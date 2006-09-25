@@ -1,0 +1,248 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ProjectType>Local</ProjectType>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{361087AE-2FD8-4BEF-8218-05A553ED7A49}</ProjectGuid>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ApplicationIcon>
+    </ApplicationIcon>
+    <AssemblyKeyContainerName>
+    </AssemblyKeyContainerName>
+    <AssemblyName>engine</AssemblyName>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
+    <DefaultClientScript>JScript</DefaultClientScript>
+    <DefaultHTMLPageLayout>Grid</DefaultHTMLPageLayout>
+    <DefaultTargetSchema>IE50</DefaultTargetSchema>
+    <DelaySign>false</DelaySign>
+    <OutputType>Library</OutputType>
+    <RootNamespace>engine</RootNamespace>
+    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
+    <StartupObject>
+    </StartupObject>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>bin\Debug\</OutputPath>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <BaseAddress>285212672</BaseAddress>
+    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DocumentationFile>
+    </DocumentationFile>
+    <DebugSymbols>true</DebugSymbols>
+    <FileAlignment>4096</FileAlignment>
+    <NoStdLib>false</NoStdLib>
+    <NoWarn>
+    </NoWarn>
+    <Optimize>false</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningLevel>4</WarningLevel>
+    <DebugType>full</DebugType>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>bin\Release\</OutputPath>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <BaseAddress>285212672</BaseAddress>
+    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>TRACE</DefineConstants>
+    <DocumentationFile>
+    </DocumentationFile>
+    <DebugSymbols>false</DebugSymbols>
+    <FileAlignment>4096</FileAlignment>
+    <NoStdLib>false</NoStdLib>
+    <NoWarn>
+    </NoWarn>
+    <Optimize>true</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningLevel>4</WarningLevel>
+    <DebugType>none</DebugType>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System">
+      <Name>System</Name>
+    </Reference>
+    <Reference Include="System.Data">
+      <Name>System.Data</Name>
+    </Reference>
+    <Reference Include="System.Xml">
+      <Name>System.XML</Name>
+    </Reference>
+    <ProjectReference Include="..\Classes\Classes.csproj">
+      <Name>Classes</Name>
+      <Project>{6FA9069E-3549-4352-ACBA-73BB0406C0B1}</Project>
+      <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ovr001.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ovr002.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ovr003.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ovr004.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ovr005.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ovr006.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ovr007.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ovr008.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ovr009.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ovr010.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ovr011.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ovr012.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ovr013.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ovr014.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ovr015.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ovr016.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ovr017.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ovr018.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ovr019.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ovr020.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ovr021.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ovr022.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ovr023.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ovr024.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ovr025.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ovr026.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ovr027.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ovr028.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ovr029.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ovr030.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ovr031.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ovr032.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ovr033.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ovr034.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ovr036.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ovr038.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="seg001.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="seg037.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="seg039.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="seg040.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="seg041.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="seg042.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="seg043.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="seg044.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="seg045.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="seg046.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="seg049.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="seg051.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+</Project>
