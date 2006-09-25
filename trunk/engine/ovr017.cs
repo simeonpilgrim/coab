@@ -2126,6 +2126,9 @@ namespace engine
                         gbl.byte_1D53D = data[4];
 
                         seg051.BlockRead(1, data, var_1C8);
+                        gbl.byte_1B2E4 = data[0];
+
+                        seg051.BlockRead(1, data, var_1C8);
                         gbl.game_state = data[0];
 
                         seg051.BlockRead(2, data, var_1C8);
@@ -2150,7 +2153,7 @@ namespace engine
                         var_1F9 = data[0];
 
                         seg051.BlockRead(0x148, data, var_1C8);
-                        var_148 = Sys.ArrayToStrings(data, 0, 0x148);
+                        var_148 = Sys.ArrayToStrings(data, 0, System.Math.Min(0x148, 0x29*var_1F9), 0x29);
 
                         seg051.Close(var_1C8);
 

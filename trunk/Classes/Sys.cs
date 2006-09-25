@@ -43,14 +43,17 @@ namespace Classes
         /// <summary>
         /// Converts a Pascal string array to a C# string.
         /// </summary>
-        public static string ArrayToString(byte[] data, int offset, int length)
+        public static string ArrayToString(byte[] data, int offset, int maxLen)
         {
-            length = Math.Min(data[offset], length);
+            int len = data[offset];
+            len = Math.Min(len, maxLen);
 
-            StringBuilder sb = new StringBuilder(length);
-            for (int i = 1; i <= length; i++)
+            StringBuilder sb = new StringBuilder(len);
+
+            for (int i = 1; i <= len; i++)
             {
-                sb.Append((char)data[i + offset]);
+                char c = (char)data[i + offset];
+                sb.Append(c);
             }
 
             return sb.ToString();
@@ -63,7 +66,8 @@ namespace Classes
             StringBuilder sb = new StringBuilder(length);
             for (int i = 1; i < length; i++)
             {
-                sb.Append(data[i + offset]);
+                char c = data[i + offset];
+                sb.Append(c);
             }
 
             return sb.ToString();
@@ -76,9 +80,16 @@ namespace Classes
         /// <param name="offset"></param>
         /// <param name="length"></param>
         /// <returns></returns>
-        public static string[] ArrayToStrings(byte[] data, int offset, int length)
+        public static string[] ArrayToStrings(byte[] data, int offset, int length, int stringWidth)
         {
-            throw new Exception("The method or operation is not implemented.");
+            List<string> strs = new List<string>();
+
+            for (int i = 0; i < length; i += stringWidth )
+            {             
+                strs.Add(Sys.ArrayToString(data, i + offset, stringWidth));
+            }
+
+            return strs.ToArray();
         }
     }
 }

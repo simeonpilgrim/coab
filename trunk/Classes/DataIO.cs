@@ -17,6 +17,7 @@ namespace Classes
         Bool,
         ByteArray,
         ShortArray,
+        WordArray,
         Cust1Array
     }
 
@@ -200,6 +201,19 @@ namespace Classes
                     }
                     break;
 
+                case DataType.WordArray:
+                    {
+                        ushort[] values = (ushort[])o;
+                        int offset = attr.Offset;
+                        for (int i = 0; i < attr.Size; i++)
+                        {
+                            ushort s = values[i];
+                            data[offset++] = (byte)(s & 0xff);
+                            data[offset++] = (byte)((s >> 8) & 0xff);
+                        }
+                    }
+                    break;
+
                 case DataType.PString:
                     {
                         byte b = (byte)attr.Size;
@@ -290,6 +304,17 @@ namespace Classes
                         for (int i = 0; i < attr.Size; i++)
                         {
                             a[i] = (short)(data[offset + (i * 2)] + (data[offset + 1 + (i * 2)] << 8));
+                        }
+                        fInfo.SetValue(obj, a);
+                    }
+                    break;
+
+                case DataType.WordArray:
+                    {
+                        ushort[] a = new ushort[attr.Size];
+                        for (int i = 0; i < attr.Size; i++)
+                        {
+                            a[i] = (ushort)(data[offset + (i * 2)] + (data[offset + 1 + (i * 2)] << 8));
                         }
                         fInfo.SetValue(obj, a);
                     }
