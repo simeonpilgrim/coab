@@ -93,11 +93,8 @@ namespace Classes
         public Item(byte[] data, int offset)
         {
             System.Text.StringBuilder sb = new System.Text.StringBuilder();
-            for (int i = 0; i < 0x2a && data[offset + i] != 0; i++)
-            {
-                sb.Append(data[offset + i]);
-            }
-            name = sb.ToString();
+
+            name = Sys.ArrayToString(data, offset, 0x2a);
 
             next = null;
             type = data[offset+0x2e];

@@ -117,48 +117,31 @@ namespace engine
             //func_end:
         }
 
-
+        /// <summary>
+        /// Item weight initiative effect check.
+        /// </summary>
         internal static void sub_6621E(Item arg_0, Player arg_4)
         {
             if (gbl.unk_1C020[arg_0.type].field_0 == 2)
             {
-                throw new System.NotSupportedException();//les	di, [bp+arg_0]
-                throw new System.NotSupportedException();//mov	ax, es:[di+37h]
-                throw new System.NotSupportedException();//cmp	ax, 0
-                throw new System.NotSupportedException();//jb	loc_6625A
-                throw new System.NotSupportedException();//cmp	ax, 0x96
-                throw new System.NotSupportedException();//ja	loc_6625A
-                throw new System.NotSupportedException();//les	di, [bp+arg_4]
-                throw new System.NotSupportedException();//mov	al, es:[di+0E4h]
-                throw new System.NotSupportedException();//les	di, [bp+arg_4]
-                throw new System.NotSupportedException();//mov	es:[di+1A5h], al
-                throw new System.NotSupportedException();//jmp	short loc_66278
-                throw new System.NotSupportedException();//loc_6625A:
-                throw new System.NotSupportedException();//cmp	ax, 0x97
-                throw new System.NotSupportedException();//jb	loc_6626F
-                throw new System.NotSupportedException();//cmp	ax, 0x18F
-                throw new System.NotSupportedException();//ja	loc_6626F
-                throw new System.NotSupportedException();//les	di, [bp+arg_4]
-                throw new System.NotSupportedException();//mov	byte ptr es:[di+1A5h], 9
-                throw new System.NotSupportedException();//jmp	short loc_66278
-                throw new System.NotSupportedException();//loc_6626F:
-                throw new System.NotSupportedException();//les	di, [bp+arg_4]
-                throw new System.NotSupportedException();//mov	byte ptr es:[di+1A5h], 6
-                throw new System.NotSupportedException();//loc_66278:
-                throw new System.NotSupportedException();//les	di, [bp+arg_0]
-                throw new System.NotSupportedException();//cmp	byte ptr es:[di+32h], 0
-                throw new System.NotSupportedException();//jz	func_end
-                throw new System.NotSupportedException();//les	di, [bp+arg_4]
-                throw new System.NotSupportedException();//cmp	byte ptr es:[di+1A5h], 9
-                throw new System.NotSupportedException();//ja	func_end
-                throw new System.NotSupportedException();//les	di, [bp+arg_4]
-                throw new System.NotSupportedException();//mov	al, es:[di+1A5h]
-                throw new System.NotSupportedException();//xor	ah, ah
-                throw new System.NotSupportedException();//add	ax, 3
-                throw new System.NotSupportedException();//les	di, [bp+arg_4]
-                throw new System.NotSupportedException();//mov	es:[di+1A5h], al
+                if (arg_0.weight >= 0 && arg_0.weight <= 0x96)
+                {
+                    arg_4.initiative = arg_4.field_E4;
+                }
+                else if (arg_0.weight >= 0x97 && arg_0.weight <= 0x18F)
+                {
+                    arg_4.initiative = 9;
+                }
+                else
+                {
+                    arg_4.initiative = 6;
+                }
+
+                if (arg_4.initiative != 0 && arg_4.initiative <= 9)
+                {
+                    arg_4.initiative += 3;
+                }
             }
-            throw new System.NotSupportedException();//func_end:
         }
 
 
