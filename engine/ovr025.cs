@@ -145,96 +145,56 @@ namespace engine
         }
 
 
-        internal static void sub_662A6(ref byte output, ref byte bonus, Item item, Player player)
+        internal static void sub_662A6(ref byte output, ref sbyte[] bonus, Item item, Player player)
         {
             byte var_2;
             byte var_1;
 
             var_1 = gbl.unk_1C020[item.type].field_6;
-            throw new System.NotSupportedException();//cmp	[bp+var_1], 0x7F
-            throw new System.NotSupportedException();//ja	loc_662CB
-            throw new System.NotSupportedException();//jmp	func_end
-            throw new System.NotSupportedException();//loc_662CB:
-            throw new System.NotSupportedException();//mov	al, [bp+var_1]
-            throw new System.NotSupportedException();//and	al, 0x7F
-            throw new System.NotSupportedException();//mov	[bp+var_1], al
-            var_2 = gbl.unk_1C020[item.type].field_0;
-            throw new System.NotSupportedException();//cmp	[bp+var_2], 1
-            throw new System.NotSupportedException();//jnz	loc_6630A
-            throw new System.NotSupportedException();//les	di, int ptr [bp+item.offset]
-            throw new System.NotSupportedException();//mov	al, es:[di+item.exp_value]
-            throw new System.NotSupportedException();//cbw
-            throw new System.NotSupportedException();//mov	dx, ax
-            throw new System.NotSupportedException();//mov	al, [bp+var_1]
-            throw new System.NotSupportedException();//xor	ah, ah
-            throw new System.NotSupportedException();//add	ax, dx
-            throw new System.NotSupportedException();//les	di, int ptr [bp+bonus.offset]
-            throw new System.NotSupportedException();//mov	es:[di+1], al
-            throw new System.NotSupportedException();//jmp	func_end
-            throw new System.NotSupportedException();//loc_6630A:
-            throw new System.NotSupportedException();//cmp	[bp+var_1], 0
-            throw new System.NotSupportedException();//jnz	loc_66370
-            throw new System.NotSupportedException();//cmp	[bp+var_2], 9
-            throw new System.NotSupportedException();//jnz	loc_66336
-            throw new System.NotSupportedException();//les	di, int ptr [bp+item.offset]
-            throw new System.NotSupportedException();//mov	al, es:[di+item.exp_value]
-            throw new System.NotSupportedException();//les	di, int ptr [bp+bonus.offset]
-            throw new System.NotSupportedException();//cmp	al, es:[di+3]
-            throw new System.NotSupportedException();//jle	loc_66334
-            throw new System.NotSupportedException();//les	di, int ptr [bp+item.offset]
-            throw new System.NotSupportedException();//mov	al, es:[di+item.exp_value]
-            throw new System.NotSupportedException();//les	di, int ptr [bp+bonus.offset]
-            throw new System.NotSupportedException();//mov	es:[di+3], al
-            throw new System.NotSupportedException();//loc_66334:
-            throw new System.NotSupportedException();//jmp	short loc_66351
-            throw new System.NotSupportedException();//loc_66336:
-            throw new System.NotSupportedException();//les	di, int ptr [bp+item.offset]
-            throw new System.NotSupportedException();//mov	al, es:[di+item.exp_value]
-            throw new System.NotSupportedException();//cbw
-            throw new System.NotSupportedException();//mov	dx, ax
-            throw new System.NotSupportedException();//les	di, int ptr [bp+bonus.offset]
-            throw new System.NotSupportedException();//mov	al, es:[di+2]
-            throw new System.NotSupportedException();//cbw
-            throw new System.NotSupportedException();//add	ax, dx
-            throw new System.NotSupportedException();//les	di, int ptr [bp+bonus.offset]
-            throw new System.NotSupportedException();//mov	es:[di+2], al
-            throw new System.NotSupportedException();//loc_66351:
-            player.field_186 = (sbyte)(player.field_186 + item.field_33);
-            throw new System.NotSupportedException();//jmp	short func_end
-            throw new System.NotSupportedException();//loc_66370:
-            throw new System.NotSupportedException();//les	di, int ptr [bp+bonus.offset]
-            throw new System.NotSupportedException();//mov	al, es:[di+4]
-            throw new System.NotSupportedException();//cbw
-            throw new System.NotSupportedException();//mov	cx, ax
-            throw new System.NotSupportedException();//les	di, int ptr [bp+item.offset]
-            throw new System.NotSupportedException();//mov	al, es:[di+item.exp_value]
-            throw new System.NotSupportedException();//cbw
-            throw new System.NotSupportedException();//mov	dx, ax
-            throw new System.NotSupportedException();//mov	al, [bp+var_1]
-            throw new System.NotSupportedException();//xor	ah, ah
-            throw new System.NotSupportedException();//add	ax, dx
-            throw new System.NotSupportedException();//cmp	ax, cx
-            throw new System.NotSupportedException();//jle	func_end
-            throw new System.NotSupportedException();//les	di, int ptr [bp+item.offset]
-            throw new System.NotSupportedException();//mov	al, es:[di+item.exp_value]
-            throw new System.NotSupportedException();//cbw
-            throw new System.NotSupportedException();//mov	dx, ax
-            throw new System.NotSupportedException();//mov	al, [bp+var_1]
-            throw new System.NotSupportedException();//xor	ah, ah
-            throw new System.NotSupportedException();//add	ax, dx
-            throw new System.NotSupportedException();//les	di, int ptr [bp+bonus.offset]
-            throw new System.NotSupportedException();//mov	es:[di+4], al
-            throw new System.NotSupportedException();//les	di, int ptr [bp+item.offset]
-            throw new System.NotSupportedException();//cmp	es:[di+item.exp_value],	0
-            throw new System.NotSupportedException();//jle	func_end
-            throw new System.NotSupportedException();//cmp	[bp+var_2], 2
-            throw new System.NotSupportedException();//jnz	func_end
-            throw new System.NotSupportedException();//les	di, int ptr [bp+output.offset]
-            throw new System.NotSupportedException();//mov	byte ptr es:[di], 1
-            throw new System.NotSupportedException();//func_end:
-            throw new System.NotSupportedException();//mov	sp, bp
-            throw new System.NotSupportedException();//pop	bp
-            throw new System.NotSupportedException();//retf	0x10
+            if (var_1 > 0x7f)
+            {
+                var_1 &= 0x7F;
+                var_2 = gbl.unk_1C020[item.type].field_0;
+                if (var_2 == 1)
+                {
+                    bonus[1] = (sbyte)(item.exp_value + var_1);
+                    return;
+                }
+
+                if (var_1 == 0)
+                {
+                    if (var_2 == 9)
+                    {
+                        if (item.exp_value > bonus[3])
+                        {
+                            bonus[3] = item.exp_value;
+                        }
+                    }
+                    else
+                    {
+                        bonus[2] += (sbyte)(item.exp_value);
+                    }
+
+                    player.field_186 = (sbyte)(player.field_186 + item.field_33);
+                    return;
+                }
+
+
+                if ((item.exp_value + var_1) > bonus[4])
+                {
+                    bonus[4] = (sbyte)(item.exp_value + var_1);
+
+                    if (item.exp_value > 0)
+                    {
+                        if (var_2 == 2)
+                        {
+                            output = 1;
+                        }
+                    }
+                }
+            }
+
+            //func_end:
         }
 
 
@@ -692,7 +652,7 @@ namespace engine
             byte var_13;
             short var_12;
             byte var_10;
-            byte[] stat_bonus = new byte[5];
+            sbyte[] stat_bonus = new sbyte[5];
             byte var_8;
             byte var_7;
             Item item_ptr;
@@ -816,7 +776,7 @@ namespace engine
                 if (item_ptr.field_34 != 0)
                 {
                     sub_6621E(item_ptr, player);
-                    sub_662A6(ref var_7, ref stat_bonus[0], item_ptr, player);
+                    sub_662A6(ref var_7, ref stat_bonus, item_ptr, player);
                 }
 
                 item_ptr = item_ptr.next;
@@ -848,14 +808,14 @@ namespace engine
 
             if (stat_bonus[4] < player.ac)
             {
-                stat_bonus[4] = player.ac;
+                stat_bonus[4] = (sbyte)player.ac;
             }
 
             player.ac = 0;
 
             for (var_2 = 0; var_2 <= 4; var_2++)
             {
-                player.ac += stat_bonus[var_2];
+                player.ac += (byte)stat_bonus[var_2];
             }
 
             player.field_19B = (byte)((stat_bonus[4] + stat_bonus[2] + stat_bonus[3]) - 2);
@@ -914,24 +874,24 @@ namespace engine
         }
 
 
-        internal static byte stat_bonus(Player player)
+        internal static sbyte stat_bonus(Player player)
         {
             byte stat_val;
-            byte bonus;
+            sbyte bonus;
 
             stat_val = player.dex;
 
             if (stat_val >= 1 && stat_val <= 3)
             {
-                bonus = 0x0FC;
+                bonus = -4;
             }
             else if (stat_val >= 4 && stat_val <= 6)
             {
-                bonus = (byte)(stat_val - 7);
+                bonus = (sbyte)(stat_val - 7);
             }
             else if (stat_val >= 15 && stat_val <= 18)
             {
-                bonus = (byte)(stat_val - 14);
+                bonus = (sbyte)(stat_val - 14);
             }
             else if (stat_val == 19 || stat_val == 20)
             {
