@@ -532,7 +532,7 @@ namespace engine
                         gbl.area_ptr.field_1CA == 0 &&
                         (gbl.game_state == 2 || gbl.game_state == 3 ||
                         gbl.game_state == 4 || gbl.game_state == 5 ||
-                        var_3F.actions.field_2 != 0))
+                        (var_3F.actions != null && var_3F.actions.field_2 != 0)))
                     {
                         var_2A += " Use";
                     }

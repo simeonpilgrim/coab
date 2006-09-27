@@ -10,7 +10,7 @@ namespace Classes
 		public string name; // 0x00
 		public Item next; // 0x2a;
 		public byte type; // 0x2e; /* 11 - 14 = scroll */
-        public byte field_23Array(int index)
+        public byte field_2EArray(int index)
         {
             switch (index)
             {

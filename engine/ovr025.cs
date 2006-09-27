@@ -326,20 +326,14 @@ namespace engine
                 player_ptr = player_ptr.next_player;
             }
 
-            throw new System.NotSupportedException();//cmp	[bp+var_7], 0
-            throw new System.NotSupportedException();//jz	loc_66550
-            throw new System.NotSupportedException();//les	di, dword ptr [bp+item.offset]
-            throw new System.NotSupportedException();//cmp	es:[di+item.exp_value],	0
-            throw new System.NotSupportedException();//jg	loc_6651E
-            throw new System.NotSupportedException();//les	di, dword ptr [bp+item.offset]
-            throw new System.NotSupportedException();//cmp	es:[di+item.field_33], 0
-            throw new System.NotSupportedException();//jg	loc_6651E
-            throw new System.NotSupportedException();//les	di, dword ptr [bp+item.offset]
-            throw new System.NotSupportedException();//cmp	es:[di+item.field_36], 0
-            throw new System.NotSupportedException();//jz	loc_66550
-            throw new System.NotSupportedException();//loc_6651E:
-            item.name += "* ";
-            throw new System.NotSupportedException();//loc_66550:
+            if (var_7 != 0)
+            {
+                if (item.exp_value > 0 || item.field_33 > 0 || item.field_36 != 0)
+                {
+                    item.name += "* ";
+                }
+            }
+
             if (item.count > 0)
             {
                 item.name += sub_670CC(item.count) + " ";
@@ -349,35 +343,13 @@ namespace engine
 
             for (var_1 = 1; var_1 <= 3; var_1++)
             {
-                throw new System.NotSupportedException();//mov	al, [bp+var_1]
-                throw new System.NotSupportedException();//xor	ah, ah
-                throw new System.NotSupportedException();//les	di, dword ptr [bp+item.offset]
-                throw new System.NotSupportedException();//add	di, ax
-                throw new System.NotSupportedException();//cmp	es:[di+item.type], 0
-                throw new System.NotSupportedException();//jz	loc_665EB
-                throw new System.NotSupportedException();//mov	al, [bp+var_1]
-                throw new System.NotSupportedException();//xor	ah, ah
-                throw new System.NotSupportedException();//mov	dx, ax
-                throw new System.NotSupportedException();//mov	ax, 3
-                throw new System.NotSupportedException();//sub	ax, dx
-                throw new System.NotSupportedException();//mov	dx, ax
-                throw new System.NotSupportedException();//les	di, dword ptr [bp+item.offset]
-                throw new System.NotSupportedException();//mov	al, es:[di+item.field_35]
-                throw new System.NotSupportedException();//xor	ah, ah
-                throw new System.NotSupportedException();//mov	cx, dx
-                throw new System.NotSupportedException();//shr	ax, cl
-                throw new System.NotSupportedException();//and	ax, 1
-                throw new System.NotSupportedException();//or	ax, ax
-                throw new System.NotSupportedException();//jnz	loc_665EB
-                throw new System.NotSupportedException();//mov	al, [bp+var_1]
-                throw new System.NotSupportedException();//xor	ah, ah
-                throw new System.NotSupportedException();//dec	ax
-                throw new System.NotSupportedException();//mov	dx, ax
-                throw new System.NotSupportedException();//mov	ax, 1
-                throw new System.NotSupportedException();//mov	cx, dx
-                throw new System.NotSupportedException();//shl	ax, cl
-                throw new System.NotSupportedException();//add	[bp+var_2], al
-                throw new System.NotSupportedException();//loc_665EB:
+                if (item.field_2EArray(var_1) != item.type)
+                {
+                    if (((item.field_35 >> (3 - var_1)) & 1) == 0)
+                    {
+                        var_2 += (byte)(1 << (var_1 - 1));
+                    }
+                }
             }
 
             var_8 = 0;
@@ -386,7 +358,7 @@ namespace engine
             {
                 if (((var_2 >> (var_1 - 1)) & 1) > 0)
                 {
-                    item.name += itemNames[item.field_23Array(var_1)];
+                    item.name += itemNames[item.field_2EArray(var_1)];
 
                     if (item.count < 2 ||
                         var_8 != 0)
@@ -450,7 +422,7 @@ namespace engine
                         item.name += " ";
                     }
                 }
-                throw new System.NotSupportedException();//loc_6675F:
+                //loc_6675F:
             }
 
             if (arg_0 != 0)
@@ -914,63 +886,41 @@ namespace engine
         }
 
 
-        internal static byte stat_bonus02(Player player)
+        internal static sbyte stat_bonus02(Player player)
         {
             byte stat_val;
-            byte var_1;
+            sbyte var_1;
 
             stat_val = player.dex;
-            throw new System.NotSupportedException();//mov	al, [bp+stat_val]
-            throw new System.NotSupportedException();//cmp	al, 0
-            throw new System.NotSupportedException();//jb	above_2
-            throw new System.NotSupportedException();//cmp	al, 2
-            throw new System.NotSupportedException();//ja	above_2
-            throw new System.NotSupportedException();//mov	[bp+var_1], -4
-            throw new System.NotSupportedException();//jmp	short func_end
-            throw new System.NotSupportedException();//above_2:
-            throw new System.NotSupportedException();//cmp	al, 3
-            throw new System.NotSupportedException();//jb	above_5
-            throw new System.NotSupportedException();//cmp	al, 5
-            throw new System.NotSupportedException();//ja	above_5
-            throw new System.NotSupportedException();//mov	al, [bp+stat_val]
-            throw new System.NotSupportedException();//xor	ah, ah
-            throw new System.NotSupportedException();//sub	ax, 6
-            throw new System.NotSupportedException();//mov	[bp+var_1], al
-            throw new System.NotSupportedException();//jmp	short func_end
-            throw new System.NotSupportedException();//above_5:
-            throw new System.NotSupportedException();//cmp	al, 16
-            throw new System.NotSupportedException();//jb	above_18
-            throw new System.NotSupportedException();//cmp	al, 18
-            throw new System.NotSupportedException();//ja	above_18
-            throw new System.NotSupportedException();//mov	al, [bp+stat_val]
-            throw new System.NotSupportedException();//xor	ah, ah
-            throw new System.NotSupportedException();//sub	ax, 15
-            throw new System.NotSupportedException();//mov	[bp+var_1], al
-            throw new System.NotSupportedException();//jmp	short func_end
-            throw new System.NotSupportedException();//above_18:
-            throw new System.NotSupportedException();//cmp	al, 19
-            throw new System.NotSupportedException();//jb	above_20
-            throw new System.NotSupportedException();//cmp	al, 20
-            throw new System.NotSupportedException();//ja	above_20
-            var_1 = 3;
-            throw new System.NotSupportedException();//jmp	short func_end
-            throw new System.NotSupportedException();//above_20:
-            throw new System.NotSupportedException();//cmp	al, 21
-            throw new System.NotSupportedException();//jb	above_23
-            throw new System.NotSupportedException();//cmp	al, 23
-            throw new System.NotSupportedException();//ja	above_23
-            var_1 = 4;
-            throw new System.NotSupportedException();//jmp	short func_end
-            throw new System.NotSupportedException();//above_23:
-            throw new System.NotSupportedException();//cmp	al, 24
-            throw new System.NotSupportedException();//jb	zero_bonus
-            throw new System.NotSupportedException();//cmp	al, 25
-            throw new System.NotSupportedException();//ja	zero_bonus
-            var_1 = 5;
-            throw new System.NotSupportedException();//jmp	short func_end
-            throw new System.NotSupportedException();//zero_bonus:
-            var_1 = 0;
-            throw new System.NotSupportedException();//func_end:
+
+            if (stat_val >= 0 && stat_val <= 2)
+            {
+                var_1 = -4;
+            }
+            else if (stat_val >= 3 && stat_val <= 5)
+            {
+                var_1 = (sbyte)(stat_val - 6);
+            }
+            else if (stat_val >= 16 && stat_val <= 18)
+            {
+                var_1 = (sbyte)(stat_val - 15);
+            }
+            else if (stat_val >= 19 && stat_val <= 20)
+            {
+                var_1 = 3;
+            }
+            else if (stat_val >= 21 && stat_val <= 23)
+            {
+                var_1 = 4;
+            }
+            else if (stat_val >= 24 && stat_val <= 25)
+            {
+                var_1 = 5;
+            }
+            else
+            {
+                var_1 = 0;
+            }
 
             return var_1;
         }
