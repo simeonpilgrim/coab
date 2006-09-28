@@ -6,16 +6,14 @@ namespace engine
     {
         internal static void parse_command_sub(byte loop_number)
         {
-            byte loop_max;
             short var_6;
             ushort var_4;
             byte var_2;
             byte loop_var;
 
             var_2 = 0;
-            loop_max = loop_number;
 
-            for (loop_var = 1; loop_var <= loop_max; loop_var++)
+            for (loop_var = 1; loop_var <= loop_number; loop_var++)
             {
                 byte code = gbl.ecl_ptr[0x8000 + gbl.ecl_offset + 1];
                 gbl.cmd_code[loop_var] = code;
@@ -29,7 +27,7 @@ namespace engine
 
                     gbl.cmd_high_bytes[loop_var] = gbl.ecl_ptr[0x8000 + gbl.ecl_offset];
                 }
-                else if (code == 0x80)
+                else if (code == 0x80) // Load compressed string
                 {
                     var_2++;
 
@@ -37,7 +35,7 @@ namespace engine
 
                     if (var_6 > 0)
                     {
-                        sub_31279(var_2, (byte)var_6);
+                        decompressString(var_2, (byte)var_6);
                     }
                     else
                     {
@@ -340,16 +338,14 @@ namespace engine
         }
 
 
-        internal static char sub_306FB(byte arg_0)
+        internal static char inflateChar(int arg_0)
         {
-            byte var_1 = arg_0;
-
             if (arg_0 <= 0x1f)
             {
-                var_1 += 0x40;
+                arg_0 += 0x40;
             }
 
-            return (char)var_1;
+            return (char)arg_0;
         }
 
 
@@ -1030,21 +1026,11 @@ namespace engine
 
                         ushort ax = (ushort)((var_103 + arg_4) << 1);
 
-                        /*gbl.area_ptr[0x6A00 + ax] = dx;*/
-                        throw new System.NotSupportedException();//les	di, dword ptr area_ptr.offset
-                        throw new System.NotSupportedException();//add	di, ax
-                        throw new System.NotSupportedException();//mov	es:[di+6A00h], dx
+                        gbl.area_ptr.field_6A00_Set(0x6A00 + ax, dx);
                     }
                 }
-                throw new System.NotSupportedException();//loc_310E8:
-                throw new System.NotSupportedException();//mov	al, [bp+var_102]
-                throw new System.NotSupportedException();//xor	ah, ah
-                throw new System.NotSupportedException();//add	ax, [bp+arg_4]
-                throw new System.NotSupportedException();//shl	ax, 1
-                throw new System.NotSupportedException();//les	di, dword ptr area_ptr.offset
-                throw new System.NotSupportedException();//add	di, ax
-                throw new System.NotSupportedException();//xor	ax, ax
-                throw new System.NotSupportedException();//mov	es:[di+6A00h], ax
+
+                gbl.area_ptr.field_6A00_Set(0x6A00 + ((var_102 + arg_4) << 1), 0);
             }
             else if (var_101 == 1)
             {
@@ -1149,111 +1135,92 @@ namespace engine
         }
 
 
-        internal static void sub_31279(byte arg_0, byte arg_2)
+        internal static void decompressString(byte strIndex, byte inputLength)
         {
-            char var_7;
-            byte var_6;
-            byte var_5 = 0xfd; /* Simeon */
-            byte var_4 = 0xfe; /* Simeon */
-            byte var_3 = 0xff; /* Simeon */
-            byte var_1;
+            int var_5 = 0; /* Simeon */
+            byte lastByte = 0; /* Simeon */
+            byte thisByte = 0; /* Simeon */
+            byte inputConsumed;
+            System.Text.StringBuilder sb = new System.Text.StringBuilder();
 
+            inputConsumed = 0;
+            int state = 1;
 
-            gbl.unk_1D972[arg_0] = string.Empty;
-
-            var_1 = 0;
-            var_6 = 1;
-
-            while (var_1 < arg_2)
+            while (inputConsumed < inputLength)
             {
-                if (var_6 < 4)
+                if (state < 4)
                 {
+                    lastByte = thisByte;
                     gbl.ecl_offset++;
-                    var_4 = var_3;
-                    var_3 = gbl.ecl_ptr[gbl.ecl_offset + 0x8000];
-                    var_1++;
+                    thisByte = gbl.ecl_ptr[gbl.ecl_offset + 0x8000];
+                    inputConsumed++;
                 }
 
-                switch (var_6)
+                switch (state)
                 {
                     case 1:
-                        var_5 = (byte)(var_3 >> 2);
+                        var_5 = thisByte >> 2;
                         break;
 
                     case 2:
-                        var_5 = (byte)((var_4 << 6) + (var_3 >> 2));
-                        var_5 >>= 2;
+                        var_5 = (lastByte << 4) | (thisByte >> 4);
                         break;
 
                     case 3:
-                        var_5 = (byte)((var_4 << 4) + (var_3 >> 4));
-                        var_5 >>= 2;
+                        var_5 = (lastByte << 2) | (thisByte >> 6);
                         break;
 
                     case 4:
-                        var_5 = (byte)(var_3 & 0x3F);
+                        var_5 = thisByte;
                         break;
                 }
 
-                if (var_6 < 4)
-                {
-                    var_6++;
-                }
-                else
-                {
-                    var_6 = 1;
-                }
+                var_5 &= 0x3F;
+
+                state = (state % 4) + 1;
 
                 if (var_5 != 0)
                 {
-                    var_7 = sub_306FB(var_5);
-                    gbl.unk_1D972[arg_0] += var_7.ToString();
+                    char ch = inflateChar(var_5);
+                    sb.Append(ch);
                 }
             }
 
-            if (var_6 == 4)
+            if (state == 4)
             {
-
-                var_5 = (byte)(var_3 & 0x3F);
+                var_5 = thisByte & 0x3F;
 
                 if (var_5 != 0)
                 {
-                    var_7 = sub_306FB(var_5);
-                    gbl.unk_1D972[arg_0] += var_7.ToString();
+                    char ch = inflateChar(var_5);
+                    sb.Append(ch);
                 }
             }
+
+            gbl.unk_1D972[strIndex] = sb.ToString();
         }
 
 
-        internal static void sub_31421(ushort arg_0, byte arg_2)
+        internal static void sub_31421(ushort arg_0, byte strIndex)
         {
             byte var_2;
             byte var_1;
 
             var_1 = sub_30723(arg_0);
-            gbl.unk_1D972[arg_2] = string.Empty;
+            gbl.unk_1D972[strIndex] = string.Empty;
             var_2 = 0;
             throw new System.NotSupportedException();//mov	al, [bp+var_1]
             throw new System.NotSupportedException();//cmp	al, 0
             throw new System.NotSupportedException();//jnz	loc_314C9
-            throw new System.NotSupportedException();//loc_3144D:
-            throw new System.NotSupportedException();//mov	al, [bp+var_2]
-            throw new System.NotSupportedException();//xor	ah, ah
-            throw new System.NotSupportedException();//add	ax, [bp+arg_0]
-            throw new System.NotSupportedException();//shl	ax, 1
-            throw new System.NotSupportedException();//les	di, dword ptr area_ptr.offset
-            throw new System.NotSupportedException();//add	di, ax
-            throw new System.NotSupportedException();//cmp	word ptr es:[di+6A00h],	0
-            throw new System.NotSupportedException();//jz	loc_314C6
 
-            throw new System.NotSupportedException();//di = ((var_2 + arg_0)<<1) + gbl.area_ptr.offset;
-            throw new System.NotSupportedException();//mov	al, es:[di+6A00h]
-            throw new System.NotSupportedException();//push	ax
-            throw new System.NotSupportedException();//gbl.unk_1D972[arg_2] += (char)ax;
+            while (gbl.area_ptr.field_6A00_Get(((var_2 + arg_0) << 1) + 0x6A00) != 0)
+            {
+                gbl.unk_1D972[arg_2] += (char)((byte)gbl.area_ptr.field_6A00_Get(((var_2 + arg_0) << 1) + 0x6A00));
 
-            var_2++;
-            throw new System.NotSupportedException();//jmp	short loc_3144D
-            throw new System.NotSupportedException();//loc_314C6:
+                var_2++;
+
+            }
+
             throw new System.NotSupportedException();//jmp	func_end
             throw new System.NotSupportedException();//loc_314C9:
             throw new System.NotSupportedException();//cmp	al, 1
@@ -1262,7 +1229,7 @@ namespace engine
             throw new System.NotSupportedException();//loc_314D0:
             throw new System.NotSupportedException();//cmp	[bp+arg_0], 0x7C00
             throw new System.NotSupportedException();//jnz	loc_314F9
-            gbl.unk_1D972[arg_2] = gbl.player_ptr.name;
+            gbl.unk_1D972[strIndex] = gbl.player_ptr.name;
 
             throw new System.NotSupportedException();//jmp	short loc_31572
             throw new System.NotSupportedException();//loc_314F9:
@@ -1276,7 +1243,7 @@ namespace engine
             throw new System.NotSupportedException();//jz	loc_31572
 
 
-            gbl.unk_1D972[arg_2] += gbl.area2_ptr.field_800_Get((var_2 + arg_0) << 1).ToString();
+            gbl.unk_1D972[strIndex] += gbl.area2_ptr.field_800_Get((var_2 + arg_0) << 1).ToString();
 
             var_2++;
             throw new System.NotSupportedException();//jmp	short loc_314F9
@@ -1294,7 +1261,7 @@ namespace engine
             throw new System.NotSupportedException();//add	di, ax
             throw new System.NotSupportedException();//cmp	word ptr es:[di+0C00h],	0
             throw new System.NotSupportedException();//jz	loc_315F2
-            gbl.unk_1D972[arg_2] += gbl.stru_1B2CA.field_C00((var_2 + arg_0) << 1).ToString();
+            gbl.unk_1D972[strIndex] += gbl.stru_1B2CA.field_C00((var_2 + arg_0) << 1).ToString();
             var_2++;
             throw new System.NotSupportedException();//jmp	short loc_31579
             throw new System.NotSupportedException();//loc_315F2:
@@ -1302,13 +1269,13 @@ namespace engine
             throw new System.NotSupportedException();//loc_315F4:
             throw new System.NotSupportedException();//cmp	al, 3
             throw new System.NotSupportedException();//jnz	func_end
-            throw new System.NotSupportedException();//loc_315F8:
+
             while (gbl.ecl_ptr[var_2 + arg_0 + 0x8000] != 0)
             {
-                gbl.unk_1D972[arg_2] += gbl.ecl_ptr[var_2 + arg_0 + 0x8000].ToString();
+                gbl.unk_1D972[strIndex] += gbl.ecl_ptr[var_2 + arg_0 + 0x8000].ToString();
                 var_2++;
             }
-            throw new System.NotSupportedException();//func_end:
+            //func_end:
         }
 
         static Set unk_31673 = new Set(0x0606, new byte[] { 0xff, 0x03, 0xfe, 0xff, 0xff, 0x07 });

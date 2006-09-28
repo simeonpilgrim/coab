@@ -74,11 +74,11 @@ namespace engine
                         var_A += 8;
                     }
 
-                    ovr038.Put8x8Symbol(0, 1, var_A, (byte)(var_4 + 2), (byte)(var_3 + 2));
+                    ovr038.Put8x8Symbol(0, 1, var_A, var_4 + 2, var_3 + 2);
                 }
             }
 
-            ovr038.Put8x8Symbol(0, 1, (short)((arg_0 >> 1) + 0x100), (byte)(var_2 + 2), (byte)(var_1 + 2));
+            ovr038.Put8x8Symbol(0, 1, (short)((arg_0 >> 1) + 0x100), var_2 + 2, var_1 + 2);
             seg040.DrawOverlay();
         }
 
@@ -148,35 +148,34 @@ namespace engine
         }
 
         /*seg600:0ADA*/
-        static byte[] unk_16DEA = { 0, 2, 6, 0xA, 0x16, 0x26, 0x36, 0x6E, 0x84, 0x9A, 1 };
+        static byte[] dataOffset = { 0, 2, 6, 10, 22, 38, 54, 110, 132, 154, 1 };
 
         /*seg600:0AE4*/
-        static byte[] unk_16DF4 = { 1, 1, 1, 3, 2, 2, 7, 2, 2, 1 };
+        static int[] colOffsets = { 1, 1, 1, 3, 2, 2, 7, 2, 2, 1 };
         /*seg600:0AEE*/
-        static byte[] unk_16DFE = { 2, 4, 4, 4, 8, 8, 8, 0xB, 0xB, 2 };
+        static int[] rowOffsets = { 2, 4, 4, 4, 8, 8, 8, 11, 11, 2 };
  
-        internal static void sub_71434(byte arg_0, byte arg_2, sbyte arg_4, sbyte arg_6)
+        internal static void sub_71434(byte offsetIndex, byte arg_2, int rowStart, int colStart)
         {
-            byte var_9;
-            short var_8;
-            short var_6;
-            short var_4;
-            short var_2;
+            int var_9 = dataOffset[offsetIndex];
 
-            var_9 = unk_16DEA[arg_0];
+            int colMax = colOffsets[offsetIndex] + colStart;
+            int rowMax = rowOffsets[offsetIndex] + rowStart;
 
-            var_2 = (short)(unk_16DF4[arg_0] + arg_6 - 1);
-            var_4 = (short)(unk_16DFE[arg_0] + arg_4 - 1);
+            int offsetA = (arg_2 - 1) / 5;
+            int offsetB = ((arg_2 - 1) % 5) * 0x9C;
 
-            for (var_8 = arg_4; var_8 <= var_4; var_8++)
+            for (int rowY = rowStart; rowY < rowMax; rowY++)
             {
-                for (var_6 = arg_6; var_6 <= var_2; var_6++)
+                for (int colX = colStart; colX < colMax; colX++)
                 {
-                    if (var_8 >= 0 && var_8 <= 10 && var_6 >= 0 && var_6 <= 10 &&
-                        gbl.stru_1D52C[(arg_2 - 1) / 5][var_9 + (((arg_2 - 1) % 5) * 0x9C)] > 0)
+                    short v = gbl.stru_1D52C[offsetA][offsetB + var_9];
+
+                    if (rowY >= 0 && rowY <= 10 && colX >= 0 && colX <= 10 && v > 0)
                     {
-                        ovr038.Put8x8Symbol(1, 1, 
-                            gbl.stru_1D52C[(arg_2 - 1) / 5][var_9 + (((arg_2 - 1) % 5) * 0x9C)], (byte)(var_8 + 2), (byte)(var_6 + 2));
+                        ovr038.Put8x8Symbol(1, 1, v , rowY + 2, colX + 2);
+
+                        Display.Update();
                     }
 
                     var_9++;
