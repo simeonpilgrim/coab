@@ -39,7 +39,7 @@ namespace engine
         }
 
 
-        internal static void Put8x8Symbol( byte arg_0, byte arg_2, short symbol_id, byte arg_6, byte arg_8 )
+        internal static void Put8x8Symbol( byte arg_0, byte arg_2, short symbol_id, int rowY, int colX )
         {
             DaxBlock var_6;
             byte var_2;
@@ -78,11 +78,11 @@ namespace engine
             {
                 symbol_id -= gbl.symbol_set_fix[symbol_set];
 
-                if( arg_2 != 0 )
-                {
-                    seg040.sub_E267( gbl.overlayLines, gbl.symbol_8x8_set[symbol_set], arg_0, (byte)symbol_id, arg_6, arg_8 );
-                }
-                else
+                //if( arg_2 != 0 )
+                //{
+                //    seg040.sub_E267( gbl.overlayLines, gbl.symbol_8x8_set[symbol_set], arg_0, (byte)symbol_id, rowY, colX );
+                //}
+                //else
                 {
                     var_6 = gbl.symbol_8x8_set[symbol_set];
 
@@ -92,7 +92,7 @@ namespace engine
 					{
 						gbl.dword_1C8F4.data[ i ] = var_6.data[ i + ax ];
 					}
-                    seg040.draw_picture( gbl.dword_1C8F4, arg_6, arg_8 );
+                    seg040.draw_picture( gbl.dword_1C8F4, rowY, colX );
                 }
             }
         }
