@@ -1215,7 +1215,7 @@ namespace engine
 
             while (gbl.area_ptr.field_6A00_Get(((var_2 + arg_0) << 1) + 0x6A00) != 0)
             {
-                gbl.unk_1D972[arg_2] += (char)((byte)gbl.area_ptr.field_6A00_Get(((var_2 + arg_0) << 1) + 0x6A00));
+                gbl.unk_1D972[strIndex] += (char)((byte)gbl.area_ptr.field_6A00_Get(((var_2 + arg_0) << 1) + 0x6A00));
 
                 var_2++;
 
