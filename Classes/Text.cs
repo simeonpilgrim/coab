@@ -2,7 +2,7 @@ using System;
 
 namespace Classes
 {
-    public delegate void TextDelegate(Text arg_0);
+    public delegate int TextDelegate(Text arg_0);
 	/// <summary>
 	/// Summary description for Text.
 	/// </summary>
@@ -24,8 +24,6 @@ namespace Classes
         public byte field_30 = 0;
 
         public object field_80;
-        public TextDelegate fnc;
-
 
         public System.IO.TextReader reader;
         public System.IO.TextWriter writer;

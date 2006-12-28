@@ -43,6 +43,8 @@ namespace engine
             ovr008.parse_command_sub(1);
 
             gbl.ecl_offset = ovr008.bytes_to_word(gbl.cmd_high_bytes[1], gbl.cmd_low_bytes[1]);
+
+            System.Console.WriteLine("CMD_Goto: ecl_offset 0x{0,4:X}", gbl.ecl_offset);
         }
 
 
@@ -68,7 +70,7 @@ namespace engine
                 ushort var_2 = ovr008.sub_30168(1);
                 ushort var_4 = ovr008.sub_30168(2);
 
-                ovr008.sub_31A11(var_4, var_2);
+                ovr008.compare_variables(var_4, var_2);
             }
         }
 
@@ -138,7 +140,7 @@ namespace engine
         }
 
 
-        internal static void sub_2629B()
+        internal static void CMD_Save()
         {
             ushort var_4;
             ushort var_2;
@@ -529,53 +531,16 @@ namespace engine
         }
 
 
-        internal static void sub_26B71()
+        internal static void CMD_if()
         {
             gbl.ecl_offset++;
 
-            switch (gbl.command)
+            int index = gbl.command - 0x16;
+
+            System.Console.WriteLine("CMD_if: {0}", gbl.item_find[index]);
+            if (gbl.item_find[index] == false)
             {
-                case 0x16:
-                    if (gbl.item_find[0] == false)
-                    {
-                        ovr008.parse_command();
-                    }
-                    break;
-
-                case 0x17:
-                    if (gbl.item_find[1] == false)
-                    {
-                        ovr008.parse_command();
-                    }
-                    break;
-
-                case 0x18:
-                    if (gbl.item_find[2] == false)
-                    {
-                        ovr008.parse_command();
-                    }
-                    break;
-
-                case 0x19:
-                    if (gbl.item_find[3] == false)
-                    {
-                        ovr008.parse_command();
-                    }
-                    break;
-
-                case 0x1A:
-                    if (gbl.item_find[4] == false)
-                    {
-                        ovr008.parse_command();
-                    }
-                    break;
-
-                case 0x1B:
-                    if (gbl.item_find[5] == false)
-                    {
-                        ovr008.parse_command();
-                    }
-                    break;
+                ovr008.parse_command();
             }
         }
 
@@ -729,7 +694,7 @@ namespace engine
             {
                 var_7 = (byte)(var_6 | var_4);
             }
-            ovr008.sub_31A11(var_7, 0);
+            ovr008.compare_variables(var_7, 0);
             ovr008.cmd_table01(var_7, var_2);
         }
 
@@ -2644,7 +2609,7 @@ namespace engine
                 case 0x06: sub_2619A(); break;
                 case 0x07: sub_2619A(); break;
                 case 0x08: sub_2623D(); break;
-                case 0x09: sub_2629B(); break;
+                case 0x09: CMD_Save(); break;
                 case 0x0A: sub_262E9(); break;
                 case 0x0B: sub_26465(); break;
                 case 0x0C: sub_263C9(); break;
@@ -2657,12 +2622,12 @@ namespace engine
                 case 0x13: sub_26AB8(); break;
                 case 0x14: sub_26B0C(); break;
                 case 0x15: sub_26EE9(); break;
-                case 0x16: sub_26B71(); break;
-                case 0x17: sub_26B71(); break;
-                case 0x18: sub_26B71(); break;
-                case 0x19: sub_26B71(); break;
-                case 0x1A: sub_26B71(); break;
-                case 0x1B: sub_26B71(); break;
+                case 0x16: CMD_if(); break;
+                case 0x17: CMD_if(); break;
+                case 0x18: CMD_if(); break;
+                case 0x19: CMD_if(); break;
+                case 0x1A: CMD_if(); break;
+                case 0x1B: CMD_if(); break;
                 case 0x1C: sub_27240(); break;
                 case 0x1D: sub_272A9(); break;
                 case 0x1E: sub_27454(); break;

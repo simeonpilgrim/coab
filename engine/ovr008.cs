@@ -351,9 +351,7 @@ namespace engine
 
         internal static byte sub_30723(ushort arg_0)
         {
-            byte var_1;
-
-            var_1 = 4;
+            byte var_1 = 4;
 
             if (arg_0 >= 0x4B00 && arg_0 <= 0x4EFF)
             {
@@ -379,22 +377,21 @@ namespace engine
         }
 
 
-        internal static byte sub_3077E(Player arg_0)
+        internal static byte find_gbl_player_index(Player arg_0)
         {
-            byte var_7;
             Player var_6;
             byte var_2;
 
 
             var_6 = gbl.player_next_ptr;
-            var_7 = 0;
+            bool plyr_found = false;
             var_2 = 0;
 
-            while (var_6 != null && var_7 == 0)
+            while (var_6 != null && plyr_found == false)
             {
                 if (var_6 == arg_0)
                 {
-                    var_7 = 1;
+                    plyr_found = true;
                 }
                 else
                 {
@@ -539,11 +536,11 @@ namespace engine
             }
             else if (arg_4 == 0x2B1)
             {
-                return_val = sub_3077E(gbl.player_ptr);
+                return_val = find_gbl_player_index(gbl.player_ptr);
             }
             else if (arg_4 == 0x2B4)
             {
-                return_val = sub_3077E(gbl.player_ptr);
+                return_val = find_gbl_player_index(gbl.player_ptr);
             }
             else if (arg_4 == 0x2CF)
             {
@@ -1428,46 +1425,18 @@ namespace engine
 
         /// <summary>
         /// sets global based of arg_0 and arg_2 relation.
+        /// sub_31A11
         /// </summary>
-        /// <param name="arg_0"></param>
-        /// <param name="arg_2"></param>
-        internal static void sub_31A11(ushort arg_0, ushort arg_2)
+        internal static void compare_variables(ushort arg_0, ushort arg_2)
         {
-            for (int i = 0; i < 6; i++)
-            {
-                gbl.item_find[i] = false;
-            }
+            System.Console.WriteLine("Compare_variables: {0} {1}", arg_2, arg_0);
 
-            if (arg_2 == arg_0)
-            {
-                gbl.item_find[0] = true;
-            }
-
-            if (arg_2 != arg_0)
-            {
-                gbl.item_find[1] = true;
-            }
-
-            if (arg_2 < arg_0)
-            {
-                gbl.item_find[2] = true;
-            }
-
-            if (arg_2 > arg_0)
-            {
-                gbl.item_find[3] = true;
-            }
-
-            if (arg_2 <= arg_0)
-            {
-                gbl.item_find[4] = true;
-            }
-
-            if (arg_2 >= arg_0)
-            {
-                gbl.item_find[5] = true;
-
-            }
+            gbl.item_find[0] = arg_2 == arg_0;
+            gbl.item_find[1] = arg_2 != arg_0;
+            gbl.item_find[2] = arg_2 < arg_0;
+            gbl.item_find[3] = arg_2 > arg_0;
+            gbl.item_find[4] = arg_2 <= arg_0;
+            gbl.item_find[5] = arg_2 >= arg_0;
         }
 
 
@@ -1673,54 +1642,54 @@ namespace engine
 
             switch (gbl.command)
             {
-                case 0x01: goto case 0x40;
-                case 0x02: goto case 0x40;
-                case 0x0A: goto case 0x40;
-                case 0x0E: goto case 0x40;
-                case 0x11: goto case 0x40;
-                case 0x12: goto case 0x40;
-                case 0x1D: goto case 0x40;
-                case 0x20: goto case 0x40;
-                case 0x2D: goto case 0x40;
-                case 0x32: goto case 0x40;
-                case 0x34: goto case 0x40;
-                case 0x36: goto case 0x40;
-                case 0x38: goto case 0x40;
-                case 0x39: goto case 0x40;
-                case 0x3C: goto case 0x40;
-                case 0x3F: goto case 0x40;
+                case 0x01:
+                case 0x02:
+                case 0x0A:
+                case 0x0E:
+                case 0x11:
+                case 0x12:
+                case 0x1D:
+                case 0x20:
+                case 0x2D:
+                case 0x32:
+                case 0x34:
+                case 0x36:
+                case 0x38:
+                case 0x39:
+                case 0x3C:
+                case 0x3F:
                 case 0x40:
                     parse_command_sub(1);
                     break;
 
-                case 0x03: goto case 0x22;
-                case 0x08: goto case 0x22;
-                case 0x09: goto case 0x22;
-                case 0x0F: goto case 0x22;
-                case 0x10: goto case 0x22;
-                case 0x1F: goto case 0x22;
+                case 0x03:
+                case 0x08:
+                case 0x09:
+                case 0x0F:
+                case 0x10:
+                case 0x1F:
                 case 0x22:
                     parse_command_sub(2);
                     break;
 
-                case 0x04: goto case 0x3B;
-                case 0x05: goto case 0x3B;
-                case 0x06: goto case 0x3B;
-                case 0x07: goto case 0x3B;
-                case 0x0B: goto case 0x3B;
-                case 0x0C: goto case 0x3B;
-                case 0x21: goto case 0x3B;
-                case 0x28: goto case 0x3B;
-                case 0x2A: goto case 0x3B;
-                case 0x2F: goto case 0x3B;
-                case 0x30: goto case 0x3B;
-                case 0x35: goto case 0x3B;
-                case 0x37: goto case 0x3B;
+                case 0x04:
+                case 0x05:
+                case 0x06:
+                case 0x07:
+                case 0x0B:
+                case 0x0C:
+                case 0x21:
+                case 0x28:
+                case 0x2A:
+                case 0x2F:
+                case 0x30:
+                case 0x35:
+                case 0x37:
                 case 0x3B:
                     parse_command_sub(3);
                     break;
 
-                case 0x14: goto case 0x23;
+                case 0x14:
                 case 0x23:
                     parse_command_sub(4);
                     break;
@@ -1729,7 +1698,7 @@ namespace engine
                     parse_command_sub(5);
                     break;
 
-                case 0x1E: goto case 0x2c;
+                case 0x1E:
                 case 0x2C:
                     parse_command_sub(6);
                     break;
