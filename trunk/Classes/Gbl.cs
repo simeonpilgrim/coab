@@ -49,16 +49,18 @@ namespace Classes
         public static byte byte_16AE2;
         public static byte byte_16BE3;
         public static byte byte_16C35;
-        public static sbyte byte_16E1C;
-        public static sbyte byte_16E1E;
-        public static sbyte byte_16E20;
-        public static sbyte byte_16E22;
-        public static byte byte_16E24;
-        public static sbyte byte_16E26;
-        public static sbyte byte_16E28;
-        public static sbyte byte_16E2A;
-        public static byte byte_16E2C;
-        public static sbyte byte_16E2E;
+
+        public static sbyte byte_16E1C = 4;
+        public static sbyte byte_16E1E = 3;
+        public static sbyte byte_16E20 = 3;
+        public static sbyte byte_16E22 = 3;
+        public static byte byte_16E24 = 1;
+        public static sbyte byte_16E26 = 1;
+        public static sbyte byte_16E28 = 1;
+        public static sbyte byte_16E2A = 0;
+        public static byte byte_16E2C = 0;
+        public static sbyte byte_16E2E = 4;
+
         public static byte byte_16E60;
         public static byte byte_1703B;
         public static byte byte_172EF;
@@ -381,63 +383,45 @@ namespace Classes
         public static byte byte_1EE99;
         public static byte byte_1EF9A;
         public static byte byte_1EF9B;
+
         public static string byte_1EFA4;
         public static byte byte_1EFBA;
-        public static byte byte_1EFBE;
-        public static byte byte_1EFBF;
 
-        public static short word_B65C;
+        public static short word_123C8 = 0;
 
-        public static short word_123C8;
-        public static short word_15CD7;
-        public static short word_16823;
-        public static short word_16E08;
-        public static short word_16E0A;
-        public static short word_16E0C;
-        public static short word_16E0E;
-        public static short word_16E10;
-        public static short word_16E12;
-        public static short word_16E14;
-        public static short word_16E16;
-        public static short word_16E18;
-        public static short word_16E1A;
-        public static short word_1888F;
-        public static short word_18891;
-        public static short word_18893;
-        public static short word_18895;
-        public static short word_18897;
-        public static short word_18899;
-        public static short word_1889B;
-        public static short word_1889D;
-        public static short word_188BC;
-        public static short word_188BE;
-        public static short word_188C0;
-        public static short word_188C2;
-        public static short word_188C4;
-        public static short word_188C6;
-        public static short word_188C8;
-        public static short word_188CA;
-        public static short word_188CC;
-        public static short word_188CE;
-        public static short word_188D0;
-        public static short word_188D2;
-        public static short word_188D4;
-        public static short word_188D6;
-        public static short word_188D8;
-        public static short[] symbol_set_fix = { 0x0001, 0x002E, 0x0074, 0x00BA, 0x0100 };
-        public static short word_1899C;
+        public const short word_16E08 = 5;
+        public const short word_16E0A = 4;
+        public const short word_16E0C = 6;
+        public const short word_16E0E = 4;
+        public const short word_16E10 = 2;
+        public const short word_16E12 = 7;
+        public const short word_16E14 = 2;
+        public const short word_16E16 = 0;
+        public const short word_16E18 = 9;
+        public const short word_16E1A = 5;
+
+        public const short word_188BC = 0x00ff;
+        public const short word_188BE = 0;
+        public const short word_188C0 = 1;
+        public const short word_188C2 = 2;
+        public const short word_188C4 = 3;
+        public const short word_188C6 = 4;
+        public const short word_188C8 = 5;
+        public const short word_188CA = 6;
+        public const short word_188CC = 7;
+        public const short word_188CE = 8;
+        public const short word_188D0 = 9;
+        public const short word_188D2 = 0xa;
+        public const short word_188D4 = 0xb;
+        public const short word_188D6 = 0xc;
+        public const short word_188D8 = 0xd;
+
+        public readonly static short[] symbol_set_fix = { 0x0001, 0x002E, 0x0074, 0x00BA, 0x0100 };
+        public const short word_1899C = 0x2D;
+
         public static RestTime word_1A13C;
-        public static short word_1AAB8;
-        public static short word_1AABA;
-        public static short word_1AABE;
-        public static short word_1AAC0;
-        public static short word_1AAC2;
-        public static short word_1AAC4;
-        public static short word_1AAD2;
-        public static short word_1AAD4;
-        public static short word_1AAD8;
-        public static short word_1AADC;
-        public static short word_1AAE0;
+
+
         public static short word_1AAFC;
         public static short dos_call_result; // seg600:47EE word_1AAFE
         public static ushort word_1AE0F;
@@ -472,18 +456,15 @@ namespace Classes
         public static short word_1D8A6;
         public static short word_1D914;
         public static short word_1D916;
-        public static short word_1D918;
+        public static short word_1D918; // above unk_1D89D
 
         public static class_1D91A dword_1D91E;
         public static ushort word_1EE76;
         public static ushort word_1EE78;
         public static ushort word_1EE7A;
-        public static short word_1EF9C;
-        public static short word_1EF9E;
+
         public static short word_1EFBC;
-        public static short word_1EFCA;
-        public static short word_1F222;
-        public static short word_3FDDE;
+
 
         public static object dword_1337B;
         public static object dword_1AAC8;

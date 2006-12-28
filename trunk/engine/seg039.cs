@@ -34,8 +34,6 @@ namespace engine
 
         internal static void config_game( )
         {
-            gbl.byte_1EFBE = 0;
-
             seg042.check_overlay_file();
 
             string unk_1B1C4;

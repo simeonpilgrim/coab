@@ -133,7 +133,7 @@ namespace engine
                 else if (gbl.import_from == 1)
                 {
                     sub_4708B(ref arg_0, ref arg_4, unk_16821[1], unk_1681B[1], unk_16818[1], gbl.byte_1BF1A + "*.cha");
-                    sub_4708B(ref arg_0, ref arg_4, gbl.word_16823, unk_1681B[1], unk_16818[1], gbl.byte_1BF1A + "*.sav");
+                    sub_4708B(ref arg_0, ref arg_4, unk_16821[1], unk_1681B[1], unk_16818[1], gbl.byte_1BF1A + "*.sav");
                 }
                 else if (gbl.import_from == 2)
                 {
