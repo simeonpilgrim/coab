@@ -4,18 +4,17 @@ namespace engine
 {
     class ovr008
     {
-        internal static void parse_command_sub(byte loop_number)
+        internal static void vm_LoadCmdSets(byte numberOfSets) // parse_command_sub
         {
-            short var_6;
-            ushort var_4;
-            byte var_2;
+            byte strIndex;
             byte loop_var;
 
-            var_2 = 0;
+            strIndex = 0;
 
-            for (loop_var = 1; loop_var <= loop_number; loop_var++)
+            for (loop_var = 1; loop_var <= numberOfSets; loop_var++)
             {
                 byte code = gbl.ecl_ptr[0x8000 + gbl.ecl_offset + 1];
+
                 gbl.cmd_code[loop_var] = code;
                 gbl.cmd_low_bytes[loop_var] = gbl.ecl_ptr[0x8000 + gbl.ecl_offset + 2];
 
@@ -29,36 +28,36 @@ namespace engine
                 }
                 else if (code == 0x80) // Load compressed string
                 {
-                    var_2++;
+                    strIndex++;
 
-                    var_6 = gbl.cmd_low_bytes[loop_var];
+                    short strLen = gbl.cmd_low_bytes[loop_var];
 
-                    if (var_6 > 0)
+                    if (strLen > 0)
                     {
-                        decompressString(var_2, (byte)var_6);
+                        decompressString(strIndex, (byte)strLen);
                     }
                     else
                     {
-                        gbl.unk_1D972[var_2] = string.Empty;
+                        gbl.unk_1D972[strIndex] = string.Empty;
                     }
                 }
                 else if (code == 0x81)
                 {
-                    var_2++;
+                    strIndex++;
                     gbl.ecl_offset++;
 
                     gbl.cmd_high_bytes[loop_var] = gbl.ecl_ptr[0x8000 + gbl.ecl_offset];
 
-                    var_4 = bytes_to_word(gbl.cmd_high_bytes[loop_var], gbl.cmd_low_bytes[loop_var]);
+                    ushort loc = bytes_to_word(gbl.cmd_high_bytes[loop_var], gbl.cmd_low_bytes[loop_var]);
 
-                    sub_31421(var_4, var_2);
+                    vm_CopyStringFromMemory(loc, strIndex);
                 }
             }
 
             gbl.ecl_offset++;
         }
 
-        internal static ushort sub_30168(int arg_0)
+        internal static ushort vm_GetCmdValue(int arg_0) // sub_30168
         {
             byte var_A;
             byte var_9;
@@ -76,7 +75,7 @@ namespace engine
             }
             else if (al == 1 || al == 3 || al == 0x80)
             {
-                var_2 = sub_30F16((ushort)((var_A << 8) + var_9));
+                var_2 = vm_GetMemoryValue((ushort)((var_A << 8) + var_9));
             }
             else if (al == 2 || al == 0x81)
             {
@@ -109,8 +108,7 @@ namespace engine
             gbl.ecl_offset = 0x8000;
             gbl.byte_1DA70 = false;
 
-            gbl.dword_1D91A = null;
-            gbl.dword_1D91E = null;
+            gbl.vmCallStack.Clear();
 
             for (int i = 0; i < 6; i++)
             {
@@ -123,19 +121,19 @@ namespace engine
             gbl.area2_ptr.field_5A6 = 0;
             gbl.area_ptr.can_cast_spells = false;
 
-            parse_command_sub(1);
+            vm_LoadCmdSets(1);
             gbl.word_1B2D3 = bytes_to_word(gbl.cmd_high_bytes[1], gbl.cmd_low_bytes[1]);
 
-            parse_command_sub(1);
+            vm_LoadCmdSets(1);
             gbl.word_1B2D5 = bytes_to_word(gbl.cmd_high_bytes[1], gbl.cmd_low_bytes[1]);
 
-            parse_command_sub(1);
+            vm_LoadCmdSets(1);
             gbl.word_1B2D7 = bytes_to_word(gbl.cmd_high_bytes[1], gbl.cmd_low_bytes[1]);
 
-            parse_command_sub(1);
+            vm_LoadCmdSets(1);
             gbl.word_1B2D9 = bytes_to_word(gbl.cmd_high_bytes[1], gbl.cmd_low_bytes[1]);
 
-            parse_command_sub(1);
+            vm_LoadCmdSets(1);
             gbl.word_1B2DB = bytes_to_word(gbl.cmd_high_bytes[1], gbl.cmd_low_bytes[1]);
 
             gbl.area_ptr.field_1CC = 1;
@@ -349,7 +347,7 @@ namespace engine
         }
 
 
-        internal static byte sub_30723(ushort arg_0)
+        internal static byte vm_GetMemoryValueType(ushort arg_0) // sub_30723
         {
             byte var_1 = 4;
 
@@ -753,23 +751,23 @@ namespace engine
         }
 
 
-        internal static void cmd_table01(ushort arg_0, ushort arg_2)
+        internal static void vm_SetMemoryValue(ushort value, ushort location) // cmd_table01
         {
             byte var_2;
             byte var_1;
 
-            var_1 = sub_30723(arg_2);
+            var_1 = vm_GetMemoryValueType(location);
 
             if (var_1 == 0)
             {
-                if ((arg_2 - 0x4B00) == 0x0FD || (arg_2 - 0x4B00) == 0x0FE)
+                if ((location - 0x4B00) == 0x0FD || (location - 0x4B00) == 0x0FE)
                 {
                     gbl.byte_1EE94 = 1;
                 }
-                else if ((arg_2 - 0x4B00) == 0x0E6 && gbl.area_ptr.field_1CC != arg_0)
+                else if ((location - 0x4B00) == 0x0E6 && gbl.area_ptr.field_1CC != value)
                 {
                     gbl.byte_1B2E4 = gbl.game_state;
-                    if (arg_0 == 0)
+                    if (value == 0)
                     {
                         gbl.game_state = 3;
                     }
@@ -779,31 +777,26 @@ namespace engine
                     }
                 }
 
-                gbl.area_ptr.field_6A00_Set((arg_2*2) + 0x6a00, arg_0);
+                gbl.area_ptr.field_6A00_Set((location*2) + 0x6a00, value);
             }
             else if (var_1 == 1)
             {
-                gbl.area2_ptr.field_800_Set((arg_2 * 2) + 0x800, arg_0);
-                alter_character(arg_0, arg_2);
+                gbl.area2_ptr.field_800_Set((location * 2) + 0x800, value);
+                alter_character(value, location);
             }
             else if (var_1 == 2)
             {
-                throw new System.NotSupportedException();//mov	dx, [bp+arg_0]
-                throw new System.NotSupportedException();//mov	ax, [bp+arg_2]
-                throw new System.NotSupportedException();//shl	ax, 1
-                throw new System.NotSupportedException();//les	di, dword ptr stru_1B2CA.offset
-                throw new System.NotSupportedException();//add	di, ax
-                throw new System.NotSupportedException();//mov	es:[di+0C00h], dx
+                gbl.stru_1B2CA[(location<<1)+0x0C00] = value;
             }
             else if (var_1 == 3)
             {
-                gbl.ecl_ptr[arg_2 + 0x8000] = (byte)arg_0;
+                gbl.ecl_ptr[location + 0x8000] = (byte)value;
             }
             else if (var_1 == 4)
             {
-                if (arg_2 < 0xBF68)
+                if (location < 0xBF68)
                 {
-                    switch (arg_2)
+                    switch (location)
                     {
                         case 0xFB:
                             break;
@@ -815,31 +808,31 @@ namespace engine
                             break;
 
                         case 0x3DE:
-                            gbl.word_1EE76 = arg_0;
+                            gbl.word_1EE76 = value;
                             break;
 
                         case 0xB8:
-                            gbl.word_1EE78 = arg_0;
+                            gbl.word_1EE78 = value;
                             break;
 
                         case 0xB9:
-                            gbl.word_1EE7A = arg_0;
+                            gbl.word_1EE7A = value;
                             break;
                     }
                 }
                 else
                 {
-                    arg_2 -= 0xBF68;
+                    location -= 0xBF68;
 
-                    switch (arg_2)
+                    switch (location)
                     {
                         case 0xE3:
                             gbl.byte_1EE92 = 1;
-                            gbl.byte_1D539 = (sbyte)(arg_0);
+                            gbl.byte_1D539 = (sbyte)(value);
                             break;
 
                         case 0xE4:
-                            gbl.byte_1D53A = (sbyte)(arg_0);
+                            gbl.byte_1D53A = (sbyte)(value);
                             gbl.byte_1EE92 = 1;
                             break;
 
@@ -847,7 +840,7 @@ namespace engine
                             do
                             {
                                 var_2 = 1;
-                                switch (arg_0)
+                                switch (value)
                                 {
                                     case 0:
                                         gbl.byte_1D53B = 0;
@@ -867,7 +860,7 @@ namespace engine
 
                                     default:
                                         var_2 = 0;
-                                        arg_0 -= 4;
+                                        value -= 4;
                                         break;
                                 }
                             } while (var_2 != 1);
@@ -876,12 +869,12 @@ namespace engine
                             break;
 
                         case 0xF1:
-                            gbl.byte_1D912 = (byte)(arg_0);
+                            gbl.byte_1D912 = (byte)(value);
                             gbl.byte_1EE91 = 1;
                             break;
 
                         case 0xF7:
-                            gbl.byte_1D913 = (byte)(arg_0);
+                            gbl.byte_1D913 = (byte)(value);
                             gbl.byte_1EE91 = 1;
                             break;
                     }
@@ -890,13 +883,13 @@ namespace engine
         }
 
 
-        internal static ushort sub_30F16(ushort arg_0)
+        internal static ushort vm_GetMemoryValue(ushort arg_0) // sub_30F16
         {
             bool var_4;
             byte var_3;
             ushort var_2 = 0;
 
-            var_3 = sub_30723(arg_0);
+            var_3 = vm_GetMemoryValueType(arg_0);
 
             var_4 = false;
 
@@ -916,21 +909,11 @@ namespace engine
                     break;
 
                 case 2:
-                    throw new System.NotSupportedException();//mov	ax, [bp+arg_0]
-                    throw new System.NotSupportedException();//shl	ax, 1
-                    throw new System.NotSupportedException();//les	di, dword ptr stru_1B2CA.offset
-                    throw new System.NotSupportedException();//add	di, ax
-                    throw new System.NotSupportedException();//mov	ax, es:[di+0C00h]
-                    throw new System.NotSupportedException();//mov	[bp+var_2], ax
+                    var_2 = gbl.stru_1B2CA[(arg_0 << 1) + 0x0C00];
                     break;
 
                 case 3:
-                    throw new System.NotSupportedException();//mov	ax, [bp+arg_0]
-                    throw new System.NotSupportedException();//les	di, dword ptr ecl_ptr.offset
-                    throw new System.NotSupportedException();//add	di, ax
-                    throw new System.NotSupportedException();//mov	al, es:[di+8000h]
-                    throw new System.NotSupportedException();//xor	ah, ah
-                    throw new System.NotSupportedException();//mov	[bp+var_2], ax
+                    var_2 = gbl.ecl_ptr[arg_0 + 0x8000]; // When does this happen?
                     break;
 
                 case 4:
@@ -997,7 +980,7 @@ namespace engine
         }
 
 
-        internal static void sub_3105D(string arg_0, ushort arg_4)
+        internal static void vm_WriteStringToMemory(string arg_0, ushort arg_4) // sub_3105D
         {
             byte var_104;
             byte var_103;
@@ -1007,7 +990,7 @@ namespace engine
 
             var_100 = arg_0;
 
-            var_101 = sub_30723(arg_4);
+            var_101 = vm_GetMemoryValueType(arg_4);
 
             var_102 = (byte)var_100.Length;
 
@@ -1074,31 +1057,11 @@ namespace engine
                     var_104 = (byte)(var_102 - 1);
                     for (var_103 = 0; var_103 <= var_104; var_103++)
                     {
-                        throw new System.NotSupportedException();//mov	al, [bp+var_103]
-                        throw new System.NotSupportedException();//xor	ah, ah
-                        throw new System.NotSupportedException();//inc	ax
-                        throw new System.NotSupportedException();//mov	di, ax
-                        throw new System.NotSupportedException();//mov	al, [bp+di+var_100]
-                        throw new System.NotSupportedException();//xor	ah, ah
-                        throw new System.NotSupportedException();//mov	dx, ax
-                        throw new System.NotSupportedException();//mov	al, [bp+var_103]
-                        throw new System.NotSupportedException();//xor	ah, ah
-                        throw new System.NotSupportedException();//add	ax, [bp+arg_4]
-                        throw new System.NotSupportedException();//shl	ax, 1
-                        throw new System.NotSupportedException();//les	di, dword ptr stru_1B2CA.offset
-                        throw new System.NotSupportedException();//add	di, ax
-                        throw new System.NotSupportedException();//mov	es:[di+0C00h], dx
+                        gbl.stru_1B2CA[((var_103 + arg_4) << 1) + 0x0C00] = var_100[var_103];
                     }
                 }
-                throw new System.NotSupportedException();//loc_311F1:
-                throw new System.NotSupportedException();//mov	al, [bp+var_102]
-                throw new System.NotSupportedException();//xor	ah, ah
-                throw new System.NotSupportedException();//add	ax, [bp+arg_4]
-                throw new System.NotSupportedException();//shl	ax, 1
-                throw new System.NotSupportedException();//les	di, dword ptr stru_1B2CA.offset
-                throw new System.NotSupportedException();//add	di, ax
-                throw new System.NotSupportedException();//xor	ax, ax
-                throw new System.NotSupportedException();//mov	es:[di+0C00h], ax
+
+                gbl.stru_1B2CA[((var_102 + arg_4) << 1) + 0x0C00] = 0;
             }
             else if (var_101 == 3)
             {
@@ -1198,81 +1161,53 @@ namespace engine
         }
 
 
-        internal static void sub_31421(ushort arg_0, byte strIndex)
+        internal static void vm_CopyStringFromMemory(ushort location, byte strIndex) // sub_31421
         {
-            byte var_2;
-            byte var_1;
+            byte var_2 = 0;
 
-            var_1 = sub_30723(arg_0);
             gbl.unk_1D972[strIndex] = string.Empty;
-            var_2 = 0;
-            throw new System.NotSupportedException();//mov	al, [bp+var_1]
-            throw new System.NotSupportedException();//cmp	al, 0
-            throw new System.NotSupportedException();//jnz	loc_314C9
 
-            while (gbl.area_ptr.field_6A00_Get(((var_2 + arg_0) << 1) + 0x6A00) != 0)
+            switch (vm_GetMemoryValueType(location))
             {
-                gbl.unk_1D972[strIndex] += (char)((byte)gbl.area_ptr.field_6A00_Get(((var_2 + arg_0) << 1) + 0x6A00));
+                case 0:
+                    while (gbl.area_ptr.field_6A00_Get(((var_2 + location) << 1) + 0x6A00) != 0)
+                    {
+                        gbl.unk_1D972[strIndex] += (char)((byte)gbl.area_ptr.field_6A00_Get(((var_2 + location) << 1) + 0x6A00));
+                        var_2++;
+                    }
+                    break;
 
-                var_2++;
+                case 1:
+                    if (location == 0x7C00)
+                    {
+                        gbl.unk_1D972[strIndex] = gbl.player_ptr.name;
+                    }
+                    else
+                    {
+                        while (gbl.area2_ptr.field_800_Get((var_2 + location) << 1) != 0)
+                        {
+                            gbl.unk_1D972[strIndex] += gbl.area2_ptr.field_800_Get((var_2 + location) << 1).ToString();
+                            var_2++;
+                        }
+                    }
+                    break;
 
+                case 2:
+                    while (gbl.stru_1B2CA.field_C00((var_2 + location) << 1) != 0)
+                    {
+                        gbl.unk_1D972[strIndex] += gbl.stru_1B2CA.field_C00((var_2 + location) << 1).ToString();
+                        var_2++;
+                    }
+                    break;
+
+                case 3:
+                    while (gbl.ecl_ptr[var_2 + location + 0x8000] != 0)
+                    {
+                        gbl.unk_1D972[strIndex] += gbl.ecl_ptr[var_2 + location + 0x8000].ToString();
+                        var_2++;
+                    }
+                    break;
             }
-
-            throw new System.NotSupportedException();//jmp	func_end
-            throw new System.NotSupportedException();//loc_314C9:
-            throw new System.NotSupportedException();//cmp	al, 1
-            throw new System.NotSupportedException();//jz	loc_314D0
-            throw new System.NotSupportedException();//jmp	loc_31575
-            throw new System.NotSupportedException();//loc_314D0:
-            throw new System.NotSupportedException();//cmp	[bp+arg_0], 0x7C00
-            throw new System.NotSupportedException();//jnz	loc_314F9
-            gbl.unk_1D972[strIndex] = gbl.player_ptr.name;
-
-            throw new System.NotSupportedException();//jmp	short loc_31572
-            throw new System.NotSupportedException();//loc_314F9:
-            throw new System.NotSupportedException();//mov	al, [bp+var_2]
-            throw new System.NotSupportedException();//xor	ah, ah
-            throw new System.NotSupportedException();//add	ax, [bp+arg_0]
-            throw new System.NotSupportedException();//shl	ax, 1
-            throw new System.NotSupportedException();//les	di, dword ptr area2_ptr.offset
-            throw new System.NotSupportedException();//add	di, ax
-            throw new System.NotSupportedException();//cmp	word ptr es:[di+800h], 0
-            throw new System.NotSupportedException();//jz	loc_31572
-
-
-            gbl.unk_1D972[strIndex] += gbl.area2_ptr.field_800_Get((var_2 + arg_0) << 1).ToString();
-
-            var_2++;
-            throw new System.NotSupportedException();//jmp	short loc_314F9
-            throw new System.NotSupportedException();//loc_31572:
-            throw new System.NotSupportedException();//jmp	func_end
-            throw new System.NotSupportedException();//loc_31575:
-            throw new System.NotSupportedException();//cmp	al, 2
-            throw new System.NotSupportedException();//jnz	loc_315F4
-            throw new System.NotSupportedException();//loc_31579:
-            throw new System.NotSupportedException();//mov	al, [bp+var_2]
-            throw new System.NotSupportedException();//xor	ah, ah
-            throw new System.NotSupportedException();//add	ax, [bp+arg_0]
-            throw new System.NotSupportedException();//shl	ax, 1
-            throw new System.NotSupportedException();//les	di, dword ptr stru_1B2CA.offset
-            throw new System.NotSupportedException();//add	di, ax
-            throw new System.NotSupportedException();//cmp	word ptr es:[di+0C00h],	0
-            throw new System.NotSupportedException();//jz	loc_315F2
-            gbl.unk_1D972[strIndex] += gbl.stru_1B2CA.field_C00((var_2 + arg_0) << 1).ToString();
-            var_2++;
-            throw new System.NotSupportedException();//jmp	short loc_31579
-            throw new System.NotSupportedException();//loc_315F2:
-            throw new System.NotSupportedException();//jmp	short func_end
-            throw new System.NotSupportedException();//loc_315F4:
-            throw new System.NotSupportedException();//cmp	al, 3
-            throw new System.NotSupportedException();//jnz	func_end
-
-            while (gbl.ecl_ptr[var_2 + arg_0 + 0x8000] != 0)
-            {
-                gbl.unk_1D972[strIndex] += gbl.ecl_ptr[var_2 + arg_0 + 0x8000].ToString();
-                var_2++;
-            }
-            //func_end:
         }
 
         static Set unk_31673 = new Set(0x0606, new byte[] { 0xff, 0x03, 0xfe, 0xff, 0xff, 0x07 });
@@ -1440,14 +1375,14 @@ namespace engine
         }
 
 
-        internal static void sub_31A77(byte arg_0)
+        internal static void vm_gosub(byte arg_0)
         {
-            gbl.dword_1D91E = gbl.dword_1D91A;
-            gbl.dword_1D91A = new Classes.gbl.class_1D91A();
-            gbl.dword_1D91A.field_2 = gbl.dword_1D91E;
+            ushort current = gbl.ecl_offset;
 
-            gbl.dword_1D91A.field_0 = gbl.ecl_offset;
+            gbl.vmCallStack.Push(current);
             gbl.ecl_offset = bytes_to_word(gbl.cmd_high_bytes[arg_0], gbl.cmd_low_bytes[arg_0]);
+
+            System.Console.WriteLine("vm_gosub: was: {0:X} now: {1:X}", current, gbl.ecl_offset);
         }
 
 
@@ -1659,7 +1594,7 @@ namespace engine
                 case 0x3C:
                 case 0x3F:
                 case 0x40:
-                    parse_command_sub(1);
+                    vm_LoadCmdSets(1);
                     break;
 
                 case 0x03:
@@ -1669,7 +1604,7 @@ namespace engine
                 case 0x10:
                 case 0x1F:
                 case 0x22:
-                    parse_command_sub(2);
+                    vm_LoadCmdSets(2);
                     break;
 
                 case 0x04:
@@ -1686,29 +1621,29 @@ namespace engine
                 case 0x35:
                 case 0x37:
                 case 0x3B:
-                    parse_command_sub(3);
+                    vm_LoadCmdSets(3);
                     break;
 
                 case 0x14:
                 case 0x23:
-                    parse_command_sub(4);
+                    vm_LoadCmdSets(4);
                     break;
 
                 case 0x2E:
-                    parse_command_sub(5);
+                    vm_LoadCmdSets(5);
                     break;
 
                 case 0x1E:
                 case 0x2C:
-                    parse_command_sub(6);
+                    vm_LoadCmdSets(6);
                     break;
 
                 case 0x27:
-                    parse_command_sub(8);
+                    vm_LoadCmdSets(8);
                     break;
 
                 case 0x29:
-                    parse_command_sub(0x0e);
+                    vm_LoadCmdSets(0x0e);
                     break;
 
                 default:

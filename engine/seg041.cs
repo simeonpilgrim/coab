@@ -346,7 +346,7 @@ namespace engine
         }
 
 
-        internal static void sub_10E12()
+        internal static void clear_screan()
         {
             ega01(0, 0x18, 0x27, 0, 0);
         }

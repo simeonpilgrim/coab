@@ -641,6 +641,7 @@ namespace engine
             gbl.byte_1AB18 = 8;
             gbl.byte_1AB19 = 0;
             gbl.byte_1AB1A = 0;
+
             var_13 = 0;
             var_3 = true;
             var_2 = false;

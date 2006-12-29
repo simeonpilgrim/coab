@@ -53,7 +53,6 @@ namespace engine
             byte var_22;
             bool var_21;
             short var_20 = 0; /* Simeon */
-            short var_1E;
             byte[] mem = null;
             short width;
             short height;
@@ -150,8 +149,6 @@ namespace engine
                                 else
                                 {
                                     for( int i = 0; i < var_20; i++ )
-                                    //for (var_1E = var_11; var_1E < (var_11 + var_20); var_1E++)
-                                    //for (var_1E = var_11; var_1E <= (var_11 + var_20); var_1E++)
                                     {
                                         byte b = mem[i];
                                         var_F[var_11 + i] ^= b;

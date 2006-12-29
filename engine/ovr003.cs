@@ -4,9 +4,9 @@ namespace engine
 {
     class ovr003
     {
-        internal static void sub_26050()
+        internal static void CMD_Exit()
         {
-            if (gbl.byte_1EE8E != 0)
+            //Simeon if (gbl.byte_1EE8E != 0)
             {
                 seg037.draw8x8_03();
             }
@@ -25,12 +25,7 @@ namespace engine
 
             gbl.ecl_offset++;
 
-            while (gbl.dword_1D91A != null)
-            {
-                gbl.dword_1D91E = gbl.dword_1D91A.field_2;
-
-                gbl.dword_1D91A = gbl.dword_1D91E;
-            }
+            gbl.vmCallStack.Clear();
 
             gbl.byte_1C8CB = 0x11;
             gbl.byte_1C8CA = 1;
@@ -40,25 +35,26 @@ namespace engine
 
         internal static void CMD_Goto()
         {
-            ovr008.parse_command_sub(1);
+            ovr008.vm_LoadCmdSets(1);
+            ushort newOffset = ovr008.bytes_to_word(gbl.cmd_high_bytes[1], gbl.cmd_low_bytes[1]);
 
-            gbl.ecl_offset = ovr008.bytes_to_word(gbl.cmd_high_bytes[1], gbl.cmd_low_bytes[1]);
+            System.Console.WriteLine("CMD_Goto: was: 0x{0,4:X} now: 0x{0,4:X}", gbl.ecl_offset, newOffset);
 
-            System.Console.WriteLine("CMD_Goto: ecl_offset 0x{0,4:X}", gbl.ecl_offset);
+            gbl.ecl_offset = newOffset;
         }
 
 
-        internal static void sub_26108()
+        internal static void CMD_Gosub()
         {
-            ovr008.parse_command_sub(1);
+            ovr008.vm_LoadCmdSets(1);
 
-            ovr008.sub_31A77(1);
+            ovr008.vm_gosub(1);
         }
 
 
         internal static void sub_2611D()
         {
-            ovr008.parse_command_sub(2);
+            ovr008.vm_LoadCmdSets(2);
 
             if (gbl.cmd_code[1] >= 0x80 ||
                 gbl.cmd_code[2] >= 0x80)
@@ -67,8 +63,8 @@ namespace engine
             }
             else
             {
-                ushort var_2 = ovr008.sub_30168(1);
-                ushort var_4 = ovr008.sub_30168(2);
+                ushort var_2 = ovr008.vm_GetCmdValue(1);
+                ushort var_4 = ovr008.vm_GetCmdValue(2);
 
                 ovr008.compare_variables(var_4, var_2);
             }
@@ -77,43 +73,43 @@ namespace engine
 
         internal static void sub_2619A()
         {
-            ushort var_9;
+            ushort value;
             ushort var_6;
             ushort var_4;
-            ushort var_2;
+            ushort location;
 
-            ovr008.parse_command_sub(3);
+            ovr008.vm_LoadCmdSets(3);
 
-            var_6 = ovr008.sub_30168(1);
-            var_4 = ovr008.sub_30168(2);
+            var_6 = ovr008.vm_GetCmdValue(1);
+            var_4 = ovr008.vm_GetCmdValue(2);
 
-            var_2 = ovr008.bytes_to_word(gbl.cmd_high_bytes[3], gbl.cmd_low_bytes[3]);
+            location = ovr008.bytes_to_word(gbl.cmd_high_bytes[3], gbl.cmd_low_bytes[3]);
 
             switch (gbl.command)
             {
                 case 4:
-                    var_9 = (ushort)(var_6 + var_4);
+                    value = (ushort)(var_6 + var_4);
                     break;
 
                 case 5:
-                    var_9 = (ushort)(var_4 - var_6);
+                    value = (ushort)(var_4 - var_6);
                     break;
 
                 case 6:
-                    var_9 = (ushort)(var_6 / var_4);
+                    value = (ushort)(var_6 / var_4);
                     gbl.area2_ptr.field_67E = (short)(var_6 % var_4);
                     break;
 
                 case 7:
-                    var_9 = (ushort)(var_6 * var_4);
+                    value = (ushort)(var_6 * var_4);
                     break;
 
                 default:
-                    var_9 = 0;
+                    value = 0;
                     throw (new System.Exception("can't get here."));
             }
 
-            ovr008.cmd_table01(var_9, var_2);
+            ovr008.vm_SetMemoryValue(value, location);
         }
 
 
@@ -123,9 +119,9 @@ namespace engine
             byte var_2;
             byte var_1;
 
-            ovr008.parse_command_sub(2);
+            ovr008.vm_LoadCmdSets(2);
 
-            var_1 = (byte)ovr008.sub_30168(1);
+            var_1 = (byte)ovr008.vm_GetCmdValue(1);
 
             if (var_1 < 0xff)
             {
@@ -136,7 +132,7 @@ namespace engine
 
             var_2 = (byte)((double)(seg051.Random(var_1)));
 
-            ovr008.cmd_table01(var_2, var_4);
+            ovr008.vm_SetMemoryValue(var_2, var_4);
         }
 
 
@@ -145,19 +141,19 @@ namespace engine
             ushort var_4;
             ushort var_2;
 
-            ovr008.parse_command_sub(2);
+            ovr008.vm_LoadCmdSets(2);
 
             var_4 = ovr008.bytes_to_word(gbl.cmd_high_bytes[2], gbl.cmd_low_bytes[2]);
 
             if (gbl.cmd_code[1] < 0x80)
             {
-                var_2 = ovr008.sub_30168(1);
+                var_2 = ovr008.vm_GetCmdValue(1);
 
-                ovr008.cmd_table01(var_2, var_4);
+                ovr008.vm_SetMemoryValue(var_2, var_4);
             }
             else
             {
-                ovr008.sub_3105D(gbl.unk_1D972[1], var_4);
+                ovr008.vm_WriteStringToMemory(gbl.unk_1D972[1], var_4);
             }
         }
 
@@ -171,10 +167,10 @@ namespace engine
 
             gbl.byte_1AB0A = 1;
 
-            ovr008.parse_command_sub(1);
+            ovr008.vm_LoadCmdSets(1);
             var_7 = 0;
 
-            var_6 = (byte)ovr008.sub_30168(1);
+            var_6 = (byte)ovr008.vm_GetCmdValue(1);
 
             player_ptr = gbl.player_next_ptr;
             var_8 = (byte)(var_6 & 0x80);
@@ -220,12 +216,12 @@ namespace engine
 
         internal static void sub_263C9()
         {
-            ovr008.parse_command_sub(3);
-            gbl.byte_1D92B = (byte)ovr008.sub_30168(1);
+            ovr008.vm_LoadCmdSets(3);
+            gbl.byte_1D92B = (byte)ovr008.vm_GetCmdValue(1);
 
-            gbl.area2_ptr.field_580 = (byte)ovr008.sub_30168(2);
+            gbl.area2_ptr.field_580 = (byte)ovr008.vm_GetCmdValue(2);
 
-            gbl.byte_1D92C = (byte)ovr008.sub_30168(3);
+            gbl.byte_1D92C = (byte)ovr008.vm_GetCmdValue(3);
 
             gbl.area2_ptr.field_582 = ovr008.sub_304B4(gbl.byte_1D53B, gbl.byte_1D53A, gbl.byte_1D539);
 
@@ -255,13 +251,13 @@ namespace engine
 
             playerD = gbl.player_ptr;
             var_4 = 1;
-            ovr008.parse_command_sub(3);
+            ovr008.vm_LoadCmdSets(3);
 
             if (gbl.byte_1AB0E < 0x3f)
             {
                 playerB = null;
                 playerA = null;
-                var_1 = (byte)ovr008.sub_30168(1);
+                var_1 = (byte)ovr008.vm_GetCmdValue(1);
 
                 ovr008.load_mob(out affect_ptr, out item_ptr, out playerC, var_1);
 
@@ -269,14 +265,14 @@ namespace engine
                 item_ptr2 = item_ptr;
                 affect_ptr2 = affect_ptr;
 
-                var_2 = (byte)ovr008.sub_30168(2);
+                var_2 = (byte)ovr008.vm_GetCmdValue(2);
 
                 if (var_2 <= 0)
                 {
                     var_2 = 1;
                 }
 
-                var_3 = (byte)ovr008.sub_30168(3);
+                var_3 = (byte)ovr008.vm_GetCmdValue(3);
                 playerB = gbl.player_next_ptr;
 
                 ovr034.chead_cbody_comspr_icon(gbl.byte_1D92D, var_3, "CPIC");
@@ -374,8 +370,8 @@ namespace engine
         {
             byte var_1;
 
-            ovr008.parse_command_sub(1);
-            var_1 = (byte)ovr008.sub_30168(1);
+            ovr008.vm_LoadCmdSets(1);
+            var_1 = (byte)ovr008.vm_GetCmdValue(1);
 
             if (var_1 != 0xff)
             {
@@ -428,7 +424,7 @@ namespace engine
             ushort var_4;
             string var_2;
 
-            ovr008.parse_command_sub(2);
+            ovr008.vm_LoadCmdSets(2);
 
             var_2 = string.Empty;
 
@@ -436,7 +432,7 @@ namespace engine
 
             var_4 = seg041.sub_10CB7(0, 0x0a, var_2);
 
-            ovr008.cmd_table01(var_4, var_6);
+            ovr008.vm_SetMemoryValue(var_4, var_6);
         }
 
 
@@ -446,7 +442,7 @@ namespace engine
             ushort var_4;
             string var_2;
 
-            ovr008.parse_command_sub(2);
+            ovr008.vm_LoadCmdSets(2);
             var_2 = string.Empty;
             var_4 = ovr008.bytes_to_word(gbl.cmd_high_bytes[2], gbl.cmd_low_bytes[2]);
 
@@ -457,19 +453,19 @@ namespace engine
                 var_104 = " ";
             }
 
-            ovr008.sub_3105D(var_104, var_4);
+            ovr008.vm_WriteStringToMemory(var_104, var_4);
         }
 
 
         internal static void CMD_Print()
         {
-            ovr008.parse_command_sub(1);
+            ovr008.vm_LoadCmdSets(1);
             gbl.byte_1EE90 = 0;
             gbl.byte_1B2F2 = 1;
 
             if (gbl.cmd_code[1] < 0x80)
             {
-                gbl.unk_1D972[1] = ovr025.ConcatWord(ovr008.sub_30168(1));
+                gbl.unk_1D972[1] = ovr025.ConcatWord(ovr008.vm_GetCmdValue(1));
             }
 
             if (gbl.command == 0x11)
@@ -488,19 +484,19 @@ namespace engine
         }
 
 
-        internal static void sub_26AB8()
+        internal static void CMD_Return()
         {
             gbl.ecl_offset++;
-            if (gbl.dword_1D91A != null)
+            if (gbl.vmCallStack.Count > 0)
             {
-                gbl.ecl_offset = gbl.dword_1D91A.field_0;
-
-                gbl.dword_1D91E = gbl.dword_1D91A.field_2;
-                gbl.dword_1D91A = gbl.dword_1D91E;
+                ushort newOffset = gbl.vmCallStack.Pop();
+                System.Console.WriteLine("CMD_Return: was: {0:X} now: {1:X}", gbl.ecl_offset - 1, newOffset);
+                gbl.ecl_offset = newOffset;
             }
             else
             {
-                sub_26050();
+                System.Console.WriteLine("CMD_Return: call stack empty. ecl_offset: {0:X}", gbl.ecl_offset - 1);
+                CMD_Exit();
             }
         }
 
@@ -512,12 +508,12 @@ namespace engine
                 gbl.item_find[i] = false;
             }
 
-            ovr008.parse_command_sub(4);
+            ovr008.vm_LoadCmdSets(4);
 
-            ushort var_8 = ovr008.sub_30168(1);
-            ushort var_6 = ovr008.sub_30168(2);
-            ushort var_4 = ovr008.sub_30168(3);
-            ushort var_2 = ovr008.sub_30168(4);
+            ushort var_8 = ovr008.vm_GetCmdValue(1);
+            ushort var_6 = ovr008.vm_GetCmdValue(2);
+            ushort var_4 = ovr008.vm_GetCmdValue(3);
+            ushort var_2 = ovr008.vm_GetCmdValue(4);
 
             if (var_8 == var_6 &&
                 var_4 == var_2)
@@ -549,10 +545,10 @@ namespace engine
         {
             byte var_1;
 
-            ovr008.parse_command_sub(1);
+            ovr008.vm_LoadCmdSets(1);
             gbl.area_ptr.field_1E4 = gbl.byte_1EE88;
 
-            var_1 = (byte)ovr008.sub_30168(1);
+            var_1 = (byte)ovr008.vm_GetCmdValue(1);
 
             gbl.byte_1EE88 = var_1;
 
@@ -571,12 +567,12 @@ namespace engine
             byte var_2;
             byte var_1;
 
-            ovr008.parse_command_sub(3);
+            ovr008.vm_LoadCmdSets(3);
             gbl.byte_1AB0B = 1;
 
-            var_3 = (byte)ovr008.sub_30168(1);
-            var_2 = (byte)ovr008.sub_30168(2);
-            var_1 = (byte)ovr008.sub_30168(3);
+            var_3 = (byte)ovr008.vm_GetCmdValue(1);
+            var_2 = (byte)ovr008.vm_GetCmdValue(2);
+            var_1 = (byte)ovr008.vm_GetCmdValue(3);
 
             if (gbl.command == 0x21)
             {
@@ -680,9 +676,9 @@ namespace engine
             ushort var_4;
             ushort var_2;
 
-            ovr008.parse_command_sub(3);
-            var_6 = ovr008.sub_30168(1);
-            var_4 = ovr008.sub_30168(2);
+            ovr008.vm_LoadCmdSets(3);
+            var_6 = ovr008.vm_GetCmdValue(1);
+            var_4 = ovr008.vm_GetCmdValue(2);
 
             var_2 = ovr008.bytes_to_word(gbl.cmd_high_bytes[3], gbl.cmd_low_bytes[3]);
 
@@ -695,7 +691,7 @@ namespace engine
                 var_7 = (byte)(var_6 | var_4);
             }
             ovr008.compare_variables(var_7, 0);
-            ovr008.cmd_table01(var_7, var_2);
+            ovr008.vm_SetMemoryValue(var_7, var_2);
         }
 
 
@@ -707,17 +703,17 @@ namespace engine
             ushort var_4;
             ushort var_2;
 
-            ovr008.parse_command_sub(3);
+            ovr008.vm_LoadCmdSets(3);
 
             var_2 = ovr008.bytes_to_word(gbl.cmd_high_bytes[1], gbl.cmd_low_bytes[1]);
-            var_9 = (byte)ovr008.sub_30168(2);
+            var_9 = (byte)ovr008.vm_GetCmdValue(2);
 
             var_4 = ovr008.bytes_to_word(gbl.cmd_high_bytes[3], gbl.cmd_low_bytes[3]);
 
             var_6 = (ushort)(var_9 + var_2);
 
-            var_8 = ovr008.sub_30F16(var_6);
-            ovr008.cmd_table01(var_8, var_4);
+            var_8 = ovr008.vm_GetMemoryValue(var_6);
+            ovr008.vm_SetMemoryValue(var_8, var_4);
         }
 
 
@@ -728,17 +724,17 @@ namespace engine
             ushort var_4;
             ushort var_2;
 
-            ovr008.parse_command_sub(3);
+            ovr008.vm_LoadCmdSets(3);
 
-            var_6 = ovr008.sub_30168(1);
+            var_6 = ovr008.vm_GetCmdValue(1);
 
             var_4 = ovr008.bytes_to_word(gbl.cmd_high_bytes[2], gbl.cmd_low_bytes[2]);
 
-            var_2 = ovr008.sub_30168(3);
+            var_2 = ovr008.vm_GetCmdValue(3);
             var_8 = var_4;
             var_8 += var_2;
 
-            ovr008.cmd_table01(var_6, var_8);
+            ovr008.vm_SetMemoryValue(var_6, var_8);
         }
 
 
@@ -758,14 +754,14 @@ namespace engine
             var_10F = true;
             var_10C = string.Empty;
             var_2 = 1;
-            ovr008.parse_command_sub(3);
+            ovr008.vm_LoadCmdSets(3);
             var_111 = ovr008.bytes_to_word(gbl.cmd_high_bytes[1], gbl.cmd_low_bytes[1]);
 
             var_102 = gbl.unk_1D972[1];
 
-            var_1 = (byte)ovr008.sub_30168(3);
+            var_1 = (byte)ovr008.vm_GetCmdValue(3);
             gbl.ecl_offset--;
-            ovr008.parse_command_sub(var_1);
+            ovr008.vm_LoadCmdSets(var_1);
 
             ovr027.alloc_stringList(out var_106, var_1);
 
@@ -792,7 +788,7 @@ namespace engine
 
             ovr008.sub_318AE(var_106, ref var_10E, ref var_10F, false, var_106, 0x16, 0x26, (sbyte)(gbl.byte_1C8CB + 1),
                 1, 15, 10, 13, var_10C, var_10C);
-            ovr008.cmd_table01((ushort)var_10E, var_111);
+            ovr008.vm_SetMemoryValue((ushort)var_10E, var_111);
 
             ovr027.free_stringList(ref var_106);
             seg037.draw8x8_clear_area(0x16, 0x26, 0x11, 1);
@@ -814,14 +810,14 @@ namespace engine
 
 
             var_38 = string.Empty;
-            ovr008.parse_command_sub(2);
+            ovr008.vm_LoadCmdSets(2);
 
             var_3A = ovr008.bytes_to_word(gbl.cmd_high_bytes[1], gbl.cmd_low_bytes[1]);
-            var_1 = (byte)ovr008.sub_30168(2);
+            var_1 = (byte)ovr008.vm_GetCmdValue(2);
 
             gbl.ecl_offset--;
 
-            ovr008.parse_command_sub(var_1);
+            ovr008.vm_LoadCmdSets(var_1);
 
             if (var_1 == 1)
             {
@@ -862,7 +858,7 @@ namespace engine
 
             var_2 = ovr008.sub_317AA(var_3C, var_3B, var_3D, var_3E, 0x0d, var_38, string.Empty);
 
-            ovr008.cmd_table01(var_2, var_3A);
+            ovr008.vm_SetMemoryValue(var_2, var_3A);
 
             seg037.draw8x8_clear_area(0x18, 0x27, 0x18, 0);
         }
@@ -904,7 +900,7 @@ namespace engine
             sbyte var_2;
             byte var_1;
 
-            ovr008.parse_command_sub(1);
+            ovr008.vm_LoadCmdSets(1);
             var_6 = 0;
             player_ptr = gbl.player_next_ptr;
 
@@ -941,17 +937,17 @@ namespace engine
             }
 
             var_8 = ovr008.bytes_to_word(gbl.cmd_high_bytes[1], gbl.cmd_low_bytes[1]);
-            ovr008.cmd_table01(var_6, var_8);
+            ovr008.vm_SetMemoryValue(var_6, var_8);
         }
 
 
         internal static void sub_273F6(byte var_A, byte var_F, byte var_10, byte var_11,
             ushort var_13, ushort var_15, ushort var_17, ushort var_19)
         {
-            ovr008.cmd_table01(var_11, var_13);
-            ovr008.cmd_table01(var_10, var_15);
-            ovr008.cmd_table01(var_F, var_17);
-            ovr008.cmd_table01(var_A, var_19);
+            ovr008.vm_SetMemoryValue(var_11, var_13);
+            ovr008.vm_SetMemoryValue(var_10, var_15);
+            ovr008.vm_SetMemoryValue(var_F, var_17);
+            ovr008.vm_SetMemoryValue(var_A, var_19);
         }
 
 
@@ -973,7 +969,7 @@ namespace engine
             short var_4;
             ushort var_2;
 
-            ovr008.parse_command_sub(6);
+            ovr008.vm_LoadCmdSets(6);
             player_ptr = gbl.player_next_ptr;
 
             var_A = false;
@@ -983,10 +979,10 @@ namespace engine
             }
             else
             {
-                var_2 = ovr008.sub_30168(1);
+                var_2 = ovr008.vm_GetCmdValue(1);
             }
 
-            affect_id = (Affects)ovr008.sub_30168(2);
+            affect_id = (Affects)ovr008.vm_GetCmdValue(2);
 
             var_13 = ovr008.bytes_to_word(gbl.cmd_high_bytes[3], gbl.cmd_low_bytes[3]);
             var_15 = ovr008.bytes_to_word(gbl.cmd_high_bytes[4], gbl.cmd_low_bytes[4]);
@@ -1077,7 +1073,7 @@ namespace engine
             byte var_5;
             Player player;
 
-            ovr008.parse_command_sub(2);
+            ovr008.vm_LoadCmdSets(2);
 
             player = gbl.player_next_ptr;
 
@@ -1097,8 +1093,8 @@ namespace engine
             var_9 = ovr008.bytes_to_word(gbl.cmd_high_bytes[1], gbl.cmd_low_bytes[1]);
             var_B = ovr008.bytes_to_word(gbl.cmd_high_bytes[2], gbl.cmd_low_bytes[2]);
 
-            ovr008.cmd_table01(var_5, var_9);
-            ovr008.cmd_table01(var_6, var_B);
+            ovr008.vm_SetMemoryValue(var_5, var_9);
+            ovr008.vm_SetMemoryValue(var_6, var_B);
         }
 
 
@@ -1114,13 +1110,13 @@ namespace engine
             byte var_2;
             byte var_1;
 
-            ovr008.parse_command_sub(4);
+            ovr008.vm_LoadCmdSets(4);
             var_4 = 0;
 
-            var_8 = (byte)ovr008.sub_30168(1);
-            var_7 = (byte)ovr008.sub_30168(2);
-            var_6 = (byte)ovr008.sub_30168(3);
-            var_5 = (byte)ovr008.sub_30168(4);
+            var_8 = (byte)ovr008.vm_GetCmdValue(1);
+            var_7 = (byte)ovr008.vm_GetCmdValue(2);
+            var_6 = (byte)ovr008.vm_GetCmdValue(3);
+            var_5 = (byte)ovr008.vm_GetCmdValue(4);
 
             var_9 = (byte)((var_5 + 2) - var_8);
             var_A = (byte)((var_7 + 2) - var_6);
@@ -1145,7 +1141,7 @@ namespace engine
                 var_4 = 2;
             }
 
-            ovr008.cmd_table01(var_4, 0x2cb);
+            ovr008.vm_SetMemoryValue(var_4, 0x2cb);
         }
 
 
@@ -1374,11 +1370,11 @@ namespace engine
             byte var_1;
 
             var_5 = 0;
-            ovr008.parse_command_sub(2);
-            var_1 = (byte)ovr008.sub_30168(1);
-            var_2 = (byte)ovr008.sub_30168(2);
+            ovr008.vm_LoadCmdSets(2);
+            var_1 = (byte)ovr008.vm_GetCmdValue(1);
+            var_2 = (byte)ovr008.vm_GetCmdValue(2);
             gbl.ecl_offset--;
-            ovr008.parse_command_sub(var_2);
+            ovr008.vm_LoadCmdSets(var_2);
             var_4 = 0;
 
             while (var_4 < var_2 && var_5 == 0)
@@ -1391,7 +1387,7 @@ namespace engine
                     }
                     else
                     {
-                        ovr008.sub_31A77((byte)(var_4 + 1));
+                        ovr008.vm_gosub((byte)(var_4 + 1));
                     }
 
                     var_5 = 1;
@@ -1421,14 +1417,14 @@ namespace engine
             byte var_2;
             byte var_1;
 
-            ovr008.parse_command_sub(8);
+            ovr008.vm_LoadCmdSets(8);
 
             for (var_1 = 0; var_1 < 7; var_1++)
             {
-                gbl.pooled_money[var_1] = ovr008.sub_30168((byte)(var_1 + 1));
+                gbl.pooled_money[var_1] = ovr008.vm_GetCmdValue((byte)(var_1 + 1));
             }
 
-            var_2 = (byte)ovr008.sub_30168(8);
+            var_2 = (byte)ovr008.vm_GetCmdValue(8);
 
             if (var_2 < 0x80)
             {
@@ -1601,12 +1597,12 @@ namespace engine
             byte var_2;
             byte var_1;
 
-            ovr008.parse_command_sub(3);
-            var_1 = (byte)ovr008.sub_30168(1);
-            var_2 = (byte)ovr008.sub_30168(2);
+            ovr008.vm_LoadCmdSets(3);
+            var_1 = (byte)ovr008.vm_GetCmdValue(1);
+            var_2 = (byte)ovr008.vm_GetCmdValue(2);
 
             var_11 = (100 - var_2) / 100.0;
-            var_3 = (byte)ovr008.sub_30168(3);
+            var_3 = (byte)ovr008.vm_GetCmdValue(3);
 
             if (var_1 == 0)
             {
@@ -1655,17 +1651,17 @@ namespace engine
             ovr008.calc_group_inituative(out init_min, out var_40A);
 
             var_439 = string.Empty;
-            ovr008.parse_command_sub(0x0e);
+            ovr008.vm_LoadCmdSets(0x0e);
 
-            gbl.byte_1D92B = (byte)ovr008.sub_30168(1);
-            gbl.area2_ptr.field_580 = ovr008.sub_30168(2);
-            gbl.byte_1D92C = (byte)ovr008.sub_30168(3);
+            gbl.byte_1D92B = (byte)ovr008.vm_GetCmdValue(1);
+            gbl.area2_ptr.field_580 = ovr008.vm_GetCmdValue(2);
+            gbl.byte_1D92C = (byte)ovr008.vm_GetCmdValue(3);
 
             var_43D = ovr008.bytes_to_word(gbl.cmd_high_bytes[4], gbl.cmd_low_bytes[4]);
 
             for (int i = 0; i < 5; i++)
             {
-                var_6[i] = (byte)ovr008.sub_30168(i + 5);
+                var_6[i] = (byte)ovr008.vm_GetCmdValue(i + 5);
             }
 
             for (var_409 = 0; var_409 < 3; var_409++)
@@ -1673,8 +1669,8 @@ namespace engine
                 var_405[var_409] = gbl.unk_1D972[var_409 + 1];
             }
 
-            var_407 = (byte)ovr008.sub_30168(0x0d);
-            var_408 = (byte)ovr008.sub_30168(0x0e);
+            var_407 = (byte)ovr008.vm_GetCmdValue(0x0d);
+            var_408 = (byte)ovr008.vm_GetCmdValue(0x0e);
 
             gbl.area2_ptr.field_582 = ovr008.sub_304B4(gbl.byte_1D53B, gbl.byte_1D53A, gbl.byte_1D539);
 
@@ -1784,17 +1780,17 @@ namespace engine
                     case 0:
                         if (var_1 != 2)
                         {
-                            ovr008.cmd_table01(1, var_43D);
+                            ovr008.vm_SetMemoryValue(1, var_43D);
                         }
                         else
                         {
                             if (init_min >= var_407)
                             {
-                                ovr008.cmd_table01(2, var_43D);
+                                ovr008.vm_SetMemoryValue(2, var_43D);
                             }
                             else
                             {
-                                ovr008.cmd_table01(1, var_43D);
+                                ovr008.vm_SetMemoryValue(1, var_43D);
                             }
                         }
                         break;
@@ -1802,7 +1798,7 @@ namespace engine
                     case 1:
                         if (var_1 == 0)
                         {
-                            ovr008.cmd_table01(1, var_43D);
+                            ovr008.vm_SetMemoryValue(1, var_43D);
                         }
                         else if (var_1 == 1)
                         {
@@ -1811,7 +1807,7 @@ namespace engine
                         }
                         else if (var_1 == 2)
                         {
-                            ovr008.cmd_table01(2, var_43D);
+                            ovr008.vm_SetMemoryValue(2, var_43D);
                         }
                         else if (var_1 == 3)
                         {
@@ -1838,7 +1834,7 @@ namespace engine
                             }
                             else
                             {
-                                ovr008.cmd_table01(3, var_43D);
+                                ovr008.vm_SetMemoryValue(3, var_43D);
                             }
                         }
                         break;
@@ -1848,7 +1844,7 @@ namespace engine
                         {
                             if (var_408 > var_40A)
                             {
-                                ovr008.cmd_table01(0, var_43D);
+                                ovr008.vm_SetMemoryValue(0, var_43D);
 
                                 gbl.byte_1C8CA = 1;
                                 gbl.byte_1C8CB = 0x11;
@@ -1856,12 +1852,12 @@ namespace engine
                             }
                             else
                             {
-                                ovr008.cmd_table01(1, var_43D);
+                                ovr008.vm_SetMemoryValue(1, var_43D);
                             }
                         }
                         else if (var_1 >= 1 && var_1 <= 4)
                         {
-                            ovr008.cmd_table01(0, var_43D);
+                            ovr008.vm_SetMemoryValue(0, var_43D);
 
                             gbl.byte_1C8CA = 1;
                             gbl.byte_1C8CB = 0x11;
@@ -1872,7 +1868,7 @@ namespace engine
                     case 3:
                         if (var_1 == 0)
                         {
-                            ovr008.cmd_table01(1, var_43D);
+                            ovr008.vm_SetMemoryValue(1, var_43D);
                         }
                         else if (var_1 == 1 || var_1 == 3)
                         {
@@ -1891,13 +1887,13 @@ namespace engine
                         }
                         else if (var_1 == 2)
                         {
-                            ovr008.cmd_table01(2, var_43D);
+                            ovr008.vm_SetMemoryValue(2, var_43D);
                         }
                         else if (var_1 == 4)
                         {
                             if (gbl.area2_ptr.field_582 <= 0)
                             {
-                                ovr008.cmd_table01(3, var_43D);
+                                ovr008.vm_SetMemoryValue(3, var_43D);
                             }
                             else
                             {
@@ -1912,14 +1908,14 @@ namespace engine
                     case 4:
                         if (var_1 == 0)
                         {
-                            ovr008.cmd_table01(1, var_43D);
+                            ovr008.vm_SetMemoryValue(1, var_43D);
                         }
                         else if (var_1 == 1 || var_1 == 3 || var_1 == 4)
                         {
 
                             if (gbl.area2_ptr.field_582 <= 0)
                             {
-                                ovr008.cmd_table01(3, var_43D);
+                                ovr008.vm_SetMemoryValue(3, var_43D);
                             }
                             else
                             {
@@ -1931,7 +1927,7 @@ namespace engine
                         }
                         else if (var_1 == 2)
                         {
-                            ovr008.cmd_table01(2, var_43D);
+                            ovr008.vm_SetMemoryValue(2, var_43D);
                         }
 
                         break;
@@ -1954,12 +1950,12 @@ namespace engine
             byte var_2;
             byte var_1;
 
-            ovr008.parse_command_sub(6);
+            ovr008.vm_LoadCmdSets(6);
             var_B = ' ';
 
             for (int i = 0; i < 5; i++)
             {
-                var_8[i] = (byte)ovr008.sub_30168(i + 1);
+                var_8[i] = (byte)ovr008.vm_GetCmdValue(i + 1);
             }
 
             var_1 = ovr008.sub_317AA(0, 0, 15, 10, 13, "~HAUGHTY ~SLY ~NICE ~MEEK ~ABUSIVE", var_B.ToString());
@@ -1967,7 +1963,7 @@ namespace engine
 
             var_2 = var_8[var_1];
 
-            ovr008.cmd_table01(var_2, var_A);
+            ovr008.vm_SetMemoryValue(var_2, var_A);
         }
 
 
@@ -1978,9 +1974,9 @@ namespace engine
             Player player;
             byte var_1;
 
-            ovr008.parse_command_sub(1);
+            ovr008.vm_LoadCmdSets(1);
             found = false;
-            var_1 = (byte)ovr008.sub_30168(1);
+            var_1 = (byte)ovr008.vm_GetCmdValue(1);
 
             for (int i = 0; i < 6; i++)
             {
@@ -2041,12 +2037,12 @@ namespace engine
             /* var_19 = 0; */
             var_1A = 0;
             player03 = gbl.player_next_ptr;
-            ovr008.parse_command_sub(5);
-            var_1 = (byte)ovr008.sub_30168(1);
-            var_2 = (byte)ovr008.sub_30168(2);
-            var_3 = (byte)ovr008.sub_30168(3);
-            var_7 = (byte)ovr008.sub_30168(4);
-            var_6 = (byte)ovr008.sub_30168(5);
+            ovr008.vm_LoadCmdSets(5);
+            var_1 = (byte)ovr008.vm_GetCmdValue(1);
+            var_2 = (byte)ovr008.vm_GetCmdValue(2);
+            var_3 = (byte)ovr008.vm_GetCmdValue(3);
+            var_7 = (byte)ovr008.vm_GetCmdValue(4);
+            var_6 = (byte)ovr008.vm_GetCmdValue(5);
 
 
             var_C = (short)(ovr024.roll_dice(var_3, var_2) + var_7);
@@ -2203,9 +2199,9 @@ namespace engine
             byte var_2;
             byte var_1;
 
-            ovr008.parse_command_sub(2);
-            var_1 = (byte)ovr008.sub_30168(1);
-            var_2 = (byte)ovr008.sub_30168(2);
+            ovr008.vm_LoadCmdSets(2);
+            var_1 = (byte)ovr008.vm_GetCmdValue(1);
+            var_2 = (byte)ovr008.vm_GetCmdValue(2);
 
             ovr021.sub_583FA(var_2, var_1);
         }
@@ -2247,7 +2243,7 @@ namespace engine
         {
             string var_100;
 
-            ovr008.parse_command_sub(1);
+            ovr008.vm_LoadCmdSets(1);
             seg037.draw8x8_clear_area(0x16, 0x26, 0x11, 1);
 
             var_100 = gbl.unk_1D972[1];
@@ -2261,12 +2257,12 @@ namespace engine
             byte var_6;
             byte var_5;
 
-            ovr008.parse_command_sub(2);
-            var_5 = (byte)ovr008.sub_30168(1);
+            ovr008.vm_LoadCmdSets(2);
+            var_5 = (byte)ovr008.vm_GetCmdValue(1);
 
             ovr017.sub_4A57D(var_5);
 
-            var_6 = (byte)ovr008.sub_30168(2);
+            var_6 = (byte)ovr008.vm_GetCmdValue(2);
 
             var_6 >>= 1;
             var_6 |= 0x80;
@@ -2291,8 +2287,8 @@ namespace engine
 
             var_9 = 0;
             var_8 = 0;
-            ovr008.parse_command_sub(3);
-            var_1 = (byte)ovr008.sub_30168(1);
+            ovr008.vm_LoadCmdSets(3);
+            var_1 = (byte)ovr008.vm_GetCmdValue(1);
             var_B = ovr008.bytes_to_word(gbl.cmd_high_bytes[2], gbl.cmd_low_bytes[2]);
             var_D = ovr008.bytes_to_word(gbl.cmd_high_bytes[3], gbl.cmd_low_bytes[3]);
             var_2 = 1;
@@ -2337,91 +2333,90 @@ namespace engine
                 var_2 = 0x0FF;
             }
 
-            ovr008.cmd_table01(var_2, var_B);
-            ovr008.cmd_table01(var_3, var_D);
+            ovr008.vm_SetMemoryValue(var_2, var_B);
+            ovr008.vm_SetMemoryValue(var_3, var_D);
         }
 
 
         internal static void CMD_Call()
         {
-            ushort var_4;
-            ushort var_2;
+            ovr008.vm_LoadCmdSets(1);
 
-            ovr008.parse_command_sub(1);
+            ushort var_2 = ovr008.bytes_to_word(gbl.cmd_high_bytes[1], gbl.cmd_low_bytes[1]);
+            ushort var_4 = (ushort)(var_2 - 0x7fff);
 
-            var_2 = ovr008.bytes_to_word(gbl.cmd_high_bytes[1], gbl.cmd_low_bytes[1]);
+            System.Console.WriteLine("CMD_Call: {0,4:X}", var_4);
 
-            var_4 = (ushort)(var_2 - 0x7fff);
-
-            if (var_4 == 0xAE11)
+            switch (var_4)
             {
-                gbl.byte_1D53D = ovr031.sub_717A5(gbl.byte_1D53A, gbl.byte_1D539);
+                case 0xAE11:
+                    gbl.byte_1D53D = ovr031.sub_717A5(gbl.byte_1D53A, gbl.byte_1D539);
 
-                if (gbl.byte_1AB0B != 0)
-                {
-                    if (gbl.byte_1EE8C != 0 || gbl.byte_1EE8F != 0 || gbl.byte_1EE91 != 0 ||
-                        gbl.byte_1EE92 != 0 || gbl.byte_1EE94 != 0)
+                    if (gbl.byte_1AB0B != 0)
                     {
-                        gbl.byte_1D8AA = 1;
-                        ovr029.sub_6F0BA();
-                        ovr025.camping_search();
-                        gbl.byte_1EE94 = 0;
-                        gbl.byte_1EE91 = 0;
-                        gbl.byte_1EE92 = 0;
-                        gbl.byte_1EE8C = 0;
-                        gbl.byte_1EE8F = 0;
+                        if (gbl.byte_1EE8C != 0 || gbl.byte_1EE8F != 0 || gbl.byte_1EE91 != 0 ||
+                            gbl.byte_1EE92 != 0 || gbl.byte_1EE94 != 0)
+                        {
+                            gbl.byte_1D8AA = 1;
+                            ovr029.sub_6F0BA();
+                            ovr025.camping_search();
+                            gbl.byte_1EE94 = 0;
+                            gbl.byte_1EE91 = 0;
+                            gbl.byte_1EE92 = 0;
+                            gbl.byte_1EE8C = 0;
+                            gbl.byte_1EE8F = 0;
 
-                        gbl.byte_1D53C = ovr031.sub_716A2(gbl.byte_1D53B, gbl.byte_1D53A, gbl.byte_1D539);
-
+                            gbl.byte_1D53C = ovr031.sub_716A2(gbl.byte_1D53B, gbl.byte_1D53A, gbl.byte_1D539);
+                        }
                     }
-                }
-            }
-            else if (var_4 == 1)
-            {
-                ovr008.duel(1);
-            }
-            else if (var_4 == 2)
-            {
-                ovr008.duel(0);
-            }
-            else if (var_4 == 0x3201)
-            {
-                if (gbl.word_1EE76 == 8)
-                {
-                    seg044.sub_120E0(gbl.word_188D2);
-                }
-                else if (gbl.word_1EE76 == 10)
-                {
-                    seg044.sub_120E0(gbl.word_188D4);
-                }
-                else
-                {
-                    seg044.sub_120E0(gbl.word_188D2);
-                }
-            }
-            else if (var_4 == 0x401F)
-            {
-                ovr008.sub_31B01();
-            }
-            else if (var_4 == 0x4019)
-            {
-                if (gbl.area_ptr.field_1CC == 0)
-                {
-                    gbl.byte_1D53C = ovr031.sub_716A2(gbl.byte_1D53B, gbl.byte_1D53A, gbl.byte_1D539);
+                    break;
 
-                }
-            }
-            else if (var_4 == 0xE804)
-            {
-                ovr030.sub_7000A(gbl.byte_1D556.ptrs[gbl.byte_1D556.curFrame].field_4, 1, 3, 3);
-                gbl.byte_1D556.curFrame++;
+                case 1:
+                    ovr008.duel(1);
+                    break;
 
-                if (gbl.byte_1D556.curFrame > gbl.byte_1D556.numFrames)
-                {
-                    gbl.byte_1D556.curFrame = 1;
-                }
+                case 2:
+                    ovr008.duel(0);
+                    break;
 
-                seg041.GameDelay();
+                case 0x3201:
+
+                    if (gbl.word_1EE76 == 8)
+                    {
+                        seg044.sub_120E0(gbl.word_188D2);
+                    }
+                    else if (gbl.word_1EE76 == 10)
+                    {
+                        seg044.sub_120E0(gbl.word_188D4);
+                    }
+                    else
+                    {
+                        seg044.sub_120E0(gbl.word_188D2);
+                    }
+                    break;
+
+                case 0x401F:
+                    ovr008.sub_31B01();
+                    break;
+
+                case 0x4019:
+                    if (gbl.area_ptr.field_1CC == 0)
+                    {
+                        gbl.byte_1D53C = ovr031.sub_716A2(gbl.byte_1D53B, gbl.byte_1D53A, gbl.byte_1D539);
+                    }
+                    break;
+
+                case 0xE804:
+                    ovr030.sub_7000A(gbl.byte_1D556.ptrs[gbl.byte_1D556.curFrame].field_4, 1, 3, 3);
+                    gbl.byte_1D556.curFrame++;
+
+                    if (gbl.byte_1D556.curFrame > gbl.byte_1D556.numFrames)
+                    {
+                        gbl.byte_1D556.curFrame = 1;
+                    }
+
+                    seg041.GameDelay();
+                    break;
             }
         }
 
@@ -2460,8 +2455,8 @@ namespace engine
                 gbl.byte_1AB0A = 0;
             }
 
-            ovr008.parse_command_sub(1);
-            var_1 = (byte)ovr008.sub_30168(1);
+            ovr008.vm_LoadCmdSets(1);
+            var_1 = (byte)ovr008.vm_GetCmdValue(1);
 
             if (var_1 == 0)
             {
@@ -2505,12 +2500,12 @@ namespace engine
                 var_3 = gbl.ecl_offset;
                 sub_29094();
                 gbl.ecl_offset = var_3;
-                sub_26050();
+                CMD_Exit();
             }
             else if (var_1 == 3)
             {
                 gbl.byte_1B2F0 = 1;
-                sub_26050();
+                CMD_Exit();
             }
         }
 
@@ -2519,7 +2514,7 @@ namespace engine
         {
             seg051.FillChar(0, 2, gbl.byte_1EE72);
             gbl.byte_1EE8C = 0;
-            ovr008.parse_command_sub(1);
+            ovr008.vm_LoadCmdSets(1);
 
             ovr004.copy_protection();
             ovr025.load_pic();
@@ -2548,8 +2543,8 @@ namespace engine
                 gbl.item_find[i] = false;
             }
 
-            ovr008.parse_command_sub(1);
-            var_5 = (Affects)ovr008.sub_30168(1);
+            ovr008.vm_LoadCmdSets(1);
+            var_5 = (Affects)ovr008.vm_GetCmdValue(1);
 
             if (ovr025.find_affect(out var_4, var_5, gbl.player_ptr) == true)
             {
@@ -2568,8 +2563,8 @@ namespace engine
             Player player;
             byte var_1;
 
-            ovr008.parse_command_sub(1);
-            var_1 = (byte)ovr008.sub_30168(1);
+            ovr008.vm_LoadCmdSets(1);
+            var_1 = (byte)ovr008.vm_GetCmdValue(1);
 
 
             player = gbl.player_next_ptr;
@@ -2600,9 +2595,9 @@ namespace engine
 
             switch (gbl.command)
             {
-                case 0x00: sub_26050(); break;
+                case 0x00: CMD_Exit(); break;
                 case 0x01: CMD_Goto(); break;
-                case 0x02: sub_26108(); break;
+                case 0x02: CMD_Gosub(); break;
                 case 0x03: sub_2611D(); break;
                 case 0x04: sub_2619A(); break;
                 case 0x05: sub_2619A(); break;
@@ -2619,7 +2614,7 @@ namespace engine
                 case 0x10: sub_269A4(); break;
                 case 0x11: CMD_Print(); break;
                 case 0x12: CMD_Print(); break;
-                case 0x13: sub_26AB8(); break;
+                case 0x13: CMD_Return(); break;
                 case 0x14: sub_26B0C(); break;
                 case 0x15: sub_26EE9(); break;
                 case 0x16: CMD_if(); break;
@@ -2685,7 +2680,7 @@ namespace engine
                 gbl.command = gbl.ecl_ptr[gbl.ecl_offset + 0x8000];
 
                 ovr036.print_command(out var_100);
-                System.Console.Out.WriteLine(var_100);
+                System.Console.Out.WriteLine("{0:X} {1}", gbl.ecl_offset, var_100);
                 
                 if (gbl.printCommands == true)
                 {

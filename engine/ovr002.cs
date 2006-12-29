@@ -98,11 +98,12 @@ namespace engine
                 seg040.draw_picture(dax_ptr, 0x0b, 0);
                 seg040.free_dax_block(ref dax_ptr);
                 delay_or_key(10);
-				seg041.sub_10E12();
+
+				seg041.clear_screan();
 				credits();
 				delay_or_key( 10 );
 
-				seg041.sub_10E12();
+				seg041.clear_screan();
 			}
 		}	
 	}

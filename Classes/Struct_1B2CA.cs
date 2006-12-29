@@ -34,5 +34,21 @@ namespace Classes
             /* this is done at ovr008:15C3 */
             throw new System.NotImplementedException();
         }
+
+        public ushort this[int index]
+        {
+            get
+            {
+                // simulate the 16 bit memory space.
+                index &= 0xFFFF;
+
+                return Sys.ArrayToUshort(m_data, index);
+            }
+            set
+            {
+                index &= 0xFFFF;
+                Sys.ShortToArray((short)value, m_data, index);
+            }
+        }
     }
 }

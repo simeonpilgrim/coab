@@ -38,15 +38,15 @@ namespace engine
         }
 
 
-        internal static void sub_760F7(byte arg_0, byte arg_2, sbyte arg_4, sbyte arg_6)
+        internal static void sub_760F7(byte arg_0, byte arg_2, int rowY, int colX)
         {
             if (arg_2 > 0x7f)
             {
-                seg040.sub_E267(gbl.overlayLines, gbl.dword_1C8FC, arg_2, (byte)(arg_2 & 0x7F), arg_4, arg_6);
+                seg040.OverlayUnbounded(gbl.overlayLines, gbl.dword_1C8FC, arg_2, arg_2 & 0x7F, rowY, colX);
             }
             else
             {
-                seg040.sub_E267(gbl.overlayLines, gbl.dword_1C8F8, arg_0, arg_2, arg_4, arg_6);
+                seg040.OverlayUnbounded(gbl.overlayLines, gbl.dword_1C8F8, arg_0, arg_2, rowY, colX);
             }
         }
 

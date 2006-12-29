@@ -16,51 +16,6 @@ namespace engine
 
     class seg046
     {
-        internal static void INTR( Registers arg_0, byte arg_4 )
-        //INTR(BYTE,REGISTERS far	&)
-        {
-            throw new System.NotSupportedException();//pushf
-            throw new System.NotSupportedException();//mov	bx, 0x45
-            throw new System.NotSupportedException();//push	cs
-            throw new System.NotSupportedException();//push	bx
-            throw new System.NotSupportedException();//xor	bx, bx
-            throw new System.NotSupportedException();//mov	ds, bx
-            throw new System.NotSupportedException();//assume ds:nothing
-            throw new System.NotSupportedException();//mov	bl, [bp+arg_4]
-            throw new System.NotSupportedException();//shl	bx, 1
-            throw new System.NotSupportedException();//shl	bx, 1
-            throw new System.NotSupportedException();//lds	bx, [bx]
-            throw new System.NotSupportedException();//assume ds:seg600
-            throw new System.NotSupportedException();//push	ds
-            throw new System.NotSupportedException();//push	bx
-            throw new System.NotSupportedException();//lds	si, [bp+arg_0]
-            throw new System.NotSupportedException();//cld
-            throw new System.NotSupportedException();//lodsw
-            throw new System.NotSupportedException();//push	ax
-            throw new System.NotSupportedException();//lodsw
-            throw new System.NotSupportedException();//mov	bx, ax
-            throw new System.NotSupportedException();//lodsw
-            throw new System.NotSupportedException();//mov	cx, ax
-            throw new System.NotSupportedException();//lodsw
-            throw new System.NotSupportedException();//mov	dx, ax
-            throw new System.NotSupportedException();//lodsw
-            throw new System.NotSupportedException();//mov	bp, ax
-            throw new System.NotSupportedException();//lodsw
-            throw new System.NotSupportedException();//push	ax
-            throw new System.NotSupportedException();//lodsw
-            throw new System.NotSupportedException();//mov	di, ax
-            throw new System.NotSupportedException();//lodsw
-            throw new System.NotSupportedException();//push	ax
-            throw new System.NotSupportedException();//lodsw
-            throw new System.NotSupportedException();//mov	es, ax
-            throw new System.NotSupportedException();//pop	ds
-            throw new System.NotSupportedException();//pop	si
-            throw new System.NotSupportedException();//pop	ax
-            throw new System.NotSupportedException();//cli
-            throw new System.NotSupportedException();//retf
-        }
-
-
         internal static int getDiskSpace( byte arg_0 )
         {
 			return 0x7FFFFFFF; /*HACK this need to be completed.*/

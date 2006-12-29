@@ -391,9 +391,9 @@ namespace engine
 					gbl.byte_1AE1B = seg051.Random( 2 );
 					var_1 = gbl.byte_1AE1B;
 
-					for( gbl.byte_1AE0E = 0; gbl.byte_1AE0E < var_1; gbl.byte_1AE0E++ )
+					for( byte byte_1AE0E = 0; byte_1AE0E < var_1; byte_1AE0E++ )
 					{
-						gbl.unk_1AE0B[ gbl.byte_1AE0E ] = (byte)(seg051.Random( 5 ) + 2);
+						gbl.unk_1AE0B[ byte_1AE0E ] = (byte)(seg051.Random( 5 ) + 2);
 					}
 
 					gbl.word_1AE0F = 65;

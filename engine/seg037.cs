@@ -9,7 +9,7 @@ namespace engine
                                     1, 1, 4, 1, 1, 1, 1, 1, 1, 6, 
                                     1, 1, 1, 1, 1, 1, 1, 1, 4, 3 };
 
-        static byte[] unk_16ED6 = { 4, 3, 0, 6, 1, 1, 1, 1, 8, 1, 1, 4, 1, 2, 1, 4 };
+        static byte[] unk_16ED6 = { 4, 3, 0, 6, 1, 1, 1, 1, 8, 1, 1, 4, 1, 1, 2, 1, 4 };
 
         static byte[] unk_16F0A = { 0, 7, 5, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 5, 2, 9, 4 };
 
@@ -222,9 +222,9 @@ namespace engine
         }
 
 
-        internal static void draw8x8_clear_area(int arg_0, int arg_2, int arg_4, int arg_6)
+        internal static void draw8x8_clear_area(int yEnd, int xEnd, int yStart, int xStart)
         {
-            seg041.ega01(0, arg_0, arg_2, arg_4, arg_6);
+            seg041.ega01(0, yEnd, xEnd, yStart, xStart);
         }
     }
 }

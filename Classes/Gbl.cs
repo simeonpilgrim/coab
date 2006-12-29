@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 
 namespace Classes
@@ -32,121 +33,29 @@ namespace Classes
         public const ushort action_struct_size = 0x16;
         public const ushort char_struct_size = 0x1a6;
 
-        public static byte byte_16405;
         public static byte byte_1642C;
         public static byte byte_1645A;
-        public static byte byte_16485;
-        public static byte byte_164AF;
-        public static byte byte_164C8;
-        public static byte byte_164FE;
-        public static byte byte_1670A;
-        public static byte byte_167C2;
-        public static byte byte_16854;
-        public static byte byte_1689C;
-        public static byte byte_168C8;
-        public static byte byte_16976;
-        public static byte byte_169EF;
-        public static byte byte_16AE2;
-        public static byte byte_16BE3;
-        public static byte byte_16C35;
 
-        public static sbyte byte_16E1C = 4;
-        public static sbyte byte_16E1E = 3;
-        public static sbyte byte_16E20 = 3;
-        public static sbyte byte_16E22 = 3;
-        public static byte byte_16E24 = 1;
-        public static sbyte byte_16E26 = 1;
-        public static sbyte byte_16E28 = 1;
-        public static sbyte byte_16E2A = 0;
-        public static byte byte_16E2C = 0;
-        public static sbyte byte_16E2E = 4;
-
-        public static byte byte_16E60;
-        public static byte byte_1703B;
-        public static byte byte_172EF;
-        public static byte byte_172F7;
-        public static byte byte_1739A;
-        public static byte byte_173B4;
-        public static byte byte_173EA;
-        public static byte byte_1749D;
-        public static byte byte_174FD;
-        public static byte byte_17513;
-        public static byte byte_17529;
-        public static byte byte_17568;
-        public static byte byte_176E2;
-        public static byte byte_176F8;
-        public static byte byte_17788;
-        public static byte byte_177C6;
-        public static byte byte_177DB;
-        public static byte byte_177F1;
-        public static byte byte_17830;
-        public static byte byte_17859;
-        public static byte byte_17899;
-        public static byte byte_178AE;
-        public static byte byte_178C1;
-        public static byte byte_17900;
-        public static byte byte_17914;
-        public static byte byte_17953;
-        public static byte byte_17983;
-        public static byte byte_17993;
-        public static byte byte_179A9;
-        public static byte byte_179C5;
-        public static byte byte_179D5;
-        public static byte byte_179EB;
-        public static byte byte_17A18;
-        public static byte byte_17A69;
-        public static byte byte_17A90;
-        public static byte byte_17AA7;
-        public static byte byte_17ACF;
-        public static byte byte_17B0F;
-        public static byte byte_17B23;
-        public static byte byte_17B50;
-        public static byte byte_17B60;
-        public static byte byte_17B77;
-        public static byte byte_17C8C;
-        public static byte byte_17CF0;
-        public static byte byte_17D5A;
-        public static byte byte_17DD7;
-        public static byte byte_17F6D;
-        public static byte byte_17FD6;
-        public static byte byte_18011;
-        public static byte byte_18025;
-        public static byte byte_1804F;
-        public static byte byte_18063;
-        public static byte byte_1808D;
-        public static byte byte_180C9;
-        public static byte byte_180DE;
-        public static byte byte_18135;
-        public static byte byte_18161;
-        public static byte byte_18189;
-        public static byte byte_181A1;
-        public static byte byte_181C9;
-        public static byte byte_1821F;
-        public static byte byte_1825B;
-        public static byte byte_18287;
-        public static byte byte_182AF;
-        public static byte byte_182F1;
-        public static byte byte_1832C;
-        public static byte byte_184D8;
-        public static byte byte_184E8;
-        public static byte byte_1853A;
-        public static byte byte_1854D;
-        public static byte byte_185A2;
-        public static byte byte_1860F;
-        public static byte byte_18625;
-        public static byte byte_1864D;
-        public static byte byte_18773;
-        public static byte byte_187C6;
+        public const sbyte byte_16E1C = 4;
+        public const sbyte byte_16E1E = 3;
+        public const sbyte byte_16E20 = 3;
+        public const sbyte byte_16E22 = 3;
+        public const byte byte_16E24 = 1;
+        public const sbyte byte_16E26 = 1;
+        public const sbyte byte_16E28 = 1;
+        public const sbyte byte_16E2A = 0;
+        public const byte byte_16E2C = 0;
+        public const sbyte byte_16E2E = 4;
 
         public static Struct_189B4[] unk_189B4;
 
-        public static byte byte_1A114;
+        public const byte byte_1A114 = 1;
         /// <summary> seg600:3EBB </summary>
-        public static byte[] byte_1A1CB =  { 10, 15, 10, 10, 11, 12, 11 };
-        public static byte[] unk_1A1D3 = { 1, 2, 3, 4, 6, 7 }; // unk_1A1D3[0] == unk_1A1D2[1];
+        public readonly static byte[] byte_1A1CB =  { 10, 15, 10, 10, 11, 12, 11 };
+        public readonly static byte[] unk_1A1D3 = { 1, 2, 3, 4, 6, 7 }; // unk_1A1D3[0] == unk_1A1D2[1];
 
         /// <summary> seg600:3FFA </summary>
-        public static byte[,] unk_1A30A = { 
+        public readonly static byte[,] unk_1A30A = { 
             { 0x12, 0x12, 0x64, 0x32, 3, 0x12, 3, 0x12, 3, 0x12, 3, 0x12, 3, 0x12}, 
             { 3, 2, 6, 0xE, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
             { 7, 2, 5, 6, 0xD, 0xE, 0xF, 0x10, 0, 0, 0, 0, 0, 0},
@@ -157,31 +66,29 @@ namespace Classes
             { 6, 0, 2, 5, 6, 3, 4, 0, 0, 0, 0, 0, 0, 0} };
 
 
-        public static byte byte_1AABC;
-        public static byte byte_1AB04;
         public static char byte_1AB06;
-        public static byte byte_1AB08;
+        public static byte byte_1AB08 = 0;
         public static byte byte_1AB09;
         public static byte byte_1AB0A;
         public static byte byte_1AB0B;
         public static byte byte_1AB0C;
         public static byte byte_1AB0D;
         public static byte byte_1AB0E;
-        public static byte byte_1AB14;
+        public static byte byte_1AB14 = 0x73;
         public static bool byte_1AB16;
         public static byte byte_1AB18;
-        public static byte byte_1AB19;
-        public static byte byte_1AB1A;
+        public static byte byte_1AB19 = 0x40;
+        public static byte byte_1AB1A; // not sure what's this is for.
         public static sbyte[] byte_1AD2C = { 0, 0 };
         public static sbyte[] byte_1AD2E = { 0, 0 };
         public static byte[] unk_1AD30 = { 0, 0 };
         public static byte[] byte_1AD32 = { 0, 0 };
-        public static sbyte byte_1AD34;
-        public static sbyte byte_1AD35;
-        public static byte byte_1AD36;
-        public static byte byte_1AD37;
-        public static byte byte_1AD38;
-        public static byte byte_1AD39;
+        public static sbyte byte_1AD34 = 0x1A;
+        public static sbyte byte_1AD35 = 0x74;
+        public static byte byte_1AD36 = 0x1A;
+        public static byte byte_1AD37 = 0x79;
+        public static byte byte_1AD38 = 0x1A;
+        public static byte byte_1AD39 = 0x8B;
         public static sbyte field_197;
         public static byte byte_1AD3C;
         public static byte byte_1AD3D;
@@ -190,24 +97,20 @@ namespace Classes
         public static bool byte_1AD48;
         public static byte byte_1ADFA;
         public static byte byte_1AE0A;
-        public static byte byte_1AE0E;
         public static byte byte_1AE1B;
         public static byte[] unk_1AE24 = new byte[0x48];
         public static byte byte_1AFDC;
         public static byte byte_1AFDD;
         public static byte byte_1AFDE;
         public static char byte_1AFE6;
-        public static byte byte_1AFE7;
-        public static byte byte_1B168;
-        public static byte byte_1B169;
-        public static string byte_1B16A;
-        public static byte byte_1B16B;
-        public static byte byte_1B16C;
+
+
+
         public static char byte_1B2BA;
         public static byte byte_1B2C0;
         public static byte byte_1B2C1;
         public static byte byte_1B2E4;
-        public static byte byte_1B2E9;
+        public static byte byte_1B2E9 = 0;
         public static byte byte_1B2EB;
         public static byte byte_1B2EE;
         public static byte byte_1B2EF;
@@ -215,8 +118,7 @@ namespace Classes
         public static byte byte_1B2F1;
         public static byte byte_1B2F2;
 
-        /*public static byte byte_1B2F4;*/
-        public static Registers byte_1B2F4 = new Registers();
+
         public static bool[] overlayLineFlag = new bool[0xA8];
         public static int[] overlayLineXStart = new int[0xA8];
         public static int[] overlayLineDataStart = new int[0xA8];
@@ -256,7 +158,7 @@ namespace Classes
         public static bool byte_1D2C8;
         public static sbyte byte_1D2C9;
         public static byte byte_1D2CA;
-        public static byte byte_1D2CB;
+        public static byte byte_1D2CB; // not used.
         public static byte byte_1D2CC;
         public static byte byte_1D2D1;
         public static byte byte_1D534;
@@ -336,7 +238,7 @@ namespace Classes
         public static byte byte_1D8AA;
         public static byte byte_1D8AC;
         public static byte byte_1D8B0;
-        public static byte byte_1D8B6;
+        public static byte byte_1D8B6; // not used.
         public static byte byte_1D8B7;
         public static byte byte_1D8B8;
         public static byte[] byte_1D8B9 = new byte[0x48];
@@ -357,6 +259,7 @@ namespace Classes
 
         public static bool byte_1DA70;
         public static byte byte_1DA71;
+
         public static byte[] byte_1EE72 = new byte[2];
         public static byte byte_1EE7C;
         public static byte byte_1EE7D;
@@ -422,7 +325,6 @@ namespace Classes
         public static RestTime word_1A13C;
 
 
-        public static short word_1AAFC;
         public static short dos_call_result; // seg600:47EE word_1AAFE
         public static ushort word_1AE0F;
         public static ushort word_1AE11;
@@ -431,15 +333,14 @@ namespace Classes
         public static ushort word_1AE17;
         public static short word_1AE19;
         public static short word_1AFE0;
-        public static short word_1AFE2;
-        public static short word_1AFE4;
+
+
         public static ushort word_1B2D3;
         public static ushort word_1B2D5;
         public static ushort word_1B2D7;
         public static ushort word_1B2D9;
         public static ushort word_1B2DB;
         public static short word_1B2EC;
-        public static short word_1BC02;
         public static DaxBlock dword_1C8FC;
         public static DaxBlock dword_1D55C;
         public static DaxBlock word_1D5B6;
@@ -458,7 +359,6 @@ namespace Classes
         public static short word_1D916;
         public static short word_1D918; // above unk_1D89D
 
-        public static class_1D91A dword_1D91E;
         public static ushort word_1EE76;
         public static ushort word_1EE78;
         public static ushort word_1EE7A;
@@ -486,7 +386,8 @@ namespace Classes
             public class_1D91A field_2;
         }
 
-        public static class_1D91A dword_1D91A;
+        public static Stack<ushort> vmCallStack = new Stack<ushort>(); // dword_1D91A
+
         public static DaxBlock dword_1EFA0;
         public static object dword_1EFD2;
 
@@ -595,106 +496,106 @@ namespace Classes
         public static Struct_19AEC[] unk_19AEC = {
             new Struct_19AEC(),
             new Struct_19AEC( 0,1,6,0,6,0,10,4,0,4,1,2,10,1,0,0),
-new Struct_19AEC( 0,1,6,0,6,0,10,0,0,4,2,1,10,3,1,0),
-new Struct_19AEC( 0,1,0,0,0,0,4,2,0,4,0,2,5,1,0,0),
-new Struct_19AEC( 0,1,-1,0,0,0,4,0,0,4,0,1,5,2,1,0),
-new Struct_19AEC( 0,1,3,0,10,0,0,1,0,4,5,2,1,0,0,0),
-new Struct_19AEC( 0,1,0,0,0,3,4,2,0,4,8,2,4,1,0,0),
-new Struct_19AEC( 0,1,0,0,0,3,4,2,0,4,9,2,4,1,0,0),
-new Struct_19AEC( 0,1,0,0,0,10,4,2,0,4,10,2,10,0,0,0),
-new Struct_19AEC( 2,1,0,0,0,0,4,0,0,4,0,1,1,2,1,0),
-new Struct_19AEC( 2,1,12,0,0,0,4,0,1,4,11,1,1,4,1,0),
-new Struct_19AEC( 2,1,0,0,0,2,0,1,0,4,5,2,1,0,0,0),
-new Struct_19AEC( 2,1,0,2,0,10,4,2,0,4,12,2,1,0,0,0),
-new Struct_19AEC( 2,1,0,2,0,10,4,2,1,4,12,2,1,0,1,0),
-new Struct_19AEC( 2,1,0,0,0,1,0,1,0,4,14,0,1,0,0,0),
-new Struct_19AEC( 2,1,6,4,0,0,4,0,0,4,0,1,1,4,1,0),
-new Struct_19AEC( 2,1,0,0,0,2,4,2,0,4,8,2,1,1,0,0),
-new Struct_19AEC( 2,1,0,0,0,2,4,2,0,4,9,2,1,1,0,0),
-new Struct_19AEC( 2,1,0,0,0,2,0,1,0,4,16,0,10,0,0,0),
-new Struct_19AEC( 2,1,0,0,0,5,0,1,0,4,17,2,1,2,0,0),
-new Struct_19AEC( 2,1,-1,0,0,0,4,0,0,4,0,1,1,2,1,0),
-new Struct_19AEC( 2,1,3,4,0,5,9,0,0,4,0x35,1,1,2,1,1),
-new Struct_19AEC( 0,2,0,0,0x1E,0,0,1,0,4,19,0,5,0,0,0),
-new Struct_19AEC( 0,2,6,0,4,1,6,0,1,4,0x34,1,5,6,1,0),
-new Struct_19AEC( 0,2,0,0,0,10,4,2,0,4,20,2,5,1,0,0),
-new Struct_19AEC( 0,2,12,0,0,2,0x1F,0,3,4,21,1,5,4,1,1),
-new Struct_19AEC( 0,2,0,0,0,0x3C,4,2,0,4,0x16,2,1,0,0,0),
-new Struct_19AEC( 0,2,3,0,0,0,0xF0,0,0,4,0x33,1,5,0,1,0),
-new Struct_19AEC( 0,2,3,0,0,1,0,1,0,4,0x17,2,5,1,0,0),
-new Struct_19AEC( 2,2,0,4,0,5,0,1,0,4,0x18,2,2,1,0,0),
-new Struct_19AEC( 2,2,0,0,0,0,4,2,0,4,0x19,2,2,2,0,0),
-new Struct_19AEC( 2,2,0,0,0,0,0,0,0,4,0,0,1,0,0,0),
-new Struct_19AEC( 2,2,0,0,0,2,0,1,0,4,0x1C,2,2,3,0,0),
-new Struct_19AEC( 2,2,1,1,0,1,4,0,1,4,0x1D,1,2,2,1,0),
-new Struct_19AEC( 2,2,3,0,0,1,9,0,3,0,0x1E,1,2,5,1,1),
-new Struct_19AEC( 2,2,0,0,0,0x3C,0,2,0,4,0x26,0,10,0,0,0),
-new Struct_19AEC( 3,7,4,0,0,0,8,4,1,4,0,2,0,2,0,0),
-new Struct_19AEC( 0,3,0,0,0,0,4,2,0,4,0,2,10,0,0,0),
-new Struct_19AEC( 0,3,-1,0,0,0,4,0,1,4,0x21,1,10,3,1,0),
-new Struct_19AEC( 0,3,0,0,0,0,0,2,0,4,0,0,100,0,0,0),
-new Struct_19AEC( 0,3,-1,0,0,0,4,0,1,4,0x22,1,100,4,1,0),
-new Struct_19AEC( 0,3,6,0,0,0,9,2,0,4,0,2,4,3,1,1),
-new Struct_19AEC( 0,3,0,0,0,1,0,4,0,4,0x31,2,6,5,0,0),
-new Struct_19AEC( 0,3,0,0,0,0,4,2,0,4,0,2,6,0,0,0),
-new Struct_19AEC( 0,3,-1,0,0,10,4,0,1,4,0x24,1,6,5,1,0),
-new Struct_19AEC( 2,3,0,0,0,1,0,0,0,4,0x25,1,1,2,0,0),
-new Struct_19AEC( 2,3,12,0,0,1,9,2,0,4,0,2,3,2,1,1),
-new Struct_19AEC( 2,3,10,1,0,0,11,0,2,4,0,1,3,7,1,3),
-new Struct_19AEC( 2,3,6,0,3,1,10,4,0,4,0x27,2,3,3,0,0),
-new Struct_19AEC( 2,3,12,0,0,2,7,0,1,4,0x34,1,3,6,1,0),
-new Struct_19AEC( 2,3,0,0,0,0,9,4,0,4,0x19,2,3,1,0,0),
-new Struct_19AEC( 2,3,4,1,0,0,8,0,2,4,0,1,3,6,1,0),
-new Struct_19AEC( 2,3,0,0,0,2,4,2,0,4,0x2D,2,3,1,0,0),
-new Struct_19AEC( 2,3,0,0,0,2,4,2,0,4,0x2E,2,3,2,0,0),
-new Struct_19AEC( 2,3,0,0,0,10,4,2,0,4,0x29,2,3,3,0,0),
-new Struct_19AEC( 2,3,9,1,3,1,10,0,0,4,0x2A,1,3,4,1,0),
-new Struct_19AEC( 0,7,0,0,0,0,4,2,0,4,0,2,6,0,0,0),
-new Struct_19AEC( 3,6,0,0,0,0,0,1,0,4,0x27,2,0,3,0,0),
-new Struct_19AEC( 0,4,0,0,0,0,4,2,0,4,0,2,7,1,0,0),
-new Struct_19AEC( 3,6,0,0,0,0,0,1,0,4,0x26,2,0,1,0,0),
-new Struct_19AEC( 3,6,4,4,0,0,4,0,2,4,0,1,0,7,1,0),
-new Struct_19AEC( 3,6,6,0,0,0,4,0,1,0,0x34,1,0,7,1,0),
-new Struct_19AEC( 3,6,0,0,0,0,0,1,0,4,0x27,2,0,1,0,0),
-new Struct_19AEC( 3,6,0,0,0,0,7,4,0,4,0x47,2,0,2,0,0),
-new Struct_19AEC( 3,6,7,0,0,0,11,0,2,4,0,1,0,7,1,3),
-new Struct_19AEC( 3,6,12,0,0,0,4,0,0,4,0,1,0,6,1,0),
-new Struct_19AEC( 0,4,0,0,0,0,4,0,0,4,0,1,7,5,1,0),
-new Struct_19AEC( 0,4,0,0,0,0,0,2,0,4,0,0,7,0,0,0),
-new Struct_19AEC( 0,4,0,0,0,0,4,0,1,0,0,1,7,6,1,0),
-new Struct_19AEC( 0,4,3,0,0,10,4,2,0,4,0x2D,2,7,2,0,0),
-new Struct_19AEC( 0,4,3,0,0,2,4,0,0,4,3,1,7,4,1,0),
-new Struct_19AEC( 0,5,0,0,0,0,4,2,0,4,0,2,8,2,0,0),
-new Struct_19AEC( 0,5,-1,0,0,0,4,0,1,4,0,1,8,6,1,0),
-new Struct_19AEC( 0,5,0,0,0,1,0,0,0,4,0x91,1,8,3,0,0),
-new Struct_19AEC( 0,5,6,0,0,0,4,0,2,4,0,1,8,6,1,0),
-new Struct_19AEC( 0,5,0,0,0,0,0,2,0,4,0,0,10,1,0,0),
-new Struct_19AEC( 0,5,3,0,0,0,4,0,1,4,0,1,10,7,1,0),
-new Struct_19AEC( 1,1,3,0,12,0,0,1,0,4,5,2,3,1,0,0),
-new Struct_19AEC( 1,1,8,0,10,0,11,0,1,4,0x88,1,3,3,1,0),
-new Struct_19AEC( 1,1,8,0,0,4,5,0,1,4,7,1,3,4,1,0),
-new Struct_19AEC( 1,1,-1,0,10,1,4,2,0,4,0x45,2,4,1,1,0),
-new Struct_19AEC( 2,4,6,0,0,0,5,0,1,4,11,1,4,6,1,0),
-new Struct_19AEC( 2,4,12,0,2,1,11,0,1,4,0x23,1,4,7,1,0),
-new Struct_19AEC( 2,4,0,3,0,0,8,0,0,4,0,1,1,0,1,0),
-new Struct_19AEC( 2,4,6,0,0,1,8,0,1,4,0x8E,1,4,6,1,0),
-new Struct_19AEC( 2,4,0,0,2,1,0,1,0,4,0,2,4,8,0,0),
-new Struct_19AEC( 2,4,0,1,0,1,4,0,1,4,0x1B,1,4,4,1,0),
-new Struct_19AEC( 2,4,0,1,0,0,10,0,0,4,0,1,4,7,1,0),
-new Struct_19AEC( 2,4,0,1,0,1,0,1,0,4,0x3F,2,4,5,0,0),
-new Struct_19AEC( 2,4,0,0,0,0,4,2,0,4,0,2,4,0,0,0),
-new Struct_19AEC( 3,5,1,0,0,0,0xF0,4,0,4,0x20,2,5,0,0,0),
-new Struct_19AEC( 2,5,2,0,0,1,9,0,0,4,0,2,5,5,1,0),
-new Struct_19AEC( 2,5,6,0,0,0,8,0,2,4,0,1,5,6,1,0),
-new Struct_19AEC( 2,5,16,0,0,0,4,0,1,4,0x44,1,5,6,1,0),
-new Struct_19AEC( 2,5,0,1,0,1,7,0,1,4,0x34,1,5,7,1,0),
-new Struct_19AEC( 3,6,0,0,0,0,0,1,0,4,0x49,2,10,1,0,0),
-new Struct_19AEC( 3,6,0,0,0,0,0,1,0,4,0x6D,2,10,1,0,0),
-new Struct_19AEC( 3,6,0,0,0,0,0,1,0,4,0x19,2,0,1,0,0),
-new Struct_19AEC( 3,6,3,0,0,0,11,0,1,4,0,1,0,1,1,0),
-new Struct_19AEC( 3,6,0,0,0,0,0,1,0,4,0,2,0,1,0,0),
-new Struct_19AEC( 2,4,0,0,0,10,4,0,1,4,0,1,4,4,1,0),
-new Struct_19AEC( 10,0,10,0,6,0,0x18,0,0x1E,0,12,0,0,1,0x28,0x28) }; /*,
+            new Struct_19AEC( 0,1,6,0,6,0,10,0,0,4,2,1,10,3,1,0),
+            new Struct_19AEC( 0,1,0,0,0,0,4,2,0,4,0,2,5,1,0,0),
+            new Struct_19AEC( 0,1,-1,0,0,0,4,0,0,4,0,1,5,2,1,0),
+            new Struct_19AEC( 0,1,3,0,10,0,0,1,0,4,5,2,1,0,0,0),
+            new Struct_19AEC( 0,1,0,0,0,3,4,2,0,4,8,2,4,1,0,0),
+            new Struct_19AEC( 0,1,0,0,0,3,4,2,0,4,9,2,4,1,0,0),
+            new Struct_19AEC( 0,1,0,0,0,10,4,2,0,4,10,2,10,0,0,0),
+            new Struct_19AEC( 2,1,0,0,0,0,4,0,0,4,0,1,1,2,1,0),
+            new Struct_19AEC( 2,1,12,0,0,0,4,0,1,4,11,1,1,4,1,0),
+            new Struct_19AEC( 2,1,0,0,0,2,0,1,0,4,5,2,1,0,0,0),
+            new Struct_19AEC( 2,1,0,2,0,10,4,2,0,4,12,2,1,0,0,0),
+            new Struct_19AEC( 2,1,0,2,0,10,4,2,1,4,12,2,1,0,1,0),
+            new Struct_19AEC( 2,1,0,0,0,1,0,1,0,4,14,0,1,0,0,0),
+            new Struct_19AEC( 2,1,6,4,0,0,4,0,0,4,0,1,1,4,1,0),
+            new Struct_19AEC( 2,1,0,0,0,2,4,2,0,4,8,2,1,1,0,0),
+            new Struct_19AEC( 2,1,0,0,0,2,4,2,0,4,9,2,1,1,0,0),
+            new Struct_19AEC( 2,1,0,0,0,2,0,1,0,4,16,0,10,0,0,0),
+            new Struct_19AEC( 2,1,0,0,0,5,0,1,0,4,17,2,1,2,0,0),
+            new Struct_19AEC( 2,1,-1,0,0,0,4,0,0,4,0,1,1,2,1,0),
+            new Struct_19AEC( 2,1,3,4,0,5,9,0,0,4,0x35,1,1,2,1,1),
+            new Struct_19AEC( 0,2,0,0,0x1E,0,0,1,0,4,19,0,5,0,0,0),
+            new Struct_19AEC( 0,2,6,0,4,1,6,0,1,4,0x34,1,5,6,1,0),
+            new Struct_19AEC( 0,2,0,0,0,10,4,2,0,4,20,2,5,1,0,0),
+            new Struct_19AEC( 0,2,12,0,0,2,0x1F,0,3,4,21,1,5,4,1,1),
+            new Struct_19AEC( 0,2,0,0,0,0x3C,4,2,0,4,0x16,2,1,0,0,0),
+            new Struct_19AEC( 0,2,3,0,0,0,0xF0,0,0,4,0x33,1,5,0,1,0),
+            new Struct_19AEC( 0,2,3,0,0,1,0,1,0,4,0x17,2,5,1,0,0),
+            new Struct_19AEC( 2,2,0,4,0,5,0,1,0,4,0x18,2,2,1,0,0),
+            new Struct_19AEC( 2,2,0,0,0,0,4,2,0,4,0x19,2,2,2,0,0),
+            new Struct_19AEC( 2,2,0,0,0,0,0,0,0,4,0,0,1,0,0,0),
+            new Struct_19AEC( 2,2,0,0,0,2,0,1,0,4,0x1C,2,2,3,0,0),
+            new Struct_19AEC( 2,2,1,1,0,1,4,0,1,4,0x1D,1,2,2,1,0),
+            new Struct_19AEC( 2,2,3,0,0,1,9,0,3,0,0x1E,1,2,5,1,1),
+            new Struct_19AEC( 2,2,0,0,0,0x3C,0,2,0,4,0x26,0,10,0,0,0),
+            new Struct_19AEC( 3,7,4,0,0,0,8,4,1,4,0,2,0,2,0,0),
+            new Struct_19AEC( 0,3,0,0,0,0,4,2,0,4,0,2,10,0,0,0),
+            new Struct_19AEC( 0,3,-1,0,0,0,4,0,1,4,0x21,1,10,3,1,0),
+            new Struct_19AEC( 0,3,0,0,0,0,0,2,0,4,0,0,100,0,0,0),
+            new Struct_19AEC( 0,3,-1,0,0,0,4,0,1,4,0x22,1,100,4,1,0),
+            new Struct_19AEC( 0,3,6,0,0,0,9,2,0,4,0,2,4,3,1,1),
+            new Struct_19AEC( 0,3,0,0,0,1,0,4,0,4,0x31,2,6,5,0,0),
+            new Struct_19AEC( 0,3,0,0,0,0,4,2,0,4,0,2,6,0,0,0),
+            new Struct_19AEC( 0,3,-1,0,0,10,4,0,1,4,0x24,1,6,5,1,0),
+            new Struct_19AEC( 2,3,0,0,0,1,0,0,0,4,0x25,1,1,2,0,0),
+            new Struct_19AEC( 2,3,12,0,0,1,9,2,0,4,0,2,3,2,1,1),
+            new Struct_19AEC( 2,3,10,1,0,0,11,0,2,4,0,1,3,7,1,3),
+            new Struct_19AEC( 2,3,6,0,3,1,10,4,0,4,0x27,2,3,3,0,0),
+            new Struct_19AEC( 2,3,12,0,0,2,7,0,1,4,0x34,1,3,6,1,0),
+            new Struct_19AEC( 2,3,0,0,0,0,9,4,0,4,0x19,2,3,1,0,0),
+            new Struct_19AEC( 2,3,4,1,0,0,8,0,2,4,0,1,3,6,1,0),
+            new Struct_19AEC( 2,3,0,0,0,2,4,2,0,4,0x2D,2,3,1,0,0),
+            new Struct_19AEC( 2,3,0,0,0,2,4,2,0,4,0x2E,2,3,2,0,0),
+            new Struct_19AEC( 2,3,0,0,0,10,4,2,0,4,0x29,2,3,3,0,0),
+            new Struct_19AEC( 2,3,9,1,3,1,10,0,0,4,0x2A,1,3,4,1,0),
+            new Struct_19AEC( 0,7,0,0,0,0,4,2,0,4,0,2,6,0,0,0),
+            new Struct_19AEC( 3,6,0,0,0,0,0,1,0,4,0x27,2,0,3,0,0),
+            new Struct_19AEC( 0,4,0,0,0,0,4,2,0,4,0,2,7,1,0,0),
+            new Struct_19AEC( 3,6,0,0,0,0,0,1,0,4,0x26,2,0,1,0,0),
+            new Struct_19AEC( 3,6,4,4,0,0,4,0,2,4,0,1,0,7,1,0),
+            new Struct_19AEC( 3,6,6,0,0,0,4,0,1,0,0x34,1,0,7,1,0),
+            new Struct_19AEC( 3,6,0,0,0,0,0,1,0,4,0x27,2,0,1,0,0),
+            new Struct_19AEC( 3,6,0,0,0,0,7,4,0,4,0x47,2,0,2,0,0),
+            new Struct_19AEC( 3,6,7,0,0,0,11,0,2,4,0,1,0,7,1,3),
+            new Struct_19AEC( 3,6,12,0,0,0,4,0,0,4,0,1,0,6,1,0),
+            new Struct_19AEC( 0,4,0,0,0,0,4,0,0,4,0,1,7,5,1,0),
+            new Struct_19AEC( 0,4,0,0,0,0,0,2,0,4,0,0,7,0,0,0),
+            new Struct_19AEC( 0,4,0,0,0,0,4,0,1,0,0,1,7,6,1,0),
+            new Struct_19AEC( 0,4,3,0,0,10,4,2,0,4,0x2D,2,7,2,0,0),
+            new Struct_19AEC( 0,4,3,0,0,2,4,0,0,4,3,1,7,4,1,0),
+            new Struct_19AEC( 0,5,0,0,0,0,4,2,0,4,0,2,8,2,0,0),
+            new Struct_19AEC( 0,5,-1,0,0,0,4,0,1,4,0,1,8,6,1,0),
+            new Struct_19AEC( 0,5,0,0,0,1,0,0,0,4,0x91,1,8,3,0,0),
+            new Struct_19AEC( 0,5,6,0,0,0,4,0,2,4,0,1,8,6,1,0),
+            new Struct_19AEC( 0,5,0,0,0,0,0,2,0,4,0,0,10,1,0,0),
+            new Struct_19AEC( 0,5,3,0,0,0,4,0,1,4,0,1,10,7,1,0),
+            new Struct_19AEC( 1,1,3,0,12,0,0,1,0,4,5,2,3,1,0,0),
+            new Struct_19AEC( 1,1,8,0,10,0,11,0,1,4,0x88,1,3,3,1,0),
+            new Struct_19AEC( 1,1,8,0,0,4,5,0,1,4,7,1,3,4,1,0),
+            new Struct_19AEC( 1,1,-1,0,10,1,4,2,0,4,0x45,2,4,1,1,0),
+            new Struct_19AEC( 2,4,6,0,0,0,5,0,1,4,11,1,4,6,1,0),
+            new Struct_19AEC( 2,4,12,0,2,1,11,0,1,4,0x23,1,4,7,1,0),
+            new Struct_19AEC( 2,4,0,3,0,0,8,0,0,4,0,1,1,0,1,0),
+            new Struct_19AEC( 2,4,6,0,0,1,8,0,1,4,0x8E,1,4,6,1,0),
+            new Struct_19AEC( 2,4,0,0,2,1,0,1,0,4,0,2,4,8,0,0),
+            new Struct_19AEC( 2,4,0,1,0,1,4,0,1,4,0x1B,1,4,4,1,0),
+            new Struct_19AEC( 2,4,0,1,0,0,10,0,0,4,0,1,4,7,1,0),
+            new Struct_19AEC( 2,4,0,1,0,1,0,1,0,4,0x3F,2,4,5,0,0),
+            new Struct_19AEC( 2,4,0,0,0,0,4,2,0,4,0,2,4,0,0,0),
+            new Struct_19AEC( 3,5,1,0,0,0,0xF0,4,0,4,0x20,2,5,0,0,0),
+            new Struct_19AEC( 2,5,2,0,0,1,9,0,0,4,0,2,5,5,1,0),
+            new Struct_19AEC( 2,5,6,0,0,0,8,0,2,4,0,1,5,6,1,0),
+            new Struct_19AEC( 2,5,16,0,0,0,4,0,1,4,0x44,1,5,6,1,0),
+            new Struct_19AEC( 2,5,0,1,0,1,7,0,1,4,0x34,1,5,7,1,0),
+            new Struct_19AEC( 3,6,0,0,0,0,0,1,0,4,0x49,2,10,1,0,0),
+            new Struct_19AEC( 3,6,0,0,0,0,0,1,0,4,0x6D,2,10,1,0,0),
+            new Struct_19AEC( 3,6,0,0,0,0,0,1,0,4,0x19,2,0,1,0,0),
+            new Struct_19AEC( 3,6,3,0,0,0,11,0,1,4,0,1,0,1,1,0),
+            new Struct_19AEC( 3,6,0,0,0,0,0,1,0,4,0,2,0,1,0,0),
+            new Struct_19AEC( 2,4,0,0,0,10,4,0,1,4,0,1,4,4,1,0),
+            new Struct_19AEC( 10,0,10,0,6,0,0x18,0,0x1E,0,12,0,0,1,0x28,0x28) }; /*,
 new Struct_19AEC( 28h,28h,2Ah,2Ah,2Ah,2Ch,2Ch,2Ch,2Eh,2Eh,2Eh,28h,28h,28h,28h,2Ah),
 new Struct_19AEC( 2Ah,2Ah,2Ch,2Ch,2Ch,2Eh,2Eh,2Eh,27h,28h,28h,2Ah,2Bh,2Ch,2Dh,2Eh),
 new Struct_19AEC( 2Fh,30h,31h,32h,33h,28h,28h,28h,2Ah,2Bh,2Ch,2Dh,2Eh,2Fh,30h,31h),
@@ -738,16 +639,16 @@ new Struct_19AEC( 32h,0,7,12h,3,12h,3,12h,8,12h,3,12h,3,3,12h,11h) };*/
 
         public static byte[] unk_1AE70;
 
-        public static byte[] /*seg600:27D9*/ unk_18AE9 = { 0, 8, 2, 3, 4 };
-        public static byte[] /*seg600:27DA*/ unk_18AEA = { 8, 2, 3, 4, 8 };
+        public readonly static byte[] /*seg600:27D9*/ unk_18AE9 = { 0, 8, 2, 3, 4 };
+        public readonly static byte[] /*seg600:27DA*/ unk_18AEA = { 8, 2, 3, 4, 8 };
 
-        public static byte[] /* seg600:27DD */ unk_18AED = { 4, 8, 0, 1, 2, 3, 4, 5, 6, 7 };
+        public readonly static byte[] /* seg600:27DD */ unk_18AED = { 4, 8, 0, 1, 2, 3, 4, 5, 6, 7 };
 
         public static Struct_1D885 stru_1D885;
         public static Struct_1D885 stru_1D889;
 
-        public static sbyte[] unk_189A6 = /*seg600:2696*/ { 0, 1, 1, 1, 0, -1, -1, -1, 0 };
-        public static sbyte[] unk_189AF = /*seg600:269F*/ { -1, -1, 0, 1, 1, 1, 0 };
+        public readonly static sbyte[] unk_189A6 = /*seg600:2696*/ { 0, 1, 1, 1, 0, -1, -1, -1, 0 };
+        public readonly static sbyte[] unk_189AF = /*seg600:269F*/ { -1, -1, 0, 1, 1, 1, 0 };
 
         /// <summary>
         /// 0 - curse, 1 - pool, 2 - hillsfar
@@ -874,7 +775,7 @@ new Struct_19AEC( 32h,0,7,12h,3,12h,3,12h,8,12h,3,12h,3,3,12h,11h) };*/
         public static byte[] unk_16E40 = new byte[16]; // seg600:0B30
         public static byte[] unk_16E50 = new byte[16]; // seg600:0B40
 
-        public static byte[,] unk_1A4EA = { 
+        public readonly static byte[,] unk_1A4EA = { 
             { 9,0,1,2,3,4,5,6,7,8},
             { 5,1,3,4,5,7,0,0,0,0},
             { 9,0,1,2,3,4,5,6,7,8},
