@@ -1162,7 +1162,6 @@ namespace engine
                     while (item_ptr != null &&
                         item_ptr.next != item)
                     {
-                        /*TODO the second while loop clause looks wrong... */
                         item_ptr = item_ptr.next;
                     }
                 }

@@ -145,7 +145,7 @@ namespace engine
         }
 
 
-        internal static void sub_E267(DaxBlock dest, DaxBlock source, byte arg_8, byte itemIdex, short rowY, short colX)
+        internal static void OverlayUnbounded(DaxBlock dest, DaxBlock source, byte arg_8, int itemIdex, int rowY, int colX)
         {
             bool var_E;
 
@@ -162,7 +162,7 @@ namespace engine
         }
 
 
-        internal static void sub_E353(DaxBlock dest, DaxBlock source, byte arg_8, byte itemIndex, short rowY, short colX)
+        internal static void sub_E353(DaxBlock dest, DaxBlock source, byte arg_8, int itemIndex, short rowY, short colX)
         {
             int backupOffset;
             bool doBackup;
@@ -729,7 +729,7 @@ namespace engine
         }
 
 
-        static void OverlayCopyUnbounded(DaxBlock dest, DaxBlock source, byte itemIndex, short rowY, short colX)
+        static void OverlayCopyUnbounded(DaxBlock dest, DaxBlock source, int itemIndex, int rowY, int colX)
         {
             int linePrefix;
             int linePostfix;
@@ -756,11 +756,11 @@ namespace engine
         }
 
 
-        static void OverlayMergeUnbounded(DaxBlock dest, DaxBlock source, byte arg_8, short rowY, short colX)
+        static void OverlayMergeUnbounded(DaxBlock dest, DaxBlock source, int itemIdex, int rowY, int colX)
         {
             int lineNo = rowY * 8;
 
-            int sourceOffset = source.bpp * arg_8;
+            int sourceOffset = source.bpp * itemIdex;
             int destOffset = lineNo * dest.width * 8;
 
             int destPrefix = colX * 8;

@@ -78,11 +78,11 @@ namespace engine
             {
                 symbol_id -= gbl.symbol_set_fix[symbol_set];
 
-                //if( arg_2 != 0 )
-                //{
-                //    seg040.sub_E267( gbl.overlayLines, gbl.symbol_8x8_set[symbol_set], arg_0, (byte)symbol_id, rowY, colX );
-                //}
-                //else
+                if( arg_2 != 0 )
+                {
+                    seg040.OverlayUnbounded( gbl.overlayLines, gbl.symbol_8x8_set[symbol_set], arg_0, (byte)symbol_id, rowY, colX );
+                }
+                else
                 {
                     var_6 = gbl.symbol_8x8_set[symbol_set];
 
