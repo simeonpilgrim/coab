@@ -10,6 +10,7 @@ namespace engine
             byte loop_var;
 
             strIndex = 0;
+            System.Console.WriteLine("  vm_LoadCmdSets: {0}", numberOfSets);
 
             for (loop_var = 1; loop_var <= numberOfSets; loop_var++)
             {
@@ -25,6 +26,9 @@ namespace engine
                     gbl.ecl_offset++;
 
                     gbl.cmd_high_bytes[loop_var] = gbl.ecl_ptr[0x8000 + gbl.ecl_offset];
+
+                    System.Console.WriteLine("   code: {0,2:X} low: {1,2:X} high: {2,2:X}",
+                        code, gbl.cmd_low_bytes[loop_var], gbl.cmd_high_bytes[loop_var]);
                 }
                 else if (code == 0x80) // Load compressed string
                 {
@@ -40,6 +44,9 @@ namespace engine
                     {
                         gbl.unk_1D972[strIndex] = string.Empty;
                     }
+
+                    System.Console.WriteLine("   code: {0,2:X} strIndex: {1} strLen: {2} str: '{3}'",
+                        code, strIndex, strLen, gbl.unk_1D972[strIndex]);
                 }
                 else if (code == 0x81)
                 {
@@ -51,6 +58,14 @@ namespace engine
                     ushort loc = bytes_to_word(gbl.cmd_high_bytes[loop_var], gbl.cmd_low_bytes[loop_var]);
 
                     vm_CopyStringFromMemory(loc, strIndex);
+
+                    System.Console.WriteLine("   code: {0,2:X} strIndex: {1} loc: {2} str: '{3}'",
+                        code, strIndex, loc, gbl.unk_1D972[strIndex]);
+                }
+                else
+                {
+                    System.Console.WriteLine("   code: {0,2:X} low: {1}",
+                        code, gbl.cmd_low_bytes[loop_var]);
                 }
             }
 
@@ -69,13 +84,16 @@ namespace engine
 
             byte al = gbl.cmd_code[arg_0];
 
+            System.Console.Write("  vm_GetCmdValue: index: {0} code: {1:X}", arg_0, al);
             if (al == 0)
             {
                 var_2 = var_9;
             }
             else if (al == 1 || al == 3 || al == 0x80)
             {
-                var_2 = vm_GetMemoryValue((ushort)((var_A << 8) + var_9));
+                ushort loc = bytes_to_word(var_A, var_9);
+                var_2 = vm_GetMemoryValue(loc);
+                System.Console.Write(" loc: {0:x}", loc);
             }
             else if (al == 2 || al == 0x81)
             {
@@ -85,7 +103,10 @@ namespace engine
             {
                 /*throw new System.NotSupportedException();*/
                 var_2 = 0;
+                System.Console.Write(" *");
             }
+
+            System.Console.WriteLine(" result: {0:X}", var_2);
 
             return var_2;
         }
@@ -754,11 +775,14 @@ namespace engine
         internal static void vm_SetMemoryValue(ushort value, ushort location) // cmd_table01
         {
             byte var_2;
-            byte var_1;
+            byte memType;
 
-            var_1 = vm_GetMemoryValueType(location);
+            memType = vm_GetMemoryValueType(location);
 
-            if (var_1 == 0)
+            System.Console.WriteLine("  vm_SetMemoryValue: value: {0:X} loc: {1:X} type: {2:X}",
+                value, location, memType);
+
+            if (memType == 0)
             {
                 if ((location - 0x4B00) == 0x0FD || (location - 0x4B00) == 0x0FE)
                 {
@@ -779,20 +803,20 @@ namespace engine
 
                 gbl.area_ptr.field_6A00_Set((location*2) + 0x6a00, value);
             }
-            else if (var_1 == 1)
+            else if (memType == 1)
             {
                 gbl.area2_ptr.field_800_Set((location * 2) + 0x800, value);
                 alter_character(value, location);
             }
-            else if (var_1 == 2)
+            else if (memType == 2)
             {
                 gbl.stru_1B2CA[(location<<1)+0x0C00] = value;
             }
-            else if (var_1 == 3)
+            else if (memType == 3)
             {
                 gbl.ecl_ptr[location + 0x8000] = (byte)value;
             }
-            else if (var_1 == 4)
+            else if (memType == 4)
             {
                 if (location < 0xBF68)
                 {
@@ -993,6 +1017,10 @@ namespace engine
             var_101 = vm_GetMemoryValueType(arg_4);
 
             var_102 = (byte)var_100.Length;
+
+            System.Console.WriteLine("  vm_WriteStringToMemory: str: '{0}' loc: {1:X} type: {2:X}",
+                arg_0, arg_4, var_101);
+
 
             if (var_101 == 0)
             {
@@ -1364,7 +1392,7 @@ namespace engine
         /// </summary>
         internal static void compare_variables(ushort arg_0, ushort arg_2)
         {
-            System.Console.WriteLine("Compare_variables: {0} {1}", arg_2, arg_0);
+            System.Console.WriteLine("  Compare_variables: {0} {1}", arg_2, arg_0);
 
             gbl.item_find[0] = arg_2 == arg_0;
             gbl.item_find[1] = arg_2 != arg_0;
@@ -1382,7 +1410,7 @@ namespace engine
             gbl.vmCallStack.Push(current);
             gbl.ecl_offset = bytes_to_word(gbl.cmd_high_bytes[arg_0], gbl.cmd_low_bytes[arg_0]);
 
-            System.Console.WriteLine("vm_gosub: was: {0:X} now: {1:X}", current, gbl.ecl_offset);
+            System.Console.WriteLine("  vm_gosub: was: {0:X} now: {1:X}", current, gbl.ecl_offset);
         }
 
 
@@ -1571,7 +1599,7 @@ namespace engine
         }
 
 
-        internal static void parse_command()
+        internal static void vm_skipNextCommand()
         {
             gbl.command = gbl.ecl_ptr[gbl.ecl_offset + 0x8000];
 
@@ -1710,9 +1738,9 @@ namespace engine
                     var_101 = string.Format("  {0} is hit FOR {1} points of Damage.", player_ptr.name, damage);
                 }
 
-                if (gbl.byte_1C8CB > 0x16)
+                if (gbl.textYCol > 0x16)
                 {
-                    gbl.byte_1C8CB = 0x11;
+                    gbl.textYCol = 0x11;
                     var_106 = true;
                     seg041.displayAndDebug("press <enter>/<return> to continue", 0, 15);
                 }
@@ -1721,7 +1749,7 @@ namespace engine
                     var_106 = false;
                 }
 
-                gbl.byte_1C8CA = 0x26;
+                gbl.textXCol = 0x26;
 
                 seg041.press_any_key(var_101, var_106, 0, 15, 0x16, 0x26, 17, 1);
 

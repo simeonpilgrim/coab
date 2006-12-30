@@ -174,7 +174,7 @@ namespace engine
                 seg041.press_any_key(var_52, true, 0, 10, (byte)(var_1 + 3), 0x26, var_1, 0x17);
             }
 
-            var_1 = (byte)(gbl.byte_1C8CB + 1);
+            var_1 = (byte)(gbl.textYCol + 1);
 
             if (arg_4 > 0)
             {

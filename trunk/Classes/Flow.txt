@@ -1,0 +1,207 @@
+  vm_LoadCmdSets: 1
+   code:  1 low: 37 high: 81
+  vm_LoadCmdSets: 1
+   code:  1 low: 86 high: 82
+  vm_LoadCmdSets: 1
+   code:  1 low: EF high: 81
+  vm_LoadCmdSets: 1
+   code:  1 low: 25 high: 82
+  vm_LoadCmdSets: 1
+   code:  1 low: 14 high: 80
+8014 LOAD FILES 0x21
+  vm_LoadCmdSets: 3
+   code:  0 low: 1
+   code:  0 low: 2
+   code:  0 low: 255
+  vm_GetCmdValue: index: 1 code: 0 result: 1
+  vm_GetCmdValue: index: 2 code: 0 result: 2
+  vm_GetCmdValue: index: 3 code: 0 result: FF
+801B LOAD PIECES 0x37
+  vm_LoadCmdSets: 3
+   code:  0 low: 1
+   code:  0 low: 2
+   code:  0 low: 3
+  vm_GetCmdValue: index: 1 code: 0 result: 1
+  vm_GetCmdValue: index: 2 code: 0 result: 2
+  vm_GetCmdValue: index: 3 code: 0 result: 3
+8022 SAVE 0x9
+  vm_LoadCmdSets: 2
+   code:  0 low: 9
+   code:  1 low: FE high: 4B
+  vm_GetCmdValue: index: 1 code: 0 result: 9
+  vm_SetMemoryValue: value: 9 loc: 4BFE type: 0
+8028 GOSUB 0x2
+  vm_LoadCmdSets: 1
+   code:  1 low: 7E high: 9D
+  vm_gosub: was: 802C now: 9D7E
+9D7E SAVE 0x9
+  vm_LoadCmdSets: 2
+   code:  0 low: 11
+   code:  1 low: 79 high: 7F
+  vm_GetCmdValue: index: 1 code: 0 result: B
+  vm_SetMemoryValue: value: B loc: 7F79 type: 1
+9D84 COMPARE 0x3
+  vm_LoadCmdSets: 2
+   code:  1 low: C9 high: 4B
+   code:  0 low: 14
+  vm_GetCmdValue: index: 1 code: 1 loc: 4bc9 result: 0
+  vm_GetCmdValue: index: 2 code: 0 result: E
+  Compare_variables: 0 14
+9D8A IF >= 0x1B
+  CMD_if: False
+  vm_LoadCmdSets: 2
+   code:  0 low: 8
+   code:  1 low: 79 high: 7F
+9D91 SAVE 0x9
+  vm_LoadCmdSets: 2
+   code:  1 low: 79 high: 7F
+   code:  1 low: FD high: 4B
+  vm_GetCmdValue: index: 1 code: 1 loc: 7f79 result: B
+  vm_SetMemoryValue: value: B loc: 4BFD type: 0
+9D98 RETURN 0x13
+  CMD_Return: was: 9D98 now: 802C
+802C SAVE 0x9
+  vm_LoadCmdSets: 2
+   code:  0 low: 99
+   code:  1 low: C6 high: 7E
+  vm_GetCmdValue: index: 1 code: 0 result: 63
+  vm_SetMemoryValue: value: 63 loc: 7EC6 type: 1
+8032 COMPARE 0x3
+  vm_LoadCmdSets: 2
+   code:  1 low: F2 high: 4B
+   code:  0 low: 1
+  vm_GetCmdValue: index: 1 code: 1 loc: 4bf2 result: 0
+  vm_GetCmdValue: index: 2 code: 0 result: 1
+  Compare_variables: 0 1
+8038 IF =  0x16
+  CMD_if: False
+803A SAVE 0x9
+  vm_LoadCmdSets: 2
+   code:  0 low: 7
+   code:  1 low: 4B high: C0
+  vm_GetCmdValue: index: 1 code: 0 result: 7
+  vm_SetMemoryValue: value: 7 loc: C04B type: 4
+8040 SAVE 0x9
+  vm_LoadCmdSets: 2
+   code:  0 low: 13
+   code:  1 low: 4C high: C0
+  vm_GetCmdValue: index: 1 code: 0 result: D
+  vm_SetMemoryValue: value: D loc: C04C type: 4
+8046 SAVE 0x9
+  vm_LoadCmdSets: 2
+   code:  0 low: 1
+   code:  1 low: 4D high: C0
+  vm_GetCmdValue: index: 1 code: 0 result: 1
+  vm_SetMemoryValue: value: 1 loc: C04D type: 4
+804C CALL 0x2D
+  vm_LoadCmdSets: 1
+   code:  1 low: 10 high: 2E
+  CMD_Call: AE11
+8050 PRINTCLEAR 0x12
+  vm_LoadCmdSets: 1
+   code: 80 strIndex: 1 strLen: 42 str: 'YOU AWAKEN IN A SMALL ROOM. LOOKING AROUND, YOU NOTICE '
+807D PRINT 0x11
+  vm_LoadCmdSets: 1
+   code: 80 strIndex: 1 strLen: 48 str: 'THAT ALL YOUR GEAR IS GONE, AS IS YOUR MEMORY OF RECENT EVENTS.'
+80B0 GOSUB 0x2
+  vm_LoadCmdSets: 1
+   code:  1 low:  C high: 9D
+  vm_gosub: was: 80B4 now: 9D0C
+9D0C HORIZONTAL MENU 0x2B
+  vm_LoadCmdSets: 2
+   code:  1 low: 79 high: 7F
+   code:  0 low: 1
+  vm_GetCmdValue: index: 2 code: 0 result: 1
+  vm_LoadCmdSets: 1
+   code: 80 strIndex: 1 strLen: 27 str: 'PRESS BUTTON OR RETURN TO CONTINUE.'
+  vm_SetMemoryValue: value: FF loc: 7F79 type: 1
+9D2F PRINTCLEAR 0x12
+  vm_LoadCmdSets: 1
+   code: 80 strIndex: 1 strLen: 0 str: ''
+9D32 RETURN 0x13
+  CMD_Return: was: 9D32 now: 80B4
+80B4 PICTURE 0xE
+  vm_LoadCmdSets: 1
+   code:  0 low: 10
+  vm_GetCmdValue: index: 1 code: 0 result: A
+80B7 PRINTCLEAR 0x12
+  vm_LoadCmdSets: 1
+   code: 80 strIndex: 1 strLen: 42 str: 'ADDING TO YOUR DISQUIET, YOU NOTICE THAT YOUR SWORD ARM '
+80E4 PRINT 0x11
+  vm_LoadCmdSets: 1
+   code: 80 strIndex: 1 strLen: 45 str: 'HAS BEEN SOMEHOW IMPRINTED WITH STRANGE PATTERNS. THE REST '
+8114 PRINT 0x11
+  vm_LoadCmdSets: 1
+   code: 80 strIndex: 1 strLen: 28 str: 'OF YOUR PARTY ARE IDENTICALLY MARKED.'
+8133 GOTO 0x1
+  vm_LoadCmdSets: 1
+   code:  1 low: B0 high: 9C
+  CMD_Goto: was: 0x8137 now: 0x9CB0
+9CB0 GOSUB 0x2
+  vm_LoadCmdSets: 1
+   code:  1 low:  C high: 9D
+  vm_gosub: was: 9CB4 now: 9D0C
+9D0C HORIZONTAL MENU 0x2B
+  vm_LoadCmdSets: 2
+   code:  1 low: 79 high: 7F
+   code:  0 low: 1
+  vm_GetCmdValue: index: 2 code: 0 result: 1
+  vm_LoadCmdSets: 1
+   code: 80 strIndex: 1 strLen: 27 str: 'PRESS BUTTON OR RETURN TO CONTINUE.'
+  vm_SetMemoryValue: value: FF loc: 7F79 type: 1
+9D2F PRINTCLEAR 0x12
+  vm_LoadCmdSets: 1
+   code: 80 strIndex: 1 strLen: 0 str: ''
+9D32 RETURN 0x13
+  CMD_Return: was: 9D32 now: 9CB4
+9CB4 CALL 0x2D
+  vm_LoadCmdSets: 1
+   code:  1 low: 10 high: 2E
+  CMD_Call: AE11
+9CB8 PRINTCLEAR 0x12
+  vm_LoadCmdSets: 1
+   code: 80 strIndex: 1 strLen: 0 str: ''
+9CBB EXIT 0x0
+ 9CBA  0
+ 9CBB  0
+ 9CBC 12
+ 9CBD 80
+ 9CBE  f
+ 9CBF 4d
+ 9CC0  1
+ 9CC1 43
+ 9CC2 24
+ 9CC3 13
+ 9CC4  f
+9CBC PRINTCLEAR 0x12
+  vm_LoadCmdSets: 1
+   code: 80 strIndex: 1 strLen: 15 str: 'SPECIALOFF2 / BYTE  '
+9CCE PRINT RETURN 0x33
+9CCF PRINT 0x11
+  vm_LoadCmdSets: 1
+   code:  1 low:  3 high: 4C
+  vm_GetCmdValue: index: 1 code: 1 loc: 4c03 result: 0
+9CD3 PRINT 0x11
+  vm_LoadCmdSets: 1
+   code: 80 strIndex: 1 strLen: 3 str: ' / '
+9CD9 PRINT 0x11
+  vm_LoadCmdSets: 1
+   code:  1 low: 80 high: 7F
+  vm_GetCmdValue: index: 1 code: 1 loc: 7f80 result: 0
+9CDD RETURN 0x13
+  CMD_Return: call stack empty. ecl_offset: 9CDD
+ 9CDD 13
+ 9CDE 2f
+ 9CDF  1
+ 9CE0  0
+ 9CE1 4c
+ 9CE2  1
+ 9CE3 7a
+ 9CE4 7f
+ 9CE5  1
+ 9CE6 79
+ 9CE7 7f
+9CDF GOTO 0x1
+  vm_LoadCmdSets: 1
+   code:  0 low: 76
+  CMD_Goto: was: 0x9CE2 now: 0x7F4C

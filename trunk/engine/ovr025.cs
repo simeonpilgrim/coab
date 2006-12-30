@@ -573,7 +573,7 @@ namespace engine
                 seg041.displayString("AC", 0, 10, var_2 + 1, 0x17);
                 display_AC(var_2 + 1, 0x1A, player);
 
-                gbl.byte_1C8CB = (byte)(var_2 + 1);
+                gbl.textYCol = (byte)(var_2 + 1);
 
                 if (player.field_151 != null)
                 {
@@ -584,7 +584,7 @@ namespace engine
                     seg041.press_any_key(player.field_151.name, true, 0, 10, (byte)(var_2 + 3), 0x26, (byte)(var_2 + 1), 0x17);
                 }
 
-                var_2 = (byte)(gbl.byte_1C8CB + 1);
+                var_2 = (byte)(gbl.textYCol + 1);
 
                 if (player.in_combat == false)
                 {

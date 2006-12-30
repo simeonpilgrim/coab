@@ -1426,7 +1426,7 @@ namespace engine
                         var_100 = "is killed";
                     }
 
-                    ovr025.sub_67788(0, (byte)(gbl.byte_1C8CB + 1), var_100, player);
+                    ovr025.sub_67788(0, (byte)(gbl.textYCol + 1), var_100, player);
 
                     if (gbl.game_state != 5)
                     {

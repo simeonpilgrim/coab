@@ -140,8 +140,8 @@ namespace Classes
         public static byte byte_1C01A;
         public static byte byte_1C01B;
         public static byte[] byte_1C8C2 = new byte[8];
-        public static byte byte_1C8CA;
-        public static byte byte_1C8CB;
+        public static byte textXCol; // byte_1C8CA
+        public static byte textYCol; // byte_1C8CB
         public static byte byte_1D1BB;
         public static byte byte_1D1C0;
         public static byte byte_1D1C4;

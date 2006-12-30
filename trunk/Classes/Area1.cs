@@ -137,7 +137,8 @@ namespace Classes
                     return field_1E4;
 
                 case 0x206:
-                    return (ushort)field_200[6];
+                    return (ushort)field_200[3];
+
                 default:
                     throw new NotImplementedException();
             }
