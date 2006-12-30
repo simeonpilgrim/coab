@@ -111,7 +111,7 @@ namespace engine
         {
             while (bp_var_103 <= bp_var_104)
             {
-                display_char01(true, bp_var_100[bp_var_103-1], 1, bp_arg_6, bp_arg_8, gbl.byte_1C8CB, gbl.byte_1C8CA);
+                display_char01(true, bp_var_100[bp_var_103-1], 1, bp_arg_6, bp_arg_8, gbl.textYCol, gbl.textXCol);
 
                 if (gbl.byte_1B2F2 != 0)
                 {
@@ -119,7 +119,7 @@ namespace engine
                 }
 
                 bp_var_103 += 1;
-                gbl.byte_1C8CA++;
+                gbl.textXCol++;
             }
         }
 
@@ -148,20 +148,20 @@ namespace engine
 
             if (arg_10 <= 0x27 && arg_E <= 0x18 && arg_C <= 0x27 && arg_A <= 0x27)
             {
-                if (gbl.byte_1C8CA < arg_10 ||
-                    gbl.byte_1C8CA > arg_C ||
-                    gbl.byte_1C8CB < arg_E ||
-                    gbl.byte_1C8CB > arg_A)
+                if (gbl.textXCol < arg_10 ||
+                    gbl.textXCol > arg_C ||
+                    gbl.textYCol < arg_E ||
+                    gbl.textYCol > arg_A)
                 {
-                    gbl.byte_1C8CA = arg_10;
-                    gbl.byte_1C8CB = arg_E;
+                    gbl.textXCol = arg_10;
+                    gbl.textYCol = arg_E;
                 }
 
                 if (arg_4 == true)
                 {
                     seg037.draw8x8_clear_area(arg_A, arg_C, arg_E, arg_10);
-                    gbl.byte_1C8CA = arg_10;
-                    gbl.byte_1C8CB = arg_E;
+                    gbl.textXCol = arg_10;
+                    gbl.textYCol = arg_E;
                 }
 
                 var_103 = 1;
@@ -199,24 +199,24 @@ namespace engine
 
                         }
 
-                        if (((var_104 - var_103) + gbl.byte_1C8CA) > arg_C)
+                        if (((var_104 - var_103) + gbl.textXCol) > arg_C)
                         {
-                            if (((var_104 - var_103) + gbl.byte_1C8CA) == arg_C &&
+                            if (((var_104 - var_103) + gbl.textXCol) == arg_C &&
                                 var_100[var_104-1] == ' ')
                             {
                                 var_104 -= 1;
                                 sub_107DE(var_100, ref var_103, var_104, arg_6, arg_8);
                             }
 
-                            gbl.byte_1C8CA = arg_10;
-                            gbl.byte_1C8CB++;
+                            gbl.textXCol = arg_10;
+                            gbl.textYCol++;
                             sub_10854(var_100, var_101, ref var_103);
 
-                            if (gbl.byte_1C8CB > arg_A &&
+                            if (gbl.textYCol > arg_A &&
                                 var_103 < var_101)
                             {
-                                gbl.byte_1C8CA = arg_10;
-                                gbl.byte_1C8CB = arg_E;
+                                gbl.textXCol = arg_10;
+                                gbl.textYCol = arg_E;
 
                                 displayAndDebug("Press	any key	to continue", 0, 13);
                                 seg043.clear_keyboard();
@@ -233,10 +233,10 @@ namespace engine
 
                     } while (var_103 <= var_101);
 
-                    if (gbl.byte_1C8CA > arg_C)
+                    if (gbl.textXCol > arg_C)
                     {
-                        gbl.byte_1C8CA = arg_10;
-                        gbl.byte_1C8CB++;
+                        gbl.textXCol = arg_10;
+                        gbl.textYCol++;
                     }
                 }
             }

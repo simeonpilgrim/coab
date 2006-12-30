@@ -429,8 +429,8 @@ namespace engine
             {
                 ovr025.sub_678A2(0, 15, 1, gbl.player_ptr);
 
-                gbl.byte_1C8CA = (byte)(gbl.player_ptr.name.Length + 2);
-                gbl.byte_1C8CB = 0x15;
+                gbl.textXCol = (byte)(gbl.player_ptr.name.Length + 2);
+                gbl.textYCol = 0x15;
 
                 seg041.press_any_key(" was going to scribe from that scroll", false, 0, 0x0E, 0x16, 0x26, 0x15, 1);
                 if (ovr027.yes_no(15, 10, 13, "is it Okay to lose it? ") == 'Y')
@@ -1158,7 +1158,7 @@ namespace engine
                         }
                         else
                         {
-                            ovr025.sub_67788(1, gbl.byte_1C8CB, "oops!", gbl.player_ptr);
+                            ovr025.sub_67788(1, gbl.textYCol, "oops!", gbl.player_ptr);
                         }
                     }
                 }

@@ -980,8 +980,8 @@ namespace engine
                 {
                     gbl.area2_ptr.field_58E = 0x80;
                     seg037.draw8x8_01();
-                    gbl.byte_1C8CA = 2;
-                    gbl.byte_1C8CB = 6;
+                    gbl.textXCol = 2;
+                    gbl.textYCol = 6;
                     seg041.press_any_key( "The monsters rejoice for the party has been destroyed", true, 0, 10, 0x16, 0x25, 5, 2 );
                     seg041.displayAndDebug( "Press any key to continue", 0, 0x0d );
 
