@@ -4,34 +4,6 @@ namespace engine
 {
     class seg039
     {
-		static Set unk_D130 = new Set( 0x0602, new byte[] { 0xff, 0x03 } );
-
-        internal static byte sub_D150( byte arg_0, byte arg_2 )
-        {
-            Set var_21 = new Set();
-
-            var_21.Clear();
-            var_21.SetRange( arg_0, arg_2 );
-
-            byte var_1;
-
-            do
-            {
-                do
-                {
-                    gbl.byte_1AFE6 = (char)seg049.READKEY();
-                }while( unk_D130.MemberOf( gbl.byte_1AFE6 ) == false );
-            }while( var_21.MemberOf( (byte)(gbl.byte_1AFE6 - 50) ) == false );
-
-            seg051.Write( 0, gbl.byte_1AFE6, gbl.known01_02 );
-            seg051.Write( gbl.known01_02 );
-            var_1 = (byte)(gbl.byte_1AFE6 - 0x30);
-            return var_1;
-         }
-
-        static Set asc_D2D4 = new Set(0x0801, new byte[] { 0x06 });
-        static Set unk_D2F4 = new Set(0x0803, new byte[] { 0xFE, 0xFF, 0x01 });
-
         internal static void config_game( )
         {
             seg042.check_overlay_file();
@@ -64,26 +36,26 @@ namespace engine
 
 			if( gbl.byte_1AFE6 == 'T' ) // Tandy
 			{
-				gbl.byte_1BF14 = 1;
+				gbl.soundType = SoundType.Tandy;
 			}
 			else if( gbl.byte_1AFE6 == 'P' ) // PC Speaker
 			{
-				gbl.byte_1BF14 = 0;
+				gbl.soundType = SoundType.PC;
 			}
 			else // No Sounds
 			{
-				gbl.byte_1BF14 = 2;
+				gbl.soundType = SoundType.None;
 			}
 
             gbl.byte_1AFE6 = 'F'; /* force normal play (vs. demo) */
 
 			if( gbl.byte_1AFE6 == 'F' )
 			{
-				gbl.byte_1B2C1 = 1;
+				gbl.DisplayFullTitleScreen = true;
 			}
 			else
 			{
-				gbl.byte_1B2C1 = 0;
+				gbl.DisplayFullTitleScreen = false;
 			}
         }
     }

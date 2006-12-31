@@ -80,7 +80,7 @@ namespace engine
 
             delay_or_key(5);
 
-			if ( gbl.byte_1B2C1 != 0 ) 
+			if ( gbl.DisplayFullTitleScreen == true ) 
 			{
                 seg040.load_dax(ref dax_ptr, 0, 0, 2, "Title");
                 seg040.draw_picture(dax_ptr, 0, 0);

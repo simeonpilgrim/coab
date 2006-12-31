@@ -420,7 +420,7 @@ namespace engine
             }
             else
             {
-                if ((gbl.byte_1B2E4 != 4 ||
+                if ((gbl.last_game_state != 4 ||
                       gbl.game_state == 4) &&
                     (gbl.byte_1EE8C != 0 ||
                       gbl.byte_1EE8F != 0))
@@ -675,7 +675,7 @@ namespace engine
 
             if (gbl.byte_1AB0C != 0 &&
                 gbl.byte_1AB0D != 0 &&
-                gbl.byte_1B2E4 == 3)
+                gbl.last_game_state == 3)
             {
                 if (gbl.game_state != 3 &&
                     gbl.byte_1EE98 != 0)
@@ -2464,8 +2464,8 @@ namespace engine
         internal static void YourHaveWon()
         {
             Player play_ptr;
-            char saveYes;
             Player player;
+            char saveYes;
             ushort var_3;
             byte var_1;
 
@@ -2739,8 +2739,8 @@ namespace engine
 
                 if (gbl.byte_1AB09 == 0)
                 {
-                    if ((gbl.byte_1B2E4 == 4 && gbl.game_state == 4) ||
-                        (gbl.byte_1B2E4 != 4 && gbl.byte_1AB0B != 0))
+                    if ((gbl.last_game_state == 4 && gbl.game_state == 4) ||
+                        (gbl.last_game_state != 4 && gbl.byte_1AB0B != 0))
                     {
                         ovr029.sub_6F0BA();
                     }
@@ -2762,7 +2762,7 @@ namespace engine
                 }
             } while (gbl.byte_1AB09 != 0);
 
-            gbl.byte_1B2E4 = gbl.game_state;
+            gbl.last_game_state = gbl.game_state;
         }
 
 

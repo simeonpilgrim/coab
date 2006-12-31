@@ -9,6 +9,12 @@ namespace Classes
     public delegate void spellDelegateX(byte arg_0, object affect, Player player);
 
 
+    public enum SoundType
+    {
+        PC,
+        Tandy,
+        None
+    }
 
     public class money
     {
@@ -108,8 +114,8 @@ namespace Classes
 
         public static char byte_1B2BA;
         public static byte byte_1B2C0;
-        public static byte byte_1B2C1;
-        public static byte byte_1B2E4;
+        public static bool DisplayFullTitleScreen; // byte_1B2C1
+        public static byte last_game_state; // byte_1B2E4
         public static byte byte_1B2E9 = 0;
         public static byte byte_1B2EB;
         public static byte byte_1B2EE;
@@ -124,9 +130,11 @@ namespace Classes
         public static int[] overlayLineDataStart = new int[0xA8];
         public static int[] overlayLineDataEnd = new int[0xA8];
         public static short[] unk_1BBF2 = new short[0xA8+8];
-        public static byte byte_1BF12;
-        public static byte byte_1BF14;
-        public static byte byte_1BF15;
+
+        public static byte byte_1BF12; // ??
+
+        public static SoundType soundType; // byte_1BF14
+        public static SoundType soundTypeBackup; // byte_1BF15
 
         public static string byte_1BF1a = "C:\\Games\\Coab\\Save\\";
 
