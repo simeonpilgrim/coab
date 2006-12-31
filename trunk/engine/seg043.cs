@@ -6,7 +6,7 @@ namespace engine
     {
         public static void print_and_exit()
         {
-            gbl.byte_1BF14 = gbl.byte_1BF15;
+            gbl.soundType = gbl.soundTypeBackup;
 
             seg044.sub_120E0(gbl.word_188BC);
 
@@ -63,17 +63,17 @@ namespace engine
 
             if (var_2 == 0x13)
             {
-                if (gbl.byte_1BF14 != 2)
+                if (gbl.soundType != SoundType.None)
                 {
-                    gbl.byte_1BF15 = gbl.byte_1BF14;
+                    gbl.soundTypeBackup = gbl.soundType;
                     seg044.sub_120E0(gbl.word_188BE);
-                    gbl.byte_1BF14 = 2;
+                    gbl.soundType = SoundType.None;
                 }
                 else
                 {
-                    if (unk_11F12.MemberOf(gbl.byte_1BF15))
+                    if (unk_11F12.MemberOf((byte)gbl.soundTypeBackup))
                     {
-                        gbl.byte_1BF14 = gbl.byte_1BF15;
+                        gbl.soundType = gbl.soundTypeBackup;
                         seg044.sub_120E0(gbl.word_188C0);
                     }
                 }

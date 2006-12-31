@@ -786,11 +786,12 @@ namespace engine
             {
                 if ((location - 0x4B00) == 0x0FD || (location - 0x4B00) == 0x0FE)
                 {
+                    System.Console.WriteLine("    gbl.byte_1EE94 = 1");
                     gbl.byte_1EE94 = 1;
                 }
                 else if ((location - 0x4B00) == 0x0E6 && gbl.area_ptr.field_1CC != value)
                 {
-                    gbl.byte_1B2E4 = gbl.game_state;
+                    gbl.last_game_state = gbl.game_state;
                     if (value == 0)
                     {
                         gbl.game_state = 3;

@@ -35,7 +35,7 @@ namespace engine
             {
                 if (arg_0 == 0)
                 {
-                    if (gbl.byte_1BF14 != 2)
+                    if (gbl.soundType != SoundType.None)
                     {
                         sub_137B1(0);
                         sub_13745(0);
@@ -43,14 +43,14 @@ namespace engine
                 }
                 else if (arg_0 == 1)
                 {
-                    if (gbl.byte_1BF14 != 2)
+                    if (gbl.soundType != SoundType.None)
                     {
                         sub_1381D(1);
                     }
                 }
                 else if (arg_0 == 0xff)
                 {
-                    if (gbl.byte_1BF14 != 2)
+                    if (gbl.soundType != SoundType.None)
                     {
                         sub_137B1(0);
                         sub_13745(0);
@@ -60,13 +60,13 @@ namespace engine
                 }
                 else if (arg_0 >= 2 && arg_0 <= 14)
                 {
-                    if (gbl.byte_1BF14 != 2)
+                    if (gbl.soundType != SoundType.None)
                     {
-                        if (gbl.byte_1BF14 == 0)
+                        if (gbl.soundType == 0)
                         {
                             sub_13745((short)(arg_0 - 1));
                         }
-                        else if (gbl.byte_1BF14 == 1)
+                        else if (gbl.soundType == SoundType.Tandy)
                         {
                             sub_137B1((short)(arg_0 - 1));
                         }
@@ -82,10 +82,10 @@ namespace engine
 
         internal static void sub_12194()
         {
-            gbl.byte_1BF15 = gbl.byte_1BF14;
+            gbl.soundTypeBackup = gbl.soundType;
             gbl.gameFlag01 = true;
 
-            if (gbl.byte_1BF14 != 2)
+            if (gbl.soundType != SoundType.None)
             {
                 sub_1337F();
                 sub_13745(0);

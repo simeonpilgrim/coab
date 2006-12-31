@@ -196,7 +196,7 @@ namespace engine
             gbl.byte_1B2F1 = 0;
             gbl.byte_1D5BE = 1;
             gbl.game_state = 4;
-            gbl.byte_1B2E4 = 0;
+            gbl.last_game_state = 0;
             gbl.gameFlag01 = true;
             gbl.byte_1D8AC = 0;
             gbl.sky_dax_250 = null;
@@ -322,7 +322,7 @@ namespace engine
             ovr027.redraw_screen();
             gbl.byte_1D5BE = 1;
             gbl.game_state = 4;
-            gbl.byte_1B2E4 = 0;
+            gbl.last_game_state = 0;
             gbl.gameFlag01 = true;
             gbl.byte_1D8AC = 0;
             gbl.byte_1EE99 = 0;

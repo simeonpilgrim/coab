@@ -2126,7 +2126,7 @@ namespace engine
                         gbl.byte_1D53D = data[4];
 
                         seg051.BlockRead(1, data, var_1C8);
-                        gbl.byte_1B2E4 = data[0];
+                        gbl.last_game_state = data[0];
 
                         seg051.BlockRead(1, data, var_1C8);
                         gbl.game_state = data[0];
@@ -2240,7 +2240,7 @@ namespace engine
                         seg043.clear_keyboard();
                         ovr027.redraw_screen();
 
-                        gbl.byte_1B2E4 = gbl.game_state;
+                        gbl.last_game_state = gbl.game_state;
 
                         gbl.game_state = 0;
                     }
@@ -2369,7 +2369,7 @@ namespace engine
                     data[4] = gbl.byte_1D53D;
                     seg051.BlockWrite(5, data, save_file);
 
-                    data[0] = gbl.byte_1B2E4;
+                    data[0] = gbl.last_game_state;
                     seg051.BlockWrite(1, data, save_file);
                     data[0] = gbl.game_state;
                     seg051.BlockWrite(1, data, save_file);
