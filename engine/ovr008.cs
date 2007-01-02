@@ -12,29 +12,37 @@ namespace engine
             strIndex = 0;
             System.Console.WriteLine("  vm_LoadCmdSets: {0}", numberOfSets);
 
+            foreach (Opperation opp in gbl.cmd_opps)
+            {
+                opp.Clear();
+            }
+
             for (loop_var = 1; loop_var <= numberOfSets; loop_var++)
             {
                 byte code = gbl.ecl_ptr[0x8000 + gbl.ecl_offset + 1];
+                byte low = gbl.ecl_ptr[0x8000 + gbl.ecl_offset + 2];
 
-                gbl.cmd_code[loop_var] = code;
-                gbl.cmd_low_bytes[loop_var] = gbl.ecl_ptr[0x8000 + gbl.ecl_offset + 2];
+
+                gbl.cmd_opps[loop_var].Code = code;
+                gbl.cmd_opps[loop_var].Low = low;
 
                 gbl.ecl_offset += 2;
 
                 if (code == 1 || code == 2 || code == 3)
                 {
                     gbl.ecl_offset++;
+                    byte high = gbl.ecl_ptr[0x8000 + gbl.ecl_offset];
 
-                    gbl.cmd_high_bytes[loop_var] = gbl.ecl_ptr[0x8000 + gbl.ecl_offset];
+                    gbl.cmd_opps[loop_var].High = high;
 
                     System.Console.WriteLine("   code: {0,2:X} low: {1,2:X} high: {2,2:X}",
-                        code, gbl.cmd_low_bytes[loop_var], gbl.cmd_high_bytes[loop_var]);
+                        code, low, high);
                 }
                 else if (code == 0x80) // Load compressed string
                 {
                     strIndex++;
 
-                    short strLen = gbl.cmd_low_bytes[loop_var];
+                    short strLen = low;
 
                     if (strLen > 0)
                     {
@@ -52,10 +60,11 @@ namespace engine
                 {
                     strIndex++;
                     gbl.ecl_offset++;
+                    byte high = gbl.ecl_ptr[0x8000 + gbl.ecl_offset];
 
-                    gbl.cmd_high_bytes[loop_var] = gbl.ecl_ptr[0x8000 + gbl.ecl_offset];
+                    gbl.cmd_opps[loop_var].High = high;
 
-                    ushort loc = bytes_to_word(gbl.cmd_high_bytes[loop_var], gbl.cmd_low_bytes[loop_var]);
+                    ushort loc = gbl.cmd_opps[loop_var].Word;
 
                     vm_CopyStringFromMemory(loc, strIndex);
 
@@ -64,8 +73,8 @@ namespace engine
                 }
                 else
                 {
-                    System.Console.WriteLine("   code: {0,2:X} low: {1}",
-                        code, gbl.cmd_low_bytes[loop_var]);
+                    System.Console.WriteLine("   code: {0,2:X} low: 0x{1,2:X}",
+                        code, low);
                 }
             }
 
@@ -74,41 +83,8 @@ namespace engine
 
         internal static ushort vm_GetCmdValue(int arg_0) // sub_30168
         {
-            byte var_A;
-            byte var_9;
-            ushort var_2;
-
-            var_9 = gbl.cmd_low_bytes[arg_0];
-
-            var_A = gbl.cmd_high_bytes[arg_0];
-
-            byte al = gbl.cmd_code[arg_0];
-
-            System.Console.Write("  vm_GetCmdValue: index: {0} code: {1:X}", arg_0, al);
-            if (al == 0)
-            {
-                var_2 = var_9;
-            }
-            else if (al == 1 || al == 3 || al == 0x80)
-            {
-                ushort loc = bytes_to_word(var_A, var_9);
-                var_2 = vm_GetMemoryValue(loc);
-                System.Console.Write(" loc: {0:x}", loc);
-            }
-            else if (al == 2 || al == 0x81)
-            {
-                var_2 = bytes_to_word(var_A, var_9);
-            }
-            else
-            {
-                /*throw new System.NotSupportedException();*/
-                var_2 = 0;
-                System.Console.Write(" *");
-            }
-
-            System.Console.WriteLine(" result: {0:X}", var_2);
-
-            return var_2;
+            return gbl.cmd_opps[arg_0].GetCmdValue();
+            //TODO replace vm_GetCmdValue function with gbl.cmd_opps[arg_0].GetCmdValue();
         }
 
 
@@ -143,19 +119,19 @@ namespace engine
             gbl.area_ptr.can_cast_spells = false;
 
             vm_LoadCmdSets(1);
-            gbl.word_1B2D3 = bytes_to_word(gbl.cmd_high_bytes[1], gbl.cmd_low_bytes[1]);
+            gbl.word_1B2D3 = gbl.cmd_opps[1].Word;
 
             vm_LoadCmdSets(1);
-            gbl.word_1B2D5 = bytes_to_word(gbl.cmd_high_bytes[1], gbl.cmd_low_bytes[1]);
+            gbl.word_1B2D5 = gbl.cmd_opps[1].Word;
 
             vm_LoadCmdSets(1);
-            gbl.word_1B2D7 = bytes_to_word(gbl.cmd_high_bytes[1], gbl.cmd_low_bytes[1]);
+            gbl.word_1B2D7 = gbl.cmd_opps[1].Word;
 
             vm_LoadCmdSets(1);
-            gbl.word_1B2D9 = bytes_to_word(gbl.cmd_high_bytes[1], gbl.cmd_low_bytes[1]);
+            gbl.word_1B2D9 = gbl.cmd_opps[1].Word;
 
             vm_LoadCmdSets(1);
-            gbl.word_1B2DB = bytes_to_word(gbl.cmd_high_bytes[1], gbl.cmd_low_bytes[1]);
+            gbl.word_1B2DB = gbl.cmd_opps[1].Word;
 
             gbl.area_ptr.field_1CC = 1;
 
@@ -794,10 +770,12 @@ namespace engine
                     gbl.last_game_state = gbl.game_state;
                     if (value == 0)
                     {
+                        System.Console.WriteLine("    gbl.game_state = 3");
                         gbl.game_state = 3;
                     }
                     else
                     {
+                        System.Console.WriteLine("    gbl.game_state = 4");
                         gbl.game_state = 4;
                     }
                 }
@@ -811,6 +789,7 @@ namespace engine
             }
             else if (memType == 2)
             {
+                
                 gbl.stru_1B2CA[(location<<1)+0x0C00] = value;
             }
             else if (memType == 3)
@@ -819,6 +798,7 @@ namespace engine
             }
             else if (memType == 4)
             {
+                
                 if (location < 0xBF68)
                 {
                     switch (location)
@@ -1409,8 +1389,8 @@ namespace engine
             ushort current = gbl.ecl_offset;
 
             gbl.vmCallStack.Push(current);
-            gbl.ecl_offset = bytes_to_word(gbl.cmd_high_bytes[arg_0], gbl.cmd_low_bytes[arg_0]);
-
+            gbl.ecl_offset = gbl.cmd_opps[arg_0].Word;
+                
             System.Console.WriteLine("  vm_gosub: was: {0:X} now: {1:X}", current, gbl.ecl_offset);
         }
 

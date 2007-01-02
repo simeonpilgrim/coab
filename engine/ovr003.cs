@@ -6,13 +6,7 @@ namespace engine
     {
         internal static void CMD_Exit()
         {
-            for (int i = -1; i < 10; i++)
-            {
-                int loc = gbl.ecl_offset + i;
-                System.Console.WriteLine(" {0,4:X} {1,2:x}",
-                    loc,
-                    gbl.ecl_ptr[loc + 0x8000]);
-            }
+            gbl.ecl_ptr.SearchECL(new byte[,] { { 9, 2 }, { 3, 2 }, { 0x18, 0 } });
 
             //Simeon if (gbl.byte_1EE8E != 0)
             {
@@ -30,7 +24,7 @@ namespace engine
 
             gbl.byte_1EE8C = 0;
             gbl.byte_1EE8E = 0;
-            gbl.byte_1AB08 = 1;
+            gbl.stopVM = true;
 
             gbl.ecl_offset++;
 
@@ -55,7 +49,7 @@ namespace engine
         internal static void CMD_Goto()
         {
             ovr008.vm_LoadCmdSets(1);
-            ushort newOffset = ovr008.bytes_to_word(gbl.cmd_high_bytes[1], gbl.cmd_low_bytes[1]);
+            ushort newOffset = gbl.cmd_opps[1].Word;
 
             System.Console.WriteLine("  CMD_Goto: was: 0x{0:X} now: 0x{1:X}", gbl.ecl_offset, newOffset);
 
@@ -75,8 +69,8 @@ namespace engine
         {
             ovr008.vm_LoadCmdSets(2);
 
-            if (gbl.cmd_code[1] >= 0x80 ||
-                gbl.cmd_code[2] >= 0x80)
+            if (gbl.cmd_opps[1].Code >= 0x80 ||
+                gbl.cmd_opps[2].Code >= 0x80)
             {
                 ovr008.sub_3193B(gbl.unk_1D972[2], gbl.unk_1D972[1]);
             }
@@ -102,7 +96,7 @@ namespace engine
             var_6 = ovr008.vm_GetCmdValue(1);
             var_4 = ovr008.vm_GetCmdValue(2);
 
-            location = ovr008.bytes_to_word(gbl.cmd_high_bytes[3], gbl.cmd_low_bytes[3]);
+            location = gbl.cmd_opps[3].Word;
 
             switch (gbl.command)
             {
@@ -147,7 +141,7 @@ namespace engine
                 var_1++;
             }
 
-            var_4 = ovr008.bytes_to_word(gbl.cmd_high_bytes[2], gbl.cmd_low_bytes[2]);
+            var_4 = gbl.cmd_opps[2].Word;
 
             var_2 = (byte)((double)(seg051.Random(var_1)));
 
@@ -162,9 +156,9 @@ namespace engine
 
             ovr008.vm_LoadCmdSets(2);
 
-            var_4 = ovr008.bytes_to_word(gbl.cmd_high_bytes[2], gbl.cmd_low_bytes[2]);
+            var_4 = gbl.cmd_opps[2].Word;
 
-            if (gbl.cmd_code[1] < 0x80)
+            if (gbl.cmd_opps[1].Code < 0x80)
             {
                 var_2 = ovr008.vm_GetCmdValue(1);
 
@@ -447,7 +441,7 @@ namespace engine
 
             var_2 = string.Empty;
 
-            var_6 = ovr008.bytes_to_word(gbl.cmd_high_bytes[2], gbl.cmd_low_bytes[2]);
+            var_6 = gbl.cmd_opps[2].Word;
 
             var_4 = seg041.sub_10CB7(0, 0x0a, var_2);
 
@@ -463,7 +457,7 @@ namespace engine
 
             ovr008.vm_LoadCmdSets(2);
             var_2 = string.Empty;
-            var_4 = ovr008.bytes_to_word(gbl.cmd_high_bytes[2], gbl.cmd_low_bytes[2]);
+            var_4 = gbl.cmd_opps[2].Word;
 
             var_104 = seg041.sub_10B26(0x28, 0, 10, var_2);
 
@@ -482,7 +476,7 @@ namespace engine
             gbl.byte_1EE90 = 0;
             gbl.byte_1B2F2 = 1;
 
-            if (gbl.cmd_code[1] < 0x80)
+            if (gbl.cmd_opps[1].Code < 0x80)
             {
                 gbl.unk_1D972[1] = ovr025.ConcatWord(ovr008.vm_GetCmdValue(1));
             }
@@ -561,7 +555,7 @@ namespace engine
         }
 
 
-        internal static void sub_26BE7()
+        internal static void CMD_NewECL()
         {
             byte var_1;
 
@@ -574,7 +568,7 @@ namespace engine
 
             ovr008.load_ecl_dax(var_1);
             ovr008.sub_301E8();
-            gbl.byte_1AB08 = 1;
+            gbl.stopVM = true;
             gbl.byte_1AB09 = 1;
 
             seg051.FillChar(0, 2, gbl.byte_1EE72);
@@ -700,7 +694,7 @@ namespace engine
             var_6 = ovr008.vm_GetCmdValue(1);
             var_4 = ovr008.vm_GetCmdValue(2);
 
-            var_2 = ovr008.bytes_to_word(gbl.cmd_high_bytes[3], gbl.cmd_low_bytes[3]);
+            var_2 = gbl.cmd_opps[3].Word;
 
             if (gbl.command == 0x27)
             {
@@ -725,10 +719,10 @@ namespace engine
 
             ovr008.vm_LoadCmdSets(3);
 
-            var_2 = ovr008.bytes_to_word(gbl.cmd_high_bytes[1], gbl.cmd_low_bytes[1]);
+            var_2 = gbl.cmd_opps[1].Word;
             var_9 = (byte)ovr008.vm_GetCmdValue(2);
 
-            var_4 = ovr008.bytes_to_word(gbl.cmd_high_bytes[3], gbl.cmd_low_bytes[3]);
+            var_4 = gbl.cmd_opps[3].Word;
 
             var_6 = (ushort)(var_9 + var_2);
 
@@ -748,7 +742,7 @@ namespace engine
 
             var_6 = ovr008.vm_GetCmdValue(1);
 
-            var_4 = ovr008.bytes_to_word(gbl.cmd_high_bytes[2], gbl.cmd_low_bytes[2]);
+            var_4 = gbl.cmd_opps[2].Word;
 
             var_2 = ovr008.vm_GetCmdValue(3);
             var_8 = var_4;
@@ -775,7 +769,7 @@ namespace engine
             var_10C = string.Empty;
             var_2 = 1;
             ovr008.vm_LoadCmdSets(3);
-            var_111 = ovr008.bytes_to_word(gbl.cmd_high_bytes[1], gbl.cmd_low_bytes[1]);
+            var_111 = gbl.cmd_opps[1].Word;
 
             var_102 = gbl.unk_1D972[1];
 
@@ -832,7 +826,7 @@ namespace engine
             var_38 = string.Empty;
             ovr008.vm_LoadCmdSets(2);
 
-            var_3A = ovr008.bytes_to_word(gbl.cmd_high_bytes[1], gbl.cmd_low_bytes[1]);
+            var_3A = gbl.cmd_opps[1].Word;
             var_1 = (byte)ovr008.vm_GetCmdValue(2);
 
             gbl.ecl_offset--;
@@ -956,7 +950,7 @@ namespace engine
                 player_ptr = player_ptr.next_player;
             }
 
-            var_8 = ovr008.bytes_to_word(gbl.cmd_high_bytes[1], gbl.cmd_low_bytes[1]);
+            var_8 = gbl.cmd_opps[1].Word;
             ovr008.vm_SetMemoryValue(var_6, var_8);
         }
 
@@ -993,9 +987,9 @@ namespace engine
             player_ptr = gbl.player_next_ptr;
 
             var_A = false;
-            if (gbl.cmd_code[1] == 1)
+            if (gbl.cmd_opps[1].Code == 1)
             {
-                var_2 = ovr008.bytes_to_word(gbl.cmd_high_bytes[1], gbl.cmd_low_bytes[1]);
+                var_2 = gbl.cmd_opps[1].Word;
             }
             else
             {
@@ -1004,10 +998,10 @@ namespace engine
 
             affect_id = (Affects)ovr008.vm_GetCmdValue(2);
 
-            var_13 = ovr008.bytes_to_word(gbl.cmd_high_bytes[3], gbl.cmd_low_bytes[3]);
-            var_15 = ovr008.bytes_to_word(gbl.cmd_high_bytes[4], gbl.cmd_low_bytes[4]);
-            var_17 = ovr008.bytes_to_word(gbl.cmd_high_bytes[5], gbl.cmd_low_bytes[5]);
-            var_19 = ovr008.bytes_to_word(gbl.cmd_high_bytes[6], gbl.cmd_low_bytes[6]);
+            var_13 = gbl.cmd_opps[3].Word;
+            var_15 = gbl.cmd_opps[4].Word;
+            var_17 = gbl.cmd_opps[5].Word;
+            var_19 = gbl.cmd_opps[6].Word;
 
             var_4 = 0;
             var_1A = 0;
@@ -1110,8 +1104,8 @@ namespace engine
                 player = player.next_player;
             }
 
-            var_9 = ovr008.bytes_to_word(gbl.cmd_high_bytes[1], gbl.cmd_low_bytes[1]);
-            var_B = ovr008.bytes_to_word(gbl.cmd_high_bytes[2], gbl.cmd_low_bytes[2]);
+            var_9 = gbl.cmd_opps[1].Word;
+            var_B = gbl.cmd_opps[2].Word;
 
             ovr008.vm_SetMemoryValue(var_5, var_9);
             ovr008.vm_SetMemoryValue(var_6, var_B);
@@ -1403,7 +1397,7 @@ namespace engine
                 {
                     if (gbl.command == 0x25)
                     {
-                        gbl.ecl_offset = ovr008.bytes_to_word(gbl.cmd_high_bytes[var_4 + 1], gbl.cmd_low_bytes[var_4 + 1]);
+                        gbl.ecl_offset = gbl.cmd_opps[var_4 + 1].Word;
                     }
                     else
                     {
@@ -1677,7 +1671,7 @@ namespace engine
             gbl.area2_ptr.field_580 = ovr008.vm_GetCmdValue(2);
             gbl.byte_1D92C = (byte)ovr008.vm_GetCmdValue(3);
 
-            var_43D = ovr008.bytes_to_word(gbl.cmd_high_bytes[4], gbl.cmd_low_bytes[4]);
+            var_43D = gbl.cmd_opps[4].Word;
 
             for (int i = 0; i < 5; i++)
             {
@@ -1979,7 +1973,7 @@ namespace engine
             }
 
             var_1 = ovr008.sub_317AA(0, 0, 15, 10, 13, "~HAUGHTY ~SLY ~NICE ~MEEK ~ABUSIVE", var_B.ToString());
-            var_A = ovr008.bytes_to_word(gbl.cmd_high_bytes[6], gbl.cmd_low_bytes[6]);
+            var_A = gbl.cmd_opps[6].Word;
 
             var_2 = var_8[var_1];
 
@@ -2309,8 +2303,8 @@ namespace engine
             var_8 = 0;
             ovr008.vm_LoadCmdSets(3);
             var_1 = (byte)ovr008.vm_GetCmdValue(1);
-            var_B = ovr008.bytes_to_word(gbl.cmd_high_bytes[2], gbl.cmd_low_bytes[2]);
-            var_D = ovr008.bytes_to_word(gbl.cmd_high_bytes[3], gbl.cmd_low_bytes[3]);
+            var_B = gbl.cmd_opps[2].Word;
+            var_D = gbl.cmd_opps[3].Word;
             var_2 = 1;
             var_3 = 0;
             var_7 = gbl.player_next_ptr;
@@ -2362,7 +2356,7 @@ namespace engine
         {
             ovr008.vm_LoadCmdSets(1);
 
-            ushort var_2 = ovr008.bytes_to_word(gbl.cmd_high_bytes[1], gbl.cmd_low_bytes[1]);
+            ushort var_2 = gbl.cmd_opps[1].Word;
             ushort var_4 = (ushort)(var_2 - 0x7fff);
 
             System.Console.WriteLine("  CMD_Call: {0:X}", var_4);
@@ -2447,13 +2441,13 @@ namespace engine
 
             var_1 = 0;
 
-            sub_29607(gbl.word_1B2D7);
+            RunEclVm(gbl.word_1B2D7);
             ovr016.make_camp(ref var_1);
 
             if (var_1 != 0)
             {
                 ovr025.load_pic();
-                sub_29607(gbl.word_1B2D9);
+                RunEclVm(gbl.word_1B2D9);
             }
             gbl.byte_1D8AA = 1;
             ovr029.sub_6F0BA();
@@ -2646,7 +2640,7 @@ namespace engine
                 case 0x1C: sub_27240(); break;
                 case 0x1D: sub_272A9(); break;
                 case 0x1E: sub_27454(); break;
-                case 0x20: sub_26BE7(); break;
+                case 0x20: CMD_NewECL(); break;
                 case 0x21: CMD_LoadFiles(); break;
                 case 0x22: sub_2767E(); break;
                 case 0x23: sub_2771E(); break;
@@ -2685,14 +2679,16 @@ namespace engine
         }
 
 
-        internal static void sub_29607(ushort offset)
+        internal static void RunEclVm(ushort offset) // sub_29607
         {
             string var_100;
 
             gbl.ecl_offset = offset;
-            gbl.byte_1AB08 = 0;
+            gbl.stopVM = false;
 
-            while (gbl.byte_1AB08 == 0 ||
+            System.Console.Out.WriteLine("RunEclVm {0,4:X} start", offset);
+
+            while (gbl.stopVM == false ||
                    gbl.byte_1B2F0 == 0)
             {
                 gbl.byte_1D928 = gbl.command;
@@ -2712,7 +2708,8 @@ namespace engine
                 commandTable();
             }
 
-            gbl.byte_1AB08 = 0;
+            gbl.stopVM = false;
+            System.Console.Out.WriteLine("RunEclVm {0,4:X} end", offset);
         }
 
 
@@ -2730,7 +2727,7 @@ namespace engine
 
                 gbl.player_ptr2 = gbl.player_ptr;
 
-                sub_29607(gbl.word_1B2DB);
+                RunEclVm(gbl.word_1B2DB);
 
                 if (gbl.byte_1AB09 == 0)
                 {
@@ -2746,11 +2743,11 @@ namespace engine
                     }
                     gbl.byte_1AB09 = 0;
 
-                    sub_29607(gbl.word_1B2D3);
+                    RunEclVm(gbl.word_1B2D3);
 
                     if (gbl.byte_1AB09 == 0)
                     {
-                        sub_29607(gbl.word_1B2D5);
+                        RunEclVm(gbl.word_1B2D5);
 
                         if (gbl.byte_1AB09 == 0)
                         {
@@ -2819,7 +2816,7 @@ namespace engine
 
             ovr008.sub_301E8();
 
-            sub_29607(gbl.word_1B2DB);
+            RunEclVm(gbl.word_1B2DB);
 
             if (gbl.inDemo == true)
             {
@@ -2878,7 +2875,7 @@ namespace engine
                             gbl.byte_1D8AA = 1;
                             ovr029.sub_6F0BA();
 
-                            sub_29607(gbl.word_1B2D5);
+                            RunEclVm(gbl.word_1B2D5);
 
                             if (gbl.byte_1AB09 != 0)
                             {
@@ -2898,7 +2895,7 @@ namespace engine
 
                     if (gbl.byte_1B2F0 == 0)
                     {
-                        sub_29607(gbl.word_1B2D3);
+                        RunEclVm(gbl.word_1B2D3);
                     }
 
                     if (gbl.byte_1AB09 != 0)
@@ -2923,7 +2920,7 @@ namespace engine
 
                             gbl.byte_1EE8C = 0;
                             gbl.byte_1EE8D = 1;
-                            sub_29607(gbl.word_1B2D5);
+                            RunEclVm(gbl.word_1B2D5);
                             if (gbl.byte_1AB09 != 0)
                             {
                                 sub_29677();

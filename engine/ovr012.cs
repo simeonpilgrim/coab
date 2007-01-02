@@ -71,6 +71,12 @@ namespace engine
             gbl.stru_1D52C[2] = new byte[0x30C];
             gbl.stru_1D530 = seg051.GetMem(0x0400);
 
+            for(int i = 0; i < gbl.cmdOppsLimit; i++ )
+            {
+                gbl.cmd_opps[i] = new Opperation();
+                gbl.cmd_opps[i].getMemoryValue = ovr008.vm_GetMemoryValue;
+            }
+
             seg040.init_dax_block(out gbl.dword_1C8F4, 0, 1, 1, 8);
             seg040.init_dax_block(out gbl.dword_1EFA0, 0, 1, 1, 8);
 
