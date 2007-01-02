@@ -121,6 +121,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ListBase.cs" />
+    <Compile Include="Opperation.cs" />
     <Compile Include="Player.cs">
       <SubType>Code</SubType>
     </Compile>

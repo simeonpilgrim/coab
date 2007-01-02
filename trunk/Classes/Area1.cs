@@ -104,8 +104,11 @@ namespace Classes
 
         public void field_6A00_Set(int index, ushort value)
         {
+            int loc = index & 0xFFFF;
+            System.Console.WriteLine("     field_6A00_Set loc: {0,4:X} value: {1,4:X}", loc, value );
+
             /* ovr021:0482 */
-            switch (index & 0xFFFF)
+            switch (loc)
             {
                 case 0x1E4:
                     field_1E4 = value;
@@ -127,6 +130,9 @@ namespace Classes
 
         public ushort field_6A00_Get(int index)
         {
+            int loc = index & 0xFFFF;
+            System.Console.WriteLine("     field_6A00_Get loc: {0,4:X}", loc);
+            
             /* ovr021:0482 */
             switch (index & 0xFFFF)
             {

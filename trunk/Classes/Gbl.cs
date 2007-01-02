@@ -73,7 +73,7 @@ namespace Classes
 
 
         public static char byte_1AB06;
-        public static byte byte_1AB08 = 0;
+        public static bool stopVM = false; //byte_1AB08
         public static byte byte_1AB09;
         public static byte byte_1AB0A;
         public static byte byte_1AB0B;
@@ -407,7 +407,7 @@ namespace Classes
         public static byte combat_type;
         public static ushort ecl_offset;
 
-        public static byte[] cmd_high_bytes = new byte[10];
+
 
         public static byte command;
         public static Player player_next_ptr;
@@ -499,8 +499,10 @@ namespace Classes
         public static DaxBlock sky_dax_252;
 
         public static string[] unk_1D972 = new string[15] { string.Empty, string.Empty, string.Empty, string.Empty, string.Empty, string.Empty, string.Empty, string.Empty, string.Empty, string.Empty, string.Empty, string.Empty, string.Empty, string.Empty, string.Empty };
-        public static byte[] cmd_low_bytes = new byte[15];
-        public static byte[] cmd_code = new byte[15];
+
+        public const int cmdOppsLimit = 15;
+        public static Opperation[] cmd_opps = new Opperation[cmdOppsLimit];
+
         public static Struct_19AEC[] unk_19AEC = {
             new Struct_19AEC(),
             new Struct_19AEC( 0,1,6,0,6,0,10,4,0,4,1,2,10,1,0,0),
