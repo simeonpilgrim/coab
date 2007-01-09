@@ -88,10 +88,8 @@ namespace engine
         }
 
 
-        internal static void sub_301E8()
+        internal static void vm_init_ecl() // sub_301E8
         {
-            short loop_var;
-
             gbl.byte_1EE8C = 0;
             gbl.byte_1EE8E = 0;
             gbl.byte_1EE7C = 0;
@@ -131,20 +129,18 @@ namespace engine
             gbl.word_1B2D9 = gbl.cmd_opps[1].Word;
 
             vm_LoadCmdSets(1);
-            gbl.word_1B2DB = gbl.cmd_opps[1].Word;
+            gbl.ecl_initial_entryPoint = gbl.cmd_opps[1].Word;
 
             gbl.area_ptr.field_1CC = 1;
 
             if (gbl.byte_1B2EB == 0)
             {
-                for (loop_var = 1; loop_var <= 32; loop_var++)
+                for (int loop_var = 1; loop_var <= 32; loop_var++)
                 {
                     gbl.area_ptr.field_200[loop_var] = 0; // word array.
                 }
 
-                loop_var = 0;
-
-                for (loop_var = 0; loop_var <= 9; loop_var++)
+                for (int loop_var = 0; loop_var <= 9; loop_var++)
                 {
                     gbl.area2_ptr.field_6F2[loop_var] = 0; // word array.
                 }

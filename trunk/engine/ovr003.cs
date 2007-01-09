@@ -6,13 +6,12 @@ namespace engine
     {
         internal static void CMD_Exit()
         {
-            gbl.ecl_ptr.SearchECL(new byte[,] { { 9, 2 }, { 3, 2 }, { 0x18, 0 } });
-
             //Simeon if (gbl.byte_1EE8E != 0)
             {
                 seg037.draw8x8_03();
             }
 
+            
             if (gbl.byte_1AB0A != 0)
             {
                 gbl.player_ptr = gbl.player_ptr2;
@@ -567,7 +566,7 @@ namespace engine
             gbl.byte_1EE88 = var_1;
 
             ovr008.load_ecl_dax(var_1);
-            ovr008.sub_301E8();
+            ovr008.vm_init_ecl();
             gbl.stopVM = true;
             gbl.byte_1AB09 = 1;
 
@@ -2687,8 +2686,8 @@ namespace engine
             gbl.stopVM = false;
 
             System.Console.Out.WriteLine("RunEclVm {0,4:X} start", offset);
-
-            while (gbl.stopVM == false ||
+            
+            while (gbl.stopVM == false &&
                    gbl.byte_1B2F0 == 0)
             {
                 gbl.byte_1D928 = gbl.command;
@@ -2727,7 +2726,7 @@ namespace engine
 
                 gbl.player_ptr2 = gbl.player_ptr;
 
-                RunEclVm(gbl.word_1B2DB);
+                RunEclVm(gbl.ecl_initial_entryPoint);
 
                 if (gbl.byte_1AB09 == 0)
                 {
@@ -2814,9 +2813,9 @@ namespace engine
                 gbl.byte_1AB0B = 1;
             }
 
-            ovr008.sub_301E8();
+            ovr008.vm_init_ecl();
 
-            RunEclVm(gbl.word_1B2DB);
+            RunEclVm(gbl.ecl_initial_entryPoint);
 
             if (gbl.inDemo == true)
             {

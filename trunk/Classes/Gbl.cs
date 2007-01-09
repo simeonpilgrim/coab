@@ -347,7 +347,7 @@ namespace Classes
         public static ushort word_1B2D5;
         public static ushort word_1B2D7;
         public static ushort word_1B2D9;
-        public static ushort word_1B2DB;
+        public static ushort ecl_initial_entryPoint; // word_1B2DB
         public static short word_1B2EC;
         public static DaxBlock dword_1C8FC;
         public static DaxBlock dword_1D55C;
@@ -356,8 +356,6 @@ namespace Classes
         public static short word_1D5C0;
         public static short word_1D5C2;
         public static spellDelegate2[] word_1D5CE = new spellDelegate2[100];
-
-        public static ushort /*seg600:4FFA*/ ega_offset;
 
         public static Player dword_1D87F;
 

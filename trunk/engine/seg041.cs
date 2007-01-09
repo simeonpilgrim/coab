@@ -4,12 +4,6 @@ namespace engine
 {
     class seg041
     {
-        internal static void set_ega_offset(byte arg_0)
-        {
-            gbl.ega_offset = (ushort)(0xA000 + (arg_0 << 9));
-        }
-
-
         internal static void ega01(byte colour, int yEnd, int xEnd, int yStart, int xStart)
         {
             xStart *= 8;
