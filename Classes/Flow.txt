@@ -1,4 +1,3 @@
-
   vm_LoadCmdSets: 1
      EclBlock[get] loc:    1 value  1
      EclBlock[get] loc:    2 value 37
@@ -24,7 +23,6 @@
      EclBlock[get] loc:   12 value 14
      EclBlock[get] loc:   13 value 80
    code:  1 low: 14 high: 80
-   
 RunEclVm 8014 start
      EclBlock[get] loc:   14 value 21
 8014 LOAD FILES 0x21
@@ -162,26 +160,11 @@ RunEclVm 8014 start
   GetCmdValue: code: 1
      field_6A00_Get loc:  1E4
   GetCmdValue: code: 0
-  Compare_variables: 1 1
+  Compare_variables: 0 1
      EclBlock[get] loc:   38 value 16
 8038 IF =  0x16
-  CMD_if: True
+  CMD_if: False
      EclBlock[get] loc:   39 value  0
-8039 EXIT 0x0
- 1EF  9
- 1F0  0
- 1F1  0
- 1F2  1
- 1F3 A8
- 1F4 7E
- 1F5  3
- 1F6  1
- 1F7 4B
- 1F8 C0
- 1F9  0
- 1FA  5
- 1FB 18
-
      EclBlock[get] loc:   3A value  9
 803A SAVE 0x9
   vm_LoadCmdSets: 2
@@ -701,5 +684,183 @@ RunEclVm 8014 start
      EclBlock[get] loc: 1CE0 value  0
      EclBlock[get] loc: 1CE1 value 4C
    code:  0 low: 0x4C
-A first chance exception of type 'System.InvalidOperationException' occurred in classes.dll
-'Main.vshost.exe' (Managed): Loaded 'C:\WINDOWS\assembly\GAC_MSIL\System.Configuration\2.0.0.0__b03f5f7f11d50a3a\System.Configuration.dll', Skipped loading symbols. Module is optimized and the debugger option 'Just My Code' is enabled.
+
+
+ECL_offset: 0x9d32
+ECL_offset: 0x9d33
+ECL_offset: 0x80b4
+ECL_offset: 0x80b6
+ECL_offset: 0x80b7
+ECL_offset: 0x80b9
+ECL_offset: 0x80ba
+ECL_offset: 0x80bb
+ECL_offset: 0x80bc
+ECL_offset: 0x80bd
+ECL_offset: 0x80be
+ECL_offset: 0x80bf
+ECL_offset: 0x80c0
+ECL_offset: 0x80c1
+ECL_offset: 0x80c2
+ECL_offset: 0x80c3
+ECL_offset: 0x80c4
+ECL_offset: 0x80c5
+ECL_offset: 0x80c6
+ECL_offset: 0x80c7
+ECL_offset: 0x80c8
+ECL_offset: 0x80c9
+ECL_offset: 0x80ca
+ECL_offset: 0x80cb
+ECL_offset: 0x80cc
+ECL_offset: 0x80cd
+ECL_offset: 0x80ce
+ECL_offset: 0x80cf
+ECL_offset: 0x80d0
+ECL_offset: 0x80d1
+ECL_offset: 0x80d2
+ECL_offset: 0x80d3
+ECL_offset: 0x80d4
+ECL_offset: 0x80d5
+ECL_offset: 0x80d6
+ECL_offset: 0x80d7
+ECL_offset: 0x80d8
+ECL_offset: 0x80d9
+ECL_offset: 0x80da
+ECL_offset: 0x80db
+ECL_offset: 0x80dc
+ECL_offset: 0x80dd
+ECL_offset: 0x80de
+ECL_offset: 0x80df
+ECL_offset: 0x80e0
+ECL_offset: 0x80e1
+ECL_offset: 0x80e2
+ECL_offset: 0x80e3
+ECL_offset: 0x80e4
+ECL_offset: 0x80e6
+ECL_offset: 0x80e7
+ECL_offset: 0x80e8
+ECL_offset: 0x80e9
+ECL_offset: 0x80ea
+ECL_offset: 0x80eb
+ECL_offset: 0x80ec
+ECL_offset: 0x80ed
+ECL_offset: 0x80ee
+ECL_offset: 0x80ef
+ECL_offset: 0x80f0
+ECL_offset: 0x80f1
+ECL_offset: 0x80f2
+ECL_offset: 0x80f3
+ECL_offset: 0x80f4
+ECL_offset: 0x80f5
+ECL_offset: 0x80f6
+ECL_offset: 0x80f7
+ECL_offset: 0x80f8
+ECL_offset: 0x80f9
+ECL_offset: 0x80fa
+ECL_offset: 0x80fb
+ECL_offset: 0x80fc
+ECL_offset: 0x80fd
+ECL_offset: 0x80fe
+ECL_offset: 0x80ff
+ECL_offset: 0x8100
+ECL_offset: 0x8101
+ECL_offset: 0x8102
+ECL_offset: 0x8103
+ECL_offset: 0x8104
+ECL_offset: 0x8105
+ECL_offset: 0x8106
+ECL_offset: 0x8107
+ECL_offset: 0x8108
+ECL_offset: 0x8109
+ECL_offset: 0x810a
+ECL_offset: 0x810b
+ECL_offset: 0x810c
+ECL_offset: 0x810d
+ECL_offset: 0x810e
+ECL_offset: 0x810f
+ECL_offset: 0x8110
+ECL_offset: 0x8111
+ECL_offset: 0x8112
+ECL_offset: 0x8113
+ECL_offset: 0x8114
+ECL_offset: 0x8116
+ECL_offset: 0x8117
+ECL_offset: 0x8118
+ECL_offset: 0x8119
+ECL_offset: 0x811a
+ECL_offset: 0x811b
+ECL_offset: 0x811c
+ECL_offset: 0x811d
+ECL_offset: 0x811e
+ECL_offset: 0x811f
+ECL_offset: 0x8120
+ECL_offset: 0x8121
+ECL_offset: 0x8122
+ECL_offset: 0x8123
+ECL_offset: 0x8124
+ECL_offset: 0x8125
+ECL_offset: 0x8126
+ECL_offset: 0x8127
+ECL_offset: 0x8128
+ECL_offset: 0x8129
+ECL_offset: 0x812a
+ECL_offset: 0x812b
+ECL_offset: 0x812c
+ECL_offset: 0x812d
+ECL_offset: 0x812e
+ECL_offset: 0x812f
+ECL_offset: 0x8130
+ECL_offset: 0x8131
+ECL_offset: 0x8132
+ECL_offset: 0x8133
+ECL_offset: 0x8135
+ECL_offset: 0x8136
+ECL_offset: 0x8137
+ECL_offset: 0x9cb0
+ECL_offset: 0x9cb2
+ECL_offset: 0x9cb3
+ECL_offset: 0x9cb4
+ECL_offset: 0x9d0c
+ECL_offset: 0x9d0e
+ECL_offset: 0x9d0f
+ECL_offset: 0x9d11
+ECL_offset: 0x9d12
+ECL_offset: 0x9d11
+ECL_offset: 0x9d13
+ECL_offset: 0x9d14
+ECL_offset: 0x9d15
+ECL_offset: 0x9d16
+ECL_offset: 0x9d17
+ECL_offset: 0x9d18
+ECL_offset: 0x9d19
+ECL_offset: 0x9d1a
+ECL_offset: 0x9d1b
+ECL_offset: 0x9d1c
+ECL_offset: 0x9d1d
+ECL_offset: 0x9d1e
+ECL_offset: 0x9d1f
+ECL_offset: 0x9d20
+ECL_offset: 0x9d21
+ECL_offset: 0x9d22
+ECL_offset: 0x9d23
+ECL_offset: 0x9d24
+ECL_offset: 0x9d25
+ECL_offset: 0x9d26
+ECL_offset: 0x9d27
+ECL_offset: 0x9d28
+ECL_offset: 0x9d29
+ECL_offset: 0x9d2a
+ECL_offset: 0x9d2b
+ECL_offset: 0x9d2c
+ECL_offset: 0x9d2d
+ECL_offset: 0x9d2e
+ECL_offset: 0x9d2f
+ECL_offset: 0x9d31
+ECL_offset: 0x9d32
+ECL_offset: 0x9d33
+ECL_offset: 0x9cb4
+ECL_offset: 0x9cb6
+ECL_offset: 0x9cb7
+ECL_offset: 0x9cb8
+ECL_offset: 0x9cba
+ECL_offset: 0x9cbb
+ECL_offset: 0x9cbc
