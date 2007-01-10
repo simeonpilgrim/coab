@@ -1942,18 +1942,18 @@ namespace engine
                 {
                     Item item = new Item(var_6, var_8);
 
-                    var_8 += 0x3F;
-
-                    if (var_8 < var_2)
+                    if (var_8 == 0)
                     {
                         player.itemsPtr = item;
-                        lastItem = item;
                     }
                     else
                     {
                         lastItem.next = item;
-                        lastItem = item;
                     }
+                    lastItem = item;
+
+                    var_8 += 0x3F;
+
                 } while (var_8 < var_2);
             }
 

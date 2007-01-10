@@ -498,7 +498,7 @@ namespace Classes
 
         public static string[] unk_1D972 = new string[15] { string.Empty, string.Empty, string.Empty, string.Empty, string.Empty, string.Empty, string.Empty, string.Empty, string.Empty, string.Empty, string.Empty, string.Empty, string.Empty, string.Empty, string.Empty };
 
-        public const int cmdOppsLimit = 15;
+        public const int cmdOppsLimit = 0x18;
         public static Opperation[] cmd_opps = new Opperation[cmdOppsLimit];
 
         public static Struct_19AEC[] unk_19AEC = {

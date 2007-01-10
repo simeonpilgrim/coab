@@ -6,7 +6,7 @@ namespace engine
     {
         internal static void CMD_Exit()
         {
-            //Simeon if (gbl.byte_1EE8E != 0)
+            if (gbl.byte_1EE8E != 0)
             {
                 seg037.draw8x8_03();
             }

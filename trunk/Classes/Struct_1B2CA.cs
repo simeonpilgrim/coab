@@ -29,12 +29,6 @@ namespace Classes
             throw new Exception("The method or operation is not implemented.");
         }
 
-        public char field_C00(int index)
-        {
-            /* this is done at ovr008:15C3 */
-            throw new System.NotImplementedException();
-        }
-
         public ushort this[int index]
         {
             get

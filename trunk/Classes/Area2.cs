@@ -172,8 +172,10 @@ namespace Classes
         {
             int loc = index & 0xFFFF;
             System.Console.WriteLine("     field_800_Get loc: {0,4:X}", loc);
-            
-            int i = ((index & 0xFFFF) - 0x6F2) >> 1;
+
+            int i = (loc - 0x6F2) >> 1;
+
+            if (loc == 0x67e) return (ushort)field_67E;
 
             return field_6F2[i];
         }

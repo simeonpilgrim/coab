@@ -216,24 +216,24 @@ namespace engine
             }
             else
             {
-                throw new System.NotSupportedException();//cmp	[bp+arg_4], 0x0F
-                throw new System.NotSupportedException();//jle	loc_715AA
-                arg_4 = 0;
-                throw new System.NotSupportedException();//jmp	short loc_715B4
-                throw new System.NotSupportedException();//loc_715AA:
-                throw new System.NotSupportedException();//cmp	[bp+arg_4], 0
-                throw new System.NotSupportedException();//jge	loc_715B4
-                arg_4 = 0x0F;
-                throw new System.NotSupportedException();//loc_715B4:
-                throw new System.NotSupportedException();//cmp	[bp+arg_2], 0x0F
-                throw new System.NotSupportedException();//jle	loc_715C0
-                arg_2 = 0;
-                throw new System.NotSupportedException();//jmp	short loc_715CA
-                throw new System.NotSupportedException();//loc_715C0:
-                throw new System.NotSupportedException();//cmp	[bp+arg_2], 0
-                throw new System.NotSupportedException();//jge	loc_715CA
-                arg_2 = 0x0F;
-                throw new System.NotSupportedException();//loc_715CA:
+                if (arg_4 > 15)
+                {
+                    arg_4 = 0;
+                }
+                else if (arg_4 < 0)
+                {
+                    arg_4 = 0x0F;
+                }
+
+                if (arg_2 > 15)
+                {
+                    arg_2 = 0;
+                }
+                else if (arg_2 < 0)
+                {
+                    arg_2 = 0x0F;
+                }
+
                 var_2 = 1;
 
                 if (sub_716A2(arg_0, arg_2, arg_4) > 0)
@@ -241,41 +241,11 @@ namespace engine
                     switch (arg_0)
                     {
                         case 6:
-                            throw new System.NotSupportedException();//mov	al, [bp+arg_4]
-                            throw new System.NotSupportedException();//cbw
-                            throw new System.NotSupportedException();//mov	dx, ax
-                            throw new System.NotSupportedException();//mov	al, [bp+arg_2]
-                            throw new System.NotSupportedException();//cbw
-                            throw new System.NotSupportedException();//mov	cl, 4
-                            throw new System.NotSupportedException();//shl	ax, cl
-                            throw new System.NotSupportedException();//les	di, int ptr stru_1D530.offset
-                            throw new System.NotSupportedException();//add	di, ax
-                            throw new System.NotSupportedException();//add	di, dx
-                            throw new System.NotSupportedException();//mov	al, es:[di+300h]
-                            throw new System.NotSupportedException();//and	al, 0x0C0
-                            throw new System.NotSupportedException();//xor	ah, ah
-                            throw new System.NotSupportedException();//mov	cx, 6
-                            throw new System.NotSupportedException();//shr	ax, cl
-                            throw new System.NotSupportedException();//mov	[bp+var_2], al
+                            var_2 = (byte)((gbl.stru_1D530[0x300 + arg_4 + (arg_2 << 4)] & 0xC0) >> 6);
                             break;
 
                         case 4:
-                            throw new System.NotSupportedException();//mov	al, [bp+arg_4]
-                            throw new System.NotSupportedException();//cbw
-                            throw new System.NotSupportedException();//mov	dx, ax
-                            throw new System.NotSupportedException();//mov	al, [bp+arg_2]
-                            throw new System.NotSupportedException();//cbw
-                            throw new System.NotSupportedException();//mov	cl, 4
-                            throw new System.NotSupportedException();//shl	ax, cl
-                            throw new System.NotSupportedException();//les	di, int ptr stru_1D530.offset
-                            throw new System.NotSupportedException();//add	di, ax
-                            throw new System.NotSupportedException();//add	di, dx
-                            throw new System.NotSupportedException();//mov	al, es:[di+300h]
-                            throw new System.NotSupportedException();//and	al, 0x30
-                            throw new System.NotSupportedException();//xor	ah, ah
-                            throw new System.NotSupportedException();//mov	cx, 4
-                            throw new System.NotSupportedException();//shr	ax, cl
-                            throw new System.NotSupportedException();//mov	[bp+var_2], al
+                            var_2 = (byte)((gbl.stru_1D530[0x300 + arg_4 + (arg_2 << 4)] & 0x30) >> 4);
                             break;
 
                         case 2:
