@@ -77,7 +77,7 @@ namespace engine
 
                         affect = player.affect_ptr;
 
-                        var_17 = affect.next;
+                        //var_17 = affect.next;
 
                         if (player.affect_ptr != null)
                         {

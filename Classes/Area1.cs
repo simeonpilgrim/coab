@@ -12,9 +12,14 @@ namespace Classes
             field_200 = new short[33];
         }
 
+        const int Area1Size = 0x3fe;
+
         public Area1(byte[] data, int offset)
         {
             DataIO.ReadObject(this, data, offset);
+
+            origData = new byte[Area1Size];
+            System.Array.Copy(data, offset, origData, 0, Area1Size);
         }
 
         public void Clear(byte value)
@@ -49,6 +54,8 @@ namespace Classes
             field_3FE  = value;
 
         }
+
+        protected byte[] origData;
 
         [DataOffset(0x186, DataType.Byte)]
         public byte field_186;
@@ -95,6 +102,9 @@ namespace Classes
         [DataOffset(0x200, DataType.ShortArray,33)]
         public short[] field_200; // 1-32
 
+        [DataOffset(0x226, DataType.Word)]
+        public ushort field_226;
+
         [DataOffset(0x342, DataType.Byte)]
         public byte field_342;
         [DataOffset(0x3FA, DataType.Byte)]
@@ -123,7 +133,9 @@ namespace Classes
                     break;
 
                 default:
-                    throw new NotImplementedException();
+                    //throw new NotImplementedException();
+                    System.Console.WriteLine("       default access");
+                    Sys.ShortToArray((short)value, origData, loc);
                     break;
             }
         }
@@ -134,7 +146,7 @@ namespace Classes
             System.Console.WriteLine("     field_6A00_Get loc: {0,4:X}", loc);
             
             /* ovr021:0482 */
-            switch (index & 0xFFFF)
+            switch (loc)
             {
                 case 0x192:
                     return field_192;
@@ -142,11 +154,32 @@ namespace Classes
                 case 0x1E4:
                     return field_1E4;
 
+                case 0x200:
+                case 0x202:
+                case 0x204:
                 case 0x206:
-                    return (ushort)field_200[3];
+                case 0x208:
+                case 0x20a:
+                case 0x20c:
+                case 0x20e:
+                case 0x210:
+                case 0x212:
+                case 0x214:
+                case 0x216:
+                case 0x218:
+                case 0x21a:
+                case 0x21c:
+                case 0x21e:
+                    return (ushort)field_200[(loc - 0x200) / 2];
+
+
+                case 0x226:
+                    return field_226;
 
                 default:
-                    throw new NotImplementedException();
+                    System.Console.WriteLine("       default access");
+                    return Sys.ArrayToUshort(origData, loc);
+                    //throw new NotImplementedException();
             }
         }
 

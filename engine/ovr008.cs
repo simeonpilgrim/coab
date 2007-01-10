@@ -1198,9 +1198,10 @@ namespace engine
                     break;
 
                 case 2:
-                    while (gbl.stru_1B2CA.field_C00((var_2 + location) << 1) != 0)
+                    while (gbl.stru_1B2CA[((var_2 + location) << 1) + 0x0C00] != 0)
                     {
-                        gbl.unk_1D972[strIndex] += gbl.stru_1B2CA.field_C00((var_2 + location) << 1).ToString();
+                        char ch = (char)gbl.stru_1B2CA[((var_2 + location) << 1) + 0x0C00];
+                        gbl.unk_1D972[strIndex] += ch.ToString();
                         var_2++;
                     }
                     break;
