@@ -35,16 +35,16 @@ namespace Classes
                 // simulate the 16 bit memory space.
                 int loc = index & 0xFFFF;
                 byte value = data[loc];
-                System.Console.WriteLine("     EclBlock[get] loc: {0,4:X} value {1,2:X}", loc, value);
+                //System.Console.WriteLine("     EclBlock[get] loc: {0,4:X} value {1,2:X}", loc, value);
 
                 return value;
             }
             set
             {
                 int loc = index & 0xFFFF;
-                System.Console.WriteLine("     EclBlock[set] loc: {0,4:X} value: {1,4:X}", loc, value);
+                //System.Console.WriteLine("     EclBlock[set] loc: {0,4:X} value: {1,4:X}", loc, value);
 
-                data[index & 0xFFFF] = value;
+                data[loc] = value;
             }
         }
 

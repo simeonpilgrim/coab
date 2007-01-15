@@ -29,12 +29,12 @@ namespace engine
 
             if (gbl.vmCallStack.Count > 0)
             {
-                System.Console.Write("  vmCallStack:");
-                foreach (ushort us in gbl.vmCallStack)
-                {
-                    System.Console.Write(" {0,4:X", us);
-                }
-                System.Console.WriteLine();
+                //System.Console.Write("  vmCallStack:");
+                //foreach (ushort us in gbl.vmCallStack)
+                //{
+                //    System.Console.Write(" {0,4:X", us);
+                //}
+                //System.Console.WriteLine();
 
                 gbl.vmCallStack.Clear();
             }
@@ -50,7 +50,7 @@ namespace engine
             ovr008.vm_LoadCmdSets(1);
             ushort newOffset = gbl.cmd_opps[1].Word;
 
-            System.Console.WriteLine("  CMD_Goto: was: 0x{0:X} now: 0x{1:X}", gbl.ecl_offset, newOffset);
+            //System.Console.WriteLine("  CMD_Goto: was: 0x{0:X} now: 0x{1:X}", gbl.ecl_offset, newOffset);
 
             gbl.ecl_offset = newOffset;
         }
@@ -502,12 +502,12 @@ namespace engine
             if (gbl.vmCallStack.Count > 0)
             {
                 ushort newOffset = gbl.vmCallStack.Pop();
-                System.Console.WriteLine("  CMD_Return: was: {0:X} now: {1:X}", gbl.ecl_offset - 1, newOffset);
+                //System.Console.WriteLine("  CMD_Return: was: {0:X} now: {1:X}", gbl.ecl_offset - 1, newOffset);
                 gbl.ecl_offset = newOffset;
             }
             else
             {
-                System.Console.WriteLine("  CMD_Return: call stack empty. ecl_offset: {0:X}", gbl.ecl_offset - 1);
+                //System.Console.WriteLine("  CMD_Return: call stack empty. ecl_offset: {0:X}", gbl.ecl_offset - 1);
                 CMD_Exit();
             }
         }
@@ -2358,7 +2358,7 @@ namespace engine
             ushort var_2 = gbl.cmd_opps[1].Word;
             ushort var_4 = (ushort)(var_2 - 0x7fff);
 
-            System.Console.WriteLine("  CMD_Call: {0:X}", var_4);
+            //System.Console.WriteLine("  CMD_Call: {0:X}", var_4);
 
             switch (var_4)
             {

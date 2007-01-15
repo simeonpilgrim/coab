@@ -171,7 +171,7 @@ namespace Classes
         public ushort field_800_Get(int index)
         {
             int loc = index & 0xFFFF;
-            System.Console.WriteLine("     field_800_Get loc: {0,4:X}", loc);
+            //System.Console.WriteLine("     field_800_Get loc: {0,4:X}", loc);
 
             int i = (loc - 0x6F2) >> 1;
 
@@ -183,7 +183,7 @@ namespace Classes
         public void field_800_Set(int index, ushort value)
         {
             int loc = index & 0xFFFF;
-            System.Console.WriteLine("     field_800_Set loc: {0,4:X} value: {1,4:X}", loc, value);
+            //System.Console.WriteLine("     field_800_Set loc: {0,4:X} value: {1,4:X}", loc, value);
 
             switch( index & 0xFFFF )
             {
