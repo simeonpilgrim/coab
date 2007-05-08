@@ -695,7 +695,7 @@ namespace engine
 
             var_2 = gbl.cmd_opps[3].Word;
 
-            if (gbl.command == 0x27)
+            if (gbl.command == 0x2F)
             {
                 var_7 = (byte)(var_6 & var_4);
             }

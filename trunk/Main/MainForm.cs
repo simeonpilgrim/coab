@@ -11,7 +11,6 @@ namespace Main
 {
     public partial class MainForm : Form
     {
-        
         public MainForm()
         {
             InitializeComponent();
@@ -21,8 +20,13 @@ namespace Main
 
         void UpdateDisplayCallback()
         {
-            displayArea.Image = (Image)Classes.Display.bm.Clone();
-        }
+            try
+            {
+                displayArea.Image = (Image)Classes.Display.bm.Clone();
+            }
+            catch(Exception)
+            { /* */ }
+        }        
 
         private void MainForm_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
         {

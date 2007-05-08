@@ -162,6 +162,8 @@ namespace Classes
         public byte field_7AA; // 0x7aa
         [DataOffset(0x7AB, DataType.Byte)]
         public byte field_7AB; // 0x7ab
+        [DataOffset(0x7EC, DataType.Word)]
+        public ushort field_7EC;
 
         public byte[] ToByteArray()
         {
@@ -173,11 +175,15 @@ namespace Classes
             int loc = index & 0xFFFF;
             //System.Console.WriteLine("     field_800_Get loc: {0,4:X}", loc);
 
-            int i = (loc - 0x6F2) >> 1;
+            switch (loc)
+            {
+                case 0x67e: return (ushort)field_67E;
+                case 0x594: return field_594;
 
-            if (loc == 0x67e) return (ushort)field_67E;
-
-            return field_6F2[i];
+                default:
+                    int i = (loc - 0x6F2) >> 1;
+                    return field_6F2[i];
+            }            
         }
 
         public void field_800_Set(int index, ushort value)
@@ -185,16 +191,31 @@ namespace Classes
             int loc = index & 0xFFFF;
             //System.Console.WriteLine("     field_800_Set loc: {0,4:X} value: {1,4:X}", loc, value);
 
-            switch( index & 0xFFFF )
+            switch (loc)
             {
                 case 0x58C:
                     field_58C = value;
                     break;
 
-                default:
-            int i = ((index & 0xFFFF) - 0x6F2) >> 1;
+                case 0x5c2:
+                    field_5C2 = (short)value;
+                    break;
 
-            field_6F2[i] = value;
+                case 0x6d8:
+                    field_6D8 = (short)value;
+                    break;
+
+                case 0x6da:
+                    field_6DA = (short)value;
+                    break;
+
+                case 0x7ec:
+                    field_7EC = value;
+                    break;
+
+                default:
+                    int i = (loc - 0x6F2) >> 1;
+                    field_6F2[i] = value;
                     break;
             }
         }
