@@ -54,7 +54,7 @@ namespace engine
 						break;
 				}
 
-                item_ptr.name = string.Format("{0,-21}{1,9)", item_ptr.name, val);
+                item_ptr.name = string.Format("{0,-21}{1,9}", item_ptr.name, val);
                 item_ptr = item_ptr.next;
             }
 
@@ -245,7 +245,7 @@ namespace engine
             gbl.byte_1EE7E = true;
             ovr025.Player_Summary( gbl.player_ptr );
 
-			for( int var_1 = 0; var_1 <= 7; var_1++ )
+			for( int var_1 = 0; var_1 < 7; var_1++ )
 			{
 				gbl.pooled_money[ var_1 ] = 0;
 			}

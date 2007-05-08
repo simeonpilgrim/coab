@@ -120,6 +120,10 @@ namespace Classes
             /* ovr021:0482 */
             switch (loc)
             {
+                case 0x192:
+                    field_192 = value;
+                    break;
+
                 case 0x1E4:
                     field_1E4 = value;
                     break;
@@ -130,6 +134,29 @@ namespace Classes
 
                 case 0x1FC:
                     field_1FC = value;
+                    break;
+
+                case 0x200:
+                case 0x202:
+                case 0x204:
+                case 0x206:
+                case 0x208:
+                case 0x20a:
+                case 0x20c:
+                case 0x20e:
+                case 0x210:
+                case 0x212:
+                case 0x214:
+                case 0x216:
+                case 0x218:
+                case 0x21a:
+                case 0x21c:
+                case 0x21e:
+                    field_200[(loc - 0x200) / 2] = (short)value;
+                    break;
+
+                case 0x226:
+                    field_226 = value;
                     break;
 
                 default:
@@ -153,6 +180,12 @@ namespace Classes
 
                 case 0x1E4:
                     return field_1E4;
+
+                case 0x1FA:
+                    return field_1FA;
+
+                case 0x1FC:
+                    return field_1FC;
 
                 case 0x200:
                 case 0x202:
