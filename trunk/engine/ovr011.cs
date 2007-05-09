@@ -126,7 +126,7 @@ namespace engine
             }
             else
             {
-                if (arg_4 == gbl.byte_1D53A &&
+                if (arg_4 == gbl.mapPosY &&
                     (arg_2 == 2 || arg_2 == 6))
                 {
                     var_1 = 0;
@@ -580,8 +580,8 @@ namespace engine
             {
                 for (gbl.byte_1AD34 = -6; gbl.byte_1AD34 <= 6; gbl.byte_1AD34++)
                 {
-                    var_1 = (sbyte)(gbl.byte_1D539 + gbl.byte_1AD34);
-                    var_2 = (sbyte)(gbl.byte_1D53A + gbl.byte_1AD35);
+                    var_1 = (sbyte)(gbl.mapPosX + gbl.byte_1AD34);
+                    var_2 = (sbyte)(gbl.mapPosY + gbl.byte_1AD35);
 
                     gbl.byte_1AD37 = sub_37388(6, var_2, var_1);
                     gbl.byte_1AD36 = sub_37388(0, var_2, var_1);
@@ -981,7 +981,7 @@ namespace engine
                     player.actions.field_13 = 1;
                 }
 
-                player.actions.field_9 = unk_1660C[gbl.byte_1D53B << 1];
+                player.actions.field_9 = unk_1660C[gbl.mapDirection << 1];
 
                 if (player.combat_team == 1)
                 {
@@ -1171,8 +1171,8 @@ namespace engine
                             var_14 == 0 &&
                             var_F == 1)
                         {
-                            var_D = (sbyte)(gbl.byte_1AD2C[gbl.field_197] + gbl.byte_1D539);
-                            var_E = (sbyte)(gbl.byte_1AD2E[gbl.field_197] + gbl.byte_1D53A);
+                            var_D = (sbyte)(gbl.byte_1AD2C[gbl.field_197] + gbl.mapPosX);
+                            var_E = (sbyte)(gbl.byte_1AD2E[gbl.field_197] + gbl.mapPosY);
                             var_6 = 0;
 
                             for (var_A = 1; var_A <= 3; var_A++)
@@ -1208,8 +1208,8 @@ namespace engine
                     {
                         var_14++;
 
-                        var_D = (sbyte)(gbl.byte_1AD2C[gbl.field_197] + gbl.byte_1D539);
-                        var_E = (sbyte)(gbl.byte_1AD2E[gbl.field_197] + gbl.byte_1D53A);
+                        var_D = (sbyte)(gbl.byte_1AD2C[gbl.field_197] + gbl.mapPosX);
+                        var_E = (sbyte)(gbl.byte_1AD2E[gbl.field_197] + gbl.mapPosY);
 
                         var_8 = unk_165EC[gbl.byte_1AD32[gbl.field_197] + var_14];
 
@@ -1274,12 +1274,12 @@ namespace engine
             gbl.byte_1AD2C[0] = 0;
             gbl.byte_1AD2E[0] = 0;
 
-            gbl.byte_1AD32[0] = (byte)(gbl.byte_1D53B >> 1);
+            gbl.byte_1AD32[0] = (byte)(gbl.mapDirection >> 1);
 
-            gbl.byte_1AD2C[1] = (sbyte)((gbl.area2_ptr.field_582 * gbl.unk_189A6[gbl.byte_1D53B]) + gbl.byte_1AD2C[0]);
-            gbl.byte_1AD2E[1] = (sbyte)((gbl.area2_ptr.field_582 * gbl.unk_189AF[gbl.byte_1D53B]) + gbl.byte_1AD2E[0]);
+            gbl.byte_1AD2C[1] = (sbyte)((gbl.area2_ptr.field_582 * gbl.unk_189A6[gbl.mapDirection]) + gbl.byte_1AD2C[0]);
+            gbl.byte_1AD2E[1] = (sbyte)((gbl.area2_ptr.field_582 * gbl.unk_189AF[gbl.mapDirection]) + gbl.byte_1AD2E[0]);
 
-            gbl.byte_1AD32[1] = (byte)(((gbl.byte_1D53B + 4) % 8) >> 1);
+            gbl.byte_1AD32[1] = (byte)(((gbl.mapDirection + 4) % 8) >> 1);
 
             gbl.unk_1AD30[0] = (byte)((gbl.friends_count + 1) / 2);
             gbl.unk_1AD30[1] = (byte)((gbl.foe_count + 1) / 2);

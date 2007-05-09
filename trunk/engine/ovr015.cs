@@ -209,7 +209,7 @@ namespace engine
 			{
 				player = player_ptr;
 
-				if ( ovr031.sub_71573( gbl.byte_1D53B, gbl.byte_1D53A , gbl.byte_1D539 ) == 3 )
+				if ( ovr031.sub_71573( gbl.mapDirection, gbl.mapPosY , gbl.mapPosX ) == 3 )
 				{
 					if ( player.strength == 18 )
 					{
@@ -365,11 +365,11 @@ namespace engine
 
 			if ( bash_worked == true )
 			{
-				sub_43148( gbl.byte_1D53B , gbl.byte_1D53A , gbl.byte_1D539 );
+				sub_43148( gbl.mapDirection , gbl.mapPosY , gbl.mapPosX );
 
-                sbyte v3 = (sbyte)(gbl.unk_189A6[gbl.byte_1D53B] + gbl.byte_1D539);
-                sbyte v2 = (sbyte)(gbl.unk_189AF[gbl.byte_1D53B] + gbl.byte_1D53A);
-                byte v1 = (byte)((gbl.byte_1D53B + 4) % 8);
+                sbyte v3 = (sbyte)(gbl.unk_189A6[gbl.mapDirection] + gbl.mapPosX);
+                sbyte v2 = (sbyte)(gbl.unk_189AF[gbl.mapDirection] + gbl.mapPosY);
+                byte v1 = (byte)((gbl.mapDirection + 4) % 8);
 
 				sub_43148( v1, v2, v3 );
 			}
@@ -400,11 +400,11 @@ namespace engine
 
 			if( loop_end_flag == true )
 			{
-				sub_43148( gbl.byte_1D53B, gbl.byte_1D53A, gbl.byte_1D539 );
+				sub_43148( gbl.mapDirection, gbl.mapPosY, gbl.mapPosX );
 
-				sub_43148( (byte)(( gbl.byte_1D53B + 4 ) % 8), 
-					(sbyte)(gbl.unk_189AF[ gbl.byte_1D53B ] + gbl.byte_1D53A),
-					(sbyte)(gbl.unk_189A6[ gbl.byte_1D53B ] + gbl.byte_1D539) );
+				sub_43148( (byte)(( gbl.mapDirection + 4 ) % 8), 
+					(sbyte)(gbl.unk_189AF[ gbl.mapDirection ] + gbl.mapPosY),
+					(sbyte)(gbl.unk_189A6[ gbl.mapDirection ] + gbl.mapPosX) );
 			}
  
 			return loop_end_flag;
@@ -479,9 +479,9 @@ namespace engine
             sbyte var_4;
             sbyte var_2;
 
-			var_2 = gbl.byte_1D539;
-			var_4 = gbl.byte_1D53A;
-			var_6 = gbl.byte_1D53B;
+			var_2 = gbl.mapPosX;
+			var_4 = gbl.mapPosY;
+			var_6 = gbl.mapDirection;
 
 			gbl.area2_ptr.field_5AA = 0;
 
@@ -492,25 +492,25 @@ namespace engine
 
                 if (var_2 > 0x0F)
                 {
-                    gbl.byte_1D539 = 0x0F;
+                    gbl.mapPosX = 0x0F;
                     gbl.area2_ptr.field_5AA = 1;
                 }
 
                 if (var_2 < 0)
                 {
-                    gbl.byte_1D539 = 0;
+                    gbl.mapPosX = 0;
                     gbl.area2_ptr.field_5AA = 1;
                 }
 
                 if (var_4 > 0x0F)
                 {
-                    gbl.byte_1D53A = 0x0F;
+                    gbl.mapPosY = 0x0F;
                     gbl.area2_ptr.field_5AA = 1;
                 }
 
                 if (var_4 < 0)
                 {
-                    gbl.byte_1D53A = 0;
+                    gbl.mapPosY = 0;
                     gbl.area2_ptr.field_5AA = 1;
                 }
 			}
@@ -522,37 +522,37 @@ namespace engine
             seg044.sub_120E0( gbl.word_188D2 );
 			seg049.SysDelay( 50 );
 
-            gbl.byte_1D539 += gbl.unk_189A6[gbl.byte_1D53B];
-            gbl.byte_1D53A += gbl.unk_189AF[gbl.byte_1D53B];
+            gbl.mapPosX += gbl.unk_189A6[gbl.mapDirection];
+            gbl.mapPosY += gbl.unk_189AF[gbl.mapDirection];
 
-            if (gbl.byte_1D539 < 0)
+            if (gbl.mapPosX < 0)
             {
-                gbl.byte_1D539 = 0x0F;
+                gbl.mapPosX = 0x0F;
             }
 
-            if (gbl.byte_1D539 > 0x0f)
+            if (gbl.mapPosX > 0x0f)
             {
-                gbl.byte_1D539 = 0;
+                gbl.mapPosX = 0;
             }
 
-            if (gbl.byte_1D53A < 0)
+            if (gbl.mapPosY < 0)
             {
-                gbl.byte_1D53A = 0x0F;
+                gbl.mapPosY = 0x0F;
             }
 
-            if (gbl.byte_1D53A > 0x0f)
+            if (gbl.mapPosY > 0x0f)
             {
-                gbl.byte_1D53A = 0;
+                gbl.mapPosY = 0;
             }
 
 
-            gbl.byte_1D53C = ovr031.sub_716A2(gbl.byte_1D53B, gbl.byte_1D53A, gbl.byte_1D539);
+            gbl.byte_1D53C = ovr031.sub_716A2(gbl.mapDirection, gbl.mapPosY, gbl.mapPosX);
 
 			gbl.can_bash_door = true;
 			gbl.can_pick_door = true;
 			gbl.can_knock_door = true;
 
-            gbl.byte_1D53D = ovr031.sub_717A5( gbl.byte_1D53A, gbl.byte_1D539 );
+            gbl.byte_1D53D = ovr031.sub_717A5( gbl.mapPosY, gbl.mapPosX );
 
 			if( (gbl.area2_ptr.field_594 & 1) > 0 )
 			{
@@ -590,9 +590,9 @@ namespace engine
 								if( gbl.area_ptr.field_1F6 == 0 ||
 									seg051.ParamStr( 2 ) == gbl.byte_1EFA4 )
 								{
-									gbl.byte_1D538 = ( gbl.byte_1D538 == false );
+									gbl.mapAreaDisplay = ( gbl.mapAreaDisplay == false );
 
-									ovr031.sub_71820( gbl.byte_1D53B, gbl.byte_1D53A, gbl.byte_1D539 );
+									ovr031.sub_71820( gbl.mapDirection, gbl.mapPosY, gbl.mapPosX );
 								}
 								else
 								{
@@ -640,27 +640,27 @@ namespace engine
 								break;
 
 							case 'P':
-								gbl.byte_1D53B = (byte)((gbl.byte_1D53B + 4) % 8);
+								gbl.mapDirection = (byte)((gbl.mapDirection + 4) % 8);
 
-								gbl.byte_1D53C = ovr031.sub_716A2( gbl.byte_1D53B, gbl.byte_1D53A, gbl.byte_1D539 );
-								ovr031.sub_71820( gbl.byte_1D53B, gbl.byte_1D53A, gbl.byte_1D539 );
+								gbl.byte_1D53C = ovr031.sub_716A2( gbl.mapDirection, gbl.mapPosY, gbl.mapPosX );
+								ovr031.sub_71820( gbl.mapDirection, gbl.mapPosY, gbl.mapPosX );
 								break;
 
 							case 'K':
-								gbl.byte_1D53B = (byte)(( gbl.byte_1D53B + 6 ) % 8);
+								gbl.mapDirection = (byte)(( gbl.mapDirection + 6 ) % 8);
 
 								seg044.sub_120E0( gbl.word_188D2 );
-								gbl.byte_1D53C = ovr031.sub_716A2( gbl.byte_1D53B, gbl.byte_1D53A, gbl.byte_1D539 );
-								ovr031.sub_71820( gbl.byte_1D53B, gbl.byte_1D53A, gbl.byte_1D539 );
+								gbl.byte_1D53C = ovr031.sub_716A2( gbl.mapDirection, gbl.mapPosY, gbl.mapPosX );
+								ovr031.sub_71820( gbl.mapDirection, gbl.mapPosY, gbl.mapPosX );
 								break;
 
 							case 'M':
-								gbl.byte_1D53B = (byte)(( gbl.byte_1D53B + 2 ) % 8);
+								gbl.mapDirection = (byte)(( gbl.mapDirection + 2 ) % 8);
 
 								seg044.sub_120E0( gbl.word_188D2 );
 
-								gbl.byte_1D53C = ovr031.sub_716A2( gbl.byte_1D53B, gbl.byte_1D53A, gbl.byte_1D539 );
-								ovr031.sub_71820( gbl.byte_1D53B, gbl.byte_1D53A, gbl.byte_1D539 );
+								gbl.byte_1D53C = ovr031.sub_716A2( gbl.mapDirection, gbl.mapPosY, gbl.mapPosX );
+								ovr031.sub_71820( gbl.mapDirection, gbl.mapPosY, gbl.mapPosX );
 								break;
 
 							default:
@@ -701,7 +701,7 @@ namespace engine
                 {
                     gbl.byte_1D8AA = 1;
 
-                    byte al = ovr031.sub_71573( gbl.byte_1D53B, gbl.byte_1D53A, gbl.byte_1D539 );
+                    byte al = ovr031.sub_71573( gbl.mapDirection, gbl.mapPosY, gbl.mapPosX );
 
                     if( al == 1 )
                     {
@@ -732,7 +732,7 @@ namespace engine
 
                         if( var_2B == " Exit" )
                         {
-                            sub_4303C( gbl.byte_1D53B, gbl.byte_1D53A, gbl.byte_1D539 );
+                            sub_4303C( gbl.mapDirection, gbl.mapPosY, gbl.mapPosX );
                         }
                         else
                         {
@@ -780,7 +780,7 @@ namespace engine
 
                         if( var_2B == " Exit" )
                         {
-                            sub_4303C( gbl.byte_1D53B, gbl.byte_1D53A, gbl.byte_1D539 );
+                            sub_4303C( gbl.mapDirection, gbl.mapPosY, gbl.mapPosX );
                         }
                         else
                         {

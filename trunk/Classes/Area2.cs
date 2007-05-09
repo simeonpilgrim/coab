@@ -193,6 +193,10 @@ namespace Classes
 
             switch (loc)
             {
+                case 0x550:
+                    field_550 = (byte)value;
+                    break;
+
                 case 0x58C:
                     field_58C = value;
                     break;

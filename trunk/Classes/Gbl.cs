@@ -173,10 +173,10 @@ namespace Classes
         public static byte byte_1D535;
         public static byte byte_1D536;
         public static byte byte_1D537;
-        public static bool byte_1D538;
-        public static sbyte byte_1D539;
-        public static sbyte byte_1D53A;
-        public static byte byte_1D53B;
+        public static bool mapAreaDisplay; //byte_1D538, Show Area Map
+        public static sbyte mapPosX; // byte_1D539, 0 map left, + map right
+        public static sbyte mapPosY; // byte_1D53A, 0 map top, +map bottom
+        public static byte mapDirection; // byte_1D53B , 0 N, 2 E, 4 S, 6 W
         public static byte byte_1D53C;
         public static byte byte_1D53D;
 

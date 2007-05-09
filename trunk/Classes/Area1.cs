@@ -7,19 +7,26 @@ namespace Classes
     /// </summary>
     public class Area1
     {
+        const int Area1Size = 0x3fe;
+ 
         public Area1()
         {
-            field_200 = new short[33];
+            constructorInit();
         }
-
-        const int Area1Size = 0x3fe;
 
         public Area1(byte[] data, int offset)
         {
+            constructorInit();
+
             DataIO.ReadObject(this, data, offset);
 
-            origData = new byte[Area1Size];
             System.Array.Copy(data, offset, origData, 0, Area1Size);
+        }
+
+        private void constructorInit()
+        {
+            field_200 = new short[33];
+            origData = new byte[Area1Size];
         }
 
         public void Clear(byte value)

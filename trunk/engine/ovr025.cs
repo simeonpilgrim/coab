@@ -2205,14 +2205,10 @@ namespace engine
             string var_31;
             string var_8;
             string var_5;
-            sbyte var_2;
-            sbyte var_1;
 
             if (gbl.game_state != 3)
             {
                 var_31 = string.Empty;
-                var_1 = gbl.byte_1D539;
-                var_2 = gbl.byte_1D53A;
 
                 var_5 = ConcatWord(gbl.area_ptr.field_192);
 
@@ -2230,10 +2226,10 @@ namespace engine
 
                 if (gbl.area_ptr.field_1F6 == 0)
                 {
-                    var_31 = sub_670CC(var_1) + "," + sub_670CC(var_2) + " ";
+                    var_31 = gbl.mapPosX.ToString() + "," + gbl.mapPosY.ToString() + " ";
                 }
 
-                var_31 = var_31 + direction(gbl.byte_1D53B) + " " + var_5 + ":" + var_8;
+                var_31 = var_31 + direction(gbl.mapDirection) + " " + var_5 + ":" + var_8;
 
                 if (gbl.printCommands == true)
                 {

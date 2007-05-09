@@ -2119,9 +2119,9 @@ namespace engine
                         gbl.ecl_ptr = new EclBlock(data, 0);
 
                         seg051.BlockRead(5, data, var_1C8);
-                        gbl.byte_1D539 = (sbyte)data[0];
-                        gbl.byte_1D53A = (sbyte)data[1];
-                        gbl.byte_1D53B = data[2];
+                        gbl.mapPosX = (sbyte)data[0];
+                        gbl.mapPosY = (sbyte)data[1];
+                        gbl.mapDirection = data[2];
                         gbl.byte_1D53C = data[3];
                         gbl.byte_1D53D = data[4];
 
@@ -2362,9 +2362,9 @@ namespace engine
                     seg051.BlockWrite(0x400, gbl.stru_1B2CA.ToByteArray(), save_file);
                     seg051.BlockWrite(0x1E00, gbl.ecl_ptr.ToByteArray(), save_file);
 
-                    data[0] = (byte)gbl.byte_1D539;
-                    data[1] = (byte)gbl.byte_1D53A;
-                    data[2] = gbl.byte_1D53B;
+                    data[0] = (byte)gbl.mapPosX;
+                    data[1] = (byte)gbl.mapPosY;
+                    data[2] = gbl.mapDirection;
                     data[3] = gbl.byte_1D53C;
                     data[4] = gbl.byte_1D53D;
                     seg051.BlockWrite(5, data, save_file);

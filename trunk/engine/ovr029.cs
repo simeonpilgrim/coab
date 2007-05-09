@@ -18,7 +18,7 @@ namespace engine
             {
                 if (gbl.area_ptr.field_1CC != 0)
                 {
-                    gbl.byte_1D53D = ovr031.sub_717A5(gbl.byte_1D53A, gbl.byte_1D539);
+                    gbl.byte_1D53D = ovr031.sub_717A5(gbl.mapPosY, gbl.mapPosX);
 
                     if (gbl.byte_1D53D > 0x7F)
                     {
@@ -34,10 +34,10 @@ namespace engine
 
                     if (gbl.area_ptr.field_1F6 != 0)
                     {
-                        gbl.byte_1D538 = false;
+                        gbl.mapAreaDisplay = false;
                     }
 
-                    ovr031.sub_71820(gbl.byte_1D53B, gbl.byte_1D53A, gbl.byte_1D539);
+                    ovr031.sub_71820(gbl.mapDirection, gbl.mapPosY, gbl.mapPosX);
                 }
                 else if (gbl.byte_1D8AA != 0)
                 {
