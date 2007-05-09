@@ -235,7 +235,7 @@ namespace engine
 
             gbl.byte_1D92C = (byte)ovr008.vm_GetCmdValue(3);
 
-            gbl.area2_ptr.field_582 = ovr008.sub_304B4(gbl.byte_1D53B, gbl.byte_1D53A, gbl.byte_1D539);
+            gbl.area2_ptr.field_582 = ovr008.sub_304B4(gbl.mapDirection, gbl.mapPosY, gbl.mapPosX);
 
             if (gbl.area2_ptr.field_580 < gbl.area2_ptr.field_582)
             {
@@ -1305,7 +1305,7 @@ namespace engine
                     seg044.sub_12194();
                 }
 
-                var_2 = ovr008.sub_304B4(gbl.byte_1D53B, gbl.byte_1D53A, gbl.byte_1D539);
+                var_2 = ovr008.sub_304B4(gbl.mapDirection, gbl.mapPosY, gbl.mapPosX);
 
                 if (var_2 < gbl.area2_ptr.field_582)
                 {
@@ -1685,7 +1685,7 @@ namespace engine
             var_407 = (byte)ovr008.vm_GetCmdValue(0x0d);
             var_408 = (byte)ovr008.vm_GetCmdValue(0x0e);
 
-            gbl.area2_ptr.field_582 = ovr008.sub_304B4(gbl.byte_1D53B, gbl.byte_1D53A, gbl.byte_1D539);
+            gbl.area2_ptr.field_582 = ovr008.sub_304B4(gbl.mapDirection, gbl.mapPosY, gbl.mapPosX);
 
             if (gbl.area2_ptr.field_580 < gbl.area2_ptr.field_582)
             {
@@ -2363,7 +2363,7 @@ namespace engine
             switch (var_4)
             {
                 case 0xAE11:
-                    gbl.byte_1D53D = ovr031.sub_717A5(gbl.byte_1D53A, gbl.byte_1D539);
+                    gbl.byte_1D53D = ovr031.sub_717A5(gbl.mapPosY, gbl.mapPosX);
 
                     if (gbl.byte_1AB0B != 0)
                     {
@@ -2379,7 +2379,7 @@ namespace engine
                             gbl.byte_1EE8C = 0;
                             gbl.byte_1EE8F = 0;
 
-                            gbl.byte_1D53C = ovr031.sub_716A2(gbl.byte_1D53B, gbl.byte_1D53A, gbl.byte_1D539);
+                            gbl.byte_1D53C = ovr031.sub_716A2(gbl.mapDirection, gbl.mapPosY, gbl.mapPosX);
                         }
                     }
                     break;
@@ -2415,7 +2415,7 @@ namespace engine
                 case 0x4019:
                     if (gbl.area_ptr.field_1CC == 0)
                     {
-                        gbl.byte_1D53C = ovr031.sub_716A2(gbl.byte_1D53B, gbl.byte_1D53A, gbl.byte_1D539);
+                        gbl.byte_1D53C = ovr031.sub_716A2(gbl.mapDirection, gbl.mapPosY, gbl.mapPosX);
                     }
                     break;
 
@@ -2720,7 +2720,7 @@ namespace engine
                 gbl.byte_1D5AB = string.Empty;
                 gbl.byte_1D5B5 = 0x0FF;
                 gbl.byte_1AB09 = 0;
-                gbl.byte_1D53D = ovr031.sub_717A5(gbl.byte_1D53A, gbl.byte_1D539);
+                gbl.byte_1D53D = ovr031.sub_717A5(gbl.mapPosY, gbl.mapPosX);
 
                 gbl.area2_ptr.field_5AA = 0;
 
@@ -2905,14 +2905,14 @@ namespace engine
                     {
                         if (gbl.byte_1B2F0 == 0)
                         {
-                            gbl.area_ptr.field_1E0 = gbl.byte_1D539;
-                            gbl.area_ptr.field_1E2 = gbl.byte_1D53A;
+                            gbl.area_ptr.field_1E0 = gbl.mapPosX;
+                            gbl.area_ptr.field_1E2 = gbl.mapPosY;
 
                             ovr015.locked_door();
                             ovr029.sub_6F0BA();
 
-                            if (gbl.area_ptr.field_1E0 != gbl.byte_1D539 ||
-                                gbl.area_ptr.field_1E2 != gbl.byte_1D53A)
+                            if (gbl.area_ptr.field_1E0 != gbl.mapPosX ||
+                                gbl.area_ptr.field_1E2 != gbl.mapPosY)
                             {
                                 seg044.sub_120E0(gbl.word_188D2);
                             }

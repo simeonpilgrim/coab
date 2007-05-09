@@ -260,9 +260,9 @@ namespace engine
 
                 if (arg_0[0] == 0)
                 {
-                    if (gbl.byte_1D538 == true)
+                    if (gbl.mapAreaDisplay == true)
                     {
-                        gbl.byte_1D538 = false;
+                        gbl.mapAreaDisplay = false;
                         gbl.byte_1D8AA = 1;
                         ovr029.sub_6F0BA();
                     }
@@ -829,11 +829,11 @@ namespace engine
                     {
                         case 0xE3:
                             gbl.byte_1EE92 = 1;
-                            gbl.byte_1D539 = (sbyte)(value);
+                            gbl.mapPosX = (sbyte)(value);
                             break;
 
                         case 0xE4:
-                            gbl.byte_1D53A = (sbyte)(value);
+                            gbl.mapPosY = (sbyte)(value);
                             gbl.byte_1EE92 = 1;
                             break;
 
@@ -844,19 +844,19 @@ namespace engine
                                 switch (value)
                                 {
                                     case 0:
-                                        gbl.byte_1D53B = 0;
+                                        gbl.mapDirection = 0;
                                         break;
 
                                     case 1:
-                                        gbl.byte_1D53B = 2;
+                                        gbl.mapDirection = 2;
                                         break;
 
                                     case 2:
-                                        gbl.byte_1D53B = 4;
+                                        gbl.mapDirection = 4;
                                         break;
 
                                     case 3:
-                                        gbl.byte_1D53B = 6;
+                                        gbl.mapDirection = 6;
                                         break;
 
                                     default:
@@ -935,7 +935,7 @@ namespace engine
                                 break;
 
                             case 0x033D:
-                                var_2 = gbl.byte_1D53B;
+                                var_2 = gbl.mapDirection;
                                 break;
 
                             case 0x035F:
@@ -949,15 +949,15 @@ namespace engine
                         switch (arg_0)
                         {
                             case 0:
-                                var_2 = (ushort)gbl.byte_1D539;
+                                var_2 = (ushort)gbl.mapPosX;
                                 break;
 
                             case 0x01:
-                                var_2 = (ushort)((short)gbl.byte_1D53A);
+                                var_2 = (ushort)((short)gbl.mapPosY);
                                 break;
 
                             case 0x02:
-                                var_2 = gbl.byte_1D53B;
+                                var_2 = gbl.mapDirection;
                                 break;
 
                             case 0x03:
@@ -1394,54 +1394,54 @@ namespace engine
 
         internal static void sub_31B01()
         {
-            if (gbl.byte_1D53B == 0)
+            if (gbl.mapDirection == 0)
             {
-                if (gbl.byte_1D53A > 0)
+                if (gbl.mapPosY > 0)
                 {
-                    gbl.byte_1D53A--;
+                    gbl.mapPosY--;
                 }
                 else
                 {
-                    gbl.byte_1D53A = 0x0F;
+                    gbl.mapPosY = 0x0F;
                 }
             }
-            else if (gbl.byte_1D53B == 2)
+            else if (gbl.mapDirection == 2)
             {
-                if (gbl.byte_1D539 < 15)
+                if (gbl.mapPosX < 15)
                 {
-                    gbl.byte_1D539++;
+                    gbl.mapPosX++;
                 }
                 else
                 {
-                    gbl.byte_1D539 = 0;
+                    gbl.mapPosX = 0;
                 }
             }
-            else if (gbl.byte_1D53B == 4)
+            else if (gbl.mapDirection == 4)
             {
-                if (gbl.byte_1D53A < 15)
+                if (gbl.mapPosY < 15)
                 {
-                    gbl.byte_1D53A++;
+                    gbl.mapPosY++;
                 }
                 else
                 {
-                    gbl.byte_1D53A = 0;
+                    gbl.mapPosY = 0;
                 }
             }
-            else if (gbl.byte_1D53B == 6)
+            else if (gbl.mapDirection == 6)
             {
-                if (gbl.byte_1D539 > 0)
+                if (gbl.mapPosX > 0)
                 {
-                    gbl.byte_1D539--;
+                    gbl.mapPosX--;
                 }
                 else
                 {
-                    gbl.byte_1D539 = 0x0F;
+                    gbl.mapPosX = 0x0F;
                 }
             }
 
-            gbl.byte_1D53D = ovr031.sub_717A5(gbl.byte_1D53A, gbl.byte_1D539);
+            gbl.byte_1D53D = ovr031.sub_717A5(gbl.mapPosY, gbl.mapPosX);
 
-            gbl.byte_1D53C = ovr031.sub_716A2(gbl.byte_1D53B, gbl.byte_1D53A, gbl.byte_1D539);
+            gbl.byte_1D53C = ovr031.sub_716A2(gbl.mapDirection, gbl.mapPosY, gbl.mapPosX);
 
             gbl.byte_1EE92 = 1;
 

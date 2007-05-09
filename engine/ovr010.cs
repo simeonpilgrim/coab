@@ -518,7 +518,7 @@ namespace engine
                         else
                         {
                             player.actions.field_15 = ovr024.roll_dice(2, 1);
-                            var_1 = (byte)(gbl.byte_1D53B - (((gbl.byte_1D53B + 2) % 4) / 2));
+                            var_1 = (byte)(gbl.mapDirection - (((gbl.mapDirection + 2) % 4) / 2));
 
                             if (player.combat_team == 0)
                             {

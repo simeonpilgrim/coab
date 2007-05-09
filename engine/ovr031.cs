@@ -4,81 +4,61 @@ namespace engine
 {
     class ovr031
     {
-        internal static void sub_7100F(byte arg_0, sbyte arg_2, sbyte arg_4)
-        {
-            short var_A;
-            sbyte var_8;
-            sbyte var_7;
-            sbyte var_6;
-            sbyte var_5;
-            sbyte var_4;
-            sbyte var_3;
-            sbyte var_2;
-            sbyte var_1;
 
-            var_5 = (sbyte)(arg_4 - 5);
+        internal static void DrawAreaMap(int partyDir, int partyMapX, int partyMapY)
+        { /* sub_7100F */
+            const int displayWidth = 11;
+            const int halfDisplayWidth = displayWidth / 2;
+            const int displayOffset = 2;
 
-            if (var_5 < 0)
+            int offsetY = partyMapY - halfDisplayWidth;
+            offsetY = System.Math.Max(offsetY, 0);
+            offsetY = System.Math.Min(offsetY, halfDisplayWidth);
+
+
+            int offsetX = partyMapX - halfDisplayWidth;
+            offsetX = System.Math.Max(offsetX, 0);
+            offsetX = System.Math.Min(offsetX, halfDisplayWidth);
+
+
+            for (int x = 0; x < displayWidth; x++)
             {
-                var_5 = 0;
-            }
+                int mapX = (sbyte)(x + offsetX);
 
-            if (var_5 > 5)
-            {
-                var_5 = 5;
-            }
-
-            var_1 = (sbyte)(arg_4 - var_5);
-
-            var_6 = (sbyte)(arg_2 - 5);
-
-            if (var_6 < 0)
-            {
-                var_6 = 0;
-            }
-
-            if (var_6 > 5)
-            {
-                var_6 = 5;
-            }
-
-            var_2 = (sbyte)(arg_2 - var_6);
-
-            for (var_4 = 0; var_4 <= 10; var_4++)
-            {
-                var_8 = (sbyte)(var_4 + var_6);
-
-                for (var_3 = 0; var_3 <= 10; var_3++)
+                for (int y = 0; y < displayWidth; y++)
                 {
-                    var_7 = (sbyte)(var_3 + var_5);
+                    int mapY = (sbyte)(y + offsetY);
 
-                    var_A = 0x104;
+                    short var_A = 0x104;
 
-                    if (sub_716A2(0, var_8, var_7) > 0)
+                    if (sub_716A2(0, mapX, mapY) > 0)
                     {
                         var_A += 1;
                     }
 
-                    if (sub_716A2(2, var_8, var_7) > 0)
+                    if (sub_716A2(2, mapX, mapY) > 0)
                     {
                         var_A += 2;
                     }
 
-                    if (sub_716A2(4, var_8, var_7) > 0)
+                    if (sub_716A2(4, mapX, mapY) > 0)
                     {
                         var_A += 4;
                     }
 
-                    if (sub_716A2(6, var_8, var_7) > 0)
+                    if (sub_716A2(6, mapX, mapY) > 0)
                     {
                         var_A += 8;
                     }
 
-                    ovr038.Put8x8Symbol(0, 1, var_A, var_4 + 2, var_3 + 2);
+                    ovr038.Put8x8Symbol(0, 1, var_A, x + displayOffset, y + displayOffset);
                 }
             }
 
-            ovr038.Put8x8Symbol(0, 1, (short)((arg_0 >> 1) + 0x100), var_2 + 2, var_1 + 2);
+            int partyScreenY = partyMapY - offsetY;
+            int partyScreenX = partyMapX - offsetX;
+
+            ovr038.Put8x8Symbol(0, 1, (short)((partyDir >> 1) + 0x100), partyScreenX + displayOffset, partyScreenY + displayOffset);
             seg040.DrawOverlay();
         }
 
@@ -103,7 +83,7 @@ namespace engine
             seg040.sub_F6F7(gbl.overlayLines, gbl.unk_188B4, gbl.unk_188B4[0], 2, 11, 0x3c, 2);
             seg040.sub_F6F7(gbl.overlayLines, gbl.unk_188B4, gbl.byte_1D537, 0x2a, 11, 0x3e, 2);
 
-            if (sub_717A5(gbl.byte_1D53A, gbl.byte_1D53A) < 0x80 &&
+            if (sub_717A5(gbl.mapPosY, gbl.mapPosY) < 0x80 &&
                 gbl.byte_1D534 == 11)
             {
                 var_3 = 2;
@@ -115,30 +95,30 @@ namespace engine
                 if (var_2 >= 1 && var_2 <= 5)
                 {
 
-                    if (gbl.byte_1D53B == 2)
+                    if (gbl.mapDirection == 2)
                     {
                         seg040.sub_E353(gbl.overlayLines, gbl.sky_dax_251, 1, 0, (short)((var_4 + 5) - var_2), (short)(var_5 - 3));
                     }
-                    else if (gbl.byte_1D53B == 4 && var_2 > 2)
+                    else if (gbl.mapDirection == 4 && var_2 > 2)
                     {
                         seg040.sub_E353(gbl.overlayLines, gbl.sky_dax_251, 1, 0, (short)((var_4 + 5) - var_2), (short)((var_3 + var_2) - 3));
                     }
                 }
                 else if (var_2 >= 13 && var_2 <= 18)
                 {
-                    if (gbl.byte_1D53B == 6)
+                    if (gbl.mapDirection == 6)
                     {
 
                         seg040.sub_E353(gbl.overlayLines, gbl.sky_dax_251, 1, 0, (short)((var_4 + var_2) - 13), var_3);
                     }
-                    else if (gbl.byte_1D53B == 4 && var_2 >= 16)
+                    else if (gbl.mapDirection == 4 && var_2 >= 16)
                     {
 
                         seg040.sub_E353(gbl.overlayLines, gbl.sky_dax_251, 1, 0, (short)((var_4 + var_2) - 13), (short)((var_3 + var_2) - 8));
                     }
                 }
 
-                if (gbl.byte_1D53B == 0)
+                if (gbl.mapDirection == 0)
                 {
                     seg040.sub_E353(gbl.overlayLines, gbl.sky_dax_250, 1, 0, var_4, var_3);
                 }
@@ -183,24 +163,11 @@ namespace engine
             }
         }
 
+        const int MapSize = 16; // 16x16 so 0-15
 
-        internal static bool sub_71542(sbyte arg_0, sbyte arg_2)
-        {
-            bool var_1;
-
-            if (arg_2 > 15 ||
-                arg_2 < 0 ||
-                arg_0 > 15 ||
-                arg_0 < 0)
-            {
-                var_1 = false;
-            }
-            else
-            {
-                var_1 = true;
-            }
-
-            return var_1;
+        internal static bool MapCoordIsValid(int mapX, int mapY)
+        { /*sub_71542*/
+            return (mapY < MapSize && mapY >= 0 && mapX < MapSize && mapY >= 0);
         }
 
 
@@ -209,7 +176,7 @@ namespace engine
             byte var_2;
             byte var_1;
 
-            if (sub_71542(arg_2, arg_4) == false &&
+            if (MapCoordIsValid(arg_2, arg_4) == false &&
                 (gbl.byte_1EE88 == 0 || gbl.byte_1EE88 == 10))
             {
                 var_1 = 0;
@@ -265,50 +232,51 @@ namespace engine
         }
 
 
-        internal static byte sub_716A2(byte arg_0, sbyte arg_2, sbyte arg_4)
+        internal static byte sub_716A2(int direction, int mapX, int mapY)
         {
             byte var_1;
 
-            if (sub_71542(arg_2, arg_4) == false && (gbl.byte_1EE88 == 0 | gbl.byte_1EE88 == 10))
+            if (MapCoordIsValid(mapX, mapY) == false && 
+                (gbl.byte_1EE88 == 0 || gbl.byte_1EE88 == 10))
             {
                 var_1 = 0;
             }
             else
             {
-                if (arg_4 > 0x0F)
+                if (mapY > 0x0F)
                 {
-                    arg_4 = 0;
+                    mapY = 0;
                 }
-                else if (arg_4 < 0)
+                else if (mapY < 0)
                 {
-                    arg_4 = 0x0F;
-                }
-
-                if (arg_2 > 0x0F)
-                {
-                    arg_2 = 0;
-                }
-                else if (arg_2 < 0)
-                {
-                    arg_2 = 0x0F;
+                    mapY = 0x0F;
                 }
 
-                switch (arg_0)
+                if (mapX > 0x0F)
+                {
+                    mapX = 0;
+                }
+                else if (mapX < 0)
+                {
+                    mapX = 0x0F;
+                }
+
+                switch (direction)
                 {
                     case 0:
-                        var_1 = (byte)((gbl.stru_1D530[arg_4 + (arg_2 << 4)] & 0xf0) >> 4);
+                        var_1 = (byte)((gbl.stru_1D530[mapY + (mapX << 4)] & 0xf0) >> 4);
                         break;
 
                     case 2:
-                        var_1 = (byte)(gbl.stru_1D530[arg_4 + (arg_2 << 4)] & 0x0f);
+                        var_1 = (byte)(gbl.stru_1D530[mapY + (mapX << 4)] & 0x0f);
                         break;
 
                     case 4:
-                        var_1 = (byte)((gbl.stru_1D530[0x100 + arg_4 + (arg_2 << 4)] & 0xf0) >> 4);
+                        var_1 = (byte)((gbl.stru_1D530[0x100 + mapY + (mapX << 4)] & 0xf0) >> 4);
                         break;
 
                     case 6:
-                        var_1 = (byte)(gbl.stru_1D530[0x100 + arg_4 + (arg_2 << 4)] & 0x0f);
+                        var_1 = (byte)(gbl.stru_1D530[0x100 + mapY + (mapX << 4)] & 0x0f);
                         break;
 
                     default:
@@ -321,42 +289,43 @@ namespace engine
         }
 
 
-        internal static byte sub_717A5(sbyte arg_0, sbyte arg_2)
+        internal static byte sub_717A5(sbyte mapX, sbyte mapY)
         {
             byte var_1;
 
-            if (sub_71542(arg_0, arg_2) == false && (gbl.byte_1EE88 == 0 || gbl.byte_1EE88 == 0x0A))
+            if (MapCoordIsValid(mapX, mapY) == false && 
+                (gbl.byte_1EE88 == 0 || gbl.byte_1EE88 == 0x0A))
             {
                 var_1 = 0;
             }
             else
             {
-                if (arg_2 > 0x0F)
+                if (mapY > 0x0F)
                 {
-                    arg_2 = 0;
+                    mapY = 0;
                 }
-                if (arg_2 < 0)
+                if (mapY < 0)
                 {
-                    arg_2 = 0x0F;
-                }
-
-                if (arg_0 > 0x0F)
-                {
-                    arg_0 = 0;
-                }
-                if (arg_0 < 0)
-                {
-                    arg_0 = 0x0F;
+                    mapY = 0x0F;
                 }
 
-                var_1 = gbl.stru_1D530[0x200 + arg_2 + (arg_0 << 4)];
+                if (mapX > 0x0F)
+                {
+                    mapX = 0;
+                }
+                if (mapX < 0)
+                {
+                    mapX = 0x0F;
+                }
+
+                var_1 = gbl.stru_1D530[0x200 + mapY + (mapX << 4)];
             }
 
             return var_1;
         }
 
 
-        internal static void sub_71820(byte arg_0, sbyte arg_2, sbyte arg_4)
+        internal static void sub_71820(byte partyDir /*arg_0*/, sbyte partyPosX /*arg_2*/, sbyte partyPosY /*arg_4*/)
         {
             byte var_17;
             byte var_15;
@@ -374,22 +343,22 @@ namespace engine
             byte var_2;
             byte var_1;
 
-            if (gbl.byte_1D538 == true)
+            if (gbl.mapAreaDisplay == true)
             {
-                sub_7100F(arg_0, arg_2, arg_4);
+                DrawAreaMap(partyDir, partyPosX, partyPosY);
             }
             else
             {
                 sub_71184();
 
-                var_1 = (byte)((arg_0 + 6) % 8);
-                var_3 = (byte)((arg_0 + 4) % 8);
-                var_2 = (byte)((arg_0 + 2) % 8);
+                var_1 = (byte)((partyDir + 6) % 8);
+                var_3 = (byte)((partyDir + 4) % 8);
+                var_2 = (byte)((partyDir + 2) % 8);
 
-                var_5 = arg_4;
-                var_7 = arg_2;
-                var_9 = gbl.unk_189A6[arg_0];
-                var_B = gbl.unk_189AF[arg_0];
+                var_5 = partyPosY;
+                var_7 = partyPosX;
+                var_9 = gbl.unk_189A6[partyDir];
+                var_B = gbl.unk_189AF[partyDir];
                 var_13 = 2;
                 var_5 += (short)(var_13 * var_9);
                 var_7 += (short)(var_13 * var_B);
@@ -407,9 +376,9 @@ namespace engine
 
                             while (var_10 < 4)
                             {
-                                var_14 = sub_716A2(arg_0, (sbyte)var_F, (sbyte)var_D);
+                                var_14 = sub_716A2(partyDir, (sbyte)var_F, (sbyte)var_D);
 
-                                if (sub_71542((sbyte)var_F, (sbyte)var_D) == false &&
+                                if (MapCoordIsValid(var_F, var_D) == false &&
                                     sub_716A2(var_2, (sbyte)var_F, (sbyte)var_D) == 0)
                                 {
                                     var_17 = 0;
@@ -452,9 +421,9 @@ namespace engine
 
                             while (var_10 < 4)
                             {
-                                var_14 = sub_716A2(arg_0, (sbyte)var_F, (sbyte)var_D);
+                                var_14 = sub_716A2(partyDir, (sbyte)var_F, (sbyte)var_D);
 
-                                if (sub_71542((sbyte)var_F, (sbyte)var_D) == false &&
+                                if (MapCoordIsValid(var_F, var_D) == false &&
                                   sub_716A2(var_1, (sbyte)var_F, (sbyte)var_D) == 0)
                                 {
                                     var_17 = 0;
@@ -558,7 +527,7 @@ namespace engine
 
                             while (var_10 < 3)
                             {
-                                var_14 = sub_716A2(arg_0, (sbyte)var_F, (sbyte)var_D);
+                                var_14 = sub_716A2(partyDir, (sbyte)var_F, (sbyte)var_D);
                                 if (var_14 != 0)
                                 {
                                     sub_71434(3, var_14, (sbyte)gbl.byte_16E22, (sbyte)(gbl.word_16E0E + var_12));
@@ -583,7 +552,7 @@ namespace engine
                             var_12 = 6;
                             while (var_10 < 3)
                             {
-                                var_14 = sub_716A2(arg_0, (sbyte)var_F, (sbyte)var_D);
+                                var_14 = sub_716A2(partyDir, (sbyte)var_F, (sbyte)var_D);
 
                                 if (var_14 != 0)
                                 {
@@ -613,7 +582,7 @@ namespace engine
 
                             while (var_10 < 2)
                             {
-                                var_14 = sub_716A2(arg_0, (sbyte)var_F, (sbyte)var_D);
+                                var_14 = sub_716A2(partyDir, (sbyte)var_F, (sbyte)var_D);
 
                                 if (var_14 != 0)
                                 {
@@ -643,7 +612,7 @@ namespace engine
                             while (var_10 < 2)
                             {
 
-                                var_14 = sub_716A2(arg_0, (sbyte)var_F, (sbyte)var_D);
+                                var_14 = sub_716A2(partyDir, (sbyte)var_F, (sbyte)var_D);
 
                                 if (var_14 != 0)
                                 {

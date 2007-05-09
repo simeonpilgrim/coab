@@ -133,15 +133,15 @@ namespace engine
             gbl.word_1D5B6 = null;
             gbl.item_pointer = null;
 
-            gbl.byte_1D539 = 0;
-            gbl.byte_1D53A = 0;
-            gbl.byte_1D53B = 0;
+            gbl.mapPosX = 0;
+            gbl.mapPosY = 0;
+            gbl.mapDirection = 0;
             gbl.byte_1D53C = 0;
             gbl.byte_1D53D = 0;
 
-            gbl.byte_1D539 = 7;
-            gbl.byte_1D53A = 0x0D;
-            gbl.byte_1D53B = 0;
+            gbl.mapPosX = 7;
+            gbl.mapPosY = 0x0D;
+            gbl.mapDirection = 0;
 
             gbl.can_bash_door = true;
             gbl.can_pick_door = true;
@@ -173,7 +173,7 @@ namespace engine
             gbl.inDemo = false;
             gbl.game_area = 1;
             gbl.game_area_backup = 1;
-            gbl.byte_1D538 = false;
+            gbl.mapAreaDisplay = false;
             gbl.textWndXXX = 1;
             gbl.area2_ptr.field_67C = 0;
             gbl.word_1D5BC = 1;
@@ -264,15 +264,15 @@ namespace engine
             gbl.stru_1B2CA.Clear();
             gbl.ecl_ptr.Clear();
 
-            gbl.byte_1D539 = 0;
-            gbl.byte_1D53A = 0;
-            gbl.byte_1D53B = 0;
+            gbl.mapPosX = 0;
+            gbl.mapPosY = 0;
+            gbl.mapDirection = 0;
             gbl.byte_1D53C = 0;
             gbl.byte_1D53D = 0;
 
-            gbl.byte_1D539 = 7;
-            gbl.byte_1D53A = 0x0D;
-            gbl.byte_1D53B = 2;
+            gbl.mapPosX = 7;
+            gbl.mapPosY = 0x0D;
+            gbl.mapDirection = 2;
 
             gbl.can_bash_door = true;
             gbl.can_pick_door = true;
@@ -298,7 +298,7 @@ namespace engine
             gbl.game_speed_var = 4;
             gbl.game_area = 1;
             gbl.game_area_backup = 1;
-            gbl.byte_1D538 = false;
+            gbl.mapAreaDisplay = false;
             gbl.textWndXXX = 1;
             gbl.area2_ptr.field_67C = 0;
             gbl.word_1D5BC = 1;

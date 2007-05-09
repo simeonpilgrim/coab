@@ -78,9 +78,9 @@ namespace engine
             {
                 symbol_id -= gbl.symbol_set_fix[symbol_set];
 
-                if( arg_2 != 0 )
+                if (arg_2 != 0)
                 {
-                    seg040.OverlayUnbounded( gbl.overlayLines, gbl.symbol_8x8_set[symbol_set], arg_0, (byte)symbol_id, rowY, colX );
+                    seg040.OverlayUnbounded(gbl.overlayLines, gbl.symbol_8x8_set[symbol_set], arg_0, (byte)symbol_id, rowY, colX);
                 }
                 else
                 {

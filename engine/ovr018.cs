@@ -3047,46 +3047,32 @@ namespace engine
                                 break;
 
                             case Race.half_elf:
-                                throw new System.NotSupportedException();//cmp	[bp+var_13], 0
-                                throw new System.NotSupportedException();//jnz	loc_50ED8
-                                throw new System.NotSupportedException();//cmp	[bp+var_19], 5
-                                throw new System.NotSupportedException();//jnz	loc_50ED8
-                                var_1 = 1;
-                                throw new System.NotSupportedException();//jmp	short loc_50F3E
-                                throw new System.NotSupportedException();//loc_50ED8:
-                                throw new System.NotSupportedException();//cmp	[bp+var_13], 2
-                                throw new System.NotSupportedException();//jz	loc_50EE4
-                                throw new System.NotSupportedException();//cmp	[bp+var_13], 4
-                                throw new System.NotSupportedException();//jnz	loc_50F0E
-                                throw new System.NotSupportedException();//loc_50EE4:
-                                throw new System.NotSupportedException();//cmp	[bp+var_19], 8
-                                throw new System.NotSupportedException();//jz	loc_50F0A
-                                throw new System.NotSupportedException();//cmp	[bp+var_19], 7
-                                throw new System.NotSupportedException();//jnz	loc_50EFA
-                                throw new System.NotSupportedException();//les	di, int ptr [bp+player_ptr.offset]
-                                throw new System.NotSupportedException();//cmp	es:[di+charStruct.strength], 0x11
-                                throw new System.NotSupportedException();//jz	loc_50F0A
-                                throw new System.NotSupportedException();//loc_50EFA:
-                                throw new System.NotSupportedException();//cmp	[bp+var_19], 6
-                                throw new System.NotSupportedException();//jnz	loc_50F0E
-                                throw new System.NotSupportedException();//les	di, int ptr [bp+player_ptr.offset]
-                                throw new System.NotSupportedException();//cmp	es:[di+charStruct.strength], 0x11
-                                throw new System.NotSupportedException();//jnb	loc_50F0E
-                                //loc_50F0A:
-                                var_1 = 1;
-                                //loc_50F0E:
-
-                                var_1 = 1;
-                                if (var_13 == 5)
+                                if (var_13 == 0 && var_19 == 5)
                                 {
-                                    if (var_19 == 8 ||
-                                        (var_19 == 7 && player_ptr.strength == 0x11) ||
-                                        (var_19 == 6 && player_ptr.strength < 0x11))
-                                    {
-                                        var_1 = 1;
-                                    }
+                                    var_1 = 1;
                                 }
-                                //loc_50F3E:
+                                else
+                                {
+                                    if (var_13 == 2 || var_13 == 4)
+                                    {
+                                        if (var_19 == 8 ||
+                                            (var_19 == 7 && player_ptr.strength == 0x11) ||
+                                            (var_19 == 6 && player_ptr.strength < 0x11))
+                                        {
+                                            var_1 = 1;
+                                        }
+                                    }
+
+                                    if (var_13 == 5)
+                                    {
+                                        if (var_19 == 8 ||
+                                            (var_19 == 7 && player_ptr.strength == 0x11) ||
+                                            (var_19 == 6 && player_ptr.strength < 0x11))
+                                        {
+                                            var_1 = 1;
+                                        }
+                                    }
+                                } 
                                 break;
 
                             case Race.halfling:
