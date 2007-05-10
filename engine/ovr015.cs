@@ -137,35 +137,35 @@ namespace engine
         }
 
 
-        internal static void sub_43148( byte arg_0, sbyte arg_2, sbyte arg_4 )
+        internal static void MapSetDoorUnlocked( int mapDir, int mapX, int mapY ) /*sub_43148*/
         {
-			if( arg_4 < 0 || arg_4 > 15 ||
-				arg_2 < 0 || arg_2 > 15 )
+			if( mapY < 0 || mapY > 15 ||
+				mapX < 0 || mapX > 15 )
 			{
 				return;
 			}
 
-			switch( arg_0 )
+			switch( mapDir )
 			{
 				case 6:
-                    gbl.stru_1D530[0x300 + arg_4 + (arg_2 << 4)] &= 0x3F;
-                    gbl.stru_1D530[0x300 + arg_4 + (arg_2 << 4)] |= 0x40;
+                    gbl.stru_1D530[0x300 + mapY + (mapX << 4)] &= 0x3F;
+                    gbl.stru_1D530[0x300 + mapY + (mapX << 4)] |= 0x40;
 
 					break;
 
 				case 4:
-                    gbl.stru_1D530[0x300 + arg_4 + (arg_2 << 4)] &= 0xCF;
-                    gbl.stru_1D530[0x300 + arg_4 + (arg_2 << 4)] |= 0x10;
+                    gbl.stru_1D530[0x300 + mapY + (mapX << 4)] &= 0xCF;
+                    gbl.stru_1D530[0x300 + mapY + (mapX << 4)] |= 0x10;
 					break;
 
 				case 2:
-                    gbl.stru_1D530[0x300 + arg_4 + (arg_2 << 4)] &= 0xF3;
-                    gbl.stru_1D530[0x300 + arg_4 + (arg_2 << 4)] |= 0x04;
+                    gbl.stru_1D530[0x300 + mapY + (mapX << 4)] &= 0xF3;
+                    gbl.stru_1D530[0x300 + mapY + (mapX << 4)] |= 0x04;
 					break;
 
 				case 0:
-                    gbl.stru_1D530[0x300 + arg_4 + (arg_2 << 4)] &= 0xFC;
-                    gbl.stru_1D530[0x300 + arg_4 + (arg_2 << 4)] |= 0x01;
+                    gbl.stru_1D530[0x300 + mapY + (mapX << 4)] &= 0xFC;
+                    gbl.stru_1D530[0x300 + mapY + (mapX << 4)] |= 0x01;
 					break;
 			}
         }
@@ -197,19 +197,15 @@ namespace engine
 
         internal static bool bash_door( )
         {
-            Player player;
-            bool bash_worked;
-            Player player_ptr;
+            bool bash_worked = false;
+            Player player_ptr = gbl.player_next_ptr;
 
-            bash_worked = false;
-
-			player_ptr = gbl.player_next_ptr;
 			while ( player_ptr != null &&
 					bash_worked == false )
 			{
-				player = player_ptr;
+                Player player = player_ptr;
 
-				if ( ovr031.sub_71573( gbl.mapDirection, gbl.mapPosY , gbl.mapPosX ) == 3 )
+				if ( ovr031.WallDoorFlagsGet( gbl.mapDirection, gbl.mapPosY , gbl.mapPosX ) == 3 )
 				{
 					if ( player.strength == 18 )
 					{
@@ -365,32 +361,30 @@ namespace engine
 
 			if ( bash_worked == true )
 			{
-				sub_43148( gbl.mapDirection , gbl.mapPosY , gbl.mapPosX );
+				MapSetDoorUnlocked( gbl.mapDirection , gbl.mapPosY , gbl.mapPosX );
 
-                sbyte v3 = (sbyte)(gbl.unk_189A6[gbl.mapDirection] + gbl.mapPosX);
-                sbyte v2 = (sbyte)(gbl.unk_189AF[gbl.mapDirection] + gbl.mapPosY);
-                byte v1 = (byte)((gbl.mapDirection + 4) % 8);
+                int v3 = gbl.MapDirectionXDelta[gbl.mapDirection] + gbl.mapPosX;
+                int v2 = gbl.MapDirectionYDelta[gbl.mapDirection] + gbl.mapPosY;
+                int v1 = (gbl.mapDirection + 4) % 8;
 
-				sub_43148( v1, v2, v3 );
+				MapSetDoorUnlocked( v1, v2, v3 );
 			}
 
 			return bash_worked;
         }
 
 
-        internal static bool sub_435B6( )
+        internal static bool pick_lock( ) /*sub_435B6*/
         {
-            Player player;
+            bool door_picked = false;
+            Player player = gbl.player_next_ptr;
 
-            bool loop_end_flag = false;
-            player = gbl.player_next_ptr;
-
-			while( player != null && loop_end_flag == false )
+			while( player != null && door_picked == false )
 			{
                 if (ovr024.roll_dice(100, 1) <= player.field_EA[1] &&
 					player.health_status == Status.okey )
 				{
-					loop_end_flag = true;
+					door_picked = true;
 				}
 
 				player = player.next_player;
@@ -398,16 +392,16 @@ namespace engine
 
             gbl.can_pick_door = false;
 
-			if( loop_end_flag == true )
+			if( door_picked == true )
 			{
-				sub_43148( gbl.mapDirection, gbl.mapPosY, gbl.mapPosX );
+				MapSetDoorUnlocked( gbl.mapDirection, gbl.mapPosY, gbl.mapPosX );
 
-				sub_43148( (byte)(( gbl.mapDirection + 4 ) % 8), 
-					(sbyte)(gbl.unk_189AF[ gbl.mapDirection ] + gbl.mapPosY),
-					(sbyte)(gbl.unk_189A6[ gbl.mapDirection ] + gbl.mapPosX) );
+				MapSetDoorUnlocked( ( gbl.mapDirection + 4 ) % 8, 
+					gbl.MapDirectionYDelta[ gbl.mapDirection ] + gbl.mapPosY,
+					gbl.MapDirectionXDelta[ gbl.mapDirection ] + gbl.mapPosX );
 			}
  
-			return loop_end_flag;
+			return door_picked;
         }
 
         internal static int find_spell(Player player, SpellId spell_id)
@@ -475,40 +469,36 @@ namespace engine
 
         internal static void sub_43765( )
         {
-            byte var_6;
-            sbyte var_4;
-            sbyte var_2;
-
-			var_2 = gbl.mapPosX;
-			var_4 = gbl.mapPosY;
-			var_6 = gbl.mapDirection;
+			int mapX = gbl.mapPosX;
+			int mapY = gbl.mapPosY;
+			int mapDir = gbl.mapDirection;
 
 			gbl.area2_ptr.field_5AA = 0;
 
-			if( ovr031.sub_71573( var_6, var_4, var_2 ) != 0 )
+			if( ovr031.WallDoorFlagsGet( mapDir, mapY, mapX ) != 0 )
 			{
-                var_2 += gbl.unk_189A6[var_6];
-                var_4 += gbl.unk_189AF[var_6];
+                mapX += gbl.MapDirectionXDelta[mapDir];
+                mapY += gbl.MapDirectionYDelta[mapDir];
 
-                if (var_2 > 0x0F)
+                if (mapX > 0x0F)
                 {
                     gbl.mapPosX = 0x0F;
                     gbl.area2_ptr.field_5AA = 1;
                 }
 
-                if (var_2 < 0)
+                if (mapX < 0)
                 {
                     gbl.mapPosX = 0;
                     gbl.area2_ptr.field_5AA = 1;
                 }
 
-                if (var_4 > 0x0F)
+                if (mapY > 0x0F)
                 {
                     gbl.mapPosY = 0x0F;
                     gbl.area2_ptr.field_5AA = 1;
                 }
 
-                if (var_4 < 0)
+                if (mapY < 0)
                 {
                     gbl.mapPosY = 0;
                     gbl.area2_ptr.field_5AA = 1;
@@ -517,13 +507,13 @@ namespace engine
         }
 
 
-        internal static void sub_43813( )
+        internal static void MovePartyForward( ) /* sub_43813 */
         {
             seg044.sub_120E0( gbl.word_188D2 );
 			seg049.SysDelay( 50 );
 
-            gbl.mapPosX += gbl.unk_189A6[gbl.mapDirection];
-            gbl.mapPosY += gbl.unk_189AF[gbl.mapDirection];
+            gbl.mapPosX += gbl.MapDirectionXDelta[gbl.mapDirection];
+            gbl.mapPosY += gbl.MapDirectionYDelta[gbl.mapDirection];
 
             if (gbl.mapPosX < 0)
             {
@@ -701,7 +691,7 @@ namespace engine
                 {
                     gbl.byte_1D8AA = 1;
 
-                    byte al = ovr031.sub_71573( gbl.mapDirection, gbl.mapPosY, gbl.mapPosX );
+                    byte al = ovr031.WallDoorFlagsGet( gbl.mapDirection, gbl.mapPosY, gbl.mapPosX );
 
                     if( al == 1 )
                     {
@@ -744,9 +734,8 @@ namespace engine
                                     var_1 = bash_door();
                                     break;
 
-
                                 case 'P':
-                                    var_1 = sub_435B6();
+                                    var_1 = pick_lock();
                                     break;
 
                                 case 'K':
@@ -805,7 +794,7 @@ namespace engine
 
                     if( var_1 == true )
                     {
-                        sub_43813();
+                        MovePartyForward();
                     }
 
                     ovr025.camping_search();

@@ -280,8 +280,8 @@ namespace engine
             var_6 = gbl.stru_1C9CD[player_index].field_1;
 
 
-            var_3 = (sbyte)(var_5 + gbl.unk_189A6[arg_0]);
-            var_4 = (sbyte)(var_6 + gbl.unk_189AF[arg_0]);
+            var_3 = (sbyte)(var_5 + gbl.MapDirectionXDelta[arg_0]);
+            var_4 = (sbyte)(var_6 + gbl.MapDirectionYDelta[arg_0]);
 
             if ((arg_0 & 0x01) != 0)
             {
@@ -374,13 +374,13 @@ namespace engine
                     var_D[var_18] = gbl.byte_1D8B9[var_18];
                 }
 
-                gbl.stru_1C9CD[player_index].field_0 += gbl.unk_189A6[arg_0];
-                gbl.stru_1C9CD[player_index].field_1 += gbl.unk_189AF[arg_0];
+                gbl.stru_1C9CD[player_index].field_0 += gbl.MapDirectionXDelta[arg_0];
+                gbl.stru_1C9CD[player_index].field_1 += gbl.MapDirectionYDelta[arg_0];
 
                 var_16 = ovr025.near_enermy(1, player);
 
-                gbl.stru_1C9CD[player_index].field_0 -= gbl.unk_189A6[arg_0];
-                gbl.stru_1C9CD[player_index].field_1 -= gbl.unk_189AF[arg_0];
+                gbl.stru_1C9CD[player_index].field_0 -= gbl.MapDirectionXDelta[arg_0];
+                gbl.stru_1C9CD[player_index].field_1 -= gbl.MapDirectionYDelta[arg_0];
 
                 for (var_18 = 1; var_18 <= var_15; var_18++)
                 {
@@ -1293,8 +1293,8 @@ namespace engine
 
             for (var_A = 0; var_A <= 8; var_A++)
             {
-                var_6 = (sbyte)(gbl.unk_189A6[var_A] + ovr033.sub_74C32(arg_4));
-                var_7 = (sbyte)(gbl.unk_189AF[var_A] + ovr033.sub_74C5A(arg_4));
+                var_6 = (sbyte)(gbl.MapDirectionXDelta[var_A] + ovr033.sub_74C32(arg_4));
+                var_7 = (sbyte)(gbl.MapDirectionYDelta[var_A] + ovr033.sub_74C5A(arg_4));
 
                 ovr033.sub_74505(out var_D, out var_C, var_7, var_6);
 
@@ -2422,8 +2422,8 @@ namespace engine
             while (asc_41342.MemberOf(var_2A) == false)
             {
                 ovr033.sub_749DD(var_2F, 3, var_34, var_33);
-                var_33 += gbl.unk_189A6[var_2F];
-                var_34 += gbl.unk_189AF[var_2F];
+                var_33 += gbl.MapDirectionXDelta[var_2F];
+                var_34 += gbl.MapDirectionYDelta[var_2F];
 
                 if (var_33 < 0)
                 {

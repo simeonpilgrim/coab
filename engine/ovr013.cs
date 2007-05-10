@@ -654,8 +654,8 @@ namespace engine
                 {
                     if (var_8.field_10[var_B] != 0)
                     {
-                        var_C = (sbyte)(var_8.field_1A + gbl.unk_189A6[gbl.unk_18AE9[var_B]]);
-                        var_D = (sbyte)(var_8.field_1B + gbl.unk_189AF[gbl.unk_18AE9[var_B]]);
+                        var_C = (sbyte)(var_8.field_1A + gbl.MapDirectionXDelta[gbl.unk_18AE9[var_B]]);
+                        var_D = (sbyte)(var_8.field_1B + gbl.MapDirectionYDelta[gbl.unk_18AE9[var_B]]);
 
                         var_9 = false;
                         var_E = gbl.byte_1D1BB;
@@ -706,8 +706,8 @@ namespace engine
                     {
                         if (var_4.field_10[var_B] != 0)
                         {
-                            int cx = gbl.unk_189A6[gbl.unk_18AE9[var_B]] + var_4.field_1A;
-                            int ax = gbl.unk_189AF[gbl.unk_18AE9[var_B]] + var_4.field_1B;
+                            int cx = gbl.MapDirectionXDelta[gbl.unk_18AE9[var_B]] + var_4.field_1A;
+                            int ax = gbl.MapDirectionYDelta[gbl.unk_18AE9[var_B]] + var_4.field_1B;
 
                             gbl.stru_1D1BC[cx, ax] = 0x1E;
                         }
@@ -1333,8 +1333,8 @@ namespace engine
                 {
                     if (var_8.field_10[var_B] != 0)
                     {
-                        var_C = (sbyte)(var_8.field_1A + gbl.unk_189A6[gbl.unk_18AED[var_B]]);
-                        var_D = (sbyte)(var_8.field_1B + gbl.unk_189AF[gbl.unk_18AED[var_B]]);
+                        var_C = (sbyte)(var_8.field_1A + gbl.MapDirectionXDelta[gbl.unk_18AED[var_B]]);
+                        var_D = (sbyte)(var_8.field_1B + gbl.MapDirectionYDelta[gbl.unk_18AED[var_B]]);
 
                         var_9 = 0;
                         var_E = gbl.byte_1D1BB;
@@ -1384,8 +1384,8 @@ namespace engine
                     {
                         if (var_4.field_10[var_B] != 0)
                         {
-                            int cx = gbl.unk_189A6[gbl.unk_18AED[var_B]] + var_4.field_1A;
-                            int ax = gbl.unk_189AF[gbl.unk_18AED[var_B]] + var_4.field_1B;
+                            int cx = gbl.MapDirectionXDelta[gbl.unk_18AED[var_B]] + var_4.field_1A;
+                            int ax = gbl.MapDirectionYDelta[gbl.unk_18AED[var_B]] + var_4.field_1B;
 
                             gbl.stru_1D1BC[cx, ax] = 0x1C;
                         }

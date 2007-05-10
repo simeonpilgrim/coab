@@ -1359,8 +1359,8 @@ namespace engine
                             break;
                     }
 
-                    arg_6 += gbl.unk_189A6[var_53[var_20]];
-                    arg_4 += gbl.unk_189AF[var_53[var_20]];
+                    arg_6 += gbl.MapDirectionXDelta[var_53[var_20]];
+                    arg_4 += gbl.MapDirectionYDelta[var_53[var_20]];
 
 
                     if (var_20 == var_21)
@@ -2015,8 +2015,8 @@ namespace engine
                 var_12 = gbl.unk_18AE9[var_11];
 
                 ovr033.sub_74505(out var_F, out var_C[var_11 - 1],
-                    gbl.byte_1D884 + gbl.unk_189AF[var_12],
-                    gbl.byte_1D883 + gbl.unk_189A6[var_12]);
+                    gbl.byte_1D884 + gbl.MapDirectionYDelta[var_12],
+                    gbl.byte_1D883 + gbl.MapDirectionXDelta[var_12]);
 
                 throw new System.NotSupportedException();//cmp	[bp+var_F], 0
                 throw new System.NotSupportedException();//jbe	loc_5E985
@@ -2161,8 +2161,8 @@ namespace engine
                 throw new System.NotSupportedException();//cmp	byte ptr es:[di+10h], 0
                 throw new System.NotSupportedException();//jz	loc_5EB88
 
-                int cx = gbl.unk_189A6[var_12] + gbl.byte_1D883;
-                int ax = gbl.unk_189AF[var_12] + gbl.byte_1D884;
+                int cx = gbl.MapDirectionXDelta[var_12] + gbl.byte_1D883;
+                int ax = gbl.MapDirectionYDelta[var_12] + gbl.byte_1D884;
 
                 gbl.stru_1D1BC[cx, ax] = 0x1E;
                 throw new System.NotSupportedException();//loc_5EB88:
@@ -2559,7 +2559,7 @@ namespace engine
 
                         for (var_1 = 1; var_1 <= var_19; var_1++)
                         {
-                            if (var_11 == var_18.field_1A + gbl.unk_189A6[gbl.unk_18AE9[var_1]])
+                            if (var_11 == var_18.field_1A + gbl.MapDirectionXDelta[gbl.unk_18AE9[var_1]])
                             {
                                 throw new System.NotSupportedException();//mov	al, [bp+var_1]
                                 throw new System.NotSupportedException();//xor	ah, ah
@@ -3659,8 +3659,8 @@ namespace engine
                 var_17 = gbl.unk_18AED[var_16];
 
                 ovr033.sub_74505(out var_14, out var_11[var_16],
-                    gbl.byte_1D884 + gbl.unk_189AF[var_17],
-                    gbl.byte_1D883 + gbl.unk_189A6[var_17]);
+                    gbl.byte_1D884 + gbl.MapDirectionYDelta[var_17],
+                    gbl.byte_1D883 + gbl.MapDirectionXDelta[var_17]);
 
                 if (var_14 > 0 &&
                     gbl.unk_189B4[var_14].field_0 < 0xff)
@@ -3882,8 +3882,8 @@ namespace engine
 
                 if (var_8.field_10[var_16] != 0)
                 {
-                    int cx = gbl.unk_189A6[var_17] + gbl.byte_1D883;
-                    int ax = gbl.unk_189AF[var_17] + gbl.byte_1D884;
+                    int cx = gbl.MapDirectionXDelta[var_17] + gbl.byte_1D883;
+                    int ax = gbl.MapDirectionYDelta[var_17] + gbl.byte_1D884;
 
                     gbl.stru_1D1BC[cx, ax] = 0x1C;
                 }
@@ -3893,8 +3893,8 @@ namespace engine
 
             if (var_8.field_10[var_16] != 0)
             {
-                int cx = gbl.unk_189A6[var_17] + gbl.byte_1D883;
-                int ax = gbl.unk_189AF[var_17] + gbl.byte_1D884;
+                int cx = gbl.MapDirectionXDelta[var_17] + gbl.byte_1D883;
+                int ax = gbl.MapDirectionYDelta[var_17] + gbl.byte_1D884;
 
                 gbl.stru_1D1BC[cx, ax] = 0x1C;
             }

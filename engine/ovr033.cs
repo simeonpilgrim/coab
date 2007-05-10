@@ -412,8 +412,8 @@ namespace engine
             byte var_5;
             Player var_4;
 
-            var_6 = (sbyte)(arg_6 + gbl.unk_189A6[arg_0]);
-            var_7 = (sbyte)(arg_4 + gbl.unk_189AF[arg_0]);
+            var_6 = (sbyte)(arg_6 + gbl.MapDirectionXDelta[arg_0]);
+            var_7 = (sbyte)(arg_4 + gbl.MapDirectionYDelta[arg_0]);
 
             if (sub_7481B(arg_2, (byte)var_7, (byte)var_6) != 0)
             {
@@ -587,8 +587,8 @@ namespace engine
             {
                 if (sub_7400F(out var_B, out var_A, var_1, gbl.stru_1C9CD[var_2].field_3) == true)
                 {
-                    var_6 = (sbyte)(var_8 + var_A + gbl.unk_189A6[arg_10]);
-                    var_7 = (sbyte)(var_9 + var_B + gbl.unk_189AF[arg_10]);
+                    var_6 = (sbyte)(var_8 + var_A + gbl.MapDirectionXDelta[arg_10]);
+                    var_7 = (sbyte)(var_9 + var_B + gbl.MapDirectionYDelta[arg_10]);
 
                     sub_74505(out var_4, out var_3, var_7, var_6);
 
