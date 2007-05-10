@@ -167,9 +167,7 @@ namespace Classes
                     break;
 
                 default:
-                    //throw new NotImplementedException();
-                    System.Console.WriteLine("       default access");
-                    Sys.ShortToArray((short)value, origData, loc);
+                    DataIO.SetObjectUShort(this, origData, loc, value);
                     break;
             }
         }
@@ -184,6 +182,12 @@ namespace Classes
             {
                 case 0x192:
                     return field_192;
+
+                //case 0x1E0:
+                //    return (ushort)field_1E0;
+
+                //case 0x1E2:
+                //    return (ushort)field_1E2;
 
                 case 0x1E4:
                     return field_1E4;
@@ -212,14 +216,11 @@ namespace Classes
                 case 0x21e:
                     return (ushort)field_200[(loc - 0x200) / 2];
 
-
                 case 0x226:
                     return field_226;
 
                 default:
-                    System.Console.WriteLine("       default access");
-                    return Sys.ArrayToUshort(origData, loc);
-                    //throw new NotImplementedException();
+                    return DataIO.GetObjectUShort(this, origData, loc);
             }
         }
 

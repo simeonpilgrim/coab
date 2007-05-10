@@ -86,6 +86,69 @@ namespace Classes
 
     public class DataIO
     {
+        static public ushort GetObjectUShort(object obj, byte[] data, int location)
+        {
+            Type type = obj.GetType();
+
+            // Iterate through all the fields of the class.
+            foreach (FieldInfo fInfo in type.GetFields())
+            {
+                DataOffsetAttribute doAttr = (DataOffsetAttribute)Attribute.GetCustomAttribute(fInfo, typeof(DataOffsetAttribute));
+                if (doAttr != null && doAttr.Offset == location)
+                {
+                    return GetObjectUshortValue(obj, fInfo, doAttr);
+                }
+            }
+
+            return Sys.ArrayToUshort(data, location);
+        }
+
+        static public void SetObjectUShort(object obj, byte[] data, int location, ushort value)
+        {
+            Type type = obj.GetType();
+
+            // Iterate through all the fields of the class.
+            foreach (FieldInfo fInfo in type.GetFields())
+            {
+                DataOffsetAttribute doAttr = (DataOffsetAttribute)Attribute.GetCustomAttribute(fInfo, typeof(DataOffsetAttribute));
+                if (doAttr != null && doAttr.Offset == location)
+                {
+                    SetObjectUshortValue(obj, fInfo, doAttr, value);
+                    return;
+                }
+            }
+
+            Sys.ShortToArray((short)value, data, location);
+        }
+
+        static private ushort GetObjectUshortValue(object obj, FieldInfo fInfo, DataOffsetAttribute attr)
+        {
+            object o = fInfo.GetValue(obj);
+            switch (attr.Type)
+            {
+                case DataType.SByte:
+                    return (ushort)(sbyte)o;
+                case DataType.SWord:
+                    return (ushort)(short)o;
+                default:
+                    return 0;
+            }
+        }
+
+        static private void SetObjectUshortValue(object obj, FieldInfo fInfo, DataOffsetAttribute attr, ushort value)
+        {
+            object o = fInfo.GetValue(obj);
+            switch (attr.Type)
+            {
+                case DataType.SByte:
+                    fInfo.SetValue(obj, (sbyte)value);
+                    break;
+                case DataType.SWord:
+                    fInfo.SetValue(obj, (short)value);
+                    break;
+            }
+        }
+
         static public void ReadObject(object obj, byte[] data, int offset)
         {
             Type type = obj.GetType();
