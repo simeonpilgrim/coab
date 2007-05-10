@@ -655,8 +655,8 @@ new Struct_19AEC( 32h,0,7,12h,3,12h,3,12h,8,12h,3,12h,3,3,12h,11h) };*/
         public static Struct_1D885 stru_1D885;
         public static Struct_1D885 stru_1D889;
 
-        public readonly static sbyte[] unk_189A6 = /*seg600:2696*/ { 0, 1, 1, 1, 0, -1, -1, -1, 0 };
-        public readonly static sbyte[] unk_189AF = /*seg600:269F*/ { -1, -1, 0, 1, 1, 1, 0 };
+        public readonly static sbyte[] MapDirectionXDelta = /*unk_189A6 seg600:2696*/ { 0, 1, 1, 1, 0, -1, -1, -1, 0 };
+        public readonly static sbyte[] MapDirectionYDelta = /*unk_189AF seg600:269F*/ { -1, -1, 0, 1, 1, 1, 0 };
 
         /// <summary>
         /// 0 - curse, 1 - pool, 2 - hillsfar

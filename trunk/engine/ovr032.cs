@@ -211,8 +211,8 @@ namespace engine
 				arg_0 = 8;
 			}
 
-			var_2 = (sbyte)(arg_8 + gbl.unk_189A6[ arg_0 ]);
-			var_3 = (sbyte)(arg_6 + gbl.unk_189AF[ arg_0 ]);
+			var_2 = (sbyte)(arg_8 + gbl.MapDirectionXDelta[ arg_0 ]);
+			var_3 = (sbyte)(arg_6 + gbl.MapDirectionYDelta[ arg_0 ]);
 
 			if( ( arg_8 == arg_4 && arg_6 == arg_2 ) ||
 				( var_2 == arg_4 && var_3 ==arg_2 ) )

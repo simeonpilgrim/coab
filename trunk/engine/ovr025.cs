@@ -1501,8 +1501,8 @@ namespace engine
 
                 do
                 {
-                    var_C6 = gbl.unk_189A6[var_94[var_AF]];
-                    var_C8 = gbl.unk_189AF[var_94[var_AF]];
+                    var_C6 = gbl.MapDirectionXDelta[var_94[var_AF]];
+                    var_C8 = gbl.MapDirectionYDelta[var_94[var_AF]];
                     var_CA += var_C6;
                     var_CC += var_C8;
 
@@ -1620,7 +1620,7 @@ namespace engine
 
                 do
                 {
-                    var_C6 = (short)(-gbl.unk_189A6[var_94[var_AF]]);
+                    var_C6 = (short)(-gbl.MapDirectionXDelta[var_94[var_AF]]);
                     throw new System.NotSupportedException();//mov	al, var_94[ var_AF ]
                     throw new System.NotSupportedException();//xor	ah, ah
                     throw new System.NotSupportedException();//mov	di, ax

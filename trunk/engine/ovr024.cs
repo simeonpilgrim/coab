@@ -429,7 +429,7 @@ namespace engine
                 for (var_A = 1; var_A <= var_B; var_A++)
                 {
                     if (var_8.field_10[var_A] != 0 &&
-                        var_8.field_1A + gbl.unk_189A6[arg_0[var_A]] == arg_C)
+                        var_8.field_1A + gbl.MapDirectionXDelta[arg_0[var_A]] == arg_C)
                     {
                         throw new System.NotSupportedException();//mov	al, [bp+arg_A]
                         throw new System.NotSupportedException();//cbw

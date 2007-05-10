@@ -108,7 +108,7 @@ namespace engine
             if (arg_6 >= 0 && arg_6 <= 15 &&
                 arg_4 >= 0 && arg_4 <= 15)
             {
-                if (ovr031.sub_71573(arg_2, arg_4, arg_6) == 0)
+                if (ovr031.WallDoorFlagsGet(arg_2, arg_4, arg_6) == 0)
                 {
                     var_1 = 1;
                 }
@@ -152,8 +152,8 @@ namespace engine
 
             var_2 = sub_37306(arg_0, arg_2, arg_4);
 
-            sbyte t1 = (sbyte)(gbl.unk_189A6[arg_0] + arg_4);
-            sbyte t2 = (sbyte)(gbl.unk_189AF[arg_0] + arg_2);
+            sbyte t1 = (sbyte)(gbl.MapDirectionXDelta[arg_0] + arg_4);
+            sbyte t2 = (sbyte)(gbl.MapDirectionYDelta[arg_0] + arg_2);
 
             var_3 = sub_37306(var_4, t2, t1);
 
@@ -1112,8 +1112,8 @@ namespace engine
 
                 if (var_7 == 1)
                 {
-                    var_B = gbl.unk_189A6[unk_1660C[(var_9 + 2) % 4]];
-                    var_C = gbl.unk_189AF[unk_1660C[(var_9 + 2) % 4]];
+                    var_B = gbl.MapDirectionXDelta[unk_1660C[(var_9 + 2) % 4]];
+                    var_C = gbl.MapDirectionYDelta[unk_1660C[(var_9 + 2) % 4]];
 
                     var_15 = (sbyte)(unk_16610[(var_14 > 0 ? 4 : 0) + var_9] + (var_F * var_B));
                     var_16 = (sbyte)(unk_16618[(var_14 > 0 ? 4 : 0) + var_9] + (var_F * var_C));
@@ -1125,8 +1125,8 @@ namespace engine
                 }
                 else if (var_7 == 2)
                 {
-                    var_B = gbl.unk_189A6[unk_1660C[(var_9 + 1) % 4]];
-                    var_C = gbl.unk_189AF[unk_1660C[(var_9 + 1) % 4]];
+                    var_B = gbl.MapDirectionXDelta[unk_1660C[(var_9 + 1) % 4]];
+                    var_C = gbl.MapDirectionYDelta[unk_1660C[(var_9 + 1) % 4]];
 
 
                     var_17 = (sbyte)(var_15 + (var_B * var_10));
@@ -1136,8 +1136,8 @@ namespace engine
                 }
                 else if (var_7 == 3)
                 {
-                    var_B = gbl.unk_189A6[unk_1660C[(var_9 + 3) % 4]];
-                    var_C = gbl.unk_189AF[unk_1660C[(var_9 + 3) % 4]];
+                    var_B = gbl.MapDirectionXDelta[unk_1660C[(var_9 + 3) % 4]];
+                    var_C = gbl.MapDirectionYDelta[unk_1660C[(var_9 + 3) % 4]];
 
                     var_17 = (sbyte)(var_15 + (var_B * var_10));
                     var_18 = (sbyte)(var_16 + (var_C * var_10));
@@ -1216,8 +1216,8 @@ namespace engine
                         if (gbl.game_state == 3 ||
                             sub_37388(var_8, var_E, var_D) != 1)
                         {
-                            var_11 = (sbyte)(gbl.byte_1AD2C[gbl.field_197] + gbl.unk_189A6[var_8]);
-                            var_12 = (sbyte)(gbl.byte_1AD2E[gbl.field_197] + gbl.unk_189AF[var_8]);
+                            var_11 = (sbyte)(gbl.byte_1AD2C[gbl.field_197] + gbl.MapDirectionXDelta[var_8]);
+                            var_12 = (sbyte)(gbl.byte_1AD2E[gbl.field_197] + gbl.MapDirectionYDelta[var_8]);
 
                             var_F = 0;
                             var_7 = 1;
@@ -1276,8 +1276,8 @@ namespace engine
 
             gbl.byte_1AD32[0] = (byte)(gbl.mapDirection >> 1);
 
-            gbl.byte_1AD2C[1] = (sbyte)((gbl.area2_ptr.field_582 * gbl.unk_189A6[gbl.mapDirection]) + gbl.byte_1AD2C[0]);
-            gbl.byte_1AD2E[1] = (sbyte)((gbl.area2_ptr.field_582 * gbl.unk_189AF[gbl.mapDirection]) + gbl.byte_1AD2E[0]);
+            gbl.byte_1AD2C[1] = (sbyte)((gbl.area2_ptr.field_582 * gbl.MapDirectionXDelta[gbl.mapDirection]) + gbl.byte_1AD2C[0]);
+            gbl.byte_1AD2E[1] = (sbyte)((gbl.area2_ptr.field_582 * gbl.MapDirectionYDelta[gbl.mapDirection]) + gbl.byte_1AD2E[0]);
 
             gbl.byte_1AD32[1] = (byte)(((gbl.mapDirection + 4) % 8) >> 1);
 
