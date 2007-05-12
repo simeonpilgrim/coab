@@ -1370,7 +1370,7 @@ namespace engine
         /// </summary>
         internal static void compare_variables(ushort arg_0, ushort arg_2)
         {
-            System.Console.WriteLine("  Compare_variables: {0} {1}", arg_2, arg_0);
+            //System.Console.WriteLine("  Compare_variables: {0} {1}", arg_2, arg_0);
 
             gbl.item_find[0] = arg_2 == arg_0;
             gbl.item_find[1] = arg_2 != arg_0;

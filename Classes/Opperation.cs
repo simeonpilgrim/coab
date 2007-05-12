@@ -98,7 +98,7 @@ namespace Classes
         {
             if (codeSet)
             {
-                System.Console.WriteLine("  GetCmdValue: code: {0:X}", code);
+                //System.Console.WriteLine("  GetCmdValue: code: {0:X}", code);
 
                 switch (code)
                 {
