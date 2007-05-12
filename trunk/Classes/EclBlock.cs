@@ -89,12 +89,12 @@ namespace Classes
 
                 if (step == dataCount)
                 {
-                    for (int j = last; j <= loc; j++)
-                    {
-                        System.Console.WriteLine("{0,4:X} {1,2:X}", j, data[j]);
-                    }
+                    //for (int j = last; j <= loc; j++)
+                    //{
+                    //    System.Console.WriteLine("{0,4:X} {1,2:X}", j, data[j]);
+                    //}
 
-                    System.Console.WriteLine();
+                    //System.Console.WriteLine();
 
                     step = 0;
                 }

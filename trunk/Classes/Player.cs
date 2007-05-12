@@ -625,21 +625,29 @@ namespace Classes
         public byte initiative; // 0x1a5
 
         public const int StructSize = 0x1A6;
+
         public Player()
         {
-            field_12CArray = new ArrayReadWrite<byte>(field_12D, 1, 16);
-            name = string.Empty;
-            stats = new StatValue[6];
+            Init();
         }
 
         public Player(byte[] data, int offset)
         {
+            Init();
+
+            DataIO.ReadObject(this, data, offset);
+        }
+
+        private void Init()
+        {
+            field_12CArray = new ArrayReadWrite<byte>(field_12D, 1, 16);
+            stats = new StatValue[6];
+
+            name = string.Empty;
             itemsPtr = null;
             affect_ptr = null;
             next_player = null;
             actions = null;
-
-            DataIO.ReadObject(this, data, offset);
         }
 
 
