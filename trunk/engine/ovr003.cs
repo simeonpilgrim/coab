@@ -864,7 +864,7 @@ namespace engine
 
             for (var_3 = 1; var_3 <= var_3F; var_3++)
             {
-                var_38 = var_38 + "~" + gbl.unk_1D972[var_3] + "~";
+                var_38 = var_38 + "~" + gbl.unk_1D972[var_3] + " ";
             }
 
             var_38 += "~" + gbl.unk_1D972[var_1];

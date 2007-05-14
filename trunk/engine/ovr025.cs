@@ -491,7 +491,7 @@ namespace engine
                         var_7 = 0;
                     }
 
-                    display_AC(y_pos, var_7 + 0x20, player_ptr);
+                    display_AC(y_pos, var_7 + 0x1F /*+0x20*/, player_ptr);
 
                     if (player_ptr.hit_point_current >= 0 && player_ptr.hit_point_current <= 9)
                     {
@@ -518,9 +518,7 @@ namespace engine
 
         internal static void display_AC(int y_offset, int x_offset, Player player)
         {
-            string var_100;
-
-            var_100 = ((int)player.ac - 0x3c).ToString();
+            string var_100 = ((int)player.ac - 0x3c).ToString();
 
             seg041.displayString(var_100, 0, 10, y_offset, x_offset);
         }
