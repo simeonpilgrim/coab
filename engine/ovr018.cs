@@ -1641,28 +1641,17 @@ namespace engine
                                             player_ptr.stats[stat_var].max = stru_1A298[(int)player_ptr.race].field_C;
                                         }
 
-                                        throw new System.NotSupportedException();//mov	al, [bp+stat_var]
-                                        throw new System.NotSupportedException();//cbw
-                                        throw new System.NotSupportedException();//shl	ax, 1
-                                        throw new System.NotSupportedException();//les	di, int ptr [bp+player_ptr.offset]
-                                        throw new System.NotSupportedException();//add	di, ax
-                                        throw new System.NotSupportedException();//mov	al, es:[di+11h]
-                                        throw new System.NotSupportedException();//cmp	al, unk_1A484[player_ptr._class].field_4
-                                        throw new System.NotSupportedException();//jnb	loc_4EDF3
-                                        throw new System.NotSupportedException();//mov	dl, unk_1A484[player_ptr._class].field_4
-                                        throw new System.NotSupportedException();//mov	al, [bp+stat_var]
-                                        throw new System.NotSupportedException();//cbw
-                                        throw new System.NotSupportedException();//shl	ax, 1
-                                        throw new System.NotSupportedException();//les	di, int ptr [bp+player_ptr.offset]
-                                        throw new System.NotSupportedException();//add	di, ax
-                                        throw new System.NotSupportedException();//mov	es:[di+11h], dl
-                                        throw new System.NotSupportedException();//loc_4EDF3:
-                                        sub_50793(gbl.player_ptr);
-                                        throw new System.NotSupportedException();//les	di, int ptr [bp+player_ptr.offset]
-                                        throw new System.NotSupportedException();//cmp	al, es:[di+charStruct.hit_point_max]
-                                        throw new System.NotSupportedException();//jnb	loc_4EE1B
-                                        player_ptr.hit_point_max = sub_506BA(player_ptr);
-                                        throw new System.NotSupportedException();//loc_4EE1B:
+                                        if (player_ptr.stats[stat_var].max < gbl.unk_1A484[(int)player_ptr._class].field_4)
+                                        {
+
+                                            player_ptr.stats[stat_var].max = gbl.unk_1A484[(int)player_ptr._class].field_4;
+                                        }
+
+                                        if (sub_50793(gbl.player_ptr) < player_ptr.hit_point_max)
+                                        {
+                                            player_ptr.hit_point_max = sub_50793(player_ptr);
+                                        }
+
                                         player_ptr.hit_point_current = player_ptr.hit_point_max;
                                         var_37 = 6;
                                         sub_4E6F2(0, var_37, var_3F);

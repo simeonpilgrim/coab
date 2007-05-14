@@ -205,6 +205,14 @@ namespace Classes
                     field_592 = (short)value;
                     break;
 
+                case 0x5a4:
+                    field_5A4 = (short)value;
+                    break;
+
+                case 0x5a6:
+                    field_5A6 = (short)value;
+                    break;
+
                 case 0x5c2:
                     field_5C2 = (short)value;
                     break;
