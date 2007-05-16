@@ -371,8 +371,6 @@ namespace Classes
 
         public static short word_1EFBC;
 
-
-        public static object dword_1337B;
         public static object dword_1AAC8;
         public static object dword_1AAF0;
         public static Item[] unk_1AF18; // array 01-0x30; seg600:4C08

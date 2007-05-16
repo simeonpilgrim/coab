@@ -23,7 +23,7 @@ namespace Classes
             bits = new byte[arrayLen];
 
 			int indA = arg_0 >> 8;
-			int indB = arg_0 & 0x0f;
+			int indB = arg_0 & 0x00ff;
 
 			for( int i = 0; i < indA; i++ )
 			{

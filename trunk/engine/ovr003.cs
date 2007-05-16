@@ -1416,7 +1416,7 @@ namespace engine
         internal static void load_item()
         {
             byte var_70;
-            byte[] var_6F;
+            byte[] data;
             short var_69;
             short var_67;
             byte var_65 = 0;
@@ -1428,20 +1428,19 @@ namespace engine
             Item var_59 = null;
             byte var_3;
             byte var_2;
-            byte var_1;
 
             ovr008.vm_LoadCmdSets(8);
 
-            for (var_1 = 0; var_1 < 7; var_1++)
+            for (int i = 0; i < 7; i++)
             {
-                gbl.pooled_money[var_1] = ovr008.vm_GetCmdValue((byte)(var_1 + 1));
+                gbl.pooled_money[i] = ovr008.vm_GetCmdValue(i + 1);
             }
 
             var_2 = (byte)ovr008.vm_GetCmdValue(8);
 
             if (var_2 < 0x80)
             {
-                seg042.load_decode_dax(out var_6F, out var_69, var_2, string.Format("ITEM{0}.dax", gbl.game_area));
+                seg042.load_decode_dax(out data, out var_69, var_2, string.Format("ITEM{0}.dax", gbl.game_area));
 
                 if (var_69 == 0)
                 {
@@ -1451,36 +1450,27 @@ namespace engine
                 }
 
                 var_67 = 0;
-
-                do
+                for( var_67 = 0; var_67 < var_69; var_67 += Item.StructSize )
                 {
-                    var_59 = new Item(var_6F, var_67);
-
-                    var_67 += 0x3F;
+                    var_59 = new Item(data, var_67);
 
                     if (gbl.item_pointer == null)
                     {
-                        gbl.item_pointer = new Item();
-                        var_59 = gbl.item_pointer;
+                        gbl.item_pointer = var_59;
                     }
                     else
                     {
                         var_5B = gbl.item_pointer;
-
-                        gbl.item_pointer = new Item();
-                        var_59 = gbl.item_pointer;
-
+                        gbl.item_pointer = var_59;
                         gbl.item_pointer.next = var_5B;
                     }
+                } 
 
-                } while (var_67 < var_69);
-
-                var_6F = null;
+                data = null;
             }
             else if (var_2 != 0xff)
             {
-                var_1 = (byte)(var_2 - 0x80);
-                var_70 = var_1;
+                var_70 = (byte)(var_2 - 0x80);
 
                 for (var_3 = 1; var_3 <= var_70; var_3++)
                 {
