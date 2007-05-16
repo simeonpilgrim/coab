@@ -14,17 +14,27 @@ namespace engine
         static short word_12206;
         static short word_12208;
 
-        static byte[] byte_1220C = new byte[1];
+        static byte[] byte_1220C = new byte[4];
 
         static byte byte_12210;
-        static short[] unk_12230 = new short[1];
+        const int unk_12230_len = 0x30 / 2; // each block is 0x30 long, but is words.
+        static short[,] unk_12230 = new short[4, unk_12230_len]; /* 4 x 0x30 */
 
         static short word_123C8;
         static short[] unk_123CA = new short[2];
 
-        static short[] word_12562 = new short[4];
+        static short[] word_12562 =  /* seg044:04a2 */    { 
+            0x0C6E,0x0C6E,0x0C6E,0x0C6E,0x0C76,0x0C6E,0x0C6E,0x0C6E,0x0B6E,
+            0x0C6E,0x0C6E,0x0C6E,0x0BDE,0x0C6E,0x0C6E,0x0C6E,0x0C06,0x0C6E,
+            0x0C6E,0x0C6E,0x0BA6,0x0C6E,0x0C6E,0x0C6E,0x0C3E,0x0C6E,0x0C6E,
+            0x0C6E,0x0B46,0x0C6E,0x0C6E,0x0C6E,0x0B02,0x0C6E,0x0C6E,0x0C6E,
+            0x0B1E,0x0C6E,0x0C6E,0x0C6E,0x912,0x0C6E,0x0C6E,0x0C6E,0x0CBE,
+            0x0C6E,0x0C6E,0x0C6E,0x952,0x0C6E,0x0C6E,0x0C6E,0x992,0x0C6E,
+            0x0C6E,0x0C6E };
+
 
         static short[] word_1260A = new short[4];
+
 
         static Set set_01 = new Set(0x0020, new byte[]{ 0xFF, 0xFF, 0 , 0 , 0, 0 ,  0 ,  
             0 , 0 , 0 , 0 ,0 ,0 , 0 ,0 , 0 ,0 , 0 ,0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0x80 });
@@ -60,16 +70,13 @@ namespace engine
                 }
                 else if (arg_0 >= 2 && arg_0 <= 14)
                 {
-                    if (gbl.soundType != SoundType.None)
+                    if (gbl.soundType == SoundType.PC)
                     {
-                        if (gbl.soundType == 0)
-                        {
-                            sub_13745((short)(arg_0 - 1));
-                        }
-                        else if (gbl.soundType == SoundType.Tandy)
-                        {
-                            sub_137B1((short)(arg_0 - 1));
-                        }
+                        sub_13745((short)(arg_0 - 1));
+                    }
+                    else if (gbl.soundType == SoundType.Tandy)
+                    {
+                        sub_137B1((short)(arg_0 - 1));
                     }
                 }
                 else if (arg_0 == 15)
@@ -98,55 +105,33 @@ namespace engine
             word_121DE = 0;
         }
 
+        static System.Timers.Timer aTimer = null;
 
         internal static void sub_1337F()
         {
-            System.Timers.Timer aTimer = new System.Timers.Timer();
+            if (aTimer == null)
+            {
+                aTimer = new System.Timers.Timer();
+                // Hook up the Elapsed event for the timer.
+                aTimer.Elapsed += new System.Timers.ElapsedEventHandler(sub_133ED);
 
-            // Hook up the Elapsed event for the timer.
-            aTimer.Elapsed += new System.Timers.ElapsedEventHandler(sub_133ED);
+                // Set the Interval to 5 milliseconds.
+                aTimer.Interval = 5;
+                aTimer.Enabled = true;
 
-            // Set the Interval to 5 milliseconds.
-            aTimer.Interval = 5;
-            aTimer.Enabled = true;
-
-            // Keep the timer alive until the end of Main.
-            System.GC.KeepAlive(aTimer);
+                // Keep the timer alive until the end of Main.
+                System.GC.KeepAlive(aTimer);
+            }
         }
 
 
         internal static void sub_133B4()
-        //Complex
         {
-            throw new System.NotSupportedException();//push	ds
-            throw new System.NotSupportedException();//mov	ax, 0x120C
-            throw new System.NotSupportedException();//mov	ds, ax
-            throw new System.NotSupportedException();//assume ds:seg044
-            throw new System.NotSupportedException();//push	ds
-            throw new System.NotSupportedException();//mov	dx, short ptr cs:dword_1337B
-            throw new System.NotSupportedException();//mov	ax, short ptr cs:dword_1337B+2
-            throw new System.NotSupportedException();//mov	ds, ax
-            throw new System.NotSupportedException();//assume ds:seg600
-            throw new System.NotSupportedException();//mov	ax, 0x2508
-            throw new System.NotSupportedException();//int	0x21
-            throw new System.NotSupportedException();//pop	ds
-            throw new System.NotSupportedException();//mov	ax, 0x0FFFF
-            throw new System.NotSupportedException();//out	0x40, al
-            throw new System.NotSupportedException();//mov	al, ah
-            throw new System.NotSupportedException();//out	0x40, al
-            throw new System.NotSupportedException();//in	al, 0x61
-            throw new System.NotSupportedException();//and	al, 0x0FC
-            throw new System.NotSupportedException();//out	0x61, al
-            throw new System.NotSupportedException();//mov	al, 0x9F
-            throw new System.NotSupportedException();//out	0x0C0, al
-            throw new System.NotSupportedException();//mov	al, 0x0BF
-            throw new System.NotSupportedException();//out	0x0C0, al
-            throw new System.NotSupportedException();//mov	al, 0x0DF
-            throw new System.NotSupportedException();//out	0x0C0, al
-            throw new System.NotSupportedException();//mov	al, 0x0FF
-            throw new System.NotSupportedException();//out	0x0C0, al
-            throw new System.NotSupportedException();//pop	ds
-            throw new System.NotSupportedException();//retf
+            //assume ds:seg044
+
+            // Set Original Int 08 Handler (saved into dword_1337B )
+
+            // Speaker Off
         }
 
         /* called with 236.6Hz clock */
@@ -181,36 +166,51 @@ namespace engine
                 byte_121DC = 4;
                 word_12208 = 0x02f0;
                 word_12206 = 0x0170;
-                short si = word_12206;
+                
+                int si = 0;
 
                 do
                 {
-                    if (unk_12230[si] != 0)
+                    if (unk_12230[si,0] != 0)
                     {
-                        sub_1357D();
+                        sub_1357D(si);
                         if (word_123C8 == 0 &&
-                            unk_12230[si + 0x0A] != 0 &&
-                            unk_12230[si] != 0)
+                            unk_12230[si, 5] != 0 &&
+                            unk_12230[si, 0] != 0)
                         {
                             word_123C8 = (short)(si + 0x170);
                         }
                     }
 
-                    si += 30;
+                    si += 1;
                 } while (--byte_121DC != 0);
 
                 if (byte_12210 != 0 &&
                     word_123C8 != 0)
                 {
                     si = byte_12210;
-                    throw new System.NotSupportedException();//mov	si, bx
+
                     throw new System.NotSupportedException();//mov	ax, [si+8]
                     throw new System.NotSupportedException();//out	0x42, al
                     throw new System.NotSupportedException();//mov	al, ah
                     throw new System.NotSupportedException();//out	0x42, al
                     throw new System.NotSupportedException();//mov	bx, [si+0Ah]
                     throw new System.NotSupportedException();//and	bl, 3
+                    byte bl = 3;
+                    if (bl == 3)
+                    {
+                        // Speaker On
+                    }
+                    else
+                    {
+                        // Speaker Off
+                    }
                 }
+                else
+                {
+                    // Speaker Off
+                }
+
             }
         }
 
@@ -231,7 +231,7 @@ namespace engine
                 {
                     if (unk_123CA[si / 2] != 0)
                     {
-                        sub_1357D();
+                        sub_1357D(si);
                     }
 
                     si += 0x30;
@@ -282,82 +282,83 @@ namespace engine
         }
 
 
-        static void sub_1357D()
+        static void sub_1357D(int si)
         {
-            throw new System.NotSupportedException();//push	cx
-            throw new System.NotSupportedException();//push	di
-            throw new System.NotSupportedException();//mov	ax, [si+0Ch]
-            throw new System.NotSupportedException();//add	[si+0Ah], ax
-            throw new System.NotSupportedException();//mov	ax, [si+6]
-            throw new System.NotSupportedException();//add	[si+4],	ax
-            throw new System.NotSupportedException();//sub	dx, dx
-            throw new System.NotSupportedException();//mov	ax, [si+1Eh]
-            throw new System.NotSupportedException();//add	ax, [si+20h]
-            throw new System.NotSupportedException();//jz	loc_135B0
-            throw new System.NotSupportedException();//cmp	ax, [si+24h]
-            throw new System.NotSupportedException();//jb	loc_1359D
-            throw new System.NotSupportedException();//sub	ax, [si+24h]
-            throw new System.NotSupportedException();//loc_1359D:
-            throw new System.NotSupportedException();//mov	[si+1Eh], ax
-            throw new System.NotSupportedException();//mov	cl, 4
-            throw new System.NotSupportedException();//sar	ax, cl
-            throw new System.NotSupportedException();//add	ax, [si+1Ch]
-            throw new System.NotSupportedException();//mov	di, ax
-            throw new System.NotSupportedException();//mov	ah, [di]
-            throw new System.NotSupportedException();//mov	al, 0
-            throw new System.NotSupportedException();//imul	short ptr [si+22h]
-            throw new System.NotSupportedException();//loc_135B0:
-            throw new System.NotSupportedException();//add	dx, [si+4]
-            throw new System.NotSupportedException();//mov	[si+8],	dx
-            throw new System.NotSupportedException();//cmp	short ptr [si+14h], 0
-            throw new System.NotSupportedException();//jz	loc_135CB
-            throw new System.NotSupportedException();//dec	short ptr [si+14h]
-            throw new System.NotSupportedException();//jnz	loc_135CB
-            throw new System.NotSupportedException();//mov	short ptr [si+18h], 0x10
-            throw new System.NotSupportedException();//mov	short ptr [si+1Ah], 1
-            throw new System.NotSupportedException();//loc_135CB:
-            throw new System.NotSupportedException();//dec	short ptr [si]
-            throw new System.NotSupportedException();//jnz	loc_135D2
-            throw new System.NotSupportedException();//call	sub_1360E
-            throw new System.NotSupportedException();//loc_135D2:
-            throw new System.NotSupportedException();//cmp	short ptr [si+1Ah], 0
-            throw new System.NotSupportedException();//jz	loc_1360B
-            throw new System.NotSupportedException();//dec	short ptr [si+1Ah]
-            throw new System.NotSupportedException();//jnz	loc_1360B
-            throw new System.NotSupportedException();//loc_135DD:
-            throw new System.NotSupportedException();//mov	bx, [si+16h]
-            throw new System.NotSupportedException();//add	bx, [si+18h]
-            throw new System.NotSupportedException();//cmp	short ptr [bx+2], 0x0FFFF
-            throw new System.NotSupportedException();//jnz	loc_135FC
-            throw new System.NotSupportedException();//mov	ax, [bx]
-            throw new System.NotSupportedException();//mov	[si+0Ah], ax
-            throw new System.NotSupportedException();//cmp	ax, 0
-            throw new System.NotSupportedException();//jnz	loc_135F6
-            throw new System.NotSupportedException();//mov	[si+0Ch], ax
-            throw new System.NotSupportedException();//loc_135F6:
-            throw new System.NotSupportedException();//add	short ptr [si+18h], 4
-            throw new System.NotSupportedException();//jmp	short loc_135DD
-            throw new System.NotSupportedException();//loc_135FC:
-            throw new System.NotSupportedException();//mov	ax, [bx]
-            throw new System.NotSupportedException();//mov	[si+0Ch], ax
-            throw new System.NotSupportedException();//mov	ax, [bx+2]
-            throw new System.NotSupportedException();//mov	[si+1Ah], ax
-            throw new System.NotSupportedException();//add	short ptr [si+18h], 4
-            throw new System.NotSupportedException();//loc_1360B:
-            throw new System.NotSupportedException();//pop	di
-            throw new System.NotSupportedException();//pop	cx
-            throw new System.NotSupportedException();//retn
+            unk_12230[si, 5] = unk_12230[si, 6];
+            unk_12230[si, 2] = unk_12230[si, 3];
+            
+            int dx = 0;
+
+            int ax = unk_12230[si, 0x1E / 2] + unk_12230[si, 0x20 / 2];
+            if (ax != 0)
+            {
+                if (ax >= unk_12230[si, 0x24 / 2])
+                {
+                    ax -= unk_12230[si, 0x24 / 2];
+                }
+
+                unk_12230[si, 0x1E / 2] = (short)ax;
+
+                ax /= 4;
+                ax += unk_12230[si, 0x1C / 2];
+
+                throw new System.NotSupportedException();//mov	di, ax
+                throw new System.NotSupportedException();//mov	ah, [di]
+                throw new System.NotSupportedException();//mov	al, 0
+
+                ax *= unk_12230[si, 0x22 / 2];
+            }
+
+            unk_12230[si, 0x8 / 2] = (short)(unk_12230[si, 0x4 / 2] + (ax >> 16));
+
+            if (unk_12230[si, 0x14 / 2] != 0 &&
+                --unk_12230[si, 0x14 / 2] == 0)
+            {
+                unk_12230[si, 0x18 / 2] = 0x10;
+                unk_12230[si, 0x1A / 2] = 1;
+            }
+
+            if (--unk_12230[si, 0] == 0)
+            {
+                sub_1360E(si);
+            }
+
+            if (unk_12230[si, 0x1A / 2] != 0 &&
+                --unk_12230[si, 0x1A / 2] == 0)
+            {
+                throw new System.NotSupportedException();//loc_135DD:
+                throw new System.NotSupportedException();//mov	bx, [si+16h]
+                throw new System.NotSupportedException();//add	bx, [si+18h]
+                throw new System.NotSupportedException();//cmp	short ptr [bx+2], 0x0FFFF
+                throw new System.NotSupportedException();//jnz	loc_135FC
+                throw new System.NotSupportedException();//mov	ax, [bx]
+                throw new System.NotSupportedException();//mov	[si+0Ah], ax
+                throw new System.NotSupportedException();//cmp	ax, 0
+                throw new System.NotSupportedException();//jnz	loc_135F6
+                throw new System.NotSupportedException();//mov	[si+0Ch], ax
+                throw new System.NotSupportedException();//loc_135F6:
+                throw new System.NotSupportedException();//add	short ptr [si+18h], 4
+                throw new System.NotSupportedException();//jmp	short loc_135DD
+                throw new System.NotSupportedException();//loc_135FC:
+                throw new System.NotSupportedException();//mov	ax, [bx]
+                throw new System.NotSupportedException();//mov	[si+0Ch], ax
+                throw new System.NotSupportedException();//mov	ax, [bx+2]
+                throw new System.NotSupportedException();//mov	[si+1Ah], ax
+                throw new System.NotSupportedException();//add	short ptr [si+18h], 4
+            }
         }
 
 
-        static void sub_1360E()
+        static void sub_1360E(int si)
         {
-            throw new System.NotSupportedException();//mov	di, [si+2]
-            throw new System.NotSupportedException();//cmp	di, 0
-            throw new System.NotSupportedException();//jnz	loc_13617
-            throw new System.NotSupportedException();//retn
-            throw new System.NotSupportedException();//loc_13617:
-            throw new System.NotSupportedException();//mov	ds:word_12204, si
+            int di = unk_12230[si, 0x2 /2];
+            if (di == 0)
+            {
+                return;
+            }
+
+            word_12204 = (short)si;
+
             throw new System.NotSupportedException();//loc_1361B:
             throw new System.NotSupportedException();//mov	bl, [di]
             throw new System.NotSupportedException();//inc	di
@@ -551,7 +552,6 @@ namespace engine
 
         internal static void sub_13745(short arg_0)
         {
-
             word_12202 = arg_0;
             byte_121DB = 1;
             byte_121DC = 4;
@@ -563,18 +563,18 @@ namespace engine
                 int ax = word_12562[si];
                 if (ax != 0)
                 {
-                    for (int bx = 0x2E; bx >= 0; bx -= 2)
+                    for (int i = 0; i < unk_12230_len; i++)
                     {
-                        unk_12230[(bx + di) / 2] = 0;
+                        unk_12230[di, i] = 0;
                     }
 
-                    unk_12230[(di + 2) / 2] = (short)ax;
+                    unk_12230[di, 1] = (short)ax;
+                    unk_12230[di, 0] = 1;
 
-                    byte_1220C[4 - (byte)byte_121DC] = (byte)word_12202;
-                    unk_12230[di / 2] = 1;
+                    byte_1220C[4 - byte_121DC] = (byte)word_12202;
                 }
 
-                di += 0x30;
+                di += 1;
                 si += 1;
             } while (--byte_121DC != 0);
 
@@ -584,7 +584,6 @@ namespace engine
 
         internal static void sub_137B1(short arg_0)
         {
-
             word_12202 = arg_0;
             byte_121DB = 1;
             byte_121DC = 4;

@@ -96,10 +96,12 @@ namespace Classes
                 DataOffsetAttribute doAttr = (DataOffsetAttribute)Attribute.GetCustomAttribute(fInfo, typeof(DataOffsetAttribute));
                 if (doAttr != null && doAttr.Offset == location)
                 {
+                    System.Console.WriteLine("GetObjectUShort {0}.{1}", obj, fInfo.Name);
                     return GetObjectUshortValue(obj, fInfo, doAttr);
                 }
             }
 
+            System.Console.WriteLine("GetObjectUShort {0} at {1,4:X}", obj, location);
             return Sys.ArrayToUshort(data, location);
         }
 
@@ -113,11 +115,13 @@ namespace Classes
                 DataOffsetAttribute doAttr = (DataOffsetAttribute)Attribute.GetCustomAttribute(fInfo, typeof(DataOffsetAttribute));
                 if (doAttr != null && doAttr.Offset == location)
                 {
+                    System.Console.WriteLine("SetObjectUShort {0}.{1}", obj, fInfo.Name);
                     SetObjectUshortValue(obj, fInfo, doAttr, value);
                     return;
                 }
             }
 
+            System.Console.WriteLine("SetObjectUShort {0} at {1,4:X}", obj, location);
             Sys.ShortToArray((short)value, data, location);
         }
 
