@@ -93,9 +93,6 @@
     <Compile Include="AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ovr001.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="ovr002.cs">
       <SubType>Code</SubType>
     </Compile>

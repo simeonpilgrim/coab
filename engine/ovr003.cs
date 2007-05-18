@@ -751,7 +751,7 @@ namespace engine
         }
 
 
-        internal static void sub_26EE9()
+        internal static void CMD_VertMenu() /* sub_26EE9 */
         {
             ushort var_111;
             bool var_10F;
@@ -783,7 +783,7 @@ namespace engine
             gbl.textXCol = 1;
             gbl.textYCol = 0x11;
 
-            seg041.press_any_key(var_102, true, 0, 10, 22, 0x26, 11, 1);
+            seg041.press_any_key(var_102, true, 0, 10, 22, 34, 17, 1);
 
             while (var_106 != null)
             {
@@ -2619,7 +2619,7 @@ namespace engine
                 case 0x12: CMD_Print(); break;
                 case 0x13: CMD_Return(); break;
                 case 0x14: sub_26B0C(); break;
-                case 0x15: sub_26EE9(); break;
+                case 0x15: CMD_VertMenu(); break;
                 case 0x16: CMD_if(); break;
                 case 0x17: CMD_if(); break;
                 case 0x18: CMD_if(); break;

@@ -1243,8 +1243,8 @@ namespace engine
                 if (mFlag == true)
                 {
                     mFlag = false;
-                    sbA.Append(ch);
                     ch = char.ToUpper(ch);
+                    sbA.Append(ch);
                 }
 
                 sbB.Append(ch);

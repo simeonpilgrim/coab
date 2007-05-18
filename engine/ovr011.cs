@@ -4,8 +4,8 @@ namespace engine
 {
     class ovr011
     {
-        // the 1 is made up.
-        static byte[, , ,] unk_1AB1C = new byte[1, 4, 6, 11]; //seg600:480C unk_1AB1C
+        // the 2 is made up.
+        static byte[, , ,] unk_1AB1C = new byte[2, 4, 6, 11]; //seg600:480C unk_1AB1C
 
         internal static void sub_37046(byte arg_0, byte arg_2, byte arg_4)
         {
@@ -302,44 +302,45 @@ namespace engine
                 }
                 else if (var_1 == 3)
                 {
-                    throw new System.NotSupportedException();//mov	al, byte_1AD37
-                    throw new System.NotSupportedException();//cmp	al, 0
-                    throw new System.NotSupportedException();//jnz	loc_37630
-                    throw new System.NotSupportedException();//cmp	byte_1AD36, 0
-                    throw new System.NotSupportedException();//jnz	loc_3761E
-                    var_3 = 0x16;
-                    throw new System.NotSupportedException();//jmp	short loc_3762E
-                    throw new System.NotSupportedException();//loc_3761E:
-                    throw new System.NotSupportedException();//cmp	[bp+var_6], 0
-                    throw new System.NotSupportedException();//jz	loc_3762A
-                    var_3 = 0x10;
-                    throw new System.NotSupportedException();//jmp	short loc_3762E
-                    throw new System.NotSupportedException();//loc_3762A:
-                    var_3 = 0x0A;
-                    throw new System.NotSupportedException();//loc_3762E:
-                    throw new System.NotSupportedException();//jmp	short loc_3765A
-                    throw new System.NotSupportedException();//loc_37630:
-                    throw new System.NotSupportedException();//cmp	al, 3
-                    throw new System.NotSupportedException();//jnz	loc_37646
-                    throw new System.NotSupportedException();//cmp	[bp+var_6], 0
-                    throw new System.NotSupportedException();//jz	loc_37640
-                    var_3 = 0x14;
-                    throw new System.NotSupportedException();//jmp	short loc_37644
-                    throw new System.NotSupportedException();//loc_37640:
-                    var_3 = 7;
-                    throw new System.NotSupportedException();//loc_37644:
-                    throw new System.NotSupportedException();//jmp	short loc_3765A
-                    throw new System.NotSupportedException();//loc_37646:
-                    throw new System.NotSupportedException();//cmp	al, 1
-                    throw new System.NotSupportedException();//jnz	loc_3765A
-                    throw new System.NotSupportedException();//cmp	[bp+var_6], 0
-                    throw new System.NotSupportedException();//jz	loc_37656
-                    var_3 = 1;
-                    throw new System.NotSupportedException();//jmp	short loc_3765A
-                    throw new System.NotSupportedException();//loc_37656:
-                    var_3 = 3;
-                    throw new System.NotSupportedException();//loc_3765A:
-                    throw new System.NotSupportedException();//jmp	short loc_376AF
+                    switch (gbl.byte_1AD37)
+                    {
+                        case 0:
+                            if (gbl.byte_1AD36 == 0)
+                            {
+                                var_3 = 0x16;
+                            }
+                            else if (var_6 != 0)
+                            {
+                                var_3 = 0x10;
+                            }
+                            else
+                            {
+                                var_3 = 0x0A;
+                            }
+                            break;
+
+                        case 3:
+                            if (var_6 != 0)
+                            {
+                                var_3 = 0x14;
+                            }
+                            else
+                            {
+                                var_3 = 7;
+                            }
+                            break;
+
+                        case 1:
+                            if (var_6 != 0)
+                            {
+                                var_3 = 1;
+                            }
+                            else
+                            {
+                                var_3 = 3;
+                            }
+                            break;
+                    }
                 }
                 else if (var_1 == 4)
                 {
@@ -411,67 +412,68 @@ namespace engine
             {
                 switch (var_1)
                 {
-                    case 1:
-                        throw new System.NotSupportedException();//mov	al, byte_1AD36
-                        throw new System.NotSupportedException();//cmp	al, 0
-                        throw new System.NotSupportedException();//jnz	loc_37773
-                        throw new System.NotSupportedException();//cmp	[bp+var_7], 1
-                        throw new System.NotSupportedException();//jnz	loc_3776D
-                        var_2 = 4;
-                        throw new System.NotSupportedException();//jmp	short loc_37771
-                        throw new System.NotSupportedException();//loc_3776D:
-                        var_2 = 0x16;
-                        throw new System.NotSupportedException();//loc_37771:
-                        throw new System.NotSupportedException();//jmp	short loc_37785
-                        throw new System.NotSupportedException();//loc_37773:
-                        throw new System.NotSupportedException();//cmp	al, 3
-                        throw new System.NotSupportedException();//jnz	loc_3777D
-                        var_2 = 0x0F;
-                        throw new System.NotSupportedException();//jmp	short loc_37785
-                        throw new System.NotSupportedException();//loc_3777D:
-                        throw new System.NotSupportedException();//cmp	al, 1
-                        throw new System.NotSupportedException();//jnz	loc_37785
-                        var_2 = 5;
-                        throw new System.NotSupportedException();//loc_37785:
+                    case 1:                  
+                        switch (gbl.byte_1AD36)
+                        {
+                            case 0:
+                                if (var_7 == 1)
+                                {
+                                    var_2 = 4;
+                                }
+                                else
+                                {
+                                    var_2 = 0x16;
+                                }
+                                break;
+
+                            case 3:
+                                var_2 = 0x0F;
+                                break;
+
+                            case 1:
+                                var_2 = 5;
+                                break;
+                        }
                         break;
 
                     case 2:
                         if (gbl.byte_1AD36 == 0)
                         {
-                            throw new System.NotSupportedException();//mov	al, [bp+var_7]
-                            throw new System.NotSupportedException();//cmp	al, 0
-                            throw new System.NotSupportedException();//jnz	loc_377A3
-                            var_4 = 0x16;
-                            throw new System.NotSupportedException();//jmp	short loc_377E1
-                            throw new System.NotSupportedException();//loc_377A3:
-                            throw new System.NotSupportedException();//cmp	al, 3
-                            throw new System.NotSupportedException();//jnz	loc_377C0
-                            throw new System.NotSupportedException();//cmp	byte_1AD38, 0
-                            throw new System.NotSupportedException();//jnz	loc_377BA
-                            throw new System.NotSupportedException();//cmp	[bp+var_8], 0
-                            throw new System.NotSupportedException();//jz	loc_377BA
-                            var_4 = 0x18;
-                            throw new System.NotSupportedException();//jmp	short loc_377BE
-                            throw new System.NotSupportedException();//loc_377BA:
-                            var_4 = 1;
-                            throw new System.NotSupportedException();//loc_377BE:
-                            throw new System.NotSupportedException();//jmp	short loc_377E1
-                            throw new System.NotSupportedException();//loc_377C0:
-                            throw new System.NotSupportedException();//cmp	al, 1
-                            throw new System.NotSupportedException();//jnz	loc_377E1
-                            throw new System.NotSupportedException();//cmp	byte_1AD38, 0
-                            throw new System.NotSupportedException();//jnz	loc_377DD
-                            throw new System.NotSupportedException();//cmp	[bp+var_8], 0
-                            throw new System.NotSupportedException();//jz	loc_377D7
-                            var_4 = 0x0B;
-                            throw new System.NotSupportedException();//jmp	short loc_377DB
-                            throw new System.NotSupportedException();//loc_377D7:
-                            var_4 = 7;
-                            throw new System.NotSupportedException();//loc_377DB:
-                            throw new System.NotSupportedException();//jmp	short loc_377E1
-                            throw new System.NotSupportedException();//loc_377DD:
-                            var_4 = 3;
-                            throw new System.NotSupportedException();//loc_377E1:
+                            switch (var_7)
+                            {
+                                case 0:
+                                    var_4 = 0x16;
+                                    break;
+
+                                case 3:
+                                    if (gbl.byte_1AD38 == 0 && var_8 != 0)
+                                    {
+                                        var_4 = 0x18;
+                                    }
+                                    else
+                                    {
+                                        var_4 = 1;
+                                    }
+                                    break;
+
+                                case 1:
+                                    if (gbl.byte_1AD38 == 0)
+                                    {
+                                        if (var_8 != 0)
+                                        {
+                                            var_4 = 0x0B;
+                                        }
+                                        else
+                                        {
+                                            var_4 = 7;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        var_4 = 3;
+                                    }
+                                    break;
+                            }
                         }
                         else
                         {
@@ -1265,9 +1267,9 @@ namespace engine
             var_F = 0;
             var_E = 0;
 
-            for (loop_var = 1; loop_var <= 0xff; loop_var++)
+            for (int i = 1; i <= gbl.stru_1C9CD_count; i++)
             {
-                gbl.stru_1C9CD[loop_var].field_3 = 0;
+                gbl.stru_1C9CD[i].field_3 = 0;
             }
 
             ovr033.sub_743E7();
@@ -1301,11 +1303,8 @@ namespace engine
                     {
                         for (var_1 = 0; var_1 <= 10; var_1++)
                         {
-                            // the 1 is made up.
-                            byte[, ,] unk_16620 = new byte[1, 6, 2]; // unk_16620 seg600:0310
-
-                            if (unk_16620[var_D, var_2, 0] > var_1 ||
-                                unk_16620[var_D, var_2, 1] < var_1)
+                            if (gbl.unk_16620[var_D, var_2, 0] > var_1 ||
+                                gbl.unk_16620[var_D, var_2, 1] < var_1)
                             {
                                 unk_1AB1C[gbl.field_197, var_C, var_2, var_1] = 0;
                             }

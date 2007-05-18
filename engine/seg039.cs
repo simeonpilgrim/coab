@@ -32,7 +32,7 @@ namespace engine
 
             gbl.byte_1B2BA = gbl.unk_1B26A[0];
    
-            gbl.byte_1AFE6 = 'P'; /* force PC Speaker */
+            gbl.byte_1AFE6 = 'N'; /* force None */
 
 			if( gbl.byte_1AFE6 == 'T' ) // Tandy
 			{

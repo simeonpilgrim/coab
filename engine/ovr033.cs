@@ -140,7 +140,6 @@ namespace engine
                 {
                     for (var_2 = 0; var_2 <= 3; var_2++)
                     {
-
                         if (sub_7400F(out var_4, out var_3, var_2, gbl.stru_1C9CD[var_1].field_3) == true)
                         {
                             int cx = gbl.stru_1C9CD[var_1].field_0 + var_3;
@@ -317,88 +316,68 @@ namespace engine
             var_B = (byte)(var_8 - var_2);
             var_C = (byte)(var_8 + var_2);
 
-
-            throw new System.NotSupportedException();//cmp	[bp+arg_0], 0x0FF
-            throw new System.NotSupportedException();//jz	loc_748BC
-            throw new System.NotSupportedException();//mov	al, [bp+arg_4]
-            throw new System.NotSupportedException();//cmp	al, [bp+var_9]
-            throw new System.NotSupportedException();//jl	loc_748BC
-            throw new System.NotSupportedException();//mov	al, [bp+arg_4]
-            throw new System.NotSupportedException();//cmp	al, [bp+var_A]
-            throw new System.NotSupportedException();//jg	loc_748BC
-            throw new System.NotSupportedException();//mov	al, [bp+arg_2]
-            throw new System.NotSupportedException();//cmp	al, [bp+var_B]
-            throw new System.NotSupportedException();//jl	loc_748BC
-            throw new System.NotSupportedException();//mov	al, [bp+arg_2]
-            throw new System.NotSupportedException();//cmp	al, [bp+var_C]
-            throw new System.NotSupportedException();//jg	loc_748BC
-            throw new System.NotSupportedException();//jmp	func_end
-            throw new System.NotSupportedException();//loc_748BC:
-            throw new System.NotSupportedException();//mov	al, [bp+arg_4]
-            throw new System.NotSupportedException();//cmp	al, [bp+var_9]
-            throw new System.NotSupportedException();//jge	loc_748D9
-            throw new System.NotSupportedException();//loc_748C4:
-            throw new System.NotSupportedException();//mov	al, [bp+arg_4]
-            throw new System.NotSupportedException();//cmp	al, [bp+var_7]
-            throw new System.NotSupportedException();//jge	loc_748D7
-            throw new System.NotSupportedException();//cmp	[bp+var_7], 3
-            throw new System.NotSupportedException();//jle	loc_748D7
-            throw new System.NotSupportedException();//dec	[bp+var_7]
-            throw new System.NotSupportedException();//jmp	short loc_748C4
-            throw new System.NotSupportedException();//loc_748D7:
-            throw new System.NotSupportedException();//jmp	short loc_748F4
-            throw new System.NotSupportedException();//loc_748D9:
-            throw new System.NotSupportedException();//mov	al, [bp+arg_4]
-            throw new System.NotSupportedException();//cmp	al, [bp+var_A]
-            throw new System.NotSupportedException();//jle	loc_748F4
-
-            while (arg_4 > var_7 && var_7 < 0x2E)
+            if (arg_0 == 0xff ||
+            arg_4 < var_9 ||
+            arg_4 > var_A ||
+            arg_2 < var_B ||
+            arg_2 > var_C)
             {
-                var_7++;
-            }
-            throw new System.NotSupportedException();//loc_748F4:
-
-            if (arg_2 < var_B)
-            {
-                while (arg_2 < var_8 && var_8 > 3)
+                if (arg_4 < var_9)
                 {
-                    var_8 -= 1;
+                    while (arg_4 < var_7 && var_7 > 3)
+                    {
+                        var_7 -= 1;
+                    }
                 }
-            }
-            else if (arg_2 > var_C)
-            {
-                while (arg_2 > var_8 && var_8 < 0x15)
+                else if( arg_4 > var_A )
                 {
-                    var_8 += 1;
+                    while (arg_4 > var_7 && var_7 < 0x2E)
+                    {
+                        var_7++;
+                    }
                 }
-            }
 
-            gbl.stru_1D1BC.field_2 = (sbyte)(var_7 - 3);
-            gbl.stru_1D1BC.field_3 = (sbyte)(var_8 - 3);
-
-            var_4 = 0;
-            var_8 = gbl.stru_1D1BC.field_3;
-
-            for (var_6 = 0; var_6 <= 6; var_6++)
-            {
-                var_3 = 0;
-                var_7 = gbl.stru_1D1BC.field_2;
-
-                for (var_5 = 0; var_5 <= 6; var_5++)
+                if (arg_2 < var_B)
                 {
-                    byte AX = gbl.unk_189B4[gbl.stru_1D1BC[var_7, var_8]].field_3;
-
-                    ovr034.sub_760F7(0, AX, var_4, var_3);
-
-                    var_3 += 3;
-                    var_7++;
+                    while (arg_2 < var_8 && var_8 > 3)
+                    {
+                        var_8 -= 1;
+                    }
                 }
-                var_4 += 3;
-                var_8++;
+                else if (arg_2 > var_C)
+                {
+                    while (arg_2 > var_8 && var_8 < 0x15)
+                    {
+                        var_8 += 1;
+                    }
+                }
+
+                gbl.stru_1D1BC.field_2 = (sbyte)(var_7 - 3);
+                gbl.stru_1D1BC.field_3 = (sbyte)(var_8 - 3);
+
+                var_4 = 0;
+                var_8 = gbl.stru_1D1BC.field_3;
+
+                for (var_6 = 0; var_6 <= 6; var_6++)
+                {
+                    var_3 = 0;
+                    var_7 = gbl.stru_1D1BC.field_2;
+
+                    for (var_5 = 0; var_5 <= 6; var_5++)
+                    {
+                        byte AX = gbl.unk_189B4[gbl.stru_1D1BC[var_7, var_8]].field_3;
+
+                        ovr034.sub_760F7(0, AX, var_4, var_3);
+
+                        var_3 += 3;
+                        var_7++;
+                    }
+                    var_4 += 3;
+                    var_8++;
+                }
+                sub_74077();
+                var_1 = 1;
             }
-            sub_74077();
-            var_1 = 1;
-            throw new System.NotSupportedException();//func_end:
 
             return var_1;
         }
