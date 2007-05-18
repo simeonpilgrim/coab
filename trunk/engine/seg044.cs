@@ -55,7 +55,7 @@ namespace engine
                 {
                     if (gbl.soundType != SoundType.None)
                     {
-                        sub_1381D(1);
+                        byte_12210 = 1;
                     }
                 }
                 else if (arg_0 == 0xff)
@@ -107,7 +107,7 @@ namespace engine
 
         static System.Timers.Timer aTimer = null;
 
-        internal static void sub_1337F()
+        private static void sub_1337F()
         {
             if (aTimer == null)
             {
@@ -125,7 +125,7 @@ namespace engine
         }
 
 
-        internal static void sub_133B4()
+        private static void sub_133B4()
         {
             //assume ds:seg044
 
@@ -135,7 +135,7 @@ namespace engine
         }
 
         /* called with 236.6Hz clock */
-        internal static void sub_133ED(object sender, System.Timers.ElapsedEventArgs e)
+        private static void sub_133ED(object sender, System.Timers.ElapsedEventArgs e)
         {
             if (word_121DE != 0)
             {
@@ -157,7 +157,7 @@ namespace engine
         }
 
 
-        static void sub_1347A()
+        private static void sub_1347A()
         {
             short bx = word_12202;
             if (bx != 0)
@@ -215,7 +215,7 @@ namespace engine
         }
 
 
-        static void sub_134EF()
+        private static void sub_134EF()
         {
             short bx = word_12202;
             if (bx != 0)
@@ -282,7 +282,7 @@ namespace engine
         }
 
 
-        static void sub_1357D(int si)
+        private static void sub_1357D(int si)
         {
             unk_12230[si, 5] = unk_12230[si, 6];
             unk_12230[si, 2] = unk_12230[si, 3];
@@ -349,7 +349,7 @@ namespace engine
         }
 
 
-        static void sub_1360E(int si)
+        private static void sub_1360E(int si)
         {
             int di = unk_12230[si, 0x2 /2];
             if (di == 0)
@@ -550,7 +550,7 @@ namespace engine
         }
 
 
-        internal static void sub_13745(short arg_0)
+        private static void sub_13745(short arg_0)
         {
             word_12202 = arg_0;
             byte_121DB = 1;
@@ -582,7 +582,7 @@ namespace engine
         }
 
 
-        internal static void sub_137B1(short arg_0)
+        private static void sub_137B1(short arg_0)
         {
             word_12202 = arg_0;
             byte_121DB = 1;
@@ -615,12 +615,6 @@ namespace engine
             } while (--byte_121DC != 0);
 
             byte_121DB = 0;
-        }
-
-
-        internal static void sub_1381D(byte arg_0)
-        {
-            byte_12210 = arg_0;
         }
     }
 }

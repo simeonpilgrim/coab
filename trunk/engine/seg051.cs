@@ -18,12 +18,6 @@ namespace engine
         }
 
 
-        internal static bool fake_mem_check( )
-        {
-			return false;
-        }
-
-
         internal static void sub_1474E( byte arg_12 )
         {
             throw new System.NotSupportedException();//sti

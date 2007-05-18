@@ -53,7 +53,8 @@ namespace Classes
         public const byte byte_16E2C = 0;
         public const sbyte byte_16E2E = 4;
 
-        public static Struct_189B4[] unk_189B4;
+        public const int unk_189B4_count = 64; /* 64 is a guess */
+        public static Struct_189B4[] unk_189B4; 
 
         public const byte byte_1A114 = 1;
         /// <summary> seg600:3EBB </summary>
@@ -409,9 +410,9 @@ namespace Classes
         public static Player player_next_ptr;
         public static Item item_ptr;
         public static Player spell_target;
-        public static Player[] sp_target;
+        public static Player[] sp_target = new Player[256];
         // 744Bh[1] == sp_target[0]
-        public static Player[] player_array;
+        public static Player[] player_array = new Player[256];
 
         public class Struct_1D1C1
         {
@@ -437,7 +438,10 @@ namespace Classes
             public byte field_3;
         }
 
+        public const int stru_1C9CD_count = 0xff;
         public static Struct_1C9CD[] stru_1C9CD; // seg600:66BD
+
+        public static byte[, ,] unk_16620; // unk_16620 seg600:0310
 
         public static byte[] unk_188B4 = new byte[8];// seg600:25A4 
 
@@ -653,8 +657,8 @@ new Struct_19AEC( 32h,0,7,12h,3,12h,3,12h,8,12h,3,12h,3,3,12h,11h) };*/
         public static Struct_1D885 stru_1D885;
         public static Struct_1D885 stru_1D889;
 
-        public readonly static sbyte[] MapDirectionXDelta = /*unk_189A6 seg600:2696*/ { 0, 1, 1, 1, 0, -1, -1, -1, 0 };
-        public readonly static sbyte[] MapDirectionYDelta = /*unk_189AF seg600:269F*/ { -1, -1, 0, 1, 1, 1, 0 };
+        public readonly static sbyte[] MapDirectionXDelta = /*unk_189A6 seg600:2696*/ {  0,  1, 1, 1, 0, -1, -1, -1, 0 };
+        public readonly static sbyte[] MapDirectionYDelta = /*unk_189AF seg600:269F*/ { -1, -1, 0, 1, 1,  1,  0, -1, 0 };
 
         /// <summary>
         /// 0 - curse, 1 - pool, 2 - hillsfar
@@ -772,8 +776,8 @@ new Struct_19AEC( 32h,0,7,12h,3,12h,3,12h,8,12h,3,12h,3,3,12h,11h) };*/
 
         public static Struct_1A35E[] unk_1A35E = new Struct_1A35E[] { stru_1A35E_0, stru_1A35E_1, stru_1A35E_2, stru_1A35E_3, stru_1A35E_4, stru_1A35E_5, stru_1A35E_6, stru_1A35E_7 };
 
-        public static sbyte[] unk_1CAF0;
-        public static sbyte[] unk_1CB38;
+        public static sbyte[] unk_1CAF0 = new sbyte[256];
+        public static sbyte[] unk_1CB38 = new sbyte[256];
 
         public static byte[] unk_1AE0B = new byte[3];
 

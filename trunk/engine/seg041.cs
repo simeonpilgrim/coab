@@ -129,7 +129,7 @@ namespace engine
 
         static private byte[] unk_16FA6 = { 2, 70, 0, 0x8C };
 
-        internal static void press_any_key(string arg_0, bool arg_4, byte arg_6, byte arg_8, byte arg_A, byte arg_C, byte arg_E, byte arg_10)
+        internal static void press_any_key(string arg_0, bool clearArea, byte arg_6, byte arg_8, byte yEnd, byte xEnd, byte yStart, byte xStart)
         {
             Set var_125;
             byte var_104;
@@ -140,22 +140,22 @@ namespace engine
 
             var_100 = arg_0;
 
-            if (arg_10 <= 0x27 && arg_E <= 0x18 && arg_C <= 0x27 && arg_A <= 0x27)
+            if (xStart <= 0x27 && yStart <= 0x18 && xEnd <= 0x27 && yEnd <= 0x27)
             {
-                if (gbl.textXCol < arg_10 ||
-                    gbl.textXCol > arg_C ||
-                    gbl.textYCol < arg_E ||
-                    gbl.textYCol > arg_A)
+                if (gbl.textXCol < xStart ||
+                    gbl.textXCol > xEnd ||
+                    gbl.textYCol < yStart ||
+                    gbl.textYCol > yEnd)
                 {
-                    gbl.textXCol = arg_10;
-                    gbl.textYCol = arg_E;
+                    gbl.textXCol = xStart;
+                    gbl.textYCol = yStart;
                 }
 
-                if (arg_4 == true)
+                if (clearArea == true)
                 {
-                    seg037.draw8x8_clear_area(arg_A, arg_C, arg_E, arg_10);
-                    gbl.textXCol = arg_10;
-                    gbl.textYCol = arg_E;
+                    seg037.draw8x8_clear_area(yEnd, xEnd, yStart, xStart);
+                    gbl.textXCol = xStart;
+                    gbl.textYCol = yStart;
                 }
 
                 var_103 = 1;
@@ -163,7 +163,7 @@ namespace engine
 
                 if (var_101 != 0)
                 {
-                    var_102 = (byte)((arg_C - arg_10) + 1);
+                    var_102 = (byte)((xEnd - xStart) + 1);
 
                     do
                     {
@@ -193,29 +193,29 @@ namespace engine
 
                         }
 
-                        if (((var_104 - var_103) + gbl.textXCol) > arg_C)
+                        if (((var_104 - var_103) + gbl.textXCol) > xEnd)
                         {
-                            if (((var_104 - var_103) + gbl.textXCol) == arg_C &&
+                            if (((var_104 - var_103) + gbl.textXCol) == xEnd &&
                                 var_100[var_104-1] == ' ')
                             {
                                 var_104 -= 1;
                                 sub_107DE(var_100, ref var_103, var_104, arg_6, arg_8);
                             }
 
-                            gbl.textXCol = arg_10;
+                            gbl.textXCol = xStart;
                             gbl.textYCol++;
                             sub_10854(var_100, var_101, ref var_103);
 
-                            if (gbl.textYCol > arg_A &&
+                            if (gbl.textYCol > yEnd &&
                                 var_103 < var_101)
                             {
-                                gbl.textXCol = arg_10;
-                                gbl.textYCol = arg_E;
+                                gbl.textXCol = xStart;
+                                gbl.textYCol = yStart;
 
                                 displayAndDebug("Press	any key	to continue", 0, 13);
                                 seg043.clear_keyboard();
 
-                                seg037.draw8x8_clear_area(arg_A, arg_C, arg_E, arg_10);
+                                seg037.draw8x8_clear_area(yEnd, xEnd, yStart, xStart);
 
                                 sub_107DE(var_100, ref var_103, var_104, arg_6, arg_8);
                             }
@@ -227,9 +227,9 @@ namespace engine
 
                     } while (var_103 <= var_101);
 
-                    if (gbl.textXCol > arg_C)
+                    if (gbl.textXCol > xEnd)
                     {
-                        gbl.textXCol = arg_10;
+                        gbl.textXCol = xStart;
                         gbl.textYCol++;
                     }
                 }
