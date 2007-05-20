@@ -471,7 +471,7 @@ namespace engine
 
                     for (int dataPos = dataPosStart; dataPos <= dataPosEnd; dataPos++)
                     {
-                        if (xPos < 320)
+                        if (xPos+8 < 320)
                         {
                             byte c = gbl.overlayLines.data[dataPos];
 

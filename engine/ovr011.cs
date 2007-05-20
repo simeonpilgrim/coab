@@ -1318,7 +1318,7 @@ namespace engine
             }
 
             loop_var = 1;
-            gbl.stru_1C9CD[0].field_3 = 1;
+            gbl.stru_1C9CD[0].field_3 = 0;
             player_ptr2 = gbl.player_next_ptr;
             player_ptr = gbl.player_next_ptr;
 
@@ -1344,7 +1344,7 @@ namespace engine
                         if (gbl.combat_type == 0 &&
                             player_ptr.actions.field_13 == 0)
                         {
-                            var_2 = gbl.stru_1C9CD[loop_var].field_0;
+                            var_1 = gbl.stru_1C9CD[loop_var].field_0;
                             var_2 = gbl.stru_1C9CD[loop_var].field_1;
                             gbl.byte_1D1BB++;
 

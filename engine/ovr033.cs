@@ -525,7 +525,7 @@ namespace engine
                     match_found = true;
                 }
 
-            } while (match_found == false && loop_var != gbl.stru_1C9CD[0].field_3);
+            } while (match_found == false && loop_var <= gbl.stru_1C9CD[0].field_3);
 
             if (match_found == true)
             {
