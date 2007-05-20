@@ -129,11 +129,14 @@ namespace Classes
 
         public static void SetPixel3(int x, int y, byte value)
         {
-            if (value != 16)
+            if (value < 16)
             {
                 ram[y, x] = value;
 
                 SetVidPixel(x, y, ram[y, x]);
+            }
+            if (value > 16)
+            {
             }
         }
     }
