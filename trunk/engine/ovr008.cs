@@ -171,11 +171,7 @@ namespace engine
 
         internal static void load_mob(out Affect affect, out Item item, out Player player, byte mod_id)
         {
-            player = null;
-
-            player = new Player();
-
-            ovr017.load_mob(player, mod_id);
+            ovr017.load_mob(out player, mod_id);
 
             item = player.itemsPtr;
             affect = player.affect_ptr;

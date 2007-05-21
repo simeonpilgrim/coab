@@ -193,8 +193,10 @@ namespace Classes
         public byte spell_to_learn_count; // 0x72;
         [DataOffset(0x73, DataType.SByte)]
         public sbyte field_73; // 0x73;
+
         [DataOffset(0x74, DataType.IByte)]
         public Race race; // 0x74;
+
         [DataOffset(0x75, DataType.IByte)]
         public ClassId _class; // 0x75;
         [DataOffset(0x76, DataType.SWord)]
@@ -536,18 +538,30 @@ namespace Classes
             get { return itemArray[9]; }
             set { itemArray[9] = value; }
         }
+
+        /// <summary>
+        /// 0x179
+        /// </summary>
         public Item Item_ptr_02
-        { // 0x179
+        {
             get { return itemArray[10]; }
             set { itemArray[10] = value; }
         }
+
+        /// <summary>
+        /// 0x17d
+        /// </summary>
         public Item Item_ptr_03
-        { // 0x17d
+        {
             get { return itemArray[11]; }
             set { itemArray[11] = value; }
         }
+
+        /// <summary>
+        /// 0x181
+        /// </summary>
         public Item Item_ptr_04
-        { // 0x181
+        { 
             get { return itemArray[12]; }
             set { itemArray[12] = value; }
         }

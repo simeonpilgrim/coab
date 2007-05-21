@@ -111,7 +111,7 @@ namespace engine
             byte var_E1;
             Affect var_E0;
             Player player_base;
-            gbl.Struct_1D1C1[] var_D8 = new gbl.Struct_1D1C1[72];
+            gbl.Struct_1D1C1[] var_D8 = new gbl.Struct_1D1C1[gbl.unk_1D1C1_count];
 
             var_E1 = 0;
             player_base = gbl.player_next_ptr;
@@ -122,7 +122,7 @@ namespace engine
             }
             else if (unk_6325A.MemberOf((byte)affect_type) == true)
             {
-                System.Array.Copy(gbl.unk_1D1C1, var_D8, 72);
+                System.Array.Copy(gbl.unk_1D1C1, var_D8, gbl.unk_1D1C1_count);
 
                 while (player_base != null &&
                     var_E1 == 0)
@@ -162,7 +162,7 @@ namespace engine
                     player_base = player_base.next_player;
                 }
 
-                System.Array.Copy(var_D8, gbl.unk_1D1C1, 72);
+                System.Array.Copy(var_D8, gbl.unk_1D1C1, gbl.unk_1D1C1_count);
             }
 
             if (var_E1 != 0)

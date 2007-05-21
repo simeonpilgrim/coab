@@ -2732,7 +2732,7 @@ namespace engine
             byte var_DB;
             byte var_DA;
             byte var_D9;
-            gbl.Struct_1D1C1[] var_D8 = new gbl.Struct_1D1C1[72];
+            gbl.Struct_1D1C1[] var_D8 = new gbl.Struct_1D1C1[gbl.unk_1D1C1_count];
 
             ovr025.sub_67924(false, 0, 0, 0x19);
 
@@ -2862,25 +2862,16 @@ namespace engine
             var_5 = 0;
 
             target = player.actions.target;
-            throw new System.NotSupportedException();//cmp	[bp+arg_0], 0
-            throw new System.NotSupportedException();//jnz	loc_41EAB
-            throw new System.NotSupportedException();//mov	ax, [bp+target.offset]
-            throw new System.NotSupportedException();//or	ax, [bp+target.seg]
-            throw new System.NotSupportedException();//jz	loc_41EBD
-            throw new System.NotSupportedException();//les	di, int ptr [bp+target.offset]
-            throw new System.NotSupportedException();//mov	al, es:[di+charStruct.combat_team]
-            throw new System.NotSupportedException();//les	di, int ptr [bp+player.offset]
-            throw new System.NotSupportedException();//cmp	al, es:[di+charStruct.combat_team]
-            throw new System.NotSupportedException();//jz	loc_41EAB
-            throw new System.NotSupportedException();//les	di, int ptr [bp+target.offset]
-            throw new System.NotSupportedException();//cmp	es:[di+charStruct.in_combat], 0
-            throw new System.NotSupportedException();//jz	loc_41EAB
-            sub_3F143(target, player);
-            throw new System.NotSupportedException();//or	al, al
-            throw new System.NotSupportedException();//jnz	loc_41EBD
-            throw new System.NotSupportedException();//loc_41EAB:
-            player.actions.target = null;
-            throw new System.NotSupportedException();//loc_41EBD:
+
+            if (arg_0 != 0 ||
+                 (target != null &&
+                   (target.combat_team == player.combat_team ||
+                    target.in_combat == false ||
+                    sub_3F143(target, player) == false)))
+            {
+                player.actions.target = null;
+            }
+           
             if (player.actions.target != null)
             {
                 var_6 = true;
@@ -2889,97 +2880,70 @@ namespace engine
             while (var_6 == false && var_5 == 0)
             {
                 var_5 = var_7;
-                throw new System.NotSupportedException();//cmp	[bp+var_7], 0
-                throw new System.NotSupportedException();//jz	loc_41F00
-                throw new System.NotSupportedException();//cmp	[bp+arg_0], 0
-                throw new System.NotSupportedException();//jnz	loc_41F00
-                gbl.stru_1D1BC.field_6 = 1;
-                throw new System.NotSupportedException();//loc_41F00:
+
+                if (var_7 != 0 && arg_0 == 0)
+                {
+                    gbl.stru_1D1BC.field_6 = 1;
+                }
+
                 var_3 = 0x14;
                 var_2 = ovr025.near_enermy(arg_4, player);
-                throw new System.NotSupportedException();//loc_41F16:
-                throw new System.NotSupportedException();//cmp	[bp+var_3], 0
-                throw new System.NotSupportedException();//ja	loc_41F1F
-                throw new System.NotSupportedException();//jmp	loc_42004
-                throw new System.NotSupportedException();//loc_41F1F:
-                throw new System.NotSupportedException();//cmp	[bp+var_6], 0
-                throw new System.NotSupportedException();//jz	loc_41F28
-                throw new System.NotSupportedException();//jmp	loc_42004
-                throw new System.NotSupportedException();//loc_41F28:
-                throw new System.NotSupportedException();//cmp	[bp+var_2], 0
-                throw new System.NotSupportedException();//ja	loc_41F31
-                throw new System.NotSupportedException();//jmp	loc_42004
-                throw new System.NotSupportedException();//loc_41F31:
-                var_3--;
-                var_4 = ovr024.roll_dice(var_2, 1);
-                throw new System.NotSupportedException();//mov	[bp+var_4], al
-                throw new System.NotSupportedException();//mov	al, [bp+var_4]
-                throw new System.NotSupportedException();//xor	ah, ah
-                throw new System.NotSupportedException();//mov	di, ax
-                throw new System.NotSupportedException();//cmp	byte_1D8B9[di],	0
-                throw new System.NotSupportedException();//ja	loc_41F54
-                throw new System.NotSupportedException();//jmp	loc_42001
-                throw new System.NotSupportedException();//loc_41F54:
-                throw new System.NotSupportedException();//mov	al, [bp+var_4]
-                throw new System.NotSupportedException();//xor	ah, ah
-                throw new System.NotSupportedException();//mov	di, ax
-                throw new System.NotSupportedException();//mov	al, byte_1D8B9[di]
-                throw new System.NotSupportedException();//xor	ah, ah
-                throw new System.NotSupportedException();//mov	di, ax
-                throw new System.NotSupportedException();//shl	di, 1
-                throw new System.NotSupportedException();//shl	di, 1
-                throw new System.NotSupportedException();//mov	ax, short ptr player_array.offset[di]
-                throw new System.NotSupportedException();//mov	dx, player_array.seg[di]
-                throw new System.NotSupportedException();//mov	[bp+target.offset], ax
-                throw new System.NotSupportedException();//mov	[bp+target.seg], dx
-                if ((arg_2 != 0 && gbl.stru_1D1BC.field_6 != 0) ||
-                    sub_3F143(target, player) == true)
+
+                while (var_3 > 0 && var_6 == false && var_2 > 0)
                 {
-                    var_6 = true;
-                    player.actions.target = target;
+                    var_3--;
+                    var_4 = ovr024.roll_dice(var_2, 1);
+
+                    if (gbl.byte_1D8B9[var_4] > 0)
+                    {
+                        target = gbl.player_array[gbl.byte_1D8B9[var_4]];
+
+                        if ((arg_2 != 0 && gbl.stru_1D1BC.field_6 != 0) ||
+                            sub_3F143(target, player) == true)
+                        {
+                            var_6 = true;
+                            player.actions.target = target;
+                        }
+                        else
+                        {
+                            gbl.byte_1D8B9[var_4] = 0;
+                            var_C = var_2;
+                            throw new System.NotSupportedException();//mov	al, 1
+                            throw new System.NotSupportedException();//cmp	al, [bp+var_C]
+                            throw new System.NotSupportedException();//ja	loc_41FF1
+                            throw new System.NotSupportedException();//mov	[bp+var_4], al
+                            throw new System.NotSupportedException();//jmp	short loc_41FD7
+                            throw new System.NotSupportedException();//loc_41FD4:
+                            var_4++;
+                            throw new System.NotSupportedException();//loc_41FD7:
+                            throw new System.NotSupportedException();//mov	al, [bp+var_4]
+                            throw new System.NotSupportedException();//xor	ah, ah
+                            throw new System.NotSupportedException();//mov	di, ax
+                            throw new System.NotSupportedException();//cmp	byte_1D8B9[di],	0
+                            throw new System.NotSupportedException();//jbe	loc_41FE9
+                            var_6 = true;
+                            throw new System.NotSupportedException();//loc_41FE9:
+                            throw new System.NotSupportedException();//mov	al, [bp+var_4]
+                            throw new System.NotSupportedException();//cmp	al, [bp+var_C]
+                            throw new System.NotSupportedException();//jnz	loc_41FD4
+                            throw new System.NotSupportedException();//loc_41FF1:
+                            throw new System.NotSupportedException();//cmp	[bp+var_6], 0
+                            throw new System.NotSupportedException();//jz	loc_41FFD
+                            var_6 = false;
+                            throw new System.NotSupportedException();//jmp	short loc_42001
+                            throw new System.NotSupportedException();//loc_41FFD:
+                            var_2 = 0;
+                        }
+                    }
+                    //loc_42001:
                 }
-                else
+
+                if (var_7 != 0)
                 {
-                    throw new System.NotSupportedException();//mov	al, [bp+var_4]
-                    throw new System.NotSupportedException();//xor	ah, ah
-                    throw new System.NotSupportedException();//mov	di, ax
-                    throw new System.NotSupportedException();//mov	byte_1D8B9[di],	0
-                    var_C = var_2;
-                    throw new System.NotSupportedException();//mov	al, 1
-                    throw new System.NotSupportedException();//cmp	al, [bp+var_C]
-                    throw new System.NotSupportedException();//ja	loc_41FF1
-                    throw new System.NotSupportedException();//mov	[bp+var_4], al
-                    throw new System.NotSupportedException();//jmp	short loc_41FD7
-                    throw new System.NotSupportedException();//loc_41FD4:
-                    var_4++;
-                    throw new System.NotSupportedException();//loc_41FD7:
-                    throw new System.NotSupportedException();//mov	al, [bp+var_4]
-                    throw new System.NotSupportedException();//xor	ah, ah
-                    throw new System.NotSupportedException();//mov	di, ax
-                    throw new System.NotSupportedException();//cmp	byte_1D8B9[di],	0
-                    throw new System.NotSupportedException();//jbe	loc_41FE9
-                    var_6 = true;
-                    throw new System.NotSupportedException();//loc_41FE9:
-                    throw new System.NotSupportedException();//mov	al, [bp+var_4]
-                    throw new System.NotSupportedException();//cmp	al, [bp+var_C]
-                    throw new System.NotSupportedException();//jnz	loc_41FD4
-                    throw new System.NotSupportedException();//loc_41FF1:
-                    throw new System.NotSupportedException();//cmp	[bp+var_6], 0
-                    throw new System.NotSupportedException();//jz	loc_41FFD
-                    var_6 = false;
-                    throw new System.NotSupportedException();//jmp	short loc_42001
-                    throw new System.NotSupportedException();//loc_41FFD:
-                    var_2 = 0;
+                    var_7 = 1;
                 }
-                throw new System.NotSupportedException();//loc_42001:
-                throw new System.NotSupportedException();//jmp	loc_41F16
-                throw new System.NotSupportedException();//loc_42004:
-                throw new System.NotSupportedException();//cmp	[bp+var_7], 0
-                throw new System.NotSupportedException();//jnz	loc_4200E
-                var_7 = 1;
-                throw new System.NotSupportedException();//loc_4200E:
             }
-            throw new System.NotSupportedException();//loc_42011:
+
             gbl.stru_1D1BC.field_6 = 0;
 
             return var_6;
