@@ -428,6 +428,7 @@ namespace Classes
             }
         }
 
+        public const int unk_1D1C1_count = 72;
         public static Struct_1D1C1[] unk_1D1C1; // seg600:6EB1 - 6EAEh[1] == unk_1D1C1[0]
 
         public class Struct_1C9CD

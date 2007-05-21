@@ -33,6 +33,12 @@ namespace engine
             }
             
             gbl.unk_16620 = new byte[5, 6, 2]; // the 5 is made up.
+
+            gbl.unk_1D1C1 = new gbl.Struct_1D1C1[gbl.unk_1D1C1_count];
+            for (int i = 0; i < gbl.unk_1D1C1_count; i++)
+            {
+                gbl.unk_1D1C1[i] = new gbl.Struct_1D1C1();
+            }
             /* Memory Init - End */
 
             seg044.sub_12194();

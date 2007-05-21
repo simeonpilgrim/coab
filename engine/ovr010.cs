@@ -313,55 +313,29 @@ namespace engine
             var_5D = 1;
 
 
-            throw new System.NotSupportedException();//cmp	[bp+var_5F], 0
-            throw new System.NotSupportedException();//ja	loc_35682
-            throw new System.NotSupportedException();//jmp	loc_3570F
-            throw new System.NotSupportedException();//loc_35682:
-            throw new System.NotSupportedException();//cmp	player.field_F7, 0x7F
-            throw new System.NotSupportedException();//ja	loc_35694
-            throw new System.NotSupportedException();//cmp	byte_1D904, 0
-            throw new System.NotSupportedException();//jz	loc_3570F
-            throw new System.NotSupportedException();//loc_35694:
-            throw new System.NotSupportedException();//push	[bp+player.seg]
-            throw new System.NotSupportedException();//push	[bp+player.offset]
-            throw new System.NotSupportedException();//call	ovr025.on_our_team(Player *)
-            throw new System.NotSupportedException();//cbw
-            throw new System.NotSupportedException();//mov	di, ax
-            throw new System.NotSupportedException();//cmp	friends_count[di], 0
-            throw new System.NotSupportedException();//jbe	loc_3570F
-            throw new System.NotSupportedException();//loc_356A9:
-            throw new System.NotSupportedException();//mov	al, [bp+var_5D]
-            throw new System.NotSupportedException();//cmp	al, [bp+var_5B]
-            throw new System.NotSupportedException();//ja	loc_3570F
-            throw new System.NotSupportedException();//cmp	[bp+var_62], 0
-            throw new System.NotSupportedException();//jnz	loc_3570F
-            var_5E = 1;
-            throw new System.NotSupportedException();//loc_356BB:
-            throw new System.NotSupportedException();//cmp	[bp+var_5E], 4
-            throw new System.NotSupportedException();//jnb	loc_35707
-            throw new System.NotSupportedException();//cmp	[bp+var_62], 0
-            throw new System.NotSupportedException();//jnz	loc_35707
-            var_60 = (byte)(ovr024.roll_dice(var_5F, 1) - 1);
-            var_61 = var_55[var_60];
-            throw new System.NotSupportedException();//push	[bp+player.seg]
-            throw new System.NotSupportedException();//push	[bp+player.offset]
-            throw new System.NotSupportedException();//mov	al, [bp+var_61]
-            throw new System.NotSupportedException();//push	ax
-            throw new System.NotSupportedException();//mov	al, [bp+var_5A]
-            throw new System.NotSupportedException();//push	ax
-            throw new System.NotSupportedException();//push	cs
-            throw new System.NotSupportedException();//call	near ptr sub_353B1
-            throw new System.NotSupportedException();//or	al, al
-            throw new System.NotSupportedException();//jz	loc_35702
-            var_62 = var_61;
-            throw new System.NotSupportedException();//loc_35702:
-            var_5E++;
-            throw new System.NotSupportedException();//jmp	short loc_356BB
-            throw new System.NotSupportedException();//loc_35707:
-            var_5A--;
-            var_5D++;
-            throw new System.NotSupportedException();//jmp	short loc_356A9
-            throw new System.NotSupportedException();//loc_3570F:
+            if (var_5F > 0 &&
+                (player.field_F7 > 0x7F || gbl.byte_1D904 == true))
+            {
+                if ((ovr025.on_our_team(player)== 0 ? gbl.friends_count : gbl.foe_count) > 0)
+                {
+                    while (var_5D <= var_5B && var_62 == 0)
+                    {
+                        for (var_5E = 1; var_5E < 4 && var_62 == 0; var_5E++)
+                        {
+                            var_60 = (byte)(ovr024.roll_dice(var_5F, 1) - 1);
+                            var_61 = var_55[var_60];
+
+                            if (sub_353B1(var_5A, var_61, player) != 0)
+                            {
+                                var_62 = var_61;
+                            }
+                        }
+
+                        var_5A--;
+                        var_5D++;
+                    }
+                }
+            }
 
             if (var_62 > 0)
             {
@@ -487,137 +461,122 @@ namespace engine
                 if ((player.actions.move / 2) > 0 &&
                     player.actions.delay > 0)
                 {
-                    throw new System.NotSupportedException();//cmp	player.field_F7, 0x80
-                    throw new System.NotSupportedException();//jb	loc_35AA3
-                    throw new System.NotSupportedException();//cmp	player.field_F7, 0x7F
-                    throw new System.NotSupportedException();//jbe	loc_35A95
-                    ovr024.roll_dice(100, 1);
-                    throw new System.NotSupportedException();//xor	ah, ah
-                    throw new System.NotSupportedException();//mov	dx, ax
-                    throw new System.NotSupportedException();//mov	al, byte_1D2CC
-                    throw new System.NotSupportedException();//xor	ah, ah
-                    throw new System.NotSupportedException();//add	ax, dx
-                    throw new System.NotSupportedException();//mov	dx, ax
-                    throw new System.NotSupportedException();//mov	al, byte_1D903
-                    throw new System.NotSupportedException();//xor	ah, ah
-                    throw new System.NotSupportedException();//cmp	ax, dx
-                    throw new System.NotSupportedException();//jle	loc_35AA3
-                    throw new System.NotSupportedException();//loc_35A95:
-                    throw new System.NotSupportedException();//cmp	player.combat_team,	1
-                    throw new System.NotSupportedException();//jz	loc_35AA3
-                    throw new System.NotSupportedException();//jmp	loc_35D9E
-                    throw new System.NotSupportedException();//loc_35AA3:
-                    if (player.actions.field_14 != 0 ||
-                        player.field_159 != null ||
-                        player._class != ClassId.magic_user)
+                    if (player.field_F7 < 0x80 ||
+                       (player.field_F7 > 0x7F && gbl.byte_1D903 <= (ovr024.roll_dice(100, 1) + gbl.byte_1D2CC)) ||
+                        player.combat_team == 1)
                     {
-                        if (player.actions.field_14 == 0)
+                        if (player.actions.field_14 != 0 ||
+                            player.field_159 != null ||
+                            player._class != ClassId.magic_user)
                         {
-                            var_1 = ovr014.sub_409BC(player.actions.target, player);
-                        }
-                        else
-                        {
-                            player.actions.field_15 = ovr024.roll_dice(2, 1);
-                            var_1 = (byte)(gbl.mapDirection - (((gbl.mapDirection + 2) % 4) / 2));
-
-                            if (player.combat_team == 0)
+                            if (player.actions.field_14 == 0)
                             {
-                                var_1 += 4;
-                            }
-
-                            var_1 %= 8;
-                        }
-
-                        var_4 = false;
-                        var_5 = false;
-                        var_3 = 1;
-
-                        while (var_3 < 6 && var_5 == false &&
-                            sub_3573B(out var_4, var_1, var_3, player) == 0)
-                        {
-                            if (player.actions.field_14 != 0 &&
-                                var_4 == true)
-                            {
-                                var_5 = ovr014.flee_battle(player);
+                                var_1 = ovr014.sub_409BC(player.actions.target, player);
                             }
                             else
                             {
-                                var_3++;
-                            }
-                        }
+                                player.actions.field_15 = ovr024.roll_dice(2, 1);
+                                var_1 = (byte)(gbl.mapDirection - (((gbl.mapDirection + 2) % 4) / 2));
 
-                        if (var_5 == true)
-                        {
-                            player.actions.move = 0;
-                            player.actions.field_14 = 0;
-                            var_5 = ovr025.clear_actions(player);
-                        }
-                        else
-                        {
-                            var_2 = (byte)((data_2B8[(player.actions.field_15 * 5) + var_3] + var_1) % 8);
-
-                            if (var_3 == 6 || ((var_2 + 4) % 8) == gbl.byte_1AB18)
-                            {
-                                gbl.byte_1AB19++;
-                                player.actions.field_15 %= 6;
-                                player.actions.field_15 += 1;
-
-                                if (gbl.byte_1AB19 > 1)
+                                if (player.combat_team == 0)
                                 {
-                                    player.actions.target = null;
+                                    var_1 += 4;
+                                }
 
-                                    if (gbl.byte_1AB19 > 2)
-                                    {
-                                        player.actions.move = 0;
-                                        var_5 = true;
-                                    }
-                                    else if (ovr014.sub_41E44(0, 1, 0xFF, player) == false)
-                                    {
-                                        var_5 = sub_361F7(player);
-                                    }
+                                var_1 %= 8;
+                            }
+
+                            var_4 = false;
+                            var_5 = false;
+                            var_3 = 1;
+
+                            while (var_3 < 6 && var_5 == false &&
+                                sub_3573B(out var_4, var_1, var_3, player) == 0)
+                            {
+                                if (player.actions.field_14 != 0 &&
+                                    var_4 == true)
+                                {
+                                    var_5 = ovr014.flee_battle(player);
+                                }
+                                else
+                                {
+                                    var_3++;
                                 }
                             }
 
-                            if (var_3 < 6)
+                            if (var_5 == true)
                             {
-                                gbl.byte_1AB18 = var_2;
-                            }
-                            else
-                            {
-                                var_5 = true;
-                            }
-                        }
-
-                        if (var_5 == false)
-                        {
-                            gbl.byte_1D910 = (gbl.byte_1D90E || ovr033.sub_74761(0, player) || player.combat_team == 0);
-
-                            ovr033.sub_74B3F(0, 0, var_2, player);
-                            ovr014.sub_3E954(player.actions.field_9, player);
-
-                            if (player.in_combat == false)
-                            {
+                                player.actions.move = 0;
+                                player.actions.field_14 = 0;
                                 var_5 = ovr025.clear_actions(player);
                             }
                             else
                             {
-                                if (player.actions.move > 0)
+                                var_2 = (byte)((data_2B8[(player.actions.field_15 * 5) + var_3] + var_1) % 8);
+
+                                if (var_3 == 6 || ((var_2 + 4) % 8) == gbl.byte_1AB18)
                                 {
-                                    ovr014.sub_3E748(player.actions.field_9, player);
+                                    gbl.byte_1AB19++;
+                                    player.actions.field_15 %= 6;
+                                    player.actions.field_15 += 1;
+
+                                    if (gbl.byte_1AB19 > 1)
+                                    {
+                                        player.actions.target = null;
+
+                                        if (gbl.byte_1AB19 > 2)
+                                        {
+                                            player.actions.move = 0;
+                                            var_5 = true;
+                                        }
+                                        else if (ovr014.sub_41E44(0, 1, 0xFF, player) == false)
+                                        {
+                                            var_5 = sub_361F7(player);
+                                        }
+                                    }
                                 }
+
+                                if (var_3 < 6)
+                                {
+                                    gbl.byte_1AB18 = var_2;
+                                }
+                                else
+                                {
+                                    var_5 = true;
+                                }
+                            }
+
+                            if (var_5 == false)
+                            {
+                                gbl.byte_1D910 = (gbl.byte_1D90E || ovr033.sub_74761(0, player) || player.combat_team == 0);
+
+                                ovr033.sub_74B3F(0, 0, var_2, player);
+                                ovr014.sub_3E954(player.actions.field_9, player);
 
                                 if (player.in_combat == false)
                                 {
                                     var_5 = ovr025.clear_actions(player);
                                 }
+                                else
+                                {
+                                    if (player.actions.move > 0)
+                                    {
+                                        ovr014.sub_3E748(player.actions.field_9, player);
+                                    }
 
-                                ovr024.in_poison_cloud(1, player);
+                                    if (player.in_combat == false)
+                                    {
+                                        var_5 = ovr025.clear_actions(player);
+                                    }
+
+                                    ovr024.in_poison_cloud(1, player);
+                                }
                             }
+                            return;
                         }
-                        return;
                     }
                 }
-                throw new System.NotSupportedException();//loc_35D9E:
+
                 var_5 = sub_361F7(player);
             }
         }
@@ -929,65 +888,37 @@ namespace engine
                     gbl.byte_1D2CC = 0;
                 }
                 ovr024.work_on_00(player, 0x11);
-                throw new System.NotSupportedException();//les	di, int ptr [bp+player.offset]
-                throw new System.NotSupportedException();//mov	al, es:[di+charStruct.hit_point_max]
-                throw new System.NotSupportedException();//xor	ah, ah
-                throw new System.NotSupportedException();//mov	cx, ax
-                throw new System.NotSupportedException();//les	di, int ptr [bp+player.offset]
-                throw new System.NotSupportedException();//mov	al, es:[di+charStruct.hit_point_current]
-                throw new System.NotSupportedException();//xor	ah, ah
-                throw new System.NotSupportedException();//mov	dx, 0x64
-                throw new System.NotSupportedException();//mul	dx
-                throw new System.NotSupportedException();//cwd
-                throw new System.NotSupportedException();//div	cx
-                throw new System.NotSupportedException();//mov	dx, ax
-                throw new System.NotSupportedException();//mov	ax, 0x64
-                throw new System.NotSupportedException();//sub	ax, dx
-                throw new System.NotSupportedException();//mov	dx, ax
-                throw new System.NotSupportedException();//mov	al, byte_1D2CC
-                throw new System.NotSupportedException();//xor	ah, ah
-                throw new System.NotSupportedException();//cmp	ax, dx
-                throw new System.NotSupportedException();//jl	loc_36452
-                throw new System.NotSupportedException();//cmp	byte_1D2CC, 0
-                throw new System.NotSupportedException();//jz	loc_36452
-                throw new System.NotSupportedException();//jmp	func_end
-                throw new System.NotSupportedException();//loc_36452:
-                var_3 = gbl.byte_1D2CC;
-                gbl.byte_1D2CC = gbl.byte_1D903;
 
-                ovr024.work_on_00(player, 17);
-                throw new System.NotSupportedException();//mov	ax, 0x64
-                throw new System.NotSupportedException();//les	di, int ptr area2_ptr.offset
-                throw new System.NotSupportedException();//sub	ax, es:[di+area2.field_58C]
-                throw new System.NotSupportedException();//mov	dx, ax
-                throw new System.NotSupportedException();//mov	al, byte_1D2CC
-                throw new System.NotSupportedException();//xor	ah, ah
-                throw new System.NotSupportedException();//cmp	ax, dx
-                throw new System.NotSupportedException();//jb	loc_36498
-                throw new System.NotSupportedException();//cmp	byte_1D2CC, 0
-                throw new System.NotSupportedException();//jz	loc_36498
-                throw new System.NotSupportedException();//les	di, int ptr [bp+player.offset]
-                throw new System.NotSupportedException();//cmp	es:[di+charStruct.combat_team],	0
-                throw new System.NotSupportedException();//jz	loc_36498
-                throw new System.NotSupportedException();//jmp	func_end
-                throw new System.NotSupportedException();//loc_36498:
 
-                var_2 = ovr014.sub_40E8F(player);
-
-                if (var_2 <= (ovr014.sub_3E124(player) >> 1))
+                if (gbl.byte_1D2CC < (100 - ((player.hit_point_current * 100) / player.hit_point_max)) ||
+                    gbl.byte_1D2CC == 0)
                 {
-                    player.actions.field_14 = 1;
-                    ovr024.remove_affect(null, Affects.affect_4a, player);
-                    ovr024.remove_affect(null, Affects.affect_4b, player);
-                }
-                else if (player._int > 5)
-                {
-                    ovr024.sub_644A7("Surrenders", Status.unconscious, player);
+                    var_3 = gbl.byte_1D2CC;
+                    gbl.byte_1D2CC = gbl.byte_1D903;
 
-                    var_1 = ovr025.clear_actions(player);
+                    ovr024.work_on_00(player, 17);
+
+                    if (gbl.byte_1D2CC < (100 - gbl.area2_ptr.field_58C) ||
+                        gbl.byte_1D2CC == 0 ||
+                        player.combat_team == 0)
+                    {
+                        var_2 = ovr014.sub_40E8F(player);
+
+                        if (var_2 <= (ovr014.sub_3E124(player) >> 1))
+                        {
+                            player.actions.field_14 = 1;
+                            ovr024.remove_affect(null, Affects.affect_4a, player);
+                            ovr024.remove_affect(null, Affects.affect_4b, player);
+                        }
+                        else if (player._int > 5)
+                        {
+                            ovr024.sub_644A7("Surrenders", Status.unconscious, player);
+
+                            var_1 = ovr025.clear_actions(player);
+                        }
+                    }
                 }
             }
-            throw new System.NotSupportedException();//func_end:
 
             return var_1;
         }
@@ -1126,32 +1057,34 @@ namespace engine
                     }
                 }
 
-                throw new System.NotSupportedException();//cmp	gbl.unk_1C020[ var_19 ].field_0, 1
-                throw new System.NotSupportedException();//jnz	loc_36898
-                throw new System.NotSupportedException();//mov	al, gbl.unk_1C020[ var_19 ].field_D
-                throw new System.NotSupportedException();//les	di, [bp+arg_0]
-                throw new System.NotSupportedException();//and	al, es:[di+12Bh]
-                throw new System.NotSupportedException();//or	al, al
-                throw new System.NotSupportedException();//jbe	loc_36898
-                throw new System.NotSupportedException();//les	di, [bp+var_10]
-                throw new System.NotSupportedException();//cmp	byte ptr es:[di+32h], 0
-                throw new System.NotSupportedException();//jl	loc_3687A
-                throw new System.NotSupportedException();//les	di, [bp+var_10]
-                throw new System.NotSupportedException();//mov	al, es:[di+32h]
-                throw new System.NotSupportedException();//cbw
-                throw new System.NotSupportedException();//inc	ax
-                throw new System.NotSupportedException();//mov	[bp+var_18], al
-                throw new System.NotSupportedException();//jmp	short loc_3687E
-                throw new System.NotSupportedException();//loc_3687A:
-                var_18 = 0;
-                throw new System.NotSupportedException();//loc_3687E:
-                if (var_18 > var_17)
-                {
-                    var_C = var_10;
-                    var_17 = var_18;
-                }
 
-                throw new System.NotSupportedException();//loc_36898:
+                if (gbl.unk_1C020[var_19].field_0 == 1)
+                {
+                    throw new System.NotSupportedException();//mov	al, gbl.unk_1C020[ var_19 ].field_D
+                    throw new System.NotSupportedException();//les	di, [bp+arg_0]
+                    throw new System.NotSupportedException();//and	al, es:[di+12Bh]
+                    throw new System.NotSupportedException();//or	al, al
+                    throw new System.NotSupportedException();//jbe	loc_36898
+                    throw new System.NotSupportedException();//les	di, [bp+var_10]
+                    throw new System.NotSupportedException();//cmp	byte ptr es:[di+32h], 0
+                    throw new System.NotSupportedException();//jl	loc_3687A
+                    throw new System.NotSupportedException();//les	di, [bp+var_10]
+                    throw new System.NotSupportedException();//mov	al, es:[di+32h]
+                    throw new System.NotSupportedException();//cbw
+                    throw new System.NotSupportedException();//inc	ax
+                    throw new System.NotSupportedException();//mov	[bp+var_18], al
+                    throw new System.NotSupportedException();//jmp	short loc_3687E
+                    throw new System.NotSupportedException();//loc_3687A:
+                    var_18 = 0;
+                    throw new System.NotSupportedException();//loc_3687E:
+                    if (var_18 > var_17)
+                    {
+                        var_C = var_10;
+                        var_17 = var_18;
+                    }
+
+                }
+                //loc_36898:
                 var_10 = var_10.next;
             }
 
@@ -1254,45 +1187,37 @@ namespace engine
             {
                 var_1C = 0;
             }
-            throw new System.NotSupportedException();//les	di, [bp+arg_0]
-            throw new System.NotSupportedException();//cmp	byte ptr es:[di+185h], 2
-            throw new System.NotSupportedException();//jbe	loc_36B55
-            throw new System.NotSupportedException();//les	di, [bp+arg_0]
-            throw new System.NotSupportedException();//mov	ax, es:[di+155h]
-            throw new System.NotSupportedException();//or	ax, es:[di+157h]
-            throw new System.NotSupportedException();//jz	loc_36B2C
-            throw new System.NotSupportedException();//les	di, [bp+arg_0]
-            throw new System.NotSupportedException();//les	di, es:[di+155h]
-            throw new System.NotSupportedException();//cmp	byte ptr es:[di+36h], 0
-            throw new System.NotSupportedException();//jz	loc_36B3D
-            throw new System.NotSupportedException();//loc_36B2C:
-            ovr020.ready_Item(var_10);
-            var_1D = 1;
-            throw new System.NotSupportedException();//jmp	short loc_36B53
-            throw new System.NotSupportedException();//loc_36B3D:
-            ovr020.ready_Item(arg_0.field_155);
-            var_1D = 1;
-            throw new System.NotSupportedException();//loc_36B53:
-            throw new System.NotSupportedException();//jmp	short loc_36BA9
-            throw new System.NotSupportedException();//loc_36B55:
-            throw new System.NotSupportedException();//les	di, [bp+arg_0]
-            throw new System.NotSupportedException();//cmp	byte ptr es:[di+185h], 2
-            throw new System.NotSupportedException();//jnb	loc_36BA9
-            throw new System.NotSupportedException();//cmp	[bp+var_1C], 0
-            throw new System.NotSupportedException();//jz	loc_36BA9
-            if (arg_0.field_155 != null)
+            
+            if (arg_0.field_185 > 2)
             {
-                ovr020.ready_Item(arg_0.field_155);
+                if (arg_0.field_155 == null ||
+                    arg_0.field_155.field_36 != 0)
+                {
+                    ovr020.ready_Item(var_10);
+                    var_1D = 1;
+                }
+                else
+                {
+                    ovr020.ready_Item(arg_0.field_155);
+                    var_1D = 1;
+                }
             }
-            ovr025.sub_66C20(arg_0);
-
-            if (var_C != null)
+            else if (arg_0.field_185 < 2 && var_1C != 0)
             {
-                ovr020.ready_Item(var_C);
+                if (arg_0.field_155 != null)
+                {
+                    ovr020.ready_Item(arg_0.field_155);
+                }
+                ovr025.sub_66C20(arg_0);
+
+                if (var_C != null)
+                {
+                    ovr020.ready_Item(var_C);
+                }
+
+                var_1D = 1;
             }
 
-            var_1D = 1;
-            throw new System.NotSupportedException();//loc_36BA9:
 
             ovr025.sub_66C20(arg_0);
 

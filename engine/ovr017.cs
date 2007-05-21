@@ -1879,7 +1879,7 @@ namespace engine
         }
 
 
-        internal static void load_mob(Player player, byte monster_id)
+        internal static void load_mob(out Player player, byte monster_id)
         {
             string var_12;
             short var_8;
@@ -1968,9 +1968,7 @@ namespace engine
 
             if (gbl.area2_ptr.field_67C <= 7)
             {
-                var_8 = new Player();
-
-                load_mob(var_8, arg_0);
+                load_mob(out var_8, arg_0);
 
                 var_8.field_126 = arg_0;
 

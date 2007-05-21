@@ -23,6 +23,10 @@ namespace Classes
 		public sbyte field_2F;
 		public sbyte field_30;
 		public byte field_31;
+
+        /// <summary>
+        /// 0x32
+        /// </summary>
 		public sbyte exp_value; // 0x32
 		public byte field_33;
 		public byte field_34; 
