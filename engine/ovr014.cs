@@ -900,31 +900,19 @@ namespace engine
 
                 var_11 = 1;
                 arg_4 = true;
-
-                throw new System.NotSupportedException();//jmp	loc_3F91B
-                throw new System.NotSupportedException();//loc_3F5E3:
             }
             else
             {
-                throw new System.NotSupportedException();//les	di, [bp+arg_E]
-                throw new System.NotSupportedException();//mov	ax, es:[di+151h]
-                throw new System.NotSupportedException();//or	ax, es:[di+153h]
-                throw new System.NotSupportedException();//jz	loc_3F66A
-                throw new System.NotSupportedException();//les	di, [bp+arg_A]
-                throw new System.NotSupportedException();//cmp	byte ptr es:[di+0DEh], 0x80
-                throw new System.NotSupportedException();//ja	loc_3F60B
-                throw new System.NotSupportedException();//les	di, [bp+arg_A]
-                throw new System.NotSupportedException();//mov	al, es:[di+0DEh]
-                throw new System.NotSupportedException();//and	al, 7
-                throw new System.NotSupportedException();//cmp	al, 1
-                throw new System.NotSupportedException();//jbe	loc_3F66A
-                throw new System.NotSupportedException();//loc_3F60B:
-                var_10 = gbl.unk_1C020[arg_E.field_151.type].ShallowClone();
+                if (arg_E.field_151 != null && 
+                    (arg_A.field_DE > 0x80 || (arg_A.field_DE & 7) > 1))
+                {
+                    var_10 = gbl.unk_1C020[arg_E.field_151.type].ShallowClone();
 
-                arg_E.field_19E = var_10.field_2;
-                arg_E.field_1A0 = var_10.field_3;
-                arg_E.field_1A2 = (sbyte)((arg_E.field_1A2 - var_10.field_B) + var_10.field_4);
-                throw new System.NotSupportedException();//loc_3F66A:
+                    arg_E.field_19E = var_10.field_2;
+                    arg_E.field_1A0 = var_10.field_3;
+                    arg_E.field_1A2 = (sbyte)((arg_E.field_1A2 - var_10.field_B) + var_10.field_4);
+                }
+
                 ovr025.sub_66C20(arg_A);
                 ovr024.work_on_00(arg_A, 11);
 
@@ -1068,7 +1056,7 @@ namespace engine
                 }
                 arg_E.actions.field_5 = 0;
             }
-            throw new System.NotSupportedException();//loc_3F91B:
+
             throw new System.NotSupportedException();//les	di, [bp+arg_E]
             throw new System.NotSupportedException();//cmp	byte ptr es:[di+196h], 0
             throw new System.NotSupportedException();//jnz	loc_3F92D
@@ -1837,218 +1825,117 @@ namespace engine
 
             while (var_3 == 0)
             {
-                throw new System.NotSupportedException();//mov	al, [bp+var_2]
-                throw new System.NotSupportedException();//cmp	al, 0
-                throw new System.NotSupportedException();//jnz	loc_40A57
-                throw new System.NotSupportedException();//mov	ax, [bp+var_B]
-                throw new System.NotSupportedException();//cmp	ax, [bp+var_7]
-                throw new System.NotSupportedException();//jg	loc_40A4B
-                throw new System.NotSupportedException();//mov	ax, 0x26A
-                throw new System.NotSupportedException();//mul	[bp+var_D]
-                throw new System.NotSupportedException();//cwd
-                throw new System.NotSupportedException();//mov	cx, 0x100
-                throw new System.NotSupportedException();//idiv	cx
-                throw new System.NotSupportedException();//cmp	ax, [bp+var_F]
-                throw new System.NotSupportedException();//jle	loc_40A4F
-                throw new System.NotSupportedException();//loc_40A4B:
-                throw new System.NotSupportedException();//mov	al, 0
-                throw new System.NotSupportedException();//jmp	short loc_40A51
-                throw new System.NotSupportedException();//loc_40A4F:
-                throw new System.NotSupportedException();//mov	al, 1
-                throw new System.NotSupportedException();//loc_40A51:
-                throw new System.NotSupportedException();//mov	[bp+var_3], al
-                throw new System.NotSupportedException();//jmp	loc_40BD6
-                throw new System.NotSupportedException();//loc_40A57:
-                throw new System.NotSupportedException();//cmp	al, 2
-                throw new System.NotSupportedException();//jnz	loc_40A80
-                throw new System.NotSupportedException();//mov	ax, [bp+var_9]
-                throw new System.NotSupportedException();//cmp	ax, [bp+var_5]
-                throw new System.NotSupportedException();//jl	loc_40A74
-                throw new System.NotSupportedException();//mov	ax, 0x6A
-                throw new System.NotSupportedException();//mul	[bp+var_D]
-                throw new System.NotSupportedException();//cwd
-                throw new System.NotSupportedException();//mov	cx, 0x100
-                throw new System.NotSupportedException();//idiv	cx
-                throw new System.NotSupportedException();//cmp	ax, [bp+var_F]
-                throw new System.NotSupportedException();//jge	loc_40A78
-                throw new System.NotSupportedException();//loc_40A74:
-                throw new System.NotSupportedException();//mov	al, 0
-                throw new System.NotSupportedException();//jmp	short loc_40A7A
-                throw new System.NotSupportedException();//loc_40A78:
-                throw new System.NotSupportedException();//mov	al, 1
-                throw new System.NotSupportedException();//loc_40A7A:
-                throw new System.NotSupportedException();//mov	[bp+var_3], al
-                throw new System.NotSupportedException();//jmp	loc_40BD6
-                throw new System.NotSupportedException();//loc_40A80:
-                throw new System.NotSupportedException();//cmp	al, 4
-                throw new System.NotSupportedException();//jnz	loc_40AA9
-                throw new System.NotSupportedException();//mov	ax, [bp+var_B]
-                throw new System.NotSupportedException();//cmp	ax, [bp+var_7]
-                throw new System.NotSupportedException();//jl	loc_40A9D
-                throw new System.NotSupportedException();//mov	ax, 0x26A
-                throw new System.NotSupportedException();//mul	[bp+var_D]
-                throw new System.NotSupportedException();//cwd
-                throw new System.NotSupportedException();//mov	cx, 0x100
-                throw new System.NotSupportedException();//idiv	cx
-                throw new System.NotSupportedException();//cmp	ax, [bp+var_F]
-                throw new System.NotSupportedException();//jle	loc_40AA1
-                throw new System.NotSupportedException();//loc_40A9D:
-                throw new System.NotSupportedException();//mov	al, 0
-                throw new System.NotSupportedException();//jmp	short loc_40AA3
-                throw new System.NotSupportedException();//loc_40AA1:
-                throw new System.NotSupportedException();//mov	al, 1
-                throw new System.NotSupportedException();//loc_40AA3:
-                throw new System.NotSupportedException();//mov	[bp+var_3], al
-                throw new System.NotSupportedException();//jmp	loc_40BD6
-                throw new System.NotSupportedException();//loc_40AA9:
-                throw new System.NotSupportedException();//cmp	al, 6
-                throw new System.NotSupportedException();//jnz	loc_40AD2
-                throw new System.NotSupportedException();//mov	ax, [bp+var_9]
-                throw new System.NotSupportedException();//cmp	ax, [bp+var_5]
-                throw new System.NotSupportedException();//jg	loc_40AC6
-                throw new System.NotSupportedException();//mov	ax, 0x6A
-                throw new System.NotSupportedException();//mul	[bp+var_D]
-                throw new System.NotSupportedException();//cwd
-                throw new System.NotSupportedException();//mov	cx, 0x100
-                throw new System.NotSupportedException();//idiv	cx
-                throw new System.NotSupportedException();//cmp	ax, [bp+var_F]
-                throw new System.NotSupportedException();//jge	loc_40ACA
-                throw new System.NotSupportedException();//loc_40AC6:
-                throw new System.NotSupportedException();//mov	al, 0
-                throw new System.NotSupportedException();//jmp	short loc_40ACC
-                throw new System.NotSupportedException();//loc_40ACA:
-                throw new System.NotSupportedException();//mov	al, 1
-                throw new System.NotSupportedException();//loc_40ACC:
-                throw new System.NotSupportedException();//mov	[bp+var_3], al
-                throw new System.NotSupportedException();//jmp	loc_40BD6
-                throw new System.NotSupportedException();//loc_40AD2:
-                throw new System.NotSupportedException();//cmp	al, 1
-                throw new System.NotSupportedException();//jnz	loc_40B14
-                throw new System.NotSupportedException();//mov	ax, [bp+var_B]
-                throw new System.NotSupportedException();//cmp	ax, [bp+var_7]
-                throw new System.NotSupportedException();//jg	loc_40B08
-                throw new System.NotSupportedException();//mov	ax, [bp+var_9]
-                throw new System.NotSupportedException();//cmp	ax, [bp+var_5]
-                throw new System.NotSupportedException();//jl	loc_40B08
-                throw new System.NotSupportedException();//mov	ax, 0x26A
-                throw new System.NotSupportedException();//mul	[bp+var_D]
-                throw new System.NotSupportedException();//cwd
-                throw new System.NotSupportedException();//mov	cx, 0x100
-                throw new System.NotSupportedException();//idiv	cx
-                throw new System.NotSupportedException();//cmp	ax, [bp+var_F]
-                throw new System.NotSupportedException();//jl	loc_40B08
-                throw new System.NotSupportedException();//mov	ax, 0x6A
-                throw new System.NotSupportedException();//mul	[bp+var_D]
-                throw new System.NotSupportedException();//cwd
-                throw new System.NotSupportedException();//mov	cx, 0x100
-                throw new System.NotSupportedException();//idiv	cx
-                throw new System.NotSupportedException();//cmp	ax, [bp+var_F]
-                throw new System.NotSupportedException();//jle	loc_40B0C
-                throw new System.NotSupportedException();//loc_40B08:
-                throw new System.NotSupportedException();//mov	al, 0
-                throw new System.NotSupportedException();//jmp	short loc_40B0E
-                throw new System.NotSupportedException();//loc_40B0C:
-                throw new System.NotSupportedException();//mov	al, 1
-                throw new System.NotSupportedException();//loc_40B0E:
-                throw new System.NotSupportedException();//mov	[bp+var_3], al
-                throw new System.NotSupportedException();//jmp	loc_40BD6
-                throw new System.NotSupportedException();//loc_40B14:
-                throw new System.NotSupportedException();//cmp	al, 3
-                throw new System.NotSupportedException();//jnz	loc_40B56
-                throw new System.NotSupportedException();//mov	ax, [bp+var_B]
-                throw new System.NotSupportedException();//cmp	ax, [bp+var_7]
-                throw new System.NotSupportedException();//jl	loc_40B4A
-                throw new System.NotSupportedException();//mov	ax, [bp+var_9]
-                throw new System.NotSupportedException();//cmp	ax, [bp+var_5]
-                throw new System.NotSupportedException();//jl	loc_40B4A
-                throw new System.NotSupportedException();//mov	ax, 0x26A
-                throw new System.NotSupportedException();//mul	[bp+var_D]
-                throw new System.NotSupportedException();//cwd
-                throw new System.NotSupportedException();//mov	cx, 0x100
-                throw new System.NotSupportedException();//idiv	cx
-                throw new System.NotSupportedException();//cmp	ax, [bp+var_F]
-                throw new System.NotSupportedException();//jl	loc_40B4A
-                throw new System.NotSupportedException();//mov	ax, 0x6A
-                throw new System.NotSupportedException();//mul	[bp+var_D]
-                throw new System.NotSupportedException();//cwd
-                throw new System.NotSupportedException();//mov	cx, 0x100
-                throw new System.NotSupportedException();//idiv	cx
-                throw new System.NotSupportedException();//cmp	ax, [bp+var_F]
-                throw new System.NotSupportedException();//jle	loc_40B4E
-                throw new System.NotSupportedException();//loc_40B4A:
-                throw new System.NotSupportedException();//mov	al, 0
-                throw new System.NotSupportedException();//jmp	short loc_40B50
-                throw new System.NotSupportedException();//loc_40B4E:
-                throw new System.NotSupportedException();//mov	al, 1
-                throw new System.NotSupportedException();//loc_40B50:
-                throw new System.NotSupportedException();//mov	[bp+var_3], al
-                throw new System.NotSupportedException();//jmp	loc_40BD6
-                throw new System.NotSupportedException();//loc_40B56:
-                throw new System.NotSupportedException();//cmp	al, 5
-                throw new System.NotSupportedException();//jnz	loc_40B97
-                throw new System.NotSupportedException();//mov	ax, [bp+var_B]
-                throw new System.NotSupportedException();//cmp	ax, [bp+var_7]
-                throw new System.NotSupportedException();//jl	loc_40B8C
-                throw new System.NotSupportedException();//mov	ax, [bp+var_9]
-                throw new System.NotSupportedException();//cmp	ax, [bp+var_5]
-                throw new System.NotSupportedException();//jg	loc_40B8C
-                throw new System.NotSupportedException();//mov	ax, 0x26A
-                throw new System.NotSupportedException();//mul	[bp+var_D]
-                throw new System.NotSupportedException();//cwd
-                throw new System.NotSupportedException();//mov	cx, 0x100
-                throw new System.NotSupportedException();//idiv	cx
-                throw new System.NotSupportedException();//cmp	ax, [bp+var_F]
-                throw new System.NotSupportedException();//jl	loc_40B8C
-                throw new System.NotSupportedException();//mov	ax, 0x6A
-                throw new System.NotSupportedException();//mul	[bp+var_D]
-                throw new System.NotSupportedException();//cwd
-                throw new System.NotSupportedException();//mov	cx, 0x100
-                throw new System.NotSupportedException();//idiv	cx
-                throw new System.NotSupportedException();//cmp	ax, [bp+var_F]
-                throw new System.NotSupportedException();//jle	loc_40B90
-                throw new System.NotSupportedException();//loc_40B8C:
-                throw new System.NotSupportedException();//mov	al, 0
-                throw new System.NotSupportedException();//jmp	short loc_40B92
-                throw new System.NotSupportedException();//loc_40B90:
-                throw new System.NotSupportedException();//mov	al, 1
-                throw new System.NotSupportedException();//loc_40B92:
-                throw new System.NotSupportedException();//mov	[bp+var_3], al
-                throw new System.NotSupportedException();//jmp	short loc_40BD6
-                throw new System.NotSupportedException();//loc_40B97:
-                throw new System.NotSupportedException();//cmp	al, 7
-                throw new System.NotSupportedException();//jnz	loc_40BD6
-                throw new System.NotSupportedException();//mov	ax, [bp+var_B]
-                throw new System.NotSupportedException();//cmp	ax, [bp+var_7]
-                throw new System.NotSupportedException();//jg	loc_40BCD
-                throw new System.NotSupportedException();//mov	ax, [bp+var_9]
-                throw new System.NotSupportedException();//cmp	ax, [bp+var_5]
-                throw new System.NotSupportedException();//jg	loc_40BCD
-                throw new System.NotSupportedException();//mov	ax, 0x26A
-                throw new System.NotSupportedException();//mul	[bp+var_D]
-                throw new System.NotSupportedException();//cwd
-                throw new System.NotSupportedException();//mov	cx, 0x100
-                throw new System.NotSupportedException();//idiv	cx
-                throw new System.NotSupportedException();//cmp	ax, [bp+var_F]
-                throw new System.NotSupportedException();//jl	loc_40BCD
-                throw new System.NotSupportedException();//mov	ax, 0x6A
-                throw new System.NotSupportedException();//mul	[bp+var_D]
-                throw new System.NotSupportedException();//cwd
-                throw new System.NotSupportedException();//mov	cx, 0x100
-                throw new System.NotSupportedException();//idiv	cx
-                throw new System.NotSupportedException();//cmp	ax, [bp+var_F]
-                throw new System.NotSupportedException();//jle	loc_40BD1
-                throw new System.NotSupportedException();//loc_40BCD:
-                throw new System.NotSupportedException();//mov	al, 0
-                throw new System.NotSupportedException();//jmp	short loc_40BD3
-                throw new System.NotSupportedException();//loc_40BD1:
-                throw new System.NotSupportedException();//mov	al, 1
-                throw new System.NotSupportedException();//loc_40BD3:
-                throw new System.NotSupportedException();//mov	[bp+var_3], al
-                throw new System.NotSupportedException();//loc_40BD6:
-                throw new System.NotSupportedException();//cmp	[bp+var_3], 0
-                throw new System.NotSupportedException();//jnz	loc_40BDF
-                var_2++;
-                throw new System.NotSupportedException();//loc_40BDF:
+                switch (var_2)
+                {
+                    case 0:
+                        if (var_B > var_7 ||
+                            ((0x26A * var_D) / 0x100) > var_F)
+                        {
+                            var_3 = 0;
+                        }
+                        else
+                        {
+                            var_3 = 1;
+                        }
+                        break;
+
+                    case 2:
+                        if (var_9 < var_5 ||
+                            ((0x6A * var_D) / 0x100) < var_F)
+                        {
+                            var_3 = 0;
+                        }
+                        else
+                        {
+                            var_3 = 1;
+                        }
+                        break;
+
+                    case 4:
+                        if (var_B < var_7 ||
+                            ((0x26A * var_D) / 0x100) > var_F)
+                        {
+                            var_3 = 0;
+                        }
+                        else
+                        {
+                            var_3 = 1;
+                        }
+                        break;
+
+                    case 6:
+                        if (var_9 > var_5 ||
+                            ((0x6A * var_D) / 0x100) < var_F)
+                        {
+                            var_3 = 0;
+                        }
+                        else
+                        {
+                            var_3 = 1;
+                        }
+                        break;
+
+                    case 1:
+                        if (var_B > var_7 ||
+                            var_9 < var_5 ||
+                            ((0x26A * var_D) / 0x100) < var_F ||
+                            ((0x6A * var_D) / 0x100) > var_F)
+                        {
+                            var_3 = 0;
+                        }
+                        else
+                        {
+                            var_3 = 1;
+                        }
+                        break;
+
+                    case 3:
+                        if (var_B < var_7 ||
+                            var_9 < var_5 ||
+                            ((0x26a * var_D) / 0x100) < var_F ||
+                            ((0x6a * var_D) / 0x100) > var_F)
+                        {
+                            var_3 = 0;
+                        }
+                        else
+                        {
+                            var_3 = 1;
+                        }
+                        break;
+
+                    case 5:
+                        if (var_B < var_7 ||
+                            var_9 > var_5 ||
+                            ((0x26a * var_D) / 0x100) < var_F ||
+                            ((0x6a * var_D) / 0x100) > var_F)
+                        {
+                            var_3 = 0;
+                        }
+                        else
+                        {
+                            var_3 = 1;
+                        }
+                        break;
+
+                    case 7:
+                        if (var_B > var_7 ||
+                            var_9 > var_5 ||
+                            ((0x26a * var_D) / 0x100) < var_F ||
+                            ((0x6a * var_D) / 0x100) > var_F)
+                        {
+                            var_3 = 0;
+                        }
+                        else
+                        {
+                            var_3 = 1;
+                        }
+                        break;
+                }
+
+                if (var_3 == 0)
+                {
+                    var_2++;
+                }
             }
 
             return var_2;

@@ -246,8 +246,8 @@ namespace engine
             if (arg_8 == 1)
             {
                 DaxBlockSubMerge(lineNo, lineToCopy, dest, source, null, source.data_ptr, var_6,
-    destOffset, sourceOffset, copySize, destPostfix, destPrefix,
-    sourcePostfix, sourcePrefix, false, backupOffset);
+                    destOffset, sourceOffset, copySize, destPostfix, destPrefix,
+                    sourcePostfix, sourcePrefix, false, backupOffset);
 
                 //DaxBlockSubCopy(lineNo, lineToCopy, dest, source, var_6, destOffset, sourceOffset,
                 //    copySize, destPostfix, destPrefix);
