@@ -349,9 +349,13 @@ namespace engine
             return spell_id;
         }
 
-        static byte[] data_2B8 = new byte[]{ 0, 8, 7, 6, 1, 2, 8, 1, 2, 7 };/* actual from seg600:02BD */
-              
-
+        static byte[] data_2B8 = new byte[]{ 
+            0, 8, 7, 6, 1, 2, 8, 1, 2, 7,
+            6, 7 ,1 ,8 ,6 ,2 ,1 ,7 ,8 ,2 ,
+            6, 8 ,7, 6 ,5 ,4 ,8 ,1 ,2 ,3,  
+            4 ,8 ,4 ,6 ,2 ,8 ,6, 4 ,0 ,8 ,
+            0 ,6 ,2 ,8 ,2 ,0 ,4 ,0, 0 ,2 ,
+            6 ,2 ,2 ,0 ,4 ,4 ,4 ,2, 6, 6 };/* actual from seg600:02BD - seg600:02F8 */
 
         internal static byte sub_3573B(out bool arg_0, byte arg_4, byte arg_6, Player player)
         {
@@ -364,7 +368,6 @@ namespace engine
             byte var_7;
             byte var_6;
             Affect var_5;
-            byte var_1;
 
             arg_0 = false;
             var_D = 0;
@@ -373,73 +376,64 @@ namespace engine
             var_7 = (byte)((arg_4 + var_6) % 8);
 
             ovr033.sub_74D04(out var_C, out var_B, out var_9, out var_8, var_7, player);
-            throw new System.NotSupportedException();//cmp	[bp+var_9], 0
-            throw new System.NotSupportedException();//jnz	loc_357BF
-            arg_0 = true;
-            throw new System.NotSupportedException();//jmp	loc_359A6
-            throw new System.NotSupportedException();//loc_357BF:
-            throw new System.NotSupportedException();//mov	al, [bp+var_9]
-            throw new System.NotSupportedException();//xor	ah, ah
-            throw new System.NotSupportedException();//mov	di, ax
-            throw new System.NotSupportedException();//shl	di, 1
-            throw new System.NotSupportedException();//shl	di, 1
-            throw new System.NotSupportedException();//cmp	unk_189B4[di].field_0,	0x0FF
-            throw new System.NotSupportedException();//jnz	loc_357D8
-            var_1 = 0;
-            throw new System.NotSupportedException();//jmp	func_end
-            throw new System.NotSupportedException();//loc_357D8:
-            if ((var_7 & 1) != 0)
+
+            if (var_9 == 0)
             {
-                var_A = (byte)(gbl.unk_189B4[var_9].field_0 * 3);
+                arg_0 = true;
             }
             else
             {
-                var_A = (byte)(gbl.unk_189B4[var_9].field_0 * 2);
-            }
-
-            throw new System.NotSupportedException();//cmp	[bp+var_8], 0
-            throw new System.NotSupportedException();//jz	loc_3581A
-            throw new System.NotSupportedException();//jmp	loc_359A6
-            throw new System.NotSupportedException();//loc_3581A:
-            throw new System.NotSupportedException();//cmp	var_A, player.actions.move
-            throw new System.NotSupportedException();//jb	loc_3582E
-            throw new System.NotSupportedException();//jmp	loc_359A6
-            throw new System.NotSupportedException();//loc_3582E:
-            if (var_B != 0 &&
-                ovr025.find_affect(out var_5, Affects.funky__32, player) == false &&
-                ovr025.find_affect(out var_5, Affects.affect_1e, player) == false &&
-                ovr025.find_affect(out var_5, Affects.affect_6f, player) == false &&
-                ovr025.find_affect(out var_5, Affects.affect_7d, player) == false &&
-                ovr025.find_affect(out var_5, Affects.affect_81, player) == false &&
-                ovr025.find_affect(out var_5, Affects.minor_globe_of_invulnerability, player) == false &&
-                player.actions.field_10 == 0)
-            {
-                if (ovr024.do_saving_throw(0, 0, player) == false)
+                if (gbl.unk_189B4[var_9].field_0 == 0xff)
                 {
-                    var_A = (byte)(player.actions.move + 1);
+                    return 0;
+                }
+
+                if ((var_7 & 1) != 0)
+                {
+                    var_A = (byte)(gbl.unk_189B4[var_9].field_0 * 3);
+                }
+                else
+                {
+                    var_A = (byte)(gbl.unk_189B4[var_9].field_0 * 2);
+                }
+
+                if (var_8 == 0 && var_A < player.actions.move)
+                {
+                    if (var_B != 0 &&
+                        ovr025.find_affect(out var_5, Affects.funky__32, player) == false &&
+                        ovr025.find_affect(out var_5, Affects.affect_1e, player) == false &&
+                        ovr025.find_affect(out var_5, Affects.affect_6f, player) == false &&
+                        ovr025.find_affect(out var_5, Affects.affect_7d, player) == false &&
+                        ovr025.find_affect(out var_5, Affects.affect_81, player) == false &&
+                        ovr025.find_affect(out var_5, Affects.minor_globe_of_invulnerability, player) == false &&
+                        player.actions.field_10 == 0)
+                    {
+                        if (ovr024.do_saving_throw(0, 0, player) == false)
+                        {
+                            var_A = (byte)(player.actions.move + 1);
+                        }
+                    }
+
+
+                    if (var_C != 0 &&
+                        player.field_E5 < 7 &&
+                        ovr025.find_affect(out var_5, Affects.affect_81, player) == false &&
+                        ovr025.find_affect(out var_5, Affects.affect_6f, player) == false &&
+                        ovr025.find_affect(out var_5, Affects.affect_85, player) == false &&
+                        ovr025.find_affect(out var_5, Affects.affect_7d, player) == false &&
+                        player.actions.field_10 == 0)
+                    {
+                        var_A = (byte)(player.actions.move + 1);
+                    }
+
+                    if (player.actions.move >= var_A)
+                    {
+                        var_D = 1;
+                    }
                 }
             }
 
-
-            if (var_C != 0 &&
-                player.field_E5 < 7 &&
-                ovr025.find_affect(out var_5, Affects.affect_81, player) == false &&
-                ovr025.find_affect(out var_5, Affects.affect_6f, player) == false &&
-                ovr025.find_affect(out var_5, Affects.affect_85, player) == false &&
-                ovr025.find_affect(out var_5, Affects.affect_7d, player) == false &&
-                player.actions.field_10 == 0)
-            {
-                var_A = (byte)(player.actions.move + 1);
-            }
-
-            if (player.actions.move >= var_A)
-            {
-                var_D = 1;
-            }
-            throw new System.NotSupportedException();//loc_359A6:
-            var_1 = var_D;
-            throw new System.NotSupportedException();//func_end:
-            return var_1;
+            return var_D;
         }
 
 

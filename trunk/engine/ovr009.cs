@@ -700,36 +700,33 @@ namespace engine
             var_29 += "Speed Exit";
             var_2A = ' ';
 
-            while (unk_341B3.MemberOf(var_2A) == false)
+            while (unk_341B3.MemberOf(var_2A) == false && arg_0 == false)
             {
-                if (arg_0 == false)
+                var_2A = ovr027.displayInput(out gbl.byte_1D905, 0, 0, 15, 10, 13, var_29, string.Empty);
+
+                switch (var_2A)
                 {
-                    var_2A = ovr027.displayInput(out gbl.byte_1D905, 0, 0, 15, 10, 13, var_29, string.Empty);
+                    case 'G':
+                        arg_0 = ovr025.guarding(player_ptr);
+                        break;
 
-                    switch (var_2A)
-                    {
-                        case 'G':
-                            arg_0 = ovr025.guarding(player_ptr);
-                            break;
+                    case 'D':
+                        player_ptr.actions.delay = 1;
+                        arg_0 = true;
+                        break;
 
-                        case 'D':
-                            player_ptr.actions.delay = 1;
-                            arg_0 = true;
-                            break;
+                    case 'Q':
+                        arg_0 = ovr025.clear_actions(player_ptr);
+                        break;
 
-                        case 'Q':
-                            arg_0 = ovr025.clear_actions(player_ptr);
-                            break;
+                    case 'B':
+                        arg_0 = ovr025.bandage(true);
+                        arg_0 = ovr025.clear_actions(player_ptr);
+                        break;
 
-                        case 'B':
-                            arg_0 = ovr025.bandage(true);
-                            arg_0 = ovr025.clear_actions(player_ptr);
-                            break;
-
-                        case 'S':
-                            set_gamespeed();
-                            break;
-                    }
+                    case 'S':
+                        set_gamespeed();
+                        break;
                 }
             }
         }
