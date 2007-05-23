@@ -132,9 +132,10 @@ namespace engine
                     System.Array.Copy(var_8.data_ptr, var_4.data_ptr, var_8.data_ptr.Length);
                 }
 
-                seg040.sub_E353(gbl.overlayLines, var_4, 1, 0, (short)(tileY * 3), (short)(tileX * 3));
+                //seg040.sub_E353(gbl.overlayLines, var_4, 1, 0, (short)(tileY * 3), (short)(tileX * 3));
+                seg040.draw_picture(var_4, tileY * 3, tileX * 3);
+                //seg040.draw_picture(var_4, 0, 0);
 
-                //seg040.draw_picture(var_4, tileY * 3, tileX * 3);
                 seg040.free_dax_block(ref var_4);
             }
         }

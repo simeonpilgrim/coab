@@ -1014,28 +1014,13 @@ namespace engine
                         throw new System.NotSupportedException();//loc_3F86C:
                     }
                 }
-                throw new System.NotSupportedException();//mov	ax, short ptr [bp+arg_0]
-                throw new System.NotSupportedException();//or	ax, short ptr [bp+arg_0+2]
-                throw new System.NotSupportedException();//jz	loc_3F8B3
-                throw new System.NotSupportedException();//les	di, [bp+arg_0]
-                throw new System.NotSupportedException();//cmp	byte ptr es:[di+39h], 0
-                throw new System.NotSupportedException();//jnz	loc_3F8B3
-                throw new System.NotSupportedException();//les	di, [bp+arg_0]
-                throw new System.NotSupportedException();//cmp	byte ptr es:[di+2Eh], 0x64
-                throw new System.NotSupportedException();//jnz	loc_3F8B3
-                var_15 = 1;
-                throw new System.NotSupportedException();//jmp	short loc_3F89D
-                throw new System.NotSupportedException();//loc_3F89A:
-                var_15++;
-                throw new System.NotSupportedException();//loc_3F89D:
-                throw new System.NotSupportedException();//mov	al, [bp+var_15]
-                throw new System.NotSupportedException();//xor	ah, ah
-                throw new System.NotSupportedException();//les	di, [bp+arg_E]
-                throw new System.NotSupportedException();//add	di, ax
-                throw new System.NotSupportedException();//mov	byte ptr es:[di+19Bh], 0
-                throw new System.NotSupportedException();//cmp	[bp+var_15], 2
-                throw new System.NotSupportedException();//jnz	loc_3F89A
-                throw new System.NotSupportedException();//loc_3F8B3:
+
+                if (arg_0 != null && arg_0.count == 0 && arg_0.type == 0x64)
+                {
+                    arg_E.field_19C = 0;
+                    arg_E.field_19D = 0;
+                }
+
                 if (var_11 == 0)
                 {
                     seg044.sub_120E0(gbl.word_188D0);
@@ -1045,28 +1030,23 @@ namespace engine
                 arg_4 = true;
                 for (var_15 = 1; var_15 <= 2; var_15++)
                 {
-                    throw new System.NotSupportedException();//mov	al, [bp+var_15]
-                    throw new System.NotSupportedException();//xor	ah, ah
-                    throw new System.NotSupportedException();//les	di, [bp+arg_E]
-                    throw new System.NotSupportedException();//add	di, ax
-                    throw new System.NotSupportedException();//cmp	byte ptr es:[di+19Bh], 0
-                    throw new System.NotSupportedException();//jbe	loc_3F908
-                    arg_4 = false;
-                    throw new System.NotSupportedException();//loc_3F908:
+                    if (arg_E.field_19BArray(var_15) > 0)
+                    {
+                        arg_4 = false;
+                    }
                 }
                 arg_E.actions.field_5 = 0;
             }
 
-            throw new System.NotSupportedException();//les	di, [bp+arg_E]
-            throw new System.NotSupportedException();//cmp	byte ptr es:[di+196h], 0
-            throw new System.NotSupportedException();//jnz	loc_3F92D
-            arg_4 = true;
-            throw new System.NotSupportedException();//loc_3F92D:
+            if (arg_E.in_combat == false)
+            {
+                arg_4 = true;
+            }
+
             if (arg_4 == true)
             {
                 arg_4 = ovr025.clear_actions(arg_E);
             }
-            throw new System.NotSupportedException();//func_end:
         }
 
 
@@ -1203,60 +1183,30 @@ namespace engine
 
         internal static void sub_3FCED(ref byte arg_0, Player arg_4, Player arg_8)
         {
-            byte var_2;
-            byte var_1;
+            int var_1;
 
-            var_2 = ovr025.sub_68708(arg_4, arg_8);
+            int var_2 = ovr025.sub_68708(arg_4, arg_8);
 
             if (ovr025.offset_above_1(arg_8) == true)
             {
-                var_1 = (byte)((gbl.unk_1C020[arg_8.field_151.type].field_C - 1) / 3);
+                var_1 = (gbl.unk_1C020[arg_8.field_151.type].field_C - 1) / 3;
             }
             else
             {
                 var_1 = var_2;
             }
 
-            throw new System.NotSupportedException();//mov	al, [bp+var_1]
-            throw new System.NotSupportedException();//cbw
-            throw new System.NotSupportedException();//mov	dx, ax
-            throw new System.NotSupportedException();//mov	al, [bp+var_2]
-            throw new System.NotSupportedException();//cbw
-            throw new System.NotSupportedException();//sub	ax, dx
-            throw new System.NotSupportedException();//or	ax, ax
-            throw new System.NotSupportedException();//jle	loc_3FD71
-            throw new System.NotSupportedException();//mov	al, [bp+var_1]
-            throw new System.NotSupportedException();//cbw
-            throw new System.NotSupportedException();//mov	dx, ax
-            throw new System.NotSupportedException();//mov	al, [bp+var_2]
-            throw new System.NotSupportedException();//cbw
-            throw new System.NotSupportedException();//sub	ax, dx
-            throw new System.NotSupportedException();//mov	[bp+var_2], al
-            throw new System.NotSupportedException();//les	di, [bp+arg_0]
-            throw new System.NotSupportedException();//mov	al, es:[di]
-            throw new System.NotSupportedException();//xor	ah, ah
-            throw new System.NotSupportedException();//inc	ax
-            throw new System.NotSupportedException();//inc	ax
-            throw new System.NotSupportedException();//les	di, [bp+arg_0]
-            throw new System.NotSupportedException();//mov	es:[di], al
-            throw new System.NotSupportedException();//loc_3FD71:
-            throw new System.NotSupportedException();//mov	al, [bp+var_1]
-            throw new System.NotSupportedException();//cbw
-            throw new System.NotSupportedException();//mov	dx, ax
-            throw new System.NotSupportedException();//mov	al, [bp+var_2]
-            throw new System.NotSupportedException();//cbw
-            throw new System.NotSupportedException();//sub	ax, dx
-            throw new System.NotSupportedException();//or	ax, ax
-            throw new System.NotSupportedException();//jle	loc_3FDA1
-            throw new System.NotSupportedException();//mov	al, [bp+var_1]
-            throw new System.NotSupportedException();//cbw
-            throw new System.NotSupportedException();//mov	dx, ax
-            throw new System.NotSupportedException();//mov	al, [bp+var_2]
-            throw new System.NotSupportedException();//cbw
-            throw new System.NotSupportedException();//sub	ax, dx
-            throw new System.NotSupportedException();//mov	[bp+var_2], al
-            arg_0 = (byte)(arg_0 + 3);
-            throw new System.NotSupportedException();//loc_3FDA1:
+            if (var_2 > var_1)
+            {
+                var_2 -= var_1;
+                arg_0 += 2;
+            }
+
+            if (var_2 > var_1)
+            {
+                var_2 -= var_1;
+                arg_0 += 3;
+            }
         }
 
         static Set word_3FDDE = new Set(0x0002, new byte[] { 0xC0, 0x01 });

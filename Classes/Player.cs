@@ -600,7 +600,15 @@ namespace Classes
 
         public byte field_19BArray(int index)
         {
-            throw new System.NotImplementedException();
+            switch (index)
+            {
+                case 1:
+                    return field_19C;
+                case 2:
+                    return field_19D;
+                default:
+                throw new System.NotImplementedException();
+            }
         }
         [DataOffset(0x19c, DataType.Byte)]
         public byte field_19C; // 0x19c
