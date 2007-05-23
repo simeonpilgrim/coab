@@ -433,8 +433,8 @@ namespace Classes
 
         public class Struct_1C9CD
         {
-            public sbyte field_0;
-            public sbyte field_1;
+            public int xPos; // 0x00
+            public int yPos; // 0x01
             public byte field_2;
             public byte field_3;
         }

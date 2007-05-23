@@ -1135,8 +1135,8 @@ namespace engine
                     if (gbl.game_state == 5)
                     {
                         ovr025.sub_67A59(0x12);
-                        var_3 = ovr033.sub_74C32(var_A);
-                        var_4 = ovr033.sub_74C5A(var_A);
+                        var_3 = ovr033.PlayerMapXPos(var_A);
+                        var_4 = ovr033.PlayerMapYPos(var_A);
 
                         var_5 = 0;
 
@@ -1492,8 +1492,8 @@ namespace engine
                         seg044.sub_120E0(gbl.word_188C2);
                         ovr025.sub_67A59(0x12);
 
-                        ovr025.sub_67AA4(0x1E, 4, ovr033.sub_74C5A(var_2D), ovr033.sub_74C32(var_2D),
-                            ovr033.sub_74C5A(gbl.player_ptr), ovr033.sub_74C32(gbl.player_ptr));
+                        ovr025.sub_67AA4(0x1E, 4, ovr033.PlayerMapYPos(var_2D), ovr033.PlayerMapXPos(var_2D),
+                            ovr033.PlayerMapYPos(gbl.player_ptr), ovr033.PlayerMapXPos(gbl.player_ptr));
                     }
 
                     if ((gbl.byte_1D2C1 == 0x4F || gbl.byte_1D2C1 == 0x51) &&
@@ -2302,7 +2302,7 @@ namespace engine
                     var_7.field_11A == 0)
                 {
 
-                    if (ovr033.sub_7515A(1, ovr033.sub_74C5A(var_7), ovr033.sub_74C32(var_7), var_7) != 0)
+                    if (ovr033.sub_7515A(1, ovr033.PlayerMapYPos(var_7), ovr033.PlayerMapXPos(var_7), var_7) != 0)
                     {
                         var_2 = (byte)((var_7.combat_team << 4) + ovr025.sub_6886F(gbl.byte_1D2C1));
 
@@ -2856,8 +2856,8 @@ namespace engine
             var_3D = 0;
             var_35 = 1;
 
-            var_31 = ovr033.sub_74C32(gbl.player_ptr);
-            var_32 = ovr033.sub_74C5A(gbl.player_ptr);
+            var_31 = ovr033.PlayerMapXPos(gbl.player_ptr);
+            var_32 = ovr033.PlayerMapYPos(gbl.player_ptr);
             var_38 = arg_0;
 
             if (var_31 != gbl.byte_1D883 ||
@@ -3444,7 +3444,7 @@ namespace engine
 
             if (ovr025.find_affect(out var_D, Affects.affect_3a, var_4) == true)
             {
-                ovr032.sub_738D8(gbl.stru_1D1BC, 1, 0xff, 1, ovr033.sub_74C5A(var_4), ovr033.sub_74C32(var_4));
+                ovr032.sub_738D8(gbl.stru_1D1BC, 1, 0xff, 1, ovr033.PlayerMapYPos(var_4), ovr033.PlayerMapXPos(var_4));
                 var_F = gbl.byte_1D1C0;
 
                 for (var_E = 0; var_E < var_F; var_E++)
@@ -3467,7 +3467,7 @@ namespace engine
 
             ovr033.sub_7515A(0, gbl.byte_1D884, gbl.byte_1D883, var_4);
 
-            ovr033.sub_749DD(8, 0, ovr033.sub_74C5A(var_4), ovr033.sub_74C32(var_4));
+            ovr033.sub_749DD(8, 0, ovr033.PlayerMapYPos(var_4), ovr033.PlayerMapXPos(var_4));
 
             ovr025.sub_67788(1, 10, "teleports", var_4);
         }
@@ -3483,7 +3483,7 @@ namespace engine
 
             var_4 = gbl.player_ptr;
 
-            sub_5D7CF(6, 3, gbl.byte_1D884, gbl.byte_1D883, ovr033.sub_74C5A(var_4), ovr033.sub_74C32(var_4));
+            sub_5D7CF(6, 3, gbl.byte_1D884, gbl.byte_1D883, ovr033.PlayerMapYPos(var_4), ovr033.PlayerMapXPos(var_4));
             var_B = gbl.byte_1D75E;
 
             for (var_9 = 1; var_9 < var_B; var_9++)
@@ -3932,7 +3932,7 @@ namespace engine
                 var_5 = 1;
             }
 
-            sub_5D7CF(var_5, 2, gbl.byte_1D884, gbl.byte_1D883, ovr033.sub_74C5A(var_4), ovr033.sub_74C32(var_4));
+            sub_5D7CF(var_5, 2, gbl.byte_1D884, gbl.byte_1D883, ovr033.PlayerMapYPos(var_4), ovr033.PlayerMapXPos(var_4));
 
             sub_5CF7F(string.Empty, 10, (sbyte)(var_6 + ovr024.roll_dice_save(4, var_6)), false, 0, gbl.byte_1D2C1);
         }
@@ -4000,7 +4000,7 @@ namespace engine
 
             player = gbl.player_ptr;
 
-            sub_5D7CF(3, 1, gbl.byte_1D884, gbl.byte_1D883, ovr033.sub_74C5A(player), ovr033.sub_74C32(player));
+            sub_5D7CF(3, 1, gbl.byte_1D884, gbl.byte_1D883, ovr033.PlayerMapYPos(player), ovr033.PlayerMapXPos(player));
             var_B = gbl.byte_1D75E;
 
             for (var_1 = 1; var_1 <= var_B; var_1++)
@@ -4051,8 +4051,8 @@ namespace engine
                 ovr025.sub_67788(0, 10, "gazes...", player);
                 ovr025.sub_67A59(0x12);
 
-                ovr025.sub_67AA4(0x2d, 4, ovr033.sub_74C5A(gbl.spell_target), ovr033.sub_74C32(gbl.spell_target),
-                    ovr033.sub_74C5A(player), ovr033.sub_74C32(player));
+                ovr025.sub_67AA4(0x2d, 4, ovr033.PlayerMapYPos(gbl.spell_target), ovr033.PlayerMapXPos(gbl.spell_target),
+                    ovr033.PlayerMapYPos(player), ovr033.PlayerMapXPos(player));
 
                 if (ovr025.find_affect(out var_9, Affects.affect_7f, player) == true)
                 {
@@ -4069,8 +4069,8 @@ namespace engine
                             {
                                 ovr025.sub_67788(0, 12, "reflects it!", gbl.spell_target);
 
-                                ovr025.sub_67AA4(0x2d, 4, ovr033.sub_74C5A(player), ovr033.sub_74C32(player),
-                                    ovr033.sub_74C5A(gbl.spell_target), ovr033.sub_74C32(gbl.spell_target));
+                                ovr025.sub_67AA4(0x2d, 4, ovr033.PlayerMapYPos(player), ovr033.PlayerMapXPos(player),
+                                    ovr033.PlayerMapYPos(gbl.spell_target), ovr033.PlayerMapXPos(gbl.spell_target));
                                 var_5 = 1;
                                 gbl.spell_target = player;
                             }
@@ -4099,8 +4099,8 @@ namespace engine
                 ovr024.roll_dice(100, 1) > 50)
             {
                 gbl.byte_1D2BF = 0x24;
-                var_2 = ovr033.sub_74C32(player);
-                var_3 = ovr033.sub_74C5A(player);
+                var_2 = ovr033.PlayerMapXPos(player);
+                var_3 = ovr033.PlayerMapYPos(player);
 
                 ovr025.sub_67788(1, 10, "Breathes!", player);
 
@@ -4159,8 +4159,8 @@ namespace engine
                     ovr025.sub_67A59(0x17);
 
                     ovr025.sub_67AA4(30, 1,
-                        ovr033.sub_74C5A(gbl.spell_target), ovr033.sub_74C32(gbl.spell_target),
-                        ovr033.sub_74C5A(player), ovr033.sub_74C32(player));
+                        ovr033.PlayerMapYPos(gbl.spell_target), ovr033.PlayerMapXPos(gbl.spell_target),
+                        ovr033.PlayerMapYPos(player), ovr033.PlayerMapXPos(player));
 
                     ovr024.damage_person(ovr024.do_saving_throw(0, 3, gbl.spell_target), 2, (sbyte)player.hit_point_max, gbl.spell_target);
                 }
@@ -4194,8 +4194,8 @@ namespace engine
             {
                 gbl.byte_1D2BF = 0x30;
 
-                var_2 = ovr033.sub_74C32(player);
-                var_3 = ovr033.sub_74C5A(player);
+                var_2 = ovr033.PlayerMapXPos(player);
+                var_3 = ovr033.PlayerMapYPos(player);
 
                 gbl.dword_1D5CA(out gbl.byte_1DA70, 1, 0x3d);
 
@@ -4293,8 +4293,8 @@ namespace engine
             throw new System.NotSupportedException();//jmp	loc_6207D
             throw new System.NotSupportedException();//loc_61F26:
             gbl.byte_1D2BF = 0x21;
-            var_2 = ovr033.sub_74C32(arg_6);
-            var_3 = ovr033.sub_74C5A(arg_6);
+            var_2 = ovr033.PlayerMapXPos(arg_6);
+            var_3 = ovr033.PlayerMapYPos(arg_6);
 
             gbl.dword_1D5CA(out gbl.byte_1DA70, 1, 0x3D);
             throw new System.NotSupportedException();//cmp	byte_1DA70, 0
@@ -4424,8 +4424,8 @@ namespace engine
 
             if (gbl.byte_1D8B7 < 4)
             {
-                var_2 = ovr033.sub_74C32(arg_6);
-                var_3 = ovr033.sub_74C5A(arg_6);
+                var_2 = ovr033.PlayerMapXPos(arg_6);
+                var_3 = ovr033.PlayerMapYPos(arg_6);
 
                 ovr025.sub_67788(1, 10, "throws lightning", arg_6);
                 gbl.dword_1D5CA(out gbl.byte_1DA70, 1, 0x33);
@@ -4455,8 +4455,8 @@ namespace engine
 
                 ovr025.sub_67A59(0x12);
 
-                ovr025.sub_67AA4(0x2d, 4, ovr033.sub_74C5A(gbl.spell_target), ovr033.sub_74C32(gbl.spell_target),
-                    ovr033.sub_74C5A(arg_6), ovr033.sub_74C32(arg_6));
+                ovr025.sub_67AA4(0x2d, 4, ovr033.PlayerMapYPos(gbl.spell_target), ovr033.PlayerMapXPos(gbl.spell_target),
+                    ovr033.PlayerMapYPos(arg_6), ovr033.PlayerMapXPos(arg_6));
 
                 if (ovr024.do_saving_throw(0, 1, gbl.spell_target) == false)
                 {

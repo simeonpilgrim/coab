@@ -162,7 +162,7 @@ namespace engine
                     }
                 }
 
-                ovr033.sub_7431C(ovr033.sub_74C5A(player), ovr033.sub_74C32(player));
+                ovr033.sub_7431C(ovr033.PlayerMapYPos(player), ovr033.PlayerMapXPos(player));
             }
         }
 
@@ -482,8 +482,8 @@ namespace engine
 
             var_1 = player.actions.move;
             var_2 = player.actions.field_9;
-            var_3 = ovr033.sub_74C32(player);
-            var_4 = ovr033.sub_74C5A(player);
+            var_3 = ovr033.PlayerMapXPos(player);
+            var_4 = ovr033.PlayerMapYPos(player);
             var_A = arg_4;
 
             arg_0 = false;
@@ -520,7 +520,7 @@ namespace engine
                             arg_0 = false;
                         }
 
-                        ovr033.sub_749DD(8, 0, ovr033.sub_74C5A(player), ovr033.sub_74C32(player));
+                        ovr033.sub_749DD(8, 0, ovr033.PlayerMapYPos(player), ovr033.PlayerMapXPos(player));
                         player.actions.field_9 = var_2;
                         var_7 = 8;
                         break;

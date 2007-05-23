@@ -1682,7 +1682,7 @@ namespace engine
 
                 if (ovr033.sub_74761(1, player) == false)
                 {
-                    ovr033.sub_749DD(8, 3, ovr033.sub_74C5A(player), ovr033.sub_74C32(player));
+                    ovr033.sub_749DD(8, 3, ovr033.PlayerMapYPos(player), ovr033.PlayerMapXPos(player));
                 }
 
                 if (arg_4 != 0)
@@ -1902,7 +1902,7 @@ namespace engine
             byte var_2;
             byte ret_val;
 
-            ovr032.sub_738D8(gbl.stru_1D1BC, ovr033.sub_74C82(player), 0xff, arg_0, ovr033.sub_74C5A(player), ovr033.sub_74C32(player));
+            ovr032.sub_738D8(gbl.stru_1D1BC, ovr033.sub_74C82(player), 0xff, arg_0, ovr033.PlayerMapYPos(player), ovr033.PlayerMapXPos(player));
             var_2 = gbl.byte_1D1C0;
             var_3 = 0;
 
@@ -1943,7 +1943,7 @@ namespace engine
 
             gbl.stru_1D1BC.field_6 = 1;
 
-            ovr032.sub_738D8(gbl.stru_1D1BC, ovr033.sub_74C82(playerB), 0xff, 0xff, ovr033.sub_74C5A(playerB), ovr033.sub_74C32(playerB));
+            ovr032.sub_738D8(gbl.stru_1D1BC, ovr033.sub_74C82(playerB), 0xff, 0xff, ovr033.PlayerMapYPos(playerB), ovr033.PlayerMapXPos(playerB));
 
             gbl.stru_1D1BC.field_6 = 0;
             var_2FF = 0;

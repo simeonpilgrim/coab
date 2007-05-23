@@ -38,8 +38,8 @@ namespace engine
 
             for (var_1 = 1; var_1 <= var_2; var_1++)
             {
-                gbl.unk_1CAF0[var_1] = (sbyte)(gbl.stru_1C9CD[var_1].field_0 - gbl.stru_1D1BC.field_2);
-                gbl.unk_1CB38[var_1] = (sbyte)(gbl.stru_1C9CD[var_1].field_1 - gbl.stru_1D1BC.field_3);
+                gbl.unk_1CAF0[var_1] = (sbyte)(gbl.stru_1C9CD[var_1].xPos - gbl.stru_1D1BC.field_2);
+                gbl.unk_1CB38[var_1] = (sbyte)(gbl.stru_1C9CD[var_1].yPos - gbl.stru_1D1BC.field_3);
             }
         }
 
@@ -142,15 +142,15 @@ namespace engine
                     {
                         if (sub_7400F(out var_4, out var_3, var_2, gbl.stru_1C9CD[var_1].field_3) == true)
                         {
-                            int cx = gbl.stru_1C9CD[var_1].field_0 + var_3;
-                            int ax = gbl.stru_1C9CD[var_1].field_1 + var_4;
+                            int cx = gbl.stru_1C9CD[var_1].xPos + var_3;
+                            int ax = gbl.stru_1C9CD[var_1].yPos + var_4;
 
                             unk_1CB81[cx, ax] = var_1;
                         }
                     }
 
-                    gbl.unk_1CAF0[var_1] = (sbyte)(gbl.stru_1C9CD[var_1].field_0 - gbl.stru_1D1BC.field_2);
-                    gbl.unk_1CB38[var_1] = (sbyte)(gbl.stru_1C9CD[var_1].field_1 - gbl.stru_1D1BC.field_3);
+                    gbl.unk_1CAF0[var_1] = (sbyte)(gbl.stru_1C9CD[var_1].xPos - gbl.stru_1D1BC.field_2);
+                    gbl.unk_1CB38[var_1] = (sbyte)(gbl.stru_1C9CD[var_1].yPos - gbl.stru_1D1BC.field_3);
                 }
             }
         }
@@ -451,7 +451,7 @@ namespace engine
                 gbl.byte_1D910 == true)
             {
 
-                sub_749DD(8, 3, sub_74C5A(player), sub_74C32(player));
+                sub_749DD(8, 3, PlayerMapYPos(player), PlayerMapXPos(player));
             }
 
             if ((arg_4 >> 2) != (player.actions.field_9 >> 2) ||
@@ -476,21 +476,21 @@ namespace engine
         }
 
 
-        internal static sbyte sub_74C32(Player player)
+        internal static sbyte PlayerMapXPos(Player player) /* sub_74C32 */
         {
             sbyte ret_val;
 
-            ret_val = gbl.stru_1C9CD[get_player_index(player)].field_0;
+            ret_val = (sbyte)gbl.stru_1C9CD[get_player_index(player)].xPos;
 
             return ret_val;
         }
 
 
-        internal static sbyte sub_74C5A(Player player)
+        internal static sbyte PlayerMapYPos(Player player) /* sub_74C5A */
         {
             sbyte ret_val;
 
-            ret_val = gbl.stru_1C9CD[get_player_index(player)].field_1;
+            ret_val = (sbyte)gbl.stru_1C9CD[get_player_index(player)].yPos;
 
             return ret_val;
         }
@@ -559,8 +559,8 @@ namespace engine
 
             var_2 = get_player_index(arg_12);
 
-            var_8 = gbl.stru_1C9CD[var_2].field_0;
-            var_9 = gbl.stru_1C9CD[var_2].field_1;
+            var_8 = (sbyte)gbl.stru_1C9CD[var_2].xPos;
+            var_9 = (sbyte)gbl.stru_1C9CD[var_2].yPos;
 
             for (var_1 = 0; var_1 <= 3; var_1++)
             {
@@ -633,8 +633,8 @@ namespace engine
                 if (var_2 >= 9)
                 {
                     var_1 = get_player_index(player);
-                    var_6 = ovr033.sub_74C32(player);
-                    var_7 = ovr033.sub_74C5A(player);
+                    var_6 = ovr033.PlayerMapXPos(player);
+                    var_7 = ovr033.PlayerMapYPos(player);
 
                     if (sub_74761(1, player) == false)
                     {
@@ -745,8 +745,8 @@ namespace engine
                 var_2 = get_player_index(player);
 
                 gbl.stru_1C9CD[var_2].field_3 = (byte)(player.field_DE & 0x7F);
-                gbl.stru_1C9CD[var_2].field_0 = arg_4;
-                gbl.stru_1C9CD[var_2].field_1 = arg_2;
+                gbl.stru_1C9CD[var_2].xPos = arg_4;
+                gbl.stru_1C9CD[var_2].yPos = arg_2;
 
                 sub_74D04(out var_8, out var_7, out var_5, out var_4, 8, player);
 
@@ -820,7 +820,7 @@ namespace engine
 
             if (gbl.byte_1D910 == true)
             {
-                sub_749DD(8, arg_2, sub_74C5A(player), sub_74C32(player));
+                sub_749DD(8, arg_2, PlayerMapYPos(player), PlayerMapXPos(player));
             }
 
             gbl.stru_1D1BC.field_4 = 0;

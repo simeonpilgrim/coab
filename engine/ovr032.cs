@@ -381,8 +381,8 @@ namespace engine
 					{
 						if( ovr033.sub_7400F( out var_B, out var_A, var_4, gbl.stru_1C9CD[ var_1 ].field_3 ) == true )
 						{
-							var_17[ var_4 ] = (sbyte)( gbl.stru_1C9CD[ var_1 ].field_0 + var_A );
-							var_1B[ var_4 ] = (sbyte)( gbl.stru_1C9CD[ var_1 ].field_1 + var_B );
+							var_17[ var_4 ] = (sbyte)( gbl.stru_1C9CD[ var_1 ].xPos + var_A );
+							var_1B[ var_4 ] = (sbyte)( gbl.stru_1C9CD[ var_1 ].yPos + var_B );
 						}
 						else
 						{
