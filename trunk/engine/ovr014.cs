@@ -253,7 +253,7 @@ namespace engine
                     if (var_6.actions.guarding == true &&
                         ovr025.is_held(var_6) == false)
                     {
-                        ovr033.sub_749DD(8, 2, ovr033.sub_74C5A(arg_0), ovr033.sub_74C32(arg_0));
+                        ovr033.sub_749DD(8, 2, ovr033.PlayerMapYPos(arg_0), ovr033.PlayerMapXPos(arg_0));
 
                         var_6.actions.guarding = false;
 
@@ -276,8 +276,8 @@ namespace engine
 
             player_index = ovr033.get_player_index(player);
 
-            var_5 = gbl.stru_1C9CD[player_index].field_0;
-            var_6 = gbl.stru_1C9CD[player_index].field_1;
+            var_5 = (sbyte)gbl.stru_1C9CD[player_index].xPos;
+            var_6 = (sbyte)gbl.stru_1C9CD[player_index].yPos;
 
 
             var_3 = (sbyte)(var_5 + gbl.MapDirectionXDelta[arg_0]);
@@ -319,8 +319,8 @@ namespace engine
                 ovr033.sub_74572(player_index, 0, 0);
             }
 
-            gbl.stru_1C9CD[player_index].field_0 = var_3;
-            gbl.stru_1C9CD[player_index].field_1 = var_4;
+            gbl.stru_1C9CD[player_index].xPos = var_3;
+            gbl.stru_1C9CD[player_index].yPos = var_4;
 
             ovr033.sub_743E7();
 
@@ -374,13 +374,13 @@ namespace engine
                     var_D[var_18] = gbl.byte_1D8B9[var_18];
                 }
 
-                gbl.stru_1C9CD[player_index].field_0 += gbl.MapDirectionXDelta[arg_0];
-                gbl.stru_1C9CD[player_index].field_1 += gbl.MapDirectionYDelta[arg_0];
+                gbl.stru_1C9CD[player_index].xPos += gbl.MapDirectionXDelta[arg_0];
+                gbl.stru_1C9CD[player_index].yPos += gbl.MapDirectionYDelta[arg_0];
 
                 var_16 = ovr025.near_enermy(1, player);
 
-                gbl.stru_1C9CD[player_index].field_0 -= gbl.MapDirectionXDelta[arg_0];
-                gbl.stru_1C9CD[player_index].field_1 -= gbl.MapDirectionYDelta[arg_0];
+                gbl.stru_1C9CD[player_index].xPos -= gbl.MapDirectionXDelta[arg_0];
+                gbl.stru_1C9CD[player_index].yPos -= gbl.MapDirectionYDelta[arg_0];
 
                 for (var_18 = 1; var_18 <= var_15; var_18++)
                 {
@@ -424,7 +424,7 @@ namespace engine
                                 {
                                     if (player_ptr.actions.delay > 0 ||
                                         player_ptr.actions.field_F == 0 ||
-                                        ovr032.sub_7354A((byte)(var_1B % 8), ovr033.sub_74C5A(player), ovr033.sub_74C32(player), ovr033.sub_74C5A(player_ptr), ovr033.sub_74C32(player_ptr)) == true)
+                                        ovr032.sub_7354A((byte)(var_1B % 8), ovr033.PlayerMapYPos(player), ovr033.PlayerMapXPos(player), ovr033.PlayerMapYPos(player_ptr), ovr033.PlayerMapXPos(player_ptr)) == true)
                                     {
                                         var_1A = 1;
                                         if (player_ptr.field_11C == 0)
@@ -1117,8 +1117,9 @@ namespace engine
                 sub_40BF1(item, player01, player02);
             }
 
-            if (player02.field_151.type == 0x2f ||
-                player02.field_151.type == 0x65)
+            if (player02.field_151 != null && /* added to get passed this point when null, why null, should 151 ever be null? */
+                (player02.field_151.type == 0x2f ||
+                player02.field_151.type == 0x65))
             {
                 sub_40BF1(player02.field_151, player01, player02);
             }
@@ -1231,8 +1232,8 @@ namespace engine
 
             for (var_A = 0; var_A <= 8; var_A++)
             {
-                var_6 = (sbyte)(gbl.MapDirectionXDelta[var_A] + ovr033.sub_74C32(arg_4));
-                var_7 = (sbyte)(gbl.MapDirectionYDelta[var_A] + ovr033.sub_74C5A(arg_4));
+                var_6 = (sbyte)(gbl.MapDirectionXDelta[var_A] + ovr033.PlayerMapXPos(arg_4));
+                var_7 = (sbyte)(gbl.MapDirectionYDelta[var_A] + ovr033.PlayerMapYPos(arg_4));
 
                 ovr033.sub_74505(out var_D, out var_C, var_7, var_6);
 
@@ -1320,8 +1321,8 @@ namespace engine
                 throw new System.NotSupportedException();//or	al, al
                 throw new System.NotSupportedException();//jz	loc_400EF
                 throw new System.NotSupportedException();//loc_400BF:
-                arg_0.field_4 = ovr033.sub_74C32(arg_0.field_0);
-                arg_0.field_5 = ovr033.sub_74C5A(arg_0.field_0);
+                arg_0.field_4 = ovr033.PlayerMapXPos(arg_0.field_0);
+                arg_0.field_5 = ovr033.PlayerMapYPos(arg_0.field_0);
                 var_2 = true;
                 throw new System.NotSupportedException();//loc_400EF:
                 throw new System.NotSupportedException();//jmp	loc_401DD
@@ -1357,8 +1358,8 @@ namespace engine
                         if (var_3 != 0)
                         {
                             arg_0.field_0 = gbl.player_ptr.actions.target;
-                            arg_0.field_4 = ovr033.sub_74C32(arg_0.field_0);
-                            arg_0.field_5 = ovr033.sub_74C5A(arg_0.field_0);
+                            arg_0.field_4 = ovr033.PlayerMapXPos(arg_0.field_0);
+                            arg_0.field_5 = ovr033.PlayerMapYPos(arg_0.field_0);
                             var_2 = true;
                         }
                     }
@@ -1399,8 +1400,8 @@ namespace engine
             gbl.byte_1D75E = 0;
             gbl.byte_1D2C7 = 0;
 
-            gbl.byte_1D883 = ovr033.sub_74C32(gbl.player_ptr);
-            gbl.byte_1D884 = ovr033.sub_74C5A(gbl.player_ptr);
+            gbl.byte_1D883 = ovr033.PlayerMapXPos(gbl.player_ptr);
+            gbl.byte_1D884 = ovr033.PlayerMapYPos(gbl.player_ptr);
 
             byte tmp1 = (byte)(gbl.unk_19AEC[arg_6].field_6 & 0x0F);
 
@@ -1446,8 +1447,8 @@ namespace engine
 
                             gbl.sp_target[var_2] = var_C.field_0;
 
-                            gbl.byte_1D883 = ovr033.sub_74C32(var_C.field_0);
-                            gbl.byte_1D884 = ovr033.sub_74C5A(var_C.field_0);
+                            gbl.byte_1D883 = ovr033.PlayerMapXPos(var_C.field_0);
+                            gbl.byte_1D884 = ovr033.PlayerMapYPos(var_C.field_0);
                             gbl.byte_1D75E++;
 
                             if (arg_6 != 0x4f)
@@ -1506,7 +1507,7 @@ namespace engine
                             }
                         }
 
-                        ovr033.sub_7431C(ovr033.sub_74C5A(var_C.field_0), ovr033.sub_74C32(var_C.field_0));
+                        ovr033.sub_7431C(ovr033.PlayerMapYPos(var_C.field_0), ovr033.PlayerMapXPos(var_C.field_0));
                     }
                     else
                     {
@@ -1592,8 +1593,8 @@ namespace engine
                             gbl.sp_target[var_2] = var_C.field_0;
                             var_1 -= 1;
 
-                            gbl.byte_1D883 = ovr033.sub_74C32(var_C.field_0);
-                            gbl.byte_1D884 = ovr033.sub_74C5A(var_C.field_0);
+                            gbl.byte_1D883 = ovr033.PlayerMapXPos(var_C.field_0);
+                            gbl.byte_1D884 = ovr033.PlayerMapYPos(var_C.field_0);
                         }
                         else
                         {
@@ -1607,7 +1608,7 @@ namespace engine
                             }
                         }
 
-                        ovr033.sub_7431C(ovr033.sub_74C5A(var_C.field_0), ovr033.sub_74C32(var_C.field_0));
+                        ovr033.sub_7431C(ovr033.PlayerMapYPos(var_C.field_0), ovr033.PlayerMapXPos(var_C.field_0));
                     }
                     else
                     {
@@ -1622,8 +1623,8 @@ namespace engine
                     arg_0 = false;
                 }
 
-                gbl.byte_1D883 = ovr033.sub_74C32(gbl.sp_target[var_2]);
-                gbl.byte_1D884 = ovr033.sub_74C5A(gbl.sp_target[var_2]);
+                gbl.byte_1D883 = ovr033.PlayerMapXPos(gbl.sp_target[var_2]);
+                gbl.byte_1D884 = ovr033.PlayerMapYPos(gbl.sp_target[var_2]);
 
             }
         }
@@ -1714,8 +1715,7 @@ namespace engine
             }
             else
             {
-                var_A = 0;
-                throw new System.NotSupportedException();
+                var_A = 0; // Only needed as the compiler doesn't see var_A is only set when var_5 is not null...
             }
 
             var_9 = arg_4.field_159;
@@ -1761,11 +1761,11 @@ namespace engine
             byte var_3;
             byte var_2;
 
-            var_5 = ovr033.sub_74C32(playerA);
-            var_7 = ovr033.sub_74C5A(playerA);
+            var_5 = ovr033.PlayerMapXPos(playerA);
+            var_7 = ovr033.PlayerMapYPos(playerA);
 
-            var_9 = ovr033.sub_74C32(playerB);
-            var_B = ovr033.sub_74C5A(playerB);
+            var_9 = ovr033.PlayerMapXPos(playerB);
+            var_B = ovr033.PlayerMapYPos(playerB);
 
             var_D = (short)System.Math.Abs(var_9 - var_5);
             var_F = (short)System.Math.Abs(var_B - var_7);
@@ -1991,8 +1991,8 @@ namespace engine
             seg044.sub_120E0(gbl.word_188D0);
             throw new System.NotSupportedException();//loc_40DB9:
 
-            ovr025.sub_67AA4(var_4, var_2, ovr033.sub_74C5A(playerA), ovr033.sub_74C32(playerA),
-                ovr033.sub_74C5A(playerB), ovr033.sub_74C32(playerB));
+            ovr025.sub_67AA4(var_4, var_2, ovr033.PlayerMapYPos(playerA), ovr033.PlayerMapXPos(playerA),
+                ovr033.PlayerMapYPos(playerB), ovr033.PlayerMapXPos(playerB));
         }
 
 
@@ -2189,8 +2189,8 @@ namespace engine
             if (arg_4 == true)
             {
                 arg_0.field_0 = arg_A;
-                arg_0.field_4 = ovr033.sub_74C32(arg_A);
-                arg_0.field_5 = ovr033.sub_74C5A(arg_A);
+                arg_0.field_4 = ovr033.PlayerMapXPos(arg_A);
+                arg_0.field_5 = ovr033.PlayerMapYPos(arg_A);
                 gbl.stru_1D1BC.field_4 = 0;
 
                 ovr033.sub_749DD(8, 3, (sbyte)(gbl.stru_1D1BC.field_3 + 3), (sbyte)(gbl.stru_1D1BC.field_2 + 3));
@@ -2245,8 +2245,8 @@ namespace engine
 
             arg_0.Clear();
 
-            var_33 = ovr033.sub_74C32(player02);
-            var_34 = ovr033.sub_74C5A(player02);
+            var_33 = ovr033.PlayerMapXPos(player02);
+            var_34 = ovr033.PlayerMapYPos(player02);
 
             var_2A = ' ';
             var_2F = 8;
@@ -2290,7 +2290,7 @@ namespace engine
                 var_31 = var_33;
                 var_32 = var_34;
 
-                if (ovr032.sub_733F1(gbl.stru_1D1BC, ref var_38, ref var_32, ref var_31, ovr033.sub_74C5A(player01), ovr033.sub_74C32(player01)) == true)
+                if (ovr032.sub_733F1(gbl.stru_1D1BC, ref var_38, ref var_32, ref var_31, ovr033.PlayerMapYPos(player01), ovr033.PlayerMapXPos(player01)) == true)
                 {
                     var_39 = 1;
 
@@ -2502,7 +2502,7 @@ namespace engine
         {
             byte var_1;
 
-            ovr032.sub_738D8(gbl.stru_1D1BC, ovr033.sub_74C82(player01), 0xff, 0x7F, ovr033.sub_74C5A(player01), ovr033.sub_74C32(player01));
+            ovr032.sub_738D8(gbl.stru_1D1BC, ovr033.sub_74C82(player01), 0xff, 0x7F, ovr033.PlayerMapYPos(player01), ovr033.PlayerMapXPos(player01));
 
             bp_var_DA = gbl.byte_1D1C0;
 
@@ -2519,8 +2519,8 @@ namespace engine
 
             if (arg_2 == true)
             {
-                bp_var_DE = gbl.stru_1C9CD[bp_var_D8[bp_var_DB].field_0].field_0;
-                bp_var_DF = gbl.stru_1C9CD[bp_var_D8[bp_var_DB].field_0].field_1;
+                bp_var_DE = (sbyte)gbl.stru_1C9CD[bp_var_D8[bp_var_DB].field_0].xPos;
+                bp_var_DF = (sbyte)gbl.stru_1C9CD[bp_var_D8[bp_var_DB].field_0].yPos;
             }
             else
             {
@@ -2541,8 +2541,8 @@ namespace engine
 
             player_ptr = gbl.player_array[bp_var_D8[bp_var_DB].field_0];
 
-            bp_var_E0 = gbl.stru_1C9CD[bp_var_D8[bp_var_DB].field_0].field_0;
-            bp_var_E1 = gbl.stru_1C9CD[bp_var_D8[bp_var_DB].field_0].field_1;
+            bp_var_E0 = (sbyte)gbl.stru_1C9CD[bp_var_D8[bp_var_DB].field_0].xPos;
+            bp_var_E1 = (sbyte)gbl.stru_1C9CD[bp_var_D8[bp_var_DB].field_0].yPos;
 
             if (arg_2 == true)
             {
@@ -2656,7 +2656,7 @@ namespace engine
                                 break;
 
                             case 'C':
-                                ovr033.sub_749DD(8, 0, ovr033.sub_74C5A(player_ptr), ovr033.sub_74C32(player_ptr));
+                                ovr033.sub_749DD(8, 0, ovr033.PlayerMapYPos(player_ptr), ovr033.PlayerMapXPos(player_ptr));
                                 var_DD = 0;
                                 break;
                         }
@@ -2669,7 +2669,7 @@ namespace engine
                         var_DD = 0;
                     }
 
-                    ovr033.sub_7431C(ovr033.sub_74C5A(player_ptr), ovr033.sub_74C32(player_ptr));
+                    ovr033.sub_7431C(ovr033.PlayerMapYPos(player_ptr), ovr033.PlayerMapXPos(player_ptr));
 
                     player_ptr = sub_41932((arg_4 == false && unk_41AE5.MemberOf(var_E6) == false), var_DD,
                         var_DA, var_DB, var_DE, var_DF, var_E0, var_E1, var_D8);
@@ -2815,8 +2815,8 @@ namespace engine
 
             ovr025.sub_67A59((byte)(arg_2 + 13));
 
-            ovr025.sub_67AA4(0x1E, 1, ovr033.sub_74C5A(player_target), ovr033.sub_74C32(player_target),
-                ovr033.sub_74C5A(player), ovr033.sub_74C32(player));
+            ovr025.sub_67AA4(0x1E, 1, ovr033.PlayerMapYPos(player_target), ovr033.PlayerMapXPos(player_target),
+                ovr033.PlayerMapYPos(player), ovr033.PlayerMapXPos(player));
         }
 
 
@@ -2828,10 +2828,10 @@ namespace engine
             var_5 = true;
             if (sub_41E44(arg_2, 0, 0xff, player) == true)
             {
-                var_1 = ovr033.sub_74C32(player.actions.target);
-                var_2 = ovr033.sub_74C5A(player.actions.target);
+                var_1 = ovr033.PlayerMapXPos(player.actions.target);
+                var_2 = ovr033.PlayerMapYPos(player.actions.target);
 
-                if (ovr032.sub_733F1(gbl.stru_1D1BC, ref var_3, ref var_2, ref var_1, ovr033.sub_74C5A(player), ovr033.sub_74C32(player)) == true)
+                if (ovr032.sub_733F1(gbl.stru_1D1BC, ref var_3, ref var_2, ref var_1, ovr033.PlayerMapYPos(player), ovr033.PlayerMapXPos(player)) == true)
                 {
                     var_5 = false;
                 }

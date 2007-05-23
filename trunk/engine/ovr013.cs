@@ -1160,7 +1160,7 @@ namespace engine
                     player.actions.target = null;
 
                     ovr032.sub_738D8(gbl.stru_1D1BC, ovr033.sub_74C82(player), 0xff, 0xff,
-                        ovr033.sub_74C5A(player), ovr033.sub_74C32(player));
+                        ovr033.PlayerMapYPos(player), ovr033.PlayerMapXPos(player));
 
                     player.actions.target = gbl.player_array[gbl.byte_1D1C4];
 
@@ -1777,8 +1777,8 @@ namespace engine
                     ovr025.sub_67A59(0x17);
 
                     ovr025.sub_67AA4(0x1e, 1,
-                        ovr033.sub_74C5A(gbl.spell_target), ovr033.sub_74C32(gbl.spell_target),
-                        ovr033.sub_74C5A(player), ovr033.sub_74C32(player));
+                        ovr033.PlayerMapYPos(gbl.spell_target), ovr033.PlayerMapXPos(gbl.spell_target),
+                        ovr033.PlayerMapYPos(player), ovr033.PlayerMapXPos(player));
 
                     sbyte b2 = ovr024.roll_dice_save(4, 8);
                     bool b1 = ovr024.do_saving_throw(0, 3, gbl.spell_target);
@@ -1953,7 +1953,7 @@ namespace engine
                 player.actions.target = null;
 
                 ovr032.sub_738D8(gbl.stru_1D1BC, ovr033.sub_74C82(player), 0xff, 0xff,
-                    ovr033.sub_74C5A(player), ovr033.sub_74C32(player));
+                    ovr033.PlayerMapYPos(player), ovr033.PlayerMapXPos(player));
 
                 player.actions.target = gbl.player_array[gbl.byte_1D1C4];
 

@@ -141,7 +141,7 @@ namespace engine
                             }
 
                             ovr032.sub_738D8(gbl.stru_1D1BC, ovr033.sub_74C82(player_base), 0xff,
-                                var_E3, ovr033.sub_74C5A(player_base), ovr033.sub_74C32(player_base));
+                                var_E3, ovr033.PlayerMapYPos(player_base), ovr033.PlayerMapXPos(player_base));
 
                             var_E4 = gbl.byte_1D1C0;
 
@@ -503,7 +503,7 @@ namespace engine
                         playerbase_ptr = gbl.player_ptr;
 
                         gbl.player_ptr = sub_63D03(gbl.unk_18AEA, 4, gbl.stru_1D885,
-                            ovr033.sub_74C5A(arg_2), ovr033.sub_74C32(arg_2));
+                            ovr033.PlayerMapYPos(arg_2), ovr033.PlayerMapXPos(arg_2));
 
                         is_unaffected("starts to cough", var_B, 0, false, 0xff, 1, Affects.affect_1e, arg_2);
 
@@ -521,7 +521,7 @@ namespace engine
                         playerbase_ptr = gbl.player_ptr;
 
                         gbl.player_ptr = sub_63D03(gbl.unk_18AEA, 4, gbl.stru_1D885,
-                            ovr033.sub_74C5A(arg_2), ovr033.sub_74C32(arg_2));
+                            ovr033.PlayerMapYPos(arg_2), ovr033.PlayerMapXPos(arg_2));
 
                         is_unaffected("chokes and gags from nausea", var_B, 0, false, 0xff, (ushort)(roll_dice(4, 1) + 1), Affects.helpless, arg_2);
 
@@ -1536,7 +1536,7 @@ namespace engine
             string var_2A;
             bool ret_val;
 
-            if (ovr033.sub_7515A(1, ovr033.sub_74C5A(player), ovr033.sub_74C32(player), player) != 0)
+            if (ovr033.sub_7515A(1, ovr033.PlayerMapYPos(player), ovr033.PlayerMapXPos(player), player) != 0)
             {
                 player.health_status = Status.okey;
                 player.in_combat = true;

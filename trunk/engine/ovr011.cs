@@ -1043,8 +1043,8 @@ namespace engine
             }
             else
             {
-                gbl.stru_1C9CD[arg_A].field_0 = (sbyte)(arg_8 + (arg_4 * 6) + (arg_2 * 5) + 22);
-                gbl.stru_1C9CD[arg_A].field_1 = (sbyte)(arg_6 + (arg_2 * 5) + 10);
+                gbl.stru_1C9CD[arg_A].xPos = (sbyte)(arg_8 + (arg_4 * 6) + (arg_2 * 5) + 22);
+                gbl.stru_1C9CD[arg_A].yPos = (sbyte)(arg_6 + (arg_2 * 5) + 10);
 
                 ovr033.sub_74D04(out var_5, out var_4, out var_3, out var_2, 8, gbl.player_array[arg_A]);
 
@@ -1344,8 +1344,8 @@ namespace engine
                         if (gbl.combat_type == 0 &&
                             player_ptr.actions.field_13 == 0)
                         {
-                            var_1 = gbl.stru_1C9CD[loop_var].field_0;
-                            var_2 = gbl.stru_1C9CD[loop_var].field_1;
+                            var_1 = (sbyte)gbl.stru_1C9CD[loop_var].xPos;
+                            var_2 = (sbyte)gbl.stru_1C9CD[loop_var].yPos;
                             gbl.byte_1D1BB++;
 
                             gbl.unk_1D183[gbl.byte_1D1BB].field_6 = gbl.stru_1D1BC[var_1, var_2];
@@ -1433,8 +1433,8 @@ namespace engine
             seg043.clear_one_keypress();
             seg040.init_dax_block(out gbl.dword_1D90A, 1, 4, 3, 0x18);
 
-            gbl.stru_1D1BC.field_2 = (sbyte)(ovr033.sub_74C32(gbl.player_next_ptr) - 3);
-            gbl.stru_1D1BC.field_3 = (sbyte)(ovr033.sub_74C5A(gbl.player_next_ptr) - 3);
+            gbl.stru_1D1BC.field_2 = (sbyte)(ovr033.PlayerMapXPos(gbl.player_next_ptr) - 3);
+            gbl.stru_1D1BC.field_3 = (sbyte)(ovr033.PlayerMapYPos(gbl.player_next_ptr) - 3);
 
             ovr025.sub_68DC0();
             player = gbl.player_next_ptr;

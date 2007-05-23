@@ -476,7 +476,6 @@ namespace engine
                             byte c = gbl.overlayLines.data[dataPos];
 
                             Display.SetPixel3(xPos + 8, line + 8, c);
-                            //Display.SetPixel3(xPos, line, gbl.overlayLines.data[dataPos]);
                         }
 
                         xPos += 1;
