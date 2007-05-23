@@ -579,8 +579,6 @@ namespace engine
         internal static bool sub_35DB1(Player player)
         {
             byte var_13;
-            sbyte var_12;
-            sbyte var_11;
             Player player01;
             Item var_C;
             byte var_8;
@@ -673,14 +671,14 @@ namespace engine
                     if (player01 != null &&
                         ovr014.sub_3F143(player01, player) == true)
                     {
-                        var_11 = ovr033.PlayerMapXPos(player01);
-                        var_12 = ovr033.PlayerMapYPos(player01);
+                        int tmpX = ovr033.PlayerMapXPos(player01);
+                        int tmpY = ovr033.PlayerMapYPos(player01);
 
                         var_6 = var_4;
 
                         gbl.stru_1D1BC.field_6 = 0;
 
-                        if (ovr032.sub_733F1(gbl.stru_1D1BC, ref var_6, ref var_12, ref var_11, ovr033.PlayerMapYPos(player), ovr033.PlayerMapXPos(player)) == true &&
+                        if (ovr032.sub_733F1(gbl.stru_1D1BC, ref var_6, ref tmpY, ref tmpX, ovr033.PlayerMapYPos(player), ovr033.PlayerMapXPos(player)) == true &&
                             (var_6 / 2) <= var_4)
                         {
                             gbl.byte_1D90E = true;

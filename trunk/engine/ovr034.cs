@@ -111,7 +111,7 @@ namespace engine
         }
 
 
-        internal static void sub_76504(byte arg_0, byte arg_2, byte arg_4, sbyte tileY, sbyte tileX)
+        internal static void sub_76504(byte arg_0, byte arg_2, byte arg_4, int tileY, int tileX)
         {
             DaxBlock var_8;
             DaxBlock var_4;

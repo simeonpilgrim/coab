@@ -15,14 +15,14 @@ namespace Classes
         public void Clear()
 		{
             field_0 = null;
-            field_4 = 0;
-            field_5 = 0;
+            mapX = 0;
+            mapY = 0;
             field_6 = 0;
 		}
 
         public Player field_0; // unk_1D17C
-        public sbyte field_4; // unk_1D180
-        public sbyte field_5; // unk_1D181
+        public int mapX; // unk_1D180 field_4 was sbyte
+        public int mapY; // unk_1D181 field_5 was sbyte
         public byte field_6; // unk_1D182
 	}
 }

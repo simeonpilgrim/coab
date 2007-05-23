@@ -411,58 +411,33 @@ namespace engine
         }
 
 
-        static Player sub_63D03(byte[] arg_0, byte arg_4, Struct_1D885 arg_6, sbyte arg_A, sbyte arg_C)
+        static Player sub_63D03(byte[] arg_0, byte arg_4, Struct_1D885 arg_6, int arg_A, int arg_C)
         {
-            byte var_B;
-            byte var_A;
-            byte var_9;
             Struct_1D885 var_8;
             Player player_base;
 
             var_8 = arg_6;
-            var_9 = 0;
+            bool found = false;
 
-            while (var_8 != null && var_9 == 0)
+            while (var_8 != null && found == false)
             {
-                var_B = arg_4;
-
-                for (var_A = 1; var_A <= var_B; var_A++)
+                for (int i = 1; i <= arg_4; i++)
                 {
-                    if (var_8.field_10[var_A] != 0 &&
-                        var_8.field_1A + gbl.MapDirectionXDelta[arg_0[var_A]] == arg_C)
+                    if (var_8.field_10[i] != 0 &&
+                        var_8.field_1A + gbl.MapDirectionXDelta[arg_0[i]] == arg_C &&
+                        var_8.field_1B + gbl.MapDirectionYDelta[arg_0[i]] == arg_A)
                     {
-                        throw new System.NotSupportedException();//mov	al, [bp+arg_A]
-                        throw new System.NotSupportedException();//cbw
-                        throw new System.NotSupportedException();//mov	cx, ax
-                        throw new System.NotSupportedException();//mov	al, [bp+var_A]
-                        throw new System.NotSupportedException();//xor	ah, ah
-                        throw new System.NotSupportedException();//les	di, [bp+arg_0]
-                        throw new System.NotSupportedException();//add	di, ax
-                        throw new System.NotSupportedException();//mov	al, es:[di]
-                        throw new System.NotSupportedException();//xor	ah, ah
-                        throw new System.NotSupportedException();//mov	di, ax
-                        throw new System.NotSupportedException();//mov	al, byte ptr unk_189AF[di]
-                        throw new System.NotSupportedException();//cbw
-                        throw new System.NotSupportedException();//mov	dx, ax
-                        throw new System.NotSupportedException();//les	di, [bp+var_8]
-                        throw new System.NotSupportedException();//mov	al, es:[di+1Bh]
-                        throw new System.NotSupportedException();//cbw
-                        throw new System.NotSupportedException();//add	ax, dx
-                        throw new System.NotSupportedException();//cmp	ax, cx
-                        throw new System.NotSupportedException();//jnz	loc_63DB2
-
-                        var_9 = 1;
+                        found = true;
                     }
-                    throw new System.NotSupportedException();//loc_63DB2:
                 }
 
-                if (var_9 == 0)
+                if (found == false)
                 {
                     var_8 = var_8.next;
                 }
             }
 
-            if (var_9 != 0)
+            if (found)
             {
                 player_base = var_8.player;
             }

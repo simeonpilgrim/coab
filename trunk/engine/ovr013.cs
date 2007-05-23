@@ -663,8 +663,8 @@ namespace engine
                         for (var_A = 1; var_A <= var_E; var_A++)
                         {
                             if (gbl.unk_1D183[var_A].field_0 != null &&
-                                gbl.unk_1D183[var_A].field_4 == var_C &&
-                                gbl.unk_1D183[var_A].field_5 == var_D)
+                                gbl.unk_1D183[var_A].mapX == var_C &&
+                                gbl.unk_1D183[var_A].mapY == var_D)
                             {
                                 var_9 = true;
                             }
@@ -1342,8 +1342,8 @@ namespace engine
                         for (var_A = 1; var_A <= var_E; var_A++)
                         {
                             if (gbl.unk_1D183[var_A].field_0 != null &&
-                                gbl.unk_1D183[var_A].field_4 == var_C &&
-                                gbl.unk_1D183[var_A].field_5 == var_D)
+                                gbl.unk_1D183[var_A].mapX == var_C &&
+                                gbl.unk_1D183[var_A].mapY == var_D)
                             {
                                 var_9 = 1;
                             }

@@ -3,15 +3,15 @@ namespace Classes
     public class Struct_XXXX
     {
         // 0x17 or 23 long
-        public short field_00;
-        public short field_02;
-        public short field_04;
-        public short field_06;
+        public int field_00; /* was short */
+        public int field_02; /* was short */
+        public int field_04; /* was short */
+        public int field_06; /* was short */
         public short field_08;
         public short field_0A;
         public short field_0C;
-        public short field_0E;
-        public short field_10;
+        public int field_0E; /* was short */
+        public int field_10; /* was short */
         public short field_12;
         public short field_14;
         public byte field_16;

@@ -1345,7 +1345,7 @@ namespace engine
         }
 
 
-        internal static void sub_67AA4(byte arg_0, byte arg_2, short arg_4, short arg_6, short arg_8, short arg_A)
+        internal static void sub_67AA4(byte arg_0, byte arg_2, int playerAMapY, int playerAMapX, int playerBMapY, int playerBMapX)
         {
             short var_D0;
             short var_CE;
@@ -1357,8 +1357,6 @@ namespace engine
             short var_C2;
             short var_C0;
             short var_BE;
-            short var_BC;
-            short var_BA;
             short var_B8;
             short var_B6;
             bool var_B4;
@@ -1369,18 +1367,18 @@ namespace engine
             Struct_XXXX var_AC = new Struct_XXXX();
             byte[] var_94 = new byte[0x94];
 
-            var_BA = arg_A;
-            var_BC = arg_8;
+            int var_BA = playerBMapX;
+            int var_BC = playerBMapY;
 
             seg051.FillChar(8, 0x94, var_94);
 
             var_AF = 0;
             var_B1 = 0;
 
-            var_AC.field_00 = (short)(arg_A * 3);
-            var_AC.field_02 = (short)(arg_8 * 3);
-            var_AC.field_04 = (short)(arg_6 * 3);
-            var_AC.field_06 = (short)(arg_4 * 3);
+            var_AC.field_00 = (short)(playerBMapX * 3);
+            var_AC.field_02 = (short)(playerBMapY * 3);
+            var_AC.field_04 = (short)(playerAMapX * 3);
+            var_AC.field_06 = (short)(playerAMapY * 3);
 
             ovr032.sub_731A5(var_AC);
 
@@ -1400,44 +1398,44 @@ namespace engine
                 return;
             }
 
-            var_C2 = (short)(arg_6 - arg_A);
-            var_C4 = (short)(arg_4 - arg_8);
+            var_C2 = (short)(playerAMapX - playerBMapX);
+            var_C4 = (short)(playerAMapY - playerBMapY);
 
-            if (ovr033.sub_74730((arg_8 - gbl.stru_1D1BC.field_3), (arg_A - gbl.stru_1D1BC.field_2)) == false ||
-                ovr033.sub_74730((arg_4 - gbl.stru_1D1BC.field_3), (arg_6 - gbl.stru_1D1BC.field_2)) == false)
+            if (ovr033.sub_74730((playerBMapY - gbl.stru_1D1BC.mapScreenTopY), (playerBMapX - gbl.stru_1D1BC.mapScreenLeftX)) == false ||
+                ovr033.sub_74730((playerAMapY - gbl.stru_1D1BC.mapScreenTopY), (playerAMapX - gbl.stru_1D1BC.mapScreenLeftX)) == false)
             {
                 if (System.Math.Abs(var_C2) <= 6 &&
                     System.Math.Abs(var_C4) <= 6)
                 {
                     var_B3 = 1;
-                    var_B6 = (short)((var_C2 / 2) + arg_A);
-                    var_B8 = (byte)((var_C4 / 2) + arg_8);
+                    var_B6 = (short)((var_C2 / 2) + playerBMapX);
+                    var_B8 = (byte)((var_C4 / 2) + playerBMapY);
                 }
                 else
                 {
                     var_B3 = 0;
-                    var_B6 = (short)(gbl.stru_1D1BC.field_2 + 3);
-                    var_B8 = (short)(gbl.stru_1D1BC.field_3 + 3);
+                    var_B6 = (short)(gbl.stru_1D1BC.mapScreenLeftX + 3);
+                    var_B8 = (short)(gbl.stru_1D1BC.mapScreenTopY + 3);
                 }
             }
             else
             {
                 var_B3 = 1;
-                var_B6 = (short)(gbl.stru_1D1BC.field_2 + 3);
-                var_B8 = (short)(gbl.stru_1D1BC.field_3 + 3);
+                var_B6 = (short)(gbl.stru_1D1BC.mapScreenLeftX + 3);
+                var_B8 = (short)(gbl.stru_1D1BC.mapScreenTopY + 3);
             }
 
-            ovr033.sub_749DD(8, 0xFF, (sbyte)var_B8, (sbyte)var_B6);
+            ovr033.sub_749DD(8, 0xFF, var_B8, var_B6);
             var_AF = 0;
             var_BE = 0;
             var_C0 = 0;
 
             do
             {
-                var_CA = (short)(((arg_A - gbl.stru_1D1BC.field_2) * 3) + var_BE);
-                var_CC = (short)(((arg_8 - gbl.stru_1D1BC.field_3) * 3) + var_C0);
-                var_BA = arg_A;
-                var_BC = arg_8;
+                var_CA = (short)(((playerBMapX - gbl.stru_1D1BC.mapScreenLeftX) * 3) + var_BE);
+                var_CC = (short)(((playerBMapY - gbl.stru_1D1BC.mapScreenTopY) * 3) + var_C0);
+                var_BA = playerBMapX;
+                var_BC = playerBMapY;
                 var_B4 = false;
 
                 do
@@ -1494,14 +1492,14 @@ namespace engine
 
                         if (System.Math.Abs(var_BE) == 3)
                         {
-                            arg_A += ovr032.sub_73005(var_BE);
+                            playerBMapX += ovr032.sub_73005(var_BE);
                             var_B6 += ovr032.sub_73005(var_BE);
                             var_BE = 0;
                         }
 
                         if (System.Math.Abs(var_C0) == 3)
                         {
-                            arg_8 += ovr032.sub_73005(var_C0);
+                            playerBMapY += ovr032.sub_73005(var_C0);
                             var_B8 += ovr032.sub_73005(var_C0);
                             var_C0 = 0;
                         }
@@ -1518,15 +1516,15 @@ namespace engine
                 var_D0 = 0;
                 var_C0 = 0;
                 var_BE = 0;
-                arg_A = arg_6;
-                arg_8 = arg_4;
-                var_BA = arg_A;
-                var_BC = arg_8;
+                playerBMapX = playerAMapX;
+                playerBMapY = playerAMapY;
+                var_BA = playerBMapX;
+                var_BC = playerBMapY;
                 throw new System.NotSupportedException();//mov	ax, [bp+arg_6]
                 throw new System.NotSupportedException();//add	ax, 3
                 throw new System.NotSupportedException();//cmp	ax, 0x31
                 throw new System.NotSupportedException();//jle	loc_67EBE
-                var_CE = (short)(arg_6 - 0x31);
+                var_CE = (short)(playerAMapX - 0x31);
                 throw new System.NotSupportedException();//jmp	short loc_67ECE
                 throw new System.NotSupportedException();//loc_67EBE:
                 throw new System.NotSupportedException();//cmp	[bp+arg_6], 3
@@ -1550,12 +1548,12 @@ namespace engine
                 throw new System.NotSupportedException();//sub	ax, [bp+arg_4]
                 throw new System.NotSupportedException();//mov	[bp+var_D0], ax
                 throw new System.NotSupportedException();//loc_67EF5:
-                var_B6 = (short)(arg_6 + var_CE);
-                var_B8 = (short)(arg_4 + var_D0);
+                var_B6 = (short)(playerAMapX + var_CE);
+                var_B8 = (short)(playerAMapY + var_D0);
 
-                ovr033.sub_749DD(8, 0xff, (sbyte)var_B8, (sbyte)var_B6);
-                var_CA = (short)((arg_6 - gbl.stru_1D1BC.field_2) * 3);
-                var_CC = (short)((arg_4 - gbl.stru_1D1BC.field_3) * 3);
+                ovr033.sub_749DD(8, 0xff, var_B8, var_B6);
+                var_CA = (short)((playerAMapX - gbl.stru_1D1BC.mapScreenLeftX) * 3);
+                var_CC = (short)((playerAMapY - gbl.stru_1D1BC.mapScreenTopY) * 3);
                 var_AF = var_B0;
                 var_B4 = false;
 
@@ -1575,21 +1573,21 @@ namespace engine
                     throw new System.NotSupportedException();//add	[bp+var_CC], ax
                     throw new System.NotSupportedException();//cmp	[bp+var_CA], 0x12
                     throw new System.NotSupportedException();//jle	loc_67FBF
-                    arg_A = (short)(gbl.stru_1D1BC.field_2 + 6);
+                    playerBMapX = gbl.stru_1D1BC.mapScreenLeftX + 6;
                     throw new System.NotSupportedException();//jmp	short loc_67FD2
                     throw new System.NotSupportedException();//loc_67FBF:
                     throw new System.NotSupportedException();//cmp	[bp+var_CA], 0
                     throw new System.NotSupportedException();//jge	loc_67FD2
-                    arg_A = gbl.stru_1D1BC.field_2;
+                    playerBMapX = gbl.stru_1D1BC.mapScreenLeftX;
                     throw new System.NotSupportedException();//loc_67FD2:
                     throw new System.NotSupportedException();//cmp	[bp+var_CC], 0x12
                     throw new System.NotSupportedException();//jle	loc_67FEA
-                    arg_8 = (short)(gbl.stru_1D1BC.field_3 + 6);
+                    playerBMapY = gbl.stru_1D1BC.mapScreenTopY + 6;
                     throw new System.NotSupportedException();//jmp	short loc_67FFD
                     throw new System.NotSupportedException();//loc_67FEA:
                     throw new System.NotSupportedException();//cmp	[bp+var_CC], 0
                     throw new System.NotSupportedException();//jge	loc_67FFD
-                    arg_8 = gbl.stru_1D1BC.field_3;
+                    playerBMapY = gbl.stru_1D1BC.mapScreenTopY;
                     throw new System.NotSupportedException();//loc_67FFD:
                     throw new System.NotSupportedException();//cmp	[bp+var_CA], 0
                     throw new System.NotSupportedException();//jl	loc_68019
@@ -1608,14 +1606,14 @@ namespace engine
                         var_C0 += var_C8;
                         if (System.Math.Abs(var_BE) == 3)
                         {
-                            arg_A += ovr032.sub_73005(var_BE);
+                            playerBMapX += ovr032.sub_73005(var_BE);
                             var_B6 += ovr032.sub_73005(var_BE);
                             var_BE = 0;
                         }
 
                         if (System.Math.Abs(var_C0) == 3)
                         {
-                            arg_8 += ovr032.sub_73005(var_C0);
+                            playerBMapY += ovr032.sub_73005(var_C0);
                             var_B8 += ovr032.sub_73005(var_C0);
                             var_C0 = 0;
                         }
@@ -1629,13 +1627,13 @@ namespace engine
                 throw new System.NotSupportedException();//loc_680A0:
                 var_B3 = 1;
 
-                if (ovr033.sub_74730(arg_4 - gbl.stru_1D1BC.field_3, arg_6 - gbl.stru_1D1BC.field_2) == false)
+                if (ovr033.sub_74730(playerAMapY - gbl.stru_1D1BC.mapScreenTopY, playerAMapX - gbl.stru_1D1BC.mapScreenLeftX) == false)
                 {
-                    ovr033.sub_749DD(8, 3, (sbyte)arg_4, (sbyte)arg_6);
+                    ovr033.sub_749DD(8, 3, playerAMapY, playerAMapX);
                 }
 
-                var_CA = (short)((arg_6 - gbl.stru_1D1BC.field_2) * 3);
-                var_CC = (short)((arg_4 - gbl.stru_1D1BC.field_3) * 3);
+                var_CA = (short)((playerAMapX - gbl.stru_1D1BC.mapScreenLeftX) * 3);
+                var_CC = (short)((playerAMapY - gbl.stru_1D1BC.mapScreenTopY) * 3);
 
                 seg040.sub_E353(gbl.overlayLines, gbl.dword_1D90A, 5, var_B1, var_CC, var_CA);
 
@@ -1705,8 +1703,8 @@ namespace engine
                     var_106 = 0;
                 }
 
-                var_101 = (byte)(gbl.unk_1CAF0[ovr033.get_player_index(player)] * 3);
-                var_102 = (byte)(gbl.unk_1CB38[ovr033.get_player_index(player)] * 3);
+                var_101 = (byte)(gbl.playerScreenX[ovr033.get_player_index(player)] * 3);
+                var_102 = (byte)(gbl.playerScreenY[ovr033.get_player_index(player)] * 3);
 
                 var_107 = var_106;
 
@@ -2199,7 +2197,7 @@ namespace engine
             ovr033.sub_740F2();
             seg037.draw8x8_06();
 
-            ovr033.sub_749DD(8, 0xff, (sbyte)(gbl.stru_1D1BC.field_3 + 3), (sbyte)(gbl.stru_1D1BC.field_2 + 3));
+            ovr033.sub_749DD(8, 0xff, gbl.stru_1D1BC.mapScreenTopY + 3, gbl.stru_1D1BC.mapScreenLeftX + 3);
         }
 
         static Set unk_68DFA = new Set(0x010A, new byte[] { 0x20, 0, 8, 0, 0, 0, 0, 0x20, 0, 8 });
