@@ -265,40 +265,36 @@ namespace engine
         }
 
 
-        internal static void sub_3E748(byte arg_0, Player player)
+        internal static void sub_3E748(byte direction, Player player)
         {
-            sbyte var_6;
-            sbyte var_5;
-            sbyte var_4;
-            sbyte var_3;
-            byte player_index;
             byte var_1;
 
-            player_index = ovr033.get_player_index(player);
+            byte player_index = ovr033.get_player_index(player);
 
-            var_5 = (sbyte)gbl.stru_1C9CD[player_index].xPos;
-            var_6 = (sbyte)gbl.stru_1C9CD[player_index].yPos;
+            sbyte oldXPos = (sbyte)gbl.stru_1C9CD[player_index].xPos;
+            sbyte oldYPos = (sbyte)gbl.stru_1C9CD[player_index].yPos;
 
+            sbyte newXPos = (sbyte)(oldXPos + gbl.MapDirectionXDelta[direction]);
+            sbyte newYPos = (sbyte)(oldYPos + gbl.MapDirectionYDelta[direction]);
 
-            var_3 = (sbyte)(var_5 + gbl.MapDirectionXDelta[arg_0]);
-            var_4 = (sbyte)(var_6 + gbl.MapDirectionYDelta[arg_0]);
-
-            if ((arg_0 & 0x01) != 0)
+            int costToMove = 0;
+            if ((direction & 0x01) != 0)
             {
-                var_1 = (byte)(gbl.unk_189B4[gbl.stru_1D1BC[var_3, var_4]].field_0 * 3);
+                // Diagonal walking...
+                costToMove = gbl.unk_189B4[gbl.stru_1D1BC[newXPos, newYPos]].field_0 * 3;
             }
             else
             {
-                var_1 = (byte)(gbl.unk_189B4[gbl.stru_1D1BC[var_3, var_4]].field_0 * 2);
+                costToMove = gbl.unk_189B4[gbl.stru_1D1BC[newXPos, newYPos]].field_0 * 2;
             }
 
-            if (var_1 > player.actions.move)
+            if (costToMove > player.actions.move)
             {
                 player.actions.move = 0;
             }
             else
             {
-                player.actions.move -= var_1;
+                player.actions.move -= (byte)costToMove;
             }
 
             var_1 = 1;
@@ -307,10 +303,10 @@ namespace engine
             {
                 var_1 = 3;
 
-                if (ovr033.sub_74730(var_4 - gbl.stru_1D1BC.field_3, var_3 - gbl.stru_1D1BC.field_2) == false &&
+                if (ovr033.sub_74730(newYPos - gbl.stru_1D1BC.mapScreenTopY, newXPos - gbl.stru_1D1BC.mapScreenLeftX) == false &&
                     gbl.byte_1D910 == true)
                 {
-                    ovr033.sub_749DD(8, 2, var_6, var_5);
+                    ovr033.sub_749DD(8, 2, oldYPos, oldXPos);
                 }
             }
 
@@ -319,14 +315,14 @@ namespace engine
                 ovr033.sub_74572(player_index, 0, 0);
             }
 
-            gbl.stru_1C9CD[player_index].xPos = var_3;
-            gbl.stru_1C9CD[player_index].yPos = var_4;
+            gbl.stru_1C9CD[player_index].xPos = newXPos;
+            gbl.stru_1C9CD[player_index].yPos = newYPos;
 
             ovr033.sub_743E7();
 
             if (gbl.byte_1D910 == true)
             {
-                ovr033.sub_749DD(8, var_1, var_4, var_3);
+                ovr033.sub_749DD(8, var_1, newYPos, newXPos);
             }
 
             player.actions.field_F = 0;
@@ -1221,8 +1217,6 @@ namespace engine
             byte var_A;
             byte var_9;
             byte var_8;
-            sbyte var_7;
-            sbyte var_6;
             Player var_5;
             bool var_1;
 
@@ -1232,10 +1226,10 @@ namespace engine
 
             for (var_A = 0; var_A <= 8; var_A++)
             {
-                var_6 = (sbyte)(gbl.MapDirectionXDelta[var_A] + ovr033.PlayerMapXPos(arg_4));
-                var_7 = (sbyte)(gbl.MapDirectionYDelta[var_A] + ovr033.PlayerMapYPos(arg_4));
+                int mapX = gbl.MapDirectionXDelta[var_A] + ovr033.PlayerMapXPos(arg_4);
+                int mapY = gbl.MapDirectionYDelta[var_A] + ovr033.PlayerMapYPos(arg_4);
 
-                ovr033.sub_74505(out var_D, out var_C, var_7, var_6);
+                ovr033.sub_74505(out var_D, out var_C, mapY, mapX);
 
                 if (var_C > 0)
                 {
@@ -1260,8 +1254,8 @@ namespace engine
                     {
                         if (gbl.unk_1D183[var_B].field_0 != null &&
                             word_3FDDE.MemberOf((byte)gbl.unk_1D183[var_B].field_0.health_status) == false &&
-                            gbl.unk_1D183[var_B].field_4 == var_6 &&
-                            gbl.unk_1D183[var_B].field_5 == var_7)
+                            gbl.unk_1D183[var_B].mapX == mapX &&
+                            gbl.unk_1D183[var_B].mapY == mapY)
                         {
                             var_8 = var_B;
                         }
@@ -1321,8 +1315,8 @@ namespace engine
                 throw new System.NotSupportedException();//or	al, al
                 throw new System.NotSupportedException();//jz	loc_400EF
                 throw new System.NotSupportedException();//loc_400BF:
-                arg_0.field_4 = ovr033.PlayerMapXPos(arg_0.field_0);
-                arg_0.field_5 = ovr033.PlayerMapYPos(arg_0.field_0);
+                arg_0.mapX = ovr033.PlayerMapXPos(arg_0.field_0);
+                arg_0.mapY = ovr033.PlayerMapYPos(arg_0.field_0);
                 var_2 = true;
                 throw new System.NotSupportedException();//loc_400EF:
                 throw new System.NotSupportedException();//jmp	loc_401DD
@@ -1358,8 +1352,8 @@ namespace engine
                         if (var_3 != 0)
                         {
                             arg_0.field_0 = gbl.player_ptr.actions.target;
-                            arg_0.field_4 = ovr033.PlayerMapXPos(arg_0.field_0);
-                            arg_0.field_5 = ovr033.PlayerMapYPos(arg_0.field_0);
+                            arg_0.mapX = ovr033.PlayerMapXPos(arg_0.field_0);
+                            arg_0.mapY = ovr033.PlayerMapYPos(arg_0.field_0);
                             var_2 = true;
                         }
                     }
@@ -1372,8 +1366,8 @@ namespace engine
             if (var_2 == true)
             {
                 var_1 = 1;
-                gbl.byte_1D883 = arg_0.field_4;
-                gbl.byte_1D884 = arg_0.field_5;
+                gbl.byte_1D883 = arg_0.mapX;
+                gbl.byte_1D884 = arg_0.mapY;
             }
             else
             {
@@ -1752,34 +1746,24 @@ namespace engine
 
         internal static byte sub_409BC(Player playerB, Player playerA)
         {
-            short var_F;
-            short var_D;
-            short var_B;
-            short var_9;
-            short var_7;
-            short var_5;
-            byte var_3;
-            byte var_2;
+            int var_5 = ovr033.PlayerMapXPos(playerA);
+            int var_7 = ovr033.PlayerMapYPos(playerA);
 
-            var_5 = ovr033.PlayerMapXPos(playerA);
-            var_7 = ovr033.PlayerMapYPos(playerA);
+            int var_9 = ovr033.PlayerMapXPos(playerB);
+            int var_B = ovr033.PlayerMapYPos(playerB);
 
-            var_9 = ovr033.PlayerMapXPos(playerB);
-            var_B = ovr033.PlayerMapYPos(playerB);
+            int var_D = System.Math.Abs(var_9 - var_5);
+            int var_F = System.Math.Abs(var_B - var_7);
 
-            var_D = (short)System.Math.Abs(var_9 - var_5);
-            var_F = (short)System.Math.Abs(var_B - var_7);
-
-            var_2 = 0;
-            var_3 = 0;
+            byte var_2 = 0;
+            byte var_3 = 0;
 
             while (var_3 == 0)
             {
                 switch (var_2)
                 {
                     case 0:
-                        if (var_B > var_7 ||
-                            ((0x26A * var_D) / 0x100) > var_F)
+                        if (var_B > var_7 || ((0x26A * var_D) / 0x100) > var_F)
                         {
                             var_3 = 0;
                         }
@@ -1790,8 +1774,7 @@ namespace engine
                         break;
 
                     case 2:
-                        if (var_9 < var_5 ||
-                            ((0x6A * var_D) / 0x100) < var_F)
+                        if (var_9 < var_5 || ((0x6A * var_D) / 0x100) < var_F)
                         {
                             var_3 = 0;
                         }
@@ -1802,8 +1785,7 @@ namespace engine
                         break;
 
                     case 4:
-                        if (var_B < var_7 ||
-                            ((0x26A * var_D) / 0x100) > var_F)
+                        if (var_B < var_7 || ((0x26A * var_D) / 0x100) > var_F)
                         {
                             var_3 = 0;
                         }
@@ -1814,8 +1796,7 @@ namespace engine
                         break;
 
                     case 6:
-                        if (var_9 > var_5 ||
-                            ((0x6A * var_D) / 0x100) < var_F)
+                        if (var_9 > var_5 || ((0x6A * var_D) / 0x100) < var_F)
                         {
                             var_3 = 0;
                         }
@@ -2189,11 +2170,11 @@ namespace engine
             if (arg_4 == true)
             {
                 arg_0.field_0 = arg_A;
-                arg_0.field_4 = ovr033.PlayerMapXPos(arg_A);
-                arg_0.field_5 = ovr033.PlayerMapYPos(arg_A);
+                arg_0.mapX = ovr033.PlayerMapXPos(arg_A);
+                arg_0.mapY = ovr033.PlayerMapYPos(arg_A);
                 gbl.stru_1D1BC.field_4 = 0;
 
-                ovr033.sub_749DD(8, 3, (sbyte)(gbl.stru_1D1BC.field_3 + 3), (sbyte)(gbl.stru_1D1BC.field_2 + 3));
+                ovr033.sub_749DD(8, 3, gbl.stru_1D1BC.mapScreenTopY + 3, gbl.stru_1D1BC.mapScreenLeftX + 3);
 
                 if (arg_8 == 1)
                 {
@@ -2233,10 +2214,6 @@ namespace engine
             short var_38;
             byte var_36;
             byte var_35;
-            sbyte var_34;
-            sbyte var_33;
-            sbyte var_32;
-            sbyte var_31;
             byte var_30;
             byte var_2F;
             Item var_2E;
@@ -2245,8 +2222,8 @@ namespace engine
 
             arg_0.Clear();
 
-            var_33 = ovr033.PlayerMapXPos(player02);
-            var_34 = ovr033.PlayerMapYPos(player02);
+            int var_33 = ovr033.PlayerMapXPos(player02);
+            int var_34 = ovr033.PlayerMapYPos(player02);
 
             var_2A = ' ';
             var_2F = 8;
@@ -2287,8 +2264,8 @@ namespace engine
                 var_39 = 0;
                 var_38 = 0x0FF;
 
-                var_31 = var_33;
-                var_32 = var_34;
+                int var_31 = var_33;
+                int var_32 = var_34;
 
                 if (ovr032.sub_733F1(gbl.stru_1D1BC, ref var_38, ref var_32, ref var_31, ovr033.PlayerMapYPos(player01), ovr033.PlayerMapXPos(player01)) == true)
                 {
@@ -2324,8 +2301,8 @@ namespace engine
 
                         for (var_30 = 1; var_30 <= var_3A; var_30++)
                         {
-                            if (gbl.unk_1D183[var_30].field_4 == var_33 &&
-                                gbl.unk_1D183[var_30].field_5 == var_34)
+                            if (gbl.unk_1D183[var_30].mapX == var_33 &&
+                                gbl.unk_1D183[var_30].mapY == var_34)
                             {
                                 player02 = gbl.unk_1D183[var_30].field_0;
                             }
@@ -2398,8 +2375,8 @@ namespace engine
                 gbl.stru_1D1BC.field_4 = 0;
                 throw new System.NotSupportedException();//cmp	[bp+var_39], 0
                 throw new System.NotSupportedException();//jz	loc_417AC
-                arg_0.field_4 = var_33;
-                arg_0.field_5 = var_34;
+                arg_0.mapX = var_33;
+                arg_0.mapY = var_34;
 
                 if (player02 != null)
                 {
@@ -2822,16 +2799,13 @@ namespace engine
 
         internal static void sub_421C1(byte arg_2, ref short var_3, ref bool var_5, ref Player player)
         {
-            sbyte var_2;
-            sbyte var_1;
-
             var_5 = true;
             if (sub_41E44(arg_2, 0, 0xff, player) == true)
             {
-                var_1 = ovr033.PlayerMapXPos(player.actions.target);
-                var_2 = ovr033.PlayerMapYPos(player.actions.target);
+                int tmpX = ovr033.PlayerMapXPos(player.actions.target);
+                int tmpY = ovr033.PlayerMapYPos(player.actions.target);
 
-                if (ovr032.sub_733F1(gbl.stru_1D1BC, ref var_3, ref var_2, ref var_1, ovr033.PlayerMapYPos(player), ovr033.PlayerMapXPos(player)) == true)
+                if (ovr032.sub_733F1(gbl.stru_1D1BC, ref var_3, ref tmpY, ref tmpX, ovr033.PlayerMapYPos(player), ovr033.PlayerMapXPos(player)) == true)
                 {
                     var_5 = false;
                 }
@@ -3057,7 +3031,7 @@ namespace engine
                     player = player.next_player;
                 }
 
-                ovr033.sub_749DD(8, 0xff, (sbyte)(gbl.stru_1D1BC.field_3 + 3), (sbyte)(gbl.stru_1D1BC.field_2 + 3));
+                ovr033.sub_749DD(8, 0xff, gbl.stru_1D1BC.mapScreenTopY + 3, gbl.stru_1D1BC.mapScreenLeftX + 3);
             }
 
             return var_1;

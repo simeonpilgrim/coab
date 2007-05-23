@@ -6,11 +6,9 @@ namespace engine
     {
         static sbyte[, ,] unk_xxxx = new sbyte[2, 4, 2] { { { 0, 0 }, { -1, -1 }, { -1, -1 }, { -1, -1 } }, { { 0, 0 }, { 0, 1 }, { -1, -1 }, { -1, -1 } } };
 
-        internal static bool sub_7400F(out sbyte arg_0, out sbyte arg_4, byte arg_8, byte arg_A)
+        internal static bool sub_7400F(out sbyte arg_0, out sbyte arg_4, int arg_8, int arg_A)
         {
-            bool var_1;
-
-            var_1 = false;
+            bool var_1 = false;
             arg_0 = 0; /* Added because of 'out' attribute */
             arg_4 = 0; /* Added because of 'out' attribute */
 
@@ -29,17 +27,14 @@ namespace engine
         }
 
 
-        static void sub_74077()
+        static void calculatePlayerScreenPositions() /* sub_74077 */
         {
-            byte var_2;
-            byte var_1;
+            int playerCount = gbl.stru_1C9CD[0].field_3;
 
-            var_2 = gbl.stru_1C9CD[0].field_3;
-
-            for (var_1 = 1; var_1 <= var_2; var_1++)
+            for (int i = 1; i <= playerCount; i++)
             {
-                gbl.unk_1CAF0[var_1] = (sbyte)(gbl.stru_1C9CD[var_1].xPos - gbl.stru_1D1BC.field_2);
-                gbl.unk_1CB38[var_1] = (sbyte)(gbl.stru_1C9CD[var_1].yPos - gbl.stru_1D1BC.field_3);
+                gbl.playerScreenX[i] = gbl.stru_1C9CD[i].xPos - gbl.stru_1D1BC.mapScreenLeftX;
+                gbl.playerScreenY[i] = gbl.stru_1C9CD[i].yPos - gbl.stru_1D1BC.mapScreenTopY;
             }
         }
 
@@ -58,65 +53,62 @@ namespace engine
         }
 
 
-        internal static void sub_7416E(sbyte arg_0, sbyte arg_2)
+        internal static void sub_7416E(int posY, int posX)
         {
             byte var_7;
             byte var_6;
-            byte var_5;
             sbyte var_4;
             sbyte var_3;
-            sbyte var_2;
-            sbyte var_1;
 
-            var_1 = (sbyte)(arg_2 - gbl.stru_1D1BC.field_2);
-            var_2 = (sbyte)(arg_0 - gbl.stru_1D1BC.field_3);
+            int screenPosX = posX - gbl.stru_1D1BC.mapScreenLeftX;
+            int screenPosY = posY - gbl.stru_1D1BC.mapScreenTopY;
 
-            for (var_5 = 0; var_5 <= 3; var_5++)
+            for (byte var_5 = 0; var_5 <= 3; var_5++)
             {
                 if (sub_7400F(out var_4, out var_3, var_5, gbl.stru_1D1BC.field_5) == true &&
-                    sub_74730(var_2 + var_4, var_1 + var_3) == true)
+                    sub_74730(screenPosY + var_4, screenPosX + var_3) == true)
                 {
-                    int i = gbl.stru_1D1BC[var_3 + arg_2, var_4 + arg_0];
+                    int i = gbl.stru_1D1BC[var_3 + posX, var_4 + posY];
 
-                    ovr034.sub_760F7(0, gbl.unk_189B4[i].field_3, (sbyte)((var_2 + var_4) * 3), (sbyte)((var_1 + var_3) * 3));
+                    ovr034.sub_760F7(0, gbl.unk_189B4[i].field_3, (screenPosY + var_4) * 3, (screenPosX + var_3) * 3);
 
                     if (gbl.stru_1D1BC.field_4 != 0)
                     {
-                        ovr034.sub_76504(0x19, 0, 0, (sbyte)(var_2 + var_4), (sbyte)(var_1 + var_3));
+                        ovr034.sub_76504(0x19, 0, 0, screenPosY + var_4, screenPosX + var_3);
                     }
                 }
             }
 
-            sub_74505(out var_7, out var_6, arg_0, arg_2);
+            sub_74505(out var_7, out var_6, posY, posX);
 
             if (var_6 > 0 &&
                 sub_74761(0, gbl.player_array[var_6]) == true)
             {
                 ovr034.sub_76504(gbl.player_array[var_6].icon_id, 0,
-                    gbl.player_array[var_6].actions.field_9, gbl.unk_1CB38[var_6],
-                    gbl.unk_1CAF0[var_6]);
+                    gbl.player_array[var_6].actions.field_9, gbl.playerScreenY[var_6],
+                    gbl.playerScreenX[var_6]);
             }
         }
 
 
-        internal static void sub_7431C(int arg_0, int arg_2)
+        internal static void sub_7431C(int mapX, int mapY)
         {
             byte var_4;
             byte var_3;
-            sbyte var_2;
-            sbyte var_1;
 
-            var_1 = (sbyte)(arg_2 - gbl.stru_1D1BC.field_2);
-            var_2 = (sbyte)(arg_0 - gbl.stru_1D1BC.field_3);
+            int newMapX = mapY - gbl.stru_1D1BC.mapScreenLeftX;
+            int newMapY = mapX - gbl.stru_1D1BC.mapScreenTopY;
 
-            sub_74572(0, var_2, var_1);
-            sub_74505(out var_4, out var_3, arg_0, arg_2);
+            sub_74572(0, newMapY, newMapX);
+            sub_74505(out var_4, out var_3, mapX, mapY);
 
             if (var_3 > 0 &&
                 sub_74761(0, gbl.player_array[var_3]) == true)
             {
-                ovr034.sub_76504(gbl.player_array[var_3].icon_id, 0, gbl.player_array[var_3].actions.field_9,
-                    gbl.unk_1CB38[var_3], gbl.unk_1CAF0[var_3]);
+                ovr034.sub_76504(gbl.player_array[var_3].icon_id,  0, 
+                    gbl.player_array[var_3].actions.field_9,
+                    gbl.playerScreenY[var_3], 
+                    gbl.playerScreenX[var_3]);
             }
         }
 
@@ -124,17 +116,15 @@ namespace engine
 
         internal static void sub_743E7()
         {
-            byte var_5;
             sbyte var_4;
             sbyte var_3;
             byte var_2;
-            byte var_1;
 
             seg051.FillChar(0, 0x4E2, unk_1CB81.field_7);
 
-            var_5 = gbl.stru_1C9CD[0].field_3;
+            int var_5 = gbl.stru_1C9CD[0].field_3;
 
-            for (var_1 = 1; var_1 <= var_5; var_1++)
+            for (int var_1 = 1; var_1 <= var_5; var_1++)
             {
                 if (gbl.stru_1C9CD[var_1].field_3 > 0)
                 {
@@ -145,12 +135,12 @@ namespace engine
                             int cx = gbl.stru_1C9CD[var_1].xPos + var_3;
                             int ax = gbl.stru_1C9CD[var_1].yPos + var_4;
 
-                            unk_1CB81[cx, ax] = var_1;
+                            unk_1CB81[cx, ax] = (byte)var_1;
                         }
                     }
 
-                    gbl.unk_1CAF0[var_1] = (sbyte)(gbl.stru_1C9CD[var_1].xPos - gbl.stru_1D1BC.field_2);
-                    gbl.unk_1CB38[var_1] = (sbyte)(gbl.stru_1C9CD[var_1].yPos - gbl.stru_1D1BC.field_3);
+                    gbl.playerScreenX[var_1] = gbl.stru_1C9CD[var_1].xPos - gbl.stru_1D1BC.mapScreenLeftX;
+                    gbl.playerScreenY[var_1] = gbl.stru_1C9CD[var_1].yPos - gbl.stru_1D1BC.mapScreenTopY;
                 }
             }
         }
@@ -172,7 +162,7 @@ namespace engine
         }
 
 
-        internal static void sub_74572(byte player_index, sbyte arg_2, sbyte arg_4)
+        internal static void sub_74572(byte player_index, int arg_2, int arg_4)
         {
             byte var_7;
             byte var_6;
@@ -184,19 +174,19 @@ namespace engine
 
             if (player_index == 0)
             {
-                var_1 = (sbyte)(arg_4 + gbl.stru_1D1BC.field_2);
-                var_2 = (sbyte)(arg_2 + gbl.stru_1D1BC.field_3);
+                var_1 = (sbyte)(arg_4 + gbl.stru_1D1BC.mapScreenLeftX);
+                var_2 = (sbyte)(arg_2 + gbl.stru_1D1BC.mapScreenTopY);
 
                 sub_74505(out var_6, out player_index, var_2, var_1);
             }
 
             if (player_index > 0)
             {
-                arg_4 = gbl.unk_1CAF0[player_index];
-                arg_2 = gbl.unk_1CB38[player_index];
+                arg_4 = gbl.playerScreenX[player_index];
+                arg_2 = gbl.playerScreenY[player_index];
 
-                var_1 = (sbyte)(arg_4 + gbl.stru_1D1BC.field_2);
-                var_2 = (sbyte)(arg_2 + gbl.stru_1D1BC.field_3);
+                var_1 = (sbyte)(arg_4 + gbl.stru_1D1BC.mapScreenLeftX);
+                var_2 = (sbyte)(arg_2 + gbl.stru_1D1BC.mapScreenTopY);
 
                 var_7 = gbl.stru_1C9CD[player_index].field_3;
 
@@ -207,13 +197,13 @@ namespace engine
                     {
                         int i1 = gbl.stru_1D1BC[var_1 + var_3, var_4 + var_2];
 
-                        ovr034.sub_760F7(0, gbl.unk_189B4[i1].field_3, (sbyte)((arg_2 + var_4) * 3), (sbyte)((arg_4 + var_3) * 3));
+                        ovr034.sub_760F7(0, gbl.unk_189B4[i1].field_3, (arg_2 + var_4) * 3, (arg_4 + var_3) * 3);
                     }
                 }
             }
             else if ( sub_74730(arg_2, arg_4) == true )
             {
-                ovr034.sub_760F7(0, gbl.unk_189B4[gbl.stru_1D1BC[var_1, var_2]].field_3, (sbyte)(arg_2 * 3), (sbyte)(arg_4 * 3));
+                ovr034.sub_760F7(0, gbl.unk_189B4[gbl.stru_1D1BC[var_1, var_2]].field_3, arg_2 * 3, arg_4 * 3);
             }
         }
 
@@ -260,7 +250,7 @@ namespace engine
                 {
                     if (sub_7400F(out var_5, out var_4, var_2, gbl.stru_1C9CD[player_index].field_3) == true)
                     {
-                        if (sub_74730(gbl.unk_1CB38[player_index] + var_5, gbl.unk_1CAF0[player_index] + var_4) == false)
+                        if (sub_74730(gbl.playerScreenY[player_index] + var_5, gbl.playerScreenX[player_index] + var_4) == false)
                         {
                             var_1 = false;
                             if (arg_0 != 0)
@@ -283,118 +273,103 @@ namespace engine
         }
 
 
-        static byte sub_7481B(byte arg_0, byte arg_2, byte arg_4)
+        static bool sub_7481B(byte arg_0, byte xPos, byte yPos)
         {
-            byte var_C;
-            byte var_B;
-            byte var_A;
-            byte var_9;
-            sbyte var_8;
-            sbyte var_7;
-            byte var_6;
-            byte var_5;
-            sbyte var_4;
-            sbyte var_3;
-            byte var_2;
-            byte var_1;
+            sbyte var_7 = (sbyte)(gbl.stru_1D1BC.mapScreenLeftX + 3);
+            sbyte var_8 = (sbyte)(gbl.stru_1D1BC.mapScreenTopY + 3);
 
-            var_1 = 0;
-
-            var_7 = (sbyte)(gbl.stru_1D1BC.field_2 + 3);
-            var_8 = (sbyte)(gbl.stru_1D1BC.field_3 + 3);
-
-            var_2 = arg_0;
+            byte var_2 = arg_0;
 
             if (arg_0 == 0xff)
             {
                 var_2 = 0;
             }
 
-            var_9 = (byte)(var_7 - var_2);
-            var_A = (byte)(var_7 + var_2);
+            byte var_9 = (byte)(var_7 - var_2);
+            byte var_A = (byte)(var_7 + var_2);
 
-            var_B = (byte)(var_8 - var_2);
-            var_C = (byte)(var_8 + var_2);
+            byte var_B = (byte)(var_8 - var_2);
+            byte var_C = (byte)(var_8 + var_2);
 
             if (arg_0 == 0xff ||
-            arg_4 < var_9 ||
-            arg_4 > var_A ||
-            arg_2 < var_B ||
-            arg_2 > var_C)
+                yPos < var_9 ||
+                yPos > var_A ||
+                xPos < var_B ||
+                xPos > var_C)
             {
-                if (arg_4 < var_9)
+                if (yPos < var_9)
                 {
-                    while (arg_4 < var_7 && var_7 > 3)
+                    while (yPos < var_7 && var_7 > 3)
                     {
                         var_7 -= 1;
                     }
                 }
-                else if( arg_4 > var_A )
+                else if (yPos > var_A)
                 {
-                    while (arg_4 > var_7 && var_7 < 0x2E)
+                    while (yPos > var_7 && var_7 < 0x2E)
                     {
-                        var_7++;
+                        var_7 += 1;
                     }
                 }
 
-                if (arg_2 < var_B)
+                if (xPos < var_B)
                 {
-                    while (arg_2 < var_8 && var_8 > 3)
+                    while (xPos < var_8 && var_8 > 3)
                     {
                         var_8 -= 1;
                     }
                 }
-                else if (arg_2 > var_C)
+                else if (xPos > var_C)
                 {
-                    while (arg_2 > var_8 && var_8 < 0x15)
+                    while (xPos > var_8 && var_8 < 0x15)
                     {
                         var_8 += 1;
                     }
                 }
 
-                gbl.stru_1D1BC.field_2 = (sbyte)(var_7 - 3);
-                gbl.stru_1D1BC.field_3 = (sbyte)(var_8 - 3);
+                gbl.stru_1D1BC.mapScreenLeftX = (sbyte)(var_7 - 3);
+                gbl.stru_1D1BC.mapScreenTopY = (sbyte)(var_8 - 3);
 
-                var_4 = 0;
-                var_8 = gbl.stru_1D1BC.field_3;
+                int screenRowY = 0;
+                int mapX = gbl.stru_1D1BC.mapScreenTopY;
+                const int IconColumnSize = 3;
 
-                for (var_6 = 0; var_6 <= 6; var_6++)
+                for (int i = 0; i <= 6; i++)
                 {
-                    var_3 = 0;
-                    var_7 = gbl.stru_1D1BC.field_2;
+                    int screenColX = 0;
+                    int mapY = gbl.stru_1D1BC.mapScreenLeftX;
 
-                    for (var_5 = 0; var_5 <= 6; var_5++)
+                    for (int j = 0; j <= 6; j++)
                     {
-                        byte AX = gbl.unk_189B4[gbl.stru_1D1BC[var_7, var_8]].field_3;
+                        byte AX = gbl.unk_189B4[gbl.stru_1D1BC[mapY, mapX]].field_3;
 
-                        ovr034.sub_760F7(0, AX, var_4, var_3);
+                        ovr034.sub_760F7(0, AX, screenRowY, screenColX);
 
-                        var_3 += 3;
-                        var_7++;
+                        screenColX += IconColumnSize;
+                        mapY++;
                     }
-                    var_4 += 3;
-                    var_8++;
+                    screenRowY += IconColumnSize;
+                    mapX++;
                 }
-                sub_74077();
-                var_1 = 1;
+                calculatePlayerScreenPositions();
+
+                return true;
             }
 
-            return var_1;
+            return false;
         }
 
 
-        internal static void sub_749DD(byte arg_0, byte arg_2, sbyte arg_4, sbyte arg_6)
+        internal static void sub_749DD(byte dir, byte arg_2, int mapY, int mapX)
         {
             byte var_8;
-            sbyte var_7;
-            sbyte var_6;
             byte var_5;
             Player var_4;
 
-            var_6 = (sbyte)(arg_6 + gbl.MapDirectionXDelta[arg_0]);
-            var_7 = (sbyte)(arg_4 + gbl.MapDirectionYDelta[arg_0]);
+            sbyte newXPos = (sbyte)(mapX + gbl.MapDirectionXDelta[dir]);
+            sbyte newYPos = (sbyte)(mapY + gbl.MapDirectionYDelta[dir]);
 
-            if (sub_7481B(arg_2, (byte)var_7, (byte)var_6) != 0)
+            if (sub_7481B(arg_2, (byte)newYPos, (byte)newXPos) == true)
             {
                 var_8 = gbl.stru_1C9CD[0].field_3;
 
@@ -406,37 +381,37 @@ namespace engine
                         gbl.stru_1C9CD[var_5].field_3 > 0 &&
                         sub_74761(0, var_4) == true)
                     {
-                        ovr034.sub_76504(var_4.icon_id, 0, var_4.actions.field_9, gbl.unk_1CB38[var_5], gbl.unk_1CAF0[var_5]);
+                        ovr034.sub_76504(var_4.icon_id, 0, var_4.actions.field_9, gbl.playerScreenY[var_5], gbl.playerScreenX[var_5]);
                     }
                 }
             }
 
-            sub_7431C(arg_4, arg_6);
+            sub_7431C(mapY, mapX);
 
-            if (sub_74730(var_7 - gbl.stru_1D1BC.field_3, var_6 - gbl.stru_1D1BC.field_2) == false)
+            if (sub_74730(newYPos - gbl.stru_1D1BC.mapScreenTopY, newXPos - gbl.stru_1D1BC.mapScreenLeftX) == false)
             {
-                if (var_6 > 0x31)
+                if (newXPos > 0x31)
                 {
-                    var_6 = 0x31;
+                    newXPos = 0x31;
                 }
 
-                if (var_6 < 0)
+                if (newXPos < 0)
                 {
-                    var_6 = 0;
+                    newXPos = 0;
                 }
 
-                if (var_7 > 0x18)
+                if (newYPos > 0x18)
                 {
-                    var_7 = 0x18;
+                    newYPos = 0x18;
                 }
 
-                if (var_7 < 0)
+                if (newYPos < 0)
                 {
-                    var_7 = 0;
+                    newYPos = 0;
                 }
             }
 
-            sub_7416E(var_7, var_6);
+            sub_7416E(newYPos, newXPos);
             seg040.DrawOverlay();
         }
 
@@ -470,29 +445,21 @@ namespace engine
                 sub_74761(0, player) == true &&
                 gbl.byte_1D910 == true)
             {
-                ovr034.sub_76504(player.icon_id, arg_2, arg_4, gbl.unk_1CB38[player_index], gbl.unk_1CAF0[player_index]);
+                ovr034.sub_76504(player.icon_id, arg_2, arg_4, gbl.playerScreenY[player_index], gbl.playerScreenX[player_index]);
                 seg040.DrawOverlay();
             }
         }
 
 
-        internal static sbyte PlayerMapXPos(Player player) /* sub_74C32 */
+        internal static int PlayerMapXPos(Player player) /* sub_74C32 */
         {
-            sbyte ret_val;
-
-            ret_val = (sbyte)gbl.stru_1C9CD[get_player_index(player)].xPos;
-
-            return ret_val;
+            return gbl.stru_1C9CD[get_player_index(player)].xPos;
         }
 
 
-        internal static sbyte PlayerMapYPos(Player player) /* sub_74C5A */
+        internal static int PlayerMapYPos(Player player) /* sub_74C5A */
         {
-            sbyte ret_val;
-
-            ret_val = (sbyte)gbl.stru_1C9CD[get_player_index(player)].yPos;
-
-            return ret_val;
+            return gbl.stru_1C9CD[get_player_index(player)].yPos;
         }
 
 
@@ -608,8 +575,8 @@ namespace engine
 
         internal static void sub_74E6F(Player player)
         {
-            sbyte var_7;
-            sbyte var_6;
+            int var_7;
+            int var_6;
             sbyte var_5;
             sbyte var_4;
             byte var_3 = 0xf0; /* Simeon */
@@ -679,7 +646,7 @@ namespace engine
 
                                 DaxBlock tmp = ((var_3 & 1) == 0 )? gbl.combat_icons[24,1]:gbl.combat_icons[25,0];
 
-                                seg040.sub_E353(gbl.overlayLines, tmp, 5, 0, (short)((gbl.unk_1CB38[var_1] + var_5) * 3), (short)((gbl.unk_1CAF0[var_1] + var_4) * 3));
+                                seg040.sub_E353(gbl.overlayLines, tmp, 5, 0, (short)((gbl.playerScreenY[var_1] + var_5) * 3), (short)((gbl.playerScreenX[var_1] + var_4) * 3));
                             }
                             //loc_74FF4:
                         }
@@ -701,21 +668,19 @@ namespace engine
                         }
 
                         gbl.unk_1D183[gbl.byte_1D1BB].field_0 = player;
-                        gbl.unk_1D183[gbl.byte_1D1BB].field_4 = var_6;
-                        gbl.unk_1D183[gbl.byte_1D1BB].field_5 = var_7;
+                        gbl.unk_1D183[gbl.byte_1D1BB].mapX = var_6;
+                        gbl.unk_1D183[gbl.byte_1D1BB].mapY = var_7;
                     }
 
                     seg041.GameDelay();
                     sub_74572(var_1, 0, 0);
-
-                    get_player_index(player);
 
                     gbl.stru_1C9CD[get_player_index(player)].field_3 = 0;
 
                     sub_743E7();
 
 
-                    sub_749DD(8, 3, (sbyte)(gbl.stru_1D1BC.field_3 + 3), (sbyte)(gbl.stru_1D1BC.field_2 + 3));
+                    sub_749DD(8, 3, gbl.stru_1D1BC.mapScreenTopY + 3, gbl.stru_1D1BC.mapScreenLeftX + 3);
 
                     player.actions.delay = 0;
                     player.actions.move = 0;
@@ -726,7 +691,7 @@ namespace engine
         }
 
 
-        internal static byte sub_7515A(byte arg_0, sbyte arg_2, sbyte arg_4, Player player)
+        internal static byte sub_7515A(byte arg_0, int arg_2, int arg_4, Player player)
         {
             byte var_9;
             byte var_8;
@@ -775,8 +740,8 @@ namespace engine
                                 }
 
                                 gbl.unk_1D183[var_3].field_0 = null;
-                                gbl.unk_1D183[var_3].field_4 = 0;
-                                gbl.unk_1D183[var_3].field_5 = 0;
+                                gbl.unk_1D183[var_3].mapX = 0;
+                                gbl.unk_1D183[var_3].mapY = 0;
                                 gbl.unk_1D183[var_3].field_6 = 0;
                             }
                         }
@@ -787,8 +752,8 @@ namespace engine
                         for (var_3 = 1; var_3 <= var_9; var_3++)
                         {
                             if (gbl.unk_1D183[var_3].field_0 != null &&
-                                gbl.unk_1D183[var_3].field_4 == arg_4 &&
-                                gbl.unk_1D183[var_3].field_5 == arg_2)
+                                gbl.unk_1D183[var_3].mapX == arg_4 &&
+                                gbl.unk_1D183[var_3].mapY == arg_2)
                             {
                                 var_6 = 1;
                             }

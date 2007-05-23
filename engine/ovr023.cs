@@ -1068,8 +1068,8 @@ namespace engine
             Player var_A;
             byte var_6;
             byte var_5;
-            sbyte var_4;
-            sbyte var_3;
+            //sbyte var_4;
+            //sbyte var_3;
             byte var_1;
 
             var_A = gbl.player_ptr;
@@ -1135,8 +1135,8 @@ namespace engine
                     if (gbl.game_state == 5)
                     {
                         ovr025.sub_67A59(0x12);
-                        var_3 = ovr033.PlayerMapXPos(var_A);
-                        var_4 = ovr033.PlayerMapYPos(var_A);
+                        int var_3 = ovr033.PlayerMapXPos(var_A);
+                        int var_4 = ovr033.PlayerMapYPos(var_A);
 
                         var_5 = 0;
 
@@ -1216,7 +1216,7 @@ namespace engine
         }
 
 
-        internal static void sub_5D676(sbyte arg_2, sbyte arg_4, sbyte arg_6, sbyte arg_8,
+        internal static void sub_5D676(int arg_2, int arg_4, int arg_6, int arg_8,
             Struct_XXXX bp_var_1C)
         {
             bp_var_1C.field_00 = arg_8;
@@ -1227,25 +1227,13 @@ namespace engine
         }
 
 
-        internal static void sub_5D6B7(ref sbyte arg_2, ref sbyte arg_6)
+        static void BoundCoords(ref int rowY, ref int colX) /* sub_5D6B7 */
         {
-            if (arg_6 > 0x31)
-            {
-                arg_6 = 0x31;
-            }
-            else if (arg_6 < 0)
-            {
-                arg_6 = 0;
-            }
+            colX = System.Math.Min(colX, Display.MaxCol);
+            colX = System.Math.Max(colX, Display.MinCol);
 
-            if (arg_2 > 0x18)
-            {
-                arg_2 = 0x18;
-            }
-            else if (arg_6 < 0)
-            {
-                arg_2 = 0;
-            }
+            rowY = System.Math.Min(rowY, Display.MaxRow);
+            rowY = System.Math.Max(rowY, Display.MinRow);
         }
 
 
@@ -1294,7 +1282,7 @@ namespace engine
         static sbyte[] unk_16D32 = { 1, 1, 0, 0, -1, -1, 0, 0 };
         static sbyte[] unk_16D3A = { 0, 0, 1, 1, 0, 0, -1, -1 };
 
-        internal static void sub_5D7CF(byte arg_0, byte arg_2, sbyte arg_4, sbyte arg_6, sbyte arg_8, sbyte arg_A)
+        internal static void sub_5D7CF(byte arg_0, byte arg_2, int arg_4, int arg_6, int arg_8, int arg_A)
         {
             byte var_7A;
             byte var_79 = 0; /* Simeon */
@@ -1312,11 +1300,6 @@ namespace engine
             bool var_1E;
             bool var_1D;
             Struct_XXXX var_1C = new Struct_XXXX();
-
-            sbyte var_4;
-            sbyte var_3;
-            sbyte var_2;
-            sbyte var_1;
 
             var_20 = 0;
             sub_5D676(arg_4, arg_6, arg_8, arg_A, var_1C);
@@ -1379,7 +1362,7 @@ namespace engine
 
             }
 
-            sub_5D6B7(ref arg_4, ref arg_6);
+            BoundCoords(ref arg_4, ref arg_6);
 
             var_1E = ovr032.sub_733F1(gbl.stru_1D1BC, ref var_78, ref arg_4, ref arg_6, arg_8, arg_A);
 
@@ -1432,15 +1415,16 @@ namespace engine
 
             if (arg_2 > 1)
             {
-                var_1 = (sbyte)(arg_6 + unk_16D22[var_76]);
-                var_2 = (sbyte)(arg_4 + unk_16D2A[var_76]);
+                int var_1 = arg_6 + unk_16D22[var_76];
+                int var_2 = arg_4 + unk_16D2A[var_76];
 
-                sub_5D6B7(ref var_2, ref var_1);
+                BoundCoords(ref var_2, ref var_1);
 
-                var_3 = (sbyte)(arg_6 + unk_16D32[var_76]);
-                var_4 = (sbyte)(arg_4 + unk_16D3A[var_76]);
+                int var_3 = arg_6 + unk_16D32[var_76];
+                int var_4 = arg_4 + unk_16D3A[var_76];
 
-                sub_5D6B7(ref var_4, ref var_3);
+                BoundCoords(ref var_4, ref var_3);
+
                 sub_5D676(var_4, var_3, arg_8, arg_A, var_1C);
                 sub_5D702(var_1C, var_1D, ref var_73, ref var_72, var_71);
 
@@ -2007,8 +1991,8 @@ namespace engine
 
             var_8.player = gbl.player_ptr;
             var_8.field_1C = var_E;
-            var_8.field_1A = gbl.byte_1D883;
-            var_8.field_1B = gbl.byte_1D884;
+            var_8.field_1A = (sbyte)gbl.byte_1D883;
+            var_8.field_1B = (sbyte)gbl.byte_1D884;
 
             for (var_11 = 1; var_11 <= 4; var_11++)
             {
@@ -2438,8 +2422,8 @@ namespace engine
             Struct_1D885 var_18;
             byte var_14;
             byte var_13;
-            sbyte var_12 = 0; /* Simeon */
-            sbyte var_11 = 0; /* Simeon */
+            int var_12 = 0; /* Simeon */
+            int var_11 = 0; /* Simeon */
             Affect var_10;
             Affect var_C;
             byte var_8;
@@ -2797,7 +2781,7 @@ namespace engine
         }
 
 
-        internal static void sub_5F986(ref bool arg_0, byte arg_4, byte arg_6, byte arg_8, sbyte arg_A, sbyte arg_C)
+        internal static void sub_5F986(ref bool arg_0, byte arg_4, byte arg_6, byte arg_8, int arg_A, int arg_C)
         {
             byte var_6;
             byte var_5;
@@ -2844,8 +2828,6 @@ namespace engine
             sbyte var_35;
             sbyte var_34;
             sbyte var_33;
-            sbyte var_32;
-            sbyte var_31;
             Struct_XXXX var_30;
             Struct_XXXX var_18;
 
@@ -2856,8 +2838,8 @@ namespace engine
             var_3D = 0;
             var_35 = 1;
 
-            var_31 = ovr033.PlayerMapXPos(gbl.player_ptr);
-            var_32 = ovr033.PlayerMapYPos(gbl.player_ptr);
+            int var_31 = ovr033.PlayerMapXPos(gbl.player_ptr);
+            int var_32 = ovr033.PlayerMapYPos(gbl.player_ptr);
             var_38 = arg_0;
 
             if (var_31 != gbl.byte_1D883 ||
@@ -3651,8 +3633,8 @@ namespace engine
 
             var_8.player = gbl.player_ptr;
             var_8.field_1C = var_13;
-            var_8.field_1A = gbl.byte_1D883;
-            var_8.field_1B = gbl.byte_1D884;
+            var_8.field_1A = (sbyte)gbl.byte_1D883;
+            var_8.field_1B = (sbyte)gbl.byte_1D884;
 
             for (var_16 = 1; var_16 <= 9; var_16++)
             {
@@ -4091,23 +4073,21 @@ namespace engine
         internal static void cast_breath(byte arg_0, object param, Player player)
         {
             Affect affect = (Affect)param;
-            sbyte var_3;
-            sbyte var_2;
             bool var_1 = false; /* Simeon */
 
             if (gbl.byte_1D8B7 == 0 ||
                 ovr024.roll_dice(100, 1) > 50)
             {
                 gbl.byte_1D2BF = 0x24;
-                var_2 = ovr033.PlayerMapXPos(player);
-                var_3 = ovr033.PlayerMapYPos(player);
+                int var_2 = ovr033.PlayerMapXPos(player);
+                int var_3 = ovr033.PlayerMapYPos(player);
 
                 ovr025.sub_67788(1, 10, "Breathes!", player);
 
                 gbl.dword_1D5CA(out gbl.byte_1DA70, 1, 0x33);
 
                 gbl.byte_1D883 = (sbyte)(var_2 + ovr032.sub_73005(gbl.byte_1D883 - var_2));
-                gbl.byte_1D884 = (sbyte)(var_3 + ovr032.sub_73005(gbl.byte_1D884 - var_3));
+                gbl.byte_1D884 = var_3 + ovr032.sub_73005(gbl.byte_1D884 - var_3);
 
                 if (gbl.byte_1D883 == (var_2 + 1))
                 {
@@ -4179,8 +4159,6 @@ namespace engine
             bool var_9;
             Player var_8;
             byte var_4;
-            sbyte var_3;
-            sbyte var_2;
             bool var_1;
 
             gbl.byte_1DA70 = false;
@@ -4194,8 +4172,8 @@ namespace engine
             {
                 gbl.byte_1D2BF = 0x30;
 
-                var_2 = ovr033.PlayerMapXPos(player);
-                var_3 = ovr033.PlayerMapYPos(player);
+                int var_2 = ovr033.PlayerMapXPos(player);
+                int var_3 = ovr033.PlayerMapYPos(player);
 
                 gbl.dword_1D5CA(out gbl.byte_1DA70, 1, 0x3d);
 
@@ -4266,8 +4244,7 @@ namespace engine
 
                 var_1 = ovr025.clear_actions(player);
             }
-            throw new System.NotSupportedException();//loc_61EF0:
-
+            //loc_61EF0:
         }
 
 
@@ -4278,8 +4255,8 @@ namespace engine
             bool var_9;
             Player var_8;
             byte var_4;
-            sbyte var_3;
-            sbyte var_2;
+            int var_3;
+            int var_2;
             bool var_1;
 
             throw new System.NotSupportedException();//cmp	byte_1D8B7, 0
@@ -4418,14 +4395,12 @@ namespace engine
 
         internal static void cast_throw_lightning(byte arg_0, object param, Player arg_6)
         {
-            sbyte var_3;
-            sbyte var_2;
             bool var_1 = false; /* Simeon */
 
             if (gbl.byte_1D8B7 < 4)
             {
-                var_2 = ovr033.PlayerMapXPos(arg_6);
-                var_3 = ovr033.PlayerMapYPos(arg_6);
+                int var_2 = ovr033.PlayerMapXPos(arg_6);
+                int var_3 = ovr033.PlayerMapYPos(arg_6);
 
                 ovr025.sub_67788(1, 10, "throws lightning", arg_6);
                 gbl.dword_1D5CA(out gbl.byte_1DA70, 1, 0x33);

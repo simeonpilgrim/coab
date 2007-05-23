@@ -446,7 +446,7 @@ namespace engine
 
             ovr025.count_teams();
 
-            ovr033.sub_749DD(8, 0xff, (sbyte)(gbl.stru_1D1BC.field_3 + 3), (sbyte)(gbl.stru_1D1BC.field_2 + 3));
+            ovr033.sub_749DD(8, 0xff, gbl.stru_1D1BC.mapScreenTopY + 3, gbl.stru_1D1BC.mapScreenLeftX + 3);
 
             if (gbl.friends_count == 0 ||
                 gbl.foe_count == 0 ||
@@ -475,15 +475,13 @@ namespace engine
             byte var_9;
             byte var_8;
             byte var_7;
-            sbyte var_4;
-            sbyte var_3;
             byte var_2;
             byte var_1;
 
             var_1 = player.actions.move;
             var_2 = player.actions.field_9;
-            var_3 = ovr033.PlayerMapXPos(player);
-            var_4 = ovr033.PlayerMapYPos(player);
+            int var_3 = ovr033.PlayerMapXPos(player);
+            int var_4 = ovr033.PlayerMapYPos(player);
             var_A = arg_4;
 
             arg_0 = false;

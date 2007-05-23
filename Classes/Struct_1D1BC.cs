@@ -14,8 +14,8 @@ namespace Classes
 
         //public byte field_0;
         //public byte field_1;
-        public sbyte field_2;
-        public sbyte field_3;
+        public int mapScreenLeftX; // field_2, was sbyte
+        public int mapScreenTopY; // field_3, was sbyte
         public byte field_4;
         public byte field_5;
         public byte field_6;

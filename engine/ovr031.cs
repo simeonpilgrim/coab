@@ -289,7 +289,7 @@ namespace engine
         }
 
 
-        internal static byte sub_717A5(sbyte mapX, sbyte mapY)
+        internal static byte sub_717A5(int mapX, int mapY)
         {
             byte var_1;
 
@@ -376,10 +376,10 @@ namespace engine
 
                             while (var_10 < 4)
                             {
-                                var_14 = sub_716A2(partyDir, (sbyte)var_F, (sbyte)var_D);
+                                var_14 = sub_716A2(partyDir, var_F, var_D);
 
                                 if (MapCoordIsValid(var_F, var_D) == false &&
-                                    sub_716A2(var_2, (sbyte)var_F, (sbyte)var_D) == 0)
+                                    sub_716A2(var_2, var_F, var_D) == 0)
                                 {
                                     var_17 = 0;
                                 }
@@ -388,19 +388,19 @@ namespace engine
                                 {
                                     if (var_17 > 0)
                                     {
-                                        sub_71434(9, var_17, gbl.byte_16E2E, (sbyte)(gbl.word_16E1A + var_12 + 1));
+                                        sub_71434(9, var_17, gbl.byte_16E2E, gbl.word_16E1A + var_12 + 1);
                                     }
 
                                     var_17 = var_14;
 
-                                    sub_71434(0, var_14, gbl.byte_16E1C, (sbyte)(gbl.word_16E08 + var_12));
+                                    sub_71434(0, var_14, gbl.byte_16E1C, gbl.word_16E08 + var_12);
                                 }
                                 else
                                 {
                                     if (var_17 > 0 &&
-                                        sub_716A2(var_1, (sbyte)(var_F - gbl.MapDirectionYDelta[var_1]), (sbyte)(var_D - gbl.MapDirectionXDelta[var_1])) != 0)
+                                        sub_716A2(var_1, var_F - gbl.MapDirectionYDelta[var_1], var_D - gbl.MapDirectionXDelta[var_1]) != 0)
                                     {
-                                        sub_71434(9, var_17, gbl.byte_16E2E, (sbyte)(gbl.word_16E1A + var_12 + 1));
+                                        sub_71434(9, var_17, gbl.byte_16E2E, gbl.word_16E1A + var_12 + 1);
                                     }
 
                                     var_17 = 0;
@@ -421,10 +421,10 @@ namespace engine
 
                             while (var_10 < 4)
                             {
-                                var_14 = sub_716A2(partyDir, (sbyte)var_F, (sbyte)var_D);
+                                var_14 = sub_716A2(partyDir, var_F, var_D);
 
                                 if (MapCoordIsValid(var_F, var_D) == false &&
-                                  sub_716A2(var_1, (sbyte)var_F, (sbyte)var_D) == 0)
+                                  sub_716A2(var_1, var_F, var_D) == 0)
                                 {
                                     var_17 = 0;
                                 }
@@ -433,18 +433,18 @@ namespace engine
                                 {
                                     if (var_17 > 0)
                                     {
-                                        sub_71434(9, var_17, gbl.byte_16E2E, (sbyte)(gbl.word_16E1A + var_12 - 1));
+                                        sub_71434(9, var_17, gbl.byte_16E2E, gbl.word_16E1A + var_12 - 1);
                                     }
 
                                     var_17 = var_14;
-                                    sub_71434(0, var_14, gbl.byte_16E1C, (sbyte)(gbl.word_16E08 + var_12));
+                                    sub_71434(0, var_14, gbl.byte_16E1C, gbl.word_16E08 + var_12);
                                 }
                                 else
                                 {
                                     if (var_17 > 0 &&
-                                        sub_716A2(var_2, (sbyte)(var_F - gbl.MapDirectionYDelta[var_2]), (sbyte)(var_D - gbl.MapDirectionXDelta[var_2])) != 0)
+                                        sub_716A2(var_2, var_F - gbl.MapDirectionYDelta[var_2], var_D - gbl.MapDirectionXDelta[var_2]) != 0)
                                     {
-                                        sub_71434(9, var_17, gbl.byte_16E2E, (sbyte)(gbl.word_16E1A + var_12 - 1));
+                                        sub_71434(9, var_17, gbl.byte_16E2E, gbl.word_16E1A + var_12 - 1);
                                     }
 
                                     var_17 = 0;
@@ -464,17 +464,17 @@ namespace engine
 
                             while (var_10 < 3)
                             {
-                                var_15 = sub_716A2(var_1, (sbyte)var_F, (sbyte)var_D);
+                                var_15 = sub_716A2(var_1, var_F, var_D);
 
                                 if (var_15 != 0)
                                 {
                                     if (var_10 == 0)
                                     {
-                                        sub_71434(1, var_15, gbl.byte_16E1E, (sbyte)(gbl.word_16E0A + var_12));
+                                        sub_71434(1, var_15, gbl.byte_16E1E, gbl.word_16E0A + var_12);
                                     }
                                     else
                                     {
-                                        sub_71434(1, var_15, gbl.byte_16E1E, (sbyte)(gbl.word_16E0A + var_12 - 1));
+                                        sub_71434(1, var_15, gbl.byte_16E1E, gbl.word_16E0A + var_12 - 1);
                                     }
 
                                 }
@@ -493,17 +493,17 @@ namespace engine
 
                             while (var_10 < 3)
                             {
-                                var_15 = sub_716A2(var_2, (sbyte)var_F, (sbyte)var_D);
+                                var_15 = sub_716A2(var_2, var_F, var_D);
 
                                 if (var_15 != 0)
                                 {
                                     if (var_10 == 0)
                                     {
-                                        sub_71434(2, var_15, gbl.byte_16E20, (sbyte)(gbl.word_16E0C + var_12));
+                                        sub_71434(2, var_15, gbl.byte_16E20, gbl.word_16E0C + var_12);
                                     }
                                     else
                                     {
-                                        sub_71434(2, var_15, gbl.byte_16E20, (sbyte)(gbl.word_16E0C + var_12 + 1));
+                                        sub_71434(2, var_15, gbl.byte_16E20, gbl.word_16E0C + var_12 + 1);
                                     }
                                 }
 
@@ -527,16 +527,16 @@ namespace engine
 
                             while (var_10 < 3)
                             {
-                                var_14 = sub_716A2(partyDir, (sbyte)var_F, (sbyte)var_D);
+                                var_14 = sub_716A2(partyDir, var_F, var_D);
                                 if (var_14 != 0)
                                 {
-                                    sub_71434(3, var_14, (sbyte)gbl.byte_16E22, (sbyte)(gbl.word_16E0E + var_12));
+                                    sub_71434(3, var_14, gbl.byte_16E22, gbl.word_16E0E + var_12);
                                 }
 
-                                var_15 = sub_716A2(var_1, (sbyte)var_F, (sbyte)var_D);
+                                var_15 = sub_716A2(var_1, var_F, var_D);
                                 if (var_15 != 0)
                                 {
-                                    sub_71434(4, var_15, (sbyte)gbl.byte_16E24, (sbyte)(gbl.word_16E10 + var_12));
+                                    sub_71434(4, var_15, gbl.byte_16E24, gbl.word_16E10 + var_12);
                                 }
 
                                 var_10++;
@@ -552,18 +552,18 @@ namespace engine
                             var_12 = 6;
                             while (var_10 < 3)
                             {
-                                var_14 = sub_716A2(partyDir, (sbyte)var_F, (sbyte)var_D);
+                                var_14 = sub_716A2(partyDir, var_F, var_D);
 
                                 if (var_14 != 0)
                                 {
-                                    sub_71434(3, var_14, gbl.byte_16E22, (sbyte)(gbl.word_16E0E + var_12));
+                                    sub_71434(3, var_14, gbl.byte_16E22, gbl.word_16E0E + var_12);
                                 }
 
-                                var_15 = sub_716A2(var_2, (sbyte)var_F, (sbyte)var_D);
+                                var_15 = sub_716A2(var_2, var_F, var_D);
 
                                 if (var_15 != 0)
                                 {
-                                    sub_71434(5, var_15, gbl.byte_16E26, (sbyte)(gbl.word_16E12 + var_12));
+                                    sub_71434(5, var_15, gbl.byte_16E26, gbl.word_16E12 + var_12);
                                 }
 
                                 var_10++;
@@ -582,18 +582,18 @@ namespace engine
 
                             while (var_10 < 2)
                             {
-                                var_14 = sub_716A2(partyDir, (sbyte)var_F, (sbyte)var_D);
+                                var_14 = sub_716A2(partyDir, var_F, var_D);
 
                                 if (var_14 != 0)
                                 {
-                                    sub_71434(6, var_14, gbl.byte_16E28, (sbyte)(gbl.word_16E14 + var_12));
+                                    sub_71434(6, var_14, gbl.byte_16E28, gbl.word_16E14 + var_12);
                                 }
 
-                                var_15 = sub_716A2(var_1, (sbyte)var_F, (sbyte)var_D);
+                                var_15 = sub_716A2(var_1, var_F, var_D);
 
                                 if (var_15 != 0)
                                 {
-                                    sub_71434(7, var_15, gbl.byte_16E2A, (sbyte)(gbl.word_16E16 + var_12));
+                                    sub_71434(7, var_15, gbl.byte_16E2A, gbl.word_16E16 + var_12);
                                 }
 
                                 var_10++;
@@ -612,19 +612,19 @@ namespace engine
                             while (var_10 < 2)
                             {
 
-                                var_14 = sub_716A2(partyDir, (sbyte)var_F, (sbyte)var_D);
+                                var_14 = sub_716A2(partyDir, var_F, var_D);
 
                                 if (var_14 != 0)
                                 {
 
-                                    sub_71434(6, var_14, (sbyte)gbl.byte_16E28, (sbyte)(var_12 + gbl.word_16E14));
+                                    sub_71434(6, var_14, gbl.byte_16E28, var_12 + gbl.word_16E14);
                                 }
 
-                                var_15 = sub_716A2(var_2, (sbyte)var_F, (sbyte)var_D);
+                                var_15 = sub_716A2(var_2, var_F, var_D);
 
                                 if (var_15 != 0)
                                 {
-                                    sub_71434(8, var_15, (sbyte)gbl.byte_16E2C, (sbyte)(var_12 + gbl.word_16E18));
+                                    sub_71434(8, var_15, gbl.byte_16E2C, var_12 + gbl.word_16E18);
                                 }
 
                                 var_10++;

@@ -240,8 +240,8 @@ namespace Classes
         public static bool byte_1D5BF;
         public static byte byte_1D5C4;
         public static byte byte_1D75E;
-        public static sbyte byte_1D883;
-        public static sbyte byte_1D884;
+        public static int byte_1D883;
+        public static int byte_1D884;
         public static byte byte_1D88D;
         public static byte byte_1D8A8;
         public static byte byte_1D8AA;
@@ -777,8 +777,8 @@ new Struct_19AEC( 32h,0,7,12h,3,12h,3,12h,8,12h,3,12h,3,3,12h,11h) };*/
 
         public static Struct_1A35E[] unk_1A35E = new Struct_1A35E[] { stru_1A35E_0, stru_1A35E_1, stru_1A35E_2, stru_1A35E_3, stru_1A35E_4, stru_1A35E_5, stru_1A35E_6, stru_1A35E_7 };
 
-        public static sbyte[] unk_1CAF0 = new sbyte[256];
-        public static sbyte[] unk_1CB38 = new sbyte[256];
+        public static int[] playerScreenX = new int[256]; /* unk_1CAF0 */
+        public static int[] playerScreenY = new int[256]; /* unk_1CB38 */
 
         public static byte[] unk_1AE0B = new byte[3];
 
