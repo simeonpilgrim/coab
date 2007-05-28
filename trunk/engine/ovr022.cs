@@ -102,7 +102,7 @@ namespace engine
         }
 
 
-        internal static short sub_592AD(byte arg_0, string arg_2, short arg_6)
+        internal static short sub_592AD(byte arg_0, string arg_2, short coinAvailable)
         {
             string var_144;
             short var_44;
@@ -116,13 +116,13 @@ namespace engine
 
             var_2B = arg_2;
 
-            seg041.sub_1071A(0x28, 0, 0x18, 0);
+            seg041.displaySpaceChar(0x28, 0, 0x18, 0);
             seg041.displayString(var_2B, 0, arg_0, 0x18, 0);
 
             var_2E = var_2B.Length;
             var_2C = var_2E;
 
-            var_34 = arg_6.ToString();
+            var_34 = coinAvailable.ToString();
 
             var_3B = string.Empty;
 
@@ -137,7 +137,7 @@ namespace engine
 
                     var_40 = (short)(int.Parse(var_3B));
 
-                    if (arg_6 >= var_40)
+                    if (coinAvailable >= var_40)
                     {
                         var_2C++;
                     }
@@ -155,12 +155,12 @@ namespace engine
                     int i = var_3B.Length - 1;
                     var_3B = seg051.Copy(i, 1, var_3B, out var_144);
 
-                    seg041.sub_1071A(1, 0, 0x18, var_2C);
+                    seg041.displaySpaceChar(1, 0, 0x18, var_2C);
                     var_2C--;
                 }
             } while (var_3C != 0x0D && var_3C != 0x1B);
 
-            seg041.sub_1071A(0x28, 0, 0x18, 0);
+            seg041.displaySpaceChar(0x28, 0, 0x18, 0);
 
             if (var_3C == 0x1B)
             {
@@ -457,13 +457,11 @@ namespace engine
         }
 
 
-        internal static byte sub_59BAB(ref string arg_0, string arg_4)
+        internal static byte sub_59BAB(out string arg_0, string arg_4)
         {
-            byte var_2;
-            byte var_1;
-
-            var_2 = 0;
-            var_1 = 7; // this is outofbounds.
+            int var_2 = 0;
+            byte var_1 = 7; // this is outofbounds.
+            arg_0 = string.Empty;
 
             while (arg_4[var_2] == ' ')
             {
@@ -471,10 +469,10 @@ namespace engine
             }
 
             char ch = arg_4[var_2];
-            if (ch == 0x47)
+            if (ch == 'G')
             {
                 ch = arg_4[var_2 + 1];
-                if (seg051.UpCase(ch) == 0x45)
+                if (char.ToUpper(ch) == 'E')
                 {
                     var_1 = 5;
                     arg_0 = "Gems ";
@@ -485,27 +483,27 @@ namespace engine
                     var_1 = 3;
                 }
             }
-            else if (ch == 0x50)
+            else if (ch == 'P')
             {
                 arg_0 = "Platinum ";
                 var_1 = 4;
             }
-            else if (ch == 0x45)
+            else if (ch == 'E')
             {
                 arg_0 = "Electrum ";
                 var_1 = 2;
             }
-            else if (ch == 0x53)
+            else if (ch == 'S')
             {
                 arg_0 = "Silver ";
                 var_1 = 1;
             }
-            else if (ch == 0x43)
+            else if (ch == 'C')
             {
                 arg_0 = "Copper ";
                 var_1 = 0;
             }
-            else if (ch == 0x4A)
+            else if (ch == 'J')
             {
                 arg_0 = "Jewelry ";
                 var_1 = 6;
@@ -568,9 +566,7 @@ namespace engine
                 {
                     var_117 = 0;
 
-                    var_114 = string.Empty;
-
-                    var_2 = sub_59BAB(ref var_114, var_C.s);
+                    var_2 = sub_59BAB(out var_114, var_C.s);
 
                     var_114 = string.Format("How much {0} will you take? ", var_114);
 

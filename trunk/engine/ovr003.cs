@@ -430,42 +430,32 @@ namespace engine
         }
 
 
-        internal static void sub_2695E()
+        internal static void CMD_InputNumber() /* sub_2695E */
         {
-            ushort var_6;
-            ushort var_4;
-            string var_2;
-
             ovr008.vm_LoadCmdSets(2);
 
-            var_2 = string.Empty;
+            ushort loc = gbl.cmd_opps[2].Word;
 
-            var_6 = gbl.cmd_opps[2].Word;
+            ushort var_4 = seg041.getUserInputShort(0, 0x0a, string.Empty);
 
-            var_4 = seg041.sub_10CB7(0, 0x0a, var_2);
-
-            ovr008.vm_SetMemoryValue(var_4, var_6);
+            ovr008.vm_SetMemoryValue(var_4, loc);
         }
 
 
-        internal static void sub_269A4()
+        internal static void CMD_InputString() /* sub_269A4 */
         {
-            string var_104;
-            ushort var_4;
-            string var_2;
-
             ovr008.vm_LoadCmdSets(2);
-            var_2 = string.Empty;
-            var_4 = gbl.cmd_opps[2].Word;
 
-            var_104 = seg041.sub_10B26(0x28, 0, 10, var_2);
+            ushort loc = gbl.cmd_opps[2].Word;
 
-            if (var_104.Length == 0)
+            string str = seg041.getUserInputString(0x28, 0, 10, string.Empty);
+
+            if (str.Length == 0)
             {
-                var_104 = " ";
+                str = " ";
             }
 
-            ovr008.vm_WriteStringToMemory(var_104, var_4);
+            ovr008.vm_WriteStringToMemory(str, loc);
         }
 
 
@@ -2613,8 +2603,8 @@ namespace engine
                 case 0x0C: sub_263C9(); break;
                 case 0x0D: sub_26835(); break;
                 case 0x0E: sub_26873(); break;
-                case 0x0F: sub_2695E(); break;
-                case 0x10: sub_269A4(); break;
+                case 0x0F: CMD_InputNumber(); break;
+                case 0x10: CMD_InputString(); break;
                 case 0x11: CMD_Print(); break;
                 case 0x12: CMD_Print(); break;
                 case 0x13: CMD_Return(); break;
@@ -2850,10 +2840,10 @@ namespace engine
                         gbl.area_ptr.field_1E4 = gbl.byte_1EE88;
                     }
 
-                    while ((gbl.area2_ptr.field_594 > 1 || seg051.UpCase(var_1) == 'E') &&
+                    while ((gbl.area2_ptr.field_594 > 1 || char.ToUpper(var_1) == 'E') &&
                         gbl.byte_1B2F0 == 0)
                     {
-                        if (seg051.UpCase(var_1) == 'E')
+                        if (char.ToUpper(var_1) == 'E')
                         {
                             sub_29094();
                         }

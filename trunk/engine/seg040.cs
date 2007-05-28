@@ -162,7 +162,7 @@ namespace engine
         }
 
 
-        internal static void sub_E353(DaxBlock dest, DaxBlock source, byte arg_8, int itemIndex, short rowY, short colX)
+        internal static void sub_E353(DaxBlock dest, DaxBlock source, byte arg_8, int itemIndex, int rowY, int colX)
         {
             int backupOffset;
             bool doBackup;
@@ -249,8 +249,6 @@ namespace engine
                     destOffset, sourceOffset, copySize, destPostfix, destPrefix,
                     sourcePostfix, sourcePrefix, false, backupOffset);
 
-                //DaxBlockSubCopy(lineNo, lineToCopy, dest, source, var_6, destOffset, sourceOffset,
-                //    copySize, destPostfix, destPrefix);
                 return;
             }
 

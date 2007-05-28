@@ -646,7 +646,7 @@ namespace engine
 
                                 DaxBlock tmp = ((var_3 & 1) == 0 )? gbl.combat_icons[24,1]:gbl.combat_icons[25,0];
 
-                                seg040.sub_E353(gbl.overlayLines, tmp, 5, 0, (short)((gbl.playerScreenY[var_1] + var_5) * 3), (short)((gbl.playerScreenX[var_1] + var_4) * 3));
+                                seg040.sub_E353(gbl.overlayLines, tmp, 5, 0, (gbl.playerScreenY[var_1] + var_5) * 3,(gbl.playerScreenX[var_1] + var_4) * 3);
                             }
                             //loc_74FF4:
                         }

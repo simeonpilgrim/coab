@@ -11,8 +11,9 @@ namespace engine
             EngineThread = System.Threading.Thread.CurrentThread;
 
             seg051.o_1_a_87_i_tpdos_idc_tpdos_l_tptv();
-            seg049.__CRTInit();
-            seg045.sub_13840();
+
+            gbl.byte_1EFA4 = "Wooden";
+
             seg044.sub_121BF();
             seg039.config_game();
         }

@@ -222,9 +222,6 @@
     <Compile Include="seg044.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="seg045.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="seg046.cs">
       <SubType>Code</SubType>
     </Compile>

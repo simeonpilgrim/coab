@@ -21,7 +21,7 @@ namespace engine
                         seg040.DaxBlockRecolor(dax_block, 1, 0, unk_16DBA, unk_16DAA);
                     }
 
-                    seg040.sub_E353(gbl.overlayLines, dax_block, 0, 0, (short)(arg_6 - 1), (short)(arg_8 - 1));
+                    seg040.sub_E353(gbl.overlayLines, dax_block, 0, 0, arg_6 - 1, arg_8 - 1);
                     seg040.DrawOverlay();
                 }
                 else
@@ -71,7 +71,7 @@ namespace engine
                 {
                     if (gbl.AnimationsOn == true)
                     {
-                        seg041.sub_1071A(0x28, 0, 0x18, 0);
+                        seg041.displaySpaceChar(0x28, 0, 0x18, 0);
                         seg041.displayString("Loading...Please Wait", 0, 10, 0x18, 0);
                     }
 
@@ -179,7 +179,7 @@ namespace engine
 
                         if (gbl.AnimationsOn == true)
                         {
-                            seg041.sub_1071A(0x28, 0, 0x18, 0);
+                            seg041.displaySpaceChar(0x28, 0, 0x18, 0);
                         }
                     }
                 }
@@ -265,7 +265,7 @@ namespace engine
             if (arg_0.ptrs[arg_4 - 1].field_4 != null)
             {
                 var_46 = arg_0.ptrs[arg_4 - 1].field_4;
-                seg040.sub_E353(gbl.overlayLines, arg_0.ptrs[arg_4 - 1].field_4, 1, 0, (short)(var_46.field_6 + 3 - 1), (short)(var_46.field_4 + 3 - 1));
+                seg040.sub_E353(gbl.overlayLines, arg_0.ptrs[arg_4 - 1].field_4, 1, 0, var_46.field_6 + 3 - 1, var_46.field_4 + 3 - 1);
                 seg040.DrawOverlay();
             }
         }

@@ -18,13 +18,12 @@ namespace engine
             string var_117;
 
             string var_17;
-            byte var_15;
-            byte var_14;
+            byte code_row;
+            byte code_path;
             string var_13;
-            string var_11;
+            string code_path_str;
             byte var_7;
             byte var_6;
-            int var_5;
             char var_3;
             char var_2;
             int var_1;
@@ -50,54 +49,53 @@ namespace engine
                 ovr034.sub_760F7(0, (byte)(var_7 + 0x1a), 7, 0x11);
 
                 seg040.DrawOverlay();
-                var_14 = seg051.Random(3);
+                code_path = seg051.Random(3);
 
-                switch (var_14)
+                switch (code_path)
                 {
                     case 0:
-                        var_11 = "-..-..-..";
+                        code_path_str = "-..-..-..";
                         break;
 
                     case 1:
-                        var_11 = "- - - - -";
+                        code_path_str = "- - - - -";
                         break;
 
                     case 2:
-                        var_11 = ".........";
+                        code_path_str = ".........";
                         break;
 
                     default:
-                        var_11 = string.Empty;
+                        code_path_str = string.Empty;
                         break;
                 }
 
-                var_15 = seg051.Random(6);
+                code_row = seg051.Random(6);
 
-                seg051.Str(1, out var_13, 0, 6 - var_15);
-                var_117 = "Type the character in box number " + var_13;
+                var_117 = "Type the character in box number " + (6 - code_row);
 
                 seg041.displayString(var_117, 0, 10, 12, 3);
 
                 seg041.displayString("under the ", 0, 10, 13, 3);
-                seg041.displayString(var_11, 0, 15, 13, 14);
+                seg041.displayString(code_path_str, 0, 15, 13, 14);
                 seg041.displayString("path.", 0, 10, 13, 0x19);
 
-                var_5 = var_6 + 0x22 - var_7 + (var_14 * 12) + ((5 - var_15) << 1);
+                int code_index = var_6 + 0x22 - var_7 + (code_path * 12) + ((5 - code_row) << 1);
 
-                while (var_5 < 0)
+                while (code_index < 0)
                 {
-                    var_5 += 36;
+                    code_index += 36;
                 }
 
-                while (var_5 > 35)
+                while (code_index > 35)
                 {
-                    var_5 -= 36;
+                    code_index -= 36;
                 }
 
-                var_3 = codeWheel[var_15][var_5];
+                var_3 = codeWheel[code_row][code_index];
 
                 var_17 = " ";
-                var_17 = seg041.sub_10B26(1, 0, 13, "type character and press return: ");
+                var_17 = seg041.getUserInputString(1, 0, 13, "type character and press return: ");
 
                 var_2 = (var_17 == null ||var_17.Length == 0 ) ? ' ' : var_17[0];
                 var_1++;

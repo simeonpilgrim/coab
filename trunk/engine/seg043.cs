@@ -17,7 +17,7 @@ namespace engine
 
             ovr012.keyboardStatus_0417 = gbl.byte_1EFBA;
 
-            seg051.RTE_handler_00_00(0);
+            seg001.EngineThread.Abort();
         }
 
 
@@ -122,8 +122,6 @@ namespace engine
             if (gbl.printCommands == true)
             {
                 gbl.unk_1EE9A.Assign("debug.txt", Text.AssignType.Write);
-
-                seg051.Rewrite(gbl.unk_1EE9A);
 
                 seg051.Write(0, System.DateTime.Now.ToString(), gbl.unk_1EE9A);
                 seg051.WriteLn(gbl.unk_1EE9A);
