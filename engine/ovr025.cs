@@ -1654,13 +1654,10 @@ namespace engine
 
         internal static void sub_6818A(string s, byte arg_4, Player player)
         {
-            byte var_107;
             byte var_106;
             byte var_105;
             byte var_104;
             byte var_103;
-            byte var_102;
-            byte var_101;
             string var_100;
 
             var_100 = s;
@@ -1703,21 +1700,19 @@ namespace engine
                     var_106 = 0;
                 }
 
-                var_101 = (byte)(gbl.playerScreenX[ovr033.get_player_index(player)] * 3);
-                var_102 = (byte)(gbl.playerScreenY[ovr033.get_player_index(player)] * 3);
+                int colX = (byte)(gbl.playerScreenX[ovr033.get_player_index(player)] * 3);
+                int rowY = (byte)(gbl.playerScreenY[ovr033.get_player_index(player)] * 3);
 
-                var_107 = var_106;
-
-                for (var_105 = 0; var_105 <= var_107; var_105++)
+                for (var_105 = 0; var_105 <= var_106; var_105++)
                 {
                     for (var_104 = 0; var_104 <= 3; var_104++)
                     {
-                        seg040.sub_E353(gbl.overlayLines, gbl.dword_1D90A, 5, var_104, var_102, var_101);
+                        seg040.sub_E353(gbl.overlayLines, gbl.dword_1D90A, 5, var_104, rowY, colX);
                         seg040.DrawOverlay();
 
                         seg049.SysDelay(70);
 
-                        seg040.sub_E353(gbl.overlayLines, gbl.word_1B316, 0, 0, var_102, var_101);
+                        seg040.sub_E353(gbl.overlayLines, gbl.word_1B316, 0, 0, rowY, colX);
                     }
                 }
 

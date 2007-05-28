@@ -109,9 +109,6 @@ namespace Classes
         public static byte byte_1AFDC;
         public static byte byte_1AFDD;
         public static byte byte_1AFDE;
-        public static char byte_1AFE6;
-
-
 
         public static char byte_1B2BA;
         public static byte byte_1B2C0;
@@ -373,7 +370,6 @@ namespace Classes
         public static short word_1EFBC;
 
         public static object dword_1AAC8;
-        public static object dword_1AAF0;
         public static Item[] unk_1AF18; // array 01-0x30; seg600:4C08
         public static byte[] unk_1AEC4; // unk_1AEC4[0x53]; seg600:4BB4
         public static Struct_1ADF6[] dword_1ADF6;
@@ -669,7 +665,6 @@ new Struct_19AEC( 32h,0,7,12h,3,12h,3,12h,8,12h,3,12h,3,3,12h,11h) };*/
         public static byte friends_count;
         public static byte foe_count;
 
-        public static Text known01_01;
         public static Text known01_02;
 
         public static DaxBlock overlayLines; // seg600:5002

@@ -6,18 +6,9 @@ namespace engine
     {
         private static byte skipReadFlag;
 
-        internal static void __CRTInit()
-        {
-            ASSIGNCRT(gbl.known01_01);
-
-            ASSIGNCRT(gbl.known01_02);
-            seg051.Rewrite(gbl.known01_02);
-        }
-
-
         volatile static bool keyboard_read = false;
 
-        internal static void keyboard_emptybuffer()
+        static void keyboard_emptybuffer()
         {
             if (keyboard_read == false)
             {
@@ -116,29 +107,5 @@ namespace engine
 
             return lastCode;
         }
-
-
-        internal static void ASSIGNCRT(Text arg_0)
-        {
-            arg_0.field_2 = 0xD7B0;
-            arg_0.field_4 = 0xD7B0;
-            arg_0.field_C = arg_0.field_80;
-            arg_0.field_30 = 0;
-        }
-
-        static void call_int10()
-        {
-            throw new System.NotSupportedException();//push	si
-            throw new System.NotSupportedException();//push	di
-            throw new System.NotSupportedException();//push	bp
-            throw new System.NotSupportedException();//push	es
-            throw new System.NotSupportedException();//int	0x10
-            throw new System.NotSupportedException();//pop	es
-            throw new System.NotSupportedException();//pop	bp
-            throw new System.NotSupportedException();//pop	di
-            throw new System.NotSupportedException();//pop	si
-            throw new System.NotSupportedException();//retn
-        }
-
     }
 }

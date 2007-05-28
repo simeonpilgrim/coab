@@ -96,11 +96,11 @@ namespace engine
                 {
                     if (gbl.mapDirection == 2)
                     {
-                        seg040.sub_E353(gbl.overlayLines, gbl.sky_dax_251, 1, 0, (short)((var_4 + 5) - var_2), (short)(var_5 - 3));
+                        seg040.sub_E353(gbl.overlayLines, gbl.sky_dax_251, 1, 0, (var_4 + 5) - var_2, var_5 - 3);
                     }
                     else if (gbl.mapDirection == 4 && var_2 > 2)
                     {
-                        seg040.sub_E353(gbl.overlayLines, gbl.sky_dax_251, 1, 0, (short)((var_4 + 5) - var_2), (short)((var_3 + var_2) - 3));
+                        seg040.sub_E353(gbl.overlayLines, gbl.sky_dax_251, 1, 0, (var_4 + 5) - var_2, (var_3 + var_2) - 3);
                     }
                 }
                 else if (var_2 >= 13 && var_2 <= 18)
@@ -108,12 +108,12 @@ namespace engine
                     if (gbl.mapDirection == 6)
                     {
 
-                        seg040.sub_E353(gbl.overlayLines, gbl.sky_dax_251, 1, 0, (short)((var_4 + var_2) - 13), var_3);
+                        seg040.sub_E353(gbl.overlayLines, gbl.sky_dax_251, 1, 0, (var_4 + var_2) - 13, var_3);
                     }
                     else if (gbl.mapDirection == 4 && var_2 >= 16)
                     {
 
-                        seg040.sub_E353(gbl.overlayLines, gbl.sky_dax_251, 1, 0, (short)((var_4 + var_2) - 13), (short)((var_3 + var_2) - 8));
+                        seg040.sub_E353(gbl.overlayLines, gbl.sky_dax_251, 1, 0, (var_4 + var_2) - 13, (var_3 + var_2) - 8);
                     }
                 }
 
@@ -687,7 +687,6 @@ namespace engine
 
                 do
                 {
-                    /* seg051.Move(0x30C, gbl.stru_1D52C[((arg_0 + var_D - 1) - 1) * 0x30C], var_6[var_8]); */
                     System.Array.Copy(var_6, var_8, gbl.stru_1D52C[arg_0 + var_D-2], 0, 0x30C);
 
                     var_8 += 0x30C;

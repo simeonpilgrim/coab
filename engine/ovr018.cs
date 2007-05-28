@@ -1292,7 +1292,7 @@ namespace engine
 
             do
             {
-                player.name = seg041.sub_10B26(15, 0, 13, "Character name: ");
+                player.name = seg041.getUserInputString(15, 0, 13, "Character name: ");
             } while (player.name.Length == 0);
 
             icon_builder();
@@ -1408,7 +1408,7 @@ namespace engine
             {
                 if (arg_2 != 0)
                 {
-                    seg041.sub_1071A(1, 0, 1, gbl.player_ptr.name.Length + 1);
+                    seg041.displaySpaceChar(1, 0, 1, gbl.player_ptr.name.Length + 1);
                     seg041.displayString(gbl.player_ptr.name, 0, 13, 1, 1);
 
                     if (bp_var_3F > gbl.player_ptr.name.Length || gbl.player_ptr.name[bp_var_3F-1] == ' ')

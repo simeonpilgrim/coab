@@ -371,7 +371,7 @@ namespace engine
 
                 var_B8 = 'O';
 
-                if (var_DD > seg046.getDiskSpace((byte)(seg051.UpCase(gbl.byte_1BF1A[0]) - 0x40)))
+                if (var_DD > seg046.getDiskSpace((byte)(char.ToUpper(gbl.byte_1BF1A[0]) - 0x40)))
                 {
                     seg041.displayAndDebug("Can't save.  No room on this disk.", 0, 14);
 
@@ -428,7 +428,7 @@ namespace engine
 
                     while (var_B2 == string.Empty)
                     {
-                        var_B2 = seg041.sub_10B26(8, 0, 10, "New file name: ");
+                        var_B2 = seg041.getUserInputString(8, 0, 10, "New file name: ");
                     }
                 }
             }
@@ -2323,7 +2323,7 @@ namespace engine
 
                     var_1FE = save_space_required();
 
-                    if (var_1FE > seg046.getDiskSpace((byte)(seg051.UpCase(gbl.byte_1BF1A[0]) - 0x40)))
+                    if (var_1FE > seg046.getDiskSpace((byte)(char.ToUpper(gbl.byte_1BF1A[0]) - 0x40)))
                     {
                         seg041.displayAndDebug("Can't save.  No room on this disk.", 0, 14);
                         return;

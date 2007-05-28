@@ -74,23 +74,23 @@ namespace engine
         }
 
 
-        internal static void sub_1071A(byte arg_0, byte arg_2, byte yCol, int xCol)
+        internal static void displaySpaceChar(byte count, byte color, int yCol, int xCol)
         {
             if (xCol >= 0 && xCol <= 0x27 &&
                 yCol >= 0 && yCol <= 0x18)
             {
-                display_char01(true, ' ', arg_0, arg_2, arg_2, yCol, xCol);
+                display_char01(true, ' ', count, color, color, yCol, xCol);
+                
+                Display.Update();
             }
-
-            Display.Update();
         }
 
 
-        internal static void displayString(string s, byte bgColor, byte fgColor, int yCol, int xCol)
+        internal static void displayString(string str, byte bgColor, byte fgColor, int yCol, int xCol)
         {
             if (xCol <= 0x27 && yCol <= 0x27)
             {
-                foreach (char ch in s)
+                foreach (char ch in str)
                 {
                     display_char01(true, ch, 1, bgColor, fgColor, yCol, xCol);
                     xCol++;
@@ -165,10 +165,10 @@ namespace engine
                 {
                     var_102 = (byte)((xEnd - xStart) + 1);
 
+                    var_125 = new Set(0x404, unk_16FA6);
                     do
                     {
                         var_104 = var_103;
-                        var_125 = new Set(0x404, unk_16FA6);
 
                         while (var_104 < var_101 &&
                             var_125.MemberOf(var_100[var_104-1]) == true)
@@ -190,7 +190,6 @@ namespace engine
                             {
                                 var_104++;
                             }
-
                         }
 
                         if (((var_104 - var_103) + gbl.textXCol) > xEnd)
@@ -237,21 +236,18 @@ namespace engine
         }
 
 
-        internal static string sub_10B26(byte arg_0, byte arg_2, byte arg_4, string arg_6)
+        internal static string getUserInputString(byte inputLen, byte bgColor, byte fgColor, string prompt)
         {
             string var_22B;
             char var_12B;
             string var_12A;
             int var_2A;
-            string var_29;
 
-            var_29 = arg_6;
+            displaySpaceChar(0x28, 0, 0x18, 0);
 
-            sub_1071A(0x28, 0, 0x18, 0);
+            displayString(prompt, bgColor, fgColor, 0x18, 0);
 
-            displayString(var_29, arg_2, arg_4, 0x18, 0);
-
-            var_2A = var_29.Length;
+            var_2A = prompt.Length;
 
             var_12A = string.Empty;
 
@@ -261,7 +257,7 @@ namespace engine
 
                 if (var_12B >= 0x20 && var_12B <= 0x7A)
                 {
-                    if (var_12A.Length < arg_0)
+                    if (var_12A.Length < inputLen)
                     {
                         var_12A += var_12B.ToString();
 
@@ -274,28 +270,27 @@ namespace engine
                 {
                     var_12A = seg051.Copy(var_12A.Length - 1, 0, var_12A, out var_22B);
 
-                    sub_1071A(1, 0, 0x18, var_2A);
+                    displaySpaceChar(1, 0, 0x18, var_2A);
                     var_2A -= 1;
                 }
 
             } while (var_12B != 0x0d && var_12B != 0x1B && gbl.inDemo == false);
 
-            sub_1071A(0x28, 0, 0x18, 0);
+            displaySpaceChar(0x28, 0, 0x18, 0);
 
             return var_12A.ToUpper();
         }
 
 
-        internal static ushort sub_10CB7(byte arg_0, byte arg_2, string arg_4)
+        internal static ushort getUserInputShort(byte bgColor, byte fgColor, string prompt)
         {
-            bool var_5A;
-            string var_58;
+            bool var_5A = true;
             int var_2F = 0; /* Simeon */
             ushort var_2;
 
             do
             {
-                var_58 = sub_10B26(6, arg_0, arg_2, arg_4);
+                string var_58 = getUserInputString(6, bgColor, fgColor, prompt);
 
                 try
                 {
@@ -325,7 +320,7 @@ namespace engine
 
         internal static void displayAndDebug(string arg_0, byte arg_4, byte arg_6)
         {
-            sub_1071A(0x28, 0, 0x18, 0);
+            displaySpaceChar(0x28, 0, 0x18, 0);
 
             displayString(arg_0, arg_4, arg_6, 0x18, 0);
             seg043.debug_txt();
@@ -348,13 +343,13 @@ namespace engine
 
         internal static void sub_10ECF(byte arg_0, byte arg_2, string arg_4)
         {
-            sub_1071A(0x28, 0, 0x18, 0);
+            displaySpaceChar(0x28, 0, 0x18, 0);
 
             displayString(arg_4, arg_0, arg_2, 0x18, 0);
 
             GameDelay();
 
-            sub_1071A(0x28, 0, 0x18, 0);
+            displaySpaceChar(0x28, 0, 0x18, 0);
         }
 
 

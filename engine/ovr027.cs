@@ -375,7 +375,7 @@ namespace engine
 
 		internal static void redraw_screen( )
 		{
-			seg041.sub_1071A( 0x28, 0, 0x18, 0 );
+			seg041.displaySpaceChar( 0x28, 0, 0x18, 0 );
 
             Display.Update();
 		}

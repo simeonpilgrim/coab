@@ -2,24 +2,14 @@ using System;
 
 namespace Classes
 {
-    public delegate int TextDelegate(Text arg_0);
 	/// <summary>
 	/// Summary description for Text.
 	/// </summary>
 	public class Text
 	{
-        public ushort field_0;
 
         public ushort field_2;
-        public ushort field_4;
-        public ushort field_6;
-        public ushort field_8;
 
-        public object field_C;
-
-        public TextDelegate field_14;
-        public TextDelegate field_18;
-        public TextDelegate field_1C;
 
         public byte field_30 = 0;
 
@@ -58,9 +48,7 @@ namespace Classes
                 }
             }
 
-            field_0 = 0;
             field_2 = 0xD7B0;
-            field_4 = 0x0080;
         }
 	}
 }

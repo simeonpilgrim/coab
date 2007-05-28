@@ -1420,9 +1420,7 @@ namespace engine
                         }
                         else
                         {
-                            var_12D = string.Empty;
-
-                            var_6 = ovr022.sub_59BAB(ref var_12D, var_10.s);
+                            var_6 = ovr022.sub_59BAB(out var_12D, var_10.s);
 
                             var_12D = "How much " + var_12D + "will you trade? ";
 
@@ -1518,8 +1516,7 @@ namespace engine
                 }
                 else
                 {
-                    var_12B = string.Empty;
-                    var_2 = ovr022.sub_59BAB(ref var_12B, var_10.s);
+                    var_2 = ovr022.sub_59BAB(out var_12B, var_10.s);
 
                     var_12B = "How much " + var_12B + "will you drop? ";
 

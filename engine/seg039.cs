@@ -32,13 +32,13 @@ namespace engine
 
             gbl.byte_1B2BA = gbl.unk_1B26A[0];
    
-            gbl.byte_1AFE6 = 'N'; /* force None */
+            char option = 'N'; /* force None */
 
-			if( gbl.byte_1AFE6 == 'T' ) // Tandy
+            if (option == 'T') // Tandy
 			{
 				gbl.soundType = SoundType.Tandy;
 			}
-			else if( gbl.byte_1AFE6 == 'P' ) // PC Speaker
+            else if (option == 'P') // PC Speaker
 			{
 				gbl.soundType = SoundType.PC;
 			}
@@ -47,9 +47,9 @@ namespace engine
 				gbl.soundType = SoundType.None;
 			}
 
-            gbl.byte_1AFE6 = 'F'; /* force normal play (vs. demo) */
+            option = 'F'; /* force normal play (vs. demo) */
 
-			if( gbl.byte_1AFE6 == 'F' )
+            if (option == 'F')
 			{
 				gbl.DisplayFullTitleScreen = true;
 			}
