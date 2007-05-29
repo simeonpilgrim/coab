@@ -662,8 +662,9 @@ namespace engine
 
                     player01 = player.actions.target;
 
-                    if (player01.in_combat == false ||
-                        player01.combat_team == 0)
+                    if (player01 != null &&
+                        (player01.in_combat == false ||
+                        player01.combat_team == 0))
                     {
                         player01 = null;
                     }
@@ -801,11 +802,11 @@ namespace engine
 
             if (seg049.KEYPRESSED() == true)
             {
-                var_6 = seg043.debug_txt();
+                var_6 = seg043.GetInputKey();
 
                 if (var_6 == 0)
                 {
-                    var_6 = seg043.debug_txt();
+                    var_6 = seg043.GetInputKey();
                 }
 
                 if (var_6 == 0x32)

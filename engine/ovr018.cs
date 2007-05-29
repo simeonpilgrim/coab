@@ -1482,11 +1482,11 @@ namespace engine
                         /* empty */
                     }
 
-                    var_35 = (char)seg043.debug_txt();
+                    var_35 = (char)seg043.GetInputKey();
 
                     if (var_35 == 0)
                     {
-                        var_35 = (char)seg043.debug_txt();
+                        var_35 = (char)seg043.GetInputKey();
                         var_36 = true;
                     }
                     else
@@ -2259,7 +2259,7 @@ namespace engine
 									   "Next Prev Keep Exit" };
 
             seg037.draw8x8_01();
-            ovr033.sub_740F2();
+            ovr033.Color_0_8_inverse();
 
             do
             {
@@ -2592,7 +2592,7 @@ namespace engine
 
             } while (var_2 != 'Y');
 
-            ovr033.sub_74130();
+            ovr033.Color_0_8_normal();
         }
 
         /// <summary> seg600:4281 </summary>

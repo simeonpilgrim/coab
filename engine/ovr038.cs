@@ -29,7 +29,7 @@ namespace engine
                     seg051.Write( 0, var_108, gbl.known01_02 );
                     seg051.WriteLn( gbl.known01_02 );
 
-                    var_8 = seg043.debug_txt();
+                    var_8 = seg043.GetInputKey();
 
                     seg043.print_and_exit();
                 }
@@ -70,7 +70,7 @@ namespace engine
             {
                 seg051.Write( 0, "Bad symbol number in Put8x8Symbol.", gbl.known01_02 );
                 seg051.WriteLn( gbl.known01_02 );
-                var_2 = seg043.debug_txt();
+                var_2 = seg043.GetInputKey();
                 seg043.print_and_exit();
             }
 

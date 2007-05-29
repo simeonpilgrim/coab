@@ -31,7 +31,7 @@ namespace engine
             gbl.stru_1D1BC = null;
 
             seg040.free_dax_block(ref gbl.dword_1D90A);
-            ovr033.sub_74130();
+            ovr033.Color_0_8_normal();
             gbl.dword_1D5CA = new Classes.spellDelegate(ovr023.cast_spell_on);
         }
 
@@ -139,9 +139,9 @@ namespace engine
 
                 gbl.byte_1D910 = ( (player.combat_team == 0) || (ovr033.sub_74761(0, player) == true) );
 
-                ovr033.sub_75356(1, 2, player);
+                ovr033.sub_75356(true, 2, player);
                 ovr025.sub_66C20(player);
-                gbl.byte_1D90F = 1;
+                gbl.byte_1D90F = true;
                 ovr025.hitpoint_ac(player);
                 ovr024.work_on_00(player, 15);
 
@@ -315,7 +315,7 @@ namespace engine
                                 case '-':
                                     if (ovr014.god_intervene() == true)
                                     {
-                                        ovr033.sub_75356(0, 3, player);
+                                        ovr033.sub_75356(false, 3, player);
                                         var_2 = true;
                                     }
                                     else
@@ -328,8 +328,8 @@ namespace engine
 
                         if (var_2 == false)
                         {
-                            ovr033.sub_75356(1, 2, player);
-                            gbl.byte_1D90F = 1;
+                            ovr033.sub_75356(true, 2, player);
+                            gbl.byte_1D90F = true;
                             ovr025.hitpoint_ac(player);
                         }
                     }

@@ -145,7 +145,7 @@ namespace engine
         }
 
 
-        internal static void OverlayUnbounded(DaxBlock dest, DaxBlock source, byte arg_8, int itemIdex, int rowY, int colX)
+        internal static void OverlayUnbounded(DaxBlock dest, DaxBlock source, int arg_8, int itemIdex, int rowY, int colX)
         {
             bool var_E;
 
@@ -489,18 +489,20 @@ namespace engine
                 gbl.overlayLineDataStart[i] = int.MaxValue;
                 gbl.overlayLineDataEnd[i] = 0;
             }
+
+            System.Array.Clear(gbl.overlayLines.data, 0, gbl.overlayLines.data.Length);
         }
 
-        internal static void sub_FAD2(byte arg_0, byte arg_2)
+        internal static void SetPaletteColor(byte color, byte index)
         {
-            byte colour = arg_0;
+            byte newColor = color;
 
-            if (arg_0 >= 8)
+            if (color >= 8)
             {
-                colour += 8;
+                newColor += 8;
             }
 
-            Display.SetEgaPalette(arg_2, colour);
+            Display.SetEgaPalette(index, newColor);
         }
 
         internal static void DaxBlockRecolor(DaxBlock dax_block, byte arg_4, short arg_6, byte[] newColors, byte[] oldColors)

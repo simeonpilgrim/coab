@@ -4,7 +4,7 @@ namespace engine
 {
     class seg041
     {
-        internal static void ega01(byte colour, int yEnd, int xEnd, int yStart, int xStart)
+        internal static void DrawRectangle(byte color, int yEnd, int xEnd, int yStart, int xStart)
         {
             xStart *= 8;
             xEnd = (xEnd + 1) * 8;
@@ -15,7 +15,7 @@ namespace engine
             {
                 for (int y = yStart; y < yEnd; y++)
                 {
-                    Display.SetPixel2(x, y, colour);
+                    Display.SetPixel2(x, y, color);
                 }
             }
         }
@@ -253,7 +253,7 @@ namespace engine
 
             do
             {
-                var_12B = (char)seg043.debug_txt();
+                var_12B = (char)seg043.GetInputKey();
 
                 if (var_12B >= 0x20 && var_12B <= 0x7A)
                 {
@@ -323,7 +323,7 @@ namespace engine
             displaySpaceChar(0x28, 0, 0x18, 0);
 
             displayString(arg_0, arg_4, arg_6, 0x18, 0);
-            seg043.debug_txt();
+            seg043.GetInputKey();
         }
 
 
@@ -337,7 +337,7 @@ namespace engine
 
         internal static void clear_screan()
         {
-            ega01(0, 0x18, 0x27, 0, 0);
+            DrawRectangle(0, 0x18, 0x27, 0, 0);
         }
 
 

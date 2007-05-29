@@ -128,7 +128,7 @@ namespace engine
 
             do
             {
-                var_3C = (char)seg043.debug_txt();
+                var_3C = (char)seg043.GetInputKey();
 
                 if (var_3C >= 0x30 &&
                     var_3C <= 0x39)

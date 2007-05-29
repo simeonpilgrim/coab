@@ -46,7 +46,7 @@ namespace engine
                 var_7 = seg051.Random(22);
 
                 ovr034.sub_760F7(0, var_6, 3, 0x11);
-                ovr034.sub_760F7(0, (byte)(var_7 + 0x1a), 7, 0x11);
+                ovr034.sub_760F7(0, var_7 + 0x1a, 7, 0x11);
 
                 seg040.DrawOverlay();
                 code_path = seg051.Random(3);

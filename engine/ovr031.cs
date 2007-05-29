@@ -676,7 +676,7 @@ namespace engine
                     seg051.Write(0, " from WALLDEF" + var_12 + ".", gbl.known01_02);
                     seg051.WriteLn(gbl.known01_02);
 
-                    seg043.debug_txt();
+                    seg043.GetInputKey();
                     seg043.print_and_exit();
                 }
 
@@ -745,7 +745,7 @@ namespace engine
             {
                 seg051.Write(0, "Unable to load geo in Load3DMap.", gbl.known01_02);
                 seg051.WriteLn(gbl.known01_02);
-                seg043.debug_txt();
+                seg043.GetInputKey();
                 seg043.print_and_exit();
             }
 
