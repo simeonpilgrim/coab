@@ -239,11 +239,11 @@ namespace engine
                 }
                 else if (seg049.KEYPRESSED() == true)
                 {
-                    var_60 = (char)seg043.debug_txt();
+                    var_60 = (char)seg043.GetInputKey();
 
                     if (var_60 == 0)
                     {
-                        var_60 = (char)seg043.debug_txt();
+                        var_60 = (char)seg043.GetInputKey();
 
                         if (arg_6 != 0)
                         {

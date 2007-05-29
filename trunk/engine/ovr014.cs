@@ -303,7 +303,7 @@ namespace engine
             {
                 var_1 = 3;
 
-                if (ovr033.sub_74730(newYPos - gbl.stru_1D1BC.mapScreenTopY, newXPos - gbl.stru_1D1BC.mapScreenLeftX) == false &&
+                if (ovr033.CoordOnScreen(newYPos - gbl.stru_1D1BC.mapScreenTopY, newXPos - gbl.stru_1D1BC.mapScreenLeftX) == false &&
                     gbl.byte_1D910 == true)
                 {
                     ovr033.sub_749DD(8, 2, oldYPos, oldXPos);
@@ -401,7 +401,7 @@ namespace engine
                     if (var_D[var_18] > 0 &&
                         player.in_combat == true)
                     {
-                        gbl.byte_1D90F = 1;
+                        gbl.byte_1D90F = true;
                         gbl.byte_1D910 = true;
                         var_12 = 0;
 
@@ -459,7 +459,7 @@ namespace engine
 
                                         if (player.in_combat == true)
                                         {
-                                            gbl.byte_1D90F = 1;
+                                            gbl.byte_1D90F = true;
                                             ovr025.hitpoint_ac(player);
                                         }
                                     }
@@ -763,8 +763,8 @@ namespace engine
                 {
                     var_5 = 1;
 
-                    ovr033.sub_75356(0, 3, var_A);
-                    gbl.byte_1D90F = 1;
+                    ovr033.sub_75356(false, 3, var_A);
+                    gbl.byte_1D90F = true;
                     ovr025.hitpoint_ac(var_A);
 
                     if (var_4 > 0)
@@ -1073,7 +1073,7 @@ namespace engine
             Item item_ptr;
 
             gbl.byte_1D910 = true;
-            gbl.byte_1D90F = 1;
+            gbl.byte_1D90F = true;
 
             gbl.byte_1D8B8 = (byte)(gbl.byte_1D8B7 + 15);
 
@@ -1655,9 +1655,9 @@ namespace engine
             {
                 ovr025.sub_68DC0();
                 gbl.byte_1D910 = true;
-                gbl.byte_1D90F = 1;
+                gbl.byte_1D90F = true;
 
-                ovr033.sub_75356(1, 3, var_A);
+                ovr033.sub_75356(true, 3, var_A);
                 ovr025.hitpoint_ac(var_A);
             }
 
@@ -2144,8 +2144,8 @@ namespace engine
             }
             throw new System.NotSupportedException();//loc_4114C:
             var_2A = "Next Prev Manual " + var_2A + "Center Exit";
-            ovr033.sub_75356(1, 3, arg_8);
-            gbl.byte_1D90F = 1;
+            ovr033.sub_75356(true, 3, arg_8);
+            gbl.byte_1D90F = true;
             ovr025.hitpoint_ac(arg_8);
 
             var_1 = ovr027.displayInput(out var_2B, 0, 1, 15, 10, 13, var_2A, "Aim:");
@@ -2172,7 +2172,7 @@ namespace engine
                 arg_0.field_0 = arg_A;
                 arg_0.mapX = ovr033.PlayerMapXPos(arg_A);
                 arg_0.mapY = ovr033.PlayerMapYPos(arg_A);
-                gbl.stru_1D1BC.field_4 = 0;
+                gbl.stru_1D1BC.field_4 = false;
 
                 ovr033.sub_749DD(8, 3, gbl.stru_1D1BC.mapScreenTopY + 3, gbl.stru_1D1BC.mapScreenLeftX + 3);
 
@@ -2230,7 +2230,7 @@ namespace engine
 
             arg_4 = false;
 
-            gbl.stru_1D1BC.field_4 = 1;
+            gbl.stru_1D1BC.field_4 = true;
             gbl.stru_1D1BC.field_5 = 1;
 
             while (asc_41342.MemberOf(var_2A) == false)
@@ -2312,7 +2312,7 @@ namespace engine
 
                 if (player02 != null)
                 {
-                    gbl.byte_1D90F = 1;
+                    gbl.byte_1D90F = true;
                     ovr025.hitpoint_ac(player02);
                 }
                 else
@@ -2372,7 +2372,7 @@ namespace engine
                 throw new System.NotSupportedException();//jz	loc_41732
                 throw new System.NotSupportedException();//jmp	loc_417E3
                 throw new System.NotSupportedException();//loc_41732:
-                gbl.stru_1D1BC.field_4 = 0;
+                gbl.stru_1D1BC.field_4 = false;
                 throw new System.NotSupportedException();//cmp	[bp+var_39], 0
                 throw new System.NotSupportedException();//jz	loc_417AC
                 arg_0.mapX = var_33;

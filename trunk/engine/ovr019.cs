@@ -29,9 +29,9 @@ namespace engine
 
         internal static void sub_52068( )
         {
-            seg040.sub_FAD2( 15, 9 );
+            seg040.SetPaletteColor( 15, 9 );
             seg049.SysDelay( 1 );
-            seg040.sub_FAD2( 9, 9 );
+            seg040.SetPaletteColor( 9, 9 );
         }
 
 		class Struct_1ADFB 

@@ -4,20 +4,26 @@ namespace engine
 {
     class ovr033
     {
-        static sbyte[, ,] unk_xxxx = new sbyte[2, 4, 2] { { { 0, 0 }, { -1, -1 }, { -1, -1 }, { -1, -1 } }, { { 0, 0 }, { 0, 1 }, { -1, -1 }, { -1, -1 } } };
+        const int MaxStep = 4;
+        static sbyte[, ,] unk_xxxx = new sbyte[4, MaxStep, 2] { 
+            { { 0, 0 }, { -1, -1 }, { -1, -1 }, { -1, -1 } },
+            { { 0, 0 }, {  0,  1 }, { -1, -1 }, { -1, -1 } },
+            { { 0, 0 }, {  1,  0 }, { -1, -1 }, { -1, -1 } },
+            { { 0, 0 }, {  1,  0 }, {  0,  1 }, {  1,  1 } },
+        };
 
-        internal static bool sub_7400F(out sbyte arg_0, out sbyte arg_4, int arg_8, int arg_A)
+        internal static bool sub_7400F(out sbyte deltaY, out sbyte deltaX, int step, int size)
         {
             bool var_1 = false;
-            arg_0 = 0; /* Added because of 'out' attribute */
-            arg_4 = 0; /* Added because of 'out' attribute */
+            deltaY = 0; /* Added because of 'out' attribute */
+            deltaX = 0; /* Added because of 'out' attribute */
 
-            if (arg_A != 0)
+            if (size != 0)
             {
-                arg_4 = unk_xxxx[arg_A - 1, arg_8, 0];
-                arg_0 = unk_xxxx[arg_A - 1, arg_8, 1];
+                deltaX = unk_xxxx[size - 1, step, 0];
+                deltaY = unk_xxxx[size - 1, step, 1];
 
-                if (arg_4 >= 0)
+                if (deltaX >= 0)
                 {
                     var_1 = true;
                 }
@@ -39,17 +45,17 @@ namespace engine
         }
 
 
-        internal static void sub_740F2()
+        internal static void Color_0_8_inverse()
         {
-            seg040.sub_FAD2(8, 0);
-            seg040.sub_FAD2(0, 8);
+            seg040.SetPaletteColor(8, 0);
+            seg040.SetPaletteColor(0, 8);
         }
 
 
-        internal static void sub_74130()
+        internal static void Color_0_8_normal()
         {
-            seg040.sub_FAD2(0, 0);
-            seg040.sub_FAD2(8, 8);
+            seg040.SetPaletteColor(0, 0);
+            seg040.SetPaletteColor(8, 8);
         }
 
 
@@ -66,13 +72,13 @@ namespace engine
             for (byte var_5 = 0; var_5 <= 3; var_5++)
             {
                 if (sub_7400F(out var_4, out var_3, var_5, gbl.stru_1D1BC.field_5) == true &&
-                    sub_74730(screenPosY + var_4, screenPosX + var_3) == true)
+                    CoordOnScreen(screenPosY + var_4, screenPosX + var_3) == true)
                 {
                     int i = gbl.stru_1D1BC[var_3 + posX, var_4 + posY];
 
                     ovr034.sub_760F7(0, gbl.unk_189B4[i].field_3, (screenPosY + var_4) * 3, (screenPosX + var_3) * 3);
 
-                    if (gbl.stru_1D1BC.field_4 != 0)
+                    if (gbl.stru_1D1BC.field_4 == true)
                     {
                         ovr034.sub_76504(0x19, 0, 0, screenPosY + var_4, screenPosX + var_3);
                     }
@@ -162,69 +168,53 @@ namespace engine
         }
 
 
-        internal static void sub_74572(byte player_index, int arg_2, int arg_4)
+        internal static void sub_74572(byte player_index, int mapY, int mapX)
         {
-            byte var_7;
-            byte var_6;
-            byte var_5;
-            sbyte var_4;
-            sbyte var_3;
-            sbyte var_2 = -120; /*Simeon*/
-            sbyte var_1 = -120; /*Simeon*/
+            sbyte deltaY;
+            sbyte deltaX;
+            int screenY = -120; /*Simeon*/
+            int screenX = -120; /*Simeon*/
 
             if (player_index == 0)
             {
-                var_1 = (sbyte)(arg_4 + gbl.stru_1D1BC.mapScreenLeftX);
-                var_2 = (sbyte)(arg_2 + gbl.stru_1D1BC.mapScreenTopY);
+                screenX = mapX + gbl.stru_1D1BC.mapScreenLeftX;
+                screenY = mapY + gbl.stru_1D1BC.mapScreenTopY;
 
-                sub_74505(out var_6, out player_index, var_2, var_1);
+                byte var_6;
+                sub_74505(out var_6, out player_index, screenY, screenX);
             }
 
             if (player_index > 0)
             {
-                arg_4 = gbl.playerScreenX[player_index];
-                arg_2 = gbl.playerScreenY[player_index];
+                mapX = gbl.playerScreenX[player_index];
+                mapY = gbl.playerScreenY[player_index];
 
-                var_1 = (sbyte)(arg_4 + gbl.stru_1D1BC.mapScreenLeftX);
-                var_2 = (sbyte)(arg_2 + gbl.stru_1D1BC.mapScreenTopY);
+                screenX = mapX + gbl.stru_1D1BC.mapScreenLeftX;
+                screenY = mapY + gbl.stru_1D1BC.mapScreenTopY;
 
-                var_7 = gbl.stru_1C9CD[player_index].field_3;
+                int size = gbl.stru_1C9CD[player_index].field_3;
 
-                for (var_5 = 0; var_5 <= 3; var_5++)
+                for (int step = 0; step < MaxStep; step++)
                 {
-                    if (sub_7400F(out var_4, out var_3, var_5, var_7) == true &&
-                        sub_74730(var_4 + arg_2, var_3 + arg_4) == true)
+                    if (sub_7400F(out deltaY, out deltaX, step, size) == true &&
+                        CoordOnScreen(deltaY + mapY, deltaX + mapX) == true)
                     {
-                        int i1 = gbl.stru_1D1BC[var_1 + var_3, var_4 + var_2];
+                        int i1 = gbl.stru_1D1BC[screenX + deltaX, deltaY + screenY];
 
-                        ovr034.sub_760F7(0, gbl.unk_189B4[i1].field_3, (arg_2 + var_4) * 3, (arg_4 + var_3) * 3);
+                        ovr034.sub_760F7(0, gbl.unk_189B4[i1].field_3, (mapY + deltaY) * 3, (mapX + deltaX) * 3);
                     }
                 }
             }
-            else if ( sub_74730(arg_2, arg_4) == true )
+            else if ( CoordOnScreen(mapY, mapX) == true )
             {
-                ovr034.sub_760F7(0, gbl.unk_189B4[gbl.stru_1D1BC[var_1, var_2]].field_3, arg_2 * 3, arg_4 * 3);
+                ovr034.sub_760F7(0, gbl.unk_189B4[gbl.stru_1D1BC[screenX, screenY]].field_3, mapY * 3, mapX * 3);
             }
         }
 
 
-        internal static bool sub_74730(int arg_0, int arg_2)
+        internal static bool CoordOnScreen(int screenY, int screenX) /* sub_74730 */
         {
-            bool var_1;
-
-            if (arg_2 < 0 ||
-                arg_2 > 6 ||
-                arg_0 < 0 ||
-                arg_0 > 6)
-            {
-                var_1 = false;
-            }
-            else
-            {
-                var_1 = true;
-            }
-
-            return var_1;
+            return (screenX >= 0 && screenX <= 6 && screenY >= 0 && screenY <= 6);
         }
 
 
@@ -250,7 +240,7 @@ namespace engine
                 {
                     if (sub_7400F(out var_5, out var_4, var_2, gbl.stru_1C9CD[player_index].field_3) == true)
                     {
-                        if (sub_74730(gbl.playerScreenY[player_index] + var_5, gbl.playerScreenX[player_index] + var_4) == false)
+                        if (CoordOnScreen(gbl.playerScreenY[player_index] + var_5, gbl.playerScreenX[player_index] + var_4) == false)
                         {
                             var_1 = false;
                             if (arg_0 != 0)
@@ -272,63 +262,67 @@ namespace engine
             return var_1;
         }
 
-
-        static bool sub_7481B(byte arg_0, byte xPos, byte yPos)
+        /// <summary>
+        /// check's a given position is visable within the current display screen (via a radius)
+        /// </summary>
+        /// <param name="radius">if this is 0xff the re-check is forced</param>
+        /// <returns></returns>
+        static bool ScreenMapCheck(byte radius, int yPos, int xPos)
         {
-            sbyte var_7 = (sbyte)(gbl.stru_1D1BC.mapScreenLeftX + 3);
-            sbyte var_8 = (sbyte)(gbl.stru_1D1BC.mapScreenTopY + 3);
+            int screenCentreX = gbl.stru_1D1BC.mapScreenLeftX + 3;
+            int screenCentreY = gbl.stru_1D1BC.mapScreenTopY + 3;
 
-            byte var_2 = arg_0;
+            int var_2 = radius;
 
-            if (arg_0 == 0xff)
+            if (radius == 0xff)
             {
                 var_2 = 0;
             }
 
-            byte var_9 = (byte)(var_7 - var_2);
-            byte var_A = (byte)(var_7 + var_2);
+            int leftX = screenCentreX - var_2;
+            int rightX = screenCentreX + var_2;
 
-            byte var_B = (byte)(var_8 - var_2);
-            byte var_C = (byte)(var_8 + var_2);
+            int topY = screenCentreY - var_2;
+            int bottomY = screenCentreY + var_2;
 
-            if (arg_0 == 0xff ||
-                yPos < var_9 ||
-                yPos > var_A ||
-                xPos < var_B ||
-                xPos > var_C)
+            if (radius == 0xff ||
+                xPos < leftX ||
+                xPos > rightX ||
+                yPos < topY ||
+                yPos > bottomY)
             {
-                if (yPos < var_9)
+                if (xPos < leftX)
                 {
-                    while (yPos < var_7 && var_7 > 3)
+                    while (xPos < screenCentreX && screenCentreX > 3)
                     {
-                        var_7 -= 1;
+                        screenCentreX -= 1;
                     }
                 }
-                else if (yPos > var_A)
+                else if (xPos > rightX)
                 {
-                    while (yPos > var_7 && var_7 < 0x2E)
+                    while (xPos > screenCentreX && screenCentreX < 0x2E)
                     {
-                        var_7 += 1;
-                    }
-                }
-
-                if (xPos < var_B)
-                {
-                    while (xPos < var_8 && var_8 > 3)
-                    {
-                        var_8 -= 1;
-                    }
-                }
-                else if (xPos > var_C)
-                {
-                    while (xPos > var_8 && var_8 < 0x15)
-                    {
-                        var_8 += 1;
+                        screenCentreX += 1;
                     }
                 }
 
-                gbl.stru_1D1BC.mapScreenLeftX = (sbyte)(var_7 - 3);
-                gbl.stru_1D1BC.mapScreenTopY = (sbyte)(var_8 - 3);
+                if (yPos < topY)
+                {
+                    while (yPos < screenCentreY && screenCentreY > 3)
+                    {
+                        screenCentreY -= 1;
+                    }
+                }
+                else if (yPos > bottomY)
+                {
+                    while (yPos > screenCentreY && screenCentreY < 0x15)
+                    {
+                        screenCentreY += 1;
+                    }
+                }
+
+                gbl.stru_1D1BC.mapScreenLeftX = screenCentreX - 3;
+                gbl.stru_1D1BC.mapScreenTopY = screenCentreY - 3;
 
                 int screenRowY = 0;
                 int mapX = gbl.stru_1D1BC.mapScreenTopY;
@@ -360,16 +354,16 @@ namespace engine
         }
 
 
-        internal static void sub_749DD(byte dir, byte arg_2, int mapY, int mapX)
+        internal static void sub_749DD(byte dir, byte radius, int mapY, int mapX)
         {
             byte var_8;
             byte var_5;
             Player var_4;
 
-            sbyte newXPos = (sbyte)(mapX + gbl.MapDirectionXDelta[dir]);
-            sbyte newYPos = (sbyte)(mapY + gbl.MapDirectionYDelta[dir]);
+            int newXPos = mapX + gbl.MapDirectionXDelta[dir];
+            int newYPos = mapY + gbl.MapDirectionYDelta[dir];
 
-            if (sub_7481B(arg_2, (byte)newYPos, (byte)newXPos) == true)
+            if (ScreenMapCheck(radius, newYPos, newXPos) == true)
             {
                 var_8 = gbl.stru_1C9CD[0].field_3;
 
@@ -388,7 +382,7 @@ namespace engine
 
             sub_7431C(mapY, mapX);
 
-            if (sub_74730(newYPos - gbl.stru_1D1BC.mapScreenTopY, newXPos - gbl.stru_1D1BC.mapScreenLeftX) == false)
+            if (CoordOnScreen(newYPos - gbl.stru_1D1BC.mapScreenTopY, newXPos - gbl.stru_1D1BC.mapScreenLeftX) == false)
             {
                 if (newXPos > 0x31)
                 {
@@ -778,17 +772,17 @@ namespace engine
         }
 
 
-        internal static void sub_75356(byte arg_0, byte arg_2, Player player)
+        internal static void sub_75356(bool arg_0, byte radius, Player player)
         {
             gbl.stru_1D1BC.field_4 = arg_0;
             gbl.stru_1D1BC.field_5 = gbl.stru_1C9CD[get_player_index(player)].field_3;
 
             if (gbl.byte_1D910 == true)
             {
-                sub_749DD(8, arg_2, PlayerMapYPos(player), PlayerMapXPos(player));
+                sub_749DD(8, radius, PlayerMapYPos(player), PlayerMapXPos(player));
             }
 
-            gbl.stru_1D1BC.field_4 = 0;
+            gbl.stru_1D1BC.field_4 = false;
             gbl.stru_1D1BC.field_5 = 1;
         }
     }

@@ -254,7 +254,7 @@ namespace Classes
         public static bool byte_1D904;
         public static bool byte_1D905;
         public static bool byte_1D90E;
-        public static byte byte_1D90F;
+        public static bool byte_1D90F;
         public static bool byte_1D910;
         public static byte byte_1D912;
         public static byte byte_1D913;

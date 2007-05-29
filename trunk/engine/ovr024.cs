@@ -712,7 +712,7 @@ namespace engine
             {
                 player_index = ovr033.get_player_index(player);
 
-                ovr033.sub_75356(0, 3, player);
+                ovr033.sub_75356(false, 3, player);
 
                 ovr025.sub_67788(1, 10, msg, player);
 
@@ -1519,7 +1519,7 @@ namespace engine
 
                 if (gbl.game_state == 5)
                 {
-                    ovr033.sub_75356(0, 3, player);
+                    ovr033.sub_75356(false, 3, player);
                 }
 
                 if (player.combat_team == 1)

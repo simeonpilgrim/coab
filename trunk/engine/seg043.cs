@@ -41,7 +41,7 @@ namespace engine
 
         static Set unk_11F12 = new Set(0x0001, new byte[] { 03 });
 
-        internal static byte debug_txt()
+        internal static byte GetInputKey()
         {
             byte var_2;
 
@@ -136,7 +136,7 @@ namespace engine
         {
             while (seg049.KEYPRESSED() == true)
             {
-                debug_txt();
+                GetInputKey();
             }
         }
 
@@ -145,7 +145,7 @@ namespace engine
         {
             if (seg049.KEYPRESSED() == true)
             {
-                debug_txt();
+                GetInputKey();
             }
         }
     }

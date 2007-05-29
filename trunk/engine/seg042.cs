@@ -22,8 +22,8 @@ namespace engine
         /// <param name="column"></param>
         static void sub_11340(char ch, byte count, byte colour, byte row, byte column)
         {
-           throw new System.NotSupportedException();// SetCursor(column, row);
-           throw new System.NotSupportedException();// WriteChar(ch, count, colour);
+           // SetCursor(column, row);
+           // WriteChar(ch, count, colour);
         }
 
 
@@ -49,7 +49,7 @@ namespace engine
 
 			sub_1141C( 0x28, 0, 0x18, 0 );
 			sub_113AC( arg_0, arg_4, 0x18, 0 );
-			var_2A = seg043.debug_txt();
+			var_2A = seg043.GetInputKey();
 			sub_1141C( 0x28, 0, 0x18, 0 );
 		}
 
@@ -76,7 +76,7 @@ namespace engine
 				{
 					seg051.Write( 0, "Please insert overlay disk.", gbl.known01_02 );
 					seg051.WriteLn( gbl.known01_02 );
-					var_1 = seg043.debug_txt();
+					var_1 = seg043.GetInputKey();
 				}
 
 			}while( var_2 == false );

@@ -38,7 +38,7 @@ namespace engine
         }
 
 
-        internal static void sub_760F7(byte arg_0, byte arg_2, int rowY, int colX)
+        internal static void sub_760F7(int arg_0, int arg_2, int rowY, int colX)
         {
             if (arg_2 > 0x7f)
             {

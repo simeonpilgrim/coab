@@ -931,7 +931,7 @@ namespace engine
 
             gbl.stru_1D1BC = new Struct_1D1BC();
 
-            gbl.stru_1D1BC.field_4 = 0;
+            gbl.stru_1D1BC.field_4 = false;
             gbl.stru_1D1BC.field_5 = 1;
             gbl.stru_1D1BC.field_6 = 0;
 

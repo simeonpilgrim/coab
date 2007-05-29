@@ -296,7 +296,7 @@ namespace engine
 
             if (gbl.game_state == 5)
             {
-                ovr033.sub_74130();
+                ovr033.Color_0_8_normal();
             }
 
             var_1 = ' ';
@@ -406,7 +406,7 @@ namespace engine
 
             if (gbl.game_state == 5)
             {
-                ovr033.sub_740F2();
+                ovr033.Color_0_8_inverse();
             }
             ovr025.load_pic();
         }

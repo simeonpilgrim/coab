@@ -495,9 +495,9 @@ namespace engine
             byte var_2;
             /*byte var_1;*/
 
-            if (gbl.byte_1D90F != 0)
+            if (gbl.byte_1D90F == true)
             {
-                gbl.byte_1D90F = 0;
+                gbl.byte_1D90F = false;
                 seg037.draw8x8_clear_area(0x15, 0x26, 1, 0x17);
 
                 var_2 = 1;
@@ -1401,8 +1401,8 @@ namespace engine
             var_C2 = (short)(playerAMapX - playerBMapX);
             var_C4 = (short)(playerAMapY - playerBMapY);
 
-            if (ovr033.sub_74730((playerBMapY - gbl.stru_1D1BC.mapScreenTopY), (playerBMapX - gbl.stru_1D1BC.mapScreenLeftX)) == false ||
-                ovr033.sub_74730((playerAMapY - gbl.stru_1D1BC.mapScreenTopY), (playerAMapX - gbl.stru_1D1BC.mapScreenLeftX)) == false)
+            if (ovr033.CoordOnScreen((playerBMapY - gbl.stru_1D1BC.mapScreenTopY), (playerBMapX - gbl.stru_1D1BC.mapScreenLeftX)) == false ||
+                ovr033.CoordOnScreen((playerAMapY - gbl.stru_1D1BC.mapScreenTopY), (playerAMapX - gbl.stru_1D1BC.mapScreenLeftX)) == false)
             {
                 if (System.Math.Abs(var_C2) <= 6 &&
                     System.Math.Abs(var_C4) <= 6)
@@ -1627,7 +1627,7 @@ namespace engine
                 throw new System.NotSupportedException();//loc_680A0:
                 var_B3 = 1;
 
-                if (ovr033.sub_74730(playerAMapY - gbl.stru_1D1BC.mapScreenTopY, playerAMapX - gbl.stru_1D1BC.mapScreenLeftX) == false)
+                if (ovr033.CoordOnScreen(playerAMapY - gbl.stru_1D1BC.mapScreenTopY, playerAMapX - gbl.stru_1D1BC.mapScreenLeftX) == false)
                 {
                     ovr033.sub_749DD(8, 3, playerAMapY, playerAMapX);
                 }
@@ -2189,7 +2189,7 @@ namespace engine
 
         internal static void sub_68DC0()
         {
-            ovr033.sub_740F2();
+            ovr033.Color_0_8_inverse();
             seg037.draw8x8_06();
 
             ovr033.sub_749DD(8, 0xff, gbl.stru_1D1BC.mapScreenTopY + 3, gbl.stru_1D1BC.mapScreenLeftX + 3);
