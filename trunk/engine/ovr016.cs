@@ -205,7 +205,7 @@ namespace engine
             else
             {
                 var_1 = false;
-                ovr025.sub_67788(1, 10, var_2A, gbl.player_ptr);
+                ovr025.DisplayPlayerStatusString(true, 10, var_2A, gbl.player_ptr);
             }
 
             return var_1;
@@ -246,7 +246,7 @@ namespace engine
                     }
                     else
                     {
-                        ovr025.sub_67788(1, 10, "has no spells memorized", gbl.player_ptr);
+                        ovr025.DisplayPlayerStatusString(true, 10, "has no spells memorized", gbl.player_ptr);
                     }
                 } while (var_6 != 0);
             }
@@ -294,7 +294,7 @@ namespace engine
 
             if (var_5F != 0)
             {
-                ovr025.sub_67788(0, 10, "can memorize:", gbl.player_ptr);
+                ovr025.DisplayPlayerStatusString(false, 10, "can memorize:", gbl.player_ptr);
                 var_5E = 3;
                 for (var_5B = 0; var_5B <= 2; var_5B++)
                 {
@@ -431,7 +431,7 @@ namespace engine
 
                     if (var_1 == true)
                     {
-                        ovr025.sub_67788(1, 10, "cannot memorize any spells", gbl.player_ptr);
+                        ovr025.DisplayPlayerStatusString(true, 10, "cannot memorize any spells", gbl.player_ptr);
                     }
                     else
                     {
@@ -527,7 +527,7 @@ namespace engine
 
                         if (var_2 == false)
                         {
-                            ovr025.sub_67788(1, 10, "has no copyable scrolls", gbl.player_ptr);
+                            ovr025.DisplayPlayerStatusString(true, 10, "has no copyable scrolls", gbl.player_ptr);
                         }
                         else
                         {
@@ -1122,11 +1122,11 @@ namespace engine
 
                 if (var_1 != 0)
                 {
-                    ovr025.sub_67788(0, 10, "has been selected", gbl.player_ptr);
+                    ovr025.DisplayPlayerStatusString(false, 10, "has been selected", gbl.player_ptr);
                 }
                 else
                 {
-                    ovr025.sub_6786F();
+                    ovr025.ClearPlayerTextArea();
                 }
                 throw new System.NotSupportedException();//loc_45954:
             }
@@ -1147,17 +1147,17 @@ namespace engine
             }
             else
             {
-                ovr025.sub_67788(0, 10, "will be gone", gbl.player_ptr);
+                ovr025.DisplayPlayerStatusString(false, 10, "will be gone", gbl.player_ptr);
 
                 if (ovr027.yes_no(15, 10, 14, "Drop from party? ") == 'Y')
                 {
                     if (gbl.player_ptr.in_combat == true)
                     {
-                        ovr025.sub_67788(1, 10, "bids you farewell", gbl.player_ptr);
+                        ovr025.DisplayPlayerStatusString(true, 10, "bids you farewell", gbl.player_ptr);
                     }
                     else
                     {
-                        ovr025.sub_67788(1, 10, "is dumped in a ditch", gbl.player_ptr);
+                        ovr025.DisplayPlayerStatusString(true, 10, "is dumped in a ditch", gbl.player_ptr);
                     }
 
                     ovr018.free_players(1, 0);
@@ -1167,7 +1167,7 @@ namespace engine
                 }
                 else
                 {
-                    ovr025.sub_67788(1, 10, "Breathes A sigh of relief", gbl.player_ptr);
+                    ovr025.DisplayPlayerStatusString(true, 10, "Breathes A sigh of relief", gbl.player_ptr);
                 }
             }
         }
@@ -1232,7 +1232,7 @@ namespace engine
 
             } while (unk_45CD7.MemberOf(var_1) == false);
 
-            ovr025.sub_6786F();
+            ovr025.ClearPlayerTextArea();
         }
 
         static Set unk_45CD7 = new Set(0x0009, new byte[] { 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x20 });
@@ -1663,7 +1663,7 @@ namespace engine
             gbl.dword_1D87F = null;
             gbl.game_state = var_1;
             ovr025.camping_search();
-            ovr025.sub_6786F();
+            ovr025.ClearPlayerTextArea();
             ovr027.redraw_screen();
         }
     }

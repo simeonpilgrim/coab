@@ -124,7 +124,7 @@ namespace engine
                 var_52 = "Attacks";
             }
 
-            ovr025.sub_67788(0, 10, var_52, arg_C);
+            ovr025.DisplayPlayerStatusString(false, 10, var_52, arg_C);
             var_1 = 0x0C;
 
             ovr025.sub_678A2(0, var_1, 0x17, arg_8);
@@ -183,7 +183,7 @@ namespace engine
                 {
                     seg041.GameDelay();
 
-                    ovr025.sub_67788(1, 12, "lost a spell", arg_8);
+                    ovr025.DisplayPlayerStatusString(true, 12, "lost a spell", arg_8);
 
                     ovr025.clear_spell(arg_8.actions.spell_id, arg_8);
                     arg_8.actions.spell_id = 0;
@@ -200,7 +200,7 @@ namespace engine
 
             if (arg_8.in_combat == false)
             {
-                ovr025.sub_67788(0, var_1, "goes down", arg_8);
+                ovr025.DisplayPlayerStatusString(false, var_1, "goes down", arg_8);
                 var_1 += 2;
 
                 if (arg_8.health_status == Status.dying)
@@ -210,7 +210,7 @@ namespace engine
 
                 if (unk_3E2EE.MemberOf((byte)arg_8.health_status) == true)
                 {
-                    ovr025.sub_67788(0, var_1, "is killed", arg_8);
+                    ovr025.DisplayPlayerStatusString(false, var_1, "is killed", arg_8);
                 }
 
                 var_1 += 2;
@@ -229,7 +229,7 @@ namespace engine
                 }
             }
 
-            ovr025.sub_6786F();
+            ovr025.ClearPlayerTextArea();
         }
 
 
@@ -640,7 +640,7 @@ namespace engine
                             var_3 = arg_4.actions.field_5;
                         }
 
-                        ovr025.sub_67788(1, 10, "sweeps", arg_4);
+                        ovr025.DisplayPlayerStatusString(true, 10, "sweeps", arg_4);
 
                         var_9 = gbl.player_array[gbl.byte_1D8B9[1]];
 
@@ -726,7 +726,7 @@ namespace engine
             byte var_2;
             byte var_1;
 
-            ovr025.sub_67788(0, 10, "turns undead...", player);
+            ovr025.DisplayPlayerStatusString(false, 10, "turns undead...", player);
             ovr027.redraw_screen();
             seg041.GameDelay();
             var_5 = 0;
@@ -774,7 +774,7 @@ namespace engine
                     }
                     else
                     {
-                        ovr025.sub_67788(0, 10, "Is destroyed", var_A);
+                        ovr025.DisplayPlayerStatusString(false, 10, "Is destroyed", var_A);
                         ovr033.sub_74E6F(var_A);
                         var_A.health_status = Status.gone;
                         var_A.in_combat = false;
@@ -792,7 +792,7 @@ namespace engine
                         var_2++;
                     }
 
-                    ovr025.sub_6786F();
+                    ovr025.ClearPlayerTextArea();
                 }
                 else
                 {
@@ -808,7 +808,7 @@ namespace engine
             ovr025.count_teams();
             gbl.byte_1D905 = ovr025.clear_actions(player);
 
-            ovr025.sub_6786F();
+            ovr025.ClearPlayerTextArea();
         }
 
 
@@ -1674,7 +1674,7 @@ namespace engine
                 else
                 {
                     arg_0 = true;
-                    ovr025.sub_67788(1, 10, "Begins Casting", var_A);
+                    ovr025.DisplayPlayerStatusString(true, 10, "Begins Casting", var_A);
 
                     var_A.actions.spell_id = var_1;
 
@@ -1890,88 +1890,72 @@ namespace engine
             var_1 = 0x0D;
 
             var_6 = gbl.dword_1D90A.bpp;
-            throw new System.NotSupportedException();//les	di, [bp+arg_0]
-            throw new System.NotSupportedException();//mov	al, es:[di+2Eh]
-            throw new System.NotSupportedException();//cmp	al, 9
-            throw new System.NotSupportedException();//jz	loc_40C4C
-            throw new System.NotSupportedException();//cmp	al, 0x15
-            throw new System.NotSupportedException();//jz	loc_40C4C
-            throw new System.NotSupportedException();//cmp	al, 0x64
-            throw new System.NotSupportedException();//jz	loc_40C4C
-            throw new System.NotSupportedException();//cmp	al, 0x1C
-            throw new System.NotSupportedException();//jz	loc_40C4C
-            throw new System.NotSupportedException();//cmp	al, 0x1F
-            throw new System.NotSupportedException();//jz	loc_40C4C
-            throw new System.NotSupportedException();//cmp	al, 0x49
-            throw new System.NotSupportedException();//jz	loc_40C4C
-            throw new System.NotSupportedException();//jmp	loc_40CD2
-            throw new System.NotSupportedException();//loc_40C4C:
-            throw new System.NotSupportedException();//mov	al, [bp+var_3]
-            throw new System.NotSupportedException();//shr	al, 1
-            throw new System.NotSupportedException();//jnb	loc_40C9B
-            throw new System.NotSupportedException();//cmp	[bp+var_3], 3
-            throw new System.NotSupportedException();//jz	loc_40C5F
-            throw new System.NotSupportedException();//cmp	[bp+var_3], 5
-            throw new System.NotSupportedException();//jnz	loc_40C7D
-            throw new System.NotSupportedException();//loc_40C5F:
-            ovr025.sub_67924((var_3 == 5), 0, 1, (byte)(var_1 + 1));
-            throw new System.NotSupportedException();//jmp	short loc_40C99
-            throw new System.NotSupportedException();//loc_40C7D:
-            ovr025.sub_67924((var_3 == 7), 0, 0, (byte)(var_1 + 1));
-            throw new System.NotSupportedException();//loc_40C99:
-            throw new System.NotSupportedException();//jmp	short loc_40CC6
-            throw new System.NotSupportedException();//loc_40C9B:
-            ovr025.sub_67924(false, 0, (byte)(var_3 >> 2), (byte)(var_1 + (var_3 % 4)));
-            throw new System.NotSupportedException();//loc_40CC6:
-            seg044.sub_120E0(gbl.word_188D6);
-            throw new System.NotSupportedException();//jmp	loc_40DB9
-            throw new System.NotSupportedException();//loc_40CD2:
-            throw new System.NotSupportedException();//cmp	al, 2
-            throw new System.NotSupportedException();//jz	loc_40CDE
-            throw new System.NotSupportedException();//cmp	al, 7
-            throw new System.NotSupportedException();//jz	loc_40CDE
-            throw new System.NotSupportedException();//cmp	al, 0x14
-            throw new System.NotSupportedException();//jnz	loc_40D00
-            throw new System.NotSupportedException();//loc_40CDE:
-            ovr025.sub_67A59((byte)(var_1 + 3));
-            var_2 = 4;
-            var_4 = 0x32;
-            seg044.sub_120E0(gbl.word_188D0);
-            throw new System.NotSupportedException();//jmp	loc_40DB9
-            throw new System.NotSupportedException();//loc_40D00:
-            throw new System.NotSupportedException();//cmp	al, 0x55
-            throw new System.NotSupportedException();//jz	loc_40D08
-            throw new System.NotSupportedException();//cmp	al, 0x56
-            throw new System.NotSupportedException();//jnz	loc_40D2A
-            throw new System.NotSupportedException();//loc_40D08:
-            ovr025.sub_67A59((byte)(var_1 + 4));
-            var_2 = 4;
-            var_4 = 0x32;
-            seg044.sub_120E0(gbl.word_188CA);
-            throw new System.NotSupportedException();//jmp	loc_40DB9
-            throw new System.NotSupportedException();//loc_40D2A:
-            throw new System.NotSupportedException();//cmp	al, 0x65
-            throw new System.NotSupportedException();//jz	loc_40D36
-            throw new System.NotSupportedException();//cmp	al, 0x2F
-            throw new System.NotSupportedException();//jz	loc_40D36
-            throw new System.NotSupportedException();//cmp	al, 0x62
-            throw new System.NotSupportedException();//jnz	loc_40D7A
-            throw new System.NotSupportedException();//loc_40D36:
-            var_1++;
-            ovr025.sub_67924(false, 0, 0, (byte)(var_1 + 7));
-            ovr025.sub_67924(false, 1, 1, (byte)(var_1 + 7));
-            var_2 = 2;
-            var_4 = 0x0A;
-            seg044.sub_120E0(gbl.word_188CA);
-            throw new System.NotSupportedException();//jmp	short loc_40DB9
-            throw new System.NotSupportedException();//loc_40D7A:
-            ovr025.sub_67924(false, 0, 0, (byte)(var_1 + 7));
-            ovr025.sub_67924(false, 1, 1, (byte)(var_1 + 7));
-            var_2 = 2;
-            var_4 = 0x14;
-            seg044.sub_120E0(gbl.word_188D0);
-            throw new System.NotSupportedException();//loc_40DB9:
 
+            switch (arg_0.type)
+            {
+                case 9:
+                case 0x15:
+                case 0x64:
+                case 0x1C:
+                case 0x1F:
+                case 0x49:
+                    if ((var_3 & 1) == 1)
+                    {
+                        if (var_3 == 3 || var_3 == 5)
+                        {
+                            ovr025.sub_67924((var_3 == 5), 0, 1, (byte)(var_1 + 1));
+                        }
+                        else
+                        {
+                            ovr025.sub_67924((var_3 == 7), 0, 0, (byte)(var_1 + 1));
+                        }
+                    }
+                    else
+                    {
+                        ovr025.sub_67924(false, 0, (byte)(var_3 >> 2), (byte)(var_1 + (var_3 % 4)));
+                    }
+                    seg044.sub_120E0(gbl.word_188D6);
+                    break;
+
+                case 2:
+                case 7:
+                case 14:
+                    ovr025.sub_67A59((byte)(var_1 + 3));
+                    var_2 = 4;
+                    var_4 = 0x32;
+                    seg044.sub_120E0(gbl.word_188D0);
+                    break;
+
+
+                case 0x55:
+                case 0x56:
+                    ovr025.sub_67A59((byte)(var_1 + 4));
+                    var_2 = 4;
+                    var_4 = 0x32;
+                    seg044.sub_120E0(gbl.word_188CA);
+                    break;
+
+                case 0x65:
+                case 0x2F:
+                case 0x62:
+                    var_1++;
+                    ovr025.sub_67924(false, 0, 0, (byte)(var_1 + 7));
+                    ovr025.sub_67924(false, 1, 1, (byte)(var_1 + 7));
+                    var_2 = 2;
+                    var_4 = 0x0A;
+                    seg044.sub_120E0(gbl.word_188CA);
+
+                    break;
+
+                default:
+                    ovr025.sub_67924(false, 0, 0, (byte)(var_1 + 7));
+                    ovr025.sub_67924(false, 1, 1, (byte)(var_1 + 7));
+                    var_2 = 2;
+                    var_4 = 0x14;
+                    seg044.sub_120E0(gbl.word_188D0);
+                    break;
+            }
+            
             ovr025.sub_67AA4(var_4, var_2, ovr033.PlayerMapYPos(playerA), ovr033.PlayerMapXPos(playerA),
                 ovr033.PlayerMapYPos(playerB), ovr033.PlayerMapXPos(playerB));
         }
@@ -2777,7 +2761,7 @@ namespace engine
                 ovr025.find_affect(out var_5, Affects.affect_0d, player_ptr) == false)
             {
                 player_ptr = playerB.actions.target;
-                ovr025.sub_67788(1, 12, "engulfs " + player_ptr.name, playerB);
+                ovr025.DisplayPlayerStatusString(true, 12, "engulfs " + player_ptr.name, playerB);
                 ovr024.add_affect(false, ovr033.get_player_index(player_ptr), 0, Affects.affect_3a, player_ptr);
 
                 ovr024.sub_630C7(0, null, player_ptr, Affects.affect_3a);
@@ -2841,7 +2825,7 @@ namespace engine
                     {
                         var_4 |= 1;
 
-                        ovr025.sub_67788(1, 10, "fires a disintegrate ray", player);
+                        ovr025.DisplayPlayerStatusString(true, 10, "fires a disintegrate ray", player);
                         sub_42159(5, player_target, player);
 
                         if (ovr024.do_saving_throw(0, 3, player_target) == false)
@@ -2855,7 +2839,7 @@ namespace engine
                     {
                         var_4 |= 2;
 
-                        ovr025.sub_67788(1, 10, "fires a stone to flesh ray", player);
+                        ovr025.DisplayPlayerStatusString(true, 10, "fires a stone to flesh ray", player);
                         sub_42159(10, player_target, player);
 
                         if (ovr024.do_saving_throw(0, 1, player_target) == false)
@@ -2869,7 +2853,7 @@ namespace engine
                     {
                         var_4 |= 4;
 
-                        ovr025.sub_67788(1, 10, "fires a death ray", player);
+                        ovr025.DisplayPlayerStatusString(true, 10, "fires a death ray", player);
                         sub_42159(5, player_target, player);
 
                         if (ovr024.do_saving_throw(0, 0, player_target) == false)
@@ -2883,7 +2867,7 @@ namespace engine
                     {
                         var_4 |= 8;
 
-                        ovr025.sub_67788(1, 10, "wounds you", player);
+                        ovr025.DisplayPlayerStatusString(true, 10, "wounds you", player);
                         sub_42159(5, player_target, player);
 
                         ovr024.damage_person(false, 0, (sbyte)(ovr024.roll_dice_save(8, 2) + 1), player_target);
@@ -2993,7 +2977,7 @@ namespace engine
             if (gbl.byte_1D2C9 >= 18)
             {
                 gbl.spell_target = player.actions.target;
-                ovr025.sub_67788(1, 12, "hugs " + gbl.spell_target.name, player);
+                ovr025.DisplayPlayerStatusString(true, 12, "hugs " + gbl.spell_target.name, player);
 
                 ovr024.add_affect(false, ovr033.get_player_index(gbl.spell_target), 0, Affects.affect_3a, gbl.spell_target);
                 ovr024.sub_630C7(0, null, gbl.spell_target, Affects.affect_3a);

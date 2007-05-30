@@ -1450,7 +1450,7 @@ namespace engine
                 gbl.player_ptr.exp != 25000) ||
                 gbl.player_ptr.field_E6 != 0)
             {
-                seg041.sub_10ECF(0, 14, gbl.player_ptr.name + " can't be modified.");
+                seg041.DisplayStatusText(0, 14, gbl.player_ptr.name + " can't be modified.");
                 return;
             }
 
@@ -2958,14 +2958,14 @@ namespace engine
             if (gbl.player_ptr.health_status != Status.okey &&
                 gbl.free_training == false)
             {
-                seg041.sub_10ECF(0, 14, "we only train conscious people");
+                seg041.DisplayStatusText(0, 14, "we only train conscious people");
             }
             else if (ovr020.getPlayerGold(gbl.player_ptr) < 1000 &&
                 gbl.free_training == false &&
                 gbl.byte_1B2F1 == 0 &&
                 gbl.byte_1EE99 == 0)
             {
-                seg041.sub_10ECF(0, 14, "Training costs 1000 gp.");
+                seg041.DisplayStatusText(0, 14, "Training costs 1000 gp.");
             }
             else
             {
@@ -3194,7 +3194,7 @@ namespace engine
                     if ((var_B & var_1F) == 0 &&
                         gbl.byte_1B2F1 == 0)
                     {
-                        seg041.sub_10ECF(0, 14, "We don't train that class here");
+                        seg041.DisplayStatusText(0, 14, "We don't train that class here");
                         return;
                     }
 
@@ -3204,7 +3204,7 @@ namespace engine
 
                         if (gbl.byte_1B2F1 == 0)
                         {
-                            seg041.sub_10ECF(0, 14, "Not Enough Experience");
+                            seg041.DisplayStatusText(0, 14, "Not Enough Experience");
                             return;
                         }
                     }

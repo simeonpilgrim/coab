@@ -11,7 +11,7 @@ namespace engine
 
             var_2 = sub_36269(player);
             ovr027.redraw_screen();
-            ovr025.sub_6786F();
+            ovr025.ClearPlayerTextArea();
 
             if (player.in_combat == false)
             {
@@ -44,7 +44,7 @@ namespace engine
             if (player.actions.field_14 != 0 &&
                 player.actions.field_10 == 0)
             {
-                ovr025.sub_67788(1, 10, "flees in panic", player);
+                ovr025.DisplayPlayerStatusString(true, 10, "flees in panic", player);
             }
 
             if (var_2 == true)
@@ -775,7 +775,7 @@ namespace engine
         {
             bool var_1;
 
-            ovr025.sub_6786F();
+            ovr025.ClearPlayerTextArea();
 
             if (ovr025.is_held(player) == true ||
                 ovr025.offset_above_1(player) ||
@@ -869,7 +869,7 @@ namespace engine
             if (player.actions.field_10 != 0)
             {
                 player.actions.field_14 = 1;
-                ovr025.sub_67788(1, 10, "is forced to flee", player);
+                ovr025.DisplayPlayerStatusString(true, 10, "is forced to flee", player);
             }
             else if (player.field_F7 > 0x7F)
             {

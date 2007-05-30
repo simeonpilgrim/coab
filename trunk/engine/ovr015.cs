@@ -586,7 +586,7 @@ namespace engine
 								}
 								else
 								{
-									seg041.sub_10ECF( 0, 14, "Not Here" );
+									seg041.DisplayStatusText( 0, 14, "Not Here" );
 								}
 								break;
 

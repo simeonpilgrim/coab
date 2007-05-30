@@ -475,7 +475,7 @@ namespace engine
                 }
 
                 seg041.GameDelay();
-                ovr025.sub_6786F();
+                ovr025.ClearPlayerTextArea();
                 gbl.word_1D8A6 = 0;
             }
         }
@@ -731,7 +731,7 @@ namespace engine
 
                             if (ovr024.roll_dice(100, 1) <= gbl.area2_ptr.field_5A6)
                             {
-                                ovr025.sub_6786F();
+                                ovr025.ClearPlayerTextArea();
                                 sub_58615(0);
                                 seg041.displayString("Your repose is suddenly interrupted!", 0, 15, 0x13, 1);
                                 var_E = true;
