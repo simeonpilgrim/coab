@@ -1207,7 +1207,7 @@ namespace engine
                 }
             }
 
-            ovr025.sub_6786F();
+            ovr025.ClearPlayerTextArea();
 
             if (gbl.game_state == 5)
             {
@@ -1547,7 +1547,7 @@ namespace engine
             if (gbl.byte_1D75E != 0 &&
                 ovr024.heal_player(0, ovr024.roll_dice(8, 1), gbl.sp_target[1]) == true)
             {
-                ovr025.sub_684F7(gbl.sp_target[1]);
+                ovr025.describeHealing(gbl.sp_target[1]);
             }
         }
 
@@ -1592,7 +1592,7 @@ namespace engine
             if (var_8.field_11A > 1 ||
                 var_8.field_DE > 1)
             {
-                ovr025.sub_67788(1, 10, "is unaffected", var_8);
+                ovr025.DisplayPlayerStatusString(true, 10, "is unaffected", var_8);
             }
             else
             {
@@ -1664,7 +1664,7 @@ namespace engine
 
             if (ovr024.sub_64728(out var_1, gbl.byte_1AFDE, gbl.byte_1AFDD, var_3) == true)
             {
-                ovr025.sub_67788(1, 10, "is stronger", var_3);
+                ovr025.DisplayPlayerStatusString(true, 10, "is stronger", var_3);
 
                 ovr024.add_affect(true, var_1, sub_5CE92(gbl.byte_1D2C1), Affects.affect_12, var_3);
 
@@ -1672,7 +1672,7 @@ namespace engine
             }
             else
             {
-                ovr025.sub_67788(1, 10, "is unaffected", var_3);
+                ovr025.DisplayPlayerStatusString(true, 10, "is unaffected", var_3);
             }
         }
 
@@ -1691,7 +1691,7 @@ namespace engine
             {
                 ovr024.remove_affect(null, Affects.enlarge, var_6);
                 ovr024.sub_648D9(0, var_6);
-                ovr025.sub_67788(1, 10, "has been reduced", var_6);
+                ovr025.DisplayPlayerStatusString(true, 10, "has been reduced", var_6);
             }
         }
 
@@ -2152,11 +2152,11 @@ namespace engine
                 throw new System.NotSupportedException();//loc_5EB88:
             }
 
-            ovr025.sub_67788(0, 10, "Creates a noxious cloud", gbl.player_ptr);
+            ovr025.DisplayPlayerStatusString(false, 10, "Creates a noxious cloud", gbl.player_ptr);
 
             ovr033.sub_749DD(8, 0xff, gbl.byte_1D884, gbl.byte_1D883);
             seg041.GameDelay();
-            ovr025.sub_6786F();
+            ovr025.ClearPlayerTextArea();
             for (var_11 = 0; var_11 < 4; var_11++)
             {
                 for (var_D = 0; var_D < 4; var_D++)
@@ -3074,7 +3074,7 @@ namespace engine
                 }
 
                 ovr026.sub_6A3C6(player);
-                ovr025.sub_67788(1, 10, "is restored", player);
+                ovr025.DisplayPlayerStatusString(true, 10, "is restored", player);
             }
         }
 
@@ -3093,7 +3093,7 @@ namespace engine
             if (gbl.byte_1D75E != 0 &&
                 ovr024.heal_player(0, (byte)(ovr024.roll_dice(8, 2) + 1), gbl.sp_target[1]) == true)
             {
-                ovr025.sub_684F7(gbl.sp_target[1]);
+                ovr025.describeHealing(gbl.sp_target[1]);
             }
         }
 
@@ -3104,7 +3104,7 @@ namespace engine
 
             if (ovr024.sub_64728(out var_1, 0, 0x15, gbl.sp_target[1]) == true)
             {
-                ovr025.sub_67788(1, 10, "is stronger", gbl.sp_target[1]);
+                ovr025.DisplayPlayerStatusString(true, 10, "is stronger", gbl.sp_target[1]);
             }
 
             ovr024.add_affect(true, var_1, (ushort)((ovr024.roll_dice(4, 1) * 10) + 0x28), Affects.affect_92, gbl.sp_target[1]);
@@ -3180,14 +3180,14 @@ namespace engine
                 ovr024.remove_affect(null, Affects.affect_0f, var_4);
 
                 gbl.byte_1D2C6 = 0;
-                ovr025.sub_67788(1, 10, "is unpoisoned", var_4);
+                ovr025.DisplayPlayerStatusString(true, 10, "is unpoisoned", var_4);
 
                 var_4.in_combat = true;
                 var_4.health_status = 0;
             }
             else
             {
-                ovr025.sub_67788(1, 10, "is unaffected", var_4);
+                ovr025.DisplayPlayerStatusString(true, 10, "is unaffected", var_4);
             }
         }
 
@@ -3224,7 +3224,7 @@ namespace engine
             }
             else
             {
-                ovr025.sub_67788(1, 10, "smashes them flat", gbl.sp_target[1]);
+                ovr025.DisplayPlayerStatusString(true, 10, "smashes them flat", gbl.sp_target[1]);
             }
         }
 
@@ -3234,7 +3234,7 @@ namespace engine
             if (gbl.byte_1D75E != 0 &&
                 ovr024.heal_player(0, (byte)(ovr024.roll_dice(8, 3) + 3), gbl.sp_target[1]) == true)
             {
-                ovr025.sub_684F7(gbl.sp_target[1]);
+                ovr025.describeHealing(gbl.sp_target[1]);
             }
         }
 
@@ -3298,7 +3298,7 @@ namespace engine
             throw new System.NotSupportedException();//les	di, [bp+var_4]
             throw new System.NotSupportedException();//mov	byte ptr es:[di+1A4h], 1
 
-            ovr025.sub_67788(1, 10, "is raised", var_4);
+            ovr025.DisplayPlayerStatusString(true, 10, "is raised", var_4);
             throw new System.NotSupportedException();//loc_605E2:
         }
 
@@ -3328,7 +3328,7 @@ namespace engine
             }
             else
             {
-                ovr025.sub_67788(1, 10, "is unaffected", var_2);
+                ovr025.DisplayPlayerStatusString(true, 10, "is unaffected", var_2);
             }
         }
 
@@ -3451,7 +3451,7 @@ namespace engine
 
             ovr033.sub_749DD(8, 0, ovr033.PlayerMapYPos(var_4), ovr033.PlayerMapXPos(var_4));
 
-            ovr025.sub_67788(1, 10, "teleports", var_4);
+            ovr025.DisplayPlayerStatusString(true, 10, "teleports", var_4);
         }
 
 
@@ -3489,7 +3489,7 @@ namespace engine
                 }
                 else
                 {
-                    ovr025.sub_67788(1, 10, "is unaffected", var_8);
+                    ovr025.DisplayPlayerStatusString(true, 10, "is unaffected", var_8);
                 }
             }
         }
@@ -3881,11 +3881,11 @@ namespace engine
                 gbl.stru_1D1BC[cx, ax] = 0x1C;
             }
 
-            ovr025.sub_67788(0, 10, "Creates a poisonous cloud", gbl.player_ptr);
+            ovr025.DisplayPlayerStatusString(false, 10, "Creates a poisonous cloud", gbl.player_ptr);
 
             ovr033.sub_749DD(8, 0xFF, gbl.byte_1D884, gbl.byte_1D883);
             seg041.GameDelay();
-            ovr025.sub_6786F();
+            ovr025.ClearPlayerTextArea();
 
             for (var_16 = 1; var_16 >= 9; var_16++)
             {
@@ -4030,7 +4030,7 @@ namespace engine
             {
                 gbl.spell_target = player.actions.target;
 
-                ovr025.sub_67788(0, 10, "gazes...", player);
+                ovr025.DisplayPlayerStatusString(false, 10, "gazes...", player);
                 ovr025.sub_67A59(0x12);
 
                 ovr025.sub_67AA4(0x2d, 4, ovr033.PlayerMapYPos(gbl.spell_target), ovr033.PlayerMapXPos(gbl.spell_target),
@@ -4049,7 +4049,7 @@ namespace engine
                                 item.field_30 == 0x76 ||
                                 item.field_31 == 0x76)
                             {
-                                ovr025.sub_67788(0, 12, "reflects it!", gbl.spell_target);
+                                ovr025.DisplayPlayerStatusString(false, 12, "reflects it!", gbl.spell_target);
 
                                 ovr025.sub_67AA4(0x2d, 4, ovr033.PlayerMapYPos(player), ovr033.PlayerMapXPos(player),
                                     ovr033.PlayerMapYPos(gbl.spell_target), ovr033.PlayerMapXPos(gbl.spell_target));
@@ -4082,7 +4082,7 @@ namespace engine
                 int var_2 = ovr033.PlayerMapXPos(player);
                 int var_3 = ovr033.PlayerMapYPos(player);
 
-                ovr025.sub_67788(1, 10, "Breathes!", player);
+                ovr025.DisplayPlayerStatusString(true, 10, "Breathes!", player);
 
                 gbl.dword_1D5CA(out gbl.byte_1DA70, 1, 0x33);
 
@@ -4135,7 +4135,7 @@ namespace engine
             {
                 if (var_1 <= 30)
                 {
-                    ovr025.sub_67788(1, 10, "Spits Acid", player);
+                    ovr025.DisplayPlayerStatusString(true, 10, "Spits Acid", player);
                     ovr025.sub_67A59(0x17);
 
                     ovr025.sub_67AA4(30, 1,
@@ -4146,7 +4146,7 @@ namespace engine
                 }
                 else
                 {
-                    ovr025.sub_67788(1, 10, "Spits Acid and Misses", player);
+                    ovr025.DisplayPlayerStatusString(true, 10, "Spits Acid and Misses", player);
                 }
             }
         }
@@ -4200,7 +4200,7 @@ namespace engine
                 throw new System.NotSupportedException();//jmp	loc_61EF0
                 throw new System.NotSupportedException();//loc_61DF7:
 
-                ovr025.sub_67788(1, 10, "breathes acid", player);
+                ovr025.DisplayPlayerStatusString(true, 10, "breathes acid", player);
                 ovr025.sub_67A59(0x12);
                 throw new System.NotSupportedException();//push	[bp+player.seg]
                 throw new System.NotSupportedException();//push	[bp+player.offset]
@@ -4283,7 +4283,7 @@ namespace engine
             throw new System.NotSupportedException();//ja	loc_61F84
             throw new System.NotSupportedException();//jmp	loc_6207D
             throw new System.NotSupportedException();//loc_61F84:
-            ovr025.sub_67788(1, 10, "breathes fire", arg_6);
+            ovr025.DisplayPlayerStatusString(true, 10, "breathes fire", arg_6);
             ovr025.sub_67A59(0x12);
             throw new System.NotSupportedException();//push	short ptr [bp+arg_6+2]
             throw new System.NotSupportedException();//push	short ptr [bp+arg_6]
@@ -4360,7 +4360,7 @@ namespace engine
             gbl.byte_1D2BF = 1;
             gbl.byte_1DA70 = ovr025.clear_actions(arg_6);
 
-            ovr025.sub_67788(1, 10, "Breathes Fire", arg_6);
+            ovr025.DisplayPlayerStatusString(true, 10, "Breathes Fire", arg_6);
             ovr025.sub_67A59(0x17);
             throw new System.NotSupportedException();//push	short ptr [bp+arg_6+2]
             throw new System.NotSupportedException();//push	short ptr [bp+arg_6]
@@ -4402,7 +4402,7 @@ namespace engine
                 int var_2 = ovr033.PlayerMapXPos(arg_6);
                 int var_3 = ovr033.PlayerMapYPos(arg_6);
 
-                ovr025.sub_67788(1, 10, "throws lightning", arg_6);
+                ovr025.DisplayPlayerStatusString(true, 10, "throws lightning", arg_6);
                 gbl.dword_1D5CA(out gbl.byte_1DA70, 1, 0x33);
 
                 ovr024.remove_affect_19(arg_6);
@@ -4426,7 +4426,7 @@ namespace engine
 
             if (gbl.spell_target != null)
             {
-                ovr025.sub_67788(0, 10, "gazes...", arg_6);
+                ovr025.DisplayPlayerStatusString(false, 10, "gazes...", arg_6);
 
                 ovr025.sub_67A59(0x12);
 
@@ -4436,7 +4436,7 @@ namespace engine
                 if (ovr024.do_saving_throw(0, 1, gbl.spell_target) == false)
                 {
                     ovr024.add_affect(false, 0xff, 0x3c, Affects.paralyze, gbl.spell_target);
-                    ovr025.sub_67788(0, 10, "is paralyzed", gbl.spell_target);
+                    ovr025.DisplayPlayerStatusString(false, 10, "is paralyzed", gbl.spell_target);
                 }
             }
         }
@@ -4493,7 +4493,7 @@ namespace engine
             if (gbl.game_state == 5)
             {
 
-                ovr025.sub_67788(1, 10, "Casts a Spell", arg_6);
+                ovr025.DisplayPlayerStatusString(true, 10, "Casts a Spell", arg_6);
                 seg037.draw8x8_clear_area(0x17, 0x27, 0x17, 0);
 
                 seg041.displayString("Spell:" + AffectNames[arg_0], 0, 10, 0x17, 0);
@@ -4507,7 +4507,7 @@ namespace engine
                 seg041.displayString(arg_2, 0, 10, 0x13, arg_6.name.Length + 2);
                 seg041.displayString(AffectNames[arg_0], 0, 10, 0x14, 1);
                 seg041.GameDelay();
-                ovr025.sub_6786F();
+                ovr025.ClearPlayerTextArea();
             }
         }
 

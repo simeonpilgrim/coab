@@ -1119,7 +1119,7 @@ namespace engine
 
                 if (gbl.byte_1D88D != 0)
                 {
-                    ovr025.sub_67788(0, 10, "uses an item", gbl.player_ptr);
+                    ovr025.DisplayPlayerStatusString(false, 10, "uses an item", gbl.player_ptr);
 
                     if (gbl.game_state == 5)
                     {
@@ -1133,7 +1133,7 @@ namespace engine
                     }
 
                     seg041.GameDelay();
-                    ovr025.sub_6786F();
+                    ovr025.ClearPlayerTextArea();
                 }
 
                 gbl.byte_1D88D = 1;
@@ -1158,7 +1158,7 @@ namespace engine
                         }
                         else
                         {
-                            ovr025.sub_67788(1, gbl.textYCol, "oops!", gbl.player_ptr);
+                            ovr025.DisplayPlayerStatusString(true, gbl.textYCol, "oops!", gbl.player_ptr);
                         }
                     }
                 }
@@ -1837,11 +1837,11 @@ namespace engine
                 if (var_5 == false)
                 {
 
-                    ovr025.sub_67788(0, 0, "is not diseased", player_ptr);
+                    ovr025.DisplayPlayerStatusString(false, 0, "is not diseased", player_ptr);
 
                     var_6 = ovr027.yes_no(15, 10, 13, "cure anyway: ");
 
-                    ovr025.sub_6786F();
+                    ovr025.ClearPlayerTextArea();
                 }
 
                 if (var_6 == 'Y')

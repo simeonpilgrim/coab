@@ -849,7 +849,7 @@ namespace engine
 
             if (var_D == 1)
             {
-                seg041.sub_10ECF(15, 4, arg_0.name + " doesn't qualify.");
+                seg041.DisplayStatusText(15, 4, arg_0.name + " doesn't qualify.");
                 ovr027.free_stringList(ref var_7);
                 return;
             }
@@ -905,7 +905,7 @@ namespace engine
 
             arg_0._class = (ClassId)var_2;
 
-            seg041.sub_10ECF(0, 10, arg_0.name + " is now a 1st level " + ovr020.classString[var_2] + ".");
+            seg041.DisplayStatusText(0, 10, arg_0.name + " is now a 1st level " + ovr020.classString[var_2] + ".");
 
             seg051.FillChar(0, 0x54, arg_0.spell_list);
 

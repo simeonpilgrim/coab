@@ -15,10 +15,10 @@ namespace engine
         {
             char ret_val;
  
-			ovr025.sub_67788( 0, 0, arg_0, gbl.player_ptr );
+			ovr025.DisplayPlayerStatusString( false, 0, arg_0, gbl.player_ptr );
 			ret_val = ovr027.yes_no( 15, 10, 13, "cast cure anyway: " );
 
-			ovr025.sub_6786F();
+			ovr025.ClearPlayerTextArea();
 
             return ret_val;
         }
@@ -65,8 +65,8 @@ namespace engine
 
 			if( var_102 == 'Y' )
 			{
-				ovr025.sub_6786F();
-				ovr025.sub_67788( 1, 0, "is cured." , gbl.player_ptr );
+				ovr025.ClearPlayerTextArea();
+				ovr025.DisplayPlayerStatusString( true, 0, "is cured." , gbl.player_ptr );
 			}
 
 			return var_102;

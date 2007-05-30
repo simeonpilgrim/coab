@@ -83,7 +83,7 @@ namespace engine
             }
 
             ovr025.sub_6818A("is fighting with snakes", 1, player);
-            ovr025.sub_6786F();
+            ovr025.ClearPlayerTextArea();
 
             ovr025.clear_actions(player);
         }
@@ -309,7 +309,7 @@ namespace engine
         {
             if (player.actions.field_2 != 0)
             {
-                ovr025.sub_67788(1, 10, "is silenced", player);
+                ovr025.DisplayPlayerStatusString(true, 10, "is silenced", player);
             }
 
             player.actions.field_2 = 0;
@@ -377,7 +377,7 @@ namespace engine
 
                 seg051.FreeMem(Item.StructSize, item);
 
-                ovr025.sub_67788(1, 10, "Gains an item", player);
+                ovr025.DisplayPlayerStatusString(true, 10, "Gains an item", player);
             }
 
             ovr025.sub_66C20(player);
@@ -418,7 +418,7 @@ namespace engine
             {
                 sub_3A019(0);
 
-                ovr025.sub_67788(1, 10, "lost an image", player);
+                ovr025.DisplayPlayerStatusString(true, 10, "lost an image", player);
 
                 affect.field_3 -= 1;
 
@@ -440,7 +440,7 @@ namespace engine
         {
             if (player.actions.field_2 != 0)
             {
-                ovr025.sub_67788(1, 10, "is coughing", player);
+                ovr025.DisplayPlayerStatusString(true, 10, "is coughing", player);
             }
 
             player.actions.field_2 = 0;
@@ -553,7 +553,7 @@ namespace engine
             throw new System.NotSupportedException();//ja	loc_3AABD
 
             ovr025.sub_6818A("is confused", 1, player);
-            ovr025.sub_6786F();
+            ovr025.ClearPlayerTextArea();
             sub_3A071(0, arg_2, player);
             throw new System.NotSupportedException();//jmp	short loc_3AB3B
             throw new System.NotSupportedException();//loc_3AABD:
@@ -571,7 +571,7 @@ namespace engine
             throw new System.NotSupportedException();//ja	loc_3AB3B
 
             ovr025.sub_6818A("is enraged", 1, player);
-            ovr025.sub_6786F();
+            ovr025.ClearPlayerTextArea();
             throw new System.NotSupportedException();//loc_3AB3B:
 
             if (ovr024.do_saving_throw(-2, 4, player) == true)
@@ -607,7 +607,7 @@ namespace engine
             {
                 affect.field_3 += 0x10;
 
-                ovr025.sub_67788(1, 10, "ages", player);
+                ovr025.DisplayPlayerStatusString(true, 10, "ages", player);
                 player.age++;
             }
 
@@ -725,7 +725,7 @@ namespace engine
                 ovr025.sub_68708(player, gbl.player_ptr) == 0 &&
                 ovr024.roll_dice(100, 1) <= arg_0)
             {
-                ovr025.sub_67788(1, 10, "Avoids it", player);
+                ovr025.DisplayPlayerStatusString(true, 10, "Avoids it", player);
                 gbl.byte_1D2BE = 0;
                 gbl.byte_1D2C9 = -1;
                 gbl.byte_1D2CA--;
@@ -782,7 +782,7 @@ namespace engine
             {
                 if (player.strength > 3)
                 {
-                    ovr025.sub_67788(1, 10, "is weakened", player);
+                    ovr025.DisplayPlayerStatusString(true, 10, "is weakened", player);
                     player.strength--;
                 }
                 else
@@ -973,7 +973,7 @@ namespace engine
             if (addAffect(0x3C, affect.field_3, Affects.affect_3e, player) == true &&
                 ovr024.heal_player(1, 1, player) == true)
             {
-                ovr025.sub_684F7(player);
+                ovr025.describeHealing(player);
             }
         }
 
@@ -994,7 +994,7 @@ namespace engine
 
             if (ovr024.do_saving_throw(arg_0, 0, gbl.spell_target) == false)
             {
-                ovr025.sub_67788(0, 10, "is Poisoned", gbl.spell_target);
+                ovr025.DisplayPlayerStatusString(false, 10, "is Poisoned", gbl.spell_target);
                 seg041.GameDelay();
                 ovr024.add_affect(false, 0xff, 0, Affects.poisoned, gbl.spell_target);
 
@@ -1044,7 +1044,7 @@ namespace engine
             player._int = 7;
             player.wis = 7;
 
-            ovr025.sub_67788(1, 10, "is stupid", player);
+            ovr025.DisplayPlayerStatusString(true, 10, "is stupid", player);
 
             if (gbl.game_state == 5)
             {
@@ -1052,7 +1052,7 @@ namespace engine
                 if (player.actions.spell_id > 0)
                 {
 
-                    ovr025.sub_67788(1, 12, "lost a spell", player);
+                    ovr025.DisplayPlayerStatusString(true, 12, "lost a spell", player);
 
                     ovr025.clear_spell(player.actions.spell_id, player);
                     player.actions.spell_id = 0;
@@ -1104,7 +1104,7 @@ namespace engine
             if ((gbl.byte_1D2BF & 0x20) > 0)
             {
                 sub_3A019(0);
-                ovr025.sub_67788(1, 10, "is unaffected", player);
+                ovr025.DisplayPlayerStatusString(true, 10, "is unaffected", player);
             }
         }
 
@@ -1167,7 +1167,7 @@ namespace engine
                     player.actions.can_cast = 0;
                     player.combat_team = (sbyte)(player.actions.target.combat_team ^ 1);
 
-                    ovr025.sub_67788(1, 10, "goes berzerk", player);
+                    ovr025.DisplayPlayerStatusString(true, 10, "goes berzerk", player);
                 }
             }
             else
@@ -1772,7 +1772,7 @@ namespace engine
                 {
                     var_1 = ovr025.clear_actions(player);
 
-                    ovr025.sub_67788(1, 10, "Spits Acid", player);
+                    ovr025.DisplayPlayerStatusString(true, 10, "Spits Acid", player);
 
                     ovr025.sub_67A59(0x17);
 
@@ -1800,7 +1800,7 @@ namespace engine
             {
                 ovr024.add_affect(false, 0xff, 0, Affects.paralyze, gbl.spell_target);
 
-                ovr025.sub_67788(1, 10, "is paralyzed", gbl.spell_target);
+                ovr025.DisplayPlayerStatusString(true, 10, "is paralyzed", gbl.spell_target);
             }
         }
 
@@ -2015,7 +2015,7 @@ namespace engine
                 var_2 = gbl.byte_1D2BF;
                 gbl.byte_1D2BF = 8;
 
-                ovr025.sub_67788(1, 10, "resists dispel evil", gbl.player_ptr);
+                ovr025.DisplayPlayerStatusString(true, 10, "resists dispel evil", gbl.player_ptr);
 
                 ovr024.damage_person(false, 0, (sbyte)gbl.byte_1D2BE, gbl.player_ptr);
                 gbl.byte_1D2BE = var_1;
@@ -2038,7 +2038,7 @@ namespace engine
             }
             else
             {
-                ovr025.sub_67788(1, 10, "resists dispel evil", gbl.spell_target);
+                ovr025.DisplayPlayerStatusString(true, 10, "resists dispel evil", gbl.spell_target);
             }
         }
 

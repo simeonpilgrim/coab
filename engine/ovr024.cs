@@ -6,7 +6,7 @@ namespace engine
     {
         internal static void sub_63014(string arg_0, Classes.Status arg_4, Player player)
         {
-            ovr025.sub_67788(0, 10, arg_0, player);
+            ovr025.DisplayPlayerStatusString(false, 10, arg_0, player);
 
             if (player.health_status != Status.stoned &&
                 player.health_status != Status.dead &&
@@ -26,7 +26,7 @@ namespace engine
                 }
 
                 seg041.GameDelay();
-                ovr025.sub_6786F();
+                ovr025.ClearPlayerTextArea();
 
                 if (gbl.game_state != 5)
                 {
@@ -514,7 +514,7 @@ namespace engine
                 {
                     if (arg_2.field_E5 >= 0 && arg_2.field_E5 <= 4)
                     {
-                        ovr025.sub_67788(0, 10, "is Poisoned", arg_2);
+                        ovr025.DisplayPlayerStatusString(false, 10, "is Poisoned", arg_2);
                         seg041.GameDelay();
                         add_affect(false, 0xff, 0, Affects.minor_globe_of_invulnerability, arg_2);
                         sub_63014("is killed", Status.dead, arg_2);
@@ -523,7 +523,7 @@ namespace engine
                     {
                         if (do_saving_throw(-4, 0, arg_2) == false)
                         {
-                            ovr025.sub_67788(0, 10, "is Poisoned", arg_2);
+                            ovr025.DisplayPlayerStatusString(false, 10, "is Poisoned", arg_2);
                             seg041.GameDelay();
                             add_affect(false, 0xff, 0, Affects.poisoned, arg_2);
                             sub_63014("is killed", Status.dead, arg_2);
@@ -533,7 +533,7 @@ namespace engine
                     {
                         if (do_saving_throw(0, 0, arg_2) == false)
                         {
-                            ovr025.sub_67788(0, 10, "is Poisoned", arg_2);
+                            ovr025.DisplayPlayerStatusString(false, 10, "is Poisoned", arg_2);
                             seg041.GameDelay();
                             add_affect(false, 0xff, 0, Affects.poisoned, arg_2);
                             sub_63014("is killed", Status.dead, arg_2);
@@ -714,7 +714,7 @@ namespace engine
 
                 ovr033.sub_75356(false, 3, player);
 
-                ovr025.sub_67788(1, 10, msg, player);
+                ovr025.DisplayPlayerStatusString(true, 10, msg, player);
 
                 player.in_combat = false;
 
@@ -816,7 +816,7 @@ namespace engine
 
             if (ovr025.find_affect(out var_5, arg_0, arg_2) == true)
             {
-                ovr025.sub_67788(1, 10, "is Cured", arg_2);
+                ovr025.DisplayPlayerStatusString(true, 10, "is Cured", arg_2);
 
                 remove_affect(var_5, arg_0, arg_2);
                 ret_val = true;
@@ -1379,7 +1379,7 @@ namespace engine
 
                     if (player.actions.spell_id > 0)
                     {
-                        ovr025.sub_67788(1, 12, "lost a spell", player);
+                        ovr025.DisplayPlayerStatusString(true, 12, "lost a spell", player);
 
                         ovr025.clear_spell(player.actions.spell_id, player);
 
@@ -1401,7 +1401,7 @@ namespace engine
                         var_100 = "is killed";
                     }
 
-                    ovr025.sub_67788(0, (byte)(gbl.textYCol + 1), var_100, player);
+                    ovr025.DisplayPlayerStatusString(false, (byte)(gbl.textYCol + 1), var_100, player);
 
                     if (gbl.game_state != 5)
                     {
@@ -1424,7 +1424,7 @@ namespace engine
                     }
                 }
 
-                ovr025.sub_6786F();
+                ovr025.ClearPlayerTextArea();
             }
         }
 
@@ -1443,7 +1443,7 @@ namespace engine
             if (gbl.byte_1D2BD == 0 ||
                 (arg_4 == true && arg_6 == 1))
             {
-                ovr025.sub_67788(1, 10, "is Unaffected", arg_10);
+                ovr025.DisplayPlayerStatusString(true, 10, "is Unaffected", arg_10);
             }
             else
             {
@@ -1458,7 +1458,7 @@ namespace engine
                 if (var_29.Length != 0)
                 {
                     ovr025.sub_6818A(var_29, 1, arg_10);
-                    ovr025.sub_6786F();
+                    ovr025.ClearPlayerTextArea();
                 }
             }
         }
@@ -1531,7 +1531,7 @@ namespace engine
                     var_2A = "gets back up";
                 }
 
-                ovr025.sub_67788(1, 10, var_2A, player);
+                ovr025.DisplayPlayerStatusString(true, 10, var_2A, player);
 
                 ovr025.count_teams();
                 ret_val = true;

@@ -341,11 +341,11 @@ namespace engine
         }
 
 
-        internal static void sub_10ECF(byte arg_0, byte arg_2, string arg_4)
+        internal static void DisplayStatusText(byte bgColor, byte fgColor, string text) /* sub_10ECF */
         {
             displaySpaceChar(0x28, 0, 0x18, 0);
 
-            displayString(arg_4, arg_0, arg_2, 0x18, 0);
+            displayString(text, bgColor, fgColor, 0x18, 0);
 
             GameDelay();
 
