@@ -234,10 +234,10 @@ namespace engine
             }
 
             copySize = (source.width - sourcePrefix - sourcePostfix) * 8;
-            sourcePrefix *= 8;
-            sourcePostfix *= 8;
-            destPostfix *= 8;
-            destPrefix *= 8;
+            //sourcePrefix *= 8;
+            //sourcePostfix *= 8;
+            //destPostfix *= 8;
+            //destPrefix *= 8;
             var_6 = destPrefix;
 
             backupOffset = sourceOffset;
@@ -444,7 +444,10 @@ namespace engine
                 {
                     for (int pixX = minX; pixX <= maxX; pixX++)
                     {
-                        Display.SetPixel3(pixX, pixY, dax_block.data[var_10]);
+                        if (pixX < 320 && pixY < 200)
+                        {
+                            Display.SetPixel3(pixX, pixY, dax_block.data[var_10]);
+                        }
 
                         var_10++;
                     }
@@ -452,27 +455,28 @@ namespace engine
                 Display.Update();
             }
         }
-
+        
+        static int backcolor = 0;
 
         internal static void DrawOverlay()
         {
+            backcolor = (backcolor+1)%8;
+
             for (int line = 0; line < 0x0A8; line++)
             {
                 if (gbl.overlayLineFlag[line] == true)
                 {
-                    int xPosStart = gbl.unk_1BBF2[line + 8] + gbl.overlayLineXStart[line];
+                    int xPos = gbl.overlayLineXStart[line];
 
                     int dataPosStart = gbl.overlayLineDataStart[line];
                     int dataPosEnd = gbl.overlayLineDataEnd[line];
-
-                    int xPos = xPosStart;
 
                     for (int dataPos = dataPosStart; dataPos <= dataPosEnd; dataPos++)
                     {
                         if (xPos+8 < 320)
                         {
                             byte c = gbl.overlayLines.data[dataPos];
-
+                            if (c == 0) c = (byte)backcolor;
                             Display.SetPixel3(xPos + 8, line + 8, c);
                         }
 
@@ -700,31 +704,31 @@ namespace engine
             dataPostfix *= 8;
             dataPos *= 8;
 
-            for (int y = 0; y <= lineCount; y++)
-            {
-                gbl.overlayLineFlag[lineNo] = true;
-                dataPos += lineXPrefix;
+            //for (int y = 0; y <= lineCount; y++)
+            //{
+            //    gbl.overlayLineFlag[lineNo] = true;
+            //    dataPos += lineXPrefix;
 
-                if (gbl.overlayLineDataStart[lineNo] > dataPos)
-                {
-                    gbl.overlayLineDataStart[lineNo] = dataPos;
-                    gbl.overlayLineXStart[lineNo] = lineXPrefix;
-                }
+            //    if (gbl.overlayLineDataStart[lineNo] > dataPos)
+            //    {
+            //        gbl.overlayLineDataStart[lineNo] = dataPos;
+            //        gbl.overlayLineXStart[lineNo] = lineXPrefix;
+            //    }
 
-                for (int x = 0; x < lineWidth; x++)
-                {
-                    arg_0.data[dataPos] = mask;
-                    dataPos += 1;
-                }
+            //    for (int x = 0; x < lineWidth; x++)
+            //    {
+            //        arg_0.data[dataPos] = mask;
+            //        dataPos += 1;
+            //    }
 
-                if ((dataPos - 1) > gbl.overlayLineDataEnd[lineNo])
-                {
-                    gbl.overlayLineDataEnd[lineNo] = dataPos - 1;
-                }
+            //    if ((dataPos - 1) > gbl.overlayLineDataEnd[lineNo])
+            //    {
+            //        gbl.overlayLineDataEnd[lineNo] = dataPos - 1;
+            //    }
 
-                dataPos += dataPostfix;
-                lineNo++;
-            }
+            //    dataPos += dataPostfix;
+            //    lineNo++;
+            //}
         }
 
 
@@ -806,11 +810,14 @@ namespace engine
                 if ((destOffset - 1) > gbl.overlayLineDataEnd[lineNo])
                 {
                     gbl.overlayLineDataEnd[lineNo] = destOffset - 1;
+                    int width = gbl.overlayLineDataEnd[lineNo] - gbl.overlayLineDataStart[lineNo];
                 }
 
                 destOffset += linePostfix;
                 lineNo += 1;
             }
+
+            //draw_picture(source, lineNo / 8, bp_var_6+1);
         }
 
 
@@ -818,63 +825,67 @@ namespace engine
             byte[] source_data_ptr, int bp_var_6, int destOffset, int sourceOffset, int copySize, int destPostfix,
             int destPrefix, int sourcePostfix, int sourcePrefix, bool doBackup, int backupOffset)
         {
-            do
-            {
-                gbl.overlayLineFlag[lineNo] = true;
+            //do
+            //{
+            //    gbl.overlayLineFlag[lineNo] = true;
 
-                sourceOffset += sourcePrefix;
-                destOffset += destPrefix;
+            //    sourceOffset += sourcePrefix;
+            //    destOffset += destPrefix;
 
-                if (destOffset <= gbl.overlayLineDataStart[lineNo])
-                {
-                    gbl.overlayLineDataStart[lineNo] = destOffset;
-                    gbl.overlayLineXStart[lineNo] = bp_var_6;
-                }
+            //    if (destOffset <= gbl.overlayLineDataStart[lineNo])
+            //    {
+            //        gbl.overlayLineDataStart[lineNo] = destOffset;
+            //        gbl.overlayLineXStart[lineNo] = bp_var_6;
+            //    }
 
-                for (int i = 0; i < copySize; i++)
-                {
-                    if (doBackup == true)
-                    {
-                        if (backup != null)
-                        {
-                            backup.data[backupOffset] = dest.data[destOffset];
-                        }
-                    }
+            //    for (int i = 0; i < copySize; i++)
+            //    {
+            //        if (doBackup == true)
+            //        {
+            //            if (backup != null)
+            //            {
+            //                backup.data[backupOffset] = dest.data[destOffset];
+            //            }
+            //        }
 
-                    //if (dest.data[destOffset] == 16 ||
-                    //    source_data_ptr[sourceOffset] == 16 ||
-                    //    source.data[sourceOffset] == 16)
-                    //{
-                    //}
+            //        //if (dest.data[destOffset] == 16 ||
+            //        //    source_data_ptr[sourceOffset] == 16 ||
+            //        //    source.data[sourceOffset] == 16)
+            //        //{
+            //        //}
 
-                    if (source.data[sourceOffset] == 16)
-                    {
-                        //dest.data[destOffset] = leave it alone;
-                    }
-                    else
-                    {
-                        dest.data[destOffset] = source.data[sourceOffset];
-                    }
+            //        if (source.data[sourceOffset] == 16)
+            //        {
+            //            //dest.data[destOffset] = leave it alone;
+            //        }
+            //        else
+            //        {
+            //            dest.data[destOffset] = source.data[sourceOffset];
+            //        }
 
-                    //dest.data[destOffset] &= source_data_ptr[sourceOffset];
-                    //dest.data[destOffset] |= source.data[sourceOffset];
+            //        //dest.data[destOffset] &= source_data_ptr[sourceOffset];
+            //        //dest.data[destOffset] |= source.data[sourceOffset];
 
-                    sourceOffset += 1;
-                    backupOffset += 1;
-                    destOffset += 1;
-                }
+            //        sourceOffset += 1;
+            //        backupOffset += 1;
+            //        destOffset += 1;
+            //    }
 
-                if ((destOffset - 1) > gbl.overlayLineDataEnd[lineNo])
-                {
-                    gbl.overlayLineDataEnd[lineNo] = destOffset - 1;
-                }
+            //    if ((destOffset - 1) > gbl.overlayLineDataEnd[lineNo])
+            //    {
+            //        gbl.overlayLineDataEnd[lineNo] = destOffset - 1;
+            //        int width = gbl.overlayLineDataEnd[lineNo] - gbl.overlayLineDataStart[lineNo];
 
-                destOffset += destPostfix;
-                sourceOffset += sourcePostfix;
-                backupOffset += sourcePostfix;
+            //    }
 
-                lineNo += 1;
-            } while ((--linesToCopy) != 0);
+            //    destOffset += destPostfix;
+            //    sourceOffset += sourcePostfix;
+            //    backupOffset += sourcePostfix;
+
+            //    lineNo += 1;
+            //} while ((--linesToCopy) != 0);
+
+            draw_picture(source, lineNo / 8, bp_var_6+1);
         }
     }
 }
