@@ -127,7 +127,6 @@ namespace Classes
         public static int[] overlayLineXStart = new int[0xA8];
         public static int[] overlayLineDataStart = new int[0xA8];
         public static int[] overlayLineDataEnd = new int[0xA8];
-        public static short[] unk_1BBF2 = new short[0xA8+8];
 
         public static byte byte_1BF12; // ??
 
