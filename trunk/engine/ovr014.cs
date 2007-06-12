@@ -281,11 +281,11 @@ namespace engine
             if ((direction & 0x01) != 0)
             {
                 // Diagonal walking...
-                costToMove = gbl.unk_189B4[gbl.stru_1D1BC[newXPos, newYPos]].field_0 * 3;
+                costToMove = gbl.unk_189B4[gbl.stru_1D1BC[newXPos, newYPos]].move_cost * 3;
             }
             else
             {
-                costToMove = gbl.unk_189B4[gbl.stru_1D1BC[newXPos, newYPos]].field_0 * 2;
+                costToMove = gbl.unk_189B4[gbl.stru_1D1BC[newXPos, newYPos]].move_cost * 2;
             }
 
             if (costToMove > player.actions.move)
@@ -2305,7 +2305,7 @@ namespace engine
                 }
 
                 if (arg_E < var_38 ||
-                    gbl.unk_189B4[var_36].field_0 == 0xff)
+                    gbl.unk_189B4[var_36].move_cost == 0xff)
                 {
                     var_39 = 0;
                 }

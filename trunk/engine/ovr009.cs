@@ -586,14 +586,14 @@ namespace engine
                     {
                         if ((var_7 / 2) < 1)
                         {
-                            var_D = gbl.unk_189B4[var_9].field_0 * 3;
+                            var_D = gbl.unk_189B4[var_9].move_cost * 3;
                         }
                         else
                         {
-                            var_D = gbl.unk_189B4[var_9].field_0 * 2;
+                            var_D = gbl.unk_189B4[var_9].move_cost * 2;
                         }
 
-                        if (gbl.unk_189B4[var_9].field_0 == 0xFF)
+                        if (gbl.unk_189B4[var_9].move_cost == 0xFF)
                         {
                             var_D = 0xFFFF;
                         }

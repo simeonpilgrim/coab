@@ -38,15 +38,15 @@ namespace engine
         }
 
 
-        internal static void sub_760F7(int arg_0, int arg_2, int rowY, int colX)
+        internal static void draw_iso_title(int arg_0, int titleIndex, int rowY, int colX) /* sub_760F7 */
         {
-            if (arg_2 > 0x7f)
+            if (titleIndex > 0x7f)
             {
-                seg040.OverlayUnbounded(gbl.dword_1C8FC, arg_2, arg_2 & 0x7F, rowY, colX);
+                seg040.OverlayUnbounded(gbl.dword_1C8FC, titleIndex, titleIndex & 0x7F, rowY, colX);
             }
             else
             {
-                seg040.OverlayUnbounded(gbl.dword_1C8F8, arg_0, arg_2+1, rowY, colX);
+                seg040.OverlayUnbounded(gbl.dword_1C8F8, arg_0, titleIndex, rowY, colX);
             }
         }
 

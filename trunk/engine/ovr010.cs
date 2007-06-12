@@ -383,18 +383,18 @@ namespace engine
             }
             else
             {
-                if (gbl.unk_189B4[var_9].field_0 == 0xff)
+                if (gbl.unk_189B4[var_9].move_cost == 0xff)
                 {
                     return 0;
                 }
 
                 if ((var_7 & 1) != 0)
                 {
-                    var_A = (byte)(gbl.unk_189B4[var_9].field_0 * 3);
+                    var_A = (byte)(gbl.unk_189B4[var_9].move_cost * 3);
                 }
                 else
                 {
-                    var_A = (byte)(gbl.unk_189B4[var_9].field_0 * 2);
+                    var_A = (byte)(gbl.unk_189B4[var_9].move_cost * 2);
                 }
 
                 if (var_8 == 0 && var_A < player.actions.move)
