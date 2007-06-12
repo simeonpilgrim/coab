@@ -122,12 +122,6 @@ namespace Classes
         public static byte byte_1B2F1;
         public static byte byte_1B2F2;
 
-
-        public static bool[] overlayLineFlag = new bool[0xA8];
-        public static int[] overlayLineXStart = new int[0xA8];
-        public static int[] overlayLineDataStart = new int[0xA8];
-        public static int[] overlayLineDataEnd = new int[0xA8];
-
         public static byte byte_1BF12; // ??
 
         public static SoundType soundType; // byte_1BF14
@@ -439,8 +433,6 @@ namespace Classes
 
         public static byte[, ,] unk_16620; // unk_16620 seg600:0310
 
-        public static byte[] unk_188B4 = new byte[8];// seg600:25A4 
-
         public static Player player_ptr01;
         public static Player player_ptr02;
 
@@ -666,7 +658,6 @@ new Struct_19AEC( 32h,0,7,12h,3,12h,3,12h,8,12h,3,12h,3,3,12h,11h) };*/
 
         public static Text known01_02;
 
-        public static DaxBlock overlayLines; // seg600:5002
         public static DaxBlock word_1B316; // seg600:5006
 
         public static bool unk_1AB07; // seg600:47F7

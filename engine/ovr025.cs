@@ -1244,7 +1244,7 @@ namespace engine
             if (arg_0 == true)
             {
                 seg040.init_dax_block(out var_4, 1, 1, 3, 0x18);
-                seg040.merge_icon(var_4, gbl.combat_icons[arg_6, arg_4]);
+                seg040.makeInverse(var_4, gbl.combat_icons[arg_6, arg_4]);
                 throw new System.NotSupportedException();//les	di, [bp+var_4]
                 throw new System.NotSupportedException();//add	di, 0x17
                 throw new System.NotSupportedException();//push	es
@@ -1401,12 +1401,12 @@ namespace engine
                         (var_CA % 3) == 0 ||
                         (var_CC % 3) == 0)
                     {
-                        seg040.sub_E353(gbl.overlayLines, gbl.dword_1D90A, 5, var_B1, var_CC, var_CA);
+                        seg040.OverlayBounded(gbl.dword_1D90A, 5, var_B1, var_CC, var_CA);
                         seg040.DrawOverlay();
 
                         seg049.SysDelay(arg_0);
 
-                        seg040.sub_E353(gbl.overlayLines, gbl.word_1B316, 0, 0, var_CC, var_CA);
+                        seg040.OverlayBounded(gbl.word_1B316, 0, 0, var_CC, var_CA);
                         var_B1++;
 
                         if (var_B1 >= arg_2)
@@ -1551,7 +1551,7 @@ namespace engine
                     var_CA = (short)((playerAMapX - gbl.stru_1D1BC.mapScreenLeftX) * 3);
                     var_CC = (short)((playerAMapY - gbl.stru_1D1BC.mapScreenTopY) * 3);
 
-                    seg040.sub_E353(gbl.overlayLines, gbl.dword_1D90A, 5, var_B1, var_CC, var_CA);
+                    seg040.OverlayBounded(gbl.dword_1D90A, 5, var_B1, var_CC, var_CA);
 
                     if (arg_0 > 0)
                     {
@@ -1559,7 +1559,7 @@ namespace engine
 
                         seg049.SysDelay(arg_0);
 
-                        seg040.sub_E353(gbl.overlayLines, gbl.word_1B316, 0, 0, var_CC, var_CA);
+                        seg040.OverlayBounded(gbl.word_1B316, 0, 0, var_CC, var_CA);
                     }
                 }
             } while (var_B3 == 0);
@@ -1623,12 +1623,12 @@ namespace engine
                 {
                     for (var_104 = 0; var_104 <= 3; var_104++)
                     {
-                        seg040.sub_E353(gbl.overlayLines, gbl.dword_1D90A, 5, var_104, rowY, colX);
+                        seg040.OverlayBounded(gbl.dword_1D90A, 5, var_104, rowY, colX);
                         seg040.DrawOverlay();
 
                         seg049.SysDelay(70);
 
-                        seg040.sub_E353(gbl.overlayLines, gbl.word_1B316, 0, 0, rowY, colX);
+                        seg040.OverlayBounded(gbl.word_1B316, 0, 0, rowY, colX);
                     }
                 }
 

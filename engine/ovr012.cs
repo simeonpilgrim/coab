@@ -81,17 +81,7 @@ namespace engine
             seg040.init_dax_block(out gbl.dword_1EFA0, 0, 1, 1, 8);
 
             seg051.FillChar(0xff, (ushort)gbl.dword_1EFA0.bpp, gbl.dword_1EFA0.data);
-            seg040.init_dax_block(out gbl.overlayLines, 0, 1, 0x15, 0xa8);
             seg040.init_dax_block(out gbl.word_1B316, 0, 1, 3, 0x18);
-
-            for (int i = 0; i < 0xA8; i++)
-            {
-                gbl.overlayLineFlag[i] = false;
-                gbl.overlayLineXStart[i] = 0;
-                gbl.overlayLineDataStart[i] = int.MaxValue;
-                gbl.overlayLineDataEnd[i] = 0;
-            }
-
 
             gbl.symbol_8x8_set = new DaxBlock[5];
             gbl.symbol_8x8_set[0] = null;
@@ -249,13 +239,6 @@ namespace engine
         internal static void sub_396E5()
         {
             gbl.byte_1B2C0 = 1;
-
-            for (int i = 0; i < 0xA8; i++)
-            {
-                gbl.overlayLineFlag[i] = false;
-                gbl.overlayLineXStart[i] = 0;
-                gbl.overlayLineDataStart[i] = int.MaxValue;
-            }
 
             gbl.area_ptr.Clear(0xFF);
             gbl.area_ptr.field_1CC = 1;
