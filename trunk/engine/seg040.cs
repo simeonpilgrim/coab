@@ -4,38 +4,6 @@ namespace engine
 {
     class seg040
     {
-        internal static byte get_mask_bits(uint longint, byte mask_color)
-        {
-            byte loop_var;
-            byte var_4;
-            byte mask_high;
-            byte var_2;
-
-            var_2 = 0;
-            mask_high = (byte)(mask_color << 4);
-            var_4 = 0x80;
-
-            for (loop_var = 0; loop_var <= 3; loop_var++)
-            {
-                if (((longint >> (8 * loop_var)) & 0xf0) == mask_high)
-                {
-                    var_2 += var_4;
-                }
-
-                var_4 >>= 1;
-
-                if (((longint >> (8 * loop_var)) & 0x0f) == mask_color)
-                {
-                    var_2 += var_4;
-                }
-
-                var_4 >>= 1;
-            }
-
-            return var_2;
-        }
-
-
         internal static void load_dax(ref DaxBlock mem_ptr, byte mask_colour, byte masked, byte block_id, string fileName)
         {
             DaxBlock dax_ptr;
@@ -84,8 +52,6 @@ namespace engine
                 seg043.clear_keyboard();
             }
         }
-
-        static byte[] ega_color_channel = { 1, 2, 4, 8 };
 
         internal static void turn_dax_to_videolayout(DaxBlock dest_dax_block, byte mask_colour, byte masked, short block_offset, byte[] data)
         {
@@ -157,30 +123,26 @@ namespace engine
         }
 
 
-        internal static byte bits_flip(byte arg_0)
-        {
-            if (arg_0 != 16)
-            {
-                arg_0 ^= 0xf;
-            }
-
-            return arg_0;
-        }
-
-
-        internal static void makeInverse(DaxBlock dest, DaxBlock source)
+        internal static void flipIconLeftToRight(DaxBlock dest, DaxBlock source)
         {
             if (source != null && dest != null)
             {
                 seg051.Move(8, dest.field_9, source.field_9);
-
-                for (int i = 0; i < source.data.Length; i++)
+                int width = source.width * 8;
+                for( int y = 0; y < source.height; y++ )
                 {
-                    dest.data[i] = bits_flip(source.data[i]);
-
-                    if (source.data_ptr != null)
+                    for (int x = 0; x < width; x++)
                     {
-                        dest.data_ptr[i] = bits_flip(source.data_ptr[i]);
+                        int di = (y * width) + x;
+                        int si = (y*width) + (width - x) - 1;
+                        dest.data[di] = source.data[si];
+                        //dest.data[di+1] = source.data[si+0];
+
+                        if (source.data_ptr != null)
+                        {
+                            dest.data_ptr[di] = source.data_ptr[si];
+                            //dest.data_ptr[di+1] = source.data_ptr[si+0];
+                        }
                     }
                 }
             }
@@ -455,7 +417,7 @@ namespace engine
             int maxY = minY + lineCount;
 
             int minX = (colX * 8) + 8;
-            int maxX = minX + (colWidth * 8) + 8;
+            int maxX = minX + (colWidth * 8);
 
             for (int pixY = minY; pixY < maxY; pixY++)
             {

@@ -343,6 +343,8 @@ namespace engine
             byte var_2;
             byte var_1;
 
+            Display.UpdateStop();
+
             if (gbl.mapAreaDisplay == true)
             {
                 DrawAreaMap(partyDir, partyPosX, partyPosY);
@@ -644,6 +646,8 @@ namespace engine
 
                 } while (var_13 >= 0);
 
+
+                Display.UpdateStart();
                 seg040.DrawOverlay();
             }
         }
@@ -735,7 +739,6 @@ namespace engine
 
         internal static void Load3DMap(byte blockId)
         {
-            int var_8;
             byte[] var_6;
             short bytesRead;
 
@@ -749,21 +752,7 @@ namespace engine
                 seg043.print_and_exit();
             }
 
-            var_8 = 2;
-
-            System.Array.Copy(var_6, var_8, gbl.stru_1D530, 0, 0x100);
-
-            var_8 += 0x100;
-
-            System.Array.Copy(var_6, var_8, gbl.stru_1D530, 0x100, 0x100);
-
-            var_8 += 0x100;
-
-            System.Array.Copy(var_6, var_8, gbl.stru_1D530, 0x200, 0x100);
-
-            var_8 += 0x100;
-
-            System.Array.Copy(var_6, var_8, gbl.stru_1D530, 0x300, 0x100);
+            System.Array.Copy(var_6, 2, gbl.stru_1D530, 0, 0x400);
 
             seg051.FreeMem(bytesRead, var_6);
 

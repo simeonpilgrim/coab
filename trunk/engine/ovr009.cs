@@ -568,7 +568,6 @@ namespace engine
 
                     if (var_8 > 0)
                     {
-                        //player_array.seg[var_8<<2] for byte array.
                         sub_33F03(ref arg_0, gbl.player_array[var_8], player);
                     }
                     else if (var_9 == 0)
