@@ -80,7 +80,7 @@ namespace engine
 
                     if (gbl.stru_1D1BC.field_4 == true)
                     {
-                        ovr034.sub_76504(0x19, 0, 0, screenPosY + var_4, screenPosX + var_3);
+                        ovr034.draw_combat_icon(0x19, 0, 0, screenPosY + var_4, screenPosX + var_3);
                     }
                 }
             }
@@ -90,7 +90,7 @@ namespace engine
             if (var_6 > 0 &&
                 sub_74761(0, gbl.player_array[var_6]) == true)
             {
-                ovr034.sub_76504(gbl.player_array[var_6].icon_id, 0,
+                ovr034.draw_combat_icon(gbl.player_array[var_6].icon_id, 0,
                     gbl.player_array[var_6].actions.field_9, gbl.playerScreenY[var_6],
                     gbl.playerScreenX[var_6]);
             }
@@ -111,7 +111,7 @@ namespace engine
             if (var_3 > 0 &&
                 sub_74761(0, gbl.player_array[var_3]) == true)
             {
-                ovr034.sub_76504(gbl.player_array[var_3].icon_id,  0, 
+                ovr034.draw_combat_icon(gbl.player_array[var_3].icon_id,  0, 
                     gbl.player_array[var_3].actions.field_9,
                     gbl.playerScreenY[var_3], 
                     gbl.playerScreenX[var_3]);
@@ -200,7 +200,7 @@ namespace engine
                         CoordOnScreen(deltaY + mapY, deltaX + mapX) == true)
                     {
                         int i1 = gbl.stru_1D1BC[screenX + deltaX, deltaY + screenY];
-
+                        //THIS DRAW BACKGROUND MAP.
                         ovr034.sub_760F7(0, gbl.unk_189B4[i1].field_3, (mapY + deltaY) * 3, (mapX + deltaX) * 3);
                     }
                 }
@@ -375,7 +375,7 @@ namespace engine
                         gbl.stru_1C9CD[var_5].field_3 > 0 &&
                         sub_74761(0, var_4) == true)
                     {
-                        ovr034.sub_76504(var_4.icon_id, 0, var_4.actions.field_9, gbl.playerScreenY[var_5], gbl.playerScreenX[var_5]);
+                        ovr034.draw_combat_icon(var_4.icon_id, 0, var_4.actions.field_9, gbl.playerScreenY[var_5], gbl.playerScreenX[var_5]);
                     }
                 }
             }
@@ -439,7 +439,7 @@ namespace engine
                 sub_74761(0, player) == true &&
                 gbl.byte_1D910 == true)
             {
-                ovr034.sub_76504(player.icon_id, arg_2, arg_4, gbl.playerScreenY[player_index], gbl.playerScreenX[player_index]);
+                ovr034.draw_combat_icon(player.icon_id, arg_2, arg_4, gbl.playerScreenY[player_index], gbl.playerScreenX[player_index]);
                 seg040.DrawOverlay();
             }
         }

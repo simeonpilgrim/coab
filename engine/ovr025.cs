@@ -1244,7 +1244,7 @@ namespace engine
             if (arg_0 == true)
             {
                 seg040.init_dax_block(out var_4, 1, 1, 3, 0x18);
-                seg040.makeInverse(var_4, gbl.combat_icons[arg_6, arg_4]);
+                seg040.flipIconLeftToRight(var_4, gbl.combat_icons[arg_6, arg_4]);
                 throw new System.NotSupportedException();//les	di, [bp+var_4]
                 throw new System.NotSupportedException();//add	di, 0x17
                 throw new System.NotSupportedException();//push	es

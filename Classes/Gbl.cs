@@ -54,7 +54,7 @@ namespace Classes
         public const sbyte byte_16E2E = 4;
 
         public const int unk_189B4_count = 64; /* 64 is a guess */
-        public static Struct_189B4[] unk_189B4; 
+        public static Struct_189B4[] unk_189B4; // TODO this holds the map background stuff, but where does it get loaded?
 
         public const byte byte_1A114 = 1;
         /// <summary> seg600:3EBB </summary>
