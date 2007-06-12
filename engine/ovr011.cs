@@ -21,7 +21,7 @@ namespace engine
             }
         }
 
-        static sbyte[] unk_1665B /*seg600:034C*/ = { 0, 1, 0 - 1 };
+        static sbyte[] unk_1665B /*seg600:034C*/ = { 0, 1, 0, - 1 };
         static sbyte[] unk_1665F /*seg600:0350*/ = { -1, 0, 1, 0 };
 
         internal static void sub_370D3()
@@ -1038,7 +1038,7 @@ namespace engine
 
                 if (var_2 == 0 &&
                     var_3 > 0 &&
-                    gbl.unk_189B4[var_3].field_0 < 0xFF)
+                    gbl.unk_189B4[var_3].move_cost < 0xFF)
                 {
                     var_1 = true;
                     unk_1AB1C[gbl.field_197, arg_0, arg_6, arg_8] = 0;

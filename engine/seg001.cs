@@ -21,12 +21,6 @@ namespace engine
         public static void PROGRAM()
         {
             /* Memory Init - Start */
-            gbl.unk_189B4 = new Struct_189B4[gbl.unk_189B4_count];
-            for (int i = 0; i < gbl.unk_189B4_count; i++)
-            {
-                gbl.unk_189B4[i] = new Struct_189B4();
-            }
-
             gbl.stru_1C9CD = new gbl.Struct_1C9CD[gbl.stru_1C9CD_count+1]; /* God damm 1-n arrays */
             for (int i = 0; i <= gbl.stru_1C9CD_count; i++)
             {

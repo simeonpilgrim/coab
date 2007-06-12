@@ -2790,7 +2790,7 @@ namespace engine
             ovr033.sub_74505(out var_6, out var_5, arg_A, arg_C);
 
             if (var_6 > 0 &&
-                gbl.unk_189B4[var_6].field_0 == 0xff &&
+                gbl.unk_189B4[var_6].move_cost == 0xff &&
                 gbl.area_ptr.field_1CC == 1 &&
                 arg_0 == false)
             {
@@ -2875,13 +2875,13 @@ namespace engine
 
                                 ovr033.sub_74505(out var_3B, out var_3A, var_18.field_10, var_18.field_0E);
 
-                                if (gbl.unk_189B4[var_3B].field_0 == 1)
+                                if (gbl.unk_189B4[var_3B].move_cost == 1)
                                 {
                                     var_36 = false;
                                 }
 
                             } while (var_37 == true && (var_3A <= 0 || var_3A == var_39) && var_3B != 0 &&
-                            gbl.unk_189B4[var_3B].field_0 <= 1 && var_18.field_16 < var_3C);
+                            gbl.unk_189B4[var_3B].move_cost <= 1 && var_18.field_16 < var_3C);
                         }
 
                         if (var_3B == 0)
@@ -3645,7 +3645,7 @@ namespace engine
                     gbl.byte_1D883 + gbl.MapDirectionXDelta[var_17]);
 
                 if (var_14 > 0 &&
-                    gbl.unk_189B4[var_14].field_0 < 0xff)
+                    gbl.unk_189B4[var_14].move_cost < 0xff)
                 {
                     var_8.field_10[var_16] = 1;
                 }

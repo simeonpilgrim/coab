@@ -76,7 +76,7 @@ namespace engine
                 {
                     int i = gbl.stru_1D1BC[var_3 + posX, var_4 + posY];
 
-                    ovr034.sub_760F7(0, gbl.unk_189B4[i].field_3, (screenPosY + var_4) * 3, (screenPosX + var_3) * 3);
+                    ovr034.draw_iso_title(0, gbl.unk_189B4[i].field_3, (screenPosY + var_4) * 3, (screenPosX + var_3) * 3);
 
                     if (gbl.stru_1D1BC.field_4 == true)
                     {
@@ -201,13 +201,13 @@ namespace engine
                     {
                         int i1 = gbl.stru_1D1BC[screenX + deltaX, deltaY + screenY];
                         //THIS DRAW BACKGROUND MAP.
-                        ovr034.sub_760F7(0, gbl.unk_189B4[i1].field_3, (mapY + deltaY) * 3, (mapX + deltaX) * 3);
+                        ovr034.draw_iso_title(0, gbl.unk_189B4[i1].field_3, (mapY + deltaY) * 3, (mapX + deltaX) * 3);
                     }
                 }
             }
             else if ( CoordOnScreen(mapY, mapX) == true )
             {
-                ovr034.sub_760F7(0, gbl.unk_189B4[gbl.stru_1D1BC[screenX, screenY]].field_3, mapY * 3, mapX * 3);
+                ovr034.draw_iso_title(0, gbl.unk_189B4[gbl.stru_1D1BC[screenX, screenY]].field_3, mapY * 3, mapX * 3);
             }
         }
 
@@ -337,7 +337,7 @@ namespace engine
                     {
                         byte AX = gbl.unk_189B4[gbl.stru_1D1BC[mapY, mapX]].field_3;
 
-                        ovr034.sub_760F7(0, AX, screenRowY, screenColX);
+                        ovr034.draw_iso_title(0, AX, screenRowY, screenColX);
 
                         screenColX += IconColumnSize;
                         mapY++;
@@ -556,9 +556,9 @@ namespace engine
                         {
                             arg_0 = 1;
                         }
-                        else if (gbl.unk_189B4[var_4].field_0 >= var_5)
+                        else if (gbl.unk_189B4[var_4].move_cost >= var_5)
                         {
-                            var_5 = gbl.unk_189B4[var_4].field_0;
+                            var_5 = gbl.unk_189B4[var_4].move_cost;
                             arg_8 = var_4;
                         }
                     }
@@ -711,7 +711,7 @@ namespace engine
 
                 if (var_4 != 0 ||
                     var_5 == 0 ||
-                    gbl.unk_189B4[var_5].field_0 == 0xff)
+                    gbl.unk_189B4[var_5].move_cost == 0xff)
                 {
                     gbl.stru_1C9CD[var_2].field_3 = 0;
                 }
