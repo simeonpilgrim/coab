@@ -42,11 +42,11 @@ namespace engine
         {
             if (arg_2 > 0x7f)
             {
-                seg040.OverlayUnbounded(gbl.overlayLines, gbl.dword_1C8FC, arg_2, arg_2 & 0x7F, rowY, colX);
+                seg040.OverlayUnbounded(gbl.dword_1C8FC, arg_2, arg_2 & 0x7F, rowY, colX);
             }
             else
             {
-                seg040.OverlayUnbounded(gbl.overlayLines, gbl.dword_1C8F8, arg_0, arg_2, rowY, colX);
+                seg040.OverlayUnbounded(gbl.dword_1C8F8, arg_0, arg_2, rowY, colX);
             }
         }
 
@@ -113,29 +113,28 @@ namespace engine
 
         internal static void sub_76504(byte arg_0, byte arg_2, byte arg_4, int tileY, int tileX)
         {
-            DaxBlock var_8;
-            DaxBlock var_4;
+            //DaxBlock var_8;
+            //DaxBlock var_4;
+            DaxBlock var_8 = gbl.combat_icons[arg_0, arg_2];
 
-            if (gbl.combat_icons[arg_0, arg_2] != null)
+            if (var_8 != null)
             {
-                var_8 = gbl.combat_icons[arg_0, arg_2];
+                //seg040.init_dax_block(out var_4, 1, 1, var_8.width, var_8.height);
 
-                seg040.init_dax_block(out var_4, 1, 1, var_8.width, var_8.height);
+                //if (arg_4 > 3)
+                //{
+                //    seg040.makeInverse(var_4, var_8);
+                //}
+                //else
+                //{
+                //    System.Array.Copy(var_8.data, var_4.data, var_8.data.Length);
+                //    System.Array.Copy(var_8.data_ptr, var_4.data_ptr, var_8.data_ptr.Length);
+                //}
 
-                if (arg_4 > 3)
-                {
-                    seg040.merge_icon(var_4, gbl.combat_icons[arg_0, arg_2]);
-                }
-                else
-                {
-                    System.Array.Copy(var_8.data, var_4.data, var_8.data.Length);
-                    System.Array.Copy(var_8.data_ptr, var_4.data_ptr, var_8.data_ptr.Length);
-                }
+                //seg040.OverlayBounded(var_4, 1, 0, tileY * 3, tileX * 3);
+                seg040.draw_picture(var_8, (tileY * 3) + 1, (tileX * 3) + 1, 0);
 
-                seg040.sub_E353(gbl.overlayLines, var_4, 1, 0, tileY * 3, tileX * 3);
-                //seg040.draw_picture(var_4, tileY * 3, tileX * 3);
-
-                seg040.free_dax_block(ref var_4);
+                //seg040.free_dax_block(ref var_4);
             }
         }
     }

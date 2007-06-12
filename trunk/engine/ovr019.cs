@@ -443,7 +443,7 @@ namespace engine
             var_42 = new DaxArray();
 
             ovr030.load_pic_final( ref var_42, 2, arg_2, "PIC" );
-            seg040.sub_E353( gbl.overlayLines, var_42.ptrs[0].field_4, 0, 0, arg_4 - 1, arg_6 - 1);
+            seg040.OverlayBounded( var_42.ptrs[0].field_4, 0, 0, arg_4 - 1, arg_6 - 1);
             seg040.DrawOverlay();
 
 			do

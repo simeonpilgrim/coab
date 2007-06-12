@@ -79,9 +79,9 @@ namespace engine
             byte var_3;
             ushort var_2;
 
-            seg040.sub_F6F7(gbl.overlayLines, gbl.unk_188B4, gbl.byte_1D534, 0x2c, 11, 16, 2);
-            seg040.sub_F6F7(gbl.overlayLines, gbl.unk_188B4, gbl.unk_188B4[0], 2, 11, 0x3c, 2);
-            seg040.sub_F6F7(gbl.overlayLines, gbl.unk_188B4, gbl.byte_1D537, 0x2a, 11, 0x3e, 2);
+            seg040.DrawColorBlock(gbl.byte_1D534, 0x2c, 11, 16, 2);
+            seg040.DrawColorBlock(0, 2, 11, 0x3c, 2);
+            seg040.DrawColorBlock(gbl.byte_1D537, 0x2a, 11, 0x3e, 2);
 
             if (sub_717A5(gbl.mapPosY, gbl.mapPosY) < 0x80 &&
                 gbl.byte_1D534 == 11)
@@ -96,11 +96,11 @@ namespace engine
                 {
                     if (gbl.mapDirection == 2)
                     {
-                        seg040.sub_E353(gbl.overlayLines, gbl.sky_dax_251, 1, 0, (var_4 + 5) - var_2, var_5 - 3);
+                        seg040.OverlayBounded(gbl.sky_dax_251, 1, 0, (var_4 + 5) - var_2, var_5 - 3);
                     }
                     else if (gbl.mapDirection == 4 && var_2 > 2)
                     {
-                        seg040.sub_E353(gbl.overlayLines, gbl.sky_dax_251, 1, 0, (var_4 + 5) - var_2, (var_3 + var_2) - 3);
+                        seg040.OverlayBounded(gbl.sky_dax_251, 1, 0, (var_4 + 5) - var_2, (var_3 + var_2) - 3);
                     }
                 }
                 else if (var_2 >= 13 && var_2 <= 18)
@@ -108,22 +108,22 @@ namespace engine
                     if (gbl.mapDirection == 6)
                     {
 
-                        seg040.sub_E353(gbl.overlayLines, gbl.sky_dax_251, 1, 0, (var_4 + var_2) - 13, var_3);
+                        seg040.OverlayBounded(gbl.sky_dax_251, 1, 0, (var_4 + var_2) - 13, var_3);
                     }
                     else if (gbl.mapDirection == 4 && var_2 >= 16)
                     {
 
-                        seg040.sub_E353(gbl.overlayLines, gbl.sky_dax_251, 1, 0, (var_4 + var_2) - 13, (var_3 + var_2) - 8);
+                        seg040.OverlayBounded(gbl.sky_dax_251, 1, 0, (var_4 + var_2) - 13, (var_3 + var_2) - 8);
                     }
                 }
 
                 if (gbl.mapDirection == 0)
                 {
-                    seg040.sub_E353(gbl.overlayLines, gbl.sky_dax_250, 1, 0, var_4, var_3);
+                    seg040.OverlayBounded(gbl.sky_dax_250, 1, 0, var_4, var_3);
                 }
             }
 
-            seg040.sub_E353(gbl.overlayLines, gbl.sky_dax_252, 1, 0, 7, 2);
+            seg040.OverlayBounded(gbl.sky_dax_252, 1, 0, 7, 2);
         }
 
         /*seg600:0ADA*/

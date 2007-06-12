@@ -145,190 +145,43 @@ namespace engine
         }
 
 
-        internal static void OverlayUnbounded(DaxBlock dest, DaxBlock source, int arg_8, int itemIdex, int rowY, int colX)
+        internal static void OverlayUnbounded(DaxBlock source, int arg_8, int itemIdex, int rowY, int colX)
         {
-            bool var_E;
-
-            var_E = ((arg_8 & 1) != 0 && source.data_ptr != null);
-
-            if (var_E == true)
-            {
-                OverlayMergeUnbounded(dest, source, itemIdex, rowY, colX);
-            }
-            else
-            {
-                OverlayCopyUnbounded(dest, source, itemIdex, rowY, colX);
-            }
+            draw_picture(source, rowY + 1, colX + 1, itemIdex);
         }
 
 
-        internal static void sub_E353(DaxBlock dest, DaxBlock source, byte arg_8, int itemIndex, int rowY, int colX)
+        internal static void OverlayBounded(DaxBlock source, byte arg_8, int itemIndex, int rowY, int colX) /* sub_E353 */
         {
-            int backupOffset;
-            bool doBackup;
-            int sourcePrefix;
-            int sourcePostfix;
-            int destPrefix;
-            int destPostfix;
-            int copySize;
-            int sourceOffset;
-            int destOffset;
-            int lineToCopy;
-            int lineNo;
-            int var_6;
-
-            if (colX < 0)
-            {
-                sourcePrefix = System.Math.Abs(colX);
-                destPrefix = 0;
-            }
-            else
-            {
-                sourcePrefix = 0;
-                destPrefix = colX;
-            }
-
-            if (dest.width < (colX + source.width))
-            {
-                sourcePostfix = (colX + source.width) - dest.width;
-                destPostfix = 0;
-            }
-            else
-            {
-                sourcePostfix = 0;
-                destPostfix = dest.width - colX - source.width;
-            }
-
-            int posY = System.Math.Abs(rowY) * 8;
-
-            if (rowY < 0)
-            {
-                lineToCopy = source.height - posY;
-                sourceOffset = posY * (source.width * 8);
-                destOffset = 0;
-                lineNo = 0;
-            }
-            else
-            {
-                sourceOffset = 0;
-                lineNo = posY;
-                destOffset = lineNo * (dest.width * 8);
-
-                if ((lineNo + source.height) > dest.height)
-                {
-                    lineToCopy = dest.height - lineNo;
-                }
-                else
-                {
-                    lineToCopy = source.height;
-                }
-            }
-
-            if (source.width < sourcePrefix ||
-                source.width < sourcePostfix ||
-                sourceOffset > source.bpp ||
-                destOffset > dest.bpp ||
-                lineToCopy > source.height)
-            {
-                return;
-            }
-
-            copySize = (source.width - sourcePrefix - sourcePostfix) * 8;
-            //sourcePrefix *= 8;
-            //sourcePostfix *= 8;
-            //destPostfix *= 8;
-            //destPrefix *= 8;
-            var_6 = destPrefix;
-
-            backupOffset = sourceOffset;
-            sourceOffset += source.bpp * itemIndex;
-
-            if (arg_8 == 1)
-            {
-                DaxBlockSubMerge(lineNo, lineToCopy, dest, source, null, source.data_ptr, var_6,
-                    destOffset, sourceOffset, copySize, destPostfix, destPrefix,
-                    sourcePostfix, sourcePrefix, false, backupOffset);
-
-                return;
-            }
-
-            doBackup = false;
-
-            if (arg_8 != 4)
-            {
-                doBackup = true;
-                //throw new System.ApplicationException("if this happens, the null below needs to be re-thought");
-            }
-
-            DaxBlockSubMerge(lineNo, lineToCopy, dest, source, null, source.data_ptr, var_6,
-                destOffset, sourceOffset, copySize, destPostfix, destPrefix,
-                sourcePostfix, sourcePrefix, doBackup, backupOffset);
-            return;
+            draw_picture(source, rowY + 1, colX + 1, itemIndex);
         }
 
 
         internal static byte bits_flip(byte arg_0)
         {
-            byte var_2;
+            if (arg_0 != 16)
+            {
+                arg_0 ^= 0xf;
+            }
 
-            var_2 = (byte)((arg_0 & 0x01) << 7);
-            var_2 += (byte)((arg_0 & 0x02) << 5);
-            var_2 += (byte)((arg_0 & 0x04) << 3);
-            var_2 += (byte)((arg_0 & 0x08) << 1);
-            var_2 += (byte)((arg_0 & 0x10) >> 1);
-            var_2 += (byte)((arg_0 & 0x20) >> 3);
-            var_2 += (byte)((arg_0 & 0x40) >> 5);
-            var_2 += (byte)((arg_0 & 0x80) >> 7);
-
-            return var_2;
+            return arg_0;
         }
 
 
-        internal static void merge_icon(DaxBlock arg_0, DaxBlock arg_4)
+        internal static void makeInverse(DaxBlock dest, DaxBlock source)
         {
-            short var_17;
-            short var_15;
-            DaxBlock var_13;
-            byte var_D;
-            short var_C;
-            short var_A;
-            short var_8;
-            short var_6;
-            short var_4;
-            short var_2;
-
-            if (arg_4 != null && arg_0 != null)
+            if (source != null && dest != null)
             {
-                var_13 = arg_4;
+                seg051.Move(8, dest.field_9, source.field_9);
 
-                seg051.Move(8, arg_0.field_9, var_13.field_9);
-
-                var_8 = (short)(var_13.width << 2);
-                var_4 = (short)(var_8 - 4);
-                var_2 = 0;
-                var_15 = var_13.height;
-
-                for (var_C = 1; var_C <= var_15; var_C++)
+                for (int i = 0; i < source.data.Length; i++)
                 {
-                    var_6 = var_2;
-                    var_17 = var_13.width;
+                    dest.data[i] = bits_flip(source.data[i]);
 
-                    for (var_A = 1; var_A <= var_17; var_A++)
+                    if (source.data_ptr != null)
                     {
-                        for (var_D = 0; var_D <= 3; var_D++)
-                        {
-                            arg_0.data[var_D + var_2] = bits_flip(var_13.data[var_4 - var_2 + var_6 + var_D]);
-
-                            if (var_13.data_ptr != null)
-                            {
-                                arg_0.data_ptr[var_D + var_2] = bits_flip(var_13.data_ptr[var_4 - var_2 + var_6 + var_D]);
-                            }
-                        }
-
-                        var_2 += 4;
+                        dest.data_ptr[i] = bits_flip(source.data_ptr[i]);
                     }
-
-                    var_4 += var_8;
                 }
             }
         }
@@ -415,36 +268,23 @@ namespace engine
         }
 
 
-        internal static void draw_picture(DaxBlock dax_block, int rowY, int colX)
+        internal static void draw_picture(DaxBlock dax_block, int rowY, int colX, int index)
         {
-            DaxBlock dax_block_ptr;
-            int var_10;
-            int maxY;
-            int maxX;
-            int minY;
-            int minX;
-
             if (dax_block != null)
             {
-                dax_block_ptr = dax_block;
+                int var_10 = index * dax_block.bpp;
 
-                var_10 = 0;
+                int minY = rowY * 8;
+                int maxY = minY + dax_block.height;
 
-                minY = rowY * 8;
-                maxY = minY + dax_block_ptr.height - 1;
+                int minX = colX * 8;
+                int maxX = minX + (dax_block.width * 8);
 
-                minX = colX;
-                maxX = minX + dax_block_ptr.width;
-
-                minX *= 8;
-                maxX *= 8;
-                maxX -= 1;
-
-                for (int pixY = minY; pixY <= maxY; pixY++)
+                for (int pixY = minY; pixY < maxY; pixY++)
                 {
-                    for (int pixX = minX; pixX <= maxX; pixX++)
+                    for (int pixX = minX; pixX < maxX; pixX++)
                     {
-                        if (pixX < 320 && pixY < 200)
+                        if (pixX >= 0 && pixX < 320 && pixY >= 0 && pixY < 200)
                         {
                             Display.SetPixel3(pixX, pixY, dax_block.data[var_10]);
                         }
@@ -452,6 +292,7 @@ namespace engine
                         var_10++;
                     }
                 }
+
                 Display.Update();
             }
         }
@@ -460,41 +301,7 @@ namespace engine
 
         internal static void DrawOverlay()
         {
-            backcolor = (backcolor+1)%8;
-
-            for (int line = 0; line < 0x0A8; line++)
-            {
-                if (gbl.overlayLineFlag[line] == true)
-                {
-                    int xPos = gbl.overlayLineXStart[line];
-
-                    int dataPosStart = gbl.overlayLineDataStart[line];
-                    int dataPosEnd = gbl.overlayLineDataEnd[line];
-
-                    for (int dataPos = dataPosStart; dataPos <= dataPosEnd; dataPos++)
-                    {
-                        if (xPos+8 < 320)
-                        {
-                            byte c = gbl.overlayLines.data[dataPos];
-                            if (c == 0) c = (byte)backcolor;
-                            Display.SetPixel3(xPos + 8, line + 8, c);
-                        }
-
-                        xPos += 1;
-                    }
-                }
-            }
-
-            Display.Update();
-
-            for (int i = 0; i < 0xA8; i++)
-            {
-                gbl.overlayLineFlag[i] = false;
-                gbl.overlayLineDataStart[i] = int.MaxValue;
-                gbl.overlayLineDataEnd[i] = 0;
-            }
-
-            System.Array.Clear(gbl.overlayLines.data, 0, gbl.overlayLines.data.Length);
+            //TODO remove this.
         }
 
         internal static void SetPaletteColor(byte color, byte index)
@@ -642,250 +449,24 @@ namespace engine
         }
 
 
-        internal static void sub_F6F7(DaxBlock arg_0, byte[] arg_4, byte mask, ushort arg_A, ushort width, short posY, short posX)
+        internal static void DrawColorBlock(byte color, int lineCount, int colWidth, int lineY, int colX)
         {
-            int lineNo;
-            int dataPos;
-            int lineCount;
-            int lineWidth;
-            int dataPostfix;
-            int lineXPrefix;
-            int widthOverrun;
-            int dataXOffset;
+            int minY = lineY + 8;
+            int maxY = minY + lineCount;
 
-            if (arg_0 == null)
-            {
-                return;
-            }
+            int minX = (colX * 8) + 8;
+            int maxX = minX + (colWidth * 8) + 8;
 
-            if (posX < 0)
+            for (int pixY = minY; pixY < maxY; pixY++)
             {
-                dataXOffset = System.Math.Abs(posX);
-                lineXPrefix = 0;
-            }
-            else
-            {
-                dataXOffset = 0;
-                lineXPrefix = posX;
-            }
-
-            if (arg_0.width < (posX + width))
-            {
-                widthOverrun = (posX + width) - arg_0.width;
-                dataPostfix = 0;
-            }
-            else
-            {
-                widthOverrun = 0;
-                dataPostfix = arg_0.width - (posX + width);
-            }
-
-            if (posY < 0)
-            {
-                dataPos = 0;
-                lineNo = 0;
-                lineCount = arg_A - System.Math.Abs(posY);
-            }
-            else
-            {
-                lineNo = posY;
-                dataPos = lineNo * arg_0.width;
-                lineCount = arg_A - 1;
-
-                if (arg_0.height < (arg_A + posY))
+                for (int pixX = minX; pixX < maxX; pixX++)
                 {
-                    lineCount = (arg_0.height - 1) - posY;
+                    if (pixX >= 0 && pixX < 320 && pixY >= 0 && pixY < 200)
+                    {
+                        Display.SetPixel3(pixX, pixY, color);
+                    }
                 }
             }
-
-            lineWidth = (short)(width - dataXOffset - widthOverrun) * 8;
-
-            lineXPrefix *= 8;
-            dataPostfix *= 8;
-            dataPos *= 8;
-
-            //for (int y = 0; y <= lineCount; y++)
-            //{
-            //    gbl.overlayLineFlag[lineNo] = true;
-            //    dataPos += lineXPrefix;
-
-            //    if (gbl.overlayLineDataStart[lineNo] > dataPos)
-            //    {
-            //        gbl.overlayLineDataStart[lineNo] = dataPos;
-            //        gbl.overlayLineXStart[lineNo] = lineXPrefix;
-            //    }
-
-            //    for (int x = 0; x < lineWidth; x++)
-            //    {
-            //        arg_0.data[dataPos] = mask;
-            //        dataPos += 1;
-            //    }
-
-            //    if ((dataPos - 1) > gbl.overlayLineDataEnd[lineNo])
-            //    {
-            //        gbl.overlayLineDataEnd[lineNo] = dataPos - 1;
-            //    }
-
-            //    dataPos += dataPostfix;
-            //    lineNo++;
-            //}
-        }
-
-
-        static void OverlayCopyUnbounded(DaxBlock dest, DaxBlock source, int itemIndex, int rowY, int colX)
-        {
-            int linePrefix;
-            int linePostfix;
-            int copySize;
-            int sourceOffset;
-            int destOffset;
-            int var_6;
-
-
-            int lineNo = rowY * 8;
-            destOffset = lineNo * dest.width * 8;
-            linePrefix = colX * 8;
-
-            linePostfix = (dest.width - source.width - colX) * 8;
-            var_6 = linePrefix;
-
-            copySize = (short)(source.width * 4);
-            int linesToCopy = source.height;
-
-            sourceOffset = source.bpp * itemIndex;
-
-            DaxBlockSubCopy(lineNo, linesToCopy, dest, source, var_6, destOffset, sourceOffset,
-                copySize, linePostfix, linePrefix);
-        }
-
-
-        static void OverlayMergeUnbounded(DaxBlock dest, DaxBlock source, int itemIdex, int rowY, int colX)
-        {
-            int lineNo = rowY * 8;
-
-            int sourceOffset = source.bpp * itemIdex;
-            int destOffset = lineNo * dest.width * 8;
-
-            int destPrefix = colX * 8;
-            int destPostfix = (dest.width - source.width - colX) * 8;
-
-            int sourcePrefix = 0;
-            int sourcePostfix = 0;
-
-            int var_6 = destPrefix;
-
-            int copySize = source.width * 8;
-            int linesToCopy = source.height;
-
-            bool doBackup = false;
-            int backupOffset = 0; /* not used because var_1A is false */
-
-            DaxBlockSubMerge(lineNo, linesToCopy, dest, source, null, source.data_ptr, var_6,
-                destOffset, sourceOffset, copySize,
-                destPostfix, destPrefix, sourcePostfix, sourcePrefix,
-                doBackup, backupOffset);
-            return;
-        }
-
-        static void DaxBlockSubCopy(int lineNo, int linesToCopy, DaxBlock dest, DaxBlock source, int bp_var_6,
-            int destOffset, int sourceOffset, int copySize, int linePostfix, int linePrefix)
-        {
-            for (int i = 0; i < linesToCopy; i++)
-            {
-                gbl.overlayLineFlag[lineNo] = true;
-
-                destOffset += linePrefix;
-
-                if (destOffset <= gbl.overlayLineDataStart[lineNo])
-                {
-                    gbl.overlayLineDataStart[lineNo] = destOffset;
-                    gbl.overlayLineXStart[lineNo] = bp_var_6;
-                }
-
-                System.Array.Copy(source.data, sourceOffset, dest.data, destOffset, copySize);
-
-                sourceOffset += copySize;
-                destOffset += copySize;
-
-                if ((destOffset - 1) > gbl.overlayLineDataEnd[lineNo])
-                {
-                    gbl.overlayLineDataEnd[lineNo] = destOffset - 1;
-                    int width = gbl.overlayLineDataEnd[lineNo] - gbl.overlayLineDataStart[lineNo];
-                }
-
-                destOffset += linePostfix;
-                lineNo += 1;
-            }
-
-            //draw_picture(source, lineNo / 8, bp_var_6+1);
-        }
-
-
-        static void DaxBlockSubMerge(int lineNo, int linesToCopy, DaxBlock dest, DaxBlock source, DaxBlock backup,
-            byte[] source_data_ptr, int bp_var_6, int destOffset, int sourceOffset, int copySize, int destPostfix,
-            int destPrefix, int sourcePostfix, int sourcePrefix, bool doBackup, int backupOffset)
-        {
-            //do
-            //{
-            //    gbl.overlayLineFlag[lineNo] = true;
-
-            //    sourceOffset += sourcePrefix;
-            //    destOffset += destPrefix;
-
-            //    if (destOffset <= gbl.overlayLineDataStart[lineNo])
-            //    {
-            //        gbl.overlayLineDataStart[lineNo] = destOffset;
-            //        gbl.overlayLineXStart[lineNo] = bp_var_6;
-            //    }
-
-            //    for (int i = 0; i < copySize; i++)
-            //    {
-            //        if (doBackup == true)
-            //        {
-            //            if (backup != null)
-            //            {
-            //                backup.data[backupOffset] = dest.data[destOffset];
-            //            }
-            //        }
-
-            //        //if (dest.data[destOffset] == 16 ||
-            //        //    source_data_ptr[sourceOffset] == 16 ||
-            //        //    source.data[sourceOffset] == 16)
-            //        //{
-            //        //}
-
-            //        if (source.data[sourceOffset] == 16)
-            //        {
-            //            //dest.data[destOffset] = leave it alone;
-            //        }
-            //        else
-            //        {
-            //            dest.data[destOffset] = source.data[sourceOffset];
-            //        }
-
-            //        //dest.data[destOffset] &= source_data_ptr[sourceOffset];
-            //        //dest.data[destOffset] |= source.data[sourceOffset];
-
-            //        sourceOffset += 1;
-            //        backupOffset += 1;
-            //        destOffset += 1;
-            //    }
-
-            //    if ((destOffset - 1) > gbl.overlayLineDataEnd[lineNo])
-            //    {
-            //        gbl.overlayLineDataEnd[lineNo] = destOffset - 1;
-            //        int width = gbl.overlayLineDataEnd[lineNo] - gbl.overlayLineDataStart[lineNo];
-
-            //    }
-
-            //    destOffset += destPostfix;
-            //    sourceOffset += sourcePostfix;
-            //    backupOffset += sourcePostfix;
-
-            //    lineNo += 1;
-            //} while ((--linesToCopy) != 0);
-
-            draw_picture(source, lineNo / 8, bp_var_6+1);
         }
     }
 }

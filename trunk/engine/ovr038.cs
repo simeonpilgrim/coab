@@ -80,7 +80,7 @@ namespace engine
 
                 if (arg_2 != 0)
                 {
-                    seg040.OverlayUnbounded(gbl.overlayLines, gbl.symbol_8x8_set[symbol_set], arg_0, (byte)symbol_id, rowY, colX);
+                    seg040.OverlayUnbounded(gbl.symbol_8x8_set[symbol_set], arg_0, (byte)symbol_id, rowY, colX);
                 }
                 else
                 {
@@ -92,7 +92,7 @@ namespace engine
 					{
 						gbl.dword_1C8F4.data[ i ] = var_6.data[ i + ax ];
 					}
-                    seg040.draw_picture( gbl.dword_1C8F4, rowY, colX );
+                    seg040.draw_picture( gbl.dword_1C8F4, rowY, colX, 0 );
                 }
             }
         }

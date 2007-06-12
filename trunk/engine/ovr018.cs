@@ -2180,7 +2180,7 @@ namespace engine
 
         internal static void sub_4FB7C(sbyte arg_2, sbyte arg_4)
         {
-            seg040.sub_F6F7(gbl.overlayLines, gbl.unk_188B4, 0, 24, 12, (short)(arg_2 * 24), (short)(arg_4 * 3));
+            seg040.DrawColorBlock( 0, 24, 12, (short)(arg_2 * 24), (short)(arg_4 * 3));
 
             ovr034.sub_76504(25, 0, 0, arg_2, arg_4);
             ovr034.sub_76504(25, 1, 0, arg_2, arg_4 + 3);

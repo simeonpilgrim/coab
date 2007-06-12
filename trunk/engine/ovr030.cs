@@ -21,12 +21,12 @@ namespace engine
                         seg040.DaxBlockRecolor(dax_block, 1, 0, unk_16DBA, unk_16DAA);
                     }
 
-                    seg040.sub_E353(gbl.overlayLines, dax_block, 0, 0, arg_6 - 1, arg_8 - 1);
+                    seg040.OverlayBounded(dax_block, 0, 0, arg_6 - 1, arg_8 - 1);
                     seg040.DrawOverlay();
                 }
                 else
                 {
-                    seg040.draw_picture(dax_block, arg_6, arg_8);
+                    seg040.draw_picture(dax_block, arg_6, arg_8, 0);
                 }
             }
         }
@@ -265,7 +265,7 @@ namespace engine
             if (arg_0.ptrs[arg_4 - 1].field_4 != null)
             {
                 var_46 = arg_0.ptrs[arg_4 - 1].field_4;
-                seg040.sub_E353(gbl.overlayLines, arg_0.ptrs[arg_4 - 1].field_4, 1, 0, var_46.field_6 + 3 - 1, var_46.field_4 + 3 - 1);
+                seg040.OverlayBounded(arg_0.ptrs[arg_4 - 1].field_4, 1, 0, var_46.field_6 + 3 - 1, var_46.field_4 + 3 - 1);
                 seg040.DrawOverlay();
             }
         }
@@ -286,7 +286,7 @@ namespace engine
         internal static void sub_7087A()
         {
             seg037.draw8x8_04();
-            seg040.draw_picture(gbl.word_1D5B6, 1, 1);
+            seg040.draw_picture(gbl.word_1D5B6, 1, 1, 0);
         }
     }
 }
