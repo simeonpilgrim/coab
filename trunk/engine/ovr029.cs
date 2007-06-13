@@ -37,7 +37,7 @@ namespace engine
                         gbl.mapAreaDisplay = false;
                     }
 
-                    ovr031.sub_71820(gbl.mapDirection, gbl.mapPosY, gbl.mapPosX);
+                    ovr031.Draw3dWorld(gbl.mapDirection, gbl.mapPosY, gbl.mapPosX);
                 }
                 else if (gbl.byte_1D8AA != 0)
                 {

@@ -582,7 +582,7 @@ namespace engine
 								{
 									gbl.mapAreaDisplay = ( gbl.mapAreaDisplay == false );
 
-									ovr031.sub_71820( gbl.mapDirection, gbl.mapPosY, gbl.mapPosX );
+									ovr031.Draw3dWorld( gbl.mapDirection, gbl.mapPosY, gbl.mapPosX );
 								}
 								else
 								{
@@ -633,7 +633,7 @@ namespace engine
 								gbl.mapDirection = (byte)((gbl.mapDirection + 4) % 8);
 
 								gbl.byte_1D53C = ovr031.sub_716A2( gbl.mapDirection, gbl.mapPosY, gbl.mapPosX );
-								ovr031.sub_71820( gbl.mapDirection, gbl.mapPosY, gbl.mapPosX );
+								ovr031.Draw3dWorld( gbl.mapDirection, gbl.mapPosY, gbl.mapPosX );
 								break;
 
 							case 'K':
@@ -641,7 +641,7 @@ namespace engine
 
 								seg044.sub_120E0( gbl.word_188D2 );
 								gbl.byte_1D53C = ovr031.sub_716A2( gbl.mapDirection, gbl.mapPosY, gbl.mapPosX );
-								ovr031.sub_71820( gbl.mapDirection, gbl.mapPosY, gbl.mapPosX );
+								ovr031.Draw3dWorld( gbl.mapDirection, gbl.mapPosY, gbl.mapPosX );
 								break;
 
 							case 'M':
@@ -650,7 +650,7 @@ namespace engine
 								seg044.sub_120E0( gbl.word_188D2 );
 
 								gbl.byte_1D53C = ovr031.sub_716A2( gbl.mapDirection, gbl.mapPosY, gbl.mapPosX );
-								ovr031.sub_71820( gbl.mapDirection, gbl.mapPosY, gbl.mapPosX );
+								ovr031.Draw3dWorld( gbl.mapDirection, gbl.mapPosY, gbl.mapPosX );
 								break;
 
 							default:
