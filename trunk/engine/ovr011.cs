@@ -98,20 +98,20 @@ namespace engine
         }
 
 
-        internal static byte sub_37306(byte dir, int mapX, int mapY)
+        internal static byte sub_37306(byte dir, int mapY, int mapX)
         {
             byte var_1;
 
-            if (mapY >= 0 && mapY <= 15 &&
-                mapX >= 0 && mapX <= 15)
+            if (mapX >= 0 && mapX <= 15 &&
+                mapY >= 0 && mapY <= 15)
             {
-                if (ovr031.WallDoorFlagsGet(dir, mapX, mapY) == 0)
+                if (ovr031.WallDoorFlagsGet(dir, mapY, mapX) == 0)
                 {
                     var_1 = 1;
                 }
                 else
                 {
-                    if (ovr031.sub_716A2(dir, mapX, mapY) == 0)
+                    if (ovr031.getMap_XXX(dir, mapY, mapX) == 0)
                     {
                         var_1 = 0;
                     }
@@ -123,7 +123,7 @@ namespace engine
             }
             else
             {
-                if (mapX == gbl.mapPosY &&
+                if (mapY == gbl.mapPosY &&
                     (dir == 2 || dir == 6))
                 {
                     var_1 = 0;

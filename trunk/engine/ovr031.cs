@@ -5,58 +5,58 @@ namespace engine
     class ovr031
     {
 
-        internal static void DrawAreaMap(int partyDir, int partyMapX, int partyMapY)
+        internal static void DrawAreaMap(int partyDir, int partyMapY, int partyMapX)
         { /* sub_7100F */
             const int displayWidth = 11;
             const int halfDisplayWidth = displayWidth / 2;
             const int displayOffset = 2;
-
-            int offsetY = partyMapY - halfDisplayWidth;
-            offsetY = System.Math.Max(offsetY, 0);
-            offsetY = System.Math.Min(offsetY, halfDisplayWidth);
-
 
             int offsetX = partyMapX - halfDisplayWidth;
             offsetX = System.Math.Max(offsetX, 0);
             offsetX = System.Math.Min(offsetX, halfDisplayWidth);
 
 
-            for (int x = 0; x < displayWidth; x++)
-            {
-                int mapX = (sbyte)(x + offsetX);
+            int offsetY = partyMapY - halfDisplayWidth;
+            offsetY = System.Math.Max(offsetY, 0);
+            offsetY = System.Math.Min(offsetY, halfDisplayWidth);
 
-                for (int y = 0; y < displayWidth; y++)
+
+            for (int y = 0; y < displayWidth; y++)
+            {
+                int mapY = y + offsetY;
+
+                for (int x = 0; x < displayWidth; x++)
                 {
-                    int mapY = (sbyte)(y + offsetY);
+                    int mapX = x + offsetX;
 
                     short var_A = 0x104;
 
-                    if (sub_716A2(0, mapX, mapY) > 0)
+                    if (getMap_XXX(0, mapY, mapX) > 0)
                     {
                         var_A += 1;
                     }
 
-                    if (sub_716A2(2, mapX, mapY) > 0)
+                    if (getMap_XXX(2, mapY, mapX) > 0)
                     {
                         var_A += 2;
                     }
 
-                    if (sub_716A2(4, mapX, mapY) > 0)
+                    if (getMap_XXX(4, mapY, mapX) > 0)
                     {
                         var_A += 4;
                     }
 
-                    if (sub_716A2(6, mapX, mapY) > 0)
+                    if (getMap_XXX(6, mapY, mapX) > 0)
                     {
                         var_A += 8;
                     }
 
-                    ovr038.Put8x8Symbol(0, 1, var_A, x + displayOffset, y + displayOffset);
+                    ovr038.Put8x8Symbol(0, 1, var_A, y + displayOffset, x + displayOffset);
                 }
             }
 
-            int partyScreenY = partyMapY - offsetY;
-            int partyScreenX = partyMapX - offsetX;
+            int partyScreenY = partyMapX - offsetX;
+            int partyScreenX = partyMapY - offsetY;
 
             ovr038.Put8x8Symbol(0, 1, (short)((partyDir >> 1) + 0x100), partyScreenX + displayOffset, partyScreenY + displayOffset);
             seg040.DrawOverlay();
@@ -134,7 +134,7 @@ namespace engine
         /*seg600:0AEE*/
         static int[] rowOffsets = { 2, 4, 4, 4, 8, 8, 8, 11, 11, 2 };
  
-        internal static void sub_71434(byte offsetIndex, byte arg_2, int rowStart, int colStart)
+        internal static void sub_71434(int offsetIndex, int arg_2, int rowStart, int colStart)
         {
             int var_9 = dataOffset[offsetIndex];
 
@@ -148,11 +148,11 @@ namespace engine
             {
                 for (int colX = colStart; colX < colMax; colX++)
                 {
-                    short v = gbl.stru_1D52C[offsetA][offsetB + var_9];
+                    short symbolId = gbl.stru_1D52C[offsetA][offsetB + var_9];
 
-                    if (rowY >= 0 && rowY <= 10 && colX >= 0 && colX <= 10 && v > 0)
+                    if (rowY >= 0 && rowY <= 10 && colX >= 0 && colX <= 10 && symbolId > 0)
                     {
-                        ovr038.Put8x8Symbol(1, 1, v , rowY + 2, colX + 2);
+                        ovr038.Put8x8Symbol(1, 1, symbolId , rowY + 2, colX + 2);
 
                         Display.Update();
                     }
@@ -164,33 +164,24 @@ namespace engine
 
         const int MapSize = 16; // 16x16 so 0-15
 
-        internal static bool MapCoordIsValid(int mapX, int mapY)
+        internal static bool MapCoordIsValid(int mapY, int mapX)
         { /*sub_71542*/
-            return (mapY < MapSize && mapY >= 0 && mapX < MapSize && mapY >= 0);
+            return (mapX < MapSize && mapX >= 0 && mapY < MapSize && mapX >= 0);
         }
 
 
-        internal static byte WallDoorFlagsGet(int mapDir, int mapX, int mapY) /*sub_71573*/
+        internal static byte WallDoorFlagsGet(int mapDir, int mapY, int mapX) /*sub_71573*/
         {
             byte var_2;
             byte var_1;
 
-            if (MapCoordIsValid(mapX, mapY) == false &&
+            if (MapCoordIsValid(mapY, mapX) == false &&
                 (gbl.byte_1EE88 == 0 || gbl.byte_1EE88 == 10))
             {
                 var_1 = 0;
             }
             else
             {
-                if (mapY > 15)
-                {
-                    mapY = 0;
-                }
-                else if (mapY < 0)
-                {
-                    mapY = 0x0F;
-                }
-
                 if (mapX > 15)
                 {
                     mapX = 0;
@@ -200,26 +191,35 @@ namespace engine
                     mapX = 0x0F;
                 }
 
+                if (mapY > 15)
+                {
+                    mapY = 0;
+                }
+                else if (mapY < 0)
+                {
+                    mapY = 0x0F;
+                }
+
                 var_2 = 1;
 
-                if (sub_716A2(mapDir, mapX, mapY) > 0)
+                if (getMap_XXX(mapDir, mapY, mapX) > 0)
                 {
                     switch (mapDir)
                     {
                         case 6:
-                            var_2 = (byte)((gbl.stru_1D530[0x300 + mapY + (mapX << 4)] & 0xC0) >> 6);
+                            var_2 = (byte)((gbl.stru_1D530[0x300 + mapX + (mapY << 4)] & 0xC0) >> 6);
                             break;
 
                         case 4:
-                            var_2 = (byte)((gbl.stru_1D530[0x300 + mapY + (mapX << 4)] & 0x30) >> 4);
+                            var_2 = (byte)((gbl.stru_1D530[0x300 + mapX + (mapY << 4)] & 0x30) >> 4);
                             break;
 
                         case 2:
-                            var_2 = (byte)((gbl.stru_1D530[0x300 + mapY + (mapX << 4)] & 0x0c) >> 2);
+                            var_2 = (byte)((gbl.stru_1D530[0x300 + mapX + (mapY << 4)] & 0x0c) >> 2);
                             break;
 
                         case 0:
-                            var_2 = (byte)(gbl.stru_1D530[0x300 + mapY + (mapX << 4)] & 3);
+                            var_2 = (byte)(gbl.stru_1D530[0x300 + mapX + (mapY << 4)] & 3);
                             break;
                     }
                 }
@@ -231,26 +231,17 @@ namespace engine
         }
 
 
-        internal static byte sub_716A2(int direction, int mapX, int mapY)
+        internal static byte getMap_XXX(int direction, int mapY, int mapX)
         {
             byte var_1;
 
-            if (MapCoordIsValid(mapX, mapY) == false && 
+            if (MapCoordIsValid(mapY, mapX) == false && 
                 (gbl.byte_1EE88 == 0 || gbl.byte_1EE88 == 10))
             {
                 var_1 = 0;
             }
             else
             {
-                if (mapY > 0x0F)
-                {
-                    mapY = 0;
-                }
-                else if (mapY < 0)
-                {
-                    mapY = 0x0F;
-                }
-
                 if (mapX > 0x0F)
                 {
                     mapX = 0;
@@ -260,22 +251,31 @@ namespace engine
                     mapX = 0x0F;
                 }
 
+                if (mapY > 0x0F)
+                {
+                    mapY = 0;
+                }
+                else if (mapY < 0)
+                {
+                    mapY = 0x0F;
+                }
+
                 switch (direction)
                 {
                     case 0:
-                        var_1 = (byte)((gbl.stru_1D530[mapY + (mapX << 4)] & 0xf0) >> 4);
+                        var_1 = (byte)((gbl.stru_1D530[mapX + (mapY << 4)] & 0xf0) >> 4);
                         break;
 
                     case 2:
-                        var_1 = (byte)(gbl.stru_1D530[mapY + (mapX << 4)] & 0x0f);
+                        var_1 = (byte)(gbl.stru_1D530[mapX + (mapY << 4)] & 0x0f);
                         break;
 
                     case 4:
-                        var_1 = (byte)((gbl.stru_1D530[0x100 + mapY + (mapX << 4)] & 0xf0) >> 4);
+                        var_1 = (byte)((gbl.stru_1D530[0x100 + mapX + (mapY << 4)] & 0xf0) >> 4);
                         break;
 
                     case 6:
-                        var_1 = (byte)(gbl.stru_1D530[0x100 + mapY + (mapX << 4)] & 0x0f);
+                        var_1 = (byte)(gbl.stru_1D530[0x100 + mapX + (mapY << 4)] & 0x0f);
                         break;
 
                     default:
@@ -289,26 +289,17 @@ namespace engine
         }
 
 
-        internal static byte sub_717A5(int mapX, int mapY)
+        internal static byte sub_717A5(int mapY, int mapX)
         {
             byte var_1;
 
-            if (MapCoordIsValid(mapX, mapY) == false && 
+            if (MapCoordIsValid(mapY, mapX) == false && 
                 (gbl.byte_1EE88 == 0 || gbl.byte_1EE88 == 0x0A))
             {
                 var_1 = 0;
             }
             else
             {
-                if (mapY > 0x0F)
-                {
-                    mapY = 0;
-                }
-                if (mapY < 0)
-                {
-                    mapY = 0x0F;
-                }
-
                 if (mapX > 0x0F)
                 {
                     mapX = 0;
@@ -318,29 +309,29 @@ namespace engine
                     mapX = 0x0F;
                 }
 
-                var_1 = gbl.stru_1D530[0x200 + mapY + (mapX << 4)];
+                if (mapY > 0x0F)
+                {
+                    mapY = 0;
+                }
+                if (mapY < 0)
+                {
+                    mapY = 0x0F;
+                }
+
+                var_1 = gbl.stru_1D530[0x200 + mapX + (mapY << 4)];
             }
 
             return var_1;
         }
 
 
-        internal static void Draw3dWorld(byte partyDir, int partyPosX, int partyPosY) /* sub_71820 */
+        internal static void Draw3dWorld(byte partyDir, int partyPosY, int partyPosX) /* sub_71820 */
         {
-            byte var_17;
-            sbyte var_13;
-            short var_12;
-            byte var_10;
-            int tmpY;
-            int tmpX;
-            int var_B;
-            int var_9;
-
             Display.UpdateStop();
 
             if (gbl.mapAreaDisplay == true)
             {
-                DrawAreaMap(partyDir, partyPosX, partyPosY);
+                DrawAreaMap(partyDir, partyPosY, partyPosX);
             }
             else
             {
@@ -350,39 +341,35 @@ namespace engine
                 int dir_behind = (partyDir + 4) % 8;
                 int dir_right = (partyDir + 2) % 8;
 
-                int var_5 = partyPosY;
-                int var_7 = partyPosX;
-                var_9 = gbl.MapDirectionXDelta[partyDir];
-                var_B = gbl.MapDirectionYDelta[partyDir];
-                var_13 = 2;
-                var_5 += var_13 * var_9;
-                var_7 += var_13 * var_B;
+                int drawStep = 2;
+
+                int drawX = partyPosX + (drawStep * gbl.MapDirectionXDelta[partyDir]);
+                int drawY = partyPosY + (drawStep * gbl.MapDirectionYDelta[partyDir]);
 
                 do
                 {
-                    switch (var_13)
+                    switch (drawStep)
                     {
                         case 2:
-                            Draw3dWorldFar(partyDir, dir_left, dir_right, var_5, var_7, out var_17, out var_12, out var_10, out tmpY, out tmpX);
-
+                            Draw3dWorldFar(partyDir, dir_left, dir_right, drawX, drawY);
                             break;
 
                         case 1:
-                            Draw3DWorldMid(partyDir, dir_left, dir_right, var_5, var_7, out var_12, out var_10, out tmpY, out tmpX);
+                            Draw3dWorldMid(partyDir, dir_left, dir_right, drawX, drawY);
                             break;
 
                         case 0:
-                            Draw3dWorldNear(partyDir, dir_left, dir_right, var_5, var_7, out var_12, out var_10, out tmpY, out tmpX);
+                            Draw3dWorldNear(partyDir, dir_left, dir_right, drawX, drawY);
                             break;
                     }
 
 
-                    var_5 += gbl.MapDirectionXDelta[dir_behind];
-                    var_7 += gbl.MapDirectionYDelta[dir_behind];
+                    drawX += gbl.MapDirectionXDelta[dir_behind];
+                    drawY += gbl.MapDirectionYDelta[dir_behind];
 
-                    var_13 -= 1;
+                    drawStep -= 1;
 
-                } while (var_13 >= 0);
+                } while (drawStep >= 0);
 
 
                 Display.UpdateStart();
@@ -390,23 +377,230 @@ namespace engine
             }
         }
 
-        private static void Draw3dWorldNear(byte partyDir, int dir_left, int dir_right, int var_5, int var_7, out short var_12, out byte var_10, out int tmpY, out int tmpX)
+
+        private static void Draw3dWorldFar(byte partyDir, int dir_left, int dir_right, int drawX, int drawY)
         {
-            tmpX = gbl.MapDirectionXDelta[dir_left] + var_5;
-            tmpY = gbl.MapDirectionYDelta[dir_left] + var_7;
+            int tmpX = drawX;
+            int tmpY = drawY;
+            int var_10 = 0;
+            int var_12 = 0;
+            byte var_17 = 0;
+
+            while (var_10 < 4)
+            {
+                byte var_14 = getMap_XXX(partyDir, tmpY, tmpX);
+
+                if (MapCoordIsValid(tmpY, tmpX) == false &&
+                    getMap_XXX(dir_right, tmpY, tmpX) == 0)
+                {
+                    var_17 = 0;
+                }
+
+                if (var_14 != 0)
+                {
+                    if (var_17 > 0)
+                    {
+                        sub_71434(9, var_17, gbl.byte_16E2E, gbl.word_16E1A + var_12 + 1);
+                    }
+
+                    var_17 = var_14;
+
+                    sub_71434(0, var_14, gbl.byte_16E1C, gbl.word_16E08 + var_12);
+                }
+                else
+                {
+                    if (var_17 > 0 &&
+                        getMap_XXX(dir_left, tmpY - gbl.MapDirectionYDelta[dir_left], tmpX - gbl.MapDirectionXDelta[dir_left]) != 0)
+                    {
+                        sub_71434(9, var_17, gbl.byte_16E2E, gbl.word_16E1A + var_12 + 1);
+                    }
+
+                    var_17 = 0;
+                }
+
+                var_10++;
+
+                tmpX += gbl.MapDirectionXDelta[dir_left];
+                tmpY += gbl.MapDirectionYDelta[dir_left];
+            }
+
+            tmpX = drawX;
+            tmpY = drawY;
             var_10 = 0;
-            var_12 = -7;
+            var_12 = 0;
+            var_17 = 0;
+
+            while (var_10 < 4)
+            {
+                byte var_14 = getMap_XXX(partyDir, tmpY, tmpX);
+
+                if (MapCoordIsValid(tmpY, tmpX) == false &&
+                  getMap_XXX(dir_left, tmpY, tmpX) == 0)
+                {
+                    var_17 = 0;
+                }
+
+                if (var_14 != 0)
+                {
+                    if (var_17 > 0)
+                    {
+                        sub_71434(9, var_17, gbl.byte_16E2E, gbl.word_16E1A + var_12 - 1);
+                    }
+
+                    var_17 = var_14;
+                    sub_71434(0, var_14, gbl.byte_16E1C, gbl.word_16E08 + var_12);
+                }
+                else
+                {
+                    if (var_17 > 0 &&
+                        getMap_XXX(dir_right, tmpY - gbl.MapDirectionYDelta[dir_right], tmpX - gbl.MapDirectionXDelta[dir_right]) != 0)
+                    {
+                        sub_71434(9, var_17, gbl.byte_16E2E, gbl.word_16E1A + var_12 - 1);
+                    }
+
+                    var_17 = 0;
+                }
+
+                var_10++;
+                var_12 += 2;
+
+                tmpX += gbl.MapDirectionXDelta[dir_right];
+                tmpY += gbl.MapDirectionYDelta[dir_right];
+            }
+
+            tmpX = drawX;
+            tmpY = drawY;
+            var_10 = 0;
+            var_12 = 0;
+
+            while (var_10 < 3)
+            {
+                byte var_15 = getMap_XXX(dir_left, tmpY, tmpX);
+
+                if (var_15 != 0)
+                {
+                    if (var_10 == 0)
+                    {
+                        sub_71434(1, var_15, gbl.byte_16E1E, gbl.word_16E0A + var_12);
+                    }
+                    else
+                    {
+                        sub_71434(1, var_15, gbl.byte_16E1E, gbl.word_16E0A + var_12 - 1);
+                    }
+
+                }
+
+                var_10++;
+                var_12 -= 2;
+
+                tmpX += gbl.MapDirectionXDelta[dir_left];
+                tmpY += gbl.MapDirectionYDelta[dir_left];
+            }
+
+            tmpX = drawX;
+            tmpY = drawY;
+            var_10 = 0;
+            var_12 = 0;
+
+            while (var_10 < 3)
+            {
+                byte var_15 = getMap_XXX(dir_right, tmpY, tmpX);
+
+                if (var_15 != 0)
+                {
+                    if (var_10 == 0)
+                    {
+                        sub_71434(2, var_15, gbl.byte_16E20, gbl.word_16E0C + var_12);
+                    }
+                    else
+                    {
+                        sub_71434(2, var_15, gbl.byte_16E20, gbl.word_16E0C + var_12 + 1);
+                    }
+                }
+
+                var_10++;
+                var_12 += 2;
+
+                tmpX += gbl.MapDirectionXDelta[dir_right];
+                tmpY += gbl.MapDirectionYDelta[dir_right];
+            }
+        }
+
+
+        private static void Draw3dWorldMid(byte partyDir, int dir_left, int dir_right, int var_5, int var_7)
+        {
+            int tmpX = gbl.MapDirectionXDelta[dir_left] + var_5 + gbl.MapDirectionXDelta[dir_left];
+            int tmpY = gbl.MapDirectionYDelta[dir_left] + var_7 + gbl.MapDirectionYDelta[dir_left];
+            int var_10 = 0;
+            int var_12 = -6;
+
+            while (var_10 < 3)
+            {
+                byte var_14 = getMap_XXX(partyDir, tmpY, tmpX);
+                if (var_14 != 0)
+                {
+                    sub_71434(3, var_14, gbl.byte_16E22, gbl.word_16E0E + var_12);
+                }
+
+                byte var_15 = getMap_XXX(dir_left, tmpY, tmpX);
+                if (var_15 != 0)
+                {
+                    sub_71434(4, var_15, gbl.byte_16E24, gbl.word_16E10 + var_12);
+                }
+
+                var_10++;
+                var_12 += 3;
+                tmpX += gbl.MapDirectionXDelta[dir_right];
+                tmpY += gbl.MapDirectionYDelta[dir_right];
+            }
+
+
+            tmpX = gbl.MapDirectionXDelta[dir_right] + gbl.MapDirectionXDelta[dir_right] + var_5;
+            tmpY = gbl.MapDirectionYDelta[dir_right] + gbl.MapDirectionYDelta[dir_right] + var_7;
+            var_10 = 0;
+            var_12 = 6;
+            while (var_10 < 3)
+            {
+                byte var_14 = getMap_XXX(partyDir, tmpY, tmpX);
+
+                if (var_14 != 0)
+                {
+                    sub_71434(3, var_14, gbl.byte_16E22, gbl.word_16E0E + var_12);
+                }
+
+                byte var_15 = getMap_XXX(dir_right, tmpY, tmpX);
+
+                if (var_15 != 0)
+                {
+                    sub_71434(5, var_15, gbl.byte_16E26, gbl.word_16E12 + var_12);
+                }
+
+                var_10++;
+                var_12 -= 3;
+
+                tmpX += gbl.MapDirectionXDelta[dir_left];
+                tmpY += gbl.MapDirectionYDelta[dir_left];
+            }
+        }
+
+
+        private static void Draw3dWorldNear(byte partyDir, int dir_left, int dir_right, int var_5, int var_7)
+        {
+            int tmpX = gbl.MapDirectionXDelta[dir_left] + var_5;
+            int tmpY = gbl.MapDirectionYDelta[dir_left] + var_7;
+            int var_10 = 0;
+            int var_12 = -7;
 
             while (var_10 < 2)
             {
-                byte var_14 = sub_716A2(partyDir, tmpY, tmpX);
+                byte var_14 = getMap_XXX(partyDir, tmpY, tmpX);
 
                 if (var_14 != 0)
                 {
                     sub_71434(6, var_14, gbl.byte_16E28, gbl.word_16E14 + var_12);
                 }
 
-                byte var_15 = sub_716A2(dir_left, tmpY, tmpX);
+                byte var_15 = getMap_XXX(dir_left, tmpY, tmpX);
 
                 if (var_15 != 0)
                 {
@@ -429,7 +623,7 @@ namespace engine
             while (var_10 < 2)
             {
 
-                byte var_14 = sub_716A2(partyDir, tmpY, tmpX);
+                byte var_14 = getMap_XXX(partyDir, tmpY, tmpX);
 
                 if (var_14 != 0)
                 {
@@ -437,7 +631,7 @@ namespace engine
                     sub_71434(6, var_14, gbl.byte_16E28, var_12 + gbl.word_16E14);
                 }
 
-                byte var_15 = sub_716A2(dir_right, tmpY, tmpX);
+                byte var_15 = getMap_XXX(dir_right, tmpY, tmpX);
 
                 if (var_15 != 0)
                 {
@@ -452,212 +646,6 @@ namespace engine
             }
         }
 
-        private static void Draw3DWorldMid(byte partyDir, int dir_left, int dir_right, int var_5, int var_7, out short var_12, out byte var_10, out int tmpY, out int tmpX)
-        {
-            tmpX = gbl.MapDirectionXDelta[dir_left] + var_5;
-            tmpX += gbl.MapDirectionXDelta[dir_left];
-
-            tmpY = gbl.MapDirectionYDelta[dir_left] + var_7;
-            tmpY += gbl.MapDirectionYDelta[dir_left];
-            var_10 = 0;
-            var_12 = -6;
-
-            while (var_10 < 3)
-            {
-                byte var_14 = sub_716A2(partyDir, tmpY, tmpX);
-                if (var_14 != 0)
-                {
-                    sub_71434(3, var_14, gbl.byte_16E22, gbl.word_16E0E + var_12);
-                }
-
-                byte var_15 = sub_716A2(dir_left, tmpY, tmpX);
-                if (var_15 != 0)
-                {
-                    sub_71434(4, var_15, gbl.byte_16E24, gbl.word_16E10 + var_12);
-                }
-
-                var_10++;
-                var_12 += 3;
-                tmpX += gbl.MapDirectionXDelta[dir_right];
-                tmpY += gbl.MapDirectionYDelta[dir_right];
-            }
-
-
-            tmpX = gbl.MapDirectionXDelta[dir_right] + gbl.MapDirectionXDelta[dir_right] + var_5;
-            tmpY = gbl.MapDirectionYDelta[dir_right] + gbl.MapDirectionYDelta[dir_right] + var_7;
-            var_10 = 0;
-            var_12 = 6;
-            while (var_10 < 3)
-            {
-                byte var_14 = sub_716A2(partyDir, tmpY, tmpX);
-
-                if (var_14 != 0)
-                {
-                    sub_71434(3, var_14, gbl.byte_16E22, gbl.word_16E0E + var_12);
-                }
-
-                byte var_15 = sub_716A2(dir_right, tmpY, tmpX);
-
-                if (var_15 != 0)
-                {
-                    sub_71434(5, var_15, gbl.byte_16E26, gbl.word_16E12 + var_12);
-                }
-
-                var_10++;
-                var_12 -= 3;
-
-                tmpX += gbl.MapDirectionXDelta[dir_left];
-                tmpY += gbl.MapDirectionYDelta[dir_left];
-            }
-        }
-
-        private static void Draw3dWorldFar(byte partyDir, int dir_left, int dir_right, int var_5, int var_7, out byte var_17, out short var_12, out byte var_10, out int tmpY, out int tmpX)
-        {
-            tmpX = var_5;
-            tmpY = var_7;
-            var_10 = 0;
-            var_12 = 0;
-            var_17 = 0;
-
-            while (var_10 < 4)
-            {
-                byte var_14 = sub_716A2(partyDir, tmpY, tmpX);
-
-                if (MapCoordIsValid(tmpY, tmpX) == false &&
-                    sub_716A2(dir_right, tmpY, tmpX) == 0)
-                {
-                    var_17 = 0;
-                }
-
-                if (var_14 != 0)
-                {
-                    if (var_17 > 0)
-                    {
-                        sub_71434(9, var_17, gbl.byte_16E2E, gbl.word_16E1A + var_12 + 1);
-                    }
-
-                    var_17 = var_14;
-
-                    sub_71434(0, var_14, gbl.byte_16E1C, gbl.word_16E08 + var_12);
-                }
-                else
-                {
-                    if (var_17 > 0 &&
-                        sub_716A2(dir_left, tmpY - gbl.MapDirectionYDelta[dir_left], tmpX - gbl.MapDirectionXDelta[dir_left]) != 0)
-                    {
-                        sub_71434(9, var_17, gbl.byte_16E2E, gbl.word_16E1A + var_12 + 1);
-                    }
-
-                    var_17 = 0;
-                }
-
-                var_10++;
-
-                tmpX += gbl.MapDirectionXDelta[dir_left];
-                tmpY += gbl.MapDirectionYDelta[dir_left];
-            }
-
-            tmpX = var_5;
-            tmpY = var_7;
-            var_10 = 0;
-            var_12 = 0;
-            var_17 = 0;
-
-            while (var_10 < 4)
-            {
-                byte var_14 = sub_716A2(partyDir, tmpY, tmpX);
-
-                if (MapCoordIsValid(tmpY, tmpX) == false &&
-                  sub_716A2(dir_left, tmpY, tmpX) == 0)
-                {
-                    var_17 = 0;
-                }
-
-                if (var_14 != 0)
-                {
-                    if (var_17 > 0)
-                    {
-                        sub_71434(9, var_17, gbl.byte_16E2E, gbl.word_16E1A + var_12 - 1);
-                    }
-
-                    var_17 = var_14;
-                    sub_71434(0, var_14, gbl.byte_16E1C, gbl.word_16E08 + var_12);
-                }
-                else
-                {
-                    if (var_17 > 0 &&
-                        sub_716A2(dir_right, tmpY - gbl.MapDirectionYDelta[dir_right], tmpX - gbl.MapDirectionXDelta[dir_right]) != 0)
-                    {
-                        sub_71434(9, var_17, gbl.byte_16E2E, gbl.word_16E1A + var_12 - 1);
-                    }
-
-                    var_17 = 0;
-                }
-
-                var_10++;
-                var_12 += 2;
-
-                tmpX += gbl.MapDirectionXDelta[dir_right];
-                tmpY += gbl.MapDirectionYDelta[dir_right];
-            }
-
-            tmpX = var_5;
-            tmpY = var_7;
-            var_10 = 0;
-            var_12 = 0;
-
-            while (var_10 < 3)
-            {
-                byte var_15 = sub_716A2(dir_left, tmpY, tmpX);
-
-                if (var_15 != 0)
-                {
-                    if (var_10 == 0)
-                    {
-                        sub_71434(1, var_15, gbl.byte_16E1E, gbl.word_16E0A + var_12);
-                    }
-                    else
-                    {
-                        sub_71434(1, var_15, gbl.byte_16E1E, gbl.word_16E0A + var_12 - 1);
-                    }
-
-                }
-
-                var_10++;
-                var_12 -= 2;
-
-                tmpX += gbl.MapDirectionXDelta[dir_left];
-                tmpY += gbl.MapDirectionYDelta[dir_left];
-            }
-
-            tmpX = var_5;
-            tmpY = var_7;
-            var_10 = 0;
-            var_12 = 0;
-
-            while (var_10 < 3)
-            {
-                byte var_15 = sub_716A2(dir_right, tmpY, tmpX);
-
-                if (var_15 != 0)
-                {
-                    if (var_10 == 0)
-                    {
-                        sub_71434(2, var_15, gbl.byte_16E20, gbl.word_16E0C + var_12);
-                    }
-                    else
-                    {
-                        sub_71434(2, var_15, gbl.byte_16E20, gbl.word_16E0C + var_12 + 1);
-                    }
-                }
-
-                var_10++;
-                var_12 += 2;
-
-                tmpX += gbl.MapDirectionXDelta[dir_right];
-                tmpY += gbl.MapDirectionYDelta[dir_right];
-            }
-        }
 
         static Set unk_72005 = new Set(0x0001, new byte[] { 0xE });
 

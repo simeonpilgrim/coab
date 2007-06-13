@@ -198,7 +198,7 @@ namespace engine
                 while (var_3 < 2 && var_2 == 0)
                 {
 
-                    if (ovr031.sub_716A2(arg_0, arg_2, arg_4) == 0)
+                    if (ovr031.getMap_XXX(arg_0, arg_2, arg_4) == 0)
                     {
                         var_3++;
                         var_1 = var_3;
@@ -1437,7 +1437,7 @@ namespace engine
 
             gbl.byte_1D53D = ovr031.sub_717A5(gbl.mapPosY, gbl.mapPosX);
 
-            gbl.byte_1D53C = ovr031.sub_716A2(gbl.mapDirection, gbl.mapPosY, gbl.mapPosX);
+            gbl.byte_1D53C = ovr031.getMap_XXX(gbl.mapDirection, gbl.mapPosY, gbl.mapPosX);
 
             gbl.byte_1EE92 = 1;
 
