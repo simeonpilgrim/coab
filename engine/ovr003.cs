@@ -2359,7 +2359,7 @@ namespace engine
                             gbl.byte_1EE8C = 0;
                             gbl.byte_1EE8F = 0;
 
-                            gbl.byte_1D53C = ovr031.sub_716A2(gbl.mapDirection, gbl.mapPosY, gbl.mapPosX);
+                            gbl.byte_1D53C = ovr031.getMap_XXX(gbl.mapDirection, gbl.mapPosY, gbl.mapPosX);
                         }
                     }
                     break;
@@ -2395,7 +2395,7 @@ namespace engine
                 case 0x4019:
                     if (gbl.area_ptr.field_1CC == 0)
                     {
-                        gbl.byte_1D53C = ovr031.sub_716A2(gbl.mapDirection, gbl.mapPosY, gbl.mapPosX);
+                        gbl.byte_1D53C = ovr031.getMap_XXX(gbl.mapDirection, gbl.mapPosY, gbl.mapPosX);
                     }
                     break;
 

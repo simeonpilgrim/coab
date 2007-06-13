@@ -536,7 +536,7 @@ namespace engine
             }
 
 
-            gbl.byte_1D53C = ovr031.sub_716A2(gbl.mapDirection, gbl.mapPosY, gbl.mapPosX);
+            gbl.byte_1D53C = ovr031.getMap_XXX(gbl.mapDirection, gbl.mapPosY, gbl.mapPosX);
 
 			gbl.can_bash_door = true;
 			gbl.can_pick_door = true;
@@ -632,7 +632,7 @@ namespace engine
 							case 'P':
 								gbl.mapDirection = (byte)((gbl.mapDirection + 4) % 8);
 
-								gbl.byte_1D53C = ovr031.sub_716A2( gbl.mapDirection, gbl.mapPosY, gbl.mapPosX );
+								gbl.byte_1D53C = ovr031.getMap_XXX( gbl.mapDirection, gbl.mapPosY, gbl.mapPosX );
 								ovr031.Draw3dWorld( gbl.mapDirection, gbl.mapPosY, gbl.mapPosX );
 								break;
 
@@ -640,7 +640,7 @@ namespace engine
 								gbl.mapDirection = (byte)(( gbl.mapDirection + 6 ) % 8);
 
 								seg044.sub_120E0( gbl.word_188D2 );
-								gbl.byte_1D53C = ovr031.sub_716A2( gbl.mapDirection, gbl.mapPosY, gbl.mapPosX );
+								gbl.byte_1D53C = ovr031.getMap_XXX( gbl.mapDirection, gbl.mapPosY, gbl.mapPosX );
 								ovr031.Draw3dWorld( gbl.mapDirection, gbl.mapPosY, gbl.mapPosX );
 								break;
 
@@ -649,7 +649,7 @@ namespace engine
 
 								seg044.sub_120E0( gbl.word_188D2 );
 
-								gbl.byte_1D53C = ovr031.sub_716A2( gbl.mapDirection, gbl.mapPosY, gbl.mapPosX );
+								gbl.byte_1D53C = ovr031.getMap_XXX( gbl.mapDirection, gbl.mapPosY, gbl.mapPosX );
 								ovr031.Draw3dWorld( gbl.mapDirection, gbl.mapPosY, gbl.mapPosX );
 								break;
 
