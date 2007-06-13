@@ -72,7 +72,7 @@ namespace engine
         }
 
 
-        internal static void sub_71184()
+        internal static void Draw3dWorldBackground()
         {
             byte var_5;
             byte var_4;
@@ -325,23 +325,16 @@ namespace engine
         }
 
 
-        internal static void sub_71820(byte partyDir /*arg_0*/, sbyte partyPosX /*arg_2*/, sbyte partyPosY /*arg_4*/)
+        internal static void Draw3dWorld(byte partyDir, int partyPosX, int partyPosY) /* sub_71820 */
         {
             byte var_17;
-            byte var_15;
-            byte var_14;
             sbyte var_13;
             short var_12;
             byte var_10;
-            short var_F;
-            short var_D;
-            short var_B;
-            short var_9;
-            short var_7;
-            short var_5;
-            byte var_3;
-            byte var_2;
-            byte var_1;
+            int tmpY;
+            int tmpX;
+            int var_B;
+            int var_9;
 
             Display.UpdateStop();
 
@@ -351,296 +344,41 @@ namespace engine
             }
             else
             {
-                sub_71184();
+                Draw3dWorldBackground();
 
-                var_1 = (byte)((partyDir + 6) % 8);
-                var_3 = (byte)((partyDir + 4) % 8);
-                var_2 = (byte)((partyDir + 2) % 8);
+                int dir_left = (partyDir + 6) % 8;
+                int dir_behind = (partyDir + 4) % 8;
+                int dir_right = (partyDir + 2) % 8;
 
-                var_5 = partyPosY;
-                var_7 = partyPosX;
+                int var_5 = partyPosY;
+                int var_7 = partyPosX;
                 var_9 = gbl.MapDirectionXDelta[partyDir];
                 var_B = gbl.MapDirectionYDelta[partyDir];
                 var_13 = 2;
-                var_5 += (short)(var_13 * var_9);
-                var_7 += (short)(var_13 * var_B);
+                var_5 += var_13 * var_9;
+                var_7 += var_13 * var_B;
 
                 do
                 {
                     switch (var_13)
                     {
                         case 2:
-                            var_D = var_5;
-                            var_F = var_7;
-                            var_10 = 0;
-                            var_12 = 0;
-                            var_17 = 0;
-
-                            while (var_10 < 4)
-                            {
-                                var_14 = sub_716A2(partyDir, var_F, var_D);
-
-                                if (MapCoordIsValid(var_F, var_D) == false &&
-                                    sub_716A2(var_2, var_F, var_D) == 0)
-                                {
-                                    var_17 = 0;
-                                }
-
-                                if (var_14 != 0)
-                                {
-                                    if (var_17 > 0)
-                                    {
-                                        sub_71434(9, var_17, gbl.byte_16E2E, gbl.word_16E1A + var_12 + 1);
-                                    }
-
-                                    var_17 = var_14;
-
-                                    sub_71434(0, var_14, gbl.byte_16E1C, gbl.word_16E08 + var_12);
-                                }
-                                else
-                                {
-                                    if (var_17 > 0 &&
-                                        sub_716A2(var_1, var_F - gbl.MapDirectionYDelta[var_1], var_D - gbl.MapDirectionXDelta[var_1]) != 0)
-                                    {
-                                        sub_71434(9, var_17, gbl.byte_16E2E, gbl.word_16E1A + var_12 + 1);
-                                    }
-
-                                    var_17 = 0;
-                                }
-
-                                var_10++;
-
-                                var_D += gbl.MapDirectionXDelta[var_1];
-                                var_F += gbl.MapDirectionYDelta[var_1];
-                            }
-
-                            var_D = var_5;
-                            var_D = var_5;
-                            var_F = var_7;
-                            var_10 = 0;
-                            var_12 = 0;
-                            var_17 = 0;
-
-                            while (var_10 < 4)
-                            {
-                                var_14 = sub_716A2(partyDir, var_F, var_D);
-
-                                if (MapCoordIsValid(var_F, var_D) == false &&
-                                  sub_716A2(var_1, var_F, var_D) == 0)
-                                {
-                                    var_17 = 0;
-                                }
-
-                                if (var_14 != 0)
-                                {
-                                    if (var_17 > 0)
-                                    {
-                                        sub_71434(9, var_17, gbl.byte_16E2E, gbl.word_16E1A + var_12 - 1);
-                                    }
-
-                                    var_17 = var_14;
-                                    sub_71434(0, var_14, gbl.byte_16E1C, gbl.word_16E08 + var_12);
-                                }
-                                else
-                                {
-                                    if (var_17 > 0 &&
-                                        sub_716A2(var_2, var_F - gbl.MapDirectionYDelta[var_2], var_D - gbl.MapDirectionXDelta[var_2]) != 0)
-                                    {
-                                        sub_71434(9, var_17, gbl.byte_16E2E, gbl.word_16E1A + var_12 - 1);
-                                    }
-
-                                    var_17 = 0;
-                                }
-
-                                var_10++;
-                                var_12 += 2;
-
-                                var_D += gbl.MapDirectionXDelta[var_2];
-                                var_F += gbl.MapDirectionYDelta[var_2];
-                            }
-
-                            var_D = var_5;
-                            var_F = var_7;
-                            var_10 = 0;
-                            var_12 = 0;
-
-                            while (var_10 < 3)
-                            {
-                                var_15 = sub_716A2(var_1, var_F, var_D);
-
-                                if (var_15 != 0)
-                                {
-                                    if (var_10 == 0)
-                                    {
-                                        sub_71434(1, var_15, gbl.byte_16E1E, gbl.word_16E0A + var_12);
-                                    }
-                                    else
-                                    {
-                                        sub_71434(1, var_15, gbl.byte_16E1E, gbl.word_16E0A + var_12 - 1);
-                                    }
-
-                                }
-
-                                var_10++;
-                                var_12 -= 2;
-
-                                var_D += gbl.MapDirectionXDelta[var_1];
-                                var_F += gbl.MapDirectionYDelta[var_1];
-                            }
-
-                            var_D = var_5;
-                            var_F = var_7;
-                            var_10 = 0;
-                            var_12 = 0;
-
-                            while (var_10 < 3)
-                            {
-                                var_15 = sub_716A2(var_2, var_F, var_D);
-
-                                if (var_15 != 0)
-                                {
-                                    if (var_10 == 0)
-                                    {
-                                        sub_71434(2, var_15, gbl.byte_16E20, gbl.word_16E0C + var_12);
-                                    }
-                                    else
-                                    {
-                                        sub_71434(2, var_15, gbl.byte_16E20, gbl.word_16E0C + var_12 + 1);
-                                    }
-                                }
-
-                                var_10++;
-                                var_12 += 2;
-
-                                var_D += gbl.MapDirectionXDelta[var_2];
-                                var_F += gbl.MapDirectionYDelta[var_2];
-                            }
+                            Draw3dWorldFar(partyDir, dir_left, dir_right, var_5, var_7, out var_17, out var_12, out var_10, out tmpY, out tmpX);
 
                             break;
 
                         case 1:
-                            var_D = (short)(gbl.MapDirectionXDelta[var_1] + var_5);
-                            var_D += gbl.MapDirectionXDelta[var_1];
-
-                            var_F = (short)(gbl.MapDirectionYDelta[var_1] + var_7);
-                            var_F += gbl.MapDirectionYDelta[var_1];
-                            var_10 = 0;
-                            var_12 = -6;
-
-                            while (var_10 < 3)
-                            {
-                                var_14 = sub_716A2(partyDir, var_F, var_D);
-                                if (var_14 != 0)
-                                {
-                                    sub_71434(3, var_14, gbl.byte_16E22, gbl.word_16E0E + var_12);
-                                }
-
-                                var_15 = sub_716A2(var_1, var_F, var_D);
-                                if (var_15 != 0)
-                                {
-                                    sub_71434(4, var_15, gbl.byte_16E24, gbl.word_16E10 + var_12);
-                                }
-
-                                var_10++;
-                                var_12 += 3;
-                                var_D += gbl.MapDirectionXDelta[var_2];
-                                var_F += gbl.MapDirectionYDelta[var_2];
-                            }
-
-
-                            var_D = (short)(gbl.MapDirectionXDelta[var_2] + gbl.MapDirectionXDelta[var_2] + var_5);
-                            var_F = (short)(gbl.MapDirectionYDelta[var_2] + gbl.MapDirectionYDelta[var_2] + var_7);
-                            var_10 = 0;
-                            var_12 = 6;
-                            while (var_10 < 3)
-                            {
-                                var_14 = sub_716A2(partyDir, var_F, var_D);
-
-                                if (var_14 != 0)
-                                {
-                                    sub_71434(3, var_14, gbl.byte_16E22, gbl.word_16E0E + var_12);
-                                }
-
-                                var_15 = sub_716A2(var_2, var_F, var_D);
-
-                                if (var_15 != 0)
-                                {
-                                    sub_71434(5, var_15, gbl.byte_16E26, gbl.word_16E12 + var_12);
-                                }
-
-                                var_10++;
-                                var_12 -= 3;
-
-                                var_D += gbl.MapDirectionXDelta[var_1];
-                                var_F += gbl.MapDirectionYDelta[var_1];
-                            }
+                            Draw3DWorldMid(partyDir, dir_left, dir_right, var_5, var_7, out var_12, out var_10, out tmpY, out tmpX);
                             break;
 
                         case 0:
-                            var_D = (short)(gbl.MapDirectionXDelta[var_1] + var_5);
-                            var_F = (short)(gbl.MapDirectionYDelta[var_1] + var_7);
-                            var_10 = 0;
-                            var_12 = -7;
-
-                            while (var_10 < 2)
-                            {
-                                var_14 = sub_716A2(partyDir, var_F, var_D);
-
-                                if (var_14 != 0)
-                                {
-                                    sub_71434(6, var_14, gbl.byte_16E28, gbl.word_16E14 + var_12);
-                                }
-
-                                var_15 = sub_716A2(var_1, var_F, var_D);
-
-                                if (var_15 != 0)
-                                {
-                                    sub_71434(7, var_15, gbl.byte_16E2A, gbl.word_16E16 + var_12);
-                                }
-
-                                var_10++;
-
-                                var_12 += 7;
-                                var_D += gbl.MapDirectionXDelta[var_2];
-                                var_F += gbl.MapDirectionYDelta[var_2];
-                            }
-
-
-                            var_D = (short)(var_5 + gbl.MapDirectionXDelta[var_2]);
-                            var_F = (short)(var_7 + gbl.MapDirectionYDelta[var_2]);
-                            var_10 = 0;
-                            var_12 = 7;
-
-                            while (var_10 < 2)
-                            {
-
-                                var_14 = sub_716A2(partyDir, var_F, var_D);
-
-                                if (var_14 != 0)
-                                {
-
-                                    sub_71434(6, var_14, gbl.byte_16E28, var_12 + gbl.word_16E14);
-                                }
-
-                                var_15 = sub_716A2(var_2, var_F, var_D);
-
-                                if (var_15 != 0)
-                                {
-                                    sub_71434(8, var_15, gbl.byte_16E2C, var_12 + gbl.word_16E18);
-                                }
-
-                                var_10++;
-                                var_12 -= 7;
-
-                                var_D += gbl.MapDirectionXDelta[var_1];
-                                var_F += gbl.MapDirectionYDelta[var_1];
-                            }
+                            Draw3dWorldNear(partyDir, dir_left, dir_right, var_5, var_7, out var_12, out var_10, out tmpY, out tmpX);
                             break;
                     }
 
 
-                    var_5 += gbl.MapDirectionXDelta[var_3];
-                    var_7 += gbl.MapDirectionYDelta[var_3];
+                    var_5 += gbl.MapDirectionXDelta[dir_behind];
+                    var_7 += gbl.MapDirectionYDelta[dir_behind];
 
                     var_13 -= 1;
 
@@ -649,6 +387,275 @@ namespace engine
 
                 Display.UpdateStart();
                 seg040.DrawOverlay();
+            }
+        }
+
+        private static void Draw3dWorldNear(byte partyDir, int dir_left, int dir_right, int var_5, int var_7, out short var_12, out byte var_10, out int tmpY, out int tmpX)
+        {
+            tmpX = gbl.MapDirectionXDelta[dir_left] + var_5;
+            tmpY = gbl.MapDirectionYDelta[dir_left] + var_7;
+            var_10 = 0;
+            var_12 = -7;
+
+            while (var_10 < 2)
+            {
+                byte var_14 = sub_716A2(partyDir, tmpY, tmpX);
+
+                if (var_14 != 0)
+                {
+                    sub_71434(6, var_14, gbl.byte_16E28, gbl.word_16E14 + var_12);
+                }
+
+                byte var_15 = sub_716A2(dir_left, tmpY, tmpX);
+
+                if (var_15 != 0)
+                {
+                    sub_71434(7, var_15, gbl.byte_16E2A, gbl.word_16E16 + var_12);
+                }
+
+                var_10++;
+
+                var_12 += 7;
+                tmpX += gbl.MapDirectionXDelta[dir_right];
+                tmpY += gbl.MapDirectionYDelta[dir_right];
+            }
+
+
+            tmpX = var_5 + gbl.MapDirectionXDelta[dir_right];
+            tmpY = var_7 + gbl.MapDirectionYDelta[dir_right];
+            var_10 = 0;
+            var_12 = 7;
+
+            while (var_10 < 2)
+            {
+
+                byte var_14 = sub_716A2(partyDir, tmpY, tmpX);
+
+                if (var_14 != 0)
+                {
+
+                    sub_71434(6, var_14, gbl.byte_16E28, var_12 + gbl.word_16E14);
+                }
+
+                byte var_15 = sub_716A2(dir_right, tmpY, tmpX);
+
+                if (var_15 != 0)
+                {
+                    sub_71434(8, var_15, gbl.byte_16E2C, var_12 + gbl.word_16E18);
+                }
+
+                var_10++;
+                var_12 -= 7;
+
+                tmpX += gbl.MapDirectionXDelta[dir_left];
+                tmpY += gbl.MapDirectionYDelta[dir_left];
+            }
+        }
+
+        private static void Draw3DWorldMid(byte partyDir, int dir_left, int dir_right, int var_5, int var_7, out short var_12, out byte var_10, out int tmpY, out int tmpX)
+        {
+            tmpX = gbl.MapDirectionXDelta[dir_left] + var_5;
+            tmpX += gbl.MapDirectionXDelta[dir_left];
+
+            tmpY = gbl.MapDirectionYDelta[dir_left] + var_7;
+            tmpY += gbl.MapDirectionYDelta[dir_left];
+            var_10 = 0;
+            var_12 = -6;
+
+            while (var_10 < 3)
+            {
+                byte var_14 = sub_716A2(partyDir, tmpY, tmpX);
+                if (var_14 != 0)
+                {
+                    sub_71434(3, var_14, gbl.byte_16E22, gbl.word_16E0E + var_12);
+                }
+
+                byte var_15 = sub_716A2(dir_left, tmpY, tmpX);
+                if (var_15 != 0)
+                {
+                    sub_71434(4, var_15, gbl.byte_16E24, gbl.word_16E10 + var_12);
+                }
+
+                var_10++;
+                var_12 += 3;
+                tmpX += gbl.MapDirectionXDelta[dir_right];
+                tmpY += gbl.MapDirectionYDelta[dir_right];
+            }
+
+
+            tmpX = gbl.MapDirectionXDelta[dir_right] + gbl.MapDirectionXDelta[dir_right] + var_5;
+            tmpY = gbl.MapDirectionYDelta[dir_right] + gbl.MapDirectionYDelta[dir_right] + var_7;
+            var_10 = 0;
+            var_12 = 6;
+            while (var_10 < 3)
+            {
+                byte var_14 = sub_716A2(partyDir, tmpY, tmpX);
+
+                if (var_14 != 0)
+                {
+                    sub_71434(3, var_14, gbl.byte_16E22, gbl.word_16E0E + var_12);
+                }
+
+                byte var_15 = sub_716A2(dir_right, tmpY, tmpX);
+
+                if (var_15 != 0)
+                {
+                    sub_71434(5, var_15, gbl.byte_16E26, gbl.word_16E12 + var_12);
+                }
+
+                var_10++;
+                var_12 -= 3;
+
+                tmpX += gbl.MapDirectionXDelta[dir_left];
+                tmpY += gbl.MapDirectionYDelta[dir_left];
+            }
+        }
+
+        private static void Draw3dWorldFar(byte partyDir, int dir_left, int dir_right, int var_5, int var_7, out byte var_17, out short var_12, out byte var_10, out int tmpY, out int tmpX)
+        {
+            tmpX = var_5;
+            tmpY = var_7;
+            var_10 = 0;
+            var_12 = 0;
+            var_17 = 0;
+
+            while (var_10 < 4)
+            {
+                byte var_14 = sub_716A2(partyDir, tmpY, tmpX);
+
+                if (MapCoordIsValid(tmpY, tmpX) == false &&
+                    sub_716A2(dir_right, tmpY, tmpX) == 0)
+                {
+                    var_17 = 0;
+                }
+
+                if (var_14 != 0)
+                {
+                    if (var_17 > 0)
+                    {
+                        sub_71434(9, var_17, gbl.byte_16E2E, gbl.word_16E1A + var_12 + 1);
+                    }
+
+                    var_17 = var_14;
+
+                    sub_71434(0, var_14, gbl.byte_16E1C, gbl.word_16E08 + var_12);
+                }
+                else
+                {
+                    if (var_17 > 0 &&
+                        sub_716A2(dir_left, tmpY - gbl.MapDirectionYDelta[dir_left], tmpX - gbl.MapDirectionXDelta[dir_left]) != 0)
+                    {
+                        sub_71434(9, var_17, gbl.byte_16E2E, gbl.word_16E1A + var_12 + 1);
+                    }
+
+                    var_17 = 0;
+                }
+
+                var_10++;
+
+                tmpX += gbl.MapDirectionXDelta[dir_left];
+                tmpY += gbl.MapDirectionYDelta[dir_left];
+            }
+
+            tmpX = var_5;
+            tmpY = var_7;
+            var_10 = 0;
+            var_12 = 0;
+            var_17 = 0;
+
+            while (var_10 < 4)
+            {
+                byte var_14 = sub_716A2(partyDir, tmpY, tmpX);
+
+                if (MapCoordIsValid(tmpY, tmpX) == false &&
+                  sub_716A2(dir_left, tmpY, tmpX) == 0)
+                {
+                    var_17 = 0;
+                }
+
+                if (var_14 != 0)
+                {
+                    if (var_17 > 0)
+                    {
+                        sub_71434(9, var_17, gbl.byte_16E2E, gbl.word_16E1A + var_12 - 1);
+                    }
+
+                    var_17 = var_14;
+                    sub_71434(0, var_14, gbl.byte_16E1C, gbl.word_16E08 + var_12);
+                }
+                else
+                {
+                    if (var_17 > 0 &&
+                        sub_716A2(dir_right, tmpY - gbl.MapDirectionYDelta[dir_right], tmpX - gbl.MapDirectionXDelta[dir_right]) != 0)
+                    {
+                        sub_71434(9, var_17, gbl.byte_16E2E, gbl.word_16E1A + var_12 - 1);
+                    }
+
+                    var_17 = 0;
+                }
+
+                var_10++;
+                var_12 += 2;
+
+                tmpX += gbl.MapDirectionXDelta[dir_right];
+                tmpY += gbl.MapDirectionYDelta[dir_right];
+            }
+
+            tmpX = var_5;
+            tmpY = var_7;
+            var_10 = 0;
+            var_12 = 0;
+
+            while (var_10 < 3)
+            {
+                byte var_15 = sub_716A2(dir_left, tmpY, tmpX);
+
+                if (var_15 != 0)
+                {
+                    if (var_10 == 0)
+                    {
+                        sub_71434(1, var_15, gbl.byte_16E1E, gbl.word_16E0A + var_12);
+                    }
+                    else
+                    {
+                        sub_71434(1, var_15, gbl.byte_16E1E, gbl.word_16E0A + var_12 - 1);
+                    }
+
+                }
+
+                var_10++;
+                var_12 -= 2;
+
+                tmpX += gbl.MapDirectionXDelta[dir_left];
+                tmpY += gbl.MapDirectionYDelta[dir_left];
+            }
+
+            tmpX = var_5;
+            tmpY = var_7;
+            var_10 = 0;
+            var_12 = 0;
+
+            while (var_10 < 3)
+            {
+                byte var_15 = sub_716A2(dir_right, tmpY, tmpX);
+
+                if (var_15 != 0)
+                {
+                    if (var_10 == 0)
+                    {
+                        sub_71434(2, var_15, gbl.byte_16E20, gbl.word_16E0C + var_12);
+                    }
+                    else
+                    {
+                        sub_71434(2, var_15, gbl.byte_16E20, gbl.word_16E0C + var_12 + 1);
+                    }
+                }
+
+                var_10++;
+                var_12 += 2;
+
+                tmpX += gbl.MapDirectionXDelta[dir_right];
+                tmpY += gbl.MapDirectionYDelta[dir_right];
             }
         }
 
