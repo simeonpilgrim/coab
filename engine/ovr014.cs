@@ -1210,7 +1210,6 @@ namespace engine
 
         internal static bool sub_3FDFE(out Player arg_0, Player arg_4)
         {
-            byte var_E;
             byte var_D;
             byte var_C;
             byte var_B;
@@ -1248,9 +1247,7 @@ namespace engine
                 }
                 else if (var_D == 0x1F)
                 {
-                    var_E = gbl.byte_1D1BB;
-
-                    for (var_B = 1; var_B <= var_E; var_B++)
+                    for (var_B = 1; var_B <= gbl.byte_1D1BB; var_B++)
                     {
                         if (gbl.unk_1D183[var_B].field_0 != null &&
                             word_3FDDE.MemberOf((byte)gbl.unk_1D183[var_B].field_0.health_status) == false &&
@@ -2193,7 +2190,6 @@ namespace engine
         internal static void Target(Struct_1D183 arg_0, out bool arg_4, byte arg_8, byte arg_A, byte arg_C, byte arg_E, Player player02, Player player01)
         {
             string var_239;
-            byte var_3A;
             byte var_39;
             short var_38;
             byte var_36;
@@ -2281,9 +2277,7 @@ namespace engine
                     }
                     else if (var_36 == 0x1f)
                     {
-                        var_3A = gbl.byte_1D1BB;
-
-                        for (var_30 = 1; var_30 <= var_3A; var_30++)
+                        for (var_30 = 1; var_30 <= gbl.byte_1D1BB; var_30++)
                         {
                             if (gbl.unk_1D183[var_30].mapX == var_33 &&
                                 gbl.unk_1D183[var_30].mapY == var_34)
