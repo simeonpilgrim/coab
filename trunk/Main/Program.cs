@@ -23,6 +23,7 @@ namespace Main
             Thread engineThread = new Thread(threadDelegate);
             engineThread.Name = "Engine";
             engineThread.Start();
+            
 
             Application.Run(main);
         }

@@ -610,13 +610,37 @@ namespace Classes
                 throw new System.NotImplementedException();
             }
         }
+
+        public void field_19BArraySet(int index, byte value)
+        {
+            switch (index)
+            {
+                case 1:
+                    field_19C = value; 
+                    break;
+                case 2:
+                    field_19D = value;
+                    break;
+                default:
+                    throw new System.NotImplementedException();
+            }
+        }
+
         [DataOffset(0x19c, DataType.Byte)]
         public byte field_19C; // 0x19c
         [DataOffset(0x19d, DataType.Byte)]
         public byte field_19D; // 0x19d
         public byte field_19DArray(int index)
         {
-            throw new System.NotImplementedException();
+            switch (index)
+            {
+                case 1:
+                    return field_19E;
+                case 2:
+                    return field_19F;
+                default:
+                    throw new System.NotImplementedException();
+            }
         }
 
         [DataOffset(0x19E, DataType.Byte)]
@@ -625,7 +649,15 @@ namespace Classes
         public byte field_19F; // 0x19f
         public byte field_19FArray(int index)
         {
-            throw new System.NotImplementedException();
+            switch (index)
+            {
+                case 1:
+                    return field_1A0;
+                case 2:
+                    return field_1A1;
+                default:
+                    throw new System.NotImplementedException();
+            }
         }
         [DataOffset(0x1A0, DataType.Byte)]
         public byte field_1A0; // 0x1a0
@@ -633,7 +665,15 @@ namespace Classes
         public byte field_1A1; // 0x1a1
         public byte field_1A1Array(int index)
         {
-            throw new System.NotImplementedException();
+            switch (index)
+            {
+                case 1:
+                    return (byte)field_1A2;
+                case 2:
+                    return field_1A3;
+                default:
+                    throw new System.NotImplementedException();
+            }
         }
         [DataOffset(0x1a2, DataType.SByte)]
         public sbyte field_1A2; // 0x1a2

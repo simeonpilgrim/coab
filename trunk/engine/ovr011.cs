@@ -1405,8 +1405,8 @@ namespace engine
             gbl.stru_1D889 = null;
             gbl.item_ptr = null;
 
-            gbl.unk_1D183 = new Struct_1D183[8];
-            for (int i = 0; i < 8; i++)
+            gbl.unk_1D183 = new Struct_1D183[8+1];
+            for (int i = 0; i < 8+1; i++)
             {
                 gbl.unk_1D183[i] = new Struct_1D183();
             }
