@@ -663,7 +663,6 @@ namespace engine
 
         internal static byte sub_7515A(byte arg_0, int arg_2, int arg_4, Player player)
         {
-            byte var_9;
             byte var_8;
             byte var_7;
             byte var_6;
@@ -698,9 +697,7 @@ namespace engine
                     if (arg_0 != 0 &&
                         player.actions.field_13 == 0)
                     {
-                        var_9 = gbl.byte_1D1BB;
-
-                        for (var_3 = 1; var_3 <= var_9; var_3++)
+                        for (var_3 = 1; var_3 <= gbl.byte_1D1BB; var_3++)
                         {
                             if (gbl.unk_1D183[var_3].field_0 == player)
                             {
@@ -717,9 +714,8 @@ namespace engine
                         }
 
                         var_6 = 0;
-                        var_9 = gbl.byte_1D1BB;
 
-                        for (var_3 = 1; var_3 <= var_9; var_3++)
+                        for (var_3 = 1; var_3 <= gbl.byte_1D1BB; var_3++)
                         {
                             if (gbl.unk_1D183[var_3].field_0 != null &&
                                 gbl.unk_1D183[var_3].mapX == arg_4 &&
@@ -731,7 +727,6 @@ namespace engine
 
                         if (var_6 == 0)
                         {
-
                             gbl.stru_1D1BC[arg_4, arg_2] = var_5;
                         }
                     }

@@ -1949,7 +1949,6 @@ namespace engine
 
         internal static void create_noxious_cloud()
         {
-            byte var_13;
             byte var_12;
             byte var_11;
             byte var_10;
@@ -2095,9 +2094,7 @@ namespace engine
                 }
                 else if (var_F == 0x1F)
                 {
-                    var_13 = gbl.byte_1D1BB;
-
-                    for (var_D = 1; var_D <= var_13; var_D++)
+                    for (var_D = 1; var_D <= gbl.byte_1D1BB; var_D++)
                     {
                         throw new System.NotSupportedException();//mov	al, [bp+var_12]
                         throw new System.NotSupportedException();//xor	ah, ah
@@ -3591,7 +3588,6 @@ namespace engine
 
         internal static void spell_poisonous_cloud()
         {
-            byte var_19;
             byte var_18;
             byte var_17 = 0; /* Simeon */
             byte var_16;
@@ -3823,9 +3819,7 @@ namespace engine
                 }
                 else if (var_14 == 0x1F)
                 {
-                    var_19 = gbl.byte_1D1BB;
-
-                    for (var_12 = 1; var_12 <= var_19; var_12++)
+                    for (var_12 = 1; var_12 <= gbl.byte_1D1BB; var_12++)
                     {
                         throw new System.NotSupportedException();//mov	al, [bp+var_17]
                         throw new System.NotSupportedException();//xor	ah, ah

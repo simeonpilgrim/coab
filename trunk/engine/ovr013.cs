@@ -617,7 +617,6 @@ namespace engine
 
         internal static void sub_3AC1D(byte arg_0, object param, Player player)
         {
-            byte var_E;
             sbyte var_D;
             sbyte var_C;
             byte var_B;
@@ -658,9 +657,8 @@ namespace engine
                         var_D = (sbyte)(var_8.field_1B + gbl.MapDirectionYDelta[gbl.unk_18AE9[var_B]]);
 
                         var_9 = false;
-                        var_E = gbl.byte_1D1BB;
 
-                        for (var_A = 1; var_A <= var_E; var_A++)
+                        for (var_A = 1; var_A <= gbl.byte_1D1BB; var_A++)
                         {
                             if (gbl.unk_1D183[var_A].field_0 != null &&
                                 gbl.unk_1D183[var_A].mapX == var_C &&
@@ -1296,7 +1294,6 @@ namespace engine
 
         internal static void sub_3BAB9(byte arg_0, object param, Player player)
         {
-            byte var_E;
             sbyte var_D;
             sbyte var_C;
             byte var_B;
@@ -1337,9 +1334,8 @@ namespace engine
                         var_D = (sbyte)(var_8.field_1B + gbl.MapDirectionYDelta[gbl.unk_18AED[var_B]]);
 
                         var_9 = 0;
-                        var_E = gbl.byte_1D1BB;
 
-                        for (var_A = 1; var_A <= var_E; var_A++)
+                        for (var_A = 1; var_A <= gbl.byte_1D1BB; var_A++)
                         {
                             if (gbl.unk_1D183[var_A].field_0 != null &&
                                 gbl.unk_1D183[var_A].mapX == var_C &&
