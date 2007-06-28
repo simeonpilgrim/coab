@@ -106,87 +106,87 @@ namespace engine
 
         static Set unk_3E2EE = new Set(0x0002, new byte[] { 0xC0, 0x01 });
 
-        static void backstab(byte arg_0, byte arg_2, byte arg_4, byte arg_6, Player arg_8, Player arg_C)
+        static void backstab(bool attackHits, byte attackDamge, byte actualDamage, byte arg_6, Player target, Player attacker)
         {
-            string var_52;
+            string text;
             byte var_1;
 
             if (arg_6 == 2)
             {
-                var_52 = "-Backstabs-";
+                text = "-Backstabs-";
             }
             else if (arg_6 == 3)
             {
-                var_52 = "slays	helpless";
+                text = "slays	helpless";
             }
             else
             {
-                var_52 = "Attacks";
+                text = "Attacks";
             }
 
-            ovr025.DisplayPlayerStatusString(false, 10, var_52, arg_C);
+            ovr025.DisplayPlayerStatusString(false, 10, text, attacker);
             var_1 = 0x0C;
 
-            ovr025.sub_678A2(0, var_1, 0x17, arg_8);
+            ovr025.sub_678A2(0, var_1, 0x17, target);
             var_1++;
 
             if (arg_6 == 1)
             {
-                var_52 = "(from behind) ";
+                text = "(from behind) ";
             }
             else
             {
-                var_52 = string.Empty;
+                text = string.Empty;
             }
 
-            if (arg_0 != 0)
+            if (attackHits == true)
             {
                 if (arg_6 == 3)
                 {
-                    var_52 = "with one cruel blow";
+                    text = "with one cruel blow";
                 }
                 else
                 {
-                    var_52 += "Hitting for " + ovr025.sub_670CC(arg_2);
+                    text += "Hitting for " + attackDamge.ToString();
 
-                    if (arg_2 == 1)
+                    if (attackDamge == 1)
                     {
-                        var_52 += " point ";
+                        text += " point ";
                     }
                     else
                     {
-                        var_52 += " points ";
+                        text += " points ";
                     }
 
-                    var_52 += "of damage";
+                    text += "of damage";
 
                 }
 
-                ovr025.damage_player(arg_4, arg_8);
+                ovr025.damage_player(actualDamage, target);
             }
             else
             {
-                var_52 += "and Misses";
+                text += "and Misses";
             }
 
-            if (arg_8.health_status != Status.gone)
+            if (target.health_status != Status.gone)
             {
-                seg041.press_any_key(var_52, true, 0, 10, (byte)(var_1 + 3), 0x26, var_1, 0x17);
+                seg041.press_any_key(text, true, 0, 10, (byte)(var_1 + 3), 0x26, var_1, 0x17);
             }
 
             var_1 = (byte)(gbl.textYCol + 1);
 
-            if (arg_4 > 0)
+            if (actualDamage > 0)
             {
-                arg_8.actions.can_cast = 0;
-                if (arg_8.actions.spell_id > 0)
+                target.actions.can_cast = 0;
+                if (target.actions.spell_id > 0)
                 {
                     seg041.GameDelay();
 
-                    ovr025.DisplayPlayerStatusString(true, 12, "lost a spell", arg_8);
+                    ovr025.DisplayPlayerStatusString(true, 12, "lost a spell", target);
 
-                    ovr025.clear_spell(arg_8.actions.spell_id, arg_8);
-                    arg_8.actions.spell_id = 0;
+                    ovr025.clear_spell(target.actions.spell_id, target);
+                    target.actions.spell_id = 0;
                 }
                 else
                 {
@@ -198,30 +198,30 @@ namespace engine
                 seg041.GameDelay();
             }
 
-            if (arg_8.in_combat == false)
+            if (target.in_combat == false)
             {
-                ovr025.DisplayPlayerStatusString(false, var_1, "goes down", arg_8);
+                ovr025.DisplayPlayerStatusString(false, var_1, "goes down", target);
                 var_1 += 2;
 
-                if (arg_8.health_status == Status.dying)
+                if (target.health_status == Status.dying)
                 {
                     seg041.displayString("and is Dying", 0, 10, var_1, 0x17);
                 }
 
-                if (unk_3E2EE.MemberOf((byte)arg_8.health_status) == true)
+                if (unk_3E2EE.MemberOf((byte)target.health_status) == true)
                 {
-                    ovr025.DisplayPlayerStatusString(false, var_1, "is killed", arg_8);
+                    ovr025.DisplayPlayerStatusString(false, var_1, "is killed", target);
                 }
 
                 var_1 += 2;
 
-                ovr024.sub_645AB(arg_8);
+                ovr024.sub_645AB(target);
 
-                ovr024.work_on_00(arg_8, 13);
+                ovr024.work_on_00(target, 13);
 
-                if (arg_8.in_combat == false)
+                if (target.in_combat == false)
                 {
-                    ovr033.sub_74E6F(arg_8);
+                    ovr033.sub_74E6F(target);
                 }
                 else
                 {
@@ -888,7 +888,7 @@ namespace engine
                         throw new System.NotImplementedException();
                 }
 
-                backstab(1, 1, (byte)(arg_A.hit_point_current + 5), 3, arg_A, arg_E);
+                backstab(true, 1, (byte)(arg_A.hit_point_current + 5), 3, arg_A, arg_E);
                 ovr024.remove_affect_19(arg_E);
 
                 arg_E.field_19C = 0;
@@ -948,66 +948,66 @@ namespace engine
                 }
 
                 var_16 = arg_E.actions.field_4;
-                for (var_15 = var_16; var_15 > 1; var_15--)
+                for (var_15 = var_16; var_15 >= 1; var_15--)
                 {
                     while (arg_E.field_19BArray(var_15) > 0 &&
                         var_12 == 0)
                     {
-                        throw new System.NotSupportedException();//mov	al, [bp+var_15]
-                        throw new System.NotSupportedException();//xor	ah, ah
-                        throw new System.NotSupportedException();//les	di, [bp+arg_E]
-                        throw new System.NotSupportedException();//add	di, ax
-                        throw new System.NotSupportedException();//dec	byte ptr es:[di+19Bh]
+                        arg_E.field_19BArraySet(var_15, (byte)(arg_E.field_19BArray(var_15) - 1));
                         arg_E.actions.field_4 = var_15;
-                        throw new System.NotSupportedException();//mov	al, [bp+var_15]
-                        throw new System.NotSupportedException();//xor	ah, ah
-                        throw new System.NotSupportedException();//mov	di, ax
-                        throw new System.NotSupportedException();//inc	byte ptr [di+75F0h]
-                        throw new System.NotSupportedException();//push	short ptr [bp+arg_E+2]
-                        throw new System.NotSupportedException();//push	short ptr [bp+arg_E]
-                        throw new System.NotSupportedException();//push	short ptr [bp+arg_A+2]
-                        throw new System.NotSupportedException();//push	short ptr [bp+arg_A]
-                        throw new System.NotSupportedException();//mov	al, [bp+var_14]
-                        throw new System.NotSupportedException();//push	ax
-                        throw new System.NotSupportedException();//call	sub_64245
-                        throw new System.NotSupportedException();//or	al, al
-                        throw new System.NotSupportedException();//jnz	loc_3F7D6
-                        throw new System.NotSupportedException();//push	short ptr [bp+arg_A+2]
-                        throw new System.NotSupportedException();//push	short ptr [bp+arg_A]
-                        throw new System.NotSupportedException();//call	is_held(Player *)
-                        throw new System.NotSupportedException();//or	al, al
-                        throw new System.NotSupportedException();//jnz	loc_3F7D6
-                        throw new System.NotSupportedException();//jmp	loc_3F86C
-                        throw new System.NotSupportedException();//loc_3F7D6:
-                        throw new System.NotSupportedException();//mov	al, [bp+var_15]
-                        throw new System.NotSupportedException();//xor	ah, ah
-                        throw new System.NotSupportedException();//mov	di, ax
-                        throw new System.NotSupportedException();//inc	byte ptr [di+6FB9h]
-                        seg044.sub_120E0(gbl.word_188CC);
-                        var_11 = 1;
-                        sub_3E192(var_15, arg_A, arg_E);
-                        backstab(1, gbl.byte_1D2BE, gbl.byte_1D2BE, var_17, arg_A, arg_E);
-                        throw new System.NotSupportedException();//les	di, [bp+arg_A]
-                        throw new System.NotSupportedException();//cmp	byte ptr es:[di+196h], 0
-                        throw new System.NotSupportedException();//jz	loc_3F83E
 
-                        ovr024.work_on_00(arg_E, var_15 + 1);
-                        throw new System.NotSupportedException();//loc_3F83E:
-                        throw new System.NotSupportedException();//les	di, [bp+arg_A]
-                        throw new System.NotSupportedException();//cmp	byte ptr es:[di+196h], 0
-                        throw new System.NotSupportedException();//jnz	loc_3F84D
-                        var_12 = 1;
-                        throw new System.NotSupportedException();//loc_3F84D:
-                        throw new System.NotSupportedException();//les	di, [bp+arg_E]
-                        throw new System.NotSupportedException();//cmp	byte ptr es:[di+196h], 0
-                        throw new System.NotSupportedException();//jnz	loc_3F86C
-                        var_16 = 0;
-                        throw new System.NotSupportedException();//mov	al, [bp+var_15]
-                        throw new System.NotSupportedException();//xor	ah, ah
-                        throw new System.NotSupportedException();//les	di, [bp+arg_E]
-                        throw new System.NotSupportedException();//add	di, ax
-                        throw new System.NotSupportedException();//mov	byte ptr es:[di+19Bh], 0
-                        throw new System.NotSupportedException();//loc_3F86C:
+                        switch (var_15)
+                        {
+                            case 1:
+                                gbl.byte_1D901++;
+                                break;
+
+                            case 2:
+                                gbl.byte_1D902++;
+                                break;
+
+                            default:
+                                throw new System.NotImplementedException();
+                        }
+
+                        if (ovr024.sub_64245(var_14, arg_A, arg_E) != 0 ||
+                            ovr025.is_held(arg_A) == true)
+                        {
+                            switch (var_15)
+                            {
+                                case 1:
+                                    gbl.byte_1D2CA++;
+                                    break;
+
+                                case 2:
+                                    gbl.byte_1D2CB++;
+                                    break;
+
+                                default:
+                                    throw new System.NotImplementedException();
+                            }
+
+                            seg044.sub_120E0(gbl.word_188CC);
+                            var_11 = 1;
+                            sub_3E192(var_15, arg_A, arg_E);
+                            backstab(true, gbl.byte_1D2BE, gbl.byte_1D2BE, var_17, arg_A, arg_E);
+
+                            if (arg_A.in_combat == true)
+                            {
+                                ovr024.work_on_00(arg_E, var_15 + 1);
+                            }
+
+                            if (arg_A.in_combat == false)
+                            {
+                                var_12 = 1;
+                            }
+
+                            if (arg_E.in_combat == false)
+                            {
+                                var_16 = 0;
+                                arg_E.field_19BArraySet(var_15, 0);
+                            }
+                        }
                     }
                 }
 
@@ -1020,7 +1020,7 @@ namespace engine
                 if (var_11 == 0)
                 {
                     seg044.sub_120E0(gbl.word_188D0);
-                    backstab(0, 0, 0, var_17, arg_A, arg_E);
+                    backstab(false, 0, 0, var_17, arg_A, arg_E);
                 }
 
                 arg_4 = true;

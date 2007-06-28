@@ -222,6 +222,7 @@ namespace engine
                         else
                         {
                             sub_107DE(var_100, ref var_103, var_104, arg_6, arg_8);
+                            Display.Update();
                         }
 
                     } while (var_103 <= var_101);

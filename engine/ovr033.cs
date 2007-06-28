@@ -573,7 +573,7 @@ namespace engine
             int var_6;
             sbyte var_5;
             sbyte var_4;
-            byte var_3 = 0xf0; /* Simeon */
+            byte var_3;
             byte var_2;
             byte var_1;
 
@@ -586,7 +586,7 @@ namespace engine
             {
                 var_2 = 1;
                 while (var_2 < 9 &&
-                    gbl.unk_1D183[var_3].field_0 != player)
+                    gbl.unk_1D183[var_2].field_0 != player) // First SIS BUG!!!
                 {
                     var_2++;
                 }
@@ -609,40 +609,16 @@ namespace engine
                     {
                         for (var_2 = 0; var_2 <= 3; var_2++)
                         {
-                            if (sub_7400F(out var_5, out var_4, var_2, gbl.stru_1C9CD[var_1].field_3) == true)
+                            if (sub_7400F(out var_5, out var_4, var_2, gbl.stru_1C9CD[var_1].field_3) == true &&
+                                CoordOnScreen(gbl.playerScreenY[var_1] + var_5, gbl.playerScreenX[var_1] + var_4) == true)
                             {
-                                throw new System.NotSupportedException();//mov	al, [bp+var_4]
-                                throw new System.NotSupportedException();//cbw
-                                throw new System.NotSupportedException();//mov	dx, ax
-                                throw new System.NotSupportedException();//mov	al, [bp+var_1]
-                                throw new System.NotSupportedException();//xor	ah, ah
-                                throw new System.NotSupportedException();//mov	di, ax
-                                throw new System.NotSupportedException();//mov	al, byte ptr unk_1CAF0[di]
-                                throw new System.NotSupportedException();//cbw
-                                throw new System.NotSupportedException();//add	ax, dx
-                                throw new System.NotSupportedException();//push	ax
-                                throw new System.NotSupportedException();//mov	al, [bp+var_5]
-                                throw new System.NotSupportedException();//cbw
-                                throw new System.NotSupportedException();//mov	dx, ax
-                                throw new System.NotSupportedException();//mov	al, [bp+var_1]
-                                throw new System.NotSupportedException();//xor	ah, ah
-                                throw new System.NotSupportedException();//mov	di, ax
-                                throw new System.NotSupportedException();//mov	al, byte ptr unk_1CB38[di]
-                                throw new System.NotSupportedException();//cbw
-                                throw new System.NotSupportedException();//add	ax, dx
-                                throw new System.NotSupportedException();//push	ax
-                                throw new System.NotSupportedException();//push	cs
-                                throw new System.NotSupportedException();//call	near ptr sub_74730
-                                throw new System.NotSupportedException();//or	al, al
-                                throw new System.NotSupportedException();//jz	loc_74FF4
 
-                              
 
-                                DaxBlock tmp = ((var_3 & 1) == 0 )? gbl.combat_icons[24,1]:gbl.combat_icons[25,0];
+                                DaxBlock tmp = ((var_3 & 1) == 0) ? gbl.combat_icons[24, 1] : gbl.combat_icons[25, 0];
 
-                                seg040.OverlayBounded(tmp, 5, 0, (gbl.playerScreenY[var_1] + var_5) * 3,(gbl.playerScreenX[var_1] + var_4) * 3);
+                                seg040.OverlayBounded(tmp, 5, 0, (gbl.playerScreenY[var_1] + var_5) * 3, (gbl.playerScreenX[var_1] + var_4) * 3);
                             }
-                            //loc_74FF4:
+
                         }
 
                         seg040.DrawOverlay();
