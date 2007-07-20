@@ -54,7 +54,7 @@ namespace engine
 
             seg037.draw8x8_01();
 
-            ovr025.sub_678A2(0, 1, 1, gbl.player_ptr02);
+            ovr025.displayPlayerName(false, 1, 1, gbl.player_ptr02);
 
             if (gbl.player_ptr02.field_F7 > 0x7F)
             {
@@ -123,14 +123,14 @@ namespace engine
             if (gbl.player_ptr02.field_151 != null)
             {
                 seg041.displayString("Weapon", 0, 15, var_2, 1);
-                ovr025.id_item(1, 0, var_2, 8, gbl.player_ptr02.field_151, gbl.player_ptr02);
+                ovr025.ItemDisplayNameBuild(1, false, var_2, 8, gbl.player_ptr02.field_151, gbl.player_ptr02);
             }
 
             var_2++;
             if (gbl.player_ptr02.field_159 != null)
             {
                 seg041.displayString("Armor", 0, 15, var_2, 2);
-                ovr025.id_item(1, 0, var_2, 8, gbl.player_ptr02.field_159, gbl.player_ptr02);
+                ovr025.ItemDisplayNameBuild(1, false, var_2, 8, gbl.player_ptr02.field_159, gbl.player_ptr02);
             }
 
             var_2++;
@@ -289,8 +289,8 @@ namespace engine
             byte var_30;
             byte var_2F;
             bool var_2E;
-            bool var_2D;
-            byte var_2C;
+            bool hasSpells;
+            byte hasMoney;
             string var_2B;
             char var_1;
 
@@ -309,14 +309,14 @@ namespace engine
             while (unk_54B03.MemberOf(var_1) == false && arg_0 == false)
             {
                 var_2B = string.Empty;
-                var_2D = false;
-                var_2C = 0;
+                hasSpells = false;
+                hasMoney = 0;
 
                 for (var_2F = 0; var_2F <= 0x53; var_2F++)
                 {
                     if (gbl.player_ptr02.spell_list[var_2F] > 0)
                     {
-                        var_2D = true;
+                        hasSpells = true;
                     }
                 }
 
@@ -324,7 +324,7 @@ namespace engine
                 {
                     if (gbl.player_ptr02.Money[var_30] > 0)
                     {
-                        var_2C = 1;
+                        hasMoney = 1;
                     }
                 }
 
@@ -333,7 +333,7 @@ namespace engine
                     var_2B += "Items ";
                 }
 
-                if (var_2D == true)
+                if (hasSpells == true)
                 {
                     var_2B += "Spells ";
                 }
@@ -342,13 +342,13 @@ namespace engine
                     gbl.player_ptr02.in_combat == false ||
                     gbl.player_ptr02.health_status == Status.animated)
                 {
-                    if (var_2C != 0 && gbl.game_state != 5)
+                    if (hasMoney != 0 && gbl.game_state != 5)
                     {
                         var_2B += "Trade ";
                     }
                 }
 
-                if (var_2C != 0)
+                if (hasMoney != 0)
                 {
                     var_2B +=  "Drop ";
                 }
@@ -376,7 +376,7 @@ namespace engine
                         break;
 
                     case 'S':
-                        var_2F = spell_menu2(out var_2D, ref var_32, 0, SpellLoc.memory);
+                        var_2F = spell_menu2(out hasSpells, ref var_32, 0, SpellLoc.memory);
                         break;
 
                     case 'T':
@@ -417,7 +417,7 @@ namespace engine
             bool var_1;
 
             var_1 = false;
-            if (arg_0.field_34 != 0)
+            if (arg_0.readied)
             {
                 ovr025.string_print01("Must be unreadied");
             }
@@ -427,7 +427,7 @@ namespace engine
             }
             else if ((int)arg_0.affect_1 > 0x7F || (int)arg_0.affect_2 > 0x7F || (int)arg_0.affect_3 > 0x7F)
             {
-                ovr025.sub_678A2(0, 15, 1, gbl.player_ptr);
+                ovr025.displayPlayerName(false, 15, 1, gbl.player_ptr);
 
                 gbl.textXCol = (byte)(gbl.player_ptr.name.Length + 2);
                 gbl.textYCol = 0x15;
@@ -477,7 +477,7 @@ namespace engine
             seg041.displayString(ovr025.sub_670CC(var_4.field_31), 0, 10, 4, 0x14);
             seg041.displayString(ovr025.sub_670CC(var_4.exp_value), 0, 10, 5, 0x14);
             seg041.displayString(ovr025.sub_670CC(var_4.field_33), 0, 10, 6, 0x14);
-            seg041.displayString(ovr025.sub_670CC(var_4.field_34), 0, 10, 7, 0x14);
+            seg041.displayString(var_4.readied.ToString(), 0, 10, 7, 0x14);
             seg041.displayString(ovr025.sub_670CC(var_4.field_35), 0, 10, 8, 0x14);
             seg041.displayString(ovr025.sub_670CC(var_4.field_36), 0, 10, 9, 0x14);
             seg041.displayString(ovr025.ConcatWord(var_4._value), 0, 10, 10, 0x14);
@@ -500,19 +500,18 @@ namespace engine
         internal static void use_item(ref bool arg_0)
         {
             byte var_40;
-            Player var_3F;
+            Player player;
             short var_37;
             Item curr_item;
-            Item var_31;
             bool var_2D;
             byte var_2C;
             string var_2A;
             char var_1;
 
-            var_3F = gbl.player_ptr;
+            player = gbl.player_ptr;
             var_1 = ' ';
 
-            curr_item = var_3F.itemsPtr;
+            curr_item = player.itemsPtr;
 
             var_37 = 0;
             var_2D = true;
@@ -520,26 +519,26 @@ namespace engine
 
             while (unk_554EE.MemberOf(var_1) == false &&
                 arg_0 == false &&
-                var_3F.field_14C > 0)
+                player.field_14C > 0)
             {
-                var_40 = var_3F.field_14C;
+                var_40 = player.field_14C;
 
-                if (var_3F.itemsPtr != null)
+                if (player.itemsPtr != null)
                 {
                     var_2A = "Ready";
 
-                    if (var_3F.in_combat == true &&
+                    if (player.in_combat == true &&
                         gbl.area_ptr.field_1CA == 0 &&
                         (gbl.game_state == 2 || gbl.game_state == 3 ||
                         gbl.game_state == 4 || gbl.game_state == 5 ||
-                        (var_3F.actions != null && var_3F.actions.field_2 != 0)))
+                        (player.actions != null && player.actions.field_2 != 0)))
                     {
                         var_2A += " Use";
                     }
 
-                    if (var_3F.field_F7 < 0x80 ||
-                        var_3F.in_combat == false ||
-                        var_3F.health_status == Status.animated)
+                    if (player.field_F7 < 0x80 ||
+                        player.in_combat == false ||
+                        player.health_status == Status.animated)
                     {
                         if (gbl.game_state != 5)
                         {
@@ -549,16 +548,16 @@ namespace engine
 
                     var_2A += " Drop";
 
-                    if (var_3F.field_14C < 16)
+                    if (player.field_14C < 16)
                     {
                         var_2A += " Halve";
                     }
 
                     var_2A += " Join";
 
-                    if (var_3F.field_F7 < 0x80 ||
-                        var_3F.in_combat == false ||
-                        var_3F.health_status == Status.animated)
+                    if (player.field_F7 < 0x80 ||
+                        player.in_combat == false ||
+                        player.health_status == Status.animated)
                     {
                         if (gbl.game_state == 1)
                         {
@@ -571,22 +570,22 @@ namespace engine
                         var_2A += " Id";
                     }
 
-                    var_31 = var_3F.itemsPtr;
+                    Item tmpItem = player.itemsPtr;
 
-                    while (var_31 != null)
+                    while (tmpItem != null)
                     {
-                        ovr025.id_item(0, 1, 0, 0, var_31, var_3F);
+                        ovr025.ItemDisplayNameBuild(0, true, 0, 0, tmpItem, player);
 
-                        var_31 = var_31.next;
+                        tmpItem = tmpItem.next;
                     }
 
                     if (var_2C != 0 || gbl.byte_1D2C8 == true)
                     {
                         seg037.draw8x8_07();
 
-                        ovr025.sub_678A2(1, 1, 1, var_3F);
+                        ovr025.displayPlayerName(true, 1, 1, player);
 
-                        seg041.displayString("Items", 0, 10, 1, var_3F.name.Length + 4);
+                        seg041.displayString("Items", 0, 10, 1, player.name.Length + 4);
                         seg041.displayString("Ready Item", 0, 15, 3, 1);
 
                         var_2D = true;
@@ -595,7 +594,7 @@ namespace engine
                     }
 
                     var_1 = ovr027.sl_select_item(out curr_item, ref var_37, ref var_2D, true,
-                        var_3F.itemsPtr, 0x16, 0x26, 5, 1, 15, 10, 13, var_2A, string.Empty);
+                        player.itemsPtr, 0x16, 0x26, 5, 1, 15, 10, 13, var_2A, string.Empty);
 
                     if (curr_item != null)
                     {
@@ -612,7 +611,7 @@ namespace engine
                                 break;
 
                             case 'U':
-                                if (curr_item.field_34 == 0)
+                                if (curr_item.readied == false)
                                 {
                                     ovr025.string_print01("Must be Readied");
                                     var_1 = ' ';
@@ -649,7 +648,7 @@ namespace engine
                             case 'D':
                                 if (sub_54EC1(curr_item) == true)
                                 {
-                                    ovr025.id_item(0, 0, 0, 0, curr_item, var_3F);
+                                    ovr025.ItemDisplayNameBuild(0, false, 0, 0, curr_item, player);
 
                                     seg041.press_any_key("Your " + curr_item.name + "will be gone forever", true, 0, 14, 22, 0x26, 21, 1);
 
@@ -692,10 +691,10 @@ namespace engine
                         }
                     }
 
-                    ovr025.sub_66C20(var_3F);
+                    ovr025.sub_66C20(player);
                 }
 
-                if (var_3F.field_14C != var_40)
+                if (player.field_14C != var_40)
                 {
                     var_2D = true;
                 }
@@ -789,7 +788,7 @@ namespace engine
                 case 4:
                     if (((int)arg_2.affect_2 & 0x0f) != var_7.alignment)
                     {
-                        arg_2.field_34 = 0;
+                        arg_2.readied = false;
                         var_3 = (sbyte)((int)arg_2.affect_2 << 4);
 
                         gbl.byte_1D2BF = 8;
@@ -879,7 +878,7 @@ namespace engine
 
             player = gbl.player_ptr;
 
-            if (item.field_34 != 0)
+            if (item.readied)
             {
                 if (item.field_36 != 0)
                 {
@@ -887,7 +886,7 @@ namespace engine
                 }
                 else
                 {
-                    item.field_34 = 0;
+                    item.readied = false;
 
                     if (var_1 == true)
                     {
@@ -948,7 +947,7 @@ namespace engine
                 switch (var_2)
                 {
                     case 0:
-                        item.field_34 = 1;
+                        item.readied = true;
                         if (var_1 == true)
                         {
                             sub_55B04(1, item);
@@ -960,7 +959,7 @@ namespace engine
                         break;
 
                     case 2:
-                        ovr025.id_item(0, 0, 0, 0, player.itemArray[var_3], player);
+                        ovr025.ItemDisplayNameBuild(0, false, 0, 0, player.itemArray[var_3], player);
                         ovr025.string_print01("already using " + player.itemArray[var_3].name);
                         break;
 
@@ -1017,7 +1016,7 @@ namespace engine
                 item_ptr = item.ShallowClone();
 
                 item_ptr.count = half_number;
-                item_ptr.field_34 = 0;
+                item_ptr.readied = false;
 
                 item_ptr.next = item.next;
 
@@ -1125,11 +1124,11 @@ namespace engine
                     {
                         seg041.displayString("Item:", 0, 10, 0x17, 0);
 
-                        ovr025.id_item(1, 0, 0x17, 5, item, gbl.player_ptr);
+                        ovr025.ItemDisplayNameBuild(1, false, 0x17, 5, item, gbl.player_ptr);
                     }
                     else
                     {
-                        ovr025.id_item(1, 0, 0x16, 1, item, gbl.player_ptr);
+                        ovr025.ItemDisplayNameBuild(1, false, 0x16, 1, item, gbl.player_ptr);
                     }
 
                     seg041.GameDelay();
@@ -1231,7 +1230,7 @@ namespace engine
                 }
             }
 
-            ovr025.id_item(0, 0, 0, 0, item, gbl.player_ptr02);
+            ovr025.ItemDisplayNameBuild(0, false, 0, 0, item, gbl.player_ptr02);
 
             var_208 = "I'll give you " + item_value.ToString() + " gold pieces for your " + item.name;
 
@@ -1280,7 +1279,7 @@ namespace engine
             int var_2;
 
             var_9 = 0;
-            ovr025.id_item(0, 0, 0, 0, item, gbl.player_ptr02);
+            ovr025.ItemDisplayNameBuild(0, false, 0, 0, item, gbl.player_ptr02);
 
             seg041.press_any_key("For 200 gold pieces I'll identify your " + item.name, true, 0, 0x0e, 0x16, 0x26, 0x15, 1);
 
@@ -1320,7 +1319,7 @@ namespace engine
                 else
                 {
                     item.field_35 = 0;
-                    ovr025.id_item(0, 0, 0, 0, item, gbl.player_ptr02);
+                    ovr025.ItemDisplayNameBuild(0, false, 0, 0, item, gbl.player_ptr02);
 
                     seg041.press_any_key("It looks like some sort of " + item.name, true, 0, 0x0e, 0x16, 0x26, 0x15, 1);
 
@@ -1697,7 +1696,7 @@ namespace engine
                     }
                 }
 
-                ovr025.sub_678A2(1, 1, 1, gbl.player_ptr);
+                ovr025.displayPlayerName(true, 1, 1, gbl.player_ptr);
 
                 seg041.displayString("Spells " + var_2A, 0, 10, 1, gbl.player_ptr.name.Length + 4);
 

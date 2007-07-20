@@ -650,7 +650,7 @@ namespace engine
             var_9.affect_3 = 0;
 
             var_9.next = null;
-            var_9.field_34 = 0;
+            var_9.readied = false;
             var_9.field_35 = 6;
             var_9.field_36 = 0;
 
@@ -1317,7 +1317,7 @@ namespace engine
                         }
 
                         seg037.draw8x8_clear_area(0x16, 0x26, 1, 1);
-                        ovr025.sub_678A2(0, 1, 1, gbl.player_ptr);
+                        ovr025.displayPlayerName(false, 1, 1, gbl.player_ptr);
 
                         seg041.displayString("You have a fine collection of:", 0, 0xf, 7, 1);
                         seg041.displayString(var_29, 0, 0x0f, 9, 1);
@@ -1399,7 +1399,7 @@ namespace engine
                                     var_B2.next = null;
                                     var_B2.weight = 1;
                                     var_B2.field_35 = 0;
-                                    var_B2.field_34 = 0;
+                                    var_B2.readied = false;
                                     var_B2.field_31 = 0x65;
                                     var_B2.field_30 = 0;
                                     var_B2.field_2F = 0;
@@ -1493,7 +1493,7 @@ namespace engine
                                 {
                                     var_B2 = new Item();
                                     var_B2.next = null;
-                                    var_B2.field_34 = 0;
+                                    var_B2.readied = false;
                                     var_B2.field_31 = 0xD6;
                                     var_B2.field_30 = 0;
                                     var_B2.type = 0x46;

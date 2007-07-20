@@ -52,12 +52,12 @@ namespace engine
 								var_12++;
 								
 								item_ptr = gbl.item_pointer;
-									
-								ovr025.id_item( 0, 0, 0, 0, item, player );
+
+                                ovr025.ItemDisplayNameBuild(0, false, 0, 0, item, player);
 									
 								gbl.item_pointer = item.ShallowClone();
 
-								gbl.item_pointer.field_34 = 0;
+								gbl.item_pointer.readied = false;
 								gbl.item_pointer.next = item_ptr;
 
 								item = item.next;
@@ -505,7 +505,7 @@ namespace engine
 
             while( var_1C != null )
             {
-                ovr025.id_item( 0, 0, 0, 0, var_1C, null );
+                ovr025.ItemDisplayNameBuild(0, false, 0, 0, var_1C, null);
                 var_1C = var_1C.next;
             }
 

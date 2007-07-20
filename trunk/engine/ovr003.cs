@@ -1574,7 +1574,7 @@ namespace engine
 
                 while (var_61 != null)
                 {
-                    ovr025.id_item(0, 0, 0, 0, var_61, gbl.player_ptr);
+                    ovr025.ItemDisplayNameBuild(0, false, 0, 0, var_61, gbl.player_ptr);
                     var_61 = var_61.next;
                 }
             }

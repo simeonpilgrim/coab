@@ -972,7 +972,7 @@ namespace engine
             while (item != null)
             {
                 if ((int)item.affect_3 > 0x80 &&
-                    item.field_34 == 0)
+                    item.readied == false)
                 {
                     var_12 = (byte)((int)item.affect_3 & 0x7F);
 

@@ -29,7 +29,7 @@ namespace Classes
         /// </summary>
 		public sbyte exp_value; // 0x32
 		public byte field_33;
-		public byte field_34; 
+		public bool readied; // field_34
 		public byte field_35;
 		public byte field_36; // 0x36
 		public short weight; // 0x37
@@ -107,7 +107,7 @@ namespace Classes
             field_31 = (byte)data[offset + 0x31];
             exp_value = (sbyte)data[offset + 0x32];
             field_33 = data[offset+0x33];
-            field_34 = data[offset+0x34];
+            readied = (data[offset+0x34] != 0);
             field_35 = data[offset+0x35];
             field_36 = data[offset+0x36];
 
@@ -136,7 +136,7 @@ namespace Classes
 			field_31 = 0;
 			exp_value = 0;
 			field_33 = 0;
-			field_34 = 0; 
+			readied = false; 
 			field_35 = 0;
 			field_36 = 0;
 			weight = 0;
