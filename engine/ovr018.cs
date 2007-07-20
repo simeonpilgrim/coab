@@ -3231,7 +3231,7 @@ namespace engine
 
                     var_16 = 4;
 
-                    ovr025.sub_678A2(0, var_16, 4, gbl.player_ptr);
+                    ovr025.displayPlayerName(false, var_16, 4, gbl.player_ptr);
 
                     seg041.displayString(" will become:", 0, 10, var_16, player_ptr.name.Length + 4);
 

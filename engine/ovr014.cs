@@ -127,7 +127,7 @@ namespace engine
             ovr025.DisplayPlayerStatusString(false, 10, text, attacker);
             var_1 = 0x0C;
 
-            ovr025.sub_678A2(0, var_1, 0x17, target);
+            ovr025.displayPlayerName(false, var_1, 0x17, target);
             var_1++;
 
             if (arg_6 == 1)
@@ -1149,7 +1149,7 @@ namespace engine
 
                             gbl.item_pointer = item_ptr;
 
-                            item_ptr.field_34 = 0;
+                            item_ptr.readied = false;
 
                             ovr025.lose_item(item, player02);
                             gbl.item_ptr = item_ptr;

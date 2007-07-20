@@ -215,7 +215,7 @@ namespace engine
             while (var_A != null)
             {
                 if (var_A.affect_3 == Affects.affect_81 &&
-                    var_A.field_34 != 0)
+                    var_A.readied)
                 {
                     for (var_5 = 1; var_5 <= 3; var_5++)
                     {
@@ -300,7 +300,7 @@ namespace engine
                     (gbl.unk_1C020[arg_0.itemArray[var_6].type].field_D & arg_0.field_12B) == 0 &&
                     arg_0.itemArray[var_6].field_36 == 0)
                 {
-                    arg_0.itemArray[var_6].field_34 = 0;
+                    arg_0.itemArray[var_6].readied = false;
                 }
             }
 
@@ -468,7 +468,7 @@ namespace engine
             while (var_8 != null && var_9 == false)
             {
                 if ((int)var_8.affect_3 > 0x80 &&
-                    var_8.field_34 != 0)
+                    var_8.readied)
                 {
                     var_4 = (byte)((int)var_8.affect_3 & 0x7F);
 
@@ -635,7 +635,7 @@ namespace engine
             while (item_ptr != null && var_A == false && var_B == false)
             {
                 if ((int)item_ptr.affect_3 > 0x80 &&
-                    item_ptr.field_34 != 0)
+                    item_ptr.readied)
                 {
                     var_3 = (byte)((int)item_ptr.affect_3 & 0x7f);
 
@@ -921,7 +921,7 @@ namespace engine
                 if ((gbl.unk_1C020[var_13.type].field_D & arg_0.field_12B) == 0 &&
                     var_13.field_36 == 0)
                 {
-                    var_13.field_34 = 0;
+                    var_13.readied = false;
                 }
 
                 var_13 = var_13.next;

@@ -250,7 +250,7 @@ namespace engine
 
                         if (ovr023.item_is_scroll(item_ptr) == false &&
                             (int)item_ptr.affect_3 < 0x80 &&
-                            item_ptr.field_34 != 0 &&
+                            item_ptr.readied &&
                             var_8 > 0)
                         {
                             if (var_8 > 0x38)

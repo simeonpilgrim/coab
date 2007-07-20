@@ -645,14 +645,11 @@ namespace engine
             bool var_57;
             short var_56;
             byte var_54;
-            string var_53;
-            string var_2A;
+
             char ret_val = '\0'; /* Simeon */
 
             result_ptr = null; /*Simeon*/
 
-            var_2A = string02;
-            var_53 = string01;
 
             if (stringList == null)
             {
@@ -720,7 +717,7 @@ namespace engine
                 while (loop_end == false)
                 {
                     ListItemHighlighted(index_ptr, stringList, arg_16, arg_18, arg_1A);
-                    var_83 = var_53;
+                    var_83 = string01;
 
                     var_84 = false;
                     var_85 = false;
@@ -742,7 +739,7 @@ namespace engine
                         var_83 += " Exit";
                     }
 
-                    var_5A = displayInput(out var_57, 0, 1, arg_1A, arg_1C, arg_1E, var_83, var_2A);
+                    var_5A = displayInput(out var_57, 0, 1, arg_1A, arg_1C, arg_1E, var_83, string02);
 
                     ListItemNormal(index_ptr, stringList, arg_16, arg_18, arg_1C, arg_1E);
 

@@ -2661,7 +2661,7 @@ namespace engine
                     if (var_4.field_36 != 0)
                     {
                         var_5 = 1;
-                        var_4.field_34 = 0;
+                        var_4.readied = false;
 
                         if ((int)var_4.affect_3 > 0x7F)
                         {
@@ -4037,7 +4037,7 @@ namespace engine
 
                     while (item != null && var_5 == 0)
                     {
-                        if (item.field_34 != 0)
+                        if (item.readied)
                         {
                             if (item.field_2F == 0x76 ||
                                 item.field_30 == 0x76 ||
@@ -4496,7 +4496,7 @@ namespace engine
             {
                 seg037.draw8x8_clear_area(0x16, 0x26, 0x12, 1);
 
-                ovr025.sub_678A2(0, 0x13, 1, arg_6);
+                ovr025.displayPlayerName(false, 0x13, 1, arg_6);
 
                 seg041.displayString(arg_2, 0, 10, 0x13, arg_6.name.Length + 2);
                 seg041.displayString(AffectNames[arg_0], 0, 10, 0x14, 1);

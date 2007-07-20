@@ -177,20 +177,27 @@ namespace engine
         }
 
 
-        static string[] itemNames = {
-								 "Battle Axe","Hand Axe","Bardiche","Bec De Corbin",
-								 "Bill-Guisarme","Bo Stick", "Club","Dagger","Dart",
-								 "Fauchard","Fauchard-Fork","Flail","Military Fork",
-								 "Glaive","Glaive-Guisarme","Guisarme","Guisarme-Voulge",
-								 "Halberd","Lucern Hammer","Hammer","Javelin","Jo Stick",
-								 "Mace","Morning Star","Partisan","Military Pick","Awl Pike",
-								 "Quarrel","Ranseur","Scimitar","Spear","Spetum","Quarter Staff",
-								 "Bastard Sword","Broad Sword","Long Sword","Short Sword",
-								 "Two-Handed Sword","Trident",
-								 "Voulge","Composite Short Bow","Long Bow","Short Bow",
-								 "Heavy Crossbow","Light Crossbow","Sling","Mail","Armor",
-								 "Leather","Padded","Studded","Ring","Scale","Chain",
-								 "Splint","Banded","Plate","Shield","Woods","Arrow",
+        static string[] itemNames = { "",
+            "Battle Axe","Hand Axe","Bardiche","Bec De Corbin","Bill-Guisarme",
+            "Bo Stick", "Club","Dagger","Dart","Fauchard",
+            
+            "Fauchard-Fork","Flail","Military Fork","Glaive","Glaive-Guisarme",
+            "Guisarme","Guisarme-Voulge","Halberd","Lucern Hammer","Hammer",
+            
+            "Javelin","Jo Stick","Mace","Morning Star","Partisan",      
+            "Military Pick","Awl Pike","Quarrel","Ranseur","Scimitar",
+ 
+            "Spear","Spetum","Quarter Staff","Bastard Sword","Broad Sword",
+            
+            "Long Sword","Short Sword","Two-Handed Sword","Trident","Voulge",
+            "Composite Long Bow","Composite Short Bow","Long Bow","Short Bow","Heavy Crossbow",
+            
+            "Light Crossbow","Sling","Mail","Armor","Leather",
+            "Padded", "Studded","Ring","Scale","Chain",					 
+            "Splint","Banded","Plate","Shield","Woods",
+            
+            "Arrow",
+
 								 string.Empty,string.Empty,"Potion","Ring","Rod","Stave",
 								 "Wand","Jug","Amulet","Dragon Breath","Bag","Defoliation",
 								 "Ice Storm","Book","Boots","Hornets Nest","Bracers",
@@ -233,20 +240,19 @@ namespace engine
 
 
 
-        internal static void id_item(byte arg_0, byte arg_2, byte arg_4, byte arg_6, Item item, Player player)
+        internal static void ItemDisplayNameBuild(byte arg_0, bool displayReadied, byte arg_4, byte arg_6, Item item, Player player) /*id_item*/
         {
             Player player_ptr;
             byte var_8;
-            byte var_7;
             Affect var_6;
             byte var_2;
             byte var_1;
 
             item.name = string.Empty;
 
-            if (arg_2 != 0)
+            if (displayReadied == true)
             {
-                if (item.field_34 != 0)
+                if (item.readied)
                 {
                     item.name = " Yes  ";
                 }
@@ -256,20 +262,20 @@ namespace engine
                 }
             }
 
-            var_7 = 0;
+            bool isMagic = false;
             player_ptr = gbl.player_next_ptr;
 
-            while (player_ptr != null && var_7 == 0)
+            while (player_ptr != null && isMagic == false)
             {
                 if (find_affect(out var_6, Affects.detect_magic, player_ptr) == true)
                 {
-                    var_7 = 1;
+                    isMagic = true;
                 }
 
                 player_ptr = player_ptr.next_player;
             }
 
-            if (var_7 != 0)
+            if (isMagic == true)
             {
                 if (item.exp_value > 0 || item.field_33 > 0 || item.field_36 != 0)
                 {
@@ -286,7 +292,7 @@ namespace engine
 
             for (var_1 = 1; var_1 <= 3; var_1++)
             {
-                if (item.field_2EArray(var_1) != item.type)
+                if (item.field_2EArray(var_1) != 0)
                 {
                     if (((item.field_35 >> (3 - var_1)) & 1) == 0)
                     {
@@ -299,6 +305,8 @@ namespace engine
 
             for (var_1 = 3; var_1 >= 1; var_1--)
             {
+                int v = (var_2 >> (var_1 - 1));
+
                 if (((var_2 >> (var_1 - 1)) & 1) > 0)
                 {
                     item.name += itemNames[item.field_2EArray(var_1)];
@@ -414,7 +422,7 @@ namespace engine
                     }
                     else
                     {
-                        sub_678A2(0, y_pos, x_pos, player_ptr);
+                        displayPlayerName(false, y_pos, x_pos, player_ptr);
                     }
 
                     if (player_ptr.ac >= 0 && player_ptr.ac <= 0x32)
@@ -520,7 +528,7 @@ namespace engine
                 {
                     var_2 += 2;
                     /*var_1 = 0x17;*/
-                    id_item(0, 0, 0, 0, player.field_151, player);
+                    ItemDisplayNameBuild(0, false, 0, 0, player.field_151, player);
 
                     seg041.press_any_key(player.field_151.name, true, 0, 10, (byte)(var_2 + 3), 0x26, (byte)(var_2 + 1), 0x17);
                 }
@@ -605,7 +613,7 @@ namespace engine
 
                 player.weight += var_12;
 
-                if (item_ptr.field_34 != 0)
+                if (item_ptr.readied)
                 {
                     gbl.word_1AFE0 += var_12;
 
@@ -686,7 +694,7 @@ namespace engine
 
             while (item_ptr != null)
             {
-                if (item_ptr.field_34 != 0)
+                if (item_ptr.readied)
                 {
                     sub_6621E(item_ptr, player);
                     sub_662A6(ref var_7, ref stat_bonus, item_ptr, player);
@@ -1167,7 +1175,7 @@ namespace engine
             {
                 seg037.draw8x8_clear_area(0x15, 0x26, arg_2, 0x17);
 
-                sub_678A2(0, arg_2, 0x17, player);
+                displayPlayerName(false, arg_2, 0x17, player);
                 seg041.press_any_key(text, true, 0, 10, 0x15, 0x26, (byte)(arg_2 + 1), 0x17);
             }
             else
@@ -1183,7 +1191,7 @@ namespace engine
                 }
                 seg037.draw8x8_clear_area(0x16, 0x26, var_101, 1);
 
-                sub_678A2(0, var_101 + 1, 1, player);
+                displayPlayerName(false, var_101 + 1, 1, player);
                 seg041.press_any_key(text, true, 0, 10, 0x16, 0x26, (byte)(var_101 + 2), 1);
             }
 
@@ -1208,28 +1216,28 @@ namespace engine
         }
 
 
-        internal static void sub_678A2(byte arg_0, int y_offset, int x_offset, Player player)
+        internal static void displayPlayerName(bool pural, int y_offset, int x_offset, Player player) /*sub_678A2*/
         {
-            byte var_1;
+            byte color;
 
             if (player.in_combat == false)
             {
-                var_1 = 0x0C;
+                color = 0x0C;
             }
             else if (player.combat_team == 1)
             {
-                var_1 = 0x0E;
+                color = 0x0E;
             }
             else
             {
-                var_1 = 0x0B;
+                color = 0x0B;
             }
 
-            seg041.displayString(player.name, 0, var_1, y_offset, x_offset);
+            seg041.displayString(player.name, 0, color, y_offset, x_offset);
 
-            if (arg_0 != 0)
+            if (pural == true)
             {
-                seg041.displayString("s", 0, var_1, y_offset, x_offset + player.name.Length);
+                seg041.displayString("s", 0, color, y_offset, x_offset + player.name.Length);
             }
         }
 
@@ -2362,7 +2370,7 @@ namespace engine
 
 
         internal static Item new_Item(Affects arg_0, Affects arg_2, Affects arg_4, short arg_6, byte arg_8,
-            short arg_A, byte arg_C, byte arg_E, byte arg_10, byte arg_12, sbyte arg_14, byte arg_16,
+            short arg_A, byte arg_C, byte arg_E, bool readied, byte arg_12, sbyte arg_14, byte arg_16,
             sbyte arg_18, sbyte arg_1A, byte arg_1C)
         {
             Item var_8;
@@ -2377,7 +2385,7 @@ namespace engine
             var_8.field_31 = arg_16;
             var_8.exp_value = arg_14;
             var_8.field_33 = arg_12;
-            var_8.field_34 = arg_10;
+            var_8.readied = readied;
             var_8.field_35 = arg_E;
             var_8.field_36 = arg_C;
             var_8.weight = arg_A;
