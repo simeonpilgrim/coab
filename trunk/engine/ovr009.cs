@@ -367,7 +367,7 @@ namespace engine
 
             var_2B = false;
 
-            for (var_2A = 0; var_2A <= 0x53; var_2A++)
+            for (var_2A = 0; var_2A < gbl.max_spells; var_2A++)
             {
                 if (player.spell_list[var_2A] > 0)
                 {

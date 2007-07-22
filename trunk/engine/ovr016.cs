@@ -21,7 +21,7 @@ namespace engine
             var_5 = 0;
             var_6 = 0;
 
-            for (loop_var = 0; loop_var <= 0x53; loop_var++)
+            for (loop_var = 0; loop_var < gbl.max_spells; loop_var++)
             {
                 if (player.spell_list[loop_var] > 127)
                 {
@@ -61,20 +61,16 @@ namespace engine
             }
 
             var_D = 0;
-            throw new System.NotSupportedException();//cmp	[bp+var_5], 0
-            throw new System.NotSupportedException();//ja	loc_4413B
-            throw new System.NotSupportedException();//cmp	[bp+var_6], 0
-            throw new System.NotSupportedException();//jbe	loc_4413F
-            throw new System.NotSupportedException();//loc_4413B:
-            var_D = 4;
-            throw new System.NotSupportedException();//loc_4413F:
-            throw new System.NotSupportedException();//cmp	[bp+var_3], 2
-            throw new System.NotSupportedException();//ja	loc_4414B
-            throw new System.NotSupportedException();//cmp	[bp+var_4], 2
-            throw new System.NotSupportedException();//jbe	loc_4414F
-            throw new System.NotSupportedException();//loc_4414B:
-            var_D = 6;
-            throw new System.NotSupportedException();//loc_4414F:
+            if (var_5 > 0 || var_6 > 0)
+            {
+                var_D = 4;
+            }
+
+            if (var_3 > 2 || var_4 > 2)
+            {
+                var_D = 6;
+            }
+
             player.spell_to_learn_count = var_D;
             var_2 = (short)((var_D * 0x3C) + (var_6 * 0x0f) + (var_5 * 0x0f));
 
@@ -86,7 +82,7 @@ namespace engine
         {
             byte var_1;
 
-            for (var_1 = 0; var_1 <= 0x53; var_1++)
+            for (var_1 = 0; var_1 < gbl.max_spells; var_1++)
             {
                 if (player.spell_list[var_1] > 0x7F)
                 {
@@ -140,7 +136,7 @@ namespace engine
 
             var_2 = 0;
 
-            for (loop_var = 0; loop_var <= 0x53; loop_var++)
+            for (loop_var = 0; loop_var < gbl.max_spells; loop_var++)
             {
                 byte b = gbl.player_ptr.spell_list[loop_var];
 
@@ -376,7 +372,7 @@ namespace engine
 
             for (var_1 = 0; var_1 <= 0x52; var_1++)
             {
-                for (var_2 = var_1; var_2 <= 0x53; var_2++)
+                for (var_2 = var_1; var_2 < gbl.max_spells; var_2++)
                 {
                     if ((gbl.player_ptr.spell_list[var_1] & 0xF7) > (gbl.player_ptr.spell_list[var_2] & 0xF7))
                     {
@@ -1349,7 +1345,7 @@ namespace engine
             {
                 if (player_is_okey(player) == true)
                 {
-                    for (var_3 = 0; var_3 <= 0x53; var_3++)
+                    for (var_3 = 0; var_3 < gbl.max_spells; var_3++)
                     {
                         switch (player.spell_list[var_3])
                         {

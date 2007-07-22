@@ -312,7 +312,7 @@ namespace engine
                 hasSpells = false;
                 hasMoney = 0;
 
-                for (var_2F = 0; var_2F <= 0x53; var_2F++)
+                for (var_2F = 0; var_2F < gbl.max_spells; var_2F++)
                 {
                     if (gbl.player_ptr02.spell_list[var_2F] > 0)
                     {
@@ -671,7 +671,7 @@ namespace engine
                                 break;
 
                             case 'J':
-                                sub_56285(curr_item);
+                                join_items(curr_item);
                                 break;
 
                             case 'S':
@@ -763,7 +763,7 @@ namespace engine
 
                         seg051.FillChar(0, 5, var_11);
 
-                        for (var_B = 0; var_B <= 0x53; var_B++)
+                        for (var_B = 0; var_B < gbl.max_spells; var_B++)
                         {
                             if (var_7.spell_list[var_B] != 0 &&
                                 gbl.unk_19AEC[var_7.spell_list[var_B]].field_0 == 2)
@@ -1031,7 +1031,7 @@ namespace engine
         }
 
 
-        internal static void sub_56285(Item item)
+        internal static void join_items(Item item) /*sub_56285*/
         {
             byte items_count;
             Item this_item;

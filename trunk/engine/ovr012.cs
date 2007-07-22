@@ -217,7 +217,7 @@ namespace engine
             seg040.load_dax(ref gbl.sky_dax_251, 13, 1, 251, "SKY");
             seg040.load_dax(ref gbl.sky_dax_252, 13, 1, 252, "SKY");
 
-            gbl.byte_1AD48 = seg042.find_and_open_file(out unk_1AD74, 0, ovr017.diskInsertStrings[gbl.game_area], "ITEMS");
+            gbl.byte_1AD48 = seg042.find_and_open_file(out unk_1AD74, 0, "", "ITEMS");
             seg051.Reset(1, unk_1AD74);
 
             seg051.Seek(2, unk_1AD74);

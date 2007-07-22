@@ -1458,14 +1458,6 @@ namespace engine
         }
 
 
-        internal static string[] diskInsertStrings = { string.Empty, 
-                                         "Insert disk B in drive ",
-                                         "Insert disk B in drive ",
-                                         "Insert disk C in drive ",
-                                         "Insert disk C in drive ",
-                                         "Insert disk D in drive ",
-                                         "Insert disk D in drive " };
-
         static Set asc_49280 = new Set(0x020E, new byte[] { 
             0x04, 0x04, 0x00, 0x80, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0x08, 0x00, 0x10	});
 

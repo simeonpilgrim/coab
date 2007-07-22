@@ -2094,36 +2094,23 @@ namespace engine
                         var_2A = string.Empty;
                     }
                 }
-                else
+                else if (arg_8 != arg_C)
                 {
-                    throw new System.NotSupportedException();//loc_410D0:
-                    throw new System.NotSupportedException();//mov	ax, [bp+arg_C]
-                    throw new System.NotSupportedException();//mov	dx, [bp+arg_E]
-                    throw new System.NotSupportedException();//cmp	dx, [bp+arg_A]
-                    throw new System.NotSupportedException();//jnz	loc_410E0
-                    throw new System.NotSupportedException();//cmp	ax, [bp+arg_8]
-                    throw new System.NotSupportedException();//jz	loc_4114C
-                    throw new System.NotSupportedException();//loc_410E0:
-                    ovr025.offset_above_1(arg_C);
-                    throw new System.NotSupportedException();//or	al, al
-                    throw new System.NotSupportedException();//jnz	loc_41104
-                    var_2A = "Target ";
-                    throw new System.NotSupportedException();//jmp	short loc_4114C
-                    throw new System.NotSupportedException();//loc_41104:
-                    ovr025.sub_6906C(out var_2F, arg_C);
-                    throw new System.NotSupportedException();//or	al, al
-                    throw new System.NotSupportedException();//jz	loc_4114C
-                    ovr025.near_enermy(1, arg_C);
-                    throw new System.NotSupportedException();//or	al, al
-                    throw new System.NotSupportedException();//jz	loc_41139
-                    ovr025.offset_equals_20(arg_C);
-                    throw new System.NotSupportedException();//or	al, al
-                    throw new System.NotSupportedException();//jz	loc_4114C
-                    throw new System.NotSupportedException();//loc_41139:
-                    var_2A = "Target ";
+                    if (ovr025.offset_above_1(arg_C) == false)
+                    {
+                        var_2A = "Target ";
+                    }
+                    else
+                    {
+                        if (ovr025.sub_6906C(out var_2F, arg_C) == true &&
+                            (ovr025.near_enermy(1, arg_C) == 0 || ovr025.offset_equals_20(arg_C) == true))
+                        {
+                            var_2A = "Target ";
+                        }
+                    }
                 }
             }
-            throw new System.NotSupportedException();//loc_4114C:
+            
             var_2A = "Next Prev Manual " + var_2A + "Center Exit";
             ovr033.sub_75356(true, 3, arg_8);
             gbl.byte_1D90F = true;
@@ -2343,112 +2330,94 @@ namespace engine
 
                 var_2A = ovr027.displayInput(out gbl.byte_1D905, 0, 1, 15, 10, 13, var_29, "(Use Cursor keys) ");
 
-                throw new System.NotSupportedException();//mov	al, [bp+var_2A]
-                throw new System.NotSupportedException();//cmp	al, 0x0D
-                throw new System.NotSupportedException();//jz	loc_41732
-                throw new System.NotSupportedException();//cmp	al, 0x54
-                throw new System.NotSupportedException();//jz	loc_41732
-                throw new System.NotSupportedException();//jmp	loc_417E3
-                throw new System.NotSupportedException();//loc_41732:
-                gbl.stru_1D1BC.field_4 = false;
-                throw new System.NotSupportedException();//cmp	[bp+var_39], 0
-                throw new System.NotSupportedException();//jz	loc_417AC
-                arg_0.mapX = var_33;
-                arg_0.mapY = var_34;
 
-                if (player02 != null)
+                switch ((int)var_2A)
                 {
-                    arg_0.field_0 = player02;
-                }
-                else
-                {
-                    arg_0.field_0 = null;
-                }
+                    case 0x0D:
+                    case 0x54:
+                        gbl.stru_1D1BC.field_4 = false;
 
-                if (arg_C == 1)
-                {
-                    sub_411D8(arg_0, ref arg_4, arg_C, arg_0.field_0, player01);
+                        if (var_39 != 0)
+                        {
+                            arg_0.mapX = var_33;
+                            arg_0.mapY = var_34;
+
+                            if (player02 != null)
+                            {
+                                arg_0.field_0 = player02;
+                            }
+                            else
+                            {
+                                arg_0.field_0 = null;
+                            }
+
+                            if (arg_C == 1)
+                            {
+                                sub_411D8(arg_0, ref arg_4, arg_C, arg_0.field_0, player01);
+                            }
+                            else
+                            {
+                                arg_4 = true;
+                            }
+                        }
+
+                        if (var_39 == 0 ||
+                            arg_4 == false)
+                        {
+                            ovr033.sub_7431C(var_34, var_33);
+                            arg_4 = false;
+                            arg_0.Clear();
+                        }
+                        break;
+
+                    case 0x48:
+                        var_2F = 0;
+                        break;
+
+                    case 0x49:
+                        var_2F = 1;
+                        break;
+
+                    case 0x4D:
+                        var_2F = 2;
+                        break;
+
+                    case 0x51:
+                        var_2F = 3;
+                        break;
+
+                    case 0x50:
+                        var_2F = 4;
+                        break;
+
+                    case 0x4F:
+                        var_2F = 5;
+                        break;
+
+                    case 0x4B:
+                        var_2F = 6;
+                        break;
+
+                    case 0x47:
+                        var_2F = 7;
+                        break;
+
+                    case 0:
+                    case 0x45:
+                        ovr033.sub_7431C(var_34, var_33);
+                        arg_0.Clear();
+                        arg_4 = false;
+                        break;
+
+                    case 0x43:
+                        ovr033.sub_749DD(8, 0, var_34, var_33);
+                        var_2F = 8;
+                        break;
+
+                    default:
+                        var_2F = 8;
+                        break;
                 }
-                else
-                {
-                    arg_4 = true;
-                }
-
-                throw new System.NotSupportedException();//loc_417AC:
-                throw new System.NotSupportedException();//cmp	[bp+var_39], 0
-                throw new System.NotSupportedException();//jz	loc_417BB
-                throw new System.NotSupportedException();//les	di, [bp+arg_4]
-                throw new System.NotSupportedException();//cmp	byte ptr es:[di], 0
-                throw new System.NotSupportedException();//jnz	loc_417E0
-                throw new System.NotSupportedException();//loc_417BB:
-                ovr033.sub_7431C(var_34, var_33);
-                throw new System.NotSupportedException();//les	di, [bp+arg_4]
-                throw new System.NotSupportedException();//mov	byte ptr es:[di], 0
-                arg_0.Clear();
-                throw new System.NotSupportedException();//loc_417E0:
-                throw new System.NotSupportedException();//jmp	loc_41886
-                throw new System.NotSupportedException();//loc_417E3:
-                throw new System.NotSupportedException();//cmp	al, 0x48
-                throw new System.NotSupportedException();//jnz	loc_417EE
-                var_2F = 0;
-                throw new System.NotSupportedException();//jmp	loc_41886
-                throw new System.NotSupportedException();//loc_417EE:
-                throw new System.NotSupportedException();//cmp	al, 0x49
-                throw new System.NotSupportedException();//jnz	loc_417F9
-                var_2F = 1;
-                throw new System.NotSupportedException();//jmp	loc_41886
-                throw new System.NotSupportedException();//loc_417F9:
-                throw new System.NotSupportedException();//cmp	al, 0x4D
-                throw new System.NotSupportedException();//jnz	loc_41804
-                var_2F = 2;
-                throw new System.NotSupportedException();//jmp	loc_41886
-                throw new System.NotSupportedException();//loc_41804:
-                throw new System.NotSupportedException();//cmp	al, 0x51
-                throw new System.NotSupportedException();//jnz	loc_4180E
-                var_2F = 3;
-                throw new System.NotSupportedException();//jmp	short loc_41886
-                throw new System.NotSupportedException();//loc_4180E:
-                throw new System.NotSupportedException();//cmp	al, 0x50
-                throw new System.NotSupportedException();//jnz	loc_41818
-                var_2F = 4;
-                throw new System.NotSupportedException();//jmp	short loc_41886
-                throw new System.NotSupportedException();//loc_41818:
-                throw new System.NotSupportedException();//cmp	al, 0x4F
-                throw new System.NotSupportedException();//jnz	loc_41822
-                var_2F = 5;
-                throw new System.NotSupportedException();//jmp	short loc_41886
-                throw new System.NotSupportedException();//loc_41822:
-                throw new System.NotSupportedException();//cmp	al, 0x4B
-                throw new System.NotSupportedException();//jnz	loc_4182C
-                var_2F = 6;
-                throw new System.NotSupportedException();//jmp	short loc_41886
-                throw new System.NotSupportedException();//loc_4182C:
-                throw new System.NotSupportedException();//cmp	al, 0x47
-                throw new System.NotSupportedException();//jnz	loc_41836
-                var_2F = 7;
-                throw new System.NotSupportedException();//jmp	short loc_41886
-                throw new System.NotSupportedException();//loc_41836:
-                throw new System.NotSupportedException();//cmp	al, 0
-                throw new System.NotSupportedException();//jz	loc_4183E
-                throw new System.NotSupportedException();//cmp	al, 0x45
-                throw new System.NotSupportedException();//jnz	loc_41865
-                throw new System.NotSupportedException();//loc_4183E:
-                ovr033.sub_7431C(var_34, var_33);
-                arg_0.Clear();
-                throw new System.NotSupportedException();//les	di, [bp+arg_4]
-                throw new System.NotSupportedException();//mov	byte ptr es:[di], 0
-                throw new System.NotSupportedException();//jmp	short loc_41886
-                throw new System.NotSupportedException();//loc_41865:
-
-                throw new System.NotSupportedException();//cmp	al, 0x43
-                throw new System.NotSupportedException();//jnz	loc_41882
-
-                ovr033.sub_749DD(8, 0, var_34, var_33);
-                var_2F = 8;
-                throw new System.NotSupportedException();//jmp	short loc_41886
-                throw new System.NotSupportedException();//loc_41882:
-                var_2F = 8;
-                throw new System.NotSupportedException();//loc_41886:
             }
         }
 
@@ -2463,6 +2432,7 @@ namespace engine
 
             for (var_1 = 1; var_1 <= bp_var_DA; var_1++)
             {
+                bp_var_D8[var_1 - 1] = new gbl.Struct_1D1C1();
                 bp_var_D8[var_1 - 1].Copy(gbl.unk_1D1C1[var_1]);
             }
         }
@@ -2494,10 +2464,10 @@ namespace engine
                 bp_var_DB = 1;
             }
 
-            player_ptr = gbl.player_array[bp_var_D8[bp_var_DB].field_0];
+            player_ptr = gbl.player_array[bp_var_D8[bp_var_DB-1].field_0];
 
-            bp_var_E0 = (sbyte)gbl.stru_1C9CD[bp_var_D8[bp_var_DB].field_0].xPos;
-            bp_var_E1 = (sbyte)gbl.stru_1C9CD[bp_var_D8[bp_var_DB].field_0].yPos;
+            bp_var_E0 = (sbyte)gbl.stru_1C9CD[bp_var_D8[bp_var_DB-1].field_0].xPos;
+            bp_var_E1 = (sbyte)gbl.stru_1C9CD[bp_var_D8[bp_var_DB-1].field_0].yPos;
 
             if (arg_2 == true)
             {

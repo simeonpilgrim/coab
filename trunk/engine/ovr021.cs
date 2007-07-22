@@ -298,7 +298,7 @@ namespace engine
             byte[] var_F = new byte[6];
             byte var_1;
 
-            for (var_1 = 0; var_1 <= 6; var_1++)
+            for (var_1 = 0; var_1 < 6; var_1++)
             {
                 var_F[var_1] = 10;
             }
@@ -309,12 +309,12 @@ namespace engine
             var_10 = 0x0B;
 
             sub_5858A(gbl.unk_1D890.field_8, out var_110);
-            seg041.displayString(var_110, 0, var_F[var_1], 0x11, var_10 + 1);
+            seg041.displayString(var_110, 0, var_F[4], 0x11, var_10 + 1);
             seg041.displayString(":", 0, 10, 17, var_10 + 3);
             var_10 += 3;
 
             sub_5858A(gbl.unk_1D890.field_6, out var_110);
-            seg041.displayString(var_110, 0, var_F[var_1], 0x11, var_10 + 1);
+            seg041.displayString(var_110, 0, var_F[3], 0x11, var_10 + 1);
             seg041.displayString(":", 0, 10, 17, var_10 + 3);
             var_10 += 3;
 

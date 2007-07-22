@@ -11,46 +11,10 @@ namespace engine
             mem_ptr = new byte[((arg_0 + 7) & 0xfff8)];
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="ch"></param>
-        /// <param name="count">number of times to write character</param>
-        /// <param name="colour">attribute (text mode) or color (graphics mode)
-        /// if bit 7 set in graphics mode, character is XOR'ed onto screen</param>
-        /// <param name="row"></param>
-        /// <param name="column"></param>
-        static void sub_11340(char ch, byte count, byte colour, byte row, byte column)
-        {
-           // SetCursor(column, row);
-           // WriteChar(ch, count, colour);
-        }
-
-
-        static void sub_113AC(string arg_0, byte colour, byte row, byte column)
-        {
-            foreach (char ch in arg_0)
-            {
-                sub_11340(ch, 1, colour, row, column);
-                column++;
-            }
-        }
-
-
-        static void sub_1141C(byte count, byte colour, byte row, byte column)
-        {
-            sub_11340((char)0xDB, count, colour, row, column);
-        }
-
-
-		static void sub_1143A( string arg_0, byte arg_4 )
+		static void debug_display( string arg_0, byte arg_4 )
 		{
-			byte var_2A;
-
-			sub_1141C( 0x28, 0, 0x18, 0 );
-			sub_113AC( arg_0, arg_4, 0x18, 0 );
-			var_2A = seg043.GetInputKey();
-			sub_1141C( 0x28, 0, 0x18, 0 );
+            System.Console.Write(arg_0);
+			seg043.GetInputKey();
 		}
 
 
@@ -65,28 +29,24 @@ namespace engine
 
 		internal static void check_overlay_file( )
 		{
-			bool var_2;
-			byte var_1;
+			bool overlayFound;
 
-			do
+            do
 			{
-				var_2 = file_find( "game.ovr" );
+				overlayFound = file_find( "game.ovr" );
 
-				if( var_2 == false )
+				if( overlayFound == false )
 				{
-					seg051.Write( 0, "Please insert overlay disk.", gbl.known01_02 );
-					seg051.WriteLn( gbl.known01_02 );
-					var_1 = seg043.GetInputKey();
+                    System.Console.WriteLine("Please insert overlay disk.");
+					seg043.GetInputKey();
 				}
-
-			}while( var_2 == false );
+			}while( overlayFound == false );
 		}
 
 
 
         internal static bool find_and_open_file(out File file_ptr, byte arg_4, string arg_6, string arg_A)
         {
-            string var_246;
             string var_146;
             string var_141;
             string var_138;
@@ -122,12 +82,11 @@ namespace engine
                 {
                     if (var_138[0] < 0x43)
                     {
-                        sub_1143A(arg_6 + gbl.byte_1B2BA.ToString() + ":", 14);
+                        debug_display(arg_6 + gbl.byte_1B2BA.ToString() + ":", 14);
                     }
                     else
                     {
-                        var_246 = "Couldn't find " + var_141 + var_146 + ". Check install.";
-                        sub_1143A(var_246, 14);
+                        debug_display("Couldn't find " + var_141 + var_146 + ". Check install.", 14);
                     }
                 }
             } while (var_A4 == false && arg_4 == 0);
@@ -294,7 +253,7 @@ namespace engine
 
                     if( dataLength > 36000 )
                     {
-                        sub_1143A( "tempsize " + dataLength.ToString(), 14 );
+                        debug_display( "tempsize " + dataLength.ToString(), 14 );
                         seg043.print_and_exit();
                     }
 
