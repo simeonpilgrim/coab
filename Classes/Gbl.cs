@@ -439,8 +439,9 @@ namespace Classes
         public static short word_1EFBC;
 
         public static object dword_1AAC8;
-        public static Item[] unk_1AF18; // array 01-0x30; seg600:4C08
-        public static byte[] unk_1AEC4; // unk_1AEC4[0x53]; seg600:4BB4
+        public static Item[] unk_1AF18 = new Item[0x30]; // array 01-0x30; seg600:4C08
+        public const int max_spells = 0x54;
+        public static byte[] unk_1AEC4 = new byte[max_spells]; // unk_1AEC4[0x53]; seg600:4BB4
         public static Struct_1ADF6[] dword_1ADF6;
         public static StringList dword_1AE6C;
         public static DaxBlock dword_1C8F4;

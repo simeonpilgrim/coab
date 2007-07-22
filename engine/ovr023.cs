@@ -673,7 +673,7 @@ namespace engine
 
             gbl.dword_1AE6C = null;
 
-            for (var_2 = 0; var_2 <= 0x53; var_2++)
+            for (var_2 = 0; var_2 < gbl.max_spells; var_2++)
             {
                 gbl.unk_1AEC4[var_2] = 0;
             }
@@ -681,7 +681,7 @@ namespace engine
             switch (spl_location)
             {
                 case SpellLoc.memory:
-                    for (var_2 = 0; var_2 <= 0x53; var_2++)
+                    for (var_2 = 0; var_2 < gbl.max_spells; var_2++)
                     {
                         throw new System.NotSupportedException();//mov	al, [bp+var_2]
                         throw new System.NotSupportedException();//xor	ah, ah
@@ -2293,7 +2293,7 @@ namespace engine
                         var_7.field_DD = 0;
                         var_7.field_E4 = 6;
 
-                        for (var_1 = 0; var_1 <= 0x53; var_1++)
+                        for (var_1 = 0; var_1 < gbl.max_spells; var_1++)
                         {
                             var_7.spell_list[var_1] = 0;
                         }

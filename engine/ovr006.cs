@@ -683,7 +683,7 @@ namespace engine
 
                 if( var_2 == true )
                 {
-                    while( var_10A <= 0x53 && var_10C == 0 )
+                    while (var_10A < gbl.max_spells && var_10C == 0)
                     {
                         if( gbl.player_ptr.spell_list[var_10A] == 5 ||
                             gbl.player_ptr.spell_list[var_10A] == 11 ||

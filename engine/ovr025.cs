@@ -1073,19 +1073,13 @@ namespace engine
 
         internal static void clear_spell(byte spell_id, Player player)
         {
-            byte loop_var;
-
-            loop_var = 0;
-
-            while (loop_var <= 0x53)
+            for(int i = 0; i < gbl.max_spells; i++ )
             {
-                if (player.spell_list[loop_var] == spell_id)
+                if (player.spell_list[i] == spell_id)
                 {
-                    player.spell_list[loop_var] = 0;
-                    loop_var = 0x54;
+                    player.spell_list[i] = 0;
+                    break;
                 }
-
-                loop_var++;
             }
         }
 

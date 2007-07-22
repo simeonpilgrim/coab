@@ -291,13 +291,13 @@ namespace engine
             bool spell_id;
             byte var_5B;
             byte var_5A;
-            byte[] var_55 = new byte[0x53];
+            byte[] var_55 = new byte[gbl.max_spells];
 
             var_5F = 0;
 
             if (player.actions.can_cast != 0)
             {
-                for (var_60 = 1; var_60 <= 0x53; var_60++)
+                for (var_60 = 1; var_60 < gbl.max_spells; var_60++)
                 {
                     if (player.spell_list[var_60] > 0)
                     {
