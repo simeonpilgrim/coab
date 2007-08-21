@@ -53,6 +53,9 @@ namespace engine
 			seg044.sub_120E0( gbl.word_188BE );
             seg044.sub_12194();
 
+            //TODO remove this after debugging the end game
+            ovr019.end_game_text();
+
 			if( seg051.ParamStr( 1 ) != "STING" )
 			{
 				ovr002.title_screen();

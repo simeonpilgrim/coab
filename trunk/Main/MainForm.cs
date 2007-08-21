@@ -30,7 +30,7 @@ namespace Main
 
         private void MainForm_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
         {
-            engine.seg049.keyCode = Keyboard.KeyToIBMKey(e.KeyCode);
+            engine.seg049.AddKey( Keyboard.KeyToIBMKey(e.KeyCode) );
         }
 
         private void dumpPlayerAffectsToolStripMenuItem_Click(object sender, EventArgs e)

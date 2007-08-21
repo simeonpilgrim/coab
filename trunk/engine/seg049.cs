@@ -1,31 +1,12 @@
 using Classes;
+using System.Collections.Generic;
+using System.Threading;
 
 namespace engine
 {
     public class seg049
     {
         private static byte skipReadFlag;
-
-        volatile static bool keyboard_read = false;
-
-        static void keyboard_emptybuffer()
-        {
-            if (keyboard_read == false)
-            {
-                return;
-            }
-
-            keyboard_read = false;
-
-            while (int_check_keyPressed() != 0)
-            {
-                int_get_keyPressed();
-            }
-
-            System.Console.Out.WriteLine("^C");
-            throw new System.ApplicationException("Exit");
-        }
-
 
         internal static void SysDelay(int arg_0)
         {
@@ -35,7 +16,23 @@ namespace engine
             }
         }
 
-        public static ushort keyCode = 0;
+
+        private static Queue<ushort> keysPressed = new Queue<ushort>();
+        private static Semaphore WaitForKey = new Semaphore(0, 1);
+
+        static public void AddKey(ushort key)
+        {
+            lock(keysPressed)
+            {
+                keysPressed.Enqueue(key);
+
+                if( keysPressed.Count == 1 )
+                {
+                    WaitForKey.Release();
+                }
+            }
+        }
+
 
         static ushort int_check_keyPressed()
         {
@@ -47,9 +44,17 @@ namespace engine
             //AL = ASCII character
             //Note:	if a keystroke is present, it is not removed from the keyboard buffer;
 
-            System.Threading.Thread.Sleep(10);
+            //System.Threading.Thread.Sleep(10);
 
-            return keyCode;
+            lock (keysPressed)
+            {
+                if (keysPressed.Count > 0)
+                {
+                    return keysPressed.Peek();
+                }
+
+                return 0;
+            }
         }
 
         static ushort int_get_keyPressed()
@@ -61,8 +66,18 @@ namespace engine
             //Notes:	on extended keyboards, this function discards any extended keystrokes,
             //returning only when a non-extended keystroke is available
 
-            ushort key = keyCode;
-            keyCode = 0;
+            ushort key = 0;
+
+            WaitForKey.WaitOne();
+            lock (keysPressed)
+            {
+                key = keysPressed.Dequeue();
+
+                if (keysPressed.Count > 0)
+                {
+                    WaitForKey.Release();
+                }
+            }
 
             return key;
         }
@@ -102,8 +117,6 @@ namespace engine
                     }
                 }
             }
-
-            keyboard_emptybuffer();
 
             return lastCode;
         }
