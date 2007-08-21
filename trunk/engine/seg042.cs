@@ -11,7 +11,7 @@ namespace engine
             mem_ptr = new byte[((arg_0 + 7) & 0xfff8)];
         }
 
-		static void debug_display( string arg_0, byte arg_4 )
+		static void debug_display( string arg_0 )
 		{
             System.Console.Write(arg_0);
 			seg043.GetInputKey();
@@ -82,11 +82,11 @@ namespace engine
                 {
                     if (var_138[0] < 0x43)
                     {
-                        debug_display(arg_6 + gbl.byte_1B2BA.ToString() + ":", 14);
+                        debug_display(arg_6 + gbl.byte_1B2BA.ToString() + ":");
                     }
                     else
                     {
-                        debug_display("Couldn't find " + var_141 + var_146 + ". Check install.", 14);
+                        debug_display("Couldn't find " + var_141 + var_146 + ". Check install.");
                     }
                 }
             } while (var_A4 == false && arg_4 == 0);
@@ -253,7 +253,7 @@ namespace engine
 
                     if( dataLength > 36000 )
                     {
-                        debug_display( "tempsize " + dataLength.ToString(), 14 );
+                        debug_display( "tempsize " + dataLength.ToString() );
                         seg043.print_and_exit();
                     }
 

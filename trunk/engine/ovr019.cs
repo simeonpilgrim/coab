@@ -22,8 +22,8 @@ namespace engine
             /* was int_0x0d which call int 10. ah 0C */
             throw new System.NotImplementedException();
 
-            throw new System.NotSupportedException();//byte var_1 = 0;
-			throw new System.NotSupportedException();//return var_1;
+            //byte var_1 = 0;
+			//return var_1;
         }
 
 
