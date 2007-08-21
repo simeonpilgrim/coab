@@ -515,7 +515,7 @@ namespace engine
             {
                 return_val = 0; /* Simeon */
                 throw new System.NotImplementedException("Not sure what should happening this case");
-                throw new System.NotSupportedException();//jmp	func_end
+                //jmp	func_end
             }
             else if (arg_4 == 0x11B)
             {
@@ -531,72 +531,71 @@ namespace engine
             }
             else if (arg_4 == 0x2CF)
             {
-                throw new System.NotSupportedException();//loc_30A88:
-                throw new System.NotSupportedException();//les	di, dword ptr player_ptr.offset
-                throw new System.NotSupportedException();//mov	al, es:[di+1Bh]
-                throw new System.NotSupportedException();//cmp	al, 3
-                throw new System.NotSupportedException();//jnz	loc_30A9C
-                return_val = 0;
-                throw new System.NotSupportedException();//jmp	loc_30B1B
-                throw new System.NotSupportedException();//loc_30A9C:
-                throw new System.NotSupportedException();//cmp	al, 4
-                throw new System.NotSupportedException();//jnz	loc_30AA7
-                return_val = 5;
-                throw new System.NotSupportedException();//jmp	short loc_30B1B
-                throw new System.NotSupportedException();//loc_30AA7:
-                throw new System.NotSupportedException();//cmp	al, 5
-                throw new System.NotSupportedException();//jnz	loc_30AB2
-                return_val = 0x0A;
-                throw new System.NotSupportedException();//jmp	short loc_30B1B
-                throw new System.NotSupportedException();//loc_30AB2:
-                throw new System.NotSupportedException();//cmp	al, 6
-                throw new System.NotSupportedException();//jnz	loc_30ABD
-                return_val = 0x0F;
-                throw new System.NotSupportedException();//jmp	short loc_30B1B
-                throw new System.NotSupportedException();//loc_30ABD:
-                throw new System.NotSupportedException();//cmp	al, 7
-                throw new System.NotSupportedException();//jnz	loc_30AC8
-                return_val = 0x14;
-                throw new System.NotSupportedException();//jmp	short loc_30B1B
-                throw new System.NotSupportedException();//loc_30AC8:
-                throw new System.NotSupportedException();//cmp	al, 8
-                throw new System.NotSupportedException();//jb	loc_30AD7
-                throw new System.NotSupportedException();//cmp	al, 0x0C
-                throw new System.NotSupportedException();//ja	loc_30AD7
-                return_val = 0x19;
-                throw new System.NotSupportedException();//jmp	short loc_30B1B
-                throw new System.NotSupportedException();//loc_30AD7:
-                throw new System.NotSupportedException();//cmp	al, 0x0D
-                throw new System.NotSupportedException();//jnz	loc_30AE2
-                return_val = 0x1E;
-                throw new System.NotSupportedException();//jmp	short loc_30B1B
-                throw new System.NotSupportedException();//loc_30AE2:
-                throw new System.NotSupportedException();//cmp	al, 0x0E
-                throw new System.NotSupportedException();//jnz	loc_30AED
-                return_val = 0x23;
-                throw new System.NotSupportedException();//jmp	short loc_30B1B
-                throw new System.NotSupportedException();//loc_30AED:
-                throw new System.NotSupportedException();//cmp	al, 0x0F
-                throw new System.NotSupportedException();//jnz	loc_30AF8
-                return_val = 0x28;
-                throw new System.NotSupportedException();//jmp	short loc_30B1B
-                throw new System.NotSupportedException();//loc_30AF8:
-                throw new System.NotSupportedException();//cmp	al, 0x10
-                throw new System.NotSupportedException();//jnz	loc_30B03
-                return_val = 0x32;
-                throw new System.NotSupportedException();//jmp	short loc_30B1B
-                throw new System.NotSupportedException();//loc_30B03:
-                throw new System.NotSupportedException();//cmp	al, 0x11
-                throw new System.NotSupportedException();//jnz	loc_30B0E
-                return_val = 0x37;
-                throw new System.NotSupportedException();//jmp	short loc_30B1B
-                throw new System.NotSupportedException();//loc_30B0E:
-                throw new System.NotSupportedException();//cmp	al, 0x12
-                throw new System.NotSupportedException();//jb	loc_30B1B
-                throw new System.NotSupportedException();//cmp	al, 0x19
-                throw new System.NotSupportedException();//ja	loc_30B1B
-                return_val = 0x3C;
-                throw new System.NotSupportedException();//loc_30B1B:
+                switch (gbl.player_ptr.charisma)
+                {
+                    case 3:
+                        return_val = 0;
+                        break;
+
+                    case 4:
+                        return_val = 5;
+                        break;
+
+                    case 5:
+                        return_val = 0x0A;
+                        break;
+
+                    case 6:
+                        return_val = 0x0F;
+                        break;
+
+                    case 7:
+                        return_val = 0x14;
+                        break;
+
+                    case 8:
+                    case 9:
+                    case 0x0a:
+                    case 0x0b:
+                    case 0x0c:
+                        return_val = 0x19;
+                        break;
+
+                    case 0x0d:
+                        return_val = 0x1E;
+                        break;
+
+                    case 0x0e:
+                        return_val = 0x23;
+                        break;
+
+                    case 0x0f:
+                        return_val = 0x28;
+                        break;
+
+                    case 0x10:
+                        return_val = 0x32;
+                        break;
+
+                    case 0x11:
+                        return_val = 0x37;
+                        break;
+
+                    case 0x12:
+                    case 0x13:
+                    case 0x14:
+                    case 0x15:
+                    case 0x16:
+                    case 0x17:
+                    case 0x18:
+                    case 0x19:
+                        return_val = 0x3C;
+                        break;
+
+                    default:
+                        return_val = 0;
+                        break;
+                }
             }
             else if (arg_4 == 0x312)
             {

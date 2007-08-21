@@ -37,6 +37,10 @@ namespace Main
                 engine.seg001.__SystemInit();
                 engine.seg001.PROGRAM();
             }
+            catch (Exception e)
+            {
+                Console.Write(e.ToString());
+            }
             finally
             {
                 VoidDelegate d = delegate() { main.Close(); };

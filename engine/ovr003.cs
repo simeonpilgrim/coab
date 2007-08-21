@@ -2081,44 +2081,38 @@ namespace engine
                 }
                 else
                 {
-                    throw new System.NotSupportedException();//mov	al, [bp+var_6]
-                    throw new System.NotSupportedException();//and	al,0x80
-                    throw new System.NotSupportedException();//or	al, al
-                    throw new System.NotSupportedException();//jz	loc_28AF1
-                    throw new System.NotSupportedException();//cmp	[bp+var_9], 0
-                    throw new System.NotSupportedException();//jz	loc_28AC7
-
-                    ovr024.do_saving_throw((sbyte)var_5, (byte)(var_9 - 1), gbl.player_ptr);
-                    throw new System.NotSupportedException();//or	al, al
-                    throw new System.NotSupportedException();//jnz	loc_28AD9
-                    throw new System.NotSupportedException();//loc_28AC7:
-                    ovr008.sub_32200(gbl.player_ptr, var_C);
-                    throw new System.NotSupportedException();//jmp	short loc_28AEF
-                    throw new System.NotSupportedException();//loc_28AD9:
-                    throw new System.NotSupportedException();//cmp	[bp+var_1B], 0
-                    throw new System.NotSupportedException();//jz	loc_28AEF
-                    ovr008.sub_32200(gbl.player_ptr, var_C);
-                    throw new System.NotSupportedException();//loc_28AEF:
-                    throw new System.NotSupportedException();//jmp	short loc_28B5C
-                    throw new System.NotSupportedException();//loc_28AF1:
-
-                    for (var_4 = 2; var_4 <= var_8; var_4++)
+                    if ((var_6 & 0x80) != 0)
                     {
-                        player03 = player03.next_player;
+                        if (var_9 == 0 ||
+                            ovr024.do_saving_throw((sbyte)var_5, (byte)(var_9 - 1), gbl.player_ptr) == false)
+                        {
+                            ovr008.sub_32200(gbl.player_ptr, var_C);
+                        }
+                        else
+                        {
+                            if (var_1B != 0)
+                            {
+                                ovr008.sub_32200(gbl.player_ptr, var_C);
+                            }
+                        }
                     }
-
-
-                    if (ovr024.do_saving_throw((sbyte)var_5, var_9, player03) == false)
+                    else
                     {
-                        ovr008.sub_32200(player03, var_C);
-                    }
-                    else if (var_1B != 0)
-                    {
-                        ovr008.sub_32200(player03, var_C);
+                        for (var_4 = 2; var_4 <= var_8; var_4++)
+                        {
+                            player03 = player03.next_player;
+                        }
 
+                        if (ovr024.do_saving_throw((sbyte)var_5, var_9, player03) == false)
+                        {
+                            ovr008.sub_32200(player03, var_C);
+                        }
+                        else if (var_1B != 0)
+                        {
+                            ovr008.sub_32200(player03, var_C);
+                        }
                     }
                 }
-                throw new System.NotSupportedException();//loc_28B5C:
             }
             else
             {
