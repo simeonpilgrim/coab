@@ -379,7 +379,7 @@ namespace engine
         {
             byte var_1;
 
-            gbl.dword_1ADF6 = new Struct_1ADF6[120];  throw new System.NotSupportedException();//seg051.GetMem( 0x0AC8 );
+            gbl.dword_1ADF6 = new Struct_1ADF6[120];  
             gbl.byte_1AE0A = 0;
 
 			do
@@ -425,7 +425,7 @@ namespace engine
 				}
 			}while( gbl.byte_1AE0A == 0 );
 
-            gbl.dword_1ADF6 = null; // seg051.FreeMem( 0x0AC8, gbl.dword_1ADF6 );
+            gbl.dword_1ADF6 = null;
         }
 
 
