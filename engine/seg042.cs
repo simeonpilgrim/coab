@@ -1,15 +1,11 @@
 using Classes;
+using System.Collections.Generic;
 
 namespace engine
 {
 	class seg042
 	{
 		static byte[] dax_raw;
-
-        static void allocate_dax_raw(ushort arg_0, out byte[] mem_ptr)
-        {
-            mem_ptr = new byte[((arg_0 + 7) & 0xfff8)];
-        }
 
 		static void debug_display( string arg_0 )
 		{
@@ -148,47 +144,6 @@ namespace engine
         }
 
 
-        static void decode_dax_raw( ref short decodeSize, ref ushort dataLength, byte[] output_ptr, byte[] input_ptr )
-        {
-            sbyte run_length;
-            ushort output_index;
-            ushort input_index;
-
-            input_index = 0;
-            output_index = 0;
-
-            do
-            {
-				run_length = (sbyte)input_ptr[ input_index ];
-
-				if( run_length >= 0 )
-				{
-					for( int i = 0; i <= run_length; i++ )
-					{
-						output_ptr[ output_index + i ] = input_ptr[ input_index + i + 1 ];
-					}
-
-					input_index += (ushort)run_length;
-					input_index += 2;
-                    output_index += (ushort)run_length;
-					output_index += 1;
-				}
-				else
-				{
-					run_length = (sbyte)(-run_length);
-
-					for( int i = 0; i < run_length; i++ )
-					{
-						output_ptr[ output_index + i ] = input_ptr[ input_index + 1 ];
-					}
-
-					input_index += 2;
-                    output_index += (ushort)run_length;
-				}
-            }while( input_index < dataLength );
-        }
-
-
         static bool setupDaxFiles(out System.IO.BinaryReader fileA, out System.IO.BinaryReader fileB, out short arg_8, string file_name)
 		{
 			fileA = null;
@@ -222,74 +177,146 @@ namespace engine
 			return true;
         }
 
-
-        internal static void load_decode_dax( out byte[] out_data, out short decodeSize, byte block_id, string file_name )
+        class DaxHeaderEntry
         {
-            System.IO.BinaryReader fileA;
-            System.IO.BinaryReader fileB;
-            short header_size;
+            internal int id;
+            internal int offset;
+            internal int rawSize; // decodeSize
+            internal int compSize; // dataLength
+        }
 
-            seg044.sub_120E0( gbl.word_188BE );
+        class DaxFileCache
+        {
+            Dictionary<int, byte[]> entries;
 
-            if (setupDaxFiles(out fileA, out fileB, out header_size, file_name) == false)
+            internal DaxFileCache(string filename)
             {
-                decodeSize = 0;
-                out_data = null;
+                entries = new Dictionary<int, byte[]>();
 
-                seg044.sub_120E0( gbl.word_188C0 );
+                LoadFile(filename);
             }
-            else
+
+            private void LoadFile(string filename)
             {
-				byte blockId;
-				ushort dataLength;
-				int blockOffset;
+                int dataOffset = 0;
+
+                if (System.IO.File.Exists(filename) == false)
+                {
+                    return ;
+                }
+
+                System.IO.BinaryReader fileA;
+
+                try
+                {
+                    System.IO.FileStream fsA = new System.IO.FileStream(filename, System.IO.FileMode.Open, System.IO.FileAccess.Read, System.IO.FileShare.Read);
+
+                    fileA = new System.IO.BinaryReader(fsA);
+                }
+                catch (System.ApplicationException)
+                {
+                    return ;
+                }
+
+                dataOffset = fileA.ReadInt16() + 2;
+
+                List<DaxHeaderEntry> headers = new List<DaxHeaderEntry>();
+
+                const int headerEntrySize = 9;
+
+                for (int i = 0; i < ((dataOffset - 2) / headerEntrySize); i++)
+                {
+                    DaxHeaderEntry dhe = new DaxHeaderEntry();
+                    dhe.id = fileA.ReadByte();
+                    dhe.offset = fileA.ReadInt32();
+                    dhe.rawSize = fileA.ReadInt16();
+                    dhe.compSize = fileA.ReadUInt16();
+
+                    headers.Add(dhe);
+                }
+
+                foreach(DaxHeaderEntry dhe in headers)
+                {
+                    byte[] comp = new byte[dhe.compSize];
+                    byte[] raw = new byte[dhe.rawSize];
+
+                    fileA.BaseStream.Seek(dataOffset + dhe.offset, System.IO.SeekOrigin.Begin);
+
+                    comp = fileA.ReadBytes(dhe.compSize);
+
+                    Decode(dhe.rawSize, dhe.compSize, raw, comp);
+
+                    entries.Add(dhe.id, raw);
+                }
+            }
+
+            void Decode(int decodeSize, int dataLength, byte[] output_ptr, byte[] input_ptr)
+            {
+                sbyte run_length;
+                int output_index;
+                int input_index;
+
+                input_index = 0;
+                output_index = 0;
 
                 do
                 {
-					blockId = fileA.ReadByte();
-					blockOffset = fileA.ReadInt32();
-					decodeSize = fileA.ReadInt16();
-					dataLength = fileA.ReadUInt16();
+                    run_length = (sbyte)input_ptr[input_index];
 
-                    if( dataLength > 36000 )
+                    if (run_length >= 0)
                     {
-                        debug_display( "tempsize " + dataLength.ToString() );
-                        seg043.print_and_exit();
+                        for (int i = 0; i <= run_length; i++)
+                        {
+                            output_ptr[output_index + i] = input_ptr[input_index + i + 1];
+                        }
+
+                        input_index += run_length + 2;
+                        output_index += run_length + 1;
                     }
+                    else
+                    {
+                        run_length = (sbyte)(-run_length);
 
-                }while( blockId != block_id && fileA.BaseStream.Position <= header_size );
-    
-                if( blockId != block_id )
+                        for (int i = 0; i < run_length; i++)
+                        {
+                            output_ptr[output_index + i] = input_ptr[input_index + 1];
+                        }
+
+                        input_index += 2;
+                        output_index += run_length;
+                    }
+                } while (input_index < dataLength);
+            }
+
+            internal void GetData(byte block_id, out byte[] data)
+            {
+                if (entries.TryGetValue(block_id, out data) == false)
                 {
-                    decodeSize = 0;
-                    out_data = null;
-
-					fileA.Close();
-					fileB.Close();
-
-					seg044.sub_120E0( gbl.word_188C0 );
-                }
-                else
-                {
-                    allocate_dax_raw( dataLength, out dax_raw );
-                
-					out_data = new byte[ decodeSize ];
-
-					fileB.BaseStream.Seek( header_size + blockOffset, System.IO.SeekOrigin.Begin );
-
-					dax_raw = fileB.ReadBytes( dataLength );
-
-					fileA.Close();
-					fileB.Close();
-
-                    decode_dax_raw( ref decodeSize, ref dataLength, out_data, dax_raw );
-					dax_raw = null;
-
-                    seg044.sub_120E0( gbl.word_188C0 );
+                    data = null;
                 }
             }
         }
 
+        static Dictionary<string, DaxFileCache> fileCache = new Dictionary<string, DaxFileCache>();
+
+        internal static void load_decode_dax( out byte[] out_data, out short decodeSize, byte block_id, string file_name )
+        {
+            seg044.sub_120E0( gbl.word_188BE );
+
+            DaxFileCache dfc;
+
+            if( !fileCache.TryGetValue(file_name.ToLower(),out dfc) )
+            {
+                dfc = new DaxFileCache(file_name);
+                fileCache.Add(file_name.ToLower(), dfc);
+            }
+
+            dfc.GetData(block_id, out out_data);
+            decodeSize = out_data == null ? (short)0:(short)out_data.Length;
+
+            seg044.sub_120E0(gbl.word_188C0);
+        }
+         
 
         internal static void set_game_area( byte arg_0 )
         {
