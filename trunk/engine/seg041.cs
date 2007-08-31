@@ -211,7 +211,7 @@ namespace engine
                                 gbl.textXCol = xStart;
                                 gbl.textYCol = yStart;
 
-                                displayAndDebug("Press	any key	to continue", 0, 13);
+                                displayAndDebug("Press any key to continue", 0, 13);
                                 seg043.clear_keyboard();
 
                                 seg037.draw8x8_clear_area(yEnd, xEnd, yStart, xStart);
