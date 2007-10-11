@@ -14,7 +14,7 @@ namespace engine
 
             gbl.byte_1EFA4 = "Wooden";
 
-            seg044.sub_121BF();
+            seg044.sound_sub_121BF();
             seg039.config_game();
         }
 
@@ -36,22 +36,22 @@ namespace engine
             }
             /* Memory Init - End */
 
-            seg044.sub_12194();
+            seg044.sound_sub_12194();
 
 			if( gbl.gameFlag01 == true )
 			{
-				seg044.sub_120E0( gbl.word_188BC );
+				seg044.sound_sub_120E0( gbl.word_188BC );
 			}
 
             ovr012.sub_39054();
 
 			if( gbl.gameFlag01 == false )
 			{
-				seg044.sub_12194();
+				seg044.sound_sub_12194();
 			}
 
-			seg044.sub_120E0( gbl.word_188BE );
-            seg044.sub_12194();
+			seg044.sound_sub_120E0( gbl.word_188BE );
+            seg044.sound_sub_12194();
 
 			if( seg051.ParamStr( 1 ) != "STING" )
 			{
@@ -93,12 +93,12 @@ namespace engine
 
 				if( gbl.gameFlag01 == true )
 				{
-					seg044.sub_120E0( gbl.word_188BC );
+					seg044.sound_sub_120E0( gbl.word_188BC );
 				}
 
 				if( gbl.gameFlag01 == false )
 				{
-					seg044.sub_12194();
+					seg044.sound_sub_12194();
 				}
 
 				if( gbl.inDemo == false )
@@ -108,36 +108,36 @@ namespace engine
 
 				if( gbl.gameFlag01 == true )
 				{
-					seg044.sub_120E0( gbl.word_188BC );
+					seg044.sound_sub_120E0( gbl.word_188BC );
 				}
 
 				if( gbl.gameFlag01 == false )
 				{
-					seg044.sub_12194();
+					seg044.sound_sub_12194();
 				}
 
 				ovr031.sub_71165( gbl.byte_1D537, gbl.byte_1D536, gbl.byte_1D535, gbl.byte_1D534 );
 
 				if( gbl.gameFlag01 == true )
 				{
-					seg044.sub_120E0( gbl.word_188BC );
+					seg044.sound_sub_120E0( gbl.word_188BC );
 				}
 
 				if( gbl.gameFlag01 == false )
 				{
-					seg044.sub_12194();
+					seg044.sound_sub_12194();
 				}
 
 				ovr003.sub_29758();
 
 				if( gbl.gameFlag01 == true )
 				{
-					seg044.sub_120E0( gbl.word_188BC );
+					seg044.sound_sub_120E0( gbl.word_188BC );
 				}
 
 				if( gbl.gameFlag01 == false )
 				{
-					seg044.sub_12194();
+					seg044.sound_sub_12194();
 				}
 
 				ovr012.sub_396E5();
@@ -165,7 +165,7 @@ namespace engine
 						ovr004.copy_protection();
 					}
 				
-					seg044.sub_120E0( gbl.word_188BE );
+					seg044.sound_sub_120E0( gbl.word_188BE );
 				}
 			}
         }

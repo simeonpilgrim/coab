@@ -12,7 +12,6 @@ namespace Classes
     public enum SoundType
     {
         PC,
-        Tandy,
         None
     }
 

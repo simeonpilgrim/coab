@@ -1600,11 +1600,11 @@ namespace engine
 
                 if (arg_4 != 0)
                 {
-                    seg044.sub_120E0(gbl.word_188C6);
+                    seg044.sound_sub_120E0(gbl.word_188C6);
                 }
                 else
                 {
-                    seg044.sub_120E0(gbl.word_188C4);
+                    seg044.sound_sub_120E0(gbl.word_188C4);
                 }
 
                 DisplayPlayerStatusString(false, 10, var_100, player);

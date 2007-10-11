@@ -21,7 +21,7 @@ namespace engine
         static short[,] unk_12230 = new short[4, unk_12230_len]; /* 4 x 0x30 */
 
         static short word_123C8;
-        static short[] unk_123CA = new short[2];
+        static short[] unk_123CA = new short[24]; /* seg044:030a */
 
         static short[] word_12562 =  /* seg044:04a2 */    { 
             0x0C6E,0x0C6E,0x0C6E,0x0C6E,0x0C76,0x0C6E,0x0C6E,0x0C6E,0x0B6E,
@@ -33,13 +33,13 @@ namespace engine
             0x0C6E,0x0C6E };
 
 
-        static short[] word_1260A = new short[4];
+        static short[] word_1260A = /* seg044:054A */ { 0x1102,0x1102,0x1102,0x1102 };
 
 
         static Set set_01 = new Set(0x0020, new byte[]{ 0xFF, 0xFF, 0 , 0 , 0, 0 ,  0 ,  
             0 , 0 , 0 , 0 ,0 ,0 , 0 ,0 , 0 ,0 , 0 ,0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0 , 0x80 });
 
-        internal static void sub_120E0(short arg_0)
+        internal static void sound_sub_120E0(short arg_0) /*sub_120E0*/
         {
             if (set_01.MemberOf((byte)arg_0) == true)
             {
@@ -47,8 +47,8 @@ namespace engine
                 {
                     if (gbl.soundType != SoundType.None)
                     {
-                        sub_137B1(0);
-                        sub_13745(0);
+                        sound_sub_137B1();
+                        sound_sub_13745(0);
                     }
                 }
                 else if (arg_0 == 1)
@@ -62,9 +62,9 @@ namespace engine
                 {
                     if (gbl.soundType != SoundType.None)
                     {
-                        sub_137B1(0);
-                        sub_13745(0);
-                        sub_133B4();
+                        sound_sub_137B1();
+                        sound_sub_13745(0);
+                        sound_sub_133B4();
                         gbl.gameFlag01 = false;
                     }
                 }
@@ -72,11 +72,7 @@ namespace engine
                 {
                     if (gbl.soundType == SoundType.PC)
                     {
-                        sub_13745((short)(arg_0 - 1));
-                    }
-                    else if (gbl.soundType == SoundType.Tandy)
-                    {
-                        sub_137B1((short)(arg_0 - 1));
+                        sound_sub_13745((short)(arg_0 - 1));
                     }
                 }
                 else if (arg_0 == 15)
@@ -87,33 +83,33 @@ namespace engine
         }
 
 
-        internal static void sub_12194()
+        internal static void sound_sub_12194()
         {
             gbl.soundTypeBackup = gbl.soundType;
             gbl.gameFlag01 = true;
 
             if (gbl.soundType != SoundType.None)
             {
-                sub_1337F();
-                sub_13745(0);
-                sub_137B1(0);
+                sound_sub_1337F();
+                sound_sub_13745(0);
+                sound_sub_137B1();
             }
         }
 
-        internal static void sub_121BF()
+        internal static void sound_sub_121BF()
         {
             word_121DE = 0;
         }
 
         static System.Timers.Timer aTimer = null;
 
-        private static void sub_1337F()
+        private static void sound_sub_1337F()
         {
             if (aTimer == null)
             {
                 aTimer = new System.Timers.Timer();
                 // Hook up the Elapsed event for the timer.
-                aTimer.Elapsed += new System.Timers.ElapsedEventHandler(sub_133ED);
+                aTimer.Elapsed += new System.Timers.ElapsedEventHandler(sound_sub_133ED);
 
                 // Set the Interval to 5 milliseconds.
                 aTimer.Interval = 5;
@@ -125,7 +121,7 @@ namespace engine
         }
 
 
-        private static void sub_133B4()
+        private static void sound_sub_133B4()
         {
             //assume ds:seg044
 
@@ -135,7 +131,7 @@ namespace engine
         }
 
         /* called with 236.6Hz clock */
-        private static void sub_133ED(object sender, System.Timers.ElapsedEventArgs e)
+        private static void sound_sub_133ED(object sender, System.Timers.ElapsedEventArgs e)
         {
             if (word_121DE != 0)
             {
@@ -150,14 +146,14 @@ namespace engine
             if (byte_121DB == 0)
             {
                 byte_121DB = 1;
-                sub_1347A();
-                sub_134EF();
+                sound_sub_1347A();
+                sound_sub_134EF();
                 byte_121DB = 0;
             }
         }
 
 
-        private static void sub_1347A()
+        private static void sound_sub_1347A()
         {
             short bx = word_12202;
             if (bx != 0)
@@ -173,7 +169,7 @@ namespace engine
                 {
                     if (unk_12230[si,0] != 0)
                     {
-                        sub_1357D(si);
+                        sound_sub_1357D(si);
                         if (word_123C8 == 0 &&
                             unk_12230[si, 5] != 0 &&
                             unk_12230[si, 0] != 0)
@@ -215,7 +211,7 @@ namespace engine
         }
 
 
-        private static void sub_134EF()
+        private static void sound_sub_134EF()
         {
             short bx = word_12202;
             if (bx != 0)
@@ -226,12 +222,11 @@ namespace engine
                 word_12206 = 0x30A;
                 short si = 0;
 
-                throw new System.NotSupportedException();//mov	si, 0x30A
                 do
                 {
                     if (unk_123CA[si / 2] != 0)
                     {
-                        sub_1357D(si);
+                        sound_sub_1357D(si);
                     }
 
                     si += 0x30;
@@ -282,7 +277,7 @@ namespace engine
         }
 
 
-        private static void sub_1357D(int si)
+        private static void sound_sub_1357D(int si)
         {
             unk_12230[si, 5] = unk_12230[si, 6];
             unk_12230[si, 2] = unk_12230[si, 3];
@@ -320,7 +315,7 @@ namespace engine
 
             if (--unk_12230[si, 0] == 0)
             {
-                sub_1360E(si);
+                sound_sub_1360E(si);
             }
 
             if (unk_12230[si, 0x1A / 2] != 0 &&
@@ -349,7 +344,7 @@ namespace engine
         }
 
 
-        private static void sub_1360E(int si)
+        private static void sound_sub_1360E(int si)
         {
             int di = unk_12230[si, 0x2 /2];
             if (di == 0)
@@ -550,7 +545,7 @@ namespace engine
         }
 
 
-        private static void sub_13745(short arg_0)
+        private static void sound_sub_13745(short arg_0)
         {
             word_12202 = arg_0;
             byte_121DB = 1;
@@ -582,36 +577,31 @@ namespace engine
         }
 
 
-        private static void sub_137B1(short arg_0)
+        private static void sound_sub_137B1()
         {
-            word_12202 = arg_0;
+            word_12202 = 0;
             byte_121DB = 1;
             byte_121DC = 4;
 
-            short si = (short)(arg_0 * 8);
-            short di = 0;
+            int si = 0;
+            int di = 0;
 
             do
             {
-                short ax = word_1260A[si / 2];
+                short ax = word_1260A[si];
                 if (ax != 0)
                 {
-                    short bx = 0x2E;
-                    do
-                    {
-                        unk_123CA[(bx + di) / 2] = 0;
-                        bx -= 2;
-                    } while (bx >= 0);
+                    System.Array.Clear(unk_123CA, di, 24);
 
-                    unk_123CA[(di + 2) / 2] = ax;
+                    unk_123CA[di + 1] = ax;
 
                     byte_1220C[4 - byte_121DC] = (byte)word_12202;
 
                     unk_123CA[di / 2] = 1;
                 }
 
-                di += 0x30;
-                si += 2;
+                di += 24;
+                si += 1;
             } while (--byte_121DC != 0);
 
             byte_121DB = 0;

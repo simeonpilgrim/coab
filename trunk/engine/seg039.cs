@@ -34,11 +34,7 @@ namespace engine
    
             char option = 'N'; /* force None */
 
-            if (option == 'T') // Tandy
-			{
-				gbl.soundType = SoundType.Tandy;
-			}
-            else if (option == 'P') // PC Speaker
+            if (option == 'P') // PC Speaker
 			{
 				gbl.soundType = SoundType.PC;
 			}

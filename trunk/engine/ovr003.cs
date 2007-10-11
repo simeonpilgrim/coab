@@ -1163,12 +1163,12 @@ namespace engine
 
                     if (gbl.gameFlag01 == true)
                     {
-                        seg044.sub_120E0(gbl.word_188BC);
+                        seg044.sound_sub_120E0(gbl.word_188BC);
                     }
 
                     if (gbl.gameFlag01 == false)
                     {
-                        seg044.sub_12194();
+                        seg044.sound_sub_12194();
                     }
 
                     ovr007.sub_2F6E7();
@@ -1177,24 +1177,24 @@ namespace engine
                     {
                         if (gbl.gameFlag01 == true)
                         {
-                            seg044.sub_120E0(gbl.word_188BC);
+                            seg044.sound_sub_120E0(gbl.word_188BC);
                         }
 
                         if (gbl.gameFlag01 == false)
                         {
-                            seg044.sub_12194();
+                            seg044.sound_sub_12194();
                         }
                     }
                     else
                     {
                         if (gbl.gameFlag01 == true)
                         {
-                            seg044.sub_120E0(gbl.word_188BC);
+                            seg044.sound_sub_120E0(gbl.word_188BC);
                         }
 
                         if (gbl.gameFlag01 == false)
                         {
-                            seg044.sub_12194();
+                            seg044.sound_sub_12194();
                         }
                     }
                 }
@@ -1206,12 +1206,12 @@ namespace engine
 
                         if (gbl.gameFlag01 == true)
                         {
-                            seg044.sub_120E0(gbl.word_188BC);
+                            seg044.sound_sub_120E0(gbl.word_188BC);
                         }
 
                         if (gbl.gameFlag01 == false)
                         {
-                            seg044.sub_12194();
+                            seg044.sound_sub_12194();
                         }
 
                         ovr005.temple_shop();
@@ -1221,24 +1221,24 @@ namespace engine
 
                             if (gbl.gameFlag01 == true)
                             {
-                                seg044.sub_120E0(gbl.word_188BC);
+                                seg044.sound_sub_120E0(gbl.word_188BC);
                             }
 
                             if (gbl.gameFlag01 == false)
                             {
-                                seg044.sub_12194();
+                                seg044.sound_sub_12194();
                             }
                         }
                         else
                         {
                             if (gbl.gameFlag01 == true)
                             {
-                                seg044.sub_120E0(gbl.word_188BC);
+                                seg044.sound_sub_120E0(gbl.word_188BC);
                             }
 
                             if (gbl.gameFlag01 == false)
                             {
-                                seg044.sub_12194();
+                                seg044.sound_sub_12194();
                             }
                         }
                     }
@@ -1246,12 +1246,12 @@ namespace engine
                     {
                         if (gbl.gameFlag01 == true)
                         {
-                            seg044.sub_120E0(gbl.word_188BC);
+                            seg044.sound_sub_120E0(gbl.word_188BC);
                         }
 
                         if (gbl.gameFlag01 == false)
                         {
-                            seg044.sub_12194();
+                            seg044.sound_sub_12194();
                         }
 
                         ovr006.sub_2E7A2();
@@ -1260,24 +1260,24 @@ namespace engine
                         {
                             if (gbl.gameFlag01 == true)
                             {
-                                seg044.sub_120E0(gbl.word_188BC);
+                                seg044.sound_sub_120E0(gbl.word_188BC);
                             }
 
                             if (gbl.gameFlag01 == false)
                             {
-                                seg044.sub_12194();
+                                seg044.sound_sub_12194();
                             }
                         }
                         else
                         {
                             if (gbl.gameFlag01 == true)
                             {
-                                seg044.sub_120E0(gbl.word_188BC);
+                                seg044.sound_sub_120E0(gbl.word_188BC);
                             }
 
                             if (gbl.gameFlag01 == false)
                             {
-                                seg044.sub_12194();
+                                seg044.sound_sub_12194();
                             }
                         }
                     }
@@ -1287,12 +1287,12 @@ namespace engine
             {
                 if (gbl.gameFlag01 == true)
                 {
-                    seg044.sub_120E0(gbl.word_188BC);
+                    seg044.sound_sub_120E0(gbl.word_188BC);
                 }
 
                 if (gbl.gameFlag01 == false)
                 {
-                    seg044.sub_12194();
+                    seg044.sound_sub_12194();
                 }
 
                 var_2 = ovr008.sub_304B4(gbl.mapDirection, gbl.mapPosY, gbl.mapPosX);
@@ -1306,26 +1306,26 @@ namespace engine
 
                 if (gbl.gameFlag01 == true)
                 {
-                    seg044.sub_120E0(gbl.word_188BC);
+                    seg044.sound_sub_120E0(gbl.word_188BC);
                 }
 
                 ovr006.sub_2E7A2();
 
                 if (gbl.gameFlag01 == false)
                 {
-                    seg044.sub_12194();
+                    seg044.sound_sub_12194();
                 }
 
                 if (gbl.area_ptr.field_1CC == 0)
                 {
                     if (gbl.gameFlag01 == true)
                     {
-                        seg044.sub_120E0(gbl.word_188BC);
+                        seg044.sound_sub_120E0(gbl.word_188BC);
                     }
 
                     if (gbl.gameFlag01 == false)
                     {
-                        seg044.sub_12194();
+                        seg044.sound_sub_12194();
                     }
                     ovr030.bigpic(0x79);
                 }
@@ -1333,12 +1333,12 @@ namespace engine
                 {
                     if (gbl.gameFlag01 == true)
                     {
-                        seg044.sub_120E0(gbl.word_188BC);
+                        seg044.sound_sub_120E0(gbl.word_188BC);
                     }
 
                     if (gbl.gameFlag01 == false)
                     {
-                        seg044.sub_12194();
+                        seg044.sound_sub_12194();
                     }
                 }
 
@@ -2370,15 +2370,15 @@ namespace engine
 
                     if (gbl.word_1EE76 == 8)
                     {
-                        seg044.sub_120E0(gbl.word_188D2);
+                        seg044.sound_sub_120E0(gbl.word_188D2);
                     }
                     else if (gbl.word_1EE76 == 10)
                     {
-                        seg044.sub_120E0(gbl.word_188D4);
+                        seg044.sound_sub_120E0(gbl.word_188D4);
                     }
                     else
                     {
-                        seg044.sub_120E0(gbl.word_188D2);
+                        seg044.sound_sub_120E0(gbl.word_188D2);
                     }
                     break;
 
@@ -2888,7 +2888,7 @@ namespace engine
                             if (gbl.area_ptr.field_1E0 != gbl.mapPosX ||
                                 gbl.area_ptr.field_1E2 != gbl.mapPosY)
                             {
-                                seg044.sub_120E0(gbl.word_188D2);
+                                seg044.sound_sub_120E0(gbl.word_188D2);
                             }
 
                             gbl.byte_1EE8C = 0;
