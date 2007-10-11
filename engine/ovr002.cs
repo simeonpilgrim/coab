@@ -93,7 +93,7 @@ namespace engine
 
                 seg040.load_dax( ref dax_ptr, 0, 0, 4, "Title" );
 
-                seg044.sub_120E0(gbl.word_188D8);
+                seg044.sound_sub_120E0(gbl.word_188D8);
 
                 seg040.draw_picture(dax_ptr, 0x0b, 0, 0);
                 seg040.free_dax_block(ref dax_ptr);

@@ -327,7 +327,7 @@ namespace engine
 
             player.actions.field_F = 0;
             player.actions.field_12 = 0;
-            seg044.sub_120E0(gbl.word_188D2);
+            seg044.sound_sub_120E0(gbl.word_188D2);
 
             sub_3E65D(player);
 
@@ -868,7 +868,7 @@ namespace engine
 
             if (ovr025.is_held(arg_A) == true)
             {
-                seg044.sub_120E0(gbl.word_188CC);
+                seg044.sound_sub_120E0(gbl.word_188CC);
 
                 while (arg_E.field_19BArray(arg_E.actions.field_4) == 0)
                 {
@@ -987,7 +987,7 @@ namespace engine
                                     throw new System.NotImplementedException();
                             }
 
-                            seg044.sub_120E0(gbl.word_188CC);
+                            seg044.sound_sub_120E0(gbl.word_188CC);
                             var_11 = 1;
                             sub_3E192(var_15, arg_A, arg_E);
                             backstab(true, gbl.byte_1D2BE, gbl.byte_1D2BE, var_17, arg_A, arg_E);
@@ -1019,7 +1019,7 @@ namespace engine
 
                 if (var_11 == 0)
                 {
-                    seg044.sub_120E0(gbl.word_188D0);
+                    seg044.sound_sub_120E0(gbl.word_188D0);
                     backstab(false, 0, 0, var_17, arg_A, arg_E);
                 }
 
@@ -1878,7 +1878,7 @@ namespace engine
             byte var_2;
             byte var_1;
 
-            seg044.sub_120E0(gbl.word_188D6);
+            seg044.sound_sub_120E0(gbl.word_188D6);
 
             var_3 = sub_409BC(playerA, playerB);
 
@@ -1911,7 +1911,7 @@ namespace engine
                     {
                         ovr025.sub_67924(false, 0, (byte)(var_3 >> 2), (byte)(var_1 + (var_3 % 4)));
                     }
-                    seg044.sub_120E0(gbl.word_188D6);
+                    seg044.sound_sub_120E0(gbl.word_188D6);
                     break;
 
                 case 2:
@@ -1920,7 +1920,7 @@ namespace engine
                     ovr025.sub_67A59((byte)(var_1 + 3));
                     var_2 = 4;
                     var_4 = 0x32;
-                    seg044.sub_120E0(gbl.word_188D0);
+                    seg044.sound_sub_120E0(gbl.word_188D0);
                     break;
 
 
@@ -1929,7 +1929,7 @@ namespace engine
                     ovr025.sub_67A59((byte)(var_1 + 4));
                     var_2 = 4;
                     var_4 = 0x32;
-                    seg044.sub_120E0(gbl.word_188CA);
+                    seg044.sound_sub_120E0(gbl.word_188CA);
                     break;
 
                 case 0x65:
@@ -1940,7 +1940,7 @@ namespace engine
                     ovr025.sub_67924(false, 1, 1, (byte)(var_1 + 7));
                     var_2 = 2;
                     var_4 = 0x0A;
-                    seg044.sub_120E0(gbl.word_188CA);
+                    seg044.sound_sub_120E0(gbl.word_188CA);
 
                     break;
 
@@ -1949,7 +1949,7 @@ namespace engine
                     ovr025.sub_67924(false, 1, 1, (byte)(var_1 + 7));
                     var_2 = 2;
                     var_4 = 0x14;
-                    seg044.sub_120E0(gbl.word_188D0);
+                    seg044.sound_sub_120E0(gbl.word_188D0);
                     break;
             }
             

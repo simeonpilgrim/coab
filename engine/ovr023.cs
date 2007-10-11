@@ -1150,15 +1150,15 @@ namespace engine
 
                         if (arg_8 == 0x2F)
                         {
-                            seg044.sub_120E0(gbl.word_188D4);
+                            seg044.sound_sub_120E0(gbl.word_188D4);
                         }
                         else if (arg_8 == 0x33)
                         {
-                            seg044.sub_120E0(gbl.word_188CE);
+                            seg044.sound_sub_120E0(gbl.word_188CE);
                         }
                         else
                         {
-                            seg044.sub_120E0(gbl.word_188C2);
+                            seg044.sound_sub_120E0(gbl.word_188C2);
                         }
 
                         ovr025.sub_67AA4(0x1E, 4, gbl.byte_1D884, gbl.byte_1D883, var_4, var_3);
@@ -1473,7 +1473,7 @@ namespace engine
 
                     if (var_2F < gbl.byte_1D75E)
                     {
-                        seg044.sub_120E0(gbl.word_188C2);
+                        seg044.sound_sub_120E0(gbl.word_188C2);
                         ovr025.sub_67A59(0x12);
 
                         ovr025.sub_67AA4(0x1E, 4, ovr033.PlayerMapYPos(var_2D), ovr033.PlayerMapXPos(var_2D),

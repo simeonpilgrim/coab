@@ -8,7 +8,7 @@ namespace engine
         {
             gbl.soundType = gbl.soundTypeBackup;
 
-            seg044.sub_120E0(gbl.word_188BC);
+            seg044.sound_sub_120E0(gbl.word_188BC);
 
             if (gbl.printCommands == true)
             {
@@ -66,7 +66,7 @@ namespace engine
                 if (gbl.soundType != SoundType.None)
                 {
                     gbl.soundTypeBackup = gbl.soundType;
-                    seg044.sub_120E0(gbl.word_188BE);
+                    seg044.sound_sub_120E0(gbl.word_188BE);
                     gbl.soundType = SoundType.None;
                 }
                 else
@@ -74,7 +74,7 @@ namespace engine
                     if (unk_11F12.MemberOf((byte)gbl.soundTypeBackup))
                     {
                         gbl.soundType = gbl.soundTypeBackup;
-                        seg044.sub_120E0(gbl.word_188C0);
+                        seg044.sound_sub_120E0(gbl.word_188C0);
                     }
                 }
             }
