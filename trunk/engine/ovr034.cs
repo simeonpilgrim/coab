@@ -4,37 +4,31 @@ namespace engine
 {
     class ovr034
     {
-        internal static void Load24x24Set(byte arg_0, byte arg_2, byte arg_4, string arg_6)
+        internal static void Load24x24Set(byte cellCount, byte destCellOffset, byte block_id, string fileName)
         {
-            DaxBlock var_104;
-            string var_100;
-
-            var_100 = arg_6;
-
-            if (arg_2 > 0x30)
+            if (destCellOffset > 0x30)
             {
                 seg051.Write(0, "Start range error in Load24x24Set", gbl.known01_02);
                 seg051.WriteLn(gbl.known01_02);
                 seg043.print_and_exit();
             }
 
-            var_104 = null;
-            seg040.load_dax(ref var_104, 0, 0, arg_4, var_100);
+            DaxBlock tmp_block = null;
+            seg040.load_dax(ref tmp_block, 0, 0, block_id, fileName);
 
-            int var_106 = arg_0 * var_104.bpp;
-            int var_108 = arg_2 * var_104.bpp;
+            int dateLength = cellCount * tmp_block.bpp;
+            int destByteOffset = destCellOffset * tmp_block.bpp;
 
-            if (gbl.dword_1C8F8 != null)
+            if (gbl.dax24x24Set != null)
             {
-                for (int i = 0; i < var_106; i++)
+                for (int i = 0; i < dateLength; i++)
                 {
-                    gbl.dword_1C8F8.data[var_108 + i] = var_104.data[i];
+                    gbl.dax24x24Set.data[destByteOffset + i] = tmp_block.data[i];
                 }
             }
 
-            seg040.free_dax_block(ref var_104);
+            seg040.free_dax_block(ref tmp_block);
             seg043.clear_keyboard();
-
         }
 
 
@@ -46,7 +40,7 @@ namespace engine
             }
             else
             {
-                seg040.OverlayUnbounded(gbl.dword_1C8F8, arg_0, titleIndex, rowY, colX);
+                seg040.OverlayUnbounded(gbl.dax24x24Set, arg_0, titleIndex, rowY, colX);
             }
         }
 

@@ -39,10 +39,8 @@ namespace engine
         }
 
 
-        internal static void Put8x8Symbol( byte arg_0, byte arg_2, short symbol_id, int rowY, int colX )
+        internal static void Put8x8Symbol( byte arg_0, bool arg_2, int symbol_id, int rowY, int colX )
         {
-            DaxBlock var_6;
-            byte var_2;
 			byte symbol_set = 0; /*HACK to make compiler happy*/
 
 
@@ -68,23 +66,20 @@ namespace engine
             }
             else if( symbol_id == 0 || ( symbol_id >= 0x128 && symbol_id <= 0x7FFF ) )
             {
-                seg051.Write( 0, "Bad symbol number in Put8x8Symbol.", gbl.known01_02 );
-                seg051.WriteLn( gbl.known01_02 );
-                var_2 = seg043.GetInputKey();
-                seg043.print_and_exit();
+                throw new System.ApplicationException("Bad symbol number in Put8x8Symbol." + symbol_id);
             }
 
             if( gbl.symbol_8x8_set[symbol_set] != null )
             {
                 symbol_id -= gbl.symbol_set_fix[symbol_set];
 
-                if (arg_2 != 0)
+                if (arg_2)
                 {
-                    seg040.OverlayUnbounded(gbl.symbol_8x8_set[symbol_set], arg_0, (byte)symbol_id, rowY, colX);
+                    seg040.OverlayUnbounded(gbl.symbol_8x8_set[symbol_set], arg_0, symbol_id, rowY, colX);
                 }
                 else
                 {
-                    var_6 = gbl.symbol_8x8_set[symbol_set];
+                    DaxBlock var_6 = gbl.symbol_8x8_set[symbol_set];
 
                     int ax = symbol_id * var_6.bpp;
 

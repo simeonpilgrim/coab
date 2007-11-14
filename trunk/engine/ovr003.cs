@@ -416,12 +416,12 @@ namespace engine
                 if ((gbl.last_game_state != 4 ||
                       gbl.game_state == 4) &&
                     (gbl.byte_1EE8C != 0 ||
-                      gbl.byte_1EE8F != 0))
+                      gbl.displayPlayerSprite))
                 {
                     gbl.byte_1D8AA = 1;
                     ovr029.sub_6F0BA();
                     gbl.byte_1EE8C = 0;
-                    gbl.byte_1EE8F = 0;
+                    gbl.displayPlayerSprite = false;
                     gbl.byte_1EE8D = 1;
                 }
                 gbl.byte_1EE72[0] = 0;
@@ -2006,7 +2006,7 @@ namespace engine
         }
 
 
-        internal static void sub_28958()
+        internal static void CMD_Damage() /* sub_28958 */
         {
             byte var_1B;
             byte var_1A;
@@ -2168,14 +2168,14 @@ namespace engine
         }
 
 
-        internal static void sub_28CB6()
+        internal static void CMD_SpriteOff() /* sub_28CB6 */
         {
             gbl.ecl_offset++;
-            if (gbl.byte_1EE8F != 0)
+            if (gbl.displayPlayerSprite)
             {
                 gbl.byte_1D8AA = 1;
                 ovr029.sub_6F0BA();
-                gbl.byte_1EE8F = 0;
+                gbl.displayPlayerSprite = false;
                 gbl.byte_1EE8C = 0;
             }
         }
@@ -2341,7 +2341,7 @@ namespace engine
 
                     if (gbl.byte_1AB0B != 0)
                     {
-                        if (gbl.byte_1EE8C != 0 || gbl.byte_1EE8F != 0 || gbl.byte_1EE91 != 0 ||
+                        if (gbl.byte_1EE8C != 0 || gbl.displayPlayerSprite || gbl.byte_1EE91 != 0 ||
                             gbl.byte_1EE92 != 0 || gbl.byte_1EE94 != 0)
                         {
                             gbl.byte_1D8AA = 1;
@@ -2351,7 +2351,7 @@ namespace engine
                             gbl.byte_1EE91 = 0;
                             gbl.byte_1EE92 = 0;
                             gbl.byte_1EE8C = 0;
-                            gbl.byte_1EE8F = 0;
+                            gbl.displayPlayerSprite = false;
 
                             gbl.byte_1D53C = ovr031.getMap_XXX(gbl.mapDirection, gbl.mapPosY, gbl.mapPosX);
                         }
@@ -2503,7 +2503,7 @@ namespace engine
             gbl.byte_1EE8C = 0;
             ovr008.vm_LoadCmdSets(1);
 
-            ovr004.copy_protection();
+            //ovr004.copy_protection();
             ovr025.load_pic();
         }
 
@@ -2627,10 +2627,10 @@ namespace engine
                 case 0x2B: CMD_HorizontalMenu(); break;
                 case 0x2C: CMD_Parlay(); break;
                 case 0x2D: CMD_Call(); break;
-                case 0x2E: sub_28958(); break;
+                case 0x2E: CMD_Damage(); break;
                 case 0x2F: sub_26DD0(); break;
                 case 0x30: sub_26DD0(); break;
-                case 0x31: sub_28CB6(); break;
+                case 0x31: CMD_SpriteOff(); break;
                 case 0x32: sub_28856(); break;
                 case 0x33: sub_28D0F(); break;
                 case 0x34: sub_28CDA(); break;

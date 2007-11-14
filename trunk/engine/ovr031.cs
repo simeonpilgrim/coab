@@ -51,24 +51,15 @@ namespace engine
                         var_A += 8;
                     }
 
-                    ovr038.Put8x8Symbol(0, 1, var_A, y + displayOffset, x + displayOffset);
+                    ovr038.Put8x8Symbol(0, true, var_A, y + displayOffset, x + displayOffset);
                 }
             }
 
             int partyScreenY = partyMapX - offsetX;
             int partyScreenX = partyMapY - offsetY;
 
-            ovr038.Put8x8Symbol(0, 1, (short)((partyDir >> 1) + 0x100), partyScreenX + displayOffset, partyScreenY + displayOffset);
+            ovr038.Put8x8Symbol(0, true, (partyDir >> 1) + 0x100, partyScreenX + displayOffset, partyScreenY + displayOffset);
             seg040.DrawOverlay();
-        }
-
-
-        internal static void sub_71165(byte arg_0, byte arg_2, byte arg_4, byte arg_6)
-        {
-            gbl.byte_1D534 = arg_6;
-            gbl.byte_1D535 = arg_4;
-            gbl.byte_1D536 = arg_2;
-            gbl.byte_1D537 = arg_0;
         }
 
 
@@ -81,7 +72,7 @@ namespace engine
 
             seg040.DrawColorBlock(gbl.byte_1D534, 0x2c, 11, 16, 2);
             seg040.DrawColorBlock(0, 2, 11, 0x3c, 2);
-            seg040.DrawColorBlock(gbl.byte_1D537, 0x2a, 11, 0x3e, 2);
+            seg040.DrawColorBlock(8, 0x2a, 11, 0x3e, 2);
 
             if (sub_717A5(gbl.mapPosY, gbl.mapPosY) < 0x80 &&
                 gbl.byte_1D534 == 11)
@@ -148,11 +139,11 @@ namespace engine
             {
                 for (int colX = colStart; colX < colMax; colX++)
                 {
-                    short symbolId = gbl.stru_1D52C[offsetA][offsetB + var_9];
+                    int symbolId = gbl.stru_1D52C[offsetA][offsetB + var_9];
 
                     if (rowY >= 0 && rowY <= 10 && colX >= 0 && colX <= 10 && symbolId > 0)
                     {
-                        ovr038.Put8x8Symbol(1, 1, symbolId , rowY + 2, colX + 2);
+                        ovr038.Put8x8Symbol(1, true, symbolId , rowY + 2, colX + 2);
 
                         Display.Update();
                     }

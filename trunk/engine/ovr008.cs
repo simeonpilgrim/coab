@@ -267,7 +267,7 @@ namespace engine
                     {
                         ovr030.load_pic_final(ref gbl.byte_1D556, 1, arg_8, "SPRIT");
                         arg_0[0] = 1;
-                        gbl.byte_1EE8F = 1;
+                        gbl.displayPlayerSprite = true;
                     }
                 }
                 else

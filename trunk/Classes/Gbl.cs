@@ -236,9 +236,7 @@ namespace Classes
         public static byte byte_1D2CC;
         public static byte byte_1D2D1;
         public static byte byte_1D534;
-        public static byte byte_1D535;
-        public static byte byte_1D536;
-        public static byte byte_1D537;
+
         public static bool mapAreaDisplay; //byte_1D538, Show Area Map
         public static sbyte mapPosX; // byte_1D539, 0 map left, + map right
         public static sbyte mapPosY; // byte_1D53A, 0 map top, +map bottom
@@ -347,7 +345,7 @@ namespace Classes
         public static byte byte_1EE8C;
         public static byte byte_1EE8D;
         public static byte byte_1EE8E;
-        public static byte byte_1EE8F;
+        public static bool displayPlayerSprite; /* byte_1EE8F */
         public static byte byte_1EE90;
         public static byte byte_1EE91;
         public static byte byte_1EE92;
@@ -444,7 +442,7 @@ namespace Classes
         public static Struct_1ADF6[] dword_1ADF6;
         public static StringList dword_1AE6C;
         public static DaxBlock dword_1C8F4;
-        public static DaxBlock dword_1C8F8;
+        public static DaxBlock dax24x24Set; //dword_1C8F8;
         public static Item dword_1D5C6;
         public static spellDelegate dword_1D5CA;
         public static DaxBlock dword_1D90A;

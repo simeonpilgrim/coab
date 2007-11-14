@@ -18,15 +18,19 @@ namespace Main
             Classes.Display.UpdateCallback = UpdateDisplayCallback;
         }
 
-        void UpdateDisplayCallback()
+        object obj = new object();
+
+        public void UpdateDisplayCallback()
         {
-            try
+            if (displayArea.InvokeRequired)
+            {
+                displayArea.Invoke(new MethodInvoker(UpdateDisplayCallback));
+            }
+            else
             {
                 displayArea.Image = (Image)Classes.Display.bm.Clone();
             }
-            catch(Exception)
-            { /* */ }
-        }        
+        }      
 
         private void MainForm_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
         {
@@ -62,6 +66,14 @@ namespace Main
         {
             string path = Path.ChangeExtension(Path.GetTempFileName(), ".jpg");
             displayArea.Image.Save(path, System.Drawing.Imaging.ImageFormat.Jpeg);
+        }
+
+        protected override void OnPaint(PaintEventArgs e)
+        {
+            lock (obj)
+            {
+                base.OnPaint(e);
+            }
         }
     }
 }

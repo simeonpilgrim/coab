@@ -4,28 +4,34 @@ namespace engine
 {
     class ovr028
     {
-        static short word_1EF9C;
-		static short word_1EF9E;
+        static byte[] unk_16D5A = { 0x4,0x0C,0x15,0x0B,0x1D,0x14,0x26,0x15,0x1E,0x1F,0x19, 
+            0x25,0x1C,0x1D,0x3,0x0C,0x19,0x1D,0x1D,0x21,0x13,0x10,0x9,0x10,0x14,0x15,
+            0x19,0x19,0x1A,0x1F,0x25,0x22,0x0F };
+
+        static byte[] unk_16D7A = {0x0F,0x8,0x0B,0x4,0x0A,0x4,0x1,0x2,0x0D,0x0F,0x3,0x5,0x2,
+            0x8,0x0C,0x0D,0x0A,0x0C,0x9,0x9,0x8,0x6,0x6,0x3,0x2,0x2,0x3,0x2,0x3,0x4,
+            0x2,0x1,0x0 };
+
+        static short loc_X; // word_1EF9C
+        static short loc_Y; // word_1EF9E
 
 		internal static void sub_6E005( )
         {
-            /*
-            word_1EF9C = gbl.area_ptr.field_342.field_A4A;
-			word_1EF9E = gbl.area_ptr.field_342.field_A6A;
-             */
+            loc_X = unk_16D5A[gbl.area_ptr.field_342];
+            loc_Y = unk_16D7A[gbl.area_ptr.field_342];           
         }
 
 
         internal static void sub_6E02E( )
         {
-            seg040.ega_01( gbl.dword_1C8F4, word_1EF9E, word_1EF9C );
- 			seg040.draw_picture( gbl.dword_1EFA0, word_1EF9E, word_1EF9C, 0 );
+            seg040.ega_01( gbl.dword_1C8F4, loc_Y, loc_X );
+ 			seg040.draw_picture( gbl.dword_1EFA0, loc_Y, loc_X, 0 );
         }
 
 
         internal static void sub_6E05D( )
         {
- 			seg040.draw_picture( gbl.dword_1C8F4, word_1EF9E, word_1EF9C, 0 );
+ 			seg040.draw_picture( gbl.dword_1C8F4, loc_Y, loc_X, 0 );
         }
     }
 }

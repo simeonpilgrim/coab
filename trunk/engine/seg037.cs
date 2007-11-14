@@ -48,18 +48,18 @@ namespace engine
 
             for (var_1 = 0; var_1 <= 0x27; var_1++)
             {
-                ovr038.Put8x8Symbol(0, 0, (short)(byte_16E60[var_1] + 0x11e), 0, var_1);
+                ovr038.Put8x8Symbol(0, false, (short)(byte_16E60[var_1] + 0x11e), 0, var_1);
             }
 
             for (var_2 = 0; var_2 < 0x17; var_2++)
             {
-                ovr038.Put8x8Symbol(0, 0, (short)(unk_16EF2[var_2] + 0x11e), var_2, 0);
-                ovr038.Put8x8Symbol(0, 0, (short)(unk_16F1B[var_2] + 0x11e), var_2, 0x27);
+                ovr038.Put8x8Symbol(0, false, (short)(unk_16EF2[var_2] + 0x11e), var_2, 0);
+                ovr038.Put8x8Symbol(0, false, (short)(unk_16F1B[var_2] + 0x11e), var_2, 0x27);
             }
 
             for (var_1 = 0; var_1 <= 0x27; var_1++)
             {
-                ovr038.Put8x8Symbol(0, 0, (short)(unk_16EB0[var_1] + 0x11e), 0x17, var_1);
+                ovr038.Put8x8Symbol(0, false, (short)(unk_16EB0[var_1] + 0x11e), 0x17, var_1);
             }
 
             Display.UpdateStart();
@@ -76,8 +76,8 @@ namespace engine
 
             for (var_1 = 0; var_1 <= 0x27; var_1++)
             {
-                ovr038.Put8x8Symbol(0, 0, (short)(x8x8_07[var_1] + 0x11E), 3, var_1);
-                ovr038.Put8x8Symbol(0, 0, (short)(x8x8_07[var_1] + 0x11E), 8, var_1);
+                ovr038.Put8x8Symbol(0, false, x8x8_07[var_1] + 0x11E, 3, var_1);
+                ovr038.Put8x8Symbol(0, false, x8x8_07[var_1] + 0x11E, 8, var_1);
             }
 
             Display.UpdateStart();
@@ -95,24 +95,24 @@ namespace engine
 
             for (var_1 = 0; var_1 <= 0x27; var_1++)
             {
-                ovr038.Put8x8Symbol(0, 0, (short)(x8x8_07[var_1] + 0x11E), 0x10, var_1);
+                ovr038.Put8x8Symbol(0, false, x8x8_07[var_1] + 0x11E, 0x10, var_1);
             }
 
             for (var_2 = 0; var_2 <= 0x10; var_2++)
             {
-                ovr038.Put8x8Symbol(0, 0, (short)(unk_16F0A[var_2] + 0x11E), var_2, 0x10);
+                ovr038.Put8x8Symbol(0, false, unk_16F0A[var_2] + 0x11E, var_2, 0x10);
             }
 
             for (var_1 = 2; var_1 <= 14; var_1++)
             {
-                ovr038.Put8x8Symbol(0, 0, (short)(unk_16ED6[var_1] + 0x114), 2, var_1);
-                ovr038.Put8x8Symbol(0, 0, (short)(unk_16EE3[var_1] + 0x114), 14, var_1);
+                ovr038.Put8x8Symbol(0, false, unk_16ED6[var_1] + 0x114, 2, var_1);
+                ovr038.Put8x8Symbol(0, false, unk_16EE3[var_1] + 0x114, 14, var_1);
             }
 
             for (var_2 = 2; var_2 <= 14; var_2++)
             {
-                ovr038.Put8x8Symbol(0, 0, (short)(unk_16F31[var_2] + 0x114), var_2, 2);
-                ovr038.Put8x8Symbol(0, 0, (short)(unk_16F3E[var_2] + 0x114), var_2, 14);
+                ovr038.Put8x8Symbol(0, false, unk_16F31[var_2] + 0x114, var_2, 2);
+                ovr038.Put8x8Symbol(0, false, unk_16F3E[var_2] + 0x114, var_2, 14);
             }
 
             Display.UpdateStart();
@@ -130,7 +130,7 @@ namespace engine
 
             for (var_1 = 0; var_1 <= 0x27; var_1++)
             {
-                ovr038.Put8x8Symbol(0, 0, (short)(x8x8_07[var_1] + 0x11E), 0x10, var_1);
+                ovr038.Put8x8Symbol(0, false,x8x8_07[var_1] + 0x11E, 0x10, var_1);
             }
 
             Display.UpdateStart();
@@ -148,23 +148,23 @@ namespace engine
 
             for (var_1 = 0; var_1 <= 0x27; var_1++)
             {
-                ovr038.Put8x8Symbol(0, 0, (short)(byte_16E60[var_1] + 0x11E), 0, var_1);
+                ovr038.Put8x8Symbol(0, false, (short)(byte_16E60[var_1] + 0x11E), 0, var_1);
             }
 
             for (var_2 = 0; var_2 <= 0x17; var_2++)
             {
-                ovr038.Put8x8Symbol(0, 0, (short)(unk_16EF2[var_2] + 0x11E), var_2, 0);
-                ovr038.Put8x8Symbol(0, 0, (short)(unk_16F1B[var_2] + 0x11E), var_2, 0x27);
+                ovr038.Put8x8Symbol(0, false, unk_16EF2[var_2] + 0x11E, var_2, 0);
+                ovr038.Put8x8Symbol(0, false, unk_16F1B[var_2] + 0x11E, var_2, 0x27);
             }
 
             for (var_1 = 0; var_1 <= 0x27; var_1++)
             {
-                ovr038.Put8x8Symbol(0, 0, (short)(unk_16EB0[var_1] + 0x11E), 0x17, var_1);
+                ovr038.Put8x8Symbol(0, false, unk_16EB0[var_1] + 0x11E, 0x17, var_1);
             }
 
             for (var_1 = 0; var_1 <= 0x27; var_1++)
             {
-                ovr038.Put8x8Symbol(0, 0, (short)(x8x8_07[var_1] + 0x11E), 0x10, var_1);
+                ovr038.Put8x8Symbol(0, false, x8x8_07[var_1] + 0x11E, 0x10, var_1);
             }
 
             Display.UpdateStart();
@@ -183,20 +183,20 @@ namespace engine
 
             for (var_1 = 0; var_1 <= 0x27; var_1++)
             {
-                ovr038.Put8x8Symbol(0, 0, (short)(byte_16E60[var_1] + 0x11E), 0, var_1);
+                ovr038.Put8x8Symbol(0, false, byte_16E60[var_1] + 0x11E, 0, var_1);
             }
 
 
             for (var_2 = 0; var_2 <= 0x16; var_2++)
             {
-                ovr038.Put8x8Symbol(0, 0, (short)(unk_16F4D[var_2] + 0x11e), var_2, 0);
-                ovr038.Put8x8Symbol(0, 0, (short)(unk_16F64[var_2] + 0x11e), var_2, 0x16);
-                ovr038.Put8x8Symbol(0, 0, (short)(unk_16F7B[var_2] + 0x11e), var_2, 0x27);
+                ovr038.Put8x8Symbol(0, false, unk_16F4D[var_2] + 0x11e, var_2, 0);
+                ovr038.Put8x8Symbol(0, false, unk_16F64[var_2] + 0x11e, var_2, 0x16);
+                ovr038.Put8x8Symbol(0, false, unk_16F7B[var_2] + 0x11e, var_2, 0x27);
             }
 
             for (var_1 = 0; var_1 <= 0x27; var_1++)
             {
-                ovr038.Put8x8Symbol(0, 0, (short)(unk_16EB0[var_1] + 0x11e), 0x16, var_1);
+                ovr038.Put8x8Symbol(0, false, unk_16EB0[var_1] + 0x11e, 0x16, var_1);
             }
 
             Display.UpdateStart();
@@ -214,7 +214,7 @@ namespace engine
 
             for (loop_var = 0; loop_var <= 0x27; loop_var++)
             {
-                ovr038.Put8x8Symbol(0, 0, (short)(x8x8_07[loop_var] + 0x11e), 2, loop_var);
+                ovr038.Put8x8Symbol(0, false, x8x8_07[loop_var] + 0x11e, 2, loop_var);
             }
 
             Display.UpdateStart();
