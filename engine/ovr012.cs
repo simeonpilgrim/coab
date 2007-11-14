@@ -90,10 +90,10 @@ namespace engine
             gbl.symbol_8x8_set[3] = null;
             gbl.symbol_8x8_set[4] = null;
 
-            gbl.dword_1C8F8 = null;
+            gbl.dax24x24Set = null;
             gbl.dword_1C8FC = null;
 
-            seg040.init_dax_block(out gbl.dword_1C8F8, 0, 0x30, 3, 0x18);
+            seg040.init_dax_block(out gbl.dax24x24Set, 0, 0x30, 3, 0x18);
 
             gbl.area_ptr.Clear(0x00);
 
@@ -175,7 +175,7 @@ namespace engine
             gbl.byte_1EE8C = 0;
             gbl.byte_1B2F0 = 0;
             gbl.byte_1BF12 = 1;
-            gbl.byte_1EE8F = 0;
+            gbl.displayPlayerSprite = false;
             gbl.byte_1C01A = 0;
             gbl.byte_1D5A2 = string.Empty;
             gbl.byte_1D5AB = string.Empty;
@@ -293,7 +293,7 @@ namespace engine
             gbl.byte_1EE8C = 0;
             gbl.byte_1B2F0 = 0;
             gbl.byte_1BF12 = 1;
-            gbl.byte_1EE8F = 0;
+            gbl.displayPlayerSprite = false;
             gbl.byte_1C01A = 0;
             gbl.byte_1D5A2 = string.Empty;
             gbl.byte_1D5AB = string.Empty;

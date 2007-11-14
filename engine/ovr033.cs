@@ -612,8 +612,6 @@ namespace engine
                             if (sub_7400F(out var_5, out var_4, var_2, gbl.stru_1C9CD[var_1].field_3) == true &&
                                 CoordOnScreen(gbl.playerScreenY[var_1] + var_5, gbl.playerScreenX[var_1] + var_4) == true)
                             {
-
-
                                 DaxBlock tmp = ((var_3 & 1) == 0) ? gbl.combat_icons[24, 1] : gbl.combat_icons[25, 0];
 
                                 seg040.OverlayBounded(tmp, 5, 0, (gbl.playerScreenY[var_1] + var_5) * 3, (gbl.playerScreenX[var_1] + var_4) * 3);

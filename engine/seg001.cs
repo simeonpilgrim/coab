@@ -116,8 +116,6 @@ namespace engine
 					seg044.sound_sub_12194();
 				}
 
-				ovr031.sub_71165( gbl.byte_1D537, gbl.byte_1D536, gbl.byte_1D535, gbl.byte_1D534 );
-
 				if( gbl.gameFlag01 == true )
 				{
 					seg044.sound_sub_120E0( gbl.word_188BC );
@@ -162,7 +160,7 @@ namespace engine
 					if( seg051.ParamStr( 2 ) != gbl.byte_1EFA4 &&
 						gbl.inDemo == false )
 					{
-						ovr004.copy_protection();
+						//ovr004.copy_protection();
 					}
 				
 					seg044.sound_sub_120E0( gbl.word_188BE );

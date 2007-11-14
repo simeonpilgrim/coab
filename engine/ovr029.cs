@@ -29,9 +29,6 @@ namespace engine
                         gbl.byte_1D534 = unk_16D9A[gbl.area_ptr.field_1FA];
                     }
 
-
-                    gbl.byte_1D537 = 8;
-
                     if (gbl.area_ptr.field_1F6 != 0)
                     {
                         gbl.mapAreaDisplay = false;

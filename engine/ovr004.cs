@@ -29,7 +29,7 @@ namespace engine
             int var_1;
 
 
-            ovr034.Load24x24Set(0x1a, 0, 1, "tiles");
+            ovr034.Load24x24Set(0x1A, 0, 1, "tiles");
             ovr034.Load24x24Set(0x16, 0x1A, 2, "tiles");
 
             seg037.draw8x8_01();
@@ -44,7 +44,7 @@ namespace engine
 
                 var_6 = seg051.Random(26);
                 var_7 = seg051.Random(22);
-
+             
                 ovr034.draw_iso_title(0, var_6, 3, 0x11);
                 ovr034.draw_iso_title(0, var_7 + 0x1a, 7, 0x11);
 

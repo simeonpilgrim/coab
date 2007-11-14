@@ -55,7 +55,7 @@ namespace Main
             this.ddfsdToolStripMenuItem,
             this.screenCaptureToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(161, 70);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(161, 48);
             // 
             // ddfsdToolStripMenuItem
             // 
