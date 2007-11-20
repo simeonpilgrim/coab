@@ -43,11 +43,10 @@ namespace engine
         internal static void playerDisplayFull()
         {
             string var_307;
-            bool var_107;
             string var_106;
             byte var_6;
             byte var_5;
-            byte var_3;
+            int xCol;
             byte var_2;
 
             gbl.player_ptr02 = gbl.player_ptr;
@@ -61,20 +60,20 @@ namespace engine
                 seg041.displayString("(NPC)", 0, 10, 1, gbl.player_ptr02.name.Length + 3);
             }
 
-            var_3 = 1;
+            xCol = 1;
 
             var_106 = sexString[gbl.player_ptr02.sex];
 
-            seg041.displayString(var_106, 0, 15, 3, var_3);
+            seg041.displayString(sexString[gbl.player_ptr02.sex], 0, 15, 3, xCol);
 
-            var_3 += (byte)(var_106.Length + 1);
+            xCol += (byte)(var_106.Length + 1);
             var_106 = raceString[(int)gbl.player_ptr02.race];
-            seg041.displayString(var_106, 0, 15, 3, var_3);
+            seg041.displayString(var_106, 0, 15, 3, xCol);
 
-            var_3 += (byte)(var_106.Length + 1);
-            var_307 = "Age " + ovr025.ConcatWord(gbl.player_ptr02.age);
+            xCol += (byte)(var_106.Length + 1);
+            var_307 = "Age " + gbl.player_ptr02.age.ToString();
 
-            seg041.displayString(var_307, 0, 15, 3, var_3);
+            seg041.displayString(var_307, 0, 15, 3, xCol);
 
             var_106 = alignmentString[gbl.player_ptr02.alignment];
             seg041.displayString(var_106, 0, 15, 4, 1);
@@ -91,7 +90,8 @@ namespace engine
 
             displayMoney();
             seg041.displayString("Level", 0, 15, 15, 1);
-            var_107 = false;
+
+            bool displaySlash = false;
             var_106 = string.Empty;
 
             for (var_6 = 0; var_6 <= 7; var_6++)
@@ -101,14 +101,14 @@ namespace engine
                 if (gbl.player_ptr02.Skill_A_lvl[var_6] > 0 ||
                     (tmp < ovr026.hasAnySkills(gbl.player_ptr02) && tmp > 0))
                 {
-                    if (var_107 == true)
+                    if (displaySlash )
                     {
                         var_106 += "/";
                     }
 
                     var_106 += ovr025.sub_670CC(gbl.player_ptr02.Skill_A_lvl[var_6] + gbl.player_ptr02.Skill_B_lvl[var_6]);
 
-                    var_107 = true;
+                    displaySlash = true;
                 }
             }
 
@@ -141,28 +141,20 @@ namespace engine
 
         internal static void displayMoney()
         {
-            string var_12B;
-            string var_2B;
-            int var_2;
-            byte var_1;
-
             seg037.draw8x8_clear_area(0x0e, 0x1a, 7, 0x0c);
 
-            var_1 = 7;
-            var_2 = 6;
+            int yCol = 7;
 
-            for (var_2 = 6; var_2 >= 0; var_2--)
+            for (int coinType = 6; coinType >= 0; coinType--)
             {
-                if (gbl.player_ptr.Money[var_2] > 0)
+                if (gbl.player_ptr.Money[coinType] > 0)
                 {
-                    var_2B = moneyString[var_2];
+                    string mString = moneyString[coinType];
 
-                    seg041.displayString(var_2B, 0, 10, var_1, (byte)(20 - var_2B.Length));
+                    seg041.displayString(mString, 0, 10, yCol, 20 - mString.Length);
+                    seg041.displayString(gbl.player_ptr.Money[coinType].ToString(), 0, 10, yCol, 21);
 
-                    var_12B = ovr025.ConcatWord(gbl.player_ptr.Money[var_2]);
-                    seg041.displayString(var_12B, 0, 10, var_1, 21);
-
-                    var_1++;
+                    yCol++;
                 }
             }
         }
@@ -170,52 +162,46 @@ namespace engine
 
         internal static void display_player_stats01()
         {
-
             Affect var_34;
             string var_30;
             byte var_7;
-            byte var_6;
-            byte var_5;
+            int xCol;
+            int yCol;
             Player player;
 
             player = gbl.player_ptr;
 
             ovr025.sub_66C20(player);
-            var_5 = 0x11;
+            yCol = 0x11;
 
-            seg041.displayString("AC    ", 0, 15, var_5, 1);
+            seg041.displayString("AC    ", 0, 15, yCol, 1);
+            ovr025.display_AC(yCol, 4, player);
 
-            ovr025.display_AC(var_5, 4, player);
-            seg041.displayString("HP    ", 0, 15, var_5 + 1, 1);
-            ovr025.display_hp(0, var_5 + 1, 4, player);
+            seg041.displayString("HP    ", 0, 15, yCol + 1, 1);
+            ovr025.display_hp(0, yCol + 1, 4, player);
 
-            var_6 = 8;
+            xCol = 8;
 
-            seg041.displayString("THAC0   ", 0, 15, var_5, var_6 + 1);
+            seg041.displayString("THAC0   ", 0, 15, yCol, xCol + 1);
+            seg041.displayString((0x3c - player.field_199).ToString(), 0, 10, yCol, xCol + 7);
 
-            var_30 = ovr025.sub_670CC(0x3c - player.field_199);
-            seg041.displayString(var_30, 0, 10, var_5, var_6 + 7);
 
-            var_30 = ovr025.sub_670CC(player.field_19E) + "d";
-            var_30 += ovr025.sub_670CC(player.field_1A0);
-
-            if (player.field_1A2 > 0)
+            var_30 = player.field_19E.ToString() + "d" + player.field_1A0.ToString();
+            if (player.damageBonus > 0)
             {
-                var_30 += "+" + ovr025.sub_670CC(player.field_1A2);
+                var_30 += "+" + player.damageBonus.ToString();
+            }
+            if (player.damageBonus < 0)
+            {
+                var_30 += player.damageBonus.ToString();
             }
 
-            if (player.field_1A2 < 0)
-            {
-                var_30 += "-" + ovr025.sub_670CC(System.Math.Abs(player.field_1A2));
-            }
-
-            seg041.displayString("Damage  ", 0, 15, var_5 + 1, var_6);
-            seg041.displayString(var_30, 0, 10, var_5 + 1, var_6 + 7);
-            var_6 = 0x16;
-            seg041.displayString("Encumbrance  ", 0, 15, var_5, var_6);
-
-            var_30 = ovr025.ConcatWord(player.weight);
-            seg041.displayString(var_30, 0, 10, var_5, var_6 + 12);
+            seg041.displayString("Damage  ", 0, 15, yCol + 1, xCol);
+            seg041.displayString(var_30, 0, 10, yCol + 1, xCol + 7);
+            
+            xCol = 0x16;
+            seg041.displayString("Encumbrance  ", 0, 15, yCol, xCol);
+            seg041.displayString(player.weight.ToString(), 0, 10, yCol, xCol + 12);
 
             var_7 = player.initiative;
 
@@ -229,8 +215,8 @@ namespace engine
                 var_7 /= 2;
             }
 
-            seg041.displayString("Movement ", 0, 15, var_5 + 1, var_6 + 3);
-            seg041.displayString(ovr025.sub_670CC(var_7), 0, 10, var_5 + 1, var_6 + 0x0c);
+            seg041.displayString("Movement ", 0, 15, yCol + 1, xCol + 3);
+            seg041.displayString(ovr025.sub_670CC(var_7), 0, 10, yCol + 1, xCol + 0x0c);
         }
 
 
@@ -372,7 +358,7 @@ namespace engine
                 switch (var_1)
                 {
                     case 'I':
-                        use_item(ref arg_0);
+                        PlayerItemsMenu(ref arg_0);
                         break;
 
                     case 'S':
@@ -448,56 +434,64 @@ namespace engine
             return var_1;
         }
 
-        internal static void sub_550A6(Item arg_0)
+        internal static void ItemDisplayStats(Item arg_0) /*sub_550A6*/
         {
             Item var_4;
 
             seg037.draw8x8_01();
             var_4 = arg_0;
 
-            seg041.displayString("itemptr:   ", 0, 10, 1, 1);
+            seg041.displayString("itemptr:      ", 0, 10, 1, 1);
+            seg041.displayString(var_4.type.ToString(), 0, 10, 1, 0x14);
+            
             seg041.displayString("namenum(1):   ", 0, 10, 2, 1);
+            seg041.displayString(var_4.field_2F.ToString(), 0, 10, 2, 0x14);
+            
             seg041.displayString("namenum(2):   ", 0, 10, 3, 1);
+            seg041.displayString(var_4.field_30.ToString(), 0, 10, 3, 0x14);
+            
             seg041.displayString("namenum(3):   ", 0, 10, 4, 1);
-            seg041.displayString("plus:        ", 0, 10, 5, 1);
-            seg041.displayString("plussave:	   ", 0, 10, 6, 1);
-            seg041.displayString("ready:	", 0, 10, 7, 1);
-            seg041.displayString("identified:   ", 0, 10, 8, 1);
-            seg041.displayString("cursed:	   ", 0, 10, 9, 1);
-            seg041.displayString("value:	", 0, 10, 10, 1);
-            seg041.displayString("special(1):   ", 0, 10, 11, 1);
-            seg041.displayString("special(2):   ", 0, 10, 12, 1);
-            seg041.displayString("special(3):   ", 0, 10, 13, 1);
-            seg041.displayString("dice large:    ", 0, 10, 14, 1);
-            seg041.displayString("sides large:   ", 0, 10, 15, 1);
-
-            seg041.displayString(ovr025.sub_670CC(var_4.type), 0, 10, 1, 0x14);
-            seg041.displayString(ovr025.sub_670CC(var_4.field_2F), 0, 10, 2, 0x14);
-            seg041.displayString(ovr025.sub_670CC(var_4.field_30), 0, 10, 3, 0x14);
-            seg041.displayString(ovr025.sub_670CC(var_4.field_31), 0, 10, 4, 0x14);
-            seg041.displayString(ovr025.sub_670CC(var_4.exp_value), 0, 10, 5, 0x14);
-            seg041.displayString(ovr025.sub_670CC(var_4.field_33), 0, 10, 6, 0x14);
+            seg041.displayString(var_4.field_31.ToString(), 0, 10, 4, 0x14);
+            
+            seg041.displayString("plus:         ", 0, 10, 5, 1);
+            seg041.displayString(var_4.exp_value.ToString(), 0, 10, 5, 0x14);
+            
+            seg041.displayString("plussave:     ", 0, 10, 6, 1);
+            seg041.displayString(var_4.field_33.ToString(), 0, 10, 6, 0x14);
+            
+            seg041.displayString("ready:        ", 0, 10, 7, 1);
             seg041.displayString(var_4.readied.ToString(), 0, 10, 7, 0x14);
-            seg041.displayString(ovr025.sub_670CC(var_4.field_35), 0, 10, 8, 0x14);
-            seg041.displayString(ovr025.sub_670CC(var_4.field_36), 0, 10, 9, 0x14);
-            seg041.displayString(ovr025.ConcatWord(var_4._value), 0, 10, 10, 0x14);
-            seg041.displayString(ovr025.sub_670CC((byte)var_4.affect_1), 0, 10, 11, 0x14);
-            seg041.displayString(ovr025.sub_670CC((byte)var_4.affect_2), 0, 10, 12, 0x14);
-            seg041.displayString(ovr025.sub_670CC((byte)var_4.affect_3), 0, 10, 13, 0x14);
-
-            string s;
-            s = ovr025.sub_670CC(gbl.unk_1C020[var_4.type << 4].field_2);
-            seg041.displayString(s, 0, 10, 14, 0x14);
-
-            s = ovr025.sub_670CC(gbl.unk_1C020[var_4.type << 4].field_3);
-            seg041.displayString(s, 0, 10, 15, 0x14);
+            
+            seg041.displayString("identified:   ", 0, 10, 8, 1);
+            seg041.displayString(var_4.field_35.ToString(), 0, 10, 8, 0x14);
+            
+            seg041.displayString("cursed:       ", 0, 10, 9, 1);
+            seg041.displayString(var_4.field_36.ToString(), 0, 10, 9, 0x14);
+            
+            seg041.displayString("value:        ", 0, 10, 10, 1);
+            seg041.displayString(var_4._value.ToString(), 0, 10, 10, 0x14);
+            
+            seg041.displayString("special(1):   ", 0, 10, 11, 1);
+            seg041.displayString(var_4.affect_1.ToString(), 0, 10, 11, 0x14);
+            
+            seg041.displayString("special(2):   ", 0, 10, 12, 1);
+            seg041.displayString(var_4.affect_2.ToString(), 0, 10, 12, 0x14);
+            
+            seg041.displayString("special(3):   ", 0, 10, 13, 1);
+            seg041.displayString(var_4.affect_3.ToString(), 0, 10, 13, 0x14);
+            
+            seg041.displayString("dice large:   ", 0, 10, 14, 1);
+            seg041.displayString(gbl.unk_1C020[var_4.type].field_2.ToString(), 0, 10, 14, 0x14);
+            
+            seg041.displayString("sides large:  ", 0, 10, 15, 1);
+            seg041.displayString(gbl.unk_1C020[var_4.type].field_3.ToString(), 0, 10, 15, 0x14);
 
             seg041.displayAndDebug("press a key", 0, 10);
         }
 
         static Set unk_554EE = new Set(0x0009, new byte[] { 0x01, 0, 0, 0, 0, 0, 0, 0, 0x20 });
 
-        internal static void use_item(ref bool arg_0)
+        internal static void PlayerItemsMenu(ref bool arg_0) /*use_item*/
         {
             byte var_40;
             Player player;
@@ -525,6 +519,7 @@ namespace engine
 
                 if (player.itemsPtr != null)
                 {
+                    //var_2A = "Ready View";
                     var_2A = "Ready";
 
                     if (player.in_combat == true &&
@@ -601,7 +596,7 @@ namespace engine
                         switch (var_1)
                         {
                             case 'V':
-                                sub_550A6(curr_item);
+                                ItemDisplayStats(curr_item);
                                 var_2D = true;
                                 var_2C = 1;
                                 break;

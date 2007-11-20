@@ -668,7 +668,7 @@ namespace Classes
             switch (index)
             {
                 case 1:
-                    return (byte)field_1A2;
+                    return (byte)damageBonus;
                 case 2:
                     return field_1A3;
                 default:
@@ -676,7 +676,7 @@ namespace Classes
             }
         }
         [DataOffset(0x1a2, DataType.SByte)]
-        public sbyte field_1A2; // 0x1a2
+        public sbyte damageBonus; // 0x1a2
         [DataOffset(0x1a3, DataType.Byte)]
         public byte field_1A3; // 0x1a3
         [DataOffset(0x1a4, DataType.Byte)]

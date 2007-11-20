@@ -77,40 +77,39 @@ namespace engine
         }
 
 
-        internal static void overloaded( out bool arg_0, Item item )
+        internal static void PlayerAddItem( out bool isOverloaded, Item item ) /*was overloaded */
         {
-            Item var_8;
-            Item item_ptr;
 
-            if( ovr020.canCarry( item, gbl.player_ptr ) == true )
+            if (ovr020.canCarry(item, gbl.player_ptr) == true)
             {
-                ovr025.string_print01( "Overloaded" );
-                arg_0 = true;
+                ovr025.string_print01("Overloaded");
+                isOverloaded = true;
             }
             else
             {
-                arg_0 = false;
-                item_ptr = gbl.player_ptr.itemsPtr;
+                isOverloaded = false;
+                Item item_ptr = gbl.player_ptr.itemsPtr;
 
-                if( item_ptr == null )
+                if (item_ptr == null)
                 {
                     item_ptr = item.ShallowClone();
                     item_ptr.next = null;
                     gbl.player_ptr.itemsPtr = item_ptr;
                 }
-                else if( item_ptr.next != null )
-                {
-                    item_ptr = item_ptr.next;
-                }
                 else
                 {
-                    var_8 = item.ShallowClone();
+                    while (item_ptr.next != null)
+                    {
+                        item_ptr = item_ptr.next;
+                    }
+
+                    Item var_8 = item.ShallowClone();
                     var_8.next = null;
-                
+
                     item_ptr.next = var_8;
                 }
 
-                ovr025.sub_66C20( gbl.player_ptr );
+                ovr025.sub_66C20(gbl.player_ptr);
             }
         }
 
@@ -146,7 +145,7 @@ namespace engine
 				else
 				{
 					var_6 = false;
-					var_8 = 0;
+                    var_8 = var_4._value;
 
 					switch( gbl.area2_ptr.field_6DA)
 					{
@@ -185,7 +184,7 @@ namespace engine
 
 					if( var_8 <= var_A )
 					{
-						overloaded( out var_F, var_4 );
+						PlayerAddItem( out var_F, var_4 );
 
 						if( var_F == false )
 						{
@@ -199,7 +198,7 @@ namespace engine
 
 						if( var_8 <= var_E )
 						{
-							overloaded( out var_F, var_4 );
+							PlayerAddItem( out var_F, var_4 );
 
 							if( var_F == false )
 							{
