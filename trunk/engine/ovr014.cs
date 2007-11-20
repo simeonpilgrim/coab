@@ -906,7 +906,7 @@ namespace engine
 
                     arg_E.field_19E = var_10.field_2;
                     arg_E.field_1A0 = var_10.field_3;
-                    arg_E.field_1A2 = (sbyte)((arg_E.field_1A2 - var_10.field_B) + var_10.field_4);
+                    arg_E.damageBonus = (sbyte)((arg_E.damageBonus - var_10.field_B) + var_10.field_4);
                 }
 
                 ovr025.sub_66C20(arg_A);
@@ -2240,7 +2240,7 @@ namespace engine
 
                     if (arg_C != 0)
                     {
-                        var_239 = "Range = " + ovr025.ConcatWord(var_38 * 2) + "  ";
+                        var_239 = "Range = " + (var_38 * 2).ToString() + "  ";
 
                         seg041.displayString(var_239, 0, 10, 0x17, 0);
                     }

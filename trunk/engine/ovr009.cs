@@ -226,7 +226,7 @@ namespace engine
 
                                 case 'U':
                                     gbl.byte_1D5BE = 2;
-                                    ovr020.use_item(ref var_2);
+                                    ovr020.PlayerItemsMenu(ref var_2);
                                     ovr014.sub_3EDD4(player);
                                     if (var_2 == false)
                                     {

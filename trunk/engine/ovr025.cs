@@ -23,12 +23,12 @@ namespace engine
                     arg_0.field_199 = (sbyte)(arg_0.field_199 + stat_bonus02(arg_0));
                 }
 
-                arg_0.field_1A2 = (sbyte)gbl.unk_1C020[var_5].field_B;
+                arg_0.damageBonus = (sbyte)gbl.unk_1C020[var_5].field_B;
 
                 if ((gbl.unk_1C020[var_5].field_E & 0x04) != 0)
                 {
                     arg_0.field_199 = (sbyte)(arg_0.field_199 + strengthHitBonus(arg_0));
-                    arg_0.field_1A2 = (sbyte)(arg_0.field_1A2 + strengthDamBonus(arg_0));
+                    arg_0.damageBonus = (sbyte)(arg_0.damageBonus + strengthDamBonus(arg_0));
                 }
 
                 var_6 = var_4.exp_value;
@@ -45,7 +45,7 @@ namespace engine
                     var_6 += arg_0.Item_ptr_03.exp_value;
                 }
 
-                arg_0.field_1A2 += var_6;
+                arg_0.damageBonus += var_6;
 
                 if (arg_0.race == Race.elf &&
                     ((var_4.type > 0x28 && var_4.type < 0x2D) ||
@@ -318,62 +318,21 @@ namespace engine
                     }
                     else
                     {
-                        throw new System.NotSupportedException();//loc_66694:
-                        throw new System.NotSupportedException();//mov	al, [bp+var_2]
-                        throw new System.NotSupportedException();//xor	ah, ah
-                        throw new System.NotSupportedException();//mov	bx, ax
-                        throw new System.NotSupportedException();//mov	al, [bp+var_1]
-                        throw new System.NotSupportedException();//xor	ah, ah
-                        throw new System.NotSupportedException();//dec	ax
-                        throw new System.NotSupportedException();//mov	dx, ax
-                        throw new System.NotSupportedException();//mov	ax, 1
-                        throw new System.NotSupportedException();//mov	cx, dx
-                        throw new System.NotSupportedException();//shl	ax, cl
-                        throw new System.NotSupportedException();//cmp	ax, bx
-                        throw new System.NotSupportedException();//jz	loc_66709
-                        throw new System.NotSupportedException();//cmp	[bp+var_1], 1
-                        throw new System.NotSupportedException();//jnz	loc_666C4
-                        throw new System.NotSupportedException();//cmp	[bp+var_2], 4
-                        throw new System.NotSupportedException();//jbe	loc_666C4
-                        throw new System.NotSupportedException();//les	di, dword ptr [bp+item.offset]
-                        throw new System.NotSupportedException();//cmp	es:[di+item.type], 0x56
-                        throw new System.NotSupportedException();//jnz	loc_66709
-                        throw new System.NotSupportedException();//loc_666C4:
-                        throw new System.NotSupportedException();//cmp	[bp+var_1], 2
-                        throw new System.NotSupportedException();//jnz	loc_666D1
-                        throw new System.NotSupportedException();//mov	al, [bp+var_2]
-                        throw new System.NotSupportedException();//shr	al, 1
-                        throw new System.NotSupportedException();//jnb	loc_66709
-                        throw new System.NotSupportedException();//loc_666D1:
-                        throw new System.NotSupportedException();//cmp	[bp+var_1], 3
-                        throw new System.NotSupportedException();//jnz	loc_666E1
-                        throw new System.NotSupportedException();//les	di, dword ptr [bp+item.offset]
-                        throw new System.NotSupportedException();//cmp	es:[di+item.type], 0x56
-                        throw new System.NotSupportedException();//jz	loc_66709
-                        throw new System.NotSupportedException();//loc_666E1:
-                        throw new System.NotSupportedException();//les	di, dword ptr [bp+item.offset]
-                        throw new System.NotSupportedException();//cmp	es:[di+item.field_31], 0x87
-                        throw new System.NotSupportedException();//jz	loc_66737
-                        throw new System.NotSupportedException();//les	di, dword ptr [bp+item.offset]
-                        throw new System.NotSupportedException();//cmp	es:[di+item.type], 0x49
-                        throw new System.NotSupportedException();//jz	loc_666FF
-                        throw new System.NotSupportedException();//les	di, dword ptr [bp+item.offset]
-                        throw new System.NotSupportedException();//cmp	es:[di+item.type], 0x1C
-                        throw new System.NotSupportedException();//jnz	loc_66737
-                        throw new System.NotSupportedException();//loc_666FF:
-                        throw new System.NotSupportedException();//les	di, dword ptr [bp+item.offset]
-                        throw new System.NotSupportedException();//cmp	es:[di+item.field_31], 0x0B1
-                        throw new System.NotSupportedException();//jz	loc_66737
-                        throw new System.NotSupportedException();//loc_66709:
-
-                        item.name += "s ";
-                        var_8 = 1;
-                        throw new System.NotSupportedException();//jmp	short loc_6675F
-                        throw new System.NotSupportedException();//loc_66737:
-                        item.name += " ";
+                        if ((1 << (var_1 - 1) == var_2) ||
+                            (var_1 == 1 && var_2 == 4 && item.type != 0x56) ||
+                            (var_1 == 2 && (var_2 & 1) == 0) ||
+                            (var_1 == 3 && item.type == 0x56) ||
+                            (item.field_31 != 0x87 && (item.type == 0x49 || item.type == 0x1c) && item.field_31 != 0xb1))
+                        {
+                            item.name += "s ";
+                            var_8 = 1;
+                        }
+                        else
+                        {
+                            item.name += " ";
+                        }
                     }
                 }
-                //loc_6675F:
             }
 
             if (arg_0 != 0)
@@ -666,7 +625,7 @@ namespace engine
             player.field_1A0 = player.field_120;
             player.field_1A1 = player.field_121;
 
-            player.field_1A2 = player.field_122;
+            player.damageBonus = player.field_122;
             player.field_1A3 = player.field_123;
 
             for (var_2 = 0; var_2 <= 4; var_2++)
@@ -686,7 +645,7 @@ namespace engine
             if (player.field_151 == null)
             {
                 player.field_199 += strengthHitBonus(player);
-                player.field_1A2 += strengthDamBonus(player);
+                player.damageBonus += strengthDamBonus(player);
             }
 
             sub_66023(player);
@@ -776,12 +735,10 @@ namespace engine
         /// word.ToString()
         /// </summary>
         /// <param name="number"></param>
-        /// <param name="output">not used.</param>
         /// <returns></returns>
         internal static string ConcatWord(int number)
         {
-            string output = number.ToString();
-            return output;
+            return number.ToString();
         }
 
 

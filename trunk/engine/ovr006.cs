@@ -547,7 +547,7 @@ namespace engine
 				{
 					var_A = 0;
 
-					ovr007.overloaded( out var_11, var_4 );
+					ovr007.PlayerAddItem( out var_11, var_4 );
 
 					if( var_11 == false )
 					{

@@ -143,7 +143,6 @@ namespace engine
 
 		internal static char displayInput( out bool arg_0, byte arg_4, byte arg_6, byte arg_8, byte arg_A, byte arg_C, string accepted_keys, string displayString )
 		{
-			byte var_90;
 			byte var_8F;
 			byte var_8E;
             byte[] var_8D = new byte[0x28];
@@ -307,8 +306,7 @@ namespace engine
                             }
                             else
                             {
-                                var_90 = var_64;
-                                for (var_62 = 0; var_62 < var_90; var_62++)
+                                for (var_62 = 0; var_62 < var_64; var_62++)
                                 {
                                     if (var_53[var_62] == var_60)
                                     {
