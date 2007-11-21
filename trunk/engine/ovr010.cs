@@ -1053,31 +1053,25 @@ namespace engine
 
                 if (gbl.unk_1C020[var_19].field_0 == 1)
                 {
-                    throw new System.NotSupportedException();//mov	al, gbl.unk_1C020[ var_19 ].field_D
-                    throw new System.NotSupportedException();//les	di, [bp+arg_0]
-                    throw new System.NotSupportedException();//and	al, es:[di+12Bh]
-                    throw new System.NotSupportedException();//or	al, al
-                    throw new System.NotSupportedException();//jbe	loc_36898
-                    throw new System.NotSupportedException();//les	di, [bp+var_10]
-                    throw new System.NotSupportedException();//cmp	byte ptr es:[di+32h], 0
-                    throw new System.NotSupportedException();//jl	loc_3687A
-                    throw new System.NotSupportedException();//les	di, [bp+var_10]
-                    throw new System.NotSupportedException();//mov	al, es:[di+32h]
-                    throw new System.NotSupportedException();//cbw
-                    throw new System.NotSupportedException();//inc	ax
-                    throw new System.NotSupportedException();//mov	[bp+var_18], al
-                    throw new System.NotSupportedException();//jmp	short loc_3687E
-                    throw new System.NotSupportedException();//loc_3687A:
-                    var_18 = 0;
-                    throw new System.NotSupportedException();//loc_3687E:
-                    if (var_18 > var_17)
+                    if ((gbl.unk_1C020[var_19].field_D & arg_0.field_12B) != 0)
                     {
-                        var_C = var_10;
-                        var_17 = var_18;
-                    }
 
+                        if (var_10.exp_value >= 0)
+                        {
+                            var_18 = (byte)(var_10.exp_value + 1);
+                        }
+                        else
+                        {
+                            var_18 = 0;
+                        }
+
+                        if (var_18 > var_17)
+                        {
+                            var_C = var_10;
+                            var_17 = var_18;
+                        }
+                    }
                 }
-                //loc_36898:
                 var_10 = var_10.next;
             }
 

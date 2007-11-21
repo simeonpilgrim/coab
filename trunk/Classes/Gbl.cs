@@ -394,8 +394,7 @@ namespace Classes
         public readonly static short[] symbol_set_fix = { 0x0001, 0x002E, 0x0074, 0x00BA, 0x0100 };
         public const short word_1899C = 0x2D;
 
-        public static RestTime word_1A13C;
-
+        public static RestTime word_1A13C = new RestTime( 10, 10, 6, 24, 30, 12, 0x100 );
 
         public static short dos_call_result; // seg600:47EE word_1AAFE
         public static ushort word_1AE0F;

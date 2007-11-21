@@ -14,6 +14,17 @@ namespace Classes
         public ushort field_A;
         public ushort field_C;
 
+        public RestTime(ushort f0, ushort f2,ushort f4,ushort f6,ushort f8,ushort fA,ushort fC)
+        {
+            field_0 = f0;
+            field_2 = f2;
+            field_4 = f4;
+            field_6 = f6;
+            field_8 = f8;
+            field_A = fA;
+            field_C = fC;
+        }
+
         public void Clear()
         {
             field_0 = 0;

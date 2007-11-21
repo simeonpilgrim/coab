@@ -48,7 +48,7 @@ namespace engine
 
             while (var_1 > 1)
             {
-                var_5 *= (ushort)gbl.word_1A13C[var_1 - 1];
+                var_5 *= gbl.word_1A13C[var_1 - 1];
                 var_1 -= 1;
             }
 
@@ -243,7 +243,6 @@ namespace engine
 
         internal static void sub_5849F(byte arg_0, byte arg_2)
         {
-            byte var_2;
             byte var_1;
 
             if (gbl.unk_1D890.field_8 != 0 ||
@@ -268,10 +267,10 @@ namespace engine
                     }
                     else
                     {
-                        for (var_2 = var_1; var_2 >= (arg_0 + 1); var_2--)
+                        for (int i = var_1; i >= (arg_0 + 1); i--)
                         {
-                            gbl.unk_1D890[var_2] -= 1;
-                            gbl.unk_1D890[var_2 - 1] += gbl.word_1A13C[var_2 - 1];
+                            gbl.unk_1D890[i] -= 1;
+                            gbl.unk_1D890[i - 1] += gbl.word_1A13C[i - 1];
                         }
                     }
                 }
@@ -285,7 +284,7 @@ namespace engine
 
         static string sub_5858A(int arg_0, out string arg_2)
         {
-            arg_2 = string.Format("{0:##}", arg_0);
+            arg_2 = string.Format("{0:00}", arg_0);
 
             return arg_2;
         }
