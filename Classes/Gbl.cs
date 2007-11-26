@@ -316,7 +316,7 @@ namespace Classes
         public static byte[] byte_1D8B9 = new byte[0x48];
         public static byte byte_1D901;
         public static byte byte_1D902;
-        public static byte byte_1D903;
+        public static byte enemyHealthPercentage; /* byte_1D903 */
         public static bool byte_1D904;
         public static bool byte_1D905;
         public static bool byte_1D90E;
@@ -463,7 +463,12 @@ namespace Classes
         public static Player player_ptr;
 
         public static byte game_state;
-        public static byte combat_type;
+        public enum combatType
+        {
+            normal = 0,
+            duel = 1
+        }
+        public static combatType combat_type;
         public static ushort ecl_offset;
 
 

@@ -167,7 +167,7 @@ namespace engine
             gbl.textWndXXX = 1;
             gbl.area2_ptr.field_67C = 0;
             gbl.word_1D5BC = 1;
-            gbl.combat_type = 0;
+            gbl.combat_type = gbl.combatType.normal;
             gbl.byte_1D8A8 = 0;
             gbl.byte_1EE89 = 0;
             gbl.byte_1EE8A = 0;
@@ -285,7 +285,7 @@ namespace engine
             gbl.textWndXXX = 1;
             gbl.area2_ptr.field_67C = 0;
             gbl.word_1D5BC = 1;
-            gbl.combat_type = 0;
+            gbl.combat_type = gbl.combatType.normal;
             gbl.byte_1D8A8 = 0;
             gbl.byte_1EE89 = 0;
             gbl.byte_1EE8A = 0;

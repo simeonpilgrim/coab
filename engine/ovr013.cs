@@ -198,36 +198,21 @@ namespace engine
             }
             else
             {
-                throw new System.NotSupportedException();//loc_3A2E4:
-                throw new System.NotSupportedException();//les	di, int ptr [bp+affect.offset]
-                throw new System.NotSupportedException();//mov	al, es:[di+affect.field_3]
-                throw new System.NotSupportedException();//and	al, 0x20
-                throw new System.NotSupportedException();//or	al, al
-                throw new System.NotSupportedException();//jnz	loc_3A35E
-                throw new System.NotSupportedException();//les	di, int ptr [bp+player.offset]
-                throw new System.NotSupportedException();//mov	al, es:[di+charStruct.combat_team]
-                throw new System.NotSupportedException();//cbw
-                throw new System.NotSupportedException();//mov	cl, 6
-                throw new System.NotSupportedException();//shl	ax, cl
-                throw new System.NotSupportedException();//mov	dx, ax
-                throw new System.NotSupportedException();//les	di, int ptr [bp+affect.offset]
-                throw new System.NotSupportedException();//mov	al, es:[di+affect.field_3]
-                throw new System.NotSupportedException();//xor	ah, ah
-                throw new System.NotSupportedException();//add	ax, 0x20
-                throw new System.NotSupportedException();//add	ax, dx
-                throw new System.NotSupportedException();//les	di, int ptr [bp+affect.offset]
-                throw new System.NotSupportedException();//mov	es:[di+affect.field_3],	al
-                player.combat_team = (sbyte)(affect.field_3 >> 7);
-                player.field_198 = 1;
-
-                if (player.field_F7 <= 0x7F)
+                if ((affect.field_3 & 0x20) == 0)
                 {
-                    player.field_F7 = 0x0B3;
-                }
+                    affect.field_3 = (byte)(20 + (player.combat_team << 6));
 
-                player.actions.target = null;
-                ovr025.count_teams();
-                throw new System.NotSupportedException();//loc_3A35E:
+                    player.combat_team = (sbyte)(affect.field_3 >> 7);
+                    player.field_198 = 1;
+
+                    if (player.field_F7 <= 0x7F)
+                    {
+                        player.field_F7 = 0x0B3;
+                    }
+
+                    player.actions.target = null;
+                    ovr025.count_teams();
+                }
                 gbl.byte_1D2CC = 100;
             }
         }

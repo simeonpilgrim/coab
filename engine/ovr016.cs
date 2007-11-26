@@ -1137,7 +1137,7 @@ namespace engine
             {
                 if (ovr027.yes_no(15, 10, 14, "quit TO DOS: ") == 'Y')
                 {
-                    ovr018.free_players(1, 0);
+                    ovr018.free_players(1, false);
                     seg043.print_and_exit();
                 }
             }
@@ -1156,7 +1156,7 @@ namespace engine
                         ovr025.DisplayPlayerStatusString(true, 10, "is dumped in a ditch", gbl.player_ptr);
                     }
 
-                    ovr018.free_players(1, 0);
+                    ovr018.free_players(1, false);
                     seg037.draw8x8_clear_area(0x0b, 0x26, 1, 0x11);
 
                     ovr025.Player_Summary(gbl.player_ptr);

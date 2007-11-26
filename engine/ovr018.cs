@@ -278,7 +278,7 @@ namespace engine
                                 if (gbl.player_ptr.field_F7 < 0x80)
                                 {
                                     ovr017.sub_47DFC(string.Empty, gbl.player_ptr);
-                                    free_players(1, 0);
+                                    free_players(1, false);
                                 }
                                 else
                                 {
@@ -1380,7 +1380,7 @@ namespace engine
                     }
 
                     ovr017.remove_player_file(gbl.player_ptr);
-                    free_players(1, 0);
+                    free_players(1, false);
                 }
                 else
                 {
@@ -2118,7 +2118,7 @@ namespace engine
         }
 
 
-        internal static void free_players(byte arg_0, byte arg_2)
+        internal static void free_players(byte arg_0, bool arg_2)
         {
             Player player_ptr;
 
@@ -2145,9 +2145,9 @@ namespace engine
                         free_player(ref gbl.player_ptr);
                         gbl.player_ptr = player_ptr;
 
-                        if (arg_2 == 0)
+                        if (arg_2 == false)
                         {
-                            gbl.area2_ptr.field_67C -= 1;
+                            gbl.area2_ptr.field_67C--;
                         }
                     }
                 }
@@ -2164,7 +2164,7 @@ namespace engine
                     free_player(ref gbl.player_ptr);
                     gbl.player_ptr = player_ptr;
 
-                    if (arg_2 == 0)
+                    if (arg_2 == false)
                     {
                         gbl.area2_ptr.field_67C--;
                     }

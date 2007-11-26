@@ -971,7 +971,7 @@ namespace engine
                     player.actions.field_13 = 1;
                 }
 
-                player.actions.field_9 = unk_1660C[gbl.mapDirection << 1];
+                player.actions.field_9 = unk_1660C[gbl.mapDirection >> 1];
 
                 if (player.combat_team == 1)
                 {
@@ -1329,7 +1329,7 @@ namespace engine
                     {
                         gbl.stru_1C9CD[loop_var].field_3 = 0;
 
-                        if (gbl.combat_type == 0 &&
+                        if (gbl.combat_type == gbl.combatType.normal &&
                             player_ptr.actions.field_13 == 0)
                         {
                             var_1 = (sbyte)gbl.stru_1C9CD[loop_var].xPos;
@@ -1359,7 +1359,7 @@ namespace engine
 
                         gbl.player_array[loop_var] = null;
                         gbl.player_ptr = player_ptr;
-                        ovr018.free_players(0, 1);
+                        ovr018.free_players(0, true);
                         player_ptr2 = player_ptr;
                     }
                     else
