@@ -573,9 +573,9 @@ namespace engine
         }
 
 
-        internal static byte sub_64245(byte arg_0, Player arg_2, Player arg_6)
+        internal static bool sub_64245(byte arg_0, Player arg_2, Player arg_6)
         {
-            byte var_1 = 0;
+            bool var_1 = false;
             short var_2;
 
             remove_affect_19(arg_6);
@@ -604,7 +604,7 @@ namespace engine
                 {
                     if ((gbl.byte_1D2C9 + arg_6.field_199 + var_2) >= arg_0)
                     {
-                        var_1 = 1;
+                        var_1 = true;
                     }
                 }
             }

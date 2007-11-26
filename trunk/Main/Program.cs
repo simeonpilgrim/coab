@@ -32,20 +32,20 @@ namespace Main
 
         static void EngineThread()
         {
-            try
-            {
+            //try
+            //{
                 engine.seg001.__SystemInit();
                 engine.seg001.PROGRAM();
-            }
-            catch (Exception e)
-            {
-                Console.Write(e.ToString());
-            }
-            finally
-            {
+            //}
+            //catch (Exception e)
+            //{
+            //    Console.Write(e.ToString());
+            //}
+            //finally
+            //{
                 VoidDelegate d = delegate() { main.Close(); };
                 main.Invoke(d);
-            }
+            //}
         }
     }
 }

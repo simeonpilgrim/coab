@@ -13,7 +13,7 @@ namespace engine
             byte loop2_var;
             Player player;
 
-			if( gbl.combat_type != 0 )
+            if (gbl.combat_type == gbl.combatType.duel)
 			{
 				longint_ptr = gbl.player_ptr.field_E5 * 100;
 			}
@@ -240,7 +240,7 @@ namespace engine
                 player = player.next_player;
             }
 
-            if( gbl.combat_type != 0 ||
+            if( gbl.combat_type == gbl.combatType.duel ||
                 ( gbl.area2_ptr.field_5CC != 0 && no_exp != 0 ) )
             {
                 gbl.byte_1B2F0 = 0;
@@ -249,7 +249,7 @@ namespace engine
             gbl.byte_1EE86 = 0;
             player = gbl.player_next_ptr;
 
-            if( gbl.combat_type == 0 ||
+            if (gbl.combat_type == gbl.combatType.normal ||
                 gbl.inDemo == false )
             {
                 while( player != null && player.actions.field_13 != 1 )
@@ -349,7 +349,7 @@ namespace engine
                             {
                                 gbl.player_ptr = player;
                                 player = player.next_player;
-                                ovr018.free_players( 1, 0 );
+                                ovr018.free_players(1, false);
                             }
                         }
                     }
@@ -364,7 +364,7 @@ namespace engine
                         if( player.actions.field_13 != 1 )
                         {
                             gbl.player_ptr = player;
-                            ovr018.free_players( 1, 0 );
+                            ovr018.free_players(1, false);
                         }
                         else
                         {
@@ -415,7 +415,7 @@ namespace engine
         }
 
 
-		internal static void sub_2DABC( int arg_0 )
+        internal static void displayCombatResults(int arg_0) /* sub_2DABC */
 		{
 			Item item_ptr;
 			bool var_10F;
@@ -425,7 +425,7 @@ namespace engine
 			seg037.draw8x8_01();
 
 			if( gbl.byte_1AB14 != 0 ||
-				gbl.combat_type != 0 )
+                gbl.combat_type == gbl.combatType.duel)
 			{
 				if( gbl.party_fled == true )
 				{
@@ -448,7 +448,7 @@ namespace engine
 				}
 				else
 				{
-					if( ( gbl.combat_type != 0 && gbl.byte_1EE86 == 0 ) ||
+                    if ((gbl.combat_type == gbl.combatType.duel && gbl.byte_1EE86 == 0) ||
 						( gbl.byte_1EE86 != 0 && gbl.area2_ptr.field_5CC != 0 ) )
 					{
 						gbl.area2_ptr.field_58E = 0x80;
@@ -458,7 +458,7 @@ namespace engine
 					}
 					else
 					{
-						if( gbl.combat_type != 0 )
+						if( gbl.combat_type == gbl.combatType.duel )
 						{
 							seg041.displayString( "You have won the duel.", 0, 10, 3, 1 );
 						}
@@ -476,7 +476,7 @@ namespace engine
 
 			seg051.Str( 10, out var_B, 0, arg_0 );
 
-			if( gbl.combat_type != 0 )
+            if (gbl.combat_type == gbl.combatType.duel)
 			{
 
 				var_10B = "The duelist receives " + var_B;
@@ -652,7 +652,7 @@ namespace engine
         }
 
 
-        internal static void sub_2E0C3( )
+        internal static void distributeCombatTreasure() /* sub_2E0C3 */
         {
             string var_11A;
             byte var_10C;
@@ -805,16 +805,10 @@ namespace engine
 
                     var_6 = player.next_player;
 
-                    gbl.player_ptr = player; 
+                    gbl.player_ptr = player;
 
-                    if( player.actions.field_13 == 1 )
-                    {
-                        ovr018.free_players( 1, 1 );
-                    }
-                    else
-                    {
-                        ovr018.free_players( 1, 0 );
-                    }
+                    ovr018.free_players(1, (player.actions.field_13 == 1));
+
                     player = var_6;
                 }
                 else
@@ -832,81 +826,67 @@ namespace engine
         }
 
 
-        internal static void sub_2E50E( )
+        internal static void distributeNpcTreasure() /*sub_2E50E*/
         {
-            string var_115;
-            bool var_14;
-            byte var_13;
-            byte var_9;
-            byte var_8;
-            byte var_6;
-            byte var_5;
-            Player var_4;
+            bool treasureTaken = false;
 
-            var_13 = 0;
-
-			var_4 = gbl.player_next_ptr;
-            var_5 = 0;
-            var_6 = 0;
+            Player player = gbl.player_next_ptr;
+            int npcParts = 0;
+            int totalParts = 0;
  
-			while( var_4 != null )
+			while( player != null )
 			{
-				if( var_4.field_F7 > 0x7f &&
-					var_4.health_status == Status.okey )
+				if( player.field_F7 > 0x7f &&
+					player.health_status == Status.okey )
 				{
-					var_5 += (byte)(var_4.field_F8 & 7);
-					var_6 += (byte)(var_4.field_F8 & 7);
+					npcParts += (byte)(player.field_F8 & 7);
+					totalParts += (byte)(player.field_F8 & 7);
 				}
 				else
 				{
-					var_6++;
+					totalParts++;
 				}
 
-				var_4 = var_4.next_player;
+				player = player.next_player;
 			}
 
-            if( var_5 > 0 )
+            if( npcParts > 0 )
             {
-                for( var_9 = 0; var_9 <= 6; var_9++ )
+                for( int i = 0; i <= 6; i++ )
                 {
-                    if( gbl.pooled_money[var_9] > 0 )
+                    if( gbl.pooled_money[i] > 0 )
                     {
-                        gbl.pooled_money[var_9] -= (gbl.pooled_money[var_9] / var_6) * var_5;
+                        gbl.pooled_money[i] -= (gbl.pooled_money[i] / totalParts) * npcParts;
 
-                        var_13 = 1;
+                        treasureTaken = true;
                     }
                 }
             }
 
-            if( var_13 != 0 )
+            if( treasureTaken )
             {
                 seg037.draw8x8_01();
-                var_4 = gbl.player_next_ptr;
-                var_8 = 0;
+                player = gbl.player_next_ptr;
+                int yCol = 0;
 
-                while( var_4 != null )
+                while( player != null )
                 {
-                    if( var_4.field_F7 > 0x7f &&
-                        var_4.health_status == Status.okey &&
-                        var_4.field_F8 > 0 )
+                    if( player.field_F7 > 0x7f &&
+                        player.health_status == Status.okey &&
+                        player.field_F8 > 0 )
                     {
-                        if( var_4.sex == 0 )
-                        {
-                            var_115 = var_4.name + " takes and hides " + "his" + " share.";
-                        }
-                        else
-                        {
-                            var_115 = var_4.name + " takes and hides " + "her" + " share.";
-                        }
-                        seg041.press_any_key( var_115, true, 0, 10, 0x16, 0x22, (byte)(var_8+5), 5 );
+                        string output = player.name + " takes and hides " + ((player.sex == 0) ? "his" : "her") + " share.";
 
-                        var_8 += 2;
+                        seg041.press_any_key(output, true, 0, 10, 0x16, 0x22, (byte)(yCol + 5), 5);
+
+                        yCol += 2;
                     }
 
-                    var_4 = var_4.next_player;
+                    player = player.next_player;
                 }
 
-                ovr027.displayInput( out var_14, 0, 1, 15, 15, 15, "press <enter>/<return> to continue", string.Empty );
+                bool tmpBool;
+                ovr027.displayInput( out tmpBool, 0, 1, 15, 15, 15, "press <enter>/<return> to continue", string.Empty );
             }
         }
 
@@ -940,7 +920,7 @@ namespace engine
                 }
 
                 if( gbl.byte_1B2F0 == 0 ||
-                    gbl.combat_type == 0 )
+                    gbl.combat_type == gbl.combatType.normal )
                 {
                     if( gbl.party_fled == true )
                     {
@@ -960,9 +940,9 @@ namespace engine
 
                     if(gbl.inDemo == false )
                     {
-                        sub_2E50E();
-                        sub_2DABC( gbl.exp_to_add );
-                        sub_2E0C3();
+                        distributeNpcTreasure(); //TODO: NPC takes share
+                        displayCombatResults( gbl.exp_to_add ); 
+                        distributeCombatTreasure();
                     }
  
                     item = gbl.item_pointer;

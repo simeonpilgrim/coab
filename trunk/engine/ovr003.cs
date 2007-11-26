@@ -217,7 +217,7 @@ namespace engine
                 {
                     gbl.byte_1AB0A = 0;
                 }
-                ovr018.free_players(1, 0);
+                ovr018.free_players(1, false);
 
                 ovr025.Player_Summary(gbl.player_ptr);
                 gbl.byte_1EE7C = 0;
@@ -1155,7 +1155,7 @@ namespace engine
             gbl.ecl_offset++;
 
             if (gbl.byte_1EE93 == 0 &&
-                gbl.combat_type == 0)
+                gbl.combat_type == gbl.combatType.normal)
             {
                 if (gbl.area2_ptr.field_6D8 == 1)
                 {
@@ -1342,9 +1342,9 @@ namespace engine
                     }
                 }
 
-                if (gbl.combat_type != 0)
+                if (gbl.combat_type == gbl.combatType.duel)
                 {
-                    gbl.combat_type = 0;
+                    gbl.combat_type = gbl.combatType.normal;
                 }
             }
 
@@ -2512,7 +2512,7 @@ namespace engine
         {
             gbl.ecl_offset++;
 
-            ovr018.free_players(1, 0);
+            ovr018.free_players(1, false);
 
             gbl.player_ptr2 = gbl.player_ptr;
 
@@ -2795,7 +2795,7 @@ namespace engine
             {
                 do
                 {
-                    ovr018.free_players(1, 1);
+                    ovr018.free_players(1, true);
                 } while (gbl.player_next_ptr != null);
             }
             else

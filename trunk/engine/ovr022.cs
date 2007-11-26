@@ -221,56 +221,54 @@ namespace engine
         }
 
 
-        internal static byte sub_595FF()
+        internal static int GetPartyCount() /* sub_595FF */
         {
-            byte var_6;
-            Player var_5;
+            int count;
+            Player player;
 
-            var_5 = gbl.player_next_ptr;
-            var_6 = 0;
+            player = gbl.player_next_ptr;
+            count = 0;
 
-            while (var_5 != null)
+            while (player != null)
             {
-                if (var_5.field_F7 == 0 ||
-                    var_5.field_F7 == 0xB3)
+                if (player.field_F7 == 0 ||
+                    player.field_F7 == 0xB3)
                 {
-                    var_6++;
+                    count++;
                 }
 
-                var_5 = var_5.next_player;
+                player = player.next_player;
             }
 
-            return var_6;
+            return count;
         }
 
 
         internal static void share_pooled()
         {
-            byte var_29;
-            short[] var_28;
-            short[] var_1A;
+            short[] money_remander;
+            short[] money_each;
             short var_C;
-            byte var_9;
             Player var_4;
 
 
             var_4 = gbl.player_next_ptr;
-            var_9 = sub_595FF();
+            int partySize = GetPartyCount();
 
-            var_1A = new short[7];
-            var_28 = new short[7];
+            money_each = new short[7];
+            money_remander = new short[7];
 
-            for (var_29 = 0; var_29 <= 6; var_29++)
+            for (int var_29 = 0; var_29 <= 6; var_29++)
             {
                 if (gbl.pooled_money[var_29] > 0)
                 {
-                    var_1A[var_29] = (short)(gbl.pooled_money[var_29] / var_9);
-                    var_28[var_29] = (short)(gbl.pooled_money[var_29] % var_9);
+                    money_each[var_29] = (short)(gbl.pooled_money[var_29] / partySize);
+                    money_remander[var_29] = (short)(gbl.pooled_money[var_29] % partySize);
                 }
                 else
                 {
-                    var_1A[var_29] = 0;
-                    var_28[var_29] = 0;
+                    money_each[var_29] = 0;
+                    money_remander[var_29] = 0;
                 }
             }
 
@@ -278,28 +276,28 @@ namespace engine
             {
                 if (var_4.field_F7 < 0x80)
                 {
-                    for (var_29 = 6; var_29 >= 0; var_29--)
+                    for (int var_29 = 6; var_29 >= 0; var_29--)
                     {
-                        if (willOverload(out var_C, var_1A[var_29], var_4) == false)
+                        if (willOverload(out var_C, money_each[var_29], var_4) == false)
                         {
-                            var_4.Money[var_29] += var_1A[var_29];
+                            var_4.Money[var_29] += money_each[var_29];
 
-                            add_weight(var_1A[var_29], var_4);
+                            add_weight(money_each[var_29], var_4);
 
-                            if (var_28[var_29] > 0 &&
+                            if (money_remander[var_29] > 0 &&
                                 willOverload(out var_C, 1, var_4) == false)
                             {
                                 var_4.Money[var_29] += 1;
 
                                 add_weight(1, var_4);
-                                var_28[var_29] -= 1;
+                                money_remander[var_29] -= 1;
                             }
                         }
                         else
                         {
                             var_4.Money[var_29] += var_C;
 
-                            var_28[var_29] += (short)(var_1A[var_29] - var_C);
+                            money_remander[var_29] += (short)(money_each[var_29] - var_C);
 
                             add_weight(var_C, var_4);
                         }
@@ -309,107 +307,41 @@ namespace engine
                 var_4 = var_4.next_player;
             }
 
-            var_29 = 6;
-            throw new System.NotSupportedException();//jmp	short loc_598AF
-            throw new System.NotSupportedException();//loc_598AC:
-            throw new System.NotSupportedException();//dec	[bp+var_29]
-            throw new System.NotSupportedException();//loc_598AF:
-            throw new System.NotSupportedException();//mov	al, [bp+var_29]
-            throw new System.NotSupportedException();//cbw
-            throw new System.NotSupportedException();//mov	di, ax
-            throw new System.NotSupportedException();//shl	di, 1
-            throw new System.NotSupportedException();//cmp	[bp+di+var_28],	0
-            throw new System.NotSupportedException();//ja	loc_598C0
-            throw new System.NotSupportedException();//jmp	loc_599BC
-            throw new System.NotSupportedException();//loc_598C0:
-            var_4 = gbl.player_next_ptr;
-            throw new System.NotSupportedException();//loc_598CD:
-            throw new System.NotSupportedException();//mov	ax, short ptr [bp+var_4]
-            throw new System.NotSupportedException();//or	ax, short ptr [bp+var_4+2]
-            throw new System.NotSupportedException();//jnz	loc_598D8
-            throw new System.NotSupportedException();//jmp	loc_599BC
-            throw new System.NotSupportedException();//loc_598D8:
-            var_C = (short)(get_max_load(var_4) - var_4.weight);
+            for (int var_29 = 6; var_29 >= 0; var_29--)
+            {
+                if (money_remander[var_29] > 0)
+                {
+                    var_4 = gbl.player_next_ptr;
+                    while (var_4 != null)
+                    {
+                        var_C = (short)(get_max_load(var_4) - var_4.weight);
 
-            throw new System.NotSupportedException();//cmp	[bp+var_C], 0
-            throw new System.NotSupportedException();//ja	loc_598F6
-            throw new System.NotSupportedException();//jmp	loc_599A6
-            throw new System.NotSupportedException();//loc_598F6:
-            throw new System.NotSupportedException();//mov	al, [bp+var_29]
-            throw new System.NotSupportedException();//cbw
-            throw new System.NotSupportedException();//mov	di, ax
-            throw new System.NotSupportedException();//shl	di, 1
-            throw new System.NotSupportedException();//mov	ax, [bp+di+var_28]
-            throw new System.NotSupportedException();//cmp	ax, [bp+var_C]
-            throw new System.NotSupportedException();//jbe	loc_59955
-            throw new System.NotSupportedException();//mov	al, [bp+var_29]
-            throw new System.NotSupportedException();//cbw
-            throw new System.NotSupportedException();//shl	ax, 1
-            throw new System.NotSupportedException();//les	di, [bp+var_4]
-            throw new System.NotSupportedException();//add	di, ax
-            throw new System.NotSupportedException();//mov	ax, es:[di+0FBh]
-            throw new System.NotSupportedException();//add	ax, [bp+var_C]
-            throw new System.NotSupportedException();//mov	dx, ax
-            throw new System.NotSupportedException();//mov	al, [bp+var_29]
-            throw new System.NotSupportedException();//cbw
-            throw new System.NotSupportedException();//shl	ax, 1
-            throw new System.NotSupportedException();//les	di, [bp+var_4]
-            throw new System.NotSupportedException();//add	di, ax
-            throw new System.NotSupportedException();//mov	es:[di+0FBh], dx
-            add_weight(var_C, var_4);
-            throw new System.NotSupportedException();//mov	al, [bp+var_29]
-            throw new System.NotSupportedException();//cbw
-            throw new System.NotSupportedException();//mov	di, ax
-            throw new System.NotSupportedException();//shl	di, 1
-            throw new System.NotSupportedException();//mov	ax, [bp+di+var_28]
-            throw new System.NotSupportedException();//sub	ax, [bp+var_C]
-            throw new System.NotSupportedException();//mov	dx, ax
-            throw new System.NotSupportedException();//mov	al, [bp+var_29]
-            throw new System.NotSupportedException();//cbw
-            throw new System.NotSupportedException();//mov	di, ax
-            throw new System.NotSupportedException();//shl	di, 1
-            throw new System.NotSupportedException();//mov	[bp+di+var_28],	dx
-            throw new System.NotSupportedException();//jmp	short loc_599A6
-            throw new System.NotSupportedException();//loc_59955:
-            throw new System.NotSupportedException();//mov	al, [bp+var_29]
-            throw new System.NotSupportedException();//cbw
-            throw new System.NotSupportedException();//mov	di, ax
-            throw new System.NotSupportedException();//shl	di, 1
-            throw new System.NotSupportedException();//mov	dx, [bp+di+var_28]
-            throw new System.NotSupportedException();//mov	al, [bp+var_29]
-            throw new System.NotSupportedException();//cbw
-            throw new System.NotSupportedException();//shl	ax, 1
-            throw new System.NotSupportedException();//les	di, [bp+var_4]
-            throw new System.NotSupportedException();//add	di, ax
-            throw new System.NotSupportedException();//mov	ax, es:[di+0FBh]
-            throw new System.NotSupportedException();//add	ax, dx
-            throw new System.NotSupportedException();//mov	dx, ax
-            throw new System.NotSupportedException();//mov	al, [bp+var_29]
-            throw new System.NotSupportedException();//cbw
-            throw new System.NotSupportedException();//shl	ax, 1
-            throw new System.NotSupportedException();//les	di, [bp+var_4]
-            throw new System.NotSupportedException();//add	di, ax
-            throw new System.NotSupportedException();//mov	es:[di+0FBh], dx
-            add_weight(var_28[var_29], var_4);
-            throw new System.NotSupportedException();//mov	al, [bp+var_29]
-            throw new System.NotSupportedException();//cbw
-            throw new System.NotSupportedException();//mov	di, ax
-            throw new System.NotSupportedException();//shl	di, 1
-            throw new System.NotSupportedException();//xor	ax, ax
-            throw new System.NotSupportedException();//mov	[bp+di+var_28],	ax
-            throw new System.NotSupportedException();//loc_599A6:
-            var_4 = var_4.next_player;
-            throw new System.NotSupportedException();//jmp	loc_598CD
-            throw new System.NotSupportedException();//loc_599BC:
-            throw new System.NotSupportedException();//cmp	[bp+var_29], 0
-            throw new System.NotSupportedException();//jz	loc_599C5
-            throw new System.NotSupportedException();//jmp	loc_598AC
-            throw new System.NotSupportedException();//loc_599C5:
+                        if (var_C > 0)
+                        {
+                            if (money_remander[var_29] > var_C)
+                            {
+                                var_4.Money[var_29] += var_C;
+                                add_weight(var_C, var_4);
+                                money_remander[var_29] -= var_C;
+                            }
+                            else
+                            {
+                                var_4.Money[var_29] += money_remander[var_29];
+                                add_weight(money_remander[var_29], var_4);
+                                money_remander[var_29] = 0;
+                            }
+                        }
+
+                        var_4 = var_4.next_player;
+                    }
+                }
+            }
+
             gbl.something01 = false;
 
-            for (var_29 = 0; var_29 <= 6; var_29++)
+            for (int var_29 = 0; var_29 <= 6; var_29++)
             {
-                gbl.pooled_money[var_29] = var_28[var_29];
+                gbl.pooled_money[var_29] = money_remander[var_29];
 
                 if (gbl.pooled_money[var_29] != 0)
                 {

@@ -1762,7 +1762,7 @@ namespace engine
         }
 
 
-        internal static byte near_enermy(byte arg_0, Player player)
+        internal static byte near_enemy(byte arg_0, Player player) /*near_enermy*/
         {
             byte var_5;
             byte var_4;

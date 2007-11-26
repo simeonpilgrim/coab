@@ -1451,7 +1451,7 @@ namespace engine
             Player DuelMaster;
             Player playerC;
 
-            gbl.combat_type = 1;
+            gbl.combat_type = gbl.combatType.duel;
 
             gbl.area2_ptr.field_5CC = arg_0;
             playerA = gbl.player_ptr;

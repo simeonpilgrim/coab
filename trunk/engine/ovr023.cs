@@ -984,7 +984,7 @@ namespace engine
 
                             ovr024.work_on_00(var_2F, 11);
 
-                            if (ovr024.sub_64245(var_2F.ac, var_2F, gbl.player_ptr) == 0)
+                            if (ovr024.sub_64245(var_2F.ac, var_2F, gbl.player_ptr) == false)
                             {
                                 arg_6 = 0;
                                 var_30 = true;
@@ -1519,8 +1519,8 @@ namespace engine
             {
                 if (gbl.sp_target[var_2A].combat_team != arg_4 ||
                     (gbl.byte_1D2C1 == 1 && gbl.game_state == 5 &&
-                     ovr025.near_enermy(1, gbl.sp_target[var_2A]) > 0))
-                    ovr025.near_enermy(1, gbl.sp_target[var_2A]);
+                     ovr025.near_enemy(1, gbl.sp_target[var_2A]) > 0))
+                    ovr025.near_enemy(1, gbl.sp_target[var_2A]);
                 {
                     gbl.sp_target[var_2A] = null;
                 }

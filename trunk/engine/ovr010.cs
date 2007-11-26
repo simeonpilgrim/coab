@@ -184,7 +184,7 @@ namespace engine
                 throw new System.NotSupportedException();//jmp	loc_354A1
                 throw new System.NotSupportedException();//loc_3540B:
 
-                var_6 = ovr025.near_enermy(ovr023.sub_5CDE5(arg_2), arg_4);
+                var_6 = ovr025.near_enemy(ovr023.sub_5CDE5(arg_2), arg_4);
 
                 if (var_6 > 0)
                 {
@@ -456,7 +456,7 @@ namespace engine
                     player.actions.delay > 0)
                 {
                     if (player.field_F7 < 0x80 ||
-                       (player.field_F7 > 0x7F && gbl.byte_1D903 <= (ovr024.roll_dice(100, 1) + gbl.byte_1D2CC)) ||
+                       (player.field_F7 > 0x7F && gbl.enemyHealthPercentage <= (ovr024.roll_dice(100, 1) + gbl.byte_1D2CC)) ||
                         player.combat_team == 1)
                     {
                         if (player.actions.field_14 != 0 ||
@@ -688,7 +688,7 @@ namespace engine
 
                     if (gbl.byte_1D90E == false)
                     {
-                        var_7 = ovr025.near_enermy(var_4, player);
+                        var_7 = ovr025.near_enemy(var_4, player);
 
                         if (var_7 == 0)
                         {
@@ -709,7 +709,7 @@ namespace engine
 
                             if (ovr025.offset_above_1(player) == true &&
                                 ovr025.offset_equals_20(player) == false &&
-                                ovr025.near_enermy(1, player) > 0)
+                                ovr025.near_enemy(1, player) > 0)
                             {
                                 sub_36673(player);
                                 var_2 = true;
@@ -887,7 +887,7 @@ namespace engine
                     gbl.byte_1D2CC == 0)
                 {
                     var_3 = gbl.byte_1D2CC;
-                    gbl.byte_1D2CC = gbl.byte_1D903;
+                    gbl.byte_1D2CC = gbl.enemyHealthPercentage;
 
                     ovr024.work_on_00(player, 17);
 
@@ -1123,7 +1123,7 @@ namespace engine
             if (var_4 != null &&
                 var_15 > (var_16 >> 1) &&
                 var_1F != 0 &&
-                (var_1E != 0 || ovr025.near_enermy(1, arg_0) == 0))
+                (var_1E != 0 || ovr025.near_enemy(1, arg_0) == 0))
             {
                 var_10 = var_4;
             }

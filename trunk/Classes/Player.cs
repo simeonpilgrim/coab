@@ -588,7 +588,7 @@ namespace Classes
         [DataOffset(0x196, DataType.Bool)]
         public bool in_combat; // 0x196
         [DataOffset(0x197, DataType.SByte)]
-        public sbyte combat_team; // 0x197 0 - our team, 1 - enermy
+        public sbyte combat_team; // 0x197 0 - our team, 1 - enemy
         [DataOffset(0x198, DataType.Byte)]
         public byte field_198; // 0x198 Auto fight. 1 yes, 0 no.
         [DataOffset(0x199, DataType.SByte)]

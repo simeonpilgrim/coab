@@ -241,7 +241,7 @@ namespace engine
             byte var_2;
             byte var_1;
 
-            var_1 = ovr025.near_enermy(1, arg_0);
+            var_1 = ovr025.near_enemy(1, arg_0);
             var_8 = var_1;
 
             for (var_2 = 1; var_2 <= var_8; var_2++)
@@ -361,7 +361,7 @@ namespace engine
             seg051.FillChar(0, 12 + 1, var_D);
 
             player_index = ovr033.get_player_index(player);
-            var_15 = ovr025.near_enermy(1, player);
+            var_15 = ovr025.near_enemy(1, player);
 
             if (var_15 != 0)
             {
@@ -373,7 +373,7 @@ namespace engine
                 gbl.stru_1C9CD[player_index].xPos += gbl.MapDirectionXDelta[arg_0];
                 gbl.stru_1C9CD[player_index].yPos += gbl.MapDirectionYDelta[arg_0];
 
-                var_16 = ovr025.near_enermy(1, player);
+                var_16 = ovr025.near_enemy(1, player);
 
                 gbl.stru_1C9CD[player_index].xPos -= gbl.MapDirectionXDelta[arg_0];
                 gbl.stru_1C9CD[player_index].yPos -= gbl.MapDirectionYDelta[arg_0];
@@ -481,7 +481,7 @@ namespace engine
 
             gets_away = false;
 
-            if (ovr025.near_enermy(0xff, player) == 0)
+            if (ovr025.near_enemy(0xff, player) == 0)
             {
                 gets_away = true;
             }
@@ -612,7 +612,7 @@ namespace engine
             {
                 if (ovr025.sub_68708(arg_0, arg_4) == 1)
                 {
-                    var_2 = ovr025.near_enermy(1, arg_4);
+                    var_2 = ovr025.near_enemy(1, arg_4);
                     var_3 = 0;
                     var_A = var_2;
 
@@ -822,7 +822,7 @@ namespace engine
 
             var_4 = 0x0D;
             output = null;
-            var_2 = ovr025.near_enermy(0xff, player);
+            var_2 = ovr025.near_enemy(0xff, player);
             var_1 = false;
 
             for (var_3 = 1; var_3 <= var_2; var_3++)
@@ -970,7 +970,7 @@ namespace engine
                                 throw new System.NotImplementedException();
                         }
 
-                        if (ovr024.sub_64245(var_14, arg_A, arg_E) != 0 ||
+                        if (ovr024.sub_64245(var_14, arg_A, arg_E) ||
                             ovr025.is_held(arg_A) == true)
                         {
                             switch (var_15)
@@ -1960,33 +1960,28 @@ namespace engine
 
         internal static void sub_40E00()
         {
-            Player var_8;
-            short var_4;
-            short var_2;
+            short maxTotal = 0;
+            short currentTotal = 0;
+            Player player = gbl.player_next_ptr;
 
-            var_2 = 0;
-            var_4 = 0;
-            var_8 = gbl.player_next_ptr;
-
-            while (var_8 != null)
+            while (player != null)
             {
-
-                if (var_8.combat_team == 1)
+                if (player.combat_team == 1)
                 {
-                    if (var_8.in_combat == true)
+                    if (player.in_combat == true)
                     {
-                        var_4 += var_8.hit_point_current;
+                        currentTotal += player.hit_point_current;
                     }
 
-                    var_2 += var_8.hit_point_max;
+                    maxTotal += player.hit_point_max;
                 }
 
-                var_8 = var_8.next_player;
+                player = player.next_player;
             }
 
-            if (var_2 > 0)
+            if (maxTotal > 0)
             {
-                gbl.byte_1D903 = (byte)(((20 * var_4) / var_2) * 5);
+                gbl.enemyHealthPercentage = (byte)(((20 * currentTotal) / maxTotal) * 5);
             }
         }
 
@@ -2103,7 +2098,7 @@ namespace engine
                     else
                     {
                         if (ovr025.sub_6906C(out var_2F, arg_C) == true &&
-                            (ovr025.near_enermy(1, arg_C) == 0 || ovr025.offset_equals_20(arg_C) == true))
+                            (ovr025.near_enemy(1, arg_C) == 0 || ovr025.offset_equals_20(arg_C) == true))
                         {
                             var_2A = "Target ";
                         }
@@ -2308,7 +2303,7 @@ namespace engine
                         }
                         else if (ovr025.offset_above_1(player01) == true &&
                              (ovr025.sub_6906C(out var_2E, player01) == true ||
-                             (ovr025.near_enermy(1, player01) >= 0 &&
+                             (ovr025.near_enemy(1, player01) >= 0 &&
                                 ovr025.offset_equals_20(player01) == false)))
                         {
                             var_39 = 0;
@@ -2649,7 +2644,7 @@ namespace engine
                 }
 
                 var_3 = 0x14;
-                var_2 = ovr025.near_enermy(arg_4, player);
+                var_2 = ovr025.near_enemy(arg_4, player);
 
                 while (var_3 > 0 && var_6 == false && var_2 > 0)
                 {

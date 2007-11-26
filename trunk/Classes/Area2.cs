@@ -222,6 +222,10 @@ namespace Classes
                     field_5C4 = (short)value;
                     break;
 
+                case 0x5cc:
+                    field_5CC = (short)value;
+                    break;
+
                 case 0x6d8:
                     field_6D8 = (short)value;
                     break;
