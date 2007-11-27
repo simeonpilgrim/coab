@@ -21,7 +21,6 @@ namespace engine
             byte var_6;
             sbyte var_5;
             sbyte var_4;
-            byte var_3;
             sbyte var_2;
             byte var_1;
 
@@ -48,7 +47,7 @@ namespace engine
                         case 0:
                             var_E.field_12D[0] += 1;
 
-                            for (var_3 = 2; var_3 <= var_2; var_3++)
+                            for (int var_3 = 2; var_3 <= var_2; var_3++)
                             {
                                 for (var_5 = 1; var_5 <= 5; var_5++)
                                 {
@@ -62,12 +61,12 @@ namespace engine
                             {
                                 var_12 = gbl.unk_19AEC[var_6];
 
-                                
-                                if( var_12.field_0 == 0 &&
-                                    var_E.field_12CArray[ var_12.field_1 ] > 0 &&
-                                    var_6 != 0x24 )
+
+                                if (var_12.field_0 == 0 &&
+                                    var_E.field_12CArray[var_12.field_1] > 0 &&
+                                    var_6 != 0x24)
                                 {
-                                    var_E.field_79[var_6-1] = 1;
+                                    var_E.field_79[var_6 - 1] = 1;
                                 }
                             }
                             break;
@@ -75,7 +74,7 @@ namespace engine
                         case 3:
                             if (var_2 > 8)
                             {
-                                for (var_3 = 9; var_3 <= var_2; var_3++)
+                                for (int var_3 = 9; var_3 <= var_2; var_3++)
                                 {
                                     for (var_5 = 1; var_5 <= 5; var_5++)
                                     {
@@ -115,7 +114,7 @@ namespace engine
                         case 4:
                             if (var_2 > 7)
                             {
-                                for (var_3 = 8; var_3 <= var_2; var_3++)
+                                for (int var_3 = 8; var_3 <= var_2; var_3++)
                                 {
                                     for (var_5 = 1; var_5 <= 3; )
                                     {
@@ -182,32 +181,17 @@ namespace engine
                         case 5:
                             var_E.field_12D[10] += 1;
 
-                            for (var_3 = 2; var_3 <= var_2; var_3++)
+                            for (int var_3 = 0; var_3 <= (var_2 - 2); var_3++)
                             {
-                                for (var_5 = 1; var_5 <= 5; var_5++)
-                                {
-                                    throw new System.NotSupportedException();//mov	al, [bp+var_5]
-                                    throw new System.NotSupportedException();//cbw
-                                    throw new System.NotSupportedException();//mov	dx, ax
-                                    throw new System.NotSupportedException();//mov	al, [bp+var_3]
-                                    throw new System.NotSupportedException();//cbw
-                                    throw new System.NotSupportedException();//mov	di, ax
-                                    throw new System.NotSupportedException();//mov	si, di
-                                    throw new System.NotSupportedException();//shl	di, 1
-                                    throw new System.NotSupportedException();//shl	di, 1
-                                    throw new System.NotSupportedException();//add	di, si
-                                    throw new System.NotSupportedException();//add	di, dx
-                                    throw new System.NotSupportedException();//mov	dl, [di+44ABh]
-                                    throw new System.NotSupportedException();//mov	al, [bp+var_5]
-                                    throw new System.NotSupportedException();//cbw
-                                    throw new System.NotSupportedException();//les	di, [bp+var_E]
-                                    throw new System.NotSupportedException();//add	di, ax
-                                    throw new System.NotSupportedException();//add	es:[di+136h], dl
-                                }
+                                /* unk_1A7C6 = seg600:44B6 */
+                                var_E.field_12D[10] += ovr020.unk_1A7C6[(var_3 * 5) + 0];
+                                var_E.field_12D[11] += ovr020.unk_1A7C6[(var_3 * 5) + 1];
+                                var_E.field_12D[12] += ovr020.unk_1A7C6[(var_3 * 5) + 2];
+                                var_E.field_12D[13] += ovr020.unk_1A7C6[(var_3 * 5) + 3];
+                                var_E.field_12D[14] += ovr020.unk_1A7C6[(var_3 * 5) + 4];
                             }
                             break;
                     }
-
                 }
             }
             var_A = var_E.itemsPtr;

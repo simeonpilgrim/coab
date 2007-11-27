@@ -475,7 +475,7 @@ namespace Classes
         [DataOffset(0x143, DataType.Byte)]
         public byte icon_id; // 0x143;
         [DataOffset(0x144, DataType.Byte)]
-        public byte field_144; // 0x144; 
+        public byte icon_size; // 0x144; field_144  1 small 2 normal
         [DataOffset(0x145, DataType.ByteArray,6)]
         public byte[] field_145 = new byte[6]; // 0x145 = field_144[1] // byte[6]
         [DataOffset(0x14b, DataType.Byte)]

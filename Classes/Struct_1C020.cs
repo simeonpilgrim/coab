@@ -9,8 +9,14 @@ namespace Classes
 	{
 		public byte field_0; //seg600:5D10 unk_1C020
 		public byte field_1; //seg600:5D11 unk_1C021
-        public byte field_2; //seg600:5D12 unk_1C022
-        public byte field_3; //seg600:5D13 unk_1C023
+        /// <summary>
+        /// field_2
+        /// </summary>
+        public byte diceCount; //seg600:5D12 unk_1C022
+        /// <summary>
+        /// field_3
+        /// </summary>
+        public byte diceSize; //seg600:5D13 unk_1C023
 		public sbyte field_4; //seg600:5D14
 		public byte field_5; //seg600:5D15
 		public byte field_6; //seg600:5D16 unk_1C026
@@ -32,8 +38,8 @@ namespace Classes
         {
             field_0 = data[offset + 0];
             field_1 = data[offset + 1];
-            field_2 = data[offset + 2];
-            field_3 = data[offset + 3];
+            diceCount = data[offset + 2];
+            diceSize = data[offset + 3];
             field_4 = (sbyte)data[offset + 4];
             field_5 = data[offset + 5];
             field_6 = data[offset + 6];

@@ -6,9 +6,8 @@ namespace engine
     {
         internal static short get_max_load(Player player)
         {
-            short ret_word;
-
-            ret_word = (short)(ovr025.strength_bonus(player) + 1500);
+            short ret_word = 1500;
+            ret_word += ovr025.strEncumberance(player);
 
             return ret_word;
         }

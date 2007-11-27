@@ -573,19 +573,19 @@ namespace engine
             switch (var_53.race)
             {
                 case Race.halfling:
-                    var_53.field_144 = 1;
+                    var_53.icon_size = 1;
                     ovr024.add_affect(false, 0xff, 0, Affects.affect_61, player);
                     break;
 
                 case Race.dwarf:
-                    var_53.field_144 = 1;
+                    var_53.icon_size = 1;
                     ovr024.add_affect(false, 0xff, 0, Affects.affect_61, player);
                     ovr024.add_affect(false, 0xff, 0, Affects.affect_1a, player);
                     ovr024.add_affect(false, 0xff, 0, Affects.affect_2f, player);
                     break;
 
                 case Race.gnome:
-                    var_53.field_144 = 1;
+                    var_53.icon_size = 1;
                     ovr024.add_affect(false, 0xff, 0, Affects.affect_61, player);
                     ovr024.add_affect(false, 0xff, 0, Affects.affect_12, player);
                     ovr024.add_affect(false, 0xff, 0, Affects.affect_2f, player);
@@ -593,18 +593,18 @@ namespace engine
                     break;
 
                 case Race.elf:
-                    var_53.field_144 = 2;
+                    var_53.icon_size = 2;
                     ovr024.add_affect(false, 0xff, 0, Affects.affect_6b, player);
 
                     break;
 
                 case Race.half_elf:
-                    var_53.field_144 = 2;
+                    var_53.icon_size = 2;
                     ovr024.add_affect(false, 0xff, 0, Affects.affect_7c, player);
                     break;
 
                 default:
-                    var_53.field_144 = 2;
+                    var_53.icon_size = 2;
                     break;
             }
 
@@ -2037,7 +2037,7 @@ namespace engine
                             gbl.area2_ptr.field_67C = 0;
                             ovr017.sub_4A60A(player_ptr1);
 
-                            ovr017.sub_47A90(1);
+                            ovr017.LoadPlayerCombatIcon(true);
                         }
                         else
                         {
@@ -2079,7 +2079,7 @@ namespace engine
                                 (((player_ptr1.alignment + 1) % 3) != 0 || var_21 == 0))
                             {
                                 ovr017.sub_4A60A(player_ptr1);
-                                ovr017.sub_47A90(1);
+                                ovr017.LoadPlayerCombatIcon(true);
 
                                 if (player_ptr1.field_F7 < 0x80)
                                 {
@@ -2178,54 +2178,51 @@ namespace engine
         }
 
 
-        internal static void sub_4FB7C(sbyte arg_2, sbyte arg_4)
+        internal static void drawIconEditorIcons(sbyte titleY, sbyte titleX) /* sub_4FB7C */
         {
-            seg040.DrawColorBlock( 0, 24, 12, (short)(arg_2 * 24), (short)(arg_4 * 3));
+            seg040.DrawColorBlock( 0, 24, 12, titleY * 24, titleX * 3);
 
-            ovr034.draw_combat_icon(25, 0, 0, arg_2, arg_4);
-            ovr034.draw_combat_icon(25, 1, 0, arg_2, arg_4 + 3);
+            ovr034.draw_combat_icon(25, 0, 0, titleY, titleX);
+            ovr034.draw_combat_icon(25, 1, 0, titleY, titleX + 3);
 
-            ovr034.draw_combat_icon(12, 0, 0, arg_2, arg_4);
-            ovr034.draw_combat_icon(12, 1, 0, arg_2, arg_4 + 3);
+            ovr034.draw_combat_icon(12, 0, 0, titleY, titleX);
+            ovr034.draw_combat_icon(12, 1, 0, titleY, titleX + 3);
 
             seg040.DrawOverlay();
         }
 
 
-        internal static void sub_4FC5B(byte arg_2, byte arg_4, byte arg_6)
+        internal static void duplicateCombatIcon(bool recolour, byte destIndex, byte sourceIndex) /* sub_4FC5B */
         {
-            Player var_28;
-            short bitPerPixel;
             byte[] newColors = new byte[16];
             byte[] oldColors = new byte[16];
-            byte var_1;
 
-            bitPerPixel = gbl.combat_icons[arg_4, 0].bpp;
+            short bitPerPixel = gbl.combat_icons[destIndex, 0].bpp;
 
-            System.Array.Copy(gbl.combat_icons[arg_6, 0].data, gbl.combat_icons[arg_4, 0].data, gbl.combat_icons[arg_6, 0].data.Length);
-            System.Array.Copy(gbl.combat_icons[arg_6, 1].data, gbl.combat_icons[arg_4, 1].data, gbl.combat_icons[arg_6, 1].data.Length);
+            System.Array.Copy(gbl.combat_icons[sourceIndex, 0].data, gbl.combat_icons[destIndex, 0].data, gbl.combat_icons[sourceIndex, 0].data.Length);
+            System.Array.Copy(gbl.combat_icons[sourceIndex, 1].data, gbl.combat_icons[destIndex, 1].data, gbl.combat_icons[sourceIndex, 1].data.Length);
 
-            System.Array.Copy(gbl.combat_icons[arg_6, 0].data_ptr, gbl.combat_icons[arg_4, 0].data_ptr, gbl.combat_icons[arg_6, 0].data_ptr.Length);
-            System.Array.Copy(gbl.combat_icons[arg_6, 1].data_ptr, gbl.combat_icons[arg_4, 1].data_ptr, gbl.combat_icons[arg_6, 1].data_ptr.Length);
+            System.Array.Copy(gbl.combat_icons[sourceIndex, 0].data_ptr, gbl.combat_icons[destIndex, 0].data_ptr, gbl.combat_icons[sourceIndex, 0].data_ptr.Length);
+            System.Array.Copy(gbl.combat_icons[sourceIndex, 1].data_ptr, gbl.combat_icons[destIndex, 1].data_ptr, gbl.combat_icons[sourceIndex, 1].data_ptr.Length);
 
-            if (arg_2 != 0)
+            if (recolour)
             {
-                var_28 = gbl.player_ptr;
+                Player var_28 = gbl.player_ptr;
 
-                for (var_1 = 0; var_1 < 16; var_1++)
+                for (byte i = 0; i < 16; i++)
                 {
-                    oldColors[var_1] = var_1;
-                    newColors[var_1] = var_1;
+                    oldColors[i] = i;
+                    newColors[i] = i;
                 }
 
-                for (var_1 = 0; var_1 < 6; var_1++)
+                for (byte i = 0; i < 6; i++)
                 {
-                    newColors[gbl.unk_1A1D3[var_1]] = (byte)(var_28.field_145[var_1] & 0x0F);
-                    newColors[gbl.unk_1A1D3[var_1] + 8] = (byte)((var_28.field_145[var_1] & 0xF0) >> 4);
+                    newColors[gbl.unk_1A1D3[i]] = (byte)(var_28.field_145[i] & 0x0F);
+                    newColors[gbl.unk_1A1D3[i] + 8] = (byte)((var_28.field_145[i] & 0xF0) >> 4);
                 }
 
-                seg040.DaxBlockRecolor(gbl.combat_icons[arg_4, 0], 0, 0, newColors, oldColors);
-                seg040.DaxBlockRecolor(gbl.combat_icons[arg_4, 1], 0, 0, newColors, oldColors);
+                seg040.DaxBlockRecolor(gbl.combat_icons[destIndex, 0], 0, 0, newColors, oldColors);
+                seg040.DaxBlockRecolor(gbl.combat_icons[destIndex, 1], 0, 0, newColors, oldColors);
             }
         }
 
@@ -2263,7 +2260,7 @@ namespace engine
 
             do
             {
-                ovr017.sub_47A90(0);
+                ovr017.LoadPlayerCombatIcon(false);
 
                 player_ptr = gbl.player_ptr;
 
@@ -2273,14 +2270,14 @@ namespace engine
 
                 var_7 = player_ptr.icon_id;
                 player_ptr.icon_id = 0x0C;
-                ovr017.sub_47A90(0);
+                ovr017.LoadPlayerCombatIcon(false);
                 player_ptr.icon_id = var_7;
                 var_4 = player_ptr.field_141;
                 var_5 = player_ptr.field_142;
-                var_6 = player_ptr.field_144;
+                var_6 = player_ptr.icon_size;
 
-                sub_4FC5B(1, 12, player_ptr.icon_id);
-                sub_4FB7C(2, 1);
+                duplicateCombatIcon(true, 12, player_ptr.icon_id);
+                drawIconEditorIcons(2, 1);
 
                 seg041.displayString("old", 0, 15, 6, 8);
                 seg041.displayString("ready   action", 0, 15, 10, 3);
@@ -2290,11 +2287,11 @@ namespace engine
                 do
                 {
 
-                    sub_4FB7C(4, 1);
+                    drawIconEditorIcons(4, 1);
 
                     if (var_8 == 4)
                     {
-                        if (player_ptr.field_144 == 2)
+                        if (player_ptr.icon_size == 2)
                         {
                             var_E = "Small" + iconStrings[var_8];
                         }
@@ -2413,17 +2410,17 @@ namespace engine
                                 switch (var_2)
                                 {
                                     case 'L':
-                                        player_ptr.field_144 = 2;
-                                        ovr017.sub_47A90(0);
+                                        player_ptr.icon_size = 2;
+                                        ovr017.LoadPlayerCombatIcon(false);
                                         break;
 
                                     case 'S':
-                                        player_ptr.field_144 = 1;
-                                        ovr017.sub_47A90(0);
+                                        player_ptr.icon_size = 1;
+                                        ovr017.LoadPlayerCombatIcon(false);
                                         break;
 
                                     case 'K':
-                                        var_6 = player_ptr.field_144;
+                                        var_6 = player_ptr.icon_size;
                                         var_8 = 1;
                                         var_2 = ' ';
                                         break;
@@ -2432,13 +2429,13 @@ namespace engine
                                         goto case '\0';
 
                                     case '\0':
-                                        player_ptr.field_144 = var_6;
+                                        player_ptr.icon_size = var_6;
                                         var_8 = 1;
                                         var_2 = ' ';
                                         break;
                                 }
 
-                                ovr017.sub_47A90(0);
+                                ovr017.LoadPlayerCombatIcon(false);
                                 break;
 
                             case 5:
@@ -2483,7 +2480,7 @@ namespace engine
                                             var_2 = ' ';
                                         }
 
-                                        ovr017.sub_47A90(0);
+                                        ovr017.LoadPlayerCombatIcon(false);
                                     }
                                     else if (var_1B == 0x57)
                                     {
@@ -2523,7 +2520,7 @@ namespace engine
                                             var_2 = ' ';
                                         }
 
-                                        ovr017.sub_47A90(0);
+                                        ovr017.LoadPlayerCombatIcon(false);
                                     }
                                 }
                                 else if (var_1A == 3)
@@ -2574,16 +2571,16 @@ namespace engine
                         }
                     }
 
-                    sub_4FC5B(1, 12, player_ptr.icon_id);
+                    duplicateCombatIcon(true, 12, player_ptr.icon_id);
 
                 } while (var_1A != 0 || unk_4FE94.MemberOf(var_2) == false);
 
                 player_ptr.field_141 = var_4;
                 player_ptr.field_142 = var_5;
-                player_ptr.field_144 = var_6;
+                player_ptr.icon_size = var_6;
                 player_ptr.field_145 = var_15;
-                sub_4FC5B(1, 12, player_ptr.icon_id);
-                sub_4FC5B(0, player_ptr.icon_id, 12);
+                duplicateCombatIcon(true, 12, player_ptr.icon_id);
+                duplicateCombatIcon(false, player_ptr.icon_id, 12);
 
                 ovr027.redraw_screen();
                 ovr034.free_icon(12);
