@@ -481,10 +481,10 @@ namespace engine
             seg041.displayString(var_4.affect_3.ToString(), 0, 10, 13, 0x14);
             
             seg041.displayString("dice large:   ", 0, 10, 14, 1);
-            seg041.displayString(gbl.unk_1C020[var_4.type].field_2.ToString(), 0, 10, 14, 0x14);
+            seg041.displayString(gbl.unk_1C020[var_4.type].diceCount.ToString(), 0, 10, 14, 0x14);
             
             seg041.displayString("sides large:  ", 0, 10, 15, 1);
-            seg041.displayString(gbl.unk_1C020[var_4.type].field_3.ToString(), 0, 10, 15, 0x14);
+            seg041.displayString(gbl.unk_1C020[var_4.type].diceSize.ToString(), 0, 10, 15, 0x14);
 
             seg041.displayAndDebug("press a key", 0, 10);
         }
@@ -696,19 +696,25 @@ namespace engine
             }
         }
 
-        /*seg600:44B5*/
-        static byte[] unk_1A7C5 = { 0xFF,
-1 ,  0 , 0 , 0, 0, 
-0 , 1, 0 , 0 , 0 ,
-1 , 1 , 0 , 0 ,0 ,  
-1 , 0 , 1 , 0 , 0 , 0, 0, 1 ,  0 , 0 ,  0, 1 , 0 , 1 ,  0 , 0 , 0 , 1 };
+        /*seg600:44B6 unk_1A7C6*/
+        public readonly static byte[] unk_1A7C6 = { 
+            1, 0, 0, 0, 0,
+            0, 1, 0, 0, 0,
+            1, 1, 0, 0, 0,
+            1, 0, 1, 0, 0,
+            0, 0, 1, 0, 0,
+            0, 1, 0, 1, 0,
+            0, 0, 1, 1, 0,
+            0, 0, 0, 0, 1,
+            0, 1, 0, 0, 1,
+            0, 0, 1, 1, 1,
+            0, 0, 0, 1, 1  };
 
         internal static void sub_55B04(byte arg_0, Item arg_2)
         {
             byte[] var_11 = new byte[5];
             sbyte var_C;
             byte var_B;
-            byte var_A;
             byte var_9;
             Player var_7;
             sbyte var_3;
@@ -746,14 +752,14 @@ namespace engine
 
                         var_7.field_12D[10] = 1;
 
-                        for (var_A = 0; var_A <= (var_9 - 2); var_A++)
+                        for (int var_A = 0; var_A <= (var_9 - 2); var_A++)
                         {
-                            /* unk_1A7C5 = seg600:44B5 */
-                            var_7.field_12D[10] += unk_1A7C5[(var_A * 5) + 1];
-                            var_7.field_12D[11] += unk_1A7C5[(var_A * 5) + 2];
-                            var_7.field_12D[12] += unk_1A7C5[(var_A * 5) + 3];
-                            var_7.field_12D[13] += unk_1A7C5[(var_A * 5) + 4];
-                            var_7.field_12D[14] += unk_1A7C5[(var_A * 5) + 5];
+                            /* unk_1A7C6 = seg600:44B6 */
+                            var_7.field_12D[10] += unk_1A7C6[(var_A * 5) + 0];
+                            var_7.field_12D[11] += unk_1A7C6[(var_A * 5) + 1];
+                            var_7.field_12D[12] += unk_1A7C6[(var_A * 5) + 2];
+                            var_7.field_12D[13] += unk_1A7C6[(var_A * 5) + 3];
+                            var_7.field_12D[14] += unk_1A7C6[(var_A * 5) + 4];
                         }
 
                         seg051.FillChar(0, 5, var_11);
@@ -1556,7 +1562,7 @@ namespace engine
                 item_weight *= item.count;
             }
 
-            if ((player.weight + item_weight) > (ovr025.strength_bonus(player) + 1500))
+            if ((player.weight + item_weight) > (ovr025.strEncumberance(player) + 1500))
             {
                 tooHeavy = true;
             }

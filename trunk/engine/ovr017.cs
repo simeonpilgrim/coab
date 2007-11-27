@@ -213,51 +213,51 @@ namespace engine
         }
 
 
-        static void icon_xx(DaxBlock icon, DaxBlock arg_4)
+        static void MergeIcons(DaxBlock destIcon, DaxBlock srcIcon) /* icon_xx */
         {
-            for (int i = 0; i < arg_4.bpp; i++)
+            for (int i = 0; i < srcIcon.bpp; i++)
             {
-                byte a = icon.data[i];
-                byte b = arg_4.data[i];
+                byte a = destIcon.data[i];
+                byte b = srcIcon.data[i];
 
                 if (a == 16 && b == 16)
                 {
-                    icon.data[i] = 16;
+                    destIcon.data[i] = 16;
                 }
                 else if (a == 16)
                 {
-                    icon.data[i] = b;
+                    destIcon.data[i] = b;
                 }
                 else if (b == 16)
                 {
-                    icon.data[i] = a;
+                    destIcon.data[i] = a;
                 }
                 else 
                 {
-                    icon.data[i] = (byte)(a | b);
+                    destIcon.data[i] = (byte)(a | b);
                 }
 
                 //icon.data[i] = (byte)(((a == 16) ? (byte)0 : a) | ((b == 16) ? (byte)0 : b));
 
-                a = icon.data_ptr[i];
-                b = arg_4.data_ptr[i];
+                a = destIcon.data_ptr[i];
+                b = srcIcon.data_ptr[i];
 
                 //TODO not sure about this...
                 if (a == 16 && b == 16)
                 {
-                    icon.data_ptr[i] = 16;
+                    destIcon.data_ptr[i] = 16;
                 }
                 else if (a == 16)
                 {
-                    icon.data_ptr[i] = b;
+                    destIcon.data_ptr[i] = b;
                 }
                 else if (b == 16)
                 {
-                    icon.data_ptr[i] = a;
+                    destIcon.data_ptr[i] = a;
                 }
                 else
                 {
-                    icon.data_ptr[i] = (byte)(a & b);
+                    destIcon.data_ptr[i] = (byte)(a & b);
                 }
                 //icon.data_ptr[i] = (byte)(((a == 16) ? (byte)0xF : a) & ((b == 16) ? (byte)0xF : b));
 
@@ -268,42 +268,39 @@ namespace engine
         }
 
 
-        internal static void sub_47A90(byte arg_0)
+        internal static void LoadPlayerCombatIcon(bool recolour) /* sub_47A90 */
         {
-            Player player_ptr;
-            byte var_24;
-            byte[] var_23 = new byte[16];
-            byte[] var_13 = new byte[16];
-
             seg042.set_game_area(1);
 
-            player_ptr = gbl.player_ptr;
+            Player player_ptr = gbl.player_ptr;
 
             char[] unk_16827 = new char[] { '\0', 'S', 'T' };
 
-            ovr034.chead_cbody_comspr_icon(11, player_ptr.field_141, "CHEAD" + unk_16827[player_ptr.field_144].ToString());
-            ovr034.chead_cbody_comspr_icon(player_ptr.icon_id, player_ptr.field_142, "CBODY" + unk_16827[player_ptr.field_144].ToString());
+            ovr034.chead_cbody_comspr_icon(11, player_ptr.field_141, "CHEAD" + unk_16827[player_ptr.icon_size].ToString());
+            ovr034.chead_cbody_comspr_icon(player_ptr.icon_id, player_ptr.field_142, "CBODY" + unk_16827[player_ptr.icon_size].ToString());
 
-            icon_xx(gbl.combat_icons[player_ptr.icon_id,0], gbl.combat_icons[11,0]);
-            icon_xx(gbl.combat_icons[player_ptr.icon_id,1], gbl.combat_icons[11,1]);
+            MergeIcons(gbl.combat_icons[player_ptr.icon_id, 0], gbl.combat_icons[11, 0]);
+            MergeIcons(gbl.combat_icons[player_ptr.icon_id, 1], gbl.combat_icons[11, 1]);
 
-            if (arg_0 != 0)
+            if (recolour)
             {
-                for (var_24 = 0; var_24 <= 15; var_24++)
+                byte[] var_23 = new byte[16];
+                byte[] var_13 = new byte[16];
+
+                for (byte i = 0; i <= 15; i++)
                 {
-                    var_13[var_24] = var_24;
-                    var_23[var_24] = var_24;
+                    var_13[i] = i;
+                    var_23[i] = i;
                 }
 
-                for (var_24 = 0; var_24 < 6; var_24++)
+                for (byte i = 0; i < 6; i++)
                 {
-                    var_23[gbl.unk_1A1D3[var_24]] = (byte)(player_ptr.field_145[var_24] & 0x0F);
-                    var_23[gbl.unk_1A1D3[var_24] + 8] = (byte)((player_ptr.field_145[var_24] & 0xF0) >> 4);
+                    var_23[gbl.unk_1A1D3[i]] = (byte)(player_ptr.field_145[i] & 0x0F);
+                    var_23[gbl.unk_1A1D3[i] + 8] = (byte)((player_ptr.field_145[i] & 0xF0) >> 4);
                 }
 
-                seg040.DaxBlockRecolor(gbl.combat_icons[player_ptr.icon_id,0], 0, 0, var_23, var_13);
-                seg040.DaxBlockRecolor(gbl.combat_icons[player_ptr.icon_id,1], 0, 0, var_23, var_13);
-
+                seg040.DaxBlockRecolor(gbl.combat_icons[player_ptr.icon_id, 0], 0, 0, var_23, var_13);
+                seg040.DaxBlockRecolor(gbl.combat_icons[player_ptr.icon_id, 1], 0, 0, var_23, var_13);
             }
 
             ovr034.free_icon(11);
@@ -1681,12 +1678,12 @@ namespace engine
                         switch (player01_ptr.race)
                         {
                             case Race.halfling:
-                                player01_ptr.field_144 = 1;
+                                player01_ptr.icon_size = 1;
                                 ovr024.add_affect(false, 0xff, 0, Affects.affect_61, player_ptr);
                                 break;
 
                             case Race.dwarf:
-                                player01_ptr.field_144 = 1;
+                                player01_ptr.icon_size = 1;
 
                                 ovr024.add_affect(false, 0xff, 0, Affects.affect_61, player_ptr);
                                 ovr024.add_affect(false, 0xff, 0, Affects.affect_1a, player_ptr);
@@ -1694,7 +1691,7 @@ namespace engine
                                 break;
 
                             case Race.gnome:
-                                player01_ptr.field_144 = 1;
+                                player01_ptr.icon_size = 1;
 
                                 ovr024.add_affect(false, 0xff, 0, Affects.affect_61, player_ptr);
                                 ovr024.add_affect(false, 0xff, 0, Affects.affect_12, player_ptr);
@@ -1703,17 +1700,17 @@ namespace engine
                                 break;
 
                             case Race.elf:
-                                player01_ptr.field_144 = 2;
+                                player01_ptr.icon_size = 2;
                                 ovr024.add_affect(false, 0xff, 0, Affects.affect_6b, player_ptr);
                                 break;
 
                             case Race.half_elf:
-                                player01_ptr.field_144 = 2;
+                                player01_ptr.icon_size = 2;
                                 ovr024.add_affect(false, 0xff, 0, Affects.affect_7c, player_ptr);
                                 break;
 
                             default:
-                                player01_ptr.field_144 = 2;
+                                player01_ptr.icon_size = 2;
                                 break;
                         }
 
@@ -2186,7 +2183,7 @@ namespace engine
                         {
                             if (gbl.player_ptr.field_F7 < 0x80)
                             {
-                                sub_47A90(1);
+                                LoadPlayerCombatIcon(true);
                             }
                             else
                             {

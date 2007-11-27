@@ -28,7 +28,7 @@ namespace engine
 
             if (player.in_combat == true)
             {
-                action.delay = (sbyte)(ovr024.roll_dice(6, 1) + ovr025.stat_bonus02(player));
+                action.delay = (sbyte)(ovr024.roll_dice(6, 1) + ovr025.dexReactionAdj(player));
 
                 if (action.delay < 1)
                 {
@@ -904,8 +904,8 @@ namespace engine
                 {
                     var_10 = gbl.unk_1C020[arg_E.field_151.type].ShallowClone();
 
-                    arg_E.field_19E = var_10.field_2;
-                    arg_E.field_1A0 = var_10.field_3;
+                    arg_E.field_19E = var_10.diceCount;
+                    arg_E.field_1A0 = var_10.diceSize;
                     arg_E.damageBonus = (sbyte)((arg_E.damageBonus - var_10.field_B) + var_10.field_4);
                 }
 
@@ -1870,9 +1870,8 @@ namespace engine
         }
 
 
-        internal static void sub_40BF1(Item arg_0, Player playerA, Player playerB)
+        internal static void sub_40BF1(Item item, Player playerA, Player playerB) /* sub_40BF1 */
         {
-            short var_6;
             byte var_4;
             byte var_3;
             byte var_2;
@@ -1886,9 +1885,7 @@ namespace engine
             var_4 = 0x0A;
             var_1 = 0x0D;
 
-            var_6 = gbl.dword_1D90A.bpp;
-
-            switch (arg_0.type)
+            switch (item.type)
             {
                 case 9:
                 case 0x15:
@@ -1900,16 +1897,16 @@ namespace engine
                     {
                         if (var_3 == 3 || var_3 == 5)
                         {
-                            ovr025.sub_67924((var_3 == 5), 0, 1, (byte)(var_1 + 1));
+                            ovr025.loadDword_1D90A((var_3 == 5), 0, 1, var_1 + 1);
                         }
                         else
                         {
-                            ovr025.sub_67924((var_3 == 7), 0, 0, (byte)(var_1 + 1));
+                            ovr025.loadDword_1D90A((var_3 == 7), 0, 0, var_1 + 1);
                         }
                     }
                     else
                     {
-                        ovr025.sub_67924(false, 0, (byte)(var_3 >> 2), (byte)(var_1 + (var_3 % 4)));
+                        ovr025.loadDword_1D90A(false, 0, var_3 >> 2, var_1 + (var_3 % 4));
                     }
                     seg044.sound_sub_120E0(gbl.word_188D6);
                     break;
@@ -1917,7 +1914,7 @@ namespace engine
                 case 2:
                 case 7:
                 case 14:
-                    ovr025.sub_67A59((byte)(var_1 + 3));
+                    ovr025.sub_67A59(var_1 + 3);
                     var_2 = 4;
                     var_4 = 0x32;
                     seg044.sound_sub_120E0(gbl.word_188D0);
@@ -1926,7 +1923,7 @@ namespace engine
 
                 case 0x55:
                 case 0x56:
-                    ovr025.sub_67A59((byte)(var_1 + 4));
+                    ovr025.sub_67A59(var_1 + 4);
                     var_2 = 4;
                     var_4 = 0x32;
                     seg044.sound_sub_120E0(gbl.word_188CA);
@@ -1936,8 +1933,8 @@ namespace engine
                 case 0x2F:
                 case 0x62:
                     var_1++;
-                    ovr025.sub_67924(false, 0, 0, (byte)(var_1 + 7));
-                    ovr025.sub_67924(false, 1, 1, (byte)(var_1 + 7));
+                    ovr025.loadDword_1D90A(false, 0, 0, var_1 + 7);
+                    ovr025.loadDword_1D90A(false, 1, 1, var_1 + 7);
                     var_2 = 2;
                     var_4 = 0x0A;
                     seg044.sound_sub_120E0(gbl.word_188CA);
@@ -1945,8 +1942,8 @@ namespace engine
                     break;
 
                 default:
-                    ovr025.sub_67924(false, 0, 0, (byte)(var_1 + 7));
-                    ovr025.sub_67924(false, 1, 1, (byte)(var_1 + 7));
+                    ovr025.loadDword_1D90A(false, 0, 0, var_1 + 7);
+                    ovr025.loadDword_1D90A(false, 1, 1, var_1 + 7);
                     var_2 = 2;
                     var_4 = 0x14;
                     seg044.sound_sub_120E0(gbl.word_188D0);
@@ -2491,7 +2488,7 @@ namespace engine
             byte var_D9;
             gbl.Struct_1D1C1[] var_D8 = new gbl.Struct_1D1C1[gbl.unk_1D1C1_count];
 
-            ovr025.sub_67924(false, 0, 0, 0x19);
+            ovr025.loadDword_1D90A(false, 0, 0, 0x19);
 
             arg_0.Clear();
 
@@ -2561,7 +2558,7 @@ namespace engine
 
                             case 'I':
                                 Target(arg_0, out arg_4, arg_8, arg_A, arg_C, var_D9, player_ptr, arg_10);
-                                ovr025.sub_67924(false, 0, 0, 0x19);
+                                ovr025.loadDword_1D90A(false, 0, 0, 0x19);
 
                                 sub_4188F(arg_10, var_D8, out var_DA);
                                 var_DD = 0;
@@ -2569,7 +2566,7 @@ namespace engine
 
                             case 'T':
                                 sub_411D8(arg_0, ref arg_4, arg_C, player_ptr, arg_10);
-                                ovr025.sub_67924(false, 0, 0, 0x19);
+                                ovr025.loadDword_1D90A(false, 0, 0, 0x19);
 
                                 sub_4188F(arg_10, var_D8, out var_DA);
                                 var_DD = 0;
@@ -2584,7 +2581,7 @@ namespace engine
                     else if (unk_41B05.MemberOf(var_E6) == true)
                     {
                         Target(arg_0, out arg_4, arg_8, arg_A, arg_C, var_D9, player_ptr, arg_10);
-                        ovr025.sub_67924(false, 0, 0, 0x19);
+                        ovr025.loadDword_1D90A(false, 0, 0, 0x19);
                         sub_4188F(arg_10, var_D8, out var_DA);
                         var_DD = 0;
                     }
@@ -2733,7 +2730,7 @@ namespace engine
         internal static void sub_42159(byte arg_2, Player player_target, Player player)
         {
 
-            ovr025.sub_67A59((byte)(arg_2 + 13));
+            ovr025.sub_67A59(arg_2 + 13);
 
             ovr025.sub_67AA4(0x1E, 1, ovr033.PlayerMapYPos(player_target), ovr033.PlayerMapXPos(player_target),
                 ovr033.PlayerMapYPos(player), ovr033.PlayerMapXPos(player));

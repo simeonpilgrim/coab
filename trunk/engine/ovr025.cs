@@ -20,7 +20,7 @@ namespace engine
 
                 if ((gbl.unk_1C020[var_5].field_E & 2) != 0)
                 {
-                    arg_0.field_199 = (sbyte)(arg_0.field_199 + stat_bonus02(arg_0));
+                    arg_0.field_199 += dexReactionAdj(arg_0);
                 }
 
                 arg_0.damageBonus = (sbyte)gbl.unk_1C020[var_5].field_B;
@@ -146,7 +146,7 @@ namespace engine
             byte var_3;
             int var_2;
 
-            var_2 = player.weight - strength_bonus(player);
+            var_2 = player.weight - strEncumberance(player);
 
             if (var_2 < 0)
             {
@@ -792,7 +792,7 @@ namespace engine
         }
 
 
-        internal static sbyte stat_bonus02(Player player)
+        internal static sbyte dexReactionAdj(Player player)
         {
             byte stat_val;
             sbyte var_1;
@@ -972,7 +972,7 @@ namespace engine
         }
 
 
-        internal static short strength_bonus(Player player)
+        internal static short strEncumberance(Player player) /* strength_bonus */
         {
             byte var_3;
             int ret_word;
@@ -1030,7 +1030,7 @@ namespace engine
 
         internal static void clear_spell(byte spell_id, Player player)
         {
-            for(int i = 0; i < gbl.max_spells; i++ )
+            for (int i = 0; i < gbl.max_spells; i++)
             {
                 if (player.spell_list[i] == spell_id)
                 {
@@ -1193,65 +1193,35 @@ namespace engine
         }
 
 
-        internal static void sub_67924(bool arg_0, byte arg_2, byte arg_4, byte arg_6)
+        internal static void loadDword_1D90A(bool flipIcon, byte iconOffset, int iconAction, int iconIdx) /* sub_67924 */
         {
-            short var_6;
-            DaxBlock var_4;
+            int dataSize = gbl.dword_1D90A.bpp;
 
-            var_6 = gbl.dword_1D90A.bpp;
-
-            if (arg_0 == true)
+            if (flipIcon == true)
             {
+                DaxBlock var_4;
                 seg040.init_dax_block(out var_4, 1, 1, 3, 0x18);
-                seg040.flipIconLeftToRight(var_4, gbl.combat_icons[arg_6, arg_4]);
-                throw new System.NotSupportedException();//les	di, [bp+var_4]
-                throw new System.NotSupportedException();//add	di, 0x17
-                throw new System.NotSupportedException();//push	es
-                throw new System.NotSupportedException();//push	di
-                throw new System.NotSupportedException();//mov	al, [bp+arg_2]
-                throw new System.NotSupportedException();//xor	ah, ah
-                throw new System.NotSupportedException();//mul	[bp+var_6]
-                throw new System.NotSupportedException();//les	di, dword_1D90A
-                throw new System.NotSupportedException();//add	di, ax
-                throw new System.NotSupportedException();//add	di, 0x17
-                throw new System.NotSupportedException();//push	es
-                throw new System.NotSupportedException();//push	di
-                throw new System.NotSupportedException();//push	[bp+var_6]
-                throw new System.NotSupportedException();//call	Move(Any &,Any &,Word)
-                throw new System.NotSupportedException();//les	di, [bp+var_4]
-                throw new System.NotSupportedException();//les	di, es:[di+13h]
-                throw new System.NotSupportedException();//push	es
-                throw new System.NotSupportedException();//push	di
-                throw new System.NotSupportedException();//mov	al, [bp+arg_2]
-                throw new System.NotSupportedException();//xor	ah, ah
-                throw new System.NotSupportedException();//mul	[bp+var_6]
-                throw new System.NotSupportedException();//les	di, dword_1D90A
-                throw new System.NotSupportedException();//les	di, es:[di+13h]
-                throw new System.NotSupportedException();//add	di, ax
-                throw new System.NotSupportedException();//push	es
-                throw new System.NotSupportedException();//push	di
-                throw new System.NotSupportedException();//push	[bp+var_6]
-                throw new System.NotSupportedException();//call	Move(Any &,Any &,Word)
+                seg040.flipIconLeftToRight(var_4, gbl.combat_icons[iconIdx, iconAction]);
+
+                System.Array.Copy(var_4.data, 0, gbl.dword_1D90A.data, iconOffset * dataSize, dataSize);
+                System.Array.Copy(var_4.data_ptr, 0, gbl.dword_1D90A.data_ptr, iconOffset * dataSize, dataSize);
 
                 seg040.free_dax_block(ref var_4);
             }
             else
             {
-
-                System.Array.Copy(gbl.combat_icons[arg_6, arg_4].data, 0, gbl.dword_1D90A.data, arg_2 * var_6, var_6);
-                System.Array.Copy(gbl.combat_icons[arg_6, arg_4].data_ptr, 0, gbl.dword_1D90A.data_ptr, arg_2 * var_6, var_6);
-
+                System.Array.Copy(gbl.combat_icons[iconIdx, iconAction].data, 0, gbl.dword_1D90A.data, iconOffset * dataSize, dataSize);
+                System.Array.Copy(gbl.combat_icons[iconIdx, iconAction].data_ptr, 0, gbl.dword_1D90A.data_ptr, iconOffset * dataSize, dataSize);
             }
-
         }
 
 
-        internal static void sub_67A59(byte arg_0)
+        internal static void sub_67A59(int iconIdx)
         {
-            sub_67924(false, 0, 0, arg_0);
-            sub_67924(true, 1, 0, arg_0);
-            sub_67924(true, 2, 1, arg_0);
-            sub_67924(false, 3, 1, arg_0);
+            loadDword_1D90A(false, 0, 0, iconIdx);
+            loadDword_1D90A(true, 1, 0, iconIdx);
+            loadDword_1D90A(true, 2, 1, iconIdx);
+            loadDword_1D90A(false, 3, 1, iconIdx);
         }
 
 
@@ -1418,7 +1388,7 @@ namespace engine
                     if ((playerAMapX + 3) > 0x31)
                     {
                         var_CE = (short)(playerAMapX - 0x31);
-   
+
                     }
                     else if (playerAMapX < 3)
                     {
