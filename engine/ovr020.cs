@@ -106,7 +106,7 @@ namespace engine
                         var_106 += "/";
                     }
 
-                    var_106 += ovr025.sub_670CC(gbl.player_ptr02.Skill_A_lvl[var_6] + gbl.player_ptr02.Skill_B_lvl[var_6]);
+                    var_106 += (gbl.player_ptr02.Skill_A_lvl[var_6] + gbl.player_ptr02.Skill_B_lvl[var_6]).ToString();
 
                     displaySlash = true;
                 }
@@ -183,7 +183,7 @@ namespace engine
             xCol = 8;
 
             seg041.displayString("THAC0   ", 0, 15, yCol, xCol + 1);
-            seg041.displayString((0x3c - player.field_199).ToString(), 0, 10, yCol, xCol + 7);
+            seg041.displayString((0x3c - player.hitBonus).ToString(), 0, 10, yCol, xCol + 7);
 
 
             var_30 = player.field_19E.ToString() + "d" + player.field_1A0.ToString();
@@ -216,7 +216,7 @@ namespace engine
             }
 
             seg041.displayString("Movement ", 0, 15, yCol + 1, xCol + 3);
-            seg041.displayString(ovr025.sub_670CC(var_7), 0, 10, yCol + 1, xCol + 0x0c);
+            seg041.displayString(var_7.ToString(), 0, 10, yCol + 1, xCol + 0x0c);
         }
 
 
@@ -243,14 +243,14 @@ namespace engine
                 var_2A++;
             }
 
-            string s = ovr025.sub_670CC(gbl.player_ptr.stats[stat_index].max);
+            string s = gbl.player_ptr.stats[stat_index].max.ToString();
             seg041.displayString(s, 0, var_2B, stat_index + 7, var_2A);
 
             if (stat_index == 0 &&
                 gbl.player_ptr.strength == 18 &&
                 gbl.player_ptr.strength_18_100 > 0)
             {
-                var_29 = ovr025.sub_670CC(gbl.player_ptr.strength_18_100);
+                var_29 = gbl.player_ptr.strength_18_100.ToString();
 
                 if (gbl.player_ptr.strength_18_100 < 10)
                 {

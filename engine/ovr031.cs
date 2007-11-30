@@ -98,12 +98,10 @@ namespace engine
                 {
                     if (gbl.mapDirection == 6)
                     {
-
                         seg040.OverlayBounded(gbl.sky_dax_251, 1, 0, (var_4 + var_2) - 13, var_3);
                     }
                     else if (gbl.mapDirection == 4 && var_2 >= 16)
                     {
-
                         seg040.OverlayBounded(gbl.sky_dax_251, 1, 0, (var_4 + var_2) - 13, (var_3 + var_2) - 8);
                     }
                 }
@@ -403,13 +401,14 @@ namespace engine
                     if (var_17 > 0 &&
                         getMap_XXX(dir_left, tmpY - gbl.MapDirectionYDelta[dir_left], tmpX - gbl.MapDirectionXDelta[dir_left]) != 0)
                     {
-                        sub_71434(9, var_17, gbl.byte_16E2E, gbl.word_16E1A + var_12 + 1);
+                        //sub_71434(9, var_17, gbl.byte_16E2E, gbl.word_16E1A + var_12 + 1);
                     }
 
                     var_17 = 0;
                 }
 
                 var_10++;
+                var_12 -= 2;
 
                 tmpX += gbl.MapDirectionXDelta[dir_left];
                 tmpY += gbl.MapDirectionYDelta[dir_left];

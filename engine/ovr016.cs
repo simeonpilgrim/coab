@@ -274,7 +274,7 @@ namespace engine
 
                 for (var_5C = 1; var_5C <= 5; var_5C++)
                 {
-                    var_60[(var_5C * 9) + (var_5B * 3)] = ovr025.sub_670CC(sub_4428E(var_5B, var_5C));
+                    var_60[(var_5C * 9) + (var_5B * 3)] = sub_4428E(var_5B, var_5C).ToString();
 
                     if (gbl.player_ptr.field_12CArray[var_5C + (var_5B * 5)] == 0)
                     {
@@ -804,7 +804,7 @@ namespace engine
 
                             if (var_15 == 0)
                             {
-                                var_40 = "Funky--" + ovr025.sub_670CC((byte)var_11);
+                                var_40 = "Funky--" + var_11.ToString();
                             }
                             break;
 
@@ -1178,7 +1178,7 @@ namespace engine
 
             do
             {
-                var_22B = "Game Speed = " + ovr025.sub_670CC(gbl.game_speed_var) + " (0=fastest 9=slowest)";
+                var_22B = "Game Speed = " + gbl.game_speed_var.ToString() + " (0=fastest 9=slowest)";
                 seg041.displayString(var_22B, 0, 10, 18, 1);
 
                 var_2B = string.Empty;

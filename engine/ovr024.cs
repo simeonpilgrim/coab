@@ -602,7 +602,7 @@ namespace engine
 
                 if (gbl.byte_1D2C9 >= 0)
                 {
-                    if ((gbl.byte_1D2C9 + arg_6.field_199 + var_2) >= arg_0)
+                    if ((gbl.byte_1D2C9 + arg_6.hitBonus + var_2) >= arg_0)
                     {
                         var_1 = true;
                     }
@@ -1338,36 +1338,34 @@ namespace engine
             {
                 if (gbl.byte_1D2BE != 1)
                 {
-                    var_100 = "takes ";
-                    var_100 += ovr025.sub_670CC(gbl.byte_1D2BE);
-                    var_100 += " points of damage ";
+                    var_100 = "takes " + gbl.byte_1D2BE.ToString() + " points of damage ";
                 }
                 else
                 {
                     var_100 = "takes 1 point of damage ";
                 }
 
-                byte al = (byte)(gbl.byte_1D2BF & 0xf7);
-                if (al == 0x01)
+                int mask = gbl.byte_1D2BF & 0xf7;
+                if (mask == 0x01)
                 {
-                    var_100 = var_100 + "from Fire";
+                    var_100 += "from Fire";
                 }
-                else if (al == 0x02)
+                else if (mask == 0x02)
                 {
-                    var_100 = var_100 + "from Cold";
+                    var_100 += "from Cold";
                 }
-                else if (al == 0x04)
+                else if (mask == 0x04)
                 {
-                    var_100 = var_100 + "from Electricity";
+                    var_100 += "from Electricity";
                 }
-                else if (al == 0x10)
+                else if (mask == 0x10)
                 {
-                    var_100 = var_100 + "from Acid";
+                    var_100 +=  "from Acid";
                 }
 
                 if ((gbl.byte_1D2BF & 8) == gbl.byte_1D2BF)
                 {
-                    var_100 = var_100 + "from Magic";
+                    var_100 += "from Magic";
                 }
 
                 ovr025.sub_6818A(var_100, 0, player);

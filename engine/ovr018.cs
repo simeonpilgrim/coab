@@ -3252,19 +3252,15 @@ namespace engine
 
                         if (var_16 == 5)
                         {
-                            var_228 = "    a level ";
-                            var_228 += ovr025.sub_670CC(player_ptr.Skill_A_lvl[var_13] + 1);
-                            var_228 += " ";
-                            var_228 += ovr020.classString[var_13];
+                            var_228 = System.String.Format("    a level {0} {1}",
+                                player_ptr.Skill_A_lvl[var_13] + 1, ovr020.classString[var_13]);
 
                             seg041.displayString(var_228, 0, 10, var_16, 6);
                         }
                         else
                         {
-                            var_228 = "and a level ";
-                            var_228 += ovr025.sub_670CC(player_ptr.Skill_A_lvl[var_13] + 1);
-                            var_228 += " ";
-                            var_228 += ovr020.classString[var_13];
+                            var_228 = System.String.Format("and a level {0} {1}",
+                                player_ptr.Skill_A_lvl[var_13] + 1, ovr020.classString[var_13]);
 
                             seg041.displayString(var_228, 0, 10, var_16, 6);
                         }

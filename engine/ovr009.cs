@@ -495,9 +495,7 @@ namespace engine
 
                 if (var_A == ' ')
                 {
-                    var_20D = "Move/Attack, Move Left = ";
-                    var_20D += ovr025.sub_670CC(player.actions.move / 2);
-                    var_20D += " ";
+                    var_20D = "Move/Attack, Move Left = " + (player.actions.move / 2).ToString() + " ";
 
                     var_A = ovr027.displayInput(out gbl.byte_1D905, 0, 1, 15, 10, 10, string.Empty, var_20D);
                 }
@@ -740,7 +738,7 @@ namespace engine
 
             while (unk_341B3.MemberOf(var_53) == false)
             {
-                var_52 = "GameSpeed (" + ovr025.sub_670CC(gbl.game_speed_var) + ") :";
+                var_52 = "GameSpeed (" + gbl.game_speed_var.ToString() + ") :";
                 var_29 = " ";
 
                 if (gbl.game_speed_var < 9)

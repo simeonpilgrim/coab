@@ -467,7 +467,7 @@ namespace engine
 
             if (gbl.cmd_opps[1].Code < 0x80)
             {
-                gbl.unk_1D972[1] = ovr025.ConcatWord(ovr008.vm_GetCmdValue(1));
+                gbl.unk_1D972[1] = ovr008.vm_GetCmdValue(1).ToString();
             }
 
             if (gbl.command == 0x11)
@@ -911,7 +911,7 @@ namespace engine
             {
                 var_1 = player_ptr.hit_point_current;
                 var_5 = player_ptr.ac;
-                var_2 = player_ptr.field_199;
+                var_2 = player_ptr.hitBonus;
 
                 var_3 = (byte)(player_ptr.magic_user_lvl + (ovr026.sub_6B3D1(player_ptr) * player_ptr.field_116));
                 var_4 = (byte)(player_ptr.cleric_lvl + (ovr026.sub_6B3D1(player_ptr) * player_ptr.turn_undead));

@@ -16,19 +16,19 @@ namespace engine
             {
                 var_5 = var_4.type;
 
-                arg_0.field_199 = arg_0.field_73;
+                arg_0.hitBonus = arg_0.field_73;
 
                 if ((gbl.unk_1C020[var_5].field_E & 2) != 0)
                 {
-                    arg_0.field_199 += dexReactionAdj(arg_0);
+                    arg_0.hitBonus += dexReactionAdj(arg_0);
                 }
 
                 arg_0.damageBonus = (sbyte)gbl.unk_1C020[var_5].field_B;
 
                 if ((gbl.unk_1C020[var_5].field_E & 0x04) != 0)
                 {
-                    arg_0.field_199 = (sbyte)(arg_0.field_199 + strengthHitBonus(arg_0));
-                    arg_0.damageBonus = (sbyte)(arg_0.damageBonus + strengthDamBonus(arg_0));
+                    arg_0.hitBonus += strengthHitBonus(arg_0);
+                    arg_0.damageBonus += strengthDamBonus(arg_0);
                 }
 
                 var_6 = var_4.exp_value;
@@ -54,7 +54,7 @@ namespace engine
                     var_6++;
                 }
 
-                arg_0.field_199 += var_6;
+                arg_0.hitBonus += var_6;
                 arg_0.field_19E = gbl.unk_1C020[var_5].field_9;
                 arg_0.field_1A0 = gbl.unk_1C020[var_5].field_A;
             }
@@ -285,7 +285,7 @@ namespace engine
 
             if (item.count > 0)
             {
-                item.name += sub_670CC(item.count) + " ";
+                item.name += item.count.ToString() + " ";
             }
 
             var_2 = 0;
@@ -452,8 +452,7 @@ namespace engine
                 colour = 0x0D;
             }
 
-            string s = sub_670CC(player.hit_point_current);
-            seg041.displayString(s, 0, colour, y_pos, x_pos);
+            seg041.displayString(player.hit_point_current.ToString(), 0, colour, y_pos, x_pos);
         }
 
 
@@ -638,13 +637,13 @@ namespace engine
             player.field_186 = 0;
             player.ac = player.field_124;
             player.initiative = player.field_E4;
-            player.field_199 = player.field_73;
+            player.hitBonus = player.field_73;
 
             stat_bonus[0] = ovr025.stat_bonus(player);
 
             if (player.field_151 == null)
             {
-                player.field_199 += strengthHitBonus(player);
+                player.hitBonus += strengthHitBonus(player);
                 player.damageBonus += strengthDamBonus(player);
             }
 
@@ -710,35 +709,6 @@ namespace engine
             {
                 player.field_DD = 1;
             }
-        }
-
-        /// <summary>
-        /// byte.ToString()
-        /// </summary>
-        /// <param name="number"></param>
-        /// <returns></returns>
-        internal static string sub_670CC(byte number)
-        {
-            return number.ToString();
-        }
-        internal static string sub_670CC(sbyte number)
-        {
-            return number.ToString();
-        }
-        internal static string sub_670CC(int number)
-        {
-            return number.ToString();
-        }
-
-
-        /// <summary>
-        /// word.ToString()
-        /// </summary>
-        /// <param name="number"></param>
-        /// <returns></returns>
-        internal static string ConcatWord(int number)
-        {
-            return number.ToString();
         }
 
 
@@ -1989,14 +1959,14 @@ namespace engine
             {
                 var_31 = string.Empty;
 
-                var_5 = ConcatWord(gbl.area_ptr.field_192);
+                var_5 = gbl.area_ptr.field_192.ToString();
 
                 if (var_5.Length < 2)
                 {
                     var_5 = "0" + var_5;
                 }
 
-                var_8 = ConcatWord((gbl.area_ptr.field_190 * 10) + gbl.area_ptr.field_18E);
+                var_8 = ((gbl.area_ptr.field_190 * 10) + gbl.area_ptr.field_18E).ToString();
 
                 if (var_8.Length < 2)
                 {
