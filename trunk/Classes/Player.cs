@@ -592,7 +592,7 @@ namespace Classes
         [DataOffset(0x198, DataType.Byte)]
         public byte field_198; // 0x198 Auto fight. 1 yes, 0 no.
         [DataOffset(0x199, DataType.SByte)]
-        public sbyte field_199; // 0x199
+        public sbyte hitBonus; // 0x199 field_199
         [DataOffset(0x19a, DataType.Byte)]
         public byte ac; // 0x19a
         [DataOffset(0x19b, DataType.Byte)]

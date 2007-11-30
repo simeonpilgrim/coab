@@ -2069,7 +2069,7 @@ namespace engine
 
             if (arg_4 != 0)
             {
-                var_231 = "Range = " + ovr025.sub_670CC(var_30) + "  ";
+                var_231 = "Range = " + var_30.ToString() + "  ";
                 seg041.displayString(var_231, 0, 10, 0x17, 0);
             }
 

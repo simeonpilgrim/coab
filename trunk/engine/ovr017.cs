@@ -167,7 +167,7 @@ namespace engine
                         }
                         else
                         {
-                            string s = "Unexpected error during save: " + ovr025.sub_670CC(var_3);
+                            string s = "Unexpected error during save: " + var_3.ToString();
                             seg041.displayAndDebug(s, 0, 14);
 
                             return false;
@@ -184,7 +184,7 @@ namespace engine
 
                     if (var_3 != 0)
                     {
-                        string s = "Unexpected error during save: " + ovr025.sub_670CC(var_3);
+                        string s = "Unexpected error during save: " + var_3.ToString();
                         seg041.displayAndDebug(s, 0, 14);
 
                         return false;
@@ -201,7 +201,7 @@ namespace engine
 
                     if (var_3 != 0)
                     {
-                        string s = "Unexpected error during save: " + ovr025.sub_670CC(var_3);
+                        string s = "Unexpected error during save: " + var_3.ToString();
                         seg041.displayAndDebug(s, 0, 14);
 
                         return false;
@@ -399,7 +399,7 @@ namespace engine
 
                 if (unk_47D82.MemberOf((char)var_DB) == false)
                 {
-                    var_2DE = "Unexpected error during save: " + ovr025.sub_670CC(var_DB);
+                    var_2DE = "Unexpected error during save: " + var_DB.ToString();
 
                     seg041.displayAndDebug(var_2DE, 0, 14);
 
@@ -2327,7 +2327,7 @@ namespace engine
 
                         if (unk_4AEEF.MemberOf((char)var_1FC) == false)
                         {
-                            seg041.displayAndDebug("Unexpected error during save: " + ovr025.sub_670CC(var_1FC), 0, 14);
+                            seg041.displayAndDebug("Unexpected error during save: " + var_1FC.ToString(), 0, 14);
                             seg051.Close(save_file);
                             return;
                         }
