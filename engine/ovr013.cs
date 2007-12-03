@@ -655,11 +655,11 @@ namespace engine
 
                         if (var_9 == true)
                         {
-                            gbl.stru_1D1BC[var_C, var_D] = 0x1F;
+                            gbl.mapToBackGroundTile[var_C, var_D] = 0x1F;
                         }
                         else
                         {
-                            gbl.stru_1D1BC[var_C, var_D] = var_8.field_7[var_B];
+                            gbl.mapToBackGroundTile[var_C, var_D] = var_8.field_7[var_B];
                         }
                     }
                 }
@@ -692,7 +692,7 @@ namespace engine
                             int cx = gbl.MapDirectionXDelta[gbl.unk_18AE9[var_B]] + var_4.field_1A;
                             int ax = gbl.MapDirectionYDelta[gbl.unk_18AE9[var_B]] + var_4.field_1B;
 
-                            gbl.stru_1D1BC[cx, ax] = 0x1E;
+                            gbl.mapToBackGroundTile[cx, ax] = 0x1E;
                         }
                     }
 
@@ -1142,7 +1142,7 @@ namespace engine
                 {
                     player.actions.target = null;
 
-                    ovr032.sub_738D8(gbl.stru_1D1BC, ovr033.sub_74C82(player), 0xff, 0xff,
+                    ovr032.sub_738D8(gbl.mapToBackGroundTile, ovr033.PlayerMapSize(player), 0xff, 0xff,
                         ovr033.PlayerMapYPos(player), ovr033.PlayerMapXPos(player));
 
                     player.actions.target = gbl.player_array[gbl.byte_1D1C4];
@@ -1332,11 +1332,11 @@ namespace engine
 
                         if (var_9 != 0)
                         {
-                            gbl.stru_1D1BC[var_C, var_D] = 0x1F;
+                            gbl.mapToBackGroundTile[var_C, var_D] = 0x1F;
                         }
                         else
                         {
-                            gbl.stru_1D1BC[var_C, var_D] = var_8.field_7[var_B];
+                            gbl.mapToBackGroundTile[var_C, var_D] = var_8.field_7[var_B];
                         }
                     }
                 }
@@ -1368,7 +1368,7 @@ namespace engine
                             int cx = gbl.MapDirectionXDelta[gbl.unk_18AED[var_B]] + var_4.field_1A;
                             int ax = gbl.MapDirectionYDelta[gbl.unk_18AED[var_B]] + var_4.field_1B;
 
-                            gbl.stru_1D1BC[cx, ax] = 0x1C;
+                            gbl.mapToBackGroundTile[cx, ax] = 0x1C;
                         }
                     }
 
@@ -1933,7 +1933,7 @@ namespace engine
 
                 player.actions.target = null;
 
-                ovr032.sub_738D8(gbl.stru_1D1BC, ovr033.sub_74C82(player), 0xff, 0xff,
+                ovr032.sub_738D8(gbl.mapToBackGroundTile, ovr033.PlayerMapSize(player), 0xff, 0xff,
                     ovr033.PlayerMapYPos(player), ovr033.PlayerMapXPos(player));
 
                 player.actions.target = gbl.player_array[gbl.byte_1D1C4];

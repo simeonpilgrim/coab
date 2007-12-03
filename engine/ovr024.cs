@@ -140,7 +140,7 @@ namespace engine
                                 var_E3 = 1;
                             }
 
-                            ovr032.sub_738D8(gbl.stru_1D1BC, ovr033.sub_74C82(player_base), 0xff,
+                            ovr032.sub_738D8(gbl.mapToBackGroundTile, ovr033.PlayerMapSize(player_base), 0xff,
                                 var_E3, ovr033.PlayerMapYPos(player_base), ovr033.PlayerMapXPos(player_base));
 
                             var_E4 = gbl.byte_1D1C0;
@@ -728,7 +728,7 @@ namespace engine
                 ovr033.sub_74572(player_index, 0, 0);
                 seg040.DrawOverlay();
 
-                gbl.stru_1C9CD[player_index].field_3 = 0;
+                gbl.CombatMap[player_index].size = 0;
 
                 ovr033.sub_743E7();
 

@@ -17,7 +17,7 @@ namespace engine
                 var_2 >= 0 &&
                 var_2 <= 0x18)
             {
-                gbl.stru_1D1BC[var_1, var_2] = (byte)(arg_0 + 1);
+                gbl.mapToBackGroundTile[var_1, var_2] = (byte)(arg_0 + 1);
             }
         }
 
@@ -69,12 +69,12 @@ namespace engine
                     if (var_3 >= 0 && var_3 <= 0x31 &&
                         var_4 >= 0 && var_4 <= 0x18)
                     {
-                        if (gbl.unk_189B4[gbl.stru_1D1BC[var_3, var_4]].field_3 == 0x16 &&
+                        if (gbl.BackGroundTiles[gbl.mapToBackGroundTile[var_3, var_4]].tile_index == 0x16 &&
                             gbl.byte_1AD3D != 0 &&
                             gbl.byte_1AD3E != 0 &&
                             ovr024.roll_dice(10, 1) <= 5)
                         {
-                            gbl.stru_1D1BC[var_3, var_4] = 0x1A;
+                            gbl.mapToBackGroundTile[var_3, var_4] = 0x1A;
 
                             for (var_7 = 0; var_7 < 4; var_7++)
                             {
@@ -84,10 +84,10 @@ namespace engine
                                 if (var_5 >= 0 && var_5 <= 0x31 &&
                                     var_6 >= 0 && var_6 <= 0x18)
                                 {
-                                    if (gbl.unk_189B4[gbl.stru_1D1BC[var_5, var_6]].field_3 == 0x16 &&
+                                    if (gbl.BackGroundTiles[gbl.mapToBackGroundTile[var_5, var_6]].tile_index == 0x16 &&
                                         ovr024.roll_dice(10, 1) <= 9)
                                     {
-                                        gbl.stru_1D1BC[var_3, var_4] = 0x1B;
+                                        gbl.mapToBackGroundTile[var_3, var_4] = 0x1B;
                                     }
                                 }
                             }
@@ -603,12 +603,12 @@ namespace engine
         {
             if (arg_2 < 0x31)
             {
-                gbl.stru_1D1BC[arg_2 + 1, arg_4] = 0x40;
+                gbl.mapToBackGroundTile[arg_2 + 1, arg_4] = 0x40;
             }
 
             if (arg_4 < 0x18 && arg_2 < 0x31)
             {
-                gbl.stru_1D1BC[arg_2 + 1, arg_4 + 1] = 0x41;
+                gbl.mapToBackGroundTile[arg_2 + 1, arg_4 + 1] = 0x41;
             }
         }
 
@@ -656,11 +656,11 @@ namespace engine
                 {
                     if (var_3 <= 0x31)
                     {
-                        gbl.stru_1D1BC[var_3, var_4] = (byte)(ovr024.roll_dice(2, 1) + 0x3B);
+                        gbl.mapToBackGroundTile[var_3, var_4] = (byte)(ovr024.roll_dice(2, 1) + 0x3B);
 
                         if (var_3 < 0x31)
                         {
-                            gbl.stru_1D1BC[var_3 + 1, var_4] = (byte)(ovr024.roll_dice(2, 1) + 0x3D);
+                            gbl.mapToBackGroundTile[var_3 + 1, var_4] = (byte)(ovr024.roll_dice(2, 1) + 0x3D);
                         }
 
                         if (ovr024.roll_dice(20, 1) == 1)
@@ -677,13 +677,9 @@ namespace engine
 
         internal static void sub_37B0B()
         {
-            sbyte var_4;
-            byte var_3;
-            byte var_2;
-
             if ((sub_37991() & 0x80) == 0)
             {
-                var_4 = 10;
+                sbyte var_4 = 10;
 
                 if ((sub_37991() & 2) != 0)
                 {
@@ -710,22 +706,22 @@ namespace engine
                     var_4 = 1;
                 }
 
-                for (var_2 = 0; var_2 <= 0x31; var_2++)
+                for (int var_2 = 0; var_2 <= 0x31; var_2++)
                 {
-                    for (var_3 = 1; var_3 <= 0x18; var_3++)
+                    for (int var_3 = 1; var_3 <= 0x18; var_3++)
                     {
-                        if (gbl.unk_189B4[gbl.stru_1D1BC[var_2, var_3]].field_3 == 22 &&
-                            gbl.unk_189B4[gbl.stru_1D1BC[var_2, var_3 - 1]].field_3 == 22 &&
+                        if (gbl.BackGroundTiles[gbl.mapToBackGroundTile[var_2, var_3]].tile_index == 22 &&
+                            gbl.BackGroundTiles[gbl.mapToBackGroundTile[var_2, var_3 - 1]].tile_index == 22 &&
                             var_4 >= ovr024.roll_dice(100, 1))
                         {
                             if (var_4 >= ovr024.roll_dice(100, 1))
                             {
-                                gbl.stru_1D1BC[var_2, var_3] = (byte)(ovr024.roll_dice(2, 1) + 0x29);
+                                gbl.mapToBackGroundTile[var_2, var_3] = (byte)(ovr024.roll_dice(2, 1) + 0x29);
                             }
                             else
                             {
-                                gbl.stru_1D1BC[var_2, var_3 - 1] = (byte)(ovr024.roll_dice(5, 1) + 0x1F);
-                                gbl.stru_1D1BC[var_2, var_3] = (byte)(ovr024.roll_dice(5, 1) + 0x24);
+                                gbl.mapToBackGroundTile[var_2, var_3 - 1] = (byte)(ovr024.roll_dice(5, 1) + 0x1F);
+                                gbl.mapToBackGroundTile[var_2, var_3] = (byte)(ovr024.roll_dice(5, 1) + 0x24);
                             }
                         }
                     }
@@ -742,7 +738,7 @@ namespace engine
 
             if (var_1 <= arg_A)
             {
-                gbl.stru_1D1BC[arg_E, arg_C] = (byte)(ovr024.roll_dice(2, 1) + 0x39);
+                gbl.mapToBackGroundTile[arg_E, arg_C] = (byte)(ovr024.roll_dice(2, 1) + 0x39);
             }
             else
             {
@@ -758,7 +754,7 @@ namespace engine
                 throw new System.NotSupportedException();//xor	ah, ah
                 throw new System.NotSupportedException();//cmp	ax, dx
                 throw new System.NotSupportedException();//jg	loc_37D37
-                gbl.stru_1D1BC[arg_E, arg_C] = (byte)(ovr024.roll_dice(2, 1) + 0x2f);
+                gbl.mapToBackGroundTile[arg_E, arg_C] = (byte)(ovr024.roll_dice(2, 1) + 0x2f);
                 throw new System.NotSupportedException();//jmp	loc_37E44
                 throw new System.NotSupportedException();//loc_37D37:
                 throw new System.NotSupportedException();//mov	al, [bp+arg_6]
@@ -776,7 +772,7 @@ namespace engine
                 throw new System.NotSupportedException();//xor	ah, ah
                 throw new System.NotSupportedException();//cmp	ax, dx
                 throw new System.NotSupportedException();//jg	loc_37D89
-                gbl.stru_1D1BC[arg_E, arg_C] = (byte)(ovr024.roll_dice(4, 1) + 0x2B);
+                gbl.mapToBackGroundTile[arg_E, arg_C] = (byte)(ovr024.roll_dice(4, 1) + 0x2B);
                 throw new System.NotSupportedException();//jmp	loc_37E44
                 throw new System.NotSupportedException();//loc_37D89:
                 throw new System.NotSupportedException();//mov	al, [bp+arg_4]
@@ -798,7 +794,7 @@ namespace engine
                 throw new System.NotSupportedException();//xor	ah, ah
                 throw new System.NotSupportedException();//cmp	ax, dx
                 throw new System.NotSupportedException();//jg	loc_37DE3
-                gbl.stru_1D1BC[arg_E, arg_C] = (byte)(ovr024.roll_dice(3, 1) + 0x36);
+                gbl.mapToBackGroundTile[arg_E, arg_C] = (byte)(ovr024.roll_dice(3, 1) + 0x36);
                 throw new System.NotSupportedException();//jmp	short loc_37E44
                 throw new System.NotSupportedException();//loc_37DE3:
                 throw new System.NotSupportedException();//mov	al, [bp+arg_4]
@@ -824,7 +820,7 @@ namespace engine
                 throw new System.NotSupportedException();//xor	ah, ah
                 throw new System.NotSupportedException();//cmp	ax, dx
                 throw new System.NotSupportedException();//jg	loc_37E44
-                gbl.stru_1D1BC[arg_E, arg_C] = (byte)(ovr024.roll_dice(4, 1) + 0x31);
+                gbl.mapToBackGroundTile[arg_E, arg_C] = (byte)(ovr024.roll_dice(4, 1) + 0x31);
             }
             throw new System.NotSupportedException();//loc_37E44:
         }
@@ -872,7 +868,7 @@ namespace engine
             {
                 for (var_2 = 0; var_2 <= 24; var_2++)
                 {
-                    if (gbl.unk_189B4[gbl.stru_1D1BC[var_1, var_2]].field_3 == 22)
+                    if (gbl.BackGroundTiles[gbl.mapToBackGroundTile[var_1, var_2]].tile_index == 22)
                     {
                         if (var_4 >= -30 && var_4 <= 9)
                         {
@@ -902,13 +898,10 @@ namespace engine
 
         internal static void sub_37FC8()
         {
-            byte var_2;
-            byte var_1;
+            gbl.mapToBackGroundTile.SetField_7(0x17);
 
-            seg051.FillChar(0x17, 0x4E2, gbl.stru_1D1BC.field_7);
-
-            var_1 = gbl.area_ptr.field_186;
-            var_2 = gbl.area_ptr.field_188;
+            //byte var_1 = gbl.area_ptr.field_186;
+            //byte var_2 = gbl.area_ptr.field_188;
             gbl.byte_1AD3C = gbl.area_ptr.field_342;
             sub_37A00();
             sub_37B0B();
@@ -929,11 +922,11 @@ namespace engine
 
             ovr034.Load24x24Set(6, 0x22, 1, "RandCom");
 
-            gbl.stru_1D1BC = new Struct_1D1BC();
+            gbl.mapToBackGroundTile = new Struct_1D1BC();
 
-            gbl.stru_1D1BC.field_4 = false;
-            gbl.stru_1D1BC.field_5 = 1;
-            gbl.stru_1D1BC.field_6 = 0;
+            gbl.mapToBackGroundTile.field_4 = false;
+            gbl.mapToBackGroundTile.size = 1;
+            gbl.mapToBackGroundTile.field_6 = 0;
 
             if (gbl.area_ptr.field_1CC != 0)
             {
@@ -1025,23 +1018,24 @@ namespace engine
 
             if (arg_8 < 0 && arg_8 > 10 &&
                 arg_6 < 0 && arg_6 > 5 &&
-                unk_1AB1C[gbl.field_197, arg_0, arg_6, arg_8] == 0)
+                unk_1AB1C[gbl.currentTeam, arg_0, arg_6, arg_8] == 0)
             {
                 var_1 = false;
             }
             else
             {
-                gbl.stru_1C9CD[arg_A].xPos = (sbyte)(arg_8 + (arg_4 * 6) + (arg_2 * 5) + 22);
-                gbl.stru_1C9CD[arg_A].yPos = (sbyte)(arg_6 + (arg_2 * 5) + 10);
+                //TODO workout why players are put on same spot (arg_4, arg_2, & arg_5 == 0)
+                gbl.CombatMap[arg_A].xPos = arg_8 + (arg_4 * 6) + (arg_2 * 5) + 22;
+                gbl.CombatMap[arg_A].yPos = arg_6 + (arg_2 * 5) + 10;
 
                 ovr033.sub_74D04(out var_5, out var_4, out var_3, out var_2, 8, gbl.player_array[arg_A]);
 
                 if (var_2 == 0 &&
                     var_3 > 0 &&
-                    gbl.unk_189B4[var_3].move_cost < 0xFF)
+                    gbl.BackGroundTiles[var_3].move_cost < 0xFF)
                 {
                     var_1 = true;
-                    unk_1AB1C[gbl.field_197, arg_0, arg_6, arg_8] = 0;
+                    unk_1AB1C[gbl.currentTeam, arg_0, arg_6, arg_8] = 0;
                 }
                 else
                 {
@@ -1092,12 +1086,12 @@ namespace engine
             var_F = 0;
             var_14 = 0;
 
-            var_11 = gbl.byte_1AD2C[gbl.field_197];
-            var_12 = gbl.byte_1AD2E[gbl.field_197];
+            var_11 = gbl.byte_1AD2C[gbl.currentTeam];
+            var_12 = gbl.byte_1AD2E[gbl.currentTeam];
 
             do
             {
-                int di = (gbl.byte_1AD32[gbl.field_197] << 2) + var_14;
+                int di = (gbl.byte_1AD32[gbl.currentTeam] << 2) + var_14;
                 var_9 = (byte)(unk_165FC[di] >> 1);
 
                 if (var_7 == 1)
@@ -1151,23 +1145,23 @@ namespace engine
                 if (var_7 > 1)
                 {
                     if ((var_5 != 0 && sub_38202(var_18, var_17) == false) ||
-                        (var_3 != 0 && var_13 >= gbl.unk_1AD30[gbl.field_197]) ||
+                        (var_3 != 0 && var_13 >= gbl.unk_1AD30[gbl.currentTeam]) ||
                         (var_3 == 0 && var_13 > 11))
                     {
                         var_F++;
 
-                        if (gbl.field_197 == 0 &&
+                        if (gbl.currentTeam == 0 &&
                             (gbl.byte_1AD32[0] & 1) == 1 &&
                             var_14 == 0 &&
                             var_F == 1)
                         {
-                            var_D = (sbyte)(gbl.byte_1AD2C[gbl.field_197] + gbl.mapPosX);
-                            var_E = (sbyte)(gbl.byte_1AD2E[gbl.field_197] + gbl.mapPosY);
+                            var_D = (sbyte)(gbl.byte_1AD2C[gbl.currentTeam] + gbl.mapPosX);
+                            var_E = (sbyte)(gbl.byte_1AD2E[gbl.currentTeam] + gbl.mapPosY);
                             var_6 = 0;
 
                             for (var_A = 1; var_A <= 3; var_A++)
                             {
-                                var_8 = unk_165EC[gbl.byte_1AD32[gbl.field_197] + var_A];
+                                var_8 = unk_165EC[gbl.byte_1AD32[gbl.currentTeam] + var_A];
 
                                 if (gbl.game_state == 3 ||
                                     sub_37388(var_8, var_E, var_D) != 1)
@@ -1198,16 +1192,16 @@ namespace engine
                     {
                         var_14++;
 
-                        var_D = (sbyte)(gbl.byte_1AD2C[gbl.field_197] + gbl.mapPosX);
-                        var_E = (sbyte)(gbl.byte_1AD2E[gbl.field_197] + gbl.mapPosY);
+                        var_D = (sbyte)(gbl.byte_1AD2C[gbl.currentTeam] + gbl.mapPosX);
+                        var_E = (sbyte)(gbl.byte_1AD2E[gbl.currentTeam] + gbl.mapPosY);
 
-                        var_8 = unk_165EC[gbl.byte_1AD32[gbl.field_197] + var_14];
+                        var_8 = unk_165EC[gbl.byte_1AD32[gbl.currentTeam] + var_14];
 
                         if (gbl.game_state == 3 ||
                             sub_37388(var_8, var_E, var_D) != 1)
                         {
-                            var_11 = (sbyte)(gbl.byte_1AD2C[gbl.field_197] + gbl.MapDirectionXDelta[var_8]);
-                            var_12 = (sbyte)(gbl.byte_1AD2E[gbl.field_197] + gbl.MapDirectionYDelta[var_8]);
+                            var_11 = (sbyte)(gbl.byte_1AD2C[gbl.currentTeam] + gbl.MapDirectionXDelta[var_8]);
+                            var_12 = (sbyte)(gbl.byte_1AD2E[gbl.currentTeam] + gbl.MapDirectionYDelta[var_8]);
 
                             var_F = 0;
                             var_7 = 1;
@@ -1257,24 +1251,22 @@ namespace engine
 
             for (int i = 1; i <= gbl.stru_1C9CD_count; i++)
             {
-                gbl.stru_1C9CD[i].field_3 = 0;
+                gbl.CombatMap[i].size = 0;
             }
 
             ovr033.sub_743E7();
             gbl.byte_1AD2C[0] = 0;
             gbl.byte_1AD2E[0] = 0;
-
             gbl.byte_1AD32[0] = (byte)(gbl.mapDirection >> 1);
 
             gbl.byte_1AD2C[1] = (sbyte)((gbl.area2_ptr.field_582 * gbl.MapDirectionXDelta[gbl.mapDirection]) + gbl.byte_1AD2C[0]);
             gbl.byte_1AD2E[1] = (sbyte)((gbl.area2_ptr.field_582 * gbl.MapDirectionYDelta[gbl.mapDirection]) + gbl.byte_1AD2E[0]);
-
             gbl.byte_1AD32[1] = (byte)(((gbl.mapDirection + 4) % 8) >> 1);
 
             gbl.unk_1AD30[0] = (byte)((gbl.friends_count + 1) / 2);
             gbl.unk_1AD30[1] = (byte)((gbl.foe_count + 1) / 2);
 
-            for (gbl.field_197 = 0; gbl.field_197 < 2; gbl.field_197++)
+            for (gbl.currentTeam = 0; gbl.currentTeam < 2; gbl.currentTeam++)
             {
                 for (var_C = 0; var_C < 4; var_C++)
                 {
@@ -1284,7 +1276,7 @@ namespace engine
                     }
                     else
                     {
-                        var_D = gbl.byte_1AD32[gbl.field_197];
+                        var_D = gbl.byte_1AD32[gbl.currentTeam];
                     }
 
                     for (var_2 = 0; var_2 <= 5; var_2++)
@@ -1294,11 +1286,11 @@ namespace engine
                             if (gbl.unk_16620[var_D, var_2, 0] > var_1 ||
                                 gbl.unk_16620[var_D, var_2, 1] < var_1)
                             {
-                                unk_1AB1C[gbl.field_197, var_C, var_2, var_1] = 0;
+                                unk_1AB1C[gbl.currentTeam, var_C, var_2, var_1] = 0;
                             }
                             else
                             {
-                                unk_1AB1C[gbl.field_197, var_C, var_2, var_1] = 1;
+                                unk_1AB1C[gbl.currentTeam, var_C, var_2, var_1] = 1;
                             }
                         }
                     }
@@ -1306,7 +1298,7 @@ namespace engine
             }
 
             loop_var = 1;
-            gbl.stru_1C9CD[0].field_3 = 0;
+            gbl.CombatantCount = 0;
             player_ptr2 = gbl.player_next_ptr;
             player_ptr = gbl.player_next_ptr;
 
@@ -1316,10 +1308,10 @@ namespace engine
 
                 gbl.player_array[loop_var] = player_ptr;
 
-                gbl.field_197 = player_ptr.combat_team;
+                gbl.currentTeam = player_ptr.combat_team;
 
-                gbl.stru_1C9CD[loop_var].field_2 = loop_var;
-                gbl.stru_1C9CD[loop_var].field_3 = (byte)(player_ptr.field_DE & 7);
+                gbl.CombatMap[loop_var].field_2 = loop_var;
+                gbl.CombatMap[loop_var].size = (byte)(player_ptr.field_DE & 7);
 
                 if (sub_38380(loop_var) != 0)
                 {
@@ -1327,17 +1319,17 @@ namespace engine
 
                     if (player_ptr.in_combat == false)
                     {
-                        gbl.stru_1C9CD[loop_var].field_3 = 0;
+                        gbl.CombatMap[loop_var].size = 0;
 
                         if (gbl.combat_type == gbl.combatType.normal &&
                             player_ptr.actions.field_13 == 0)
                         {
-                            var_1 = (sbyte)gbl.stru_1C9CD[loop_var].xPos;
-                            var_2 = (sbyte)gbl.stru_1C9CD[loop_var].yPos;
+                            var_1 = (sbyte)gbl.CombatMap[loop_var].xPos;
+                            var_2 = (sbyte)gbl.CombatMap[loop_var].yPos;
                             gbl.byte_1D1BB++;
 
-                            gbl.unk_1D183[gbl.byte_1D1BB].field_6 = gbl.stru_1D1BC[var_1, var_2];
-                            gbl.stru_1D1BC[var_1, var_2] = 0x1F;
+                            gbl.unk_1D183[gbl.byte_1D1BB].field_6 = (byte)gbl.mapToBackGroundTile[var_1, var_2];
+                            gbl.mapToBackGroundTile[var_1, var_2] = 0x1F;
                             gbl.unk_1D183[gbl.byte_1D1BB].field_0 = player_ptr;
                             gbl.unk_1D183[gbl.byte_1D1BB].mapX = var_1;
                             gbl.unk_1D183[gbl.byte_1D1BB].mapY = var_2;
@@ -1346,12 +1338,12 @@ namespace engine
 
                     ovr033.sub_743E7();
                     loop_var++;
-                    gbl.stru_1C9CD[0].field_3++;
+                    gbl.CombatantCount++;
                     var_E++;
                 }
                 else
                 {
-                    gbl.stru_1C9CD[loop_var].field_3 = 0;
+                    gbl.CombatMap[loop_var].size = 0;
 
                     if (player_ptr.actions.field_13 == 1)
                     {
@@ -1365,7 +1357,7 @@ namespace engine
                     else
                     {
                         player_ptr2 = player_ptr;
-                        gbl.stru_1C9CD[0].field_3++;
+                        gbl.CombatantCount++;
                     }
                 }
 
@@ -1421,8 +1413,8 @@ namespace engine
             seg043.clear_one_keypress();
             seg040.init_dax_block(out gbl.dword_1D90A, 1, 4, 3, 0x18);
 
-            gbl.stru_1D1BC.mapScreenLeftX = ovr033.PlayerMapXPos(gbl.player_next_ptr) - 3;
-            gbl.stru_1D1BC.mapScreenTopY = ovr033.PlayerMapYPos(gbl.player_next_ptr) - 3;
+            gbl.mapToBackGroundTile.mapScreenLeftX = ovr033.PlayerMapXPos(gbl.player_next_ptr) - 3;
+            gbl.mapToBackGroundTile.mapScreenTopY = ovr033.PlayerMapYPos(gbl.player_next_ptr) - 3;
 
             ovr025.sub_68DC0();
             player = gbl.player_next_ptr;

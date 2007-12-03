@@ -900,7 +900,7 @@ namespace engine
             gbl.area2_ptr.field_58E = 0;
             gbl.byte_1AB14 = 0;
 
-            if( gbl.inDemo == true )
+            if( gbl.inDemo == false )
             {
                 sub_2D556();
             }

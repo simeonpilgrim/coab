@@ -21,10 +21,10 @@ namespace engine
         public static void PROGRAM()
         {
             /* Memory Init - Start */
-            gbl.stru_1C9CD = new gbl.Struct_1C9CD[gbl.stru_1C9CD_count+1]; /* God damm 1-n arrays */
+            gbl.CombatMap = new gbl.Struct_1C9CD[gbl.stru_1C9CD_count+1]; /* God damm 1-n arrays */
             for (int i = 0; i <= gbl.stru_1C9CD_count; i++)
             {
-                gbl.stru_1C9CD[i] = new gbl.Struct_1C9CD();
+                gbl.CombatMap[i] = new gbl.Struct_1C9CD();
             }
             
             gbl.unk_16620 = new byte[5, 6, 2]; // the 5 is made up.

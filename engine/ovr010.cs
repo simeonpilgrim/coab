@@ -52,7 +52,7 @@ namespace engine
                 return;
             }
 
-            if (sub_354AA(player) != 0)
+            if (sub_354AA(player))
             {
                 var_2 = ovr025.clear_actions(player);
                 return;
@@ -118,7 +118,7 @@ namespace engine
         }
 
 
-        internal static bool sub_352AF(byte arg_2, sbyte arg_4, sbyte arg_6)
+        internal static bool sub_352AF(byte arg_2, int mapY, int mapX)
         {
             byte var_4;
             sbyte var_3;
@@ -136,7 +136,7 @@ namespace engine
                 var_3 = 8;
             }
 
-            ovr032.sub_738D8(gbl.stru_1D1BC, 1, 0xff, gbl.unk_19AEC[arg_2].field_F, arg_4, arg_6);
+            ovr032.sub_738D8(gbl.mapToBackGroundTile, 1, 0xff, gbl.unk_19AEC[arg_2].field_F, mapY, mapX);
             var_4 = gbl.byte_1D1C0;
 
             for (var_2 = 1; var_2 <= var_4; var_2++)
@@ -156,78 +156,64 @@ namespace engine
         }
 
 
-        internal static byte sub_353B1(byte arg_0, byte arg_2, Player arg_4)
+        internal static bool sub_353B1(byte arg_0, byte arg_2, Player arg_4)
         {
             byte var_8;
             byte var_7;
             byte var_6;
             Player var_5;
-            byte var_1;
 
-            var_1 = 0;
+            bool var_1 = false;
 
             if (gbl.unk_19AEC[arg_2].field_D < arg_0)
             {
-
-                throw new System.NotSupportedException();//cmp	[bp+arg_2], 3
-                throw new System.NotSupportedException();//jz	loc_353EA
-                throw new System.NotSupportedException();//cmp	gbl.unk_19AEC[ arg_2 ].field_E, 0
-                throw new System.NotSupportedException();//jz	loc_35404
-                throw new System.NotSupportedException();//loc_353EA:
-                throw new System.NotSupportedException();//cmp	[bp+arg_2], 3
-                throw new System.NotSupportedException();//jnz	loc_3540B
-                ovr014.sub_3FDFE(out var_5, arg_4);
-                throw new System.NotSupportedException();//or	al, al
-                throw new System.NotSupportedException();//jz	loc_3540B
-                throw new System.NotSupportedException();//loc_35404:
-                var_1 = 1;
-                throw new System.NotSupportedException();//jmp	loc_354A1
-                throw new System.NotSupportedException();//loc_3540B:
-
-                var_6 = ovr025.near_enemy(ovr023.sub_5CDE5(arg_2), arg_4);
-
-                if (var_6 > 0)
+                if ((arg_2 != 3 && gbl.unk_19AEC[arg_2].field_E == 0) ||
+                    (arg_2 == 3 && ovr014.sub_3FDFE(out var_5, arg_4)))
                 {
-                    if (gbl.unk_19AEC[arg_2].field_F == 0)
-                    {
-                        var_1 = 1;
-                    }
-                    else
-                    {
-                        var_8 = var_6;
+                    var_1 = true;
+                }
+                else
+                {
+                    var_6 = ovr025.near_enemy(ovr023.sub_5CDE5(arg_2), arg_4);
 
-                        for (var_7 = 1; var_7 <= var_8; var_7++)
+                    if (var_6 > 0)
+                    {
+                        if (gbl.unk_19AEC[arg_2].field_F == 0)
                         {
-                            if (sub_352AF(arg_2, (sbyte)gbl.stru_1C9CD[gbl.byte_1D8B9[var_7]].yPos, (sbyte)gbl.stru_1C9CD[gbl.byte_1D8B9[var_7]].xPos) == true)
-                            {
-                                return var_1;
-                            }
+                            var_1 = true;
                         }
-                        var_1 = 1;
+                        else
+                        {
+                            var_8 = var_6;
+
+                            for (var_7 = 1; var_7 <= var_8; var_7++)
+                            {
+                                if (sub_352AF(arg_2, gbl.CombatMap[gbl.byte_1D8B9[var_7]].yPos, gbl.CombatMap[gbl.byte_1D8B9[var_7]].xPos) == true)
+                                {
+                                    return var_1;
+                                }
+                            }
+                            var_1 = true;
+                        }
                     }
                 }
             }
-            throw new System.NotSupportedException();//loc_354A1:
+
             return var_1;
         }
 
 
-        internal static byte sub_354AA(Player player)
+        internal static bool sub_354AA(Player player)
         {
-            byte var_16;
-            bool var_15 = false; /* simeon */
-            Item var_14;
             Item item_ptr;
             byte var_8;
-            byte var_7;
             byte var_4;
             byte var_3;
             byte var_2;
-            byte var_1;
 
-            var_1 = 0;
+            bool var_1 = false;
 
-            var_14 = null;
+            Item var_14 = null;
             var_2 = 7;
             var_3 = ovr024.roll_dice(7, 1);
 
@@ -236,16 +222,14 @@ namespace engine
                 teamCount > 0 &&
                 gbl.area_ptr.can_cast_spells == false)
             {
-                var_16 = var_3;
-
-                for (var_4 = 1; var_4 <= var_16; var_4++)
+                for (var_4 = 1; var_4 <= var_3; var_4++)
                 {
                     item_ptr = player.itemsPtr;
 
                     while (item_ptr != null && var_14 == null)
                     {
                         var_8 = (byte)item_ptr.affect_2;
-                        var_7 = gbl.unk_1C020[item_ptr.type].field_0;
+                        byte var_7 = gbl.unk_1C020[item_ptr.type].field_0;
 
 
                         if (ovr023.item_is_scroll(item_ptr) == false &&
@@ -258,7 +242,7 @@ namespace engine
                                 var_8 -= 0x17;
                             }
 
-                            if (sub_353B1(var_2, var_8, player) != 0)
+                            if (sub_353B1(var_2, var_8, player) )
                             {
                                 var_14 = item_ptr;
                             }
@@ -272,8 +256,9 @@ namespace engine
 
             if (var_14 != null)
             {
+                bool var_15 = false; /* simeon */
                 ovr020.sub_56478(ref var_15, var_14);
-                var_1 = 1;
+                var_1 = true;
             }
 
             return var_1;
@@ -325,7 +310,7 @@ namespace engine
                             var_60 = (byte)(ovr024.roll_dice(var_5F, 1) - 1);
                             var_61 = var_55[var_60];
 
-                            if (sub_353B1(var_5A, var_61, player) != 0)
+                            if (sub_353B1(var_5A, var_61, player))
                             {
                                 var_62 = var_61;
                             }
@@ -383,18 +368,18 @@ namespace engine
             }
             else
             {
-                if (gbl.unk_189B4[var_9].move_cost == 0xff)
+                if (gbl.BackGroundTiles[var_9].move_cost == 0xff)
                 {
                     return 0;
                 }
 
                 if ((var_7 & 1) != 0)
                 {
-                    var_A = (byte)(gbl.unk_189B4[var_9].move_cost * 3);
+                    var_A = (byte)(gbl.BackGroundTiles[var_9].move_cost * 3);
                 }
                 else
                 {
-                    var_A = (byte)(gbl.unk_189B4[var_9].move_cost * 2);
+                    var_A = (byte)(gbl.BackGroundTiles[var_9].move_cost * 2);
                 }
 
                 if (var_8 == 0 && var_A < player.actions.move)
@@ -677,9 +662,9 @@ namespace engine
 
                         var_6 = var_4;
 
-                        gbl.stru_1D1BC.field_6 = 0;
+                        gbl.mapToBackGroundTile.field_6 = 0;
 
-                        if (ovr032.sub_733F1(gbl.stru_1D1BC, ref var_6, ref tmpY, ref tmpX, ovr033.PlayerMapYPos(player), ovr033.PlayerMapXPos(player)) == true &&
+                        if (ovr032.sub_733F1(gbl.mapToBackGroundTile, ref var_6, ref tmpY, ref tmpX, ovr033.PlayerMapYPos(player), ovr033.PlayerMapXPos(player)) == true &&
                             (var_6 / 2) <= var_4)
                         {
                             gbl.byte_1D90E = true;

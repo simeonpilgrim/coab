@@ -52,8 +52,8 @@ namespace Classes
         public const byte byte_16E2C = 0;
         public const sbyte byte_16E2E = 4;
 
-        public const int unk_189B4_count = 64; /* 64 is a guess */
-        public static Struct_189B4[] unk_189B4 = { 
+        public const int BackGroundTiles_count = 64; /* 64 is a guess */
+        public static Struct_189B4[] BackGroundTiles = { /* unk_189B4 */
             new Struct_189B4( 1 , 0 , 0xFF, 0),
             new Struct_189B4( 0xFF , 1 , 2 , 0 ),
             new Struct_189B4( 0xFF , 1 , 2 , 1 ),
@@ -171,7 +171,7 @@ namespace Classes
         public static byte byte_1AD37 = 0x79;
         public static byte byte_1AD38 = 0x1A;
         public static byte byte_1AD39 = 0x8B;
-        public static sbyte field_197;
+        public static sbyte currentTeam; // field_197
         public static byte byte_1AD3C;
         public static byte byte_1AD3D;
         public static byte byte_1AD3E;
@@ -503,11 +503,12 @@ namespace Classes
             public int xPos; // 0x00
             public int yPos; // 0x01
             public byte field_2;
-            public byte field_3;
+            public byte size; // field_3
         }
 
         public const int stru_1C9CD_count = 0xff;
-        public static Struct_1C9CD[] stru_1C9CD; // seg600:66BD
+        public static int CombatantCount; // gbl.stru_1C9CD[0].field_3
+        public static Struct_1C9CD[] CombatMap; // seg600:66BD stru_1C9CD
 
         public static byte[, ,] unk_16620; // unk_16620 seg600:0310
 
@@ -711,7 +712,7 @@ new Struct_19AEC( 32h,0,7,12h,3,12h,3,12h,8,12h,3,12h,3,3,12h,11h) };*/
         public static Struct_1C020[] unk_1C020;
         public static short unk_1C8BC;
         public static Struct_1D183[] unk_1D183; // array[8] but 1 offset.
-        public static Struct_1D1BC stru_1D1BC;
+        public static Struct_1D1BC mapToBackGroundTile; // stru_1D1BC
 
         public static byte[] unk_1AE70;
 

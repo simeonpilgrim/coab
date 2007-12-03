@@ -105,14 +105,13 @@ namespace engine
         }
 
 
-        internal static void draw_combat_icon(int iconIndex, int iconState, byte arg_4, int tileY, int tileX) /* sub_76504 */
+        internal static void draw_combat_icon(int iconIndex, int iconState, int direction, int tileY, int tileX) /* sub_76504 */
         {
-            //TODO workout what arg_4 is for?
             DaxBlock icon = gbl.combat_icons[iconIndex, iconState];
 
             if (icon != null)
             {
-                if (arg_4 > 3)
+                if (direction > 3)
                 {
                     DaxBlock flipped;
                     seg040.init_dax_block(out flipped, 1, 1, 3, 0x18);

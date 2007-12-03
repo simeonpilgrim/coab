@@ -27,8 +27,8 @@ namespace engine
                 gbl.stru_1D889 = var_4;
             }
 
-            seg051.FreeMem(0x4e9, gbl.stru_1D1BC);
-            gbl.stru_1D1BC = null;
+            seg051.FreeMem(0x4e9, gbl.mapToBackGroundTile);
+            gbl.mapToBackGroundTile = null;
 
             seg040.free_dax_block(ref gbl.dword_1D90A);
             ovr033.Color_0_8_normal();
@@ -446,7 +446,7 @@ namespace engine
 
             ovr025.count_teams();
 
-            ovr033.sub_749DD(8, 0xff, gbl.stru_1D1BC.mapScreenTopY + 3, gbl.stru_1D1BC.mapScreenLeftX + 3);
+            ovr033.sub_749DD(8, 0xff, gbl.mapToBackGroundTile.mapScreenTopY + 3, gbl.mapToBackGroundTile.mapScreenLeftX + 3);
 
             if (gbl.friends_count == 0 ||
                 gbl.foe_count == 0 ||
@@ -584,14 +584,14 @@ namespace engine
                     {
                         if ((var_7 / 2) < 1)
                         {
-                            var_D = gbl.unk_189B4[var_9].move_cost * 3;
+                            var_D = gbl.BackGroundTiles[var_9].move_cost * 3;
                         }
                         else
                         {
-                            var_D = gbl.unk_189B4[var_9].move_cost * 2;
+                            var_D = gbl.BackGroundTiles[var_9].move_cost * 2;
                         }
 
-                        if (gbl.unk_189B4[var_9].move_cost == 0xFF)
+                        if (gbl.BackGroundTiles[var_9].move_cost == 0xFF)
                         {
                             var_D = 0xFFFF;
                         }

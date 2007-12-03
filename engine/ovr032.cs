@@ -4,47 +4,47 @@ namespace engine
 {
     class ovr032
     {
-        internal static short sub_73005( int arg_0 )
+        internal static short sub_73005(int arg_0)
         {
             short var_2;
-   
-			if( arg_0 < 0 )
-			{
-				var_2 = -1;
-			}
-			else if( arg_0 > 0 )
-			{
-				var_2 = 1;
-			}
-			else
-			{
-				var_2 = 0;
-			}
 
-			return var_2;
+            if (arg_0 < 0)
+            {
+                var_2 = -1;
+            }
+            else if (arg_0 > 0)
+            {
+                var_2 = 1;
+            }
+            else
+            {
+                var_2 = 0;
+            }
+
+            return var_2;
         }
 
 
-        static void sub_73033( )
+        static void sub_73033()
         {
-            if( gbl.byte_1D1C0 > 1 )
+            if (gbl.byte_1D1C0 > 1)
             {
-                for( int var_1 = 1; var_1 <= (gbl.byte_1D1C0 - 1); var_1++ )
+                for (int var_1 = 1; var_1 <= (gbl.byte_1D1C0 - 1); var_1++)
                 {
-                    for( int var_2 = var_1 + 1; var_2 <= gbl.byte_1D1C0; var_2++ )
+                    for (int var_2 = var_1 + 1; var_2 <= gbl.byte_1D1C0; var_2++)
                     {
-                        byte var_4 = gbl.unk_1D1C1[ var_1 ].field_2;
-                        byte var_3 = gbl.unk_1D1C1[ var_2 ].field_2;
+                        byte var_4 = gbl.unk_1D1C1[var_1].field_2;
+                        byte var_3 = gbl.unk_1D1C1[var_2].field_2;
 
-						if( gbl.unk_1D1C1[ var_2 ].field_1 < gbl.unk_1D1C1[ var_1 ].field_1 ||
-							( gbl.unk_1D1C1[ var_2 ].field_1 == gbl.unk_1D1C1[ var_1 ].field_1 &&
-							  var_3 < var_4 &&
-							  ( var_3 % 2 ) <= ( var_4 % 2 ) ) )
-						{
-							gbl.Struct_1D1C1 var_7 = gbl.unk_1D1C1[ var_1 ];
-							gbl.unk_1D1C1[ var_1 ] = gbl.unk_1D1C1[ var_2 ];
-							gbl.unk_1D1C1[ var_2 ] = var_7;
-						}
+                        if (gbl.unk_1D1C1[var_2].field_1 < gbl.unk_1D1C1[var_1].field_1 ||
+                            (gbl.unk_1D1C1[var_2].field_1 == gbl.unk_1D1C1[var_1].field_1 &&
+                              var_3 < var_4 &&
+                              (var_3 % 2) <= (var_4 % 2)))
+                        {
+                            gbl.Struct_1D1C1 var_7 = gbl.unk_1D1C1[var_1];
+                            gbl.unk_1D1C1[var_1] = gbl.unk_1D1C1[var_2];
+                            gbl.unk_1D1C1[var_2] = var_7;
+                        }
                     }
                 }
             }
@@ -62,7 +62,7 @@ namespace engine
             arg_0.field_14 = sub_73005(arg_0.field_06 - arg_0.field_02);
 
             arg_0.field_08 = 0;
-            arg_0.field_16 = 0;           
+            arg_0.field_16 = 0;
         }
 
         internal static bool sub_7324C(Struct_XXXX arg_0)
@@ -97,7 +97,7 @@ namespace engine
                     var_1 = true;
                 }
             }
-            else if( var_7.field_10 != var_7.field_06 )
+            else if (var_7.field_10 != var_7.field_06)
             {
                 var_7.field_10 += var_7.field_14;
                 var_3 = (sbyte)(var_7.field_14 + 1);
@@ -151,7 +151,7 @@ namespace engine
 
             var_31.field_00 = 0;
 
-            var_31.field_02 = gbl.unk_189B4[arg_0[mapX, mapY]].field_1;
+            var_31.field_02 = gbl.BackGroundTiles[arg_0[mapX, mapY]].field_1;
 
             if (var_19.field_0A > var_19.field_0C)
             {
@@ -162,17 +162,17 @@ namespace engine
                 var_31.field_04 = var_19.field_0C;
             }
 
-            var_31.field_06 = gbl.unk_189B4[arg_0[mapX, mapY]].field_1;
+            var_31.field_06 = gbl.BackGroundTiles[arg_0[mapX, mapY]].field_1;
             sub_731A5(var_31);
             var_32 = false;
 
             do
             {
-                if ((arg_0.field_6 == 0 && gbl.unk_189B4[arg_0[var_19.field_0E, var_19.field_10]].field_2 > var_31.field_0A) ||
+                if ((arg_0.field_6 == 0 && gbl.BackGroundTiles[arg_0[var_19.field_0E, var_19.field_10]].field_2 > var_31.field_0A) ||
                     var_19.field_16 > var_35)
                 {
-                    outX = (sbyte)var_19.field_0E;
-                    outY = (sbyte)var_19.field_10;
+                    outX = var_19.field_0E;
+                    outY = var_19.field_10;
                     arg_4 = (sbyte)var_19.field_16;
 
                     return false;
@@ -187,44 +187,44 @@ namespace engine
             return true;
         }
 
-
-        internal static bool sub_7354A(byte arg_0, int arg_2, int arg_4, int arg_6, int arg_8)
+        /// <summary>
+        /// Returns if playerB can see playerA
+        /// </summary>
+        internal static bool CanSeeCombatant(byte direction, int playerAY, int playerAX, int playerBY, int playerBX) /* sub_7354A */
         {
-            sbyte var_3;
-            sbyte var_2;
             bool var_1;
 
-            if (arg_8 < 0 ||
-                arg_8 > 0x31 ||
-                arg_6 < 0 ||
-                arg_6 > 0x18 ||
-                arg_4 < 0 ||
-                arg_4 > 0x31 ||
-                arg_2 < 0 ||
-                arg_2 > 0x18)
+            if (playerBX < 0 ||
+                playerBX > 0x31 ||
+                playerBY < 0 ||
+                playerBY > 0x18 ||
+                playerAX < 0 ||
+                playerAX > 0x31 ||
+                playerAY < 0 ||
+                playerAY > 0x18)
             {
                 return false;
             }
 
-            if (arg_0 == 0xff)
+            if (direction == 0xff)
             {
-                arg_0 = 8;
+                direction = 8;
             }
 
-            var_2 = (sbyte)(arg_8 + gbl.MapDirectionXDelta[arg_0]);
-            var_3 = (sbyte)(arg_6 + gbl.MapDirectionYDelta[arg_0]);
+            int facingX = playerBX + gbl.MapDirectionXDelta[direction];
+            int facingY = playerBY + gbl.MapDirectionYDelta[direction];
 
-            if ((arg_8 == arg_4 && arg_6 == arg_2) ||
-                (var_2 == arg_4 && var_3 == arg_2))
+            if ((playerBX == playerAX && playerBY == playerAY) ||
+                (facingX == playerAX && facingY == playerAY))
             {
                 return true;
             }
 
-            switch (arg_0)
+            switch (direction)
             {
                 case 0:
-                    if ((arg_4 >= var_2 && arg_2 <= ((var_2 - arg_4) + var_3)) ||
-                        (arg_4 <= var_2 && arg_2 <= ((arg_4 - var_2) + var_3)))
+                    if ((playerAX >= facingX && playerAY <= ((facingX - playerAX) + facingY)) ||
+                        (playerAX <= facingX && playerAY <= ((playerAX - facingX) + facingY)))
                     {
                         var_1 = true;
                     }
@@ -235,8 +235,8 @@ namespace engine
                     break;
 
                 case 1:
-                    if ((arg_4 >= var_2 && arg_2 <= ((var_2 - arg_4) + var_3)) ||
-                        (arg_4 >= ((var_2 - var_3) + arg_2) && arg_2 <= var_3))
+                    if ((playerAX >= facingX && playerAY <= ((facingX - playerAX) + facingY)) ||
+                        (playerAX >= ((facingX - facingY) + playerAY) && playerAY <= facingY))
                     {
                         var_1 = true;
                     }
@@ -247,8 +247,8 @@ namespace engine
                     break;
 
                 case 2:
-                    if ((arg_4 >= (var_2 + var_3 - arg_2) && arg_2 <= var_3) ||
-                        (arg_4 >= (var_2 + arg_2 - var_3) && arg_2 >= var_3))
+                    if ((playerAX >= (facingX + facingY - playerAY) && playerAY <= facingY) ||
+                        (playerAX >= (facingX + playerAY - facingY) && playerAY >= facingY))
                     {
                         var_1 = true;
                     }
@@ -259,8 +259,8 @@ namespace engine
                     break;
 
                 case 3:
-                    if ((arg_4 >= ((var_2 + arg_2) - var_3) && arg_2 >= var_3) ||
-                        (arg_4 >= var_2 && arg_2 >= ((arg_4 - var_2) + var_3)))
+                    if ((playerAX >= ((facingX + playerAY) - facingY) && playerAY >= facingY) ||
+                        (playerAX >= facingX && playerAY >= ((playerAX - facingX) + facingY)))
                     {
                         var_1 = true;
                     }
@@ -271,8 +271,8 @@ namespace engine
                     break;
 
                 case 4:
-                    if ((arg_4 >= var_2 && arg_2 >= ((arg_4 - var_2) + var_3)) ||
-                        (arg_4 <= var_2 && arg_2 >= ((var_2 - arg_4) + var_3)))
+                    if ((playerAX >= facingX && playerAY >= ((playerAX - facingX) + facingY)) ||
+                        (playerAX <= facingX && playerAY >= ((facingX - playerAX) + facingY)))
                     {
                         var_1 = true;
                     }
@@ -283,8 +283,8 @@ namespace engine
                     break;
 
                 case 5:
-                    if ((arg_4 <= var_2 && arg_2 >= ((var_2 - arg_4) + var_3)) ||
-                        (arg_4 <= ((var_2 + var_3) - arg_2) && arg_2 >= var_3))
+                    if ((playerAX <= facingX && playerAY >= ((facingX - playerAX) + facingY)) ||
+                        (playerAX <= ((facingX + facingY) - playerAY) && playerAY >= facingY))
                     {
                         var_1 = true;
                     }
@@ -295,8 +295,8 @@ namespace engine
                     break;
 
                 case 6:
-                    if ((arg_4 <= ((var_2 + var_3) - arg_2) && arg_2 >= var_3) ||
-                        (arg_4 <= ((var_2 + arg_2) - var_3) && arg_2 <= var_3))
+                    if ((playerAX <= ((facingX + facingY) - playerAY) && playerAY >= facingY) ||
+                        (playerAX <= ((facingX + playerAY) - facingY) && playerAY <= facingY))
                     {
                         var_1 = true;
                     }
@@ -307,8 +307,8 @@ namespace engine
                     break;
 
                 case 7:
-                    if ((arg_4 <= ((var_2 + arg_2) - var_3) && arg_2 <= var_3) ||
-                        (arg_4 <= var_2 && arg_2 <= ((arg_4 - var_2) + var_3)))
+                    if ((playerAX <= ((facingX + playerAY) - facingY) && playerAY <= facingY) ||
+                        (playerAX <= facingX && playerAY <= ((playerAX - facingX) + facingY)))
                     {
                         var_1 = true;
                     }
@@ -330,117 +330,113 @@ namespace engine
         }
 
 
-        internal static void sub_738D8( Struct_1D1BC arg_0, byte arg_4, byte arg_6, short arg_8, int mapY, int mapX )
+        internal static void sub_738D8(Struct_1D1BC arg_0, int size, byte arg_6, short arg_8, int mapY, int mapX)
         {
-            byte var_20;
             short var_1F;
             short var_1D;
-            sbyte[] var_1B = new sbyte[ 4 ];
-            sbyte[] var_17 = new sbyte[ 4 ];
-			sbyte[] var_13 = new sbyte[ 4 ];
-			sbyte[] var_F = new sbyte[ 4 ];
-			sbyte var_B;
-            sbyte var_A;
+            int[] combatantMapStepY = new int[4];
+            int[] combatantMapStepX = new int[4];
+            int[] mapStepY = new int[4];
+            int[] mapStepX = new int[4];
+            sbyte deltaY;
+            sbyte deltaX;
             byte var_7;
-            byte var_6;
-            byte var_5;
-            byte var_4;
-            byte var_3;
+            int var_6;
+            int var_5;
             byte var_2;
-            byte var_1;
+            byte playerIndex;
 
-			var_6 = 255; /* put here because of unused error */
-			var_5 = 255; /* put here because of unused error */
+            var_6 = 255; /* put here because of unused error */
+            var_5 = 255; /* put here because of unused error */
 
-			for( var_3 = 0; var_3 <= 3; var_3++ )
-			{
-				if( ovr033.sub_7400F( out var_B, out var_A, var_3, arg_4 ) == true )
-				{
-					var_F[ var_3 ] = (sbyte)(var_A + mapX);
-					var_13[ var_3 ] = (sbyte)(mapY + var_B);
-				}
-				else
-				{
-					var_F[ var_3 ] = -1;
-				}
-			}
+            for (int step = 0; step <= 3; step++)
+            {
+                if (ovr033.GetSizeBasedMapDelta(out deltaY, out deltaX, step, size) == true)
+                {
+                    mapStepX[step] = mapX + deltaX;
+                    mapStepY[step] = mapY + deltaY;
+                }
+                else
+                {
+                    mapStepX[step] = -1;
+                }
+            }
 
             gbl.byte_1D1C0 = 0;
-			var_20 = gbl.stru_1C9CD[0].field_3;
 
-			for( var_1 = 1; var_1 <= var_20; var_1++ )
-			{
-				if( gbl.stru_1C9CD[ var_1 ].field_3 > 0 )
-				{
-					var_7 = 0;
-					var_1F = 0x0FF;
+            for (playerIndex = 1; playerIndex <= gbl.CombatantCount; playerIndex++)
+            {
+                if (gbl.CombatMap[playerIndex].size > 0)
+                {
+                    var_7 = 0;
+                    var_1F = 0x0FF;
 
-					for( var_4 = 0; var_4 <= 3; var_4++ )
-					{
-						if( ovr033.sub_7400F( out var_B, out var_A, var_4, gbl.stru_1C9CD[ var_1 ].field_3 ) == true )
-						{
-							var_17[ var_4 ] = (sbyte)( gbl.stru_1C9CD[ var_1 ].xPos + var_A );
-							var_1B[ var_4 ] = (sbyte)( gbl.stru_1C9CD[ var_1 ].yPos + var_B );
-						}
-						else
-						{
-							var_17[ var_4 ] = -1;
-						}
-					}
+                    for (int combStep = 0; combStep <= 3; combStep++)
+                    {
+                        if (ovr033.GetSizeBasedMapDelta(out deltaY, out deltaX, combStep, gbl.CombatMap[playerIndex].size) == true)
+                        {
+                            combatantMapStepX[combStep] = gbl.CombatMap[playerIndex].xPos + deltaX;
+                            combatantMapStepY[combStep] = gbl.CombatMap[playerIndex].yPos + deltaY;
+                        }
+                        else
+                        {
+                            combatantMapStepX[combStep] = -1;
+                        }
+                    }
 
-					for( var_4 = 0; var_4 <= 3; var_4++ )
-					{
-						if( var_17[ var_4 ] >= 0 )
-						{
-							for( var_3 = 0; var_3 <= 3; var_3++ )
-							{
-								if( var_F[ var_3 ] >= 0 &&
-									sub_7354A( arg_6, var_1B[ var_4 ], var_17[ var_4 ], var_13[ var_3 ], var_F[ var_3 ]) == true )
-								{
-									int var_8 = var_17[ var_4 ];
-									int var_9 = var_1B[ var_4 ];
-									var_1D = arg_8;
+                    for (int combStep = 0; combStep <= 3; combStep++)
+                    {
+                        if (combatantMapStepX[combStep] >= 0)
+                        {
+                            for (int step = 0; step <= 3; step++)
+                            {
+                                if (mapStepX[step] >= 0 &&
+                                    CanSeeCombatant(arg_6, combatantMapStepY[combStep], combatantMapStepX[combStep], mapStepY[step], mapStepX[step]) == true)
+                                {
+                                    int var_8 = combatantMapStepX[combStep];
+                                    int var_9 = combatantMapStepY[combStep];
+                                    var_1D = arg_8;
 
-									if( sub_733F1( arg_0, ref var_1D, ref var_9, ref var_8, var_13[ var_3 ], var_F[ var_3 ] ) == true )
-									{
-										var_7 = 1;
+                                    if (sub_733F1(arg_0, ref var_1D, ref var_9, ref var_8, mapStepY[step], mapStepX[step]) == true)
+                                    {
+                                        var_7 = 1;
 
-										if( var_1D < var_1F )
-										{
-											var_1F = var_1D;
-											var_5 = var_3;
-											var_6 = var_4;
-										}
-									}
-								}
-							}
-						}
-					}
+                                        if (var_1D < var_1F)
+                                        {
+                                            var_1F = var_1D;
+                                            var_5 = step;
+                                            var_6 = combStep;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
 
-					if( var_7 != 0 )
-					{
-						gbl.byte_1D1C0++;
+                    if (var_7 != 0)
+                    {
+                        gbl.byte_1D1C0++;
 
-						gbl.unk_1D1C1[ gbl.byte_1D1C0 ].field_0 = var_1;
-						gbl.unk_1D1C1[ gbl.byte_1D1C0 ].field_1 = (byte)var_1F;
-						var_2 = 0;
+                        gbl.unk_1D1C1[gbl.byte_1D1C0].field_0 = playerIndex;
+                        gbl.unk_1D1C1[gbl.byte_1D1C0].field_1 = (byte)var_1F;
+                        var_2 = 0;
 
-						if( arg_6 < 8 )
-						{
-							var_2 = arg_6;
-						}
-						else
-						{
-							while( sub_7354A( var_2, var_1B[ var_6 ], var_17[ var_6 ], var_13[ var_5 ], var_F[ var_5 ] ) == false )
-							{
-								var_2++;
-							}
-						}
+                        if (arg_6 < 8)
+                        {
+                            var_2 = arg_6;
+                        }
+                        else
+                        {
+                            while (CanSeeCombatant(var_2, combatantMapStepY[var_6], combatantMapStepX[var_6], mapStepY[var_5], mapStepX[var_5]) == false)
+                            {
+                                var_2++;
+                            }
+                        }
 
-						gbl.unk_1D1C1[ gbl.byte_1D1C0 ].field_2 = var_2;
-					}
-				}
-			}
+                        gbl.unk_1D1C1[gbl.byte_1D1C0].field_2 = var_2;
+                    }
+                }
+            }
 
             sub_73033();
         }
