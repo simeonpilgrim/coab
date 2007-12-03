@@ -712,16 +712,6 @@ namespace engine
         }
 
 
-        internal static string sub_67142(int arg_0)
-        {
-            string var_100;
-
-            seg051.Str(0xff, out var_100, 0, arg_0);
-
-            return var_100;
-        }
-
-
         internal static sbyte stat_bonus(Player player)
         {
             byte stat_val;
@@ -1251,8 +1241,8 @@ namespace engine
             var_C2 = (short)(playerAMapX - playerBMapX);
             var_C4 = (short)(playerAMapY - playerBMapY);
 
-            if (ovr033.CoordOnScreen((playerBMapY - gbl.stru_1D1BC.mapScreenTopY), (playerBMapX - gbl.stru_1D1BC.mapScreenLeftX)) == false ||
-                ovr033.CoordOnScreen((playerAMapY - gbl.stru_1D1BC.mapScreenTopY), (playerAMapX - gbl.stru_1D1BC.mapScreenLeftX)) == false)
+            if (ovr033.CoordOnScreen((playerBMapY - gbl.mapToBackGroundTile.mapScreenTopY), (playerBMapX - gbl.mapToBackGroundTile.mapScreenLeftX)) == false ||
+                ovr033.CoordOnScreen((playerAMapY - gbl.mapToBackGroundTile.mapScreenTopY), (playerAMapX - gbl.mapToBackGroundTile.mapScreenLeftX)) == false)
             {
                 if (System.Math.Abs(var_C2) <= 6 &&
                     System.Math.Abs(var_C4) <= 6)
@@ -1264,15 +1254,15 @@ namespace engine
                 else
                 {
                     var_B3 = 0;
-                    var_B6 = (short)(gbl.stru_1D1BC.mapScreenLeftX + 3);
-                    var_B8 = (short)(gbl.stru_1D1BC.mapScreenTopY + 3);
+                    var_B6 = (short)(gbl.mapToBackGroundTile.mapScreenLeftX + 3);
+                    var_B8 = (short)(gbl.mapToBackGroundTile.mapScreenTopY + 3);
                 }
             }
             else
             {
                 var_B3 = 1;
-                var_B6 = (short)(gbl.stru_1D1BC.mapScreenLeftX + 3);
-                var_B8 = (short)(gbl.stru_1D1BC.mapScreenTopY + 3);
+                var_B6 = (short)(gbl.mapToBackGroundTile.mapScreenLeftX + 3);
+                var_B8 = (short)(gbl.mapToBackGroundTile.mapScreenTopY + 3);
             }
 
             ovr033.sub_749DD(8, 0xFF, var_B8, var_B6);
@@ -1282,8 +1272,8 @@ namespace engine
 
             do
             {
-                var_CA = (short)(((playerBMapX - gbl.stru_1D1BC.mapScreenLeftX) * 3) + var_BE);
-                var_CC = (short)(((playerBMapY - gbl.stru_1D1BC.mapScreenTopY) * 3) + var_C0);
+                var_CA = (short)(((playerBMapX - gbl.mapToBackGroundTile.mapScreenLeftX) * 3) + var_BE);
+                var_CC = (short)(((playerBMapY - gbl.mapToBackGroundTile.mapScreenTopY) * 3) + var_C0);
                 var_BA = playerBMapX;
                 var_BC = playerBMapY;
                 var_B4 = false;
@@ -1379,8 +1369,8 @@ namespace engine
                     var_B8 = (short)(playerAMapY + var_D0);
 
                     ovr033.sub_749DD(8, 0xff, var_B8, var_B6);
-                    var_CA = (short)((playerAMapX - gbl.stru_1D1BC.mapScreenLeftX) * 3);
-                    var_CC = (short)((playerAMapY - gbl.stru_1D1BC.mapScreenTopY) * 3);
+                    var_CA = (short)((playerAMapX - gbl.mapToBackGroundTile.mapScreenLeftX) * 3);
+                    var_CC = (short)((playerAMapY - gbl.mapToBackGroundTile.mapScreenTopY) * 3);
                     var_AF = var_B0;
                     var_B4 = false;
 
@@ -1394,20 +1384,20 @@ namespace engine
 
                         if (var_CA > 0x12)
                         {
-                            playerBMapX = gbl.stru_1D1BC.mapScreenLeftX + 6;
+                            playerBMapX = gbl.mapToBackGroundTile.mapScreenLeftX + 6;
                         }
                         else if (var_CA < 0)
                         {
-                            playerBMapX = gbl.stru_1D1BC.mapScreenLeftX;
+                            playerBMapX = gbl.mapToBackGroundTile.mapScreenLeftX;
                         }
 
                         if (var_CC > 0x12)
                         {
-                            playerBMapY = gbl.stru_1D1BC.mapScreenTopY + 6;
+                            playerBMapY = gbl.mapToBackGroundTile.mapScreenTopY + 6;
                         }
                         else if (var_CC < 0)
                         {
-                            playerBMapY = gbl.stru_1D1BC.mapScreenTopY;
+                            playerBMapY = gbl.mapToBackGroundTile.mapScreenTopY;
                         }
 
                         if (var_CA < 0 || var_CA > 0x12 || var_CC < 0 || var_CC > 0x12)
@@ -1442,13 +1432,13 @@ namespace engine
                 {
                     var_B3 = 1;
 
-                    if (ovr033.CoordOnScreen(playerAMapY - gbl.stru_1D1BC.mapScreenTopY, playerAMapX - gbl.stru_1D1BC.mapScreenLeftX) == false)
+                    if (ovr033.CoordOnScreen(playerAMapY - gbl.mapToBackGroundTile.mapScreenTopY, playerAMapX - gbl.mapToBackGroundTile.mapScreenLeftX) == false)
                     {
                         ovr033.sub_749DD(8, 3, playerAMapY, playerAMapX);
                     }
 
-                    var_CA = (short)((playerAMapX - gbl.stru_1D1BC.mapScreenLeftX) * 3);
-                    var_CC = (short)((playerAMapY - gbl.stru_1D1BC.mapScreenTopY) * 3);
+                    var_CA = (short)((playerAMapX - gbl.mapToBackGroundTile.mapScreenLeftX) * 3);
+                    var_CC = (short)((playerAMapY - gbl.mapToBackGroundTile.mapScreenTopY) * 3);
 
                     seg040.OverlayBounded(gbl.dword_1D90A, 5, var_B1, var_CC, var_CA);
 
@@ -1710,7 +1700,7 @@ namespace engine
             byte var_2;
             byte ret_val;
 
-            ovr032.sub_738D8(gbl.stru_1D1BC, ovr033.sub_74C82(player), 0xff, arg_0, ovr033.PlayerMapYPos(player), ovr033.PlayerMapXPos(player));
+            ovr032.sub_738D8(gbl.mapToBackGroundTile, ovr033.PlayerMapSize(player), 0xff, arg_0, ovr033.PlayerMapYPos(player), ovr033.PlayerMapXPos(player));
             var_2 = gbl.byte_1D1C0;
             var_3 = 0;
 
@@ -1749,11 +1739,12 @@ namespace engine
 
             System.Array.Copy(gbl.unk_1D1C1, var_2FE, gbl.unk_1D1C1_count);
 
-            gbl.stru_1D1BC.field_6 = 1;
+            gbl.mapToBackGroundTile.field_6 = 1;
 
-            ovr032.sub_738D8(gbl.stru_1D1BC, ovr033.sub_74C82(playerB), 0xff, 0xff, ovr033.PlayerMapYPos(playerB), ovr033.PlayerMapXPos(playerB));
+            ovr032.sub_738D8(gbl.mapToBackGroundTile, ovr033.PlayerMapSize(playerB), 0xff, 0xff, 
+                ovr033.PlayerMapYPos(playerB), ovr033.PlayerMapXPos(playerB));
 
-            gbl.stru_1D1BC.field_6 = 0;
+            gbl.mapToBackGroundTile.field_6 = 0;
             var_2FF = 0;
 
             while (gbl.player_array[gbl.unk_1D1C1[var_2FF].field_0] != playerA && var_2FF < (gbl.byte_1D1C0 - 1))
@@ -2007,7 +1998,7 @@ namespace engine
             ovr033.Color_0_8_inverse();
             seg037.draw8x8_06();
 
-            ovr033.sub_749DD(8, 0xff, gbl.stru_1D1BC.mapScreenTopY + 3, gbl.stru_1D1BC.mapScreenLeftX + 3);
+            ovr033.sub_749DD(8, 0xff, gbl.mapToBackGroundTile.mapScreenTopY + 3, gbl.mapToBackGroundTile.mapScreenLeftX + 3);
         }
 
         static Set unk_68DFA = new Set(0x010A, new byte[] { 0x20, 0, 8, 0, 0, 0, 0, 0x20, 0, 8 });

@@ -12,7 +12,7 @@ namespace engine
             { { 0, 0 }, {  1,  0 }, {  0,  1 }, {  1,  1 } },
         };
 
-        internal static bool sub_7400F(out sbyte deltaY, out sbyte deltaX, int step, int size)
+        internal static bool GetSizeBasedMapDelta(out sbyte deltaY, out sbyte deltaX, int step, int size) /*sub_7400F*/
         {
             bool var_1 = false;
             deltaY = 0; /* Added because of 'out' attribute */
@@ -35,12 +35,12 @@ namespace engine
 
         static void calculatePlayerScreenPositions() /* sub_74077 */
         {
-            int playerCount = gbl.stru_1C9CD[0].field_3;
+            int playerCount = gbl.CombatantCount;
 
             for (int i = 1; i <= playerCount; i++)
             {
-                gbl.playerScreenX[i] = gbl.stru_1C9CD[i].xPos - gbl.stru_1D1BC.mapScreenLeftX;
-                gbl.playerScreenY[i] = gbl.stru_1C9CD[i].yPos - gbl.stru_1D1BC.mapScreenTopY;
+                gbl.playerScreenX[i] = gbl.CombatMap[i].xPos - gbl.mapToBackGroundTile.mapScreenLeftX;
+                gbl.playerScreenY[i] = gbl.CombatMap[i].yPos - gbl.mapToBackGroundTile.mapScreenTopY;
             }
         }
 
@@ -63,24 +63,24 @@ namespace engine
         {
             byte var_7;
             byte var_6;
-            sbyte var_4;
-            sbyte var_3;
+            sbyte deltaY;
+            sbyte deltaX;
 
-            int screenPosX = posX - gbl.stru_1D1BC.mapScreenLeftX;
-            int screenPosY = posY - gbl.stru_1D1BC.mapScreenTopY;
+            int screenPosX = posX - gbl.mapToBackGroundTile.mapScreenLeftX;
+            int screenPosY = posY - gbl.mapToBackGroundTile.mapScreenTopY;
 
-            for (byte var_5 = 0; var_5 <= 3; var_5++)
+            for (int step = 0; step <= 3; step++)
             {
-                if (sub_7400F(out var_4, out var_3, var_5, gbl.stru_1D1BC.field_5) == true &&
-                    CoordOnScreen(screenPosY + var_4, screenPosX + var_3) == true)
+                if (GetSizeBasedMapDelta(out deltaY, out deltaX, step, gbl.mapToBackGroundTile.size) == true &&
+                    CoordOnScreen(screenPosY + deltaY, screenPosX + deltaX) == true)
                 {
-                    int i = gbl.stru_1D1BC[var_3 + posX, var_4 + posY];
+                    int i = gbl.mapToBackGroundTile[deltaX + posX, deltaY + posY];
 
-                    ovr034.draw_iso_title(0, gbl.unk_189B4[i].field_3, (screenPosY + var_4) * 3, (screenPosX + var_3) * 3);
+                    ovr034.draw_iso_title(0, gbl.BackGroundTiles[i].tile_index, (screenPosY + deltaY) * 3, (screenPosX + deltaX) * 3);
 
-                    if (gbl.stru_1D1BC.field_4 == true)
+                    if (gbl.mapToBackGroundTile.field_4 == true)
                     {
-                        ovr034.draw_combat_icon(0x19, 0, 0, screenPosY + var_4, screenPosX + var_3);
+                        ovr034.draw_combat_icon(0x19, 0, 0, screenPosY + deltaY, screenPosX + deltaX);
                     }
                 }
             }
@@ -102,8 +102,8 @@ namespace engine
             byte var_4;
             byte var_3;
 
-            int newMapX = mapY - gbl.stru_1D1BC.mapScreenLeftX;
-            int newMapY = mapX - gbl.stru_1D1BC.mapScreenTopY;
+            int newMapX = mapY - gbl.mapToBackGroundTile.mapScreenLeftX;
+            int newMapY = mapX - gbl.mapToBackGroundTile.mapScreenTopY;
 
             sub_74572(0, newMapY, newMapX);
             sub_74505(out var_4, out var_3, mapX, mapY);
@@ -118,51 +118,47 @@ namespace engine
             }
         }
 
-        static Struct_1D1BC unk_1CB81 = new Struct_1D1BC();
+        static Struct_1D1BC mapToPlayerIndex = new Struct_1D1BC(); /*unk_1CB81*/
 
         internal static void sub_743E7()
         {
-            sbyte var_4;
-            sbyte var_3;
-            byte var_2;
+            mapToPlayerIndex.SetField_7(0x00);
 
-            seg051.FillChar(0, 0x4E2, unk_1CB81.field_7);
-
-            int var_5 = gbl.stru_1C9CD[0].field_3;
-
-            for (int var_1 = 1; var_1 <= var_5; var_1++)
+            for (int index = 1; index <= gbl.CombatantCount; index++)
             {
-                if (gbl.stru_1C9CD[var_1].field_3 > 0)
+                if (gbl.CombatMap[index].size > 0)
                 {
-                    for (var_2 = 0; var_2 <= 3; var_2++)
+                    for (int step = 0; step <= 3; step++)
                     {
-                        if (sub_7400F(out var_4, out var_3, var_2, gbl.stru_1C9CD[var_1].field_3) == true)
+                        sbyte deltaY;
+                        sbyte deltaX;
+                        if (GetSizeBasedMapDelta(out deltaY, out deltaX, step, gbl.CombatMap[index].size) == true)
                         {
-                            int cx = gbl.stru_1C9CD[var_1].xPos + var_3;
-                            int ax = gbl.stru_1C9CD[var_1].yPos + var_4;
+                            int xPos = gbl.CombatMap[index].xPos + deltaX;
+                            int yPos = gbl.CombatMap[index].yPos + deltaY;
 
-                            unk_1CB81[cx, ax] = (byte)var_1;
+                            mapToPlayerIndex[xPos, yPos] = index;
                         }
                     }
 
-                    gbl.playerScreenX[var_1] = gbl.stru_1C9CD[var_1].xPos - gbl.stru_1D1BC.mapScreenLeftX;
-                    gbl.playerScreenY[var_1] = gbl.stru_1C9CD[var_1].yPos - gbl.stru_1D1BC.mapScreenTopY;
+                    gbl.playerScreenX[index] = gbl.CombatMap[index].xPos - gbl.mapToBackGroundTile.mapScreenLeftX;
+                    gbl.playerScreenY[index] = gbl.CombatMap[index].yPos - gbl.mapToBackGroundTile.mapScreenTopY;
                 }
             }
         }
 
 
-        internal static void sub_74505(out byte arg_0, out byte arg_4, int arg_8, int arg_A)
+        internal static void sub_74505(out byte arg_0, out byte playerIndex, int posY, int posX)
         {
-            if (arg_A >= 0 && arg_A <= 0x31 &&
-                arg_8 >= 0 && arg_8 <= 0x18)
+            if (posX >= 0 && posX <= 0x31 &&
+                posY >= 0 && posY <= 0x18 )
             {
-                arg_0 = gbl.stru_1D1BC[arg_A, arg_8];
-                arg_4 = unk_1CB81[arg_A, arg_8];
+                arg_0 = (byte)gbl.mapToBackGroundTile[posX, posY];
+                playerIndex = (byte)mapToPlayerIndex[posX, posY];
             }
             else
             {
-                arg_4 = 0;
+                playerIndex = 0;
                 arg_0 = 0;
             }
         }
@@ -177,8 +173,8 @@ namespace engine
 
             if (player_index == 0)
             {
-                screenX = mapX + gbl.stru_1D1BC.mapScreenLeftX;
-                screenY = mapY + gbl.stru_1D1BC.mapScreenTopY;
+                screenX = mapX + gbl.mapToBackGroundTile.mapScreenLeftX;
+                screenY = mapY + gbl.mapToBackGroundTile.mapScreenTopY;
 
                 byte var_6;
                 sub_74505(out var_6, out player_index, screenY, screenX);
@@ -189,25 +185,25 @@ namespace engine
                 mapX = gbl.playerScreenX[player_index];
                 mapY = gbl.playerScreenY[player_index];
 
-                screenX = mapX + gbl.stru_1D1BC.mapScreenLeftX;
-                screenY = mapY + gbl.stru_1D1BC.mapScreenTopY;
+                screenX = mapX + gbl.mapToBackGroundTile.mapScreenLeftX;
+                screenY = mapY + gbl.mapToBackGroundTile.mapScreenTopY;
 
-                int size = gbl.stru_1C9CD[player_index].field_3;
+                int size = gbl.CombatMap[player_index].size;
 
                 for (int step = 0; step < MaxStep; step++)
                 {
-                    if (sub_7400F(out deltaY, out deltaX, step, size) == true &&
+                    if (GetSizeBasedMapDelta(out deltaY, out deltaX, step, size) == true &&
                         CoordOnScreen(deltaY + mapY, deltaX + mapX) == true)
                     {
-                        int i1 = gbl.stru_1D1BC[screenX + deltaX, deltaY + screenY];
-                        //THIS DRAW BACKGROUND MAP.
-                        ovr034.draw_iso_title(0, gbl.unk_189B4[i1].field_3, (mapY + deltaY) * 3, (mapX + deltaX) * 3);
+                        int i1 = gbl.mapToBackGroundTile[screenX + deltaX, deltaY + screenY];
+                        //THIS DRAWS BACKGROUND MAP.
+                        ovr034.draw_iso_title(0, gbl.BackGroundTiles[i1].tile_index, (mapY + deltaY) * 3, (mapX + deltaX) * 3);
                     }
                 }
             }
             else if ( CoordOnScreen(mapY, mapX) == true )
             {
-                ovr034.draw_iso_title(0, gbl.unk_189B4[gbl.stru_1D1BC[screenX, screenY]].field_3, mapY * 3, mapX * 3);
+                ovr034.draw_iso_title(0, gbl.BackGroundTiles[gbl.mapToBackGroundTile[screenX, screenY]].tile_index, mapY * 3, mapX * 3);
             }
         }
 
@@ -220,29 +216,26 @@ namespace engine
 
         internal static bool sub_74761(byte arg_0, Player player)
         {
-            sbyte var_5;
-            sbyte var_4;
-            byte player_index;
-            byte var_2;
-            bool var_1;
+            bool result = true;
 
-            var_1 = true;
+            int player_index = get_player_index(player);
 
-            player_index = get_player_index(player);
-
-            if (gbl.stru_1C9CD[player_index].field_3 == 0)
+            if (gbl.CombatMap[player_index].size == 0)
             {
-                var_1 = false;
+                result = false;
             }
             else
             {
-                for (var_2 = 0; var_2 <= 3; var_2++)
+                for (int step = 0; step <= 3; step++)
                 {
-                    if (sub_7400F(out var_5, out var_4, var_2, gbl.stru_1C9CD[player_index].field_3) == true)
+                    sbyte deltaY;
+                    sbyte deltaX;
+
+                    if (GetSizeBasedMapDelta(out deltaY, out deltaX, step, gbl.CombatMap[player_index].size) == true)
                     {
-                        if (CoordOnScreen(gbl.playerScreenY[player_index] + var_5, gbl.playerScreenX[player_index] + var_4) == false)
+                        if (CoordOnScreen(gbl.playerScreenY[player_index] + deltaY, gbl.playerScreenX[player_index] + deltaX) == false)
                         {
-                            var_1 = false;
+                            result = false;
                             if (arg_0 != 0)
                             {
                                 break;
@@ -250,7 +243,7 @@ namespace engine
                         }
                         else
                         {
-                            var_1 = true;
+                            result = true;
                             if (arg_0 == 0)
                             {
                                 break;
@@ -259,7 +252,7 @@ namespace engine
                     }
                 }
             }
-            return var_1;
+            return result;
         }
 
         /// <summary>
@@ -269,8 +262,8 @@ namespace engine
         /// <returns></returns>
         static bool ScreenMapCheck(byte radius, int yPos, int xPos)
         {
-            int screenCentreX = gbl.stru_1D1BC.mapScreenLeftX + 3;
-            int screenCentreY = gbl.stru_1D1BC.mapScreenTopY + 3;
+            int screenCentreX = gbl.mapToBackGroundTile.mapScreenLeftX + 3;
+            int screenCentreY = gbl.mapToBackGroundTile.mapScreenTopY + 3;
 
             int var_2 = radius;
 
@@ -321,23 +314,21 @@ namespace engine
                     }
                 }
 
-                gbl.stru_1D1BC.mapScreenLeftX = screenCentreX - 3;
-                gbl.stru_1D1BC.mapScreenTopY = screenCentreY - 3;
+                gbl.mapToBackGroundTile.mapScreenLeftX = screenCentreX - 3;
+                gbl.mapToBackGroundTile.mapScreenTopY = screenCentreY - 3;
 
                 int screenRowY = 0;
-                int mapX = gbl.stru_1D1BC.mapScreenTopY;
+                int mapX = gbl.mapToBackGroundTile.mapScreenTopY;
                 const int IconColumnSize = 3;
 
                 for (int i = 0; i <= 6; i++)
                 {
                     int screenColX = 0;
-                    int mapY = gbl.stru_1D1BC.mapScreenLeftX;
+                    int mapY = gbl.mapToBackGroundTile.mapScreenLeftX;
 
                     for (int j = 0; j <= 6; j++)
                     {
-                        byte AX = gbl.unk_189B4[gbl.stru_1D1BC[mapY, mapX]].field_3;
-
-                        ovr034.draw_iso_title(0, AX, screenRowY, screenColX);
+                        ovr034.draw_iso_title(0, gbl.BackGroundTiles[gbl.mapToBackGroundTile[mapY, mapX]].tile_index, screenRowY, screenColX);
 
                         screenColX += IconColumnSize;
                         mapY++;
@@ -356,33 +347,27 @@ namespace engine
 
         internal static void sub_749DD(byte dir, byte radius, int mapY, int mapX)
         {
-            byte var_8;
-            byte var_5;
-            Player var_4;
-
             int newXPos = mapX + gbl.MapDirectionXDelta[dir];
             int newYPos = mapY + gbl.MapDirectionYDelta[dir];
 
             if (ScreenMapCheck(radius, newYPos, newXPos) == true)
             {
-                var_8 = gbl.stru_1C9CD[0].field_3;
-
-                for (var_5 = 1; var_5 <= var_8; var_5++)
+                for (int index = 1; index <= gbl.CombatantCount; index++)
                 {
-                    var_4 = gbl.player_array[var_5];
+                    Player player = gbl.player_array[index];
 
-                    if (var_4.in_combat == true &&
-                        gbl.stru_1C9CD[var_5].field_3 > 0 &&
-                        sub_74761(0, var_4) == true)
+                    if (player.in_combat == true &&
+                        gbl.CombatMap[index].size > 0 &&
+                        sub_74761(0, player) == true)
                     {
-                        ovr034.draw_combat_icon(var_4.icon_id, 0, var_4.actions.field_9, gbl.playerScreenY[var_5], gbl.playerScreenX[var_5]);
+                        ovr034.draw_combat_icon(player.icon_id, 0, player.actions.field_9, gbl.playerScreenY[index], gbl.playerScreenX[index]);
                     }
                 }
             }
 
             sub_7431C(mapY, mapX);
 
-            if (CoordOnScreen(newYPos - gbl.stru_1D1BC.mapScreenTopY, newXPos - gbl.stru_1D1BC.mapScreenLeftX) == false)
+            if (CoordOnScreen(newYPos - gbl.mapToBackGroundTile.mapScreenTopY, newXPos - gbl.mapToBackGroundTile.mapScreenLeftX) == false)
             {
                 if (newXPos > 0x31)
                 {
@@ -410,7 +395,7 @@ namespace engine
         }
 
 
-        internal static void sub_74B3F(byte arg_0, byte arg_2, byte arg_4, Player player)
+        internal static void sub_74B3F(byte arg_0, byte arg_2, byte direction, Player player)
         {
             byte player_index;
 
@@ -419,11 +404,10 @@ namespace engine
             if (sub_74761(1, player) == false &&
                 gbl.byte_1D910 == true)
             {
-
                 sub_749DD(8, 3, PlayerMapYPos(player), PlayerMapXPos(player));
             }
 
-            if ((arg_4 >> 2) != (player.actions.field_9 >> 2) ||
+            if ((direction >> 2) != (player.actions.field_9 >> 2) ||
                 arg_2 != 0 ||
                 arg_0 != 0)
             {
@@ -433,13 +417,13 @@ namespace engine
                 }
             }
 
-            player.actions.field_9 = arg_4;
+            player.actions.field_9 = direction;
 
             if (arg_0 == 0 &&
                 sub_74761(0, player) == true &&
                 gbl.byte_1D910 == true)
             {
-                ovr034.draw_combat_icon(player.icon_id, arg_2, arg_4, gbl.playerScreenY[player_index], gbl.playerScreenX[player_index]);
+                ovr034.draw_combat_icon(player.icon_id, arg_2, direction, gbl.playerScreenY[player_index], gbl.playerScreenX[player_index]);
                 seg040.DrawOverlay();
             }
         }
@@ -447,21 +431,21 @@ namespace engine
 
         internal static int PlayerMapXPos(Player player) /* sub_74C32 */
         {
-            return gbl.stru_1C9CD[get_player_index(player)].xPos;
+            return gbl.CombatMap[get_player_index(player)].xPos;
         }
 
 
         internal static int PlayerMapYPos(Player player) /* sub_74C5A */
         {
-            return gbl.stru_1C9CD[get_player_index(player)].yPos;
+            return gbl.CombatMap[get_player_index(player)].yPos;
         }
 
 
-        internal static byte sub_74C82(Player player)
+        internal static int PlayerMapSize(Player player) /*sub_74C82*/
         {
-            byte ret_val;
+            int ret_val;
 
-            ret_val = gbl.stru_1C9CD[get_player_index(player)].field_3;
+            ret_val = gbl.CombatMap[get_player_index(player)].size;
 
             return ret_val;
         }
@@ -486,7 +470,7 @@ namespace engine
                     match_found = true;
                 }
 
-            } while (match_found == false && loop_var <= gbl.stru_1C9CD[0].field_3);
+            } while (match_found == false && loop_var <= gbl.CombatantCount);
 
             if (match_found == true)
             {
@@ -497,19 +481,13 @@ namespace engine
         }
 
 
-        internal static void sub_74D04(out byte arg_0, out byte arg_4, out byte arg_8, out byte arg_C, byte arg_10, Player arg_12)
+        internal static void sub_74D04(out byte arg_0, out byte arg_4, out byte arg_8, out byte arg_C, byte direction, Player player)
         {
-            sbyte var_B;
-            sbyte var_A;
-            sbyte var_9;
-            sbyte var_8;
-            sbyte var_7;
-            sbyte var_6;
+            sbyte deltaY;
+            sbyte deltaX;
             byte var_5;
             byte var_4;
             byte var_3;
-            byte var_2;
-            byte var_1;
 
             arg_C = 0;
             arg_8 = 0x17;
@@ -518,21 +496,21 @@ namespace engine
             arg_4 = 0;
             arg_0 = 0;
 
-            var_2 = get_player_index(arg_12);
+            byte playerIndex = get_player_index(player);
 
-            var_8 = (sbyte)gbl.stru_1C9CD[var_2].xPos;
-            var_9 = (sbyte)gbl.stru_1C9CD[var_2].yPos;
+            int playerPosX = gbl.CombatMap[playerIndex].xPos;
+            int playerPosY = gbl.CombatMap[playerIndex].yPos;
 
-            for (var_1 = 0; var_1 <= 3; var_1++)
+            for (int step = 0; step <= 3; step++)
             {
-                if (sub_7400F(out var_B, out var_A, var_1, gbl.stru_1C9CD[var_2].field_3) == true)
+                if (GetSizeBasedMapDelta(out deltaY, out deltaX, step, gbl.CombatMap[playerIndex].size) == true)
                 {
-                    var_6 = (sbyte)(var_8 + var_A + gbl.MapDirectionXDelta[arg_10]);
-                    var_7 = (sbyte)(var_9 + var_B + gbl.MapDirectionYDelta[arg_10]);
+                    int posX = playerPosX + deltaX + gbl.MapDirectionXDelta[direction];
+                    int posY = playerPosY + deltaY + gbl.MapDirectionYDelta[direction];
 
-                    sub_74505(out var_4, out var_3, var_7, var_6);
+                    sub_74505(out var_4, out var_3, posY, posX);
 
-                    if (var_3 == var_2)
+                    if (var_3 == playerIndex)
                     {
                         var_3 = 0;
                     }
@@ -556,9 +534,9 @@ namespace engine
                         {
                             arg_0 = 1;
                         }
-                        else if (gbl.unk_189B4[var_4].move_cost >= var_5)
+                        else if (gbl.BackGroundTiles[var_4].move_cost >= var_5)
                         {
-                            var_5 = gbl.unk_189B4[var_4].move_cost;
+                            var_5 = gbl.BackGroundTiles[var_4].move_cost;
                             arg_8 = var_4;
                         }
                     }
@@ -609,7 +587,7 @@ namespace engine
                     {
                         for (var_2 = 0; var_2 <= 3; var_2++)
                         {
-                            if (sub_7400F(out var_5, out var_4, var_2, gbl.stru_1C9CD[var_1].field_3) == true &&
+                            if (GetSizeBasedMapDelta(out var_5, out var_4, var_2, gbl.CombatMap[var_1].size) == true &&
                                 CoordOnScreen(gbl.playerScreenY[var_1] + var_5, gbl.playerScreenX[var_1] + var_4) == true)
                             {
                                 DaxBlock tmp = ((var_3 & 1) == 0) ? gbl.combat_icons[24, 1] : gbl.combat_icons[25, 0];
@@ -628,11 +606,11 @@ namespace engine
                     {
                         gbl.byte_1D1BB++;
 
-                        gbl.unk_1D183[gbl.byte_1D1BB].field_6 = gbl.stru_1D1BC[var_6, var_7];
+                        gbl.unk_1D183[gbl.byte_1D1BB].field_6 = (byte)gbl.mapToBackGroundTile[var_6, var_7];
 
-                        if (gbl.stru_1D1BC[var_6, var_7] != 0x1E)
+                        if (gbl.mapToBackGroundTile[var_6, var_7] != 0x1E)
                         {
-                            gbl.stru_1D1BC[var_6, var_7] = 0x1F;
+                            gbl.mapToBackGroundTile[var_6, var_7] = 0x1F;
                         }
 
                         gbl.unk_1D183[gbl.byte_1D1BB].field_0 = player;
@@ -643,12 +621,12 @@ namespace engine
                     seg041.GameDelay();
                     sub_74572(var_1, 0, 0);
 
-                    gbl.stru_1C9CD[get_player_index(player)].field_3 = 0;
+                    gbl.CombatMap[get_player_index(player)].size = 0;
 
                     sub_743E7();
 
 
-                    sub_749DD(8, 3, gbl.stru_1D1BC.mapScreenTopY + 3, gbl.stru_1D1BC.mapScreenLeftX + 3);
+                    sub_749DD(8, 3, gbl.mapToBackGroundTile.mapScreenTopY + 3, gbl.mapToBackGroundTile.mapScreenLeftX + 3);
 
                     player.actions.delay = 0;
                     player.actions.move = 0;
@@ -676,17 +654,17 @@ namespace engine
 
                 var_2 = get_player_index(player);
 
-                gbl.stru_1C9CD[var_2].field_3 = (byte)(player.field_DE & 0x7F);
-                gbl.stru_1C9CD[var_2].xPos = arg_4;
-                gbl.stru_1C9CD[var_2].yPos = arg_2;
+                gbl.CombatMap[var_2].size = (byte)(player.field_DE & 0x7F);
+                gbl.CombatMap[var_2].xPos = arg_4;
+                gbl.CombatMap[var_2].yPos = arg_2;
 
                 sub_74D04(out var_8, out var_7, out var_5, out var_4, 8, player);
 
                 if (var_4 != 0 ||
                     var_5 == 0 ||
-                    gbl.unk_189B4[var_5].move_cost == 0xff)
+                    gbl.BackGroundTiles[var_5].move_cost == 0xff)
                 {
-                    gbl.stru_1C9CD[var_2].field_3 = 0;
+                    gbl.CombatMap[var_2].size = 0;
                 }
                 else
                 {
@@ -725,7 +703,7 @@ namespace engine
 
                         if (var_6 == 0)
                         {
-                            gbl.stru_1D1BC[arg_4, arg_2] = var_5;
+                            gbl.mapToBackGroundTile[arg_4, arg_2] = var_5;
                         }
                     }
 
@@ -743,16 +721,16 @@ namespace engine
 
         internal static void sub_75356(bool arg_0, byte radius, Player player)
         {
-            gbl.stru_1D1BC.field_4 = arg_0;
-            gbl.stru_1D1BC.field_5 = gbl.stru_1C9CD[get_player_index(player)].field_3;
+            gbl.mapToBackGroundTile.field_4 = arg_0;
+            gbl.mapToBackGroundTile.size = gbl.CombatMap[get_player_index(player)].size;
 
             if (gbl.byte_1D910 == true)
             {
                 sub_749DD(8, radius, PlayerMapYPos(player), PlayerMapXPos(player));
             }
 
-            gbl.stru_1D1BC.field_4 = false;
-            gbl.stru_1D1BC.field_5 = 1;
+            gbl.mapToBackGroundTile.field_4 = false;
+            gbl.mapToBackGroundTile.size = 1;
         }
     }
 }

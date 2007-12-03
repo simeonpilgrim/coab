@@ -1067,9 +1067,6 @@ namespace engine
             Affect var_E;
             Player var_A;
             byte var_6;
-            byte var_5;
-            //sbyte var_4;
-            //sbyte var_3;
             byte var_1;
 
             var_A = gbl.player_ptr;
@@ -1120,7 +1117,6 @@ namespace engine
             if (arg_4 != 0 ||
                 gbl.byte_1D88D == 0)
             {
-
                 cast_a_spell(arg_8, "casts", var_A);
             }
 
@@ -1138,15 +1134,15 @@ namespace engine
                         int var_3 = ovr033.PlayerMapXPos(var_A);
                         int var_4 = ovr033.PlayerMapYPos(var_A);
 
-                        var_5 = 0;
+                        byte direction = 0;
 
-                        while (ovr032.sub_7354A(var_5, gbl.byte_1D884, gbl.byte_1D883, var_4, var_3) == false)
+                        while (ovr032.CanSeeCombatant(direction, gbl.byte_1D884, gbl.byte_1D883, var_4, var_3) == false)
                         {
-                            var_5++;
+                            direction++;
                         }
 
                         gbl.byte_1D910 = true;
-                        ovr033.sub_74B3F(0, 1, var_5, var_A);
+                        ovr033.sub_74B3F(0, 1, direction, var_A);
 
                         if (arg_8 == 0x2F)
                         {
@@ -1364,7 +1360,7 @@ namespace engine
 
             BoundCoords(ref arg_4, ref arg_6);
 
-            var_1E = ovr032.sub_733F1(gbl.stru_1D1BC, ref var_78, ref arg_4, ref arg_6, arg_8, arg_A);
+            var_1E = ovr032.sub_733F1(gbl.mapToBackGroundTile, ref var_78, ref arg_4, ref arg_6, arg_8, arg_A);
 
             sub_5D676(arg_4, arg_6, arg_8, arg_A, var_1C);
 
@@ -2145,7 +2141,7 @@ namespace engine
                 int cx = gbl.MapDirectionXDelta[var_12] + gbl.byte_1D883;
                 int ax = gbl.MapDirectionYDelta[var_12] + gbl.byte_1D884;
 
-                gbl.stru_1D1BC[cx, ax] = 0x1E;
+                gbl.mapToBackGroundTile[cx, ax] = 0x1E;
                 throw new System.NotSupportedException();//loc_5EB88:
             }
 
@@ -2719,7 +2715,7 @@ namespace engine
             if (gbl.area_ptr.field_1CC == 0)
             {
 
-                ovr032.sub_738D8(gbl.stru_1D1BC, 1, 0xff, 2, gbl.byte_1D884, gbl.byte_1D883);
+                ovr032.sub_738D8(gbl.mapToBackGroundTile, 1, 0xff, 2, gbl.byte_1D884, gbl.byte_1D883);
                 var_3 = gbl.byte_1D1C0;
 
                 for (var_2 = 0; var_2 < var_3; var_2++)
@@ -2787,7 +2783,7 @@ namespace engine
             ovr033.sub_74505(out var_6, out var_5, arg_A, arg_C);
 
             if (var_6 > 0 &&
-                gbl.unk_189B4[var_6].move_cost == 0xff &&
+                gbl.BackGroundTiles[var_6].move_cost == 0xff &&
                 gbl.area_ptr.field_1CC == 1 &&
                 arg_0 == false)
             {
@@ -2872,13 +2868,13 @@ namespace engine
 
                                 ovr033.sub_74505(out var_3B, out var_3A, var_18.field_10, var_18.field_0E);
 
-                                if (gbl.unk_189B4[var_3B].move_cost == 1)
+                                if (gbl.BackGroundTiles[var_3B].move_cost == 1)
                                 {
                                     var_36 = false;
                                 }
 
                             } while (var_37 == true && (var_3A <= 0 || var_3A == var_39) && var_3B != 0 &&
-                            gbl.unk_189B4[var_3B].move_cost <= 1 && var_18.field_16 < var_3C);
+                            gbl.BackGroundTiles[var_3B].move_cost <= 1 && var_18.field_16 < var_3C);
                         }
 
                         if (var_3B == 0)
@@ -3423,7 +3419,7 @@ namespace engine
 
             if (ovr025.find_affect(out var_D, Affects.affect_3a, var_4) == true)
             {
-                ovr032.sub_738D8(gbl.stru_1D1BC, 1, 0xff, 1, ovr033.PlayerMapYPos(var_4), ovr033.PlayerMapXPos(var_4));
+                ovr032.sub_738D8(gbl.mapToBackGroundTile, 1, 0xff, 1, ovr033.PlayerMapYPos(var_4), ovr033.PlayerMapXPos(var_4));
                 var_F = gbl.byte_1D1C0;
 
                 for (var_E = 0; var_E < var_F; var_E++)
@@ -3641,7 +3637,7 @@ namespace engine
                     gbl.byte_1D883 + gbl.MapDirectionXDelta[var_17]);
 
                 if (var_14 > 0 &&
-                    gbl.unk_189B4[var_14].move_cost < 0xff)
+                    gbl.BackGroundTiles[var_14].move_cost < 0xff)
                 {
                     var_8.field_10[var_16] = 1;
                 }
@@ -3861,7 +3857,7 @@ namespace engine
                     int cx = gbl.MapDirectionXDelta[var_17] + gbl.byte_1D883;
                     int ax = gbl.MapDirectionYDelta[var_17] + gbl.byte_1D884;
 
-                    gbl.stru_1D1BC[cx, ax] = 0x1C;
+                    gbl.mapToBackGroundTile[cx, ax] = 0x1C;
                 }
             }
 
@@ -3872,7 +3868,7 @@ namespace engine
                 int cx = gbl.MapDirectionXDelta[var_17] + gbl.byte_1D883;
                 int ax = gbl.MapDirectionYDelta[var_17] + gbl.byte_1D884;
 
-                gbl.stru_1D1BC[cx, ax] = 0x1C;
+                gbl.mapToBackGroundTile[cx, ax] = 0x1C;
             }
 
             ovr025.DisplayPlayerStatusString(false, 10, "Creates a poisonous cloud", gbl.player_ptr);
