@@ -469,8 +469,6 @@ namespace engine
         {
             string var_20D;
             int var_D;
-            byte var_C;
-            byte var_B;
             char var_A;
             byte var_9;
             byte var_8;
@@ -562,6 +560,7 @@ namespace engine
                 if (var_7 < 8)
                 {
                     ovr033.sub_74B3F(0, 0, var_7, player);
+                    bool var_C, var_B;
                     ovr033.sub_74D04(out var_C, out var_B, out var_9, out var_8, var_7, player);
 
                     if (var_8 > 0)

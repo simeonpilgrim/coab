@@ -72,7 +72,7 @@ namespace engine
             lock (keysPressed)
             {
                 key = keysPressed.Dequeue();
-
+                         
                 if (keysPressed.Count > 0)
                 {
                     WaitForKey.Release();

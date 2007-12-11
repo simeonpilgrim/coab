@@ -683,33 +683,12 @@ namespace engine
                 case SpellLoc.memory:
                     for (var_2 = 0; var_2 < gbl.max_spells; var_2++)
                     {
-                        throw new System.NotSupportedException();//mov	al, [bp+var_2]
-                        throw new System.NotSupportedException();//xor	ah, ah
-                        throw new System.NotSupportedException();//les	di, int ptr player_ptr.offset
-                        throw new System.NotSupportedException();//add	di, ax
-                        throw new System.NotSupportedException();//cmp	es:[di+charStruct.spell_list], 0
-                        throw new System.NotSupportedException();//jbe	loc_5CB0F
-                        throw new System.NotSupportedException();//push	player_ptr.seg
-                        throw new System.NotSupportedException();//push	player_ptr.offset
-                        throw new System.NotSupportedException();//mov	al, [bp+var_2]
-                        throw new System.NotSupportedException();//xor	ah, ah
-                        throw new System.NotSupportedException();//les	di, int ptr player_ptr.offset
-                        throw new System.NotSupportedException();//add	di, ax
-                        throw new System.NotSupportedException();//mov	al, es:[di+charStruct.spell_list]
-                        throw new System.NotSupportedException();//and	al, 0x7F
-                        throw new System.NotSupportedException();//push	ax
-                        throw new System.NotSupportedException();//push	cs
-                        throw new System.NotSupportedException();//call	near ptr sub_5C01E
-                        throw new System.NotSupportedException();//or	al, al
-                        throw new System.NotSupportedException();//jz	loc_5CB0F
-                        throw new System.NotSupportedException();//mov	al, [bp+var_2]
-                        throw new System.NotSupportedException();//xor	ah, ah
-                        throw new System.NotSupportedException();//les	di, int ptr player_ptr.offset
-                        throw new System.NotSupportedException();//add	di, ax
-                        throw new System.NotSupportedException();//cmp	es:[di+charStruct.spell_list], 0x80
-                        throw new System.NotSupportedException();//jnb	loc_5CB0F
-                        sub_5C5B9(gbl.player_ptr.spell_list[var_2]);
-                        throw new System.NotSupportedException();//loc_5CB0F:
+                        if (gbl.player_ptr.spell_list[var_2] > 0 &&
+                            sub_5C01E((byte)(gbl.player_ptr.spell_list[var_2] & 0x7F), gbl.player_ptr) != 0 &&
+                            gbl.player_ptr.spell_list[var_2] < 0x80)
+                        {
+                            sub_5C5B9(gbl.player_ptr.spell_list[var_2]);
+                        }
                     }
                     break;
 
@@ -1244,7 +1223,7 @@ namespace engine
 
                 if (bp_var_1D == false)
                 {
-                    ovr033.sub_74505(out bp_var_73, out bp_var_72, bp_var_1C.field_10, bp_var_1C.field_0E);
+                    ovr033.AtMapXY(out bp_var_73, out bp_var_72, bp_var_1C.field_10, bp_var_1C.field_0E);
                     var_1 = 1;
                     var_2 = false;
 
@@ -1373,7 +1352,7 @@ namespace engine
 
                 if (var_1D == false)
                 {
-                    ovr033.sub_74505(out var_73, out var_72, var_1C.field_10, var_1C.field_0E);
+                    ovr033.AtMapXY(out var_73, out var_72, var_1C.field_10, var_1C.field_0E);
 
                     if (var_72 > 0)
                     {
@@ -1993,7 +1972,7 @@ namespace engine
             {
                 var_12 = gbl.unk_18AE9[var_11];
 
-                ovr033.sub_74505(out var_F, out var_C[var_11 - 1],
+                ovr033.AtMapXY(out var_F, out var_C[var_11 - 1],
                     gbl.byte_1D884 + gbl.MapDirectionYDelta[var_12],
                     gbl.byte_1D883 + gbl.MapDirectionXDelta[var_12]);
 
@@ -2514,7 +2493,7 @@ namespace engine
                         break;
                 }
 
-                ovr033.sub_74505(out var_13, out var_14, var_12, var_11);
+                ovr033.AtMapXY(out var_13, out var_14, var_12, var_11);
 
                 if (var_13 == 0x1C || var_13 == 0x1E)
                 {
@@ -2780,7 +2759,7 @@ namespace engine
             byte var_5;
             Player var_4;
 
-            ovr033.sub_74505(out var_6, out var_5, arg_A, arg_C);
+            ovr033.AtMapXY(out var_6, out var_5, arg_A, arg_C);
 
             if (var_6 > 0 &&
                 gbl.BackGroundTiles[var_6].move_cost == 0xff &&
@@ -2827,7 +2806,7 @@ namespace engine
             var_36 = false;
             ovr025.sub_67A59(0x13);
 
-            ovr033.sub_74505(out var_3B, out var_39, gbl.byte_1D884, gbl.byte_1D883);
+            ovr033.AtMapXY(out var_3B, out var_39, gbl.byte_1D884, gbl.byte_1D883);
             var_3D = 0;
             var_35 = 1;
 
@@ -2866,7 +2845,7 @@ namespace engine
 
                                 var_37 = ovr032.sub_7324C(var_18);
 
-                                ovr033.sub_74505(out var_3B, out var_3A, var_18.field_10, var_18.field_0E);
+                                ovr033.AtMapXY(out var_3B, out var_3A, var_18.field_10, var_18.field_0E);
 
                                 if (gbl.BackGroundTiles[var_3B].move_cost == 1)
                                 {
@@ -3632,7 +3611,7 @@ namespace engine
             {
                 var_17 = gbl.unk_18AED[var_16];
 
-                ovr033.sub_74505(out var_14, out var_11[var_16],
+                ovr033.AtMapXY(out var_14, out var_11[var_16],
                     gbl.byte_1D884 + gbl.MapDirectionYDelta[var_17],
                     gbl.byte_1D883 + gbl.MapDirectionXDelta[var_17]);
 

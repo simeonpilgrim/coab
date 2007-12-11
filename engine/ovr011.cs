@@ -1010,8 +1010,6 @@ namespace engine
 
         internal static bool sub_38233(byte arg_0, sbyte arg_2, sbyte arg_4, sbyte arg_6, sbyte arg_8, byte arg_A)
         {
-            byte var_5;
-            byte var_4;
             byte var_3;
             byte var_2;
             bool var_1;
@@ -1028,6 +1026,7 @@ namespace engine
                 gbl.CombatMap[arg_A].xPos = arg_8 + (arg_4 * 6) + (arg_2 * 5) + 22;
                 gbl.CombatMap[arg_A].yPos = arg_6 + (arg_2 * 5) + 10;
 
+                bool var_5, var_4;
                 ovr033.sub_74D04(out var_5, out var_4, out var_3, out var_2, 8, gbl.player_array[arg_A]);
 
                 if (var_2 == 0 &&
@@ -1336,9 +1335,9 @@ namespace engine
                         }
                     }
 
+                    gbl.CombatantCount++;
                     ovr033.sub_743E7();
                     loop_var++;
-                    gbl.CombatantCount++;
                     var_E++;
                 }
                 else

@@ -453,8 +453,8 @@ namespace engine
         internal static void in_poison_cloud(byte arg_0, Player arg_2)
         {
             Player playerbase_ptr;
-            byte var_D;
-            byte var_C;
+            bool isPoisonousCloud;
+            bool var_C;
             bool var_B;
             Affect var_A;
             Affect var_6;
@@ -463,9 +463,9 @@ namespace engine
 
             if (arg_2.in_combat == true)
             {
-                ovr033.sub_74D04(out var_D, out var_C, out var_1, out var_2, 8, arg_2);
+                ovr033.sub_74D04(out isPoisonousCloud, out var_C, out var_1, out var_2, 8, arg_2);
 
-                if (var_C != 0 && arg_0 != 0 &&
+                if (var_C && arg_0 != 0 &&
                     ovr025.find_affect(out var_6, Affects.helpless, arg_2) == false &&
                     ovr025.find_affect(out var_6, Affects.funky__32, arg_2) == false &&
                     ovr025.find_affect(out var_6, Affects.affect_6f, arg_2) == false &&
@@ -509,7 +509,7 @@ namespace engine
                     }
                 }
 
-                if (var_D != 0 &&
+                if (isPoisonousCloud == true &&
                     arg_2.in_combat == true)
                 {
                     if (arg_2.field_E5 >= 0 && arg_2.field_E5 <= 4)

@@ -1228,7 +1228,7 @@ namespace engine
                 int mapX = gbl.MapDirectionXDelta[var_A] + ovr033.PlayerMapXPos(arg_4);
                 int mapY = gbl.MapDirectionYDelta[var_A] + ovr033.PlayerMapYPos(arg_4);
 
-                ovr033.sub_74505(out var_D, out var_C, mapY, mapX);
+                ovr033.AtMapXY(out var_D, out var_C, mapY, mapX);
 
                 if (var_C > 0)
                 {
@@ -2218,7 +2218,7 @@ namespace engine
                     var_34 = 0x18;
                 }
 
-                ovr033.sub_74505(out var_36, out var_35, var_34, var_33);
+                ovr033.AtMapXY(out var_36, out var_35, var_34, var_33);
                 seg043.clear_keyboard();
                 var_39 = 0;
                 var_38 = 0x0FF;
