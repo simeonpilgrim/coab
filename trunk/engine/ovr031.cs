@@ -361,9 +361,10 @@ namespace engine
                 } while (drawStep >= 0);
 
 
-                Display.UpdateStart();
-                seg040.DrawOverlay();
             }
+
+            Display.UpdateStart();
+            seg040.DrawOverlay();
         }
 
 

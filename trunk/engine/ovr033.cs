@@ -85,7 +85,7 @@ namespace engine
                 }
             }
 
-            sub_74505(out var_7, out var_6, posY, posX);
+            AtMapXY(out var_7, out var_6, posY, posX);
 
             if (var_6 > 0 &&
                 sub_74761(0, gbl.player_array[var_6]) == true)
@@ -106,7 +106,7 @@ namespace engine
             int newMapY = mapX - gbl.mapToBackGroundTile.mapScreenTopY;
 
             sub_74572(0, newMapY, newMapX);
-            sub_74505(out var_4, out var_3, mapX, mapY);
+            AtMapXY(out var_4, out var_3, mapX, mapY);
 
             if (var_3 > 0 &&
                 sub_74761(0, gbl.player_array[var_3]) == true)
@@ -148,18 +148,18 @@ namespace engine
         }
 
 
-        internal static void sub_74505(out byte arg_0, out byte playerIndex, int posY, int posX)
+        internal static void AtMapXY(out byte groundTile, out byte playerIndex, int posY, int posX) /* sub_74505 */
         {
             if (posX >= 0 && posX <= 0x31 &&
                 posY >= 0 && posY <= 0x18 )
             {
-                arg_0 = (byte)gbl.mapToBackGroundTile[posX, posY];
+                groundTile = (byte)gbl.mapToBackGroundTile[posX, posY];
                 playerIndex = (byte)mapToPlayerIndex[posX, posY];
             }
             else
             {
                 playerIndex = 0;
-                arg_0 = 0;
+                groundTile = 0;
             }
         }
 
@@ -177,7 +177,7 @@ namespace engine
                 screenY = mapY + gbl.mapToBackGroundTile.mapScreenTopY;
 
                 byte var_6;
-                sub_74505(out var_6, out player_index, screenY, screenX);
+                AtMapXY(out var_6, out player_index, screenY, screenX);
             }
 
             if (player_index > 0)
@@ -481,63 +481,63 @@ namespace engine
         }
 
 
-        internal static void sub_74D04(out byte arg_0, out byte arg_4, out byte arg_8, out byte arg_C, byte direction, Player player)
+        internal static void sub_74D04(out bool isPoisonousCloud, out bool isNoxiousCloud, out byte groundTile, out byte playerIndex, byte direction, Player player)
         {
-            sbyte deltaY;
-            sbyte deltaX;
-            byte var_5;
-            byte var_4;
-            byte var_3;
+            playerIndex = 0;
+            groundTile = 0x17;
 
-            arg_C = 0;
-            arg_8 = 0x17;
+            byte maxMoveCost = 1;
+            isNoxiousCloud = false;
+            isPoisonousCloud = false;
 
-            var_5 = 1;
-            arg_4 = 0;
-            arg_0 = 0;
+            byte currentPlayerIndex = get_player_index(player);
 
-            byte playerIndex = get_player_index(player);
-
-            int playerPosX = gbl.CombatMap[playerIndex].xPos;
-            int playerPosY = gbl.CombatMap[playerIndex].yPos;
+            int playerPosX = gbl.CombatMap[currentPlayerIndex].xPos;
+            int playerPosY = gbl.CombatMap[currentPlayerIndex].yPos;
 
             for (int step = 0; step <= 3; step++)
             {
-                if (GetSizeBasedMapDelta(out deltaY, out deltaX, step, gbl.CombatMap[playerIndex].size) == true)
+                sbyte deltaY;
+                sbyte deltaX;
+
+                if (GetSizeBasedMapDelta(out deltaY, out deltaX, step, gbl.CombatMap[currentPlayerIndex].size) == true)
                 {
                     int posX = playerPosX + deltaX + gbl.MapDirectionXDelta[direction];
                     int posY = playerPosY + deltaY + gbl.MapDirectionYDelta[direction];
 
-                    sub_74505(out var_4, out var_3, posY, posX);
+                    byte atGroundTile;
+                    byte atPlayerIdx;
 
-                    if (var_3 == playerIndex)
+                    AtMapXY(out atGroundTile, out atPlayerIdx, posY, posX);
+
+                    if (atPlayerIdx == currentPlayerIndex)
                     {
-                        var_3 = 0;
+                        atPlayerIdx = 0;
                     }
 
-                    if (var_3 > 0)
+                    if (atPlayerIdx > 0)
                     {
-                        arg_C = var_3;
+                        playerIndex = atPlayerIdx;
                     }
 
-                    if (var_4 == 0)
+                    if (atGroundTile == 0)
                     {
-                        arg_8 = 0;
+                        groundTile = 0;
                     }
-                    else if (arg_8 != 0)
+                    else if (groundTile != 0)
                     {
-                        if (var_4 == 0x1e)
+                        if (atGroundTile == 0x1e) // Noxious_cloud
                         {
-                            arg_4 = 1;
+                            isNoxiousCloud = true;
                         }
-                        else if (var_4 == 0x1c)
+                        else if (atGroundTile == 0x1c) // Poisonous cloud
                         {
-                            arg_0 = 1;
+                            isPoisonousCloud = true;
                         }
-                        else if (gbl.BackGroundTiles[var_4].move_cost >= var_5)
+                        else if (gbl.BackGroundTiles[atGroundTile].move_cost >= maxMoveCost)
                         {
-                            var_5 = gbl.BackGroundTiles[var_4].move_cost;
-                            arg_8 = var_4;
+                            maxMoveCost = gbl.BackGroundTiles[atGroundTile].move_cost;
+                            groundTile = atGroundTile;
                         }
                     }
                 }
@@ -639,8 +639,6 @@ namespace engine
 
         internal static byte sub_7515A(byte arg_0, int arg_2, int arg_4, Player player)
         {
-            byte var_8;
-            byte var_7;
             byte var_6;
             byte var_5;
             byte var_4;
@@ -658,6 +656,7 @@ namespace engine
                 gbl.CombatMap[var_2].xPos = arg_4;
                 gbl.CombatMap[var_2].yPos = arg_2;
 
+                bool var_8, var_7;
                 sub_74D04(out var_8, out var_7, out var_5, out var_4, 8, player);
 
                 if (var_4 != 0 ||
