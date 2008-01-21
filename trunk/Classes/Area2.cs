@@ -234,6 +234,18 @@ namespace Classes
                     field_6DA = (short)value;
                     break;
 
+                case 0x6e0:
+                    field_6E0 = (short)value;
+                    break;
+
+                case 0x6e2:
+                    field_6E2 = (short)value;
+                    break;
+
+                case 0x6e4:
+                    field_6E4 = (short)value;
+                    break;
+
                 case 0x7ec:
                     field_7EC = value;
                     break;

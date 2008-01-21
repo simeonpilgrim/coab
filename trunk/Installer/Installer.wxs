@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+		<Product Id="2ec6de4b-f50f-4940-b7ca-e6ec675c1bd4" Name="Curse of the Azure Bonds" 
+             Language="1033" Version="1.0.1.0" Manufacturer="ReActive Systems" 
+             UpgradeCode="6acb18e9-9a80-4ed4-a8ef-3634fa2b3e9b">
+		<Package InstallerVersion="200" Compressed="yes" />
+
+		<Media Id="1" Cabinet="Installer.cab" EmbedCab="yes" />
+
+		<Directory Id="TARGETDIR" Name="SourceDir">
+			<Directory Id="ProgramFilesFolder">
+				<Directory Id="INSTALLLOCATION" Name="Curse of the Azure Bonds">
+
+					<Component Id="LegacyComponent" Guid="ac733b14-f618-4fb2-bb9a-9ecb98b0e5c8">
+            <File Id="_8x8d1.dax" Name="8x8d1.dax" Source="c:\games\coab\8x8d1.dax" />
+            <File Id="_8x8d2.dax" Name="8x8d2.dax" Source="c:\games\coab\8x8d2.dax" />
+            <File Id="_8x8d3.dax" Name="8x8d3.dax" Source="c:\games\coab\8x8d3.dax" />
+            <File Id="_8x8d4.dax" Name="8x8d4.dax" Source="c:\games\coab\8x8d4.dax" />
+            <File Id="_8x8d5.dax" Name="8x8d5.dax" Source="c:\games\coab\8x8d5.dax" />
+            <File Id="_8x8d6.dax" Name="8x8d6.dax" Source="c:\games\coab\8x8d6.dax" />
+            <File Id="bigpic1.dax" Source="c:\games\coab\bigpic1.dax" />
+            <File Id="bigpic2.dax" Source="c:\games\coab\bigpic2.dax" />
+            <File Id="bigpic6.dax" Source="c:\games\coab\bigpic6.dax" />
+            <File Id="body2.dax" Source="c:\games\coab\body2.dax" />
+            <File Id="body3.dax" Source="c:\games\coab\body3.dax" />
+            <File Id="body4.dax" Source="c:\games\coab\body4.dax" />
+            <File Id="body5.dax" Source="c:\games\coab\body5.dax" />
+            <File Id="body6.dax" Source="c:\games\coab\body6.dax" />
+            <File Id="cbody.dax" Source="c:\games\coab\cbody.dax" />
+            <File Id="chead.dax" Source="c:\games\coab\chead.dax" />
+
+            <File Id="cpic1.dax" Source="c:\games\coab\cpic1.dax" />
+            <File Id="cpic2.dax" Source="c:\games\coab\cpic2.dax" />
+            <File Id="cpic3.dax" Source="c:\games\coab\cpic3.dax" />
+            <File Id="cpic4.dax" Source="c:\games\coab\cpic4.dax" />
+            <File Id="cpic5.dax" Source="c:\games\coab\cpic5.dax" />
+            <File Id="cpic6.dax" Source="c:\games\coab\cpic6.dax" />
+
+            <File Id="dungcom.dax" Source="c:\games\coab\dungcom.dax" />
+
+            <File Id="ecl1.dax" Source="c:\games\coab\ecl1.dax" />
+            <File Id="ecl2.dax" Source="c:\games\coab\ecl2.dax" />
+            <File Id="ecl3.dax" Source="c:\games\coab\ecl3.dax" />
+            <File Id="ecl4.dax" Source="c:\games\coab\ecl4.dax" />
+            <File Id="ecl5.dax" Source="c:\games\coab\ecl5.dax" />
+            <File Id="ecl6.dax" Source="c:\games\coab\ecl6.dax" />
+
+            <File Id="geo2.dax" Source="c:\games\coab\geo2.dax" />
+            <File Id="geo3.dax" Source="c:\games\coab\geo3.dax" />
+            <File Id="geo4.dax" Source="c:\games\coab\geo4.dax" />
+            <File Id="geo5.dax" Source="c:\games\coab\geo5.dax" />
+            <File Id="geo6.dax" Source="c:\games\coab\geo6.dax" />
+
+            <File Id="head2.dax" Source="c:\games\coab\head2.dax" />
+            <File Id="head3.dax" Source="c:\games\coab\head3.dax" />
+            <File Id="head4.dax" Source="c:\games\coab\head4.dax" />
+            <File Id="head5.dax" Source="c:\games\coab\head5.dax" />
+            <File Id="head6.dax" Source="c:\games\coab\head6.dax" />
+
+            <File Id="item1.dax" Source="c:\games\coab\item1.dax" />
+            <File Id="item2.dax" Source="c:\games\coab\item2.dax" />
+            <File Id="item3.dax" Source="c:\games\coab\item3.dax" />
+            <File Id="item4.dax" Source="c:\games\coab\item4.dax" />
+            <File Id="item5.dax" Source="c:\games\coab\item5.dax" />
+            <File Id="item6.dax" Source="c:\games\coab\item6.dax" />
+            <File Id="items" Source="c:\games\coab\items" />
+
+            <File Id="mon1cha.dax" Source="c:\games\coab\mon1cha.dax" />
+            <File Id="mon1itm.dax" Source="c:\games\coab\mon1itm.dax" />
+            <File Id="mon1spc.dax" Source="c:\games\coab\mon1spc.dax" />
+
+            <File Id="mon2cha.dax" Source="c:\games\coab\mon2cha.dax" />
+            <File Id="mon2itm.dax" Source="c:\games\coab\mon2itm.dax" />
+            <File Id="mon2spc.dax" Source="c:\games\coab\mon2spc.dax" />
+
+            <File Id="mon3cha.dax" Source="c:\games\coab\mon3cha.dax" />
+            <File Id="mon3itm.dax" Source="c:\games\coab\mon3itm.dax" />
+            <File Id="mon3spc.dax" Source="c:\games\coab\mon3spc.dax" />
+
+            <File Id="mon4cha.dax" Source="c:\games\coab\mon4cha.dax" />
+            <File Id="mon4itm.dax" Source="c:\games\coab\mon4itm.dax" />
+            <File Id="mon4spc.dax" Source="c:\games\coab\mon4spc.dax" />
+
+            <File Id="mon5cha.dax" Source="c:\games\coab\mon5cha.dax" />
+            <File Id="mon5itm.dax" Source="c:\games\coab\mon5itm.dax" />
+            <File Id="mon5spc.dax" Source="c:\games\coab\mon5spc.dax" />
+
+            <File Id="mon6cha.dax" Source="c:\games\coab\mon6cha.dax" />
+            <File Id="mon6itm.dax" Source="c:\games\coab\mon6itm.dax" />
+            <File Id="mon6spc.dax" Source="c:\games\coab\mon6spc.dax" />
+
+            <File Id="pic1.dax" Source="c:\games\coab\pic1.dax" />
+            <File Id="pic2.dax" Source="c:\games\coab\pic2.dax" />
+            <File Id="pic3.dax" Source="c:\games\coab\pic3.dax" />
+            <File Id="pic4.dax" Source="c:\games\coab\pic4.dax" />
+            <File Id="pic5.dax" Source="c:\games\coab\pic5.dax" />
+            <File Id="pic6.dax" Source="c:\games\coab\pic6.dax" />
+
+            <File Id="randcom.dax" Source="c:\games\coab\randcom.dax" />
+            <File Id="sky.dax" Source="c:\games\coab\sky.dax" />
+
+            <File Id="sprit1.dax" Source="c:\games\coab\sprit1.dax" />
+            <File Id="sprit2.dax" Source="c:\games\coab\sprit2.dax" />
+            <File Id="sprit3.dax" Source="c:\games\coab\sprit3.dax" />
+            <File Id="sprit4.dax" Source="c:\games\coab\sprit4.dax" />
+            <File Id="sprit5.dax" Source="c:\games\coab\sprit5.dax" />
+            <File Id="sprit6.dax" Source="c:\games\coab\sprit6.dax" />
+            
+            <File Id="tiles.dax" Source="c:\games\coab\tiles.dax" />
+            <File Id="title.dax" Source="c:\games\coab\title.dax" />
+
+            <File Id="walldef2.dax" Source="c:\games\coab\walldef2.dax" />
+            <File Id="walldef3.dax" Source="c:\games\coab\walldef3.dax" />
+            <File Id="walldef4.dax" Source="c:\games\coab\walldef4.dax" />
+            <File Id="walldef5.dax" Source="c:\games\coab\walldef5.dax" />
+            <File Id="walldef6.dax" Source="c:\games\coab\walldef6.dax" />
+            <File Id="wildcom.dax" Source="c:\games\coab\wildcom.dax" />
+
+           
+          </Component>
+          <Component Id="MainComponent" Guid="{20B26580-D989-42db-AB5A-53DC13BA27C7}">
+            <File Id ="main.exe" Source="C:\dev\coab\Main\bin\Debug\main.exe" />
+          </Component>
+          <Component Id="EngineComponent" Guid="{BA296A86-2188-4389-9DEE-FD773637B349}">
+            <File Id ="engine.dll" Source="C:\dev\coab\Main\bin\Debug\engine.dll" />
+          </Component>
+          <Component Id="ClassesComponent" Guid="{193AEC02-2C90-47dc-931D-B8D6523B4779}">
+            <File Id ="classes.dll" Source="C:\dev\coab\Main\bin\Debug\classes.dll" />
+          </Component>
+          </Directory>
+      </Directory>
+		</Directory>
+
+		<Feature Id="Complete" Level="1">
+      <ComponentRef Id="LegacyComponent" />
+      <ComponentRef Id="MainComponent" />
+      <ComponentRef Id="EngineComponent" />
+      <ComponentRef Id="ClassesComponent" />
+    </Feature>
+	</Product>
+</Wix>

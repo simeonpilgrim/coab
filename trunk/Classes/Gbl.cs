@@ -199,10 +199,10 @@ namespace Classes
 
         public static byte byte_1BF12; // ??
 
-        public static SoundType soundType; // byte_1BF14
+        public static SoundType soundType = SoundType.None; // byte_1BF14
         public static SoundType soundTypeBackup; // byte_1BF15
 
-        public static string byte_1BF1a = "C:\\Games\\Coab\\Save\\";
+        public static string byte_1BF1a = "Save\\";
 
         public static string byte_1BF1A
         {

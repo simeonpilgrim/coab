@@ -1,10 +1,33 @@
 Microsoft Visual Studio Solution File, Format Version 9.00
 # Visual Studio 2005
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "engine", "engine\engine.csproj", "{361087AE-2FD8-4BEF-8218-05A553ED7A49}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Classes", "Classes\Classes.csproj", "{6FA9069E-3549-4352-ACBA-73BB0406C0B1}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Main", "Main\Main.csproj", "{12F0D1A4-9A42-4B5C-94CB-2982FA3E2F7D}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
+EndProject
+Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "Installer", "Installer\Installer.wixproj", "{88FC9A0B-D761-4940-824E-DD6F08E748CA}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
+	ProjectSection(ProjectDependencies) = postProject
+		{12F0D1A4-9A42-4B5C-94CB-2982FA3E2F7D} = {12F0D1A4-9A42-4B5C-94CB-2982FA3E2F7D}
+		{361087AE-2FD8-4BEF-8218-05A553ED7A49} = {361087AE-2FD8-4BEF-8218-05A553ED7A49}
+		{6FA9069E-3549-4352-ACBA-73BB0406C0B1} = {6FA9069E-3549-4352-ACBA-73BB0406C0B1}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -24,6 +47,10 @@ Global
 		{12F0D1A4-9A42-4B5C-94CB-2982FA3E2F7D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{12F0D1A4-9A42-4B5C-94CB-2982FA3E2F7D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{12F0D1A4-9A42-4B5C-94CB-2982FA3E2F7D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{88FC9A0B-D761-4940-824E-DD6F08E748CA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{88FC9A0B-D761-4940-824E-DD6F08E748CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{88FC9A0B-D761-4940-824E-DD6F08E748CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{88FC9A0B-D761-4940-824E-DD6F08E748CA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
