@@ -21,7 +21,7 @@ namespace engine
             }
         }
 
-        static sbyte[] unk_1665B /*seg600:034C*/ = { 0, 1, 0, - 1 };
+        static sbyte[] unk_1665B /*seg600:034C*/ = { 0, 1, 0, -1 };
         static sbyte[] unk_1665F /*seg600:0350*/ = { -1, 0, 1, 0 };
 
         internal static void sub_370D3()
@@ -403,7 +403,7 @@ namespace engine
             {
                 switch (var_1)
                 {
-                    case 1:                  
+                    case 1:
                         switch (gbl.byte_1AD36)
                         {
                             case 0:
@@ -740,89 +740,23 @@ namespace engine
             {
                 gbl.mapToBackGroundTile[arg_E, arg_C] = (byte)(ovr024.roll_dice(2, 1) + 0x39);
             }
-            else
+            else if (var_1 <= arg_A + arg_8)
             {
-                throw new System.NotSupportedException();//loc_37CEE:
-                throw new System.NotSupportedException();//mov	al, [bp+arg_8]
-                throw new System.NotSupportedException();//xor	ah, ah
-                throw new System.NotSupportedException();//mov	dx, ax
-                throw new System.NotSupportedException();//mov	al, [bp+arg_A]
-                throw new System.NotSupportedException();//xor	ah, ah
-                throw new System.NotSupportedException();//add	ax, dx
-                throw new System.NotSupportedException();//mov	dx, ax
-                throw new System.NotSupportedException();//mov	al, [bp+var_1]
-                throw new System.NotSupportedException();//xor	ah, ah
-                throw new System.NotSupportedException();//cmp	ax, dx
-                throw new System.NotSupportedException();//jg	loc_37D37
                 gbl.mapToBackGroundTile[arg_E, arg_C] = (byte)(ovr024.roll_dice(2, 1) + 0x2f);
-                throw new System.NotSupportedException();//jmp	loc_37E44
-                throw new System.NotSupportedException();//loc_37D37:
-                throw new System.NotSupportedException();//mov	al, [bp+arg_6]
-                throw new System.NotSupportedException();//xor	ah, ah
-                throw new System.NotSupportedException();//mov	cx, ax
-                throw new System.NotSupportedException();//mov	al, [bp+arg_8]
-                throw new System.NotSupportedException();//xor	ah, ah
-                throw new System.NotSupportedException();//mov	dx, ax
-                throw new System.NotSupportedException();//mov	al, [bp+arg_A]
-                throw new System.NotSupportedException();//xor	ah, ah
-                throw new System.NotSupportedException();//add	ax, dx
-                throw new System.NotSupportedException();//add	ax, cx
-                throw new System.NotSupportedException();//mov	dx, ax
-                throw new System.NotSupportedException();//mov	al, [bp+var_1]
-                throw new System.NotSupportedException();//xor	ah, ah
-                throw new System.NotSupportedException();//cmp	ax, dx
-                throw new System.NotSupportedException();//jg	loc_37D89
+
+            }
+            else if( var_1 <= arg_A + arg_8 + arg_6 )
+            {
                 gbl.mapToBackGroundTile[arg_E, arg_C] = (byte)(ovr024.roll_dice(4, 1) + 0x2B);
-                throw new System.NotSupportedException();//jmp	loc_37E44
-                throw new System.NotSupportedException();//loc_37D89:
-                throw new System.NotSupportedException();//mov	al, [bp+arg_4]
-                throw new System.NotSupportedException();//xor	ah, ah
-                throw new System.NotSupportedException();//mov	bx, ax
-                throw new System.NotSupportedException();//mov	al, [bp+arg_6]
-                throw new System.NotSupportedException();//xor	ah, ah
-                throw new System.NotSupportedException();//mov	cx, ax
-                throw new System.NotSupportedException();//mov	al, [bp+arg_8]
-                throw new System.NotSupportedException();//xor	ah, ah
-                throw new System.NotSupportedException();//mov	dx, ax
-                throw new System.NotSupportedException();//mov	al, [bp+arg_A]
-                throw new System.NotSupportedException();//xor	ah, ah
-                throw new System.NotSupportedException();//add	ax, dx
-                throw new System.NotSupportedException();//add	ax, cx
-                throw new System.NotSupportedException();//add	ax, bx
-                throw new System.NotSupportedException();//mov	dx, ax
-                throw new System.NotSupportedException();//mov	al, [bp+var_1]
-                throw new System.NotSupportedException();//xor	ah, ah
-                throw new System.NotSupportedException();//cmp	ax, dx
-                throw new System.NotSupportedException();//jg	loc_37DE3
+            }
+            else if( var_1 <= arg_A + arg_8 + arg_6 + arg_4 )
+            {
                 gbl.mapToBackGroundTile[arg_E, arg_C] = (byte)(ovr024.roll_dice(3, 1) + 0x36);
-                throw new System.NotSupportedException();//jmp	short loc_37E44
-                throw new System.NotSupportedException();//loc_37DE3:
-                throw new System.NotSupportedException();//mov	al, [bp+arg_4]
-                throw new System.NotSupportedException();//xor	ah, ah
-                throw new System.NotSupportedException();//mov	bx, ax
-                throw new System.NotSupportedException();//mov	al, [bp+arg_6]
-                throw new System.NotSupportedException();//xor	ah, ah
-                throw new System.NotSupportedException();//mov	cx, ax
-                throw new System.NotSupportedException();//mov	al, [bp+arg_8]
-                throw new System.NotSupportedException();//xor	ah, ah
-                throw new System.NotSupportedException();//mov	dx, ax
-                throw new System.NotSupportedException();//mov	al, [bp+arg_A]
-                throw new System.NotSupportedException();//xor	ah, ah
-                throw new System.NotSupportedException();//add	ax, dx
-                throw new System.NotSupportedException();//add	ax, cx
-                throw new System.NotSupportedException();//add	ax, bx
-                throw new System.NotSupportedException();//mov	dx, ax
-                throw new System.NotSupportedException();//mov	al, [bp+arg_2]
-                throw new System.NotSupportedException();//xor	ah, ah
-                throw new System.NotSupportedException();//add	ax, dx
-                throw new System.NotSupportedException();//mov	dx, ax
-                throw new System.NotSupportedException();//mov	al, [bp+var_1]
-                throw new System.NotSupportedException();//xor	ah, ah
-                throw new System.NotSupportedException();//cmp	ax, dx
-                throw new System.NotSupportedException();//jg	loc_37E44
+            }
+            else if (var_1 <= arg_A + arg_8 + arg_6 + arg_4 + arg_2)
+            {
                 gbl.mapToBackGroundTile[arg_E, arg_C] = (byte)(ovr024.roll_dice(4, 1) + 0x31);
             }
-            throw new System.NotSupportedException();//loc_37E44:
         }
 
 
@@ -939,7 +873,7 @@ namespace engine
         }
 
         /*seg600:02FC*/
-        static byte[] unk_1660C = { 7, 2, 3, 6, 5, 4, 5, 6, 3, 8, 7, 2 };
+        static byte[] unk_1660C = { 7, 2, 3, 6, 5 , 4 , 5 , 6 , 3 , 8 , 7 , 2 };
 
 
         internal static void sub_380E0()
@@ -1045,11 +979,11 @@ namespace engine
             return var_1;
         }
 
-        static byte[] /*seg600:02DC*/ unk_165EC = { 8, 4, 6, 2, 8, 6, 4, 0, 8, 0, 6, 2, 8, 2, 0, 4 };
-        static byte[] /*seg600:02EC*/ unk_165FC = { 0, 0, 2, 6, 2, 2, 0, 4, 4, 4, 2, 6, 6, 6, 4, 0 };
+        static byte[] /*seg600:02DC*/ unk_165EC = { 8, 4, 6, 2, 8 , 6 , 4 , 0 , 8 , 0 , 6 , 2 , 8 , 2 , 0 , 4 };
+        static byte[] /*seg600:02EC*/ unk_165FC = { 0, 0, 2, 6, 2 , 2 , 0 , 4 , 4 , 4 , 2 , 6 , 6 , 6 , 4 , 0 };
 
-        static byte[] /*seg600:0300*/ unk_16610 = { 5, 4, 5, 6, 3, 8, 7, 2 };
-        static byte[] /*seg600:0308*/ unk_16618 = { 3, 2, 2, 3, 0, 2, 5, 3 };
+        static byte[] /*seg600:0300*/ unk_16610 = { 5, 4, 5, 6, 3 , 8 , 7 , 2 };
+        static byte[] /*seg600:0308*/ unk_16618 = { 3, 2, 2, 3, 0 , 2 , 5 , 3 };
 
 
         internal static byte sub_38380(byte arg_0)
@@ -1396,8 +1330,8 @@ namespace engine
             gbl.stru_1D889 = null;
             gbl.item_ptr = null;
 
-            gbl.unk_1D183 = new Struct_1D183[8+1];
-            for (int i = 0; i < 8+1; i++)
+            gbl.unk_1D183 = new Struct_1D183[8 + 1];
+            for (int i = 0; i < 8 + 1; i++)
             {
                 gbl.unk_1D183[i] = new Struct_1D183();
             }

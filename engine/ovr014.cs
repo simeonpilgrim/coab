@@ -1282,6 +1282,7 @@ namespace engine
             return var_1;
         }
 
+        static Affects[] unk_18ADB = { Affects.bless, Affects.snake_charm, Affects.paralyze, Affects.sleep, Affects.helpless }; // seg600:27CB first is filler (off by 1)
 
         internal static byte sub_4001C(Struct_1D183 arg_0, byte arg_4, byte arg_6, byte arg_8)
         {
@@ -1301,23 +1302,19 @@ namespace engine
                 sub_41B25(arg_0, out var_2, var_A, arg_4, 0, ovr023.sub_5CDE5(arg_8), gbl.player_ptr);
                 gbl.player_ptr.actions.target = arg_0.field_0;
             }
+            else if (gbl.unk_19AEC[arg_8].field_E == 0)
+            {
+                arg_0.field_0 = gbl.player_ptr;
+
+                if (arg_8 != 3 || sub_3FDFE(out arg_0.field_0, gbl.player_ptr))
+                {
+                    arg_0.mapX = ovr033.PlayerMapXPos(arg_0.field_0);
+                    arg_0.mapY = ovr033.PlayerMapYPos(arg_0.field_0);
+                    var_2 = true;
+                }
+            }
             else
             {
-                throw new System.NotSupportedException();//cmp	gbl.unk_19AEC[ arg_8 ].field_E, 0
-                throw new System.NotSupportedException();//jnz	loc_400F2
-                arg_0.field_0 = gbl.player_ptr;
-                throw new System.NotSupportedException();//cmp	[bp+arg_8], 3
-                throw new System.NotSupportedException();//jnz	loc_400BF
-                sub_3FDFE(out arg_0.field_0, gbl.player_ptr);
-                throw new System.NotSupportedException();//or	al, al
-                throw new System.NotSupportedException();//jz	loc_400EF
-                throw new System.NotSupportedException();//loc_400BF:
-                arg_0.mapX = ovr033.PlayerMapXPos(arg_0.field_0);
-                arg_0.mapY = ovr033.PlayerMapYPos(arg_0.field_0);
-                var_2 = true;
-                throw new System.NotSupportedException();//loc_400EF:
-                throw new System.NotSupportedException();//jmp	loc_401DD
-                throw new System.NotSupportedException();//loc_400F2:
                 var_9 = 1;
 
                 while (var_9 > 0 &&
@@ -1333,17 +1330,11 @@ namespace engine
                         {
                             for (var_8 = 1; var_8 <= 4; var_8++)
                             {
-                                throw new System.NotSupportedException();//mov	al, [bp+var_8]
-                                throw new System.NotSupportedException();//xor	ah, ah
-                                throw new System.NotSupportedException();//mov	di, ax
-                                throw new System.NotSupportedException();//mov	dl, [di+27CBh]
-                                throw new System.NotSupportedException();//mov	al, gbl.unk_19AEC[ arg_8 ].field_A
-                                throw new System.NotSupportedException();//cmp	al, dl
-                                throw new System.NotSupportedException();//jnz	loc_40180
-                                var_3 = 0;
-                                throw new System.NotSupportedException();//loc_40180:
+                                if (gbl.unk_19AEC[arg_8].field_A == unk_18ADB[arg_8])
+                                {
+                                    var_3 = 0;
+                                }
                             }
-
                         }
 
                         if (var_3 != 0)
@@ -1358,7 +1349,7 @@ namespace engine
                     var_9 -= 1;
                 }
             }
-            throw new System.NotSupportedException();//loc_401DD:
+
 
             if (var_2 == true)
             {

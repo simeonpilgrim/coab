@@ -1903,8 +1903,6 @@ namespace engine
                 {
                     Affect affect = new Affect(var_6, var_8);
 
-                    var_8 += 9;
-
                     if (var_8 == 0)
                     {
                         player.affect_ptr = affect;
@@ -1915,6 +1913,8 @@ namespace engine
                         lastAffect.next = affect;
                         lastAffect = affect;
                     }
+
+                    var_8 += 9;
                 } while (var_8 < var_2);
 
                 seg051.FreeMem(var_2, var_6);

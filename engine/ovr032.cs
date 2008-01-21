@@ -73,7 +73,7 @@ namespace engine
 
             Struct_XXXX var_7 = arg_0;
 
-            if (var_7.field_0A > var_7.field_0C)
+            if (var_7.field_0A >= var_7.field_0C)
             {
                 if (var_7.field_0E != var_7.field_04)
                 {
