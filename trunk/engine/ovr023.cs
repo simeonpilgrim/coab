@@ -1976,20 +1976,16 @@ namespace engine
                     gbl.byte_1D884 + gbl.MapDirectionYDelta[var_12],
                     gbl.byte_1D883 + gbl.MapDirectionXDelta[var_12]);
 
-                throw new System.NotSupportedException();//cmp	[bp+var_F], 0
-                throw new System.NotSupportedException();//jbe	loc_5E985
-                throw new System.NotSupportedException();//mov	al, [bp+var_F]
-                throw new System.NotSupportedException();//xor	ah, ah
-                throw new System.NotSupportedException();//mov	di, ax
-                throw new System.NotSupportedException();//shl	di, 1
-                throw new System.NotSupportedException();//shl	di, 1
-                throw new System.NotSupportedException();//cmp	unk_189B4[di].field_0,	0x0FF
-                throw new System.NotSupportedException();//jnb	loc_5E985
-                var_8.field_10[var_11] = 1;
-                throw new System.NotSupportedException();//jmp	short loc_5E994
-                throw new System.NotSupportedException();//loc_5E985:
-                var_8.field_10[var_11] = 0;
-                throw new System.NotSupportedException();//loc_5E994:
+
+                if (var_F > 0 && gbl.BackGroundTiles[var_F].move_cost < 0xFF)
+                {
+                    var_8.field_10[var_11] = 1;
+                }
+                else
+                {
+                    var_8.field_10[var_11] = 0;
+                }
+
 
                 if (var_F == 0x1E)
                 {
@@ -2003,65 +1999,65 @@ namespace engine
                             {
                                 if (var_4.field_10[var_D] != 0)
                                 {
-                                    throw new System.NotSupportedException();//mov	al, [bp+var_12]
-                                    throw new System.NotSupportedException();//xor	ah, ah
-                                    throw new System.NotSupportedException();//mov	di, ax
-                                    throw new System.NotSupportedException();//mov	al, byte ptr unk_189A6[di]
-                                    throw new System.NotSupportedException();//cbw
-                                    throw new System.NotSupportedException();//mov	dx, ax
-                                    throw new System.NotSupportedException();//mov	al, byte_1D883
-                                    throw new System.NotSupportedException();//cbw
-                                    throw new System.NotSupportedException();//add	ax, dx
-                                    throw new System.NotSupportedException();//mov	cx, ax
-                                    throw new System.NotSupportedException();//mov	al, [bp+var_D]
-                                    throw new System.NotSupportedException();//xor	ah, ah
-                                    throw new System.NotSupportedException();//mov	di, ax
-                                    throw new System.NotSupportedException();//mov	al, byte ptr unk_18AE9[di]
-                                    throw new System.NotSupportedException();//xor	ah, ah
-                                    throw new System.NotSupportedException();//mov	di, ax
-                                    throw new System.NotSupportedException();//mov	al, byte ptr unk_189A6[di]
-                                    throw new System.NotSupportedException();//cbw
-                                    throw new System.NotSupportedException();//mov	dx, ax
-                                    throw new System.NotSupportedException();//les	di, [bp+var_4]
-                                    throw new System.NotSupportedException();//mov	al, es:[di+1Ah]
-                                    throw new System.NotSupportedException();//cbw
-                                    throw new System.NotSupportedException();//add	ax, dx
-                                    throw new System.NotSupportedException();//cmp	ax, cx
-                                    throw new System.NotSupportedException();//jnz	loc_5EA7B
-                                    throw new System.NotSupportedException();//mov	al, [bp+var_12]
-                                    throw new System.NotSupportedException();//xor	ah, ah
-                                    throw new System.NotSupportedException();//mov	di, ax
-                                    throw new System.NotSupportedException();//mov	al, byte ptr unk_189AF[di]
-                                    throw new System.NotSupportedException();//cbw
-                                    throw new System.NotSupportedException();//mov	dx, ax
-                                    throw new System.NotSupportedException();//mov	al, byte_1D884
-                                    throw new System.NotSupportedException();//cbw
-                                    throw new System.NotSupportedException();//add	ax, dx
-                                    throw new System.NotSupportedException();//mov	cx, ax
-                                    throw new System.NotSupportedException();//mov	al, [bp+var_D]
-                                    throw new System.NotSupportedException();//xor	ah, ah
-                                    throw new System.NotSupportedException();//mov	di, ax
-                                    throw new System.NotSupportedException();//mov	al, byte ptr unk_18AE9[di]
-                                    throw new System.NotSupportedException();//xor	ah, ah
-                                    throw new System.NotSupportedException();//mov	di, ax
-                                    throw new System.NotSupportedException();//mov	al, byte ptr unk_189AF[di]
-                                    throw new System.NotSupportedException();//cbw
-                                    throw new System.NotSupportedException();//mov	dx, ax
-                                    throw new System.NotSupportedException();//les	di, [bp+var_4]
-                                    throw new System.NotSupportedException();//mov	al, es:[di+1Bh]
-                                    throw new System.NotSupportedException();//cbw
-                                    throw new System.NotSupportedException();//add	ax, dx
-                                    throw new System.NotSupportedException();//cmp	ax, cx
-                                    throw new System.NotSupportedException();//jnz	loc_5EA7B
-                                    throw new System.NotSupportedException();//mov	al, [bp+var_D]
-                                    throw new System.NotSupportedException();//xor	ah, ah
-                                    throw new System.NotSupportedException();//les	di, [bp+var_4]
-                                    throw new System.NotSupportedException();//add	di, ax
-                                    throw new System.NotSupportedException();//cmp	byte ptr es:[di+7], 0x1E
-                                    throw new System.NotSupportedException();//jz	loc_5EA7B
+                                    //mov	al, [bp+var_12]
+                                    //xor	ah, ah
+                                    //mov	di, ax
+                                    //mov	al, byte ptr unk_189A6[di]
+                                    //cbw
+                                    //mov	dx, ax
+                                    //mov	al, byte_1D883
+                                    //cbw
+                                    //add	ax, dx
+                                    //mov	cx, ax
+                                    //mov	al, [bp+var_D]
+                                    //xor	ah, ah
+                                    //mov	di, ax
+                                    //mov	al, byte ptr unk_18AE9[di]
+                                    //xor	ah, ah
+                                    //mov	di, ax
+                                    //mov	al, byte ptr unk_189A6[di]
+                                    //cbw
+                                    //mov	dx, ax
+                                    //les	di, [bp+var_4]
+                                    //mov	al, es:[di+1Ah]
+                                    //cbw
+                                    //add	ax, dx
+                                    //cmp	ax, cx
+                                    //jnz	loc_5EA7B
+                                    //mov	al, [bp+var_12]
+                                    //xor	ah, ah
+                                    //mov	di, ax
+                                    //mov	al, byte ptr unk_189AF[di]
+                                    //cbw
+                                    //mov	dx, ax
+                                    //mov	al, byte_1D884
+                                    //cbw
+                                    //add	ax, dx
+                                    //mov	cx, ax
+                                    //mov	al, [bp+var_D]
+                                    //xor	ah, ah
+                                    //mov	di, ax
+                                    //mov	al, byte ptr unk_18AE9[di]
+                                    //xor	ah, ah
+                                    //mov	di, ax
+                                    //mov	al, byte ptr unk_189AF[di]
+                                    //cbw
+                                    //mov	dx, ax
+                                    //les	di, [bp+var_4]
+                                    //mov	al, es:[di+1Bh]
+                                    //cbw
+                                    //add	ax, dx
+                                    //cmp	ax, cx
+                                    //jnz	loc_5EA7B
+                                    //mov	al, [bp+var_D]
+                                    //xor	ah, ah
+                                    //les	di, [bp+var_4]
+                                    //add	di, ax
+                                    //cmp	byte ptr es:[di+7], 0x1E
+                                    //jz	loc_5EA7B
                                     var_F = var_4.field_7[var_D];
                                 }
-                                throw new System.NotSupportedException();//loc_5EA7B:
+                                //loc_5EA7B:
                             }
                         }
                         var_4 = var_4.next;
@@ -2902,15 +2898,16 @@ namespace engine
                         }
 
                         var_3D = (byte)(var_18.field_16 - var_3D);
-                        throw new System.NotSupportedException();//mov	al, [bp+var_3D]
-                        throw new System.NotSupportedException();//cmp	al, [bp+var_3C]
-                        throw new System.NotSupportedException();//jnb	loc_5FCB2
-                        throw new System.NotSupportedException();//mov	al, [bp+var_3D]
-                        throw new System.NotSupportedException();//sub	[bp+var_3C], al
-                        throw new System.NotSupportedException();//jmp	short loc_5FCB6
-                        throw new System.NotSupportedException();//loc_5FCB2:
-                        var_3C = 0;
-                        throw new System.NotSupportedException();//loc_5FCB6:
+
+                        if (var_3D < var_3C)
+                        {
+                            var_3C -= var_3D;
+                        }
+                        else
+                        {
+                            var_3C = 0;
+                        }
+
                         var_3D = var_18.field_16;
                     } while (var_36 == false && var_3C != 0);
                 }

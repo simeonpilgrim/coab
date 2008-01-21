@@ -13,6 +13,8 @@ namespace Classes
             next = null;
             // zero the rest.
 
+            field_7 = new byte[10];
+            field_10 = new byte[10];
         }
 
         /// <summary>0x00</summary>

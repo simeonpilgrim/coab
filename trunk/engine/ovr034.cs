@@ -114,7 +114,7 @@ namespace engine
                 if (direction > 3)
                 {
                     DaxBlock flipped;
-                    seg040.init_dax_block(out flipped, 1, 1, 3, 0x18);
+                    seg040.init_dax_block(out flipped, 1, 1, icon.width, icon.height); // was 3 and 0x18
                     seg040.flipIconLeftToRight(flipped, icon);
                     icon = flipped;
                 }

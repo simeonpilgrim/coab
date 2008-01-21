@@ -35,6 +35,11 @@ namespace Classes
             get
             {
                 int index = indexA + (indexB * 0x32);
+                if (index < 0 || index > dataSize)
+                {
+                    index = 0;
+                }
+
                 return field_7[index];
             }
             set

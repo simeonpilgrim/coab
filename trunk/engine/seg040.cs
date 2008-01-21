@@ -135,6 +135,7 @@ namespace engine
                     {
                         int di = (y * width) + x;
                         int si = (y*width) + (width - x) - 1;
+                        byte[] dd = dest.data;
                         dest.data[di] = source.data[si];
                         //dest.data[di+1] = source.data[si+0];
 
