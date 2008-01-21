@@ -23,23 +23,6 @@ namespace engine
 		}
 
 
-		internal static void check_overlay_file( )
-		{
-			bool overlayFound;
-
-            do
-			{
-				overlayFound = file_find( "game.ovr" );
-
-				if( overlayFound == false )
-				{
-                    System.Console.WriteLine("Please insert overlay disk.");
-					seg043.GetInputKey();
-				}
-			}while( overlayFound == false );
-		}
-
-
 
         internal static bool find_and_open_file(out File file_ptr, byte arg_4, string arg_6, string arg_A)
         {
