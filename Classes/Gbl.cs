@@ -172,9 +172,9 @@ namespace Classes
         public static byte byte_1AD38 = 0x1A;
         public static byte byte_1AD39 = 0x8B;
         public static sbyte currentTeam; // field_197
-        public static byte byte_1AD3C;
-        public static byte byte_1AD3D;
-        public static byte byte_1AD3E;
+        public static byte byte_1AD3C = 0x1C;
+        public static byte byte_1AD3D = 0x9F;
+        public static byte byte_1AD3E = 0x1C;
         public static byte byte_1AD44;
         public static bool byte_1AD48;
         public static byte byte_1ADFA;
