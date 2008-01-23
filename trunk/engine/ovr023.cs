@@ -2776,7 +2776,7 @@ namespace engine
                 var_4 = gbl.player_array[var_5];
                 gbl.byte_1D2BF = 0x0C;
 
-                ovr024.damage_person(ovr024.do_saving_throw(0, var_6, var_4), 2, (sbyte)arg_8, var_4);
+                ovr024.damage_person(ovr024.do_saving_throw(0, arg_6, var_4), 2, (sbyte)arg_8, var_4);
                 ovr025.sub_67A59(0x13);
                 gbl.byte_1D2BF = 0;
             }

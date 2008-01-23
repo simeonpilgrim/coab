@@ -535,7 +535,7 @@ namespace engine
 
             int index = gbl.command - 0x16;
 
-            System.Console.WriteLine("  CMD_if: {0}", gbl.item_find[index]);
+            //System.Console.WriteLine("  CMD_if: {0}", gbl.item_find[index]);
             
             if (gbl.item_find[index] == false)
             {
@@ -2659,7 +2659,7 @@ namespace engine
             gbl.ecl_offset = offset;
             gbl.stopVM = false;
 
-            System.Console.Out.WriteLine("RunEclVm {0,4:X} start", offset);
+            //System.Console.Out.WriteLine("RunEclVm {0,4:X} start", offset);
             
             while (gbl.stopVM == false &&
                    gbl.byte_1B2F0 == 0)
@@ -2669,7 +2669,7 @@ namespace engine
                 gbl.command = gbl.ecl_ptr[gbl.ecl_offset + 0x8000];
 
                 print_command(out var_100);
-                System.Console.Out.WriteLine("{0:X} {1}", gbl.ecl_offset, var_100);
+                //System.Console.Out.WriteLine("{0:X} {1}", gbl.ecl_offset, var_100);
                 
                 if (gbl.printCommands == true)
                 {
@@ -2682,7 +2682,7 @@ namespace engine
             }
 
             gbl.stopVM = false;
-            System.Console.Out.WriteLine("RunEclVm {0,4:X} end", offset);
+            //System.Console.Out.WriteLine("RunEclVm {0,4:X} end", offset);
         }
 
 

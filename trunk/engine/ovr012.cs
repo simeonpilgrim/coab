@@ -95,7 +95,7 @@ namespace engine
 
             seg040.init_dax_block(out gbl.dax24x24Set, 0, 0x30, 3, 0x18);
 
-            gbl.area_ptr.Clear(0x00);
+            gbl.area_ptr.Clear();
 
             gbl.area_ptr.field_1CC = 1;
             gbl.area_ptr.field_1E4 = 0;
@@ -240,7 +240,7 @@ namespace engine
         {
             gbl.byte_1B2C0 = 1;
 
-            gbl.area_ptr.Clear(0xFF);
+            gbl.area_ptr.Clear();
             gbl.area_ptr.field_1CC = 1;
             gbl.area_ptr.field_1E4 = 0;
             gbl.area2_ptr.Clear();

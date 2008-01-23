@@ -7,7 +7,7 @@ namespace Classes
     /// </summary>
     public class Area1
     {
-        const int Area1Size = 0x3fe;
+        const int Area1Size = 0x800;
  
         public Area1()
         {
@@ -29,36 +29,37 @@ namespace Classes
             origData = new byte[Area1Size];
         }
 
-        public void Clear(byte value)
+        public void Clear()
         {
-            field_186  = value;
-            field_188  = value;
-            field_18A  = value;
-            field_18E  = value;
-            field_190  = value;
-            field_192  = value;
+            field_186  = 0;
+            field_188  = 0;
+            field_18A  = 0;
+            field_18E  = 0;
+            field_190  = 0;
+            field_192  = 0;
 
-            field_1CA  = value;
-            field_1CC  = value;
-            field_1CE  = value;
-            field_1D0  = value;
+            field_1CA  = 0;
+            field_1CC  = 0;
+            field_1CE  = 0;
+            field_1D0  = 0;
 
-            field_1E0  = value;
-            field_1E2  = value;
-            field_1E4  = value;
-            field_1F6  = value;
-            game_speed  = value;
-            field_1FA  = value;
-            field_1FC  = value;
-            pics_on  = value; //field_1FE;
+            field_1E0  = 0;
+            field_1E2  = 0;
+            field_1E4  = 0;
+            field_1F6  = 0;
+            game_speed  = 0;
+            field_1FA  = 0;
+            field_1FC  = 0;
+            pics_on  = 0; //field_1FE;
 
             can_cast_spells = false;
 
             Array.Clear(field_200, 1, 32);
+            Array.Clear(origData, 0, origData.Length);
 
-            field_342  = value;
-            field_3FA  = value;
-            field_3FE  = value;
+            field_342  = 0;
+            field_3FA  = 0;
+            field_3FE  = 0;
 
         }
 
@@ -109,9 +110,6 @@ namespace Classes
         [DataOffset(0x200, DataType.ShortArray,33)]
         public short[] field_200; // 1-32
 
-        [DataOffset(0x226, DataType.Word)]
-        public ushort field_226;
-
         [DataOffset(0x342, DataType.Byte)]
         public byte field_342;
         [DataOffset(0x3FA, DataType.Byte)]
@@ -129,6 +127,10 @@ namespace Classes
             {
                 case 0x192:
                     field_192 = value;
+                    break;
+
+                case 0x1CC:
+                    field_1CC = (short)value;
                     break;
 
                 case 0x1E4:
@@ -159,11 +161,24 @@ namespace Classes
                 case 0x21a:
                 case 0x21c:
                 case 0x21e:
-                    field_200[(loc - 0x200) / 2] = (short)value;
-                    break;
-
+                case 0x220:
+                case 0x222:
+                case 0x224:
                 case 0x226:
-                    field_226 = value;
+                case 0x228:
+                case 0x22a:
+                case 0x22c:
+                case 0x22e:
+                case 0x230:
+                case 0x232:
+                case 0x234:
+                case 0x236:
+                case 0x238:
+                case 0x23a:
+                case 0x23c:
+                case 0x23e:
+                case 0x240:
+                    field_200[(loc - 0x200) / 2] = (short)value;
                     break;
 
                 default:
@@ -188,6 +203,9 @@ namespace Classes
 
                 //case 0x1E2:
                 //    return (ushort)field_1E2;
+                
+                case 0x1CC:
+                    return (ushort)field_1CC;
 
                 case 0x1E4:
                     return field_1E4;
@@ -214,10 +232,24 @@ namespace Classes
                 case 0x21a:
                 case 0x21c:
                 case 0x21e:
-                    return (ushort)field_200[(loc - 0x200) / 2];
-
+                case 0x220:
+                case 0x222:
+                case 0x224:
                 case 0x226:
-                    return field_226;
+                case 0x228:
+                case 0x22a:
+                case 0x22c:
+                case 0x22e:
+                case 0x230:
+                case 0x232:
+                case 0x234:
+                case 0x236:
+                case 0x238:
+                case 0x23a:
+                case 0x23c:
+                case 0x23e:
+                case 0x240:
+                    return (ushort)field_200[(loc - 0x200) / 2];
 
                 default:
                     return DataIO.GetObjectUShort(this, origData, loc);

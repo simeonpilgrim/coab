@@ -2683,7 +2683,7 @@ namespace engine
                     //loc_42001:
                 }
 
-                if (var_7 != 0)
+                if (var_7 == 0)
                 {
                     var_7 = 1;
                 }
