@@ -58,15 +58,13 @@ namespace engine
 				ovr002.title_screen();
 			}
 
-			gbl.word_1D5C0 = 0x0BB8;
-            gbl.word_1D5C2 = 0;
-            gbl.byte_1D5C4 = 0x44;
+			gbl.displayInputCentiSecondWait = 3000;
+            gbl.displayInputTimeoutValue = 'D';
           
             gbl.byte_1AB06 = ovr027.displayInput( out gbl.unk_1AB07, 0, 0, 15, 10, 13, "Play Demo", "Curse of the Azure Bonds v1.3 " );
  
-            gbl.word_1D5C0 = 0;
-            gbl.word_1D5C2 = 0;
-            gbl.byte_1D5C4 = 0;
+            gbl.displayInputCentiSecondWait = 0;
+            gbl.displayInputTimeoutValue = '\0';
 
 			if( gbl.byte_1AB06 == 'D' )
 			{
@@ -145,15 +143,13 @@ namespace engine
 					ovr002.title_screen();
 					seg043.clear_keyboard();
 
-					gbl.word_1D5C0 = 0x3E8;
-					gbl.word_1D5C2 = 0;
-					gbl.byte_1D5C4 = 0x44;
+					gbl.displayInputCentiSecondWait = 1000;
+					gbl.displayInputTimeoutValue = 'D';
 				
 					gbl.byte_1AB06 = ovr027.displayInput( out gbl.unk_1AB07, 0, 0, 15, 10, 13, "Play Demo", "Curse of the Azure Bonds v1.3 " );
 
-					gbl.word_1D5C0 = 0;
-					gbl.word_1D5C2 = 0;
-					gbl.byte_1D5C4 = 0;
+					gbl.displayInputCentiSecondWait = 0;
+                    gbl.displayInputTimeoutValue = '\0';
 
 					gbl.inDemo = ( gbl.byte_1AB06 == 0x44 );
 

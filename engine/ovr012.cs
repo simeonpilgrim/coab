@@ -151,7 +151,7 @@ namespace engine
             gbl.AnimationsOn = true;
             gbl.PicsOn = true;
             gbl.printCommands = false;
-            gbl.byte_1B2F2 = 1;
+            gbl.DelayBetweenCharacters = true;
             gbl.byte_1B2EB = 0;
             gbl.word_1B2EC = 0;
 
@@ -272,7 +272,7 @@ namespace engine
             gbl.word_1D548 = -1;
 
             gbl.printCommands = false;
-            gbl.byte_1B2F2 = 1;
+            gbl.DelayBetweenCharacters = true;
             gbl.byte_1B2EB = 0;
             gbl.word_1B2EC = 0;
             gbl.player_next_ptr = null;

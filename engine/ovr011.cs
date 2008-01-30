@@ -1305,7 +1305,7 @@ namespace engine
         {
             Player player;
 
-            gbl.byte_1B2F2 = 0;
+            gbl.DelayBetweenCharacters = false;
 
             ovr030.DaxArrayFreeDaxBlocks(gbl.byte_1D556);
 

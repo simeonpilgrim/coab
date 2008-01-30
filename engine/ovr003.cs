@@ -463,7 +463,7 @@ namespace engine
         {
             ovr008.vm_LoadCmdSets(1);
             gbl.byte_1EE90 = 0;
-            gbl.byte_1B2F2 = 1;
+            gbl.DelayBetweenCharacters = true;
 
             if (gbl.cmd_opps[1].Code < 0x80)
             {
@@ -482,7 +482,7 @@ namespace engine
                 seg041.press_any_key(gbl.unk_1D972[1], true, 0, 10, 0x16, 0x26, 0x11, 1);
             }
 
-            gbl.byte_1B2F2 = 0;
+            gbl.DelayBetweenCharacters = false;
         }
 
 
@@ -1639,7 +1639,7 @@ namespace engine
 
             gbl.byte_1EE95 = 1;
             gbl.byte_1EE90 = 0;
-            gbl.byte_1B2F2 = 1;
+            gbl.DelayBetweenCharacters = true;
 
             ovr008.calc_group_inituative(out init_min, out var_40A);
 
@@ -1928,7 +1928,7 @@ namespace engine
             } while (init_max != 0);
 
             ovr027.redraw_screen();
-            gbl.byte_1B2F2 = 0;
+            gbl.DelayBetweenCharacters = false;
             gbl.byte_1EE95 = 0;
         }
 

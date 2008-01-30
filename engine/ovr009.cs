@@ -78,7 +78,7 @@ namespace engine
             }
 
             sub_3304B();
-            gbl.byte_1B2F2 = 1;
+            gbl.DelayBetweenCharacters = true;
         }
 
 

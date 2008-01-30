@@ -154,7 +154,6 @@ namespace engine
 			char var_60;
 			int var_5F;
 			int var_5B;
-			int var_57;
 			string var_53;
 			string var_2A;
 
@@ -177,7 +176,7 @@ namespace engine
             arg_0 = false;
 			var_63 = 0;
 
-			var_57 = seg041.time01();
+			int timeStart = seg041.time01();
 			var_5B = seg041.time01() + 30;
 
 			var_5F = var_5B + 50;
@@ -216,7 +215,7 @@ namespace engine
 				{
                     ovr030.sub_7000A(gbl.byte_1D556.ptrs[gbl.byte_1D556.curFrame].field_4, arg_4, 3, 3);
 
-                    if ((seg041.time01() - var_57) >= (gbl.byte_1D556.ptrs[gbl.byte_1D556.curFrame].field_0 * 10) ||
+                    if ((seg041.time01() - timeStart) >= (gbl.byte_1D556.ptrs[gbl.byte_1D556.curFrame].field_0 * 10) ||
 						gbl.area_ptr.field_3FE != 0 )
 					{
                         gbl.byte_1D556.curFrame++;
@@ -224,16 +223,16 @@ namespace engine
                         if (gbl.byte_1D556.curFrame > gbl.byte_1D556.numFrames)
 						{
                             gbl.byte_1D556.curFrame = 1;
-						}
+                        }
 
-						var_57 = seg041.time01();
+                        timeStart = seg041.time01();
 					}
 				}
 
-                if (gbl.word_1D5C0 > 0 &&
-                    (seg041.time01() - var_57) >= gbl.word_1D5C0)
+                if (gbl.displayInputCentiSecondWait > 0 &&
+                    (seg041.time01() - timeStart) >= gbl.displayInputCentiSecondWait)
                 {
-                    var_60 = (char)gbl.byte_1D5C4;
+                    var_60 = gbl.displayInputTimeoutValue;
                     var_63 = 1;
                 }
                 else if (seg049.KEYPRESSED() == true)
@@ -353,6 +352,8 @@ namespace engine
 
 					var_5F = var_5B + 50;
 				}
+
+                System.Threading.Thread.Sleep(20);
 
 			}while( var_63 == 0 );
 

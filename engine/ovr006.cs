@@ -967,7 +967,7 @@ namespace engine
 
                 }
 
-                gbl.byte_1B2F2 = 1;
+                gbl.DelayBetweenCharacters = true;
                 gbl.area2_ptr.field_6E0 = 0;
                 gbl.area2_ptr.field_6E2 = 0;
                 gbl.area2_ptr.field_6E4 = 0;
