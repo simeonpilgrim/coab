@@ -4,21 +4,18 @@ namespace engine
 {
 	class ovr002
 	{
-		internal static void delay_or_key( short arg_0 )
+		internal static void delay_or_key( int seconds )
 		{
-			int var_6;
-			int var_2;
-
 			seg043.clear_keyboard();
 
-			var_2 = seg041.time01();
+			int timeNow = seg041.time01();
+            int timeEnd = timeNow + (seconds * 100);
 
-            var_6 = var_2 + (arg_0 * 100);
-
-			while ( seg049.KEYPRESSED() == false && 
-				var_2 < var_6 )
+			while ( seg049.KEYPRESSED() == false &&
+                timeNow < timeEnd)
 			{
-				var_2 = seg041.time01();
+                System.Threading.Thread.Sleep(100);
+                timeNow = seg041.time01();
 			}
 
 			seg043.clear_keyboard();

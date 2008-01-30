@@ -195,7 +195,7 @@ namespace Classes
         public static byte byte_1B2EF;
         public static byte byte_1B2F0;
         public static byte byte_1B2F1;
-        public static byte byte_1B2F2;
+        public static bool DelayBetweenCharacters; // byte_1B2F2
 
         public static byte byte_1BF12; // ??
 
@@ -301,7 +301,6 @@ namespace Classes
         public static byte byte_1D5BA;
         public static byte byte_1D5BE;
         public static bool byte_1D5BF;
-        public static byte byte_1D5C4;
         public static byte byte_1D75E;
         public static int byte_1D883;
         public static int byte_1D884;
@@ -416,8 +415,9 @@ namespace Classes
         public static DaxBlock dword_1D55C;
         public static DaxBlock word_1D5B6;
         public static short word_1D5BC;
-        public static short word_1D5C0;
-        public static short word_1D5C2;
+        public static int displayInputCentiSecondWait; // word_1D5C0 & word_1D5C2
+         public static char displayInputTimeoutValue; // byte_1D5C4
+
         public static spellDelegate2[] word_1D5CE = new spellDelegate2[100];
 
         public static Player dword_1D87F;

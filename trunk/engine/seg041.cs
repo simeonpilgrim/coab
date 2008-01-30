@@ -107,7 +107,7 @@ namespace engine
             {
                 display_char01(true, bp_var_100[bp_var_103-1], 1, bp_arg_6, bp_arg_8, gbl.textYCol, gbl.textXCol);
 
-                if (gbl.byte_1B2F2 != 0)
+                if (gbl.DelayBetweenCharacters)
                 {
                     seg049.SysDelay(gbl.game_speed_var * 3);
                 }
@@ -328,7 +328,10 @@ namespace engine
         }
 
 
-        internal static int time01()
+        /// <summary>
+        /// Gets the centi seconds since midnight
+        /// </summary>
+        internal static int time01() // time01
         {
             System.DateTime dt = System.DateTime.Now;
 
