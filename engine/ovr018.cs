@@ -1202,8 +1202,8 @@ namespace engine
                             {
                                 Struct_19AEC stru = gbl.unk_19AEC[loop3_var];
 
-                                if (stru.field_0 == 0 &&
-                                    stru.field_1 == 1)
+                                if (stru.spellClass == 0 &&
+                                    stru.spellLevel == 1)
                                 {
                                     var_53.field_79[loop3_var - 1] = 1;
                                 }

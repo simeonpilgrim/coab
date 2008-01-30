@@ -964,7 +964,7 @@ namespace engine
         internal static void sub_3B3CA(byte arg_0, object param, Player player)
         {
             if (gbl.byte_1D2C1 > 0 &&
-                gbl.unk_19AEC[gbl.byte_1D2C1].field_1 < 4)
+                gbl.unk_19AEC[gbl.byte_1D2C1].spellLevel < 4)
             {
                 sub_3A019(0);
             }

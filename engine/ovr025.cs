@@ -1798,7 +1798,7 @@ namespace engine
             }
             else
             {
-                switch (gbl.unk_19AEC[arg_0].field_0)
+                switch (gbl.unk_19AEC[arg_0].spellClass)
                 {
                     case 0:
                         var_2 = (sbyte)(gbl.player_ptr.cleric_lvl + (ovr026.sub_6B3D1(gbl.player_ptr) * gbl.player_ptr.turn_undead));
@@ -1850,7 +1850,7 @@ namespace engine
             }
 
             if (gbl.byte_1D88D != 0 &&
-                gbl.unk_19AEC[arg_0].field_0 != 3)
+                gbl.unk_19AEC[arg_0].spellClass != 3)
             {
                 var_1 = 6;
             }

@@ -25,7 +25,7 @@ namespace engine
             {
                 if (player.spell_list[loop_var] > 127)
                 {
-                    var_C = (byte)gbl.unk_19AEC[player.spell_list[loop_var] & 0x7F].field_1;
+                    var_C = (byte)gbl.unk_19AEC[player.spell_list[loop_var] & 0x7F].spellLevel;
 
                     if (var_C > var_3)
                     {
@@ -45,7 +45,7 @@ namespace engine
                     {
                         if ((int)item.getAffect(loop_var) > 0x7f)
                         {
-                            var_C = (byte)gbl.unk_19AEC[(int)item.getAffect(loop_var) & 0x7f].field_1;
+                            var_C = (byte)gbl.unk_19AEC[(int)item.getAffect(loop_var) & 0x7f].spellLevel;
 
                             if (var_C > var_4)
                             {
@@ -128,34 +128,27 @@ namespace engine
         }
 
 
-        internal static byte sub_4428E(sbyte arg_0, sbyte arg_2)
+        internal static int HowManySpellsPlayerCanLearn(sbyte spellClass, sbyte spellLevel) //sub_4428E
         {
-            byte loop_var;
-            byte var_2;
-            byte var_1;
+            int alreadyLearning = 0;
 
-            var_2 = 0;
-
-            for (loop_var = 0; loop_var < gbl.max_spells; loop_var++)
+            for (int loop_var = 0; loop_var < gbl.max_spells; loop_var++)
             {
-                byte b = gbl.player_ptr.spell_list[loop_var];
+                int b = gbl.player_ptr.spell_list[loop_var];
 
                 if (b > 0)
                 {
                     b &= 0x7F;
 
-                    if (gbl.unk_19AEC[b].field_1 == arg_2 &&
-                        gbl.unk_19AEC[b].field_0 == arg_0)
+                    if (gbl.unk_19AEC[b].spellLevel == spellLevel &&
+                        gbl.unk_19AEC[b].spellClass == spellClass)
                     {
-                        var_2++;
+                        alreadyLearning++;
                     }
                 }
             }
 
-
-            var_1 = (byte)(gbl.player_ptr.field_12CArray[(arg_0 * 5) + arg_2] - var_2);
-
-            return var_1;
+            return gbl.player_ptr.field_12CArray[(spellClass * 5) + spellLevel] - alreadyLearning; ;
         }
 
 
@@ -256,33 +249,35 @@ namespace engine
 
         internal static byte sub_445D4()
         {
-            string[] var_60 = new string[51];
+            const int MaxSpellLevel = 5;
+            const int MaxSpellClass = 3;
+            string[,] var_60 = new string[MaxSpellClass, MaxSpellLevel];
             byte var_5F;
             byte var_5E;
             byte var_5D;
-            sbyte var_5C;
-            sbyte var_5B;
-            byte[] var_5A = new byte[3];
+            sbyte spellLevel;
+            sbyte spellClass;
+            bool[] canLearnSpellClass = new bool[MaxSpellClass];
             string var_2A = string.Empty;
             byte var_1;
 
             var_5F = 0;
 
-            for (var_5B = 0; var_5B <= 2; var_5B++)
+            for (spellClass = 0; spellClass < MaxSpellClass; spellClass++)
             {
-                var_5A[var_5B] = 0;
+                canLearnSpellClass[spellClass] = false;
 
-                for (var_5C = 1; var_5C <= 5; var_5C++)
+                for (spellLevel = 0; spellLevel < MaxSpellLevel; spellLevel++)
                 {
-                    var_60[(var_5C * 9) + (var_5B * 3)] = sub_4428E(var_5B, var_5C).ToString();
+                    var_60[spellClass, spellLevel] = HowManySpellsPlayerCanLearn(spellClass, (sbyte)(spellLevel+1)).ToString();
 
-                    if (gbl.player_ptr.field_12CArray[var_5C + (var_5B * 5)] == 0)
+                    if (gbl.player_ptr.field_12CArray[spellLevel + 1 + (spellClass * MaxSpellLevel)] == 0)
                     {
-                        var_60[(var_5B*3) + (var_5C * 9)] = " ";
+                        var_60[spellClass,spellLevel] = " ";
                     }
                     else
                     {
-                        var_5A[var_5B] = 1;
+                        canLearnSpellClass[spellClass] = true;
                         var_5F = 1;
                     }
                 }
@@ -292,11 +287,11 @@ namespace engine
             {
                 ovr025.DisplayPlayerStatusString(false, 10, "can memorize:", gbl.player_ptr);
                 var_5E = 3;
-                for (var_5B = 0; var_5B <= 2; var_5B++)
+                for (spellClass = 0; spellClass < MaxSpellClass; spellClass++)
                 {
-                    if (var_5A[var_5B] != 0)
+                    if (canLearnSpellClass[spellClass])
                     {
-                        switch (var_5B)
+                        switch (spellClass)
                         {
                             case 0:
                                 var_2A = "    Cleric Spells:";
@@ -313,9 +308,9 @@ namespace engine
 
                         seg041.displayString(var_2A, 0, 10, var_5E + 17, 1);
                         var_5D = 0x13;
-                        for (var_5C = 1; var_5C <= 5; var_5C++)
+                        for (spellLevel = 0; spellLevel < MaxSpellLevel; spellLevel++)
                         {
-                            seg041.displayString(var_60[(var_5C * 9) + (var_5B * 3)], 0, 10, var_5E + 0x11, var_5D + 1);
+                            seg041.displayString(var_60[spellClass, spellLevel], 0, 10, var_5E + 0x11, var_5D + 1);
                             var_5D += 3;
                         }
                         var_5E++;
@@ -438,7 +433,7 @@ namespace engine
                         {
                             var_1 = true;
                         }
-                        else if (sub_4428E(gbl.unk_19AEC[var_4].field_0, gbl.unk_19AEC[var_4].field_1) > 0)
+                        else if (HowManySpellsPlayerCanLearn(gbl.unk_19AEC[var_4].spellClass, gbl.unk_19AEC[var_4].spellLevel) > 0)
                         {
                             var_5 = 0;
 
