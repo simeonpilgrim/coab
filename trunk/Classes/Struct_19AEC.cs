@@ -17,8 +17,8 @@ namespace Classes
         public Struct_19AEC(sbyte f0, sbyte f1, sbyte f2, byte f3, byte f4, byte f5,
             byte f6, byte f7, byte f8, byte f9, byte fa, byte fb, byte fc, byte fd, byte fe, byte ff)
         {
-            field_0 = f0;
-            field_1 = f1;
+            spellClass = f0;
+            spellLevel = f1;
             field_2 = f2;
             field_3 = f3;
             field_4 = f4;
@@ -35,9 +35,12 @@ namespace Classes
             field_F = ff;
         }
 
-        public sbyte field_0; //seg600:37DC asc_19AEC    db 0
-        public sbyte field_1; //seg600:37DD unk_19AED    db 0
-        public sbyte field_2; //seg600:37DE              db 0
+        /// <summary>
+        /// 0 - Cleric, 1 - Druid, 2 - Magic-User
+        /// </summary>
+        public sbyte spellClass; //seg600:37DC asc_19AEC    db 0 // field_0
+        public sbyte spellLevel; //seg600:37DD unk_19AED    db 0 // field_1
+        public sbyte field_2; //seg600:37DE              db 0 
         public byte field_3; //seg600:37DF              db 0
         public byte field_4; //seg600:37E0              db	  0
         public byte field_5; //seg600:37E1              db	  0

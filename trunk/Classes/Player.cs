@@ -8,12 +8,16 @@ namespace Classes
         T[] array;
         int min;
         int max;
+        int shift;
 
-        public ArrayReadWrite(T[] data, int min, int max)
+        public ArrayReadWrite(T[] data, int min, int max, int shift)
         {
+            if (max + shift != data.Length) throw new ArgumentOutOfRangeException();
+
             array = data;
             this.min = min;
             this.max = max;
+            this.shift = shift;
         }
 
 
@@ -21,13 +25,34 @@ namespace Classes
         {
             set
             {
-                if (index >= max || index < min) throw new ArgumentOutOfRangeException();
-                array[index] = value;
+                if (index >= max || index < min)
+                {
+                    throw new ArgumentOutOfRangeException();
+                }
+                int i = index + shift;
+                array[i] = value;
             }
             get
             {
-                if (index >= max || index < min) throw new ArgumentOutOfRangeException();
-                return array[index];
+                if (index >= max || index < min)
+                {
+                    throw new ArgumentOutOfRangeException();
+                }
+                int i = index + shift;
+
+                T t;
+                try
+                {
+                    t = array[i];
+                }
+                catch(Exception e)
+                {
+                    int a = 0;
+                    t = array[0];
+                }
+
+                return t;
+                //return array[i];
             }
         }
     }
@@ -187,8 +212,9 @@ namespace Classes
         [DataOffset(0x1D, DataType.Byte)]
         public byte field_1D; // 0x1d;
 
-        [DataOffset(0x1E, DataType.ByteArray, 84)]
-        public byte[] spell_list = new byte[84]; // 0x1e byte[84]
+        public const int SpellListSize = 84;
+        [DataOffset(0x1E, DataType.ByteArray, SpellListSize)]
+        public byte[] spell_list = new byte[SpellListSize]; // 0x1e byte[84]
         [DataOffset(0x72, DataType.Byte)]
         public byte spell_to_learn_count; // 0x72;
         [DataOffset(0x73, DataType.SByte)]
@@ -702,7 +728,7 @@ namespace Classes
 
         private void Init()
         {
-            field_12CArray = new ArrayReadWrite<byte>(field_12D, 1, 16);
+            field_12CArray = new ArrayReadWrite<byte>(field_12D, 1, 16, -1);
             stats = new StatValue[6];
 
             name = string.Empty;

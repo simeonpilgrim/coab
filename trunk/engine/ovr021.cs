@@ -494,7 +494,7 @@ namespace engine
                 {
                     if (output == true)
                     {
-                        var_2 = (byte)gbl.unk_19AEC[player.spell_list[spell_index] & 0x7F].field_1;
+                        var_2 = (byte)gbl.unk_19AEC[player.spell_list[spell_index] & 0x7F].spellLevel;
                     }
                     else
                     {
@@ -540,7 +540,7 @@ namespace engine
 
                             if (arg_0 == true)
                             {
-                                var_4 = (byte)gbl.unk_19AEC[(int)item.getAffect(var_2) & 0x7F].field_1;
+                                var_4 = (byte)gbl.unk_19AEC[(int)item.getAffect(var_2) & 0x7F].spellLevel;
                             }
                             else
                             {

@@ -119,7 +119,7 @@ namespace engine
             arg_0 &= 0x7f;
             var_1 = 0;
 
-            switch (gbl.unk_19AEC[arg_0].field_0)
+            switch (gbl.unk_19AEC[arg_0].spellClass)
             {
                 case 0:
                     throw new System.NotSupportedException();//les	di, [bp+arg_2]
@@ -387,7 +387,7 @@ namespace engine
                 }
 
 
-                var_6 = gbl.unk_19AEC[gbl.unk_1AEC4[var_5 - 1] << 4].field_1;
+                var_6 = gbl.unk_19AEC[gbl.unk_1AEC4[var_5 - 1] << 4].spellLevel;
 
                 var_4.next = new StringList();
 
@@ -396,9 +396,9 @@ namespace engine
 
             var_4.next = null;
 
-            if (gbl.unk_19AEC[arg_0 & 0x7F].field_1 != var_6)
+            if (gbl.unk_19AEC[arg_0 & 0x7F].spellLevel != var_6)
             {
-                var_4.s = LevelStrings[gbl.unk_19AEC[arg_0 & 0x7F].field_1];
+                var_4.s = LevelStrings[gbl.unk_19AEC[arg_0 & 0x7F].spellLevel];
 
                 var_4.field_29 = 1;
                 var_4.next = new StringList();
@@ -438,7 +438,7 @@ namespace engine
             var_6 = gbl.dword_1AE6C;
             var_11 = 0;
 
-            var_12 = gbl.unk_19AEC[arg_0 & 0x7F].field_1;
+            var_12 = gbl.unk_19AEC[arg_0 & 0x7F].spellLevel;
 
             if (gbl.dword_1AE6C == null)
             {
@@ -693,30 +693,13 @@ namespace engine
                     break;
 
                 case SpellLoc.memorize:
-                    for (var_2 = 0; var_2 <= 0x53; var_2++)
+                    for (var_2 = 0; var_2 < gbl.max_spells; var_2++)
                     {
-                        throw new System.NotSupportedException();//mov	al, [bp+var_2]
-                        throw new System.NotSupportedException();//xor	ah, ah
-                        throw new System.NotSupportedException();//les	di, int ptr player_ptr.offset
-                        throw new System.NotSupportedException();//add	di, ax
-                        throw new System.NotSupportedException();//cmp	es:[di+struc_151.field_1E], 0x7F
-                        throw new System.NotSupportedException();//jbe	loc_5CB6D
-                        throw new System.NotSupportedException();//push	player_ptr.seg
-                        throw new System.NotSupportedException();//push	player_ptr.offset
-                        throw new System.NotSupportedException();//mov	al, [bp+var_2]
-                        throw new System.NotSupportedException();//xor	ah, ah
-                        throw new System.NotSupportedException();//les	di, int ptr player_ptr.offset
-                        throw new System.NotSupportedException();//add	di, ax
-                        throw new System.NotSupportedException();//mov	al, es:[di+1Eh]
-                        throw new System.NotSupportedException();//and	al, 0x7F
-                        throw new System.NotSupportedException();//push	ax
-                        throw new System.NotSupportedException();//push	cs
-                        throw new System.NotSupportedException();//call	near ptr sub_5C01E
-                        throw new System.NotSupportedException();//or	al, al
-                        throw new System.NotSupportedException();//jz	loc_5CB6D
-
-                        sub_5C5B9(gbl.player_ptr.spell_list[var_2]);
-                        throw new System.NotSupportedException();//loc_5CB6D:
+                        if (gbl.player_ptr.spell_list[var_2] > 0x7F &&
+                            sub_5C01E((byte)(gbl.player_ptr.spell_list[var_2] & 0x7F), gbl.player_ptr) != 0)
+                        {
+                            sub_5C5B9(gbl.player_ptr.spell_list[var_2]);
+                        }
                     }
                     break;
 
@@ -784,14 +767,14 @@ namespace engine
                 {
                     var_2 = 0;
 
-                    var_C = gbl.unk_19AEC[gbl.unk_1AEC4[var_2]].field_1;
+                    var_C = gbl.unk_19AEC[gbl.unk_1AEC4[var_2]].spellLevel;
 
                     var_A = new StringList();
 
                     var_A.next = gbl.dword_1AE6C;
                     gbl.dword_1AE6C = var_A;
 
-                    gbl.dword_1AE6C.s = LevelStrings[gbl.unk_19AEC[gbl.unk_1AEC4[var_2]].field_1];
+                    gbl.dword_1AE6C.s = LevelStrings[gbl.unk_19AEC[gbl.unk_1AEC4[var_2]].spellLevel];
                     gbl.dword_1AE6C.field_29 = 1;
                     var_6 = gbl.dword_1AE6C;
 
@@ -1362,14 +1345,10 @@ namespace engine
 
                             for (gbl.byte_1DA71 = 1; gbl.byte_1DA71 < var_7A; gbl.byte_1DA71++)
                             {
-                                throw new System.NotSupportedException();//mov	al, byte_1DA71
-                                throw new System.NotSupportedException();//cbw
-                                throw new System.NotSupportedException();//mov	di, ax
-                                throw new System.NotSupportedException();//mov	al, [bp+di+var_72]
-                                throw new System.NotSupportedException();//cmp	al, [bp+var_72]
-                                throw new System.NotSupportedException();//jnz	loc_5D9B1
-                                var_79 = 1;
-                                throw new System.NotSupportedException();//loc_5D9B1:
+                                if (var_71[gbl.byte_1DA71 - 1] == var_72)
+                                {
+                                    var_79 = 1;
+                                }
                             }
                         }
                         else

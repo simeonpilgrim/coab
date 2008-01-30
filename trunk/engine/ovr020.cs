@@ -767,9 +767,9 @@ namespace engine
                         for (var_B = 0; var_B < gbl.max_spells; var_B++)
                         {
                             if (var_7.spell_list[var_B] != 0 &&
-                                gbl.unk_19AEC[var_7.spell_list[var_B]].field_0 == 2)
+                                gbl.unk_19AEC[var_7.spell_list[var_B]].spellClass == 2)
                             {
-                                var_C = gbl.unk_19AEC[var_7.spell_list[var_B]].field_1;
+                                var_C = gbl.unk_19AEC[var_7.spell_list[var_B]].spellLevel;
                                 var_11[var_C - 1] += 1;
 
                                 if (var_11[var_C - 1] > var_7.field_12D[10 + var_C - 1])

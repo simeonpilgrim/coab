@@ -73,8 +73,8 @@ namespace engine
                                 var_12 = gbl.unk_19AEC[var_6];
 
 
-                                if (var_12.field_0 == 0 &&
-                                    var_E.field_12CArray[var_12.field_1] > 0 &&
+                                if (var_12.spellClass == 0 &&
+                                    var_E.field_12CArray[var_12.spellLevel] > 0 &&
                                     var_6 != 0x24)
                                 {
                                     var_E.field_79[var_6 - 1] = 1;
@@ -113,8 +113,8 @@ namespace engine
                                 {
                                     var_12 = gbl.unk_19AEC[var_6];
 
-                                    if (var_12.field_0 == 0 &&
-                                        var_E.field_12CArray[var_12.field_1] > 0)
+                                    if (var_12.spellClass == 0 &&
+                                        var_E.field_12CArray[var_12.spellLevel] > 0)
                                     {
                                         var_E.field_79[var_6] = 1;
                                     }
@@ -176,7 +176,7 @@ namespace engine
 
                                 for (var_6 = 1; var_6 <= 100; var_6++)
                                 {
-                                    if (gbl.unk_19AEC[var_6].field_0 == 1)
+                                    if (gbl.unk_19AEC[var_6].spellClass == 1)
                                     {
                                         throw new System.NotSupportedException();//mov	al, [bp+var_6]
                                         throw new System.NotSupportedException();//xor	ah, ah
