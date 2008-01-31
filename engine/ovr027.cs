@@ -98,42 +98,40 @@ namespace engine
         }
 
 
-        internal static void sub_6C1E9(byte arg_2, byte bp_var_64, byte bp_arg_8, string bp_var_53, byte bp_var_65, byte bp_arg_A, byte[] bp_var_8D)
-		{
-			byte var_1;
-
-			if( bp_var_64 > 0 )
-			{
-                for (var_1 = 0; var_1 < bp_var_64; var_1++)
-				{
-                    if (bp_var_8D[arg_2 << 1] <= var_1 &&
-                        bp_var_8D[(arg_2 << 1) + 1] >= var_1 &&
-                        bp_arg_8 != 0)
+        internal static void sub_6C1E9(byte arg_2, int displayInputStringLen, byte highlightFgColor, string displayInputString, int xOffset, byte fgColor, byte[] bp_var_8D)
+        {
+            if (displayInputStringLen > 0)
+            {
+                for (int i = 0; i < displayInputStringLen; i++)
+                {
+                    if (bp_var_8D[arg_2 << 1] <= i &&
+                        bp_var_8D[(arg_2 << 1) + 1] >= i &&
+                        highlightFgColor != 0)
                     {
-                        seg041.display_char01(true, bp_var_53[var_1], 1, bp_arg_8, 0, 0x18, bp_var_65 + var_1);
+                        seg041.display_char01(true, displayInputString[i], 1, highlightFgColor, 0, 0x18, xOffset + i);
                     }
                     else
                     {
-                        if (unk_6C0BA.MemberOf(bp_var_53[var_1]) == true)
+                        if (unk_6C0BA.MemberOf(displayInputString[i]) == true)
                         {
-                            seg041.display_char01(true, bp_var_53[var_1], 1, 0, bp_arg_8, 0x18, bp_var_65 + var_1);
+                            seg041.display_char01(true, displayInputString[i], 1, 0, highlightFgColor, 0x18, xOffset + i);
                         }
                         else
                         {
-                            seg041.display_char01(true, bp_var_53[var_1], 1, 0, bp_arg_A, 0x18, bp_var_65 + var_1);
+                            seg041.display_char01(true, displayInputString[i], 1, 0, fgColor, 0x18, xOffset + i);
                         }
                     }
-				}
+                }
 
-				if( bp_var_64 + bp_var_65 < 0x27 )
-				{
-					seg041.display_char01( true, ' ', (byte)(( 0x27 - bp_var_64 - bp_var_65) + 1),
-						0, 0, 0x18, ( bp_var_65 + bp_var_64 ) );
-				}
+                if (displayInputStringLen + xOffset < 0x27)
+                {
+                    seg041.display_char01(true, ' ', (0x27 - displayInputStringLen - xOffset) + 1,
+                        0, 0, 0x18, xOffset + displayInputStringLen);
+                }
 
                 Display.Update();
-			}
-		}
+            }
+        }
 
         static Set unk_6C398 = new Set(0x0408, new byte[] { 1, 0, 0xFF, 3, 0xFE, 0xFF, 0xFF, 7 });
         static Set unk_6C3B8 = new Set(0x0606, new byte[] { 0xFE, 3, 0, 0, 0, 0x10 });
@@ -141,93 +139,85 @@ namespace engine
         static byte[] unk_18AE0 = { 0x4F, 0x50, 0x51, 0x4B, 0x20, 0x4D, 0x47, 0x48, 0x49 };
 
 
-		internal static char displayInput( out bool arg_0, byte arg_4, byte arg_6, byte arg_8, byte arg_A, byte arg_C, string accepted_keys, string displayString )
-		{
-			byte var_8F;
-			byte var_8E;
+        internal static char displayInput(out bool arg_0, byte arg_4, byte arg_6, byte highlightFgColor, byte fgColor, byte extraStringFgColor, string displayInputString, string displayExtraString)
+        {
+            byte var_8E;
             byte[] var_8D = new byte[0x28];
-			byte var_65;
-			byte var_64;
-			byte var_63;
-			byte var_62;
-			byte var_61;
-			char var_60;
-			int var_5F;
-			int var_5B;
-			string var_53;
-			string var_2A;
+            byte var_63;
+            byte var_62;
+            byte var_61;
+            char var_60;
+            int var_5F;
+            int var_5B;
 
-			var_2A = displayString;
-			var_53 = accepted_keys;
+            gbl.byte_1D5BF = false;
 
-			gbl.byte_1D5BF = false;
+            bool var_8F = (fgColor != 0) || (highlightFgColor != 0);
 
-			var_8F = ( (arg_A != 0) || (arg_8 != 0) )?(byte)1:(byte)0;
+            buildInputKeys(displayInputString, var_8D, out var_8E);
 
-			buildInputKeys( var_53, var_8D, out var_8E );
+            if (gbl.byte_1D5BE >= var_8E)
+            {
+                gbl.byte_1D5BE = 0;
+            }
 
-			if( gbl.byte_1D5BE >= var_8E )
-			{
-				gbl.byte_1D5BE = 0;
-			}
-
-			var_64 = (byte)var_53.Length;
-			var_60 = '\0';
+            int displayInputStringLen = displayInputString.Length;
+            var_60 = '\0';
             arg_0 = false;
-			var_63 = 0;
+            var_63 = 0;
 
-			int timeStart = seg041.time01();
-			var_5B = seg041.time01() + 30;
+            int timeStart = seg041.time01();
+            var_5B = seg041.time01() + 30;
 
-			var_5F = var_5B + 50;
+            var_5F = var_5B + 50;
 
-			if( var_2A.Length != 0 )
-			{
-				seg041.displayString( var_2A, 0, arg_C, 0x18, 0 );
-			}
+            if (displayExtraString.Length != 0)
+            {
+                seg041.displayString(displayExtraString, 0, extraStringFgColor, 0x18, 0);
+            }
 
-			var_65 = (byte)var_2A.Length;
+            int displayInputXOffset = displayExtraString.Length;
 
-            sub_6C1E9(gbl.byte_1D5BE, var_64, arg_8, var_53, var_65, arg_A, var_8D);
+            sub_6C1E9(gbl.byte_1D5BE, displayInputStringLen, highlightFgColor, displayInputString, displayInputXOffset, fgColor, var_8D);
 
-			if( gbl.game_state == 3 &&
-				gbl.byte_1D5BA == 0x79 &&
-				gbl.byte_1D5B4 != 0x50 )
-			{
-				ovr028.sub_6E005();
-				ovr028.sub_6E02E();
-				ovr028.sub_6E05D();
-			}
+            if (gbl.game_state == 3 &&
+                gbl.byte_1D5BA == 0x79 &&
+                gbl.byte_1D5B4 != 0x50)
+            {
+                ovr028.sub_6E005();
+                ovr028.sub_6E02E();
+                ovr028.sub_6E05D();
+            }
 
-			do
-			{
-				if( gbl.game_state == 3 &&
-					gbl.byte_1D5BA == 0x79 &&
-					gbl.byte_1D5B4 != 0x50 &&
-					seg041.time01() >= var_5B )
-				{
-					ovr028.sub_6E02E();
-					var_5B = var_5F + 30;
-				}
+            do
+            {
+                if (gbl.game_state == 3 &&
+                    gbl.byte_1D5BA == 0x79 &&
+                    gbl.byte_1D5B4 != 0x50 &&
+                    seg041.time01() >= var_5B)
+                {
+                    ovr028.sub_6E02E();
+                    var_5B = var_5F + 30;
+                }
 
-				if( ( gbl.area_ptr.field_3FE != 0 || arg_4 != 0 ) &&
+                if ((gbl.area_ptr.field_3FE != 0 || arg_4 != 0) &&
                     gbl.byte_1D556.curFrame > 0)
-				{
+                {
                     ovr030.sub_7000A(gbl.byte_1D556.ptrs[gbl.byte_1D556.curFrame].field_4, arg_4, 3, 3);
 
                     if ((seg041.time01() - timeStart) >= (gbl.byte_1D556.ptrs[gbl.byte_1D556.curFrame].field_0 * 10) ||
-						gbl.area_ptr.field_3FE != 0 )
-					{
+                        gbl.area_ptr.field_3FE != 0)
+                    {
                         gbl.byte_1D556.curFrame++;
 
                         if (gbl.byte_1D556.curFrame > gbl.byte_1D556.numFrames)
-						{
+                        {
                             gbl.byte_1D556.curFrame = 1;
                         }
 
                         timeStart = seg041.time01();
-					}
-				}
+                    }
+                }
 
                 if (gbl.displayInputCentiSecondWait > 0 &&
                     (seg041.time01() - timeStart) >= gbl.displayInputCentiSecondWait)
@@ -256,11 +246,11 @@ namespace engine
                     }
                     else if (var_60 == 13)
                     {
-                        if (var_8F != 0)
+                        if (var_8F)
                         {
                             if (var_8D[(gbl.byte_1D5BE) << 1] != 0xff)
                             {
-                                var_60 = var_53[var_8D[(gbl.byte_1D5BE) << 1]];
+                                var_60 = displayInputString[var_8D[(gbl.byte_1D5BE) << 1]];
                             }
                             else
                             {
@@ -281,7 +271,7 @@ namespace engine
                             gbl.byte_1D5BE--;
                         }
 
-                        sub_6C1E9(gbl.byte_1D5BE, var_64, arg_8, var_53, var_65, arg_A, var_8D);
+                        sub_6C1E9(gbl.byte_1D5BE, displayInputStringLen, highlightFgColor, displayInputString, displayInputXOffset, fgColor, var_8D);
                     }
                     else if (var_60 == 0x2E)
                     {
@@ -292,7 +282,7 @@ namespace engine
                             gbl.byte_1D5BE = 0;
                         }
 
-                        sub_6C1E9(gbl.byte_1D5BE, var_64, arg_8, var_53, var_65, arg_A, var_8D);
+                        sub_6C1E9(gbl.byte_1D5BE, displayInputStringLen, highlightFgColor, displayInputString, displayInputXOffset, fgColor, var_8D);
                     }
                     else
                     {
@@ -305,9 +295,9 @@ namespace engine
                             }
                             else
                             {
-                                for (var_62 = 0; var_62 < var_64; var_62++)
+                                for (var_62 = 0; var_62 < displayInputStringLen; var_62++)
                                 {
-                                    if (var_53[var_62] == var_60)
+                                    if (displayInputString[var_62] == var_60)
                                     {
                                         var_63 = 1;
                                         var_61 = 0;
@@ -319,7 +309,7 @@ namespace engine
 
                                         gbl.byte_1D5BE = var_61;
 
-                                        sub_6C1E9(gbl.byte_1D5BE, var_64, arg_8, var_53, var_65, arg_A, var_8D);
+                                        sub_6C1E9(gbl.byte_1D5BE, displayInputStringLen, highlightFgColor, displayInputString, displayInputXOffset, fgColor, var_8D);
                                     }
                                 }
                             }
@@ -343,33 +333,33 @@ namespace engine
                     }
                 }
 
-				if( gbl.game_state == 3 &&
-					gbl.byte_1D5BA == 0x79 &&
-					gbl.byte_1D5B4 != 0x50 &&
-					seg041.time01() >= var_5F )
-				{
-					ovr028.sub_6E05D();
+                if (gbl.game_state == 3 &&
+                    gbl.byte_1D5BA == 0x79 &&
+                    gbl.byte_1D5B4 != 0x50 &&
+                    seg041.time01() >= var_5F)
+                {
+                    ovr028.sub_6E05D();
 
-					var_5F = var_5B + 50;
-				}
+                    var_5F = var_5B + 50;
+                }
 
                 System.Threading.Thread.Sleep(20);
 
-			}while( var_63 == 0 );
+            } while (var_63 == 0);
 
-			gbl.area_ptr.field_3FE = 0;
+            gbl.area_ptr.field_3FE = 0;
 
-			if( gbl.game_state == 3 &&
-				gbl.byte_1D5BA == 0x79 &&
-				gbl.byte_1D5B4 != 0x50 )
-			{
-				ovr028.sub_6E05D();
-			}
+            if (gbl.game_state == 3 &&
+                gbl.byte_1D5BA == 0x79 &&
+                gbl.byte_1D5B4 != 0x50)
+            {
+                ovr028.sub_6E05D();
+            }
 
             gbl.byte_1D5BF = arg_0;
 
             return var_60;
-		}
+        }
 
 
 		internal static void redraw_screen( )
@@ -380,19 +370,18 @@ namespace engine
 		}
 
 
-		internal static T sub_6C804<T>( T arg_2, short arg_6 )where T: class,IListBase
+		internal static T sub_6C804<T>( T arg_2, int index )where T: class,IListBase
 		{
-			short var_E;
             T var_C;
             T var_8;
             T var_4;
 
-			var_E = 0;
+			int count = 0;
 
 			var_8 = arg_2;
 			var_C = null;
 
-			while( var_8 != null && var_E < arg_6 )
+			while( var_8 != null && count < index )
 			{
 				if( var_8.Field29() != 0 )
 				{
@@ -400,7 +389,7 @@ namespace engine
 				}
 
 				var_8 = (T)var_8.Next();
-				var_E++;
+				count++;
 			}
 
 			if( var_C == null &&
@@ -418,37 +407,35 @@ namespace engine
 
 
         internal static void sub_6C897<T>(short arg_2,
-            sbyte bp_arg_12, sbyte bp_arg_14, sbyte bp_arg_16, sbyte bp_arg_18, T bp_arg_E,
-            byte bp_arg_1C, byte bp_arg_1E, byte bp_var_54) where T : class, IListBase
+            int yEnd, int xEnd, int yStart, int xStart, T bp_arg_E,
+            byte bp_arg_1C, byte bp_arg_1E, int displayFillWidth) where T : class, IListBase
         {
-            sbyte var_9;
-            T var_8;
-            T var_4;
+            seg037.draw8x8_clear_area(yEnd, xEnd, yStart, xStart);
 
-            seg037.draw8x8_clear_area(bp_arg_12, bp_arg_14, bp_arg_16, bp_arg_18);
-            var_4 = getStringListEntry(bp_arg_E, arg_2);
-            var_8 = sub_6C804(bp_arg_E, arg_2);
+            T var_4 = getStringListEntry(bp_arg_E, arg_2);
+            T var_8 = sub_6C804(bp_arg_E, arg_2);
 
-            var_9 = bp_arg_16;
+            int yCol = yStart;
 
-            while (var_4 != null && var_9 <= bp_arg_12)
+            while (var_4 != null && yCol <= yEnd)
             {
                 if (var_4.Field29() != 0)
                 {
-                    seg041.displayString(var_4.String(), 0, bp_arg_1E, var_9, bp_arg_18);
+                    seg041.displayString(var_4.String(), 0, bp_arg_1E, yCol, xStart);
                 }
                 else
                 {
-                    seg041.displayString(var_4.String(), 0, bp_arg_1C, var_9, bp_arg_18);
+                    seg041.displayString(var_4.String(), 0, bp_arg_1C, yCol, xStart);
                 }
 
-                if (var_4.String().Length < bp_var_54)
+                if (var_4.String().Length < displayFillWidth)
                 {
-                    seg041.display_char01(true, ' ', (byte)(bp_var_54 - var_4.String().Length), 0, 0, var_9, (byte)(var_4.String().Length + bp_arg_18));
+                    seg041.display_char01(true, ' ', displayFillWidth - var_4.String().Length, 0, 0, 
+                        yCol, var_4.String().Length + xStart);
                 }
 
                 var_4 = (T)var_4.Next();
-                var_9++;
+                yCol++;
             }
         }
 
@@ -464,24 +451,20 @@ namespace engine
 		}
 
 
-        static void ListItemHighlighted<T>(short arg_2, T bp_arg_10, sbyte bp_arg_16, sbyte bp_arg_18, byte bp_arg_1A) where T : class, IListBase
+        static void ListItemHighlighted<T>(short index, T stringList, sbyte listDisplayStartY, sbyte listDisplayStartX,
+            byte bgColor) where T : class, IListBase
 		{
-			byte var_6;
-			byte var_5;
-			T var_4;
+			T var_4 = getStringListEntry( stringList, index );
 
-			var_4 = getStringListEntry( bp_arg_10, arg_2 );
-
-			var_5 = getBegingOfString( var_4.String() );
-
-			var_6 = (byte)(( getEndOfString( var_4.String() ) - var_5 ) /*+ 1*/);
+			int stringStart = getBegingOfString( var_4.String() );
+			int stringEnd = getEndOfString( var_4.String() ) - stringStart ;
 
 			seg041.displayString( 
-				seg051.Copy( var_6, var_5, var_4.String() ),
-				bp_arg_1A, 
+				seg051.Copy( stringEnd, stringStart, var_4.String() ),
+				bgColor, 
 				0, 
-				bp_arg_16 + ( arg_2 - gbl.word_1D5BC ),
-				bp_arg_18 + var_5 );
+				listDisplayStartY + ( index - gbl.word_1D5BC ),
+				listDisplayStartX + stringStart );
 		}
 
 
@@ -559,8 +542,8 @@ namespace engine
 
         internal static void sub_6CD38<T>(bool arg_2, ref short bp_arg_4, T bp_arg_E, short bp_var_56,
             short bp_var_59,
-            sbyte bp_arg_12, sbyte bp_arg_14, sbyte bp_arg_16, sbyte bp_arg_18,
-            byte bp_arg_1C, byte bp_arg_1E, byte bp_var_54) where T : class,IListBase
+            sbyte yEnd, sbyte xEnd, sbyte yStart, sbyte xStart,
+            byte bp_arg_1C, byte bp_arg_1E, int displayFillWidth) where T : class,IListBase
         {
             short var_2;
 
@@ -588,8 +571,8 @@ namespace engine
 
             sub_6CC08(arg_2, ref bp_arg_4, bp_arg_E, bp_var_56, bp_var_59);
 
-            sub_6C897(gbl.word_1D5BC, bp_arg_12, bp_arg_14, bp_arg_16, bp_arg_18,
-                bp_arg_E, bp_arg_1C, bp_arg_1E, bp_var_54);
+            sub_6C897(gbl.word_1D5BC, yEnd, xEnd, yStart, xStart,
+                bp_arg_E, bp_arg_1C, bp_arg_1E, displayFillWidth);
         }
 
 
@@ -629,177 +612,171 @@ namespace engine
 
 
         internal static char sl_select_item<T>(out T result_ptr, ref short index_ptr,
-            ref bool arg_8, bool show_exit, T stringList, sbyte arg_12, sbyte arg_14,
-            sbyte arg_16, sbyte arg_18, byte arg_1A, byte arg_1C, byte arg_1E,
-            string string01, string string02) where T : class, IListBase
+            ref bool arg_8, bool showExit, T stringList, sbyte listDisplayEndY, sbyte listDisplayEndX,
+            sbyte listDisplayStartY, sbyte listDisplayStartX, byte highlightBgColor, byte arg_1C, byte arg_1E,
+            string inputString, string extraTextString) where T : class, IListBase
         {
             short var_8D;
             short stringList_size;
             T tmpStringList;
-            bool var_85;
-            bool var_84;
-            string var_83;
+            bool showPrevious;
+            bool showNext;
             char var_5A;
             short var_59;
             bool var_57;
             short var_56;
-            byte var_54;
 
             char ret_val = '\0'; /* Simeon */
-
             result_ptr = null; /*Simeon*/
-
 
             if (stringList == null)
             {
                 index_ptr = 0;
                 result_ptr = null;
 
-                ret_val = '\0';
+                return '\0';
             }
-            else
+            
+            gbl.byte_1D5BE = 1;
+
+            int listDisplayWidth = (byte)((listDisplayEndX - listDisplayStartX) + 1);
+            var_56 = StringListCount(stringList);
+            var_59 = (short)((listDisplayEndY - listDisplayStartY) + 1);
+
+            tmpStringList = stringList;
+            stringList_size = 0;
+
+            while (tmpStringList != null && tmpStringList.Field29() != 0)
             {
-                gbl.byte_1D5BE = 1;
+                tmpStringList = (T)tmpStringList.Next();
+                stringList_size++;
+            }
 
-                var_54 = (byte)((arg_14 - arg_18) + 1);
-                var_56 = StringListCount(stringList);
-                var_59 = (short)((arg_12 - arg_16) + 1);
+            tmpStringList = stringList;
+            var_8D = 0;
 
-                tmpStringList = stringList;
-                stringList_size = 0;
+            while (tmpStringList != null)
+            {
+                tmpStringList = (T)tmpStringList.Next();
+                var_8D++;
+            }
 
-                while (tmpStringList != null && tmpStringList.Field29() != 0)
+            if (var_8D <= var_59)
+            {
+                gbl.word_1D5BC = 0;
+            }
+
+            if (gbl.word_1D5BC > index_ptr)
+            {
+                gbl.word_1D5BC = index_ptr;
+                arg_8 = true;
+            }
+
+            if (gbl.word_1D5BC > var_8D)
+            {
+                gbl.word_1D5BC = 0;
+                arg_8 = true;
+            }
+
+            index_ptr++;
+            sub_6CDCA(false, ref index_ptr, stringList, var_56, var_59);
+
+            if (arg_8 == true)
+            {
+                sub_6C897(gbl.word_1D5BC, listDisplayEndY, listDisplayEndX, listDisplayStartY, listDisplayStartX,
+                    stringList, arg_1C, arg_1E, listDisplayWidth);
+            }
+
+            arg_8 = false;
+
+            bool loop_end = false;
+
+            while (loop_end == false)
+            {
+                ListItemHighlighted(index_ptr, stringList, listDisplayStartY, listDisplayStartX, highlightBgColor);
+                string displayString = inputString;
+
+                showNext = false;
+                showPrevious = false;
+
+                if ((var_56 - var_59) > gbl.word_1D5BC)
                 {
-                    tmpStringList = (T)tmpStringList.Next();
-                    stringList_size++;
+                    displayString += " Next";
+                    showNext = true;
                 }
 
-                tmpStringList = stringList;
-                var_8D = 0;
-
-                while (tmpStringList != null)
+                if (gbl.word_1D5BC > stringList_size)
                 {
-                    tmpStringList = (T)tmpStringList.Next();
-                    var_8D++;
+                    displayString += " Prev";
+                    showPrevious = true;
                 }
 
-                if (var_8D <= var_59)
+                if (showExit == true)
                 {
-                    gbl.word_1D5BC = 0;
+                    displayString += " Exit";
                 }
 
-                if (gbl.word_1D5BC > index_ptr)
+                var_5A = displayInput(out var_57, 0, 1, highlightBgColor, arg_1C, arg_1E, displayString, extraTextString);
+
+                ListItemNormal(index_ptr, stringList, listDisplayStartY, listDisplayStartX, arg_1C, arg_1E);
+
+                if (var_57 == true)
                 {
-                    gbl.word_1D5BC = index_ptr;
-                    arg_8 = true;
-                }
-
-                if (gbl.word_1D5BC > var_8D)
-                {
-                    gbl.word_1D5BC = 0;
-                    arg_8 = true;
-                }
-
-                index_ptr++;
-                sub_6CDCA(false, ref index_ptr, stringList, var_56, var_59);
-
-                if (arg_8 == true)
-                {
-                    sub_6C897(gbl.word_1D5BC, arg_12, arg_14, arg_16, arg_18,
-                        stringList, arg_1C, arg_1E, var_54);
-                }
-
-                arg_8 = false;
-
-                bool loop_end = false;
-
-                while (loop_end == false)
-                {
-                    ListItemHighlighted(index_ptr, stringList, arg_16, arg_18, arg_1A);
-                    var_83 = string01;
-
-                    var_84 = false;
-                    var_85 = false;
-
-                    if ((var_56 - var_59) > gbl.word_1D5BC)
+                    switch (var_5A)
                     {
-                        var_83 += " Next";
-                        var_84 = true;
+                        case 'G':
+                            sub_6CDCA(false, ref index_ptr, stringList, var_56, var_59);
+                            break;
+
+                        case 'O':
+                            sub_6CDCA(true, ref index_ptr, stringList, var_56, var_59);
+                            break;
+
+                        case 'I':
+                            if (showPrevious == true)
+                            {
+                                sub_6CD38(false, ref index_ptr, stringList, var_56, var_59, listDisplayEndY, listDisplayEndX, listDisplayStartY, listDisplayStartX, arg_1C, arg_1E, listDisplayWidth);
+                            }
+                            break;
+
+                        case 'Q':
+                            if (showNext == true)
+                            {
+                                sub_6CD38(true, ref index_ptr, stringList, var_56, var_59, listDisplayEndY, listDisplayEndX, listDisplayStartY, listDisplayStartX, arg_1C, arg_1E, listDisplayWidth);
+                            }
+                            break;
                     }
-
-                    if (gbl.word_1D5BC > stringList_size)
+                }
+                else
+                {
+                    switch (var_5A)
                     {
-                        var_83 += " Prev";
-                        var_85 = true;
-                    }
+                        case 'P':
+                            sub_6CD38(false, ref index_ptr, stringList, var_56, var_59, listDisplayEndY, listDisplayEndX, listDisplayStartY, listDisplayStartX, arg_1C, arg_1E, listDisplayWidth);
+                            break;
 
-                    if (show_exit == true)
-                    {
-                        var_83 += " Exit";
-                    }
+                        case 'N':
 
-                    var_5A = displayInput(out var_57, 0, 1, arg_1A, arg_1C, arg_1E, var_83, string02);
+                            sub_6CD38(true, ref index_ptr, stringList, var_56, var_59, listDisplayEndY, listDisplayEndX, listDisplayStartY, listDisplayStartX, arg_1C, arg_1E, listDisplayWidth);
+                            break;
 
-                    ListItemNormal(index_ptr, stringList, arg_16, arg_18, arg_1C, arg_1E);
+                        case (char)0x1B:
+                            goto case 'E';
 
-                    if (var_57 == true)
-                    {
-                        switch (var_5A)
-                        {
-                            case 'G':
-                                sub_6CDCA(false, ref index_ptr, stringList, var_56, var_59);
-                                break;
+                        case '\0':
+                            goto case 'E';
 
-                            case 'O':
-                                sub_6CDCA(true, ref index_ptr, stringList, var_56, var_59);
-                                break;
+                        case 'E':
+                            result_ptr = null;
+                            ret_val = '\0';
+                            loop_end = true;
+                            break;
 
-                            case 'I':
-                                if (var_85 == true)
-                                {
-                                    sub_6CD38(false, ref index_ptr, stringList, var_56, var_59, arg_12, arg_14, arg_16, arg_18, arg_1C, arg_1E, var_54);
-                                }
-                                break;
-
-                            case 'Q':
-                                if (var_84 == true)
-                                {
-                                    sub_6CD38(true, ref index_ptr, stringList, var_56, var_59, arg_12, arg_14, arg_16, arg_18, arg_1C, arg_1E, var_54);
-                                }
-                                break;
-                        }
-                    }
-                    else
-                    {
-                        switch (var_5A)
-                        {
-                            case 'P':
-                                sub_6CD38(false, ref index_ptr, stringList, var_56, var_59, arg_12, arg_14, arg_16, arg_18, arg_1C, arg_1E, var_54);
-                                break;
-
-                            case 'N':
-
-                                sub_6CD38(true, ref index_ptr, stringList, var_56, var_59, arg_12, arg_14, arg_16, arg_18, arg_1C, arg_1E, var_54);
-                                break;
-
-                            case (char)0x1B:
-                                goto case 'E';
-
-                            case '\0':
-                                goto case 'E';
-
-                            case 'E':
-                                result_ptr = null;
-                                ret_val = '\0';
-                                loop_end = true;
-                                break;
-
-                            default:
-                                result_ptr = getStringListEntry(stringList, index_ptr);
-                                ret_val = var_5A;
-                                loop_end = true;
-                                break;
-                        }
+                        default:
+                            result_ptr = getStringListEntry(stringList, index_ptr);
+                            ret_val = var_5A;
+                            loop_end = true;
+                            break;
                     }
                 }
             }

@@ -159,8 +159,8 @@ namespace engine
 
                     if (var_3 != 0)
                     {
-                        if (var_3 == 2 ||
-                            var_3 == 0x12)
+                        if (var_3 == SearchRec.FileNotFound ||
+                            var_3 == SearchRec.NoMoreFiles)
                         {
                             seg051.MkDir(seg051.Copy(gbl.byte_1BF1A.Length, 0, gbl.byte_1BF1A, out var_12F));
                             var_3 = gbl.word_1EFBC;
@@ -173,13 +173,13 @@ namespace engine
                             return false;
                         }
                     }
-                } while (unk_47635.MemberOf((char)var_3) == false);
+                } while (unk_47635.MemberOf((byte)var_3) == false);
             }
             else if (gbl.import_from == 1)
             {
                 do
                 {
-                    seg046.FINDFIRST(out var_2E, 16, seg051.Copy(gbl.byte_1BF1A.Length - 1, 1, gbl.byte_1BF1A, out var_12F));
+                    seg046.FINDFIRST(out var_2E, 16, gbl.byte_1BF1A);
                     var_3 = gbl.word_1EFBC;
 
                     if (var_3 != 0)
