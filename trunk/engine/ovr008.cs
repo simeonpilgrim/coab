@@ -1252,7 +1252,7 @@ namespace engine
         static Set unk_3178A = new Set(0x0606, new byte[] { 0xff, 0x03, 0xfe, 0xff, 0xff, 0x07 });
 
         internal static byte sub_317AA(byte arg_0, byte arg_2, byte arg_4, byte arg_6, 
-			byte arg_8, string arg_A, string arg_E)
+			byte fgColor, string displayString, string extraString)
         {
             bool var_156;
             char var_155;
@@ -1260,11 +1260,11 @@ namespace engine
             string var_153;
             byte ret_val;
 
-            buildMenuStrings(out var_153, ref arg_A);
+            buildMenuStrings(out var_153, ref displayString);
 
             do
             {
-                var_155 = ovr027.displayInput(out var_156, arg_0, 1, arg_4, arg_6, arg_8, arg_A, arg_E);
+                var_155 = ovr027.displayInput(out var_156, arg_0, 1, arg_4, arg_6, fgColor, displayString, extraString);
 
                 if (var_156 == true)
                 {

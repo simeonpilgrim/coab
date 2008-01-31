@@ -43,7 +43,7 @@ namespace engine
         }
 
 
-        internal static void display_char01(bool arg_0, char ch, byte repeatCount, byte bgColor, byte fgColor,
+        internal static void display_char01(bool arg_0, char ch, int repeatCount, int bgColor, int fgColor,
             int YCol, int XCol)
         {
             char var_2;
@@ -74,19 +74,19 @@ namespace engine
         }
 
 
-        internal static void displaySpaceChar(byte count, byte color, int yCol, int xCol)
+        internal static void displaySpaceChar(int count, int color, int yCol, int xCol)
         {
             if (xCol >= 0 && xCol <= 0x27 &&
                 yCol >= 0 && yCol <= 0x18)
             {
                 display_char01(true, ' ', count, color, color, yCol, xCol);
-                
+
                 Display.Update();
             }
         }
 
 
-        internal static void displayString(string str, byte bgColor, byte fgColor, int yCol, int xCol)
+        internal static void displayString(string str, int bgColor, int fgColor, int yCol, int xCol)
         {
             if (xCol <= 0x27 && yCol <= 0x27)
             {
@@ -101,11 +101,11 @@ namespace engine
 
 
 
-        internal static void sub_107DE(string bp_var_100, ref byte bp_var_103, byte bp_var_104, byte bp_arg_6, byte bp_arg_8)
+        internal static void displayStringSlow(string bp_var_100, ref byte bp_var_103, byte bp_var_104, int bgColor, int fgColor) // sub_107DE
         {
             while (bp_var_103 <= bp_var_104)
             {
-                display_char01(true, bp_var_100[bp_var_103-1], 1, bp_arg_6, bp_arg_8, gbl.textYCol, gbl.textXCol);
+                display_char01(true, bp_var_100[bp_var_103-1], 1, bgColor, fgColor, gbl.textYCol, gbl.textXCol);
 
                 if (gbl.DelayBetweenCharacters)
                 {
@@ -129,7 +129,7 @@ namespace engine
 
         static private byte[] unk_16FA6 = { 2, 70, 0, 0x8C };
 
-        internal static void press_any_key(string arg_0, bool clearArea, byte arg_6, byte arg_8, byte yEnd, byte xEnd, byte yStart, byte xStart)
+        internal static void press_any_key(string arg_0, bool clearArea, int bgColor, int fgColor, byte yEnd, byte xEnd, byte yStart, byte xStart)
         {
             Set var_125;
             byte var_104;
@@ -198,7 +198,7 @@ namespace engine
                                 var_100[var_104-1] == ' ')
                             {
                                 var_104 -= 1;
-                                sub_107DE(var_100, ref var_103, var_104, arg_6, arg_8);
+                                displayStringSlow(var_100, ref var_103, var_104, bgColor, fgColor);
                             }
 
                             gbl.textXCol = xStart;
@@ -216,12 +216,12 @@ namespace engine
 
                                 seg037.draw8x8_clear_area(yEnd, xEnd, yStart, xStart);
 
-                                sub_107DE(var_100, ref var_103, var_104, arg_6, arg_8);
+                                displayStringSlow(var_100, ref var_103, var_104, bgColor, fgColor);
                             }
                         }
                         else
                         {
-                            sub_107DE(var_100, ref var_103, var_104, arg_6, arg_8);
+                            displayStringSlow(var_100, ref var_103, var_104, bgColor, fgColor);
                             Display.Update();
                         }
 
@@ -363,7 +363,7 @@ namespace engine
         }
 
 
-        static void ega_char_out(byte bgColor, byte fgColor, int Y, int X)
+        static void ega_char_out(int bgColor, int fgColor, int Y, int X)
         {
             for (int i = 0; i < 8; i++)
             {

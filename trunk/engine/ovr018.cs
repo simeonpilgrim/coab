@@ -2033,7 +2033,6 @@ namespace engine
 
                         if (gbl.player_next_ptr == null)
                         {
-
                             gbl.area2_ptr.field_67C = 0;
                             ovr017.sub_4A60A(player_ptr1);
 
@@ -2071,9 +2070,9 @@ namespace engine
                                 player_ptr2 = player_ptr2.next_player;
                             }
 
-                            if (player_ptr2 != null &&
-                                ((player_ptr1.field_F7 >= 0x80 && var_1E < 6) ||
-                                    (player_ptr1.field_F7 >= 0x80 && gbl.area2_ptr.field_67C < 8)) &&
+                            if (player_ptr2 == null &&
+                                ((player_ptr1.field_F7 < 0x80 && var_1E < 6) ||
+                                    (player_ptr1.field_F7 > 0x7F && gbl.area2_ptr.field_67C < 8)) &&
                                 (player_ptr1.paladin_lvl == 0 || var_20 == 0) &&
                                 (player_ptr1.ranger_lvl == 0 || var_1F < 3) &&
                                 (((player_ptr1.alignment + 1) % 3) != 0 || var_21 == 0))
@@ -2085,7 +2084,6 @@ namespace engine
                                 {
                                     var_1E++;
                                 }
-
                             }
                             else
                             {
