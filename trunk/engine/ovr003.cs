@@ -83,7 +83,7 @@ namespace engine
         }
 
 
-        internal static void sub_2619A()
+        internal static void CMD_AddSubDivMulti() // sub_2619A
         {
             ushort value;
             ushort var_6;
@@ -125,7 +125,7 @@ namespace engine
         }
 
 
-        internal static void sub_2623D()
+        internal static void CMD_Random() // sub_2623D
         {
             ushort var_4;
             byte var_2;
@@ -142,7 +142,7 @@ namespace engine
 
             var_4 = gbl.cmd_opps[2].Word;
 
-            var_2 = (byte)((double)(seg051.Random(var_1)));
+            var_2 = (byte)(seg051.Random(var_1));
 
             ovr008.vm_SetMemoryValue(var_2, var_4);
         }
@@ -366,7 +366,7 @@ namespace engine
         }
 
 
-        internal static void sub_26835()
+        internal static void CMD_Approach() // sub_26835
         {
             if (gbl.area2_ptr.field_582 > 0)
             {
@@ -529,7 +529,7 @@ namespace engine
         }
 
 
-        internal static void CMD_if()
+        internal static void CMD_If()
         {
             gbl.ecl_offset++;
 
@@ -1148,7 +1148,7 @@ namespace engine
         }
 
 
-        internal static void sub_277E4()
+        internal static void CMD_Combat() // sub_277E4
         {
             ushort var_2;
 
@@ -1960,7 +1960,7 @@ namespace engine
         }
 
 
-        internal static void sub_28856()
+        internal static void CMD_FindItem() // sub_28856
         {
             bool found;
             Item item_ptr;
@@ -2194,7 +2194,7 @@ namespace engine
         }
 
 
-        internal static void sub_28D0F()
+        internal static void CMD_PrintReturn() // sub_28D0F
         {
             gbl.ecl_offset++;
 
@@ -2212,7 +2212,7 @@ namespace engine
         }
 
 
-        internal static void sub_28D38()
+        internal static void CMD_ClearBox() // sub_28D38 
         {
             gbl.ecl_offset++;
             seg037.draw8x8_03();
@@ -2226,20 +2226,18 @@ namespace engine
         }
 
 
-        internal static void sub_28D7F()
+        internal static void CMD_Who() // sub_28D7F
         {
-            string var_100;
-
             ovr008.vm_LoadCmdSets(1);
             seg037.draw8x8_clear_area(0x16, 0x26, 0x11, 1);
 
-            var_100 = gbl.unk_1D972[1];
+            string var_100 = gbl.unk_1D972[1];
 
             ovr025.selectAPlayer(ref gbl.player_ptr, false, var_100);
         }
 
 
-        internal static void sub_28DCA()
+        internal static void CMD_AddNPC() // sub_28DCA
         {
             byte var_6;
             byte var_5;
@@ -2428,7 +2426,7 @@ namespace engine
         }
 
 
-        internal static void YourHaveWon()
+        internal static void CMD_Program() //YourHaveWon
         {
             Player play_ptr;
             Player player;
@@ -2457,7 +2455,7 @@ namespace engine
             else if (var_1 == 8)
             {
                 ovr019.end_game_text();
-                gbl.byte_1EE99 = 1;
+                gbl.gameWon = true;
                 gbl.area_ptr.field_3FA = 0xff;
                 gbl.area2_ptr.field_550 = 0xff;
                 player = gbl.player_next_ptr;
@@ -2497,7 +2495,7 @@ namespace engine
         }
 
 
-        internal static void sub_2923F()
+        internal static void CMD_Protection() // sub_2923F
         {
             seg051.FillChar(0, 2, gbl.byte_1EE72);
             gbl.byte_1EE8C = 0;
@@ -2508,7 +2506,7 @@ namespace engine
         }
 
 
-        internal static void sub_29271()
+        internal static void CMD_Dump() // sub_29271
         {
             gbl.ecl_offset++;
 
@@ -2520,7 +2518,7 @@ namespace engine
         }
 
 
-        internal static void sub_292A5()
+        internal static void CMD_FindSpecial() // sub_292A5
         {
             Affects var_5;
             Affect var_4;
@@ -2544,7 +2542,7 @@ namespace engine
         }
 
 
-        internal static void sub_292F9()
+        internal static void CMD_DestroyItems() // sub_292F9
         {
             Item item;
             Player player;
@@ -2586,16 +2584,16 @@ namespace engine
                 case 0x01: CMD_Goto(); break;
                 case 0x02: CMD_Gosub(); break;
                 case 0x03: CMD_Compare(); break;
-                case 0x04: sub_2619A(); break;
-                case 0x05: sub_2619A(); break;
-                case 0x06: sub_2619A(); break;
-                case 0x07: sub_2619A(); break;
-                case 0x08: sub_2623D(); break;
+                case 0x04: CMD_AddSubDivMulti(); break;
+                case 0x05: CMD_AddSubDivMulti(); break;
+                case 0x06: CMD_AddSubDivMulti(); break;
+                case 0x07: CMD_AddSubDivMulti(); break;
+                case 0x08: CMD_Random(); break;
                 case 0x09: CMD_Save(); break;
                 case 0x0A: sub_262E9(); break;
                 case 0x0B: sub_26465(); break;
                 case 0x0C: sub_263C9(); break;
-                case 0x0D: sub_26835(); break;
+                case 0x0D: CMD_Approach(); break;
                 case 0x0E: sub_26873(); break;
                 case 0x0F: CMD_InputNumber(); break;
                 case 0x10: CMD_InputString(); break;
@@ -2604,12 +2602,12 @@ namespace engine
                 case 0x13: CMD_Return(); break;
                 case 0x14: sub_26B0C(); break;
                 case 0x15: CMD_VertMenu(); break;
-                case 0x16: CMD_if(); break;
-                case 0x17: CMD_if(); break;
-                case 0x18: CMD_if(); break;
-                case 0x19: CMD_if(); break;
-                case 0x1A: CMD_if(); break;
-                case 0x1B: CMD_if(); break;
+                case 0x16: CMD_If(); break;
+                case 0x17: CMD_If(); break;
+                case 0x18: CMD_If(); break;
+                case 0x19: CMD_If(); break;
+                case 0x1A: CMD_If(); break;
+                case 0x1B: CMD_If(); break;
                 case 0x1C: sub_27240(); break;
                 case 0x1D: sub_272A9(); break;
                 case 0x1E: sub_27454(); break;
@@ -2617,7 +2615,7 @@ namespace engine
                 case 0x21: CMD_LoadFiles(); break;
                 case 0x22: sub_2767E(); break;
                 case 0x23: sub_2771E(); break;
-                case 0x24: sub_277E4(); break;
+                case 0x24: CMD_Combat(); break;
                 case 0x25: sub_27AE5(); break;
                 case 0x26: sub_27AE5(); break;
                 case 0x27: load_item(); break;
@@ -2631,21 +2629,21 @@ namespace engine
                 case 0x2F: sub_26DD0(); break;
                 case 0x30: sub_26DD0(); break;
                 case 0x31: CMD_SpriteOff(); break;
-                case 0x32: sub_28856(); break;
-                case 0x33: sub_28D0F(); break;
+                case 0x32: CMD_FindItem(); break;
+                case 0x33: CMD_PrintReturn(); break;
                 case 0x34: sub_28CDA(); break;
                 case 0x35: sub_26E9D(); break;
-                case 0x36: sub_28DCA(); break;
+                case 0x36: CMD_AddNPC(); break;
                 case 0x37: CMD_LoadFiles(); break;
-                case 0x38: YourHaveWon(); break;
-                case 0x39: sub_28D7F(); break;
+                case 0x38: CMD_Program(); break;
+                case 0x39: CMD_Who(); break;
                 case 0x3A: CMD_Delay(); break;
                 case 0x3B: CMD_Spell(); break;
-                case 0x3C: sub_2923F(); break;
-                case 0x3D: sub_28D38(); break;
-                case 0x3E: sub_29271(); break;
-                case 0x3F: sub_292A5(); break;
-                case 0x40: sub_292F9(); break;
+                case 0x3C: CMD_Protection(); break;
+                case 0x3D: CMD_ClearBox(); break;
+                case 0x3E: CMD_Dump(); break;
+                case 0x3F: CMD_FindSpecial(); break;
+                case 0x40: CMD_DestroyItems(); break;
                 default:
                     break;
             }

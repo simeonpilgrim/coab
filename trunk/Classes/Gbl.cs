@@ -354,7 +354,7 @@ namespace Classes
         public static byte byte_1EE96;
         public static byte byte_1EE97;
         public static byte byte_1EE98;
-        public static byte byte_1EE99;
+        public static bool gameWon; // byte_1EE99
         public static byte byte_1EF9A;
         public static byte byte_1EF9B;
 

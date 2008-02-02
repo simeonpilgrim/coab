@@ -198,7 +198,7 @@ namespace engine
             gbl.sky_dax_250 = null;
             gbl.sky_dax_251 = null;
             gbl.sky_dax_252 = null;
-            gbl.byte_1EE99 = 0;
+            gbl.gameWon = false;
             seg041.load_8x8d1_201();
             ovr027.redraw_screen();
             seg041.displayString("Loading...Please Wait", 0, 10, 0x18, 0);
@@ -314,7 +314,7 @@ namespace engine
             gbl.last_game_state = 0;
             gbl.gameFlag01 = true;
             gbl.byte_1D8AC = 0;
-            gbl.byte_1EE99 = 0;
+            gbl.gameWon = false;
         }
     }
 }
