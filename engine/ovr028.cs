@@ -15,23 +15,23 @@ namespace engine
         static short loc_X; // word_1EF9C
         static short loc_Y; // word_1EF9E
 
-		internal static void sub_6E005( )
+        internal static void sub_6E005()
         {
             loc_X = unk_16D5A[gbl.area_ptr.field_342];
-            loc_Y = unk_16D7A[gbl.area_ptr.field_342];           
+            loc_Y = unk_16D7A[gbl.area_ptr.field_342];
         }
 
 
-        internal static void sub_6E02E( )
+        internal static void sub_6E02E()
         {
-            seg040.ega_01( gbl.dword_1C8F4, loc_Y, loc_X );
- 			seg040.draw_picture( gbl.dword_1EFA0, loc_Y, loc_X, 0 );
+            seg040.ega_01(gbl.dword_1C8F4, loc_Y, loc_X);
+            seg040.draw_picture(gbl.dword_1EFA0, loc_Y, loc_X, 0);
         }
 
 
-        internal static void sub_6E05D( )
+        internal static void sub_6E05D()
         {
- 			seg040.draw_picture( gbl.dword_1C8F4, loc_Y, loc_X, 0 );
+            seg040.draw_picture(gbl.dword_1C8F4, loc_Y, loc_X, 0);
         }
     }
 }

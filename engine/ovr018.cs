@@ -2958,7 +2958,7 @@ namespace engine
             else if (ovr020.getPlayerGold(gbl.player_ptr) < 1000 &&
                 gbl.free_training == false &&
                 gbl.byte_1B2F1 == 0 &&
-                gbl.byte_1EE99 == 0)
+                gbl.gameWon == false)
             {
                 seg041.DisplayStatusText(0, 14, "Training costs 1000 gp.");
             }
@@ -3273,7 +3273,7 @@ namespace engine
                         ovr025.string_print01("Congratulations...");
 
                         if (gbl.free_training == false &&
-                            gbl.byte_1EE99 == 0)
+                            gbl.gameWon == false)
                         {
                             subtract_gold(player_ptr, 1000);
                         }
