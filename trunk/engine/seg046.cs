@@ -46,14 +46,21 @@ namespace engine
                 filter = "*.*";
             }
 
+            if (System.IO.Directory.Exists(root) == false)
+            {
+                gbl.word_1EFBC = SearchRec.PathNotFound;
+                return;
+            } 
+            
             di = new System.IO.DirectoryInfo(root);
+
 
 
             record.files = di.GetFiles(filter);
 
             if (record.files.Length == 0)
             {
-                gbl.word_1EFBC = SearchRec.FileNotFound;
+                gbl.word_1EFBC = SearchRec.NoMoreFiles;
                 return;
             }
 

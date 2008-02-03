@@ -152,28 +152,20 @@ namespace engine
 
             if (gbl.import_from == 0)
             {
-                do
+                try
                 {
-                    seg046.FINDFIRST(out var_2E, 16, gbl.byte_1BF1A);
-                    var_3 = gbl.word_1EFBC;
-
-                    if (var_3 != 0)
+                    if (System.IO.Directory.Exists(gbl.byte_1BF1A) == false)
                     {
-                        if (var_3 == SearchRec.FileNotFound ||
-                            var_3 == SearchRec.NoMoreFiles)
-                        {
-                            seg051.MkDir(seg051.Copy(gbl.byte_1BF1A.Length, 0, gbl.byte_1BF1A, out var_12F));
-                            var_3 = gbl.word_1EFBC;
-                        }
-                        else
-                        {
-                            string s = "Unexpected error during save: " + var_3.ToString();
-                            seg041.displayAndDebug(s, 0, 14);
-
-                            return false;
-                        }
+                        System.IO.Directory.CreateDirectory(gbl.byte_1BF1a);
                     }
-                } while (unk_47635.MemberOf((byte)var_3) == false);
+                }
+                catch (System.Exception ex)
+                {
+                    string s = "Unexpected error during save: " + ex.ToString();
+                    seg041.displayAndDebug(s, 0, 14);
+
+                    return false;
+                }
             }
             else if (gbl.import_from == 1)
             {

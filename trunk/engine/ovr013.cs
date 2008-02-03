@@ -878,11 +878,6 @@ namespace engine
         }
 
 
-        internal static void sub_3B274(byte arg_0, object param, Player player)
-        {
-        }
-
-
         internal static void sub_3B27B(byte arg_0, object param, Player player)
         {
             ovr024.add_affect(false, 12, 1, Affects.invisibility, player);
@@ -2086,7 +2081,7 @@ namespace engine
             gbl.spell_jump_list[52] = new spellDelegateX(ovr013.sub_3A071);
             gbl.spell_jump_list[53] = new spellDelegateX(ovr013.sub_3A071);
             gbl.spell_jump_list[54] = new spellDelegateX(ovr013.sub_3B243);
-            gbl.spell_jump_list[55] = new spellDelegateX(ovr013.sub_3B274);
+            gbl.spell_jump_list[55] = new spellDelegateX(ovr013.empty);
             gbl.spell_jump_list[56] = new spellDelegateX(ovr013.sub_3B27B);
             gbl.spell_jump_list[57] = new spellDelegateX(ovr014.engulfs);
             gbl.spell_jump_list[58] = new spellDelegateX(ovr013.sub_3B29A);
