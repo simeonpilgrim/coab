@@ -625,7 +625,7 @@ namespace engine
                             ovr025.string_print01("You can not scribe that spell.");
                         }
                     }
-                    throw new System.NotSupportedException();//loc_44E21:
+                    //loc_44E21:
                 }
 
                 if (var_8 != -1)
@@ -1060,66 +1060,52 @@ namespace engine
         }
 
         static string[] seg600_04A6 = { "Select Exit", "Place Exit" };
+        static Set unk_45832 = new Set(0101, new byte[] { 0x020 });
 
         internal static void reorder_party()
         {
-            char var_3;
             bool var_2;
-            byte var_1;
 
-            var_1 = 0;
-            var_3 = ' ';
+            int var_1 = 0;
+            char var_3 = ' ';
 
             while (unk_45CD7.MemberOf(var_3) == false)
             {
                 var_3 = ovr027.displayInput(out var_2, 1, 1, 15, 10, 13, seg600_04A6[var_1], "Party Order: ");
-                throw new System.NotSupportedException();//cmp	[bp+var_2], 0
-                throw new System.NotSupportedException();//jz	loc_45909
-                throw new System.NotSupportedException();//cmp	[bp+var_1], 0
-                throw new System.NotSupportedException();//jnz	loc_458E5
-                throw new System.NotSupportedException();//mov	al, [bp+var_3]
-                throw new System.NotSupportedException();//push	ax
-                throw new System.NotSupportedException();//call	ovr020.sub_572CF
-                ovr025.Player_Summary(gbl.player_ptr);
-                throw new System.NotSupportedException();//jmp	short loc_45907
-                throw new System.NotSupportedException();//loc_458E5:
-                throw new System.NotSupportedException();//mov	al, [bp+var_3]
-                throw new System.NotSupportedException();//cmp	al, 0x47
-                throw new System.NotSupportedException();//jnz	loc_458F2
-                sub_4558D();
-                throw new System.NotSupportedException();//jmp	short loc_458FA
-                throw new System.NotSupportedException();//loc_458F2:
-                throw new System.NotSupportedException();//cmp	al, 0x4F
-                throw new System.NotSupportedException();//jnz	loc_458FA
-                sub_456E5();
-                throw new System.NotSupportedException();//loc_458FA:
-                ovr025.Player_Summary(gbl.player_ptr);
-                throw new System.NotSupportedException();//loc_45907:
-                throw new System.NotSupportedException();//jmp	short loc_45954
-                throw new System.NotSupportedException();//loc_45909:
-                throw new System.NotSupportedException();//mov	al, [bp+var_3]
-                throw new System.NotSupportedException();//push	ax
-                throw new System.NotSupportedException();//mov	di, offset unk_45832
-                throw new System.NotSupportedException();//push	cs
-                throw new System.NotSupportedException();//push	di
-                throw new System.NotSupportedException();//call	Set__MemberOf(Byte)
-                throw new System.NotSupportedException();//jz	loc_45954
-                throw new System.NotSupportedException();//cmp	[bp+var_1], 0
-                throw new System.NotSupportedException();//mov	al, 0
-                throw new System.NotSupportedException();//jnz	loc_45922
-                throw new System.NotSupportedException();//inc	ax
-                throw new System.NotSupportedException();//loc_45922:
-                throw new System.NotSupportedException();//mov	[bp+var_1], al
+                
+                if (var_2 == true)
+                {
+                    if (var_1 == 0)
+                    {
+                        ovr020.sub_572CF(var_3);
+                        ovr025.Player_Summary(gbl.player_ptr);
+                    }
+                    else
+                    {
+                        if (var_3 == 0x47)
+                        {
+                            sub_4558D();
+                        }
+                        else if (var_3 == 0x4F)
+                        {
+                            sub_456E5();
+                        }
+                        ovr025.Player_Summary(gbl.player_ptr);
+                    }
+                }
+                else if( unk_45832.MemberOf(var_3) == true )
+                {
+                    var_1 = (var_1 == 0) ? 1 : 0;
 
-                if (var_1 != 0)
-                {
-                    ovr025.DisplayPlayerStatusString(false, 10, "has been selected", gbl.player_ptr);
+                    if (var_1 != 0)
+                    {
+                        ovr025.DisplayPlayerStatusString(false, 10, "has been selected", gbl.player_ptr);
+                    }
+                    else
+                    {
+                        ovr025.ClearPlayerTextArea();
+                    }
                 }
-                else
-                {
-                    ovr025.ClearPlayerTextArea();
-                }
-                throw new System.NotSupportedException();//loc_45954:
             }
 
         }

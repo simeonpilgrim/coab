@@ -47,7 +47,6 @@ namespace Classes
                 }
                 catch(Exception e)
                 {
-                    int a = 0;
                     t = array[0];
                 }
 

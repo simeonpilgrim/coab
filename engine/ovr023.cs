@@ -636,7 +636,7 @@ namespace engine
         {
             byte var_1;
 
-            for (var_1 = 0; var_1 <= 0x30; var_1++)
+            for (var_1 = 0; var_1 < 0x30; var_1++)
             {
                 gbl.unk_1AF18[var_1] = null;
             }
