@@ -1060,7 +1060,7 @@ namespace engine
         }
 
         static string[] seg600_04A6 = { "Select Exit", "Place Exit" };
-        static Set unk_45832 = new Set(0101, new byte[] { 0x020 });
+        static Set unk_45832 = new Set(0x0101, new byte[] { 0x020 });
 
         internal static void reorder_party()
         {
