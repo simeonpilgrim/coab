@@ -4,20 +4,26 @@ namespace engine
 {
     public class seg043
     {
+        static bool in_print_and_exit = false;
         public static void print_and_exit()
         {
-            gbl.soundType = gbl.soundTypeBackup;
-
-            seg044.sound_sub_120E0(gbl.word_188BC);
-
-            if (gbl.printCommands == true)
+            if (in_print_and_exit == false)
             {
-                seg051.Close(gbl.unk_1EE9A);
+                in_print_and_exit = true;
+
+                gbl.soundType = gbl.soundTypeBackup;
+
+                seg044.sound_sub_120E0(gbl.word_188BC);
+
+                if (gbl.printCommands == true)
+                {
+                    seg051.Close(gbl.unk_1EE9A);
+                }
+
+                ovr012.keyboardStatus_0417 = gbl.byte_1EFBA;
+
+                seg001.EngineStop();
             }
-
-            ovr012.keyboardStatus_0417 = gbl.byte_1EFBA;
-
-            seg001.EngineThread.Abort();
         }
 
 

@@ -1170,8 +1170,17 @@ namespace engine
             }
             else
             {
-                System.Array.Copy(gbl.combat_icons[iconIdx, iconAction].data, 0, gbl.dword_1D90A.data, iconOffset * dataSize, dataSize);
-                System.Array.Copy(gbl.combat_icons[iconIdx, iconAction].data_ptr, 0, gbl.dword_1D90A.data_ptr, iconOffset * dataSize, dataSize);
+                DaxBlock src = gbl.combat_icons[iconIdx, iconAction];
+                if (src != null)
+                {
+                    System.Array.Copy(gbl.combat_icons[iconIdx, iconAction].data, 0, gbl.dword_1D90A.data, iconOffset * dataSize, dataSize);
+                    System.Array.Copy(gbl.combat_icons[iconIdx, iconAction].data_ptr, 0, gbl.dword_1D90A.data_ptr, iconOffset * dataSize, dataSize);
+                }
+                else
+                {
+                    System.Array.Clear(gbl.dword_1D90A.data, iconOffset * dataSize, dataSize);
+                    System.Array.Clear(gbl.dword_1D90A.data_ptr, iconOffset * dataSize, dataSize);
+                }
             }
         }
 
