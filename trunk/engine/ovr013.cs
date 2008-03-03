@@ -432,28 +432,22 @@ namespace engine
             player.actions.can_cast = 0;
 
             ovr025.sub_66C20(player);
-            throw new System.NotSupportedException();//les	di, [bp+player]
-            throw new System.NotSupportedException();//cmp	byte ptr es:[di+19Bh], 0x34
-            throw new System.NotSupportedException();//jbe	loc_3A858
-            throw new System.NotSupportedException();//les	di, [bp+player]
-            throw new System.NotSupportedException();//sub	byte ptr es:[di+19Bh], 2
-            throw new System.NotSupportedException();//jmp	short loc_3A861
-            throw new System.NotSupportedException();//loc_3A858:
-            throw new System.NotSupportedException();//les	di, [bp+player]
-            throw new System.NotSupportedException();//mov	byte ptr es:[di+19Bh], 0x32
-            throw new System.NotSupportedException();//loc_3A861:
-            throw new System.NotSupportedException();//les	di, [bp+player]
-            throw new System.NotSupportedException();//mov	al, es:[di+19Bh]
-            throw new System.NotSupportedException();//les	di, [bp+player]
-            throw new System.NotSupportedException();//mov	es:[di+19Ah], al
-            throw new System.NotSupportedException();//mov	ax, short ptr [bp+player]
-            throw new System.NotSupportedException();//mov	dx, short ptr [bp+player+2]
-            throw new System.NotSupportedException();//cmp	dx, player_ptr.seg
-            throw new System.NotSupportedException();//jnz	loc_3A88E
-            throw new System.NotSupportedException();//cmp	ax, player_ptr.offset
-            throw new System.NotSupportedException();//jnz	loc_3A88E
-            ovr025.hitpoint_ac(player);
-            throw new System.NotSupportedException();//loc_3A88E:
+            
+            if( player.field_19B > 0x34 )
+            {
+                player.field_19B -= 2;
+            }
+            else
+            {
+                player.field_19B = 0x32;
+            }
+
+            player.ac = player.field_19B;
+
+            if (player == gbl.player_ptr)
+            {
+                ovr025.hitpoint_ac(player);
+            }
         }
 
 

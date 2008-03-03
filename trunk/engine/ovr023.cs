@@ -1978,65 +1978,15 @@ namespace engine
                             {
                                 if (var_4.field_10[var_D] != 0)
                                 {
-                                    //mov	al, [bp+var_12]
-                                    //xor	ah, ah
-                                    //mov	di, ax
-                                    //mov	al, byte ptr unk_189A6[di]
-                                    //cbw
-                                    //mov	dx, ax
-                                    //mov	al, byte_1D883
-                                    //cbw
-                                    //add	ax, dx
-                                    //mov	cx, ax
-                                    //mov	al, [bp+var_D]
-                                    //xor	ah, ah
-                                    //mov	di, ax
-                                    //mov	al, byte ptr unk_18AE9[di]
-                                    //xor	ah, ah
-                                    //mov	di, ax
-                                    //mov	al, byte ptr unk_189A6[di]
-                                    //cbw
-                                    //mov	dx, ax
-                                    //les	di, [bp+var_4]
-                                    //mov	al, es:[di+1Ah]
-                                    //cbw
-                                    //add	ax, dx
-                                    //cmp	ax, cx
-                                    //jnz	loc_5EA7B
-                                    //mov	al, [bp+var_12]
-                                    //xor	ah, ah
-                                    //mov	di, ax
-                                    //mov	al, byte ptr unk_189AF[di]
-                                    //cbw
-                                    //mov	dx, ax
-                                    //mov	al, byte_1D884
-                                    //cbw
-                                    //add	ax, dx
-                                    //mov	cx, ax
-                                    //mov	al, [bp+var_D]
-                                    //xor	ah, ah
-                                    //mov	di, ax
-                                    //mov	al, byte ptr unk_18AE9[di]
-                                    //xor	ah, ah
-                                    //mov	di, ax
-                                    //mov	al, byte ptr unk_189AF[di]
-                                    //cbw
-                                    //mov	dx, ax
-                                    //les	di, [bp+var_4]
-                                    //mov	al, es:[di+1Bh]
-                                    //cbw
-                                    //add	ax, dx
-                                    //cmp	ax, cx
-                                    //jnz	loc_5EA7B
-                                    //mov	al, [bp+var_D]
-                                    //xor	ah, ah
-                                    //les	di, [bp+var_4]
-                                    //add	di, ax
-                                    //cmp	byte ptr es:[di+7], 0x1E
-                                    //jz	loc_5EA7B
-                                    var_F = var_4.field_7[var_D];
+                                    if (gbl.byte_1D883 + gbl.MapDirectionXDelta[var_12] == var_4.field_1A + gbl.MapDirectionXDelta[gbl.unk_18AE9[var_D]] &&
+                                        gbl.byte_1D884 + gbl.MapDirectionYDelta[var_12] == gbl.MapDirectionYDelta[gbl.unk_18AE9[var_D]] + var_4.field_1B)
+                                    {
+                                        if (var_4.field_7[var_D] != 0x1E)
+                                        {
+                                            var_F = var_4.field_7[var_D];
+                                        }
+                                    }
                                 }
-                                //loc_5EA7B:
                             }
                         }
                         var_4 = var_4.next;
@@ -2046,57 +1996,22 @@ namespace engine
                 {
                     for (var_D = 1; var_D <= gbl.byte_1D1BB; var_D++)
                     {
-                        throw new System.NotSupportedException();//mov	al, [bp+var_12]
-                        throw new System.NotSupportedException();//xor	ah, ah
-                        throw new System.NotSupportedException();//mov	di, ax
-                        throw new System.NotSupportedException();//mov	al, byte ptr unk_189A6[di]
-                        throw new System.NotSupportedException();//cbw
-                        throw new System.NotSupportedException();//mov	dx, ax
-                        throw new System.NotSupportedException();//mov	al, byte_1D883
-                        throw new System.NotSupportedException();//cbw
-                        throw new System.NotSupportedException();//add	ax, dx
-                        throw new System.NotSupportedException();//mov	cx, ax
-                        throw new System.NotSupportedException();//mov	al, gbl.unk_1D183[ var_D ].field_4]
-                        throw new System.NotSupportedException();//cbw
-                        throw new System.NotSupportedException();//cmp	ax, cx
-                        throw new System.NotSupportedException();//jnz	loc_5EB22
-                        throw new System.NotSupportedException();//mov	al, [bp+var_12]
-                        throw new System.NotSupportedException();//xor	ah, ah
-                        throw new System.NotSupportedException();//mov	di, ax
-                        throw new System.NotSupportedException();//mov	al, byte ptr unk_189AF[di]
-                        throw new System.NotSupportedException();//cbw
-                        throw new System.NotSupportedException();//mov	dx, ax
-                        throw new System.NotSupportedException();//mov	al, byte_1D884
-                        throw new System.NotSupportedException();//cbw
-                        throw new System.NotSupportedException();//add	ax, dx
-                        throw new System.NotSupportedException();//mov	cx, ax
-                        throw new System.NotSupportedException();//mov	al, gbl.unk_1D183[ var_D ].field_5
-                        throw new System.NotSupportedException();//cbw
-                        throw new System.NotSupportedException();//cmp	ax, cx
-                        throw new System.NotSupportedException();//jnz	loc_5EB22
-                        var_F = gbl.unk_1D183[var_D].field_6;
-                        throw new System.NotSupportedException();//loc_5EB22:
+                        if (gbl.unk_1D183[var_D].mapX == gbl.byte_1D883 + gbl.MapDirectionXDelta[var_12] &&
+                            gbl.unk_1D183[var_D].mapY == gbl.byte_1D884 + gbl.MapDirectionYDelta[var_12])
+                        {
+                            var_F = gbl.unk_1D183[var_D].field_6;
+                        }
                     }
                 }
 
-                throw new System.NotSupportedException();//mov	dl, [bp+var_F]
-                throw new System.NotSupportedException();//mov	al, [bp+var_11]
-                throw new System.NotSupportedException();//xor	ah, ah
-                throw new System.NotSupportedException();//les	di, [bp+var_8]
-                throw new System.NotSupportedException();//add	di, ax
-                throw new System.NotSupportedException();//mov	es:[di+7], dl
-                throw new System.NotSupportedException();//mov	al, [bp+var_11]
-                throw new System.NotSupportedException();//xor	ah, ah
-                throw new System.NotSupportedException();//les	di, [bp+var_8]
-                throw new System.NotSupportedException();//add	di, ax
-                throw new System.NotSupportedException();//cmp	byte ptr es:[di+10h], 0
-                throw new System.NotSupportedException();//jz	loc_5EB88
+                var_8.field_7[var_11] = var_F;
+                if (var_8.field_10[var_11] != 0)
+                {
+                    int cx = gbl.MapDirectionXDelta[var_12] + gbl.byte_1D883;
+                    int ax = gbl.MapDirectionYDelta[var_12] + gbl.byte_1D884;
 
-                int cx = gbl.MapDirectionXDelta[var_12] + gbl.byte_1D883;
-                int ax = gbl.MapDirectionYDelta[var_12] + gbl.byte_1D884;
-
-                gbl.mapToBackGroundTile[cx, ax] = 0x1E;
-                throw new System.NotSupportedException();//loc_5EB88:
+                    gbl.mapToBackGroundTile[cx, ax] = 0x1E;
+                }
             }
 
             ovr025.DisplayPlayerStatusString(false, 10, "Creates a noxious cloud", gbl.player_ptr);
@@ -2495,10 +2410,10 @@ namespace engine
                                 throw new System.NotSupportedException();//mov	al, [bp+var_1]
                                 throw new System.NotSupportedException();//xor	ah, ah
                                 throw new System.NotSupportedException();//mov	di, ax
-                                throw new System.NotSupportedException();//mov	al, byte ptr unk_18AE9[di]
+                                throw new System.NotSupportedException();//mov	al, gbl.unk_18AE9[di]
                                 throw new System.NotSupportedException();//xor	ah, ah
                                 throw new System.NotSupportedException();//mov	di, ax
-                                throw new System.NotSupportedException();//mov	al, byte ptr unk_189AF[di]
+                                throw new System.NotSupportedException();//mov	al, gbl.MapDirectionYDelta[di]
                                 throw new System.NotSupportedException();//cbw
                                 throw new System.NotSupportedException();//mov	dx, ax
                                 throw new System.NotSupportedException();//les	di, [bp+var_18]
@@ -3617,7 +3532,7 @@ namespace engine
                             throw new System.NotSupportedException();//mov	al, [bp+var_17]
                             throw new System.NotSupportedException();//xor	ah, ah
                             throw new System.NotSupportedException();//mov	di, ax
-                            throw new System.NotSupportedException();//mov	al, byte ptr unk_189A6[di]
+                            throw new System.NotSupportedException();//mov	al, gbl.MapDirectionXDelta[di]
                             throw new System.NotSupportedException();//cbw
                             throw new System.NotSupportedException();//mov	dx, ax
                             throw new System.NotSupportedException();//mov	al, byte_1D883
@@ -3627,10 +3542,10 @@ namespace engine
                             throw new System.NotSupportedException();//mov	al, [bp+var_12]
                             throw new System.NotSupportedException();//xor	ah, ah
                             throw new System.NotSupportedException();//mov	di, ax
-                            throw new System.NotSupportedException();//mov	al, byte ptr unk_18AE9[di]
+                            throw new System.NotSupportedException();//mov	al, gbl.unk_18AE9[di]
                             throw new System.NotSupportedException();//xor	ah, ah
                             throw new System.NotSupportedException();//mov	di, ax
-                            throw new System.NotSupportedException();//mov	al, byte ptr unk_189A6[di]
+                            throw new System.NotSupportedException();//mov	al, gbl.MapDirectionXDelta[di]
                             throw new System.NotSupportedException();//cbw
                             throw new System.NotSupportedException();//mov	dx, ax
                             throw new System.NotSupportedException();//les	di, [bp+var_4]
@@ -3642,7 +3557,7 @@ namespace engine
                             throw new System.NotSupportedException();//mov	al, [bp+var_17]
                             throw new System.NotSupportedException();//xor	ah, ah
                             throw new System.NotSupportedException();//mov	di, ax
-                            throw new System.NotSupportedException();//mov	al, byte ptr unk_189AF[di]
+                            throw new System.NotSupportedException();//mov	al, gbl.MapDirectionYDelta[di]
                             throw new System.NotSupportedException();//cbw
                             throw new System.NotSupportedException();//mov	dx, ax
                             throw new System.NotSupportedException();//mov	al, byte_1D884
@@ -3652,10 +3567,10 @@ namespace engine
                             throw new System.NotSupportedException();//mov	al, [bp+var_12]
                             throw new System.NotSupportedException();//xor	ah, ah
                             throw new System.NotSupportedException();//mov	di, ax
-                            throw new System.NotSupportedException();//mov	al, byte ptr unk_18AE9[di]
+                            throw new System.NotSupportedException();//mov	al, gbl.unk_18AE9[di]
                             throw new System.NotSupportedException();//xor	ah, ah
                             throw new System.NotSupportedException();//mov	di, ax
-                            throw new System.NotSupportedException();//mov	al, byte ptr unk_189AF[di]
+                            throw new System.NotSupportedException();//mov	al, gbl.MapDirectionYDelta[di]
                             throw new System.NotSupportedException();//cbw
                             throw new System.NotSupportedException();//mov	dx, ax
                             throw new System.NotSupportedException();//les	di, [bp+var_4]
@@ -3699,7 +3614,7 @@ namespace engine
                                 throw new System.NotSupportedException();//mov	al, [bp+var_17]
                                 throw new System.NotSupportedException();//xor	ah, ah
                                 throw new System.NotSupportedException();//mov	di, ax
-                                throw new System.NotSupportedException();//mov	al, byte ptr unk_189A6[di]
+                                throw new System.NotSupportedException();//mov	al, gbl.MapDirectionXDelta[di]
                                 throw new System.NotSupportedException();//cbw
                                 throw new System.NotSupportedException();//mov	dx, ax
                                 throw new System.NotSupportedException();//mov	al, byte_1D883
@@ -3709,10 +3624,10 @@ namespace engine
                                 throw new System.NotSupportedException();//mov	al, [bp+var_12]
                                 throw new System.NotSupportedException();//xor	ah, ah
                                 throw new System.NotSupportedException();//mov	di, ax
-                                throw new System.NotSupportedException();//mov	al, byte ptr unk_18AED[di]
+                                throw new System.NotSupportedException();//mov	al, gbl.unk_18AED[di]
                                 throw new System.NotSupportedException();//xor	ah, ah
                                 throw new System.NotSupportedException();//mov	di, ax
-                                throw new System.NotSupportedException();//mov	al, byte ptr unk_189A6[di]
+                                throw new System.NotSupportedException();//mov	al, gbl.MapDirectionXDelta[di]
                                 throw new System.NotSupportedException();//cbw
                                 throw new System.NotSupportedException();//mov	dx, ax
                                 throw new System.NotSupportedException();//les	di, [bp+var_4]
@@ -3724,7 +3639,7 @@ namespace engine
                                 throw new System.NotSupportedException();//mov	al, [bp+var_17]
                                 throw new System.NotSupportedException();//xor	ah, ah
                                 throw new System.NotSupportedException();//mov	di, ax
-                                throw new System.NotSupportedException();//mov	al, byte ptr unk_189AF[di]
+                                throw new System.NotSupportedException();//mov	al, gbl.MapDirectionYDelta[di]
                                 throw new System.NotSupportedException();//cbw
                                 throw new System.NotSupportedException();//mov	dx, ax
                                 throw new System.NotSupportedException();//mov	al, byte_1D884
@@ -3734,10 +3649,10 @@ namespace engine
                                 throw new System.NotSupportedException();//mov	al, [bp+var_12]
                                 throw new System.NotSupportedException();//xor	ah, ah
                                 throw new System.NotSupportedException();//mov	di, ax
-                                throw new System.NotSupportedException();//mov	al, byte ptr unk_18AED[di]
+                                throw new System.NotSupportedException();//mov	al, gbl.unk_18AED[di]
                                 throw new System.NotSupportedException();//xor	ah, ah
                                 throw new System.NotSupportedException();//mov	di, ax
-                                throw new System.NotSupportedException();//mov	al, byte ptr unk_189AF[di]
+                                throw new System.NotSupportedException();//mov	al, gbl.MapDirectionYDelta[di]
                                 throw new System.NotSupportedException();//cbw
                                 throw new System.NotSupportedException();//mov	dx, ax
                                 throw new System.NotSupportedException();//les	di, [bp+var_4]
@@ -3775,7 +3690,7 @@ namespace engine
                         throw new System.NotSupportedException();//mov	al, [bp+var_17]
                         throw new System.NotSupportedException();//xor	ah, ah
                         throw new System.NotSupportedException();//mov	di, ax
-                        throw new System.NotSupportedException();//mov	al, byte ptr unk_189A6[di]
+                        throw new System.NotSupportedException();//mov	al, gbl.MapDirectionXDelta[di]
                         throw new System.NotSupportedException();//cbw
                         throw new System.NotSupportedException();//mov	dx, ax
                         throw new System.NotSupportedException();//mov	al, byte_1D883
@@ -3789,7 +3704,7 @@ namespace engine
                         throw new System.NotSupportedException();//mov	al, [bp+var_17]
                         throw new System.NotSupportedException();//xor	ah, ah
                         throw new System.NotSupportedException();//mov	di, ax
-                        throw new System.NotSupportedException();//mov	al, byte ptr unk_189AF[di]
+                        throw new System.NotSupportedException();//mov	al, gbl.MapDirectionYDelta[di]
                         throw new System.NotSupportedException();//cbw
                         throw new System.NotSupportedException();//mov	dx, ax
                         throw new System.NotSupportedException();//mov	al, byte_1D884

@@ -5,10 +5,20 @@ namespace engine
     public class seg001
     {
         internal static System.Threading.Thread EngineThread;
+        
+        public delegate void VoidDelegate();
+        static VoidDelegate EngineStoppedCallback;
 
-        public static void __SystemInit( )
+        internal static void EngineStop()
+        {
+            EngineStoppedCallback();
+            EngineThread.Abort();
+        }
+
+        public static void __SystemInit(VoidDelegate stoppedCallback  )
         {
             EngineThread = System.Threading.Thread.CurrentThread;
+            EngineStoppedCallback = stoppedCallback;
 
             seg051.o_1_a_87_i_tpdos_idc_tpdos_l_tptv();
 

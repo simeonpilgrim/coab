@@ -8,6 +8,7 @@ namespace Main
     static class Program
     {
         static MainForm main;
+        static Thread engineThread;
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
@@ -20,7 +21,7 @@ namespace Main
             main = new MainForm();
 
             ThreadStart threadDelegate = new ThreadStart(EngineThread);
-            Thread engineThread = new Thread(threadDelegate);
+            engineThread = new Thread(threadDelegate);
             engineThread.Name = "Engine";
             engineThread.Start();
             
@@ -30,11 +31,20 @@ namespace Main
 
         public delegate void VoidDelegate();
 
+        static void EngineStopped()
+        {
+            VoidDelegate d = delegate()
+            {
+                Application.Exit();
+            };
+            main.Invoke(d);
+        }
+
         static void EngineThread()
         {
             //try
             //{
-                engine.seg001.__SystemInit();
+            engine.seg001.__SystemInit(EngineStopped);
                 engine.seg001.PROGRAM();
             //}
             //catch (Exception e)
@@ -43,8 +53,7 @@ namespace Main
             //}
             //finally
             //{
-                VoidDelegate d = delegate() { main.Close(); };
-                main.Invoke(d);
+                EngineStopped();
             //}
         }
     }
