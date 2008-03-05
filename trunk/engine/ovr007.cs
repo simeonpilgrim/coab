@@ -274,7 +274,7 @@ namespace engine
                     var_29 = "Buy View Pool Appraise Exit";
                 }
 
-                var_2E = ovr027.displayInput( out var_2C, 0, 1, 15, 10, 13, var_29, var_2B );
+                var_2E = ovr027.displayInput( out var_2C, false, 1, 15, 10, 13, var_29, var_2B );
 
                 switch ( var_2E )
                 {
@@ -316,7 +316,7 @@ namespace engine
                             seg041.press_any_key( "As you Leave the Shopkeeper says, \"Excuse me but you have Left Some Money here.\"  ", true, 0, 0x0a, 0x16, 0x26, 0x11, 1 );
                             seg041.press_any_key( "Do you want to go back and get your Money?", false, 0, 0x0f, 0x16, 0x26, 0x11, 1 );
                 
-                            var_31 = ovr008.sub_317AA( 0, 0, 0x0f, 0x0a, 0x0d, var_29, var_2B );
+                            var_31 = ovr008.sub_317AA( false, 0, 0x0f, 0x0a, 0x0d, var_29, var_2B );
                 
                             if( var_31 == 1 )
                             {

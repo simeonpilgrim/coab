@@ -489,7 +489,7 @@ namespace engine
 			seg041.displayString( var_10B, 0, 10, 5, 1 );
 			seg041.displayString( "experience points.", 0, 10, 7, 1 );
 
-			ovr027.displayInput( out var_10F, 0, 1, 15, 15, 15, "press <enter>/<return> to continue", string.Empty );
+			ovr027.displayInput( out var_10F, false, 1, 15, 15, 15, "press <enter>/<return> to continue", string.Empty );
 		}
 
 
@@ -600,7 +600,7 @@ namespace engine
                 {
                     do
                     {
-                        var_1 = ovr027.displayInput( out var_3, 1, 1, 15, 10, 13, "Money Items Exit", "Take: " );
+                        var_1 = ovr027.displayInput( out var_3, true, 1, 15, 10, 13, "Money Items Exit", "Take: " );
                         
                         switch( var_1 )
                         {
@@ -714,7 +714,7 @@ namespace engine
                     var_103 = "View Take Pool" + var_11A;
                 }
 
-                var_104 = ovr027.displayInput( out var_106, 1, 1, 15, 10, 13, var_103, var_108 );
+                var_104 = ovr027.displayInput( out var_106, true, 1, 15, 10, 13, var_103, var_108 );
 
                 switch( var_104 )
                 {
@@ -753,7 +753,7 @@ namespace engine
  
                             seg041.press_any_key( "There is still treasure left.  ", true, 0, 10, 0x16, 0x26, 0x11, 1 );
                             seg041.press_any_key( "Do you want to go back and claim your treasure?", false, 0, 15, 0x16, 0x26, 0x11, 1 );
-                            var_109 = ovr008.sub_317AA( 0, 0, 15, 10, 13, var_103, var_108 );
+                            var_109 = ovr008.sub_317AA( false, 0, 15, 10, 13, var_103, var_108 );
 
                             if( var_109 == 1 )
                             {
@@ -886,7 +886,7 @@ namespace engine
                 }
 
                 bool tmpBool;
-                ovr027.displayInput( out tmpBool, 0, 1, 15, 15, 15, "press <enter>/<return> to continue", string.Empty );
+                ovr027.displayInput( out tmpBool, false, 1, 15, 15, 15, "press <enter>/<return> to continue", string.Empty );
             }
         }
 

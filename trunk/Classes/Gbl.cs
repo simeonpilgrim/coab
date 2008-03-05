@@ -294,9 +294,9 @@ namespace Classes
         public static short word_1D548; // byte_1D53C[di] 3*4
 
         public static DaxArray byte_1D556;
-        public static string byte_1D5A2;
+        public static string lastDaxFile;
         public static string byte_1D5AB;
-        public static byte byte_1D5B4;
+        public static byte byte_1D5B4; // byte_1D5B4
         public static byte byte_1D5B5;
         public static byte byte_1D5BA;
         public static byte byte_1D5BE;
@@ -412,7 +412,6 @@ namespace Classes
         public static ushort ecl_initial_entryPoint; // word_1B2DB
         public static short word_1B2EC;
         public static DaxBlock dword_1C8FC;
-        public static DaxBlock dword_1D55C;
         public static DaxBlock word_1D5B6;
         public static short word_1D5BC;
         public static int displayInputCentiSecondWait; // word_1D5C0 & word_1D5C2

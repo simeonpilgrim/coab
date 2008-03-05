@@ -924,7 +924,7 @@ namespace engine
 
             while (arg_0 == 0 && unk_45CD7.MemberOf(var_1) == false)
             {
-                var_1 = ovr027.displayInput(out var_2, 1, 1, 15, 10, 13, "Cast Memorize Scribe Display Rest Exit", string.Empty);
+                var_1 = ovr027.displayInput(out var_2, true, 1, 15, 10, 13, "Cast Memorize Scribe Display Rest Exit", string.Empty);
 
                 if (var_2 == true)
                 {
@@ -1071,7 +1071,7 @@ namespace engine
 
             while (unk_45CD7.MemberOf(var_3) == false)
             {
-                var_3 = ovr027.displayInput(out var_2, 1, 1, 15, 10, 13, seg600_04A6[var_1], "Party Order: ");
+                var_3 = ovr027.displayInput(out var_2, true, 1, 15, 10, 13, seg600_04A6[var_1], "Party Order: ");
                 
                 if (var_2 == true)
                 {
@@ -1176,7 +1176,7 @@ namespace engine
 
                 var_2B += " Exit";
 
-                var_1 = ovr027.displayInput(out var_2, 1, 1, 15, 10, 13, var_2B, "Game Speed:");
+                var_1 = ovr027.displayInput(out var_2, true, 1, 15, 10, 13, var_2B, "Game Speed:");
 
                 if (var_2 == true)
                 {
@@ -1225,7 +1225,7 @@ namespace engine
 
             while (unk_45CD7.MemberOf(var_1) == false)
             {
-                var_1 = ovr027.displayInput(out var_3, 1, 1, 15, 10, 13, "Order Drop Speed Icon Pics Exit", "Alter: ");
+                var_1 = ovr027.displayInput(out var_3, true, 1, 15, 10, 13, "Order Drop Speed Icon Pics Exit", "Alter: ");
 
                 if (var_3 == true)
                 {
@@ -1276,7 +1276,7 @@ namespace engine
 
                                 var_2C += "Exit";
 
-                                var_2 = ovr027.displayInput(out var_3, 1, 0, 15, 10, 13, var_2C, string.Empty);
+                                var_2 = ovr027.displayInput(out var_3, true, 0, 15, 10, 13, var_2C, string.Empty);
 
                                 if (var_2 == 0x50)
                                 {
@@ -1569,7 +1569,7 @@ namespace engine
 
             gbl.unk_1D890.Clear();
 
-            gbl.byte_1D5AB = gbl.byte_1D5A2;
+            gbl.byte_1D5AB = gbl.lastDaxFile;
             gbl.byte_1D5B5 = gbl.byte_1D5B4;
 
             ovr025.load_pic();
@@ -1585,7 +1585,7 @@ namespace engine
                 unk_463F4.MemberOf(var_2) == false)
             {
 
-                var_2 = ovr027.displayInput(out var_4, 1, 1, 15, 10, 13, "Save View Magic Rest Alter Fix Exit", "Camp:");
+                var_2 = ovr027.displayInput(out var_4, true, 1, 15, 10, 13, "Save View Magic Rest Alter Fix Exit", "Camp:");
 
                 if (var_4 == true)
                 {

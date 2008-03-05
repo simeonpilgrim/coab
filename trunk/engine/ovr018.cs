@@ -174,7 +174,7 @@ namespace engine
                     var_F = false;
                 }
 
-                inputkey = ovr027.displayInput(out var_3, 0, 1, 0, 0, 13, "C D M T H V A R L S B E J", "Choose a function ");
+                inputkey = ovr027.displayInput(out var_3, false, 1, 0, 0, 13, "C D M T H V A R L S B E J", "Choose a function ");
 
                 ovr027.redraw_screen();
 
@@ -1501,7 +1501,7 @@ namespace engine
                 }
                 else
                 {
-                    var_35 = ovr027.displayInput(out var_36, 0, 1, 15, 10, 13, "Keep Exit", "Modify: ");
+                    var_35 = ovr027.displayInput(out var_36, false, 1, 15, 10, 13, "Keep Exit", "Modify: ");
                 }
 
                 sub_4E6F2(0, var_37, var_3F);
@@ -1981,7 +1981,7 @@ namespace engine
             var_1F = 0;
             seg037.draw8x8_clear_area(0x16, 0x26, 1, 1);
 
-            var_1B = ovr027.displayInput(out var_4B, 0, 0, 15, 10, 13, "Curse Pool Hillsfar Exit", "Add from where? ");
+            var_1B = ovr027.displayInput(out var_4B, false, 0, 15, 10, 13, "Curse Pool Hillsfar Exit", "Add from where? ");
 
             switch (var_1B)
             {
@@ -2303,7 +2303,7 @@ namespace engine
                         var_E = iconStrings[var_8];
                     }
 
-                    var_2 = ovr027.displayInput(out var_3, 0, 0, 15, 10, 13, var_E, string.Empty);
+                    var_2 = ovr027.displayInput(out var_3, false, 0, 15, 10, 13, var_E, string.Empty);
 
                     if (var_3 == false)
                     {

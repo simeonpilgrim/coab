@@ -337,7 +337,7 @@ namespace engine
             do
             {
                 sub_58615(var_4);
-                var_3 = ovr027.displayInput(out var_2, 0, 1, 15, 10, 13, "Rest Days Hours Mins Add Subtract Exit", string.Empty);
+                var_3 = ovr027.displayInput(out var_2, false, 1, 15, 10, 13, "Rest Days Hours Mins Add Subtract Exit", string.Empty);
 
                 if (var_2 == true)
                 {

@@ -300,7 +300,7 @@ namespace engine
                                 ovr030.load_pic_final(ref gbl.byte_1D556, 0, arg_6, "PIC");
                                 arg_0[1] = 1;
 
-                                ovr030.sub_7000A(gbl.dword_1D55C, 1, 3, 3);
+                                ovr030.sub_7000A(gbl.byte_1D556.ptrs[0].field_4, true, 3, 3);
                             }
                             else
                             {
@@ -1251,7 +1251,7 @@ namespace engine
 
         static Set unk_3178A = new Set(0x0606, new byte[] { 0xff, 0x03, 0xfe, 0xff, 0xff, 0x07 });
 
-        internal static byte sub_317AA(byte arg_0, byte arg_2, byte arg_4, byte arg_6, 
+        internal static byte sub_317AA(bool useOverlay, byte arg_2, byte arg_4, byte arg_6, 
 			byte fgColor, string displayString, string extraString)
         {
             bool var_156;
@@ -1264,7 +1264,7 @@ namespace engine
 
             do
             {
-                var_155 = ovr027.displayInput(out var_156, arg_0, 1, arg_4, arg_6, fgColor, displayString, extraString);
+                var_155 = ovr027.displayInput(out var_156, useOverlay, 1, arg_4, arg_6, fgColor, displayString, extraString);
 
                 if (var_156 == true)
                 {

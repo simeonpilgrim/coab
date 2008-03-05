@@ -395,7 +395,7 @@ namespace engine
 
             do
             {
-                arg_0 = ovr027.displayInput(out var_2B, 0, 1, 15, 10, 13, var_29, string.Empty);
+                arg_0 = ovr027.displayInput(out var_2B, false, 1, 15, 10, 13, var_29, string.Empty);
 
                 if (var_2B == true &&
                     unk_33748.MemberOf(arg_0) == false)
@@ -495,7 +495,7 @@ namespace engine
                 {
                     var_20D = "Move/Attack, Move Left = " + (player.actions.move / 2).ToString() + " ";
 
-                    var_A = ovr027.displayInput(out gbl.byte_1D905, 0, 1, 15, 10, 10, string.Empty, var_20D);
+                    var_A = ovr027.displayInput(out gbl.byte_1D905, false, 1, 15, 10, 10, string.Empty, var_20D);
                 }
 
                 switch (var_A)
@@ -696,7 +696,7 @@ namespace engine
 
             while (unk_341B3.MemberOf(var_2A) == false && arg_0 == false)
             {
-                var_2A = ovr027.displayInput(out gbl.byte_1D905, 0, 0, 15, 10, 13, var_29, string.Empty);
+                var_2A = ovr027.displayInput(out gbl.byte_1D905, false, 0, 15, 10, 13, var_29, string.Empty);
 
                 switch (var_2A)
                 {
@@ -752,7 +752,7 @@ namespace engine
 
                 var_29 += "Exit";
 
-                var_53 = ovr027.displayInput(out gbl.byte_1D905, 0, 0, 15, 10, 13, var_29, var_52);
+                var_53 = ovr027.displayInput(out gbl.byte_1D905, false, 0, 15, 10, 13, var_29, var_52);
 
                 if (var_53 == 0x53)
                 {

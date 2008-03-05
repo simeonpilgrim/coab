@@ -177,7 +177,7 @@ namespace engine
             gbl.byte_1BF12 = 1;
             gbl.displayPlayerSprite = false;
             gbl.byte_1C01A = 0;
-            gbl.byte_1D5A2 = string.Empty;
+            gbl.lastDaxFile = string.Empty;
             gbl.byte_1D5AB = string.Empty;
             gbl.byte_1D5B4 = 0x0FF;
             gbl.byte_1D5B5 = 0x0FF;
@@ -295,7 +295,7 @@ namespace engine
             gbl.byte_1BF12 = 1;
             gbl.displayPlayerSprite = false;
             gbl.byte_1C01A = 0;
-            gbl.byte_1D5A2 = string.Empty;
+            gbl.lastDaxFile = string.Empty;
             gbl.byte_1D5AB = string.Empty;
             gbl.byte_1D5B4 = 0x0FF;
             gbl.byte_1D5B5 = 0x0FF;

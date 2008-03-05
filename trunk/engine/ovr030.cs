@@ -9,24 +9,24 @@ namespace engine
         static byte[] unk_16DCA = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 };
         static byte[] unk_16DDA = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 0, 14, 15 };
 
-        internal static void sub_7000A(DaxBlock dax_block, byte arg_4, short arg_6, short arg_8)
+        internal static void sub_7000A(DaxBlock dax_block, bool useOverlay, short rowY, short colX)
         {
             if (dax_block != null)
             {
                 if (gbl.area_ptr.field_3FE > 0 ||
-                    arg_4 != 0)
+                    useOverlay == true)
                 {
                     if (gbl.area_ptr.field_3FE > 0)
                     {
                         seg040.DaxBlockRecolor(dax_block, 1, 0, unk_16DBA, unk_16DAA);
                     }
 
-                    seg040.OverlayBounded(dax_block, 0, 0, arg_6 - 1, arg_8 - 1);
+                    seg040.OverlayBounded(dax_block, 0, 0, rowY - 1, colX - 1);
                     seg040.DrawOverlay();
                 }
                 else
                 {
-                    seg040.draw_picture(dax_block, arg_6, arg_8, 0);
+                    seg040.draw_picture(dax_block, rowY, colX, 0);
                 }
             }
         }
@@ -34,21 +34,20 @@ namespace engine
 
         internal static void sub_7008D(DaxBlock dax_block, byte arg_4, byte arg_6)
         {
-            sub_7000A(dax_block, 0, arg_4, arg_6);
+            sub_7000A(dax_block, false, arg_4, arg_6);
         }
 
 
         internal static void sub_700AD(DaxBlock dax_block, byte arg_4, byte arg_6)
         {
-            sub_7000A(dax_block, 0, (short)(arg_4 + 5), arg_6);
+            sub_7000A(dax_block, false, (short)(arg_4 + 5), arg_6);
         }
 
 
-        internal static void load_pic_final(ref DaxArray arg_0, byte masked, byte arg_6, string arg_8)
+        internal static void load_pic_final(ref DaxArray daxArray, byte masked, byte block_id, string arg_8)
         {
             DaxBlock var_2C;
             byte var_28;
-            DaxArray var_27;
             byte var_23;
             byte var_22;
             bool var_21;
@@ -60,14 +59,14 @@ namespace engine
             short var_11;
             byte[] var_F;
             short var_B;
-            string var_9;
+            string file_string;
 
-            var_9 = arg_8;
+            file_string = arg_8;
 
-            if (var_9 != gbl.byte_1D5A2 ||
-                arg_6 != gbl.byte_1D5B4)
+            if (file_string != gbl.lastDaxFile ||
+                block_id != gbl.byte_1D5B4)
             {
-                if (arg_6 != 0xff)
+                if (block_id != 0xff)
                 {
                     if (gbl.AnimationsOn == true)
                     {
@@ -75,14 +74,14 @@ namespace engine
                         seg041.displayString("Loading...Please Wait", 0, 10, 0x18, 0);
                     }
 
-                    DaxArrayFreeDaxBlocks(arg_0);
-                    gbl.byte_1D5A2 = var_9;
+                    DaxArrayFreeDaxBlocks(daxArray);
+                    gbl.lastDaxFile = file_string;
 
-                    gbl.byte_1D5B4 = arg_6;
+                    gbl.byte_1D5B4 = block_id;
 
-                    var_21 = (var_9 == "PIC" || var_9 == "FINAL");
+                    var_21 = (file_string == "PIC" || file_string == "FINAL");
 
-                    seg042.load_decode_dax(out var_F, out var_B, arg_6, var_9 + gbl.game_area.ToString() + ".dax");
+                    seg042.load_decode_dax(out var_F, out var_B, block_id, file_string + gbl.game_area.ToString() + ".dax");
 
                     if (var_B == 0)
                     {
@@ -93,24 +92,22 @@ namespace engine
                         var_11 = 0;
                         var_22 = 0;
 
-                        var_27 = arg_0;
-
-                        var_27.numFrames = var_F[var_11];
+                        daxArray.numFrames = var_F[var_11];
                         var_11++;
-                        var_27.curFrame = 1;
+                        daxArray.curFrame = 1;
 
                         var_23 = 0;
 
                         if (gbl.AnimationsOn == false && var_21 == true)
                         {
-                            var_27.numFrames = 1;
+                            daxArray.numFrames = 1;
                         }
 
-                        var_28 = var_27.numFrames;
+                        var_28 = daxArray.numFrames;
 
                         for (var_12 = 1; var_12 <= var_28; var_12++)
                         {
-                            var_27.ptrs[var_12 - 1].field_0 = Sys.ArrayToInt(var_F, var_11);
+                            daxArray.ptrs[var_12 - 1].field_0 = Sys.ArrayToInt(var_F, var_11);
                             var_11 += 4;
 
                             height = Sys.ArrayToShort(var_F, var_11);
@@ -121,9 +118,9 @@ namespace engine
 
                             var_23++;
 
-                            seg040.init_dax_block(out var_27.ptrs[var_12 - 1].field_4, masked, 1, width, height);
+                            seg040.init_dax_block(out daxArray.ptrs[var_12 - 1].field_4, masked, 1, width, height);
 
-                            var_2C = var_27.ptrs[var_12 - 1].field_4;
+                            var_2C = daxArray.ptrs[var_12 - 1].field_4;
 
                             var_2C.field_4 = Sys.ArrayToShort(var_F, var_11);
                             var_11 += 2;
@@ -134,7 +131,7 @@ namespace engine
                             System.Array.Copy(var_F, var_11, var_2C.field_9, 0, 8);
                             var_11 += 8;
 
-                            var_20 = (short)((var_27.ptrs[var_12 - 1].field_4.bpp / 2) - 1);
+                            var_20 = (short)((daxArray.ptrs[var_12 - 1].field_4.bpp / 2) - 1);
 
                             if (var_21 == true)
                             {
@@ -156,17 +153,17 @@ namespace engine
                                 }
                             }
 
-                            seg040.turn_dax_to_videolayout(var_27.ptrs[var_12-1].field_4, 0, masked, var_11, var_F);
+                            seg040.turn_dax_to_videolayout(daxArray.ptrs[var_12-1].field_4, 0, masked, var_11, var_F);
 
                             if ((masked & 1) > 0)
                             {
-                                seg040.DaxBlockRecolor(var_27.ptrs[var_12-1].field_4, 0, 0, unk_16DDA, unk_16DCA);
+                                seg040.DaxBlockRecolor(daxArray.ptrs[var_12-1].field_4, 0, 0, unk_16DDA, unk_16DCA);
                             }
 
                             var_11 += (short)(var_20 + 1);
                         }
 
-                        var_27.numFrames = var_23;
+                        daxArray.numFrames = var_23;
 
 
                         if (var_21 == true && var_22 != 0)
@@ -197,7 +194,7 @@ namespace engine
             arg_0.numFrames = 0;
             arg_0.curFrame = 0;
 
-            gbl.byte_1D5A2 = string.Empty;
+            gbl.lastDaxFile = string.Empty;
             gbl.byte_1D5B4 = 0x0FF;
         }
 
@@ -246,7 +243,7 @@ namespace engine
             }
             else
             {
-                sub_7000A(gbl.headX_dax, 0, arg_2, arg_4);
+                sub_7000A(gbl.headX_dax, false, arg_2, arg_4);
             }
         }
 

@@ -351,7 +351,7 @@ namespace engine
 
                 var_2B += "Exit";
 
-                var_1 = ovr027.displayInput(out var_2E, 0, 0, 15, 10, 13, var_2B, string.Empty);
+                var_1 = ovr027.displayInput(out var_2E, false, 0, 15, 10, 13, var_2B, string.Empty);
 
                 var_32 = -1;
 
