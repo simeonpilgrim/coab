@@ -403,7 +403,7 @@ namespace engine
                     else
                     {
                         ovr030.load_pic_final(ref gbl.byte_1D556, 0, var_1, "PIC");
-                        ovr030.sub_7000A(gbl.dword_1D55C, 1, 3, 3);
+                        ovr030.sub_7000A(gbl.byte_1D556.ptrs[0].field_4, true, 3, 3);
                     }
                 }
                 else
@@ -803,7 +803,7 @@ namespace engine
             byte var_3F;
             byte var_3E;
             byte var_3D;
-            byte var_3C;
+            bool useOverlay;
             byte var_3B;
             ushort var_3A;
             string var_38;
@@ -843,11 +843,11 @@ namespace engine
             if (gbl.byte_1EE8C == 0 ||
                 gbl.byte_1EE8D == 0)
             {
-                var_3C = 0;
+                useOverlay = false;
             }
             else
             {
-                var_3C = 1;
+                useOverlay = true;
             }
 
             var_3F = (byte)(var_1 - 1);
@@ -859,7 +859,7 @@ namespace engine
 
             var_38 += "~" + gbl.unk_1D972[var_1];
 
-            var_2 = ovr008.sub_317AA(var_3C, var_3B, var_3D, var_3E, 0x0d, var_38, string.Empty);
+            var_2 = ovr008.sub_317AA(useOverlay, var_3B, var_3D, var_3E, 0x0d, var_38, string.Empty);
 
             ovr008.vm_SetMemoryValue(var_2, var_3A);
 
@@ -1624,7 +1624,7 @@ namespace engine
             byte var_43A;
             string var_439;
             string var_437;
-            byte var_40E;
+            bool useOverlay;
             bool var_40D;
             byte init_max;
             byte init_min;
@@ -1681,11 +1681,11 @@ namespace engine
                     gbl.area_ptr.field_1CC == 0 ||
                     gbl.byte_1D5B4 == 0x50)
                 {
-                    var_40E = 0;
+                    useOverlay = false;
                 }
                 else
                 {
-                    var_40E = 1;
+                    useOverlay = true;
                 }
 
                 var_40D = (gbl.area_ptr.field_1CC != 0);
@@ -1755,7 +1755,7 @@ namespace engine
                     var_437 = "~COMBAT ~WAIT ~FLEE ~ADVANCE";
                 }
 
-                var_1 = ovr008.sub_317AA(var_40E, 0, 15, 10, 13, var_437, var_439);
+                var_1 = ovr008.sub_317AA(useOverlay, 0, 15, 10, 13, var_437, var_439);
 
                 if (gbl.area2_ptr.field_582 == 0 ||
                     gbl.area_ptr.field_1CC == 0)
@@ -1951,7 +1951,7 @@ namespace engine
                 var_8[i] = (byte)ovr008.vm_GetCmdValue(i + 1);
             }
 
-            var_1 = ovr008.sub_317AA(0, 0, 15, 10, 13, "~HAUGHTY ~SLY ~NICE ~MEEK ~ABUSIVE", var_B.ToString());
+            var_1 = ovr008.sub_317AA(false, 0, 15, 10, 13, "~HAUGHTY ~SLY ~NICE ~MEEK ~ABUSIVE", var_B.ToString());
             var_A = gbl.cmd_opps[6].Word;
 
             var_2 = var_8[var_1];
@@ -2219,7 +2219,7 @@ namespace engine
             ovr025.Player_Summary(gbl.player_ptr);
             ovr025.camping_search();
 
-            ovr030.sub_7000A(gbl.dword_1D55C, 1, 3, 3);
+            ovr030.sub_7000A(gbl.byte_1D556.ptrs[0].field_4, true, 3, 3);
             ovr025.camping_search();
             gbl.byte_1EE98 = 0;
             gbl.byte_1EE8A = 1;
@@ -2392,7 +2392,7 @@ namespace engine
                     break;
 
                 case 0xE804:
-                    ovr030.sub_7000A(gbl.byte_1D556.ptrs[gbl.byte_1D556.curFrame].field_4, 1, 3, 3);
+                    ovr030.sub_7000A(gbl.byte_1D556.ptrs[gbl.byte_1D556.curFrame].field_4, true, 3, 3);
                     gbl.byte_1D556.curFrame++;
 
                     if (gbl.byte_1D556.curFrame > gbl.byte_1D556.numFrames)

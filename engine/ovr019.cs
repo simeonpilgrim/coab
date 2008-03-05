@@ -448,7 +448,7 @@ namespace engine
 
 			do
 			{
-                ovr030.sub_7000A(var_42.ptrs[var_42.curFrame - 1].field_4, 1, arg_4, arg_6);
+                ovr030.sub_7000A(var_42.ptrs[var_42.curFrame - 1].field_4, true, arg_4, arg_6);
 				var_46 = seg041.time01();
 
                 int delay = var_42.ptrs[var_42.curFrame - 1].field_0 * (gbl.game_speed_var + 3);

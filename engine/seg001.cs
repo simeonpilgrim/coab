@@ -71,7 +71,7 @@ namespace engine
 			gbl.displayInputCentiSecondWait = 3000;
             gbl.displayInputTimeoutValue = 'D';
           
-            gbl.byte_1AB06 = ovr027.displayInput( out gbl.unk_1AB07, 0, 0, 15, 10, 13, "Play Demo", "Curse of the Azure Bonds v1.3 " );
+            gbl.byte_1AB06 = ovr027.displayInput( out gbl.unk_1AB07, false, 0, 15, 10, 13, "Play Demo", "Curse of the Azure Bonds v1.3 " );
  
             gbl.displayInputCentiSecondWait = 0;
             gbl.displayInputTimeoutValue = '\0';
@@ -156,7 +156,7 @@ namespace engine
 					gbl.displayInputCentiSecondWait = 1000;
 					gbl.displayInputTimeoutValue = 'D';
 				
-					gbl.byte_1AB06 = ovr027.displayInput( out gbl.unk_1AB07, 0, 0, 15, 10, 13, "Play Demo", "Curse of the Azure Bonds v1.3 " );
+					gbl.byte_1AB06 = ovr027.displayInput( out gbl.unk_1AB07, false, 0, 15, 10, 13, "Play Demo", "Curse of the Azure Bonds v1.3 " );
 
 					gbl.displayInputCentiSecondWait = 0;
                     gbl.displayInputTimeoutValue = '\0';

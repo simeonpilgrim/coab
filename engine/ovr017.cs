@@ -364,7 +364,7 @@ namespace engine
                 {
                     seg041.displayAndDebug("Can't save.  No room on this disk.", 0, 14);
 
-                    var_B8 = ovr027.displayInput(out var_DE, 0, 0, 15, 10, 13, "Ok  Try another disk", "Lose character? ");
+                    var_B8 = ovr027.displayInput(out var_DE, false, 0, 15, 10, 13, "Ok  Try another disk", "Lose character? ");
                 }
             } while (var_B8 != 0x4F);
 
@@ -2061,7 +2061,7 @@ namespace engine
                     bool v;
                     do
                     {
-                        var_1FB = ovr027.displayInput(out var_1FC, 0, 0, 15, 10, 13, var_211, "Load Which Game: ");
+                        var_1FB = ovr027.displayInput(out var_1FC, false, 0, 15, 10, 13, var_211, "Load Which Game: ");
 
                         v = false;
                         if (asc_4A761.MemberOf(var_1FB) == true)
@@ -2284,7 +2284,7 @@ namespace engine
 
             do
             {
-                var_1FA = ovr027.displayInput(out var_1F9, (gbl.game_state == 2) ? (byte)1 : (byte)0, 0, 15, 10, 13, "A B C D E F G H I J", "Save Which Game: ");
+                var_1FA = ovr027.displayInput(out var_1F9, (gbl.game_state == 2), 0, 15, 10, 13, "A B C D E F G H I J", "Save Which Game: ");
 
             } while (unk_4AEA0.MemberOf(var_1FA) == false);
 

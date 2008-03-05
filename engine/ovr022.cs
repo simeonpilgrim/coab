@@ -1267,7 +1267,7 @@ namespace engine
 
                         var_7C += " Exit";
 
-                        var_53 = ovr027.displayInput(out var_B4, 0, 1, 15, 10, 13, var_7C, "Appraise : ");
+                        var_53 = ovr027.displayInput(out var_B4, false, 1, 15, 10, 13, var_7C, "Appraise : ");
 
                         if (var_53 == 'G')
                         {
@@ -1322,7 +1322,7 @@ namespace engine
                                     var_B5 = 0;
                                 }
 
-                                var_53 = ovr027.displayInput(out var_B4, 0, 1, 15, 10, 13, var_A5, "You can : ");
+                                var_53 = ovr027.displayInput(out var_B4, false, 1, 15, 10, 13, var_A5, "You can : ");
 
                                 if (var_53 == 'K' && var_B5 == 0)
                                 {
@@ -1418,7 +1418,7 @@ namespace engine
                                     var_B5 = 0;
                                 }
 
-                                var_53 = ovr027.displayInput(out var_B4, 0, 1, 15, 10, 13, var_A5, "You can : ");
+                                var_53 = ovr027.displayInput(out var_B4, false, 1, 15, 10, 13, var_A5, "You can : ");
 
                                 if (var_53 == 'K' && var_B5 == 0)
                                 {

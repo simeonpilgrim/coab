@@ -570,7 +570,7 @@ namespace engine
 
 				do
 				{
-					var_3 = ovr027.displayInput( out var_4, 0, 1, 15, 10, 13, "Area Cast View Encamp Search Look", string.Empty );
+					var_3 = ovr027.displayInput( out var_4, false, 1, 15, 10, 13, "Area Cast View Encamp Search Look", string.Empty );
 
 					if( var_4 == false )
 					{
@@ -726,7 +726,7 @@ namespace engine
                         }
                         else
                         {
-                            input = ovr027.displayInput( out var_2, 0, 0, 15, 10, 13, var_2B, "Locked. " );
+                            input = ovr027.displayInput( out var_2, false, 0, 15, 10, 13, var_2B, "Locked. " );
 
                             switch( input )
                             {
@@ -773,7 +773,7 @@ namespace engine
                         }
                         else
                         {
-                            input = ovr027.displayInput( out var_2, 0, 0, 15, 10, 13, var_2B, "Locked. " );
+                            input = ovr027.displayInput( out var_2, false, 0, 15, 10, 13, var_2B, "Locked. " );
 
                             switch ( input )
                             {

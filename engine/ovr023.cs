@@ -3381,7 +3381,7 @@ namespace engine
                 }
                 else
                 {
-                    var_1 = ovr027.displayInput(out var_2, 0, 0, 15, 10, 13, "Hot Cold", "flame type: ");
+                    var_1 = ovr027.displayInput(out var_2, false, 0, 15, 10, 13, "Hot Cold", "flame type: ");
                 }
 
                 if (var_1 == 'H')
@@ -3398,7 +3398,7 @@ namespace engine
                 }
                 else
                 {
-                    var_1 = ovr027.displayInput(out var_2, 0, 0, 15, 10, 13, "Yes No", "Abort spell? ");
+                    var_1 = ovr027.displayInput(out var_2, false, 0, 15, 10, 13, "Yes No", "Abort spell? ");
 
                     if (var_1 == 'Y')
                     {

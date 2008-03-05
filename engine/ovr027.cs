@@ -139,7 +139,7 @@ namespace engine
         static byte[] unk_18AE0 = { 0x4F, 0x50, 0x51, 0x4B, 0x20, 0x4D, 0x47, 0x48, 0x49 };
 
 
-        internal static char displayInput(out bool arg_0, byte arg_4, byte arg_6, byte highlightFgColor, byte fgColor, byte extraStringFgColor, string displayInputString, string displayExtraString)
+        internal static char displayInput(out bool arg_0, bool useOverlay, byte arg_6, byte highlightFgColor, byte fgColor, byte extraStringFgColor, string displayInputString, string displayExtraString)
         {
             byte var_8E;
             byte[] var_8D = new byte[0x28];
@@ -200,10 +200,10 @@ namespace engine
                     var_5B = var_5F + 30;
                 }
 
-                if ((gbl.area_ptr.field_3FE != 0 || arg_4 != 0) &&
+                if ((gbl.area_ptr.field_3FE != 0 || useOverlay == true) &&
                     gbl.byte_1D556.curFrame > 0)
                 {
-                    ovr030.sub_7000A(gbl.byte_1D556.ptrs[gbl.byte_1D556.curFrame].field_4, arg_4, 3, 3);
+                    ovr030.sub_7000A(gbl.byte_1D556.ptrs[gbl.byte_1D556.curFrame].field_4, useOverlay, 3, 3);
 
                     if ((seg041.time01() - timeStart) >= (gbl.byte_1D556.ptrs[gbl.byte_1D556.curFrame].field_0 * 10) ||
                         gbl.area_ptr.field_3FE != 0)
@@ -716,7 +716,7 @@ namespace engine
                     displayString += " Exit";
                 }
 
-                var_5A = displayInput(out var_57, 0, 1, highlightBgColor, arg_1C, arg_1E, displayString, extraTextString);
+                var_5A = displayInput(out var_57, false, 1, highlightBgColor, arg_1C, arg_1E, displayString, extraTextString);
 
                 ListItemNormal(index_ptr, stringList, listDisplayStartY, listDisplayStartX, arg_1C, arg_1E);
 
@@ -794,7 +794,7 @@ namespace engine
 
 			do
 			{
-				inputKey = displayInput( out var_2B, 0, 0, arg_0, arg_2, arg_4, "Yes No", inputString );
+				inputKey = displayInput( out var_2B, false, 0, arg_0, arg_2, arg_4, "Yes No", inputString );
 
 			} while( yesNoFlags.MemberOf( inputKey ) == false );
 

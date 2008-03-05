@@ -2099,7 +2099,7 @@ namespace engine
             gbl.byte_1D90F = true;
             ovr025.hitpoint_ac(arg_8);
 
-            var_1 = ovr027.displayInput(out var_2B, 0, 1, 15, 10, 13, var_2A, "Aim:");
+            var_1 = ovr027.displayInput(out var_2B, false, 1, 15, 10, 13, var_2A, "Aim:");
 
             return var_1;
         }
@@ -2311,7 +2311,7 @@ namespace engine
                     var_29 = "Target " + var_29;
                 }
 
-                var_2A = ovr027.displayInput(out gbl.byte_1D905, 0, 1, 15, 10, 13, var_29, "(Use Cursor keys) ");
+                var_2A = ovr027.displayInput(out gbl.byte_1D905, false, 1, 15, 10, 13, var_29, "(Use Cursor keys) ");
 
 
                 switch ((int)var_2A)

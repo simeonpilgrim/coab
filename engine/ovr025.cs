@@ -1888,7 +1888,7 @@ namespace engine
                     if (gbl.byte_1D5B4 == 0x50)
                     {
 
-                        ovr030.sub_7000A(gbl.dword_1D55C, 1, 3, 3);
+                        ovr030.sub_7000A(gbl.byte_1D556.ptrs[0].field_4, true, 3, 3);
                     }
                     else
                     {
@@ -2017,7 +2017,7 @@ namespace engine
         {
             string var_59;
             Player player_ptr;
-            byte var_2C;
+            bool useOverlay;
             bool var_2B;
             char var_2A;
             string var_29;
@@ -2038,14 +2038,14 @@ namespace engine
                 if (gbl.game_state == 2 ||
                     gbl.game_state == 6)
                 {
-                    var_2C = 1;
+                    useOverlay = true;
                 }
                 else
                 {
-                    var_2C = 0;
+                    useOverlay = false;
                 }
 
-                var_2A = ovr027.displayInput(out var_2B, var_2C, 1, 15, 10, 13, "Select" + var_59, var_29 + " ");
+                var_2A = ovr027.displayInput(out var_2B, useOverlay, 1, 15, 10, 13, "Select" + var_59, var_29 + " ");
                 player_ptr = player;
 
                 if (var_2B == true)
