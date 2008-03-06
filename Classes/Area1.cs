@@ -65,6 +65,15 @@ namespace Classes
 
         protected byte[] origData;
 
+        [DataOffset(0xAE, DataType.Word)]
+        public ushort field_AE;
+        [DataOffset(0x10E, DataType.Word)]
+        public ushort field_10E;
+        [DataOffset(0x136, DataType.Word)]
+        public ushort field_136;
+        [DataOffset(0x16C, DataType.Word)]
+        public ushort field_16C;
+
         [DataOffset(0x186, DataType.Byte)]
         public byte field_186;
         [DataOffset(0x188, DataType.Byte)]
@@ -125,6 +134,22 @@ namespace Classes
             /* ovr021:0482 */
             switch (loc)
             {
+                case 0xAE:
+                    field_AE = value; 
+                    break;
+
+                case 0x10E:
+                    field_10E = value; 
+                    break;
+
+                case 0x136:
+                    field_136 = value;
+                    break;
+
+                case 0x16C:
+                    field_16C = value;
+                    break;
+
                 case 0x192:
                     field_192 = value;
                     break;
@@ -195,6 +220,15 @@ namespace Classes
             /* ovr021:0482 */
             switch (loc)
             {
+                case 0xAE:
+                    return field_AE;
+                case 0x10E:
+                    return field_10E;
+                case 0x136:
+                    return field_136;
+                case 0x16C:
+                    return field_16C;
+
                 case 0x192:
                     return field_192;
 
