@@ -93,11 +93,12 @@ namespace engine
             }
             else
             {
-                seg051.Str(1, out var_102, 0, gbl.game_area);
-                seg040.load_dax(ref gbl.combat_icons[arg_0, 0], 0, 1, arg_2, var_100 + var_102);
+                var_100 += gbl.game_area.ToString();
+
+                seg040.load_dax(ref gbl.combat_icons[arg_0, 0], 0, 1, arg_2, var_100);
                 seg040.DaxBlockRecolor(gbl.combat_icons[arg_0, 0], 0, 0, gbl.unk_16E40, gbl.unk_16E30);
 
-                seg040.load_dax(ref gbl.combat_icons[arg_0, 1], 0, 1, (byte)(arg_2 + 0x80), var_100 + var_102);
+                seg040.load_dax(ref gbl.combat_icons[arg_0, 1], 0, 1, (byte)(arg_2 + 0x80), var_100);
                 seg040.DaxBlockRecolor(gbl.combat_icons[arg_0, 1], 0, 0, gbl.unk_16E40, gbl.unk_16E30);
             }
 
