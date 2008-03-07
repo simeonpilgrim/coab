@@ -7,6 +7,7 @@ namespace Classes
     /// </summary>
     public class Area2
     {
+        // Size 0x800
         public Area2()
         {
             //
@@ -167,7 +168,9 @@ namespace Classes
 
         public byte[] ToByteArray()
         {
-            throw new Exception("The method or operation is not implemented.");
+            byte[] data = new byte[0x800];
+            DataIO.WriteObject(this, data);
+            return data;
         }
 
         public ushort field_800_Get(int index)

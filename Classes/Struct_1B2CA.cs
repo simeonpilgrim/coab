@@ -26,7 +26,7 @@ namespace Classes
 
         public byte[] ToByteArray()
         {
-            throw new Exception("The method or operation is not implemented.");
+            return (byte[])m_data.Clone();
         }
 
         public ushort this[int index]
