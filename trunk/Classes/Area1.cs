@@ -292,7 +292,9 @@ namespace Classes
 
         public byte[] ToByteArray()
         {
-            throw new Exception("The method or operation is not implemented.");
+            DataIO.WriteObject(this, origData);
+
+            return (byte[])origData.Clone();
         }
     }
 }

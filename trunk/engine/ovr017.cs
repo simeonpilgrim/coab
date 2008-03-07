@@ -310,15 +310,11 @@ namespace engine
             seg042.delete_file(var_51 + ".fx");
         }
 
-        static Set unk_47D82 = new Set(0x0001, new byte[] { 0x05 });
-
         internal static void sub_47DFC(string arg_0, Player arg_4)
         {
-            string var_2DE;
             string var_1DE;
             bool var_DE;
             short var_DD;
-            short var_DB;
             Affect var_C1;
             Item var_BD;
             char var_B8;
@@ -380,27 +376,17 @@ namespace engine
                 var_B2 = var_9;
             }
 
+            var_1DE = gbl.byte_1BF1A + var_B2 + var_B7;
+            var_89.Assign(var_1DE);
+            seg051.Reset(1, var_89);
 
-            do
+            if (var_89.stream == null)
             {
-                var_1DE = gbl.byte_1BF1A + var_B2 + var_B7;
-                var_89.Assign(var_1DE);
-                seg051.Reset(1, var_89);
+                seg041.displayAndDebug("Unexpected error during save: " + var_1DE, 0, 14);
 
-                var_DB = gbl.word_1EFBC;
-
-                if (unk_47D82.MemberOf((char)var_DB) == false)
-                {
-                    var_2DE = "Unexpected error during save: " + var_DB.ToString();
-
-                    seg041.displayAndDebug(var_2DE, 0, 14);
-
-                    seg051.Close(var_89);
-                    return;
-                }
-
-            } while (var_DB != 0 && var_DB != 2);
-
+                seg051.Close(var_89);
+                return;
+            }
 
             seg051.Close(var_89);
             var_B8 = 'N';
@@ -2371,9 +2357,8 @@ namespace engine
                     while (player_ptr != null)
                     {
                         var_1C9++;
-                        seg051.Str(1, out var_1CF, 0, var_1C9);
-
-                        var_171[var_1C9 - 1] = "CHRDAT" + var_1FA + var_1CF;
+ 
+                        var_171[var_1C9 - 1] = "CHRDAT" + var_1FA + var_1C9.ToString();
 
                         player_ptr = player_ptr.next_player;
                     }
@@ -2381,7 +2366,11 @@ namespace engine
                     data[0] = var_1C9;
                     seg051.BlockWrite(1, data, save_file);
 
-                    /*todo seg051.BlockWrite(0x148, ref var_171, save_file);*/
+                    for (int i = 0; i < var_1C9; i++)
+                    {
+                        Sys.StringToArray(data, 0x29*i, 0x29, var_171[i]);
+                    }
+                    seg051.BlockWrite(0x148, data, save_file);
                     seg051.Close(save_file);
                     player_ptr = gbl.player_next_ptr;
                     var_1C9 = 0;

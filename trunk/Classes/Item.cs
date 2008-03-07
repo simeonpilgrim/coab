@@ -96,8 +96,6 @@ namespace Classes
 
         public Item(byte[] data, int offset)
         {
-            System.Text.StringBuilder sb = new System.Text.StringBuilder();
-
             name = Sys.ArrayToString(data, offset, 0x2a);
 
             next = null;
@@ -149,7 +147,28 @@ namespace Classes
 
         public byte[] ToByteArray()
         {
-            throw new Exception("The method or operation is not implemented.");
+            byte[] data = new byte[StructSize];
+
+            Sys.StringToArray(data, 0, 0x2a, name);
+
+            data[0x2e] = type;
+            data[0x2f] = (byte)field_2F;
+            data[0x30] = (byte)field_30;
+            data[0x31] = field_31;
+            data[0x32] = (byte)exp_value;
+            data[0x33] = field_33;
+            data[0x34] = readied ? (byte)1 : (byte)0;
+            data[0x35] = field_35;
+            data[0x36] = field_36;
+            Sys.ShortToArray(weight, data, 0x37);
+            data[0x39] = count;
+            Sys.ShortToArray(_value, data, 0x3a);
+            data[0x3C] = (byte)affect_1;
+            data[0x3D] = (byte)affect_2;
+            data[0x3E] = (byte)affect_3;
+
+
+            return data;
         }
     }
 }

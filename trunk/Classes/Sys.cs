@@ -59,6 +59,25 @@ namespace Classes
             return sb.ToString();
         }
 
+        /// <summary>
+        /// Converts a C# string to a Pascal string array
+        /// </summary>
+        public static void StringToArray(byte[] data, int offset, int length, string input)
+        {
+            data[offset] = (byte)length;
+            for (int i = 1; i <= length; i++)
+            {
+                if (i <= input.Length)
+                {
+                    data[offset + i] = (byte)input[i-1];
+                }
+                else
+                {
+                    data[offset + i] = 0;
+                }
+            }
+        }
+
         public static string ArrayToString(char[] data, int offset, int length)
         {
             length = Math.Min(data[offset], length);

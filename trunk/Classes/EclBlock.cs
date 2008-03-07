@@ -55,7 +55,7 @@ namespace Classes
 
         public byte[] ToByteArray()
         {
-            throw new Exception("The method or operation is not implemented.");
+            return (byte[])data.Clone();
         }
 
         public void SearchECL(byte[,] blocks)
