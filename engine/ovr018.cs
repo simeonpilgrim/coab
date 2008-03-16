@@ -1676,7 +1676,7 @@ namespace engine
                             {
                                 player_ptr.hit_point_max -= 1;
 
-                                if (sub_506BA(gbl.player_ptr) > player_ptr.hit_point_max)
+                               if (sub_506BA(gbl.player_ptr) > player_ptr.hit_point_max)
                                 {
                                     player_ptr.hit_point_max = sub_506BA(player_ptr);
                                 }
@@ -2740,6 +2740,7 @@ namespace engine
                                 var_3 += (byte)((var_4 + 8) * player_ptr.Skill_A_lvl[loop_var]);
                                 break;
 
+                            case 2:
                             case 3:
                                 var_3 += (byte)((var_4 + 10) * player_ptr.Skill_A_lvl[loop_var]);
                                 break;
