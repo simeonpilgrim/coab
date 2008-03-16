@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
-		<Product Id="4CFA06AE-25AE-4c79-81DF-FC1509E7FEAD" Name="Curse of the Azure Bonds" 
-             Language="1033" Version="1.0.3.0" Manufacturer="ReActive Systems" 
+		<Product Id="F01A4623-DC6E-4dbc-95B8-E3B7E5F1355F" Name="Curse of the Azure Bonds" 
+             Language="1033" Version="1.0.4.0" Manufacturer="ReActive Systems" 
              UpgradeCode="6acb18e9-9a80-4ed4-a8ef-3634fa2b3e9b">
-		<Package InstallerVersion="200" Compressed="yes" />
+		<Package InstallerVersion="200" Compressed="yes"  />
 
 		<Media Id="1" Cabinet="Installer.cab" EmbedCab="yes" />
 
