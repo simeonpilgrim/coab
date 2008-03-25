@@ -428,7 +428,7 @@ namespace engine
 
         internal static void display_AC(int y_offset, int x_offset, Player player)
         {
-            string var_100 = ((int)player.ac - 0x3c).ToString();
+            string var_100 = (0x3c - (int)player.ac ).ToString();
 
             seg041.displayString(var_100, 0, 10, y_offset, x_offset);
         }
@@ -639,7 +639,7 @@ namespace engine
             player.initiative = player.field_E4;
             player.hitBonus = player.field_73;
 
-            stat_bonus[0] = ovr025.stat_bonus(player);
+            stat_bonus[0] = ovr025.dex_ac_bonus(player);
 
             if (player.field_151 == null)
             {
@@ -712,12 +712,11 @@ namespace engine
         }
 
 
-        internal static sbyte stat_bonus(Player player)
+        internal static sbyte dex_ac_bonus(Player player) /* stat_bonus */
         {
-            byte stat_val;
             sbyte bonus;
 
-            stat_val = player.dex;
+            byte stat_val = player.dex;
 
             if (stat_val >= 1 && stat_val <= 3)
             {
@@ -735,7 +734,7 @@ namespace engine
             {
                 bonus = 4;
             }
-            else if (stat_val >= 21 || stat_val <= 23)
+            else if (stat_val >= 21 && stat_val <= 23)
             {
                 bonus = 5;
             }

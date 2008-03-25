@@ -295,7 +295,7 @@ namespace engine
                             break;
 
                         case 'S':
-                            if (menuFlags[allow_load] == true &&
+                            if (menuFlags[allow_save] == true &&
                                 gbl.player_next_ptr != null)
                             {
                                 ovr017.SaveGame();
