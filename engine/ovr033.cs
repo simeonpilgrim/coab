@@ -345,7 +345,7 @@ namespace engine
         }
 
 
-        internal static void sub_749DD(byte dir, byte radius, int mapY, int mapX)
+        internal static void redrawCombatArea(byte dir, byte radius, int mapY, int mapX) /*sub_749DD*/
         {
             int newXPos = mapX + gbl.MapDirectionXDelta[dir];
             int newYPos = mapY + gbl.MapDirectionYDelta[dir];
@@ -404,7 +404,7 @@ namespace engine
             if (sub_74761(1, player) == false &&
                 gbl.byte_1D910 == true)
             {
-                sub_749DD(8, 3, PlayerMapYPos(player), PlayerMapXPos(player));
+                redrawCombatArea(8, 3, PlayerMapYPos(player), PlayerMapXPos(player));
             }
 
             if ((direction >> 2) != (player.actions.field_9 >> 2) ||
@@ -577,7 +577,7 @@ namespace engine
 
                     if (sub_74761(1, player) == false)
                     {
-                        sub_749DD(8, 3, var_7, var_6);
+                        redrawCombatArea(8, 3, var_7, var_6);
                     }
 
                     sub_74572(var_1, 0, 0);
@@ -626,7 +626,7 @@ namespace engine
                     sub_743E7();
 
 
-                    sub_749DD(8, 3, gbl.mapToBackGroundTile.mapScreenTopY + 3, gbl.mapToBackGroundTile.mapScreenLeftX + 3);
+                    redrawCombatArea(8, 3, gbl.mapToBackGroundTile.mapScreenTopY + 3, gbl.mapToBackGroundTile.mapScreenLeftX + 3);
 
                     player.actions.delay = 0;
                     player.actions.move = 0;
@@ -725,7 +725,7 @@ namespace engine
 
             if (gbl.byte_1D910 == true)
             {
-                sub_749DD(8, radius, PlayerMapYPos(player), PlayerMapXPos(player));
+                redrawCombatArea(8, radius, PlayerMapYPos(player), PlayerMapXPos(player));
             }
 
             gbl.mapToBackGroundTile.field_4 = false;

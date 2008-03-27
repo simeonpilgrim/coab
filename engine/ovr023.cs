@@ -2015,7 +2015,7 @@ namespace engine
 
             ovr025.DisplayPlayerStatusString(false, 10, "Creates a noxious cloud", gbl.player_ptr);
 
-            ovr033.sub_749DD(8, 0xff, gbl.byte_1D884, gbl.byte_1D883);
+            ovr033.redrawCombatArea(8, 0xff, gbl.byte_1D884, gbl.byte_1D883);
             seg041.GameDelay();
             ovr025.ClearPlayerTextArea();
             for (var_11 = 0; var_11 < 4; var_11++)
@@ -2594,7 +2594,7 @@ namespace engine
                 gbl.byte_1D75E = gbl.byte_1D1C0;
             }
 
-            ovr033.sub_749DD(8, 0, gbl.byte_1D884, gbl.byte_1D883);
+            ovr033.redrawCombatArea(8, 0, gbl.byte_1D884, gbl.byte_1D883);
 
             sub_5CF7F(string.Empty, 9, ovr024.roll_dice_save(6, var_1), false, 0, gbl.byte_1D2C1);
 
@@ -3311,7 +3311,7 @@ namespace engine
 
             ovr033.sub_7515A(0, gbl.byte_1D884, gbl.byte_1D883, var_4);
 
-            ovr033.sub_749DD(8, 0, ovr033.PlayerMapYPos(var_4), ovr033.PlayerMapXPos(var_4));
+            ovr033.redrawCombatArea(8, 0, ovr033.PlayerMapYPos(var_4), ovr033.PlayerMapXPos(var_4));
 
             ovr025.DisplayPlayerStatusString(true, 10, "teleports", var_4);
         }
@@ -3742,7 +3742,7 @@ namespace engine
 
             ovr025.DisplayPlayerStatusString(false, 10, "Creates a poisonous cloud", gbl.player_ptr);
 
-            ovr033.sub_749DD(8, 0xFF, gbl.byte_1D884, gbl.byte_1D883);
+            ovr033.redrawCombatArea(8, 0xFF, gbl.byte_1D884, gbl.byte_1D883);
             seg041.GameDelay();
             ovr025.ClearPlayerTextArea();
 

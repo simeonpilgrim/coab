@@ -253,7 +253,7 @@ namespace engine
                     if (var_6.actions.guarding == true &&
                         ovr025.is_held(var_6) == false)
                     {
-                        ovr033.sub_749DD(8, 2, ovr033.PlayerMapYPos(arg_0), ovr033.PlayerMapXPos(arg_0));
+                        ovr033.redrawCombatArea(8, 2, ovr033.PlayerMapYPos(arg_0), ovr033.PlayerMapXPos(arg_0));
 
                         var_6.actions.guarding = false;
 
@@ -306,7 +306,7 @@ namespace engine
                 if (ovr033.CoordOnScreen(newYPos - gbl.mapToBackGroundTile.mapScreenTopY, newXPos - gbl.mapToBackGroundTile.mapScreenLeftX) == false &&
                     gbl.byte_1D910 == true)
                 {
-                    ovr033.sub_749DD(8, 2, oldYPos, oldXPos);
+                    ovr033.redrawCombatArea(8, 2, oldYPos, oldXPos);
                 }
             }
 
@@ -322,7 +322,7 @@ namespace engine
 
             if (gbl.byte_1D910 == true)
             {
-                ovr033.sub_749DD(8, var_1, newYPos, newXPos);
+                ovr033.redrawCombatArea(8, var_1, newYPos, newXPos);
             }
 
             player.actions.field_F = 0;
@@ -2125,7 +2125,7 @@ namespace engine
                 arg_0.mapY = ovr033.PlayerMapYPos(arg_A);
                 gbl.mapToBackGroundTile.field_4 = false;
 
-                ovr033.sub_749DD(8, 3, gbl.mapToBackGroundTile.mapScreenTopY + 3, gbl.mapToBackGroundTile.mapScreenLeftX + 3);
+                ovr033.redrawCombatArea(8, 3, gbl.mapToBackGroundTile.mapScreenTopY + 3, gbl.mapToBackGroundTile.mapScreenLeftX + 3);
 
                 if (arg_8 == 1)
                 {
@@ -2161,22 +2161,22 @@ namespace engine
         {
             string var_239;
             byte var_39;
-            short var_38;
-            byte var_36;
-            byte var_35;
+            short range;
+            byte groundTile;
+            byte playerAtXY;
             byte var_30;
-            byte var_2F;
+            byte dir;
             Item var_2E;
             char var_2A;
             string var_29;
 
             arg_0.Clear();
 
-            int var_33 = ovr033.PlayerMapXPos(player02);
-            int var_34 = ovr033.PlayerMapYPos(player02);
+            int posX = ovr033.PlayerMapXPos(player02);
+            int posY = ovr033.PlayerMapYPos(player02);
 
             var_2A = ' ';
-            var_2F = 8;
+            dir = 8;
 
             arg_4 = false;
 
@@ -2185,45 +2185,45 @@ namespace engine
 
             while (asc_41342.MemberOf(var_2A) == false)
             {
-                ovr033.sub_749DD(var_2F, 3, var_34, var_33);
-                var_33 += gbl.MapDirectionXDelta[var_2F];
-                var_34 += gbl.MapDirectionYDelta[var_2F];
+                ovr033.redrawCombatArea(dir, 3, posY, posX);
+                posX += gbl.MapDirectionXDelta[dir];
+                posY += gbl.MapDirectionYDelta[dir];
 
-                if (var_33 < 0)
+                if (posX < 0)
                 {
-                    var_33 = 0;
+                    posX = 0;
                 }
 
-                if (var_34 < 0)
+                if (posY < 0)
                 {
-                    var_34 = 0;
+                    posY = 0;
                 }
 
-                if (var_33 > 0x31)
+                if (posX > 0x31)
                 {
-                    var_33 = 0x31;
+                    posX = 0x31;
                 }
 
-                if (var_34 > 0x18)
+                if (posY > 0x18)
                 {
-                    var_34 = 0x18;
+                    posY = 0x18;
                 }
 
-                ovr033.AtMapXY(out var_36, out var_35, var_34, var_33);
+                ovr033.AtMapXY(out groundTile, out playerAtXY, posY, posX);
                 seg043.clear_keyboard();
                 var_39 = 0;
-                var_38 = 0x0FF;
+                range = 255;
 
-                int var_31 = var_33;
-                int var_32 = var_34;
+                int tmpX = posX;
+                int tmpY = posY;
 
-                if (ovr032.sub_733F1(gbl.mapToBackGroundTile, ref var_38, ref var_32, ref var_31, ovr033.PlayerMapYPos(player01), ovr033.PlayerMapXPos(player01)) == true)
+                if (ovr032.sub_733F1(gbl.mapToBackGroundTile, ref range, ref tmpY, ref tmpX, ovr033.PlayerMapYPos(player01), ovr033.PlayerMapXPos(player01)) == true)
                 {
                     var_39 = 1;
 
                     if (arg_C != 0)
                     {
-                        var_239 = "Range = " + (var_38 * 2).ToString() + "  ";
+                        var_239 = "Range = " + (range * 2).ToString() + "  ";
 
                         seg041.displayString(var_239, 0, 10, 0x17, 0);
                     }
@@ -2236,21 +2236,21 @@ namespace engine
                     }
                 }
 
-                var_38 /= 2;
+                range /= 2;
                 player02 = null;
 
                 if (var_39 != 0)
                 {
-                    if (var_35 > 0)
+                    if (playerAtXY > 0)
                     {
-                        player02 = gbl.player_array[var_35];
+                        player02 = gbl.player_array[playerAtXY];
                     }
-                    else if (var_36 == 0x1f)
+                    else if (groundTile == 0x1f)
                     {
                         for (var_30 = 1; var_30 <= gbl.byte_1D1BB; var_30++)
                         {
-                            if (gbl.unk_1D183[var_30].mapX == var_33 &&
-                                gbl.unk_1D183[var_30].mapY == var_34)
+                            if (gbl.unk_1D183[var_30].mapX == posX &&
+                                gbl.unk_1D183[var_30].mapY == posY)
                             {
                                 player02 = gbl.unk_1D183[var_30].field_0;
                             }
@@ -2268,8 +2268,8 @@ namespace engine
                     seg037.draw8x8_clear_area(0x15, 0x26, 1, 0x17);
                 }
 
-                if (arg_E < var_38 ||
-                    gbl.BackGroundTiles[var_36].move_cost == 0xff)
+                if (arg_E < range ||
+                    gbl.BackGroundTiles[groundTile].move_cost == 0xff)
                 {
                     var_39 = 0;
                 }
@@ -2285,7 +2285,7 @@ namespace engine
                     if (arg_C == 1)
                     {
                         if (player01 == player02 ||
-                            (var_35 == 0 && var_36 == 0x1f))
+                            (playerAtXY == 0 && groundTile == 0x1f))
                         {
                             var_39 = 0;
                         }
@@ -2322,8 +2322,8 @@ namespace engine
 
                         if (var_39 != 0)
                         {
-                            arg_0.mapX = var_33;
-                            arg_0.mapY = var_34;
+                            arg_0.mapX = posX;
+                            arg_0.mapY = posY;
 
                             if (player02 != null)
                             {
@@ -2347,58 +2347,58 @@ namespace engine
                         if (var_39 == 0 ||
                             arg_4 == false)
                         {
-                            ovr033.sub_7431C(var_34, var_33);
+                            ovr033.sub_7431C(posY, posX);
                             arg_4 = false;
                             arg_0.Clear();
                         }
                         break;
 
                     case 0x48:
-                        var_2F = 0;
+                        dir = 0;
                         break;
 
                     case 0x49:
-                        var_2F = 1;
+                        dir = 1;
                         break;
 
                     case 0x4D:
-                        var_2F = 2;
+                        dir = 2;
                         break;
 
                     case 0x51:
-                        var_2F = 3;
+                        dir = 3;
                         break;
 
                     case 0x50:
-                        var_2F = 4;
+                        dir = 4;
                         break;
 
                     case 0x4F:
-                        var_2F = 5;
+                        dir = 5;
                         break;
 
                     case 0x4B:
-                        var_2F = 6;
+                        dir = 6;
                         break;
 
                     case 0x47:
-                        var_2F = 7;
+                        dir = 7;
                         break;
 
                     case 0:
                     case 0x45:
-                        ovr033.sub_7431C(var_34, var_33);
+                        ovr033.sub_7431C(posY, posX);
                         arg_0.Clear();
                         arg_4 = false;
                         break;
 
                     case 0x43:
-                        ovr033.sub_749DD(8, 0, var_34, var_33);
-                        var_2F = 8;
+                        ovr033.redrawCombatArea(8, 0, posY, posX);
+                        dir = 8;
                         break;
 
                     default:
-                        var_2F = 8;
+                        dir = 8;
                         break;
                 }
             }
@@ -2564,7 +2564,7 @@ namespace engine
                                 break;
 
                             case 'C':
-                                ovr033.sub_749DD(8, 0, ovr033.PlayerMapYPos(player_ptr), ovr033.PlayerMapXPos(player_ptr));
+                                ovr033.redrawCombatArea(8, 0, ovr033.PlayerMapYPos(player_ptr), ovr033.PlayerMapXPos(player_ptr));
                                 var_DD = 0;
                                 break;
                         }
@@ -2962,7 +2962,7 @@ namespace engine
                     player = player.next_player;
                 }
 
-                ovr033.sub_749DD(8, 0xff, gbl.mapToBackGroundTile.mapScreenTopY + 3, gbl.mapToBackGroundTile.mapScreenLeftX + 3);
+                ovr033.redrawCombatArea(8, 0xff, gbl.mapToBackGroundTile.mapScreenTopY + 3, gbl.mapToBackGroundTile.mapScreenLeftX + 3);
             }
 
             return var_1;

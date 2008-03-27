@@ -65,6 +65,7 @@ namespace engine
             arg_0.field_16 = 0;
         }
 
+
         internal static bool sub_7324C(Struct_XXXX arg_0)
         {
             bool var_1 = false;
@@ -134,14 +135,13 @@ namespace engine
 
         internal static bool sub_733F1(Struct_1D1BC arg_0, ref short arg_4, ref int outY, ref int outX, int mapY, int mapX)
         {
-            short var_35;
             bool var_33;
             bool var_32;
 
             Struct_XXXX var_31 = new Struct_XXXX();
             Struct_XXXX var_19 = new Struct_XXXX();
 
-            var_35 = (short)(arg_4 * 2);
+            int var_35 = arg_4 * 2;
             var_19.field_00 = mapX;
             var_19.field_02 = mapY;
             var_19.field_04 = outX;
@@ -168,7 +168,8 @@ namespace engine
 
             do
             {
-                if ((arg_0.field_6 == 0 && gbl.BackGroundTiles[arg_0[var_19.field_0E, var_19.field_10]].field_2 > var_31.field_0A) ||
+                if ((arg_0.field_6 == 0 && 
+                     gbl.BackGroundTiles[arg_0[var_19.field_0E, var_19.field_10]].field_2 > var_31.field_0A) ||
                     var_19.field_16 > var_35)
                 {
                     outX = var_19.field_0E;
