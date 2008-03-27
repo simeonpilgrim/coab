@@ -1471,10 +1471,9 @@ namespace engine
 
             for (var_2A = 1; var_2A <= var_2B; var_2A++)
             {
-                if (gbl.sp_target[var_2A].combat_team != arg_4 ||
+                if (gbl.sp_target[var_2A] != null && ( gbl.sp_target[var_2A].combat_team != arg_4 ||
                     (gbl.byte_1D2C1 == 1 && gbl.game_state == 5 &&
-                     ovr025.near_enemy(1, gbl.sp_target[var_2A]) > 0))
-                    ovr025.near_enemy(1, gbl.sp_target[var_2A]);
+                     ovr025.near_enemy(1, gbl.sp_target[var_2A]) > 0)))
                 {
                     gbl.sp_target[var_2A] = null;
                 }
