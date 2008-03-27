@@ -20,7 +20,6 @@ namespace engine
             string var_17;
             byte code_row;
             byte code_path;
-            string var_13;
             string code_path_str;
             byte var_7;
             byte var_6;
