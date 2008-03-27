@@ -1330,7 +1330,7 @@ namespace engine
                         {
                             for (var_8 = 1; var_8 <= 4; var_8++)
                             {
-                                if (gbl.unk_19AEC[arg_8].field_A == unk_18ADB[arg_8])
+                                if (gbl.unk_19AEC[arg_8].field_A == unk_18ADB[var_8])
                                 {
                                     var_3 = 0;
                                 }

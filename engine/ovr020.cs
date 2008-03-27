@@ -1597,7 +1597,7 @@ namespace engine
                         }
                     }
                 }
-                else if (arg_0 == 'G')
+                else if (arg_0 == 'O')
                 {
                     if (gbl.player_ptr.next_player != null)
                     {

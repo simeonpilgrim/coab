@@ -920,7 +920,7 @@ namespace engine
                 }
 
                 if( gbl.byte_1B2F0 == 0 ||
-                    gbl.combat_type == gbl.combatType.normal )
+                    gbl.combat_type == gbl.combatType.duel )
                 {
                     if( gbl.party_fled == true )
                     {

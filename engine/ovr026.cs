@@ -20,7 +20,37 @@ namespace engine
             1, 1, 1, 0, 0,  //seg600:42FD
         };
 
+        static byte[] /*seg600:43E5*/ unk_1A6F5 = { 0xAE,
+            0xA, 0, 0x91, 5, 0x10,
+            0, 0xFF, 0xFF, 0xFF, 0xFF,
+            0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 
+            0, 0, 0, 0, 0,  
+            0, 0, 0, 0, 0, 
+            1, 0, 0, 0, 0, 
+            1, 0, 0, 0, 0, 
+            0, 1, 0, 0, 0, 
+            0, 1, 0, 0, 0
+        };
 
+        static byte[] /*seg600:4448*/ unk_1A758 = { 0xF5,
+            4,0,0x11,0xEB,9,
+            0, 0xFF, 0xFF, 0xFF, 0xFF,
+            0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0,
+            1, 0, 0, 0, 0,
+            0, 0, 0, 1, 0,
+            1, 0, 0, 0, 0,
+            0, 0, 0, 1, 0,
+            0, 1, 0, 0, 0 
+        }; 
    
 
 
@@ -89,23 +119,7 @@ namespace engine
                                 {
                                     for (var_5 = 1; var_5 <= 5; var_5++)
                                     {
-                                        throw new System.NotSupportedException();//mov	al, [bp+var_5]
-                                        throw new System.NotSupportedException();//cbw
-                                        throw new System.NotSupportedException();//mov	dx, ax
-                                        throw new System.NotSupportedException();//mov	al, [bp+var_3]
-                                        throw new System.NotSupportedException();//cbw
-                                        throw new System.NotSupportedException();//mov	di, ax
-                                        throw new System.NotSupportedException();//mov	si, di
-                                        throw new System.NotSupportedException();//shl	di, 1
-                                        throw new System.NotSupportedException();//shl	di, 1
-                                        throw new System.NotSupportedException();//add	di, si
-                                        throw new System.NotSupportedException();//add	di, dx
-                                        throw new System.NotSupportedException();//mov	dl, [di+43E5h]
-                                        throw new System.NotSupportedException();//mov	al, [bp+var_5]
-                                        throw new System.NotSupportedException();//cbw
-                                        throw new System.NotSupportedException();//les	di, [bp+var_E]
-                                        throw new System.NotSupportedException();//add	di, ax
-                                        throw new System.NotSupportedException();//add	es:[di+12Ch], dl
+                                        var_E.field_12CArray[var_5] += unk_1A6F5[(var_3 * 5) + var_5];
                                     }
                                 }
 
@@ -127,62 +141,23 @@ namespace engine
                             {
                                 for (int var_3 = 8; var_3 <= var_2; var_3++)
                                 {
-                                    for (var_5 = 1; var_5 <= 3; )
+                                    for (var_5 = 1; var_5 <= 3; var_5++)
                                     {
-                                        throw new System.NotSupportedException();//mov	al, [bp+var_5]
-                                        throw new System.NotSupportedException();//cbw
-                                        throw new System.NotSupportedException();//mov	dx, ax
-                                        throw new System.NotSupportedException();//mov	al, [bp+var_3]
-                                        throw new System.NotSupportedException();//cbw
-                                        throw new System.NotSupportedException();//mov	di, ax
-                                        throw new System.NotSupportedException();//mov	si, di
-                                        throw new System.NotSupportedException();//shl	di, 1
-                                        throw new System.NotSupportedException();//shl	di, 1
-                                        throw new System.NotSupportedException();//add	di, si
-                                        throw new System.NotSupportedException();//add	di, dx
-                                        throw new System.NotSupportedException();//mov	dl, [di+4448h]
-                                        throw new System.NotSupportedException();//mov	al, [bp+var_5]
-                                        throw new System.NotSupportedException();//cbw
-                                        throw new System.NotSupportedException();//les	di, [bp+var_E]
-                                        throw new System.NotSupportedException();//add	di, ax
-                                        throw new System.NotSupportedException();//add	es:[di+131h], dl
+                                        var_E.field_12CArray[5 + var_5] += unk_1A758[(var_3*5)+var_5];
                                     }
-                                    var_5 = 4;
-                                    throw new System.NotSupportedException();//jmp	short loc_6A275
-                                    throw new System.NotSupportedException();//loc_6A272:
-                                    var_5++;
-                                    throw new System.NotSupportedException();//loc_6A275:
-                                    var_4 = (sbyte)(var_5 - 3);
-                                    throw new System.NotSupportedException();//mov	al, [bp+var_5]
-                                    throw new System.NotSupportedException();//cbw
-                                    throw new System.NotSupportedException();//mov	dx, ax
-                                    throw new System.NotSupportedException();//mov	al, [bp+var_3]
-                                    throw new System.NotSupportedException();//cbw
-                                    throw new System.NotSupportedException();//mov	di, ax
-                                    throw new System.NotSupportedException();//mov	si, di
-                                    throw new System.NotSupportedException();//shl	di, 1
-                                    throw new System.NotSupportedException();//shl	di, 1
-                                    throw new System.NotSupportedException();//add	di, si
-                                    throw new System.NotSupportedException();//add	di, dx
-                                    throw new System.NotSupportedException();//mov	dl, [di+4448h]
-                                    throw new System.NotSupportedException();//mov	al, [bp+var_4]
-                                    throw new System.NotSupportedException();//cbw
-                                    throw new System.NotSupportedException();//les	di, [bp+var_E]
-                                    throw new System.NotSupportedException();//add	di, ax
-                                    throw new System.NotSupportedException();//add	es:[di+136h], dl
-                                    throw new System.NotSupportedException();//cmp	[bp+var_5], 5
-                                    throw new System.NotSupportedException();//jnz	loc_6A272
+
+                                    for (var_5 = 4; var_5 <= 5; var_5++)
+                                    {
+                                        var_4 = (sbyte)(var_5 - 3);
+                                        var_E.field_12CArray[10 + var_4] += unk_1A758[(var_3 * 5) + var_5];
+                                    }
                                 }
 
                                 for (var_6 = 1; var_6 <= 100; var_6++)
                                 {
                                     if (gbl.unk_19AEC[var_6].spellClass == 1)
                                     {
-                                        throw new System.NotSupportedException();//mov	al, [bp+var_6]
-                                        throw new System.NotSupportedException();//xor	ah, ah
-                                        throw new System.NotSupportedException();//les	di, [bp+var_E]
-                                        throw new System.NotSupportedException();//add	di, ax
-                                        throw new System.NotSupportedException();//mov	byte ptr es:[di+78h], 1
+                                        var_E.field_79[var_6 - 1] = 1;
                                     }
                                 }
                             }
@@ -214,16 +189,7 @@ namespace engine
                 {
                     for (var_5 = 1; var_5 <= 3; var_5++)
                     {
-                        throw new System.NotSupportedException();//mov	al, [bp+var_5]
-                        throw new System.NotSupportedException();//cbw
-                        throw new System.NotSupportedException();//les	di, [bp+arg_0]
-                        throw new System.NotSupportedException();//add	di, ax
-                        throw new System.NotSupportedException();//mov	dl, es:[di+136h]
-                        throw new System.NotSupportedException();//mov	al, [bp+var_5]
-                        throw new System.NotSupportedException();//cbw
-                        throw new System.NotSupportedException();//les	di, [bp+arg_0]
-                        throw new System.NotSupportedException();//add	di, ax
-                        throw new System.NotSupportedException();//add	es:[di+136h], dl
+                        arg_0.field_12CArray[0xA + var_5] *= 2;
                     }
                 }
 
