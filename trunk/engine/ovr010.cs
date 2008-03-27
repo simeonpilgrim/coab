@@ -709,7 +709,7 @@ namespace engine
 
                     if (gbl.byte_1D90E == true)
                     {
-                        ovr033.sub_749DD(ovr014.sub_409BC(player01, player), 2, ovr033.PlayerMapYPos(player), ovr033.PlayerMapXPos(player));
+                        ovr033.redrawCombatArea(ovr014.sub_409BC(player01, player), 2, ovr033.PlayerMapYPos(player), ovr033.PlayerMapXPos(player));
 
                     }
 

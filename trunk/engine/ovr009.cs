@@ -446,7 +446,7 @@ namespace engine
 
             ovr025.count_teams();
 
-            ovr033.sub_749DD(8, 0xff, gbl.mapToBackGroundTile.mapScreenTopY + 3, gbl.mapToBackGroundTile.mapScreenLeftX + 3);
+            ovr033.redrawCombatArea(8, 0xff, gbl.mapToBackGroundTile.mapScreenTopY + 3, gbl.mapToBackGroundTile.mapScreenLeftX + 3);
 
             if (gbl.friends_count == 0 ||
                 gbl.foe_count == 0 ||
@@ -514,7 +514,7 @@ namespace engine
                             arg_0 = false;
                         }
 
-                        ovr033.sub_749DD(8, 0, ovr033.PlayerMapYPos(player), ovr033.PlayerMapXPos(player));
+                        ovr033.redrawCombatArea(8, 0, ovr033.PlayerMapYPos(player), ovr033.PlayerMapXPos(player));
                         player.actions.field_9 = var_2;
                         var_7 = 8;
                         break;

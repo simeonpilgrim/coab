@@ -1277,7 +1277,7 @@ namespace engine
                 var_B8 = (short)(gbl.mapToBackGroundTile.mapScreenTopY + 3);
             }
 
-            ovr033.sub_749DD(8, 0xFF, var_B8, var_B6);
+            ovr033.redrawCombatArea(8, 0xFF, var_B8, var_B6);
             var_AF = 0;
             var_BE = 0;
             var_C0 = 0;
@@ -1380,7 +1380,7 @@ namespace engine
                     var_B6 = (short)(playerAMapX + var_CE);
                     var_B8 = (short)(playerAMapY + var_D0);
 
-                    ovr033.sub_749DD(8, 0xff, var_B8, var_B6);
+                    ovr033.redrawCombatArea(8, 0xff, var_B8, var_B6);
                     var_CA = (short)((playerAMapX - gbl.mapToBackGroundTile.mapScreenLeftX) * 3);
                     var_CC = (short)((playerAMapY - gbl.mapToBackGroundTile.mapScreenTopY) * 3);
                     var_AF = var_B0;
@@ -1446,7 +1446,7 @@ namespace engine
 
                     if (ovr033.CoordOnScreen(playerAMapY - gbl.mapToBackGroundTile.mapScreenTopY, playerAMapX - gbl.mapToBackGroundTile.mapScreenLeftX) == false)
                     {
-                        ovr033.sub_749DD(8, 3, playerAMapY, playerAMapX);
+                        ovr033.redrawCombatArea(8, 3, playerAMapY, playerAMapX);
                     }
 
                     var_CA = (short)((playerAMapX - gbl.mapToBackGroundTile.mapScreenLeftX) * 3);
@@ -1494,7 +1494,7 @@ namespace engine
 
                 if (ovr033.sub_74761(1, player) == false)
                 {
-                    ovr033.sub_749DD(8, 3, ovr033.PlayerMapYPos(player), ovr033.PlayerMapXPos(player));
+                    ovr033.redrawCombatArea(8, 3, ovr033.PlayerMapYPos(player), ovr033.PlayerMapXPos(player));
                 }
 
                 if (arg_4 != 0)
@@ -2010,7 +2010,7 @@ namespace engine
             ovr033.Color_0_8_inverse();
             seg037.draw8x8_06();
 
-            ovr033.sub_749DD(8, 0xff, gbl.mapToBackGroundTile.mapScreenTopY + 3, gbl.mapToBackGroundTile.mapScreenLeftX + 3);
+            ovr033.redrawCombatArea(8, 0xff, gbl.mapToBackGroundTile.mapScreenTopY + 3, gbl.mapToBackGroundTile.mapScreenLeftX + 3);
         }
 
         static Set unk_68DFA = new Set(0x010A, new byte[] { 0x20, 0, 8, 0, 0, 0, 0, 0x20, 0, 8 });
