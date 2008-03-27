@@ -75,7 +75,7 @@ namespace engine
                 file_ptr = new File();
                 file_ptr.Assign(System.IO.Path.Combine(var_138 ,var_141 + var_146));
 
-                seg051.Reset(1, file_ptr);
+                seg051.Reset(file_ptr);
             }
             else
             {

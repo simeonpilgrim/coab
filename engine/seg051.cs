@@ -248,15 +248,14 @@ namespace engine
         }
 
 
-        internal static void Reset( short arg_2, File arg_4 )
+        internal static void Reset(File arg_4 )
         {
             arg_4.stream.Seek(0, System.IO.SeekOrigin.Begin);
         }
 
-        internal static void Rewrite( short arg_0, File arg_2 )
+        internal static void Rewrite(File arg_2 )
         {
             arg_2.stream.SetLength(0);
-
         }
 
 

@@ -30,7 +30,7 @@ namespace engine
             while (gbl.word_1EFBC == 0)
             {
                 var_112.Assign(gbl.byte_1BF1A + var_90.fileName);
-                seg051.Reset(1, var_112);
+                seg051.Reset(var_112);
 
                 if (seg051.FileSize(var_112) == arg_A)
                 {
@@ -312,7 +312,6 @@ namespace engine
 
         internal static void sub_47DFC(string arg_0, Player arg_4)
         {
-            string var_1DE;
             bool var_DE;
             short var_DD;
             Affect var_C1;
@@ -335,7 +334,6 @@ namespace engine
                 }
 
                 var_DD = 0;
-
                 var_DD += 0x1A6;
 
                 var_BD = arg_4.itemsPtr;
@@ -367,7 +365,6 @@ namespace engine
             if (var_9 == string.Empty)
             {
                 var_B7 = ".guy";
-
                 var_B2 = seg042.clean_string(arg_4.name);
             }
             else
@@ -376,19 +373,6 @@ namespace engine
                 var_B2 = var_9;
             }
 
-            var_1DE = gbl.byte_1BF1A + var_B2 + var_B7;
-            var_89.Assign(var_1DE);
-            seg051.Reset(1, var_89);
-
-            if (var_89.stream == null)
-            {
-                seg041.displayAndDebug("Unexpected error during save: " + var_1DE, 0, 14);
-
-                seg051.Close(var_89);
-                return;
-            }
-
-            seg051.Close(var_89);
             var_B8 = 'N';
 
             while (var_B8 == 'N' &&
@@ -410,7 +394,7 @@ namespace engine
 
             var_89.Assign(gbl.byte_1BF1A + var_B2 + var_B7);
 
-            seg051.Rewrite(1, var_89);
+            seg051.Rewrite(var_89);
 
             seg051.BlockWrite(0x1A6, arg_4.ToByteArray(), var_89);
             seg051.Close(var_89);
@@ -421,7 +405,7 @@ namespace engine
             {
 
                 var_89.Assign(gbl.byte_1BF1A + var_B2 + ".swg");
-                seg051.Rewrite(1, var_89);
+                seg051.Rewrite(var_89);
                 var_BD = arg_4.itemsPtr;
 
                 while (var_BD != null)
@@ -438,7 +422,7 @@ namespace engine
             if (arg_4.affect_ptr != null)
             {
                 var_89.Assign(gbl.byte_1BF1A + var_B2 + ".fx");
-                seg051.Rewrite(1, var_89);
+                seg051.Rewrite(var_89);
 
                 var_C1 = arg_4.affect_ptr;
 
@@ -2300,7 +2284,7 @@ namespace engine
                     do
                     {
                         save_file.Assign(gbl.byte_1BF1A + "savgam" + var_1FA + ".dat");
-                        seg051.Rewrite(1, save_file);
+                        seg051.Rewrite(save_file);
                         var_1FC = gbl.word_1EFBC;
 
                         if (unk_4AEEF.MemberOf((char)var_1FC) == false)

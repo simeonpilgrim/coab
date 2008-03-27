@@ -61,7 +61,6 @@ namespace engine
 
         internal static void chead_cbody_comspr_icon(byte arg_0, byte arg_2, string arg_4)
         {
-            string var_102;
             string var_100;
 
             var_100 = arg_4;

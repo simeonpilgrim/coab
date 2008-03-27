@@ -232,11 +232,11 @@ namespace Classes
                 case 0x192:
                     return field_192;
 
-                //case 0x1E0:
-                //    return (ushort)field_1E0;
+                case 0x1E0:
+                    return (ushort)field_1E0;
 
-                //case 0x1E2:
-                //    return (ushort)field_1E2;
+                case 0x1E2:
+                    return (ushort)field_1E2;
                 
                 case 0x1CC:
                     return (ushort)field_1CC;
