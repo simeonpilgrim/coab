@@ -62,8 +62,16 @@ namespace engine
                                    "Protection From Normal Missiles",
                                    "Slow",
                                    "Restoration",
+                                    string.Empty,
                                    "Cure Serious Wounds",
-                                   "Cause Serious Wounds",
+                                    string.Empty,
+                                    string.Empty,
+                                    string.Empty,
+                                    string.Empty,
+                                    string.Empty,
+                                    string.Empty,
+                                    string.Empty,                                   
+                                    "Cause Serious Wounds",
                                    "Neutralize Poison",
                                    "Poison",
                                    "Protection Evil, 10' Radius",
@@ -122,40 +130,18 @@ namespace engine
             switch (gbl.unk_19AEC[arg_0].spellClass)
             {
                 case 0:
-                    throw new System.NotSupportedException();//les	di, [bp+arg_2]
-                    throw new System.NotSupportedException();//cmp	byte ptr es:[di+15h], 8
-                    throw new System.NotSupportedException();//mov	al, 0
-                    throw new System.NotSupportedException();//jbe	loc_5C050
-                    throw new System.NotSupportedException();//inc	ax
-                    throw new System.NotSupportedException();//loc_5C050:
-                    throw new System.NotSupportedException();//or	al, al
-                    throw new System.NotSupportedException();//jz	loc_5C09E
-                    throw new System.NotSupportedException();//les	di, [bp+arg_2]
-                    throw new System.NotSupportedException();//cmp	byte ptr es:[di+109h], 0
-                    throw new System.NotSupportedException();//jg	loc_5C0A2
-                    ovr026.sub_6B3D1(arg_2);
-                    throw new System.NotSupportedException();//or	al, al
-                    throw new System.NotSupportedException();//jz	loc_5C079
-                    throw new System.NotSupportedException();//les	di, [bp+arg_2]
-                    throw new System.NotSupportedException();//cmp	byte ptr es:[di+111h], 0
-                    throw new System.NotSupportedException();//jg	loc_5C0A2
-                    throw new System.NotSupportedException();//loc_5C079:
-                    throw new System.NotSupportedException();//les	di, [bp+arg_2]
-                    throw new System.NotSupportedException();//cmp	byte ptr es:[di+10Ch], 8
-                    throw new System.NotSupportedException();//jg	loc_5C0A2
-                    throw new System.NotSupportedException();//les	di, [bp+arg_2]
-                    throw new System.NotSupportedException();//cmp	byte ptr es:[di+114h], 8
-                    throw new System.NotSupportedException();//jle	loc_5C09E
-                    ovr026.sub_6B3D1(arg_2);
-                    throw new System.NotSupportedException();//or	al, al
-                    throw new System.NotSupportedException();//jnz	loc_5C0A2
-                    throw new System.NotSupportedException();//loc_5C09E:
-                    throw new System.NotSupportedException();//mov	al, 0
-                    throw new System.NotSupportedException();//jmp	short loc_5C0A4
-                    throw new System.NotSupportedException();//loc_5C0A2:
-                    throw new System.NotSupportedException();//mov	al, 1
-                    throw new System.NotSupportedException();//loc_5C0A4:
-                    throw new System.NotSupportedException();//mov	[bp+var_1], al
+                    if (arg_2.wis > 8 &&
+                        ((arg_2.cleric_lvl > 0) ||
+                         (ovr026.sub_6B3D1(arg_2) != 0 && arg_2.turn_undead > 0) ||
+                         (arg_2.paladin_lvl > 8) ||
+                         (arg_2.field_114 > 8 && ovr026.sub_6B3D1(arg_2) != 0)))
+                    {
+                        var_1 = 1;
+                    }
+                    else
+                    {
+                        var_1 = 0;
+                    }
                     break;
 
                 case 1:
@@ -186,43 +172,20 @@ namespace engine
                     break;
 
                 case 2:
-                    throw new System.NotSupportedException();//les	di, [bp+arg_2]
-                    throw new System.NotSupportedException();//cmp	byte ptr es:[di+13h], 8
-                    throw new System.NotSupportedException();//jbe	loc_5C16B
-                    throw new System.NotSupportedException();//les	di, [bp+arg_2]
-                    throw new System.NotSupportedException();//cmp	byte ptr es:[di+74h], 7
-                    throw new System.NotSupportedException();//jnz	loc_5C16F
-                    throw new System.NotSupportedException();//les	di, [bp+arg_2]
-                    throw new System.NotSupportedException();//mov	ax, es:[di+159h]
-                    throw new System.NotSupportedException();//or	ax, es:[di+15Bh]
-                    throw new System.NotSupportedException();//jz	loc_5C16F
-                    throw new System.NotSupportedException();//cmp	game_state, 5
-                    throw new System.NotSupportedException();//jnz	loc_5C16F
-                    throw new System.NotSupportedException();//les	di, [bp+arg_2]
-                    throw new System.NotSupportedException();//cmp	byte ptr es:[di+10Dh], 8
-                    throw new System.NotSupportedException();//jg	loc_5C16F
-                    ovr026.sub_6B3D1(arg_2);
-                    throw new System.NotSupportedException();//or	al, al
-                    throw new System.NotSupportedException();//jz	loc_5C16B
-                    throw new System.NotSupportedException();//les	di, [bp+arg_2]
-                    throw new System.NotSupportedException();//cmp	byte ptr es:[di+115h], 8
-                    throw new System.NotSupportedException();//jle	loc_5C16B
-                    throw new System.NotSupportedException();//les	di, [bp+arg_2]
-                    throw new System.NotSupportedException();//cmp	byte ptr es:[di+10Eh], 0
-                    throw new System.NotSupportedException();//jg	loc_5C16F
-                    ovr026.sub_6B3D1(arg_2);
-                    throw new System.NotSupportedException();//or	al, al
-                    throw new System.NotSupportedException();//jz	loc_5C16B
-                    throw new System.NotSupportedException();//les	di, [bp+arg_2]
-                    throw new System.NotSupportedException();//cmp	byte ptr es:[di+116h], 0
-                    throw new System.NotSupportedException();//jg	loc_5C16F
-                    throw new System.NotSupportedException();//loc_5C16B:
-                    throw new System.NotSupportedException();//mov	al, 0
-                    throw new System.NotSupportedException();//jmp	short loc_5C171
-                    throw new System.NotSupportedException();//loc_5C16F:
-                    throw new System.NotSupportedException();//mov	al, 1
-                    throw new System.NotSupportedException();//loc_5C171:
-                    throw new System.NotSupportedException();//mov	[bp+var_1], al
+                    if (arg_2._int > 8 &&
+                        ((arg_2.race != Race.human) ||
+                     (arg_2.field_159 == null) ||
+                     (gbl.game_state != 5) ||
+                     (arg_2.ranger_lvl > 8) ||
+                     (ovr026.sub_6B3D1(arg_2) != 0 && arg_2.field_115 > 8 && arg_2.magic_user_lvl > 0) ||
+                     (ovr026.sub_6B3D1(arg_2) != 0 && arg_2.field_116 > 0)))
+                    {
+                        var_1 = 1;
+                    }
+                    else
+                    {
+                        var_1 = 0;
+                    }
                     break;
 
                 case 3:
@@ -455,83 +418,69 @@ namespace engine
             }
             else
             {
-
                 var_F = 0;
 
                 while (var_6 != null && var_11 == 0)
                 {
-                    throw new System.NotSupportedException();//les	di, [bp+var_6]
-                    throw new System.NotSupportedException();//cmp	byte ptr es:[di+29h], 0
-                    throw new System.NotSupportedException();//jnz	loc_5C6A2
-                    throw new System.NotSupportedException();//mov	al, gbl.unk_19AEC[ unk_1AEC4[ var_F ] ] ].field_1
-                    throw new System.NotSupportedException();//cmp	al, [bp+var_12]
-                    throw new System.NotSupportedException();//jg	loc_5C69C
-                    throw new System.NotSupportedException();//mov	al, [bp+arg_0]
-                    throw new System.NotSupportedException();//and	al, 0x7F
-                    throw new System.NotSupportedException();//mov	dl, al
-                    throw new System.NotSupportedException();//mov	al, [bp+var_F]
-                    throw new System.NotSupportedException();//cbw
-                    throw new System.NotSupportedException();//mov	di, ax
-                    throw new System.NotSupportedException();//mov	al, unk_1AEC4[di]
-                    throw new System.NotSupportedException();//cmp	al, dl
-                    throw new System.NotSupportedException();//jz	loc_5C69C
-                    var_F++;
-                    var_6 = var_6.next;
-                    throw new System.NotSupportedException();//jmp	short loc_5C6A0
-                    throw new System.NotSupportedException();//loc_5C69C:
-                    var_11 = 1;
-                    throw new System.NotSupportedException();//loc_5C6A0:
-                    throw new System.NotSupportedException();//jmp	short loc_5C6B6
-                    throw new System.NotSupportedException();//loc_5C6A2:
-                    var_6 = var_6.next;
-                    var_F++;
-                    throw new System.NotSupportedException();//loc_5C6B6:
-                }
-                throw new System.NotSupportedException();//mov	al, [bp+arg_0]
-                throw new System.NotSupportedException();//and	al, 0x7F
-                throw new System.NotSupportedException();//mov	dl, al
-                throw new System.NotSupportedException();//mov	al, [bp+var_F]
-                throw new System.NotSupportedException();//cbw
-                throw new System.NotSupportedException();//mov	di, ax
-                throw new System.NotSupportedException();//mov	al, unk_1AEC4[di]
-                throw new System.NotSupportedException();//cmp	al, dl
-                throw new System.NotSupportedException();//jnz	loc_5C6D0
-                throw new System.NotSupportedException();//jmp	loc_5C7CF
-                throw new System.NotSupportedException();//loc_5C6D0:
-                var_A = gbl.dword_1AE6C;
-                if (var_A != var_6)
-                {
-                    while (var_A.next != var_6)
+                    if (var_6.field_29 == 0)
                     {
-                        var_A = var_A.next;
+                        if (gbl.unk_19AEC[gbl.unk_1AEC4[var_F]].spellLevel <= var_12 &&
+                            gbl.unk_1AEC4[var_F] != (arg_0 & 0x7F))
+                        {
+                            var_F++;
+                            var_6 = var_6.next;
+                        }
+                        else
+                        {
+                            var_11 = 1;
+                        }
+                    }
+                    else
+                    {
+                        var_6 = var_6.next;
+                        var_F++;
+                    }
+                }
+
+
+                if (gbl.unk_1AEC4[var_F] != (arg_0 & 0x7F))
+                {
+                    var_A = gbl.dword_1AE6C;
+                    if (var_A != var_6)
+                    {
+                        while (var_A.next != var_6)
+                        {
+                            var_A = var_A.next;
+                        }
+
+                        var_E = new StringList();
+                        var_E.next = var_A.next;
+                        var_A.next = var_E;
+                        var_6 = var_E;
+                    }
+                    else
+                    {
+                        var_E = new StringList();
+                        var_E.next = var_6;
+                        gbl.dword_1AE6C = var_E;
+                        var_6 = var_E;
                     }
 
-                    var_E = new StringList();
-                    var_E.next = var_A.next;
-                    var_A.next = var_E;
-                    var_6 = var_E;
+                    var_1 = 1;
+
+                    for (var_10 = var_F; var_10 <= 0x53; var_10++)
+                    {
+                        var_2 = gbl.unk_1AE70[var_10];
+                        gbl.unk_1AE70[var_10] = var_1;
+                        var_1 = var_2;
+                    }
                 }
                 else
                 {
-                    var_E = new StringList();
-                    var_E.next = var_6;
-                    gbl.dword_1AE6C = var_E;
-                    var_6 = var_E;
+                    gbl.unk_1AE70[var_F] += 1;
                 }
-
-                var_1 = 1;
-
-                for (var_10 = var_F; var_10 <= 0x53; var_10++)
-                {
-                    var_2 = gbl.unk_1AE70[var_10];
-                    gbl.unk_1AE70[var_10] = var_1;
-                    var_1 = var_2;
-                }
-                throw new System.NotSupportedException();//jmp	short loc_5C7D9
-                throw new System.NotSupportedException();//loc_5C7CF:
-                gbl.unk_1AE70[var_F] += 1;
             }
-            throw new System.NotSupportedException();//loc_5C7D9:
+
             if (arg_0 > 0x7F)
             {
                 var_6.s = " *";
@@ -548,25 +497,19 @@ namespace engine
             {
                 var_6.s = string.Format("{0} ({1})", var_6.s, gbl.unk_1AE70[var_F]);
             }
-            throw new System.NotSupportedException();//mov	al, [bp+arg_0]
-            throw new System.NotSupportedException();//and	al, 0x7F
-            throw new System.NotSupportedException();//mov	dl, al
-            throw new System.NotSupportedException();//mov	al, [bp+var_F]
-            throw new System.NotSupportedException();//cbw
-            throw new System.NotSupportedException();//mov	di, ax
-            throw new System.NotSupportedException();//mov	al, unk_1AEC4[di]
-            throw new System.NotSupportedException();//cmp	al, dl
-            throw new System.NotSupportedException();//jz	func_end
-            var_1 = gbl.unk_1AEC4[var_F];
-            gbl.unk_1AEC4[var_F] = (byte)(arg_0 & 0x7F);
 
-            for (var_10 = (byte)(var_F + 1); var_10 <= 0x53; var_10++)
+            if (gbl.unk_1AEC4[var_F] != (arg_0 & 0x7F))
             {
-                var_2 = gbl.unk_1AEC4[var_10];
-                gbl.unk_1AEC4[var_10] = var_1;
-                var_1 = var_2;
+                var_1 = gbl.unk_1AEC4[var_F];
+                gbl.unk_1AEC4[var_F] = (byte)(arg_0 & 0x7F);
+
+                for (var_10 = (byte)(var_F + 1); var_10 <= 0x53; var_10++)
+                {
+                    var_2 = gbl.unk_1AEC4[var_10];
+                    gbl.unk_1AEC4[var_10] = var_1;
+                    var_1 = var_2;
+                }
             }
-            throw new System.NotSupportedException();//func_end:
         }
 
 
@@ -781,35 +724,24 @@ namespace engine
                     do
                     {
                         var_B = var_C;
-                        throw new System.NotSupportedException();//mov	al, [bp+var_2]
-                        throw new System.NotSupportedException();//xor	ah, ah
-                        throw new System.NotSupportedException();//mov	di, ax
-                        throw new System.NotSupportedException();//cmp	byte ptr unk_1AEC4[di],	0
-                        throw new System.NotSupportedException();//jz	loc_5CD43
-                        throw new System.NotSupportedException();//mov	al, [bp+var_2]
-                        throw new System.NotSupportedException();//xor	ah, ah
-                        throw new System.NotSupportedException();//mov	di, ax
-                        throw new System.NotSupportedException();//mov	al, byte ptr unk_1AEC4[di]
-                        throw new System.NotSupportedException();//xor	ah, ah
-                        throw new System.NotSupportedException();//mov	di, ax
-                        throw new System.NotSupportedException();//mov	cl, 4
-                        throw new System.NotSupportedException();//shl	di, cl
-                        throw new System.NotSupportedException();//mov	al, gbl.unk_19AEC[ di ].field_1
-                        throw new System.NotSupportedException();//mov	[bp+var_C], al
-                        throw new System.NotSupportedException();//loc_5CD43:
-                        throw new System.NotSupportedException();//mov	al, [bp+var_B]
-                        throw new System.NotSupportedException();//cmp	al, [bp+var_C]
-                        throw new System.NotSupportedException();//jge	loc_5CDB9
-                        var_A = new StringList();
-                        var_A.next = var_6.next;
-                        var_6.next = var_A;
 
-                        var_6 = var_6.next;
+                        if (gbl.unk_1AEC4[var_2] != 0)
+                        {
+                            var_C = gbl.unk_19AEC[gbl.unk_1AEC4[var_2]].spellLevel;
+                        }
 
-                        var_6.s = LevelStrings[var_C];
-                        var_6.field_29 = 1;
+                        if (var_B < var_C)
+                        {
+                            var_A = new StringList();
+                            var_A.next = var_6.next;
+                            var_6.next = var_A;
 
-                        throw new System.NotSupportedException();//loc_5CDB9:
+                            var_6 = var_6.next;
+
+                            var_6.s = LevelStrings[var_C];
+                            var_6.field_29 = 1;
+                        }
+
                         var_2++;
                         var_6 = var_6.next;
                     } while (var_6 != null);

@@ -713,7 +713,7 @@ new Struct_19AEC( 32h,0,7,12h,3,12h,3,12h,8,12h,3,12h,3,3,12h,11h) };*/
         public static Struct_1D183[] unk_1D183; // array[8] but 1 offset.
         public static Struct_1D1BC mapToBackGroundTile; // stru_1D1BC
 
-        public static byte[] unk_1AE70;
+        public static byte[] unk_1AE70 = new byte[0x54];
 
         public readonly static byte[] /*seg600:27D9*/ unk_18AE9 = { 0, 8, 2, 3, 4 };
         public readonly static byte[] /*seg600:27DA*/ unk_18AEA = { 8, 2, 3, 4, 8 };
