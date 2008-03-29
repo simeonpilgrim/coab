@@ -761,11 +761,7 @@ namespace engine
                             break;
 
                         case (char)0x1B:
-                            goto case 'E';
-
                         case '\0':
-                            goto case 'E';
-
                         case 'E':
                             result_ptr = null;
                             ret_val = '\0';
