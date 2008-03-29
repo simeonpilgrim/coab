@@ -214,7 +214,7 @@ namespace engine
             gbl.party_fled = false;
             player = gbl.player_next_ptr;
 
-            while( player != null && player.actions.field_12 != 1 )
+            while( player != null && (player.actions == null || player.actions.field_12 != 1 ))
             {
                 if( player.health_status == Status.running )
                 {
@@ -252,7 +252,7 @@ namespace engine
             if (gbl.combat_type == gbl.combatType.normal ||
                 gbl.inDemo == false )
             {
-                while( player != null && player.actions.field_13 != 1 )
+                while( player != null && (player.actions == null || player.actions.field_13 != 1 ))
                 {
                     if( player.health_status == Status.running ||
                         player.health_status == Status.animated ||
@@ -295,7 +295,7 @@ namespace engine
 
                 if( gbl.byte_1B2F0 == 0 )
                 {
-                    while( player != null && player.actions.field_13 != 1 )
+                    while( player != null && (player.actions == null || player.actions.field_13 != 1 ))
                     {
                         if( gbl.party_fled == false )
                         {
@@ -749,7 +749,7 @@ namespace engine
 
                         if( var_1 == true || var_2 == true )
                         {
-                            var_103 = "~Yes	~No";
+                            var_103 = "~Yes ~No";
  
                             seg041.press_any_key( "There is still treasure left.  ", true, 0, 10, 0x16, 0x26, 0x11, 1 );
                             seg041.press_any_key( "Do you want to go back and claim your treasure?", false, 0, 15, 0x16, 0x26, 0x11, 1 );
@@ -794,7 +794,7 @@ namespace engine
 
 			while( player != null )
 			{
-                if( player.actions.field_13 == 1 ||
+                if( (player.actions != null && player.actions.field_13 == 1 ) ||
                     player.combat_team == 1 )
                 {
                     gbl.byte_1AB14 = 1;
@@ -807,7 +807,7 @@ namespace engine
 
                     gbl.player_ptr = player;
 
-                    ovr018.free_players(1, (player.actions.field_13 == 1));
+                    ovr018.free_players(1, (player.actions != null && player.actions.field_13 == 1));
 
                     player = var_6;
                 }

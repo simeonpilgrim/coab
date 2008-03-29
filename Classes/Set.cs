@@ -69,21 +69,21 @@ namespace Classes
         }
 
 
-		public bool MemberOf( char arg_4 )
-		{
-			byte lhs = bits[arg_4>>shift];
-            byte rhs = (byte)(1 << (arg_4 & mask));
-
-			return ( (lhs & rhs) != 0 );
-		}
-
-		public bool MemberOf( byte arg_4 )
-		{
+        public bool MemberOf(char arg_4)
+        {
             byte lhs = bits[arg_4 >> shift];
             byte rhs = (byte)(1 << (arg_4 & mask));
 
-			return ( (lhs & rhs) != 0 );
-		}
+            return ((lhs & rhs) != 0);
+        }
+
+        public bool MemberOf(byte arg_4)
+        {
+            byte lhs = bits[arg_4 >> shift];
+            byte rhs = (byte)(1 << (arg_4 & mask));
+
+            return ((lhs & rhs) != 0);
+        }
 
 
         //public static void operator+=( int arg_0, int arg_4 )

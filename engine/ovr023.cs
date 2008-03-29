@@ -145,30 +145,15 @@ namespace engine
                     break;
 
                 case 1:
-                    throw new System.NotSupportedException();//les	di, [bp+arg_2]
-                    throw new System.NotSupportedException();//cmp	byte ptr es:[di+15h], 8
-                    throw new System.NotSupportedException();//mov	al, 0
-                    throw new System.NotSupportedException();//jbe	loc_5C0BB
-                    throw new System.NotSupportedException();//inc	ax
-                    throw new System.NotSupportedException();//loc_5C0BB:
-                    throw new System.NotSupportedException();//or	al, al
-                    throw new System.NotSupportedException();//jz	loc_5C0E4
-                    throw new System.NotSupportedException();//les	di, [bp+arg_2]
-                    throw new System.NotSupportedException();//cmp	byte ptr es:[di+10Dh], 6
-                    throw new System.NotSupportedException();//jg	loc_5C0E8
-                    ovr026.sub_6B3D1(arg_2);
-                    throw new System.NotSupportedException();//or	al, al
-                    throw new System.NotSupportedException();//jz	loc_5C0E4
-                    throw new System.NotSupportedException();//les	di, [bp+arg_2]
-                    throw new System.NotSupportedException();//cmp	byte ptr es:[di+115h], 6
-                    throw new System.NotSupportedException();//jg	loc_5C0E8
-                    throw new System.NotSupportedException();//loc_5C0E4:
-                    throw new System.NotSupportedException();//mov	al, 0
-                    throw new System.NotSupportedException();//jmp	short loc_5C0EA
-                    throw new System.NotSupportedException();//loc_5C0E8:
-                    throw new System.NotSupportedException();//mov	al, 1
-                    throw new System.NotSupportedException();//loc_5C0EA:
-                    throw new System.NotSupportedException();//mov	[bp+var_1], al
+                    if ((arg_2.wis > 8 && arg_2.ranger_lvl > 6) ||
+                        (ovr026.sub_6B3D1(arg_2) != 0 && arg_2.field_115 > 6))
+                    {
+                        var_1 = 1;
+                    }
+                    else
+                    {
+                        var_1 = 0;
+                    }
                     break;
 
                 case 2:
@@ -198,7 +183,7 @@ namespace engine
         }
 
         static Set unk_5C1A2 = new Set(0x0001, new byte[] { 0x1E });
-        static Set asc_5C1D1 = new Set(0x000A, new byte[] { 1, 0, 0, 0, 0, 0, 0, 0x28, 0x30, 8 });
+        static Set asc_5C1D1 = new Set(0x000B, new byte[] { 1, 0, 0, 0, 0, 0, 0, 0, 0x28, 0x30, 8 });
         static Set unk_5C1F1 = new Set(0x0009, new byte[] { 1, 0, 0, 0, 0, 0, 0, 0, 0x20 });
 
         internal static byte spell_menu(ref short arg_0, byte arg_4)
