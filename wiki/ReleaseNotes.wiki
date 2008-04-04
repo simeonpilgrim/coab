@@ -1,0 +1,41 @@
+= The Release Notes =
+
+= Unreleased =
+  * Fixed the clipping of the combat screen. Large monsters where over drawing the board, which is not redrawn
+  * Implemented video ram save/restore so the missile items draw correctly in combat
+  * Changed the DaxFileCache to copy data before returning. This slows the game down more, but stops merged pictures from being wrong on second viewings (camp fire in DEMO)
+ 
+= 1.0.5 =
+  * Loading saved games with Druids/Ranger/Paladins/Magic-Users/Clerics was not translation complete, and would therefore crash
+  * Saving newly created chracters incorrectly ask if you wanted to overwrite the file.
+  * The display of a characters AC was +/- flipped.
+  * The save game from the training menu did not work
+  * The item name list was missing a blank string, thus causes items part way through to display with a off by one name.
+  * Fixed the calculation of AC bonus from Dexterity
+  * Fixed how losing combat was treated, so you now don't get shown the EXP rewarded screen.
+  * Scrolling through the party list was broken.
+  * Fixed small typo in the code-wheel (even though it turned off in the game)
+  * Fixed the display names on spells. The where many blank strings missing.
+  * Fixed spell memorizing screen
+  * Fixed some menu that would not accept input like Exit
+  * Fixed the treasure found code to handle not being in combat (SSI bug)
+
+= 1.0.4 = 
+  * Scripted portrait pictures are displayed. This can be seen in the DEMO, with the village picture.
+  * Fighter hit points are now correctly limited/managed in the modify player screen
+  * The [ and ] keys have been mapped to keypad 'home' and 'end' so the game is playable on laptop keyboards
+
+= 1.0.3 =
+  * Fixed the CPU thrashing that occurred while waiting for user input in parts of the game.
+  * Many changes have been made so the Demo runs to completion, and now it seams to be exception (crash) free. I had it running for 5 hours at work, with no exceptions.
+  * Fixed some code translations issues.
+  * Fixed some data translations issues. Used to control menu etc.
+  * Worked on Spell memorization menu (not complete)
+  * Fixed the synchronisation between the engine and UI so they both shutdown when the window is closed, or the game exited.
+  * Made some improvements to how the installer upgrades itself (not very tested or checked in yet)
+
+= 1.0.2 =
+  * mistake release
+
+= 1.0.1 =
+  * Very first installer build, very alpha.
