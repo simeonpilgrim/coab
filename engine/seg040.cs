@@ -113,13 +113,13 @@ namespace engine
 
         internal static void OverlayUnbounded(DaxBlock source, int arg_8, int itemIdex, int rowY, int colX)
         {
-            draw_picture(source, rowY + 1, colX + 1, itemIdex);
+            draw_combat_picture(source, rowY + 1, colX + 1, itemIdex);
         }
 
 
         internal static void OverlayBounded(DaxBlock source, byte arg_8, int itemIndex, int rowY, int colX) /* sub_E353 */
         {
-            draw_picture(source, rowY + 1, colX + 1, itemIndex);
+            draw_combat_picture(source, rowY + 1, colX + 1, itemIndex);
         }
 
 
@@ -231,7 +231,9 @@ namespace engine
         }
 
 
-        internal static void draw_picture(DaxBlock dax_block, int rowY, int colX, int index)
+
+        internal static void draw_clipped_picture(DaxBlock dax_block, int rowY, int colX, int index, 
+            int clipMinX, int clipMaxX, int clipMinY, int clipMaxY)
         {
             if (dax_block != null)
             {
@@ -247,7 +249,8 @@ namespace engine
                 {
                     for (int pixX = minX; pixX < maxX; pixX++)
                     {
-                        if (pixX >= 0 && pixX < 320 && pixY >= 0 && pixY < 200)
+                        if (pixX >= clipMinX && pixX < clipMaxX && 
+                            pixY >= clipMinY && pixY < clipMaxY)
                         {
                             Display.SetPixel3(pixX, pixY, dax_block.data[var_10]);
                         }
@@ -258,6 +261,16 @@ namespace engine
 
                 Display.Update();
             }
+        }
+
+        internal static void draw_combat_picture(DaxBlock dax_block, int rowY, int colX, int index)
+        {
+            draw_clipped_picture(dax_block, rowY, colX, index, 8, 176, 8, 176);
+        }
+
+        internal static void draw_picture(DaxBlock dax_block, int rowY, int colX, int index)
+        {
+            draw_clipped_picture(dax_block, rowY, colX, index, 0, 320, 0, 200);
         }
         
         static int backcolor = 0;

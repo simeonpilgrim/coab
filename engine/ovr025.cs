@@ -1302,12 +1302,13 @@ namespace engine
                         (var_CA % 3) == 0 ||
                         (var_CC % 3) == 0)
                     {
+                        Display.SaveVidRam();
                         seg040.OverlayBounded(gbl.dword_1D90A, 5, var_B1, var_CC, var_CA);
                         seg040.DrawOverlay();
 
                         seg049.SysDelay(arg_0);
 
-                        seg040.OverlayBounded(gbl.word_1B316, 0, 0, var_CC, var_CA);
+                        Display.RestoreVidRam();
                         var_B1++;
 
                         if (var_B1 >= arg_2)
@@ -1452,6 +1453,7 @@ namespace engine
                     var_CA = (short)((playerAMapX - gbl.mapToBackGroundTile.mapScreenLeftX) * 3);
                     var_CC = (short)((playerAMapY - gbl.mapToBackGroundTile.mapScreenTopY) * 3);
 
+                    Display.SaveVidRam();
                     seg040.OverlayBounded(gbl.dword_1D90A, 5, var_B1, var_CC, var_CA);
 
                     if (arg_0 > 0)
@@ -1460,7 +1462,7 @@ namespace engine
 
                         seg049.SysDelay(arg_0);
 
-                        seg040.OverlayBounded(gbl.word_1B316, 0, 0, var_CC, var_CA);
+                        Display.RestoreVidRam();
                     }
                 }
             } while (var_B3 == 0);
@@ -1524,12 +1526,13 @@ namespace engine
                 {
                     for (var_104 = 0; var_104 <= 3; var_104++)
                     {
+                        Display.SaveVidRam();
                         seg040.OverlayBounded(gbl.dword_1D90A, 5, var_104, rowY, colX);
                         seg040.DrawOverlay();
 
                         seg049.SysDelay(70);
 
-                        seg040.OverlayBounded(gbl.word_1B316, 0, 0, rowY, colX);
+                        Display.RestoreVidRam();
                     }
                 }
 

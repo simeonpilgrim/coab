@@ -81,7 +81,6 @@ namespace engine
             seg040.init_dax_block(out gbl.dword_1EFA0, 0, 1, 1, 8);
 
             seg051.FillChar(0xff, (ushort)gbl.dword_1EFA0.bpp, gbl.dword_1EFA0.data);
-            seg040.init_dax_block(out gbl.word_1B316, 0, 1, 3, 0x18);
 
             gbl.symbol_8x8_set = new DaxBlock[5];
             gbl.symbol_8x8_set[0] = null;

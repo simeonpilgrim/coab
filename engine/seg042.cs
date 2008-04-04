@@ -271,12 +271,15 @@ namespace engine
                 } while (input_index < dataLength);
             }
 
-            internal void GetData(byte block_id, out byte[] data)
+            internal byte[] GetData(byte block_id)
             {
-                if (entries.TryGetValue(block_id, out data) == false)
+                byte[] orig;
+                if (entries.TryGetValue(block_id, out orig) == false)
                 {
-                    data = null;
+                    return null;
                 }
+
+                return (byte[])orig.Clone();
             }
         }
 
@@ -294,7 +297,7 @@ namespace engine
                 fileCache.Add(file_name.ToLower(), dfc);
             }
 
-            dfc.GetData(block_id, out out_data);
+            out_data = dfc.GetData(block_id);
             decodeSize = out_data == null ? (short)0:(short)out_data.Length;
 
             seg044.sound_sub_120E0(gbl.word_188C0);
