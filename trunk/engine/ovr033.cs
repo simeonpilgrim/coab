@@ -80,6 +80,7 @@ namespace engine
 
                     if (gbl.mapToBackGroundTile.field_4 == true)
                     {
+                        // draws grey focus box
                         ovr034.draw_combat_icon(0x19, 0, 0, screenPosY + deltaY, screenPosX + deltaX);
                     }
                 }
@@ -90,6 +91,7 @@ namespace engine
             if (var_6 > 0 &&
                 sub_74761(0, gbl.player_array[var_6]) == true)
             {
+                // draws the player icon over focus box
                 ovr034.draw_combat_icon(gbl.player_array[var_6].icon_id, 0,
                     gbl.player_array[var_6].actions.field_9, gbl.playerScreenY[var_6],
                     gbl.playerScreenX[var_6]);
