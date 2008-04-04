@@ -206,6 +206,10 @@ namespace Classes
                     field_200[(loc - 0x200) / 2] = (short)value;
                     break;
 
+                case 0x3fe:
+                    field_3FE = (short)value;
+                    break;
+
                 default:
                     DataIO.SetObjectUShort(this, origData, loc, value);
                     break;

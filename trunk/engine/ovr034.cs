@@ -119,7 +119,7 @@ namespace engine
                     icon = flipped;
                 }
 
-                seg040.draw_picture(icon, (tileY * 3) + 1, (tileX * 3) + 1, 0);
+                seg040.draw_combat_picture(icon, (tileY * 3) + 1, (tileX * 3) + 1, 0);
             }
         }
     }

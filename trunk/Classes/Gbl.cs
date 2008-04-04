@@ -736,8 +736,6 @@ new Struct_19AEC( 32h,0,7,12h,3,12h,3,12h,8,12h,3,12h,3,3,12h,11h) };*/
 
         public static Text known01_02;
 
-        public static DaxBlock word_1B316; // seg600:5006
-
         public static bool unk_1AB07; // seg600:47F7
 
         public static spellDelegateX[] spell_jump_list;

@@ -12,6 +12,7 @@ namespace Classes
         static byte[,] egaColors = { { 0, 0, 0 }, { 0, 0, 173 }, { 0, 173, 0 }, { 0, 173, 173 }, { 173, 0, 0 }, { 173, 0, 173 }, { 173, 82, 0 }, { 173, 173, 173 }, { 82, 82, 82 }, { 82, 82, 255 }, { 82, 255, 82 }, { 82, 255, 255 }, { 255, 82, 82 }, { 255, 82, 255 }, { 255, 255, 82 }, { 255, 255, 255 } };
         static int[,] ram;
         static byte[] videoRam;
+        static byte[] videoRamBkUp;
         static int videoRamSize;
         static int scanLineWidth;
         static int outputWidth;
@@ -125,6 +126,16 @@ namespace Classes
                     updateCallback.Invoke();
                 }
             }
+        }
+
+        public static void SaveVidRam()
+        {
+            videoRamBkUp = (byte[])videoRam.Clone();
+        }
+
+        public static void RestoreVidRam()
+        {
+            videoRam = videoRamBkUp;
         }
 
         public static void SetPixel3(int x, int y, byte value)
