@@ -7,7 +7,7 @@
  
 = 1.0.5 =
   * Loading saved games with Druids/Ranger/Paladins/Magic-Users/Clerics was not translation complete, and would therefore crash
-  * Saving newly created chracters incorrectly ask if you wanted to overwrite the file.
+  * Saving newly created characters incorrectly ask if you wanted to overwrite the file.
   * The display of a characters AC was +/- flipped.
   * The save game from the training menu did not work
   * The item name list was missing a blank string, thus causes items part way through to display with a off by one name.
