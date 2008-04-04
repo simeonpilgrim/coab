@@ -268,19 +268,12 @@ namespace engine
                             switch (var_1)
                             {
                                 case 'G':
-                                    goto case 'I';
                                 case 'H':
-                                    goto case 'I';
                                 case 'K':
-                                    goto case 'I';
                                 case 'M':
-                                    goto case 'I';
                                 case 'O':
-                                    goto case 'I';
                                 case 'P':
-                                    goto case 'I';
                                 case 'Q':
-                                    goto case 'I';
                                 case 'I':
                                     sub_33B26(ref var_2, var_1, player);
                                     break;
