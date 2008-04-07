@@ -435,10 +435,9 @@ namespace engine
 
             player = gbl.player_next_ptr;
 
-			while( player != null && find_spell( player, spell_id ) != -1 )
+			while( player != null && find_spell( player, spell_id ) == -1 )
 			{
 				player = player.next_player;
-
 			}
 
 			return player;
