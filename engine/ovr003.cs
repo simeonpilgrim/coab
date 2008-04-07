@@ -665,7 +665,7 @@ namespace engine
                 {
                     seg037.draw8x8_03();
                     ovr025.Player_Summary(gbl.player_ptr);
-                    ovr025.camping_search();
+                    ovr025.display_map_position_time();
                 }
                 gbl.byte_1EE98 = 0;
             }
@@ -2217,10 +2217,10 @@ namespace engine
             gbl.ecl_offset++;
             seg037.draw8x8_03();
             ovr025.Player_Summary(gbl.player_ptr);
-            ovr025.camping_search();
+            ovr025.display_map_position_time();
 
             ovr030.sub_7000A(gbl.byte_1D556.ptrs[0].field_4, true, 3, 3);
-            ovr025.camping_search();
+            ovr025.display_map_position_time();
             gbl.byte_1EE98 = 0;
             gbl.byte_1EE8A = 1;
         }
@@ -2344,7 +2344,7 @@ namespace engine
                         {
                             gbl.byte_1D8AA = 1;
                             ovr029.sub_6F0BA();
-                            ovr025.camping_search();
+                            ovr025.display_map_position_time();
                             gbl.byte_1EE94 = 0;
                             gbl.byte_1EE91 = 0;
                             gbl.byte_1EE92 = 0;

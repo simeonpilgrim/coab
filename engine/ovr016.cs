@@ -355,7 +355,7 @@ namespace engine
 
             gbl.unk_1D890.Clear();
 
-            ovr025.camping_search();
+            ovr025.display_map_position_time();
         }
 
 
@@ -1530,7 +1530,7 @@ namespace engine
                 if (sub_4608F() == 0)
                 {
                     ovr025.Player_Summary(gbl.player_ptr);
-                    ovr025.camping_search();
+                    ovr025.display_map_position_time();
                 }
                 else
                 {
@@ -1545,7 +1545,7 @@ namespace engine
                         sub_45FDD(ref var_2, var_16);
                         sub_46280(var_16);
                         ovr025.Player_Summary(gbl.player_ptr);
-                        ovr025.camping_search();
+                        ovr025.display_map_position_time();
 
                         gbl.unk_1D890 = var_16;
                     }
@@ -1639,7 +1639,7 @@ namespace engine
             cancel_spells();
             gbl.dword_1D87F = null;
             gbl.game_state = var_1;
-            ovr025.camping_search();
+            ovr025.display_map_position_time();
             ovr025.ClearPlayerTextArea();
             ovr027.redraw_screen();
         }

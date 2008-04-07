@@ -1903,21 +1903,21 @@ namespace engine
                     }
 
                     Player_Summary(gbl.player_ptr);
-                    camping_search();
+                    display_map_position_time();
                     break;
 
                 case 2:
                     seg037.draw8x8_03();
                     ovr030.load_pic_final(ref gbl.byte_1D556, 0, 0x1d, "PIC");
                     Player_Summary(gbl.player_ptr);
-                    camping_search();
+                    display_map_position_time();
                     break;
 
                 case 4:
                     seg037.draw8x8_03();
                     ovr029.sub_6F0BA();
                     Player_Summary(gbl.player_ptr);
-                    camping_search();
+                    display_map_position_time();
                     gbl.byte_1EE98 = 0;
                     break;
 
@@ -1955,55 +1955,39 @@ namespace engine
         }
 
 
-        internal static void camping_search()
+        internal static void display_map_position_time() // camping_search
         {
-            string var_31;
-            string var_8;
-            string var_5;
-
             if (gbl.game_state != 3)
             {
-                var_31 = string.Empty;
+                string output = string.Empty;
 
-                var_5 = gbl.area_ptr.field_192.ToString();
-
-                if (var_5.Length < 2)
-                {
-                    var_5 = "0" + var_5;
-                }
-
-                var_8 = ((gbl.area_ptr.field_190 * 10) + gbl.area_ptr.field_18E).ToString();
-
-                if (var_8.Length < 2)
-                {
-                    var_8 = "0" + var_8;
-                }
+                string minutes = gbl.area_ptr.time_hour.ToString("00");
+                string hours = ((gbl.area_ptr.time_minutes_tens * 10) + gbl.area_ptr.time_minutes_ones).ToString("00");
 
                 if (gbl.area_ptr.field_1F6 == 0)
                 {
-                    var_31 = gbl.mapPosX.ToString() + "," + gbl.mapPosY.ToString() + " ";
+                    output = string.Format("{0},{1} ", gbl.mapPosX, gbl.mapPosY);
                 }
 
-                var_31 = var_31 + direction(gbl.mapDirection) + " " + var_5 + ":" + var_8;
+                output += direction(gbl.mapDirection) + " " + minutes + ":" + hours;
 
                 if (gbl.printCommands == true)
                 {
-                    var_31 = var_31 + "*";
+                    output += "*";
                 }
 
                 if (gbl.game_state == 2)
                 {
-                    var_31 = var_31 + " camping";
+                    output += " camping";
                 }
                 else if ((gbl.area2_ptr.field_594 & 1) > 0)
                 {
-                    var_31 = var_31 + " search";
-
+                    output += " search";
                 }
 
                 seg037.draw8x8_clear_area(15, 0x26, 15, 17);
 
-                seg041.displayString(var_31, 0, 10, 15, 17);
+                seg041.displayString(output, 0, 10, 15, 17);
             }
         }
 

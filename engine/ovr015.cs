@@ -659,7 +659,7 @@ namespace engine
 						}
 					}
 
-					ovr025.camping_search();
+					ovr025.display_map_position_time();
 
 				}while( var_2 == false );
 			}
@@ -796,7 +796,7 @@ namespace engine
                         MovePartyForward();
                     }
 
-                    ovr025.camping_search();
+                    ovr025.display_map_position_time();
                 }
                 else
                 {

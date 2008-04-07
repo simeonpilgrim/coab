@@ -34,9 +34,9 @@ namespace Classes
             field_186  = 0;
             field_188  = 0;
             field_18A  = 0;
-            field_18E  = 0;
-            field_190  = 0;
-            field_192  = 0;
+            time_minutes_ones  = 0;
+            time_minutes_tens  = 0;
+            time_hour  = 0;
 
             field_1CA  = 0;
             field_1CC  = 0;
@@ -81,11 +81,11 @@ namespace Classes
         [DataOffset(0x18A, DataType.Byte)]
         public byte field_18A;
         [DataOffset(0x18E, DataType.SWord)]
-        public short field_18E;
+        public short time_minutes_ones; // field_18E
         [DataOffset(0x190, DataType.SWord)]
-        public short field_190;
+        public short time_minutes_tens; // field_190
         [DataOffset(0x192, DataType.Word)]
-        public ushort field_192;
+        public ushort time_hour; // field_192
 
         [DataOffset(0x1CA, DataType.SWord)]
         public short field_1CA;
@@ -103,7 +103,7 @@ namespace Classes
         [DataOffset(0x1E4, DataType.Word)]
         public ushort field_1E4;
         [DataOffset(0x1F6, DataType.SWord)]
-        public short field_1F6;
+        public short field_1F6; // field_1F6
         [DataOffset(0x1F8, DataType.Byte)]
         public byte game_speed;
         [DataOffset(0x1FA, DataType.Word)]
@@ -151,7 +151,7 @@ namespace Classes
                     break;
 
                 case 0x192:
-                    field_192 = value;
+                    time_hour = value;
                     break;
 
                 case 0x1CC:
@@ -234,7 +234,7 @@ namespace Classes
                     return field_16C;
 
                 case 0x192:
-                    return field_192;
+                    return time_hour;
 
                 case 0x1E0:
                     return (ushort)field_1E0;

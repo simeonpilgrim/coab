@@ -286,7 +286,7 @@ namespace engine
 
             if (color >= 8)
             {
-                newColor += 8;
+                //newColor += 8;
             }
 
             Display.SetEgaPalette(index, newColor);
