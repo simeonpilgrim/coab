@@ -81,7 +81,7 @@ namespace engine
                 var_4 = 2;
                 var_5 = 0x0C;
 
-                var_2 = gbl.area_ptr.field_192;
+                var_2 = gbl.area_ptr.time_hour;
 
                 if (var_2 >= 1 && var_2 <= 5)
                 {

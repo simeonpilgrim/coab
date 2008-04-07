@@ -55,9 +55,9 @@ namespace Classes
 
         public static void SetEgaPalette(int index, int colour)
         {
-            egaColors[index, 0] = OrigEgaColors[index, 0];
-            egaColors[index, 1] = OrigEgaColors[index, 1];
-            egaColors[index, 2] = OrigEgaColors[index, 2];
+            egaColors[index, 0] = OrigEgaColors[colour, 0];
+            egaColors[index, 1] = OrigEgaColors[colour, 1];
+            egaColors[index, 2] = OrigEgaColors[colour, 2];
 
             for (int y = 0; y < outputHeight; y++)
             {
