@@ -339,12 +339,12 @@ namespace engine
                     var_2B +=  "Drop ";
                 }
 
-                if (sub_575F0(gbl.player_ptr) == true)
+                if (CanCastHeal(gbl.player_ptr) == true)
                 {
                     var_2B += "Heal ";
                 }
 
-                if (sub_57655(gbl.player_ptr) == true)
+                if (CanCastCure(gbl.player_ptr) == true)
                 {
                     var_2B += "Cure ";
                 }
@@ -1712,24 +1712,17 @@ namespace engine
         }
 
 
-        internal static bool sub_575F0(Player player)
+        internal static bool CanCastHeal(Player player) /* sub_575F0 */
         {
             Affect var_5;
             bool var_1;
 
-            if (player._class == ClassId.paladin ||
-                (player.field_114 > 0 && ovr026.sub_6B3D1(player) != 0))
-            {
-                if (gbl.game_state != 5 &&
+            if ((player._class == ClassId.paladin || (player.field_114 > 0 && ovr026.sub_6B3D1(player) != 0)) &&
+                 gbl.game_state != 5 &&
                     player.health_status == Status.okey &&
                     ovr025.find_affect(out var_5, Affects.affect_8c, player) == false)
-                {
-                    var_1 = true;
-                }
-                else
-                {
-                    var_1 = false;
-                }
+            {
+                var_1 = true;
             }
             else
             {
@@ -1740,24 +1733,20 @@ namespace engine
         }
 
 
-        internal static bool sub_57655(Player player)
+        internal static bool CanCastCure(Player player) /* sub_57655 */
         {
             bool var_1;
 
-            if (player._class != ClassId.paladin &&
-                (player.field_114 <= 0 || ovr026.sub_6B3D1(player) == 0))
+            if ((player._class == ClassId.paladin || (player.field_114 > 0 && ovr026.sub_6B3D1(player) != 0)) &&
+                gbl.game_state != 5 &&
+                player.health_status == Status.okey &&
+                player.field_191 > 0)
             {
-                var_1 = false;
-            }
-            else if (gbl.game_state == 5 ||
-                player.health_status == Status.okey ||
-                player.field_191 <= 0)
-            {
-                var_1 = false;
+                var_1 = true;
             }
             else
             {
-                var_1 = true;
+                var_1 = false;
             }
 
             return var_1;

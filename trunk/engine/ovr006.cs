@@ -742,8 +742,6 @@ namespace engine
                         break;
 
                     case 'E':
-                        goto case '\0';
-
                     case '\0':
                         ovr022.treasureOnGround( out var_2, out var_1 );
 

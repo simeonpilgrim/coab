@@ -266,20 +266,20 @@ namespace engine
                 }
             }
 
-            bool isMagic = false;
+            bool detectMagic = false;
             player_ptr = gbl.player_next_ptr;
 
-            while (player_ptr != null && isMagic == false)
+            while (player_ptr != null && detectMagic == false)
             {
                 if (find_affect(out var_6, Affects.detect_magic, player_ptr) == true)
                 {
-                    isMagic = true;
+                    detectMagic = true;
                 }
 
                 player_ptr = player_ptr.next_player;
             }
 
-            if (isMagic == true)
+            if (detectMagic == true)
             {
                 if (item.exp_value > 0 || item.field_33 > 0 || item.field_36 != 0)
                 {
