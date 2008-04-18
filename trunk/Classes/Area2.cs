@@ -184,6 +184,7 @@ namespace Classes
                 case 0x594: return field_594;
                 case 0x550: return field_550;
                 case 0x58e: return (ushort)field_58E;
+                case 0x5aa: return (ushort)field_5AA;
 
                 default:
                     int i = (loc - 0x6F2) >> 1;
