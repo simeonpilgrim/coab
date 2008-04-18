@@ -58,7 +58,7 @@ namespace engine
             if (var_8 == null)
             {
                 var_8 = arg_6.affect_ptr;
-                while (var_8 != null && var_8.type == affect_id)
+                while (var_8 != null && var_8.type != affect_id)
                 {
                     var_8 = var_8.next;
                 }
