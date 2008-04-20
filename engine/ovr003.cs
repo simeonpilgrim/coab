@@ -1415,7 +1415,7 @@ namespace engine
             byte var_62;
             Item var_61;
             Item var_5B;
-            Item var_59 = null;
+            Item var_59;
             byte var_3;
             byte var_2;
 
@@ -1470,7 +1470,7 @@ namespace engine
                     {
                         var_64 = ovr024.roll_dice(100, 1);
 
-                        if ((var_64 >= 1 && var_64 <= 0x27) ||
+                        if ((var_64 >= 1 && var_64 <= 0x2F) ||
                             (var_64 >= 0x32 && var_64 <= 0x3b))
                         {
                             if (var_64 == 0x2D)
@@ -1554,7 +1554,7 @@ namespace engine
                         var_65 = 0x3B;
                     }
 
-                    ovr022.sub_5A007(var_59, var_65);
+                    ovr022.sub_5A007(out var_59, var_65);
 
                     if (gbl.item_pointer == null)
                     {

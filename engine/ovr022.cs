@@ -560,9 +560,17 @@ namespace engine
             return var_1;
         }
 
-        static byte[] /*seg600:082E*/	unk_16B3E = { 0x32, 0x39, 0x0B9, 0, 0x0BB, 0, 0x40, 0, 1, 0, 0x20, 3, 3, 0, 0x63, 0, 0, 0, 0x0EF, 0, 0x0A7, 0, 0x40 };
+        static short[] /*seg600:082E*/	unk_16B3E = { 
+            0x3932, 
+            0x00B9, 0x00BB, 0x0040, 0x0001, 0x0320, 0x0003, 0x0063, 0x0000,
+            0x00EF, 0x00A7, 0x0040, 0x0001, 0x044C, 0x0001, 0x003b, 0x0000,
+            0x00b9, 0x00a7, 0x0040, 0x0001, 0x0190, 0x0001, 0x0003, 0x0000,
+            0x00AD, 0x00a7, 0x0040, 0x0001, 0x01C2, 0x0001, 0x0030, 0x0000,
+            0x00CE, 0x00A7, 0x0045, 0x0001, 0x2AF8, 0x001E, 0x000F, 0x0000,
+            0x00E2, 0x00A7, 0x0064, 0x000A, 0x3A98, 0x0000, 0x0026, 0x0083,
+            0x009d, 0x00a7, 0x0015, 0x0014, 0x0bb8, 0x0001, 0x0033, 0x0000 };
 
-        internal static void sub_5A007(Item arg_0, byte arg_4)
+        internal static void sub_5A007(out Item arg_0, byte arg_4)
         {
             byte var_A;
             Item var_9;
@@ -572,7 +580,7 @@ namespace engine
             byte var_2;
             byte var_1;
 
-            arg_0.Clear();
+            arg_0 = new Item();
             var_4 = 0;
             var_9 = arg_0;
 
@@ -681,16 +689,8 @@ namespace engine
                 }
                 else
                 {
-                    throw new System.NotSupportedException();//les	di, [bp+var_9]
-                    throw new System.NotSupportedException();//mov	al, es:[di+2Eh]
-                    throw new System.NotSupportedException();//les	di, [bp+var_9]
-                    throw new System.NotSupportedException();//mov	es:[di+31h], al
-                    throw new System.NotSupportedException();//les	di, [bp+var_9]
-                    throw new System.NotSupportedException();//mov	al, es:[di+32h]
-                    throw new System.NotSupportedException();//cbw
-                    throw new System.NotSupportedException();//add	ax, 0x0A1
-                    throw new System.NotSupportedException();//les	di, [bp+var_9]
-                    throw new System.NotSupportedException();//mov	es:[di+30h], al
+                    var_9.field_31 = var_9.type;
+                    var_9.field_30 = (sbyte)(var_9.exp_value + 0xA1); 
                 }
 
                 var_9.field_33 = 0;
@@ -993,193 +993,137 @@ namespace engine
                 throw new System.NotSupportedException();//les	di, [bp+var_9]
                 throw new System.NotSupportedException();//mov	es:[di+3Ah], ax
                 throw new System.NotSupportedException();//loc_5A56B:
-                throw new System.NotSupportedException();//jmp	loc_5A797
             }
-            throw new System.NotSupportedException();//loc_5A56E:
-            throw new System.NotSupportedException();//cmp	al, 0x3D
-            throw new System.NotSupportedException();//jz	loc_5A579
-            throw new System.NotSupportedException();//cmp	al, 0x3E
-            throw new System.NotSupportedException();//jz	loc_5A579
-            throw new System.NotSupportedException();//jmp	loc_5A73E
-            throw new System.NotSupportedException();//loc_5A579:
-            var_2 = ovr024.roll_dice(3, 1);
-            throw new System.NotSupportedException();//les	di, [bp+var_9]
-            throw new System.NotSupportedException();//cmp	byte ptr es:[di+2Eh], 0x3D
-            throw new System.NotSupportedException();//jnz	loc_5A59B
-            var_9.field_31 = 0xD1;
-            throw new System.NotSupportedException();//jmp	short loc_5A5A3
-            throw new System.NotSupportedException();//loc_5A59B:
-            var_9.field_31 = 0xD0;
-            throw new System.NotSupportedException();//loc_5A5A3:
-            throw new System.NotSupportedException();//mov	al, [bp+var_2]
-            throw new System.NotSupportedException();//xor	ah, ah
-            throw new System.NotSupportedException();//add	ax, 0x0D1
-            throw new System.NotSupportedException();//les	di, [bp+var_9]
-            throw new System.NotSupportedException();//mov	es:[di+30h], al
-            var_9.field_2F = 0;
-            var_9.exp_value = 1;
-            var_9.weight = 0x19;
-            var_9.count = 0;
-            throw new System.NotSupportedException();//les	di, [bp+var_9]
-            throw new System.NotSupportedException();//xor	ax, ax
-            throw new System.NotSupportedException();//mov	es:[di+3Ah], ax
-            var_A = var_2;
-
-            for (var_3 = 1; var_3 <= var_A; var_3++)
+            else if (al == 0x3d || al == 0x3e)
             {
-                var_1 = ovr024.roll_dice(5, 1);
 
-                if (var_9.type == 0x3D)
-                {
-                    switch (var_1)
-                    {
-                        case 1:
-                            var_5 = (byte)(ovr024.roll_dice(13, 1) + 8);
-                            break;
-
-                        case 2:
-                            var_5 = (byte)(ovr024.roll_dice(7, 1) + 28);
-                            break;
-
-                        case 3:
-                            var_5 = (byte)(ovr024.roll_dice(0x0B, 1) + 44);
-                            break;
-
-                        case 4:
-                            var_5 = (byte)(ovr024.roll_dice(9, 1) + 80);
-                            break;
-
-                        case 5:
-                            var_5 = (byte)(ovr024.roll_dice(4, 1) + 90);
-                            break;
-                    }
-                }
-                else
-                {
-                    switch (var_1)
-                    {
-                        case 1:
-                            var_5 = ovr024.roll_dice(8, 1);
-                            break;
-
-                        case 2:
-                            var_5 = (byte)(ovr024.roll_dice(7, 1) + 0x15);
-                            break;
-
-                        case 3:
-                            var_5 = (byte)(ovr024.roll_dice(8, 1) + 0x24);
-                            break;
-
-                        case 4:
-                            var_5 = (byte)(ovr024.roll_dice(5, 1) + 0x41);
-                            break;
-
-                        case 5:
-                            var_5 = (byte)(ovr024.roll_dice(6, 1) + 0x46);
-                            break;
-                    }
-                }
-
-                var_9.setAffect(var_3, (Affects)var_5);
-                var_9._value += (short)(var_1 * 300);
-            }
-            throw new System.NotSupportedException();//jmp	short loc_5A797
-            throw new System.NotSupportedException();//loc_5A73E:
-            throw new System.NotSupportedException();//cmp	al, 0x3F
-            throw new System.NotSupportedException();//jz	loc_5A746
-            throw new System.NotSupportedException();//cmp	al, 0x43
-            throw new System.NotSupportedException();//jnz	loc_5A74C
-            throw new System.NotSupportedException();//loc_5A746:
-            var_4 = 0x29;
-            throw new System.NotSupportedException();//jmp	short loc_5A797
-            throw new System.NotSupportedException();//loc_5A74C:
-            throw new System.NotSupportedException();//cmp	al, 0x4E
-            throw new System.NotSupportedException();//jz	loc_5A754
-            throw new System.NotSupportedException();//cmp	al, 0x4F
-            throw new System.NotSupportedException();//jnz	loc_5A75A
-            throw new System.NotSupportedException();//loc_5A754:
-            var_4 = 0x21;
-            throw new System.NotSupportedException();//jmp	short loc_5A797
-            throw new System.NotSupportedException();//loc_5A75A:
-            throw new System.NotSupportedException();//cmp	al, 0x54
-            throw new System.NotSupportedException();//jz	loc_5A762
-            throw new System.NotSupportedException();//cmp	al, 0x5C
-            throw new System.NotSupportedException();//jnz	loc_5A768
-            throw new System.NotSupportedException();//loc_5A762:
-            var_4 = 9;
-            throw new System.NotSupportedException();//jmp	short loc_5A797
-            throw new System.NotSupportedException();//loc_5A768:
-            throw new System.NotSupportedException();//cmp	al, 0x47
-            throw new System.NotSupportedException();//jnz	loc_5A797
-            ovr024.roll_dice(8, 1);
-            throw new System.NotSupportedException();//mov	[bp+var_1], al
-            throw new System.NotSupportedException();//mov	al, [bp+var_1]
-            throw new System.NotSupportedException();//cmp	al, 1
-            throw new System.NotSupportedException();//jb	loc_5A78B
-            throw new System.NotSupportedException();//cmp	al, 5
-            throw new System.NotSupportedException();//ja	loc_5A78B
-            var_4 = 0x11;
-            throw new System.NotSupportedException();//jmp	short loc_5A797
-            throw new System.NotSupportedException();//loc_5A78B:
-            throw new System.NotSupportedException();//cmp	al, 6
-            throw new System.NotSupportedException();//jb	loc_5A797
-            throw new System.NotSupportedException();//cmp	al, 8
-            throw new System.NotSupportedException();//ja	loc_5A797
-            var_4 = 1;
-
-
-            throw new System.NotSupportedException();//loc_5A797:
-
-
-            throw new System.NotSupportedException();//cmp	[bp+var_4], 0
-            throw new System.NotSupportedException();//jnz	loc_5A7A0
-            throw new System.NotSupportedException();//jmp	loc_5A850
-            throw new System.NotSupportedException();//loc_5A7A0:
-            for (var_3 = 0; var_3 <= 2; var_3++)
-            {
-                throw new System.NotSupportedException();//mov	al, [bp+var_3]
-                throw new System.NotSupportedException();//xor	ah, ah
-                throw new System.NotSupportedException();//mov	dx, ax
-                throw new System.NotSupportedException();//mov	al, [bp+var_4]
-                throw new System.NotSupportedException();//xor	ah, ah
-                throw new System.NotSupportedException();//add	ax, dx
-                throw new System.NotSupportedException();//mov	di, ax
-                throw new System.NotSupportedException();//shl	di, 1
-                throw new System.NotSupportedException();//mov	dl, [di+82Eh]
-                throw new System.NotSupportedException();//mov	al, [bp+var_3]
-                throw new System.NotSupportedException();//xor	ah, ah
-                throw new System.NotSupportedException();//inc	ax
+                var_2 = ovr024.roll_dice(3, 1);
                 throw new System.NotSupportedException();//les	di, [bp+var_9]
-                throw new System.NotSupportedException();//add	di, ax
-                throw new System.NotSupportedException();//mov	es:[di+2Eh], dl
+                throw new System.NotSupportedException();//cmp	byte ptr es:[di+2Eh], 0x3D
+                throw new System.NotSupportedException();//jnz	loc_5A59B
+                var_9.field_31 = 0xD1;
+                throw new System.NotSupportedException();//jmp	short loc_5A5A3
+                throw new System.NotSupportedException();//loc_5A59B:
+                var_9.field_31 = 0xD0;
+                throw new System.NotSupportedException();//loc_5A5A3:
+                throw new System.NotSupportedException();//mov	al, [bp+var_2]
+                throw new System.NotSupportedException();//xor	ah, ah
+                throw new System.NotSupportedException();//add	ax, 0x0D1
+                throw new System.NotSupportedException();//les	di, [bp+var_9]
+                throw new System.NotSupportedException();//mov	es:[di+30h], al
+                var_9.field_2F = 0;
+                var_9.exp_value = 1;
+                var_9.weight = 0x19;
+                var_9.count = 0;
+                throw new System.NotSupportedException();//les	di, [bp+var_9]
+                throw new System.NotSupportedException();//xor	ax, ax
+                throw new System.NotSupportedException();//mov	es:[di+3Ah], ax
+                var_A = var_2;
+
+                for (var_3 = 1; var_3 <= var_A; var_3++)
+                {
+                    var_1 = ovr024.roll_dice(5, 1);
+
+                    if (var_9.type == 0x3D)
+                    {
+                        switch (var_1)
+                        {
+                            case 1:
+                                var_5 = (byte)(ovr024.roll_dice(13, 1) + 8);
+                                break;
+
+                            case 2:
+                                var_5 = (byte)(ovr024.roll_dice(7, 1) + 28);
+                                break;
+
+                            case 3:
+                                var_5 = (byte)(ovr024.roll_dice(0x0B, 1) + 44);
+                                break;
+
+                            case 4:
+                                var_5 = (byte)(ovr024.roll_dice(9, 1) + 80);
+                                break;
+
+                            case 5:
+                                var_5 = (byte)(ovr024.roll_dice(4, 1) + 90);
+                                break;
+                        }
+                    }
+                    else
+                    {
+                        switch (var_1)
+                        {
+                            case 1:
+                                var_5 = ovr024.roll_dice(8, 1);
+                                break;
+
+                            case 2:
+                                var_5 = (byte)(ovr024.roll_dice(7, 1) + 0x15);
+                                break;
+
+                            case 3:
+                                var_5 = (byte)(ovr024.roll_dice(8, 1) + 0x24);
+                                break;
+
+                            case 4:
+                                var_5 = (byte)(ovr024.roll_dice(5, 1) + 0x41);
+                                break;
+
+                            case 5:
+                                var_5 = (byte)(ovr024.roll_dice(6, 1) + 0x46);
+                                break;
+                        }
+                    }
+
+                    var_9.setAffect(var_3, (Affects)var_5);
+                    var_9._value += (short)(var_1 * 300);
+                }
             }
-            var_9.exp_value = 1;
-            var_9.field_33 = 1;
-
-            throw new System.NotSupportedException();//mov	al, [bp+var_4]
-            throw new System.NotSupportedException();//xor	ah, ah
-            throw new System.NotSupportedException();//add	ax, 3
-            throw new System.NotSupportedException();//mov	di, ax
-            throw new System.NotSupportedException();//shl	di, 1
-            throw new System.NotSupportedException();//mov	ax, [di+82Eh]
-            throw new System.NotSupportedException();//les	di, [bp+var_9]
-            throw new System.NotSupportedException();//mov	es:[di+37h], ax
-            var_9.count = 0;
-            throw new System.NotSupportedException();//mov	al, [bp+var_4]
-            throw new System.NotSupportedException();//xor	ah, ah
-            throw new System.NotSupportedException();//add	ax, 4
-            throw new System.NotSupportedException();//mov	di, ax
-            throw new System.NotSupportedException();//shl	di, 1
-            throw new System.NotSupportedException();//mov	ax, [di+82Eh]
-            throw new System.NotSupportedException();//les	di, [bp+var_9]
-            throw new System.NotSupportedException();//mov	es:[di+3Ah], ax
-
-            for (var_3 = 1; var_3 <= 3; var_3++)
+            else if (al == 0x3f || al == 0x43)
             {
-                var_9.setAffect(var_3, (Affects)unk_16B3E[(var_4 + 4 + var_3) * 2]);
+                var_4 = 0x29;
+            }
+            else if (al == 0x4E || al == 0x4F)
+            {
+                var_4 = 0x21;
+            }
+            else if (al == 0x54 || al == 0x5C)
+            {
+                var_4 = 9;
+            }
+            else if (al == 0x47)
+            {
+                var_1 = ovr024.roll_dice(8, 1);
+
+                if (var_1 >= 1 && var_1 <= 5)
+                {
+                    var_4 = 17;
+                }
+                else if (var_1 >= 6 && var_1 <= 8)
+                {
+                    var_4 = 1;
+                }
             }
 
-            throw new System.NotSupportedException();//loc_5A850:
+            if (var_4 != 0)
+            {
+                var_9.field_2F = (sbyte)unk_16B3E[var_4 + 0];
+                var_9.field_30 = (sbyte)unk_16B3E[var_4 + 1];
+                var_9.field_31 = (byte)unk_16B3E[var_4 + 2];
+
+                var_9.exp_value = 1;
+                var_9.field_33 = 1;
+
+                var_9.weight = unk_16B3E[var_4 + 3];
+                var_9.count = 0;
+
+                var_9._value = unk_16B3E[var_4 + 4];
+
+                for (var_3 = 1; var_3 <= 3; var_3++)
+                {
+                    var_9.setAffect(var_3, (Affects)(byte)unk_16B3E[(var_4 + 4 + var_3)]);
+                }
+            }
         }
 
 
