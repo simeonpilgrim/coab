@@ -24,7 +24,9 @@ namespace engine
 
         internal static void sub_6E02E()
         {
-            seg040.ega_01(gbl.dword_1C8F4, loc_Y, loc_X);
+            // hack to stop ega code barfing, need to work out
+            // is only displayed when world map is displayed
+            //seg040.ega_01(gbl.dword_1C8F4, loc_Y, loc_X);
             seg040.draw_picture(gbl.dword_1EFA0, loc_Y, loc_X, 0);
         }
 

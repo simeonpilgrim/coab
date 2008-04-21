@@ -763,7 +763,7 @@ namespace engine
             ovr025.ClearPlayerTextArea();
 
             if (ovr025.is_held(player) == true ||
-                ovr025.offset_above_1(player) ||
+                ovr025.offset_above_1(player) == true ||
                 player.actions.delay == 0)
             {
                 var_1 = ovr025.clear_actions(player);
@@ -1013,7 +1013,7 @@ namespace engine
                 var_19 = var_10.type;
 
                 if (gbl.unk_1C020[var_19].field_0 == 0 &&
-                    (gbl.unk_1C020[var_19].field_D & arg_0.field_12B) != 0)
+                    (gbl.unk_1C020[var_19].classFlags & arg_0.classFlags) != 0)
                 {
                     var_18 = sub_36535(var_10, arg_0);
 
@@ -1038,9 +1038,8 @@ namespace engine
 
                 if (gbl.unk_1C020[var_19].field_0 == 1)
                 {
-                    if ((gbl.unk_1C020[var_19].field_D & arg_0.field_12B) != 0)
+                    if ((gbl.unk_1C020[var_19].classFlags & arg_0.classFlags) != 0)
                     {
-
                         if (var_10.exp_value >= 0)
                         {
                             var_18 = (byte)(var_10.exp_value + 1);

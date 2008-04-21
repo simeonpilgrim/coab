@@ -244,21 +244,21 @@ namespace engine
                 sub_6AAEA(arg_0);
             }
 
-            arg_0.field_12B = 0;
+            arg_0.classFlags = 0;
 
             for (var_1 = 0; var_1 <= 7; var_1++)
             {
                 if (arg_0.Skill_A_lvl[var_1] > 0 ||
                     (arg_0.Skill_B_lvl[var_1] > 0 && arg_0.Skill_B_lvl[var_1] < arg_0.field_E5))
                 {
-                    arg_0.field_12B += ovr018.unk_1A1B2[var_1];
+                    arg_0.classFlags += ovr018.unk_1A1B2[var_1];
                 }
             }
 
             for (var_6 = 0; var_6 <= 12; var_6++)
             {
                 if (arg_0.itemArray[var_6] != null &&
-                    (gbl.unk_1C020[arg_0.itemArray[var_6].type].field_D & arg_0.field_12B) == 0 &&
+                    (gbl.unk_1C020[arg_0.itemArray[var_6].type].classFlags & arg_0.classFlags) == 0 &&
                     arg_0.itemArray[var_6].field_36 == 0)
                 {
                     arg_0.itemArray[var_6].readied = false;
@@ -879,7 +879,7 @@ namespace engine
 
             while (var_13 != null)
             {
-                if ((gbl.unk_1C020[var_13.type].field_D & arg_0.field_12B) == 0 &&
+                if ((gbl.unk_1C020[var_13.type].classFlags & arg_0.classFlags) == 0 &&
                     var_13.field_36 == 0)
                 {
                     var_13.readied = false;

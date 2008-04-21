@@ -940,7 +940,7 @@ namespace engine
                     }
                 }
 
-                if ((player.field_12B & gbl.unk_1C020[item.type].field_D) == 0)
+                if ((player.classFlags & gbl.unk_1C020[item.type].classFlags) == 0)
                 {
                     var_2 = 1;
                 }
