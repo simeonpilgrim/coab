@@ -98,7 +98,7 @@ namespace engine
         }
 
 
-        internal static byte sub_37306(byte dir, int mapY, int mapX)
+        internal static byte sub_37306(int dir, int mapY, int mapX)
         {
             byte var_1;
 
@@ -109,16 +109,13 @@ namespace engine
                 {
                     var_1 = 1;
                 }
+                else if (ovr031.getMap_XXX(dir, mapY, mapX) == 0)
+                {
+                    var_1 = 0;
+                }
                 else
                 {
-                    if (ovr031.getMap_XXX(dir, mapY, mapX) == 0)
-                    {
-                        var_1 = 0;
-                    }
-                    else
-                    {
-                        var_1 = 3;
-                    }
+                    var_1 = 3;
                 }
             }
             else
@@ -138,7 +135,7 @@ namespace engine
         }
 
 
-        internal static byte sub_37388(byte dir, int mapX, int mapY)
+        internal static byte sub_37388(int dir, int mapX, int mapY)
         {
             byte oppositeDir = (byte)((dir + 4) % 8);
 
@@ -998,15 +995,9 @@ namespace engine
             sbyte var_11;
             byte var_10 = 0; /* Simeon */
             byte var_F;
-            sbyte var_E;
-            sbyte var_D;
-            sbyte var_C;
-            sbyte var_B;
             byte var_A;
             byte var_9;
-            byte var_8;
             byte var_7;
-            byte var_6;
             byte var_5;
             byte var_4;
             byte var_3;
@@ -1029,11 +1020,11 @@ namespace engine
 
                 if (var_7 == 1)
                 {
-                    var_B = gbl.MapDirectionXDelta[unk_1660C[(var_9 + 2) % 4]];
-                    var_C = gbl.MapDirectionYDelta[unk_1660C[(var_9 + 2) % 4]];
+                    int tmpX = gbl.MapDirectionXDelta[unk_1660C[(var_9 + 2) % 4]];
+                    int tmpY = gbl.MapDirectionYDelta[unk_1660C[(var_9 + 2) % 4]];
 
-                    var_15 = (sbyte)(unk_16610[(var_14 > 0 ? 4 : 0) + var_9] + (var_F * var_B));
-                    var_16 = (sbyte)(unk_16618[(var_14 > 0 ? 4 : 0) + var_9] + (var_F * var_C));
+                    var_15 = (sbyte)(unk_16610[(var_14 > 0 ? 4 : 0) + var_9] + (var_F * tmpX));
+                    var_16 = (sbyte)(unk_16618[(var_14 > 0 ? 4 : 0) + var_9] + (var_F * tmpY));
                     var_17 = var_15;
                     var_18 = var_16;
                     var_10 = 1;
@@ -1042,22 +1033,22 @@ namespace engine
                 }
                 else if (var_7 == 2)
                 {
-                    var_B = gbl.MapDirectionXDelta[unk_1660C[(var_9 + 1) % 4]];
-                    var_C = gbl.MapDirectionYDelta[unk_1660C[(var_9 + 1) % 4]];
+                    int tmpX = gbl.MapDirectionXDelta[unk_1660C[(var_9 + 1) % 4]];
+                    int tmpY = gbl.MapDirectionYDelta[unk_1660C[(var_9 + 1) % 4]];
 
 
-                    var_17 = (sbyte)(var_15 + (var_B * var_10));
-                    var_18 = (sbyte)(var_16 + (var_C * var_10));
+                    var_17 = (sbyte)(var_15 + (tmpX * var_10));
+                    var_18 = (sbyte)(var_16 + (tmpY * var_10));
                     var_7 = 3;
                     var_13 += 1;
                 }
                 else if (var_7 == 3)
                 {
-                    var_B = gbl.MapDirectionXDelta[unk_1660C[(var_9 + 3) % 4]];
-                    var_C = gbl.MapDirectionYDelta[unk_1660C[(var_9 + 3) % 4]];
+                    int tmpX = gbl.MapDirectionXDelta[unk_1660C[(var_9 + 3) % 4]];
+                    int tmpY = gbl.MapDirectionYDelta[unk_1660C[(var_9 + 3) % 4]];
 
-                    var_17 = (sbyte)(var_15 + (var_B * var_10));
-                    var_18 = (sbyte)(var_16 + (var_C * var_10));
+                    var_17 = (sbyte)(var_15 + (tmpX * var_10));
+                    var_18 = (sbyte)(var_16 + (tmpY * var_10));
 
                     var_7 = 2;
                     var_10++;
@@ -1088,26 +1079,25 @@ namespace engine
                             var_14 == 0 &&
                             var_F == 1)
                         {
-                            var_D = (sbyte)(gbl.byte_1AD2C[gbl.currentTeam] + gbl.mapPosX);
-                            var_E = (sbyte)(gbl.byte_1AD2E[gbl.currentTeam] + gbl.mapPosY);
-                            var_6 = 0;
+                            int tmpX = gbl.byte_1AD2C[gbl.currentTeam] + gbl.mapPosX;
+                            int tmpY = gbl.byte_1AD2E[gbl.currentTeam] + gbl.mapPosY;
+                            bool found = false;
 
                             for (var_A = 1; var_A <= 3; var_A++)
                             {
-                                var_8 = unk_165EC[gbl.byte_1AD32[gbl.currentTeam] + var_A];
+                                int tmpDir = unk_165EC[gbl.byte_1AD32[gbl.currentTeam] + var_A];
 
                                 if (gbl.game_state == 3 ||
-                                    sub_37388(var_8, var_E, var_D) != 1)
+                                    sub_37388(tmpDir, tmpY, tmpX) != 1)
                                 {
-                                    var_6 = 1;
+                                    found = true;
                                 }
                             }
 
-                            if (var_6 != 0)
+                            if (found)
                             {
                                 var_F++;
                             }
-
                         }
                         var_7 = 1;
                         var_3 = 0;
@@ -1125,16 +1115,16 @@ namespace engine
                     {
                         var_14++;
 
-                        var_D = (sbyte)(gbl.byte_1AD2C[gbl.currentTeam] + gbl.mapPosX);
-                        var_E = (sbyte)(gbl.byte_1AD2E[gbl.currentTeam] + gbl.mapPosY);
+                        int tmpX = gbl.byte_1AD2C[gbl.currentTeam] + gbl.mapPosX;
+                        int tmpY = gbl.byte_1AD2E[gbl.currentTeam] + gbl.mapPosY;
 
-                        var_8 = unk_165EC[gbl.byte_1AD32[gbl.currentTeam] + var_14];
+                        int tmpDir = unk_165EC[gbl.byte_1AD32[gbl.currentTeam] + var_14];
 
                         if (gbl.game_state == 3 ||
-                            sub_37388(var_8, var_E, var_D) != 1)
+                            sub_37388(tmpDir, tmpY, tmpX) != 1)
                         {
-                            var_11 = (sbyte)(gbl.byte_1AD2C[gbl.currentTeam] + gbl.MapDirectionXDelta[var_8]);
-                            var_12 = (sbyte)(gbl.byte_1AD2E[gbl.currentTeam] + gbl.MapDirectionYDelta[var_8]);
+                            var_11 = (sbyte)(gbl.byte_1AD2C[gbl.currentTeam] + gbl.MapDirectionXDelta[tmpDir]);
+                            var_12 = (sbyte)(gbl.byte_1AD2E[gbl.currentTeam] + gbl.MapDirectionYDelta[tmpDir]);
 
                             var_F = 0;
                             var_7 = 1;
@@ -1257,15 +1247,15 @@ namespace engine
                         if (gbl.combat_type == gbl.combatType.normal &&
                             player_ptr.actions.field_13 == 0)
                         {
-                            var_1 = (sbyte)gbl.CombatMap[loop_var].xPos;
-                            var_2 = (sbyte)gbl.CombatMap[loop_var].yPos;
+                            int tmpX = gbl.CombatMap[loop_var].xPos;
+                            int tmpY = gbl.CombatMap[loop_var].yPos;
                             gbl.byte_1D1BB++;
 
-                            gbl.unk_1D183[gbl.byte_1D1BB].field_6 = (byte)gbl.mapToBackGroundTile[var_1, var_2];
-                            gbl.mapToBackGroundTile[var_1, var_2] = 0x1F;
+                            gbl.unk_1D183[gbl.byte_1D1BB].field_6 = (byte)gbl.mapToBackGroundTile[tmpX, tmpY];
+                            gbl.mapToBackGroundTile[tmpX, tmpY] = 0x1F;
                             gbl.unk_1D183[gbl.byte_1D1BB].field_0 = player_ptr;
-                            gbl.unk_1D183[gbl.byte_1D1BB].mapX = var_1;
-                            gbl.unk_1D183[gbl.byte_1D1BB].mapY = var_2;
+                            gbl.unk_1D183[gbl.byte_1D1BB].mapX = tmpX;
+                            gbl.unk_1D183[gbl.byte_1D1BB].mapY = tmpY;
                         }
                     }
 

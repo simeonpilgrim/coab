@@ -7,7 +7,6 @@ namespace engine
         internal static void sub_5801E(byte arg_0, byte arg_2)
         {
             Affect affect01;
-            Affect var_17;
             Affect affect;
             Affect var_F;
             byte var_B;
@@ -77,8 +76,6 @@ namespace engine
 
                         affect = player.affect_ptr;
 
-                        //var_17 = affect.next;
-
                         if (player.affect_ptr != null)
                         {
                             while (var_F.next != null)
@@ -110,7 +107,7 @@ namespace engine
                             }
                             else
                             {
-                                var_17 = affect01.next;
+                                Affect var_17 = affect01.next;
 
                                 ovr024.remove_affect(affect01, affect01.type, player);
 

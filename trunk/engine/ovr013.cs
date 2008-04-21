@@ -271,8 +271,8 @@ namespace engine
         internal static void sub_3A44A(byte arg_0, object param, Player player)
         {
             gbl.spell_target = player.actions.target;
-
-            if ((gbl.spell_target.field_14B & 2) != 0)
+            //HACK - why could gbl.spell_target be null?
+            if (gbl.spell_target != null && (gbl.spell_target.field_14B & 2) != 0)
             {
                 gbl.byte_1D2C9++;
             }

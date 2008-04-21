@@ -764,7 +764,7 @@ namespace engine
                 ovr026.sub_6AAEA(player);
             }
 
-            var_53.field_12B = 0;
+            var_53.classFlags = 0;
             var_53.field_73 = 0;
 
             for (loop4_var = 0; loop4_var <= 7; loop4_var++)
@@ -778,7 +778,7 @@ namespace engine
                         var_53.field_73 = t;
                     }
 
-                    var_53.field_12B += unk_1A1B2[loop4_var];
+                    var_53.classFlags += unk_1A1B2[loop4_var];
                 }
             }
 
@@ -3283,7 +3283,7 @@ namespace engine
                     var_D = 0;
                     var_17 = player_ptr.magic_user_lvl;
                     var_18 = player_ptr.ranger_lvl;
-                    player_ptr.field_12B = 0;
+                    player_ptr.classFlags = 0;
 
                     for (var_13 = 0; var_13 <= 7; var_13++)
                     {

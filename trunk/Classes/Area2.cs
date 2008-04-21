@@ -235,6 +235,10 @@ namespace Classes
                     field_5CC = (short)value;
                     break;
 
+                case 0x624:
+                    game_area = (byte)value;
+                    break;
+
                 case 0x6d8:
                     field_6D8 = (short)value;
                     break;

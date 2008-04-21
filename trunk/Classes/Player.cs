@@ -477,7 +477,7 @@ namespace Classes
         [DataOffset(0x127, DataType.Int)]
         public int exp; // 0x127
         [DataOffset(0x12b, DataType.Byte)]
-        public byte field_12B; // 0x12b;
+        public byte classFlags; // 0x12b;
         [DataOffset(0x12c, DataType.Byte)]
         public byte field_12C; // 0x12c;
 

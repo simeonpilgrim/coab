@@ -2295,7 +2295,6 @@ namespace engine
                                 ovr025.offset_equals_20(player01) == false)))
                         {
                             var_39 = 0;
-
                         }
                     }
                 }

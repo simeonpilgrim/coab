@@ -656,368 +656,213 @@ namespace engine
                 {
                     var_9.field_31 = 0x4F;
                     var_9.field_30 = -89;
-                    throw new System.NotSupportedException();//les	di, [bp+var_9]
-                    throw new System.NotSupportedException();//mov	al, es:[di+32h]
-                    throw new System.NotSupportedException();//cbw
-                    throw new System.NotSupportedException();//shl	ax, 1
-                    throw new System.NotSupportedException();//inc	ax
-                    throw new System.NotSupportedException();//inc	ax
-                    throw new System.NotSupportedException();//les	di, [bp+var_9]
-                    throw new System.NotSupportedException();//mov	es:[di+32h], al
-                    throw new System.NotSupportedException();//les	di, [bp+var_9]
-                    throw new System.NotSupportedException();//mov	al, es:[di+32h]
-                    throw new System.NotSupportedException();//cmp	al, 4
-                    throw new System.NotSupportedException();//jnz	loc_5A218
-                    var_9.field_2F = -35;
-                    throw new System.NotSupportedException();//jmp	short loc_5A224
-                    throw new System.NotSupportedException();//loc_5A218:
-                    throw new System.NotSupportedException();//cmp	al, 6
-                    throw new System.NotSupportedException();//jnz	loc_5A224
-                    var_9.field_2F = -34;
-                    throw new System.NotSupportedException();//loc_5A224:
+                    var_9.exp_value = (sbyte)((var_9.exp_value << 1) + 2);
+
+                    if (var_9.exp_value == 4)
+                    {
+                        var_9.field_2F = -35;
+                    }
+                    else if (var_9.exp_value == 6)
+                    {
+                        var_9.field_2F = -34;
+                    }
                 }
                 else if (var_9.type == 0x5d)
                 {
                     var_9.field_31 = 0x42;
                     var_9.field_30 = -32;
-                    throw new System.NotSupportedException();//les	di, [bp+var_9]
-                    throw new System.NotSupportedException();//mov	al, es:[di+32h]
-                    throw new System.NotSupportedException();//cbw
-                    throw new System.NotSupportedException();//add	ax, 0x0A1
-                    throw new System.NotSupportedException();//les	di, [bp+var_9]
-                    throw new System.NotSupportedException();//mov	es:[di+2Fh], al
+                    var_9.field_2F = (sbyte)(var_9.exp_value + 0xA1);
                 }
                 else
                 {
                     var_9.field_31 = var_9.type;
-                    var_9.field_30 = (sbyte)(var_9.exp_value + 0xA1); 
+                    var_9.field_30 = (sbyte)(var_9.exp_value + 0xA1);
                 }
 
                 var_9.field_33 = 0;
                 var_9.count = 0;
-                throw new System.NotSupportedException();//les	di, [bp+var_9]
-                throw new System.NotSupportedException();//mov	al, es:[di+2Eh]
-                throw new System.NotSupportedException();//cmp	al, 1
-                throw new System.NotSupportedException();//jz	loc_5A295
-                throw new System.NotSupportedException();//cmp	al, 0x0D
-                throw new System.NotSupportedException();//jz	loc_5A295
-                throw new System.NotSupportedException();//cmp	al, 0x0E
-                throw new System.NotSupportedException();//jz	loc_5A295
-                throw new System.NotSupportedException();//cmp	al, 0x23
-                throw new System.NotSupportedException();//jnz	loc_5A2A1
-                throw new System.NotSupportedException();//loc_5A295:
-                var_9.weight = 0x4B;
-                throw new System.NotSupportedException();//jmp	loc_5A48B
-                throw new System.NotSupportedException();//loc_5A2A1:
-                throw new System.NotSupportedException();//cmp	al, 2
-                throw new System.NotSupportedException();//jz	loc_5A2CD
-                throw new System.NotSupportedException();//cmp	al, 0x14
-                throw new System.NotSupportedException();//jz	loc_5A2CD
-                throw new System.NotSupportedException();//cmp	al, 0x1D
-                throw new System.NotSupportedException();//jz	loc_5A2CD
-                throw new System.NotSupportedException();//cmp	al, 0x1F
-                throw new System.NotSupportedException();//jz	loc_5A2CD
-                throw new System.NotSupportedException();//cmp	al, 0x20
-                throw new System.NotSupportedException();//jz	loc_5A2CD
-                throw new System.NotSupportedException();//cmp	al, 0x21
-                throw new System.NotSupportedException();//jz	loc_5A2CD
-                throw new System.NotSupportedException();//cmp	al, 0x27
-                throw new System.NotSupportedException();//jz	loc_5A2CD
-                throw new System.NotSupportedException();//cmp	al, 0x2A
-                throw new System.NotSupportedException();//jz	loc_5A2CD
-                throw new System.NotSupportedException();//cmp	al, 0x2C
-                throw new System.NotSupportedException();//jz	loc_5A2CD
-                throw new System.NotSupportedException();//cmp	al, 0x2E
-                throw new System.NotSupportedException();//jz	loc_5A2CD
-                throw new System.NotSupportedException();//cmp	al, 0x3B
-                throw new System.NotSupportedException();//jnz	loc_5A2D9
-                throw new System.NotSupportedException();//loc_5A2CD:
-                var_9.weight = 0x32;
-                throw new System.NotSupportedException();//jmp	loc_5A48B
-                throw new System.NotSupportedException();//loc_5A2D9:
-                throw new System.NotSupportedException();//cmp	al, 3
-                throw new System.NotSupportedException();//jz	loc_5A2E5
-                throw new System.NotSupportedException();//cmp	al, 0x18
-                throw new System.NotSupportedException();//jz	loc_5A2E5
-                throw new System.NotSupportedException();//cmp	al, 0x28
-                throw new System.NotSupportedException();//jnz	loc_5A2F1
-                throw new System.NotSupportedException();//loc_5A2E5:
-                var_9.weight = 0x7D;
-                throw new System.NotSupportedException();//jmp	loc_5A48B
-                throw new System.NotSupportedException();//loc_5A2F1:
-                throw new System.NotSupportedException();//cmp	al, 4
-                throw new System.NotSupportedException();//jz	loc_5A30D
-                throw new System.NotSupportedException();//cmp	al, 0x0F
-                throw new System.NotSupportedException();//jz	loc_5A30D
-                throw new System.NotSupportedException();//cmp	al, 0x17
-                throw new System.NotSupportedException();//jz	loc_5A30D
-                throw new System.NotSupportedException();//cmp	al, 0x22
-                throw new System.NotSupportedException();//jz	loc_5A30D
-                throw new System.NotSupportedException();//cmp	al, 0x2B
-                throw new System.NotSupportedException();//jz	loc_5A30D
-                throw new System.NotSupportedException();//cmp	al, 0x2D
-                throw new System.NotSupportedException();//jz	loc_5A30D
-                throw new System.NotSupportedException();//cmp	al, 0x33
-                throw new System.NotSupportedException();//jnz	loc_5A319
-                throw new System.NotSupportedException();//loc_5A30D:
-                var_9.weight = 0x64;
-                throw new System.NotSupportedException();//jmp	loc_5A48B
-                throw new System.NotSupportedException();//loc_5A319:
-                throw new System.NotSupportedException();//cmp	al, 5
-                throw new System.NotSupportedException();//jz	loc_5A32D
-                throw new System.NotSupportedException();//cmp	al, 0x0C
-                throw new System.NotSupportedException();//jz	loc_5A32D
-                throw new System.NotSupportedException();//cmp	al, 0x11
-                throw new System.NotSupportedException();//jz	loc_5A32D
-                throw new System.NotSupportedException();//cmp	al, 0x13
-                throw new System.NotSupportedException();//jz	loc_5A32D
-                throw new System.NotSupportedException();//cmp	al, 0x32
-                throw new System.NotSupportedException();//jnz	loc_5A339
-                throw new System.NotSupportedException();//loc_5A32D:
-                var_9.weight = 0x96;
-                throw new System.NotSupportedException();//jmp	loc_5A48B
-                throw new System.NotSupportedException();//loc_5A339:
-                throw new System.NotSupportedException();//cmp	al, 6
-                throw new System.NotSupportedException();//jnz	loc_5A349
-                var_9.weight = 0x0F;
-                throw new System.NotSupportedException();//jmp	loc_5A48B
-                throw new System.NotSupportedException();//loc_5A349:
-                throw new System.NotSupportedException();//cmp	al, 7
-                throw new System.NotSupportedException();//jnz	loc_5A359
-                var_9.weight = 0x1E;
-                throw new System.NotSupportedException();//jmp	loc_5A48B
-                throw new System.NotSupportedException();//loc_5A359:
-                throw new System.NotSupportedException();//cmp	al, 8
-                throw new System.NotSupportedException();//jz	loc_5A361
-                throw new System.NotSupportedException();//cmp	al, 0x4D
-                throw new System.NotSupportedException();//jnz	loc_5A36D
-                throw new System.NotSupportedException();//loc_5A361:
-                var_9.weight = 0x0A;
-                throw new System.NotSupportedException();//jmp	loc_5A48B
-                throw new System.NotSupportedException();//loc_5A36D:
-                throw new System.NotSupportedException();//cmp	al, 9
-                throw new System.NotSupportedException();//jnz	loc_5A385
-                var_9.weight = 0x19;
-                var_9.count = 5;
-                throw new System.NotSupportedException();//jmp	loc_5A48B
-                throw new System.NotSupportedException();//loc_5A385:
-                throw new System.NotSupportedException();//cmp	al, 0x0A
-                throw new System.NotSupportedException();//jz	loc_5A391
-                throw new System.NotSupportedException();//cmp	al, 0x1A
-                throw new System.NotSupportedException();//jz	loc_5A391
-                throw new System.NotSupportedException();//cmp	al, 0x24
-                throw new System.NotSupportedException();//jnz	loc_5A39D
-                throw new System.NotSupportedException();//loc_5A391:
-                var_9.weight = 0x3C;
-                throw new System.NotSupportedException();//jmp	loc_5A48B
-                throw new System.NotSupportedException();//loc_5A39D:
-                throw new System.NotSupportedException();//cmp	al, 0x0B
-                throw new System.NotSupportedException();//jz	loc_5A3B5
-                throw new System.NotSupportedException();//cmp	al, 0x10
-                throw new System.NotSupportedException();//jz	loc_5A3B5
-                throw new System.NotSupportedException();//cmp	al, 0x19
-                throw new System.NotSupportedException();//jz	loc_5A3B5
-                throw new System.NotSupportedException();//cmp	al, 0x1B
-                throw new System.NotSupportedException();//jz	loc_5A3B5
-                throw new System.NotSupportedException();//cmp	al, 0x29
-                throw new System.NotSupportedException();//jz	loc_5A3B5
-                throw new System.NotSupportedException();//cmp	al, 0x2F
-                throw new System.NotSupportedException();//jnz	loc_5A3C1
-                throw new System.NotSupportedException();//loc_5A3B5:
-                var_9.weight = 0x50;
-                throw new System.NotSupportedException();//jmp	loc_5A48B
-                throw new System.NotSupportedException();//loc_5A3C1:
-                throw new System.NotSupportedException();//cmp	al, 0x12
-                throw new System.NotSupportedException();//jnz	loc_5A3D1
-                var_9.weight = 0xAF;
-                throw new System.NotSupportedException();//jmp	loc_5A48B
-                throw new System.NotSupportedException();//loc_5A3D1:
-                throw new System.NotSupportedException();//cmp	al, 0x15
-                throw new System.NotSupportedException();//jnz	loc_5A3E1
-                var_9.weight = 0x14;
-                throw new System.NotSupportedException();//jmp	loc_5A48B
-                throw new System.NotSupportedException();//loc_5A3E1:
-                throw new System.NotSupportedException();//cmp	al, 0x16
-                throw new System.NotSupportedException();//jz	loc_5A3E9
-                throw new System.NotSupportedException();//cmp	al, 0x1E
-                throw new System.NotSupportedException();//jnz	loc_5A3F5
-                throw new System.NotSupportedException();//loc_5A3E9:
-                var_9.weight = 0x28;
-                throw new System.NotSupportedException();//jmp	loc_5A48B
-                throw new System.NotSupportedException();//loc_5A3F5:
-                throw new System.NotSupportedException();//cmp	al, 0x25
-                throw new System.NotSupportedException();//jnz	loc_5A405
-                var_9.weight = 0x23;
-                throw new System.NotSupportedException();//jmp	loc_5A48B
-                throw new System.NotSupportedException();//loc_5A405:
-                throw new System.NotSupportedException();//cmp	al, 0x26
-                throw new System.NotSupportedException();//jz	loc_5A40D
-                throw new System.NotSupportedException();//cmp	al, 0x35
-                throw new System.NotSupportedException();//jnz	loc_5A418
-                throw new System.NotSupportedException();//loc_5A40D:
-                var_9.weight = 0x0FA;
-                throw new System.NotSupportedException();//jmp	short loc_5A48B
-                throw new System.NotSupportedException();//loc_5A418:
-                throw new System.NotSupportedException();//cmp	al, 0x34
-                throw new System.NotSupportedException();//jnz	loc_5A427
-                var_9.weight = 0x0C8;
-                throw new System.NotSupportedException();//jmp	short loc_5A48B
-                throw new System.NotSupportedException();//loc_5A427:
-                throw new System.NotSupportedException();//cmp	al, 0x36
-                throw new System.NotSupportedException();//jz	loc_5A42F
-                throw new System.NotSupportedException();//cmp	al, 0x38
-                throw new System.NotSupportedException();//jnz	loc_5A43A
-                throw new System.NotSupportedException();//loc_5A42F:
-                var_9.weight = 0x190;
-                throw new System.NotSupportedException();//jmp	short loc_5A48B
-                throw new System.NotSupportedException();//loc_5A43A:
-                throw new System.NotSupportedException();//cmp	al, 0x37
-                throw new System.NotSupportedException();//jnz	loc_5A449
-                var_9.weight = 0x12C;
-                throw new System.NotSupportedException();//jmp	short loc_5A48B
-                throw new System.NotSupportedException();//loc_5A449:
-                throw new System.NotSupportedException();//cmp	al, 0x39
-                throw new System.NotSupportedException();//jnz	loc_5A458
-                var_9.weight = 0x15E;
-                throw new System.NotSupportedException();//jmp	short loc_5A48B
-                throw new System.NotSupportedException();//loc_5A458:
-                throw new System.NotSupportedException();//cmp	al, 0x3A
-                throw new System.NotSupportedException();//jnz	loc_5A467
-                var_9.weight = 0x1C2;
-                throw new System.NotSupportedException();//jmp	short loc_5A48B
-                throw new System.NotSupportedException();//loc_5A467:
-                throw new System.NotSupportedException();//cmp	al, 0x2F
-                throw new System.NotSupportedException();//jz	loc_5A46F
-                throw new System.NotSupportedException();//cmp	al, 0x5D
-                throw new System.NotSupportedException();//jnz	loc_5A47A
-                throw new System.NotSupportedException();//loc_5A46F:
-                var_9.weight = 1;
-                throw new System.NotSupportedException();//jmp	short loc_5A48B
-                throw new System.NotSupportedException();//loc_5A47A:
-                var_9.weight = 0x28;
-                var_9.count = 0x0A;
-                throw new System.NotSupportedException();//loc_5A48B:
-                throw new System.NotSupportedException();//les	di, [bp+var_9]
-                throw new System.NotSupportedException();//mov	al, es:[di+2Eh]
-                throw new System.NotSupportedException();//cmp	al, 0x3B
-                throw new System.NotSupportedException();//jnz	loc_5A4AD
-                throw new System.NotSupportedException();//les	di, [bp+var_9]
-                throw new System.NotSupportedException();//mov	al, es:[di+32h]
-                throw new System.NotSupportedException();//cbw
-                throw new System.NotSupportedException();//mov	dx, 0x9C4
-                throw new System.NotSupportedException();//mul	dx
-                throw new System.NotSupportedException();//les	di, [bp+var_9]
-                throw new System.NotSupportedException();//mov	es:[di+3Ah], ax
-                throw new System.NotSupportedException();//jmp	loc_5A56B
-                throw new System.NotSupportedException();//loc_5A4AD:
-                throw new System.NotSupportedException();//cmp	al, 0x49
-                throw new System.NotSupportedException();//jz	loc_5A4B5
-                throw new System.NotSupportedException();//cmp	al, 0x1C
-                throw new System.NotSupportedException();//jnz	loc_5A4CC
-                throw new System.NotSupportedException();//loc_5A4B5:
-                throw new System.NotSupportedException();//les	di, [bp+var_9]
-                throw new System.NotSupportedException();//mov	al, es:[di+32h]
-                throw new System.NotSupportedException();//cbw
-                throw new System.NotSupportedException();//mov	dx, 0x96
-                throw new System.NotSupportedException();//mul	dx
-                throw new System.NotSupportedException();//les	di, [bp+var_9]
-                throw new System.NotSupportedException();//mov	es:[di+3Ah], ax
-                throw new System.NotSupportedException();//jmp	loc_5A56B
-                throw new System.NotSupportedException();//loc_5A4CC:
-                throw new System.NotSupportedException();//cmp	al, 0x35
-                throw new System.NotSupportedException();//jz	loc_5A4D4
-                throw new System.NotSupportedException();//cmp	al, 0x36
-                throw new System.NotSupportedException();//jnz	loc_5A4EB
-                throw new System.NotSupportedException();//loc_5A4D4:
-                throw new System.NotSupportedException();//les	di, [bp+var_9]
-                throw new System.NotSupportedException();//mov	al, es:[di+32h]
-                throw new System.NotSupportedException();//cbw
-                throw new System.NotSupportedException();//mov	dx, 0x0BB8
-                throw new System.NotSupportedException();//mul	dx
-                throw new System.NotSupportedException();//les	di, [bp+var_9]
-                throw new System.NotSupportedException();//mov	es:[di+3Ah], ax
-                throw new System.NotSupportedException();//jmp	loc_5A56B
-                throw new System.NotSupportedException();//loc_5A4EB:
-                throw new System.NotSupportedException();//cmp	al, 0x37
-                throw new System.NotSupportedException();//jz	loc_5A4F3
-                throw new System.NotSupportedException();//cmp	al, 0x38
-                throw new System.NotSupportedException();//jnz	loc_5A509
-                throw new System.NotSupportedException();//loc_5A4F3:
-                throw new System.NotSupportedException();//les	di, [bp+var_9]
-                throw new System.NotSupportedException();//mov	al, es:[di+32h]
-                throw new System.NotSupportedException();//cbw
-                throw new System.NotSupportedException();//mov	dx, 0x0DAC
-                throw new System.NotSupportedException();//mul	dx
-                throw new System.NotSupportedException();//les	di, [bp+var_9]
-                throw new System.NotSupportedException();//mov	es:[di+3Ah], ax
-                throw new System.NotSupportedException();//jmp	short loc_5A56B
-                throw new System.NotSupportedException();//loc_5A509:
-                throw new System.NotSupportedException();//cmp	al, 0x39
-                throw new System.NotSupportedException();//jnz	loc_5A523
-                throw new System.NotSupportedException();//les	di, [bp+var_9]
-                throw new System.NotSupportedException();//mov	al, es:[di+32h]
-                throw new System.NotSupportedException();//cbw
-                throw new System.NotSupportedException();//mov	dx, 0x0FA0
-                throw new System.NotSupportedException();//mul	dx
-                throw new System.NotSupportedException();//les	di, [bp+var_9]
-                throw new System.NotSupportedException();//mov	es:[di+3Ah], ax
-                throw new System.NotSupportedException();//jmp	short loc_5A56B
-                throw new System.NotSupportedException();//loc_5A523:
-                throw new System.NotSupportedException();//cmp	al, 0x3A
-                throw new System.NotSupportedException();//jnz	loc_5A53D
-                throw new System.NotSupportedException();//les	di, [bp+var_9]
-                throw new System.NotSupportedException();//mov	al, es:[di+32h]
-                throw new System.NotSupportedException();//cbw
-                throw new System.NotSupportedException();//mov	dx, 0x1388
-                throw new System.NotSupportedException();//mul	dx
-                throw new System.NotSupportedException();//les	di, [bp+var_9]
-                throw new System.NotSupportedException();//mov	es:[di+3Ah], ax
-                throw new System.NotSupportedException();//jmp	short loc_5A56B
-                throw new System.NotSupportedException();//loc_5A53D:
-                throw new System.NotSupportedException();//cmp	al, 0x4D
-                throw new System.NotSupportedException();//jnz	loc_5A557
-                throw new System.NotSupportedException();//les	di, [bp+var_9]
-                throw new System.NotSupportedException();//mov	al, es:[di+32h]
-                throw new System.NotSupportedException();//cbw
-                throw new System.NotSupportedException();//mov	dx, 0x0BB8
-                throw new System.NotSupportedException();//mul	dx
-                throw new System.NotSupportedException();//les	di, [bp+var_9]
-                throw new System.NotSupportedException();//mov	es:[di+3Ah], ax
-                throw new System.NotSupportedException();//jmp	short loc_5A56B
-                throw new System.NotSupportedException();//loc_5A557:
-                throw new System.NotSupportedException();//les	di, [bp+var_9]
-                throw new System.NotSupportedException();//mov	al, es:[di+32h]
-                throw new System.NotSupportedException();//cbw
-                throw new System.NotSupportedException();//mov	dx, 0x7D0
-                throw new System.NotSupportedException();//mul	dx
-                throw new System.NotSupportedException();//les	di, [bp+var_9]
-                throw new System.NotSupportedException();//mov	es:[di+3Ah], ax
-                throw new System.NotSupportedException();//loc_5A56B:
+
+                switch (var_9.type)
+                {
+                    case 1:
+                    case 0x0d:
+                    case 0x0e:
+                    case 0x23:
+                        var_9.weight = 0x4B;
+                        break;
+
+                    case 2:
+                    case 0x14:
+                    case 0x1d:
+                    case 0x1f:
+                    case 0x20:
+                    case 0x21:
+                    case 0x27:
+                    case 0x2a:
+                    case 0x2c:
+                    case 0x2e:
+                    case 0x3b:
+
+                        var_9.weight = 0x32;
+                        break;
+
+                    case 3:
+                    case 0x18:
+                    case 0x28:
+                        var_9.weight = 0x7D;
+                        break;
+
+                    case 4:
+                    case 0x0f:
+                    case 0x17:
+                    case 0x22:
+                    case 0x2b:
+                    case 0x2d:
+                    case 0x33:
+                        var_9.weight = 0x64;
+                        break;
+
+                    case 5:
+                    case 0x0c:
+                    case 0x11:
+                    case 0x13:
+                    case 0x32:
+                        var_9.weight = 0x96;
+                        break;
+
+                    case 6:
+                        var_9.weight = 0x0F;
+                        break;
+
+                    case 7:
+                        var_9.weight = 0x1E;
+                        break;
+
+                    case 8:
+                    case 0x4d:
+                        var_9.weight = 0x0A;
+                        break;
+
+                    case 9:
+                        var_9.weight = 0x19;
+                        var_9.count = 5;
+                        break;
+
+                    case 0x0a:
+                    case 0x1a:
+                    case 0x24:
+                        var_9.weight = 0x3C;
+                        break;
+
+                    case 0x0b:
+                    case 0x10:
+                    case 0x19:
+                    case 0x1b:
+                    case 0x29:
+                    case 0x2f:
+                        var_9.weight = 0x50;
+                        break;
+                    case 0x12:
+                        var_9.weight = 0xAF;
+                        break;
+
+                    case 0x15:
+                        var_9.weight = 0x14;
+                        break;
+
+                    case 0x16:
+                    case 0x1e:
+                        var_9.weight = 0x28;
+                        break;
+                    case 0x25:
+                        var_9.weight = 0x23;
+                        break;
+                    case 0x26:
+                    case 0x35:
+                        var_9.weight = 0x0FA;
+                        break;
+                    case 0x34:
+                        var_9.weight = 0x0C8;
+                        break;
+                    case 0x36:
+                    case 0x38:
+                        var_9.weight = 0x190;
+                        break;
+                    case 0x37:
+                        var_9.weight = 0x12C;
+                        break;
+                    case 0x39:
+                        var_9.weight = 0x15E;
+                        break;
+                    case 0x3a:
+                        var_9.weight = 0x1C2;
+                        break;
+                    //case 0x2f: //wonder if this should have been 0x3f
+                    case 0x5d:
+                        var_9.weight = 1;
+                        break;
+
+                    default:
+                        var_9.weight = 0x28;
+                        var_9.count = 0x0A;
+                        break;
+                }
+
+                if (var_9.type == 0x3b)
+                {
+                    var_9._value = (short)(var_9.exp_value * 2500);
+                }
+                else if (var_9.type == 0x49 || var_9.type == 0x1c)
+                {
+                    var_9._value = (short)(var_9.exp_value * 150);
+                }
+                else if (var_9.type == 0x35 || var_9.type == 0x36)
+                {
+                    var_9._value = (short)(var_9.exp_value * 3000);
+                }
+                else if (var_9.type == 0x37 || var_9.type == 0x38)
+                {
+                    var_9._value = (short)(var_9.exp_value * 3500);
+                }
+                else if (var_9.type == 0x39)
+                {
+                    var_9._value = (short)(var_9.exp_value * 4000);
+
+                }
+                else if (var_9.type == 0x3a)
+                {
+                    var_9._value = (short)(var_9.exp_value * 5000);
+                
+                }
+                else if (var_9.type == 0x4d)
+                {
+                    var_9._value = (short)(var_9.exp_value * 3000);
+                }
+                else
+                {
+                    var_9._value = (short)(var_9.exp_value * 2000);
+                }
             }
             else if (al == 0x3d || al == 0x3e)
             {
 
                 var_2 = ovr024.roll_dice(3, 1);
-                throw new System.NotSupportedException();//les	di, [bp+var_9]
-                throw new System.NotSupportedException();//cmp	byte ptr es:[di+2Eh], 0x3D
-                throw new System.NotSupportedException();//jnz	loc_5A59B
-                var_9.field_31 = 0xD1;
-                throw new System.NotSupportedException();//jmp	short loc_5A5A3
-                throw new System.NotSupportedException();//loc_5A59B:
-                var_9.field_31 = 0xD0;
-                throw new System.NotSupportedException();//loc_5A5A3:
-                throw new System.NotSupportedException();//mov	al, [bp+var_2]
-                throw new System.NotSupportedException();//xor	ah, ah
-                throw new System.NotSupportedException();//add	ax, 0x0D1
-                throw new System.NotSupportedException();//les	di, [bp+var_9]
-                throw new System.NotSupportedException();//mov	es:[di+30h], al
+
+                if (var_9.type == 0x3d)
+                {
+                    var_9.field_31 = 0xD1;
+                }
+                else
+                {
+                    var_9.field_31 = 0xD0;
+                }
+
+                var_9.field_30 = (sbyte)(var_2 + 0xd1);
                 var_9.field_2F = 0;
                 var_9.exp_value = 1;
                 var_9.weight = 0x19;
                 var_9.count = 0;
-                throw new System.NotSupportedException();//les	di, [bp+var_9]
-                throw new System.NotSupportedException();//xor	ax, ax
-                throw new System.NotSupportedException();//mov	es:[di+3Ah], ax
+                var_9._value = 0;
                 var_A = var_2;
 
                 for (var_3 = 1; var_3 <= var_A; var_3++)
