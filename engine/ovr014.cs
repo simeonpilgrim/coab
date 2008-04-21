@@ -2420,14 +2420,16 @@ namespace engine
         }
 
 
-        internal static Player sub_41932(bool arg_2, byte arg_4, byte bp_var_DA, byte bp_var_DB, sbyte bp_var_DE, sbyte bp_var_DF, sbyte bp_var_E0, sbyte bp_var_E1, gbl.Struct_1D1C1[] bp_var_D8)
+        internal static Player sub_41932(bool arg_2, byte arg_4, 
+            byte bp_var_DA, ref byte bp_var_DB, ref sbyte bp_var_DE, sbyte bp_var_DF, 
+            ref sbyte bp_var_E0, ref sbyte bp_var_E1, gbl.Struct_1D1C1[] bp_var_D8)
         {
             Player player_ptr;
 
             if (arg_2 == true)
             {
-                bp_var_DE = (sbyte)gbl.CombatMap[bp_var_D8[bp_var_DB].field_0].xPos;
-                bp_var_DF = (sbyte)gbl.CombatMap[bp_var_D8[bp_var_DB].field_0].yPos;
+                bp_var_DE = (sbyte)gbl.CombatMap[bp_var_D8[bp_var_DB-1].field_0].xPos;
+                bp_var_DF = (sbyte)gbl.CombatMap[bp_var_D8[bp_var_DB-1].field_0].yPos;
             }
             else
             {
@@ -2472,8 +2474,6 @@ namespace engine
             sbyte var_DF = 0; /* simeon */
             sbyte var_DE = 0; /* simeon */
             byte var_DD = 0; /* simeon */
-            byte var_DC;
-            byte var_DB;
             byte var_DA;
             byte var_D9;
             gbl.Struct_1D1C1[] var_D8 = new gbl.Struct_1D1C1[gbl.unk_1D1C1_count];
@@ -2506,10 +2506,10 @@ namespace engine
 
             sub_4188F(arg_10, var_D8, out var_DA);
 
-            var_DB = 1;
-            var_DC = 0;
+            byte var_DB = 1;
+            byte var_DC = 0;
 
-            player_ptr = sub_41932(true, var_DC, var_DA, var_DB, var_DE, var_DF, var_E0, var_E1, var_D8);
+            player_ptr = sub_41932(true, var_DC, var_DA, ref var_DB, ref var_DE, var_DF, ref var_E0, ref var_E1, var_D8);
 
             var_DC = 1;
             var_E6 = ' ';
@@ -2518,8 +2518,7 @@ namespace engine
             {
                 if (sub_3F143(player_ptr, arg_10) == false)
                 {
-
-                    player_ptr = sub_41932(false, var_DC, var_DA, var_DB, var_DE, var_DF, var_E0, var_E1, var_D8);
+                    player_ptr = sub_41932(false, var_DC, var_DA, ref var_DB, ref var_DE, var_DF, ref var_E0, ref var_E1, var_D8);
                 }
                 else
                 {
@@ -2535,17 +2534,16 @@ namespace engine
                                 break;
 
                             case 'P':
-                                var_DC = 0x0FF;
+                                var_DC = 0x0FF;                                
                                 var_DD = 0x0FF;
                                 break;
 
-                            case 'M': goto case 'I';
-                            case 'H': goto case 'I';
-                            case 'K': goto case 'I';
-                            case 'G': goto case 'I';
-                            case 'O': goto case 'I';
-                            case 'Q': goto case 'I';
-
+                            case 'M':
+                            case 'H':
+                            case 'K':
+                            case 'G':
+                            case 'O':
+                            case 'Q':
                             case 'I':
                                 Target(arg_0, out arg_4, arg_8, arg_A, arg_C, var_D9, player_ptr, arg_10);
                                 ovr025.loadDword_1D90A(false, 0, 0, 0x19);
@@ -2579,7 +2577,7 @@ namespace engine
                     ovr033.sub_7431C(ovr033.PlayerMapYPos(player_ptr), ovr033.PlayerMapXPos(player_ptr));
 
                     player_ptr = sub_41932((arg_4 == false && unk_41AE5.MemberOf(var_E6) == false), var_DD,
-                        var_DA, var_DB, var_DE, var_DF, var_E0, var_E1, var_D8);
+                        var_DA, ref var_DB, ref var_DE, var_DF, ref var_E0, ref var_E1, var_D8);
                 }
             }
 
