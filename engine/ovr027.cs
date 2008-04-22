@@ -451,7 +451,7 @@ namespace engine
 		}
 
 
-        static void ListItemHighlighted<T>(short index, T stringList, sbyte listDisplayStartY, sbyte listDisplayStartX,
+        static void ListItemHighlighted<T>(short index, T stringList, int listDisplayStartY, int listDisplayStartX,
             byte bgColor) where T : class, IListBase
 		{
 			T var_4 = getStringListEntry( stringList, index );
@@ -468,10 +468,9 @@ namespace engine
 		}
 
 
-        static void ListItemNormal<T>(short arg_2, T bp_arg_10, sbyte bp_arg_16, sbyte bp_arg_18, byte bp_arg_1C, byte bp_arg_1E) where T : class, IListBase
+        static void ListItemNormal<T>(short arg_2, T bp_arg_10, int startY, int startX, byte bp_arg_1C, byte bp_arg_1E) where T : class, IListBase
         {
             string var_106;
-            byte var_6;
             byte var_5;
             T var_4;
 
@@ -479,16 +478,16 @@ namespace engine
 
             var_5 = getBegingOfString(var_4.String());
 
-            var_6 = (byte)((getEndOfString(var_4.String()) - var_5) /*+ 1*/);
+            int copyLen = (byte)((getEndOfString(var_4.String()) - var_5));
 
-            seg051.Copy(var_6, var_5, var_4.String(), out var_106);
+            seg051.Copy(copyLen, var_5, var_4.String(), out var_106);
             if (var_4.Field29() != 0)
             {
-                seg041.displayString(var_106, 0, bp_arg_1E, bp_arg_16 + (arg_2 - gbl.word_1D5BC), bp_arg_18 + var_5);
+                seg041.displayString(var_106, 0, bp_arg_1E, startY + (arg_2 - gbl.word_1D5BC), startX + var_5);
             }
             else
             {
-                seg041.displayString(var_106, 0, bp_arg_1C, bp_arg_16 + (arg_2 - gbl.word_1D5BC), bp_arg_18 + var_5);
+                seg041.displayString(var_106, 0, bp_arg_1C, startY + (arg_2 - gbl.word_1D5BC), startX + var_5);
             }
         }
 
@@ -542,7 +541,7 @@ namespace engine
 
         internal static void sub_6CD38<T>(bool arg_2, ref short bp_arg_4, T bp_arg_E, short bp_var_56,
             short bp_var_59,
-            sbyte yEnd, sbyte xEnd, sbyte yStart, sbyte xStart,
+            int yEnd, int xEnd, int yStart, int xStart,
             byte bp_arg_1C, byte bp_arg_1E, int displayFillWidth) where T : class,IListBase
         {
             short var_2;
@@ -612,8 +611,9 @@ namespace engine
 
 
         internal static char sl_select_item<T>(out T result_ptr, ref short index_ptr,
-            ref bool arg_8, bool showExit, T stringList, sbyte listDisplayEndY, sbyte listDisplayEndX,
-            sbyte listDisplayStartY, sbyte listDisplayStartX, byte highlightBgColor, byte arg_1C, byte arg_1E,
+            ref bool arg_8, bool showExit, T stringList, 
+            int endY, int endX, int startY, int startX, 
+            byte highlightBgColor, byte arg_1C, byte arg_1E,
             string inputString, string extraTextString) where T : class, IListBase
         {
             short var_8D;
@@ -639,9 +639,9 @@ namespace engine
             
             gbl.byte_1D5BE = 1;
 
-            int listDisplayWidth = (byte)((listDisplayEndX - listDisplayStartX) + 1);
+            int listDisplayWidth = (byte)((endX - startX) + 1);
             var_56 = StringListCount(stringList);
-            var_59 = (short)((listDisplayEndY - listDisplayStartY) + 1);
+            var_59 = (short)((endY - startY) + 1);
 
             tmpStringList = stringList;
             stringList_size = 0;
@@ -683,7 +683,7 @@ namespace engine
 
             if (arg_8 == true)
             {
-                sub_6C897(gbl.word_1D5BC, listDisplayEndY, listDisplayEndX, listDisplayStartY, listDisplayStartX,
+                sub_6C897(gbl.word_1D5BC, endY, endX, startY, startX,
                     stringList, arg_1C, arg_1E, listDisplayWidth);
             }
 
@@ -693,7 +693,7 @@ namespace engine
 
             while (loop_end == false)
             {
-                ListItemHighlighted(index_ptr, stringList, listDisplayStartY, listDisplayStartX, highlightBgColor);
+                ListItemHighlighted(index_ptr, stringList, startY, startX, highlightBgColor);
                 string displayString = inputString;
 
                 showNext = false;
@@ -718,7 +718,7 @@ namespace engine
 
                 var_5A = displayInput(out var_57, false, 1, highlightBgColor, arg_1C, arg_1E, displayString, extraTextString);
 
-                ListItemNormal(index_ptr, stringList, listDisplayStartY, listDisplayStartX, arg_1C, arg_1E);
+                ListItemNormal(index_ptr, stringList, startY, startX, arg_1C, arg_1E);
 
                 if (var_57 == true)
                 {
@@ -735,14 +735,14 @@ namespace engine
                         case 'I':
                             if (showPrevious == true)
                             {
-                                sub_6CD38(false, ref index_ptr, stringList, var_56, var_59, listDisplayEndY, listDisplayEndX, listDisplayStartY, listDisplayStartX, arg_1C, arg_1E, listDisplayWidth);
+                                sub_6CD38(false, ref index_ptr, stringList, var_56, var_59, endY, endX, startY, startX, arg_1C, arg_1E, listDisplayWidth);
                             }
                             break;
 
                         case 'Q':
                             if (showNext == true)
                             {
-                                sub_6CD38(true, ref index_ptr, stringList, var_56, var_59, listDisplayEndY, listDisplayEndX, listDisplayStartY, listDisplayStartX, arg_1C, arg_1E, listDisplayWidth);
+                                sub_6CD38(true, ref index_ptr, stringList, var_56, var_59, endY, endX, startY, startX, arg_1C, arg_1E, listDisplayWidth);
                             }
                             break;
                     }
@@ -752,12 +752,12 @@ namespace engine
                     switch (var_5A)
                     {
                         case 'P':
-                            sub_6CD38(false, ref index_ptr, stringList, var_56, var_59, listDisplayEndY, listDisplayEndX, listDisplayStartY, listDisplayStartX, arg_1C, arg_1E, listDisplayWidth);
+                            sub_6CD38(false, ref index_ptr, stringList, var_56, var_59, endY, endX, startY, startX, arg_1C, arg_1E, listDisplayWidth);
                             break;
 
                         case 'N':
 
-                            sub_6CD38(true, ref index_ptr, stringList, var_56, var_59, listDisplayEndY, listDisplayEndX, listDisplayStartY, listDisplayStartX, arg_1C, arg_1E, listDisplayWidth);
+                            sub_6CD38(true, ref index_ptr, stringList, var_56, var_59, endY, endX, startY, startX, arg_1C, arg_1E, listDisplayWidth);
                             break;
 
                         case (char)0x1B:

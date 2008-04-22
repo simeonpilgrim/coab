@@ -640,8 +640,8 @@ namespace engine
 
         internal static void sub_33F03(ref bool arg_0, Player target, Player player)
         {
-            if (ovr025.offset_above_1(player) == true &&
-                ovr025.offset_equals_20(player) == false)
+            if (ovr025.is_weapon_ranged(player) == true &&
+                ovr025.is_weapon_ranged_melee(player) == false)
             {
                 ovr025.string_print01("Not with that weapon");
             }
@@ -671,8 +671,9 @@ namespace engine
             arg_0 = false;
             var_29 = string.Empty;
 
-            if (ovr025.offset_above_1(player_ptr) == false ||
-                ovr025.offset_equals_20(player_ptr) == true)
+
+            if (ovr025.is_weapon_ranged(player_ptr) == false ||
+                ovr025.is_weapon_ranged_melee(player_ptr) == true)
             {
                 var_29 += "Guard ";
             }

@@ -109,7 +109,6 @@ namespace engine
         static void backstab(bool attackHits, byte attackDamge, byte actualDamage, byte arg_6, Player target, Player attacker)
         {
             string text;
-            byte var_1;
 
             if (arg_6 == 2)
             {
@@ -125,10 +124,10 @@ namespace engine
             }
 
             ovr025.DisplayPlayerStatusString(false, 10, text, attacker);
-            var_1 = 0x0C;
+            int line = 12;
 
-            ovr025.displayPlayerName(false, var_1, 0x17, target);
-            var_1++;
+            ovr025.displayPlayerName(false, line, 0x17, target);
+            line++;
 
             if (arg_6 == 1)
             {
@@ -171,10 +170,10 @@ namespace engine
 
             if (target.health_status != Status.gone)
             {
-                seg041.press_any_key(text, true, 0, 10, (byte)(var_1 + 3), 0x26, var_1, 0x17);
+                seg041.press_any_key(text, true, 0, 10, line + 3, 0x26, line, 0x17);
             }
 
-            var_1 = (byte)(gbl.textYCol + 1);
+            line = gbl.textYCol + 1;
 
             if (actualDamage > 0)
             {
@@ -200,20 +199,20 @@ namespace engine
 
             if (target.in_combat == false)
             {
-                ovr025.DisplayPlayerStatusString(false, var_1, "goes down", target);
-                var_1 += 2;
+                ovr025.DisplayPlayerStatusString(false, line, "goes down", target);
+                line += 2;
 
                 if (target.health_status == Status.dying)
                 {
-                    seg041.displayString("and is Dying", 0, 10, var_1, 0x17);
+                    seg041.displayString("and is Dying", 0, 10, line, 0x17);
                 }
 
                 if (unk_3E2EE.MemberOf((byte)target.health_status) == true)
                 {
-                    ovr025.DisplayPlayerStatusString(false, var_1, "is killed", target);
+                    ovr025.DisplayPlayerStatusString(false, line, "is killed", target);
                 }
 
-                var_1 += 2;
+                line += 2;
 
                 ovr024.sub_645AB(target);
 
@@ -530,7 +529,7 @@ namespace engine
             var_2 = arg_0.field_19C;
             arg_0.field_19C = arg_0.field_11C;
 
-            if (ovr025.offset_above_1(arg_0) == true &&
+            if (ovr025.is_weapon_ranged(arg_0) == true &&
                 ovr025.sub_6906C(out var_9, arg_0) == true)
             {
                 var_5 = true;
@@ -1140,7 +1139,7 @@ namespace engine
 
                     if (item.count == 0)
                     {
-                        if (ovr025.offset_equals_20(player02) == true &&
+                        if (ovr025.is_weapon_ranged_melee(player02) == true &&
                             item.affect_3 != Affects.affect_89)
                         {
                             item_ptr = item.ShallowClone();
@@ -1184,7 +1183,7 @@ namespace engine
 
             int var_2 = ovr025.sub_68708(playerA, playerB);
 
-            if (ovr025.offset_above_1(playerB) == true)
+            if (ovr025.is_weapon_ranged(playerB) == true)
             {
                 var_1 = (gbl.unk_1C020[playerB.field_151.type].field_C - 1) / 3;
             }
@@ -2079,14 +2078,14 @@ namespace engine
                 }
                 else if (arg_8 != arg_C)
                 {
-                    if (ovr025.offset_above_1(arg_C) == false)
+                    if (ovr025.is_weapon_ranged(arg_C) == false)
                     {
                         var_2A = "Target ";
                     }
                     else
                     {
                         if (ovr025.sub_6906C(out var_2F, arg_C) == true &&
-                            (ovr025.near_enemy(1, arg_C) == 0 || ovr025.offset_equals_20(arg_C) == true))
+                            (ovr025.near_enemy(1, arg_C) == 0 || ovr025.is_weapon_ranged_melee(arg_C) == true))
                         {
                             var_2A = "Target ";
                         }
@@ -2137,9 +2136,9 @@ namespace engine
                     {
                         sub_3F94D(arg_A, arg_E);
 
-                        if (ovr025.offset_above_1(arg_E) == true &&
+                        if (ovr025.is_weapon_ranged(arg_E) == true &&
                             ovr025.sub_6906C(out var_5, arg_E) == true &&
-                            ovr025.offset_equals_20(arg_E) == true &&
+                            ovr025.is_weapon_ranged_melee(arg_E) == true &&
                             ovr025.sub_68708(arg_A, arg_E) == 0)
                         {
                             var_5 = null;
@@ -2289,10 +2288,10 @@ namespace engine
                         {
                             var_39 = 0;
                         }
-                        else if (ovr025.offset_above_1(player01) == true &&
+                        else if (ovr025.is_weapon_ranged(player01) == true &&
                              (ovr025.sub_6906C(out var_2E, player01) == true ||
                              (ovr025.near_enemy(1, player01) >= 0 &&
-                                ovr025.offset_equals_20(player01) == false)))
+                                ovr025.is_weapon_ranged_melee(player01) == false)))
                         {
                             var_39 = 0;
                         }

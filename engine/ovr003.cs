@@ -789,7 +789,7 @@ namespace engine
 
             var_10E = 0;
 
-            ovr008.sub_318AE(var_106, ref var_10E, ref var_10F, false, var_106, 0x16, 0x26, (sbyte)(gbl.textYCol + 1),
+            ovr008.sub_318AE(var_106, ref var_10E, ref var_10F, false, var_106, 0x16, 0x26, gbl.textYCol + 1,
                 1, 15, 10, 13, var_10C, var_10C);
             ovr008.vm_SetMemoryValue((ushort)var_10E, var_111);
 

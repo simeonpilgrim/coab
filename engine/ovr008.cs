@@ -1302,22 +1302,17 @@ namespace engine
         }
 
 
-        internal static void sub_318AE(StringList arg_0, ref short arg_4, ref bool arg_8, bool arg_C, 
-			StringList arg_E, sbyte arg_12, sbyte arg_14, sbyte arg_16, sbyte arg_18, 
-			byte arg_1A, byte arg_1C, byte arg_1E, string arg_20, string arg_24)
+        internal static void sub_318AE(StringList arg_0, ref short arg_4, ref bool arg_8, bool showExit, 
+			StringList arg_E, sbyte endY, sbyte endX, int startY, sbyte startX, 
+			byte arg_1A, byte arg_1C, byte arg_1E, string inputString, string extraString)
         {
-            string var_153;
-            char var_12A;
-            string var_129;
-            string var_29;
+            string menuKeys;
+            string newInputString = inputString;
 
-            var_29 = arg_24;
-            var_129 = arg_20;
+            buildMenuStrings(out menuKeys, ref newInputString);
 
-            buildMenuStrings(out var_153, ref var_129);
-
-            var_12A = ovr027.sl_select_item(out arg_0, ref arg_4, ref arg_8, arg_C, arg_E, arg_12, arg_14,
-                arg_16, arg_18, arg_1A, arg_1C, arg_1E, var_129, var_29);
+            ovr027.sl_select_item(out arg_0, ref arg_4, ref arg_8, showExit, arg_E, endY, endX,
+                startY, startX, arg_1A, arg_1C, arg_1E, newInputString, extraString);
         }
 
 
