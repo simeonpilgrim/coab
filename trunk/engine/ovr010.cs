@@ -692,8 +692,8 @@ namespace engine
 
                             player01 = gbl.player_array[gbl.byte_1D8B9[var_8]];
 
-                            if (ovr025.offset_above_1(player) == true &&
-                                ovr025.offset_equals_20(player) == false &&
+                            if (ovr025.is_weapon_ranged(player) == true &&
+                                ovr025.is_weapon_ranged_melee(player) == false &&
                                 ovr025.near_enemy(1, player) > 0)
                             {
                                 sub_36673(player);
@@ -725,11 +725,11 @@ namespace engine
 
                             var_C = null;
 
-                            if (ovr025.offset_above_1(player) == true)
+                            if (ovr025.is_weapon_ranged(player) == true)
                             {
                                 gbl.byte_1D90E = ovr025.sub_6906C(out var_C, player);
 
-                                if (ovr025.offset_equals_20(player) == true &&
+                                if (ovr025.is_weapon_ranged_melee(player) == true &&
                                     ovr025.sub_68708(player01, player) == 1)
                                 {
 
@@ -763,7 +763,7 @@ namespace engine
             ovr025.ClearPlayerTextArea();
 
             if (ovr025.is_held(player) == true ||
-                ovr025.offset_above_1(player) == true ||
+                ovr025.is_weapon_ranged(player) == true ||
                 player.actions.delay == 0)
             {
                 var_1 = ovr025.clear_actions(player);
@@ -966,11 +966,8 @@ namespace engine
 
         internal static void sub_36673(Player arg_0)
         {
-            byte var_1F;
-            byte var_1E;
             byte var_1D;
             byte var_1C;
-            byte var_1A;
             byte var_19;
             byte var_18;
             byte var_17;
@@ -1059,20 +1056,10 @@ namespace engine
                 var_10 = var_10.next;
             }
 
-            if (var_4 != null &&
-                gbl.unk_1C020[var_4.type].field_C > 1 &&
-                (gbl.unk_1C020[var_4.type].field_E & 0x14) == 0x14)
-            {
-                var_1E = 1;
-            }
-            else
-            {
-                var_1E = 0;
-            }
-
-            var_1F = 0;
+            bool var_1E = ovr025.item_is_ranged_melee(var_4);
+            bool var_1F = false;
             var_14 = null;
-            var_1A = 0;
+            byte var_1A = 0;
 
             if (var_4 != null)
             {
@@ -1100,14 +1087,13 @@ namespace engine
             if (var_14 != null ||
                 var_1A == 10)
             {
-                var_1F = 1;
+                var_1F = true;
             }
-
 
             if (var_4 != null &&
                 var_15 > (var_16 >> 1) &&
-                var_1F != 0 &&
-                (var_1E != 0 || ovr025.near_enemy(1, arg_0) == 0))
+                var_1F == true &&
+                (var_1E == true || ovr025.near_enemy(1, arg_0) == 0))
             {
                 var_10 = var_4;
             }

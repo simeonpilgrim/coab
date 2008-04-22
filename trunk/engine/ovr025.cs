@@ -244,6 +244,26 @@ namespace engine
 
 
 
+        internal static void DebugItems()
+        {
+            Item it;
+            for (byte i = 0; i < 0x81; i++)
+            {
+                ovr022.sub_5A007(out it, i);
+                int a = it.field_2F < itemNames.Length ? (int)(byte)it.field_2F : 0;
+                int b = it.field_30 < itemNames.Length ? (int)(byte)it.field_30 : 0;
+                int c = it.field_31 < itemNames.Length ? (int)(byte)it.field_31 : 0;
+                Player pl = new Player();
+                pl.field_151 = it;
+                bool o1 = is_weapon_ranged(pl);
+                bool o20 = is_weapon_ranged_melee(pl);
+                System.Console.WriteLine("{0} {1} {2} {3} {4} {5} {6}",
+                    i, itemNames[c], itemNames[b], itemNames[a],
+                    it.type, o1, o20);
+                      
+            }
+        }
+
         internal static void ItemDisplayNameBuild(byte arg_0, bool displayReadied, byte arg_4, byte arg_6, Item item, Player player) /*id_item*/
         {
             Player player_ptr;
@@ -462,7 +482,6 @@ namespace engine
 
         internal static void hitpoint_ac(Player player)
         {
-            byte var_2;
             /*byte var_1;*/
 
             if (gbl.byte_1D90F == true)
@@ -470,40 +489,40 @@ namespace engine
                 gbl.byte_1D90F = false;
                 seg037.draw8x8_clear_area(0x15, 0x26, 1, 0x17);
 
-                var_2 = 1;
+                int line = 1;
 
-                DisplayPlayerStatusString(false, var_2, " ", player);
+                DisplayPlayerStatusString(false, line, " ", player);
 
-                var_2++;
+                line++;
 
-                seg041.displayString("Hitpoints", 0, 10, var_2 + 1, 0x17);
+                seg041.displayString("Hitpoints", 0, 10, line + 1, 0x17);
 
-                display_hp(0, (byte)(var_2 + 1), 0x21, player);
-                var_2 += 2;
+                display_hp(0, line + 1, 0x21, player);
+                line += 2;
 
-                seg041.displayString("AC", 0, 10, var_2 + 1, 0x17);
-                display_AC(var_2 + 1, 0x1A, player);
+                seg041.displayString("AC", 0, 10, line + 1, 0x17);
+                display_AC(line + 1, 0x1A, player);
 
-                gbl.textYCol = (byte)(var_2 + 1);
+                gbl.textYCol = line + 1;
 
                 if (player.field_151 != null)
                 {
-                    var_2 += 2;
+                    line += 2;
                     /*var_1 = 0x17;*/
                     ItemDisplayNameBuild(0, false, 0, 0, player.field_151, player);
 
-                    seg041.press_any_key(player.field_151.name, true, 0, 10, (byte)(var_2 + 3), 0x26, (byte)(var_2 + 1), 0x17);
+                    seg041.press_any_key(player.field_151.name, true, 0, 10, line + 3, 0x26, line + 1, 0x17);
                 }
 
-                var_2 = (byte)(gbl.textYCol + 1);
+                line = gbl.textYCol + 1;
 
                 if (player.in_combat == false)
                 {
-                    seg041.displayString(ovr020.statusString[(int)player.health_status], 0, 15, var_2 + 1, 0x17);
+                    seg041.displayString(ovr020.statusString[(int)player.health_status], 0, 15, line + 1, 0x17);
                 }
                 else if (is_held(player) == true)
                 {
-                    seg041.displayString("(Helpless)", 0, 15, var_2 + 1, 0x17);
+                    seg041.displayString("(Helpless)", 0, 15, line + 1, 0x17);
                 }
             }
         }
@@ -1082,15 +1101,15 @@ namespace engine
         }
 
 
-        internal static void DisplayPlayerStatusString(bool clearDisplay, byte arg_2, string text, Player player) /* sub_67788 */
+        internal static void DisplayPlayerStatusString(bool clearDisplay, int lineY, string text, Player player) /* sub_67788 */
         {
 
             if (gbl.game_state == 5)
             {
-                seg037.draw8x8_clear_area(0x15, 0x26, arg_2, 0x17);
+                seg037.draw8x8_clear_area(0x15, 0x26, lineY, 0x17);
 
-                displayPlayerName(false, arg_2, 0x17, player);
-                seg041.press_any_key(text, true, 0, 10, 0x15, 0x26, (byte)(arg_2 + 1), 0x17);
+                displayPlayerName(false, lineY, 0x17, player);
+                seg041.press_any_key(text, true, 0, 10, 0x15, 0x26, lineY + 1, 0x17);
             }
             else
             {
@@ -1709,37 +1728,36 @@ namespace engine
 
         internal static byte near_enemy(byte arg_0, Player player) /*near_enermy*/
         {
-            byte var_5;
-            byte var_4;
             byte var_3;
             byte var_2;
             byte ret_val;
 
-            ovr032.sub_738D8(gbl.mapToBackGroundTile, ovr033.PlayerMapSize(player), 0xff, arg_0, ovr033.PlayerMapYPos(player), ovr033.PlayerMapXPos(player));
+            ovr032.sub_738D8(gbl.mapToBackGroundTile, 
+                ovr033.PlayerMapSize(player), 0xff, arg_0, 
+                ovr033.PlayerMapYPos(player), ovr033.PlayerMapXPos(player));
+
             var_2 = gbl.byte_1D1C0;
             var_3 = 0;
 
             if (var_2 > 0)
             {
-                var_5 = var_2;
-                for (var_4 = 1; var_4 <= var_5; var_4++)
+                for (int i = 1; i <= var_2; i++)
                 {
-                    if (gbl.player_array[gbl.unk_1D1C1[var_4].field_0].combat_team == on_our_team(player))
+                    if (gbl.player_array[gbl.unk_1D1C1[i].field_0].combat_team == on_our_team(player))
                     {
                         var_3++;
-                        gbl.unk_1D1C1[var_3].Copy(gbl.unk_1D1C1[var_4]);
+                        gbl.unk_1D1C1[var_3].Copy(gbl.unk_1D1C1[i]);
                     }
                 }
 
-                var_2 = var_3;
-                gbl.byte_1D1C0 = var_3;
+                //var_2 = var_3;
+                gbl.byte_1D1C0 = var_2 = var_3;
             }
 
             ret_val = var_2;
-            var_5 = var_2;
-            for (var_4 = 1; var_4 <= var_5; var_4++)
+            for (int i = 1; i <= var_2; i++)
             {
-                gbl.byte_1D8B9[var_4] = gbl.unk_1D1C1[var_4].field_0;
+                gbl.byte_1D8B9[i] = gbl.unk_1D1C1[i].field_0;
             }
 
             return ret_val;
@@ -2084,39 +2102,27 @@ namespace engine
         }
 
 
-        internal static bool offset_above_1(Player player)
+        internal static bool item_is_ranged(Item item)
         {
-            bool ret_val;
+            return item != null &&
+                gbl.unk_1C020[item.type].field_C > 1;
+        }
 
-            if (player.field_151 != null &&
-                gbl.unk_1C020[player.field_151.type].field_C > 1)
-            {
-                ret_val = true;
-            }
-            else
-            {
-                ret_val = false;
-            }
+        internal static bool item_is_ranged_melee(Item item)
+        {
+            return item_is_ranged(item) &&
+                 (gbl.unk_1C020[item.type].field_E & 0x14) == 0x14;
+        }
 
-            return ret_val;
+        internal static bool is_weapon_ranged(Player player) /* offset_above_1 */
+        {
+            return item_is_ranged(player.field_151);
         }
 
 
-        internal static bool offset_equals_20(Player player)
+        internal static bool is_weapon_ranged_melee(Player player) /* offset_equals_20 */
         {
-            bool ret_val;
-
-            if (offset_above_1(player) == true &&
-                (gbl.unk_1C020[player.field_151.type].field_E & 0x14) == 0x14)
-            {
-                ret_val = true;
-            }
-            else
-            {
-                ret_val = false;
-            }
-
-            return ret_val;
+            return item_is_ranged_melee(player.field_151);
         }
 
 

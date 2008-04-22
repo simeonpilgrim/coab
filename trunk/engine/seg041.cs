@@ -129,7 +129,9 @@ namespace engine
 
         static private byte[] unk_16FA6 = { 2, 70, 0, 0x8C };
 
-        internal static void press_any_key(string arg_0, bool clearArea, int bgColor, int fgColor, byte yEnd, byte xEnd, byte yStart, byte xStart)
+        internal static void press_any_key(string arg_0, bool clearArea, 
+            int bgColor, int fgColor, 
+            int yEnd, int xEnd, int yStart, int xStart)
         {
             Set var_125;
             byte var_104;
@@ -140,7 +142,8 @@ namespace engine
 
             var_100 = arg_0;
 
-            if (xStart <= 0x27 && yStart <= 0x18 && xEnd <= 0x27 && yEnd <= 0x27)
+            if (xStart <= 0x27 && yStart <= 0x18 && 
+                xEnd <= 0x27 && yEnd <= 0x27)
             {
                 if (gbl.textXCol < xStart ||
                     gbl.textXCol > xEnd ||
