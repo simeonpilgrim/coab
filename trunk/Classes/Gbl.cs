@@ -163,18 +163,18 @@ namespace Classes
         public static byte byte_1AB1A; // not sure what's this is for.
         public static sbyte[] byte_1AD2C = { 0, 0 };
         public static sbyte[] byte_1AD2E = { 0, 0 };
-        public static byte[] unk_1AD30 = { 0, 0 };
-        public static byte[] byte_1AD32 = { 0, 0 };
+        public static int[] half_team_count = { 0, 0 }; /* unk_1AD30 */
+        public static int[] team_direction = { 0, 0 }; /* byte_1AD32 */
         public static sbyte byte_1AD34 = 0x1A;
-        public static sbyte byte_1AD35 = 0x74;
+        public static sbyte byte_1AD35;
         public static byte byte_1AD36 = 0x1A;
         public static byte byte_1AD37 = 0x79;
         public static byte byte_1AD38 = 0x1A;
         public static byte byte_1AD39 = 0x8B;
         public static sbyte currentTeam; // field_197
-        public static byte byte_1AD3C = 0x1C;
-        public static byte byte_1AD3D = 0x9F;
-        public static byte byte_1AD3E = 0x1C;
+        public static byte byte_1AD3C;
+        public static byte byte_1AD3D;
+        public static byte byte_1AD3E;
         public static byte byte_1AD44;
         public static bool byte_1AD48;
         public static byte byte_1ADFA;
@@ -235,7 +235,7 @@ namespace Classes
         public static byte byte_1D2CB; // not used.
         public static byte byte_1D2CC;
         public static byte byte_1D2D1;
-        public static byte byte_1D534;
+        public static int sky_colour; /* byte_1D534 */
 
         public static bool mapAreaDisplay; //byte_1D538, Show Area Map
         public static sbyte mapPosX; // byte_1D539, 0 map left, + map right
@@ -361,8 +361,6 @@ namespace Classes
         public static string byte_1EFA4;
         public static byte byte_1EFBA;
 
-        public static short word_123C8 = 0;
-
         public const short word_16E08 = 5;
         public const short word_16E0A = 4;
         public const short word_16E0C = 6;
@@ -374,21 +372,21 @@ namespace Classes
         public const short word_16E18 = 9;
         public const short word_16E1A = 5;
 
-        public const short word_188BC = 0x00ff;
-        public const short word_188BE = 0;
-        public const short word_188C0 = 1;
-        public const short word_188C2 = 2;
-        public const short word_188C4 = 3;
-        public const short word_188C6 = 4;
-        public const short word_188C8 = 5;
-        public const short word_188CA = 6;
-        public const short word_188CC = 7;
-        public const short word_188CE = 8;
-        public const short word_188D0 = 9;
-        public const short word_188D2 = 0xa;
-        public const short word_188D4 = 0xb;
-        public const short word_188D6 = 0xc;
-        public const short word_188D8 = 0xd;
+        public const short sound_FF_188BC = 0x00ff;
+        public const short sound_0_188BE = 0;
+        public const short sound_1_188C0 = 1;
+        public const short sound_2_188C2 = 2;
+        public const short sound_3_188C4 = 3;
+        public const short sound_4_188C6 = 4;
+        public const short sound_5_188C8 = 5;
+        public const short sound_6_188CA = 6;
+        public const short sound_7_188CC = 7;
+        public const short sound_8_188CE = 8;
+        public const short sound_9_188D0 = 9;
+        public const short sound_a_188D2 = 0xa;
+        public const short sound_b_188D4 = 0xb;
+        public const short sound_c_188D6 = 0xc;
+        public const short sound_d_188D8 = 0xd;
 
         public readonly static short[] symbol_set_fix = { 0x0001, 0x002E, 0x0074, 0x00BA, 0x0100 };
         public const short word_1899C = 0x2D;
@@ -443,7 +441,7 @@ namespace Classes
         public static DaxBlock dax24x24Set; //dword_1C8F8;
         public static Item dword_1D5C6;
         public static spellDelegate dword_1D5CA;
-        public static DaxBlock dword_1D90A;
+        public static DaxBlock missile_dax; /* */
         public static int exp_to_add;
 
         public class class_1D91A

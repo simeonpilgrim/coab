@@ -1175,9 +1175,9 @@ namespace engine
         }
 
 
-        internal static void loadDword_1D90A(bool flipIcon, byte iconOffset, int iconAction, int iconIdx) /* sub_67924 */
+        internal static void load_missile_dax(bool flipIcon, byte iconOffset, int iconAction, int iconIdx) /* sub_67924 */
         {
-            int dataSize = gbl.dword_1D90A.bpp;
+            int dataSize = gbl.missile_dax.bpp;
 
             if (flipIcon == true)
             {
@@ -1185,8 +1185,8 @@ namespace engine
                 seg040.init_dax_block(out var_4, 1, 1, 3, 0x18);
                 seg040.flipIconLeftToRight(var_4, gbl.combat_icons[iconIdx, iconAction]);
 
-                System.Array.Copy(var_4.data, 0, gbl.dword_1D90A.data, iconOffset * dataSize, dataSize);
-                System.Array.Copy(var_4.data_ptr, 0, gbl.dword_1D90A.data_ptr, iconOffset * dataSize, dataSize);
+                System.Array.Copy(var_4.data, 0, gbl.missile_dax.data, iconOffset * dataSize, dataSize);
+                System.Array.Copy(var_4.data_ptr, 0, gbl.missile_dax.data_ptr, iconOffset * dataSize, dataSize);
 
                 seg040.free_dax_block(ref var_4);
             }
@@ -1195,13 +1195,13 @@ namespace engine
                 DaxBlock src = gbl.combat_icons[iconIdx, iconAction];
                 if (src != null)
                 {
-                    System.Array.Copy(gbl.combat_icons[iconIdx, iconAction].data, 0, gbl.dword_1D90A.data, iconOffset * dataSize, dataSize);
-                    System.Array.Copy(gbl.combat_icons[iconIdx, iconAction].data_ptr, 0, gbl.dword_1D90A.data_ptr, iconOffset * dataSize, dataSize);
+                    System.Array.Copy(gbl.combat_icons[iconIdx, iconAction].data, 0, gbl.missile_dax.data, iconOffset * dataSize, dataSize);
+                    System.Array.Copy(gbl.combat_icons[iconIdx, iconAction].data_ptr, 0, gbl.missile_dax.data_ptr, iconOffset * dataSize, dataSize);
                 }
                 else
                 {
-                    System.Array.Clear(gbl.dword_1D90A.data, iconOffset * dataSize, dataSize);
-                    System.Array.Clear(gbl.dword_1D90A.data_ptr, iconOffset * dataSize, dataSize);
+                    System.Array.Clear(gbl.missile_dax.data, iconOffset * dataSize, dataSize);
+                    System.Array.Clear(gbl.missile_dax.data_ptr, iconOffset * dataSize, dataSize);
                 }
             }
         }
@@ -1209,14 +1209,14 @@ namespace engine
 
         internal static void sub_67A59(int iconIdx)
         {
-            loadDword_1D90A(false, 0, 0, iconIdx);
-            loadDword_1D90A(true, 1, 0, iconIdx);
-            loadDword_1D90A(true, 2, 1, iconIdx);
-            loadDword_1D90A(false, 3, 1, iconIdx);
+            load_missile_dax(false, 0, 0, iconIdx);
+            load_missile_dax(true, 1, 0, iconIdx);
+            load_missile_dax(true, 2, 1, iconIdx);
+            load_missile_dax(false, 3, 1, iconIdx);
         }
 
 
-        internal static void sub_67AA4(byte arg_0, byte arg_2, int playerAMapY, int playerAMapX, int playerBMapY, int playerBMapX)
+        internal static void sub_67AA4(int delay, byte arg_2, int playerAMapY, int playerAMapX, int playerBMapY, int playerBMapX)
         {
             short var_D0;
             short var_CE;
@@ -1317,15 +1317,15 @@ namespace engine
                     var_CC += var_C8;
 
 
-                    if (arg_0 > 0 ||
+                    if (delay > 0 ||
                         (var_CA % 3) == 0 ||
                         (var_CC % 3) == 0)
                     {
                         Display.SaveVidRam();
-                        seg040.OverlayBounded(gbl.dword_1D90A, 5, var_B1, var_CC, var_CA);
+                        seg040.OverlayBounded(gbl.missile_dax, 5, var_B1, var_CC, var_CA);
                         seg040.DrawOverlay();
 
-                        seg049.SysDelay(arg_0);
+                        seg049.SysDelay(delay);
 
                         Display.RestoreVidRam();
                         var_B1++;
@@ -1473,13 +1473,13 @@ namespace engine
                     var_CC = (short)((playerAMapY - gbl.mapToBackGroundTile.mapScreenTopY) * 3);
 
                     Display.SaveVidRam();
-                    seg040.OverlayBounded(gbl.dword_1D90A, 5, var_B1, var_CC, var_CA);
+                    seg040.OverlayBounded(gbl.missile_dax, 5, var_B1, var_CC, var_CA);
 
-                    if (arg_0 > 0)
+                    if (delay > 0)
                     {
                         seg040.DrawOverlay();
 
-                        seg049.SysDelay(arg_0);
+                        seg049.SysDelay(delay);
 
                         Display.RestoreVidRam();
                     }
@@ -1520,11 +1520,11 @@ namespace engine
 
                 if (arg_4 != 0)
                 {
-                    seg044.sound_sub_120E0(gbl.word_188C6);
+                    seg044.sound_sub_120E0(gbl.sound_4_188C6);
                 }
                 else
                 {
-                    seg044.sound_sub_120E0(gbl.word_188C4);
+                    seg044.sound_sub_120E0(gbl.sound_3_188C4);
                 }
 
                 DisplayPlayerStatusString(false, 10, var_100, player);
@@ -1538,15 +1538,15 @@ namespace engine
                     var_106 = 0;
                 }
 
-                int colX = (byte)(gbl.playerScreenX[ovr033.get_player_index(player)] * 3);
-                int rowY = (byte)(gbl.playerScreenY[ovr033.get_player_index(player)] * 3);
+                int colX = gbl.playerScreenX[ovr033.get_player_index(player)] * 3;
+                int rowY = gbl.playerScreenY[ovr033.get_player_index(player)] * 3;
 
                 for (var_105 = 0; var_105 <= var_106; var_105++)
                 {
                     for (var_104 = 0; var_104 <= 3; var_104++)
                     {
                         Display.SaveVidRam();
-                        seg040.OverlayBounded(gbl.dword_1D90A, 5, var_104, rowY, colX);
+                        seg040.OverlayBounded(gbl.missile_dax, 5, var_104, rowY, colX);
                         seg040.DrawOverlay();
 
                         seg049.SysDelay(70);
@@ -1982,7 +1982,7 @@ namespace engine
                 string minutes = gbl.area_ptr.time_hour.ToString("00");
                 string hours = ((gbl.area_ptr.time_minutes_tens * 10) + gbl.area_ptr.time_minutes_ones).ToString("00");
 
-                if (gbl.area_ptr.field_1F6 == 0)
+                if (gbl.area_ptr.block_area_view == 0)
                 {
                     output = string.Format("{0},{1} ", gbl.mapPosX, gbl.mapPosY);
                 }

@@ -50,7 +50,7 @@ namespace engine
 
 			if( gbl.gameFlag01 == true )
 			{
-				seg044.sound_sub_120E0( gbl.word_188BC );
+				seg044.sound_sub_120E0( gbl.sound_FF_188BC );
 			}
 
             ovr012.sub_39054();
@@ -60,7 +60,7 @@ namespace engine
 				seg044.sound_sub_12194();
 			}
 
-			seg044.sound_sub_120E0( gbl.word_188BE );
+			seg044.sound_sub_120E0( gbl.sound_0_188BE );
             seg044.sound_sub_12194();
 
 			if( seg051.ParamStr( 1 ) != "STING" )
@@ -101,7 +101,7 @@ namespace engine
 
 				if( gbl.gameFlag01 == true )
 				{
-					seg044.sound_sub_120E0( gbl.word_188BC );
+					seg044.sound_sub_120E0( gbl.sound_FF_188BC );
 				}
 
 				if( gbl.gameFlag01 == false )
@@ -116,7 +116,7 @@ namespace engine
 
 				if( gbl.gameFlag01 == true )
 				{
-					seg044.sound_sub_120E0( gbl.word_188BC );
+					seg044.sound_sub_120E0( gbl.sound_FF_188BC );
 				}
 
 				if( gbl.gameFlag01 == false )
@@ -126,7 +126,7 @@ namespace engine
 
 				if( gbl.gameFlag01 == true )
 				{
-					seg044.sound_sub_120E0( gbl.word_188BC );
+					seg044.sound_sub_120E0( gbl.sound_FF_188BC );
 				}
 
 				if( gbl.gameFlag01 == false )
@@ -138,7 +138,7 @@ namespace engine
 
 				if( gbl.gameFlag01 == true )
 				{
-					seg044.sound_sub_120E0( gbl.word_188BC );
+					seg044.sound_sub_120E0( gbl.sound_FF_188BC );
 				}
 
 				if( gbl.gameFlag01 == false )
@@ -169,7 +169,7 @@ namespace engine
 						//ovr004.copy_protection();
 					}
 				
-					seg044.sound_sub_120E0( gbl.word_188BE );
+					seg044.sound_sub_120E0( gbl.sound_0_188BE );
 				}
 			}
         }

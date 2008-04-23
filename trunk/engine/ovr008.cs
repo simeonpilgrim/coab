@@ -1508,19 +1508,19 @@ namespace engine
         }
 
 
-        internal static void sub_31DEF(Player player_ptr, double arg_4)
+        internal static void RobMoney(Player player_ptr, double scale) /* sub_31DEF */
         {
-            player_ptr.copper = (short)(player_ptr.copper * arg_4);
-            player_ptr.electrum = (short)(player_ptr.electrum * arg_4);
-            player_ptr.silver = (short)(player_ptr.silver * arg_4);
-            player_ptr.gold = (short)(player_ptr.gold * arg_4);
-            player_ptr.platinum = (short)(player_ptr.platinum * arg_4);
-            player_ptr.field_105 = (short)(player_ptr.field_105 * arg_4);
-            player_ptr.field_107 = (short)(player_ptr.field_107 * arg_4);
+            player_ptr.copper *= (short)(player_ptr.copper * scale);
+            player_ptr.electrum = (short)(player_ptr.electrum * scale);
+            player_ptr.silver = (short)(player_ptr.silver * scale);
+            player_ptr.gold = (short)(player_ptr.gold * scale);
+            player_ptr.platinum = (short)(player_ptr.platinum * scale);
+            player_ptr.field_105 = (short)(player_ptr.field_105 * scale);
+            player_ptr.field_107 = (short)(player_ptr.field_107 * scale);
         }
 
 
-        internal static void sub_31F1C(Player player, byte arg_4)
+        internal static void RobItems(Player player, byte arg_4) /* sub_31F1C */
         {
             Item next_item_ptr;
             Item item_ptr;

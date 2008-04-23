@@ -7,33 +7,25 @@ namespace engine
         // the 2 is made up.
         static byte[, , ,] unk_1AB1C = new byte[2, 4, 6, 11]; //seg600:480C unk_1AB1C
 
-        internal static void sub_37046(byte arg_0, byte arg_2, byte arg_4)
+        internal static void set_background_tile(int tileId, int y, int x) /* sub_37046 */
         {
-            int var_1 = (gbl.byte_1AD34 * 6) + 21 + (gbl.byte_1AD35 * 5) + arg_4;
-            int var_2 = (gbl.byte_1AD35 * 5) + 10 + arg_2;
+            int tmpX = (gbl.byte_1AD34 * 6) + (gbl.byte_1AD35 * 5) + 21 + x;
+            int tmpY = (gbl.byte_1AD35 * 5) + 10 + y;
 
-            if (var_1 >= 0 &&
-                var_1 <= 0x31 &&
-                var_2 >= 0 &&
-                var_2 <= 0x18)
+            if (tmpX >= 0 &&
+                tmpX <= 0x31 &&
+                tmpY >= 0 &&
+                tmpY <= 0x18)
             {
-                gbl.mapToBackGroundTile[var_1, var_2] = (byte)(arg_0 + 1);
+                gbl.mapToBackGroundTile[tmpX, tmpY] = tileId + 1;
             }
         }
 
-        static sbyte[] unk_1665B /*seg600:034C*/ = { 0, 1, 0, -1 };
-        static sbyte[] unk_1665F /*seg600:0350*/ = { -1, 0, 1, 0 };
+        static int[] dir_x_offset /*seg600:034C unk_1665B*/ = { 0, 1, 0, -1 };
+        static int[] dir_y_offset /*seg600:0350 unk_1665F*/ = { -1, 0, 1, 0 };
 
         internal static void sub_370D3()
         {
-            byte var_7;
-            byte var_6;
-            byte var_5;
-            byte var_4;
-            byte var_3;
-            byte var_2;
-            byte var_1;
-
             if (gbl.byte_1AD36 != 1 && gbl.byte_1AD38 != 1 &&
                 gbl.byte_1AD39 != 1 && gbl.byte_1AD37 != 1)
             {
@@ -59,35 +51,35 @@ namespace engine
                 gbl.byte_1AD3E = 1;
             }
 
-            for (var_1 = 2; var_1 <= 3; var_1++)
+            for (int var_1 = 2; var_1 <= 3; var_1++)
             {
-                for (var_2 = 2; var_2 <= 4; var_2++)
+                for (int var_2 = 2; var_2 <= 4; var_2++)
                 {
-                    var_3 = (byte)((gbl.byte_1AD34 * 6) + (gbl.byte_1AD35 * 5) + 0x15 + var_1 + var_2);
-                    var_4 = (byte)((gbl.byte_1AD35 * 5) + 0x0a + var_2);
+                    int posX = (gbl.byte_1AD34 * 6) + (gbl.byte_1AD35 * 5) + 0x15 + var_1 + var_2;
+                    int posY = (gbl.byte_1AD35 * 5) + 0x0a + var_2;
 
-                    if (var_3 >= 0 && var_3 <= 0x31 &&
-                        var_4 >= 0 && var_4 <= 0x18)
+                    if (posX >= 0 && posX <= 0x31 &&
+                        posY >= 0 && posY <= 0x18)
                     {
-                        if (gbl.BackGroundTiles[gbl.mapToBackGroundTile[var_3, var_4]].tile_index == 0x16 &&
+                        if (gbl.BackGroundTiles[gbl.mapToBackGroundTile[posX, posY]].tile_index == 0x16 &&
                             gbl.byte_1AD3D != 0 &&
                             gbl.byte_1AD3E != 0 &&
                             ovr024.roll_dice(10, 1) <= 5)
                         {
-                            gbl.mapToBackGroundTile[var_3, var_4] = 0x1A;
+                            gbl.mapToBackGroundTile[posX, posY] = 0x1A; // Table
 
-                            for (var_7 = 0; var_7 < 4; var_7++)
+                            for (int var_7 = 0; var_7 < 4; var_7++)
                             {
-                                var_5 = (byte)(unk_1665B[var_7] + var_3);
-                                var_6 = (byte)(unk_1665F[var_7] + var_4);
+                                int tmpX = dir_x_offset[var_7] + posX;
+                                int tmpY = dir_y_offset[var_7] + posY;
 
-                                if (var_5 >= 0 && var_5 <= 0x31 &&
-                                    var_6 >= 0 && var_6 <= 0x18)
+                                if (tmpX >= 0 && tmpX <= 0x31 &&
+                                    tmpY >= 0 && tmpY <= 0x18)
                                 {
-                                    if (gbl.BackGroundTiles[gbl.mapToBackGroundTile[var_5, var_6]].tile_index == 0x16 &&
+                                    if (gbl.BackGroundTiles[gbl.mapToBackGroundTile[tmpX, tmpY]].tile_index == 0x16 &&
                                         ovr024.roll_dice(10, 1) <= 9)
                                     {
-                                        gbl.mapToBackGroundTile[var_3, var_4] = 0x1B;
+                                        gbl.mapToBackGroundTile[posX, posY] = 0x1B; // Chair
                                     }
                                 }
                             }
@@ -137,8 +129,7 @@ namespace engine
 
         internal static byte sub_37388(int dir, int mapX, int mapY)
         {
-            byte oppositeDir = (byte)((dir + 4) % 8);
-
+            int oppositeDir = (dir + 4) % 8;
             int newMapY = gbl.MapDirectionXDelta[dir] + mapY;
             int newMapX = gbl.MapDirectionYDelta[dir] + mapX;
 
@@ -160,7 +151,7 @@ namespace engine
             {
                 for (var_1 = 0; var_1 <= 5; var_1++)
                 {
-                    sub_37046(0x16, var_2, var_1);
+                    set_background_tile(0x16, var_2, var_1);
                 }
             }
 
@@ -168,15 +159,15 @@ namespace engine
             {
                 for (var_2 = 2; var_2 <= 4; var_2++)
                 {
-                    sub_37046(4, var_2, (byte)(var_2 - 1));
-                    sub_37046(3, var_2, var_2);
-                    sub_37046(13, var_2, (byte)(var_2 + 1));
+                    set_background_tile(4, var_2, var_2 - 1);
+                    set_background_tile(3, var_2, var_2);
+                    set_background_tile(13, var_2, var_2 + 1);
                 }
             }
             else if (gbl.byte_1AD37 == 3)
             {
-                sub_37046(8, 2, 1);
-                sub_37046(0, 4, 5);
+                set_background_tile(8, 2, 1);
+                set_background_tile(0, 4, 5);
             }
         }
 
@@ -185,17 +176,17 @@ namespace engine
         {
             if (gbl.byte_1AD36 == 1)
             {
-                sub_37046(5, 0, 3);
-                sub_37046(5, 0, 4);
-                sub_37046(10, 1, 3);
-                sub_37046(10, 1, 4);
+                set_background_tile(5, 0, 3);
+                set_background_tile(5, 0, 4);
+                set_background_tile(10, 1, 3);
+                set_background_tile(10, 1, 4);
             }
             else
             {
-                sub_37046(0x16, 0, 3);
-                sub_37046(0x16, 0, 4);
-                sub_37046(0x16, 1, 3);
-                sub_37046(0x16, 1, 4);
+                set_background_tile(0x16, 0, 3);
+                set_background_tile(0x16, 0, 4);
+                set_background_tile(0x16, 1, 3);
+                set_background_tile(0x16, 1, 4);
             }
         }
 
@@ -365,10 +356,10 @@ namespace engine
                 }
             }
 
-            sub_37046(var_2, 0, 1);
-            sub_37046(var_4, 0, 2);
-            sub_37046(var_3, 1, 1);
-            sub_37046(var_5, 1, 2);
+            set_background_tile(var_2, 0, 1);
+            set_background_tile(var_4, 0, 2);
+            set_background_tile(var_3, 1, 1);
+            set_background_tile(var_5, 1, 2);
         }
 
 
@@ -554,10 +545,10 @@ namespace engine
                 }
             }
 
-            sub_37046(var_2, 0, 5);
-            sub_37046(var_4, 0, 6);
-            sub_37046(var_3, 1, 5);
-            sub_37046(var_5, 1, 6);
+            set_background_tile(var_2, 0, 5);
+            set_background_tile(var_4, 0, 6);
+            set_background_tile(var_3, 1, 5);
+            set_background_tile(var_5, 1, 6);
         }
 
 
@@ -1015,7 +1006,7 @@ namespace engine
 
             do
             {
-                int di = (gbl.byte_1AD32[gbl.currentTeam] << 2) + var_14;
+                int di = (gbl.team_direction[gbl.currentTeam] << 2) + var_14;
                 var_9 = (byte)(unk_165FC[di] >> 1);
 
                 if (var_7 == 1)
@@ -1069,13 +1060,13 @@ namespace engine
                 if (var_7 > 1)
                 {
                     if ((var_5 != 0 && sub_38202(var_18, var_17) == false) ||
-                        (var_3 != 0 && var_13 >= gbl.unk_1AD30[gbl.currentTeam]) ||
+                        (var_3 != 0 && var_13 >= gbl.half_team_count[gbl.currentTeam]) ||
                         (var_3 == 0 && var_13 > 11))
                     {
                         var_F++;
 
                         if (gbl.currentTeam == 0 &&
-                            (gbl.byte_1AD32[0] & 1) == 1 &&
+                            (gbl.team_direction[0] & 1) == 1 &&
                             var_14 == 0 &&
                             var_F == 1)
                         {
@@ -1085,7 +1076,7 @@ namespace engine
 
                             for (var_A = 1; var_A <= 3; var_A++)
                             {
-                                int tmpDir = unk_165EC[gbl.byte_1AD32[gbl.currentTeam] + var_A];
+                                int tmpDir = unk_165EC[gbl.team_direction[gbl.currentTeam] + var_A];
 
                                 if (gbl.game_state == 3 ||
                                     sub_37388(tmpDir, tmpY, tmpX) != 1)
@@ -1118,7 +1109,7 @@ namespace engine
                         int tmpX = gbl.byte_1AD2C[gbl.currentTeam] + gbl.mapPosX;
                         int tmpY = gbl.byte_1AD2E[gbl.currentTeam] + gbl.mapPosY;
 
-                        int tmpDir = unk_165EC[gbl.byte_1AD32[gbl.currentTeam] + var_14];
+                        int tmpDir = unk_165EC[gbl.team_direction[gbl.currentTeam] + var_14];
 
                         if (gbl.game_state == 3 ||
                             sub_37388(tmpDir, tmpY, tmpX) != 1)
@@ -1160,7 +1151,7 @@ namespace engine
         {
             byte var_F;
             byte var_E;
-            byte var_D;
+            int var_D;
             byte var_C;
             byte loop_var;
             Player player_ptr;
@@ -1180,14 +1171,14 @@ namespace engine
             ovr033.sub_743E7();
             gbl.byte_1AD2C[0] = 0;
             gbl.byte_1AD2E[0] = 0;
-            gbl.byte_1AD32[0] = (byte)(gbl.mapDirection >> 1);
+            gbl.team_direction[0] = (byte)(gbl.mapDirection >> 1);
 
             gbl.byte_1AD2C[1] = (sbyte)((gbl.area2_ptr.field_582 * gbl.MapDirectionXDelta[gbl.mapDirection]) + gbl.byte_1AD2C[0]);
             gbl.byte_1AD2E[1] = (sbyte)((gbl.area2_ptr.field_582 * gbl.MapDirectionYDelta[gbl.mapDirection]) + gbl.byte_1AD2E[0]);
-            gbl.byte_1AD32[1] = (byte)(((gbl.mapDirection + 4) % 8) >> 1);
+            gbl.team_direction[1] = (byte)(((gbl.mapDirection + 4) % 8) >> 1);
 
-            gbl.unk_1AD30[0] = (byte)((gbl.friends_count + 1) / 2);
-            gbl.unk_1AD30[1] = (byte)((gbl.foe_count + 1) / 2);
+            gbl.half_team_count[0] = (byte)((gbl.friends_count + 1) / 2);
+            gbl.half_team_count[1] = (byte)((gbl.foe_count + 1) / 2);
 
             for (gbl.currentTeam = 0; gbl.currentTeam < 2; gbl.currentTeam++)
             {
@@ -1199,7 +1190,7 @@ namespace engine
                     }
                     else
                     {
-                        var_D = gbl.byte_1AD32[gbl.currentTeam];
+                        var_D = gbl.team_direction[gbl.currentTeam];
                     }
 
                     for (var_2 = 0; var_2 <= 5; var_2++)
@@ -1334,7 +1325,7 @@ namespace engine
             seg043.clear_one_keypress();
             sub_387FE();
             seg043.clear_one_keypress();
-            seg040.init_dax_block(out gbl.dword_1D90A, 1, 4, 3, 0x18);
+            seg040.init_dax_block(out gbl.missile_dax, 1, 4, 3, 0x18);
 
             gbl.mapToBackGroundTile.mapScreenLeftX = ovr033.PlayerMapXPos(gbl.player_next_ptr) - 3;
             gbl.mapToBackGroundTile.mapScreenTopY = ovr033.PlayerMapYPos(gbl.player_next_ptr) - 3;

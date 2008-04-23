@@ -68,20 +68,19 @@ namespace engine
             byte var_5;
             byte var_4;
             byte var_3;
-            ushort var_2;
 
-            seg040.DrawColorBlock(gbl.byte_1D534, 0x2c, 11, 16, 2);
+            seg040.DrawColorBlock(gbl.sky_colour, 0x2c, 11, 16, 2);
             seg040.DrawColorBlock(0, 2, 11, 0x3c, 2);
             seg040.DrawColorBlock(8, 0x2a, 11, 0x3e, 2);
 
             if (sub_717A5(gbl.mapPosY, gbl.mapPosY) < 0x80 &&
-                gbl.byte_1D534 == 11)
+                gbl.sky_colour == 11)
             {
                 var_3 = 2;
                 var_4 = 2;
                 var_5 = 0x0C;
 
-                var_2 = gbl.area_ptr.time_hour;
+                int var_2 = gbl.area_ptr.time_hour;
 
                 if (var_2 >= 1 && var_2 <= 5)
                 {
@@ -283,7 +282,7 @@ namespace engine
             byte var_1;
 
             if (MapCoordIsValid(mapY, mapX) == false && 
-                (gbl.byte_1EE88 == 0 || gbl.byte_1EE88 == 0x0A))
+                (gbl.byte_1EE88 == 0 || gbl.byte_1EE88 == 10))
             {
                 var_1 = 0;
             }
@@ -426,7 +425,7 @@ namespace engine
                 byte var_14 = getMap_XXX(partyDir, tmpY, tmpX);
 
                 if (MapCoordIsValid(tmpY, tmpX) == false &&
-                  getMap_XXX(dir_left, tmpY, tmpX) == 0)
+                    getMap_XXX(dir_left, tmpY, tmpX) == 0)
                 {
                     var_17 = 0;
                 }

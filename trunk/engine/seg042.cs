@@ -287,7 +287,7 @@ namespace engine
 
         internal static void load_decode_dax( out byte[] out_data, out short decodeSize, byte block_id, string file_name )
         {
-            seg044.sound_sub_120E0( gbl.word_188BE );
+            seg044.sound_sub_120E0( gbl.sound_0_188BE );
 
             DaxFileCache dfc;
 
@@ -300,7 +300,7 @@ namespace engine
             out_data = dfc.GetData(block_id);
             decodeSize = out_data == null ? (short)0:(short)out_data.Length;
 
-            seg044.sound_sub_120E0(gbl.word_188C0);
+            seg044.sound_sub_120E0(gbl.sound_1_188C0);
         }
          
 
