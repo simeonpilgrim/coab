@@ -152,6 +152,11 @@ namespace engine
             }
         }
 
+        private static void SetTone(short ax)
+        {
+            //TODO Set the tone...
+        }
+
 
         private static void sound_sub_1347A()
         {
@@ -174,25 +179,24 @@ namespace engine
                             unk_12230[si, 5] != 0 &&
                             unk_12230[si, 0] != 0)
                         {
-                            word_123C8 = (short)(si + 0x170);
+                            word_123C8 = (short)((si*0x30) + 0x170);
                         }
                     }
 
                     si += 1;
                 } while (--byte_121DC != 0);
 
+
                 if (byte_12210 != 0 &&
                     word_123C8 != 0)
                 {
-                    si = byte_12210;
+                    si = word_123C8;
+                    int i = (si-0x170)/0x30;
+                    short ax = unk_12230[i, 8];
+                    
+                    SetTone(ax);
 
-                    throw new System.NotSupportedException();//mov	ax, [si+8]
-                    throw new System.NotSupportedException();//out	0x42, al
-                    throw new System.NotSupportedException();//mov	al, ah
-                    throw new System.NotSupportedException();//out	0x42, al
-                    throw new System.NotSupportedException();//mov	bx, [si+0Ah]
-                    throw new System.NotSupportedException();//and	bl, 3
-                    byte bl = 3;
+                    byte bl = (byte)(unk_12230[i, 0xA] & 3);
                     if (bl == 3)
                     {
                         // Speaker On

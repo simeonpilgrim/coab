@@ -559,7 +559,7 @@ namespace engine
 
             if (gbl.game_state != 5)
             {
-                seg044.sound_sub_120E0(gbl.word_188C8);
+                seg044.sound_sub_120E0(gbl.sound_5_188C8);
                 seg041.GameDelay();
             }
             else
@@ -583,7 +583,7 @@ namespace engine
                     }
 
                     sub_74572(var_1, 0, 0);
-                    seg044.sound_sub_120E0(gbl.word_188C8);
+                    seg044.sound_sub_120E0(gbl.sound_5_188C8);
 
                     for (var_3 = 0; var_3 <= 8; var_3++)
                     {

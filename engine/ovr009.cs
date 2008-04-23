@@ -30,7 +30,7 @@ namespace engine
             seg051.FreeMem(0x4e9, gbl.mapToBackGroundTile);
             gbl.mapToBackGroundTile = null;
 
-            seg040.free_dax_block(ref gbl.dword_1D90A);
+            seg040.free_dax_block(ref gbl.missile_dax);
             ovr033.Color_0_8_normal();
             gbl.dword_1D5CA = new Classes.spellDelegate(ovr023.cast_spell_on);
         }

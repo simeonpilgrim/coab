@@ -46,10 +46,10 @@ namespace Classes
             field_1E0  = 0;
             field_1E2  = 0;
             field_1E4  = 0;
-            field_1F6  = 0;
+            block_area_view  = 0;
             game_speed  = 0;
-            field_1FA  = 0;
-            field_1FC  = 0;
+            outdoor_sky_colour  = 0;
+            indoor_sky_colour  = 0;
             pics_on  = 0; //field_1FE;
 
             can_cast_spells = false;
@@ -103,13 +103,13 @@ namespace Classes
         [DataOffset(0x1E4, DataType.Word)]
         public ushort field_1E4;
         [DataOffset(0x1F6, DataType.SWord)]
-        public short field_1F6; // field_1F6
+        public short block_area_view; // field_1F6
         [DataOffset(0x1F8, DataType.Byte)]
         public byte game_speed;
         [DataOffset(0x1FA, DataType.Word)]
-        public ushort field_1FA;
+        public ushort outdoor_sky_colour;
         [DataOffset(0x1FC, DataType.Word)]
-        public ushort field_1FC;
+        public ushort indoor_sky_colour;
         [DataOffset(0x1FE, DataType.Byte)]
         public byte pics_on; //field_1FE;
 
@@ -162,12 +162,16 @@ namespace Classes
                     field_1E4 = value;
                     break;
 
+                case 0x1F6:
+                    block_area_view = (short)value;
+                    break;
+
                 case 0x1FA:
-                    field_1FA = value;
+                    outdoor_sky_colour = value;
                     break;
 
                 case 0x1FC:
-                    field_1FC = value;
+                    indoor_sky_colour = value;
                     break;
 
                 case 0x200:
@@ -249,10 +253,10 @@ namespace Classes
                     return field_1E4;
 
                 case 0x1FA:
-                    return field_1FA;
+                    return outdoor_sky_colour;
 
                 case 0x1FC:
-                    return field_1FC;
+                    return indoor_sky_colour;
 
                 case 0x200:
                 case 0x202:

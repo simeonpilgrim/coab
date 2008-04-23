@@ -138,7 +138,7 @@ namespace Classes
             videoRam = videoRamBkUp;
         }
 
-        public static void SetPixel3(int x, int y, byte value)
+        public static void SetPixel3(int x, int y, int value)
         {
             if (value < 16)
             {

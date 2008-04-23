@@ -546,12 +546,10 @@ namespace engine
 
         internal static void CMD_NewECL()
         {
-            byte var_1;
-
             ovr008.vm_LoadCmdSets(1);
             gbl.area_ptr.field_1E4 = gbl.byte_1EE88;
 
-            var_1 = (byte)ovr008.vm_GetCmdValue(1);
+            byte var_1 = (byte)ovr008.vm_GetCmdValue(1);
 
             gbl.byte_1EE88 = var_1;
 
@@ -1163,7 +1161,7 @@ namespace engine
 
                     if (gbl.gameFlag01 == true)
                     {
-                        seg044.sound_sub_120E0(gbl.word_188BC);
+                        seg044.sound_sub_120E0(gbl.sound_FF_188BC);
                     }
 
                     if (gbl.gameFlag01 == false)
@@ -1177,7 +1175,7 @@ namespace engine
                     {
                         if (gbl.gameFlag01 == true)
                         {
-                            seg044.sound_sub_120E0(gbl.word_188BC);
+                            seg044.sound_sub_120E0(gbl.sound_FF_188BC);
                         }
 
                         if (gbl.gameFlag01 == false)
@@ -1189,7 +1187,7 @@ namespace engine
                     {
                         if (gbl.gameFlag01 == true)
                         {
-                            seg044.sound_sub_120E0(gbl.word_188BC);
+                            seg044.sound_sub_120E0(gbl.sound_FF_188BC);
                         }
 
                         if (gbl.gameFlag01 == false)
@@ -1206,7 +1204,7 @@ namespace engine
 
                         if (gbl.gameFlag01 == true)
                         {
-                            seg044.sound_sub_120E0(gbl.word_188BC);
+                            seg044.sound_sub_120E0(gbl.sound_FF_188BC);
                         }
 
                         if (gbl.gameFlag01 == false)
@@ -1221,7 +1219,7 @@ namespace engine
 
                             if (gbl.gameFlag01 == true)
                             {
-                                seg044.sound_sub_120E0(gbl.word_188BC);
+                                seg044.sound_sub_120E0(gbl.sound_FF_188BC);
                             }
 
                             if (gbl.gameFlag01 == false)
@@ -1233,7 +1231,7 @@ namespace engine
                         {
                             if (gbl.gameFlag01 == true)
                             {
-                                seg044.sound_sub_120E0(gbl.word_188BC);
+                                seg044.sound_sub_120E0(gbl.sound_FF_188BC);
                             }
 
                             if (gbl.gameFlag01 == false)
@@ -1246,7 +1244,7 @@ namespace engine
                     {
                         if (gbl.gameFlag01 == true)
                         {
-                            seg044.sound_sub_120E0(gbl.word_188BC);
+                            seg044.sound_sub_120E0(gbl.sound_FF_188BC);
                         }
 
                         if (gbl.gameFlag01 == false)
@@ -1260,7 +1258,7 @@ namespace engine
                         {
                             if (gbl.gameFlag01 == true)
                             {
-                                seg044.sound_sub_120E0(gbl.word_188BC);
+                                seg044.sound_sub_120E0(gbl.sound_FF_188BC);
                             }
 
                             if (gbl.gameFlag01 == false)
@@ -1272,7 +1270,7 @@ namespace engine
                         {
                             if (gbl.gameFlag01 == true)
                             {
-                                seg044.sound_sub_120E0(gbl.word_188BC);
+                                seg044.sound_sub_120E0(gbl.sound_FF_188BC);
                             }
 
                             if (gbl.gameFlag01 == false)
@@ -1287,7 +1285,7 @@ namespace engine
             {
                 if (gbl.gameFlag01 == true)
                 {
-                    seg044.sound_sub_120E0(gbl.word_188BC);
+                    seg044.sound_sub_120E0(gbl.sound_FF_188BC);
                 }
 
                 if (gbl.gameFlag01 == false)
@@ -1306,7 +1304,7 @@ namespace engine
 
                 if (gbl.gameFlag01 == true)
                 {
-                    seg044.sound_sub_120E0(gbl.word_188BC);
+                    seg044.sound_sub_120E0(gbl.sound_FF_188BC);
                 }
 
                 ovr006.sub_2E7A2();
@@ -1320,7 +1318,7 @@ namespace engine
                 {
                     if (gbl.gameFlag01 == true)
                     {
-                        seg044.sound_sub_120E0(gbl.word_188BC);
+                        seg044.sound_sub_120E0(gbl.sound_FF_188BC);
                     }
 
                     if (gbl.gameFlag01 == false)
@@ -1333,7 +1331,7 @@ namespace engine
                 {
                     if (gbl.gameFlag01 == true)
                     {
-                        seg044.sound_sub_120E0(gbl.word_188BC);
+                        seg044.sound_sub_120E0(gbl.sound_FF_188BC);
                     }
 
                     if (gbl.gameFlag01 == false)
@@ -1581,26 +1579,25 @@ namespace engine
         }
 
 
-        internal static void sub_27F76()
+        internal static void CMD_Rob() /* sub_27F76*/
         {
             double var_11;
             object var_B;
             Player player;
             byte var_3;
             byte var_2;
-            byte var_1;
 
             ovr008.vm_LoadCmdSets(3);
-            var_1 = (byte)ovr008.vm_GetCmdValue(1);
+            byte allParty = (byte)ovr008.vm_GetCmdValue(1);
             var_2 = (byte)ovr008.vm_GetCmdValue(2);
 
             var_11 = (100 - var_2) / 100.0;
             var_3 = (byte)ovr008.vm_GetCmdValue(3);
 
-            if (var_1 == 0)
+            if (allParty == 0)
             {
-                ovr008.sub_31DEF(gbl.player_ptr, var_11);
-                ovr008.sub_31F1C(gbl.player_ptr, var_3);
+                ovr008.RobMoney(gbl.player_ptr, var_11);
+                ovr008.RobItems(gbl.player_ptr, var_3);
             }
             else
             {
@@ -1609,8 +1606,8 @@ namespace engine
                 while (player != null)
                 {
                     var_B = player.itemsPtr;
-                    ovr008.sub_31DEF(player, var_11);
-                    ovr008.sub_31F1C(player, var_3);
+                    ovr008.RobMoney(player, var_11);
+                    ovr008.RobItems(player, var_3);
                     player = player.next_player;
                 }
             }
@@ -2368,15 +2365,15 @@ namespace engine
 
                     if (gbl.word_1EE76 == 8)
                     {
-                        seg044.sound_sub_120E0(gbl.word_188D2);
+                        seg044.sound_sub_120E0(gbl.sound_a_188D2);
                     }
                     else if (gbl.word_1EE76 == 10)
                     {
-                        seg044.sound_sub_120E0(gbl.word_188D4);
+                        seg044.sound_sub_120E0(gbl.sound_b_188D4);
                     }
                     else
                     {
-                        seg044.sound_sub_120E0(gbl.word_188D2);
+                        seg044.sound_sub_120E0(gbl.sound_a_188D2);
                     }
                     break;
 
@@ -2619,7 +2616,7 @@ namespace engine
                 case 0x25: sub_27AE5(); break;
                 case 0x26: sub_27AE5(); break;
                 case 0x27: load_item(); break;
-                case 0x28: sub_27F76(); break;
+                case 0x28: CMD_Rob(); break;
                 case 0x29: CMD_EncounterMenu(); break;
                 case 0x2A: sub_26E3F(); break;
                 case 0x2B: CMD_HorizontalMenu(); break;
@@ -2879,7 +2876,7 @@ namespace engine
                             if (gbl.area_ptr.field_1E0 != gbl.mapPosX ||
                                 gbl.area_ptr.field_1E2 != gbl.mapPosY)
                             {
-                                seg044.sound_sub_120E0(gbl.word_188D2);
+                                seg044.sound_sub_120E0(gbl.sound_a_188D2);
                             }
 
                             gbl.byte_1EE8C = 0;

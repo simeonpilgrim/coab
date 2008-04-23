@@ -326,7 +326,7 @@ namespace engine
 
             player.actions.field_F = 0;
             player.actions.field_12 = 0;
-            seg044.sound_sub_120E0(gbl.word_188D2);
+            seg044.sound_sub_120E0(gbl.sound_a_188D2);
 
             sub_3E65D(player);
 
@@ -867,7 +867,7 @@ namespace engine
 
             if (ovr025.is_held(arg_A) == true)
             {
-                seg044.sound_sub_120E0(gbl.word_188CC);
+                seg044.sound_sub_120E0(gbl.sound_7_188CC);
 
                 while (arg_E.field_19BArray(arg_E.actions.field_4) == 0)
                 {
@@ -986,7 +986,7 @@ namespace engine
                                     throw new System.NotImplementedException();
                             }
 
-                            seg044.sound_sub_120E0(gbl.word_188CC);
+                            seg044.sound_sub_120E0(gbl.sound_7_188CC);
                             var_11 = 1;
                             sub_3E192(var_15, arg_A, arg_E);
                             backstab(true, gbl.byte_1D2BE, gbl.byte_1D2BE, var_17, arg_A, arg_E);
@@ -1018,7 +1018,7 @@ namespace engine
 
                 if (var_11 == 0)
                 {
-                    seg044.sound_sub_120E0(gbl.word_188D0);
+                    seg044.sound_sub_120E0(gbl.sound_9_188D0);
                     backstab(false, 0, 0, var_17, arg_A, arg_E);
                 }
 
@@ -1867,7 +1867,7 @@ namespace engine
             byte var_2;
             byte var_1;
 
-            seg044.sound_sub_120E0(gbl.word_188D6);
+            seg044.sound_sub_120E0(gbl.sound_c_188D6);
 
             var_3 = sub_409BC(playerA, playerB);
 
@@ -1887,18 +1887,18 @@ namespace engine
                     {
                         if (var_3 == 3 || var_3 == 5)
                         {
-                            ovr025.loadDword_1D90A((var_3 == 5), 0, 1, var_1 + 1);
+                            ovr025.load_missile_dax((var_3 == 5), 0, 1, var_1 + 1);
                         }
                         else
                         {
-                            ovr025.loadDword_1D90A((var_3 == 7), 0, 0, var_1 + 1);
+                            ovr025.load_missile_dax((var_3 == 7), 0, 0, var_1 + 1);
                         }
                     }
                     else
                     {
-                        ovr025.loadDword_1D90A(false, 0, var_3 >> 2, var_1 + (var_3 % 4));
+                        ovr025.load_missile_dax(false, 0, var_3 >> 2, var_1 + (var_3 % 4));
                     }
-                    seg044.sound_sub_120E0(gbl.word_188D6);
+                    seg044.sound_sub_120E0(gbl.sound_c_188D6);
                     break;
 
                 case 2:
@@ -1907,7 +1907,7 @@ namespace engine
                     ovr025.sub_67A59(var_1 + 3);
                     var_2 = 4;
                     var_4 = 0x32;
-                    seg044.sound_sub_120E0(gbl.word_188D0);
+                    seg044.sound_sub_120E0(gbl.sound_9_188D0);
                     break;
 
 
@@ -1916,27 +1916,27 @@ namespace engine
                     ovr025.sub_67A59(var_1 + 4);
                     var_2 = 4;
                     var_4 = 0x32;
-                    seg044.sound_sub_120E0(gbl.word_188CA);
+                    seg044.sound_sub_120E0(gbl.sound_6_188CA);
                     break;
 
                 case 0x65:
                 case 0x2F:
                 case 0x62:
                     var_1++;
-                    ovr025.loadDword_1D90A(false, 0, 0, var_1 + 7);
-                    ovr025.loadDword_1D90A(false, 1, 1, var_1 + 7);
+                    ovr025.load_missile_dax(false, 0, 0, var_1 + 7);
+                    ovr025.load_missile_dax(false, 1, 1, var_1 + 7);
                     var_2 = 2;
                     var_4 = 0x0A;
-                    seg044.sound_sub_120E0(gbl.word_188CA);
+                    seg044.sound_sub_120E0(gbl.sound_6_188CA);
 
                     break;
 
                 default:
-                    ovr025.loadDword_1D90A(false, 0, 0, var_1 + 7);
-                    ovr025.loadDword_1D90A(false, 1, 1, var_1 + 7);
+                    ovr025.load_missile_dax(false, 0, 0, var_1 + 7);
+                    ovr025.load_missile_dax(false, 1, 1, var_1 + 7);
                     var_2 = 2;
                     var_4 = 0x14;
-                    seg044.sound_sub_120E0(gbl.word_188D0);
+                    seg044.sound_sub_120E0(gbl.sound_9_188D0);
                     break;
             }
             
@@ -2477,7 +2477,7 @@ namespace engine
             byte var_D9;
             gbl.Struct_1D1C1[] var_D8 = new gbl.Struct_1D1C1[gbl.unk_1D1C1_count];
 
-            ovr025.loadDword_1D90A(false, 0, 0, 0x19);
+            ovr025.load_missile_dax(false, 0, 0, 0x19);
 
             arg_0.Clear();
 
@@ -2545,7 +2545,7 @@ namespace engine
                             case 'Q':
                             case 'I':
                                 Target(arg_0, out arg_4, arg_8, arg_A, arg_C, var_D9, player_ptr, arg_10);
-                                ovr025.loadDword_1D90A(false, 0, 0, 0x19);
+                                ovr025.load_missile_dax(false, 0, 0, 0x19);
 
                                 sub_4188F(arg_10, var_D8, out var_DA);
                                 var_DD = 0;
@@ -2553,7 +2553,7 @@ namespace engine
 
                             case 'T':
                                 sub_411D8(arg_0, ref arg_4, arg_C, player_ptr, arg_10);
-                                ovr025.loadDword_1D90A(false, 0, 0, 0x19);
+                                ovr025.load_missile_dax(false, 0, 0, 0x19);
 
                                 sub_4188F(arg_10, var_D8, out var_DA);
                                 var_DD = 0;
@@ -2568,7 +2568,7 @@ namespace engine
                     else if (unk_41B05.MemberOf(var_E6) == true)
                     {
                         Target(arg_0, out arg_4, arg_8, arg_A, arg_C, var_D9, player_ptr, arg_10);
-                        ovr025.loadDword_1D90A(false, 0, 0, 0x19);
+                        ovr025.load_missile_dax(false, 0, 0, 0x19);
                         sub_4188F(arg_10, var_D8, out var_DA);
                         var_DD = 0;
                     }
