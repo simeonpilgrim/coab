@@ -245,7 +245,7 @@ namespace Classes
         public static byte byte_1D2BE;
         public static byte byte_1D2BF;
         public static byte byte_1D2C0;
-        public static byte byte_1D2C1;
+        public static byte byte_1D2C1; //TODO rename spell_id
         public static sbyte byte_1D2C2;
         public static byte byte_1D2C4;
         public static byte byte_1D2C5;
@@ -324,8 +324,8 @@ namespace Classes
         public static byte byte_1D5BE;
         public static bool displayInput_specialKeyPressed; // byte_1D5BF displayInput
         public static int byte_1D75E;
-        public static int byte_1D883;
-        public static int byte_1D884;
+        public static int targetX; // byte_1D883
+        public static int targetY; // byte_1D884
         public static byte byte_1D88D;
         public static byte byte_1D8A8;
         public static byte byte_1D8AA;

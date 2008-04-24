@@ -268,7 +268,6 @@ namespace engine
         {
             Player player_ptr;
             byte var_8;
-            Affect var_6;
             byte var_2;
             byte var_1;
 
@@ -291,13 +290,18 @@ namespace engine
 
             while (player_ptr != null && detectMagic == false)
             {
-                if (find_affect(out var_6, Affects.detect_magic, player_ptr) == true)
+                Affect dummyAffect;
+
+                if (find_affect(out dummyAffect, Affects.detect_magic, player_ptr) == true)
                 {
                     detectMagic = true;
                 }
 
                 player_ptr = player_ptr.next_player;
             }
+
+            //cheat 
+            //detectMagic = true;
 
             if (detectMagic == true)
             {
@@ -329,7 +333,7 @@ namespace engine
 
             for (var_1 = 3; var_1 >= 1; var_1--)
             {
-                int v = (var_2 >> (var_1 - 1));
+                //int v = (var_2 >> (var_1 - 1));
 
                 if (((var_2 >> (var_1 - 1)) & 1) > 0)
                 {
