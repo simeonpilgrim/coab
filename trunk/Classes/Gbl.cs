@@ -183,8 +183,8 @@ namespace Classes
         public static byte byte_1AB18;
         public static byte byte_1AB19 = 0x40;
         public static byte byte_1AB1A; // not sure what's this is for.
-        public static sbyte[] byte_1AD2C = { 0, 0 };
-        public static sbyte[] byte_1AD2E = { 0, 0 };
+        public static int[] team_start_x = { 0, 0 }; /* byte_1AD2C */
+        public static int[] team_start_y = { 0, 0 }; /* byte_1AD2E */
         public static int[] half_team_count = { 0, 0 }; /* unk_1AD30 */
         public static int[] team_direction = { 0, 0 }; /* byte_1AD32 */
         public static sbyte byte_1AD34 = 0x1A;

@@ -5,14 +5,14 @@ namespace engine
     class ovr033
     {
         const int MaxStep = 4;
-        static sbyte[, ,] unk_xxxx = new sbyte[4, MaxStep, 2] { 
+        static int[, ,] unk_xxxx = new int[4, MaxStep, 2] { 
             { { 0, 0 }, { -1, -1 }, { -1, -1 }, { -1, -1 } },
             { { 0, 0 }, {  0,  1 }, { -1, -1 }, { -1, -1 } },
             { { 0, 0 }, {  1,  0 }, { -1, -1 }, { -1, -1 } },
             { { 0, 0 }, {  1,  0 }, {  0,  1 }, {  1,  1 } },
         };
 
-        internal static bool GetSizeBasedMapDelta(out sbyte deltaY, out sbyte deltaX, int step, int size) /*sub_7400F*/
+        internal static bool GetSizeBasedMapDelta(out int deltaY, out int deltaX, int step, int size) /*sub_7400F*/
         {
             bool var_1 = false;
             deltaY = 0; /* Added because of 'out' attribute */
@@ -63,8 +63,8 @@ namespace engine
         {
             byte var_7;
             byte var_6;
-            sbyte deltaY;
-            sbyte deltaX;
+            int deltaY;
+            int deltaX;
 
             int screenPosX = posX - gbl.mapToBackGroundTile.mapScreenLeftX;
             int screenPosY = posY - gbl.mapToBackGroundTile.mapScreenTopY;
@@ -132,8 +132,8 @@ namespace engine
                 {
                     for (int step = 0; step <= 3; step++)
                     {
-                        sbyte deltaY;
-                        sbyte deltaX;
+                        int deltaY;
+                        int deltaX;
                         if (GetSizeBasedMapDelta(out deltaY, out deltaX, step, gbl.CombatMap[index].size) == true)
                         {
                             int xPos = gbl.CombatMap[index].xPos + deltaX;
@@ -168,8 +168,6 @@ namespace engine
 
         internal static void sub_74572(byte player_index, int mapY, int mapX)
         {
-            sbyte deltaY;
-            sbyte deltaX;
             int screenY = -120; /*Simeon*/
             int screenX = -120; /*Simeon*/
 
@@ -194,6 +192,9 @@ namespace engine
 
                 for (int step = 0; step < MaxStep; step++)
                 {
+                    int deltaY;
+                    int deltaX;
+
                     if (GetSizeBasedMapDelta(out deltaY, out deltaX, step, size) == true &&
                         CoordOnScreen(deltaY + mapY, deltaX + mapX) == true)
                     {
@@ -230,8 +231,8 @@ namespace engine
             {
                 for (int step = 0; step <= 3; step++)
                 {
-                    sbyte deltaY;
-                    sbyte deltaX;
+                    int deltaY;
+                    int deltaX;
 
                     if (GetSizeBasedMapDelta(out deltaY, out deltaX, step, gbl.CombatMap[player_index].size) == true)
                     {
@@ -499,8 +500,8 @@ namespace engine
 
             for (int step = 0; step <= 3; step++)
             {
-                sbyte deltaY;
-                sbyte deltaX;
+                int deltaY;
+                int deltaX;
 
                 if (GetSizeBasedMapDelta(out deltaY, out deltaX, step, gbl.CombatMap[currentPlayerIndex].size) == true)
                 {
@@ -549,13 +550,7 @@ namespace engine
 
         internal static void sub_74E6F(Player player)
         {
-            int var_7;
-            int var_6;
-            sbyte var_5;
-            sbyte var_4;
-            byte var_3;
             byte var_2;
-            byte var_1;
 
             if (gbl.game_state != 5)
             {
@@ -573,9 +568,9 @@ namespace engine
 
                 if (var_2 >= 9)
                 {
-                    var_1 = get_player_index(player);
-                    var_6 = ovr033.PlayerMapXPos(player);
-                    var_7 = ovr033.PlayerMapYPos(player);
+                    byte var_1 = get_player_index(player);
+                    int var_6 = ovr033.PlayerMapXPos(player);
+                    int var_7 = ovr033.PlayerMapYPos(player);
 
                     if (sub_74761(1, player) == false)
                     {
@@ -585,10 +580,13 @@ namespace engine
                     sub_74572(var_1, 0, 0);
                     seg044.sound_sub_120E0(gbl.sound_5_188C8);
 
-                    for (var_3 = 0; var_3 <= 8; var_3++)
+                    for (int var_3 = 0; var_3 <= 8; var_3++)
                     {
                         for (var_2 = 0; var_2 <= 3; var_2++)
                         {
+                            int var_5;
+                            int var_4;
+
                             if (GetSizeBasedMapDelta(out var_5, out var_4, var_2, gbl.CombatMap[var_1].size) == true &&
                                 CoordOnScreen(gbl.playerScreenY[var_1] + var_5, gbl.playerScreenX[var_1] + var_4) == true)
                             {
@@ -626,7 +624,6 @@ namespace engine
                     gbl.CombatMap[get_player_index(player)].size = 0;
 
                     sub_743E7();
-
 
                     redrawCombatArea(8, 3, gbl.mapToBackGroundTile.mapScreenTopY + 3, gbl.mapToBackGroundTile.mapScreenLeftX + 3);
 

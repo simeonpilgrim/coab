@@ -2138,7 +2138,6 @@ namespace engine
         {
             string var_239;
             byte var_39;
-            short range;
             byte groundTile;
             byte playerAtXY;
             byte var_30;
@@ -2189,7 +2188,7 @@ namespace engine
                 ovr033.AtMapXY(out groundTile, out playerAtXY, posY, posX);
                 seg043.clear_keyboard();
                 var_39 = 0;
-                range = 255;
+                int range = 255;
 
                 int tmpX = posX;
                 int tmpY = posY;
@@ -2699,7 +2698,7 @@ namespace engine
         }
 
 
-        internal static void sub_421C1(byte arg_2, ref short var_3, ref bool var_5, ref Player player)
+        internal static void sub_421C1(byte arg_2, ref int var_3, ref bool var_5, ref Player player)
         {
             var_5 = true;
             if (sub_41E44(arg_2, 0, 0xff, player) == true)
@@ -2720,7 +2719,7 @@ namespace engine
             Player player_target;
             bool var_5;
             byte var_4;
-            short var_3 = 0; /* simeon */
+            int var_3 = 0; /* simeon */
             byte var_1;
 
             var_4 = 0;

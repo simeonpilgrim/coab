@@ -1150,7 +1150,7 @@ namespace engine
         {
             byte var_7A;
             byte var_79 = 0; /* Simeon */
-            short var_78 = 0; /* Simeon */
+            int var_78 = 0; /* Simeon */
             byte var_76 = 0; /* Simeon */
             byte var_75;
             byte var_74;

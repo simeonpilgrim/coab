@@ -559,7 +559,6 @@ namespace engine
             Item var_C;
             byte var_8;
             byte var_7;
-            short var_6;
             byte var_4;
             bool var_3;
             bool var_2;
@@ -651,7 +650,7 @@ namespace engine
                         int tmpX = ovr033.PlayerMapXPos(player01);
                         int tmpY = ovr033.PlayerMapYPos(player01);
 
-                        var_6 = var_4;
+                        int var_6 = var_4;
 
                         gbl.mapToBackGroundTile.field_6 = 0;
 
