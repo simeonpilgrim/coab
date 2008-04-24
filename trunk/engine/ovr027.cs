@@ -139,7 +139,7 @@ namespace engine
         static byte[] unk_18AE0 = { 0x4F, 0x50, 0x51, 0x4B, 0x20, 0x4D, 0x47, 0x48, 0x49 };
 
 
-        internal static char displayInput(out bool arg_0, bool useOverlay, byte arg_6, byte highlightFgColor, byte fgColor, byte extraStringFgColor, string displayInputString, string displayExtraString)
+        internal static char displayInput(out bool specialKeyPressed, bool useOverlay, byte arg_6, byte highlightFgColor, byte fgColor, byte extraStringFgColor, string displayInputString, string displayExtraString)
         {
             byte var_8E;
             byte[] var_8D = new byte[0x28];
@@ -163,7 +163,7 @@ namespace engine
 
             int displayInputStringLen = displayInputString.Length;
             var_60 = '\0';
-            arg_0 = false;
+            specialKeyPressed = false;
             var_63 = 0;
 
             int timeStart = seg041.time01();
@@ -235,7 +235,7 @@ namespace engine
 
                         if (arg_6 != 0)
                         {
-                            arg_0 = true;
+                            specialKeyPressed = true;
                             var_63 = 1;
                         }
                     }
@@ -327,7 +327,7 @@ namespace engine
                                 var_60 = (char)unk_18AE0[var_60 - 0x31];
                             }
 
-                            arg_0 = true;
+                            specialKeyPressed = true;
                             var_63 = 1;
                         }
                     }
@@ -356,7 +356,7 @@ namespace engine
                 ovr028.sub_6E05D();
             }
 
-            gbl.displayInput_specialKeyPressed = arg_0;
+            gbl.displayInput_specialKeyPressed = specialKeyPressed;
 
             return var_60;
         }

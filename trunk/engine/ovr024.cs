@@ -738,6 +738,7 @@ namespace engine
 
         internal static void remove_affect_19(Player player)
         {
+            //TODO rename remove_invisibility
             Affect var_4;
 
             while (ovr025.find_affect(out var_4, Affects.invisibility, player) == true)

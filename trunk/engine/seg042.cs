@@ -5,7 +5,7 @@ namespace engine
 {
 	class seg042
 	{
-		static byte[] dax_raw;
+		//static byte[] dax_raw;
 
 		static void debug_display( string arg_0 )
 		{

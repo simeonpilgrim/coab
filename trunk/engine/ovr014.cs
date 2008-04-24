@@ -1337,8 +1337,8 @@ namespace engine
             if (var_2 == true)
             {
                 var_1 = 1;
-                gbl.byte_1D883 = arg_0.mapX;
-                gbl.byte_1D884 = arg_0.mapY;
+                gbl.targetX = arg_0.mapX;
+                gbl.targetY = arg_0.mapY;
             }
             else
             {
@@ -1364,8 +1364,8 @@ namespace engine
             gbl.byte_1D75E = 0;
             gbl.byte_1D2C7 = 0;
 
-            gbl.byte_1D883 = ovr033.PlayerMapXPos(gbl.player_ptr);
-            gbl.byte_1D884 = ovr033.PlayerMapYPos(gbl.player_ptr);
+            gbl.targetX = ovr033.PlayerMapXPos(gbl.player_ptr);
+            gbl.targetY = ovr033.PlayerMapYPos(gbl.player_ptr);
 
             byte tmp1 = (byte)(gbl.unk_19AEC[arg_6].field_6 & 0x0F);
 
@@ -1410,8 +1410,8 @@ namespace engine
 
                             gbl.sp_target[var_2] = var_C.field_0;
 
-                            gbl.byte_1D883 = ovr033.PlayerMapXPos(var_C.field_0);
-                            gbl.byte_1D884 = ovr033.PlayerMapYPos(var_C.field_0);
+                            gbl.targetX = ovr033.PlayerMapXPos(var_C.field_0);
+                            gbl.targetY = ovr033.PlayerMapYPos(var_C.field_0);
                             gbl.byte_1D75E++;
 
                             if (arg_6 != 0x4f)
@@ -1492,7 +1492,7 @@ namespace engine
                     else
                     {
                         /* TODO it doesn't make sense to mask the low nibble then shift it out */
-                        ovr032.Rebuild_SortedCombatantList(gbl.mapToBackGroundTile, 1, 0xff, (short)((gbl.unk_19AEC[arg_6].field_6 & 0x0f) >> 4), gbl.byte_1D884, gbl.byte_1D883);
+                        ovr032.Rebuild_SortedCombatantList(gbl.mapToBackGroundTile, 1, 0xff, (short)((gbl.unk_19AEC[arg_6].field_6 & 0x0f) >> 4), gbl.targetY, gbl.targetX);
 
                         for (var_2 = 0; var_2 < gbl.sortedCombatantCount; var_2++)
                         {
@@ -1512,7 +1512,7 @@ namespace engine
             {
                 if (sub_4001C(var_C, 1, arg_4, arg_6) != 0)
                 {
-                    ovr032.Rebuild_SortedCombatantList(gbl.mapToBackGroundTile, 1, 0xff, (short)(gbl.unk_19AEC[arg_6].field_6 & 7), gbl.byte_1D884, gbl.byte_1D883);
+                    ovr032.Rebuild_SortedCombatantList(gbl.mapToBackGroundTile, 1, 0xff, (short)(gbl.unk_19AEC[arg_6].field_6 & 7), gbl.targetY, gbl.targetX);
 
                     for (var_2 = 0; var_2 < gbl.sortedCombatantCount; var_2++)
                     {
@@ -1553,8 +1553,8 @@ namespace engine
                             gbl.sp_target[var_2] = var_C.field_0;
                             var_1 -= 1;
 
-                            gbl.byte_1D883 = ovr033.PlayerMapXPos(var_C.field_0);
-                            gbl.byte_1D884 = ovr033.PlayerMapYPos(var_C.field_0);
+                            gbl.targetX = ovr033.PlayerMapXPos(var_C.field_0);
+                            gbl.targetY = ovr033.PlayerMapYPos(var_C.field_0);
                         }
                         else
                         {
@@ -1583,8 +1583,8 @@ namespace engine
                     arg_0 = false;
                 }
 
-                gbl.byte_1D883 = ovr033.PlayerMapXPos(gbl.sp_target[var_2]);
-                gbl.byte_1D884 = ovr033.PlayerMapYPos(gbl.sp_target[var_2]);
+                gbl.targetX = ovr033.PlayerMapXPos(gbl.sp_target[var_2]);
+                gbl.targetY = ovr033.PlayerMapYPos(gbl.sp_target[var_2]);
 
             }
         }

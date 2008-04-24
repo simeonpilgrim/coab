@@ -493,116 +493,95 @@ namespace engine
 		}
 
 
-        internal static void sub_2DD2B( ref short arg_0, ref Item arg_4, ref Item arg_8, out char arg_C )
+        internal static void select_treasure(ref short index, out Item selectedItem, out char key) /* sub_2DD2B */
         {
-            Item var_1C;
-            bool var_18;
-            Item var_4;
-
-            var_18 = true;
             seg037.draw8x8_01();
-			var_1C = gbl.item_pointer;
 
-            while( var_1C != null )
+            Item tmpItem = gbl.item_pointer;
+            while( tmpItem != null )
             {
-                ovr025.ItemDisplayNameBuild(0, false, 0, 0, var_1C, null);
-                var_1C = var_1C.next;
+                ovr025.ItemDisplayNameBuild(0, false, 0, 0, tmpItem, null);
+                tmpItem = tmpItem.next;
             }
 
-			var_4 = gbl.item_pointer;
-
-            arg_C = ovr027.sl_select_item(out arg_4, ref arg_0, ref var_18, true, var_4, 
+            bool var_18 = true;
+            key = ovr027.sl_select_item(out selectedItem, ref index, ref var_18, true, gbl.item_pointer, 
                  0x16, 0x26, 1, 1, 15, 10, 13, "Take", "Items: " );
 
-            arg_8 = arg_4;
         }
 
 
-        internal static void sub_2DDFC( )
+        internal static void take_items_treasure() /* sub_2DDFC */
         {
-            bool var_11;
-            short var_10;
-            Item var_E;
-            byte var_A;
-            char var_9;
-            Item var_8;
+            bool stop;
+            char key;
             Item var_4;
+            short dummyShort = 0;
 
-            var_4 = null;
+            do
+            {
+                select_treasure(ref dummyShort, out var_4, out key);
 
-			var_E = gbl.item_pointer;
+                if (key != 'T' &&
+                    key != '\r')
+                {
+                    stop = true;
+                }
+                else
+                {
+                    stop = false;
 
-			var_10 = 0;
+                    bool willOverload;
+                    ovr007.PlayerAddItem(out willOverload, var_4);
 
-			do
-			{
-				sub_2DD2B( ref var_10, ref var_E, ref var_4, out var_9 );
+                    if (willOverload == false)
+                    {
+                        Item var_8 = gbl.item_pointer;
 
-				if( var_9 != 0x54 &&
-					var_9 != 0x0d )
-				{
-					var_A = 1;
-				}
-				else
-				{
-					var_A = 0;
+                        if (var_8 == var_4)
+                        {
+                            gbl.item_pointer = var_4.next;
+                        }
+                        else
+                        {
+                            while (var_8.next != var_4)
+                            {
+                                var_8 = var_8.next;
+                            }
 
-					ovr007.PlayerAddItem( out var_11, var_4 );
+                            var_8.next = var_4.next;
+                        }
 
-					if( var_11 == false )
-					{
-						var_8 = gbl.item_pointer;
+                        var_4.next = null;
+                        var_4 = null;
 
-						if( var_8 == var_4 )
-						{
-							gbl.item_pointer = var_4.next;
-						}
-						else
-						{
-							while( var_8.next != var_4 )
-							{
-								var_8 = var_8.next;
-							}
-
-							var_8.next = var_4.next;
-						}
-
-						/* TODO this seams wrong to asign before null check */
-						var_4.next = null;
-
-						if( var_4 != null )
-						{
-                            var_4 = null;
-						}
-
-						if( gbl.item_pointer == null )
-						{
-							var_A = 1;
-						}
-					}
-				}
-			}while( var_A == 0 );
+                        if (gbl.item_pointer == null)
+                        {
+                            stop = true;
+                        }
+                    }
+                }
+            } while (stop == false);
 
             ovr025.load_pic();
         }
 
 
-        internal static void sub_2DF2E( ref bool arg_0, ref bool arg_4 )
+        internal static void take_treasure(ref bool items_present, ref bool money_present) /* sub_2DF2E */
         {
-            bool var_3;
+            bool ctrl_key;
             byte var_2;
-            char var_1;
 
             var_2 = 0;
-            if( arg_4 == true )
+            if( money_present == true )
             {
-                if( arg_0 == true )
+                if( items_present == true )
                 {
                     do
                     {
-                        var_1 = ovr027.displayInput( out var_3, true, 1, 15, 10, 13, "Money Items Exit", "Take: " );
+                        char key = ovr027.displayInput( out ctrl_key, true, 1, 15, 10, 13, "Money Items Exit", "Take: " );
                         
-                        switch( var_1 )
+                        switch( key )
                         {
                             case 'M':
                             ovr022.takeItems();
@@ -610,7 +589,7 @@ namespace engine
                                 break;
 
                             case 'I':
-                                sub_2DDFC();
+                                take_items_treasure();
                                 break;
 
                             case 'E':
@@ -621,19 +600,19 @@ namespace engine
                                 break;
 
                             case 'G':
-                                ovr020.sub_572CF( var_1 );
+                                ovr020.sub_572CF( key );
                                 break;
 
                             case 'O':
-                                ovr020.sub_572CF( var_1 );
+                                ovr020.sub_572CF( key );
                                 break;
                         }
 
                         ovr025.Player_Summary( gbl.player_ptr );
-                        ovr022.treasureOnGround( out arg_0, out arg_4 );
+                        ovr022.treasureOnGround( out items_present, out money_present );
                         
-                        if( arg_4 == false ||
-                            arg_0 == false )
+                        if( money_present == false ||
+                            items_present == false )
                         {
                             var_2 = 1;
                         }
@@ -647,87 +626,84 @@ namespace engine
             }
             else
             {
-                sub_2DDFC();
+                take_items_treasure();
             }
         }
 
 
         internal static void distributeCombatTreasure() /* sub_2E0C3 */
         {
-            string var_11A;
-            byte var_10C;
-            byte var_10B = 255; /* Simeon */
-            byte var_10A;
+            string suffix;
+            byte var_10B = 0; /* Simeon */
             byte var_109;
             string var_108;
-            bool var_106;
+            bool ctrl_key;
             bool var_105;
             char var_104;
-            string var_103;
-            bool var_2;
-            bool var_1;
+            string text;
+            bool items_present;
+            bool money_present;
 
             var_108 = string.Empty;
             var_105 = false;
             ovr025.load_pic();
-            var_1 = false;
 
             do
             {
-                ovr022.treasureOnGround( out var_2, out var_1 );
+                ovr022.treasureOnGround( out items_present, out money_present );
 
-                var_103 = "View Pool Exit";
-                var_10A = 0;
-                var_11A = " Exit";
-                var_10C = 0;
+                text = "View Pool Exit";
+                suffix = " Exit";
+                bool can_detect_magic = false;
+                int index = 0;
 
-                if( var_2 == true )
+                if( items_present == true )
                 {
-                    while (var_10A < gbl.max_spells && var_10C == 0)
+                    while (index < gbl.max_spells && can_detect_magic == false)
                     {
-                        if( gbl.player_ptr.spell_list[var_10A] == 5 ||
-                            gbl.player_ptr.spell_list[var_10A] == 11 ||
-                            gbl.player_ptr.spell_list[var_10A] == 0x4D )
+                        if( gbl.player_ptr.spell_list[index] == 5 ||
+                            gbl.player_ptr.spell_list[index] == 11 ||
+                            gbl.player_ptr.spell_list[index] == 0x4D )
                         {
                             if( gbl.player_ptr.in_combat == true )
                             {
-                                var_10C = 1;
-                                var_10B = gbl.player_ptr.spell_list[var_10A];
+                                can_detect_magic = true;
+                                var_10B = gbl.player_ptr.spell_list[index];
                             }
                         }
 
-                        var_10A++;
+                        index++;
                     }
                 }
 
-                if( var_10C != 0 )
+                if (can_detect_magic == true)
                 {
-                    var_11A = " Detect Exit";
+                    suffix = " Detect Exit";
                 }
 
-                if( var_1 == true )
+                if( money_present == true )
                 {
-                    var_103 = "View Take Pool Share" + var_11A;
+                    text = "View Take Pool Share" + suffix;
                 }
-                else if( var_2 == true )
+                else if( items_present == true )
                 {
-                    var_103 = "View Take Pool" + var_11A;
+                    text = "View Take Pool" + suffix;
                 }
 
-                var_104 = ovr027.displayInput( out var_106, true, 1, 15, 10, 13, var_103, var_108 );
+                var_104 = ovr027.displayInput( out ctrl_key, true, 1, 15, 10, 13, text, var_108 );
 
                 switch( var_104 )
                 {
                     case 'V':
-                        ovr020.viewPlayer( out var_106 );
+                        ovr020.viewPlayer( out ctrl_key );
                         break;
 
                     case 'T':
-                        sub_2DF2E( ref var_2, ref var_1 );
+                        take_treasure( ref items_present, ref money_present );
                         break;
 
                     case 'P':
-                        if( var_106 == false )
+                        if( ctrl_key == false )
                         {
                             ovr022.poolMoney();
                         }
@@ -738,20 +714,20 @@ namespace engine
                         break;
 
                     case 'D':
-                        ovr023.sub_5D2E1( ref var_106, 0, 0, var_10B );
+                        ovr023.sub_5D2E1( ref ctrl_key, 0, 0, var_10B );
                         break;
 
                     case 'E':
                     case '\0':
-                        ovr022.treasureOnGround( out var_2, out var_1 );
+                        ovr022.treasureOnGround( out items_present, out money_present );
 
-                        if( var_1 == true || var_2 == true )
+                        if( money_present == true || items_present == true )
                         {
-                            var_103 = "~Yes ~No";
+                            text = "~Yes ~No";
  
                             seg041.press_any_key( "There is still treasure left.  ", true, 0, 10, 0x16, 0x26, 0x11, 1 );
                             seg041.press_any_key( "Do you want to go back and claim your treasure?", false, 0, 15, 0x16, 0x26, 0x11, 1 );
-                            var_109 = ovr008.sub_317AA( false, 0, 15, 10, 13, var_103, var_108 );
+                            var_109 = ovr008.sub_317AA( false, 0, 15, 10, 13, text, var_108 );
 
                             if( var_109 == 1 )
                             {

@@ -273,7 +273,7 @@ namespace engine
             draw_clipped_picture(dax_block, rowY, colX, index, 0, 320, 0, 200);
         }
         
-        static int backcolor = 0;
+        //static int backcolor = 0;
 
         internal static void DrawOverlay()
         {
