@@ -446,43 +446,42 @@ namespace engine
         }
 
 
-        internal static void in_poison_cloud(byte arg_0, Player arg_2)
+        internal static void in_poison_cloud(byte arg_0, Player player)
         {
             Player playerbase_ptr;
             bool isPoisonousCloud;
-            bool var_C;
-            bool var_B;
+            bool isNoxiouxCloud;
             Affect var_A;
             Affect var_6;
             byte var_2;
-            byte var_1;
 
-            if (arg_2.in_combat == true)
+            if (player.in_combat == true)
             {
-                ovr033.sub_74D04(out isPoisonousCloud, out var_C, out var_1, out var_2, 8, arg_2);
+                byte dummyByte;
+                ovr033.sub_74D04(out isPoisonousCloud, out isNoxiouxCloud, out dummyByte, out var_2, 8, player);
 
-                if (var_C && arg_0 != 0 &&
-                    ovr025.find_affect(out var_6, Affects.helpless, arg_2) == false &&
-                    ovr025.find_affect(out var_6, Affects.funky__32, arg_2) == false &&
-                    ovr025.find_affect(out var_6, Affects.affect_6f, arg_2) == false &&
-                    ovr025.find_affect(out var_6, Affects.affect_7d, arg_2) == false)
+                if (isNoxiouxCloud && arg_0 != 0 &&
+                    ovr025.find_affect(out var_6, Affects.helpless, player) == false &&
+                    ovr025.find_affect(out var_6, Affects.funky__32, player) == false &&
+                    ovr025.find_affect(out var_6, Affects.affect_6f, player) == false &&
+                    ovr025.find_affect(out var_6, Affects.affect_7d, player) == false)
                 {
-                    var_B = do_saving_throw(0, 0, arg_2);
+                    bool save_passed = do_saving_throw(0, 0, player);
 
-                    if (var_B == true)
+                    if (save_passed == true)
                     {
                         playerbase_ptr = gbl.player_ptr;
 
                         gbl.player_ptr = sub_63D03(gbl.unk_18AEA, 4, gbl.stru_1D885,
-                            ovr033.PlayerMapYPos(arg_2), ovr033.PlayerMapXPos(arg_2));
+                            ovr033.PlayerMapYPos(player), ovr033.PlayerMapXPos(player));
 
-                        is_unaffected("starts to cough", var_B, 0, false, 0xff, 1, Affects.affect_1e, arg_2);
+                        is_unaffected("starts to cough", save_passed, 0, false, 0xff, 1, Affects.affect_1e, player);
 
                         var_A = null;
 
-                        if (ovr025.find_affect(out var_A, Affects.affect_1e, arg_2) == true)
+                        if (ovr025.find_affect(out var_A, Affects.affect_1e, player) == true)
                         {
-                            sub_630C7(0, var_6, arg_2, Affects.affect_1e);
+                            sub_630C7(0, var_6, player, Affects.affect_1e);
                         }
 
                         gbl.player_ptr = playerbase_ptr;
@@ -492,13 +491,13 @@ namespace engine
                         playerbase_ptr = gbl.player_ptr;
 
                         gbl.player_ptr = sub_63D03(gbl.unk_18AEA, 4, gbl.stru_1D885,
-                            ovr033.PlayerMapYPos(arg_2), ovr033.PlayerMapXPos(arg_2));
+                            ovr033.PlayerMapYPos(player), ovr033.PlayerMapXPos(player));
 
-                        is_unaffected("chokes and gags from nausea", var_B, 0, false, 0xff, (ushort)(roll_dice(4, 1) + 1), Affects.helpless, arg_2);
+                        is_unaffected("chokes and gags from nausea", save_passed, 0, false, 0xff, (ushort)(roll_dice(4, 1) + 1), Affects.helpless, player);
 
-                        if (ovr025.find_affect(out var_6, Affects.helpless, arg_2) == true)
+                        if (ovr025.find_affect(out var_6, Affects.helpless, player) == true)
                         {
-                            sub_630C7(0, var_6, arg_2, Affects.helpless);
+                            sub_630C7(0, var_6, player, Affects.helpless);
                         }
 
                         gbl.player_ptr = playerbase_ptr;
@@ -506,33 +505,33 @@ namespace engine
                 }
 
                 if (isPoisonousCloud == true &&
-                    arg_2.in_combat == true)
+                    player.in_combat == true)
                 {
-                    if (arg_2.field_E5 >= 0 && arg_2.field_E5 <= 4)
+                    if (player.field_E5 >= 0 && player.field_E5 <= 4)
                     {
-                        ovr025.DisplayPlayerStatusString(false, 10, "is Poisoned", arg_2);
+                        ovr025.DisplayPlayerStatusString(false, 10, "is Poisoned", player);
                         seg041.GameDelay();
-                        add_affect(false, 0xff, 0, Affects.minor_globe_of_invulnerability, arg_2);
-                        sub_63014("is killed", Status.dead, arg_2);
+                        add_affect(false, 0xff, 0, Affects.minor_globe_of_invulnerability, player);
+                        sub_63014("is killed", Status.dead, player);
                     }
-                    else if (arg_2.field_E5 == 5)
+                    else if (player.field_E5 == 5)
                     {
-                        if (do_saving_throw(-4, 0, arg_2) == false)
+                        if (do_saving_throw(-4, 0, player) == false)
                         {
-                            ovr025.DisplayPlayerStatusString(false, 10, "is Poisoned", arg_2);
+                            ovr025.DisplayPlayerStatusString(false, 10, "is Poisoned", player);
                             seg041.GameDelay();
-                            add_affect(false, 0xff, 0, Affects.poisoned, arg_2);
-                            sub_63014("is killed", Status.dead, arg_2);
+                            add_affect(false, 0xff, 0, Affects.poisoned, player);
+                            sub_63014("is killed", Status.dead, player);
                         }
                     }
-                    else if (arg_2.field_E5 == 6)
+                    else if (player.field_E5 == 6)
                     {
-                        if (do_saving_throw(0, 0, arg_2) == false)
+                        if (do_saving_throw(0, 0, player) == false)
                         {
-                            ovr025.DisplayPlayerStatusString(false, 10, "is Poisoned", arg_2);
+                            ovr025.DisplayPlayerStatusString(false, 10, "is Poisoned", player);
                             seg041.GameDelay();
-                            add_affect(false, 0xff, 0, Affects.poisoned, arg_2);
-                            sub_63014("is killed", Status.dead, arg_2);
+                            add_affect(false, 0xff, 0, Affects.poisoned, player);
+                            sub_63014("is killed", Status.dead, player);
                         }
                     }
                 }

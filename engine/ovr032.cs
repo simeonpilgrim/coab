@@ -134,7 +134,7 @@ namespace engine
 								  };
 
 
-        internal static bool sub_733F1(Struct_1D1BC arg_0, ref short arg_4, ref int outY, ref int outX, int mapY, int mapX)
+        internal static bool sub_733F1(Struct_1D1BC arg_0, ref int arg_4, ref int outY, ref int outX, int mapY, int mapX)
         {
             bool var_33;
             bool var_32;
@@ -334,14 +334,10 @@ namespace engine
 
         internal static void Rebuild_SortedCombatantList(Struct_1D1BC arg_0, int size, byte dir, short arg_8, int mapY, int mapX) /* sub_738D8 */
         {
-            short var_1F;
-            short var_1D;
             int[] combatantMapStepY = new int[4];
             int[] combatantMapStepX = new int[4];
             int[] mapStepY = new int[4];
             int[] mapStepX = new int[4];
-            sbyte deltaY;
-            sbyte deltaX;
             int var_6;
             int var_5;
             byte playerIndex;
@@ -351,6 +347,9 @@ namespace engine
 
             for (int step = 0; step <= 3; step++)
             {
+                int deltaY;
+                int deltaX;
+
                 if (ovr033.GetSizeBasedMapDelta(out deltaY, out deltaX, step, size) == true)
                 {
                     mapStepX[step] = mapX + deltaX;
@@ -369,10 +368,13 @@ namespace engine
                 if (gbl.CombatMap[playerIndex].size > 0)
                 {
                     bool found = false;
-                    var_1F = 0x0FF;
+                    int var_1F = 0x0FF;
 
                     for (int combStep = 0; combStep <= 3; combStep++)
                     {
+                        int deltaY;
+                        int deltaX;
+
                         if (ovr033.GetSizeBasedMapDelta(out deltaY, out deltaX, combStep, gbl.CombatMap[playerIndex].size) == true)
                         {
                             combatantMapStepX[combStep] = gbl.CombatMap[playerIndex].xPos + deltaX;
@@ -395,7 +397,7 @@ namespace engine
                                 {
                                     int var_8 = combatantMapStepX[combStep];
                                     int var_9 = combatantMapStepY[combStep];
-                                    var_1D = arg_8;
+                                    int var_1D = arg_8;
 
                                     if (sub_733F1(arg_0, ref var_1D, ref var_9, ref var_8, mapStepY[step], mapStepX[step]) == true)
                                     {
@@ -418,7 +420,7 @@ namespace engine
                         gbl.sortedCombatantCount++;
 
                         gbl.SortedCombatantList[gbl.sortedCombatantCount].player_index = playerIndex;
-                        gbl.SortedCombatantList[gbl.sortedCombatantCount].steps = (byte)var_1F;
+                        gbl.SortedCombatantList[gbl.sortedCombatantCount].steps = var_1F;
                         byte tmpDir = 0;
 
                         if (dir < 8)

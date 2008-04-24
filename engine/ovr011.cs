@@ -930,10 +930,8 @@ namespace engine
         }
 
 
-        internal static bool sub_38233(byte arg_0, sbyte arg_2, sbyte arg_4, sbyte arg_6, sbyte arg_8, byte arg_A)
+        internal static bool sub_38233(byte arg_0, int arg_2, int arg_4, int arg_6, int arg_8, int player_index)
         {
-            byte var_3;
-            byte var_2;
             bool var_1;
 
             if (arg_8 < 0 && arg_8 > 10 &&
@@ -945,15 +943,17 @@ namespace engine
             else
             {
                 //TODO workout why players are put on same spot (arg_4, arg_2, & arg_5 == 0)
-                gbl.CombatMap[arg_A].xPos = arg_8 + (arg_4 * 6) + (arg_2 * 5) + 22;
-                gbl.CombatMap[arg_A].yPos = arg_6 + (arg_2 * 5) + 10;
+                gbl.CombatMap[player_index].xPos = arg_8 + (arg_4 * 6) + (arg_2 * 5) + 22;
+                gbl.CombatMap[player_index].yPos = arg_6 + (arg_2 * 5) + 10;
 
-                bool var_5, var_4;
-                ovr033.sub_74D04(out var_5, out var_4, out var_3, out var_2, 8, gbl.player_array[arg_A]);
+                bool dummyBoolA, dummyBoolB;
+                byte groundTile;
+                byte var_2;
+                ovr033.sub_74D04(out dummyBoolA, out dummyBoolB, out groundTile, out var_2, 8, gbl.player_array[player_index]);
 
                 if (var_2 == 0 &&
-                    var_3 > 0 &&
-                    gbl.BackGroundTiles[var_3].move_cost < 0xFF)
+                    groundTile > 0 &&
+                    gbl.BackGroundTiles[groundTile].move_cost < 0xFF)
                 {
                     var_1 = true;
                     unk_1AB1C[gbl.currentTeam, arg_0, arg_6, arg_8] = 0;
@@ -968,13 +968,13 @@ namespace engine
         }
 
         static byte[] /*seg600:02DC*/ unk_165EC = { 8, 4, 6, 2, 8 , 6 , 4 , 0 , 8 , 0 , 6 , 2 , 8 , 2 , 0 , 4 };
-        static byte[] /*seg600:02EC*/ unk_165FC = { 0, 0, 2, 6, 2 , 2 , 0 , 4 , 4 , 4 , 2 , 6 , 6 , 6 , 4 , 0 };
+        static int[] /*seg600:02EC*/ unk_165FC = { 0, 0, 2, 6, 2 , 2 , 0 , 4 , 4 , 4 , 2 , 6 , 6 , 6 , 4 , 0 };
 
         static byte[] /*seg600:0300*/ unk_16610 = { 5, 4, 5, 6, 3 , 8 , 7 , 2 };
         static byte[] /*seg600:0308*/ unk_16618 = { 3, 2, 2, 3, 0 , 2 , 5 , 3 };
 
 
-        internal static byte sub_38380(byte arg_0)
+        internal static bool sub_38380(byte arg_0)
         {
             sbyte var_18 = 0; /* Simeon */
             sbyte var_17 = 0; /* Simeon */
@@ -982,32 +982,25 @@ namespace engine
             sbyte var_15 = 0; /* Simeon */
             byte var_14;
             byte var_13 = 0; /* Simeon */
-            sbyte var_12;
-            sbyte var_11;
             byte var_10 = 0; /* Simeon */
             byte var_F;
-            byte var_A;
-            byte var_9;
             byte var_7;
-            byte var_5;
-            byte var_4;
-            byte var_3;
+            bool var_5;
             bool var_2 = false; /* Simeon */
-            byte var_1;
 
-            var_3 = 1;
-            var_4 = 0;
+            bool var_3 = true;
+            bool var_4 = false;
             var_7 = 1;
             var_F = 0;
             var_14 = 0;
 
-            var_11 = gbl.byte_1AD2C[gbl.currentTeam];
-            var_12 = gbl.byte_1AD2E[gbl.currentTeam];
+            int var_11 = gbl.team_start_x[gbl.currentTeam];
+            int var_12 = gbl.team_start_y[gbl.currentTeam];
 
             do
             {
                 int di = (gbl.team_direction[gbl.currentTeam] << 2) + var_14;
-                var_9 = (byte)(unk_165FC[di] >> 1);
+                int var_9 = unk_165FC[di] / 2;
 
                 if (var_7 == 1)
                 {
@@ -1026,7 +1019,6 @@ namespace engine
                 {
                     int tmpX = gbl.MapDirectionXDelta[unk_1660C[(var_9 + 1) % 4]];
                     int tmpY = gbl.MapDirectionYDelta[unk_1660C[(var_9 + 1) % 4]];
-
 
                     var_17 = (sbyte)(var_15 + (tmpX * var_10));
                     var_18 = (sbyte)(var_16 + (tmpY * var_10));
@@ -1049,19 +1041,19 @@ namespace engine
                 if (var_17 < 0 || var_18 < 0 ||
                     var_17 > 10 || var_18 > 5)
                 {
-                    var_5 = 1;
+                    var_5 = true;
                 }
                 else
                 {
-                    var_5 = 0;
+                    var_5 = false;
                 }
 
 
                 if (var_7 > 1)
                 {
-                    if ((var_5 != 0 && sub_38202(var_18, var_17) == false) ||
-                        (var_3 != 0 && var_13 >= gbl.half_team_count[gbl.currentTeam]) ||
-                        (var_3 == 0 && var_13 > 11))
+                    if ((var_5 == true && sub_38202(var_18, var_17) == false) ||
+                        (var_3 == true && var_13 >= gbl.half_team_count[gbl.currentTeam]) ||
+                        (var_3 == false && var_13 > 11))
                     {
                         var_F++;
 
@@ -1070,11 +1062,11 @@ namespace engine
                             var_14 == 0 &&
                             var_F == 1)
                         {
-                            int tmpX = gbl.byte_1AD2C[gbl.currentTeam] + gbl.mapPosX;
-                            int tmpY = gbl.byte_1AD2E[gbl.currentTeam] + gbl.mapPosY;
+                            int tmpX = gbl.team_start_x[gbl.currentTeam] + gbl.mapPosX;
+                            int tmpY = gbl.team_start_y[gbl.currentTeam] + gbl.mapPosY;
                             bool found = false;
 
-                            for (var_A = 1; var_A <= 3; var_A++)
+                            for (int var_A = 1; var_A <= 3; var_A++)
                             {
                                 int tmpDir = unk_165EC[gbl.team_direction[gbl.currentTeam] + var_A];
 
@@ -1091,12 +1083,12 @@ namespace engine
                             }
                         }
                         var_7 = 1;
-                        var_3 = 0;
+                        var_3 = false;
                     }
                 }
 
 
-                if (var_5 != 0 &&
+                if (var_5 == true &&
                     sub_38202(var_18, var_17) == true)
                 {
                     var_2 = false;
@@ -1106,16 +1098,16 @@ namespace engine
                     {
                         var_14++;
 
-                        int tmpX = gbl.byte_1AD2C[gbl.currentTeam] + gbl.mapPosX;
-                        int tmpY = gbl.byte_1AD2E[gbl.currentTeam] + gbl.mapPosY;
+                        int tmpX = gbl.team_start_x[gbl.currentTeam] + gbl.mapPosX;
+                        int tmpY = gbl.team_start_y[gbl.currentTeam] + gbl.mapPosY;
 
                         int tmpDir = unk_165EC[gbl.team_direction[gbl.currentTeam] + var_14];
 
                         if (gbl.game_state == 3 ||
                             sub_37388(tmpDir, tmpY, tmpX) != 1)
                         {
-                            var_11 = (sbyte)(gbl.byte_1AD2C[gbl.currentTeam] + gbl.MapDirectionXDelta[tmpDir]);
-                            var_12 = (sbyte)(gbl.byte_1AD2E[gbl.currentTeam] + gbl.MapDirectionYDelta[tmpDir]);
+                            var_11 = gbl.team_start_x[gbl.currentTeam] + gbl.MapDirectionXDelta[tmpDir];
+                            var_12 = gbl.team_start_y[gbl.currentTeam] + gbl.MapDirectionYDelta[tmpDir];
 
                             var_F = 0;
                             var_7 = 1;
@@ -1124,26 +1116,18 @@ namespace engine
 
                     if (var_7 != 1)
                     {
-                        var_4 = 1;
+                        var_4 = true;
                     }
                 }
 
-                if (var_5 == 0)
+                if (var_5 == false)
                 {
                     var_2 = sub_38233(var_14, var_12, var_11, var_18, var_17, arg_0);
                 }
-            } while (var_2 == false && var_4 == 0);
+            } while (var_2 == false && var_4 == false);
 
-            if (var_4 != 0)
-            {
-                var_1 = 0;
-            }
-            else
-            {
-                var_1 = 1;
-            }
 
-            return var_1;
+            return var_4 == false;
         }
 
 
@@ -1169,16 +1153,16 @@ namespace engine
             }
 
             ovr033.sub_743E7();
-            gbl.byte_1AD2C[0] = 0;
-            gbl.byte_1AD2E[0] = 0;
+            gbl.team_start_x[0] = 0;
+            gbl.team_start_y[0] = 0;
             gbl.team_direction[0] = (byte)(gbl.mapDirection >> 1);
 
-            gbl.byte_1AD2C[1] = (sbyte)((gbl.area2_ptr.field_582 * gbl.MapDirectionXDelta[gbl.mapDirection]) + gbl.byte_1AD2C[0]);
-            gbl.byte_1AD2E[1] = (sbyte)((gbl.area2_ptr.field_582 * gbl.MapDirectionYDelta[gbl.mapDirection]) + gbl.byte_1AD2E[0]);
-            gbl.team_direction[1] = (byte)(((gbl.mapDirection + 4) % 8) >> 1);
+            gbl.team_start_x[1] = (gbl.area2_ptr.field_582 * gbl.MapDirectionXDelta[gbl.mapDirection]) + gbl.team_start_x[0];
+            gbl.team_start_y[1] = (gbl.area2_ptr.field_582 * gbl.MapDirectionYDelta[gbl.mapDirection]) + gbl.team_start_y[0];
+            gbl.team_direction[1] = ((gbl.mapDirection + 4) % 8) / 2;
 
-            gbl.half_team_count[0] = (byte)((gbl.friends_count + 1) / 2);
-            gbl.half_team_count[1] = (byte)((gbl.foe_count + 1) / 2);
+            gbl.half_team_count[0] = (gbl.friends_count + 1) / 2;
+            gbl.half_team_count[1] = (gbl.foe_count + 1) / 2;
 
             for (gbl.currentTeam = 0; gbl.currentTeam < 2; gbl.currentTeam++)
             {
@@ -1227,7 +1211,7 @@ namespace engine
                 gbl.CombatMap[loop_var].field_2 = loop_var;
                 gbl.CombatMap[loop_var].size = (byte)(player_ptr.field_DE & 7);
 
-                if (sub_38380(loop_var) != 0)
+                if (sub_38380(loop_var) == true)
                 {
                     player_ptr2 = player_ptr;
 
