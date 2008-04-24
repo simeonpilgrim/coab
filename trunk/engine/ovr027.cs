@@ -150,7 +150,7 @@ namespace engine
             int var_5F;
             int var_5B;
 
-            gbl.byte_1D5BF = false;
+            gbl.displayInput_specialKeyPressed = false;
 
             bool var_8F = (fgColor != 0) || (highlightFgColor != 0);
 
@@ -356,7 +356,7 @@ namespace engine
                 ovr028.sub_6E05D();
             }
 
-            gbl.byte_1D5BF = arg_0;
+            gbl.displayInput_specialKeyPressed = arg_0;
 
             return var_60;
         }

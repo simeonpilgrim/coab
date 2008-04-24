@@ -120,12 +120,9 @@ namespace engine
 
         internal static bool sub_352AF(byte arg_2, int mapY, int mapX)
         {
-            byte var_4;
             sbyte var_3;
-            byte var_2;
-            bool var_1;
 
-            var_1 = false;
+            bool result = false;
 
             if (gbl.player_ptr.combat_team == 0)
             {
@@ -136,31 +133,27 @@ namespace engine
                 var_3 = 8;
             }
 
-            ovr032.sub_738D8(gbl.mapToBackGroundTile, 1, 0xff, gbl.unk_19AEC[arg_2].field_F, mapY, mapX);
-            var_4 = gbl.byte_1D1C0;
-
-            for (var_2 = 1; var_2 <= var_4; var_2++)
+            ovr032.Rebuild_SortedCombatantList(gbl.mapToBackGroundTile, 1, 0xff, gbl.unk_19AEC[arg_2].field_F, mapY, mapX);
+   
+            for (int i = 1; i <= gbl.sortedCombatantCount; i++)
             {
-                Player tmpPlayer = gbl.player_array[gbl.unk_1D1C1[var_2].field_0]; // Index is not fixed up.
+                Player tmpPlayer = gbl.player_array[gbl.SortedCombatantList[i].player_index];
                 Struct_19AEC tmpS = gbl.unk_19AEC[arg_2];
 
                 if (ovr025.on_our_team(gbl.player_ptr) != tmpPlayer.combat_team &&
                     tmpS.field_8 != 1 &&
                     ovr024.do_saving_throw(var_3, tmpS.field_9, tmpPlayer) == false)
                 {
-                    var_1 = true;
+                    result = true;
                 }
             }
 
-            return var_1;
+            return result;
         }
 
 
         internal static bool sub_353B1(byte arg_0, byte arg_2, Player arg_4)
         {
-            byte var_8;
-            byte var_7;
-            byte var_6;
             Player var_5;
 
             bool var_1 = false;
@@ -174,7 +167,7 @@ namespace engine
                 }
                 else
                 {
-                    var_6 = ovr025.near_enemy(ovr023.sub_5CDE5(arg_2), arg_4);
+                    int var_6 = ovr025.near_enemy(ovr023.sub_5CDE5(arg_2), arg_4);
 
                     if (var_6 > 0)
                     {
@@ -184,11 +177,9 @@ namespace engine
                         }
                         else
                         {
-                            var_8 = var_6;
-
-                            for (var_7 = 1; var_7 <= var_8; var_7++)
+                            for (int i = 1; i <= var_6; i++)
                             {
-                                if (sub_352AF(arg_2, gbl.CombatMap[gbl.byte_1D8B9[var_7]].yPos, gbl.CombatMap[gbl.byte_1D8B9[var_7]].xPos) == true)
+                                if (sub_352AF(arg_2, gbl.CombatMap[gbl.byte_1D8B9[i]].yPos, gbl.CombatMap[gbl.byte_1D8B9[i]].xPos) == true)
                                 {
                                     return var_1;
                                 }
@@ -673,7 +664,7 @@ namespace engine
 
                     if (gbl.byte_1D90E == false)
                     {
-                        var_7 = ovr025.near_enemy(var_4, player);
+                        var_7 = (byte)ovr025.near_enemy(var_4, player);
 
                         if (var_7 == 0)
                         {

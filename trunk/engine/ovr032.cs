@@ -1,49 +1,50 @@
 using Classes;
+using System;
 
 namespace engine
 {
     class ovr032
     {
-        internal static short sub_73005(int arg_0)
+        internal static int signOfNumer(int arg_0) /*sub_73005*/
         {
-            short var_2;
+            int sign;
 
             if (arg_0 < 0)
             {
-                var_2 = -1;
+                sign = -1;
             }
             else if (arg_0 > 0)
             {
-                var_2 = 1;
+                sign = 1;
             }
             else
             {
-                var_2 = 0;
+                sign = 0;
             }
 
-            return var_2;
+            return sign;
         }
 
 
-        static void sub_73033()
+        static void Sort_SortedCombatabtList() /* sub_73033 */
         {
-            if (gbl.byte_1D1C0 > 1)
+            if (gbl.sortedCombatantCount > 1)
             {
-                for (int var_1 = 1; var_1 <= (gbl.byte_1D1C0 - 1); var_1++)
+                for (int indexA = 1; indexA <= (gbl.sortedCombatantCount - 1); indexA++)
                 {
-                    for (int var_2 = var_1 + 1; var_2 <= gbl.byte_1D1C0; var_2++)
+                    for (int indexB = indexA + 1; indexB <= gbl.sortedCombatantCount; indexB++)
                     {
-                        byte var_4 = gbl.unk_1D1C1[var_1].field_2;
-                        byte var_3 = gbl.unk_1D1C1[var_2].field_2;
+                        int dirA = gbl.SortedCombatantList[indexA].direction;
+                        int dirB = gbl.SortedCombatantList[indexB].direction;
 
-                        if (gbl.unk_1D1C1[var_2].field_1 < gbl.unk_1D1C1[var_1].field_1 ||
-                            (gbl.unk_1D1C1[var_2].field_1 == gbl.unk_1D1C1[var_1].field_1 &&
-                              var_3 < var_4 &&
-                              (var_3 % 2) <= (var_4 % 2)))
+                        if (gbl.SortedCombatantList[indexB].steps < gbl.SortedCombatantList[indexA].steps ||
+                            (gbl.SortedCombatantList[indexB].steps == gbl.SortedCombatantList[indexA].steps &&
+                              dirB < dirA && (dirB % 2) <= (dirA % 2)))
                         {
-                            gbl.Struct_1D1C1 var_7 = gbl.unk_1D1C1[var_1];
-                            gbl.unk_1D1C1[var_1] = gbl.unk_1D1C1[var_2];
-                            gbl.unk_1D1C1[var_2] = var_7;
+                            // swap them.
+                            SortedCombatant var_7 = gbl.SortedCombatantList[indexA];
+                            gbl.SortedCombatantList[indexA] = gbl.SortedCombatantList[indexB];
+                            gbl.SortedCombatantList[indexB] = var_7;
                         }
                     }
                 }
@@ -55,11 +56,11 @@ namespace engine
         {
             arg_0.field_0E = arg_0.field_00;
             arg_0.field_10 = arg_0.field_02;
-            arg_0.field_0A = (short)(System.Math.Abs(arg_0.field_04 - arg_0.field_00));
-            arg_0.field_0C = (short)(System.Math.Abs(arg_0.field_06 - arg_0.field_02));
+            arg_0.field_0A = Math.Abs(arg_0.field_04 - arg_0.field_00);
+            arg_0.field_0C = Math.Abs(arg_0.field_06 - arg_0.field_02);
 
-            arg_0.field_12 = sub_73005(arg_0.field_04 - arg_0.field_00);
-            arg_0.field_14 = sub_73005(arg_0.field_06 - arg_0.field_02);
+            arg_0.field_12 = signOfNumer(arg_0.field_04 - arg_0.field_00);
+            arg_0.field_14 = signOfNumer(arg_0.field_06 - arg_0.field_02);
 
             arg_0.field_08 = 0;
             arg_0.field_16 = 0;
@@ -331,7 +332,7 @@ namespace engine
         }
 
 
-        internal static void sub_738D8(Struct_1D1BC arg_0, int size, byte arg_6, short arg_8, int mapY, int mapX)
+        internal static void Rebuild_SortedCombatantList(Struct_1D1BC arg_0, int size, byte dir, short arg_8, int mapY, int mapX) /* sub_738D8 */
         {
             short var_1F;
             short var_1D;
@@ -341,10 +342,8 @@ namespace engine
             int[] mapStepX = new int[4];
             sbyte deltaY;
             sbyte deltaX;
-            byte var_7;
             int var_6;
             int var_5;
-            byte var_2;
             byte playerIndex;
 
             var_6 = 255; /* put here because of unused error */
@@ -363,13 +362,13 @@ namespace engine
                 }
             }
 
-            gbl.byte_1D1C0 = 0;
+            gbl.sortedCombatantCount = 0;
 
             for (playerIndex = 1; playerIndex <= gbl.CombatantCount; playerIndex++)
             {
                 if (gbl.CombatMap[playerIndex].size > 0)
                 {
-                    var_7 = 0;
+                    bool found = false;
                     var_1F = 0x0FF;
 
                     for (int combStep = 0; combStep <= 3; combStep++)
@@ -392,7 +391,7 @@ namespace engine
                             for (int step = 0; step <= 3; step++)
                             {
                                 if (mapStepX[step] >= 0 &&
-                                    CanSeeCombatant(arg_6, combatantMapStepY[combStep], combatantMapStepX[combStep], mapStepY[step], mapStepX[step]) == true)
+                                    CanSeeCombatant(dir, combatantMapStepY[combStep], combatantMapStepX[combStep], mapStepY[step], mapStepX[step]) == true)
                                 {
                                     int var_8 = combatantMapStepX[combStep];
                                     int var_9 = combatantMapStepY[combStep];
@@ -400,7 +399,7 @@ namespace engine
 
                                     if (sub_733F1(arg_0, ref var_1D, ref var_9, ref var_8, mapStepY[step], mapStepX[step]) == true)
                                     {
-                                        var_7 = 1;
+                                        found = true;
 
                                         if (var_1D < var_1F)
                                         {
@@ -414,32 +413,32 @@ namespace engine
                         }
                     }
 
-                    if (var_7 != 0)
+                    if (found == true)
                     {
-                        gbl.byte_1D1C0++;
+                        gbl.sortedCombatantCount++;
 
-                        gbl.unk_1D1C1[gbl.byte_1D1C0].field_0 = playerIndex;
-                        gbl.unk_1D1C1[gbl.byte_1D1C0].field_1 = (byte)var_1F;
-                        var_2 = 0;
+                        gbl.SortedCombatantList[gbl.sortedCombatantCount].player_index = playerIndex;
+                        gbl.SortedCombatantList[gbl.sortedCombatantCount].steps = (byte)var_1F;
+                        byte tmpDir = 0;
 
-                        if (arg_6 < 8)
+                        if (dir < 8)
                         {
-                            var_2 = arg_6;
+                            tmpDir = dir;
                         }
                         else
                         {
-                            while (CanSeeCombatant(var_2, combatantMapStepY[var_6], combatantMapStepX[var_6], mapStepY[var_5], mapStepX[var_5]) == false)
+                            while (CanSeeCombatant(tmpDir, combatantMapStepY[var_6], combatantMapStepX[var_6], mapStepY[var_5], mapStepX[var_5]) == false)
                             {
-                                var_2++;
+                                tmpDir++;
                             }
                         }
 
-                        gbl.unk_1D1C1[gbl.byte_1D1C0].field_2 = var_2;
+                        gbl.SortedCombatantList[gbl.sortedCombatantCount].direction = tmpDir;
                     }
                 }
             }
 
-            sub_73033();
+            Sort_SortedCombatabtList();
         }
     }
 }

@@ -811,7 +811,6 @@ namespace engine
 
         internal static void sub_5CF7F(string arg_0, byte arg_4, sbyte arg_6, bool arg_8, byte arg_A, byte arg_C)
         {
-            byte var_31;
             bool var_30;
             Player var_2F;
             byte var_2B;
@@ -840,9 +839,7 @@ namespace engine
                     var_2A = arg_A;
                 }
 
-                var_31 = gbl.byte_1D75E;
-
-                for (var_2B = 1; var_2B <= var_31; var_2B++)
+                for (var_2B = 1; var_2B <= gbl.byte_1D75E; var_2B++)
                 {
                     if (gbl.sp_target[var_2B] != null)
                     {
@@ -1329,14 +1326,13 @@ namespace engine
         internal static void sub_5DB24(string arg_0, sbyte arg_4)
         {
             byte var_30;
-            byte var_2F;
             bool var_2E;
             Player var_2D;
             string var_29;
 
             var_29 = arg_0;
 
-            for (var_2F = gbl.byte_1D75E; var_2F >= 1; var_2F--)
+            for (int var_2F = gbl.byte_1D75E; var_2F >= 1; var_2F--)
             {
                 if (gbl.sp_target[var_2F] != null)
                 {
@@ -1378,25 +1374,19 @@ namespace engine
 
         internal static void sub_5DCA0(string arg_0, sbyte arg_4)
         {
-            byte var_2B;
-            byte var_2A;
-            string var_29;
-
-            var_29 = arg_0;
             gbl.byte_1D2C7 = 1;
-            var_2B = gbl.byte_1D75E;
 
-            for (var_2A = 1; var_2A <= var_2B; var_2A++)
+            for (int i = 1; i <= gbl.byte_1D75E; i++)
             {
-                if (gbl.sp_target[var_2A] != null && ( gbl.sp_target[var_2A].combat_team != arg_4 ||
+                if (gbl.sp_target[i] != null && ( gbl.sp_target[i].combat_team != arg_4 ||
                     (gbl.byte_1D2C1 == 1 && gbl.game_state == 5 &&
-                     ovr025.near_enemy(1, gbl.sp_target[var_2A]) > 0)))
+                     ovr025.near_enemy(1, gbl.sp_target[i]) > 0)))
                 {
-                    gbl.sp_target[var_2A] = null;
+                    gbl.sp_target[i] = null;
                 }
             }
 
-            sub_5CF7F(var_29, 0, 0, false, 0, gbl.byte_1D2C1);
+            sub_5CF7F(arg_0, 0, 0, false, 0, gbl.byte_1D2C1);
         }
 
 
@@ -1598,16 +1588,14 @@ namespace engine
 
         internal static void falls_asleep()
         {
-            byte var_6;
             Affect var_5;
             byte var_1;
 
             gbl.byte_1D2C7 = 1;
 
             gbl.byte_1AFDD = ovr024.roll_dice(4, 4);
-            var_6 = gbl.byte_1D75E;
 
-            for (var_1 = 1; var_1 <= var_6; var_1++)
+            for (var_1 = 1; var_1 <= gbl.byte_1D75E; var_1++)
             {
                 throw new System.NotSupportedException();//mov	al, [bp+var_1]
                 throw new System.NotSupportedException();//xor	ah, ah
@@ -2212,9 +2200,8 @@ namespace engine
 
             gbl.byte_1D2C7 = 1;
             var_2 = ovr025.sub_6886F(gbl.byte_1D2C1);
-            var_19 = gbl.byte_1D75E;
 
-            for (var_1 = 1; var_1 <= var_19; var_1++)
+            for (int i = 1; i <= gbl.byte_1D75E; i++)
             {
                 var_7 = 0;
                 var_6 = gbl.sp_target[1];
@@ -2482,8 +2469,6 @@ namespace engine
 
         internal static void sub_5F782()
         {
-            byte var_3;
-            byte var_2;
             sbyte var_1;
 
             gbl.byte_1D2C7 = 1;
@@ -2500,15 +2485,14 @@ namespace engine
             if (gbl.area_ptr.field_1CC == 0)
             {
 
-                ovr032.sub_738D8(gbl.mapToBackGroundTile, 1, 0xff, 2, gbl.byte_1D884, gbl.byte_1D883);
-                var_3 = gbl.byte_1D1C0;
+                ovr032.Rebuild_SortedCombatantList(gbl.mapToBackGroundTile, 1, 0xff, 2, gbl.byte_1D884, gbl.byte_1D883);
 
-                for (var_2 = 0; var_2 < var_3; var_2++)
+                for (int i = 0; i < gbl.sortedCombatantCount; i++)
                 {
-                    gbl.sp_target[var_2 + 1] = gbl.player_array[gbl.unk_1D1C1[var_2].field_0];
+                    gbl.sp_target[i + 1] = gbl.player_array[gbl.SortedCombatantList[i].player_index];
                 }
 
-                gbl.byte_1D75E = gbl.byte_1D1C0;
+                gbl.byte_1D75E = gbl.sortedCombatantCount;
             }
 
             ovr033.redrawCombatArea(8, 0, gbl.byte_1D884, gbl.byte_1D883);
@@ -2520,7 +2504,7 @@ namespace engine
 
         internal static void sub_5F87B(string arg_0, sbyte arg_4, Affects arg_6)
         {
-            byte var_2D;
+
             byte var_2B;
             byte var_2A;
             string var_29;
@@ -2529,9 +2513,8 @@ namespace engine
             gbl.byte_1D2C7 = 1;
 
             var_2A = ovr025.sub_6886F(gbl.byte_1D2C1);
-            var_2D = gbl.byte_1D75E;
 
-            for (var_2B = 1; var_2B < var_2D; var_2B++)
+            for (var_2B = 1; var_2B < gbl.byte_1D75E; var_2B++)
             {
                 if (gbl.sp_target[var_2B].combat_team == arg_4 &&
                     var_2A > 0)
@@ -3195,80 +3178,67 @@ namespace engine
 
         internal static void cast_teleport()
         {
-            byte var_F;
-            byte var_E;
-            Affect var_D;
-            Player var_8;
-            Player var_4;
+            Affect affect;
+            Player playerA = gbl.player_ptr;
 
-            var_4 = gbl.player_ptr;
-
-            if (ovr025.find_affect(out var_D, Affects.affect_3a, var_4) == true)
+            if (ovr025.find_affect(out affect, Affects.affect_3a, playerA) == true)
             {
-                ovr032.sub_738D8(gbl.mapToBackGroundTile, 1, 0xff, 1, ovr033.PlayerMapYPos(var_4), ovr033.PlayerMapXPos(var_4));
-                var_F = gbl.byte_1D1C0;
+                ovr032.Rebuild_SortedCombatantList(gbl.mapToBackGroundTile, 1, 0xff, 1, ovr033.PlayerMapYPos(playerA), ovr033.PlayerMapXPos(playerA));
 
-                for (var_E = 0; var_E < var_F; var_E++)
+                for (int i = 0; i < gbl.sortedCombatantCount; i++)
                 {
-                    var_8 = gbl.player_array[gbl.unk_1D1C1[var_E].field_0];
+                    Player playerB = gbl.player_array[gbl.SortedCombatantList[i].player_index];
 
-                    if (ovr025.find_affect(out var_D, Affects.affect_90, var_8) == true ||
-                        ovr025.find_affect(out var_D, Affects.affect_8b, var_8) == true)
+                    if (ovr025.find_affect(out affect, Affects.affect_90, playerB) == true ||
+                        ovr025.find_affect(out affect, Affects.affect_8b, playerB) == true)
                     {
-                        if (gbl.player_array[var_D.field_3] == var_4)
+                        if (gbl.player_array[affect.field_3] == playerA)
                         {
-                            ovr024.remove_affect(null, Affects.affect_90, var_8);
-                            ovr024.remove_affect(null, Affects.affect_8b, var_8);
+                            ovr024.remove_affect(null, Affects.affect_90, playerB);
+                            ovr024.remove_affect(null, Affects.affect_8b, playerB);
                         }
                     }
                 }
             }
 
-            ovr033.sub_74572(ovr033.get_player_index(var_4), 0, 0);
+            ovr033.sub_74572(ovr033.get_player_index(playerA), 0, 0);
 
-            ovr033.sub_7515A(0, gbl.byte_1D884, gbl.byte_1D883, var_4);
+            ovr033.sub_7515A(0, gbl.byte_1D884, gbl.byte_1D883, playerA);
 
-            ovr033.redrawCombatArea(8, 0, ovr033.PlayerMapYPos(var_4), ovr033.PlayerMapXPos(var_4));
+            ovr033.redrawCombatArea(8, 0, ovr033.PlayerMapYPos(playerA), ovr033.PlayerMapXPos(playerA));
 
-            ovr025.DisplayPlayerStatusString(true, 10, "teleports", var_4);
+            ovr025.DisplayPlayerStatusString(true, 10, "teleports", playerA);
         }
 
 
         internal static void cast_terror()
         {
-            byte var_B;
-            bool var_A;
-            byte var_9;
-            Player var_8;
-            Player var_4;
+            Player caster = gbl.player_ptr;
 
-            var_4 = gbl.player_ptr;
+            sub_5D7CF(6, 3, gbl.byte_1D884, gbl.byte_1D883, ovr033.PlayerMapYPos(caster), ovr033.PlayerMapXPos(caster));
 
-            sub_5D7CF(6, 3, gbl.byte_1D884, gbl.byte_1D883, ovr033.PlayerMapYPos(var_4), ovr033.PlayerMapXPos(var_4));
-            var_B = gbl.byte_1D75E;
-
-            for (var_9 = 1; var_9 < var_B; var_9++)
+            for (int var_9 = 1; var_9 < gbl.byte_1D75E; var_9++)
             {
-                var_8 = gbl.sp_target[var_9];
+                Player target = gbl.sp_target[var_9];
 
-                var_A = ovr024.do_saving_throw(0, 4, var_8);
+                bool saves = ovr024.do_saving_throw(0, 4, target);
 
-                if (var_A == false)
+                if (saves == false)
                 {
-                    ovr024.is_unaffected("runs in terror", var_A, 1, true, 0, sub_5CE92(0x54), Affects.affect_8e, var_8);
-                    var_8.actions.field_10 = 1;
-                    var_8.field_198 = 1;
+                    ovr024.is_unaffected("runs in terror", saves, 1, true, 0, sub_5CE92(0x54), Affects.affect_8e, target);
+                    target.actions.field_10 = 1;
+                    target.field_198 = 1;
 
-                    if (var_8.field_F7 <= 0x7F)
+                    if (target.field_F7 <= 0x7F)
                     {
-                        var_8.field_F7 = 0xB3;
+                        target.field_F7 = 0xB3;
                     }
 
-                    var_8.actions.target = null;
+                    target.actions.target = null;
                 }
                 else
                 {
-                    ovr025.DisplayPlayerStatusString(true, 10, "is unaffected", var_8);
+                    ovr025.DisplayPlayerStatusString(true, 10, "is unaffected", target);
                 }
             }
         }
@@ -3750,25 +3720,18 @@ namespace engine
 
         internal static void sub_61727()
         {
-            byte var_B;
-            bool var_A;
-            Player var_9;
-            Player player;
-            byte var_1;
-
-            player = gbl.player_ptr;
+            Player player = gbl.player_ptr;
 
             sub_5D7CF(3, 1, gbl.byte_1D884, gbl.byte_1D883, ovr033.PlayerMapYPos(player), ovr033.PlayerMapXPos(player));
-            var_B = gbl.byte_1D75E;
 
-            for (var_1 = 1; var_1 <= var_B; var_1++)
+            for (int i = 1; i <= gbl.byte_1D75E; i++)
             {
-                if (gbl.sp_target[var_1] != null)
+                if (gbl.sp_target[i] != null)
                 {
+                    Player target = gbl.sp_target[i];
+                    bool var_A;
 
-                    var_9 = gbl.sp_target[var_1];
-
-                    if (var_9.field_11A == 18)
+                    if (target.field_11A == 18)
                     {
                         var_A = false;
                     }
@@ -3777,7 +3740,7 @@ namespace engine
                         var_A = true;
                     }
 
-                    ovr024.damage_person(var_A, gbl.byte_1A114, ovr024.roll_dice_save(6, 6), var_9);
+                    ovr024.damage_person(var_A, gbl.byte_1A114, ovr024.roll_dice_save(6, 6), target);
                 }
             }
         }
@@ -3862,8 +3825,8 @@ namespace engine
 
                 gbl.dword_1D5CA(out gbl.byte_1DA70, 1, 0x33);
 
-                gbl.byte_1D883 = (sbyte)(var_2 + ovr032.sub_73005(gbl.byte_1D883 - var_2));
-                gbl.byte_1D884 = var_3 + ovr032.sub_73005(gbl.byte_1D884 - var_3);
+                gbl.byte_1D883 = var_2 + ovr032.signOfNumer(gbl.byte_1D883 - var_2);
+                gbl.byte_1D884 = var_3 + ovr032.signOfNumer(gbl.byte_1D884 - var_3);
 
                 if (gbl.byte_1D883 == (var_2 + 1))
                 {
@@ -3931,7 +3894,6 @@ namespace engine
         internal static void spell_breathes_acid(byte arg_0, object param, Player player)
         {
             Affect affect = (Affect)param;
-            byte var_A;
             bool var_9;
             Player var_8;
             byte var_4;
@@ -3958,9 +3920,7 @@ namespace engine
                     sub_5D7CF(6, 1, gbl.byte_1D884, gbl.byte_1D883, var_3, var_2);
                 }
 
-                var_A = gbl.byte_1D75E;
-
-                for (var_4 = 1; var_4 <= var_A; var_4++)
+                for (var_4 = 1; var_4 <= gbl.byte_1D75E; var_4++)
                 {
                     if (ovr025.on_our_team(player) == gbl.sp_target[var_4].combat_team)
                     {
@@ -4003,9 +3963,8 @@ namespace engine
                 throw new System.NotSupportedException();//mov	al, 0x1E
                 throw new System.NotSupportedException();//push	ax
                 throw new System.NotSupportedException();//call	sub_67AA4
-                var_A = gbl.byte_1D75E;
 
-                for (var_4 = 1; var_4 <= var_A; var_4++)
+                for (var_4 = 1; var_4 <= gbl.byte_1D75E; var_4++)
                 {
                     if (gbl.sp_target[var_4] != null)
                     {
@@ -4027,7 +3986,6 @@ namespace engine
         internal static void spell_breathes_fire(byte arg_0, object param, Player arg_6)
         {
             Affect arg_2 = (Affect)param;
-            byte var_A;
             bool var_9;
             Player var_8;
             byte var_4;
@@ -4086,9 +4044,8 @@ namespace engine
             throw new System.NotSupportedException();//mov	al, 0x1E
             throw new System.NotSupportedException();//push	ax
             throw new System.NotSupportedException();//call	sub_67AA4
-            var_A = gbl.byte_1D75E;
 
-            for (var_4 = 1; var_4 <= var_A; var_4++)
+            for (var_4 = 1; var_4 <= gbl.byte_1D75E; var_4++)
             {
                 if (gbl.sp_target[var_4] != null)
                 {

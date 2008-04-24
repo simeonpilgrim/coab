@@ -31,18 +31,18 @@ namespace engine
         public static void PROGRAM()
         {
             /* Memory Init - Start */
-            gbl.CombatMap = new gbl.Struct_1C9CD[gbl.stru_1C9CD_count+1]; /* God damm 1-n arrays */
-            for (int i = 0; i <= gbl.stru_1C9CD_count; i++)
+            gbl.CombatMap = new gbl.Struct_1C9CD[gbl.MaxCombatantCount+1]; /* God damm 1-n arrays */
+            for (int i = 0; i <= gbl.MaxCombatantCount; i++)
             {
                 gbl.CombatMap[i] = new gbl.Struct_1C9CD();
             }
             
             gbl.unk_16620 = new byte[5, 6, 2]; // the 5 is made up.
 
-            gbl.unk_1D1C1 = new gbl.Struct_1D1C1[gbl.unk_1D1C1_count];
-            for (int i = 0; i < gbl.unk_1D1C1_count; i++)
+            gbl.SortedCombatantList = new SortedCombatant[gbl.MaxSortedCombatantCount];
+            for (int i = 0; i < gbl.MaxSortedCombatantCount; i++)
             {
-                gbl.unk_1D1C1[i] = new gbl.Struct_1D1C1();
+                gbl.SortedCombatantList[i] = new SortedCombatant();
             }
             /* Memory Init - End */
 

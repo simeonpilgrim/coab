@@ -30,6 +30,28 @@ namespace Classes
         public static int[] per_copper = { 1, 10, 100, 200, 1000 };
     }
 
+    public class SortedCombatant /*Struct_1D1C1*/
+    {
+        public SortedCombatant()
+        {
+            player_index = 0;
+            steps = 0;
+            direction = 0;
+        }
+
+        public SortedCombatant(SortedCombatant source)
+        {
+            player_index = source.player_index;
+            steps = source.steps;
+            direction = source.direction;
+        }
+
+        public int player_index; //field_0
+        public int steps; // field_1
+        public int direction; // field_2
+    }
+
+
     /// <summary>
     /// Summary description for Class1.
     /// </summary>
@@ -217,7 +239,7 @@ namespace Classes
         public static int textXCol; // byte_1C8CA
         public static int textYCol; // byte_1C8CB
         public static byte byte_1D1BB;
-        public static byte byte_1D1C0;
+        public static int sortedCombatantCount; // byte_1D1C0
         public static byte byte_1D1C4;
         public static byte byte_1D2BD;
         public static byte byte_1D2BE;
@@ -300,8 +322,8 @@ namespace Classes
         public static byte byte_1D5B5;
         public static byte byte_1D5BA;
         public static byte byte_1D5BE;
-        public static bool byte_1D5BF;
-        public static byte byte_1D75E;
+        public static bool displayInput_specialKeyPressed; // byte_1D5BF displayInput
+        public static int byte_1D75E;
         public static int byte_1D883;
         public static int byte_1D884;
         public static byte byte_1D88D;
@@ -312,7 +334,7 @@ namespace Classes
         public static byte byte_1D8B6; // not used.
         public static byte byte_1D8B7;
         public static byte byte_1D8B8;
-        public static byte[] byte_1D8B9 = new byte[0x48];
+        public static int[] byte_1D8B9 = new int[0x48];
         public static byte byte_1D901;
         public static byte byte_1D902;
         public static byte enemyHealthPercentage; /* byte_1D903 */
@@ -478,22 +500,8 @@ namespace Classes
         // 744Bh[1] == sp_target[0]
         public static Player[] player_array = new Player[256];
 
-        public class Struct_1D1C1
-        {
-            public byte field_0;
-            public byte field_1;
-            public byte field_2;
-
-            public void Copy(Struct_1D1C1 source)
-            {
-                field_0 = source.field_0;
-                field_1 = source.field_1;
-                field_2 = source.field_2;
-            }
-        }
-
-        public const int unk_1D1C1_count = 72;
-        public static Struct_1D1C1[] unk_1D1C1; // seg600:6EB1 - 6EAEh[1] == unk_1D1C1[0]
+        public const int MaxSortedCombatantCount = 72; /*unk_1D1C1_count*/
+        public static SortedCombatant[] SortedCombatantList; // seg600:6EB1 - 6EAEh[1] == unk_1D1C1[0]
 
         public class Struct_1C9CD
         {
@@ -503,7 +511,7 @@ namespace Classes
             public byte size; // field_3
         }
 
-        public const int stru_1C9CD_count = 0xff;
+        public const int MaxCombatantCount = 0xff; /* stru_1C9CD_count */
         public static int CombatantCount; // gbl.stru_1C9CD[0].field_3
         public static Struct_1C9CD[] CombatMap; // seg600:66BD stru_1C9CD
 
@@ -553,7 +561,7 @@ namespace Classes
 
         public static short textWndXXX;
 
-        public static byte saving_throw;
+        public static byte saving_throw_roll;
         public static bool save_made;
         public static bool gameFlag01;
         public static bool printCommands;

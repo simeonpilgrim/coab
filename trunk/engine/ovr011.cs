@@ -1163,7 +1163,7 @@ namespace engine
             var_F = 0;
             var_E = 0;
 
-            for (int i = 1; i <= gbl.stru_1C9CD_count; i++)
+            for (int i = 1; i <= gbl.MaxCombatantCount; i++)
             {
                 gbl.CombatMap[i].size = 0;
             }
