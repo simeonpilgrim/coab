@@ -194,7 +194,7 @@ namespace engine
                     {
                         combat_menu(out var_1, player);
 
-                        if (gbl.byte_1D5BF == false)
+                        if (gbl.displayInput_specialKeyPressed == false)
                         {
                             switch (var_1)
                             {
@@ -221,7 +221,7 @@ namespace engine
                                     break;
 
                                 case 'A':
-                                    ovr014.sub_41B25( var_D, out var_2, 1, 0, 1, 0xff, player);
+                                    ovr014.aim_menu( var_D, out var_2, 1, 0, 1, 0xff, player);
                                     break;
 
                                 case 'U':

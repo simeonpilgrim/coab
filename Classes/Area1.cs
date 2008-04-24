@@ -166,6 +166,10 @@ namespace Classes
                     block_area_view = (short)value;
                     break;
 
+                case 0x1F8:
+                    game_speed = (byte)value;
+                    break;
+
                 case 0x1FA:
                     outdoor_sky_colour = value;
                     break;
@@ -251,6 +255,9 @@ namespace Classes
 
                 case 0x1E4:
                     return field_1E4;
+
+                case 0x1F8:
+                    return (ushort)game_speed;
 
                 case 0x1FA:
                     return outdoor_sky_colour;

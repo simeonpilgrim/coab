@@ -40,7 +40,7 @@ namespace engine
 
         internal static void sub_3A087(byte arg_0, object param, Player player)
         {
-            gbl.saving_throw++;
+            gbl.saving_throw_roll++;
             gbl.byte_1D2C9++;
         }
 
@@ -155,7 +155,7 @@ namespace engine
                 gbl.player_ptr.alignment == 5 ||
                 gbl.player_ptr.alignment == 8)
             {
-                gbl.saving_throw += 2;
+                gbl.saving_throw_roll += 2;
                 gbl.byte_1D2C9 -= 2;
             }
         }
@@ -167,7 +167,7 @@ namespace engine
                 gbl.player_ptr.alignment == 3 ||
                 gbl.player_ptr.alignment == 6)
             {
-                gbl.saving_throw += 2;
+                gbl.saving_throw_roll += 2;
                 gbl.byte_1D2C9 -= 2;
             }
         }
@@ -178,7 +178,7 @@ namespace engine
             if ((gbl.byte_1D2BF & 2) != 0)
             {
                 gbl.byte_1D2BE >>= 1;
-                gbl.saving_throw += 3;
+                gbl.saving_throw_roll += 3;
             }
         }
 
@@ -259,7 +259,7 @@ namespace engine
                 player.ac = 0x39;
             }
 
-            gbl.saving_throw++;
+            gbl.saving_throw_roll++;
 
             if (gbl.byte_1D2C1 == 15)
             {
@@ -285,7 +285,7 @@ namespace engine
                 (gbl.byte_1D2BF & 1) != 0)
             {
                 gbl.byte_1D2BE >>= 1;
-                gbl.saving_throw += 3;
+                gbl.saving_throw_roll += 3;
             }
         }
 
@@ -485,7 +485,7 @@ namespace engine
             player.ac -= 4;
             player.field_19B -= 4;
 
-            gbl.saving_throw -= 4;
+            gbl.saving_throw_roll -= 4;
         }
 
 
@@ -564,7 +564,7 @@ namespace engine
         internal static void sub_3AB6F(byte arg_0, object param, Player player)
         {
             gbl.byte_1D2C9 -= 4;
-            gbl.saving_throw -= 4;
+            gbl.saving_throw_roll -= 4;
         }
 
 
@@ -841,7 +841,7 @@ namespace engine
             else
             {
                 gbl.byte_1D2C9 -= 1;
-                gbl.saving_throw -= 1;
+                gbl.saving_throw_roll -= 1;
             }
         }
 
@@ -850,7 +850,7 @@ namespace engine
         {
             if ((gbl.byte_1D2BF & 2) != 0)
             {
-                gbl.saving_throw += 2;
+                gbl.saving_throw_roll += 2;
             }
             else if ((gbl.byte_1D2BF & 1) != 0 && gbl.save_made == false)
             {
@@ -863,7 +863,7 @@ namespace engine
         {
             if ((gbl.byte_1D2BF & 1) != 0)
             {
-                gbl.saving_throw += 2;
+                gbl.saving_throw_roll += 2;
             }
             else if ((gbl.byte_1D2BF & 2) != 0 && gbl.byte_1C01B == 0)
             {
@@ -928,7 +928,7 @@ namespace engine
                     }
                 }
 
-                gbl.saving_throw += 4;
+                gbl.saving_throw_roll += 4;
 
                 if ((gbl.byte_1D2BF & 8) == 0)
                 {
@@ -1131,7 +1131,7 @@ namespace engine
                 {
                     player.actions.target = null;
 
-                    ovr032.sub_738D8(gbl.mapToBackGroundTile, ovr033.PlayerMapSize(player), 0xff, 0xff,
+                    ovr032.Rebuild_SortedCombatantList(gbl.mapToBackGroundTile, ovr033.PlayerMapSize(player), 0xff, 0xff,
                         ovr033.PlayerMapYPos(player), ovr033.PlayerMapXPos(player));
 
                     player.actions.target = gbl.player_array[gbl.byte_1D1C4];
@@ -1431,7 +1431,7 @@ namespace engine
                     var_1 = 5;
                 }
 
-                gbl.saving_throw += var_1;
+                gbl.saving_throw_roll += var_1;
             }
         }
 
@@ -1600,7 +1600,7 @@ namespace engine
 
             if (gbl.byte_1D2D1 == 0)
             {
-                gbl.saving_throw = 100;
+                gbl.saving_throw_roll = 100;
             }
         }
 
@@ -1802,7 +1802,7 @@ namespace engine
 
             if (gbl.byte_1D2D1 != 0)
             {
-                gbl.saving_throw = 100;
+                gbl.saving_throw_roll = 100;
             }
         }
 
@@ -1922,7 +1922,7 @@ namespace engine
 
                 player.actions.target = null;
 
-                ovr032.sub_738D8(gbl.mapToBackGroundTile, ovr033.PlayerMapSize(player), 0xff, 0xff,
+                ovr032.Rebuild_SortedCombatantList(gbl.mapToBackGroundTile, ovr033.PlayerMapSize(player), 0xff, 0xff,
                     ovr033.PlayerMapYPos(player), ovr033.PlayerMapXPos(player));
 
                 player.actions.target = gbl.player_array[gbl.byte_1D1C4];

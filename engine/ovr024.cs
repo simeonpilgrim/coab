@@ -105,29 +105,27 @@ namespace engine
 
         internal static void calc_affect_effect(Affects affect_type, Player player)
         {
-            byte var_E4;
             byte var_E3;
-            byte var_E2;
             byte var_E1;
-            Affect var_E0;
+            Affect affect;
             Player player_base;
-            gbl.Struct_1D1C1[] var_D8 = new gbl.Struct_1D1C1[gbl.unk_1D1C1_count];
+            SortedCombatant[] var_D8 = new SortedCombatant[gbl.MaxSortedCombatantCount];
 
             var_E1 = 0;
             player_base = gbl.player_next_ptr;
 
-            if (ovr025.find_affect(out var_E0, affect_type, player) == true)
+            if (ovr025.find_affect(out affect, affect_type, player) == true)
             {
                 var_E1 = 1;
             }
             else if (unk_6325A.MemberOf((byte)affect_type) == true)
             {
-                System.Array.Copy(gbl.unk_1D1C1, var_D8, gbl.unk_1D1C1_count);
+                System.Array.Copy(gbl.SortedCombatantList, var_D8, gbl.MaxSortedCombatantCount);
 
                 while (player_base != null &&
                     var_E1 == 0)
                 {
-                    if (ovr025.find_affect(out var_E0, affect_type, player_base) == true)
+                    if (ovr025.find_affect(out affect, affect_type, player_base) == true)
                     {
                         if (gbl.game_state == 5)
                         {
@@ -140,14 +138,12 @@ namespace engine
                                 var_E3 = 1;
                             }
 
-                            ovr032.sub_738D8(gbl.mapToBackGroundTile, ovr033.PlayerMapSize(player_base), 0xff,
+                            ovr032.Rebuild_SortedCombatantList(gbl.mapToBackGroundTile, ovr033.PlayerMapSize(player_base), 0xff,
                                 var_E3, ovr033.PlayerMapYPos(player_base), ovr033.PlayerMapXPos(player_base));
 
-                            var_E4 = gbl.byte_1D1C0;
-
-                            for (var_E2 = 0; var_E2 < var_E4; var_E2++)
+                            for (int i = 0; i < gbl.sortedCombatantCount; i++)
                             {
-                                if (gbl.unk_1D1C1[var_E2].field_0 == ovr033.get_player_index(player))
+                                if (gbl.SortedCombatantList[i].player_index == ovr033.get_player_index(player))
                                 {
                                     var_E1 = 1;
                                 }
@@ -162,12 +158,12 @@ namespace engine
                     player_base = player_base.next_player;
                 }
 
-                System.Array.Copy(var_D8, gbl.unk_1D1C1, gbl.unk_1D1C1_count);
+                System.Array.Copy(var_D8, gbl.SortedCombatantList, gbl.MaxSortedCombatantCount);
             }
 
             if (var_E1 != 0)
             {
-                sub_630C7(0, var_E0, player, affect_type);
+                sub_630C7(0, affect, player, affect_type);
             }
         }
 
@@ -616,23 +612,23 @@ namespace engine
         {
             gbl.save_made = true;
 
-            gbl.saving_throw = roll_dice(20, 1);
+            gbl.saving_throw_roll = roll_dice(20, 1);
 
-            if (gbl.saving_throw == 1)
+            if (gbl.saving_throw_roll == 1)
             {
                 gbl.save_made = false;
             }
-            else if (gbl.saving_throw == 20)
+            else if (gbl.saving_throw_roll == 20)
             {
                 gbl.save_made = true;
             }
             else
             {
-                gbl.saving_throw += (byte)(arg_0 + player.field_186);
+                gbl.saving_throw_roll += (byte)(arg_0 + player.field_186);
                 gbl.byte_1D2D1 = arg_2;
 
                 work_on_00(player, 12);
-                if (player.field_DFArrayGet(arg_2) > gbl.saving_throw)
+                if (player.field_DFArrayGet(arg_2) > gbl.saving_throw_roll)
                 {
                     gbl.save_made = false;
                 }

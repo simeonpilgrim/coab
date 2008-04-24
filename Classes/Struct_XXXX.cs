@@ -7,13 +7,13 @@ namespace Classes
         public int field_02; /* was short */
         public int field_04; /* was short */
         public int field_06; /* was short */
-        public short field_08;
-        public short field_0A;
-        public short field_0C;
+        public int field_08; /* was short */
+        public int field_0A; /* was short */
+        public int field_0C; /* was short */
         public int field_0E; /* was short */
         public int field_10; /* was short */
-        public short field_12;
-        public short field_14;
+        public int field_12; /* was short */
+        public int field_14; /* was short */
         public byte field_16;
         public byte field_17;
 

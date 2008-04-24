@@ -1228,8 +1228,8 @@ namespace engine
             short var_C2;
             short var_C0;
             short var_BE;
-            short var_B8;
-            short var_B6;
+            int var_B8;
+            int var_B6;
             bool var_B4;
             byte var_B3;
             byte var_B1;
@@ -1351,15 +1351,15 @@ namespace engine
 
                         if (System.Math.Abs(var_BE) == 3)
                         {
-                            playerBMapX += ovr032.sub_73005(var_BE);
-                            var_B6 += ovr032.sub_73005(var_BE);
+                            playerBMapX += ovr032.signOfNumer(var_BE);
+                            var_B6 += ovr032.signOfNumer(var_BE);
                             var_BE = 0;
                         }
 
                         if (System.Math.Abs(var_C0) == 3)
                         {
-                            playerBMapY += ovr032.sub_73005(var_C0);
-                            var_B8 += ovr032.sub_73005(var_C0);
+                            playerBMapY += ovr032.signOfNumer(var_C0);
+                            var_B8 += ovr032.signOfNumer(var_C0);
                             var_C0 = 0;
                         }
                     }
@@ -1443,15 +1443,15 @@ namespace engine
                             var_C0 += var_C8;
                             if (System.Math.Abs(var_BE) == 3)
                             {
-                                playerBMapX += ovr032.sub_73005(var_BE);
-                                var_B6 += ovr032.sub_73005(var_BE);
+                                playerBMapX += ovr032.signOfNumer(var_BE);
+                                var_B6 += ovr032.signOfNumer(var_BE);
                                 var_BE = 0;
                             }
 
                             if (System.Math.Abs(var_C0) == 3)
                             {
-                                playerBMapY += ovr032.sub_73005(var_C0);
-                                var_B8 += ovr032.sub_73005(var_C0);
+                                playerBMapY += ovr032.signOfNumer(var_C0);
+                                var_B8 += ovr032.signOfNumer(var_C0);
                                 var_C0 = 0;
                             }
 
@@ -1726,38 +1726,34 @@ namespace engine
         }
 
 
-        internal static byte near_enemy(byte arg_0, Player player) /*near_enermy*/
+        internal static int near_enemy(byte arg_0, Player player) /*near_enermy*/
         {
-            byte var_3;
-            byte var_2;
-            byte ret_val;
+            int ret_val;
 
-            ovr032.sub_738D8(gbl.mapToBackGroundTile, 
+            ovr032.Rebuild_SortedCombatantList(gbl.mapToBackGroundTile, 
                 ovr033.PlayerMapSize(player), 0xff, arg_0, 
                 ovr033.PlayerMapYPos(player), ovr033.PlayerMapXPos(player));
 
-            var_2 = gbl.byte_1D1C0;
-            var_3 = 0;
-
-            if (var_2 > 0)
+            if (gbl.sortedCombatantCount > 0)
             {
-                for (int i = 1; i <= var_2; i++)
+                int tmpCount = 0;
+
+                for (int i = 1; i <= gbl.sortedCombatantCount; i++)
                 {
-                    if (gbl.player_array[gbl.unk_1D1C1[i].field_0].combat_team == on_our_team(player))
+                    if (gbl.player_array[gbl.SortedCombatantList[i].player_index].combat_team == on_our_team(player))
                     {
-                        var_3++;
-                        gbl.unk_1D1C1[var_3].Copy(gbl.unk_1D1C1[i]);
+                        tmpCount++;
+                        gbl.SortedCombatantList[tmpCount] = new SortedCombatant(gbl.SortedCombatantList[i]);
                     }
                 }
 
-                //var_2 = var_3;
-                gbl.byte_1D1C0 = var_2 = var_3;
+                gbl.sortedCombatantCount = tmpCount;
             }
 
-            ret_val = var_2;
-            for (int i = 1; i <= var_2; i++)
+            ret_val = gbl.sortedCombatantCount;
+            for (int i = 1; i <= gbl.sortedCombatantCount; i++)
             {
-                gbl.byte_1D8B9[i] = gbl.unk_1D1C1[i].field_0;
+                gbl.byte_1D8B9[i] = gbl.SortedCombatantList[i].player_index;
             }
 
             return ret_val;
@@ -1767,27 +1763,28 @@ namespace engine
         internal static byte sub_68708(Player playerA, Player playerB)
         {
             byte var_2FF;
-            gbl.Struct_1D1C1[] var_2FE = new gbl.Struct_1D1C1[gbl.unk_1D1C1_count];
+            SortedCombatant[] var_2FE = new SortedCombatant[gbl.MaxSortedCombatantCount];
             byte var_1;
 
-            System.Array.Copy(gbl.unk_1D1C1, var_2FE, gbl.unk_1D1C1_count);
+            System.Array.Copy(gbl.SortedCombatantList, var_2FE, gbl.MaxSortedCombatantCount);
 
             gbl.mapToBackGroundTile.field_6 = 1;
 
-            ovr032.sub_738D8(gbl.mapToBackGroundTile, ovr033.PlayerMapSize(playerB), 0xff, 0xff, 
+            ovr032.Rebuild_SortedCombatantList(gbl.mapToBackGroundTile, ovr033.PlayerMapSize(playerB), 0xff, 0xff, 
                 ovr033.PlayerMapYPos(playerB), ovr033.PlayerMapXPos(playerB));
 
             gbl.mapToBackGroundTile.field_6 = 0;
             var_2FF = 0;
 
-            while (gbl.player_array[gbl.unk_1D1C1[var_2FF].field_0] != playerA && var_2FF < (gbl.byte_1D1C0 - 1))
+            while (gbl.player_array[gbl.SortedCombatantList[var_2FF].player_index] != playerA && 
+                var_2FF < (gbl.sortedCombatantCount - 1))
             {
                 var_2FF++;
             }
 
-            var_1 = (byte)(gbl.unk_1D1C1[var_2FF].field_1 >> 1);
+            var_1 = (byte)(gbl.SortedCombatantList[var_2FF].steps >> 1);
 
-            System.Array.Copy(var_2FE, gbl.unk_1D1C1, gbl.unk_1D1C1_count);
+            System.Array.Copy(var_2FE, gbl.SortedCombatantList, gbl.MaxSortedCombatantCount);
             return var_1;
         }
 
