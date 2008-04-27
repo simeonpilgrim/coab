@@ -1,6 +1,13 @@
 = The Release Notes =
 
 = Unreleased =
+  * Fixed the function that checks if any team member has a spell, to return the correct team member (and therefore not crash)
+  * Paladin's can now cure other players from the 'view player' screen
+  * Issue 4 - combat screen background colour is now grey not black
+  * Partial fix for Paul's save game E play problem
+  * Fixed combat targeting via the Aim submenu
+  * Fixed logic in the remove affect code, that meant they where not being removed
+  * Translated more assembly, and name/renamed functions and variables as there prepose became clear
   * Fixed the clipping of the combat screen. Large monsters where over drawing the board, which is not redrawn
   * Implemented video ram save/restore so the missile items draw correctly in combat
   * Changed the DaxFileCache to copy data before returning. This slows the game down more, but stops merged pictures from being wrong on second viewings (camp fire in DEMO)
