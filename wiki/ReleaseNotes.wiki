@@ -1,6 +1,7 @@
 = The Release Notes =
 
 = Unreleased =
+  * Issue 3 - Detect magic cast when sharing treasure now works, therefore you can see the magic treasure
   * Fixed the function that checks if any team member has a spell, to return the correct team member (and therefore not crash)
   * Paladin's can now cure other players from the 'view player' screen
   * Issue 4 - combat screen background colour is now grey not black
