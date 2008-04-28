@@ -2826,7 +2826,7 @@ namespace engine
 
                 if (arg_0 == 0)
                 {
-                    affect.field_4 = false;
+                    affect.call_spell_jump_list = false;
 
                     ovr024.remove_affect(affect, Affects.affect_8b, player);
                 }
@@ -2866,7 +2866,7 @@ namespace engine
                 ovr024.remove_affect(null, Affects.affect_3a, gbl.spell_target);
                 if (arg_0 == 0)
                 {
-                    affect.field_4 = false;
+                    affect.call_spell_jump_list = false;
                     ovr024.remove_affect(affect, Affects.affect_90, player);
                 }
             }

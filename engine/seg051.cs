@@ -199,7 +199,6 @@ namespace engine
             }
         }
 
-
         internal static short Random( short arg_0 )
         {
             if( arg_0 == 0 )
@@ -219,6 +218,16 @@ namespace engine
             }
 
             return (byte)(random_number.Next() % arg_0);
+        }
+
+        internal static int Random(int arg_0)
+        {
+            if (arg_0 == 0)
+            {
+                return 0;
+            }
+
+            return random_number.Next() % arg_0;
         }
 
         internal static double Random__Real( )

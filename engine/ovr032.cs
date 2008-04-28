@@ -54,13 +54,13 @@ namespace engine
 
         internal static void sub_731A5(Struct_XXXX arg_0)
         {
-            arg_0.field_0E = arg_0.field_00;
-            arg_0.field_10 = arg_0.field_02;
-            arg_0.field_0A = Math.Abs(arg_0.field_04 - arg_0.field_00);
-            arg_0.field_0C = Math.Abs(arg_0.field_06 - arg_0.field_02);
+            arg_0.field_0E = arg_0.attacker_x;
+            arg_0.field_10 = arg_0.attacker_y;
+            arg_0.diff_x = Math.Abs(arg_0.target_x - arg_0.attacker_x);
+            arg_0.diff_y = Math.Abs(arg_0.target_y - arg_0.attacker_y);
 
-            arg_0.field_12 = signOfNumer(arg_0.field_04 - arg_0.field_00);
-            arg_0.field_14 = signOfNumer(arg_0.field_06 - arg_0.field_02);
+            arg_0.sign_x = signOfNumer(arg_0.target_x - arg_0.attacker_x);
+            arg_0.sign_y = signOfNumer(arg_0.target_y - arg_0.attacker_y);
 
             arg_0.field_08 = 0;
             arg_0.field_16 = 0;
@@ -75,45 +75,45 @@ namespace engine
 
             Struct_XXXX var_7 = arg_0;
 
-            if (var_7.field_0A >= var_7.field_0C)
+            if (var_7.diff_x >= var_7.diff_y)
             {
-                if (var_7.field_0E != var_7.field_04)
+                if (var_7.field_0E != var_7.target_x)
                 {
-                    var_7.field_0E += var_7.field_12;
-                    var_2 = (sbyte)(var_7.field_12 + 1);
+                    var_7.field_0E += var_7.sign_x;
+                    var_2 = (sbyte)(var_7.sign_x + 1);
 
-                    var_7.field_08 += var_7.field_0C;
-                    var_7.field_08 += var_7.field_0C;
+                    var_7.field_08 += var_7.diff_y;
+                    var_7.field_08 += var_7.diff_y;
                     var_7.field_16 += 2;
 
-                    if (var_7.field_08 >= var_7.field_0A)
+                    if (var_7.field_08 >= var_7.diff_x)
                     {
-                        var_7.field_08 -= var_7.field_0A;
-                        var_7.field_08 -= var_7.field_0A;
+                        var_7.field_08 -= var_7.diff_x;
+                        var_7.field_08 -= var_7.diff_x;
 
-                        var_7.field_10 += var_7.field_14;
-                        var_3 = (sbyte)(var_7.field_14 + 1);
+                        var_7.field_10 += var_7.sign_y;
+                        var_3 = (sbyte)(var_7.sign_y + 1);
                         var_7.field_16 += 1;
                     }
 
                     var_1 = true;
                 }
             }
-            else if (var_7.field_10 != var_7.field_06)
+            else if (var_7.field_10 != var_7.target_y)
             {
-                var_7.field_10 += var_7.field_14;
-                var_3 = (sbyte)(var_7.field_14 + 1);
+                var_7.field_10 += var_7.sign_y;
+                var_3 = (sbyte)(var_7.sign_y + 1);
 
-                var_7.field_08 += var_7.field_0A;
-                var_7.field_08 += var_7.field_0A;
+                var_7.field_08 += var_7.diff_x;
+                var_7.field_08 += var_7.diff_x;
                 var_7.field_16 += 2;
 
-                if (var_7.field_08 >= var_7.field_0C)
+                if (var_7.field_08 >= var_7.diff_y)
                 {
-                    var_7.field_08 -= var_7.field_0C;
-                    var_7.field_08 -= var_7.field_0C;
-                    var_7.field_0E = var_7.field_12;
-                    var_2 = (sbyte)(var_7.field_12 + 1);
+                    var_7.field_08 -= var_7.diff_y;
+                    var_7.field_08 -= var_7.diff_y;
+                    var_7.field_0E = var_7.sign_x;
+                    var_2 = (sbyte)(var_7.sign_x + 1);
                     var_7.field_16 += 1;
                 }
 
@@ -143,34 +143,34 @@ namespace engine
             Struct_XXXX var_19 = new Struct_XXXX();
 
             int var_35 = arg_4 * 2;
-            var_19.field_00 = mapX;
-            var_19.field_02 = mapY;
-            var_19.field_04 = outX;
-            var_19.field_06 = outY;
+            var_19.attacker_x = mapX;
+            var_19.attacker_y = mapY;
+            var_19.target_x = outX;
+            var_19.target_y = outY;
 
             sub_731A5(var_19);
 
-            var_31.field_00 = 0;
+            var_31.attacker_x = 0;
 
-            var_31.field_02 = gbl.BackGroundTiles[arg_0[mapX, mapY]].field_1;
+            var_31.attacker_y = gbl.BackGroundTiles[arg_0[mapX, mapY]].field_1;
 
-            if (var_19.field_0A > var_19.field_0C)
+            if (var_19.diff_x > var_19.diff_y)
             {
-                var_31.field_04 = var_19.field_0A;
+                var_31.target_x = var_19.diff_x;
             }
             else
             {
-                var_31.field_04 = var_19.field_0C;
+                var_31.target_x = var_19.diff_y;
             }
 
-            var_31.field_06 = gbl.BackGroundTiles[arg_0[mapX, mapY]].field_1;
+            var_31.target_y = gbl.BackGroundTiles[arg_0[mapX, mapY]].field_1;
             sub_731A5(var_31);
             var_32 = false;
 
             do
             {
                 if ((arg_0.field_6 == 0 && 
-                     gbl.BackGroundTiles[arg_0[var_19.field_0E, var_19.field_10]].field_2 > var_31.field_0A) ||
+                     gbl.BackGroundTiles[arg_0[var_19.field_0E, var_19.field_10]].field_2 > var_31.diff_x) ||
                     var_19.field_16 > var_35)
                 {
                     outX = var_19.field_0E;

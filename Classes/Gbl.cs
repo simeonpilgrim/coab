@@ -245,11 +245,11 @@ namespace Classes
         public static byte byte_1D2BE;
         public static byte byte_1D2BF;
         public static byte byte_1D2C0;
-        public static byte byte_1D2C1; //TODO rename spell_id
-        public static sbyte byte_1D2C2;
+        public static byte spell_id; // byte_1D2C1
+        public static int dice_count; // byte_1D2C2
         public static byte byte_1D2C4;
         public static byte byte_1D2C5;
-        public static byte byte_1D2C6;
+        public static bool byte_1D2C6;
         public static byte byte_1D2C7;
         public static bool byte_1D2C8;
         public static sbyte byte_1D2C9;
