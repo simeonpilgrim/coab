@@ -19,7 +19,7 @@ namespace engine
         {
             bool var_1;
 
-            if (gbl.byte_1D2C6 != 0)
+            if (gbl.byte_1D2C6 == true)
             {
                 var_1 = false;
             }
@@ -68,10 +68,9 @@ namespace engine
 
         internal static void sub_3A0DC(byte arg_0, object param, Player player)
         {
-            byte var_1;
             Affect affect = (Affect)param;
 
-            var_1 = (byte)(player.field_19D + player.field_19C);
+            byte var_1 = (byte)(player.field_19D + player.field_19C);
 
             if (affect.field_3 > var_1)
             {
@@ -261,7 +260,7 @@ namespace engine
 
             gbl.saving_throw_roll++;
 
-            if (gbl.byte_1D2C1 == 15)
+            if (gbl.spell_id == 15)
             {
                 gbl.byte_1D2BE = 0;
             }
@@ -308,14 +307,14 @@ namespace engine
 
             if (ovr025.find_affect(out var_4, Affects.poisoned, player) == true)
             {
-                ovr024.sub_63014("dies	from poison", Status.dead, player);
+                ovr024.sub_63014("dies from poison", Status.dead, player);
             }
 
-            gbl.byte_1D2C6 = 1;
+            gbl.byte_1D2C6 = true;
 
             ovr024.remove_affect(null, Affects.affect_0f, player);
 
-            gbl.byte_1D2C6 = 0;
+            gbl.byte_1D2C6 = false;
         }
 
 
@@ -398,7 +397,7 @@ namespace engine
             Affect affect = (Affect)param;
 
             if (ovr024.roll_dice((byte)((affect.field_3 >> 4) + 1), 1) > 1 &&
-                gbl.byte_1D2C1 > 0 &&
+                gbl.spell_id > 0 &&
                 gbl.byte_1D2C7 == 0)
             {
                 sub_3A019(0);
@@ -455,9 +454,9 @@ namespace engine
         {
             Affect affect = (Affect)param;
 
-            affect.field_4 = false;
+            affect.call_spell_jump_list = false;
 
-            if (gbl.byte_1D2C6 == 0)
+            if (gbl.byte_1D2C6 == false)
             {
                 ovr024.sub_63014("collapses", Status.dead, player);
             }
@@ -918,13 +917,13 @@ namespace engine
         {
             if ((gbl.byte_1D2BF & 1) != 0)
             {
-                for (int i = 1; i <= gbl.byte_1D2C2; i++)
+                for (int i = 1; i <= gbl.dice_count; i++)
                 {
                     gbl.byte_1D2BE -= 2;
 
-                    if (gbl.byte_1D2BE < gbl.byte_1D2C2)
+                    if (gbl.byte_1D2BE < gbl.dice_count)
                     {
-                        gbl.byte_1D2BE = (byte)gbl.byte_1D2C2;
+                        gbl.byte_1D2BE = (byte)gbl.dice_count;
                     }
                 }
 
@@ -952,8 +951,8 @@ namespace engine
 
         internal static void sub_3B3CA(byte arg_0, object param, Player player)
         {
-            if (gbl.byte_1D2C1 > 0 &&
-                gbl.unk_19AEC[gbl.byte_1D2C1].spellLevel < 4)
+            if (gbl.spell_id > 0 &&
+                gbl.unk_19AEC[gbl.spell_id].spellLevel < 4)
             {
                 sub_3A019(0);
             }
@@ -1194,7 +1193,7 @@ namespace engine
                 (gbl.byte_1D2BF & 0x02) != 0)
             {
                 if (ovr024.do_saving_throw(0, 4, player) == true &&
-                    gbl.unk_19AEC[gbl.byte_1D2C1 << 4].field_8 != 0)
+                    gbl.unk_19AEC[gbl.spell_id << 4].field_8 != 0)
                 {
                     gbl.byte_1D2BE = 0;
                 }
@@ -1393,7 +1392,7 @@ namespace engine
         internal static void sub_3BE06(byte arg_0, object param, Player arg_6)
         {
             Affect affect = (Affect)param;
-            affect.field_4 = false;
+            affect.call_spell_jump_list = false;
 
             if (arg_6.in_combat == true)
             {
@@ -1470,7 +1469,7 @@ namespace engine
                 ovr024.combat_heal(heal_amount, player_ptr) == true)
             {
                 ovr024.add_affect(true, 0xff, (ushort)(ovr024.roll_dice(4, 1) + 1), Affects.affect_5F, player_ptr);
-                arg_2.field_4 = false;
+                arg_2.call_spell_jump_list = false;
                 ovr024.remove_affect(arg_2, Affects.affect_63, player_ptr);
             }
         }
@@ -1535,7 +1534,7 @@ namespace engine
             byte var_2;
             byte var_1;
 
-            var_1 = ovr025.sub_6886F(gbl.byte_1D2C1);
+            var_1 = ovr025.sub_6886F(gbl.spell_id);
             var_2 = (byte)(arg_0 + ((0x0b - var_1) * 5));
 
             if (gbl.byte_1D2BD != 0 ||
@@ -1618,13 +1617,13 @@ namespace engine
         {
             if ((gbl.byte_1D2BF & 1) != 0)
             {
-                for (int i = 1; i <= gbl.byte_1D2C2; i++)
+                for (int i = 1; i <= gbl.dice_count; i++)
                 {
                     gbl.byte_1D2BE--;
 
-                    if (gbl.byte_1D2BE < gbl.byte_1D2C2)
+                    if (gbl.byte_1D2BE < gbl.dice_count)
                     {
-                        gbl.byte_1D2BE = (byte)gbl.byte_1D2C2;
+                        gbl.byte_1D2BE = (byte)gbl.dice_count;
                     }
                 }
             }

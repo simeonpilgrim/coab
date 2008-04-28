@@ -1602,7 +1602,7 @@ namespace engine
                         player01_ptr.field_140 = 1;
                         player01_ptr.field_DE = 1;
 
-                        player01_ptr.field_126 = seg051.Random(0xff);
+                        player01_ptr.field_126 = seg051.Random((byte)0xff);
                         player01_ptr.icon_id = 0x0A;
 
                         player01_ptr.field_11C = 2;

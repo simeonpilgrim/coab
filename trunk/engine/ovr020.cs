@@ -1835,13 +1835,13 @@ namespace engine
 
                 if (var_6 == 'Y')
                 {
-                    gbl.byte_1D2C6 = 1;
+                    gbl.byte_1D2C6 = true;
                     for (gbl.byte_1DA71 = 1; gbl.byte_1DA71 < 7; gbl.byte_1DA71++)
                     {
                         ovr024.remove_affect(null, unk_16B39[gbl.byte_1DA71], player_ptr);
                     }
 
-                    gbl.byte_1D2C6 = 0;
+                    gbl.byte_1D2C6 = false;
 
                     if (player.field_191 > 0)
                     {

@@ -126,13 +126,13 @@ namespace engine
 				
 				if( var_105 == 'Y' )
 				{
-					gbl.byte_1D2C6 = 1;
+					gbl.byte_1D2C6 = true;
 					for( loop_var = 0; loop_var < 6; loop_var++ )
 					{
 						ovr024.remove_affect( null, disease_types[loop_var], gbl.player_ptr );
 					}
 
-					gbl.byte_1D2C6 = 0;
+					gbl.byte_1D2C6 = false;
 				}
 			}
         }
@@ -232,12 +232,12 @@ namespace engine
                 if( var_105 == 'Y' &&
                     var_106 != 0 )
                 {
-                    gbl.byte_1D2C6 = 1;
+                    gbl.byte_1D2C6 = true;
 
                     ovr024.remove_affect( null , Affects.funky__32, player01 );
                     ovr024.remove_affect( null , Affects.poisoned, player01 );
 
-                    gbl.byte_1D2C6 = 0;
+                    gbl.byte_1D2C6 = false;
 
                     player01.hit_point_current = 1;
                     player01.health_status = Status.okey;
@@ -323,13 +323,13 @@ namespace engine
 
 				if( var_105 == 'Y' )
 				{
-					gbl.byte_1D2C6 = 1;
+					gbl.byte_1D2C6 = true;
 
 					ovr024.remove_affect( null , Affects.poisoned, gbl.player_ptr );
 					ovr024.remove_affect( null , Affects.slow_poison, gbl.player_ptr );
 					ovr024.remove_affect( null , Affects.affect_0f, gbl.player_ptr );
 
-					gbl.byte_1D2C6 = 0;
+					gbl.byte_1D2C6 = false;
 				}
 			}
         }

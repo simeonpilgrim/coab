@@ -1250,10 +1250,10 @@ namespace engine
             var_AF = 0;
             var_B1 = 0;
 
-            var_AC.field_00 = (short)(playerBMapX * 3);
-            var_AC.field_02 = (short)(playerBMapY * 3);
-            var_AC.field_04 = (short)(playerAMapX * 3);
-            var_AC.field_06 = (short)(playerAMapY * 3);
+            var_AC.attacker_x = (short)(playerBMapX * 3);
+            var_AC.attacker_y = (short)(playerBMapY * 3);
+            var_AC.target_x = (short)(playerAMapX * 3);
+            var_AC.target_y = (short)(playerAMapY * 3);
 
             ovr032.sub_731A5(var_AC);
 
@@ -1817,7 +1817,7 @@ namespace engine
         }
 
 
-        internal static byte sub_6886F(byte arg_0)
+        internal static byte sub_6886F(int spell_id)
         {
             sbyte var_3;
             sbyte var_2;
@@ -1832,7 +1832,7 @@ namespace engine
             }
             else
             {
-                switch (gbl.unk_19AEC[arg_0].spellClass)
+                switch (gbl.unk_19AEC[spell_id].spellClass)
                 {
                     case 0:
                         var_2 = (sbyte)(gbl.player_ptr.cleric_lvl + (ovr026.sub_6B3D1(gbl.player_ptr) * gbl.player_ptr.turn_undead));
@@ -1878,13 +1878,13 @@ namespace engine
 
                     case 3:
 
-                        var_1 = 0x0C;
+                        var_1 = 12;
                         break;
                 }
             }
 
             if (gbl.byte_1D88D != 0 &&
-                gbl.unk_19AEC[arg_0].spellClass != 3)
+                gbl.unk_19AEC[spell_id].spellClass != 3)
             {
                 var_1 = 6;
             }

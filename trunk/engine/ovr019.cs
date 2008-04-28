@@ -377,8 +377,6 @@ namespace engine
 
         internal static void sub_529F4( )
         {
-            byte var_1;
-
             gbl.dword_1ADF6 = new Struct_1ADF6[120];  
             gbl.byte_1AE0A = 0;
 
@@ -388,10 +386,9 @@ namespace engine
 					seg051.Random( 10000 ) < 1 )
 				{
 					seg051.FillChar( 1, 3, gbl.unk_1AE0B );
-					gbl.byte_1AE1B = seg051.Random( 2 );
-					var_1 = gbl.byte_1AE1B;
+					gbl.byte_1AE1B = seg051.Random( (byte)2 );
 
-					for( byte byte_1AE0E = 0; byte_1AE0E < var_1; byte_1AE0E++ )
+                    for (byte byte_1AE0E = 0; byte_1AE0E < gbl.byte_1AE1B; byte_1AE0E++)
 					{
 						gbl.unk_1AE0B[ byte_1AE0E ] = (byte)(seg051.Random( 5 ) + 2);
 					}

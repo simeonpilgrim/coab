@@ -66,7 +66,7 @@ namespace engine
 
             if (var_8 != null)
             {
-                if (var_8.field_4 == true)
+                if (var_8.call_spell_jump_list == true)
                 {
                     sub_630C7(1, var_8, arg_6, affect_id);
                 }
@@ -641,26 +641,26 @@ namespace engine
         }
 
 
-        internal static byte roll_dice(byte dice_size, byte dice_count)
+        internal static byte roll_dice(int dice_size, int dice_count)
         {
-            byte roll_total = 0;
+            int roll_total = 0;
 
             for (int i = 0; i < dice_count; i++)
             {
-                roll_total += (byte)(seg051.Random(dice_size) + 1);
+                roll_total += seg051.Random(dice_size) + 1;
             }
 
-            return roll_total;
+            byte byte_total = (byte)roll_total;
+
+            return byte_total;
         }
 
 
-        internal static sbyte roll_dice_save(byte arg_0, sbyte arg_2)
+        internal static sbyte roll_dice_save(int dice_size, int dice_count)
         {
-            byte var_1;
+            gbl.dice_count = dice_count;
 
-            gbl.byte_1D2C2 = arg_2;
-
-            var_1 = roll_dice(arg_0, (byte)arg_2);
+            byte var_1 = roll_dice(dice_size, dice_count);
 
             return (sbyte)var_1;
         }
@@ -695,7 +695,7 @@ namespace engine
             affect_ptr2.type = type;
             affect_ptr2.field_1 = arg_4;
             affect_ptr2.field_3 = arg_2;
-            affect_ptr2.field_4 = arg_0;
+            affect_ptr2.call_spell_jump_list = arg_0;
         }
 
 

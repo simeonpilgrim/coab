@@ -169,7 +169,7 @@ namespace Classes
             type = (Affects)data[offset + 0x0];
             field_1 = Sys.ArrayToUshort(data, offset + 0x1);
             field_3 = data[offset + 0x3];
-            field_4 = (data[offset + 0x4] != 0);
+            call_spell_jump_list = (data[offset + 0x4] != 0);
             next = null;
         }
 
@@ -186,7 +186,7 @@ namespace Classes
         [DataOffset(0x03, DataType.Byte)]
         public byte field_3;
         [DataOffset(0x04, DataType.Bool)]
-        public bool field_4;
+        public bool call_spell_jump_list;
 		public Affect next; // pointer to next affect.
 
         public byte[] ToByteArray()
