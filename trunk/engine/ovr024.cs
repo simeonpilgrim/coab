@@ -448,23 +448,23 @@ namespace engine
 
         internal static void in_poison_cloud(byte arg_0, Player player)
         {
-            Player playerbase_ptr;
-            bool isPoisonousCloud;
-            bool isNoxiouxCloud;
-            Affect var_A;
-            Affect var_6;
+            Player playerbase_ptr; 
             byte var_2;
 
             if (player.in_combat == true)
             {
+                bool isPoisonousCloud;
+                bool isNoxiouxCloud;
                 byte dummyByte;
                 ovr033.sub_74D04(out isPoisonousCloud, out isNoxiouxCloud, out dummyByte, out var_2, 8, player);
 
+                Affect affect;
+
                 if (isNoxiouxCloud && arg_0 != 0 &&
-                    ovr025.find_affect(out var_6, Affects.helpless, player) == false &&
-                    ovr025.find_affect(out var_6, Affects.funky__32, player) == false &&
-                    ovr025.find_affect(out var_6, Affects.affect_6f, player) == false &&
-                    ovr025.find_affect(out var_6, Affects.affect_7d, player) == false)
+                    ovr025.find_affect(out affect, Affects.helpless, player) == false &&
+                    ovr025.find_affect(out affect, Affects.funky__32, player) == false &&
+                    ovr025.find_affect(out affect, Affects.affect_6f, player) == false &&
+                    ovr025.find_affect(out affect, Affects.affect_7d, player) == false)
                 {
                     bool save_passed = do_saving_throw(0, 0, player);
 
@@ -477,11 +477,11 @@ namespace engine
 
                         is_unaffected("starts to cough", save_passed, 0, false, 0xff, 1, Affects.affect_1e, player);
 
-                        var_A = null;
+                        Affect var_A = null;
 
                         if (ovr025.find_affect(out var_A, Affects.affect_1e, player) == true)
                         {
-                            sub_630C7(0, var_6, player, Affects.affect_1e);
+                            sub_630C7(0, affect, player, Affects.affect_1e);
                         }
 
                         gbl.player_ptr = playerbase_ptr;
@@ -495,9 +495,9 @@ namespace engine
 
                         is_unaffected("chokes and gags from nausea", save_passed, 0, false, 0xff, (ushort)(roll_dice(4, 1) + 1), Affects.helpless, player);
 
-                        if (ovr025.find_affect(out var_6, Affects.helpless, player) == true)
+                        if (ovr025.find_affect(out affect, Affects.helpless, player) == true)
                         {
-                            sub_630C7(0, var_6, player, Affects.helpless);
+                            sub_630C7(0, affect, player, Affects.helpless);
                         }
 
                         gbl.player_ptr = playerbase_ptr;
@@ -573,7 +573,7 @@ namespace engine
             bool var_1 = false;
             short var_2;
 
-            remove_affect_19(arg_6);
+            remove_invisibility(arg_6);
             gbl.byte_1D2C9 = (sbyte)roll_dice(20, 1);
 
             if (gbl.byte_1D2C9 > 1)
@@ -735,14 +735,13 @@ namespace engine
         }
 
 
-        internal static void remove_affect_19(Player player)
+        internal static void remove_invisibility(Player player)
         {
-            //TODO rename remove_invisibility
-            Affect var_4;
+            Affect affect;
 
-            while (ovr025.find_affect(out var_4, Affects.invisibility, player) == true)
+            while (ovr025.find_affect(out affect, Affects.invisibility, player) == true)
             {
-                remove_affect(var_4, Affects.invisibility, player);
+                remove_affect(affect, Affects.invisibility, player);
             }
         }
 

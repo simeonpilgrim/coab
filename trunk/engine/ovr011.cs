@@ -1285,7 +1285,7 @@ namespace engine
 
             seg041.displayString("A battle begins...", 0, 0x0a, 0x18, 0);
 
-            gbl.byte_1D904 = false;
+            gbl.magicOn = false;
             gbl.byte_1D8B7 = 0;
             gbl.byte_1D8B8 = 0x0F;
             gbl.byte_1D2C9 = 0;

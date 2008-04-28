@@ -5,27 +5,6 @@ namespace engine
 {
     class ovr032
     {
-        internal static int signOfNumer(int arg_0) /*sub_73005*/
-        {
-            int sign;
-
-            if (arg_0 < 0)
-            {
-                sign = -1;
-            }
-            else if (arg_0 > 0)
-            {
-                sign = 1;
-            }
-            else
-            {
-                sign = 0;
-            }
-
-            return sign;
-        }
-
-
         static void Sort_SortedCombatabtList() /* sub_73033 */
         {
             if (gbl.sortedCombatantCount > 1)
@@ -52,88 +31,6 @@ namespace engine
         }
 
 
-        internal static void sub_731A5(Struct_XXXX arg_0)
-        {
-            arg_0.field_0E = arg_0.attacker_x;
-            arg_0.field_10 = arg_0.attacker_y;
-            arg_0.diff_x = Math.Abs(arg_0.target_x - arg_0.attacker_x);
-            arg_0.diff_y = Math.Abs(arg_0.target_y - arg_0.attacker_y);
-
-            arg_0.sign_x = signOfNumer(arg_0.target_x - arg_0.attacker_x);
-            arg_0.sign_y = signOfNumer(arg_0.target_y - arg_0.attacker_y);
-
-            arg_0.field_08 = 0;
-            arg_0.field_16 = 0;
-        }
-
-
-        internal static bool sub_7324C(Struct_XXXX arg_0)
-        {
-            bool var_1 = false;
-            sbyte var_2 = 1;
-            sbyte var_3 = 1;
-
-            Struct_XXXX var_7 = arg_0;
-
-            if (var_7.diff_x >= var_7.diff_y)
-            {
-                if (var_7.field_0E != var_7.target_x)
-                {
-                    var_7.field_0E += var_7.sign_x;
-                    var_2 = (sbyte)(var_7.sign_x + 1);
-
-                    var_7.field_08 += var_7.diff_y;
-                    var_7.field_08 += var_7.diff_y;
-                    var_7.field_16 += 2;
-
-                    if (var_7.field_08 >= var_7.diff_x)
-                    {
-                        var_7.field_08 -= var_7.diff_x;
-                        var_7.field_08 -= var_7.diff_x;
-
-                        var_7.field_10 += var_7.sign_y;
-                        var_3 = (sbyte)(var_7.sign_y + 1);
-                        var_7.field_16 += 1;
-                    }
-
-                    var_1 = true;
-                }
-            }
-            else if (var_7.field_10 != var_7.target_y)
-            {
-                var_7.field_10 += var_7.sign_y;
-                var_3 = (sbyte)(var_7.sign_y + 1);
-
-                var_7.field_08 += var_7.diff_x;
-                var_7.field_08 += var_7.diff_x;
-                var_7.field_16 += 2;
-
-                if (var_7.field_08 >= var_7.diff_y)
-                {
-                    var_7.field_08 -= var_7.diff_y;
-                    var_7.field_08 -= var_7.diff_y;
-                    var_7.field_0E = var_7.sign_x;
-                    var_2 = (sbyte)(var_7.sign_x + 1);
-                    var_7.field_16 += 1;
-                }
-
-                var_1 = true;
-            }
-
-            var_7.field_17 = unk_1886A[(var_3 * 3) + var_2];
-
-
-            return var_1;
-        }
-
-
-        static byte[] unk_1886A = {
-									  7, 0, 1, 6, 8, 2, 5, 4, 3, 8, 4, 2, 1, 0, 0,  
-									  0x55, 0x55, 0xAA, 0xAA, 0xFF, 0xFF, 0, 0, 0,  
-									  1, 2, 2, 2, 3, 0, 1, 1, 1, 2, 2, 3, 3 
-								  };
-
-
         internal static bool sub_733F1(Struct_1D1BC arg_0, ref int arg_4, ref int outY, ref int outX, int mapY, int mapX)
         {
             bool var_33;
@@ -148,7 +45,7 @@ namespace engine
             var_19.target_x = outX;
             var_19.target_y = outY;
 
-            sub_731A5(var_19);
+            var_19.init_struct_xxxx();
 
             var_31.attacker_x = 0;
 
@@ -164,27 +61,27 @@ namespace engine
             }
 
             var_31.target_y = gbl.BackGroundTiles[arg_0[mapX, mapY]].field_1;
-            sub_731A5(var_31);
+            var_31.init_struct_xxxx();
             var_32 = false;
 
             do
             {
                 if ((arg_0.field_6 == 0 && 
-                     gbl.BackGroundTiles[arg_0[var_19.field_0E, var_19.field_10]].field_2 > var_31.diff_x) ||
-                    var_19.field_16 > var_35)
+                     gbl.BackGroundTiles[arg_0[var_19.current_x, var_19.current_y]].field_2 > var_31.diff_x) ||
+                    var_19.steps > var_35)
                 {
-                    outX = var_19.field_0E;
-                    outY = var_19.field_10;
-                    arg_4 = (sbyte)var_19.field_16;
+                    outX = var_19.current_x;
+                    outY = var_19.current_y;
+                    arg_4 = (sbyte)var_19.steps;
 
                     return false;
                 }
 
-                var_33 = sub_7324C(var_31);
-                var_32 = !sub_7324C(var_19);
+                var_33 = var_31.sub_7324C();
+                var_32 = !var_19.sub_7324C();
             } while (var_32 == false);
 
-            arg_4 = (sbyte)var_19.field_16;
+            arg_4 = (sbyte)var_19.steps;
 
             return true;
         }

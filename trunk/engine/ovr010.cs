@@ -290,7 +290,7 @@ namespace engine
 
 
             if (var_5F > 0 &&
-                (player.field_F7 > 0x7F || gbl.byte_1D904 == true))
+                (player.field_F7 > 0x7F || gbl.magicOn == true))
             {
                 if ((ovr025.on_our_team(player)== 0 ? gbl.friends_count : gbl.foe_count) > 0)
                 {
@@ -786,9 +786,9 @@ namespace engine
 
                 if (var_6 == 0x32)
                 {
-                    gbl.byte_1D904 = !gbl.byte_1D904;
+                    gbl.magicOn = !gbl.magicOn;
 
-                    if (gbl.byte_1D904 == true)
+                    if (gbl.magicOn == true)
                     {
                         ovr025.string_print01("Magic On");
                     }

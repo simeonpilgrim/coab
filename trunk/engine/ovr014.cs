@@ -872,7 +872,7 @@ namespace engine
                 }
 
                 backstab(true, 1, (byte)(arg_A.hit_point_current + 5), 3, arg_A, arg_E);
-                ovr024.remove_affect_19(arg_E);
+                ovr024.remove_invisibility(arg_E);
 
                 arg_E.field_19C = 0;
                 arg_E.field_19D = 0;
@@ -942,11 +942,11 @@ namespace engine
                         switch (var_15)
                         {
                             case 1:
-                                gbl.byte_1D901++;
+                                gbl.byte_1D901 += 1;
                                 break;
 
                             case 2:
-                                gbl.byte_1D902++;
+                                gbl.byte_1D902 += 1;
                                 break;
 
                             default:
@@ -2667,15 +2667,13 @@ namespace engine
 
         internal static void engulfs(byte arg_0, object param, Player playerB)
         {
-            Player player_ptr;
-            Affect var_5;
-
-            player_ptr = playerB.actions.target;
+            Affect dummyAffect;
+            Player player_ptr = playerB.actions.target;
 
             if (gbl.byte_1D2CA == 2 &&
                 player_ptr.in_combat == true &&
-                ovr025.find_affect(out var_5, Affects.affect_3a, player_ptr) == false &&
-                ovr025.find_affect(out var_5, Affects.affect_0d, player_ptr) == false)
+                ovr025.find_affect(out dummyAffect, Affects.affect_3a, player_ptr) == false &&
+                ovr025.find_affect(out dummyAffect, Affects.affect_0d, player_ptr) == false)
             {
                 player_ptr = playerB.actions.target;
                 ovr025.DisplayPlayerStatusString(true, 12, "engulfs " + player_ptr.name, playerB);
@@ -2690,7 +2688,6 @@ namespace engine
 
         internal static void sub_42159(byte arg_2, Player player_target, Player player)
         {
-
             ovr025.sub_67A59(arg_2 + 13);
 
             ovr025.sub_67AA4(0x1E, 1, ovr033.PlayerMapYPos(player_target), ovr033.PlayerMapXPos(player_target),
@@ -2698,7 +2695,7 @@ namespace engine
         }
 
 
-        internal static void sub_421C1(byte arg_2, ref int var_3, ref bool var_5, ref Player player)
+        internal static void sub_421C1(byte arg_2, ref int var_3, out bool var_5, ref Player player)
         {
             var_5 = true;
             if (sub_41E44(arg_2, 0, 0xff, player) == true)
@@ -2727,7 +2724,7 @@ namespace engine
             var_5 = false;
 
             player.actions.target = null;
-            sub_421C1(1, ref var_3, ref var_5, ref player);
+            sub_421C1(1, ref var_3, out var_5, ref player);
 
             do
             {
@@ -2750,7 +2747,7 @@ namespace engine
                             ovr024.sub_63014("is disintergrated", Status.gone, player_target);
                         }
 
-                        sub_421C1(0, ref var_3, ref var_5, ref player);
+                        sub_421C1(0, ref var_3, out var_5, ref player);
                     }
                     else if (var_3 == 3 && (var_4 & 2) == 0)
                     {
@@ -2764,7 +2761,7 @@ namespace engine
                             ovr024.sub_63014("is Stoned", Status.stoned, player_target);
                         }
 
-                        sub_421C1(0, ref var_3, ref var_5, ref player);
+                        sub_421C1(0, ref var_3, out var_5, ref player);
                     }
                     else if (var_3 == 4 && (var_4 & 4) == 0)
                     {
@@ -2778,7 +2775,7 @@ namespace engine
                             ovr024.sub_63014("is killed", Status.dead, player_target);
                         }
 
-                        sub_421C1(0, ref var_3, ref var_5, ref player);
+                        sub_421C1(0, ref var_3, out var_5, ref player);
                     }
                     else if (var_3 == 5 && (var_4 & 8) == 0)
                     {
@@ -2788,7 +2785,7 @@ namespace engine
                         sub_42159(5, player_target, player);
 
                         ovr024.damage_person(false, 0, (sbyte)(ovr024.roll_dice_save(8, 2) + 1), player_target);
-                        sub_421C1(0, ref var_3, ref var_5, ref player);
+                        sub_421C1(0, ref var_3, out var_5, ref player);
                     }
                     else if ((var_4 & 0x10) == 0)
                     {

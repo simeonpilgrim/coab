@@ -338,7 +338,7 @@ namespace Classes
         public static byte byte_1D901;
         public static byte byte_1D902;
         public static byte enemyHealthPercentage; /* byte_1D903 */
-        public static bool byte_1D904;
+        public static bool magicOn; /* byte_1D904 */
         public static bool byte_1D905;
         public static bool byte_1D90E;
         public static bool byte_1D90F;
