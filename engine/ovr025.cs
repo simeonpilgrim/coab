@@ -1,4 +1,5 @@
 using Classes;
+using System;
 
 namespace engine
 {
@@ -1250,16 +1251,16 @@ namespace engine
             var_AF = 0;
             var_B1 = 0;
 
-            var_AC.attacker_x = (short)(playerBMapX * 3);
-            var_AC.attacker_y = (short)(playerBMapY * 3);
-            var_AC.target_x = (short)(playerAMapX * 3);
-            var_AC.target_y = (short)(playerAMapY * 3);
+            var_AC.attacker_x = playerBMapX * 3;
+            var_AC.attacker_y = playerBMapY * 3;
+            var_AC.target_x = playerAMapX * 3;
+            var_AC.target_y = playerAMapY * 3;
 
-            ovr032.sub_731A5(var_AC);
+            var_AC.init_struct_xxxx();
 
             do
             {
-                var_B4 = !ovr032.sub_7324C(var_AC);
+                var_B4 = !var_AC.sub_7324C();
 
                 var_94[var_AF] = var_AC.field_17;
 
@@ -1355,15 +1356,15 @@ namespace engine
 
                         if (System.Math.Abs(var_BE) == 3)
                         {
-                            playerBMapX += ovr032.signOfNumer(var_BE);
-                            var_B6 += ovr032.signOfNumer(var_BE);
+                            playerBMapX += Math.Sign(var_BE);
+                            var_B6 += Math.Sign(var_BE);
                             var_BE = 0;
                         }
 
                         if (System.Math.Abs(var_C0) == 3)
                         {
-                            playerBMapY += ovr032.signOfNumer(var_C0);
-                            var_B8 += ovr032.signOfNumer(var_C0);
+                            playerBMapY += Math.Sign(var_C0);
+                            var_B8 += Math.Sign(var_C0);
                             var_C0 = 0;
                         }
                     }
@@ -1447,15 +1448,15 @@ namespace engine
                             var_C0 += var_C8;
                             if (System.Math.Abs(var_BE) == 3)
                             {
-                                playerBMapX += ovr032.signOfNumer(var_BE);
-                                var_B6 += ovr032.signOfNumer(var_BE);
+                                playerBMapX += Math.Sign(var_BE);
+                                var_B6 += Math.Sign(var_BE);
                                 var_BE = 0;
                             }
 
                             if (System.Math.Abs(var_C0) == 3)
                             {
-                                playerBMapY += ovr032.signOfNumer(var_C0);
-                                var_B8 += ovr032.signOfNumer(var_C0);
+                                playerBMapY += Math.Sign(var_C0);
+                                var_B8 += Math.Sign(var_C0);
                                 var_C0 = 0;
                             }
 

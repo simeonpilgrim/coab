@@ -279,9 +279,9 @@ namespace engine
                                     break;
 
                                 case '2':
-                                    gbl.byte_1D904 = !gbl.byte_1D904;
+                                    gbl.magicOn = !gbl.magicOn;
 
-                                    if (gbl.byte_1D904 == true)
+                                    if (gbl.magicOn == true)
                                     {
                                         ovr025.string_print01("Magic On");
                                     }
@@ -460,38 +460,31 @@ namespace engine
 
         internal static void sub_33B26(ref bool arg_0, char arg_4, Player player)
         {
-            string var_20D;
-            int var_D;
-            char var_A;
             byte var_9;
             byte var_8;
-            byte var_7;
-            byte var_2;
-            byte var_1;
 
-            var_1 = player.actions.move;
-            var_2 = player.actions.field_9;
+            byte var_1 = player.actions.move;
+            byte var_2 = player.actions.field_9;
             int var_3 = ovr033.PlayerMapXPos(player);
             int var_4 = ovr033.PlayerMapYPos(player);
-            var_A = arg_4;
 
             arg_0 = false;
-            var_7 = 8;
+            byte dir = 8;
 
             while (player.actions.move > 1 &&
-                var_A != 0 &&
-                var_A != 13)
+                arg_4 != 0 &&
+                arg_4 != 13)
             {
                 seg037.draw8x8_clear_area(0x18, 0x27, 0x18, 0x18);
 
-                if (var_A == ' ')
+                if (arg_4 == ' ')
                 {
-                    var_20D = "Move/Attack, Move Left = " + (player.actions.move / 2).ToString() + " ";
+                    string text = "Move/Attack, Move Left = " + (player.actions.move / 2).ToString() + " ";
 
-                    var_A = ovr027.displayInput(out gbl.byte_1D905, false, 1, 15, 10, 10, string.Empty, var_20D);
+                    arg_4 = ovr027.displayInput(out gbl.byte_1D905, false, 1, 15, 10, 10, string.Empty, text);
                 }
 
-                switch (var_A)
+                switch (arg_4)
                 {
                     case '\0':
                         player.actions.move = var_1;
@@ -509,52 +502,51 @@ namespace engine
 
                         ovr033.redrawCombatArea(8, 0, ovr033.PlayerMapYPos(player), ovr033.PlayerMapXPos(player));
                         player.actions.field_9 = var_2;
-                        var_7 = 8;
+                        dir = 8;
                         break;
 
                     case 'H':
-                        var_7 = 0;
+                        dir = 0;
                         break;
 
                     case 'I':
-                        var_7 = 1;
+                        dir = 1;
                         break;
 
                     case 'M':
-
-                        var_7 = 2;
+                        dir = 2;
                         break;
 
                     case 'Q':
-                        var_7 = 3;
+                        dir = 3;
                         break;
 
                     case 'P':
-                        var_7 = 4;
+                        dir = 4;
                         break;
 
                     case 'O':
-                        var_7 = 5;
+                        dir = 5;
                         break;
 
                     case 'K':
-                        var_7 = 6;
+                        dir = 6;
                         break;
 
                     case 'G':
-                        var_7 = 7;
+                        dir = 7;
                         break;
 
                     default:
-                        var_7 = 8;
+                        dir = 8;
                         break;
                 }
 
-                if (var_7 < 8)
+                if (dir < 8)
                 {
-                    ovr033.sub_74B3F(0, 0, var_7, player);
-                    bool var_C, var_B;
-                    ovr033.sub_74D04(out var_C, out var_B, out var_9, out var_8, var_7, player);
+                    ovr033.sub_74B3F(0, 0, dir, player);
+                    bool dummyBoolA, dummyBoolB;
+                    ovr033.sub_74D04(out dummyBoolA, out dummyBoolB, out var_9, out var_8, dir, player);
 
                     if (var_8 > 0)
                     {
@@ -574,27 +566,29 @@ namespace engine
                     }
                     else
                     {
-                        if ((var_7 / 2) < 1)
+                        int cost;
+
+                        if ((dir / 2) < 1)
                         {
-                            var_D = gbl.BackGroundTiles[var_9].move_cost * 3;
+                            cost = gbl.BackGroundTiles[var_9].move_cost * 3;
                         }
                         else
                         {
-                            var_D = gbl.BackGroundTiles[var_9].move_cost * 2;
+                            cost = gbl.BackGroundTiles[var_9].move_cost * 2;
                         }
 
                         if (gbl.BackGroundTiles[var_9].move_cost == 0xFF)
                         {
-                            var_D = 0xFFFF;
+                            cost = 0xFFFF;
                         }
 
-                        if (var_D > player.actions.move)
+                        if (cost > player.actions.move)
                         {
                             ovr025.string_print01("can't go there");
                         }
                         else
                         {
-                            ovr014.sub_3E954(var_7, player);
+                            ovr014.sub_3E954(dir, player);
 
                             if (player.in_combat == false)
                             {
@@ -605,7 +599,7 @@ namespace engine
                                 if (player.actions.move > 0)
                                 {
 
-                                    ovr014.sub_3E748(var_7, player);
+                                    ovr014.sub_3E748(dir, player);
                                 }
 
                                 if (player.in_combat == false)
@@ -624,10 +618,10 @@ namespace engine
                     }
                 }
 
-                if (var_A != 0 &&
-                    var_A != 13)
+                if (arg_4 != 0 &&
+                    arg_4 != 13)
                 {
-                    var_A = ' ';
+                    arg_4 = ' ';
                 }
             }
 

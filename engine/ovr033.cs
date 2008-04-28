@@ -101,22 +101,22 @@ namespace engine
 
         internal static void sub_7431C(int mapX, int mapY)
         {
-            byte var_4;
-            byte var_3;
+            byte groundTile;
+            byte playerIndex;
 
             int newMapX = mapY - gbl.mapToBackGroundTile.mapScreenLeftX;
             int newMapY = mapX - gbl.mapToBackGroundTile.mapScreenTopY;
 
             sub_74572(0, newMapY, newMapX);
-            AtMapXY(out var_4, out var_3, mapX, mapY);
+            AtMapXY(out groundTile, out playerIndex, mapX, mapY);
 
-            if (var_3 > 0 &&
-                sub_74761(0, gbl.player_array[var_3]) == true)
+            if (playerIndex > 0 &&
+                sub_74761(0, gbl.player_array[playerIndex]) == true)
             {
-                ovr034.draw_combat_icon(gbl.player_array[var_3].icon_id,  0, 
-                    gbl.player_array[var_3].actions.field_9,
-                    gbl.playerScreenY[var_3], 
-                    gbl.playerScreenX[var_3]);
+                ovr034.draw_combat_icon(gbl.player_array[playerIndex].icon_id,  0, 
+                    gbl.player_array[playerIndex].actions.field_9,
+                    gbl.playerScreenY[playerIndex], 
+                    gbl.playerScreenX[playerIndex]);
             }
         }
 

@@ -1,4 +1,5 @@
 using Classes;
+using System;
 
 namespace engine
 {
@@ -1032,7 +1033,7 @@ namespace engine
                         }
                     }
 
-                    ovr024.remove_affect_19(caster);
+                    ovr024.remove_invisibility(caster);
 
                     if (gbl.byte_1D88D == 0)
                     {
@@ -1085,7 +1086,8 @@ namespace engine
             bp_var_1C.attacker_y = casterY;
             bp_var_1C.target_x = targetX;
             bp_var_1C.target_y = targetY;
-            ovr032.sub_731A5(bp_var_1C);
+
+            bp_var_1C.init_struct_xxxx();
         }
 
 
@@ -1106,11 +1108,11 @@ namespace engine
 
             do
             {
-                bp_var_1D = !ovr032.sub_7324C(bp_var_1C);
+                bp_var_1D = !bp_var_1C.sub_7324C();
 
                 if (bp_var_1D == false)
                 {
-                    ovr033.AtMapXY(out bp_var_73, out bp_var_72, bp_var_1C.field_10, bp_var_1C.field_0E);
+                    ovr033.AtMapXY(out bp_var_73, out bp_var_72, bp_var_1C.current_y, bp_var_1C.current_x);
                     var_1 = 1;
                     var_2 = false;
 
@@ -1168,7 +1170,7 @@ namespace engine
 
             do
             {
-                var_1D = !ovr032.sub_7324C(var_1C);
+                var_1D = !var_1C.sub_7324C();
 
                 if (var_1D == true)
                 {
@@ -1180,7 +1182,7 @@ namespace engine
             var_21 = (byte)(var_20 - 1);
             var_20 = 0;
             arg_0 = (byte)(arg_0 * 2);
-            var_1F = var_1C.field_16;
+            var_1F = var_1C.steps;
             var_1D = false;
 
             while (var_1F < arg_0 && var_1D == false)
@@ -1235,11 +1237,11 @@ namespace engine
 
             do
             {
-                var_1D = !ovr032.sub_7324C(var_1C);
+                var_1D = !var_1C.sub_7324C();
 
                 if (var_1D == false)
                 {
-                    ovr033.AtMapXY(out var_73, out var_72, var_1C.field_10, var_1C.field_0E);
+                    ovr033.AtMapXY(out var_73, out var_72, var_1C.current_y, var_1C.current_x);
 
                     if (var_72 > 0)
                     {
@@ -2531,16 +2533,15 @@ namespace engine
         }
 
 
-        internal static void sub_5F986(ref bool arg_0, byte arg_4, byte arg_6, byte arg_8, int arg_A, int arg_C)
+        internal static void sub_5F986(ref bool arg_0, byte arg_4, byte arg_6, byte arg_8, int posY, int posX)
         {
-            byte var_6;
-            byte var_5;
-            Player var_4;
+            byte groundTile;
+            byte playerIndex;
 
-            ovr033.AtMapXY(out var_6, out var_5, arg_A, arg_C);
+            ovr033.AtMapXY(out groundTile, out playerIndex, posY, posX);
 
-            if (var_6 > 0 &&
-                gbl.BackGroundTiles[var_6].move_cost == 0xff &&
+            if (groundTile > 0 &&
+                gbl.BackGroundTiles[groundTile].move_cost == 0xff &&
                 gbl.area_ptr.field_1CC == 1 &&
                 arg_0 == false)
             {
@@ -2551,14 +2552,13 @@ namespace engine
                 arg_0 = false;
             }
 
-            if (var_5 > 0 &&
-                var_5 != arg_4)
+            if (playerIndex > 0 &&
+                playerIndex != arg_4)
             {
-
-                var_4 = gbl.player_array[var_5];
+                Player player = gbl.player_array[playerIndex];
                 gbl.byte_1D2BF = 0x0C;
 
-                ovr024.damage_person(ovr024.do_saving_throw(0, arg_6, var_4), 2, (sbyte)arg_8, var_4);
+                ovr024.damage_person(ovr024.do_saving_throw(0, arg_6, player), 2, (sbyte)arg_8, player);
                 ovr025.sub_67A59(0x13);
                 gbl.byte_1D2BF = 0;
             }
@@ -2608,12 +2608,12 @@ namespace engine
                     var_18.target_x = (short)(gbl.targetX + ((gbl.targetX - var_31) * var_35 * var_3C));
                     var_18.target_y = (short)(gbl.targetY + ((gbl.targetY - var_32) * var_35 * var_3C));
 
-                    ovr032.sub_731A5(var_18);
+                    var_18.init_struct_xxxx();
 
                     do
                     {
-                        var_33 = (sbyte)var_18.field_0E;
-                        var_34 = (sbyte)var_18.field_10;
+                        var_33 = (sbyte)var_18.current_x;
+                        var_34 = (sbyte)var_18.current_y;
 
                         if (var_18.attacker_x != var_18.target_x ||
                             var_18.attacker_y != var_18.target_y)
@@ -2621,9 +2621,9 @@ namespace engine
                             do
                             {
 
-                                var_37 = ovr032.sub_7324C(var_18);
+                                var_37 = var_18.sub_7324C();
 
-                                ovr033.AtMapXY(out var_3B, out var_3A, var_18.field_10, var_18.field_0E);
+                                ovr033.AtMapXY(out var_3B, out var_3A, var_18.current_y, var_18.current_x);
 
                                 if (gbl.BackGroundTiles[var_3B].move_cost == 1)
                                 {
@@ -2631,7 +2631,7 @@ namespace engine
                                 }
 
                             } while (var_37 == true && (var_3A <= 0 || var_3A == var_39) && var_3B != 0 &&
-                            gbl.BackGroundTiles[var_3B].move_cost <= 1 && var_18.field_16 < var_3C);
+                            gbl.BackGroundTiles[var_3B].move_cost <= 1 && var_18.steps < var_3C);
                         }
 
                         if (var_3B == 0)
@@ -2639,15 +2639,15 @@ namespace engine
                             var_3C = 0;
                         }
 
-                        ovr025.sub_67AA4(0x32, 4, var_18.field_10, var_18.field_0E, var_34, var_33);
+                        ovr025.sub_67AA4(0x32, 4, var_18.current_y, var_18.current_x, var_34, var_33);
 
-                        sub_5F986(ref var_36, var_39, arg_2, arg_4, (sbyte)var_18.field_10, (sbyte)var_18.field_0E);
+                        sub_5F986(ref var_36, var_39, arg_2, arg_4, (sbyte)var_18.current_y, (sbyte)var_18.current_x);
                         var_39 = var_3A;
 
                         if (var_36 == true)
                         {
-                            gbl.targetX = (sbyte)var_18.field_0E;
-                            gbl.targetY = (sbyte)var_18.field_10;
+                            gbl.targetX = (sbyte)var_18.current_x;
+                            gbl.targetY = (sbyte)var_18.current_y;
 
                             var_30 = new Struct_XXXX();
 
@@ -2656,9 +2656,9 @@ namespace engine
                             var_30.target_y = var_31;
                             var_30.target_x = var_32;
 
-                            ovr032.sub_731A5(var_30);
+                            var_30.init_struct_xxxx();
 
-                            while (ovr032.sub_7324C(var_30) == true)
+                            while (var_30.sub_7324C() == true)
                             {
                                 /* empty */
                             }
@@ -2667,7 +2667,7 @@ namespace engine
                             throw new System.NotSupportedException();//jz	loc_5FC7C
                             throw new System.NotSupportedException();//cmp	var_30.field_16, 8
                             throw new System.NotSupportedException();//ja	loc_5FC7C
-                            var_18.field_16 += 8;
+                            var_18.steps += 8;
                             throw new System.NotSupportedException();//loc_5FC7C:
                             throw new System.NotSupportedException();//mov	al, [bp+var_35]
                             throw new System.NotSupportedException();//cbw
@@ -2679,7 +2679,7 @@ namespace engine
                             var_39 = 0;
                         }
 
-                        var_3D = (byte)(var_18.field_16 - var_3D);
+                        var_3D = (byte)(var_18.steps - var_3D);
 
                         if (var_3D < var_3C)
                         {
@@ -2690,7 +2690,7 @@ namespace engine
                             var_3C = 0;
                         }
 
-                        var_3D = var_18.field_16;
+                        var_3D = var_18.steps;
                     } while (var_36 == false && var_3C != 0);
                 }
 
@@ -3816,8 +3816,8 @@ namespace engine
 
                 gbl.dword_1D5CA(out gbl.byte_1DA70, 1, 0x33);
 
-                gbl.targetX = var_2 + ovr032.signOfNumer(gbl.targetX - var_2);
-                gbl.targetY = var_3 + ovr032.signOfNumer(gbl.targetY - var_3);
+                gbl.targetX = var_2 + Math.Sign(gbl.targetX - var_2);
+                gbl.targetY = var_3 + Math.Sign(gbl.targetY - var_3);
 
                 if (gbl.targetX == (var_2 + 1))
                 {
@@ -3829,7 +3829,7 @@ namespace engine
                     gbl.targetY++;
                 }
 
-                ovr024.remove_affect_19(player);
+                ovr024.remove_invisibility(player);
                 ovr025.sub_67A59(0x13);
 
                 ovr025.sub_67AA4(0x32, 4, gbl.targetY, gbl.targetX, var_3, var_2);
@@ -4129,7 +4129,7 @@ namespace engine
                 ovr025.DisplayPlayerStatusString(true, 10, "throws lightning", arg_6);
                 gbl.dword_1D5CA(out gbl.byte_1DA70, 1, 0x33);
 
-                ovr024.remove_affect_19(arg_6);
+                ovr024.remove_invisibility(arg_6);
                 ovr025.sub_67A59(0x13);
                 ovr025.sub_67AA4(0x32, 4, gbl.targetY, gbl.targetX, var_3, var_2);
 
