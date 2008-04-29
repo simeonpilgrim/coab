@@ -369,7 +369,7 @@ namespace engine
 
 				if( var_10A == 'Y' )
 				{
-					gbl.sp_target[1] = gbl.player_ptr;
+					gbl.sp_targets[1] = gbl.player_ptr;
 					ovr023.uncurse();
 				}
 			}

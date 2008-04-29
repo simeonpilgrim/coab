@@ -31,15 +31,12 @@ namespace engine
         }
 
 
-        internal static bool sub_733F1(Struct_1D1BC arg_0, ref int arg_4, ref int outY, ref int outX, int mapY, int mapX)
+        internal static bool sub_733F1(Struct_1D1BC arg_0, ref int range, ref int outY, ref int outX, int mapY, int mapX)
         {
-            bool var_33;
-            bool var_32;
-
             Struct_XXXX var_31 = new Struct_XXXX();
             Struct_XXXX var_19 = new Struct_XXXX();
 
-            int var_35 = arg_4 * 2;
+            int max_range = range * 2;
             var_19.attacker_x = mapX;
             var_19.attacker_y = mapY;
             var_19.target_x = outX;
@@ -48,7 +45,6 @@ namespace engine
             var_19.init_struct_xxxx();
 
             var_31.attacker_x = 0;
-
             var_31.attacker_y = gbl.BackGroundTiles[arg_0[mapX, mapY]].field_1;
 
             if (var_19.diff_x > var_19.diff_y)
@@ -62,26 +58,26 @@ namespace engine
 
             var_31.target_y = gbl.BackGroundTiles[arg_0[mapX, mapY]].field_1;
             var_31.init_struct_xxxx();
-            var_32 = false;
+            bool finished = false;
 
             do
             {
                 if ((arg_0.field_6 == 0 && 
                      gbl.BackGroundTiles[arg_0[var_19.current_x, var_19.current_y]].field_2 > var_31.diff_x) ||
-                    var_19.steps > var_35)
+                    var_19.steps > max_range)
                 {
                     outX = var_19.current_x;
                     outY = var_19.current_y;
-                    arg_4 = (sbyte)var_19.steps;
+                    range = var_19.steps;
 
                     return false;
                 }
 
-                var_33 = var_31.sub_7324C();
-                var_32 = !var_19.sub_7324C();
-            } while (var_32 == false);
+                var_31.step();
+                finished = !var_19.step();
+            } while (finished == false);
 
-            arg_4 = (sbyte)var_19.steps;
+            range = var_19.steps;
 
             return true;
         }

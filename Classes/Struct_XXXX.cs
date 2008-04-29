@@ -16,7 +16,7 @@ namespace Classes
         public int sign_x; 
         public int sign_y; 
         public byte steps;
-        public byte field_17;
+        public byte direction;
 
         public void Clear()
         {
@@ -32,12 +32,16 @@ namespace Classes
             sign_x = 0;
             sign_y = 0;
             steps = 0;
-            field_17 = 0;
+            direction = 0;
         }
 
-        public bool sub_7324C()
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns>if a step was done</returns>
+        public bool step() /* sub_7324C */
         {
-            bool result = false;
+            bool stepMade = false;
             int index_x = 1;
             int index_y = 1;
 
@@ -60,7 +64,7 @@ namespace Classes
                         index_y = sign_y + 1;
                     }
 
-                    result = true;
+                    stepMade = true;
                 }
             }
             else if (current_y != target_y)
@@ -80,19 +84,19 @@ namespace Classes
                     index_x = sign_x + 1;
                 }
 
-                result = true;
+                stepMade = true;
             }
 
-            field_17 = unk_1886A[(index_y * 3) + index_x];
+            direction = directions[(index_y * 3) + index_x];
 
-            return result;
+            return stepMade;
         }
 
-        static byte[] unk_1886A = {
-									  7, 0, 1, 6, 8, 2, 5, 4, 3, 8, 4, 2, 1, 0, 0,  
-									  0x55, 0x55, 0xAA, 0xAA, 0xFF, 0xFF, 0, 0, 0,  
-									  1, 2, 2, 2, 3, 0, 1, 1, 1, 2, 2, 3, 3 
-								  };
+        static byte[] directions = { 7, 0, 1, 6, 8, 2, 5, 4, 3, 8 };
+        //, 4, 2, 1, 0, 0,  
+		//							  0x55, 0x55, 0xAA, 0xAA, 0xFF, 0xFF, 0, 0, 0,  
+		//							  1, 2, 2, 2, 3, 0, 1, 1, 1, 2, 2, 3, 3 
+		//						  };
 
 
         public void init_struct_xxxx() /* sub_731A5 */

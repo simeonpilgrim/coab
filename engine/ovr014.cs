@@ -589,20 +589,19 @@ namespace engine
         }
 
 
-        internal static bool sub_3EF3D(Player arg_0, Player arg_4)
+        internal static bool sub_3EF3D(Player target, Player attacker)
         {
             Player var_9;
-            byte var_2;
             bool var_1;
 
             var_1 = false;
 
-            if (arg_4.field_19C < arg_4.actions.field_5 &&
-                arg_0.field_E5 == 0)
+            if (attacker.field_19C < attacker.actions.field_5 &&
+                target.field_E5 == 0)
             {
-                if (ovr025.sub_68708(arg_0, arg_4) == 1)
+                if (ovr025.getTargetRange(target, attacker) == 1)
                 {
-                    int var_A = ovr025.near_enemy(1, arg_4);
+                    int var_A = ovr025.near_enemy(1, attacker);
                     byte var_3 = 0;
 
                     int var_5 = 0xff;
@@ -611,7 +610,7 @@ namespace engine
                     {
                         var_9 = gbl.player_array[gbl.byte_1D8B9[var_4]];
 
-                        if (var_9 == arg_0)
+                        if (var_9 == target)
                         {
                             var_5 = var_4;
                         }
@@ -622,21 +621,21 @@ namespace engine
                         }
                     }
 
-                    if (var_3 > arg_4.field_19C)
+                    if (var_3 > attacker.field_19C)
                     {
-                        if (var_3 > arg_4.actions.field_5)
+                        if (var_3 > attacker.actions.field_5)
                         {
-                            var_3 = arg_4.actions.field_5;
+                            var_3 = attacker.actions.field_5;
                         }
 
-                        ovr025.DisplayPlayerStatusString(true, 10, "sweeps", arg_4);
+                        ovr025.DisplayPlayerStatusString(true, 10, "sweeps", attacker);
 
                         var_9 = gbl.player_array[gbl.byte_1D8B9[1]];
 
-                        if (var_9 != arg_0)
+                        if (var_9 != target)
                         {
                             gbl.byte_1D8B9[var_5] = gbl.byte_1D8B9[1];
-                            gbl.byte_1D8B9[1] = ovr033.get_player_index(arg_0);
+                            gbl.byte_1D8B9[1] = ovr033.get_player_index(target);
                         }
 
 
@@ -647,11 +646,11 @@ namespace engine
                             {
                                 var_9 = gbl.player_array[gbl.byte_1D8B9[var_4]];
 
-                                sub_3F94D(var_9, arg_4);
+                                sub_3F94D(var_9, attacker);
 
-                                arg_4.field_19C = 1;
+                                attacker.field_19C = 1;
 
-                                sub_3F9DB(out gbl.byte_1D905, null, 0, var_9, arg_4);
+                                sub_3F9DB(out gbl.byte_1D905, null, 0, var_9, attacker);
                                 var_3--;
                             }
                         }
@@ -902,7 +901,7 @@ namespace engine
                 else
                 {
                     if (arg_A.actions.field_F > 1 &&
-                        sub_409BC(arg_A, arg_E) == arg_A.actions.field_9 &&
+                        getTargetDirection(arg_A, arg_E) == arg_A.actions.field_9 &&
                         arg_A.actions.field_12 > 4)
                     {
                         var_13 = 1;
@@ -1036,7 +1035,7 @@ namespace engine
 
             target.actions.field_F++;
 
-            var_2 = sub_409BC(attacker, target);
+            var_2 = getTargetDirection(attacker, target);
 
             var_1 = (byte)(((var_2 - target.actions.field_9) + 8) % 8);
 
@@ -1063,7 +1062,7 @@ namespace engine
             if (player01.actions.field_F < 2 &&
                 arg_8 == 0)
             {
-                var_9 = sub_409BC(player02, player01);
+                var_9 = getTargetDirection(player02, player01);
 
                 player01.actions.field_9 = (byte)((var_9 + 4) % 8);
             }
@@ -1082,7 +1081,7 @@ namespace engine
                 ovr033.sub_74B3F(0, 0, var_9, player01);
             }
 
-            var_9 = sub_409BC(player01, player02);
+            var_9 = getTargetDirection(player01, player02);
             ovr025.hitpoint_ac(player02);
 
             ovr033.sub_74B3F(0, 1, var_9, player02);
@@ -1161,30 +1160,29 @@ namespace engine
         }
 
 
-        internal static void sub_3FCED(ref byte arg_0, Player playerA, Player playerB)
+        internal static void sub_3FCED(ref byte arg_0, Player target, Player attacker)
         {
-            int var_1;
+            int weapon_range;
+            int range = ovr025.getTargetRange(target, attacker);
 
-            int var_2 = ovr025.sub_68708(playerA, playerB);
-
-            if (ovr025.is_weapon_ranged(playerB) == true)
+            if (ovr025.is_weapon_ranged(attacker) == true)
             {
-                var_1 = (gbl.unk_1C020[playerB.field_151.type].field_C - 1) / 3;
+                weapon_range = (gbl.unk_1C020[attacker.field_151.type].field_C - 1) / 3;
             }
             else
             {
-                var_1 = var_2;
+                weapon_range = range;
             }
 
-            if (var_2 > var_1)
+            if (range > weapon_range)
             {
-                var_2 -= var_1;
+                range -= weapon_range;
                 arg_0 += 2;
             }
 
-            if (var_2 > var_1)
+            if (range > weapon_range)
             {
-                var_2 -= var_1;
+                range -= weapon_range;
                 arg_0 += 3;
             }
         }
@@ -1371,7 +1369,7 @@ namespace engine
 
             if (tmp1 == 0)
             {
-                gbl.sp_target[1] = gbl.player_ptr;
+                gbl.sp_targets[1] = gbl.player_ptr;
                 gbl.byte_1D75E = 1;
             }
             else if (tmp1 == 5)
@@ -1398,7 +1396,7 @@ namespace engine
 
                         for (var_3 = 1; var_3 <= var_2; var_3++)
                         {
-                            if (gbl.sp_target[var_3] == var_C.field_0)
+                            if (gbl.sp_targets[var_3] == var_C.field_0)
                             {
                                 var_D = 1;
                             }
@@ -1408,7 +1406,7 @@ namespace engine
                         {
                             var_2++;
 
-                            gbl.sp_target[var_2] = var_C.field_0;
+                            gbl.sp_targets[var_2] = var_C.field_0;
 
                             gbl.targetX = ovr033.PlayerMapXPos(var_C.field_0);
                             gbl.targetY = ovr033.PlayerMapYPos(var_C.field_0);
@@ -1416,7 +1414,7 @@ namespace engine
 
                             if (arg_6 != 0x4f)
                             {
-                                byte al = gbl.sp_target[var_2].field_E5;
+                                byte al = gbl.sp_targets[var_2].field_E5;
 
                                 if (al == 0 || al == 1)
                                 {
@@ -1437,7 +1435,7 @@ namespace engine
                             }
                             else
                             {
-                                byte al = gbl.sp_target[var_2].field_DE;
+                                byte al = gbl.sp_targets[var_2].field_DE;
 
                                 if (al == 1)
                                 {
@@ -1486,7 +1484,7 @@ namespace engine
                     if (gbl.player_ptr.actions.target != null)
                     {
 
-                        gbl.sp_target[1] = gbl.player_ptr.actions.target;
+                        gbl.sp_targets[1] = gbl.player_ptr.actions.target;
                         gbl.byte_1D75E = 1;
                     }
                     else
@@ -1496,7 +1494,7 @@ namespace engine
 
                         for (var_2 = 0; var_2 < gbl.sortedCombatantCount; var_2++)
                         {
-                            gbl.sp_target[var_2 + 1] = gbl.player_array[gbl.SortedCombatantList[var_2].player_index];
+                            gbl.sp_targets[var_2 + 1] = gbl.player_array[gbl.SortedCombatantList[var_2].player_index];
                         }
 
                         gbl.byte_1D75E = gbl.sortedCombatantCount;
@@ -1516,7 +1514,7 @@ namespace engine
 
                     for (var_2 = 0; var_2 < gbl.sortedCombatantCount; var_2++)
                     {
-                        gbl.sp_target[var_2 + 1] = gbl.player_array[gbl.SortedCombatantList[var_2].player_index];
+                        gbl.sp_targets[var_2 + 1] = gbl.player_array[gbl.SortedCombatantList[var_2].player_index];
                     }
 
                     gbl.byte_1D75E = gbl.sortedCombatantCount;
@@ -1541,7 +1539,7 @@ namespace engine
 
                         for (var_3 = 1; var_3 <= var_2; var_3++)
                         {
-                            if (gbl.sp_target[var_3] == var_C.field_0)
+                            if (gbl.sp_targets[var_3] == var_C.field_0)
                             {
                                 var_D = 1;
                             }
@@ -1550,7 +1548,7 @@ namespace engine
                         if (var_D == 0)
                         {
                             var_2++;
-                            gbl.sp_target[var_2] = var_C.field_0;
+                            gbl.sp_targets[var_2] = var_C.field_0;
                             var_1 -= 1;
 
                             gbl.targetX = ovr033.PlayerMapXPos(var_C.field_0);
@@ -1583,8 +1581,8 @@ namespace engine
                     arg_0 = false;
                 }
 
-                gbl.targetX = ovr033.PlayerMapXPos(gbl.sp_target[var_2]);
-                gbl.targetY = ovr033.PlayerMapYPos(gbl.sp_target[var_2]);
+                gbl.targetX = ovr033.PlayerMapXPos(gbl.sp_targets[var_2]);
+                gbl.targetY = ovr033.PlayerMapYPos(gbl.sp_targets[var_2]);
 
             }
         }
@@ -1697,7 +1695,7 @@ namespace engine
             if (var_B != 0 &&
                 arg_0.actions.field_F > 1 &&
                 (arg_0.field_DE & 0x7F) <= 1 &&
-                sub_409BC(arg_0, arg_4) == arg_0.actions.field_9)
+                getTargetDirection(arg_0, arg_4) == arg_0.actions.field_9)
             {
                 var_1 = 1;
             }
@@ -1710,148 +1708,150 @@ namespace engine
         }
 
 
-        internal static byte sub_409BC(Player playerB, Player playerA)
+        internal static byte getTargetDirection(Player playerB, Player playerA) /* sub_409BC */
         {
-            int var_5 = ovr033.PlayerMapXPos(playerA);
-            int var_7 = ovr033.PlayerMapYPos(playerA);
+            int plyr_a_x = ovr033.PlayerMapXPos(playerA);
+            int plyr_a_y = ovr033.PlayerMapYPos(playerA);
 
-            int var_9 = ovr033.PlayerMapXPos(playerB);
-            int var_B = ovr033.PlayerMapYPos(playerB);
+            int plyr_b_x = ovr033.PlayerMapXPos(playerB);
+            int plyr_b_y = ovr033.PlayerMapYPos(playerB);
 
-            int var_D = System.Math.Abs(var_9 - var_5);
-            int var_F = System.Math.Abs(var_B - var_7);
+            int diff_x = System.Math.Abs(plyr_b_x - plyr_a_x);
+            int diff_y = System.Math.Abs(plyr_b_y - plyr_a_y);
 
-            byte var_2 = 0;
-            byte var_3 = 0;
+            byte direction = 0;
+            bool solved = false;
 
-            while (var_3 == 0)
+            while (solved == false)
             {
-                switch (var_2)
+                switch (direction)
                 {
                     case 0:
-                        if (var_B > var_7 || ((0x26A * var_D) / 0x100) > var_F)
+                        if (plyr_b_y > plyr_a_y ||
+                            ((0x26A * diff_x) / 0x100) > diff_y)
                         {
-                            var_3 = 0;
+                            solved = false;
                         }
                         else
                         {
-                            var_3 = 1;
+                            solved = true;
                         }
                         break;
 
                     case 2:
-                        if (var_9 < var_5 || ((0x6A * var_D) / 0x100) < var_F)
+                        if (plyr_b_x < plyr_a_x ||
+                            ((0x6A * diff_x) / 0x100) < diff_y)
                         {
-                            var_3 = 0;
+                            solved = false;
                         }
                         else
                         {
-                            var_3 = 1;
+                            solved = true;
                         }
                         break;
 
                     case 4:
-                        if (var_B < var_7 || ((0x26A * var_D) / 0x100) > var_F)
+                        if (plyr_b_y < plyr_a_y ||
+                            ((0x26A * diff_x) / 0x100) > diff_y)
                         {
-                            var_3 = 0;
+                            solved = false;
                         }
                         else
                         {
-                            var_3 = 1;
+                            solved = true;
                         }
                         break;
 
                     case 6:
-                        if (var_9 > var_5 || ((0x6A * var_D) / 0x100) < var_F)
+                        if (plyr_b_x > plyr_a_x ||
+                            ((0x6A * diff_x) / 0x100) < diff_y)
                         {
-                            var_3 = 0;
+                            solved = false;
                         }
                         else
                         {
-                            var_3 = 1;
+                            solved = true;
                         }
                         break;
 
                     case 1:
-                        if (var_B > var_7 ||
-                            var_9 < var_5 ||
-                            ((0x26A * var_D) / 0x100) < var_F ||
-                            ((0x6A * var_D) / 0x100) > var_F)
+                        if (plyr_b_y > plyr_a_y ||
+                            plyr_b_x < plyr_a_x ||
+                            ((0x26A * diff_x) / 0x100) < diff_y ||
+                            ((0x6A * diff_x) / 0x100) > diff_y)
                         {
-                            var_3 = 0;
+                            solved = false;
                         }
                         else
                         {
-                            var_3 = 1;
+                            solved = true;
                         }
                         break;
 
                     case 3:
-                        if (var_B < var_7 ||
-                            var_9 < var_5 ||
-                            ((0x26a * var_D) / 0x100) < var_F ||
-                            ((0x6a * var_D) / 0x100) > var_F)
+                        if (plyr_b_y < plyr_a_y ||
+                            plyr_b_x < plyr_a_x ||
+                            ((0x26a * diff_x) / 0x100) < diff_y ||
+                            ((0x6a * diff_x) / 0x100) > diff_y)
                         {
-                            var_3 = 0;
+                            solved = false;
                         }
                         else
                         {
-                            var_3 = 1;
+                            solved = true;
                         }
                         break;
 
                     case 5:
-                        if (var_B < var_7 ||
-                            var_9 > var_5 ||
-                            ((0x26a * var_D) / 0x100) < var_F ||
-                            ((0x6a * var_D) / 0x100) > var_F)
+                        if (plyr_b_y < plyr_a_y ||
+                            plyr_b_x > plyr_a_x ||
+                            ((0x26a * diff_x) / 0x100) < diff_y ||
+                            ((0x6a * diff_x) / 0x100) > diff_y)
                         {
-                            var_3 = 0;
+                            solved = false;
                         }
                         else
                         {
-                            var_3 = 1;
+                            solved = true;
                         }
                         break;
 
                     case 7:
-                        if (var_B > var_7 ||
-                            var_9 > var_5 ||
-                            ((0x26a * var_D) / 0x100) < var_F ||
-                            ((0x6a * var_D) / 0x100) > var_F)
+                        if (plyr_b_y > plyr_a_y ||
+                            plyr_b_x > plyr_a_x ||
+                            ((0x26a * diff_x) / 0x100) < diff_y ||
+                            ((0x6a * diff_x) / 0x100) > diff_y)
                         {
-                            var_3 = 0;
+                            solved = false;
                         }
                         else
                         {
-                            var_3 = 1;
+                            solved = true;
                         }
                         break;
                 }
 
-                if (var_3 == 0)
+                if (solved == false)
                 {
-                    var_2++;
+                    direction++;
                 }
             }
 
-            return var_2;
+            return direction;
         }
 
 
         internal static void sub_40BF1(Item item, Player playerA, Player playerB) /* sub_40BF1 */
         {
-            byte var_4;
             byte var_3;
-            byte var_2;
             byte var_1;
 
             seg044.sound_sub_120E0(gbl.sound_c_188D6);
 
-            var_3 = sub_409BC(playerA, playerB);
+            var_3 = getTargetDirection(playerA, playerB);
 
-            var_2 = 1;
-            var_4 = 0x0A;
+            int frame_count = 1;
+            int delay = 10;
             var_1 = 0x0D;
 
             switch (item.type)
@@ -1884,8 +1884,8 @@ namespace engine
                 case 7:
                 case 14:
                     ovr025.sub_67A59(var_1 + 3);
-                    var_2 = 4;
-                    var_4 = 0x32;
+                    frame_count = 4;
+                    delay = 50;
                     seg044.sound_sub_120E0(gbl.sound_9_188D0);
                     break;
 
@@ -1893,8 +1893,8 @@ namespace engine
                 case 0x55:
                 case 0x56:
                     ovr025.sub_67A59(var_1 + 4);
-                    var_2 = 4;
-                    var_4 = 0x32;
+                    frame_count = 4;
+                    delay = 50;
                     seg044.sound_sub_120E0(gbl.sound_6_188CA);
                     break;
 
@@ -1904,8 +1904,8 @@ namespace engine
                     var_1++;
                     ovr025.load_missile_dax(false, 0, 0, var_1 + 7);
                     ovr025.load_missile_dax(false, 1, 1, var_1 + 7);
-                    var_2 = 2;
-                    var_4 = 0x0A;
+                    frame_count = 2;
+                    delay = 10;
                     seg044.sound_sub_120E0(gbl.sound_6_188CA);
 
                     break;
@@ -1913,13 +1913,13 @@ namespace engine
                 default:
                     ovr025.load_missile_dax(false, 0, 0, var_1 + 7);
                     ovr025.load_missile_dax(false, 1, 1, var_1 + 7);
-                    var_2 = 2;
-                    var_4 = 0x14;
+                    frame_count = 2;
+                    delay = 20;
                     seg044.sound_sub_120E0(gbl.sound_9_188D0);
                     break;
             }
             
-            ovr025.sub_67AA4(var_4, var_2, ovr033.PlayerMapYPos(playerA), ovr033.PlayerMapXPos(playerA),
+            ovr025.draw_missile_attack(delay, frame_count, ovr033.PlayerMapYPos(playerA), ovr033.PlayerMapXPos(playerA),
                 ovr033.PlayerMapYPos(playerB), ovr033.PlayerMapXPos(playerB));
         }
 
@@ -2024,24 +2024,21 @@ namespace engine
 
         internal static char aim_sub_menu(byte arg_0, byte arg_2, byte arg_4, byte arg_6, Player target, Player playerA) /* Aim_menu */
         {
-            string var_231;
-            byte var_31;
-            byte var_30;
             Item var_2F;
             bool var_2B;
             char var_1;
 
             string text = string.Empty;
-            var_30 = ovr025.sub_68708(target, playerA);
-            var_31 = sub_409BC(target, playerA);
+            int range = ovr025.getTargetRange(target, playerA);
+            int direction = getTargetDirection(target, playerA);
 
             if (arg_4 != 0)
             {
-                var_231 = "Range = " + var_30.ToString() + "  ";
-                seg041.displayString(var_231, 0, 10, 0x17, 0);
+                string range_txt = "Range = " + range.ToString() + "  ";
+                seg041.displayString(range_txt, 0, 10, 0x17, 0);
             }
 
-            if (var_30 <= arg_6)
+            if (range <= arg_6)
             {
                 if (arg_4 == 0)
                 {
@@ -2117,7 +2114,7 @@ namespace engine
                         if (ovr025.is_weapon_ranged(arg_E) == true &&
                             ovr025.sub_6906C(out var_5, arg_E) == true &&
                             ovr025.is_weapon_ranged_melee(arg_E) == true &&
-                            ovr025.sub_68708(arg_A, arg_E) == 0)
+                            ovr025.getTargetRange(arg_A, arg_E) == 0)
                         {
                             var_5 = null;
                         }
@@ -2428,7 +2425,7 @@ namespace engine
 
             if (arg_2 == true)
             {
-                ovr025.sub_67AA4(0, 1, bp_var_E1, bp_var_E0, bp_var_DF, bp_var_DE);
+                ovr025.draw_missile_attack(0, 1, bp_var_E1, bp_var_E0, bp_var_DF, bp_var_DE);
                 bp_var_DE = bp_var_E0;
                 bp_var_DF = bp_var_E1;
             }
@@ -2690,12 +2687,12 @@ namespace engine
         {
             ovr025.sub_67A59(arg_2 + 13);
 
-            ovr025.sub_67AA4(0x1E, 1, ovr033.PlayerMapYPos(player_target), ovr033.PlayerMapXPos(player_target),
+            ovr025.draw_missile_attack(0x1E, 1, ovr033.PlayerMapYPos(player_target), ovr033.PlayerMapXPos(player_target),
                 ovr033.PlayerMapYPos(player), ovr033.PlayerMapXPos(player));
         }
 
 
-        internal static void sub_421C1(byte arg_2, ref int var_3, out bool var_5, ref Player player)
+        internal static void sub_421C1(byte arg_2, ref int range, out bool var_5, ref Player player)
         {
             var_5 = true;
             if (sub_41E44(arg_2, 0, 0xff, player) == true)
@@ -2703,7 +2700,7 @@ namespace engine
                 int tmpX = ovr033.PlayerMapXPos(player.actions.target);
                 int tmpY = ovr033.PlayerMapYPos(player.actions.target);
 
-                if (ovr032.sub_733F1(gbl.mapToBackGroundTile, ref var_3, ref tmpY, ref tmpX, ovr033.PlayerMapYPos(player), ovr033.PlayerMapXPos(player)) == true)
+                if (ovr032.sub_733F1(gbl.mapToBackGroundTile, ref range, ref tmpY, ref tmpX, ovr033.PlayerMapYPos(player), ovr033.PlayerMapXPos(player)) == true)
                 {
                     var_5 = false;
                 }
@@ -2711,81 +2708,81 @@ namespace engine
         }
 
 
-        internal static void attack_or_kill(byte arg_0, object param, Player player)
+        internal static void attack_or_kill(byte arg_0, object param, Player attacker)
         {
-            Player player_target;
+            Player target;
             bool var_5;
             byte var_4;
-            int var_3 = 0; /* simeon */
+            int range = 0; /* simeon */
             byte var_1;
 
             var_4 = 0;
             var_1 = 4;
             var_5 = false;
 
-            player.actions.target = null;
-            sub_421C1(1, ref var_3, out var_5, ref player);
+            attacker.actions.target = null;
+            sub_421C1(1, ref range, out var_5, ref attacker);
 
             do
             {
-                player_target = player.actions.target;
+                target = attacker.actions.target;
 
-                var_3 = ovr025.sub_68708(player_target, player);
+                range = ovr025.getTargetRange(target, attacker);
                 var_1--;
 
-                if (player_target != null)
+                if (target != null)
                 {
-                    if (var_3 == 2 && (var_4 & 1) == 0)
+                    if (range == 2 && (var_4 & 1) == 0)
                     {
                         var_4 |= 1;
 
-                        ovr025.DisplayPlayerStatusString(true, 10, "fires a disintegrate ray", player);
-                        sub_42159(5, player_target, player);
+                        ovr025.DisplayPlayerStatusString(true, 10, "fires a disintegrate ray", attacker);
+                        sub_42159(5, target, attacker);
 
-                        if (ovr024.do_saving_throw(0, 3, player_target) == false)
+                        if (ovr024.do_saving_throw(0, 3, target) == false)
                         {
-                            ovr024.sub_63014("is disintergrated", Status.gone, player_target);
+                            ovr024.sub_63014("is disintergrated", Status.gone, target);
                         }
 
-                        sub_421C1(0, ref var_3, out var_5, ref player);
+                        sub_421C1(0, ref range, out var_5, ref attacker);
                     }
-                    else if (var_3 == 3 && (var_4 & 2) == 0)
+                    else if (range == 3 && (var_4 & 2) == 0)
                     {
                         var_4 |= 2;
 
-                        ovr025.DisplayPlayerStatusString(true, 10, "fires a stone to flesh ray", player);
-                        sub_42159(10, player_target, player);
+                        ovr025.DisplayPlayerStatusString(true, 10, "fires a stone to flesh ray", attacker);
+                        sub_42159(10, target, attacker);
 
-                        if (ovr024.do_saving_throw(0, 1, player_target) == false)
+                        if (ovr024.do_saving_throw(0, 1, target) == false)
                         {
-                            ovr024.sub_63014("is Stoned", Status.stoned, player_target);
+                            ovr024.sub_63014("is Stoned", Status.stoned, target);
                         }
 
-                        sub_421C1(0, ref var_3, out var_5, ref player);
+                        sub_421C1(0, ref range, out var_5, ref attacker);
                     }
-                    else if (var_3 == 4 && (var_4 & 4) == 0)
+                    else if (range == 4 && (var_4 & 4) == 0)
                     {
                         var_4 |= 4;
 
-                        ovr025.DisplayPlayerStatusString(true, 10, "fires a death ray", player);
-                        sub_42159(5, player_target, player);
+                        ovr025.DisplayPlayerStatusString(true, 10, "fires a death ray", attacker);
+                        sub_42159(5, target, attacker);
 
-                        if (ovr024.do_saving_throw(0, 0, player_target) == false)
+                        if (ovr024.do_saving_throw(0, 0, target) == false)
                         {
-                            ovr024.sub_63014("is killed", Status.dead, player_target);
+                            ovr024.sub_63014("is killed", Status.dead, target);
                         }
 
-                        sub_421C1(0, ref var_3, out var_5, ref player);
+                        sub_421C1(0, ref range, out var_5, ref attacker);
                     }
-                    else if (var_3 == 5 && (var_4 & 8) == 0)
+                    else if (range == 5 && (var_4 & 8) == 0)
                     {
                         var_4 |= 8;
 
-                        ovr025.DisplayPlayerStatusString(true, 10, "wounds you", player);
-                        sub_42159(5, player_target, player);
+                        ovr025.DisplayPlayerStatusString(true, 10, "wounds you", attacker);
+                        sub_42159(5, target, attacker);
 
-                        ovr024.damage_person(false, 0, (sbyte)(ovr024.roll_dice_save(8, 2) + 1), player_target);
-                        sub_421C1(0, ref var_3, out var_5, ref player);
+                        ovr024.damage_person(false, 0, (sbyte)(ovr024.roll_dice_save(8, 2) + 1), target);
+                        sub_421C1(0, ref range, out var_5, ref attacker);
                     }
                     else if ((var_4 & 0x10) == 0)
                     {
@@ -2803,7 +2800,7 @@ namespace engine
                         var_4 |= 0x40;
                     }
                 }
-            } while (var_1 > 0 && player.actions.target != null);
+            } while (var_1 > 0 && attacker.actions.target != null);
         }
 
 
