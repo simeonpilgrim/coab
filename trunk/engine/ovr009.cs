@@ -491,7 +491,7 @@ namespace engine
 
                         ovr033.sub_74572(ovr033.get_player_index(player), 0, 0);
 
-                        if (ovr033.sub_7515A(0, var_4, var_3, player) == 0)
+                        if (ovr033.sub_7515A(false, var_4, var_3, player) == 0)
                         {
                             arg_0 = true;
                         }
@@ -546,7 +546,7 @@ namespace engine
                 {
                     ovr033.sub_74B3F(0, 0, dir, player);
                     bool dummyBoolA, dummyBoolB;
-                    ovr033.sub_74D04(out dummyBoolA, out dummyBoolB, out var_9, out var_8, dir, player);
+                    ovr033.getGroundInformation(out dummyBoolA, out dummyBoolB, out var_9, out var_8, dir, player);
 
                     if (var_8 > 0)
                     {

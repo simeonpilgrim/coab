@@ -484,7 +484,7 @@ namespace engine
         }
 
 
-        internal static void sub_74D04(out bool isPoisonousCloud, out bool isNoxiousCloud, out byte groundTile, out byte playerIndex, byte direction, Player player)
+        internal static void getGroundInformation(out bool isPoisonousCloud, out bool isNoxiousCloud, out byte groundTile, out byte playerIndex, byte direction, Player player) /* sub_74D04 */
         {
             playerIndex = 0;
             groundTile = 0x17;
@@ -636,72 +636,69 @@ namespace engine
         }
 
 
-        internal static byte sub_7515A(byte arg_0, int arg_2, int arg_4, Player player)
+        internal static byte sub_7515A(bool arg_0, int pos_y, int pos_x, Player player)
         {
-            byte var_6;
-            byte var_5;
-            byte var_4;
-            byte var_3;
-            byte var_2;
             byte ret_val;
 
             if (gbl.game_state == 5)
             {
                 ret_val = 0;
 
-                var_2 = get_player_index(player);
+                int player_index = get_player_index(player);
 
-                gbl.CombatMap[var_2].size = (byte)(player.field_DE & 0x7F);
-                gbl.CombatMap[var_2].xPos = arg_4;
-                gbl.CombatMap[var_2].yPos = arg_2;
+                gbl.CombatMap[player_index].size = (byte)(player.field_DE & 0x7F);
+                gbl.CombatMap[player_index].xPos = pos_x;
+                gbl.CombatMap[player_index].yPos = pos_y;
 
-                bool var_8, var_7;
-                sub_74D04(out var_8, out var_7, out var_5, out var_4, 8, player);
+                byte var_4;
+                byte ground_tile;
+                bool dummyBoolA, dummyBoolB;
+                getGroundInformation(out dummyBoolA, out dummyBoolB, out ground_tile, out var_4, 8, player);
 
                 if (var_4 != 0 ||
-                    var_5 == 0 ||
-                    gbl.BackGroundTiles[var_5].move_cost == 0xff)
+                    ground_tile == 0 ||
+                    gbl.BackGroundTiles[ground_tile].move_cost == 0xff)
                 {
-                    gbl.CombatMap[var_2].size = 0;
+                    gbl.CombatMap[player_index].size = 0;
                 }
                 else
                 {
                     ret_val = 1;
 
-                    if (arg_0 != 0 &&
+                    if (arg_0 == true &&
                         player.actions.field_13 == 0)
                     {
-                        for (var_3 = 1; var_3 <= gbl.byte_1D1BB; var_3++)
+                        for (int i = 1; i <= gbl.byte_1D1BB; i++)
                         {
-                            if (gbl.unk_1D183[var_3].field_0 == player)
+                            if (gbl.unk_1D183[i].field_0 == player)
                             {
-                                if (gbl.unk_1D183[var_3].field_6 != 0x1F)
+                                if (gbl.unk_1D183[i].field_6 != 0x1F)
                                 {
-                                    var_5 = gbl.unk_1D183[var_3].field_6;
+                                    ground_tile = gbl.unk_1D183[i].field_6;
                                 }
 
-                                gbl.unk_1D183[var_3].field_0 = null;
-                                gbl.unk_1D183[var_3].mapX = 0;
-                                gbl.unk_1D183[var_3].mapY = 0;
-                                gbl.unk_1D183[var_3].field_6 = 0;
+                                gbl.unk_1D183[i].field_0 = null;
+                                gbl.unk_1D183[i].mapX = 0;
+                                gbl.unk_1D183[i].mapY = 0;
+                                gbl.unk_1D183[i].field_6 = 0;
                             }
                         }
 
-                        var_6 = 0;
+                        bool found = false;
 
-                        for (var_3 = 1; var_3 <= gbl.byte_1D1BB; var_3++)
+                        for (int i = 1; i <= gbl.byte_1D1BB; i++)
                         {
-                            if (gbl.unk_1D183[var_3].field_0 != null &&
-                                gbl.unk_1D183[var_3].mapX == arg_4 &&
-                                gbl.unk_1D183[var_3].mapY == arg_2)
+                            if (gbl.unk_1D183[i].field_0 != null &&
+                                gbl.unk_1D183[i].mapX == pos_x &&
+                                gbl.unk_1D183[i].mapY == pos_y)
                             {
-                                var_6 = 1;
+                                found = true;
                             }
                         }
 
-                        if (var_6 == 0)
+                        if (found == false)
                         {
-                            gbl.mapToBackGroundTile[arg_4, arg_2] = var_5;
+                            gbl.mapToBackGroundTile[pos_x, pos_y] = ground_tile;
                         }
                     }
 

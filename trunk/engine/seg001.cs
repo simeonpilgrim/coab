@@ -37,7 +37,15 @@ namespace engine
                 gbl.CombatMap[i] = new gbl.Struct_1C9CD();
             }
             
-            gbl.unk_16620 = new byte[5, 6, 2]; // the 5 is made up.
+       
+            gbl.unk_16620 = new byte[5, 6, 2] {  // the 5 is made up.
+                {{1,0},{1,0},{1,0},{2,9},{3,10},{4,10}}, // 310 - 31B
+                {{0,2},{0,3},{1,4},{2,5},{3,6},{4,7}}, // 31C - 327
+                {{0,6},{0,7},{1,8},{1,0},{1,0},{1,0}}, // 328 - 333
+                {{3,6},{4,7},{5,8},{6,9},{7,10},{8,10}}, // 334 - 33F
+                {{0,6},{0,7},{1,8},{2,9},{3,10},{4,10}}, // 340 - 31B
+            };
+
 
             gbl.SortedCombatantList = new SortedCombatant[gbl.MaxSortedCombatantCount];
             for (int i = 0; i < gbl.MaxSortedCombatantCount; i++)

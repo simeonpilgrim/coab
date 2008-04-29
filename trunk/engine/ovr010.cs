@@ -351,7 +351,7 @@ namespace engine
             var_6 = data_2B8[(player.actions.field_15 * 5) + arg_6];
             playerDirection = (byte)((arg_4 + var_6) % 8);
 
-            ovr033.sub_74D04(out isPoisonousCloud, out isNoxiousCloud, out groundTile, out playerIndex, playerDirection, player);
+            ovr033.getGroundInformation(out isPoisonousCloud, out isNoxiousCloud, out groundTile, out playerIndex, playerDirection, player);
 
             if (groundTile == 0)
             {
@@ -441,7 +441,7 @@ namespace engine
                         {
                             if (player.actions.field_14 == 0)
                             {
-                                var_1 = ovr014.sub_409BC(player.actions.target, player);
+                                var_1 = ovr014.getTargetDirection(player.actions.target, player);
                             }
                             else
                             {
@@ -689,7 +689,7 @@ namespace engine
                                 sub_36673(player);
                                 var_2 = true;
                             }
-                            else if (ovr025.sub_68708(player01, player) == 1 ||
+                            else if (ovr025.getTargetRange(player01, player) == 1 ||
                                 ovr014.sub_3F143(player01, player) == true)
                             {
                                 gbl.byte_1D90E = true;
@@ -699,7 +699,7 @@ namespace engine
 
                     if (gbl.byte_1D90E == true)
                     {
-                        ovr033.redrawCombatArea(ovr014.sub_409BC(player01, player), 2, ovr033.PlayerMapYPos(player), ovr033.PlayerMapXPos(player));
+                        ovr033.redrawCombatArea(ovr014.getTargetDirection(player01, player), 2, ovr033.PlayerMapYPos(player), ovr033.PlayerMapXPos(player));
 
                     }
 
@@ -720,7 +720,7 @@ namespace engine
                                 gbl.byte_1D90E = ovr025.sub_6906C(out var_C, player);
 
                                 if (ovr025.is_weapon_ranged_melee(player) == true &&
-                                    ovr025.sub_68708(player01, player) == 1)
+                                    ovr025.getTargetRange(player01, player) == 1)
                                 {
 
                                     var_C = null;

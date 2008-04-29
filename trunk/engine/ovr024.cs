@@ -407,7 +407,7 @@ namespace engine
         }
 
 
-        static Player sub_63D03(byte[] arg_0, byte arg_4, Struct_1D885 arg_6, int arg_A, int arg_C)
+        static Player sub_63D03(byte[] arg_0, byte arg_4, Struct_1D885 arg_6, int mapY, int mapX)
         {
             Struct_1D885 var_8;
             Player player_base;
@@ -420,8 +420,8 @@ namespace engine
                 for (int i = 1; i <= arg_4; i++)
                 {
                     if (var_8.field_10[i] != 0 &&
-                        var_8.field_1A + gbl.MapDirectionXDelta[arg_0[i]] == arg_C &&
-                        var_8.field_1B + gbl.MapDirectionYDelta[arg_0[i]] == arg_A)
+                        var_8.field_1A + gbl.MapDirectionXDelta[arg_0[i]] == mapX &&
+                        var_8.field_1B + gbl.MapDirectionYDelta[arg_0[i]] == mapY)
                     {
                         found = true;
                     }
@@ -448,15 +448,13 @@ namespace engine
 
         internal static void in_poison_cloud(byte arg_0, Player player)
         {
-            Player playerbase_ptr; 
-            byte var_2;
-
             if (player.in_combat == true)
             {
                 bool isPoisonousCloud;
                 bool isNoxiouxCloud;
-                byte dummyByte;
-                ovr033.sub_74D04(out isPoisonousCloud, out isNoxiouxCloud, out dummyByte, out var_2, 8, player);
+                byte dummyGroundTile;
+                byte dummyPlayerIndex;
+                ovr033.getGroundInformation(out isPoisonousCloud, out isNoxiouxCloud, out dummyGroundTile, out dummyPlayerIndex, 8, player);
 
                 Affect affect;
 
@@ -470,7 +468,7 @@ namespace engine
 
                     if (save_passed == true)
                     {
-                        playerbase_ptr = gbl.player_ptr;
+                        Player tmp_player_ptr = gbl.player_ptr;
 
                         gbl.player_ptr = sub_63D03(gbl.unk_18AEA, 4, gbl.stru_1D885,
                             ovr033.PlayerMapYPos(player), ovr033.PlayerMapXPos(player));
@@ -484,11 +482,11 @@ namespace engine
                             sub_630C7(0, affect, player, Affects.affect_1e);
                         }
 
-                        gbl.player_ptr = playerbase_ptr;
+                        gbl.player_ptr = tmp_player_ptr;
                     }
                     else
                     {
-                        playerbase_ptr = gbl.player_ptr;
+                        Player tmp_player_ptr = gbl.player_ptr;
 
                         gbl.player_ptr = sub_63D03(gbl.unk_18AEA, 4, gbl.stru_1D885,
                             ovr033.PlayerMapYPos(player), ovr033.PlayerMapXPos(player));
@@ -500,7 +498,7 @@ namespace engine
                             sub_630C7(0, affect, player, Affects.helpless);
                         }
 
-                        gbl.player_ptr = playerbase_ptr;
+                        gbl.player_ptr = tmp_player_ptr;
                     }
                 }
 
@@ -1504,7 +1502,7 @@ namespace engine
             string var_2A;
             bool ret_val;
 
-            if (ovr033.sub_7515A(1, ovr033.PlayerMapYPos(player), ovr033.PlayerMapXPos(player), player) != 0)
+            if (ovr033.sub_7515A(true, ovr033.PlayerMapYPos(player), ovr033.PlayerMapXPos(player), player) != 0)
             {
                 player.health_status = Status.okey;
                 player.in_combat = true;

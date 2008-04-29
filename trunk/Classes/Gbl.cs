@@ -47,6 +47,9 @@ namespace Classes
         }
 
         public int player_index; //field_0
+        /// <summary>
+        /// steps to counted in 2's, so that diagional steps can be 3 (thus 1.5)
+        /// </summary>
         public int steps; // field_1
         public int direction; // field_2
     }
@@ -496,7 +499,7 @@ namespace Classes
         public static Player player_next_ptr;
         public static Item item_ptr;
         public static Player spell_target;
-        public static Player[] sp_target = new Player[256];
+        public static Player[] sp_targets = new Player[256]; /* sp_target */ 
         // 744Bh[1] == sp_target[0]
         public static Player[] player_array = new Player[256];
 

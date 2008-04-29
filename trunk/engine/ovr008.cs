@@ -1571,6 +1571,12 @@ namespace engine
         {
             gbl.command = gbl.ecl_ptr[gbl.ecl_offset + 0x8000];
 
+            if (gbl.printCommands == true)
+            {
+                System.Console.Out.Write("SKIPPING: ");
+                ovr003.print_command();
+            }
+
             switch (gbl.command)
             {
                 case 0x01:

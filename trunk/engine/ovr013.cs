@@ -698,7 +698,7 @@ namespace engine
         internal static void sub_3AF06(byte arg_0, Player player)
         {
             if (gbl.player_ptr.field_151 != null &&
-                ovr025.sub_68708(player, gbl.player_ptr) == 0 &&
+                ovr025.getTargetRange(player, gbl.player_ptr) == 0 &&
                 ovr024.roll_dice(100, 1) <= arg_0)
             {
                 ovr025.DisplayPlayerStatusString(true, 10, "Avoids it", player);
@@ -1737,7 +1737,7 @@ namespace engine
 
             if (ovr024.roll_dice(100, 1) <= 25)
             {
-                if (ovr025.sub_68708(gbl.spell_target, player) < 4)
+                if (ovr025.getTargetRange(gbl.spell_target, player) < 4)
                 {
                     var_1 = ovr025.clear_actions(player);
 
@@ -1745,7 +1745,7 @@ namespace engine
 
                     ovr025.sub_67A59(0x17);
 
-                    ovr025.sub_67AA4(0x1e, 1,
+                    ovr025.draw_missile_attack(0x1e, 1,
                         ovr033.PlayerMapYPos(gbl.spell_target), ovr033.PlayerMapXPos(gbl.spell_target),
                         ovr033.PlayerMapYPos(player), ovr033.PlayerMapXPos(player));
 
@@ -1975,7 +1975,7 @@ namespace engine
             byte var_2;
             byte var_1;
 
-            if (ovr025.sub_68708(arg_6, gbl.player_ptr) < 2)
+            if (ovr025.getTargetRange(arg_6, gbl.player_ptr) < 2)
             {
                 var_1 = gbl.byte_1D2BE;
 
