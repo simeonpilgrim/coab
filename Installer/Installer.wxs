@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
-		<Product Id="{5C4C89A6-06D5-4a70-B94C-FEF178B6EF4C}" Name="Curse of the Azure Bonds" 
-             Language="1033" Version="1.0.5.0" Manufacturer="ReActive Systems" 
+		<Product Id="{811C4D00-5AB7-4ffd-BAB2-BE30F88E831D}" Name="Curse of the Azure Bonds" 
+             Language="1033" Version="1.0.6.0" Manufacturer="ReActive Systems" 
              UpgradeCode="6acb18e9-9a80-4ed4-a8ef-3634fa2b3e9b">
 		<Package InstallerVersion="200" Compressed="yes"  />
 
@@ -95,7 +95,7 @@
             <File Id="pic4.dax" Source="c:\games\coab\pic4.dax" />
             <File Id="pic5.dax" Source="c:\games\coab\pic5.dax" />
             <File Id="pic6.dax" Source="c:\games\coab\pic6.dax" />
-
+            
             <File Id="randcom.dax" Source="c:\games\coab\randcom.dax" />
             <File Id="sky.dax" Source="c:\games\coab\sky.dax" />
 

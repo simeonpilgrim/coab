@@ -31,36 +31,9 @@ namespace Classes
 
         public void Clear()
         {
-            field_186  = 0;
-            field_188  = 0;
-            field_18A  = 0;
-            time_minutes_ones  = 0;
-            time_minutes_tens  = 0;
-            time_hour  = 0;
+            System.Array.Clear(origData, 0, Area1Size);
 
-            field_1CA  = 0;
-            field_1CC  = 0;
-            field_1CE  = 0;
-            field_1D0  = 0;
-
-            field_1E0  = 0;
-            field_1E2  = 0;
-            field_1E4  = 0;
-            block_area_view  = 0;
-            game_speed  = 0;
-            outdoor_sky_colour  = 0;
-            indoor_sky_colour  = 0;
-            pics_on  = 0; //field_1FE;
-
-            can_cast_spells = false;
-
-            Array.Clear(field_200, 1, 32);
-            Array.Clear(origData, 0, origData.Length);
-
-            field_342  = 0;
-            field_3FA  = 0;
-            field_3FE  = 0;
-
+            DataIO.ReadObject(this, origData, 0);
         }
 
         protected byte[] origData;
@@ -121,6 +94,8 @@ namespace Classes
 
         [DataOffset(0x342, DataType.Byte)]
         public byte field_342;
+        [DataOffset(0x3E2, DataType.Word)]
+        public ushort field_3E2;
         [DataOffset(0x3FA, DataType.Byte)]
         public byte field_3FA;
         [DataOffset(0x3FE, DataType.SWord)]
@@ -214,6 +189,10 @@ namespace Classes
                     field_200[(loc - 0x200) / 2] = (short)value;
                     break;
 
+                case 0x3E2:
+                    field_3E2 = value;
+                    break;
+
                 case 0x3fe:
                     field_3FE = (short)value;
                     break;
@@ -299,6 +278,9 @@ namespace Classes
                 case 0x23e:
                 case 0x240:
                     return (ushort)field_200[(loc - 0x200) / 2];
+
+                case 0x3E2:
+                    return field_3E2;
 
                 default:
                     return DataIO.GetObjectUShort(this, origData, loc);

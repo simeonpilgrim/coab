@@ -7,69 +7,36 @@ namespace Classes
     /// </summary>
     public class Area2
     {
-        // Size 0x800
+        const int Area2Size = 0x800;
+ 
         public Area2()
         {
-            //
-            // TODO: Add constructor logic here
-            //
-            field_6F2 = new ushort[10];
+            constructorInit();
         }
 
         public Area2(byte[] data, int offset)
         {
+            constructorInit();
+
             DataIO.ReadObject(this, data, offset);
+
+            System.Array.Copy(data, offset, origData, 0, Area2Size);
+        }
+
+        private void constructorInit()
+        {
+            field_6F2 = new ushort[10];
+            origData = new byte[Area2Size];
         }
 
         public void Clear()
         {
-            field_550 = 0; // 0x550
-            field_580 = 0; // 0x580
-            field_582 = 0; // 0x582
-            field_58C = 0; // 0x58c
-            field_58E = 0; // 0x58e
-            field_590 = 0; // 0x590
-            field_592 = 0; // 0x592
-            field_594 = 0; // 0x594
-            field_596 = 0; // 0x596
-            field_5A4 = 0; // 0x5a4
-            field_5A6 = 0; // 0x5a6
-            field_5AA = 0; // 0x5aa
-            field_5C2 = 0; // 0x5c2
-            field_5C4 = 0; // 0x5c4
-            field_5C6 = 0; // 0x5c6
-            field_5CC = 0; // 0x5cc
-            game_area = 0; // 0x624
-            field_666 = 0; // 0x666
-            field_67C = 0; // 0x67c
-            field_67E = 0; // 0x67e
-            field_6D8 = 0; // 0x6d8
-            field_6DA = 0; // 0x6da
-            field_6E0 = 0; // 0x6e0
-            field_6E2 = 0; // 0x6e2
-            field_6E4 = 0; // 0x6e4
-            Array.Clear(field_6F2, 0, 10);
+            System.Array.Clear(origData, 0, Area2Size);
 
-            field_799 = 0; // 0x799
-            field_79A = 0; // 0x79a
-            field_79B = 0; // 0x79b
-            field_79C = 0; // 0x79c
-            field_79D = 0; // 0x79d
-            field_79E = 0; // 0x79e
-            field_79F = 0; // 0x79f
-            field_7A0 = 0; // 0x7a0
-            field_7A1 = 0; // 0x7a1
-            field_7A2 = 0; // 0x7a2
-            field_7A3 = 0; // 0x7a3
-            field_7A4 = 0; // 0x7a4
-            field_7A5 = 0; // 0x7a5
-            field_7A6 = 0; // 0x7a6
-            field_7A7 = 0; // 0x7a7
-            field_7A8 = 0; // 0x7a8
-            field_7A9 = 0; // 0x7a9
-            field_7AA = 0; // 0x7aa
-            field_7AB = 0; // 0x7ab
+            DataIO.ReadObject(this, origData, 0);
         }
+
+        protected byte[] origData;
 
         [DataOffset(0x550, DataType.Byte)]
         public byte field_550; // 0x550
@@ -186,9 +153,20 @@ namespace Classes
                 case 0x58e: return (ushort)field_58E;
                 case 0x5aa: return (ushort)field_5AA;
 
-                default:
-                    int i = (loc - 0x6F2) >> 1;
-                    return field_6F2[i];
+                case 0x6F2:
+                case 0x6F4:
+                case 0x6F6:
+                case 0x6F8:
+                case 0x6FA:
+                case 0x6FC:
+                case 0x6FE:
+                case 0x700:
+                case 0x702:
+                case 0x704:
+                    return field_6F2[(loc - 0x6F2)/2];
+
+                default: 
+                    return DataIO.GetObjectUShort(this, origData, loc);
             }            
         }
 
@@ -263,9 +241,21 @@ namespace Classes
                     field_7EC = value;
                     break;
 
+                case 0x6F2:
+                case 0x6F4:
+                case 0x6F6:
+                case 0x6F8:
+                case 0x6FA:
+                case 0x6FC:
+                case 0x6FE:
+                case 0x700:
+                case 0x702:
+                case 0x704:
+                    field_6F2[(loc - 0x6F2) / 2] = value;
+                    break;
+
                 default:
-                    int i = (loc - 0x6F2) >> 1;
-                    field_6F2[i] = value;
+                    DataIO.SetObjectUShort(this, origData, loc, value);
                     break;
             }
         }

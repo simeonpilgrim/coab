@@ -1359,7 +1359,7 @@ namespace engine
             byte var_1;
 
             arg_0 = true;
-            gbl.byte_1D75E = 0;
+            gbl.sp_target_count = 0;
             gbl.byte_1D2C7 = 0;
 
             gbl.targetX = ovr033.PlayerMapXPos(gbl.player_ptr);
@@ -1370,7 +1370,7 @@ namespace engine
             if (tmp1 == 0)
             {
                 gbl.sp_targets[1] = gbl.player_ptr;
-                gbl.byte_1D75E = 1;
+                gbl.sp_target_count = 1;
             }
             else if (tmp1 == 5)
             {
@@ -1410,7 +1410,7 @@ namespace engine
 
                             gbl.targetX = ovr033.PlayerMapXPos(var_C.field_0);
                             gbl.targetY = ovr033.PlayerMapYPos(var_C.field_0);
-                            gbl.byte_1D75E++;
+                            gbl.sp_target_count++;
 
                             if (arg_6 != 0x4f)
                             {
@@ -1483,21 +1483,22 @@ namespace engine
                 {
                     if (gbl.player_ptr.actions.target != null)
                     {
-
                         gbl.sp_targets[1] = gbl.player_ptr.actions.target;
-                        gbl.byte_1D75E = 1;
+                        gbl.sp_target_count = 1;
                     }
                     else
                     {
                         /* TODO it doesn't make sense to mask the low nibble then shift it out */
                         ovr032.Rebuild_SortedCombatantList(gbl.mapToBackGroundTile, 1, 0xff, (short)((gbl.unk_19AEC[arg_6].field_6 & 0x0f) >> 4), gbl.targetY, gbl.targetX);
+                        // test with it how it would make sense...
+						//ovr032.Rebuild_SortedCombatantList(gbl.mapToBackGroundTile, 1, 0xff, (short)((gbl.unk_19AEC[arg_6].field_6 & 0xf0) >> 4), gbl.targetY, gbl.targetX);
 
-                        for (var_2 = 0; var_2 < gbl.sortedCombatantCount; var_2++)
+                        for (int i = 0; i < gbl.sortedCombatantCount; i++)
                         {
-                            gbl.sp_targets[var_2 + 1] = gbl.player_array[gbl.SortedCombatantList[var_2].player_index];
+                            gbl.sp_targets[i + 1] = gbl.player_array[gbl.SortedCombatantList[i].player_index];
                         }
 
-                        gbl.byte_1D75E = gbl.sortedCombatantCount;
+                        gbl.sp_target_count = gbl.sortedCombatantCount;
                         gbl.byte_1D2C7 = 1;
                     }
                 }
@@ -1517,7 +1518,7 @@ namespace engine
                         gbl.sp_targets[var_2 + 1] = gbl.player_array[gbl.SortedCombatantList[var_2].player_index];
                     }
 
-                    gbl.byte_1D75E = gbl.sortedCombatantCount;
+                    gbl.sp_target_count = gbl.sortedCombatantCount;
                     gbl.byte_1D2C7 = 1;
                 }
                 else
@@ -1574,7 +1575,7 @@ namespace engine
                     }
                 }
 
-                gbl.byte_1D75E = var_2;
+                gbl.sp_target_count = var_2;
 
                 if (var_2 == 0)
                 {
