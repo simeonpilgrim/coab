@@ -1233,7 +1233,7 @@ namespace engine
             int center_x;
             bool var_B4;
             bool var_B3;
-            Struct_XXXX var_AC = new Struct_XXXX();
+            SteppingPath var_AC = new SteppingPath();
             byte[] var_94 = new byte[0x94];
 
             int var_BA = playerBMapX;
@@ -1249,11 +1249,11 @@ namespace engine
             var_AC.target_x = playerAMapX * 3;
             var_AC.target_y = playerAMapY * 3;
 
-            var_AC.init_struct_xxxx();
+            var_AC.CalculateDeltas();
 
             do
             {
-                var_B4 = !var_AC.step();
+                var_B4 = !var_AC.Step();
 
                 var_94[var_AF] = var_AC.direction;
 

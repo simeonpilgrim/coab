@@ -976,7 +976,7 @@ namespace engine
 
                 if (dice_roll == 1)
                 {
-                    cast_a_spell(spell_id, "miscasts", caster);
+                    cast_spell_text(spell_id, "miscasts", caster);
                     arg_4 = 0;
                     var_1 = 0;
                 }
@@ -984,7 +984,7 @@ namespace engine
 
             if (arg_4 != 0 || gbl.byte_1D88D == 0)
             {
-                cast_a_spell(spell_id, "casts", caster);
+                cast_spell_text(spell_id, "casts", caster);
             }
 
             while (var_1 != 0)
@@ -1079,15 +1079,15 @@ namespace engine
         }
 
 
-        internal static void sub_5D676(int targetY, int targetX, int casterY, int casterX,
-            Struct_XXXX bp_var_1C)
+        internal static void localSteppingPathInit(int targetY, int targetX, int casterY, int casterX,
+            SteppingPath bp_var_1C) /* sub_5D676 */
         {
             bp_var_1C.attacker_x = casterX;
             bp_var_1C.attacker_y = casterY;
             bp_var_1C.target_x = targetX;
             bp_var_1C.target_y = targetY;
 
-            bp_var_1C.init_struct_xxxx();
+            bp_var_1C.CalculateDeltas();
         }
 
 
@@ -1101,15 +1101,15 @@ namespace engine
         }
 
 
-        internal static void sub_5D702(Struct_XXXX bp_var_1C, out bool finished, ref byte groundTile, ref byte playerIndex, byte[] bp_var_71)
+        internal static void sub_5D702(SteppingPath path, out bool finished, out byte groundTile, out byte playerIndex, byte[] bp_var_71)
         {
             do
             {
-                finished = !bp_var_1C.step();
+                finished = !path.Step();
 
                 if (finished == false)
                 {
-                    ovr033.AtMapXY(out groundTile, out playerIndex, bp_var_1C.current_y, bp_var_1C.current_x);
+                    ovr033.AtMapXY(out groundTile, out playerIndex, path.current_y, path.current_x);
                     int var_1 = 1;
                     bool var_2 = false;
 
@@ -1145,14 +1145,13 @@ namespace engine
 
         internal static void sub_5D7CF(byte arg_0, byte arg_2, int targetY, int targetX, int casterY, int casterX)
         {
-            byte var_7A;
             byte var_79 = 0; /* Simeon */
             int var_78 = 0; /* Simeon */
             byte var_76 = 0; /* Simeon */
             byte var_75;
             byte var_74;
-            byte var_73 = 0; /* Simeon */
-            byte var_72 = 0; /* Simeon */
+            byte groundTile;
+            byte player_index;
             byte[] var_71 = new byte[0x1E];
             byte[] var_53 = new byte[0x32];
             byte var_21;
@@ -1160,18 +1159,18 @@ namespace engine
             byte var_1F;
             bool var_1E;
             bool finished;
-            Struct_XXXX var_1C = new Struct_XXXX();
+            SteppingPath path = new SteppingPath();
 
             var_20 = 0;
-            sub_5D676(targetY, targetX, casterY, casterX, var_1C);
+            localSteppingPathInit(targetY, targetX, casterY, casterX, path);
 
             do
             {
-                finished = !var_1C.step();
+                finished = !path.Step();
 
                 if (finished == true)
                 {
-                    var_53[var_20] = var_1C.direction;
+                    var_53[var_20] = path.direction;
                     var_20++;
                 }
             } while (finished == false);
@@ -1179,7 +1178,7 @@ namespace engine
             var_21 = (byte)(var_20 - 1);
             var_20 = 0;
             arg_0 = (byte)(arg_0 * 2);
-            var_1F = var_1C.steps;
+            var_1F = path.steps;
             finished = false;
 
             while (var_1F < arg_0 && finished == false)
@@ -1227,28 +1226,26 @@ namespace engine
 
             var_1E = ovr032.sub_733F1(gbl.mapToBackGroundTile, ref var_78, ref targetY, ref targetX, casterY, casterX);
 
-            sub_5D676(targetY, targetX, casterY, casterX, var_1C);
+            localSteppingPathInit(targetY, targetX, casterY, casterX, path);
 
             seg051.FillChar(0, 0x1E, var_71);
             var_74 = 1;
 
             do
             {
-                finished = !var_1C.step();
+                finished = !path.Step();
 
                 if (finished == false)
                 {
-                    ovr033.AtMapXY(out var_73, out var_72, var_1C.current_y, var_1C.current_x);
+                    ovr033.AtMapXY(out groundTile, out player_index, path.current_y, path.current_x);
 
-                    if (var_72 > 0)
+                    if (player_index > 0)
                     {
                         if (var_74 > 1)
                         {
-                            var_7A = (byte)(var_74 - 1);
-
-                            for (gbl.byte_1DA71 = 1; gbl.byte_1DA71 < var_7A; gbl.byte_1DA71++)
+                            for (gbl.byte_1DA71 = 1; gbl.byte_1DA71 < (var_74 - 1); gbl.byte_1DA71++)
                             {
-                                if (var_71[gbl.byte_1DA71 - 1] == var_72)
+                                if (var_71[gbl.byte_1DA71 - 1] == player_index)
                                 {
                                     var_79 = 1;
                                 }
@@ -1261,11 +1258,11 @@ namespace engine
 
                         if (var_79 == 0)
                         {
-                            var_71[var_74] = var_72;
+                            var_71[var_74] = player_index;
                             var_74++;
                         }
 
-                        var_76 = var_1C.direction;
+                        var_76 = path.direction;
                     }
                 }
             } while (finished == false);
@@ -1282,13 +1279,13 @@ namespace engine
 
                 BoundCoords(ref var_4, ref var_3);
 
-                sub_5D676(var_4, var_3, casterY, casterX, var_1C);
-                sub_5D702(var_1C, out finished, ref var_73, ref var_72, var_71);
+                localSteppingPathInit(var_4, var_3, casterY, casterX, path);
+                sub_5D702(path, out finished, out groundTile, out player_index, var_71);
 
                 if (arg_2 > 2)
                 {
-                    sub_5D676(var_2, var_1, casterY, casterX, var_1C);
-                    sub_5D702(var_1C, out finished, ref var_73, ref var_72, var_71);
+                    localSteppingPathInit(var_2, var_1, casterY, casterX, path);
+                    sub_5D702(path, out finished, out groundTile, out player_index, var_71);
                 }
             }
 
@@ -2575,8 +2572,8 @@ namespace engine
             sbyte var_35;
             sbyte var_34;
             sbyte var_33;
-            Struct_XXXX var_30;
-            Struct_XXXX var_18;
+            SteppingPath var_30;
+            SteppingPath var_18;
 
             var_36 = false;
             ovr025.sub_67A59(0x13);
@@ -2598,14 +2595,14 @@ namespace engine
                 while (var_3C > 0)
                 {
 
-                    var_18 = new Struct_XXXX();
+                    var_18 = new SteppingPath();
 
                     var_18.attacker_x = gbl.targetX;
                     var_18.attacker_y = gbl.targetY;
                     var_18.target_x = (short)(gbl.targetX + ((gbl.targetX - var_31) * var_35 * var_3C));
                     var_18.target_y = (short)(gbl.targetY + ((gbl.targetY - var_32) * var_35 * var_3C));
 
-                    var_18.init_struct_xxxx();
+                    var_18.CalculateDeltas();
 
                     do
                     {
@@ -2618,7 +2615,7 @@ namespace engine
                             do
                             {
 
-                                var_37 = var_18.step();
+                                var_37 = var_18.Step();
 
                                 ovr033.AtMapXY(out var_3B, out var_3A, var_18.current_y, var_18.current_x);
 
@@ -2646,16 +2643,16 @@ namespace engine
                             gbl.targetX = (sbyte)var_18.current_x;
                             gbl.targetY = (sbyte)var_18.current_y;
 
-                            var_30 = new Struct_XXXX();
+                            var_30 = new SteppingPath();
 
                             var_30.attacker_x = gbl.targetX;
                             var_30.attacker_y = gbl.targetY;
                             var_30.target_y = var_31;
                             var_30.target_x = var_32;
 
-                            var_30.init_struct_xxxx();
+                            var_30.CalculateDeltas();
 
-                            while (var_30.step() == true)
+                            while (var_30.Step() == true)
                             {
                                 /* empty */
                             }
@@ -4209,9 +4206,8 @@ namespace engine
         }
 
 
-        internal static void cast_a_spell(byte arg_0, string arg_2, Player arg_6)
+        internal static void cast_spell_text(byte arg_0, string arg_2, Player arg_6) /* cast_a_spell */
         {
-            //TODO rename to cast_spell_text
             if (gbl.game_state == 5)
             {
 

@@ -277,7 +277,7 @@ namespace engine
 
         internal static void DrawOverlay()
         {
-            //TODO remove this.
+            //TODO this might be useful when we move to OpenGL.
         }
 
         internal static void SetPaletteColor(byte color, byte index)

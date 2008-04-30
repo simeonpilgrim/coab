@@ -499,7 +499,7 @@ namespace engine
 
                         sub_58615(0);
 
-                        ovr023.cast_a_spell(player.spell_list[spell_index], "has memorized", player);
+                        ovr023.cast_spell_text(player.spell_list[spell_index], "has memorized", player);
                         output = true;
                     }
                 }
@@ -547,7 +547,7 @@ namespace engine
 
                                 sub_58615(0);
 
-                                ovr023.cast_a_spell(var_3, "has scribed", player);
+                                ovr023.cast_spell_text(var_3, "has scribed", player);
                                 arg_0 = true;
                             }
                         }

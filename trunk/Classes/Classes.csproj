@@ -133,6 +133,7 @@
     <Compile Include="Set.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="SteppingPath.cs" />
     <Compile Include="StringList.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -163,7 +164,6 @@
     <Compile Include="Struct_1D885.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Struct_XXXX.cs" />
     <Compile Include="Sys.cs" />
     <Compile Include="Text.cs">
       <SubType>Code</SubType>

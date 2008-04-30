@@ -914,7 +914,7 @@ namespace engine
 
                     if(gbl.inDemo == false )
                     {
-                        distributeNpcTreasure(); //TODO: NPC takes share
+                        distributeNpcTreasure();
                         displayCombatResults( gbl.exp_to_add ); 
                         distributeCombatTreasure();
                     }
