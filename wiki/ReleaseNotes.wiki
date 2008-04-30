@@ -1,12 +1,14 @@
 = The Release Notes =
 
 = Unreleased =
+
+= 1.0.6 =
   * Issue 3 - Detect magic cast when sharing treasure now works, therefore you can see the magic treasure
   * Fixed the function that checks if any team member has a spell, to return the correct team member (and therefore not crash)
   * Paladin's can now cure other players from the 'view player' screen
   * Issue 4 - combat screen background colour is now grey not black
-  * Partial fix for Paul's save game E play problem
-  * Fixed combat targeting via the Aim submenu
+  * Fixed 'Paul's save game E' play problem correctly
+  * Fixed combat targeting via the Aim sub-menu
   * Fixed logic in the remove affect code, that meant they where not being removed
   * Translated more assembly, and name/renamed functions and variables as there prepose became clear
   * Fixed the clipping of the combat screen. Large monsters where over drawing the board, which is not redrawn
