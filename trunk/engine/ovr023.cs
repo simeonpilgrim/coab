@@ -826,7 +826,7 @@ namespace engine
                 gbl.byte_1D2BF = arg_4;
             }
 
-            if (gbl.byte_1D75E != 0)
+            if (gbl.sp_target_count != 0)
             {
                 if (arg_A == 0)
                 {
@@ -837,7 +837,7 @@ namespace engine
                     var_2A = arg_A;
                 }
 
-                for (var_2B = 1; var_2B <= gbl.byte_1D75E; var_2B++)
+                for (var_2B = 1; var_2B <= gbl.sp_target_count; var_2B++)
                 {
                     if (gbl.sp_targets[var_2B] != null)
                     {
@@ -892,7 +892,7 @@ namespace engine
             }
 
             gbl.sp_targets[1] = gbl.player_ptr;
-            gbl.byte_1D75E = 1;
+            gbl.sp_target_count = 1;
             arg_0 = true;
 
             switch (gbl.unk_19AEC[arg_6].field_7)
@@ -908,7 +908,7 @@ namespace engine
                     if (gbl.dword_1D87F == null)
                     {
                         gbl.sp_targets[1] = null;
-                        gbl.byte_1D75E = 0;
+                        gbl.sp_target_count = 0;
                         arg_0 = false;
                     }
                     else
@@ -918,13 +918,13 @@ namespace engine
                     break;
 
                 case 4:
-                    gbl.sp_targets[gbl.byte_1D75E] = gbl.player_next_ptr;
+                    gbl.sp_targets[gbl.sp_target_count] = gbl.player_next_ptr;
 
-                    while (gbl.sp_targets[gbl.byte_1D75E].next_player != null)
+                    while (gbl.sp_targets[gbl.sp_target_count].next_player != null)
                     {
-                        gbl.sp_targets[gbl.byte_1D75E] = gbl.sp_targets[gbl.byte_1D75E].next_player;
+                        gbl.sp_targets[gbl.sp_target_count] = gbl.sp_targets[gbl.sp_target_count].next_player;
 
-                        gbl.byte_1D75E++;
+                        gbl.sp_target_count++;
                     }
 
                     break;
@@ -1101,7 +1101,7 @@ namespace engine
         }
 
 
-        internal static void sub_5D702(SteppingPath path, out bool finished, out byte groundTile, out byte playerIndex, byte[] bp_var_71)
+        internal static void find_players_on_path(SteppingPath path, out bool finished, byte[] player_list) /* sub_5D702 */ 
         {
             do
             {
@@ -1109,29 +1109,32 @@ namespace engine
 
                 if (finished == false)
                 {
-                    ovr033.AtMapXY(out groundTile, out playerIndex, path.current_y, path.current_x);
-                    int var_1 = 1;
-                    bool var_2 = false;
+                    byte dummyGroundTile;
+                    byte playerIndex;
+                    ovr033.AtMapXY(out dummyGroundTile, out playerIndex, path.current_y, path.current_x);
+                    
+                    int index = 1;
+                    bool inserted = false;
 
                     if (playerIndex > 0)
                     {
                         do
                         {
-                            if (bp_var_71[var_1] == playerIndex)
+                            if (player_list[index] == playerIndex)
                             {
-                                var_2 = true;
+                                inserted = true;
                             }
-                            else if (bp_var_71[var_1] == 0)
+                            else if (player_list[index] == 0)
                             {
-                                bp_var_71[var_1] = playerIndex;
-                                var_2 = true;
+                                player_list[index] = playerIndex;
+                                inserted = true;
                             }
                             else
                             {
-                                var_1++;
+                                index++;
                             }
 
-                        } while (var_2 == false);
+                        } while (inserted == false);
                     }
                 }
             } while (finished == false);
@@ -1150,9 +1153,7 @@ namespace engine
             byte var_76 = 0; /* Simeon */
             byte var_75;
             byte var_74;
-            byte groundTile;
-            byte player_index;
-            byte[] var_71 = new byte[0x1E];
+            byte[] players_on_path = new byte[0x1E];
             byte[] var_53 = new byte[0x32];
             byte var_21;
             byte var_20;
@@ -1228,7 +1229,7 @@ namespace engine
 
             localSteppingPathInit(targetY, targetX, casterY, casterX, path);
 
-            seg051.FillChar(0, 0x1E, var_71);
+            seg051.FillChar(0, 0x1E, players_on_path);
             var_74 = 1;
 
             do
@@ -1237,6 +1238,8 @@ namespace engine
 
                 if (finished == false)
                 {
+                    byte groundTile;
+                    byte player_index;
                     ovr033.AtMapXY(out groundTile, out player_index, path.current_y, path.current_x);
 
                     if (player_index > 0)
@@ -1245,7 +1248,7 @@ namespace engine
                         {
                             for (gbl.byte_1DA71 = 1; gbl.byte_1DA71 < (var_74 - 1); gbl.byte_1DA71++)
                             {
-                                if (var_71[gbl.byte_1DA71 - 1] == player_index)
+                                if (players_on_path[gbl.byte_1DA71 - 1] == player_index)
                                 {
                                     var_79 = 1;
                                 }
@@ -1258,7 +1261,7 @@ namespace engine
 
                         if (var_79 == 0)
                         {
-                            var_71[var_74] = player_index;
+                            players_on_path[var_74] = player_index;
                             var_74++;
                         }
 
@@ -1269,42 +1272,40 @@ namespace engine
 
             if (arg_2 > 1)
             {
-                int var_1 = targetX + unk_16D22[var_76];
-                int var_2 = targetY + unk_16D2A[var_76];
+                int map_a_x = targetX + unk_16D22[var_76];
+                int map_a_y = targetY + unk_16D2A[var_76];
 
-                BoundCoords(ref var_2, ref var_1);
+                BoundCoords(ref map_a_y, ref map_a_x);
 
-                int var_3 = targetX + unk_16D32[var_76];
-                int var_4 = targetY + unk_16D3A[var_76];
+                int map_b_x = targetX + unk_16D32[var_76];
+                int map_b_y = targetY + unk_16D3A[var_76];
 
-                BoundCoords(ref var_4, ref var_3);
+                BoundCoords(ref map_b_y, ref map_b_x);
 
-                localSteppingPathInit(var_4, var_3, casterY, casterX, path);
-                sub_5D702(path, out finished, out groundTile, out player_index, var_71);
+                localSteppingPathInit(map_b_y, map_b_x, casterY, casterX, path);
+                find_players_on_path(path, out finished, players_on_path);
 
                 if (arg_2 > 2)
                 {
-                    localSteppingPathInit(var_2, var_1, casterY, casterX, path);
-                    sub_5D702(path, out finished, out groundTile, out player_index, var_71);
+                    localSteppingPathInit(map_a_y, map_a_x, casterY, casterX, path);
+                    find_players_on_path(path, out finished, players_on_path);
                 }
             }
 
-            var_74 = 1;
-            var_75 = 1;
-            gbl.byte_1D75E = 0;
+            int path_index = 1;
+            int sp_target_index = 1;
+            gbl.sp_target_count = 0;
 
-            if (var_71[1] != 0)
+            while (players_on_path[path_index] != 0)
             {
-                do
+                if (gbl.player_array[players_on_path[path_index]] != gbl.player_ptr)
                 {
-                    if (gbl.player_array[var_71[var_74]] != gbl.player_ptr)
-                    {
-                        gbl.byte_1D75E++;
-                        gbl.sp_targets[var_75] = gbl.player_array[var_74];
-                        var_75++;
-                    }
-                    var_74++;
-                } while (var_71[var_74] != 0);
+                    gbl.sp_target_count += 1;
+                    gbl.sp_targets[sp_target_index] = gbl.player_array[players_on_path[path_index]];
+                    sp_target_index++;
+                }
+
+                path_index++;
             }
         }
 
@@ -1318,13 +1319,13 @@ namespace engine
 
             var_29 = arg_0;
 
-            for (int var_2F = gbl.byte_1D75E; var_2F >= 1; var_2F--)
+            for (int i = gbl.sp_target_count; i >= 1; i--)
             {
-                if (gbl.sp_targets[var_2F] != null)
+                if (gbl.sp_targets[i] != null)
                 {
-                    var_2D = gbl.sp_targets[var_2F];
+                    var_2D = gbl.sp_targets[i];
 
-                    if (var_2F < gbl.byte_1D75E)
+                    if (i < gbl.sp_target_count)
                     {
                         seg044.sound_sub_120E0(gbl.sound_2_188C2);
                         ovr025.sub_67A59(0x12);
@@ -1334,7 +1335,7 @@ namespace engine
                     }
 
                     if ((gbl.spell_id == 0x4F || gbl.spell_id == 0x51) &&
-                        var_2F == gbl.byte_1D75E)
+                        i == gbl.sp_target_count)
                     {
                         var_2E = true;
                         var_30 = 1;
@@ -1362,7 +1363,7 @@ namespace engine
         {
             gbl.byte_1D2C7 = 1;
 
-            for (int i = 1; i <= gbl.byte_1D75E; i++)
+            for (int i = 1; i <= gbl.sp_target_count; i++)
             {
                 if (gbl.sp_targets[i] != null && ( gbl.sp_targets[i].combat_team != arg_4 ||
                     (gbl.spell_id == 1 && gbl.game_state == 5 &&
@@ -1390,7 +1391,7 @@ namespace engine
 
         internal static void sub_5DDBC()
         {
-            if (gbl.byte_1D75E != 0 &&
+            if (gbl.sp_target_count != 0 &&
                 ovr024.heal_player(0, ovr024.roll_dice(8, 1), gbl.sp_targets[1]) == true)
             {
                 ovr025.describeHealing(gbl.sp_targets[1]);
@@ -1531,7 +1532,7 @@ namespace engine
             var_6 = gbl.sp_targets[1];
 
             if (var_6 != null &&
-                gbl.byte_1D75E > 0 &&
+                gbl.sp_target_count > 0 &&
                 ovr024.do_saving_throw(0, 4, var_6) == false &&
                 ovr025.find_affect(out var_4, Affects.enlarge, var_6) == true)
             {
@@ -1581,7 +1582,7 @@ namespace engine
 
             gbl.byte_1AFDD = ovr024.roll_dice(4, 4);
 
-            for (var_1 = 1; var_1 <= gbl.byte_1D75E; var_1++)
+            for (var_1 = 1; var_1 <= gbl.sp_target_count; var_1++)
             {
                 throw new System.NotSupportedException();//mov	al, [bp+var_1]
                 throw new System.NotSupportedException();//xor	ah, ah
@@ -1662,7 +1663,7 @@ namespace engine
         {
             sbyte var_1;
 
-            if (gbl.byte_1D75E == 1)
+            if (gbl.sp_target_count == 1)
             {
                 if (gbl.spell_id == 0x17)
                 {
@@ -1673,11 +1674,11 @@ namespace engine
                     var_1 = -3;
                 }
             }
-            else if (gbl.byte_1D75E == 2)
+            else if (gbl.sp_target_count == 2)
             {
                 var_1 = -1;
             }
-            else if (gbl.byte_1D75E == 3 || gbl.byte_1D75E == 4)
+            else if (gbl.sp_target_count == 3 || gbl.sp_target_count == 4)
             {
                 var_1 = 0;
             }
@@ -1733,7 +1734,7 @@ namespace engine
             Player player;
 
             gbl.byte_1AFDD = gbl.player_ptr.hit_point_current;
-            gbl.byte_1D75E = 0;
+            gbl.sp_target_count = 0;
             player = gbl.player_next_ptr;
 
             while (player != null)
@@ -1742,8 +1743,8 @@ namespace engine
                     gbl.byte_1AFDD >= player.hit_point_current)
                 {
                     gbl.byte_1AFDD -= player.hit_point_current;
-                    gbl.byte_1D75E++;
-                    gbl.sp_targets[gbl.byte_1D75E] = player;
+                    gbl.sp_target_count++;
+                    gbl.sp_targets[gbl.sp_target_count] = player;
                 }
 
                 player = player.next_player;
@@ -2029,7 +2030,7 @@ namespace engine
 
             var_3 = ovr025.sub_6886F(gbl.spell_id);
 
-            gbl.byte_1D75E = 0;
+            gbl.sp_target_count = 0;
             var_7 = gbl.player_next_ptr;
 
             while (var_7 != null && var_3 > 0)
@@ -2186,7 +2187,7 @@ namespace engine
             gbl.byte_1D2C7 = 1;
             var_2 = ovr025.sub_6886F(gbl.spell_id);
 
-            for (int i = 1; i <= gbl.byte_1D75E; i++)
+            for (int i = 1; i <= gbl.sp_target_count; i++)
             {
                 var_7 = 0;
                 var_6 = gbl.sp_targets[1];
@@ -2477,7 +2478,7 @@ namespace engine
                     gbl.sp_targets[i + 1] = gbl.player_array[gbl.SortedCombatantList[i].player_index];
                 }
 
-                gbl.byte_1D75E = gbl.sortedCombatantCount;
+                gbl.sp_target_count = gbl.sortedCombatantCount;
             }
 
             ovr033.redrawCombatArea(8, 0, gbl.targetY, gbl.targetX);
@@ -2499,7 +2500,7 @@ namespace engine
 
             var_2A = ovr025.sub_6886F(gbl.spell_id);
 
-            for (var_2B = 1; var_2B < gbl.byte_1D75E; var_2B++)
+            for (var_2B = 1; var_2B < gbl.sp_target_count; var_2B++)
             {
                 if (gbl.sp_targets[var_2B].combat_team == arg_4 &&
                     var_2A > 0)
@@ -2835,7 +2836,7 @@ namespace engine
 
         internal static void sub_5FF6D()
         {
-            if (gbl.byte_1D75E != 0 &&
+            if (gbl.sp_target_count != 0 &&
                 ovr024.heal_player(0, (byte)(ovr024.roll_dice(8, 2) + 1), gbl.sp_targets[1]) == true)
             {
                 ovr025.describeHealing(gbl.sp_targets[1]);
@@ -2978,7 +2979,7 @@ namespace engine
 
         internal static void sub_603F0()
         {
-            if (gbl.byte_1D75E != 0 &&
+            if (gbl.sp_target_count != 0 &&
                 ovr024.heal_player(0, (byte)(ovr024.roll_dice(8, 3) + 3), gbl.sp_targets[1]) == true)
             {
                 ovr025.describeHealing(gbl.sp_targets[1]);
@@ -3088,7 +3089,7 @@ namespace engine
 
             if (gbl.area_ptr.field_1CC == 0)
             {
-                for (var_5 = 1; var_5 <= gbl.byte_1D75E; var_5++)
+                for (var_5 = 1; var_5 <= gbl.sp_target_count; var_5++)
                 {
                     if (gbl.sp_targets[var_5] != null)
                     {
@@ -3122,7 +3123,7 @@ namespace engine
 
             sub_5DB24("is charmed", 0);
 
-            for (var_1 = 1; var_1 <= gbl.byte_1D75E; var_1++)
+            for (var_1 = 1; var_1 <= gbl.sp_target_count; var_1++)
             {
                 if (ovr025.find_affect(out var_7, Affects.charm_person, gbl.sp_targets[var_1]) == true)
                 {
@@ -3141,12 +3142,12 @@ namespace engine
 
             var_B = ovr024.roll_dice(8, 2);
 
-            if (gbl.byte_1D75E > var_B)
+            if (gbl.sp_target_count > var_B)
             {
-                gbl.byte_1D75E = var_B;
+                gbl.sp_target_count = var_B;
             }
 
-            for (var_1 = 1; var_1 <= gbl.byte_1D75E; var_1++)
+            for (var_1 = 1; var_1 <= gbl.sp_target_count; var_1++)
             {
                 if (gbl.sp_targets[var_1] != null)
                 {
@@ -3202,7 +3203,7 @@ namespace engine
 
             sub_5D7CF(6, 3, gbl.targetY, gbl.targetX, ovr033.PlayerMapYPos(caster), ovr033.PlayerMapXPos(caster));
 
-            for (int var_9 = 1; var_9 < gbl.byte_1D75E; var_9++)
+            for (int var_9 = 1; var_9 < gbl.sp_target_count; var_9++)
             {
                 Player target = gbl.sp_targets[var_9];
 
@@ -3709,7 +3710,7 @@ namespace engine
 
             sub_5D7CF(3, 1, gbl.targetY, gbl.targetX, ovr033.PlayerMapYPos(player), ovr033.PlayerMapXPos(player));
 
-            for (int i = 1; i <= gbl.byte_1D75E; i++)
+            for (int i = 1; i <= gbl.sp_target_count; i++)
             {
                 if (gbl.sp_targets[i] != null)
                 {
@@ -3905,7 +3906,7 @@ namespace engine
                     sub_5D7CF(6, 1, gbl.targetY, gbl.targetX, var_3, var_2);
                 }
 
-                for (var_4 = 1; var_4 <= gbl.byte_1D75E; var_4++)
+                for (var_4 = 1; var_4 <= gbl.sp_target_count; var_4++)
                 {
                     if (ovr025.on_our_team(player) == gbl.sp_targets[var_4].combat_team)
                     {
@@ -3949,7 +3950,7 @@ namespace engine
                 throw new System.NotSupportedException();//push	ax
                 throw new System.NotSupportedException();//call	sub_67AA4
 
-                for (var_4 = 1; var_4 <= gbl.byte_1D75E; var_4++)
+                for (var_4 = 1; var_4 <= gbl.sp_target_count; var_4++)
                 {
                     if (gbl.sp_targets[var_4] != null)
                     {
@@ -4030,7 +4031,7 @@ namespace engine
             throw new System.NotSupportedException();//push	ax
             throw new System.NotSupportedException();//call	sub_67AA4
 
-            for (var_4 = 1; var_4 <= gbl.byte_1D75E; var_4++)
+            for (var_4 = 1; var_4 <= gbl.sp_target_count; var_4++)
             {
                 if (gbl.sp_targets[var_4] != null)
                 {

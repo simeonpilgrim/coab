@@ -326,7 +326,7 @@ namespace Classes
         public static byte byte_1D5BA;
         public static byte byte_1D5BE;
         public static bool displayInput_specialKeyPressed; // byte_1D5BF displayInput
-        public static int byte_1D75E;
+        public static int sp_target_count; // byte_1D75E
         public static int targetX; // byte_1D883
         public static int targetY; // byte_1D884
         public static byte byte_1D88D;
