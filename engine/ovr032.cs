@@ -33,8 +33,8 @@ namespace engine
 
         internal static bool sub_733F1(Struct_1D1BC arg_0, ref int range, ref int outY, ref int outX, int mapY, int mapX)
         {
-            Struct_XXXX var_31 = new Struct_XXXX();
-            Struct_XXXX var_19 = new Struct_XXXX();
+            SteppingPath var_31 = new SteppingPath();
+            SteppingPath var_19 = new SteppingPath();
 
             int max_range = range * 2;
             var_19.attacker_x = mapX;
@@ -42,7 +42,7 @@ namespace engine
             var_19.target_x = outX;
             var_19.target_y = outY;
 
-            var_19.init_struct_xxxx();
+            var_19.CalculateDeltas();
 
             var_31.attacker_x = 0;
             var_31.attacker_y = gbl.BackGroundTiles[arg_0[mapX, mapY]].field_1;
@@ -57,7 +57,7 @@ namespace engine
             }
 
             var_31.target_y = gbl.BackGroundTiles[arg_0[mapX, mapY]].field_1;
-            var_31.init_struct_xxxx();
+            var_31.CalculateDeltas();
             bool finished = false;
 
             do
@@ -73,8 +73,8 @@ namespace engine
                     return false;
                 }
 
-                var_31.step();
-                finished = !var_19.step();
+                var_31.Step();
+                finished = !var_19.Step();
             } while (finished == false);
 
             range = var_19.steps;

@@ -1,7 +1,7 @@
 using System;
 namespace Classes
 {
-    public class Struct_XXXX
+    public class SteppingPath
     {
         // 0x17 or 23 long
         public int attacker_x;
@@ -39,7 +39,7 @@ namespace Classes
         /// 
         /// </summary>
         /// <returns>if a step was done</returns>
-        public bool step() /* sub_7324C */
+        public bool Step() /* sub_7324C */
         {
             bool stepMade = false;
             int index_x = 1;
@@ -99,7 +99,7 @@ namespace Classes
 		//						  };
 
 
-        public void init_struct_xxxx() /* sub_731A5 */
+        public void CalculateDeltas() /* sub_731A5 */
         {
             current_x = attacker_x;
             current_y = attacker_y;
