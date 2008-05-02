@@ -1152,29 +1152,28 @@ namespace engine
 
             byte[] players_on_path = new byte[0x1E];
             byte[] var_53 = new byte[0x32];
-            byte var_21;
-            byte var_20;
             byte var_1F;
             bool var_1E;
             bool finished;
             SteppingPath path = new SteppingPath();
 
-            var_20 = 0;
             localSteppingPathInit(targetY, targetX, casterY, casterX, path);
 
+            int index = 0;
             do
             {
                 finished = !path.Step();
 
-                if (finished == true)
+                if (finished == false)
                 {
-                    var_53[var_20] = path.direction;
-                    var_20++;
+                    var_53[index] = path.direction;
+                    index++;
                 }
             } while (finished == false);
 
-            var_21 = (byte)(var_20 - 1);
-            var_20 = 0;
+            int count = index - 1;
+
+            index = 0;
             arg_0 = (byte)(arg_0 * 2);
             var_1F = path.steps;
             finished = false;
@@ -1183,7 +1182,7 @@ namespace engine
             {
                 if (targetX < 0x31 && targetX > 0 && targetY < 0x18 && targetY > 0)
                 {
-                    switch (var_53[var_20])
+                    switch (var_53[index])
                     {
                         case 0:
                         case 2:
@@ -1200,17 +1199,17 @@ namespace engine
                             break;
                     }
 
-                    targetX += gbl.MapDirectionXDelta[var_53[var_20]];
-                    targetY += gbl.MapDirectionYDelta[var_53[var_20]];
+                    targetX += gbl.MapDirectionXDelta[var_53[index]];
+                    targetY += gbl.MapDirectionYDelta[var_53[index]];
 
 
-                    if (var_20 == var_21)
+                    if (index == count)
                     {
-                        var_20 = 0;
+                        index = 0;
                     }
                     else
                     {
-                        var_20++;
+                        index++;
                     }
                 }
                 else
@@ -2085,7 +2084,7 @@ namespace engine
 
         internal static void can_see()
         {
-            if (ovr024.is_cured(Affects.blinded, gbl.sp_targets[1]) == true)
+            if (ovr024.cure_affect(Affects.blinded, gbl.sp_targets[1]) == true)
             {
                 ovr025.sub_6818A("can see", 1, gbl.sp_targets[1]);
             }
@@ -2104,12 +2103,12 @@ namespace engine
 
             gbl.byte_1D2C6 = true;
 
-            if (ovr024.is_cured(Affects.cause_disease_1, gbl.sp_targets[1]) == true)
+            if (ovr024.cure_affect(Affects.cause_disease_1, gbl.sp_targets[1]) == true)
             {
                 var_1 = true;
             }
 
-            if (ovr024.is_cured(Affects.affect_2b, gbl.sp_targets[1]) == true)
+            if (ovr024.cure_affect(Affects.affect_2b, gbl.sp_targets[1]) == true)
             {
                 var_1 = true;
 
@@ -2117,7 +2116,7 @@ namespace engine
                 ovr024.remove_affect(null, Affects.helpless, gbl.sp_targets[1]);
             }
 
-            if (ovr024.is_cured(Affects.hot_fire_shield, gbl.sp_targets[1]) == true)
+            if (ovr024.cure_affect(Affects.hot_fire_shield, gbl.sp_targets[1]) == true)
             {
                 var_1 = true;
                 ovr024.remove_affect(null, Affects.affect_39, gbl.sp_targets[1]);
@@ -2399,7 +2398,7 @@ namespace engine
             byte var_5;
             Item var_4;
 
-            if (ovr024.is_cured(Affects.bestow_curse, gbl.sp_targets[1]) == true)
+            if (ovr024.cure_affect(Affects.bestow_curse, gbl.sp_targets[1]) == true)
             {
                 ovr025.sub_6818A("is un-cursed", 1, gbl.sp_targets[1]);
             }
@@ -2486,37 +2485,33 @@ namespace engine
         }
 
 
-        internal static void sub_5F87B(string arg_0, sbyte arg_4, Affects arg_6)
+        internal static void sub_5F87B(string text, sbyte combatTeam, Affects affect)
         {
-
-            byte var_2B;
             byte var_2A;
-            string var_29;
 
-            var_29 = arg_0;
             gbl.byte_1D2C7 = 1;
 
             var_2A = ovr025.sub_6886F(gbl.spell_id);
 
-            for (var_2B = 1; var_2B < gbl.sp_target_count; var_2B++)
+            for (int index = 1; index <= gbl.sp_target_count; index++)
             {
-                if (gbl.sp_targets[var_2B].combat_team == arg_4 &&
+                if (gbl.sp_targets[index].combat_team == combatTeam &&
                     var_2A > 0)
                 {
                     var_2A -= 1;
 
-                    if (ovr024.is_cured(arg_6, gbl.sp_targets[var_2B]) == true)
+                    if (ovr024.cure_affect(affect, gbl.sp_targets[index]) == true)
                     {
-                        gbl.sp_targets[var_2B] = null;
+                        gbl.sp_targets[index] = null;
                     }
                 }
                 else
                 {
-                    gbl.sp_targets[var_2B] = null;
+                    gbl.sp_targets[index] = null;
                 }
             }
 
-            sub_5CF7F(var_29, 0, 0, false, 0, gbl.spell_id);
+            sub_5CF7F(text, 0, 0, false, 0, gbl.spell_id);
         }
 
 
@@ -2821,7 +2816,7 @@ namespace engine
 
         internal static void cast_speed()
         {
-            if (ovr024.is_cured(Affects.slow, gbl.sp_targets[1]) == false)
+            if (ovr024.cure_affect(Affects.slow, gbl.sp_targets[1]) == false)
             {
                 sub_5CF7F("is Speedy", 0, 0, false, 0, gbl.spell_id);
             }
