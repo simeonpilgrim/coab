@@ -1,6 +1,9 @@
 = The Release Notes =
 
 = Unreleased =
+  * Fixed the "You have lost the fight"/"Zero EXP" noticed fighting drow patrols in Save E
+  * Fixed crash when lighting bolt spell hits a wall
+  * Turned off the "always on" detect magic effect, that was left in after debugging the issue
 
 = 1.0.6 =
   * Issue 3 - Detect magic cast when sharing treasure now works, therefore you can see the magic treasure
