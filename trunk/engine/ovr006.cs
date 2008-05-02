@@ -417,11 +417,6 @@ namespace engine
 
         internal static void displayCombatResults(int arg_0) /* sub_2DABC */
 		{
-			Item item_ptr;
-			bool var_10F;
-			string var_10B;
-			string var_B;
-
 			seg037.draw8x8_01();
 
 			if( gbl.byte_1AB14 != 0 ||
@@ -433,7 +428,7 @@ namespace engine
 
 					arg_0 = 0;
 
-					item_ptr = gbl.item_pointer;
+                    Item item_ptr = gbl.item_pointer;
 					while( item_ptr != null )
 					{
 						Item var_115 = item_ptr.next;
@@ -449,7 +444,7 @@ namespace engine
 				else
 				{
                     if ((gbl.combat_type == gbl.combatType.duel && gbl.byte_1EE86 == 0) ||
-						( gbl.byte_1EE86 != 0 && gbl.area2_ptr.field_5CC != 0 ) )
+						( gbl.byte_1EE86 == 0 && gbl.area2_ptr.field_5CC != 0 ) )
 					{
 						gbl.area2_ptr.field_58E = 0x80;
 						seg041.displayString( "You have lost the fight.", 0, 10, 3, 1 );
@@ -474,22 +469,22 @@ namespace engine
 				seg041.displayString( "The party has found Treasure!", 0, 10, 3, 1 );
 			}
 
-			seg051.Str( 10, out var_B, 0, arg_0 );
-
+            string text;
             if (gbl.combat_type == gbl.combatType.duel)
 			{
 
-				var_10B = "The duelist receives " + var_B;
+                text = "The duelist receives " + arg_0.ToString();
 			}
 			else
 			{
-				var_10B = "Each character receives " + var_B;
+                text = "Each character receives " + arg_0.ToString();
 			}
 
-			seg041.displayString( var_10B, 0, 10, 5, 1 );
+            seg041.displayString(text, 0, 10, 5, 1);
 			seg041.displayString( "experience points.", 0, 10, 7, 1 );
 
-			ovr027.displayInput( out var_10F, false, 1, 15, 15, 15, "press <enter>/<return> to continue", string.Empty );
+            bool dummyBool;
+            ovr027.displayInput(out dummyBool, false, 1, 15, 15, 15, "press <enter>/<return> to continue", string.Empty);
 		}
 
 

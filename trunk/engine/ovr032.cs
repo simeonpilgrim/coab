@@ -31,7 +31,7 @@ namespace engine
         }
 
 
-        internal static bool sub_733F1(Struct_1D1BC arg_0, ref int range, ref int outY, ref int outX, int mapY, int mapX)
+        internal static bool canReachTarget(Struct_1D1BC groundTilesMap, ref int range, ref int outY, ref int outX, int mapY, int mapX) /* sub_733F1 */
         {
             SteppingPath var_31 = new SteppingPath();
             SteppingPath var_19 = new SteppingPath();
@@ -45,7 +45,7 @@ namespace engine
             var_19.CalculateDeltas();
 
             var_31.attacker_x = 0;
-            var_31.attacker_y = gbl.BackGroundTiles[arg_0[mapX, mapY]].field_1;
+            var_31.attacker_y = gbl.BackGroundTiles[groundTilesMap[mapX, mapY]].field_1;
 
             if (var_19.diff_x > var_19.diff_y)
             {
@@ -56,14 +56,14 @@ namespace engine
                 var_31.target_x = var_19.diff_y;
             }
 
-            var_31.target_y = gbl.BackGroundTiles[arg_0[mapX, mapY]].field_1;
+            var_31.target_y = gbl.BackGroundTiles[groundTilesMap[mapX, mapY]].field_1;
             var_31.CalculateDeltas();
             bool finished = false;
 
             do
             {
-                if ((arg_0.field_6 == 0 && 
-                     gbl.BackGroundTiles[arg_0[var_19.current_x, var_19.current_y]].field_2 > var_31.diff_x) ||
+                if ((groundTilesMap.field_6 == 0 &&
+                     gbl.BackGroundTiles[groundTilesMap[var_19.current_x, var_19.current_y]].field_2 > var_31.diff_x) ||
                     var_19.steps > max_range)
                 {
                     outX = var_19.current_x;
@@ -227,80 +227,76 @@ namespace engine
 
         internal static void Rebuild_SortedCombatantList(Struct_1D1BC arg_0, int size, byte dir, short arg_8, int mapY, int mapX) /* sub_738D8 */
         {
-            int[] combatantMapStepY = new int[4];
-            int[] combatantMapStepX = new int[4];
-            int[] mapStepY = new int[4];
-            int[] mapStepX = new int[4];
-            int var_6;
-            int var_5;
-            byte playerIndex;
+            int[] targetMapSizeY = new int[4];
+            int[] targetMapSizeX = new int[4];
+            int[] attackerMapSizeY = new int[4];
+            int[] attackerMapSizeX = new int[4];
 
-            var_6 = 255; /* put here because of unused error */
-            var_5 = 255; /* put here because of unused error */
-
-            for (int step = 0; step <= 3; step++)
+            for (int attackerSize = 0; attackerSize <= 3; attackerSize++)
             {
                 int deltaY;
                 int deltaX;
 
-                if (ovr033.GetSizeBasedMapDelta(out deltaY, out deltaX, step, size) == true)
+                if (ovr033.GetSizeBasedMapDelta(out deltaY, out deltaX, attackerSize, size) == true)
                 {
-                    mapStepX[step] = mapX + deltaX;
-                    mapStepY[step] = mapY + deltaY;
+                    attackerMapSizeX[attackerSize] = mapX + deltaX;
+                    attackerMapSizeY[attackerSize] = mapY + deltaY;
                 }
                 else
                 {
-                    mapStepX[step] = -1;
+                    attackerMapSizeX[attackerSize] = -1;
                 }
             }
 
             gbl.sortedCombatantCount = 0;
 
-            for (playerIndex = 1; playerIndex <= gbl.CombatantCount; playerIndex++)
+            for (int playerIndex = 1; playerIndex <= gbl.CombatantCount; playerIndex++)
             {
                 if (gbl.CombatMap[playerIndex].size > 0)
                 {
-                    bool found = false;
-                    int var_1F = 0x0FF;
-
-                    for (int combStep = 0; combStep <= 3; combStep++)
+                    for (int targetSize = 0; targetSize <= 3; targetSize++)
                     {
                         int deltaY;
                         int deltaX;
 
-                        if (ovr033.GetSizeBasedMapDelta(out deltaY, out deltaX, combStep, gbl.CombatMap[playerIndex].size) == true)
+                        if (ovr033.GetSizeBasedMapDelta(out deltaY, out deltaX, targetSize, gbl.CombatMap[playerIndex].size) == true)
                         {
-                            combatantMapStepX[combStep] = gbl.CombatMap[playerIndex].xPos + deltaX;
-                            combatantMapStepY[combStep] = gbl.CombatMap[playerIndex].yPos + deltaY;
+                            targetMapSizeX[targetSize] = gbl.CombatMap[playerIndex].xPos + deltaX;
+                            targetMapSizeY[targetSize] = gbl.CombatMap[playerIndex].yPos + deltaY;
                         }
                         else
                         {
-                            combatantMapStepX[combStep] = -1;
+                            targetMapSizeX[targetSize] = -1;
                         }
                     }
 
-                    for (int combStep = 0; combStep <= 3; combStep++)
-                    {
-                        if (combatantMapStepX[combStep] >= 0)
-                        {
-                            for (int step = 0; step <= 3; step++)
-                            {
-                                if (mapStepX[step] >= 0 &&
-                                    CanSeeCombatant(dir, combatantMapStepY[combStep], combatantMapStepX[combStep], mapStepY[step], mapStepX[step]) == true)
-                                {
-                                    int var_8 = combatantMapStepX[combStep];
-                                    int var_9 = combatantMapStepY[combStep];
-                                    int var_1D = arg_8;
+                    bool found = false;
+                    int found_range = 0xFFFF;
+                    int found_target_size = 0xFFFF;
+                    int found_attacker_size = 0xFFFF;
 
-                                    if (sub_733F1(arg_0, ref var_1D, ref var_9, ref var_8, mapStepY[step], mapStepX[step]) == true)
+                    for (int targetSize = 0; targetSize <= 3; targetSize++)
+                    {
+                        if (targetMapSizeX[targetSize] >= 0)
+                        {
+                            for (int attackerSize = 0; attackerSize <= 3; attackerSize++)
+                            {
+                                if (attackerMapSizeX[attackerSize] >= 0 &&
+                                    CanSeeCombatant(dir, targetMapSizeY[targetSize], targetMapSizeX[targetSize], attackerMapSizeY[attackerSize], attackerMapSizeX[attackerSize]) == true)
+                                {
+                                    int target_x = targetMapSizeX[targetSize];
+                                    int target_y = targetMapSizeY[targetSize];
+                                    int tmp_range = arg_8;
+
+                                    if (canReachTarget(arg_0, ref tmp_range, ref target_y, ref target_x, attackerMapSizeY[attackerSize], attackerMapSizeX[attackerSize]) == true)
                                     {
                                         found = true;
 
-                                        if (var_1D < var_1F)
+                                        if (tmp_range < found_range)
                                         {
-                                            var_1F = var_1D;
-                                            var_5 = step;
-                                            var_6 = combStep;
+                                            found_range = tmp_range;
+                                            found_attacker_size = attackerSize;
+                                            found_target_size = targetSize;
                                         }
                                     }
                                 }
@@ -313,7 +309,7 @@ namespace engine
                         gbl.sortedCombatantCount++;
 
                         gbl.SortedCombatantList[gbl.sortedCombatantCount].player_index = playerIndex;
-                        gbl.SortedCombatantList[gbl.sortedCombatantCount].steps = var_1F;
+                        gbl.SortedCombatantList[gbl.sortedCombatantCount].steps = found_range;
                         byte tmpDir = 0;
 
                         if (dir < 8)
@@ -322,7 +318,7 @@ namespace engine
                         }
                         else
                         {
-                            while (CanSeeCombatant(tmpDir, combatantMapStepY[var_6], combatantMapStepX[var_6], mapStepY[var_5], mapStepX[var_5]) == false)
+                            while (CanSeeCombatant(tmpDir, targetMapSizeY[found_target_size], targetMapSizeX[found_target_size], attackerMapSizeY[found_attacker_size], attackerMapSizeX[found_attacker_size]) == false)
                             {
                                 tmpDir++;
                             }

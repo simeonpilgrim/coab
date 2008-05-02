@@ -4,19 +4,19 @@ namespace Classes
     public class SteppingPath
     {
         // 0x17 or 23 long
-        public int attacker_x;
-        public int attacker_y;
-        public int target_x;
-        public int target_y;
-        public int delta_count; 
-        public int diff_x; 
-        public int diff_y; 
-        public int current_x;
-        public int current_y;
-        public int sign_x; 
-        public int sign_y; 
-        public byte steps;
-        public byte direction;
+        public int attacker_x;      // 00
+        public int attacker_y;      // 02
+        public int target_x;        // 04
+        public int target_y;        // 06
+        public int delta_count;     // 08
+        public int diff_x;          // 0a 
+        public int diff_y;          // 0c
+        public int current_x;       // 0e
+        public int current_y;       // 10
+        public int sign_x;          // 12
+        public int sign_y;          // 14
+        public byte steps;          // 16
+        public byte direction;      // 17 
 
         public void Clear()
         {

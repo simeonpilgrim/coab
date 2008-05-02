@@ -654,7 +654,7 @@ namespace engine
 
                         gbl.mapToBackGroundTile.field_6 = 0;
 
-                        if (ovr032.sub_733F1(gbl.mapToBackGroundTile, ref var_6, ref tmpY, ref tmpX, ovr033.PlayerMapYPos(player), ovr033.PlayerMapXPos(player)) == true &&
+                        if (ovr032.canReachTarget(gbl.mapToBackGroundTile, ref var_6, ref tmpY, ref tmpX, ovr033.PlayerMapYPos(player), ovr033.PlayerMapXPos(player)) == true &&
                             (var_6 / 2) <= var_4)
                         {
                             gbl.byte_1D90E = true;
