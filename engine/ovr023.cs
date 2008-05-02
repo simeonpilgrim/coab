@@ -1148,11 +1148,8 @@ namespace engine
 
         internal static void sub_5D7CF(byte arg_0, byte arg_2, int targetY, int targetX, int casterY, int casterX)
         {
-            byte var_79 = 0; /* Simeon */
-            int var_78 = 0; /* Simeon */
             byte var_76 = 0; /* Simeon */
-            byte var_75;
-            byte var_74;
+
             byte[] players_on_path = new byte[0x1E];
             byte[] var_53 = new byte[0x32];
             byte var_21;
@@ -1225,12 +1222,14 @@ namespace engine
 
             BoundCoords(ref targetY, ref targetX);
 
-            var_1E = ovr032.sub_733F1(gbl.mapToBackGroundTile, ref var_78, ref targetY, ref targetX, casterY, casterX);
+            int var_78 = 0xff; /* Simeon */
+            var_1E = ovr032.canReachTarget(gbl.mapToBackGroundTile, ref var_78, ref targetY, ref targetX, casterY, casterX);
 
             localSteppingPathInit(targetY, targetX, casterY, casterX, path);
 
             seg051.FillChar(0, 0x1E, players_on_path);
-            var_74 = 1;
+            
+            int list_index = 1;
 
             do
             {
@@ -1244,31 +1243,30 @@ namespace engine
 
                     if (player_index > 0)
                     {
-                        if (var_74 > 1)
+                        bool player_in_list = false;
+
+                        if (list_index > 1)
                         {
-                            for (gbl.byte_1DA71 = 1; gbl.byte_1DA71 < (var_74 - 1); gbl.byte_1DA71++)
+                            for (int i = 0; i < list_index; i++)
                             {
-                                if (players_on_path[gbl.byte_1DA71 - 1] == player_index)
+                                if (players_on_path[i] == player_index)
                                 {
-                                    var_79 = 1;
+                                    player_in_list = true;
                                 }
                             }
                         }
-                        else
-                        {
-                            var_79 = 0;
-                        }
 
-                        if (var_79 == 0)
+                        if (player_in_list == false)
                         {
-                            players_on_path[var_74] = player_index;
-                            var_74++;
+                            players_on_path[list_index] = player_index;
+                            list_index++;
                         }
 
                         var_76 = path.direction;
                     }
                 }
             } while (finished == false);
+
 
             if (arg_2 > 1)
             {
@@ -2658,18 +2656,14 @@ namespace engine
                                 /* empty */
                             }
 
-                            throw new System.NotSupportedException();//cmp	[bp+var_38], 0
-                            throw new System.NotSupportedException();//jz	loc_5FC7C
-                            throw new System.NotSupportedException();//cmp	var_30.field_16, 8
-                            throw new System.NotSupportedException();//ja	loc_5FC7C
-                            var_18.steps += 8;
-                            throw new System.NotSupportedException();//loc_5FC7C:
-                            throw new System.NotSupportedException();//mov	al, [bp+var_35]
-                            throw new System.NotSupportedException();//cbw
-                            throw new System.NotSupportedException();//mov	dx, ax
-                            throw new System.NotSupportedException();//xor	ax, ax
-                            throw new System.NotSupportedException();//sub	ax, dx
-                            throw new System.NotSupportedException();//mov	[bp+var_35], al
+                            if (var_38 != 0 && var_30.steps <= 8)
+                            {
+                                var_18.steps += 8;
+                            }
+
+
+
+                            var_35 = (sbyte)-var_35;
                             var_38 = 0;
                             var_39 = 0;
                         }

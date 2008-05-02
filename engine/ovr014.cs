@@ -2191,7 +2191,7 @@ namespace engine
                 int tmpX = posX;
                 int tmpY = posY;
 
-                if (ovr032.sub_733F1(gbl.mapToBackGroundTile, ref range, ref tmpY, ref tmpX, ovr033.PlayerMapYPos(player01), ovr033.PlayerMapXPos(player01)) == true)
+                if (ovr032.canReachTarget(gbl.mapToBackGroundTile, ref range, ref tmpY, ref tmpX, ovr033.PlayerMapYPos(player01), ovr033.PlayerMapXPos(player01)) == true)
                 {
                     var_39 = 1;
 
@@ -2701,7 +2701,7 @@ namespace engine
                 int tmpX = ovr033.PlayerMapXPos(player.actions.target);
                 int tmpY = ovr033.PlayerMapYPos(player.actions.target);
 
-                if (ovr032.sub_733F1(gbl.mapToBackGroundTile, ref range, ref tmpY, ref tmpX, ovr033.PlayerMapYPos(player), ovr033.PlayerMapXPos(player)) == true)
+                if (ovr032.canReachTarget(gbl.mapToBackGroundTile, ref range, ref tmpY, ref tmpX, ovr033.PlayerMapYPos(player), ovr033.PlayerMapXPos(player)) == true)
                 {
                     var_5 = false;
                 }

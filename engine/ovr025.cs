@@ -302,7 +302,7 @@ namespace engine
             }
 
             //cheat 
-            detectMagic = true;
+            //detectMagic = true;
 
             if (detectMagic == true)
             {
