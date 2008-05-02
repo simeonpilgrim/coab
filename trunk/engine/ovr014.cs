@@ -1513,9 +1513,9 @@ namespace engine
                 {
                     ovr032.Rebuild_SortedCombatantList(gbl.mapToBackGroundTile, 1, 0xff, (short)(gbl.unk_19AEC[arg_6].field_6 & 7), gbl.targetY, gbl.targetX);
 
-                    for (var_2 = 0; var_2 < gbl.sortedCombatantCount; var_2++)
+                    for (int i = 0; i < gbl.sortedCombatantCount; i++)
                     {
-                        gbl.sp_targets[var_2 + 1] = gbl.player_array[gbl.SortedCombatantList[var_2].player_index];
+                        gbl.sp_targets[i + 1] = gbl.player_array[gbl.SortedCombatantList[i].player_index];
                     }
 
                     gbl.sp_target_count = gbl.sortedCombatantCount;

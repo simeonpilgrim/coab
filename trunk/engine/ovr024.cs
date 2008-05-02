@@ -800,22 +800,19 @@ namespace engine
         }
 
 
-        internal static bool is_cured(Affects arg_0, Player arg_2)
+        internal static bool cure_affect(Affects affectId, Player player) /* is_cured */
         {
-            Affect var_5;
-            bool ret_val;
-
-            ret_val = false;
-
-            if (ovr025.find_affect(out var_5, arg_0, arg_2) == true)
+            Affect affect;
+            if (ovr025.find_affect(out affect, affectId, player) == true)
             {
-                ovr025.DisplayPlayerStatusString(true, 10, "is Cured", arg_2);
+                ovr025.DisplayPlayerStatusString(true, 10, "is Cured", player);
 
-                remove_affect(var_5, arg_0, arg_2);
-                ret_val = true;
+                remove_affect(affect, affectId, player);
+                
+                return true;
             }
 
-            return ret_val;
+            return false;
         }
 
 
