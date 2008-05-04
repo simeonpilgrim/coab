@@ -307,7 +307,7 @@ namespace engine
 
             if (gbl.byte_1D910 == true)
             {
-                ovr033.sub_74572(player_index, 0, 0);
+                ovr033.draw_74572(player_index, 0, 0);
             }
 
             gbl.CombatMap[player_index].xPos = newXPos;
@@ -2080,11 +2080,9 @@ namespace engine
         }
 
 
-        internal static void sub_411D8(Struct_1D183 arg_0, ref bool arg_4, byte arg_8, Player arg_A, Player arg_E)
+        internal static void sub_411D8(Struct_1D183 arg_0, out bool arg_4, byte arg_8, Player arg_A, Player arg_E)
         {
-            Item var_5;
-
-            var_5 = null;
+            Item var_5 = null;
             arg_4 = true;
 
             if (arg_8 == 1 ||
@@ -2309,7 +2307,7 @@ namespace engine
 
                             if (arg_C == 1)
                             {
-                                sub_411D8(arg_0, ref arg_4, arg_C, arg_0.field_0, player01);
+                                sub_411D8(arg_0, out arg_4, arg_C, arg_0.field_0, player01);
                             }
                             else
                             {
@@ -2524,7 +2522,7 @@ namespace engine
                                 break;
 
                             case 'T':
-                                sub_411D8(arg_0, ref arg_4, arg_C, player_ptr, arg_10);
+                                sub_411D8(arg_0, out arg_4, arg_C, player_ptr, arg_10);
                                 ovr025.load_missile_dax(false, 0, 0, 0x19);
 
                                 sub_4188F(arg_10, var_D8, out var_DA);

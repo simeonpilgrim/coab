@@ -107,7 +107,7 @@ namespace engine
             int newMapX = mapY - gbl.mapToBackGroundTile.mapScreenLeftX;
             int newMapY = mapX - gbl.mapToBackGroundTile.mapScreenTopY;
 
-            sub_74572(0, newMapY, newMapX);
+            draw_74572(0, newMapY, newMapX);
             AtMapXY(out groundTile, out playerIndex, mapX, mapY);
 
             if (playerIndex > 0 &&
@@ -166,7 +166,7 @@ namespace engine
         }
 
 
-        internal static void sub_74572(byte player_index, int mapY, int mapX)
+        internal static void draw_74572(byte player_index, int mapY, int mapX) /* sub_74572 */
         {
             int screenY = -120; /*Simeon*/
             int screenX = -120; /*Simeon*/
@@ -176,10 +176,10 @@ namespace engine
                 screenX = mapX + gbl.mapToBackGroundTile.mapScreenLeftX;
                 screenY = mapY + gbl.mapToBackGroundTile.mapScreenTopY;
 
-                byte var_6;
-                AtMapXY(out var_6, out player_index, screenY, screenX);
+                byte dummyGroundTile;
+                AtMapXY(out dummyGroundTile, out player_index, screenY, screenX);
             }
-
+            
             if (player_index > 0)
             {
                 mapX = gbl.playerScreenX[player_index];
@@ -416,7 +416,7 @@ namespace engine
             {
                 if (gbl.byte_1D910 == true)
                 {
-                    sub_74572(player_index, 0, 0);
+                    draw_74572(player_index, 0, 0);
                 }
             }
 
@@ -577,7 +577,7 @@ namespace engine
                         redrawCombatArea(8, 3, var_7, var_6);
                     }
 
-                    sub_74572(var_1, 0, 0);
+                    draw_74572(var_1, 0, 0);
                     seg044.sound_sub_120E0(gbl.sound_5_188C8);
 
                     for (int var_3 = 0; var_3 <= 8; var_3++)
@@ -619,7 +619,7 @@ namespace engine
                     }
 
                     seg041.GameDelay();
-                    sub_74572(var_1, 0, 0);
+                    draw_74572(var_1, 0, 0);
 
                     gbl.CombatMap[get_player_index(player)].size = 0;
 

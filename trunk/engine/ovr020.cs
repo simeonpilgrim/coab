@@ -1182,7 +1182,7 @@ namespace engine
 
                 if (ovr023.item_is_scroll(item) == true)
                 {
-                    ovr023.sub_623FF(var_1, item, gbl.player_ptr);
+                    ovr023.remove_spell_from_scroll(var_1, item, gbl.player_ptr);
                 }
                 else if ( item.affect_1 > 0 )
                 {

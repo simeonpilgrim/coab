@@ -718,7 +718,7 @@ namespace engine
                     player.hit_point_current = 0;
                 }
 
-                ovr033.sub_74572(player_index, 0, 0);
+                ovr033.draw_74572(player_index, 0, 0);
                 seg040.DrawOverlay();
 
                 gbl.CombatMap[player_index].size = 0;
@@ -1455,9 +1455,7 @@ namespace engine
 
         internal static bool heal_player(byte arg_0, byte amount_healed, Player player)
         {
-            bool ret_val;
-
-            ret_val = false;
+            bool ret_val = false;
 
             if (unk_653B5.MemberOf((byte)player.health_status) == true)
             {

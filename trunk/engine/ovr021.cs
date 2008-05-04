@@ -158,12 +158,9 @@ namespace engine
         }
 
 
-        internal static void sub_58317(RestTime arg_0)
+        internal static void normalize_clock(RestTime arg_0) /* sub_58317 */
         {
-            Player player;
-            byte loop_var;
-
-            for (loop_var = 0; loop_var <= 6; loop_var++)
+            for (int loop_var = 0; loop_var <= 6; loop_var++)
             {
                 if (arg_0[loop_var] >= gbl.word_1A13C[loop_var])/* short arrays */
                 {
@@ -174,7 +171,7 @@ namespace engine
                     }
                     else
                     {
-                        player = gbl.player_next_ptr;
+                        Player player = gbl.player_next_ptr;
 
                         while (player != null)
                         {
@@ -188,9 +185,9 @@ namespace engine
         }
 
 
-        internal static void sub_583C8()
+        internal static void clock_583C8() /* sub_583C8 */
         {
-            sub_58317(gbl.unk_1D890);
+            normalize_clock(gbl.unk_1D890);
 
             if (gbl.unk_1D890.field_A > 0)
             {
@@ -210,26 +207,21 @@ namespace engine
 
         internal static void sub_583FA(byte arg_0, byte arg_2)
         {
-            byte var_11;
-            byte var_10;
-            byte var_F;
             RestTime var_E = new RestTime();
 
-            for (var_F = 0; var_F <= 6; var_F++)
+            for (int var_F = 0; var_F <= 6; var_F++)
             {
                 var_E[var_F] = gbl.area_ptr.field_6A00_Get(unk_4BC6[var_F]); // as WORD[]
             }
 
-            var_11 = arg_2;
-
-            for (var_10 = 1; var_10 <= var_11; var_10++)
+            for (int var_10 = 1; var_10 <= arg_2; var_10++)
             {
                 var_E[arg_0] += 1;
 
-                sub_58317(var_E);
+                normalize_clock(var_E);
             }
 
-            for (var_F = 0; var_F <= 6; var_F++)
+            for (int var_F = 0; var_F <= 6; var_F++)
             {
                 gbl.area_ptr.field_6A00_Set(unk_4BC6[var_F], var_E[var_F]);
             }
@@ -274,49 +266,44 @@ namespace engine
 
                 gbl.unk_1D890[arg_0] -= arg_2;
 
-                sub_583C8();
+                clock_583C8();
             }
         }
 
 
-        static string sub_5858A(int arg_0, out string arg_2)
+        static string format_time(int arg_0) /* sub_5858A */
         {
-            arg_2 = string.Format("{0:00}", arg_0);
-
-            return arg_2;
+            return string.Format("{0:00}", arg_0);
         }
 
 
-        internal static void sub_58615(byte arg_0)
+        internal static void dispay_resting_time(int highlight_time) /* sub_58615 */
         {
-            string var_110;
-            byte var_10;
-            byte[] var_F = new byte[6];
-            byte var_1;
+            int[] colors = new int[6];
 
-            for (var_1 = 0; var_1 < 6; var_1++)
+            for (int index = 0; index < 6; index++)
             {
-                var_F[var_1] = 10;
+                colors[index] = 10;
             }
 
-            var_F[arg_0] = 15;
+            colors[highlight_time] = 15;
 
             seg041.displayString("Rest Time:", 0, 10, 17, 1);
-            var_10 = 0x0B;
+            int col_x = 11;
 
-            sub_5858A(gbl.unk_1D890.field_8, out var_110);
-            seg041.displayString(var_110, 0, var_F[4], 0x11, var_10 + 1);
-            seg041.displayString(":", 0, 10, 17, var_10 + 3);
-            var_10 += 3;
+            string text = format_time(gbl.unk_1D890.field_8);
+            seg041.displayString(text, 0, colors[4], 0x11, col_x + 1);
+            seg041.displayString(":", 0, 10, 17, col_x + 3);
+            col_x += 3;
 
-            sub_5858A(gbl.unk_1D890.field_6, out var_110);
-            seg041.displayString(var_110, 0, var_F[3], 0x11, var_10 + 1);
-            seg041.displayString(":", 0, 10, 17, var_10 + 3);
-            var_10 += 3;
+            text = format_time(gbl.unk_1D890.field_6);
+            seg041.displayString(text, 0, colors[3], 0x11, col_x + 1);
+            seg041.displayString(":", 0, 10, 17, col_x + 3);
+            col_x += 3;
 
-            sub_5858A((gbl.unk_1D890.field_4 * 10) + gbl.unk_1D890.field_2, out var_110);
+            text = format_time((gbl.unk_1D890.field_4 * 10) + gbl.unk_1D890.field_2);
 
-            seg041.displayString(var_110, 0, var_F[2], 0x11, var_10 + 1);
+            seg041.displayString(text, 0, colors[2], 0x11, col_x + 1);
         }
 
         static Set unk_58731 = new Set(0x000B, new byte[] { 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x20, 0x00, 0x04 });
@@ -333,7 +320,7 @@ namespace engine
 
             do
             {
-                sub_58615(var_4);
+                dispay_resting_time(var_4);
                 var_3 = ovr027.displayInput(out var_2, false, 1, 15, 10, 13, "Rest Days Hours Mins Add Subtract Exit", string.Empty);
 
                 if (var_2 == true)
@@ -414,7 +401,7 @@ namespace engine
                             throw (new System.NotImplementedException("The original code only looked like var_4 could be 2,3 or 4 \r\n  at ovr021:083E"));
                         }
 
-                        sub_583C8();
+                        clock_583C8();
                         break;
 
                     case 'S':
@@ -427,7 +414,7 @@ namespace engine
                             sub_5849F(var_4, 1);
                         }
 
-                        sub_583C8();
+                        clock_583C8();
                         break;
                 }
             } while (unk_58731.MemberOf(var_3) == false);
@@ -436,7 +423,7 @@ namespace engine
         }
 
 
-        internal static void reset_heal(byte arg_0)
+        internal static void reset_heal(bool show_text)
         {
             Player player;
             byte var_1;
@@ -458,9 +445,9 @@ namespace engine
                     player = player.next_player;
                 }
 
-                if (arg_0 != 0)
+                if (show_text == true)
                 {
-                    sub_58615(0);
+                    dispay_resting_time(0);
                 }
 
                 seg041.displayString("The Whole Party Is Healed", 0, 10, 19, 1);
@@ -479,11 +466,8 @@ namespace engine
 
         internal static byte rest_memorize(ref bool output, Player player)
         {
-            int spell_index;
-            byte var_2;
-
-            var_2 = 0;
-            spell_index = 0;
+            byte var_2 = 0;
+            int spell_index = 0;
 
             while (spell_index <= 83 && var_2 == 0)
             {
@@ -497,7 +481,7 @@ namespace engine
                     {
                         player.spell_list[spell_index] -= 128;
 
-                        sub_58615(0);
+                        dispay_resting_time(0);
 
                         ovr023.cast_spell_text(player.spell_list[spell_index], "has memorized", player);
                         output = true;
@@ -514,14 +498,12 @@ namespace engine
         internal static byte reset_scribe(ref bool arg_0, Player player)
         {
             /*byte var_9;*/
-            Item item;
             byte var_4;
-            byte var_3;
             byte var_2;
 
             var_4 = 0;
             /*var_9 = 0;*/
-            item = player.itemsPtr;
+            Item item = player.itemsPtr;
 
             while (item != null && var_4 == 0)
             {
@@ -541,13 +523,13 @@ namespace engine
                             }
                             else
                             {
-                                var_3 = (byte)((int)item.getAffect(var_2) & 0x7F);
-                                player.field_79[var_3] = 1;
-                                ovr023.sub_623FF(var_3, item, player);
+                                byte affect = (byte)((int)item.getAffect(var_2) & 0x7F);
+                                player.field_79[affect] = 1;
+                                ovr023.remove_spell_from_scroll(affect, item, player);
 
-                                sub_58615(0);
+                                dispay_resting_time(0);
 
-                                ovr023.cast_spell_text(var_3, "has scribed", player);
+                                ovr023.cast_spell_text(affect, "has scribed", player);
                                 arg_0 = true;
                             }
                         }
@@ -565,13 +547,8 @@ namespace engine
 
         internal static void sub_58B4D()
         {
-            bool var_7;
-            Player player;
-            byte var_2;
-            byte var_1;
-
-            var_1 = 1;
-            player = gbl.player_next_ptr;
+            int var_1 = 1;
+            Player player = gbl.player_next_ptr;
 
             while (player != null)
             {
@@ -583,8 +560,8 @@ namespace engine
                 if (gbl.unk_1D89D[var_1] != 0 &&
                     player.spell_to_learn_count != 0)
                 {
-                    var_7 = false;
-                    var_2 = reset_scribe(ref var_7, player);
+                    bool var_7 = false;
+                    byte var_2 = reset_scribe(ref var_7, player);
 
                     if (var_2 == 0)
                     {
@@ -638,16 +615,16 @@ namespace engine
         }
 
 
-        internal static byte reseting(byte arg_0)
+        internal static bool reseting(bool arg_0)
         {
             bool var_E;
             byte var_D;
             byte var_C;
             byte var_B;
             Player var_5;
-            byte var_1;
+            bool var_1;
 
-            var_1 = 0;
+            var_1 = false;
             var_B = 1;
             var_5 = gbl.player_next_ptr;
 
@@ -662,15 +639,15 @@ namespace engine
             var_C = 0;
             var_D = 0;
 
-            if (arg_0 != 0)
+            if (arg_0 == true)
             {
                 seg037.draw8x8_clear_area(0x16, 0x26, 0x11, 1);
-                sub_58615(0);
+                dispay_resting_time(0);
             }
 
             gbl.byte_1D8A8 = 1;
 
-            if (arg_0 != 0)
+            if (arg_0 == true)
             {
                 var_E = (sub_58751() == 0);
             }
@@ -685,10 +662,10 @@ namespace engine
                   gbl.unk_1D890.field_4 > 0 ||
                   gbl.unk_1D890.field_2 > 0))
             {
-                if (arg_0 != 0 &&
+                if (arg_0 == true &&
                     seg049.KEYPRESSED() == true)
                 {
-                    sub_58615(0);
+                    dispay_resting_time(0);
 
                     if (ovr027.yes_no(15, 10, 13, "Stop Resting? ") == 'Y')
                     {
@@ -705,10 +682,10 @@ namespace engine
                     sub_5849F(1, 5);
                     var_D++;
 
-                    if (arg_0 != 0 &&
+                    if (arg_0 == true &&
                         var_D >= 5)
                     {
-                        sub_58615(0);
+                        dispay_resting_time(0);
                         var_D = 0;
                     }
 
@@ -728,10 +705,10 @@ namespace engine
                             if (ovr024.roll_dice(100, 1) <= gbl.area2_ptr.field_5A6)
                             {
                                 ovr025.ClearPlayerTextArea();
-                                sub_58615(0);
+                                dispay_resting_time(0);
                                 seg041.displayString("Your repose is suddenly interrupted!", 0, 15, 0x13, 1);
                                 var_E = true;
-                                var_1 = 1;
+                                var_1 = true;
                                 seg041.GameDelay();
                             }
                         }

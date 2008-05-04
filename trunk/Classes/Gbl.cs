@@ -448,7 +448,7 @@ namespace Classes
         public static short word_1D8A6;
         public static short word_1D914;
         public static short word_1D916;
-        public static short word_1D918; // above unk_1D89D
+        public static short word_1D918;
 
         public static ushort word_1EE76;
         public static ushort word_1EE78;
@@ -711,7 +711,7 @@ new Struct_19AEC( 32h,0,7,12h,3,12h,3,12h,8,12h,3,12h,3,3,12h,11h) };*/
 
         public static Text unk_1EE9A = new Text(); // seg600:8B8A File/TEXT
 
-        public static byte[] unk_1D89D = new byte[10]; // seg600:758D
+        public static byte[] unk_1D89D = new byte[9]; // seg600:758D
 
         public static bool free_training;
 

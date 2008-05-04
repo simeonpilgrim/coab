@@ -12,7 +12,18 @@ namespace Classes
         public ushort field_6;
         public ushort field_8;
         public ushort field_A;
-        public ushort field_C;
+        public int field_C;
+
+        public RestTime(RestTime old)
+        {
+            field_0 = old.field_0;
+            field_2 = old.field_2;
+            field_4 = old.field_4;
+            field_6 = old.field_6;
+            field_8 = old.field_8;
+            field_A = old.field_A;
+            field_C = old.field_C;
+        }
 
         public RestTime(ushort f0, ushort f2,ushort f4,ushort f6,ushort f8,ushort fA,ushort fC)
         {
@@ -55,12 +66,12 @@ namespace Classes
                     case 5:
                         return field_A;
                     case 6:
-                        return field_C;
+                        return (ushort)field_C;
                     default:
                         throw new NotSupportedException();
                 }
             }
-                       set
+            set
             {
                 switch (index)
                 {

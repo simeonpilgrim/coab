@@ -3176,7 +3176,7 @@ namespace engine
                 }
             }
 
-            ovr033.sub_74572(ovr033.get_player_index(playerA), 0, 0);
+            ovr033.draw_74572(ovr033.get_player_index(playerA), 0, 0);
 
             ovr033.sub_7515A(false, gbl.targetY, gbl.targetX, playerA);
 
@@ -4169,24 +4169,21 @@ namespace engine
         }
 
 
-        internal static void sub_623FF(byte arg_0, Item item, Player player)
+        internal static void remove_spell_from_scroll(byte affect, Item item, Player player) /* sub_623FF */
         {
-            byte var_3;
-            byte var_2;
+            int affect_index = 0;
 
-            var_3 = 0;
-
-            for (var_2 = 1; var_2 <= 3; var_2++)
+            for (int index = 1; index <= 3; index++)
             {
-                if (((int)item.getAffect(var_2) & 0x7F) == arg_0)
+                if (((int)item.getAffect(index) & 0x7F) == affect)
                 {
-                    var_3 = var_2;
+                    affect_index = index;
                 }
             }
 
-            if (var_3 != 0)
+            if (affect_index != 0)
             {
-                item.setAffect(var_3, 0);
+                item.setAffect(affect_index, 0);
                 item.field_30 -= 1;
                 if (item.field_30 < -46)
                 {
