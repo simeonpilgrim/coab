@@ -2178,14 +2178,11 @@ namespace engine
         }
 
 
-        internal static void sub_28CDA()
+        internal static void CMD_EclClock() /* sub_28CDA */
         {
-            byte var_2;
-            byte var_1;
-
             ovr008.vm_LoadCmdSets(2);
-            var_1 = (byte)ovr008.vm_GetCmdValue(1);
-            var_2 = (byte)ovr008.vm_GetCmdValue(2);
+            byte var_1 = (byte)ovr008.vm_GetCmdValue(1);
+            byte var_2 = (byte)ovr008.vm_GetCmdValue(2);
 
             ovr021.sub_583FA(var_2, var_1);
         }
@@ -2405,14 +2402,12 @@ namespace engine
 
         internal static void sub_29094()
         {
-            byte var_1;
-
-            var_1 = 0;
+            bool var_1 = false;
 
             RunEclVm(gbl.word_1B2D7);
-            ovr016.make_camp(ref var_1);
+            ovr016.make_camp(out var_1);
 
-            if (var_1 != 0)
+            if (var_1 == true)
             {
                 ovr025.load_pic();
                 RunEclVm(gbl.word_1B2D9);
@@ -2628,7 +2623,7 @@ namespace engine
                 case 0x31: CMD_SpriteOff(); break;
                 case 0x32: CMD_FindItem(); break;
                 case 0x33: CMD_PrintReturn(); break;
-                case 0x34: sub_28CDA(); break;
+                case 0x34: CMD_EclClock(); break;
                 case 0x35: sub_26E9D(); break;
                 case 0x36: CMD_AddNPC(); break;
                 case 0x37: CMD_LoadFiles(); break;

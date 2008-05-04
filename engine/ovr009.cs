@@ -404,14 +404,12 @@ namespace engine
 
         internal static void battle01(ref bool arg_0)
         {
-            byte var_6;
-            Player player;
-
             ovr021.sub_583FA(1, 1);
             gbl.byte_1D8B7++;
             ovr014.sub_40E00();
-            player = gbl.player_next_ptr;
-            var_6 = 1;
+
+            Player player = gbl.player_next_ptr;
+            byte var_6 = 1;
 
             while (player != null)
             {
@@ -489,7 +487,7 @@ namespace engine
                     case '\0':
                         player.actions.move = var_1;
 
-                        ovr033.sub_74572(ovr033.get_player_index(player), 0, 0);
+                        ovr033.draw_74572(ovr033.get_player_index(player), 0, 0);
 
                         if (ovr033.sub_7515A(false, var_4, var_3, player) == 0)
                         {

@@ -324,7 +324,7 @@ namespace engine
         }
 
 
-        internal static void rest_menu(ref byte arg_0)
+        internal static void rest_menu(out bool arg_0)
         {
             short var_8;
             short var_6;
@@ -351,7 +351,7 @@ namespace engine
 
             gbl.unk_1D890.field_2 = (ushort)(var_6 % 10);
 
-            arg_0 = ovr021.reseting(1);
+            arg_0 = ovr021.reseting(true);
 
             gbl.unk_1D890.Clear();
 
@@ -915,14 +915,14 @@ namespace engine
         }
 
 
-        internal static void magic_menu(ref byte arg_0)
+        internal static void magic_menu(ref bool arg_0)
         {
             bool var_2;
             char var_1;
 
             var_1 = ' ';
 
-            while (arg_0 == 0 && unk_45CD7.MemberOf(var_1) == false)
+            while (arg_0 == false && unk_45CD7.MemberOf(var_1) == false)
             {
                 var_1 = ovr027.displayInput(out var_2, true, 1, 15, 10, 13, "Cast Memorize Scribe Display Rest Exit", string.Empty);
 
@@ -952,7 +952,7 @@ namespace engine
                             break;
 
                         case 'R':
-                            rest_menu(ref arg_0);
+                            rest_menu(out arg_0);
                             break;
                     }
                 }
@@ -1297,49 +1297,34 @@ namespace engine
 
         internal static bool player_is_okey(Player player)
         {
-            bool var_1;
-
-            if (player.health_status == Status.okey)
-            {
-                var_1 = false;
-            }
-            else
-            {
-                var_1 = true;
-            }
-
-            return var_1;
+            return (player.health_status == Status.okey);
         }
 
 
-        internal static void sub_45F22(ref short bp_var_2)
+        internal static void sub_45F22(out int var_2)
         {
-            Player player;
-            byte var_3;
-            short var_2;
-
             var_2 = 0;
 
-            player = gbl.player_next_ptr;
+            Player player = gbl.player_next_ptr;
 
             while (player != null)
             {
                 if (player_is_okey(player) == true)
                 {
-                    for (var_3 = 0; var_3 < gbl.max_spells; var_3++)
+                    for (int i = 0; i < gbl.max_spells; i++)
                     {
-                        switch (player.spell_list[var_3])
+                        switch (player.spell_list[i])
                         {
                             case 3:
                                 var_2 += ovr024.roll_dice(8, 1);
                                 break;
 
                             case 0x3A:
-                                var_2 += (short)(ovr024.roll_dice(8, 2) + 1);
+                                var_2 += ovr024.roll_dice(8, 2) + 1;
                                 break;
 
                             case 0x47:
-                                var_2 += (short)(ovr024.roll_dice(8, 3) + 3);
+                                var_2 += ovr024.roll_dice(8, 3) + 3;
                                 break;
                         }
                     }
@@ -1347,58 +1332,48 @@ namespace engine
 
                 player = player.next_player;
             }
-
-            bp_var_2 = var_2;
         }
 
 
-        internal static void sub_45FDD(ref short bp_var_2, RestTime bp_var_16)
+        internal static void sub_45FDD(out int var_2, int bp_var_4, int bp_var_6, int bp_var_8)
         {
-            int var_3;
-            short var_2;
-
             var_2 = 0;
 
-            for (var_3 = 1; var_3 <= bp_var_16.field_C; var_3++)
+            for (int var_3 = 1; var_3 <= bp_var_4; var_3++)
             {
                 var_2 += ovr024.roll_dice(8, 1);
             }
 
-            for (var_3 = 1; var_3 <= bp_var_16.field_A; var_3++)
+            for (int var_3 = 1; var_3 <= bp_var_6; var_3++)
             {
                 var_2 += ovr024.roll_dice(8, 2);
                 var_2 += 1;
             }
 
-            for (var_3 = 1; var_3 <= bp_var_16.field_8; var_3++)
+            for (int var_3 = 1; var_3 <= bp_var_8; var_3++)
             {
                 var_2 += ovr024.roll_dice(8, 3);
                 var_2 += 3;
             }
-
-            bp_var_2 += var_2;
         }
 
 
-        internal static short sub_4608F()
+        internal static int total_hitpoints_lost() /* sub_4608F */
         {
-            Player player;
-            short var_4;
-
-            var_4 = 0;
-            player = gbl.player_next_ptr;
+            int lost_points = 0;
+            Player player = gbl.player_next_ptr;
 
             while (player != null)
             {
-                var_4 += (short)(player.hit_point_max - player.hit_point_current);
+                lost_points += player.hit_point_max - player.hit_point_current;
                 player = player.next_player;
             }
 
-            return var_4;
+            return lost_points;
         }
 
 
-        internal static void sub_460ED(RestTime bp_var_16)
+        internal static void sub_460ED(out int bp_var_8,out int bp_var_6,out int bp_var_4 )
         {
             byte var_11;
             short var_10;
@@ -1414,9 +1389,9 @@ namespace engine
             var_C = 0;
             var_E = 0;
 
-            bp_var_16.field_C = 0;
-            bp_var_16.field_A = 0;
-            bp_var_16.field_8 = 0;
+            bp_var_4 = 0;
+            bp_var_6 = 0;
+            bp_var_8 = 0;
             var_8 = 0;
 
             while (player_ptr != null)
@@ -1425,13 +1400,13 @@ namespace engine
 
                 if (player_is_okey(player_ptr) == true)
                 {
-                    bp_var_16.field_C += player_ptr.field_12D[0];
+                    bp_var_4 += player_ptr.field_12D[0];
                     var_A = (short)(player_ptr.field_12D[0] * 15);
 
-                    bp_var_16.field_A += player_ptr.field_12D[3];
+                    bp_var_6 += player_ptr.field_12D[3];
                     var_C = (short)(player_ptr.field_12D[3] * 0x3C);
 
-                    bp_var_16.field_8 += player_ptr.field_12D[4];
+                    bp_var_8 += player_ptr.field_12D[4];
                     var_E = (short)(player_ptr.field_12D[4] * 0x4B);
                 }
 
@@ -1465,9 +1440,9 @@ namespace engine
                 player_ptr = player_ptr.next_player;
             }
 
-            if (sub_4608F() < var_2)
+            if (total_hitpoints_lost() < var_2)
             {
-                var_11 = (byte)(var_2 / sub_4608F());
+                var_11 = (byte)(var_2 / total_hitpoints_lost());
 
                 var_8 /= var_11;
             }
@@ -1480,34 +1455,33 @@ namespace engine
         }
 
 
-        internal static void sub_46280(RestTime bp_var_16)
+        internal static void sub_46280(ref int bp_var_4)
         {
-            ushort var_6;
-            Player player;
+            int var_6;
 
-            player = gbl.player_next_ptr;
+            Player player = gbl.player_next_ptr;
 
             while (player != null)
             {
                 if (player.hit_point_max > player.hit_point_current)
                 {
-                    var_6 = (byte)(player.hit_point_max - player.hit_point_current);
+                    var_6 = player.hit_point_max - player.hit_point_current;
 
-                    if (var_6 > bp_var_16.field_C)
+                    if (var_6 > bp_var_4)
                     {
-                        var_6 = bp_var_16.field_C;
+                        var_6 = bp_var_4;
                     }
 
-                    if (var_6 >= 1)
+                    if (var_6 < 1)
                     {
                         var_6 = 0;
                     }
 
                     if (var_6 > 0 &&
                         ovr024.heal_player(0, (byte)var_6, player) == true &&
-                        var_6 <= bp_var_16.field_C)
+                        var_6 <= bp_var_4)
                     {
-                        bp_var_16.field_C -= var_6;
+                        bp_var_4 -= var_6;
                     }
                 }
                 player = player.next_player;
@@ -1515,39 +1489,41 @@ namespace engine
         }
 
 
-        internal static void fix_menu(ref byte arg_0)
+        internal static void fix_menu(out bool arg_0)
         {
-            RestTime var_16;
-            short var_2;
+            RestTime rest_time;
+            int var_8;
+            int var_6;
+            int var_4;
 
-            arg_0 = 0;
-            var_2 = 0;
+            arg_0 = false;
 
-            if (sub_4608F() != 0)
+            if (total_hitpoints_lost() != 0)
             {
-                sub_45F22(ref var_2);
+                int var_2;
+                sub_45F22(out var_2);
 
-                if (sub_4608F() == 0)
+                if (total_hitpoints_lost() == 0)
                 {
                     ovr025.Player_Summary(gbl.player_ptr);
                     ovr025.display_map_position_time();
                 }
                 else
                 {
-                    var_16 = gbl.unk_1D890;
+                    rest_time = new RestTime(gbl.unk_1D890);
 
-                    sub_460ED(var_16);
+                    sub_460ED(out var_8, out var_6, out var_4);
 
-                    arg_0 = ovr021.reseting(0);
+                    arg_0 = ovr021.reseting(false);
 
-                    if (arg_0 == 0)
+                    if (arg_0 == false)
                     {
-                        sub_45FDD(ref var_2, var_16);
-                        sub_46280(var_16);
+                        sub_45FDD(out var_2, var_4, var_6, var_8);
+                        sub_46280(ref var_4);
                         ovr025.Player_Summary(gbl.player_ptr);
                         ovr025.display_map_position_time();
 
-                        gbl.unk_1D890 = var_16;
+                        gbl.unk_1D890 = new RestTime(rest_time);
                     }
                 }
             }
@@ -1555,7 +1531,7 @@ namespace engine
 
         static Set unk_463F4 = new Set(0x0009, new byte[] { 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x20 });
 
-        internal static void make_camp(ref byte arg_0)
+        internal static void make_camp(out bool arg_0)
         {
             string var_104;
             bool var_4;
@@ -1577,11 +1553,11 @@ namespace engine
 
             seg041.displayString("The party makes camp...", 0, 10, 18, 1);
             cancel_spells();
-            arg_0 = 0;
+            arg_0 = false;
             var_2 = ' ';
 
 
-            while (arg_0 == 0 &&
+            while (arg_0 == false &&
                 unk_463F4.MemberOf(var_2) == false)
             {
 
@@ -1616,11 +1592,11 @@ namespace engine
 
                         case 'R':
                             gbl.byte_1D5BE = 1;
-                            rest_menu(ref arg_0);
+                            rest_menu(out arg_0);
                             break;
 
                         case 'F':
-                            fix_menu(ref arg_0);
+                            fix_menu(out arg_0);
                             break;
 
                         case 'A':
