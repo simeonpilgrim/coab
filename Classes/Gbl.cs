@@ -192,10 +192,10 @@ namespace Classes
         public static int[] team_direction = { 0, 0 }; /* byte_1AD32 */
         public static sbyte byte_1AD34 = 0x1A;
         public static sbyte byte_1AD35;
-        public static byte byte_1AD36 = 0x1A;
-        public static byte byte_1AD37 = 0x79;
-        public static byte byte_1AD38 = 0x1A;
-        public static byte byte_1AD39 = 0x8B;
+        public static int dir_0_flags; // byte_1AD36
+        public static int dir_6_flags; // byte_1AD37
+        public static int dir_2_flags; // byte_1AD38
+        public static int dir_4_flags; // byte_1AD39
         public static sbyte currentTeam; // field_197
         public static byte byte_1AD3C;
         public static byte byte_1AD3D;
@@ -517,8 +517,6 @@ namespace Classes
         public const int MaxCombatantCount = 0xff; /* stru_1C9CD_count */
         public static int CombatantCount; // gbl.stru_1C9CD[0].field_3
         public static Struct_1C9CD[] CombatMap; // seg600:66BD stru_1C9CD
-
-        public static byte[, ,] unk_16620; // unk_16620 seg600:0310
 
         public static Player player_ptr01;
         public static Player player_ptr02;
