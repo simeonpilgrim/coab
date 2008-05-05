@@ -26,23 +26,23 @@ namespace engine
 
         internal static void sub_370D3()
         {
-            if (gbl.byte_1AD36 != 1 && gbl.byte_1AD38 != 1 &&
-                gbl.byte_1AD39 != 1 && gbl.byte_1AD37 != 1)
+            if (gbl.dir_0_flags != 1 && gbl.dir_2_flags != 1 &&
+                gbl.dir_4_flags != 1 && gbl.dir_6_flags != 1)
             {
                 gbl.byte_1AD3E = 0;
             }
-            else if (gbl.byte_1AD36 == 1 && gbl.byte_1AD39 == 1 &&
-                (gbl.byte_1AD38 != 1 || gbl.byte_1AD37 != 1))
+            else if (gbl.dir_0_flags == 1 && gbl.dir_4_flags == 1 &&
+                (gbl.dir_2_flags != 1 || gbl.dir_6_flags != 1))
             {
                 gbl.byte_1AD3E = 0;
             }
-            else if (gbl.byte_1AD38 == 1 && gbl.byte_1AD37 == 1 &&
-                (gbl.byte_1AD36 != 1 || gbl.byte_1AD39 != 1))
+            else if (gbl.dir_2_flags == 1 && gbl.dir_6_flags == 1 &&
+                (gbl.dir_0_flags != 1 || gbl.dir_4_flags != 1))
             {
                 gbl.byte_1AD3E = 0;
             }
-            else if (gbl.byte_1AD36 == 3 || gbl.byte_1AD38 == 3 ||
-                gbl.byte_1AD39 == 3 || gbl.byte_1AD37 == 3)
+            else if (gbl.dir_0_flags == 3 || gbl.dir_2_flags == 3 ||
+                gbl.dir_4_flags == 3 || gbl.dir_6_flags == 3)
             {
                 gbl.byte_1AD3E = 0;
             }
@@ -90,24 +90,24 @@ namespace engine
         }
 
 
-        internal static byte sub_37306(int dir, int mapY, int mapX)
+        internal static int sub_37306(int dir, int mapY, int mapX)
         {
-            byte var_1;
+            int flags;
 
             if (mapX >= 0 && mapX <= 15 &&
                 mapY >= 0 && mapY <= 15)
             {
                 if (ovr031.WallDoorFlagsGet(dir, mapY, mapX) == 0)
                 {
-                    var_1 = 1;
+                    flags = 1;
                 }
                 else if (ovr031.getMap_XXX(dir, mapY, mapX) == 0)
                 {
-                    var_1 = 0;
+                    flags = 0;
                 }
                 else
                 {
-                    var_1 = 3;
+                    flags = 3;
                 }
             }
             else
@@ -115,56 +115,54 @@ namespace engine
                 if (mapY == gbl.mapPosY &&
                     (dir == 2 || dir == 6))
                 {
-                    var_1 = 0;
+                    flags = 0;
                 }
                 else
                 {
-                    var_1 = 1;
+                    flags = 1;
                 }
             }
 
-            return var_1;
+            return flags;
         }
 
 
-        internal static byte sub_37388(int dir, int mapX, int mapY)
+        /// <summary>
+        /// result can be 0, 1, 3
+        /// </summary>
+        internal static int get_dir_flags(int dir, int mapX, int mapY) /* sub_37388 */
         {
             int oppositeDir = (dir + 4) % 8;
             int newMapY = gbl.MapDirectionXDelta[dir] + mapY;
             int newMapX = gbl.MapDirectionYDelta[dir] + mapX;
 
-            byte var_2 = sub_37306(dir, mapX, mapY);
-            byte var_3 = sub_37306(oppositeDir, newMapX, newMapY);
+            int var_2 = sub_37306(dir, mapX, mapY);
+            int var_3 = sub_37306(oppositeDir, newMapX, newMapY);
 
-            byte var_1 = (byte)(var_2 | var_3);
-
-            return var_1;
+            return (var_2 | var_3);
         }
 
 
-        internal static void sub_373FC()
+        internal static void build_background_tiles_1() /* sub_373FC */
         {
-            byte var_2;
-            byte var_1;
-
-            for (var_2 = 2; var_2 <= 4; var_2++)
+            for (int var_2 = 2; var_2 <= 4; var_2++)
             {
-                for (var_1 = 0; var_1 <= 5; var_1++)
+                for (int var_1 = 0; var_1 <= 5; var_1++)
                 {
                     set_background_tile(0x16, var_2, var_1);
                 }
             }
 
-            if (gbl.byte_1AD37 == 1)
+            if (gbl.dir_6_flags == 1)
             {
-                for (var_2 = 2; var_2 <= 4; var_2++)
+                for (int var_2 = 2; var_2 <= 4; var_2++)
                 {
                     set_background_tile(4, var_2, var_2 - 1);
                     set_background_tile(3, var_2, var_2);
                     set_background_tile(13, var_2, var_2 + 1);
                 }
             }
-            else if (gbl.byte_1AD37 == 3)
+            else if (gbl.dir_6_flags == 3)
             {
                 set_background_tile(8, 2, 1);
                 set_background_tile(0, 4, 5);
@@ -172,9 +170,9 @@ namespace engine
         }
 
 
-        internal static void sub_374A1()
+        internal static void build_background_tiles_2() /* sub_374A1 */
         {
-            if (gbl.byte_1AD36 == 1)
+            if (gbl.dir_0_flags == 1)
             {
                 set_background_tile(5, 0, 3);
                 set_background_tile(5, 0, 4);
@@ -191,32 +189,24 @@ namespace engine
         }
 
 
-        internal static void sub_3751E(int mapX, int mapY)
+        internal static void build_backgrould_tiles_3(int mapX, int mapY) /* sub_3751E */
         {
-            byte var_6;
             byte var_5 = 0; /* simeon added */
             byte var_4 = 0; /* simeon added */
             byte var_3 = 0; /* simeon added */
             byte var_2 = 0; /* simeon added */
             byte var_1;
 
-            if (sub_37388(6, mapY - 1, mapX) == 0 &&
-                sub_37388(0, mapY, mapX - 1) == 0)
-            {
-                var_6 = 1;
-            }
-            else
-            {
-                var_6 = 0;
-            }
+            bool var_6 = (get_dir_flags(6, mapY - 1, mapX) == 0 &&
+                            get_dir_flags(0, mapY, mapX - 1) == 0);
 
             for (var_1 = 1; var_1 <= 4; var_1++)
             {
                 if (var_1 == 1)
                 {
-                    if (gbl.byte_1AD36 == 0)
+                    if (gbl.dir_0_flags == 0)
                     {
-                        switch (gbl.byte_1AD37)
+                        switch (gbl.dir_6_flags)
                         {
                             case 0:
                                 var_2 = 0x16;
@@ -227,7 +217,7 @@ namespace engine
                                 break;
 
                             case 1:
-                                if (var_6 != 0)
+                                if (var_6 == true)
                                 {
                                     var_2 = 0;
                                 }
@@ -238,11 +228,11 @@ namespace engine
                                 break;
                         }
                     }
-                    else if (gbl.byte_1AD36 == 3 || gbl.byte_1AD36 == 1)
+                    else if (gbl.dir_0_flags == 3 || gbl.dir_0_flags == 1)
                     {
-                        if (gbl.byte_1AD37 == 0)
+                        if (gbl.dir_6_flags == 0)
                         {
-                            if (var_6 != 0)
+                            if (var_6 == true)
                             {
                                 var_2 = 0x0F;
                             }
@@ -253,7 +243,7 @@ namespace engine
                         }
                         else
                         {
-                            if (var_6 != 0)
+                            if (var_6 == true)
                             {
                                 var_2 = 0x12;
                             }
@@ -266,29 +256,29 @@ namespace engine
                 }
                 else if (var_1 == 2)
                 {
-                    if (gbl.byte_1AD36 == 0)
+                    if (gbl.dir_0_flags == 0)
                     {
                         var_4 = 0x16;
                     }
-                    else if (gbl.byte_1AD36 == 3)
+                    else if (gbl.dir_0_flags == 3)
                     {
                         var_4 = 0x11;
                     }
-                    else if (gbl.byte_1AD36 == 1)
+                    else if (gbl.dir_0_flags == 1)
                     {
                         var_4 = 5;
                     }
                 }
                 else if (var_1 == 3)
                 {
-                    switch (gbl.byte_1AD37)
+                    switch (gbl.dir_6_flags)
                     {
                         case 0:
-                            if (gbl.byte_1AD36 == 0)
+                            if (gbl.dir_0_flags == 0)
                             {
                                 var_3 = 0x16;
                             }
-                            else if (var_6 != 0)
+                            else if (var_6 == true)
                             {
                                 var_3 = 0x10;
                             }
@@ -299,7 +289,7 @@ namespace engine
                             break;
 
                         case 3:
-                            if (var_6 != 0)
+                            if (var_6 == true)
                             {
                                 var_3 = 0x14;
                             }
@@ -310,7 +300,7 @@ namespace engine
                             break;
 
                         case 1:
-                            if (var_6 != 0)
+                            if (var_6 == true)
                             {
                                 var_3 = 1;
                             }
@@ -323,32 +313,32 @@ namespace engine
                 }
                 else if (var_1 == 4)
                 {
-                    if (gbl.byte_1AD37 == 0 || gbl.byte_1AD37 == 3)
+                    if (gbl.dir_6_flags == 0 || gbl.dir_6_flags == 3)
                     {
-                        if (gbl.byte_1AD36 == 0)
+                        if (gbl.dir_0_flags == 0)
                         {
                             var_5 = 0x16;
                         }
-                        else if (gbl.byte_1AD36 == 3)
+                        else if (gbl.dir_0_flags == 3)
                         {
                             var_5 = 0x17;
                         }
-                        else if (gbl.byte_1AD36 == 1)
+                        else if (gbl.dir_0_flags == 1)
                         {
                             var_5 = 0x0A;
                         }
                     }
-                    else if (gbl.byte_1AD37 == 1)
+                    else if (gbl.dir_6_flags == 1)
                     {
-                        if (gbl.byte_1AD36 == 0)
+                        if (gbl.dir_0_flags == 0)
                         {
                             var_5 = 0x0D;
                         }
-                        else if (gbl.byte_1AD36 == 3)
+                        else if (gbl.dir_0_flags == 3)
                         {
                             var_5 = 0x15;
                         }
-                        else if (gbl.byte_1AD36 == 1)
+                        else if (gbl.dir_0_flags == 1)
                         {
                             var_5 = 6;
                         }
@@ -363,186 +353,138 @@ namespace engine
         }
 
 
-        internal static void sub_376F6(int mapX, int mapY)
+        internal static void build_background_tiles_4(int mapX, int mapY) /* sub_376F6 */
         {
-            byte var_8;
-            byte var_7;
-            byte var_6;
-            byte var_5 = 0;
-            byte var_4 = 0; /* simeon added */
-            byte var_3 = 0; /* simeon added */
-            byte var_2 = 0; /* simeon added */
-            byte var_1;
+            byte var_5;
+            byte var_4;
+            byte var_3; 
+            byte var_2;
 
-            var_7 = sub_37388(2, mapY - 1, mapX);
-            var_8 = sub_37388(0, mapY, mapX + 1);
+            int var_7 = get_dir_flags(2, mapY - 1, mapX);
+            int var_8 = get_dir_flags(0, mapY, mapX + 1);
 
-            if (var_7 == 0 &&
-                var_8 == 0)
+            bool var_6 = (var_7 == 0 && var_8 == 0);
+
+            //case 1:
+            if (gbl.dir_0_flags == 0)
             {
-                var_6 = 1;
+                if (var_7 == 1)
+                {
+                    var_2 = 4; // bottom of north-south wall
+                }
+                else
+                {
+                    var_2 = 0x16; // bottom west edge of west-east wall
+                }
+            }
+            else if (gbl.dir_0_flags == 3)
+            {
+                var_2 = 0x0F; // top west edge of west-east wall
+            }
+            else // gbl.dir_0_flags == 1
+            {
+                var_2 = 5; // top of east-west wall
+            }
+
+            //case 2:
+            if (gbl.dir_0_flags == 0)
+            {
+                if (var_7 == 0)
+                {
+                    var_4 = 0x16; // bottow west edge of west-east wall
+                }
+                else if (var_7 == 3)
+                {
+                    if (gbl.dir_2_flags == 0 && var_8 != 0)
+                    {
+                        var_4 = 0x18;
+                    }
+                    else
+                    {
+                        var_4 = 1;
+                    }
+                }
+                else // var_7 == 1 
+                {
+                    if (gbl.dir_2_flags == 0)
+                    {
+                        if (var_8 != 0)
+                        {
+                            var_4 = 0x0B;
+                        }
+                        else
+                        {
+                            var_4 = 7;
+                        }
+                    }
+                    else
+                    {
+                        var_4 = 3;
+                    }
+                }
+            }
+            else if (gbl.dir_2_flags != 0)
+            {
+                var_4 = 9;
+            }
+            else if (var_8 != 0)
+            {
+                var_4 = 5;
+            }
+            else if (var_6 == true)
+            {
+                var_4 = 0x11;
             }
             else
             {
-                var_6 = 0;
+                var_4 = 0x13;
             }
 
-            for (var_1 = 1; var_1 <= 4; var_1++)
+            //case 3:
+            if (gbl.dir_0_flags == 0)
             {
-                switch (var_1)
+                var_3 = 0x16;
+            }
+            else if (gbl.dir_0_flags == 3)
+            {
+                var_3 = 0x10;
+            }
+            else // gbl.dir_0_flags == 1
+            {
+                var_3 = 0x0A;
+            }
+
+            //case 4:
+            if (gbl.dir_0_flags == 0)
+            {
+                if (var_7 == 0)
                 {
-                    case 1:
-                        switch (gbl.byte_1AD36)
-                        {
-                            case 0:
-                                if (var_7 == 1)
-                                {
-                                    var_2 = 4;
-                                }
-                                else
-                                {
-                                    var_2 = 0x16;
-                                }
-                                break;
-
-                            case 3:
-                                var_2 = 0x0F;
-                                break;
-
-                            case 1:
-                                var_2 = 5;
-                                break;
-                        }
-                        break;
-
-                    case 2:
-                        if (gbl.byte_1AD36 == 0)
-                        {
-                            switch (var_7)
-                            {
-                                case 0:
-                                    var_4 = 0x16;
-                                    break;
-
-                                case 3:
-                                    if (gbl.byte_1AD38 == 0 && var_8 != 0)
-                                    {
-                                        var_4 = 0x18;
-                                    }
-                                    else
-                                    {
-                                        var_4 = 1;
-                                    }
-                                    break;
-
-                                case 1:
-                                    if (gbl.byte_1AD38 == 0)
-                                    {
-                                        if (var_8 != 0)
-                                        {
-                                            var_4 = 0x0B;
-                                        }
-                                        else
-                                        {
-                                            var_4 = 7;
-                                        }
-                                    }
-                                    else
-                                    {
-                                        var_4 = 3;
-                                    }
-                                    break;
-                            }
-                        }
-                        else
-                        {
-                            if (gbl.byte_1AD38 != 0)
-                            {
-                                var_4 = 9;
-                            }
-                            else
-                            {
-                                if (var_8 != 0)
-                                {
-                                    var_4 = 5;
-                                }
-                                else
-                                {
-                                    if (var_6 != 0)
-                                    {
-                                        var_4 = 0x11;
-                                    }
-                                    else
-                                    {
-                                        var_4 = 0x13;
-                                    }
-                                }
-                            }
-                        }
-                        break;
-
-                    case 3:
-                        if (gbl.byte_1AD36 == 0)
-                        {
-                            var_3 = 0x16;
-                        }
-                        else if (gbl.byte_1AD36 == 3)
-                        {
-                            var_3 = 0x10;
-                        }
-                        else if (gbl.byte_1AD36 == 1)
-                        {
-                            var_3 = 0x0A;
-                        }
-                        break;
-
-                    case 4:
-                        if (gbl.byte_1AD36 == 0)
-                        {
-                            if (var_7 == 0)
-                            {
-                                var_5 = 0x16;
-                            }
-                            else
-                            {
-
-                                if (gbl.byte_1AD38 != 0)
-                                {
-                                    var_5 = 4;
-                                }
-                                else
-                                {
-                                    if (var_8 == 0)
-                                    {
-                                        var_5 = 8;
-                                    }
-                                    else
-                                    {
-                                        var_5 = 0x0C;
-                                    }
-                                }
-                            }
-                        }
-                        else
-                        {
-                            if (gbl.byte_1AD38 != 0)
-                            {
-                                var_5 = 0x0E;
-                            }
-                            else
-                            {
-                                if (var_8 == 0)
-                                {
-                                    var_5 = 0x17;
-                                }
-                                else
-                                {
-                                    var_5 = 0x0A;
-                                }
-                            }
-                        }
-                        break;
+                    var_5 = 0x16;
                 }
+                else if (gbl.dir_2_flags != 0)
+                {
+                    var_5 = 4;
+                }
+                else if (var_8 == 0)
+                {
+                    var_5 = 8;
+                }
+                else
+                {
+                    var_5 = 0x0C;
+                }
+            }
+            else if (gbl.dir_2_flags != 0)
+            {
+                var_5 = 0x0E;
+            }
+            else if (var_8 == 0)
+            {
+                var_5 = 0x17;
+            }
+            else
+            {
+                var_5 = 0x0A;
             }
 
             set_background_tile(var_2, 0, 5);
@@ -561,33 +503,32 @@ namespace engine
                     int mapX = gbl.mapPosX + gbl.byte_1AD34;
                     int mapY = gbl.mapPosY + gbl.byte_1AD35;
 
-                    gbl.byte_1AD37 = sub_37388(6, mapY, mapX);
-                    gbl.byte_1AD36 = sub_37388(0, mapY, mapX);
-                    gbl.byte_1AD38 = sub_37388(2, mapY, mapX);
-                    gbl.byte_1AD39 = sub_37388(4, mapY, mapX);
-                    sub_373FC();
-                    sub_374A1();
-                    sub_3751E(mapX, mapY);
-                    sub_376F6(mapX, mapY);
+                    gbl.dir_0_flags = get_dir_flags(0, mapY, mapX);
+                    gbl.dir_6_flags = get_dir_flags(6, mapY, mapX);
+                    gbl.dir_2_flags = get_dir_flags(2, mapY, mapX);
+                    gbl.dir_4_flags = get_dir_flags(4, mapY, mapX);
+
+                    build_background_tiles_1();
+                    build_background_tiles_2();
+                    build_backgrould_tiles_3(mapX, mapY);
+                    build_background_tiles_4(mapX, mapY);
                     gbl.byte_1AD3D = (byte)(ovr031.sub_717A5(mapY, mapX) & 0x40);
                     sub_370D3();
                 }
             }
         }
 
-        static byte[] unk_16664 = { 0, 0x18, 0x11, 0x15, 1, 1 }; /* unk_16B8 = seg600:0354 */
+        static byte[] unk_16664 = { 0, 0x18, 0x11, 0x15, 1, 1 }; /* unk_16664 seg600:0354 */
 
         internal static byte sub_37991()
         {
-            byte var_1;
-
-            var_1 = unk_16664[gbl.byte_1AD3C];
+            byte var_1 = unk_16664[gbl.byte_1AD3C];
 
             return var_1;
         }
 
 
-        internal static void sub_379AC(sbyte arg_2, sbyte arg_4)
+        internal static void sub_379AC(int arg_2, int arg_4)
         {
             if (arg_2 < 0x31)
             {
@@ -603,12 +544,10 @@ namespace engine
 
         internal static void sub_37A00()
         {
-            sbyte var_4;
             sbyte var_3;
             sbyte var_2;
-            byte var_1;
 
-            var_1 = 0;
+            byte var_1 = 0;
 
             if ((sub_37991() & 0x20) != 0)
             {
@@ -640,7 +579,7 @@ namespace engine
                 throw new System.NotSupportedException();//loc_37A66:
                 var_2 = var_3;
 
-                for (var_4 = 0; var_4 <= 0x18; var_4++)
+                for (int var_4 = 0; var_4 <= 0x18; var_4++)
                 {
                     if (var_3 <= 0x31)
                     {
@@ -860,10 +799,6 @@ namespace engine
             }
         }
 
-        /*seg600:02FC*/
-        static byte[] unk_1660C = { 7, 2, 3, 6, 5 , 4 , 5 , 6 , 3 , 8 , 7 , 2 };
-
-
         internal static void sub_380E0()
         {
             byte var_6;
@@ -912,12 +847,12 @@ namespace engine
         }
 
 
-        internal static bool sub_38202(int arg_0, int arg_2)
+        internal static bool offset_invalid(int arg_0, int arg_2) /* sub_38202 */
         {
             bool ret_val;
 
-            if ((arg_2 >= 0 && arg_2 < 12) ||
-                (arg_0 >= 0 && arg_0 < 6))
+            if ((arg_2 >= 0 && arg_2 <= 10) ||
+                (arg_0 >= 0 && arg_0 <= 5))
             {
                 ret_val = false;
             }
@@ -967,12 +902,21 @@ namespace engine
             return var_1;
         }
 
-        static byte[] /*seg600:02DC*/ unk_165EC = { 8, 4, 6, 2, 8 , 6 , 4 , 0 , 8 , 0 , 6 , 2 , 8 , 2 , 0 , 4 };
-        static int[] /*seg600:02EC*/ unk_165FC = { 0, 0, 2, 6, 2 , 2 , 0 , 4 , 4 , 4 , 2 , 6 , 6 , 6 , 4 , 0 };
+        static int[] direction_165EC = { 8, 4, 6, 2, 8, 6, 4, 0, 8, 0, 6, 2, 8, 2, 0, 4 }; /*seg600:02DC unk_165EC*/ 
+        static int[] direction_165FC = { 0, 0, 2, 6, 2, 2, 0, 4, 4, 4, 2, 6, 6, 6, 4, 0 }; /*seg600:02EC unk_165FC*/
 
-        static byte[] /*seg600:0300*/ unk_16610 = { 5, 4, 5, 6, 3 , 8 , 7 , 2 };
-        static byte[] /*seg600:0308*/ unk_16618 = { 3, 2, 2, 3, 0 , 2 , 5 , 3 };
+        static byte[] unk_1660C = { 7, 2, 3, 6 }; /*seg600:02FC*/
 
+        static byte[] /*seg600:0300*/ unk_16610 = { 5, 4, 5, 6, 3, 8, 7, 2 };
+        static byte[] /*seg600:0308*/ unk_16618 = { 3, 2, 2, 3, 0, 2, 5, 3 };
+
+        static byte[, ,] unk_16620 = new byte[5, 6, 2] { // unk_16620 seg600:0310 
+                {{1,0},{1,0},{1,0},{2,9},{3,10},{4,10}}, // 310 - 31B
+                {{0,2},{0,3},{1,4},{2,5},{3,6},{4,7}}, // 31C - 327
+                {{0,6},{0,7},{1,8},{1,0},{1,0},{1,0}}, // 328 - 333
+                {{3,6},{4,7},{5,8},{6,9},{7,10},{8,10}}, // 334 - 33F
+                {{0,6},{0,7},{1,8},{2,9},{3,10},{4,10}}, // 340 - 31B
+        };
 
         internal static bool sub_38380(byte loop_count)
         {
@@ -997,15 +941,15 @@ namespace engine
             do
             {
                 int tempIndex = (gbl.team_direction[gbl.currentTeam] << 2) + var_14;
-                int var_9 = unk_165FC[tempIndex] / 2;
+                int direction = direction_165FC[tempIndex] / 2;
 
                 if (var_7 == 1)
                 {
-                    int tmpX = gbl.MapDirectionXDelta[unk_1660C[(var_9 + 2) % 4]];
-                    int tmpY = gbl.MapDirectionYDelta[unk_1660C[(var_9 + 2) % 4]];
+                    int tmpX = gbl.MapDirectionXDelta[unk_1660C[(direction + 2) % 4]];
+                    int tmpY = gbl.MapDirectionYDelta[unk_1660C[(direction + 2) % 4]];
 
-                    var_15 = (sbyte)(unk_16610[(var_14 > 0 ? 4 : 0) + var_9] + (var_F * tmpX));
-                    var_16 = (sbyte)(unk_16618[(var_14 > 0 ? 4 : 0) + var_9] + (var_F * tmpY));
+                    var_15 = (sbyte)(unk_16610[(var_14 > 0 ? 4 : 0) + direction] + (var_F * tmpX));
+                    var_16 = (sbyte)(unk_16618[(var_14 > 0 ? 4 : 0) + direction] + (var_F * tmpY));
                     var_17 = var_15;
                     var_18 = var_16;
                     var_10 = 1;
@@ -1014,8 +958,8 @@ namespace engine
                 }
                 else if (var_7 == 2)
                 {
-                    int tmpX = gbl.MapDirectionXDelta[unk_1660C[(var_9 + 1) % 4]];
-                    int tmpY = gbl.MapDirectionYDelta[unk_1660C[(var_9 + 1) % 4]];
+                    int tmpX = gbl.MapDirectionXDelta[unk_1660C[(direction + 1) % 4]];
+                    int tmpY = gbl.MapDirectionYDelta[unk_1660C[(direction + 1) % 4]];
 
                     var_17 = (sbyte)(var_15 + (tmpX * var_10));
                     var_18 = (sbyte)(var_16 + (tmpY * var_10));
@@ -1024,8 +968,8 @@ namespace engine
                 }
                 else if (var_7 == 3)
                 {
-                    int tmpX = gbl.MapDirectionXDelta[unk_1660C[(var_9 + 3) % 4]];
-                    int tmpY = gbl.MapDirectionYDelta[unk_1660C[(var_9 + 3) % 4]];
+                    int tmpX = gbl.MapDirectionXDelta[unk_1660C[(direction + 3) % 4]];
+                    int tmpY = gbl.MapDirectionYDelta[unk_1660C[(direction + 3) % 4]];
 
                     var_17 = (sbyte)(var_15 + (tmpX * var_10));
                     var_18 = (sbyte)(var_16 + (tmpY * var_10));
@@ -1048,7 +992,7 @@ namespace engine
 
                 if (var_7 > 1)
                 {
-                    if ((var_5 == true && sub_38202(var_18, var_17) == false) ||
+                    if ((var_5 == true && offset_invalid(var_18, var_17) == false) ||
                         (var_3 == true && var_13 >= gbl.half_team_count[gbl.currentTeam]) ||
                         (var_3 == false && var_13 > 11))
                     {
@@ -1065,10 +1009,10 @@ namespace engine
 
                             for (int var_A = 1; var_A <= 3; var_A++)
                             {
-                                int tmpDir = unk_165EC[gbl.team_direction[gbl.currentTeam] + var_A];
+                                int tmpDir = direction_165EC[gbl.team_direction[gbl.currentTeam] + var_A];
 
                                 if (gbl.game_state == 3 ||
-                                    sub_37388(tmpDir, tmpY, tmpX) != 1)
+                                    get_dir_flags(tmpDir, tmpY, tmpX) != 1)
                                 {
                                     found = true;
                                 }
@@ -1086,7 +1030,7 @@ namespace engine
 
 
                 if (var_5 == true &&
-                    sub_38202(var_18, var_17) == true)
+                    offset_invalid(var_18, var_17) == true)
                 {
                     var_2 = false;
                     var_7 = 0;
@@ -1098,10 +1042,10 @@ namespace engine
                         int tmpX = gbl.team_start_x[gbl.currentTeam] + gbl.mapPosX;
                         int tmpY = gbl.team_start_y[gbl.currentTeam] + gbl.mapPosY;
 
-                        int tmpDir = unk_165EC[gbl.team_direction[gbl.currentTeam] + var_14];
+                        int tmpDir = direction_165EC[gbl.team_direction[gbl.currentTeam] + var_14];
 
                         if (gbl.game_state == 3 ||
-                            sub_37388(tmpDir, tmpY, tmpX) != 1)
+                            get_dir_flags(tmpDir, tmpY, tmpX) != 1)
                         {
                             pos_x = gbl.team_start_x[gbl.currentTeam] + gbl.MapDirectionXDelta[tmpDir];
                             pos_y = gbl.team_start_y[gbl.currentTeam] + gbl.MapDirectionYDelta[tmpDir];
@@ -1178,8 +1122,8 @@ namespace engine
                     {
                         for (var_1 = 0; var_1 <= 10; var_1++)
                         {
-                            if (gbl.unk_16620[direction, var_2, 0] > var_1 ||
-                                gbl.unk_16620[direction, var_2, 1] < var_1)
+                            if (unk_16620[direction, var_2, 0] > var_1 ||
+                                unk_16620[direction, var_2, 1] < var_1)
                             {
                                 unk_1AB1C[gbl.currentTeam, var_C, var_2, var_1] = 0;
                             }
