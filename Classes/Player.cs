@@ -753,5 +753,10 @@ namespace Classes
 
             return data;
         }
+
+        public override string ToString()
+        {
+            return name;
+        }
     }
 }

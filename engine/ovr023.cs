@@ -819,11 +819,11 @@ namespace engine
 
             if (arg_6 == 0)
             {
-                gbl.byte_1D2BF = 0;
+                gbl.damage_flags = 0;
             }
             else
             {
-                gbl.byte_1D2BF = arg_4;
+                gbl.damage_flags = arg_4;
             }
 
             if (gbl.sp_target_count != 0)
@@ -879,7 +879,7 @@ namespace engine
                         }
                     }
                 }
-                gbl.byte_1D2BF = 0;
+                gbl.damage_flags = 0;
             }
         }
 
@@ -1028,8 +1028,8 @@ namespace engine
 
                         if (ovr033.sub_74761(0, caster) == true)
                         {
-                            ovr033.sub_74B3F(1, 1, caster.actions.field_9, caster);
-                            ovr033.sub_74B3F(0, 0, caster.actions.field_9, caster);
+                            ovr033.sub_74B3F(1, 1, caster.actions.direction, caster);
+                            ovr033.sub_74B3F(0, 0, caster.actions.direction, caster);
                         }
                     }
 
@@ -1151,9 +1151,7 @@ namespace engine
             byte var_76 = 0; /* Simeon */
 
             byte[] players_on_path = new byte[0x1E];
-            byte[] var_53 = new byte[0x32];
-            byte var_1F;
-            bool var_1E;
+            byte[] directions = new byte[0x32];
             bool finished;
             SteppingPath path = new SteppingPath();
 
@@ -1166,7 +1164,7 @@ namespace engine
 
                 if (finished == false)
                 {
-                    var_53[index] = path.direction;
+                    directions[index] = path.direction;
                     index++;
                 }
             } while (finished == false);
@@ -1175,14 +1173,14 @@ namespace engine
 
             index = 0;
             arg_0 = (byte)(arg_0 * 2);
-            var_1F = path.steps;
+            byte var_1F = path.steps;
             finished = false;
 
             while (var_1F < arg_0 && finished == false)
             {
                 if (targetX < 0x31 && targetX > 0 && targetY < 0x18 && targetY > 0)
                 {
-                    switch (var_53[index])
+                    switch (directions[index])
                     {
                         case 0:
                         case 2:
@@ -1199,8 +1197,8 @@ namespace engine
                             break;
                     }
 
-                    targetX += gbl.MapDirectionXDelta[var_53[index]];
-                    targetY += gbl.MapDirectionYDelta[var_53[index]];
+                    targetX += gbl.MapDirectionXDelta[directions[index]];
+                    targetY += gbl.MapDirectionYDelta[directions[index]];
 
 
                     if (index == count)
@@ -1222,12 +1220,12 @@ namespace engine
             BoundCoords(ref targetY, ref targetX);
 
             int var_78 = 0xff; /* Simeon */
-            var_1E = ovr032.canReachTarget(gbl.mapToBackGroundTile, ref var_78, ref targetY, ref targetX, casterY, casterX);
+            bool var_1E = ovr032.canReachTarget(gbl.mapToBackGroundTile, ref var_78, ref targetY, ref targetX, casterY, casterX);
 
             localSteppingPathInit(targetY, targetX, casterY, casterX, path);
 
             seg051.FillChar(0, 0x1E, players_on_path);
-            
+
             int list_index = 1;
 
             do
@@ -1289,11 +1287,10 @@ namespace engine
                 }
             }
 
-            int path_index = 1;
             int sp_target_index = 1;
             gbl.sp_target_count = 0;
 
-            while (players_on_path[path_index] != 0)
+            for (int path_index = 1; players_on_path[path_index] != 0; path_index++)
             {
                 if (gbl.player_array[players_on_path[path_index]] != gbl.player_ptr)
                 {
@@ -1301,8 +1298,6 @@ namespace engine
                     gbl.sp_targets[sp_target_index] = gbl.player_array[players_on_path[path_index]];
                     sp_target_index++;
                 }
-
-                path_index++;
             }
         }
 
@@ -1428,23 +1423,22 @@ namespace engine
 
         internal static void is_charmed()
         {
-            Player var_8;
-            Affect var_4;
+            Player target = gbl.sp_targets[1];
 
-            var_8 = gbl.sp_targets[1];
-
-            if (var_8.field_11A > 1 ||
-                var_8.field_DE > 1)
+            if (target.field_11A > 1 ||
+                target.field_DE > 1)
             {
-                ovr025.DisplayPlayerStatusString(true, 10, "is unaffected", var_8);
+                ovr025.DisplayPlayerStatusString(true, 10, "is unaffected", target);
             }
             else
             {
                 sub_5CF7F("is charmed", 0, 0, true, (byte)((gbl.player_ptr.combat_team << 7) + ovr025.sub_6886F(gbl.spell_id)), gbl.spell_id);
 
-                if (ovr025.find_affect(out var_4, Affects.charm_person, var_8) == true)
+                Affect affect;
+
+                if (ovr025.find_affect(out affect, Affects.charm_person, target) == true)
                 {
-                    ovr024.sub_630C7(0, var_4, gbl.sp_targets[1], Affects.shield);
+                    ovr024.sub_630C7(0, affect, gbl.sp_targets[1], Affects.shield);
                 }
             }
         }
@@ -1581,75 +1575,52 @@ namespace engine
 
             for (var_1 = 1; var_1 <= gbl.sp_target_count; var_1++)
             {
-                throw new System.NotSupportedException();//mov	al, [bp+var_1]
-                throw new System.NotSupportedException();//xor	ah, ah
-                throw new System.NotSupportedException();//mov	di, ax
-                throw new System.NotSupportedException();//shl	di, 1
-                throw new System.NotSupportedException();//shl	di, 1
-                throw new System.NotSupportedException();//les	di, sp_target[di]
-                throw new System.NotSupportedException();//mov	al, es:[di+0E5h]
-                throw new System.NotSupportedException();//cmp	al, 0
-                throw new System.NotSupportedException();//jl	loc_5E35A
-                throw new System.NotSupportedException();//cmp	al, 1
-                throw new System.NotSupportedException();//jg	loc_5E35A
-                gbl.byte_1AFDE = 1;
-                throw new System.NotSupportedException();//jmp	short loc_5E3A8
-                throw new System.NotSupportedException();//loc_5E35A:
-                throw new System.NotSupportedException();//cmp	al, 2
-                throw new System.NotSupportedException();//jnz	loc_5E365
-                gbl.byte_1AFDE = 2;
-                throw new System.NotSupportedException();//jmp	short loc_5E3A8
-                throw new System.NotSupportedException();//loc_5E365:
-                throw new System.NotSupportedException();//cmp	al, 3
-                throw new System.NotSupportedException();//jnz	loc_5E370
-                gbl.byte_1AFDE = 4;
-                throw new System.NotSupportedException();//jmp	short loc_5E3A8
-                throw new System.NotSupportedException();//loc_5E370:
-                throw new System.NotSupportedException();//cmp	al, 4
-                throw new System.NotSupportedException();//jnz	loc_5E37B
-                gbl.byte_1AFDE = 6;
-                throw new System.NotSupportedException();//jmp	short loc_5E3A8
-                throw new System.NotSupportedException();//loc_5E37B:
-                throw new System.NotSupportedException();//cmp	al, 5
-                throw new System.NotSupportedException();//jnz	loc_5E3A3
-                throw new System.NotSupportedException();//mov	al, [bp+var_1]
-                throw new System.NotSupportedException();//xor	ah, ah
-                throw new System.NotSupportedException();//mov	di, ax
-                throw new System.NotSupportedException();//shl	di, 1
-                throw new System.NotSupportedException();//shl	di, 1
-                throw new System.NotSupportedException();//les	di, sp_target[di]
-                throw new System.NotSupportedException();//cmp	byte ptr es:[di+74h], 0
-                throw new System.NotSupportedException();//jnz	loc_5E39C
-                gbl.byte_1AFDE = 0x0A;
-                throw new System.NotSupportedException();//jmp	short loc_5E3A1
-                throw new System.NotSupportedException();//loc_5E39C:
-                gbl.byte_1AFDE = 0x14;
-                throw new System.NotSupportedException();//loc_5E3A1:
-                throw new System.NotSupportedException();//jmp	short loc_5E3A8
-                throw new System.NotSupportedException();//loc_5E3A3:
-                gbl.byte_1AFDE = 0x14;
-                throw new System.NotSupportedException();//loc_5E3A8:
-                throw new System.NotSupportedException();//mov	al, [bp+var_1]
-                throw new System.NotSupportedException();//xor	ah, ah
-                throw new System.NotSupportedException();//mov	di, ax
-                throw new System.NotSupportedException();//shl	di, 1
-                throw new System.NotSupportedException();//shl	di, 1
-                throw new System.NotSupportedException();//les	di, sp_target[di]
-                throw new System.NotSupportedException();//cmp	byte ptr es:[di+195h], 1
-                throw new System.NotSupportedException();//jz	loc_5E3F5
+                switch (gbl.sp_targets[var_1].field_E5)
+                {
+                    case 0:
+                    case 1:
+                        gbl.byte_1AFDE = 1;
+                        break;
 
-                ovr025.find_affect(out var_5, Affects.sleep, gbl.sp_targets[var_1]);
-                throw new System.NotSupportedException();//or	al, al
-                throw new System.NotSupportedException();//jnz	loc_5E3F5
-                throw new System.NotSupportedException();//mov	al, byte_1AFDD
-                throw new System.NotSupportedException();//cmp	al, byte_1AFDE
-                throw new System.NotSupportedException();//jb	loc_5E3F5
-                throw new System.NotSupportedException();//mov	al, byte_1AFDE
-                throw new System.NotSupportedException();//sub	byte_1AFDD, al
-                throw new System.NotSupportedException();//jmp	short loc_5E40A
-                throw new System.NotSupportedException();//loc_5E3F5:
-                gbl.sp_targets[var_1] = null;
-                throw new System.NotSupportedException();//loc_5E40A:
+                    case 2:
+                        gbl.byte_1AFDE = 2;
+                        break;
+
+                    case 3:
+                        gbl.byte_1AFDE = 4;
+                        break;
+
+                    case 4:
+                        gbl.byte_1AFDE = 6;
+                        break;
+
+                    case 5:
+                        if (gbl.sp_targets[var_1].race == Race.monster)
+                        {
+                            gbl.byte_1AFDE = 0x0A;
+                        }
+                        else
+                        {
+                            gbl.byte_1AFDE = 0x14;
+                        }
+                        break;
+
+                    default:
+                        gbl.byte_1AFDE = 0x14;
+                        break;
+                }
+
+
+                if (gbl.sp_targets[var_1].health_status != Status.animated &&
+                    ovr025.find_affect(out var_5, Affects.sleep, gbl.sp_targets[var_1]) == false &&
+                    gbl.byte_1AFDD >= gbl.byte_1AFDE)
+                {
+                    gbl.byte_1AFDD -= gbl.byte_1AFDE;
+                }
+                else
+                {
+                    gbl.sp_targets[var_1] = null;
+                }
             }
 
             sub_5CF7F("falls asleep", 0, 0, false, 0, gbl.spell_id);
@@ -2012,72 +1983,65 @@ namespace engine
                 ovr024.add_affect(true, var_8, sub_5CE92(gbl.spell_id), Affects.strength, player);
                 ovr024.sub_648D9(0, player);
             }
-
         }
 
 
         internal static void is_animated()
         {
-            Player var_7;
-            byte var_3;
-            byte var_2;
-            byte var_1;
-
             gbl.byte_1D2C7 = 1;
 
-            var_3 = ovr025.sub_6886F(gbl.spell_id);
+            byte var_3 = ovr025.sub_6886F(gbl.spell_id);
 
             gbl.sp_target_count = 0;
-            var_7 = gbl.player_next_ptr;
+            Player player = gbl.player_next_ptr;
 
-            while (var_7 != null && var_3 > 0)
+            while (player != null && var_3 > 0)
             {
-                if (var_7.health_status == Status.dead &&
-                    var_7.field_11A == 0)
+                if (player.health_status == Status.dead &&
+                    player.field_11A == 0)
                 {
-
-                    if (ovr033.sub_7515A(true, ovr033.PlayerMapYPos(var_7), ovr033.PlayerMapXPos(var_7), var_7) != 0)
+                    if (ovr033.sub_7515A(true, ovr033.PlayerMapYPos(player), ovr033.PlayerMapXPos(player), player) != 0)
                     {
-                        var_2 = (byte)((var_7.combat_team << 4) + ovr025.sub_6886F(gbl.spell_id));
+                        byte var_2 = (byte)((player.combat_team << 4) + ovr025.sub_6886F(gbl.spell_id));
 
-                        var_7.combat_team = gbl.player_ptr.combat_team;
-                        var_7.field_198 = 1;
-                        var_7.field_E9 = 1;
-                        var_7.field_DD = 0;
-                        var_7.field_E4 = 6;
+                        player.combat_team = gbl.player_ptr.combat_team;
+                        player.field_198 = 1;
+                        player.field_E9 = 1;
+                        player.field_DD = 0;
+                        player.field_E4 = 6;
 
-                        for (var_1 = 0; var_1 < gbl.max_spells; var_1++)
+                        for (int var_1 = 0; var_1 < gbl.max_spells; var_1++)
                         {
-                            var_7.spell_list[var_1] = 0;
+                            player.spell_list[var_1] = 0;
                         }
 
-                        if (var_7.field_F7 > 0xf7)
+                        if (player.field_F7 > 0xf7)
                         {
-                            var_7.field_F7 = 0xB2;
+                            player.field_F7 = 0xB2;
                         }
                         else
                         {
-                            var_7.field_F7 = 0xB3;
+                            player.field_F7 = 0xB3;
                         }
 
-                        var_7.field_11A = 4;
+                        player.field_11A = 4;
 
                         if (gbl.game_state == 5)
                         {
-                            var_7.actions.target = null;
+                            player.actions.target = null;
                         }
 
                         var_3--;
 
-                        if (ovr024.combat_heal(var_7.hit_point_max, var_7) == true)
+                        if (ovr024.combat_heal(player.hit_point_max, player) == true)
                         {
-                            ovr024.is_unaffected("is animated", false, 0, true, var_2, 0, Affects.funky__32, var_7);
-                            var_7.health_status = Status.animated;
+                            ovr024.is_unaffected("is animated", false, 0, true, var_2, 0, Affects.funky__32, player);
+                            player.health_status = Status.animated;
                         }
                     }
                 }
 
-                var_7 = var_7.next_player;
+                player = player.next_player;
             }
         }
 
@@ -2470,9 +2434,9 @@ namespace engine
 
                 ovr032.Rebuild_SortedCombatantList(gbl.mapToBackGroundTile, 1, 0xff, 2, gbl.targetY, gbl.targetX);
 
-                for (int i = 0; i < gbl.sortedCombatantCount; i++)
+                for (int i = 1; i <= gbl.sortedCombatantCount; i++)
                 {
-                    gbl.sp_targets[i + 1] = gbl.player_array[gbl.SortedCombatantList[i].player_index];
+                    gbl.sp_targets[i] = gbl.player_array[gbl.SortedCombatantList[i].player_index];
                 }
 
                 gbl.sp_target_count = gbl.sortedCombatantCount;
@@ -2544,11 +2508,11 @@ namespace engine
                 playerIndex != arg_4)
             {
                 Player player = gbl.player_array[playerIndex];
-                gbl.byte_1D2BF = 0x0C;
+                gbl.damage_flags = 0x0C;
 
                 ovr024.damage_person(ovr024.do_saving_throw(0, arg_6, player), 2, (sbyte)arg_8, player);
                 ovr025.sub_67A59(0x13);
-                gbl.byte_1D2BF = 0;
+                gbl.damage_flags = 0;
             }
         }
 
@@ -3045,11 +3009,11 @@ namespace engine
             Player var_2;
 
             var_2 = gbl.sp_targets[1];
-            gbl.byte_1D2BF = 0x40;
-            gbl.byte_1D2BE = 0x43;
+            gbl.damage_flags = 0x40;
+            gbl.damage = 0x43;
             ovr024.work_on_00(var_2, 9);
 
-            if (gbl.byte_1D2BE != 0)
+            if (gbl.damage != 0)
             {
 
                 if (ovr024.do_saving_throw(0, 4, var_2) == false)
@@ -3058,7 +3022,7 @@ namespace engine
                 }
                 else
                 {
-                    gbl.byte_1D2BF = 8;
+                    gbl.damage_flags = 8;
 
                     ovr024.damage_person(false, 0, (sbyte)(ovr024.roll_dice_save(8, 2) + 1), var_2);
                 }
@@ -3277,7 +3241,7 @@ namespace engine
             Player var_4;
 
             var_4 = gbl.sp_targets[1];
-            gbl.byte_1D2BF = 0x40;
+            gbl.damage_flags = 0x40;
 
             if (ovr024.do_saving_throw(0, 4, var_4) == false)
             {
@@ -3792,7 +3756,7 @@ namespace engine
             if (gbl.byte_1D8B7 == 0 ||
                 ovr024.roll_dice(100, 1) > 50)
             {
-                gbl.byte_1D2BF = 0x24;
+                gbl.damage_flags = 0x24;
                 int var_2 = ovr033.PlayerMapXPos(player);
                 int var_3 = ovr033.PlayerMapYPos(player);
 
@@ -3883,7 +3847,7 @@ namespace engine
 
             if (affect.field_3 > 0)
             {
-                gbl.byte_1D2BF = 0x30;
+                gbl.damage_flags = 0x30;
 
                 int var_2 = ovr033.PlayerMapXPos(player);
                 int var_3 = ovr033.PlayerMapYPos(player);
@@ -3978,7 +3942,7 @@ namespace engine
             throw new System.NotSupportedException();//ja	loc_61F26
             throw new System.NotSupportedException();//jmp	loc_6207D
             throw new System.NotSupportedException();//loc_61F26:
-            gbl.byte_1D2BF = 0x21;
+            gbl.damage_flags = 0x21;
             var_2 = ovr033.PlayerMapXPos(arg_6);
             var_3 = ovr033.PlayerMapYPos(arg_6);
 
@@ -4065,7 +4029,7 @@ namespace engine
             throw new System.NotSupportedException();//jnz	loc_620F5
             throw new System.NotSupportedException();//jmp	loc_6219A
             throw new System.NotSupportedException();//loc_620F5:
-            gbl.byte_1D2BF = 1;
+            gbl.damage_flags = 1;
             gbl.byte_1DA70 = ovr025.clear_actions(arg_6);
 
             ovr025.DisplayPlayerStatusString(true, 10, "Breathes Fire", arg_6);

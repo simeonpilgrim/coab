@@ -61,16 +61,14 @@ namespace engine
 
         internal static void sub_7416E(int posY, int posX)
         {
-            byte var_7;
-            byte var_6;
-            int deltaY;
-            int deltaX;
-
             int screenPosX = posX - gbl.mapToBackGroundTile.mapScreenLeftX;
             int screenPosY = posY - gbl.mapToBackGroundTile.mapScreenTopY;
 
             for (int step = 0; step <= 3; step++)
             {
+                int deltaY;
+                int deltaX;
+
                 if (GetSizeBasedMapDelta(out deltaY, out deltaX, step, gbl.mapToBackGroundTile.size) == true &&
                     CoordOnScreen(screenPosY + deltaY, screenPosX + deltaX) == true)
                 {
@@ -86,15 +84,19 @@ namespace engine
                 }
             }
 
-            AtMapXY(out var_7, out var_6, posY, posX);
+            byte ground_tile;
+            byte player_index;
 
-            if (var_6 > 0 &&
-                sub_74761(0, gbl.player_array[var_6]) == true)
+            AtMapXY(out ground_tile, out player_index, posY, posX);
+
+            if (player_index > 0 &&
+                sub_74761(0, gbl.player_array[player_index]) == true)
             {
                 // draws the player icon over focus box
-                ovr034.draw_combat_icon(gbl.player_array[var_6].icon_id, 0,
-                    gbl.player_array[var_6].actions.field_9, gbl.playerScreenY[var_6],
-                    gbl.playerScreenX[var_6]);
+                ovr034.draw_combat_icon(gbl.player_array[player_index].icon_id, 0,
+                    gbl.player_array[player_index].actions.direction, 
+                    gbl.playerScreenY[player_index],
+                    gbl.playerScreenX[player_index]);
             }
         }
 
@@ -114,7 +116,7 @@ namespace engine
                 sub_74761(0, gbl.player_array[playerIndex]) == true)
             {
                 ovr034.draw_combat_icon(gbl.player_array[playerIndex].icon_id,  0, 
-                    gbl.player_array[playerIndex].actions.field_9,
+                    gbl.player_array[playerIndex].actions.direction,
                     gbl.playerScreenY[playerIndex], 
                     gbl.playerScreenX[playerIndex]);
             }
@@ -363,7 +365,7 @@ namespace engine
                         gbl.CombatMap[index].size > 0 &&
                         sub_74761(0, player) == true)
                     {
-                        ovr034.draw_combat_icon(player.icon_id, 0, player.actions.field_9, gbl.playerScreenY[index], gbl.playerScreenX[index]);
+                        ovr034.draw_combat_icon(player.icon_id, 0, player.actions.direction, gbl.playerScreenY[index], gbl.playerScreenX[index]);
                     }
                 }
             }
@@ -410,7 +412,7 @@ namespace engine
                 redrawCombatArea(8, 3, PlayerMapYPos(player), PlayerMapXPos(player));
             }
 
-            if ((direction >> 2) != (player.actions.field_9 >> 2) ||
+            if ((direction >> 2) != (player.actions.direction >> 2) ||
                 arg_2 != 0 ||
                 arg_0 != 0)
             {
@@ -420,7 +422,7 @@ namespace engine
                 }
             }
 
-            player.actions.field_9 = direction;
+            player.actions.direction = direction;
 
             if (arg_0 == 0 &&
                 sub_74761(0, player) == true &&

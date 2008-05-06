@@ -409,19 +409,15 @@ namespace engine
 
         static Player sub_63D03(byte[] arg_0, byte arg_4, Struct_1D885 arg_6, int mapY, int mapX)
         {
-            Struct_1D885 var_8;
-            Player player_base;
-
-            var_8 = arg_6;
             bool found = false;
 
-            while (var_8 != null && found == false)
+            while (arg_6 != null && found == false)
             {
                 for (int i = 1; i <= arg_4; i++)
                 {
-                    if (var_8.field_10[i] != 0 &&
-                        var_8.field_1A + gbl.MapDirectionXDelta[arg_0[i]] == mapX &&
-                        var_8.field_1B + gbl.MapDirectionYDelta[arg_0[i]] == mapY)
+                    if (arg_6.field_10[i] != 0 &&
+                        arg_6.field_1A + gbl.MapDirectionXDelta[arg_0[i]] == mapX &&
+                        arg_6.field_1B + gbl.MapDirectionYDelta[arg_0[i]] == mapY)
                     {
                         found = true;
                     }
@@ -429,18 +425,11 @@ namespace engine
 
                 if (found == false)
                 {
-                    var_8 = var_8.next;
+                    arg_6 = arg_6.next;
                 }
             }
 
-            if (found)
-            {
-                player_base = var_8.player;
-            }
-            else
-            {
-                player_base = gbl.player_next_ptr;
-            }
+            Player player_base = (found) ? arg_6.player : gbl.player_next_ptr;
 
             return player_base;
         }
@@ -576,7 +565,7 @@ namespace engine
 
             if (gbl.byte_1D2C9 > 1)
             {
-                if (gbl.byte_1D2C9 == 0x14)
+                if (gbl.byte_1D2C9 == 20)
                 {
                     gbl.byte_1D2C9 = 100;
                 }
@@ -664,7 +653,7 @@ namespace engine
         }
 
 
-        internal static void add_affect(bool arg_0, byte arg_2, ushort arg_4, Affects type, Player player)
+        internal static void add_affect(bool call_spell_jump_list, byte arg_2, ushort arg_4, Affects type, Player player)
         {
             Affect affect_ptr;
             Affect affect_ptr2;
@@ -693,17 +682,15 @@ namespace engine
             affect_ptr2.type = type;
             affect_ptr2.field_1 = arg_4;
             affect_ptr2.field_3 = arg_2;
-            affect_ptr2.call_spell_jump_list = arg_0;
+            affect_ptr2.call_spell_jump_list = call_spell_jump_list;
         }
 
 
         internal static void sub_644A7(string msg, Status health_status, Player player)
         {
-            byte player_index;
-
             if (player.in_combat == true)
             {
-                player_index = ovr033.get_player_index(player);
+                byte player_index = ovr033.get_player_index(player);
 
                 ovr033.sub_75356(false, 3, player);
 
@@ -1300,23 +1287,23 @@ namespace engine
 
         static Set unk_64F90 = new Set(0x0002, new byte[] { 0xC0, 0x01 });
 
-        internal static void damage_person(bool arg_0, byte arg_2, sbyte arg_4, Player player)
+        internal static void damage_person(bool change_damage, byte arg_2, int damage, Player player)
         {
-            string var_100;
+            string text;
 
-            gbl.byte_1D2BE = (byte)arg_4;
+            gbl.damage = damage;
 
             work_on_00(player, 6);
 
-            if (arg_0 == true)
+            if (change_damage == true)
             {
                 if (arg_2 == 1)
                 {
-                    gbl.byte_1D2BE = 0;
+                    gbl.damage = 0;
                 }
                 else if (arg_2 == 2)
                 {
-                    gbl.byte_1D2BE /= 2;
+                    gbl.damage /= 2;
                 }
             }
             else
@@ -1324,42 +1311,42 @@ namespace engine
                 work_on_00(player, 20);
             }
 
-            if (gbl.byte_1D2BE > 0)
+            if (gbl.damage > 0)
             {
-                if (gbl.byte_1D2BE != 1)
+                if (gbl.damage != 1)
                 {
-                    var_100 = "takes " + gbl.byte_1D2BE.ToString() + " points of damage ";
+                    text = "takes " + gbl.damage.ToString() + " points of damage ";
                 }
                 else
                 {
-                    var_100 = "takes 1 point of damage ";
+                    text = "takes 1 point of damage ";
                 }
 
-                int mask = gbl.byte_1D2BF & 0xf7;
+                int mask = gbl.damage_flags & 0xf7;
                 if (mask == 0x01)
                 {
-                    var_100 += "from Fire";
+                    text += "from Fire";
                 }
                 else if (mask == 0x02)
                 {
-                    var_100 += "from Cold";
+                    text += "from Cold";
                 }
                 else if (mask == 0x04)
                 {
-                    var_100 += "from Electricity";
+                    text += "from Electricity";
                 }
                 else if (mask == 0x10)
                 {
-                    var_100 +=  "from Acid";
+                    text +=  "from Acid";
                 }
 
-                if ((gbl.byte_1D2BF & 8) == gbl.byte_1D2BF)
+                if ((gbl.damage_flags & 8) == gbl.damage_flags)
                 {
-                    var_100 += "from Magic";
+                    text += "from Magic";
                 }
 
-                ovr025.sub_6818A(var_100, 0, player);
-                ovr025.damage_player(gbl.byte_1D2BE, player);
+                ovr025.sub_6818A(text, 0, player);
+                ovr025.damage_player(gbl.damage, player);
 
                 if (gbl.game_state == 5)
                 {
@@ -1377,19 +1364,19 @@ namespace engine
 
                 if (player.in_combat == false)
                 {
-                    var_100 = "Goes Down";
+                    text = "Goes Down";
 
                     if (player.health_status == Status.dying)
                     {
-                        var_100 = var_100 + ", and is Dying";
+                        text = text + ", and is Dying";
                     }
 
                     if (unk_64F90.MemberOf((byte)player.health_status) == true)
                     {
-                        var_100 = "is killed";
+                        text = "is killed";
                     }
 
-                    ovr025.DisplayPlayerStatusString(false, (byte)(gbl.textYCol + 1), var_100, player);
+                    ovr025.DisplayPlayerStatusString(false, (byte)(gbl.textYCol + 1), text, player);
 
                     if (gbl.game_state != 5)
                     {
@@ -1417,35 +1404,31 @@ namespace engine
         }
 
 
-        internal static void is_unaffected(string arg_0, bool arg_4, byte arg_6, bool arg_8, byte arg_A, ushort arg_C, Affects arg_E, Player arg_10)
+        internal static void is_unaffected(string text, bool arg_4, byte arg_6, bool arg_8, byte arg_A, ushort arg_C, Affects affect_id, Player player)
         {
-            Affect var_2D;
-            string var_29;
+            gbl.byte_1D2BD = (byte)affect_id;
 
-            var_29 = arg_0;
-
-            gbl.byte_1D2BD = (byte)arg_E;
-
-            work_on_00(arg_10, 9);
+            work_on_00(player, 9);
 
             if (gbl.byte_1D2BD == 0 ||
                 (arg_4 == true && arg_6 == 1))
             {
-                ovr025.DisplayPlayerStatusString(true, 10, "is Unaffected", arg_10);
+                ovr025.DisplayPlayerStatusString(true, 10, "is Unaffected", player);
             }
             else
             {
-                if (ovr025.find_affect(out var_2D, arg_E, arg_10) == true &&
-                    var_2D.field_1 > 0)
+                Affect affect_found;
+                if (ovr025.find_affect(out affect_found, affect_id, player) == true &&
+                    affect_found.field_1 > 0)
                 {
-                    remove_affect(var_2D, arg_E, arg_10);
+                    remove_affect(affect_found, affect_id, player);
                 }
 
-                add_affect(arg_8, arg_A, arg_C, arg_E, arg_10);
+                add_affect(arg_8, arg_A, arg_C, affect_id, player);
 
-                if (var_29.Length != 0)
+                if (text.Length != 0)
                 {
-                    ovr025.sub_6818A(var_29, 1, arg_10);
+                    ovr025.sub_6818A(text, 1, player);
                     ovr025.ClearPlayerTextArea();
                 }
             }

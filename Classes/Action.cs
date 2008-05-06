@@ -21,10 +21,10 @@ namespace Classes
         ///<summary>0x07</summary>
         public bool guarding; // 0x07
         public byte field_8;  // 0x08
-        public byte field_9;  // 0x09
+        public byte direction;  // 0x09 field_9
         ///<summary>0x0A,0x0C</summary>
         public Player target; // 0x0A
-        public byte bleeding; // 0x0E
+        public int bleeding; // 0x0E
         public byte field_F;  // 0x0F
         public byte field_10; // 0x10
         public byte field_11; // 0x11

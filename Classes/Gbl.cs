@@ -243,10 +243,10 @@ namespace Classes
         public static int textYCol; // byte_1C8CB
         public static byte byte_1D1BB;
         public static int sortedCombatantCount; // byte_1D1C0
-        public static byte byte_1D1C4;
+        //public static byte byte_1D1C4;
         public static byte byte_1D2BD;
-        public static byte byte_1D2BE;
-        public static byte byte_1D2BF;
+        public static int damage; // byte_1D2BE
+        public static byte damage_flags; // byte_1D2BF
         public static byte byte_1D2C0;
         public static byte spell_id; // byte_1D2C1
         public static int dice_count; // byte_1D2C2
@@ -543,7 +543,7 @@ namespace Classes
 
         public static bool[] item_find = new bool[6];
 
-        public static byte game_speed_var;
+        public static int game_speed_var;
 
         public static bool inDemo;
         public static bool AnimationsOn;

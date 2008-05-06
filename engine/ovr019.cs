@@ -426,9 +426,9 @@ namespace engine
         }
 
 
-        internal static void sub_52B79( byte num_loops, byte arg_2, short arg_4, short arg_6 )
+        internal static void sub_52B79( int num_loops, byte arg_2, short arg_4, short arg_6 )
         {
-            byte loop_count;
+            int loop_count;
             int var_4A;
             int var_46;
             DaxArray var_42;
@@ -533,12 +533,12 @@ namespace engine
 
 			gbl.area_ptr.field_3FE = 1;
 
-            sub_52B79( (byte)((10 - gbl.game_speed_var)*2), 0x4d, 3, 3 );
+            sub_52B79((10 - gbl.game_speed_var) * 2, 0x4d, 3, 3);
             
 			gbl.area_ptr.field_3FE = 0;
 
 			ovr030.head_body( 0x41, 0x41 );
-            ovr030.sub_706DC( true, 3, 3 );
+            ovr030.draw_head_and_body( true, 3, 3 );
 
 			seg041.press_any_key( aTheKnightsOfMy, true, 0, 10, 0x16, 0x26, 0x11, 1 );
 			seg041.press_any_key( aCongratulati_0, false, 0, 10, 0x16, 0x26, 0x11, 1 );

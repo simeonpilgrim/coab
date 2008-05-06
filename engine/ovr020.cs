@@ -792,7 +792,7 @@ namespace engine
                         arg_2.readied = false;
                         var_3 = (sbyte)((int)arg_2.affect_2 << 4);
 
-                        gbl.byte_1D2BF = 8;
+                        gbl.damage_flags = 8;
                         if (gbl.game_state == 5)
                         {
                             ovr025.sub_68DC0();

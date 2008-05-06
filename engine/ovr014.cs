@@ -84,29 +84,29 @@ namespace engine
         }
 
 
-        static void sub_3E192(byte arg_0, Player arg_2, Player arg_6)
+        static void sub_3E192(byte arg_0, Player target, Player attacker)
         {
-            gbl.byte_1D2BE = (byte)ovr024.roll_dice_save(arg_6.field_19FArray(arg_0), (sbyte)arg_6.field_19DArray(arg_0));
-            gbl.byte_1D2BE += arg_6.field_1A1Array(arg_0);
+            gbl.damage = ovr024.roll_dice_save(attacker.field_19FArray(arg_0), attacker.field_19DArray(arg_0));
+            gbl.damage += attacker.field_1A1Array(arg_0);
 
-            if (gbl.byte_1D2BE < 0)
+            if (gbl.damage < 0)
             {
-                gbl.byte_1D2BE = 0;
+                gbl.damage = 0;
             }
 
-            if (sub_408D7(arg_2, arg_6) != 0)
+            if (sub_408D7(target, attacker) != 0)
             {
-                gbl.byte_1D2BE *= (byte)((((arg_6.thief_lvl + (arg_6.field_117 * ovr026.sub_6B3D1(arg_6))) - 1) / 4) + 2);
+                gbl.damage *= (((attacker.thief_lvl + (attacker.field_117 * ovr026.sub_6B3D1(attacker))) - 1) / 4) + 2;
             }
 
-            gbl.byte_1D2BF = 0;
-            ovr024.work_on_00(arg_6, 4);
-            ovr024.work_on_00(arg_2, 5);
+            gbl.damage_flags = 0;
+            ovr024.work_on_00(attacker, 4);
+            ovr024.work_on_00(target, 5);
         }
 
         static Set unk_3E2EE = new Set(0x0002, new byte[] { 0xC0, 0x01 });
 
-        static void backstab(bool attackHits, byte attackDamge, byte actualDamage, byte arg_6, Player target, Player attacker)
+        static void backstab(bool attackHits, int attackDamge, int actualDamage, byte arg_6, Player target, Player attacker)
         {
             string text;
 
@@ -116,7 +116,7 @@ namespace engine
             }
             else if (arg_6 == 3)
             {
-                text = "slays	helpless";
+                text = "slays helpless";
             }
             else
             {
@@ -335,7 +335,7 @@ namespace engine
         }
 
 
-        internal static void sub_3E954(byte arg_0, Player player)
+        internal static void sub_3E954(int direction, Player player)
         {
             int var_25;
             Player var_23;
@@ -364,13 +364,13 @@ namespace engine
                     var_D[var_18] = gbl.byte_1D8B9[var_18];
                 }
 
-                gbl.CombatMap[player_index].xPos += gbl.MapDirectionXDelta[arg_0];
-                gbl.CombatMap[player_index].yPos += gbl.MapDirectionYDelta[arg_0];
+                gbl.CombatMap[player_index].xPos += gbl.MapDirectionXDelta[direction];
+                gbl.CombatMap[player_index].yPos += gbl.MapDirectionYDelta[direction];
 
                 int var_16 = ovr025.near_enemy(1, player);
 
-                gbl.CombatMap[player_index].xPos -= gbl.MapDirectionXDelta[arg_0];
-                gbl.CombatMap[player_index].yPos -= gbl.MapDirectionYDelta[arg_0];
+                gbl.CombatMap[player_index].xPos -= gbl.MapDirectionXDelta[direction];
+                gbl.CombatMap[player_index].yPos -= gbl.MapDirectionYDelta[direction];
 
                 for (var_18 = 1; var_18 <= var_15; var_18++)
                 {
@@ -406,9 +406,9 @@ namespace engine
                             ovr025.find_affect(out var_10, Affects.affect_4b, player_ptr) == false &&
                             ovr025.find_affect(out var_10, Affects.affect_4a, player_ptr) == false)
                         {
-                            var_25 = player_ptr.actions.field_9 + 10;
+                            var_25 = player_ptr.actions.direction + 10;
 
-                            for (var_1B = player_ptr.actions.field_9 + 6; var_1B <= var_25; var_1B++)
+                            for (var_1B = player_ptr.actions.direction + 6; var_1B <= var_25; var_1B++)
                             {
                                 if (var_12 != 0)
                                 {
@@ -468,12 +468,9 @@ namespace engine
 
         internal static bool flee_battle(Player player)
         {
-            byte var_4;
-            byte var_3;
-            bool gets_away;
             bool ret_val;
 
-            gets_away = false;
+            bool gets_away = false;
 
             if (ovr025.near_enemy(0xff, player) == 0)
             {
@@ -481,8 +478,8 @@ namespace engine
             }
             else
             {
-                var_4 = (byte)(sub_3E124(player) >> 1);
-                var_3 = sub_40E8F(player);
+                int var_4 = sub_3E124(player) >> 1;
+                int var_3 = sub_40E8F(player);
 
                 if (var_3 < var_4)
                 {
@@ -496,7 +493,6 @@ namespace engine
 
             if (gets_away == true)
             {
-
                 ovr024.sub_644A7("Got Away", Status.running, player);
             }
             else
@@ -665,10 +661,7 @@ namespace engine
 
         internal static bool sub_3F143(Player player01, Player player02)
         {
-            Player old_target;
-            bool ret_val;
-
-            ret_val = false;
+            bool ret_val = false;
 
             if (player01 != null)
             {
@@ -684,7 +677,7 @@ namespace engine
 
                     if (gbl.byte_1D2C5 == 0)
                     {
-                        old_target = player02.actions.target;
+                        Player old_target = player02.actions.target;
 
                         player02.actions.target = player01;
 
@@ -825,7 +818,7 @@ namespace engine
         }
 
 
-        internal static void sub_3F4EB(Item arg_0, ref bool arg_4, byte arg_8, Player arg_A, Player arg_E)
+        internal static void sub_3F4EB(Item arg_0, ref bool arg_4, byte arg_8, Player target, Player attacker)
         {
             byte var_17;
             byte var_16;
@@ -844,20 +837,20 @@ namespace engine
             gbl.byte_1D902 = 0;
             var_11 = 0;
             var_12 = 0;
-            gbl.byte_1D2BE = 0;
+            gbl.damage = 0;
 
-            arg_E.actions.field_8 = 1;
+            attacker.actions.field_8 = 1;
 
-            if (ovr025.is_held(arg_A) == true)
+            if (ovr025.is_held(target) == true)
             {
                 seg044.sound_sub_120E0(gbl.sound_7_188CC);
 
-                while (arg_E.field_19BArray(arg_E.actions.field_4) == 0)
+                while (attacker.field_19BArray(attacker.actions.field_4) == 0)
                 {
-                    arg_E.actions.field_4--;
+                    attacker.actions.field_4--;
                 }
 
-                switch (arg_E.actions.field_4)
+                switch (attacker.actions.field_4)
                 {
                     case 1:
                         gbl.byte_1D901 += 1;
@@ -870,73 +863,73 @@ namespace engine
                         throw new System.NotImplementedException();
                 }
 
-                backstab(true, 1, (byte)(arg_A.hit_point_current + 5), 3, arg_A, arg_E);
-                ovr024.remove_invisibility(arg_E);
+                backstab(true, 1, (byte)(target.hit_point_current + 5), 3, target, attacker);
+                ovr024.remove_invisibility(attacker);
 
-                arg_E.field_19C = 0;
-                arg_E.field_19D = 0;
+                attacker.field_19C = 0;
+                attacker.field_19D = 0;
 
                 var_11 = 1;
                 arg_4 = true;
             }
             else
             {
-                if (arg_E.field_151 != null && 
-                    (arg_A.field_DE > 0x80 || (arg_A.field_DE & 7) > 1))
+                if (attacker.field_151 != null && 
+                    (target.field_DE > 0x80 || (target.field_DE & 7) > 1))
                 {
-                    var_10 = gbl.unk_1C020[arg_E.field_151.type].ShallowClone();
+                    var_10 = gbl.unk_1C020[attacker.field_151.type].ShallowClone();
 
-                    arg_E.field_19E = var_10.diceCount;
-                    arg_E.field_1A0 = var_10.diceSize;
-                    arg_E.damageBonus = (sbyte)((arg_E.damageBonus - var_10.field_B) + var_10.field_4);
+                    attacker.field_19E = var_10.diceCount;
+                    attacker.field_1A0 = var_10.diceSize;
+                    attacker.damageBonus = (sbyte)((attacker.damageBonus - var_10.field_B) + var_10.field_4);
                 }
 
-                ovr025.sub_66C20(arg_A);
-                ovr024.work_on_00(arg_A, 11);
+                ovr025.sub_66C20(target);
+                ovr024.work_on_00(target, 11);
 
-                if (sub_408D7(arg_A, arg_E) != 0)
+                if (sub_408D7(target, attacker) != 0)
                 {
-                    var_14 = (byte)(arg_A.field_19B - 4);
+                    var_14 = (byte)(target.field_19B - 4);
                 }
                 else
                 {
-                    if (arg_A.actions.field_F > 1 &&
-                        getTargetDirection(arg_A, arg_E) == arg_A.actions.field_9 &&
-                        arg_A.actions.field_12 > 4)
+                    if (target.actions.field_F > 1 &&
+                        getTargetDirection(target, attacker) == target.actions.direction &&
+                        target.actions.field_12 > 4)
                     {
                         var_13 = 1;
                     }
 
                     if (var_13 != 0)
                     {
-                        var_14 = arg_A.field_19B;
+                        var_14 = target.field_19B;
                     }
                     else
                     {
-                        var_14 = arg_A.ac;
+                        var_14 = target.ac;
                     }
                 }
 
-                sub_3FCED(ref var_14, arg_A, arg_E);
+                sub_3FCED(ref var_14, target, attacker);
                 var_17 = 0;
                 if (var_13 != 0)
                 {
                     var_17 = 1;
                 }
 
-                if (sub_408D7(arg_A, arg_E) != 0)
+                if (sub_408D7(target, attacker) != 0)
                 {
                     var_17 = 2;
                 }
 
-                var_16 = arg_E.actions.field_4;
+                var_16 = attacker.actions.field_4;
                 for (var_15 = var_16; var_15 >= 1; var_15--)
                 {
-                    while (arg_E.field_19BArray(var_15) > 0 &&
+                    while (attacker.field_19BArray(var_15) > 0 &&
                         var_12 == 0)
                     {
-                        arg_E.field_19BArraySet(var_15, (byte)(arg_E.field_19BArray(var_15) - 1));
-                        arg_E.actions.field_4 = var_15;
+                        attacker.field_19BArraySet(var_15, (byte)(attacker.field_19BArray(var_15) - 1));
+                        attacker.actions.field_4 = var_15;
 
                         switch (var_15)
                         {
@@ -952,8 +945,8 @@ namespace engine
                                 throw new System.NotImplementedException();
                         }
 
-                        if (ovr024.sub_64245(var_14, arg_A, arg_E) ||
-                            ovr025.is_held(arg_A) == true)
+                        if (ovr024.sub_64245(var_14, target, attacker) ||
+                            ovr025.is_held(target) == true)
                         {
                             switch (var_15)
                             {
@@ -971,23 +964,23 @@ namespace engine
 
                             seg044.sound_sub_120E0(gbl.sound_7_188CC);
                             var_11 = 1;
-                            sub_3E192(var_15, arg_A, arg_E);
-                            backstab(true, gbl.byte_1D2BE, gbl.byte_1D2BE, var_17, arg_A, arg_E);
+                            sub_3E192(var_15, target, attacker);
+                            backstab(true, gbl.damage, gbl.damage, var_17, target, attacker);
 
-                            if (arg_A.in_combat == true)
+                            if (target.in_combat == true)
                             {
-                                ovr024.work_on_00(arg_E, var_15 + 1);
+                                ovr024.work_on_00(attacker, var_15 + 1);
                             }
 
-                            if (arg_A.in_combat == false)
+                            if (target.in_combat == false)
                             {
                                 var_12 = 1;
                             }
 
-                            if (arg_E.in_combat == false)
+                            if (attacker.in_combat == false)
                             {
                                 var_16 = 0;
-                                arg_E.field_19BArraySet(var_15, 0);
+                                attacker.field_19BArraySet(var_15, 0);
                             }
                         }
                     }
@@ -995,35 +988,35 @@ namespace engine
 
                 if (arg_0 != null && arg_0.count == 0 && arg_0.type == 0x64)
                 {
-                    arg_E.field_19C = 0;
-                    arg_E.field_19D = 0;
+                    attacker.field_19C = 0;
+                    attacker.field_19D = 0;
                 }
 
                 if (var_11 == 0)
                 {
                     seg044.sound_sub_120E0(gbl.sound_9_188D0);
-                    backstab(false, 0, 0, var_17, arg_A, arg_E);
+                    backstab(false, 0, 0, var_17, target, attacker);
                 }
 
                 arg_4 = true;
                 for (var_15 = 1; var_15 <= 2; var_15++)
                 {
-                    if (arg_E.field_19BArray(var_15) > 0)
+                    if (attacker.field_19BArray(var_15) > 0)
                     {
                         arg_4 = false;
                     }
                 }
-                arg_E.actions.field_5 = 0;
+                attacker.actions.field_5 = 0;
             }
 
-            if (arg_E.in_combat == false)
+            if (attacker.in_combat == false)
             {
                 arg_4 = true;
             }
 
             if (arg_4 == true)
             {
-                arg_4 = ovr025.clear_actions(arg_E);
+                arg_4 = ovr025.clear_actions(attacker);
             }
         }
 
@@ -1037,7 +1030,7 @@ namespace engine
 
             var_2 = getTargetDirection(attacker, target);
 
-            var_1 = (byte)(((var_2 - target.actions.field_9) + 8) % 8);
+            var_1 = (byte)(((var_2 - target.actions.direction) + 8) % 8);
 
             if (var_1 > 4)
             {
@@ -1064,15 +1057,15 @@ namespace engine
             {
                 var_9 = getTargetDirection(player02, player01);
 
-                player01.actions.field_9 = (byte)((var_9 + 4) % 8);
+                player01.actions.direction = (byte)((var_9 + 4) % 8);
             }
             else if (ovr033.sub_74761(0, player01) == true)
             {
-                var_9 = player01.actions.field_9;
+                var_9 = player01.actions.direction;
 
                 if (arg_8 == 0)
                 {
-                    player01.actions.field_9 = (byte)((var_9 + 4) % 8);
+                    player01.actions.direction = (byte)((var_9 + 4) % 8);
                 }
             }
 
@@ -1154,8 +1147,8 @@ namespace engine
 
             if (ovr033.sub_74761(0, player02) == true)
             {
-                ovr033.sub_74B3F(1, 1, player02.actions.field_9, player02);
-                ovr033.sub_74B3F(0, 0, player02.actions.field_9, player02);
+                ovr033.sub_74B3F(1, 1, player02.actions.direction, player02);
+                ovr033.sub_74B3F(0, 0, player02.actions.direction, player02);
             }
         }
 
@@ -1350,12 +1343,9 @@ namespace engine
         internal static void target(out bool arg_0, byte arg_4, byte arg_6)
         {
             byte var_E;
-            byte var_D;
             Struct_1D183 var_C = new Struct_1D183();
             byte var_5;
             byte var_4;
-            byte var_3;
-            byte var_2;
             byte var_1;
 
             arg_0 = true;
@@ -1375,7 +1365,7 @@ namespace engine
             else if (tmp1 == 5)
             {
                 var_5 = 0;
-                var_2 = 0;
+                int sp_target_index = 0;
 
                 if (arg_6 == 0x4F)
                 {
@@ -1392,21 +1382,21 @@ namespace engine
                 {
                     if (sub_4001C(var_C, 0, arg_4, arg_6) != 0)
                     {
-                        var_D = 0;
+                        bool found = false;
 
-                        for (var_3 = 1; var_3 <= var_2; var_3++)
+                        for (int index = 1; index <= sp_target_index; index++)
                         {
-                            if (gbl.sp_targets[var_3] == var_C.field_0)
+                            if (gbl.sp_targets[index] == var_C.field_0)
                             {
-                                var_D = 1;
+                                found = true;
                             }
                         }
 
-                        if (var_D == 0)
+                        if (found == false)
                         {
-                            var_2++;
+                            sp_target_index++;
 
-                            gbl.sp_targets[var_2] = var_C.field_0;
+                            gbl.sp_targets[sp_target_index] = var_C.field_0;
 
                             gbl.targetX = ovr033.PlayerMapXPos(var_C.field_0);
                             gbl.targetY = ovr033.PlayerMapYPos(var_C.field_0);
@@ -1414,7 +1404,7 @@ namespace engine
 
                             if (arg_6 != 0x4f)
                             {
-                                byte al = gbl.sp_targets[var_2].field_E5;
+                                byte al = gbl.sp_targets[sp_target_index].field_E5;
 
                                 if (al == 0 || al == 1)
                                 {
@@ -1435,7 +1425,7 @@ namespace engine
                             }
                             else
                             {
-                                byte al = gbl.sp_targets[var_2].field_DE;
+                                byte al = gbl.sp_targets[sp_target_index].field_DE;
 
                                 if (al == 1)
                                 {
@@ -1451,7 +1441,7 @@ namespace engine
                                 }
                             }
 
-                            if (var_2 > 1 && var_5 > var_4)
+                            if (sp_target_index > 1 && var_5 > var_4)
                             {
                                 var_E = 1;
                             }
@@ -1493,9 +1483,9 @@ namespace engine
                         // test with it how it would make sense...
 						//ovr032.Rebuild_SortedCombatantList(gbl.mapToBackGroundTile, 1, 0xff, (short)((gbl.unk_19AEC[arg_6].field_6 & 0xf0) >> 4), gbl.targetY, gbl.targetX);
 
-                        for (int i = 0; i < gbl.sortedCombatantCount; i++)
+                        for (int i = 1; i <= gbl.sortedCombatantCount; i++)
                         {
-                            gbl.sp_targets[i + 1] = gbl.player_array[gbl.SortedCombatantList[i].player_index];
+                            gbl.sp_targets[i] = gbl.player_array[gbl.SortedCombatantList[i].player_index];
                         }
 
                         gbl.sp_target_count = gbl.sortedCombatantCount;
@@ -1513,9 +1503,9 @@ namespace engine
                 {
                     ovr032.Rebuild_SortedCombatantList(gbl.mapToBackGroundTile, 1, 0xff, (short)(gbl.unk_19AEC[arg_6].field_6 & 7), gbl.targetY, gbl.targetX);
 
-                    for (int i = 0; i < gbl.sortedCombatantCount; i++)
+                    for (int i = 1; i <= gbl.sortedCombatantCount; i++)
                     {
-                        gbl.sp_targets[i + 1] = gbl.player_array[gbl.SortedCombatantList[i].player_index];
+                        gbl.sp_targets[i] = gbl.player_array[gbl.SortedCombatantList[i].player_index];
                     }
 
                     gbl.sp_target_count = gbl.sortedCombatantCount;
@@ -1529,27 +1519,26 @@ namespace engine
             else
             {
                 var_1 = (byte)((gbl.unk_19AEC[arg_6].field_6 & 3) + 1);
-                var_2 = 0;
+                int sp_target_index = 0;
 
                 while (var_1 > 0)
                 {
-
                     if (sub_4001C(var_C, 0, arg_4, arg_6) != 0)
                     {
-                        var_D = 0;
+                        bool found = false;
 
-                        for (var_3 = 1; var_3 <= var_2; var_3++)
+                        for (int index = 1; index <= sp_target_index; index++)
                         {
-                            if (gbl.sp_targets[var_3] == var_C.field_0)
+                            if (gbl.sp_targets[index] == var_C.field_0)
                             {
-                                var_D = 1;
+                                found = true;
                             }
                         }
 
-                        if (var_D == 0)
+                        if (found == false)
                         {
-                            var_2++;
-                            gbl.sp_targets[var_2] = var_C.field_0;
+                            sp_target_index++;
+                            gbl.sp_targets[sp_target_index] = var_C.field_0;
                             var_1 -= 1;
 
                             gbl.targetX = ovr033.PlayerMapXPos(var_C.field_0);
@@ -1575,16 +1564,15 @@ namespace engine
                     }
                 }
 
-                gbl.sp_target_count = var_2;
+                gbl.sp_target_count = sp_target_index;
 
-                if (var_2 == 0)
+                if (sp_target_index == 0)
                 {
                     arg_0 = false;
                 }
 
-                gbl.targetX = ovr033.PlayerMapXPos(gbl.sp_targets[var_2]);
-                gbl.targetY = ovr033.PlayerMapYPos(gbl.sp_targets[var_2]);
-
+                gbl.targetX = ovr033.PlayerMapXPos(gbl.sp_targets[sp_target_index]);
+                gbl.targetY = ovr033.PlayerMapYPos(gbl.sp_targets[sp_target_index]);
             }
         }
 
@@ -1696,7 +1684,7 @@ namespace engine
             if (var_B != 0 &&
                 arg_0.actions.field_F > 1 &&
                 (arg_0.field_DE & 0x7F) <= 1 &&
-                getTargetDirection(arg_0, arg_4) == arg_0.actions.field_9)
+                getTargetDirection(arg_0, arg_4) == arg_0.actions.direction)
             {
                 var_1 = 1;
             }
@@ -2195,7 +2183,7 @@ namespace engine
 
                     if (arg_C != 0)
                     {
-                        var_239 = "Range = " + (range * 2).ToString() + "  ";
+                        var_239 = "Range = " + (range /2).ToString() + "  ";
 
                         seg041.displayString(var_239, 0, 10, 0x17, 0);
                     }
@@ -2376,58 +2364,63 @@ namespace engine
         }
 
 
-        internal static void sub_4188F(Player player01, SortedCombatant[] bp_var_D8, out int bp_var_DA)
+        internal static void sub_4188F(Player player, SortedCombatant[] sorted_list, out int sorted_count)
         {
-            ovr032.Rebuild_SortedCombatantList(gbl.mapToBackGroundTile, ovr033.PlayerMapSize(player01), 0xff, 0x7F, ovr033.PlayerMapYPos(player01), ovr033.PlayerMapXPos(player01));
+            ovr032.Rebuild_SortedCombatantList(gbl.mapToBackGroundTile, 
+                ovr033.PlayerMapSize(player), 0xff, 0x7F,
+                ovr033.PlayerMapYPos(player),
+                ovr033.PlayerMapXPos(player));
 
-            bp_var_DA = gbl.sortedCombatantCount;
+            sorted_count = gbl.sortedCombatantCount;
 
-            for (int i = 1; i <= bp_var_DA; i++)
+            for (int i = 1; i <= sorted_count; i++)
             {
-                bp_var_D8[i - 1] = new SortedCombatant(gbl.SortedCombatantList[i]);
+                sorted_list[i - 1] = new SortedCombatant(gbl.SortedCombatantList[i]);
             }
         }
 
 
-        internal static Player sub_41932(bool arg_2, int arg_4,
-            int bp_var_DA, ref int bp_var_DB, ref sbyte bp_var_DE, sbyte bp_var_DF, 
-            ref sbyte bp_var_E0, ref sbyte bp_var_E1, SortedCombatant[] bp_var_D8)
+        internal static Player step_combat_list(bool arg_2, int step,
+            int sorted_count, ref int list_index, 
+            ref int attacker_x, ref int attacker_y,
+            SortedCombatant[] sorted_list) /* sub_41932 */
         {
             Player player_ptr;
 
             if (arg_2 == true)
             {
-                bp_var_DE = (sbyte)gbl.CombatMap[bp_var_D8[bp_var_DB-1].player_index].xPos;
-                bp_var_DF = (sbyte)gbl.CombatMap[bp_var_D8[bp_var_DB-1].player_index].yPos;
+                attacker_x = gbl.CombatMap[sorted_list[list_index-1].player_index].xPos;
+                attacker_y = gbl.CombatMap[sorted_list[list_index-1].player_index].yPos;
             }
             else
             {
-                ovr033.sub_7431C(bp_var_DF, bp_var_DE);
+                ovr033.sub_7431C(attacker_y, attacker_x);
             }
 
-            bp_var_DB += arg_4;
+            list_index += step;
 
-            if (bp_var_DB == 0)
+            if (list_index == 0)
             {
-                bp_var_DB = bp_var_DA;
+                list_index = sorted_count;
             }
 
-            if (bp_var_DB > bp_var_DA)
+            if (list_index > sorted_count)
             {
-                bp_var_DB = 1;
+                list_index = 1;
             }
 
-            player_ptr = gbl.player_array[bp_var_D8[bp_var_DB-1].player_index];
+            player_ptr = gbl.player_array[sorted_list[list_index-1].player_index];
 
-            bp_var_E0 = (sbyte)gbl.CombatMap[bp_var_D8[bp_var_DB-1].player_index].xPos;
-            bp_var_E1 = (sbyte)gbl.CombatMap[bp_var_D8[bp_var_DB-1].player_index].yPos;
+            int target_y = gbl.CombatMap[sorted_list[list_index-1].player_index].xPos;
+            int target_x = gbl.CombatMap[sorted_list[list_index-1].player_index].yPos;
 
             if (arg_2 == true)
             {
-                ovr025.draw_missile_attack(0, 1, bp_var_E1, bp_var_E0, bp_var_DF, bp_var_DE);
-                bp_var_DE = bp_var_E0;
-                bp_var_DF = bp_var_E1;
+                ovr025.draw_missile_attack(0, 1, target_x, target_y, attacker_y, attacker_x);
+                attacker_x = target_y;
+                attacker_y = target_x;
             }
+
             return player_ptr;
         }
 
@@ -2436,16 +2429,12 @@ namespace engine
 
         internal static void aim_menu(Struct_1D183 arg_0, out bool arg_4, byte arg_8, byte arg_A, byte arg_C, byte arg_E, Player arg_10) /* sub_41B25 */
         {
-            char var_E6;
-            Player player_ptr; /* var_E5 */
-            sbyte var_E1 = 0; /* simeon */
-            sbyte var_E0 = 0; /* simeon */
-            sbyte var_DF = 0; /* simeon */
-            sbyte var_DE = 0; /* simeon */
-            byte var_DD = 0; /* simeon */
-            int var_DA;
+            Player player_ptr; /* var_E5 */ 
+            int attacker_y = 0;
+            int attacker_x = 0;
+            int sorted_count;
             byte var_D9;
-            SortedCombatant[] var_D8 = new SortedCombatant[gbl.MaxSortedCombatantCount];
+            SortedCombatant[] sorted_list = new SortedCombatant[gbl.MaxSortedCombatantCount];
 
             ovr025.load_missile_dax(false, 0, 0, 0x19);
 
@@ -2473,38 +2462,39 @@ namespace engine
                 var_D9 = 1;
             }
 
-            sub_4188F(arg_10, var_D8, out var_DA);
+            sub_4188F(arg_10, sorted_list, out sorted_count);
 
-            int var_DB = 1;
-            byte var_DC = 0;
+            int list_index = 1;
+            int next_prev_step = 0;
+            int target_step = 0;
 
-            player_ptr = sub_41932(true, var_DC, var_DA, ref var_DB, ref var_DE, var_DF, ref var_E0, ref var_E1, var_D8);
+            player_ptr = step_combat_list(true, next_prev_step, sorted_count, ref list_index, ref attacker_x, ref attacker_y, sorted_list);
 
-            var_DC = 1;
-            var_E6 = ' ';
+            next_prev_step = 1;
+            char input = ' ';
 
-            while (arg_4 == false && unk_41AE5.MemberOf(var_E6) == false)
+            while (arg_4 == false && unk_41AE5.MemberOf(input) == false)
             {
                 if (sub_3F143(player_ptr, arg_10) == false)
                 {
-                    player_ptr = sub_41932(false, var_DC, var_DA, ref var_DB, ref var_DE, var_DF, ref var_E0, ref var_E1, var_D8);
+                    player_ptr = step_combat_list(false, next_prev_step, sorted_count, ref list_index, ref attacker_x, ref attacker_y, sorted_list);
                 }
                 else
                 {
-                    var_E6 = aim_sub_menu(arg_8, arg_A, arg_C, var_D9, player_ptr, arg_10);
+                    input = aim_sub_menu(arg_8, arg_A, arg_C, var_D9, player_ptr, arg_10);
 
                     if (gbl.displayInput_specialKeyPressed == false)
                     {
-                        switch (var_E6)
+                        switch (input)
                         {
                             case 'N':
-                                var_DC = 1;
-                                var_DD = 1;
+                                next_prev_step = 1;
+                                target_step = 1;
                                 break;
 
                             case 'P':
-                                var_DC = 0x0FF;                                
-                                var_DD = 0x0FF;
+                                next_prev_step = -1;                                
+                                target_step = -1;
                                 break;
 
                             case 'M':
@@ -2517,36 +2507,36 @@ namespace engine
                                 Target(arg_0, out arg_4, arg_8, arg_A, arg_C, var_D9, player_ptr, arg_10);
                                 ovr025.load_missile_dax(false, 0, 0, 0x19);
 
-                                sub_4188F(arg_10, var_D8, out var_DA);
-                                var_DD = 0;
+                                sub_4188F(arg_10, sorted_list, out sorted_count);
+                                target_step = 0;
                                 break;
 
                             case 'T':
                                 sub_411D8(arg_0, out arg_4, arg_C, player_ptr, arg_10);
                                 ovr025.load_missile_dax(false, 0, 0, 0x19);
 
-                                sub_4188F(arg_10, var_D8, out var_DA);
-                                var_DD = 0;
+                                sub_4188F(arg_10, sorted_list, out sorted_count);
+                                target_step = 0;
                                 break;
 
                             case 'C':
                                 ovr033.redrawCombatArea(8, 0, ovr033.PlayerMapYPos(player_ptr), ovr033.PlayerMapXPos(player_ptr));
-                                var_DD = 0;
+                                target_step = 0;
                                 break;
                         }
                     }
-                    else if (unk_41B05.MemberOf(var_E6) == true)
+                    else if (unk_41B05.MemberOf(input) == true)
                     {
                         Target(arg_0, out arg_4, arg_8, arg_A, arg_C, var_D9, player_ptr, arg_10);
                         ovr025.load_missile_dax(false, 0, 0, 0x19);
-                        sub_4188F(arg_10, var_D8, out var_DA);
-                        var_DD = 0;
+                        sub_4188F(arg_10, sorted_list, out sorted_count);
+                        target_step = 0;
                     }
 
                     ovr033.sub_7431C(ovr033.PlayerMapYPos(player_ptr), ovr033.PlayerMapXPos(player_ptr));
 
-                    player_ptr = sub_41932((arg_4 == false && unk_41AE5.MemberOf(var_E6) == false), var_DD,
-                        var_DA, ref var_DB, ref var_DE, var_DF, ref var_E0, ref var_E1, var_D8);
+                    player_ptr = step_combat_list((arg_4 == false && unk_41AE5.MemberOf(input) == false), target_step,
+                        sorted_count, ref list_index, ref attacker_x, ref attacker_y, sorted_list);
                 }
             }
 
