@@ -2298,7 +2298,7 @@ namespace engine
                     ovr027.redraw_screen();
                     seg041.displayString("Saving...Please Wait", 0, 10, 0x18, 0);
 
-                    gbl.area_ptr.game_speed = gbl.game_speed_var;
+                    gbl.area_ptr.game_speed = (byte)gbl.game_speed_var;
                     gbl.area_ptr.pics_on = (byte)(((gbl.PicsOn) ? 0x02 : 0) | ((gbl.AnimationsOn) ? 0x01 : 0));
                     gbl.area2_ptr.game_area = gbl.game_area;
 

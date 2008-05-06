@@ -462,7 +462,7 @@ namespace engine
             byte var_8;
 
             byte var_1 = player.actions.move;
-            byte var_2 = player.actions.field_9;
+            byte var_2 = player.actions.direction;
             int var_3 = ovr033.PlayerMapXPos(player);
             int var_4 = ovr033.PlayerMapYPos(player);
 
@@ -499,7 +499,7 @@ namespace engine
                         }
 
                         ovr033.redrawCombatArea(8, 0, ovr033.PlayerMapYPos(player), ovr033.PlayerMapXPos(player));
-                        player.actions.field_9 = var_2;
+                        player.actions.direction = var_2;
                         dir = 8;
                         break;
 

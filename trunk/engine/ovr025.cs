@@ -1221,7 +1221,7 @@ namespace engine
         }
 
 
-        internal static void draw_missile_attack(int delay, int frameCount, int playerAMapY, int playerAMapX, int playerBMapY, int playerBMapX) /* sub_67AA4 */
+        internal static void draw_missile_attack(int delay, int frameCount, int target_y, int target_x, int attacker_y, int attacker_x) /* sub_67AA4 */
         {
             int cur_y;
             int cur_x;
@@ -1236,18 +1236,18 @@ namespace engine
             SteppingPath var_AC = new SteppingPath();
             byte[] var_94 = new byte[0x94];
 
-            int var_BA = playerBMapX;
-            int var_BC = playerBMapY;
+            int var_BA = attacker_x;
+            int var_BC = attacker_y;
 
             seg051.FillChar(8, 0x94, var_94);
 
             int var_AF = 0;
             int frame = 0;
 
-            var_AC.attacker_x = playerBMapX * 3;
-            var_AC.attacker_y = playerBMapY * 3;
-            var_AC.target_x = playerAMapX * 3;
-            var_AC.target_y = playerAMapY * 3;
+            var_AC.attacker_x = attacker_x * 3;
+            var_AC.attacker_y = attacker_y * 3;
+            var_AC.target_x = target_x * 3;
+            var_AC.target_y = target_y * 3;
 
             var_AC.CalculateDeltas();
 
@@ -1267,18 +1267,18 @@ namespace engine
                 return;
             }
 
-            int diff_x = playerAMapX - playerBMapX;
-            int diff_y = playerAMapY - playerBMapY;
+            int diff_x = target_x - attacker_x;
+            int diff_y = target_y - attacker_y;
 
-            if (ovr033.CoordOnScreen((playerBMapY - gbl.mapToBackGroundTile.mapScreenTopY), (playerBMapX - gbl.mapToBackGroundTile.mapScreenLeftX)) == false ||
-                ovr033.CoordOnScreen((playerAMapY - gbl.mapToBackGroundTile.mapScreenTopY), (playerAMapX - gbl.mapToBackGroundTile.mapScreenLeftX)) == false)
+            if (ovr033.CoordOnScreen((attacker_y - gbl.mapToBackGroundTile.mapScreenTopY), (attacker_x - gbl.mapToBackGroundTile.mapScreenLeftX)) == false ||
+                ovr033.CoordOnScreen((target_y - gbl.mapToBackGroundTile.mapScreenTopY), (target_x - gbl.mapToBackGroundTile.mapScreenLeftX)) == false)
             {
                 if (System.Math.Abs(diff_x) <= 6 &&
                     System.Math.Abs(diff_y) <= 6)
                 {
                     var_B3 = true;
-                    center_x = (diff_x / 2) + playerBMapX;
-                    center_y = (diff_y / 2) + playerBMapY;
+                    center_x = (diff_x / 2) + attacker_x;
+                    center_y = (diff_y / 2) + attacker_y;
                 }
                 else
                 {
@@ -1301,10 +1301,10 @@ namespace engine
 
             do
             {
-                cur_x = ((playerBMapX - gbl.mapToBackGroundTile.mapScreenLeftX) * 3) + var_BE;
-                cur_y = ((playerBMapY - gbl.mapToBackGroundTile.mapScreenTopY) * 3) + var_C0;
-                var_BA = playerBMapX;
-                var_BC = playerBMapY;
+                cur_x = ((attacker_x - gbl.mapToBackGroundTile.mapScreenLeftX) * 3) + var_BE;
+                cur_y = ((attacker_y - gbl.mapToBackGroundTile.mapScreenTopY) * 3) + var_C0;
+                var_BA = attacker_x;
+                var_BC = attacker_y;
                 var_B4 = false;
 
                 do
@@ -1349,14 +1349,14 @@ namespace engine
 
                         if (Math.Abs(var_BE) == 3)
                         {
-                            playerBMapX += Math.Sign(var_BE);
+                            attacker_x += Math.Sign(var_BE);
                             center_x += Math.Sign(var_BE);
                             var_BE = 0;
                         }
 
                         if (Math.Abs(var_C0) == 3)
                         {
-                            playerBMapY += Math.Sign(var_C0);
+                            attacker_y += Math.Sign(var_C0);
                             center_y += Math.Sign(var_C0);
                             var_C0 = 0;
                         }
@@ -1370,36 +1370,36 @@ namespace engine
                     int var_D0 = 0;
                     var_C0 = 0;
                     var_BE = 0;
-                    playerBMapX = playerAMapX;
-                    playerBMapY = playerAMapY;
-                    var_BA = playerBMapX;
-                    var_BC = playerBMapY;
+                    attacker_x = target_x;
+                    attacker_y = target_y;
+                    var_BA = attacker_x;
+                    var_BC = attacker_y;
 
-                    if ((playerAMapX + 3) > 0x31)
+                    if ((target_x + 3) > 0x31)
                     {
-                        var_CE = playerAMapX - 0x31;
+                        var_CE = target_x - 0x31;
 
                     }
-                    else if (playerAMapX < 3)
+                    else if (target_x < 3)
                     {
-                        var_CE = 3 - playerAMapX;
+                        var_CE = 3 - target_x;
                     }
 
-                    if ((playerAMapY + 3) > 0x18)
+                    if ((target_y + 3) > 0x18)
                     {
-                        var_D0 = playerAMapY - 0x18;
+                        var_D0 = target_y - 0x18;
                     }
-                    else if (playerAMapY < 3)
+                    else if (target_y < 3)
                     {
-                        var_D0 = 3 - playerAMapY;
+                        var_D0 = 3 - target_y;
                     }
 
-                    center_x = playerAMapX + var_CE;
-                    center_y = playerAMapY + var_D0;
+                    center_x = target_x + var_CE;
+                    center_y = target_y + var_D0;
 
                     ovr033.redrawCombatArea(8, 0xff, center_y, center_x);
-                    cur_x = (playerAMapX - gbl.mapToBackGroundTile.mapScreenLeftX) * 3;
-                    cur_y = (playerAMapY - gbl.mapToBackGroundTile.mapScreenTopY) * 3;
+                    cur_x = (target_x - gbl.mapToBackGroundTile.mapScreenLeftX) * 3;
+                    cur_y = (target_y - gbl.mapToBackGroundTile.mapScreenTopY) * 3;
                     var_AF = var_B0;
                     var_B4 = false;
 
@@ -1413,20 +1413,20 @@ namespace engine
 
                         if (cur_x > 0x12)
                         {
-                            playerBMapX = gbl.mapToBackGroundTile.mapScreenLeftX + 6;
+                            attacker_x = gbl.mapToBackGroundTile.mapScreenLeftX + 6;
                         }
                         else if (cur_x < 0)
                         {
-                            playerBMapX = gbl.mapToBackGroundTile.mapScreenLeftX;
+                            attacker_x = gbl.mapToBackGroundTile.mapScreenLeftX;
                         }
 
                         if (cur_y > 0x12)
                         {
-                            playerBMapY = gbl.mapToBackGroundTile.mapScreenTopY + 6;
+                            attacker_y = gbl.mapToBackGroundTile.mapScreenTopY + 6;
                         }
                         else if (cur_y < 0)
                         {
-                            playerBMapY = gbl.mapToBackGroundTile.mapScreenTopY;
+                            attacker_y = gbl.mapToBackGroundTile.mapScreenTopY;
                         }
 
                         if (cur_x < 0 || cur_x > 0x12 || cur_y < 0 || cur_y > 0x12)
@@ -1440,14 +1440,14 @@ namespace engine
                             var_C0 += var_C8;
                             if (System.Math.Abs(var_BE) == 3)
                             {
-                                playerBMapX += Math.Sign(var_BE);
+                                attacker_x += Math.Sign(var_BE);
                                 center_x += Math.Sign(var_BE);
                                 var_BE = 0;
                             }
 
                             if (System.Math.Abs(var_C0) == 3)
                             {
-                                playerBMapY += Math.Sign(var_C0);
+                                attacker_y += Math.Sign(var_C0);
                                 center_y += Math.Sign(var_C0);
                                 var_C0 = 0;
                             }
@@ -1461,13 +1461,13 @@ namespace engine
                 {
                     var_B3 = true;
 
-                    if (ovr033.CoordOnScreen(playerAMapY - gbl.mapToBackGroundTile.mapScreenTopY, playerAMapX - gbl.mapToBackGroundTile.mapScreenLeftX) == false)
+                    if (ovr033.CoordOnScreen(target_y - gbl.mapToBackGroundTile.mapScreenTopY, target_x - gbl.mapToBackGroundTile.mapScreenLeftX) == false)
                     {
-                        ovr033.redrawCombatArea(8, 3, playerAMapY, playerAMapX);
+                        ovr033.redrawCombatArea(8, 3, target_y, target_x);
                     }
 
-                    cur_x = (playerAMapX - gbl.mapToBackGroundTile.mapScreenLeftX) * 3;
-                    cur_y = (playerAMapY - gbl.mapToBackGroundTile.mapScreenTopY) * 3;
+                    cur_x = (target_x - gbl.mapToBackGroundTile.mapScreenLeftX) * 3;
+                    cur_y = (target_y - gbl.mapToBackGroundTile.mapScreenTopY) * 3;
 
                     Display.SaveVidRam();
                     seg040.OverlayBounded(gbl.missile_dax, 5, frame, cur_y, cur_x);
@@ -1487,28 +1487,15 @@ namespace engine
         }
 
 
-        internal static void sub_6818A(string s, byte arg_4, Player player)
+        internal static void sub_6818A(string text, byte arg_4, Player player)
         {
-            byte var_106;
-            byte var_105;
-            byte var_104;
-            byte var_103;
-            string var_100;
-
-            var_100 = s;
+            byte frame;
 
             if (gbl.game_state == 5)
             {
-                if (arg_4 != 0)
-                {
-                    var_103 = 0x16;
-                }
-                else
-                {
-                    var_103 = 0x17;
-                }
+                int iconId = arg_4 != 0 ? 0x16 : 0x17;
 
-                sub_67A59(var_103);
+                sub_67A59(iconId);
 
                 if (ovr033.sub_74761(1, player) == false)
                 {
@@ -1524,26 +1511,20 @@ namespace engine
                     seg044.sound_sub_120E0(gbl.sound_3_188C4);
                 }
 
-                DisplayPlayerStatusString(false, 10, var_100, player);
+                DisplayPlayerStatusString(false, 10, text, player);
 
-                if (arg_4 != 0)
-                {
-                    var_106 = gbl.game_speed_var;
-                }
-                else
-                {
-                    var_106 = 0;
-                }
+                int var_106 = arg_4 != 0 ? gbl.game_speed_var : 0;
 
                 int colX = gbl.playerScreenX[ovr033.get_player_index(player)] * 3;
                 int rowY = gbl.playerScreenY[ovr033.get_player_index(player)] * 3;
 
-                for (var_105 = 0; var_105 <= var_106; var_105++)
+                for (int var_105 = 0; var_105 <= var_106; var_105++)
                 {
-                    for (var_104 = 0; var_104 <= 3; var_104++)
+                    for (frame = 0; frame <= 3; frame++)
                     {
                         Display.SaveVidRam();
-                        seg040.OverlayBounded(gbl.missile_dax, 5, var_104, rowY, colX);
+                        
+                        seg040.OverlayBounded(gbl.missile_dax, 5, frame, rowY, colX);
                         seg040.DrawOverlay();
 
                         seg049.SysDelay(70);
@@ -1561,16 +1542,14 @@ namespace engine
             }
             else
             {
-                DisplayPlayerStatusString(true, 10, var_100, player);
+                DisplayPlayerStatusString(true, 10, text, player);
             }
         }
 
 
         internal static bool find_affect(out Affect affect, Affects affect_type, Player playerBase)
         {
-            bool found_one_yet;
-
-            found_one_yet = false;
+            bool found_one_yet = false;
             affect = playerBase.affect_ptr;
 
             while (affect != null &&
@@ -1591,21 +1570,18 @@ namespace engine
 
         static Set unk_683B5 = new Set(0x0001, new byte[] { 0x03 });
 
-        internal static void damage_player(byte damage, Player player)
+        internal static void damage_player(int damage, Player player)
         {
-            byte new_hp;
-            byte neg_hp;
-
-            neg_hp = 0;
-            new_hp = 0;
+            int neg_hp = 0;
+            int new_hp = 0;
 
             if (player.hit_point_current >= damage)
             {
-                new_hp = (byte)(player.hit_point_current - damage);
+                new_hp = player.hit_point_current - damage;
             }
             else
             {
-                neg_hp = (byte)(damage - player.hit_point_current);
+                neg_hp = damage - player.hit_point_current;
             }
 
             if (neg_hp > 9 ||
@@ -1630,7 +1606,6 @@ namespace engine
                 }
             }
 
-
             if (unk_683B5.MemberOf((byte)player.health_status) == false)
             {
                 player.in_combat = false;
@@ -1652,25 +1627,25 @@ namespace engine
             }
             else
             {
-                player.hit_point_current = new_hp;
+                player.hit_point_current = (byte)new_hp;
             }
         }
 
 
         internal static void describeHealing(Player player) /* sub_684F7 */
         {
-            string var_29;
+            string text;
 
             if (player.hit_point_current == player.hit_point_max)
             {
-                var_29 = "is fully healed";
+                text = "is fully healed";
             }
             else
             {
-                var_29 = "is partially healed";
+                text = "is partially healed";
             }
 
-            DisplayPlayerStatusString(true, 10, var_29, player);
+            DisplayPlayerStatusString(true, 10, text, player);
 
             if (gbl.game_state != 5)
             {
@@ -1800,9 +1775,7 @@ namespace engine
 
         internal static bool guarding(Player player)
         {
-            bool ret_val;
-
-            ret_val = clear_actions(player);
+            bool ret_val = clear_actions(player);
             player.actions.guarding = true;
 
             string_print01("Guarding");
@@ -1813,9 +1786,9 @@ namespace engine
 
         internal static byte sub_6886F(int spell_id)
         {
-            sbyte var_3;
-            sbyte var_2;
-            sbyte var_1 = 0;
+            int var_2;
+            int var_3;
+            int var_1 = 0;
 
             if (gbl.player_ptr.cleric_lvl == 0 &&
                 gbl.player_ptr.magic_user_lvl == 0 &&
@@ -1829,9 +1802,8 @@ namespace engine
                 switch (gbl.unk_19AEC[spell_id].spellClass)
                 {
                     case 0:
-                        var_2 = (sbyte)(gbl.player_ptr.cleric_lvl + (ovr026.sub_6B3D1(gbl.player_ptr) * gbl.player_ptr.turn_undead));
-                        var_3 = (sbyte)(gbl.player_ptr.paladin_lvl + (ovr026.sub_6B3D1(gbl.player_ptr) * gbl.player_ptr.field_114) - 8);
-
+                        var_2 = gbl.player_ptr.cleric_lvl + (ovr026.sub_6B3D1(gbl.player_ptr) * gbl.player_ptr.turn_undead);
+                        var_3 = gbl.player_ptr.paladin_lvl + (ovr026.sub_6B3D1(gbl.player_ptr) * gbl.player_ptr.field_114) - 8;
 
                         if (var_2 > var_3)
                         {
@@ -1844,7 +1816,7 @@ namespace engine
                         break;
 
                     case 1:
-                        var_2 = (sbyte)(gbl.player_ptr.ranger_lvl + (ovr026.sub_6B3D1(gbl.player_ptr) * gbl.player_ptr.field_115) - 7);
+                        var_2 = gbl.player_ptr.ranger_lvl + (ovr026.sub_6B3D1(gbl.player_ptr) * gbl.player_ptr.field_115) - 7;
                         if (var_2 > 0)
                         {
                             var_1 = var_2;
@@ -1856,8 +1828,8 @@ namespace engine
                         break;
 
                     case 2:
-                        var_2 = (sbyte)(gbl.player_ptr.magic_user_lvl + (ovr026.sub_6B3D1(gbl.player_ptr) * gbl.player_ptr.field_116));
-                        var_3 = (sbyte)(gbl.player_ptr.ranger_lvl + (ovr026.sub_6B3D1(gbl.player_ptr) * gbl.player_ptr.field_115) - 8);
+                        var_2 = gbl.player_ptr.magic_user_lvl + (ovr026.sub_6B3D1(gbl.player_ptr) * gbl.player_ptr.field_116);
+                        var_3 = gbl.player_ptr.ranger_lvl + (ovr026.sub_6B3D1(gbl.player_ptr) * gbl.player_ptr.field_115) - 8;
 
                         if (var_2 > var_3)
                         {
@@ -1871,7 +1843,6 @@ namespace engine
                         break;
 
                     case 3:
-
                         var_1 = 12;
                         break;
                 }
@@ -1882,7 +1853,6 @@ namespace engine
             {
                 var_1 = 6;
             }
-
 
             return (byte)var_1;
         }
@@ -1912,7 +1882,7 @@ namespace engine
                     else
                     {
                         ovr030.head_body(gbl.byte_1B2EF, gbl.byte_1B2EE);
-                        ovr030.sub_706DC(true, 3, 3);
+                        ovr030.draw_head_and_body(true, 3, 3);
                     }
 
                     Player_Summary(gbl.player_ptr);

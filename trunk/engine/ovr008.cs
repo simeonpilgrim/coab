@@ -241,7 +241,7 @@ namespace engine
             gbl.byte_1B2EF = arg_0;
 
             ovr030.head_body(arg_0, arg_2);
-            ovr030.sub_706DC(true, 3, 3);
+            ovr030.draw_head_and_body(true, 3, 3);
         }
 
 

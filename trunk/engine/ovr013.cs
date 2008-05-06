@@ -9,7 +9,7 @@ namespace engine
             if (arg_0 == 0 ||
                 gbl.byte_1D2BD == arg_0)
             {
-                gbl.byte_1D2BE = 0;
+                gbl.damage = 0;
                 gbl.byte_1D2BD = 0;
             }
         }
@@ -121,8 +121,8 @@ namespace engine
             }
 
             gbl.byte_1D2C9 += var_1;
-            gbl.byte_1D2BE += (byte)var_1;
-            gbl.byte_1D2BF = 9;
+            gbl.damage += var_1;
+            gbl.damage_flags = 9;
         }
 
 
@@ -174,9 +174,9 @@ namespace engine
 
         internal static void sub_3A28E(byte arg_0, object param, Player player)
         {
-            if ((gbl.byte_1D2BF & 2) != 0)
+            if ((gbl.damage_flags & 2) != 0)
             {
-                gbl.byte_1D2BE >>= 1;
+                gbl.damage /= 2;
                 gbl.saving_throw_roll += 3;
             }
         }
@@ -239,7 +239,7 @@ namespace engine
             if (addAffect(10, affect.field_3, Affects.affect_0f, player) == true &&
                 player.hit_point_current > 1)
             {
-                gbl.byte_1D2BF = 0;
+                gbl.damage_flags = 0;
 
                 ovr024.damage_person(false, 0, 1, player);
 
@@ -262,7 +262,7 @@ namespace engine
 
             if (gbl.spell_id == 15)
             {
-                gbl.byte_1D2BE = 0;
+                gbl.damage = 0;
             }
         }
 
@@ -281,9 +281,9 @@ namespace engine
         internal static void sub_3A480(byte arg_0, object param, Player player)
         {
             if (arg_0 == 0 &&
-                (gbl.byte_1D2BF & 1) != 0)
+                (gbl.damage_flags & 1) != 0)
             {
-                gbl.byte_1D2BE >>= 1;
+                gbl.damage /= 2;
                 gbl.saving_throw_roll += 3;
             }
         }
@@ -396,7 +396,7 @@ namespace engine
         {
             Affect affect = (Affect)param;
 
-            if (ovr024.roll_dice((byte)((affect.field_3 >> 4) + 1), 1) > 1 &&
+            if (ovr024.roll_dice((affect.field_3 >> 4) + 1, 1) > 1 &&
                 gbl.spell_id > 0 &&
                 gbl.byte_1D2C7 == 0)
             {
@@ -416,7 +416,7 @@ namespace engine
 
         internal static void sub_3A7C0(byte arg_0, object param, Player player)
         {
-            gbl.byte_1D2BE -= (byte)(gbl.byte_1D2BE / 4);
+            gbl.damage -= gbl.damage / 4;
         }
 
 
@@ -702,7 +702,7 @@ namespace engine
                 ovr024.roll_dice(100, 1) <= arg_0)
             {
                 ovr025.DisplayPlayerStatusString(true, 10, "Avoids it", player);
-                gbl.byte_1D2BE = 0;
+                gbl.damage = 0;
                 gbl.byte_1D2C9 = -1;
                 gbl.byte_1D2CA--;
             }
@@ -781,7 +781,7 @@ namespace engine
             {
                 if (player.hit_point_current > 1)
                 {
-                    gbl.byte_1D2BF = 0;
+                    gbl.damage_flags = 0;
 
                     ovr024.damage_person(false, 0, 1, player);
 
@@ -847,26 +847,26 @@ namespace engine
 
         internal static void sub_3B212(byte arg_0, object param, Player player)
         {
-            if ((gbl.byte_1D2BF & 2) != 0)
+            if ((gbl.damage_flags & 2) != 0)
             {
                 gbl.saving_throw_roll += 2;
             }
-            else if ((gbl.byte_1D2BF & 1) != 0 && gbl.save_made == false)
+            else if ((gbl.damage_flags & 1) != 0 && gbl.save_made == false)
             {
-                gbl.byte_1D2BE <<= 1;
+                gbl.damage *= 2;
             }
         }
 
 
         internal static void sub_3B243(byte arg_0, object param, Player player)
         {
-            if ((gbl.byte_1D2BF & 1) != 0)
+            if ((gbl.damage_flags & 1) != 0)
             {
                 gbl.saving_throw_roll += 2;
             }
-            else if ((gbl.byte_1D2BF & 2) != 0 && gbl.byte_1C01B == 0)
+            else if ((gbl.damage_flags & 2) != 0 && gbl.byte_1C01B == 0)
             {
-                gbl.byte_1D2BE <<= 1;
+                gbl.damage *= 2;
             }
         }
 
@@ -903,33 +903,33 @@ namespace engine
             if (var_4 == null ||
                 var_4.exp_value == 0)
             {
-                gbl.byte_1D2BE = 0;
+                gbl.damage = 0;
             }
             else if (var_4 != null &&
                 var_4.exp_value < 3)
             {
-                gbl.byte_1D2BE >>= 1;
+                gbl.damage /= 2;
             }
         }
 
 
         internal static void sub_3B32B(byte arg_0, object param, Player player)
         {
-            if ((gbl.byte_1D2BF & 1) != 0)
+            if ((gbl.damage_flags & 1) != 0)
             {
                 for (int i = 1; i <= gbl.dice_count; i++)
                 {
-                    gbl.byte_1D2BE -= 2;
+                    gbl.damage -= 2;
 
-                    if (gbl.byte_1D2BE < gbl.dice_count)
+                    if (gbl.damage < gbl.dice_count)
                     {
-                        gbl.byte_1D2BE = (byte)gbl.dice_count;
+                        gbl.damage = gbl.dice_count;
                     }
                 }
 
                 gbl.saving_throw_roll += 4;
 
-                if ((gbl.byte_1D2BF & 8) == 0)
+                if ((gbl.damage_flags & 8) == 0)
                 {
                     sub_3A019(0);
                 }
@@ -1072,7 +1072,7 @@ namespace engine
 
         internal static void sub_3B6D2(byte arg_0, object param, Player player)
         {
-            if ((gbl.byte_1D2BF & 0x20) > 0)
+            if ((gbl.damage_flags & 0x20) > 0)
             {
                 sub_3A019(0);
                 ovr025.DisplayPlayerStatusString(true, 10, "is unaffected", player);
@@ -1092,7 +1092,7 @@ namespace engine
 
             if (gbl.spell_target.field_11A == 3)
             {
-                gbl.byte_1D2BE = (byte)((ovr024.roll_dice(12, 1) * 3) + 4 + ovr025.strengthDamBonus(player));
+                gbl.damage = (ovr024.roll_dice(12, 1) * 3) + 4 + ovr025.strengthDamBonus(player);
                 gbl.byte_1D2C9 += 2;
             }
         }
@@ -1105,7 +1105,7 @@ namespace engine
             if (gbl.spell_target.field_11A == 8)
             {
                 gbl.byte_1D2C9 += 3;
-                gbl.byte_1D2BE += 3;
+                gbl.damage += 3;
             }
         }
 
@@ -1133,7 +1133,7 @@ namespace engine
                     ovr032.Rebuild_SortedCombatantList(gbl.mapToBackGroundTile, ovr033.PlayerMapSize(player), 0xff, 0xff,
                         ovr033.PlayerMapYPos(player), ovr033.PlayerMapXPos(player));
 
-                    player.actions.target = gbl.player_array[gbl.byte_1D1C4];
+                    player.actions.target = gbl.player_array[gbl.SortedCombatantList[1].player_index];
 
                     player.actions.can_cast = 0;
                     player.combat_team = (sbyte)(player.actions.target.combat_team ^ 1);
@@ -1166,7 +1166,7 @@ namespace engine
 
         internal static void sub_3B919(byte arg_0, object param, Player player)
         {
-            gbl.byte_1D2BF = 9;
+            gbl.damage_flags = 9;
 
             ovr024.damage_person(false, 0, ovr024.roll_dice_save(10, 2), player.actions.target);
 
@@ -1175,7 +1175,7 @@ namespace engine
 
         internal static void sub_3B94C(byte arg_0, object param, Player player)
         {
-            gbl.byte_1D2BF = 0x10;
+            gbl.damage_flags = 0x10;
 
             ovr024.damage_person(false, 0, ovr024.roll_dice_save(4, 1), player.actions.target);
         }
@@ -1183,23 +1183,23 @@ namespace engine
 
         internal static void sub_3B97F(byte arg_0, object param, Player player)
         {
-            gbl.byte_1D2BE /= 2;
+            gbl.damage /= 2;
         }
 
 
         internal static void sub_3B990(byte arg_0, object param, Player player)
         {
-            if ((gbl.byte_1D2BF & 0x01) != 0 ||
-                (gbl.byte_1D2BF & 0x02) != 0)
+            if ((gbl.damage_flags & 0x01) != 0 ||
+                (gbl.damage_flags & 0x02) != 0)
             {
                 if (ovr024.do_saving_throw(0, 4, player) == true &&
                     gbl.unk_19AEC[gbl.spell_id << 4].field_8 != 0)
                 {
-                    gbl.byte_1D2BE = 0;
+                    gbl.damage = 0;
                 }
                 else
                 {
-                    gbl.byte_1D2BE /= 2;
+                    gbl.damage /= 2;
                 }
             }
         }
@@ -1209,7 +1209,7 @@ namespace engine
         {
             byte var_1;
 
-            if ((gbl.byte_1D2BF & 0x04) != 0)
+            if ((gbl.damage_flags & 0x04) != 0)
             {
                 sub_3A019(0);
                 var_1 = ovr024.roll_dice(8, 1);
@@ -1228,7 +1228,7 @@ namespace engine
             if (var_4 != null &&
                 gbl.unk_1C020[var_4.type].field_7 == 1)
             {
-                gbl.byte_1D2BE = 1;
+                gbl.damage = 1;
             }
         }
 
@@ -1368,23 +1368,21 @@ namespace engine
 
         internal static void sub_3BD98(byte arg_0, object param, Player arg_6)
         {
-            if ((gbl.byte_1D2BF & 0x01) != 0)
+            if ((gbl.damage_flags & 0x01) != 0)
             {
-                gbl.byte_1D2BE >>= 1;
+                gbl.damage /= 2;
             }
         }
 
 
         internal static void sub_3BDB2(byte arg_0, object param, Player arg_6)
         {
-            Item var_4;
+            Item item = sub_3AF77(gbl.player_ptr);
 
-            var_4 = sub_3AF77(gbl.player_ptr);
-
-            if (var_4 != null &&
-                (gbl.unk_1C020[var_4.type].field_7 & 0x81) != 0)
+            if (item != null &&
+                (gbl.unk_1C020[item.type].field_7 & 0x81) != 0)
             {
-                gbl.byte_1D2BE >>= 1;
+                gbl.damage /= 2;
             }
         }
 
@@ -1477,8 +1475,8 @@ namespace engine
 
         internal static void sub_3BF91(byte arg_0, object param, Player player)
         {
-            if ((gbl.byte_1D2BF & 1) == 0 &&
-                (gbl.byte_1D2BF & 0x10) == 0)
+            if ((gbl.damage_flags & 1) == 0 &&
+                (gbl.damage_flags & 0x10) == 0)
             {
                 ovr024.add_affect(true, 0xff, ovr024.roll_dice(6, 3), Affects.affect_66, player);
             }
@@ -1518,7 +1516,7 @@ namespace engine
                 ovr025.find_affect(out var_4, Affects.cold_fire_shield, gbl.spell_target) == false &&
                 ovr025.find_affect(out var_4, Affects.fire_resist, gbl.spell_target) == false)
             {
-                gbl.byte_1D2BE += ovr024.roll_dice(6, 1);
+                gbl.damage += ovr024.roll_dice(6, 1);
             }
         }
 
@@ -1531,14 +1529,11 @@ namespace engine
 
         internal static void sub_3C0EE(byte arg_0)
         {
-            byte var_2;
-            byte var_1;
-
-            var_1 = ovr025.sub_6886F(gbl.spell_id);
-            var_2 = (byte)(arg_0 + ((0x0b - var_1) * 5));
+            byte var_1 = ovr025.sub_6886F(gbl.spell_id);
+            byte var_2 = (byte)(arg_0 + ((0x0b - var_1) * 5));
 
             if (gbl.byte_1D2BD != 0 ||
-                (gbl.byte_1D2BF & 8) != 0)
+                (gbl.damage_flags & 8) != 0)
             {
                 if (ovr024.roll_dice(100, 1) <= var_2)
                 {
@@ -1585,7 +1580,7 @@ namespace engine
 
         internal static void sub_3C1B2(byte arg_0, object param, Player arg_6)
         {
-            if ((gbl.byte_1D2BF & 2) != 0)
+            if ((gbl.damage_flags & 2) != 0)
             {
                 sub_3A019(0);
             }
@@ -1606,7 +1601,7 @@ namespace engine
 
         internal static void sub_3C1EA(byte arg_0, object param, Player arg_6)
         {
-            if ((gbl.byte_1D2BF & 1) != 0)
+            if ((gbl.damage_flags & 1) != 0)
             {
                 sub_3A019(0);
             }
@@ -1615,15 +1610,15 @@ namespace engine
 
         internal static void sub_3C201(byte arg_0, object param, Player arg_6)
         {
-            if ((gbl.byte_1D2BF & 1) != 0)
+            if ((gbl.damage_flags & 1) != 0)
             {
                 for (int i = 1; i <= gbl.dice_count; i++)
                 {
-                    gbl.byte_1D2BE--;
+                    gbl.damage--;
 
-                    if (gbl.byte_1D2BE < gbl.dice_count)
+                    if (gbl.damage < gbl.dice_count)
                     {
-                        gbl.byte_1D2BE = (byte)gbl.dice_count;
+                        gbl.damage = gbl.dice_count;
                     }
                 }
             }
@@ -1632,9 +1627,9 @@ namespace engine
 
         internal static void sub_3C246(byte arg_0, object param, Player player)
         {
-            if ((gbl.byte_1D2BF & 4) != 0)
+            if ((gbl.damage_flags & 4) != 0)
             {
-                gbl.byte_1D2BF >>= 1;
+                gbl.damage_flags >>= 1;
             }
         }
 
@@ -1650,7 +1645,7 @@ namespace engine
                 if (gbl.unk_1C020[var_4.type].field_7 == 0 ||
                     (gbl.unk_1C020[var_4.type].field_7 & 1) != 0)
                 {
-                    gbl.byte_1D2BE >>= 1;
+                    gbl.damage /= 2;
                 }
             }
         }
@@ -1658,37 +1653,33 @@ namespace engine
 
         internal static void sub_3C2BF(byte arg_0, object param, Player player)
         {
-            Item var_4;
+            Item item = sub_3AF77(gbl.player_ptr);
 
-            var_4 = sub_3AF77(gbl.player_ptr);
-
-            if (var_4 != null &&
-                var_4.exp_value > 0)
+            if (item != null &&
+                item.exp_value > 0)
             {
-                gbl.byte_1D2BE >>= 1;
+                gbl.damage /= 2;
             }
         }
 
 
         internal static void sub_3C2F9(byte arg_0, object param, Player player)
         {
-            Item var_4;
+            Item item = gbl.player_ptr.field_151;
 
-            var_4 = gbl.player_ptr.field_151;
-
-            if (var_4 != null &&
-                var_4.type == 0x55)
+            if (item != null &&
+                item.type == 0x55)
             {
-                gbl.byte_1D2BE = (byte)(ovr024.roll_dice_save(6, 1) + 1);
+                gbl.damage = ovr024.roll_dice_save(6, 1) + 1;
             }
         }
 
 
         internal static void sub_3C33C(byte arg_0, object param, Player player)
         {
-            if ((gbl.byte_1D2BF & 2) != 0)
+            if ((gbl.damage_flags & 2) != 0)
             {
-                gbl.byte_1D2BE /= 2;
+                gbl.damage /= 2;
             }
         }
 
@@ -1705,7 +1696,7 @@ namespace engine
                 if (gbl.player_ptr.race > 0 ||
                     gbl.player_ptr.field_E5 < 4)
                 {
-                    gbl.byte_1D2BE = 0;
+                    gbl.damage = 0;
                 }
             }
         }
@@ -1776,7 +1767,7 @@ namespace engine
 
         internal static void sub_3C59D(byte arg_0, object param, Player player)
         {
-            gbl.byte_1D2BF = 0x0A;
+            gbl.damage_flags = 0x0A;
 
             ovr024.damage_person(false, 0, ovr024.roll_dice_save(8, 2), player.actions.target);
         }
@@ -1809,7 +1800,7 @@ namespace engine
         internal static void sub_3C623(byte arg_0, object param, Player player)
         {
             if (gbl.byte_1D2BD != 0 ||
-                (gbl.byte_1D2BF & 8) != 0)
+                (gbl.damage_flags & 8) != 0)
             {
                 sub_3A019(0);
             }
@@ -1867,7 +1858,7 @@ namespace engine
             sub_3A019(0x1D);
             sub_3A019(0x44);
 
-            if ((gbl.byte_1D2BF & 0x40) != 0)
+            if ((gbl.damage_flags & 0x40) != 0)
             {
                 sub_3A019(0);
             }
@@ -1880,14 +1871,14 @@ namespace engine
 
             if ((gbl.spell_target.field_14B & 8) != 0)
             {
-                gbl.byte_1D2BE += player.ranger_lvl;
+                gbl.damage += player.ranger_lvl;
             }
         }
 
 
         internal static void sub_3C7B5(byte arg_0, object param, Player player)
         {
-            if ((gbl.byte_1D2BF & 0x04) != 0)
+            if ((gbl.damage_flags & 0x04) != 0)
             {
                 sub_3A019(0);
             }
@@ -1924,7 +1915,7 @@ namespace engine
                 ovr032.Rebuild_SortedCombatantList(gbl.mapToBackGroundTile, ovr033.PlayerMapSize(player), 0xff, 0xff,
                     ovr033.PlayerMapYPos(player), ovr033.PlayerMapXPos(player));
 
-                player.actions.target = gbl.player_array[gbl.byte_1D1C4];
+                player.actions.target = gbl.player_array[gbl.SortedCombatantList[1].player_index];
 
                 player.combat_team = (sbyte)(player.actions.target.combat_team ^ 1);
             }
@@ -1972,23 +1963,19 @@ namespace engine
 
         internal static void sub_3C975(byte arg_0, object arg_2, Player arg_6)
         {
-            byte var_2;
-            byte var_1;
-
             if (ovr025.getTargetRange(arg_6, gbl.player_ptr) < 2)
             {
-                var_1 = gbl.byte_1D2BE;
+                int bkup_damage = gbl.damage;
+                byte bkup_damage_flags = gbl.damage_flags;
 
-                gbl.byte_1D2BE <<= 1;
-
-                var_2 = gbl.byte_1D2BF;
-                gbl.byte_1D2BF = 8;
+                gbl.damage *= 2;
+                gbl.damage_flags = 8;
 
                 ovr025.DisplayPlayerStatusString(true, 10, "resists dispel evil", gbl.player_ptr);
 
-                ovr024.damage_person(false, 0, (sbyte)gbl.byte_1D2BE, gbl.player_ptr);
-                gbl.byte_1D2BE = var_1;
-                gbl.byte_1D2BF = var_2;
+                ovr024.damage_person(false, 0, gbl.damage, gbl.player_ptr);
+                gbl.damage = bkup_damage;
+                gbl.damage_flags = bkup_damage_flags;
             }
         }
 

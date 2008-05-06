@@ -821,11 +821,11 @@ namespace engine
                     player.actions.field_13 = 1;
                 }
 
-                player.actions.field_9 = unk_1660C[gbl.mapDirection >> 1];
+                player.actions.direction = unk_1660C[gbl.mapDirection >> 1];
 
                 if (player.combat_team == 1)
                 {
-                    player.actions.field_9 = (byte)((player.actions.field_9 + 4) % 8);
+                    player.actions.direction = (byte)((player.actions.direction + 4) % 8);
                 }
 
                 var_6 = (byte)(player.field_F7 & 0x7f);

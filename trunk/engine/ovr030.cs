@@ -9,7 +9,7 @@ namespace engine
         static byte[] unk_16DCA = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 };
         static byte[] unk_16DDA = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 0, 14, 15 };
 
-        internal static void sub_7000A(DaxBlock dax_block, bool useOverlay, short rowY, short colX)
+        internal static void sub_7000A(DaxBlock dax_block, bool useOverlay, int rowY, int colX)
         {
             if (dax_block != null)
             {
@@ -29,18 +29,6 @@ namespace engine
                     seg040.draw_picture(dax_block, rowY, colX, 0);
                 }
             }
-        }
-
-
-        internal static void sub_7008D(DaxBlock dax_block, byte arg_4, byte arg_6)
-        {
-            sub_7000A(dax_block, false, arg_4, arg_6);
-        }
-
-
-        internal static void sub_700AD(DaxBlock dax_block, byte arg_4, byte arg_6)
-        {
-            sub_7000A(dax_block, false, (short)(arg_4 + 5), arg_6);
         }
 
 
@@ -201,14 +189,12 @@ namespace engine
 
         internal static void head_body(byte body_id, byte head_id)
         {
-            string var_2;
-
-            seg051.Str(1, out var_2, 0, gbl.game_area);
+            string text = gbl.game_area.ToString();
 
             if (head_id != 0xff &&
                 (gbl.current_head_id == 0xff || gbl.current_head_id != head_id))
             {
-                seg040.load_dax(ref gbl.headX_dax, 0, 0, head_id, "HEAD" + var_2);
+                seg040.load_dax(ref gbl.headX_dax, 0, 0, head_id, "HEAD" + text);
 
                 if (gbl.headX_dax == null)
                 {
@@ -221,7 +207,7 @@ namespace engine
             if (body_id != 0xff &&
                 (gbl.current_body_id == 0xff || gbl.current_body_id != body_id))
             {
-                seg040.load_dax(ref gbl.bodyX_dax, 0, 0, body_id, "BODY" + var_2);
+                seg040.load_dax(ref gbl.bodyX_dax, 0, 0, body_id, "BODY" + text);
                 if (gbl.bodyX_dax == null)
                 {
                     seg041.displayAndDebug("body not found", 0, 14);
@@ -234,16 +220,16 @@ namespace engine
         }
 
 
-        internal static void sub_706DC(bool arg_0, byte arg_2, byte arg_4)
+        internal static void draw_head_and_body(bool draw_body, byte rowY, byte colX) /* sub_706DC */
         {
-            if (arg_0 == true)
+            if (draw_body == true)
             {
-                sub_7008D(gbl.headX_dax, arg_2, arg_4);
-                sub_700AD(gbl.bodyX_dax, arg_2, arg_4);
+                sub_7000A(gbl.headX_dax, false, rowY, colX);
+                sub_7000A(gbl.bodyX_dax, false, rowY + 5, colX);
             }
             else
             {
-                sub_7000A(gbl.headX_dax, false, arg_2, arg_4);
+                sub_7000A(gbl.headX_dax, false, rowY, colX);
             }
         }
 
