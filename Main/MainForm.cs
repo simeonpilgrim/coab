@@ -75,5 +75,10 @@ namespace Main
                 base.OnPaint(e);
             }
         }
+
+        private void playersAlwayMakeSavingThrowToolStripMenuItem_CheckedChanged(object sender, EventArgs e)
+        {
+            engine.ovr024.TogglePlayerAlwaysSaves();
+        }
     }
 }

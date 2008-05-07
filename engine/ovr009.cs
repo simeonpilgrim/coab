@@ -489,7 +489,7 @@ namespace engine
 
                         ovr033.draw_74572(ovr033.get_player_index(player), 0, 0);
 
-                        if (ovr033.sub_7515A(false, var_4, var_3, player) == 0)
+                        if (ovr033.sub_7515A(false, var_4, var_3, player) == false)
                         {
                             arg_0 = true;
                         }

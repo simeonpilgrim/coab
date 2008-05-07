@@ -1231,12 +1231,8 @@ namespace engine
             throw new System.NotSupportedException();//mov	ax, 2
             throw new System.NotSupportedException();//push	ax
             throw new System.NotSupportedException();//call	Move(Any &,Any &,Word)
-            throw new System.NotSupportedException();//mov	di, [bp+arg_0]
-            throw new System.NotSupportedException();//les	di, ss:[di-0x1C0]
-            throw new System.NotSupportedException();//mov	al, es:[di+11Bh]
-            throw new System.NotSupportedException();//les	di, int ptr [bp+player.offset]
-            throw new System.NotSupportedException();//mov	es:[di+1A4h], al
 
+            player.hit_point_current = (byte)bp_var_1C0.field_11B;
             player.initiative = (byte)bp_var_1C0.field_11C;
         }
 
