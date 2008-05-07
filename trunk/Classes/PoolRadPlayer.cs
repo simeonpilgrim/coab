@@ -12,6 +12,7 @@ namespace Classes
         public byte race; // 0x2e
         public byte sex; // 0x9e
         public byte[] field_C1; // 0xC1
+        public byte field_11B; // 0x11b
         public sbyte field_11C; // 0x11c
 
         

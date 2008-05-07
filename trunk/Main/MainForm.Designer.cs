@@ -35,6 +35,7 @@ namespace Main
             this.commandDebuggingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dumpPlayerAffectsToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.screenCaptureToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.playersAlwayMakeSavingThrowToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.displayArea)).BeginInit();
             this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -55,13 +56,14 @@ namespace Main
             this.ddfsdToolStripMenuItem,
             this.screenCaptureToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(161, 48);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(161, 70);
             // 
             // ddfsdToolStripMenuItem
             // 
             this.ddfsdToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.commandDebuggingToolStripMenuItem,
-            this.dumpPlayerAffectsToolStripMenuItem1});
+            this.dumpPlayerAffectsToolStripMenuItem1,
+            this.playersAlwayMakeSavingThrowToolStripMenuItem});
             this.ddfsdToolStripMenuItem.Name = "ddfsdToolStripMenuItem";
             this.ddfsdToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
             this.ddfsdToolStripMenuItem.Text = "Debugging";
@@ -70,14 +72,14 @@ namespace Main
             // 
             this.commandDebuggingToolStripMenuItem.CheckOnClick = true;
             this.commandDebuggingToolStripMenuItem.Name = "commandDebuggingToolStripMenuItem";
-            this.commandDebuggingToolStripMenuItem.Size = new System.Drawing.Size(186, 22);
+            this.commandDebuggingToolStripMenuItem.Size = new System.Drawing.Size(248, 22);
             this.commandDebuggingToolStripMenuItem.Text = "Command Debugging";
             this.commandDebuggingToolStripMenuItem.CheckedChanged += new System.EventHandler(this.commandDebuggingToolStripMenuItem_CheckedChanged);
             // 
             // dumpPlayerAffectsToolStripMenuItem1
             // 
             this.dumpPlayerAffectsToolStripMenuItem1.Name = "dumpPlayerAffectsToolStripMenuItem1";
-            this.dumpPlayerAffectsToolStripMenuItem1.Size = new System.Drawing.Size(186, 22);
+            this.dumpPlayerAffectsToolStripMenuItem1.Size = new System.Drawing.Size(248, 22);
             this.dumpPlayerAffectsToolStripMenuItem1.Text = "Dump Player Affects";
             this.dumpPlayerAffectsToolStripMenuItem1.Click += new System.EventHandler(this.dumpPlayerAffectsToolStripMenuItem1_Click);
             // 
@@ -87,6 +89,14 @@ namespace Main
             this.screenCaptureToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
             this.screenCaptureToolStripMenuItem.Text = "Screen Capture";
             this.screenCaptureToolStripMenuItem.Click += new System.EventHandler(this.screenCaptureToolStripMenuItem_Click);
+            // 
+            // playersAlwayMakeSavingThrowToolStripMenuItem
+            // 
+            this.playersAlwayMakeSavingThrowToolStripMenuItem.CheckOnClick = true;
+            this.playersAlwayMakeSavingThrowToolStripMenuItem.Name = "playersAlwayMakeSavingThrowToolStripMenuItem";
+            this.playersAlwayMakeSavingThrowToolStripMenuItem.Size = new System.Drawing.Size(248, 22);
+            this.playersAlwayMakeSavingThrowToolStripMenuItem.Text = "Players Alway Make Saving Throw";
+            this.playersAlwayMakeSavingThrowToolStripMenuItem.CheckedChanged += new System.EventHandler(this.playersAlwayMakeSavingThrowToolStripMenuItem_CheckedChanged);
             // 
             // MainForm
             // 
@@ -100,8 +110,8 @@ namespace Main
             this.MaximizeBox = false;
             this.Name = "MainForm";
             this.Text = "Curse Of The Azure Bonds";
-            this.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.MainForm_PreviewKeyDown);
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
+            this.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.MainForm_PreviewKeyDown);
             ((System.ComponentModel.ISupportInitialize)(this.displayArea)).EndInit();
             this.contextMenuStrip1.ResumeLayout(false);
             this.ResumeLayout(false);
@@ -116,6 +126,7 @@ namespace Main
         private System.Windows.Forms.ToolStripMenuItem commandDebuggingToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem dumpPlayerAffectsToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem screenCaptureToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem playersAlwayMakeSavingThrowToolStripMenuItem;
     }
 }
 

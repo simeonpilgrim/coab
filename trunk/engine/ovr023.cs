@@ -499,7 +499,7 @@ namespace engine
         }
 
 
-        internal static void sub_5C912(byte arg_0)
+        internal static void scroll_5C912(byte arg_0) /* sub_5C912 */
         {
             Affect var_5;
             byte var_1;
@@ -557,15 +557,13 @@ namespace engine
                 gbl.byte_1AFDC++;
                 throw new System.NotSupportedException();//loc_5C9E8:
             }
-            throw new System.NotSupportedException();//func_end:
+            //func_end:
         }
 
 
         internal static void sub_5C9F4(byte arg_0)
         {
-            byte var_1;
-
-            for (var_1 = 0; var_1 < 0x30; var_1++)
+            for (int var_1 = 0; var_1 < 0x30; var_1++)
             {
                 gbl.unk_1AF18[var_1] = null;
             }
@@ -576,10 +574,9 @@ namespace engine
 
             while (gbl.dword_1D5C6 != null)
             {
-
                 if (item_is_scroll(gbl.dword_1D5C6) == true)
                 {
-                    sub_5C912(arg_0);
+                    scroll_5C912(arg_0);
                 }
 
                 gbl.dword_1D5C6 = gbl.dword_1D5C6.next;
@@ -644,7 +641,7 @@ namespace engine
                     break;
 
                 case SpellLoc.scroll:
-                    sub_5C912(0);
+                    scroll_5C912(0);
                     var_D = 0;
                     break;
 
@@ -1304,27 +1301,23 @@ namespace engine
 
         internal static void sub_5DB24(string arg_0, sbyte arg_4)
         {
-            byte var_30;
-            bool var_2E;
-            Player var_2D;
-            string var_29;
-
-            var_29 = arg_0;
-
             for (int i = gbl.sp_target_count; i >= 1; i--)
             {
                 if (gbl.sp_targets[i] != null)
                 {
-                    var_2D = gbl.sp_targets[i];
+                    Player target = gbl.sp_targets[i];
 
                     if (i < gbl.sp_target_count)
                     {
                         seg044.sound_sub_120E0(gbl.sound_2_188C2);
                         ovr025.sub_67A59(0x12);
 
-                        ovr025.draw_missile_attack(0x1E, 4, ovr033.PlayerMapYPos(var_2D), ovr033.PlayerMapXPos(var_2D),
+                        ovr025.draw_missile_attack(0x1E, 4, ovr033.PlayerMapYPos(target), ovr033.PlayerMapXPos(target),
                             ovr033.PlayerMapYPos(gbl.player_ptr), ovr033.PlayerMapXPos(gbl.player_ptr));
                     }
+        
+                    bool var_2E;
+                    byte var_30;
 
                     if ((gbl.spell_id == 0x4F || gbl.spell_id == 0x51) &&
                         i == gbl.sp_target_count)
@@ -1334,18 +1327,18 @@ namespace engine
                     }
                     else
                     {
-                        var_2E = ovr024.do_saving_throw(arg_4, gbl.unk_19AEC[gbl.spell_id].field_9, var_2D);
+                        var_2E = ovr024.do_saving_throw(arg_4, gbl.unk_19AEC[gbl.spell_id].field_9, target);
                         var_30 = gbl.unk_19AEC[gbl.spell_id].field_8;
                     }
 
-                    if ((var_2D.field_11A > 1 || var_2D.field_DE > 1) &&
+                    if ((target.field_11A > 1 || target.field_DE > 1) &&
                         gbl.spell_id != 0x53)
                     {
                         var_2E = true;
                     }
 
-                    ovr024.is_unaffected(var_29, var_2E, var_30, false, ovr025.sub_6886F(gbl.spell_id), sub_5CE92(gbl.spell_id),
-                        gbl.unk_19AEC[gbl.spell_id].field_A, var_2D);
+                    ovr024.is_unaffected(arg_0, var_2E, var_30, false, ovr025.sub_6886F(gbl.spell_id), sub_5CE92(gbl.spell_id),
+                        gbl.unk_19AEC[gbl.spell_id].field_A, target);
                 }
             }
         }
@@ -2000,7 +1993,7 @@ namespace engine
                 if (player.health_status == Status.dead &&
                     player.field_11A == 0)
                 {
-                    if (ovr033.sub_7515A(true, ovr033.PlayerMapYPos(player), ovr033.PlayerMapXPos(player), player) != 0)
+                    if (ovr033.sub_7515A(true, ovr033.PlayerMapYPos(player), ovr033.PlayerMapXPos(player), player) == true)
                     {
                         byte var_2 = (byte)((player.combat_team << 4) + ovr025.sub_6886F(gbl.spell_id));
 
@@ -2855,23 +2848,19 @@ namespace engine
 
         internal static void cure_poison()
         {
-            Affect var_8;
-            Player var_4;
-
-            var_4 = gbl.sp_targets[1];
+            Affect dummy_affect;
+            Player var_4 = gbl.sp_targets[1];
 
             if (var_4.health_status == Status.animated)
             {
                 gbl.sp_targets[1] = null;
             }
-            else if (ovr025.find_affect(out var_8, Affects.poisoned, var_4) == true)
+            else if (ovr025.find_affect(out dummy_affect, Affects.poisoned, var_4) == true)
             {
-                throw new System.NotSupportedException();//les	di, [bp+var_4]
-                throw new System.NotSupportedException();//cmp	byte ptr es:[di+1A4h], 0
-                throw new System.NotSupportedException();//jnz	loc_60231
-                throw new System.NotSupportedException();//les	di, [bp+var_4]
-                throw new System.NotSupportedException();//mov	byte ptr es:[di+1A4h], 1
-                throw new System.NotSupportedException();//loc_60231:
+                if (var_4.hit_point_current == 0)
+                {
+                    var_4.hit_point_current = 1;
+                }
                 
                 gbl.byte_1D2C6 = true;
 
@@ -2996,11 +2985,10 @@ namespace engine
             throw new System.NotSupportedException();//dec	byte ptr es:[di+18h]
 
             ovr024.sub_648D9(4, var_4);
-            throw new System.NotSupportedException();//les	di, [bp+var_4]
-            throw new System.NotSupportedException();//mov	byte ptr es:[di+1A4h], 1
+            var_4.hit_point_current = 1;
 
             ovr025.DisplayPlayerStatusString(true, 10, "is raised", var_4);
-            throw new System.NotSupportedException();//loc_605E2:
+            //loc_605E2:
         }
 
 
@@ -4161,7 +4149,6 @@ namespace engine
         {
             if (gbl.game_state == 5)
             {
-
                 ovr025.DisplayPlayerStatusString(true, 10, "Casts a Spell", arg_6);
                 seg037.draw8x8_clear_area(0x17, 0x27, 0x17, 0);
 

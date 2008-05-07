@@ -2,7 +2,7 @@ using Classes;
 
 namespace engine
 {
-    class ovr024
+    public class ovr024
     {
         internal static void sub_63014(string arg_0, Classes.Status arg_4, Player player)
         {
@@ -600,6 +600,11 @@ namespace engine
 
             gbl.saving_throw_roll = roll_dice(20, 1);
 
+            if (PlayerAlwaysSave && player.combat_team == 0 )
+            {
+                gbl.saving_throw_roll = 20;
+            }
+
             if (gbl.saving_throw_roll == 1)
             {
                 gbl.save_made = false;
@@ -625,6 +630,12 @@ namespace engine
             }
 
             return gbl.save_made;
+        }
+
+        static bool PlayerAlwaysSave = false;
+        public static void TogglePlayerAlwaysSaves()
+        {
+            PlayerAlwaysSave = !PlayerAlwaysSave;
         }
 
 
@@ -818,10 +829,9 @@ namespace engine
         }
 
 
-        internal static void sub_646D9(ref byte arg_0, ref byte arg_4, Affect arg_8)
+        internal static void sub_646D9(out byte arg_0, out byte arg_4, Affect arg_8)
         {
             arg_0 = 0;
-
             arg_4 = (byte)(arg_8.field_3 & 0x7F);
 
             if (arg_4 <= 101)
@@ -1096,15 +1106,14 @@ namespace engine
 
             if (arg_0 == 0)
             {
-
                 if (ovr025.find_affect(out affect_ptr, Affects.strength, player) == true)
                 {
-                    sub_646D9(ref var_4, ref var_2, affect_ptr);
+                    sub_646D9(out var_4, out var_2, affect_ptr);
 
                     if (var_1 <= 18 &&
                         var_3 < 100)
                     {
-                        var_2 = (byte)(var_1 + var_2);
+                        var_2 += var_1;
 
                         if (var_2 > 18)
                         {
@@ -1137,15 +1146,14 @@ namespace engine
 
                 if (ovr025.find_affect(out affect_ptr, Affects.affect_92, player) == true)
                 {
-                    sub_646D9(ref var_4, ref var_2, affect_ptr);
+                    sub_646D9(out var_4, out var_2, affect_ptr);
                     sub_64771(ref var_1, var_2, ref var_3, var_4);
                 }
 
                 if (ovr025.find_affect(out affect_ptr, Affects.enlarge, player) == true)
                 {
-                    sub_646D9(ref var_4, ref var_2, affect_ptr);
+                    sub_646D9(out var_4, out var_2, affect_ptr);
                     sub_64771(ref var_1, var_2, ref var_3, var_4);
-
                 }
 
                 if (var_11 != 0xff)
@@ -1404,31 +1412,32 @@ namespace engine
         }
 
 
-        internal static void is_unaffected(string text, bool arg_4, byte arg_6, bool arg_8, byte arg_A, ushort arg_C, Affects affect_id, Player player)
+        internal static void is_unaffected(string text, bool arg_4, byte arg_6, bool arg_8, byte arg_A, ushort arg_C, Affects affect_id, Player target)
         {
             gbl.byte_1D2BD = (byte)affect_id;
 
-            work_on_00(player, 9);
+            work_on_00(target, 9);
 
             if (gbl.byte_1D2BD == 0 ||
                 (arg_4 == true && arg_6 == 1))
             {
-                ovr025.DisplayPlayerStatusString(true, 10, "is Unaffected", player);
+                ovr025.DisplayPlayerStatusString(true, 10, "is Unaffected", target);
             }
             else
             {
-                Affect affect_found;
-                if (ovr025.find_affect(out affect_found, affect_id, player) == true &&
-                    affect_found.field_1 > 0)
+                Affect found_affect;
+
+                if (ovr025.find_affect(out found_affect, affect_id, target) == true &&
+                    found_affect.field_1 > 0)
                 {
-                    remove_affect(affect_found, affect_id, player);
+                    remove_affect(found_affect, affect_id, target);
                 }
 
-                add_affect(arg_8, arg_A, arg_C, affect_id, player);
+                add_affect(arg_8, arg_A, arg_C, affect_id, target);
 
                 if (text.Length != 0)
                 {
-                    ovr025.sub_6818A(text, 1, player);
+                    ovr025.sub_6818A(text, 1, target);
                     ovr025.ClearPlayerTextArea();
                 }
             }
@@ -1477,10 +1486,9 @@ namespace engine
 
         internal static bool combat_heal(byte arg_0, Player player)
         {
-            string var_2A;
             bool ret_val;
 
-            if (ovr033.sub_7515A(true, ovr033.PlayerMapYPos(player), ovr033.PlayerMapXPos(player), player) != 0)
+            if (ovr033.sub_7515A(true, ovr033.PlayerMapYPos(player), ovr033.PlayerMapXPos(player), player) == true)
             {
                 player.health_status = Status.okey;
                 player.in_combat = true;
@@ -1491,26 +1499,24 @@ namespace engine
                     ovr033.sub_75356(false, 3, player);
                 }
 
+                string text;
                 if (player.combat_team == 1)
                 {
-                    var_2A = "stands up and grins";
+                    text = "stands up and grins";
                 }
                 else
                 {
-                    var_2A = "gets back up";
+                    text = "gets back up";
                 }
 
-                ovr025.DisplayPlayerStatusString(true, 10, var_2A, player);
+                ovr025.DisplayPlayerStatusString(true, 10, text, player);
 
                 ovr025.count_teams();
-                ret_val = true;
-            }
-            else
-            {
-                ret_val = false;
+
+                return true;
             }
 
-            return ret_val;
+            return false;
         }
     }
 }

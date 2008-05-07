@@ -638,13 +638,13 @@ namespace engine
         }
 
 
-        internal static byte sub_7515A(bool arg_0, int pos_y, int pos_x, Player player)
+        internal static bool sub_7515A(bool arg_0, int pos_y, int pos_x, Player player)
         {
-            byte ret_val;
+            bool ret_val;
 
             if (gbl.game_state == 5)
             {
-                ret_val = 0;
+                ret_val = false;
 
                 int player_index = get_player_index(player);
 
@@ -665,7 +665,7 @@ namespace engine
                 }
                 else
                 {
-                    ret_val = 1;
+                    ret_val = true;
 
                     if (arg_0 == true &&
                         player.actions.field_13 == 0)
@@ -709,7 +709,7 @@ namespace engine
             }
             else
             {
-                ret_val = 1;
+                ret_val = true;
             }
 
             return ret_val;
