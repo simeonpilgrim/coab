@@ -881,7 +881,7 @@ namespace engine
         {
             player.actions.move = 0;
 
-            if (gbl.byte_1D2C4 != 0)
+            if (gbl.reset_byte_1D2C0 == true)
             {
                 gbl.byte_1D2C0 = 0;
             }

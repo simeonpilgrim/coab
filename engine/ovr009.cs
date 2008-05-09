@@ -458,9 +458,6 @@ namespace engine
 
         internal static void sub_33B26(ref bool arg_0, char arg_4, Player player)
         {
-            byte var_9;
-            byte var_8;
-
             byte var_1 = player.actions.move;
             byte var_2 = player.actions.direction;
             int var_3 = ovr033.PlayerMapXPos(player);
@@ -542,15 +539,18 @@ namespace engine
 
                 if (dir < 8)
                 {
-                    ovr033.sub_74B3F(0, 0, dir, player);
+                    ovr033.draw_74B3F(0, 0, dir, player);
                     bool dummyBoolA, dummyBoolB;
-                    ovr033.getGroundInformation(out dummyBoolA, out dummyBoolB, out var_9, out var_8, dir, player);
+                    byte ground_tile;
+                    byte target_index;
 
-                    if (var_8 > 0)
+                    ovr033.getGroundInformation(out dummyBoolA, out dummyBoolB, out ground_tile, out target_index, dir, player);
+
+                    if (target_index > 0)
                     {
-                        sub_33F03(ref arg_0, gbl.player_array[var_8], player);
+                        sub_33F03(ref arg_0, gbl.player_array[target_index], player);
                     }
-                    else if (var_9 == 0)
+                    else if (ground_tile == 0)
                     {
                         char b = ovr027.yes_no(15, 10, 13, "Flee:");
                         if (b == 'Y')
@@ -568,14 +568,14 @@ namespace engine
 
                         if ((dir / 2) < 1)
                         {
-                            cost = gbl.BackGroundTiles[var_9].move_cost * 3;
+                            cost = gbl.BackGroundTiles[ground_tile].move_cost * 3;
                         }
                         else
                         {
-                            cost = gbl.BackGroundTiles[var_9].move_cost * 2;
+                            cost = gbl.BackGroundTiles[ground_tile].move_cost * 2;
                         }
 
-                        if (gbl.BackGroundTiles[var_9].move_cost == 0xFF)
+                        if (gbl.BackGroundTiles[ground_tile].move_cost == 0xFF)
                         {
                             cost = 0xFFFF;
                         }
@@ -596,7 +596,6 @@ namespace engine
                             {
                                 if (player.actions.move > 0)
                                 {
-
                                     ovr014.sub_3E748(dir, player);
                                 }
 

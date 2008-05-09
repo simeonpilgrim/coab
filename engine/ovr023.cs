@@ -1006,7 +1006,7 @@ namespace engine
                         }
 
                         gbl.byte_1D910 = true;
-                        ovr033.sub_74B3F(0, 1, direction, caster);
+                        ovr033.draw_74B3F(0, 1, direction, caster);
 
                         if (spell_id == 0x2F)
                         {
@@ -1025,8 +1025,8 @@ namespace engine
 
                         if (ovr033.sub_74761(0, caster) == true)
                         {
-                            ovr033.sub_74B3F(1, 1, caster.actions.direction, caster);
-                            ovr033.sub_74B3F(0, 0, caster.actions.direction, caster);
+                            ovr033.draw_74B3F(1, 1, caster.actions.direction, caster);
+                            ovr033.draw_74B3F(0, 0, caster.actions.direction, caster);
                         }
                     }
 
@@ -3854,57 +3854,54 @@ namespace engine
                         gbl.byte_1DA70 = false;
                     }
                 }
-                throw new System.NotSupportedException();//cmp	byte_1DA70, 0
-                throw new System.NotSupportedException();//jnz	loc_61DED
-                throw new System.NotSupportedException();//jmp	loc_61EF0
-                throw new System.NotSupportedException();//loc_61DED:
-                throw new System.NotSupportedException();//cmp	byte_1D75E, 0
-                throw new System.NotSupportedException();//ja	loc_61DF7
-                throw new System.NotSupportedException();//jmp	loc_61EF0
-                throw new System.NotSupportedException();//loc_61DF7:
 
-                ovr025.DisplayPlayerStatusString(true, 10, "breathes acid", player);
-                ovr025.sub_67A59(0x12);
-                throw new System.NotSupportedException();//push	[bp+player.seg]
-                throw new System.NotSupportedException();//push	[bp+player.offset]
-                throw new System.NotSupportedException();//call	ovr033.sub_74C32(Player *)
-                throw new System.NotSupportedException();//cbw
-                throw new System.NotSupportedException();//push	ax
-                throw new System.NotSupportedException();//push	[bp+player.seg]
-                throw new System.NotSupportedException();//push	[bp+player.offset]
-                throw new System.NotSupportedException();//call	ovr033.sub_74C5A(Player *)
-                throw new System.NotSupportedException();//cbw
-                throw new System.NotSupportedException();//push	ax
-                throw new System.NotSupportedException();//push	sp_target[1].seg
-                throw new System.NotSupportedException();//push	sp_target[1].offset
-                throw new System.NotSupportedException();//call	ovr033.sub_74C32(Player *)
-                throw new System.NotSupportedException();//cbw
-                throw new System.NotSupportedException();//push	ax
-                throw new System.NotSupportedException();//push	sp_target[1].seg
-                throw new System.NotSupportedException();//push	sp_target[1].offset
-                throw new System.NotSupportedException();//call	ovr033.sub_74C5A(Player *)
-                throw new System.NotSupportedException();//cbw
-                throw new System.NotSupportedException();//push	ax
-                throw new System.NotSupportedException();//mov	al, 1
-                throw new System.NotSupportedException();//push	ax
-                throw new System.NotSupportedException();//mov	al, 0x1E
-                throw new System.NotSupportedException();//push	ax
-                throw new System.NotSupportedException();//call	sub_67AA4
 
-                for (var_4 = 1; var_4 <= gbl.sp_target_count; var_4++)
+                if (gbl.byte_1DA70 == true &&
+                    gbl.sp_target_count > 0)
                 {
-                    if (gbl.sp_targets[var_4] != null)
+                    ovr025.DisplayPlayerStatusString(true, 10, "breathes acid", player);
+                    ovr025.sub_67A59(0x12);
+                    throw new System.NotSupportedException();//push	[bp+player.seg]
+                    throw new System.NotSupportedException();//push	[bp+player.offset]
+                    throw new System.NotSupportedException();//call	ovr033.sub_74C32(Player *)
+                    throw new System.NotSupportedException();//cbw
+                    throw new System.NotSupportedException();//push	ax
+                    throw new System.NotSupportedException();//push	[bp+player.seg]
+                    throw new System.NotSupportedException();//push	[bp+player.offset]
+                    throw new System.NotSupportedException();//call	ovr033.sub_74C5A(Player *)
+                    throw new System.NotSupportedException();//cbw
+                    throw new System.NotSupportedException();//push	ax
+                    throw new System.NotSupportedException();//push	sp_target[1].seg
+                    throw new System.NotSupportedException();//push	sp_target[1].offset
+                    throw new System.NotSupportedException();//call	ovr033.sub_74C32(Player *)
+                    throw new System.NotSupportedException();//cbw
+                    throw new System.NotSupportedException();//push	ax
+                    throw new System.NotSupportedException();//push	sp_target[1].seg
+                    throw new System.NotSupportedException();//push	sp_target[1].offset
+                    throw new System.NotSupportedException();//call	ovr033.sub_74C5A(Player *)
+                    throw new System.NotSupportedException();//cbw
+                    throw new System.NotSupportedException();//push	ax
+                    throw new System.NotSupportedException();//mov	al, 1
+                    throw new System.NotSupportedException();//push	ax
+                    throw new System.NotSupportedException();//mov	al, 0x1E
+                    throw new System.NotSupportedException();//push	ax
+                    throw new System.NotSupportedException();//call	sub_67AA4
+
+                    for (var_4 = 1; var_4 <= gbl.sp_target_count; var_4++)
                     {
-                        var_8 = gbl.sp_targets[var_4];
+                        if (gbl.sp_targets[var_4] != null)
+                        {
+                            var_8 = gbl.sp_targets[var_4];
 
-                        var_9 = ovr024.do_saving_throw(0, 3, var_8);
-                        ovr024.damage_person(var_9, 2, (sbyte)player.hit_point_max, var_8);
+                            var_9 = ovr024.do_saving_throw(0, 3, var_8);
+                            ovr024.damage_person(var_9, 2, (sbyte)player.hit_point_max, var_8);
+                        }
                     }
+
+                    affect.field_3--;
+
+                    var_1 = ovr025.clear_actions(player);
                 }
-
-                affect.field_3--;
-
-                var_1 = ovr025.clear_actions(player);
             }
             //loc_61EF0:
         }

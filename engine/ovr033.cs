@@ -400,11 +400,9 @@ namespace engine
         }
 
 
-        internal static void sub_74B3F(byte arg_0, byte arg_2, byte direction, Player player)
+        internal static void draw_74B3F(byte arg_0, byte arg_2, byte direction, Player player) /* sub_74B3F */
         {
-            byte player_index;
-
-            player_index = get_player_index(player);
+            byte player_index = get_player_index(player);
 
             if (sub_74761(1, player) == false &&
                 gbl.byte_1D910 == true)

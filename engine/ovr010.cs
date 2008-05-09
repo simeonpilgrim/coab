@@ -520,7 +520,7 @@ namespace engine
                             {
                                 gbl.byte_1D910 = (gbl.byte_1D90E || ovr033.sub_74761(0, player) || player.combat_team == 0);
 
-                                ovr033.sub_74B3F(0, 0, var_2, player);
+                                ovr033.draw_74B3F(0, 0, var_2, player);
                                 ovr014.sub_3E954(player.actions.direction, player);
 
                                 if (player.in_combat == false)
