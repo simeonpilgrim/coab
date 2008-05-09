@@ -18,7 +18,7 @@ namespace engine
 
             sub_3EDD4(player);
             gbl.byte_1D2C0 = player.field_11D;
-            gbl.byte_1D2C4 = 0;
+            gbl.reset_byte_1D2C0 = false;
 
             ovr024.work_on_00(player, 18);
 
@@ -57,17 +57,14 @@ namespace engine
 
         internal static byte sub_3E124(Player player)
         {
-            sbyte var_2;
-            byte var_1;
-
-            var_2 = (sbyte)player.initiative;
+            byte var_2 = player.initiative;
 
             if (player.in_combat == false)
             {
-                var_2 += (sbyte)gbl.area2_ptr.field_6E4;
+                var_2 += (byte)gbl.area2_ptr.field_6E4;
             }
 
-            gbl.byte_1D2C4 = 1;
+            gbl.reset_byte_1D2C0 = true;
 
             if (var_2 < 1 || var_2 > 0x60)
             {
@@ -77,10 +74,10 @@ namespace engine
             gbl.byte_1D2C0 = (byte)(var_2 << 1);
 
             ovr024.work_on_00(player, 18);
-            gbl.byte_1D2C4 = 0;
-            var_1 = gbl.byte_1D2C0;
 
-            return var_1;
+            gbl.reset_byte_1D2C0 = false;
+
+            return gbl.byte_1D2C0;
         }
 
 
@@ -262,8 +259,6 @@ namespace engine
 
         internal static void sub_3E748(byte direction, Player player)
         {
-            byte var_1;
-
             byte player_index = ovr033.get_player_index(player);
 
             sbyte oldXPos = (sbyte)gbl.CombatMap[player_index].xPos;
@@ -292,11 +287,11 @@ namespace engine
                 player.actions.move -= (byte)costToMove;
             }
 
-            var_1 = 1;
+            byte radius = 1;
 
             if (player.field_198 != 0)
             {
-                var_1 = 3;
+                radius = 3;
 
                 if (ovr033.CoordOnScreen(newYPos - gbl.mapToBackGroundTile.mapScreenTopY, newXPos - gbl.mapToBackGroundTile.mapScreenLeftX) == false &&
                     gbl.byte_1D910 == true)
@@ -317,7 +312,7 @@ namespace engine
 
             if (gbl.byte_1D910 == true)
             {
-                ovr033.redrawCombatArea(8, var_1, newYPos, newXPos);
+                ovr033.redrawCombatArea(8, radius, newYPos, newXPos);
             }
 
             player.actions.field_F = 0;
@@ -538,7 +533,7 @@ namespace engine
                 gbl.byte_1D2C0 = arg_0.field_19C;
             }
 
-            gbl.byte_1D2C4 = 0;
+            gbl.reset_byte_1D2C0 = false;
             ovr024.work_on_00(arg_0, 18);
             var_1 = sub_3EF0D(gbl.byte_1D2C0);
 
@@ -572,16 +567,12 @@ namespace engine
 
         internal static byte sub_3EF0D(byte arg_0)
         {
-            byte var_2;
-
-            var_2 = arg_0;
-
-            if ((gbl.byte_1D8B7 >> 2) < 1)
+            if ((gbl.byte_1D8B7 & 1) == 1)
             {
-                var_2++;
+                arg_0++;
             }
 
-            return (byte)(var_2 >> 1);
+            return (byte)(arg_0 / 2);
         }
 
 
@@ -1071,13 +1062,13 @@ namespace engine
 
             if (ovr033.sub_74761(0, player01) == true)
             {
-                ovr033.sub_74B3F(0, 0, var_9, player01);
+                ovr033.draw_74B3F(0, 0, var_9, player01);
             }
 
             var_9 = getTargetDirection(player01, player02);
             ovr025.hitpoint_ac(player02);
 
-            ovr033.sub_74B3F(0, 1, var_9, player02);
+            ovr033.draw_74B3F(0, 1, var_9, player02);
 
             player02.actions.target = player01;
 
@@ -1147,8 +1138,8 @@ namespace engine
 
             if (ovr033.sub_74761(0, player02) == true)
             {
-                ovr033.sub_74B3F(1, 1, player02.actions.direction, player02);
-                ovr033.sub_74B3F(0, 0, player02.actions.direction, player02);
+                ovr033.draw_74B3F(1, 1, player02.actions.direction, player02);
+                ovr033.draw_74B3F(0, 0, player02.actions.direction, player02);
             }
         }
 
@@ -2073,7 +2064,7 @@ namespace engine
             Item var_5 = null;
             arg_4 = true;
 
-            if (arg_8 == 1 ||
+            if (arg_8 == 1 &&
                 sub_40F1F(arg_A, arg_E) == false)
             {
                 arg_4 = false;
