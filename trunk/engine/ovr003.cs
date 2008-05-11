@@ -170,22 +170,17 @@ namespace engine
         }
 
 
-        internal static void sub_262E9()
+        internal static void CMD_LoadCharacter() /* sub_262E9 */
         {
-            byte var_8;
-            byte var_7;
-            byte var_6;
-            Player player_ptr;
-
             gbl.byte_1AB0A = 1;
 
             ovr008.vm_LoadCmdSets(1);
-            var_7 = 0;
+            byte var_7 = 0;
 
-            var_6 = (byte)ovr008.vm_GetCmdValue(1);
+            byte var_6 = (byte)ovr008.vm_GetCmdValue(1);
 
-            player_ptr = gbl.player_next_ptr;
-            var_8 = (byte)(var_6 & 0x80);
+            Player player_ptr = gbl.player_next_ptr;
+            byte var_8 = (byte)(var_6 & 0x80);
 
             var_6 = (byte)(var_6 & 0x7f);
 
@@ -226,7 +221,7 @@ namespace engine
         }
 
 
-        internal static void sub_263C9()
+        internal static void CMD_SetupMonster() /* sub_263C9 */
         {
             ovr008.vm_LoadCmdSets(3);
             gbl.byte_1D92B = (byte)ovr008.vm_GetCmdValue(1);
@@ -245,46 +240,38 @@ namespace engine
         }
 
 
-        internal static void sub_26465()
+        internal static void CMD_LoadMonster() /* sub_26465 */
         {
             Affect affect_ptr2;
             Affect affect_ptr;
-            Item item_ptr2;
             Item item_ptr;
             Player player_struct;
-            Player playerD;
             Player playerC;
-            Player playerB;
-            Player playerA;
-            byte var_4;
-            byte var_3;
-            byte var_2;
-            byte var_1;
 
-            playerD = gbl.player_ptr;
-            var_4 = 1;
+            Player player_ptr_bkup = gbl.player_ptr;
+            byte var_4 = 1;
             ovr008.vm_LoadCmdSets(3);
 
             if (gbl.byte_1AB0E < 0x3f)
             {
-                playerB = null;
-                playerA = null;
-                var_1 = (byte)ovr008.vm_GetCmdValue(1);
+                Player playerB = null;
+                Player playerA = null;
+                byte var_1 = (byte)ovr008.vm_GetCmdValue(1);
 
                 ovr008.load_mob(out affect_ptr, out item_ptr, out playerC, var_1);
 
                 player_struct = playerC.ShallowClone();
-                item_ptr2 = item_ptr;
+                Item item_ptr2 = item_ptr;
                 affect_ptr2 = affect_ptr;
 
-                var_2 = (byte)ovr008.vm_GetCmdValue(2);
+                byte var_2 = (byte)ovr008.vm_GetCmdValue(2);
 
                 if (var_2 <= 0)
                 {
                     var_2 = 1;
                 }
 
-                var_3 = (byte)ovr008.vm_GetCmdValue(3);
+                byte var_3 = (byte)ovr008.vm_GetCmdValue(3);
                 playerB = gbl.player_next_ptr;
 
                 ovr034.chead_cbody_comspr_icon(gbl.byte_1D92D, var_3, "CPIC");
@@ -360,8 +347,7 @@ namespace engine
                 }
                 gbl.byte_1D92D++;
                 gbl.byte_1EE93 = 1;
-                gbl.player_ptr = playerD;
-
+                gbl.player_ptr = player_ptr_bkup;
             }
         }
 
@@ -378,12 +364,10 @@ namespace engine
         }
 
 
-        internal static void sub_26873()
+        internal static void CMD_Picture() /* sub_26873 */
         {
-            byte var_1;
-
             ovr008.vm_LoadCmdSets(1);
-            var_1 = (byte)ovr008.vm_GetCmdValue(1);
+            byte var_1 = (byte)ovr008.vm_GetCmdValue(1);
 
             if (var_1 != 0xff)
             {
@@ -503,7 +487,7 @@ namespace engine
         }
 
 
-        internal static void sub_26B0C()
+        internal static void CMD_CompareAnd() /* sub_26B0C */
         {
             for (int i = 0; i < 6; i++)
             {
@@ -666,83 +650,73 @@ namespace engine
         }
 
 
-        internal static void sub_26DD0()
+        internal static void CMD_AndOr() /* sub_26DD0 */
         {
-            byte var_7;
-            ushort var_6;
-            ushort var_4;
-            ushort var_2;
+            byte resultant;
 
             ovr008.vm_LoadCmdSets(3);
-            var_6 = ovr008.vm_GetCmdValue(1);
-            var_4 = ovr008.vm_GetCmdValue(2);
+            ushort var_6 = ovr008.vm_GetCmdValue(1);
+            ushort var_4 = ovr008.vm_GetCmdValue(2);
 
-            var_2 = gbl.cmd_opps[3].Word;
+            ushort loc = gbl.cmd_opps[3].Word;
 
             if (gbl.command == 0x2F)
             {
-                var_7 = (byte)(var_6 & var_4);
+                resultant = (byte)(var_6 & var_4);
             }
             else
             {
-                var_7 = (byte)(var_6 | var_4);
+                resultant = (byte)(var_6 | var_4);
             }
-            ovr008.compare_variables(var_7, 0);
-            ovr008.vm_SetMemoryValue(var_7, var_2);
+
+            ovr008.compare_variables(resultant, 0);
+            ovr008.vm_SetMemoryValue(resultant, loc);
         }
 
 
-        internal static void sub_26E3F()
+        internal static void CMD_GetTable() /* sub_26E3F */
         {
             ovr008.vm_LoadCmdSets(3);
 
             ushort var_2 = gbl.cmd_opps[1].Word;
             byte var_9 = (byte)ovr008.vm_GetCmdValue(2);
 
-            ushort var_4 = gbl.cmd_opps[3].Word;
+            ushort result_loc = gbl.cmd_opps[3].Word;
 
             ushort var_6 = (ushort)(var_9 + var_2);
 
             ushort var_8 = ovr008.vm_GetMemoryValue(var_6);
-            ovr008.vm_SetMemoryValue(var_8, var_4);
+            ovr008.vm_SetMemoryValue(var_8, result_loc);
         }
 
 
-        internal static void sub_26E9D()
+        internal static void CMD_SaveTable() /* sub_26E9D */
         {
             ovr008.vm_LoadCmdSets(3);
 
             ushort var_6 = ovr008.vm_GetCmdValue(1);
 
-            ushort var_4 = gbl.cmd_opps[2].Word;
-            var_4 += ovr008.vm_GetCmdValue(3);
+            ushort result_loc = gbl.cmd_opps[2].Word;
+            result_loc += ovr008.vm_GetCmdValue(3);
             
-            ovr008.vm_SetMemoryValue(var_6, var_4);
+            ovr008.vm_SetMemoryValue(var_6, result_loc);
         }
 
 
         internal static void CMD_VertMenu() /* sub_26EE9 */
         {
-            ushort var_111;
-            bool var_10F;
-            short var_10E;
-            string var_10C;
             StringList var_10A;
             StringList var_106;
-            string var_102;
-            byte var_2;
-            byte var_1;
 
             gbl.byte_1EE90 = 0;
-            var_10F = true;
-            var_10C = string.Empty;
-            var_2 = 1;
+            bool var_10F = true;
+            byte var_2 = 1;
             ovr008.vm_LoadCmdSets(3);
-            var_111 = gbl.cmd_opps[1].Word;
+            ushort var_111 = gbl.cmd_opps[1].Word;
 
-            var_102 = gbl.unk_1D972[1];
+            string var_102 = gbl.unk_1D972[1];
 
-            var_1 = (byte)ovr008.vm_GetCmdValue(3);
+            byte var_1 = (byte)ovr008.vm_GetCmdValue(3);
             gbl.ecl_offset--;
             ovr008.vm_LoadCmdSets(var_1);
 
@@ -767,10 +741,10 @@ namespace engine
 
             var_106 = var_10A;
 
-            var_10E = 0;
+            short var_10E = 0;
 
             ovr008.sub_318AE(var_106, ref var_10E, ref var_10F, false, var_106, 0x16, 0x26, gbl.textYCol + 1,
-                1, 15, 10, 13, var_10C, var_10C);
+                1, 15, 10, 13, string.Empty, string.Empty);
             ovr008.vm_SetMemoryValue((ushort)var_10E, var_111);
 
             ovr027.free_stringList(ref var_106);
@@ -780,23 +754,18 @@ namespace engine
 
         internal static void CMD_HorizontalMenu()
         {
-            byte var_3F;
             byte var_3E;
             byte var_3D;
             bool useOverlay;
             byte var_3B;
             ushort var_3A;
-            string var_38;
-            byte var_3;
             byte var_2;
-            byte var_1;
 
-
-            var_38 = string.Empty;
+            string var_38 = string.Empty;
             ovr008.vm_LoadCmdSets(2);
 
             var_3A = gbl.cmd_opps[1].Word;
-            var_1 = (byte)ovr008.vm_GetCmdValue(2);
+            byte var_1 = (byte)ovr008.vm_GetCmdValue(2);
 
             gbl.ecl_offset--;
 
@@ -830,9 +799,7 @@ namespace engine
                 useOverlay = true;
             }
 
-            var_3F = (byte)(var_1 - 1);
-
-            for (var_3 = 1; var_3 <= var_3F; var_3++)
+            for (int var_3 = 1; var_3 <= (var_1 - 1); var_3++)
             {
                 var_38 = var_38 + "~" + gbl.unk_1D972[var_3] + " ";
             }
@@ -849,10 +816,8 @@ namespace engine
         /// <summary>
         /// Clears the pooled items and pool money.
         /// </summary>
-        internal static void sub_27240()
+        internal static void CMD_ClearMonsters() /* sub_27240 */
         {
-            Item var_4;
-
             gbl.ecl_offset++;
             gbl.byte_1AB0E = 0;
             gbl.byte_1EE93 = 0;
@@ -865,83 +830,78 @@ namespace engine
 
             while (gbl.item_pointer != null)
             {
-                var_4 = gbl.item_pointer.next;
+                Item item = gbl.item_pointer.next;
 
-                gbl.item_pointer = var_4;
+                gbl.item_pointer = item;
             }
         }
 
 
-        internal static void sub_272A9()
+        internal static void CMD_PartyStrength() /* sub_272A9 */
         {
-            Player player_ptr;
-            ushort var_8;
             byte var_6;
-            byte var_5;
             byte var_4;
             byte var_3;
-            sbyte var_2;
-            byte var_1;
 
             ovr008.vm_LoadCmdSets(1);
             var_6 = 0;
-            player_ptr = gbl.player_next_ptr;
+            Player player = gbl.player_next_ptr;
 
-            while (player_ptr != null)
+            while (player != null)
             {
-                var_1 = player_ptr.hit_point_current;
-                var_5 = player_ptr.ac;
-                var_2 = player_ptr.hitBonus;
+                byte hit_points = player.hit_point_current;
+                byte armor_class = player.ac;
+                int hit_bonus = player.hitBonus;
 
-                var_3 = (byte)(player_ptr.magic_user_lvl + (ovr026.sub_6B3D1(player_ptr) * player_ptr.field_116));
-                var_4 = (byte)(player_ptr.cleric_lvl + (ovr026.sub_6B3D1(player_ptr) * player_ptr.turn_undead));
+                var_3 = (byte)(player.magic_user_lvl + (ovr026.sub_6B3D1(player) * player.field_116));
+                var_4 = (byte)(player.cleric_lvl + (ovr026.sub_6B3D1(player) * player.turn_undead));
 
-                if (var_5 > 0x3c)
+                if (armor_class > 0x3c)
                 {
-                    var_5 -= 0x3c;
+                    armor_class -= 0x3c;
                 }
                 else
                 {
-                    var_5 = 0;
+                    armor_class = 0;
                 }
 
-                if (var_2 > 0x27)
+                if (hit_bonus > 0x27)
                 {
-                    var_2 -= 0x27;
+                    hit_bonus -= 0x27;
                 }
                 else
                 {
-                    var_2 = 0;
+                    hit_bonus = 0;
                 }
 
-                var_6 = (byte)(((var_4 * 4) + var_1 + (var_5 * 5) + (var_2 * 5) + (var_3 * 8)) / 10);
+                var_6 = (byte)(((var_4 * 4) + hit_points + (armor_class * 5) + (hit_bonus * 5) + (var_3 * 8)) / 10);
 
-                player_ptr = player_ptr.next_player;
+                player = player.next_player;
             }
 
-            var_8 = gbl.cmd_opps[1].Word;
-            ovr008.vm_SetMemoryValue(var_6, var_8);
+            ushort loc = gbl.cmd_opps[1].Word;
+            ovr008.vm_SetMemoryValue(var_6, loc);
         }
 
 
-        internal static void sub_273F6(byte var_A, byte var_F, byte var_10, byte var_11,
-            ushort var_13, ushort var_15, ushort var_17, ushort var_19)
+        internal static void setMemoryFour(byte val_d, byte val_c, byte val_b, byte val_a,
+            ushort loc_a, ushort loc_b, ushort loc_c, ushort loc_d) /* sub_273F6 */
         {
-            ovr008.vm_SetMemoryValue(var_11, var_13);
-            ovr008.vm_SetMemoryValue(var_10, var_15);
-            ovr008.vm_SetMemoryValue(var_F, var_17);
-            ovr008.vm_SetMemoryValue(var_A, var_19);
+            ovr008.vm_SetMemoryValue(val_a, loc_a);
+            ovr008.vm_SetMemoryValue(val_b, loc_b);
+            ovr008.vm_SetMemoryValue(val_c, loc_c);
+            ovr008.vm_SetMemoryValue(val_d, loc_d);
         }
 
 
-        internal static void sub_27454()
+        internal static void CMD_CheckParty() /* sub_27454 */
         {
             byte var_1B;
             byte var_1A;
-            ushort var_19;
-            ushort var_17;
-            ushort var_15;
-            ushort var_13;
+            ushort loc_d;
+            ushort loc_c;
+            ushort loc_b;
+            ushort loc_a;
             byte var_11;
             byte var_10;
             byte var_F;
@@ -967,10 +927,10 @@ namespace engine
 
             affect_id = (Affects)ovr008.vm_GetCmdValue(2);
 
-            var_13 = gbl.cmd_opps[3].Word;
-            var_15 = gbl.cmd_opps[4].Word;
-            var_17 = gbl.cmd_opps[5].Word;
-            var_19 = gbl.cmd_opps[6].Word;
+            loc_a = gbl.cmd_opps[3].Word;
+            loc_b = gbl.cmd_opps[4].Word;
+            loc_c = gbl.cmd_opps[5].Word;
+            loc_d = gbl.cmd_opps[6].Word;
 
             var_4 = 0;
             var_1A = 0;
@@ -991,7 +951,7 @@ namespace engine
                 var_10 = 0;
                 var_F = 0;
 
-                sub_273F6((var_A) ? (byte)1 : (byte)0, var_F, var_10, var_11, var_13, var_15, var_17, var_19);
+                setMemoryFour((var_A) ? (byte)1 : (byte)0, var_F, var_10, var_11, loc_a, loc_b, loc_c, loc_d);
             }
             else if (var_2 >= 0x00A5 && var_2 <= 0x00AC)
             {
@@ -1018,7 +978,7 @@ namespace engine
 
                 var_F = (byte)(var_4 / var_1A);
 
-                sub_273F6((var_A) ? (byte)1 : (byte)0, var_F, var_10, var_11, var_13, var_15, var_17, var_19);
+                setMemoryFour((var_A) ? (byte)1 : (byte)0, var_F, var_10, var_11, loc_a, loc_b, loc_c, loc_d);
             }
             else if (var_2 == 0x9f)
             {
@@ -1043,12 +1003,12 @@ namespace engine
 
                 var_F = (byte)(var_4 / var_1A);
 
-                sub_273F6((var_A) ? (byte)1 : (byte)0, var_F, var_10, var_11, var_13, var_15, var_17, var_19);
+                setMemoryFour((var_A) ? (byte)1 : (byte)0, var_F, var_10, var_11, loc_a, loc_b, loc_c, loc_d);
             }
         }
 
 
-        internal static void sub_2767E()
+        internal static void CMD_PartySurprise() /* sub_2767E */
         {
             ushort var_B;
             ushort var_9;
@@ -1081,7 +1041,7 @@ namespace engine
         }
 
 
-        internal static void sub_2771E()
+        internal static void CMD_Surprise() /* sub_2771E */
         {
             byte var_A;
             byte var_9;
@@ -1345,58 +1305,38 @@ namespace engine
         }
 
 
-        internal static void sub_27AE5()
+        internal static void CMD_OnGotoGoSub() /* sub_27AE5 */
         {
-            byte var_5;
-            byte var_4;
-            byte var_2;
-            byte var_1;
-
-            var_5 = 0;
             ovr008.vm_LoadCmdSets(2);
-            var_1 = (byte)ovr008.vm_GetCmdValue(1);
-            var_2 = (byte)ovr008.vm_GetCmdValue(2);
+            byte var_1 = (byte)ovr008.vm_GetCmdValue(1);
+            byte var_2 = (byte)ovr008.vm_GetCmdValue(2);
             gbl.ecl_offset--;
             ovr008.vm_LoadCmdSets(var_2);
-            var_4 = 0;
 
-            while (var_4 < var_2 && var_5 == 0)
+            if (var_1 < var_2)
             {
-                if (var_1 == var_4)
+                if (gbl.command == 0x25)
                 {
-                    if (gbl.command == 0x25)
-                    {
-                        gbl.ecl_offset = gbl.cmd_opps[var_4 + 1].Word;
-                    }
-                    else
-                    {
-                        ovr008.vm_gosub((byte)(var_4 + 1));
-                    }
-
-                    var_5 = 1;
+                    // Goto
+                    gbl.ecl_offset = gbl.cmd_opps[var_1 + 1].Word;
                 }
                 else
                 {
-                    var_4++;
+                    // Gosub
+                    ovr008.vm_gosub(var_1 + 1);
                 }
             }
         }
 
 
-        internal static void load_item()
+        internal static void CMD_Treasure() /* load_item */
         {
-            byte var_70;
             byte[] data;
-            short var_69;
-            short var_67;
+            short dataSize;
             byte var_65 = 0;
             byte var_64;
             byte var_63;
             byte var_62;
-            Item var_61;
-            Item var_5B;
-            Item var_59;
-            byte var_3;
             byte var_2;
 
             ovr008.vm_LoadCmdSets(8);
@@ -1410,29 +1350,28 @@ namespace engine
 
             if (var_2 < 0x80)
             {
-                seg042.load_decode_dax(out data, out var_69, var_2, string.Format("ITEM{0}.dax", gbl.game_area));
+                seg042.load_decode_dax(out data, out dataSize, var_2, string.Format("ITEM{0}.dax", gbl.game_area));
 
-                if (var_69 == 0)
+                if (dataSize == 0)
                 {
                     seg041.displayAndDebug("Unable to find item file", 0, 15);
 
                     seg043.print_and_exit();
                 }
 
-                var_67 = 0;
-                for( var_67 = 0; var_67 < var_69; var_67 += Item.StructSize )
+                for( int offset = 0; offset < dataSize; offset += Item.StructSize )
                 {
-                    var_59 = new Item(data, var_67);
+                    Item item = new Item(data, offset);
 
                     if (gbl.item_pointer == null)
                     {
-                        gbl.item_pointer = var_59;
+                        gbl.item_pointer = item;
                     }
                     else
                     {
-                        var_5B = gbl.item_pointer;
-                        gbl.item_pointer = var_59;
-                        gbl.item_pointer.next = var_5B;
+                        Item tmpItem = gbl.item_pointer;
+                        gbl.item_pointer = item;
+                        gbl.item_pointer.next = tmpItem;
                     }
                 } 
 
@@ -1440,9 +1379,7 @@ namespace engine
             }
             else if (var_2 != 0xff)
             {
-                var_70 = (byte)(var_2 - 0x80);
-
-                for (var_3 = 1; var_3 <= var_70; var_3++)
+                for (int var_3 = 1; var_3 <= (var_2 - 0x80); var_3++)
                 {
                     var_63 = ovr024.roll_dice(100, 1);
 
@@ -1534,23 +1471,24 @@ namespace engine
                         var_65 = 0x3B;
                     }
 
-                    ovr022.sub_5A007(out var_59, var_65);
+                    Item item;
+                    ovr022.sub_5A007(out item, var_65);
 
                     if (gbl.item_pointer == null)
                     {
-                        gbl.item_pointer = var_59.ShallowClone();
+                        gbl.item_pointer = item.ShallowClone();
                         gbl.item_pointer.next = null;
                     }
                     else
                     {
-                        var_5B = gbl.item_pointer;
+                        Item var_5B = gbl.item_pointer;
 
-                        gbl.item_pointer = var_59.ShallowClone();
+                        gbl.item_pointer = item.ShallowClone();
                         gbl.item_pointer.next = var_5B;
                     }
                 }
 
-                var_61 = gbl.item_pointer;
+                Item var_61 = gbl.item_pointer;
 
                 while (var_61 != null)
                 {
@@ -2518,19 +2456,14 @@ namespace engine
 
         internal static void CMD_DestroyItems() // sub_292F9
         {
-            Item item;
-            Player player;
-            byte var_1;
-
             ovr008.vm_LoadCmdSets(1);
-            var_1 = (byte)ovr008.vm_GetCmdValue(1);
+            byte var_1 = (byte)ovr008.vm_GetCmdValue(1);
 
-
-            player = gbl.player_next_ptr;
+            Player player = gbl.player_next_ptr;
 
             while (player != null)
             {
-                item = player.itemsPtr;
+                Item item = player.itemsPtr;
                 while (item != null)
                 {
                     Item var_D = item.next;
@@ -2564,17 +2497,17 @@ namespace engine
                 case 0x07: CMD_AddSubDivMulti(); break;
                 case 0x08: CMD_Random(); break;
                 case 0x09: CMD_Save(); break;
-                case 0x0A: sub_262E9(); break;
-                case 0x0B: sub_26465(); break;
-                case 0x0C: sub_263C9(); break;
+                case 0x0A: CMD_LoadCharacter(); break;
+                case 0x0B: CMD_LoadMonster(); break;
+                case 0x0C: CMD_SetupMonster(); break;
                 case 0x0D: CMD_Approach(); break;
-                case 0x0E: sub_26873(); break;
+                case 0x0E: CMD_Picture(); break;
                 case 0x0F: CMD_InputNumber(); break;
                 case 0x10: CMD_InputString(); break;
                 case 0x11: CMD_Print(); break;
                 case 0x12: CMD_Print(); break;
                 case 0x13: CMD_Return(); break;
-                case 0x14: sub_26B0C(); break;
+                case 0x14: CMD_CompareAnd(); break;
                 case 0x15: CMD_VertMenu(); break;
                 case 0x16: CMD_If(); break;
                 case 0x17: CMD_If(); break;
@@ -2582,31 +2515,31 @@ namespace engine
                 case 0x19: CMD_If(); break;
                 case 0x1A: CMD_If(); break;
                 case 0x1B: CMD_If(); break;
-                case 0x1C: sub_27240(); break;
-                case 0x1D: sub_272A9(); break;
-                case 0x1E: sub_27454(); break;
+                case 0x1C: CMD_ClearMonsters(); break;
+                case 0x1D: CMD_PartyStrength(); break;
+                case 0x1E: CMD_CheckParty(); break;
                 case 0x20: CMD_NewECL(); break;
                 case 0x21: CMD_LoadFiles(); break;
-                case 0x22: sub_2767E(); break;
-                case 0x23: sub_2771E(); break;
+                case 0x22: CMD_PartySurprise(); break;
+                case 0x23: CMD_Surprise(); break;
                 case 0x24: CMD_Combat(); break;
-                case 0x25: sub_27AE5(); break;
-                case 0x26: sub_27AE5(); break;
-                case 0x27: load_item(); break;
+                case 0x25: CMD_OnGotoGoSub(); break;
+                case 0x26: CMD_OnGotoGoSub(); break;
+                case 0x27: CMD_Treasure(); break;
                 case 0x28: CMD_Rob(); break;
                 case 0x29: CMD_EncounterMenu(); break;
-                case 0x2A: sub_26E3F(); break;
+                case 0x2A: CMD_GetTable(); break;
                 case 0x2B: CMD_HorizontalMenu(); break;
                 case 0x2C: CMD_Parlay(); break;
                 case 0x2D: CMD_Call(); break;
                 case 0x2E: CMD_Damage(); break;
-                case 0x2F: sub_26DD0(); break;
-                case 0x30: sub_26DD0(); break;
+                case 0x2F: CMD_AndOr(); break;
+                case 0x30: CMD_AndOr(); break;
                 case 0x31: CMD_SpriteOff(); break;
                 case 0x32: CMD_FindItem(); break;
                 case 0x33: CMD_PrintReturn(); break;
                 case 0x34: CMD_EclClock(); break;
-                case 0x35: sub_26E9D(); break;
+                case 0x35: CMD_SaveTable(); break;
                 case 0x36: CMD_AddNPC(); break;
                 case 0x37: CMD_LoadFiles(); break;
                 case 0x38: CMD_Program(); break;
