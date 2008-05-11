@@ -564,16 +564,12 @@ namespace engine
 
         internal static void CMD_LoadFiles()
         {
-            byte var_3;
-            byte var_2;
-            byte var_1;
-
             ovr008.vm_LoadCmdSets(3);
             gbl.byte_1AB0B = 1;
 
-            var_3 = (byte)ovr008.vm_GetCmdValue(1);
-            var_2 = (byte)ovr008.vm_GetCmdValue(2);
-            var_1 = (byte)ovr008.vm_GetCmdValue(3);
+            byte var_3 = (byte)ovr008.vm_GetCmdValue(1);
+            byte var_2 = (byte)ovr008.vm_GetCmdValue(2);
+            byte var_1 = (byte)ovr008.vm_GetCmdValue(3);
 
             if (gbl.command == 0x21)
             {
@@ -698,44 +694,30 @@ namespace engine
 
         internal static void sub_26E3F()
         {
-            byte var_9;
-            ushort var_8;
-            ushort var_6;
-            ushort var_4;
-            ushort var_2;
-
             ovr008.vm_LoadCmdSets(3);
 
-            var_2 = gbl.cmd_opps[1].Word;
-            var_9 = (byte)ovr008.vm_GetCmdValue(2);
+            ushort var_2 = gbl.cmd_opps[1].Word;
+            byte var_9 = (byte)ovr008.vm_GetCmdValue(2);
 
-            var_4 = gbl.cmd_opps[3].Word;
+            ushort var_4 = gbl.cmd_opps[3].Word;
 
-            var_6 = (ushort)(var_9 + var_2);
+            ushort var_6 = (ushort)(var_9 + var_2);
 
-            var_8 = ovr008.vm_GetMemoryValue(var_6);
+            ushort var_8 = ovr008.vm_GetMemoryValue(var_6);
             ovr008.vm_SetMemoryValue(var_8, var_4);
         }
 
 
         internal static void sub_26E9D()
         {
-            ushort var_8;
-            ushort var_6;
-            ushort var_4;
-            ushort var_2;
-
             ovr008.vm_LoadCmdSets(3);
 
-            var_6 = ovr008.vm_GetCmdValue(1);
+            ushort var_6 = ovr008.vm_GetCmdValue(1);
 
-            var_4 = gbl.cmd_opps[2].Word;
-
-            var_2 = ovr008.vm_GetCmdValue(3);
-            var_8 = var_4;
-            var_8 += var_2;
-
-            ovr008.vm_SetMemoryValue(var_6, var_8);
+            ushort var_4 = gbl.cmd_opps[2].Word;
+            var_4 += ovr008.vm_GetCmdValue(3);
+            
+            ovr008.vm_SetMemoryValue(var_6, var_4);
         }
 
 
