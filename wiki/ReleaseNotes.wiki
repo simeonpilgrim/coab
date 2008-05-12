@@ -4,6 +4,10 @@
   * Fixed the "You have lost the fight"/"Zero EXP" noticed fighting drow patrols in Save E
   * Fixed crash when lighting bolt spell hits a wall
   * Turned off the "always on" detect magic effect, that was left in after debugging the issue
+  * Fixed 'Paul's save game F' forward into big fight. The combat now actually begins
+  * Added a cheat, to allow Saving Throws to always succeed for the party. Some spells however do not make saving throws, and other have lesser spells cast when the major fails
+  * Fixed a number of small mistaken translations
+  * As always, lots of renaming of the variables/functions
 
 = 1.0.6 =
   * Issue 3 - Detect magic cast when sharing treasure now works, therefore you can see the magic treasure
