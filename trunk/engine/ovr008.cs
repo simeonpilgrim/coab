@@ -498,7 +498,7 @@ namespace engine
             else if (arg_4 == 0x10C)
             {
                 if (gbl.player_ptr.combat_team == 0 &&
-                    gbl.player_ptr.field_198 != 0)
+                    gbl.player_ptr.quick_fight != 0)
                 {
                     return_val = 0x80;
                 }
@@ -691,17 +691,17 @@ namespace engine
                 {
                     case 0:
                         gbl.player_ptr.combat_team = 0;
-                        gbl.player_ptr.field_198 = 0;
+                        gbl.player_ptr.quick_fight = 0;
                         break;
 
                     case 0x80:
                         gbl.player_ptr.combat_team = 0;
-                        gbl.player_ptr.field_198 = 1;
+                        gbl.player_ptr.quick_fight = 1;
                         break;
 
                     case 0x81:
                         gbl.player_ptr.combat_team = 1;
-                        gbl.player_ptr.field_198 = 1;
+                        gbl.player_ptr.quick_fight = 1;
                         break;
                 }
             }
@@ -1473,7 +1473,7 @@ namespace engine
                 DuelMaster.in_combat = true;
                 DuelMaster.next_player = null;
                 DuelMaster.name = "ROLF";
-                DuelMaster.field_198 = 1;
+                DuelMaster.quick_fight = 1;
 
                 DuelMaster.combat_team = 1;
                 DuelMaster.field_F7 = 0xB2;

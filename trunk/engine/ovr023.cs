@@ -1998,7 +1998,7 @@ namespace engine
                         byte var_2 = (byte)((player.combat_team << 4) + ovr025.sub_6886F(gbl.spell_id));
 
                         player.combat_team = gbl.player_ptr.combat_team;
-                        player.field_198 = 1;
+                        player.quick_fight = 1;
                         player.field_E9 = 1;
                         player.field_DD = 0;
                         player.field_E4 = 6;
@@ -3154,7 +3154,7 @@ namespace engine
                 {
                     ovr024.is_unaffected("runs in terror", saves, 1, true, 0, sub_5CE92(0x54), Affects.affect_8e, target);
                     target.actions.field_10 = 1;
-                    target.field_198 = 1;
+                    target.quick_fight = 1;
 
                     if (target.field_F7 <= 0x7F)
                     {
@@ -3181,7 +3181,7 @@ namespace engine
 
             do
             {
-                if (gbl.player_ptr.field_198 != 0)
+                if (gbl.player_ptr.quick_fight != 0)
                 {
                     if (ovr024.roll_dice(10, 1) > 5)
                     {

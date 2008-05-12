@@ -202,7 +202,7 @@ namespace engine
                     affect.field_3 = (byte)(20 + (player.combat_team << 6));
 
                     player.combat_team = (sbyte)(affect.field_3 >> 7);
-                    player.field_198 = 1;
+                    player.quick_fight = 1;
 
                     if (player.field_F7 <= 0x7F)
                     {
@@ -462,7 +462,7 @@ namespace engine
             }
 
             player.combat_team = (sbyte)(affect.field_3 >> 4);
-            player.field_198 = 1;
+            player.quick_fight = 1;
             player.field_E9 = 0;
 
             player.field_DD = (byte)(player.fighter_lvl + (player.field_113 * ovr026.sub_6B3D1(player)));
@@ -513,7 +513,7 @@ namespace engine
             throw new System.NotSupportedException();//loc_3A9FE:
             ovr024.remove_affect(null, Affects.confuse, player);
             player.actions.field_10 = 1;
-            player.field_198 = 1;
+            player.quick_fight = 1;
 
             if (player.field_F7 <= 0x7f)
             {
@@ -1114,7 +1114,7 @@ namespace engine
         {
             if (arg_0 == 0)
             {
-                player.field_198 = 1;
+                player.quick_fight = 1;
 
                 if (player.field_F7 <= 0x7F ||
                     player.field_F7 == 0xb3)
@@ -1897,7 +1897,7 @@ namespace engine
 
             if (arg_0 == 0)
             {
-                player.field_198 = 1;
+                player.quick_fight = 1;
 
                 if (player.field_F7 <= 0x7f ||
                     player.field_F7 == 0xb3)
@@ -1953,7 +1953,7 @@ namespace engine
                 if (player.field_F7 == 0xb3)
                 {
                     player.field_F7 = 0;
-                    player.field_198 = 0;
+                    player.quick_fight = 0;
                 }
 
                 player.actions.field_10 = 0;

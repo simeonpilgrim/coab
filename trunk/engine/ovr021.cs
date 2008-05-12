@@ -230,7 +230,7 @@ namespace engine
         }
 
 
-        internal static void sub_5849F(byte arg_0, byte arg_2)
+        internal static void sub_5849F(int time_index, byte arg_2)
         {
             byte var_1;
 
@@ -239,9 +239,9 @@ namespace engine
                 gbl.unk_1D890.field_4 != 0 ||
                 gbl.unk_1D890.field_2 != 0)
             {
-                while (arg_2 > gbl.unk_1D890[arg_0])
+                while (arg_2 > gbl.unk_1D890[time_index])
                 {
-                    var_1 = (byte)(arg_0 + 1);
+                    var_1 = (byte)(time_index + 1);
 
                     while (gbl.unk_1D890[var_1] == 0 &&
                         var_1 < 5)
@@ -256,7 +256,7 @@ namespace engine
                     }
                     else
                     {
-                        for (int i = var_1; i >= (arg_0 + 1); i--)
+                        for (int i = var_1; i >= (time_index + 1); i--)
                         {
                             gbl.unk_1D890[i] -= 1;
                             gbl.unk_1D890[i - 1] += gbl.word_1A13C[i - 1];
@@ -264,7 +264,7 @@ namespace engine
                     }
                 }
 
-                gbl.unk_1D890[arg_0] -= arg_2;
+                gbl.unk_1D890[time_index] -= arg_2;
 
                 clock_583C8();
             }
@@ -277,7 +277,7 @@ namespace engine
         }
 
 
-        internal static void dispay_resting_time(int highlight_time) /* sub_58615 */
+        internal static void display_resting_time(int highlight_time) /* sub_58615 */
         {
             int[] colors = new int[6];
 
@@ -306,120 +306,112 @@ namespace engine
             seg041.displayString(text, 0, colors[2], 0x11, col_x + 1);
         }
 
+
         static Set unk_58731 = new Set(0x000B, new byte[] { 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x20, 0x00, 0x04 });
 
-        internal static byte sub_58751()
+        internal static bool reseting_time_menu() /* sub_58751 */
         {
-            byte var_4;
-            char var_3;
-            bool var_2;
-            byte var_1;
+            char input_key;
 
-            var_1 = 0;
-            var_4 = 2;
+            bool resting = false;
+            int time_index = 2;
 
             do
             {
-                dispay_resting_time(var_4);
-                var_3 = ovr027.displayInput(out var_2, false, 1, 15, 10, 13, "Rest Days Hours Mins Add Subtract Exit", string.Empty);
+                display_resting_time(time_index);
+                bool control_key;
 
-                if (var_2 == true)
+                input_key = ovr027.displayInput(out control_key, false, 1, 15, 10, 13, "Rest Days Hours Mins Add Subtract Exit", string.Empty);
+
+                if (control_key == true)
                 {
-                    switch (var_3)
+                    switch (input_key)
                     {
                         case 'H':
-                            var_3 = 'A';
+                            input_key = 'A';
                             break;
 
                         case 'P':
-                            var_3 = 'S';
+                            input_key = 'S';
                             break;
 
                         case 'K':
-                            var_4 += 1;
-                            if (var_4 > 4)
+                            time_index += 1;
+                            if (time_index > 4)
                             {
-                                var_4 = 2;
+                                time_index = 2;
                             }
 
-                            var_3 = 'X';
+                            input_key = 'X';
                             break;
 
                         case 'M':
-                            var_4 -= 1;
-                            if (var_4 < 2)
+                            time_index -= 1;
+                            if (time_index < 2)
                             {
-                                var_4 = 4;
+                                time_index = 4;
                             }
-                            var_3 = 'X';
+                            input_key = 'X';
                             break;
 
                         default:
-                            var_3 = 'X';
+                            input_key = 'X';
                             break;
                     }
                 }
 
-                if (var_3 == 0x0D)
+                if (input_key == 0x0D)
                 {
-                    var_3 = 'R';
+                    input_key = 'R';
                 }
 
-                switch (var_3)
+                switch (input_key)
                 {
                     case 'R':
-                        var_1 = 1;
+                        resting = true;
                         break;
 
                     case 'D':
-                        var_4 = 4;
+                        time_index = 4;
                         break;
 
                     case 'H':
-                        var_4 = 3;
+                        time_index = 3;
                         break;
 
                     case 'M':
-                        var_4 = 2;
+                        time_index = 2;
                         break;
 
                     case 'A':
-                        if (var_4 == 2)
+                        if (time_index == 2)
                         {
                             gbl.unk_1D890.field_2 += 5;
                         }
-                        else if (var_4 == 3)
-                        {
-                            gbl.unk_1D890.field_6 += 1;
-                        }
-                        else if (var_4 == 4)
-                        {
-                            gbl.unk_1D890.field_8 += 1;
-                        }
                         else
                         {
-                            throw (new System.NotImplementedException("The original code only looked like var_4 could be 2,3 or 4 \r\n  at ovr021:083E"));
+                            gbl.unk_1D890[time_index] += 1;
                         }
 
                         clock_583C8();
                         break;
 
                     case 'S':
-                        if (var_4 == 2)
+                        if (time_index == 2)
                         {
                             sub_5849F(1, 5);
                         }
                         else
                         {
-                            sub_5849F(var_4, 1);
+                            sub_5849F(time_index, 1);
                         }
 
                         clock_583C8();
                         break;
                 }
-            } while (unk_58731.MemberOf(var_3) == false);
+            } while (unk_58731.MemberOf(input_key) == false);
 
-            return var_1;
+            return resting;
         }
 
 
@@ -447,7 +439,7 @@ namespace engine
 
                 if (show_text == true)
                 {
-                    dispay_resting_time(0);
+                    display_resting_time(0);
                 }
 
                 seg041.displayString("The Whole Party Is Healed", 0, 10, 19, 1);
@@ -481,7 +473,7 @@ namespace engine
                     {
                         player.spell_list[spell_index] -= 128;
 
-                        dispay_resting_time(0);
+                        display_resting_time(0);
 
                         ovr023.cast_spell_text(player.spell_list[spell_index], "has memorized", player);
                         output = true;
@@ -527,7 +519,7 @@ namespace engine
                                 player.field_79[affect] = 1;
                                 ovr023.remove_spell_from_scroll(affect, item, player);
 
-                                dispay_resting_time(0);
+                                display_resting_time(0);
 
                                 ovr023.cast_spell_text(affect, "has scribed", player);
                                 arg_0 = true;
@@ -577,28 +569,23 @@ namespace engine
         }
 
 
-        internal static void sub_58C03(ref byte arg_0)
+        internal static void sub_58C03(ref int arg_0)
         {
-            bool var_7;
-            Player player;
-            byte var_2;
-            byte var_1;
-
             arg_0 += 1;
 
             if (arg_0 >= 0x0C)
             {
                 arg_0 = 0;
 
-                var_1 = 1;
-                player = gbl.player_next_ptr;
+                int var_1 = 1;
+                Player player = gbl.player_next_ptr;
                 while (player != null)
                 {
                     if (player.spell_to_learn_count > 0 &&
                         --player.spell_to_learn_count == 0)
                     {
-                        var_7 = true;
-                        var_2 = reset_scribe(ref var_7, player);
+                        bool var_7 = true;
+                        byte var_2 = reset_scribe(ref var_7, player);
 
                         if (var_2 == 0)
                         {
@@ -615,18 +602,13 @@ namespace engine
         }
 
 
-        internal static bool reseting(bool arg_0)
+        internal static bool reseting(bool interactive_resting)
         {
-            bool var_E;
-            byte var_D;
-            byte var_C;
-            byte var_B;
-            Player var_5;
-            bool var_1;
+            bool stop_reseting;
+            bool var_1 = false;
 
-            var_1 = false;
-            var_B = 1;
-            var_5 = gbl.player_next_ptr;
+            int var_B = 1;
+            Player var_5 = gbl.player_next_ptr;
 
             while (var_5 != null)
             {
@@ -636,40 +618,40 @@ namespace engine
             }
 
             seg051.FillChar(1, 0x48, gbl.unk_1AE24);
-            var_C = 0;
-            var_D = 0;
+            int var_C = 0;
+            int display_counter = 0;
 
-            if (arg_0 == true)
+            if (interactive_resting == true)
             {
                 seg037.draw8x8_clear_area(0x16, 0x26, 0x11, 1);
-                dispay_resting_time(0);
+                display_resting_time(0);
             }
 
             gbl.byte_1D8A8 = 1;
 
-            if (arg_0 == true)
+            if (interactive_resting == true)
             {
-                var_E = (sub_58751() == 0);
+                stop_reseting = !reseting_time_menu();
             }
             else
             {
-                var_E = false;
+                stop_reseting = false;
             }
 
-            while (var_E == false &&
+            while (stop_reseting == false &&
                 (gbl.unk_1D890.field_8 > 0 ||
                   gbl.unk_1D890.field_6 > 0 ||
                   gbl.unk_1D890.field_4 > 0 ||
                   gbl.unk_1D890.field_2 > 0))
             {
-                if (arg_0 == true &&
+                if (interactive_resting == true &&
                     seg049.KEYPRESSED() == true)
                 {
-                    dispay_resting_time(0);
+                    display_resting_time(0);
 
                     if (ovr027.yes_no(15, 10, 13, "Stop Resting? ") == 'Y')
                     {
-                        var_E = true;
+                        stop_reseting = true;
                     }
                     else
                     {
@@ -677,20 +659,20 @@ namespace engine
                     }
                 }
 
-                if (var_E == false)
+                if (stop_reseting == false)
                 {
                     sub_5849F(1, 5);
-                    var_D++;
+                    display_counter++;
 
-                    if (arg_0 == true &&
-                        var_D >= 5)
+                    if (interactive_resting == true &&
+                        display_counter >= 5)
                     {
-                        dispay_resting_time(0);
-                        var_D = 0;
+                        display_resting_time(0);
+                        display_counter = 0;
                     }
 
                     sub_583FA(1, 5);
-                    reset_heal(arg_0);
+                    reset_heal(interactive_resting);
                     sub_58B4D();
                     sub_58C03(ref var_C);
 
@@ -705,9 +687,9 @@ namespace engine
                             if (ovr024.roll_dice(100, 1) <= gbl.area2_ptr.field_5A6)
                             {
                                 ovr025.ClearPlayerTextArea();
-                                dispay_resting_time(0);
+                                display_resting_time(0);
                                 seg041.displayString("Your repose is suddenly interrupted!", 0, 15, 0x13, 1);
-                                var_E = true;
+                                stop_reseting = true;
                                 var_1 = true;
                                 seg041.GameDelay();
                             }
