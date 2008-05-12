@@ -753,7 +753,7 @@ namespace engine
 
         internal static void sub_3432F(Player player)
         {
-            player.quick_fight = 1;
+            player.quick_fight = QuickFight.True;
             if (player.actions.target != null)
             {
                 if (player.actions.target.combat_team == player.combat_team)

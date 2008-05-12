@@ -4,7 +4,13 @@ using System.Collections.Generic;
 
 namespace Classes
 {
-    public delegate void spellDelegate(out bool arg_0, byte quick_fight, byte arg_6);
+    public enum QuickFight 
+    {
+        False = 0,
+        True = 1
+    }
+
+    public delegate void spellDelegate(out bool arg_0, QuickFight quick_fight, byte arg_6);
     public delegate void spellDelegate2();
     public delegate void spellDelegateX(byte arg_0, object affect, Player player);
 

@@ -1249,20 +1249,15 @@ namespace engine
 
         static Affects[] unk_18ADB = { Affects.bless, Affects.snake_charm, Affects.paralyze, Affects.sleep, Affects.helpless }; // seg600:27CB first is filler (off by 1)
 
-        internal static byte sub_4001C(Struct_1D183 arg_0, byte arg_4, byte arg_6, byte arg_8)
+        internal static bool sub_4001C(Struct_1D183 arg_0, byte arg_4, QuickFight quick_fight, byte arg_8)
         {
-            byte var_A;
             byte var_9;
-            byte var_8;
             Player var_7;
-            byte var_3;
-            bool var_2;
-            byte var_1;
 
-            var_2 = false;
-            if (arg_6 == 0)
+            bool var_2 = false;
+            if (quick_fight == QuickFight.False)
             {
-                var_A = arg_8 != 0x53 ? (byte)1 : (byte)0;
+                byte var_A = arg_8 != 0x53 ? (byte)1 : (byte)0;
 
                 aim_menu(arg_0, out var_2, var_A, arg_4, 0, ovr023.sub_5CDE5(arg_8), gbl.player_ptr);
                 gbl.player_ptr.actions.target = arg_0.field_0;
@@ -1285,7 +1280,7 @@ namespace engine
                 while (var_9 > 0 &&
                         var_2 == false)
                 {
-                    var_3 = 1;
+                    bool var_3 = true;
 
                     if (sub_41E44(1, 0, ovr023.sub_5CDE5(arg_8), gbl.player_ptr) == true)
                     {
@@ -1293,16 +1288,16 @@ namespace engine
 
                         if (ovr025.is_held(var_7) == true)
                         {
-                            for (var_8 = 1; var_8 <= 4; var_8++)
+                            for (int i = 1; i <= 4; i++)
                             {
-                                if (gbl.unk_19AEC[arg_8].field_A == unk_18ADB[var_8])
+                                if (gbl.unk_19AEC[arg_8].field_A == unk_18ADB[i])
                                 {
-                                    var_3 = 0;
+                                    var_3 = false;
                                 }
                             }
                         }
 
-                        if (var_3 != 0)
+                        if (var_3 == true)
                         {
                             arg_0.field_0 = gbl.player_ptr.actions.target;
                             arg_0.mapX = ovr033.PlayerMapXPos(arg_0.field_0);
@@ -1318,20 +1313,18 @@ namespace engine
 
             if (var_2 == true)
             {
-                var_1 = 1;
                 gbl.targetX = arg_0.mapX;
                 gbl.targetY = arg_0.mapY;
             }
             else
             {
-                var_1 = 0;
                 arg_0.Clear();
             }
 
-            return var_1;
+            return var_2;
         }
 
-        internal static void target(out bool arg_0, byte arg_4, byte arg_6)
+        internal static void target(out bool arg_0, QuickFight quick_fight, byte arg_6)
         {
             byte var_E;
             Struct_1D183 var_C = new Struct_1D183();
@@ -1371,7 +1364,7 @@ namespace engine
 
                 do
                 {
-                    if (sub_4001C(var_C, 0, arg_4, arg_6) != 0)
+                    if (sub_4001C(var_C, 0, quick_fight, arg_6) == true)
                     {
                         bool found = false;
 
@@ -1439,7 +1432,7 @@ namespace engine
                         }
                         else
                         {
-                            if (arg_4 != 0)
+                            if (quick_fight != 0)
                             {
                                 var_4 -= 1;
                             }
@@ -1460,7 +1453,7 @@ namespace engine
             else if (tmp1 == 0x0F)
             {
 
-                if (sub_4001C(var_C, 0, arg_4, arg_6) != 0)
+                if (sub_4001C(var_C, 0, quick_fight, arg_6) == true)
                 {
                     if (gbl.player_ptr.actions.target != null)
                     {
@@ -1490,7 +1483,7 @@ namespace engine
             }
             else if (tmp1 >= 8 && tmp1 <= 0x0E)
             {
-                if (sub_4001C(var_C, 1, arg_4, arg_6) != 0)
+                if (sub_4001C(var_C, 1, quick_fight, arg_6) == true)
                 {
                     ovr032.Rebuild_SortedCombatantList(gbl.mapToBackGroundTile, 1, 0xff, (short)(gbl.unk_19AEC[arg_6].field_6 & 7), gbl.targetY, gbl.targetX);
 
@@ -1514,7 +1507,7 @@ namespace engine
 
                 while (var_1 > 0)
                 {
-                    if (sub_4001C(var_C, 0, arg_4, arg_6) != 0)
+                    if (sub_4001C(var_C, 0, quick_fight, arg_6) == true)
                     {
                         bool found = false;
 
@@ -1537,7 +1530,7 @@ namespace engine
                         }
                         else
                         {
-                            if (arg_4 == 0)
+                            if (quick_fight == 0)
                             {
                                 ovr025.string_print01("Already been targeted");
                             }
@@ -1568,7 +1561,7 @@ namespace engine
         }
 
 
-        internal static void spell_menu3(out bool arg_0, byte arg_4, byte arg_6)
+        internal static void spell_menu3(out bool arg_0, QuickFight quick_fight, byte arg_6)
         {
             Player var_A;
             bool var_6;
@@ -1595,7 +1588,7 @@ namespace engine
                 var_1 = 0;
             }
 
-            if (arg_4 == 0)
+            if (quick_fight == QuickFight.False)
             {
                 ovr025.sub_68DC0();
                 gbl.byte_1D910 = true;
@@ -1611,7 +1604,7 @@ namespace engine
 
                 if (var_3 == 0)
                 {
-                    ovr023.sub_5D2E1(ref arg_0, 1, arg_4, var_1);
+                    ovr023.sub_5D2E1(ref arg_0, 1, quick_fight, var_1);
 
                     arg_0 = ovr025.clear_actions(var_A);
                 }
@@ -2766,17 +2759,17 @@ namespace engine
                     }
                     else if ((var_4 & 0x10) == 0)
                     {
-                        ovr023.sub_5D2E1(ref var_5, 1, 1, 0x54);
+                        ovr023.sub_5D2E1(ref var_5, 1, QuickFight.True, 0x54);
                         var_4 |= 0x10;
                     }
                     else if ((var_4 & 0x20) == 0)
                     {
-                        ovr023.sub_5D2E1(ref var_5, 1, 1, 0x37);
+                        ovr023.sub_5D2E1(ref var_5, 1, QuickFight.True, 0x37);
                         var_4 |= 0x20;
                     }
                     else if ((var_4 & 0x40) == 0)
                     {
-                        ovr023.sub_5D2E1(ref var_5, 1, 1, 0x15);
+                        ovr023.sub_5D2E1(ref var_5, 1, QuickFight.True, 0x15);
                         var_4 |= 0x40;
                     }
                 }
