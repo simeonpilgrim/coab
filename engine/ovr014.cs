@@ -289,7 +289,7 @@ namespace engine
 
             byte radius = 1;
 
-            if (player.field_198 != 0)
+            if (player.quick_fight != 0)
             {
                 radius = 3;
 
@@ -1967,7 +1967,7 @@ namespace engine
             bool var_1;
 
             if (ovr025.on_our_team(playerA) == playerB.combat_team ||
-                playerB.field_198 != 0)
+                playerB.quick_fight != 0)
             {
                 var_1 = true;
             }

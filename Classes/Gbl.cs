@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Classes
 {
-    public delegate void spellDelegate(out bool arg_0, byte arg_4, byte arg_6);
+    public delegate void spellDelegate(out bool arg_0, byte quick_fight, byte arg_6);
     public delegate void spellDelegate2();
     public delegate void spellDelegateX(byte arg_0, object affect, Player player);
 

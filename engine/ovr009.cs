@@ -32,7 +32,7 @@ namespace engine
 
             seg040.free_dax_block(ref gbl.missile_dax);
             ovr033.Color_0_8_normal();
-            gbl.dword_1D5CA = new Classes.spellDelegate(ovr023.cast_spell_on);
+            gbl.dword_1D5CA = new spellDelegate(ovr023.cast_spell_on);
         }
 
 
@@ -42,7 +42,7 @@ namespace engine
             bool var_1;
 
             gbl.game_state = 5;
-            gbl.dword_1D5CA = new Classes.spellDelegate(ovr014.target);
+            gbl.dword_1D5CA = new spellDelegate(ovr014.target);
             ovr011.battle_begins();
             var_1 = false;
 
@@ -152,7 +152,7 @@ namespace engine
 
                 if (player.actions.delay > 0)
                 {
-                    if (player.field_198 != 0)
+                    if (player.quick_fight != 0)
                     {
                         ovr010.sub_3504B(player);
                     }
@@ -255,7 +255,7 @@ namespace engine
                                     {
                                         if (player_ptr.field_F7 < 0x80)
                                         {
-                                            player_ptr.field_198 = 0;
+                                            player_ptr.quick_fight = 0;
                                         }
                                         player_ptr = player_ptr.next_player;
                                     }
@@ -753,7 +753,7 @@ namespace engine
 
         internal static void sub_3432F(Player player)
         {
-            player.field_198 = 1;
+            player.quick_fight = 1;
             if (player.actions.target != null)
             {
                 if (player.actions.target.combat_team == player.combat_team)

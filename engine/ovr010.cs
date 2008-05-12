@@ -806,13 +806,13 @@ namespace engine
                         if (player_ptr.field_F7 < 0x80 &&
                             player_ptr.health_status != Status.animated)
                         {
-                            player_ptr.field_198 = 0;
+                            player_ptr.quick_fight = 0;
                         }
 
                         player_ptr = player_ptr.next_player;
                     }
 
-                    if (arg_0.field_198 == 0)
+                    if (arg_0.quick_fight == 0)
                     {
                         arg_0.actions.delay = 0x14;
                         var_1 = true;

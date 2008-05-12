@@ -80,13 +80,11 @@ namespace engine
 
         internal static void cancel_memorize(Player player)
         {
-            byte var_1;
-
-            for (var_1 = 0; var_1 < gbl.max_spells; var_1++)
+            for (int i = 0; i < gbl.max_spells; i++)
             {
-                if (player.spell_list[var_1] > 0x7F)
+                if (player.spell_list[i] > 0x7F)
                 {
-                    player.spell_list[var_1] = 0;
+                    player.spell_list[i] = 0;
                 }
             }
 
@@ -96,9 +94,7 @@ namespace engine
 
         internal static void cancel_scribes(Player player)
         {
-            Item item;
-
-            item = player.itemsPtr;
+            Item item = player.itemsPtr;
 
             while (item != null)
             {
@@ -115,9 +111,7 @@ namespace engine
 
         internal static void cancel_spells()
         {
-            Player player;
-
-            player = gbl.player_next_ptr;
+            Player player = gbl.player_next_ptr;
 
             while (player != null)
             {
@@ -134,14 +128,14 @@ namespace engine
 
             for (int loop_var = 0; loop_var < gbl.max_spells; loop_var++)
             {
-                int b = gbl.player_ptr.spell_list[loop_var];
+                int spell_id = gbl.player_ptr.spell_list[loop_var];
 
-                if (b > 0)
+                if (spell_id > 0)
                 {
-                    b &= 0x7F;
+                    spell_id &= 0x7F;
 
-                    if (gbl.unk_19AEC[b].spellLevel == spellLevel &&
-                        gbl.unk_19AEC[b].spellClass == spellClass)
+                    if (gbl.unk_19AEC[spell_id].spellLevel == spellLevel &&
+                        gbl.unk_19AEC[spell_id].spellClass == spellClass)
                     {
                         alreadyLearning++;
                     }
@@ -154,63 +148,53 @@ namespace engine
 
         internal static bool sub_443A0(byte learn_type)
         {
-            string var_2A;
-            bool var_1;
-
-            var_2A = string.Empty;
+            string text = string.Empty;
 
             if (learn_type == 1)
             {
                 if (gbl.area_ptr.can_cast_spells == true)
                 {
-                    var_2A = "cannot cast spells in this area";
+                    text = "cannot cast spells in this area";
                 }
             }
             else if (gbl.player_ptr.health_status == Status.animated ||
                 gbl.player_ptr.in_combat == false)
             {
-                var_2A = "is in no condition to ";
+                text = "is in no condition to ";
 
                 switch (learn_type)
                 {
                     case 1:
-                        var_2A += "cast any spells";
+                        text += "cast any spells";
                         break;
 
                     case 2:
-                        var_2A += "memorize spells";
+                        text += "memorize spells";
                         break;
 
                     case 3:
-                        var_2A += "scribe any scrolls";
+                        text += "scribe any scrolls";
                         break;
                 }
             }
 
-            if (var_2A.Length == 0)
+            if (text.Length != 0)
             {
-                var_1 = true;
-            }
-            else
-            {
-                var_1 = false;
-                ovr025.DisplayPlayerStatusString(true, 10, var_2A, gbl.player_ptr);
+                ovr025.DisplayPlayerStatusString(true, 10, text, gbl.player_ptr);
+
+                return false;
             }
 
-            return var_1;
+            return true;
         }
 
 
         internal static void cast_spell()
         {
-            byte var_6;
             bool var_5 = false; /* simeon */
-            byte var_4;
-            bool var_3;
-            short var_2;
 
-            var_4 = 0;
-            var_2 = -1;
+            bool var_4 = false;
+            short var_2 = -1;
 
             gbl.dword_1D87F = null;
 
@@ -218,29 +202,33 @@ namespace engine
 
             if (sub_443A0(1) == true)
             {
+                byte spell_id;
+
                 do
                 {
-                    var_6 = ovr020.spell_menu2(out var_3, ref var_2, 1, SpellLoc.memory);
+                    bool var_3;
 
-                    if (var_6 != 0)
+                    spell_id = ovr020.spell_menu2(out var_3, ref var_2, 1, SpellLoc.memory);
+
+                    if (spell_id != 0)
                     {
-                        var_4 = 1;
+                        var_4 = true;
                         seg037.draw8x8_clear_area(0x16, 0x26, 0x11, 1);
 
-                        ovr023.sub_5D2E1(ref var_5, 1, 0, var_6);
+                        ovr023.sub_5D2E1(ref var_5, 1, 0, spell_id);
                     }
                     else if (var_3 == true)
                     {
-                        var_4 = 1;
+                        var_4 = true;
                     }
                     else
                     {
                         ovr025.DisplayPlayerStatusString(true, 10, "has no spells memorized", gbl.player_ptr);
                     }
-                } while (var_6 != 0);
+                } while (spell_id != 0);
             }
 
-            if (var_4 != 0)
+            if (var_4 == true)
             {
                 ovr025.load_pic();
             }

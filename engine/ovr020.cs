@@ -966,7 +966,7 @@ namespace engine
 
                     case 3:
                         if (gbl.game_state != 5 ||
-                            player.field_198 == 0)
+                            player.quick_fight == 0)
                         {
                             ovr025.string_print01("Your hands are full!");
                         }
@@ -1112,7 +1112,7 @@ namespace engine
             else
             {
                 if (gbl.game_state == 5 &&
-                    gbl.player_ptr.field_198 == 0)
+                    gbl.player_ptr.quick_fight == 0)
                 {
                     ovr025.sub_68DC0();
                 }
@@ -1147,14 +1147,14 @@ namespace engine
                         gbl.player_ptr.magic_user_lvl > 0 ||
                         gbl.player_ptr.cleric_lvl > 0)
                     {
-                        ovr023.sub_5D2E1(ref arg_0, 0, gbl.player_ptr.field_198, var_1);
+                        ovr023.sub_5D2E1(ref arg_0, 0, gbl.player_ptr.quick_fight, var_1);
                     }
                     else
                     {
                         if (gbl.player_ptr.thief_lvl > 9 &&
                             ovr024.roll_dice(100, 1) <= 0x4b)
                         {
-                            ovr023.sub_5D2E1(ref arg_0, 0, gbl.player_ptr.field_198, var_1);
+                            ovr023.sub_5D2E1(ref arg_0, 0, gbl.player_ptr.quick_fight, var_1);
                         }
                         else
                         {
@@ -1164,7 +1164,7 @@ namespace engine
                 }
                 else
                 {
-                    ovr023.sub_5D2E1(ref arg_0, 0, gbl.player_ptr.field_198, var_1);
+                    ovr023.sub_5D2E1(ref arg_0, 0, gbl.player_ptr.quick_fight, var_1);
                 }
 
                 gbl.byte_1D88D = 0;
