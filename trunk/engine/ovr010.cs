@@ -60,7 +60,7 @@ namespace engine
 
             if (player.actions.spell_id > 0)
             {
-                ovr023.sub_5D2E1(ref var_2, 1, 1, player.actions.spell_id);
+                ovr023.sub_5D2E1(ref var_2, 1, QuickFight.True, player.actions.spell_id);
 
                 var_2 = ovr025.clear_actions(player);
                 return;
@@ -315,7 +315,7 @@ namespace engine
 
             if (var_62 > 0)
             {
-                ovr014.spell_menu3(out spell_id, 1, var_62);
+                ovr014.spell_menu3(out spell_id, QuickFight.True, var_62);
             }
             else
             {

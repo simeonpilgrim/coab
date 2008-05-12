@@ -881,7 +881,7 @@ namespace engine
         }
 
 
-        internal static void cast_spell_on(out bool arg_0, byte arg_4, byte arg_6)
+        internal static void cast_spell_on(out bool arg_0, QuickFight quick_fight, byte arg_6)
         {
             if (gbl.dword_1D87F == null)
             {
@@ -933,7 +933,7 @@ namespace engine
         }
 
 
-        internal static void sub_5D2E1(ref bool arg_0, byte arg_4, byte arg_6, byte spell_id)
+        internal static void sub_5D2E1(ref bool arg_0, byte arg_4, QuickFight quick_fight, byte spell_id)
         {
             Player caster = gbl.player_ptr;
             byte var_1 = 1;
@@ -986,7 +986,7 @@ namespace engine
 
             while (var_1 != 0)
             {
-                gbl.dword_1D5CA(out arg_0, arg_6, spell_id);
+                gbl.dword_1D5CA(out arg_0, quick_fight, spell_id);
 
                 if (arg_0 == true)
                 {
@@ -1052,7 +1052,7 @@ namespace engine
                     }
                     else
                     {
-                        if (arg_6 != 0 ||
+                        if (quick_fight == QuickFight.True ||
                             ovr027.yes_no(15, 10, 14, "Abort Spell? ") == 'Y')
                         {
                             ovr025.string_print01("Spell Aborted");
@@ -1998,7 +1998,7 @@ namespace engine
                         byte var_2 = (byte)((player.combat_team << 4) + ovr025.sub_6886F(gbl.spell_id));
 
                         player.combat_team = gbl.player_ptr.combat_team;
-                        player.quick_fight = 1;
+                        player.quick_fight = QuickFight.True;
                         player.field_E9 = 1;
                         player.field_DD = 0;
                         player.field_E4 = 6;
@@ -3154,7 +3154,7 @@ namespace engine
                 {
                     ovr024.is_unaffected("runs in terror", saves, 1, true, 0, sub_5CE92(0x54), Affects.affect_8e, target);
                     target.actions.field_10 = 1;
-                    target.quick_fight = 1;
+                    target.quick_fight = QuickFight.True;
 
                     if (target.field_F7 <= 0x7F)
                     {
@@ -3690,7 +3690,7 @@ namespace engine
 
             player.actions.target = null;
 
-            gbl.dword_1D5CA(out gbl.byte_1DA70, 1, 0x41);
+            gbl.dword_1D5CA(out gbl.byte_1DA70, QuickFight.True, 0x41);
 
             if (player.actions.target != null)
             {
@@ -3750,7 +3750,7 @@ namespace engine
 
                 ovr025.DisplayPlayerStatusString(true, 10, "Breathes!", player);
 
-                gbl.dword_1D5CA(out gbl.byte_1DA70, 1, 0x33);
+                gbl.dword_1D5CA(out gbl.byte_1DA70, QuickFight.True, 0x33);
 
                 gbl.targetX = var_2 + Math.Sign(gbl.targetX - var_2);
                 gbl.targetY = var_3 + Math.Sign(gbl.targetY - var_3);
@@ -3790,7 +3790,7 @@ namespace engine
         {
             byte var_1;
 
-            gbl.dword_1D5CA(out gbl.byte_1DA70, 1, 0x41);
+            gbl.dword_1D5CA(out gbl.byte_1DA70, QuickFight.True, 0x41);
 
             gbl.spell_target = player.actions.target;
 
@@ -3840,7 +3840,7 @@ namespace engine
                 int var_2 = ovr033.PlayerMapXPos(player);
                 int var_3 = ovr033.PlayerMapYPos(player);
 
-                gbl.dword_1D5CA(out gbl.byte_1DA70, 1, 0x3d);
+                gbl.dword_1D5CA(out gbl.byte_1DA70, QuickFight.True, 0x3d);
 
                 if (gbl.byte_1DA70 == true)
                 {
@@ -3931,7 +3931,7 @@ namespace engine
             var_2 = ovr033.PlayerMapXPos(arg_6);
             var_3 = ovr033.PlayerMapYPos(arg_6);
 
-            gbl.dword_1D5CA(out gbl.byte_1DA70, 1, 0x3D);
+            gbl.dword_1D5CA(out gbl.byte_1DA70, QuickFight.True, 0x3D);
             throw new System.NotSupportedException();//cmp	byte_1DA70, 0
             throw new System.NotSupportedException();//jnz	loc_61F60
             throw new System.NotSupportedException();//jmp	loc_6207D
@@ -3988,7 +3988,7 @@ namespace engine
 
         internal static void cast_breath_fire(byte arg_0, object param, Player arg_6)
         {
-            gbl.dword_1D5CA(out gbl.byte_1DA70, 1, 0x41);
+            gbl.dword_1D5CA(out gbl.byte_1DA70, QuickFight.True, 0x41);
             throw new System.NotSupportedException();//les	di, [bp+arg_6]
             throw new System.NotSupportedException();//les	di, int ptr es:[di+charStruct.actions.offset]
             throw new System.NotSupportedException();//mov	ax, es:[di+0Ah]
@@ -4060,7 +4060,7 @@ namespace engine
                 int var_3 = ovr033.PlayerMapYPos(arg_6);
 
                 ovr025.DisplayPlayerStatusString(true, 10, "throws lightning", arg_6);
-                gbl.dword_1D5CA(out gbl.byte_1DA70, 1, 0x33);
+                gbl.dword_1D5CA(out gbl.byte_1DA70, QuickFight.True, 0x33);
 
                 ovr024.remove_invisibility(arg_6);
                 ovr025.sub_67A59(0x13);
@@ -4077,7 +4077,7 @@ namespace engine
         {
             arg_6.actions.target = null;
 
-            gbl.dword_1D5CA(out gbl.byte_1DA70, 1, 0x24);
+            gbl.dword_1D5CA(out gbl.byte_1DA70, QuickFight.True, 0x24);
 
             gbl.spell_target = arg_6.actions.target;
 

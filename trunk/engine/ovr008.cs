@@ -696,12 +696,12 @@ namespace engine
 
                     case 0x80:
                         gbl.player_ptr.combat_team = 0;
-                        gbl.player_ptr.quick_fight = 1;
+                        gbl.player_ptr.quick_fight = QuickFight.True;
                         break;
 
                     case 0x81:
                         gbl.player_ptr.combat_team = 1;
-                        gbl.player_ptr.quick_fight = 1;
+                        gbl.player_ptr.quick_fight = QuickFight.True;
                         break;
                 }
             }
@@ -1473,7 +1473,7 @@ namespace engine
                 DuelMaster.in_combat = true;
                 DuelMaster.next_player = null;
                 DuelMaster.name = "ROLF";
-                DuelMaster.quick_fight = 1;
+                DuelMaster.quick_fight = QuickFight.True;
 
                 DuelMaster.combat_team = 1;
                 DuelMaster.field_F7 = 0xB2;

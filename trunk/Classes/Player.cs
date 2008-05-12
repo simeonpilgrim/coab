@@ -614,8 +614,8 @@ namespace Classes
         public bool in_combat; // 0x196
         [DataOffset(0x197, DataType.SByte)]
         public sbyte combat_team; // 0x197 0 - our team, 1 - enemy
-        [DataOffset(0x198, DataType.Byte)]
-        public byte quick_fight; // 0x198 Auto fight. 1 yes, 0 no.
+        [DataOffset(0x198, DataType.IByte)]
+        public QuickFight quick_fight; // 0x198 Auto fight. 1 yes, 0 no.
         [DataOffset(0x199, DataType.SByte)]
         public sbyte hitBonus; // 0x199 field_199
         [DataOffset(0x19a, DataType.Byte)]
