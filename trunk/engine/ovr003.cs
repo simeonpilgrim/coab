@@ -380,8 +380,8 @@ namespace engine
 
                     if (var_1 >= 0x78)
                     {
-                        ovr030.bigpic(var_1);
-                        ovr030.sub_7087A();
+                        ovr030.load_bigpic(var_1);
+                        ovr030.draw_bigpic();
                         gbl.byte_1D8AA = 0;
                     }
                     else
@@ -572,7 +572,7 @@ namespace engine
                     gbl.area_ptr.field_1CC == 0 &&
                     gbl.byte_1D5B4 != 0x50)
                 {
-                    ovr030.bigpic(0x79);
+                    ovr030.load_bigpic(0x79);
                 }
             }
             else
@@ -1267,7 +1267,7 @@ namespace engine
                     {
                         seg044.sound_sub_12194();
                     }
-                    ovr030.bigpic(0x79);
+                    ovr030.load_bigpic(0x79);
                 }
                 else
                 {

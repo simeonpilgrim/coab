@@ -101,7 +101,6 @@ namespace engine
             byte gameState;
             bool var_F;
             byte var_E;
-            bool var_4;
             bool var_3;
             char inputkey;
             byte loop_cx;
@@ -260,7 +259,8 @@ namespace engine
                         case 'V':
                             if (menuFlags[allow_view] == true)
                             {
-                                ovr020.viewPlayer(out var_4);
+                                bool dummyBool;
+                                ovr020.viewPlayer(out dummyBool);
                             }
                             break;
 

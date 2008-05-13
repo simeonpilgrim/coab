@@ -188,7 +188,7 @@ namespace engine
 
             if (arg_0 != 0)
             {
-                player.combat_team = (sbyte)((affect.field_3 & 0x40) >> 6);
+                player.combat_team = (CombatTeam)((affect.field_3 & 0x40) >> 6);
 
                 if (player.field_F7 == 0xB3)
                 {
@@ -199,9 +199,9 @@ namespace engine
             {
                 if ((affect.field_3 & 0x20) == 0)
                 {
-                    affect.field_3 = (byte)(20 + (player.combat_team << 6));
+                    affect.field_3 += (byte)(0x20 + (((int)player.combat_team) << 6));
 
-                    player.combat_team = (sbyte)(affect.field_3 >> 7);
+                    player.combat_team = (CombatTeam)(affect.field_3 >> 7);
                     player.quick_fight = QuickFight.True;
 
                     if (player.field_F7 <= 0x7F)
@@ -461,7 +461,7 @@ namespace engine
                 ovr024.sub_63014("collapses", Status.dead, player);
             }
 
-            player.combat_team = (sbyte)(affect.field_3 >> 4);
+            player.combat_team = (CombatTeam)(affect.field_3 >> 4);
             player.quick_fight = QuickFight.True;
             player.field_E9 = 0;
 
@@ -828,12 +828,11 @@ namespace engine
 
         internal static void sub_3B1C9(byte arg_0, object param, Player player)
         {
-            byte var_1;
             Affect affect = (Affect)param;
 
-            var_1 = (byte)((affect.field_3 & 0x10) >> 4);
+            CombatTeam team = (CombatTeam)((affect.field_3 & 0x10) >> 4);
 
-            if (player.combat_team == var_1)
+            if (player.combat_team == team)
             {
                 sub_3A087(arg_0, affect, player);
             }
@@ -1136,7 +1135,7 @@ namespace engine
                     player.actions.target = gbl.player_array[gbl.SortedCombatantList[1].player_index];
 
                     player.actions.can_cast = 0;
-                    player.combat_team = (sbyte)(player.actions.target.combat_team ^ 1);
+                    player.combat_team = ovr025.opposite_team(player.actions.target);
 
                     ovr025.DisplayPlayerStatusString(true, 10, "goes berzerk", player);
                 }
@@ -1148,7 +1147,7 @@ namespace engine
                     player.field_F7 = 0;
                 }
 
-                player.combat_team = 0;
+                player.combat_team = CombatTeam.Ours;
             }
         }
 
@@ -1917,7 +1916,7 @@ namespace engine
 
                 player.actions.target = gbl.player_array[gbl.SortedCombatantList[1].player_index];
 
-                player.combat_team = (sbyte)(player.actions.target.combat_team ^ 1);
+                player.combat_team = ovr025.opposite_team(player.actions.target);
             }
             else
             {
@@ -1926,7 +1925,7 @@ namespace engine
                     player.field_F7 = 0;
                 }
 
-                player.combat_team = (sbyte)affect.field_3;
+                player.combat_team = (CombatTeam)affect.field_3;
             }
         }
 

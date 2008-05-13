@@ -236,8 +236,6 @@ namespace engine
 
         internal static void Show3DSprite(DaxArray arg_0, byte arg_4)
         {
-            DaxBlock var_46;
-
             if (arg_4 < 1 || arg_4 > 3)
             {
                 seg051.Write(0, "Illegal range in Show3DSprite.", gbl.known01_02);
@@ -247,29 +245,29 @@ namespace engine
 
             if (arg_0.ptrs[arg_4 - 1].field_4 != null)
             {
-                var_46 = arg_0.ptrs[arg_4 - 1].field_4;
+                DaxBlock var_46 = arg_0.ptrs[arg_4 - 1].field_4;
                 seg040.OverlayBounded(arg_0.ptrs[arg_4 - 1].field_4, 1, 0, var_46.field_6 + 3 - 1, var_46.field_4 + 3 - 1);
                 seg040.DrawOverlay();
             }
         }
 
 
-        internal static void bigpic(byte block_id)
+        internal static void load_bigpic(byte block_id) /* bigpic */
         {
             DaxArrayFreeDaxBlocks(gbl.byte_1D556);
 
-            if (gbl.byte_1D5BA != block_id)
+            if (gbl.bigpic_block_id != block_id)
             {
-                seg040.load_dax(ref gbl.word_1D5B6, 0, 0, block_id, "bigpic" + gbl.game_area.ToString());
-                gbl.byte_1D5BA = block_id;
+                seg040.load_dax(ref gbl.bigpic_dax, 0, 0, block_id, "bigpic" + gbl.game_area.ToString());
+                gbl.bigpic_block_id = block_id;
             }
         }
 
 
-        internal static void sub_7087A()
+        internal static void draw_bigpic() /* sub_7087A */
         {
             seg037.draw8x8_04();
-            seg040.draw_picture(gbl.word_1D5B6, 1, 1, 0);
+            seg040.draw_picture(gbl.bigpic_dax, 1, 1, 0);
         }
     }
 }

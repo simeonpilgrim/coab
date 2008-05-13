@@ -261,7 +261,7 @@ namespace engine
                 System.Console.WriteLine("{0} {1} {2} {3} {4} {5} {6}",
                     i, itemNames[c], itemNames[b], itemNames[a],
                     it.type, o1, o20);
-                      
+
             }
         }
 
@@ -457,7 +457,7 @@ namespace engine
 
         internal static void display_AC(int y_offset, int x_offset, Player player)
         {
-            string var_100 = (0x3c - (int)player.ac ).ToString();
+            string var_100 = (0x3c - (int)player.ac).ToString();
 
             seg041.displayString(var_100, 0, 10, y_offset, x_offset);
         }
@@ -1108,7 +1108,6 @@ namespace engine
 
         internal static void DisplayPlayerStatusString(bool clearDisplay, int lineY, string text, Player player) /* sub_67788 */
         {
-
             if (gbl.game_state == 5)
             {
                 seg037.draw8x8_clear_area(0x15, 0x26, lineY, 0x17);
@@ -1118,19 +1117,12 @@ namespace engine
             }
             else
             {
-                byte var_101;
-                if (gbl.byte_1D8A8 != 0)
-                {
-                    var_101 = 0x12;
-                }
-                else
-                {
-                    var_101 = 0x11;
-                }
-                seg037.draw8x8_clear_area(0x16, 0x26, var_101, 1);
+                int line_y = gbl.displayPlayerStatusLine18 ? 18 : 17;
 
-                displayPlayerName(false, var_101 + 1, 1, player);
-                seg041.press_any_key(text, true, 0, 10, 0x16, 0x26, (byte)(var_101 + 2), 1);
+                seg037.draw8x8_clear_area(0x16, 0x26, line_y, 1);
+
+                displayPlayerName(false, line_y + 1, 1, player);
+                seg041.press_any_key(text, true, 0, 10, 0x16, 0x26, line_y + 2, 1);
             }
 
             if (clearDisplay == true)
@@ -1162,7 +1154,7 @@ namespace engine
             {
                 color = 0x0C;
             }
-            else if (player.combat_team == 1)
+            else if (player.combat_team == CombatTeam.Enemy)
             {
                 color = 0x0E;
             }
@@ -1523,7 +1515,7 @@ namespace engine
                     for (frame = 0; frame <= 3; frame++)
                     {
                         Display.SaveVidRam();
-                        
+
                         seg040.OverlayBounded(gbl.missile_dax, 5, frame, rowY, colX);
                         seg040.DrawOverlay();
 
@@ -1613,7 +1605,7 @@ namespace engine
 
                 if (gbl.game_state == 5)
                 {
-                    if (player.combat_team == 0)
+                    if (player.combat_team == CombatTeam.Ours)
                     {
                         gbl.friends_count--;
                     }
@@ -1654,36 +1646,24 @@ namespace engine
         }
 
 
-        internal static sbyte on_our_team(Player player)
+        internal static CombatTeam opposite_team(Player player) /* on_our_team */
         {
-            sbyte ret_val;
-
-            if (player.combat_team == 0)
-            {
-                ret_val = 1;
-            }
-            else
-            {
-                ret_val = 0;
-            }
-
-            return ret_val;
+            return (player.combat_team == CombatTeam.Ours) ? CombatTeam.Enemy : CombatTeam.Ours;
         }
 
 
         internal static void count_teams()
         {
-            Player player;
-
             gbl.friends_count = 0;
             gbl.foe_count = 0;
-            player = gbl.player_next_ptr;
+
+            Player player = gbl.player_next_ptr;
 
             while (player != null)
             {
                 if (player.in_combat == true)
                 {
-                    if (player.combat_team == 0)
+                    if (player.combat_team == CombatTeam.Ours)
                     {
                         gbl.friends_count++;
                     }
@@ -1702,8 +1682,8 @@ namespace engine
         {
             int ret_val;
 
-            ovr032.Rebuild_SortedCombatantList(gbl.mapToBackGroundTile, 
-                ovr033.PlayerMapSize(player), 0xff, arg_0, 
+            ovr032.Rebuild_SortedCombatantList(gbl.mapToBackGroundTile,
+                ovr033.PlayerMapSize(player), 0xff, arg_0,
                 ovr033.PlayerMapYPos(player), ovr033.PlayerMapXPos(player));
 
             if (gbl.sortedCombatantCount > 0)
@@ -1712,7 +1692,7 @@ namespace engine
 
                 for (int i = 1; i <= gbl.sortedCombatantCount; i++)
                 {
-                    if (gbl.player_array[gbl.SortedCombatantList[i].player_index].combat_team == on_our_team(player))
+                    if (gbl.player_array[gbl.SortedCombatantList[i].player_index].combat_team == opposite_team(player))
                     {
                         tmpCount++;
                         gbl.SortedCombatantList[tmpCount] = new SortedCombatant(gbl.SortedCombatantList[i]);
@@ -1740,15 +1720,15 @@ namespace engine
 
             gbl.mapToBackGroundTile.field_6 = 1;
 
-            ovr032.Rebuild_SortedCombatantList(gbl.mapToBackGroundTile, 
-                ovr033.PlayerMapSize(attacker), 0xff, 0xff, 
-                ovr033.PlayerMapYPos(attacker), 
+            ovr032.Rebuild_SortedCombatantList(gbl.mapToBackGroundTile,
+                ovr033.PlayerMapSize(attacker), 0xff, 0xff,
+                ovr033.PlayerMapYPos(attacker),
                 ovr033.PlayerMapXPos(attacker));
 
             gbl.mapToBackGroundTile.field_6 = 0;
-            
+
             int i = 0;
-            while (gbl.player_array[gbl.SortedCombatantList[i].player_index] != target && 
+            while (gbl.player_array[gbl.SortedCombatantList[i].player_index] != target &&
                 i < (gbl.sortedCombatantCount - 1))
             {
                 i++;
@@ -1934,7 +1914,6 @@ namespace engine
                 default:
                     throw new System.ArgumentOutOfRangeException();
             }
-
         }
 
 
@@ -2254,14 +2233,13 @@ namespace engine
         internal static bool bandage(bool bandage_flag)
         {
             bool someone_bleeding = false;
-            Player player_ptr;
 
-            player_ptr = gbl.player_next_ptr;
+            Player player_ptr = gbl.player_next_ptr;
 
             while (player_ptr != null)
             {
                 if (player_ptr.actions.field_13 == 0 &&
-                    player_ptr.combat_team == 0 &&
+                    player_ptr.combat_team == CombatTeam.Ours &&
                     player_ptr.health_status == Status.dying)
                 {
                     someone_bleeding = true;

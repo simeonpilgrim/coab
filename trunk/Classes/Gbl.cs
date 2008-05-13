@@ -329,14 +329,14 @@ namespace Classes
         public static string byte_1D5AB;
         public static byte byte_1D5B4; // byte_1D5B4
         public static byte byte_1D5B5;
-        public static byte byte_1D5BA;
+        public static byte bigpic_block_id; /* byte_1D5BA */
         public static byte byte_1D5BE;
         public static bool displayInput_specialKeyPressed; // byte_1D5BF displayInput
         public static int sp_target_count; // byte_1D75E
         public static int targetX; // byte_1D883
         public static int targetY; // byte_1D884
         public static byte byte_1D88D;
-        public static byte byte_1D8A8;
+        public static bool displayPlayerStatusLine18; /* byte_1D8A8 */
         public static byte byte_1D8AA;
         public static byte byte_1D8AC;
         public static byte byte_1D8B0;
@@ -441,7 +441,7 @@ namespace Classes
         public static ushort ecl_initial_entryPoint; // word_1B2DB
         public static short word_1B2EC;
         public static DaxBlock dword_1C8FC;
-        public static DaxBlock word_1D5B6;
+        public static DaxBlock bigpic_dax; /* word_1D5B6 */
         public static short word_1D5BC;
         public static int displayInputCentiSecondWait; // word_1D5C0 & word_1D5C2
          public static char displayInputTimeoutValue; // byte_1D5C4
@@ -451,7 +451,7 @@ namespace Classes
         public static Player dword_1D87F;
 
         public static RestTime unk_1D890 = new RestTime();
-        public static short word_1D8A6;
+        public static int rest_10_seconds; // word_1D8A6 seg600:7596
         public static short word_1D914;
         public static short word_1D916;
         public static short word_1D918;

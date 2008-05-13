@@ -224,21 +224,10 @@ namespace engine
             bool items_on_ground;
             bool money_on_ground;
             char var_2E;
-            bool var_2D;
             bool var_2C;
-            string var_2B;
-            string var_29;
 
             gbl.game_state = 1;
-
-            if( gbl.area_ptr.field_1CC == 0 )
-            { 
-                gbl.byte_1EE7E = true;
-            }
-            else
-            {
-                gbl.byte_1EE7E = false;
-            }
+            gbl.byte_1EE7E = (gbl.area_ptr.field_1CC == 0);
 
             ovr025.load_pic();
             gbl.byte_1EE7E = true;
@@ -249,9 +238,8 @@ namespace engine
 				gbl.pooled_money[ var_1 ] = 0;
 			}
 
-            var_2B = string.Empty;
             gbl.something01 = false;
-            var_2D = false;
+            bool var_2D = false;
             item_ptr = gbl.item_pointer;
 
             while( item_ptr != null )
@@ -265,16 +253,17 @@ namespace engine
             {
                 ovr022.treasureOnGround( out items_on_ground, out money_on_ground );
 
+                string text;
                 if( money_on_ground == true )
                 {
-                    var_29 = "Buy View Take Pool Share Appraise Exit";
+                    text = "Buy View Take Pool Share Appraise Exit";
                 }
                 else
                 {
-                    var_29 = "Buy View Pool Appraise Exit";
+                    text = "Buy View Pool Appraise Exit";
                 }
 
-                var_2E = ovr027.displayInput( out var_2C, false, 1, 15, 10, 13, var_29, var_2B );
+                var_2E = ovr027.displayInput(out var_2C, false, 1, 15, 10, 13, text, string.Empty);
 
                 switch ( var_2E )
                 {
@@ -283,7 +272,8 @@ namespace engine
                         break;
 
                     case 'V':
-                        ovr020.viewPlayer( out var_2C );
+                        bool dummyBool;
+                        ovr020.viewPlayer(out dummyBool);
                         break;
 
                     case 'T':
@@ -312,11 +302,10 @@ namespace engine
 
                         if( money_on_ground == true )
                         {
-                            var_29 = "~Yes ~No";
                             seg041.press_any_key( "As you Leave the Shopkeeper says, \"Excuse me but you have Left Some Money here.\"  ", true, 0, 0x0a, 0x16, 0x26, 0x11, 1 );
                             seg041.press_any_key( "Do you want to go back and get your Money?", false, 0, 0x0f, 0x16, 0x26, 0x11, 1 );
-                
-                            var_31 = ovr008.sub_317AA( false, 0, 0x0f, 0x0a, 0x0d, var_29, var_2B );
+
+                            var_31 = ovr008.sub_317AA(false, 0, 0x0f, 0x0a, 0x0d, "~Yes ~No", string.Empty);
                 
                             if( var_31 == 1 )
                             {

@@ -2180,7 +2180,7 @@ namespace engine
                         }
                         else
                         {
-                            ovr030.bigpic(0x79);
+                            ovr030.load_bigpic(0x79);
                         }
 
                         seg043.clear_keyboard();
