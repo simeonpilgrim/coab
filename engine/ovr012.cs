@@ -119,7 +119,7 @@ namespace engine
 
             gbl.byte_1D556 = new DaxArray();
 
-            gbl.word_1D5B6 = null;
+            gbl.bigpic_dax = null;
             gbl.item_pointer = null;
 
             gbl.mapPosX = 0;
@@ -167,7 +167,7 @@ namespace engine
             gbl.area2_ptr.field_67C = 0;
             gbl.word_1D5BC = 1;
             gbl.combat_type = gbl.combatType.normal;
-            gbl.byte_1D8A8 = 0;
+            gbl.displayPlayerStatusLine18 = false;
             gbl.byte_1EE89 = 0;
             gbl.byte_1EE8A = 0;
             gbl.byte_1EE8B = 0;
@@ -185,7 +185,7 @@ namespace engine
             gbl.byte_1D912 = 0x0DB;
             gbl.byte_1EE95 = 0;
             gbl.byte_1D910 = true;
-            gbl.byte_1D5BA = 0x0FF;
+            gbl.bigpic_block_id = 0x0FF;
             gbl.byte_1EF9A = 0;
             gbl.byte_1EF9B = 0;
             gbl.byte_1B2F1 = 0;
@@ -285,7 +285,7 @@ namespace engine
             gbl.area2_ptr.field_67C = 0;
             gbl.word_1D5BC = 1;
             gbl.combat_type = gbl.combatType.normal;
-            gbl.byte_1D8A8 = 0;
+            gbl.displayPlayerStatusLine18 = false;
             gbl.byte_1EE89 = 0;
             gbl.byte_1EE8A = 0;
             gbl.byte_1EE8B = 0;
@@ -303,7 +303,7 @@ namespace engine
             gbl.byte_1D912 = 0x0DB;
             gbl.byte_1EE95 = 0;
             gbl.byte_1D910 = true;
-            gbl.byte_1D5BA = 0x0FF;
+            gbl.bigpic_block_id = 0x0FF;
             gbl.byte_1EF9A = 0;
             gbl.byte_1EF9B = 0;
             gbl.byte_1B2F1 = 0;

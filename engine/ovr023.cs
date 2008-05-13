@@ -936,7 +936,7 @@ namespace engine
         internal static void sub_5D2E1(ref bool arg_0, byte arg_4, QuickFight quick_fight, byte spell_id)
         {
             Player caster = gbl.player_ptr;
-            byte var_1 = 1;
+            bool var_1 = true;
 
             if (gbl.game_state != 5 &&
                 gbl.unk_19AEC[spell_id].field_7 == 0)
@@ -963,7 +963,7 @@ namespace engine
                 }
 
                 arg_4 = 0;
-                var_1 = 0;
+                var_1 = false;
             }
 
             Affect dummyAffect;
@@ -975,7 +975,7 @@ namespace engine
                 {
                     cast_spell_text(spell_id, "miscasts", caster);
                     arg_4 = 0;
-                    var_1 = 0;
+                    var_1 = false;
                 }
             }
 
@@ -984,13 +984,13 @@ namespace engine
                 cast_spell_text(spell_id, "casts", caster);
             }
 
-            while (var_1 != 0)
+            while (var_1 == true)
             {
                 gbl.dword_1D5CA(out arg_0, quick_fight, spell_id);
 
                 if (arg_0 == true)
                 {
-                    var_1 = 0;
+                    var_1 = false;
 
                     if (gbl.game_state == 5)
                     {
@@ -1048,7 +1048,7 @@ namespace engine
                 {
                     if (gbl.game_state != 5)
                     {
-                        var_1 = 0;
+                        var_1 = false;
                     }
                     else
                     {
@@ -1061,7 +1061,7 @@ namespace engine
                                 ovr025.clear_spell(spell_id, caster);
                             }
 
-                            var_1 = 0;
+                            var_1 = false;
                         }
                     }
                 }
@@ -1344,13 +1344,14 @@ namespace engine
         }
 
 
-        internal static void sub_5DCA0(string arg_0, sbyte arg_4)
+        internal static void sub_5DCA0(string arg_0, CombatTeam team)
         {
             gbl.byte_1D2C7 = 1;
 
             for (int i = 1; i <= gbl.sp_target_count; i++)
             {
-                if (gbl.sp_targets[i] != null && ( gbl.sp_targets[i].combat_team != arg_4 ||
+                if (gbl.sp_targets[i] != null &&
+                    (gbl.sp_targets[i].combat_team != team ||
                     (gbl.spell_id == 1 && gbl.game_state == 5 &&
                      ovr025.near_enemy(1, gbl.sp_targets[i]) > 0)))
                 {
@@ -1370,7 +1371,7 @@ namespace engine
 
         internal static void is_Cursed()
         {
-            sub_5DCA0("is Cursed", ovr025.on_our_team(gbl.player_ptr));
+            sub_5DCA0("is Cursed", ovr025.opposite_team(gbl.player_ptr));
         }
 
 
@@ -1425,7 +1426,7 @@ namespace engine
             }
             else
             {
-                sub_5CF7F("is charmed", 0, 0, true, (byte)((gbl.player_ptr.combat_team << 7) + ovr025.sub_6886F(gbl.spell_id)), gbl.spell_id);
+                sub_5CF7F("is charmed", 0, 0, true, (byte)(((int)gbl.player_ptr.combat_team << 7) + ovr025.sub_6886F(gbl.spell_id)), gbl.spell_id);
 
                 Affect affect;
 
@@ -1995,7 +1996,7 @@ namespace engine
                 {
                     if (ovr033.sub_7515A(true, ovr033.PlayerMapYPos(player), ovr033.PlayerMapXPos(player), player) == true)
                     {
-                        byte var_2 = (byte)((player.combat_team << 4) + ovr025.sub_6886F(gbl.spell_id));
+                        byte var_2 = (byte)(((int)player.combat_team << 4) + ovr025.sub_6886F(gbl.spell_id));
 
                         player.combat_team = gbl.player_ptr.combat_team;
                         player.quick_fight = QuickFight.True;
@@ -2343,7 +2344,7 @@ namespace engine
 
         internal static void is_praying()
         {
-            byte tmpByte = (byte)((gbl.player_ptr.combat_team << 4) + ovr025.sub_6886F(gbl.spell_id));
+            byte tmpByte = (byte)(((int)gbl.player_ptr.combat_team << 4) + ovr025.sub_6886F(gbl.spell_id));
 
             sub_5CF7F("is praying", 0, 0, false, tmpByte, gbl.spell_id);
         }
@@ -2442,7 +2443,7 @@ namespace engine
         }
 
 
-        internal static void sub_5F87B(string text, sbyte combatTeam, Affects affect)
+        internal static void sub_5F87B(string text, CombatTeam combatTeam, Affects affect)
         {
             byte var_2A;
 
@@ -2655,7 +2656,7 @@ namespace engine
 
         internal static void sub_5FD2E()
         {
-            sub_5F87B("is Slowed", ovr025.on_our_team(gbl.player_ptr), Affects.haste);
+            sub_5F87B("is Slowed", ovr025.opposite_team(gbl.player_ptr), Affects.haste);
         }
 
 
@@ -3849,7 +3850,7 @@ namespace engine
 
                 for (var_4 = 1; var_4 <= gbl.sp_target_count; var_4++)
                 {
-                    if (ovr025.on_our_team(player) == gbl.sp_targets[var_4].combat_team)
+                    if (ovr025.opposite_team(player) == gbl.sp_targets[var_4].combat_team)
                     {
                         gbl.byte_1DA70 = false;
                     }

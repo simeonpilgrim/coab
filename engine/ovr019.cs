@@ -547,9 +547,9 @@ namespace engine
 
             seg041.displayAndDebug( "Press any key to continue.", 0, 13 );
 			ovr027.redraw_screen();
-			ovr030.bigpic( 0x7A );
+			ovr030.load_bigpic( 0x7A );
 
-            ovr030.sub_7087A();
+            ovr030.draw_bigpic();
 
             seg041.press_any_key( aYouAreTeleport, true, 0, 10, 0x16, 0x26, 0x11, 1 );
             seg041.press_any_key( aHaveAlreadyBeg, false, 0, 10, 0x16, 0x26, 0x11, 1 );

@@ -35,7 +35,7 @@ namespace engine
                     action.delay = 1;
                 }
 
-                if (((player.combat_team + 1) & gbl.area2_ptr.field_596) != 0)
+                if ((((int)player.combat_team + 1) & gbl.area2_ptr.field_596) != 0)
                 {
                     action.delay -= 6;
                 }
@@ -1905,7 +1905,7 @@ namespace engine
 
             while (player != null)
             {
-                if (player.combat_team == 1)
+                if (player.combat_team == CombatTeam.Enemy)
                 {
                     if (player.in_combat == true)
                     {
@@ -1936,7 +1936,7 @@ namespace engine
 
             while (var_7 != null)
             {
-                if (ovr025.on_our_team(arg_0) == var_7.combat_team &&
+                if (ovr025.opposite_team(arg_0) == var_7.combat_team &&
                     var_7.in_combat == true)
                 {
                     var_3 = (byte)(sub_3E124(var_7) >> 1);
@@ -1959,7 +1959,7 @@ namespace engine
             Player player;
             bool var_1;
 
-            if (ovr025.on_our_team(playerA) == playerB.combat_team ||
+            if (ovr025.opposite_team(playerA) == playerB.combat_team ||
                 playerB.quick_fight != 0)
             {
                 var_1 = true;
@@ -1981,7 +1981,7 @@ namespace engine
                     if (player.health_status == Status.okey &&
                         player.field_F7 > 0x7F)
                     {
-                        player.combat_team = 1;
+                        player.combat_team = CombatTeam.Enemy;
                         player.actions.target = null;
                     }
 
@@ -2887,7 +2887,7 @@ namespace engine
 
                 while (player != null)
                 {
-                    if (player.combat_team == 1)
+                    if (player.combat_team == CombatTeam.Enemy)
                     {
                         player.in_combat = false;
                         player.health_status = Status.dead;

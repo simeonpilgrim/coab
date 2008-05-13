@@ -137,7 +137,7 @@ namespace engine
 
                 gbl.player_ptr = player;
 
-                gbl.byte_1D910 = ( (player.combat_team == 0) || (ovr033.sub_74761(0, player) == true) );
+                gbl.byte_1D910 = ((player.combat_team == CombatTeam.Ours) || (ovr033.sub_74761(0, player) == true));
 
                 ovr033.sub_75356(true, 2, player);
                 ovr025.sub_66C20(player);

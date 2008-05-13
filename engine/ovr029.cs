@@ -40,7 +40,7 @@ namespace engine
                 }
                 else if (gbl.byte_1D8AA != 0)
                 {
-                    ovr030.sub_7087A();
+                    ovr030.draw_bigpic();
                 }
 
                 gbl.byte_1D8AA = 0;

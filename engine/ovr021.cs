@@ -309,7 +309,7 @@ namespace engine
 
         static Set unk_58731 = new Set(0x000B, new byte[] { 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x20, 0x00, 0x04 });
 
-        internal static bool reseting_time_menu() /* sub_58751 */
+        internal static bool resting_time_menu() /* sub_58751 */
         {
             char input_key;
 
@@ -415,23 +415,20 @@ namespace engine
         }
 
 
-        internal static void reset_heal(bool show_text)
+        internal static void rest_heal(bool show_text) /* reset_heal */
         {
-            Player player;
-            byte var_1;
+            gbl.rest_10_seconds++;
 
-            gbl.word_1D8A6++;
-
-            if (gbl.word_1D8A6 >= 0x120)
+            if (gbl.rest_10_seconds >= (8*36))
             {
-                var_1 = 0;
-                player = gbl.player_next_ptr;
+                bool update_ui = false;
+                Player player = gbl.player_next_ptr;
 
                 while (player != null)
                 {
                     if (ovr024.heal_player(0, 1, player) == true)
                     {
-                        var_1 = 1;
+                        update_ui = true;
                     }
 
                     player = player.next_player;
@@ -444,14 +441,14 @@ namespace engine
 
                 seg041.displayString("The Whole Party Is Healed", 0, 10, 19, 1);
 
-                if (var_1 != 0)
+                if (update_ui)
                 {
                     ovr025.Player_Summary(gbl.player_ptr);
                 }
 
                 seg041.GameDelay();
                 ovr025.ClearPlayerTextArea();
-                gbl.word_1D8A6 = 0;
+                gbl.rest_10_seconds = 0;
             }
         }
 
@@ -602,10 +599,10 @@ namespace engine
         }
 
 
-        internal static bool reseting(bool interactive_resting)
+        internal static bool resting(bool interactive_resting) /* reseting */
         {
-            bool stop_reseting;
-            bool var_1 = false;
+            bool stop_resting;
+            bool resting_interupted = false;
 
             int var_B = 1;
             Player var_5 = gbl.player_next_ptr;
@@ -627,18 +624,18 @@ namespace engine
                 display_resting_time(0);
             }
 
-            gbl.byte_1D8A8 = 1;
+            gbl.displayPlayerStatusLine18 = true;
 
             if (interactive_resting == true)
             {
-                stop_reseting = !reseting_time_menu();
+                stop_resting = !resting_time_menu();
             }
             else
             {
-                stop_reseting = false;
+                stop_resting = false;
             }
 
-            while (stop_reseting == false &&
+            while (stop_resting == false &&
                 (gbl.unk_1D890.field_8 > 0 ||
                   gbl.unk_1D890.field_6 > 0 ||
                   gbl.unk_1D890.field_4 > 0 ||
@@ -651,7 +648,7 @@ namespace engine
 
                     if (ovr027.yes_no(15, 10, 13, "Stop Resting? ") == 'Y')
                     {
-                        stop_reseting = true;
+                        stop_resting = true;
                     }
                     else
                     {
@@ -659,7 +656,7 @@ namespace engine
                     }
                 }
 
-                if (stop_reseting == false)
+                if (stop_resting == false)
                 {
                     sub_5849F(1, 5);
                     display_counter++;
@@ -672,7 +669,7 @@ namespace engine
                     }
 
                     sub_583FA(1, 5);
-                    reset_heal(interactive_resting);
+                    rest_heal(interactive_resting);
                     sub_58B4D();
                     sub_58C03(ref var_C);
 
@@ -689,8 +686,8 @@ namespace engine
                                 ovr025.ClearPlayerTextArea();
                                 display_resting_time(0);
                                 seg041.displayString("Your repose is suddenly interrupted!", 0, 15, 0x13, 1);
-                                stop_reseting = true;
-                                var_1 = true;
+                                stop_resting = true;
+                                resting_interupted = true;
                                 seg041.GameDelay();
                             }
                         }
@@ -699,9 +696,9 @@ namespace engine
             }
 
             seg037.draw8x8_clear_area(0x16, 0x26, 0x11, 1);
-            gbl.byte_1D8A8 = 0;
+            gbl.displayPlayerStatusLine18 = false;
 
-            return var_1;
+            return resting_interupted;
         }
     }
 }

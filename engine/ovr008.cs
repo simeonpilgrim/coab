@@ -497,12 +497,12 @@ namespace engine
             }
             else if (arg_4 == 0x10C)
             {
-                if (gbl.player_ptr.combat_team == 0 &&
+                if (gbl.player_ptr.combat_team == CombatTeam.Ours &&
                     gbl.player_ptr.quick_fight != 0)
                 {
                     return_val = 0x80;
                 }
-                else if (gbl.player_ptr.combat_team == 1)
+                else if (gbl.player_ptr.combat_team == CombatTeam.Enemy)
                 {
                     return_val = 0x81;
                 }
@@ -690,17 +690,17 @@ namespace engine
                 switch (set_value)
                 {
                     case 0:
-                        gbl.player_ptr.combat_team = 0;
+                        gbl.player_ptr.combat_team = CombatTeam.Ours;
                         gbl.player_ptr.quick_fight = 0;
                         break;
 
                     case 0x80:
-                        gbl.player_ptr.combat_team = 0;
+                        gbl.player_ptr.combat_team = CombatTeam.Ours;
                         gbl.player_ptr.quick_fight = QuickFight.True;
                         break;
 
                     case 0x81:
-                        gbl.player_ptr.combat_team = 1;
+                        gbl.player_ptr.combat_team = CombatTeam.Enemy;
                         gbl.player_ptr.quick_fight = QuickFight.True;
                         break;
                 }
@@ -1474,8 +1474,8 @@ namespace engine
                 DuelMaster.next_player = null;
                 DuelMaster.name = "ROLF";
                 DuelMaster.quick_fight = QuickFight.True;
+                DuelMaster.combat_team = CombatTeam.Enemy;
 
-                DuelMaster.combat_team = 1;
                 DuelMaster.field_F7 = 0xB2;
                 DuelMaster.icon_id = gbl.byte_1D92D;
 

@@ -556,7 +556,6 @@ namespace engine
 
         internal static char sub_438DF( )
         {
-            bool var_2E;
             bool var_4;
             char var_3 = '\0'; /* simeon */ 
             bool var_2;
@@ -599,7 +598,8 @@ namespace engine
 
 							case 'V':
 								gbl.byte_1D5BE = 1;
-								ovr020.viewPlayer( out var_2E );
+                                bool dummyBool;
+								ovr020.viewPlayer( out dummyBool );
 								break;
 
 							case 'E':

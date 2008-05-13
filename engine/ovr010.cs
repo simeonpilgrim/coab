@@ -124,7 +124,7 @@ namespace engine
 
             bool result = false;
 
-            if (gbl.player_ptr.combat_team == 0)
+            if (gbl.player_ptr.combat_team == CombatTeam.Ours)
             {
                 var_3 = -2;
             }
@@ -140,7 +140,7 @@ namespace engine
                 Player tmpPlayer = gbl.player_array[gbl.SortedCombatantList[i].player_index];
                 Struct_19AEC tmpS = gbl.unk_19AEC[arg_2];
 
-                if (ovr025.on_our_team(gbl.player_ptr) != tmpPlayer.combat_team &&
+                if (ovr025.opposite_team(gbl.player_ptr) != tmpPlayer.combat_team &&
                     tmpS.field_8 != 1 &&
                     ovr024.do_saving_throw(var_3, tmpS.field_9, tmpPlayer) == false)
                 {
@@ -208,7 +208,7 @@ namespace engine
             var_2 = 7;
             var_3 = ovr024.roll_dice(7, 1);
 
-            int teamCount = (ovr025.on_our_team(player) == 0) ? gbl.friends_count : gbl.foe_count;
+            int teamCount = (ovr025.opposite_team(player) == 0) ? gbl.friends_count : gbl.foe_count;
             if (player.actions.field_2 != 0 &&
                 teamCount > 0 &&
                 gbl.area_ptr.can_cast_spells == false)
@@ -292,7 +292,7 @@ namespace engine
             if (var_5F > 0 &&
                 (player.field_F7 > 0x7F || gbl.magicOn == true))
             {
-                if ((ovr025.on_our_team(player)== 0 ? gbl.friends_count : gbl.foe_count) > 0)
+                if ((ovr025.opposite_team(player)== 0 ? gbl.friends_count : gbl.foe_count) > 0)
                 {
                     while (var_5D <= var_5B && var_62 == 0)
                     {
@@ -433,7 +433,7 @@ namespace engine
                 {
                     if (player.field_F7 < 0x80 ||
                        (player.field_F7 > 0x7F && gbl.enemyHealthPercentage <= (ovr024.roll_dice(100, 1) + gbl.byte_1D2CC)) ||
-                        player.combat_team == 1)
+                        player.combat_team == CombatTeam.Enemy)
                     {
                         if (player.actions.field_14 != 0 ||
                             player.field_159 != null ||
@@ -448,7 +448,7 @@ namespace engine
                                 player.actions.field_15 = ovr024.roll_dice(2, 1);
                                 var_1 = (byte)(gbl.mapDirection - (((gbl.mapDirection + 2) % 4) / 2));
 
-                                if (player.combat_team == 0)
+                                if (player.combat_team == CombatTeam.Ours)
                                 {
                                     var_1 += 4;
                                 }
@@ -518,7 +518,7 @@ namespace engine
 
                             if (var_5 == false)
                             {
-                                gbl.byte_1D910 = (gbl.byte_1D90E || ovr033.sub_74761(0, player) || player.combat_team == 0);
+                                gbl.byte_1D910 = (gbl.byte_1D90E || ovr033.sub_74761(0, player) || player.combat_team == CombatTeam.Ours);
 
                                 ovr033.draw_74B3F(0, 0, var_2, player);
                                 ovr014.sub_3E954(player.actions.direction, player);
@@ -574,7 +574,7 @@ namespace engine
 
             ovr024.work_on_00(player, 14);
 
-            if (player.combat_team == 0 &&
+            if (player.combat_team == CombatTeam.Ours &&
                 ovr025.bandage(true) == true)
             {
                 player.actions.delay = 0;
@@ -639,7 +639,7 @@ namespace engine
 
                     if (player01 != null &&
                         (player01.in_combat == false ||
-                        player01.combat_team == 0))
+                        player01.combat_team == CombatTeam.Ours))
                     {
                         player01 = null;
                     }
@@ -868,7 +868,7 @@ namespace engine
 
                     if (gbl.byte_1D2CC < (100 - gbl.area2_ptr.field_58C) ||
                         gbl.byte_1D2CC == 0 ||
-                        player.combat_team == 0)
+                        player.combat_team == CombatTeam.Ours)
                     {
                         var_2 = ovr014.sub_40E8F(player);
 

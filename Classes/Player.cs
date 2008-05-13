@@ -131,6 +131,12 @@ namespace Classes
         public byte max;
     }
 
+    public enum CombatTeam
+    {
+        Ours = 0,
+        Enemy = 1
+    }
+
     /// <summary>
     /// Summary description for Player.
     /// </summary>
@@ -612,8 +618,8 @@ namespace Classes
         public Status health_status; // 0x195
         [DataOffset(0x196, DataType.Bool)]
         public bool in_combat; // 0x196
-        [DataOffset(0x197, DataType.SByte)]
-        public sbyte combat_team; // 0x197 0 - our team, 1 - enemy
+        [DataOffset(0x197, DataType.IByte)]
+        public CombatTeam combat_team; // 0x197 0 - our team, 1 - enemy
         [DataOffset(0x198, DataType.IByte)]
         public QuickFight quick_fight; // 0x198 Auto fight. 1 yes, 0 no.
         [DataOffset(0x199, DataType.SByte)]

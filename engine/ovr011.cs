@@ -823,14 +823,14 @@ namespace engine
 
                 player.actions.direction = unk_1660C[gbl.mapDirection >> 1];
 
-                if (player.combat_team == 1)
+                if (player.combat_team == CombatTeam.Enemy)
                 {
                     player.actions.direction = (byte)((player.actions.direction + 4) % 8);
                 }
 
                 var_6 = (byte)(player.field_F7 & 0x7f);
 
-                if (player.combat_team == 0)
+                if (player.combat_team == CombatTeam.Ours)
                 {
                     if (player.actions.field_13 == 1)
                     {
@@ -1147,7 +1147,7 @@ namespace engine
 
                 gbl.player_array[loop_var] = player_ptr;
 
-                gbl.currentTeam = player_ptr.combat_team;
+                gbl.currentTeam = (sbyte)player_ptr.combat_team;
 
                 gbl.CombatMap[loop_var].field_2 = loop_var;
                 gbl.CombatMap[loop_var].size = (byte)(player_ptr.field_DE & 7);
@@ -1217,8 +1217,8 @@ namespace engine
 
             seg040.free_dax_block(ref gbl.headX_dax);
             seg040.free_dax_block(ref gbl.bodyX_dax);
-            seg040.free_dax_block(ref gbl.word_1D5B6);
-            gbl.byte_1D5BA = 0xff;
+            seg040.free_dax_block(ref gbl.bigpic_dax);
+            gbl.bigpic_block_id = 0xff;
             gbl.current_head_id = 0xff;
             gbl.current_body_id = 0xff;
             ovr027.redraw_screen();

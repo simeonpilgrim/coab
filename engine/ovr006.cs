@@ -31,7 +31,7 @@ namespace engine
 				{
 					item = player.itemsPtr;
 					
-					if( player.combat_team == 1 &&
+					if( player.combat_team == CombatTeam.Enemy &&
 						player.health_status != Status.okey &&
 						player.health_status != Status.running )
 					{
@@ -258,7 +258,7 @@ namespace engine
                         player.health_status == Status.animated ||
                         player.health_status == Status.okey )
                     {
-                        if( player.combat_team == 0 &&
+                        if (player.combat_team == CombatTeam.Ours &&
                             player.field_F7 < 0x80 )
                         {
                             gbl.byte_1B2F0 = 0;
@@ -384,7 +384,7 @@ namespace engine
                 {
                     if( player.in_combat == true &&
                         player.health_status == Status.okey &&
-                        player.combat_team != 1 )
+                        player.combat_team == CombatTeam.Ours)
                     {
                         gbl.byte_1EE86 = 1;
                         calc_battle_exp( ref gbl.exp_to_add );
@@ -645,22 +645,22 @@ namespace engine
 
             do
             {
-                ovr022.treasureOnGround( out items_present, out money_present );
+                ovr022.treasureOnGround(out items_present, out money_present);
 
                 text = "View Pool Exit";
                 suffix = " Exit";
                 bool can_detect_magic = false;
                 int index = 0;
 
-                if( items_present == true )
+                if (items_present == true)
                 {
                     while (index < gbl.max_spells && can_detect_magic == false)
                     {
-                        if( gbl.player_ptr.spell_list[index] == 5 ||
+                        if (gbl.player_ptr.spell_list[index] == 5 ||
                             gbl.player_ptr.spell_list[index] == 11 ||
-                            gbl.player_ptr.spell_list[index] == 0x4D )
+                            gbl.player_ptr.spell_list[index] == 0x4D)
                         {
-                            if( gbl.player_ptr.in_combat == true )
+                            if (gbl.player_ptr.in_combat == true)
                             {
                                 can_detect_magic = true;
                                 var_10B = gbl.player_ptr.spell_list[index];
@@ -676,29 +676,30 @@ namespace engine
                     suffix = " Detect Exit";
                 }
 
-                if( money_present == true )
+                if (money_present == true)
                 {
                     text = "View Take Pool Share" + suffix;
                 }
-                else if( items_present == true )
+                else if (items_present == true)
                 {
                     text = "View Take Pool" + suffix;
                 }
 
-                var_104 = ovr027.displayInput( out ctrl_key, true, 1, 15, 10, 13, text, var_108 );
+                var_104 = ovr027.displayInput(out ctrl_key, true, 1, 15, 10, 13, text, var_108);
 
-                switch( var_104 )
+                switch (var_104)
                 {
                     case 'V':
-                        ovr020.viewPlayer( out ctrl_key );
+                        bool dummyBool;
+                        ovr020.viewPlayer(out dummyBool);
                         break;
 
                     case 'T':
-                        take_treasure( ref items_present, ref money_present );
+                        take_treasure(ref items_present, ref money_present);
                         break;
 
                     case 'P':
-                        if( ctrl_key == false )
+                        if (ctrl_key == false)
                         {
                             ovr022.poolMoney();
                         }
@@ -709,22 +710,20 @@ namespace engine
                         break;
 
                     case 'D':
-                        ovr023.sub_5D2E1( ref ctrl_key, 0, 0, var_10B );
+                        ovr023.sub_5D2E1(ref ctrl_key, 0, 0, var_10B);
                         break;
 
                     case 'E':
                     case '\0':
-                        ovr022.treasureOnGround( out items_present, out money_present );
+                        ovr022.treasureOnGround(out items_present, out money_present);
 
-                        if( money_present == true || items_present == true )
+                        if (money_present == true || items_present == true)
                         {
-                            text = "~Yes ~No";
- 
-                            seg041.press_any_key( "There is still treasure left.  ", true, 0, 10, 0x16, 0x26, 0x11, 1 );
-                            seg041.press_any_key( "Do you want to go back and claim your treasure?", false, 0, 15, 0x16, 0x26, 0x11, 1 );
-                            var_109 = ovr008.sub_317AA( false, 0, 15, 10, 13, text, var_108 );
+                            seg041.press_any_key("There is still treasure left.  ", true, 0, 10, 0x16, 0x26, 0x11, 1);
+                            seg041.press_any_key("Do you want to go back and claim your treasure?", false, 0, 15, 0x16, 0x26, 0x11, 1);
+                            var_109 = ovr008.sub_317AA(false, 0, 15, 10, 13, "~Yes ~No", var_108);
 
-                            if( var_109 == 1 )
+                            if (var_109 == 1)
                             {
                                 var_105 = true;
                             }
@@ -740,16 +739,16 @@ namespace engine
                         break;
 
                     case 'G':
-                        ovr020.sub_572CF( var_104 );
-                        ovr025.Player_Summary( gbl.player_ptr );
+                        ovr020.sub_572CF(var_104);
+                        ovr025.Player_Summary(gbl.player_ptr);
                         break;
 
                     case 'O':
-                        ovr020.sub_572CF( var_104 );
-                        ovr025.Player_Summary( gbl.player_ptr );
+                        ovr020.sub_572CF(var_104);
+                        ovr025.Player_Summary(gbl.player_ptr);
                         break;
                 }
-            } while( var_105 == false );
+            } while (var_105 == false);
         }
 
 
@@ -764,7 +763,7 @@ namespace engine
 			while( player != null )
 			{
                 if( (player.actions != null && player.actions.field_13 == 1 ) ||
-                    player.combat_team == 1 )
+                    player.combat_team == CombatTeam.Enemy)
                 {
                     gbl.byte_1AB14 = 1;
                     if( player.in_combat == false )

@@ -101,29 +101,30 @@ namespace engine
 
 
 
-        internal static void displayStringSlow(string bp_var_100, ref byte bp_var_103, byte bp_var_104, int bgColor, int fgColor) // sub_107DE
+        internal static void displayStringSlow(string text
+            , ref int text_index, int text_length, int bgColor, int fgColor) // sub_107DE
         {
-            while (bp_var_103 <= bp_var_104)
+            while (text_index <= text_length)
             {
-                display_char01(true, bp_var_100[bp_var_103-1], 1, bgColor, fgColor, gbl.textYCol, gbl.textXCol);
+                display_char01(true, text[text_index-1], 1, bgColor, fgColor, gbl.textYCol, gbl.textXCol);
 
                 if (gbl.DelayBetweenCharacters)
                 {
                     seg049.SysDelay(gbl.game_speed_var * 3);
                 }
 
-                bp_var_103 += 1;
+                text_index += 1;
                 gbl.textXCol++;
             }
         }
 
 
-        internal static void sub_10854(string bp_var_100, byte bp_var_101, ref byte bp_var_103)
+        internal static void text_skip_space(string text, int text_max, ref int text_index) /* sub_10854 */
         {
-            while (bp_var_103 < bp_var_101 &&
-                bp_var_100[bp_var_103] == ' ')
+            while (text_index < text_max &&
+                text[text_index] == ' ')
             {
-                bp_var_103 += 1;
+                text_index += 1;
             }
         }
 
@@ -134,13 +135,12 @@ namespace engine
             int yEnd, int xEnd, int yStart, int xStart)
         {
             Set var_125;
-            byte var_104;
-            byte var_103;
+            int text_length;
+            int text_index;
             byte var_102;
-            byte var_101;
-            string var_100;
+            string text;
 
-            var_100 = arg_0;
+            text = arg_0;
 
             if (xStart <= 0x27 && yStart <= 0x18 && 
                 xEnd <= 0x27 && yEnd <= 0x27)
@@ -161,8 +161,8 @@ namespace engine
                     gbl.textYCol = yStart;
                 }
 
-                var_103 = 1;
-                var_101 = (byte)var_100.Length;
+                text_index = 1;
+                int var_101 = text.Length;
 
                 if (var_101 != 0)
                 {
@@ -171,45 +171,45 @@ namespace engine
                     var_125 = new Set(0x404, unk_16FA6);
                     do
                     {
-                        var_104 = var_103;
+                        text_length = text_index;
 
-                        while (var_104 < var_101 &&
-                            var_125.MemberOf(var_100[var_104-1]) == true)
+                        while (text_length < var_101 &&
+                            var_125.MemberOf(text[text_length-1]) == true)
                         {
-                            var_104++;
+                            text_length++;
                         }
 
-                        while (var_104 < var_101 &&
-                            var_125.MemberOf(var_100[var_104-1]) == false &&
-                            var_100[var_104-1] != ' ')
+                        while (text_length < var_101 &&
+                            var_125.MemberOf(text[text_length-1]) == false &&
+                            text[text_length-1] != ' ')
                         {
-                            var_104++;
+                            text_length++;
                         }
 
-                        if (var_100[var_104-1] != ' ')
+                        if (text[text_length-1] != ' ')
                         {
-                            while (var_104 < var_101 &&
-                                var_125.MemberOf(var_100[var_104 ]) == true)
+                            while (text_length < var_101 &&
+                                var_125.MemberOf(text[text_length ]) == true)
                             {
-                                var_104++;
+                                text_length++;
                             }
                         }
 
-                        if (((var_104 - var_103) + gbl.textXCol) > xEnd)
+                        if (((text_length - text_index) + gbl.textXCol) > xEnd)
                         {
-                            if (((var_104 - var_103) + gbl.textXCol) == xEnd &&
-                                var_100[var_104-1] == ' ')
+                            if (((text_length - text_index) + gbl.textXCol) == xEnd &&
+                                text[text_length-1] == ' ')
                             {
-                                var_104 -= 1;
-                                displayStringSlow(var_100, ref var_103, var_104, bgColor, fgColor);
+                                text_length -= 1;
+                                displayStringSlow(text, ref text_index, text_length, bgColor, fgColor);
                             }
 
                             gbl.textXCol = xStart;
                             gbl.textYCol++;
-                            sub_10854(var_100, var_101, ref var_103);
+                            text_skip_space(text, var_101, ref text_index);
 
                             if (gbl.textYCol > yEnd &&
-                                var_103 < var_101)
+                                text_index < var_101)
                             {
                                 gbl.textXCol = xStart;
                                 gbl.textYCol = yStart;
@@ -219,16 +219,16 @@ namespace engine
 
                                 seg037.draw8x8_clear_area(yEnd, xEnd, yStart, xStart);
 
-                                displayStringSlow(var_100, ref var_103, var_104, bgColor, fgColor);
+                                displayStringSlow(text, ref text_index, text_length, bgColor, fgColor);
                             }
                         }
                         else
                         {
-                            displayStringSlow(var_100, ref var_103, var_104, bgColor, fgColor);
+                            displayStringSlow(text, ref text_index, text_length, bgColor, fgColor);
                             Display.Update();
                         }
 
-                    } while (var_103 <= var_101);
+                    } while (text_index <= var_101);
 
                     if (gbl.textXCol > xEnd)
                     {

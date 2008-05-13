@@ -181,7 +181,7 @@ namespace engine
             sub_6C1E9(gbl.byte_1D5BE, displayInputStringLen, highlightFgColor, displayInputString, displayInputXOffset, fgColor, var_8D);
 
             if (gbl.game_state == 3 &&
-                gbl.byte_1D5BA == 0x79 &&
+                gbl.bigpic_block_id == 0x79 &&
                 gbl.byte_1D5B4 != 0x50)
             {
                 ovr028.sub_6E005();
@@ -192,7 +192,7 @@ namespace engine
             do
             {
                 if (gbl.game_state == 3 &&
-                    gbl.byte_1D5BA == 0x79 &&
+                    gbl.bigpic_block_id == 0x79 &&
                     gbl.byte_1D5B4 != 0x50 &&
                     seg041.time01() >= var_5B)
                 {
@@ -334,7 +334,7 @@ namespace engine
                 }
 
                 if (gbl.game_state == 3 &&
-                    gbl.byte_1D5BA == 0x79 &&
+                    gbl.bigpic_block_id == 0x79 &&
                     gbl.byte_1D5B4 != 0x50 &&
                     seg041.time01() >= var_5F)
                 {
@@ -350,7 +350,7 @@ namespace engine
             gbl.area_ptr.field_3FE = 0;
 
             if (gbl.game_state == 3 &&
-                gbl.byte_1D5BA == 0x79 &&
+                gbl.bigpic_block_id == 0x79 &&
                 gbl.byte_1D5B4 != 0x50)
             {
                 ovr028.sub_6E05D();

@@ -339,7 +339,7 @@ namespace engine
 
             gbl.unk_1D890.field_2 = (ushort)(var_6 % 10);
 
-            arg_0 = ovr021.reseting(true);
+            arg_0 = ovr021.resting(true);
 
             gbl.unk_1D890.Clear();
 
@@ -1289,10 +1289,8 @@ namespace engine
         }
 
 
-        internal static void sub_45F22(out int var_2)
+        internal static void sub_45F22(ref int var_2)
         {
-            var_2 = 0;
-
             Player player = gbl.player_next_ptr;
 
             while (player != null)
@@ -1323,10 +1321,8 @@ namespace engine
         }
 
 
-        internal static void sub_45FDD(out int var_2, int bp_var_4, int bp_var_6, int bp_var_8)
+        internal static void sub_45FDD(ref int var_2, int bp_var_4, int bp_var_6, int bp_var_8)
         {
-            var_2 = 0;
-
             for (int var_3 = 1; var_3 <= bp_var_4; var_3++)
             {
                 var_2 += ovr024.roll_dice(8, 1);
@@ -1334,14 +1330,12 @@ namespace engine
 
             for (int var_3 = 1; var_3 <= bp_var_6; var_3++)
             {
-                var_2 += ovr024.roll_dice(8, 2);
-                var_2 += 1;
+                var_2 += ovr024.roll_dice(8, 2) + 1;
             }
 
             for (int var_3 = 1; var_3 <= bp_var_8; var_3++)
             {
-                var_2 += ovr024.roll_dice(8, 3);
-                var_2 += 3;
+                var_2 += ovr024.roll_dice(8, 3) + 3;
             }
         }
 
@@ -1363,12 +1357,10 @@ namespace engine
 
         internal static void sub_460ED(out int bp_var_8,out int bp_var_6,out int bp_var_4 )
         {
-            byte var_11;
             short var_10;
             short var_E;
             short var_C;
             short var_A;
-            short var_8;
             Player player_ptr;
             short var_2 = 0; /* Simeon */
 
@@ -1380,7 +1372,7 @@ namespace engine
             bp_var_4 = 0;
             bp_var_6 = 0;
             bp_var_8 = 0;
-            var_8 = 0;
+            int var_8 = 0;
 
             while (player_ptr != null)
             {
@@ -1392,29 +1384,29 @@ namespace engine
                     var_A = (short)(player_ptr.field_12D[0] * 15);
 
                     bp_var_6 += player_ptr.field_12D[3];
-                    var_C = (short)(player_ptr.field_12D[3] * 0x3C);
+                    var_C = (short)(player_ptr.field_12D[3] * 60);
 
                     bp_var_8 += player_ptr.field_12D[4];
-                    var_E = (short)(player_ptr.field_12D[4] * 0x4B);
+                    var_E = (short)(player_ptr.field_12D[4] * 75);
                 }
 
                 if (var_A > 0)
                 {
-                    var_10 = 0x00F0;
-                    var_2 += 0x1B;
+                    var_10 = 240;
+                    var_2 += 27;
                 }
 
-                if ((var_C + var_E) > 0)
+                if ((var_C + var_E) != 0)
                 {
-                    var_10 = 0x168;
+                    var_10 = 360;
 
                     if (var_E > 0)
                     {
-                        var_2 += 0x4E;
+                        var_2 += 78;
                     }
                     else
                     {
-                        var_2 += 0x22;
+                        var_2 += 34;
                     }
                 }
 
@@ -1430,7 +1422,7 @@ namespace engine
 
             if (total_hitpoints_lost() < var_2)
             {
-                var_11 = (byte)(var_2 / total_hitpoints_lost());
+                int var_11 = var_2 / total_hitpoints_lost();
 
                 var_8 /= var_11;
             }
@@ -1443,7 +1435,7 @@ namespace engine
         }
 
 
-        internal static void sub_46280(ref int bp_var_4)
+        internal static void sub_46280(ref int bp_var_2)
         {
             int var_6;
 
@@ -1455,9 +1447,9 @@ namespace engine
                 {
                     var_6 = player.hit_point_max - player.hit_point_current;
 
-                    if (var_6 > bp_var_4)
+                    if (var_6 > bp_var_2)
                     {
-                        var_6 = bp_var_4;
+                        var_6 = bp_var_2;
                     }
 
                     if (var_6 < 1)
@@ -1467,9 +1459,9 @@ namespace engine
 
                     if (var_6 > 0 &&
                         ovr024.heal_player(0, (byte)var_6, player) == true &&
-                        var_6 <= bp_var_4)
+                        var_6 <= bp_var_2)
                     {
-                        bp_var_4 -= var_6;
+                        bp_var_2 -= var_6;
                     }
                 }
                 player = player.next_player;
@@ -1488,8 +1480,8 @@ namespace engine
 
             if (total_hitpoints_lost() != 0)
             {
-                int var_2;
-                sub_45F22(out var_2);
+                int var_2 = 0;
+                sub_45F22(ref var_2);
 
                 if (total_hitpoints_lost() == 0)
                 {
@@ -1502,12 +1494,12 @@ namespace engine
 
                     sub_460ED(out var_8, out var_6, out var_4);
 
-                    arg_0 = ovr021.reseting(false);
+                    arg_0 = ovr021.resting(false);
 
                     if (arg_0 == false)
                     {
-                        sub_45FDD(out var_2, var_4, var_6, var_8);
-                        sub_46280(ref var_4);
+                        sub_45FDD(ref var_2, var_4, var_6, var_8);
+                        sub_46280(ref var_2);
                         ovr025.Player_Summary(gbl.player_ptr);
                         ovr025.display_map_position_time();
 
@@ -1523,13 +1515,10 @@ namespace engine
         {
             string var_104;
             bool var_4;
-            bool var_3;
-            char var_2;
-            byte var_1;
 
-            var_1 = gbl.game_state;
+            byte game_state_bkup = gbl.game_state;
             gbl.game_state = 2;
-            gbl.word_1D8A6 = 0;
+            gbl.rest_10_seconds = 0;
 
             gbl.unk_1D890.Clear();
 
@@ -1542,23 +1531,21 @@ namespace engine
             seg041.displayString("The party makes camp...", 0, 10, 18, 1);
             cancel_spells();
             arg_0 = false;
-            var_2 = ' ';
-
+            char input_key = ' ';
 
             while (arg_0 == false &&
-                unk_463F4.MemberOf(var_2) == false)
+                unk_463F4.MemberOf(input_key) == false)
             {
-
-                var_2 = ovr027.displayInput(out var_4, true, 1, 15, 10, 13, "Save View Magic Rest Alter Fix Exit", "Camp:");
+                input_key = ovr027.displayInput(out var_4, true, 1, 15, 10, 13, "Save View Magic Rest Alter Fix Exit", "Camp:");
 
                 if (var_4 == true)
                 {
-                    ovr020.sub_572CF(var_2);
+                    ovr020.sub_572CF(input_key);
                     ovr025.Player_Summary(gbl.player_ptr);
                 }
                 else
                 {
-                    switch (var_2)
+                    switch (input_key)
                     {
                         case 'S':
                             ovr017.SaveGame();
@@ -1570,7 +1557,8 @@ namespace engine
 
                         case 'V':
                             gbl.byte_1D5BE = 1;
-                            ovr020.viewPlayer(out var_3);
+                            bool dummyBool;
+                            ovr020.viewPlayer(out dummyBool);
                             break;
 
                         case 'M':
@@ -1602,7 +1590,7 @@ namespace engine
 
             cancel_spells();
             gbl.dword_1D87F = null;
-            gbl.game_state = var_1;
+            gbl.game_state = game_state_bkup;
             ovr025.display_map_position_time();
             ovr025.ClearPlayerTextArea();
             ovr027.redraw_screen();
