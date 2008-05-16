@@ -717,7 +717,29 @@ new Struct_19AEC( 32h,0,7,12h,3,12h,3,12h,8,12h,3,12h,3,3,12h,11h) };*/
 
         public static byte[] unk_1D89D = new byte[9]; // seg600:758D
 
-        public static bool free_training;
+        public static bool free_training = false;
+        public static void FreeTrainingToggle()
+        {
+            free_training = !free_training;
+        }
+
+        public static bool always_show_areamap = false;
+        public static void AlwayShowAreaMapToggle()
+        {
+            always_show_areamap = !always_show_areamap;
+        }
+
+        public static bool allow_gods_intervene = false;
+        public static void AllowGodsIntervene()
+        {
+            allow_gods_intervene = !allow_gods_intervene;
+        }
+
+        public static bool skip_copy_protection = true;
+        public static void SkipCopyProtection()
+        {
+            skip_copy_protection = !skip_copy_protection;
+        }
 
         public static bool party_fled;
 

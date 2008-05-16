@@ -8,28 +8,22 @@ namespace engine
 
         internal static void Load8x8D( byte arg_0, byte arg_2 )
         {
-            string var_108;
-            byte var_8;
-            string var_2;
-
 			if( Load8x8D_flags.MemberOf( arg_0 ) == true )
 			{
-                seg051.Str( 1, out var_2, 0, gbl.game_area );
-
-                var_108 = "8x8d" + var_2;
-				seg040.load_dax( ref gbl.symbol_8x8_set[arg_0], 13, 1, arg_2, var_108 );
+                string text = "8x8d" + gbl.game_area.ToString();
+				seg040.load_dax( ref gbl.symbol_8x8_set[arg_0], 13, 1, arg_2, text );
 
                 if( gbl.symbol_8x8_set[arg_0] == null )
                 {
                     seg051.Write( 0, "Unable to load ", gbl.known01_02 );
                     seg051.Write( 0, arg_2, gbl.known01_02 );
 
-                    var_108 = " from 8x8D" + var_2;
+                    text = " from 8x8D" + gbl.game_area.ToString();
 
-                    seg051.Write( 0, var_108, gbl.known01_02 );
+                    seg051.Write( 0, text, gbl.known01_02 );
                     seg051.WriteLn( gbl.known01_02 );
 
-                    var_8 = seg043.GetInputKey();
+                    seg043.GetInputKey();
 
                     seg043.print_and_exit();
                 }

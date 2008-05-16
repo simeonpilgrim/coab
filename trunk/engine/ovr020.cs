@@ -726,7 +726,7 @@ namespace engine
             {
                 case 0:
                     gbl.byte_1D8AC = 1;
-                    ovr024.sub_630C7((arg_0 == 0)?(byte)1:(byte)0, arg_2, var_7, arg_2.affect_3);
+                    ovr024.CallSpellJumpTable((arg_0 == 0)?(byte)1:(byte)0, arg_2, var_7, arg_2.affect_3);
                     break;
 
                 case 1:

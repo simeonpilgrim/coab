@@ -35,7 +35,11 @@ namespace Main
             this.commandDebuggingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dumpPlayerAffectsToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.screenCaptureToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.cheatsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.playersAlwayMakeSavingThrowToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.freeTrainingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.alwayAllowAreaMapToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.skipCopyProtectionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.displayArea)).BeginInit();
             this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -54,7 +58,8 @@ namespace Main
             // 
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.ddfsdToolStripMenuItem,
-            this.screenCaptureToolStripMenuItem});
+            this.screenCaptureToolStripMenuItem,
+            this.cheatsToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
             this.contextMenuStrip1.Size = new System.Drawing.Size(161, 70);
             // 
@@ -62,8 +67,7 @@ namespace Main
             // 
             this.ddfsdToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.commandDebuggingToolStripMenuItem,
-            this.dumpPlayerAffectsToolStripMenuItem1,
-            this.playersAlwayMakeSavingThrowToolStripMenuItem});
+            this.dumpPlayerAffectsToolStripMenuItem1});
             this.ddfsdToolStripMenuItem.Name = "ddfsdToolStripMenuItem";
             this.ddfsdToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
             this.ddfsdToolStripMenuItem.Text = "Debugging";
@@ -90,13 +94,50 @@ namespace Main
             this.screenCaptureToolStripMenuItem.Text = "Screen Capture";
             this.screenCaptureToolStripMenuItem.Click += new System.EventHandler(this.screenCaptureToolStripMenuItem_Click);
             // 
+            // cheatsToolStripMenuItem
+            // 
+            this.cheatsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.playersAlwayMakeSavingThrowToolStripMenuItem,
+            this.freeTrainingToolStripMenuItem,
+            this.alwayAllowAreaMapToolStripMenuItem,
+            this.skipCopyProtectionToolStripMenuItem});
+            this.cheatsToolStripMenuItem.Name = "cheatsToolStripMenuItem";
+            this.cheatsToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
+            this.cheatsToolStripMenuItem.Text = "Cheats";
+            // 
             // playersAlwayMakeSavingThrowToolStripMenuItem
             // 
             this.playersAlwayMakeSavingThrowToolStripMenuItem.CheckOnClick = true;
             this.playersAlwayMakeSavingThrowToolStripMenuItem.Name = "playersAlwayMakeSavingThrowToolStripMenuItem";
             this.playersAlwayMakeSavingThrowToolStripMenuItem.Size = new System.Drawing.Size(248, 22);
             this.playersAlwayMakeSavingThrowToolStripMenuItem.Text = "Players Alway Make Saving Throw";
-            this.playersAlwayMakeSavingThrowToolStripMenuItem.CheckedChanged += new System.EventHandler(this.playersAlwayMakeSavingThrowToolStripMenuItem_CheckedChanged);
+            this.playersAlwayMakeSavingThrowToolStripMenuItem.Click += new System.EventHandler(this.playersAlwayMakeSavingThrowToolStripMenuItem_CheckedChanged);
+            // 
+            // freeTrainingToolStripMenuItem
+            // 
+            this.freeTrainingToolStripMenuItem.CheckOnClick = true;
+            this.freeTrainingToolStripMenuItem.Name = "freeTrainingToolStripMenuItem";
+            this.freeTrainingToolStripMenuItem.Size = new System.Drawing.Size(248, 22);
+            this.freeTrainingToolStripMenuItem.Text = "Free Training";
+            this.freeTrainingToolStripMenuItem.Click += new System.EventHandler(this.freeTrainingToolStripMenuItem_Click);
+            // 
+            // alwayAllowAreaMapToolStripMenuItem
+            // 
+            this.alwayAllowAreaMapToolStripMenuItem.CheckOnClick = true;
+            this.alwayAllowAreaMapToolStripMenuItem.Name = "alwayAllowAreaMapToolStripMenuItem";
+            this.alwayAllowAreaMapToolStripMenuItem.Size = new System.Drawing.Size(248, 22);
+            this.alwayAllowAreaMapToolStripMenuItem.Text = "Alway Allow Area Map";
+            this.alwayAllowAreaMapToolStripMenuItem.Click += new System.EventHandler(this.alwayAllowAreaMapToolStripMenuItem_Click);
+            // 
+            // skipCopyProtectionToolStripMenuItem
+            // 
+            this.skipCopyProtectionToolStripMenuItem.Checked = true;
+            this.skipCopyProtectionToolStripMenuItem.CheckOnClick = true;
+            this.skipCopyProtectionToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.skipCopyProtectionToolStripMenuItem.Name = "skipCopyProtectionToolStripMenuItem";
+            this.skipCopyProtectionToolStripMenuItem.Size = new System.Drawing.Size(248, 22);
+            this.skipCopyProtectionToolStripMenuItem.Text = "Skip Copy Protection";
+            this.skipCopyProtectionToolStripMenuItem.Click += new System.EventHandler(this.skipCopyProtectionToolStripMenuItem_Click);
             // 
             // MainForm
             // 
@@ -126,7 +167,11 @@ namespace Main
         private System.Windows.Forms.ToolStripMenuItem commandDebuggingToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem dumpPlayerAffectsToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem screenCaptureToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem cheatsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem playersAlwayMakeSavingThrowToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem freeTrainingToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem alwayAllowAreaMapToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem skipCopyProtectionToolStripMenuItem;
     }
 }
 

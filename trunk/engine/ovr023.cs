@@ -1432,7 +1432,7 @@ namespace engine
 
                 if (ovr025.find_affect(out affect, Affects.charm_person, target) == true)
                 {
-                    ovr024.sub_630C7(0, affect, gbl.sp_targets[1], Affects.shield);
+                    ovr024.CallSpellJumpTable(0, affect, gbl.sp_targets[1], Affects.shield);
                 }
             }
         }
@@ -1685,7 +1685,7 @@ namespace engine
                 }
 
                 sub_5CF7F("is affected", 0, 0, true, 0xff, gbl.spell_id);
-                ovr024.sub_630C7(1, null, player, Affects.affect_4e);
+                ovr024.CallSpellJumpTable(1, null, player, Affects.affect_4e);
                 ovr024.add_affect(true, 0xff, 10, Affects.affect_0f, player);
             }
         }
@@ -1720,7 +1720,7 @@ namespace engine
         {
             sub_5CF7F(string.Empty, 0, 0, true, 0, gbl.spell_id);
 
-            ovr024.sub_630C7(0, null, gbl.sp_targets[1], Affects.spiritual_hammer);
+            ovr024.CallSpellJumpTable(0, null, gbl.sp_targets[1], Affects.spiritual_hammer);
         }
 
 
@@ -2373,7 +2373,7 @@ namespace engine
                         if ((int)var_4.affect_3 > 0x7F)
                         {
                             gbl.byte_1D8AC = 1;
-                            ovr024.sub_630C7(1, var_4, gbl.sp_targets[1], var_4.affect_3);
+                            ovr024.CallSpellJumpTable(1, var_4, gbl.sp_targets[1], var_4.affect_3);
 
                             for (var_6 = 0; var_6 <= 5; var_6++)
                             {
@@ -2883,7 +2883,7 @@ namespace engine
 
             if (gbl.byte_1D2BD == 0x40)
             {
-                ovr024.sub_630C7(0, var_2, gbl.player_ptr, Affects.affect_40);
+                ovr024.CallSpellJumpTable(0, var_2, gbl.player_ptr, Affects.affect_40);
             }
         }
 
@@ -2898,7 +2898,7 @@ namespace engine
 
                 if (ovr025.find_affect(out var_4, Affects.affect_03, gbl.sp_targets[1]) == true)
                 {
-                    ovr024.sub_630C7(0, var_4, gbl.sp_targets[1], Affects.affect_03);
+                    ovr024.CallSpellJumpTable(0, var_4, gbl.sp_targets[1], Affects.affect_03);
                 }
             }
             else
@@ -3057,7 +3057,7 @@ namespace engine
             {
                 if (ovr025.find_affect(out var_7, Affects.charm_person, gbl.sp_targets[var_1]) == true)
                 {
-                    ovr024.sub_630C7(0, var_7, gbl.sp_targets[var_1], Affects.charm_person);
+                    ovr024.CallSpellJumpTable(0, var_7, gbl.sp_targets[var_1], Affects.charm_person);
                 }
             }
         }
@@ -3226,7 +3226,7 @@ namespace engine
 
                 if (ovr025.find_affect(out var_8, Affects.fumbling, var_4) == true)
                 {
-                    ovr024.sub_630C7(0, null, var_4, Affects.fumbling);
+                    ovr024.CallSpellJumpTable(0, null, var_4, Affects.fumbling);
                 }
             }
             else
@@ -3235,7 +3235,7 @@ namespace engine
 
                 if (ovr025.find_affect(out var_8, Affects.slow, var_4) == true)
                 {
-                    ovr024.sub_630C7(0, null, var_4, Affects.slow);
+                    ovr024.CallSpellJumpTable(0, null, var_4, Affects.slow);
                 }
             }
             sub_5CF7F("is clumsy", 0, 0, true, 0, gbl.spell_id);
@@ -3609,7 +3609,7 @@ namespace engine
 
             if (ovr025.find_affect(out var_9, Affects.feeble, var_5) == true)
             {
-                ovr024.sub_630C7(0, null, var_5, Affects.feeble);
+                ovr024.CallSpellJumpTable(0, null, var_5, Affects.feeble);
             }
 
             var_5.field_E3 = var_1;
@@ -3795,7 +3795,7 @@ namespace engine
                         ovr033.PlayerMapYPos(gbl.spell_target), ovr033.PlayerMapXPos(gbl.spell_target),
                         ovr033.PlayerMapYPos(player), ovr033.PlayerMapXPos(player));
 
-                    ovr024.damage_person(ovr024.do_saving_throw(0, 3, gbl.spell_target), 2, (sbyte)player.hit_point_max, gbl.spell_target);
+                    ovr024.damage_person(ovr024.do_saving_throw(0, 3, gbl.spell_target), 2, player.hit_point_max, gbl.spell_target);
                 }
                 else
                 {

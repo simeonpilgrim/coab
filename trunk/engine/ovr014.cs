@@ -71,7 +71,7 @@ namespace engine
                 var_2 = 1;
             }
 
-            gbl.byte_1D2C0 = (byte)(var_2 << 1);
+            gbl.byte_1D2C0 = (byte)(var_2 *2);
 
             ovr024.work_on_00(player, 18);
 
@@ -1918,21 +1918,17 @@ namespace engine
         }
 
 
-        internal static byte sub_40E8F(Player arg_0)
+        internal static int sub_40E8F(Player arg_0)
         {
-            Player var_7;
-            byte var_3;
-            byte var_2;
+            int var_2 = 0;
+            Player player = gbl.player_next_ptr;
 
-            var_2 = 0;
-            var_7 = gbl.player_next_ptr;
-
-            while (var_7 != null)
+            while (player != null)
             {
-                if (ovr025.opposite_team(arg_0) == var_7.combat_team &&
-                    var_7.in_combat == true)
+                if (ovr025.opposite_team(arg_0) == player.combat_team &&
+                    player.in_combat == true)
                 {
-                    var_3 = (byte)(sub_3E124(var_7) >> 1);
+                    int var_3 = sub_3E124(player) /2;
 
                     if (var_3 > var_2)
                     {
@@ -1940,7 +1936,7 @@ namespace engine
                     }
                 }
 
-                var_7 = var_7.next_player;
+                player = player.next_player;
             }
 
             return var_2;
@@ -2642,7 +2638,7 @@ namespace engine
                 ovr025.DisplayPlayerStatusString(true, 12, "engulfs " + player_ptr.name, playerB);
                 ovr024.add_affect(false, ovr033.get_player_index(player_ptr), 0, Affects.affect_3a, player_ptr);
 
-                ovr024.sub_630C7(0, null, player_ptr, Affects.affect_3a);
+                ovr024.CallSpellJumpTable(0, null, player_ptr, Affects.affect_3a);
                 ovr024.add_affect(false, ovr024.roll_dice(4, 2), 0, Affects.affect_0d, player_ptr);
                 ovr024.add_affect(true, ovr033.get_player_index(player_ptr), 0, Affects.affect_8b, playerB);
             }
@@ -2857,7 +2853,7 @@ namespace engine
                 ovr025.DisplayPlayerStatusString(true, 12, "hugs " + gbl.spell_target.name, player);
 
                 ovr024.add_affect(false, ovr033.get_player_index(gbl.spell_target), 0, Affects.affect_3a, gbl.spell_target);
-                ovr024.sub_630C7(0, null, gbl.spell_target, Affects.affect_3a);
+                ovr024.CallSpellJumpTable(0, null, gbl.spell_target, Affects.affect_3a);
 
                 ovr024.add_affect(true, ovr033.get_player_index(gbl.spell_target), 0, Affects.affect_90, player);
             }
@@ -2866,17 +2862,13 @@ namespace engine
 
         internal static bool god_intervene()
         {
-            Player player;
-            bool var_2;
-            bool var_1;
+            bool intervened = false;
 
-            var_1 = false;
-
-            if (seg051.ParamStr(2) == gbl.byte_1EFA4)
+            if (gbl.allow_gods_intervene)
             {
-                var_1 = true;
+                intervened = true;
                 ovr025.string_print01("The Gods intervene!");
-                player = gbl.player_next_ptr;
+                Player player = gbl.player_next_ptr;
 
                 while (player != null)
                 {
@@ -2888,14 +2880,14 @@ namespace engine
                         gbl.CombatMap[ovr033.get_player_index(player)].size = 0;
                     }
 
-                    var_2 = ovr025.clear_actions(player);
+                    ovr025.clear_actions(player);
                     player = player.next_player;
                 }
 
                 ovr033.redrawCombatArea(8, 0xff, gbl.mapToBackGroundTile.mapScreenTopY + 3, gbl.mapToBackGroundTile.mapScreenLeftX + 3);
             }
 
-            return var_1;
+            return intervened;
         }
     }
 }

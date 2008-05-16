@@ -36,7 +36,7 @@ namespace engine
         }
 
 
-        internal static void sub_630C7(byte arg_0, object parameter, Player player, Affects affect)
+        internal static void CallSpellJumpTable(byte arg_0, object parameter, Player player, Affects affect) /* sub_630C7 */
         {
             if (gbl.byte_1D8AC != 0)
             {
@@ -68,7 +68,7 @@ namespace engine
             {
                 if (var_8.call_spell_jump_list == true)
                 {
-                    sub_630C7(1, var_8, arg_6, affect_id);
+                    CallSpellJumpTable(1, var_8, arg_6, affect_id);
                 }
 
                 if (arg_6.affect_ptr == var_8)
@@ -163,7 +163,7 @@ namespace engine
 
             if (var_E1 != 0)
             {
-                sub_630C7(0, affect, player, affect_type);
+                CallSpellJumpTable(0, affect, player, affect_type);
             }
         }
 
@@ -339,7 +339,7 @@ namespace engine
                     calc_affect_effect(Affects.affect_53, player);
                     calc_affect_effect(Affects.affect_58, player);
                     calc_affect_effect(Affects.affect_79, player);
-                    calc_affect_effect(Affects.affect_56, player);
+                    calc_affect_effect(Affects.spit_acid, player);
                     calc_affect_effect(Affects.affect_57, player);
                     calc_affect_effect(Affects.affect_5a, player);
                     calc_affect_effect(Affects.affect_7e, player);
@@ -468,7 +468,7 @@ namespace engine
 
                         if (ovr025.find_affect(out var_A, Affects.affect_1e, player) == true)
                         {
-                            sub_630C7(0, affect, player, Affects.affect_1e);
+                            CallSpellJumpTable(0, affect, player, Affects.affect_1e);
                         }
 
                         gbl.player_ptr = tmp_player_ptr;
@@ -484,7 +484,7 @@ namespace engine
 
                         if (ovr025.find_affect(out affect, Affects.helpless, player) == true)
                         {
-                            sub_630C7(0, affect, player, Affects.helpless);
+                            CallSpellJumpTable(0, affect, player, Affects.helpless);
                         }
 
                         gbl.player_ptr = tmp_player_ptr;
@@ -1466,7 +1466,7 @@ namespace engine
                         if (player.health_status == Status.unconscious &&
                             gbl.game_state != 5)
                         {
-                            sub_630C7(1, null, player, Affects.affect_4e);
+                            CallSpellJumpTable(1, null, player, Affects.affect_4e);
                         }
                     }
 

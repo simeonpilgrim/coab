@@ -771,9 +771,8 @@ namespace engine
         {
             byte var_6;
             Player player_ptr;
-            bool var_1;
 
-            var_1 = false;
+            bool var_1 = false;
 
             if (seg049.KEYPRESSED() == true)
             {
@@ -818,7 +817,7 @@ namespace engine
                         var_1 = true;
                     }
                 }
-                else if (var_6 == 0x2d)
+                else if (var_6 == '-')
                 {
                     ovr014.god_intervene();
                 }
@@ -833,7 +832,6 @@ namespace engine
         internal static bool sub_3637F(Player player)
         {
             byte var_3;
-            byte var_2;
             bool var_1;
 
             var_1 = false;
@@ -870,7 +868,7 @@ namespace engine
                         gbl.byte_1D2CC == 0 ||
                         player.combat_team == CombatTeam.Ours)
                     {
-                        var_2 = ovr014.sub_40E8F(player);
+                        int var_2 = ovr014.sub_40E8F(player);
 
                         if (var_2 <= (ovr014.sub_3E124(player) >> 1))
                         {

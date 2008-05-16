@@ -89,7 +89,7 @@ namespace Classes
         affect_53 = 0x53,
         affect_54 = 0x54,
         affect_55 = 0x55,
-        affect_56 = 0x56,
+        spit_acid = 0x56,
         affect_57 = 0x57,
         affect_58 = 0x58,
         displace = 0x59,
