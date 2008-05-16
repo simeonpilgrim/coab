@@ -503,7 +503,6 @@ namespace engine
             byte loop3_var;
             short var_12;
             StringList var_10;
-            StringList var_C;
             Player var_8;
             Player player;
 
@@ -523,7 +522,7 @@ namespace engine
             var_53.field_126 = (byte)seg051.Random(256);
             var_53.icon_id = 0x0A;
 
-            ovr027.alloc_stringList(out var_C, 7);
+            StringList var_C = ovr027.alloc_stringList(7);
             var_C.field_29 = 1;
             var_C.s = "Pick Race";
 
@@ -612,7 +611,7 @@ namespace engine
 
             ovr027.free_stringList(ref var_C);
 
-            ovr027.alloc_stringList(out var_C, 3);
+            var_C = ovr027.alloc_stringList(3);
             var_C.field_29 = 1;
             var_C.s = "Pick Gender";
 
@@ -648,7 +647,7 @@ namespace engine
 
             var_1C = gbl.unk_1A30A[(int)player.race, 0];
 
-            ovr027.alloc_stringList(out var_C, var_1C + 1);
+            var_C = ovr027.alloc_stringList(var_1C + 1);
 
             var_C.field_29 = 1;
             var_C.s = "Pick Class";
@@ -787,7 +786,7 @@ namespace engine
 
             var_1C = gbl.unk_1A4EA[(int)player._class, 0];
 
-            ovr027.alloc_stringList(out var_C, var_1C + 1);
+            var_C = ovr027.alloc_stringList(var_1C + 1);
 
             var_C.field_29 = 1;
             var_C.s = "Pick Alignment";

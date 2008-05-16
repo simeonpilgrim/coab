@@ -590,8 +590,8 @@ namespace engine
 
             var_9.next = null;
             var_9.readied = false;
-            var_9.field_35 = 6;
-            var_9.field_36 = 0;
+            var_9.hidden_names_flag = 6;
+            var_9.cursed = false;
 
             var_9.type = arg_4;
 
@@ -604,7 +604,7 @@ namespace engine
             if ((al >= 1 && al <= 0x3B) ||
                 al == 0x49 || al == 0x4D || al == 0x5D)
             {
-                var_9.exp_value = sub_59FCF();
+                var_9.plus = sub_59FCF();
 
                 if (var_9.type == 0x15)
                 {
@@ -617,52 +617,52 @@ namespace engine
 
                     var_9.field_31 = 0x15;
 
-                    var_9.field_30 = (sbyte)(var_9.exp_value + 0xA1);
+                    var_9.field_30 = (sbyte)(var_9.plus + 0xA1);
                 }
                 else if (var_9.type == 0x1C)
                 {
                     var_9.field_31 = 0x1C;
-                    var_9.field_30 = (sbyte)(var_9.exp_value + 0xA1);
+                    var_9.field_30 = (sbyte)(var_9.plus + 0xA1);
                 }
                 else if (var_9.type == 0x32 ||
                     var_9.type == 0x33)
                 {
                     var_9.field_31 = var_9.type;
                     var_9.field_30 = 0x31;
-                    var_9.field_2F = (sbyte)(var_9.exp_value + 0xA1);
-                    var_9.field_35 = 4;
+                    var_9.field_2F = (sbyte)(var_9.plus + 0xA1);
+                    var_9.hidden_names_flag = 4;
                 }
                 else if (var_9.type == 0x34)
                 {
                     var_9.field_31 = var_9.type;
                     var_9.field_30 = 0x32;
-                    var_9.field_2F = (sbyte)(var_9.exp_value + 0xA1);
-                    var_9.field_35 = 4;
+                    var_9.field_2F = (sbyte)(var_9.plus + 0xA1);
+                    var_9.hidden_names_flag = 4;
                 }
                 else if (var_9.type >= 0x35 &&
                     var_9.type <= 0x3a)
                 {
                     var_9.field_31 = var_9.type;
                     var_9.field_30 = 0x30;
-                    var_9.field_2F = (sbyte)(var_9.exp_value + 0xA1);
-                    var_9.field_35 = 4;
+                    var_9.field_2F = (sbyte)(var_9.plus + 0xA1);
+                    var_9.hidden_names_flag = 4;
                 }
                 else if (var_9.type == 0x49)
                 {
                     var_9.field_31 = 0x3D;
-                    var_9.field_30 = (sbyte)(var_9.exp_value + 0xA1);
+                    var_9.field_30 = (sbyte)(var_9.plus + 0xA1);
                 }
                 else if (var_9.type == 0x4d)
                 {
                     var_9.field_31 = 0x4F;
                     var_9.field_30 = -89;
-                    var_9.exp_value = (sbyte)((var_9.exp_value << 1) + 2);
+                    var_9.plus = (sbyte)((var_9.plus << 1) + 2);
 
-                    if (var_9.exp_value == 4)
+                    if (var_9.plus == 4)
                     {
                         var_9.field_2F = -35;
                     }
-                    else if (var_9.exp_value == 6)
+                    else if (var_9.plus == 6)
                     {
                         var_9.field_2F = -34;
                     }
@@ -671,15 +671,15 @@ namespace engine
                 {
                     var_9.field_31 = 0x42;
                     var_9.field_30 = -32;
-                    var_9.field_2F = (sbyte)(var_9.exp_value + 0xA1);
+                    var_9.field_2F = (sbyte)(var_9.plus + 0xA1);
                 }
                 else
                 {
                     var_9.field_31 = var_9.type;
-                    var_9.field_30 = (sbyte)(var_9.exp_value + 0xA1);
+                    var_9.field_30 = (sbyte)(var_9.plus + 0xA1);
                 }
 
-                var_9.field_33 = 0;
+                var_9.plus_save = 0;
                 var_9.count = 0;
 
                 switch (var_9.type)
@@ -810,37 +810,37 @@ namespace engine
 
                 if (var_9.type == 0x3b)
                 {
-                    var_9._value = (short)(var_9.exp_value * 2500);
+                    var_9._value = (short)(var_9.plus * 2500);
                 }
                 else if (var_9.type == 0x49 || var_9.type == 0x1c)
                 {
-                    var_9._value = (short)(var_9.exp_value * 150);
+                    var_9._value = (short)(var_9.plus * 150);
                 }
                 else if (var_9.type == 0x35 || var_9.type == 0x36)
                 {
-                    var_9._value = (short)(var_9.exp_value * 3000);
+                    var_9._value = (short)(var_9.plus * 3000);
                 }
                 else if (var_9.type == 0x37 || var_9.type == 0x38)
                 {
-                    var_9._value = (short)(var_9.exp_value * 3500);
+                    var_9._value = (short)(var_9.plus * 3500);
                 }
                 else if (var_9.type == 0x39)
                 {
-                    var_9._value = (short)(var_9.exp_value * 4000);
+                    var_9._value = (short)(var_9.plus * 4000);
 
                 }
                 else if (var_9.type == 0x3a)
                 {
-                    var_9._value = (short)(var_9.exp_value * 5000);
+                    var_9._value = (short)(var_9.plus * 5000);
                 
                 }
                 else if (var_9.type == 0x4d)
                 {
-                    var_9._value = (short)(var_9.exp_value * 3000);
+                    var_9._value = (short)(var_9.plus * 3000);
                 }
                 else
                 {
-                    var_9._value = (short)(var_9.exp_value * 2000);
+                    var_9._value = (short)(var_9.plus * 2000);
                 }
             }
             else if (al == 0x3d || al == 0x3e)
@@ -859,7 +859,7 @@ namespace engine
 
                 var_9.field_30 = (sbyte)(var_2 + 0xd1);
                 var_9.field_2F = 0;
-                var_9.exp_value = 1;
+                var_9.plus = 1;
                 var_9.weight = 0x19;
                 var_9.count = 0;
                 var_9._value = 0;
@@ -956,8 +956,8 @@ namespace engine
                 var_9.field_30 = (sbyte)unk_16B3E[var_4 + 1];
                 var_9.field_31 = (byte)unk_16B3E[var_4 + 2];
 
-                var_9.exp_value = 1;
-                var_9.field_33 = 1;
+                var_9.plus = 1;
+                var_9.plus_save = 1;
 
                 var_9.weight = unk_16B3E[var_4 + 3];
                 var_9.count = 0;
@@ -1118,7 +1118,7 @@ namespace engine
                                     var_B2 = new Item();
                                     var_B2.next = null;
                                     var_B2.weight = 1;
-                                    var_B2.field_35 = 0;
+                                    var_B2.hidden_names_flag = 0;
                                     var_B2.readied = false;
                                     var_B2.field_31 = 0x65;
                                     var_B2.field_30 = 0;
@@ -1220,7 +1220,7 @@ namespace engine
                                     var_B2.field_2F = 0;
 
                                     var_B2._value = var_A8;
-                                    var_B2.field_35 = 0;
+                                    var_B2.hidden_names_flag = 0;
                                     var_B2.weight = 1;
 
 

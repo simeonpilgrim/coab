@@ -26,70 +26,62 @@ namespace engine
 
         internal static char buy_cure(short cost, string cure_name)
         {
-            int var_106;
-            short var_104;
-            char var_102;
-            string var_101;
+            string text = cure_name + " will only cost	" + cost.ToString() + "	gold pieces.";
+            seg041.press_any_key(text, true, 0, 10, 0x16, 0x26, 0x11, 1);
 
-            var_101 = cure_name + " will only cost	" + cost.ToString() + "	gold pieces.";
+            char input_key = ovr027.yes_no(15, 10, 13, "pay for cure ");
 
-            seg041.press_any_key(var_101, true, 0, 10, 0x16, 0x26, 0x11, 1);
-
-            var_102 = ovr027.yes_no(15, 10, 13, "pay for cure ");
-
-            if (var_102 == 'Y')
+            if (input_key == 'Y')
             {
-                var_104 = (short)ovr020.getPlayerGold(gbl.player_ptr);
+                int player_money = ovr020.getPlayerGold(gbl.player_ptr);
 
-                if (cost <= var_104)
+                if (cost <= player_money)
                 {
-                    var_104 = cost;
+                    player_money = cost;
 
-                    ovr022.setPlayerMoney(var_104);
+                    ovr022.setPlayerMoney(player_money);
                 }
                 else
                 {
-                    var_106 = ovr022.getPooledGold(gbl.pooled_money);
+                    int pool_money = ovr022.getPooledGold(gbl.pooled_money);
 
-                    if (cost <= var_106)
+                    if (cost <= pool_money)
                     {
-                        ovr022.setPooledGold(var_106 - cost);
+                        ovr022.setPooledGold(pool_money - cost);
                     }
                     else
                     {
                         ovr025.string_print01("Not enough money.");
-                        var_102 = 'N';
+                        input_key = 'N';
                     }
                 }
             }
 
-            if (var_102 == 'Y')
+            if (input_key == 'Y')
             {
                 ovr025.ClearPlayerTextArea();
                 ovr025.DisplayPlayerStatusString(true, 0, "is cured.", gbl.player_ptr);
             }
 
-            return var_102;
+            return input_key;
         }
 
 
         internal static void cure_blindness()
         {
-            char var_105;
-            Affect var_4;
+            Affect dummyAffect;
+            char input_key = 'Y';
 
-            var_105 = 'Y';
-
-            if (ovr025.find_affect(out var_4, Affects.blinded, gbl.player_ptr) == false)
+            if (ovr025.find_affect(out dummyAffect, Affects.blinded, gbl.player_ptr) == false)
             {
-                var_105 = cast_cure_anyway("is not blind.");
+                input_key = cast_cure_anyway("is not blind.");
             }
 
-            if (var_105 == 'Y')
+            if (input_key == 'Y')
             {
-                var_105 = buy_cure(1000, "Cure Blindness");
+                input_key = buy_cure(1000, "Cure Blindness");
 
-                if (var_105 == 'Y')
+                if (input_key == 'Y')
                 {
                     ovr024.remove_affect(null, Affects.blinded, gbl.player_ptr);
                 }
@@ -99,37 +91,33 @@ namespace engine
 
         internal static void cure_disease()
         {
-            byte var_107;
-            byte loop_var;
-            char var_105;
-            Affect var_4;
+            bool is_diseased = false;
 
-            var_107 = 0;
-            var_105 = 'Y';
-
-            for (loop_var = 0; loop_var < 6; loop_var++)
+            for (int i = 0; i < 6; i++)
             {
-                if (ovr025.find_affect(out var_4, disease_types[loop_var], gbl.player_ptr) == true)
+                Affect dummyAffect;
+                if (ovr025.find_affect(out dummyAffect, disease_types[i], gbl.player_ptr) == true)
                 {
-                    var_107 = 1;
+                    is_diseased = true;
                 }
             }
 
-            if (var_107 == 0)
+            char input_key = 'Y';
+            if (is_diseased == false)
             {
-                var_105 = cast_cure_anyway("is not Diseased.");
+                input_key = cast_cure_anyway("is not Diseased.");
             }
 
-            if (var_105 == 'Y')
+            if (input_key == 'Y')
             {
-                var_105 = buy_cure(1000, "Cure Disease");
+                input_key = buy_cure(1000, "Cure Disease");
 
-                if (var_105 == 'Y')
+                if (input_key == 'Y')
                 {
                     gbl.byte_1D2C6 = true;
-                    for (loop_var = 0; loop_var < 6; loop_var++)
+                    for (int i = 0; i < 6; i++)
                     {
-                        ovr024.remove_affect(null, disease_types[loop_var], gbl.player_ptr);
+                        ovr024.remove_affect(null, disease_types[i], gbl.player_ptr);
                     }
 
                     gbl.byte_1D2C6 = false;
@@ -141,53 +129,52 @@ namespace engine
         internal static void cure_wounds(int arg_0)
         {
             bool var_4;
-            char var_3;
-            byte var_2;
-            byte var_1;
+            char input_key;
+            byte heal_amount;
 
             switch (arg_0)
             {
                 case 1:
-                    var_3 = buy_cure(100, "Cure Light Wounds");
-                    if (var_3 == 'Y')
+                    input_key = buy_cure(100, "Cure Light Wounds");
+                    if (input_key == 'Y')
                     {
-                        var_1 = ovr024.roll_dice(8, 1);
-                        var_4 = ovr024.heal_player(0, var_1, gbl.player_ptr);
+                        heal_amount = ovr024.roll_dice(8, 1);
+                        var_4 = ovr024.heal_player(0, heal_amount, gbl.player_ptr);
                     }
                     break;
 
                 case 2:
-                    var_3 = buy_cure(350, "Cure Serious Wounds");
-                    if (var_3 == 'Y')
+                    input_key = buy_cure(350, "Cure Serious Wounds");
+                    if (input_key == 'Y')
                     {
-                        var_1 = (byte)(ovr024.roll_dice(8, 2) + 1);
-                        var_4 = ovr024.heal_player(0, var_1, gbl.player_ptr);
+                        heal_amount = (byte)(ovr024.roll_dice(8, 2) + 1);
+                        var_4 = ovr024.heal_player(0, heal_amount, gbl.player_ptr);
                     }
                     break;
 
                 case 3:
-                    var_3 = buy_cure(600, "Cure Critical Wounds");
-                    if (var_3 == 'Y')
+                    input_key = buy_cure(600, "Cure Critical Wounds");
+                    if (input_key == 'Y')
                     {
-                        var_1 = (byte)(ovr024.roll_dice(8, 3) + 3);
-                        var_4 = ovr024.heal_player(0, var_1, gbl.player_ptr);
+                        heal_amount = (byte)(ovr024.roll_dice(8, 3) + 3);
+                        var_4 = ovr024.heal_player(0, heal_amount, gbl.player_ptr);
                     }
                     break;
 
                 case 4:
-                    var_3 = buy_cure(5000, "Heal");
-                    if (var_3 == 'Y')
+                    input_key = buy_cure(5000, "Heal");
+                    if (input_key == 'Y')
                     {
-                        var_1 = gbl.player_ptr.hit_point_max;
-                        var_1 -= gbl.player_ptr.hit_point_current;
-                        var_1 -= ovr024.roll_dice(4, 1);
+                        heal_amount = gbl.player_ptr.hit_point_max;
+                        heal_amount -= gbl.player_ptr.hit_point_current;
+                        heal_amount -= ovr024.roll_dice(4, 1);
 
-                        var_4 = ovr024.heal_player(0, var_1, gbl.player_ptr);
+                        var_4 = ovr024.heal_player(0, heal_amount, gbl.player_ptr);
                         ovr024.remove_affect(null, Affects.blinded, gbl.player_ptr);
 
-                        for (var_2 = 0; var_2 < 6; var_2++)
+                        for (int i = 0; i < 6; i++)
                         {
-                            ovr024.remove_affect(null, disease_types[var_2], gbl.player_ptr);
+                            ovr024.remove_affect(null, disease_types[i], gbl.player_ptr);
                         }
 
                         ovr024.remove_affect(null, Affects.feeble, gbl.player_ptr);
@@ -337,37 +324,34 @@ namespace engine
 
         internal static void remove_curse()
         {
-            char var_10A;
-            Affect var_9;
-            Item var_5;
-            byte var_1;
+            char input_key = 'Y';
+            bool cursed_item_found = false;
 
-            var_10A = 'Y';
-            var_1 = 0;
+            Item item = gbl.player_ptr.itemsPtr;
 
-            var_5 = gbl.player_ptr.itemsPtr;
-
-            while (var_5 != null && var_1 == 0)
+            while (item != null && cursed_item_found == false)
             {
-                if (var_5.field_36 != 0)
+                if (item.cursed)
                 {
-                    var_1 = 1;
+                    cursed_item_found = true;
                 }
 
-                var_5 = var_5.next;
+                item = item.next;
             }
 
-            if (var_1 == 0 &&
-                ovr025.find_affect(out var_9, Affects.bestow_curse, gbl.player_ptr) == false)
+            Affect dummyAffect;
+
+            if (cursed_item_found == false &&
+                ovr025.find_affect(out dummyAffect, Affects.bestow_curse, gbl.player_ptr) == false)
             {
-                var_10A = cast_cure_anyway("is not cursed.");
+                input_key = cast_cure_anyway("is not cursed.");
             }
 
-            if (var_10A == 'Y')
+            if (input_key == 'Y')
             {
-                var_10A = buy_cure(3500, "Remove Curse");
+                input_key = buy_cure(3500, "Remove Curse");
 
-                if (var_10A == 'Y')
+                if (input_key == 'Y')
                 {
                     gbl.sp_targets[1] = gbl.player_ptr;
                     ovr023.uncurse();
@@ -378,20 +362,18 @@ namespace engine
 
         internal static void stone_to_flesh()
         {
-            char var_105;
-
-            var_105 = 'Y';
+            char input_key = 'Y';
 
             if (gbl.player_ptr.health_status != Status.stoned)
             {
-                var_105 = cast_cure_anyway("is not stoned.");
+                input_key = cast_cure_anyway("is not stoned.");
             }
 
-            if (var_105 == 'Y')
+            if (input_key == 'Y')
             {
-                var_105 = buy_cure(2000, "Stone to Flesh");
+                input_key = buy_cure(2000, "Stone to Flesh");
 
-                if (var_105 == 'Y' &&
+                if (input_key == 'Y' &&
                     gbl.player_ptr.health_status == Status.stoned)
                 {
                     gbl.player_ptr.health_status = Status.okey;
@@ -404,46 +386,36 @@ namespace engine
 
         internal static void temple_heal()
         {
-            char sl_output;
-            string var_36;
-            bool end_shop;
             short sl_index = 0;
-            int var_A;
-            bool var_9;
-            StringList stringListPtr;
-            StringList stringList;
 
-            end_shop = false;
-            stringList = null;
-            stringListPtr = null;
-            ovr027.alloc_stringList(out stringList, 10);
+            bool end_shop = false;
+            StringList stringListPtr = null;
+            StringList stringList = ovr027.alloc_stringList(10);
 
             stringListPtr = stringList;
-            var_A = 0;
+            int temple_index = 0;
 
             while (stringList != null)
             {
-                stringList.s = temple_sl[var_A];
-
+                stringList.s = temple_sl[temple_index];
                 stringList.field_29 = 0;
 
                 stringList = stringList.next;
-
-                var_A++;
+                temple_index++;
             }
 
             stringList = stringListPtr;
 
             seg037.draw8x8_clear_area(0x18, 0x27, 0x18, 0);
-            var_9 = true;
+            bool var_9 = true;
             seg037.draw8x8_04();
 
             do
             {
-                var_36 = gbl.player_ptr.name + ", how can we help you?";
-                seg041.displayString(var_36, 0, 15, 1, 1);
+                string text = gbl.player_ptr.name + ", how can we help you?";
+                seg041.displayString(text, 0, 15, 1, 1);
 
-                sl_output = ovr027.sl_select_item(out stringListPtr, ref sl_index, ref var_9, false,
+                char sl_output = ovr027.sl_select_item(out stringListPtr, ref sl_index, ref var_9, false,
                     stringList, 15, 0x26, 4, 2, 15, 10, 13, "Heal Exit", string.Empty);
 
                 if (sl_output == 'H' || sl_output == 0x0d)
@@ -629,7 +601,7 @@ namespace engine
                 {
                     ovr025.load_pic();
                 }
-                else if (var_1 == 0x41 && var_30 == true)
+                else if (var_1 == 'A' && var_30 == true)
                 {
                     ovr025.load_pic();
                 }

@@ -53,7 +53,7 @@ namespace engine
 								
 								item_ptr = gbl.item_pointer;
 
-                                ovr025.ItemDisplayNameBuild(0, false, 0, 0, item, player);
+                                ovr025.ItemDisplayNameBuild(false, false, 0, 0, item, player);
 									
 								gbl.item_pointer = item.ShallowClone();
 
@@ -81,9 +81,9 @@ namespace engine
 				while( gbl.item_pointer != null &&
 					   item_ptr != gbl.item_ptr )
 				{
-					if( item_ptr.exp_value > 0 )
+					if( item_ptr.plus > 0 )
 					{
-						total += item_ptr.exp_value * 400;
+						total += item_ptr.plus * 400;
 					}
 
 					item_ptr = item_ptr.next;
@@ -495,7 +495,7 @@ namespace engine
             Item tmpItem = gbl.item_pointer;
             while( tmpItem != null )
             {
-                ovr025.ItemDisplayNameBuild(0, false, 0, 0, tmpItem, null);
+                ovr025.ItemDisplayNameBuild(false, false, 0, 0, tmpItem, null);
                 tmpItem = tmpItem.next;
             }
 

@@ -1516,14 +1516,14 @@ namespace engine
                     if (var_1C4.field_1D > 0)
                     {
                         item_ptr = ovr025.new_Item(0, Affects.helpless, (Affects)var_1C4.field_1D, (short)(var_1C4.field_1D * 200),
-                            0, 0, 0, 0, false, 0, 0, 0x57, -89, -88, 0x46);
+                            0, 0, false, 0, false, 0, 0, 0x57, -89, -88, 0x46);
                         ovr025.addItem(item_ptr, player_ptr);
                     }
 
                     if (var_1C4.field_23 > 0)
                     {
                         item_ptr = ovr025.new_Item(0, Affects.affect_41, (Affects)var_1C4.field_23, (short)(var_1C4.field_23 * 0x15E),
-                            0, 1, 0, 0, false, 0, 1, 0x45, -89, -50, 0x4F);
+                            0, 1, false, 0, false, 0, 1, 0x45, -89, -50, 0x4F);
 
                         ovr025.addItem(item_ptr, player_ptr);
                     }
@@ -1531,7 +1531,7 @@ namespace engine
                     if (var_1C4.field_86 > 0)
                     {
                         item_ptr = ovr025.new_Item(0, Affects.helpless, (Affects)var_1C4.field_86, (short)(var_1C4.field_86 * 0xc8),
-                            0, 0, 0, 0, false, 0, 0, 0x42, -89, -88, 0x45);
+                            0, 0, false, 0, false, 0, 0, 0x42, -89, -88, 0x45);
 
                         ovr025.addItem(item_ptr, player_ptr);
                     }
@@ -1539,7 +1539,7 @@ namespace engine
                     if (var_1C4.field_87 > 0)
                     {
                         item_ptr = ovr025.new_Item(0, Affects.affect_3e, (Affects)var_1C4.field_87, (short)(var_1C4.field_87 * 0x190),
-                            0, (short)(var_1C4.field_87 * 10), 0, 0, false, 0, 0, 0x40, -89, -71, 0x46);
+                            0, (short)(var_1C4.field_87 * 10), false, 0, false, 0, 0, 0x40, -89, -71, 0x46);
 
                         ovr025.addItem(item_ptr, player_ptr);
                     }

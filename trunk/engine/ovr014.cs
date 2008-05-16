@@ -503,23 +503,16 @@ namespace engine
 
         internal static void sub_3EDD4(Player arg_0)
         {
-            Item var_9;
-            bool var_5;
-            byte var_4;
-            byte var_3;
-            byte var_2;
-            byte var_1;
-
-            var_5 = false;
-            var_9 = null;
-            var_2 = arg_0.field_19C;
+            bool var_5 = false;
+            Item var_9 = null;
+            byte var_2 = arg_0.field_19C;
             arg_0.field_19C = arg_0.field_11C;
 
             if (ovr025.is_weapon_ranged(arg_0) == true &&
                 ovr025.sub_6906C(out var_9, arg_0) == true)
             {
                 var_5 = true;
-                var_4 = gbl.unk_1C020[arg_0.field_151.type].field_5;
+                byte var_4 = gbl.unk_1C020[arg_0.field_151.type].field_5;
 
                 if (var_4 < 2)
                 {
@@ -535,12 +528,12 @@ namespace engine
 
             gbl.reset_byte_1D2C0 = false;
             ovr024.work_on_00(arg_0, 18);
-            var_1 = sub_3EF0D(gbl.byte_1D2C0);
+            byte var_1 = sub_3EF0D(gbl.byte_1D2C0);
 
             if (var_5 == true &&
                 var_9 != null)
             {
-                var_3 = 1;
+                int var_3 = 1;
                 if (var_9 != null &&
                     var_9.count > var_3)
                 {
@@ -550,7 +543,7 @@ namespace engine
                 if (var_3 < var_1 &&
                     var_9.count > 0)
                 {
-                    var_1 = var_3;
+                    var_1 = (byte)var_3;
                 }
             }
 
@@ -1329,7 +1322,7 @@ namespace engine
             byte var_E;
             Struct_1D183 var_C = new Struct_1D183();
             byte var_5;
-            byte var_4;
+            int var_4;
             byte var_1;
 
             arg_0 = true;
@@ -1353,7 +1346,7 @@ namespace engine
 
                 if (arg_6 == 0x4F)
                 {
-                    var_4 = ovr025.sub_6886F(0x4F);
+                    var_4 = ovr025.spell_target_count(0x4F);
                 }
                 else
                 {
