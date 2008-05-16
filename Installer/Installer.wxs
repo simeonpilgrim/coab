@@ -1,17 +1,40 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding='Windows-1252'?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
-		<Product Id="{811C4D00-5AB7-4ffd-BAB2-BE30F88E831D}" Name="Curse of the Azure Bonds" 
-             Language="1033" Version="1.0.6.0" Manufacturer="ReActive Systems" 
-             UpgradeCode="6acb18e9-9a80-4ed4-a8ef-3634fa2b3e9b">
-		<Package InstallerVersion="200" Compressed="yes"  />
+  <?define SkuName = "Curse of the Azure Bonds"?>
 
-		<Media Id="1" Cabinet="Installer.cab" EmbedCab="yes" />
+  <?define ProductVersion="1.0.7" ?>
+  <?define Manufacturer="ReActive Systems"?>
+  <?define UpgradeCode="6acb18e9-9a80-4ed4-a8ef-3634fa2b3e9b"?>
 
-		<Directory Id="TARGETDIR" Name="SourceDir">
-			<Directory Id="ProgramFilesFolder">
-				<Directory Id="INSTALLLOCATION" Name="Curse of the Azure Bonds">
+  <Product Id="*" 
+           Name="Curse of the Azure Bonds"
+           Language="1033" 
+           Version='$(var.ProductVersion)'
+           Manufacturer='$(var.Manufacturer)'
+           UpgradeCode="$(var.UpgradeCode)">
+    <Package InstallerVersion="200" Compressed="yes"  />
 
-					<Component Id="LegacyComponent" Guid="ac733b14-f618-4fb2-bb9a-9ecb98b0e5c8">
+    <Media Id="1" Cabinet="Installer.cab" EmbedCab="yes" />
+    
+    <Upgrade Id="$(var.UpgradeCode)">
+      <UpgradeVersion Minimum="$(var.ProductVersion)"
+                      IncludeMinimum="no"
+                      OnlyDetect="yes"
+                      Language="1033"
+                      Property="NEWPRODUCTFOUND"/>
+      
+      <UpgradeVersion Minimum="1.0.0" 
+                      IncludeMinimum="yes" 
+                      Maximum="$(var.ProductVersion)" 
+                      IncludeMaximum="no" 
+                      Property="UPGRADEFOUND"/>
+    </Upgrade>
+    
+    <Directory Id="TARGETDIR" Name="SourceDir">
+      <Directory Id="ProgramFilesFolder">
+        <Directory Id="INSTALLLOCATION" Name="Curse of the Azure Bonds">
+
+          <Component Id="LegacyComponent" Guid="ac733b14-f618-4fb2-bb9a-9ecb98b0e5c8">
             <File Id="_8x8d1.dax" Name="8x8d1.dax" Source="c:\games\coab\8x8d1.dax" />
             <File Id="_8x8d2.dax" Name="8x8d2.dax" Source="c:\games\coab\8x8d2.dax" />
             <File Id="_8x8d3.dax" Name="8x8d3.dax" Source="c:\games\coab\8x8d3.dax" />
@@ -95,7 +118,7 @@
             <File Id="pic4.dax" Source="c:\games\coab\pic4.dax" />
             <File Id="pic5.dax" Source="c:\games\coab\pic5.dax" />
             <File Id="pic6.dax" Source="c:\games\coab\pic6.dax" />
-            
+
             <File Id="randcom.dax" Source="c:\games\coab\randcom.dax" />
             <File Id="sky.dax" Source="c:\games\coab\sky.dax" />
 
@@ -105,7 +128,7 @@
             <File Id="sprit4.dax" Source="c:\games\coab\sprit4.dax" />
             <File Id="sprit5.dax" Source="c:\games\coab\sprit5.dax" />
             <File Id="sprit6.dax" Source="c:\games\coab\sprit6.dax" />
-            
+
             <File Id="tiles.dax" Source="c:\games\coab\tiles.dax" />
             <File Id="title.dax" Source="c:\games\coab\title.dax" />
 
@@ -116,7 +139,7 @@
             <File Id="walldef6.dax" Source="c:\games\coab\walldef6.dax" />
             <File Id="wildcom.dax" Source="c:\games\coab\wildcom.dax" />
 
-           
+
           </Component>
           <Component Id="MainComponent" Guid="{20B26580-D989-42db-AB5A-53DC13BA27C7}">
             <File Id ="main.exe" Source="C:\dev\coab\Main\bin\Debug\main.exe" />
@@ -127,15 +150,30 @@
           <Component Id="ClassesComponent" Guid="{193AEC02-2C90-47dc-931D-B8D6523B4779}">
             <File Id ="classes.dll" Source="C:\dev\coab\Main\bin\Debug\classes.dll" />
           </Component>
-          </Directory>
+        </Directory>
       </Directory>
-		</Directory>
+    </Directory>
 
-		<Feature Id="Complete" Level="1">
+    <Feature Id="Complete" Level="1">
       <ComponentRef Id="LegacyComponent" />
       <ComponentRef Id="MainComponent" />
       <ComponentRef Id="EngineComponent" />
       <ComponentRef Id="ClassesComponent" />
     </Feature>
-	</Product>
+
+    
+    <!-- Prevent downgrading -->
+    <CustomAction Id="PreventDowngrading" Error="Newer version already installed." />
+
+    <!-- Sequences -->
+    <InstallExecuteSequence>
+      <Custom Action="PreventDowngrading" After="FindRelatedProducts">NEWPRODUCTFOUND</Custom>
+      <RemoveExistingProducts After="InstallFinalize" />
+    </InstallExecuteSequence>
+
+    <InstallUISequence>
+      <Custom Action="PreventDowngrading" After="FindRelatedProducts">NEWPRODUCTFOUND</Custom>
+    </InstallUISequence>
+    
+  </Product>
 </Wix>
