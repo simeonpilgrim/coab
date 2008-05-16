@@ -664,7 +664,7 @@ namespace engine
         }
 
 
-        internal static void add_affect(bool call_spell_jump_list, byte arg_2, ushort arg_4, Affects type, Player player)
+        internal static void add_affect(bool call_spell_jump_list, int arg_2, ushort arg_4, Affects type, Player player)
         {
             Affect affect_ptr;
             Affect affect_ptr2;
@@ -692,7 +692,7 @@ namespace engine
 
             affect_ptr2.type = type;
             affect_ptr2.field_1 = arg_4;
-            affect_ptr2.field_3 = arg_2;
+            affect_ptr2.field_3 = (byte)arg_2;
             affect_ptr2.call_spell_jump_list = call_spell_jump_list;
         }
 
@@ -1406,7 +1406,7 @@ namespace engine
         }
 
 
-        internal static void is_unaffected(string text, bool arg_4, byte arg_6, bool arg_8, byte arg_A, ushort arg_C, Affects affect_id, Player target)
+        internal static void is_unaffected(string text, bool arg_4, byte arg_6, bool call_spell_jump_list, int arg_A, ushort arg_C, Affects affect_id, Player target)
         {
             gbl.byte_1D2BD = (byte)affect_id;
 
@@ -1427,7 +1427,7 @@ namespace engine
                     remove_affect(found_affect, affect_id, target);
                 }
 
-                add_affect(arg_8, arg_A, arg_C, affect_id, target);
+                add_affect(call_spell_jump_list, arg_A, arg_C, affect_id, target);
 
                 if (text.Length != 0)
                 {

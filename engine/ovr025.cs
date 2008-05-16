@@ -32,18 +32,18 @@ namespace engine
                     arg_0.damageBonus += strengthDamBonus(arg_0);
                 }
 
-                var_6 = var_4.exp_value;
+                var_6 = var_4.plus;
 
                 if (gbl.unk_1C020[var_5].field_E > 0x7F &&
                     arg_0.Item_ptr_04 != null)
                 {
-                    var_6 += arg_0.Item_ptr_04.exp_value;
+                    var_6 += arg_0.Item_ptr_04.plus;
                 }
 
                 if ((gbl.unk_1C020[var_5].field_E & 0x01) != 0 &&
                     arg_0.Item_ptr_03 != null)
                 {
-                    var_6 += arg_0.Item_ptr_03.exp_value;
+                    var_6 += arg_0.Item_ptr_03.plus;
                 }
 
                 arg_0.damageBonus += var_6;
@@ -101,7 +101,7 @@ namespace engine
                 var_2 = gbl.unk_1C020[item.type].field_0;
                 if (var_2 == 1)
                 {
-                    bonus[1] = (sbyte)(item.exp_value + var_1);
+                    bonus[1] = (sbyte)(item.plus + var_1);
                     return;
                 }
 
@@ -109,26 +109,26 @@ namespace engine
                 {
                     if (var_2 == 9)
                     {
-                        if (item.exp_value > bonus[3])
+                        if (item.plus > bonus[3])
                         {
-                            bonus[3] = item.exp_value;
+                            bonus[3] = item.plus;
                         }
                     }
                     else
                     {
-                        bonus[2] += (sbyte)(item.exp_value);
+                        bonus[2] += (sbyte)(item.plus);
                     }
 
-                    player.field_186 = (sbyte)(player.field_186 + item.field_33);
+                    player.field_186 = (sbyte)(player.field_186 + item.plus_save);
                     return;
                 }
 
 
-                if ((item.exp_value + var_1) > bonus[4])
+                if ((item.plus + var_1) > bonus[4])
                 {
-                    bonus[4] = (sbyte)(item.exp_value + var_1);
+                    bonus[4] = (sbyte)(item.plus + var_1);
 
-                    if (item.exp_value > 0)
+                    if (item.plus > 0)
                     {
                         if (var_2 == 2)
                         {
@@ -265,12 +265,9 @@ namespace engine
             }
         }
 
-        internal static void ItemDisplayNameBuild(byte arg_0, bool displayReadied, byte arg_4, byte arg_6, Item item, Player player) /*id_item*/
+        internal static void ItemDisplayNameBuild(bool display_new_name, bool displayReadied, byte arg_4, byte arg_6, Item item, Player player) /*id_item*/
         {
             Player player_ptr;
-            byte var_8;
-            byte var_2;
-            byte var_1;
 
             item.name = string.Empty;
 
@@ -306,7 +303,7 @@ namespace engine
 
             if (detectMagic == true)
             {
-                if (item.exp_value > 0 || item.field_33 > 0 || item.field_36 != 0)
+                if (item.plus > 0 || item.plus_save > 0 || item.cursed == true)
                 {
                     item.name += "* ";
                 }
@@ -317,44 +314,36 @@ namespace engine
                 item.name += item.count.ToString() + " ";
             }
 
-            var_2 = 0;
+            int display_flags = 0;
+            display_flags |= (item.field_2F != 0 && (item.hidden_names_flag & 0x4) == 0) ? 0x1 : 0;
+            display_flags |= (item.field_30 != 0 && (item.hidden_names_flag & 0x2) == 0) ? 0x2 : 0;
+            display_flags |= (item.field_31 != 0 && (item.hidden_names_flag & 0x1) == 0) ? 0x4 : 0;
 
-            for (var_1 = 1; var_1 <= 3; var_1++)
+            bool pural_added = false;
+
+            for (int var_1 = 3; var_1 >= 1; var_1--)
             {
-                if (item.field_2EArray(var_1) != 0)
-                {
-                    if (((item.field_35 >> (3 - var_1)) & 1) == 0)
-                    {
-                        var_2 += (byte)(1 << (var_1 - 1));
-                    }
-                }
-            }
+                //int v = (display_flags >> (var_1 - 1));
 
-            var_8 = 0;
-
-            for (var_1 = 3; var_1 >= 1; var_1--)
-            {
-                //int v = (var_2 >> (var_1 - 1));
-
-                if (((var_2 >> (var_1 - 1)) & 1) > 0)
+                if (((display_flags >> (var_1 - 1)) & 1) > 0)
                 {
                     item.name += itemNames[item.field_2EArray(var_1)];
 
                     if (item.count < 2 ||
-                        var_8 != 0)
+                        pural_added == true)
                     {
                         item.name += " ";
                     }
                     else
                     {
-                        if ((1 << (var_1 - 1) == var_2) ||
-                            (var_1 == 1 && var_2 == 4 && item.type != 0x56) ||
-                            (var_1 == 2 && (var_2 & 1) == 0) ||
+                        if ((1 << (var_1 - 1) == display_flags) ||
+                            (var_1 == 1 && display_flags == 4 && item.type != 0x56) ||
+                            (var_1 == 2 && (display_flags & 1) == 0) ||
                             (var_1 == 3 && item.type == 0x56) ||
                             (item.field_31 != 0x87 && (item.type == 0x49 || item.type == 0x1c) && item.field_31 != 0xb1))
                         {
                             item.name += "s ";
-                            var_8 = 1;
+                            pural_added = true;
                         }
                         else
                         {
@@ -364,11 +353,10 @@ namespace engine
                 }
             }
 
-            if (arg_0 != 0)
+            if (display_new_name)
             {
                 seg041.displayString(item.name, 0, 10, arg_4, arg_6);
             }
-
         }
 
 
@@ -514,7 +502,7 @@ namespace engine
                 {
                     line += 2;
                     /*var_1 = 0x17;*/
-                    ItemDisplayNameBuild(0, false, 0, 0, player.field_151, player);
+                    ItemDisplayNameBuild(false, false, 0, 0, player.field_151, player);
 
                     seg041.press_any_key(player.field_151.name, true, 0, 10, line + 3, 0x26, line + 1, 0x17);
                 }
@@ -1764,77 +1752,73 @@ namespace engine
         }
 
 
-        internal static byte sub_6886F(int spell_id)
+        internal static int spell_target_count(int spell_id) /* sub_6886F */
         {
-            int var_2;
-            int var_3;
-            int var_1 = 0;
+            int target_count = 0;
 
             if (gbl.player_ptr.cleric_lvl == 0 &&
                 gbl.player_ptr.magic_user_lvl == 0 &&
                 gbl.player_ptr.paladin_lvl < 9 &&
                 gbl.player_ptr.ranger_lvl < 8)
             {
-                var_1 = 6;
+                target_count = 6;
             }
             else
             {
-                switch (gbl.unk_19AEC[spell_id].spellClass)
+                sbyte spell_class = gbl.unk_19AEC[spell_id].spellClass;
+                if (spell_class == 0)
                 {
-                    case 0:
-                        var_2 = gbl.player_ptr.cleric_lvl + (ovr026.sub_6B3D1(gbl.player_ptr) * gbl.player_ptr.turn_undead);
-                        var_3 = gbl.player_ptr.paladin_lvl + (ovr026.sub_6B3D1(gbl.player_ptr) * gbl.player_ptr.field_114) - 8;
+                    int var_2 = gbl.player_ptr.cleric_lvl + (ovr026.sub_6B3D1(gbl.player_ptr) * gbl.player_ptr.turn_undead);
+                    int var_3 = gbl.player_ptr.paladin_lvl + (ovr026.sub_6B3D1(gbl.player_ptr) * gbl.player_ptr.field_114) - 8;
 
-                        if (var_2 > var_3)
-                        {
-                            var_1 = var_2;
-                        }
-                        else
-                        {
-                            var_1 = var_3;
-                        }
-                        break;
+                    if (var_2 > var_3)
+                    {
+                        target_count = var_2;
+                    }
+                    else
+                    {
+                        target_count = var_3;
+                    }
+                }
+                else if (spell_class == 1)
+                {
+                    int var_2 = gbl.player_ptr.ranger_lvl + (ovr026.sub_6B3D1(gbl.player_ptr) * gbl.player_ptr.field_115) - 7;
+                    if (var_2 > 0)
+                    {
+                        target_count = var_2;
+                    }
+                    else
+                    {
+                        target_count = 0;
+                    }
+                }
+                else if (spell_class == 2)
+                {
+                    int var_2 = gbl.player_ptr.magic_user_lvl + (ovr026.sub_6B3D1(gbl.player_ptr) * gbl.player_ptr.field_116);
+                    int var_3 = gbl.player_ptr.ranger_lvl + (ovr026.sub_6B3D1(gbl.player_ptr) * gbl.player_ptr.field_115) - 8;
 
-                    case 1:
-                        var_2 = gbl.player_ptr.ranger_lvl + (ovr026.sub_6B3D1(gbl.player_ptr) * gbl.player_ptr.field_115) - 7;
-                        if (var_2 > 0)
-                        {
-                            var_1 = var_2;
-                        }
-                        else
-                        {
-                            var_1 = 0;
-                        }
-                        break;
-
-                    case 2:
-                        var_2 = gbl.player_ptr.magic_user_lvl + (ovr026.sub_6B3D1(gbl.player_ptr) * gbl.player_ptr.field_116);
-                        var_3 = gbl.player_ptr.ranger_lvl + (ovr026.sub_6B3D1(gbl.player_ptr) * gbl.player_ptr.field_115) - 8;
-
-                        if (var_2 > var_3)
-                        {
-                            var_1 = var_2;
-                        }
-                        else
-                        {
-                            var_1 = var_3;
-                        }
-
-                        break;
-
-                    case 3:
-                        var_1 = 12;
-                        break;
+                    if (var_2 > var_3)
+                    {
+                        target_count = var_2;
+                    }
+                    else
+                    {
+                        target_count = var_3;
+                    }
+                }
+                else if (spell_class == 3)
+                {
+                    target_count = 12;
                 }
             }
 
             if (gbl.byte_1D88D != 0 &&
                 gbl.unk_19AEC[spell_id].spellClass != 3)
             {
-                var_1 = 6;
+                target_count = 6;
             }
 
-            return (byte)var_1;
+            return target_count;
         }
 
 
@@ -2072,33 +2056,29 @@ namespace engine
 
         internal static bool sub_6906C(out Item output, Player player)
         {
-            byte var_6;
-            Item filed_151;
-            bool var_1;
+            bool var_1 = false;
 
-            var_1 = false;
-
-            filed_151 = player.field_151;
+            Item item = player.field_151;
             output = null;
-            var_6 = 0;
+            byte flags = 0;
 
-            if (filed_151 != null)
+            if (item != null)
             {
-                var_6 = gbl.unk_1C020[filed_151.type].field_E;
+                flags = gbl.unk_1C020[item.type].field_E;
 
-                if ((var_6 & 0x10) != 0)
+                if ((flags & 0x10) != 0)
                 {
-                    output = filed_151;
+                    output = item;
                 }
 
-                if ((var_6 & 0x08) != 0)
+                if ((flags & 0x08) != 0)
                 {
-                    if ((var_6 & 0x01) != 0)
+                    if ((flags & 0x01) != 0)
                     {
                         output = player.Item_ptr_03;
                     }
 
-                    if ((var_6 & 0x80) != 0)
+                    if ((flags & 0x80) != 0)
                     {
                         output = player.Item_ptr_04;
                     }
@@ -2106,7 +2086,7 @@ namespace engine
             }
 
             if (output != null ||
-                var_6 == 10)
+                flags == 10)
             {
                 var_1 = true;
             }
@@ -2201,32 +2181,30 @@ namespace engine
 
 
         internal static Item new_Item(Affects arg_0, Affects arg_2, Affects arg_4, short arg_6, byte arg_8,
-            short arg_A, byte arg_C, byte arg_E, bool readied, byte arg_12, sbyte arg_14, byte arg_16,
-            sbyte arg_18, sbyte arg_1A, byte arg_1C)
+            short arg_A, bool cursed, byte arg_E, bool readied, byte arg_12, sbyte exp_value, byte arg_16,
+            sbyte arg_18, sbyte arg_1A, byte type)
         {
-            Item var_8;
+            Item item = new Item();
 
-            var_8 = new Item();
+            item.name = string.Empty;
+            item.next = null;
+            item.type = type;
+            item.field_2F = arg_1A;
+            item.field_30 = arg_18;
+            item.field_31 = arg_16;
+            item.plus = exp_value;
+            item.plus_save = arg_12;
+            item.readied = readied;
+            item.hidden_names_flag = arg_E;
+            item.cursed = cursed;
+            item.weight = arg_A;
+            item.count = arg_8;
+            item._value = arg_6;
+            item.affect_1 = arg_4;
+            item.affect_2 = arg_2;
+            item.affect_3 = arg_0;
 
-            var_8.name = string.Empty;
-            var_8.next = null;
-            var_8.type = arg_1C;
-            var_8.field_2F = arg_1A;
-            var_8.field_30 = arg_18;
-            var_8.field_31 = arg_16;
-            var_8.exp_value = arg_14;
-            var_8.field_33 = arg_12;
-            var_8.readied = readied;
-            var_8.field_35 = arg_E;
-            var_8.field_36 = arg_C;
-            var_8.weight = arg_A;
-            var_8.count = arg_8;
-            var_8._value = arg_6;
-            var_8.affect_1 = arg_4;
-            var_8.affect_2 = arg_2;
-            var_8.affect_3 = arg_0;
-
-            return var_8;
+            return item;
         }
 
 

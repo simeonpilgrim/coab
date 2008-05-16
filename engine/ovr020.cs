@@ -123,14 +123,14 @@ namespace engine
             if (gbl.player_ptr02.field_151 != null)
             {
                 seg041.displayString("Weapon", 0, 15, var_2, 1);
-                ovr025.ItemDisplayNameBuild(1, false, var_2, 8, gbl.player_ptr02.field_151, gbl.player_ptr02);
+                ovr025.ItemDisplayNameBuild(true, false, var_2, 8, gbl.player_ptr02.field_151, gbl.player_ptr02);
             }
 
             var_2++;
             if (gbl.player_ptr02.field_159 != null)
             {
                 seg041.displayString("Armor", 0, 15, var_2, 2);
-                ovr025.ItemDisplayNameBuild(1, false, var_2, 8, gbl.player_ptr02.field_159, gbl.player_ptr02);
+                ovr025.ItemDisplayNameBuild(true, false, var_2, 8, gbl.player_ptr02.field_159, gbl.player_ptr02);
             }
 
             var_2++;
@@ -436,55 +436,52 @@ namespace engine
 
         internal static void ItemDisplayStats(Item arg_0) /*sub_550A6*/
         {
-            Item var_4;
-
             seg037.draw8x8_01();
-            var_4 = arg_0;
 
             seg041.displayString("itemptr:      ", 0, 10, 1, 1);
-            seg041.displayString(var_4.type.ToString(), 0, 10, 1, 0x14);
+            seg041.displayString(arg_0.type.ToString(), 0, 10, 1, 0x14);
             
             seg041.displayString("namenum(1):   ", 0, 10, 2, 1);
-            seg041.displayString(var_4.field_2F.ToString(), 0, 10, 2, 0x14);
+            seg041.displayString(arg_0.field_2F.ToString(), 0, 10, 2, 0x14);
             
             seg041.displayString("namenum(2):   ", 0, 10, 3, 1);
-            seg041.displayString(var_4.field_30.ToString(), 0, 10, 3, 0x14);
+            seg041.displayString(arg_0.field_30.ToString(), 0, 10, 3, 0x14);
             
             seg041.displayString("namenum(3):   ", 0, 10, 4, 1);
-            seg041.displayString(var_4.field_31.ToString(), 0, 10, 4, 0x14);
+            seg041.displayString(arg_0.field_31.ToString(), 0, 10, 4, 0x14);
             
             seg041.displayString("plus:         ", 0, 10, 5, 1);
-            seg041.displayString(var_4.exp_value.ToString(), 0, 10, 5, 0x14);
+            seg041.displayString(arg_0.plus.ToString(), 0, 10, 5, 0x14);
             
             seg041.displayString("plussave:     ", 0, 10, 6, 1);
-            seg041.displayString(var_4.field_33.ToString(), 0, 10, 6, 0x14);
+            seg041.displayString(arg_0.plus_save.ToString(), 0, 10, 6, 0x14);
             
             seg041.displayString("ready:        ", 0, 10, 7, 1);
-            seg041.displayString(var_4.readied.ToString(), 0, 10, 7, 0x14);
+            seg041.displayString(arg_0.readied.ToString(), 0, 10, 7, 0x14);
             
             seg041.displayString("identified:   ", 0, 10, 8, 1);
-            seg041.displayString(var_4.field_35.ToString(), 0, 10, 8, 0x14);
+            seg041.displayString(arg_0.hidden_names_flag.ToString(), 0, 10, 8, 0x14);
             
             seg041.displayString("cursed:       ", 0, 10, 9, 1);
-            seg041.displayString(var_4.field_36.ToString(), 0, 10, 9, 0x14);
+            seg041.displayString(arg_0.cursed.ToString(), 0, 10, 9, 0x14);
             
             seg041.displayString("value:        ", 0, 10, 10, 1);
-            seg041.displayString(var_4._value.ToString(), 0, 10, 10, 0x14);
+            seg041.displayString(arg_0._value.ToString(), 0, 10, 10, 0x14);
             
             seg041.displayString("special(1):   ", 0, 10, 11, 1);
-            seg041.displayString(var_4.affect_1.ToString(), 0, 10, 11, 0x14);
+            seg041.displayString(arg_0.affect_1.ToString(), 0, 10, 11, 0x14);
             
             seg041.displayString("special(2):   ", 0, 10, 12, 1);
-            seg041.displayString(var_4.affect_2.ToString(), 0, 10, 12, 0x14);
+            seg041.displayString(arg_0.affect_2.ToString(), 0, 10, 12, 0x14);
             
             seg041.displayString("special(3):   ", 0, 10, 13, 1);
-            seg041.displayString(var_4.affect_3.ToString(), 0, 10, 13, 0x14);
+            seg041.displayString(arg_0.affect_3.ToString(), 0, 10, 13, 0x14);
             
             seg041.displayString("dice large:   ", 0, 10, 14, 1);
-            seg041.displayString(gbl.unk_1C020[var_4.type].diceCount.ToString(), 0, 10, 14, 0x14);
+            seg041.displayString(gbl.unk_1C020[arg_0.type].diceCount.ToString(), 0, 10, 14, 0x14);
             
             seg041.displayString("sides large:  ", 0, 10, 15, 1);
-            seg041.displayString(gbl.unk_1C020[var_4.type].diceSize.ToString(), 0, 10, 15, 0x14);
+            seg041.displayString(gbl.unk_1C020[arg_0.type].diceSize.ToString(), 0, 10, 15, 0x14);
 
             seg041.displayAndDebug("press a key", 0, 10);
         }
@@ -569,7 +566,7 @@ namespace engine
 
                     while (tmpItem != null)
                     {
-                        ovr025.ItemDisplayNameBuild(0, true, 0, 0, tmpItem, player);
+                        ovr025.ItemDisplayNameBuild(false, true, 0, 0, tmpItem, player);
 
                         tmpItem = tmpItem.next;
                     }
@@ -643,7 +640,7 @@ namespace engine
                             case 'D':
                                 if (sub_54EC1(curr_item) == true)
                                 {
-                                    ovr025.ItemDisplayNameBuild(0, false, 0, 0, curr_item, player);
+                                    ovr025.ItemDisplayNameBuild(false, false, 0, 0, curr_item, player);
 
                                     seg041.press_any_key("Your " + curr_item.name + "will be gone forever", true, 0, 14, 22, 0x26, 21, 1);
 
@@ -881,7 +878,7 @@ namespace engine
 
             if (item.readied)
             {
-                if (item.field_36 != 0)
+                if (item.cursed == true)
                 {
                     ovr025.string_print01("It's Cursed");
                 }
@@ -960,7 +957,7 @@ namespace engine
                         break;
 
                     case 2:
-                        ovr025.ItemDisplayNameBuild(0, false, 0, 0, player.itemArray[var_3], player);
+                        ovr025.ItemDisplayNameBuild(false, false, 0, 0, player.itemArray[var_3], player);
                         ovr025.string_print01("already using " + player.itemArray[var_3].name);
                         break;
 
@@ -978,9 +975,7 @@ namespace engine
 
         internal static void trade_item(Item item)
         {
-            Player player_ptr;
-
-            player_ptr = gbl.player_ptr01;
+            Player player_ptr = gbl.player_ptr01;
             ovr025.load_pic();
 
             ovr025.selectAPlayer(ref player_ptr, true, "Trade with Whom?");
@@ -1004,15 +999,13 @@ namespace engine
 
         internal static void halve_items(Item item)
         {
-            byte half_and_remander;
-            byte half_number;
             Item item_ptr;
 
-            half_number = (byte)(item.count >> 2);
+            int half_number = item.count / 2;
 
             if (half_number > 0)
             {
-                half_and_remander = (byte)(item.count - half_number);
+                int half_and_remander = item.count - half_number;
 
                 item_ptr = item.ShallowClone();
 
@@ -1034,18 +1027,13 @@ namespace engine
 
         internal static void join_items(Item item) /*sub_56285*/
         {
-            byte items_count;
-            Item this_item;
-            Item next_item;
-            Item item_ptr;
+            Item this_item = item;
+            int items_count = this_item.count;
 
-            this_item = item;
-            items_count = this_item.count;
-
-            item_ptr = gbl.player_ptr.itemsPtr;
+            Item item_ptr = gbl.player_ptr.itemsPtr;
             while (item_ptr != null)
             {
-                next_item = item_ptr.next;
+                Item next_item = item_ptr.next;
 
                 if (item_ptr != this_item &&
                     item_ptr.count > 0 &&
@@ -1053,9 +1041,9 @@ namespace engine
                     item_ptr.field_30 == this_item.field_30 &&
                     item_ptr.field_31 == this_item.field_31 &&
                     item_ptr.type == this_item.type &&
-                    item_ptr.exp_value == this_item.exp_value &&
-                    item_ptr.field_33 == this_item.field_33 &&
-                    item_ptr.field_36 == this_item.field_36 &&
+                    item_ptr.plus == this_item.plus &&
+                    item_ptr.plus_save == this_item.plus_save &&
+                    item_ptr.cursed == this_item.cursed &&
                     item_ptr.weight == this_item.weight &&
                     item_ptr.affect_1 == this_item.affect_1 &&
                     (int)item_ptr.affect_1 < 2 &&
@@ -1125,11 +1113,11 @@ namespace engine
                     {
                         seg041.displayString("Item:", 0, 10, 0x17, 0);
 
-                        ovr025.ItemDisplayNameBuild(1, false, 0x17, 5, item, gbl.player_ptr);
+                        ovr025.ItemDisplayNameBuild(true, false, 0x17, 5, item, gbl.player_ptr);
                     }
                     else
                     {
-                        ovr025.ItemDisplayNameBuild(1, false, 0x16, 1, item, gbl.player_ptr);
+                        ovr025.ItemDisplayNameBuild(true, false, 0x16, 1, item, gbl.player_ptr);
                     }
 
                     seg041.GameDelay();
@@ -1231,7 +1219,7 @@ namespace engine
                 }
             }
 
-            ovr025.ItemDisplayNameBuild(0, false, 0, 0, item, gbl.player_ptr02);
+            ovr025.ItemDisplayNameBuild(false, false, 0, 0, item, gbl.player_ptr02);
 
             var_208 = "I'll give you " + item_value.ToString() + " gold pieces for your " + item.name;
 
@@ -1280,7 +1268,7 @@ namespace engine
             int var_2;
 
             var_9 = 0;
-            ovr025.ItemDisplayNameBuild(0, false, 0, 0, item, gbl.player_ptr02);
+            ovr025.ItemDisplayNameBuild(false, false, 0, 0, item, gbl.player_ptr02);
 
             seg041.press_any_key("For 200 gold pieces I'll identify your " + item.name, true, 0, 0x0e, 0x16, 0x26, 0x15, 1);
 
@@ -1313,14 +1301,14 @@ namespace engine
 
             if (var_9 != 0)
             {
-                if (item.field_35 == 0)
+                if (item.hidden_names_flag == 0)
                 {
                     seg041.press_any_key("I can't tell anything new about your " + item.name, true, 0, 0x0e, 0x16, 0x26, 0x15, 1);
                 }
                 else
                 {
-                    item.field_35 = 0;
-                    ovr025.ItemDisplayNameBuild(0, false, 0, 0, item, gbl.player_ptr02);
+                    item.hidden_names_flag = 0;
+                    ovr025.ItemDisplayNameBuild(false, false, 0, 0, item, gbl.player_ptr02);
 
                     seg041.press_any_key("It looks like some sort of " + item.name, true, 0, 0x0e, 0x16, 0x26, 0x15, 1);
 
@@ -1559,7 +1547,7 @@ namespace engine
 
             if (item.count > 0)
             {
-                item_weight *= item.count;
+                item_weight *= (short)item.count;
             }
 
             if ((player.weight + item_weight) > (ovr025.strEncumberance(player) + 1500))

@@ -70,7 +70,7 @@ namespace engine
 
             while( item_ptr != null )
             {
-                ovr025.ItemDisplayNameBuild( 0, false, 0, 0, item_ptr, null );
+                ovr025.ItemDisplayNameBuild( false, false, 0, 0, item_ptr, null );
 
                 item_ptr = item_ptr.next;
             }
@@ -244,7 +244,7 @@ namespace engine
 
             while( item_ptr != null )
             {
-                ovr025.ItemDisplayNameBuild(0, false, 0, 0, item_ptr, null);
+                ovr025.ItemDisplayNameBuild(false, false, 0, 0, item_ptr, null);
 
                 item_ptr = item_ptr.next;
             }

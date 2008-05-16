@@ -798,13 +798,10 @@ namespace engine
         }
 
 
-        internal static void alloc_stringList( out StringList sl, int numEntries )
+        internal static StringList alloc_stringList(int numEntries)
         {
-            StringList sl_ptr;
-
-            sl = new StringList();
-			
-			sl_ptr = sl;
+            StringList sl = new StringList();
+            StringList sl_ptr = sl;
 
 			for( int i = 1; i < numEntries; i++ )
 			{
@@ -812,6 +809,8 @@ namespace engine
 
                 sl_ptr = sl_ptr.next;
 			}
+
+            return sl;
         }
 
 

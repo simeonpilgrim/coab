@@ -706,7 +706,6 @@ namespace engine
         internal static void CMD_VertMenu() /* sub_26EE9 */
         {
             StringList var_10A;
-            StringList var_106;
 
             gbl.byte_1EE90 = 0;
             bool var_10F = true;
@@ -720,7 +719,7 @@ namespace engine
             gbl.ecl_offset--;
             ovr008.vm_LoadCmdSets(var_1);
 
-            ovr027.alloc_stringList(out var_106, var_1);
+            StringList var_106 = ovr027.alloc_stringList(var_1);
 
             var_10A = var_106;
 
@@ -1492,7 +1491,7 @@ namespace engine
 
                 while (var_61 != null)
                 {
-                    ovr025.ItemDisplayNameBuild(0, false, 0, 0, var_61, gbl.player_ptr);
+                    ovr025.ItemDisplayNameBuild(false, false, 0, 0, var_61, gbl.player_ptr);
                     var_61 = var_61.next;
                 }
             }

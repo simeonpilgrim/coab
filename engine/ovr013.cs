@@ -352,7 +352,7 @@ namespace engine
                 item.type = 20;
                 item.field_30 = 20;
                 item.field_31 = 243;
-                item.exp_value = 1;
+                item.plus = 1;
                 item.affect_2 = Affects.spiritual_hammer;
                 item.affect_3 = (Affects)160;
 
@@ -735,7 +735,7 @@ namespace engine
         {
             Item item = sub_3AF77(gbl.player_ptr);
 
-            if (item != null && item.exp_value == 0)
+            if (item != null && item.plus == 0)
             {
                 sub_3AF06(100, player);
             }
@@ -900,12 +900,12 @@ namespace engine
             var_4 = sub_3AF77(gbl.player_ptr);
 
             if (var_4 == null ||
-                var_4.exp_value == 0)
+                var_4.plus == 0)
             {
                 gbl.damage = 0;
             }
             else if (var_4 != null &&
-                var_4.exp_value < 3)
+                var_4.plus < 3)
             {
                 gbl.damage /= 2;
             }
@@ -1236,31 +1236,15 @@ namespace engine
         {
             Affect affect = (Affect)param;
 
-            throw new System.NotSupportedException();//cmp	byte_1D8B7, 0
-            throw new System.NotSupportedException();//jnz	loc_3BA78
-            throw new System.NotSupportedException();//cmp	byte_1D2C9, 0
-            throw new System.NotSupportedException();//jnz	loc_3BA78
-            throw new System.NotSupportedException();//les	di, [bp+affect]
-            throw new System.NotSupportedException();//mov	al, es:[di+3]
-            throw new System.NotSupportedException();//and	al, 0x0F
-            throw new System.NotSupportedException();//les	di, [bp+affect]
-            throw new System.NotSupportedException();//mov	es:[di+3], al
-            throw new System.NotSupportedException();//jmp	short func_end
-            throw new System.NotSupportedException();//loc_3BA78:
-            throw new System.NotSupportedException();//les	di, [bp+affect]
-            throw new System.NotSupportedException();//mov	al, es:[di+3]
-            throw new System.NotSupportedException();//and	al, 0x10
-            throw new System.NotSupportedException();//or	al, al
-            throw new System.NotSupportedException();//jnz	func_end
-            gbl.byte_1D2C9 = -1;
-            throw new System.NotSupportedException();//les	di, [bp+affect]
-            throw new System.NotSupportedException();//mov	al, es:[di+3]
-            throw new System.NotSupportedException();//or	al, 0x10
-            throw new System.NotSupportedException();//les	di, [bp+affect]
-            throw new System.NotSupportedException();//mov	es:[di+3], al
-            throw new System.NotSupportedException();//func_end:
-            throw new System.NotSupportedException();//pop	bp
-            throw new System.NotSupportedException();//retf	0x0A
+            if (gbl.byte_1D8B7 == 0 && gbl.byte_1D2C9 == 0)
+            {
+                affect.field_3 &= 0x0f;
+            }
+            else if ((affect.field_3 & 0x10) == 0)
+            {
+                gbl.byte_1D2C9 = -1;
+                affect.field_3 |= 0x10;
+            }
         }
 
 
@@ -1528,8 +1512,8 @@ namespace engine
 
         internal static void sub_3C0EE(byte arg_0)
         {
-            byte var_1 = ovr025.sub_6886F(gbl.spell_id);
-            byte var_2 = (byte)(arg_0 + ((0x0b - var_1) * 5));
+            int target_count = ovr025.spell_target_count(gbl.spell_id);
+            int var_2 = (byte)(arg_0 + ((0x0b - target_count) * 5));
 
             if (gbl.byte_1D2BD != 0 ||
                 (gbl.damage_flags & 8) != 0)
@@ -1655,7 +1639,7 @@ namespace engine
             Item item = sub_3AF77(gbl.player_ptr);
 
             if (item != null &&
-                item.exp_value > 0)
+                item.plus > 0)
             {
                 gbl.damage /= 2;
             }
@@ -1690,7 +1674,7 @@ namespace engine
             var_4 = sub_3AF77(gbl.player_ptr);
 
             if (var_4 == null ||
-                var_4.exp_value == 0)
+                var_4.plus == 0)
             {
                 if (gbl.player_ptr.race > 0 ||
                     gbl.player_ptr.field_E5 < 4)

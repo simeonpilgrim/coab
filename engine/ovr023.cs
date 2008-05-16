@@ -743,7 +743,7 @@ namespace engine
 
             if (gbl.byte_1D88D == 0)
             {
-                var_2 = (byte)(gbl.unk_19AEC[arg_0].field_2 + (gbl.unk_19AEC[arg_0].field_3 * ovr025.sub_6886F(arg_0)));
+                var_2 = (byte)(gbl.unk_19AEC[arg_0].field_2 + (gbl.unk_19AEC[arg_0].field_3 * ovr025.spell_target_count(arg_0)));
             }
             else
             {
@@ -800,19 +800,19 @@ namespace engine
             }
             else
             {
-                var_4 = (ushort)(gbl.unk_19AEC[arg_0].field_4 + (gbl.unk_19AEC[arg_0].field_5 * ovr025.sub_6886F(arg_0)));
+                var_4 = (ushort)(gbl.unk_19AEC[arg_0].field_4 + (gbl.unk_19AEC[arg_0].field_5 * ovr025.spell_target_count(arg_0)));
             }
 
             return var_4;
         }
 
 
-        internal static void sub_5CF7F(string arg_0, byte arg_4, sbyte arg_6, bool arg_8, byte arg_A, byte spell_id)
+        internal static void sub_5CF7F(string arg_0, byte arg_4, sbyte arg_6, bool arg_8, int TargetCount, byte spell_id)
         {
             bool var_30;
             Player var_2F;
             byte var_2B;
-            byte var_2A;
+            int target_count;
 
             if (arg_6 == 0)
             {
@@ -825,13 +825,13 @@ namespace engine
 
             if (gbl.sp_target_count != 0)
             {
-                if (arg_A == 0)
+                if (TargetCount == 0)
                 {
-                    var_2A = ovr025.sub_6886F(spell_id);
+                    target_count = ovr025.spell_target_count(spell_id);
                 }
                 else
                 {
-                    var_2A = arg_A;
+                    target_count = TargetCount;
                 }
 
                 for (var_2B = 1; var_2B <= gbl.sp_target_count; var_2B++)
@@ -871,7 +871,7 @@ namespace engine
                         if (gbl.unk_19AEC[spell_id].field_A > 0)
                         {
                             ovr024.is_unaffected(arg_0, var_30, gbl.unk_19AEC[spell_id].field_8,
-                                arg_8, var_2A, sub_5CE92(spell_id), gbl.unk_19AEC[spell_id].field_A,
+                                arg_8, target_count, sub_5CE92(spell_id), gbl.unk_19AEC[spell_id].field_A,
                                 var_2F);
                         }
                     }
@@ -1337,7 +1337,7 @@ namespace engine
                         var_2E = true;
                     }
 
-                    ovr024.is_unaffected(arg_0, var_2E, var_30, false, ovr025.sub_6886F(gbl.spell_id), sub_5CE92(gbl.spell_id),
+                    ovr024.is_unaffected(arg_0, var_2E, var_30, false, ovr025.spell_target_count(gbl.spell_id), sub_5CE92(gbl.spell_id),
                         gbl.unk_19AEC[gbl.spell_id].field_A, target);
                 }
             }
@@ -1411,7 +1411,7 @@ namespace engine
 
         internal static void sub_5DEE1()
         {
-            sub_5CF7F(string.Empty, 9, (sbyte)ovr025.sub_6886F(gbl.spell_id), false, 0, gbl.spell_id);
+            sub_5CF7F(string.Empty, 9, (sbyte)ovr025.spell_target_count(gbl.spell_id), false, 0, gbl.spell_id);
         }
 
 
@@ -1426,7 +1426,7 @@ namespace engine
             }
             else
             {
-                sub_5CF7F("is charmed", 0, 0, true, (byte)(((int)gbl.player_ptr.combat_team << 7) + ovr025.sub_6886F(gbl.spell_id)), gbl.spell_id);
+                sub_5CF7F("is charmed", 0, 0, true, (byte)(((int)gbl.player_ptr.combat_team << 7) + ovr025.spell_target_count(gbl.spell_id)), gbl.spell_id);
 
                 Affect affect;
 
@@ -1447,7 +1447,7 @@ namespace engine
             gbl.byte_1AFDD = 0x12;
             gbl.byte_1AFDE = 0;
 
-            switch (ovr025.sub_6886F(gbl.spell_id))
+            switch (ovr025.spell_target_count(gbl.spell_id))
             {
                 case 1:
                     gbl.byte_1AFDE = 0;
@@ -1539,7 +1539,7 @@ namespace engine
         {
             sbyte var_1;
 
-            var_1 = (sbyte)(ovr025.sub_6886F(gbl.spell_id) + 1);
+            var_1 = (sbyte)(ovr025.spell_target_count(gbl.spell_id) + 1);
 
             sub_5CF7F(string.Empty, 8, (sbyte)((var_1 >> 1) + ovr024.roll_dice_save(4, (sbyte)(var_1 >> 1))), false, 0, gbl.spell_id);
         }
@@ -1553,7 +1553,7 @@ namespace engine
 
         internal static void sub_5E2B2()
         {
-            sub_5CF7F(string.Empty, 12, (sbyte)(ovr024.roll_dice_save(8, 1) + ovr025.sub_6886F(gbl.spell_id)),
+            sub_5CF7F(string.Empty, 12, (sbyte)(ovr024.roll_dice_save(8, 1) + ovr025.spell_target_count(gbl.spell_id)),
                 false, 0, gbl.spell_id);
         }
 
@@ -1738,11 +1738,9 @@ namespace engine
 
         internal static void is_duplicated()
         {
-            byte var_1;
+            int var_1 = ovr024.roll_dice(4, 1) << 4;
 
-            var_1 = (byte)(ovr024.roll_dice(4, 1) << 4);
-
-            var_1 |= ovr025.sub_6886F(gbl.spell_id);
+            var_1 += ovr025.spell_target_count(gbl.spell_id);
 
             sub_5CF7F("is duplicated", 0, 0, false, var_1, gbl.spell_id);
         }
@@ -1768,7 +1766,7 @@ namespace engine
 
             gbl.byte_1D2C7 = 1;
 
-            var_10 = ovr025.sub_6886F(gbl.spell_id);
+            var_10 = (byte)ovr025.spell_target_count(gbl.spell_id);
             var_E = 0;
             var_8 = gbl.stru_1D885;
 
@@ -1984,7 +1982,7 @@ namespace engine
         {
             gbl.byte_1D2C7 = 1;
 
-            byte var_3 = ovr025.sub_6886F(gbl.spell_id);
+            int var_3 = ovr025.spell_target_count(gbl.spell_id);
 
             gbl.sp_target_count = 0;
             Player player = gbl.player_next_ptr;
@@ -1996,7 +1994,7 @@ namespace engine
                 {
                     if (ovr033.sub_7515A(true, ovr033.PlayerMapYPos(player), ovr033.PlayerMapXPos(player), player) == true)
                     {
-                        byte var_2 = (byte)(((int)player.combat_team << 4) + ovr025.sub_6886F(gbl.spell_id));
+                        byte var_2 = (byte)(((int)player.combat_team << 4) + ovr025.spell_target_count(gbl.spell_id));
 
                         player.combat_team = gbl.player_ptr.combat_team;
                         player.quick_fight = QuickFight.True;
@@ -2098,19 +2096,19 @@ namespace engine
         }
 
 
-        internal static bool sub_5F126(Player arg_2, byte bp_var_2)
+        internal static bool sub_5F126(Player arg_2, int target_count)
         {
             bool var_1;
 
             gbl.byte_1AFDE = (byte)(arg_2.magic_user_lvl + (arg_2.field_116 * ovr026.sub_6B3D1(gbl.player_ptr)));
 
-            if (bp_var_2 > gbl.byte_1AFDE)
+            if (target_count > gbl.byte_1AFDE)
             {
-                gbl.byte_1AFDD = (byte)(((bp_var_2 - gbl.byte_1AFDE) * 5) + 50);
+                gbl.byte_1AFDD = (byte)(((target_count - gbl.byte_1AFDE) * 5) + 50);
             }
-            else if (bp_var_2 < gbl.byte_1AFDE)
+            else if (target_count < gbl.byte_1AFDE)
             {
-                gbl.byte_1AFDD = (byte)(50 - ((gbl.byte_1AFDE - bp_var_2) * 2));
+                gbl.byte_1AFDD = (byte)(50 - ((gbl.byte_1AFDE - target_count) * 2));
             }
             else
             {
@@ -2136,11 +2134,11 @@ namespace engine
             byte var_8;
             byte var_7;
             Player var_6;
-            byte var_2;
+            int var_2;
             byte var_1;
 
             gbl.byte_1D2C7 = 1;
-            var_2 = ovr025.sub_6886F(gbl.spell_id);
+            var_2 = ovr025.spell_target_count(gbl.spell_id);
 
             for (int i = 1; i <= gbl.sp_target_count; i++)
             {
@@ -2344,7 +2342,7 @@ namespace engine
 
         internal static void is_praying()
         {
-            byte tmpByte = (byte)(((int)gbl.player_ptr.combat_team << 4) + ovr025.sub_6886F(gbl.spell_id));
+            byte tmpByte = (byte)(((int)gbl.player_ptr.combat_team << 4) + ovr025.spell_target_count(gbl.spell_id));
 
             sub_5CF7F("is praying", 0, 0, false, tmpByte, gbl.spell_id);
         }
@@ -2367,7 +2365,7 @@ namespace engine
 
                 while (var_4 != null && var_5 == 0)
                 {
-                    if (var_4.field_36 != 0)
+                    if (var_4.cursed == true)
                     {
                         var_5 = 1;
                         var_4.readied = false;
@@ -2410,22 +2408,21 @@ namespace engine
 
         internal static void sub_5F782()
         {
-            sbyte var_1;
+            int dice_count;
 
             gbl.byte_1D2C7 = 1;
 
             if (gbl.spell_id == 0x40)
             {
-                var_1 = (sbyte)((ovr024.roll_dice(3, 1) * 2) + 1);
+                dice_count = (ovr024.roll_dice(3, 1) * 2) + 1;
             }
             else
             {
-                var_1 = (sbyte)ovr025.sub_6886F(gbl.spell_id);
+                dice_count = ovr025.spell_target_count(gbl.spell_id);
             }
 
             if (gbl.area_ptr.field_1CC == 0)
             {
-
                 ovr032.Rebuild_SortedCombatantList(gbl.mapToBackGroundTile, 1, 0xff, 2, gbl.targetY, gbl.targetX);
 
                 for (int i = 1; i <= gbl.sortedCombatantCount; i++)
@@ -2438,18 +2435,16 @@ namespace engine
 
             ovr033.redrawCombatArea(8, 0, gbl.targetY, gbl.targetX);
 
-            sub_5CF7F(string.Empty, 9, ovr024.roll_dice_save(6, var_1), false, 0, gbl.spell_id);
+            sub_5CF7F(string.Empty, 9, ovr024.roll_dice_save(6, dice_count), false, 0, gbl.spell_id);
 
         }
 
 
         internal static void sub_5F87B(string text, CombatTeam combatTeam, Affects affect)
         {
-            byte var_2A;
-
             gbl.byte_1D2C7 = 1;
 
-            var_2A = ovr025.sub_6886F(gbl.spell_id);
+            int var_2A = ovr025.spell_target_count(gbl.spell_id);
 
             for (int index = 1; index <= gbl.sp_target_count; index++)
             {
@@ -2479,7 +2474,7 @@ namespace engine
         }
 
 
-        internal static void sub_5F986(ref bool arg_0, byte arg_4, byte arg_6, byte arg_8, int posY, int posX)
+        internal static void sub_5F986(ref bool arg_0, byte player_index, byte arg_6, int damage, int posY, int posX)
         {
             byte groundTile;
             byte playerIndex;
@@ -2499,19 +2494,19 @@ namespace engine
             }
 
             if (playerIndex > 0 &&
-                playerIndex != arg_4)
+                playerIndex != player_index)
             {
                 Player player = gbl.player_array[playerIndex];
                 gbl.damage_flags = 0x0C;
 
-                ovr024.damage_person(ovr024.do_saving_throw(0, arg_6, player), 2, (sbyte)arg_8, player);
+                ovr024.damage_person(ovr024.do_saving_throw(0, arg_6, player), 2, damage, player);
                 ovr025.sub_67A59(0x13);
                 gbl.damage_flags = 0;
             }
         }
 
 
-        internal static void sub_5FA44(byte arg_0, byte arg_2, byte arg_4, byte arg_6)
+        internal static void sub_5FA44(byte arg_0, byte arg_2, int damage, byte arg_6)
         {
             byte var_3D;
             byte var_3C;
@@ -2522,10 +2517,8 @@ namespace engine
             bool var_37;
             bool var_36;
             sbyte var_35;
-            sbyte var_34;
-            sbyte var_33;
-            SteppingPath var_30;
-            SteppingPath var_18;
+            SteppingPath path_b;
+            SteppingPath path_a;
 
             var_36 = false;
             ovr025.sub_67A59(0x13);
@@ -2546,30 +2539,28 @@ namespace engine
 
                 while (var_3C > 0)
                 {
+                    path_a = new SteppingPath();
 
-                    var_18 = new SteppingPath();
+                    path_a.attacker_x = gbl.targetX;
+                    path_a.attacker_y = gbl.targetY;
+                    path_a.target_x = gbl.targetX + ((gbl.targetX - var_31) * var_35 * var_3C);
+                    path_a.target_y = gbl.targetY + ((gbl.targetY - var_32) * var_35 * var_3C);
 
-                    var_18.attacker_x = gbl.targetX;
-                    var_18.attacker_y = gbl.targetY;
-                    var_18.target_x = (short)(gbl.targetX + ((gbl.targetX - var_31) * var_35 * var_3C));
-                    var_18.target_y = (short)(gbl.targetY + ((gbl.targetY - var_32) * var_35 * var_3C));
-
-                    var_18.CalculateDeltas();
+                    path_a.CalculateDeltas();
 
                     do
                     {
-                        var_33 = (sbyte)var_18.current_x;
-                        var_34 = (sbyte)var_18.current_y;
+                        int tmp_x = path_a.current_x;
+                        int tmp_y = path_a.current_y;
 
-                        if (var_18.attacker_x != var_18.target_x ||
-                            var_18.attacker_y != var_18.target_y)
+                        if (path_a.attacker_x != path_a.target_x ||
+                            path_a.attacker_y != path_a.target_y)
                         {
                             do
                             {
+                                var_37 = path_a.Step();
 
-                                var_37 = var_18.Step();
-
-                                ovr033.AtMapXY(out var_3B, out var_3A, var_18.current_y, var_18.current_x);
+                                ovr033.AtMapXY(out var_3B, out var_3A, path_a.current_y, path_a.current_x);
 
                                 if (gbl.BackGroundTiles[var_3B].move_cost == 1)
                                 {
@@ -2577,7 +2568,7 @@ namespace engine
                                 }
 
                             } while (var_37 == true && (var_3A <= 0 || var_3A == var_39) && var_3B != 0 &&
-                            gbl.BackGroundTiles[var_3B].move_cost <= 1 && var_18.steps < var_3C);
+                            gbl.BackGroundTiles[var_3B].move_cost <= 1 && path_a.steps < var_3C);
                         }
 
                         if (var_3B == 0)
@@ -2585,43 +2576,41 @@ namespace engine
                             var_3C = 0;
                         }
 
-                        ovr025.draw_missile_attack(0x32, 4, var_18.current_y, var_18.current_x, var_34, var_33);
+                        ovr025.draw_missile_attack(0x32, 4, path_a.current_y, path_a.current_x, tmp_y, tmp_x);
 
-                        sub_5F986(ref var_36, var_39, arg_2, arg_4, (sbyte)var_18.current_y, (sbyte)var_18.current_x);
+                        sub_5F986(ref var_36, var_39, arg_2, damage, path_a.current_y, path_a.current_x);
                         var_39 = var_3A;
 
                         if (var_36 == true)
                         {
-                            gbl.targetX = (sbyte)var_18.current_x;
-                            gbl.targetY = (sbyte)var_18.current_y;
+                            gbl.targetX = path_a.current_x;
+                            gbl.targetY = path_a.current_y;
 
-                            var_30 = new SteppingPath();
+                            path_b = new SteppingPath();
 
-                            var_30.attacker_x = gbl.targetX;
-                            var_30.attacker_y = gbl.targetY;
-                            var_30.target_y = var_31;
-                            var_30.target_x = var_32;
+                            path_b.attacker_x = gbl.targetX;
+                            path_b.attacker_y = gbl.targetY;
+                            path_b.target_y = var_31;
+                            path_b.target_x = var_32;
 
-                            var_30.CalculateDeltas();
+                            path_b.CalculateDeltas();
 
-                            while (var_30.Step() == true)
+                            while (path_b.Step() == true)
                             {
                                 /* empty */
                             }
 
-                            if (var_38 != 0 && var_30.steps <= 8)
+                            if (var_38 != 0 && path_b.steps <= 8)
                             {
-                                var_18.steps += 8;
+                                path_a.steps += 8;
                             }
-
-
 
                             var_35 = (sbyte)-var_35;
                             var_38 = 0;
                             var_39 = 0;
                         }
 
-                        var_3D = (byte)(var_18.steps - var_3D);
+                        var_3D = (byte)(path_a.steps - var_3D);
 
                         if (var_3D < var_3C)
                         {
@@ -2632,7 +2621,7 @@ namespace engine
                             var_3C = 0;
                         }
 
-                        var_3D = var_18.steps;
+                        var_3D = path_a.steps;
                     } while (var_36 == false && var_3C != 0);
                 }
 
@@ -2644,12 +2633,11 @@ namespace engine
         internal static void sub_5FCD9()
         {
             bool var_2 = false; /* Simeon */
-            byte var_1;
 
-            var_1 = ovr024.roll_dice(6, ovr025.sub_6886F(gbl.spell_id));
+            int damage = ovr024.roll_dice(6, ovr025.spell_target_count(gbl.spell_id));
 
-            sub_5F986(ref var_2, 0, 4, var_1, gbl.targetY, gbl.targetX);
-            sub_5FA44(1, 4, var_1, 7);
+            sub_5F986(ref var_2, 0, 4, damage, gbl.targetY, gbl.targetX);
+            sub_5FA44(1, 4, damage, 7);
 
         }
 
@@ -2809,7 +2797,7 @@ namespace engine
         {
             bool var_1 = false;
 
-            sub_5F986(ref var_1, 0, 4, (byte)(ovr024.roll_dice(6, 1) + 20), gbl.targetY, gbl.targetX);
+            sub_5F986(ref var_1, 0, 4, ovr024.roll_dice(6, 1) + 20, gbl.targetY, gbl.targetX);
             sub_5FA44(0, 4, 20, 3);
         }
 
@@ -2906,7 +2894,7 @@ namespace engine
 
             if (gbl.sp_targets[1].field_E5 < 6)
             {
-                sub_5CF7F(string.Empty, 8, 0, false, ovr025.sub_6886F(gbl.spell_id), gbl.spell_id);
+                sub_5CF7F(string.Empty, 8, 0, false, ovr025.spell_target_count(gbl.spell_id), gbl.spell_id);
 
                 if (ovr025.find_affect(out var_4, Affects.affect_03, gbl.sp_targets[1]) == true)
                 {
@@ -3281,7 +3269,7 @@ namespace engine
 
             gbl.byte_1D2C7 = 1;
 
-            var_15 = ovr025.sub_6886F(gbl.spell_id);
+            var_15 = (byte)ovr025.spell_target_count(gbl.spell_id);
             var_13 = 0;
             var_8 = gbl.stru_1D889;
 
@@ -3579,9 +3567,9 @@ namespace engine
 
             var_4 = gbl.player_ptr;
 
-            var_6 = (sbyte)ovr025.sub_6886F(gbl.spell_id);
+            var_6 = (sbyte)ovr025.spell_target_count(gbl.spell_id);
 
-            var_5 = (byte)((ovr025.sub_6886F(gbl.spell_id) + 1) / 2);
+            var_5 = (byte)((ovr025.spell_target_count(gbl.spell_id) + 1) / 2);
 
             if (var_5 < 1)
             {
@@ -3789,18 +3777,16 @@ namespace engine
 
         internal static void spell_spit_acid(byte arg_0, object param, Player player)
         {
-            byte var_1;
-
             gbl.dword_1D5CA(out gbl.byte_1DA70, QuickFight.True, 0x41);
 
             gbl.spell_target = player.actions.target;
 
-            var_1 = ovr024.roll_dice(100, 1);
+            int roll = ovr024.roll_dice(100, 1);
 
             if (ovr025.getTargetRange(gbl.spell_target, player) < 7 &&
                 gbl.spell_target != null)
             {
-                if (var_1 <= 30)
+                if (roll <= 30)
                 {
                     ovr025.DisplayPlayerStatusString(true, 10, "Spits Acid", player);
                     ovr025.sub_67A59(0x17);
@@ -3822,10 +3808,6 @@ namespace engine
         internal static void spell_breathes_acid(byte arg_0, object param, Player player)
         {
             Affect affect = (Affect)param;
-            bool var_9;
-            Player var_8;
-            byte var_4;
-            bool var_1;
 
             gbl.byte_1DA70 = false;
 
@@ -3848,63 +3830,39 @@ namespace engine
                     sub_5D7CF(6, 1, gbl.targetY, gbl.targetX, var_3, var_2);
                 }
 
-                for (var_4 = 1; var_4 <= gbl.sp_target_count; var_4++)
+                for (int i = 1; i <= gbl.sp_target_count; i++)
                 {
-                    if (ovr025.opposite_team(player) == gbl.sp_targets[var_4].combat_team)
+                    if (ovr025.opposite_team(player) == gbl.sp_targets[i].combat_team)
                     {
                         gbl.byte_1DA70 = false;
                     }
                 }
-
 
                 if (gbl.byte_1DA70 == true &&
                     gbl.sp_target_count > 0)
                 {
                     ovr025.DisplayPlayerStatusString(true, 10, "breathes acid", player);
                     ovr025.sub_67A59(0x12);
-                    throw new System.NotSupportedException();//push	[bp+player.seg]
-                    throw new System.NotSupportedException();//push	[bp+player.offset]
-                    throw new System.NotSupportedException();//call	ovr033.sub_74C32(Player *)
-                    throw new System.NotSupportedException();//cbw
-                    throw new System.NotSupportedException();//push	ax
-                    throw new System.NotSupportedException();//push	[bp+player.seg]
-                    throw new System.NotSupportedException();//push	[bp+player.offset]
-                    throw new System.NotSupportedException();//call	ovr033.sub_74C5A(Player *)
-                    throw new System.NotSupportedException();//cbw
-                    throw new System.NotSupportedException();//push	ax
-                    throw new System.NotSupportedException();//push	sp_target[1].seg
-                    throw new System.NotSupportedException();//push	sp_target[1].offset
-                    throw new System.NotSupportedException();//call	ovr033.sub_74C32(Player *)
-                    throw new System.NotSupportedException();//cbw
-                    throw new System.NotSupportedException();//push	ax
-                    throw new System.NotSupportedException();//push	sp_target[1].seg
-                    throw new System.NotSupportedException();//push	sp_target[1].offset
-                    throw new System.NotSupportedException();//call	ovr033.sub_74C5A(Player *)
-                    throw new System.NotSupportedException();//cbw
-                    throw new System.NotSupportedException();//push	ax
-                    throw new System.NotSupportedException();//mov	al, 1
-                    throw new System.NotSupportedException();//push	ax
-                    throw new System.NotSupportedException();//mov	al, 0x1E
-                    throw new System.NotSupportedException();//push	ax
-                    throw new System.NotSupportedException();//call	sub_67AA4
 
-                    for (var_4 = 1; var_4 <= gbl.sp_target_count; var_4++)
+                    ovr025.draw_missile_attack(0x1E, 1, ovr033.PlayerMapYPos(gbl.sp_targets[1]), ovr033.PlayerMapXPos(gbl.sp_targets[1]),
+                        ovr033.PlayerMapYPos(player), ovr033.PlayerMapXPos(player));
+
+                    for (int i = 1; i <= gbl.sp_target_count; i++)
                     {
-                        if (gbl.sp_targets[var_4] != null)
+                        if (gbl.sp_targets[i] != null)
                         {
-                            var_8 = gbl.sp_targets[var_4];
+                            Player target = gbl.sp_targets[i];
 
-                            var_9 = ovr024.do_saving_throw(0, 3, var_8);
-                            ovr024.damage_person(var_9, 2, (sbyte)player.hit_point_max, var_8);
+                            bool save_made = ovr024.do_saving_throw(0, 3, target);
+                            ovr024.damage_person(save_made, 2, player.hit_point_max, target);
                         }
                     }
 
                     affect.field_3--;
 
-                    var_1 = ovr025.clear_actions(player);
+                    ovr025.clear_actions(player);
                 }
             }
-            //loc_61EF0:
         }
 
 
@@ -3944,31 +3902,10 @@ namespace engine
             throw new System.NotSupportedException();//loc_61F84:
             ovr025.DisplayPlayerStatusString(true, 10, "breathes fire", arg_6);
             ovr025.sub_67A59(0x12);
-            throw new System.NotSupportedException();//push	short ptr [bp+arg_6+2]
-            throw new System.NotSupportedException();//push	short ptr [bp+arg_6]
-            throw new System.NotSupportedException();//call	ovr033.sub_74C32(Player *)
-            throw new System.NotSupportedException();//cbw
-            throw new System.NotSupportedException();//push	ax
-            throw new System.NotSupportedException();//push	short ptr [bp+arg_6+2]
-            throw new System.NotSupportedException();//push	short ptr [bp+arg_6]
-            throw new System.NotSupportedException();//call	ovr033.sub_74C5A(Player *)
-            throw new System.NotSupportedException();//cbw
-            throw new System.NotSupportedException();//push	ax
-            throw new System.NotSupportedException();//push	sp_target[1].seg
-            throw new System.NotSupportedException();//push	sp_target[1].offset
-            throw new System.NotSupportedException();//call	ovr033.sub_74C32(Player *)
-            throw new System.NotSupportedException();//cbw
-            throw new System.NotSupportedException();//push	ax
-            throw new System.NotSupportedException();//push	sp_target[1].seg
-            throw new System.NotSupportedException();//push	sp_target[1].offset
-            throw new System.NotSupportedException();//call	ovr033.sub_74C5A(Player *)
-            throw new System.NotSupportedException();//cbw
-            throw new System.NotSupportedException();//push	ax
-            throw new System.NotSupportedException();//mov	al, 1
-            throw new System.NotSupportedException();//push	ax
-            throw new System.NotSupportedException();//mov	al, 0x1E
-            throw new System.NotSupportedException();//push	ax
-            throw new System.NotSupportedException();//call	sub_67AA4
+
+            ovr025.draw_missile_attack(0x1E, 1, 
+                ovr033.PlayerMapYPos(gbl.sp_targets[1]), ovr033.PlayerMapXPos(gbl.sp_targets[1]),
+                ovr033.PlayerMapYPos(arg_6), ovr033.PlayerMapXPos(arg_6));
 
             for (var_4 = 1; var_4 <= gbl.sp_target_count; var_4++)
             {
@@ -3982,8 +3919,8 @@ namespace engine
             }
             arg_2.field_3 -= 1;
             var_1 = ovr025.clear_actions(arg_6);
-            throw new System.NotSupportedException();//loc_6207D:
-
+            
+            //loc_6207D:
         }
 
 
@@ -4020,34 +3957,14 @@ namespace engine
 
             ovr025.DisplayPlayerStatusString(true, 10, "Breathes Fire", arg_6);
             ovr025.sub_67A59(0x17);
-            throw new System.NotSupportedException();//push	short ptr [bp+arg_6+2]
-            throw new System.NotSupportedException();//push	short ptr [bp+arg_6]
-            throw new System.NotSupportedException();//call	ovr033.sub_74C32(Player *)
-            throw new System.NotSupportedException();//cbw
-            throw new System.NotSupportedException();//push	ax
-            throw new System.NotSupportedException();//push	short ptr [bp+arg_6+2]
-            throw new System.NotSupportedException();//push	short ptr [bp+arg_6]
-            throw new System.NotSupportedException();//call	ovr033.sub_74C5A(Player *)
-            throw new System.NotSupportedException();//cbw
-            throw new System.NotSupportedException();//push	ax
-            throw new System.NotSupportedException();//push	spell_target.seg
-            throw new System.NotSupportedException();//push	spell_target.offset
-            throw new System.NotSupportedException();//call	ovr033.sub_74C32(Player *)
-            throw new System.NotSupportedException();//cbw
-            throw new System.NotSupportedException();//push	ax
-            throw new System.NotSupportedException();//push	spell_target.seg
-            throw new System.NotSupportedException();//push	spell_target.offset
-            throw new System.NotSupportedException();//call	ovr033.sub_74C5A(Player *)
-            throw new System.NotSupportedException();//cbw
-            throw new System.NotSupportedException();//push	ax
-            throw new System.NotSupportedException();//mov	al, 1
-            throw new System.NotSupportedException();//push	ax
-            throw new System.NotSupportedException();//mov	al, 0x1E
-            throw new System.NotSupportedException();//push	ax
-            throw new System.NotSupportedException();//call	sub_67AA4
+
+            ovr025.draw_missile_attack(0x1E, 1, ovr033.PlayerMapYPos(gbl.spell_target), ovr033.PlayerMapXPos(gbl.spell_target),
+                ovr033.PlayerMapYPos(arg_6), ovr033.PlayerMapXPos(arg_6));
+
 
             ovr024.damage_person(ovr024.do_saving_throw(0, 3, gbl.spell_target), 2, 7, gbl.spell_target);
-            throw new System.NotSupportedException();//loc_6219A:
+            
+            //loc_6219A:
         }
 
 
@@ -4067,7 +3984,7 @@ namespace engine
                 ovr025.sub_67A59(0x13);
                 ovr025.draw_missile_attack(0x32, 4, gbl.targetY, gbl.targetX, var_3, var_2);
 
-                sub_5F986(ref var_1, 0, 4, (byte)ovr024.roll_dice_save(6, 16), gbl.targetY, gbl.targetX);
+                sub_5F986(ref var_1, 0, 4, ovr024.roll_dice_save(6, 16), gbl.targetY, gbl.targetX);
                 sub_5FA44(0, 0, (byte)ovr024.roll_dice_save(6, 16), 10);
                 var_1 = ovr025.clear_actions(arg_6);
             }

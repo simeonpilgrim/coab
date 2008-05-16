@@ -259,7 +259,7 @@ namespace engine
             {
                 if (arg_0.itemArray[var_6] != null &&
                     (gbl.unk_1C020[arg_0.itemArray[var_6].type].classFlags & arg_0.classFlags) == 0 &&
-                    arg_0.itemArray[var_6].field_36 == 0)
+                    arg_0.itemArray[var_6].cursed == false)
                 {
                     arg_0.itemArray[var_6].readied = false;
                 }
@@ -880,7 +880,7 @@ namespace engine
             while (var_13 != null)
             {
                 if ((gbl.unk_1C020[var_13.type].classFlags & arg_0.classFlags) == 0 &&
-                    var_13.field_36 == 0)
+                    var_13.cursed == false)
                 {
                     var_13.readied = false;
                 }
