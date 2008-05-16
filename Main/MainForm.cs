@@ -80,5 +80,20 @@ namespace Main
         {
             engine.ovr024.TogglePlayerAlwaysSaves();
         }
+
+        private void alwayAllowAreaMapToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Classes.gbl.AlwayShowAreaMapToggle();
+        }
+
+        private void freeTrainingToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Classes.gbl.FreeTrainingToggle();
+        }
+
+        private void skipCopyProtectionToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Classes.gbl.SkipCopyProtection();
+        }
     }
 }

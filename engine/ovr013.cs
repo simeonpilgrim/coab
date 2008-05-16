@@ -490,8 +490,8 @@ namespace engine
 
         internal static void sub_3A974(byte arg_0, object param, Player player)
         {
-            ovr024.sub_630C7(arg_0, param, player, Affects.affect_2b);
-            ovr024.sub_630C7(arg_0, param, player, Affects.cause_disease_2);
+            ovr024.CallSpellJumpTable(arg_0, param, player, Affects.affect_2b);
+            ovr024.CallSpellJumpTable(arg_0, param, player, Affects.cause_disease_2);
         }
 
 
@@ -540,7 +540,7 @@ namespace engine
             throw new System.NotSupportedException();//cmp	al, 0x50
             throw new System.NotSupportedException();//ja	loc_3AB11
             ovr024.is_unaffected("goes berserk", false, 1, true, (byte)player.combat_team, 1, Affects.affect_89, player);
-            ovr024.sub_630C7(0, null, player, Affects.affect_89);
+            ovr024.CallSpellJumpTable(0, null, player, Affects.affect_89);
             throw new System.NotSupportedException();//jmp	short loc_3AB3B
             throw new System.NotSupportedException();//loc_3AB11:
             throw new System.NotSupportedException();//cmp	al, 0x51
@@ -1829,7 +1829,7 @@ namespace engine
 
                 if (gbl.game_state != 5)
                 {
-                    ovr024.sub_630C7(0, null, player, item.affect_2);
+                    ovr024.CallSpellJumpTable(0, null, player, item.affect_2);
                 }
             }
         }

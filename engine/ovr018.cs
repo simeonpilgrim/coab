@@ -108,7 +108,6 @@ namespace engine
             gameState = gbl.game_state;
             gbl.game_state = 0;
             var_F = true;
-            gbl.free_training = false;
 
             while (true)
             {
@@ -362,22 +361,6 @@ namespace engine
                                     {
                                         seg043.print_and_exit();
                                     }
-                                }
-                            }
-                            break;
-
-                        case 'J':
-                            if (seg051.ParamStr(2) == gbl.byte_1EFA4)
-                            {
-                                gbl.free_training = !gbl.free_training;
-
-                                if (gbl.free_training == true)
-                                {
-                                    ovr025.string_print01("Free training on");
-                                }
-                                else
-                                {
-                                    ovr025.string_print01("Free training off");
                                 }
                             }
                             break;
@@ -2925,10 +2908,7 @@ namespace engine
 
         internal static void train_player()
         {
-            string var_228;
             Player player_ptr;
-            byte var_24;
-            int var_23;
             byte var_1F;
             bool var_1D;
             short var_1C;
@@ -3112,7 +3092,8 @@ namespace engine
 
                 if (gbl.byte_1B2F1 == 0)
                 {
-                    var_23 = 0;
+                    byte var_24 = 0;
+                    int var_23 = 0;
                     var_9 = 0;
                     for (var_13 = 0; var_13 <= 7; var_13++)
                     {
@@ -3129,55 +3110,17 @@ namespace engine
 
                     if (var_23 > 0)
                     {
-                        throw new System.NotSupportedException();//mov	al, [bp+var_24]
-                        throw new System.NotSupportedException();//cbw
-                        throw new System.NotSupportedException();//mov	di, ax
-                        throw new System.NotSupportedException();//mov	al, byte ptr unk_1A1BA[di]
-                        throw new System.NotSupportedException();//mov	[bp+var_A], al
-                        throw new System.NotSupportedException();//mov	al, [bp+var_19]
-                        throw new System.NotSupportedException();//inc	al
-                        throw new System.NotSupportedException();//inc	al
-                        throw new System.NotSupportedException();//cbw
-                        throw new System.NotSupportedException();//shl	ax, 1
-                        throw new System.NotSupportedException();//shl	ax, 1
-                        throw new System.NotSupportedException();//mov	cx, ax
-                        throw new System.NotSupportedException();//mov	al, [bp+var_24]
-                        throw new System.NotSupportedException();//cbw
-                        throw new System.NotSupportedException();//mov	dx, 0x63
-                        throw new System.NotSupportedException();//mul	dx
-                        throw new System.NotSupportedException();//mov	di, ax
-                        throw new System.NotSupportedException();//add	di, cx
-                        throw new System.NotSupportedException();//mov	ax, short ptr unk_1A5A3[di]
-                        throw new System.NotSupportedException();//mov	dx, short ptr unk_1A5A5[di]
-                        throw new System.NotSupportedException();//mov	[bp+var_9], ax
-                        throw new System.NotSupportedException();//mov	[bp+var_7], dx
-                        throw new System.NotSupportedException();//cmp	[bp+var_7], 0
-                        throw new System.NotSupportedException();//jg	loc_511F5
-                        throw new System.NotSupportedException();//jl	loc_51232
-                        throw new System.NotSupportedException();//cmp	[bp+var_9], 0
-                        throw new System.NotSupportedException();//jbe	loc_51232
-                        throw new System.NotSupportedException();//loc_511F5:
-                        throw new System.NotSupportedException();//les	di, int ptr [bp+player_ptr.offset]
-                        throw new System.NotSupportedException();//mov	ax, es:[di+charStruct.exp_lw]
-                        throw new System.NotSupportedException();//mov	dx, es:[di+charStruct.exp_hw]
-                        throw new System.NotSupportedException();//cmp	dx, [bp+var_7]
-                        throw new System.NotSupportedException();//jg	loc_5120E
-                        throw new System.NotSupportedException();//jl	loc_51232
-                        throw new System.NotSupportedException();//cmp	ax, [bp+var_9]
-                        throw new System.NotSupportedException();//jb	loc_51232
-                        throw new System.NotSupportedException();//loc_5120E:
-                        throw new System.NotSupportedException();//mov	ax, [bp+var_9]
-                        throw new System.NotSupportedException();//mov	dx, [bp+var_7]
-                        throw new System.NotSupportedException();//cmp	dx, [bp+var_3]
-                        throw new System.NotSupportedException();//jg	loc_51220
-                        throw new System.NotSupportedException();//jl	loc_51232
-                        throw new System.NotSupportedException();//cmp	ax, [bp+var_5]
-                        throw new System.NotSupportedException();//jbe	loc_51232
-                        throw new System.NotSupportedException();//loc_51220:
-                        var_5 = var_9 - 1;
+                        var_A = unk_1A1BA[var_24];
+                        var_9 = unk_1A5A3[var_24, var_19 + 2];
+
+                        if (var_9 > 0 &&
+                            player_ptr.exp >= var_9 &&
+                            var_9 > var_5)
+                        {
+                            var_5 = var_9 - 1;
+                        }
                     }
                 }
-                //loc_51232:
 
                 if (var_5 > 0 && gbl.byte_1B2F1 == 0)
                 {
@@ -3230,39 +3173,28 @@ namespace engine
 
                     seg041.displayString(" will become:", 0, 10, var_16, player_ptr.name.Length + 4);
 
-
                     for (var_13 = 0; var_13 <= 7; var_13++)
                     {
-                        throw new System.NotSupportedException();//cmp player_ptr.Skill_A_lvl[ var_13 ], 0
-                        throw new System.NotSupportedException();//jg	loc_51359
-                        throw new System.NotSupportedException();//jmp	loc_5143E
-                        throw new System.NotSupportedException();//loc_51359:
-                        throw new System.NotSupportedException();//mov	al, [bp+var_13]
-                        throw new System.NotSupportedException();//cbw
-                        throw new System.NotSupportedException();//mov	di, ax
-                        throw new System.NotSupportedException();//mov	al, byte ptr unk_1A1BA[di]
-                        throw new System.NotSupportedException();//and	al, [bp+var_C]
-                        throw new System.NotSupportedException();//or	al, al
-                        throw new System.NotSupportedException();//ja	loc_5136D
-                        throw new System.NotSupportedException();//jmp	loc_5143E
-                        throw new System.NotSupportedException();//loc_5136D:
-                        var_16++;
-
-                        if (var_16 == 5)
+                        if (player_ptr.Skill_A_lvl[var_13] > 0 &&
+                            (unk_1A1BA[var_13] & var_C) != 0)
                         {
-                            var_228 = System.String.Format("    a level {0} {1}",
-                                player_ptr.Skill_A_lvl[var_13] + 1, ovr020.classString[var_13]);
+                            var_16++;
 
-                            seg041.displayString(var_228, 0, 10, var_16, 6);
-                        }
-                        else
-                        {
-                            var_228 = System.String.Format("and a level {0} {1}",
-                                player_ptr.Skill_A_lvl[var_13] + 1, ovr020.classString[var_13]);
+                            if (var_16 == 5)
+                            {
+                                string text = System.String.Format("    a level {0} {1}",
+                                    player_ptr.Skill_A_lvl[var_13] + 1, ovr020.classString[var_13]);
 
-                            seg041.displayString(var_228, 0, 10, var_16, 6);
+                                seg041.displayString(text, 0, 10, var_16, 6);
+                            }
+                            else
+                            {
+                                string text = System.String.Format("and a level {0} {1}",
+                                    player_ptr.Skill_A_lvl[var_13] + 1, ovr020.classString[var_13]);
+
+                                seg041.displayString(text, 0, 10, var_16, 6);
+                            }
                         }
-                        //loc_5143E:
                     }
                 }
 
