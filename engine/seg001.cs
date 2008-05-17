@@ -22,8 +22,6 @@ namespace engine
 
             seg051.o_1_a_87_i_tpdos_idc_tpdos_l_tptv();
 
-            gbl.byte_1EFA4 = "Wooden";
-
             seg044.sound_sub_121BF();
             seg039.config_game();
         }
@@ -83,10 +81,10 @@ namespace engine
 				gbl.inDemo = true;
 			}
 
-			if( seg051.ParamStr( 2 ) != gbl.byte_1EFA4 &&
+			if( Cheats.skip_copy_protection == false &&
 				gbl.inDemo == false )
 			{
-				//ovr004.copy_protection();
+				ovr004.copy_protection();
 			}
 
 			while( true )
@@ -165,11 +163,11 @@ namespace engine
 
 					gbl.inDemo = ( gbl.byte_1AB06 == 0x44 );
 
-					if( seg051.ParamStr( 2 ) != gbl.byte_1EFA4 &&
-						gbl.inDemo == false )
-					{
-						//ovr004.copy_protection();
-					}
+                    if (Cheats.skip_copy_protection == false &&
+                        gbl.inDemo == false)
+                    {
+                        ovr004.copy_protection();
+                    }
 				
 					seg044.sound_sub_120E0( gbl.sound_0_188BE );
 				}

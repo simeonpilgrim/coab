@@ -576,7 +576,7 @@ namespace engine
 						{
 							case 'A':
 								if( gbl.area_ptr.block_area_view == 0 ||
-									gbl.always_show_areamap )
+                                    Cheats.always_show_areamap)
 								{
 									gbl.mapAreaDisplay = ( gbl.mapAreaDisplay == false );
 

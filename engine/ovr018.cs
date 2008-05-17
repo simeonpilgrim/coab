@@ -121,12 +121,12 @@ namespace engine
                         menuFlags[allow_modify] = true;
 
                         if (gbl.area2_ptr.field_550 > 0 ||
-                            gbl.free_training == true)
+                            Cheats.free_training == true)
                         {
                             menuFlags[allow_training] = true;
                         }
 
-                        if ((gbl.area2_ptr.field_550 <= 0 && gbl.free_training == false) ||
+                        if ((gbl.area2_ptr.field_550 <= 0 && Cheats.free_training == false) ||
                             ovr026.is_human(gbl.player_ptr) == false ||
                             ovr026.getExtraFirstSkill(gbl.player_ptr) != 0x11)
                         {
@@ -2931,12 +2931,12 @@ namespace engine
             byte var_1;
 
             if (gbl.player_ptr.health_status != Status.okey &&
-                gbl.free_training == false)
+                Cheats.free_training == false)
             {
                 seg041.DisplayStatusText(0, 14, "we only train conscious people");
             }
             else if (ovr020.getPlayerGold(gbl.player_ptr) < 1000 &&
-                gbl.free_training == false &&
+                Cheats.free_training == false &&
                 gbl.byte_1B2F1 == 0 &&
                 gbl.gameWon == false)
             {
@@ -3057,11 +3057,11 @@ namespace engine
                         if (var_1 == 0)
                         {
                             if (unk_1A5A3[var_13, var_19 + 1] <= player_ptr.exp ||
-                                gbl.free_training == true)
+                                Cheats.free_training == true)
                             {
                                 if (unk_1A5A3[var_13, var_19 + 1] > 0)
                                 {
-                                    if (gbl.free_training == true)
+                                    if (Cheats.free_training == true)
                                     {
                                         if (unk_1A5A3[var_13, var_19 + 1] > 0)
                                         {
@@ -3127,7 +3127,7 @@ namespace engine
                     player_ptr.exp = var_5;
                 }
 
-                if (gbl.free_training == false)
+                if (Cheats.free_training == false)
                 {
                     if ((var_B & var_1F) == 0 &&
                         gbl.byte_1B2F1 == 0)
@@ -3148,7 +3148,7 @@ namespace engine
                     }
                 }
 
-                if (gbl.free_training == false)
+                if (Cheats.free_training == false)
                 {
                     var_C = (byte)(var_A & var_1F);
                 }
@@ -3204,7 +3204,7 @@ namespace engine
                     {
                         ovr025.string_print01("Congratulations...");
 
-                        if (gbl.free_training == false &&
+                        if (Cheats.free_training == false &&
                             gbl.gameWon == false)
                         {
                             subtract_gold(player_ptr, 1000);

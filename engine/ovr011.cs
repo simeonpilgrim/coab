@@ -801,13 +801,9 @@ namespace engine
 
         internal static void sub_380E0()
         {
-            byte var_6;
-            byte var_5;
-            Player player;
+            Player player = gbl.player_next_ptr;
 
-            player = gbl.player_next_ptr;
-
-            var_5 = 0;
+            int var_5 = 0;
 
             while (player != null)
             {
@@ -828,7 +824,7 @@ namespace engine
                     player.actions.direction = (byte)((player.actions.direction + 4) % 8);
                 }
 
-                var_6 = (byte)(player.field_F7 & 0x7f);
+                int var_6 = player.field_F7 & 0x7f;
 
                 if (player.combat_team == CombatTeam.Ours)
                 {
@@ -926,7 +922,6 @@ namespace engine
             sbyte var_15 = 0; /* Simeon */
             byte var_13 = 0; /* Simeon */
             byte var_10 = 0; /* Simeon */
-            bool var_5;
             bool var_2 = false; /* Simeon */
 
             bool var_3 = true;
@@ -979,16 +974,7 @@ namespace engine
                     var_13++;
                 }
 
-                if (var_17 < 0 || var_18 < 0 ||
-                    var_17 > 10 || var_18 > 5)
-                {
-                    var_5 = true;
-                }
-                else
-                {
-                    var_5 = false;
-                }
-
+                bool var_5 = (var_17 < 0 || var_18 < 0 || var_17 > 10 || var_18 > 5);
 
                 if (var_7 > 1)
                 {
@@ -1074,19 +1060,14 @@ namespace engine
 
         internal static void sub_387FE()
         {
-            byte var_F;
-            byte var_E;
             int direction;
-            byte var_C;
             byte loop_var;
             Player player_ptr;
             Player player_ptr2;
-            sbyte var_2;
-            sbyte var_1 = 0;
 
             ovr025.count_teams();
-            var_F = 0;
-            var_E = 0;
+            byte var_F = 0;
+            byte var_E = 0;
 
             for (int i = 1; i <= gbl.MaxCombatantCount; i++)
             {
@@ -1107,7 +1088,7 @@ namespace engine
 
             for (gbl.currentTeam = 0; gbl.currentTeam < 2; gbl.currentTeam++)
             {
-                for (var_C = 0; var_C < 4; var_C++)
+                for (int var_C = 0; var_C < 4; var_C++)
                 {
                     if (var_C == 1)
                     {
@@ -1118,9 +1099,9 @@ namespace engine
                         direction = gbl.team_direction[gbl.currentTeam];
                     }
 
-                    for (var_2 = 0; var_2 <= 5; var_2++)
+                    for (int var_2 = 0; var_2 <= 5; var_2++)
                     {
-                        for (var_1 = 0; var_1 <= 10; var_1++)
+                        for (int var_1 = 0; var_1 <= 10; var_1++)
                         {
                             if (unk_16620[direction, var_2, 0] > var_1 ||
                                 unk_16620[direction, var_2, 1] < var_1)
@@ -1266,7 +1247,7 @@ namespace engine
                 player = player.next_player;
             }
 
-            ovr014.sub_40E00();
+            ovr014.calc_enemy_health_percentage();
             gbl.game_state = 5;
         }
     }

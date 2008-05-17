@@ -581,7 +581,7 @@ namespace engine
         {
             Affect affect = (Affect)param;
 
-            if ((affect.field_3 & 0x10) != 0)
+            if ((affect.field_3 & 0x10) == 0)
             {
                 affect.field_3 += 0x10;
 

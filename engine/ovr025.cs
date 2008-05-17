@@ -314,10 +314,17 @@ namespace engine
                 item.name += item.count.ToString() + " ";
             }
 
+            int hidden_names_flag = item.hidden_names_flag;
+
+            if (Cheats.display_full_item_names)
+            {
+                hidden_names_flag = 0;
+            }
+
             int display_flags = 0;
-            display_flags |= (item.field_2F != 0 && (item.hidden_names_flag & 0x4) == 0) ? 0x1 : 0;
-            display_flags |= (item.field_30 != 0 && (item.hidden_names_flag & 0x2) == 0) ? 0x2 : 0;
-            display_flags |= (item.field_31 != 0 && (item.hidden_names_flag & 0x1) == 0) ? 0x4 : 0;
+            display_flags |= (item.field_2F != 0 && (hidden_names_flag & 0x4) == 0) ? 0x1 : 0;
+            display_flags |= (item.field_30 != 0 && (hidden_names_flag & 0x2) == 0) ? 0x2 : 0;
+            display_flags |= (item.field_31 != 0 && (hidden_names_flag & 0x1) == 0) ? 0x4 : 0;
 
             bool pural_added = false;
 
@@ -334,21 +341,18 @@ namespace engine
                     {
                         item.name += " ";
                     }
-                    else
-                    {
-                        if ((1 << (var_1 - 1) == display_flags) ||
-                            (var_1 == 1 && display_flags == 4 && item.type != 0x56) ||
+                    else if ((1 << (var_1 - 1) == display_flags) ||
+                            (var_1 == 1 && display_flags > 4 && item.type != 0x56) ||
                             (var_1 == 2 && (display_flags & 1) == 0) ||
                             (var_1 == 3 && item.type == 0x56) ||
                             (item.field_31 != 0x87 && (item.type == 0x49 || item.type == 0x1c) && item.field_31 != 0xb1))
-                        {
-                            item.name += "s ";
-                            pural_added = true;
-                        }
-                        else
-                        {
-                            item.name += " ";
-                        }
+                    {
+                        item.name += "s ";
+                        pural_added = true;
+                    }
+                    else
+                    {
+                        item.name += " ";
                     }
                 }
             }

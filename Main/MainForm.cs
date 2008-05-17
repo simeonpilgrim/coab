@@ -78,22 +78,37 @@ namespace Main
 
         private void playersAlwayMakeSavingThrowToolStripMenuItem_CheckedChanged(object sender, EventArgs e)
         {
-            engine.ovr024.TogglePlayerAlwaysSaves();
+            Classes.Cheats.PlayerAlwaysSavesToggle();
         }
 
         private void alwayAllowAreaMapToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Classes.gbl.AlwayShowAreaMapToggle();
+            Classes.Cheats.AlwayShowAreaMapToggle();
         }
 
         private void freeTrainingToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Classes.gbl.FreeTrainingToggle();
+            Classes.Cheats.FreeTrainingToggle();
         }
 
         private void skipCopyProtectionToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Classes.gbl.SkipCopyProtection();
+            Classes.Cheats.SkipCopyProtectionToggle();
+        }
+
+        private void allowGodsInterveneToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Classes.Cheats.AllowGodsInterveneToggle();
+        }
+
+        private void displayItemsFullNameToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Classes.Cheats.DisplayFullItemNamesToggle();
+        }
+
+        private void viewItemsStatsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Classes.Cheats.ViewItemStatsTogle();
         }
     }
 }
