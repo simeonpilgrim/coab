@@ -2350,32 +2350,28 @@ namespace engine
 
         internal static void uncurse()
         {
-            byte var_6;
-            byte var_5;
-            Item var_4;
-
             if (ovr024.cure_affect(Affects.bestow_curse, gbl.sp_targets[1]) == true)
             {
                 ovr025.sub_6818A("is un-cursed", 1, gbl.sp_targets[1]);
             }
             else
             {
-                var_5 = 0;
-                var_4 = gbl.sp_targets[1].itemsPtr;
+                bool var_5 = false;
+                Item item = gbl.sp_targets[1].itemsPtr;
 
-                while (var_4 != null && var_5 == 0)
+                while (item != null && var_5 == false)
                 {
-                    if (var_4.cursed == true)
+                    if (item.cursed == true)
                     {
-                        var_5 = 1;
-                        var_4.readied = false;
+                        var_5 = true;
+                        item.readied = false;
 
-                        if ((int)var_4.affect_3 > 0x7F)
+                        if ((int)item.affect_3 > 0x7F)
                         {
                             gbl.byte_1D8AC = 1;
-                            ovr024.CallSpellJumpTable(1, var_4, gbl.sp_targets[1], var_4.affect_3);
+                            ovr024.CallSpellJumpTable(1, item, gbl.sp_targets[1], item.affect_3);
 
-                            for (var_6 = 0; var_6 <= 5; var_6++)
+                            for (int var_6 = 0; var_6 <= 5; var_6++)
                             {
                                 ovr024.sub_648D9(var_6, gbl.sp_targets[1]);
                             }
@@ -2383,10 +2379,10 @@ namespace engine
                         }
                     }
 
-                    var_4 = var_4.next;
+                    item = item.next;
                 }
 
-                if (var_5 != 0)
+                if (var_5 == true)
                 {
                     ovr025.sub_6818A("has an item un-cursed", 1, gbl.sp_targets[1]);
                 }
@@ -2436,7 +2432,6 @@ namespace engine
             ovr033.redrawCombatArea(8, 0, gbl.targetY, gbl.targetX);
 
             sub_5CF7F(string.Empty, 9, ovr024.roll_dice_save(6, dice_count), false, 0, gbl.spell_id);
-
         }
 
 

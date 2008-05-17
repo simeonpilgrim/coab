@@ -259,7 +259,6 @@ namespace engine
                                         }
                                         player_ptr = player_ptr.next_player;
                                     }
-
                                     break;
                             }
                         }
@@ -316,6 +315,7 @@ namespace engine
                                         ovr025.string_print01("That doesn't work");
                                     }
                                     break;
+
                             }
                         }
 
@@ -406,7 +406,7 @@ namespace engine
         {
             ovr021.sub_583FA(1, 1);
             gbl.byte_1D8B7++;
-            ovr014.sub_40E00();
+            ovr014.calc_enemy_health_percentage();
 
             Player player = gbl.player_next_ptr;
             byte var_6 = 1;

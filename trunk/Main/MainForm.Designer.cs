@@ -40,6 +40,9 @@ namespace Main
             this.freeTrainingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.alwayAllowAreaMapToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.skipCopyProtectionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.allowGodsInterveneToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.displayItemsFullNameToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.viewItemsStatsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.displayArea)).BeginInit();
             this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -61,7 +64,7 @@ namespace Main
             this.screenCaptureToolStripMenuItem,
             this.cheatsToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(161, 70);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(161, 92);
             // 
             // ddfsdToolStripMenuItem
             // 
@@ -76,14 +79,14 @@ namespace Main
             // 
             this.commandDebuggingToolStripMenuItem.CheckOnClick = true;
             this.commandDebuggingToolStripMenuItem.Name = "commandDebuggingToolStripMenuItem";
-            this.commandDebuggingToolStripMenuItem.Size = new System.Drawing.Size(248, 22);
+            this.commandDebuggingToolStripMenuItem.Size = new System.Drawing.Size(186, 22);
             this.commandDebuggingToolStripMenuItem.Text = "Command Debugging";
             this.commandDebuggingToolStripMenuItem.CheckedChanged += new System.EventHandler(this.commandDebuggingToolStripMenuItem_CheckedChanged);
             // 
             // dumpPlayerAffectsToolStripMenuItem1
             // 
             this.dumpPlayerAffectsToolStripMenuItem1.Name = "dumpPlayerAffectsToolStripMenuItem1";
-            this.dumpPlayerAffectsToolStripMenuItem1.Size = new System.Drawing.Size(248, 22);
+            this.dumpPlayerAffectsToolStripMenuItem1.Size = new System.Drawing.Size(186, 22);
             this.dumpPlayerAffectsToolStripMenuItem1.Text = "Dump Player Affects";
             this.dumpPlayerAffectsToolStripMenuItem1.Click += new System.EventHandler(this.dumpPlayerAffectsToolStripMenuItem1_Click);
             // 
@@ -100,7 +103,10 @@ namespace Main
             this.playersAlwayMakeSavingThrowToolStripMenuItem,
             this.freeTrainingToolStripMenuItem,
             this.alwayAllowAreaMapToolStripMenuItem,
-            this.skipCopyProtectionToolStripMenuItem});
+            this.skipCopyProtectionToolStripMenuItem,
+            this.allowGodsInterveneToolStripMenuItem,
+            this.displayItemsFullNameToolStripMenuItem,
+            this.viewItemsStatsToolStripMenuItem});
             this.cheatsToolStripMenuItem.Name = "cheatsToolStripMenuItem";
             this.cheatsToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
             this.cheatsToolStripMenuItem.Text = "Cheats";
@@ -139,6 +145,30 @@ namespace Main
             this.skipCopyProtectionToolStripMenuItem.Text = "Skip Copy Protection";
             this.skipCopyProtectionToolStripMenuItem.Click += new System.EventHandler(this.skipCopyProtectionToolStripMenuItem_Click);
             // 
+            // allowGodsInterveneToolStripMenuItem
+            // 
+            this.allowGodsInterveneToolStripMenuItem.CheckOnClick = true;
+            this.allowGodsInterveneToolStripMenuItem.Name = "allowGodsInterveneToolStripMenuItem";
+            this.allowGodsInterveneToolStripMenuItem.Size = new System.Drawing.Size(248, 22);
+            this.allowGodsInterveneToolStripMenuItem.Text = "Allow Gods Intervene";
+            this.allowGodsInterveneToolStripMenuItem.Click += new System.EventHandler(this.allowGodsInterveneToolStripMenuItem_Click);
+            // 
+            // displayItemsFullNameToolStripMenuItem
+            // 
+            this.displayItemsFullNameToolStripMenuItem.CheckOnClick = true;
+            this.displayItemsFullNameToolStripMenuItem.Name = "displayItemsFullNameToolStripMenuItem";
+            this.displayItemsFullNameToolStripMenuItem.Size = new System.Drawing.Size(248, 22);
+            this.displayItemsFullNameToolStripMenuItem.Text = "Display Item\'s Full Name";
+            this.displayItemsFullNameToolStripMenuItem.Click += new System.EventHandler(this.displayItemsFullNameToolStripMenuItem_Click);
+            // 
+            // viewItemsStatsToolStripMenuItem
+            // 
+            this.viewItemsStatsToolStripMenuItem.CheckOnClick = true;
+            this.viewItemsStatsToolStripMenuItem.Name = "viewItemsStatsToolStripMenuItem";
+            this.viewItemsStatsToolStripMenuItem.Size = new System.Drawing.Size(248, 22);
+            this.viewItemsStatsToolStripMenuItem.Text = "View Items Stats";
+            this.viewItemsStatsToolStripMenuItem.Click += new System.EventHandler(this.viewItemsStatsToolStripMenuItem_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -172,6 +202,9 @@ namespace Main
         private System.Windows.Forms.ToolStripMenuItem freeTrainingToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem alwayAllowAreaMapToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem skipCopyProtectionToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem allowGodsInterveneToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem displayItemsFullNameToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem viewItemsStatsToolStripMenuItem;
     }
 }
 

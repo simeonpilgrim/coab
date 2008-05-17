@@ -600,7 +600,7 @@ namespace engine
 
             gbl.saving_throw_roll = roll_dice(20, 1);
 
-            if (PlayerAlwaysSave && player.combat_team == 0 )
+            if (Cheats.player_always_saves && player.combat_team == 0)
             {
                 gbl.saving_throw_roll = 20;
             }
@@ -630,12 +630,6 @@ namespace engine
             }
 
             return gbl.save_made;
-        }
-
-        static bool PlayerAlwaysSave = false;
-        public static void TogglePlayerAlwaysSaves()
-        {
-            PlayerAlwaysSave = !PlayerAlwaysSave;
         }
 
 
@@ -878,7 +872,7 @@ namespace engine
         }
 
 
-        internal static void sub_647BE(byte arg_2, sbyte arg_4, byte bp_var_1, ref byte bp_var_A, Player bp_arg_2)
+        internal static void sub_647BE(byte arg_2, int arg_4, byte bp_var_1, ref byte bp_var_A, Player bp_arg_2)
         {
             if (gbl.byte_1A1CB[arg_4] <= arg_2)
             {
@@ -924,72 +918,60 @@ namespace engine
         }
 
 
-        internal static void sub_648D9(byte arg_0, Player player)
+        internal static void sub_648D9(int stat_index, Player player)
         {
-            byte var_13;
-            byte var_12;
-            byte var_11;
-            Item item;
-            sbyte var_C;
-            byte var_B;
-            byte var_A;
-            byte var_9;
             Affect affect_ptr;
-            byte str_00_b;
-            byte str_00_a;
-            byte str_b;
-            byte str_a;
 
-            var_A = 0;
-            str_b = 0;
-            str_00_b = 0;
-            var_11 = 0x0FF;
+            byte var_A = 0;
+            byte stat_b = 0;
+            byte str_00_b = 0;
+            byte var_11 = 0x0FF;
 
-            item = player.itemsPtr;
+            Item item = player.itemsPtr;
 
-            str_a = player.stats[arg_0].tmp;
-            str_00_a = player.field_1D;
+            byte stat_a = player.stats[stat_index].tmp;
+            byte str_00_a = player.field_1D;
 
             while (item != null)
             {
                 if ((int)item.affect_3 > 0x80 &&
-                    item.readied == false)
+                    item.readied == true)
                 {
-                    var_12 = (byte)((int)item.affect_3 & 0x7F);
+                    int var_12 = (int)item.affect_3 & 0x7F;
 
-                    if (arg_0 == 0)
+                    if (stat_index == 0)
                     {
                         if (var_12 == 5)
                         {
                             switch ((int)item.affect_2)
                             {
                                 case 0:
-                                    str_b = 0x12;
-                                    str_00_b = 0x64;
+                                    stat_b = 18;
+                                    str_00_b = 100;
                                     break;
 
                                 case 1:
-                                    str_b = 0x13;
+                                    stat_b = 19;
                                     break;
 
                                 case 2:
-                                    str_b = 0x14;
+                                    stat_b = 20;
                                     break;
 
                                 case 3:
-                                    str_b = 0x15;
+                                    stat_b = 21;
                                     break;
 
                                 case 4:
-                                    str_b = 0x16;
+                                    stat_b = 22;
                                     break;
 
                                 case 5:
-                                    str_b = 0x17;
+                                    stat_b = 23;
                                     break;
 
                                 case 6:
-                                    str_b = 0x18;
+                                    stat_b = 24;
                                     break;
                             }
                         }
@@ -998,7 +980,7 @@ namespace engine
                             if (player.tmp_str < 18 &&
                                 item.affect_2 == 0)
                             {
-                                str_b = (byte)(player.tmp_str + 1);
+                                stat_b = (byte)(player.tmp_str + 1);
                                 str_00_b = 0;
                             }
                         }
@@ -1007,29 +989,29 @@ namespace engine
                             var_11 = 3;
                         }
 
-                        sub_64771(ref str_a, str_b, ref str_00_a, str_00_b);
+                        sub_64771(ref stat_a, stat_b, ref str_00_a, str_00_b);
                     }
-                    else if (arg_0 == 4)
+                    else if (stat_index == 4)
                     {
                         if (var_12 == 6)
                         {
-                            str_a++;
+                            stat_a++;
                         }
                         else if (var_12 == 8 &&
                             player.stats[(int)Stat.CON].tmp < 18 &&
                             (int)item.affect_2 == 4)
                         {
-                            str_a++;
+                            stat_a++;
                         }
                     }
-                    else if (arg_0 == 1)
+                    else if (stat_index == 1)
                     {
                         if (var_12 == 8)
                         {
                             if (player.stats[(int)Stat.INT].tmp < 0x18 &&
                                 (int)item.affect_2 == 1)
                             {
-                                str_a++;
+                                stat_a++;
                             }
                         }
                         else if (var_12 == 12)
@@ -1041,30 +1023,30 @@ namespace engine
                             var_11 = 3;
                         }
                     }
-                    else if (arg_0 == 2)
+                    else if (stat_index == 2)
                     {
                         if (var_12 == 8 &&
                             (int)item.affect_2 == 2 &&
                             player.tmp_wis < 18)
                         {
-                            str_a++;
+                            stat_a++;
                         }
                     }
-                    else if (arg_0 == 3)
+                    else if (stat_index == 3)
                     {
                         if (var_12 == 2)
                         {
                             if (player.tmp_dex >= 0 && player.tmp_dex <= 6)
                             {
-                                str_a += 4;
+                                stat_a += 4;
                             }
                             else if (player.tmp_dex >= 7 && player.tmp_dex <= 13)
                             {
-                                str_a += 2;
+                                stat_a += 2;
                             }
                             else
                             {
-                                str_a++;
+                                stat_a++;
                             }
                         }
                         else if (var_12 == 8)
@@ -1072,25 +1054,25 @@ namespace engine
                             if (player.tmp_dex < 18 &&
                                 (int)item.affect_2 == 3)
                             {
-                                str_a++;
+                                stat_a++;
                             }
                         }
                         else if (var_12 == 10)
                         {
-                            str_a -= 2;
+                            stat_a -= 2;
                         }
                     }
-                    else if (arg_0 == 5)
+                    else if (stat_index == 5)
                     {
                         if (var_12 == 6)
                         {
-                            str_a -= 1;
+                            stat_a -= 1;
                         }
                         else if (var_12 == 8 &&
                             player.tmp_cha < 18 &&
                             (int)item.affect_2 == 5)
                         {
-                            str_a += 1;
+                            stat_a += 1;
                         }
                     }
                 }
@@ -1098,18 +1080,18 @@ namespace engine
                 item = item.next;
             }
 
-            if (arg_0 == 0)
+            if (stat_index == 0)
             {
                 if (ovr025.find_affect(out affect_ptr, Affects.strength, player) == true)
                 {
-                    sub_646D9(out str_00_b, out str_b, affect_ptr);
+                    sub_646D9(out str_00_b, out stat_b, affect_ptr);
 
-                    if (str_a <= 18 &&
+                    if (stat_a <= 18 &&
                         str_00_a < 100)
                     {
-                        str_b += str_a;
+                        stat_b += stat_a;
 
-                        if (str_b > 18)
+                        if (stat_b > 18)
                         {
                             if (player.fighter_lvl > 0 ||
                                 player.field_113 > 0 ||
@@ -1118,36 +1100,36 @@ namespace engine
                                 player.ranger_lvl > 0 ||
                                 player.field_115 > 0)
                             {
-                                str_00_b = (byte)(player.strength_18_100 + ((str_b - 18) * 10));
+                                str_00_b = (byte)(player.strength_18_100 + ((stat_b - 18) * 10));
 
                                 if (str_00_b > 100)
                                 {
                                     str_00_b = 100;
                                 }
 
-                                str_b = 18;
+                                stat_b = 18;
                             }
                             else
                             {
-                                str_b = 18;
+                                stat_b = 18;
                             }
                         }
                     }
 
 
-                    sub_64771(ref str_a, str_b, ref str_00_a, str_00_b);
+                    sub_64771(ref stat_a, stat_b, ref str_00_a, str_00_b);
                 }
 
                 if (ovr025.find_affect(out affect_ptr, Affects.affect_92, player) == true)
                 {
-                    sub_646D9(out str_00_b, out str_b, affect_ptr);
-                    sub_64771(ref str_a, str_b, ref str_00_a, str_00_b);
+                    sub_646D9(out str_00_b, out stat_b, affect_ptr);
+                    sub_64771(ref stat_a, stat_b, ref str_00_a, str_00_b);
                 }
 
                 if (ovr025.find_affect(out affect_ptr, Affects.enlarge, player) == true)
                 {
-                    sub_646D9(out str_00_b, out str_b, affect_ptr);
-                    sub_64771(ref str_a, str_b, ref str_00_a, str_00_b);
+                    sub_646D9(out str_00_b, out stat_b, affect_ptr);
+                    sub_64771(ref stat_a, stat_b, ref str_00_a, str_00_b);
                 }
 
                 if (var_11 != 0xff)
@@ -1157,23 +1139,23 @@ namespace engine
                 }
                 else
                 {
-                    player.strength = str_a;
+                    player.strength = stat_a;
                     player.strength_18_100 = str_00_a;
                 }
             }
-            else if (arg_0 == 4)
+            else if (stat_index == 4)
             {
-                var_13 = 0;
-                var_9 = player.hit_point_max;
+                byte var_13 = 0;
+                byte map_hp = player.hit_point_max;
                 player.hit_point_max = player.field_12C;
 
-                for (var_C = 0; var_C <= 7; var_C++)
+                for (int var_C = 0; var_C <= 7; var_C++)
                 {
-                    var_B = player.Skill_B_lvl[var_C];
+                    byte var_B = player.Skill_B_lvl[var_C];
 
                     if (var_B > 0)
                     {
-                        sub_647BE(var_B, var_C, str_a, ref var_A, player);
+                        sub_647BE(var_B, var_C, stat_a, ref var_A, player);
                     }
 
                     var_B = player.Skill_A_lvl[var_C];
@@ -1192,23 +1174,23 @@ namespace engine
                     {
                         var_B = player.field_E6;
 
-                        sub_647BE(var_B, var_C, str_a, ref var_A, player);
+                        sub_647BE(var_B, var_C, stat_a, ref var_A, player);
                     }
                 }
 
                 var_A /= var_13;
                 player.hit_point_max += var_A;
 
-                if (player.hit_point_max > var_9)
+                if (player.hit_point_max > map_hp)
                 {
-                    player.hit_point_current = (byte)(player.hit_point_max - var_9);
+                    player.hit_point_current = (byte)(player.hit_point_max - map_hp);
                 }
 
-                if (player.hit_point_max < var_9)
+                if (player.hit_point_max < map_hp)
                 {
-                    if (player.hit_point_current > var_9 - player.hit_point_max)
+                    if (player.hit_point_current > map_hp - player.hit_point_max)
                     {
-                        player.hit_point_current = (byte)(var_9 - player.hit_point_max);
+                        player.hit_point_current = (byte)(map_hp - player.hit_point_max);
                     }
                     else
                     {
@@ -1216,7 +1198,7 @@ namespace engine
                     }
                 }
 
-                player.con = str_a;
+                player.con = stat_a;
 
                 if (player.con > 20)
                 {
@@ -1230,7 +1212,7 @@ namespace engine
                     remove_affect(null, Affects.affect_3e, player);
                 }
             }
-            else if (arg_0 == 1)
+            else if (stat_index == 1)
             {
                 if (ovr025.find_affect(out affect_ptr, Affects.feeble, player) == true &&
                     var_11 > 7)
@@ -1244,10 +1226,10 @@ namespace engine
                 }
                 else
                 {
-                    player._int = str_a;
+                    player._int = stat_a;
                 }
             }
-            else if (arg_0 == 2)
+            else if (stat_index == 2)
             {
                 if (ovr025.find_affect(out affect_ptr, Affects.feeble, player) == true &&
                     var_11 > 7)
@@ -1261,10 +1243,10 @@ namespace engine
                 }
                 else
                 {
-                    player.wis = str_a;
+                    player.wis = stat_a;
                 }
             }
-            else if (arg_0 == 3)
+            else if (stat_index == 3)
             {
                 if (var_11 != 0xff)
                 {
@@ -1272,18 +1254,17 @@ namespace engine
                 }
                 else
                 {
-                    player.dex = str_a;
+                    player.dex = stat_a;
                 }
             }
-            else if (arg_0 == 5)
+            else if (stat_index == 5)
             {
                 if (ovr025.find_affect(out affect_ptr, Affects.friends, player) == true)
                 {
-                    str_a = affect_ptr.field_3;
+                    stat_a = affect_ptr.field_3;
                 }
 
-                player.charisma = str_a;
-
+                player.charisma = stat_a;
             }
         }
 

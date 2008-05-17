@@ -82,6 +82,11 @@ namespace Main
                 return 0x5100;
             }
 
+            if (key == Keys.OemMinus)
+            {
+                return 0x2d00;
+            }
+
             return 0x0020;
         }
     }

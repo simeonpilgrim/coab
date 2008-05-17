@@ -4,6 +4,51 @@ using System.Collections.Generic;
 
 namespace Classes
 {
+    public class Cheats
+    {
+        public static bool always_show_areamap = false;
+        public static void AlwayShowAreaMapToggle()
+        {
+            always_show_areamap = !always_show_areamap;
+        }
+
+        public static bool free_training = false;
+        public static void FreeTrainingToggle()
+        {
+            free_training = !free_training;
+        }
+
+        public static bool view_item_stats = false;
+        public static void ViewItemStatsTogle()
+        {
+            view_item_stats = !view_item_stats;
+        }
+
+        public static bool player_always_saves = false;
+        public static void PlayerAlwaysSavesToggle()
+        {
+            player_always_saves = !player_always_saves;
+        }
+
+        public static bool allow_gods_intervene = false;
+        public static void AllowGodsInterveneToggle()
+        {
+            allow_gods_intervene = !allow_gods_intervene;
+        }
+
+        public static bool skip_copy_protection = true;
+        public static void SkipCopyProtectionToggle()
+        {
+            skip_copy_protection = !skip_copy_protection;
+        }
+
+        public static bool display_full_item_names = false;
+        public static void DisplayFullItemNamesToggle()
+        {
+            display_full_item_names = !display_full_item_names;
+        }
+    }
+
     public enum QuickFight 
     {
         False = 0,
@@ -389,7 +434,6 @@ namespace Classes
         public static byte byte_1EF9A;
         public static byte byte_1EF9B;
 
-        public static string byte_1EFA4;
         public static byte byte_1EFBA;
 
         public const short word_16E08 = 5;
@@ -490,7 +534,7 @@ namespace Classes
         public static Player player_ptr2;
         public static Player player_ptr;
 
-        public static byte game_state;
+        public static byte game_state; // 1- shop, 5 - combat
         public enum combatType
         {
             normal = 0,
@@ -717,30 +761,7 @@ new Struct_19AEC( 32h,0,7,12h,3,12h,3,12h,8,12h,3,12h,3,3,12h,11h) };*/
 
         public static byte[] unk_1D89D = new byte[9]; // seg600:758D
 
-        public static bool free_training = false;
-        public static void FreeTrainingToggle()
-        {
-            free_training = !free_training;
-        }
-
-        public static bool always_show_areamap = false;
-        public static void AlwayShowAreaMapToggle()
-        {
-            always_show_areamap = !always_show_areamap;
-        }
-
-        public static bool allow_gods_intervene = false;
-        public static void AllowGodsIntervene()
-        {
-            allow_gods_intervene = !allow_gods_intervene;
-        }
-
-        public static bool skip_copy_protection = true;
-        public static void SkipCopyProtection()
-        {
-            skip_copy_protection = !skip_copy_protection;
-        }
-
+ 
         public static bool party_fled;
 
         public static Struct_1C020[] unk_1C020;
