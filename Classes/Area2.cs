@@ -53,7 +53,7 @@ namespace Classes
         [DataOffset(0x592, DataType.SWord)]
         public short field_592; // 0x592
         [DataOffset(0x594, DataType.Word)]
-        public ushort field_594; // 0x594
+        public ushort search_flags; // 0x594 - field_594 bit flags 1 - searching, 2 - looking
         [DataOffset(0x596, DataType.SWord)]
         public short field_596; // 0x596
         [DataOffset(0x5A4, DataType.SWord)]
@@ -148,7 +148,7 @@ namespace Classes
             switch (loc)
             {
                 case 0x67e: return (ushort)field_67E;
-                case 0x594: return field_594;
+                case 0x594: return search_flags;
                 case 0x550: return field_550;
                 case 0x58e: return (ushort)field_58E;
                 case 0x5aa: return (ushort)field_5AA;

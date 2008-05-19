@@ -382,7 +382,7 @@ namespace engine
                     {
                         ovr030.load_bigpic(var_1);
                         ovr030.draw_bigpic();
-                        gbl.byte_1D8AA = 0;
+                        gbl.can_draw_bigpic = false;
                     }
                     else
                     {
@@ -402,7 +402,7 @@ namespace engine
                     (gbl.byte_1EE8C != 0 ||
                       gbl.displayPlayerSprite))
                 {
-                    gbl.byte_1D8AA = 1;
+                    gbl.can_draw_bigpic = true;
                     ovr029.sub_6F0BA();
                     gbl.byte_1EE8C = 0;
                     gbl.displayPlayerSprite = false;
@@ -1296,7 +1296,7 @@ namespace engine
                 gbl.game_state = 3;
             }
 
-            gbl.area2_ptr.field_594 &= 1;
+            gbl.area2_ptr.search_flags &= 1;
 
             seg051.FillChar(0, 2, gbl.byte_1EE72);
             gbl.byte_1EE8C = 0;
@@ -2089,7 +2089,7 @@ namespace engine
             gbl.ecl_offset++;
             if (gbl.displayPlayerSprite)
             {
-                gbl.byte_1D8AA = 1;
+                gbl.can_draw_bigpic = true;
                 ovr029.sub_6F0BA();
                 gbl.displayPlayerSprite = false;
                 gbl.byte_1EE8C = 0;
@@ -2255,7 +2255,7 @@ namespace engine
                         if (gbl.byte_1EE8C != 0 || gbl.displayPlayerSprite || gbl.byte_1EE91 != 0 ||
                             gbl.byte_1EE92 != 0 || gbl.byte_1EE94 != 0)
                         {
-                            gbl.byte_1D8AA = 1;
+                            gbl.can_draw_bigpic = true;
                             ovr029.sub_6F0BA();
                             ovr025.display_map_position_time();
                             gbl.byte_1EE94 = 0;
@@ -2331,7 +2331,7 @@ namespace engine
                 ovr025.load_pic();
                 RunEclVm(gbl.word_1B2D9);
             }
-            gbl.byte_1D8AA = 1;
+            gbl.can_draw_bigpic = true;
             ovr029.sub_6F0BA();
             gbl.byte_1C01B = 0;
         }
@@ -2639,7 +2639,7 @@ namespace engine
 
             gbl.player_ptr2 = gbl.player_ptr;
 
-            gbl.byte_1D8AA = 1;
+            gbl.can_draw_bigpic = true;
             gbl.byte_1EE8E = 0;
             gbl.byte_1AB0C = 0;
             gbl.byte_1AB0D = 0;
@@ -2714,7 +2714,7 @@ namespace engine
                         ovr025.load_pic();
                     }
 
-                    gbl.byte_1D8AA = 1;
+                    gbl.can_draw_bigpic = true;
                     ovr029.sub_6F0BA();
                 }
 
@@ -2731,7 +2731,7 @@ namespace engine
                         gbl.area_ptr.field_1E4 = gbl.byte_1EE88;
                     }
 
-                    while ((gbl.area2_ptr.field_594 > 1 || char.ToUpper(var_1) == 'E') &&
+                    while ((gbl.area2_ptr.search_flags > 1 || char.ToUpper(var_1) == 'E') &&
                         gbl.byte_1B2F0 == 0)
                     {
                         if (char.ToUpper(var_1) == 'E')
@@ -2740,9 +2740,9 @@ namespace engine
                         }
                         else
                         {
-                            gbl.byte_1EE89 = (byte)(gbl.area2_ptr.field_594 & 1);
-                            gbl.area2_ptr.field_594 = 1;
-                            gbl.byte_1D8AA = 1;
+                            gbl.search_flag_bkup = gbl.area2_ptr.search_flags & 1;
+                            gbl.area2_ptr.search_flags = 1;
+                            gbl.can_draw_bigpic = true;
                             ovr029.sub_6F0BA();
 
                             RunEclVm(gbl.word_1B2D5);
@@ -2752,7 +2752,7 @@ namespace engine
                                 sub_29677();
                             }
 
-                            gbl.area2_ptr.field_594 = gbl.byte_1EE89;
+                            gbl.area2_ptr.search_flags = (ushort)gbl.search_flag_bkup;
                         }
 
                         if (gbl.byte_1B2F0 == 0)

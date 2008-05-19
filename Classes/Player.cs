@@ -3,59 +3,6 @@ using System;
 
 namespace Classes
 {
-    public class ArrayReadWrite<T>
-    {
-        T[] array;
-        int min;
-        int max;
-        int shift;
-
-        public ArrayReadWrite(T[] data, int min, int max, int shift)
-        {
-            if (max + shift != data.Length) throw new ArgumentOutOfRangeException();
-
-            array = data;
-            this.min = min;
-            this.max = max;
-            this.shift = shift;
-        }
-
-
-        public T this[int index]
-        {
-            set
-            {
-                if (index >= max || index < min)
-                {
-                    throw new ArgumentOutOfRangeException();
-                }
-                int i = index + shift;
-                array[i] = value;
-            }
-            get
-            {
-                if (index >= max || index < min)
-                {
-                    throw new ArgumentOutOfRangeException();
-                }
-                int i = index + shift;
-
-                T t;
-                try
-                {
-                    t = array[i];
-                }
-                catch(Exception e)
-                {
-                    t = array[0];
-                }
-
-                return t;
-                //return array[i];
-            }
-        }
-    }
-
     public enum Status
     {
         okey = 0x0,
@@ -487,9 +434,8 @@ namespace Classes
         [DataOffset(0x12c, DataType.Byte)]
         public byte field_12C; // 0x12c;
 
-        public ArrayReadWrite<byte> field_12CArray;
-        [DataOffset(0x12d, DataType.ByteArray,15)]
-        public byte[] field_12D = new byte[15]; // 0x12d;
+        //[DataOffset(0x12d, DataType.ByteArray,15)]
+        public byte[,] field_12D = new byte[3,5]; // 0x12d - field_12D
 
         [DataOffset(0x13c, DataType.SWord)]
         public short field_13C; // 0x13c
@@ -729,11 +675,15 @@ namespace Classes
             Init();
 
             DataIO.ReadObject(this, data, offset);
+
+            for (int i = 0; i < 3; i++)
+                for (int j = 0; j < 5; j++)
+                    field_12D[i, j] = data[0x12d + j + (i * i)];
         }
 
         private void Init()
         {
-            field_12CArray = new ArrayReadWrite<byte>(field_12D, 1, 16, -1);
+            field_12D = new byte[3, 5];
             stats = new StatValue[6];
 
             name = string.Empty;
@@ -756,6 +706,10 @@ namespace Classes
             byte[] data = new byte[StructSize];
 
             DataIO.WriteObject(this, data);
+
+            for (int i = 0; i < 3; i++)
+                for (int j = 0; j < 5; j++)
+                    data[0x12d + j + (i * i)] = field_12D[i, j];
 
             return data;
         }

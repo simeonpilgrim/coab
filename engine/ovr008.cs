@@ -259,7 +259,7 @@ namespace engine
                     if (gbl.mapAreaDisplay == true)
                     {
                         gbl.mapAreaDisplay = false;
-                        gbl.byte_1D8AA = 1;
+                        gbl.can_draw_bigpic = true;
                         ovr029.sub_6F0BA();
                     }
 
@@ -272,7 +272,7 @@ namespace engine
                 }
                 else
                 {
-                    gbl.byte_1D8AA = 1;
+                    gbl.can_draw_bigpic = true;
                     ovr029.sub_6F0BA();
                 }
 
@@ -1268,7 +1268,7 @@ namespace engine
 
                 if (var_156 == true)
                 {
-                    ovr020.sub_572CF(var_155);
+                    ovr020.scroll_team_list(var_155);
                     ovr025.Player_Summary(gbl.player_ptr);
                     var_155 = '\0';
                 }

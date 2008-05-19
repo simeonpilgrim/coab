@@ -416,8 +416,8 @@ namespace engine
                 for (int i = 1; i <= arg_4; i++)
                 {
                     if (arg_6.field_10[i] != 0 &&
-                        arg_6.field_1A + gbl.MapDirectionXDelta[arg_0[i]] == mapX &&
-                        arg_6.field_1B + gbl.MapDirectionYDelta[arg_0[i]] == mapY)
+                        arg_6.target_x + gbl.MapDirectionXDelta[arg_0[i]] == mapX &&
+                        arg_6.target_y + gbl.MapDirectionYDelta[arg_0[i]] == mapY)
                     {
                         found = true;
                     }
