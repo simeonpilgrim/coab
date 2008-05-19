@@ -588,11 +588,11 @@ namespace engine
                         break;
 
                     case 'G':
-                        ovr020.sub_572CF(var_1);
+                        ovr020.scroll_team_list(var_1);
                         break;
 
                     case 'O':
-                        ovr020.sub_572CF(var_1);
+                        ovr020.scroll_team_list(var_1);
                         break;
                 }
 

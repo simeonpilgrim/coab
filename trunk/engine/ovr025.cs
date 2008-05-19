@@ -1828,7 +1828,7 @@ namespace engine
 
         internal static void load_pic()
         {
-            gbl.byte_1D8AA = 1;
+            gbl.can_draw_bigpic = true;
 
             switch (gbl.game_state)
             {
@@ -1930,7 +1930,7 @@ namespace engine
                 {
                     output += " camping";
                 }
-                else if ((gbl.area2_ptr.field_594 & 1) > 0)
+                else if ((gbl.area2_ptr.search_flags & 1) > 0)
                 {
                     output += " search";
                 }

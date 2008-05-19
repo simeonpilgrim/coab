@@ -11,7 +11,7 @@ namespace engine
         {
             if (gbl.byte_1D5B4 == 0x50)
             {
-                gbl.byte_1D8AA = 0;
+                gbl.can_draw_bigpic = false;
             }
 
             if (gbl.byte_1B2F0 == 0)
@@ -38,12 +38,12 @@ namespace engine
 
                     ovr031.Draw3dWorld(gbl.mapDirection, gbl.mapPosY, gbl.mapPosX);
                 }
-                else if (gbl.byte_1D8AA != 0)
+                else if (gbl.can_draw_bigpic == true)
                 {
                     ovr030.draw_bigpic();
                 }
 
-                gbl.byte_1D8AA = 0;
+                gbl.can_draw_bigpic = false;
             }
         }
     }

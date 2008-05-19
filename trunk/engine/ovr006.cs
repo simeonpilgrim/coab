@@ -568,18 +568,18 @@ namespace engine
             byte var_2;
 
             var_2 = 0;
-            if( money_present == true )
+            if (money_present == true)
             {
-                if( items_present == true )
+                if (items_present == true)
                 {
                     do
                     {
-                        char key = ovr027.displayInput( out ctrl_key, true, 1, 15, 10, 13, "Money Items Exit", "Take: " );
-                        
-                        switch( key )
+                        char key = ovr027.displayInput(out ctrl_key, true, 1, 15, 10, 13, "Money Items Exit", "Take: ");
+
+                        switch (key)
                         {
                             case 'M':
-                            ovr022.takeItems();
+                                ovr022.takeItems();
                                 ovr025.load_pic();
                                 break;
 
@@ -588,30 +588,28 @@ namespace engine
                                 break;
 
                             case 'E':
-                                goto case '\0';
-  
                             case '\0':
                                 var_2 = 1;
                                 break;
 
                             case 'G':
-                                ovr020.sub_572CF( key );
+                                ovr020.scroll_team_list(key);
                                 break;
 
                             case 'O':
-                                ovr020.sub_572CF( key );
+                                ovr020.scroll_team_list(key);
                                 break;
                         }
 
-                        ovr025.Player_Summary( gbl.player_ptr );
-                        ovr022.treasureOnGround( out items_present, out money_present );
-                        
-                        if( money_present == false ||
-                            items_present == false )
+                        ovr025.Player_Summary(gbl.player_ptr);
+                        ovr022.treasureOnGround(out items_present, out money_present);
+
+                        if (money_present == false ||
+                            items_present == false)
                         {
                             var_2 = 1;
                         }
-                    }while( var_2 == 0 );
+                    } while (var_2 == 0);
                 }
                 else
                 {
@@ -739,12 +737,12 @@ namespace engine
                         break;
 
                     case 'G':
-                        ovr020.sub_572CF(var_104);
+                        ovr020.scroll_team_list(var_104);
                         ovr025.Player_Summary(gbl.player_ptr);
                         break;
 
                     case 'O':
-                        ovr020.sub_572CF(var_104);
+                        ovr020.scroll_team_list(var_104);
                         ovr025.Player_Summary(gbl.player_ptr);
                         break;
                 }

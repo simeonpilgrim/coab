@@ -698,18 +698,18 @@ namespace engine
         }
 
         /*seg600:44B6 unk_1A7C6*/
-        public readonly static byte[] unk_1A7C6 = { 
-            1, 0, 0, 0, 0,
-            0, 1, 0, 0, 0,
-            1, 1, 0, 0, 0,
-            1, 0, 1, 0, 0,
-            0, 0, 1, 0, 0,
-            0, 1, 0, 1, 0,
-            0, 0, 1, 1, 0,
-            0, 0, 0, 0, 1,
-            0, 1, 0, 0, 1,
-            0, 0, 1, 1, 1,
-            0, 0, 0, 1, 1  };
+        public readonly static byte[,] unk_1A7C6 = { 
+            {1, 0, 0, 0, 0},
+            {0, 1, 0, 0, 0},
+            {1, 1, 0, 0, 0},
+            {1, 0, 1, 0, 0},
+            {0, 0, 1, 0, 0},
+            {0, 1, 0, 1, 0},
+            {0, 0, 1, 1, 0},
+            {0, 0, 0, 0, 1},
+            {0, 1, 0, 0, 1},
+            {0, 0, 1, 1, 1},
+            {0, 0, 0, 1, 1}  };
 
         internal static void sub_55B04(byte arg_0, Item item)
         {
@@ -727,30 +727,30 @@ namespace engine
                 case 1:
                     if (arg_0 != 0)
                     {
-                        player.field_12D[10] *= 2;
-                        player.field_12D[11] *= 2;
-                        player.field_12D[12] *= 2;
+                        player.field_12D[2,0] *= 2;
+                        player.field_12D[2,1] *= 2;
+                        player.field_12D[2,2] *= 2;
                     }
                     else
                     {
                         int var_9 = player.magic_user_lvl + (player.field_116 * ovr026.sub_6B3D1(player));
 
-                        player.field_12D[10] = 0;
-                        player.field_12D[11] = 0;
-                        player.field_12D[12] = 0;
-                        player.field_12D[13] = 0;
-                        player.field_12D[14] = 0;
+                        player.field_12D[2,0] = 0;
+                        player.field_12D[2,1] = 0;
+                        player.field_12D[2,2] = 0;
+                        player.field_12D[2,3] = 0;
+                        player.field_12D[2,4] = 0;
 
-                        player.field_12D[10] = 1;
+                        player.field_12D[2,0] = 1;
 
-                        for (int var_A = 0; var_A <= (var_9 - 2); var_A++)
+                        for (int sp_lvl = 0; sp_lvl <= (var_9 - 2); sp_lvl++)
                         {
                             /* unk_1A7C6 = seg600:44B6 */
-                            player.field_12D[10] += unk_1A7C6[(var_A * 5) + 0];
-                            player.field_12D[11] += unk_1A7C6[(var_A * 5) + 1];
-                            player.field_12D[12] += unk_1A7C6[(var_A * 5) + 2];
-                            player.field_12D[13] += unk_1A7C6[(var_A * 5) + 3];
-                            player.field_12D[14] += unk_1A7C6[(var_A * 5) + 4];
+                            player.field_12D[2,0] += unk_1A7C6[sp_lvl, 0];
+                            player.field_12D[2,1] += unk_1A7C6[sp_lvl, 1];
+                            player.field_12D[2,2] += unk_1A7C6[sp_lvl, 2];
+                            player.field_12D[2,3] += unk_1A7C6[sp_lvl, 3];
+                            player.field_12D[2,4] += unk_1A7C6[sp_lvl, 4];
                         }
 
                         byte[] var_11 = new byte[5];
@@ -764,7 +764,7 @@ namespace engine
                                 int var_C = gbl.unk_19AEC[player.spell_list[i]].spellLevel;
                                 var_11[var_C - 1] += 1;
 
-                                if (var_11[var_C - 1] > player.field_12D[10 + var_C - 1])
+                                if (var_11[var_C - 1] > player.field_12D[2, var_C - 1])
                                 {
                                     player.spell_list[i] = 0;
                                 }
@@ -1554,46 +1554,44 @@ namespace engine
         }
 
 
-        internal static void sub_572CF(char arg_0)
+        internal static void scroll_team_list(char input_key)
         {
-            Player var_4;
+            Player player = gbl.player_next_ptr;
 
-            var_4 = gbl.player_next_ptr;
-
-            if (var_4 != null)
+            if (player != null)
             {
-                if (arg_0 == 'G')
+                if (input_key == 'G')
                 {
-                    if (var_4 == gbl.player_ptr)
+                    if (player == gbl.player_ptr)
                     {
-                        while (var_4.next_player != null)
+                        while (player.next_player != null)
                         {
-                            var_4 = var_4.next_player;
+                            player = player.next_player;
                         }
                     }
                     else
                     {
-                        while (var_4 != null &&
-                            var_4.next_player != gbl.player_ptr)
+                        while (player != null &&
+                            player.next_player != gbl.player_ptr)
                         {
-                            var_4 = var_4.next_player;
+                            player = player.next_player;
                         }
                     }
                 }
-                else if (arg_0 == 'O')
+                else if (input_key == 'O')
                 {
                     if (gbl.player_ptr.next_player != null)
                     {
-                        var_4 = gbl.player_ptr.next_player;
+                        player = gbl.player_ptr.next_player;
                     }
                 }
                 else
                 {
-                    var_4 = gbl.player_next_ptr;
+                    player = gbl.player_next_ptr;
                 }
             }
 
-            gbl.player_ptr = var_4;
+            gbl.player_ptr = player;
         }
 
 

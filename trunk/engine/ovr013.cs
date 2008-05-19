@@ -595,8 +595,6 @@ namespace engine
 
         internal static void sub_3AC1D(byte arg_0, object param, Player player)
         {
-            sbyte var_D;
-            sbyte var_C;
             byte var_B;
             byte var_A;
             bool var_9;
@@ -631,16 +629,16 @@ namespace engine
                 {
                     if (var_8.field_10[var_B] != 0)
                     {
-                        var_C = (sbyte)(var_8.field_1A + gbl.MapDirectionXDelta[gbl.unk_18AE9[var_B]]);
-                        var_D = (sbyte)(var_8.field_1B + gbl.MapDirectionYDelta[gbl.unk_18AE9[var_B]]);
+                        int tmp_x = var_8.target_x + gbl.MapDirectionXDelta[gbl.unk_18AE9[var_B]];
+                        int tmp_y = var_8.target_y + gbl.MapDirectionYDelta[gbl.unk_18AE9[var_B]];
 
                         var_9 = false;
 
                         for (var_A = 1; var_A <= gbl.byte_1D1BB; var_A++)
                         {
                             if (gbl.unk_1D183[var_A].field_0 != null &&
-                                gbl.unk_1D183[var_A].mapX == var_C &&
-                                gbl.unk_1D183[var_A].mapY == var_D)
+                                gbl.unk_1D183[var_A].mapX == tmp_x &&
+                                gbl.unk_1D183[var_A].mapY == tmp_y)
                             {
                                 var_9 = true;
                             }
@@ -648,11 +646,11 @@ namespace engine
 
                         if (var_9 == true)
                         {
-                            gbl.mapToBackGroundTile[var_C, var_D] = 0x1F;
+                            gbl.mapToBackGroundTile[tmp_x, tmp_y] = 0x1F;
                         }
                         else
                         {
-                            gbl.mapToBackGroundTile[var_C, var_D] = var_8.field_7[var_B];
+                            gbl.mapToBackGroundTile[tmp_x, tmp_y] = var_8.field_7[var_B];
                         }
                     }
                 }
@@ -682,10 +680,10 @@ namespace engine
                     {
                         if (var_4.field_10[var_B] != 0)
                         {
-                            int cx = gbl.MapDirectionXDelta[gbl.unk_18AE9[var_B]] + var_4.field_1A;
-                            int ax = gbl.MapDirectionYDelta[gbl.unk_18AE9[var_B]] + var_4.field_1B;
+                            int tmp_x = gbl.MapDirectionXDelta[gbl.unk_18AE9[var_B]] + var_4.target_x;
+                            int tmp_y = gbl.MapDirectionYDelta[gbl.unk_18AE9[var_B]] + var_4.target_y;
 
-                            gbl.mapToBackGroundTile[cx, ax] = 0x1E;
+                            gbl.mapToBackGroundTile[tmp_x, tmp_y] = 0x1E;
                         }
                     }
 
@@ -1250,27 +1248,23 @@ namespace engine
 
         internal static void sub_3BAB9(byte arg_0, object param, Player player)
         {
-            sbyte var_D;
-            sbyte var_C;
             byte var_B;
-            byte var_A;
-            byte var_9;
             Struct_1D885 var_8;
             Struct_1D885 var_4;
 
             Affect affect = (Affect)param;
 
-            var_A = (byte)(affect.field_3 >> 4);
+            byte var_A = (byte)(affect.field_3 >> 4);
 
-            var_9 = 0;
+            bool var_9 = false;
             var_8 = gbl.stru_1D889;
 
-            while (var_8 != null && var_9 == 0)
+            while (var_8 != null && var_9 == false)
             {
                 if (var_8.player == player &&
                     var_8.field_1C == var_A)
                 {
-                    var_9 = 1;
+                    var_9 = true;
                 }
                 else
                 {
@@ -1278,7 +1272,7 @@ namespace engine
                 }
             }
 
-            if (var_9 != 0)
+            if (var_9 == true)
             {
                 ovr025.string_print01("The air clears a little...");
 
@@ -1286,28 +1280,28 @@ namespace engine
                 {
                     if (var_8.field_10[var_B] != 0)
                     {
-                        var_C = (sbyte)(var_8.field_1A + gbl.MapDirectionXDelta[gbl.unk_18AED[var_B]]);
-                        var_D = (sbyte)(var_8.field_1B + gbl.MapDirectionYDelta[gbl.unk_18AED[var_B]]);
+                        int tmp_x = var_8.target_x + gbl.MapDirectionXDelta[gbl.unk_18AED[var_B]];
+                        int tmp_y = var_8.target_y + gbl.MapDirectionYDelta[gbl.unk_18AED[var_B]];
 
-                        var_9 = 0;
+                        bool var_E = false;
 
-                        for (var_A = 1; var_A <= gbl.byte_1D1BB; var_A++)
+                        for (int i = 1; i <= gbl.byte_1D1BB; i++)
                         {
-                            if (gbl.unk_1D183[var_A].field_0 != null &&
-                                gbl.unk_1D183[var_A].mapX == var_C &&
-                                gbl.unk_1D183[var_A].mapY == var_D)
+                            if (gbl.unk_1D183[i].field_0 != null &&
+                                gbl.unk_1D183[i].mapX == tmp_x &&
+                                gbl.unk_1D183[i].mapY == tmp_y)
                             {
-                                var_9 = 1;
+                                var_E = true;
                             }
                         }
 
-                        if (var_9 != 0)
+                        if (var_E == true)
                         {
-                            gbl.mapToBackGroundTile[var_C, var_D] = 0x1F;
+                            gbl.mapToBackGroundTile[tmp_x, tmp_y] = 0x1F;
                         }
                         else
                         {
-                            gbl.mapToBackGroundTile[var_C, var_D] = var_8.field_7[var_B];
+                            gbl.mapToBackGroundTile[tmp_x, tmp_y] = var_8.field_7[var_B];
                         }
                     }
                 }
@@ -1336,10 +1330,10 @@ namespace engine
                     {
                         if (var_4.field_10[var_B] != 0)
                         {
-                            int cx = gbl.MapDirectionXDelta[gbl.unk_18AED[var_B]] + var_4.field_1A;
-                            int ax = gbl.MapDirectionYDelta[gbl.unk_18AED[var_B]] + var_4.field_1B;
+                            int tmp_x = gbl.MapDirectionXDelta[gbl.unk_18AED[var_B]] + var_4.target_x;
+                            int tmp_y = gbl.MapDirectionYDelta[gbl.unk_18AED[var_B]] + var_4.target_y;
 
-                            gbl.mapToBackGroundTile[cx, ax] = 0x1C;
+                            gbl.mapToBackGroundTile[tmp_x, tmp_y] = 0x1C;
                         }
                     }
 

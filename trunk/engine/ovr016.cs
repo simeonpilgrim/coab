@@ -122,13 +122,13 @@ namespace engine
         }
 
 
-        internal static int HowManySpellsPlayerCanLearn(sbyte spellClass, sbyte spellLevel) //sub_4428E
+        internal static int HowManySpellsPlayerCanLearn(int spellClass, int spellLevel) //sub_4428E
         {
             int alreadyLearning = 0;
 
-            for (int loop_var = 0; loop_var < gbl.max_spells; loop_var++)
+            for (int i = 0; i < gbl.max_spells; i++)
             {
-                int spell_id = gbl.player_ptr.spell_list[loop_var];
+                int spell_id = gbl.player_ptr.spell_list[i];
 
                 if (spell_id > 0)
                 {
@@ -142,7 +142,7 @@ namespace engine
                 }
             }
 
-            return gbl.player_ptr.field_12CArray[(spellClass * 5) + spellLevel] - alreadyLearning; ;
+            return gbl.player_ptr.field_12D[spellClass, spellLevel-1] - alreadyLearning;
         }
 
 
@@ -257,9 +257,9 @@ namespace engine
 
                 for (spellLevel = 0; spellLevel < MaxSpellLevel; spellLevel++)
                 {
-                    var_60[spellClass, spellLevel] = HowManySpellsPlayerCanLearn(spellClass, (sbyte)(spellLevel+1)).ToString();
-
-                    if (gbl.player_ptr.field_12CArray[spellLevel + 1 + (spellClass * MaxSpellLevel)] == 0)
+                    var_60[spellClass, spellLevel] = HowManySpellsPlayerCanLearn(spellClass, spellLevel+1).ToString();
+                    
+                    if (gbl.player_ptr.field_12D[spellClass, spellLevel] == 0)
                     {
                         var_60[spellClass,spellLevel] = " ";
                     }
@@ -916,7 +916,7 @@ namespace engine
 
                 if (var_2 == true)
                 {
-                    ovr020.sub_572CF(var_1);
+                    ovr020.scroll_team_list(var_1);
                     ovr025.Player_Summary(gbl.player_ptr);
                 }
                 else
@@ -1065,7 +1065,7 @@ namespace engine
                 {
                     if (var_1 == 0)
                     {
-                        ovr020.sub_572CF(var_3);
+                        ovr020.scroll_team_list(var_3);
                         ovr025.Player_Summary(gbl.player_ptr);
                     }
                     else
@@ -1217,7 +1217,7 @@ namespace engine
 
                 if (var_3 == true)
                 {
-                    ovr020.sub_572CF(var_1);
+                    ovr020.scroll_team_list(var_1);
                     ovr025.Player_Summary(gbl.player_ptr);
                 }
                 else
@@ -1380,14 +1380,14 @@ namespace engine
 
                 if (player_is_okey(player_ptr) == true)
                 {
-                    bp_var_4 += player_ptr.field_12D[0];
-                    var_A = (short)(player_ptr.field_12D[0] * 15);
+                    bp_var_4 += player_ptr.field_12D[0,0];
+                    var_A = (short)(player_ptr.field_12D[0,0] * 15);
 
-                    bp_var_6 += player_ptr.field_12D[3];
-                    var_C = (short)(player_ptr.field_12D[3] * 60);
+                    bp_var_6 += player_ptr.field_12D[0,3];
+                    var_C = (short)(player_ptr.field_12D[0,3] * 60);
 
-                    bp_var_8 += player_ptr.field_12D[4];
-                    var_E = (short)(player_ptr.field_12D[4] * 75);
+                    bp_var_8 += player_ptr.field_12D[0,4];
+                    var_E = (short)(player_ptr.field_12D[0,4] * 75);
                 }
 
                 if (var_A > 0)
@@ -1513,9 +1513,6 @@ namespace engine
 
         internal static void make_camp(out bool arg_0)
         {
-            string var_104;
-            bool var_4;
-
             byte game_state_bkup = gbl.game_state;
             gbl.game_state = 2;
             gbl.rest_10_seconds = 0;
@@ -1536,11 +1533,12 @@ namespace engine
             while (arg_0 == false &&
                 unk_463F4.MemberOf(input_key) == false)
             {
-                input_key = ovr027.displayInput(out var_4, true, 1, 15, 10, 13, "Save View Magic Rest Alter Fix Exit", "Camp:");
+                bool special_key;
+                input_key = ovr027.displayInput(out special_key, true, 1, 15, 10, 13, "Save View Magic Rest Alter Fix Exit", "Camp:");
 
-                if (var_4 == true)
+                if (special_key == true)
                 {
-                    ovr020.sub_572CF(input_key);
+                    ovr020.scroll_team_list(input_key);
                     ovr025.Player_Summary(gbl.player_ptr);
                 }
                 else
@@ -1583,7 +1581,7 @@ namespace engine
                 }
             }
 
-            if (seg051.Copy(3, 1, gbl.byte_1D5AB, out var_104) == "PIC")
+            if (seg051.Copy(3, 1, gbl.byte_1D5AB) == "PIC")
             {
                 ovr030.load_pic_final(ref gbl.byte_1D556, 0, gbl.byte_1D5B5, gbl.byte_1D5AB);
             }

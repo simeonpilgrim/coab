@@ -53,30 +53,21 @@ namespace engine
             }
         }
 
-        internal static void turn_dax_to_videolayout(DaxBlock dest_dax_block, byte mask_colour, byte masked, short block_offset, byte[] data)
+        internal static void turn_dax_to_videolayout(DaxBlock dax_block, byte mask_colour, byte masked, int block_offset, byte[] data)
         {
-            short width;
-            short height;
-            byte item_count;
-            DaxBlock dax_ptr;
-            int dest_offset;
+            /* TODO, this function needs to account for masked colours */
 
-            /* Todo, this function needs to account for masked colours */
-
-            if (dest_dax_block != null)
+            if (dax_block != null)
             {
-                dax_ptr = dest_dax_block;
-                dest_offset = 0;
+                int dest_offset = 0;
 
-                item_count = dax_ptr.item_count;
-
-                for (int loop1_var = 1; loop1_var <= item_count; loop1_var++)
+                for (int loop1_var = 1; loop1_var <= dax_block.item_count; loop1_var++)
                 {
-                    height = (short)(dax_ptr.height - 1);
+                    int height = dax_block.height - 1;
 
                     for (int loop2_var = 0; loop2_var <= height; loop2_var++)
                     {
-                        width = (short)((dax_ptr.width * 4) - 1);
+                        int width = (dax_block.width * 4) - 1;
 
                         for (int loop3_var = 0; loop3_var <= width; loop3_var++)
                         {
@@ -85,21 +76,21 @@ namespace engine
 
                             if (masked != 0 && a == mask_colour)
                             {
-                                dax_ptr.data[dest_offset] = 16;
+                                dax_block.data[dest_offset] = 16;
                             }
                             else
                             {
-                                dax_ptr.data[dest_offset] = a;
+                                dax_block.data[dest_offset] = a;
                             }
                             dest_offset += 1;
 
                             if (masked != 0 && b == mask_colour)
                             {
-                                dax_ptr.data[dest_offset] = 16;
+                                dax_block.data[dest_offset] = 16;
                             }
                             else
                             {
-                                dax_ptr.data[dest_offset] = b;
+                                dax_block.data[dest_offset] = b;
                             }
 
                             dest_offset += 1;

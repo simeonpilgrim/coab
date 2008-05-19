@@ -382,7 +382,7 @@ namespace Classes
         public static int targetY; // byte_1D884
         public static byte byte_1D88D;
         public static bool displayPlayerStatusLine18; /* byte_1D8A8 */
-        public static byte byte_1D8AA;
+        public static bool can_draw_bigpic; // byte_1D8AA
         public static byte byte_1D8AC;
         public static byte byte_1D8B0;
         public static byte byte_1D8B6; // not used.
@@ -414,7 +414,7 @@ namespace Classes
         public static byte byte_1EE81;
         public static byte byte_1EE86;
         public static byte byte_1EE88;
-        public static byte byte_1EE89;
+        public static int search_flag_bkup; // byte_1EE89
         public static byte byte_1EE8A;
         public static byte byte_1EE8B;
         public static byte byte_1EE8C;

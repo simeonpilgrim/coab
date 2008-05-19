@@ -168,7 +168,7 @@ namespace engine
             gbl.word_1D5BC = 1;
             gbl.combat_type = gbl.combatType.normal;
             gbl.displayPlayerStatusLine18 = false;
-            gbl.byte_1EE89 = 0;
+            gbl.search_flag_bkup = 0;
             gbl.byte_1EE8A = 0;
             gbl.byte_1EE8B = 0;
             gbl.byte_1EE8C = 0;
@@ -286,7 +286,7 @@ namespace engine
             gbl.word_1D5BC = 1;
             gbl.combat_type = gbl.combatType.normal;
             gbl.displayPlayerStatusLine18 = false;
-            gbl.byte_1EE89 = 0;
+            gbl.search_flag_bkup = 0;
             gbl.byte_1EE8A = 0;
             gbl.byte_1EE8B = 0;
             gbl.byte_1EE8C = 0;

@@ -4,52 +4,49 @@ namespace engine
 {
     class ovr026
     {
-        static byte[] /*seg600:42BC*/ unk_1A5CC = { 0xDD,
-            0x06, 0x00, 0xFF, 0xFF, 0xFF,
-            0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
-            1, 0, 0, 0, 0,
-            0, 1, 0, 0, 0,
-            1, 1, 0, 0, 0,
-            0, 1, 1, 0, 0,
-            0, 0, 1, 0, 0, 
-            0, 0, 0, 1, 0,    
-            0, 0, 1, 1, 0, 
-            1, 1, 0, 0, 1,  //seg600:42EE
-            0, 0, 0, 1, 1,  //seg600:42F3
-            1, 0, 1, 0, 0,  //seg600:42F8
-            1, 1, 1, 0, 0,  //seg600:42FD
+        static byte[,] /*seg600:42BC*/ unk_1A5CC = { 
+            {1, 0, 0, 0, 0},
+            {0, 1, 0, 0, 0},
+            {1, 1, 0, 0, 0},
+            {0, 1, 1, 0, 0},
+            {0, 0, 1, 0, 0}, 
+            {0, 0, 0, 1, 0},    
+            {0, 0, 1, 1, 0}, 
+            {1, 1, 0, 0, 1},  //seg600:42EE
+            {0, 0, 0, 1, 1},  //seg600:42F3
+            {1, 0, 1, 0, 0},  //seg600:42F8
+            {1, 1, 1, 0, 0},  //seg600:42FD
         };
 
-        static byte[] /*seg600:43E5*/ unk_1A6F5 = { 0xAE,
-            0xA, 0, 0x91, 5, 0x10,
-            0, 0xFF, 0xFF, 0xFF, 0xFF,
-            0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 
-            0, 0, 0, 0, 0,  
-            0, 0, 0, 0, 0, 
-            1, 0, 0, 0, 0, 
-            1, 0, 0, 0, 0, 
-            0, 1, 0, 0, 0, 
-            0, 1, 0, 0, 0
+        static byte[,] /*seg600:43E5*/ unk_1A6F5 = { 
+            {0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0}, 
+            {0, 0, 0, 0, 0},  
+            {0, 0, 0, 0, 0}, 
+            {1, 0, 0, 0, 0}, 
+            {1, 0, 0, 0, 0}, 
+            {0, 1, 0, 0, 0}, 
+            {0, 1, 0, 0, 0}
         };
 
-        static byte[] /*seg600:4448*/ unk_1A758 = { 0xF5,
-            4,0,0x11,0xEB,9,
-            0, 0xFF, 0xFF, 0xFF, 0xFF,
-            0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0,
-            1, 0, 0, 0, 0,
-            0, 0, 0, 1, 0,
-            1, 0, 0, 0, 0,
-            0, 0, 0, 1, 0,
-            0, 1, 0, 0, 0 
+        static byte[,] /*seg600:4448*/ unk_1A758 = { 
+            {0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0},
+            {1, 0, 0, 0, 0},
+            {0, 0, 0, 1, 0},
+            {1, 0, 0, 0, 0},
+            {0, 0, 0, 1, 0},
+            {0, 1, 0, 0, 0} 
         }; 
    
 
@@ -57,28 +54,28 @@ namespace engine
         internal static void sub_6A00F(Player arg_0)
         {
             Struct_19AEC var_12;
-            Player var_E;
-            Item var_A;
             byte var_6;
-            sbyte var_5;
-            sbyte var_4;
             sbyte var_2;
             byte var_1;
 
-            var_E = arg_0;
 
-            seg051.FillChar(0, 0x0f, var_E.field_12D);
+            for (int i = 0; i < 5; i++)
+            {
+                arg_0.field_12D[0, i] = 0;
+                arg_0.field_12D[1, i] = 0;
+                arg_0.field_12D[2, i] = 0;
+            }
 
             for (var_1 = 0; var_1 <= 7; var_1++)
             {
                 if (sub_6B3D1(arg_0) != 0 &&
-                    var_E.Skill_B_lvl[var_1] != 0)
+                    arg_0.Skill_B_lvl[var_1] != 0)
                 {
-                    var_2 = (sbyte)var_E.Skill_B_lvl[var_1];
+                    var_2 = (sbyte)arg_0.Skill_B_lvl[var_1];
                 }
                 else
                 {
-                    var_2 = (sbyte)var_E.Skill_A_lvl[var_1];
+                    var_2 = (sbyte)arg_0.Skill_A_lvl[var_1];
                 }
 
                 if (var_2 > 0)
@@ -86,28 +83,30 @@ namespace engine
                     switch (var_1)
                     {
                         case 0:
-                            var_E.field_12D[0] += 1;
+                            arg_0.field_12D[0, 0] += 1;
 
-                            for (int var_3 = 2; var_3 <= var_2; var_3++)
+                            for (int sp_class = 0; sp_class <= (var_2 - 2); sp_class++)
                             {
-                                for (var_5 = 1; var_5 <= 5; var_5++)
+                                for (int sp_lvl = 0; sp_lvl < 5; sp_lvl++)
                                 {
-                                    var_E.field_12D[var_5 - 1] = unk_1A5CC[(var_3 * 5) + var_5];
+                                    arg_0.field_12D[0, sp_lvl] += unk_1A5CC[sp_class, sp_lvl];
                                 }
                             }
 
-                            sub_6A686(0, arg_0);
+                            calc_cleric_spells(false, arg_0);
 
                             for (var_6 = 1; var_6 <= 100; var_6++)
                             {
                                 var_12 = gbl.unk_19AEC[var_6];
 
+                                int sp_class = (var_12.spellLevel - 1) / 5;
+                                int sp_lvl = (var_12.spellLevel - 1) % 5;
 
                                 if (var_12.spellClass == 0 &&
-                                    var_E.field_12CArray[var_12.spellLevel] > 0 &&
+                                    arg_0.field_12D[sp_class, sp_lvl] > 0 &&
                                     var_6 != 0x24)
                                 {
-                                    var_E.field_79[var_6 - 1] = 1;
+                                    arg_0.field_79[var_6 - 1] = 1;
                                 }
                             }
                             break;
@@ -115,11 +114,11 @@ namespace engine
                         case 3:
                             if (var_2 > 8)
                             {
-                                for (int var_3 = 9; var_3 <= var_2; var_3++)
+                                for (int var_3 = 8; var_3 < var_2; var_3++)
                                 {
-                                    for (var_5 = 1; var_5 <= 5; var_5++)
+                                    for (int sp_lvl = 0; sp_lvl < 5; sp_lvl++)
                                     {
-                                        var_E.field_12CArray[var_5] += unk_1A6F5[(var_3 * 5) + var_5];
+                                        arg_0.field_12D[0, sp_lvl] += unk_1A6F5[var_3, sp_lvl];
                                     }
                                 }
 
@@ -127,10 +126,12 @@ namespace engine
                                 {
                                     var_12 = gbl.unk_19AEC[var_6];
 
+                                    int sp_class = (var_12.spellLevel-1)/5;
+                                    int sp_lvl = (var_12.spellLevel-1)%5;
                                     if (var_12.spellClass == 0 &&
-                                        var_E.field_12CArray[var_12.spellLevel] > 0)
+                                        arg_0.field_12D[sp_class, sp_lvl] > 0)
                                     {
-                                        var_E.field_79[var_6] = 1;
+                                        arg_0.field_79[var_6] = 1;
                                     }
                                 }
                             }
@@ -141,15 +142,14 @@ namespace engine
                             {
                                 for (int var_3 = 8; var_3 <= var_2; var_3++)
                                 {
-                                    for (var_5 = 1; var_5 <= 3; var_5++)
+                                    for (int sp_lvl = 0; sp_lvl < 3; sp_lvl++)
                                     {
-                                        var_E.field_12CArray[5 + var_5] += unk_1A758[(var_3*5)+var_5];
+                                        arg_0.field_12D[1, sp_lvl] += unk_1A758[var_3, sp_lvl];
                                     }
 
-                                    for (var_5 = 4; var_5 <= 5; var_5++)
+                                    for (int sp_lvl = 3; sp_lvl < 5; sp_lvl++)
                                     {
-                                        var_4 = (sbyte)(var_5 - 3);
-                                        var_E.field_12CArray[10 + var_4] += unk_1A758[(var_3 * 5) + var_5];
+                                        arg_0.field_12D[2, sp_lvl - 3] += unk_1A758[var_3, sp_lvl];
                                     }
                                 }
 
@@ -157,7 +157,7 @@ namespace engine
                                 {
                                     if (gbl.unk_19AEC[var_6].spellClass == 1)
                                     {
-                                        var_E.field_79[var_6 - 1] = 1;
+                                        arg_0.field_79[var_6 - 1] = 1;
                                     }
                                 }
                             }
@@ -165,31 +165,32 @@ namespace engine
                             break;
 
                         case 5:
-                            var_E.field_12D[10] += 1;
+                            arg_0.field_12D[2, 0] += 1;
 
-                            for (int var_3 = 0; var_3 <= (var_2 - 2); var_3++)
+                            for (int lvl = 0; lvl <= (var_2 - 2); lvl++)
                             {
                                 /* unk_1A7C6 = seg600:44B6 */
-                                var_E.field_12D[10] += ovr020.unk_1A7C6[(var_3 * 5) + 0];
-                                var_E.field_12D[11] += ovr020.unk_1A7C6[(var_3 * 5) + 1];
-                                var_E.field_12D[12] += ovr020.unk_1A7C6[(var_3 * 5) + 2];
-                                var_E.field_12D[13] += ovr020.unk_1A7C6[(var_3 * 5) + 3];
-                                var_E.field_12D[14] += ovr020.unk_1A7C6[(var_3 * 5) + 4];
+                                arg_0.field_12D[2, 0] += ovr020.unk_1A7C6[lvl, 0];
+                                arg_0.field_12D[2, 1] += ovr020.unk_1A7C6[lvl, 1];
+                                arg_0.field_12D[2, 2] += ovr020.unk_1A7C6[lvl, 2];
+                                arg_0.field_12D[2, 3] += ovr020.unk_1A7C6[lvl, 3];
+                                arg_0.field_12D[2, 4] += ovr020.unk_1A7C6[lvl, 4];
                             }
                             break;
                     }
                 }
             }
-            var_A = var_E.itemsPtr;
+
+            Item var_A = arg_0.itemsPtr;
 
             while (var_A != null)
             {
                 if (var_A.affect_3 == Affects.affect_81 &&
                     var_A.readied)
                 {
-                    for (var_5 = 1; var_5 <= 3; var_5++)
+                    for (int sp_lvl = 0; sp_lvl < 3; sp_lvl++)
                     {
-                        arg_0.field_12CArray[0xA + var_5] *= 2;
+                        arg_0.field_12D[2, sp_lvl] *= 2;
                     }
                 }
 
@@ -307,65 +308,58 @@ namespace engine
         }
 
 
-        internal static void sub_6A686(byte arg_0, Player arg_2)
+        internal static void calc_cleric_spells(bool arg_0, Player player) /* sub_6A686 */
         {
-            Player var_7;
-            sbyte var_3;
-            sbyte var_2;
-            sbyte var_1;
-
-            var_3 = (sbyte)(arg_2.cleric_lvl + arg_2.turn_undead * sub_6B3D1(arg_2));
+            int var_3 = player.cleric_lvl + player.turn_undead * sub_6B3D1(player);
 
             if (var_3 > 0)
             {
-                var_7 = arg_2;
-
-                if (arg_0 != 0)
+                if (arg_0 == true)
                 {
-                    for (var_2 = 2; var_2 <= 5; var_2++)
+                    for (int sp_lvl = 1; sp_lvl < 5; sp_lvl++)
                     {
-                        var_7.field_12CArray[var_2] = 0;
+                        player.field_12D[0, sp_lvl] = 0;
                     }
 
-                    var_7.field_12D[0] = 1;
+                    player.field_12D[0, 0] = 1;
 
-                    for (var_1 = 2; var_1 <= var_3; var_1++)
+                    for (int sp_class = 0; sp_class <= (var_3 - 2); sp_class++)
                     {
-                        for (var_2 = 1; var_2 <= 5; var_2++)
+                        for (int sp_lvl = 0; sp_lvl < 5; sp_lvl++)
                         {
-                            var_7.field_12CArray[var_2] += unk_1A5CC[var_2 + (var_1 * 5)];
+                            player.field_12D[0, sp_lvl] += unk_1A5CC[sp_class, sp_lvl];
                         }
                     }
                 }
 
-                if (var_7.wis > 12 && var_7.field_12CArray[1] > 0)
+                if (player.wis > 12 && player.field_12D[0, 0] > 0)
                 {
-                    var_7.field_12CArray[1] += 1;
+                    player.field_12D[0, 0] += 1;
                 }
 
-                if (var_7.wis > 13 && var_7.field_12CArray[1] > 0)
+                if (player.wis > 13 && player.field_12D[0, 0] > 0)
                 {
-                    var_7.field_12CArray[1] += 1;
+                    player.field_12D[0, 0] += 1;
                 }
 
-                if (var_7.wis > 14 && var_7.field_12CArray[2] > 0)
+                if (player.wis > 14 && player.field_12D[0, 1] > 0)
                 {
-                    var_7.field_12CArray[2] += 1;
+                    player.field_12D[0, 1] += 1;
                 }
 
-                if (var_7.wis > 15 && var_7.field_12CArray[2] > 0)
+                if (player.wis > 15 && player.field_12D[0, 1] > 0)
                 {
-                    var_7.field_12CArray[2] += 1;
+                    player.field_12D[0, 1] += 1;
                 }
 
-                if (var_7.wis > 16 && var_7.field_12CArray[3] > 0)
+                if (player.wis > 16 && player.field_12D[0, 2] > 0)
                 {
-                    var_7.field_12CArray[3] += 1;
+                    player.field_12D[0, 2] += 1;
                 }
 
-                if (var_7.wis > 17 && var_7.field_12CArray[4] > 0)
+                if (player.wis > 17 && player.field_12D[0, 3] > 0)
                 {
-                    var_7.field_12CArray[4] += 1;
+                    player.field_12D[0, 3] += 1;
                 }
             }
         }
@@ -850,15 +844,20 @@ namespace engine
             arg_0.Skill_A_lvl[getFirstSkill(arg_0)] = 0;
             arg_0.Skill_A_lvl[var_2] = 1;
 
-            seg051.FillChar(0, 15, arg_0.field_12D);
+            for (int i = 0; i < 5; i++)
+            {
+                arg_0.field_12D[0, i] = 0;
+                arg_0.field_12D[1, i] = 0;
+                arg_0.field_12D[2, i] = 0;
+            }
 
             if (var_2 == 0)
             {
-                arg_0.field_12D[0] = 1;
+                arg_0.field_12D[0,0] = 1;
             }
             else if (var_2 == 5)
             {
-                arg_0.field_12D[10] = 1;
+                arg_0.field_12D[2,0] = 1;
                 arg_0.field_83 = 1;
                 arg_0.field_8A = 1;
                 arg_0.field_8D = 1;
@@ -871,7 +870,7 @@ namespace engine
             seg051.FillChar(0, 0x54, arg_0.spell_list);
 
             sub_6A3C6(arg_0);
-            sub_6A686(1, arg_0);
+            calc_cleric_spells(true, arg_0);
             sub_6A7FB(arg_0);
             sub_6AAEA(arg_0);
 

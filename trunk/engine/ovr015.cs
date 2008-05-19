@@ -543,7 +543,7 @@ namespace engine
 
             gbl.byte_1D53D = ovr031.sub_717A5( gbl.mapPosY, gbl.mapPosX );
 
-			if( (gbl.area2_ptr.field_594 & 1) > 0 )
+			if( (gbl.area2_ptr.search_flags & 1) > 0 )
 			{
 				ovr021.sub_583FA( 2, 1 );
 			}
@@ -556,23 +556,23 @@ namespace engine
 
         internal static char sub_438DF( )
         {
-            bool var_4;
-            char var_3 = '\0'; /* simeon */ 
-            bool var_2;
+            char input_key = '\0'; /* simeon */ 
 		
 			gbl.area2_ptr.field_592 = 0;
 
 			if( gbl.game_state == 4 )
 			{
-				var_2 = false;
+				bool stop_loop = false;
 
 				do
 				{
-					var_3 = ovr027.displayInput( out var_4, false, 1, 15, 10, 13, "Area Cast View Encamp Search Look", string.Empty );
+                    bool special_key;
 
-					if( var_4 == false )
+					input_key = ovr027.displayInput( out special_key, false, 1, 15, 10, 13, "Area Cast View Encamp Search Look", string.Empty );
+
+					if( special_key == false )
 					{
-						switch( var_3 )
+						switch( input_key )
 						{
 							case 'A':
 								if( gbl.area_ptr.block_area_view == 0 ||
@@ -603,29 +603,29 @@ namespace engine
 								break;
 
 							case 'E':
-								var_2 = true;
+								stop_loop = true;
 								gbl.byte_1D5BE = 1;
 								break;
 
 							case 'S':
-								gbl.area2_ptr.field_594 ^= 1;
+								gbl.area2_ptr.search_flags ^= 1;
 								break;
 
 							case 'L':
-								gbl.area2_ptr.field_594 |= 2;
+								gbl.area2_ptr.search_flags |= 2;
 								ovr021.sub_583FA( 2, 1 );
 								gbl.ecl_offset = gbl.word_1B2D5;
-								var_2 = true;
+								stop_loop = true;
 								break;
 						}
 					}
 					else
 					{
-						switch( var_3 )
+						switch( input_key )
 						{
 							case 'H':
 								sub_43765();
-								var_2 = true;
+								stop_loop = true;
 								break;
 
 							case 'P':
@@ -653,7 +653,7 @@ namespace engine
 								break;
 
 							default:
-								ovr020.sub_572CF( var_3 );
+								ovr020.scroll_team_list( input_key );
 								ovr025.Player_Summary( gbl.player_ptr );
 								break;
 						}
@@ -661,7 +661,7 @@ namespace engine
 
 					ovr025.display_map_position_time();
 
-				}while( var_2 == false );
+				}while( stop_loop == false );
 			}
 
 			if( gbl.byte_1EE90 == 0 )
@@ -671,7 +671,7 @@ namespace engine
 				gbl.byte_1EE90 = 1;
 			}
 
-			return var_3;
+			return input_key;
         }
 
 
@@ -688,7 +688,7 @@ namespace engine
             {
                 if( gbl.area2_ptr.field_592 < 0xff )
                 {
-                    gbl.byte_1D8AA = 1;
+                    gbl.can_draw_bigpic = true;
 
                     byte al = ovr031.WallDoorFlagsGet( gbl.mapDirection, gbl.mapPosY, gbl.mapPosX );
 

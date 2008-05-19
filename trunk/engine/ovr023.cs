@@ -1755,7 +1755,6 @@ namespace engine
         internal static void create_noxious_cloud()
         {
             byte var_12;
-            byte var_11;
             byte var_10;
             byte var_F;
             byte var_E;
@@ -1795,10 +1794,10 @@ namespace engine
 
             var_8.player = gbl.player_ptr;
             var_8.field_1C = var_E;
-            var_8.field_1A = (sbyte)gbl.targetX;
-            var_8.field_1B = (sbyte)gbl.targetY;
+            var_8.target_x = gbl.targetX;
+            var_8.target_y = gbl.targetY;
 
-            for (var_11 = 1; var_11 <= 4; var_11++)
+            for (int var_11 = 1; var_11 <= 4; var_11++)
             {
                 var_12 = gbl.unk_18AE9[var_11];
 
@@ -1829,8 +1828,8 @@ namespace engine
                             {
                                 if (var_4.field_10[var_D] != 0)
                                 {
-                                    if (gbl.targetX + gbl.MapDirectionXDelta[var_12] == var_4.field_1A + gbl.MapDirectionXDelta[gbl.unk_18AE9[var_D]] &&
-                                        gbl.targetY + gbl.MapDirectionYDelta[var_12] == gbl.MapDirectionYDelta[gbl.unk_18AE9[var_D]] + var_4.field_1B)
+                                    if (gbl.targetX + gbl.MapDirectionXDelta[var_12] == var_4.target_x + gbl.MapDirectionXDelta[gbl.unk_18AE9[var_D]] &&
+                                        gbl.targetY + gbl.MapDirectionYDelta[var_12] == gbl.MapDirectionYDelta[gbl.unk_18AE9[var_D]] + var_4.target_y)
                                     {
                                         if (var_4.field_7[var_D] != 0x1E)
                                         {
@@ -1870,7 +1869,7 @@ namespace engine
             ovr033.redrawCombatArea(8, 0xff, gbl.targetY, gbl.targetX);
             seg041.GameDelay();
             ovr025.ClearPlayerTextArea();
-            for (var_11 = 0; var_11 < 4; var_11++)
+            for (int var_11 = 0; var_11 < 4; var_11++)
             {
                 for (var_D = 0; var_D < 4; var_D++)
                 {
@@ -1882,7 +1881,7 @@ namespace engine
                 }
             }
 
-            for (var_11 = 0; var_11 < 4; var_11++)
+            for (int var_11 = 0; var_11 < 4; var_11++)
             {
                 if (var_C[var_11] > 0)
                 {
@@ -2247,7 +2246,7 @@ namespace engine
 
                         for (var_1 = 1; var_1 <= var_19; var_1++)
                         {
-                            if (var_11 == var_18.field_1A + gbl.MapDirectionXDelta[gbl.unk_18AE9[var_1]])
+                            if (var_11 == var_18.target_x + gbl.MapDirectionXDelta[gbl.unk_18AE9[var_1]])
                             {
                                 throw new System.NotSupportedException();//mov	al, [bp+var_1]
                                 throw new System.NotSupportedException();//xor	ah, ah
@@ -3292,8 +3291,8 @@ namespace engine
 
             var_8.player = gbl.player_ptr;
             var_8.field_1C = var_13;
-            var_8.field_1A = (sbyte)gbl.targetX;
-            var_8.field_1B = (sbyte)gbl.targetY;
+            var_8.target_x = gbl.targetX;
+            var_8.target_y = gbl.targetY;
 
             for (var_16 = 1; var_16 <= 9; var_16++)
             {

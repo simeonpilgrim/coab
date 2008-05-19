@@ -37,15 +37,12 @@ namespace engine
             DaxBlock var_2C;
             byte var_28;
             byte var_23;
-            byte var_22;
-            bool var_21;
-            short var_20 = 0; /* Simeon */
             byte[] mem = null;
             short width;
             short height;
             byte var_12;
             short var_11;
-            byte[] var_F;
+            byte[] uncompressed_data;
             short var_B;
             string file_string;
 
@@ -67,9 +64,9 @@ namespace engine
 
                     gbl.byte_1D5B4 = block_id;
 
-                    var_21 = (file_string == "PIC" || file_string == "FINAL");
+                    bool is_pic_or_final = (file_string == "PIC" || file_string == "FINAL");
 
-                    seg042.load_decode_dax(out var_F, out var_B, block_id, file_string + gbl.game_area.ToString() + ".dax");
+                    seg042.load_decode_dax(out uncompressed_data, out var_B, block_id, file_string + gbl.game_area.ToString() + ".dax");
 
                     if (var_B == 0)
                     {
@@ -78,15 +75,15 @@ namespace engine
                     else
                     {
                         var_11 = 0;
-                        var_22 = 0;
+                        bool var_22 = false;
 
-                        daxArray.numFrames = var_F[var_11];
+                        daxArray.numFrames = uncompressed_data[var_11];
                         var_11++;
                         daxArray.curFrame = 1;
 
                         var_23 = 0;
 
-                        if (gbl.AnimationsOn == false && var_21 == true)
+                        if (gbl.AnimationsOn == false && is_pic_or_final == true)
                         {
                             daxArray.numFrames = 1;
                         }
@@ -95,13 +92,13 @@ namespace engine
 
                         for (var_12 = 1; var_12 <= var_28; var_12++)
                         {
-                            daxArray.ptrs[var_12 - 1].field_0 = Sys.ArrayToInt(var_F, var_11);
+                            daxArray.ptrs[var_12 - 1].field_0 = Sys.ArrayToInt(uncompressed_data, var_11);
                             var_11 += 4;
 
-                            height = Sys.ArrayToShort(var_F, var_11);
+                            height = Sys.ArrayToShort(uncompressed_data, var_11);
                             var_11 += 2;
 
-                            width = Sys.ArrayToShort(var_F, var_11);
+                            width = Sys.ArrayToShort(uncompressed_data, var_11);
                             var_11 += 2;
 
                             var_23++;
@@ -110,38 +107,38 @@ namespace engine
 
                             var_2C = daxArray.ptrs[var_12 - 1].field_4;
 
-                            var_2C.field_4 = Sys.ArrayToShort(var_F, var_11);
+                            var_2C.field_4 = Sys.ArrayToShort(uncompressed_data, var_11);
                             var_11 += 2;
 
-                            var_2C.field_6 = Sys.ArrayToShort(var_F, var_11);
+                            var_2C.field_6 = Sys.ArrayToShort(uncompressed_data, var_11);
                             var_11 += 3;
 
-                            System.Array.Copy(var_F, var_11, var_2C.field_9, 0, 8);
+                            System.Array.Copy(uncompressed_data, var_11, var_2C.field_9, 0, 8);
                             var_11 += 8;
 
-                            var_20 = (short)((daxArray.ptrs[var_12 - 1].field_4.bpp / 2) - 1);
+                            int var_20 = (daxArray.ptrs[var_12 - 1].field_4.bpp / 2) - 1;
 
-                            if (var_21 == true)
+                            if (is_pic_or_final == true)
                             {
                                 if (var_12 == 1)
                                 {
                                     mem = seg051.GetMem(var_20 + 1);
 
-                                    System.Array.Copy(var_F, var_11, mem, 0, var_20 + 1);
+                                    System.Array.Copy(uncompressed_data, var_11, mem, 0, var_20 + 1);
 
-                                    var_22 = 1;
+                                    var_22 = true;
                                 }
                                 else
                                 {
                                     for( int i = 0; i < var_20; i++ )
                                     {
                                         byte b = mem[i];
-                                        var_F[var_11 + i] ^= b;
+                                        uncompressed_data[var_11 + i] ^= b;
                                     }
                                 }
                             }
 
-                            seg040.turn_dax_to_videolayout(daxArray.ptrs[var_12-1].field_4, 0, masked, var_11, var_F);
+                            seg040.turn_dax_to_videolayout(daxArray.ptrs[var_12-1].field_4, 0, masked, var_11, uncompressed_data);
 
                             if ((masked & 1) > 0)
                             {
@@ -154,12 +151,12 @@ namespace engine
                         daxArray.numFrames = var_23;
 
 
-                        if (var_21 == true && var_22 != 0)
+                        if (is_pic_or_final == true && var_22 == true)
                         {
-                            seg051.FreeMem(var_20 + 1, mem);
+                            //seg051.FreeMem(var_20 + 1, mem);
                         }
 
-                        seg051.FreeMem(var_B, var_F);
+                        seg051.FreeMem(var_B, uncompressed_data);
                         seg043.clear_keyboard();
 
                         if (gbl.AnimationsOn == true)

@@ -323,11 +323,11 @@ namespace engine
                         break;
 
                     case 'G':
-                        ovr020.sub_572CF( var_2E );
+                        ovr020.scroll_team_list( var_2E );
                         break;
 
                     case 'O':
-                        ovr020.sub_572CF( var_2E );
+                        ovr020.scroll_team_list( var_2E );
                         break;
                 }
                 

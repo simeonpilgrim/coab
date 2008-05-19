@@ -190,7 +190,7 @@ namespace engine
                             var_11 = 1;
                         }
 
-                        ovr020.sub_572CF(inputkey);
+                        ovr020.scroll_team_list(inputkey);
                         ovr025.Player_Summary(gbl.player_ptr);
 
                         if (ovr026.is_human(gbl.player_ptr) == false ||
@@ -1097,7 +1097,7 @@ namespace engine
                             break;
 
                         case Stat.CON:
-                            if( unk_1A434[(int)var_53.race].field_1 < var_53.age )
+                            if (unk_1A434[(int)var_53.race].field_1 < var_53.age)
                             {
                                 var_53.stats[var_1B].max -= 1;
                             }
@@ -1158,7 +1158,12 @@ namespace engine
                 var_21 = 0;
                 var_20 = 0;
 
-                seg051.FillChar(0, 15, var_53.field_12D);
+                for (int i = 0; i < 5; i++)
+                {
+                    var_53.field_12D[0, i] = 0;
+                    var_53.field_12D[1, i] = 0;
+                    var_53.field_12D[2, i] = 0;
+                }
 
                 for (loop4_var = 0; loop4_var <= 7; loop4_var++)
                 {
@@ -1166,19 +1171,18 @@ namespace engine
                     {
                         if (loop4_var == 0)
                         {
-                            var_53.field_12D[0] = 1;
+                            var_53.field_12D[0, 0] = 1;
                         }
                         else if (loop4_var == 5)
                         {
-                            var_53.field_12D[10] = 1;
+                            var_53.field_12D[2, 0] = 1;
                         }
 
                         var_21 += ovr024.roll_dice(unk_1A8C4[loop4_var], unk_1A8C3[loop4_var]);
 
                         if (loop4_var == 0)
                         {
-
-                            ovr026.sub_6A686(0, player);
+                            ovr026.calc_cleric_spells(false, player);
 
                             for (loop3_var = 1; loop3_var <= 100; loop3_var++)
                             {
@@ -1599,9 +1603,9 @@ namespace engine
                                             player_ptr.stats[stat_var].max = gbl.unk_1A484[(int)player_ptr._class].field_2;
                                         }
                                         
-                                        if (player_ptr.field_12D[0] > 0)
+                                        if (player_ptr.field_12D[0,0] > 0)
                                         {
-                                            player_ptr.field_12D[0] = 1;
+                                            player_ptr.field_12D[0,0] = 1;
                                         }
                                         break;
 
@@ -1713,9 +1717,9 @@ namespace engine
                                             player_ptr.stats[stat_var].max = stru_1A298[(int)player_ptr.race].field_9;
                                         }
 
-                                        if (player_ptr.field_12D[0] > 0)
+                                        if (player_ptr.field_12D[0,0] > 0)
                                         {
-                                            player_ptr.field_12D[0] = 1;
+                                            player_ptr.field_12D[0,0] = 1;
                                         }
                                         break;
 
@@ -1895,7 +1899,7 @@ namespace engine
                 sub_4E6F2(1, var_37, var_3F);
             } while (var_36 == true || var_35 != 0x4B);
 
-            ovr026.sub_6A686(1, gbl.player_ptr);
+            ovr026.calc_cleric_spells(true, gbl.player_ptr);
 
             gbl.player_ptr.field_F8 = 1;
 

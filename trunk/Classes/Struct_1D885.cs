@@ -46,8 +46,9 @@ namespace Classes
         // 0x17
         // 0x18
         // 0x19
-        public sbyte field_1A;// 0x1A
-        public sbyte field_1B;// 0x1B
+        public int target_x;// 0x1A - field_1A
+        public int target_y
+            ;// 0x1B - field_1B
         public byte field_1C;// 0x1C
         public byte field_1D;// 0x1D
     }
