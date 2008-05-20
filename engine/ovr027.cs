@@ -781,18 +781,18 @@ namespace engine
         }
 
 
-        internal static char yes_no( byte arg_0, byte arg_2, byte arg_4, string inputString )
+        internal static char yes_no(byte highlightFgColor, byte fgColor, byte extraStringFgColor, string inputString)
         {
             char inputKey;
-            bool var_2B;
+            bool dummyBool;
 
             gbl.byte_1D5BE = 2;
 
-			do
-			{
-				inputKey = displayInput( out var_2B, false, 0, arg_0, arg_2, arg_4, "Yes No", inputString );
-
-			} while( yesNoFlags.MemberOf( inputKey ) == false );
+            do
+            {
+                inputKey = displayInput(out dummyBool, false, 0, highlightFgColor, fgColor, extraStringFgColor, "Yes No", inputString);
+            
+            } while (yesNoFlags.MemberOf(inputKey) == false);
 
             return inputKey;
         }

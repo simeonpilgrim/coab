@@ -3253,11 +3253,7 @@ namespace engine
 
                             if (var_1A > 0)
                             {
-                                throw new System.NotSupportedException();//mov	al, [bp+var_1A]
-                                throw new System.NotSupportedException();//xor	ah, ah
-                                throw new System.NotSupportedException();//les	di, int ptr [bp+player_ptr.offset]
-                                throw new System.NotSupportedException();//add	di, ax
-                                throw new System.NotSupportedException();//mov	es:[di+charStruct.hit_point_max], 1
+                                player_ptr.field_79[var_1A - 1] = 1;
                             }
                         }
                     }

@@ -121,66 +121,52 @@ namespace engine
                                     "9th Level"
                                 };
 
-        internal static byte sub_5C01E(byte arg_0, Player arg_2)
+        internal static bool can_learn_spell(byte spell_id, Player player) /* sub_5C01E */
         {
-            byte var_1;
+            spell_id &= 0x7f;
+            bool can_learn = false;
 
-            arg_0 &= 0x7f;
-            var_1 = 0;
-
-            switch (gbl.unk_19AEC[arg_0].spellClass)
+            switch (gbl.unk_19AEC[spell_id].spellClass)
             {
                 case 0:
-                    if (arg_2.wis > 8 &&
-                        ((arg_2.cleric_lvl > 0) ||
-                         (ovr026.sub_6B3D1(arg_2) != 0 && arg_2.turn_undead > 0) ||
-                         (arg_2.paladin_lvl > 8) ||
-                         (arg_2.field_114 > 8 && ovr026.sub_6B3D1(arg_2) != 0)))
+                    if (player.wis > 8 &&
+                        ((player.cleric_lvl > 0) ||
+                         (ovr026.sub_6B3D1(player) != 0 && player.turn_undead > 0) ||
+                         (player.paladin_lvl > 8) ||
+                         (player.field_114 > 8 && ovr026.sub_6B3D1(player) != 0)))
                     {
-                        var_1 = 1;
-                    }
-                    else
-                    {
-                        var_1 = 0;
+                        can_learn = true;
                     }
                     break;
 
                 case 1:
-                    if ((arg_2.wis > 8 && arg_2.ranger_lvl > 6) ||
-                        (ovr026.sub_6B3D1(arg_2) != 0 && arg_2.field_115 > 6))
+                    if ((player.wis > 8 && player.ranger_lvl > 6) ||
+                        (ovr026.sub_6B3D1(player) != 0 && player.field_115 > 6))
                     {
-                        var_1 = 1;
-                    }
-                    else
-                    {
-                        var_1 = 0;
+                        can_learn = true;
                     }
                     break;
 
                 case 2:
-                    if (arg_2._int > 8 &&
-                        ((arg_2.race != Race.human) ||
-                     (arg_2.field_159 == null) ||
+                    if (player._int > 8 &&
+                        ((player.race != Race.human) ||
+                     (player.field_159 == null) ||
                      (gbl.game_state != 5) ||
-                     (arg_2.ranger_lvl > 8) ||
-                     (ovr026.sub_6B3D1(arg_2) != 0 && arg_2.field_115 > 8 && arg_2.magic_user_lvl > 0) ||
-                     (ovr026.sub_6B3D1(arg_2) != 0 && arg_2.field_116 > 0)))
+                     (player.ranger_lvl > 8) ||
+                     (ovr026.sub_6B3D1(player) != 0 && player.field_115 > 8 && player.magic_user_lvl > 0) ||
+                     (ovr026.sub_6B3D1(player) != 0 && player.field_116 > 0)))
                     {
-                        var_1 = 1;
-                    }
-                    else
-                    {
-                        var_1 = 0;
+                        can_learn = true;
                     }
                     break;
 
                 case 3:
-                    var_1 = 0;
+                    can_learn = false;
                     break;
 
             }
 
-            return var_1;
+            return can_learn;
         }
 
         static Set unk_5C1A2 = new Set(0x0001, new byte[] { 0x1E });
@@ -610,7 +596,7 @@ namespace engine
                     for (var_2 = 0; var_2 < gbl.max_spells; var_2++)
                     {
                         if (gbl.player_ptr.spell_list[var_2] > 0 &&
-                            sub_5C01E((byte)(gbl.player_ptr.spell_list[var_2] & 0x7F), gbl.player_ptr) != 0 &&
+                            can_learn_spell((byte)(gbl.player_ptr.spell_list[var_2] & 0x7F), gbl.player_ptr) == true &&
                             gbl.player_ptr.spell_list[var_2] < 0x80)
                         {
                             sub_5C5B9(gbl.player_ptr.spell_list[var_2]);
@@ -622,7 +608,7 @@ namespace engine
                     for (var_2 = 0; var_2 < gbl.max_spells; var_2++)
                     {
                         if (gbl.player_ptr.spell_list[var_2] > 0x7F &&
-                            sub_5C01E((byte)(gbl.player_ptr.spell_list[var_2] & 0x7F), gbl.player_ptr) != 0)
+                            can_learn_spell((byte)(gbl.player_ptr.spell_list[var_2] & 0x7F), gbl.player_ptr) == true)
                         {
                             sub_5C5B9(gbl.player_ptr.spell_list[var_2]);
                         }
@@ -633,7 +619,7 @@ namespace engine
                     for (var_2 = 1; var_2 <= 100; var_2++)
                     {
                         if (gbl.player_ptr.field_79[var_2-1] != 0 &&
-                            sub_5C01E(var_2, gbl.player_ptr) != 0)
+                            can_learn_spell(var_2, gbl.player_ptr) == true)
                         {
                             sub_5C5B9(var_2);
                         }
@@ -658,31 +644,22 @@ namespace engine
                 case SpellLoc.choose:
                     for (var_2 = 1; var_2 <= 100; var_2++)
                     {
-                        throw new System.NotSupportedException();//mov	al, gbl.unk_19AEC[ var_2 ].field_1;
-                        throw new System.NotSupportedException();//cbw
-                        throw new System.NotSupportedException();//mov	dx, ax
-                        throw new System.NotSupportedException();//mov	al, gbl.unk_19AEC[ var_2 ].field_0
-                        throw new System.NotSupportedException();//cbw
-                        throw new System.NotSupportedException();//mov	si, ax
-                        throw new System.NotSupportedException();//shl	ax, 1
-                        throw new System.NotSupportedException();//shl	ax, 1
-                        throw new System.NotSupportedException();//add	ax, si
-                        throw new System.NotSupportedException();//les	di, int ptr player_ptr.offset
-                        throw new System.NotSupportedException();//add	di, ax
-                        throw new System.NotSupportedException();//add	di, dx
-                        throw new System.NotSupportedException();//cmp	es:[di+charStruct.field_12C], 0
-                        throw new System.NotSupportedException();//jbe	loc_5CC64
-                        sub_5C01E(var_2, gbl.player_ptr);
-                        throw new System.NotSupportedException();//or	al, al
-                        throw new System.NotSupportedException();//jz	loc_5CC64
-                        throw new System.NotSupportedException();//mov	al, [bp+var_2]
-                        throw new System.NotSupportedException();//xor	ah, ah
-                        throw new System.NotSupportedException();//les	di, int ptr player_ptr.offset
-                        throw new System.NotSupportedException();//add	di, ax
-                        throw new System.NotSupportedException();//cmp	byte ptr es:[di+78h], 0
-                        throw new System.NotSupportedException();//jnz	loc_5CC64
-                        sub_5C5B9(var_2);
-                        throw new System.NotSupportedException();//loc_5CC64:
+                        int sp_lvl = gbl.unk_19AEC[var_2].spellLevel;
+                        int sp_class = gbl.unk_19AEC[var_2].spellClass;
+                        //int tmp = (sp_class * 5) + sp_lvl - 1;
+                        //sp_lvl = tmp % 5;
+                        //sp_class = tmp / 5;
+
+                        if (sp_lvl >= 5 || sp_class >= 3)
+                        {
+                            //skip this spell
+                        }
+                        else if (gbl.player_ptr.field_12D[sp_class, sp_lvl] > 0 &&
+                            can_learn_spell(var_2, gbl.player_ptr) == true &&
+                            gbl.player_ptr.field_79[var_2 - 1] == 0)
+                        {
+                            sub_5C5B9(var_2);
+                        }
                     }
                     break;
             }
@@ -979,7 +956,7 @@ namespace engine
                 }
             }
 
-            if (arg_4 != 0 || gbl.byte_1D88D == 0)
+            if (arg_4 != 0 && gbl.byte_1D88D == 0)
             {
                 cast_spell_text(spell_id, "casts", caster);
             }

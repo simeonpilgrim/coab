@@ -230,10 +230,8 @@ namespace engine
         }
 
 
-        internal static void sub_5849F(int time_index, byte arg_2)
+        internal static void rest_time_5849F(int time_index, byte arg_2) /* sub_5849F */
         {
-            byte var_1;
-
             if (gbl.unk_1D890.field_8 != 0 ||
                 gbl.unk_1D890.field_6 != 0 ||
                 gbl.unk_1D890.field_4 != 0 ||
@@ -241,7 +239,7 @@ namespace engine
             {
                 while (arg_2 > gbl.unk_1D890[time_index])
                 {
-                    var_1 = (byte)(time_index + 1);
+                    int var_1 = time_index + 1;
 
                     while (gbl.unk_1D890[var_1] == 0 &&
                         var_1 < 5)
@@ -399,11 +397,11 @@ namespace engine
                     case 'S':
                         if (time_index == 2)
                         {
-                            sub_5849F(1, 5);
+                            rest_time_5849F(1, 5);
                         }
                         else
                         {
-                            sub_5849F(time_index, 1);
+                            rest_time_5849F(time_index, 1);
                         }
 
                         clock_583C8();
@@ -543,8 +541,8 @@ namespace engine
                     gbl.unk_1D89D[var_1] -= 1;
                 }
 
-                if (gbl.unk_1D89D[var_1] != 0 &&
-                    player.spell_to_learn_count != 0)
+                if (gbl.unk_1D89D[var_1] == 0 &&
+                    player.spell_to_learn_count == 0)
                 {
                     bool var_7 = false;
                     byte var_2 = reset_scribe(ref var_7, player);
@@ -655,7 +653,7 @@ namespace engine
 
                 if (stop_resting == false)
                 {
-                    sub_5849F(1, 5);
+                    rest_time_5849F(1, 5);
                     display_counter++;
 
                     if (interactive_resting == true &&
