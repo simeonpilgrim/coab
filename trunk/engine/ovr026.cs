@@ -54,7 +54,6 @@ namespace engine
         internal static void sub_6A00F(Player arg_0)
         {
             Struct_19AEC var_12;
-            byte var_6;
             sbyte var_2;
             byte var_1;
 
@@ -95,18 +94,18 @@ namespace engine
 
                             calc_cleric_spells(false, arg_0);
 
-                            for (var_6 = 1; var_6 <= 100; var_6++)
+                            for (int i = 1; i <= 100; i++)
                             {
-                                var_12 = gbl.unk_19AEC[var_6];
+                                var_12 = gbl.unk_19AEC[i];
 
                                 int sp_class = (var_12.spellLevel - 1) / 5;
                                 int sp_lvl = (var_12.spellLevel - 1) % 5;
 
                                 if (var_12.spellClass == 0 &&
                                     arg_0.field_12D[sp_class, sp_lvl] > 0 &&
-                                    var_6 != 0x24)
+                                    i != 0x24)
                                 {
-                                    arg_0.field_79[var_6 - 1] = 1;
+                                    arg_0.field_79[i - 1] = 1;
                                 }
                             }
                             break;
@@ -122,16 +121,17 @@ namespace engine
                                     }
                                 }
 
-                                for (var_6 = 1; var_6 <= 100; var_6++)
+                                for (int i = 1; i <= 100; i++)
                                 {
-                                    var_12 = gbl.unk_19AEC[var_6];
+                                    var_12 = gbl.unk_19AEC[i];
 
-                                    int sp_class = (var_12.spellLevel-1)/5;
-                                    int sp_lvl = (var_12.spellLevel-1)%5;
+                                    int sp_class = (var_12.spellLevel - 1) / 5;
+                                    int sp_lvl = (var_12.spellLevel - 1) % 5;
+
                                     if (var_12.spellClass == 0 &&
                                         arg_0.field_12D[sp_class, sp_lvl] > 0)
                                     {
-                                        arg_0.field_79[var_6] = 1;
+                                        arg_0.field_79[i - 1] = 1;
                                     }
                                 }
                             }
@@ -153,11 +153,11 @@ namespace engine
                                     }
                                 }
 
-                                for (var_6 = 1; var_6 <= 100; var_6++)
+                                for (int i = 1; i <= 100; i++)
                                 {
-                                    if (gbl.unk_19AEC[var_6].spellClass == 1)
+                                    if (gbl.unk_19AEC[i].spellClass == 1)
                                     {
-                                        arg_0.field_79[var_6 - 1] = 1;
+                                        arg_0.field_79[i - 1] = 1;
                                     }
                                 }
                             }
@@ -858,9 +858,9 @@ namespace engine
             else if (var_2 == 5)
             {
                 arg_0.field_12D[2,0] = 1;
-                arg_0.field_83 = 1;
-                arg_0.field_8A = 1;
-                arg_0.field_8D = 1;
+                arg_0.field_79[0xB - 1] = 1;
+                arg_0.field_79[0x12 - 1] = 1;
+                arg_0.field_79[0x15 - 1] = 1;
             }
 
             arg_0._class = (ClassId)var_2;

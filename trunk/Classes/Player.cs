@@ -185,16 +185,6 @@ namespace Classes
         
         [DataOffset(0x79, DataType.ByteArray,100)]
         public byte[] field_79 = new byte[100]; //78[di]; // 1- 100 or 0x79 - 0xDC
-        public byte field_82; // 0x82;
-        public byte field_83; // 0x83;
-        public byte field_84; // 0x84;
-        public byte field_87; // 0x87;
-        public byte field_8A; // 0x8a;
-        public byte field_8B; // 0x8b;
-        public byte field_8D; // 0x8d;
-        public byte field_97; // 0x97;
-        public byte field_9A; // 0x9a;
-        public byte field_A7; // 0xa7;
 
         [DataOffset(0xdd, DataType.Byte)]
         public byte field_DD; // 0xdd;

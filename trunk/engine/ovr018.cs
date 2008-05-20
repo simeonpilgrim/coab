@@ -483,7 +483,6 @@ namespace engine
             char reroll_stats;
             byte stat_value;
             byte var_14;
-            byte loop3_var;
             short var_12;
             StringList var_10;
             Player var_8;
@@ -492,9 +491,9 @@ namespace engine
             player = new Player();
 
             var_53 = player;
-            for (loop3_var = 0; loop3_var < 6; loop3_var++)
+            for (int i = 0; i < 6; i++)
             {
-                var_53.field_145[loop3_var] = (byte)(((gbl.unk_1A1D3[loop3_var] + 8) << 4) + gbl.unk_1A1D3[loop3_var]);
+                var_53.field_145[i] = (byte)(((gbl.unk_1A1D3[i] + 8) << 4) + gbl.unk_1A1D3[i]);
             }
 
             var_53.field_124 = 0x32;
@@ -635,10 +634,10 @@ namespace engine
             var_C.field_29 = 1;
             var_C.s = "Pick Class";
 
-            for (loop3_var = 1; loop3_var <= var_1C; loop3_var++)
+            for (int i = 1; i <= var_1C; i++)
             {
-                var_10 = ovr027.getStringListEntry(var_C, loop3_var);
-                var_10.s = "  " + ovr020.classString[gbl.unk_1A30A[(int)player.race, loop3_var]];
+                var_10 = ovr027.getStringListEntry(var_C, i);
+                var_10.s = "  " + ovr020.classString[gbl.unk_1A30A[(int)player.race, i]];
             }
 
             var_10 = var_C;
@@ -774,10 +773,10 @@ namespace engine
             var_C.field_29 = 1;
             var_C.s = "Pick Alignment";
 
-            for (loop3_var = 1; loop3_var <= var_1C; loop3_var++)
+            for (int i = 1; i <= var_1C; i++)
             {
-                var_10 = ovr027.getStringListEntry(var_C, loop3_var);
-                var_10.s = "  " + ovr020.alignmentString[gbl.unk_1A4EA[(int)player._class, loop3_var]];
+                var_10 = ovr027.getStringListEntry(var_C, i);
+                var_10.s = "  " + ovr020.alignmentString[gbl.unk_1A4EA[(int)player._class, i]];
             }
 
             var_10 = var_C;
@@ -1184,23 +1183,23 @@ namespace engine
                         {
                             ovr026.calc_cleric_spells(false, player);
 
-                            for (loop3_var = 1; loop3_var <= 100; loop3_var++)
+                            for (int i = 1; i <= 100; i++)
                             {
-                                Struct_19AEC stru = gbl.unk_19AEC[loop3_var];
+                                Struct_19AEC stru = gbl.unk_19AEC[i];
 
                                 if (stru.spellClass == 0 &&
                                     stru.spellLevel == 1)
                                 {
-                                    var_53.field_79[loop3_var - 1] = 1;
+                                    var_53.field_79[i - 1] = 1;
                                 }
                             }
                         }
                         else if (loop4_var == 5)
                         {
-                            var_53.field_83 = 1;
-                            var_53.field_8A = 1;
-                            var_53.field_84 = 1;
-                            var_53.field_8D = 1;
+                            var_53.field_79[0xB - 1] = 1;
+                            var_53.field_79[0x12 - 1] = 1;
+                            var_53.field_79[0xC - 1] = 1;
+                            var_53.field_79[0x15 - -1] = 1;
                         }
 
                         var_20++;
@@ -3268,20 +3267,20 @@ namespace engine
                         switch (player_ptr.magic_user_lvl)
                         {
                             case 2:
-                                player_ptr.field_87 = 1;
+                                player_ptr.field_79[0xF - 1] = 1;
                                 break;
 
                             case 3:
-                                player_ptr.field_9A = 1;
-                                player_ptr.field_82 = 1;
+                                player_ptr.field_79[0x22 - 1] = 1;
+                                player_ptr.field_79[0x10 - 1] = 1;
                                 break;
 
                             case 4:
-                                player_ptr.field_97 = 1;
+                                player_ptr.field_79[0x1F - 1] = 1;
                                 break;
 
                             case 5:
-                                player_ptr.field_A7 = 1;
+                                player_ptr.field_79[0x2F - 1] = 1;
                                 break;
                         }
                     }
