@@ -486,17 +486,14 @@ namespace engine
 
         internal static byte reset_scribe(ref bool arg_0, Player player)
         {
-            /*byte var_9;*/
-            byte var_4;
-            byte var_2;
+            /*byte var_9 = 0;*/
 
-            var_4 = 0;
-            /*var_9 = 0;*/
+            byte var_4 = 0;
             Item item = player.itemsPtr;
 
             while (item != null && var_4 == 0)
             {
-                var_2 = 1;
+                int var_2 = 1;
 
                 if (ovr023.item_is_scroll(item) == true)
                 {
@@ -513,7 +510,7 @@ namespace engine
                             else
                             {
                                 byte affect = (byte)((int)item.getAffect(var_2) & 0x7F);
-                                player.field_79[affect] = 1;
+                                player.field_79[affect - 1] = 1;
                                 ovr023.remove_spell_from_scroll(affect, item, player);
 
                                 display_resting_time(0);

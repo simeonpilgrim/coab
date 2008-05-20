@@ -1686,10 +1686,10 @@ namespace engine
 
                         if (player01_ptr.magic_user_lvl > 0)
                         {
-                            player01_ptr.field_83 = 1;
-                            player01_ptr.field_8A = 1;
-                            player01_ptr.field_8B = 1;
-                            player01_ptr.field_8D = 1;
+                            player01_ptr.field_79[0xB - 1] = 1;
+                            player01_ptr.field_79[0x12 - 1] = 1;
+                            player01_ptr.field_79[0x13 - 1] = 1;
+                            player01_ptr.field_79[0x15 - 1] = 1;
                         }
 
                         gbl.area2_ptr.field_550 = 0xff;
