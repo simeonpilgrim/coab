@@ -145,9 +145,8 @@ namespace engine
         internal static void sub_663C4(Player player)
         {
             byte var_3;
-            int var_2;
 
-            var_2 = player.weight - strEncumberance(player);
+            int var_2 = player.weight - max_encumberance(player);
 
             if (var_2 < 0)
             {
@@ -811,9 +810,9 @@ namespace engine
         }
 
 
-        internal static byte playerStrengh(Player player)
+        internal static int playerStrengh(Player player)
         {
-            byte ret_val;
+            int ret_val;
 
             if (player.strength >= 0 && player.strength <= 17)
             {
@@ -865,7 +864,7 @@ namespace engine
 
         internal static sbyte strengthHitBonus(Player player)
         {
-            byte str_stat;
+            int str_stat;
             int str_bonus;
 
             str_bonus = 0;
@@ -951,59 +950,58 @@ namespace engine
         }
 
 
-        internal static short strEncumberance(Player player) /* strength_bonus */
+        internal static int max_encumberance(Player player) /* strength_bonus */
         {
-            byte var_3;
-            int ret_word;
+            int max_encumberance;
 
-            var_3 = playerStrengh(player);
+            int str = playerStrengh(player);
 
-            if (var_3 >= 1 && var_3 <= 3)
+            if (str >= 1 && str <= 3)
             {
-                ret_word = -350;
+                max_encumberance = -350;
             }
-            else if (var_3 == 4 || var_3 == 5)
+            else if (str == 4 || str == 5)
             {
-                ret_word = -250;
+                max_encumberance = -250;
             }
-            else if (var_3 == 6 || var_3 == 7)
+            else if (str == 6 || str == 7)
             {
-                ret_word = -150;
+                max_encumberance = -150;
             }
-            else if (var_3 == 12 || var_3 == 13)
+            else if (str == 12 || str == 13)
             {
-                ret_word = 100;
+                max_encumberance = 100;
             }
-            else if (var_3 == 14 || var_3 == 15)
+            else if (str == 14 || str == 15)
             {
-                ret_word = 200;
+                max_encumberance = 200;
             }
-            else if (var_3 == 16)
+            else if (str == 16)
             {
-                ret_word = 350;
+                max_encumberance = 350;
             }
-            else if (var_3 >= 17 && var_3 <= 21)
+            else if (str >= 17 && str <= 21)
             {
-                ret_word = ((var_3 - 17) * 250) + 500;
+                max_encumberance = ((str - 17) * 250) + 500;
             }
-            else if (var_3 >= 22 && var_3 <= 26)
+            else if (str >= 22 && str <= 26)
             {
-                ret_word = ((var_3 - 22) * 1000) + 2000;
+                max_encumberance = ((str - 22) * 1000) + 2000;
             }
-            else if (var_3 == 27)
+            else if (str == 27)
             {
-                ret_word = 7500;
+                max_encumberance = 7500;
             }
-            else if (var_3 >= 28 && var_3 <= 30)
+            else if (str >= 28 && str <= 30)
             {
-                ret_word = ((var_3 - 28) * 3000) + 9000;
+                max_encumberance = ((str - 28) * 3000) + 9000;
             }
             else
             {
-                ret_word = 0;
+                max_encumberance = 0;
             }
 
-            return (short)ret_word;
+            return max_encumberance;
         }
 
 
@@ -1953,44 +1951,24 @@ namespace engine
         static Set unk_68DFA = new Set(0x010A, new byte[] { 0x20, 0, 8, 0, 0, 0, 0, 0x20, 0, 8 });
 
 
-        internal static void selectAPlayer(ref Player player, bool showExit, string arg_6)
+        internal static void selectAPlayer(ref Player player, bool showExit, string prompt)
         {
-            string var_59;
-            Player player_ptr;
-            bool useOverlay;
-            bool var_2B;
-            char var_2A;
-            string var_29;
+            string text = showExit ? " Exit" : string.Empty;
 
-            var_29 = arg_6;
-            var_2A = ' ';
-            var_59 = string.Empty;
-
-            if (showExit == true)
-            {
-                var_59 = " Exit";
-            }
-
-            while (unk_68DFA.MemberOf(var_2A) == false)
+            char input_key = ' ';
+            while (unk_68DFA.MemberOf(input_key) == false)
             {
                 Player_Summary(player);
 
-                if (gbl.game_state == 2 ||
-                    gbl.game_state == 6)
-                {
-                    useOverlay = true;
-                }
-                else
-                {
-                    useOverlay = false;
-                }
+                bool useOverlay = (gbl.game_state == 2 || gbl.game_state == 6);
+                bool special_key;
 
-                var_2A = ovr027.displayInput(out var_2B, useOverlay, 1, 15, 10, 13, "Select" + var_59, var_29 + " ");
-                player_ptr = player;
+                input_key = ovr027.displayInput(out special_key, useOverlay, 1, 15, 10, 13, "Select" + text, prompt + " ");
+                Player player_ptr = player;
 
-                if (var_2B == true)
+                if (special_key == true)
                 {
-                    if (var_2A == 'O')
+                    if (input_key == 'O')
                     {
                         player_ptr = player_ptr.next_player;
 
@@ -1999,7 +1977,7 @@ namespace engine
                             player_ptr = gbl.player_next_ptr;
                         }
                     }
-                    else if (var_2A == 'G')
+                    else if (input_key == 'G')
                     {
                         player_ptr = gbl.player_next_ptr;
 
@@ -2008,7 +1986,6 @@ namespace engine
                             while (player_ptr.next_player != player)
                             {
                                 player_ptr = player_ptr.next_player;
-
                             }
                         }
                         else
@@ -2022,8 +1999,8 @@ namespace engine
                 }
                 else if (showExit == true)
                 {
-                    if (var_2A == 'E' ||
-                        var_2A == 0)
+                    if (input_key == 'E' ||
+                        input_key == 0)
                     {
                         player_ptr = null;
                     }
@@ -2101,15 +2078,9 @@ namespace engine
 
         internal static bool sub_69138(byte arg_0, Player player)
         {
-            Player player_ptr;
-            byte skill;
-            bool ret_val;
+            bool ret_val = false;
 
-            ret_val = false;
-
-            player_ptr = player;
-
-            skill = player_ptr.Skill_A_lvl[arg_0];
+            int skill = player.Skill_A_lvl[arg_0];
 
             if (skill > 0)
             {
@@ -2118,8 +2089,8 @@ namespace engine
                     case Race.dwarf:
                         if (arg_0 == 2)
                         {
-                            if ((skill == 8 && player_ptr.strength == 17) ||
-                                (skill == 7 && player_ptr.strength < 17))
+                            if ((skill == 8 && player.strength == 17) ||
+                                (skill == 7 && player.strength < 17))
                             {
                                 ret_val = true;
                             }
@@ -2130,8 +2101,8 @@ namespace engine
                         if (arg_0 == 2)
                         {
                             if ((skill == 7) ||
-                                (skill == 6 && player_ptr.strength == 17) ||
-                                (skill == 5 && player_ptr.strength < 17))
+                                (skill == 6 && player.strength == 17) ||
+                                (skill == 5 && player.strength < 17))
                             {
                                 ret_val = true;
                             }
@@ -2142,7 +2113,7 @@ namespace engine
                         if (arg_0 == 2)
                         {
                             if ((skill == 6) ||
-                                (skill == 5 && player_ptr.strength < 18))
+                                (skill == 5 && player.strength < 18))
                             {
                                 ret_val = true;
                             }
@@ -2158,8 +2129,8 @@ namespace engine
                         else if (arg_0 == 2)
                         {
                             if (skill == 8 ||
-                                (skill == 7 && player_ptr.strength == 17) ||
-                                (skill == 6 && player_ptr.strength < 17))
+                                (skill == 7 && player.strength == 17) ||
+                                (skill == 6 && player.strength < 17))
                             {
                                 ret_val = true;
                             }
@@ -2170,8 +2141,8 @@ namespace engine
                         if (arg_0 == 2)
                         {
                             if ((skill == 6) ||
-                                (skill == 5 && player_ptr.strength == 17) ||
-                                (skill == 4 && player_ptr.strength < 17))
+                                (skill == 5 && player.strength == 17) ||
+                                (skill == 4 && player.strength < 17))
                             {
                                 ret_val = true;
                             }
