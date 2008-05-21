@@ -1545,7 +1545,7 @@ namespace engine
                 item_weight *= (short)item.count;
             }
 
-            if ((player.weight + item_weight) > (ovr025.strEncumberance(player) + 1500))
+            if ((player.weight + item_weight) > (ovr025.max_encumberance(player) + 1500))
             {
                 tooHeavy = true;
             }

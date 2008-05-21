@@ -2093,28 +2093,22 @@ namespace engine
 
         internal static void Target(Struct_1D183 arg_0, out bool arg_4, byte arg_8, byte arg_A, byte arg_C, byte arg_E, Player player02, Player player01)
         {
-            byte var_39;
-            byte groundTile;
-            byte playerAtXY;
-            byte dir;
-            Item var_2E;
-            char var_2A;
-            string var_29;
+            Item dummyItem;
 
             arg_0.Clear();
 
             int posX = ovr033.PlayerMapXPos(player02);
             int posY = ovr033.PlayerMapYPos(player02);
 
-            var_2A = ' ';
-            dir = 8;
+            char input_key = ' ';
+            byte dir = 8;
 
             arg_4 = false;
 
             gbl.mapToBackGroundTile.field_4 = true;
             gbl.mapToBackGroundTile.size = 1;
 
-            while (asc_41342.MemberOf(var_2A) == false)
+            while (asc_41342.MemberOf(input_key) == false)
             {
                 ovr033.redrawCombatArea(dir, 3, posY, posX);
                 posX += gbl.MapDirectionXDelta[dir];
@@ -2140,9 +2134,12 @@ namespace engine
                     posY = 0x18;
                 }
 
+                byte groundTile;
+                byte playerAtXY;
+
                 ovr033.AtMapXY(out groundTile, out playerAtXY, posY, posX);
                 seg043.clear_keyboard();
-                var_39 = 0;
+                bool can_target = false;
                 int range = 255;
 
                 int tmpX = posX;
@@ -2150,13 +2147,13 @@ namespace engine
 
                 if (ovr032.canReachTarget(gbl.mapToBackGroundTile, ref range, ref tmpY, ref tmpX, ovr033.PlayerMapYPos(player01), ovr033.PlayerMapXPos(player01)) == true)
                 {
-                    var_39 = 1;
+                    can_target = true;
 
                     if (arg_C != 0)
                     {
-                        string text = "Range = " + (range /2).ToString() + "  ";
+                        string range_text = "Range = " + (range /2).ToString() + "  ";
 
-                        seg041.displayString(text, 0, 10, 0x17, 0);
+                        seg041.displayString(range_text, 0, 10, 0x17, 0);
                     }
                 }
                 else
@@ -2170,7 +2167,7 @@ namespace engine
                 range /= 2;
                 player02 = null;
 
-                if (var_39 != 0)
+                if (can_target)
                 {
                     if (playerAtXY > 0)
                     {
@@ -2202,7 +2199,7 @@ namespace engine
                 if (arg_E < range ||
                     gbl.BackGroundTiles[groundTile].move_cost == 0xff)
                 {
-                    var_39 = 0;
+                    can_target = false;
                 }
 
                 if (player02 != null)
@@ -2210,7 +2207,7 @@ namespace engine
                     if (sub_3F143(player02, player01) == false ||
                         arg_8 == 0)
                     {
-                        var_39 = 0;
+                        can_target = false;
                     }
 
                     if (arg_C == 1)
@@ -2218,38 +2215,38 @@ namespace engine
                         if (player01 == player02 ||
                             (playerAtXY == 0 && groundTile == 0x1f))
                         {
-                            var_39 = 0;
+                            can_target = false;
                         }
                         else if (ovr025.is_weapon_ranged(player01) == true &&
-                             (ovr025.sub_6906C(out var_2E, player01) == true ||
+                             (ovr025.sub_6906C(out dummyItem, player01) == true ||
                              (ovr025.near_enemy(1, player01) >= 0 &&
                                 ovr025.is_weapon_ranged_melee(player01) == false)))
                         {
-                            var_39 = 0;
+                            can_target = false;
                         }
                     }
                 }
                 else if (arg_A == 0)
                 {
-                    var_39 = 0;
+                    can_target = false;
                 }
 
-                var_29 = "Center Exit";
+                string var_29 = "Center Exit";
 
-                if (var_39 != 0)
+                if (can_target)
                 {
                     var_29 = "Target " + var_29;
                 }
 
-                var_2A = ovr027.displayInput(out gbl.byte_1D905, false, 1, 15, 10, 13, var_29, "(Use Cursor keys) ");
+                input_key = ovr027.displayInput(out gbl.byte_1D905, false, 1, 15, 10, 13, var_29, "(Use Cursor keys) ");
 
-                switch ((int)var_2A)
+                switch (input_key)
                 {
-                    case 0x0D:
-                    case 0x54:
+                    case '\r':
+                    case 'T':
                         gbl.mapToBackGroundTile.field_4 = false;
 
-                        if (var_39 != 0)
+                        if (can_target)
                         {
                             arg_0.mapX = posX;
                             arg_0.mapY = posY;
@@ -2273,7 +2270,7 @@ namespace engine
                             }
                         }
 
-                        if (var_39 == 0 ||
+                        if (can_target == false ||
                             arg_4 == false)
                         {
                             ovr033.sub_7431C(posY, posX);
@@ -2282,46 +2279,46 @@ namespace engine
                         }
                         break;
 
-                    case 0x48:
+                    case 'H':
                         dir = 0;
                         break;
 
-                    case 0x49:
+                    case 'I':
                         dir = 1;
                         break;
 
-                    case 0x4D:
+                    case 'M':
                         dir = 2;
                         break;
 
-                    case 0x51:
+                    case 'Q':
                         dir = 3;
                         break;
 
-                    case 0x50:
+                    case 'P':
                         dir = 4;
                         break;
 
-                    case 0x4F:
+                    case 'O':
                         dir = 5;
                         break;
 
-                    case 0x4B:
+                    case 'K':
                         dir = 6;
                         break;
 
-                    case 0x47:
+                    case 'G':
                         dir = 7;
                         break;
 
-                    case 0:
-                    case 0x45:
+                    case '\0':
+                    case 'E':
                         ovr033.sub_7431C(posY, posX);
                         arg_0.Clear();
                         arg_4 = false;
                         break;
 
-                    case 0x43:
+                    case 'C':
                         ovr033.redrawCombatArea(8, 0, posY, posX);
                         dir = 8;
                         break;

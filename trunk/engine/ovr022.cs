@@ -4,12 +4,9 @@ namespace engine
 {
     class ovr022
     {
-        internal static short get_max_load(Player player)
+        internal static int get_max_load(Player player)
         {
-            short ret_word = 1500;
-            ret_word += ovr025.strEncumberance(player);
-
-            return ret_word;
+            return 1500 + ovr025.max_encumberance(player);
         }
 
 
