@@ -985,7 +985,7 @@ namespace engine
                 else
                 {
                     ovr025.addItem(item, player_ptr);
-                    ovr025.lose_item(item, player_ptr);
+                    ovr025.lose_item(item, gbl.player_ptr);
                     ovr025.sub_66C20(player_ptr);
                 }
             }
