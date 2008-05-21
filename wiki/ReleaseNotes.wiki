@@ -2,6 +2,13 @@
 
 = Unreleased =
 
+= 1.0.8 =
+  * Issue 17 - Missing targeting cursor - a DAX file was missing from the installer
+  * Issue 16 - Copying items between players resulted in duplication
+  * Overhauled the cheats - You can now activate the original cheats via context menu, plus a few extras. Remember to press '-' to activate "god intervene"
+  * Fixed a mistake, that stopped you from memorising spells when resting (more work needed in the area of spells)
+  * Fixed a mistake, that said you had cast a combat spell in non-combat when you chose to cancel
+
 = 1.0.7 =
   * Fixed the "You have lost the fight"/"Zero EXP" noticed fighting drow patrols in Save E
   * Fixed crash when lighting bolt spell hits a wall
