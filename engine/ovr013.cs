@@ -1190,7 +1190,7 @@ namespace engine
                 (gbl.damage_flags & 0x02) != 0)
             {
                 if (ovr024.do_saving_throw(0, 4, player) == true &&
-                    gbl.unk_19AEC[gbl.spell_id << 4].field_8 != 0)
+                    gbl.unk_19AEC[gbl.spell_id].field_8 != 0)
                 {
                     gbl.damage = 0;
                 }

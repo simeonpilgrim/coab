@@ -295,9 +295,8 @@ namespace engine
         {
             sbyte var_6;
             byte var_5;
-            StringList var_4;
 
-            var_4 = gbl.dword_1AE6C;
+            StringList var_4 = gbl.dword_1AE6C;
 
             if (gbl.dword_1AE6C == null)
             {
@@ -306,7 +305,6 @@ namespace engine
                 gbl.dword_1AE6C = var_4;
                 var_6 = 0;
                 var_5 = 0;
-
             }
             else
             {
@@ -321,8 +319,7 @@ namespace engine
                     var_4 = var_4.next;
                 }
 
-
-                var_6 = gbl.unk_19AEC[gbl.unk_1AEC4[var_5 - 1] << 4].spellLevel;
+                var_6 = gbl.unk_19AEC[gbl.unk_1AEC4[var_5 - 1]].spellLevel;
 
                 var_4.next = new StringList();
 
@@ -487,63 +484,29 @@ namespace engine
 
         internal static void scroll_5C912(byte arg_0) /* sub_5C912 */
         {
-            Affect var_5;
-            byte var_1;
+            Affect dummyAffect;
 
-            ovr025.find_affect(out var_5, Affects.read_magic, gbl.player_ptr);
-            throw new System.NotSupportedException();//or	al, al
-            throw new System.NotSupportedException();//jnz	loc_5C968
-            throw new System.NotSupportedException();//les	di, int ptr player_ptr.offset
-            throw new System.NotSupportedException();//cmp	byte ptr es:[di+109h], 0
-            throw new System.NotSupportedException();//jg	loc_5C951
-            throw new System.NotSupportedException();//les	di, int ptr player_ptr.offset
-            throw new System.NotSupportedException();//mov	al, es:[di+111h]
-            throw new System.NotSupportedException();//les	di, int ptr player_ptr.offset
-            throw new System.NotSupportedException();//cmp	al, es:[di+0E6h]
-            throw new System.NotSupportedException();//jle	loc_5C971
-            throw new System.NotSupportedException();//loc_5C951:
-            throw new System.NotSupportedException();//cmp	gbl.unk_1C020[ gbl.dword_1D5C6.type ].field_0, 0x0C
-            throw new System.NotSupportedException();//jnz	loc_5C971
-            throw new System.NotSupportedException();//loc_5C968:
-            throw new System.NotSupportedException();//les	di, dword_1D5C6
-            throw new System.NotSupportedException();//mov	byte ptr es:[di+35h], 0
-            throw new System.NotSupportedException();//loc_5C971:
-            throw new System.NotSupportedException();//les	di, dword_1D5C6
-            throw new System.NotSupportedException();//cmp	byte ptr es:[di+35h], 0
-            throw new System.NotSupportedException();//jnz	func_end
-            for (var_1 = 1; var_1 <= 3; var_1++)
+            if (ovr025.find_affect(out dummyAffect, Affects.read_magic, gbl.player_ptr) == true ||
+                ((gbl.player_ptr.cleric_lvl > 0 || gbl.player_ptr.turn_undead > gbl.player_ptr.field_E6) &&
+                  gbl.unk_1C020[gbl.dword_1D5C6.type].field_0 == 0x0c))
             {
-                throw new System.NotSupportedException();//cmp	[bp+arg_0], 0
-                throw new System.NotSupportedException();//jz	loc_5C99D
-                throw new System.NotSupportedException();//mov	al, [bp+var_1]
-                throw new System.NotSupportedException();//xor	ah, ah
-                throw new System.NotSupportedException();//les	di, dword_1D5C6
-                throw new System.NotSupportedException();//add	di, ax
-                throw new System.NotSupportedException();//cmp	byte ptr es:[di+3Bh], 0x80
-                throw new System.NotSupportedException();//ja	loc_5C9B5
-                throw new System.NotSupportedException();//loc_5C99D:
-                throw new System.NotSupportedException();//cmp	[bp+arg_0], 0
-                throw new System.NotSupportedException();//jnz	loc_5C9E8
-                throw new System.NotSupportedException();//mov	al, [bp+var_1]
-                throw new System.NotSupportedException();//xor	ah, ah
-                throw new System.NotSupportedException();//les	di, dword_1D5C6
-                throw new System.NotSupportedException();//add	di, ax
-                throw new System.NotSupportedException();//cmp	byte ptr es:[di+3Bh], 0
-                throw new System.NotSupportedException();//jbe	loc_5C9E8
-                throw new System.NotSupportedException();//loc_5C9B5:
-                throw new System.NotSupportedException();//mov	al, [bp+var_1]
-                throw new System.NotSupportedException();//xor	ah, ah
-                throw new System.NotSupportedException();//les	di, dword_1D5C6
-                throw new System.NotSupportedException();//add	di, ax
-                throw new System.NotSupportedException();//mov	al, es:[di+3Bh]
-                throw new System.NotSupportedException();//push	ax
-                throw new System.NotSupportedException();//push	cs
-                throw new System.NotSupportedException();//call	near ptr sub_5C3ED
-                gbl.unk_1AF18[gbl.byte_1AFDC] = gbl.dword_1D5C6;
-                gbl.byte_1AFDC++;
-                throw new System.NotSupportedException();//loc_5C9E8:
+                gbl.dword_1D5C6.hidden_names_flag = 0;
             }
-            //func_end:
+ 
+
+            if (gbl.dword_1D5C6.hidden_names_flag == 0)
+            {
+                for (byte var_1 = 1; var_1 <= 3; var_1++)
+                {
+                    if ((arg_0 != 0 && (int)gbl.dword_1D5C6.getAffect(var_1) > 0x80) ||
+                        (arg_0 == 0 && (int)gbl.dword_1D5C6.getAffect(var_1) > 0))
+                    {
+                        sub_5C3ED((byte)gbl.dword_1D5C6.getAffect(var_1));
+                        gbl.unk_1AF18[gbl.byte_1AFDC] = gbl.dword_1D5C6;
+                        gbl.byte_1AFDC++;
+                    }
+                }
+            }
         }
 
 
