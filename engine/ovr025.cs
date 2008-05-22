@@ -5,59 +5,55 @@ namespace engine
 {
     class ovr025
     {
-        internal static void sub_66023(Player arg_0)
+        internal static void sub_66023(Player player)
         {
-            sbyte var_6;
-            byte var_5;
-            Item var_4;
+            Item item = player.field_151;
 
-            var_4 = arg_0.field_151;
-
-            if (var_4 != null)
+            if (item != null)
             {
-                var_5 = var_4.type;
+                uint item_type = item.type;
 
-                arg_0.hitBonus = arg_0.field_73;
+                player.hitBonus = player.field_73;
 
-                if ((gbl.unk_1C020[var_5].field_E & 2) != 0)
+                if ((gbl.unk_1C020[item_type].field_E & 2) != 0)
                 {
-                    arg_0.hitBonus += dexReactionAdj(arg_0);
+                    player.hitBonus += (sbyte)dexReactionAdj(player);
                 }
 
-                arg_0.damageBonus = (sbyte)gbl.unk_1C020[var_5].field_B;
+                player.damageBonus = (sbyte)gbl.unk_1C020[item_type].field_B;
 
-                if ((gbl.unk_1C020[var_5].field_E & 0x04) != 0)
+                if ((gbl.unk_1C020[item_type].field_E & 0x04) != 0)
                 {
-                    arg_0.hitBonus += strengthHitBonus(arg_0);
-                    arg_0.damageBonus += strengthDamBonus(arg_0);
+                    player.hitBonus += strengthHitBonus(player);
+                    player.damageBonus += strengthDamBonus(player);
                 }
 
-                var_6 = var_4.plus;
+                sbyte bonus = item.plus;
 
-                if (gbl.unk_1C020[var_5].field_E > 0x7F &&
-                    arg_0.Item_ptr_04 != null)
+                if (gbl.unk_1C020[item_type].field_E > 0x7F &&
+                    player.Item_ptr_04 != null)
                 {
-                    var_6 += arg_0.Item_ptr_04.plus;
+                    bonus += player.Item_ptr_04.plus;
                 }
 
-                if ((gbl.unk_1C020[var_5].field_E & 0x01) != 0 &&
-                    arg_0.Item_ptr_03 != null)
+                if ((gbl.unk_1C020[item_type].field_E & 0x01) != 0 &&
+                    player.Item_ptr_03 != null)
                 {
-                    var_6 += arg_0.Item_ptr_03.plus;
+                    bonus += player.Item_ptr_03.plus;
                 }
 
-                arg_0.damageBonus += var_6;
+                player.damageBonus += bonus;
 
-                if (arg_0.race == Race.elf &&
-                    ((var_4.type > 0x28 && var_4.type < 0x2D) ||
-                      var_4.type == 0x25 || var_4.type == 0x24))
+                if (player.race == Race.elf &&
+                    ((item.type > 0x28 && item.type < 0x2D) ||
+                      item.type == 0x25 || item.type == 0x24))
                 {
-                    var_6++;
+                    bonus++;
                 }
 
-                arg_0.hitBonus += var_6;
-                arg_0.field_19E = gbl.unk_1C020[var_5].field_9;
-                arg_0.field_1A0 = gbl.unk_1C020[var_5].field_A;
+                player.hitBonus += bonus;
+                player.field_19E = gbl.unk_1C020[item_type].field_9;
+                player.field_1A0 = gbl.unk_1C020[item_type].field_A;
             }
         }
 
@@ -137,8 +133,6 @@ namespace engine
                     }
                 }
             }
-
-            //func_end:
         }
 
 
@@ -260,7 +254,6 @@ namespace engine
                 System.Console.WriteLine("{0} {1} {2} {3} {4} {5} {6}",
                     i, itemNames[c], itemNames[b], itemNames[a],
                     it.type, o1, o20);
-
             }
         }
 
@@ -297,15 +290,10 @@ namespace engine
                 player_ptr = player_ptr.next_player;
             }
 
-            //cheat 
-            //detectMagic = true;
-
-            if (detectMagic == true)
+            if (detectMagic == true &&
+                (item.plus > 0 || item.plus_save > 0 || item.cursed == true))
             {
-                if (item.plus > 0 || item.plus_save > 0 || item.cursed == true)
-                {
-                    item.name += "* ";
-                }
+                item.name += "* ";
             }
 
             if (item.count > 0)
@@ -329,8 +317,6 @@ namespace engine
 
             for (int var_1 = 3; var_1 >= 1; var_1--)
             {
-                //int v = (display_flags >> (var_1 - 1));
-
                 if (((display_flags >> (var_1 - 1)) & 1) > 0)
                 {
                     item.name += itemNames[item.field_2EArray(var_1)];
@@ -448,9 +434,9 @@ namespace engine
 
         internal static void display_AC(int y_offset, int x_offset, Player player)
         {
-            string var_100 = (0x3c - (int)player.ac).ToString();
+            string text = (0x3c - (int)player.ac).ToString();
 
-            seg041.displayString(var_100, 0, 10, y_offset, x_offset);
+            seg041.displayString(text, 0, 10, y_offset, x_offset);
         }
 
 
@@ -478,8 +464,6 @@ namespace engine
 
         internal static void hitpoint_ac(Player player)
         {
-            /*byte var_1;*/
-
             if (gbl.byte_1D90F == true)
             {
                 gbl.byte_1D90F = false;
@@ -528,20 +512,17 @@ namespace engine
 
         internal static bool is_held(Player player)
         {
-            Affect affect_ptr;
-            byte loop_var;
-            bool var_1;
-
-            var_1 = false;
-            for (loop_var = 0; loop_var < 4; loop_var++)
+            bool held = false;
+            for (int loop_var = 0; loop_var < 4; loop_var++)
             {
-                if (find_affect(out affect_ptr, affects_01[loop_var], player) == true)
+                Affect dummyAffect;
+                if (find_affect(out dummyAffect, affects_01[loop_var], player) == true)
                 {
-                    var_1 = true;
+                    held = true;
                 }
             }
 
-            return var_1;
+            return held;
         }
 
 
@@ -770,47 +751,46 @@ namespace engine
         }
 
 
-        internal static sbyte dexReactionAdj(Player player)
+        internal static int dexReactionAdj(Player player)
         {
-            byte stat_val;
-            sbyte var_1;
+            int bonus;
 
-            stat_val = player.dex;
+            int stat_val = player.dex;
 
             if (stat_val >= 0 && stat_val <= 2)
             {
-                var_1 = -4;
+                bonus = -4;
             }
             else if (stat_val >= 3 && stat_val <= 5)
             {
-                var_1 = (sbyte)(stat_val - 6);
+                bonus = stat_val - 6;
             }
             else if (stat_val >= 16 && stat_val <= 18)
             {
-                var_1 = (sbyte)(stat_val - 15);
+                bonus = stat_val - 15;
             }
             else if (stat_val >= 19 && stat_val <= 20)
             {
-                var_1 = 3;
+                bonus = 3;
             }
             else if (stat_val >= 21 && stat_val <= 23)
             {
-                var_1 = 4;
+                bonus = 4;
             }
             else if (stat_val >= 24 && stat_val <= 25)
             {
-                var_1 = 5;
+                bonus = 5;
             }
             else
             {
-                var_1 = 0;
+                bonus = 0;
             }
 
-            return var_1;
+            return bonus;
         }
 
 
-        internal static int playerStrengh(Player player)
+        internal static int player_strenght_group(Player player) /* playerStrengh */
         {
             int ret_val;
 
@@ -851,7 +831,7 @@ namespace engine
             }
             else if (player.strength >= 19 && player.strength <= 25)
             {
-                ret_val = (byte)(player.strength + 5);
+                ret_val = player.strength + 5;
             }
             else
             {
@@ -864,12 +844,8 @@ namespace engine
 
         internal static sbyte strengthHitBonus(Player player)
         {
-            int str_stat;
-            int str_bonus;
-
-            str_bonus = 0;
-
-            str_stat = playerStrengh(player);
+            int str_bonus = 0;
+            int str_stat = player_strenght_group(player);
 
             if (player.field_125 != 0)
             {
@@ -911,42 +887,41 @@ namespace engine
         }
 
 
-        internal static sbyte strengthDamBonus(Player arg_0)
+        internal static sbyte strengthDamBonus(Player player)
         {
-            byte var_2;
-            int var_1 = 0;
+            int damage_bonus = 0;
 
-            var_2 = playerStrengh(arg_0);
+            int var_2 = player_strenght_group(player);
 
-            if (arg_0.field_125 != 0)
+            if (player.field_125 != 0)
             {
                 if (var_2 == 1 || var_2 == 2)
                 {
-                    var_1 = -2;
+                    damage_bonus = -2;
                 }
                 else if (var_2 >= 3 && var_2 <= 5)
                 {
-                    var_1 = -1;
+                    damage_bonus = -1;
                 }
                 else if (var_2 == 16)
                 {
-                    var_1 = 1;
+                    damage_bonus = 1;
                 }
                 else if (var_2 >= 17 && var_2 <= 19)
                 {
-                    var_1 = var_2 - 16;
+                    damage_bonus = var_2 - 16;
                 }
                 else if (var_2 >= 20 && var_2 <= 29)
                 {
-                    var_1 = var_2 - 17;
+                    damage_bonus = var_2 - 17;
                 }
                 else if (var_2 == 30)
                 {
-                    var_1 = 14;
+                    damage_bonus = 14;
                 }
             }
 
-            return (sbyte)var_1;
+            return (sbyte)damage_bonus;
         }
 
 
@@ -954,7 +929,7 @@ namespace engine
         {
             int max_encumberance;
 
-            int str = playerStrengh(player);
+            int str = player_strenght_group(player);
 
             if (str >= 1 && str <= 3)
             {
