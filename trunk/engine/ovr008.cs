@@ -46,7 +46,7 @@ namespace engine
 
                     if (strLen > 0)
                     {
-                        decompressString(strIndex, (byte)strLen);
+                        decompressString(strIndex, strLen);
                     }
                     else
                     {
@@ -325,7 +325,7 @@ namespace engine
         }
 
 
-        internal static char inflateChar(int arg_0)
+        internal static char inflateChar(uint arg_0)
         {
             if (arg_0 <= 0x1f)
             {
@@ -335,6 +335,16 @@ namespace engine
             return (char)arg_0;
         }
 
+        internal static uint deflateChar(char ch)
+        {
+            uint output = (uint)ch;
+
+            if (output >= 0x40)
+            {
+                output -= 0x40;
+            }
+            return output;
+        }
 
         internal static byte vm_GetMemoryValueType(ushort arg_0) // sub_30723
         {
@@ -1094,17 +1104,58 @@ namespace engine
             }
         }
 
-
-        internal static void decompressString(byte strIndex, byte inputLength)
+        internal static byte[] compressString(string input)
         {
-            int var_5 = 0; /* Simeon */
-            byte lastByte = 0; /* Simeon */
-            byte thisByte = 0; /* Simeon */
-            byte inputConsumed;
+            byte[] data = new byte[((input.Length * 3) / 4) + 1];
+            int state = 1;
+            int last = 0;
+            int curr = 0;
+            
+            foreach (char ch in input)
+            {
+                uint bits = deflateChar(ch) & 0x3F;
+                if (state == 1)
+                {
+                    data[curr] = (byte)(bits << 2);
+                    last = curr++;
+                    state = 2;
+                }
+                else if (state == 2)
+                {
+                    data[last] |= (byte)(bits >> 4);
+                    data[curr] = (byte)(bits << 4);
+                    last = curr++;
+                    state = 3;
+                }
+                else if (state == 3)
+                {
+                    data[last] |= (byte)(bits >> 2);
+                    data[curr] = (byte)(bits << 6);
+                    last = curr++;
+                    state = 4;
+                }
+                else //if (state == 4)
+                {
+                    data[last] |= (byte)(bits);
+                    state = 1;
+                }
+
+            }
+
+            return data;
+        }
+
+        internal static void decompressString(int strIndex, int inputLength)
+        {
             System.Text.StringBuilder sb = new System.Text.StringBuilder();
 
-            inputConsumed = 0;
+            int inputConsumed = 0;
             int state = 1;
+            uint curr = 0;
+            uint lastByte = 0;
+            uint thisByte = 0;
+
+            //byte[] bkup = new byte[inputLength];
 
             while (inputConsumed < inputLength)
             {
@@ -1113,51 +1164,58 @@ namespace engine
                     lastByte = thisByte;
                     gbl.ecl_offset++;
                     thisByte = gbl.ecl_ptr[gbl.ecl_offset + 0x8000];
+                    //bkup[inputConsumed] = gbl.ecl_ptr[gbl.ecl_offset + 0x8000];
                     inputConsumed++;
                 }
 
                 switch (state)
                 {
                     case 1:
-                        var_5 = thisByte >> 2;
+                        curr = thisByte >> 2;
                         break;
 
                     case 2:
-                        var_5 = (lastByte << 4) | (thisByte >> 4);
+                        curr = (lastByte << 4) | (thisByte >> 4);
                         break;
 
                     case 3:
-                        var_5 = (lastByte << 2) | (thisByte >> 6);
+                        curr = (lastByte << 2) | (thisByte >> 6);
                         break;
 
                     case 4:
-                        var_5 = thisByte;
+                        curr = thisByte;
                         break;
                 }
 
-                var_5 &= 0x3F;
+                curr &= 0x3F;
 
                 state = (state % 4) + 1;
 
-                if (var_5 != 0)
+                if (curr != 0)
                 {
-                    char ch = inflateChar(var_5);
+                    char ch = inflateChar(curr);
                     sb.Append(ch);
                 }
             }
 
             if (state == 4)
             {
-                var_5 = thisByte & 0x3F;
+                curr = thisByte & 0x3F;
 
-                if (var_5 != 0)
+                if (curr != 0)
                 {
-                    char ch = inflateChar(var_5);
+                    char ch = inflateChar(curr);
                     sb.Append(ch);
                 }
             }
 
+            //byte[] bytes = compressString("THE WAY IS BLOCKED WITH RUBBLE");
+            //gbl.ecl_ptr.SearchForBytes(bytes, bytes.Length - 1);
+
             gbl.unk_1D972[strIndex] = sb.ToString();
+            //int elco = gbl.ecl_offset;
+            //bytes = compressString(sb.ToString());
+            //gbl.ecl_ptr.SearchForBytes(bytes, bytes.Length - 1);
         }
 
 

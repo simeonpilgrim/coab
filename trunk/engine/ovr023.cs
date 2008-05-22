@@ -2584,19 +2584,14 @@ namespace engine
 
         internal static void cast_restore()
         {
-            byte var_D;
-            byte var_C = 30; /* simeon */
-            int var_B;
-            byte var_7;
+            int var_C = 30; /* simeon */
             byte var_6;
-            byte var_5;
-            Player player;
 
-            player = gbl.sp_targets[1];
+            Player player = gbl.sp_targets[1];
 
             if (player.field_E7 > 0)
             {
-                var_5 = (byte)(player.field_E8 / player.field_E7);
+                byte var_5 = (byte)(player.field_E8 / player.field_E7);
 
                 player.hit_point_max += var_5;
                 player.hit_point_current += var_5;
@@ -2605,80 +2600,24 @@ namespace engine
                 player.field_E7--;
 
                 var_6 = 13;
-                var_B = 0x00989680;
+                int var_B = 0x00989680;
 
-                for (var_D = 0; var_D <= 7; var_D++)
+                for (int var_D = 0; var_D <= 7; var_D++)
                 {
-                    var_7 = player.Skill_A_lvl[var_D];
+                    byte var_7 = player.Skill_A_lvl[var_D];
 
                     if (var_7 > 0 &&
                         var_7 <= var_6)
                     {
-                        throw new System.NotSupportedException();//mov	al, [bp+var_7]
-                        throw new System.NotSupportedException();//inc	al
-                        throw new System.NotSupportedException();//cbw
-                        throw new System.NotSupportedException();//shl	ax, 1
-                        throw new System.NotSupportedException();//shl	ax, 1
-                        throw new System.NotSupportedException();//mov	cx, ax
-                        throw new System.NotSupportedException();//mov	al, [bp+var_D]
-                        throw new System.NotSupportedException();//cbw
-                        throw new System.NotSupportedException();//mov	dx, 0x63
-                        throw new System.NotSupportedException();//mul	dx
-                        throw new System.NotSupportedException();//mov	di, ax
-                        throw new System.NotSupportedException();//add	di, cx
-                        throw new System.NotSupportedException();//cmp	short ptr unk_1A5A5[di],	0
-                        throw new System.NotSupportedException();//jg	loc_5FE3D
-                        throw new System.NotSupportedException();//jl	loc_5FEB0
-                        throw new System.NotSupportedException();//cmp	short ptr unk_1A5A3[di],	0
-                        throw new System.NotSupportedException();//jbe	loc_5FEB0
-                        throw new System.NotSupportedException();//loc_5FE3D:
-                        throw new System.NotSupportedException();//mov	al, [bp+var_7]
-                        throw new System.NotSupportedException();//inc	al
-                        throw new System.NotSupportedException();//cbw
-                        throw new System.NotSupportedException();//shl	ax, 1
-                        throw new System.NotSupportedException();//shl	ax, 1
-                        throw new System.NotSupportedException();//mov	cx, ax
-                        throw new System.NotSupportedException();//mov	al, [bp+var_D]
-                        throw new System.NotSupportedException();//cbw
-                        throw new System.NotSupportedException();//mov	dx, 0x63
-                        throw new System.NotSupportedException();//mul	dx
-                        throw new System.NotSupportedException();//mov	di, ax
-                        throw new System.NotSupportedException();//add	di, cx
-                        throw new System.NotSupportedException();//mov	ax, short ptr unk_1A5A3[di]
-                        throw new System.NotSupportedException();//mov	dx, short ptr unk_1A5A5[di]
-                        throw new System.NotSupportedException();//cmp	dx, [bp+var_9]
-                        throw new System.NotSupportedException();//jl	loc_5FE6A
-                        throw new System.NotSupportedException();//jg	loc_5FEB0
-                        throw new System.NotSupportedException();//cmp	ax, [bp+var_B]
-                        throw new System.NotSupportedException();//jnb	loc_5FEB0
-                        throw new System.NotSupportedException();//loc_5FE6A:
-                        throw new System.NotSupportedException();//push	[bp+player.seg]
-                        throw new System.NotSupportedException();//push	[bp+player.offset]
-                        throw new System.NotSupportedException();//mov	al, [bp+var_D]
-                        throw new System.NotSupportedException();//push	ax
-                        throw new System.NotSupportedException();//call	sub_69138
-                        throw new System.NotSupportedException();//or	al, al
-                        throw new System.NotSupportedException();//jnz	loc_5FEB0
-                        var_6 = var_7;
-                        var_C = var_D;
-                        throw new System.NotSupportedException();//mov	al, [bp+var_7]
-                        throw new System.NotSupportedException();//inc	al
-                        throw new System.NotSupportedException();//cbw
-                        throw new System.NotSupportedException();//shl	ax, 1
-                        throw new System.NotSupportedException();//shl	ax, 1
-                        throw new System.NotSupportedException();//mov	cx, ax
-                        throw new System.NotSupportedException();//mov	al, [bp+var_D]
-                        throw new System.NotSupportedException();//cbw
-                        throw new System.NotSupportedException();//mov	dx, 0x63
-                        throw new System.NotSupportedException();//mul	dx
-                        throw new System.NotSupportedException();//mov	di, ax
-                        throw new System.NotSupportedException();//add	di, cx
-                        throw new System.NotSupportedException();//mov	ax, short ptr unk_1A5A3[di]
-                        throw new System.NotSupportedException();//mov	dx, short ptr unk_1A5A5[di]
-                        throw new System.NotSupportedException();//mov	[bp+var_B], ax
-                        throw new System.NotSupportedException();//mov	[bp+var_9], dx
+                        if (ovr018.unk_1A5A3[var_D, var_7 + 1] > 0 &&
+                            ovr018.unk_1A5A3[var_D, var_7 + 1] < var_B &&
+                            ovr025.sub_69138(var_D, player) == false)
+                        {
+                            var_6 = var_7;
+                            var_C = var_D;
+                            var_B = ovr018.unk_1A5A3[var_D, var_7 + 1];
+                        }
                     }
-                    throw new System.NotSupportedException();//loc_5FEB0:
                 }
 
                 player.Skill_A_lvl[var_C]++;
@@ -2873,45 +2812,27 @@ namespace engine
 
         internal static void cast_raise()
         {
-            Player var_4;
+            Player player = gbl.sp_targets[1];
 
-            var_4 = gbl.sp_targets[1];
-            throw new System.NotSupportedException();//les	di, [bp+var_4]
-            throw new System.NotSupportedException();//cmp	byte ptr es:[di+195h], 6
-            throw new System.NotSupportedException();//jz	loc_60546
-            throw new System.NotSupportedException();//les	di, [bp+var_4]
-            throw new System.NotSupportedException();//cmp	byte ptr es:[di+195h], 1
-            throw new System.NotSupportedException();//jz	loc_60546
-            throw new System.NotSupportedException();//jmp	loc_605E2
-            throw new System.NotSupportedException();//loc_60546:
-            throw new System.NotSupportedException();//les	di, [bp+var_4]
-            throw new System.NotSupportedException();//cmp	byte ptr es:[di+18h], 0
-            throw new System.NotSupportedException();//ja	loc_60553
-            throw new System.NotSupportedException();//jmp	loc_605E2
-            throw new System.NotSupportedException();//loc_60553:
-            throw new System.NotSupportedException();//les	di, [bp+var_4]
-            throw new System.NotSupportedException();//cmp	byte ptr es:[di+74h], 2
-            throw new System.NotSupportedException();//jnz	loc_60560
-            throw new System.NotSupportedException();//jmp	loc_605E2
-            throw new System.NotSupportedException();//loc_60560:
-            gbl.byte_1D2C6 = true;
+            if ((player.health_status == Status.dead || player.health_status == Status.animated) &&
+                player.tmp_con > 0 &&
+                player.race != Race.elf)
+            {
+                gbl.byte_1D2C6 = true;
 
-            ovr024.remove_affect(null, Affects.funky__32, var_4);
-            ovr024.remove_affect(null, Affects.poisoned, var_4);
-            gbl.byte_1D2C6 = false;
+                ovr024.remove_affect(null, Affects.funky__32, player);
+                ovr024.remove_affect(null, Affects.poisoned, player);
+                gbl.byte_1D2C6 = false;
 
-            throw new System.NotSupportedException();//les	di, [bp+var_4]
-            throw new System.NotSupportedException();//mov	byte ptr es:[di+195h], 0
-            throw new System.NotSupportedException();//les	di, [bp+var_4]
-            throw new System.NotSupportedException();//mov	byte ptr es:[di+196h], 1
-            throw new System.NotSupportedException();//les	di, [bp+var_4]
-            throw new System.NotSupportedException();//dec	byte ptr es:[di+18h]
+                player.health_status = Status.okey;
+                player.in_combat = true;
+                player.tmp_con--;
 
-            ovr024.sub_648D9(4, var_4);
-            var_4.hit_point_current = 1;
+                ovr024.sub_648D9(4, player);
+                player.hit_point_current = 1;
 
-            ovr025.DisplayPlayerStatusString(true, 10, "is raised", var_4);
-            //loc_605E2:
+                ovr025.DisplayPlayerStatusString(true, 10, "is raised", player);
+            }
         }
 
 
@@ -3803,58 +3724,48 @@ namespace engine
         internal static void spell_breathes_fire(byte arg_0, object param, Player arg_6)
         {
             Affect arg_2 = (Affect)param;
-            bool var_9;
-            Player var_8;
-            byte var_4;
-            int var_3;
-            int var_2;
-            bool var_1;
 
-            throw new System.NotSupportedException();//cmp	byte_1D8B7, 0
-            throw new System.NotSupportedException();//jnz	loc_61F19
-            throw new System.NotSupportedException();//les	di, [bp+arg_2]
-            throw new System.NotSupportedException();//mov	es:[di+affect.field_3],	3
-            throw new System.NotSupportedException();//loc_61F19:
-            throw new System.NotSupportedException();//les	di, [bp+arg_2]
-            throw new System.NotSupportedException();//cmp	es:[di+affect.field_3],	0
-            throw new System.NotSupportedException();//ja	loc_61F26
-            throw new System.NotSupportedException();//jmp	loc_6207D
-            throw new System.NotSupportedException();//loc_61F26:
-            gbl.damage_flags = 0x21;
-            var_2 = ovr033.PlayerMapXPos(arg_6);
-            var_3 = ovr033.PlayerMapYPos(arg_6);
-
-            gbl.dword_1D5CA(out gbl.byte_1DA70, QuickFight.True, 0x3D);
-            throw new System.NotSupportedException();//cmp	byte_1DA70, 0
-            throw new System.NotSupportedException();//jnz	loc_61F60
-            throw new System.NotSupportedException();//jmp	loc_6207D
-            throw new System.NotSupportedException();//loc_61F60:
-            sub_5D7CF(9, 3, gbl.targetY, gbl.targetX, var_3, var_2);
-            throw new System.NotSupportedException();//cmp	byte_1D75E, 0
-            throw new System.NotSupportedException();//ja	loc_61F84
-            throw new System.NotSupportedException();//jmp	loc_6207D
-            throw new System.NotSupportedException();//loc_61F84:
-            ovr025.DisplayPlayerStatusString(true, 10, "breathes fire", arg_6);
-            ovr025.sub_67A59(0x12);
-
-            ovr025.draw_missile_attack(0x1E, 1, 
-                ovr033.PlayerMapYPos(gbl.sp_targets[1]), ovr033.PlayerMapXPos(gbl.sp_targets[1]),
-                ovr033.PlayerMapYPos(arg_6), ovr033.PlayerMapXPos(arg_6));
-
-            for (var_4 = 1; var_4 <= gbl.sp_target_count; var_4++)
+            if (gbl.byte_1D8B7 == 0)
             {
-                if (gbl.sp_targets[var_4] != null)
-                {
-                    var_8 = gbl.sp_targets[var_4];
-                    var_9 = ovr024.do_saving_throw(0, 3, var_8);
+                arg_2.field_3 = 3;
+            }
 
-                    ovr024.damage_person(var_9, 2, (sbyte)arg_6.hit_point_max, var_8);
+            if (arg_2.field_3 > 0)
+            {
+                gbl.damage_flags = 0x21;
+                int var_2 = ovr033.PlayerMapXPos(arg_6);
+                int var_3 = ovr033.PlayerMapYPos(arg_6);
+
+                gbl.dword_1D5CA(out gbl.byte_1DA70, QuickFight.True, 0x3D);
+
+                if (gbl.byte_1DA70 == true)
+                {
+                    sub_5D7CF(9, 3, gbl.targetY, gbl.targetX, var_3, var_2);
+
+                    if (gbl.sp_target_count > 0)
+                    {
+                        ovr025.DisplayPlayerStatusString(true, 10, "breathes fire", arg_6);
+                        ovr025.sub_67A59(0x12);
+
+                        ovr025.draw_missile_attack(0x1E, 1,
+                            ovr033.PlayerMapYPos(gbl.sp_targets[1]), ovr033.PlayerMapXPos(gbl.sp_targets[1]),
+                            ovr033.PlayerMapYPos(arg_6), ovr033.PlayerMapXPos(arg_6));
+
+                        for (int var_4 = 1; var_4 <= gbl.sp_target_count; var_4++)
+                        {
+                            if (gbl.sp_targets[var_4] != null)
+                            {
+                                Player target = gbl.sp_targets[var_4];
+                                bool var_9 = ovr024.do_saving_throw(0, 3, target);
+
+                                ovr024.damage_person(var_9, 2, (sbyte)arg_6.hit_point_max, target);
+                            }
+                        }
+                        arg_2.field_3 -= 1;
+                        ovr025.clear_actions(arg_6);
+                    }
                 }
             }
-            arg_2.field_3 -= 1;
-            var_1 = ovr025.clear_actions(arg_6);
-            
-            //loc_6207D:
         }
 
 
