@@ -189,6 +189,10 @@ namespace Classes
                     field_200[(loc - 0x200) / 2] = (short)value;
                     break;
 
+                case 0x342:
+                    field_342 = (byte)value;
+                    break;
+
                 case 0x3E2:
                     field_3E2 = value;
                     break;

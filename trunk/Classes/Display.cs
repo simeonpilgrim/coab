@@ -83,15 +83,6 @@ namespace Classes
             videoRam[(y * scanLineWidth) + (x * 3) + 2] = egaColors[egaColor, 0];
         }
 
-        static public void SetPixel2(int x, int y, int value)
-        {
-            ram[y, x] = ((value >> 4) & 0x0f);
-            ram[y, x + 1] = (value & 0x0f);
-
-            SetVidPixel(x, y, ram[y, x]);
-            SetVidPixel(x + 1, y, ram[y, x + 1]);
-        }
-
         static Rectangle rect = new Rectangle(0, 0, 320, 200);
 
         static int noUpdateCount;
@@ -136,6 +127,11 @@ namespace Classes
         public static void RestoreVidRam()
         {
             videoRam = videoRamBkUp;
+        }
+
+        public static byte GetPixel(int x, int y)
+        {
+            return (byte)ram[y, x];
         }
 
         public static void SetPixel3(int x, int y, int value)

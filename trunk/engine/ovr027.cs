@@ -185,8 +185,8 @@ namespace engine
                 gbl.byte_1D5B4 != 0x50)
             {
                 ovr028.sub_6E005();
-                ovr028.sub_6E02E();
-                ovr028.sub_6E05D();
+                ovr028.map_cursor_draw();
+                ovr028.map_cursor_restore();
             }
 
             do
@@ -196,7 +196,7 @@ namespace engine
                     gbl.byte_1D5B4 != 0x50 &&
                     seg041.time01() >= var_5B)
                 {
-                    ovr028.sub_6E02E();
+                    ovr028.map_cursor_draw();
                     var_5B = var_5F + 30;
                 }
 
@@ -338,7 +338,7 @@ namespace engine
                     gbl.byte_1D5B4 != 0x50 &&
                     seg041.time01() >= var_5F)
                 {
-                    ovr028.sub_6E05D();
+                    ovr028.map_cursor_restore();
 
                     var_5F = var_5B + 50;
                 }
@@ -353,7 +353,7 @@ namespace engine
                 gbl.bigpic_block_id == 0x79 &&
                 gbl.byte_1D5B4 != 0x50)
             {
-                ovr028.sub_6E05D();
+                ovr028.map_cursor_restore();
             }
 
             gbl.displayInput_specialKeyPressed = specialKeyPressed;

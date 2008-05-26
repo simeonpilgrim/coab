@@ -75,13 +75,10 @@ namespace engine
                 {
                     DaxBlock var_6 = gbl.symbol_8x8_set[symbol_set];
 
-                    int ax = symbol_id * var_6.bpp;
+                    int offset = symbol_id * var_6.bpp;
+                    System.Array.Copy(var_6.data, offset, gbl.cursor_bkup.data, 0, var_6.bpp);
 
-					for( int i = 0; i < var_6.bpp; i++ )
-					{
-						gbl.dword_1C8F4.data[ i ] = var_6.data[ i + ax ];
-					}
-                    seg040.draw_picture( gbl.dword_1C8F4, rowY, colX, 0 );
+                    seg040.draw_picture( gbl.cursor_bkup, rowY, colX, 0 );
                 }
             }
         }

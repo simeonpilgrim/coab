@@ -141,83 +141,26 @@ namespace engine
         }
 
 
-        internal static void ega_01(DaxBlock arg_0, short arg_4, short arg_6)
+        internal static void ega_backup(DaxBlock dax_block, int rowY, int colX) /* ega_01 */
         {
-            DaxBlock var_15;
-            byte var_11;
-            short var_10;
-            short var_C;
-            short var_A;
-            short var_8;
-            short var_4;
-            short var_2;
-
-            if (arg_0 != null)
+            if (dax_block != null)
             {
-                var_15 = arg_0;
+                int var_10 = 0;
 
-                var_10 = 0;
+                int minY = rowY * 8;
+                int maxY = minY + dax_block.height;
 
-                var_8 = (short)(arg_4 << 3);
-                var_C = (short)(var_8 + var_15.height - 1);
-                var_A = (short)(arg_6 + var_15.width - 1);
+                int minX = colX * 8;
+                int maxX = minX + (dax_block.width * 8);
 
-                throw new System.NotSupportedException();//mov	al, 5
-                throw new System.NotSupportedException();//mov	dx, 0x3CE
-                throw new System.NotSupportedException();//out	dx, al
-
-                throw new System.NotSupportedException();//mov	al, 0
-                throw new System.NotSupportedException();//mov	dx, 0x3CF
-                throw new System.NotSupportedException();//out	dx, al
-
-                throw new System.NotSupportedException();//mov	al, 4
-                throw new System.NotSupportedException();//mov	dx, 0x3CE
-                throw new System.NotSupportedException();//out	dx, al
-
-                for (var_4 = var_8; var_4 <= var_C; var_4++)
+                for (int pixY = minY; pixY < maxY; pixY++)
                 {
-                    for (var_2 = arg_6; var_2 <= var_A; var_2++)
+                    for (int pixX = minX; pixX < maxX; pixX++)
                     {
-                        for (var_11 = 0; var_11 <= 3; var_11++)
-                        {
-                            throw new System.NotSupportedException();//mov	al, [bp+var_11]
-                            throw new System.NotSupportedException();//mov	dx, 0x3CF
-                            throw new System.NotSupportedException();//out	dx, al
-                            throw new System.NotSupportedException();//mov	ax, 0x0A000
-                            throw new System.NotSupportedException();//push	ax
-                            throw new System.NotSupportedException();//mov	ax, [bp+var_2]
-                            throw new System.NotSupportedException();//cwd
-                            throw new System.NotSupportedException();//mov	cx, ax
-                            throw new System.NotSupportedException();//mov	bx, dx
-                            throw new System.NotSupportedException();//mov	di, [bp+var_4]
-                            throw new System.NotSupportedException();//shl	di, 1
-                            throw new System.NotSupportedException();//mov	ax, short ptr unk_1BBF2[di]
-                            throw new System.NotSupportedException();//xor	dx, dx
-                            throw new System.NotSupportedException();//add	ax, cx
-                            throw new System.NotSupportedException();//adc	dx, bx
-                            throw new System.NotSupportedException();//mov	di, ax
-                            throw new System.NotSupportedException();//pop	es
-                            throw new System.NotSupportedException();//mov	dl, es:[di]
-                            throw new System.NotSupportedException();//mov	ax, [bp+var_10]
-                            throw new System.NotSupportedException();//les	di, [bp+arg_0]
-                            throw new System.NotSupportedException();//add	di, ax
-                            throw new System.NotSupportedException();//mov	es:[di+17h], dl
-                            var_10++;
-                        }
+                        dax_block.data[var_10] = Display.GetPixel(pixX, pixY);
+                        var_10++;
                     }
                 }
-
-                throw new System.NotSupportedException();//mov	al, 0
-                throw new System.NotSupportedException();//mov	dx, 0x3CF
-                throw new System.NotSupportedException();//out	dx, al
-
-                throw new System.NotSupportedException();//mov	al, 5
-                throw new System.NotSupportedException();//mov	dx, 0x3CE
-                throw new System.NotSupportedException();//out	dx, al
-
-                throw new System.NotSupportedException();//mov	al, 0
-                throw new System.NotSupportedException();//mov	dx, 0x3CF
-                throw new System.NotSupportedException();//out	dx, al
             }
         }
 

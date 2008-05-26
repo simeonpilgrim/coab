@@ -2051,21 +2051,21 @@ namespace engine
         }
 
 
-        internal static bool sub_69138(byte arg_0, Player player)
+        internal static bool sub_69138(int skill, Player player)
         {
             bool ret_val = false;
 
-            int skill = player.Skill_A_lvl[arg_0];
+            int skill_lvl = player.Skill_A_lvl[skill];
 
-            if (skill > 0)
+            if (skill_lvl > 0)
             {
                 switch (player.race)
                 {
                     case Race.dwarf:
-                        if (arg_0 == 2)
+                        if (skill == 2)
                         {
-                            if ((skill == 8 && player.strength == 17) ||
-                                (skill == 7 && player.strength < 17))
+                            if ((skill_lvl == 8 && player.strength == 17) ||
+                                (skill_lvl == 7 && player.strength < 17))
                             {
                                 ret_val = true;
                             }
@@ -2073,11 +2073,11 @@ namespace engine
                         break;
 
                     case Race.elf:
-                        if (arg_0 == 2)
+                        if (skill == 2)
                         {
-                            if ((skill == 7) ||
-                                (skill == 6 && player.strength == 17) ||
-                                (skill == 5 && player.strength < 17))
+                            if ((skill_lvl == 7) ||
+                                (skill_lvl == 6 && player.strength == 17) ||
+                                (skill_lvl == 5 && player.strength < 17))
                             {
                                 ret_val = true;
                             }
@@ -2085,10 +2085,10 @@ namespace engine
                         break;
 
                     case Race.gnome:
-                        if (arg_0 == 2)
+                        if (skill == 2)
                         {
-                            if ((skill == 6) ||
-                                (skill == 5 && player.strength < 18))
+                            if ((skill_lvl == 6) ||
+                                (skill_lvl == 5 && player.strength < 18))
                             {
                                 ret_val = true;
                             }
@@ -2096,16 +2096,16 @@ namespace engine
                         break;
 
                     case Race.half_elf:
-                        if (arg_0 == 0 &&
-                            skill == 5)
+                        if (skill == 0 &&
+                            skill_lvl == 5)
                         {
                             ret_val = true;
                         }
-                        else if (arg_0 == 2)
+                        else if (skill == 2)
                         {
-                            if (skill == 8 ||
-                                (skill == 7 && player.strength == 17) ||
-                                (skill == 6 && player.strength < 17))
+                            if (skill_lvl == 8 ||
+                                (skill_lvl == 7 && player.strength == 17) ||
+                                (skill_lvl == 6 && player.strength < 17))
                             {
                                 ret_val = true;
                             }
@@ -2113,11 +2113,11 @@ namespace engine
                         break;
 
                     case Race.halfling:
-                        if (arg_0 == 2)
+                        if (skill == 2)
                         {
-                            if ((skill == 6) ||
-                                (skill == 5 && player.strength == 17) ||
-                                (skill == 4 && player.strength < 17))
+                            if ((skill_lvl == 6) ||
+                                (skill_lvl == 5 && player.strength == 17) ||
+                                (skill_lvl == 4 && player.strength < 17))
                             {
                                 ret_val = true;
                             }

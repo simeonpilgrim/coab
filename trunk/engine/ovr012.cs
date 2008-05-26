@@ -77,10 +77,10 @@ namespace engine
                 gbl.cmd_opps[i].getMemoryValue = ovr008.vm_GetMemoryValue;
             }
 
-            seg040.init_dax_block(out gbl.dword_1C8F4, 0, 1, 1, 8);
-            seg040.init_dax_block(out gbl.dword_1EFA0, 0, 1, 1, 8);
+            seg040.init_dax_block(out gbl.cursor_bkup, 0, 1, 1, 8);
+            seg040.init_dax_block(out gbl.cursor, 0, 1, 1, 8);
 
-            seg051.FillChar(0xff, (ushort)gbl.dword_1EFA0.bpp, gbl.dword_1EFA0.data);
+            seg051.FillChar(0xf, (ushort)gbl.cursor.bpp, gbl.cursor.data);
 
             gbl.symbol_8x8_set = new DaxBlock[5];
             gbl.symbol_8x8_set[0] = null;

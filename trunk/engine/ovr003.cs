@@ -726,7 +726,7 @@ namespace engine
             gbl.textXCol = 1;
             gbl.textYCol = 0x11;
 
-            seg041.press_any_key(var_102, true, 0, 10, 22, 34, 17, 1);
+            seg041.press_any_key(var_102, true, 0, 10, 22, 38, 17, 1);
 
             while (var_106 != null)
             {
