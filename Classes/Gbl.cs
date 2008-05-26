@@ -512,7 +512,7 @@ namespace Classes
         public static byte[] unk_1AEC4 = new byte[max_spells]; // unk_1AEC4[0x53]; seg600:4BB4
         public static Struct_1ADF6[] dword_1ADF6;
         public static StringList dword_1AE6C;
-        public static DaxBlock dword_1C8F4;
+        public static DaxBlock cursor_bkup; // dword_1C8F4
         public static DaxBlock dax24x24Set; //dword_1C8F8;
         public static Item dword_1D5C6;
         public static spellDelegate dword_1D5CA;
@@ -527,9 +527,7 @@ namespace Classes
 
         public static Stack<ushort> vmCallStack = new Stack<ushort>(); // dword_1D91A
 
-        public static DaxBlock dword_1EFA0;
-        public static object dword_1EFD2;
-
+        public static DaxBlock cursor; // dword_1EFA0
 
         public static Player player_ptr2;
         public static Player player_ptr;

@@ -26,18 +26,16 @@ namespace engine
         }
 
 
-        internal static void sub_6E02E()
+        internal static void map_cursor_draw() /* sub_6E02E */
         {
-            // hack to stop ega code barfing, need to work out
-            // is only displayed when world map is displayed
-            //seg040.ega_01(gbl.dword_1C8F4, loc_Y, loc_X);
-            seg040.draw_picture(gbl.dword_1EFA0, loc_Y, loc_X, 0);
+            seg040.ega_backup(gbl.cursor_bkup, loc_Y, loc_X);
+            seg040.draw_picture(gbl.cursor, loc_Y, loc_X, 0);
         }
 
 
-        internal static void sub_6E05D()
+        internal static void map_cursor_restore() /* sub_6E05D */
         {
-            seg040.draw_picture(gbl.dword_1C8F4, loc_Y, loc_X, 0);
+            seg040.draw_picture(gbl.cursor_bkup, loc_Y, loc_X, 0);
         }
     }
 }

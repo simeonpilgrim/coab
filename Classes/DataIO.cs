@@ -135,6 +135,7 @@ namespace Classes
                 case DataType.SWord:
                     return (ushort)(short)o;
                 default:
+                    throw new NotImplementedException();
                     return 0;
             }
         }
@@ -150,6 +151,9 @@ namespace Classes
                 case DataType.SWord:
                     fInfo.SetValue(obj, (short)value);
                     break;
+                default:
+                    throw new NotImplementedException();
+
             }
         }
 

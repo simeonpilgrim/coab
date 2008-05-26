@@ -11,11 +11,11 @@ namespace engine
             yStart *= 8;
             yEnd = (yEnd + 1) * 8;
 
-            for (int x = xStart; x < xEnd; x += 2)
+            for (int x = xStart; x < xEnd; x ++)
             {
                 for (int y = yStart; y < yEnd; y++)
                 {
-                    Display.SetPixel2(x, y, color);
+                    Display.SetPixel3(x, y, color);
                 }
             }
         }

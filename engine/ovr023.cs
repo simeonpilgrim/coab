@@ -2585,7 +2585,7 @@ namespace engine
         internal static void cast_restore()
         {
             int var_C = 30; /* simeon */
-            byte var_6;
+            int var_6;
 
             Player player = gbl.sp_targets[1];
 
@@ -2602,20 +2602,20 @@ namespace engine
                 var_6 = 13;
                 int var_B = 0x00989680;
 
-                for (int var_D = 0; var_D <= 7; var_D++)
+                for (int skill = 0; skill <= 7; skill++)
                 {
-                    byte var_7 = player.Skill_A_lvl[var_D];
+                    int var_7 = player.Skill_A_lvl[skill];
 
                     if (var_7 > 0 &&
                         var_7 <= var_6)
                     {
-                        if (ovr018.unk_1A5A3[var_D, var_7 + 1] > 0 &&
-                            ovr018.unk_1A5A3[var_D, var_7 + 1] < var_B &&
-                            ovr025.sub_69138(var_D, player) == false)
+                        if (ovr018.unk_1A5A3[skill, var_7 + 1] > 0 &&
+                            ovr018.unk_1A5A3[skill, var_7 + 1] < var_B &&
+                            ovr025.sub_69138(skill, player) == false)
                         {
                             var_6 = var_7;
-                            var_C = var_D;
-                            var_B = ovr018.unk_1A5A3[var_D, var_7 + 1];
+                            var_C = skill;
+                            var_B = ovr018.unk_1A5A3[skill, var_7 + 1];
                         }
                     }
                 }
