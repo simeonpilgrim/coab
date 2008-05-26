@@ -133,6 +133,14 @@ namespace Classes
                     field_1CC = (short)value;
                     break;
 
+                case 0x1CE:
+                    field_1CE = (short)value;
+                    break;
+
+                case 0x1D0:
+                    field_1D0 = (short)value;
+                    break;
+
                 case 0x1E4:
                     field_1E4 = value;
                     break;

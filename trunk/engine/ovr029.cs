@@ -31,7 +31,8 @@ namespace engine
                         gbl.sky_colour = sky_colours[gbl.area_ptr.outdoor_sky_colour];
                     }
 
-                    if (gbl.area_ptr.block_area_view != 0)
+                    if (gbl.area_ptr.block_area_view != 0 &&
+                        Cheats.always_show_areamap == false)
                     {
                         gbl.mapAreaDisplay = false;
                     }

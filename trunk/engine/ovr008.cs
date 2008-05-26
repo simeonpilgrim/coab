@@ -1012,11 +1012,9 @@ namespace engine
 
                     for (var_103 = 0; var_103 <= var_104; var_103++)
                     {
-                        ushort dx = var_100[var_103];
+                        ushort val = var_100[var_103];
 
-                        ushort ax = (ushort)((var_103 + arg_4) << 1);
-
-                        gbl.area_ptr.field_6A00_Set(0x6A00 + ax, dx);
+                        gbl.area_ptr.field_6A00_Set(0x6A00 + ((var_103 + arg_4) * 2), val);
                     }
                 }
 
@@ -1024,41 +1022,23 @@ namespace engine
             }
             else if (var_101 == 1)
             {
-                throw new System.NotSupportedException();//cmp	[bp+arg_4], 0x7C00
-                throw new System.NotSupportedException();//jnz	loc_31128
-                gbl.player_ptr.name = var_100;
-                throw new System.NotSupportedException();//jmp	short loc_31195
-                throw new System.NotSupportedException();//loc_31128:
-                throw new System.NotSupportedException();//cmp	[bp+var_102], 0
-                throw new System.NotSupportedException();//jbe	loc_3117D
-                var_104 = (byte)(var_102 - 1);
-                for (var_103 = 0; var_103 <= var_104; var_103++)
+                if (arg_4 == 0x7C00)
                 {
-                    throw new System.NotSupportedException();//mov	al, [bp+var_103]
-                    throw new System.NotSupportedException();//xor	ah, ah
-                    throw new System.NotSupportedException();//inc	ax
-                    throw new System.NotSupportedException();//mov	di, ax
-                    throw new System.NotSupportedException();//mov	al, [bp+di+var_100]
-                    throw new System.NotSupportedException();//xor	ah, ah
-                    throw new System.NotSupportedException();//mov	dx, ax
-                    throw new System.NotSupportedException();//mov	al, [bp+var_103]
-                    throw new System.NotSupportedException();//xor	ah, ah
-                    throw new System.NotSupportedException();//add	ax, [bp+arg_4]
-                    throw new System.NotSupportedException();//shl	ax, 1
-                    throw new System.NotSupportedException();//les	di, dword ptr area2_ptr.offset
-                    throw new System.NotSupportedException();//add	di, ax
-                    throw new System.NotSupportedException();//mov	es:[di+800h], dx
+                    gbl.player_ptr.name = var_100;
                 }
-                throw new System.NotSupportedException();//loc_3117D:
-                throw new System.NotSupportedException();//mov	al, [bp+var_102]
-                throw new System.NotSupportedException();//xor	ah, ah
-                throw new System.NotSupportedException();//add	ax, [bp+arg_4]
-                throw new System.NotSupportedException();//shl	ax, 1
-                throw new System.NotSupportedException();//les	di, dword ptr area2_ptr.offset
-                throw new System.NotSupportedException();//add	di, ax
-                throw new System.NotSupportedException();//xor	ax, ax
-                throw new System.NotSupportedException();//mov	es:[di+800h], ax
-                throw new System.NotSupportedException();//loc_31195:
+                else
+                {
+                    if (var_102 > 0)
+                    {
+                        var_104 = (byte)(var_102 - 1);
+                        for (var_103 = 0; var_103 <= var_104; var_103++)
+                        {
+                            gbl.area2_ptr.field_800_Set(((var_103 + arg_4) * 2) + 0x800, var_100[var_103]);
+                        }
+                    }
+
+                    gbl.area2_ptr.field_800_Set(((var_102 + arg_4) * 2) + 0x800, 0);
+                }
             }
             else if (var_101 == 2)
             {
@@ -1081,26 +1061,11 @@ namespace engine
 
                     for (var_103 = 0; var_103 <= var_104; var_103++)
                     {
-                        throw new System.NotSupportedException();//mov	al, [bp+var_103]
-                        throw new System.NotSupportedException();//xor	ah, ah
-                        throw new System.NotSupportedException();//inc	ax
-                        throw new System.NotSupportedException();//mov	di, ax
-                        throw new System.NotSupportedException();//mov	dl, [bp+di+var_100]
-                        throw new System.NotSupportedException();//mov	al, [bp+var_103]
-                        throw new System.NotSupportedException();//xor	ah, ah
-                        throw new System.NotSupportedException();//add	ax, [bp+arg_4]
-                        throw new System.NotSupportedException();//les	di, dword ptr ecl_ptr.offset
-                        throw new System.NotSupportedException();//add	di, ax
-                        throw new System.NotSupportedException();//mov	es:[di+8000h], dl
+                        gbl.ecl_ptr[0x8000 + var_103 + arg_4] = (byte)var_100[var_103];
                     }
                 }
 
-                throw new System.NotSupportedException();//mov	al, [bp+var_102]
-                throw new System.NotSupportedException();//xor	ah, ah
-                throw new System.NotSupportedException();//add	ax, [bp+arg_4]
-                throw new System.NotSupportedException();//les	di, dword ptr ecl_ptr.offset
-                throw new System.NotSupportedException();//add	di, ax
-                throw new System.NotSupportedException();//mov	byte ptr es:[di+8000h],	0
+                gbl.ecl_ptr[0x8000 + var_102 + arg_4] = 0;
             }
         }
 

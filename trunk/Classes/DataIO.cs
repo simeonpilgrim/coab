@@ -136,7 +136,7 @@ namespace Classes
                     return (ushort)(short)o;
                 default:
                     throw new NotImplementedException();
-                    return 0;
+                    //return 0;
             }
         }
 
