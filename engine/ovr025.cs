@@ -1887,7 +1887,8 @@ namespace engine
                 string minutes = gbl.area_ptr.time_hour.ToString("00");
                 string hours = ((gbl.area_ptr.time_minutes_tens * 10) + gbl.area_ptr.time_minutes_ones).ToString("00");
 
-                if (gbl.area_ptr.block_area_view == 0)
+                if (gbl.area_ptr.block_area_view == 0 ||
+                    Cheats.always_show_areamap)
                 {
                     output = string.Format("{0},{1} ", gbl.mapPosX, gbl.mapPosY);
                 }

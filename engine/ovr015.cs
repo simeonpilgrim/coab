@@ -578,7 +578,7 @@ namespace engine
 								if( gbl.area_ptr.block_area_view == 0 ||
                                     Cheats.always_show_areamap)
 								{
-									gbl.mapAreaDisplay = ( gbl.mapAreaDisplay == false );
+									gbl.mapAreaDisplay = !gbl.mapAreaDisplay;
 
 									ovr031.Draw3dWorld( gbl.mapDirection, gbl.mapPosY, gbl.mapPosX );
 								}
