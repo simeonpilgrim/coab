@@ -1,6 +1,9 @@
 = The Release Notes =
 
 = Unreleased =
+  * Issue 22 - The icon now flashes
+  * Issue 20 - This encounter now works
+  * Fixed text problem on the large map, where the last four characters where not cleared off the screen
 
 = 1.0.8 =
   * Issue 17 - Missing targeting cursor - a DAX file was missing from the installer
