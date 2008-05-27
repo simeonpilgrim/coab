@@ -1145,7 +1145,7 @@ namespace engine
                             break;
                     }
 
-                    ovr020.display_stat(0, var_1B);
+                    ovr020.display_stat(false, var_1B);
                 }
                 var_53 = player;
                 var_53.hit_point_current = var_53.hit_point_max;
@@ -1379,30 +1379,30 @@ namespace engine
         /// <summary>
         /// nested function, has not been fix to be not nested.
         /// </summary>
-        internal static void sub_4E6F2(byte arg_2, byte bp_var_37, byte bp_var_3F)
+        internal static void draw_highlight_stat(bool arg_2, byte edited_stat, byte name_cursor_pos) /* sub_4E6F2 */
         {
-            if (bp_var_37 >= 0 && bp_var_37 <= 5)
+            if (edited_stat >= 0 && edited_stat <= 5)
             {
-                ovr020.display_stat(arg_2, bp_var_37);
+                ovr020.display_stat(arg_2, edited_stat);
             }
-            else if (bp_var_37 == 6)
+            else if (edited_stat == 6)
             {
                 ovr025.display_hp(arg_2, 18, 4, gbl.player_ptr);
             }
-            else if (bp_var_37 == 7)
+            else if (edited_stat == 7)
             {
-                if (arg_2 != 0)
+                if (arg_2 == true)
                 {
                     seg041.displaySpaceChar(1, 0, 1, gbl.player_ptr.name.Length + 1);
                     seg041.displayString(gbl.player_ptr.name, 0, 13, 1, 1);
 
-                    if (bp_var_3F > gbl.player_ptr.name.Length || gbl.player_ptr.name[bp_var_3F-1] == ' ')
+                    if (name_cursor_pos > gbl.player_ptr.name.Length || gbl.player_ptr.name[name_cursor_pos-1] == ' ')
                     {
-                        seg041.displayString("%", 0, 15, 1, bp_var_3F);
+                        seg041.displayString("%", 0, 15, 1, name_cursor_pos);
                     }
                     else
                     {
-                        seg041.displayString(gbl.player_ptr.name[bp_var_3F-1].ToString(), 0, 15, 1, bp_var_3F);
+                        seg041.displayString(gbl.player_ptr.name[name_cursor_pos-1].ToString(), 0, 15, 1, name_cursor_pos);
                     }
                 }
                 else
@@ -1418,8 +1418,8 @@ namespace engine
             byte var_45;
             Player player_ptr;
             byte var_40;
-            byte var_3F;
-            byte var_37;
+            byte name_cursor_pos;
+            byte edited_stat;
             bool var_36;
             char var_35;
             byte stat_var;
@@ -1429,7 +1429,8 @@ namespace engine
             byte var_7;
             byte[] var_6 = new byte[6];
 
-            if ((gbl.player_ptr.exp != 0 &&
+            if (Cheats.allow_player_modify == false &&
+                (gbl.player_ptr.exp != 0 &&
                 gbl.player_ptr.exp != 8333 &&
                 gbl.player_ptr.exp != 12500 &&
                 gbl.player_ptr.exp != 25000) ||
@@ -1451,16 +1452,16 @@ namespace engine
 
             var_31 = gbl.player_ptr.name;
 
-            var_3F = 1;
-            var_37 = 7;
-            sub_4E6F2(0, var_37, var_3F);
-            var_37 = 0;
-            sub_4E6F2(1, var_37, var_3F);
+            name_cursor_pos = 1;
+            edited_stat = 7;
+            draw_highlight_stat(false, edited_stat, name_cursor_pos);
+            edited_stat = 0;
+            draw_highlight_stat(true, edited_stat, name_cursor_pos);
             player_ptr = gbl.player_ptr;
 
             do
             {
-                if (var_37 == 7)
+                if (edited_stat == 7)
                 {
                     while (seg049.KEYPRESSED() == false)
                     {
@@ -1489,71 +1490,68 @@ namespace engine
                     var_35 = ovr027.displayInput(out var_36, false, 1, 15, 10, 13, "Keep Exit", "Modify: ");
                 }
 
-                sub_4E6F2(0, var_37, var_3F);
+                draw_highlight_stat(false, edited_stat, name_cursor_pos);
 
                 if (var_36 == true)
                 {
                     switch (var_35)
                     {
                         case 'S':
-                            if (var_37 == 7 && gbl.player_ptr.name.Length > 1)
+                            if (edited_stat == 7 && gbl.player_ptr.name.Length > 1)
                             {
-                                throw new System.NotSupportedException();//mov	al, [bp+var_3F]
-                                throw new System.NotSupportedException();//les	di, int ptr player_ptr.offset
-                                throw new System.NotSupportedException();//cmp	al, es:[di]
-                                throw new System.NotSupportedException();//jnz	loc_4E9F4
-                                throw new System.NotSupportedException();//les	di, int ptr player_ptr.offset
-                                throw new System.NotSupportedException();//dec	byte ptr es:[di]
-                                throw new System.NotSupportedException();//les	di, int ptr player_ptr.offset
-                                throw new System.NotSupportedException();//mov	al, es:[di]
-                                throw new System.NotSupportedException();//mov	[bp+var_3F], al
-                                throw new System.NotSupportedException();//jmp	short loc_4EA3D
-                                throw new System.NotSupportedException();//loc_4E9F4:
-                                var_45 = (byte)(gbl.player_ptr.name.Length - 1);
-
-                                for (var_40 = var_3F; var_40 <= var_45; var_40++)
+                                if (name_cursor_pos == gbl.player_ptr.name.Length)
                                 {
-                                    throw new System.NotSupportedException();//mov	al, [bp+var_40]
-                                    throw new System.NotSupportedException();//xor	ah, ah
-                                    throw new System.NotSupportedException();//inc	ax
-                                    throw new System.NotSupportedException();//les	di, int ptr player_ptr.offset
-                                    throw new System.NotSupportedException();//add	di, ax
-                                    throw new System.NotSupportedException();//mov	dl, es:[di]
-                                    throw new System.NotSupportedException();//mov	al, [bp+var_40]
-                                    throw new System.NotSupportedException();//xor	ah, ah
-                                    throw new System.NotSupportedException();//les	di, int ptr player_ptr.offset
-                                    throw new System.NotSupportedException();//add	di, ax
-                                    throw new System.NotSupportedException();//mov	es:[di], dl
+                                    throw new System.NotSupportedException();
+                                    //gbl.player_ptr.name.Length -= 1;
+                                    //var_3F = gbl.player_ptr.name.Length;
                                 }
+                                else
+                                {
+                                    var_45 = (byte)(gbl.player_ptr.name.Length - 1);
 
-                                throw new System.NotSupportedException();//les	di, int ptr player_ptr.offset
-                                throw new System.NotSupportedException();//dec	byte ptr es:[di]
+                                    for (var_40 = name_cursor_pos; var_40 <= var_45; var_40++)
+                                    {
+
+                                        throw new System.NotSupportedException();//mov	al, [bp+var_40]
+                                        throw new System.NotSupportedException();//xor	ah, ah
+                                        throw new System.NotSupportedException();//inc	ax
+                                        throw new System.NotSupportedException();//les	di, int ptr player_ptr.offset
+                                        throw new System.NotSupportedException();//add	di, ax
+                                        throw new System.NotSupportedException();//mov	dl, es:[di]
+                                        throw new System.NotSupportedException();//mov	al, [bp+var_40]
+                                        throw new System.NotSupportedException();//xor	ah, ah
+                                        throw new System.NotSupportedException();//les	di, int ptr player_ptr.offset
+                                        throw new System.NotSupportedException();//add	di, ax
+                                        throw new System.NotSupportedException();//mov	es:[di], dl
+                                    }
+                                    throw new System.NotSupportedException();
+                                    //gbl.player_ptr.name.Length -= 1; 
+                                }
                             }
-                            //loc_4EA3D:
                             break;
 
                         case 'O':
-                            var_37++;
+                            edited_stat++;
 
-                            if (var_37 > 7)
+                            if (edited_stat > 7)
                             {
-                                var_37 = 0;
+                                edited_stat = 0;
                             }
                             break;
 
                         case 'G':
-                            var_37 -= 1;
+                            edited_stat -= 1;
 
-                            if (var_37 == 0xff)
+                            if (edited_stat == 0xff)
                             {
-                                var_37 = 7;
+                                edited_stat = 7;
                             }
                             break;
 
                         case 'K':
-                            if (var_37 < 6)
+                            if (edited_stat < 6)
                             {
-                                stat_var = var_37;
+                                stat_var = edited_stat;
                                 player_ptr.stats[stat_var].max -= 1;
 
                                 switch ((Stat)stat_var)
@@ -1638,9 +1636,9 @@ namespace engine
                                         }
 
                                         player_ptr.hit_point_current = player_ptr.hit_point_max;
-                                        var_37 = 6;
-                                        sub_4E6F2(0, var_37, var_3F);
-                                        var_37 = 4;
+                                        edited_stat = 6;
+                                        draw_highlight_stat(false, edited_stat, name_cursor_pos);
+                                        edited_stat = 4;
 
                                         break;
 
@@ -1657,7 +1655,7 @@ namespace engine
                                         break;
                                 }
                             }
-                            else if (var_37 == 6)
+                            else if (edited_stat == 6)
                             {
                                 player_ptr.hit_point_max -= 1;
 
@@ -1670,21 +1668,21 @@ namespace engine
                             }
                             else
                             {
-                                if (var_3F == 1)
+                                if (name_cursor_pos == 1)
                                 {
-                                    var_3F = (byte)gbl.player_ptr.name.Length;
+                                    name_cursor_pos = (byte)gbl.player_ptr.name.Length;
                                 }
                                 else
                                 {
-                                    var_3F -= 1;
+                                    name_cursor_pos -= 1;
                                 }
                             }
                             break;
 
                         case 'M':
-                            if (var_37 < 6)
+                            if (edited_stat < 6)
                             {
-                                stat_var = var_37;
+                                stat_var = edited_stat;
 
                                 player_ptr.stats[stat_var].max += 1;
                                 switch ((Stat)stat_var)
@@ -1741,9 +1739,9 @@ namespace engine
                                         }
 
                                         player_ptr.hit_point_current = player_ptr.hit_point_max;
-                                        var_37 = 6;
-                                        sub_4E6F2(0, var_37, var_3F);
-                                        var_37 = 4;
+                                        edited_stat = 6;
+                                        draw_highlight_stat(false, edited_stat, name_cursor_pos);
+                                        edited_stat = 4;
                                         break;
 
                                     case Stat.CHA:
@@ -1756,7 +1754,7 @@ namespace engine
                             }
                             else
                             {
-                                if (var_37 == 6)
+                                if (edited_stat == 6)
                                 {
                                     player_ptr.hit_point_max += 1;
 
@@ -1769,13 +1767,13 @@ namespace engine
                                 }
                                 else
                                 {
-                                    if (var_3F == player_ptr.name.Length+1)
+                                    if (name_cursor_pos == player_ptr.name.Length+1)
                                     {
-                                        var_3F = 1;
+                                        name_cursor_pos = 1;
                                     }
                                     else
                                     {
-                                        var_3F++;
+                                        name_cursor_pos++;
                                     }
                                 }
                             }
@@ -1786,19 +1784,19 @@ namespace engine
                 {
                     if (var_35 == 0x0d)
                     {
-                        var_37++;
+                        edited_stat++;
 
-                        if (var_37 > 7)
+                        if (edited_stat > 7)
                         {
-                            var_37 = 0;
+                            edited_stat = 0;
                         }
                     }
                     else if (var_35 == 0x08)
                     {
-                        if (var_3F > 1 && var_37 > 6)
+                        if (name_cursor_pos > 1 && edited_stat > 6)
                         {
                             int len = gbl.player_ptr.name.Length;
-                            int del = var_3F - 1;
+                            int del = name_cursor_pos - 1;
 
                              
                             /* delete char from name */
@@ -1815,21 +1813,21 @@ namespace engine
 
                             gbl.player_ptr.name = s;
 
-                            if (var_3F > gbl.player_ptr.name.Length)
+                            if (name_cursor_pos > gbl.player_ptr.name.Length)
                             {
-                                var_3F = (byte)gbl.player_ptr.name.Length;
+                                name_cursor_pos = (byte)gbl.player_ptr.name.Length;
                             }
                         }
                     }
                     else if (var_35 >= 0x20 && var_35 <= 0x7A)
                     {
-                        if (var_37 > 6)
+                        if (edited_stat > 6)
                         {
-                            if (var_3F <= 15)
+                            if (name_cursor_pos <= 15)
                             {
                                 string s = string.Empty;
                                 int len = player_ptr.name.Length;
-                                int insert = var_3F - 1;
+                                int insert = name_cursor_pos - 1;
 
                                 if (insert > 0)
                                 {
@@ -1843,15 +1841,15 @@ namespace engine
 
                                 player_ptr.name = s;
 
-                                var_3F++;
-                                if (var_3F > 15)
+                                name_cursor_pos++;
+                                if (name_cursor_pos > 15)
                                 {
-                                    var_3F = 15;
+                                    name_cursor_pos = 15;
                                 }
 
-                                if (var_3F > player_ptr.name.Length)
+                                if (name_cursor_pos > player_ptr.name.Length)
                                 {
-                                   player_ptr.name.PadRight(var_3F, ' ');
+                                   player_ptr.name.PadRight(name_cursor_pos, ' ');
                                 }
                                 var_35 = '\0';
                             }
@@ -1895,7 +1893,7 @@ namespace engine
                 ovr025.sub_66C20(gbl.player_ptr);
                 ovr020.display_player_stats01();
 
-                sub_4E6F2(1, var_37, var_3F);
+                draw_highlight_stat(true, edited_stat, name_cursor_pos);
             } while (var_36 == true || var_35 != 0x4B);
 
             ovr026.calc_cleric_spells(true, gbl.player_ptr);
