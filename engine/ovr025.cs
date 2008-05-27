@@ -422,7 +422,7 @@ namespace engine
                         var_7 = 0;
                     }
 
-                    display_hp(0, y_pos, var_7 + 0x24, player_ptr);
+                    display_hp(false, y_pos, var_7 + 0x24, player_ptr);
                     y_pos++;
                     player_ptr = player_ptr.next_player;
                 }
@@ -440,9 +440,9 @@ namespace engine
         }
 
 
-        internal static void display_hp(byte arg_0, int y_pos, int x_pos, Player player)
+        internal static void display_hp(bool arg_0, int y_pos, int x_pos, Player player)
         {
-            byte colour;
+            int colour;
 
             if (player.hit_point_current < player.hit_point_max)
             {
@@ -453,7 +453,7 @@ namespace engine
                 colour = 0x0A;
             }
 
-            if (arg_0 != 0)
+            if (arg_0 == true)
             {
                 colour = 0x0D;
             }
@@ -477,7 +477,7 @@ namespace engine
 
                 seg041.displayString("Hitpoints", 0, 10, line + 1, 0x17);
 
-                display_hp(0, line + 1, 0x21, player);
+                display_hp(false, line + 1, 0x21, player);
                 line += 2;
 
                 seg041.displayString("AC", 0, 10, line + 1, 0x17);

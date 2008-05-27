@@ -6,6 +6,8 @@ namespace Classes
 {
     public class Cheats
     {
+        public static bool allow_player_modify = true;
+
         public static bool always_show_areamap = false;
         public static void AlwayShowAreaMapToggle()
         {

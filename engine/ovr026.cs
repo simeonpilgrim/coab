@@ -670,153 +670,99 @@ namespace engine
         }
 
 
-        internal static bool sub_6AD3E(byte arg_2, Player bp_arg_0)
+        internal static bool player_can_be_class(int _class, Player player) /* sub_6AD3E */
         {
-            byte var_4;
-            sbyte var_3;
-            bool var_2;
-
-            var_2 = (gbl.unk_1A30A[(int)bp_arg_0.race, gbl.byte_1DA71] != getFirstSkill(bp_arg_0));
-            var_3 = 0;
+            bool var_2 = (gbl.unk_1A30A[(int)player.race, gbl.byte_1DA71] != getFirstSkill(player));
+            sbyte var_3 = 0;
 
             while (var_3 <= 5 &&
-            (gbl.unk_1A484[getFirstSkill(bp_arg_0)][var_3] < 9 ||
-                    bp_arg_0.stats[var_3].tmp > 0x0E))
+            (gbl.unk_1A484[getFirstSkill(player)][var_3] < 9 ||
+                    player.stats[var_3].tmp > 0x0E))
             {
                 var_3++;
             }
 
             var_2 = (var_2 == true && var_3 > 5);
             var_3 = 0;
-            throw new System.NotSupportedException();//loc_6ADE5:
-            throw new System.NotSupportedException();//cmp	[bp+var_3], 5
-            throw new System.NotSupportedException();//jg	loc_6AE23
-            throw new System.NotSupportedException();//mov	al, [bp+var_3]
-            throw new System.NotSupportedException();//cbw
-            throw new System.NotSupportedException();//mov	dx, ax
-            throw new System.NotSupportedException();//mov	al, byte ptr [bp+arg_2]
-            throw new System.NotSupportedException();//cbw
-            throw new System.NotSupportedException();//mov	di, ax
-            throw new System.NotSupportedException();//shl	di, 1
-            throw new System.NotSupportedException();//mov	si, di
-            throw new System.NotSupportedException();//shl	di, 1
-            throw new System.NotSupportedException();//add	di, si
-            throw new System.NotSupportedException();//add	di, dx
-            throw new System.NotSupportedException();//cmp	byte ptr unk_1A484[di].field_0, 9
-            throw new System.NotSupportedException();//jb	loc_6AE1E
-            throw new System.NotSupportedException();//cmp	bp_arg_0.stats[var_3].tmp, 0x10
-            throw new System.NotSupportedException();//jbe	loc_6AE23
-            throw new System.NotSupportedException();//loc_6AE1E:
-            var_3++;
-            throw new System.NotSupportedException();//jmp	short loc_6ADE5
-            throw new System.NotSupportedException();//loc_6AE23:
+
+            while (var_3 <= 5 &&
+                (gbl.unk_1A484[_class][var_3] < 9 || player.stats[var_3].tmp > 0x10))
+            {
+                var_3++;
+            }
+
             var_2 = (var_2 == true && var_3 > 5);
 
-            var_4 = 1;
-            throw new System.NotSupportedException();//loc_6AE3C:
-            throw new System.NotSupportedException();//mov	al, byte ptr [bp+arg_2]
-            throw new System.NotSupportedException();//cbw
-            throw new System.NotSupportedException();//mov	dx, 0x0A
-            throw new System.NotSupportedException();//mul	dx
-            throw new System.NotSupportedException();//mov	di, ax
-            throw new System.NotSupportedException();//mov	al, unk_1A4EA[di]
-            throw new System.NotSupportedException();//cmp	al, [bp+var_4]
-            throw new System.NotSupportedException();//jb	loc_6AE7B
-            throw new System.NotSupportedException();//mov	al, [bp+var_4]
-            throw new System.NotSupportedException();//xor	ah, ah
-            throw new System.NotSupportedException();//mov	cx, ax
-            throw new System.NotSupportedException();//mov	al, byte ptr [bp+arg_2]
-            throw new System.NotSupportedException();//cbw
-            throw new System.NotSupportedException();//mov	dx, 0x0A
-            throw new System.NotSupportedException();//mul	dx
-            throw new System.NotSupportedException();//mov	di, ax
-            throw new System.NotSupportedException();//add	di, cx
-            throw new System.NotSupportedException();//mov	al, unk_1A4EA[di]
-            throw new System.NotSupportedException();//cmp	al, bp_arg_0.alignment
-            throw new System.NotSupportedException();//jz	loc_6AE7B
-            var_4++;
-            throw new System.NotSupportedException();//jmp	short loc_6AE3C
-            throw new System.NotSupportedException();//loc_6AE7B:
-            throw new System.NotSupportedException();//cmp	[bp+var_2], 0
-            throw new System.NotSupportedException();//jz	loc_6AE95
-            throw new System.NotSupportedException();//mov	al, byte ptr [bp+arg_2]
-            throw new System.NotSupportedException();//cbw
-            throw new System.NotSupportedException();//mov	dx, 0x0A
-            throw new System.NotSupportedException();//mul	dx
-            throw new System.NotSupportedException();//mov	di, ax
-            throw new System.NotSupportedException();//mov	al, unk_1A4EA[di]
-            throw new System.NotSupportedException();//cmp	al, [bp+var_4]
-            throw new System.NotSupportedException();//jnb	loc_6AE99
-            throw new System.NotSupportedException();//loc_6AE95:
-            throw new System.NotSupportedException();//mov	al, 0
-            throw new System.NotSupportedException();//jmp	short loc_6AE9B
-            throw new System.NotSupportedException();//loc_6AE99:
-            throw new System.NotSupportedException();//mov	al, 1
-            throw new System.NotSupportedException();//loc_6AE9B:
-            throw new System.NotSupportedException();//mov	[bp+var_2], al
+            byte var_4 = 1;
+
+            while (gbl.unk_1A4EA[_class, 0] >= var_4 &&
+                gbl.unk_1A4EA[_class, var_4] != player.alignment)
+            {
+                var_4++;
+            }
+
+            if (var_2 == false ||
+                gbl.unk_1A4EA[_class, 0] < var_4)
+            {
+                var_2 = false;
+            }
+            else
+            {
+                var_2 = true;
+            }
 
             return var_2;
         }
 
 
-        internal static void multiclass(Player arg_0)
+        internal static void multiclass(Player player)
         {
-            byte var_14;
-            Item var_13;
-            bool var_F;
-            bool var_E;
-            short var_D;
-            StringList var_B;
-            StringList var_7;
-            byte var_3;
-            byte var_2;
-            char var_1;
 
-            var_3 = gbl.unk_1A30A[(int)arg_0.race, 0];
+            byte var_3 = gbl.unk_1A30A[(int)player.race, 0];
 
-            var_7 = new StringList();
+            StringList list = new StringList();
+            StringList list_ptr = list;
 
-            var_B = var_7;
+            list_ptr.next = null;
+            list_ptr.field_29 = 1;
+            list_ptr.s = "Pick New Class";
 
-            var_B.next = null;
-            var_B.field_29 = 1;
-            var_B.s = "Pick New Class";
+            int count = 1;
 
-            var_D = 1;
-            var_14 = var_3;
-
-            for (gbl.byte_1DA71 = 1; gbl.byte_1DA71 < var_14; gbl.byte_1DA71++)
+            for (gbl.byte_1DA71 = 1; gbl.byte_1DA71 < var_3; gbl.byte_1DA71++)
             {
-                var_2 = gbl.unk_1A30A[(int)arg_0.race, gbl.byte_1DA71];
+                int _class = gbl.unk_1A30A[(int)player.race, gbl.byte_1DA71];
 
-                if (sub_6AD3E(var_2, arg_0) == true)
+                if (player_can_be_class(_class, player) == true)
                 {
-                    var_B.next = new StringList();
-                    var_B = var_B.next;
+                    list_ptr.next = new StringList();
+                    list_ptr = list_ptr.next;
 
-                    var_B.next = null;
-                    var_B.field_29 = 0;
-                    var_B.s = ovr020.classString[var_2];
+                    list_ptr.next = null;
+                    list_ptr.field_29 = 0;
+                    list_ptr.s = ovr020.classString[_class];
 
-                    var_D++;
+                    count++;
                 }
             }
 
-            if (var_D == 1)
+            if (count == 1)
             {
-                seg041.DisplayStatusText(15, 4, arg_0.name + " doesn't qualify.");
-                ovr027.free_stringList(ref var_7);
+                seg041.DisplayStatusText(15, 4, player.name + " doesn't qualify.");
+                ovr027.free_stringList(ref list);
                 return;
             }
 
-            var_B = var_7;
-            var_D = 1;
-            var_E = true;
-            var_F = true;
+            list_ptr = list;
+            short index = 1;
+            bool show_exit = true;
+            bool var_F = true;
+
+            char var_1;
 
             do
             {
-                var_1 = ovr027.sl_select_item(out var_B, ref var_D, ref var_F, var_E, var_7,
+                var_1 = ovr027.sl_select_item(out list_ptr, ref index, ref var_F, show_exit, list,
                     0x16, 0x26, 2, 1, 15, 10, 13, "Select", string.Empty);
 
                 if (var_1 == 0)
@@ -825,66 +771,66 @@ namespace engine
                 }
             } while (var_1 != 0x53);
 
-            arg_0.exp = 0;
-            arg_0.field_11C = 2;
-            var_2 = 0;
+            player.exp = 0;
+            player.field_11C = 2;
+            byte var_2 = 0;
 
-            while (var_2 <= 7 && ovr020.classString[var_2] != var_B.s)
+            while (var_2 <= 7 && ovr020.classString[var_2] != list_ptr.s)
             {
                 var_2++;
             }
 
-            ovr027.free_stringList(ref var_7);
+            ovr027.free_stringList(ref list);
 
-            arg_0.Skill_B_lvl[getFirstSkill(arg_0)] = hasAnySkills(arg_0);
+            player.Skill_B_lvl[getFirstSkill(player)] = hasAnySkills(player);
 
-            arg_0.field_E6 = arg_0.field_E5;
-            arg_0.field_E5 = 1;
+            player.field_E6 = player.field_E5;
+            player.field_E5 = 1;
 
-            arg_0.Skill_A_lvl[getFirstSkill(arg_0)] = 0;
-            arg_0.Skill_A_lvl[var_2] = 1;
+            player.Skill_A_lvl[getFirstSkill(player)] = 0;
+            player.Skill_A_lvl[var_2] = 1;
 
             for (int i = 0; i < 5; i++)
             {
-                arg_0.field_12D[0, i] = 0;
-                arg_0.field_12D[1, i] = 0;
-                arg_0.field_12D[2, i] = 0;
+                player.field_12D[0, i] = 0;
+                player.field_12D[1, i] = 0;
+                player.field_12D[2, i] = 0;
             }
 
             if (var_2 == 0)
             {
-                arg_0.field_12D[0,0] = 1;
+                player.field_12D[0,0] = 1;
             }
             else if (var_2 == 5)
             {
-                arg_0.field_12D[2,0] = 1;
-                arg_0.field_79[0xB - 1] = 1;
-                arg_0.field_79[0x12 - 1] = 1;
-                arg_0.field_79[0x15 - 1] = 1;
+                player.field_12D[2,0] = 1;
+                player.field_79[0xB - 1] = 1;
+                player.field_79[0x12 - 1] = 1;
+                player.field_79[0x15 - 1] = 1;
             }
 
-            arg_0._class = (ClassId)var_2;
+            player._class = (ClassId)var_2;
 
-            seg041.DisplayStatusText(0, 10, arg_0.name + " is now a 1st level " + ovr020.classString[var_2] + ".");
+            seg041.DisplayStatusText(0, 10, player.name + " is now a 1st level " + ovr020.classString[var_2] + ".");
 
-            seg051.FillChar(0, 0x54, arg_0.spell_list);
+            seg051.FillChar(0, 0x54, player.spell_list);
 
-            sub_6A3C6(arg_0);
-            calc_cleric_spells(true, arg_0);
-            sub_6A7FB(arg_0);
-            sub_6AAEA(arg_0);
+            sub_6A3C6(player);
+            calc_cleric_spells(true, player);
+            sub_6A7FB(player);
+            sub_6AAEA(player);
 
-            var_13 = arg_0.itemsPtr;
+            Item item = player.itemsPtr;
 
-            while (var_13 != null)
+            while (item != null)
             {
-                if ((gbl.unk_1C020[var_13.type].classFlags & arg_0.classFlags) == 0 &&
-                    var_13.cursed == false)
+                if ((gbl.unk_1C020[item.type].classFlags & player.classFlags) == 0 &&
+                    item.cursed == false)
                 {
-                    var_13.readied = false;
+                    item.readied = false;
                 }
 
-                var_13 = var_13.next;
+                item = item.next;
             }
         }
 

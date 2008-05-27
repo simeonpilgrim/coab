@@ -121,7 +121,7 @@ namespace engine
                                     "9th Level"
                                 };
 
-        internal static bool can_learn_spell(byte spell_id, Player player) /* sub_5C01E */
+        internal static bool can_learn_spell(int spell_id, Player player) /* sub_5C01E */
         {
             spell_id &= 0x7f;
             bool can_learn = false;
@@ -175,13 +175,8 @@ namespace engine
 
         internal static byte spell_menu(ref short arg_0, byte arg_4)
         {
-            bool var_61;
-            bool var_60;
             char var_5F;
-            sbyte var_5E;
-            byte var_5D;
-            string var_5B;
-            string var_32;
+            string text;
             StringList var_9;
             StringList var_5;
             byte var_1;
@@ -189,54 +184,32 @@ namespace engine
             switch (arg_4)
             {
                 case 1:
-                    var_5B = "Cast";
+                    text = "Cast";
                     break;
 
                 case 2:
-                    var_5B = "Memorize";
+                    text = "Memorize";
                     break;
 
                 case 3:
-                    var_5B = "Scribe";
+                    text = "Scribe";
                     break;
 
                 case 4:
-                    var_5B = "Learn";
+                    text = "Learn";
                     break;
 
                 default:
-                    var_5B = string.Empty;
+                    text = string.Empty;
                     break;
             }
 
-            if (unk_5C1A2.MemberOf(arg_4) == true)
-            {
-                var_32 = "Choose Spell: ";
-            }
-            else
-            {
-                var_32 = string.Empty;
-            }
+            string prompt_text = unk_5C1A2.MemberOf(arg_4) ? "Choose Spell: " : "";
 
-            if (arg_4 == 2)
-            {
-                var_5E = 0x0F;
-            }
-            else
-            {
-                var_5E = 0x16;
-            }
+            int end_y = (arg_4 == 2)? 0x0F : 0x16;
 
-            if (arg_4 == 4)
-            {
-                var_60 = false;
-            }
-            else
-            {
-                var_60 = true;
-            }
-
-            var_61 = false;
+            bool var_60 = arg_4 != 4;
+            bool var_61 = false;
 
             if (arg_0 < 0)
             {
@@ -254,12 +227,12 @@ namespace engine
             do
             {
                 var_5F = ovr027.sl_select_item(out var_5, ref arg_0, ref var_61, var_60, gbl.dword_1AE6C,
-                    var_5E, 0x26, 5, 1, 15, 10, 13, var_5B, var_32);
+                    end_y, 0x26, 5, 1, 15, 10, 13, text, prompt_text);
 
             } while (asc_5C1D1.MemberOf(var_5F) == false);
 
             var_9 = gbl.dword_1AE6C;
-            var_5D = 0;
+            int var_5D = 0;
 
             while (var_9 != var_5)
             {
@@ -355,22 +328,18 @@ namespace engine
         }
 
 
-        internal static void sub_5C5B9(byte arg_0)
+        internal static void sub_5C5B9(int arg_0)
         {
-            sbyte var_12;
-            byte var_11;
-            byte var_10;
             byte var_F;
             StringList var_E;
             StringList var_A;
             StringList var_6;
-            byte var_2;
             byte var_1;
 
             var_6 = gbl.dword_1AE6C;
-            var_11 = 0;
+            bool found = false;
 
-            var_12 = gbl.unk_19AEC[arg_0 & 0x7F].spellLevel;
+            int sp_lvl = gbl.unk_19AEC[arg_0 & 0x7F].spellLevel;
 
             if (gbl.dword_1AE6C == null)
             {
@@ -389,11 +358,11 @@ namespace engine
             {
                 var_F = 0;
 
-                while (var_6 != null && var_11 == 0)
+                while (var_6 != null && found == false)
                 {
                     if (var_6.field_29 == 0)
                     {
-                        if (gbl.unk_19AEC[gbl.unk_1AEC4[var_F]].spellLevel <= var_12 &&
+                        if (gbl.unk_19AEC[gbl.unk_1AEC4[var_F]].spellLevel <= sp_lvl &&
                             gbl.unk_1AEC4[var_F] != (arg_0 & 0x7F))
                         {
                             var_F++;
@@ -401,7 +370,7 @@ namespace engine
                         }
                         else
                         {
-                            var_11 = 1;
+                            found = true;
                         }
                     }
                     else
@@ -437,10 +406,10 @@ namespace engine
 
                     var_1 = 1;
 
-                    for (var_10 = var_F; var_10 <= 0x53; var_10++)
+                    for (int i = var_F; i <= 0x53; i++)
                     {
-                        var_2 = gbl.unk_1AE70[var_10];
-                        gbl.unk_1AE70[var_10] = var_1;
+                        byte var_2 = gbl.unk_1AE70[i];
+                        gbl.unk_1AE70[i] = var_1;
                         var_1 = var_2;
                     }
                 }
@@ -450,15 +419,7 @@ namespace engine
                 }
             }
 
-            if (arg_0 > 0x7F)
-            {
-                var_6.s = " *";
-            }
-            else
-            {
-                var_6.s = "  ";
-            }
-
+            var_6.s = (arg_0 > 0x7F) ? " *" : "  ";
             var_6.s += AffectNames[arg_0 & 0x7F];
             var_6.field_29 = 0;
 
@@ -472,10 +433,10 @@ namespace engine
                 var_1 = gbl.unk_1AEC4[var_F];
                 gbl.unk_1AEC4[var_F] = (byte)(arg_0 & 0x7F);
 
-                for (var_10 = (byte)(var_F + 1); var_10 <= 0x53; var_10++)
+                for (int i = var_F + 1; i <= 0x53; i++)
                 {
-                    var_2 = gbl.unk_1AEC4[var_10];
-                    gbl.unk_1AEC4[var_10] = var_1;
+                    byte var_2 = gbl.unk_1AEC4[i];
+                    gbl.unk_1AEC4[i] = var_1;
                     var_1 = var_2;
                 }
             }
@@ -535,20 +496,17 @@ namespace engine
 
         internal static bool sub_5CA74(SpellLoc spl_location)
         {
-            byte var_D;
             sbyte var_C;
             sbyte var_B;
             StringList var_A;
             StringList var_6;
-            byte var_2;
-            bool var_1;
 
-            var_D = 1;
-            var_1 = false;
+            bool result = false;
+            bool var_D = true;
 
             gbl.dword_1AE6C = null;
 
-            for (var_2 = 0; var_2 < gbl.max_spells; var_2++)
+            for (int var_2 = 0; var_2 < gbl.max_spells; var_2++)
             {
                 gbl.unk_1AEC4[var_2] = 0;
             }
@@ -556,7 +514,7 @@ namespace engine
             switch (spl_location)
             {
                 case SpellLoc.memory:
-                    for (var_2 = 0; var_2 < gbl.max_spells; var_2++)
+                    for (int var_2 = 0; var_2 < gbl.max_spells; var_2++)
                     {
                         if (gbl.player_ptr.spell_list[var_2] > 0 &&
                             can_learn_spell((byte)(gbl.player_ptr.spell_list[var_2] & 0x7F), gbl.player_ptr) == true &&
@@ -568,7 +526,7 @@ namespace engine
                     break;
 
                 case SpellLoc.memorize:
-                    for (var_2 = 0; var_2 < gbl.max_spells; var_2++)
+                    for (int var_2 = 0; var_2 < gbl.max_spells; var_2++)
                     {
                         if (gbl.player_ptr.spell_list[var_2] > 0x7F &&
                             can_learn_spell((byte)(gbl.player_ptr.spell_list[var_2] & 0x7F), gbl.player_ptr) == true)
@@ -579,7 +537,7 @@ namespace engine
                     break;
 
                 case SpellLoc.grimoire:
-                    for (var_2 = 1; var_2 <= 100; var_2++)
+                    for (int var_2 = 1; var_2 <= 100; var_2++)
                     {
                         if (gbl.player_ptr.field_79[var_2-1] != 0 &&
                             can_learn_spell(var_2, gbl.player_ptr) == true)
@@ -591,21 +549,21 @@ namespace engine
 
                 case SpellLoc.scroll:
                     scroll_5C912(0);
-                    var_D = 0;
+                    var_D = false;
                     break;
 
                 case SpellLoc.scrolls:
                     sub_5C9F4(0);
-                    var_D = 0;
+                    var_D = false;
                     break;
 
                 case SpellLoc.scribe:
                     sub_5C9F4(1);
-                    var_D = 0;
+                    var_D = false;
                     break;
 
                 case SpellLoc.choose:
-                    for (var_2 = 1; var_2 <= 100; var_2++)
+                    for (int var_2 = 1; var_2 <= 100; var_2++)
                     {
                         int sp_lvl = gbl.unk_19AEC[var_2].spellLevel;
                         int sp_class = gbl.unk_19AEC[var_2].spellClass;
@@ -629,9 +587,9 @@ namespace engine
 
             if (gbl.dword_1AE6C != null)
             {
-                if (var_D != 0)
+                if (var_D == true)
                 {
-                    var_2 = 0;
+                    int var_2 = 0;
 
                     var_C = gbl.unk_19AEC[gbl.unk_1AEC4[var_2]].spellLevel;
 
@@ -669,10 +627,10 @@ namespace engine
                         var_6 = var_6.next;
                     } while (var_6 != null);
                 }
-                var_1 = true;
+                result = true;
             }
 
-            return var_1;
+            return result;
         }
 
 

@@ -85,7 +85,7 @@ namespace engine
             {
                 var_106 = statShortString[var_5];
                 seg041.displayString(var_106, 0, 10, var_5 + 7, 1);
-                display_stat(0, var_5);
+                display_stat(false, var_5);
             }
 
             displayMoney();
@@ -178,7 +178,7 @@ namespace engine
             ovr025.display_AC(yCol, 4, player);
 
             seg041.displayString("HP    ", 0, 15, yCol + 1, 1);
-            ovr025.display_hp(0, yCol + 1, 4, player);
+            ovr025.display_hp(false, yCol + 1, 4, player);
 
             xCol = 8;
 
@@ -220,49 +220,37 @@ namespace engine
         }
 
 
-        internal static void display_stat(byte arg_0, byte stat_index)
+        internal static void display_stat(bool arg_0, byte stat_index)
         {
-            byte var_2B;
-            byte var_2A;
-            string var_29;
-
-            if (arg_0 != 0)
-            {
-                var_2B = 0x0D;
-            }
-            else
-            {
-                var_2B = 0x0A;
-            }
-
-            var_2A = 5;
-            seg037.draw8x8_clear_area(stat_index + 7, 0x0b, stat_index + 7, var_2A);
+            int color = arg_0 ? 0x0D : 0x0A;
+            int col_x = 5;
+            seg037.draw8x8_clear_area(stat_index + 7, 0x0b, stat_index + 7, col_x);
 
             if (gbl.player_ptr.stats[stat_index].max < 10)
             {
-                var_2A++;
+                col_x++;
             }
 
             string s = gbl.player_ptr.stats[stat_index].max.ToString();
-            seg041.displayString(s, 0, var_2B, stat_index + 7, var_2A);
+            seg041.displayString(s, 0, color, stat_index + 7, col_x);
 
             if (stat_index == 0 &&
                 gbl.player_ptr.strength == 18 &&
                 gbl.player_ptr.strength_18_100 > 0)
             {
-                var_29 = gbl.player_ptr.strength_18_100.ToString();
+                string text = gbl.player_ptr.strength_18_100.ToString();
 
                 if (gbl.player_ptr.strength_18_100 < 10)
                 {
-                    var_29 = "0" + var_29;
+                    text = "0" + text;
                 }
 
                 if (gbl.player_ptr.strength_18_100 == 100)
                 {
-                    var_29 = "00";
+                    text = "00";
                 }
 
-                seg041.displayString("(" + var_29 + ")", 0, var_2B, 7, 7);
+                seg041.displayString("(" + text + ")", 0, color, 7, 7);
             }
         }
 
@@ -271,98 +259,90 @@ namespace engine
 
         internal static void viewPlayer(out bool arg_0)
         {
-            short var_32;
-            byte var_30;
-            byte var_2F;
-            bool var_2E;
-            bool hasSpells;
-            byte hasMoney;
-            string var_2B;
-            char var_1;
-
             if (gbl.game_state == 5)
             {
                 ovr033.Color_0_8_normal();
             }
 
-            var_1 = ' ';
+            char input_key = ' ';
             arg_0 = false;
 
             gbl.player_ptr01 = gbl.player_ptr;
 
             playerDisplayFull();
 
-            while (unk_54B03.MemberOf(var_1) == false && arg_0 == false)
+            while (unk_54B03.MemberOf(input_key) == false && arg_0 == false)
             {
-                var_2B = string.Empty;
-                hasSpells = false;
-                hasMoney = 0;
+                string text = string.Empty;
+                bool hasSpells = false;
+                bool hasMoney = false;
 
-                for (var_2F = 0; var_2F < gbl.max_spells; var_2F++)
+                for (int i = 0; i < gbl.max_spells; i++)
                 {
-                    if (gbl.player_ptr02.spell_list[var_2F] > 0)
+                    if (gbl.player_ptr02.spell_list[i] > 0)
                     {
                         hasSpells = true;
                     }
                 }
 
-                for (var_30 = 0; var_30 <= 6; var_30++)
+                for (int i = 0; i <= 6; i++)
                 {
-                    if (gbl.player_ptr02.Money[var_30] > 0)
+                    if (gbl.player_ptr02.Money[i] > 0)
                     {
-                        hasMoney = 1;
+                        hasMoney = true;
                     }
                 }
 
                 if (gbl.player_ptr02.itemsPtr != null)
                 {
-                    var_2B += "Items ";
+                    text += "Items ";
                 }
 
                 if (hasSpells == true)
                 {
-                    var_2B += "Spells ";
+                    text += "Spells ";
                 }
 
                 if (gbl.player_ptr02.field_F7 < 0x80 ||
                     gbl.player_ptr02.in_combat == false ||
                     gbl.player_ptr02.health_status == Status.animated)
                 {
-                    if (hasMoney != 0 && gbl.game_state != 5)
+                    if (hasMoney && gbl.game_state != 5)
                     {
-                        var_2B += "Trade ";
+                        text += "Trade ";
                     }
                 }
 
-                if (hasMoney != 0)
+                if (hasMoney)
                 {
-                    var_2B +=  "Drop ";
+                    text += "Drop ";
                 }
 
                 if (CanCastHeal(gbl.player_ptr) == true)
                 {
-                    var_2B += "Heal ";
+                    text += "Heal ";
                 }
 
                 if (CanCastCure(gbl.player_ptr) == true)
                 {
-                    var_2B += "Cure ";
+                    text += "Cure ";
                 }
 
-                var_2B += "Exit";
+                text += "Exit";
 
-                var_1 = ovr027.displayInput(out var_2E, false, 0, 15, 10, 13, var_2B, string.Empty);
+                bool dummyBool;
+                input_key = ovr027.displayInput(out dummyBool, false, 0, 15, 10, 13, text, string.Empty);
 
-                var_32 = -1;
+                short var_32 = -1;
 
-                switch (var_1)
+                switch (input_key)
                 {
                     case 'I':
                         PlayerItemsMenu(ref arg_0);
                         break;
 
                     case 'S':
-                        var_2F = spell_menu2(out hasSpells, ref var_32, 0, SpellLoc.memory);
+                        spell_menu2(out hasSpells, ref var_32, 0, SpellLoc.memory);
                         break;
 
                     case 'T':
@@ -379,12 +359,12 @@ namespace engine
                         break;
 
                     case 'C':
-                        sub_577EC(gbl.player_ptr);
+                        paladin_cure_disease(gbl.player_ptr);
                         break;
                 }
 
                 if (arg_0 == false &&
-                    asc_54B50.MemberOf(var_1) == true)
+                    asc_54B50.MemberOf(input_key) == true)
                 {
                     playerDisplayFull();
                 }
@@ -1614,43 +1594,43 @@ namespace engine
 
         internal static byte spell_menu2(out bool arg_0, ref short arg_4, byte arg_8, SpellLoc spl_location)
         {
-            string var_2A;
-            byte var_1;
+            string text;
+            byte result;
 
             switch (spl_location)
             {
                 case SpellLoc.memory:
 
-                    var_2A = "in Memory";
+                    text = "in Memory";
                     break;
 
                 case SpellLoc.grimoire:
 
-                    var_2A = "in Grimoire";
+                    text = "in Grimoire";
                     break;
 
                 case SpellLoc.scroll:
-                    var_2A = "on Scroll";
+                    text = "on Scroll";
                     break;
 
                 case SpellLoc.scrolls:
-                    var_2A = "on Scrolls";
+                    text = "on Scrolls";
                     break;
 
                 case SpellLoc.choose:
-                    var_2A = "to Choose";
+                    text = "to Choose";
                     break;
 
                 case SpellLoc.memorize:
-                    var_2A = "to Memorize";
+                    text = "to Memorize";
                     break;
 
                 case SpellLoc.scribe:
-                    var_2A = "to Scribe";
+                    text = "to Scribe";
                     break;
 
                 default:
-                    var_2A = string.Empty;
+                    text = string.Empty;
                     break;
             }
 
@@ -1680,66 +1660,64 @@ namespace engine
 
                 ovr025.displayPlayerName(true, 1, 1, gbl.player_ptr);
 
-                seg041.displayString("Spells " + var_2A, 0, 10, 1, gbl.player_ptr.name.Length + 4);
+                seg041.displayString("Spells " + text, 0, 10, 1, gbl.player_ptr.name.Length + 4);
 
-                var_1 = ovr023.spell_menu(ref arg_4, arg_8);
+                result = ovr023.spell_menu(ref arg_4, arg_8);
             }
             else
             {
-                var_1 = 0;
+                result = 0;
             }
 
-            return var_1;
+            return result;
         }
 
 
         internal static bool CanCastHeal(Player player) /* sub_575F0 */
         {
-            Affect var_5;
-            bool var_1;
+            Affect dummyAffect;
+            bool result;
 
             if ((player._class == ClassId.paladin || (player.field_114 > 0 && ovr026.sub_6B3D1(player) != 0)) &&
                  gbl.game_state != 5 &&
                     player.health_status == Status.okey &&
-                    ovr025.find_affect(out var_5, Affects.affect_8c, player) == false)
+                    ovr025.find_affect(out dummyAffect, Affects.affect_8c, player) == false)
             {
-                var_1 = true;
+                result = true;
             }
             else
             {
-                var_1 = false;
+                result = false;
             }
 
-            return var_1;
+            return result;
         }
 
 
         internal static bool CanCastCure(Player player) /* sub_57655 */
         {
-            bool var_1;
+            bool result;
 
             if ((player._class == ClassId.paladin || (player.field_114 > 0 && ovr026.sub_6B3D1(player) != 0)) &&
                 gbl.game_state != 5 &&
                 player.health_status == Status.okey &&
                 player.field_191 > 0)
             {
-                var_1 = true;
+                result = true;
             }
             else
             {
-                var_1 = false;
+                result = false;
             }
 
-            return var_1;
+            return result;
         }
 
 
         internal static void sub_576D7(Player player)
         {
-            Player player_ptr;
-
             ovr025.load_pic();
-            player_ptr = gbl.player_next_ptr;
+            Player player_ptr = gbl.player_next_ptr;
 
             ovr025.selectAPlayer(ref player_ptr, true, "Heal whom? ");
 
@@ -1775,51 +1753,47 @@ namespace engine
             Affects.hot_fire_shield, 
             Affects.affect_39 };
 
-        internal static void sub_577EC(Player player)
+        internal static void paladin_cure_disease(Player player) /* sub_577EC */
         {
-            Affect var_A;
-            char var_6;
-            bool var_5;
-            Player player_ptr;
+            Affect dummy_affect;
 
             ovr025.load_pic();
-            player_ptr = gbl.player_next_ptr;
+            Player target = gbl.player_next_ptr;
 
-            ovr025.selectAPlayer(ref player_ptr, true, "Cure whom? ");
+            ovr025.selectAPlayer(ref target, true, "Cure whom? ");
 
-            if (player_ptr == null)
+            if (target == null)
             {
                 playerDisplayFull();
             }
             else
             {
-                var_5 = false;
+                bool is_diseased = false;
                 for (gbl.byte_1DA71 = 1; gbl.byte_1DA71 < 7; gbl.byte_1DA71++)
                 {
-                    if (ovr025.find_affect(out var_A, unk_16B39[gbl.byte_1DA71], player_ptr) == true)
+                    if (ovr025.find_affect(out dummy_affect, unk_16B39[gbl.byte_1DA71], target) == true)
                     {
-                        var_5 = true;
+                        is_diseased = true;
                     }
                 }
 
-                var_6 = 'Y';
+                char input = 'Y';
 
-                if (var_5 == false)
+                if (is_diseased == false)
                 {
+                    ovr025.DisplayPlayerStatusString(false, 0, "is not diseased", target);
 
-                    ovr025.DisplayPlayerStatusString(false, 0, "is not diseased", player_ptr);
-
-                    var_6 = ovr027.yes_no(15, 10, 13, "cure anyway: ");
+                    input = ovr027.yes_no(15, 10, 13, "cure anyway: ");
 
                     ovr025.ClearPlayerTextArea();
                 }
 
-                if (var_6 == 'Y')
+                if (input == 'Y')
                 {
                     gbl.byte_1D2C6 = true;
                     for (gbl.byte_1DA71 = 1; gbl.byte_1DA71 < 7; gbl.byte_1DA71++)
                     {
-                        ovr024.remove_affect(null, unk_16B39[gbl.byte_1DA71], player_ptr);
+                        ovr024.remove_affect(null, unk_16B39[gbl.byte_1DA71], target);
                     }
 
                     gbl.byte_1D2C6 = false;
@@ -1829,12 +1803,12 @@ namespace engine
                         player.field_191--;
                     }
 
-                    if (ovr025.find_affect(out var_A, Affects.affect_8D, player) == false)
+                    if (ovr025.find_affect(out dummy_affect, Affects.affect_8D, player) == false)
                     {
                         ovr024.add_affect(true, 0, 0x2760, Affects.affect_8D, player);
                     }
 
-                    ovr025.string_print01(player_ptr.name + " is cured");
+                    ovr025.string_print01(target.name + " is cured");
                 }
 
                 playerDisplayFull();
