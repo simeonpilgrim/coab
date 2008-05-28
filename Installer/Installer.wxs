@@ -6,30 +6,30 @@
   <?define Manufacturer="ReActive Systems"?>
   <?define UpgradeCode="6acb18e9-9a80-4ed4-a8ef-3634fa2b3e9b"?>
 
-  <Product Id="*" 
+  <Product Id="*"
            Name="Curse of the Azure Bonds"
-           Language="1033" 
+           Language="1033"
            Version='$(var.ProductVersion)'
            Manufacturer='$(var.Manufacturer)'
            UpgradeCode="$(var.UpgradeCode)">
     <Package InstallerVersion="200" Compressed="yes"  />
 
     <Media Id="1" Cabinet="Installer.cab" EmbedCab="yes" />
-    
+
     <Upgrade Id="$(var.UpgradeCode)">
       <UpgradeVersion Minimum="$(var.ProductVersion)"
                       IncludeMinimum="no"
                       OnlyDetect="yes"
                       Language="1033"
                       Property="NEWPRODUCTFOUND"/>
-      
-      <UpgradeVersion Minimum="1.0.0" 
-                      IncludeMinimum="yes" 
-                      Maximum="$(var.ProductVersion)" 
-                      IncludeMaximum="no" 
+
+      <UpgradeVersion Minimum="1.0.0"
+                      IncludeMinimum="yes"
+                      Maximum="$(var.ProductVersion)"
+                      IncludeMaximum="no"
                       Property="UPGRADEFOUND"/>
     </Upgrade>
-    
+
     <Directory Id="TARGETDIR" Name="SourceDir">
       <Directory Id="ProgramFilesFolder">
         <Directory Id="INSTALLLOCATION" Name="Curse of the Azure Bonds">
@@ -152,6 +152,9 @@
           <Component Id="ClassesComponent" Guid="{193AEC02-2C90-47dc-931D-B8D6523B4779}">
             <File Id ="classes.dll" Source="C:\dev\coab\Main\bin\Debug\classes.dll" />
           </Component>
+          <Component Id="LoggingComponent" Guid="{42F3391F-FA43-4cb2-90DE-344FC6C19EC4}">
+            <File Id ="logging.dll" Source="C:\dev\coab\Main\bin\Debug\logging.dll" />
+          </Component>
         </Directory>
       </Directory>
     </Directory>
@@ -162,9 +165,10 @@
       <ComponentRef Id="MainComponent" />
       <ComponentRef Id="EngineComponent" />
       <ComponentRef Id="ClassesComponent" />
+      <ComponentRef Id="LoggingComponent" />
     </Feature>
 
-    
+
     <!-- Prevent downgrading -->
     <CustomAction Id="PreventDowngrading" Error="Newer version already installed." />
 
@@ -177,6 +181,6 @@
     <InstallUISequence>
       <Custom Action="PreventDowngrading" After="FindRelatedProducts">NEWPRODUCTFOUND</Custom>
     </InstallUISequence>
-    
+
   </Product>
 </Wix>

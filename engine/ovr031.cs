@@ -1,4 +1,5 @@
 using Classes;
+using Logging;
 
 namespace engine
 {
@@ -660,13 +661,7 @@ namespace engine
                 if (var_2 == 0 ||
                     ((var_2 / 0x30C) + arg_0) > 4)
                 {
-                    seg051.Write(0, "Unable to load ", gbl.known01_02);
-                    seg051.Write(0, arg_2, gbl.known01_02);
-                    seg051.Write(0, " from WALLDEF" + var_12 + ".", gbl.known01_02);
-                    seg051.WriteLn(gbl.known01_02);
-
-                    seg043.GetInputKey();
-                    seg043.print_and_exit();
+                    Logger.LogAndExit("Unable to load {0} from WALLDEF{1}.", arg_2, var_12);
                 }
 
                 var_A = (short)(gbl.symbol_set_fix[arg_0] - gbl.symbol_set_fix[1]);
@@ -731,10 +726,7 @@ namespace engine
 
             if (bytesRead == 0 || bytesRead != 0x402)
             {
-                seg051.Write(0, "Unable to load geo in Load3DMap.", gbl.known01_02);
-                seg051.WriteLn(gbl.known01_02);
-                seg043.GetInputKey();
-                seg043.print_and_exit();
+                Logger.LogAndExit("Unable to load geo in Load3DMap.");
             }
 
             System.Array.Copy(var_6, 2, gbl.stru_1D530, 0, 0x400);

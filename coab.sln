@@ -29,6 +29,12 @@ Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "Installer", "Installer\Inst
 		{6FA9069E-3549-4352-ACBA-73BB0406C0B1} = {6FA9069E-3549-4352-ACBA-73BB0406C0B1}
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Logging", "Logging\Logging.csproj", "{BEC15EB8-3A21-49FF-ABC0-7465927E80B8}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +57,10 @@ Global
 		{88FC9A0B-D761-4940-824E-DD6F08E748CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{88FC9A0B-D761-4940-824E-DD6F08E748CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{88FC9A0B-D761-4940-824E-DD6F08E748CA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BEC15EB8-3A21-49FF-ABC0-7465927E80B8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BEC15EB8-3A21-49FF-ABC0-7465927E80B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BEC15EB8-3A21-49FF-ABC0-7465927E80B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BEC15EB8-3A21-49FF-ABC0-7465927E80B8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,4 +1,5 @@
 using Classes;
+using Logging;
 
 namespace engine
 {
@@ -15,17 +16,7 @@ namespace engine
 
                 if( gbl.symbol_8x8_set[arg_0] == null )
                 {
-                    seg051.Write( 0, "Unable to load ", gbl.known01_02 );
-                    seg051.Write( 0, arg_2, gbl.known01_02 );
-
-                    text = " from 8x8D" + gbl.game_area.ToString();
-
-                    seg051.Write( 0, text, gbl.known01_02 );
-                    seg051.WriteLn( gbl.known01_02 );
-
-                    seg043.GetInputKey();
-
-                    seg043.print_and_exit();
+                    Logger.LogAndExit("Unable to load {0} from 8x8D{1}", arg_2, gbl.game_area);
                 }
 
 				seg043.clear_keyboard();

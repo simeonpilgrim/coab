@@ -88,6 +88,10 @@
       <Project>{6FA9069E-3549-4352-ACBA-73BB0406C0B1}</Project>
       <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
     </ProjectReference>
+    <ProjectReference Include="..\Logging\Logging.csproj">
+      <Project>{BEC15EB8-3A21-49FF-ABC0-7465927E80B8}</Project>
+      <Name>Logging</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs">

@@ -4,53 +4,6 @@ using System.Collections.Generic;
 
 namespace Classes
 {
-    public class Cheats
-    {
-        public static bool allow_player_modify = true;
-
-        public static bool always_show_areamap = false;
-        public static void AlwayShowAreaMapToggle()
-        {
-            always_show_areamap = !always_show_areamap;
-        }
-
-        public static bool free_training = false;
-        public static void FreeTrainingToggle()
-        {
-            free_training = !free_training;
-        }
-
-        public static bool view_item_stats = false;
-        public static void ViewItemStatsTogle()
-        {
-            view_item_stats = !view_item_stats;
-        }
-
-        public static bool player_always_saves = false;
-        public static void PlayerAlwaysSavesToggle()
-        {
-            player_always_saves = !player_always_saves;
-        }
-
-        public static bool allow_gods_intervene = false;
-        public static void AllowGodsInterveneToggle()
-        {
-            allow_gods_intervene = !allow_gods_intervene;
-        }
-
-        public static bool skip_copy_protection = true;
-        public static void SkipCopyProtectionToggle()
-        {
-            skip_copy_protection = !skip_copy_protection;
-        }
-
-        public static bool display_full_item_names = false;
-        public static void DisplayFullItemNamesToggle()
-        {
-            display_full_item_names = !display_full_item_names;
-        }
-    }
-
     public enum QuickFight 
     {
         False = 0,
@@ -470,7 +423,6 @@ namespace Classes
 
         public static RestTime word_1A13C = new RestTime( 10, 10, 6, 24, 30, 12, 0x100 );
 
-        public static short dos_call_result; // seg600:47EE word_1AAFE
         public static ushort word_1AE0F;
         public static ushort word_1AE11;
         public static ushort word_1AE13;
@@ -615,7 +567,7 @@ namespace Classes
         public static byte saving_throw_roll;
         public static bool save_made;
         public static bool gameFlag01;
-        public static bool printCommands;
+        public static bool printCommands = false;
 
         public static DaxBlock sky_dax_250;
         public static DaxBlock sky_dax_251;
@@ -756,9 +708,6 @@ new Struct_19AEC( 4Bh,0,8,12h,3,12h,7,13h,6,12h,8,12h,6,6,12h,0Fh),
 new Struct_19AEC( 32h,0,7,12h,3,12h,3,12h,8,12h,3,12h,3,3,12h,11h) };*/
 
 
-
-        public static Text unk_1EE9A = new Text(); // seg600:8B8A File/TEXT
-
         public static byte[] unk_1D89D = new byte[9]; // seg600:758D
 
  
@@ -789,8 +738,6 @@ new Struct_19AEC( 32h,0,7,12h,3,12h,3,12h,8,12h,3,12h,3,3,12h,11h) };*/
 
         public static byte friends_count;
         public static byte foe_count;
-
-        public static Text known01_02;
 
         public static bool unk_1AB07; // seg600:47F7
 

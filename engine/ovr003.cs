@@ -1,4 +1,5 @@
 using Classes;
+using Logging;
 
 namespace engine
 {
@@ -2881,8 +2882,7 @@ namespace engine
                     break;
             }
 
-            System.Console.Out.WriteLine("{1} 0x{0:X}", gbl.command, name);
-
+            Logger.Debug("{1} 0x{0:X}", gbl.command, name);
         }
     }
 }

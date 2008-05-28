@@ -8,12 +8,6 @@ namespace engine
 		static System.Random random_number;
         /*static int random_number;*/
 
-        internal static void o_1_a_87_i_tpdos_idc_tpdos_l_tptv()
-        {
-            gbl.known01_02 = new Text();
-            gbl.known01_02.Assign(string.Empty, Text.AssignType.Write);
-        }
-
 
         internal static byte[] GetMem( int arg_0 )
         /*TODO REMOVE THIS*/
@@ -32,121 +26,6 @@ namespace engine
         /*TODO REMOVE THIS*/
         {
 
-        }
-
-        internal static void Close( Text arg_2 )
-        {
-            if (arg_2 != null)
-            {
-                if (arg_2.reader != null)
-                {
-                    arg_2.reader.Close();
-                }
-                if (arg_2.writer != null)
-                {
-                    arg_2.writer.Close();
-                }
-            }
-        }
-
-
-        static void __PutEntry( Text arg_0 )
-        {
-            if (gbl.dos_call_result == 0 &&
-                arg_0.field_2 != 0xD7B2)
-            {
-                gbl.dos_call_result = 0x69;
-            }
-
-            throw new System.NotSupportedException();//bx = arg_0.field_8;
-            throw new System.NotSupportedException();//dx = arg_0.field_4;
-
-            throw new System.NotSupportedException();//mov	bx, es:[di+8]
-            throw new System.NotSupportedException();//mov	dx, es:[di+4]
-            throw new System.NotSupportedException();//les	di, es:[di+0Ch]
-        }
-
-
-        static void __PutChar( )
-        {
-            throw new System.NotSupportedException();//mov	es:[bx+di], al
-            throw new System.NotSupportedException();//inc	bx
-            throw new System.NotSupportedException();//cmp	bx, dx
-            throw new System.NotSupportedException();//jz	loc_14E83
-            throw new System.NotSupportedException();//retn
-            throw new System.NotSupportedException();//loc_14E83:
-            throw new System.NotSupportedException();//mov	di, sp
-            throw new System.NotSupportedException();//les	di, ss:[di+2]
-        }
-
-
-        internal static void WriteLn( Text arg_0 )
-        {
-            arg_0.writer.WriteLine();
-        }
-
-
-        internal static char Read(Text arg_0)
-        {
-            return (char)arg_0.reader.Read();
-        }
-
-		/// <summary>
-		/// leaves arg_6 on the stack.
-		/// </summary>
-        internal static void Read( short arg_0, out string arg_2, Text arg_6 )
-        {
-            char[] buff = new char[arg_0];
-
-            arg_6.reader.Read(buff,0,arg_0);
-
-            arg_2 = Sys.ArrayToString(buff, 0, arg_0);
-        }
-
-        internal static void Write( short arg_0, string arg_2, Text arg_6 )
-        {
-            arg_6.writer.Write(string.Empty.PadLeft(arg_0));
-            arg_6.writer.Write(arg_2);
-        }
-
-		/// <summary>
-		/// leaves arg_6 on the stack.
-		/// </summary>
-		internal static void Write( short arg_0, int arg_2, Text arg_6 )
-        //Write(Text far &,Longint,Word)
-        {
-            string var_20 = arg_2.ToString();
-
-            throw new System.NotSupportedException();//les	di, [bp+arg_6]
-            throw new System.NotSupportedException();//assume es:nothing
-            throw new System.NotSupportedException();//push	es
-            throw new System.NotSupportedException();//push	di
-            throw new System.NotSupportedException();//call	__PutEntry
-            throw new System.NotSupportedException();//jnz	loc_1508A
-            throw new System.NotSupportedException();//mov	ax, [bp+arg_0]
-            throw new System.NotSupportedException();//sub	ax, cx
-            throw new System.NotSupportedException();//jle	loc_1507F
-            throw new System.NotSupportedException();//mov	si, cx
-            throw new System.NotSupportedException();//mov	cx, ax
-            throw new System.NotSupportedException();//loc_15076:
-            throw new System.NotSupportedException();//mov	al, 0x20
-            throw new System.NotSupportedException();//call	__PutChar
-            throw new System.NotSupportedException();//loop	loc_15076
-            throw new System.NotSupportedException();//mov	cx, si
-            throw new System.NotSupportedException();//loc_1507F:
-            throw new System.NotSupportedException();//lea	si, [bp+var_20]
-            throw new System.NotSupportedException();//loc_15082:
-            throw new System.NotSupportedException();//cld
-            throw new System.NotSupportedException();//lods	byte ptr ss:[si+0]
-            throw new System.NotSupportedException();//call	__PutChar
-            throw new System.NotSupportedException();//loop	loc_15082
-            throw new System.NotSupportedException();//loc_1508A:
-            throw new System.NotSupportedException();//pop	di
-            throw new System.NotSupportedException();//pop	es
-            throw new System.NotSupportedException();//mov	es:[di+8], bx
-            throw new System.NotSupportedException();//mov	sp, bp
-            throw new System.NotSupportedException();//pop	bp
-            throw new System.NotSupportedException();//retf	6
         }
 
         internal static string Copy(int CopyLen, int StartAt, string InString)
@@ -271,23 +150,6 @@ namespace engine
         internal static void Close( File arg_0 )
         {
             arg_0.stream.Close();
-
-            if (checkFILEvalid(arg_0))
-			{
-				arg_0.status = 0xD7B0;
-			}
-        }
-
-
-        static bool checkFILEvalid( File f )
-        {
-			if( f.status != 0xD7B3 )
-			{
-				gbl.dos_call_result = 0x67;
-				return false;
-			}
-
-			return true;
         }
 
 
@@ -334,24 +196,6 @@ namespace engine
 				buffer[i] = fill_byte;
 			}
         }
-
-        static List<string> Param = new List<string>();
-
-        internal static string ParamStr(short arg_0)
-        {
-            string param;
-            if (Param.Count < arg_0)
-            {
-                param = string.Empty;
-            }
-            else
-            {
-                param = Param[arg_0];
-            }
-
-            return param;
-        }
-
 
         internal static void MkDir( string path )
         {

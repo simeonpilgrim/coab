@@ -1,4 +1,5 @@
 using Classes;
+using Logging;
 
 namespace engine
 {
@@ -15,10 +16,7 @@ namespace engine
 
                 seg044.sound_sub_120E0(gbl.sound_FF_188BC);
 
-                if (gbl.printCommands == true)
-                {
-                    seg051.Close(gbl.unk_1EE9A);
-                }
+                Logger.Close();            
 
                 ovr012.keyboardStatus_0417 = gbl.byte_1EFBA;
 
@@ -29,18 +27,11 @@ namespace engine
 
         static void display_players_affects(Player player)
         {
-            Affect affect;
-
-            affect = player.affect_ptr;
+            Affect affect = player.affect_ptr;
 
             while (affect != null)
             {
-                seg051.Write(0, "who: ", gbl.unk_1EE9A);
-                seg051.Write(0, player.name, gbl.unk_1EE9A);
-                seg051.Write(0, "  sp#: ", gbl.unk_1EE9A);
-                seg051.Write(0, (int)affect.type, gbl.unk_1EE9A);
-                seg051.WriteLn(gbl.unk_1EE9A);
-
+                Logger.Debug("who: {0}  sp#: {1} - {2}", player.name, (int)affect.type, affect.type);
                 affect = affect.next;
             }
         }
@@ -49,25 +40,25 @@ namespace engine
 
         internal static byte GetInputKey()
         {
-            byte var_2;
+            byte key;
 
             if (gbl.inDemo == true)
             {
                 if (seg049.KEYPRESSED() == true)
                 {
-                    var_2 = seg049.READKEY();
+                    key = seg049.READKEY();
                 }
                 else
                 {
-                    var_2 = 0;
+                    key = 0;
                 }
             }
             else
             {
-                var_2 = seg049.READKEY();
+                key = seg049.READKEY();
             }
 
-            if (var_2 == 0x13)
+            if (key == 0x13)
             {
                 if (gbl.soundType != SoundType.None)
                 {
@@ -85,56 +76,40 @@ namespace engine
                 }
             }
 
-            if (seg051.ParamStr(1) == "STING")
+            if (Cheats.allow_keyboard_exit && key == 3)
             {
-                if (var_2 == 3)
-                {
-                    print_and_exit();
-                }
+                print_and_exit();
             }
 
-            if (var_2 != 0)
+            if (key != 0)
             {
                 while (seg049.KEYPRESSED() == true)
                 {
-                    var_2 = seg049.READKEY();
+                    key = seg049.READKEY();
                 }
             }
 
-            return var_2;
+            return key;
         }
 
         public static void DumpPlayerAffects()
         {
-            Player player;
+            Player player = gbl.player_next_ptr;
 
-            if (gbl.printCommands == true)
+            while (player != null)
             {
-                player = gbl.player_next_ptr;
-
-                while (player != null)
-                {
-                    display_players_affects(player);
-                    player = player.next_player;
-                }
+                display_players_affects(player);
+                player = player.next_player;
             }
         }
 
         public static void ToggleCommandDebugging()
-        {
-            
+        {    
             gbl.printCommands = !gbl.printCommands;
 
             if (gbl.printCommands == true)
             {
-                gbl.unk_1EE9A.Assign("debug.txt", Text.AssignType.Write);
-
-                seg051.Write(0, System.DateTime.Now.ToString(), gbl.unk_1EE9A);
-                seg051.WriteLn(gbl.unk_1EE9A);
-            }
-            else
-            {
-                seg051.Close(gbl.unk_1EE9A);
+                Logger.Debug(System.DateTime.Now.ToString());
             }
         }
 

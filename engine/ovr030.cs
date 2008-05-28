@@ -1,4 +1,5 @@
 using Classes;
+using Logging;
 
 namespace engine
 {
@@ -235,9 +236,7 @@ namespace engine
         {
             if (arg_4 < 1 || arg_4 > 3)
             {
-                seg051.Write(0, "Illegal range in Show3DSprite.", gbl.known01_02);
-                seg051.WriteLn(gbl.known01_02);
-                seg043.print_and_exit();
+                Logger.LogAndExit("Illegal range in Show3DSprite. {0}", arg_4);
             }
 
             if (arg_0.ptrs[arg_4 - 1].field_4 != null)

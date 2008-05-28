@@ -1,4 +1,5 @@
 using Classes;
+using Logging;
 
 namespace engine
 {
@@ -8,9 +9,7 @@ namespace engine
         {
             if (destCellOffset > 0x30)
             {
-                seg051.Write(0, "Start range error in Load24x24Set", gbl.known01_02);
-                seg051.WriteLn(gbl.known01_02);
-                seg043.print_and_exit();
+                Logger.LogAndExit("Start range error in Load24x24Set. {0}", destCellOffset);
             }
 
             DaxBlock tmp_block = null;
