@@ -9,6 +9,7 @@ namespace engine
 
 		static void debug_display( string arg_0 )
 		{
+            
             System.Console.Write(arg_0);
 			seg043.GetInputKey();
 		}

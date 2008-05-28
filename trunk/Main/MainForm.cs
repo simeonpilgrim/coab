@@ -37,11 +37,6 @@ namespace Main
             engine.seg049.AddKey( Keyboard.KeyToIBMKey(e.KeyCode) );
         }
 
-        private void dumpPlayerAffectsToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            engine.seg043.DumpPlayerAffects();
-        }
-
         private void commandDebugToolStripMenuItem_CheckedChanged(object sender, EventArgs e)
         {
             engine.seg043.ToggleCommandDebugging();

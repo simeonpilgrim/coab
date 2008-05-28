@@ -15,12 +15,10 @@ namespace engine
             EngineThread.Abort();
         }
 
-        public static void __SystemInit(VoidDelegate stoppedCallback  )
+        public static void __SystemInit(VoidDelegate stoppedCallback)
         {
             EngineThread = System.Threading.Thread.CurrentThread;
             EngineStoppedCallback = stoppedCallback;
-
-            seg051.o_1_a_87_i_tpdos_idc_tpdos_l_tptv();
 
             seg044.sound_sub_121BF();
             seg039.config_game();
@@ -35,10 +33,6 @@ namespace engine
                 gbl.CombatMap[i] = new gbl.Struct_1C9CD();
             }
             
-       
-
-
-
             gbl.SortedCombatantList = new SortedCombatant[gbl.MaxSortedCombatantCount];
             for (int i = 0; i < gbl.MaxSortedCombatantCount; i++)
             {
@@ -63,7 +57,7 @@ namespace engine
 			seg044.sound_sub_120E0( gbl.sound_0_188BE );
             seg044.sound_sub_12194();
 
-			if( seg051.ParamStr( 1 ) != "STING" )
+			if( Cheats.skip_title_screen == false )
 			{
 				ovr002.title_screen();
 			}

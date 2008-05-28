@@ -16,7 +16,6 @@ namespace Classes
 		}
 
 		public short field_0;
-		public ushort status;
 		public byte id;
 		public byte[] field_4;
 		public string name;

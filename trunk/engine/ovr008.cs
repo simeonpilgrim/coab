@@ -1,4 +1,5 @@
 using Classes;
+using Logging;
 
 namespace engine
 {
@@ -1594,7 +1595,7 @@ namespace engine
 
             if (gbl.printCommands == true)
             {
-                System.Console.Out.Write("SKIPPING: ");
+                Logger.Debug("SKIPPING: ");
                 ovr003.print_command();
             }
 

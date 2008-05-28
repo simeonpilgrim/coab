@@ -101,6 +101,7 @@
     <Compile Include="AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Cheats.cs" />
     <Compile Include="DataIO.cs" />
     <Compile Include="DaxArray.cs" />
     <Compile Include="DaxBlock.cs">
@@ -165,9 +166,12 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Sys.cs" />
-    <Compile Include="Text.cs">
-      <SubType>Code</SubType>
-    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Logging\Logging.csproj">
+      <Project>{BEC15EB8-3A21-49FF-ABC0-7465927E80B8}</Project>
+      <Name>Logging</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
