@@ -51,7 +51,7 @@ namespace engine
 
             gbl.player_ptr02 = gbl.player_ptr;
 
-            seg037.draw8x8_01();
+            seg037.draw8x8_outer_frame();
 
             ovr025.displayPlayerName(false, 1, 1, gbl.player_ptr02);
 
@@ -416,7 +416,7 @@ namespace engine
 
         internal static void ItemDisplayStats(Item arg_0) /*sub_550A6*/
         {
-            seg037.draw8x8_01();
+            seg037.draw8x8_outer_frame();
 
             seg041.displayString("itemptr:      ", 0, 10, 1, 1);
             seg041.displayString(arg_0.type.ToString(), 0, 10, 1, 0x14);
@@ -1654,7 +1654,7 @@ namespace engine
                     }
                     else
                     {
-                        seg037.draw8x8_01();
+                        seg037.draw8x8_outer_frame();
                     }
                 }
 

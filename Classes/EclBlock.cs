@@ -58,6 +58,9 @@ namespace Classes
             return (byte[])data.Clone();
         }
 
+        /// <summary>
+        /// Dev Debugging Function
+        /// </summary>
         public void SearchForBytes(byte[] bytes, int length)
         {
             for (int offset = 0; offset <= ecl_struct_size; offset++)
@@ -75,6 +78,9 @@ namespace Classes
             }
         }
 
+        /// <summary>
+        /// Dev Debugging Function
+        /// </summary>
         public void SearchECL(byte[,] blocks)
         {
             int last = 0;

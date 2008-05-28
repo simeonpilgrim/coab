@@ -182,7 +182,7 @@ namespace engine
 
             if (gbl.game_state == 3 &&
                 gbl.bigpic_block_id == 0x79 &&
-                gbl.byte_1D5B4 != 0x50)
+                gbl.lastDaxBlockId != 0x50)
             {
                 ovr028.sub_6E005();
                 ovr028.map_cursor_draw();
@@ -193,7 +193,7 @@ namespace engine
             {
                 if (gbl.game_state == 3 &&
                     gbl.bigpic_block_id == 0x79 &&
-                    gbl.byte_1D5B4 != 0x50 &&
+                    gbl.lastDaxBlockId != 0x50 &&
                     seg041.time01() >= var_5B)
                 {
                     ovr028.map_cursor_draw();
@@ -203,9 +203,9 @@ namespace engine
                 if ((gbl.area_ptr.field_3FE != 0 || useOverlay == true) &&
                     gbl.byte_1D556.curFrame > 0)
                 {
-                    ovr030.sub_7000A(gbl.byte_1D556.ptrs[gbl.byte_1D556.curFrame].field_4, useOverlay, 3, 3);
+                    ovr030.sub_7000A(gbl.byte_1D556.ptrs[gbl.byte_1D556.curFrame-1].field_4, useOverlay, 3, 3);
 
-                    if ((seg041.time01() - timeStart) >= (gbl.byte_1D556.ptrs[gbl.byte_1D556.curFrame].field_0 * 10) ||
+                    if ((seg041.time01() - timeStart) >= (gbl.byte_1D556.ptrs[gbl.byte_1D556.curFrame-1].field_0 * 10) ||
                         gbl.area_ptr.field_3FE != 0)
                     {
                         gbl.byte_1D556.curFrame++;
@@ -335,7 +335,7 @@ namespace engine
 
                 if (gbl.game_state == 3 &&
                     gbl.bigpic_block_id == 0x79 &&
-                    gbl.byte_1D5B4 != 0x50 &&
+                    gbl.lastDaxBlockId != 0x50 &&
                     seg041.time01() >= var_5F)
                 {
                     ovr028.map_cursor_restore();
@@ -351,7 +351,7 @@ namespace engine
 
             if (gbl.game_state == 3 &&
                 gbl.bigpic_block_id == 0x79 &&
-                gbl.byte_1D5B4 != 0x50)
+                gbl.lastDaxBlockId != 0x50)
             {
                 ovr028.map_cursor_restore();
             }

@@ -9,7 +9,7 @@ namespace engine
 
         internal static void sub_6F0BA()
         {
-            if (gbl.byte_1D5B4 == 0x50)
+            if (gbl.lastDaxBlockId == 0x50)
             {
                 gbl.can_draw_bigpic = false;
             }

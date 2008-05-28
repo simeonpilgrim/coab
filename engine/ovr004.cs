@@ -22,7 +22,7 @@ namespace engine
             ovr034.Load24x24Set(0x1A, 0, 1, "tiles");
             ovr034.Load24x24Set(0x16, 0x1A, 2, "tiles");
 
-            seg037.draw8x8_01();
+            seg037.draw8x8_outer_frame();
 
             seg041.displayString("Align the espruar and dethek runes", 0, 10, 2, 3);
             seg041.displayString("shown below, on translation wheel", 0, 10, 3, 3);

@@ -455,7 +455,7 @@ namespace engine
             byte var_2;
             sbyte var_1;
 
-            seg037.draw8x8_01();
+            seg037.draw8x8_outer_frame();
             var_14 = 0;
 
             do

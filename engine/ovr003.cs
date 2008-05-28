@@ -571,7 +571,7 @@ namespace engine
 
                 if (var_1 != 0xff &&
                     gbl.area_ptr.field_1CC == 0 &&
-                    gbl.byte_1D5B4 != 0x50)
+                    gbl.lastDaxBlockId != 0x50)
                 {
                     ovr030.load_bigpic(0x79);
                 }
@@ -1596,7 +1596,7 @@ namespace engine
                 if (gbl.byte_1EE8C == 0 ||
                     gbl.byte_1EE8D == 0 ||
                     gbl.area_ptr.field_1CC == 0 ||
-                    gbl.byte_1D5B4 == 0x50)
+                    gbl.lastDaxBlockId == 0x50)
                 {
                     useOverlay = false;
                 }
@@ -2072,7 +2072,7 @@ namespace engine
 
             if (gbl.byte_1B2F0 != 0)
             {
-                seg037.draw8x8_01();
+                seg037.draw8x8_outer_frame();
                 gbl.textXCol = 2;
                 gbl.textYCol = 2;
 
@@ -2306,7 +2306,7 @@ namespace engine
                     break;
 
                 case 0xE804:
-                    ovr030.sub_7000A(gbl.byte_1D556.ptrs[gbl.byte_1D556.curFrame].field_4, true, 3, 3);
+                    ovr030.sub_7000A(gbl.byte_1D556.ptrs[gbl.byte_1D556.curFrame-1].field_4, true, 3, 3);
                     gbl.byte_1D556.curFrame++;
 
                     if (gbl.byte_1D556.curFrame > gbl.byte_1D556.numFrames)
@@ -2358,7 +2358,7 @@ namespace engine
             if (var_1 == 0)
             {
                 ovr018.startGameMenu();
-                if (gbl.byte_1D5B4 != 0x50 &&
+                if (gbl.lastDaxBlockId != 0x50 &&
                     gbl.area_ptr.field_1CC == 0)
                 {
                     ovr025.load_pic();

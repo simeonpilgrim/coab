@@ -1806,7 +1806,7 @@ namespace engine
             switch (gbl.game_state)
             {
                 case 0:
-                    seg037.draw8x8_01();
+                    seg037.draw8x8_outer_frame();
                     break;
 
                 case 1:
@@ -1815,7 +1815,7 @@ namespace engine
                         seg037.draw8x8_03();
                     }
 
-                    if (gbl.byte_1D5B4 == 0x50)
+                    if (gbl.lastDaxBlockId == 0x50)
                     {
 
                         ovr030.sub_7000A(gbl.byte_1D556.ptrs[0].field_4, true, 3, 3);
@@ -1846,7 +1846,7 @@ namespace engine
                     break;
 
                 case 3:
-                    if (gbl.byte_1D5B4 != 0x50)
+                    if (gbl.lastDaxBlockId != 0x50)
                     {
                         ovr029.sub_6F0BA();
                     }

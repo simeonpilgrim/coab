@@ -417,7 +417,7 @@ namespace engine
 
         internal static void displayCombatResults(int arg_0) /* sub_2DABC */
 		{
-			seg037.draw8x8_01();
+			seg037.draw8x8_outer_frame();
 
 			if( gbl.byte_1AB14 != 0 ||
                 gbl.combat_type == gbl.combatType.duel)
@@ -490,7 +490,7 @@ namespace engine
 
         internal static void select_treasure(ref short index, out Item selectedItem, out char key) /* sub_2DD2B */
         {
-            seg037.draw8x8_01();
+            seg037.draw8x8_outer_frame();
 
             Item tmpItem = gbl.item_pointer;
             while( tmpItem != null )
@@ -831,7 +831,7 @@ namespace engine
 
             if( treasureTaken )
             {
-                seg037.draw8x8_01();
+                seg037.draw8x8_outer_frame();
                 player = gbl.player_next_ptr;
                 int yCol = 0;
 
@@ -925,7 +925,7 @@ namespace engine
                 else
                 {
                     gbl.area2_ptr.field_58E = 0x80;
-                    seg037.draw8x8_01();
+                    seg037.draw8x8_outer_frame();
                     gbl.textXCol = 2;
                     gbl.textYCol = 6;
                     seg041.press_any_key( "The monsters rejoice for the party has been destroyed", true, 0, 10, 0x16, 0x25, 5, 2 );

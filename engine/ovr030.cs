@@ -33,24 +33,10 @@ namespace engine
         }
 
 
-        internal static void load_pic_final(ref DaxArray daxArray, byte masked, byte block_id, string arg_8)
+        internal static void load_pic_final(ref DaxArray daxArray, byte masked, byte block_id, string file_name)
         {
-            DaxBlock var_2C;
-            byte var_28;
-            byte var_23;
-            byte[] mem = null;
-            short width;
-            short height;
-            byte var_12;
-            short var_11;
-            byte[] uncompressed_data;
-            short var_B;
-            string file_string;
-
-            file_string = arg_8;
-
-            if (file_string != gbl.lastDaxFile ||
-                block_id != gbl.byte_1D5B4)
+            if (file_name != gbl.lastDaxFile ||
+                block_id != gbl.lastDaxBlockId)
             {
                 if (block_id != 0xff)
                 {
@@ -61,103 +47,106 @@ namespace engine
                     }
 
                     DaxArrayFreeDaxBlocks(daxArray);
-                    gbl.lastDaxFile = file_string;
 
-                    gbl.byte_1D5B4 = block_id;
+                    gbl.lastDaxFile = file_name;
+                    gbl.lastDaxBlockId = block_id;
 
-                    bool is_pic_or_final = (file_string == "PIC" || file_string == "FINAL");
+                    bool is_pic_or_final = (file_name == "PIC" || file_name == "FINAL");
 
-                    seg042.load_decode_dax(out uncompressed_data, out var_B, block_id, file_string + gbl.game_area.ToString() + ".dax");
+                    short uncompressed_size;
+                    byte[] uncompressed_data;
 
-                    if (var_B == 0)
+                    seg042.load_decode_dax(out uncompressed_data, out uncompressed_size, block_id, file_name + gbl.game_area.ToString() + ".dax");
+
+                    if (uncompressed_size == 0)
                     {
                         seg041.displayAndDebug("PIC not found", 0, 14);
                     }
                     else
                     {
-                        var_11 = 0;
-                        bool var_22 = false;
+                        int src_offset = 0;
+                        bool allocated_first_frame = false;
 
-                        daxArray.numFrames = uncompressed_data[var_11];
-                        var_11++;
+                        daxArray.numFrames = uncompressed_data[src_offset];
+                        src_offset++;
                         daxArray.curFrame = 1;
 
-                        var_23 = 0;
+                        byte frames_count = 0; // kind of pointless...
 
                         if (gbl.AnimationsOn == false && is_pic_or_final == true)
                         {
                             daxArray.numFrames = 1;
                         }
 
-                        var_28 = daxArray.numFrames;
+                        byte[] first_frame_ega_layout = null;
 
-                        for (var_12 = 1; var_12 <= var_28; var_12++)
+                        for (int frame = 1; frame <= daxArray.numFrames; frame++)
                         {
-                            daxArray.ptrs[var_12 - 1].field_0 = Sys.ArrayToInt(uncompressed_data, var_11);
-                            var_11 += 4;
+                            daxArray.ptrs[frame - 1].field_0 = Sys.ArrayToInt(uncompressed_data, src_offset);
+                            src_offset += 4;
 
-                            height = Sys.ArrayToShort(uncompressed_data, var_11);
-                            var_11 += 2;
+                            short height = Sys.ArrayToShort(uncompressed_data, src_offset);
+                            src_offset += 2;
 
-                            width = Sys.ArrayToShort(uncompressed_data, var_11);
-                            var_11 += 2;
+                            short width = Sys.ArrayToShort(uncompressed_data, src_offset);
+                            src_offset += 2;
 
-                            var_23++;
+                            frames_count++;
 
-                            seg040.init_dax_block(out daxArray.ptrs[var_12 - 1].field_4, masked, 1, width, height);
+                            seg040.init_dax_block(out daxArray.ptrs[frame - 1].field_4, masked, 1, width, height);
 
-                            var_2C = daxArray.ptrs[var_12 - 1].field_4;
+                            DaxBlock dax_block = daxArray.ptrs[frame - 1].field_4;
 
-                            var_2C.field_4 = Sys.ArrayToShort(uncompressed_data, var_11);
-                            var_11 += 2;
+                            dax_block.field_4 = Sys.ArrayToShort(uncompressed_data, src_offset);
+                            src_offset += 2;
 
-                            var_2C.field_6 = Sys.ArrayToShort(uncompressed_data, var_11);
-                            var_11 += 3;
+                            dax_block.field_6 = Sys.ArrayToShort(uncompressed_data, src_offset);
+                            src_offset += 3;
 
-                            System.Array.Copy(uncompressed_data, var_11, var_2C.field_9, 0, 8);
-                            var_11 += 8;
+                            System.Array.Copy(uncompressed_data, src_offset, dax_block.field_9, 0, 8);
+                            src_offset += 8;
 
-                            int var_20 = (daxArray.ptrs[var_12 - 1].field_4.bpp / 2) - 1;
+                            int ega_encoded_size = (daxArray.ptrs[frame - 1].field_4.bpp / 2) - 1;
 
                             if (is_pic_or_final == true)
                             {
-                                if (var_12 == 1)
+                                if (frame == 1)
                                 {
-                                    mem = seg051.GetMem(var_20 + 1);
+                                    first_frame_ega_layout = seg051.GetMem(ega_encoded_size + 1);
 
-                                    System.Array.Copy(uncompressed_data, var_11, mem, 0, var_20 + 1);
+                                    System.Array.Copy(uncompressed_data, src_offset, first_frame_ega_layout, 0, ega_encoded_size + 1);
 
-                                    var_22 = true;
+                                    allocated_first_frame = true;
                                 }
                                 else
                                 {
-                                    for( int i = 0; i < var_20; i++ )
+                                    for (int i = 0; i < ega_encoded_size; i++)
                                     {
-                                        byte b = mem[i];
-                                        uncompressed_data[var_11 + i] ^= b;
+                                        byte b = first_frame_ega_layout[i];
+                                        uncompressed_data[src_offset + i] ^= b;
                                     }
                                 }
                             }
 
-                            seg040.turn_dax_to_videolayout(daxArray.ptrs[var_12-1].field_4, 0, masked, var_11, uncompressed_data);
+                            seg040.turn_dax_to_videolayout(daxArray.ptrs[frame - 1].field_4, 0, masked, src_offset, uncompressed_data);
 
                             if ((masked & 1) > 0)
                             {
-                                seg040.DaxBlockRecolor(daxArray.ptrs[var_12-1].field_4, 0, 0, unk_16DDA, unk_16DCA);
+                                seg040.DaxBlockRecolor(daxArray.ptrs[frame - 1].field_4, 0, 0, unk_16DDA, unk_16DCA);
                             }
 
-                            var_11 += (short)(var_20 + 1);
+                            src_offset += ega_encoded_size + 1;
                         }
 
-                        daxArray.numFrames = var_23;
+                        daxArray.numFrames = frames_count; // also pointless
 
 
-                        if (is_pic_or_final == true && var_22 == true)
+                        if (is_pic_or_final == true && allocated_first_frame == true)
                         {
                             //seg051.FreeMem(var_20 + 1, mem);
                         }
 
-                        seg051.FreeMem(var_B, uncompressed_data);
+                        seg051.FreeMem(uncompressed_size, uncompressed_data);
                         seg043.clear_keyboard();
 
                         if (gbl.AnimationsOn == true)
@@ -181,7 +170,7 @@ namespace engine
             arg_0.curFrame = 0;
 
             gbl.lastDaxFile = string.Empty;
-            gbl.byte_1D5B4 = 0x0FF;
+            gbl.lastDaxBlockId = 0x0FF;
         }
 
 
