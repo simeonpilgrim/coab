@@ -113,7 +113,7 @@ namespace engine
             {
                 while (var_F == true)
                 {
-                    seg037.draw8x8_01();
+                    seg037.draw8x8_outer_frame();
                     if (gbl.player_ptr != null)
                     {
                         ovr025.Player_Summary(gbl.player_ptr);
@@ -311,7 +311,7 @@ namespace engine
                                     gbl.game_state = gameState;
 
                                     if (gbl.byte_1B2EB == 0 &&
-                                        gbl.byte_1D5B4 != 0x50)
+                                        gbl.lastDaxBlockId != 0x50)
                                     {
                                         if (gbl.game_state == 3)
                                         {
@@ -2236,7 +2236,7 @@ namespace engine
 									   " Keep Exit", 
 									   "Next Prev Keep Exit" };
 
-            seg037.draw8x8_01();
+            seg037.draw8x8_outer_frame();
             ovr033.Color_0_8_inverse();
 
             do

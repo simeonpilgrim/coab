@@ -327,7 +327,7 @@ namespace Classes
         public static DaxArray byte_1D556;
         public static string lastDaxFile;
         public static string byte_1D5AB;
-        public static byte byte_1D5B4; // byte_1D5B4
+        public static byte lastDaxBlockId; // byte_1D5B4
         public static byte byte_1D5B5;
         public static byte bigpic_block_id; /* byte_1D5BA */
         public static byte byte_1D5BE;

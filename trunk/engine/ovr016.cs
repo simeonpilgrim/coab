@@ -891,7 +891,7 @@ namespace engine
 
             var_17 = true;
             var_42 = 0;
-            seg037.draw8x8_01();
+            seg037.draw8x8_outer_frame();
 
             ovr027.sl_select_item(out var_C, ref var_42, ref var_17, true, var_8,
                 0x16, 0x26, 4, 1, 15, 10, 11, string.Empty, string.Empty);
@@ -1518,7 +1518,7 @@ namespace engine
             gbl.unk_1D890.Clear();
 
             gbl.byte_1D5AB = gbl.lastDaxFile;
-            gbl.byte_1D5B5 = gbl.byte_1D5B4;
+            gbl.byte_1D5B5 = gbl.lastDaxBlockId;
 
             ovr025.load_pic();
             seg037.draw8x8_clear_area(0x16, 0x26, 0x11, 1);

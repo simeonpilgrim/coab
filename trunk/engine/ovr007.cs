@@ -130,7 +130,7 @@ namespace engine
             var_4 = null;
             var_11 = gbl.item_pointer;
             var_15 = 0;
-            seg037.draw8x8_01();
+            seg037.draw8x8_outer_frame();
             gbl.byte_1AB16 = true;
 
 			do
