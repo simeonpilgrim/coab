@@ -10,9 +10,15 @@ namespace Classes
         True = 1
     }
 
+    public enum Effect
+    {
+        Add = 0,
+        Remove = 1
+    }
+
     public delegate void spellDelegate(out bool arg_0, QuickFight quick_fight, byte arg_6);
     public delegate void spellDelegate2();
-    public delegate void spellDelegateX(byte arg_0, object affect, Player player);
+    public delegate void spellDelegateX(Effect arg_0, object affect, Player player);
 
 
     public enum SoundType
@@ -338,7 +344,7 @@ namespace Classes
         public static byte byte_1D88D;
         public static bool displayPlayerStatusLine18; /* byte_1D8A8 */
         public static bool can_draw_bigpic; // byte_1D8AA
-        public static byte byte_1D8AC;
+        public static bool byte_1D8AC; // byte_1D8AC
         public static byte byte_1D8B0;
         public static byte byte_1D8B6; // not used.
         public static byte byte_1D8B7;

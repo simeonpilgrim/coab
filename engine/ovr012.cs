@@ -192,7 +192,7 @@ namespace engine
             gbl.game_state = 4;
             gbl.last_game_state = 0;
             gbl.gameFlag01 = true;
-            gbl.byte_1D8AC = 0;
+            gbl.byte_1D8AC = false;
             gbl.sky_dax_250 = null;
             gbl.sky_dax_251 = null;
             gbl.sky_dax_252 = null;
@@ -310,7 +310,7 @@ namespace engine
             gbl.game_state = 4;
             gbl.last_game_state = 0;
             gbl.gameFlag01 = true;
-            gbl.byte_1D8AC = 0;
+            gbl.byte_1D8AC = false;
             gbl.gameWon = false;
         }
     }

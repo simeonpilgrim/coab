@@ -691,7 +691,7 @@ namespace engine
             {0, 0, 1, 1, 1},
             {0, 0, 0, 1, 1}  };
 
-        internal static void sub_55B04(byte arg_0, Item item)
+        internal static void calc_items_effects(bool add_item, Item item) /*sub_55B04*/
         {
             Player player = gbl.player_ptr;
 
@@ -700,12 +700,12 @@ namespace engine
             switch (masked_affect)
             {
                 case 0:
-                    gbl.byte_1D8AC = 1;
-                    ovr024.CallSpellJumpTable((arg_0 == 0)?(byte)1:(byte)0, item, player, item.affect_3);
+                    gbl.byte_1D8AC = true;
+                    ovr024.CallSpellJumpTable((add_item) ? Effect.Add : Effect.Remove, item, player, item.affect_3);
                     break;
 
                 case 1:
-                    if (arg_0 != 0)
+                    if (add_item == true)
                     {
                         player.field_12D[2,0] *= 2;
                         player.field_12D[2,1] *= 2;
@@ -814,7 +814,7 @@ namespace engine
                     break;
 
                 case 9:
-                    if (arg_0 == 0)
+                    if (add_item == false)
                     {
                         ovr024.remove_affect(null, Affects.spiritual_hammer, player);
                     }
@@ -863,7 +863,7 @@ namespace engine
 
                     if (var_1 == true)
                     {
-                        sub_55B04(0, item);
+                        calc_items_effects(false, item);
                     }
                 }
                 return;
@@ -923,7 +923,7 @@ namespace engine
                         item.readied = true;
                         if (var_1 == true)
                         {
-                            sub_55B04(1, item);
+                            calc_items_effects(true, item);
                         }
                         break;
 

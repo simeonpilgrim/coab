@@ -2599,7 +2599,7 @@ namespace engine
         }
 
 
-        internal static void engulfs(byte arg_0, object param, Player attacker)
+        internal static void engulfs(Effect arg_0, object param, Player attacker)
         {
             Affect dummyAffect;
             Player target = attacker.actions.target;
@@ -2613,7 +2613,7 @@ namespace engine
                 ovr025.DisplayPlayerStatusString(true, 12, "engulfs " + target.name, attacker);
                 ovr024.add_affect(false, ovr033.get_player_index(target), 0, Affects.affect_3a, target);
 
-                ovr024.CallSpellJumpTable(0, null, target, Affects.affect_3a);
+                ovr024.CallSpellJumpTable(Effect.Add, null, target, Affects.affect_3a);
                 ovr024.add_affect(false, ovr024.roll_dice(4, 2), 0, Affects.affect_0d, target);
                 ovr024.add_affect(true, ovr033.get_player_index(target), 0, Affects.affect_8b, attacker);
             }
@@ -2646,7 +2646,7 @@ namespace engine
         }
 
 
-        internal static void attack_or_kill(byte arg_0, object param, Player attacker)
+        internal static void attack_or_kill(Effect arg_0, object param, Player attacker)
         {
             Player target;
             int range = 0; /* simeon */
@@ -2739,7 +2739,7 @@ namespace engine
         }
 
 
-        internal static void sub_425C6(byte arg_0, object param, Player player)
+        internal static void sub_425C6(Effect arg_0, object param, Player player)
         {
             Affect affect = (Affect)param;
             bool var_1;
@@ -2781,19 +2781,18 @@ namespace engine
         }
 
 
-        internal static void sub_426FC(byte arg_0, object param, Player player)
+        internal static void sub_426FC(Effect arg_0, object param, Player player)
         {
             Affect affect = (Affect)param;
-            bool var_1;
 
             gbl.spell_target = gbl.player_array[affect.field_3];
 
-            if (arg_0 != 0 ||
+            if (arg_0 == Effect.Remove ||
                 player.in_combat == false ||
                 gbl.spell_target.in_combat == false)
             {
                 ovr024.remove_affect(null, Affects.affect_3a, gbl.spell_target);
-                if (arg_0 == 0)
+                if (arg_0 == Effect.Add)
                 {
                     affect.call_spell_jump_list = false;
                     ovr024.remove_affect(affect, Affects.affect_90, player);
@@ -2805,9 +2804,11 @@ namespace engine
                 player.field_19D = 0;
                 player.field_19E = 2;
                 player.field_1A0 = 8;
+                
+                bool dummy_bool;
 
-                sub_3F9DB(out var_1, null, 2, gbl.spell_target, player);
-                var_1 = ovr025.clear_actions(player);
+                sub_3F9DB(out dummy_bool, null, 2, gbl.spell_target, player);
+                dummy_bool = ovr025.clear_actions(player);
 
                 if (gbl.spell_target.in_combat == false)
                 {
@@ -2818,7 +2819,7 @@ namespace engine
         }
 
 
-        internal static void hugs(byte arg_0, object param, Player player)
+        internal static void hugs(Effect arg_0, object param, Player player)
         {
             if (gbl.byte_1D2C9 >= 18)
             {
@@ -2826,7 +2827,7 @@ namespace engine
                 ovr025.DisplayPlayerStatusString(true, 12, "hugs " + gbl.spell_target.name, player);
 
                 ovr024.add_affect(false, ovr033.get_player_index(gbl.spell_target), 0, Affects.affect_3a, gbl.spell_target);
-                ovr024.CallSpellJumpTable(0, null, gbl.spell_target, Affects.affect_3a);
+                ovr024.CallSpellJumpTable(Effect.Add, null, gbl.spell_target, Affects.affect_3a);
 
                 ovr024.add_affect(true, ovr033.get_player_index(gbl.spell_target), 0, Affects.affect_90, player);
             }

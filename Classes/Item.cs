@@ -35,7 +35,7 @@ namespace Classes
         public short weight; // 0x37
         public int count;   // 0x39 
         public short _value; // 0x3A "seams like value is in electrum, as value is doubled.";
-        public Affects affect_1; // ox3C
+        public Affects affect_1; // 0x3C
         public Affects affect_2; // 0x3D
         public Affects affect_3; // 0x3E
 

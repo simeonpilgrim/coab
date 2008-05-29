@@ -32,27 +32,27 @@ namespace engine
         }
 
 
-        internal static void sub_3A071(byte arg_0, object param, Player player)
+        internal static void sub_3A071(Effect arg_0, object param, Player player)
         {
             ovr025.clear_actions(player);
         }
 
 
-        internal static void sub_3A087(byte arg_0, object param, Player player)
+        internal static void sub_3A087(Effect arg_0, object param, Player player)
         {
             gbl.saving_throw_roll++;
             gbl.byte_1D2C9++;
         }
 
 
-        internal static void sub_3A096(byte arg_0, object param, Player player)
+        internal static void sub_3A096(Effect add_remove, object param, Player player)
         {
             gbl.byte_1D2CC += 5;
             gbl.byte_1D2C9++;
         }
 
 
-        internal static void sub_3A0A6(byte arg_0, object param, Player player)
+        internal static void sub_3A0A6(Effect arg_0, object param, Player player)
         {
             if (gbl.byte_1D2CC < 5)
             {
@@ -66,7 +66,7 @@ namespace engine
         }
 
 
-        internal static void sub_3A0DC(byte arg_0, object param, Player player)
+        internal static void sub_3A0DC(Effect arg_0, object param, Player player)
         {
             Affect affect = (Affect)param;
 
@@ -88,7 +88,7 @@ namespace engine
         }
 
 
-        internal static void sub_3A15F(byte arg_0, object param, Player player)
+        internal static void sub_3A15F(Effect arg_0, object param, Player player)
         {
             if ((gbl.player_ptr.field_14B & 1) != 0)
             {
@@ -97,7 +97,7 @@ namespace engine
         }
 
 
-        internal static void sub_3A17A(byte arg_0, object param, Player player)
+        internal static void sub_3A17A(Effect arg_0, object param, Player player)
         {
             sbyte var_1;
 
@@ -126,7 +126,7 @@ namespace engine
         }
 
 
-        internal static void sub_3A1DF(byte arg_0, object param, Player player)
+        internal static void sub_3A1DF(Effect arg_0, object param, Player player)
         {
             if (player.ac < 0x3A)
             {
@@ -148,7 +148,7 @@ namespace engine
         }
 
 
-        internal static void sub_3A224(byte arg_0, object param, Player player)
+        internal static void sub_3A224(Effect arg_0, object param, Player player)
         {
             if (gbl.player_ptr.alignment == 2 ||
                 gbl.player_ptr.alignment == 5 ||
@@ -160,7 +160,7 @@ namespace engine
         }
 
 
-        internal static void sub_3A259(byte arg_0, object param, Player player)
+        internal static void sub_3A259(Effect arg_0, object param, Player player)
         {
             if (gbl.player_ptr.alignment == 0 ||
                 gbl.player_ptr.alignment == 3 ||
@@ -172,7 +172,7 @@ namespace engine
         }
 
 
-        internal static void sub_3A28E(byte arg_0, object param, Player player)
+        internal static void sub_3A28E(Effect arg_0, object param, Player player)
         {
             if ((gbl.damage_flags & 2) != 0)
             {
@@ -182,11 +182,11 @@ namespace engine
         }
 
 
-        internal static void sub_3A2AD(byte arg_0, object param, Player player)
+        internal static void sub_3A2AD(Effect arg_0, object param, Player player)
         {
             Affect affect = (Affect)param;
 
-            if (arg_0 != 0)
+            if (arg_0 == Effect.Remove)
             {
                 player.combat_team = (CombatTeam)((affect.field_3 & 0x40) >> 6);
 
@@ -217,7 +217,7 @@ namespace engine
         }
 
 
-        internal static void Suffocates(byte arg_0, object param, Player player)
+        internal static void Suffocates(Effect arg_0, object param, Player player)
         {
             Affect affect = (Affect)param;
 
@@ -232,7 +232,7 @@ namespace engine
         }
 
 
-        internal static void sub_3A3BC(byte arg_0, object param, Player player)
+        internal static void sub_3A3BC(Effect arg_0, object param, Player player)
         {
             Affect affect = (Affect)param;
 
@@ -251,7 +251,7 @@ namespace engine
         }
 
 
-        internal static void sub_3A41F(byte arg_0, object param, Player player)
+        internal static void sub_3A41F(Effect arg_0, object param, Player player)
         {
             if (player.ac < 0x39)
             {
@@ -267,7 +267,7 @@ namespace engine
         }
 
 
-        internal static void sub_3A44A(byte arg_0, object param, Player player)
+        internal static void sub_3A44A(Effect arg_0, object param, Player player)
         {
             gbl.spell_target = player.actions.target;
             //HACK - why could gbl.spell_target be null?
@@ -278,7 +278,7 @@ namespace engine
         }
 
 
-        internal static void sub_3A480(byte arg_0, object param, Player player)
+        internal static void sub_3A480(Effect arg_0, object param, Player player)
         {
             if (arg_0 == 0 &&
                 (gbl.damage_flags & 1) != 0)
@@ -289,7 +289,7 @@ namespace engine
         }
 
 
-        internal static void is_silenced1(byte arg_0, object param, Player player)
+        internal static void is_silenced1(Effect arg_0, object param, Player player)
         {
             if (player.actions.field_2 != 0)
             {
@@ -301,7 +301,7 @@ namespace engine
         }
 
 
-        internal static void sub_3A517(byte arg_0, object param, Player player)
+        internal static void sub_3A517(Effect arg_0, object param, Player player)
         {
             Affect var_4;
 
@@ -318,7 +318,7 @@ namespace engine
         }
 
 
-        internal static void sub_3A583(byte arg_0, object param, Player player)
+        internal static void sub_3A583(Effect arg_0, object param, Player player)
         {
             bool item_found;
             Item item;
@@ -368,7 +368,7 @@ namespace engine
         }
 
 
-        internal static void sub_3A6C6(byte arg_0, object param, Player player)
+        internal static void sub_3A6C6(Effect arg_0, object param, Player player)
         {
             Affect var_4;
 
@@ -381,7 +381,7 @@ namespace engine
         }
 
 
-        internal static void sub_3A6FB(byte arg_0, object param, Player player)
+        internal static void sub_3A6FB(Effect arg_0, object param, Player player)
         {
             gbl.spell_target = player.actions.target;
 
@@ -392,7 +392,7 @@ namespace engine
         }
 
 
-        internal static void sub_3A73F(byte arg_0, object param, Player player)
+        internal static void sub_3A73F(Effect arg_0, object param, Player player)
         {
             Affect affect = (Affect)param;
 
@@ -414,13 +414,13 @@ namespace engine
         }
 
 
-        internal static void sub_3A7C0(byte arg_0, object param, Player player)
+        internal static void sub_3A7C0(Effect arg_0, object param, Player player)
         {
             gbl.damage -= gbl.damage / 4;
         }
 
 
-        internal static void sub_3A7E8(byte arg_0, object param, Player player)
+        internal static void sub_3A7E8(Effect arg_0, object param, Player player)
         {
             if (player.actions.field_2 != 0)
             {
@@ -450,7 +450,7 @@ namespace engine
         }
 
 
-        internal static void sub_3A89E(byte arg_0, object param, Player player)
+        internal static void sub_3A89E(Effect arg_0, object param, Player player)
         {
             Affect affect = (Affect)param;
 
@@ -477,7 +477,7 @@ namespace engine
         }
 
 
-        internal static void sub_3A951(byte arg_0, object param, Player player)
+        internal static void sub_3A951(Effect arg_0, object param, Player player)
         {
             gbl.byte_1D2C9 -= 4;
 
@@ -488,14 +488,14 @@ namespace engine
         }
 
 
-        internal static void sub_3A974(byte arg_0, object param, Player player)
+        internal static void sub_3A974(Effect add_remove, object param, Player player)
         {
-            ovr024.CallSpellJumpTable(arg_0, param, player, Affects.affect_2b);
-            ovr024.CallSpellJumpTable(arg_0, param, player, Affects.cause_disease_2);
+            ovr024.CallSpellJumpTable(add_remove, param, player, Affects.affect_2b);
+            ovr024.CallSpellJumpTable(add_remove, param, player, Affects.cause_disease_2);
         }
 
 
-        internal static void sub_3A9D9(byte arg_0, object arg_2, Player player)
+        internal static void sub_3A9D9(Effect arg_0, object arg_2, Player player)
         {
             byte var_1;
 
@@ -540,7 +540,7 @@ namespace engine
             throw new System.NotSupportedException();//cmp	al, 0x50
             throw new System.NotSupportedException();//ja	loc_3AB11
             ovr024.is_unaffected("goes berserk", false, 1, true, (byte)player.combat_team, 1, Affects.affect_89, player);
-            ovr024.CallSpellJumpTable(0, null, player, Affects.affect_89);
+            ovr024.CallSpellJumpTable(Effect.Add, null, player, Affects.affect_89);
             throw new System.NotSupportedException();//jmp	short loc_3AB3B
             throw new System.NotSupportedException();//loc_3AB11:
             throw new System.NotSupportedException();//cmp	al, 0x51
@@ -560,14 +560,14 @@ namespace engine
         }
 
 
-        internal static void sub_3AB6F(byte arg_0, object param, Player player)
+        internal static void sub_3AB6F(Effect arg_0, object param, Player player)
         {
             gbl.byte_1D2C9 -= 4;
             gbl.saving_throw_roll -= 4;
         }
 
 
-        internal static void has_action_timedout(byte arg_0, object param, Player player)
+        internal static void has_action_timedout(Effect arg_0, object param, Player player)
         {
             if (player.actions.delay == 0)
             {
@@ -577,7 +577,7 @@ namespace engine
         }
 
 
-        internal static void spl_age(byte arg_0, object param, Player player)
+        internal static void spl_age(Effect arg_0, object param, Player player)
         {
             Affect affect = (Affect)param;
 
@@ -593,7 +593,7 @@ namespace engine
         }
 
 
-        internal static void sub_3AC1D(byte arg_0, object param, Player player)
+        internal static void sub_3AC1D(Effect arg_0, object param, Player player)
         {
             byte var_B;
             byte var_A;
@@ -729,7 +729,7 @@ namespace engine
         }
 
 
-        internal static void sub_3AFE0(byte arg_0, object param, Player player)
+        internal static void sub_3AFE0(Effect arg_0, object param, Player player)
         {
             Item item = sub_3AF77(gbl.player_ptr);
 
@@ -740,13 +740,13 @@ namespace engine
         }
 
 
-        internal static void sub_3B01B(byte arg_0, object param, Player player)
+        internal static void sub_3B01B(Effect arg_0, object param, Player player)
         {
             gbl.byte_1D2C0 /= 2;
         }
 
 
-        internal static void weaken(byte arg_0, object param, Player player)
+        internal static void weaken(Effect arg_0, object param, Player player)
         {
             Affect var_4;
             Affect affect = (Affect)param;
@@ -770,7 +770,7 @@ namespace engine
         }
 
 
-        internal static void sub_3B0C2(byte arg_0, object param, Player player)
+        internal static void sub_3B0C2(Effect arg_0, object param, Player player)
         {
             Affect var_4;
             Affect affect = (Affect)param;
@@ -799,7 +799,7 @@ namespace engine
         }
 
 
-        internal static void sub_3B153(byte arg_0, object param, Player player)
+        internal static void sub_3B153(Effect arg_0, object param, Player player)
         {
             gbl.spell_target = player.actions.target;
 
@@ -814,7 +814,7 @@ namespace engine
         }
 
 
-        internal static void sub_3B1A2(byte arg_0, object param, Player player)
+        internal static void sub_3B1A2(Effect arg_0, object param, Player player)
         {
             if (gbl.player_ptr.field_11A == 1 &&
                 (gbl.player_ptr.field_DE & 0x7F) == 2)
@@ -824,7 +824,7 @@ namespace engine
         }
 
 
-        internal static void sub_3B1C9(byte arg_0, object param, Player player)
+        internal static void sub_3B1C9(Effect arg_0, object param, Player player)
         {
             Affect affect = (Affect)param;
 
@@ -842,7 +842,7 @@ namespace engine
         }
 
 
-        internal static void sub_3B212(byte arg_0, object param, Player player)
+        internal static void sub_3B212(Effect arg_0, object param, Player player)
         {
             if ((gbl.damage_flags & 2) != 0)
             {
@@ -855,7 +855,7 @@ namespace engine
         }
 
 
-        internal static void sub_3B243(byte arg_0, object param, Player player)
+        internal static void sub_3B243(Effect arg_0, object param, Player player)
         {
             if ((gbl.damage_flags & 1) != 0)
             {
@@ -868,13 +868,13 @@ namespace engine
         }
 
 
-        internal static void sub_3B27B(byte arg_0, object param, Player player)
+        internal static void sub_3B27B(Effect arg_0, object param, Player player)
         {
             ovr024.add_affect(false, 12, 1, Affects.invisibility, player);
         }
 
 
-        internal static void sub_3B29A(byte arg_0, object param, Player player)
+        internal static void sub_3B29A(Effect arg_0, object param, Player player)
         {
             player.actions.move = 0;
 
@@ -885,13 +885,13 @@ namespace engine
         }
 
 
-        internal static void sub_3B2BA(byte arg_0, object param, Player player)
+        internal static void sub_3B2BA(Effect arg_0, object param, Player player)
         {
             ovr024.add_affect(false, 0xff, 0, Affects.affect_62, player);
         }
 
 
-        internal static void sub_3B2D8(byte arg_0, object param, Player player)
+        internal static void sub_3B2D8(Effect arg_0, object param, Player player)
         {
             Item var_4;
 
@@ -910,7 +910,7 @@ namespace engine
         }
 
 
-        internal static void sub_3B32B(byte arg_0, object param, Player player)
+        internal static void sub_3B32B(Effect arg_0, object param, Player player)
         {
             if ((gbl.damage_flags & 1) != 0)
             {
@@ -934,7 +934,7 @@ namespace engine
         }
 
 
-        internal static void sub_3B386(byte arg_0, object param, Player player)
+        internal static void sub_3B386(Effect arg_0, object param, Player player)
         {
             Affect affect = (Affect)param;
 
@@ -946,7 +946,7 @@ namespace engine
         }
 
 
-        internal static void sub_3B3CA(byte arg_0, object param, Player player)
+        internal static void sub_3B3CA(Effect arg_0, object param, Player player)
         {
             if (gbl.spell_id > 0 &&
                 gbl.unk_19AEC[gbl.spell_id].spellLevel < 4)
@@ -983,31 +983,31 @@ namespace engine
         }
 
 
-        internal static void sub_3B520(byte arg_0, object param, Player player)
+        internal static void sub_3B520(Effect arg_0, object param, Player player)
         {
             sub_3B407(0, player);
         }
 
 
-        internal static void sub_3B534(byte arg_0, object param, Player player)
+        internal static void sub_3B534(Effect arg_0, object param, Player player)
         {
             sub_3B407(4, player);
         }
 
 
-        internal static void sub_3B548(byte arg_0, object param, Player player)
+        internal static void sub_3B548(Effect arg_0, object param, Player player)
         {
             sub_3B407(2, player);
         }
 
 
-        internal static void sub_3B55C(byte arg_0, object param, Player player)
+        internal static void sub_3B55C(Effect arg_0, object param, Player player)
         {
             sub_3B4AE(0, ovr024.roll_dice(8, 2), player);
         }
 
 
-        internal static void spell_stupid(byte arg_0, object param, Player player)
+        internal static void spell_stupid(Effect arg_0, object param, Player player)
         {
             player._int = 7;
             player.wis = 7;
@@ -1029,7 +1029,7 @@ namespace engine
         }
 
 
-        internal static void sub_3B636(byte arg_0, object param, Player player)
+        internal static void sub_3B636(Effect arg_0, object param, Player player)
         {
             Affect var_4;
 
@@ -1045,20 +1045,20 @@ namespace engine
         }
 
 
-        internal static void sub_3B671(byte arg_0, object param, Player player)
+        internal static void sub_3B671(Effect arg_0, object param, Player player)
         {
             sub_3B407(-2, player);
         }
 
 
-        internal static void sub_3B685(byte arg_0, object param, Player player)
+        internal static void sub_3B685(Effect arg_0, object param, Player player)
         {
             gbl.byte_1D2C5 = 1;
             gbl.byte_1D2C9 -= 4;
         }
 
 
-        internal static void sub_3B696(byte arg_0, object param, Player player)
+        internal static void sub_3B696(Effect arg_0, object param, Player player)
         {
             if (ovr024.roll_dice(100, 1) <= 95)
             {
@@ -1067,7 +1067,7 @@ namespace engine
         }
 
 
-        internal static void sub_3B6D2(byte arg_0, object param, Player player)
+        internal static void sub_3B6D2(Effect arg_0, object param, Player player)
         {
             if ((gbl.damage_flags & 0x20) > 0)
             {
@@ -1077,13 +1077,13 @@ namespace engine
         }
 
 
-        internal static void sub_3B70E(byte arg_0, object param, Player player)
+        internal static void sub_3B70E(Effect arg_0, object param, Player player)
         {
 
         }
 
 
-        internal static void sub_3B71A(byte arg_0, object param, Player player)
+        internal static void sub_3B71A(Effect arg_0, object param, Player player)
         {
             gbl.spell_target = player.actions.target;
 
@@ -1095,7 +1095,7 @@ namespace engine
         }
 
 
-        internal static void sub_3B772(byte arg_0, object param, Player player)
+        internal static void sub_3B772(Effect arg_0, object param, Player player)
         {
             gbl.spell_target = player.actions.target;
 
@@ -1107,7 +1107,7 @@ namespace engine
         }
 
 
-        internal static void spl_berzerk(byte arg_0, object param, Player player)
+        internal static void spl_berzerk(Effect arg_0, object param, Player player)
         {
             if (arg_0 == 0)
             {
@@ -1150,7 +1150,7 @@ namespace engine
         }
 
 
-        internal static void sub_3B8D9(byte arg_0, object param, Player player)
+        internal static void sub_3B8D9(Effect arg_0, object param, Player player)
         {
             Affect affect = (Affect)param;
 
@@ -1161,7 +1161,7 @@ namespace engine
         }
 
 
-        internal static void sub_3B919(byte arg_0, object param, Player player)
+        internal static void sub_3B919(Effect arg_0, object param, Player player)
         {
             gbl.damage_flags = 9;
 
@@ -1170,7 +1170,7 @@ namespace engine
         }
 
 
-        internal static void sub_3B94C(byte arg_0, object param, Player player)
+        internal static void sub_3B94C(Effect arg_0, object param, Player player)
         {
             gbl.damage_flags = 0x10;
 
@@ -1178,13 +1178,13 @@ namespace engine
         }
 
 
-        internal static void sub_3B97F(byte arg_0, object param, Player player)
+        internal static void sub_3B97F(Effect arg_0, object param, Player player)
         {
             gbl.damage /= 2;
         }
 
 
-        internal static void sub_3B990(byte arg_0, object param, Player player)
+        internal static void sub_3B990(Effect arg_0, object param, Player player)
         {
             if ((gbl.damage_flags & 0x01) != 0 ||
                 (gbl.damage_flags & 0x02) != 0)
@@ -1202,7 +1202,7 @@ namespace engine
         }
 
 
-        internal static void sub_3B9E1(byte arg_0, object param, Player player)
+        internal static void sub_3B9E1(Effect arg_0, object param, Player player)
         {
             byte var_1;
 
@@ -1216,7 +1216,7 @@ namespace engine
         }
 
 
-        internal static void sub_3BA14(byte arg_0, object param, Player player)
+        internal static void sub_3BA14(Effect arg_0, object param, Player player)
         {
             Item var_4;
 
@@ -1230,7 +1230,7 @@ namespace engine
         }
 
 
-        internal static void sub_3BA55(byte arg_0, object param, Player player)
+        internal static void sub_3BA55(Effect arg_0, object param, Player player)
         {
             Affect affect = (Affect)param;
 
@@ -1246,7 +1246,7 @@ namespace engine
         }
 
 
-        internal static void sub_3BAB9(byte arg_0, object param, Player player)
+        internal static void sub_3BAB9(Effect arg_0, object param, Player player)
         {
             byte var_B;
             Struct_1D885 var_8;
@@ -1343,7 +1343,7 @@ namespace engine
         }
 
 
-        internal static void sub_3BD98(byte arg_0, object param, Player arg_6)
+        internal static void sub_3BD98(Effect arg_0, object param, Player arg_6)
         {
             if ((gbl.damage_flags & 0x01) != 0)
             {
@@ -1352,7 +1352,7 @@ namespace engine
         }
 
 
-        internal static void sub_3BDB2(byte arg_0, object param, Player arg_6)
+        internal static void sub_3BDB2(Effect arg_0, object param, Player arg_6)
         {
             Item item = sub_3AF77(gbl.player_ptr);
 
@@ -1364,7 +1364,7 @@ namespace engine
         }
 
 
-        internal static void sub_3BE06(byte arg_0, object param, Player arg_6)
+        internal static void sub_3BE06(Effect arg_0, object param, Player arg_6)
         {
             Affect affect = (Affect)param;
             affect.call_spell_jump_list = false;
@@ -1377,7 +1377,7 @@ namespace engine
         }
 
 
-        internal static void sub_3BE42(byte arg_0, object param, Player arg_6)
+        internal static void sub_3BE42(Effect arg_0, object param, Player arg_6)
         {
             if (gbl.byte_1D2D1 == 4 ||
                 gbl.byte_1D2D1 == 2)
@@ -1410,7 +1410,7 @@ namespace engine
         }
 
 
-        internal static void sub_3BEB8(byte arg_0, object param, Player arg_6)
+        internal static void sub_3BEB8(Effect arg_0, object param, Player arg_6)
         {
             arg_6.hit_point_current += 3;
 
@@ -1421,7 +1421,7 @@ namespace engine
         }
 
 
-        internal static void sub_3BEE8(byte arg_0, object param, Player player_ptr)
+        internal static void sub_3BEE8(Effect arg_0, object param, Player player_ptr)
         {
             Affect arg_2 = (Affect)param;
 
@@ -1450,7 +1450,7 @@ namespace engine
         }
 
 
-        internal static void sub_3BF91(byte arg_0, object param, Player player)
+        internal static void sub_3BF91(Effect arg_0, object param, Player player)
         {
             if ((gbl.damage_flags & 1) == 0 &&
                 (gbl.damage_flags & 0x10) == 0)
@@ -1460,7 +1460,7 @@ namespace engine
         }
 
 
-        internal static void sp_regenerate(byte arg_0, object param, Player player)
+        internal static void sp_regenerate(Effect arg_0, object param, Player player)
         {
             Affect var_4;
 
@@ -1472,7 +1472,7 @@ namespace engine
         }
 
 
-        internal static void sub_3C01E(byte arg_0, object param, Player player)
+        internal static void sub_3C01E(Effect arg_0, object param, Player player)
         {
             Affect arg_2 = (Affect)param;
 
@@ -1483,7 +1483,7 @@ namespace engine
         }
 
 
-        internal static void sub_3C05D(byte arg_0, object param, Player arg_6)
+        internal static void sub_3C05D(Effect arg_0, object param, Player arg_6)
         {
             Affect var_4;
 
@@ -1498,7 +1498,7 @@ namespace engine
         }
 
 
-        internal static void sub_3C0DA(byte arg_0, object param, Player arg_6)
+        internal static void sub_3C0DA(Effect arg_0, object param, Player arg_6)
         {
             sub_3AF06(0x3c, arg_6);
         }
@@ -1520,19 +1520,19 @@ namespace engine
         }
 
 
-        internal static void sub_3C14F(byte arg_0, object param, Player arg_6)
+        internal static void sub_3C14F(Effect arg_0, object param, Player arg_6)
         {
             sub_3C0EE(50);
         }
 
 
-        internal static void sub_3C15D(byte arg_0, object param, Player arg_6)
+        internal static void sub_3C15D(Effect arg_0, object param, Player arg_6)
         {
             sub_3C0EE(15);
         }
 
 
-        internal static void sub_3C16B(byte arg_0, object param, Player arg_6)
+        internal static void sub_3C16B(Effect arg_0, object param, Player arg_6)
         {
             if (ovr024.roll_dice(100, 1) <= 0x5a)
             {
@@ -1542,20 +1542,20 @@ namespace engine
         }
 
 
-        internal static void sub_3C18F(byte arg_0, object param, Player arg_6)
+        internal static void sub_3C18F(Effect arg_0, object param, Player arg_6)
         {
             sub_3A019(11);
             sub_3A019(0x35);
         }
 
 
-        internal static void sub_3C1A4(byte arg_0, object param, Player arg_6)
+        internal static void sub_3C1A4(Effect arg_0, object param, Player arg_6)
         {
             sub_3A019(0x34);
         }
 
 
-        internal static void sub_3C1B2(byte arg_0, object param, Player arg_6)
+        internal static void sub_3C1B2(Effect arg_0, object param, Player arg_6)
         {
             if ((gbl.damage_flags & 2) != 0)
             {
@@ -1564,7 +1564,7 @@ namespace engine
         }
 
 
-        internal static void sub_3C1C9(byte arg_0, object param, Player arg_6)
+        internal static void sub_3C1C9(Effect arg_0, object param, Player arg_6)
         {
             sub_3A019(0x37);
             sub_3A019(0x34);
@@ -1576,7 +1576,7 @@ namespace engine
         }
 
 
-        internal static void sub_3C1EA(byte arg_0, object param, Player arg_6)
+        internal static void sub_3C1EA(Effect arg_0, object param, Player arg_6)
         {
             if ((gbl.damage_flags & 1) != 0)
             {
@@ -1585,7 +1585,7 @@ namespace engine
         }
 
 
-        internal static void sub_3C201(byte arg_0, object param, Player arg_6)
+        internal static void sub_3C201(Effect arg_0, object param, Player arg_6)
         {
             if ((gbl.damage_flags & 1) != 0)
             {
@@ -1602,7 +1602,7 @@ namespace engine
         }
 
 
-        internal static void sub_3C246(byte arg_0, object param, Player player)
+        internal static void sub_3C246(Effect arg_0, object param, Player player)
         {
             if ((gbl.damage_flags & 4) != 0)
             {
@@ -1611,7 +1611,7 @@ namespace engine
         }
 
 
-        internal static void sub_3C260(byte arg_0, object param, Player player)
+        internal static void sub_3C260(Effect arg_0, object param, Player player)
         {
             Item var_4;
 
@@ -1628,7 +1628,7 @@ namespace engine
         }
 
 
-        internal static void sub_3C2BF(byte arg_0, object param, Player player)
+        internal static void sub_3C2BF(Effect arg_0, object param, Player player)
         {
             Item item = sub_3AF77(gbl.player_ptr);
 
@@ -1640,7 +1640,7 @@ namespace engine
         }
 
 
-        internal static void sub_3C2F9(byte arg_0, object param, Player player)
+        internal static void sub_3C2F9(Effect arg_0, object param, Player player)
         {
             Item item = gbl.player_ptr.field_151;
 
@@ -1652,7 +1652,7 @@ namespace engine
         }
 
 
-        internal static void sub_3C33C(byte arg_0, object param, Player player)
+        internal static void sub_3C33C(Effect arg_0, object param, Player player)
         {
             if ((gbl.damage_flags & 2) != 0)
             {
@@ -1661,7 +1661,7 @@ namespace engine
         }
 
 
-        internal static void sub_3C356(byte arg_0, object param, Player player)
+        internal static void sub_3C356(Effect arg_0, object param, Player player)
         {
             Item var_4;
 
@@ -1679,7 +1679,7 @@ namespace engine
         }
 
 
-        internal static void sub_3C3A2(byte arg_0, object param, Player player)
+        internal static void sub_3C3A2(Effect arg_0, object param, Player player)
         {
             Item field_151;
 
@@ -1696,7 +1696,7 @@ namespace engine
         }
 
 
-        internal static void sub_3C3F6(byte arg_0, object param, Player player)
+        internal static void sub_3C3F6(Effect arg_0, object param, Player player)
         {
             bool var_1;
             Affect affect_ptr = (Affect)param;
@@ -1729,7 +1729,7 @@ namespace engine
         }
 
 
-        internal static void spl_paralyze(byte arg_0, object param, Player player)
+        internal static void spl_paralyze(Effect arg_0, object param, Player player)
         {
             gbl.spell_target = player.actions.target;
 
@@ -1742,7 +1742,7 @@ namespace engine
         }
 
 
-        internal static void sub_3C59D(byte arg_0, object param, Player player)
+        internal static void sub_3C59D(Effect arg_0, object param, Player player)
         {
             gbl.damage_flags = 0x0A;
 
@@ -1750,7 +1750,7 @@ namespace engine
         }
 
 
-        internal static void sub_3C5D0(byte arg_0, object param, Player player)
+        internal static void sub_3C5D0(Effect arg_0, object param, Player player)
         {
             if (ovr024.roll_dice(100, 1) <= 0x1e)
             {
@@ -1760,7 +1760,7 @@ namespace engine
         }
 
 
-        internal static void sub_3C5F4(byte arg_0, object param, Player player)
+        internal static void sub_3C5F4(Effect arg_0, object param, Player player)
         {
             sub_3A019(11);
             sub_3A019(0x35);
@@ -1774,7 +1774,7 @@ namespace engine
         }
 
 
-        internal static void sub_3C623(byte arg_0, object param, Player player)
+        internal static void sub_3C623(Effect arg_0, object param, Player player)
         {
             if (gbl.byte_1D2BD != 0 ||
                 (gbl.damage_flags & 8) != 0)
@@ -1784,7 +1784,7 @@ namespace engine
         }
 
 
-        internal static void sub_3C643(byte arg_0, object arg_2, Player player)
+        internal static void sub_3C643(Effect arg_0, object arg_2, Player player)
         {
             Item var_4 = null;
 
@@ -1807,13 +1807,13 @@ namespace engine
         }
 
 
-        internal static void sub_3C6D3(byte arg_0, object param, Player player)
+        internal static void sub_3C6D3(Effect remove_affect, object param, Player player)
         {
             Item item = (Item)param;
 
-            gbl.byte_1D8AC = 0;
+            gbl.byte_1D8AC = false;
 
-            if (arg_0 != 0)
+            if (remove_affect == Effect.Remove)
             {
                 ovr024.remove_affect(null, item.affect_2, player);
             }
@@ -1823,13 +1823,13 @@ namespace engine
 
                 if (gbl.game_state != 5)
                 {
-                    ovr024.CallSpellJumpTable(0, null, player, item.affect_2);
+                    ovr024.CallSpellJumpTable(Effect.Add, null, player, item.affect_2);
                 }
             }
         }
 
 
-        internal static void sub_3C750(byte arg_0, object param, Player player)
+        internal static void sub_3C750(Effect arg_0, object param, Player player)
         {
             sub_3A019(0x8E);
             sub_3A019(0x1D);
@@ -1842,7 +1842,7 @@ namespace engine
         }
 
 
-        internal static void sub_3C77C(byte arg_0, object param, Player player)
+        internal static void sub_3C77C(Effect arg_0, object param, Player player)
         {
             gbl.spell_target = player.actions.target;
 
@@ -1853,7 +1853,7 @@ namespace engine
         }
 
 
-        internal static void sub_3C7B5(byte arg_0, object param, Player player)
+        internal static void sub_3C7B5(Effect arg_0, object param, Player player)
         {
             if ((gbl.damage_flags & 0x04) != 0)
             {
@@ -1862,13 +1862,13 @@ namespace engine
         }
 
 
-        internal static void sub_3C7CC(byte arg_0, object param, Player player)
+        internal static void sub_3C7CC(Effect arg_0, object param, Player player)
         {
             player.actions.move = 0;
         }
 
 
-        internal static void sub_3C7E0(byte arg_0, object param, Player player)
+        internal static void sub_3C7E0(Effect arg_0, object param, Player player)
         {
             Affect affect = (Affect)param;
 
@@ -1908,13 +1908,13 @@ namespace engine
         }
 
 
-        internal static void add_affect_19(byte arg_0, object param, Player player)
+        internal static void add_affect_19(Effect arg_0, object param, Player player)
         {
             ovr024.add_affect(false, 0xff, 0xff, Affects.invisibility, player);
         }
 
 
-        internal static void sub_3C8EF(byte arg_0, object param, Player player)
+        internal static void sub_3C8EF(Effect arg_0, object param, Player player)
         {
             if (arg_0 != 0)
             {
@@ -1923,9 +1923,9 @@ namespace engine
         }
 
 
-        internal static void sub_3C932(byte arg_0, object param, Player player)
+        internal static void sub_3C932(Effect arg_0, object param, Player player)
         {
-            if (arg_0 != 0)
+            if (arg_0 == Effect.Add)
             {
                 if (player.field_F7 == 0xb3)
                 {
@@ -1938,7 +1938,7 @@ namespace engine
         }
 
 
-        internal static void sub_3C975(byte arg_0, object arg_2, Player arg_6)
+        internal static void sub_3C975(Effect arg_0, object arg_2, Player arg_6)
         {
             if (ovr025.getTargetRange(arg_6, gbl.player_ptr) < 2)
             {
@@ -1957,7 +1957,7 @@ namespace engine
         }
 
 
-        internal static void sp_dispel_evil(byte arg_0, object param, Player player)
+        internal static void sp_dispel_evil(Effect arg_0, object param, Player player)
         {
             gbl.spell_target = player.actions.target;
 
@@ -1975,7 +1975,7 @@ namespace engine
             }
         }
 
-        internal static void empty(byte arg_0, object param, Player player)
+        internal static void empty(Effect arg_0, object param, Player player)
         {
         }
 
@@ -1988,149 +1988,149 @@ namespace engine
             gbl.spell_jump_list[2] = ovr013.sub_3A0A6;
             gbl.spell_jump_list[3] = ovr013.sub_3A0DC;
             gbl.spell_jump_list[4] = ovr013.sub_3A15F;
-            gbl.spell_jump_list[5] = new spellDelegateX(ovr013.empty);
-            gbl.spell_jump_list[6] = new spellDelegateX(ovr013.sub_3A17A);
-            gbl.spell_jump_list[7] = new spellDelegateX(ovr013.sub_3A1DF);
-            gbl.spell_jump_list[8] = new spellDelegateX(ovr013.sub_3A224);
-            gbl.spell_jump_list[9] = new spellDelegateX(ovr013.sub_3A259);
-            gbl.spell_jump_list[10] = new spellDelegateX(ovr013.sub_3A28E);
-            gbl.spell_jump_list[11] = new spellDelegateX(ovr013.sub_3A2AD);
-            gbl.spell_jump_list[12] = new spellDelegateX(ovr013.empty);
-            gbl.spell_jump_list[13] = new spellDelegateX(ovr013.Suffocates);
-            gbl.spell_jump_list[14] = new spellDelegateX(ovr013.empty);
-            gbl.spell_jump_list[15] = new spellDelegateX(ovr013.sub_3A3BC);
-            gbl.spell_jump_list[16] = new spellDelegateX(ovr013.empty);
-            gbl.spell_jump_list[17] = new spellDelegateX(ovr013.sub_3A41F);
-            gbl.spell_jump_list[18] = new spellDelegateX(ovr013.sub_3A44A);
-            gbl.spell_jump_list[19] = new spellDelegateX(ovr013.empty);
-            gbl.spell_jump_list[20] = new spellDelegateX(ovr013.sub_3A480);
-            gbl.spell_jump_list[21] = new spellDelegateX(ovr013.is_silenced1);
-            gbl.spell_jump_list[22] = new spellDelegateX(ovr013.sub_3A517);
-            gbl.spell_jump_list[23] = new spellDelegateX(ovr013.sub_3A583);
-            gbl.spell_jump_list[24] = new spellDelegateX(ovr013.empty);
-            gbl.spell_jump_list[25] = new spellDelegateX(ovr013.sub_3A6C6);
-            gbl.spell_jump_list[26] = new spellDelegateX(ovr013.sub_3A6FB);
-            gbl.spell_jump_list[27] = new spellDelegateX(ovr013.sub_3A071);
-            gbl.spell_jump_list[28] = new spellDelegateX(ovr013.sub_3A73F);
-            gbl.spell_jump_list[29] = new spellDelegateX(ovr013.sub_3A7C0);
-            gbl.spell_jump_list[30] = new spellDelegateX(ovr013.sub_3A7E8);
-            gbl.spell_jump_list[31] = new spellDelegateX(ovr013.sub_3A071);
-            gbl.spell_jump_list[32] = new spellDelegateX(ovr013.sub_3A89E);
-            gbl.spell_jump_list[33] = new spellDelegateX(ovr013.sub_3A951);
-            gbl.spell_jump_list[34] = new spellDelegateX(ovr013.sub_3A974);
-            gbl.spell_jump_list[35] = new spellDelegateX(ovr013.sub_3A9D9);
-            gbl.spell_jump_list[36] = new spellDelegateX(ovr013.sub_3AB6F);
-            gbl.spell_jump_list[37] = new spellDelegateX(ovr013.has_action_timedout);
-            gbl.spell_jump_list[38] = new spellDelegateX(ovr013.empty);
-            gbl.spell_jump_list[39] = new spellDelegateX(ovr013.spl_age);
-            gbl.spell_jump_list[40] = new spellDelegateX(ovr013.sub_3AC1D);
-            gbl.spell_jump_list[41] = new spellDelegateX(ovr013.sub_3AFE0);
-            gbl.spell_jump_list[42] = new spellDelegateX(ovr013.sub_3B01B);
-            gbl.spell_jump_list[43] = new spellDelegateX(ovr013.weaken);
-            gbl.spell_jump_list[44] = new spellDelegateX(ovr013.sub_3B0C2);
-            gbl.spell_jump_list[45] = new spellDelegateX(ovr013.sub_3A224);
-            gbl.spell_jump_list[46] = new spellDelegateX(ovr013.sub_3A259);
-            gbl.spell_jump_list[47] = new spellDelegateX(ovr013.sub_3B153);
-            gbl.spell_jump_list[48] = new spellDelegateX(ovr013.sub_3B1A2);
-            gbl.spell_jump_list[49] = new spellDelegateX(ovr013.sub_3B1C9);
-            gbl.spell_jump_list[50] = new spellDelegateX(ovr013.sub_3B212);
-            gbl.spell_jump_list[51] = new spellDelegateX(ovr013.sub_3A071);
-            gbl.spell_jump_list[52] = new spellDelegateX(ovr013.sub_3A071);
-            gbl.spell_jump_list[53] = new spellDelegateX(ovr013.sub_3A071);
-            gbl.spell_jump_list[54] = new spellDelegateX(ovr013.sub_3B243);
-            gbl.spell_jump_list[55] = new spellDelegateX(ovr013.empty);
-            gbl.spell_jump_list[56] = new spellDelegateX(ovr013.sub_3B27B);
-            gbl.spell_jump_list[57] = new spellDelegateX(ovr014.engulfs);
-            gbl.spell_jump_list[58] = new spellDelegateX(ovr013.sub_3B29A);
-            gbl.spell_jump_list[59] = new spellDelegateX(ovr013.sub_3B2BA);
-            gbl.spell_jump_list[60] = new spellDelegateX(ovr013.sub_3B2D8);
-            gbl.spell_jump_list[61] = new spellDelegateX(ovr013.sub_3B32B);
-            gbl.spell_jump_list[62] = new spellDelegateX(ovr013.sub_3B386);
-            gbl.spell_jump_list[63] = new spellDelegateX(ovr013.sub_3B3CA);
-            gbl.spell_jump_list[64] = new spellDelegateX(ovr013.sub_3B520);
-            gbl.spell_jump_list[65] = new spellDelegateX(ovr013.sub_3B534);
-            gbl.spell_jump_list[66] = new spellDelegateX(ovr013.sub_3B548);
-            gbl.spell_jump_list[67] = new spellDelegateX(ovr013.sub_3B55C);
-            gbl.spell_jump_list[68] = new spellDelegateX(ovr013.spell_stupid);
-            gbl.spell_jump_list[69] = new spellDelegateX(ovr013.sub_3B636);
-            gbl.spell_jump_list[70] = new spellDelegateX(ovr013.sub_3B671);
-            gbl.spell_jump_list[71] = new spellDelegateX(ovr013.sub_3B685);
-            gbl.spell_jump_list[72] = new spellDelegateX(ovr013.sub_3B696);
-            gbl.spell_jump_list[73] = new spellDelegateX(ovr013.sub_3B6D2);
-            gbl.spell_jump_list[74] = new spellDelegateX(ovr013.sub_3B70E);
-            gbl.spell_jump_list[75] = new spellDelegateX(ovr013.sub_3B71A);
-            gbl.spell_jump_list[76] = new spellDelegateX(ovr013.sub_3B772);
-            gbl.spell_jump_list[77] = new spellDelegateX(ovr013.spl_berzerk);
-            gbl.spell_jump_list[78] = new spellDelegateX(ovr013.sub_3B8D9);
-            gbl.spell_jump_list[79] = new spellDelegateX(ovr013.sub_3B919);
-            gbl.spell_jump_list[80] = new spellDelegateX(ovr013.sub_3B94C);
-            gbl.spell_jump_list[81] = new spellDelegateX(ovr013.sub_3B97F);
-            gbl.spell_jump_list[82] = new spellDelegateX(ovr013.sub_3B990);
-            gbl.spell_jump_list[83] = new spellDelegateX(ovr023.spell_stone);
-            gbl.spell_jump_list[84] = new spellDelegateX(ovr013.sub_3B9E1);
-            gbl.spell_jump_list[85] = new spellDelegateX(ovr013.sub_3BA14);
-            gbl.spell_jump_list[86] = new spellDelegateX(ovr023.spell_spit_acid);
-            gbl.spell_jump_list[87] = new spellDelegateX(ovr014.attack_or_kill);
-            gbl.spell_jump_list[88] = new spellDelegateX(ovr023.cast_breath);
-            gbl.spell_jump_list[89] = new spellDelegateX(ovr013.sub_3BA55);
-            gbl.spell_jump_list[90] = new spellDelegateX(ovr023.spell_breathes_acid);
-            gbl.spell_jump_list[91] = new spellDelegateX(ovr013.sub_3BAB9);
-            gbl.spell_jump_list[92] = new spellDelegateX(ovr013.empty);
-            gbl.spell_jump_list[93] = new spellDelegateX(ovr013.sub_3BD98);
-            gbl.spell_jump_list[94] = new spellDelegateX(ovr013.sub_3BDB2);
-            gbl.spell_jump_list[95] = new spellDelegateX(ovr013.sub_3BE06);
-            gbl.spell_jump_list[96] = new spellDelegateX(ovr014.hugs);
-            gbl.spell_jump_list[97] = new spellDelegateX(ovr013.sub_3BE42);
-            gbl.spell_jump_list[98] = new spellDelegateX(ovr013.sub_3BEB8);
-            gbl.spell_jump_list[99] = new spellDelegateX(ovr013.sub_3BEE8);
-            gbl.spell_jump_list[100] = new spellDelegateX(ovr013.sub_3BF91);
-            gbl.spell_jump_list[101] = new spellDelegateX(ovr013.sp_regenerate);
-            gbl.spell_jump_list[102] = new spellDelegateX(ovr013.sub_3C01E);
-            gbl.spell_jump_list[103] = new spellDelegateX(ovr013.sub_3C05D);
-            gbl.spell_jump_list[104] = new spellDelegateX(ovr013.sub_3C0DA);
-            gbl.spell_jump_list[105] = new spellDelegateX(ovr013.sub_3C14F);
-            gbl.spell_jump_list[106] = new spellDelegateX(ovr013.sub_3C15D);
-            gbl.spell_jump_list[107] = new spellDelegateX(ovr013.sub_3C16B);
-            gbl.spell_jump_list[108] = new spellDelegateX(ovr013.sub_3C18F);
-            gbl.spell_jump_list[109] = new spellDelegateX(ovr013.sub_3C1A4);
-            gbl.spell_jump_list[110] = new spellDelegateX(ovr013.sub_3C1B2);
-            gbl.spell_jump_list[111] = new spellDelegateX(ovr013.sub_3C1C9);
-            gbl.spell_jump_list[112] = new spellDelegateX(ovr013.sub_3C1EA);
-            gbl.spell_jump_list[113] = new spellDelegateX(ovr013.sub_3C201);
-            gbl.spell_jump_list[114] = new spellDelegateX(ovr013.sub_3C246);
-            gbl.spell_jump_list[115] = new spellDelegateX(ovr013.sub_3C260);
-            gbl.spell_jump_list[116] = new spellDelegateX(ovr013.sub_3C2BF);
-            gbl.spell_jump_list[117] = new spellDelegateX(ovr013.sub_3C2F9);
-            gbl.spell_jump_list[118] = new spellDelegateX(ovr013.sub_3C33C);
-            gbl.spell_jump_list[119] = new spellDelegateX(ovr013.sub_3C356);
-            gbl.spell_jump_list[120] = new spellDelegateX(ovr013.sub_3C3A2);
-            gbl.spell_jump_list[121] = new spellDelegateX(ovr013.sub_3C3F6);
-            gbl.spell_jump_list[122] = new spellDelegateX(ovr013.spl_paralyze);
-            gbl.spell_jump_list[123] = new spellDelegateX(ovr013.sub_3C59D);
-            gbl.spell_jump_list[124] = new spellDelegateX(ovr013.sub_3C5D0);
-            gbl.spell_jump_list[125] = new spellDelegateX(ovr013.sub_3C5F4);
-            gbl.spell_jump_list[126] = new spellDelegateX(ovr023.cast_gaze_paralyze);
-            gbl.spell_jump_list[127] = new spellDelegateX(ovr013.empty);
-            gbl.spell_jump_list[128] = new spellDelegateX(ovr023.spell_breathes_fire);
-            gbl.spell_jump_list[129] = new spellDelegateX(ovr013.sub_3C623);
-            gbl.spell_jump_list[130] = new spellDelegateX(ovr013.sub_3C643);
-            gbl.spell_jump_list[131] = new spellDelegateX(ovr023.cast_breath_fire);
-            gbl.spell_jump_list[132] = new spellDelegateX(ovr023.cast_throw_lightning);
-            gbl.spell_jump_list[133] = new spellDelegateX(ovr013.sub_3C750);
-            gbl.spell_jump_list[134] = new spellDelegateX(ovr013.sub_3C77C);
-            gbl.spell_jump_list[135] = new spellDelegateX(ovr013.sub_3C7B5);
-            gbl.spell_jump_list[136] = new spellDelegateX(ovr013.sub_3C7CC);
-            gbl.spell_jump_list[137] = new spellDelegateX(ovr013.sub_3C7E0);
-            gbl.spell_jump_list[138] = new spellDelegateX(ovr013.add_affect_19);
-            gbl.spell_jump_list[139] = new spellDelegateX(ovr014.sub_425C6);
-            gbl.spell_jump_list[140] = new spellDelegateX(ovr013.empty);
-            gbl.spell_jump_list[141] = new spellDelegateX(ovr013.sub_3C8EF);
-            gbl.spell_jump_list[142] = new spellDelegateX(ovr013.sub_3C932);
-            gbl.spell_jump_list[143] = new spellDelegateX(ovr013.sub_3C975);
-            gbl.spell_jump_list[144] = new spellDelegateX(ovr014.sub_426FC);
-            gbl.spell_jump_list[145] = new spellDelegateX(ovr013.sp_dispel_evil);
-            gbl.spell_jump_list[146] = new spellDelegateX(ovr013.empty);
-            gbl.spell_jump_list[147] = new spellDelegateX(ovr013.sub_3C6D3);
+            gbl.spell_jump_list[5] = ovr013.empty;
+            gbl.spell_jump_list[6] = ovr013.sub_3A17A;
+            gbl.spell_jump_list[7] = ovr013.sub_3A1DF;
+            gbl.spell_jump_list[8] = ovr013.sub_3A224;
+            gbl.spell_jump_list[9] = ovr013.sub_3A259;
+            gbl.spell_jump_list[10] = ovr013.sub_3A28E;
+            gbl.spell_jump_list[11] = ovr013.sub_3A2AD;
+            gbl.spell_jump_list[12] = ovr013.empty;
+            gbl.spell_jump_list[13] = ovr013.Suffocates;
+            gbl.spell_jump_list[14] = ovr013.empty;
+            gbl.spell_jump_list[15] = ovr013.sub_3A3BC;
+            gbl.spell_jump_list[16] = ovr013.empty;
+            gbl.spell_jump_list[17] = ovr013.sub_3A41F;
+            gbl.spell_jump_list[18] = ovr013.sub_3A44A;
+            gbl.spell_jump_list[19] = ovr013.empty;
+            gbl.spell_jump_list[20] = ovr013.sub_3A480;
+            gbl.spell_jump_list[21] = ovr013.is_silenced1;
+            gbl.spell_jump_list[22] = ovr013.sub_3A517;
+            gbl.spell_jump_list[23] = ovr013.sub_3A583;
+            gbl.spell_jump_list[24] = ovr013.empty;
+            gbl.spell_jump_list[25] = ovr013.sub_3A6C6;
+            gbl.spell_jump_list[26] = ovr013.sub_3A6FB;
+            gbl.spell_jump_list[27] = ovr013.sub_3A071;
+            gbl.spell_jump_list[28] = ovr013.sub_3A73F;
+            gbl.spell_jump_list[29] = ovr013.sub_3A7C0;
+            gbl.spell_jump_list[30] = ovr013.sub_3A7E8;
+            gbl.spell_jump_list[31] = ovr013.sub_3A071;
+            gbl.spell_jump_list[32] = ovr013.sub_3A89E;
+            gbl.spell_jump_list[33] = ovr013.sub_3A951;
+            gbl.spell_jump_list[34] = ovr013.sub_3A974;
+            gbl.spell_jump_list[35] = ovr013.sub_3A9D9;
+            gbl.spell_jump_list[36] = ovr013.sub_3AB6F;
+            gbl.spell_jump_list[37] = ovr013.has_action_timedout;
+            gbl.spell_jump_list[38] = ovr013.empty;
+            gbl.spell_jump_list[39] = ovr013.spl_age;
+            gbl.spell_jump_list[40] = ovr013.sub_3AC1D;
+            gbl.spell_jump_list[41] = ovr013.sub_3AFE0;
+            gbl.spell_jump_list[42] = ovr013.sub_3B01B;
+            gbl.spell_jump_list[43] = ovr013.weaken;
+            gbl.spell_jump_list[44] = ovr013.sub_3B0C2;
+            gbl.spell_jump_list[45] = ovr013.sub_3A224;
+            gbl.spell_jump_list[46] = ovr013.sub_3A259;
+            gbl.spell_jump_list[47] = ovr013.sub_3B153;
+            gbl.spell_jump_list[48] = ovr013.sub_3B1A2;
+            gbl.spell_jump_list[49] = ovr013.sub_3B1C9;
+            gbl.spell_jump_list[50] = ovr013.sub_3B212;
+            gbl.spell_jump_list[51] = ovr013.sub_3A071;
+            gbl.spell_jump_list[52] = ovr013.sub_3A071;
+            gbl.spell_jump_list[53] = ovr013.sub_3A071;
+            gbl.spell_jump_list[54] = ovr013.sub_3B243;
+            gbl.spell_jump_list[55] = ovr013.empty;
+            gbl.spell_jump_list[56] = ovr013.sub_3B27B;
+            gbl.spell_jump_list[57] = ovr014.engulfs;
+            gbl.spell_jump_list[58] = ovr013.sub_3B29A;
+            gbl.spell_jump_list[59] = ovr013.sub_3B2BA;
+            gbl.spell_jump_list[60] = ovr013.sub_3B2D8;
+            gbl.spell_jump_list[61] = ovr013.sub_3B32B;
+            gbl.spell_jump_list[62] = ovr013.sub_3B386;
+            gbl.spell_jump_list[63] = ovr013.sub_3B3CA;
+            gbl.spell_jump_list[64] = ovr013.sub_3B520;
+            gbl.spell_jump_list[65] = ovr013.sub_3B534;
+            gbl.spell_jump_list[66] = ovr013.sub_3B548;
+            gbl.spell_jump_list[67] = ovr013.sub_3B55C;
+            gbl.spell_jump_list[68] = ovr013.spell_stupid;
+            gbl.spell_jump_list[69] = ovr013.sub_3B636;
+            gbl.spell_jump_list[70] = ovr013.sub_3B671;
+            gbl.spell_jump_list[71] = ovr013.sub_3B685;
+            gbl.spell_jump_list[72] = ovr013.sub_3B696;
+            gbl.spell_jump_list[73] = ovr013.sub_3B6D2;
+            gbl.spell_jump_list[74] = ovr013.sub_3B70E;
+            gbl.spell_jump_list[75] = ovr013.sub_3B71A;
+            gbl.spell_jump_list[76] = ovr013.sub_3B772;
+            gbl.spell_jump_list[77] = ovr013.spl_berzerk;
+            gbl.spell_jump_list[78] = ovr013.sub_3B8D9;
+            gbl.spell_jump_list[79] = ovr013.sub_3B919;
+            gbl.spell_jump_list[80] = ovr013.sub_3B94C;
+            gbl.spell_jump_list[81] = ovr013.sub_3B97F;
+            gbl.spell_jump_list[82] = ovr013.sub_3B990;
+            gbl.spell_jump_list[83] = ovr023.spell_stone;
+            gbl.spell_jump_list[84] = ovr013.sub_3B9E1;
+            gbl.spell_jump_list[85] = ovr013.sub_3BA14;
+            gbl.spell_jump_list[86] = ovr023.spell_spit_acid;
+            gbl.spell_jump_list[87] = ovr014.attack_or_kill;
+            gbl.spell_jump_list[88] = ovr023.cast_breath;
+            gbl.spell_jump_list[89] = ovr013.sub_3BA55;
+            gbl.spell_jump_list[90] = ovr023.spell_breathes_acid;
+            gbl.spell_jump_list[91] = ovr013.sub_3BAB9;
+            gbl.spell_jump_list[92] = ovr013.empty;
+            gbl.spell_jump_list[93] = ovr013.sub_3BD98;
+            gbl.spell_jump_list[94] = ovr013.sub_3BDB2;
+            gbl.spell_jump_list[95] = ovr013.sub_3BE06;
+            gbl.spell_jump_list[96] = ovr014.hugs;
+            gbl.spell_jump_list[97] = ovr013.sub_3BE42;
+            gbl.spell_jump_list[98] = ovr013.sub_3BEB8;
+            gbl.spell_jump_list[99] = ovr013.sub_3BEE8;
+            gbl.spell_jump_list[100] = ovr013.sub_3BF91;
+            gbl.spell_jump_list[101] = ovr013.sp_regenerate;
+            gbl.spell_jump_list[102] = ovr013.sub_3C01E;
+            gbl.spell_jump_list[103] = ovr013.sub_3C05D;
+            gbl.spell_jump_list[104] = ovr013.sub_3C0DA;
+            gbl.spell_jump_list[105] = ovr013.sub_3C14F;
+            gbl.spell_jump_list[106] = ovr013.sub_3C15D;
+            gbl.spell_jump_list[107] = ovr013.sub_3C16B;
+            gbl.spell_jump_list[108] = ovr013.sub_3C18F;
+            gbl.spell_jump_list[109] = ovr013.sub_3C1A4;
+            gbl.spell_jump_list[110] = ovr013.sub_3C1B2;
+            gbl.spell_jump_list[111] = ovr013.sub_3C1C9;
+            gbl.spell_jump_list[112] = ovr013.sub_3C1EA;
+            gbl.spell_jump_list[113] = ovr013.sub_3C201;
+            gbl.spell_jump_list[114] = ovr013.sub_3C246;
+            gbl.spell_jump_list[115] = ovr013.sub_3C260;
+            gbl.spell_jump_list[116] = ovr013.sub_3C2BF;
+            gbl.spell_jump_list[117] = ovr013.sub_3C2F9;
+            gbl.spell_jump_list[118] = ovr013.sub_3C33C;
+            gbl.spell_jump_list[119] = ovr013.sub_3C356;
+            gbl.spell_jump_list[120] = ovr013.sub_3C3A2;
+            gbl.spell_jump_list[121] = ovr013.sub_3C3F6;
+            gbl.spell_jump_list[122] = ovr013.spl_paralyze;
+            gbl.spell_jump_list[123] = ovr013.sub_3C59D;
+            gbl.spell_jump_list[124] = ovr013.sub_3C5D0;
+            gbl.spell_jump_list[125] = ovr013.sub_3C5F4;
+            gbl.spell_jump_list[126] = ovr023.cast_gaze_paralyze;
+            gbl.spell_jump_list[127] = ovr013.empty;
+            gbl.spell_jump_list[128] = ovr023.spell_breathes_fire;
+            gbl.spell_jump_list[129] = ovr013.sub_3C623;
+            gbl.spell_jump_list[130] = ovr013.sub_3C643;
+            gbl.spell_jump_list[131] = ovr023.cast_breath_fire;
+            gbl.spell_jump_list[132] = ovr023.cast_throw_lightning;
+            gbl.spell_jump_list[133] = ovr013.sub_3C750;
+            gbl.spell_jump_list[134] = ovr013.sub_3C77C;
+            gbl.spell_jump_list[135] = ovr013.sub_3C7B5;
+            gbl.spell_jump_list[136] = ovr013.sub_3C7CC;
+            gbl.spell_jump_list[137] = ovr013.sub_3C7E0;
+            gbl.spell_jump_list[138] = ovr013.add_affect_19;
+            gbl.spell_jump_list[139] = ovr014.sub_425C6;
+            gbl.spell_jump_list[140] = ovr013.empty;
+            gbl.spell_jump_list[141] = ovr013.sub_3C8EF;
+            gbl.spell_jump_list[142] = ovr013.sub_3C932;
+            gbl.spell_jump_list[143] = ovr013.sub_3C975;
+            gbl.spell_jump_list[144] = ovr014.sub_426FC;
+            gbl.spell_jump_list[145] = ovr013.sp_dispel_evil;
+            gbl.spell_jump_list[146] = ovr013.empty;
+            gbl.spell_jump_list[147] = ovr013.sub_3C6D3;
 
         }
     }

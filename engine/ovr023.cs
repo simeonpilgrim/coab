@@ -1330,7 +1330,7 @@ namespace engine
 
                 if (ovr025.find_affect(out affect, Affects.charm_person, target) == true)
                 {
-                    ovr024.CallSpellJumpTable(0, affect, gbl.sp_targets[1], Affects.shield);
+                    ovr024.CallSpellJumpTable(Effect.Add, affect, gbl.sp_targets[1], Affects.shield);
                 }
             }
         }
@@ -1583,7 +1583,7 @@ namespace engine
                 }
 
                 sub_5CF7F("is affected", 0, 0, true, 0xff, gbl.spell_id);
-                ovr024.CallSpellJumpTable(1, null, player, Affects.affect_4e);
+                ovr024.CallSpellJumpTable(Effect.Remove, null, player, Affects.affect_4e);
                 ovr024.add_affect(true, 0xff, 10, Affects.affect_0f, player);
             }
         }
@@ -1618,7 +1618,7 @@ namespace engine
         {
             sub_5CF7F(string.Empty, 0, 0, true, 0, gbl.spell_id);
 
-            ovr024.CallSpellJumpTable(0, null, gbl.sp_targets[1], Affects.spiritual_hammer);
+            ovr024.CallSpellJumpTable(Effect.Add, null, gbl.sp_targets[1], Affects.spiritual_hammer);
         }
 
 
@@ -2265,8 +2265,8 @@ namespace engine
 
                         if ((int)item.affect_3 > 0x7F)
                         {
-                            gbl.byte_1D8AC = 1;
-                            ovr024.CallSpellJumpTable(1, item, gbl.sp_targets[1], item.affect_3);
+                            gbl.byte_1D8AC = true;
+                            ovr024.CallSpellJumpTable(Effect.Remove, item, gbl.sp_targets[1], item.affect_3);
 
                             for (int var_6 = 0; var_6 <= 5; var_6++)
                             {
@@ -2714,7 +2714,7 @@ namespace engine
 
             if (gbl.byte_1D2BD == 0x40)
             {
-                ovr024.CallSpellJumpTable(0, var_2, gbl.player_ptr, Affects.affect_40);
+                ovr024.CallSpellJumpTable(Effect.Add, var_2, gbl.player_ptr, Affects.affect_40);
             }
         }
 
@@ -2729,7 +2729,7 @@ namespace engine
 
                 if (ovr025.find_affect(out var_4, Affects.affect_03, gbl.sp_targets[1]) == true)
                 {
-                    ovr024.CallSpellJumpTable(0, var_4, gbl.sp_targets[1], Affects.affect_03);
+                    ovr024.CallSpellJumpTable(Effect.Add, var_4, gbl.sp_targets[1], Affects.affect_03);
                 }
             }
             else
@@ -2870,7 +2870,7 @@ namespace engine
             {
                 if (ovr025.find_affect(out var_7, Affects.charm_person, gbl.sp_targets[var_1]) == true)
                 {
-                    ovr024.CallSpellJumpTable(0, var_7, gbl.sp_targets[var_1], Affects.charm_person);
+                    ovr024.CallSpellJumpTable(Effect.Add, var_7, gbl.sp_targets[var_1], Affects.charm_person);
                 }
             }
         }
@@ -3039,7 +3039,7 @@ namespace engine
 
                 if (ovr025.find_affect(out var_8, Affects.fumbling, var_4) == true)
                 {
-                    ovr024.CallSpellJumpTable(0, null, var_4, Affects.fumbling);
+                    ovr024.CallSpellJumpTable(Effect.Add, null, var_4, Affects.fumbling);
                 }
             }
             else
@@ -3048,7 +3048,7 @@ namespace engine
 
                 if (ovr025.find_affect(out var_8, Affects.slow, var_4) == true)
                 {
-                    ovr024.CallSpellJumpTable(0, null, var_4, Affects.slow);
+                    ovr024.CallSpellJumpTable(Effect.Add, null, var_4, Affects.slow);
                 }
             }
             sub_5CF7F("is clumsy", 0, 0, true, 0, gbl.spell_id);
@@ -3422,7 +3422,7 @@ namespace engine
 
             if (ovr025.find_affect(out var_9, Affects.feeble, var_5) == true)
             {
-                ovr024.CallSpellJumpTable(0, null, var_5, Affects.feeble);
+                ovr024.CallSpellJumpTable(Effect.Add, null, var_5, Affects.feeble);
             }
 
             var_5.field_E3 = var_1;
@@ -3484,7 +3484,7 @@ namespace engine
         }
 
 
-        internal static void spell_stone(byte arg_0, object param, Player player)
+        internal static void spell_stone(Effect arg_0, object param, Player player)
         {
             Affect var_9;
             byte var_5;
@@ -3538,7 +3538,7 @@ namespace engine
         }
 
 
-        internal static void cast_breath(byte arg_0, object param, Player player)
+        internal static void cast_breath(Effect arg_0, object param, Player player)
         {
             Affect affect = (Affect)param;
             bool var_1 = false; /* Simeon */
@@ -3588,7 +3588,7 @@ namespace engine
         }
 
 
-        internal static void spell_spit_acid(byte arg_0, object param, Player player)
+        internal static void spell_spit_acid(Effect arg_0, object param, Player player)
         {
             gbl.dword_1D5CA(out gbl.byte_1DA70, QuickFight.True, 0x41);
 
@@ -3618,7 +3618,7 @@ namespace engine
         }
 
 
-        internal static void spell_breathes_acid(byte arg_0, object param, Player player)
+        internal static void spell_breathes_acid(Effect arg_0, object param, Player player)
         {
             Affect affect = (Affect)param;
 
@@ -3679,7 +3679,7 @@ namespace engine
         }
 
 
-        internal static void spell_breathes_fire(byte arg_0, object param, Player arg_6)
+        internal static void spell_breathes_fire(Effect arg_0, object param, Player arg_6)
         {
             Affect arg_2 = (Affect)param;
 
@@ -3727,7 +3727,7 @@ namespace engine
         }
 
 
-        internal static void cast_breath_fire(byte arg_0, object param, Player arg_6)
+        internal static void cast_breath_fire(Effect arg_0, object param, Player arg_6)
         {
             gbl.dword_1D5CA(out gbl.byte_1DA70, QuickFight.True, 0x41);
             throw new System.NotSupportedException();//les	di, [bp+arg_6]
@@ -3771,7 +3771,7 @@ namespace engine
         }
 
 
-        internal static void cast_throw_lightning(byte arg_0, object param, Player arg_6)
+        internal static void cast_throw_lightning(Effect arg_0, object param, Player arg_6)
         {
             bool var_1 = false; /* Simeon */
 
@@ -3794,7 +3794,7 @@ namespace engine
         }
 
 
-        internal static void cast_gaze_paralyze(byte arg_0, object param, Player arg_6)
+        internal static void cast_gaze_paralyze(Effect arg_0, object param, Player arg_6)
         {
             arg_6.actions.target = null;
 
