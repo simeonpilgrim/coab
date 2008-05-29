@@ -36,15 +36,15 @@ namespace engine
         }
 
 
-        internal static void CallSpellJumpTable(byte arg_0, object parameter, Player player, Affects affect) /* sub_630C7 */
+        internal static void CallSpellJumpTable(Effect add_remove, object parameter, Player player, Affects affect) /* sub_630C7 */
         {
-            if (gbl.byte_1D8AC != 0)
+            if (gbl.byte_1D8AC)
             {
-                gbl.spell_jump_list[147](arg_0, parameter, player);
+                gbl.spell_jump_list[147](add_remove, parameter, player);
             }
             else
             {
-                gbl.spell_jump_list[(int)affect](arg_0, parameter, player);
+                gbl.spell_jump_list[(int)affect](add_remove, parameter, player);
             }
         }
 
@@ -68,7 +68,7 @@ namespace engine
             {
                 if (var_8.call_spell_jump_list == true)
                 {
-                    CallSpellJumpTable(1, var_8, arg_6, affect_id);
+                    CallSpellJumpTable(Effect.Remove, var_8, arg_6, affect_id);
                 }
 
                 if (arg_6.affect_ptr == var_8)
@@ -163,7 +163,7 @@ namespace engine
 
             if (var_E1 != 0)
             {
-                CallSpellJumpTable(0, affect, player, affect_type);
+                CallSpellJumpTable(Effect.Add, affect, player, affect_type);
             }
         }
 
@@ -468,7 +468,7 @@ namespace engine
 
                         if (ovr025.find_affect(out var_A, Affects.affect_1e, player) == true)
                         {
-                            CallSpellJumpTable(0, affect, player, Affects.affect_1e);
+                            CallSpellJumpTable(Effect.Add, affect, player, Affects.affect_1e);
                         }
 
                         gbl.player_ptr = tmp_player_ptr;
@@ -484,7 +484,7 @@ namespace engine
 
                         if (ovr025.find_affect(out affect, Affects.helpless, player) == true)
                         {
-                            CallSpellJumpTable(0, affect, player, Affects.helpless);
+                            CallSpellJumpTable(Effect.Add, affect, player, Affects.helpless);
                         }
 
                         gbl.player_ptr = tmp_player_ptr;
@@ -1447,7 +1447,7 @@ namespace engine
                         if (player.health_status == Status.unconscious &&
                             gbl.game_state != 5)
                         {
-                            CallSpellJumpTable(1, null, player, Affects.affect_4e);
+                            CallSpellJumpTable(Effect.Remove, null, player, Affects.affect_4e);
                         }
                     }
 
