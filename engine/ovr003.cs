@@ -2594,7 +2594,7 @@ namespace engine
                 gbl.byte_1AB09 = 0;
                 gbl.byte_1D53D = ovr031.sub_717A5(gbl.mapPosY, gbl.mapPosX);
 
-                gbl.area2_ptr.field_5AA = 0;
+                gbl.area2_ptr.tried_to_exit_map = false;
 
                 gbl.player_ptr2 = gbl.player_ptr;
 
@@ -2723,7 +2723,7 @@ namespace engine
 
                 do
                 {
-                    var_1 = ovr015.sub_438DF();
+                    var_1 = ovr015.main_3d_world_menu();
 
                     gbl.player_ptr2 = gbl.player_ptr;
 
@@ -2758,7 +2758,7 @@ namespace engine
 
                         if (gbl.byte_1B2F0 == 0)
                         {
-                            var_1 = ovr015.sub_438DF();
+                            var_1 = ovr015.main_3d_world_menu();
                             gbl.player_ptr2 = gbl.player_ptr;
                         }
                     }

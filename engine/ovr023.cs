@@ -2861,16 +2861,15 @@ namespace engine
 
         internal static void cast_charmed()
         {
-            Affect var_7;
-            byte var_1;
-
             sub_5DB24("is charmed", 0);
 
-            for (var_1 = 1; var_1 <= gbl.sp_target_count; var_1++)
+            for (int i = 1; i <= gbl.sp_target_count; i++)
             {
-                if (ovr025.find_affect(out var_7, Affects.charm_person, gbl.sp_targets[var_1]) == true)
+                Affect affect;
+
+                if (ovr025.find_affect(out affect, Affects.charm_person, gbl.sp_targets[i]) == true)
                 {
-                    ovr024.CallSpellJumpTable(Effect.Add, var_7, gbl.sp_targets[var_1], Affects.charm_person);
+                    ovr024.CallSpellJumpTable(Effect.Add, affect, gbl.sp_targets[i], Affects.charm_person);
                 }
             }
         }
@@ -3429,19 +3428,7 @@ namespace engine
         }
 
 
-        internal static void sub_6169E()
-        {
-            sub_5CF7F(string.Empty, 0, 0, false, 0, gbl.spell_id);
-        }
-
-
         internal static void sub_616CC()
-        {
-            sub_5CF7F(string.Empty, 0, 0, false, 0, gbl.spell_id);
-        }
-
-
-        internal static void sub_616FA()
         {
             sub_5CF7F(string.Empty, 0, 0, false, 0, gbl.spell_id);
         }
@@ -3455,21 +3442,12 @@ namespace engine
 
             for (int i = 1; i <= gbl.sp_target_count; i++)
             {
-                if (gbl.sp_targets[i] != null)
+                Player target = gbl.sp_targets[i];
+                if (target != null)
                 {
-                    Player target = gbl.sp_targets[i];
-                    bool var_A;
+                    bool change_damage = target.field_11A != 18;
 
-                    if (target.field_11A == 18)
-                    {
-                        var_A = false;
-                    }
-                    else
-                    {
-                        var_A = true;
-                    }
-
-                    ovr024.damage_person(var_A, gbl.byte_1A114, ovr024.roll_dice_save(6, 6), target);
+                    ovr024.damage_person(change_damage, gbl.byte_1A114, ovr024.roll_dice_save(6, 6), target);
                 }
             }
         }
@@ -3484,12 +3462,8 @@ namespace engine
         }
 
 
-        internal static void spell_stone(Effect arg_0, object param, Player player)
+        internal static void spell_paralizing_gaze(Effect arg_0, object param, Player player) /* spell_stone */
         {
-            Affect var_9;
-            byte var_5;
-            Item item;
-
             player.actions.target = null;
 
             gbl.dword_1D5CA(out gbl.byte_1DA70, QuickFight.True, 0x41);
@@ -3504,26 +3478,25 @@ namespace engine
                 ovr025.draw_missile_attack(0x2d, 4, ovr033.PlayerMapYPos(gbl.spell_target), ovr033.PlayerMapXPos(gbl.spell_target),
                     ovr033.PlayerMapYPos(player), ovr033.PlayerMapXPos(player));
 
-                if (ovr025.find_affect(out var_9, Affects.affect_7f, player) == true)
+                Affect dummy_affect;
+                if (ovr025.find_affect(out dummy_affect, Affects.affect_7f, player) == true)
                 {
-                    var_5 = 0;
-                    item = gbl.spell_target.itemsPtr;
+                    bool item_found = false;
+                    Item item = gbl.spell_target.itemsPtr;
 
-                    while (item != null && var_5 == 0)
+                    while (item != null && item_found == false)
                     {
-                        if (item.readied)
+                        if (item.readied &&
+                             (item.field_2F == 0x76 ||
+                              item.field_30 == 0x76 ||
+                              item.field_31 == 0x76))
                         {
-                            if (item.field_2F == 0x76 ||
-                                item.field_30 == 0x76 ||
-                                item.field_31 == 0x76)
-                            {
-                                ovr025.DisplayPlayerStatusString(false, 12, "reflects it!", gbl.spell_target);
+                            ovr025.DisplayPlayerStatusString(false, 12, "reflects it!", gbl.spell_target);
 
-                                ovr025.draw_missile_attack(0x2d, 4, ovr033.PlayerMapYPos(player), ovr033.PlayerMapXPos(player),
-                                    ovr033.PlayerMapYPos(gbl.spell_target), ovr033.PlayerMapXPos(gbl.spell_target));
-                                var_5 = 1;
-                                gbl.spell_target = player;
-                            }
+                            ovr025.draw_missile_attack(0x2d, 4, ovr033.PlayerMapYPos(player), ovr033.PlayerMapXPos(player),
+                                ovr033.PlayerMapYPos(gbl.spell_target), ovr033.PlayerMapXPos(gbl.spell_target));
+                            item_found = true;
+                            gbl.spell_target = player;
                         }
 
                         item = item.next;
@@ -3989,9 +3962,9 @@ namespace engine
             gbl.word_1D5CE[91] = new spellDelegate2(ovr023.sub_61550);
             gbl.word_1D5CE[92] = new spellDelegate2(ovr023.sub_615F2);
             gbl.word_1D5CE[93] = new spellDelegate2(ovr023.is_held);
-            gbl.word_1D5CE[94] = new spellDelegate2(ovr023.sub_6169E);
+            gbl.word_1D5CE[94] = new spellDelegate2(ovr023.sub_616CC);
             gbl.word_1D5CE[95] = new spellDelegate2(ovr023.sub_616CC);
-            gbl.word_1D5CE[96] = new spellDelegate2(ovr023.sub_616FA);
+            gbl.word_1D5CE[96] = new spellDelegate2(ovr023.sub_616CC);
             gbl.word_1D5CE[97] = new spellDelegate2(ovr023.sub_61727);
             gbl.word_1D5CE[98] = new spellDelegate2(ovr023.cast_heal2);
             gbl.word_1D5CE[99] = new spellDelegate2(ovr023.curse);

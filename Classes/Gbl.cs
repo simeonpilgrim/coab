@@ -217,7 +217,7 @@ namespace Classes
         public static byte byte_1ADFA;
         public static byte byte_1AE0A;
         public static byte byte_1AE1B;
-        public static byte[] unk_1AE24 = new byte[0x48];
+        public static bool[] affects_timed_out = new bool[0x48]; /* unk_1AE24 */
         public static byte byte_1AFDC;
         public static byte byte_1AFDD;
         public static byte byte_1AFDE;
@@ -443,7 +443,7 @@ namespace Classes
         public static ushort word_1B2D7;
         public static ushort word_1B2D9;
         public static ushort ecl_initial_entryPoint; // word_1B2DB
-        public static short word_1B2EC;
+        public static short rest_incounter_count;
         public static DaxBlock dword_1C8FC;
         public static DaxBlock bigpic_dax; /* word_1D5B6 */
         public static short word_1D5BC;
@@ -567,8 +567,6 @@ namespace Classes
         public static bool can_pick_door;
         public static bool can_knock_door;
 
-
-        public static short textWndXXX;
 
         public static byte saving_throw_roll;
         public static bool save_made;
@@ -874,7 +872,6 @@ new Struct_19AEC( 32h,0,7,12h,3,12h,3,12h,8,12h,3,12h,3,3,12h,11h) };*/
             { 7,1,2,3,4,5,7,8,0,0},
             { 7,1,2,3,4,5,7,8,0,0},
             { 7,1,2,3,4,5,7,8,0,0} };
-
 
     }
 }

@@ -2066,7 +2066,7 @@ namespace engine
             gbl.spell_jump_list[80] = ovr013.sub_3B94C;
             gbl.spell_jump_list[81] = ovr013.sub_3B97F;
             gbl.spell_jump_list[82] = ovr013.sub_3B990;
-            gbl.spell_jump_list[83] = ovr023.spell_stone;
+            gbl.spell_jump_list[83] = ovr023.spell_paralizing_gaze;
             gbl.spell_jump_list[84] = ovr013.sub_3B9E1;
             gbl.spell_jump_list[85] = ovr013.sub_3BA14;
             gbl.spell_jump_list[86] = ovr023.spell_spit_acid;
