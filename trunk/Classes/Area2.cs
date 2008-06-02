@@ -57,11 +57,11 @@ namespace Classes
         [DataOffset(0x596, DataType.SWord)]
         public short field_596; // 0x596
         [DataOffset(0x5A4, DataType.SWord)]
-        public short field_5A4; // 0x5a4
+        public short rest_incounter_period; // 0x5a4
         [DataOffset(0x5A6, DataType.SWord)]
-        public short field_5A6; // 0x5a6
-        [DataOffset(0x5AA, DataType.SWord)]
-        public short field_5AA; // 0x5aa
+        public short rest_incounter_percentage; // 0x5a6
+        [DataOffset(0x5AA, DataType.Bool)]
+        public bool tried_to_exit_map; // 0x5aa
         [DataOffset(0x5C2, DataType.SWord)]
         public short field_5C2; // 0x5c2
         [DataOffset(0x5C4, DataType.SWord)]
@@ -151,7 +151,7 @@ namespace Classes
                 case 0x594: return search_flags;
                 case 0x550: return field_550;
                 case 0x58e: return (ushort)field_58E;
-                case 0x5aa: return (ushort)field_5AA;
+                case 0x5aa: return tried_to_exit_map?(ushort)1:(ushort)0;
 
                 case 0x6F2:
                 case 0x6F4:
@@ -194,11 +194,11 @@ namespace Classes
                     break;
 
                 case 0x5a4:
-                    field_5A4 = (short)value;
+                    rest_incounter_period = (short)value;
                     break;
 
                 case 0x5a6:
-                    field_5A6 = (short)value;
+                    rest_incounter_percentage = (short)value;
                     break;
 
                 case 0x5c2:

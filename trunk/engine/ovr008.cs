@@ -113,8 +113,8 @@ namespace engine
 
             gbl.area2_ptr.field_5C2 = 0xFF;
 
-            gbl.area2_ptr.field_5A4 = 0;
-            gbl.area2_ptr.field_5A6 = 0;
+            gbl.area2_ptr.rest_incounter_period = 0;
+            gbl.area2_ptr.rest_incounter_percentage = 0;
             gbl.area_ptr.can_cast_spells = false;
 
             vm_LoadCmdSets(1);
@@ -347,9 +347,9 @@ namespace engine
             return output;
         }
 
-        internal static byte vm_GetMemoryValueType(ushort arg_0) // sub_30723
+        internal static int vm_GetMemoryValueType(ushort arg_0) // sub_30723
         {
-            byte var_1 = 4;
+            int var_1 = 4;
 
             if (arg_0 >= 0x4B00 && arg_0 <= 0x4EFF)
             {
@@ -753,9 +753,8 @@ namespace engine
         internal static void vm_SetMemoryValue(ushort value, ushort location) // cmd_table01
         {
             byte var_2;
-            byte memType;
 
-            memType = vm_GetMemoryValueType(location);
+            int memType = vm_GetMemoryValueType(location);
 
             //System.Console.WriteLine("  vm_SetMemoryValue: value: {0:X} loc: {1:X} type: {2:X}",
             //    value, location, memType);
@@ -892,21 +891,18 @@ namespace engine
 
         internal static ushort vm_GetMemoryValue(ushort arg_0) // sub_30F16
         {
-            bool var_4;
-            byte var_3;
             ushort var_2 = 0;
 
-            var_3 = vm_GetMemoryValueType(arg_0);
+            int mem_type = vm_GetMemoryValueType(arg_0);
 
-            var_4 = false;
-
-            switch (var_3)
+            switch (mem_type)
             {
                 case 0:
                     var_2 = gbl.area_ptr.field_6A00_Get((arg_0 * 2)+0x6A00);
                     break;
 
                 case 1:
+                    bool var_4 = false;
                     var_2 = get_player_values(ref var_4, arg_0);
 
                     if (var_4 == false)
@@ -979,8 +975,6 @@ namespace engine
                         }
                     }
                     break;
-
-
             }
 
             return var_2;
@@ -992,12 +986,11 @@ namespace engine
             byte var_104;
             byte var_103;
             byte var_102;
-            byte var_101;
             string var_100;
 
             var_100 = arg_0;
 
-            var_101 = vm_GetMemoryValueType(arg_4);
+            int mem_type = vm_GetMemoryValueType(arg_4);
 
             var_102 = (byte)var_100.Length;
 
@@ -1005,7 +998,7 @@ namespace engine
             //    arg_0, arg_4, var_101);
 
 
-            if (var_101 == 0)
+            if (mem_type == 0)
             {
                 if (var_102 > 0)
                 {
@@ -1021,7 +1014,7 @@ namespace engine
 
                 gbl.area_ptr.field_6A00_Set(0x6A00 + ((var_102 + arg_4) << 1), 0);
             }
-            else if (var_101 == 1)
+            else if (mem_type == 1)
             {
                 if (arg_4 == 0x7C00)
                 {
@@ -1041,7 +1034,7 @@ namespace engine
                     gbl.area2_ptr.field_800_Set(((var_102 + arg_4) * 2) + 0x800, 0);
                 }
             }
-            else if (var_101 == 2)
+            else if (mem_type == 2)
             {
                 if (var_102 > 0)
                 {
@@ -1054,7 +1047,7 @@ namespace engine
 
                 gbl.stru_1B2CA[((var_102 + arg_4) << 1) + 0x0C00] = 0;
             }
-            else if (var_101 == 3)
+            else if (mem_type == 3)
             {
                 if (var_102 > 0)
                 {
@@ -1187,17 +1180,17 @@ namespace engine
 
         internal static void vm_CopyStringFromMemory(ushort location, byte strIndex) // sub_31421
         {
-            byte var_2 = 0;
+            int offset = 0;
 
             gbl.unk_1D972[strIndex] = string.Empty;
 
             switch (vm_GetMemoryValueType(location))
             {
                 case 0:
-                    while (gbl.area_ptr.field_6A00_Get(((var_2 + location) << 1) + 0x6A00) != 0)
+                    while (gbl.area_ptr.field_6A00_Get(((offset + location) << 1) + 0x6A00) != 0)
                     {
-                        gbl.unk_1D972[strIndex] += (char)((byte)gbl.area_ptr.field_6A00_Get(((var_2 + location) << 1) + 0x6A00));
-                        var_2++;
+                        gbl.unk_1D972[strIndex] += (char)((byte)gbl.area_ptr.field_6A00_Get(((offset + location) << 1) + 0x6A00));
+                        offset++;
                     }
                     break;
 
@@ -1208,28 +1201,28 @@ namespace engine
                     }
                     else
                     {
-                        while (gbl.area2_ptr.field_800_Get((var_2 + location) << 1) != 0)
+                        while (gbl.area2_ptr.field_800_Get((offset + location) << 1) != 0)
                         {
-                            gbl.unk_1D972[strIndex] += gbl.area2_ptr.field_800_Get((var_2 + location) << 1).ToString();
-                            var_2++;
+                            gbl.unk_1D972[strIndex] += gbl.area2_ptr.field_800_Get((offset + location) << 1).ToString();
+                            offset++;
                         }
                     }
                     break;
 
                 case 2:
-                    while (gbl.stru_1B2CA[((var_2 + location) << 1) + 0x0C00] != 0)
+                    while (gbl.stru_1B2CA[((offset + location) << 1) + 0x0C00] != 0)
                     {
-                        char ch = (char)gbl.stru_1B2CA[((var_2 + location) << 1) + 0x0C00];
+                        char ch = (char)gbl.stru_1B2CA[((offset + location) << 1) + 0x0C00];
                         gbl.unk_1D972[strIndex] += ch.ToString();
-                        var_2++;
+                        offset++;
                     }
                     break;
 
                 case 3:
-                    while (gbl.ecl_ptr[var_2 + location + 0x8000] != 0)
+                    while (gbl.ecl_ptr[offset + location + 0x8000] != 0)
                     {
-                        gbl.unk_1D972[strIndex] += gbl.ecl_ptr[var_2 + location + 0x8000].ToString();
-                        var_2++;
+                        gbl.unk_1D972[strIndex] += gbl.ecl_ptr[offset + location + 0x8000].ToString();
+                        offset++;
                     }
                     break;
             }

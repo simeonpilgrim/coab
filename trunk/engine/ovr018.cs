@@ -1798,7 +1798,6 @@ namespace engine
                             int len = gbl.player_ptr.name.Length;
                             int del = name_cursor_pos - 1;
 
-                             
                             /* delete char from name */
                             string s = string.Empty;
                             if (del > 0)
@@ -1811,7 +1810,7 @@ namespace engine
                                 s += gbl.player_ptr.name.Substring(del+1);
                             }
 
-                            gbl.player_ptr.name = s;
+                             gbl.player_ptr.name = s;
 
                             if (name_cursor_pos > gbl.player_ptr.name.Length)
                             {

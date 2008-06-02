@@ -151,7 +151,7 @@ namespace engine
             gbl.PicsOn = true;
             gbl.DelayBetweenCharacters = true;
             gbl.byte_1B2EB = 0;
-            gbl.word_1B2EC = 0;
+            gbl.rest_incounter_count = 0;
 
             gbl.player_next_ptr = null;
             gbl.player_ptr = null;
@@ -162,7 +162,6 @@ namespace engine
             gbl.game_area = 1;
             gbl.game_area_backup = 1;
             gbl.mapAreaDisplay = false;
-            gbl.textWndXXX = 1;
             gbl.area2_ptr.field_67C = 0;
             gbl.word_1D5BC = 1;
             gbl.combat_type = gbl.combatType.normal;
@@ -271,7 +270,7 @@ namespace engine
 
             gbl.DelayBetweenCharacters = true;
             gbl.byte_1B2EB = 0;
-            gbl.word_1B2EC = 0;
+            gbl.rest_incounter_count = 0;
             gbl.player_next_ptr = null;
             gbl.player_ptr = null;
             gbl.ecl_offset = 0x8000;
@@ -279,7 +278,6 @@ namespace engine
             gbl.game_area = 1;
             gbl.game_area_backup = 1;
             gbl.mapAreaDisplay = false;
-            gbl.textWndXXX = 1;
             gbl.area2_ptr.field_67C = 0;
             gbl.word_1D5BC = 1;
             gbl.combat_type = gbl.combatType.normal;

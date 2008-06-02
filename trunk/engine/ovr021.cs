@@ -4,46 +4,43 @@ namespace engine
 {
     class ovr021
     {
-        internal static void sub_5801E(byte arg_0, byte arg_2)
+        internal static void sub_5801E(int arg_0, byte arg_2)
         {
             Affect affect01;
             Affect affect;
             Affect var_F;
-            byte var_B;
-            byte var_A;
             Player player;
-            ushort var_5;
-            byte var_3;
-            byte var_2;
-            byte var_1;
 
             if (gbl.game_state != 2)
             {
-                seg051.FillChar(1, 0x48, gbl.unk_1AE24);
+                for (int i = 0; i < 0x48; i++)
+                {
+                    gbl.affects_timed_out[i] = true;
+                }
             }
             else
             {
-                var_B = 0;
-                var_2 = 0;
+                bool var_B = false;
+                byte var_2 = 0;
 
                 do
                 {
-                    if (gbl.unk_1AE24[var_2] != 0)
+                    if (gbl.affects_timed_out[var_2] == true)
                     {
-                        var_B = 1;
+                        var_B = true;
                     }
 
                     var_2++;
-                } while (var_B == 0 && var_2 < gbl.area2_ptr.field_67C);
+                } while (var_B == false && var_2 < gbl.area2_ptr.field_67C);
 
-                if (var_B == 0)
+                if (var_B == false)
                 {
                     return;
                 }
             }
 
-            var_5 = arg_2;
-            var_1 = arg_0;
+            int var_5 = arg_2;
+            int var_1 = arg_0;
 
             while (var_1 > 1)
             {
@@ -53,23 +50,16 @@ namespace engine
 
             while (var_5 > 0)
             {
-                if (var_5 > 10)
-                {
-                    var_3 = 0x0A;
-                }
-                else
-                {
-                    var_3 = (byte)var_5;
-                }
+                int var_3 = System.Math.Min(10, var_5);
 
-                var_2 = 0;
+                int var_2 = 0;
                 player = gbl.player_next_ptr;
 
                 while (player != null)
                 {
-                    if (gbl.unk_1AE24[var_2] != 0)
+                    if (gbl.affects_timed_out[var_2] == true)
                     {
-                        gbl.unk_1AE24[var_2] = 0;
+                        gbl.affects_timed_out[var_2] = false;
 
                         affect01 = player.affect_ptr;
                         var_F = player.affect_ptr;
@@ -84,14 +74,14 @@ namespace engine
                             }
                         }
 
-                        var_A = 0;
+                        bool var_A = false;
 
                         while (affect01 != null &&
-                            var_A == 0)
+                            var_A == false)
                         {
                             if (affect01 == var_F)
                             {
-                                var_A = 1;
+                                var_A = true;
                             }
 
                             if (affect01.field_1 == 0)
@@ -100,8 +90,8 @@ namespace engine
                             }
                             else if (var_3 < affect01.field_1)
                             {
-                                affect01.field_1 = var_3;
-                                gbl.unk_1AE24[var_2] = 1;
+                                affect01.field_1 = (ushort)var_3;
+                                gbl.affects_timed_out[var_2] = true;
 
                                 affect01 = affect01.next;
                             }
@@ -135,7 +125,7 @@ namespace engine
                         {
                             if (affect01.field_1 > 0)
                             {
-                                gbl.unk_1AE24[var_2] = 1;
+                                gbl.affects_timed_out[var_2] = true;
                             }
 
                             affect01 = affect01.next;
@@ -609,7 +599,11 @@ namespace engine
                 var_5 = var_5.next_player;
             }
 
-            seg051.FillChar(1, 0x48, gbl.unk_1AE24);
+            for (int i = 0; i < 0x48; i++)
+            {
+                gbl.affects_timed_out[i] = true;
+            }
+
             int var_C = 0;
             int display_counter = 0;
 
@@ -668,15 +662,15 @@ namespace engine
                     sub_58B4D();
                     sub_58C03(ref var_C);
 
-                    if (gbl.area2_ptr.field_5A4 > 0)
+                    if (gbl.area2_ptr.rest_incounter_period > 0)
                     {
-                        gbl.word_1B2EC++;
+                        gbl.rest_incounter_count++;
 
-                        if (gbl.word_1B2EC >= gbl.area2_ptr.field_5A4)
+                        if (gbl.rest_incounter_count >= gbl.area2_ptr.rest_incounter_period)
                         {
-                            gbl.word_1B2EC = 0;
+                            gbl.rest_incounter_count = 0;
 
-                            if (ovr024.roll_dice(100, 1) <= gbl.area2_ptr.field_5A6)
+                            if (ovr024.roll_dice(100, 1) <= gbl.area2_ptr.rest_incounter_percentage)
                             {
                                 ovr025.ClearPlayerTextArea();
                                 display_resting_time(0);

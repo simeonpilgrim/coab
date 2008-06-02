@@ -472,7 +472,7 @@ namespace engine
 			int mapY = gbl.mapPosY;
 			int mapDir = gbl.mapDirection;
 
-			gbl.area2_ptr.field_5AA = 0;
+			gbl.area2_ptr.tried_to_exit_map = false;
 
 			if( ovr031.WallDoorFlagsGet( mapDir, mapY, mapX ) != 0 )
 			{
@@ -482,25 +482,25 @@ namespace engine
                 if (mapX > 0x0F)
                 {
                     gbl.mapPosX = 0x0F;
-                    gbl.area2_ptr.field_5AA = 1;
+                    gbl.area2_ptr.tried_to_exit_map = true;
                 }
 
                 if (mapX < 0)
                 {
                     gbl.mapPosX = 0;
-                    gbl.area2_ptr.field_5AA = 1;
+                    gbl.area2_ptr.tried_to_exit_map = true;
                 }
 
                 if (mapY > 0x0F)
                 {
                     gbl.mapPosY = 0x0F;
-                    gbl.area2_ptr.field_5AA = 1;
+                    gbl.area2_ptr.tried_to_exit_map = true;
                 }
 
                 if (mapY < 0)
                 {
                     gbl.mapPosY = 0;
-                    gbl.area2_ptr.field_5AA = 1;
+                    gbl.area2_ptr.tried_to_exit_map = true;
                 }
 			}
         }
@@ -554,7 +554,7 @@ namespace engine
         }
 
 
-        internal static char sub_438DF( )
+        internal static char main_3d_world_menu() /* sub_438DF */
         {
             char input_key = '\0'; /* simeon */ 
 		

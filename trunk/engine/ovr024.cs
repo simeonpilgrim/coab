@@ -660,34 +660,30 @@ namespace engine
 
         internal static void add_affect(bool call_spell_jump_list, int arg_2, ushort arg_4, Affects type, Player player)
         {
-            Affect affect_ptr;
-            Affect affect_ptr2;
-
-            affect_ptr2 = new Affect();
+            Affect affect = new Affect();
 
             if (player.affect_ptr == null)
             {
-                player.affect_ptr = affect_ptr2;
+                player.affect_ptr = affect;
             }
             else
             {
-                affect_ptr = player.affect_ptr;
+                Affect affect_tmp = player.affect_ptr;
 
-                while (affect_ptr.next != null)
+                while (affect_tmp.next != null)
                 {
-                    affect_ptr = affect_ptr.next;
-
+                    affect_tmp = affect_tmp.next;
                 }
 
-                affect_ptr.next = affect_ptr2;
+                affect_tmp.next = affect;
             }
 
-            affect_ptr2.next = null;
+            affect.next = null;
 
-            affect_ptr2.type = type;
-            affect_ptr2.field_1 = arg_4;
-            affect_ptr2.field_3 = (byte)arg_2;
-            affect_ptr2.call_spell_jump_list = call_spell_jump_list;
+            affect.type = type;
+            affect.field_1 = arg_4;
+            affect.field_3 = (byte)arg_2;
+            affect.call_spell_jump_list = call_spell_jump_list;
         }
 
 

@@ -163,7 +163,6 @@ namespace engine
                      */
 
 					var_21.field_11 = GetPixel( var_21.field_02, var_21.field_00 );
-
 				}
 			}
 		}
@@ -296,7 +295,7 @@ namespace engine
         }
 
 
-        internal static void sub_5285E( byte arg_0, short arg_2, ref short arg_4, ref ushort arg_8, ref ushort arg_C, ref ushort arg_10 )
+        internal static void endgame_5285E(byte arg_0, short arg_2, ref short arg_4, ref ushort arg_8, ref ushort arg_C, ref ushort arg_10) /* sub_5285E */
         {
             short var_D;
             byte var_B;
@@ -375,7 +374,7 @@ namespace engine
         }
 
 
-        internal static void sub_529F4( )
+        internal static void endgame_529F4() /* sub_529F4 */
         {
             gbl.dword_1ADF6 = new Struct_1ADF6[120];  
             gbl.byte_1AE0A = 0;
@@ -388,9 +387,9 @@ namespace engine
 					seg051.FillChar( 1, 3, gbl.unk_1AE0B );
 					gbl.byte_1AE1B = seg051.Random( (byte)2 );
 
-                    for (byte byte_1AE0E = 0; byte_1AE0E < gbl.byte_1AE1B; byte_1AE0E++)
+                    for (byte i = 0; i < gbl.byte_1AE1B; i++)
 					{
-						gbl.unk_1AE0B[ byte_1AE0E ] = (byte)(seg051.Random( 5 ) + 2);
+						gbl.unk_1AE0B[ i ] = (byte)(seg051.Random( 5 ) + 2);
 					}
 
 					gbl.word_1AE0F = 65;
@@ -402,7 +401,7 @@ namespace engine
 					gbl.word_1AE19 = gbl.word_1AE15;
 					gbl.word_1AE17 = gbl.word_1AE13;
 
-					sub_5285E( 0, 0x3C, ref gbl.word_1AE15, ref gbl.word_1AE13, ref gbl.word_1AE11, ref gbl.word_1AE0F );
+					endgame_5285E( 0, 0x3C, ref gbl.word_1AE15, ref gbl.word_1AE13, ref gbl.word_1AE11, ref gbl.word_1AE0F );
 					sub_520B8( gbl.unk_1AE0B, gbl.word_1AE15, gbl.word_1AE13, gbl.word_1AE11, gbl.word_1AE0F );
 
 					gbl.word_1AE13 = gbl.word_1AE17;
@@ -411,7 +410,7 @@ namespace engine
 					gbl.word_1AE0F = 0x41;
 					gbl.word_1AE11 = 0x41;
 
-					sub_5285E( 1, 0x3C, ref gbl.word_1AE15, ref gbl.word_1AE13, ref gbl.word_1AE11, ref gbl.word_1AE0F );
+					endgame_5285E( 1, 0x3C, ref gbl.word_1AE15, ref gbl.word_1AE13, ref gbl.word_1AE11, ref gbl.word_1AE0F );
 
                     sub_5279B(gbl.unk_1AE0B);/*TODO - extra params - gbl.word_1AE15, gbl.word_1AE13, gbl.word_1AE11, gbl.word_1AE0F );*/
 
@@ -555,7 +554,7 @@ namespace engine
             seg041.press_any_key( aHaveAlreadyBeg, false, 0, 10, 0x16, 0x26, 0x11, 1 );
 			seg041.press_any_key( aGharriAndNacac, false, 0, 10, 0x16, 0x26, 0x11, 1 );
             seg041.press_any_key( aFromTheNearbyS, false, 0, 10, 0x16, 0x26, 0x11, 1 );
-			sub_529F4();
+			endgame_529F4();
 
             gbl.game_state = gbl.last_game_state;
             ovr025.load_pic();
