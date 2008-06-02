@@ -51,48 +51,46 @@ namespace engine
    
 
 
-        internal static void sub_6A00F(Player arg_0)
+        internal static void sub_6A00F(Player player)
         {
             Struct_19AEC var_12;
             sbyte var_2;
-            byte var_1;
-
 
             for (int i = 0; i < 5; i++)
             {
-                arg_0.field_12D[0, i] = 0;
-                arg_0.field_12D[1, i] = 0;
-                arg_0.field_12D[2, i] = 0;
+                player.field_12D[0, i] = 0;
+                player.field_12D[1, i] = 0;
+                player.field_12D[2, i] = 0;
             }
 
-            for (var_1 = 0; var_1 <= 7; var_1++)
+            for (int skill = 0; skill <= 7; skill++)
             {
-                if (sub_6B3D1(arg_0) != 0 &&
-                    arg_0.Skill_B_lvl[var_1] != 0)
+                if (sub_6B3D1(player) != 0 &&
+                    player.Skill_B_lvl[skill] != 0)
                 {
-                    var_2 = (sbyte)arg_0.Skill_B_lvl[var_1];
+                    var_2 = (sbyte)player.Skill_B_lvl[skill];
                 }
                 else
                 {
-                    var_2 = (sbyte)arg_0.Skill_A_lvl[var_1];
+                    var_2 = (sbyte)player.Skill_A_lvl[skill];
                 }
 
                 if (var_2 > 0)
                 {
-                    switch (var_1)
+                    switch (skill)
                     {
                         case 0:
-                            arg_0.field_12D[0, 0] += 1;
+                            player.field_12D[0, 0] += 1;
 
                             for (int sp_class = 0; sp_class <= (var_2 - 2); sp_class++)
                             {
                                 for (int sp_lvl = 0; sp_lvl < 5; sp_lvl++)
                                 {
-                                    arg_0.field_12D[0, sp_lvl] += unk_1A5CC[sp_class, sp_lvl];
+                                    player.field_12D[0, sp_lvl] += unk_1A5CC[sp_class, sp_lvl];
                                 }
                             }
 
-                            calc_cleric_spells(false, arg_0);
+                            calc_cleric_spells(false, player);
 
                             for (int i = 1; i <= 100; i++)
                             {
@@ -102,10 +100,10 @@ namespace engine
                                 int sp_lvl = (var_12.spellLevel - 1) % 5;
 
                                 if (var_12.spellClass == 0 &&
-                                    arg_0.field_12D[sp_class, sp_lvl] > 0 &&
+                                    player.field_12D[sp_class, sp_lvl] > 0 &&
                                     i != 0x24)
                                 {
-                                    arg_0.field_79[i - 1] = 1;
+                                    player.field_79[i - 1] = 1;
                                 }
                             }
                             break;
@@ -117,7 +115,7 @@ namespace engine
                                 {
                                     for (int sp_lvl = 0; sp_lvl < 5; sp_lvl++)
                                     {
-                                        arg_0.field_12D[0, sp_lvl] += unk_1A6F5[var_3, sp_lvl];
+                                        player.field_12D[0, sp_lvl] += unk_1A6F5[var_3, sp_lvl];
                                     }
                                 }
 
@@ -129,9 +127,9 @@ namespace engine
                                     int sp_lvl = (var_12.spellLevel - 1) % 5;
 
                                     if (var_12.spellClass == 0 &&
-                                        arg_0.field_12D[sp_class, sp_lvl] > 0)
+                                        player.field_12D[sp_class, sp_lvl] > 0)
                                     {
-                                        arg_0.field_79[i - 1] = 1;
+                                        player.field_79[i - 1] = 1;
                                     }
                                 }
                             }
@@ -144,12 +142,12 @@ namespace engine
                                 {
                                     for (int sp_lvl = 0; sp_lvl < 3; sp_lvl++)
                                     {
-                                        arg_0.field_12D[1, sp_lvl] += unk_1A758[var_3, sp_lvl];
+                                        player.field_12D[1, sp_lvl] += unk_1A758[var_3, sp_lvl];
                                     }
 
                                     for (int sp_lvl = 3; sp_lvl < 5; sp_lvl++)
                                     {
-                                        arg_0.field_12D[2, sp_lvl - 3] += unk_1A758[var_3, sp_lvl];
+                                        player.field_12D[2, sp_lvl - 3] += unk_1A758[var_3, sp_lvl];
                                     }
                                 }
 
@@ -157,7 +155,7 @@ namespace engine
                                 {
                                     if (gbl.unk_19AEC[i].spellClass == 1)
                                     {
-                                        arg_0.field_79[i - 1] = 1;
+                                        player.field_79[i - 1] = 1;
                                     }
                                 }
                             }
@@ -165,23 +163,23 @@ namespace engine
                             break;
 
                         case 5:
-                            arg_0.field_12D[2, 0] += 1;
+                            player.field_12D[2, 0] += 1;
 
                             for (int lvl = 0; lvl <= (var_2 - 2); lvl++)
                             {
                                 /* unk_1A7C6 = seg600:44B6 */
-                                arg_0.field_12D[2, 0] += ovr020.unk_1A7C6[lvl, 0];
-                                arg_0.field_12D[2, 1] += ovr020.unk_1A7C6[lvl, 1];
-                                arg_0.field_12D[2, 2] += ovr020.unk_1A7C6[lvl, 2];
-                                arg_0.field_12D[2, 3] += ovr020.unk_1A7C6[lvl, 3];
-                                arg_0.field_12D[2, 4] += ovr020.unk_1A7C6[lvl, 4];
+                                player.field_12D[2, 0] += ovr020.unk_1A7C6[lvl, 0];
+                                player.field_12D[2, 1] += ovr020.unk_1A7C6[lvl, 1];
+                                player.field_12D[2, 2] += ovr020.unk_1A7C6[lvl, 2];
+                                player.field_12D[2, 3] += ovr020.unk_1A7C6[lvl, 3];
+                                player.field_12D[2, 4] += ovr020.unk_1A7C6[lvl, 4];
                             }
                             break;
                     }
                 }
             }
 
-            Item var_A = arg_0.itemsPtr;
+            Item var_A = player.itemsPtr;
 
             while (var_A != null)
             {
@@ -190,7 +188,7 @@ namespace engine
                 {
                     for (int sp_lvl = 0; sp_lvl < 3; sp_lvl++)
                     {
-                        arg_0.field_12D[2, sp_lvl] *= 2;
+                        player.field_12D[2, sp_lvl] *= 2;
                     }
                 }
 
@@ -199,110 +197,106 @@ namespace engine
         }
 
 
-        internal static void sub_6A3C6(Player arg_0)
+        internal static void sub_6A3C6(Player player)
         {
-            byte var_6;
-            byte var_4;
-            byte var_1;
+            player.field_73 = 0;
 
-            arg_0.field_73 = 0;
-
-            for (var_1 = 0; var_1 <= 7; var_1++)
+            for (int skill = 0; skill <= 7; skill++)
             {
-                var_4 = arg_0.Skill_A_lvl[var_1];
+                byte skill_lvl = player.Skill_A_lvl[skill];
 
-                if (ovr018.unk_1A14A[(var_1 * 0xD) + var_4] > arg_0.field_73)
+                if (ovr018.unk_1A14A[(skill * 0xD) + skill_lvl] > player.field_73)
                 {
-                    arg_0.field_73 = ovr018.unk_1A14A[(var_1 * 0xD) + var_4];
+                    player.field_73 = ovr018.unk_1A14A[(skill * 0xD) + skill_lvl];
                 }
 
-                if (arg_0.field_E5 < var_4)
+                if (player.field_E5 < skill_lvl)
                 {
-                    arg_0.field_E5 = var_4;
+                    player.field_E5 = skill_lvl;
                 }
 
-                if (var_1 == 2 || var_1 == 3)
+                if (skill == 2 || skill == 3)
                 {
-                    if (var_4 > 6)
+                    if (skill_lvl > 6)
                     {
-                        arg_0.field_11C = 3;
+                        player.field_11C = 3;
                     }
                 }
-                else if (var_1 == 4)
+                else if (skill == 4)
                 {
-                    if (var_4 > 7)
+                    if (skill_lvl > 7)
                     {
-                        arg_0.field_11C = 3;
+                        player.field_11C = 3;
                     }
                 }
             }
 
-            sub_6A00F(arg_0);
-            sub_6A7FB(arg_0);
+            sub_6A00F(player);
+            sub_6A7FB(player);
 
-            if (arg_0.thief_lvl > 0)
+            if (player.thief_lvl > 0)
             {
-                sub_6AAEA(arg_0);
+                sub_6AAEA(player);
             }
 
-            arg_0.classFlags = 0;
+            player.classFlags = 0;
 
-            for (var_1 = 0; var_1 <= 7; var_1++)
+            for (int skill = 0; skill <= 7; skill++)
             {
-                if (arg_0.Skill_A_lvl[var_1] > 0 ||
-                    (arg_0.Skill_B_lvl[var_1] > 0 && arg_0.Skill_B_lvl[var_1] < arg_0.field_E5))
+                if (player.Skill_A_lvl[skill] > 0 ||
+                    (player.Skill_B_lvl[skill] > 0 && player.Skill_B_lvl[skill] < player.field_E5))
                 {
-                    arg_0.classFlags += ovr018.unk_1A1B2[var_1];
+                    player.classFlags += ovr018.unk_1A1B2[skill];
                 }
             }
 
-            for (var_6 = 0; var_6 <= 12; var_6++)
+            for (int item_slot = 0; item_slot <= 12; item_slot++)
             {
-                if (arg_0.itemArray[var_6] != null &&
-                    (gbl.unk_1C020[arg_0.itemArray[var_6].type].classFlags & arg_0.classFlags) == 0 &&
-                    arg_0.itemArray[var_6].cursed == false)
+                if (player.itemArray[item_slot] != null &&
+                    (gbl.unk_1C020[player.itemArray[item_slot].type].classFlags & player.classFlags) == 0 &&
+                    player.itemArray[item_slot].cursed == false)
                 {
-                    arg_0.itemArray[var_6].readied = false;
+                    player.itemArray[item_slot].readied = false;
                 }
             }
 
-            if (sub_6B3D1(arg_0) != 0)
+            if (sub_6B3D1(player) != 0)
             {
-                for (var_1 = 0; var_1 <= 7; var_1++)
+                for (int skill = 0; skill <= 7; skill++)
                 {
-                    var_4 = arg_0.Skill_B_lvl[var_1];
+                    byte skill_lvl = player.Skill_B_lvl[skill];
 
-                    if (var_1 == 2 || var_1 == 3)
+                    if (skill == 2 || skill == 3)
                     {
-                        if (var_4 > 6)
+                        if (skill_lvl > 6)
                         {
-                            arg_0.field_11C = 3;
+                            player.field_11C = 3;
                         }
                     }
-                    else if (var_1 == 4)
+                    else if (skill == 4)
                     {
-                        if (var_4 > 7)
+                        if (skill_lvl > 7)
                         {
-                            arg_0.field_11C = 3;
+                            player.field_11C = 3;
                         }
                     }
 
-                    if (ovr018.unk_1A14A[(var_1 * 0xd) + var_4] > arg_0.field_73)
+                    if (ovr018.unk_1A14A[(skill * 0xd) + skill_lvl] > player.field_73)
                     {
-                        arg_0.field_73 = ovr018.unk_1A14A[(var_1 * 0xd) + var_4];
+                        player.field_73 = ovr018.unk_1A14A[(skill * 0xd) + skill_lvl];
                     }
                 }
 
-                if (arg_0.field_113 > 6 ||
-                    arg_0.field_115 > 7 ||
-                    arg_0.field_114 > 6)
+                if (player.field_113 > 6 ||
+                    player.field_115 > 7 ||
+                    player.field_114 > 6)
                 {
-                    arg_0.field_11C = 3;
+                    player.field_11C = 3;
                 }
 
-                if (arg_0.field_117 > 0)
+                if (player.field_117 > 0)
                 {
-                    sub_6AAEA(arg_0);
+                    sub_6AAEA(player);
                 }
             }
         }
@@ -408,43 +402,40 @@ namespace engine
     15, 13, 11, 10, 10, 14, 11, 13, 11, 9, 13,
     10, 11, 9, 7, 11, 8 };
 
-        internal static void sub_6A7FB(Player arg_0)
+        internal static void sub_6A7FB(Player player)
         {
-            bool var_9;
-            Item var_8;
-            byte var_4;
             byte var_2;
             byte var_1;
 
-            var_9 = false;
+            bool var_9 = false;
 
-            var_8 = arg_0.itemsPtr;
+            Item player_ptr = player.itemsPtr;
 
-            while (var_8 != null && var_9 == false)
+            while (player_ptr != null && var_9 == false)
             {
-                if ((int)var_8.affect_3 > 0x80 &&
-                    var_8.readied)
+                if ((int)player_ptr.affect_3 > 0x80 &&
+                    player_ptr.readied)
                 {
-                    var_4 = (byte)((int)var_8.affect_3 & 0x7F);
+                    int var_4 = (int)player_ptr.affect_3 & 0x7F;
 
                     var_9 = (var_4 == 6);
                 }
 
-                var_8 = var_8.next;
+                player_ptr = player_ptr.next;
             }
 
             for (var_1 = 0; var_1 <= 4; var_1++)
             {
-                arg_0.field_DFArraySet(var_1, 0x14);
+                player.field_DFArraySet(var_1, 0x14);
                 for (var_2 = 0; var_2 <= 7; var_2++)
                 {
-                    if (arg_0.Skill_A_lvl[var_2] > 0)
+                    if (player.Skill_A_lvl[var_2] > 0)
                     {
-                        byte dl = byte_1A8CE[(var_2 * 60) + (arg_0.Skill_A_lvl[var_2] * 5) + var_1];
+                        byte dl = byte_1A8CE[(var_2 * 60) + (player.Skill_A_lvl[var_2] * 5) + var_1];
 
-                        if (arg_0.field_DFArrayGet(var_1) > dl)
+                        if (player.field_DFArrayGet(var_1) > dl)
                         {
-                            arg_0.field_DFArraySet(var_1, dl);
+                            player.field_DFArraySet(var_1, dl);
                         }
                     }
                 }
@@ -452,62 +443,62 @@ namespace engine
                 var_2 -= 1; /* Orignal code had a post use test and would exit on 7,
                             * but this for loops uses are pre-test increment so fix var_2 */
 
-                if (arg_0.Skill_A_lvl[var_2] > arg_0.Skill_B_lvl[var_2])
+                if (player.Skill_A_lvl[var_2] > player.Skill_B_lvl[var_2])
                 {
-                    byte dl = byte_1A8CE[(var_2 * 60) + (arg_0.Skill_B_lvl[var_2] * 5) + var_1];
+                    byte dl = byte_1A8CE[(var_2 * 60) + (player.Skill_B_lvl[var_2] * 5) + var_1];
 
-                    if (arg_0.field_DFArrayGet(var_1) > dl)
+                    if (player.field_DFArrayGet(var_1) > dl)
                     {
-                        arg_0.field_DFArraySet(var_1, dl);
+                        player.field_DFArraySet(var_1, dl);
                     }
                 }
 
                 if (var_1 == 0)
                 {
-                    if (arg_0.race == Race.dwarf || arg_0.race == Race.halfling ||
+                    if (player.race == Race.dwarf || player.race == Race.halfling ||
                         var_9 == true)
                     {
-                        if (arg_0.con >= 4 && arg_0.con <= 6)
+                        if (player.con >= 4 && player.con <= 6)
                         {
-                            arg_0.field_DFArraySet(var_1, (byte)(arg_0.field_DFArrayGet(var_1) + 1));
+                            player.field_DFArraySet(var_1, (byte)(player.field_DFArrayGet(var_1) + 1));
                         }
-                        else if (arg_0.con >= 7 && arg_0.con <= 10)
+                        else if (player.con >= 7 && player.con <= 10)
                         {
-                            arg_0.field_DFArraySet(var_1, (byte)(arg_0.field_DFArrayGet(var_1) + 2));
+                            player.field_DFArraySet(var_1, (byte)(player.field_DFArrayGet(var_1) + 2));
                         }
-                        else if (arg_0.con >= 11 && arg_0.con <= 13)
+                        else if (player.con >= 11 && player.con <= 13)
                         {
 
-                            arg_0.field_DFArraySet(var_1, (byte)(arg_0.field_DFArrayGet(var_1) + 3));
+                            player.field_DFArraySet(var_1, (byte)(player.field_DFArrayGet(var_1) + 3));
                         }
-                        else if (arg_0.con >= 14 && arg_0.con <= 17)
+                        else if (player.con >= 14 && player.con <= 17)
                         {
-                            arg_0.field_DFArraySet(var_1, (byte)(arg_0.field_DFArrayGet(var_1) + 4));
+                            player.field_DFArraySet(var_1, (byte)(player.field_DFArrayGet(var_1) + 4));
                         }
-                        else if (arg_0.con == 18)
+                        else if (player.con == 18)
                         {
-                            arg_0.field_DFArraySet(var_1, (byte)(arg_0.field_DFArrayGet(var_1) + 5));
+                            player.field_DFArraySet(var_1, (byte)(player.field_DFArrayGet(var_1) + 5));
                         }
                     }
                 }
 
                 if (var_1 == 0)
                 {
-                    if (arg_0.con == 0x13 || arg_0.con == 0x14)
+                    if (player.con == 0x13 || player.con == 0x14)
                     {
-                        arg_0.field_DFArraySet(var_1, (byte)(arg_0.field_DFArrayGet(var_1) + 1));
+                        player.field_DFArraySet(var_1, (byte)(player.field_DFArrayGet(var_1) + 1));
                     }
-                    else if (arg_0.con == 0x15 || arg_0.con == 0x16)
+                    else if (player.con == 0x15 || player.con == 0x16)
                     {
-                        arg_0.field_DFArraySet(var_1, (byte)(arg_0.field_DFArrayGet(var_1) + 2));
+                        player.field_DFArraySet(var_1, (byte)(player.field_DFArrayGet(var_1) + 2));
                     }
-                    else if (arg_0.con == 0x17 || arg_0.con == 0x18)
+                    else if (player.con == 0x17 || player.con == 0x18)
                     {
-                        arg_0.field_DFArraySet(var_1, (byte)(arg_0.field_DFArrayGet(var_1) + 3));
+                        player.field_DFArraySet(var_1, (byte)(player.field_DFArrayGet(var_1) + 3));
                     }
-                    else if (arg_0.con == 0x19)
+                    else if (player.con == 0x19)
                     {
-                        arg_0.field_DFArraySet(var_1, (byte)(arg_0.field_DFArrayGet(var_1) + 4));
+                        player.field_DFArraySet(var_1, (byte)(player.field_DFArrayGet(var_1) + 4));
                     }
                 }
             }
@@ -572,27 +563,21 @@ namespace engine
 
         internal static void sub_6AAEA(Player player)
         {
-            Player player_ptr;
-            bool var_B;
-            bool var_A;
-            Item item_ptr;
             sbyte var_5;
-            sbyte var_4;
-            byte var_3;
             byte var_2 = 0; //Simeon
             byte var_1;
 
-            player_ptr = player;
-            var_A = false;
-            var_B = false;
-            item_ptr = player_ptr.itemsPtr;
+            Player player_ptr = player;
+            bool var_A = false;
+            bool var_B = false;
+            Item item_ptr = player_ptr.itemsPtr;
 
             while (item_ptr != null && var_A == false && var_B == false)
             {
                 if ((int)item_ptr.affect_3 > 0x80 &&
                     item_ptr.readied)
                 {
-                    var_3 = (byte)((int)item_ptr.affect_3 & 0x7f);
+                    int var_3 = (int)item_ptr.affect_3 & 0x7f;
 
                     var_A = (var_3 == 11);
                     var_B = (var_3 == 2);
@@ -602,7 +587,7 @@ namespace engine
             }
 
 
-            var_4 = (sbyte)(player.thief_lvl + (sub_6B3D1(player) * player.field_117));
+            sbyte var_4 = (sbyte)(player.thief_lvl + (sub_6B3D1(player) * player.field_117));
 
             if (var_4 < 4 && var_B == true)
             {
