@@ -7,7 +7,7 @@ namespace Classes
 	/// </summary>
 	public class Struct_1C020
 	{
-		public byte field_0; //seg600:5D10 unk_1C020
+        public byte item_slot; //seg600:5D10 unk_1C020 - field_0
 		public byte field_1; //seg600:5D11 unk_1C021
         /// <summary>
         /// field_2
@@ -36,7 +36,7 @@ namespace Classes
 
         public Struct_1C020(byte[] data, int offset)
         {
-            field_0 = data[offset + 0];
+            item_slot = data[offset + 0];
             field_1 = data[offset + 1];
             diceCount = data[offset + 2];
             diceSize = data[offset + 3];

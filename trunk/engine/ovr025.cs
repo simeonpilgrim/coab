@@ -62,7 +62,7 @@ namespace engine
         /// </summary>
         internal static void sub_6621E(Item arg_0, Player arg_4)
         {
-            if (gbl.unk_1C020[arg_0.type].field_0 == 2)
+            if (gbl.unk_1C020[arg_0.type].item_slot == 2)
             {
                 if (arg_0.weight >= 0 && arg_0.weight <= 0x96)
                 {
@@ -94,7 +94,7 @@ namespace engine
             if (var_1 > 0x7f)
             {
                 var_1 &= 0x7F;
-                var_2 = gbl.unk_1C020[item.type].field_0;
+                var_2 = gbl.unk_1C020[item.type].item_slot;
                 if (var_2 == 1)
                 {
                     bonus[1] = (sbyte)(item.plus + var_1);
@@ -528,11 +528,8 @@ namespace engine
 
         internal static void sub_66C20(Player player)
         {
-            byte var_13;
-            short var_12;
             byte var_10;
             sbyte[] stat_bonus = new sbyte[5];
-            byte var_8;
             byte var_7;
             Item item_ptr;
             byte var_2;
@@ -549,8 +546,9 @@ namespace engine
             player.Item_ptr_01 = null;
             player.Item_ptr_02 = null;
             player.Item_ptr_03 = null;
+            player.Item_ptr_04 = null;
 
-            var_8 = 0;
+            bool var_8 = false ;
             player.field_14C = 0;
 
             item_ptr = player.itemsPtr;
@@ -562,20 +560,20 @@ namespace engine
             while (item_ptr != null)
             {
                 player.field_14C++;
-                var_12 = item_ptr.weight;
+                short item_weight = item_ptr.weight;
 
                 if (item_ptr.count > 0)
                 {
-                    var_12 = (short)(var_12 * item_ptr.count);
+                    item_weight *= (short)item_ptr.count;
                 }
 
-                player.weight += var_12;
+                player.weight += item_weight;
 
                 if (item_ptr.readied)
                 {
-                    gbl.word_1AFE0 += var_12;
+                    gbl.word_1AFE0 += item_weight;
 
-                    var_13 = gbl.unk_1C020[item_ptr.type].field_0;
+                    int var_13 = gbl.unk_1C020[item_ptr.type].item_slot;
 
                     if (var_13 >= 0 && var_13 <= 8)
                     {
@@ -666,7 +664,7 @@ namespace engine
                 stat_bonus[3] = 0;
             }
 
-            if (var_8 != 0)
+            if (var_8 == true)
             {
                 if (player.weight < 5000)
                 {

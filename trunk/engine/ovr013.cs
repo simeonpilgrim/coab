@@ -1077,20 +1077,18 @@ namespace engine
         }
 
 
-        internal static void sub_3B70E(Effect arg_0, object param, Player player)
-        {
-
-        }
-
-
         internal static void sub_3B71A(Effect arg_0, object param, Player player)
         {
-            gbl.spell_target = player.actions.target;
-
-            if (gbl.spell_target.field_11A == 3)
+            if (player.actions != null &&
+                player.actions.target != null)
             {
-                gbl.damage = (ovr024.roll_dice(12, 1) * 3) + 4 + ovr025.strengthDamBonus(player);
-                gbl.byte_1D2C9 += 2;
+                gbl.spell_target = player.actions.target;
+
+                if (gbl.spell_target.field_11A == 3)
+                {
+                    gbl.damage = (ovr024.roll_dice(12, 1) * 3) + 4 + ovr025.strengthDamBonus(player);
+                    gbl.byte_1D2C9 += 2;
+                }
             }
         }
 
@@ -1166,7 +1164,6 @@ namespace engine
             gbl.damage_flags = 9;
 
             ovr024.damage_person(false, 0, ovr024.roll_dice_save(10, 2), player.actions.target);
-
         }
 
 
@@ -1230,18 +1227,25 @@ namespace engine
         }
 
 
-        internal static void sub_3BA55(Effect arg_0, object param, Player player)
+        internal static void spell_displace(Effect arg_0, object param, Player player) /*sub_3BA55*/
         {
             Affect affect = (Affect)param;
 
-            if (gbl.byte_1D8B7 == 0 && gbl.byte_1D2C9 == 0)
+            if (affect != null)
             {
-                affect.field_3 &= 0x0f;
+                if (gbl.byte_1D8B7 == 0 && gbl.byte_1D2C9 == 0)
+                {
+                    affect.field_3 &= 0x0f;
+                }
+                else if ((affect.field_3 & 0x10) == 0)
+                {
+                    gbl.byte_1D2C9 = -1;
+                    affect.field_3 |= 0x10;
+                }
             }
-            else if ((affect.field_3 & 0x10) == 0)
+            else
             {
-                gbl.byte_1D2C9 = -1;
-                affect.field_3 |= 0x10;
+                int i = 0;
             }
         }
 
@@ -1821,7 +1825,7 @@ namespace engine
             {
                 ovr024.add_affect(true, 0xff, 0, item.affect_2, player);
 
-                if (gbl.game_state != 5)
+                if (gbl.game_state == 5) // Simeon swaped from != 5 to == 5
                 {
                     ovr024.CallSpellJumpTable(Effect.Add, null, player, item.affect_2);
                 }
@@ -2057,7 +2061,7 @@ namespace engine
             gbl.spell_jump_list[71] = ovr013.sub_3B685;
             gbl.spell_jump_list[72] = ovr013.sub_3B696;
             gbl.spell_jump_list[73] = ovr013.sub_3B6D2;
-            gbl.spell_jump_list[74] = ovr013.sub_3B70E;
+            gbl.spell_jump_list[74] = ovr013.empty;
             gbl.spell_jump_list[75] = ovr013.sub_3B71A;
             gbl.spell_jump_list[76] = ovr013.sub_3B772;
             gbl.spell_jump_list[77] = ovr013.spl_berzerk;
@@ -2072,7 +2076,7 @@ namespace engine
             gbl.spell_jump_list[86] = ovr023.spell_spit_acid;
             gbl.spell_jump_list[87] = ovr014.attack_or_kill;
             gbl.spell_jump_list[88] = ovr023.cast_breath;
-            gbl.spell_jump_list[89] = ovr013.sub_3BA55;
+            gbl.spell_jump_list[89] = ovr013.spell_displace;
             gbl.spell_jump_list[90] = ovr023.spell_breathes_acid;
             gbl.spell_jump_list[91] = ovr013.sub_3BAB9;
             gbl.spell_jump_list[92] = ovr013.empty;

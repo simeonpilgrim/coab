@@ -449,7 +449,7 @@ namespace engine
 
             if (ovr025.find_affect(out dummyAffect, Affects.read_magic, gbl.player_ptr) == true ||
                 ((gbl.player_ptr.cleric_lvl > 0 || gbl.player_ptr.turn_undead > gbl.player_ptr.field_E6) &&
-                  gbl.unk_1C020[gbl.dword_1D5C6.type].field_0 == 0x0c))
+                  gbl.unk_1C020[gbl.dword_1D5C6.type].item_slot == 12))
             {
                 gbl.dword_1D5C6.hidden_names_flag = 0;
             }
@@ -3798,8 +3798,8 @@ namespace engine
             bool var_1;
 
             if (item != null &&
-                gbl.unk_1C020[item.type].field_0 > 10 &&
-                gbl.unk_1C020[item.type].field_0 < 14)
+                gbl.unk_1C020[item.type].item_slot > 10 &&
+                gbl.unk_1C020[item.type].item_slot < 14)
             {
                 var_1 = true;
             }

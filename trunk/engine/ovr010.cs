@@ -220,7 +220,7 @@ namespace engine
                     while (item_ptr != null && var_14 == null)
                     {
                         var_8 = (byte)item_ptr.affect_2;
-                        byte var_7 = gbl.unk_1C020[item_ptr.type].field_0;
+                        byte var_7 = gbl.unk_1C020[item_ptr.type].item_slot;
 
 
                         if (ovr023.item_is_scroll(item_ptr) == false &&
@@ -997,7 +997,7 @@ namespace engine
             {
                 var_19 = var_10.type;
 
-                if (gbl.unk_1C020[var_19].field_0 == 0 &&
+                if (gbl.unk_1C020[var_19].item_slot == 0 &&
                     (gbl.unk_1C020[var_19].classFlags & arg_0.classFlags) != 0)
                 {
                     var_18 = sub_36535(var_10, arg_0);
@@ -1021,7 +1021,7 @@ namespace engine
                 }
 
 
-                if (gbl.unk_1C020[var_19].field_0 == 1)
+                if (gbl.unk_1C020[var_19].item_slot == 1)
                 {
                     if ((gbl.unk_1C020[var_19].classFlags & arg_0.classFlags) != 0)
                     {

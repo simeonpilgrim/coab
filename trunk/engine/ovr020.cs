@@ -842,14 +842,9 @@ namespace engine
 
         internal static void ready_Item(Item item)
         {
-            Player player;
-            byte var_3;
-            byte var_2;
-            bool var_1;
+            bool magic_item = ((int)item.affect_3 > 0x7f);
 
-            var_1 = ((int)item.affect_3 > 0x7f);
-
-            player = gbl.player_ptr;
+            Player player = gbl.player_ptr;
 
             if (item.readied)
             {
@@ -861,7 +856,7 @@ namespace engine
                 {
                     item.readied = false;
 
-                    if (var_1 == true)
+                    if (magic_item == true)
                     {
                         calc_items_effects(false, item);
                     }
@@ -870,23 +865,23 @@ namespace engine
             }
             else
             {
-                var_2 = 0;
+                int var_2 = 0;
 
                 if ((player.field_185 + gbl.unk_1C020[item.type].field_1) > 2)
                 {
                     var_2 = 3;
                 }
    
-                var_3 = gbl.unk_1C020[item.type].field_0;
+                int item_slot = gbl.unk_1C020[item.type].item_slot;
 
-                if (var_3 >= 0 && var_3 <= 8)
+                if (item_slot >= 0 && item_slot <= 8)
                 {
-                    if (player.itemArray[var_3] != null)
+                    if (player.itemArray[item_slot] != null)
                     {
                         var_2 = 2;
                     }
                 }
-                else if (var_3 == 9)
+                else if (item_slot == 9)
                 {
                     if (player.Item_ptr_02 != null)
                     {
@@ -894,21 +889,21 @@ namespace engine
                     }
                 }
 
-                if (item.type == 0x49)
+                if (item.type == 0x49) // Arrows
                 {
                     if (player.Item_ptr_03 != null)
                     {
                         var_2 = 2;
-                        var_3 = 0x0B;
+                        item_slot = 0x0B;
                     }
                 }
 
-                if (item.type == 0x1C)
+                if (item.type == 0x1C) // Quarrels
                 {
                     if (player.Item_ptr_04 != null)
                     {
                         var_2 = 2;
-                        var_3 = 0x0C;
+                        item_slot = 0x0C;
                     }
                 }
 
@@ -921,7 +916,7 @@ namespace engine
                 {
                     case 0:
                         item.readied = true;
-                        if (var_1 == true)
+                        if (magic_item == true)
                         {
                             calc_items_effects(true, item);
                         }
@@ -932,13 +927,13 @@ namespace engine
                         break;
 
                     case 2:
-                        ovr025.ItemDisplayNameBuild(false, false, 0, 0, player.itemArray[var_3], player);
-                        ovr025.string_print01("already using " + player.itemArray[var_3].name);
+                        ovr025.ItemDisplayNameBuild(false, false, 0, 0, player.itemArray[item_slot], player);
+                        ovr025.string_print01("already using " + player.itemArray[item_slot].name);
                         break;
 
                     case 3:
                         if (gbl.game_state != 5 ||
-                            player.quick_fight == 0)
+                            player.quick_fight == QuickFight.False)
                         {
                             ovr025.string_print01("Your hands are full!");
                         }
