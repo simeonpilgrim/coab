@@ -14,7 +14,7 @@ namespace engine
                 gbl.can_draw_bigpic = false;
             }
 
-            if (gbl.byte_1B2F0 == 0)
+            if (gbl.byte_1B2F0 == false)
             {
                 if (gbl.area_ptr.field_1CC != 0)
                 {

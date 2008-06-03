@@ -1268,50 +1268,50 @@ namespace engine
 
         static Set unk_3178A = new Set(0x0606, new byte[] { 0xff, 0x03, 0xfe, 0xff, 0xff, 0x07 });
 
-        internal static byte sub_317AA(bool useOverlay, byte arg_2, byte arg_4, byte arg_6, 
+        internal static int sub_317AA(bool useOverlay, byte arg_2, byte arg_4, byte arg_6, 
 			byte fgColor, string displayString, string extraString)
         {
-            bool var_156;
-            char var_155;
-            byte var_154;
-            string var_153;
-            byte ret_val;
+            char key_pressed;
+            string menu_keys;
+            int ret_val;
 
-            buildMenuStrings(out var_153, ref displayString);
+            buildMenuStrings(out menu_keys, ref displayString);
 
             do
             {
-                var_155 = ovr027.displayInput(out var_156, useOverlay, 1, arg_4, arg_6, fgColor, displayString, extraString);
+                bool special_key_pressed;
+                key_pressed = ovr027.displayInput(out special_key_pressed, useOverlay, 1, arg_4, arg_6, fgColor, displayString, extraString);
 
-                if (var_156 == true)
+                if (special_key_pressed == true)
                 {
-                    ovr020.scroll_team_list(var_155);
+                    ovr020.scroll_team_list(key_pressed);
                     ovr025.Player_Summary(gbl.player_ptr);
-                    var_155 = '\0';
+                    key_pressed = '\0';
                 }
 
-            } while (unk_3178A.MemberOf(var_155) == false && (var_155 != 0x0d || arg_2 == 0));
+            } while (unk_3178A.MemberOf(key_pressed) == false && (key_pressed != 0x0d || arg_2 == 0));
 
-            if (var_155 == 0x0d)
+            if (key_pressed == 0x0d)
             {
                 ret_val = 0;
             }
             else
             {
-                var_154 = 0;
+                int var_154 = 0;
 
-                while (var_154 < var_153.Length && var_153[var_154] != var_155)
+                while (var_154 < menu_keys.Length && menu_keys[var_154] != key_pressed)
                 {
                     var_154++;
                 }
 
-                if (var_154 < var_153.Length)
+
+                if (var_154 < menu_keys.Length)
                 {
                     ret_val = var_154;
                 }
                 else
                 {
-                    ret_val = 0xff;
+                    ret_val = -1;
                 }
             }
 
@@ -1333,42 +1333,14 @@ namespace engine
         }
 
 
-        internal static void sub_3193B(string arg_0, string arg_4)
+        internal static void compare_strings(string string_a, string string_b) /* sub_3193B */
         {
-            for (int i = 0; i < 6; i++)
-            {
-                gbl.item_find[i] = false;
-            }
-
-            if (arg_4.CompareTo(arg_0) == 0)
-            {
-                gbl.item_find[0] = true;
-            }
-
-            if (arg_4.CompareTo(arg_0) != 0)
-            {
-                gbl.item_find[1] = true;
-            }
-
-            if (arg_4.CompareTo(arg_0) < 0)
-            {
-                gbl.item_find[2] = true;
-            }
-
-            if (arg_4.CompareTo(arg_0) > 0)
-            {
-                gbl.item_find[3] = true;
-            }
-
-            if (arg_4.CompareTo(arg_0) <= 0)
-            {
-                gbl.item_find[4] = true;
-            }
-
-            if (arg_4.CompareTo(arg_0) >= 0)
-            {
-                gbl.item_find[5] = true;
-            }
+            gbl.item_find[0] = (string_b.CompareTo(string_a) == 0);
+            gbl.item_find[1] = (string_b.CompareTo(string_a) != 0);
+            gbl.item_find[2] = (string_b.CompareTo(string_a) < 0);
+            gbl.item_find[3] = (string_b.CompareTo(string_a) > 0);
+            gbl.item_find[4] = (string_b.CompareTo(string_a) <= 0);
+            gbl.item_find[5] = (string_b.CompareTo(string_a) >= 0);
         }
 
         /// <summary>
@@ -1455,17 +1427,11 @@ namespace engine
 
         internal static void duel(byte arg_0)
         {
-            Item var_14;
-            Item item;
-            Player playerA;
-            Player DuelMaster;
-            Player playerC;
-
             gbl.combat_type = gbl.combatType.duel;
 
             gbl.area2_ptr.field_5CC = arg_0;
-            playerA = gbl.player_ptr;
-            playerC = gbl.player_next_ptr;
+            Player playerA = gbl.player_ptr;
+            Player playerC = gbl.player_next_ptr;
 
             while (playerC != null)
             {
@@ -1486,7 +1452,7 @@ namespace engine
                     playerC = playerC.next_player;
                 }
 
-                DuelMaster = playerA.ShallowClone();
+                Player DuelMaster = playerA.ShallowClone();
                 DuelMaster.in_combat = true;
                 DuelMaster.next_player = null;
                 DuelMaster.name = "ROLF";
@@ -1502,7 +1468,7 @@ namespace engine
                 playerC.next_player = DuelMaster;
                 playerC = playerC.next_player;
 
-                item = playerA.itemsPtr;
+                Item item = playerA.itemsPtr;
 
                 while (item != null)
                 {
@@ -1513,9 +1479,9 @@ namespace engine
                     }
                     else
                     {
-                        var_14 = playerC.itemsPtr;
+                        Item item_bkup = playerC.itemsPtr;
                         playerC.itemsPtr = item.ShallowClone();
-                        playerC.itemsPtr.next = var_14;
+                        playerC.itemsPtr.next = item_bkup;
                     }
                     item = item.next;
                 }
@@ -1523,15 +1489,15 @@ namespace engine
         }
 
 
-        internal static void RobMoney(Player player_ptr, double scale) /* sub_31DEF */
+        internal static void RobMoney(Player player, double scale) /* sub_31DEF */
         {
-            player_ptr.copper *= (short)(player_ptr.copper * scale);
-            player_ptr.electrum = (short)(player_ptr.electrum * scale);
-            player_ptr.silver = (short)(player_ptr.silver * scale);
-            player_ptr.gold = (short)(player_ptr.gold * scale);
-            player_ptr.platinum = (short)(player_ptr.platinum * scale);
-            player_ptr.field_105 = (short)(player_ptr.field_105 * scale);
-            player_ptr.field_107 = (short)(player_ptr.field_107 * scale);
+            player.copper *= (short)(player.copper * scale);
+            player.electrum = (short)(player.electrum * scale);
+            player.silver = (short)(player.silver * scale);
+            player.gold = (short)(player.gold * scale);
+            player.platinum = (short)(player.platinum * scale);
+            player.field_105 = (short)(player.field_105 * scale);
+            player.field_107 = (short)(player.field_107 * scale);
         }
 
 
@@ -1672,24 +1638,21 @@ namespace engine
 
         internal static void calc_group_inituative(out byte init_min, out byte init_max)
         {
-            byte player_initiative;
-            Affect affect_ptr;
-            Player player_ptr;
+            Player player = gbl.player_next_ptr;
 
-            player_ptr = gbl.player_next_ptr;
+            init_max = player.initiative;
+            init_min = player.initiative;
 
-            init_max = player_ptr.initiative;
-            init_min = player_ptr.initiative;
-
-            while (player_ptr != null)
+            while (player != null)
             {
-                player_initiative = player_ptr.initiative;
+                byte player_initiative = player.initiative;
 
-                if (ovr025.find_affect(out affect_ptr, Affects.haste, player_ptr) == true)
+                Affect dummy_affect;
+                if (ovr025.find_affect(out dummy_affect, Affects.haste, player) == true)
                 {
                     player_initiative *= 2;
                 }
-                else if (ovr025.find_affect(out affect_ptr, Affects.slow, player_ptr) == true)
+                else if (ovr025.find_affect(out dummy_affect, Affects.slow, player) == true)
                 {
                     player_initiative /= 2;
                 }
@@ -1704,48 +1667,46 @@ namespace engine
                     init_min = player_initiative;
                 }
 
-                player_ptr = player_ptr.next_player;
+                player = player.next_player;
             }
         }
 
 
-        internal static void sub_32200(Player player_ptr, short damage)
+        internal static void sub_32200(Player player, int damage) /* sub_32200 */
         {
-            bool var_106;
-            string var_101;
-
-            if (player_ptr.health_status != Status.dead)
+            if (player.health_status != Status.dead)
             {
-                var_106 = false;
+                string text;
+                bool clear_text_area = false;
 
-                if ((player_ptr.hit_point_current + 10) < damage)
+                if ((player.hit_point_current + 10) < damage)
                 {
-                    var_101 = string.Format("  {0} dies. ", player_ptr.name);
+                    text = string.Format("  {0} dies. ", player.name);
                 }
                 else
                 {
-                    var_101 = string.Format("  {0} is hit FOR {1} points of Damage.", player_ptr.name, damage);
+                    text = string.Format("  {0} is hit FOR {1} points of Damage.", player.name, damage);
                 }
 
                 if (gbl.textYCol > 0x16)
                 {
                     gbl.textYCol = 0x11;
-                    var_106 = true;
+                    clear_text_area = true;
                     seg041.displayAndDebug("press <enter>/<return> to continue", 0, 15);
                 }
                 else
                 {
-                    var_106 = false;
+                    clear_text_area = false;
                 }
 
                 gbl.textXCol = 0x26;
 
-                seg041.press_any_key(var_101, var_106, 0, 15, 0x16, 0x26, 17, 1);
+                seg041.press_any_key(text, clear_text_area, 0, 15, 0x16, 0x26, 17, 1);
 
-                ovr025.damage_player((byte)damage, player_ptr);
+                ovr025.damage_player(damage, player);
                 seg037.draw8x8_clear_area(0x0f, 0x26, 1, 0x11);
 
-                ovr025.Player_Summary(player_ptr);
+                ovr025.Player_Summary(player);
             }
         }
     }

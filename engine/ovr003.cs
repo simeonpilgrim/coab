@@ -72,14 +72,14 @@ namespace engine
             if (gbl.cmd_opps[1].Code >= 0x80 ||
                 gbl.cmd_opps[2].Code >= 0x80)
             {
-                ovr008.sub_3193B(gbl.unk_1D972[2], gbl.unk_1D972[1]);
+                ovr008.compare_strings(gbl.unk_1D972[2], gbl.unk_1D972[1]);
             }
             else
             {
-                ushort var_2 = ovr008.vm_GetCmdValue(1);
-                ushort var_4 = ovr008.vm_GetCmdValue(2);
+                ushort value_a = ovr008.vm_GetCmdValue(1);
+                ushort value_b = ovr008.vm_GetCmdValue(2);
 
-                ovr008.compare_variables(var_4, var_2);
+                ovr008.compare_variables(value_b, value_a);
             }
         }
 
@@ -759,7 +759,6 @@ namespace engine
             bool useOverlay;
             byte var_3B;
             ushort var_3A;
-            byte var_2;
 
             string var_38 = string.Empty;
             ovr008.vm_LoadCmdSets(2);
@@ -806,9 +805,9 @@ namespace engine
 
             var_38 += "~" + gbl.unk_1D972[var_1];
 
-            var_2 = ovr008.sub_317AA(useOverlay, var_3B, var_3D, var_3E, 0x0d, var_38, string.Empty);
+            byte menu_selected = (byte)ovr008.sub_317AA(useOverlay, var_3B, var_3D, var_3E, 0x0d, var_38, string.Empty);
 
-            ovr008.vm_SetMemoryValue(var_2, var_3A);
+            ovr008.vm_SetMemoryValue(menu_selected, var_3A);
 
             seg037.draw8x8_clear_area(0x18, 0x27, 0x18, 0);
         }
@@ -1552,7 +1551,7 @@ namespace engine
             string var_406 = string.Empty; /* Simeon */
             string[] var_405 = new string[3];
             byte[] var_6 = new byte[5];
-            byte var_1;
+            int menu_selected;
 
             gbl.byte_1EE95 = 1;
             gbl.byte_1EE90 = 0;
@@ -1672,23 +1671,23 @@ namespace engine
                     var_437 = "~COMBAT ~WAIT ~FLEE ~ADVANCE";
                 }
 
-                var_1 = ovr008.sub_317AA(useOverlay, 0, 15, 10, 13, var_437, var_439);
+                menu_selected = ovr008.sub_317AA(useOverlay, 0, 15, 10, 13, var_437, var_439);
 
                 if (gbl.area2_ptr.field_582 == 0 ||
                     gbl.area_ptr.field_1CC == 0)
                 {
-                    if (var_1 == 3)
+                    if (menu_selected == 3)
                     {
-                        var_1 = 4;
+                        menu_selected = 4;
                     }
                 }
 
-                var_43A = var_6[var_1];
+                var_43A = var_6[menu_selected];
 
                 switch (var_43A)
                 {
                     case 0:
-                        if (var_1 != 2)
+                        if (menu_selected != 2)
                         {
                             ovr008.vm_SetMemoryValue(1, var_43D);
                         }
@@ -1706,20 +1705,20 @@ namespace engine
                         break;
 
                     case 1:
-                        if (var_1 == 0)
+                        if (menu_selected == 0)
                         {
                             ovr008.vm_SetMemoryValue(1, var_43D);
                         }
-                        else if (var_1 == 1)
+                        else if (menu_selected == 1)
                         {
                             init_max = 1;
                             seg041.press_any_key("Both sides wait.", true, 0, 10, 0x16, 0x26, 0x11, 1);
                         }
-                        else if (var_1 == 2)
+                        else if (menu_selected == 2)
                         {
                             ovr008.vm_SetMemoryValue(2, var_43D);
                         }
-                        else if (var_1 == 3)
+                        else if (menu_selected == 3)
                         {
                             if (gbl.area2_ptr.field_582 != 0)
                             {
@@ -1734,7 +1733,7 @@ namespace engine
 
                             init_max = 1;
                         }
-                        else if (var_1 == 4)
+                        else if (menu_selected == 4)
                         {
                             if (gbl.area2_ptr.field_582 > 0)
                             {
@@ -1750,7 +1749,7 @@ namespace engine
                         break;
 
                     case 2:
-                        if (var_1 == 0)
+                        if (menu_selected == 0)
                         {
                             if (var_408 > var_40A)
                             {
@@ -1765,7 +1764,7 @@ namespace engine
                                 ovr008.vm_SetMemoryValue(1, var_43D);
                             }
                         }
-                        else if (var_1 >= 1 && var_1 <= 4)
+                        else if (menu_selected >= 1 && menu_selected <= 4)
                         {
                             ovr008.vm_SetMemoryValue(0, var_43D);
 
@@ -1776,11 +1775,11 @@ namespace engine
                         break;
 
                     case 3:
-                        if (var_1 == 0)
+                        if (menu_selected == 0)
                         {
                             ovr008.vm_SetMemoryValue(1, var_43D);
                         }
-                        else if (var_1 == 1 || var_1 == 3)
+                        else if (menu_selected == 1 || menu_selected == 3)
                         {
                             if (gbl.area2_ptr.field_582 != 0)
                             {
@@ -1795,11 +1794,11 @@ namespace engine
 
                             init_max = 1;
                         }
-                        else if (var_1 == 2)
+                        else if (menu_selected == 2)
                         {
                             ovr008.vm_SetMemoryValue(2, var_43D);
                         }
-                        else if (var_1 == 4)
+                        else if (menu_selected == 4)
                         {
                             if (gbl.area2_ptr.field_582 <= 0)
                             {
@@ -1816,11 +1815,11 @@ namespace engine
                         break;
 
                     case 4:
-                        if (var_1 == 0)
+                        if (menu_selected == 0)
                         {
                             ovr008.vm_SetMemoryValue(1, var_43D);
                         }
-                        else if (var_1 == 1 || var_1 == 3 || var_1 == 4)
+                        else if (menu_selected == 1 || menu_selected == 3 || menu_selected == 4)
                         {
 
                             if (gbl.area2_ptr.field_582 <= 0)
@@ -1835,7 +1834,7 @@ namespace engine
                                 init_max = 1;
                             }
                         }
-                        else if (var_1 == 2)
+                        else if (menu_selected == 2)
                         {
                             ovr008.vm_SetMemoryValue(2, var_43D);
                         }
@@ -1850,30 +1849,23 @@ namespace engine
         }
 
 
-        internal static void CMD_Parlay()
+        internal static void CMD_Parlay() /* talk_style */
         {
-            char var_B;
-            ushort var_A;
-
-            byte[] var_8 = new byte[5];
-
-            byte var_2;
-            byte var_1;
-
             ovr008.vm_LoadCmdSets(6);
-            var_B = ' ';
 
+            byte[] values = new byte[5];
             for (int i = 0; i < 5; i++)
             {
-                var_8[i] = (byte)ovr008.vm_GetCmdValue(i + 1);
+                values[i] = (byte)ovr008.vm_GetCmdValue(i + 1);
             }
 
-            var_1 = ovr008.sub_317AA(false, 0, 15, 10, 13, "~HAUGHTY ~SLY ~NICE ~MEEK ~ABUSIVE", var_B.ToString());
-            var_A = gbl.cmd_opps[6].Word;
+            int menu_selected = ovr008.sub_317AA(false, 0, 15, 10, 13, "~HAUGHTY ~SLY ~NICE ~MEEK ~ABUSIVE", " ");
+            
+            ushort location = gbl.cmd_opps[6].Word;
 
-            var_2 = var_8[var_1];
+            byte value = values[menu_selected];
 
-            ovr008.vm_SetMemoryValue(var_2, var_A);
+            ovr008.vm_SetMemoryValue(value, location);
         }
 
 
@@ -1925,39 +1917,26 @@ namespace engine
 
         internal static void CMD_Damage() /* sub_28958 */
         {
-            byte var_1B;
-            byte var_1A;
-            /* byte var_19; */
-            Player player01;
-            Player player02;
-            Player player03;
-            short var_C;
             byte var_A;
             byte var_9;
             byte var_8 = 0; /* Simeon */
-            byte var_7;
-            byte var_6;
             byte var_5;
-            byte var_4;
-            byte var_3;
-            byte var_2;
-            byte var_1;
 
-            player01 = gbl.player_ptr;
-            /* var_19 = 0; */
-            var_1A = 0;
-            player03 = gbl.player_next_ptr;
+            Player player01 = gbl.player_ptr;
+            /*byte var_19 = 0; */
+            byte var_1A = 0;
+            Player player03 = gbl.player_next_ptr;
             ovr008.vm_LoadCmdSets(5);
-            var_1 = (byte)ovr008.vm_GetCmdValue(1);
-            var_2 = (byte)ovr008.vm_GetCmdValue(2);
-            var_3 = (byte)ovr008.vm_GetCmdValue(3);
-            var_7 = (byte)ovr008.vm_GetCmdValue(4);
-            var_6 = (byte)ovr008.vm_GetCmdValue(5);
+            byte var_1 = (byte)ovr008.vm_GetCmdValue(1);
+            byte var_2 = (byte)ovr008.vm_GetCmdValue(2);
+            byte var_3 = (byte)ovr008.vm_GetCmdValue(3);
+            byte var_7 = (byte)ovr008.vm_GetCmdValue(4);
+            byte var_6 = (byte)ovr008.vm_GetCmdValue(5);
 
 
-            var_C = (short)(ovr024.roll_dice(var_3, var_2) + var_7);
+            short var_C = (short)(ovr024.roll_dice(var_3, var_2) + var_7);
 
-            var_1B = (byte)(var_1 & 0x10);
+            byte var_1B = (byte)(var_1 & 0x10);
 
             if ((var_1 & 0x40) != 0)
             {
@@ -1975,7 +1954,6 @@ namespace engine
 
                 if (var_1A != 0)
                 {
-
                     while (player03 != null)
                     {
                         if ((var_1 & 0x20) != 0)
@@ -2015,7 +1993,7 @@ namespace engine
                     }
                     else
                     {
-                        for (var_4 = 2; var_4 <= var_8; var_4++)
+                        for (int var_4 = 2; var_4 <= var_8; var_4++)
                         {
                             player03 = player03.next_player;
                         }
@@ -2033,7 +2011,7 @@ namespace engine
             }
             else
             {
-                for (var_4 = 1; var_4 <= var_1; var_4++)
+                for (int var_4 = 1; var_4 <= var_1; var_4++)
                 {
                     player03 = gbl.player_next_ptr;
                     var_8 = ovr024.roll_dice(gbl.area2_ptr.field_67C, 1);
@@ -2057,27 +2035,27 @@ namespace engine
 
             }
 
-            player02 = gbl.player_next_ptr;
-            gbl.byte_1B2F0 = 1;
+            Player player02 = gbl.player_next_ptr;
+            gbl.byte_1B2F0 = true;
 
             while (player02 != null)
             {
                 if (player02.in_combat == true)
                 {
-                    gbl.byte_1B2F0 = 0;
+                    gbl.byte_1B2F0 = false;
                 }
 
                 player02 = player02.next_player;
             }
 
-            if (gbl.byte_1B2F0 != 0)
+            if (gbl.byte_1B2F0 == true)
             {
                 seg037.draw8x8_outer_frame();
                 gbl.textXCol = 2;
                 gbl.textYCol = 2;
 
                 seg041.press_any_key("The entire party is killed!", true, 0, 10, 0x16, 0x26, 1, 1);
-                seg049.SysDelay(0x0BB8);
+                seg049.SysDelay(3000);
             }
 
             gbl.player_ptr = player01;
@@ -2401,7 +2379,7 @@ namespace engine
             }
             else if (var_1 == 3)
             {
-                gbl.byte_1B2F0 = 1;
+                gbl.byte_1B2F0 = true;
                 CMD_Exit();
             }
         }
@@ -2565,7 +2543,7 @@ namespace engine
             //System.Console.Out.WriteLine("RunEclVm {0,4:X} start", offset);
             
             while (gbl.stopVM == false &&
-                   gbl.byte_1B2F0 == 0)
+                   gbl.byte_1B2F0 == false)
             {
                 gbl.byte_1D928 = gbl.command;
 
@@ -2733,7 +2711,7 @@ namespace engine
                     }
 
                     while ((gbl.area2_ptr.search_flags > 1 || char.ToUpper(var_1) == 'E') &&
-                        gbl.byte_1B2F0 == 0)
+                        gbl.byte_1B2F0 == false)
                     {
                         if (char.ToUpper(var_1) == 'E')
                         {
@@ -2756,7 +2734,7 @@ namespace engine
                             gbl.area2_ptr.search_flags = (ushort)gbl.search_flag_bkup;
                         }
 
-                        if (gbl.byte_1B2F0 == 0)
+                        if (gbl.byte_1B2F0 == false)
                         {
                             var_1 = ovr015.main_3d_world_menu();
                             gbl.player_ptr2 = gbl.player_ptr;
@@ -2764,7 +2742,7 @@ namespace engine
                     }
 
 
-                    if (gbl.byte_1B2F0 == 0)
+                    if (gbl.byte_1B2F0 == false)
                     {
                         RunEclVm(gbl.word_1B2D3);
                     }
@@ -2775,7 +2753,7 @@ namespace engine
                     }
                     else
                     {
-                        if (gbl.byte_1B2F0 == 0)
+                        if (gbl.byte_1B2F0 == false)
                         {
                             gbl.area_ptr.field_1E0 = gbl.mapPosX;
                             gbl.area_ptr.field_1E2 = gbl.mapPosY;
@@ -2798,9 +2776,9 @@ namespace engine
                             }
                         }
                     }
-                } while (gbl.byte_1B2F0 == 0);
+                } while (gbl.byte_1B2F0 == false);
 
-                gbl.byte_1B2F0 = 0;
+                gbl.byte_1B2F0 = false;
             }
         }
 
