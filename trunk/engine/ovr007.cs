@@ -218,9 +218,7 @@ namespace engine
 
         internal static void sub_2F6E7( )
         {
-            Item item_ptr;
             bool var_32 = false; /* Simeon */
-            byte var_31;
             bool items_on_ground;
             bool money_on_ground;
             char var_2E;
@@ -240,7 +238,7 @@ namespace engine
 
             gbl.something01 = false;
             bool var_2D = false;
-            item_ptr = gbl.item_pointer;
+            Item item_ptr = gbl.item_pointer;
 
             while( item_ptr != null )
             {
@@ -305,9 +303,9 @@ namespace engine
                             seg041.press_any_key( "As you Leave the Shopkeeper says, \"Excuse me but you have Left Some Money here.\"  ", true, 0, 0x0a, 0x16, 0x26, 0x11, 1 );
                             seg041.press_any_key( "Do you want to go back and get your Money?", false, 0, 0x0f, 0x16, 0x26, 0x11, 1 );
 
-                            var_31 = ovr008.sub_317AA(false, 0, 0x0f, 0x0a, 0x0d, "~Yes ~No", string.Empty);
+                            int menu_selected = ovr008.sub_317AA(false, 0, 0x0f, 0x0a, 0x0d, "~Yes ~No", string.Empty);
                 
-                            if( var_31 == 1 )
+                            if( menu_selected == 1 )
                             {
                                 var_2D = true;
                             }

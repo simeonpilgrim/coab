@@ -484,7 +484,6 @@ namespace engine
         internal static void temple_shop()
         {
             bool var_30 = false; /* Simeon */
-            byte var_2F;
             bool var_2E;
             bool var_2D;
             string var_2C;
@@ -569,9 +568,9 @@ namespace engine
 
                             seg041.press_any_key("As you leave a priest says, \"Excuse me but you have left some money here\" ", true, 0, 10, 0x16, 0x26, 0x11, 1);
                             seg041.press_any_key("Do you want to go back and retrieve your money?", true, 0, 10, 0x16, 0x26, 0x11, 1);
-                            var_2F = ovr008.sub_317AA(false, 0, 15, 10, 13, var_2C, string.Empty);
+                            int menu_selected = ovr008.sub_317AA(false, 0, 15, 10, 13, var_2C, string.Empty);
 
-                            if (var_2F == 1)
+                            if (menu_selected == 1)
                             {
                                 var_2 = 1;
                             }
