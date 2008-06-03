@@ -305,6 +305,7 @@ namespace engine
 
             if (Cheats.display_full_item_names)
             {
+                //item.hidden_names_flag = 0;
                 hidden_names_flag = 0;
             }
 
@@ -1820,7 +1821,7 @@ namespace engine
                     }
                     else
                     {
-                        ovr030.head_body(gbl.byte_1B2EF, gbl.byte_1B2EE);
+                        ovr030.head_body(gbl.body_block_id, gbl.head_block_id);
                         ovr030.draw_head_and_body(true, 3, 3);
                     }
 

@@ -272,7 +272,7 @@ namespace engine
                 } while (input_index < dataLength);
             }
 
-            internal byte[] GetData(byte block_id)
+            internal byte[] GetData(int block_id)
             {
                 byte[] orig;
                 if (entries.TryGetValue(block_id, out orig) == false)
@@ -286,7 +286,7 @@ namespace engine
 
         static Dictionary<string, DaxFileCache> fileCache = new Dictionary<string, DaxFileCache>();
 
-        internal static void load_decode_dax( out byte[] out_data, out short decodeSize, byte block_id, string file_name )
+        internal static void load_decode_dax( out byte[] out_data, out short decodeSize, int block_id, string file_name )
         {
             seg044.sound_sub_120E0( gbl.sound_0_188BE );
 

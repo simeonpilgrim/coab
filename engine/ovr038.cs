@@ -7,16 +7,16 @@ namespace engine
     {
 		static Set Load8x8D_flags = new Set( 0x0001, new byte[] { 0x1F } );
 
-        internal static void Load8x8D( byte arg_0, byte arg_2 )
+        internal static void Load8x8D( byte arg_0, byte block_id )
         {
 			if( Load8x8D_flags.MemberOf( arg_0 ) == true )
 			{
                 string text = "8x8d" + gbl.game_area.ToString();
-				seg040.load_dax( ref gbl.symbol_8x8_set[arg_0], 13, 1, arg_2, text );
+				seg040.load_dax( ref gbl.symbol_8x8_set[arg_0], 13, 1, block_id, text );
 
                 if( gbl.symbol_8x8_set[arg_0] == null )
                 {
-                    Logger.LogAndExit("Unable to load {0} from 8x8D{1}", arg_2, gbl.game_area);
+                    Logger.LogAndExit("Unable to load {0} from 8x8D{1}", block_id, gbl.game_area);
                 }
 
 				seg043.clear_keyboard();
@@ -24,10 +24,9 @@ namespace engine
         }
 
 
-        internal static void Put8x8Symbol( byte arg_0, bool arg_2, int symbol_id, int rowY, int colX )
+        internal static void Put8x8Symbol( byte arg_0, bool use_overlay, int symbol_id, int rowY, int colX )
         {
 			byte symbol_set = 0; /*HACK to make compiler happy*/
-
 
             if( symbol_id >= 1 && symbol_id <= 0x2d )
             {
@@ -58,7 +57,7 @@ namespace engine
             {
                 symbol_id -= gbl.symbol_set_fix[symbol_set];
 
-                if (arg_2)
+                if (use_overlay)
                 {
                     seg040.OverlayUnbounded(gbl.symbol_8x8_set[symbol_set], arg_0, symbol_id, rowY, colX);
                 }

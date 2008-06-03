@@ -393,7 +393,7 @@ namespace engine
                 }
                 else
                 {
-                    ovr008.sub_30543(var_1, (byte)gbl.area2_ptr.field_5C2);
+                    ovr008.set_and_draw_head_body(var_1, (byte)gbl.area2_ptr.field_5C2);
                 }
             }
             else
@@ -564,7 +564,7 @@ namespace engine
                     var_3 != 0x7f &&
                     gbl.area_ptr.field_1CC != 0)
                 {
-                    gbl.area_ptr.field_18A = var_3;
+                    gbl.area_ptr.current_3DMap_block_id = var_3;
                     ovr031.Load3DMap(var_3);
                     gbl.area2_ptr.field_592 = 0;
                 }

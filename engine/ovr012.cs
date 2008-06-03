@@ -69,7 +69,6 @@ namespace engine
             gbl.stru_1D52C[0] = new byte[0x30C];
             gbl.stru_1D52C[1] = new byte[0x30C];
             gbl.stru_1D52C[2] = new byte[0x30C];
-            gbl.stru_1D530 = seg051.GetMem(0x0400);
 
             for(int i = 0; i < gbl.cmdOppsLimit; i++ )
             {

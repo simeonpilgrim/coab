@@ -153,14 +153,14 @@ namespace engine
         }
 
 
-        internal static void BlockRead(int arg_4, byte[] arg_6, File arg_A)
+        internal static void BlockRead(int read_len, byte[] data, File file)
         {
-            arg_A.stream.Read(arg_6, 0, arg_4);
+            file.stream.Read(data, 0, read_len);
         }
 
-        internal static void BlockRead( out short arg_0, int arg_4, byte[] arg_6, File arg_A )
+        internal static void BlockRead( out short arg_0, int arg_4, byte[] arg_6, File file )
         {
-            arg_0 = (short)arg_A.stream.Read(arg_6, 0, arg_4);
+            arg_0 = (short)file.stream.Read(arg_6, 0, arg_4);
         }
 
 

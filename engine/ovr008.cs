@@ -179,15 +179,9 @@ namespace engine
         }
 
 
-        internal static byte sub_304B4(byte arg_0, sbyte arg_2, sbyte arg_4)
+        internal static byte sub_304B4(int map_dir, int map_y, int map_x)
         {
-            byte var_3;
-            byte var_2;
-            byte var_1;
-
-            var_3 = 0;
-            var_2 = 0;
-            var_1 = 0;
+            byte var_1 = 0;
 
             if (gbl.area_ptr.field_1CC == 0)
             {
@@ -196,36 +190,38 @@ namespace engine
             }
             else
             {
-                while (var_3 < 2 && var_2 == 0)
-                {
+                bool var_2 = false;
+                byte var_3 = 0;
 
-                    if (ovr031.getMap_XXX(arg_0, arg_2, arg_4) == 0)
+                while (var_3 < 2 && var_2 == false)
+                {
+                    if (ovr031.getMap_XXX(map_dir, map_y, map_x) == 0)
                     {
                         var_3++;
                         var_1 = var_3;
 
-                        switch (arg_0)
+                        switch (map_dir)
                         {
                             case 0:
-                                arg_2--;
+                                map_y--;
                                 break;
 
                             case 2:
-                                arg_4++;
+                                map_x++;
                                 break;
 
                             case 4:
-                                arg_2++;
+                                map_y++;
                                 break;
 
                             case 6:
-                                arg_4--;
+                                map_x--;
                                 break;
                         }
                     }
                     else
                     {
-                        var_2 = 1;
+                        var_2 = true;
                     }
                 }
             }
@@ -234,27 +230,24 @@ namespace engine
         }
 
 
-        internal static void sub_30543(byte arg_0, byte arg_2)
+        internal static void set_and_draw_head_body(byte body_id, byte head_id) /* sub_30543 */
         {
             gbl.byte_1EE8D = 0;
 
-            gbl.byte_1B2EE = arg_2;
-            gbl.byte_1B2EF = arg_0;
+            gbl.head_block_id = head_id;
+            gbl.body_block_id = body_id;
 
-            ovr030.head_body(arg_0, arg_2);
+            ovr030.head_body(body_id, head_id);
             ovr030.draw_head_and_body(true, 3, 3);
         }
 
 
-        internal static void sub_30580(byte[] arg_0, ushort arg_4, byte arg_6, byte arg_8)
+        internal static void sub_30580(byte[] arg_0, ushort arg_4, byte pic_block_id, byte sprite_block_id)
         {
-            byte var_9;
-
-            var_9 = (byte)(arg_4 + 1);
+            byte var_9 = (byte)(arg_4 + 1);
 
             if (arg_0[1] == 0)
             {
-
                 if (arg_0[0] == 0)
                 {
                     if (gbl.mapAreaDisplay == true)
@@ -266,7 +259,7 @@ namespace engine
 
                     if (gbl.area_ptr.field_1CC != 0)
                     {
-                        ovr030.load_pic_final(ref gbl.byte_1D556, 1, arg_8, "SPRIT");
+                        ovr030.load_pic_final(ref gbl.byte_1D556, 1, sprite_block_id, "SPRIT");
                         arg_0[0] = 1;
                         gbl.displayPlayerSprite = true;
                     }
@@ -297,15 +290,14 @@ namespace engine
                             gbl.byte_1EE8C = 1;
                             if (gbl.area2_ptr.field_5C2 == 0xff)
                             {
-
-                                ovr030.load_pic_final(ref gbl.byte_1D556, 0, arg_6, "PIC");
+                                ovr030.load_pic_final(ref gbl.byte_1D556, 0, pic_block_id, "PIC");
                                 arg_0[1] = 1;
 
                                 ovr030.sub_7000A(gbl.byte_1D556.ptrs[0].field_4, true, 3, 3);
                             }
                             else
                             {
-                                sub_30543(arg_6, (byte)gbl.area2_ptr.field_5C2);
+                                set_and_draw_head_body(pic_block_id, (byte)gbl.area2_ptr.field_5C2);
                                 arg_0[1] = 1;
                                 gbl.byte_1EE8D = 0;
                             }
@@ -955,7 +947,7 @@ namespace engine
                                 break;
 
                             case 0x01:
-                                var_2 = (ushort)((short)gbl.mapPosY);
+                                var_2 = (ushort)gbl.mapPosY;
                                 break;
 
                             case 0x02:
@@ -1347,7 +1339,7 @@ namespace engine
         /// sets global based of arg_0 and arg_2 relation.
         /// sub_31A11
         /// </summary>
-        internal static void compare_variables(ushort arg_0, ushort arg_2)
+        internal static void compare_variables(ushort arg_0, ushort arg_2) /* sub_31A11 */
         {
             //System.Console.WriteLine("  Compare_variables: {0} {1}", arg_2, arg_0);
 
@@ -1360,7 +1352,7 @@ namespace engine
         }
 
 
-        internal static void vm_gosub(int arg_0)
+        internal static void vm_gosub(int arg_0) /* sub_31A77 */
         {
             gbl.vmCallStack.Push(gbl.ecl_offset);
             gbl.ecl_offset = gbl.cmd_opps[arg_0].Word;

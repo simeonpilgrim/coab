@@ -1447,21 +1447,21 @@ namespace engine
             seg041.displayString("Loading...Please Wait", 0, 10, 0x18, 0);
 
 
-            if (gbl.import_from == 0)
+            if (gbl.import_from == 0) // Curse
             {
                 var_192 = new byte[Player.StructSize];
 
-                seg051.BlockRead(out var_182, 0x1a6, var_192, file);
+                seg051.BlockRead(0x1a6, var_192, file);
                 player_ptr = new Player(var_192, 0);
 
                 var_192 = null;
                 seg051.Close(file);
             }
-            else if (gbl.import_from == 1)
+            else if (gbl.import_from == 1) // Pool
             {
                 byte[] data = new byte[0x11D];
 
-                seg051.BlockRead(out var_182, 0x11D, data, file);
+                seg051.BlockRead(0x11D, data, file);
                 seg051.Close(file);
 
                 var_1C0 = new PoolRadPlayer(data);
@@ -1470,7 +1470,7 @@ namespace engine
 
                 var_1C0 = null;
             }
-            else if (gbl.import_from == 2)
+            else if (gbl.import_from == 2) // Hillsfar
             {
                 byte[] data = new byte[0xBC];
 
@@ -2161,7 +2161,7 @@ namespace engine
                             {
                                 if (gbl.word_1D53E > 0)
                                 {
-                                    ovr031.Load3DMap(gbl.area_ptr.field_18A);
+                                    ovr031.Load3DMap(gbl.area_ptr.current_3DMap_block_id);
                                 }
 
                                 if (gbl.word_1D53E > 0)
