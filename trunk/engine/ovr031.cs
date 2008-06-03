@@ -32,24 +32,28 @@ namespace engine
 
                     short var_A = 0x104;
 
-                    if (getMap_XXX(0, mapY, mapX) > 0)
+                    MapInfo mi = getMap_XXX(mapY, mapX);
+                    if (mi != null)
                     {
-                        var_A += 1;
-                    }
+                        if (mi.x0_dir_0 > 0)
+                        {
+                            var_A += 1;
+                        }
 
-                    if (getMap_XXX(2, mapY, mapX) > 0)
-                    {
-                        var_A += 2;
-                    }
+                        if (mi.x0_dir_2 > 0)
+                        {
+                            var_A += 2;
+                        }
 
-                    if (getMap_XXX(4, mapY, mapX) > 0)
-                    {
-                        var_A += 4;
-                    }
+                        if (mi.x1_dir_4 > 0)
+                        {
+                            var_A += 4;
+                        }
 
-                    if (getMap_XXX(6, mapY, mapX) > 0)
-                    {
-                        var_A += 8;
+                        if (mi.x1_dir_6 > 0)
+                        {
+                            var_A += 8;
+                        }
                     }
 
                     ovr038.Put8x8Symbol(0, true, var_A, y + displayOffset, x + displayOffset);
@@ -161,7 +165,6 @@ namespace engine
 
         internal static byte WallDoorFlagsGet(int mapDir, int mapY, int mapX) /*sub_71573*/
         {
-            byte var_2;
             byte var_1;
 
             if (MapCoordIsValid(mapY, mapX) == false &&
@@ -189,31 +192,31 @@ namespace engine
                     mapY = 0x0F;
                 }
 
-                var_2 = 1;
+                MapInfo mi = gbl.stru_1D530.maps[mapY, mapX];
+				var_1 = 1;
 
-                if (getMap_XXX(mapDir, mapY, mapX) > 0)
+                switch (mapDir)
                 {
-                    switch (mapDir)
-                    {
-                        case 6:
-                            var_2 = (byte)((gbl.stru_1D530[0x300 + mapX + (mapY << 4)] & 0xC0) >> 6);
-                            break;
+                    case 6:
+                        if (mi.x1_dir_6 != 0)
+                            var_1 = mi.x3_dir_6;
+                        break;
 
-                        case 4:
-                            var_2 = (byte)((gbl.stru_1D530[0x300 + mapX + (mapY << 4)] & 0x30) >> 4);
-                            break;
+                    case 4:
+                        if (mi.x1_dir_4 != 0)
+                            var_1 = mi.x3_dir_4;
+                        break;
 
-                        case 2:
-                            var_2 = (byte)((gbl.stru_1D530[0x300 + mapX + (mapY << 4)] & 0x0c) >> 2);
-                            break;
+                    case 2:
+                        if (mi.x0_dir_2 != 0)
+                            var_1 = mi.x3_dir_2;
+                        break;
 
-                        case 0:
-                            var_2 = (byte)(gbl.stru_1D530[0x300 + mapX + (mapY << 4)] & 3);
-                            break;
-                    }
+                    case 0:
+                        if (mi.x0_dir_0 != 0)
+                            var_1 = mi.x3_dir_0;
+                        break;
                 }
-
-                var_1 = var_2;
             }
 
             return var_1;
@@ -222,12 +225,43 @@ namespace engine
 
         internal static byte getMap_XXX(int direction, int mapY, int mapX)
         {
-            byte var_1;
+            byte result = 0;
 
-            if (MapCoordIsValid(mapY, mapX) == false && 
+            MapInfo mi = getMap_XXX(mapY, mapX);
+
+            if( mi != null )
+            {
+                switch (direction)
+                {
+                    case 0:
+                        result = mi.x0_dir_0;
+                        break;
+
+                    case 2:
+                        result = mi.x0_dir_2;
+                        break;
+
+                    case 4:
+                        result = mi.x1_dir_4;
+                        break;
+
+                    case 6:
+                        result = mi.x1_dir_6;
+                        break;
+                }
+            }
+
+            return result;
+        }
+
+
+        internal static MapInfo getMap_XXX(int mapY, int mapX)
+        {
+            MapInfo mi = null;
+
+            if (MapCoordIsValid(mapY, mapX) == false &&
                 (gbl.byte_1EE88 == 0 || gbl.byte_1EE88 == 10))
             {
-                var_1 = 0;
             }
             else
             {
@@ -249,32 +283,10 @@ namespace engine
                     mapY = 0x0F;
                 }
 
-                switch (direction)
-                {
-                    case 0:
-                        var_1 = (byte)((gbl.stru_1D530[mapX + (mapY << 4)] & 0xf0) >> 4);
-                        break;
-
-                    case 2:
-                        var_1 = (byte)(gbl.stru_1D530[mapX + (mapY << 4)] & 0x0f);
-                        break;
-
-                    case 4:
-                        var_1 = (byte)((gbl.stru_1D530[0x100 + mapX + (mapY << 4)] & 0xf0) >> 4);
-                        break;
-
-                    case 6:
-                        var_1 = (byte)(gbl.stru_1D530[0x100 + mapX + (mapY << 4)] & 0x0f);
-                        break;
-
-                    default:
-                        var_1 = 0;
-                        //throw new System.Exception();
-                        break;
-                }
+                mi = gbl.stru_1D530.maps[mapY, mapX];
             }
 
-            return var_1;
+            return mi;
         }
 
 
@@ -307,7 +319,8 @@ namespace engine
                     mapY = 0x0F;
                 }
 
-                var_1 = gbl.stru_1D530[0x200 + mapX + (mapY << 4)];
+                MapInfo mi = gbl.stru_1D530.maps[mapY, mapX];
+                var_1 = mi.x2;
             }
 
             return var_1;
@@ -359,8 +372,6 @@ namespace engine
                     drawStep -= 1;
 
                 } while (drawStep >= 0);
-
-
             }
 
             Display.UpdateStart();
@@ -640,28 +651,24 @@ namespace engine
 
         static Set unk_72005 = new Set(0x0001, new byte[] { 0xE });
 
-        internal static void LoadWalldef(byte arg_0, byte arg_2)
+        internal static void LoadWalldef(byte arg_0, byte block_id)
         {
-            string var_12;
-            byte var_10;
-            short var_F;
             short var_D;
-            byte var_B;
             short var_A;
             short var_8;
-            byte[] var_6;
-            short var_2;
+            short decode_size;
 
             if (arg_0 >= 1 && arg_0 <= 3)
             {
-                seg051.Str(1, out var_12, 0, gbl.game_area);
+                string area_text = gbl.game_area.ToString();
+                byte[] data;
 
-                seg042.load_decode_dax(out var_6, out var_2, arg_2, "WALLDEF" + var_12 + ".dax");
+                seg042.load_decode_dax(out data, out decode_size, block_id, "WALLDEF" + area_text + ".dax");
 
-                if (var_2 == 0 ||
-                    ((var_2 / 0x30C) + arg_0) > 4)
+                if (decode_size == 0 ||
+                    ((decode_size / 0x30C) + arg_0) > 4)
                 {
-                    Logger.LogAndExit("Unable to load {0} from WALLDEF{1}.", arg_2, var_12);
+                    Logger.LogAndExit("Unable to load {0} from WALLDEF{1}.", block_id, area_text);
                 }
 
                 var_A = (short)(gbl.symbol_set_fix[arg_0] - gbl.symbol_set_fix[1]);
@@ -671,15 +678,15 @@ namespace engine
 
                 do
                 {
-                    System.Array.Copy(var_6, var_8, gbl.stru_1D52C[arg_0 + var_D-2], 0, 0x30C);
+                    System.Array.Copy(data, var_8, gbl.stru_1D52C[arg_0 + var_D-2], 0, 0x30C);
 
                     var_8 += 0x30C;
                     var_D += 1;
-                } while (var_8 < var_2);
+                } while (var_8 < decode_size);
 
-                seg051.FreeMem(var_2, var_6);
+                seg051.FreeMem(decode_size, data);
 
-                var_10 = (byte)(var_D - 1);
+                int var_10 = var_D - 1;
 
                 for (var_D = 1; var_D <= var_10; var_D++)
                 {
@@ -688,9 +695,9 @@ namespace engine
                         gbl.wordSetArray_1D53A((arg_0 + var_D - 1), -1);
                         gbl.wordSetArray_1D53C((arg_0 + var_D - 1), -1);
 
-                        for (var_B = 1; var_B <= 5; var_B++)
+                        for (int var_B = 1; var_B <= 5; var_B++)
                         {
-                            for (var_F = 0; var_F <= 0x9B; var_F++)
+                            for (int var_F = 0; var_F <= 0x9B; var_F++)
                             {
                                 if (gbl.stru_1D52C[arg_0 + var_D - 2][var_F + ((var_B - 1) * 0x9C)] >= gbl.word_1899C)
                                 {
@@ -701,39 +708,39 @@ namespace engine
 
                         if (var_10 > 1)
                         {
-                            ovr038.Load8x8D((byte)(arg_0 + var_D - 1), (byte)((arg_2 * 10) + var_D));
+                            ovr038.Load8x8D((byte)(arg_0 + var_D - 1), (byte)((block_id * 10) + var_D));
                         }
                         else
                         {
-                            ovr038.Load8x8D((byte)(arg_0 + var_D - 1), arg_2);
+                            ovr038.Load8x8D((byte)(arg_0 + var_D - 1), block_id);
                         }
 
                     }
                 }
 
-                gbl.wordSetArray_1D53A(arg_0, arg_2);
+                gbl.wordSetArray_1D53A(arg_0, block_id);
                 gbl.wordSetArray_1D53C(arg_0, arg_0);
             }
         }
 
 
-        internal static void Load3DMap(byte blockId)
+        internal static void Load3DMap(int blockId)
         {
-            byte[] var_6;
+            byte[] data;
             short bytesRead;
 
-            seg042.load_decode_dax(out var_6, out bytesRead, blockId, "GEO" + gbl.game_area.ToString() + ".dax");
+            seg042.load_decode_dax(out data, out bytesRead, blockId, "GEO" + gbl.game_area.ToString() + ".dax");
 
             if (bytesRead == 0 || bytesRead != 0x402)
             {
                 Logger.LogAndExit("Unable to load geo in Load3DMap.");
             }
 
-            System.Array.Copy(var_6, 2, gbl.stru_1D530, 0, 0x400);
+            gbl.stru_1D530.LoadData(data);
 
-            seg051.FreeMem(bytesRead, var_6);
+            seg051.FreeMem(bytesRead, data);
 
-            gbl.area_ptr.field_18A = blockId;
+            gbl.area_ptr.current_3DMap_block_id = (byte)blockId;
         }
     }
 }

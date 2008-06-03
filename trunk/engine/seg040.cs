@@ -4,7 +4,7 @@ namespace engine
 {
     class seg040
     {
-        internal static void load_dax(ref DaxBlock mem_ptr, byte mask_colour, byte masked, byte block_id, string fileName)
+        internal static void load_dax(ref DaxBlock mem_ptr, byte mask_colour, byte masked, int block_id, string fileName)
         {
             DaxBlock dax_ptr;
             byte[] pic_data;

@@ -228,8 +228,8 @@ namespace Classes
         public static byte last_game_state; // byte_1B2E4
         public static byte byte_1B2E9 = 0;
         public static byte byte_1B2EB;
-        public static byte byte_1B2EE;
-        public static byte byte_1B2EF;
+        public static byte head_block_id; // byte_1B2EE
+        public static byte body_block_id; // byte_1B2EF
         public static bool byte_1B2F0;
         public static byte byte_1B2F1;
         public static bool DelayBetweenCharacters; // byte_1B2F2
@@ -309,6 +309,7 @@ namespace Classes
                 case 1: word_1D540 = value; break;
                 case 2: word_1D544 = value; break;
                 case 3: word_1D548 = value; break;
+                default: throw new System.NotSupportedException();
             }
         }
 
@@ -539,7 +540,7 @@ namespace Classes
         public static EclBlock ecl_ptr;
         public static byte[,] dax_8x8d1_201;
         public static byte[][] stru_1D52C;
-        public static byte[] stru_1D530;
+        public static Struct_1D530 stru_1D530 = new Struct_1D530();
 
         public static DaxBlock[,] combat_icons;
 

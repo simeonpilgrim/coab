@@ -52,7 +52,7 @@ namespace Classes
         [DataOffset(0x188, DataType.Byte)]
         public byte field_188;
         [DataOffset(0x18A, DataType.Byte)]
-        public byte field_18A;
+        public byte current_3DMap_block_id; // field_18A
         [DataOffset(0x18E, DataType.SWord)]
         public short time_minutes_ones; // field_18E
         [DataOffset(0x190, DataType.SWord)]

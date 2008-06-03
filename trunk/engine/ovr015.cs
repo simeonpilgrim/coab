@@ -137,37 +137,32 @@ namespace engine
         }
 
 
-        internal static void MapSetDoorUnlocked( int mapDir, int mapX, int mapY ) /*sub_43148*/
+        internal static void MapSetDoorUnlocked(int mapDir, int mapY, int mapX) /*sub_43148*/
         {
-			if( mapY < 0 || mapY > 15 ||
-				mapX < 0 || mapX > 15 )
-			{
-				return;
-			}
+            if (mapX < 0 || mapX > 15 ||
+                mapY < 0 || mapY > 15)
+            {
+                return;
+            }
 
-			switch( mapDir )
-			{
-				case 6:
-                    gbl.stru_1D530[0x300 + mapY + (mapX << 4)] &= 0x3F;
-                    gbl.stru_1D530[0x300 + mapY + (mapX << 4)] |= 0x40;
+            switch (mapDir)
+            {
+                case 6:
+                    gbl.stru_1D530.maps[mapY, mapX].x3_dir_6 = 1;
+                    break;
 
-					break;
+                case 4:
+                    gbl.stru_1D530.maps[mapY, mapX].x3_dir_4 = 1;
+                    break;
 
-				case 4:
-                    gbl.stru_1D530[0x300 + mapY + (mapX << 4)] &= 0xCF;
-                    gbl.stru_1D530[0x300 + mapY + (mapX << 4)] |= 0x10;
-					break;
+                case 2:
+                    gbl.stru_1D530.maps[mapY, mapX].x3_dir_2 = 1;
+                    break;
 
-				case 2:
-                    gbl.stru_1D530[0x300 + mapY + (mapX << 4)] &= 0xF3;
-                    gbl.stru_1D530[0x300 + mapY + (mapX << 4)] |= 0x04;
-					break;
-
-				case 0:
-                    gbl.stru_1D530[0x300 + mapY + (mapX << 4)] &= 0xFC;
-                    gbl.stru_1D530[0x300 + mapY + (mapX << 4)] |= 0x01;
-					break;
-			}
+                case 0:
+                    gbl.stru_1D530.maps[mapY, mapX].x3_dir_0 = 1;
+                    break;
+            }
         }
 
 
@@ -363,11 +358,11 @@ namespace engine
 			{
 				MapSetDoorUnlocked( gbl.mapDirection , gbl.mapPosY , gbl.mapPosX );
 
-                int v3 = gbl.MapDirectionXDelta[gbl.mapDirection] + gbl.mapPosX;
-                int v2 = gbl.MapDirectionYDelta[gbl.mapDirection] + gbl.mapPosY;
-                int v1 = (gbl.mapDirection + 4) % 8;
+                int map_x = gbl.MapDirectionXDelta[gbl.mapDirection] + gbl.mapPosX;
+                int map_y = gbl.MapDirectionYDelta[gbl.mapDirection] + gbl.mapPosY;
+                int map_dir = (gbl.mapDirection + 4) % 8;
 
-				MapSetDoorUnlocked( v1, v2, v3 );
+				MapSetDoorUnlocked( map_dir, map_y, map_x );
 			}
 
 			return bash_worked;
@@ -623,19 +618,19 @@ namespace engine
 					{
 						switch( input_key )
 						{
-							case 'H':
+							case 'H': // forward
 								sub_43765();
 								stop_loop = true;
 								break;
 
-							case 'P':
+							case 'P': // turn 180
 								gbl.mapDirection = (byte)((gbl.mapDirection + 4) % 8);
 
 								gbl.byte_1D53C = ovr031.getMap_XXX( gbl.mapDirection, gbl.mapPosY, gbl.mapPosX );
 								ovr031.Draw3dWorld( gbl.mapDirection, gbl.mapPosY, gbl.mapPosX );
 								break;
 
-							case 'K':
+							case 'K': // turn left
 								gbl.mapDirection = (byte)(( gbl.mapDirection + 6 ) % 8);
 
 								seg044.sound_sub_120E0( gbl.sound_a_188D2 );
@@ -643,7 +638,7 @@ namespace engine
 								ovr031.Draw3dWorld( gbl.mapDirection, gbl.mapPosY, gbl.mapPosX );
 								break;
 
-							case 'M':
+							case 'M': // turn right
 								gbl.mapDirection = (byte)(( gbl.mapDirection + 2 ) % 8);
 
 								seg044.sound_sub_120E0( gbl.sound_a_188D2 );

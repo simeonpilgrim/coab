@@ -159,6 +159,7 @@
     <Compile Include="Struct_1D1BC.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Struct_1D530.cs" />
     <Compile Include="Struct_1D558.cs">
       <SubType>Code</SubType>
     </Compile>
