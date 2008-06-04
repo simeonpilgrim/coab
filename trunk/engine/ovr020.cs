@@ -739,9 +739,9 @@ namespace engine
                         for (int i = 0; i < gbl.max_spells; i++)
                         {
                             if (player.spell_list[i] != 0 &&
-                                gbl.unk_19AEC[player.spell_list[i]].spellClass == 2)
+                                gbl.spell_list[player.spell_list[i]].spellClass == 2)
                             {
-                                int var_C = gbl.unk_19AEC[player.spell_list[i]].spellLevel;
+                                int var_C = gbl.spell_list[player.spell_list[i]].spellLevel;
                                 var_11[var_C - 1] += 1;
 
                                 if (var_11[var_C - 1] > player.field_12D[2, var_C - 1])
@@ -1128,7 +1128,7 @@ namespace engine
                 gbl.byte_1D88D = 0;
 
                 if (gbl.game_state == 5 &&
-                    gbl.unk_19AEC[var_1].field_B != 0)
+                    gbl.spell_list[var_1].field_B != 0)
                 {
 
                     arg_0 = ovr025.clear_actions(gbl.player_ptr);

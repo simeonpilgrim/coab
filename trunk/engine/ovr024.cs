@@ -1383,14 +1383,14 @@ namespace engine
         }
 
 
-        internal static void is_unaffected(string text, bool arg_4, byte arg_6, bool call_spell_jump_list, int arg_A, ushort arg_C, Affects affect_id, Player target)
+        internal static void is_unaffected(string text, bool saved, byte can_save, bool call_spell_jump_list, int arg_A, ushort arg_C, Affects affect_id, Player target)
         {
-            gbl.byte_1D2BD = (byte)affect_id;
+            gbl.byte_1D2BD = affect_id;
 
             work_on_00(target, 9);
 
             if (gbl.byte_1D2BD == 0 ||
-                (arg_4 == true && arg_6 == 1))
+                (saved == true && can_save == 1))
             {
                 ovr025.DisplayPlayerStatusString(true, 10, "is Unaffected", target);
             }

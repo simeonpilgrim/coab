@@ -1166,49 +1166,42 @@ namespace engine
 
         static Set word_3FDDE = new Set(0x0002, new byte[] { 0xC0, 0x01 });
 
-        internal static bool sub_3FDFE(out Player arg_0, Player arg_4)
+        internal static bool find_healing_target(out Player target, Player healer) /* sub_3FDFE */
         {
-            byte var_D;
-            byte var_C;
-            byte var_B;
-            byte var_A;
-            byte var_9;
-            byte var_8;
-            Player var_5;
-            bool var_1;
+            Player lowest_target = null;
+            int lowest_hp = 0x0FF;
+            int var_8 = 0;
 
-            var_5 = null;
-            var_8 = 0;
-            var_9 = 0x0FF;
-
-            for (var_A = 0; var_A <= 8; var_A++)
+            for (int dir = 0; dir <= 8; dir++)
             {
-                int mapX = gbl.MapDirectionXDelta[var_A] + ovr033.PlayerMapXPos(arg_4);
-                int mapY = gbl.MapDirectionYDelta[var_A] + ovr033.PlayerMapYPos(arg_4);
+                int mapX = gbl.MapDirectionXDelta[dir] + ovr033.PlayerMapXPos(healer);
+                int mapY = gbl.MapDirectionYDelta[dir] + ovr033.PlayerMapYPos(healer);
 
-                ovr033.AtMapXY(out var_D, out var_C, mapY, mapX);
+                byte ground_tile;
+                byte player_index;
+                ovr033.AtMapXY(out ground_tile, out player_index, mapY, mapX);
 
-                if (var_C > 0)
+                if (player_index > 0)
                 {
-                    arg_0 = gbl.player_array[var_C];
+                    target = gbl.player_array[player_index];
 
-                    if (arg_0.combat_team == arg_4.combat_team &&
-                        arg_0.hit_point_current >= arg_0.hit_point_max)
+                    if (target.combat_team == healer.combat_team &&
+                        target.hit_point_current < target.hit_point_max)
                     {
-                        if (arg_0.hit_point_current < var_9 ||
-                            (arg_0 == arg_4 && arg_0.hit_point_current < (arg_0.hit_point_max / 2)))
+                        if (target.hit_point_current < lowest_hp ||
+                            (target == healer && target.hit_point_current < (target.hit_point_max / 2)))
                         {
-                            var_5 = arg_0;
-                            var_9 = arg_0.hit_point_current;
+                            lowest_target = target;
+                            lowest_hp = target.hit_point_current;
                         }
                     }
                 }
-                else if (var_D == 0x1F)
+                else if (ground_tile == 0x1F)
                 {
-                    for (var_B = 1; var_B <= gbl.byte_1D1BB; var_B++)
+                    for (int var_B = 1; var_B <= gbl.byte_1D1BB; var_B++)
                     {
-                        if (gbl.unk_1D183[var_B].field_0 != null &&
-                            word_3FDDE.MemberOf((byte)gbl.unk_1D183[var_B].field_0.health_status) == false &&
+                        if (gbl.unk_1D183[var_B].target != null &&
+                            word_3FDDE.MemberOf((byte)gbl.unk_1D183[var_B].target.health_status) == false &&
                             gbl.unk_1D183[var_B].mapX == mapX &&
                             gbl.unk_1D183[var_B].mapY == mapY)
                         {
@@ -1218,57 +1211,47 @@ namespace engine
                 }
             }
 
-            if (var_9 < 8 ||
+            if (lowest_hp < 8 ||
                 var_8 == 0)
             {
-                arg_0 = var_5;
+                target = lowest_target;
             }
             else
             {
-                arg_0 = gbl.unk_1D183[var_8].field_0;
+                target = gbl.unk_1D183[var_8].target;
             }
 
-            if (arg_0 != null)
-            {
-                var_1 = true;
-            }
-            else
-            {
-                var_1 = false;
-            }
+            bool target_found = (target != null);
 
-            return var_1;
+            return target_found;
         }
 
         static Affects[] unk_18ADB = { Affects.bless, Affects.snake_charm, Affects.paralyze, Affects.sleep, Affects.helpless }; // seg600:27CB first is filler (off by 1)
 
         internal static bool sub_4001C(Struct_1D183 arg_0, byte arg_4, QuickFight quick_fight, byte arg_8)
         {
-            byte var_9;
-            Player var_7;
-
             bool var_2 = false;
             if (quick_fight == QuickFight.False)
             {
                 byte var_A = arg_8 != 0x53 ? (byte)1 : (byte)0;
 
                 aim_menu(arg_0, out var_2, var_A, arg_4, 0, ovr023.sub_5CDE5(arg_8), gbl.player_ptr);
-                gbl.player_ptr.actions.target = arg_0.field_0;
+                gbl.player_ptr.actions.target = arg_0.target;
             }
-            else if (gbl.unk_19AEC[arg_8].field_E == 0)
+            else if (gbl.spell_list[arg_8].field_E == 0)
             {
-                arg_0.field_0 = gbl.player_ptr;
+                arg_0.target = gbl.player_ptr;
 
-                if (arg_8 != 3 || sub_3FDFE(out arg_0.field_0, gbl.player_ptr))
+                if (arg_8 != 3 || find_healing_target(out arg_0.target, gbl.player_ptr))
                 {
-                    arg_0.mapX = ovr033.PlayerMapXPos(arg_0.field_0);
-                    arg_0.mapY = ovr033.PlayerMapYPos(arg_0.field_0);
+                    arg_0.mapX = ovr033.PlayerMapXPos(arg_0.target);
+                    arg_0.mapY = ovr033.PlayerMapYPos(arg_0.target);
                     var_2 = true;
                 }
             }
             else
             {
-                var_9 = 1;
+                int var_9 = 1;
 
                 while (var_9 > 0 &&
                         var_2 == false)
@@ -1277,13 +1260,13 @@ namespace engine
 
                     if (sub_41E44(1, 0, ovr023.sub_5CDE5(arg_8), gbl.player_ptr) == true)
                     {
-                        var_7 = gbl.player_ptr.actions.target;
+                        Player target = gbl.player_ptr.actions.target;
 
-                        if (ovr025.is_held(var_7) == true)
+                        if (ovr025.is_held(target) == true)
                         {
                             for (int i = 1; i <= 4; i++)
                             {
-                                if (gbl.unk_19AEC[arg_8].field_A == unk_18ADB[i])
+                                if (gbl.spell_list[arg_8].affect_id == unk_18ADB[i])
                                 {
                                     var_3 = false;
                                 }
@@ -1292,9 +1275,9 @@ namespace engine
 
                         if (var_3 == true)
                         {
-                            arg_0.field_0 = gbl.player_ptr.actions.target;
-                            arg_0.mapX = ovr033.PlayerMapXPos(arg_0.field_0);
-                            arg_0.mapY = ovr033.PlayerMapYPos(arg_0.field_0);
+                            arg_0.target = gbl.player_ptr.actions.target;
+                            arg_0.mapX = ovr033.PlayerMapXPos(arg_0.target);
+                            arg_0.mapY = ovr033.PlayerMapYPos(arg_0.target);
                             var_2 = true;
                         }
                     }
@@ -1319,11 +1302,7 @@ namespace engine
 
         internal static void target(out bool arg_0, QuickFight quick_fight, byte arg_6)
         {
-            byte var_E;
             Struct_1D183 var_C = new Struct_1D183();
-            byte var_5;
-            int var_4;
-            byte var_1;
 
             arg_0 = true;
             gbl.sp_target_count = 0;
@@ -1332,7 +1311,7 @@ namespace engine
             gbl.targetX = ovr033.PlayerMapXPos(gbl.player_ptr);
             gbl.targetY = ovr033.PlayerMapYPos(gbl.player_ptr);
 
-            byte tmp1 = (byte)(gbl.unk_19AEC[arg_6].field_6 & 0x0F);
+            byte tmp1 = (byte)(gbl.spell_list[arg_6].field_6 & 0x0F);
 
             if (tmp1 == 0)
             {
@@ -1341,8 +1320,10 @@ namespace engine
             }
             else if (tmp1 == 5)
             {
-                var_5 = 0;
+                int var_5 = 0;
                 int sp_target_index = 0;
+
+                int var_4;
 
                 if (arg_6 == 0x4F)
                 {
@@ -1353,7 +1334,7 @@ namespace engine
                     var_4 = ovr024.roll_dice(4, 2);
                 }
 
-                var_E = 0;
+                bool stop_loop = false;
 
                 do
                 {
@@ -1363,7 +1344,7 @@ namespace engine
 
                         for (int index = 1; index <= sp_target_index; index++)
                         {
-                            if (gbl.sp_targets[index] == var_C.field_0)
+                            if (gbl.sp_targets[index] == var_C.target)
                             {
                                 found = true;
                             }
@@ -1373,10 +1354,10 @@ namespace engine
                         {
                             sp_target_index++;
 
-                            gbl.sp_targets[sp_target_index] = var_C.field_0;
+                            gbl.sp_targets[sp_target_index] = var_C.target;
 
-                            gbl.targetX = ovr033.PlayerMapXPos(var_C.field_0);
-                            gbl.targetY = ovr033.PlayerMapYPos(var_C.field_0);
+                            gbl.targetX = ovr033.PlayerMapXPos(var_C.target);
+                            gbl.targetY = ovr033.PlayerMapYPos(var_C.target);
                             gbl.sp_target_count++;
 
                             if (arg_6 != 0x4f)
@@ -1420,7 +1401,7 @@ namespace engine
 
                             if (sp_target_index > 1 && var_5 > var_4)
                             {
-                                var_E = 1;
+                                stop_loop = true;
                             }
                         }
                         else
@@ -1435,13 +1416,13 @@ namespace engine
                             }
                         }
 
-                        ovr033.sub_7431C(ovr033.PlayerMapYPos(var_C.field_0), ovr033.PlayerMapXPos(var_C.field_0));
+                        ovr033.sub_7431C(ovr033.PlayerMapYPos(var_C.target), ovr033.PlayerMapXPos(var_C.target));
                     }
                     else
                     {
-                        var_E = 1;
+                        stop_loop = true;
                     }
-                } while (var_E == 0 && var_4 != 0);
+                } while (stop_loop == false && var_4 != 0);
             }
             else if (tmp1 == 0x0F)
             {
@@ -1456,9 +1437,9 @@ namespace engine
                     else
                     {
                         /* TODO it doesn't make sense to mask the low nibble then shift it out */
-                        ovr032.Rebuild_SortedCombatantList(gbl.mapToBackGroundTile, 1, 0xff, (short)((gbl.unk_19AEC[arg_6].field_6 & 0x0f) >> 4), gbl.targetY, gbl.targetX);
+                        ovr032.Rebuild_SortedCombatantList(gbl.mapToBackGroundTile, 1, 0xff, (gbl.spell_list[arg_6].field_6 & 0x0f) >> 4, gbl.targetY, gbl.targetX);
                         // test with it how it would make sense...
-						//ovr032.Rebuild_SortedCombatantList(gbl.mapToBackGroundTile, 1, 0xff, (short)((gbl.unk_19AEC[arg_6].field_6 & 0xf0) >> 4), gbl.targetY, gbl.targetX);
+						//ovr032.Rebuild_SortedCombatantList(gbl.mapToBackGroundTile, 1, 0xff, (gbl.unk_19AEC[arg_6].field_6 & 0xf0) >> 4, gbl.targetY, gbl.targetX);
 
                         for (int i = 1; i <= gbl.sortedCombatantCount; i++)
                         {
@@ -1478,7 +1459,7 @@ namespace engine
             {
                 if (sub_4001C(var_C, 1, quick_fight, arg_6) == true)
                 {
-                    ovr032.Rebuild_SortedCombatantList(gbl.mapToBackGroundTile, 1, 0xff, (short)(gbl.unk_19AEC[arg_6].field_6 & 7), gbl.targetY, gbl.targetX);
+                    ovr032.Rebuild_SortedCombatantList(gbl.mapToBackGroundTile, 1, 0xff, (short)(gbl.spell_list[arg_6].field_6 & 7), gbl.targetY, gbl.targetX);
 
                     for (int i = 1; i <= gbl.sortedCombatantCount; i++)
                     {
@@ -1495,7 +1476,7 @@ namespace engine
             }
             else
             {
-                var_1 = (byte)((gbl.unk_19AEC[arg_6].field_6 & 3) + 1);
+                int var_1 = (gbl.spell_list[arg_6].field_6 & 3) + 1;
                 int sp_target_index = 0;
 
                 while (var_1 > 0)
@@ -1506,7 +1487,7 @@ namespace engine
 
                         for (int index = 1; index <= sp_target_index; index++)
                         {
-                            if (gbl.sp_targets[index] == var_C.field_0)
+                            if (gbl.sp_targets[index] == var_C.target)
                             {
                                 found = true;
                             }
@@ -1515,11 +1496,11 @@ namespace engine
                         if (found == false)
                         {
                             sp_target_index++;
-                            gbl.sp_targets[sp_target_index] = var_C.field_0;
+                            gbl.sp_targets[sp_target_index] = var_C.target;
                             var_1 -= 1;
 
-                            gbl.targetX = ovr033.PlayerMapXPos(var_C.field_0);
-                            gbl.targetY = ovr033.PlayerMapYPos(var_C.field_0);
+                            gbl.targetX = ovr033.PlayerMapXPos(var_C.target);
+                            gbl.targetY = ovr033.PlayerMapYPos(var_C.target);
                         }
                         else
                         {
@@ -1533,7 +1514,7 @@ namespace engine
                             }
                         }
 
-                        ovr033.sub_7431C(ovr033.PlayerMapYPos(var_C.field_0), ovr033.PlayerMapXPos(var_C.field_0));
+                        ovr033.sub_7431C(ovr033.PlayerMapYPos(var_C.target), ovr033.PlayerMapXPos(var_C.target));
                     }
                     else
                     {
@@ -1575,7 +1556,7 @@ namespace engine
             }
 
             if (var_1 > 0 &&
-                gbl.unk_19AEC[var_1].field_B == 0)
+                gbl.spell_list[var_1].field_B == 0)
             {
                 ovr025.string_print01("Camp Only Spell");
                 var_1 = 0;
@@ -1593,7 +1574,7 @@ namespace engine
 
             if (var_1 > 0)
             {
-                var_3 = (sbyte)(gbl.unk_19AEC[var_1].field_C / 3);
+                var_3 = (sbyte)(gbl.spell_list[var_1].field_C / 3);
 
                 if (var_3 == 0)
                 {
@@ -1986,10 +1967,6 @@ namespace engine
 
         internal static char aim_sub_menu(byte arg_0, byte arg_2, byte arg_4, byte arg_6, Player target, Player playerA) /* Aim_menu */
         {
-            Item var_2F;
-            bool var_2B;
-            char var_1;
-
             string text = string.Empty;
             int range = ovr025.getTargetRange(target, playerA);
             int direction = getTargetDirection(target, playerA);
@@ -2021,7 +1998,8 @@ namespace engine
                     }
                     else
                     {
-                        if (ovr025.sub_6906C(out var_2F, playerA) == true &&
+                        Item dummyItem;
+                        if (ovr025.sub_6906C(out dummyItem, playerA) == true &&
                             (ovr025.near_enemy(1, playerA) == 0 || ovr025.is_weapon_ranged_melee(playerA) == true))
                         {
                             text = "Target ";
@@ -2035,9 +2013,10 @@ namespace engine
             gbl.byte_1D90F = true;
             ovr025.hitpoint_ac(target);
 
-            var_1 = ovr027.displayInput(out var_2B, false, 1, 15, 10, 13, text, "Aim:");
+            bool dummy_bool;
+            char input_key = ovr027.displayInput(out dummy_bool, false, 1, 15, 10, 13, text, "Aim:");
 
-            return var_1;
+            return input_key;
         }
 
 
@@ -2054,7 +2033,7 @@ namespace engine
 
             if (arg_4 == true)
             {
-                arg_0.field_0 = arg_A;
+                arg_0.target = arg_A;
                 arg_0.mapX = ovr033.PlayerMapXPos(arg_A);
                 arg_0.mapY = ovr033.PlayerMapYPos(arg_A);
                 gbl.mapToBackGroundTile.field_4 = false;
@@ -2180,7 +2159,7 @@ namespace engine
                             if (gbl.unk_1D183[i].mapX == posX &&
                                 gbl.unk_1D183[i].mapY == posY)
                             {
-                                player02 = gbl.unk_1D183[i].field_0;
+                                player02 = gbl.unk_1D183[i].target;
                             }
                         }
                     }
@@ -2253,16 +2232,16 @@ namespace engine
 
                             if (player02 != null)
                             {
-                                arg_0.field_0 = player02;
+                                arg_0.target = player02;
                             }
                             else
                             {
-                                arg_0.field_0 = null;
+                                arg_0.target = null;
                             }
 
                             if (arg_C == 1)
                             {
-                                sub_411D8(arg_0, out arg_4, arg_C, arg_0.field_0, player01);
+                                sub_411D8(arg_0, out arg_4, arg_C, arg_0.target, player01);
                             }
                             else
                             {
@@ -2648,7 +2627,6 @@ namespace engine
 
         internal static void attack_or_kill(Effect arg_0, object param, Player attacker)
         {
-            Player target;
             int range = 0; /* simeon */
 
             byte var_4 = 0;
@@ -2660,7 +2638,7 @@ namespace engine
 
             do
             {
-                target = attacker.actions.target;
+                Player target = attacker.actions.target;
 
                 range = ovr025.getTargetRange(target, attacker);
                 var_1--;
@@ -2716,7 +2694,7 @@ namespace engine
                         ovr025.DisplayPlayerStatusString(true, 10, "wounds you", attacker);
                         sub_42159(5, target, attacker);
 
-                        ovr024.damage_person(false, 0, (sbyte)(ovr024.roll_dice_save(8, 2) + 1), target);
+                        ovr024.damage_person(false, 0, ovr024.roll_dice_save(8, 2) + 1, target);
                         sub_421C1(0, ref range, out var_5, ref attacker);
                     }
                     else if ((var_4 & 0x10) == 0)
@@ -2739,21 +2717,21 @@ namespace engine
         }
 
 
-        internal static void sub_425C6(Effect arg_0, object param, Player player)
+        internal static void sub_425C6(Effect add_remove, object param, Player player)
         {
             Affect affect = (Affect)param;
             bool var_1;
 
             gbl.spell_target = gbl.player_array[affect.field_3];
 
-            if (arg_0 != 0 ||
+            if (add_remove == Effect.Remove ||
                 player.in_combat == false ||
                 gbl.spell_target.in_combat == false)
             {
                 ovr024.remove_affect(null, Affects.affect_3a, gbl.spell_target);
                 ovr024.remove_affect(null, Affects.affect_0d, gbl.spell_target);
 
-                if (arg_0 == 0)
+                if (add_remove == Effect.Add)
                 {
                     affect.call_spell_jump_list = false;
 

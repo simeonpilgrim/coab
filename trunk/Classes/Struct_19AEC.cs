@@ -15,7 +15,7 @@ namespace Classes
 		}
 
         public Struct_19AEC(sbyte f0, sbyte f1, sbyte f2, byte f3, byte f4, byte f5,
-            byte f6, byte f7, byte f8, byte f9, byte fa, byte fb, byte fc, byte fd, byte fe, byte ff)
+            byte f6, byte f7, byte f8, byte f9, Affects fa, byte fb, byte fc, byte fd, byte fe, byte ff)
         {
             spellClass = f0;
             spellLevel = f1;
@@ -25,9 +25,9 @@ namespace Classes
             field_5 = f5;
             field_6 = f6;
             field_7 = f7;
-            field_8 = f8;
+            can_save_flag = f8;
             field_9 = f9;
-            field_A = (Affects)fa;
+            affect_id = fa;
             field_B = fb;
             field_C = fc;
             field_D = fd;
@@ -38,21 +38,21 @@ namespace Classes
         /// <summary>
         /// 0 - Cleric, 1 - Druid, 2 - Magic-User
         /// </summary>
-        public sbyte spellClass; //seg600:37DC asc_19AEC    db 0 // field_0
-        public sbyte spellLevel; //seg600:37DD unk_19AED    db 0 // field_1
-        public sbyte field_2; //seg600:37DE              db 0 
-        public byte field_3; //seg600:37DF              db 0
-        public byte field_4; //seg600:37E0              db	  0
-        public byte field_5; //seg600:37E1              db	  0
-        public byte field_6; //seg600:37E2              db	  0
-        public byte field_7; //seg600:37E3              db	  0
-        public byte field_8; //seg600:37E4 unk_19AF4    db	  0
-        public byte field_9; //seg600:37E5 unk_19AF5    db	  0
-        public Affects field_A; //seg600:37E6 unk_19AF6    db	  0
-        public byte field_B; //seg600:37E7 unk_19AF7    db	  0
-        public byte field_C; //seg600:37E8 unk_19AF8    db	  0
-        public byte field_D; //seg600:37E9 unk_19AF9    db	  0
-        public byte field_E; //seg600:37EA unk_19AFA    db	  0
-        public byte field_F; //seg600:37EB unk_19AFB    db	  0
+        public sbyte spellClass; //seg600:37DC asc_19AEC    // field_0
+        public sbyte spellLevel; //seg600:37DD unk_19AED    // field_1
+        public sbyte field_2; //seg600:37DE              
+        public byte field_3; //seg600:37DF            
+        public byte field_4; //seg600:37E0             
+        public byte field_5; //seg600:37E1            
+        public byte field_6; //seg600:37E2              
+        public byte field_7; //seg600:37E3             
+        public byte can_save_flag; //seg600:37E4 unk_19AF4  // field_8 
+        public byte field_9; //seg600:37E5 unk_19AF5    
+        public Affects affect_id; //seg600:37E6 unk_19AF6   // field_A
+        public byte field_B; //seg600:37E7 unk_19AF7    
+        public byte field_C; //seg600:37E8 unk_19AF8    
+        public byte field_D; //seg600:37E9 unk_19AF9    
+        public byte field_E; //seg600:37EA unk_19AFA    
+        public byte field_F; //seg600:37EB unk_19AFB   
     }
 }

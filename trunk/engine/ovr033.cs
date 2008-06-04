@@ -561,7 +561,7 @@ namespace engine
             {
                 var_2 = 1;
                 while (var_2 < 9 &&
-                    gbl.unk_1D183[var_2].field_0 != player) // First SIS BUG!!!
+                    gbl.unk_1D183[var_2].target != player) // First SIS BUG!!!
                 {
                     var_2++;
                 }
@@ -613,7 +613,7 @@ namespace engine
                             gbl.mapToBackGroundTile[var_6, var_7] = 0x1F;
                         }
 
-                        gbl.unk_1D183[gbl.byte_1D1BB].field_0 = player;
+                        gbl.unk_1D183[gbl.byte_1D1BB].target = player;
                         gbl.unk_1D183[gbl.byte_1D1BB].mapX = var_6;
                         gbl.unk_1D183[gbl.byte_1D1BB].mapY = var_7;
                     }
@@ -670,14 +670,14 @@ namespace engine
                     {
                         for (int i = 1; i <= gbl.byte_1D1BB; i++)
                         {
-                            if (gbl.unk_1D183[i].field_0 == player)
+                            if (gbl.unk_1D183[i].target == player)
                             {
                                 if (gbl.unk_1D183[i].field_6 != 0x1F)
                                 {
                                     ground_tile = gbl.unk_1D183[i].field_6;
                                 }
 
-                                gbl.unk_1D183[i].field_0 = null;
+                                gbl.unk_1D183[i].target = null;
                                 gbl.unk_1D183[i].mapX = 0;
                                 gbl.unk_1D183[i].mapY = 0;
                                 gbl.unk_1D183[i].field_6 = 0;
@@ -688,7 +688,7 @@ namespace engine
 
                         for (int i = 1; i <= gbl.byte_1D1BB; i++)
                         {
-                            if (gbl.unk_1D183[i].field_0 != null &&
+                            if (gbl.unk_1D183[i].target != null &&
                                 gbl.unk_1D183[i].mapX == pos_x &&
                                 gbl.unk_1D183[i].mapY == pos_y)
                             {

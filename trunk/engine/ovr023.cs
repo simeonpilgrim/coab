@@ -126,7 +126,7 @@ namespace engine
             spell_id &= 0x7f;
             bool can_learn = false;
 
-            switch (gbl.unk_19AEC[spell_id].spellClass)
+            switch (gbl.spell_list[spell_id].spellClass)
             {
                 case 0:
                     if (player.wis > 8 &&
@@ -292,7 +292,7 @@ namespace engine
                     var_4 = var_4.next;
                 }
 
-                var_6 = gbl.unk_19AEC[gbl.unk_1AEC4[var_5 - 1]].spellLevel;
+                var_6 = gbl.spell_list[gbl.unk_1AEC4[var_5 - 1]].spellLevel;
 
                 var_4.next = new StringList();
 
@@ -301,9 +301,9 @@ namespace engine
 
             var_4.next = null;
 
-            if (gbl.unk_19AEC[arg_0 & 0x7F].spellLevel != var_6)
+            if (gbl.spell_list[arg_0 & 0x7F].spellLevel != var_6)
             {
-                var_4.s = LevelStrings[gbl.unk_19AEC[arg_0 & 0x7F].spellLevel];
+                var_4.s = LevelStrings[gbl.spell_list[arg_0 & 0x7F].spellLevel];
 
                 var_4.field_29 = 1;
                 var_4.next = new StringList();
@@ -339,7 +339,7 @@ namespace engine
             var_6 = gbl.dword_1AE6C;
             bool found = false;
 
-            int sp_lvl = gbl.unk_19AEC[arg_0 & 0x7F].spellLevel;
+            int sp_lvl = gbl.spell_list[arg_0 & 0x7F].spellLevel;
 
             if (gbl.dword_1AE6C == null)
             {
@@ -362,7 +362,7 @@ namespace engine
                 {
                     if (var_6.field_29 == 0)
                     {
-                        if (gbl.unk_19AEC[gbl.unk_1AEC4[var_F]].spellLevel <= sp_lvl &&
+                        if (gbl.spell_list[gbl.unk_1AEC4[var_F]].spellLevel <= sp_lvl &&
                             gbl.unk_1AEC4[var_F] != (arg_0 & 0x7F))
                         {
                             var_F++;
@@ -565,8 +565,8 @@ namespace engine
                 case SpellLoc.choose:
                     for (int var_2 = 1; var_2 <= 100; var_2++)
                     {
-                        int sp_lvl = gbl.unk_19AEC[var_2].spellLevel;
-                        int sp_class = gbl.unk_19AEC[var_2].spellClass;
+                        int sp_lvl = gbl.spell_list[var_2].spellLevel;
+                        int sp_class = gbl.spell_list[var_2].spellClass;
                         //int tmp = (sp_class * 5) + sp_lvl - 1;
                         //sp_lvl = tmp % 5;
                         //sp_class = tmp / 5;
@@ -591,14 +591,14 @@ namespace engine
                 {
                     int var_2 = 0;
 
-                    var_C = gbl.unk_19AEC[gbl.unk_1AEC4[var_2]].spellLevel;
+                    var_C = gbl.spell_list[gbl.unk_1AEC4[var_2]].spellLevel;
 
                     var_A = new StringList();
 
                     var_A.next = gbl.dword_1AE6C;
                     gbl.dword_1AE6C = var_A;
 
-                    gbl.dword_1AE6C.s = LevelStrings[gbl.unk_19AEC[gbl.unk_1AEC4[var_2]].spellLevel];
+                    gbl.dword_1AE6C.s = LevelStrings[gbl.spell_list[gbl.unk_1AEC4[var_2]].spellLevel];
                     gbl.dword_1AE6C.field_29 = 1;
                     var_6 = gbl.dword_1AE6C;
 
@@ -608,7 +608,7 @@ namespace engine
 
                         if (gbl.unk_1AEC4[var_2] != 0)
                         {
-                            var_C = gbl.unk_19AEC[gbl.unk_1AEC4[var_2]].spellLevel;
+                            var_C = gbl.spell_list[gbl.unk_1AEC4[var_2]].spellLevel;
                         }
 
                         if (var_B < var_C)
@@ -641,15 +641,15 @@ namespace engine
 
             if (gbl.byte_1D88D == 0)
             {
-                var_2 = (byte)(gbl.unk_19AEC[arg_0].field_2 + (gbl.unk_19AEC[arg_0].field_3 * ovr025.spell_target_count(arg_0)));
+                var_2 = (byte)(gbl.spell_list[arg_0].field_2 + (gbl.spell_list[arg_0].field_3 * ovr025.spell_target_count(arg_0)));
             }
             else
             {
-                var_2 = (byte)((gbl.unk_19AEC[arg_0].field_3 * 6) + gbl.unk_19AEC[arg_0].field_2);
+                var_2 = (byte)((gbl.spell_list[arg_0].field_3 * 6) + gbl.spell_list[arg_0].field_2);
             }
 
             if (var_2 == 0 &&
-                gbl.unk_19AEC[arg_0].field_6 != 0)
+                gbl.spell_list[arg_0].field_6 != 0)
             {
                 var_2 = 1;
             }
@@ -698,7 +698,7 @@ namespace engine
             }
             else
             {
-                var_4 = (ushort)(gbl.unk_19AEC[arg_0].field_4 + (gbl.unk_19AEC[arg_0].field_5 * ovr025.spell_target_count(arg_0)));
+                var_4 = (ushort)(gbl.spell_list[arg_0].field_4 + (gbl.spell_list[arg_0].field_5 * ovr025.spell_target_count(arg_0)));
             }
 
             return var_4;
@@ -738,16 +738,16 @@ namespace engine
                     {
                         var_2F = gbl.sp_targets[var_2B];
 
-                        if (gbl.unk_19AEC[spell_id].field_8 == 0)
+                        if (gbl.spell_list[spell_id].can_save_flag == 0)
                         {
                             var_30 = false;
                         }
                         else
                         {
-                            var_30 = ovr024.do_saving_throw(0, gbl.unk_19AEC[spell_id].field_9, var_2F);
+                            var_30 = ovr024.do_saving_throw(0, gbl.spell_list[spell_id].field_9, var_2F);
                         }
 
-                        if (gbl.unk_19AEC[gbl.spell_id].field_2 == -1)
+                        if (gbl.spell_list[gbl.spell_id].field_2 == -1)
                         {
                             ovr025.sub_66C20(var_2F);
 
@@ -762,14 +762,14 @@ namespace engine
 
                         if (arg_6 > 0)
                         {
-                            ovr024.damage_person(var_30, gbl.unk_19AEC[spell_id].field_8, arg_6, var_2F);
+                            ovr024.damage_person(var_30, gbl.spell_list[spell_id].can_save_flag, arg_6, var_2F);
 
                         }
 
-                        if (gbl.unk_19AEC[spell_id].field_A > 0)
+                        if (gbl.spell_list[spell_id].affect_id > 0)
                         {
-                            ovr024.is_unaffected(arg_0, var_30, gbl.unk_19AEC[spell_id].field_8,
-                                arg_8, target_count, sub_5CE92(spell_id), gbl.unk_19AEC[spell_id].field_A,
+                            ovr024.is_unaffected(arg_0, var_30, gbl.spell_list[spell_id].can_save_flag,
+                                arg_8, target_count, sub_5CE92(spell_id), gbl.spell_list[spell_id].affect_id,
                                 var_2F);
                         }
                     }
@@ -790,7 +790,7 @@ namespace engine
             gbl.sp_target_count = 1;
             arg_0 = true;
 
-            switch (gbl.unk_19AEC[arg_6].field_7)
+            switch (gbl.spell_list[arg_6].field_7)
             {
                 case 1:
                     break;
@@ -837,7 +837,7 @@ namespace engine
             bool var_1 = true;
 
             if (gbl.game_state != 5 &&
-                gbl.unk_19AEC[spell_id].field_7 == 0)
+                gbl.spell_list[spell_id].field_7 == 0)
             {
                 if (gbl.byte_1D88D == 0)
                 {
@@ -1199,13 +1199,13 @@ namespace engine
 
         internal static void sub_5DB24(string arg_0, sbyte arg_4)
         {
-            for (int i = gbl.sp_target_count; i >= 1; i--)
+            for (int target_index = gbl.sp_target_count; target_index >= 1; target_index--)
             {
-                if (gbl.sp_targets[i] != null)
+                if (gbl.sp_targets[target_index] != null)
                 {
-                    Player target = gbl.sp_targets[i];
+                    Player target = gbl.sp_targets[target_index];
 
-                    if (i < gbl.sp_target_count)
+                    if (target_index < gbl.sp_target_count)
                     {
                         seg044.sound_sub_120E0(gbl.sound_2_188C2);
                         ovr025.sub_67A59(0x12);
@@ -1214,29 +1214,29 @@ namespace engine
                             ovr033.PlayerMapYPos(gbl.player_ptr), ovr033.PlayerMapXPos(gbl.player_ptr));
                     }
         
-                    bool var_2E;
-                    byte var_30;
+                    bool saved;
+                    byte can_save_flag;
 
                     if ((gbl.spell_id == 0x4F || gbl.spell_id == 0x51) &&
-                        i == gbl.sp_target_count)
+                        target_index == gbl.sp_target_count)
                     {
-                        var_2E = true;
-                        var_30 = 1;
+                        saved = true;
+                        can_save_flag = 1;
                     }
                     else
                     {
-                        var_2E = ovr024.do_saving_throw(arg_4, gbl.unk_19AEC[gbl.spell_id].field_9, target);
-                        var_30 = gbl.unk_19AEC[gbl.spell_id].field_8;
+                        saved = ovr024.do_saving_throw(arg_4, gbl.spell_list[gbl.spell_id].field_9, target);
+                        can_save_flag = gbl.spell_list[gbl.spell_id].can_save_flag;
                     }
 
                     if ((target.field_11A > 1 || target.field_DE > 1) &&
                         gbl.spell_id != 0x53)
                     {
-                        var_2E = true;
+                        saved = true;
                     }
 
-                    ovr024.is_unaffected(arg_0, var_2E, var_30, false, ovr025.spell_target_count(gbl.spell_id), sub_5CE92(gbl.spell_id),
-                        gbl.unk_19AEC[gbl.spell_id].field_A, target);
+                    ovr024.is_unaffected(arg_0, saved, can_save_flag, false, ovr025.spell_target_count(gbl.spell_id), sub_5CE92(gbl.spell_id),
+                        gbl.spell_list[gbl.spell_id].affect_id, target);
                 }
             }
         }
@@ -2704,15 +2704,14 @@ namespace engine
 
         internal static void sub_602D0()
         {
-            Player var_6;
             Affect var_2 = null; /* Simeon */
 
             sub_5CF7F(string.Empty, 8, 0, false, 0, gbl.spell_id);
-            var_6 = gbl.player_ptr.actions.target;
-            gbl.byte_1D2BD = 0x40;
-            ovr024.work_on_00(var_6, 9);
+            Player target = gbl.player_ptr.actions.target;
+            gbl.byte_1D2BD = Affects.affect_40;
+            ovr024.work_on_00(target, 9);
 
-            if (gbl.byte_1D2BD == 0x40)
+            if (gbl.byte_1D2BD == Affects.affect_40)
             {
                 ovr024.CallSpellJumpTable(Effect.Add, var_2, gbl.player_ptr, Affects.affect_40);
             }
@@ -2796,51 +2795,44 @@ namespace engine
 
         internal static void cast_slay()
         {
-            Player var_2;
-
-            var_2 = gbl.sp_targets[1];
+            Player target = gbl.sp_targets[1];
             gbl.damage_flags = 0x40;
             gbl.damage = 0x43;
-            ovr024.work_on_00(var_2, 9);
+            ovr024.work_on_00(target, 9);
 
             if (gbl.damage != 0)
             {
-
-                if (ovr024.do_saving_throw(0, 4, var_2) == false)
+                if (ovr024.do_saving_throw(0, 4, target) == false)
                 {
-                    ovr024.sub_63014("is slain", Status.dead, var_2);
+                    ovr024.sub_63014("is slain", Status.dead, target);
                 }
                 else
                 {
                     gbl.damage_flags = 8;
 
-                    ovr024.damage_person(false, 0, (sbyte)(ovr024.roll_dice_save(8, 2) + 1), var_2);
+                    ovr024.damage_person(false, 0, ovr024.roll_dice_save(8, 2) + 1, target);
                 }
             }
             else
             {
-                ovr025.DisplayPlayerStatusString(true, 10, "is unaffected", var_2);
+                ovr025.DisplayPlayerStatusString(true, 10, "is unaffected", target);
             }
         }
 
 
         internal static void cast_entangle()
         {
-            bool var_6;
-            byte var_5;
-            Player var_4;
-
             if (gbl.area_ptr.field_1CC == 0)
             {
-                for (var_5 = 1; var_5 <= gbl.sp_target_count; var_5++)
+                for (int i = 1; i <= gbl.sp_target_count; i++)
                 {
-                    if (gbl.sp_targets[var_5] != null)
+                    if (gbl.sp_targets[i] != null)
                     {
-                        var_4 = gbl.sp_targets[var_5];
+                        Player target = gbl.sp_targets[i];
 
-                        var_6 = ovr024.do_saving_throw(0, 4, var_4);
+                        bool saved = ovr024.do_saving_throw(0, 4, target);
 
-                        ovr024.is_unaffected("is entangled", var_6, 1, false, 0, sub_5CE92(0x88), Affects.affect_88, var_4);
+                        ovr024.is_unaffected("is entangled", saved, 1, false, 0, sub_5CE92(0x88), Affects.affect_88, target);
                     }
                 }
             }
@@ -2879,7 +2871,6 @@ namespace engine
         {
             byte var_B;
             Player var_6;
-            bool var_2;
             byte var_1;
 
             var_B = ovr024.roll_dice(8, 2);
@@ -2896,9 +2887,9 @@ namespace engine
 
                     var_6 = gbl.sp_targets[var_1];
 
-                    var_2 = ovr024.do_saving_throw(0, 6, var_6);
+                    bool saved = ovr024.do_saving_throw(0, 6, var_6);
 
-                    ovr024.is_unaffected("is confused", var_2, 1, false, 0, sub_5CE92(0x52), Affects.cause_disease_2, var_6);
+                    ovr024.is_unaffected("is confused", saved, 1, false, 0, sub_5CE92(0x52), Affects.cause_disease_2, var_6);
                 }
             }
         }

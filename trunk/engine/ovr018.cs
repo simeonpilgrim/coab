@@ -1185,7 +1185,7 @@ namespace engine
 
                             for (int i = 1; i <= 100; i++)
                             {
-                                Struct_19AEC stru = gbl.unk_19AEC[i];
+                                Struct_19AEC stru = gbl.spell_list[i];
 
                                 if (stru.spellClass == 0 &&
                                     stru.spellLevel == 1)
