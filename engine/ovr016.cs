@@ -25,7 +25,7 @@ namespace engine
             {
                 if (player.spell_list[loop_var] > 127)
                 {
-                    var_C = (byte)gbl.unk_19AEC[player.spell_list[loop_var] & 0x7F].spellLevel;
+                    var_C = (byte)gbl.spell_list[player.spell_list[loop_var] & 0x7F].spellLevel;
 
                     if (var_C > var_3)
                     {
@@ -45,7 +45,7 @@ namespace engine
                     {
                         if ((int)item.getAffect(loop_var) > 0x7f)
                         {
-                            var_C = (byte)gbl.unk_19AEC[(int)item.getAffect(loop_var) & 0x7f].spellLevel;
+                            var_C = (byte)gbl.spell_list[(int)item.getAffect(loop_var) & 0x7f].spellLevel;
 
                             if (var_C > var_4)
                             {
@@ -134,8 +134,8 @@ namespace engine
                 {
                     spell_id &= 0x7F;
 
-                    if (gbl.unk_19AEC[spell_id].spellLevel == spellLevel &&
-                        gbl.unk_19AEC[spell_id].spellClass == spellClass)
+                    if (gbl.spell_list[spell_id].spellLevel == spellLevel &&
+                        gbl.spell_list[spell_id].spellClass == spellClass)
                     {
                         alreadyLearning++;
                     }
@@ -421,7 +421,7 @@ namespace engine
                         {
                             var_1 = true;
                         }
-                        else if (HowManySpellsPlayerCanLearn(gbl.unk_19AEC[var_4].spellClass, gbl.unk_19AEC[var_4].spellLevel) > 0)
+                        else if (HowManySpellsPlayerCanLearn(gbl.spell_list[var_4].spellClass, gbl.spell_list[var_4].spellLevel) > 0)
                         {
                             var_5 = 0;
 
@@ -772,7 +772,7 @@ namespace engine
                             while (var_12 <= 0x38 &&
                                 var_15 == 0)
                             {
-                                if (gbl.unk_19AEC[var_12].field_A == var_11)
+                                if (gbl.spell_list[var_12].affect_id == var_11)
                                 {
                                     var_40 = ovr023.AffectNames[var_12];
                                     var_15 = 1;

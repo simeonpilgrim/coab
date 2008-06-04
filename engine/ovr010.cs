@@ -133,15 +133,15 @@ namespace engine
                 var_3 = 8;
             }
 
-            ovr032.Rebuild_SortedCombatantList(gbl.mapToBackGroundTile, 1, 0xff, gbl.unk_19AEC[arg_2].field_F, mapY, mapX);
+            ovr032.Rebuild_SortedCombatantList(gbl.mapToBackGroundTile, 1, 0xff, gbl.spell_list[arg_2].field_F, mapY, mapX);
    
             for (int i = 1; i <= gbl.sortedCombatantCount; i++)
             {
                 Player tmpPlayer = gbl.player_array[gbl.SortedCombatantList[i].player_index];
-                Struct_19AEC tmpS = gbl.unk_19AEC[arg_2];
+                Struct_19AEC tmpS = gbl.spell_list[arg_2];
 
                 if (ovr025.opposite_team(gbl.player_ptr) != tmpPlayer.combat_team &&
-                    tmpS.field_8 != 1 &&
+                    tmpS.can_save_flag != 1 &&
                     ovr024.do_saving_throw(var_3, tmpS.field_9, tmpPlayer) == false)
                 {
                     result = true;
@@ -152,26 +152,25 @@ namespace engine
         }
 
 
-        internal static bool sub_353B1(byte arg_0, byte arg_2, Player arg_4)
+        internal static bool sub_353B1(byte arg_0, byte arg_2, Player attacker)
         {
-            Player var_5;
-
             bool var_1 = false;
 
-            if (gbl.unk_19AEC[arg_2].field_D < arg_0)
+            if (gbl.spell_list[arg_2].field_D < arg_0)
             {
-                if ((arg_2 != 3 && gbl.unk_19AEC[arg_2].field_E == 0) ||
-                    (arg_2 == 3 && ovr014.sub_3FDFE(out var_5, arg_4)))
+                Player dummy_target;
+                if ((arg_2 != 3 && gbl.spell_list[arg_2].field_E == 0) ||
+                    (arg_2 == 3 && ovr014.find_healing_target(out dummy_target, attacker)))
                 {
                     var_1 = true;
                 }
                 else
                 {
-                    int var_6 = ovr025.near_enemy(ovr023.sub_5CDE5(arg_2), arg_4);
+                    int var_6 = ovr025.near_enemy(ovr023.sub_5CDE5(arg_2), attacker);
 
                     if (var_6 > 0)
                     {
-                        if (gbl.unk_19AEC[arg_2].field_F == 0)
+                        if (gbl.spell_list[arg_2].field_F == 0)
                         {
                             var_1 = true;
                         }

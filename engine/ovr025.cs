@@ -1741,7 +1741,7 @@ namespace engine
             }
             else
             {
-                sbyte spell_class = gbl.unk_19AEC[spell_id].spellClass;
+                sbyte spell_class = gbl.spell_list[spell_id].spellClass;
                 if (spell_class == 0)
                 {
                     int var_2 = gbl.player_ptr.cleric_lvl + (ovr026.sub_6B3D1(gbl.player_ptr) * gbl.player_ptr.turn_undead);
@@ -1789,7 +1789,7 @@ namespace engine
             }
 
             if (gbl.byte_1D88D != 0 &&
-                gbl.unk_19AEC[spell_id].spellClass != 3)
+                gbl.spell_list[spell_id].spellClass != 3)
             {
                 target_count = 6;
             }
@@ -2010,44 +2010,38 @@ namespace engine
         }
 
 
-        internal static bool sub_6906C(out Item output, Player player)
+        internal static bool sub_6906C(out Item found_item, Player player)
         {
-            bool var_1 = false;
-
-            Item item = player.field_151;
-            output = null;
+            found_item = null;
             byte flags = 0;
 
+            Item item = player.field_151;
             if (item != null)
             {
                 flags = gbl.unk_1C020[item.type].field_E;
 
                 if ((flags & 0x10) != 0)
                 {
-                    output = item;
+                    found_item = item;
                 }
 
                 if ((flags & 0x08) != 0)
                 {
                     if ((flags & 0x01) != 0)
                     {
-                        output = player.Item_ptr_03;
+                        found_item = player.Item_ptr_03;
                     }
 
                     if ((flags & 0x80) != 0)
                     {
-                        output = player.Item_ptr_04;
+                        found_item = player.Item_ptr_04;
                     }
                 }
             }
 
-            if (output != null ||
-                flags == 10)
-            {
-                var_1 = true;
-            }
+            bool item_found = (found_item != null || flags == 10);
 
-            return var_1;
+            return item_found;
         }
 
 

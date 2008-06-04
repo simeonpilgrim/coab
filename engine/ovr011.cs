@@ -1155,7 +1155,7 @@ namespace engine
 
                             gbl.unk_1D183[gbl.byte_1D1BB].field_6 = (byte)gbl.mapToBackGroundTile[tmpX, tmpY];
                             gbl.mapToBackGroundTile[tmpX, tmpY] = 0x1F;
-                            gbl.unk_1D183[gbl.byte_1D1BB].field_0 = player_ptr;
+                            gbl.unk_1D183[gbl.byte_1D1BB].target = player_ptr;
                             gbl.unk_1D183[gbl.byte_1D1BB].mapX = tmpX;
                             gbl.unk_1D183[gbl.byte_1D1BB].mapY = tmpY;
                         }

@@ -4,10 +4,10 @@ namespace engine
 {
     class ovr013
     {
-        internal static void sub_3A019(byte arg_0)
+        internal static void sub_3A019(Affects affect)
         {
-            if (arg_0 == 0 ||
-                gbl.byte_1D2BD == arg_0)
+            if (affect == 0 ||
+                gbl.byte_1D2BD == affect)
             {
                 gbl.damage = 0;
                 gbl.byte_1D2BD = 0;
@@ -370,10 +370,10 @@ namespace engine
 
         internal static void sub_3A6C6(Effect arg_0, object param, Player player)
         {
-            Affect var_4;
+            Affect dummy_affect;
 
             if (player.name.Length == 0 &&
-                ovr025.find_affect(out var_4, Affects.detect_invisibility, gbl.player_ptr) == false)
+                ovr025.find_affect(out dummy_affect, Affects.detect_invisibility, gbl.player_ptr) == false)
             {
                 gbl.byte_1D2C5 = 1;
                 gbl.byte_1D2C9 -= 4;
@@ -414,7 +414,7 @@ namespace engine
         }
 
 
-        internal static void sub_3A7C0(Effect arg_0, object param, Player player)
+        internal static void three_quarters_damage(Effect arg_0, object param, Player player)
         {
             gbl.damage -= gbl.damage / 4;
         }
@@ -497,66 +497,44 @@ namespace engine
 
         internal static void sub_3A9D9(Effect arg_0, object arg_2, Player player)
         {
-            byte var_1;
+            byte var_1 = ovr024.roll_dice(100, 1);
 
-
-            var_1 = ovr024.roll_dice(100, 1);
-
-            throw new System.NotSupportedException();//mov	al, [bp+var_1]
-            throw new System.NotSupportedException();//cmp	al, 1
-            throw new System.NotSupportedException();//jnb	loc_3A9F7
-            throw new System.NotSupportedException();//jmp	loc_3AA7E
-            throw new System.NotSupportedException();//loc_3A9F7:
-            throw new System.NotSupportedException();//cmp	al, 0x0A
-            throw new System.NotSupportedException();//jbe	loc_3A9FE
-            throw new System.NotSupportedException();//jmp	loc_3AA7E
-            throw new System.NotSupportedException();//loc_3A9FE:
-            ovr024.remove_affect(null, Affects.confuse, player);
-            player.actions.field_10 = 1;
-            player.quick_fight = QuickFight.True;
-
-            if (player.field_F7 <= 0x7f)
+            if (var_1 >= 1 && var_1 <= 10)
             {
-                player.field_F7 = 0xb3;
+                ovr024.remove_affect(null, Affects.confuse, player);
+                player.actions.field_10 = 1;
+                player.quick_fight = QuickFight.True;
+
+                if (player.field_F7 <= 0x7f)
+                {
+                    player.field_F7 = 0xb3;
+                }
+
+                player.actions.target = null;
+
+                ovr024.is_unaffected("runs away", false, 1, true, 0, 10, Affects.affect_8e, player);
             }
-
-            player.actions.target = null;
-
-            ovr024.is_unaffected("runs away", false, 1, true, 0, 10, Affects.affect_8e, player);
-            throw new System.NotSupportedException();//jmp	loc_3AB3B
-            throw new System.NotSupportedException();//loc_3AA7E:
-            throw new System.NotSupportedException();//cmp	al, 0x0B
-            throw new System.NotSupportedException();//jb	loc_3AABD
-            throw new System.NotSupportedException();//cmp	al, 0x3C
-            throw new System.NotSupportedException();//ja	loc_3AABD
-
-            ovr025.sub_6818A("is confused", 1, player);
-            ovr025.ClearPlayerTextArea();
-            sub_3A071(0, arg_2, player);
-            throw new System.NotSupportedException();//jmp	short loc_3AB3B
-            throw new System.NotSupportedException();//loc_3AABD:
-            throw new System.NotSupportedException();//cmp	al, 0x3D
-            throw new System.NotSupportedException();//jb	loc_3AB11
-            throw new System.NotSupportedException();//cmp	al, 0x50
-            throw new System.NotSupportedException();//ja	loc_3AB11
-            ovr024.is_unaffected("goes berserk", false, 1, true, (byte)player.combat_team, 1, Affects.affect_89, player);
-            ovr024.CallSpellJumpTable(Effect.Add, null, player, Affects.affect_89);
-            throw new System.NotSupportedException();//jmp	short loc_3AB3B
-            throw new System.NotSupportedException();//loc_3AB11:
-            throw new System.NotSupportedException();//cmp	al, 0x51
-            throw new System.NotSupportedException();//jb	loc_3AB3B
-            throw new System.NotSupportedException();//cmp	al, 0x64
-            throw new System.NotSupportedException();//ja	loc_3AB3B
-
-            ovr025.sub_6818A("is enraged", 1, player);
-            ovr025.ClearPlayerTextArea();
-            throw new System.NotSupportedException();//loc_3AB3B:
+            else if (var_1 >= 11 && var_1 <= 60)
+            {
+                ovr025.sub_6818A("is confused", 1, player);
+                ovr025.ClearPlayerTextArea();
+                sub_3A071(0, arg_2, player);
+            }
+            else if (var_1 >= 61 && var_1 <= 80)
+            {
+                ovr024.is_unaffected("goes berserk", false, 1, true, (byte)player.combat_team, 1, Affects.affect_89, player);
+                ovr024.CallSpellJumpTable(Effect.Add, null, player, Affects.affect_89);
+            }
+            else if (var_1 >= 81 && var_1 <= 100)
+            {
+                ovr025.sub_6818A("is enraged", 1, player);
+                ovr025.ClearPlayerTextArea();
+            }
 
             if (ovr024.do_saving_throw(-2, 4, player) == true)
             {
                 ovr024.remove_affect(null, Affects.confuse, player);
             }
-            throw new System.NotSupportedException();//func_end:
         }
 
 
@@ -595,17 +573,14 @@ namespace engine
 
         internal static void sub_3AC1D(Effect arg_0, object param, Player player)
         {
-            byte var_B;
-            byte var_A;
-            bool var_9;
             Struct_1D885 var_8;
             Struct_1D885 var_4;
 
             Affect affect = (Affect)param;
 
-            var_A = (byte)(affect.field_3 >> 4);
+            byte var_A = (byte)(affect.field_3 >> 4);
 
-            var_9 = false;
+            bool var_9 = false;
             var_8 = gbl.stru_1D885;
 
             while (var_8 != null && var_9 == false)
@@ -625,7 +600,7 @@ namespace engine
             {
                 ovr025.string_print01("The air clears a little...");
 
-                for (var_B = 1; var_B <= 4; var_B++)
+                for (int var_B = 1; var_B <= 4; var_B++)
                 {
                     if (var_8.field_10[var_B] != 0)
                     {
@@ -634,11 +609,11 @@ namespace engine
 
                         var_9 = false;
 
-                        for (var_A = 1; var_A <= gbl.byte_1D1BB; var_A++)
+                        for (int i = 1; i <= gbl.byte_1D1BB; i++)
                         {
-                            if (gbl.unk_1D183[var_A].field_0 != null &&
-                                gbl.unk_1D183[var_A].mapX == tmp_x &&
-                                gbl.unk_1D183[var_A].mapY == tmp_y)
+                            if (gbl.unk_1D183[i].target != null &&
+                                gbl.unk_1D183[i].mapX == tmp_x &&
+                                gbl.unk_1D183[i].mapY == tmp_y)
                             {
                                 var_9 = true;
                             }
@@ -676,7 +651,7 @@ namespace engine
 
                 while (var_4 != null)
                 {
-                    for (var_B = 1; var_B <= 4; var_B++)
+                    for (int var_B = 1; var_B <= 4; var_B++)
                     {
                         if (var_4.field_10[var_B] != 0)
                         {
@@ -707,31 +682,28 @@ namespace engine
         }
 
 
-        internal static Item sub_3AF77(Player player)
+        internal static Item get_primary_weapon(Player player) /* sub_3AF77 */
         {
-            bool var_9;
-            Item var_8;
-
-            var_8 = null;
+            Item item = null;
 
             if (player.field_151 != null)
             {
-                var_9 = ovr025.sub_6906C(out var_8, player);
+                bool item_found = ovr025.sub_6906C(out item, player);
 
-                if (var_9 == false ||
-                    var_8 == null)
+                if (item_found == false ||
+                    item == null)
                 {
-                    var_8 = player.field_151;
+                    item = player.field_151;
                 }
             }
 
-            return var_8;
+            return item;
         }
 
 
         internal static void sub_3AFE0(Effect arg_0, object param, Player player)
         {
-            Item item = sub_3AF77(gbl.player_ptr);
+            Item item = get_primary_weapon(gbl.player_ptr);
 
             if (item != null && item.plus == 0)
             {
@@ -748,9 +720,7 @@ namespace engine
 
         internal static void weaken(Effect arg_0, object param, Player player)
         {
-            Affect var_4;
             Affect affect = (Affect)param;
-
 
             if (addAffect(0x3c, affect.field_3, Affects.affect_2b, player) == true)
             {
@@ -761,7 +731,8 @@ namespace engine
                 }
                 else
                 {
-                    if (ovr025.find_affect(out var_4, Affects.helpless, player) == true)
+                    Affect dummy_affect;
+                    if (ovr025.find_affect(out dummy_affect, Affects.helpless, player) == true)
                     {
                         ovr024.add_affect(false, 0xff, 0, Affects.helpless, player);
                     }
@@ -772,7 +743,6 @@ namespace engine
 
         internal static void sub_3B0C2(Effect arg_0, object param, Player player)
         {
-            Affect var_4;
             Affect affect = (Affect)param;
 
             if (addAffect(10, affect.field_3, Affects.cause_disease_2, player) == true)
@@ -790,7 +760,8 @@ namespace engine
                 }
                 else
                 {
-                    if (ovr025.find_affect(out var_4, Affects.helpless, player) == false)
+                    Affect dummy_affect;
+                    if (ovr025.find_affect(out dummy_affect, Affects.helpless, player) == false)
                     {
                         ovr024.add_affect(false, 0xff, 0, Affects.helpless, player);
                     }
@@ -893,17 +864,15 @@ namespace engine
 
         internal static void sub_3B2D8(Effect arg_0, object param, Player player)
         {
-            Item var_4;
+            Item weapon = get_primary_weapon(gbl.player_ptr);
 
-            var_4 = sub_3AF77(gbl.player_ptr);
-
-            if (var_4 == null ||
-                var_4.plus == 0)
+            if (weapon == null ||
+                weapon.plus == 0)
             {
                 gbl.damage = 0;
             }
-            else if (var_4 != null &&
-                var_4.plus < 3)
+            else if (weapon != null &&
+                weapon.plus < 3)
             {
                 gbl.damage /= 2;
             }
@@ -949,7 +918,7 @@ namespace engine
         internal static void sub_3B3CA(Effect arg_0, object param, Player player)
         {
             if (gbl.spell_id > 0 &&
-                gbl.unk_19AEC[gbl.spell_id].spellLevel < 4)
+                gbl.spell_list[gbl.spell_id].spellLevel < 4)
             {
                 sub_3A019(0);
             }
@@ -1175,7 +1144,7 @@ namespace engine
         }
 
 
-        internal static void sub_3B97F(Effect arg_0, object param, Player player)
+        internal static void half_damage(Effect arg_0, object param, Player player) /* sub_3B97F */
         {
             gbl.damage /= 2;
         }
@@ -1187,7 +1156,7 @@ namespace engine
                 (gbl.damage_flags & 0x02) != 0)
             {
                 if (ovr024.do_saving_throw(0, 4, player) == true &&
-                    gbl.unk_19AEC[gbl.spell_id].field_8 != 0)
+                    gbl.spell_list[gbl.spell_id].can_save_flag != 0)
                 {
                     gbl.damage = 0;
                 }
@@ -1217,7 +1186,7 @@ namespace engine
         {
             Item var_4;
 
-            var_4 = sub_3AF77(gbl.player_ptr);
+            var_4 = get_primary_weapon(gbl.player_ptr);
 
             if (var_4 != null &&
                 gbl.unk_1C020[var_4.type].field_7 == 1)
@@ -1291,7 +1260,7 @@ namespace engine
 
                         for (int i = 1; i <= gbl.byte_1D1BB; i++)
                         {
-                            if (gbl.unk_1D183[i].field_0 != null &&
+                            if (gbl.unk_1D183[i].target != null &&
                                 gbl.unk_1D183[i].mapX == tmp_x &&
                                 gbl.unk_1D183[i].mapY == tmp_y)
                             {
@@ -1358,7 +1327,7 @@ namespace engine
 
         internal static void sub_3BDB2(Effect arg_0, object param, Player arg_6)
         {
-            Item item = sub_3AF77(gbl.player_ptr);
+            Item item = get_primary_weapon(gbl.player_ptr);
 
             if (item != null &&
                 (gbl.unk_1C020[item.type].field_7 & 0x81) != 0)
@@ -1540,22 +1509,22 @@ namespace engine
         {
             if (ovr024.roll_dice(100, 1) <= 0x5a)
             {
-                sub_3A019(0x35);
-                sub_3A019(11);
+                sub_3A019(Affects.sleep);
+                sub_3A019(Affects.charm_person);
             }
         }
 
 
         internal static void sub_3C18F(Effect arg_0, object param, Player arg_6)
         {
-            sub_3A019(11);
-            sub_3A019(0x35);
+            sub_3A019(Affects.charm_person);
+            sub_3A019(Affects.sleep);
         }
 
 
         internal static void sub_3C1A4(Effect arg_0, object param, Player arg_6)
         {
-            sub_3A019(0x34);
+            sub_3A019(Affects.paralyze);
         }
 
 
@@ -1570,8 +1539,8 @@ namespace engine
 
         internal static void sub_3C1C9(Effect arg_0, object param, Player arg_6)
         {
-            sub_3A019(0x37);
-            sub_3A019(0x34);
+            sub_3A019(Affects.poisoned);
+            sub_3A019(Affects.paralyze);
 
             if (gbl.byte_1D2D1 == 0)
             {
@@ -1617,14 +1586,12 @@ namespace engine
 
         internal static void sub_3C260(Effect arg_0, object param, Player player)
         {
-            Item var_4;
+            Item weapon = get_primary_weapon(gbl.player_ptr);
 
-            var_4 = sub_3AF77(gbl.player_ptr);
-
-            if (var_4 != null)
+            if (weapon != null)
             {
-                if (gbl.unk_1C020[var_4.type].field_7 == 0 ||
-                    (gbl.unk_1C020[var_4.type].field_7 & 1) != 0)
+                if (gbl.unk_1C020[weapon.type].field_7 == 0 ||
+                    (gbl.unk_1C020[weapon.type].field_7 & 1) != 0)
                 {
                     gbl.damage /= 2;
                 }
@@ -1632,12 +1599,12 @@ namespace engine
         }
 
 
-        internal static void sub_3C2BF(Effect arg_0, object param, Player player)
+        internal static void half_damage_if_weap_magic(Effect arg_0, object param, Player player) /* sub_3C2BF */
         {
-            Item item = sub_3AF77(gbl.player_ptr);
+            Item weapon = get_primary_weapon(gbl.player_ptr);
 
-            if (item != null &&
-                item.plus > 0)
+            if (weapon != null &&
+                weapon.plus > 0)
             {
                 gbl.damage /= 2;
             }
@@ -1669,7 +1636,7 @@ namespace engine
         {
             Item var_4;
 
-            var_4 = sub_3AF77(gbl.player_ptr);
+            var_4 = get_primary_weapon(gbl.player_ptr);
 
             if (var_4 == null ||
                 var_4.plus == 0)
@@ -1758,18 +1725,18 @@ namespace engine
         {
             if (ovr024.roll_dice(100, 1) <= 0x1e)
             {
-                sub_3A019(0x0b);
-                sub_3A019(0x35);
+                sub_3A019(Affects.charm_person);
+                sub_3A019(Affects.sleep);
             }
         }
 
 
         internal static void sub_3C5F4(Effect arg_0, object param, Player player)
         {
-            sub_3A019(11);
-            sub_3A019(0x35);
-            sub_3A019(0x34);
-            sub_3A019(0x37);
+            sub_3A019(Affects.charm_person);
+            sub_3A019(Affects.sleep);
+            sub_3A019(Affects.paralyze);
+            sub_3A019(Affects.poisoned);
 
             if (gbl.byte_1D2D1 != 0)
             {
@@ -1835,9 +1802,9 @@ namespace engine
 
         internal static void sub_3C750(Effect arg_0, object param, Player player)
         {
-            sub_3A019(0x8E);
-            sub_3A019(0x1D);
-            sub_3A019(0x44);
+            sub_3A019(Affects.affect_8e);
+            sub_3A019(Affects.ray_of_enfeeblement);
+            sub_3A019(Affects.feeble);
 
             if ((gbl.damage_flags & 0x40) != 0)
             {
@@ -2016,7 +1983,7 @@ namespace engine
             gbl.spell_jump_list[26] = ovr013.sub_3A6FB;
             gbl.spell_jump_list[27] = ovr013.sub_3A071;
             gbl.spell_jump_list[28] = ovr013.sub_3A73F;
-            gbl.spell_jump_list[29] = ovr013.sub_3A7C0;
+            gbl.spell_jump_list[29] = ovr013.three_quarters_damage;
             gbl.spell_jump_list[30] = ovr013.sub_3A7E8;
             gbl.spell_jump_list[31] = ovr013.sub_3A071;
             gbl.spell_jump_list[32] = ovr013.sub_3A89E;
@@ -2068,7 +2035,7 @@ namespace engine
             gbl.spell_jump_list[78] = ovr013.sub_3B8D9;
             gbl.spell_jump_list[79] = ovr013.sub_3B919;
             gbl.spell_jump_list[80] = ovr013.sub_3B94C;
-            gbl.spell_jump_list[81] = ovr013.sub_3B97F;
+            gbl.spell_jump_list[81] = ovr013.half_damage;
             gbl.spell_jump_list[82] = ovr013.sub_3B990;
             gbl.spell_jump_list[83] = ovr023.spell_paralizing_gaze;
             gbl.spell_jump_list[84] = ovr013.sub_3B9E1;
@@ -2103,7 +2070,7 @@ namespace engine
             gbl.spell_jump_list[113] = ovr013.sub_3C201;
             gbl.spell_jump_list[114] = ovr013.sub_3C246;
             gbl.spell_jump_list[115] = ovr013.sub_3C260;
-            gbl.spell_jump_list[116] = ovr013.sub_3C2BF;
+            gbl.spell_jump_list[116] = ovr013.half_damage_if_weap_magic;
             gbl.spell_jump_list[117] = ovr013.sub_3C2F9;
             gbl.spell_jump_list[118] = ovr013.sub_3C33C;
             gbl.spell_jump_list[119] = ovr013.sub_3C356;

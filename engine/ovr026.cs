@@ -53,7 +53,6 @@ namespace engine
 
         internal static void sub_6A00F(Player player)
         {
-            Struct_19AEC var_12;
             sbyte var_2;
 
             for (int i = 0; i < 5; i++)
@@ -94,7 +93,7 @@ namespace engine
 
                             for (int i = 1; i <= 100; i++)
                             {
-                                var_12 = gbl.unk_19AEC[i];
+                                Struct_19AEC var_12 = gbl.spell_list[i];
 
                                 int sp_class = (var_12.spellLevel - 1) / 5;
                                 int sp_lvl = (var_12.spellLevel - 1) % 5;
@@ -121,7 +120,7 @@ namespace engine
 
                                 for (int i = 1; i <= 100; i++)
                                 {
-                                    var_12 = gbl.unk_19AEC[i];
+                                    Struct_19AEC var_12 = gbl.spell_list[i];
 
                                     int sp_class = (var_12.spellLevel - 1) / 5;
                                     int sp_lvl = (var_12.spellLevel - 1) % 5;
@@ -153,7 +152,7 @@ namespace engine
 
                                 for (int i = 1; i <= 100; i++)
                                 {
-                                    if (gbl.unk_19AEC[i].spellClass == 1)
+                                    if (gbl.spell_list[i].spellClass == 1)
                                     {
                                         player.field_79[i - 1] = 1;
                                     }
@@ -852,18 +851,17 @@ namespace engine
         }
 
 
-        internal static sbyte getFirstSkill(Player player)
+        internal static int getFirstSkill(Player player)
         {
-            sbyte skill_index;
-            sbyte var_1;
+            int index;
 
             if (player.race != Race.human)
             {
-                var_1 = 0x11;
+                index = 0x11;
             }
             else
             {
-                skill_index = 0;
+                int skill_index = 0;
                 while (skill_index < 7 && player.Skill_A_lvl[skill_index] == 0)
                 {
                     skill_index++;
@@ -871,15 +869,15 @@ namespace engine
 
                 if (player.Skill_A_lvl[skill_index] > 0)
                 {
-                    var_1 = skill_index;
+                    index = skill_index;
                 }
                 else
                 {
-                    var_1 = 0x11;
+                    index = 0x11;
                 }
             }
 
-            return var_1;
+            return index;
         }
 
 
