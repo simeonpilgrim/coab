@@ -38,6 +38,7 @@ namespace Classes
                 if (index < 0 || index > dataSize)
                 {
                     index = 0;
+                    throw new Exception("shouldn't be here");
                 }
 
                 return field_7[index];

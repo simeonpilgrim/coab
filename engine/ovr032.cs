@@ -65,8 +65,8 @@ namespace engine
                 int gt = groundTilesMap[var_19.current_x, var_19.current_y];
                 Struct_189B4 s189 = gbl.BackGroundTiles[gt];
 
-                if (var_19.steps > max_range ||
-                    (groundTilesMap.field_6 == 0 && s189.field_2 > var_31.diff_x))
+                if ((groundTilesMap.field_6 == 0 && s189.field_2 > var_31.current_y) ||
+                    var_19.steps > max_range)
                 {
                     outX = var_19.current_x;
                     outY = var_19.current_y;
