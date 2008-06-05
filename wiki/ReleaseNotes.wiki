@@ -1,6 +1,7 @@
 = The Release Notes =
 
 = Unreleased =
+  * Issue 10 - Ranged weapons (fireball spell) can target through walls
   * Issue 21 - The treasure picture now is displayed when sharing out treasure
   * Issue 22 - The icon now flashes
   * Issue 20 - This encounter now works
