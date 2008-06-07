@@ -331,7 +331,7 @@ namespace engine
                             (var_1 == 1 && display_flags > 4 && item.type != 0x56) ||
                             (var_1 == 2 && (display_flags & 1) == 0) ||
                             (var_1 == 3 && item.type == 0x56) ||
-                            (item.field_31 != 0x87 && (item.type == 0x49 || item.type == 0x1c) && item.field_31 != 0xb1))
+                            (item.field_31 != 0x87 && (item.type == 0x49 || item.type == 0x1c || item.type == 0x09) && item.field_31 != 0xb1))
                     {
                         item.name += "s ";
                         pural_added = true;
@@ -1816,7 +1816,6 @@ namespace engine
 
                     if (gbl.lastDaxBlockId == 0x50)
                     {
-
                         ovr030.sub_7000A(gbl.byte_1D556.ptrs[0].field_4, true, 3, 3);
                     }
                     else
