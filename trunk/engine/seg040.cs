@@ -295,7 +295,8 @@ namespace engine
                                     }
 
 
-                                    if (dax_block.data[var_22] == oldColors[var_36])
+                                    if (dax_block.data[var_22] == oldColors[var_36] &&
+                                        (arg_4 == 0 || seg051.Random(4) == 0 ) )
                                     {
                                         var_3A.data[var_24] = newColors[var_36];
                                     }
