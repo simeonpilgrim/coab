@@ -210,9 +210,9 @@ namespace engine
                     {
                         gbl.byte_1D556.curFrame++;
 
-                        if (gbl.byte_1D556.curFrame >= gbl.byte_1D556.numFrames)
+                        if (gbl.byte_1D556.curFrame > gbl.byte_1D556.numFrames)
                         {
-                            gbl.byte_1D556.curFrame = 0;
+                            gbl.byte_1D556.curFrame = 1;
                         }
 
                         timeStart = seg041.time01();

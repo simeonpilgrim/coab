@@ -6,7 +6,7 @@ namespace engine
     class ovr030
     {
         static byte[] unk_16DAA = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 };
-        static byte[] unk_16DBA = { 0xC, 0xC, 0xC, 0xC, 4, 5, 6, 7, 0xC, 0xC, 0xA, 0xC, 0xC, 0xC, 0xE, 0xC };
+        static byte[] unk_16DBA = { 12, 12, 12, 12, 4, 5, 6, 7, 12, 12, 10, 12, 12, 12, 14, 12 };
         static byte[] unk_16DCA = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 };
         static byte[] unk_16DDA = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 0, 14, 15 };
 
