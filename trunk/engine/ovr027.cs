@@ -621,9 +621,7 @@ namespace engine
             T tmpStringList;
             bool showPrevious;
             bool showNext;
-            char var_5A;
             short var_59;
-            bool var_57;
             short var_56;
 
             char ret_val = '\0'; /* Simeon */
@@ -716,13 +714,14 @@ namespace engine
                     displayString += " Exit";
                 }
 
-                var_5A = displayInput(out var_57, false, 1, highlightBgColor, arg_1C, arg_1E, displayString, extraTextString);
+                bool speical_key;
+                char input_key = displayInput(out speical_key, false, 1, highlightBgColor, arg_1C, arg_1E, displayString, extraTextString);
 
                 ListItemNormal(index_ptr, stringList, startY, startX, arg_1C, arg_1E);
 
-                if (var_57 == true)
+                if (speical_key == true)
                 {
-                    switch (var_5A)
+                    switch (input_key)
                     {
                         case 'G':
                             sub_6CDCA(false, ref index_ptr, stringList, var_56, var_59);
@@ -749,7 +748,7 @@ namespace engine
                 }
                 else
                 {
-                    switch (var_5A)
+                    switch (input_key)
                     {
                         case 'P':
                             sub_6CD38(false, ref index_ptr, stringList, var_56, var_59, endY, endX, startY, startX, arg_1C, arg_1E, listDisplayWidth);
@@ -770,7 +769,7 @@ namespace engine
 
                         default:
                             result_ptr = getStringListEntry(stringList, index_ptr);
-                            ret_val = var_5A;
+                            ret_val = input_key;
                             loop_end = true;
                             break;
                     }

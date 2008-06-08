@@ -147,11 +147,11 @@ namespace Classes
 
             switch (loc)
             {
-                case 0x67e: return (ushort)field_67E;
-                case 0x594: return search_flags;
                 case 0x550: return field_550;
                 case 0x58e: return (ushort)field_58E;
-                case 0x5aa: return tried_to_exit_map?(ushort)1:(ushort)0;
+                case 0x594: return search_flags;
+                case 0x5aa: return tried_to_exit_map ? (ushort)1 : (ushort)0;
+                case 0x67e: return (ushort)field_67E;
 
                 case 0x6F2:
                 case 0x6F4:
@@ -204,9 +204,11 @@ namespace Classes
                 case 0x5c2:
                     field_5C2 = (short)value;
                     break;
-
                 case 0x5c4:
                     field_5C4 = (short)value;
+                    break;
+                case 0x5c6:
+                    field_5C6 = (short)value;
                     break;
 
                 case 0x5cc:

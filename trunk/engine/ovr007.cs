@@ -4,12 +4,9 @@ namespace engine
 {
     class ovr007
     {
-        internal static void sub_2F04E( ref short arg_0, out Item arg_4, ref Item arg_8, out char arg_C )
+        internal static void sub_2F04E( ref short index, out Item arg_4, out Item arg_8, out char arg_C )
         {
-            Item item_ptr;
-            Item var_2;
-
-            item_ptr = gbl.item_pointer;
+            Item item_ptr = gbl.item_pointer;
 
             while( item_ptr != null )
             {
@@ -58,10 +55,10 @@ namespace engine
                 item_ptr = item_ptr.next;
             }
 
-            var_2 = gbl.item_pointer;
+            Item item_list = gbl.item_pointer;
             gbl.byte_1D5BE = 0;
 
-            arg_C = ovr027.sl_select_item(out arg_4, ref arg_0, ref gbl.byte_1AB16, true, var_2,
+            arg_C = ovr027.sl_select_item(out arg_4, ref index, ref gbl.byte_1AB16, true, item_list,
                 0x16, 0x26, 1, 1, 15, 10, 13, "Buy", "Items: " );
 
 			arg_8 = arg_4;
@@ -79,7 +76,6 @@ namespace engine
 
         internal static void PlayerAddItem( out bool isOverloaded, Item item ) /*was overloaded */
         {
-
             if (ovr020.canCarry(item, gbl.player_ptr) == true)
             {
                 ovr025.string_print01("Overloaded");
@@ -109,110 +105,104 @@ namespace engine
                     item_ptr.next = var_8;
                 }
 
-                ovr025.sub_66C20(gbl.player_ptr);
+                ovr025.reclac_player_values(gbl.player_ptr);
             }
         }
 
 
-        internal static void sub_2F474( )
+        internal static void shop_buy() /* sub_2F474 */
         {
-            short var_15;
-            Item var_13;
-            Item var_11;
-            bool var_F;
-            int var_E;
-            int var_A;
-            int var_8;
-            bool var_6;
-            char var_5;
-            Item var_4;
+            bool stop_loop;
+            char input_key;
 
-            var_4 = null;
-            var_11 = gbl.item_pointer;
-            var_15 = 0;
+            Item var_4 = null;
+            Item var_13 = gbl.item_pointer;
+            short var_15 = 0;
             seg037.draw8x8_outer_frame();
             gbl.byte_1AB16 = true;
 
-			do
-			{
-				sub_2F04E( ref var_15, out var_13, ref var_4, out var_5 );
+            do
+            {
+                sub_2F04E(ref var_15, out var_13, out var_4, out input_key);
 
-				if( var_5 != 0x42 &&
-					var_5 != 0x0d )
-				{
-					var_6 = true;
-				}
-				else
-				{
-					var_6 = false;
-                    var_8 = var_4._value;
+                if (input_key != 'B' &&
+                    input_key != 0x0d)
+                {
+                    stop_loop = true;
+                }
+                else
+                {
+                    stop_loop = false;
+                    int item_cost = var_4._value;
 
-					switch( gbl.area2_ptr.field_6DA)
-					{
-						case 0x01:
-							var_8 = var_4._value >> 4;
+                    switch (gbl.area2_ptr.field_6DA)
+                    {
+                        case 0x01:
+                            item_cost = var_4._value >> 4;
 
-							break;
+                            break;
 
-						case 0x02:
-							var_8 = var_4._value >> 3;
+                        case 0x02:
+                            item_cost = var_4._value >> 3;
 
-							break;
+                            break;
 
-						case 0x04:
-							var_8 = var_4._value >> 2;
-							break;
+                        case 0x04:
+                            item_cost = var_4._value >> 2;
+                            break;
 
-						case 0x08:
-							var_8 = var_4._value >> 1;
-							break;
+                        case 0x08:
+                            item_cost = var_4._value >> 1;
+                            break;
 
-						case 0x20:
-							var_8 = var_4._value << 1;
-							break;
+                        case 0x20:
+                            item_cost = var_4._value << 1;
+                            break;
 
-						case 0x40:
-							var_8 = var_4._value << 2;
-							break;
+                        case 0x40:
+                            item_cost = var_4._value << 2;
+                            break;
 
-						case 0x80:
-							var_8 = var_4._value << 3;
-							break;
-					}
+                        case 0x80:
+                            item_cost = var_4._value << 3;
+                            break;
+                    }
 
-					var_A = ovr020.getPlayerGold( gbl.player_ptr );
+                    int player_gold = ovr020.getPlayerGold(gbl.player_ptr);
 
-					if( var_8 <= var_A )
-					{
-						PlayerAddItem( out var_F, var_4 );
+                    if (item_cost <= player_gold)
+                    {
+                        bool overloaded;
+                        PlayerAddItem(out overloaded, var_4);
 
-						if( var_F == false )
-						{
-							var_A -= var_8;
-							ovr022.setPlayerMoney( var_A );
-						}
-					}
-					else
-					{
-						var_E = ovr022.getPooledGold( gbl.pooled_money );
+                        if (overloaded == false)
+                        {
+                            player_gold -= item_cost;
+                            ovr022.setPlayerMoney(player_gold);
+                        }
+                    }
+                    else
+                    {
+                        int pooled_gold = ovr022.getPooledGold(gbl.pooled_money);
 
-						if( var_8 <= var_E )
-						{
-							PlayerAddItem( out var_F, var_4 );
+                        if (item_cost <= pooled_gold)
+                        {
+                            bool overloaded;
+                            PlayerAddItem(out overloaded, var_4);
 
-							if( var_F == false )
-							{
-								var_E -= var_8;
-								ovr022.setPooledGold( var_E );
-							}
-						}
-						else
-						{
-							ovr025.string_print01( "Not enough Money." );
-						}
-					}
-				}
-			}while( var_6 == false );
+                            if (overloaded == false)
+                            {
+                                pooled_gold -= item_cost;
+                                ovr022.setPooledGold(pooled_gold);
+                            }
+                        }
+                        else
+                        {
+                            ovr025.string_print01("Not enough Money.");
+                        }
+                    }
+                }
+            } while (stop_loop == false);
         }
 
 
@@ -266,7 +256,7 @@ namespace engine
                 switch ( var_2E )
                 {
                     case 'B':
-                        sub_2F474();
+                        shop_buy();
                         break;
 
                     case 'V':

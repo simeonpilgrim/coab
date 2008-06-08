@@ -1822,7 +1822,7 @@ namespace engine
                 }
             }
             seg043.clear_keyboard();
-            ovr025.sub_66C20(player_ptr);
+            ovr025.reclac_player_values(player_ptr);
             ovr026.sub_6A3C6(player_ptr);
         }
 

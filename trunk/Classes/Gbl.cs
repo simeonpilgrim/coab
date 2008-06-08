@@ -230,7 +230,7 @@ namespace Classes
         public static byte byte_1B2EB;
         public static byte head_block_id; // byte_1B2EE
         public static byte body_block_id; // byte_1B2EF
-        public static bool byte_1B2F0;
+        public static bool party_killed; // byte_1B2F0
         public static byte byte_1B2F1;
         public static bool DelayBetweenCharacters; // byte_1B2F2
 

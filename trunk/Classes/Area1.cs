@@ -92,14 +92,77 @@ namespace Classes
         [DataOffset(0x200, DataType.ShortArray,33)]
         public short[] field_200; // 1-32
 
+        [DataOffset(0x25A, DataType.Word)]
+        public ushort field_25A;
+        [DataOffset(0x25C, DataType.Word)]
+        public ushort field_25C;
+        [DataOffset(0x25E, DataType.Word)]
+        public ushort field_25E;
+
+        [DataOffset(0x296, DataType.Word)]
+        public ushort field_296;
+        [DataOffset(0x298, DataType.Word)]
+        public ushort field_298;
+        [DataOffset(0x29A, DataType.Word)]
+        public ushort field_29A;
+        [DataOffset(0x2B2, DataType.Word)]
+        public ushort field_2B2;
+        [DataOffset(0x2B4, DataType.Word)]
+        public ushort field_2B4;
+        [DataOffset(0x2B6, DataType.Word)]
+        public ushort field_2B6;
+
+
+        [DataOffset(0x336, DataType.Byte)]
+        public byte field_336;
+        [DataOffset(0x338, DataType.Byte)]
+        public byte field_338;
+        [DataOffset(0x33A, DataType.Byte)]
+        public byte field_33A;
+
+        [DataOffset(0x340, DataType.Byte)]
+        public byte field_340;
         [DataOffset(0x342, DataType.Byte)]
         public byte field_342;
+        [DataOffset(0x344, DataType.Byte)]
+        public byte field_344;
+        [DataOffset(0x346, DataType.Byte)]
+        public byte field_346;
+        [DataOffset(0x348, DataType.Byte)]
+        public byte field_348;
+
+
+        [DataOffset(0x3D4, DataType.Word)]
+        public ushort field_3D4;
+        [DataOffset(0x3D6, DataType.Word)]
+        public ushort field_3D6;
+        [DataOffset(0x3D8, DataType.Word)]
+        public ushort field_3D8;
+        [DataOffset(0x3DA, DataType.Word)]
+        public ushort field_3DA;
+        [DataOffset(0x3DC, DataType.Word)]
+        public ushort field_3DC;
+        [DataOffset(0x3DE, DataType.Word)]
+        public ushort field_3DE;
+
+        [DataOffset(0x3E0, DataType.Word)]
+        public ushort field_3E0;
         [DataOffset(0x3E2, DataType.Word)]
         public ushort field_3E2;
+        [DataOffset(0x3E4, DataType.Word)]
+        public ushort field_3E4;
+        [DataOffset(0x3E6, DataType.Word)]
+        public ushort field_3E6;
+        [DataOffset(0x3E8, DataType.Word)]
+        public ushort field_3E8;
+
         [DataOffset(0x3FA, DataType.Byte)]
         public byte field_3FA;
         [DataOffset(0x3FE, DataType.SWord)]
         public short field_3FE;
+
+        [DataOffset(0x596, DataType.Word)]
+        public ushort field_596;
 
         public void field_6A00_Set(int index, ushort value)
         {
@@ -197,16 +260,102 @@ namespace Classes
                     field_200[(loc - 0x200) / 2] = (short)value;
                     break;
 
+                case 0x25A:
+                    field_25A = value;
+                    break;
+
+                case 0x25C:
+                    field_25C = value;
+                    break;
+                case 0x25E:
+                    field_25E = value;
+                    break;
+
+                case 0x296:
+                    field_296 = value;
+                    break;
+                case 0x298:
+                    field_298 = value;
+                    break;
+                case 0x29A:
+                    field_29A = value;
+                    break;
+
+                case 0x2B2:
+                    field_2B2 = value;
+                    break;
+                case 0x2B4:
+                    field_2B4 = value;
+                    break;
+                case 0x2B6:
+                    field_2B6 = value;
+                    break;
+
+                case 0x336:
+                    field_336 = (byte)value;
+                    break;
+                case 0x338:
+                    field_338 = (byte)value;
+                    break;
+                case 0x33A:
+                    field_33A = (byte)value;
+                    break;
+
+                case 0x340:
+                    field_340 = (byte)value;
+                    break;
                 case 0x342:
                     field_342 = (byte)value;
                     break;
+                case 0x346:
+                    field_346 = (byte)value;
+                    break;
+                case 0x348:
+                    field_348 = (byte)value;
+                    break;
 
+                case 0x3D4:
+                    field_3D4 = value;
+                    break;
+                case 0x3D6:
+                    field_3D6 = value;
+                    break;
+                case 0x3D8:
+                    field_3D8 = value;
+                    break;
+                case 0x3DA:
+                    field_3DA = value;
+                    break;
+                case 0x3DC:
+                    field_3DC = value;
+                    break;
+                case 0x3DE:
+                    field_3DE = value;
+                    break;
+
+                case 0x3E0:
+                    field_3E0 = value;
+                    break;
                 case 0x3E2:
                     field_3E2 = value;
                     break;
+                case 0x3E4:
+                    field_3E4 = value;
+                    break;
+                case 0x3E6:
+                    field_3E6 = value;
+                    break;
+                case 0x3E8:
+                    field_3E8 = value;
+                    break;
+
 
                 case 0x3fe:
                     field_3FE = (short)value;
+                    break;
+
+                case 0x596:
+                    field_596 = value;
                     break;
 
                 default:
@@ -291,8 +440,63 @@ namespace Classes
                 case 0x240:
                     return (ushort)field_200[(loc - 0x200) / 2];
 
+                case 0x25A:
+                    return field_25A;
+                case 0x25C:
+                    return field_25C;
+                case 0x25E:
+                    return field_25E;
+
+                case 0x296:
+                    return field_296;
+                case 0x298:
+                    return field_298;
+
+                case 0x29A:
+                    return field_29A;
+
+                case 0x2B2:
+                    return field_2B2;
+                case 0x2B4:
+                    return field_2B4;
+                case 0x2B6:
+                    return field_2B6;
+
+
+                case 0x336:
+                    return field_336;
+                case 0x338:
+                    return field_338;
+                case 0x33A:
+                    return field_33A;
+                
+                case 0x3D4:
+                    return field_3D4;
+                case 0x3D6:
+                    return field_3D6;
+                case 0x3D8:
+                    return field_3D8;
+                case 0x3DA:
+                    return field_3DA;
+                case 0x3DC:
+                    return field_3DC;
+                case 0x3DE:
+                    return field_3DE;
+
+
+                case 0x3E0:
+                    return field_3E0;
                 case 0x3E2:
                     return field_3E2;
+                case 0x3E4:
+                    return field_3E4;
+                case 0x3E6:
+                    return field_3E6;
+                case 0x3E8:
+                    return field_3E8;
+
+                case 0x596:
+                    return field_596;
 
                 default:
                     return DataIO.GetObjectUShort(this, origData, loc);

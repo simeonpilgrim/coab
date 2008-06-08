@@ -1352,15 +1352,6 @@ namespace engine
         }
 
 
-        internal static void vm_gosub(int arg_0) /* sub_31A77 */
-        {
-            gbl.vmCallStack.Push(gbl.ecl_offset);
-            gbl.ecl_offset = gbl.cmd_opps[arg_0].Word;
-                
-            //System.Console.WriteLine("  vm_gosub: was: {0:X} now: {1:X}", current, gbl.ecl_offset);
-        }
-
-
         internal static void sub_31B01()
         {
             if (gbl.mapDirection == 0)
@@ -1488,8 +1479,8 @@ namespace engine
             player.silver = (short)(player.silver * scale);
             player.gold = (short)(player.gold * scale);
             player.platinum = (short)(player.platinum * scale);
-            player.field_105 = (short)(player.field_105 * scale);
-            player.field_107 = (short)(player.field_107 * scale);
+            player.gems = (short)(player.gems * scale);
+            player.jewels = (short)(player.jewels * scale);
         }
 
 

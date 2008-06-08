@@ -102,8 +102,9 @@ namespace Classes
                 }
             }
 
-            Logger.Debug("GetObjectUShort {0} at {1,4:X}", obj, location);
-            return Sys.ArrayToUshort(data, location);
+            ushort val = Sys.ArrayToUshort(data, location); 
+            Logger.Debug("GetObjectUShort {0} at {1,4:X} val: {2:X}", obj, location, val);
+            return val;
         }
 
         static public void SetObjectUShort(object obj, byte[] data, int location, ushort value)
@@ -122,8 +123,9 @@ namespace Classes
                 }
             }
 
-            System.Console.WriteLine("SetObjectUShort {0} at {1,4:X}", obj, location);
             Sys.ShortToArray((short)value, data, location);
+            Logger.Debug("SetObjectUShort {0} at {1,4:X} val: {2:X}", obj, location, value); 
+
         }
 
         static private ushort GetObjectUshortValue(object obj, FieldInfo fInfo, DataOffsetAttribute attr)
@@ -135,6 +137,8 @@ namespace Classes
                     return (ushort)(sbyte)o;
                 case DataType.SWord:
                     return (ushort)(short)o;
+                case DataType.Word:
+                    return (ushort)o;
                 default:
                     throw new NotImplementedException();
                     //return 0;
@@ -151,6 +155,9 @@ namespace Classes
                     break;
                 case DataType.SWord:
                     fInfo.SetValue(obj, (short)value);
+                    break;
+                case DataType.Word:
+                    fInfo.SetValue(obj, value);
                     break;
                 default:
                     throw new NotImplementedException();
@@ -177,9 +184,9 @@ namespace Classes
                         readData(obj, fInfo, doAttr, data, 0);
                     }
                 }
-
             }
         }
+
 
         static public void WriteObject(object obj, byte[] data)
         {

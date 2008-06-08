@@ -868,7 +868,7 @@ namespace engine
                     attacker.damageBonus = (sbyte)((attacker.damageBonus - var_10.field_B) + var_10.field_4);
                 }
 
-                ovr025.sub_66C20(target);
+                ovr025.reclac_player_values(target);
                 ovr024.work_on_00(target, 11);
 
                 if (sub_408D7(target, attacker) != 0)
@@ -1120,7 +1120,7 @@ namespace engine
                     }
                 }
 
-                ovr025.sub_66C20(player02);
+                ovr025.reclac_player_values(player02);
                 gbl.player_ptr = playerBase;
             }
 

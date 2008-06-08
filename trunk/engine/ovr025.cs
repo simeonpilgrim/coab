@@ -527,13 +527,11 @@ namespace engine
         }
 
 
-        internal static void sub_66C20(Player player)
+        internal static void reclac_player_values(Player player) /* sub_66C20 */
         {
-            byte var_10;
             sbyte[] stat_bonus = new sbyte[5];
             byte var_7;
             Item item_ptr;
-            byte var_2;
 
             player.field_151 = null;
             player.field_155 = null;
@@ -612,9 +610,9 @@ namespace engine
             }
 
 
-            for (var_10 = 0; var_10 <= 6; var_10++)
+            for (int money = 0; money < 7; money++)
             {
-                player.weight += player.Money[var_10];
+                player.weight += player.Money[money];
             }
 
             player.field_19E = player.field_11E;
@@ -626,9 +624,9 @@ namespace engine
             player.damageBonus = player.field_122;
             player.field_1A3 = player.field_123;
 
-            for (var_2 = 0; var_2 <= 4; var_2++)
+            for (int i = 0; i <= 4; i++)
             {
-                stat_bonus[var_2] = 0;
+                stat_bonus[i] = 0;
             }
 
             var_7 = 0;
@@ -691,9 +689,9 @@ namespace engine
 
             player.ac = 0;
 
-            for (var_2 = 0; var_2 <= 4; var_2++)
+            for (int i = 0; i <= 4; i++)
             {
-                player.ac += (byte)stat_bonus[var_2];
+                player.ac += (byte)stat_bonus[i];
             }
 
             player.field_19B = (byte)((stat_bonus[4] + stat_bonus[2] + stat_bonus[3]) - 2);

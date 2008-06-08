@@ -812,7 +812,7 @@ namespace engine
 
             while (player != null)
             {
-                ovr025.sub_66C20(player);
+                ovr025.reclac_player_values(player);
                 var_5++;
 
                 player.actions = new Action();
@@ -1176,7 +1176,7 @@ namespace engine
 
                         gbl.player_array[loop_var] = null;
                         gbl.player_ptr = player_ptr;
-                        ovr018.free_players(0, true);
+                        ovr018.free_players(false, true);
                         player_ptr2 = player_ptr;
                     }
                     else

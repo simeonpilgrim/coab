@@ -364,7 +364,7 @@ namespace engine
                 ovr025.DisplayPlayerStatusString(true, 10, "Gains an item", player);
             }
 
-            ovr025.sub_66C20(player);
+            ovr025.reclac_player_values(player);
         }
 
 
@@ -430,7 +430,7 @@ namespace engine
             player.actions.field_2 = 0;
             player.actions.can_cast = 0;
 
-            ovr025.sub_66C20(player);
+            ovr025.reclac_player_values(player);
             
             if( player.field_19B > 0x34 )
             {

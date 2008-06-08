@@ -484,11 +484,7 @@ namespace engine
         internal static void temple_shop()
         {
             bool var_30 = false; /* Simeon */
-            bool var_2E;
-            bool var_2D;
-            string var_2C;
-            byte var_2;
-            char var_1;
+            bool money_present;
 
             gbl.game_state = 1;
             gbl.byte_1EE7E = false;
@@ -508,25 +504,26 @@ namespace engine
             }
 
             gbl.something01 = false;
-            var_2 = 0;
+            bool stop_loop = false;
 
             do
             {
-                ovr022.treasureOnGround(out var_2E, out var_2D);
-
-                if (var_2D == true)
+                bool items_present;
+                ovr022.treasureOnGround(out items_present, out money_present);
+                string text;
+                if (money_present == true)
                 {
-                    var_2C = "Heal View Take Pool Share Appraise Exit";
+                    text = "Heal View Take Pool Share Appraise Exit";
                 }
                 else
                 {
-                    var_2C = "Heal View Pool Appraise Exit";
+                    text = "Heal View Pool Appraise Exit";
                 }
 
                 bool ctrl_key;
-                var_1 = ovr027.displayInput(out ctrl_key, false, 1, 15, 10, 13, var_2C, string.Empty);
+                char input_key = ovr027.displayInput(out ctrl_key, false, 1, 15, 10, 13, text, string.Empty);
 
-                switch (var_1)
+                switch (input_key)
                 {
                     case 'H':
                         if (ctrl_key == false)
@@ -560,19 +557,19 @@ namespace engine
                         break;
 
                     case 'E':
-                        ovr022.treasureOnGround(out var_2E, out var_2D);
+                        ovr022.treasureOnGround(out items_present, out money_present);
 
-                        if (var_2D == true)
+                        if (money_present == true)
                         {
-                            var_2C = "~Yes ~No";
+                            string prompt = "~Yes ~No";
 
                             seg041.press_any_key("As you leave a priest says, \"Excuse me but you have left some money here\" ", true, 0, 10, 0x16, 0x26, 0x11, 1);
                             seg041.press_any_key("Do you want to go back and retrieve your money?", true, 0, 10, 0x16, 0x26, 0x11, 1);
-                            int menu_selected = ovr008.sub_317AA(false, 0, 15, 10, 13, var_2C, string.Empty);
+                            int menu_selected = ovr008.sub_317AA(false, 0, 15, 10, 13, prompt, string.Empty);
 
                             if (menu_selected == 1)
                             {
-                                var_2 = 1;
+                                stop_loop = true;
                             }
                             else
                             {
@@ -581,32 +578,32 @@ namespace engine
                         }
                         else
                         {
-                            var_2 = 1;
+                            stop_loop = true;
                         }
 
                         break;
 
                     case 'G':
-                        ovr020.scroll_team_list(var_1);
+                        ovr020.scroll_team_list(input_key);
                         break;
 
                     case 'O':
-                        ovr020.scroll_team_list(var_1);
+                        ovr020.scroll_team_list(input_key);
                         break;
                 }
 
-                if (var_1 == 0x42 ||
-                    var_1 == 0x54)
+                if (input_key == 0x42 ||
+                    input_key == 0x54)
                 {
                     ovr025.load_pic();
                 }
-                else if (var_1 == 'A' && var_30 == true)
+                else if (input_key == 'A' && var_30 == true)
                 {
                     ovr025.load_pic();
                 }
 
                 ovr025.Player_Summary(gbl.player_ptr);
-            } while (var_2 == 0);
+            } while (stop_loop == false);
         }
     }
 }
