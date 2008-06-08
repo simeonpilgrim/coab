@@ -1,6 +1,8 @@
 = The Release Notes =
 
 = Unreleased =
+  * Issue 6 - Moander sigil now fades at the correct speed
+  * Issue 23 - Magic Darts are now pluralised correctly 
   * Issue 10 - Ranged weapons (fireball spell) can target through walls
   * Issue 21 - The treasure picture now is displayed when sharing out treasure
   * Issue 22 - The icon now flashes
