@@ -171,7 +171,7 @@ namespace engine
 
             player = gbl.player_ptr;
 
-            ovr025.sub_66C20(player);
+            ovr025.reclac_player_values(player);
             yCol = 0x11;
 
             seg041.displayString("AC    ", 0, 15, yCol, 1);
@@ -667,7 +667,7 @@ namespace engine
                         }
                     }
 
-                    ovr025.sub_66C20(player);
+                    ovr025.reclac_player_values(player);
                 }
 
                 if (player.field_14C != var_40)
@@ -961,7 +961,7 @@ namespace engine
                 {
                     ovr025.addItem(item, player_ptr);
                     ovr025.lose_item(item, gbl.player_ptr);
-                    ovr025.sub_66C20(player_ptr);
+                    ovr025.reclac_player_values(player_ptr);
                 }
             }
         }
@@ -1502,30 +1502,27 @@ namespace engine
 
         internal static bool canCarry(Item item, Player player)
         {
-            short item_weight;
-            bool tooHeavy;
-
-            ovr025.sub_66C20(player);
-            tooHeavy = false;
+            ovr025.reclac_player_values(player);
+            bool too_heavy = false;
 
             if (player.field_14C > 15)
             {
-                tooHeavy = true;
+                too_heavy = true;
             }
 
-            item_weight = item.weight;
+            int item_weight = item.weight;
 
             if (item.count > 0)
             {
-                item_weight *= (short)item.count;
+                item_weight *= item.count;
             }
 
             if ((player.weight + item_weight) > (ovr025.max_encumberance(player) + 1500))
             {
-                tooHeavy = true;
+                too_heavy = true;
             }
 
-            return tooHeavy;
+            return too_heavy;
         }
 
 

@@ -749,7 +749,7 @@ namespace engine
 
                         if (gbl.spell_list[gbl.spell_id].field_2 == -1)
                         {
-                            ovr025.sub_66C20(var_2F);
+                            ovr025.reclac_player_values(var_2F);
 
                             ovr024.work_on_00(var_2F, 11);
 
@@ -763,7 +763,6 @@ namespace engine
                         if (arg_6 > 0)
                         {
                             ovr024.damage_person(var_30, gbl.spell_list[spell_id].can_save_flag, arg_6, var_2F);
-
                         }
 
                         if (gbl.spell_list[spell_id].affect_id > 0)

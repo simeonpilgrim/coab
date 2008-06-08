@@ -1106,7 +1106,7 @@ namespace engine
                     ovr020.ready_Item(arg_0.field_151);
                 }
 
-                ovr025.sub_66C20(arg_0);
+                ovr025.reclac_player_values(arg_0);
 
                 if (arg_0.field_155 != null &&
                     arg_0.field_155.cursed == false)
@@ -1122,7 +1122,7 @@ namespace engine
                 var_1D = 1;
             }
 
-            ovr025.sub_66C20(arg_0);
+            ovr025.reclac_player_values(arg_0);
             ovr014.sub_3EDD4(arg_0);
             var_1C = 1;
 
@@ -1152,7 +1152,7 @@ namespace engine
                 {
                     ovr020.ready_Item(arg_0.field_155);
                 }
-                ovr025.sub_66C20(arg_0);
+                ovr025.reclac_player_values(arg_0);
 
                 if (var_C != null)
                 {
@@ -1163,7 +1163,7 @@ namespace engine
             }
 
 
-            ovr025.sub_66C20(arg_0);
+            ovr025.reclac_player_values(arg_0);
 
             if (var_1D != 0)
             {

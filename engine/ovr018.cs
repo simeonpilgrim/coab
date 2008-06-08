@@ -277,7 +277,7 @@ namespace engine
                                 if (gbl.player_ptr.field_F7 < 0x80)
                                 {
                                     ovr017.sub_47DFC(string.Empty, gbl.player_ptr);
-                                    free_players(1, false);
+                                    free_players(true, false);
                                 }
                                 else
                                 {
@@ -1365,7 +1365,7 @@ namespace engine
                     }
 
                     ovr017.remove_player_file(gbl.player_ptr);
-                    free_players(1, false);
+                    free_players(true, false);
                 }
                 else
                 {
@@ -1866,7 +1866,7 @@ namespace engine
 
                             gbl.player_ptr.name = var_31;
 
-                            ovr025.sub_66C20(gbl.player_ptr);
+                            ovr025.reclac_player_values(gbl.player_ptr);
                             return;
                         }
                     }
@@ -1883,13 +1883,13 @@ namespace engine
                         gbl.player_ptr.name = var_31;
 
                         gbl.player_ptr.hit_point_current = gbl.player_ptr.hit_point_max;
-                        ovr025.sub_66C20(gbl.player_ptr);
+                        ovr025.reclac_player_values(gbl.player_ptr);
                         return;
 
                     }
                 }
 
-                ovr025.sub_66C20(gbl.player_ptr);
+                ovr025.reclac_player_values(gbl.player_ptr);
                 ovr020.display_player_stats01();
 
                 draw_highlight_stat(true, edited_stat, name_cursor_pos);
@@ -2098,32 +2098,30 @@ namespace engine
         }
 
 
-        internal static void free_players(byte arg_0, bool arg_2)
+        internal static void free_players(bool free_icon, bool arg_2)
         {
-            Player player_ptr;
-
             if (gbl.player_next_ptr != null)
             {
-                player_ptr = gbl.player_next_ptr;
+                Player player = gbl.player_next_ptr;
 
-                if (player_ptr != gbl.player_ptr)
+                if (player != gbl.player_ptr)
                 {
-                    while (player_ptr.next_player != gbl.player_ptr && player_ptr.next_player != null)
+                    while (player.next_player != gbl.player_ptr && player.next_player != null)
                     {
-                        player_ptr = player_ptr.next_player;
+                        player = player.next_player;
                     }
 
-                    if (player_ptr.next_player != null)
+                    if (player.next_player != null)
                     {
-                        if (arg_0 != 0)
+                        if (free_icon)
                         {
                             ovr034.free_icon(gbl.player_ptr.icon_id);
                         }
 
-                        player_ptr.next_player = gbl.player_ptr.next_player;
+                        player.next_player = gbl.player_ptr.next_player;
 
                         free_player(ref gbl.player_ptr);
-                        gbl.player_ptr = player_ptr;
+                        gbl.player_ptr = player;
 
                         if (arg_2 == false)
                         {
@@ -2133,16 +2131,16 @@ namespace engine
                 }
                 else
                 {
-                    if (arg_0 != 0)
+                    if (free_icon)
                     {
                         ovr034.free_icon(gbl.player_ptr.icon_id);
                     }
 
                     gbl.player_next_ptr = gbl.player_ptr.next_player;
-                    player_ptr = gbl.player_ptr.next_player;
+                    player = gbl.player_ptr.next_player;
 
                     free_player(ref gbl.player_ptr);
-                    gbl.player_ptr = player_ptr;
+                    gbl.player_ptr = player;
 
                     if (arg_2 == false)
                     {

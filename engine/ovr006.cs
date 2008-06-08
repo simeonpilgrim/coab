@@ -198,7 +198,7 @@ namespace engine
         internal static void sub_2D556()
         {
             gbl.byte_1EE81 = 0;
-            gbl.byte_1B2F0 = true;
+            gbl.party_killed = true;
             gbl.party_fled = false;
             Player player = gbl.player_next_ptr;
 
@@ -231,7 +231,7 @@ namespace engine
             if (gbl.combat_type == gbl.combatType.duel ||
                 (gbl.area2_ptr.field_5CC != 0 && no_exp == true))
             {
-                gbl.byte_1B2F0 = false;
+                gbl.party_killed = false;
             }
 
             gbl.byte_1EE86 = 0;
@@ -249,7 +249,7 @@ namespace engine
                         if (player.combat_team == CombatTeam.Ours &&
                             player.field_F7 < 0x80)
                         {
-                            gbl.byte_1B2F0 = false;
+                            gbl.party_killed = false;
                         }
                     }
 
@@ -281,7 +281,7 @@ namespace engine
 
                 player = gbl.player_next_ptr;
 
-                if (gbl.byte_1B2F0 == false)
+                if (gbl.party_killed == false)
                 {
                     while (player != null && (player.actions == null || player.actions.field_13 != 1))
                     {
@@ -337,7 +337,7 @@ namespace engine
                             {
                                 gbl.player_ptr = player;
                                 player = player.next_player;
-                                ovr018.free_players(1, false);
+                                ovr018.free_players(true, false);
                             }
                         }
                     }
@@ -352,7 +352,7 @@ namespace engine
                         if (player.actions.field_13 != 1)
                         {
                             gbl.player_ptr = player;
-                            ovr018.free_players(1, false);
+                            ovr018.free_players(true, false);
                         }
                         else
                         {
@@ -750,7 +750,7 @@ namespace engine
 
                     gbl.player_ptr = player;
 
-                    ovr018.free_players(1, (player.actions != null && player.actions.field_13 == 1));
+                    ovr018.free_players(true, (player.actions != null && player.actions.field_13 == 1));
 
                     player = next_player;
                 }
@@ -856,11 +856,11 @@ namespace engine
 
                 while (player != null)
                 {
-                    ovr025.sub_66C20(player);
+                    ovr025.reclac_player_values(player);
                     player = player.next_player;
                 }
 
-                if (gbl.byte_1B2F0 == false ||
+                if (gbl.party_killed == false ||
                     gbl.combat_type == gbl.combatType.duel)
                 {
                     if (gbl.party_fled == true)
@@ -903,7 +903,6 @@ namespace engine
                     gbl.textYCol = 6;
                     seg041.press_any_key("The monsters rejoice for the party has been destroyed", true, 0, 10, 0x16, 0x25, 5, 2);
                     seg041.displayAndDebug("Press any key to continue", 0, 0x0d);
-
                 }
 
                 gbl.DelayBetweenCharacters = true;

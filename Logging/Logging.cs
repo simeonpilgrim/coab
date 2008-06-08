@@ -40,6 +40,12 @@ namespace Logging
             System.Console.WriteLine(fmt, args);
             debug.WriteLine(fmt, args);
         }
+
+        static public void DebugWrite(string fmt, params object[] args)
+        {
+            System.Console.Write(fmt, args);
+            debug.Write(fmt, args);
+        }
     }
 
     class DebugWriter
@@ -65,6 +71,22 @@ namespace Logging
                 if (writer != null)
                 {
                     writer.WriteLine(fmt, args);
+                }
+            }
+        }
+
+        internal void Write(string fmt, params object[] args)
+        {
+            lock (iolock)
+            {
+                if (writer == null)
+                {
+                    writer = new System.IO.StreamWriter(filename, true);
+                }
+
+                if (writer != null)
+                {
+                    writer.Write(fmt, args);
                 }
             }
         }

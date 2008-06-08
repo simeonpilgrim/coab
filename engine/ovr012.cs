@@ -169,7 +169,7 @@ namespace engine
             gbl.byte_1EE8A = 0;
             gbl.byte_1EE8B = 0;
             gbl.byte_1EE8C = 0;
-            gbl.byte_1B2F0 = false;
+            gbl.party_killed = false;
             gbl.byte_1BF12 = 1;
             gbl.displayPlayerSprite = false;
             gbl.byte_1C01A = 0;
@@ -285,7 +285,7 @@ namespace engine
             gbl.byte_1EE8A = 0;
             gbl.byte_1EE8B = 0;
             gbl.byte_1EE8C = 0;
-            gbl.byte_1B2F0 = false;
+            gbl.party_killed = false;
             gbl.byte_1BF12 = 1;
             gbl.displayPlayerSprite = false;
             gbl.byte_1C01A = 0;

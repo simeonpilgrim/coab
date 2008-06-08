@@ -289,12 +289,12 @@ namespace Classes
             get { return Money[4]; }
             set { Money[4] = value; }
         }
-        public short field_105 // 0x105
+        public short gems // 0x105
         {
             get { return Money[5]; }
             set { Money[5] = value; }
         }
-        public short field_107 // 0x107
+        public short jewels // 0x107
         {
             get { return Money[6]; }
             set { Money[6] = value; }

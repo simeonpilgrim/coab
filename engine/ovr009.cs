@@ -140,7 +140,7 @@ namespace engine
                 gbl.byte_1D910 = ((player.combat_team == CombatTeam.Ours) || (ovr033.sub_74761(0, player) == true));
 
                 ovr033.sub_75356(true, 2, player);
-                ovr025.sub_66C20(player);
+                ovr025.reclac_player_values(player);
                 gbl.byte_1D90F = true;
                 ovr025.hitpoint_ac(player);
                 ovr024.work_on_00(player, 15);
