@@ -181,7 +181,7 @@ namespace Classes
                     {
                         DataOffsetAttribute doAttr = (DataOffsetAttribute)attr;
 
-                        readData(obj, fInfo, doAttr, data, 0);
+                        readData(obj, fInfo, doAttr, data, offset);
                     }
                 }
             }
