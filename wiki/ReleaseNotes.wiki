@@ -1,6 +1,8 @@
 = The Release Notes =
 
 = Unreleased =
+
+= 1.0.9 =
   * Issue 5 - The correct exit message now plays when you try leave the Moander temple
   * Issue 6 - Moander sigil now fades at the correct speed
   * Issue 23 - Magic Darts are now pluralised correctly 
@@ -9,6 +11,7 @@
   * Issue 22 - The icon now flashes
   * Issue 20 - This encounter now works
   * Fixed text problem on the large map, where the last four characters where not cleared off the screen
+  * Issue 19 - The correct event happen when dealing with Dracolich
 
 = 1.0.8 =
   * Issue 17 - Missing targeting cursor - a DAX file was missing from the installer
