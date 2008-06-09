@@ -1,6 +1,7 @@
 = The Release Notes =
 
 = Unreleased =
+  * Issue 5 - The correct exit message now plays when you try leave the Moander temple
   * Issue 6 - Moander sigil now fades at the correct speed
   * Issue 23 - Magic Darts are now pluralised correctly 
   * Issue 10 - Ranged weapons (fireball spell) can target through walls
