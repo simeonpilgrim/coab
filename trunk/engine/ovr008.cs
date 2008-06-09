@@ -951,7 +951,7 @@ namespace engine
                                 break;
 
                             case 0x02:
-                                var_2 = gbl.mapDirection;
+                                var_2 = (ushort)(gbl.mapDirection / 2);
                                 break;
 
                             case 0x03:
