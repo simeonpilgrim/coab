@@ -160,9 +160,9 @@ namespace Classes
             get { return stats[5].max; }
         }
         [DataOffset(0x1C, DataType.Byte)]
-        public byte strength_18_100; // 0x1c;
+        public byte tmp_str_00; // 0x1c - strength_18_100
         [DataOffset(0x1D, DataType.Byte)]
-        public byte field_1D; // 0x1d;
+        public byte max_str_00; // 0x1d - field_1D
 
         public const int SpellListSize = 84;
         [DataOffset(0x1E, DataType.ByteArray, SpellListSize)]

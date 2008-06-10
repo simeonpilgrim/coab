@@ -868,7 +868,7 @@ namespace engine
                     }
                 }
 
-                player.strength_18_100 = 0;
+                player.tmp_str_00 = 0;
 
                 for (var_1B = 0; var_1B <= 5; var_1B++)
                 {
@@ -986,11 +986,11 @@ namespace engine
                                     var_53.ranger_lvl > 0 ||
                                     var_53.paladin_lvl > 0)
                                 {
-                                    var_53.strength_18_100 = (byte)(seg051.Random(100) + 1);
+                                    var_53.tmp_str_00 = (byte)(seg051.Random(100) + 1);
 
-                                    if (var_53.strength_18_100 > stru_1A298[(int)var_53.race].str_100_max[var_53.sex])
+                                    if (var_53.tmp_str_00 > stru_1A298[(int)var_53.race].str_100_max[var_53.sex])
                                     {
-                                        var_53.strength_18_100 = stru_1A298[(int)var_53.race].str_100_max[var_53.sex];
+                                        var_53.tmp_str_00 = stru_1A298[(int)var_53.race].str_100_max[var_53.sex];
                                     }
                                 }
                             }
@@ -1287,7 +1287,7 @@ namespace engine
                 player.stats[var_1B].tmp = player.stats[var_1B].max;
             }
 
-            player.field_1D = player.strength_18_100;
+            player.max_str_00 = player.tmp_str_00;
 
             reroll_stats = ovr027.yes_no(15, 10, 13, "Save " + player.name + "? ");
 
@@ -1447,7 +1447,7 @@ namespace engine
                 var_6[stat_var] = gbl.player_ptr.stats[stat_var].max;
             }
 
-            var_7 = gbl.player_ptr.strength_18_100;
+            var_7 = gbl.player_ptr.tmp_str_00;
             var_8 = gbl.player_ptr.hit_point_max;
 
             var_31 = gbl.player_ptr.name;
@@ -1557,9 +1557,9 @@ namespace engine
                                 switch ((Stat)stat_var)
                                 {
                                     case Stat.STR:
-                                        if (player_ptr.strength_18_100 > 0)
+                                        if (player_ptr.tmp_str_00 > 0)
                                         {
-                                            player_ptr.strength_18_100 -= 1;
+                                            player_ptr.tmp_str_00 -= 1;
 
                                             player_ptr.stats[stat_var].max += 1;
                                         }
@@ -1692,9 +1692,9 @@ namespace engine
                                         {
                                             if( player_ptr.stats[stat_var].max > 18 &&
                                                 (player_ptr.fighter_lvl > 0 || player_ptr.paladin_lvl > 0 || player_ptr.ranger_lvl > 0 ) &&
-                                                stru_1A298[(int)player_ptr.race].str_100_max[player_ptr.sex] > player_ptr.strength_18_100 )
+                                                stru_1A298[(int)player_ptr.race].str_100_max[player_ptr.sex] > player_ptr.tmp_str_00 )
                                             {
-                                                player_ptr.strength_18_100 += 1;
+                                                player_ptr.tmp_str_00 += 1;
                                             }
 
                                             player_ptr.stats[stat_var].max = stru_1A298[(int)player_ptr.race].str_max[player_ptr.sex];
@@ -1860,7 +1860,7 @@ namespace engine
                                 player_ptr.stats[stat_var].max = var_6[stat_var];
                             }
 
-                            gbl.player_ptr.strength_18_100 = var_7;
+                            gbl.player_ptr.tmp_str_00 = var_7;
                             gbl.player_ptr.hit_point_max = var_8;
                             gbl.player_ptr.hit_point_current = gbl.player_ptr.hit_point_max;
 
@@ -1878,7 +1878,7 @@ namespace engine
                             gbl.player_ptr.stats[stat_var].max = var_6[stat_var];
                         }
 
-                        gbl.player_ptr.strength_18_100 = var_7;
+                        gbl.player_ptr.tmp_str_00 = var_7;
                         gbl.player_ptr.hit_point_max = var_8;
                         gbl.player_ptr.name = var_31;
 
@@ -1935,7 +1935,7 @@ namespace engine
                 gbl.player_ptr.stats[stat_var].tmp = gbl.player_ptr.stats[stat_var].max;
             }
 
-            gbl.player_ptr.strength_18_100 = gbl.player_ptr.field_1D;
+            gbl.player_ptr.tmp_str_00 = gbl.player_ptr.max_str_00;
         }
 
 

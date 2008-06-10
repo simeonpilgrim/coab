@@ -1851,7 +1851,7 @@ namespace engine
                 throw new System.NotSupportedException();//jle	loc_5EDB2
                 throw new System.NotSupportedException();//loc_5ED85:
 
-                var_5 = (byte)(player.strength_18_100 + ((var_7 - 18) * 10));
+                var_5 = (byte)(player.tmp_str_00 + ((var_7 - 18) * 10));
 
                 if (var_5 > 100)
                 {

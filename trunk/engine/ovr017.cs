@@ -795,7 +795,7 @@ namespace engine
                 throw new System.NotSupportedException();//add	di, ax
                 throw new System.NotSupportedException();//mov	es:[di+11h], dl
             }
-            player.strength_18_100 = bp_var_1C0.strength_100;
+            player.tmp_str_00 = bp_var_1C0.strength_100;
             throw new System.NotSupportedException();//les	di, int ptr [bp+player.offset]
             throw new System.NotSupportedException();//mov	al, es:[di+119h]
             throw new System.NotSupportedException();//cbw
@@ -1610,8 +1610,8 @@ namespace engine
                         player01_ptr.name = var_1C4.field_4;
                         player01_ptr.tmp_str = var_1C4.field_14;
                         player01_ptr.strength = var_1C4.field_14;
-                        player01_ptr.strength_18_100 = var_1C4.field_15;
-                        player01_ptr.field_1D = var_1C4.field_15;
+                        player01_ptr.tmp_str_00 = var_1C4.field_15;
+                        player01_ptr.max_str_00 = var_1C4.field_15;
 
                         player01_ptr.stats[1].tmp = var_1C4.field_16;
                         player01_ptr.stats[1].max = var_1C4.field_16;

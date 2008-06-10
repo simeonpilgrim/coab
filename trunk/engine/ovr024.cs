@@ -48,55 +48,52 @@ namespace engine
             }
         }
 
-        internal static void remove_affect(Affect arg_0, Affects affect_id, Player arg_6)
+        internal static void remove_affect(Affect affect, Affects affect_id, Player player)
         {
-            Affect var_4;
-            Affect var_8;
+            Affect var_8 = affect;
 
-            var_8 = arg_0;
-
-            if (var_8 == null)
+            if (affect == null)
             {
-                var_8 = arg_6.affect_ptr;
-                while (var_8 != null && var_8.type != affect_id)
+                affect = player.affect_ptr;
+                while (affect != null && affect.type != affect_id)
                 {
-                    var_8 = var_8.next;
+                    affect = affect.next;
                 }
             }
 
-            if (var_8 != null)
+            if (affect != null)
             {
-                if (var_8.call_spell_jump_list == true)
+                if (affect.call_spell_jump_list == true)
                 {
-                    CallSpellJumpTable(Effect.Remove, var_8, arg_6, affect_id);
+                    CallSpellJumpTable(Effect.Remove, affect, player, affect_id);
                 }
 
-                if (arg_6.affect_ptr == var_8)
+                if (player.affect_ptr == affect)
                 {
-                    arg_6.affect_ptr = var_8.next;
+                    player.affect_ptr = affect.next;
                 }
                 else
                 {
-                    var_4 = arg_6.affect_ptr;
+                    Affect tmp_affect = player.affect_ptr;
 
-                    while (var_4 != null && var_4.next != var_8)
+                    while (tmp_affect != null && tmp_affect.next != affect)
                     {
-                        var_4 = var_4.next;
+                        tmp_affect = tmp_affect.next;
                     }
 
-                    var_4.next = var_8.next;
+                    tmp_affect.next = affect.next;
                 }
 
-                seg051.FreeMem(9, var_8);
+                seg051.FreeMem(9, affect);
 
                 if (affect_id == Affects.resist_fire)
                 {
-                    sub_648D9(5, arg_6);
+                    sub_648D9(5, player);
                 }
 
                 if (affect_id == Affects.enlarge || affect_id == Affects.strength || affect_id == Affects.affect_92)
                 {
-                    sub_648D9(0, arg_6);
+                    sub_648D9(0, player);
                 }
             }
         }
@@ -105,63 +102,50 @@ namespace engine
 
         internal static void calc_affect_effect(Affects affect_type, Player player)
         {
-            byte var_E3;
-            byte var_E1;
+            bool found = false;
+
             Affect affect;
-            Player player_base;
-            SortedCombatant[] var_D8 = new SortedCombatant[gbl.MaxSortedCombatantCount];
-
-            var_E1 = 0;
-            player_base = gbl.player_next_ptr;
-
             if (ovr025.find_affect(out affect, affect_type, player) == true)
             {
-                var_E1 = 1;
+                found = true;
             }
             else if (unk_6325A.MemberOf((byte)affect_type) == true)
             {
-                System.Array.Copy(gbl.SortedCombatantList, var_D8, gbl.MaxSortedCombatantCount);
+                Player player_base = gbl.player_next_ptr;
+                SortedCombatant[] bkup_list = (SortedCombatant[])gbl.SortedCombatantList.Clone();
 
-                while (player_base != null &&
-                    var_E1 == 0)
+                while (player_base != null && found == false)
                 {
                     if (ovr025.find_affect(out affect, affect_type, player_base) == true)
                     {
                         if (gbl.game_state == 5)
                         {
-                            if (affect_type == Affects.prayer)
-                            {
-                                var_E3 = 6;
-                            }
-                            else
-                            {
-                                var_E3 = 1;
-                            }
+                            int max_range = (affect_type == Affects.prayer) ? 6 : 1;
 
                             ovr032.Rebuild_SortedCombatantList(gbl.mapToBackGroundTile, ovr033.PlayerMapSize(player_base), 0xff,
-                                var_E3, ovr033.PlayerMapYPos(player_base), ovr033.PlayerMapXPos(player_base));
+                                max_range, ovr033.PlayerMapYPos(player_base), ovr033.PlayerMapXPos(player_base));
 
                             for (int i = 0; i < gbl.sortedCombatantCount; i++)
                             {
                                 if (gbl.SortedCombatantList[i].player_index == ovr033.get_player_index(player))
                                 {
-                                    var_E1 = 1;
+                                    found = true;
                                 }
                             }
                         }
                         else
                         {
-                            var_E1 = 1;
+                            found = true;
                         }
                     }
 
                     player_base = player_base.next_player;
                 }
 
-                System.Array.Copy(var_D8, gbl.SortedCombatantList, gbl.MaxSortedCombatantCount);
+                System.Array.Copy(bkup_list, gbl.SortedCombatantList, gbl.MaxSortedCombatantCount);
             }
 
-            if (var_E1 != 0)
+            if (found == true)
             {
                 CallSpellJumpTable(Effect.Add, affect, player, affect_type);
             }
@@ -734,9 +718,6 @@ namespace engine
 
         internal static void sub_645AB(Player player)
         {
-            Affect var_5;
-            byte loop_var;
-
             Affects[] table = { 
 								  Affects.faerie_fire,
 								  Affects.charm_person,
@@ -759,12 +740,13 @@ namespace engine
 								  Affects.affect_90
 							  };
 
-            for (loop_var = 0; loop_var < 19; loop_var++)
+            for (int i = 0; i < 19; i++)
             {
-                remove_affect(null, table[loop_var], player);
+                remove_affect(null, table[i], player);
             }
 
-            if (ovr025.find_affect(out var_5, Affects.berserk, player) == true &&
+            Affect dummy_affect;
+            if (ovr025.find_affect(out dummy_affect, Affects.berserk, player) == true &&
                 player.field_F7 == 0xB3)
             {
                 player.combat_team = CombatTeam.Ours;
@@ -774,14 +756,12 @@ namespace engine
 
         internal static void sub_6460D(Player arg_0)
         {
-            byte var_1;
-
             Affects[] table = {   Affects.affect_0d, 
 								  Affects.affect_3a, 
 								  Affects.affect_8b, 
 								  Affects.affect_90 };
 
-            for (var_1 = 0; var_1 < 4; var_1++)
+            for (int var_1 = 0; var_1 < 4; var_1++)
             {
                 remove_affect(null, table[var_1], arg_0);
             }
@@ -804,34 +784,32 @@ namespace engine
         }
 
 
-        internal static byte odd_math(byte arg_0, byte arg_2)
+        internal static byte encode_strength(byte str_00, byte str) /* odd_math */
         {
-            byte ret_val;
+            byte ret_val = (byte)(str + 100);
 
-            ret_val = (byte)(arg_2 + 100);
-
-            if (arg_2 == 18)
+            if (str == 18)
             {
-                ret_val = (byte)(arg_0 + 1);
+                ret_val = (byte)(str_00 + 1);
             }
 
             return ret_val;
         }
 
 
-        internal static void sub_646D9(out byte arg_0, out byte arg_4, Affect arg_8)
+        internal static void decode_strength(out byte str_00, out byte str, Affect arg_8) /* sub_646D9 */
         {
-            arg_0 = 0;
-            arg_4 = (byte)(arg_8.field_3 & 0x7F);
+            str_00 = 0;
+            str = (byte)(arg_8.field_3 & 0x7F);
 
-            if (arg_4 <= 101)
+            if (str <= 101)
             {
-                arg_0 = (byte)(arg_4 - 1);
-                arg_4 = 18;
+                str_00 = (byte)(str - 1);
+                str = 18;
             }
             else
             {
-                arg_4 -= 100;
+                str -= 100;
             }
         }
 
@@ -841,11 +819,10 @@ namespace engine
             bool ret_val;
 
             if (arg_6 > arg_8.tmp_str ||
-                (arg_6 == 18 && arg_4 > arg_8.field_1D))
+                (arg_6 == 18 && arg_4 > arg_8.max_str_00))
             {
                 ret_val = true;
-
-                arg_0 = odd_math(arg_4, arg_6);
+                arg_0 = encode_strength(arg_4, arg_6);
             }
             else
             {
@@ -857,7 +834,7 @@ namespace engine
         }
 
 
-        internal static void sub_64771(ref byte str_a, byte str_b, ref byte str_00_a, byte str_00_b) /* sub_64771 */
+        internal static void max_strength(ref byte str_a, byte str_b, ref byte str_00_a, byte str_00_b) /* sub_64771 */
         {
             if (str_b > str_a ||
                 (str_b == 18 && str_00_b > str_00_a))
@@ -926,7 +903,7 @@ namespace engine
             Item item = player.itemsPtr;
 
             byte stat_a = player.stats[stat_index].tmp;
-            byte str_00_a = player.field_1D;
+            byte str_00_a = player.max_str_00;
 
             while (item != null)
             {
@@ -985,7 +962,7 @@ namespace engine
                             var_11 = 3;
                         }
 
-                        sub_64771(ref stat_a, stat_b, ref str_00_a, str_00_b);
+                        max_strength(ref stat_a, stat_b, ref str_00_a, str_00_b);
                     }
                     else if (stat_index == 4)
                     {
@@ -1080,7 +1057,7 @@ namespace engine
             {
                 if (ovr025.find_affect(out affect_ptr, Affects.strength, player) == true)
                 {
-                    sub_646D9(out str_00_b, out stat_b, affect_ptr);
+                    decode_strength(out str_00_b, out stat_b, affect_ptr);
 
                     if (stat_a <= 18 &&
                         str_00_a < 100)
@@ -1096,7 +1073,7 @@ namespace engine
                                 player.ranger_lvl > 0 ||
                                 player.field_115 > 0)
                             {
-                                str_00_b = (byte)(player.strength_18_100 + ((stat_b - 18) * 10));
+                                str_00_b = (byte)(player.tmp_str_00 + ((stat_b - 18) * 10));
 
                                 if (str_00_b > 100)
                                 {
@@ -1113,30 +1090,30 @@ namespace engine
                     }
 
 
-                    sub_64771(ref stat_a, stat_b, ref str_00_a, str_00_b);
+                    max_strength(ref stat_a, stat_b, ref str_00_a, str_00_b);
                 }
 
                 if (ovr025.find_affect(out affect_ptr, Affects.affect_92, player) == true)
                 {
-                    sub_646D9(out str_00_b, out stat_b, affect_ptr);
-                    sub_64771(ref stat_a, stat_b, ref str_00_a, str_00_b);
+                    decode_strength(out str_00_b, out stat_b, affect_ptr);
+                    max_strength(ref stat_a, stat_b, ref str_00_a, str_00_b);
                 }
 
                 if (ovr025.find_affect(out affect_ptr, Affects.enlarge, player) == true)
                 {
-                    sub_646D9(out str_00_b, out stat_b, affect_ptr);
-                    sub_64771(ref stat_a, stat_b, ref str_00_a, str_00_b);
+                    decode_strength(out str_00_b, out stat_b, affect_ptr);
+                    max_strength(ref stat_a, stat_b, ref str_00_a, str_00_b);
                 }
 
                 if (var_11 != 0xff)
                 {
                     player.strength = var_11;
-                    player.strength_18_100 = 0;
+                    player.tmp_str_00 = 0;
                 }
                 else
                 {
                     player.strength = stat_a;
-                    player.strength_18_100 = str_00_a;
+                    player.tmp_str_00 = str_00_a;
                 }
             }
             else if (stat_index == 4)
