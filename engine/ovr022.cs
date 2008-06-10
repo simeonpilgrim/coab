@@ -567,7 +567,7 @@ namespace engine
             0x00E2, 0x00A7, 0x0064, 0x000A, 0x3A98, 0x0000, 0x0026, 0x0083,
             0x009d, 0x00a7, 0x0015, 0x0014, 0x0bb8, 0x0001, 0x0033, 0x0000 };
 
-        internal static void sub_5A007(out Item arg_0, byte arg_4)
+        internal static void create_item(out Item arg_0, int item_type) /* sub_5A007 */
         {
             byte var_A;
             Item var_9;
@@ -590,7 +590,7 @@ namespace engine
             var_9.hidden_names_flag = 6;
             var_9.cursed = false;
 
-            var_9.type = arg_4;
+            var_9.type = (byte)item_type;
 
             var_9.field_2F = 0;
             var_9.field_30 = 0;

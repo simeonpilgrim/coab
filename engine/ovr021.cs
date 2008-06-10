@@ -4,13 +4,8 @@ namespace engine
 {
     class ovr021
     {
-        internal static void sub_5801E(int arg_0, byte arg_2)
+        internal static void sub_5801E(int arg_0, int arg_2)
         {
-            Affect affect01;
-            Affect affect;
-            Affect var_F;
-            Player player;
-
             if (gbl.game_state != 2)
             {
                 for (int i = 0; i < 0x48; i++)
@@ -53,7 +48,7 @@ namespace engine
                 int var_3 = System.Math.Min(10, var_5);
 
                 int var_2 = 0;
-                player = gbl.player_next_ptr;
+                Player player = gbl.player_next_ptr;
 
                 while (player != null)
                 {
@@ -61,74 +56,73 @@ namespace engine
                     {
                         gbl.affects_timed_out[var_2] = false;
 
-                        affect01 = player.affect_ptr;
-                        var_F = player.affect_ptr;
-
-                        affect = player.affect_ptr;
+                        Affect affect_a = player.affect_ptr;
+                        Affect affect_b = player.affect_ptr;
+                        Affect affect_c = player.affect_ptr;
 
                         if (player.affect_ptr != null)
                         {
-                            while (var_F.next != null)
+                            while (affect_b.next != null)
                             {
-                                var_F = var_F.next;
+                                affect_b = affect_b.next;
                             }
                         }
 
                         bool var_A = false;
 
-                        while (affect01 != null &&
+                        while (affect_a != null &&
                             var_A == false)
                         {
-                            if (affect01 == var_F)
+                            if (affect_a == affect_b)
                             {
                                 var_A = true;
                             }
 
-                            if (affect01.field_1 == 0)
+                            if (affect_a.field_1 == 0)
                             {
-                                affect01 = affect01.next;
+                                affect_a = affect_a.next;
                             }
-                            else if (var_3 < affect01.field_1)
+                            else if (var_3 < affect_a.field_1)
                             {
-                                affect01.field_1 = (ushort)var_3;
+                                affect_a.field_1 = (ushort)var_3;
                                 gbl.affects_timed_out[var_2] = true;
 
-                                affect01 = affect01.next;
+                                affect_a = affect_a.next;
                             }
                             else
                             {
-                                Affect var_17 = affect01.next;
+                                Affect next_affect = affect_a.next;
 
-                                ovr024.remove_affect(affect01, affect01.type, player);
+                                ovr024.remove_affect(affect_a, affect_a.type, player);
 
-                                if (affect == player.affect_ptr)
+                                if (affect_c == player.affect_ptr)
                                 {
-                                    affect01 = player.affect_ptr;
+                                    affect_a = player.affect_ptr;
                                 }
                                 else
                                 {
-                                    affect01 = var_17;
+                                    affect_a = next_affect;
                                 }
                             }
 
-                            affect = player.affect_ptr;
+                            affect_c = player.affect_ptr;
 
-                            while (affect != null &&
-                                affect != affect01 &&
-                                affect.next != affect01)
+                            while (affect_c != null &&
+                                affect_c != affect_a &&
+                                affect_c.next != affect_a)
                             {
-                                affect = affect.next;
+                                affect_c = affect_c.next;
                             }
                         }
 
-                        while (affect01 != null)
+                        while (affect_a != null)
                         {
-                            if (affect01.field_1 > 0)
+                            if (affect_a.field_1 > 0)
                             {
                                 gbl.affects_timed_out[var_2] = true;
                             }
 
-                            affect01 = affect01.next;
+                            affect_a = affect_a.next;
                         }
                     }
 
@@ -150,14 +144,14 @@ namespace engine
 
         internal static void normalize_clock(RestTime arg_0) /* sub_58317 */
         {
-            for (int loop_var = 0; loop_var <= 6; loop_var++)
+            for (int i = 0; i <= 6; i++)
             {
-                if (arg_0[loop_var] >= gbl.word_1A13C[loop_var])/* short arrays */
+                if (arg_0[i] >= gbl.word_1A13C[i])/* short arrays */
                 {
-                    if (loop_var != 6)
+                    if (i != 6)
                     {
-                        arg_0[loop_var + 1] += 1;
-                        arg_0[loop_var] -= gbl.word_1A13C[loop_var]; ;
+                        arg_0[i + 1] += 1;
+                        arg_0[i] -= gbl.word_1A13C[i]; ;
                     }
                     else
                     {
@@ -193,27 +187,27 @@ namespace engine
         }
 
         /*static byte[] unk_4BC6 = { 0x57, 0x87, 0x57, 0x9B, 0x57, 0xB6, 0x57 };*/
-        static ushort[] unk_4BC6 = { 0x00AE, 0x010E, 0x00AE, 0x0136, 0x00AE, 0x016C, 0x00AE };
+        static ushort[] time_table = { 0x00AE, 0x010E, 0x00AE, 0x0136, 0x00AE, 0x016C, 0x00AE };
 
-        internal static void sub_583FA(byte arg_0, byte arg_2)
+        internal static void sub_583FA(int arg_0, int arg_2) /* sub_583FA */
         {
-            RestTime var_E = new RestTime();
+            RestTime rest_time = new RestTime();
 
-            for (int var_F = 0; var_F <= 6; var_F++)
+            for (int i = 0; i <= 6; i++)
             {
-                var_E[var_F] = gbl.area_ptr.field_6A00_Get(unk_4BC6[var_F]); // as WORD[]
+                rest_time[i] = gbl.area_ptr.field_6A00_Get(time_table[i]); // as WORD[]
             }
 
-            for (int var_10 = 1; var_10 <= arg_2; var_10++)
+            for (int i = 1; i <= arg_2; i++)
             {
-                var_E[arg_0] += 1;
+                rest_time[arg_0] += 1;
 
-                normalize_clock(var_E);
+                normalize_clock(rest_time);
             }
 
-            for (int var_F = 0; var_F <= 6; var_F++)
+            for (int i = 0; i <= 6; i++)
             {
-                gbl.area_ptr.field_6A00_Set(unk_4BC6[var_F], var_E[var_F]);
+                gbl.area_ptr.field_6A00_Set(time_table[i], rest_time[i]);
             }
 
             sub_5801E(arg_0, arg_2);
@@ -259,9 +253,9 @@ namespace engine
         }
 
 
-        static string format_time(int arg_0) /* sub_5858A */
+        static string format_time(int value) /* sub_5858A */
         {
-            return string.Format("{0:00}", arg_0);
+            return string.Format("{0:00}", value);
         }
 
 
@@ -407,7 +401,7 @@ namespace engine
         {
             gbl.rest_10_seconds++;
 
-            if (gbl.rest_10_seconds >= (8*36))
+            if (gbl.rest_10_seconds >= (8 * 36))
             {
                 bool update_ui = false;
                 Player player = gbl.player_next_ptr;
@@ -555,7 +549,7 @@ namespace engine
         {
             arg_0 += 1;
 
-            if (arg_0 >= 0x0C)
+            if (arg_0 >= 12)
             {
                 arg_0 = 0;
 
@@ -626,9 +620,9 @@ namespace engine
 
             while (stop_resting == false &&
                 (gbl.unk_1D890.field_8 > 0 ||
-                  gbl.unk_1D890.field_6 > 0 ||
-                  gbl.unk_1D890.field_4 > 0 ||
-                  gbl.unk_1D890.field_2 > 0))
+                 gbl.unk_1D890.field_6 > 0 ||
+                 gbl.unk_1D890.field_4 > 0 ||
+                 gbl.unk_1D890.field_2 > 0))
             {
                 if (interactive_resting == true &&
                     seg049.KEYPRESSED() == true)

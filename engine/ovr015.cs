@@ -204,15 +204,15 @@ namespace engine
 				{
 					if ( player.strength == 18 )
 					{
-						if( player.strength_18_100 >= 0x5b &&
-							player.strength_18_100 <= 99 )
+						if( player.tmp_str_00 >= 0x5b &&
+							player.tmp_str_00 <= 99 )
 						{
 							if( ovr024.roll_dice( 6, 1 ) == 1 )
 							{
 								bash_worked = true;
 							}
 						}
-						else if( player.strength_18_100 == 100 )
+						else if( player.tmp_str_00 == 100 )
 						{
 							if( ovr024.roll_dice( 6, 1 ) <= 2 )
 							{
@@ -290,8 +290,8 @@ namespace engine
 					}
 					else if ( al == 18 )
 					{
-						if( player.strength_18_100 >= 0 &&
-							player.strength_18_100 <= 50 )
+						if( player.tmp_str_00 >= 0 &&
+							player.tmp_str_00 <= 50 )
 						{
 							bash_worked = true;
 
@@ -300,8 +300,8 @@ namespace engine
 								bash_worked = true;
 							}
 						}
-						else if ( player.strength_18_100 >= 51 &&
-							player.strength_18_100 <= 99 )
+						else if ( player.tmp_str_00 >= 51 &&
+							player.tmp_str_00 <= 99 )
 						{
 							if ( ovr024.roll_dice( 6, 1 ) <= 4 )
 							{
@@ -309,7 +309,7 @@ namespace engine
 							}
 
 						}
-						else if ( player.strength_18_100 == 100 )
+						else if ( player.tmp_str_00 == 100 )
 						{
 							if ( ovr024.roll_dice( 6, 1 ) <= 5 )
 							{

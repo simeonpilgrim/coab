@@ -1669,8 +1669,7 @@ namespace engine
 
         internal static void sub_3C3F6(Effect arg_0, object param, Player player)
         {
-            bool var_1;
-            Affect affect_ptr = (Affect)param;
+            Affect affect = (Affect)param;
 
             gbl.spell_target = player.actions.target;
 
@@ -1678,7 +1677,7 @@ namespace engine
             {
                 if (ovr025.getTargetRange(gbl.spell_target, player) < 4)
                 {
-                    var_1 = ovr025.clear_actions(player);
+                    ovr025.clear_actions(player);
 
                     ovr025.DisplayPlayerStatusString(true, 10, "Spits Acid", player);
 
@@ -1688,12 +1687,12 @@ namespace engine
                         ovr033.PlayerMapYPos(gbl.spell_target), ovr033.PlayerMapXPos(gbl.spell_target),
                         ovr033.PlayerMapYPos(player), ovr033.PlayerMapXPos(player));
 
-                    sbyte b2 = ovr024.roll_dice_save(4, 8);
-                    bool b1 = ovr024.do_saving_throw(0, 3, gbl.spell_target);
+                    int damage = ovr024.roll_dice_save(4, 8);
+                    bool saved = ovr024.do_saving_throw(0, 3, gbl.spell_target);
 
-                    ovr024.damage_person(b1, 2, b2, gbl.spell_target);
+                    ovr024.damage_person(saved, 2, damage, gbl.spell_target);
 
-                    ovr024.remove_affect(affect_ptr, Affects.affect_79, player);
+                    ovr024.remove_affect(affect, Affects.affect_79, player);
                     ovr024.remove_affect(null, Affects.affect_50, player);
                 }
             }

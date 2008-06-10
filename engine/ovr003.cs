@@ -1377,11 +1377,7 @@ namespace engine
         {
             byte[] data;
             short dataSize;
-            byte var_65 = 0;
-            byte var_64;
-            byte var_63;
-            byte var_62;
-            byte var_2;
+            int item_type = 0;
 
             ovr008.vm_LoadCmdSets(8);
 
@@ -1390,17 +1386,16 @@ namespace engine
                 gbl.pooled_money[i] = ovr008.vm_GetCmdValue(i + 1);
             }
 
-            var_2 = (byte)ovr008.vm_GetCmdValue(8);
+            byte var_2 = (byte)ovr008.vm_GetCmdValue(8);
 
             if (var_2 < 0x80)
             {
-                seg042.load_decode_dax(out data, out dataSize, var_2, string.Format("ITEM{0}.dax", gbl.game_area));
+                string filename = string.Format("ITEM{0}.dax", gbl.game_area);
+                seg042.load_decode_dax(out data, out dataSize, var_2, filename);
 
                 if (dataSize == 0)
                 {
-                    seg041.displayAndDebug("Unable to find item file", 0, 15);
-
-                    seg043.print_and_exit();
+                    Logger.LogAndExit("Unable to find item file: {0}", filename);
                 }
 
                 for (int offset = 0; offset < dataSize; offset += Item.StructSize)
@@ -1423,100 +1418,100 @@ namespace engine
             }
             else if (var_2 != 0xff)
             {
-                for (int var_3 = 1; var_3 <= (var_2 - 0x80); var_3++)
+                for (int count = 0; count < (var_2 - 0x80); count++)
                 {
-                    var_63 = ovr024.roll_dice(100, 1);
+                    int var_63 = ovr024.roll_dice(100, 1);
 
-                    if (var_63 >= 1 && var_63 <= 0x3c)
+                    if (var_63 >= 1 && var_63 <= 60)
                     {
-                        var_64 = ovr024.roll_dice(100, 1);
+                        int var_64 = ovr024.roll_dice(100, 1);
 
-                        if ((var_64 >= 1 && var_64 <= 0x2F) ||
-                            (var_64 >= 0x32 && var_64 <= 0x3b))
+                        if ((var_64 >= 1 && var_64 <= 47) ||
+                            (var_64 >= 50 && var_64 <= 59))
                         {
-                            if (var_64 == 0x2D)
+                            if (var_64 == 45)
                             {
-                                var_65 = 0x3B;
+                                item_type = 59;
                             }
                             else
                             {
-                                var_65 = var_64;
+                                item_type = var_64;
                             }
                         }
-                        else if (var_64 >= 0x3C && var_64 <= 0x5A)
+                        else if (var_64 >= 60 && var_64 <= 90)
                         {
                             var_64 = ovr024.roll_dice(10, 1);
 
                             if (var_64 >= 1 && var_64 <= 4)
                             {
-                                var_65 = 0x24;
+                                item_type = 0x24;
                             }
                             else if (var_64 >= 5 && var_64 <= 7)
                             {
-                                var_65 = 0x23;
+                                item_type = 0x23;
                             }
                             else if (var_64 == 8)
                             {
-                                var_65 = 0x22;
+                                item_type = 0x22;
                             }
                             else if (var_64 == 9)
                             {
-                                var_65 = 0x25;
+                                item_type = 0x25;
                             }
                             else if (var_64 == 10)
                             {
-                                var_65 = 0x26;
+                                item_type = 0x26;
                             }
                         }
                         else if (var_64 >= 0x5B && var_64 <= 0x5E)
                         {
-                            var_65 = 0x49;
+                            item_type = 0x49;
                         }
                         else if (var_64 >= 0x5F && var_64 <= 0x61)
                         {
-                            var_65 = 0x5D;
+                            item_type = 0x5D;
                         }
                         else if (var_64 >= 0x62 && var_64 <= 0x64)
                         {
-                            var_65 = 0x4D;
+                            item_type = 0x4D;
                         }
                         else
                         {
-                            var_65 = 0x3B;
+                            item_type = 0x3B;
                         }
                     }
                     else if (var_63 >= 0x3d && var_63 <= 0x55)
                     {
-                        var_65 = 0x3D;
+                        item_type = 0x3D;
                     }
                     else if (var_63 >= 0x56 && var_63 <= 0x5C)
                     {
-                        var_65 = 0x3E;
+                        item_type = 0x3E;
                     }
                     else if (var_63 >= 0x5B && var_63 <= 0x62)
                     {
-                        var_62 = ovr024.roll_dice(15, 1);
+                        int var_62 = ovr024.roll_dice(15, 1);
 
                         if (var_62 >= 1 && var_62 <= 9)
                         {
-                            var_65 = 0x47;
+                            item_type = 0x47;
                         }
                         else if (var_62 == 10)
                         {
-                            var_65 = 0x54;
+                            item_type = 0x54;
                         }
                         else if (var_62 >= 11 && var_62 <= 15)
                         {
-                            var_65 = 0x4F;
+                            item_type = 0x4F;
                         }
                     }
-                    else if (var_63 == 0x63 || var_63 == 0x64)
+                    else if (var_63 == 99 || var_63 == 100)
                     {
-                        var_65 = 0x3B;
+                        item_type = 0x3B;
                     }
 
                     Item item;
-                    ovr022.sub_5A007(out item, var_65);
+                    ovr022.create_item(out item, item_type);
 
                     if (gbl.item_pointer == null)
                     {
@@ -1525,19 +1520,19 @@ namespace engine
                     }
                     else
                     {
-                        Item var_5B = gbl.item_pointer;
+                        Item next_item = gbl.item_pointer;
 
                         gbl.item_pointer = item.ShallowClone();
-                        gbl.item_pointer.next = var_5B;
+                        gbl.item_pointer.next = next_item;
                     }
                 }
 
-                Item var_61 = gbl.item_pointer;
+                Item tmp_item = gbl.item_pointer;
 
-                while (var_61 != null)
+                while (tmp_item != null)
                 {
-                    ovr025.ItemDisplayNameBuild(false, false, 0, 0, var_61, gbl.player_ptr);
-                    var_61 = var_61.next;
+                    ovr025.ItemDisplayNameBuild(false, false, 0, 0, tmp_item, gbl.player_ptr);
+                    tmp_item = tmp_item.next;
                 }
             }
         }

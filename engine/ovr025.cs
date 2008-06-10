@@ -241,9 +241,9 @@ namespace engine
         internal static void DebugItems()
         {
             Item it;
-            for (byte i = 0; i < 0x81; i++)
+            for (int i = 0; i < 0x81; i++)
             {
-                ovr022.sub_5A007(out it, i);
+                ovr022.create_item(out it, i);
                 int a = it.field_2F < itemNames.Length ? (int)(byte)it.field_2F : 0;
                 int b = it.field_30 < itemNames.Length ? (int)(byte)it.field_30 : 0;
                 int c = it.field_31 < itemNames.Length ? (int)(byte)it.field_31 : 0;
@@ -797,27 +797,27 @@ namespace engine
             }
             else if (player.strength == 18)
             {
-                if (player.strength_18_100 == 0)
+                if (player.tmp_str_00 == 0)
                 {
                     ret_val = 18;
                 }
-                else if (player.strength_18_100 >= 1 && player.strength_18_100 <= 50)
+                else if (player.tmp_str_00 >= 1 && player.tmp_str_00 <= 50)
                 {
                     ret_val = 19;
                 }
-                else if (player.strength_18_100 >= 51 && player.strength_18_100 <= 75)
+                else if (player.tmp_str_00 >= 51 && player.tmp_str_00 <= 75)
                 {
                     ret_val = 20;
                 }
-                else if (player.strength_18_100 >= 76 && player.strength_18_100 <= 90)
+                else if (player.tmp_str_00 >= 76 && player.tmp_str_00 <= 90)
                 {
                     ret_val = 21;
                 }
-                else if (player.strength_18_100 >= 91 && player.strength_18_100 <= 99)
+                else if (player.tmp_str_00 >= 91 && player.tmp_str_00 <= 99)
                 {
                     ret_val = 22;
                 }
-                else if (player.strength_18_100 >= 100)
+                else if (player.tmp_str_00 >= 100)
                 {
                     ret_val = 23;
                 }

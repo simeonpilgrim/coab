@@ -236,16 +236,16 @@ namespace engine
 
             if (stat_index == 0 &&
                 gbl.player_ptr.strength == 18 &&
-                gbl.player_ptr.strength_18_100 > 0)
+                gbl.player_ptr.tmp_str_00 > 0)
             {
-                string text = gbl.player_ptr.strength_18_100.ToString();
+                string text = gbl.player_ptr.tmp_str_00.ToString();
 
-                if (gbl.player_ptr.strength_18_100 < 10)
+                if (gbl.player_ptr.tmp_str_00 < 10)
                 {
                     text = "0" + text;
                 }
 
-                if (gbl.player_ptr.strength_18_100 == 100)
+                if (gbl.player_ptr.tmp_str_00 == 100)
                 {
                     text = "00";
                 }

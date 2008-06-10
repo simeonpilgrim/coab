@@ -102,7 +102,7 @@ namespace Classes
             type = data[offset + 0x2e];
             field_2F = (sbyte)data[offset + 0x2f];
             field_30 = (sbyte)data[offset + 0x30];
-            field_31 = (byte)data[offset + 0x31];
+            field_31 = data[offset + 0x31];
             plus = (sbyte)data[offset + 0x32];
             plus_save = data[offset + 0x33];
             readied = (data[offset + 0x34] != 0);
