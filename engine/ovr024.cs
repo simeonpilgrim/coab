@@ -168,7 +168,7 @@ namespace engine
                 case 2:
                     calc_affect_effect(Affects.affect_4f, player);
                     calc_affect_effect(Affects.affect_50, player);
-                    calc_affect_effect(Affects.affect_91, player);
+                    calc_affect_effect(Affects.sp_dispel_evil, player);
                     calc_affect_effect(Affects.affect_39, player);
                     calc_affect_effect(Affects.affect_60, player);
                     calc_affect_effect(Affects.affect_7a, player);
@@ -325,11 +325,11 @@ namespace engine
                     calc_affect_effect(Affects.affect_79, player);
                     calc_affect_effect(Affects.spit_acid, player);
                     calc_affect_effect(Affects.affect_57, player);
-                    calc_affect_effect(Affects.affect_5a, player);
+                    calc_affect_effect(Affects.breath_acid, player);
                     calc_affect_effect(Affects.affect_7e, player);
                     calc_affect_effect(Affects.affect_80, player);
-                    calc_affect_effect(Affects.affect_83, player);
-                    calc_affect_effect(Affects.affect_84, player);
+                    calc_affect_effect(Affects.cast_breath_fire, player);
+                    calc_affect_effect(Affects.cast_throw_lightening, player);
                     calc_affect_effect(Affects.affect_8b, player);
                     break;
 
@@ -1362,11 +1362,11 @@ namespace engine
 
         internal static void is_unaffected(string text, bool saved, byte can_save, bool call_spell_jump_list, int arg_A, ushort arg_C, Affects affect_id, Player target)
         {
-            gbl.byte_1D2BD = affect_id;
+            gbl.current_affect = affect_id;
 
             work_on_00(target, 9);
 
-            if (gbl.byte_1D2BD == 0 ||
+            if (gbl.current_affect == 0 ||
                 (saved == true && can_save == 1))
             {
                 ovr025.DisplayPlayerStatusString(true, 10, "is Unaffected", target);

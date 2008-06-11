@@ -4,13 +4,16 @@ namespace engine
 {
     class ovr013
     {
-        internal static void sub_3A019(Affects affect)
+        /// <summary>
+        /// If same as current affect damage set to zero, or if affect is zero
+        /// </summary>
+        internal static void protection_type_check(Affects affect) /* sub_3A019 */
         {
             if (affect == 0 ||
-                gbl.byte_1D2BD == affect)
+                gbl.current_affect == affect)
             {
                 gbl.damage = 0;
-                gbl.byte_1D2BD = 0;
+                gbl.current_affect = 0;
             }
         }
 
@@ -400,7 +403,7 @@ namespace engine
                 gbl.spell_id > 0 &&
                 gbl.byte_1D2C7 == 0)
             {
-                sub_3A019(0);
+                protection_type_check(0);
 
                 ovr025.DisplayPlayerStatusString(true, 10, "lost an image", player);
 
@@ -897,7 +900,7 @@ namespace engine
 
                 if ((gbl.damage_flags & 8) == 0)
                 {
-                    sub_3A019(0);
+                    protection_type_check(0);
                 }
             }
         }
@@ -920,7 +923,7 @@ namespace engine
             if (gbl.spell_id > 0 &&
                 gbl.spell_list[gbl.spell_id].spellLevel < 4)
             {
-                sub_3A019(0);
+                protection_type_check(0);
             }
         }
 
@@ -1040,7 +1043,7 @@ namespace engine
         {
             if ((gbl.damage_flags & 0x20) > 0)
             {
-                sub_3A019(0);
+                protection_type_check(0);
                 ovr025.DisplayPlayerStatusString(true, 10, "is unaffected", player);
             }
         }
@@ -1174,7 +1177,7 @@ namespace engine
 
             if ((gbl.damage_flags & 0x04) != 0)
             {
-                sub_3A019(0);
+                protection_type_check(0);
                 var_1 = ovr024.roll_dice(8, 1);
 
                 player.ac += 8;
@@ -1482,12 +1485,12 @@ namespace engine
             int target_count = ovr025.spell_target_count(gbl.spell_id);
             int var_2 = (byte)(arg_0 + ((0x0b - target_count) * 5));
 
-            if (gbl.byte_1D2BD != 0 ||
+            if (gbl.current_affect != 0 ||
                 (gbl.damage_flags & 8) != 0)
             {
                 if (ovr024.roll_dice(100, 1) <= var_2)
                 {
-                    sub_3A019(0);
+                    protection_type_check(0);
                 }
             }
         }
@@ -1509,22 +1512,22 @@ namespace engine
         {
             if (ovr024.roll_dice(100, 1) <= 0x5a)
             {
-                sub_3A019(Affects.sleep);
-                sub_3A019(Affects.charm_person);
+                protection_type_check(Affects.sleep);
+                protection_type_check(Affects.charm_person);
             }
         }
 
 
         internal static void sub_3C18F(Effect arg_0, object param, Player arg_6)
         {
-            sub_3A019(Affects.charm_person);
-            sub_3A019(Affects.sleep);
+            protection_type_check(Affects.charm_person);
+            protection_type_check(Affects.sleep);
         }
 
 
         internal static void sub_3C1A4(Effect arg_0, object param, Player arg_6)
         {
-            sub_3A019(Affects.paralyze);
+            protection_type_check(Affects.paralyze);
         }
 
 
@@ -1532,15 +1535,15 @@ namespace engine
         {
             if ((gbl.damage_flags & 2) != 0)
             {
-                sub_3A019(0);
+                protection_type_check(0);
             }
         }
 
 
         internal static void sub_3C1C9(Effect arg_0, object param, Player arg_6)
         {
-            sub_3A019(Affects.poisoned);
-            sub_3A019(Affects.paralyze);
+            protection_type_check(Affects.poisoned);
+            protection_type_check(Affects.paralyze);
 
             if (gbl.byte_1D2D1 == 0)
             {
@@ -1553,7 +1556,7 @@ namespace engine
         {
             if ((gbl.damage_flags & 1) != 0)
             {
-                sub_3A019(0);
+                protection_type_check(0);
             }
         }
 
@@ -1724,18 +1727,18 @@ namespace engine
         {
             if (ovr024.roll_dice(100, 1) <= 0x1e)
             {
-                sub_3A019(Affects.charm_person);
-                sub_3A019(Affects.sleep);
+                protection_type_check(Affects.charm_person);
+                protection_type_check(Affects.sleep);
             }
         }
 
 
         internal static void sub_3C5F4(Effect arg_0, object param, Player player)
         {
-            sub_3A019(Affects.charm_person);
-            sub_3A019(Affects.sleep);
-            sub_3A019(Affects.paralyze);
-            sub_3A019(Affects.poisoned);
+            protection_type_check(Affects.charm_person);
+            protection_type_check(Affects.sleep);
+            protection_type_check(Affects.paralyze);
+            protection_type_check(Affects.poisoned);
 
             if (gbl.byte_1D2D1 != 0)
             {
@@ -1746,10 +1749,10 @@ namespace engine
 
         internal static void sub_3C623(Effect arg_0, object param, Player player)
         {
-            if (gbl.byte_1D2BD != 0 ||
+            if (gbl.current_affect != 0 ||
                 (gbl.damage_flags & 8) != 0)
             {
-                sub_3A019(0);
+                protection_type_check(0);
             }
         }
 
@@ -1777,7 +1780,7 @@ namespace engine
         }
 
 
-        internal static void sub_3C6D3(Effect remove_affect, object param, Player player)
+        internal static void do_items_affect(Effect remove_affect, object param, Player player) /* sub_3C6D3 */
         {
             Item item = (Item)param;
 
@@ -1801,13 +1804,13 @@ namespace engine
 
         internal static void sub_3C750(Effect arg_0, object param, Player player)
         {
-            sub_3A019(Affects.affect_8e);
-            sub_3A019(Affects.ray_of_enfeeblement);
-            sub_3A019(Affects.feeble);
+            protection_type_check(Affects.affect_8e);
+            protection_type_check(Affects.ray_of_enfeeblement);
+            protection_type_check(Affects.feeble);
 
             if ((gbl.damage_flags & 0x40) != 0)
             {
-                sub_3A019(0);
+                protection_type_check(0);
             }
         }
 
@@ -1827,7 +1830,7 @@ namespace engine
         {
             if ((gbl.damage_flags & 0x04) != 0)
             {
-                sub_3A019(0);
+                protection_type_check(0);
             }
         }
 
@@ -1937,7 +1940,7 @@ namespace engine
                 ovr024.sub_63014("is dispelled", Status.gone, gbl.spell_target);
 
                 ovr024.remove_affect(null, Affects.dispel_evil, gbl.player_ptr);
-                ovr024.remove_affect(null, Affects.affect_91, gbl.player_ptr);
+                ovr024.remove_affect(null, Affects.sp_dispel_evil, gbl.player_ptr);
             }
             else
             {
@@ -2085,7 +2088,7 @@ namespace engine
             gbl.spell_jump_list[129] = ovr013.sub_3C623;
             gbl.spell_jump_list[130] = ovr013.sub_3C643;
             gbl.spell_jump_list[131] = ovr023.cast_breath_fire;
-            gbl.spell_jump_list[132] = ovr023.cast_throw_lightning;
+            gbl.spell_jump_list[132] = ovr023.cast_throw_lightening;
             gbl.spell_jump_list[133] = ovr013.sub_3C750;
             gbl.spell_jump_list[134] = ovr013.sub_3C77C;
             gbl.spell_jump_list[135] = ovr013.sub_3C7B5;
@@ -2100,7 +2103,7 @@ namespace engine
             gbl.spell_jump_list[144] = ovr014.sub_426FC;
             gbl.spell_jump_list[145] = ovr013.sp_dispel_evil;
             gbl.spell_jump_list[146] = ovr013.empty;
-            gbl.spell_jump_list[147] = ovr013.sub_3C6D3;
+            gbl.spell_jump_list[147] = ovr013.do_items_affect;
 
         }
     }

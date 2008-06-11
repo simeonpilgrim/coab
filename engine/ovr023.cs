@@ -1066,7 +1066,7 @@ namespace engine
             int count = index - 1;
 
             index = 0;
-            arg_0 = (byte)(arg_0 * 2);
+            arg_0 *= 2;
             byte var_1F = path.steps;
             finished = false;
 
@@ -1113,8 +1113,8 @@ namespace engine
 
             BoundCoords(ref targetY, ref targetX);
 
-            int var_78 = 0xff; /* Simeon */
-            bool var_1E = ovr032.canReachTarget(gbl.mapToBackGroundTile, ref var_78, ref targetY, ref targetX, casterY, casterX);
+            int range = 0xff; /* Simeon */
+            bool var_1E = ovr032.canReachTarget(gbl.mapToBackGroundTile, ref range, ref targetY, ref targetX, casterY, casterX);
 
             localSteppingPathInit(targetY, targetX, casterY, casterX, path);
 
@@ -1406,21 +1406,20 @@ namespace engine
         }
 
 
-        internal static void has_been_reduced()
+        internal static void enlarge_end() /* has_been_reduced */
         {
-            Player var_6;
-            Affect var_4;
+            Affect dummy_affect;
 
-            var_6 = gbl.sp_targets[1];
+            Player target = gbl.sp_targets[1];
 
-            if (var_6 != null &&
+            if (target != null &&
                 gbl.sp_target_count > 0 &&
-                ovr024.do_saving_throw(0, 4, var_6) == false &&
-                ovr025.find_affect(out var_4, Affects.enlarge, var_6) == true)
+                ovr024.do_saving_throw(0, 4, target) == false &&
+                ovr025.find_affect(out dummy_affect, Affects.enlarge, target) == true)
             {
-                ovr024.remove_affect(null, Affects.enlarge, var_6);
-                ovr024.sub_648D9(0, var_6);
-                ovr025.DisplayPlayerStatusString(true, 10, "has been reduced", var_6);
+                ovr024.remove_affect(null, Affects.enlarge, target);
+                ovr024.sub_648D9(0, target);
+                ovr025.DisplayPlayerStatusString(true, 10, "has been reduced", target);
             }
         }
 
@@ -1754,10 +1753,10 @@ namespace engine
                 var_8.field_7[var_11] = var_F;
                 if (var_8.field_10[var_11] != 0)
                 {
-                    int cx = gbl.MapDirectionXDelta[var_12] + gbl.targetX;
-                    int ax = gbl.MapDirectionYDelta[var_12] + gbl.targetY;
+                    int tmp_x = gbl.MapDirectionXDelta[var_12] + gbl.targetX;
+                    int tmp_y = gbl.MapDirectionYDelta[var_12] + gbl.targetY;
 
-                    gbl.mapToBackGroundTile[cx, ax] = 0x1E;
+                    gbl.mapToBackGroundTile[tmp_x, tmp_y] = 0x1E;
                 }
             }
 
@@ -2203,9 +2202,9 @@ namespace engine
                                         throw new System.NotSupportedException();//jnz	loc_5F507
                                         var_8 = 1;
                                         throw new System.NotSupportedException();//jmp	short loc_5F518
-                                        throw new System.NotSupportedException();//loc_5F507:
+                                        //loc_5F507:
                                         var_C = var_C.next;
-                                        throw new System.NotSupportedException();//loc_5F518:
+                                        //loc_5F518:
                                     }
 
                                     if (var_8 != 0)
@@ -2707,10 +2706,10 @@ namespace engine
 
             sub_5CF7F(string.Empty, 8, 0, false, 0, gbl.spell_id);
             Player target = gbl.player_ptr.actions.target;
-            gbl.byte_1D2BD = Affects.affect_40;
+            gbl.current_affect = Affects.affect_40;
             ovr024.work_on_00(target, 9);
 
-            if (gbl.byte_1D2BD == Affects.affect_40)
+            if (gbl.current_affect == Affects.affect_40)
             {
                 ovr024.CallSpellJumpTable(Effect.Add, var_2, gbl.player_ptr, Affects.affect_40);
             }
@@ -3339,10 +3338,10 @@ namespace engine
 
             if (var_8.field_10[var_16] != 0)
             {
-                int cx = gbl.MapDirectionXDelta[var_17] + gbl.targetX;
-                int ax = gbl.MapDirectionYDelta[var_17] + gbl.targetY;
+                int tmp_x = gbl.MapDirectionXDelta[var_17] + gbl.targetX;
+                int tmp_y = gbl.MapDirectionYDelta[var_17] + gbl.targetY;
 
-                gbl.mapToBackGroundTile[cx, ax] = 0x1C;
+                gbl.mapToBackGroundTile[tmp_x, tmp_y] = 0x1C;
             }
 
             ovr025.DisplayPlayerStatusString(false, 10, "Creates a poisonous cloud", gbl.player_ptr);
@@ -3734,7 +3733,7 @@ namespace engine
         }
 
 
-        internal static void cast_throw_lightning(Effect arg_0, object param, Player arg_6)
+        internal static void cast_throw_lightening(Effect arg_0, object param, Player arg_6) /* cast_throw_lightning */
         {
             bool var_1 = false; /* Simeon */
 
@@ -3870,7 +3869,7 @@ namespace engine
             gbl.word_1D5CE[9] = new spellDelegate2(ovr023.is_charmed);
             gbl.word_1D5CE[10] = new spellDelegate2(ovr023.is_affected);
             gbl.word_1D5CE[11] = new spellDelegate2(ovr023.is_stronger);
-            gbl.word_1D5CE[12] = new spellDelegate2(ovr023.has_been_reduced);
+            gbl.word_1D5CE[12] = new spellDelegate2(ovr023.enlarge_end);
             gbl.word_1D5CE[13] = new spellDelegate2(ovr023.is_friendly);
             gbl.word_1D5CE[14] = new spellDelegate2(ovr023.sub_5E221);
             gbl.word_1D5CE[15] = new spellDelegate2(ovr023.is_protected);

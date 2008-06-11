@@ -256,7 +256,7 @@ namespace Classes
         public static byte byte_1D1BB;
         public static int sortedCombatantCount; // byte_1D1C0
         //public static byte byte_1D1C4;
-        public static Affects byte_1D2BD;
+        public static Affects current_affect; // byte_1D2BD
         public static int damage; // byte_1D2BE
         public static byte damage_flags; // byte_1D2BF
         public static byte byte_1D2C0;
@@ -380,7 +380,7 @@ namespace Classes
         public static byte byte_1EE8A;
         public static byte byte_1EE8B;
         public static byte byte_1EE8C;
-        public static byte byte_1EE8D;
+        public static bool byte_1EE8D;
         public static byte byte_1EE8E;
         public static bool displayPlayerSprite; /* byte_1EE8F */
         public static byte byte_1EE90;
@@ -657,7 +657,7 @@ namespace Classes
             new Struct_19AEC(0, 4, 3, 0, 0, 2, 4, 0, 0, 4, Affects.affect_03, 1, 7, 4, 1, 0), 
             new Struct_19AEC(0, 5, 0, 0, 0, 0, 4, 2, 0, 4, 0, 2, 8, 2, 0, 0), 
             new Struct_19AEC(0, 5, -1, 0, 0, 0, 4, 0, 1, 4, 0, 1, 8, 6, 1, 0), 
-            new Struct_19AEC(0, 5, 0, 0, 0, 1, 0, 0, 0, 4, Affects.affect_91, 1, 8, 3, 0, 0), 
+            new Struct_19AEC(0, 5, 0, 0, 0, 1, 0, 0, 0, 4, Affects.sp_dispel_evil, 1, 8, 3, 0, 0), 
             new Struct_19AEC(0, 5, 6, 0, 0, 0, 4, 0, 2, 4, 0, 1, 8, 6, 1, 0), 
             new Struct_19AEC(0, 5, 0, 0, 0, 0, 0, 2, 0, 4, 0, 0, 10, 1, 0, 0), 
             new Struct_19AEC(0, 5, 3, 0, 0, 0, 4, 0, 1, 4, 0, 1, 10, 7, 1, 0), 

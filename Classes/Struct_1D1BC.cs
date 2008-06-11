@@ -25,9 +25,9 @@ namespace Classes
         //public byte field_1;
         public int mapScreenLeftX; // field_2, was sbyte
         public int mapScreenTopY; // field_3, was sbyte
-        public bool field_4; // field_4, was byte
+        public bool draw_target_cursor; // field_4, was byte
         public byte size; // field_5
-        public byte field_6;
+        public bool field_6; // field_6, was byte
         public int[] field_7;
 
         public int this[int indexA, int indexB]
