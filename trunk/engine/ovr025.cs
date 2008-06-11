@@ -1640,12 +1640,12 @@ namespace engine
         }
 
 
-        internal static int near_enemy(byte arg_0, Player player) /*near_enermy*/
+        internal static int near_enemy(int max_range, Player player) /*near_enermy*/
         {
             int ret_val;
 
             ovr032.Rebuild_SortedCombatantList(gbl.mapToBackGroundTile,
-                ovr033.PlayerMapSize(player), 0xff, arg_0,
+                ovr033.PlayerMapSize(player), 0xff, max_range,
                 ovr033.PlayerMapYPos(player), ovr033.PlayerMapXPos(player));
 
             if (gbl.sortedCombatantCount > 0)
@@ -1680,14 +1680,14 @@ namespace engine
             SortedCombatant[] backupList = new SortedCombatant[gbl.MaxSortedCombatantCount];
             System.Array.Copy(gbl.SortedCombatantList, backupList, gbl.MaxSortedCombatantCount);
 
-            gbl.mapToBackGroundTile.field_6 = 1;
+            gbl.mapToBackGroundTile.field_6 = true;
 
             ovr032.Rebuild_SortedCombatantList(gbl.mapToBackGroundTile,
                 ovr033.PlayerMapSize(attacker), 0xff, 0xff,
                 ovr033.PlayerMapYPos(attacker),
                 ovr033.PlayerMapXPos(attacker));
 
-            gbl.mapToBackGroundTile.field_6 = 0;
+            gbl.mapToBackGroundTile.field_6 = false;
 
             int i = 0;
             while (gbl.player_array[gbl.SortedCombatantList[i].player_index] != target &&

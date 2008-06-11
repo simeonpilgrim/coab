@@ -651,7 +651,7 @@ namespace engine
 
                         int var_6 = var_4;
 
-                        gbl.mapToBackGroundTile.field_6 = 0;
+                        gbl.mapToBackGroundTile.field_6 = false;
 
                         if (ovr032.canReachTarget(gbl.mapToBackGroundTile, ref var_6, ref tmpY, ref tmpX, ovr033.PlayerMapYPos(player), ovr033.PlayerMapXPos(player)) == true &&
                             (var_6 / 2) <= var_4)
@@ -931,7 +931,7 @@ namespace engine
                 var_2 = 0;
             }
 
-            if (arg_0.affect_3 == Affects.affect_84 &&
+            if (arg_0.affect_3 == Affects.cast_throw_lightening &&
                 ((int)arg_0.affect_2 & 0x0f) != arg_4.alignment)
             {
                 var_2 = 0;

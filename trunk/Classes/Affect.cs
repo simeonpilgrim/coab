@@ -93,7 +93,7 @@ namespace Classes
         affect_57 = 0x57,
         affect_58 = 0x58,
         displace = 0x59,
-        affect_5a = 0x5a,
+        breath_acid = 0x5a,
         affect_5b = 0x5b,
         affect_5c = 0x5c,
         affect_5d = 0x5d,
@@ -134,8 +134,8 @@ namespace Classes
         affect_80 = 0x80,
         affect_81 = 0x81,
         affect_82 = 0x82,
-        affect_83 = 0x83,
-        affect_84 = 0x84,
+        cast_breath_fire = 0x83,
+        cast_throw_lightening = 0x84,
         affect_85 = 0x85,
         affect_86 = 0x86,
         affect_87 = 0x87,
@@ -148,7 +148,7 @@ namespace Classes
         affect_8e = 0x8e,
         affect_8f = 0x8f,
         affect_90 = 0x90,
-        affect_91 = 0x91,
+        sp_dispel_evil = 0x91,
         affect_92 = 0x92
     }
 

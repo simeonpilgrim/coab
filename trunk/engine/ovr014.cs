@@ -2036,7 +2036,7 @@ namespace engine
                 arg_0.target = arg_A;
                 arg_0.mapX = ovr033.PlayerMapXPos(arg_A);
                 arg_0.mapY = ovr033.PlayerMapYPos(arg_A);
-                gbl.mapToBackGroundTile.field_4 = false;
+                gbl.mapToBackGroundTile.draw_target_cursor = false;
 
                 ovr033.redrawCombatArea(8, 3, gbl.mapToBackGroundTile.mapScreenTopY + 3, gbl.mapToBackGroundTile.mapScreenLeftX + 3);
 
@@ -2084,7 +2084,7 @@ namespace engine
 
             arg_4 = false;
 
-            gbl.mapToBackGroundTile.field_4 = true;
+            gbl.mapToBackGroundTile.draw_target_cursor = true;
             gbl.mapToBackGroundTile.size = 1;
 
             while (asc_41342.MemberOf(input_key) == false)
@@ -2223,7 +2223,7 @@ namespace engine
                 {
                     case '\r':
                     case 'T':
-                        gbl.mapToBackGroundTile.field_4 = false;
+                        gbl.mapToBackGroundTile.draw_target_cursor = false;
 
                         if (can_target)
                         {
@@ -2493,7 +2493,7 @@ namespace engine
         }
 
 
-        internal static bool sub_41E44(byte arg_0, byte arg_2, byte arg_4, Player player)
+        internal static bool sub_41E44(byte arg_0, byte arg_2, int max_range, Player player)
         {
             byte var_7 = 0;
             bool var_6 = false;
@@ -2521,11 +2521,11 @@ namespace engine
 
                 if (var_7 != 0 && arg_0 == 0)
                 {
-                    gbl.mapToBackGroundTile.field_6 = 1;
+                    gbl.mapToBackGroundTile.field_6 = true;
                 }
 
                 int var_3 = 0x14;
-                int var_2 = ovr025.near_enemy(arg_4, player);
+                int var_2 = ovr025.near_enemy(max_range, player);
 
                 while (var_3 > 0 && var_6 == false && var_2 > 0)
                 {
@@ -2536,7 +2536,7 @@ namespace engine
                     {
                         target = gbl.player_array[gbl.byte_1D8B9[roll]];
 
-                        if ((arg_2 != 0 && gbl.mapToBackGroundTile.field_6 != 0) ||
+                        if ((arg_2 != 0 && gbl.mapToBackGroundTile.field_6 == true) ||
                             sub_3F143(target, player) == true)
                         {
                             var_6 = true;
@@ -2572,7 +2572,7 @@ namespace engine
                 }
             }
 
-            gbl.mapToBackGroundTile.field_6 = 0;
+            gbl.mapToBackGroundTile.field_6 = false;
 
             return var_6;
         }

@@ -392,7 +392,7 @@ namespace engine
 
                 if (gbl.area2_ptr.field_5C2 == 0xff)
                 {
-                    gbl.byte_1EE8D = 1;
+                    gbl.byte_1EE8D = true;
 
                     if (var_1 >= 0x78)
                     {
@@ -422,7 +422,7 @@ namespace engine
                     ovr029.sub_6F0BA();
                     gbl.byte_1EE8C = 0;
                     gbl.displayPlayerSprite = false;
-                    gbl.byte_1EE8D = 1;
+                    gbl.byte_1EE8D = true;
                 }
                 gbl.byte_1EE72[0] = 0;
                 gbl.byte_1EE72[1] = 0;
@@ -570,9 +570,11 @@ namespace engine
         }
 
 
-        internal static void CMD_LoadFiles()
+        internal static void CMD_LoadFiles() /* sub_26C41 */
         {
             ovr008.vm_LoadCmdSets(3);
+
+            gbl.byte_1AB0B = 1;
 
             byte var_3 = (byte)ovr008.vm_GetCmdValue(1);
             byte var_2 = (byte)ovr008.vm_GetCmdValue(2);
@@ -581,7 +583,6 @@ namespace engine
             VmLog.WriteLine("CMD_LoadFile: {0} A: {1} B: {2} C: {3}",
                 gbl.command == 0x21 ? "Files" : "Pieces", var_1, var_2, var_3);
 
-            gbl.byte_1AB0B = 1;
 
             if (gbl.command == 0x21)
             {
@@ -660,7 +661,6 @@ namespace engine
                     }
                 }
             }
-
 
 
             if (gbl.byte_1AB0C != 0 &&
@@ -819,7 +819,7 @@ namespace engine
             }
 
             if (gbl.byte_1EE8C == 0 ||
-                gbl.byte_1EE8D == 0)
+                gbl.byte_1EE8D == false)
             {
                 useOverlay = false;
             }
@@ -1633,7 +1633,7 @@ namespace engine
             do
             {
                 if (gbl.byte_1EE8C == 0 ||
-                    gbl.byte_1EE8D == 0 ||
+                    gbl.byte_1EE8D == false ||
                     gbl.area_ptr.field_1CC == 0 ||
                     gbl.lastDaxBlockId == 0x50)
                 {
@@ -2192,65 +2192,61 @@ namespace engine
 
         internal static void CMD_Spell()
         {
-            ushort var_D;
-            ushort var_B;
-            byte var_9;
-            byte var_8;
-            Player var_7;
-            byte var_3;
-            byte var_2;
-            byte var_1;
-
-            var_9 = 0;
-            var_8 = 0;
             ovr008.vm_LoadCmdSets(3);
-            var_1 = (byte)ovr008.vm_GetCmdValue(1);
-            var_B = gbl.cmd_opps[2].Word;
-            var_D = gbl.cmd_opps[3].Word;
-            var_2 = 1;
-            var_3 = 0;
-            var_7 = gbl.player_next_ptr;
 
-            while (var_7 != null && var_8 == 0)
+            byte spell_id = (byte)ovr008.vm_GetCmdValue(1);
+            ushort loc_a = gbl.cmd_opps[2].Word;
+            ushort loc_b = gbl.cmd_opps[3].Word;
+            byte val_a = 1;
+            byte val_b = 0;
+
+            bool var_9 = false;
+            bool var_8 = false;
+            Player player = gbl.player_next_ptr;
+
+            while (player != null && var_8 == false)
             {
-                var_2 = 1;
+                val_a = 1;
 
                 do
                 {
-                    if (var_7.spell_list[var_2] == var_1)
+                    if (player.spell_list[val_a] == spell_id)
                     {
-                        var_8 = 1;
+                        var_8 = true;
                     }
                     else
                     {
-                        if (var_2 <= 100)
+                        if (val_a <= 100)
                         {
-                            var_2++;
+                            val_a++;
                         }
                         else
                         {
-                            var_9 = 1;
+                            var_9 = true;
                         }
                     }
-                } while (var_9 == 0 && var_8 == 0);
+                } while (var_9 == false && var_8 == false);
 
-                var_9 = 0;
-                var_7 = var_7.next_player;
+                var_9 = false;
+                player = player.next_player;
 
-                if (var_7 != null &&
-                    var_8 == 0)
+                if (player != null &&
+                    var_8 == false)
                 {
-                    var_3++;
+                    val_b++;
                 }
             }
 
-            if (var_2 > 100)
+            if (val_a > 100)
             {
-                var_2 = 0x0FF;
+                val_a = 0x0FF;
             }
 
-            ovr008.vm_SetMemoryValue(var_2, var_B);
-            ovr008.vm_SetMemoryValue(var_3, var_D);
+            VmLog.WriteLine("CMD_Spell: spell_id: {0} loc a: {1} val a: {2} loc b: {3} val b: {4}",
+                spell_id, new MemLoc(loc_a), val_a, new MemLoc(loc_b), val_b);
+
+            ovr008.vm_SetMemoryValue(val_a, loc_a);
+            ovr008.vm_SetMemoryValue(val_b, loc_b);
         }
 
 
@@ -2261,7 +2257,7 @@ namespace engine
             ushort var_2 = gbl.cmd_opps[1].Word;
             ushort var_4 = (ushort)(var_2 - 0x7fff);
 
-            //System.Console.WriteLine("  CMD_Call: {0:X}", var_4);
+            VmLog.WriteLine("CMD_Call: {0:X}", var_4);
 
             switch (var_4)
             {
@@ -2475,7 +2471,9 @@ namespace engine
         internal static void CMD_DestroyItems() // sub_292F9
         {
             ovr008.vm_LoadCmdSets(1);
-            byte var_1 = (byte)ovr008.vm_GetCmdValue(1);
+            byte item_type = (byte)ovr008.vm_GetCmdValue(1);
+
+            VmLog.WriteLine("CMD_DestroyItems: type: {0}", item_type);
 
             Player player = gbl.player_next_ptr;
 
@@ -2484,13 +2482,13 @@ namespace engine
                 Item item = player.itemsPtr;
                 while (item != null)
                 {
-                    Item var_D = item.next;
+                    Item next_item = item.next;
 
-                    if (var_1 == item.type)
+                    if (item_type == item.type)
                     {
                         ovr025.lose_item(item, player);
                     }
-                    item = var_D;
+                    item = next_item;
                 }
 
                 ovr025.reclac_player_values(player);
@@ -2808,7 +2806,7 @@ namespace engine
                             }
 
                             gbl.byte_1EE8C = 0;
-                            gbl.byte_1EE8D = 1;
+                            gbl.byte_1EE8D = true;
                             RunEclVm(gbl.word_1B2D5);
                             if (gbl.byte_1AB09 != 0)
                             {

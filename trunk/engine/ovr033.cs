@@ -76,7 +76,7 @@ namespace engine
 
                     ovr034.draw_iso_title(0, gbl.BackGroundTiles[i].tile_index, (screenPosY + deltaY) * 3, (screenPosX + deltaX) * 3);
 
-                    if (gbl.mapToBackGroundTile.field_4 == true)
+                    if (gbl.mapToBackGroundTile.draw_target_cursor == true)
                     {
                         // draws grey focus box
                         ovr034.draw_combat_icon(0x19, 0, 0, screenPosY + deltaY, screenPosX + deltaX);
@@ -550,8 +550,6 @@ namespace engine
 
         internal static void sub_74E6F(Player player)
         {
-            byte var_2;
-
             if (gbl.game_state != 5)
             {
                 seg044.sound_sub_120E0(gbl.sound_5_188C8);
@@ -559,7 +557,7 @@ namespace engine
             }
             else
             {
-                var_2 = 1;
+                int var_2 = 1;
                 while (var_2 < 9 &&
                     gbl.unk_1D183[var_2].target != player) // First SIS BUG!!!
                 {
@@ -568,37 +566,36 @@ namespace engine
 
                 if (var_2 >= 9)
                 {
-                    byte var_1 = get_player_index(player);
-                    int var_6 = ovr033.PlayerMapXPos(player);
-                    int var_7 = ovr033.PlayerMapYPos(player);
+                    byte player_index = get_player_index(player);
+                    int map_x = ovr033.PlayerMapXPos(player);
+                    int map_y = ovr033.PlayerMapYPos(player);
 
                     if (sub_74761(1, player) == false)
                     {
-                        redrawCombatArea(8, 3, var_7, var_6);
+                        redrawCombatArea(8, 3, map_y, map_x);
                     }
 
-                    draw_74572(var_1, 0, 0);
+                    draw_74572(player_index, 0, 0);
                     seg044.sound_sub_120E0(gbl.sound_5_188C8);
 
                     for (int var_3 = 0; var_3 <= 8; var_3++)
                     {
-                        for (var_2 = 0; var_2 <= 3; var_2++)
+                        for (int step = 0; step <= 3; step++)
                         {
-                            int var_5;
-                            int var_4;
+                            int delta_y;
+                            int delta_x;
 
-                            if (GetSizeBasedMapDelta(out var_5, out var_4, var_2, gbl.CombatMap[var_1].size) == true &&
-                                CoordOnScreen(gbl.playerScreenY[var_1] + var_5, gbl.playerScreenX[var_1] + var_4) == true)
+                            if (GetSizeBasedMapDelta(out delta_y, out delta_x, step, gbl.CombatMap[player_index].size) == true &&
+                                CoordOnScreen(gbl.playerScreenY[player_index] + delta_y, gbl.playerScreenX[player_index] + delta_x) == true)
                             {
                                 DaxBlock tmp = ((var_3 & 1) == 0) ? gbl.combat_icons[24, 1] : gbl.combat_icons[25, 0];
 
-                                seg040.OverlayBounded(tmp, 5, 0, (gbl.playerScreenY[var_1] + var_5) * 3, (gbl.playerScreenX[var_1] + var_4) * 3);
+                                seg040.OverlayBounded(tmp, 5, 0, (gbl.playerScreenY[player_index] + delta_y) * 3, (gbl.playerScreenX[player_index] + delta_x) * 3);
                             }
 
                         }
 
                         seg040.DrawOverlay();
-
                         seg049.SysDelay(10);
                     }
 
@@ -606,20 +603,20 @@ namespace engine
                     {
                         gbl.byte_1D1BB++;
 
-                        gbl.unk_1D183[gbl.byte_1D1BB].field_6 = (byte)gbl.mapToBackGroundTile[var_6, var_7];
+                        gbl.unk_1D183[gbl.byte_1D1BB].field_6 = (byte)gbl.mapToBackGroundTile[map_x, map_y];
 
-                        if (gbl.mapToBackGroundTile[var_6, var_7] != 0x1E)
+                        if (gbl.mapToBackGroundTile[map_x, map_y] != 0x1E)
                         {
-                            gbl.mapToBackGroundTile[var_6, var_7] = 0x1F;
+                            gbl.mapToBackGroundTile[map_x, map_y] = 0x1F;
                         }
 
                         gbl.unk_1D183[gbl.byte_1D1BB].target = player;
-                        gbl.unk_1D183[gbl.byte_1D1BB].mapX = var_6;
-                        gbl.unk_1D183[gbl.byte_1D1BB].mapY = var_7;
+                        gbl.unk_1D183[gbl.byte_1D1BB].mapX = map_x;
+                        gbl.unk_1D183[gbl.byte_1D1BB].mapY = map_y;
                     }
 
                     seg041.GameDelay();
-                    draw_74572(var_1, 0, 0);
+                    draw_74572(player_index, 0, 0);
 
                     gbl.CombatMap[get_player_index(player)].size = 0;
 
@@ -716,7 +713,7 @@ namespace engine
 
         internal static void sub_75356(bool arg_0, byte radius, Player player)
         {
-            gbl.mapToBackGroundTile.field_4 = arg_0;
+            gbl.mapToBackGroundTile.draw_target_cursor = arg_0;
             gbl.mapToBackGroundTile.size = gbl.CombatMap[get_player_index(player)].size;
 
             if (gbl.byte_1D910 == true)
@@ -724,7 +721,7 @@ namespace engine
                 redrawCombatArea(8, radius, PlayerMapYPos(player), PlayerMapXPos(player));
             }
 
-            gbl.mapToBackGroundTile.field_4 = false;
+            gbl.mapToBackGroundTile.draw_target_cursor = false;
             gbl.mapToBackGroundTile.size = 1;
         }
     }

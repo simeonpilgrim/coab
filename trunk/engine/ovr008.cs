@@ -232,7 +232,7 @@ namespace engine
 
         internal static void set_and_draw_head_body(byte body_id, byte head_id) /* sub_30543 */
         {
-            gbl.byte_1EE8D = 0;
+            gbl.byte_1EE8D = false;
 
             gbl.head_block_id = head_id;
             gbl.body_block_id = body_id;
@@ -299,7 +299,7 @@ namespace engine
                             {
                                 set_and_draw_head_body(pic_block_id, (byte)gbl.area2_ptr.field_5C2);
                                 arg_0[1] = 1;
-                                gbl.byte_1EE8D = 0;
+                                gbl.byte_1EE8D = false;
                             }
                         }
                     }

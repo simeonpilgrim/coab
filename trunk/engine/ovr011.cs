@@ -533,25 +533,22 @@ namespace engine
         }
 
 
-        internal static void sub_379AC(int arg_2, int arg_4)
+        internal static void sub_379AC(int map_x, int map_y)
         {
-            if (arg_2 < 0x31)
+            if (map_x < 0x31)
             {
-                gbl.mapToBackGroundTile[arg_2 + 1, arg_4] = 0x40;
+                gbl.mapToBackGroundTile[map_x + 1, map_y] = 0x40;
             }
 
-            if (arg_4 < 0x18 && arg_2 < 0x31)
+            if (map_y < 0x18 && map_x < 0x31)
             {
-                gbl.mapToBackGroundTile[arg_2 + 1, arg_4 + 1] = 0x41;
+                gbl.mapToBackGroundTile[map_x + 1, map_y + 1] = 0x41;
             }
         }
 
 
         internal static void sub_37A00()
         {
-            sbyte var_3;
-            sbyte var_2;
-
             byte var_1 = 0;
 
             if ((sub_37991() & 0x20) != 0)
@@ -566,41 +563,30 @@ namespace engine
 
             if (ovr024.roll_dice(100, 1) <= var_1)
             {
-                var_3 = (sbyte)(0x22 - ovr024.roll_dice(4, 5));
+                int map_x = 0x22 - ovr024.roll_dice(4, 5);
 
-                throw new System.NotSupportedException();//loc_37A50:
-                throw new System.NotSupportedException();//mov	al, [bp+var_3]
-                throw new System.NotSupportedException();//cbw
-                throw new System.NotSupportedException();//inc	ax
-                throw new System.NotSupportedException();//inc	ax
-                throw new System.NotSupportedException();//cwd
-                throw new System.NotSupportedException();//mov	cx, 7
-                throw new System.NotSupportedException();//idiv	cx
-                throw new System.NotSupportedException();//xchg	ax, dx
-                throw new System.NotSupportedException();//or	ax, ax
-                throw new System.NotSupportedException();//jle	loc_37A66
-                throw new System.NotSupportedException();//dec	[bp+var_3]
-                throw new System.NotSupportedException();//jmp	short loc_37A50
-                throw new System.NotSupportedException();//loc_37A66:
-                var_2 = var_3;
-
-                for (int var_4 = 0; var_4 <= 0x18; var_4++)
+                while (((map_x + 2) % 7) > 0)
                 {
-                    if (var_3 <= 0x31)
-                    {
-                        gbl.mapToBackGroundTile[var_3, var_4] = (byte)(ovr024.roll_dice(2, 1) + 0x3B);
+                    map_x--;
+                }
 
-                        if (var_3 < 0x31)
+                for (int map_y = 0; map_y <= 0x18; map_y++)
+                {
+                    if (map_x <= 0x31)
+                    {
+                        gbl.mapToBackGroundTile[map_x, map_y] = (byte)(ovr024.roll_dice(2, 1) + 0x3B);
+
+                        if (map_x < 0x31)
                         {
-                            gbl.mapToBackGroundTile[var_3 + 1, var_4] = (byte)(ovr024.roll_dice(2, 1) + 0x3D);
+                            gbl.mapToBackGroundTile[map_x + 1, map_y] = (byte)(ovr024.roll_dice(2, 1) + 0x3D);
                         }
 
                         if (ovr024.roll_dice(20, 1) == 1)
                         {
-                            sub_379AC(var_3, var_4);
+                            sub_379AC(map_x, map_y);
                         }
 
-                        var_3++;
+                        map_x++;
                     }
                 }
             }
@@ -638,22 +624,22 @@ namespace engine
                     var_4 = 1;
                 }
 
-                for (int var_2 = 0; var_2 <= 0x31; var_2++)
+                for (int map_x = 0; map_x <= 0x31; map_x++)
                 {
-                    for (int var_3 = 1; var_3 <= 0x18; var_3++)
+                    for (int map_y = 1; map_y <= 0x18; map_y++)
                     {
-                        if (gbl.BackGroundTiles[gbl.mapToBackGroundTile[var_2, var_3]].tile_index == 22 &&
-                            gbl.BackGroundTiles[gbl.mapToBackGroundTile[var_2, var_3 - 1]].tile_index == 22 &&
+                        if (gbl.BackGroundTiles[gbl.mapToBackGroundTile[map_x, map_y]].tile_index == 22 &&
+                            gbl.BackGroundTiles[gbl.mapToBackGroundTile[map_x, map_y - 1]].tile_index == 22 &&
                             var_4 >= ovr024.roll_dice(100, 1))
                         {
                             if (var_4 >= ovr024.roll_dice(100, 1))
                             {
-                                gbl.mapToBackGroundTile[var_2, var_3] = (byte)(ovr024.roll_dice(2, 1) + 0x29);
+                                gbl.mapToBackGroundTile[map_x, map_y] = (byte)(ovr024.roll_dice(2, 1) + 0x29);
                             }
                             else
                             {
-                                gbl.mapToBackGroundTile[var_2, var_3 - 1] = (byte)(ovr024.roll_dice(5, 1) + 0x1F);
-                                gbl.mapToBackGroundTile[var_2, var_3] = (byte)(ovr024.roll_dice(5, 1) + 0x24);
+                                gbl.mapToBackGroundTile[map_x, map_y - 1] = (byte)(ovr024.roll_dice(5, 1) + 0x1F);
+                                gbl.mapToBackGroundTile[map_x, map_y] = (byte)(ovr024.roll_dice(5, 1) + 0x24);
                             }
                         }
                     }
@@ -662,43 +648,37 @@ namespace engine
         }
 
 
-        internal static void sub_37CA2(byte arg_2, byte arg_4, byte arg_6, byte arg_8, byte arg_A, byte arg_C, byte arg_E)
+        internal static void sub_37CA2(byte arg_2, byte arg_4, byte arg_6, byte arg_8, byte arg_A, int map_y, int map_x)
         {
-            byte var_1;
+            int roll = ovr024.roll_dice(100, 1);
 
-            var_1 = ovr024.roll_dice(100, 1);
-
-            if (var_1 <= arg_A)
+            if (roll <= arg_A)
             {
-                gbl.mapToBackGroundTile[arg_E, arg_C] = (byte)(ovr024.roll_dice(2, 1) + 0x39);
+                gbl.mapToBackGroundTile[map_x, map_y] = (byte)(ovr024.roll_dice(2, 1) + 0x39);
             }
-            else if (var_1 <= arg_A + arg_8)
+            else if (roll <= arg_A + arg_8)
             {
-                gbl.mapToBackGroundTile[arg_E, arg_C] = (byte)(ovr024.roll_dice(2, 1) + 0x2f);
+                gbl.mapToBackGroundTile[map_x, map_y] = (byte)(ovr024.roll_dice(2, 1) + 0x2f);
 
             }
-            else if( var_1 <= arg_A + arg_8 + arg_6 )
+            else if( roll <= arg_A + arg_8 + arg_6 )
             {
-                gbl.mapToBackGroundTile[arg_E, arg_C] = (byte)(ovr024.roll_dice(4, 1) + 0x2B);
+                gbl.mapToBackGroundTile[map_x, map_y] = (byte)(ovr024.roll_dice(4, 1) + 0x2B);
             }
-            else if( var_1 <= arg_A + arg_8 + arg_6 + arg_4 )
+            else if( roll <= arg_A + arg_8 + arg_6 + arg_4 )
             {
-                gbl.mapToBackGroundTile[arg_E, arg_C] = (byte)(ovr024.roll_dice(3, 1) + 0x36);
+                gbl.mapToBackGroundTile[map_x, map_y] = (byte)(ovr024.roll_dice(3, 1) + 0x36);
             }
-            else if (var_1 <= arg_A + arg_8 + arg_6 + arg_4 + arg_2)
+            else if (roll <= arg_A + arg_8 + arg_6 + arg_4 + arg_2)
             {
-                gbl.mapToBackGroundTile[arg_E, arg_C] = (byte)(ovr024.roll_dice(4, 1) + 0x31);
+                gbl.mapToBackGroundTile[map_x, map_y] = (byte)(ovr024.roll_dice(4, 1) + 0x31);
             }
         }
 
 
         internal static void sub_37E4A()
         {
-            short var_4;
-            byte var_2;
-            byte var_1;
-
-            var_4 = 50;
+            int var_4 = 50;
 
             if ((sub_37991() & 0x10) != 0)
             {
@@ -730,31 +710,31 @@ namespace engine
                 var_4 -= 50;
             }
 
-            for (var_1 = 0; var_1 <= 49; var_1++)
+            for (int map_x = 0; map_x <= 49; map_x++)
             {
-                for (var_2 = 0; var_2 <= 24; var_2++)
+                for (int map_y = 0; map_y <= 24; map_y++)
                 {
-                    if (gbl.BackGroundTiles[gbl.mapToBackGroundTile[var_1, var_2]].tile_index == 22)
+                    if (gbl.BackGroundTiles[gbl.mapToBackGroundTile[map_x, map_y]].tile_index == 22)
                     {
                         if (var_4 >= -30 && var_4 <= 9)
                         {
-                            sub_37CA2(15, 30, 0, 0, 0, var_2, var_1);
+                            sub_37CA2(15, 30, 0, 0, 0, map_y, map_x);
                         }
                         else if (var_4 >= 10 && var_4 <= 29)
                         {
-                            sub_37CA2(10, 14, 5, 1, 0, var_2, var_1);
+                            sub_37CA2(10, 14, 5, 1, 0, map_y, map_x);
                         }
                         else if (var_4 >= 30 && var_4 <= 69)
                         {
-                            sub_37CA2(5, 10, 5, 2, 0, var_2, var_1);
+                            sub_37CA2(5, 10, 5, 2, 0, map_y, map_x);
                         }
                         else if (var_4 >= 60 && var_4 <= 89)
                         {
-                            sub_37CA2(1, 10, 10, 2, 10, var_2, var_1);
+                            sub_37CA2(1, 10, 10, 2, 10, map_y, map_x);
                         }
                         else if (var_4 >= 90 && var_4 <= 110)
                         {
-                            sub_37CA2(1, 10, 15, 5, 15, var_2, var_1);
+                            sub_37CA2(1, 10, 15, 5, 15, map_y, map_x);
                         }
                     }
                 }
@@ -790,9 +770,9 @@ namespace engine
 
             gbl.mapToBackGroundTile = new Struct_1D1BC();
 
-            gbl.mapToBackGroundTile.field_4 = false;
+            gbl.mapToBackGroundTile.draw_target_cursor = false;
             gbl.mapToBackGroundTile.size = 1;
-            gbl.mapToBackGroundTile.field_6 = 0;
+            gbl.mapToBackGroundTile.field_6 = false;
 
             if (gbl.area_ptr.field_1CC != 0)
             {
