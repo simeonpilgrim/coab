@@ -1,6 +1,8 @@
 = The Release Notes =
 
 = Unreleased =
+  * Issue 18 - Scribing spells, now works (tested magic users + rangers)
+  * Issue 24 - Trying to leave Tilverton crashed game
 
 = 1.0.9 =
   * Issue 5 - The correct exit message now plays when you try leave the Moander temple
