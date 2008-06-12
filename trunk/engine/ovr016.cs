@@ -464,7 +464,6 @@ namespace engine
             bool var_D;
             Item var_C;
             short var_8;
-            byte var_6;
             byte var_4;
             byte var_3;
             bool var_2;
@@ -529,7 +528,7 @@ namespace engine
                             {
                                 if (ovr023.item_is_scroll(var_C) == true)
                                 {
-                                    for (var_6 = 1; var_6 <= 3; var_6++)
+                                    for (int var_6 = 1; var_6 <= 3; var_6++)
                                     {
                                         if ((int)var_C.getAffect(var_6) > 0x7F &&
                                             ((int)var_C.getAffect(var_6) & 0x7F) == var_4)
@@ -545,73 +544,37 @@ namespace engine
 
                             if (var_D == false)
                             {
-                                throw new System.NotSupportedException();//mov	al, gbl.unk_19AEC[var_4].field_1
-                                throw new System.NotSupportedException();//cbw
-                                throw new System.NotSupportedException();//mov	dx, ax
-                                throw new System.NotSupportedException();//mov	al, gbl.unk_19AEC[var_4].field_0
-                                throw new System.NotSupportedException();//cbw
-                                throw new System.NotSupportedException();//mov	si, ax
-                                throw new System.NotSupportedException();//shl	ax, 1
-                                throw new System.NotSupportedException();//shl	ax, 1
-                                throw new System.NotSupportedException();//add	ax, si
-                                throw new System.NotSupportedException();//les	di, int ptr player_ptr.offset
-                                throw new System.NotSupportedException();//add	di, ax
-                                throw new System.NotSupportedException();//add	di, dx
-                                throw new System.NotSupportedException();//cmp	es:[di+charStruct.field_12C], 0
-                                throw new System.NotSupportedException();//ja	loc_44D8C
-                                throw new System.NotSupportedException();//jmp	loc_44E0D
-                                throw new System.NotSupportedException();//loc_44D8C:
+                                int spell_level = gbl.spell_list[var_4].spellLevel;
+                                int spell_class = gbl.spell_list[var_4].spellClass;
 
-                                var_C = gbl.player_ptr.itemsPtr;
-                                throw new System.NotSupportedException();//loc_44DA0:
-                                throw new System.NotSupportedException();//mov	ax, short ptr [bp+var_C]
-                                throw new System.NotSupportedException();//or	ax, short ptr [bp+var_C+2]
-                                throw new System.NotSupportedException();//jz	loc_44E0B
-                                throw new System.NotSupportedException();//cmp	[bp+var_D], 0
-                                throw new System.NotSupportedException();//jnz	loc_44E0B
-                                var_6 = 1;
-                                throw new System.NotSupportedException();//loc_44DB2:
-                                throw new System.NotSupportedException();//mov	al, [bp+var_6]
-                                throw new System.NotSupportedException();//xor	ah, ah
-                                throw new System.NotSupportedException();//les	di, [bp+var_C]
-                                throw new System.NotSupportedException();//add	di, ax
-                                throw new System.NotSupportedException();//mov	al, es:[di+3Bh]
-                                throw new System.NotSupportedException();//cmp	al, [bp+var_4]
-                                throw new System.NotSupportedException();//jnz	loc_44DE9
-                                throw new System.NotSupportedException();//mov	al, [bp+var_6]
-                                throw new System.NotSupportedException();//xor	ah, ah
-                                throw new System.NotSupportedException();//les	di, [bp+var_C]
-                                throw new System.NotSupportedException();//add	di, ax
-                                throw new System.NotSupportedException();//mov	al, es:[di+3Bh]
-                                throw new System.NotSupportedException();//or	al, 0x80
-                                throw new System.NotSupportedException();//mov	dl, al
-                                throw new System.NotSupportedException();//mov	al, [bp+var_6]
-                                throw new System.NotSupportedException();//xor	ah, ah
-                                throw new System.NotSupportedException();//les	di, [bp+var_C]
-                                throw new System.NotSupportedException();//add	di, ax
-                                throw new System.NotSupportedException();//mov	es:[di+3Bh], dl
-                                var_D = true;
-                                throw new System.NotSupportedException();//loc_44DE9:
-                                var_6++;
-                                throw new System.NotSupportedException();//cmp	[bp+var_6], 3
-                                throw new System.NotSupportedException();//ja	loc_44DF8
-                                throw new System.NotSupportedException();//cmp	[bp+var_D], 0
-                                throw new System.NotSupportedException();//jz	loc_44DB2
-                                throw new System.NotSupportedException();//loc_44DF8:
-                                throw new System.NotSupportedException();//les	di, [bp+var_C]
-                                throw new System.NotSupportedException();//mov	ax, es:[di+2Ah]
-                                throw new System.NotSupportedException();//mov	dx, es:[di+2Ch]
-                                throw new System.NotSupportedException();//mov	short ptr [bp+var_C], ax
-                                throw new System.NotSupportedException();//mov	short ptr [bp+var_C+2], dx
-                                throw new System.NotSupportedException();//jmp	short loc_44DA0
-                                throw new System.NotSupportedException();//loc_44E0B:
-                                throw new System.NotSupportedException();//jmp	short loc_44E21
-                                throw new System.NotSupportedException();//loc_44E0D:
-                                ovr025.string_print01("You can not scribe that spell.");
+                                if (gbl.player_ptr.field_12D[spell_class, spell_level - 1] > 0)
+                                {
+                                    var_C = gbl.player_ptr.itemsPtr;
+
+                                    while (var_C != null && var_D == false)
+                                    {
+                                        int var_6 = 1;
+                                        do
+                                        {
+                                            if (var_C.getAffect(var_6) == (Affects)var_4)
+                                            {
+                                                var_C.setAffect(var_6, (Affects)((int)var_C.getAffect(var_6) | 0x80));
+                                                var_D = true;
+                                            }
+ 
+                                            var_6++;
+                                        } while (var_6 <= 3 && var_D == false);
+
+                                        var_C = var_C.next;
+                                    }
+                                }
+                                else
+                                {
+                                    ovr025.string_print01("You can not scribe that spell.");
+                                }
                             }
                         }
                     }
-                    //loc_44E21:
                 }
 
                 if (var_8 != -1)
