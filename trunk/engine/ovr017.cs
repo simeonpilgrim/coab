@@ -492,6 +492,7 @@ namespace engine
                 switch ((Stat)var_1)
                 {
                     case Stat.STR:
+                        //byte dl = 
                         throw new System.NotSupportedException();//les	di, int ptr [bp+player.offset]
                         throw new System.NotSupportedException();//mov	al, es:[di+charStruct.sex]
                         throw new System.NotSupportedException();//cbw
@@ -1239,11 +1240,10 @@ namespace engine
 
         internal static void sub_48F35(HillsFarPlayer bp_var_1C4, Player bp_player_ptr, Player bp_var_1CA)
         {
-            Player var_7;
             byte var_3;
             byte var_1;
 
-            var_7 = bp_player_ptr;
+            Player var_7 = bp_player_ptr;
 
             if (var_7.tmp_str < bp_var_1C4.field_14)
             {
@@ -1251,71 +1251,37 @@ namespace engine
                 var_7.strength = bp_var_1C4.field_14;
             }
 
-            throw new System.NotSupportedException();//les	di, [bp+var_7]
-            throw new System.NotSupportedException();//mov	al, es:[di+1Ch]
-            throw new System.NotSupportedException();//mov	di, [bp+previous_bp]
-            throw new System.NotSupportedException();//les	di, ss:[di+var_1C4]
-            throw new System.NotSupportedException();//cmp	al, es:[di+15h]
-            throw new System.NotSupportedException();//jnb	loc_48FBE
-            throw new System.NotSupportedException();//mov	di, [bp+previous_bp]
-            throw new System.NotSupportedException();//les	di, ss:[di+var_1C4]
-            throw new System.NotSupportedException();//mov	al, es:[di+15h]
-            throw new System.NotSupportedException();//les	di, [bp+var_7]
-            throw new System.NotSupportedException();//mov	es:[di+1Ch], al
-            throw new System.NotSupportedException();//mov	di, [bp+previous_bp]
-            throw new System.NotSupportedException();//les	di, ss:[di+var_1C4]
-            throw new System.NotSupportedException();//mov	al, es:[di+15h]
-            throw new System.NotSupportedException();//les	di, [bp+var_7]
-            throw new System.NotSupportedException();//mov	es:[di+1Dh], al
-            throw new System.NotSupportedException();//loc_48FBE:
-            var_1 = 1;
-            throw new System.NotSupportedException();//jmp	short loc_48FC7
-            throw new System.NotSupportedException();//loc_48FC4:
-            var_1++;
-            throw new System.NotSupportedException();//loc_48FC7:
-            throw new System.NotSupportedException();//mov	al, [bp+var_1]
-            throw new System.NotSupportedException();//cbw
-            throw new System.NotSupportedException();//add	ax, 0x15
-            throw new System.NotSupportedException();//mov	di, [bp+previous_bp]
-            throw new System.NotSupportedException();//les	di, ss:[di+var_1C4]
-            throw new System.NotSupportedException();//add	di, ax
-            throw new System.NotSupportedException();//mov	dl, es:[di]
-            throw new System.NotSupportedException();//mov	al, [bp+var_1]
-            throw new System.NotSupportedException();//cbw
-            throw new System.NotSupportedException();//shl	ax, 1
-            throw new System.NotSupportedException();//les	di, [bp+var_7]
-            throw new System.NotSupportedException();//add	di, ax
-            throw new System.NotSupportedException();//mov	al, es:[di+10h]
-            throw new System.NotSupportedException();//cmp	al, dl
-            throw new System.NotSupportedException();//jnb	loc_4902F
-            throw new System.NotSupportedException();//mov	al, [bp+var_1]
-            throw new System.NotSupportedException();//cbw
-            throw new System.NotSupportedException();//add	ax, 0x15
-            throw new System.NotSupportedException();//mov	di, [bp+previous_bp]
-            throw new System.NotSupportedException();//les	di, ss:[di+var_1C4]
-            throw new System.NotSupportedException();//add	di, ax
-            throw new System.NotSupportedException();//mov	dl, es:[di]
-            throw new System.NotSupportedException();//mov	al, [bp+var_1]
-            throw new System.NotSupportedException();//cbw
-            throw new System.NotSupportedException();//shl	ax, 1
-            throw new System.NotSupportedException();//les	di, [bp+var_7]
-            throw new System.NotSupportedException();//add	di, ax
-            throw new System.NotSupportedException();//mov	es:[di+10h], dl
-            throw new System.NotSupportedException();//mov	al, [bp+var_1]
-            throw new System.NotSupportedException();//cbw
-            throw new System.NotSupportedException();//shl	ax, 1
-            throw new System.NotSupportedException();//les	di, [bp+var_7]
-            throw new System.NotSupportedException();//add	di, ax
-            throw new System.NotSupportedException();//mov	dl, es:[di+10h]
-            throw new System.NotSupportedException();//mov	al, [bp+var_1]
-            throw new System.NotSupportedException();//cbw
-            throw new System.NotSupportedException();//shl	ax, 1
-            throw new System.NotSupportedException();//les	di, [bp+var_7]
-            throw new System.NotSupportedException();//add	di, ax
-            throw new System.NotSupportedException();//mov	es:[di+11h], dl
-            throw new System.NotSupportedException();//loc_4902F:
-            throw new System.NotSupportedException();//cmp	[bp+var_1], 5
-            throw new System.NotSupportedException();//jnz	loc_48FC4
+            if (var_7.tmp_str_00 < bp_var_1C4.field_15)
+            {
+                var_7.tmp_str_00 = bp_var_1C4.field_15;
+                var_7.max_str_00 = bp_var_1C4.field_15;
+            }
+
+            if (var_7.tmp_int < bp_var_1C4.field_16)
+            {
+                var_7.tmp_int = bp_var_1C4.field_16;
+                var_7._int = bp_var_1C4.field_16;
+            }
+            if (var_7.tmp_wis < bp_var_1C4.field_17)
+            {
+                var_7.tmp_wis = bp_var_1C4.field_17;
+                var_7.wis = bp_var_1C4.field_17;
+            }
+            if (var_7.tmp_dex < bp_var_1C4.field_18)
+            {
+                var_7.tmp_dex = bp_var_1C4.field_18;
+                var_7.dex = bp_var_1C4.field_18;
+            }
+            if (var_7.tmp_con < bp_var_1C4.field_19)
+            {
+                var_7.tmp_con = bp_var_1C4.field_19;
+                var_7.con = bp_var_1C4.field_19;
+            }
+            if (var_7.tmp_cha < bp_var_1C4.field_1A)
+            {
+                var_7.tmp_cha = bp_var_1C4.field_1A;
+                var_7.charisma = bp_var_1C4.field_1A;
+            }
 
             if (var_7.exp < bp_var_1C4.field_2E)
             {
