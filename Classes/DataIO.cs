@@ -135,6 +135,8 @@ namespace Classes
             {
                 case DataType.SByte:
                     return (ushort)(sbyte)o;
+                case DataType.Byte:
+                    return (ushort)(byte)o;
                 case DataType.SWord:
                     return (ushort)(short)o;
                 case DataType.Word:
@@ -159,9 +161,12 @@ namespace Classes
                 case DataType.Word:
                     fInfo.SetValue(obj, value);
                     break;
+                case DataType.Byte:
+                    fInfo.SetValue(obj, (byte)value);
+                    break;
+
                 default:
                     throw new NotImplementedException();
-
             }
         }
 

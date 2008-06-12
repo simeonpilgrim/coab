@@ -204,6 +204,12 @@ namespace Classes
                     field_1D0 = (short)value;
                     break;
 
+                case 0x1E0:
+                    field_1E0 = (short)value;
+                    break;
+                case 0x1E2:
+                    field_1E2 = (short)value;
+                    break;
                 case 0x1E4:
                     field_1E4 = value;
                     break;
@@ -462,13 +468,17 @@ namespace Classes
                 case 0x2B6:
                     return field_2B6;
 
-
                 case 0x336:
                     return field_336;
                 case 0x338:
                     return field_338;
                 case 0x33A:
                     return field_33A;
+
+                case 0x344:
+                    return field_344;
+                case 0x346:
+                    return field_346;
                 
                 case 0x3D4:
                     return field_3D4;
