@@ -199,7 +199,7 @@ namespace engine
                 {
                     bool var_3;
 
-                    spell_id = ovr020.spell_menu2(out var_3, ref var_2, 1, SpellLoc.memory);
+                    spell_id = ovr020.spell_menu2(out var_3, ref var_2, SpellSource.Cast, SpellLoc.memory);
 
                     if (spell_id != 0)
                     {
@@ -393,7 +393,7 @@ namespace engine
                     }
                     else
                     {
-                        var_4 = ovr020.spell_menu2(out var_2, ref var_7, 2, SpellLoc.grimoire);
+                        var_4 = ovr020.spell_menu2(out var_2, ref var_7, SpellSource.Memorize, SpellLoc.grimoire);
                         var_3 = 1;
 
                         if (var_4 == 0)
@@ -476,7 +476,7 @@ namespace engine
 
                 while (var_1 == 0)
                 {
-                    var_4 = ovr020.spell_menu2(out var_2, ref var_8, 3, SpellLoc.scrolls);
+                    var_4 = ovr020.spell_menu2(out var_2, ref var_8, SpellSource.Scribe, SpellLoc.scrolls);
 
                     if (var_4 == 0)
                     {

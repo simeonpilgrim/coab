@@ -1048,18 +1048,18 @@ namespace engine
             byte var_1;
 
             var_3 = -1;
-            gbl.byte_1D88D = 0;
+            gbl.spell_from_item = false;
             var_1 = 0;
 
             if (ovr023.item_is_scroll(item) == true)
             {
                 gbl.dword_1D5C6 = item;
 
-                var_1 = spell_menu2(out var_4, ref var_3, 1, SpellLoc.scroll);
+                var_1 = spell_menu2(out var_4, ref var_3, SpellSource.Cast, SpellLoc.scroll);
             }
             else if( item.affect_2 > 0 && (int)item.affect_3 < 0x80 )
             {
-                gbl.byte_1D88D = 1;
+                gbl.spell_from_item = true;
                 var_1 = (byte)((int)item.affect_2 & 0x7F);
             }
 
@@ -1075,7 +1075,7 @@ namespace engine
                     ovr025.sub_68DC0();
                 }
 
-                if (gbl.byte_1D88D != 0)
+                if (gbl.spell_from_item == true)
                 {
                     ovr025.DisplayPlayerStatusString(false, 10, "uses an item", gbl.player_ptr);
 
@@ -1094,7 +1094,7 @@ namespace engine
                     ovr025.ClearPlayerTextArea();
                 }
 
-                gbl.byte_1D88D = 1;
+                gbl.spell_from_item = true;
 
                 if (ovr023.item_is_scroll(item) == true)
                 {
@@ -1125,7 +1125,7 @@ namespace engine
                     ovr023.sub_5D2E1(ref arg_0, 0, gbl.player_ptr.quick_fight, var_1);
                 }
 
-                gbl.byte_1D88D = 0;
+                gbl.spell_from_item = false;
 
                 if (gbl.game_state == 5 &&
                     gbl.spell_list[var_1].field_B != 0)
@@ -1584,7 +1584,7 @@ namespace engine
             return var_2;
         }
 
-        internal static byte spell_menu2(out bool arg_0, ref short arg_4, byte arg_8, SpellLoc spl_location)
+        internal static byte spell_menu2(out bool arg_0, ref short arg_4, SpellSource arg_8, SpellLoc spl_location)
         {
             string text;
             byte result;
@@ -1631,11 +1631,11 @@ namespace engine
             if (arg_0 == true )
             {
                 if (arg_4 < 0 ||
-                    arg_8 == 1)
+                    arg_8 == SpellSource.Cast)
                 {
                     if (gbl.game_state != 5)
                     {
-                        if (arg_8 == 2)
+                        if (arg_8 == SpellSource.Memorize)
                         {
                             seg037.draw8x8_05();
                         }
