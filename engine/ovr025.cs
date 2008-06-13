@@ -1786,7 +1786,7 @@ namespace engine
                 }
             }
 
-            if (gbl.byte_1D88D != 0 &&
+            if (gbl.spell_from_item == true &&
                 gbl.spell_list[spell_id].spellClass != 3)
             {
                 target_count = 6;

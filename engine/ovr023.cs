@@ -173,29 +173,25 @@ namespace engine
         static Set asc_5C1D1 = new Set(0x000B, new byte[] { 1, 0, 0, 0, 0, 0, 0, 0, 0x28, 0x30, 8 });
         static Set unk_5C1F1 = new Set(0x0009, new byte[] { 1, 0, 0, 0, 0, 0, 0, 0, 0x20 });
 
-        internal static byte spell_menu(ref short arg_0, byte arg_4)
+        internal static byte spell_menu(ref short arg_0, SpellSource arg_4)
         {
-            char var_5F;
             string text;
-            StringList var_9;
-            StringList var_5;
-            byte var_1;
 
             switch (arg_4)
             {
-                case 1:
+                case SpellSource.Cast:
                     text = "Cast";
                     break;
 
-                case 2:
+                case SpellSource.Memorize:
                     text = "Memorize";
                     break;
 
-                case 3:
+                case SpellSource.Scribe:
                     text = "Scribe";
                     break;
 
-                case 4:
+                case SpellSource.Learn:
                     text = "Learn";
                     break;
 
@@ -204,11 +200,11 @@ namespace engine
                     break;
             }
 
-            string prompt_text = unk_5C1A2.MemberOf(arg_4) ? "Choose Spell: " : "";
+            string prompt_text = unk_5C1A2.MemberOf((byte)arg_4) ? "Choose Spell: " : "";
 
-            int end_y = (arg_4 == 2)? 0x0F : 0x16;
+            int end_y = (arg_4 == SpellSource.Memorize) ? 0x0F : 0x16;
 
-            bool var_60 = arg_4 != 4;
+            bool show_exit = arg_4 != SpellSource.Learn;
             bool var_61 = false;
 
             if (arg_0 < 0)
@@ -217,114 +213,109 @@ namespace engine
                 arg_0 = 0;
             }
 
-            if (arg_4 == 4 || arg_4 == 1)
+            if (arg_4 == SpellSource.Learn || arg_4 == SpellSource.Cast)
             {
                 var_61 = true;
             }
 
-            var_5 = null;
+            StringList selected = null;
+            char input_key;
 
             do
             {
-                var_5F = ovr027.sl_select_item(out var_5, ref arg_0, ref var_61, var_60, gbl.dword_1AE6C,
+                input_key = ovr027.sl_select_item(out selected, ref arg_0, ref var_61, show_exit, gbl.spell_string_list,
                     end_y, 0x26, 5, 1, 15, 10, 13, text, prompt_text);
 
-            } while (asc_5C1D1.MemberOf(var_5F) == false);
+            } while (asc_5C1D1.MemberOf(input_key) == false);
 
-            var_9 = gbl.dword_1AE6C;
-            int var_5D = 0;
+            int selected_index = 0;
+            StringList tmp_sl = gbl.spell_string_list;
 
-            while (var_9 != var_5)
+            while (tmp_sl != selected)
             {
-                if (var_9.field_29 == 0)
+                if (tmp_sl.field_29 == 0)
                 {
-                    var_5D++;
+                    selected_index++;
                 }
 
-                var_9 = var_9.next;
+                tmp_sl = tmp_sl.next;
             }
 
-            if (unk_5C1F1.MemberOf(var_5F) == true)
+            byte spell_id;
+            if (unk_5C1F1.MemberOf(input_key) == true)
             {
-                var_1 = 0;
+                spell_id = 0;
             }
             else
             {
-                var_1 = gbl.unk_1AEC4[var_5D];
+                spell_id = gbl.unk_1AEC4[selected_index];
             }
 
-            if (arg_4 == 3)
+            if (arg_4 == SpellSource.Scribe)
             {
-                gbl.dword_1D5C6 = gbl.unk_1AF18[var_5D];
+                gbl.dword_1D5C6 = gbl.unk_1AF18[selected_index];
             }
 
-            ovr027.free_stringList(ref gbl.dword_1AE6C);
+            ovr027.free_stringList(ref gbl.spell_string_list);
 
-            return var_1;
+            return spell_id;
         }
 
 
-        internal static void sub_5C3ED(byte arg_0)
+        internal static void add_spell_to_list(byte arg_0) /* sub_5C3ED */
         {
-            sbyte var_6;
-            byte var_5;
+            sbyte last_spell_level;
+            byte index;
+            byte masked_id = (byte)(arg_0 & 0x7F);
 
-            StringList var_4 = gbl.dword_1AE6C;
+            StringList string_list = gbl.spell_string_list;
 
-            if (gbl.dword_1AE6C == null)
+            if (string_list == null)
             {
-                var_4 = new StringList();
+                string_list = new StringList();
 
-                gbl.dword_1AE6C = var_4;
-                var_6 = 0;
-                var_5 = 0;
+                gbl.spell_string_list = string_list;
+                last_spell_level = 0;
+                index = 0;
             }
             else
             {
-                var_5 = 1;
+                index = 1;
 
-                while (var_4.next != null)
+                while (string_list.next != null)
                 {
-                    if (var_4.field_29 == 0)
+                    if (string_list.field_29 == 0)
                     {
-                        var_5++;
+                        index++;
                     }
-                    var_4 = var_4.next;
+                    string_list = string_list.next;
                 }
 
-                var_6 = gbl.spell_list[gbl.unk_1AEC4[var_5 - 1]].spellLevel;
+                last_spell_level = gbl.spell_list[gbl.unk_1AEC4[index - 1]].spellLevel;
 
-                var_4.next = new StringList();
+                string_list.next = new StringList();
 
-                var_4 = var_4.next;
+                string_list = string_list.next;
             }
 
-            var_4.next = null;
+            string_list.next = null;
 
-            if (gbl.spell_list[arg_0 & 0x7F].spellLevel != var_6)
+            if (gbl.spell_list[masked_id].spellLevel != last_spell_level)
             {
-                var_4.s = LevelStrings[gbl.spell_list[arg_0 & 0x7F].spellLevel];
+                string_list.s = LevelStrings[gbl.spell_list[masked_id].spellLevel];
 
-                var_4.field_29 = 1;
-                var_4.next = new StringList();
+                string_list.field_29 = 1;
+                string_list.next = new StringList();
 
-                var_4 = var_4.next;
-                var_4.next = null;
+                string_list = string_list.next;
+                string_list.next = null;
             }
 
-            if (arg_0 > 0x7f)
-            {
-                var_4.s = " *";
-            }
-            else
-            {
-                var_4.s = "  ";
-            }
+            string_list.s = (arg_0 > 0x7F) ? " *" : "  ";
+            string_list.s += AffectNames[masked_id];
+            string_list.field_29 = 0;
 
-            var_4.s += AffectNames[arg_0 & 0x7f];
-            var_4.field_29 = 0;
-
-            gbl.unk_1AEC4[var_5] = (byte)(arg_0 & 0x7F);
+            gbl.unk_1AEC4[index] = masked_id;
         }
 
 
@@ -336,19 +327,19 @@ namespace engine
             StringList var_6;
             byte var_1;
 
-            var_6 = gbl.dword_1AE6C;
+            var_6 = gbl.spell_string_list;
             bool found = false;
 
             int sp_lvl = gbl.spell_list[arg_0 & 0x7F].spellLevel;
 
-            if (gbl.dword_1AE6C == null)
+            if (gbl.spell_string_list == null)
             {
                 seg051.FillChar(0, 0x54, gbl.unk_1AE70);
 
                 var_6 = new StringList();
                 var_6.next = null;
 
-                gbl.dword_1AE6C = var_6;
+                gbl.spell_string_list = var_6;
 
                 var_F = 0;
 
@@ -383,7 +374,7 @@ namespace engine
 
                 if (gbl.unk_1AEC4[var_F] != (arg_0 & 0x7F))
                 {
-                    var_A = gbl.dword_1AE6C;
+                    var_A = gbl.spell_string_list;
                     if (var_A != var_6)
                     {
                         while (var_A.next != var_6)
@@ -400,7 +391,7 @@ namespace engine
                     {
                         var_E = new StringList();
                         var_E.next = var_6;
-                        gbl.dword_1AE6C = var_E;
+                        gbl.spell_string_list = var_E;
                         var_6 = var_E;
                     }
 
@@ -462,7 +453,7 @@ namespace engine
                     if ((arg_0 != 0 && (int)gbl.dword_1D5C6.getAffect(var_1) > 0x80) ||
                         (arg_0 == 0 && (int)gbl.dword_1D5C6.getAffect(var_1) > 0))
                     {
-                        sub_5C3ED((byte)gbl.dword_1D5C6.getAffect(var_1));
+                        add_spell_to_list((byte)gbl.dword_1D5C6.getAffect(var_1));
                         gbl.unk_1AF18[gbl.byte_1AFDC] = gbl.dword_1D5C6;
                         gbl.byte_1AFDC++;
                     }
@@ -504,7 +495,7 @@ namespace engine
             bool result = false;
             bool var_D = true;
 
-            gbl.dword_1AE6C = null;
+            gbl.spell_string_list = null;
 
             for (int var_2 = 0; var_2 < gbl.max_spells; var_2++)
             {
@@ -585,7 +576,7 @@ namespace engine
                     break;
             }
 
-            if (gbl.dword_1AE6C != null)
+            if (gbl.spell_string_list != null)
             {
                 if (var_D == true)
                 {
@@ -595,12 +586,12 @@ namespace engine
 
                     var_A = new StringList();
 
-                    var_A.next = gbl.dword_1AE6C;
-                    gbl.dword_1AE6C = var_A;
+                    var_A.next = gbl.spell_string_list;
+                    gbl.spell_string_list = var_A;
 
-                    gbl.dword_1AE6C.s = LevelStrings[gbl.spell_list[gbl.unk_1AEC4[var_2]].spellLevel];
-                    gbl.dword_1AE6C.field_29 = 1;
-                    var_6 = gbl.dword_1AE6C;
+                    gbl.spell_string_list.s = LevelStrings[gbl.spell_list[gbl.unk_1AEC4[var_2]].spellLevel];
+                    gbl.spell_string_list.field_29 = 1;
+                    var_6 = gbl.spell_string_list;
 
                     do
                     {
@@ -639,7 +630,7 @@ namespace engine
             byte var_2;
             byte var_1;
 
-            if (gbl.byte_1D88D == 0)
+            if (gbl.spell_from_item == false)
             {
                 var_2 = (byte)(gbl.spell_list[arg_0].field_2 + (gbl.spell_list[arg_0].field_3 * ovr025.spell_target_count(arg_0)));
             }
@@ -838,7 +829,7 @@ namespace engine
             if (gbl.game_state != 5 &&
                 gbl.spell_list[spell_id].field_7 == 0)
             {
-                if (gbl.byte_1D88D == 0)
+                if (gbl.spell_from_item == false)
                 {
                     seg041.displayString(AffectNames[spell_id], 0, 10, 0x13, 1);
                     seg041.displayString("can't be cast here...", 0, 10, 0x14, 1);
@@ -876,7 +867,7 @@ namespace engine
                 }
             }
 
-            if (arg_4 != 0 && gbl.byte_1D88D == 0)
+            if (arg_4 != 0 && gbl.spell_from_item == false)
             {
                 cast_spell_text(spell_id, "casts", caster);
             }
@@ -929,7 +920,7 @@ namespace engine
 
                     ovr024.remove_invisibility(caster);
 
-                    if (gbl.byte_1D88D == 0)
+                    if (gbl.spell_from_item == false)
                     {
                         ovr025.clear_spell(spell_id, caster);
                     }
@@ -953,7 +944,7 @@ namespace engine
                             ovr027.yes_no(15, 10, 14, "Abort Spell? ") == 'Y')
                         {
                             ovr025.string_print01("Spell Aborted");
-                            if (gbl.byte_1D88D == 0)
+                            if (gbl.spell_from_item == false)
                             {
                                 ovr025.clear_spell(spell_id, caster);
                             }
@@ -3851,7 +3842,7 @@ namespace engine
         internal static void setup_spells()
         {
             gbl.byte_1D2C6 = false;
-            gbl.byte_1D88D = 0;
+            gbl.spell_from_item = false;
             gbl.dword_1D87F = null;
             gbl.byte_1D2C8 = true;
 

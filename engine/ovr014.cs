@@ -1548,7 +1548,7 @@ namespace engine
 
             if (var_1 == 0)
             {
-                var_1 = ovr020.spell_menu2(out var_6, ref var_5, 1, SpellLoc.memory);
+                var_1 = ovr020.spell_menu2(out var_6, ref var_5, SpellSource.Cast, SpellLoc.memory);
             }
 
             if (var_1 > 0 &&

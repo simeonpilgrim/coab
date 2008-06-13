@@ -3243,7 +3243,7 @@ namespace engine
 
                             do
                             {
-                                var_1A = ovr020.spell_menu2(out var_1D, ref var_1C, 4, SpellLoc.choose);
+                                var_1A = ovr020.spell_menu2(out var_1D, ref var_1C, SpellSource.Learn, SpellLoc.choose);
                             } while (var_1A <= 0 && var_1D == true);
 
                             if (var_1A > 0)

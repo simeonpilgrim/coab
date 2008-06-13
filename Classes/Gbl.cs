@@ -16,6 +16,15 @@ namespace Classes
         Remove = 1
     }
 
+    public enum SpellSource
+    {
+        Cast = 1,
+        Memorize = 2,
+        Scribe = 3,
+        Learn = 4
+    }
+    
+
     public delegate void spellDelegate(out bool arg_0, QuickFight quick_fight, byte arg_6);
     public delegate void spellDelegate2();
     public delegate void spellDelegateX(Effect arg_0, object affect, Player player);
@@ -342,7 +351,7 @@ namespace Classes
         public static int sp_target_count; // byte_1D75E
         public static int targetX; // byte_1D883
         public static int targetY; // byte_1D884
-        public static byte byte_1D88D;
+        public static bool spell_from_item; // byte_1D88D
         public static bool displayPlayerStatusLine18; /* byte_1D8A8 */
         public static bool can_draw_bigpic; // byte_1D8AA
         public static bool byte_1D8AC; // byte_1D8AC
@@ -472,7 +481,7 @@ namespace Classes
         public const int max_spells = 0x54;
         public static byte[] unk_1AEC4 = new byte[max_spells]; // unk_1AEC4[0x53]; seg600:4BB4
         public static Struct_1ADF6[] dword_1ADF6;
-        public static StringList dword_1AE6C;
+        public static StringList spell_string_list; // dword_1AE6C
         public static DaxBlock cursor_bkup; // dword_1C8F4
         public static DaxBlock dax24x24Set; //dword_1C8F8;
         public static Item dword_1D5C6;
