@@ -229,28 +229,27 @@ namespace engine
         }
 
 
-        static void sub_3E65D(Player arg_0)
+        static void sub_3E65D(Player target)
         {
-
-            int var_8 = ovr025.near_enemy(1, arg_0);
+            int var_8 = ovr025.near_enemy(1, target);
 
             for (int var_2 = 1; var_2 <= var_8; var_2++)
             {
-                if (arg_0.in_combat == true)
+                if (target.in_combat == true)
                 {
-                    Player var_6 = gbl.player_array[gbl.byte_1D8B9[var_2]];
+                    Player attacker = gbl.player_array[gbl.byte_1D8B9[var_2]];
 
-                    if (var_6.actions.guarding == true &&
-                        ovr025.is_held(var_6) == false)
+                    if (attacker.actions.guarding == true &&
+                        ovr025.is_held(attacker) == false)
                     {
-                        ovr033.redrawCombatArea(8, 2, ovr033.PlayerMapYPos(arg_0), ovr033.PlayerMapXPos(arg_0));
+                        ovr033.redrawCombatArea(8, 2, ovr033.PlayerMapYPos(target), ovr033.PlayerMapXPos(target));
 
-                        var_6.actions.guarding = false;
+                        attacker.actions.guarding = false;
 
-                        sub_3F94D(arg_0, var_6);
+                        sub_3F94D(target, attacker);
 
                         bool tmpBool;
-                        sub_3F9DB(out tmpBool, null, 0, arg_0, var_6);
+                        sub_3F9DB(out tmpBool, null, 0, target, attacker);
                     }
                 }
             }
@@ -289,7 +288,7 @@ namespace engine
 
             byte radius = 1;
 
-            if (player.quick_fight != 0)
+            if (player.quick_fight == QuickFight.True)
             {
                 radius = 3;
 
@@ -1007,14 +1006,11 @@ namespace engine
 
         internal static void sub_3F94D(Player target, Player attacker)
         {
-            byte var_2;
-            byte var_1;
-
             target.actions.field_F++;
 
-            var_2 = getTargetDirection(attacker, target);
+            byte var_2 = getTargetDirection(attacker, target);
 
-            var_1 = (byte)(((var_2 - target.actions.direction) + 8) % 8);
+            byte var_1 = (byte)(((var_2 - target.actions.direction) + 8) % 8);
 
             if (var_1 > 4)
             {
@@ -1924,27 +1920,26 @@ namespace engine
         }
 
 
-        internal static bool sub_40F1F(Player playerA, Player playerB)
+        internal static bool can_attack_target(Player target, Player attacker) /* sub_40F1F */
         {
-            Player player;
-            bool var_1;
+            bool result;
 
-            if (ovr025.opposite_team(playerA) == playerB.combat_team ||
-                playerB.quick_fight == QuickFight.True)
+            if (ovr025.opposite_team(target) == attacker.combat_team ||
+                attacker.quick_fight == QuickFight.True)
             {
-                var_1 = true;
+                result = true;
             }
             else if (ovr027.yes_no(15, 10, 13, "Attack Ally: ") != 'Y')
             {
-                var_1 = false;
+                result = false;
             }
             else
             {
-                var_1 = true;
+                result = true;
                 gbl.byte_1D8B6 = 1;
                 gbl.area2_ptr.field_666 = 1;
 
-                player = gbl.player_next_ptr;
+                Player player = gbl.player_next_ptr;
 
                 while (player != null)
                 {
@@ -1961,7 +1956,7 @@ namespace engine
                 ovr025.count_teams();
             }
 
-            return var_1;
+            return result;
         }
 
 
@@ -2020,45 +2015,46 @@ namespace engine
         }
 
 
-        internal static void sub_411D8(Struct_1D183 arg_0, out bool arg_4, byte arg_8, Player arg_A, Player arg_E)
+        internal static void sub_411D8(Struct_1D183 arg_0, out bool arg_4, byte arg_8, Player target, Player attacker)
         {
-            Item var_5 = null;
             arg_4 = true;
 
             if (arg_8 == 1 &&
-                sub_40F1F(arg_A, arg_E) == false)
+                can_attack_target(target, attacker) == false)
             {
                 arg_4 = false;
             }
 
             if (arg_4 == true)
             {
-                arg_0.target = arg_A;
-                arg_0.mapX = ovr033.PlayerMapXPos(arg_A);
-                arg_0.mapY = ovr033.PlayerMapYPos(arg_A);
+                arg_0.target = target;
+                arg_0.mapX = ovr033.PlayerMapXPos(target);
+                arg_0.mapY = ovr033.PlayerMapYPos(target);
                 gbl.mapToBackGroundTile.draw_target_cursor = false;
 
                 ovr033.redrawCombatArea(8, 3, gbl.mapToBackGroundTile.mapScreenTopY + 3, gbl.mapToBackGroundTile.mapScreenLeftX + 3);
 
                 if (arg_8 == 1)
                 {
-                    if (sub_3EF3D(arg_A, arg_E) == true)
+                    if (sub_3EF3D(target, attacker) == true)
                     {
-                        arg_4 = ovr025.clear_actions(arg_E);
+                        arg_4 = ovr025.clear_actions(attacker);
                     }
                     else
                     {
-                        sub_3F94D(arg_A, arg_E);
+                        sub_3F94D(target, attacker);
 
-                        if (ovr025.is_weapon_ranged(arg_E) == true &&
-                            ovr025.sub_6906C(out var_5, arg_E) == true &&
-                            ovr025.is_weapon_ranged_melee(arg_E) == true &&
-                            ovr025.getTargetRange(arg_A, arg_E) == 0)
+                        Item var_5 = null;
+
+                        if (ovr025.is_weapon_ranged(attacker) == true &&
+                            ovr025.sub_6906C(out var_5, attacker) == true &&
+                            ovr025.is_weapon_ranged_melee(attacker) == true &&
+                            ovr025.getTargetRange(target, attacker) == 0)
                         {
                             var_5 = null;
                         }
 
-                        sub_3F9DB(out arg_4, var_5, 0, arg_A, arg_E);
+                        sub_3F9DB(out arg_4, var_5, 0, target, attacker);
                     }
                 }
             }

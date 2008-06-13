@@ -4,55 +4,46 @@ namespace engine
 {
     class ovr016
     {
-        internal static short sub_44032(Player player)
+        internal static int sub_44032(Player player)
         {
-            byte var_D;
-            byte var_C;
-            byte loop_var;
-            Item item;
-            byte var_6;
-            byte var_5;
-            byte var_4;
-            byte var_3;
-            short var_2;
+            int max_spell_level = 0;
+            int total_spell_level = 0;
 
-            var_3 = 0;
-            var_4 = 0;
-            var_5 = 0;
-            var_6 = 0;
-
-            for (loop_var = 0; loop_var < gbl.max_spells; loop_var++)
+            for (int sp_indx = 0; sp_indx < gbl.max_spells; sp_indx++)
             {
-                if (player.spell_list[loop_var] > 127)
+                if (player.spell_list[sp_indx] > 127)
                 {
-                    var_C = (byte)gbl.spell_list[player.spell_list[loop_var] & 0x7F].spellLevel;
+                    int var_C = gbl.spell_list[player.spell_list[sp_indx] & 0x7F].spellLevel;
 
-                    if (var_C > var_3)
+                    if (var_C > max_spell_level)
                     {
-                        var_3 = var_C;
+                        max_spell_level = var_C;
                     }
 
-                    var_5 += var_C;
+                    total_spell_level += var_C;
                 }
             }
-            item = player.itemsPtr;
+
+            Item item = player.itemsPtr;
+            int max_scribe_level = 0;
+            int total_scribe_level = 0;
 
             while (item != null)
             {
                 if (ovr023.item_is_scroll(item) == true)
                 {
-                    for (loop_var = 1; loop_var <= 3; loop_var++)
+                    for (int loop_var = 1; loop_var <= 3; loop_var++)
                     {
                         if ((int)item.getAffect(loop_var) > 0x7f)
                         {
-                            var_C = (byte)gbl.spell_list[(int)item.getAffect(loop_var) & 0x7f].spellLevel;
+                            int var_C = gbl.spell_list[(int)item.getAffect(loop_var) & 0x7f].spellLevel;
 
-                            if (var_C > var_4)
+                            if (var_C > max_scribe_level)
                             {
-                                var_4 = var_C;
+                                max_scribe_level = var_C;
                             }
 
-                            var_6 += var_C;
+                            total_scribe_level += var_C;
                         }
                     }
                 }
@@ -60,21 +51,21 @@ namespace engine
                 item = item.next;
             }
 
-            var_D = 0;
-            if (var_5 > 0 || var_6 > 0)
+            byte count = 0;
+            if (total_spell_level > 0 || total_scribe_level > 0)
             {
-                var_D = 4;
+                count = 4;
             }
 
-            if (var_3 > 2 || var_4 > 2)
+            if (max_spell_level > 2 || max_scribe_level > 2)
             {
-                var_D = 6;
+                count = 6;
             }
 
-            player.spell_to_learn_count = var_D;
-            var_2 = (short)((var_D * 0x3C) + (var_6 * 0x0f) + (var_5 * 0x0f));
+            player.spell_to_learn_count = count;
+            int result = (count * 0x3C) + (total_scribe_level * 0x0f) + (total_spell_level * 0x0f);
 
-            return var_2;
+            return result;
         }
 
 
@@ -235,27 +226,21 @@ namespace engine
         }
 
 
-        internal static byte sub_445D4()
+        internal static bool sub_445D4()
         {
             const int MaxSpellLevel = 5;
             const int MaxSpellClass = 3;
             string[,] var_60 = new string[MaxSpellClass, MaxSpellLevel];
-            byte var_5F;
-            byte var_5E;
-            byte var_5D;
-            sbyte spellLevel;
-            sbyte spellClass;
+
             bool[] canLearnSpellClass = new bool[MaxSpellClass];
-            string var_2A = string.Empty;
-            byte var_1;
 
-            var_5F = 0;
+            bool found = false;
 
-            for (spellClass = 0; spellClass < MaxSpellClass; spellClass++)
+            for (int spellClass = 0; spellClass < MaxSpellClass; spellClass++)
             {
                 canLearnSpellClass[spellClass] = false;
 
-                for (spellLevel = 0; spellLevel < MaxSpellLevel; spellLevel++)
+                for (int spellLevel = 0; spellLevel < MaxSpellLevel; spellLevel++)
                 {
                     var_60[spellClass, spellLevel] = HowManySpellsPlayerCanLearn(spellClass, spellLevel+1).ToString();
                     
@@ -266,64 +251,62 @@ namespace engine
                     else
                     {
                         canLearnSpellClass[spellClass] = true;
-                        var_5F = 1;
+                        found = true;
                     }
                 }
             }
 
-            if (var_5F != 0)
+            if (found == true)
             {
                 ovr025.DisplayPlayerStatusString(false, 10, "can memorize:", gbl.player_ptr);
-                var_5E = 3;
-                for (spellClass = 0; spellClass < MaxSpellClass; spellClass++)
+                int y_col = 3;
+                for (int spellClass = 0; spellClass < MaxSpellClass; spellClass++)
                 {
                     if (canLearnSpellClass[spellClass])
                     {
+                        string text = string.Empty;
+
                         switch (spellClass)
                         {
                             case 0:
-                                var_2A = "    Cleric Spells:";
+                                text = "    Cleric Spells:";
                                 break;
 
                             case 1:
-                                var_2A = "     Druid Spells:";
+                                text = "     Druid Spells:";
                                 break;
 
                             case 2:
-                                var_2A = "Magic-User Spells:";
+                                text = "Magic-User Spells:";
                                 break;
                         }
 
-                        seg041.displayString(var_2A, 0, 10, var_5E + 17, 1);
-                        var_5D = 0x13;
-                        for (spellLevel = 0; spellLevel < MaxSpellLevel; spellLevel++)
+                        seg041.displayString(text, 0, 10, y_col + 17, 1);
+                        int x_col = 0x13;
+                        for (int spellLevel = 0; spellLevel < MaxSpellLevel; spellLevel++)
                         {
-                            seg041.displayString(var_60[spellClass, spellLevel], 0, 10, var_5E + 0x11, var_5D + 1);
-                            var_5D += 3;
+                            seg041.displayString(var_60[spellClass, spellLevel], 0, 10, y_col + 0x11, x_col + 1);
+                            x_col += 3;
                         }
-                        var_5E++;
+                        y_col++;
                     }
                 }
             }
 
-            var_1 = var_5F;
-
-            return var_1;
+            return found;
         }
 
 
         internal static void rest_menu(out bool arg_0)
         {
-            short var_8;
-            short var_6;
             Player player;
 
-            var_6 = 0;
+            int var_6 = 0;
             player = gbl.player_next_ptr;
 
             while (player != null)
             {
-                var_8 = sub_44032(player);
+                int var_8 = sub_44032(player);
 
                 if (var_6 < var_8)
                 {
@@ -347,21 +330,17 @@ namespace engine
         }
 
 
-        internal static void sub_4486F()
+        internal static void sort_spell_list() /* sub_4486F */
         {
-            byte var_3;
-            byte var_2;
-            byte var_1;
-
-            for (var_1 = 0; var_1 <= 0x52; var_1++)
+            for (int i = 0; i < (gbl.max_spells - 1); i++)
             {
-                for (var_2 = var_1; var_2 < gbl.max_spells; var_2++)
+                for (int j = i; j < gbl.max_spells; j++)
                 {
-                    if ((gbl.player_ptr.spell_list[var_1] & 0xF7) > (gbl.player_ptr.spell_list[var_2] & 0xF7))
+                    if ((gbl.player_ptr.spell_list[i] & 0xF7) > (gbl.player_ptr.spell_list[j] & 0xF7))
                     {
-                        var_3 = gbl.player_ptr.spell_list[var_1];
-                        gbl.player_ptr.spell_list[var_1] = gbl.player_ptr.spell_list[var_2];
-                        gbl.player_ptr.spell_list[var_2] = var_3;
+                        byte tmp_byte = gbl.player_ptr.spell_list[i];
+                        gbl.player_ptr.spell_list[i] = gbl.player_ptr.spell_list[j];
+                        gbl.player_ptr.spell_list[j] = tmp_byte;
                     }
                 }
             }
@@ -406,7 +385,7 @@ namespace engine
 
                 while (var_1 == false)
                 {
-                    var_1 = (sub_445D4() == 0);
+                    var_1 = (sub_445D4() == false);
 
                     if (var_1 == true)
                     {
@@ -432,7 +411,7 @@ namespace engine
 
                             gbl.player_ptr.spell_list[var_5] = (byte)(var_4 + 0x80);
 
-                            sub_4486F();
+                            sort_spell_list();
                         }
                     }
                 }
