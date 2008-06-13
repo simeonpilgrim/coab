@@ -804,15 +804,15 @@ namespace engine
                         if (player_ptr.field_F7 < 0x80 &&
                             player_ptr.health_status != Status.animated)
                         {
-                            player_ptr.quick_fight = 0;
+                            player_ptr.quick_fight = QuickFight.False;
                         }
 
                         player_ptr = player_ptr.next_player;
                     }
 
-                    if (arg_0.quick_fight == 0)
+                    if (arg_0.quick_fight == QuickFight.False)
                     {
-                        arg_0.actions.delay = 0x14;
+                        arg_0.actions.delay = 20;
                         var_1 = true;
                     }
                 }

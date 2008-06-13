@@ -47,7 +47,7 @@ namespace engine
 				seg044.sound_sub_120E0( gbl.sound_FF_188BC );
 			}
 
-            ovr012.sub_39054();
+            ovr012.init_values_a();
 
 			if( gbl.gameFlag01 == false )
 			{
@@ -140,7 +140,7 @@ namespace engine
 					seg044.sound_sub_12194();
 				}
 
-				ovr012.sub_396E5();
+				ovr012.init_values_b();
 
 				if( gbl.inDemo == true ) 
 				{

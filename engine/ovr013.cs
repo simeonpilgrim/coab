@@ -1903,7 +1903,7 @@ namespace engine
                 if (player.field_F7 == 0xb3)
                 {
                     player.field_F7 = 0;
-                    player.quick_fight = 0;
+                    player.quick_fight = QuickFight.False;
                 }
 
                 player.actions.field_10 = 0;

@@ -152,13 +152,13 @@ namespace engine
 
                 if (player.actions.delay > 0)
                 {
-                    if (player.quick_fight != 0)
+                    if (player.quick_fight == QuickFight.True )
                     {
                         ovr010.sub_3504B(player);
                     }
                     else
                     {
-                        camp_menu(player);
+                        combat_menu(player);
                     }
                 }
 
@@ -167,7 +167,7 @@ namespace engine
         }
 
 
-        internal static void camp_menu(Player player)
+        internal static void combat_menu(Player player) /* camp_menu */
         {
             byte spell_id;
             Struct_1D183 var_D = new Struct_1D183();
@@ -255,7 +255,7 @@ namespace engine
                                     {
                                         if (player_ptr.field_F7 < 0x80)
                                         {
-                                            player_ptr.quick_fight = 0;
+                                            player_ptr.quick_fight = QuickFight.False;
                                         }
                                         player_ptr = player_ptr.next_player;
                                     }
@@ -636,7 +636,7 @@ namespace engine
             {
                 ovr025.string_print01("Not with that weapon");
             }
-            else if (ovr014.sub_40F1F(target, player) == true)
+            else if (ovr014.can_attack_target(target, player) == true)
             {
                 player.actions.target = target;
 

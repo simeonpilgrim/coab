@@ -501,7 +501,7 @@ namespace engine
             else if (arg_4 == 0x10C)
             {
                 if (gbl.player_ptr.combat_team == CombatTeam.Ours &&
-                    gbl.player_ptr.quick_fight != 0)
+                    gbl.player_ptr.quick_fight == QuickFight.True)
                 {
                     return_val = 0x80;
                 }
@@ -694,7 +694,7 @@ namespace engine
                 {
                     case 0:
                         gbl.player_ptr.combat_team = CombatTeam.Ours;
-                        gbl.player_ptr.quick_fight = 0;
+                        gbl.player_ptr.quick_fight = QuickFight.False;
                         break;
 
                     case 0x80:

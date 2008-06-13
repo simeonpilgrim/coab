@@ -50,7 +50,7 @@ namespace engine
             }
         }
 
-        internal static void sub_39054()
+        internal static void init_values_a() /* sub_39054 */
         {
             File unk_1AD74;
 
@@ -233,7 +233,7 @@ namespace engine
         }
 
 
-        internal static void sub_396E5()
+        internal static void init_values_b() /* sub_396E5 */
         {
             gbl.byte_1B2C0 = 1;
 

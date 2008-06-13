@@ -2971,7 +2971,7 @@ namespace engine
 
             do
             {
-                if (gbl.player_ptr.quick_fight != 0)
+                if (gbl.player_ptr.quick_fight == QuickFight.True)
                 {
                     if (ovr024.roll_dice(10, 1) > 5)
                     {

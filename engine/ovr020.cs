@@ -1070,7 +1070,7 @@ namespace engine
             else
             {
                 if (gbl.game_state == 5 &&
-                    gbl.player_ptr.quick_fight == 0)
+                    gbl.player_ptr.quick_fight == QuickFight.False)
                 {
                     ovr025.sub_68DC0();
                 }
