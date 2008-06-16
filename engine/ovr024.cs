@@ -112,7 +112,9 @@ namespace engine
             else if (unk_6325A.MemberOf((byte)affect_type) == true)
             {
                 Player player_base = gbl.player_next_ptr;
-                SortedCombatant[] bkup_list = (SortedCombatant[])gbl.SortedCombatantList.Clone();
+
+                SortedCombatant[] bkup_list = new SortedCombatant[gbl.MaxSortedCombatantCount];
+                System.Array.Copy(gbl.SortedCombatantList, bkup_list, gbl.MaxSortedCombatantCount);
 
                 while (player_base != null && found == false)
                 {

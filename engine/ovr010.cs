@@ -83,7 +83,7 @@ namespace engine
 
             while (var_2 == false)
             {
-                if (ovr014.sub_41E44(0, 1, 0xff, player) == true &&
+                if (ovr014.find_target(false, 1, 0xff, player) == true &&
                     player.actions.delay > 0 &&
                     player.in_combat == true)
                 {
@@ -498,7 +498,7 @@ namespace engine
                                             player.actions.move = 0;
                                             var_5 = true;
                                         }
-                                        else if (ovr014.sub_41E44(0, 1, 0xFF, player) == false)
+                                        else if (ovr014.find_target(false, 1, 0xFF, player) == false)
                                         {
                                             var_5 = sub_361F7(player);
                                         }
@@ -520,7 +520,7 @@ namespace engine
                                 gbl.byte_1D910 = (gbl.byte_1D90E || ovr033.sub_74761(0, player) || player.combat_team == CombatTeam.Ours);
 
                                 ovr033.draw_74B3F(0, 0, var_2, player);
-                                ovr014.sub_3E954(player.actions.direction, player);
+                                ovr014.move_step_away_attack(player.actions.direction, player);
 
                                 if (player.in_combat == false)
                                 {
@@ -666,7 +666,7 @@ namespace engine
 
                         if (var_7 == 0)
                         {
-                            if (ovr014.sub_41E44(0, 0, 0xff, player) == true)
+                            if (ovr014.find_target(false, 0, 0xff, player) == true)
                             {
                                 sub_359D1(player);
                             }
@@ -1167,7 +1167,7 @@ namespace engine
 
             if (var_1D != 0)
             {
-                ovr025.hitpoint_ac(arg_0);
+                ovr025.display_hitpoint_ac(arg_0);
             }
         }
     }

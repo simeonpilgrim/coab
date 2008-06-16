@@ -446,39 +446,26 @@ namespace engine
 
         internal static int PlayerMapSize(Player player) /*sub_74C82*/
         {
-            int ret_val;
-
-            ret_val = gbl.CombatMap[get_player_index(player)].size;
-
-            return ret_val;
+            return gbl.CombatMap[get_player_index(player)].size;
         }
 
 
         internal static byte get_player_index(Player player)
         {
-            byte loop_var;
-            bool match_found;
-            byte ret_val;
-
-            match_found = false;
-            ret_val = 0;
-            loop_var = 0;
-
+            bool found = false;
+            byte loop_var = 0;
             do
             {
                 loop_var++;
 
                 if (gbl.player_array[loop_var] == player)
                 {
-                    match_found = true;
+                    found = true;
                 }
 
-            } while (match_found == false && loop_var <= gbl.CombatantCount);
+            } while (found == false && loop_var <= gbl.CombatantCount);
 
-            if (match_found == true)
-            {
-                ret_val = loop_var;
-            }
+            byte ret_val = (found == true) ? loop_var : (byte)0;
 
             return ret_val;
         }
@@ -488,11 +475,10 @@ namespace engine
         {
             playerIndex = 0;
             groundTile = 0x17;
-
-            byte maxMoveCost = 1;
             isNoxiousCloud = false;
             isPoisonousCloud = false;
 
+            byte maxMoveCost = 1;
             byte currentPlayerIndex = get_player_index(player);
 
             int playerPosX = gbl.CombatMap[currentPlayerIndex].xPos;

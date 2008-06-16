@@ -448,7 +448,7 @@ namespace engine
 
             if (player == gbl.player_ptr)
             {
-                ovr025.hitpoint_ac(player);
+                ovr025.display_hitpoint_ac(player);
             }
         }
 
