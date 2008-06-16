@@ -2001,7 +2001,7 @@ namespace engine
                         }
                         else
                         {
-                            if (ovr024.do_saving_throw((sbyte)var_5, var_9, player03) == false)
+                            if (ovr024.do_saving_throw(var_5, var_9, player03) == false)
                             {
                                 ovr008.sub_32200(player03, var_C);
                             }
@@ -2018,7 +2018,7 @@ namespace engine
                     if ((var_6 & 0x80) != 0)
                     {
                         if (var_9 == 0 ||
-                            ovr024.do_saving_throw((sbyte)var_5, (byte)(var_9 - 1), gbl.player_ptr) == false)
+                            ovr024.do_saving_throw(var_5, (byte)(var_9 - 1), gbl.player_ptr) == false)
                         {
                             ovr008.sub_32200(gbl.player_ptr, var_C);
                         }
@@ -2037,7 +2037,7 @@ namespace engine
                             player03 = player03.next_player;
                         }
 
-                        if (ovr024.do_saving_throw((sbyte)var_5, var_9, player03) == false)
+                        if (ovr024.do_saving_throw(var_5, var_9, player03) == false)
                         {
                             ovr008.sub_32200(player03, var_C);
                         }

@@ -196,15 +196,15 @@ namespace Classes
         {
             switch (index)
             {
-                case 00:
+                case 0:
                     return field_DF;
-                case 01:
+                case 1:
                     return field_E0;
-                case 02:
+                case 2:
                     return field_E1;
-                case 03:
+                case 3:
                     return field_E2;
-                case 04:
+                case 4:
                     return field_E3;
 
                 default:
@@ -215,15 +215,15 @@ namespace Classes
         {
             switch (index)
             {
-                case 00:
+                case 0:
                     field_DF = value; break;
-                case 01:
+                case 1:
                     field_E0 = value; break;
-                case 02:
+                case 2:
                     field_E1 = value; break;
-                case 03:
+                case 3:
                     field_E2 = value; break;
-                case 04:
+                case 4:
                     field_E3 = value; break;
 
                 default:

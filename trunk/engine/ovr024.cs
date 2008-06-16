@@ -580,7 +580,7 @@ namespace engine
         }
 
 
-        internal static bool do_saving_throw(sbyte arg_0, byte arg_2, Player player)
+        internal static bool do_saving_throw(int save_bonus, byte arg_2, Player player)
         {
             gbl.save_made = true;
 
@@ -601,7 +601,7 @@ namespace engine
             }
             else
             {
-                gbl.saving_throw_roll += (byte)(arg_0 + player.field_186);
+                gbl.saving_throw_roll += save_bonus + player.field_186;
                 gbl.byte_1D2D1 = arg_2;
 
                 work_on_00(player, 12);
@@ -778,7 +778,7 @@ namespace engine
                 ovr025.DisplayPlayerStatusString(true, 10, "is Cured", player);
 
                 remove_affect(affect, affectId, player);
-                
+
                 return true;
             }
 
@@ -816,23 +816,23 @@ namespace engine
         }
 
 
-        internal static bool sub_64728(out byte arg_0, byte arg_4, byte arg_6, Player arg_8)
+        internal static bool sub_64728(out byte encoded_str, byte str_100, byte str, Player arg_8)
         {
-            bool ret_val;
+            bool encoded;
 
-            if (arg_6 > arg_8.tmp_str ||
-                (arg_6 == 18 && arg_4 > arg_8.max_str_00))
+            if (str > arg_8.tmp_str ||
+                (str == 18 && str_100 > arg_8.max_str_00))
             {
-                ret_val = true;
-                arg_0 = encode_strength(arg_4, arg_6);
+                encoded = true;
+                encoded_str = encode_strength(str_100, str);
             }
             else
             {
-                ret_val = false;
-                arg_0 = 0;
+                encoded = false;
+                encoded_str = 0;
             }
 
-            return ret_val;
+            return encoded;
         }
 
 
@@ -1295,7 +1295,7 @@ namespace engine
                 }
                 else if (mask == 0x10)
                 {
-                    text +=  "from Acid";
+                    text += "from Acid";
                 }
 
                 if ((gbl.damage_flags & 8) == gbl.damage_flags)
@@ -1397,8 +1397,6 @@ namespace engine
 
         internal static bool heal_player(byte arg_0, byte amount_healed, Player player)
         {
-            bool ret_val = false;
-
             if (unk_653B5.MemberOf((byte)player.health_status) == true)
             {
                 if (player.hit_point_current < player.hit_point_max ||
@@ -1426,18 +1424,16 @@ namespace engine
                         }
                     }
 
-                    ret_val = true;
+                    return true;
                 }
             }
 
-            return ret_val;
+            return false;
         }
 
 
         internal static bool combat_heal(byte arg_0, Player player)
         {
-            bool ret_val;
-
             if (ovr033.sub_7515A(true, ovr033.PlayerMapYPos(player), ovr033.PlayerMapXPos(player), player) == true)
             {
                 player.health_status = Status.okey;

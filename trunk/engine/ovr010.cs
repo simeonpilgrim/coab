@@ -9,7 +9,7 @@ namespace engine
             bool var_2;
             byte var_1;
 
-            var_2 = sub_36269(player);
+            var_2 = process_input_in_monsters_turn(player);
             ovr027.redraw_screen();
             ovr025.ClearPlayerTextArea();
 
@@ -79,7 +79,7 @@ namespace engine
             }
 
             sub_36673(player);
-            var_2 = sub_36269(player);
+            var_2 = process_input_in_monsters_turn(player);
 
             while (var_2 == false)
             {
@@ -120,18 +120,9 @@ namespace engine
 
         internal static bool sub_352AF(byte arg_2, int mapY, int mapX)
         {
-            sbyte var_3;
-
             bool result = false;
 
-            if (gbl.player_ptr.combat_team == CombatTeam.Ours)
-            {
-                var_3 = -2;
-            }
-            else
-            {
-                var_3 = 8;
-            }
+            int save_bonus = (gbl.player_ptr.combat_team == CombatTeam.Ours)? -2 : 8;
 
             ovr032.Rebuild_SortedCombatantList(gbl.mapToBackGroundTile, 1, 0xff, gbl.spell_list[arg_2].field_F, mapY, mapX);
    
@@ -142,7 +133,7 @@ namespace engine
 
                 if (ovr025.opposite_team(gbl.player_ptr) != tmpPlayer.combat_team &&
                     tmpS.can_save_flag != 1 &&
-                    ovr024.do_saving_throw(var_3, tmpS.field_9, tmpPlayer) == false)
+                    ovr024.do_saving_throw(save_bonus, tmpS.field_9, tmpPlayer) == false)
                 {
                     result = true;
                 }
@@ -414,18 +405,17 @@ namespace engine
 
         internal static void sub_359D1(Player player)
         {
-            string var_209;
             bool var_5;
-            bool var_4;
+
             byte var_3;
             byte var_2 = 0; /* Simeon */
             byte var_1;
 
-            var_209 = string.Format("Move/Attack, Move Left = {0} ", player.actions.move / 2);
+            string prompt = string.Format("Move/Attack, Move Left = {0} ", player.actions.move / 2);
 
-            seg041.displayString(var_209, 0, 10, 0x18, 0);
+            seg041.displayString(prompt, 0, 10, 0x18, 0);
 
-            if (sub_36269(player) == false)
+            if (process_input_in_monsters_turn(player) == false)
             {
                 if ((player.actions.move / 2) > 0 &&
                     player.actions.delay > 0)
@@ -455,7 +445,7 @@ namespace engine
                                 var_1 %= 8;
                             }
 
-                            var_4 = false;
+                            bool var_4 = false;
                             var_5 = false;
                             var_3 = 1;
 
@@ -553,23 +543,13 @@ namespace engine
 
         internal static bool sub_35DB1(Player player)
         {
-            byte var_13;
-            Player player01;
-            Item var_C;
-            byte var_8;
-            byte var_7;
-            byte var_4;
-            bool var_3;
-            bool var_2;
-
-
             gbl.byte_1AB18 = 8;
             gbl.byte_1AB19 = 0;
             gbl.byte_1AB1A = 0;
 
-            var_13 = 0;
-            var_3 = true;
-            var_2 = false;
+            byte var_13 = 0;
+            bool var_3 = true;
+            bool var_2 = false;
 
             ovr024.work_on_00(player, 14);
 
@@ -622,39 +602,39 @@ namespace engine
                     }
 
                     gbl.byte_1D90E = false;
-                    var_4 = 1;
+                    int range = 1;
 
                     if (player.field_151 != null)
                     {
-                        var_4 = (byte)(gbl.unk_1C020[player.field_151.type].field_C - 1);
+                        range = gbl.unk_1C020[player.field_151.type].field_C - 1;
                     }
 
-                    if (var_4 == 0 || var_4 == 0xff)
+                    if (range == 0 || range == 0xff || range == -1)
                     {
-                        var_4 = 1;
+                        range = 1;
                     }
 
-                    player01 = player.actions.target;
+                    Player target = player.actions.target;
 
-                    if (player01 != null &&
-                        (player01.in_combat == false ||
-                        player01.combat_team == CombatTeam.Ours))
+                    if (target != null &&
+                        (target.in_combat == false ||
+                        target.combat_team == CombatTeam.Ours))
                     {
-                        player01 = null;
+                        target = null;
                     }
 
-                    if (player01 != null &&
-                        ovr014.sub_3F143(player01, player) == true)
+                    if (target != null &&
+                        ovr014.sub_3F143(target, player) == true)
                     {
-                        int tmpX = ovr033.PlayerMapXPos(player01);
-                        int tmpY = ovr033.PlayerMapYPos(player01);
+                        int tmpX = ovr033.PlayerMapXPos(target);
+                        int tmpY = ovr033.PlayerMapYPos(target);
 
-                        int var_6 = var_4;
+                        int var_6 = range;
 
                         gbl.mapToBackGroundTile.field_6 = false;
 
                         if (ovr032.canReachTarget(gbl.mapToBackGroundTile, ref var_6, ref tmpY, ref tmpX, ovr033.PlayerMapYPos(player), ovr033.PlayerMapXPos(player)) == true &&
-                            (var_6 / 2) <= var_4)
+                            (var_6 / 2) <= range)
                         {
                             gbl.byte_1D90E = true;
                         }
@@ -662,9 +642,9 @@ namespace engine
 
                     if (gbl.byte_1D90E == false)
                     {
-                        var_7 = (byte)ovr025.near_enemy(var_4, player);
+                        int enemy_near = ovr025.near_enemy(range, player);
 
-                        if (var_7 == 0)
+                        if (enemy_near == 0)
                         {
                             if (ovr014.find_target(false, 0, 0xff, player) == true)
                             {
@@ -677,9 +657,9 @@ namespace engine
                         }
                         else
                         {
-                            var_8 = ovr024.roll_dice(var_7, 1);
+                            int roll = ovr024.roll_dice(enemy_near, 1);
 
-                            player01 = gbl.player_array[gbl.byte_1D8B9[var_8]];
+                            target = gbl.player_array[gbl.byte_1D8B9[roll]];
 
                             if (ovr025.is_weapon_ranged(player) == true &&
                                 ovr025.is_weapon_ranged_melee(player) == false &&
@@ -688,8 +668,8 @@ namespace engine
                                 sub_36673(player);
                                 var_2 = true;
                             }
-                            else if (ovr025.getTargetRange(player01, player) == 1 ||
-                                ovr014.sub_3F143(player01, player) == true)
+                            else if (ovr025.getTargetRange(target, player) == 1 ||
+                                ovr014.sub_3F143(target, player) == true)
                             {
                                 gbl.byte_1D90E = true;
                             }
@@ -698,41 +678,41 @@ namespace engine
 
                     if (gbl.byte_1D90E == true)
                     {
-                        ovr033.redrawCombatArea(ovr014.getTargetDirection(player01, player), 2, ovr033.PlayerMapYPos(player), ovr033.PlayerMapXPos(player));
+                        ovr033.redrawCombatArea(ovr014.getTargetDirection(target, player), 2, ovr033.PlayerMapYPos(player), ovr033.PlayerMapXPos(player));
 
                     }
 
                     if (gbl.byte_1D90E == true)
                     {
-                        if (ovr014.sub_3EF3D(player01, player) == true)
+                        if (ovr014.sub_3EF3D(target, player) == true)
                         {
                             var_2 = ovr025.clear_actions(player);
                         }
                         else
                         {
-                            ovr014.sub_3F94D(player01, player);
+                            ovr014.sub_3F94D(target, player);
 
-                            var_C = null;
+                            Item item = null;
 
                             if (ovr025.is_weapon_ranged(player) == true)
                             {
-                                gbl.byte_1D90E = ovr025.sub_6906C(out var_C, player);
+                                gbl.byte_1D90E = ovr025.sub_6906C(out item, player);
 
                                 if (ovr025.is_weapon_ranged_melee(player) == true &&
-                                    ovr025.getTargetRange(player01, player) == 1)
+                                    ovr025.getTargetRange(target, player) == 1)
                                 {
 
-                                    var_C = null;
+                                    item = null;
                                 }
                             }
 
-                            ovr014.sub_3F9DB(out var_2, var_C, 0, player01, player);
+                            ovr014.sub_3F9DB(out var_2, item, 0, target, player);
 
                             if (var_2 == true)
                             {
                                 var_3 = false;
                             }
-                            else if (player01.in_combat == false)
+                            else if (target.in_combat == false)
                             {
                                 var_2 = true;
                             }
@@ -766,16 +746,16 @@ namespace engine
         }
 
 
-        internal static bool sub_36269(Player arg_0)
+        /// <summary>
+        /// processes keyboard input during combat. Returns if current player is user controlled
+        /// </summary>
+        internal static bool process_input_in_monsters_turn(Player player) /* sub_36269 */
         {
-            byte var_6;
-            Player player_ptr;
-
-            bool var_1 = false;
+            bool player_turn = false;
 
             if (seg049.KEYPRESSED() == true)
             {
-                var_6 = seg043.GetInputKey();
+                byte var_6 = seg043.GetInputKey();
 
                 if (var_6 == 0)
                 {
@@ -797,7 +777,7 @@ namespace engine
                 }
                 else if (var_6 == 0x20)
                 {
-                    player_ptr = gbl.player_next_ptr;
+                    Player player_ptr = gbl.player_next_ptr;
 
                     while (player_ptr != null)
                     {
@@ -810,10 +790,10 @@ namespace engine
                         player_ptr = player_ptr.next_player;
                     }
 
-                    if (arg_0.quick_fight == QuickFight.False)
+                    if (player.quick_fight == QuickFight.False)
                     {
-                        arg_0.actions.delay = 20;
-                        var_1 = true;
+                        player.actions.delay = 20;
+                        player_turn = true;
                     }
                 }
                 else if (var_6 == '-')
@@ -824,7 +804,7 @@ namespace engine
 
             seg043.clear_keyboard();
 
-            return var_1;
+            return player_turn;
         }
 
 

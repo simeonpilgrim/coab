@@ -583,7 +583,7 @@ namespace Classes
         public static bool can_knock_door;
 
 
-        public static byte saving_throw_roll;
+        public static int saving_throw_roll;
         public static bool save_made;
         public static bool gameFlag01;
         public static bool printCommands = false;
