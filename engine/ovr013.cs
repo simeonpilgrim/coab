@@ -43,7 +43,7 @@ namespace engine
 
         internal static void sub_3A087(Effect arg_0, object param, Player player)
         {
-            gbl.saving_throw_roll++;
+            gbl.saving_throw_roll += 1;
             gbl.byte_1D2C9++;
         }
 
@@ -261,7 +261,7 @@ namespace engine
                 player.ac = 0x39;
             }
 
-            gbl.saving_throw_roll++;
+            gbl.saving_throw_roll += 1;
 
             if (gbl.spell_id == 15)
             {
@@ -306,9 +306,9 @@ namespace engine
 
         internal static void sub_3A517(Effect arg_0, object param, Player player)
         {
-            Affect var_4;
+            Affect dummy_affect;
 
-            if (ovr025.find_affect(out var_4, Affects.poisoned, player) == true)
+            if (ovr025.find_affect(out dummy_affect, Affects.poisoned, player) == true)
             {
                 ovr024.sub_63014("dies from poison", Status.dead, player);
             }
@@ -323,11 +323,8 @@ namespace engine
 
         internal static void sub_3A583(Effect arg_0, object param, Player player)
         {
-            bool item_found;
-            Item item;
-
-            item = player.itemsPtr;
-            item_found = false;
+            Item item = player.itemsPtr;
+            bool item_found = false;
 
             while (item != null && item_found == false)
             {
@@ -928,11 +925,11 @@ namespace engine
         }
 
 
-        internal static void sub_3B407(sbyte arg_0, Player player)
+        internal static void sub_3B407(int save_bonus, Player player)
         {
             gbl.spell_target = player.actions.target;
 
-            if (ovr024.do_saving_throw(arg_0, 0, gbl.spell_target) == false)
+            if (ovr024.do_saving_throw(save_bonus, 0, gbl.spell_target) == false)
             {
                 ovr025.DisplayPlayerStatusString(false, 10, "is Poisoned", gbl.spell_target);
                 seg041.GameDelay();
@@ -1353,35 +1350,35 @@ namespace engine
         }
 
 
-        internal static void sub_3BE42(Effect arg_0, object param, Player arg_6)
+        internal static void con_saving_bonus(Effect arg_0, object param, Player player) /* sub_3BE42 */
         {
             if (gbl.byte_1D2D1 == 4 ||
                 gbl.byte_1D2D1 == 2)
             {
-                byte var_1 = 0;
+                int save_bonus = 0;
 
-                if (arg_6.con >= 4 && arg_6.con <= 6)
+                if (player.con >= 4 && player.con <= 6)
                 {
-                    var_1 = 1;
+                    save_bonus = 1;
                 }
-                else if (arg_6.con >= 7 && arg_6.con <= 10)
+                else if (player.con >= 7 && player.con <= 10)
                 {
-                    var_1 = 2;
+                    save_bonus = 2;
                 }
-                else if (arg_6.con >= 11 && arg_6.con <= 13)
+                else if (player.con >= 11 && player.con <= 13)
                 {
-                    var_1 = 3;
+                    save_bonus = 3;
                 }
-                else if (arg_6.con >= 14 && arg_6.con <= 17)
+                else if (player.con >= 14 && player.con <= 17)
                 {
-                    var_1 = 4;
+                    save_bonus = 4;
                 }
-                else if (arg_6.con >= 18 && arg_6.con <= 20)
+                else if (player.con >= 18 && player.con <= 20)
                 {
-                    var_1 = 5;
+                    save_bonus = 5;
                 }
 
-                gbl.saving_throw_roll += var_1;
+                gbl.saving_throw_roll += save_bonus;
             }
         }
 
@@ -2053,7 +2050,7 @@ namespace engine
             gbl.spell_jump_list[94] = ovr013.sub_3BDB2;
             gbl.spell_jump_list[95] = ovr013.sub_3BE06;
             gbl.spell_jump_list[96] = ovr014.hugs;
-            gbl.spell_jump_list[97] = ovr013.sub_3BE42;
+            gbl.spell_jump_list[97] = ovr013.con_saving_bonus;
             gbl.spell_jump_list[98] = ovr013.sub_3BEB8;
             gbl.spell_jump_list[99] = ovr013.sub_3BEE8;
             gbl.spell_jump_list[100] = ovr013.sub_3BF91;

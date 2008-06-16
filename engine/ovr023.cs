@@ -1187,7 +1187,7 @@ namespace engine
         }
 
 
-        internal static void sub_5DB24(string arg_0, sbyte arg_4)
+        internal static void sub_5DB24(string arg_0, int save_bonus)
         {
             for (int target_index = gbl.sp_target_count; target_index >= 1; target_index--)
             {
@@ -1215,7 +1215,7 @@ namespace engine
                     }
                     else
                     {
-                        saved = ovr024.do_saving_throw(arg_4, gbl.spell_list[gbl.spell_id].field_9, target);
+                        saved = ovr024.do_saving_throw(save_bonus, gbl.spell_list[gbl.spell_id].field_9, target);
                         can_save_flag = gbl.spell_list[gbl.spell_id].can_save_flag;
                     }
 
@@ -1510,26 +1510,26 @@ namespace engine
 
         internal static void is_held()
         {
-            sbyte var_1;
+            int save_bonus;
 
             if (gbl.sp_target_count == 1)
             {
                 if (gbl.spell_id == 0x17)
                 {
-                    var_1 = -2;
+                    save_bonus = -2;
                 }
                 else
                 {
-                    var_1 = -3;
+                    save_bonus = -3;
                 }
             }
             else if (gbl.sp_target_count == 2)
             {
-                var_1 = -1;
+                save_bonus = -1;
             }
             else if (gbl.sp_target_count == 3 || gbl.sp_target_count == 4)
             {
-                var_1 = 0;
+                save_bonus = 0;
             }
             else
             {
@@ -1537,7 +1537,7 @@ namespace engine
             }
 
 
-            sub_5DB24("is held", var_1);
+            sub_5DB24("is held", save_bonus);
         }
 
 
