@@ -1115,7 +1115,7 @@ namespace engine
 
                 gbl.currentTeam = (sbyte)player_ptr.combat_team;
 
-                gbl.CombatMap[loop_var].field_2 = loop_var;
+                gbl.CombatMap[loop_var].player_index = loop_var;
                 gbl.CombatMap[loop_var].size = (byte)(player_ptr.field_DE & 7);
 
                 if (sub_38380(loop_var) == true)

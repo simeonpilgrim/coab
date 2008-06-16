@@ -141,8 +141,8 @@ namespace engine
 
                 ovr033.sub_75356(true, 2, player);
                 ovr025.reclac_player_values(player);
-                gbl.byte_1D90F = true;
-                ovr025.hitpoint_ac(player);
+                gbl.display_hitpoints_ac = true;
+                ovr025.display_hitpoint_ac(player);
                 ovr024.work_on_00(player, 15);
 
                 if (player.actions.spell_id == 0)
@@ -322,8 +322,8 @@ namespace engine
                         if (var_2 == false)
                         {
                             ovr033.sub_75356(true, 2, player);
-                            gbl.byte_1D90F = true;
-                            ovr025.hitpoint_ac(player);
+                            gbl.display_hitpoints_ac = true;
+                            ovr025.display_hitpoint_ac(player);
                         }
                     }
                 }
@@ -586,7 +586,7 @@ namespace engine
                         }
                         else
                         {
-                            ovr014.sub_3E954(dir, player);
+                            ovr014.move_step_away_attack(dir, player);
 
                             if (player.in_combat == false)
                             {

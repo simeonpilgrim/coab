@@ -73,6 +73,11 @@ namespace Classes
         /// </summary>
         public int steps; // field_1
         public int direction; // field_2
+
+        public override string ToString()
+        {
+            return "index: " + player_index + " dir: " + direction + " steps: " + steps;
+        }
     }
 
 
@@ -366,7 +371,7 @@ namespace Classes
         public static bool magicOn; /* byte_1D904 */
         public static bool byte_1D905;
         public static bool byte_1D90E;
-        public static bool byte_1D90F;
+        public static bool display_hitpoints_ac; /* byte_1D90F */
         public static bool byte_1D910;
         public static byte byte_1D912;
         public static byte byte_1D913;
@@ -528,7 +533,7 @@ namespace Classes
         {
             public int xPos; // 0x00
             public int yPos; // 0x01
-            public byte field_2;
+            public byte player_index;  // field_2
             public byte size; // field_3
         }
 

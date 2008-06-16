@@ -21,9 +21,9 @@ namespace engine
                               dirB < dirA && (dirB % 2) <= (dirA % 2)))
                         {
                             // swap them.
-                            SortedCombatant var_7 = gbl.SortedCombatantList[indexA];
+                            SortedCombatant tmp = gbl.SortedCombatantList[indexA];
                             gbl.SortedCombatantList[indexA] = gbl.SortedCombatantList[indexB];
-                            gbl.SortedCombatantList[indexB] = var_7;
+                            gbl.SortedCombatantList[indexB] = tmp;
                         }
                     }
                 }
@@ -36,7 +36,7 @@ namespace engine
             SteppingPath var_31 = new SteppingPath();
             SteppingPath var_19 = new SteppingPath();
 
-            int max_range = range * 2;
+            int max_range = (range * 2) + 1;
             var_19.attacker_x = mapX;
             var_19.attacker_y = mapY;
             var_19.target_x = outX;

@@ -463,11 +463,11 @@ namespace engine
         }
 
 
-        internal static void hitpoint_ac(Player player)
+        internal static void display_hitpoint_ac(Player player) /* hitpoint_ac */
         {
-            if (gbl.byte_1D90F == true)
+            if (gbl.display_hitpoints_ac == true)
             {
-                gbl.byte_1D90F = false;
+                gbl.display_hitpoints_ac = false;
                 seg037.draw8x8_clear_area(0x15, 0x26, 1, 0x17);
 
                 int line = 1;
@@ -1654,7 +1654,11 @@ namespace engine
 
                 for (int i = 1; i <= gbl.sortedCombatantCount; i++)
                 {
-                    if (gbl.player_array[gbl.SortedCombatantList[i].player_index].combat_team == opposite_team(player))
+                    Player tmp = gbl.player_array[gbl.SortedCombatantList[i].player_index];
+                    //int steps = gbl.SortedCombatantList[i].steps;
+                    //int index = gbl.SortedCombatantList[i].player_index;
+					
+                    if (tmp.combat_team == opposite_team(player))
                     {
                         tmpCount++;
                         gbl.SortedCombatantList[tmpCount] = new SortedCombatant(gbl.SortedCombatantList[i]);
