@@ -1,6 +1,7 @@
 = The Release Notes =
 
 = Unreleased =
+  * Issue 14 - Attacks of opportunity now occur.
   * Issue 18 - Scribing spells, now works (tested magic users + rangers)
   * Issue 24 - Trying to leave Tilverton crashed game
 
