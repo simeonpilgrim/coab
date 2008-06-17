@@ -2,7 +2,7 @@
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
   <?define SkuName = "Curse of the Azure Bonds"?>
 
-  <?define ProductVersion="1.0.9" ?>
+  <?define ProductVersion="1.0.10" ?>
   <?define Manufacturer="ReActive Systems"?>
   <?define UpgradeCode="6acb18e9-9a80-4ed4-a8ef-3634fa2b3e9b"?>
 
