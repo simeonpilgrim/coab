@@ -171,17 +171,17 @@ namespace engine
         }
 
 
-        internal static void add_object(byte arg_0, short weight, Player player, Player arg_8)
+        internal static void trade_money(int money_slot, short num_coins, Player dest, Player source) /* add_object */
         {
-            if ((player.weight + weight) <= get_max_load(player))
+            if ((dest.weight + num_coins) <= get_max_load(dest))
             {
-                player.Money[arg_0] -= weight;
+                source.Money[money_slot] -= num_coins;
 
-                remove_weight(weight, arg_8);
+                remove_weight(num_coins, source);
 
-                player.Money[arg_0] += weight;
+                dest.Money[money_slot] += num_coins;
 
-                add_weight(weight, player);
+                add_weight(num_coins, dest);
             }
             else
             {
@@ -192,27 +192,25 @@ namespace engine
 
         internal static void poolMoney()
         {
-            Player playerBase;
-
-            playerBase = gbl.player_next_ptr;
+            Player player = gbl.player_next_ptr;
             gbl.something01 = true;
 
-            while (playerBase != null)
+            while (player != null)
             {
-                if (playerBase.field_F7 == 0 ||
-                    playerBase.field_F7 == 0x0B3)
+                if (player.field_F7 == 0 ||
+                    player.field_F7 == 0x0B3)
                 {
                     for (int i = 0; i < 7; i++)
                     {
-                        gbl.pooled_money[i] += playerBase.Money[i];
+                        gbl.pooled_money[i] += player.Money[i];
 
-                        remove_weight(playerBase.Money[i], playerBase);
+                        remove_weight(player.Money[i], player);
 
-                        playerBase.Money[i] = 0;
+                        player.Money[i] = 0;
                     }
                 }
 
-                playerBase = playerBase.next_player;
+                player = player.next_player;
             }
         }
 
@@ -347,112 +345,107 @@ namespace engine
         }
 
 
-        internal static void sub_59A19(byte arg_0, short arg_2, Player arg_4)
+        internal static void drop_coins(int money_slot, short num_coins, Player player) /* sub_59A19 */
         {
-            arg_4.Money[arg_0] -= arg_2;
-            remove_weight(arg_2, arg_4);
+            player.Money[money_slot] -= num_coins;
+            remove_weight(num_coins, player);
 
             if (gbl.game_state == 6 ||
                 gbl.game_state == 1)
             {
-                gbl.pooled_money[arg_0] += arg_2;
+                gbl.pooled_money[money_slot] += num_coins;
             }
         }
 
 
-        internal static void sub_59AA0(byte arg_0, short arg_2, Player arg_4)
+        internal static void sub_59AA0(int money_slot, short num_coins, Player player) /* sub_59AA0 */
         {
-            short var_2;
+            short dummy_short;
 
-            if (willOverload(out var_2, arg_2, arg_4) == true)
+            if (willOverload(out dummy_short, num_coins, player) == true)
             {
                 ovr025.string_print01("Overloaded");
             }
             else
             {
-                if (arg_2 > (short)gbl.pooled_money[arg_0])
+                if (num_coins > gbl.pooled_money[money_slot])
                 {
-                    arg_2 = (short)gbl.pooled_money[arg_0];
+                    num_coins = (short)gbl.pooled_money[money_slot];
                 }
 
+                gbl.pooled_money[money_slot] -= num_coins;
 
-                gbl.pooled_money[arg_0] -= arg_2;
+                player.Money[money_slot] += num_coins;
 
-                arg_4.Money[arg_0] += arg_2;
-
-                add_weight(arg_2, arg_4);
+                add_weight(num_coins, player);
             }
         }
 
 
-        internal static byte sub_59BAB(out string arg_0, string arg_4)
+        internal static int sub_59BAB(out string arg_0, string input)
         {
-            int var_2 = 0;
-            byte var_1 = 7; // this is outofbounds.
+            int offset = 0;
+            int index = 7; // this is outofbounds.
             arg_0 = string.Empty;
 
-            while (arg_4[var_2] == ' ')
+            while (input[offset] == ' ')
             {
-                var_2++;
+                offset++;
             }
 
-            char ch = arg_4[var_2];
+            char ch = input[offset];
             if (ch == 'G')
             {
-                ch = arg_4[var_2 + 1];
+                ch = input[offset + 1];
                 if (char.ToUpper(ch) == 'E')
                 {
-                    var_1 = 5;
+                    index = 5;
                     arg_0 = "Gems ";
                 }
                 else
                 {
                     arg_0 = "Gold ";
-                    var_1 = 3;
+                    index = 3;
                 }
             }
             else if (ch == 'P')
             {
                 arg_0 = "Platinum ";
-                var_1 = 4;
+                index = 4;
             }
             else if (ch == 'E')
             {
                 arg_0 = "Electrum ";
-                var_1 = 2;
+                index = 2;
             }
             else if (ch == 'S')
             {
                 arg_0 = "Silver ";
-                var_1 = 1;
+                index = 1;
             }
             else if (ch == 'C')
             {
                 arg_0 = "Copper ";
-                var_1 = 0;
+                index = 0;
             }
             else if (ch == 'J')
             {
                 arg_0 = "Jewelry ";
-                var_1 = 6;
+                index = 6;
             }
 
-            return var_1;
+            return index;
         }
 
 
         internal static void takeItems()
         {
-            char var_119;
-            bool var_118;
             byte var_117;
-            short var_116;
             string var_114;
             short var_14;
-            StringList var_10;
+
             StringList var_C;
             StringList item_ptr;
-            byte var_2;
             sbyte var_1;
 
             seg037.draw8x8_outer_frame();
@@ -460,7 +453,7 @@ namespace engine
 
             do
             {
-                var_118 = true;
+                bool var_118 = true;
 
                 item_ptr = null;
                 var_C = null;
@@ -472,21 +465,19 @@ namespace engine
                         item_ptr = new StringList();
                         item_ptr.next = var_C;
 
-                        seg051.Str(0xff, out var_114, 0, gbl.pooled_money[var_1]);
-
-                        item_ptr.s = money.names[var_1] + " " + var_114;
+                        item_ptr.s = money.names[var_1] + " " + gbl.pooled_money[var_1].ToString();
                         item_ptr.field_29 = 0;
 
                     }
                 }
 
                 var_C = item_ptr;
-                var_10 = item_ptr;
+                StringList var_10 = item_ptr;
 
-                var_119 = ovr027.sl_select_item(out var_C, ref var_14, ref var_118, true, item_ptr,
+                char input_key = ovr027.sl_select_item(out var_C, ref var_14, ref var_118, true, item_ptr,
                     8, 15, 2, 2, 15, 10, 13, "Select", "Select type of coin ");
 
-                if (var_C == null || var_119 == 0)
+                if (var_C == null || input_key == 0)
                 {
                     var_117 = 1;
                 }
@@ -494,17 +485,17 @@ namespace engine
                 {
                     var_117 = 0;
 
-                    var_2 = sub_59BAB(out var_114, var_C.s);
+                    int money_slot = sub_59BAB(out var_114, var_C.s);
 
                     var_114 = string.Format("How much {0} will you take? ", var_114);
 
-                    var_116 = sub_592AD(10, var_114, (short)gbl.pooled_money[var_2]);
+                    short num_coins = sub_592AD(10, var_114, (short)gbl.pooled_money[money_slot]);
 
-                    sub_59AA0(var_2, var_116, gbl.player_ptr);
+                    sub_59AA0(money_slot, num_coins, gbl.player_ptr);
                     ovr027.free_stringList(ref var_10);
                     gbl.something01 = false;
                     var_117 = 1;
-                    for (var_1 = 0; var_1 <= 6; var_1++)
+                    for (var_1 = 0; var_1 < 7; var_1++)
                     {
                         if (gbl.pooled_money[var_1] > 0)
                         {
@@ -523,7 +514,7 @@ namespace engine
             money = false;
             items = false;
 
-            for (int i = 0; i <= 6; i++)
+            for (int i = 0; i < 7; i++)
             {
                 if (gbl.pooled_money[i] != 0)
                 {
@@ -540,16 +531,15 @@ namespace engine
 
         internal static sbyte sub_59FCF()
         {
-            byte var_2;
             sbyte var_1 = 0;
 
-            var_2 = ovr024.roll_dice(20, 1);
+            int roll = ovr024.roll_dice(20, 1);
 
-            if (var_2 >= 1 && var_2 <= 14)
+            if (roll >= 1 && roll <= 14)
             {
                 var_1 = 1;
             }
-            else if (var_2 >= 15 && var_2 <= 20)
+            else if (roll >= 15 && roll <= 20)
             {
                 var_1 = 2;
             }

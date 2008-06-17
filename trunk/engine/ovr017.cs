@@ -1292,7 +1292,7 @@ namespace engine
             {
                 for (var_3 = 0; var_3 <= 4; var_3++)
                 {
-                    ovr022.sub_59A19(var_3, bp_player_ptr.Money[var_3], bp_player_ptr);
+                    ovr022.drop_coins(var_3, bp_player_ptr.Money[var_3], bp_player_ptr);
                 }
                 ovr022.addPlayerGold((short)(bp_var_1C4.field_28 / 5));
             }

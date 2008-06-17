@@ -1043,19 +1043,16 @@ namespace engine
 
         internal static void sub_56478(ref bool arg_0, Item item)
         {
-            bool var_4;
-            short var_3;
-            byte var_1;
-
-            var_3 = -1;
             gbl.spell_from_item = false;
-            var_1 = 0;
+            short var_3 = -1;
+            byte var_1 = 0;
 
             if (ovr023.item_is_scroll(item) == true)
             {
                 gbl.dword_1D5C6 = item;
 
-                var_1 = spell_menu2(out var_4, ref var_3, SpellSource.Cast, SpellLoc.scroll);
+                bool dummy_bool;
+                var_1 = spell_menu2(out dummy_bool, ref var_3, SpellSource.Cast, SpellLoc.scroll);
             }
             else if( item.affect_2 > 0 && (int)item.affect_3 < 0x80 )
             {
@@ -1130,14 +1127,12 @@ namespace engine
                 if (gbl.game_state == 5 &&
                     gbl.spell_list[var_1].field_B != 0)
                 {
-
                     arg_0 = ovr025.clear_actions(gbl.player_ptr);
                 }
             }
 
             if (arg_0 == true)
             {
-
                 if (ovr023.item_is_scroll(item) == true)
                 {
                     ovr023.remove_spell_from_scroll(var_1, item, gbl.player_ptr);
@@ -1163,13 +1158,7 @@ namespace engine
 
         internal static void sell_Item(Item item)
         {
-            string var_208;
-            short var_8;
-            short var_6;
-            short var_4;
-            int item_value;
-
-            item_value = 0;
+            int item_value = 0;
 
             if (item._value > 0)
             {
@@ -1178,7 +1167,7 @@ namespace engine
 
             if (item.count > 1)
             {
-                if (item.type != 73 ||
+                if (item.type != 73 || // TODO this has to be a bug!
                     item.type != 28)
                 {
                     item_value = (item.count * item_value) / 20;
@@ -1191,9 +1180,9 @@ namespace engine
 
             ovr025.ItemDisplayNameBuild(false, false, 0, 0, item, gbl.player_ptr02);
 
-            var_208 = "I'll give you " + item_value.ToString() + " gold pieces for your " + item.name;
+            string offer = "I'll give you " + item_value.ToString() + " gold pieces for your " + item.name;
 
-            seg041.press_any_key(var_208, true, 0, 14, 0x16, 0x26, 0x15, 1);
+            seg041.press_any_key(offer, true, 0, 14, 0x16, 0x26, 0x15, 1);
 
             if (ovr027.yes_no(15, 10, 13, "Is It a Deal? ") == 'Y')
             {
@@ -1201,29 +1190,30 @@ namespace engine
 
                 ovr025.lose_item(item, gbl.player_ptr);
 
-                var_4 = (short)(item_value / 5);
-                var_6 = (short)(item_value % 5);
+                short plat = (short)(item_value / 5);
+                short gold = (short)(item_value % 5);
+                short var_8;
 
-                if (ovr022.willOverload(out var_8, var_4 + var_6, gbl.player_ptr) == true)
+                if (ovr022.willOverload(out var_8, plat + gold, gbl.player_ptr) == true)
                 {
                     ovr025.string_print01("Overloaded. Money will be put in pool.");
 
-                    if (var_8 > var_4)
+                    if (var_8 > plat)
                     {
-                        gbl.player_ptr.platinum += var_4;
+                        gbl.player_ptr.platinum += plat;
                     }
                     else
                     {
                         gbl.player_ptr.platinum += var_8;
-                        gbl.pooled_money[money.platum] += var_4 - var_8;
+                        gbl.pooled_money[money.platum] += plat - var_8;
                     }
 
-                    gbl.player_ptr.gold += var_6;
+                    gbl.player_ptr.gold += gold;
                 }
                 else
                 {
-                    gbl.player_ptr.platinum += var_4;
-                    gbl.player_ptr.gold += var_6;
+                    gbl.player_ptr.platinum += plat;
+                    gbl.player_ptr.gold += gold;
                 }
             }
 
@@ -1233,34 +1223,30 @@ namespace engine
 
         internal static void IdentifyItem(ref bool arg_0, Item item)
         {
-            byte var_9;
-            int var_6;
-            int var_2;
-
-            var_9 = 0;
+            bool id_item = false;
             ovr025.ItemDisplayNameBuild(false, false, 0, 0, item, gbl.player_ptr02);
 
             seg041.press_any_key("For 200 gold pieces I'll identify your " + item.name, true, 0, 0x0e, 0x16, 0x26, 0x15, 1);
 
             if (ovr027.yes_no(15, 10, 13, "Is It a Deal? ") == 'Y')
             {
-                var_2 = getPlayerGold(gbl.player_ptr);
+                int player_gold = getPlayerGold(gbl.player_ptr);
 
-                if (var_2 >= 200)
+                if (player_gold >= 200)
                 {
-                    var_9 = 1;
+                    id_item = true;
 
-                    ovr022.setPlayerMoney((short)(var_2 - 200));
+                    ovr022.setPlayerMoney(player_gold - 200);
                 }
                 else
                 {
-                    var_6 = ovr022.getPooledGold(gbl.pooled_money);
+                    int pooled_gold = ovr022.getPooledGold(gbl.pooled_money);
 
-                    if (var_6 > 200)
+                    if (pooled_gold > 200)
                     {
-                        var_9 = 1;
+                        id_item = true;
 
-                        ovr022.setPooledGold(var_6 - 200);
+                        ovr022.setPooledGold(pooled_gold - 200);
                     }
                     else
                     {
@@ -1269,7 +1255,7 @@ namespace engine
                 }
             }
 
-            if (var_9 != 0)
+            if (id_item == true)
             {
                 if (item.hidden_names_flag == 0)
                 {
@@ -1284,10 +1270,7 @@ namespace engine
 
                     arg_0 = true;
                 }
-            }
 
-            if (var_9 != 0)
-            {
                 seg041.GameDelay();
             }
 
@@ -1297,35 +1280,26 @@ namespace engine
 
         internal static void tradeCoin()
         {
-            bool var_133;
             bool var_132;
-            bool var_131 = false; /* Simeon */
             short var_130;
             char var_12E;
             string var_12D;
             string var_2D;
-            string var_28;
             short var_18;
-            short var_16;
             StringList var_14;
-            StringList var_10;
             StringList var_C;
-            int var_8;
-            byte var_7;
-            byte var_6;
-            byte var_5;
-            Player var_4;
 
+            bool finished = false;
             do
             {
-                var_4 = gbl.player_ptr01;
+                Player source = gbl.player_ptr01;
                 ovr025.load_pic();
 
-                ovr025.selectAPlayer(ref var_4, true, "Trade to?");
+                ovr025.selectAPlayer(ref source, true, "Trade to?");
 
-                if (var_4 == null)
+                if (source == null)
                 {
-                    var_131 = true;
+                    finished = true;
                 }
                 else
                 {
@@ -1333,41 +1307,31 @@ namespace engine
                     do
                     {
                         displayMoney();
-                        gbl.player_ptr01 = var_4;
+                        gbl.player_ptr01 = source;
                         var_C = null;
-                        var_10 = null;
 
                         var_14 = null;
-                        var_16 = 0;
+                        int counter = 0; // var_16
 
-                        for (var_5 = 0; var_5 <= 6; var_5++)
+                        for (int coin = 0; coin <= 6; coin++)
                         {
-                            if (gbl.player_ptr.Money[var_5] != 0)
+                            if (gbl.player_ptr.Money[coin] != 0)
                             {
-                                var_16++;
+                                counter++;
 
-                                var_10 = var_C;
+                                StringList tmp_sl = var_C;
                                 var_C = new StringList();
-                                var_C.next = var_10;
+                                var_C.next = tmp_sl;
 
-                                seg051.Str(15, out var_28, 0, gbl.player_ptr.Money[var_5]);
-                                var_8 = 8 - moneyString[var_5].Length;
-
-                                var_2D = string.Empty;
-
-                                for (var_7 = 0; var_7 < var_8; var_7++)
-                                {
-                                    var_2D += ' ';
-                                }
-
-                                var_C.s = var_2D + moneyString[var_5] + ' ' + var_28;
+                                var_C.s = moneyString[coin].PadLeft(8, ' ') + ' ' + gbl.player_ptr.Money[coin].ToString();
                                 var_C.field_29 = 0;
                             }
                         }
 
                         var_14 = var_C;
                         var_18 = 0;
-                        var_133 = true;
+                        bool var_133 = true;
+                        StringList var_10;
 
                         var_12E = ovr027.sl_select_item(out var_10, ref var_18, ref var_133, true,
                             var_C, 13, 0x19, 7, 12, 15, 10, 13, " Select", "Select type of coin ");
@@ -1378,21 +1342,21 @@ namespace engine
                         }
                         else
                         {
-                            var_6 = ovr022.sub_59BAB(out var_12D, var_10.s);
+                            int money_slot = ovr022.sub_59BAB(out var_12D, var_10.s);
 
                             var_12D = "How much " + var_12D + "will you trade? ";
 
-                            var_130 = ovr022.sub_592AD(10, var_12D, gbl.player_ptr.Money[var_6]);
+                            var_130 = ovr022.sub_592AD(10, var_12D, gbl.player_ptr.Money[money_slot]);
 
-                            ovr022.add_object(var_6, var_130, var_4, gbl.player_ptr);
+                            ovr022.trade_money(money_slot, var_130, source, gbl.player_ptr);
                             var_132 = true;
-                            var_131 = true;
+                            finished = true;
 
-                            for (var_5 = 0; var_5 <= 6; var_5++)
+                            for (int var_5 = 0; var_5 <= 6; var_5++)
                             {
                                 if (gbl.player_ptr.Money[var_5] > 0)
                                 {
-                                    var_131 = false;
+                                    finished = false;
                                     var_132 = false;
                                 }
                             }
@@ -1405,13 +1369,12 @@ namespace engine
 
                     } while (var_132 == false);
                 }
-            } while (var_131 == false);
+            } while (finished == false);
         }
 
 
         internal static void drop_coin()
         {
-            short var_12E;
             char var_12C;
             string var_12B;
             string var_2B;
@@ -1425,7 +1388,6 @@ namespace engine
             short var_6;
             byte var_4;
             int var_3;
-            byte var_2;
             byte var_1;
 
             do
@@ -1474,13 +1436,13 @@ namespace engine
                 }
                 else
                 {
-                    var_2 = ovr022.sub_59BAB(out var_12B, var_10.s);
+                    int money_slot = ovr022.sub_59BAB(out var_12B, var_10.s);
 
                     var_12B = "How much " + var_12B + "will you drop? ";
 
-                    var_12E = ovr022.sub_592AD(10, var_12B, gbl.player_ptr.Money[var_2]);
+                    short num_coins = ovr022.sub_592AD(10, var_12B, gbl.player_ptr.Money[money_slot]);
 
-                    ovr022.sub_59A19(var_2, var_12E, gbl.player_ptr);
+                    ovr022.drop_coins(money_slot, num_coins, gbl.player_ptr);
                     var_15 = true;
 
                     for (var_1 = 0; var_1 <= 6; var_1++)
