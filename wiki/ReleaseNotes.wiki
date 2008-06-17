@@ -1,6 +1,8 @@
 = The Release Notes =
 
 = Unreleased =
+  * Issue 9 - (Was fixed in rev 121), but now tested to prove that is fixed
+  * Issue 8 - Combatant placement is now correct for large groups
   * Issue 25 - Trading money between party members was broken
   * Issue 14 - Attacks of opportunity now occur
   * Issue 18 - Scribing spells, now works (tested magic users + rangers)
