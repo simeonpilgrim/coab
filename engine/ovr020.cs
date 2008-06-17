@@ -506,8 +506,8 @@ namespace engine
                     if (player.in_combat == true &&
                         gbl.area_ptr.field_1CA == 0 &&
                         (gbl.game_state == 2 || gbl.game_state == 3 ||
-                        gbl.game_state == 4 || gbl.game_state == 5 ||
-                        (player.actions != null && player.actions.field_2 != 0)))
+                         gbl.game_state == 4 || gbl.game_state == 5 ||
+                         (player.actions != null && player.actions.field_2 != 0)))
                     {
                         text += " Use";
                     }

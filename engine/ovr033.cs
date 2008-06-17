@@ -124,7 +124,7 @@ namespace engine
 
         static Struct_1D1BC mapToPlayerIndex = new Struct_1D1BC(); /*unk_1CB81*/
 
-        internal static void sub_743E7()
+        internal static void setup_mapToPlayerIndex_and_playerScreen() /* sub_743E7 */
         {
             mapToPlayerIndex.SetField_7(0x00);
 
@@ -606,7 +606,7 @@ namespace engine
 
                     gbl.CombatMap[get_player_index(player)].size = 0;
 
-                    sub_743E7();
+                    setup_mapToPlayerIndex_and_playerScreen();
 
                     redrawCombatArea(8, 3, gbl.mapToBackGroundTile.mapScreenTopY + 3, gbl.mapToBackGroundTile.mapScreenLeftX + 3);
 
@@ -685,7 +685,7 @@ namespace engine
                         }
                     }
 
-                    sub_743E7();
+                    setup_mapToPlayerIndex_and_playerScreen();
                 }
             }
             else

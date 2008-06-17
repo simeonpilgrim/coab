@@ -38,43 +38,40 @@ namespace engine
 
         internal static void sub_33100()
         {
-            Player playerbase_ptr;
-            bool var_1;
-
             gbl.game_state = 5;
             gbl.dword_1D5CA = new spellDelegate(ovr014.target);
             ovr011.battle_begins();
-            var_1 = false;
+            bool end_combat = false;
 
             if (gbl.friends_count == 0 ||
                 gbl.foe_count == 0)
             {
-                var_1 = true;
+                end_combat = true;
             }
 
-            while (var_1 == false)
+            while (end_combat == false)
             {
                 ovr025.count_teams();
-                playerbase_ptr = gbl.player_next_ptr;
+                Player player = gbl.player_next_ptr;
 
-                while (playerbase_ptr != null)
+                while (player != null)
                 {
-                    ovr014.sub_3E000(playerbase_ptr);
+                    ovr014.sub_3E000(player);
 
-                    playerbase_ptr = playerbase_ptr.next_player;
+                    player = player.next_player;
                 }
 
                 gbl.area2_ptr.field_596 = 0;
 
-                sub_331BC(ref playerbase_ptr);
+                find_next_delayed_player(out player);
 
-                while (playerbase_ptr != null)
+                while (player != null)
                 {
-                    sub_33281(playerbase_ptr);
-                    sub_331BC(ref playerbase_ptr);
+                    sub_33281(player);
+                    find_next_delayed_player(out player);
                 }
 
-                battle01(ref var_1);
+                battle01(ref end_combat);
             }
 
             sub_3304B();
@@ -82,41 +79,39 @@ namespace engine
         }
 
 
-        internal static void sub_331BC(ref Player arg_0)
+        internal static void find_next_delayed_player(out Player output_player) /* sub_331BC */
         {
-            Player player;
-            byte var_3;
-            byte var_2;
-            sbyte var_1;
+            output_player = null;
 
-            var_1 = 0;
-            var_2 = 0;
-            player = gbl.player_next_ptr;
+            int max_delay = 0;
+            int max_roll = 0;
+
+            Player player = gbl.player_next_ptr;
 
             while (player != null)
             {
-                var_3 = ovr024.roll_dice(100, 1);
+                int roll = ovr024.roll_dice(100, 1);
 
-                if (player.actions.delay > var_1)
+                if (player.actions.delay > max_delay)
                 {
-                    var_2 = var_3;
+                    max_roll = roll;
                 }
 
-                if (player.actions.delay > var_1 &&
-                    var_3 >= var_2)
+                if (player.actions.delay >= max_delay &&
+                    roll >= max_roll)
                 {
-                    var_2 = var_3;
-                    var_1 = player.actions.delay;
+                    max_roll = roll;
+                    max_delay = player.actions.delay;
 
-                    arg_0 = player;
+                    output_player = player;
                 }
 
                 player = player.next_player;
             }
 
-            if (var_1 == 0)
+            if (max_delay == 0)
             {
-                arg_0 = null;
+                output_player = null;
             }
         }
 

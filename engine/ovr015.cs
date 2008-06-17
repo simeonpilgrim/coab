@@ -675,9 +675,8 @@ namespace engine
             char input;
             string var_2B;
             bool var_2;
-            bool var_1;
 
-            var_1 = false;
+            bool var_1 = false;
 
             if( gbl.game_state == 4 )
             {
@@ -800,7 +799,6 @@ namespace engine
             }
 
             ovr030.DaxArrayFreeDaxBlocks( gbl.byte_1D556 );
-
 
 			seg040.free_dax_block( ref gbl.headX_dax );
 			seg040.free_dax_block( ref gbl.bodyX_dax );
