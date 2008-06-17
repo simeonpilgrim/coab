@@ -533,7 +533,7 @@ namespace Classes
         {
             public int xPos; // 0x00
             public int yPos; // 0x01
-            public byte player_index;  // field_2
+            public int player_index;  // field_2
             public byte size; // field_3
         }
 

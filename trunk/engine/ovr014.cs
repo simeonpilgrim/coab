@@ -307,7 +307,7 @@ namespace engine
             gbl.CombatMap[player_index].xPos = newXPos;
             gbl.CombatMap[player_index].yPos = newYPos;
 
-            ovr033.sub_743E7();
+            ovr033.setup_mapToPlayerIndex_and_playerScreen();
 
             if (gbl.byte_1D910 == true)
             {
@@ -787,23 +787,16 @@ namespace engine
 
         internal static void sub_3F4EB(Item arg_0, ref bool arg_4, byte arg_8, Player target, Player attacker)
         {
-            byte var_17;
-            byte var_16;
-            byte var_15;
             byte var_14;
-            byte var_13;
-            byte var_12;
-            byte var_11;
-            Struct_1C020 var_10;
 
-            var_13 = arg_8;
+            byte var_13 = arg_8;
             arg_4 = false;
             gbl.byte_1D2CA = 0;
             gbl.byte_1D2CB = 0;
             gbl.byte_1D901 = 0;
             gbl.byte_1D902 = 0;
-            var_11 = 0;
-            var_12 = 0;
+            bool var_11 = false;
+            bool var_12 = false;
             gbl.damage = 0;
 
             attacker.actions.field_8 = 1;
@@ -836,7 +829,7 @@ namespace engine
                 attacker.field_19C = 0;
                 attacker.field_19D = 0;
 
-                var_11 = 1;
+                var_11 = true;
                 arg_4 = true;
             }
             else
@@ -844,7 +837,7 @@ namespace engine
                 if (attacker.field_151 != null && 
                     (target.field_DE > 0x80 || (target.field_DE & 7) > 1))
                 {
-                    var_10 = gbl.unk_1C020[attacker.field_151.type].ShallowClone();
+                    Struct_1C020 var_10 = gbl.unk_1C020[attacker.field_151.type].ShallowClone();
 
                     attacker.field_19E = var_10.diceCount;
                     attacker.field_1A0 = var_10.diceSize;
@@ -878,7 +871,7 @@ namespace engine
                 }
 
                 sub_3FCED(ref var_14, target, attacker);
-                var_17 = 0;
+                byte var_17 = 0;
                 if (var_13 != 0)
                 {
                     var_17 = 1;
@@ -889,11 +882,11 @@ namespace engine
                     var_17 = 2;
                 }
 
-                var_16 = attacker.actions.field_4;
-                for (var_15 = var_16; var_15 >= 1; var_15--)
+                byte var_16 = attacker.actions.field_4;
+                for (byte var_15 = var_16; var_15 >= 1; var_15--)
                 {
                     while (attacker.field_19BArray(var_15) > 0 &&
-                        var_12 == 0)
+                        var_12 == false)
                     {
                         attacker.field_19BArraySet(var_15, (byte)(attacker.field_19BArray(var_15) - 1));
                         attacker.actions.field_4 = var_15;
@@ -930,7 +923,7 @@ namespace engine
                             }
 
                             seg044.sound_sub_120E0(gbl.sound_7_188CC);
-                            var_11 = 1;
+                            var_11 = true;
                             sub_3E192(var_15, target, attacker);
                             display_attack_message(true, gbl.damage, gbl.damage, var_17, target, attacker);
 
@@ -941,7 +934,7 @@ namespace engine
 
                             if (target.in_combat == false)
                             {
-                                var_12 = 1;
+                                var_12 = true;
                             }
 
                             if (attacker.in_combat == false)
@@ -959,14 +952,14 @@ namespace engine
                     attacker.field_19D = 0;
                 }
 
-                if (var_11 == 0)
+                if (var_11 == false)
                 {
                     seg044.sound_sub_120E0(gbl.sound_9_188D0);
                     display_attack_message(false, 0, 0, var_17, target, attacker);
                 }
 
                 arg_4 = true;
-                for (var_15 = 1; var_15 <= 2; var_15++)
+                for (byte var_15 = 1; var_15 <= 2; var_15++)
                 {
                     if (attacker.field_19BArray(var_15) > 0)
                     {

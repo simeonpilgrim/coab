@@ -697,7 +697,7 @@ namespace engine
 
                 gbl.CombatMap[player_index].size = 0;
 
-                ovr033.sub_743E7();
+                ovr033.setup_mapToPlayerIndex_and_playerScreen();
 
                 if (ovr025.clear_actions(player) == true)
                 {

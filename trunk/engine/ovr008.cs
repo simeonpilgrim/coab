@@ -763,12 +763,10 @@ namespace engine
                     gbl.last_game_state = gbl.game_state;
                     if (value == 0)
                     {
-                        //System.Console.WriteLine("    gbl.game_state = 3");
                         gbl.game_state = 3;
                     }
                     else
                     {
-                        //System.Console.WriteLine("    gbl.game_state = 4");
                         gbl.game_state = 4;
                     }
                 }

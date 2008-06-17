@@ -802,7 +802,7 @@ namespace engine
                     player.actions.field_13 = 1;
                 }
 
-                player.actions.direction = unk_1660C[gbl.mapDirection >> 1];
+                player.actions.direction = HalfDirToIso[gbl.mapDirection >> 1];
 
                 if (player.combat_team == CombatTeam.Enemy)
                 {
@@ -828,25 +828,21 @@ namespace engine
         }
 
 
-        internal static bool offset_invalid(int arg_0, int arg_2) /* sub_38202 */
+        internal static bool both_invalid(int arg_0, int arg_2) /* sub_38202 */
         {
-            bool ret_val;
-
-            if ((arg_2 >= 0 && arg_2 <= 10) ||
-                (arg_0 >= 0 && arg_0 <= 5))
+            if ((arg_2 >= 0 && arg_2 < 11) ||
+                (arg_0 >= 0 && arg_0 < 6))
             {
-                ret_val = false;
+                return false;
             }
             else
             {
-                ret_val = true;
+                return true;
             }
-
-            return ret_val;
         }
 
 
-        internal static bool sub_38233(byte arg_0, int arg_2, int arg_4, int arg_6, int arg_8, int player_index)
+        internal static bool try_place_combatant(byte arg_0, int arg_2, int arg_4, int arg_6, int arg_8, int player_index) /* sub_38233 */
         {
             bool var_1;
 
@@ -883,10 +879,10 @@ namespace engine
             return var_1;
         }
 
-        static int[] direction_165EC = { 8, 4, 6, 2, 8, 6, 4, 0, 8, 0, 6, 2, 8, 2, 0, 4 }; /*seg600:02DC unk_165EC*/ 
-        static int[] direction_165FC = { 0, 0, 2, 6, 2, 2, 0, 4, 4, 4, 2, 6, 6, 6, 4, 0 }; /*seg600:02EC unk_165FC*/
+        static int[,] direction_165EC = { { 8, 4, 6, 2 }, { 8, 6, 4, 0 }, { 8, 0, 6, 2 }, { 8, 2, 0, 4 } }; /*seg600:02DC unk_165EC*/
+        static int[,] direction_165FC = { { 0, 0, 2, 6 }, { 2, 2, 0, 4 }, { 4, 4, 2, 6 }, { 6, 6, 4, 0 } }; /*seg600:02EC unk_165FC*/
 
-        static byte[] unk_1660C = { 7, 2, 3, 6 }; /*seg600:02FC*/
+        static byte[] HalfDirToIso = { 7, 2, 3, 6 }; /*seg600:02FC unk_1660C */
 
         static byte[] /*seg600:0300*/ unk_16610 = { 5, 4, 5, 6, 3, 8, 7, 2 };
         static byte[] /*seg600:0308*/ unk_16618 = { 3, 2, 2, 3, 0, 2, 5, 3 };
@@ -899,80 +895,96 @@ namespace engine
                 {{0,6},{0,7},{1,8},{2,9},{3,10},{4,10}}, // 340 - 31B
         };
 
-        internal static bool sub_38380(byte loop_count)
+        enum tri_state
         {
-            sbyte var_18 = 0; /* Simeon */
-            sbyte var_17 = 0; /* Simeon */
-            sbyte var_16 = 0; /* Simeon */
-            sbyte var_15 = 0; /* Simeon */
-            byte var_13 = 0; /* Simeon */
-            byte var_10 = 0; /* Simeon */
-            bool var_2 = false; /* Simeon */
+            start = 1,
+            right = 2,
+            left = 3
+        }
 
-            bool var_3 = true;
+        internal static bool place_combatant(int player_index) /* sub_38380 */
+        {
+            int cur_y = 0; /* Simeon */
+            int cur_x = 0; /* Simeon */
+            int base_y = 0; /* Simeon */
+            int base_x = 0; /* Simeon */
+            byte var_13 = 0; /* Simeon */
+            
+            bool placed = false;
+            bool first_row = true;
             bool var_4 = false;
-            byte var_7 = 1;
-            int var_F = 0;
+
+            tri_state state = tri_state.start;
+            int row_scale = 0;
+            int col_scale = 0;
             byte var_14 = 0;
 
-            int pos_x = gbl.team_start_x[gbl.currentTeam];
-            int pos_y = gbl.team_start_y[gbl.currentTeam];
+            int team_x = gbl.team_start_x[gbl.currentTeam];
+            int team_y = gbl.team_start_y[gbl.currentTeam];
 
             do
             {
-                int tempIndex = (gbl.team_direction[gbl.currentTeam] << 2) + var_14;
-                int direction = direction_165FC[tempIndex] / 2;
+                int half_dir = direction_165FC[gbl.team_direction[gbl.currentTeam], var_14] / 2;
 
-                if (var_7 == 1)
+                switch (state)
                 {
-                    int tmpX = gbl.MapDirectionXDelta[unk_1660C[(direction + 2) % 4]];
-                    int tmpY = gbl.MapDirectionYDelta[unk_1660C[(direction + 2) % 4]];
+                    case tri_state.start:
+                        {
+                            int iso_dir = HalfDirToIso[(half_dir + 2) % 4];
+                            int delta_x = gbl.MapDirectionXDelta[iso_dir];
+                            int delta_y = gbl.MapDirectionYDelta[iso_dir];
 
-                    var_15 = (sbyte)(unk_16610[(var_14 > 0 ? 4 : 0) + direction] + (var_F * tmpX));
-                    var_16 = (sbyte)(unk_16618[(var_14 > 0 ? 4 : 0) + direction] + (var_F * tmpY));
-                    var_17 = var_15;
-                    var_18 = var_16;
-                    var_10 = 1;
-                    var_7 = 2;
-                    var_13 = 1;
+                            base_x = unk_16610[(var_14 > 0 ? 4 : 0) + half_dir] + (row_scale * delta_x);
+                            base_y = unk_16618[(var_14 > 0 ? 4 : 0) + half_dir] + (row_scale * delta_y);
+                            cur_x = base_x;
+                            cur_y = base_y;
+                            col_scale = 1;
+                            state = tri_state.right;
+                            var_13 = 1;
+                        }
+                        break;
+
+                    case tri_state.right:
+                        {
+                            int delta_x = gbl.MapDirectionXDelta[HalfDirToIso[(half_dir + 1) % 4]];
+                            int delta_y = gbl.MapDirectionYDelta[HalfDirToIso[(half_dir + 1) % 4]];
+
+                            cur_x = base_x + (delta_x * col_scale);
+                            cur_y = base_y + (delta_y * col_scale);
+                            state = tri_state.left;
+                            var_13 += 1;
+                        }
+                        break;
+
+                    case tri_state.left:
+                        {
+                            int delta_x = gbl.MapDirectionXDelta[HalfDirToIso[(half_dir + 3) % 4]];
+                            int delta_y = gbl.MapDirectionYDelta[HalfDirToIso[(half_dir + 3) % 4]];
+
+                            cur_x = base_x + (delta_x * col_scale);
+                            cur_y = base_y + (delta_y * col_scale);
+
+                            state = tri_state.right;
+                            col_scale += 1;
+                            var_13 += 1;
+                        }
+                        break;
                 }
-                else if (var_7 == 2)
+
+                bool any_cur_invalid = (cur_x < 0 || cur_y < 0 || cur_x > 10 || cur_y > 5);
+
+                if (state > tri_state.start)
                 {
-                    int tmpX = gbl.MapDirectionXDelta[unk_1660C[(direction + 1) % 4]];
-                    int tmpY = gbl.MapDirectionYDelta[unk_1660C[(direction + 1) % 4]];
-
-                    var_17 = (sbyte)(var_15 + (tmpX * var_10));
-                    var_18 = (sbyte)(var_16 + (tmpY * var_10));
-                    var_7 = 3;
-                    var_13 += 1;
-                }
-                else if (var_7 == 3)
-                {
-                    int tmpX = gbl.MapDirectionXDelta[unk_1660C[(direction + 3) % 4]];
-                    int tmpY = gbl.MapDirectionYDelta[unk_1660C[(direction + 3) % 4]];
-
-                    var_17 = (sbyte)(var_15 + (tmpX * var_10));
-                    var_18 = (sbyte)(var_16 + (tmpY * var_10));
-
-                    var_7 = 2;
-                    var_10++;
-                    var_13++;
-                }
-
-                bool var_5 = (var_17 < 0 || var_18 < 0 || var_17 > 10 || var_18 > 5);
-
-                if (var_7 > 1)
-                {
-                    if ((var_5 == true && offset_invalid(var_18, var_17) == false) ||
-                        (var_3 == true && var_13 >= gbl.half_team_count[gbl.currentTeam]) ||
-                        (var_3 == false && var_13 > 11))
+                    if ((any_cur_invalid == true && both_invalid(cur_y, cur_x) == false) ||
+                        (first_row == true && var_13 >= gbl.half_team_count[gbl.currentTeam]) ||
+                        (first_row == false && var_13 > 11))
                     {
-                        var_F++;
+                        row_scale++;
 
                         if (gbl.currentTeam == 0 &&
                             (gbl.team_direction[0] & 1) == 1 &&
                             var_14 == 0 &&
-                            var_F == 1)
+                            row_scale == 1)
                         {
                             int tmpX = gbl.team_start_x[gbl.currentTeam] + gbl.mapPosX;
                             int tmpY = gbl.team_start_y[gbl.currentTeam] + gbl.mapPosY;
@@ -980,7 +992,7 @@ namespace engine
 
                             for (int var_A = 1; var_A <= 3; var_A++)
                             {
-                                int tmpDir = direction_165EC[gbl.team_direction[gbl.currentTeam] + var_A];
+                                int tmpDir = direction_165EC[gbl.team_direction[gbl.currentTeam], var_A];
 
                                 if (gbl.game_state == 3 ||
                                     get_dir_flags(tmpDir, tmpY, tmpX) != 1)
@@ -991,65 +1003,60 @@ namespace engine
 
                             if (found)
                             {
-                                var_F++;
+                                row_scale++;
                             }
                         }
-                        var_7 = 1;
-                        var_3 = false;
+                        state = tri_state.start;
+                        first_row = false;
                     }
                 }
 
 
-                if (var_5 == true &&
-                    offset_invalid(var_18, var_17) == true)
+                if (any_cur_invalid == true &&
+                    both_invalid(cur_y, cur_x) == true)
                 {
-                    var_2 = false;
-                    var_7 = 0;
+                    placed = false;
+                    state = 0;
 
-                    while (var_14 < 3 && var_7 != 1)
+                    while (var_14 < 3 && state != tri_state.start)
                     {
                         var_14++;
 
                         int tmpX = gbl.team_start_x[gbl.currentTeam] + gbl.mapPosX;
                         int tmpY = gbl.team_start_y[gbl.currentTeam] + gbl.mapPosY;
 
-                        int tmpDir = direction_165EC[gbl.team_direction[gbl.currentTeam] + var_14];
+                        int tmpDir = direction_165EC[gbl.team_direction[gbl.currentTeam], var_14];
 
                         if (gbl.game_state == 3 ||
                             get_dir_flags(tmpDir, tmpY, tmpX) != 1)
                         {
-                            pos_x = gbl.team_start_x[gbl.currentTeam] + gbl.MapDirectionXDelta[tmpDir];
-                            pos_y = gbl.team_start_y[gbl.currentTeam] + gbl.MapDirectionYDelta[tmpDir];
+                            team_x = gbl.team_start_x[gbl.currentTeam] + gbl.MapDirectionXDelta[tmpDir];
+                            team_y = gbl.team_start_y[gbl.currentTeam] + gbl.MapDirectionYDelta[tmpDir];
 
-                            var_F = 0;
-                            var_7 = 1;
+                            row_scale = 0;
+                            state = tri_state.start;
                         }
                     }
 
-                    if (var_7 != 1)
+                    if (state != tri_state.start)
                     {
                         var_4 = true;
                     }
                 }
 
-                if (var_5 == false)
+                if (any_cur_invalid == false)
                 {
-                    var_2 = sub_38233(var_14, pos_y, pos_x, var_18, var_17, loop_count);
+                    placed = try_place_combatant(var_14, team_y, team_x, cur_y, cur_x, player_index);
                 }
-            } while (var_2 == false && var_4 == false);
+            } while (placed == false && var_4 == false);
 
 
             return var_4 == false;
         }
 
 
-        internal static void sub_387FE()
+        internal static void place_combatants() /* sub_387FE */
         {
-            int direction;
-            byte loop_var;
-            Player player_ptr;
-            Player player_ptr2;
-
             ovr025.count_teams();
             byte var_F = 0;
             byte var_E = 0;
@@ -1058,11 +1065,11 @@ namespace engine
             {
                 gbl.CombatMap[i].size = 0;
             }
+            ovr033.setup_mapToPlayerIndex_and_playerScreen();
 
-            ovr033.sub_743E7();
             gbl.team_start_x[0] = 0;
             gbl.team_start_y[0] = 0;
-            gbl.team_direction[0] = (byte)(gbl.mapDirection >> 1);
+            gbl.team_direction[0] = gbl.mapDirection / 2;
 
             gbl.team_start_x[1] = (gbl.area2_ptr.field_582 * gbl.MapDirectionXDelta[gbl.mapDirection]) + gbl.team_start_x[0];
             gbl.team_start_y[1] = (gbl.area2_ptr.field_582 * gbl.MapDirectionYDelta[gbl.mapDirection]) + gbl.team_start_y[0];
@@ -1075,6 +1082,7 @@ namespace engine
             {
                 for (int var_C = 0; var_C < 4; var_C++)
                 {
+                    int direction;
                     if (var_C == 1)
                     {
                         direction = 4;
@@ -1084,9 +1092,9 @@ namespace engine
                         direction = gbl.team_direction[gbl.currentTeam];
                     }
 
-                    for (int var_2 = 0; var_2 <= 5; var_2++)
+                    for (int var_2 = 0; var_2 < 6; var_2++)
                     {
-                        for (int var_1 = 0; var_1 <= 10; var_1++)
+                        for (int var_1 = 0; var_1 < 11; var_1++)
                         {
                             if (unk_16620[direction, var_2, 0] > var_1 ||
                                 unk_16620[direction, var_2, 1] < var_1)
@@ -1102,10 +1110,10 @@ namespace engine
                 }
             }
 
-            loop_var = 1;
+            int loop_var = 1;
             gbl.CombatantCount = 0;
-            player_ptr2 = gbl.player_next_ptr;
-            player_ptr = gbl.player_next_ptr;
+            Player player_ptr2 = gbl.player_next_ptr;
+            Player player_ptr = gbl.player_next_ptr;
 
             while (player_ptr != null)
             {
@@ -1118,7 +1126,7 @@ namespace engine
                 gbl.CombatMap[loop_var].player_index = loop_var;
                 gbl.CombatMap[loop_var].size = (byte)(player_ptr.field_DE & 7);
 
-                if (sub_38380(loop_var) == true)
+                if (place_combatant(loop_var) == true)
                 {
                     player_ptr2 = player_ptr;
 
@@ -1142,7 +1150,7 @@ namespace engine
                     }
 
                     gbl.CombatantCount++;
-                    ovr033.sub_743E7();
+                    ovr033.setup_mapToPlayerIndex_and_playerScreen();
                     loop_var++;
                     var_E++;
                 }
@@ -1214,7 +1222,7 @@ namespace engine
             seg043.clear_one_keypress();
             sub_380E0();
             seg043.clear_one_keypress();
-            sub_387FE();
+            place_combatants();
             seg043.clear_one_keypress();
             seg040.init_dax_block(out gbl.missile_dax, 1, 4, 3, 0x18);
 
