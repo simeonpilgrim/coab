@@ -93,7 +93,7 @@ namespace engine
 
                             for (int i = 1; i <= 100; i++)
                             {
-                                Struct_19AEC var_12 = gbl.spell_list[i];
+                                SpellEntry var_12 = gbl.spell_table[i];
 
                                 int sp_class = (var_12.spellLevel - 1) / 5;
                                 int sp_lvl = (var_12.spellLevel - 1) % 5;
@@ -120,7 +120,7 @@ namespace engine
 
                                 for (int i = 1; i <= 100; i++)
                                 {
-                                    Struct_19AEC var_12 = gbl.spell_list[i];
+                                    SpellEntry var_12 = gbl.spell_table[i];
 
                                     int sp_class = (var_12.spellLevel - 1) / 5;
                                     int sp_lvl = (var_12.spellLevel - 1) % 5;
@@ -152,7 +152,7 @@ namespace engine
 
                                 for (int i = 1; i <= 100; i++)
                                 {
-                                    if (gbl.spell_list[i].spellClass == 1)
+                                    if (gbl.spell_table[i].spellClass == 1)
                                     {
                                         player.field_79[i - 1] = 1;
                                     }

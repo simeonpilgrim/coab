@@ -1234,7 +1234,7 @@ namespace engine
             throw new System.NotSupportedException();//call	Move(Any &,Any &,Word)
 
             player.hit_point_current = (byte)bp_var_1C0.field_11B;
-            player.initiative = (byte)bp_var_1C0.field_11C;
+            player.movement = (byte)bp_var_1C0.field_11C;
         }
 
 

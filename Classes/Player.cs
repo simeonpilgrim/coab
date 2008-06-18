@@ -651,7 +651,7 @@ namespace Classes
 
 
         [DataOffsetAttribute(0x1A5, DataType.Byte)]
-        public byte initiative; // 0x1a5
+        public byte movement; // 0x1a5 initiative
 
         public const int StructSize = 0x1A6;
 

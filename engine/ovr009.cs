@@ -32,7 +32,7 @@ namespace engine
 
             seg040.free_dax_block(ref gbl.missile_dax);
             ovr033.Color_0_8_normal();
-            gbl.dword_1D5CA = new spellDelegate(ovr023.cast_spell_on);
+            gbl.dword_1D5CA = ovr023.cast_spell_on;
         }
 
 

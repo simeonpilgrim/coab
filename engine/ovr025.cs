@@ -60,26 +60,26 @@ namespace engine
         /// <summary>
         /// Item weight initiative effect check.
         /// </summary>
-        internal static void sub_6621E(Item arg_0, Player arg_4)
+        internal static void sub_6621E(Item item, Player player)
         {
-            if (gbl.unk_1C020[arg_0.type].item_slot == 2)
+            if (gbl.unk_1C020[item.type].item_slot == 2)
             {
-                if (arg_0.weight >= 0 && arg_0.weight <= 0x96)
+                if (item.weight >= 0 && item.weight <= 0x96)
                 {
-                    arg_4.initiative = arg_4.field_E4;
+                    player.movement = player.field_E4;
                 }
-                else if (arg_0.weight >= 0x97 && arg_0.weight <= 0x18F)
+                else if (item.weight >= 0x97 && item.weight <= 0x18F)
                 {
-                    arg_4.initiative = 9;
+                    player.movement = 9;
                 }
                 else
                 {
-                    arg_4.initiative = 6;
+                    player.movement = 6;
                 }
 
-                if (arg_4.initiative != 0 && arg_4.initiative <= 9)
+                if (player.movement != 0 && player.movement <= 9)
                 {
-                    arg_4.initiative += 3;
+                    player.movement += 3;
                 }
             }
         }
@@ -136,37 +136,36 @@ namespace engine
         }
 
 
-        internal static void sub_663C4(Player player)
+        internal static void calc_movement(Player player) /* sub_663C4 */
         {
-            byte var_3;
+            int overload = player.weight - max_encumberance(player);
 
-            int var_2 = player.weight - max_encumberance(player);
-
-            if (var_2 < 0)
+            if (overload < 0)
             {
-                var_2 = 0;
+                overload = 0;
             }
 
-            if (var_2 >= 0 && var_2 <= 0x200)
+            int moves;
+            if (overload >= 0 && overload <= 0x200)
             {
-                var_3 = player.initiative;
+                moves = player.movement;
             }
-            else if (var_2 >= 0x201 && var_2 <= 0x300)
+            else if (overload >= 0x201 && overload <= 0x300)
             {
-                var_3 = 9;
+                moves = 9;
             }
-            else if (var_2 >= 0x301 && var_2 <= 0x400)
+            else if (overload >= 0x301 && overload <= 0x400)
             {
-                var_3 = 6;
+                moves = 6;
             }
             else
             {
-                var_3 = 3;
+                moves = 3;
             }
 
-            if (var_3 < player.initiative)
+            if (moves < player.movement)
             {
-                player.initiative = var_3;
+                player.movement = (byte)moves;
             }
         }
 
@@ -633,7 +632,7 @@ namespace engine
 
             player.field_186 = 0;
             player.ac = player.field_124;
-            player.initiative = player.field_E4;
+            player.movement = player.field_E4;
             player.hitBonus = player.field_73;
 
             stat_bonus[0] = ovr025.dex_ac_bonus(player);
@@ -680,7 +679,7 @@ namespace engine
                 }
             }
 
-            sub_663C4(player);
+            calc_movement(player);
 
             if (stat_bonus[4] < player.ac)
             {
@@ -1743,7 +1742,7 @@ namespace engine
             }
             else
             {
-                sbyte spell_class = gbl.spell_list[spell_id].spellClass;
+                sbyte spell_class = gbl.spell_table[spell_id].spellClass;
                 if (spell_class == 0)
                 {
                     int var_2 = gbl.player_ptr.cleric_lvl + (ovr026.sub_6B3D1(gbl.player_ptr) * gbl.player_ptr.turn_undead);
@@ -1791,7 +1790,7 @@ namespace engine
             }
 
             if (gbl.spell_from_item == true &&
-                gbl.spell_list[spell_id].spellClass != 3)
+                gbl.spell_table[spell_id].spellClass != 3)
             {
                 target_count = 6;
             }
