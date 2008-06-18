@@ -162,17 +162,10 @@ namespace engine
 
         internal static void display_player_stats01()
         {
-            Affect var_34;
-            string var_30;
-            byte var_7;
-            int xCol;
-            int yCol;
-            Player player;
-
-            player = gbl.player_ptr;
+            Player player = gbl.player_ptr;
 
             ovr025.reclac_player_values(player);
-            yCol = 0x11;
+            int yCol = 0x11;
 
             seg041.displayString("AC    ", 0, 15, yCol, 1);
             ovr025.display_AC(yCol, 4, player);
@@ -180,43 +173,44 @@ namespace engine
             seg041.displayString("HP    ", 0, 15, yCol + 1, 1);
             ovr025.display_hp(false, yCol + 1, 4, player);
 
-            xCol = 8;
+            int xCol = 8;
 
             seg041.displayString("THAC0   ", 0, 15, yCol, xCol + 1);
             seg041.displayString((0x3c - player.hitBonus).ToString(), 0, 10, yCol, xCol + 7);
 
 
-            var_30 = player.field_19E.ToString() + "d" + player.field_1A0.ToString();
+            string damage = player.field_19E.ToString() + "d" + player.field_1A0.ToString();
             if (player.damageBonus > 0)
             {
-                var_30 += "+" + player.damageBonus.ToString();
+                damage += "+" + player.damageBonus.ToString();
             }
             if (player.damageBonus < 0)
             {
-                var_30 += player.damageBonus.ToString();
+                damage += player.damageBonus.ToString();
             }
 
             seg041.displayString("Damage  ", 0, 15, yCol + 1, xCol);
-            seg041.displayString(var_30, 0, 10, yCol + 1, xCol + 7);
+            seg041.displayString(damage, 0, 10, yCol + 1, xCol + 7);
             
             xCol = 0x16;
             seg041.displayString("Encumbrance  ", 0, 15, yCol, xCol);
             seg041.displayString(player.weight.ToString(), 0, 10, yCol, xCol + 12);
 
-            var_7 = player.initiative;
+            int movement = player.movement;
 
-            if (ovr025.find_affect(out var_34, Affects.slow, player) == true)
+            Affect dummy_affect;
+            if (ovr025.find_affect(out dummy_affect, Affects.slow, player) == true)
             {
-                var_7 *= 2;
+                movement *= 2;
             }
 
-            if (ovr025.find_affect(out var_34, Affects.haste, player) == true)
+            if (ovr025.find_affect(out dummy_affect, Affects.haste, player) == true)
             {
-                var_7 /= 2;
+                movement /= 2;
             }
 
             seg041.displayString("Movement ", 0, 15, yCol + 1, xCol + 3);
-            seg041.displayString(var_7.ToString(), 0, 10, yCol + 1, xCol + 0x0c);
+            seg041.displayString(movement.ToString(), 0, 10, yCol + 1, xCol + 12);
         }
 
 
@@ -739,9 +733,9 @@ namespace engine
                         for (int i = 0; i < gbl.max_spells; i++)
                         {
                             if (player.spell_list[i] != 0 &&
-                                gbl.spell_list[player.spell_list[i]].spellClass == 2)
+                                gbl.spell_table[player.spell_list[i]].spellClass == 2)
                             {
-                                int var_C = gbl.spell_list[player.spell_list[i]].spellLevel;
+                                int var_C = gbl.spell_table[player.spell_list[i]].spellLevel;
                                 var_11[var_C - 1] += 1;
 
                                 if (var_11[var_C - 1] > player.field_12D[2, var_C - 1])
@@ -1125,7 +1119,7 @@ namespace engine
                 gbl.spell_from_item = false;
 
                 if (gbl.game_state == 5 &&
-                    gbl.spell_list[var_1].field_B != 0)
+                    gbl.spell_table[var_1].field_B != 0)
                 {
                     arg_0 = ovr025.clear_actions(gbl.player_ptr);
                 }

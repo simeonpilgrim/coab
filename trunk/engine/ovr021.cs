@@ -446,7 +446,7 @@ namespace engine
                 {
                     if (output == true)
                     {
-                        var_2 = (byte)gbl.spell_list[player.spell_list[spell_index] & 0x7F].spellLevel;
+                        var_2 = (byte)gbl.spell_table[player.spell_list[spell_index] & 0x7F].spellLevel;
                     }
                     else
                     {
@@ -487,7 +487,7 @@ namespace engine
 
                             if (arg_0 == true)
                             {
-                                var_4 = (byte)gbl.spell_list[(int)item.getAffect(var_2) & 0x7F].spellLevel;
+                                var_4 = (byte)gbl.spell_table[(int)item.getAffect(var_2) & 0x7F].spellLevel;
                             }
                             else
                             {

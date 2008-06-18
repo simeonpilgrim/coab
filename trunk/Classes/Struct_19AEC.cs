@@ -5,16 +5,9 @@ namespace Classes
 	/// <summary>
 	/// Summary description for Struct_19AEC.
 	/// </summary>
-	public class Struct_19AEC
+    public class SpellEntry /* Struct_19AEC */
 	{
-		public Struct_19AEC()
-		{
-			//
-			// TODO: Add constructor logic here
-			//
-		}
-
-        public Struct_19AEC(sbyte f0, sbyte f1, sbyte f2, byte f3, byte f4, byte f5,
+        public SpellEntry(sbyte f0, sbyte f1, sbyte f2, byte f3, byte f4, byte f5,
             byte f6, byte f7, byte f8, byte f9, Affects fa, byte fb, byte fc, byte fd, byte fe, byte ff)
         {
             spellClass = f0;

@@ -57,21 +57,21 @@ namespace engine
 
         internal static byte sub_3E124(Player player)
         {
-            byte var_2 = player.initiative;
+            int moves = player.movement;
 
             if (player.in_combat == false)
             {
-                var_2 += (byte)gbl.area2_ptr.field_6E4;
+                moves += gbl.area2_ptr.field_6E4;
             }
 
             gbl.reset_byte_1D2C0 = true;
 
-            if (var_2 < 1 || var_2 > 0x60)
+            if (moves < 1 || moves > 96)
             {
-                var_2 = 1;
+                moves = 1;
             }
 
-            gbl.byte_1D2C0 = (byte)(var_2 *2);
+            gbl.byte_1D2C0 = (byte)(moves * 2);
 
             ovr024.work_on_00(player, 18);
 
@@ -1211,7 +1211,7 @@ namespace engine
                 aim_menu(arg_0, out var_2, var_A, arg_4, 0, ovr023.sub_5CDE5(arg_8), gbl.player_ptr);
                 gbl.player_ptr.actions.target = arg_0.target;
             }
-            else if (gbl.spell_list[arg_8].field_E == 0)
+            else if (gbl.spell_table[arg_8].field_E == 0)
             {
                 arg_0.target = gbl.player_ptr;
 
@@ -1239,7 +1239,7 @@ namespace engine
                         {
                             for (int i = 1; i <= 4; i++)
                             {
-                                if (gbl.spell_list[arg_8].affect_id == unk_18ADB[i])
+                                if (gbl.spell_table[arg_8].affect_id == unk_18ADB[i])
                                 {
                                     var_3 = false;
                                 }
@@ -1284,7 +1284,7 @@ namespace engine
             gbl.targetX = ovr033.PlayerMapXPos(gbl.player_ptr);
             gbl.targetY = ovr033.PlayerMapYPos(gbl.player_ptr);
 
-            byte tmp1 = (byte)(gbl.spell_list[arg_6].field_6 & 0x0F);
+            byte tmp1 = (byte)(gbl.spell_table[arg_6].field_6 & 0x0F);
 
             if (tmp1 == 0)
             {
@@ -1410,7 +1410,7 @@ namespace engine
                     else
                     {
                         /* TODO it doesn't make sense to mask the low nibble then shift it out */
-                        ovr032.Rebuild_SortedCombatantList(gbl.mapToBackGroundTile, 1, 0xff, (gbl.spell_list[arg_6].field_6 & 0x0f) >> 4, gbl.targetY, gbl.targetX);
+                        ovr032.Rebuild_SortedCombatantList(gbl.mapToBackGroundTile, 1, 0xff, (gbl.spell_table[arg_6].field_6 & 0x0f) >> 4, gbl.targetY, gbl.targetX);
                         // test with it how it would make sense...
 						//ovr032.Rebuild_SortedCombatantList(gbl.mapToBackGroundTile, 1, 0xff, (gbl.unk_19AEC[arg_6].field_6 & 0xf0) >> 4, gbl.targetY, gbl.targetX);
 
@@ -1432,7 +1432,7 @@ namespace engine
             {
                 if (sub_4001C(var_C, 1, quick_fight, arg_6) == true)
                 {
-                    ovr032.Rebuild_SortedCombatantList(gbl.mapToBackGroundTile, 1, 0xff, (short)(gbl.spell_list[arg_6].field_6 & 7), gbl.targetY, gbl.targetX);
+                    ovr032.Rebuild_SortedCombatantList(gbl.mapToBackGroundTile, 1, 0xff, (short)(gbl.spell_table[arg_6].field_6 & 7), gbl.targetY, gbl.targetX);
 
                     for (int i = 1; i <= gbl.sortedCombatantCount; i++)
                     {
@@ -1449,7 +1449,7 @@ namespace engine
             }
             else
             {
-                int var_1 = (gbl.spell_list[arg_6].field_6 & 3) + 1;
+                int var_1 = (gbl.spell_table[arg_6].field_6 & 3) + 1;
                 int sp_target_index = 0;
 
                 while (var_1 > 0)
@@ -1529,7 +1529,7 @@ namespace engine
             }
 
             if (var_1 > 0 &&
-                gbl.spell_list[var_1].field_B == 0)
+                gbl.spell_table[var_1].field_B == 0)
             {
                 ovr025.string_print01("Camp Only Spell");
                 var_1 = 0;
@@ -1547,7 +1547,7 @@ namespace engine
 
             if (var_1 > 0)
             {
-                var_3 = (sbyte)(gbl.spell_list[var_1].field_C / 3);
+                var_3 = (sbyte)(gbl.spell_table[var_1].field_C / 3);
 
                 if (var_3 == 0)
                 {

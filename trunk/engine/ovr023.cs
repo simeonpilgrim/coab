@@ -126,7 +126,7 @@ namespace engine
             spell_id &= 0x7f;
             bool can_learn = false;
 
-            switch (gbl.spell_list[spell_id].spellClass)
+            switch (gbl.spell_table[spell_id].spellClass)
             {
                 case 0:
                     if (player.wis > 8 &&
@@ -291,7 +291,7 @@ namespace engine
                     string_list = string_list.next;
                 }
 
-                last_spell_level = gbl.spell_list[gbl.unk_1AEC4[index - 1]].spellLevel;
+                last_spell_level = gbl.spell_table[gbl.unk_1AEC4[index - 1]].spellLevel;
 
                 string_list.next = new StringList();
 
@@ -300,9 +300,9 @@ namespace engine
 
             string_list.next = null;
 
-            if (gbl.spell_list[masked_id].spellLevel != last_spell_level)
+            if (gbl.spell_table[masked_id].spellLevel != last_spell_level)
             {
-                string_list.s = LevelStrings[gbl.spell_list[masked_id].spellLevel];
+                string_list.s = LevelStrings[gbl.spell_table[masked_id].spellLevel];
 
                 string_list.field_29 = 1;
                 string_list.next = new StringList();
@@ -330,7 +330,7 @@ namespace engine
             var_6 = gbl.spell_string_list;
             bool found = false;
 
-            int sp_lvl = gbl.spell_list[arg_0 & 0x7F].spellLevel;
+            int sp_lvl = gbl.spell_table[arg_0 & 0x7F].spellLevel;
 
             if (gbl.spell_string_list == null)
             {
@@ -353,7 +353,7 @@ namespace engine
                 {
                     if (var_6.field_29 == 0)
                     {
-                        if (gbl.spell_list[gbl.unk_1AEC4[var_F]].spellLevel <= sp_lvl &&
+                        if (gbl.spell_table[gbl.unk_1AEC4[var_F]].spellLevel <= sp_lvl &&
                             gbl.unk_1AEC4[var_F] != (arg_0 & 0x7F))
                         {
                             var_F++;
@@ -556,8 +556,8 @@ namespace engine
                 case SpellLoc.choose:
                     for (int var_2 = 1; var_2 <= 100; var_2++)
                     {
-                        int sp_lvl = gbl.spell_list[var_2].spellLevel;
-                        int sp_class = gbl.spell_list[var_2].spellClass;
+                        int sp_lvl = gbl.spell_table[var_2].spellLevel;
+                        int sp_class = gbl.spell_table[var_2].spellClass;
                         //int tmp = (sp_class * 5) + sp_lvl - 1;
                         //sp_lvl = tmp % 5;
                         //sp_class = tmp / 5;
@@ -582,14 +582,14 @@ namespace engine
                 {
                     int var_2 = 0;
 
-                    var_C = gbl.spell_list[gbl.unk_1AEC4[var_2]].spellLevel;
+                    var_C = gbl.spell_table[gbl.unk_1AEC4[var_2]].spellLevel;
 
                     var_A = new StringList();
 
                     var_A.next = gbl.spell_string_list;
                     gbl.spell_string_list = var_A;
 
-                    gbl.spell_string_list.s = LevelStrings[gbl.spell_list[gbl.unk_1AEC4[var_2]].spellLevel];
+                    gbl.spell_string_list.s = LevelStrings[gbl.spell_table[gbl.unk_1AEC4[var_2]].spellLevel];
                     gbl.spell_string_list.field_29 = 1;
                     var_6 = gbl.spell_string_list;
 
@@ -599,7 +599,7 @@ namespace engine
 
                         if (gbl.unk_1AEC4[var_2] != 0)
                         {
-                            var_C = gbl.spell_list[gbl.unk_1AEC4[var_2]].spellLevel;
+                            var_C = gbl.spell_table[gbl.unk_1AEC4[var_2]].spellLevel;
                         }
 
                         if (var_B < var_C)
@@ -628,19 +628,18 @@ namespace engine
         internal static byte sub_5CDE5(byte arg_0)
         {
             byte var_2;
-            byte var_1;
 
             if (gbl.spell_from_item == false)
             {
-                var_2 = (byte)(gbl.spell_list[arg_0].field_2 + (gbl.spell_list[arg_0].field_3 * ovr025.spell_target_count(arg_0)));
+                var_2 = (byte)(gbl.spell_table[arg_0].field_2 + (gbl.spell_table[arg_0].field_3 * ovr025.spell_target_count(arg_0)));
             }
             else
             {
-                var_2 = (byte)((gbl.spell_list[arg_0].field_3 * 6) + gbl.spell_list[arg_0].field_2);
+                var_2 = (byte)((gbl.spell_table[arg_0].field_3 * 6) + gbl.spell_table[arg_0].field_2);
             }
 
             if (var_2 == 0 &&
-                gbl.spell_list[arg_0].field_6 != 0)
+                gbl.spell_table[arg_0].field_6 != 0)
             {
                 var_2 = 1;
             }
@@ -650,9 +649,7 @@ namespace engine
                 var_2 = 1;
             }
 
-            var_1 = var_2;
-
-            return var_1;
+            return var_2;
         }
 
 
@@ -689,7 +686,7 @@ namespace engine
             }
             else
             {
-                var_4 = (ushort)(gbl.spell_list[arg_0].field_4 + (gbl.spell_list[arg_0].field_5 * ovr025.spell_target_count(arg_0)));
+                var_4 = (ushort)(gbl.spell_table[arg_0].field_4 + (gbl.spell_table[arg_0].field_5 * ovr025.spell_target_count(arg_0)));
             }
 
             return var_4;
@@ -729,16 +726,16 @@ namespace engine
                     {
                         var_2F = gbl.sp_targets[var_2B];
 
-                        if (gbl.spell_list[spell_id].can_save_flag == 0)
+                        if (gbl.spell_table[spell_id].can_save_flag == 0)
                         {
                             var_30 = false;
                         }
                         else
                         {
-                            var_30 = ovr024.do_saving_throw(0, gbl.spell_list[spell_id].field_9, var_2F);
+                            var_30 = ovr024.do_saving_throw(0, gbl.spell_table[spell_id].field_9, var_2F);
                         }
 
-                        if (gbl.spell_list[gbl.spell_id].field_2 == -1)
+                        if (gbl.spell_table[gbl.spell_id].field_2 == -1)
                         {
                             ovr025.reclac_player_values(var_2F);
 
@@ -753,13 +750,13 @@ namespace engine
 
                         if (arg_6 > 0)
                         {
-                            ovr024.damage_person(var_30, gbl.spell_list[spell_id].can_save_flag, arg_6, var_2F);
+                            ovr024.damage_person(var_30, gbl.spell_table[spell_id].can_save_flag, arg_6, var_2F);
                         }
 
-                        if (gbl.spell_list[spell_id].affect_id > 0)
+                        if (gbl.spell_table[spell_id].affect_id > 0)
                         {
-                            ovr024.is_unaffected(arg_0, var_30, gbl.spell_list[spell_id].can_save_flag,
-                                arg_8, target_count, sub_5CE92(spell_id), gbl.spell_list[spell_id].affect_id,
+                            ovr024.is_unaffected(arg_0, var_30, gbl.spell_table[spell_id].can_save_flag,
+                                arg_8, target_count, sub_5CE92(spell_id), gbl.spell_table[spell_id].affect_id,
                                 var_2F);
                         }
                     }
@@ -780,7 +777,7 @@ namespace engine
             gbl.sp_target_count = 1;
             arg_0 = true;
 
-            switch (gbl.spell_list[arg_6].field_7)
+            switch (gbl.spell_table[arg_6].field_7)
             {
                 case 1:
                     break;
@@ -827,7 +824,7 @@ namespace engine
             bool var_1 = true;
 
             if (gbl.game_state != 5 &&
-                gbl.spell_list[spell_id].field_7 == 0)
+                gbl.spell_table[spell_id].field_7 == 0)
             {
                 if (gbl.spell_from_item == false)
                 {
@@ -927,7 +924,7 @@ namespace engine
 
                     gbl.spell_id = spell_id;
 
-                    gbl.word_1D5CE[gbl.spell_id - 1]();
+                    gbl.spells_func_table[gbl.spell_id]();
 
                     gbl.spell_id = 0;
                     gbl.byte_1D2C7 = 0;
@@ -1215,8 +1212,8 @@ namespace engine
                     }
                     else
                     {
-                        saved = ovr024.do_saving_throw(save_bonus, gbl.spell_list[gbl.spell_id].field_9, target);
-                        can_save_flag = gbl.spell_list[gbl.spell_id].can_save_flag;
+                        saved = ovr024.do_saving_throw(save_bonus, gbl.spell_table[gbl.spell_id].field_9, target);
+                        can_save_flag = gbl.spell_table[gbl.spell_id].can_save_flag;
                     }
 
                     if ((target.field_11A > 1 || target.field_DE > 1) &&
@@ -1226,7 +1223,7 @@ namespace engine
                     }
 
                     ovr024.is_unaffected(arg_0, saved, can_save_flag, false, ovr025.spell_target_count(gbl.spell_id), sub_5CE92(gbl.spell_id),
-                        gbl.spell_list[gbl.spell_id].affect_id, target);
+                        gbl.spell_table[gbl.spell_id].affect_id, target);
                 }
             }
         }
@@ -1251,19 +1248,19 @@ namespace engine
         }
 
 
-        internal static void is_Blessed()
+        internal static void cleric_bless() /* is_Blessed */
         {
             sub_5DCA0("is Blessed", gbl.player_ptr.combat_team);
         }
 
 
-        internal static void is_Cursed()
+        internal static void cleric_curse() /* is_Cursed */
         {
             sub_5DCA0("is Cursed", ovr025.opposite_team(gbl.player_ptr));
         }
 
 
-        internal static void sub_5DDBC()
+        internal static void cleric_cure_light() /* sub_5DDBC */
         {
             if (gbl.sp_target_count != 0 &&
                 ovr024.heal_player(0, ovr024.roll_dice(8, 1), gbl.sp_targets[1]) == true)
@@ -1273,7 +1270,7 @@ namespace engine
         }
 
 
-        internal static void sub_5DDF8()
+        internal static void cleric_cause_light() /* sub_5DDF8 */
         {
             sub_5CF7F(string.Empty, 8, ovr024.roll_dice_save(8, 1), false, 0, gbl.spell_id);
         }
@@ -1291,7 +1288,7 @@ namespace engine
         }
 
 
-        internal static void is_cold_resistant()
+        internal static void cleric_resist_cold() /* is_cold_resistant */
         {
             sub_5CF7F("is cold-resistant", 0, 0, false, 0, gbl.spell_id);
         }
@@ -2828,7 +2825,7 @@ namespace engine
         }
 
 
-        internal static void cast_highlight()
+        internal static void cast_faerie_fire() /* cast_highlisht */
         {
             sub_5DB24("is highlighted", 0);
         }
@@ -3848,106 +3845,107 @@ namespace engine
 
             gbl.dword_1D5CA = new spellDelegate(ovr023.cast_spell_on);
 
-            gbl.word_1D5CE[0] = new spellDelegate2(ovr023.is_Blessed);
-            gbl.word_1D5CE[1] = new spellDelegate2(ovr023.is_Cursed);
-            gbl.word_1D5CE[2] = new spellDelegate2(ovr023.sub_5DDBC);
-            gbl.word_1D5CE[3] = new spellDelegate2(ovr023.sub_5DDF8);
-            gbl.word_1D5CE[4] = new spellDelegate2(ovr023.is_affected);
-            gbl.word_1D5CE[5] = new spellDelegate2(ovr023.is_protected);
-            gbl.word_1D5CE[6] = new spellDelegate2(ovr023.is_protected);
-            gbl.word_1D5CE[7] = new spellDelegate2(ovr023.is_cold_resistant);
-            gbl.word_1D5CE[8] = new spellDelegate2(ovr023.sub_5DEE1);
-            gbl.word_1D5CE[9] = new spellDelegate2(ovr023.is_charmed);
-            gbl.word_1D5CE[10] = new spellDelegate2(ovr023.is_affected);
-            gbl.word_1D5CE[11] = new spellDelegate2(ovr023.is_stronger);
-            gbl.word_1D5CE[12] = new spellDelegate2(ovr023.enlarge_end);
-            gbl.word_1D5CE[13] = new spellDelegate2(ovr023.is_friendly);
-            gbl.word_1D5CE[14] = new spellDelegate2(ovr023.sub_5E221);
-            gbl.word_1D5CE[15] = new spellDelegate2(ovr023.is_protected);
-            gbl.word_1D5CE[16] = new spellDelegate2(ovr023.is_protected);
-            gbl.word_1D5CE[17] = new spellDelegate2(ovr023.is_affected);
-            gbl.word_1D5CE[18] = new spellDelegate2(ovr023.is_shielded);
-            gbl.word_1D5CE[19] = new spellDelegate2(ovr023.sub_5E2B2);
-            gbl.word_1D5CE[20] = new spellDelegate2(ovr023.falls_asleep);
-            gbl.word_1D5CE[21] = new spellDelegate2(ovr023.is_affected);
-            gbl.word_1D5CE[22] = new spellDelegate2(ovr023.is_held);
-            gbl.word_1D5CE[23] = new spellDelegate2(ovr023.is_fire_resistant);
-            gbl.word_1D5CE[24] = new spellDelegate2(ovr023.is_silenced);
-            gbl.word_1D5CE[25] = new spellDelegate2(ovr023.is_affected2);
-            gbl.word_1D5CE[26] = new spellDelegate2(ovr023.is_charmed2);
-            gbl.word_1D5CE[27] = new spellDelegate2(ovr023.sub_5E681);
-            gbl.word_1D5CE[28] = new spellDelegate2(ovr023.is_affected);
-            gbl.word_1D5CE[29] = new spellDelegate2(ovr023.is_invisible);
-            gbl.word_1D5CE[30] = new spellDelegate2(ovr023.knock_Knock);
-            gbl.word_1D5CE[31] = new spellDelegate2(ovr023.is_duplicated);
-            gbl.word_1D5CE[32] = new spellDelegate2(ovr023.is_weakened);
-            gbl.word_1D5CE[33] = new spellDelegate2(ovr023.create_noxious_cloud);
-            gbl.word_1D5CE[34] = new spellDelegate2(ovr023.sub_5EC5B);
-            gbl.word_1D5CE[35] = new spellDelegate2(ovr023.is_animated);
-            gbl.word_1D5CE[36] = new spellDelegate2(ovr023.can_see);
-            gbl.word_1D5CE[37] = new spellDelegate2(ovr023.is_blind);
-            gbl.word_1D5CE[38] = new spellDelegate2(ovr023.sub_5F0DC);
-            gbl.word_1D5CE[39] = new spellDelegate2(ovr023.is_diseased);
-            gbl.word_1D5CE[40] = new spellDelegate2(ovr023.is_affected3);
-            gbl.word_1D5CE[41] = new spellDelegate2(ovr023.is_praying);
-            gbl.word_1D5CE[42] = new spellDelegate2(ovr023.uncurse);
-            gbl.word_1D5CE[43] = new spellDelegate2(ovr023.curse);
-            gbl.word_1D5CE[44] = new spellDelegate2(ovr023.spell_blinking);
-            gbl.word_1D5CE[45] = new spellDelegate2(ovr023.is_affected3);
-            gbl.word_1D5CE[46] = new spellDelegate2(ovr023.sub_5F782);
-            gbl.word_1D5CE[47] = new spellDelegate2(ovr023.cast_haste);
-            gbl.word_1D5CE[48] = new spellDelegate2(ovr023.is_held);
-            gbl.word_1D5CE[49] = new spellDelegate2(ovr023.is_invisible);
-            gbl.word_1D5CE[50] = new spellDelegate2(ovr023.sub_5FCD9);
-            gbl.word_1D5CE[51] = new spellDelegate2(ovr023.is_protected);
-            gbl.word_1D5CE[52] = new spellDelegate2(ovr023.is_protected);
-            gbl.word_1D5CE[53] = new spellDelegate2(ovr023.is_protected);
-            gbl.word_1D5CE[54] = new spellDelegate2(ovr023.sub_5FD2E);
-            gbl.word_1D5CE[55] = new spellDelegate2(ovr023.cast_restore);
-            gbl.word_1D5CE[56] = new spellDelegate2(ovr023.cast_speed);
-            gbl.word_1D5CE[57] = new spellDelegate2(ovr023.sub_5FF6D);
-            gbl.word_1D5CE[58] = new spellDelegate2(ovr023.cast_strength);
-            gbl.word_1D5CE[59] = new spellDelegate2(ovr023.sub_6003C);
-            gbl.word_1D5CE[60] = new spellDelegate2(ovr023.cast_paralyzed);
-            gbl.word_1D5CE[61] = new spellDelegate2(ovr023.cast_heal);
-            gbl.word_1D5CE[62] = new spellDelegate2(ovr023.cast_invisible);
-            gbl.word_1D5CE[63] = new spellDelegate2(ovr023.sub_5F782);
-            gbl.word_1D5CE[64] = new spellDelegate2(ovr023.sub_6014A);
-            gbl.word_1D5CE[65] = new spellDelegate2(ovr023.sub_60185);
-            gbl.word_1D5CE[66] = new spellDelegate2(ovr023.cure_poison);
-            gbl.word_1D5CE[67] = new spellDelegate2(ovr023.sub_602D0);
-            gbl.word_1D5CE[68] = new spellDelegate2(ovr023.is_protected);
-            gbl.word_1D5CE[69] = new spellDelegate2(ovr023.cast_flattern);
-            gbl.word_1D5CE[70] = new spellDelegate2(ovr023.sub_603F0);
-            gbl.word_1D5CE[71] = new spellDelegate2(ovr023.sub_60431);
-            gbl.word_1D5CE[72] = new spellDelegate2(ovr023.is_affected4);
-            gbl.word_1D5CE[73] = new spellDelegate2(ovr023.sub_604DA);
-            gbl.word_1D5CE[74] = new spellDelegate2(ovr023.cast_raise);
-            gbl.word_1D5CE[75] = new spellDelegate2(ovr023.cast_slay);
-            gbl.word_1D5CE[76] = new spellDelegate2(ovr023.is_affected);
-            gbl.word_1D5CE[77] = new spellDelegate2(ovr023.cast_entangle);
-            gbl.word_1D5CE[78] = new spellDelegate2(ovr023.cast_highlight);
-            gbl.word_1D5CE[79] = new spellDelegate2(ovr023.cast_invisible2);
-            gbl.word_1D5CE[80] = new spellDelegate2(ovr023.cast_charmed);
-            gbl.word_1D5CE[81] = new spellDelegate2(ovr023.cast_confuse);
-            gbl.word_1D5CE[82] = new spellDelegate2(ovr023.cast_teleport);
-            gbl.word_1D5CE[83] = new spellDelegate2(ovr023.cast_terror);
-            gbl.word_1D5CE[84] = new spellDelegate2(ovr023.cast_protection);
-            gbl.word_1D5CE[85] = new spellDelegate2(ovr023.spell_slow);
-            gbl.word_1D5CE[86] = new spellDelegate2(ovr023.sub_60F0B);
-            gbl.word_1D5CE[87] = new spellDelegate2(ovr023.sub_60F4E);
-            gbl.word_1D5CE[88] = new spellDelegate2(ovr023.uncurse);
-            gbl.word_1D5CE[89] = new spellDelegate2(ovr023.is_animated);
-            gbl.word_1D5CE[90] = new spellDelegate2(ovr023.spell_poisonous_cloud);
-            gbl.word_1D5CE[91] = new spellDelegate2(ovr023.sub_61550);
-            gbl.word_1D5CE[92] = new spellDelegate2(ovr023.sub_615F2);
-            gbl.word_1D5CE[93] = new spellDelegate2(ovr023.is_held);
-            gbl.word_1D5CE[94] = new spellDelegate2(ovr023.sub_616CC);
-            gbl.word_1D5CE[95] = new spellDelegate2(ovr023.sub_616CC);
-            gbl.word_1D5CE[96] = new spellDelegate2(ovr023.sub_616CC);
-            gbl.word_1D5CE[97] = new spellDelegate2(ovr023.sub_61727);
-            gbl.word_1D5CE[98] = new spellDelegate2(ovr023.cast_heal2);
-            gbl.word_1D5CE[99] = new spellDelegate2(ovr023.curse);
+            gbl.spells_func_table[0x00] = null;
+            gbl.spells_func_table[0x01] = ovr023.cleric_bless;
+            gbl.spells_func_table[0x02] = ovr023.cleric_curse;
+            gbl.spells_func_table[0x03] = ovr023.cleric_cure_light;
+            gbl.spells_func_table[0x04] = ovr023.cleric_cause_light;
+            gbl.spells_func_table[0x05] = ovr023.is_affected;
+            gbl.spells_func_table[0x06] = ovr023.is_protected;
+            gbl.spells_func_table[0x07] = ovr023.is_protected;
+            gbl.spells_func_table[0x08] = ovr023.cleric_resist_cold;
+            gbl.spells_func_table[0x09] = ovr023.sub_5DEE1;
+            gbl.spells_func_table[0x0a] = ovr023.is_charmed;
+            gbl.spells_func_table[0x0b] = ovr023.is_affected;
+            gbl.spells_func_table[0x0c] = ovr023.is_stronger;
+            gbl.spells_func_table[0x0d] = ovr023.enlarge_end;
+            gbl.spells_func_table[0x0e] = ovr023.is_friendly;
+            gbl.spells_func_table[0x0f] = ovr023.sub_5E221;
+            gbl.spells_func_table[0x10] = ovr023.is_protected;
+            gbl.spells_func_table[0x11] = ovr023.is_protected;
+            gbl.spells_func_table[0x12] = ovr023.is_affected;
+            gbl.spells_func_table[0x13] = ovr023.is_shielded;
+            gbl.spells_func_table[0x14] = ovr023.sub_5E2B2;
+            gbl.spells_func_table[0x15] = ovr023.falls_asleep;
+            gbl.spells_func_table[0x16] = ovr023.is_affected;
+            gbl.spells_func_table[0x17] = ovr023.is_held;
+            gbl.spells_func_table[0x18] = ovr023.is_fire_resistant;
+            gbl.spells_func_table[0x19] = ovr023.is_silenced;
+            gbl.spells_func_table[0x1a] = ovr023.is_affected2;
+            gbl.spells_func_table[0x1b] = ovr023.is_charmed2;
+            gbl.spells_func_table[0x1c] = ovr023.sub_5E681;
+            gbl.spells_func_table[0x1d] = ovr023.is_affected;
+            gbl.spells_func_table[0x1e] = ovr023.is_invisible;
+            gbl.spells_func_table[0x1f] = ovr023.knock_Knock;
+            gbl.spells_func_table[0x20] = ovr023.is_duplicated;
+            gbl.spells_func_table[0x21] = ovr023.is_weakened;
+            gbl.spells_func_table[0x22] = ovr023.create_noxious_cloud;
+            gbl.spells_func_table[0x23] = ovr023.sub_5EC5B;
+            gbl.spells_func_table[0x24] = ovr023.is_animated;
+            gbl.spells_func_table[0x25] = ovr023.can_see;
+            gbl.spells_func_table[0x26] = ovr023.is_blind;
+            gbl.spells_func_table[0x27] = ovr023.sub_5F0DC;
+            gbl.spells_func_table[0x28] = ovr023.is_diseased;
+            gbl.spells_func_table[0x29] = ovr023.is_affected3;
+            gbl.spells_func_table[0x2a] = ovr023.is_praying;
+            gbl.spells_func_table[0x2b] = ovr023.uncurse;
+            gbl.spells_func_table[0x2c] = ovr023.curse;
+            gbl.spells_func_table[0x2d] = ovr023.spell_blinking;
+            gbl.spells_func_table[0x2e] = ovr023.is_affected3;
+            gbl.spells_func_table[0x2f] = ovr023.sub_5F782;
+            gbl.spells_func_table[0x30] = ovr023.cast_haste;
+            gbl.spells_func_table[0x31] = ovr023.is_held;
+            gbl.spells_func_table[0x32] = ovr023.is_invisible;
+            gbl.spells_func_table[0x33] = ovr023.sub_5FCD9;
+            gbl.spells_func_table[0x34] = ovr023.is_protected;
+            gbl.spells_func_table[0x35] = ovr023.is_protected;
+            gbl.spells_func_table[0x36] = ovr023.is_protected;
+            gbl.spells_func_table[0x37] = ovr023.sub_5FD2E;
+            gbl.spells_func_table[0x38] = ovr023.cast_restore;
+            gbl.spells_func_table[0x39] = ovr023.cast_speed;
+            gbl.spells_func_table[0x3a] = ovr023.sub_5FF6D;
+            gbl.spells_func_table[0x3b] = ovr023.cast_strength;
+            gbl.spells_func_table[0x3c] = ovr023.sub_6003C;
+            gbl.spells_func_table[0x3d] = ovr023.cast_paralyzed;
+            gbl.spells_func_table[0x3e] = ovr023.cast_heal;
+            gbl.spells_func_table[0x3f] = ovr023.cast_invisible;
+            gbl.spells_func_table[0x40] = ovr023.sub_5F782;
+            gbl.spells_func_table[0x41] = ovr023.sub_6014A;
+            gbl.spells_func_table[0x42] = ovr023.sub_60185;
+            gbl.spells_func_table[0x43] = ovr023.cure_poison;
+            gbl.spells_func_table[0x44] = ovr023.sub_602D0;
+            gbl.spells_func_table[0x45] = ovr023.is_protected;
+            gbl.spells_func_table[0x46] = ovr023.cast_flattern;
+            gbl.spells_func_table[0x47] = ovr023.sub_603F0;
+            gbl.spells_func_table[0x48] = ovr023.sub_60431;
+            gbl.spells_func_table[0x49] = ovr023.is_affected4;
+            gbl.spells_func_table[0x4a] = ovr023.sub_604DA;
+            gbl.spells_func_table[0x4b] = ovr023.cast_raise;
+            gbl.spells_func_table[0x4c] = ovr023.cast_slay;
+            gbl.spells_func_table[0x4d] = ovr023.is_affected;
+            gbl.spells_func_table[0x4e] = ovr023.cast_entangle;
+            gbl.spells_func_table[0x4f] = ovr023.cast_faerie_fire;
+            gbl.spells_func_table[0x50] = ovr023.cast_invisible2;
+            gbl.spells_func_table[0x51] = ovr023.cast_charmed;
+            gbl.spells_func_table[0x52] = ovr023.cast_confuse;
+            gbl.spells_func_table[0x53] = ovr023.cast_teleport;
+            gbl.spells_func_table[0x54] = ovr023.cast_terror;
+            gbl.spells_func_table[0x55] = ovr023.cast_protection;
+            gbl.spells_func_table[0x56] = ovr023.spell_slow;
+            gbl.spells_func_table[0x57] = ovr023.sub_60F0B;
+            gbl.spells_func_table[0x58] = ovr023.sub_60F4E;
+            gbl.spells_func_table[0x59] = ovr023.uncurse;
+            gbl.spells_func_table[0x5a] = ovr023.is_animated;
+            gbl.spells_func_table[0x5b] = ovr023.spell_poisonous_cloud;
+            gbl.spells_func_table[0x5c] = ovr023.sub_61550;
+            gbl.spells_func_table[0x5d] = ovr023.sub_615F2;
+            gbl.spells_func_table[0x5e] = ovr023.is_held;
+            gbl.spells_func_table[0x5f] = ovr023.sub_616CC;
+            gbl.spells_func_table[0x60] = ovr023.sub_616CC;
+            gbl.spells_func_table[0x61] = ovr023.sub_616CC;
+            gbl.spells_func_table[0x62] = ovr023.sub_61727;
+            gbl.spells_func_table[0x63] = ovr023.cast_heal2;
+            gbl.spells_func_table[0x64] = ovr023.curse;
         }
     }
 }

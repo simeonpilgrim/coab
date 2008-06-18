@@ -13,7 +13,7 @@ namespace engine
             {
                 if (player.spell_list[sp_indx] > 127)
                 {
-                    int var_C = gbl.spell_list[player.spell_list[sp_indx] & 0x7F].spellLevel;
+                    int var_C = gbl.spell_table[player.spell_list[sp_indx] & 0x7F].spellLevel;
 
                     if (var_C > max_spell_level)
                     {
@@ -36,7 +36,7 @@ namespace engine
                     {
                         if ((int)item.getAffect(loop_var) > 0x7f)
                         {
-                            int var_C = gbl.spell_list[(int)item.getAffect(loop_var) & 0x7f].spellLevel;
+                            int var_C = gbl.spell_table[(int)item.getAffect(loop_var) & 0x7f].spellLevel;
 
                             if (var_C > max_scribe_level)
                             {
@@ -125,8 +125,8 @@ namespace engine
                 {
                     spell_id &= 0x7F;
 
-                    if (gbl.spell_list[spell_id].spellLevel == spellLevel &&
-                        gbl.spell_list[spell_id].spellClass == spellClass)
+                    if (gbl.spell_table[spell_id].spellLevel == spellLevel &&
+                        gbl.spell_table[spell_id].spellClass == spellClass)
                     {
                         alreadyLearning++;
                     }
@@ -400,7 +400,7 @@ namespace engine
                         {
                             var_1 = true;
                         }
-                        else if (HowManySpellsPlayerCanLearn(gbl.spell_list[var_4].spellClass, gbl.spell_list[var_4].spellLevel) > 0)
+                        else if (HowManySpellsPlayerCanLearn(gbl.spell_table[var_4].spellClass, gbl.spell_table[var_4].spellLevel) > 0)
                         {
                             var_5 = 0;
 
@@ -523,8 +523,8 @@ namespace engine
 
                             if (var_D == false)
                             {
-                                int spell_level = gbl.spell_list[var_4].spellLevel;
-                                int spell_class = gbl.spell_list[var_4].spellClass;
+                                int spell_level = gbl.spell_table[var_4].spellLevel;
+                                int spell_class = gbl.spell_table[var_4].spellClass;
 
                                 if (gbl.player_ptr.field_12D[spell_class, spell_level - 1] > 0)
                                 {
@@ -714,7 +714,7 @@ namespace engine
                             while (var_12 <= 0x38 &&
                                 var_15 == 0)
                             {
-                                if (gbl.spell_list[var_12].affect_id == var_11)
+                                if (gbl.spell_table[var_12].affect_id == var_11)
                                 {
                                     var_40 = ovr023.AffectNames[var_12];
                                     var_15 = 1;

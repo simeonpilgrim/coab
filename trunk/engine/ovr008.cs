@@ -108,7 +108,7 @@ namespace engine
 
             for (int i = 0; i < 6; i++)
             {
-                gbl.item_find[i] = false;
+                gbl.compare_flags[i] = false;
             }
 
             gbl.area2_ptr.field_5C2 = 0xFF;
@@ -522,7 +522,7 @@ namespace engine
             }
             else if (arg_4 == 0x11B)
             {
-                return_val = gbl.player_ptr.initiative;
+                return_val = gbl.player_ptr.movement;
             }
             else if (arg_4 == 0x2B1)
             {
@@ -1325,12 +1325,12 @@ namespace engine
 
         internal static void compare_strings(string string_a, string string_b) /* sub_3193B */
         {
-            gbl.item_find[0] = (string_b.CompareTo(string_a) == 0);
-            gbl.item_find[1] = (string_b.CompareTo(string_a) != 0);
-            gbl.item_find[2] = (string_b.CompareTo(string_a) < 0);
-            gbl.item_find[3] = (string_b.CompareTo(string_a) > 0);
-            gbl.item_find[4] = (string_b.CompareTo(string_a) <= 0);
-            gbl.item_find[5] = (string_b.CompareTo(string_a) >= 0);
+            gbl.compare_flags[0] = (string_b.CompareTo(string_a) == 0);
+            gbl.compare_flags[1] = (string_b.CompareTo(string_a) != 0);
+            gbl.compare_flags[2] = (string_b.CompareTo(string_a) < 0);
+            gbl.compare_flags[3] = (string_b.CompareTo(string_a) > 0);
+            gbl.compare_flags[4] = (string_b.CompareTo(string_a) <= 0);
+            gbl.compare_flags[5] = (string_b.CompareTo(string_a) >= 0);
         }
 
         /// <summary>
@@ -1341,12 +1341,12 @@ namespace engine
         {
             //System.Console.WriteLine("  Compare_variables: {0} {1}", arg_2, arg_0);
 
-            gbl.item_find[0] = arg_2 == arg_0;
-            gbl.item_find[1] = arg_2 != arg_0;
-            gbl.item_find[2] = arg_2 < arg_0;
-            gbl.item_find[3] = arg_2 > arg_0;
-            gbl.item_find[4] = arg_2 <= arg_0;
-            gbl.item_find[5] = arg_2 >= arg_0;
+            gbl.compare_flags[0] = arg_2 == arg_0;
+            gbl.compare_flags[1] = arg_2 != arg_0;
+            gbl.compare_flags[2] = arg_2 < arg_0;
+            gbl.compare_flags[3] = arg_2 > arg_0;
+            gbl.compare_flags[4] = arg_2 <= arg_0;
+            gbl.compare_flags[5] = arg_2 >= arg_0;
         }
 
 
@@ -1617,35 +1617,35 @@ namespace engine
         }
 
 
-        internal static void calc_group_inituative(out byte init_min, out byte init_max)
+        internal static void calc_group_movement(out byte mov_min, out byte mov_max) /* calc_group_inituative */
         {
             Player player = gbl.player_next_ptr;
 
-            init_max = player.initiative;
-            init_min = player.initiative;
+            mov_max = player.movement;
+            mov_min = player.movement;
 
             while (player != null)
             {
-                byte player_initiative = player.initiative;
+                byte movement = player.movement;
 
                 Affect dummy_affect;
                 if (ovr025.find_affect(out dummy_affect, Affects.haste, player) == true)
                 {
-                    player_initiative *= 2;
+                    movement *= 2;
                 }
                 else if (ovr025.find_affect(out dummy_affect, Affects.slow, player) == true)
                 {
-                    player_initiative /= 2;
+                    movement /= 2;
                 }
 
-                if (player_initiative > init_max)
+                if (movement > mov_max)
                 {
-                    init_max = player_initiative;
+                    mov_max = movement;
                 }
 
-                if (player_initiative < init_min)
+                if (movement < mov_min)
                 {
-                    init_min = player_initiative;
+                    mov_min = movement;
                 }
 
                 player = player.next_player;

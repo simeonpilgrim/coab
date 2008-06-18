@@ -124,12 +124,12 @@ namespace engine
 
             int save_bonus = (gbl.player_ptr.combat_team == CombatTeam.Ours)? -2 : 8;
 
-            ovr032.Rebuild_SortedCombatantList(gbl.mapToBackGroundTile, 1, 0xff, gbl.spell_list[arg_2].field_F, mapY, mapX);
+            ovr032.Rebuild_SortedCombatantList(gbl.mapToBackGroundTile, 1, 0xff, gbl.spell_table[arg_2].field_F, mapY, mapX);
    
             for (int i = 1; i <= gbl.sortedCombatantCount; i++)
             {
                 Player tmpPlayer = gbl.player_array[gbl.SortedCombatantList[i].player_index];
-                Struct_19AEC tmpS = gbl.spell_list[arg_2];
+                SpellEntry tmpS = gbl.spell_table[arg_2];
 
                 if (ovr025.opposite_team(gbl.player_ptr) != tmpPlayer.combat_team &&
                     tmpS.can_save_flag != 1 &&
@@ -147,10 +147,10 @@ namespace engine
         {
             bool var_1 = false;
 
-            if (gbl.spell_list[arg_2].field_D < arg_0)
+            if (gbl.spell_table[arg_2].field_D < arg_0)
             {
                 Player dummy_target;
-                if ((arg_2 != 3 && gbl.spell_list[arg_2].field_E == 0) ||
+                if ((arg_2 != 3 && gbl.spell_table[arg_2].field_E == 0) ||
                     (arg_2 == 3 && ovr014.find_healing_target(out dummy_target, attacker)))
                 {
                     var_1 = true;
@@ -161,7 +161,7 @@ namespace engine
 
                     if (var_6 > 0)
                     {
-                        if (gbl.spell_list[arg_2].field_F == 0)
+                        if (gbl.spell_table[arg_2].field_F == 0)
                         {
                             var_1 = true;
                         }

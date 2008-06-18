@@ -40,11 +40,11 @@ namespace engine
         {
             if (gbl.byte_1D8AC)
             {
-                gbl.spell_jump_list[147](add_remove, parameter, player);
+                gbl.affect_jump_list[147](add_remove, parameter, player);
             }
             else
             {
-                gbl.spell_jump_list[(int)affect](add_remove, parameter, player);
+                gbl.affect_jump_list[(int)affect](add_remove, parameter, player);
             }
         }
 
