@@ -9,6 +9,8 @@
   * Issue 14 - Attacks of opportunity now occur
   * Issue 18 - Scribing spells, now works (tested magic users + rangers)
   * Issue 24 - Trying to leave Tilverton crashed game
+  * Issue 2 - Installing on Win XP x64 - Tested this works
+  * Issue 11 - Shambling Mounds should take half damage - Tested this works
 
 = 1.0.9 =
   * Issue 5 - The correct exit message now plays when you try leave the Moander temple
