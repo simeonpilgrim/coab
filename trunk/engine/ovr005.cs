@@ -69,10 +69,9 @@ namespace engine
 
         internal static void cure_blindness()
         {
-            Affect dummyAffect;
             char input_key = 'Y';
 
-            if (ovr025.find_affect(out dummyAffect, Affects.blinded, gbl.player_ptr) == false)
+            if (ovr025.find_affect(Affects.blinded, gbl.player_ptr) == false)
             {
                 input_key = cast_cure_anyway("is not blind.");
             }
@@ -95,8 +94,7 @@ namespace engine
 
             for (int i = 0; i < 6; i++)
             {
-                Affect dummyAffect;
-                if (ovr025.find_affect(out dummyAffect, disease_types[i], gbl.player_ptr) == true)
+                if (ovr025.find_affect(disease_types[i], gbl.player_ptr) == true)
                 {
                     is_diseased = true;
                 }
@@ -288,13 +286,12 @@ namespace engine
         {
             byte var_106;
             char var_105;
-            Affect var_4;
 
             var_106 = 0;
 
             var_105 = 'Y';
 
-            if (ovr025.find_affect(out var_4, Affects.poisoned, gbl.player_ptr) == true)
+            if (ovr025.find_affect(Affects.poisoned, gbl.player_ptr) == true)
             {
                 var_106 = 1;
             }
@@ -339,10 +336,8 @@ namespace engine
                 item = item.next;
             }
 
-            Affect dummyAffect;
-
             if (cursed_item_found == false &&
-                ovr025.find_affect(out dummyAffect, Affects.bestow_curse, gbl.player_ptr) == false)
+                ovr025.find_affect(Affects.bestow_curse, gbl.player_ptr) == false)
             {
                 input_key = cast_cure_anyway("is not cursed.");
             }

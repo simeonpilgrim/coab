@@ -279,9 +279,7 @@ namespace engine
 
             while (player_ptr != null && detectMagic == false)
             {
-                Affect dummyAffect;
-
-                if (find_affect(out dummyAffect, Affects.detect_magic, player_ptr) == true)
+                if (find_affect(Affects.detect_magic, player_ptr) == true)
                 {
                     detectMagic = true;
                 }
@@ -515,8 +513,7 @@ namespace engine
             bool held = false;
             for (int loop_var = 0; loop_var < 4; loop_var++)
             {
-                Affect dummyAffect;
-                if (find_affect(out dummyAffect, affects_01[loop_var], player) == true)
+                if (find_affect(affects_01[loop_var], player) == true)
                 {
                     held = true;
                 }
@@ -1519,6 +1516,27 @@ namespace engine
             }
 
             return found_one_yet;
+        }
+
+        internal static bool find_affect(Affects affect_type, Player player)
+        {
+            bool found_one = false;
+            Affect affect = player.affect_ptr;
+
+            while (affect != null &&
+                   found_one == false)
+            {
+                if (affect.type == affect_type)
+                {
+                    found_one = true;
+                }
+                else
+                {
+                    affect = affect.next;
+                }
+            }
+
+            return found_one;
         }
 
         static Set unk_683B5 = new Set(0x0001, new byte[] { 0x03 });

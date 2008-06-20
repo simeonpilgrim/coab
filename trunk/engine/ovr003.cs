@@ -971,8 +971,7 @@ namespace engine
 
                 while (player != null && affect_found == false)
                 {
-                    Affect dummy_affect;
-                    affect_found = ovr025.find_affect(out dummy_affect, affect_id, player);
+                    affect_found = ovr025.find_affect(affect_id, player);
                     player = player.next_player;
                 }
 
@@ -2414,18 +2413,15 @@ namespace engine
 
         internal static void CMD_FindSpecial() // sub_292A5
         {
-            Affects var_5;
-            Affect var_4;
-
             for (int i = 0; i < 6; i++)
             {
                 gbl.compare_flags[i] = false;
             }
 
             ovr008.vm_LoadCmdSets(1);
-            var_5 = (Affects)ovr008.vm_GetCmdValue(1);
+            Affects affect_type = (Affects)ovr008.vm_GetCmdValue(1);
 
-            if (ovr025.find_affect(out var_4, var_5, gbl.player_ptr) == true)
+            if (ovr025.find_affect(affect_type, gbl.player_ptr) == true)
             {
                 gbl.compare_flags[0] = true;
             }

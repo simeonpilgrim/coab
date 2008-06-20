@@ -198,13 +198,12 @@ namespace engine
 
             int movement = player.movement;
 
-            Affect dummy_affect;
-            if (ovr025.find_affect(out dummy_affect, Affects.slow, player) == true)
+            if (ovr025.find_affect(Affects.slow, player) == true)
             {
                 movement *= 2;
             }
 
-            if (ovr025.find_affect(out dummy_affect, Affects.haste, player) == true)
+            if (ovr025.find_affect(Affects.haste, player) == true)
             {
                 movement /= 2;
             }
@@ -1278,7 +1277,7 @@ namespace engine
             short var_130;
             char var_12E;
             string var_12D;
-            string var_2D;
+
             short var_18;
             StringList var_14;
             StringList var_C;
@@ -1623,13 +1622,12 @@ namespace engine
 
         internal static bool CanCastHeal(Player player) /* sub_575F0 */
         {
-            Affect dummyAffect;
             bool result;
 
             if ((player._class == ClassId.paladin || (player.field_114 > 0 && ovr026.sub_6B3D1(player) != 0)) &&
                  gbl.game_state != 5 &&
                     player.health_status == Status.okey &&
-                    ovr025.find_affect(out dummyAffect, Affects.affect_8c, player) == false)
+                    ovr025.find_affect(Affects.affect_8c, player) == false)
             {
                 result = true;
             }
@@ -1703,8 +1701,6 @@ namespace engine
 
         internal static void paladin_cure_disease(Player player) /* sub_577EC */
         {
-            Affect dummy_affect;
-
             ovr025.load_pic();
             Player target = gbl.player_next_ptr;
 
@@ -1719,7 +1715,7 @@ namespace engine
                 bool is_diseased = false;
                 for (gbl.byte_1DA71 = 1; gbl.byte_1DA71 < 7; gbl.byte_1DA71++)
                 {
-                    if (ovr025.find_affect(out dummy_affect, unk_16B39[gbl.byte_1DA71], target) == true)
+                    if (ovr025.find_affect(unk_16B39[gbl.byte_1DA71], target) == true)
                     {
                         is_diseased = true;
                     }
@@ -1751,7 +1747,7 @@ namespace engine
                         player.field_191--;
                     }
 
-                    if (ovr025.find_affect(out dummy_affect, Affects.affect_8D, player) == false)
+                    if (ovr025.find_affect(Affects.affect_8D, player) == false)
                     {
                         ovr024.add_affect(true, 0, 0x2760, Affects.affect_8D, player);
                     }

@@ -182,8 +182,6 @@ namespace engine
 
         internal static void cast_spell()
         {
-            bool var_5 = false; /* simeon */
-
             bool var_4 = false;
             short var_2 = -1;
 
@@ -206,7 +204,7 @@ namespace engine
                         var_4 = true;
                         seg037.draw8x8_clear_area(0x16, 0x26, 0x11, 1);
 
-                        ovr023.sub_5D2E1(ref var_5, 1, 0, spell_id);
+                        ovr023.sub_5D2E1(1, 0, spell_id);
                     }
                     else if (var_3 == true)
                     {
