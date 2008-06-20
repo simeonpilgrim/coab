@@ -436,9 +436,7 @@ namespace engine
 
         internal static void scroll_5C912(byte arg_0) /* sub_5C912 */
         {
-            Affect dummyAffect;
-
-            if (ovr025.find_affect(out dummyAffect, Affects.read_magic, gbl.player_ptr) == true ||
+            if (ovr025.find_affect(Affects.read_magic, gbl.player_ptr) == true ||
                 ((gbl.player_ptr.cleric_lvl > 0 || gbl.player_ptr.turn_undead > gbl.player_ptr.field_E6) &&
                   gbl.unk_1C020[gbl.dword_1D5C6.type].item_slot == 12))
             {
@@ -818,6 +816,13 @@ namespace engine
         }
 
 
+        internal static void sub_5D2E1(byte arg_4, QuickFight quick_fight, byte spell_id)
+        {
+            bool dummy = false;
+            sub_5D2E1(ref dummy, arg_4, quick_fight, spell_id);
+        }
+
+
         internal static void sub_5D2E1(ref bool arg_0, byte arg_4, QuickFight quick_fight, byte spell_id)
         {
             Player caster = gbl.player_ptr;
@@ -851,8 +856,7 @@ namespace engine
                 var_1 = false;
             }
 
-            Affect dummyAffect;
-            if (ovr025.find_affect(out dummyAffect, Affects.affect_4a, caster) == true)
+            if (ovr025.find_affect(Affects.affect_4a, caster) == true)
             {
                 byte dice_roll = ovr024.roll_dice(2, 1);
 
@@ -927,7 +931,7 @@ namespace engine
                     gbl.spells_func_table[gbl.spell_id]();
 
                     gbl.spell_id = 0;
-                    gbl.byte_1D2C7 = 0;
+                    gbl.byte_1D2C7 = false;
                 }
                 else
                 {
@@ -1028,7 +1032,7 @@ namespace engine
         static sbyte[] unk_16D32 = { 1, 1, 0, 0, -1, -1, 0, 0 };
         static sbyte[] unk_16D3A = { 0, 0, 1, 1, 0, 0, -1, -1 };
 
-        internal static void sub_5D7CF(byte arg_0, byte arg_2, int targetY, int targetX, int casterY, int casterX)
+        internal static void sub_5D7CF(int max_range, int arg_2, int targetY, int targetX, int casterY, int casterX)
         {
             byte var_76 = 0; /* Simeon */
 
@@ -1054,11 +1058,11 @@ namespace engine
             int count = index - 1;
 
             index = 0;
-            arg_0 *= 2;
-            byte var_1F = path.steps;
+            max_range *= 2;
+            int tmp_range = path.steps;
             finished = false;
 
-            while (var_1F < arg_0 && finished == false)
+            while (tmp_range < max_range && finished == false)
             {
                 if (targetX < 0x31 && targetX > 0 && targetY < 0x18 && targetY > 0)
                 {
@@ -1068,14 +1072,14 @@ namespace engine
                         case 2:
                         case 4:
                         case 6:
-                            var_1F += 2;
+                            tmp_range += 2;
                             break;
 
                         case 1:
                         case 3:
                         case 5:
                         case 7:
-                            var_1F += 3;
+                            tmp_range += 3;
                             break;
                     }
 
@@ -1231,7 +1235,7 @@ namespace engine
 
         internal static void sub_5DCA0(string arg_0, CombatTeam team)
         {
-            gbl.byte_1D2C7 = 1;
+            gbl.byte_1D2C7 = true;
 
             for (int i = 1; i <= gbl.sp_target_count; i++)
             {
@@ -1325,10 +1329,9 @@ namespace engine
 
         internal static void is_stronger()
         {
-            Player var_3;
             byte var_1;
 
-            var_3 = gbl.sp_targets[1];
+            Player target = gbl.sp_targets[1];
             gbl.byte_1AFDD = 0x12;
             gbl.byte_1AFDE = 0;
 
@@ -1379,31 +1382,29 @@ namespace engine
                     break;
             }
 
-            if (ovr024.sub_64728(out var_1, gbl.byte_1AFDE, gbl.byte_1AFDD, var_3) == true)
+            if (ovr024.sub_64728(out var_1, gbl.byte_1AFDE, gbl.byte_1AFDD, target) == true)
             {
-                ovr025.DisplayPlayerStatusString(true, 10, "is stronger", var_3);
+                ovr025.DisplayPlayerStatusString(true, 10, "is stronger", target);
 
-                ovr024.add_affect(true, var_1, sub_5CE92(gbl.spell_id), Affects.affect_12, var_3);
+                ovr024.add_affect(true, var_1, sub_5CE92(gbl.spell_id), Affects.affect_12, target);
 
-                ovr024.sub_648D9(0, var_3);
+                ovr024.sub_648D9(0, target);
             }
             else
             {
-                ovr025.DisplayPlayerStatusString(true, 10, "is unaffected", var_3);
+                ovr025.DisplayPlayerStatusString(true, 10, "is unaffected", target);
             }
         }
 
 
         internal static void enlarge_end() /* has_been_reduced */
         {
-            Affect dummy_affect;
-
             Player target = gbl.sp_targets[1];
 
             if (target != null &&
                 gbl.sp_target_count > 0 &&
                 ovr024.do_saving_throw(0, 4, target) == false &&
-                ovr025.find_affect(out dummy_affect, Affects.enlarge, target) == true)
+                ovr025.find_affect(Affects.enlarge, target) == true)
             {
                 ovr024.remove_affect(null, Affects.enlarge, target);
                 ovr024.sub_648D9(0, target);
@@ -1444,16 +1445,12 @@ namespace engine
 
         internal static void falls_asleep()
         {
-            Affect var_5;
-            byte var_1;
-
-            gbl.byte_1D2C7 = 1;
-
+            gbl.byte_1D2C7 = true;
             gbl.byte_1AFDD = ovr024.roll_dice(4, 4);
 
-            for (var_1 = 1; var_1 <= gbl.sp_target_count; var_1++)
+            for (int target_index = 1; target_index <= gbl.sp_target_count; target_index++)
             {
-                switch (gbl.sp_targets[var_1].field_E5)
+                switch (gbl.sp_targets[target_index].field_E5)
                 {
                     case 0:
                     case 1:
@@ -1473,7 +1470,7 @@ namespace engine
                         break;
 
                     case 5:
-                        if (gbl.sp_targets[var_1].race == Race.monster)
+                        if (gbl.sp_targets[target_index].race == Race.monster)
                         {
                             gbl.byte_1AFDE = 0x0A;
                         }
@@ -1489,15 +1486,15 @@ namespace engine
                 }
 
 
-                if (gbl.sp_targets[var_1].health_status != Status.animated &&
-                    ovr025.find_affect(out var_5, Affects.sleep, gbl.sp_targets[var_1]) == false &&
+                if (gbl.sp_targets[target_index].health_status != Status.animated &&
+                    ovr025.find_affect(Affects.sleep, gbl.sp_targets[target_index]) == false &&
                     gbl.byte_1AFDD >= gbl.byte_1AFDE)
                 {
                     gbl.byte_1AFDD -= gbl.byte_1AFDE;
                 }
                 else
                 {
-                    gbl.sp_targets[var_1] = null;
+                    gbl.sp_targets[target_index] = null;
                 }
             }
 
@@ -1553,7 +1550,6 @@ namespace engine
         internal static void is_affected2()
         {
             Player player;
-            Affect var_4;
 
             player = gbl.sp_targets[1];
 
@@ -1561,7 +1557,7 @@ namespace engine
             {
                 gbl.sp_targets[1] = null;
             }
-            else if (ovr025.find_affect(out var_4, Affects.poisoned, player) == true)
+            else if (ovr025.find_affect(Affects.poisoned, player) == true)
             {
                 if (player.hit_point_current == 0)
                 {
@@ -1577,11 +1573,9 @@ namespace engine
 
         internal static void is_charmed2()
         {
-            Player player;
-
             gbl.byte_1AFDD = gbl.player_ptr.hit_point_current;
             gbl.sp_target_count = 0;
-            player = gbl.player_next_ptr;
+            Player player = gbl.player_next_ptr;
 
             while (player != null)
             {
@@ -1639,19 +1633,15 @@ namespace engine
         internal static void create_noxious_cloud()
         {
             byte var_12;
-            byte var_10;
             byte var_F;
-            byte var_E;
             byte var_D;
             byte[] var_C = new byte[4];
-            Struct_1D885 var_8;
-            Struct_1D885 var_4;
 
-            gbl.byte_1D2C7 = 1;
+            gbl.byte_1D2C7 = true;
 
-            var_10 = (byte)ovr025.spell_target_count(gbl.spell_id);
-            var_E = 0;
-            var_8 = gbl.stru_1D885;
+            byte var_10 = (byte)ovr025.spell_target_count(gbl.spell_id);
+            byte var_E = 0;
+            Struct_1D885 var_8 = gbl.stru_1D885;
 
             if (gbl.stru_1D885 == null)
             {
@@ -1702,7 +1692,7 @@ namespace engine
 
                 if (var_F == 0x1E)
                 {
-                    var_4 = gbl.stru_1D885;
+                    Struct_1D885 var_4 = gbl.stru_1D885;
 
                     while (var_4 != null)
                     {
@@ -1779,91 +1769,71 @@ namespace engine
         {
             byte var_8;
             byte var_7;
-            byte var_6;
-            byte var_5;
-            Player player;
 
-            var_6 = 0; /* simeon added */
-            var_5 = 0;
-            player = gbl.sp_targets[1];
 
-            if (player.magic_user_lvl > 0 ||
-                player.field_116 > player.field_E6)
+            byte var_6 = 0; /* simeon added */
+            byte var_5 = 0;
+            Player target = gbl.sp_targets[1];
+
+            if (target.magic_user_lvl > 0 ||
+                target.field_116 > target.field_E6)
             {
                 var_6 = ovr024.roll_dice(4, 1);
             }
 
-            if (player.cleric_lvl > 0 ||
-                player.turn_undead > player.field_E6 ||
-                player.thief_lvl > 0 ||
-                player.field_117 > player.field_E6)
+            if (target.cleric_lvl > 0 ||
+                target.turn_undead > target.field_E6 ||
+                target.thief_lvl > 0 ||
+                target.field_117 > target.field_E6)
             {
                 var_6 = ovr024.roll_dice(6, 1);
             }
 
-            if (player.fighter_lvl > 0 ||
-                player.field_113 > player.field_E6)
+            if (target.fighter_lvl > 0 ||
+                target.field_113 > target.field_E6)
             {
 
                 var_6 = ovr024.roll_dice(8, 1);
             }
 
-            var_7 = (byte)(player.strength + var_6);
+            var_7 = (byte)(target.strength + var_6);
 
             if (var_7 > 18)
             {
-                throw new System.NotSupportedException();//les	di, int ptr [bp+player.offset]
-                throw new System.NotSupportedException();//cmp	byte ptr es:[di+10Bh], 0
-                throw new System.NotSupportedException();//jg	loc_5ED85
-                throw new System.NotSupportedException();//les	di, int ptr [bp+player.offset]
-                throw new System.NotSupportedException();//mov	al, es:[di+113h]
-                throw new System.NotSupportedException();//les	di, int ptr [bp+player.offset]
-                throw new System.NotSupportedException();//cmp	al, es:[di+0E6h]
-                throw new System.NotSupportedException();//jg	loc_5ED85
-                throw new System.NotSupportedException();//les	di, int ptr [bp+player.offset]
-                throw new System.NotSupportedException();//cmp	byte ptr es:[di+10Ch], 0
-                throw new System.NotSupportedException();//jg	loc_5ED85
-                throw new System.NotSupportedException();//les	di, int ptr [bp+player.offset]
-                throw new System.NotSupportedException();//mov	al, es:[di+114h]
-                throw new System.NotSupportedException();//les	di, int ptr [bp+player.offset]
-                throw new System.NotSupportedException();//cmp	al, es:[di+0E6h]
-                throw new System.NotSupportedException();//jg	loc_5ED85
-                throw new System.NotSupportedException();//les	di, int ptr [bp+player.offset]
-                throw new System.NotSupportedException();//cmp	byte ptr es:[di+10Dh], 0
-                throw new System.NotSupportedException();//jg	loc_5ED85
-                throw new System.NotSupportedException();//les	di, int ptr [bp+player.offset]
-                throw new System.NotSupportedException();//mov	al, es:[di+115h]
-                throw new System.NotSupportedException();//les	di, int ptr [bp+player.offset]
-                throw new System.NotSupportedException();//cmp	al, es:[di+0E6h]
-                throw new System.NotSupportedException();//jle	loc_5EDB2
-                throw new System.NotSupportedException();//loc_5ED85:
-
-                var_5 = (byte)(player.tmp_str_00 + ((var_7 - 18) * 10));
-
-                if (var_5 > 100)
+                if (target.fighter_lvl > 0 ||
+                    target.field_113 > target.field_E6 ||
+                    target.paladin_lvl > 0 ||
+                    target.field_114 > target.field_E6 ||
+                    target.ranger_lvl > 0 ||
+                    target.field_115 > target.field_E6)
                 {
-                    var_5 = 100;
-                }
+                    var_5 = (byte)(target.tmp_str_00 + ((var_7 - 18) * 10));
 
-                var_7 = 18;
-                throw new System.NotSupportedException();//jmp	short loc_5EDB6
-                throw new System.NotSupportedException();//loc_5EDB2:
-                var_7 = 18;
+                    if (var_5 > 100)
+                    {
+                        var_5 = 100;
+                    }
+
+                    var_7 = 18;
+                }
+                else
+                {
+                    var_7 = 18;
+                }
             }
-            throw new System.NotSupportedException();//loc_5EDB6:
-            if (ovr024.sub_64728(out var_8, var_5, var_7, player) == true)
+            if (ovr024.sub_64728(out var_8, var_5, var_7, target) == true)
             {
                 var_8 = (byte)(var_6 + 100);
 
-                ovr024.add_affect(true, var_8, sub_5CE92(gbl.spell_id), Affects.strength, player);
-                ovr024.sub_648D9(0, player);
+                ovr024.add_affect(true, var_8, sub_5CE92(gbl.spell_id), Affects.strength, target);
+                ovr024.sub_648D9(0, target);
             }
         }
 
 
         internal static void is_animated()
         {
-            gbl.byte_1D2C7 = 1;
+            gbl.byte_1D2C7 = true;
 
             int var_3 = ovr025.spell_target_count(gbl.spell_id);
 
@@ -2006,32 +1976,18 @@ namespace engine
 
         internal static void is_affected3()
         {
-            byte var_19;
-            Struct_1D885 var_18;
-            byte var_14;
-            byte var_13;
-            int var_12 = 0; /* Simeon */
-            int var_11 = 0; /* Simeon */
-            Affect var_10;
-            Affect var_C;
-            byte var_8;
-            byte var_7;
-            Player var_6;
-            int var_2;
-            byte var_1;
-
-            gbl.byte_1D2C7 = 1;
-            var_2 = ovr025.spell_target_count(gbl.spell_id);
+            gbl.byte_1D2C7 = true;
+            int var_2 = ovr025.spell_target_count(gbl.spell_id);
 
             for (int i = 1; i <= gbl.sp_target_count; i++)
             {
-                var_7 = 0;
-                var_6 = gbl.sp_targets[1];
-                var_C = var_6.affect_ptr;
+                bool is_affected = false;
+                Player target = gbl.sp_targets[1];
+                Affect var_C = target.affect_ptr;
 
                 while (var_C != null)
                 {
-                    var_10 = var_C.next;
+                    Affect next_affect = var_C.next;
 
                     if (var_C.field_3 < 0xff)
                     {
@@ -2052,19 +2008,22 @@ namespace engine
 
                         if (ovr024.roll_dice(100, 1) <= gbl.byte_1AFDD)
                         {
-                            ovr024.remove_affect(var_C, var_C.type, var_6);
-                            var_7 = 1;
+                            ovr024.remove_affect(var_C, var_C.type, target);
+                            is_affected = true;
                         }
                     }
 
-                    var_C = var_10;
+                    var_C = next_affect;
                 }
 
-                if (var_7 != 0)
+                if (is_affected == true)
                 {
-                    ovr025.sub_6818A("is affected", 1, var_6);
+                    ovr025.sub_6818A("is affected", 1, target);
                 }
             }
+
+            int var_12 = 0; 
+            int var_11 = 0;
 
             for (gbl.byte_1DA71 = 0; gbl.byte_1DA71 <= 8; gbl.byte_1DA71++)
             {
@@ -2076,11 +2035,11 @@ namespace engine
                         break;
 
                     case 1:
-                        var_12 = (sbyte)(gbl.targetY - 1);
+                        var_12 = gbl.targetY - 1;
                         break;
 
                     case 2:
-                        var_11 = (sbyte)(gbl.targetX - 1);
+                        var_11 = gbl.targetX - 1;
                         break;
 
                     case 3:
@@ -2088,7 +2047,7 @@ namespace engine
                         break;
 
                     case 4:
-                        var_12 = (sbyte)(gbl.targetY + 1);
+                        var_12 = gbl.targetY + 1;
                         break;
 
                     case 5:
@@ -2096,7 +2055,7 @@ namespace engine
                         break;
 
                     case 6:
-                        var_11 = (sbyte)(gbl.targetX - 1);
+                        var_11 = gbl.targetX - 1;
                         break;
 
                     case 7:
@@ -2104,16 +2063,20 @@ namespace engine
                         break;
 
                     case 8:
-                        var_12 = (sbyte)(gbl.targetY - 1);
+                        var_12 = gbl.targetY - 1;
                         break;
                 }
 
-                ovr033.AtMapXY(out var_13, out var_14, var_12, var_11);
+                byte dummy_byte;
+                byte ground_tile;
+                ovr033.AtMapXY(out ground_tile, out dummy_byte, var_12, var_11);
 
-                if (var_13 == 0x1C || var_13 == 0x1E)
+                if (ground_tile == 0x1C || ground_tile == 0x1E)
                 {
+                    Struct_1D885 var_18;
+                    int var_14;
 
-                    if (var_13 == 0x1C)
+                    if (ground_tile == 0x1C)
                     {
                         var_18 = gbl.stru_1D889;
                         var_14 = 9;
@@ -2126,106 +2089,64 @@ namespace engine
 
                     while (var_18 != null)
                     {
-                        var_19 = var_14;
-
-                        for (var_1 = 1; var_1 <= var_19; var_1++)
+                        for (int var_1 = 1; var_1 <= var_14; var_1++)
                         {
                             if (var_11 == var_18.target_x + gbl.MapDirectionXDelta[gbl.unk_18AE9[var_1]])
                             {
-                                throw new System.NotSupportedException();//mov	al, [bp+var_1]
-                                throw new System.NotSupportedException();//xor	ah, ah
-                                throw new System.NotSupportedException();//mov	di, ax
-                                throw new System.NotSupportedException();//mov	al, gbl.unk_18AE9[di]
-                                throw new System.NotSupportedException();//xor	ah, ah
-                                throw new System.NotSupportedException();//mov	di, ax
-                                throw new System.NotSupportedException();//mov	al, gbl.MapDirectionYDelta[di]
-                                throw new System.NotSupportedException();//cbw
-                                throw new System.NotSupportedException();//mov	dx, ax
-                                throw new System.NotSupportedException();//les	di, [bp+var_18]
-                                throw new System.NotSupportedException();//mov	al, es:[di+1Bh]
-                                throw new System.NotSupportedException();//cbw
-                                throw new System.NotSupportedException();//add	ax, dx
-                                throw new System.NotSupportedException();//mov	dx, ax
-                                throw new System.NotSupportedException();//mov	al, [bp+var_12]
-                                throw new System.NotSupportedException();//cbw
-                                throw new System.NotSupportedException();//cmp	ax, dx
-                                throw new System.NotSupportedException();//jz	loc_5F47C
-                                throw new System.NotSupportedException();//jmp	loc_5F562
-                                throw new System.NotSupportedException();//loc_5F47C:
-                                throw new System.NotSupportedException();//les	di, [bp+var_18]
-                                throw new System.NotSupportedException();//cmp	byte ptr es:[di+1Dh], 0
-                                throw new System.NotSupportedException();//jz	loc_5F489
-                                throw new System.NotSupportedException();//jmp	loc_5F562
-                                throw new System.NotSupportedException();//loc_5F489:
-                                if (sub_5F126(var_18.player, var_2) == true)
+                                int tmp_int = (var_18.target_y + gbl.MapDirectionYDelta[gbl.unk_18AE9[var_1]]);
+
+                                if (var_12 == tmp_int &&                       
+                                    var_18.field_1D == 0)
                                 {
-
-                                    var_C = var_18.player.affect_ptr;
-                                    var_8 = 0;
-
-                                    while (var_C != null && var_8 == 0)
+                                    if (sub_5F126(var_18.player, var_2) == true)
                                     {
-                                        throw new System.NotSupportedException();//les	di, [bp+var_C]
-                                        throw new System.NotSupportedException();//cmp	byte ptr es:[di], 0x5B
-                                        throw new System.NotSupportedException();//jnz	loc_5F4D6
-                                        throw new System.NotSupportedException();//cmp	[bp+var_13], 0x1C
-                                        throw new System.NotSupportedException();//jz	loc_5F4E5
-                                        throw new System.NotSupportedException();//loc_5F4D6:
-                                        throw new System.NotSupportedException();//les	di, [bp+var_C]
-                                        throw new System.NotSupportedException();//cmp	byte ptr es:[di], 0x28
-                                        throw new System.NotSupportedException();//jnz	loc_5F507
-                                        throw new System.NotSupportedException();//cmp	[bp+var_13], 0x1E
-                                        throw new System.NotSupportedException();//jnz	loc_5F507
-                                        throw new System.NotSupportedException();//loc_5F4E5:
-                                        throw new System.NotSupportedException();//les	di, [bp+var_18]
-                                        throw new System.NotSupportedException();//mov	al, es:[di+1Ch]
-                                        throw new System.NotSupportedException();//xor	ah, ah
-                                        throw new System.NotSupportedException();//mov	dx, ax
-                                        throw new System.NotSupportedException();//les	di, [bp+var_C]
-                                        throw new System.NotSupportedException();//mov	al, es:[di+3]
-                                        throw new System.NotSupportedException();//xor	ah, ah
-                                        throw new System.NotSupportedException();//mov	cl, 4
-                                        throw new System.NotSupportedException();//shr	ax, cl
-                                        throw new System.NotSupportedException();//cmp	ax, dx
-                                        throw new System.NotSupportedException();//jnz	loc_5F507
-                                        var_8 = 1;
-                                        throw new System.NotSupportedException();//jmp	short loc_5F518
-                                        //loc_5F507:
-                                        var_C = var_C.next;
-                                        //loc_5F518:
-                                    }
+                                        Affect affect = var_18.player.affect_ptr;
+                                        bool found = false;
 
-                                    if (var_8 != 0)
-                                    {
-                                        if (var_13 == 0x1C)
+                                        while (affect != null && found == false)
                                         {
-                                            ovr024.remove_affect(var_C, Affects.affect_5b, var_18.player);
+                                            if (((affect.type == Affects.affect_5b && ground_tile == 0x1c) ||
+                                                 (affect.type == Affects.affect_28 && ground_tile == 0x1E)) &&
+                                                (affect.field_3 >> 4) == var_18.field_1C)
+                                            {
+                                                found = true;
+                                            }
+                                            else
+                                            {
+                                                affect = affect.next;
+                                            }
                                         }
-                                        else
+
+                                        if (found == true)
                                         {
-                                            ovr024.remove_affect(var_C, Affects.affect_28, var_18.player);
+                                            if (ground_tile == 0x1C)
+                                            {
+                                                ovr024.remove_affect(affect, Affects.affect_5b, var_18.player);
+                                            }
+                                            else
+                                            {
+                                                ovr024.remove_affect(affect, Affects.affect_28, var_18.player);
+                                            }
                                         }
                                     }
-                                }
-                                else
-                                {
-                                    var_18.field_1D = 1;
+                                    else
+                                    {
+                                        var_18.field_1D = 1;
+                                    }
                                 }
                             }
-                            throw new System.NotSupportedException();//loc_5F562:
                         }
 
                         var_18 = var_18.next;
                     }
                 }
             }
-
         }
 
 
         internal static void is_praying()
         {
-            byte tmpByte = (byte)(((int)gbl.player_ptr.combat_team << 4) + ovr025.spell_target_count(gbl.spell_id));
+            byte tmpByte = (byte)(((int)gbl.player_ptr.combat_team * 16) + ovr025.spell_target_count(gbl.spell_id));
 
             sub_5CF7F("is praying", 0, 0, false, tmpByte, gbl.spell_id);
         }
@@ -2289,7 +2210,7 @@ namespace engine
         {
             int dice_count;
 
-            gbl.byte_1D2C7 = 1;
+            gbl.byte_1D2C7 = true;
 
             if (gbl.spell_id == 0x40)
             {
@@ -2320,7 +2241,7 @@ namespace engine
 
         internal static void sub_5F87B(string text, CombatTeam combatTeam, Affects affect)
         {
-            gbl.byte_1D2C7 = 1;
+            gbl.byte_1D2C7 = true;
 
             int var_2A = ovr025.spell_target_count(gbl.spell_id);
 
@@ -2413,7 +2334,7 @@ namespace engine
                 var_32 != gbl.targetY)
             {
                 var_3C = (byte)(arg_6 * 2);
-                gbl.byte_1D2C7 = 1;
+                gbl.byte_1D2C7 = true;
 
                 while (var_3C > 0)
                 {
@@ -2503,7 +2424,7 @@ namespace engine
                     } while (var_36 == false && var_3C != 0);
                 }
 
-                gbl.byte_1D2C7 = 0;
+                gbl.byte_1D2C7 = false;
             }
         }
 
@@ -2654,14 +2575,13 @@ namespace engine
 
         internal static void cure_poison()
         {
-            Affect dummy_affect;
             Player var_4 = gbl.sp_targets[1];
 
             if (var_4.health_status == Status.animated)
             {
                 gbl.sp_targets[1] = null;
             }
-            else if (ovr025.find_affect(out dummy_affect, Affects.poisoned, var_4) == true)
+            else if (ovr025.find_affect(Affects.poisoned, var_4) == true)
             {
                 if (var_4.hit_point_current == 0)
                 {
@@ -2706,15 +2626,14 @@ namespace engine
 
         internal static void cast_flattern()
         {
-            Affect var_4;
-
             if (gbl.sp_targets[1].field_E5 < 6)
             {
                 sub_5CF7F(string.Empty, 8, 0, false, ovr025.spell_target_count(gbl.spell_id), gbl.spell_id);
 
-                if (ovr025.find_affect(out var_4, Affects.affect_03, gbl.sp_targets[1]) == true)
+                Affect affect;
+                if (ovr025.find_affect(out affect, Affects.affect_03, gbl.sp_targets[1]) == true)
                 {
-                    ovr024.CallSpellJumpTable(Effect.Add, var_4, gbl.sp_targets[1], Affects.affect_03);
+                    ovr024.CallSpellJumpTable(Effect.Add, affect, gbl.sp_targets[1], Affects.affect_03);
                 }
             }
             else
@@ -2884,11 +2803,11 @@ namespace engine
         internal static void cast_teleport()
         {
             Affect affect;
-            Player playerA = gbl.player_ptr;
+            Player player = gbl.player_ptr;
 
-            if (ovr025.find_affect(out affect, Affects.affect_3a, playerA) == true)
+            if (ovr025.find_affect(out affect, Affects.affect_3a, player) == true)
             {
-                ovr032.Rebuild_SortedCombatantList(gbl.mapToBackGroundTile, 1, 0xff, 1, ovr033.PlayerMapYPos(playerA), ovr033.PlayerMapXPos(playerA));
+                ovr032.Rebuild_SortedCombatantList(gbl.mapToBackGroundTile, 1, 0xff, 1, ovr033.PlayerMapYPos(player), ovr033.PlayerMapXPos(player));
 
                 for (int i = 0; i < gbl.sortedCombatantCount; i++)
                 {
@@ -2897,7 +2816,7 @@ namespace engine
                     if (ovr025.find_affect(out affect, Affects.affect_90, playerB) == true ||
                         ovr025.find_affect(out affect, Affects.affect_8b, playerB) == true)
                     {
-                        if (gbl.player_array[affect.field_3] == playerA)
+                        if (gbl.player_array[affect.field_3] == player)
                         {
                             ovr024.remove_affect(null, Affects.affect_90, playerB);
                             ovr024.remove_affect(null, Affects.affect_8b, playerB);
@@ -2906,13 +2825,13 @@ namespace engine
                 }
             }
 
-            ovr033.draw_74572(ovr033.get_player_index(playerA), 0, 0);
+            ovr033.draw_74572(ovr033.get_player_index(player), 0, 0);
 
-            ovr033.sub_7515A(false, gbl.targetY, gbl.targetX, playerA);
+            ovr033.sub_7515A(false, gbl.targetY, gbl.targetX, player);
 
-            ovr033.redrawCombatArea(8, 0, ovr033.PlayerMapYPos(playerA), ovr033.PlayerMapXPos(playerA));
+            ovr033.redrawCombatArea(8, 0, ovr033.PlayerMapYPos(player), ovr033.PlayerMapXPos(player));
 
-            ovr025.DisplayPlayerStatusString(true, 10, "teleports", playerA);
+            ovr025.DisplayPlayerStatusString(true, 10, "teleports", player);
         }
 
 
@@ -2951,11 +2870,9 @@ namespace engine
 
         internal static void cast_protection()
         {
-            bool var_3;
-            bool var_2;
-            char var_1;
+            char input_key;
 
-            var_3 = false;
+            bool var_3 = false;
 
             do
             {
@@ -2963,25 +2880,26 @@ namespace engine
                 {
                     if (ovr024.roll_dice(10, 1) > 5)
                     {
-                        var_1 = 'H';
+                        input_key = 'H';
                     }
                     else
                     {
-                        var_1 = 'C';
+                        input_key = 'C';
                     }
                 }
                 else
                 {
-                    var_1 = ovr027.displayInput(out var_2, false, 0, 15, 10, 13, "Hot Cold", "flame type: ");
+                    bool dummy_bool;
+                    input_key = ovr027.displayInput(out dummy_bool, false, 0, 15, 10, 13, "Hot Cold", "flame type: ");
                 }
 
-                if (var_1 == 'H')
+                if (input_key == 'H')
                 {
                     ovr024.is_unaffected("is protected", false, 0, false, 0, sub_5CE92(0x55), Affects.hot_fire_shield, gbl.player_ptr);
                     ovr024.is_unaffected(string.Empty, false, 0, false, 0, sub_5CE92(0x55), Affects.affect_87, gbl.player_ptr);
                     var_3 = true;
                 }
-                else if (var_1 == 'C')
+                else if (input_key == 'C')
                 {
                     ovr024.is_unaffected(string.Empty, false, 0, false, 0, sub_5CE92(0x55), Affects.cold_fire_shield, gbl.player_ptr);
                     ovr024.is_unaffected(string.Empty, false, 0, false, 0, sub_5CE92(0x55), Affects.affect_87, gbl.player_ptr);
@@ -2989,9 +2907,10 @@ namespace engine
                 }
                 else
                 {
-                    var_1 = ovr027.displayInput(out var_2, false, 0, 15, 10, 13, "Yes No", "Abort spell? ");
+                    bool dummy_bool;
+                    input_key = ovr027.displayInput(out dummy_bool, false, 0, 15, 10, 13, "Yes No", "Abort spell? ");
 
-                    if (var_1 == 'Y')
+                    if (input_key == 'Y')
                     {
                         var_3 = true;
                     }
@@ -3003,28 +2922,25 @@ namespace engine
 
         internal static void spell_slow()
         {
-            Affect var_8;
-            Player var_4;
-
-            var_4 = gbl.sp_targets[1];
+            Player target = gbl.sp_targets[1];
             gbl.damage_flags = 0x40;
 
-            if (ovr024.do_saving_throw(0, 4, var_4) == false)
+            if (ovr024.do_saving_throw(0, 4, target) == false)
             {
-                ovr024.is_unaffected("is clumsy", false, 0, false, 0, sub_5CE92(0x56), Affects.fumbling, var_4);
+                ovr024.is_unaffected("is clumsy", false, 0, false, 0, sub_5CE92(0x56), Affects.fumbling, target);
 
-                if (ovr025.find_affect(out var_8, Affects.fumbling, var_4) == true)
+                if (ovr025.find_affect(Affects.fumbling, target) == true)
                 {
-                    ovr024.CallSpellJumpTable(Effect.Add, null, var_4, Affects.fumbling);
+                    ovr024.CallSpellJumpTable(Effect.Add, null, target, Affects.fumbling);
                 }
             }
             else
             {
-                ovr024.is_unaffected("is slowed", false, 0, false, 0, sub_5CE92(0x56), Affects.slow, var_4);
+                ovr024.is_unaffected("is slowed", false, 0, false, 0, sub_5CE92(0x56), Affects.slow, target);
 
-                if (ovr025.find_affect(out var_8, Affects.slow, var_4) == true)
+                if (ovr025.find_affect(Affects.slow, target) == true)
                 {
-                    ovr024.CallSpellJumpTable(Effect.Add, null, var_4, Affects.slow);
+                    ovr024.CallSpellJumpTable(Effect.Add, null, target, Affects.slow);
                 }
             }
             sub_5CF7F("is clumsy", 0, 0, true, 0, gbl.spell_id);
@@ -3056,7 +2972,7 @@ namespace engine
             Struct_1D885 var_8;
             Struct_1D885 var_4;
 
-            gbl.byte_1D2C7 = 1;
+            gbl.byte_1D2C7 = true;
 
             var_15 = (byte)ovr025.spell_target_count(gbl.spell_id);
             var_13 = 0;
@@ -3116,68 +3032,49 @@ namespace engine
                     {
                         for (var_12 = 1; var_12 <= 4; var_12++)
                         {
-                            throw new System.NotSupportedException();//cmp	var_4.field_10[var_12], 0
-                            throw new System.NotSupportedException();//jnz	loc_6118A
-                            throw new System.NotSupportedException();//jmp	loc_61235
-                            throw new System.NotSupportedException();//loc_6118A:
-                            throw new System.NotSupportedException();//mov	al, [bp+var_17]
-                            throw new System.NotSupportedException();//xor	ah, ah
-                            throw new System.NotSupportedException();//mov	di, ax
-                            throw new System.NotSupportedException();//mov	al, gbl.MapDirectionXDelta[di]
-                            throw new System.NotSupportedException();//cbw
-                            throw new System.NotSupportedException();//mov	dx, ax
-                            throw new System.NotSupportedException();//mov	al, byte_1D883
-                            throw new System.NotSupportedException();//cbw
-                            throw new System.NotSupportedException();//add	ax, dx
-                            throw new System.NotSupportedException();//mov	cx, ax
-                            throw new System.NotSupportedException();//mov	al, [bp+var_12]
-                            throw new System.NotSupportedException();//xor	ah, ah
-                            throw new System.NotSupportedException();//mov	di, ax
-                            throw new System.NotSupportedException();//mov	al, gbl.unk_18AE9[di]
-                            throw new System.NotSupportedException();//xor	ah, ah
-                            throw new System.NotSupportedException();//mov	di, ax
-                            throw new System.NotSupportedException();//mov	al, gbl.MapDirectionXDelta[di]
-                            throw new System.NotSupportedException();//cbw
-                            throw new System.NotSupportedException();//mov	dx, ax
-                            throw new System.NotSupportedException();//les	di, [bp+var_4]
-                            throw new System.NotSupportedException();//mov	al, es:[di+1Ah]
-                            throw new System.NotSupportedException();//cbw
-                            throw new System.NotSupportedException();//add	ax, dx
-                            throw new System.NotSupportedException();//cmp	ax, cx
-                            throw new System.NotSupportedException();//jnz	loc_61235
-                            throw new System.NotSupportedException();//mov	al, [bp+var_17]
-                            throw new System.NotSupportedException();//xor	ah, ah
-                            throw new System.NotSupportedException();//mov	di, ax
-                            throw new System.NotSupportedException();//mov	al, gbl.MapDirectionYDelta[di]
-                            throw new System.NotSupportedException();//cbw
-                            throw new System.NotSupportedException();//mov	dx, ax
-                            throw new System.NotSupportedException();//mov	al, byte_1D884
-                            throw new System.NotSupportedException();//cbw
-                            throw new System.NotSupportedException();//add	ax, dx
-                            throw new System.NotSupportedException();//mov	cx, ax
-                            throw new System.NotSupportedException();//mov	al, [bp+var_12]
-                            throw new System.NotSupportedException();//xor	ah, ah
-                            throw new System.NotSupportedException();//mov	di, ax
-                            throw new System.NotSupportedException();//mov	al, gbl.unk_18AE9[di]
-                            throw new System.NotSupportedException();//xor	ah, ah
-                            throw new System.NotSupportedException();//mov	di, ax
-                            throw new System.NotSupportedException();//mov	al, gbl.MapDirectionYDelta[di]
-                            throw new System.NotSupportedException();//cbw
-                            throw new System.NotSupportedException();//mov	dx, ax
-                            throw new System.NotSupportedException();//les	di, [bp+var_4]
-                            throw new System.NotSupportedException();//mov	al, es:[di+1Bh]
-                            throw new System.NotSupportedException();//cbw
-                            throw new System.NotSupportedException();//add	ax, dx
-                            throw new System.NotSupportedException();//cmp	ax, cx
-                            throw new System.NotSupportedException();//jnz	loc_61235
-                            throw new System.NotSupportedException();//cmp	var_4.field_7[var_12], 0x1E
-                            throw new System.NotSupportedException();//jz	loc_61235
-                            throw new System.NotSupportedException();//cmp	var_4.field_7[var_12], 0x1C
-                            throw new System.NotSupportedException();//jz	loc_61235
+                            if (var_4.field_10[var_12] != 0)
+                            {
+                                throw new System.NotSupportedException();//mov	al, [bp+var_17]
+                                throw new System.NotSupportedException();//xor	ah, ah
+                                throw new System.NotSupportedException();//mov	di, ax
+                                throw new System.NotSupportedException();//mov	al, gbl.MapDirectionXDelta[di]
+                                throw new System.NotSupportedException();//cbw
+                                throw new System.NotSupportedException();//mov	dx, ax
+                                throw new System.NotSupportedException();//mov	al, byte_1D883
+                                throw new System.NotSupportedException();//cbw
+                                throw new System.NotSupportedException();//add	ax, dx
+                                throw new System.NotSupportedException();//mov	cx, ax
+                                throw new System.NotSupportedException();//mov	al, [bp+var_12]
+                                throw new System.NotSupportedException();//xor	ah, ah
+                                throw new System.NotSupportedException();//mov	di, ax
+                                throw new System.NotSupportedException();//mov	al, gbl.unk_18AE9[di]
+                                throw new System.NotSupportedException();//xor	ah, ah
+                                throw new System.NotSupportedException();//mov	di, ax
+                                throw new System.NotSupportedException();//mov	al, gbl.MapDirectionXDelta[di]
+                                throw new System.NotSupportedException();//cbw
+                                throw new System.NotSupportedException();//mov	dx, ax
+                                throw new System.NotSupportedException();//les	di, [bp+var_4]
+                                throw new System.NotSupportedException();//mov	al, es:[di+1Ah]
+                                throw new System.NotSupportedException();//cbw
+                                throw new System.NotSupportedException();//add	ax, dx
+                                throw new System.NotSupportedException();//cmp	ax, cx
+                                throw new System.NotSupportedException();//jnz	loc_61235
 
-                            var_14 = var_4.field_7[var_12];
-                            var_18 = 1;
-                            throw new System.NotSupportedException();//loc_61235:
+
+                                int cx = gbl.targetY + gbl.MapDirectionYDelta[var_17];
+                                int ax = var_4.target_y + gbl.MapDirectionYDelta[gbl.unk_18AE9[var_12]];
+
+                                if (ax == cx)
+                                {
+                                    if (var_4.field_7[var_12] != 0x1E &&
+                                        var_4.field_7[var_12] != 0x1C)
+                                    {
+                                        var_14 = var_4.field_7[var_12];
+                                        var_18 = 1;
+                                    }
+                                }
+                            }
+                            //loc_61235:
                         }
 
                         var_4 = var_4.next;
@@ -3233,7 +3130,7 @@ namespace engine
                                 throw new System.NotSupportedException();//mov	al, gbl.MapDirectionYDelta[di]
                                 throw new System.NotSupportedException();//cbw
                                 throw new System.NotSupportedException();//mov	dx, ax
-                                throw new System.NotSupportedException();//mov	al, byte_1D884
+                                throw new System.NotSupportedException();//mov	al, gbl.targetY
                                 throw new System.NotSupportedException();//cbw
                                 throw new System.NotSupportedException();//add	ax, dx
                                 throw new System.NotSupportedException();//mov	cx, ax
@@ -3298,7 +3195,7 @@ namespace engine
                         throw new System.NotSupportedException();//mov	al, gbl.MapDirectionYDelta[di]
                         throw new System.NotSupportedException();//cbw
                         throw new System.NotSupportedException();//mov	dx, ax
-                        throw new System.NotSupportedException();//mov	al, byte_1D884
+                        throw new System.NotSupportedException();//mov	al, gbl.targetY
                         throw new System.NotSupportedException();//cbw
                         throw new System.NotSupportedException();//add	ax, dx
                         throw new System.NotSupportedException();//mov	cx, ax
@@ -3350,22 +3247,16 @@ namespace engine
 
         internal static void sub_61550()
         {
-            sbyte var_6;
-            byte var_5;
-            Player var_4;
+            Player player = gbl.player_ptr;
+            int var_6 = ovr025.spell_target_count(gbl.spell_id);
+            int max_range = (ovr025.spell_target_count(gbl.spell_id) + 1) / 2;
 
-            var_4 = gbl.player_ptr;
-
-            var_6 = (sbyte)ovr025.spell_target_count(gbl.spell_id);
-
-            var_5 = (byte)((ovr025.spell_target_count(gbl.spell_id) + 1) / 2);
-
-            if (var_5 < 1)
+            if (max_range < 1)
             {
-                var_5 = 1;
+                max_range = 1;
             }
 
-            sub_5D7CF(var_5, 2, gbl.targetY, gbl.targetX, ovr033.PlayerMapYPos(var_4), ovr033.PlayerMapXPos(var_4));
+            sub_5D7CF(max_range, 2, gbl.targetY, gbl.targetX, ovr033.PlayerMapYPos(player), ovr033.PlayerMapXPos(player));
 
             sub_5CF7F(string.Empty, 10, (sbyte)(var_6 + ovr024.roll_dice_save(4, var_6)), false, 0, gbl.spell_id);
         }
@@ -3373,35 +3264,31 @@ namespace engine
 
         internal static void sub_615F2()
         {
-            Affect var_9;
-            Player var_5;
-            byte var_1;
+            Player target = gbl.sp_targets[1];
 
-            var_5 = gbl.sp_targets[1];
+            byte bkup_val = target.field_E3;
 
-            var_1 = var_5.field_E3;
-
-            if (var_5._class == ClassId.cleric)
+            if (target._class == ClassId.cleric)
             {
-                var_5.field_E3 -= 1;
+                target.field_E3 -= 1;
             }
-            else if (var_5._class == ClassId.magic_user)
+            else if (target._class == ClassId.magic_user)
             {
-                var_5.field_E3 += 4;
+                target.field_E3 += 4;
             }
             else
             {
-                var_5.field_E3 += 2;
+                target.field_E3 += 2;
             }
 
             sub_5CF7F(string.Empty, 0, 0, false, 0, gbl.spell_id);
 
-            if (ovr025.find_affect(out var_9, Affects.feeble, var_5) == true)
+            if (ovr025.find_affect(Affects.feeble, target) == true)
             {
-                ovr024.CallSpellJumpTable(Effect.Add, null, var_5, Affects.feeble);
+                ovr024.CallSpellJumpTable(Effect.Add, null, target, Affects.feeble);
             }
 
-            var_5.field_E3 = var_1;
+            target.field_E3 = bkup_val;
         }
 
 
@@ -3455,8 +3342,7 @@ namespace engine
                 ovr025.draw_missile_attack(0x2d, 4, ovr033.PlayerMapYPos(gbl.spell_target), ovr033.PlayerMapXPos(gbl.spell_target),
                     ovr033.PlayerMapYPos(player), ovr033.PlayerMapXPos(player));
 
-                Affect dummy_affect;
-                if (ovr025.find_affect(out dummy_affect, Affects.affect_7f, player) == true)
+                if (ovr025.find_affect(Affects.affect_7f, player) == true)
                 {
                     bool item_found = false;
                     Item item = gbl.spell_target.itemsPtr;
@@ -3680,66 +3566,45 @@ namespace engine
         internal static void cast_breath_fire(Effect arg_0, object param, Player arg_6)
         {
             gbl.dword_1D5CA(out gbl.byte_1DA70, QuickFight.True, 0x41);
-            throw new System.NotSupportedException();//les	di, [bp+arg_6]
-            throw new System.NotSupportedException();//les	di, int ptr es:[di+charStruct.actions.offset]
-            throw new System.NotSupportedException();//mov	ax, es:[di+0Ah]
-            throw new System.NotSupportedException();//mov	dx, es:[di+0Ch]
-            throw new System.NotSupportedException();//mov	spell_target.offset, ax
-            throw new System.NotSupportedException();//mov	spell_target.seg, dx
-            throw new System.NotSupportedException();//mov	al, 1
-            throw new System.NotSupportedException();//push	ax
-            throw new System.NotSupportedException();//mov	al, 0x64
-            throw new System.NotSupportedException();//push	ax
-            throw new System.NotSupportedException();//call	roll_dice(byte,byte)
-            throw new System.NotSupportedException();//cmp	al, 0x32
-            throw new System.NotSupportedException();//jbe	loc_620CF
-            throw new System.NotSupportedException();//jmp	loc_6219A
-            throw new System.NotSupportedException();//loc_620CF:
-            throw new System.NotSupportedException();//call	ovr025.sub_68708( spell_target, arg_6)
-            throw new System.NotSupportedException();//cmp	al, 2
-            throw new System.NotSupportedException();//jb	loc_620E9
-            throw new System.NotSupportedException();//jmp	loc_6219A
-            throw new System.NotSupportedException();//loc_620E9:
-            throw new System.NotSupportedException();//mov	ax, spell_target.offset
-            throw new System.NotSupportedException();//or	ax, spell_target.seg
-            throw new System.NotSupportedException();//jnz	loc_620F5
-            throw new System.NotSupportedException();//jmp	loc_6219A
-            throw new System.NotSupportedException();//loc_620F5:
-            gbl.damage_flags = 1;
-            gbl.byte_1DA70 = ovr025.clear_actions(arg_6);
+            gbl.spell_target = arg_6.actions.target;
 
-            ovr025.DisplayPlayerStatusString(true, 10, "Breathes Fire", arg_6);
-            ovr025.sub_67A59(0x17);
+            if ((gbl.spell_target != null) &&
+                (ovr024.roll_dice(100, 1) <= 50) &&
+                ovr025.getTargetRange(gbl.spell_target, arg_6) < 2)
+            {
+                gbl.damage_flags = 1;
+                gbl.byte_1DA70 = ovr025.clear_actions(arg_6);
 
-            ovr025.draw_missile_attack(0x1E, 1, ovr033.PlayerMapYPos(gbl.spell_target), ovr033.PlayerMapXPos(gbl.spell_target),
-                ovr033.PlayerMapYPos(arg_6), ovr033.PlayerMapXPos(arg_6));
+                ovr025.DisplayPlayerStatusString(true, 10, "Breathes Fire", arg_6);
+                ovr025.sub_67A59(0x17);
 
+                ovr025.draw_missile_attack(0x1E, 1, ovr033.PlayerMapYPos(gbl.spell_target), ovr033.PlayerMapXPos(gbl.spell_target),
+                    ovr033.PlayerMapYPos(arg_6), ovr033.PlayerMapXPos(arg_6));
 
-            ovr024.damage_person(ovr024.do_saving_throw(0, 3, gbl.spell_target), 2, 7, gbl.spell_target);
-            
-            //loc_6219A:
+                ovr024.damage_person(ovr024.do_saving_throw(0, 3, gbl.spell_target), 2, 7, gbl.spell_target);
+            }
         }
 
 
-        internal static void cast_throw_lightening(Effect arg_0, object param, Player arg_6) /* cast_throw_lightning */
+        internal static void cast_throw_lightening(Effect arg_0, object param, Player caster) /* cast_throw_lightning */
         {
             bool var_1 = false; /* Simeon */
 
             if (gbl.byte_1D8B7 < 4)
             {
-                int var_2 = ovr033.PlayerMapXPos(arg_6);
-                int var_3 = ovr033.PlayerMapYPos(arg_6);
+                int pos_x = ovr033.PlayerMapXPos(caster);
+                int pos_y = ovr033.PlayerMapYPos(caster);
 
-                ovr025.DisplayPlayerStatusString(true, 10, "throws lightning", arg_6);
+                ovr025.DisplayPlayerStatusString(true, 10, "throws lightning", caster);
                 gbl.dword_1D5CA(out gbl.byte_1DA70, QuickFight.True, 0x33);
 
-                ovr024.remove_invisibility(arg_6);
+                ovr024.remove_invisibility(caster);
                 ovr025.sub_67A59(0x13);
-                ovr025.draw_missile_attack(0x32, 4, gbl.targetY, gbl.targetX, var_3, var_2);
+                ovr025.draw_missile_attack(0x32, 4, gbl.targetY, gbl.targetX, pos_y, pos_x);
 
                 sub_5F986(ref var_1, 0, 4, ovr024.roll_dice_save(6, 16), gbl.targetY, gbl.targetX);
-                sub_5FA44(0, 0, (byte)ovr024.roll_dice_save(6, 16), 10);
-                var_1 = ovr025.clear_actions(arg_6);
+                sub_5FA44(0, 0, ovr024.roll_dice_save(6, 16), 10);
+                var_1 = ovr025.clear_actions(caster);
             }
         }
 

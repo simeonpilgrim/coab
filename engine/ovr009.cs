@@ -5,13 +5,11 @@ namespace engine
 {
     class ovr009
     {
-        internal static void sub_3304B()
+        internal static void free_combat_stuff() /* sub_3304B */
         {
-            Struct_1D885 var_4;
-
             while (gbl.stru_1D885 != null)
             {
-                var_4 = gbl.stru_1D885.next;
+                Struct_1D885 var_4 = gbl.stru_1D885.next;
 
                 seg051.FreeMem(0x1E, gbl.stru_1D885);
 
@@ -20,7 +18,7 @@ namespace engine
 
             while (gbl.stru_1D889 != null)
             {
-                var_4 = gbl.stru_1D889.next;
+                Struct_1D885 var_4 = gbl.stru_1D889.next;
 
                 seg051.FreeMem(0x1E, gbl.stru_1D889);
 
@@ -74,7 +72,7 @@ namespace engine
                 battle01(ref end_combat);
             }
 
-            sub_3304B();
+            free_combat_stuff();
             gbl.DelayBetweenCharacters = true;
         }
 
@@ -167,23 +165,21 @@ namespace engine
             byte spell_id;
             Struct_1D183 var_D = new Struct_1D183();
             Player player_ptr;
-            bool var_2 = false; /*HACK was unassigned in ovr023.sub_5D2E1 call */
             char var_1;
 
             if (player.in_combat == true)
             {
                 if (player.actions.spell_id > 0)
                 {
-
                     spell_id = player.actions.spell_id;
                     player.actions.spell_id = 0;
 
-                    ovr023.sub_5D2E1(ref var_2, 1, 0, spell_id);
-                    var_2 = ovr025.clear_actions(player);
+                    ovr023.sub_5D2E1(1, 0, spell_id);
+                    ovr025.clear_actions(player);
                 }
                 else
                 {
-                    var_2 = false;
+                    bool var_2 = false;
 
                     while (var_2 == false)
                     {
@@ -325,7 +321,7 @@ namespace engine
             }
             else
             {
-                var_2 = ovr025.clear_actions(player);
+                ovr025.clear_actions(player);
             }
         }
 

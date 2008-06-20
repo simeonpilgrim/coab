@@ -450,9 +450,7 @@ namespace engine
 
                         is_unaffected("starts to cough", save_passed, 0, false, 0xff, 1, Affects.affect_1e, player);
 
-                        Affect var_A = null;
-
-                        if (ovr025.find_affect(out var_A, Affects.affect_1e, player) == true)
+                        if (ovr025.find_affect(Affects.affect_1e, player) == true)
                         {
                             CallSpellJumpTable(Effect.Add, affect, player, Affects.affect_1e);
                         }
@@ -747,8 +745,7 @@ namespace engine
                 remove_affect(null, table[i], player);
             }
 
-            Affect dummy_affect;
-            if (ovr025.find_affect(out dummy_affect, Affects.berserk, player) == true &&
+            if (ovr025.find_affect(Affects.berserk, player) == true &&
                 player.field_F7 == 0xB3)
             {
                 player.combat_team = CombatTeam.Ours;
@@ -1177,7 +1174,7 @@ namespace engine
 
                 if (player.con > 20)
                 {
-                    if (ovr025.find_affect(out affect_ptr, Affects.affect_3e, player) == true)
+                    if (ovr025.find_affect(Affects.affect_3e, player) == true)
                     {
                         add_affect(false, 0xff, 0x3c, Affects.affect_3e, player);
                     }
@@ -1189,7 +1186,7 @@ namespace engine
             }
             else if (stat_index == 1)
             {
-                if (ovr025.find_affect(out affect_ptr, Affects.feeble, player) == true &&
+                if (ovr025.find_affect(Affects.feeble, player) == true &&
                     var_11 > 7)
                 {
                     var_11 = 3;
@@ -1206,7 +1203,7 @@ namespace engine
             }
             else if (stat_index == 2)
             {
-                if (ovr025.find_affect(out affect_ptr, Affects.feeble, player) == true &&
+                if (ovr025.find_affect(Affects.feeble, player) == true &&
                     var_11 > 7)
                 {
                     var_11 = 3;

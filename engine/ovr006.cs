@@ -688,7 +688,7 @@ namespace engine
                         break;
 
                     case 'D':
-                        ovr023.sub_5D2E1(ref ctrl_key, 0, 0, var_10B);
+                        ovr023.sub_5D2E1(0, 0, var_10B);
                         break;
 
                     case 'E':

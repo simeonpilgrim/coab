@@ -1628,12 +1628,11 @@ namespace engine
             {
                 byte movement = player.movement;
 
-                Affect dummy_affect;
-                if (ovr025.find_affect(out dummy_affect, Affects.haste, player) == true)
+                if (ovr025.find_affect(Affects.haste, player) == true)
                 {
                     movement *= 2;
                 }
-                else if (ovr025.find_affect(out dummy_affect, Affects.slow, player) == true)
+                else if (ovr025.find_affect(Affects.slow, player) == true)
                 {
                     movement /= 2;
                 }

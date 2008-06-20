@@ -382,12 +382,11 @@ namespace engine
                         bool var_12 = false;
 
                         Player player_ptr = gbl.player_array[var_D[var_18]];
-                        Affect dummy_affect;
 
                         if (ovr025.is_held(player_ptr) == false &&
                             sub_3F143(player, player_ptr) == true &&
-                            ovr025.find_affect(out dummy_affect, Affects.affect_4b, player_ptr) == false &&
-                            ovr025.find_affect(out dummy_affect, Affects.affect_4a, player_ptr) == false)
+                            ovr025.find_affect(Affects.affect_4b, player_ptr) == false &&
+                            ovr025.find_affect(Affects.affect_4a, player_ptr) == false)
                         {
                             int end_dir = player_ptr.actions.direction + 10;
 
@@ -1279,7 +1278,7 @@ namespace engine
 
             arg_0 = true;
             gbl.sp_target_count = 0;
-            gbl.byte_1D2C7 = 0;
+            gbl.byte_1D2C7 = false;
 
             gbl.targetX = ovr033.PlayerMapXPos(gbl.player_ptr);
             gbl.targetY = ovr033.PlayerMapYPos(gbl.player_ptr);
@@ -1420,7 +1419,7 @@ namespace engine
                         }
 
                         gbl.sp_target_count = gbl.sortedCombatantCount;
-                        gbl.byte_1D2C7 = 1;
+                        gbl.byte_1D2C7 = true;
                     }
                 }
                 else
@@ -1440,7 +1439,7 @@ namespace engine
                     }
 
                     gbl.sp_target_count = gbl.sortedCombatantCount;
-                    gbl.byte_1D2C7 = 1;
+                    gbl.byte_1D2C7 = true;
                 }
                 else
                 {
@@ -1551,7 +1550,7 @@ namespace engine
 
                 if (var_3 == 0)
                 {
-                    ovr023.sub_5D2E1(ref arg_0, 1, quick_fight, var_1);
+                    ovr023.sub_5D2E1(1, quick_fight, var_1);
 
                     arg_0 = ovr025.clear_actions(var_A);
                 }
@@ -2553,13 +2552,12 @@ namespace engine
 
         internal static void engulfs(Effect arg_0, object param, Player attacker)
         {
-            Affect dummyAffect;
             Player target = attacker.actions.target;
 
             if (gbl.byte_1D2CA == 2 &&
                 target.in_combat == true &&
-                ovr025.find_affect(out dummyAffect, Affects.affect_3a, target) == false &&
-                ovr025.find_affect(out dummyAffect, Affects.affect_0d, target) == false)
+                ovr025.find_affect(Affects.affect_3a, target) == false &&
+                ovr025.find_affect(Affects.affect_0d, target) == false)
             {
                 target = attacker.actions.target;
                 ovr025.DisplayPlayerStatusString(true, 12, "engulfs " + target.name, attacker);
@@ -2676,17 +2674,17 @@ namespace engine
                     }
                     else if ((var_4 & 0x10) == 0)
                     {
-                        ovr023.sub_5D2E1(ref var_5, 1, QuickFight.True, 0x54);
+                        ovr023.sub_5D2E1(1, QuickFight.True, 0x54);
                         var_4 |= 0x10;
                     }
                     else if ((var_4 & 0x20) == 0)
                     {
-                        ovr023.sub_5D2E1(ref var_5, 1, QuickFight.True, 0x37);
+                        ovr023.sub_5D2E1(1, QuickFight.True, 0x37);
                         var_4 |= 0x20;
                     }
                     else if ((var_4 & 0x40) == 0)
                     {
-                        ovr023.sub_5D2E1(ref var_5, 1, QuickFight.True, 0x15);
+                        ovr023.sub_5D2E1(1, QuickFight.True, 0x15);
                         var_4 |= 0x40;
                     }
                 }

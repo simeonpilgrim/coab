@@ -306,9 +306,7 @@ namespace engine
 
         internal static void sub_3A517(Effect arg_0, object param, Player player)
         {
-            Affect dummy_affect;
-
-            if (ovr025.find_affect(out dummy_affect, Affects.poisoned, player) == true)
+            if (ovr025.find_affect(Affects.poisoned, player) == true)
             {
                 ovr024.sub_63014("dies from poison", Status.dead, player);
             }
@@ -370,10 +368,8 @@ namespace engine
 
         internal static void sub_3A6C6(Effect arg_0, object param, Player player)
         {
-            Affect dummy_affect;
-
             if (player.name.Length == 0 &&
-                ovr025.find_affect(out dummy_affect, Affects.detect_invisibility, gbl.player_ptr) == false)
+                ovr025.find_affect(Affects.detect_invisibility, gbl.player_ptr) == false)
             {
                 gbl.byte_1D2C5 = 1;
                 gbl.byte_1D2C9 -= 4;
@@ -398,7 +394,7 @@ namespace engine
 
             if (ovr024.roll_dice((affect.field_3 >> 4) + 1, 1) > 1 &&
                 gbl.spell_id > 0 &&
-                gbl.byte_1D2C7 == 0)
+                gbl.byte_1D2C7 == false)
             {
                 protection_type_check(0);
 
@@ -729,13 +725,9 @@ namespace engine
                     ovr025.DisplayPlayerStatusString(true, 10, "is weakened", player);
                     player.strength--;
                 }
-                else
+                else if (ovr025.find_affect(Affects.helpless, player) == true)
                 {
-                    Affect dummy_affect;
-                    if (ovr025.find_affect(out dummy_affect, Affects.helpless, player) == true)
-                    {
-                        ovr024.add_affect(false, 0xff, 0, Affects.helpless, player);
-                    }
+                    ovr024.add_affect(false, 0xff, 0, Affects.helpless, player);
                 }
             }
         }
@@ -758,13 +750,9 @@ namespace engine
                         ovr025.Player_Summary(gbl.player_ptr);
                     }
                 }
-                else
+                else if (ovr025.find_affect(Affects.helpless, player) == false)
                 {
-                    Affect dummy_affect;
-                    if (ovr025.find_affect(out dummy_affect, Affects.helpless, player) == false)
-                    {
-                        ovr024.add_affect(false, 0xff, 0, Affects.helpless, player);
-                    }
+                    ovr024.add_affect(false, 0xff, 0, Affects.helpless, player);
                 }
             }
         }
@@ -1000,11 +988,9 @@ namespace engine
 
         internal static void sub_3B636(Effect arg_0, object param, Player player)
         {
-            Affect var_4;
-
             if (gbl.player_ptr.field_11A == 0x13)
             {
-                if (ovr025.find_affect(out var_4, Affects.detect_invisibility, gbl.player_ptr) == false)
+                if (ovr025.find_affect(Affects.detect_invisibility, gbl.player_ptr) == false)
                 {
                     gbl.byte_1D2C5 = 1;
                 }
@@ -1435,10 +1421,8 @@ namespace engine
 
         internal static void sp_regenerate(Effect arg_0, object param, Player player)
         {
-            Affect var_4;
-
-            if (ovr025.find_affect(out var_4, Affects.affect_62, player) == false &&
-                ovr025.find_affect(out var_4, Affects.regenerate, player) == false)
+            if (ovr025.find_affect(Affects.affect_62, player) == false &&
+                ovr025.find_affect(Affects.regenerate, player) == false)
             {
                 ovr024.add_affect(true, 0xff, 3, Affects.regenerate, player);
             }
@@ -1456,24 +1440,22 @@ namespace engine
         }
 
 
-        internal static void sub_3C05D(Effect arg_0, object param, Player arg_6)
+        internal static void sub_3C05D(Effect arg_0, object param, Player player)
         {
-            Affect var_4;
+            gbl.spell_target = player.actions.target;
 
-            gbl.spell_target = arg_6.actions.target;
-
-            if (ovr025.find_affect(out var_4, Affects.resist_fire, gbl.spell_target) == false &&
-                ovr025.find_affect(out var_4, Affects.cold_fire_shield, gbl.spell_target) == false &&
-                ovr025.find_affect(out var_4, Affects.fire_resist, gbl.spell_target) == false)
+            if (ovr025.find_affect(Affects.resist_fire, gbl.spell_target) == false &&
+                ovr025.find_affect(Affects.cold_fire_shield, gbl.spell_target) == false &&
+                ovr025.find_affect(Affects.fire_resist, gbl.spell_target) == false)
             {
                 gbl.damage += ovr024.roll_dice(6, 1);
             }
         }
 
 
-        internal static void sub_3C0DA(Effect arg_0, object param, Player arg_6)
+        internal static void sub_3C0DA(Effect arg_0, object param, Player player)
         {
-            sub_3AF06(0x3c, arg_6);
+            sub_3AF06(0x3c, player);
         }
 
 

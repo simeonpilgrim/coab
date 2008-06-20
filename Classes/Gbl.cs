@@ -279,7 +279,7 @@ namespace Classes
         public static bool reset_byte_1D2C0; // byte_1D2C4
         public static byte byte_1D2C5;
         public static bool byte_1D2C6;
-        public static byte byte_1D2C7;
+        public static bool byte_1D2C7;
         public static bool byte_1D2C8;
         public static sbyte byte_1D2C9;
         public static byte byte_1D2CA;

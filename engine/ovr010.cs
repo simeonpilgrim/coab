@@ -60,7 +60,7 @@ namespace engine
 
             if (player.actions.spell_id > 0)
             {
-                ovr023.sub_5D2E1(ref var_2, 1, QuickFight.True, player.actions.spell_id);
+                ovr023.sub_5D2E1(1, QuickFight.True, player.actions.spell_id);
 
                 var_2 = ovr025.clear_actions(player);
                 return;
@@ -323,24 +323,20 @@ namespace engine
             0 ,6 ,2 ,8 ,2 ,0 ,4 ,0, 0 ,2 ,
             6 ,2 ,2 ,0 ,4 ,4 ,4 ,2, 6, 6 };/* actual from seg600:02BD - seg600:02F8 */
 
-        internal static byte sub_3573B(out bool arg_0, byte arg_4, byte arg_6, Player player)
+        internal static bool sub_3573B(out bool arg_0, byte arg_4, byte arg_6, Player player)
         {
-            byte var_D;
-            bool isPoisonousCloud;
-            bool isNoxiousCloud;
             byte var_A;
-            byte groundTile;
-            byte playerIndex;
-            byte playerDirection;
-            byte var_6;
-            Affect var_5;
 
             arg_0 = false;
-            var_D = 0;
+            bool result = false;
 
-            var_6 = data_2B8[(player.actions.field_15 * 5) + arg_6];
-            playerDirection = (byte)((arg_4 + var_6) % 8);
+            byte var_6 = data_2B8[(player.actions.field_15 * 5) + arg_6];
+            byte playerDirection = (byte)((arg_4 + var_6) % 8);
 
+            byte groundTile;
+            byte playerIndex;  
+            bool isPoisonousCloud;
+            bool isNoxiousCloud;
             ovr033.getGroundInformation(out isPoisonousCloud, out isNoxiousCloud, out groundTile, out playerIndex, playerDirection, player);
 
             if (groundTile == 0)
@@ -351,7 +347,7 @@ namespace engine
             {
                 if (gbl.BackGroundTiles[groundTile].move_cost == 0xff)
                 {
-                    return 0;
+                    return false;
                 }
 
                 if ((playerDirection & 1) != 0)
@@ -366,12 +362,12 @@ namespace engine
                 if (playerIndex == 0 && var_A < player.actions.move)
                 {
                     if (isNoxiousCloud == true &&
-                        ovr025.find_affect(out var_5, Affects.funky__32, player) == false &&
-                        ovr025.find_affect(out var_5, Affects.affect_1e, player) == false &&
-                        ovr025.find_affect(out var_5, Affects.affect_6f, player) == false &&
-                        ovr025.find_affect(out var_5, Affects.affect_7d, player) == false &&
-                        ovr025.find_affect(out var_5, Affects.affect_81, player) == false &&
-                        ovr025.find_affect(out var_5, Affects.minor_globe_of_invulnerability, player) == false &&
+                        ovr025.find_affect(Affects.funky__32, player) == false &&
+                        ovr025.find_affect(Affects.affect_1e, player) == false &&
+                        ovr025.find_affect(Affects.affect_6f, player) == false &&
+                        ovr025.find_affect(Affects.affect_7d, player) == false &&
+                        ovr025.find_affect(Affects.affect_81, player) == false &&
+                        ovr025.find_affect(Affects.minor_globe_of_invulnerability, player) == false &&
                         player.actions.field_10 == 0)
                     {
                         if (ovr024.do_saving_throw(0, 0, player) == false)
@@ -383,10 +379,10 @@ namespace engine
 
                     if (isPoisonousCloud == true &&
                         player.field_E5 < 7 &&
-                        ovr025.find_affect(out var_5, Affects.affect_81, player) == false &&
-                        ovr025.find_affect(out var_5, Affects.affect_6f, player) == false &&
-                        ovr025.find_affect(out var_5, Affects.affect_85, player) == false &&
-                        ovr025.find_affect(out var_5, Affects.affect_7d, player) == false &&
+                        ovr025.find_affect(Affects.affect_81, player) == false &&
+                        ovr025.find_affect(Affects.affect_6f, player) == false &&
+                        ovr025.find_affect(Affects.affect_85, player) == false &&
+                        ovr025.find_affect(Affects.affect_7d, player) == false &&
                         player.actions.field_10 == 0)
                     {
                         var_A = (byte)(player.actions.move + 1);
@@ -394,12 +390,12 @@ namespace engine
 
                     if (player.actions.move >= var_A)
                     {
-                        var_D = 1;
+                        result = true;
                     }
                 }
             }
 
-            return var_D;
+            return result;
         }
 
 
@@ -450,7 +446,7 @@ namespace engine
                             var_3 = 1;
 
                             while (var_3 < 6 && var_5 == false &&
-                                sub_3573B(out var_4, var_1, var_3, player) == 0)
+                                sub_3573B(out var_4, var_1, var_3, player) == false)
                             {
                                 if (player.actions.field_14 != 0 &&
                                     var_4 == true)
