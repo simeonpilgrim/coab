@@ -187,55 +187,50 @@ namespace engine
 
         internal static void raise_dead()
         {
-            Player player01;
-            byte var_109;
             byte var_108;
             byte var_107;
-            byte var_106;
-            char var_105;
 
-            player01 = gbl.player_ptr;
-            var_106 = 0;
-            var_105 = 'Y';
+            Player player = gbl.player_ptr;
+            bool player_dead = false;
+            char input_key = 'Y';
 
-            if (player01.health_status == Status.dead ||
-                player01.health_status == Status.animated)
+            if (player.health_status == Status.dead ||
+                player.health_status == Status.animated)
             {
-                var_106 = 1;
+                player_dead = true;
             }
 
-            if (var_106 == 0)
+            if (player_dead == false)
             {
-                var_105 = cast_cure_anyway("is not dead.");
+                input_key = cast_cure_anyway("is not dead.");
             }
 
-
-            if (var_105 == 'Y')
+            if (input_key == 'Y')
             {
-                var_105 = buy_cure(5500, "Raise Dead");
+                input_key = buy_cure(5500, "Raise Dead");
 
-                if (var_105 == 'Y' &&
-                    var_106 != 0)
+                if (input_key == 'Y' &&
+                    player_dead ==true)
                 {
                     gbl.byte_1D2C6 = true;
 
-                    ovr024.remove_affect(null, Affects.funky__32, player01);
-                    ovr024.remove_affect(null, Affects.poisoned, player01);
+                    ovr024.remove_affect(null, Affects.funky__32, player);
+                    ovr024.remove_affect(null, Affects.poisoned, player);
 
                     gbl.byte_1D2C6 = false;
 
-                    player01.hit_point_current = 1;
-                    player01.health_status = Status.okey;
-                    player01.in_combat = true;
+                    player.hit_point_current = 1;
+                    player.health_status = Status.okey;
+                    player.in_combat = true;
 
-                    if (player01.con <= 0)
+                    if (player.con <= 0)
                     {
-                        player01.con--;
+                        player.con--;
                     }
 
-                    if (player01.hit_point_max > player01.field_12C)
+                    if (player.hit_point_max > player.field_12C)
                     {
-                        var_107 = (byte)(player01.hit_point_max - player01.field_12C);
+                        var_107 = (byte)(player.hit_point_max - player.field_12C);
                     }
                     else
                     {
@@ -244,23 +239,23 @@ namespace engine
 
                     var_108 = 0;
 
-                    if (player01.con >= 14)
+                    if (player.con >= 14)
                     {
-                        for (var_109 = 0; var_109 <= 7; var_109++)
+                        for (int var_109 = 0; var_109 <= 7; var_109++)
                         {
-                            if (player01.Skill_A_lvl[var_109] > 0)
+                            if (player.class_lvls[var_109] > 0)
                             {
                                 if (var_109 == 2)
                                 {
-                                    var_108 += (byte)((player01.con - 14) * player01.fighter_lvl);
+                                    var_108 += (byte)((player.con - 14) * player.fighter_lvl);
                                 }
-                                else if (player01.con > 15)
+                                else if (player.con > 15)
                                 {
-                                    var_108 += (byte)(player01.Skill_A_lvl[var_109] * 2);
+                                    var_108 += (byte)(player.class_lvls[var_109] * 2);
                                 }
                                 else
                                 {
-                                    var_108 += player01.Skill_A_lvl[var_109];
+                                    var_108 += player.class_lvls[var_109];
                                 }
                             }
                         }
@@ -270,11 +265,11 @@ namespace engine
                             var_107 /= var_108;
                         }
 
-                        if (player01.con < 17 ||
-                            player01.fighter_lvl > 0 ||
-                            player01.fighter_lvl > player01.field_E6)
+                        if (player.con < 17 ||
+                            player.fighter_lvl > 0 ||
+                            player.fighter_lvl > player.field_E6)
                         {
-                            player01.hit_point_max = var_107;
+                            player.hit_point_max = var_107;
                         }
                     }
                 }

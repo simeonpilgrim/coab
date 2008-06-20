@@ -71,7 +71,7 @@ namespace engine
                 }
                 else
                 {
-                    var_2 = (sbyte)player.Skill_A_lvl[skill];
+                    var_2 = (sbyte)player.class_lvls[skill];
                 }
 
                 if (var_2 > 0)
@@ -202,7 +202,7 @@ namespace engine
 
             for (int skill = 0; skill <= 7; skill++)
             {
-                byte skill_lvl = player.Skill_A_lvl[skill];
+                byte skill_lvl = player.class_lvls[skill];
 
                 if (ovr018.unk_1A14A[(skill * 0xD) + skill_lvl] > player.field_73)
                 {
@@ -242,7 +242,7 @@ namespace engine
 
             for (int skill = 0; skill <= 7; skill++)
             {
-                if (player.Skill_A_lvl[skill] > 0 ||
+                if (player.class_lvls[skill] > 0 ||
                     (player.Skill_B_lvl[skill] > 0 && player.Skill_B_lvl[skill] < player.field_E5))
                 {
                     player.classFlags += ovr018.unk_1A1B2[skill];
@@ -428,9 +428,9 @@ namespace engine
                 player.field_DFArraySet(var_1, 0x14);
                 for (var_2 = 0; var_2 <= 7; var_2++)
                 {
-                    if (player.Skill_A_lvl[var_2] > 0)
+                    if (player.class_lvls[var_2] > 0)
                     {
-                        byte dl = byte_1A8CE[(var_2 * 60) + (player.Skill_A_lvl[var_2] * 5) + var_1];
+                        byte dl = byte_1A8CE[(var_2 * 60) + (player.class_lvls[var_2] * 5) + var_1];
 
                         if (player.field_DFArrayGet(var_1) > dl)
                         {
@@ -442,7 +442,7 @@ namespace engine
                 var_2 -= 1; /* Orignal code had a post use test and would exit on 7,
                             * but this for loops uses are pre-test increment so fix var_2 */
 
-                if (player.Skill_A_lvl[var_2] > player.Skill_B_lvl[var_2])
+                if (player.class_lvls[var_2] > player.Skill_B_lvl[var_2])
                 {
                     byte dl = byte_1A8CE[(var_2 * 60) + (player.Skill_B_lvl[var_2] * 5) + var_1];
 
@@ -771,8 +771,8 @@ namespace engine
             player.field_E6 = player.field_E5;
             player.field_E5 = 1;
 
-            player.Skill_A_lvl[getFirstSkill(player)] = 0;
-            player.Skill_A_lvl[var_2] = 1;
+            player.class_lvls[getFirstSkill(player)] = 0;
+            player.class_lvls[var_2] = 1;
 
             for (int i = 0; i < 5; i++)
             {
@@ -862,12 +862,12 @@ namespace engine
             else
             {
                 int skill_index = 0;
-                while (skill_index < 7 && player.Skill_A_lvl[skill_index] == 0)
+                while (skill_index < 7 && player.class_lvls[skill_index] == 0)
                 {
                     skill_index++;
                 }
 
-                if (player.Skill_A_lvl[skill_index] > 0)
+                if (player.class_lvls[skill_index] > 0)
                 {
                     index = skill_index;
                 }
@@ -893,12 +893,12 @@ namespace engine
             loop_var = 0;
 
             while (loop_var < 7 &&
-                player.Skill_A_lvl[loop_var] != 0)
+                player.class_lvls[loop_var] != 0)
             {
                 loop_var++;
             }
 
-            return player.Skill_A_lvl[loop_var];
+            return player.class_lvls[loop_var];
         }
 
 

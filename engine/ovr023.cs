@@ -5,7 +5,7 @@ namespace engine
 {
     class ovr023
     {
-        internal static string[] AffectNames = {
+        internal static string[] SpellNames = { /* AffectNames */
                                    string.Empty,
                                    "Bless",
                                    "Curse",
@@ -128,7 +128,7 @@ namespace engine
 
             switch (gbl.spell_table[spell_id].spellClass)
             {
-                case 0:
+                case 0: // Cleric
                     if (player.wis > 8 &&
                         ((player.cleric_lvl > 0) ||
                          (ovr026.sub_6B3D1(player) != 0 && player.turn_undead > 0) ||
@@ -139,7 +139,7 @@ namespace engine
                     }
                     break;
 
-                case 1:
+                case 1: // Druid
                     if ((player.wis > 8 && player.ranger_lvl > 6) ||
                         (ovr026.sub_6B3D1(player) != 0 && player.field_115 > 6))
                     {
@@ -147,7 +147,7 @@ namespace engine
                     }
                     break;
 
-                case 2:
+                case 2: // Magic-User
                     if (player._int > 8 &&
                         ((player.race != Race.human) ||
                      (player.field_159 == null) ||
@@ -160,7 +160,7 @@ namespace engine
                     }
                     break;
 
-                case 3:
+                case 3: // Monster?
                     can_learn = false;
                     break;
 
@@ -248,7 +248,7 @@ namespace engine
             }
             else
             {
-                spell_id = gbl.unk_1AEC4[selected_index];
+                spell_id = gbl.memorize_spell_id[selected_index];
             }
 
             if (arg_4 == SpellSource.Scribe)
@@ -262,11 +262,11 @@ namespace engine
         }
 
 
-        internal static void add_spell_to_list(byte arg_0) /* sub_5C3ED */
+        internal static void add_spell_to_list(byte spell_id) /* sub_5C3ED */
         {
             sbyte last_spell_level;
             byte index;
-            byte masked_id = (byte)(arg_0 & 0x7F);
+            byte masked_id = (byte)(spell_id & 0x7F);
 
             StringList string_list = gbl.spell_string_list;
 
@@ -291,7 +291,7 @@ namespace engine
                     string_list = string_list.next;
                 }
 
-                last_spell_level = gbl.spell_table[gbl.unk_1AEC4[index - 1]].spellLevel;
+                last_spell_level = gbl.spell_table[gbl.memorize_spell_id[index - 1]].spellLevel;
 
                 string_list.next = new StringList();
 
@@ -311,53 +311,48 @@ namespace engine
                 string_list.next = null;
             }
 
-            string_list.s = (arg_0 > 0x7F) ? " *" : "  ";
-            string_list.s += AffectNames[masked_id];
+            string_list.s = (spell_id > 0x7F) ? " *" : "  ";
+            string_list.s += SpellNames[masked_id];
             string_list.field_29 = 0;
 
-            gbl.unk_1AEC4[index] = masked_id;
+            gbl.memorize_spell_id[index] = masked_id;
         }
 
 
-        internal static void sub_5C5B9(int arg_0)
+        internal static void add_spell_to_learning_list(int spell_id) /* sub_5C5B9 */
         {
-            byte var_F;
-            StringList var_E;
-            StringList var_A;
-            StringList var_6;
-            byte var_1;
-
-            var_6 = gbl.spell_string_list;
+            int memorize_index;
+            byte masked_id = (byte)(spell_id & 0x7F);
+         
+            StringList spell_list = gbl.spell_string_list;
             bool found = false;
 
-            int sp_lvl = gbl.spell_table[arg_0 & 0x7F].spellLevel;
+            int sp_lvl = gbl.spell_table[masked_id].spellLevel;
 
             if (gbl.spell_string_list == null)
             {
-                seg051.FillChar(0, 0x54, gbl.unk_1AE70);
+                System.Array.Clear(gbl.memorize_count, 0, gbl.max_spells);
 
-                var_6 = new StringList();
-                var_6.next = null;
+                spell_list = new StringList();
 
-                gbl.spell_string_list = var_6;
+                gbl.spell_string_list = spell_list;
 
-                var_F = 0;
-
-                gbl.unk_1AE70[var_F] = 1;
+                memorize_index = 0;
+                gbl.memorize_count[memorize_index] = 1;
             }
             else
             {
-                var_F = 0;
+                memorize_index = 0;
 
-                while (var_6 != null && found == false)
+                while (spell_list != null && found == false)
                 {
-                    if (var_6.field_29 == 0)
+                    if (spell_list.field_29 == 0)
                     {
-                        if (gbl.spell_table[gbl.unk_1AEC4[var_F]].spellLevel <= sp_lvl &&
-                            gbl.unk_1AEC4[var_F] != (arg_0 & 0x7F))
+                        if (gbl.spell_table[gbl.memorize_spell_id[memorize_index]].spellLevel <= sp_lvl &&
+                            gbl.memorize_spell_id[memorize_index] != masked_id)
                         {
-                            var_F++;
-                            var_6 = var_6.next;
+                            memorize_index++;
+                            spell_list = spell_list.next;
                         }
                         else
                         {
@@ -366,69 +361,68 @@ namespace engine
                     }
                     else
                     {
-                        var_6 = var_6.next;
-                        var_F++;
+                        spell_list = spell_list.next;
+                        memorize_index++;
                     }
                 }
 
-
-                if (gbl.unk_1AEC4[var_F] != (arg_0 & 0x7F))
+                if (gbl.memorize_spell_id[memorize_index] != masked_id)
                 {
-                    var_A = gbl.spell_string_list;
-                    if (var_A != var_6)
+                    if (gbl.spell_string_list != spell_list)
                     {
-                        while (var_A.next != var_6)
+                        StringList sl = gbl.spell_string_list;
+
+                        while (sl.next != spell_list)
                         {
-                            var_A = var_A.next;
+                            sl = sl.next;
                         }
 
-                        var_E = new StringList();
-                        var_E.next = var_A.next;
-                        var_A.next = var_E;
-                        var_6 = var_E;
+                        StringList tmp_sl = new StringList();
+                        tmp_sl.next = sl.next;
+                        sl.next = tmp_sl;
+                        spell_list = tmp_sl;
                     }
                     else
                     {
-                        var_E = new StringList();
-                        var_E.next = var_6;
-                        gbl.spell_string_list = var_E;
-                        var_6 = var_E;
+                        StringList tmp_sl = new StringList();
+                        tmp_sl.next = spell_list;
+                        gbl.spell_string_list = tmp_sl;
+                        spell_list = tmp_sl;
                     }
 
-                    var_1 = 1;
-
-                    for (int i = var_F; i <= 0x53; i++)
+                    int insert_count = 1;
+                    for (int i = memorize_index; i < gbl.max_spells; i++)
                     {
-                        byte var_2 = gbl.unk_1AE70[i];
-                        gbl.unk_1AE70[i] = var_1;
-                        var_1 = var_2;
+                        int tmp_count = gbl.memorize_count[i];
+                        gbl.memorize_count[i] = insert_count;
+                        insert_count = tmp_count;
                     }
                 }
                 else
                 {
-                    gbl.unk_1AE70[var_F] += 1;
+                    gbl.memorize_count[memorize_index] += 1;
                 }
             }
 
-            var_6.s = (arg_0 > 0x7F) ? " *" : "  ";
-            var_6.s += AffectNames[arg_0 & 0x7F];
-            var_6.field_29 = 0;
+            spell_list.s = (spell_id > 0x7F) ? " *" : "  ";
+            spell_list.s += SpellNames[masked_id];
+            spell_list.field_29 = 0;
 
-            if (gbl.unk_1AE70[var_F] > 1)
+            if (gbl.memorize_count[memorize_index] > 1)
             {
-                var_6.s = string.Format("{0} ({1})", var_6.s, gbl.unk_1AE70[var_F]);
+                spell_list.s += string.Format(" ({0})", gbl.memorize_count[memorize_index]);
             }
 
-            if (gbl.unk_1AEC4[var_F] != (arg_0 & 0x7F))
+            if (gbl.memorize_spell_id[memorize_index] != masked_id)
             {
-                var_1 = gbl.unk_1AEC4[var_F];
-                gbl.unk_1AEC4[var_F] = (byte)(arg_0 & 0x7F);
+                byte insert_id = gbl.memorize_spell_id[memorize_index];
+                gbl.memorize_spell_id[memorize_index] = masked_id;
 
-                for (int i = var_F + 1; i <= 0x53; i++)
+                for (int i = memorize_index + 1; i < gbl.max_spells; i++)
                 {
-                    byte var_2 = gbl.unk_1AEC4[i];
-                    gbl.unk_1AEC4[i] = var_1;
-                    var_1 = var_2;
+                    byte tmp_id = gbl.memorize_spell_id[i];
+                    gbl.memorize_spell_id[i] = insert_id;
+                    insert_id = tmp_id;
                 }
             }
         }
@@ -442,7 +436,6 @@ namespace engine
             {
                 gbl.dword_1D5C6.hidden_names_flag = 0;
             }
- 
 
             if (gbl.dword_1D5C6.hidden_names_flag == 0)
             {
@@ -497,7 +490,7 @@ namespace engine
 
             for (int var_2 = 0; var_2 < gbl.max_spells; var_2++)
             {
-                gbl.unk_1AEC4[var_2] = 0;
+                gbl.memorize_spell_id[var_2] = 0;
             }
 
             switch (spl_location)
@@ -506,10 +499,10 @@ namespace engine
                     for (int var_2 = 0; var_2 < gbl.max_spells; var_2++)
                     {
                         if (gbl.player_ptr.spell_list[var_2] > 0 &&
-                            can_learn_spell((byte)(gbl.player_ptr.spell_list[var_2] & 0x7F), gbl.player_ptr) == true &&
+                            can_learn_spell(gbl.player_ptr.spell_list[var_2] & 0x7F, gbl.player_ptr) == true &&
                             gbl.player_ptr.spell_list[var_2] < 0x80)
                         {
-                            sub_5C5B9(gbl.player_ptr.spell_list[var_2]);
+                            add_spell_to_learning_list(gbl.player_ptr.spell_list[var_2]);
                         }
                     }
                     break;
@@ -518,9 +511,9 @@ namespace engine
                     for (int var_2 = 0; var_2 < gbl.max_spells; var_2++)
                     {
                         if (gbl.player_ptr.spell_list[var_2] > 0x7F &&
-                            can_learn_spell((byte)(gbl.player_ptr.spell_list[var_2] & 0x7F), gbl.player_ptr) == true)
+                            can_learn_spell(gbl.player_ptr.spell_list[var_2] & 0x7F, gbl.player_ptr) == true)
                         {
-                            sub_5C5B9(gbl.player_ptr.spell_list[var_2]);
+                            add_spell_to_learning_list(gbl.player_ptr.spell_list[var_2]);
                         }
                     }
                     break;
@@ -531,7 +524,7 @@ namespace engine
                         if (gbl.player_ptr.field_79[var_2-1] != 0 &&
                             can_learn_spell(var_2, gbl.player_ptr) == true)
                         {
-                            sub_5C5B9(var_2);
+                            add_spell_to_learning_list(var_2);
                         }
                     }
                     break;
@@ -568,7 +561,7 @@ namespace engine
                             can_learn_spell(var_2, gbl.player_ptr) == true &&
                             gbl.player_ptr.field_79[var_2 - 1] == 0)
                         {
-                            sub_5C5B9(var_2);
+                            add_spell_to_learning_list(var_2);
                         }
                     }
                     break;
@@ -580,14 +573,14 @@ namespace engine
                 {
                     int var_2 = 0;
 
-                    var_C = gbl.spell_table[gbl.unk_1AEC4[var_2]].spellLevel;
+                    var_C = gbl.spell_table[gbl.memorize_spell_id[var_2]].spellLevel;
 
                     var_A = new StringList();
 
                     var_A.next = gbl.spell_string_list;
                     gbl.spell_string_list = var_A;
 
-                    gbl.spell_string_list.s = LevelStrings[gbl.spell_table[gbl.unk_1AEC4[var_2]].spellLevel];
+                    gbl.spell_string_list.s = LevelStrings[gbl.spell_table[gbl.memorize_spell_id[var_2]].spellLevel];
                     gbl.spell_string_list.field_29 = 1;
                     var_6 = gbl.spell_string_list;
 
@@ -595,9 +588,9 @@ namespace engine
                     {
                         var_B = var_C;
 
-                        if (gbl.unk_1AEC4[var_2] != 0)
+                        if (gbl.memorize_spell_id[var_2] != 0)
                         {
-                            var_C = gbl.spell_table[gbl.unk_1AEC4[var_2]].spellLevel;
+                            var_C = gbl.spell_table[gbl.memorize_spell_id[var_2]].spellLevel;
                         }
 
                         if (var_B < var_C)
@@ -833,7 +826,7 @@ namespace engine
             {
                 if (gbl.spell_from_item == false)
                 {
-                    seg041.displayString(AffectNames[spell_id], 0, 10, 0x13, 1);
+                    seg041.displayString(SpellNames[spell_id], 0, 10, 0x13, 1);
                     seg041.displayString("can't be cast here...", 0, 10, 0x14, 1);
 
                     if (ovr027.yes_no(15, 10, 13, "Lose it? ") == 'Y')
@@ -883,7 +876,7 @@ namespace engine
 
                     if (gbl.game_state == 5)
                     {
-                        ovr025.sub_67A59(0x12);
+                        ovr025.load_missile_icons(0x12);
                         int casterX = ovr033.PlayerMapXPos(caster);
                         int casterY = ovr033.PlayerMapYPos(caster);
 
@@ -912,7 +905,7 @@ namespace engine
 
                         ovr025.draw_missile_attack(0x1E, 4, gbl.targetY, gbl.targetX, casterY, casterX);
 
-                        if (ovr033.sub_74761(0, caster) == true)
+                        if (ovr033.sub_74761(false, caster) == true)
                         {
                             ovr033.draw_74B3F(1, 1, caster.actions.direction, caster);
                             ovr033.draw_74B3F(0, 0, caster.actions.direction, caster);
@@ -1100,7 +1093,6 @@ namespace engine
                 {
                     finished = true;
                 }
-
             }
 
             BoundCoords(ref targetY, ref targetX);
@@ -1188,7 +1180,7 @@ namespace engine
         }
 
 
-        internal static void sub_5DB24(string arg_0, int save_bonus)
+        internal static void sub_5DB24(string text, int save_bonus)
         {
             for (int target_index = gbl.sp_target_count; target_index >= 1; target_index--)
             {
@@ -1199,7 +1191,7 @@ namespace engine
                     if (target_index < gbl.sp_target_count)
                     {
                         seg044.sound_sub_120E0(gbl.sound_2_188C2);
-                        ovr025.sub_67A59(0x12);
+                        ovr025.load_missile_icons(0x12);
 
                         ovr025.draw_missile_attack(0x1E, 4, ovr033.PlayerMapYPos(target), ovr033.PlayerMapXPos(target),
                             ovr033.PlayerMapYPos(gbl.player_ptr), ovr033.PlayerMapXPos(gbl.player_ptr));
@@ -1226,14 +1218,14 @@ namespace engine
                         saved = true;
                     }
 
-                    ovr024.is_unaffected(arg_0, saved, can_save_flag, false, ovr025.spell_target_count(gbl.spell_id), sub_5CE92(gbl.spell_id),
+                    ovr024.is_unaffected(text, saved, can_save_flag, false, ovr025.spell_target_count(gbl.spell_id), sub_5CE92(gbl.spell_id),
                         gbl.spell_table[gbl.spell_id].affect_id, target);
                 }
             }
         }
 
 
-        internal static void sub_5DCA0(string arg_0, CombatTeam team)
+        internal static void sub_5DCA0(string text, CombatTeam team)
         {
             gbl.byte_1D2C7 = true;
 
@@ -1248,7 +1240,7 @@ namespace engine
                 }
             }
 
-            sub_5CF7F(arg_0, 0, 0, false, 0, gbl.spell_id);
+            sub_5CF7F(text, 0, 0, false, 0, gbl.spell_id);
         }
 
 
@@ -1329,8 +1321,6 @@ namespace engine
 
         internal static void is_stronger()
         {
-            byte var_1;
-
             Player target = gbl.sp_targets[1];
             gbl.byte_1AFDD = 0x12;
             gbl.byte_1AFDE = 0;
@@ -1382,11 +1372,12 @@ namespace engine
                     break;
             }
 
-            if (ovr024.sub_64728(out var_1, gbl.byte_1AFDE, gbl.byte_1AFDD, target) == true)
+            byte encoded_strength;
+            if (ovr024.sub_64728(out encoded_strength, gbl.byte_1AFDE, gbl.byte_1AFDD, target) == true)
             {
                 ovr025.DisplayPlayerStatusString(true, 10, "is stronger", target);
 
-                ovr024.add_affect(true, var_1, sub_5CE92(gbl.spell_id), Affects.affect_12, target);
+                ovr024.add_affect(true, encoded_strength, sub_5CE92(gbl.spell_id), Affects.affect_12, target);
 
                 ovr024.sub_648D9(0, target);
             }
@@ -1422,9 +1413,7 @@ namespace engine
 
         internal static void sub_5E221()
         {
-            sbyte var_1;
-
-            var_1 = (sbyte)(ovr025.spell_target_count(gbl.spell_id) + 1);
+            sbyte var_1 = (sbyte)(ovr025.spell_target_count(gbl.spell_id) + 1);
 
             sub_5CF7F(string.Empty, 8, (sbyte)((var_1 >> 1) + ovr024.roll_dice_save(4, (sbyte)(var_1 >> 1))), false, 0, gbl.spell_id);
         }
@@ -1529,7 +1518,6 @@ namespace engine
             {
                 throw new System.NotSupportedException();
             }
-
 
             sub_5DB24("is held", save_bonus);
         }
@@ -1895,7 +1883,7 @@ namespace engine
         {
             if (ovr024.cure_affect(Affects.blinded, gbl.sp_targets[1]) == true)
             {
-                ovr025.sub_6818A("can see", 1, gbl.sp_targets[1]);
+                ovr025.sub_6818A("can see", true, gbl.sp_targets[1]);
             }
         }
 
@@ -2018,7 +2006,7 @@ namespace engine
 
                 if (is_affected == true)
                 {
-                    ovr025.sub_6818A("is affected", 1, target);
+                    ovr025.sub_6818A("is affected", true, target);
                 }
             }
 
@@ -2156,7 +2144,7 @@ namespace engine
         {
             if (ovr024.cure_affect(Affects.bestow_curse, gbl.sp_targets[1]) == true)
             {
-                ovr025.sub_6818A("is un-cursed", 1, gbl.sp_targets[1]);
+                ovr025.sub_6818A("is un-cursed", true, gbl.sp_targets[1]);
             }
             else
             {
@@ -2188,7 +2176,7 @@ namespace engine
 
                 if (var_5 == true)
                 {
-                    ovr025.sub_6818A("has an item un-cursed", 1, gbl.sp_targets[1]);
+                    ovr025.sub_6818A("has an item un-cursed", true, gbl.sp_targets[1]);
                 }
             }
         }
@@ -2299,7 +2287,7 @@ namespace engine
                 gbl.damage_flags = 0x0C;
 
                 ovr024.damage_person(ovr024.do_saving_throw(0, arg_6, player), 2, damage, player);
-                ovr025.sub_67A59(0x13);
+                ovr025.load_missile_icons(0x13);
                 gbl.damage_flags = 0;
             }
         }
@@ -2320,7 +2308,7 @@ namespace engine
             SteppingPath path_a;
 
             var_36 = false;
-            ovr025.sub_67A59(0x13);
+            ovr025.load_missile_icons(0x13);
 
             ovr033.AtMapXY(out var_3B, out var_39, gbl.targetY, gbl.targetX);
             var_3D = 0;
@@ -2450,7 +2438,6 @@ namespace engine
         internal static void cast_restore()
         {
             int var_C = 30; /* simeon */
-            int var_6;
 
             Player player = gbl.sp_targets[1];
 
@@ -2464,32 +2451,32 @@ namespace engine
                 player.field_E8 -= var_5;
                 player.field_E7--;
 
-                var_6 = 13;
-                int var_B = 0x00989680;
+                int max_lvl = 13;
+                int max_exp = 10000000;
 
                 for (int skill = 0; skill <= 7; skill++)
                 {
-                    int var_7 = player.Skill_A_lvl[skill];
+                    int lvl = player.class_lvls[skill];
 
-                    if (var_7 > 0 &&
-                        var_7 <= var_6)
+                    if (lvl > 0 &&
+                        lvl <= max_lvl)
                     {
-                        if (ovr018.unk_1A5A3[skill, var_7 + 1] > 0 &&
-                            ovr018.unk_1A5A3[skill, var_7 + 1] < var_B &&
+                        if (ovr018.exp_table[skill, lvl] > 0 &&
+                            ovr018.exp_table[skill, lvl] < max_exp &&
                             ovr025.sub_69138(skill, player) == false)
                         {
-                            var_6 = var_7;
+                            max_lvl = lvl;
                             var_C = skill;
-                            var_B = ovr018.unk_1A5A3[skill, var_7 + 1];
+                            max_exp = ovr018.exp_table[skill, lvl];
                         }
                     }
                 }
 
-                player.Skill_A_lvl[var_C]++;
+                player.class_lvls[var_C]++;
 
-                if (player.exp < var_B)
+                if (player.exp < max_exp)
                 {
-                    player.exp = var_B;
+                    player.exp = max_exp;
                 }
 
                 ovr026.sub_6A3C6(player);
@@ -2550,7 +2537,7 @@ namespace engine
         {
             if (ovr024.heal_player(0, (byte)(ovr024.roll_dice(4, 2) + 2), gbl.sp_targets[1]) == true)
             {
-                ovr025.sub_6818A("is Healed", 1, gbl.sp_targets[1]);
+                ovr025.sub_6818A("is Healed", true, gbl.sp_targets[1]);
             }
         }
 
@@ -2575,35 +2562,35 @@ namespace engine
 
         internal static void cure_poison()
         {
-            Player var_4 = gbl.sp_targets[1];
+            Player target = gbl.sp_targets[1];
 
-            if (var_4.health_status == Status.animated)
+            if (target.health_status == Status.animated)
             {
                 gbl.sp_targets[1] = null;
             }
-            else if (ovr025.find_affect(Affects.poisoned, var_4) == true)
+            else if (ovr025.find_affect(Affects.poisoned, target) == true)
             {
-                if (var_4.hit_point_current == 0)
+                if (target.hit_point_current == 0)
                 {
-                    var_4.hit_point_current = 1;
+                    target.hit_point_current = 1;
                 }
                 
                 gbl.byte_1D2C6 = true;
 
-                ovr024.remove_affect(null, Affects.poisoned, var_4);
-                ovr024.remove_affect(null, Affects.slow_poison, var_4);
-                ovr024.remove_affect(null, Affects.affect_0f, var_4);
+                ovr024.remove_affect(null, Affects.poisoned, target);
+                ovr024.remove_affect(null, Affects.slow_poison, target);
+                ovr024.remove_affect(null, Affects.affect_0f, target);
 
                 gbl.byte_1D2C6 = false;
 
-                ovr025.DisplayPlayerStatusString(true, 10, "is unpoisoned", var_4);
+                ovr025.DisplayPlayerStatusString(true, 10, "is unpoisoned", target);
 
-                var_4.in_combat = true;
-                var_4.health_status = 0;
+                target.in_combat = true;
+                target.health_status = Status.okey;
             }
             else
             {
-                ovr025.DisplayPlayerStatusString(true, 10, "is unaffected", var_4);
+                ovr025.DisplayPlayerStatusString(true, 10, "is unaffected", target);
             }
         }
 
@@ -3321,7 +3308,7 @@ namespace engine
         {
             if (ovr024.heal_player(0, (byte)(ovr024.roll_dice(4, 2) + 2), gbl.sp_targets[1]) == true)
             {
-                ovr025.sub_6818A("is Healed", 1, gbl.sp_targets[1]);
+                ovr025.sub_6818A("is Healed", true, gbl.sp_targets[1]);
             }
         }
 
@@ -3337,7 +3324,7 @@ namespace engine
                 gbl.spell_target = player.actions.target;
 
                 ovr025.DisplayPlayerStatusString(false, 10, "gazes...", player);
-                ovr025.sub_67A59(0x12);
+                ovr025.load_missile_icons(0x12);
 
                 ovr025.draw_missile_attack(0x2d, 4, ovr033.PlayerMapYPos(gbl.spell_target), ovr033.PlayerMapXPos(gbl.spell_target),
                     ovr033.PlayerMapYPos(player), ovr033.PlayerMapXPos(player));
@@ -3404,7 +3391,7 @@ namespace engine
                 }
 
                 ovr024.remove_invisibility(player);
-                ovr025.sub_67A59(0x13);
+                ovr025.load_missile_icons(0x13);
 
                 ovr025.draw_missile_attack(0x32, 4, gbl.targetY, gbl.targetX, var_3, var_2);
                 sub_5F986(ref var_1, 0, 3, player.hit_point_max, gbl.targetY, gbl.targetX);
@@ -3438,7 +3425,7 @@ namespace engine
                 if (roll <= 30)
                 {
                     ovr025.DisplayPlayerStatusString(true, 10, "Spits Acid", player);
-                    ovr025.sub_67A59(0x17);
+                    ovr025.load_missile_icons(0x17);
 
                     ovr025.draw_missile_attack(30, 1,
                         ovr033.PlayerMapYPos(gbl.spell_target), ovr033.PlayerMapXPos(gbl.spell_target),
@@ -3454,7 +3441,7 @@ namespace engine
         }
 
 
-        internal static void spell_breathes_acid(Effect arg_0, object param, Player player)
+        internal static void spell_breathes_acid(Effect arg_0, object param, Player attacker)
         {
             Affect affect = (Affect)param;
 
@@ -3469,19 +3456,19 @@ namespace engine
             {
                 gbl.damage_flags = 0x30;
 
-                int var_2 = ovr033.PlayerMapXPos(player);
-                int var_3 = ovr033.PlayerMapYPos(player);
+                int attacker_x = ovr033.PlayerMapXPos(attacker);
+                int attacker_y = ovr033.PlayerMapYPos(attacker);
 
                 gbl.dword_1D5CA(out gbl.byte_1DA70, QuickFight.True, 0x3d);
 
                 if (gbl.byte_1DA70 == true)
                 {
-                    sub_5D7CF(6, 1, gbl.targetY, gbl.targetX, var_3, var_2);
+                    sub_5D7CF(6, 1, gbl.targetY, gbl.targetX, attacker_y, attacker_x);
                 }
 
                 for (int i = 1; i <= gbl.sp_target_count; i++)
                 {
-                    if (ovr025.opposite_team(player) == gbl.sp_targets[i].combat_team)
+                    if (ovr025.opposite_team(attacker) == gbl.sp_targets[i].combat_team)
                     {
                         gbl.byte_1DA70 = false;
                     }
@@ -3490,11 +3477,11 @@ namespace engine
                 if (gbl.byte_1DA70 == true &&
                     gbl.sp_target_count > 0)
                 {
-                    ovr025.DisplayPlayerStatusString(true, 10, "breathes acid", player);
-                    ovr025.sub_67A59(0x12);
+                    ovr025.DisplayPlayerStatusString(true, 10, "breathes acid", attacker);
+                    ovr025.load_missile_icons(0x12);
 
                     ovr025.draw_missile_attack(0x1E, 1, ovr033.PlayerMapYPos(gbl.sp_targets[1]), ovr033.PlayerMapXPos(gbl.sp_targets[1]),
-                        ovr033.PlayerMapYPos(player), ovr033.PlayerMapXPos(player));
+                        ovr033.PlayerMapYPos(attacker), ovr033.PlayerMapXPos(attacker));
 
                     for (int i = 1; i <= gbl.sp_target_count; i++)
                     {
@@ -3503,47 +3490,47 @@ namespace engine
                             Player target = gbl.sp_targets[i];
 
                             bool save_made = ovr024.do_saving_throw(0, 3, target);
-                            ovr024.damage_person(save_made, 2, player.hit_point_max, target);
+                            ovr024.damage_person(save_made, 2, attacker.hit_point_max, target);
                         }
                     }
 
                     affect.field_3--;
 
-                    ovr025.clear_actions(player);
+                    ovr025.clear_actions(attacker);
                 }
             }
         }
 
 
-        internal static void spell_breathes_fire(Effect arg_0, object param, Player arg_6)
+        internal static void spell_breathes_fire(Effect arg_0, object param, Player attacker)
         {
-            Affect arg_2 = (Affect)param;
+            Affect affect = (Affect)param;
 
             if (gbl.byte_1D8B7 == 0)
             {
-                arg_2.field_3 = 3;
+                affect.field_3 = 3;
             }
 
-            if (arg_2.field_3 > 0)
+            if (affect.field_3 > 0)
             {
                 gbl.damage_flags = 0x21;
-                int var_2 = ovr033.PlayerMapXPos(arg_6);
-                int var_3 = ovr033.PlayerMapYPos(arg_6);
+                int attack_x = ovr033.PlayerMapXPos(attacker);
+                int attack_y = ovr033.PlayerMapYPos(attacker);
 
                 gbl.dword_1D5CA(out gbl.byte_1DA70, QuickFight.True, 0x3D);
 
                 if (gbl.byte_1DA70 == true)
                 {
-                    sub_5D7CF(9, 3, gbl.targetY, gbl.targetX, var_3, var_2);
+                    sub_5D7CF(9, 3, gbl.targetY, gbl.targetX, attack_y, attack_x);
 
                     if (gbl.sp_target_count > 0)
                     {
-                        ovr025.DisplayPlayerStatusString(true, 10, "breathes fire", arg_6);
-                        ovr025.sub_67A59(0x12);
+                        ovr025.DisplayPlayerStatusString(true, 10, "breathes fire", attacker);
+                        ovr025.load_missile_icons(0x12);
 
                         ovr025.draw_missile_attack(0x1E, 1,
                             ovr033.PlayerMapYPos(gbl.sp_targets[1]), ovr033.PlayerMapXPos(gbl.sp_targets[1]),
-                            ovr033.PlayerMapYPos(arg_6), ovr033.PlayerMapXPos(arg_6));
+                            ovr033.PlayerMapYPos(attacker), ovr033.PlayerMapXPos(attacker));
 
                         for (int var_4 = 1; var_4 <= gbl.sp_target_count; var_4++)
                         {
@@ -3552,11 +3539,11 @@ namespace engine
                                 Player target = gbl.sp_targets[var_4];
                                 bool var_9 = ovr024.do_saving_throw(0, 3, target);
 
-                                ovr024.damage_person(var_9, 2, (sbyte)arg_6.hit_point_max, target);
+                                ovr024.damage_person(var_9, 2, (sbyte)attacker.hit_point_max, target);
                             }
                         }
-                        arg_2.field_3 -= 1;
-                        ovr025.clear_actions(arg_6);
+                        affect.field_3 -= 1;
+                        ovr025.clear_actions(attacker);
                     }
                 }
             }
@@ -3576,7 +3563,7 @@ namespace engine
                 gbl.byte_1DA70 = ovr025.clear_actions(arg_6);
 
                 ovr025.DisplayPlayerStatusString(true, 10, "Breathes Fire", arg_6);
-                ovr025.sub_67A59(0x17);
+                ovr025.load_missile_icons(0x17);
 
                 ovr025.draw_missile_attack(0x1E, 1, ovr033.PlayerMapYPos(gbl.spell_target), ovr033.PlayerMapXPos(gbl.spell_target),
                     ovr033.PlayerMapYPos(arg_6), ovr033.PlayerMapXPos(arg_6));
@@ -3599,7 +3586,7 @@ namespace engine
                 gbl.dword_1D5CA(out gbl.byte_1DA70, QuickFight.True, 0x33);
 
                 ovr024.remove_invisibility(caster);
-                ovr025.sub_67A59(0x13);
+                ovr025.load_missile_icons(0x13);
                 ovr025.draw_missile_attack(0x32, 4, gbl.targetY, gbl.targetX, pos_y, pos_x);
 
                 sub_5F986(ref var_1, 0, 4, ovr024.roll_dice_save(6, 16), gbl.targetY, gbl.targetX);
@@ -3621,7 +3608,7 @@ namespace engine
             {
                 ovr025.DisplayPlayerStatusString(false, 10, "gazes...", arg_6);
 
-                ovr025.sub_67A59(0x12);
+                ovr025.load_missile_icons(0x12);
 
                 ovr025.draw_missile_attack(0x2d, 4, ovr033.PlayerMapYPos(gbl.spell_target), ovr033.PlayerMapXPos(gbl.spell_target),
                     ovr033.PlayerMapYPos(arg_6), ovr033.PlayerMapXPos(arg_6));
@@ -3685,7 +3672,7 @@ namespace engine
                 ovr025.DisplayPlayerStatusString(true, 10, "Casts a Spell", arg_6);
                 seg037.draw8x8_clear_area(0x17, 0x27, 0x17, 0);
 
-                seg041.displayString("Spell:" + AffectNames[arg_0], 0, 10, 0x17, 0);
+                seg041.displayString("Spell:" + SpellNames[arg_0], 0, 10, 0x17, 0);
             }
             else
             {
@@ -3694,7 +3681,7 @@ namespace engine
                 ovr025.displayPlayerName(false, 0x13, 1, arg_6);
 
                 seg041.displayString(arg_2, 0, 10, 0x13, arg_6.name.Length + 2);
-                seg041.displayString(AffectNames[arg_0], 0, 10, 0x14, 1);
+                seg041.displayString(SpellNames[arg_0], 0, 10, 0x14, 1);
                 seg041.GameDelay();
                 ovr025.ClearPlayerTextArea();
             }

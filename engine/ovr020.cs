@@ -98,7 +98,7 @@ namespace engine
             {
                 byte tmp = gbl.player_ptr02.Skill_B_lvl[var_6];
 
-                if (gbl.player_ptr02.Skill_A_lvl[var_6] > 0 ||
+                if (gbl.player_ptr02.class_lvls[var_6] > 0 ||
                     (tmp < ovr026.hasAnySkills(gbl.player_ptr02) && tmp > 0))
                 {
                     if (displaySlash )
@@ -106,7 +106,7 @@ namespace engine
                         var_106 += "/";
                     }
 
-                    var_106 += (gbl.player_ptr02.Skill_A_lvl[var_6] + gbl.player_ptr02.Skill_B_lvl[var_6]).ToString();
+                    var_106 += (gbl.player_ptr02.class_lvls[var_6] + gbl.player_ptr02.Skill_B_lvl[var_6]).ToString();
 
                     displaySlash = true;
                 }

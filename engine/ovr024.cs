@@ -4,16 +4,15 @@ namespace engine
 {
     public class ovr024
     {
-        internal static void sub_63014(string arg_0, Classes.Status arg_4, Player player)
+        internal static void sub_63014(string text, Status new_health_status, Player player)
         {
-            ovr025.DisplayPlayerStatusString(false, 10, arg_0, player);
+            ovr025.DisplayPlayerStatusString(false, 10, text, player);
 
             if (player.health_status != Status.stoned &&
                 player.health_status != Status.dead &&
                 player.health_status != Status.gone)
             {
-
-                player.health_status = arg_4;
+                player.health_status = new_health_status;
                 player.in_combat = false;
                 player.hit_point_current = 0;
 
@@ -813,12 +812,12 @@ namespace engine
         }
 
 
-        internal static bool sub_64728(out byte encoded_str, byte str_100, byte str, Player arg_8)
+        internal static bool sub_64728(out byte encoded_str, byte str_100, byte str, Player player)
         {
             bool encoded;
 
-            if (str > arg_8.tmp_str ||
-                (str == 18 && str_100 > arg_8.max_str_00))
+            if (str > player.tmp_str ||
+                (str == 18 && str_100 > player.max_str_00))
             {
                 encoded = true;
                 encoded_str = encode_strength(str_100, str);
@@ -1130,7 +1129,7 @@ namespace engine
                         sub_647BE(var_B, var_C, stat_a, ref var_A, player);
                     }
 
-                    var_B = player.Skill_A_lvl[var_C];
+                    var_B = player.class_lvls[var_C];
 
                     if (var_B > 0)
                     {
@@ -1300,7 +1299,7 @@ namespace engine
                     text += "from Magic";
                 }
 
-                ovr025.sub_6818A(text, 0, player);
+                ovr025.sub_6818A(text, false, player);
                 ovr025.damage_player(gbl.damage, player);
 
                 if (gbl.game_state == 5)
@@ -1384,7 +1383,7 @@ namespace engine
 
                 if (text.Length != 0)
                 {
-                    ovr025.sub_6818A(text, 1, target);
+                    ovr025.sub_6818A(text, true, target);
                     ovr025.ClearPlayerTextArea();
                 }
             }

@@ -594,225 +594,175 @@ namespace engine
         internal static void display_magic_effects()
         {
             short var_42;
-            string var_40;
             bool var_17;
-            byte var_16;
-            byte var_15;
             byte var_13;
-            byte var_12;
-            Affects var_11;
-            Player player;
-            StringList var_C;
-            StringList var_8;
-            Affect affect;
 
-            var_8 = new StringList();
-            var_C = var_8;
+            StringList var_8 = new StringList();
+            StringList var_C = var_8;
 
             var_C.field_29 = 0;
             var_C.s = " ";
             var_C.next = null;
 
-            player = gbl.player_next_ptr;
+            Player player = gbl.player_next_ptr;
 
             while (player != null)
             {
                 var_13 = 0;
                 sub_44E89(player.name, 1, ref var_C);
 
-                affect = player.affect_ptr;
+                Affect affect = player.affect_ptr;
 
                 while (affect != null)
                 {
-                    var_16 = 1;
+                    bool has_name = true;
 
-                    var_11 = affect.type;
-                    var_40 = string.Empty;
+                    Affects affect_type = affect.type;
+                    string affect_name = string.Empty;
 
-                    switch (var_11)
+                    switch (affect_type)
                     {
                         case Affects.bless:
-                            goto case Affects.sleep;
                         case Affects.cursed:
-                            goto case Affects.sleep;
                         case Affects.detect_magic:
-                            goto case Affects.sleep;
                         case Affects.protection_from_evil:
-                            goto case Affects.sleep;
                         case Affects.protection_from_good:
-                            goto case Affects.sleep;
                         case Affects.resist_cold:
-                            goto case Affects.sleep;
                         case Affects.charm_person:
-                            goto case Affects.sleep;
                         case Affects.enlarge:
-                            goto case Affects.sleep;
-
                         case Affects.friends:
-                            goto case Affects.sleep;
                         case Affects.read_magic:
-                            goto case Affects.sleep;
                         case Affects.shield:
-                            goto case Affects.sleep;
                         case Affects.find_traps:
-                            goto case Affects.sleep;
                         case Affects.resist_fire:
-                            goto case Affects.sleep;
                         case Affects.silence_15_radius:
-                            goto case Affects.sleep;
                         case Affects.slow_poison:
-                            goto case Affects.sleep;
                         case Affects.spiritual_hammer:
-                            goto case Affects.sleep;
                         case Affects.detect_invisibility:
-                            goto case Affects.sleep;
                         case Affects.invisibility:
-                            goto case Affects.sleep;
-
                         case Affects.mirror_image:
-                            goto case Affects.sleep;
                         case Affects.ray_of_enfeeblement:
-                            goto case Affects.sleep;
-
                         case Affects.funky__32:
-                            goto case Affects.sleep;
                         case Affects.blinded:
-                            goto case Affects.sleep;
                         case Affects.cause_disease_1:
-                            goto case Affects.sleep;
-
                         case Affects.bestow_curse:
-                            goto case Affects.sleep;
                         case Affects.blink:
-                            goto case Affects.sleep;
                         case Affects.strength:
-                            goto case Affects.sleep;
                         case Affects.haste:
-                            goto case Affects.sleep;
-
                         case Affects.prot_from_normal_missiles:
-                            goto case Affects.sleep;
                         case Affects.slow:
-                            goto case Affects.sleep;
                         case Affects.prot_from_evil_10_radius:
-                            goto case Affects.sleep;
                         case Affects.prot_from_good_10_radius:
-                            goto case Affects.sleep;
                         case Affects.prayer:
-                            goto case Affects.sleep;
-
                         case Affects.snake_charm:
-                            goto case Affects.sleep;
                         case Affects.paralyze:
-                            goto case Affects.sleep;
                         case Affects.sleep:
-                            var_12 = 1;
-                            var_15 = 0;
+                            int spell_id = 1;
+                            bool found = false;
 
-                            while (var_12 <= 0x38 &&
-                                var_15 == 0)
+                            while (spell_id <= 0x38 && found == false)
                             {
-                                if (gbl.spell_table[var_12].affect_id == var_11)
+                                if (gbl.spell_table[spell_id].affect_id == affect_type)
                                 {
-                                    var_40 = ovr023.AffectNames[var_12];
-                                    var_15 = 1;
+                                    affect_name = ovr023.SpellNames[spell_id];
+                                    found = true;
                                 }
                                 else
                                 {
-                                    var_12++;
+                                    spell_id++;
                                 }
                             }
 
-                            if (var_15 == 0)
+                            if (found == false)
                             {
-                                var_40 = "Funky--" + var_11.ToString();
+                                affect_name = "Funky--" + affect_type.ToString();
                             }
                             break;
 
                         case Affects.dispel_evil:
-                            var_40 = "Dispel Evil";
+                            affect_name = "Dispel Evil";
                             break;
 
                         case Affects.faerie_fire:
-                            var_40 = "Faerie Fire";
+                            affect_name = "Faerie Fire";
                             break;
 
                         case Affects.fumbling:
-                            var_40 = "Fumbling";
+                            affect_name = "Fumbling";
                             break;
 
                         case Affects.helpless:
-                            var_40 = "Helpless";
+                            affect_name = "Helpless";
                             break;
 
                         case Affects.confuse:
-                            var_40 = "Confused";
+                            affect_name = "Confused";
                             break;
 
                         case Affects.cause_disease_2:
-                            var_40 = "Cause Disease";
+                            affect_name = "Cause Disease";
                             break;
 
                         case Affects.hot_fire_shield:
-                            var_40 = "Hot Fire Shield";
+                            affect_name = "Hot Fire Shield";
                             break;
 
                         case Affects.cold_fire_shield:
-                            var_40 = "Cold Fire Shield";
+                            affect_name = "Cold Fire Shield";
                             break;
 
                         case Affects.poisoned:
-                            var_40 = "Poisoned";
+                            affect_name = "Poisoned";
                             break;
 
                         case Affects.regenerate:
-                            var_40 = "Regenerating";
+                            affect_name = "Regenerating";
                             break;
 
                         case Affects.fire_resist:
-                            var_40 = "Fire Resistance";
+                            affect_name = "Fire Resistance";
                             break;
 
                         case Affects.minor_globe_of_invulnerability:
-                            var_40 = "Minor Globe of Invulnerability";
+                            affect_name = "Minor Globe of Invulnerability";
                             break;
 
                         case Affects.feeble:
-                            var_40 = "enfeebled";
+                            affect_name = "enfeebled";
                             break;
 
                         case Affects.invisible_to_animals:
-                            var_40 = "invisible to animals";
+                            affect_name = "invisible to animals";
                             break;
 
                         case Affects.invisible:
-                            var_40 = "Invisible";
+                            affect_name = "Invisible";
                             break;
 
                         case Affects.camouflage:
-                            var_40 = "Camouflaged";
+                            affect_name = "Camouflaged";
                             break;
 
                         case Affects.prot_drag_breath:
-                            var_40 = "protected from dragon breath";
+                            affect_name = "protected from dragon breath";
                             break;
 
                         case Affects.berserk:
-                            var_40 = "berserk";
+                            affect_name = "berserk";
                             break;
 
                         case Affects.displace:
-                            var_40 = "Displaced";
+                            affect_name = "Displaced";
                             break;
 
                         default:
-                            var_16 = 0;
+                            has_name = false;
                             break;
                     }
 
-                    if (var_16 != 0)
+                    if (has_name == true)
                     {
-                        sub_44E89(" " + var_40, 0, ref var_C);
+                        sub_44E89(" " + affect_name, 0, ref var_C);
                     }
 
                     affect = affect.next;
@@ -820,7 +770,6 @@ namespace engine
 
                 if (var_13 == 0)
                 {
-
                     sub_44E89(" <No Spell Effects>", 0, ref var_C);
                 }
 

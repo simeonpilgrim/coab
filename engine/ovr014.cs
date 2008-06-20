@@ -231,13 +231,13 @@ namespace engine
 
         static void move_step_into_attack(Player target) /* sub_3E65D */
         {
-            int var_8 = ovr025.near_enemy(1, target);
+            int near_count = ovr025.near_enemy(1, target);
 
-            for (int var_2 = 1; var_2 <= var_8; var_2++)
+            for (int i = 1; i <= near_count; i++)
             {
                 if (target.in_combat == true)
                 {
-                    Player attacker = gbl.player_array[gbl.byte_1D8B9[var_2]];
+                    Player attacker = gbl.player_array[gbl.near_targets[i]];
 
                     if (attacker.actions.guarding == true &&
                         ovr025.is_held(attacker) == false)
@@ -343,7 +343,7 @@ namespace engine
             {
                 for (int i = 1; i <= var_15; i++)
                 {
-                    var_D[i] = gbl.byte_1D8B9[i];
+                    var_D[i] = gbl.near_targets[i];
                 }
 
                 gbl.CombatMap[player_index].xPos += gbl.MapDirectionXDelta[direction];
@@ -360,7 +360,7 @@ namespace engine
 
                     for (int j = 1; j <= var_16; j++)
                     {
-                        if (gbl.byte_1D8B9[j] == var_D[i])
+                        if (gbl.near_targets[j] == var_D[i])
                         {
                             found = true;
                         }
@@ -553,31 +553,28 @@ namespace engine
 
         internal static bool sub_3EF3D(Player target, Player attacker)
         {
-            Player var_9;
-            bool var_1;
-
-            var_1 = false;
+            bool var_1 = false;
 
             if (attacker.field_19C < attacker.actions.field_5 &&
                 target.field_E5 == 0)
             {
                 if (ovr025.getTargetRange(target, attacker) == 1)
                 {
-                    int var_A = ovr025.near_enemy(1, attacker);
+                    int near_count = ovr025.near_enemy(1, attacker);
                     byte var_3 = 0;
 
                     int var_5 = 0xff;
 
-                    for (int var_4 = 1; var_4 <= var_A; var_4++)
+                    for (int var_4 = 1; var_4 <= near_count; var_4++)
                     {
-                        var_9 = gbl.player_array[gbl.byte_1D8B9[var_4]];
+                        Player near_target = gbl.player_array[gbl.near_targets[var_4]];
 
-                        if (var_9 == target)
+                        if (near_target == target)
                         {
                             var_5 = var_4;
                         }
 
-                        if (var_9.field_E5 == 0)
+                        if (near_target.field_E5 == 0)
                         {
                             var_3++;
                         }
@@ -592,27 +589,27 @@ namespace engine
 
                         ovr025.DisplayPlayerStatusString(true, 10, "sweeps", attacker);
 
-                        var_9 = gbl.player_array[gbl.byte_1D8B9[1]];
+                        Player near_target = gbl.player_array[gbl.near_targets[1]];
 
-                        if (var_9 != target)
+                        if (near_target != target)
                         {
-                            gbl.byte_1D8B9[var_5] = gbl.byte_1D8B9[1];
-                            gbl.byte_1D8B9[1] = ovr033.get_player_index(target);
+                            gbl.near_targets[var_5] = gbl.near_targets[1];
+                            gbl.near_targets[1] = ovr033.get_player_index(target);
                         }
 
 
-                        for (int var_4 = 1; var_4 <= var_A; var_4++)
+                        for (int var_4 = 1; var_4 <= near_count; var_4++)
                         {
                             if (var_3 > 0 &&
-                                gbl.player_array[gbl.byte_1D8B9[var_4]].field_E5 == 0)
+                                gbl.player_array[gbl.near_targets[var_4]].field_E5 == 0)
                             {
-                                var_9 = gbl.player_array[gbl.byte_1D8B9[var_4]];
+                                near_target = gbl.player_array[gbl.near_targets[var_4]];
 
-                                sub_3F94D(var_9, attacker);
+                                sub_3F94D(near_target, attacker);
 
                                 attacker.field_19C = 1;
 
-                                sub_3F9DB(out gbl.byte_1D905, null, 0, var_9, attacker);
+                                sub_3F9DB(out gbl.byte_1D905, null, 0, near_target, attacker);
                                 var_3--;
                             }
                         }
@@ -716,7 +713,7 @@ namespace engine
                     if (var_4 > 0)
                     {
                         var_A.actions.field_10 = 1;
-                        ovr025.sub_6818A("is	turned", 1, var_A);
+                        ovr025.sub_6818A("is turned", true, var_A);
                     }
                     else
                     {
@@ -768,7 +765,7 @@ namespace engine
 
             for (int i = 1; i <= var_2; i++)
             {
-                Player player_ptr = gbl.player_array[gbl.byte_1D8B9[i]];
+                Player player_ptr = gbl.player_array[gbl.near_targets[i]];
 
                 if (player_ptr.actions.field_10 == 0 &&
                     player_ptr.field_E9 > 0 &&
@@ -1015,7 +1012,7 @@ namespace engine
 
                 player01.actions.direction = (byte)((var_9 + 4) % 8);
             }
-            else if (ovr033.sub_74761(0, player01) == true)
+            else if (ovr033.sub_74761(false, player01) == true)
             {
                 var_9 = player01.actions.direction;
 
@@ -1025,7 +1022,7 @@ namespace engine
                 }
             }
 
-            if (ovr033.sub_74761(0, player01) == true)
+            if (ovr033.sub_74761(false, player01) == true)
             {
                 ovr033.draw_74B3F(0, 0, var_9, player01);
             }
@@ -1101,7 +1098,7 @@ namespace engine
                 arg_0 = ovr025.clear_actions(player02);
             }
 
-            if (ovr033.sub_74761(0, player02) == true)
+            if (ovr033.sub_74761(false, player02) == true)
             {
                 ovr033.draw_74B3F(1, 1, player02.actions.direction, player02);
                 ovr033.draw_74B3F(0, 0, player02.actions.direction, player02);
@@ -1802,7 +1799,7 @@ namespace engine
                 case 2:
                 case 7:
                 case 14:
-                    ovr025.sub_67A59(var_1 + 3);
+                    ovr025.load_missile_icons(var_1 + 3);
                     frame_count = 4;
                     delay = 50;
                     seg044.sound_sub_120E0(gbl.sound_9_188D0);
@@ -1811,7 +1808,7 @@ namespace engine
 
                 case 0x55:
                 case 0x56:
-                    ovr025.sub_67A59(var_1 + 4);
+                    ovr025.load_missile_icons(var_1 + 4);
                     frame_count = 4;
                     delay = 50;
                     seg044.sound_sub_120E0(gbl.sound_6_188CA);
@@ -2504,9 +2501,9 @@ namespace engine
                     var_3--;
                     int roll = ovr024.roll_dice(var_2, 1);
 
-                    if (gbl.byte_1D8B9[roll] > 0)
+                    if (gbl.near_targets[roll] > 0)
                     {
-                        target = gbl.player_array[gbl.byte_1D8B9[roll]];
+                        target = gbl.player_array[gbl.near_targets[roll]];
 
                         if ((arg_2 != 0 && gbl.mapToBackGroundTile.field_6 == true) ||
                             sub_3F143(target, player) == true)
@@ -2516,11 +2513,11 @@ namespace engine
                         }
                         else
                         {
-                            gbl.byte_1D8B9[roll] = 0;
+                            gbl.near_targets[roll] = 0;
                             
                             for (int i = 1; i <= var_2; i++)
                             {
-                                if (gbl.byte_1D8B9[i] > 0)
+                                if (gbl.near_targets[i] > 0)
                                 {
                                     target_found = true;
                                 }
@@ -2572,7 +2569,7 @@ namespace engine
 
         internal static void sub_42159(int icon_id, Player target, Player attacker)
         {
-            ovr025.sub_67A59(icon_id + 13);
+            ovr025.load_missile_icons(icon_id + 13);
 
             ovr025.draw_missile_attack(0x1E, 1, 
                 ovr033.PlayerMapYPos(target), ovr033.PlayerMapXPos(target),
