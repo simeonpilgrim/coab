@@ -178,7 +178,7 @@ namespace engine
 			while ( player_ptr != null &&
 					has_skill == false )
 			{
-                if (player_ptr.Skill_A_lvl[s] > 0 ||
+                if (player_ptr.class_lvls[s] > 0 ||
                     (player_ptr.Skill_B_lvl[s] > 0 &&
 					  ovr026.sub_6B3D1( player_ptr ) != 0 ) )
 				{

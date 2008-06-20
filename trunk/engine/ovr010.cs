@@ -169,7 +169,7 @@ namespace engine
                         {
                             for (int i = 1; i <= var_6; i++)
                             {
-                                if (sub_352AF(arg_2, gbl.CombatMap[gbl.byte_1D8B9[i]].yPos, gbl.CombatMap[gbl.byte_1D8B9[i]].xPos) == true)
+                                if (sub_352AF(arg_2, gbl.CombatMap[gbl.near_targets[i]].yPos, gbl.CombatMap[gbl.near_targets[i]].xPos) == true)
                                 {
                                     return var_1;
                                 }
@@ -503,7 +503,7 @@ namespace engine
 
                             if (var_5 == false)
                             {
-                                gbl.byte_1D910 = (gbl.byte_1D90E || ovr033.sub_74761(0, player) || player.combat_team == CombatTeam.Ours);
+                                gbl.byte_1D910 = (gbl.byte_1D90E || ovr033.sub_74761(false, player) || player.combat_team == CombatTeam.Ours);
 
                                 ovr033.draw_74B3F(0, 0, var_2, player);
                                 ovr014.move_step_away_attack(player.actions.direction, player);
@@ -655,7 +655,7 @@ namespace engine
                         {
                             int roll = ovr024.roll_dice(enemy_near, 1);
 
-                            target = gbl.player_array[gbl.byte_1D8B9[roll]];
+                            target = gbl.player_array[gbl.near_targets[roll]];
 
                             if (ovr025.is_weapon_ranged(player) == true &&
                                 ovr025.is_weapon_ranged_melee(player) == false &&

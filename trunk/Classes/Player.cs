@@ -301,47 +301,47 @@ namespace Classes
         }
 
         [DataOffset(0x109, DataType.ByteArray,8)]
-        public byte[] Skill_A_lvl = new byte[8];
+        public byte[] class_lvls = new byte[8]; /* Skill_A_lvl */
 
         public byte cleric_lvl // 0x109;
         {
-            get { return Skill_A_lvl[0]; }
-            set { Skill_A_lvl[0] = value; }
+            get { return class_lvls[0]; }
+            set { class_lvls[0] = value; }
         }
         public byte druid_lvl // 0x10a;
         {
-            get { return Skill_A_lvl[1]; }
-            set { Skill_A_lvl[1] = value; }
+            get { return class_lvls[1]; }
+            set { class_lvls[1] = value; }
         }
         public byte fighter_lvl // 0x10b;
         {
-            get { return Skill_A_lvl[2]; }
-            set { Skill_A_lvl[2] = value; }
+            get { return class_lvls[2]; }
+            set { class_lvls[2] = value; }
         }
         public byte paladin_lvl // 0x10c;
         {
-            get { return Skill_A_lvl[3]; }
-            set { Skill_A_lvl[3] = value; }
+            get { return class_lvls[3]; }
+            set { class_lvls[3] = value; }
         }
         public byte ranger_lvl // 0x10d;
         {
-            get { return Skill_A_lvl[4]; }
-            set { Skill_A_lvl[4] = value; }
+            get { return class_lvls[4]; }
+            set { class_lvls[4] = value; }
         }
         public byte magic_user_lvl // 0x10e;
         {
-            get { return Skill_A_lvl[5]; }
-            set { Skill_A_lvl[5] = value; }
+            get { return class_lvls[5]; }
+            set { class_lvls[5] = value; }
         }
         public byte thief_lvl // 0x10f;
         {
-            get { return Skill_A_lvl[6]; }
-            set { Skill_A_lvl[6] = value; }
+            get { return class_lvls[6]; }
+            set { class_lvls[6] = value; }
         }
         public byte monk_lvl // 0x110;
         {
-            get { return Skill_A_lvl[7]; }
-            set { Skill_A_lvl[7] = value; }
+            get { return class_lvls[7]; }
+            set { class_lvls[7] = value; }
         }
 
         [DataOffset(0x111, DataType.ByteArray, 8)]

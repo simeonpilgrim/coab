@@ -364,7 +364,7 @@ namespace Classes
         public static byte byte_1D8B6; // not used.
         public static byte byte_1D8B7;
         public static byte byte_1D8B8;
-        public static int[] byte_1D8B9 = new int[0x48];
+        public static int[] near_targets = new int[0x48]; // byte_1D8B9
         public static byte byte_1D901;
         public static byte byte_1D902;
         public static byte enemyHealthPercentage; /* byte_1D903 */
@@ -483,8 +483,11 @@ namespace Classes
 
         public static object dword_1AAC8;
         public static Item[] unk_1AF18 = new Item[0x30]; // array 01-0x30; seg600:4C08
+        
         public const int max_spells = 0x54;
-        public static byte[] unk_1AEC4 = new byte[max_spells]; // unk_1AEC4[0x53]; seg600:4BB4
+        public static byte[] memorize_spell_id = new byte[max_spells]; // unk_1AEC4 seg600:4BB4
+        public static int[] memorize_count = new int[max_spells]; /* unk_1AE70 */
+        
         public static Struct_1ADF6[] dword_1ADF6;
         public static StringList spell_string_list; // dword_1AE6C
         public static DaxBlock cursor_bkup; // dword_1C8F4
@@ -715,7 +718,6 @@ namespace Classes
         public static Struct_1D183[] unk_1D183; // array[8] but 1 offset.
         public static Struct_1D1BC mapToBackGroundTile; // stru_1D1BC
 
-        public static byte[] unk_1AE70 = new byte[0x54];
 
         public readonly static byte[] /*seg600:27D9*/ unk_18AE9 = { 0, 8, 2, 3, 4 };
         public readonly static byte[] /*seg600:27DA*/ unk_18AEA = { 8, 2, 3, 4, 8 };

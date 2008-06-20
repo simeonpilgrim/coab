@@ -18,7 +18,7 @@ namespace engine
         }
 
 
-        internal static bool addAffect(ushort arg_0, byte arg_2, Affects affect_type, Player player)
+        internal static bool addAffect(ushort arg_0, int arg_2, Affects affect_type, Player player)
         {
             bool var_1;
 
@@ -84,7 +84,7 @@ namespace engine
                 ovr024.remove_affect(null, Affects.affect_03, player);
             }
 
-            ovr025.sub_6818A("is fighting with snakes", 1, player);
+            ovr025.sub_6818A("is fighting with snakes", true, player);
             ovr025.ClearPlayerTextArea();
 
             ovr025.clear_actions(player);
@@ -512,7 +512,7 @@ namespace engine
             }
             else if (var_1 >= 11 && var_1 <= 60)
             {
-                ovr025.sub_6818A("is confused", 1, player);
+                ovr025.sub_6818A("is confused", true, player);
                 ovr025.ClearPlayerTextArea();
                 sub_3A071(0, arg_2, player);
             }
@@ -523,7 +523,7 @@ namespace engine
             }
             else if (var_1 >= 81 && var_1 <= 100)
             {
-                ovr025.sub_6818A("is enraged", 1, player);
+                ovr025.sub_6818A("is enraged", true, player);
                 ovr025.ClearPlayerTextArea();
             }
 
@@ -934,7 +934,7 @@ namespace engine
 
             if (ovr024.do_saving_throw(0, 0, gbl.spell_target) == false)
             {
-                ovr025.sub_6818A("is Paralyzed", 1, gbl.spell_target);
+                ovr025.sub_6818A("is Paralyzed", true, gbl.spell_target);
                 ovr024.add_affect(false, 12, affect, Affects.paralyze, gbl.spell_target);
             }
         }
@@ -1663,7 +1663,7 @@ namespace engine
 
                     ovr025.DisplayPlayerStatusString(true, 10, "Spits Acid", player);
 
-                    ovr025.sub_67A59(0x17);
+                    ovr025.load_missile_icons(0x17);
 
                     ovr025.draw_missile_attack(0x1e, 1,
                         ovr033.PlayerMapYPos(gbl.spell_target), ovr033.PlayerMapXPos(gbl.spell_target),
@@ -1704,7 +1704,7 @@ namespace engine
 
         internal static void sub_3C5D0(Effect arg_0, object param, Player player)
         {
-            if (ovr024.roll_dice(100, 1) <= 0x1e)
+            if (ovr024.roll_dice(100, 1) <= 30)
             {
                 protection_type_check(Affects.charm_person);
                 protection_type_check(Affects.sleep);
@@ -1738,12 +1738,12 @@ namespace engine
 
         internal static void sub_3C643(Effect arg_0, object arg_2, Player player)
         {
-            Item var_4 = null;
+            Item item;
 
-            if (ovr025.sub_6906C(out var_4, gbl.player_ptr) == true &&
-                var_4 != null &&
-                var_4.type == 0x1c &&
-                var_4.field_31 == 0x87)
+            if (ovr025.sub_6906C(out item, gbl.player_ptr) == true &&
+                item != null &&
+                item.type == 0x1c &&
+                item.field_31 == 0x87)
             {
                 player.health_status = Status.gone;
                 player.in_combat = false;
@@ -1890,9 +1890,9 @@ namespace engine
         }
 
 
-        internal static void sub_3C975(Effect arg_0, object arg_2, Player arg_6)
+        internal static void sub_3C975(Effect arg_0, object arg_2, Player target)
         {
-            if (ovr025.getTargetRange(arg_6, gbl.player_ptr) < 2)
+            if (ovr025.getTargetRange(target, gbl.player_ptr) < 2)
             {
                 int bkup_damage = gbl.damage;
                 byte bkup_damage_flags = gbl.damage_flags;

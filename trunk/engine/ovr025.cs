@@ -1162,7 +1162,7 @@ namespace engine
         }
 
 
-        internal static void sub_67A59(int iconIdx)
+        internal static void load_missile_icons(int iconIdx) /* sub_67A59 */
         {
             load_missile_dax(false, 0, 0, iconIdx);
             load_missile_dax(true, 1, 0, iconIdx);
@@ -1437,22 +1437,20 @@ namespace engine
         }
 
 
-        internal static void sub_6818A(string text, byte arg_4, Player player)
+        internal static void sub_6818A(string text, bool arg_4, Player player)
         {
-            byte frame;
-
             if (gbl.game_state == 5)
             {
-                int iconId = arg_4 != 0 ? 0x16 : 0x17;
+                int iconId = arg_4 ? 0x16 : 0x17;
 
-                sub_67A59(iconId);
+                load_missile_icons(iconId);
 
-                if (ovr033.sub_74761(1, player) == false)
+                if (ovr033.sub_74761(true, player) == false)
                 {
                     ovr033.redrawCombatArea(8, 3, ovr033.PlayerMapYPos(player), ovr033.PlayerMapXPos(player));
                 }
 
-                if (arg_4 != 0)
+                if (arg_4)
                 {
                     seg044.sound_sub_120E0(gbl.sound_4_188C6);
                 }
@@ -1463,14 +1461,14 @@ namespace engine
 
                 DisplayPlayerStatusString(false, 10, text, player);
 
-                int var_106 = arg_4 != 0 ? gbl.game_speed_var : 0;
+                int var_106 = arg_4 ? gbl.game_speed_var : 0;
 
                 int colX = gbl.playerScreenX[ovr033.get_player_index(player)] * 3;
                 int rowY = gbl.playerScreenY[ovr033.get_player_index(player)] * 3;
 
                 for (int var_105 = 0; var_105 <= var_106; var_105++)
                 {
-                    for (frame = 0; frame <= 3; frame++)
+                    for (int frame = 0; frame <= 3; frame++)
                     {
                         Display.SaveVidRam();
 
@@ -1688,7 +1686,7 @@ namespace engine
             ret_val = gbl.sortedCombatantCount;
             for (int i = 1; i <= gbl.sortedCombatantCount; i++)
             {
-                gbl.byte_1D8B9[i] = gbl.SortedCombatantList[i].player_index;
+                gbl.near_targets[i] = gbl.SortedCombatantList[i].player_index;
             }
 
             return ret_val;
@@ -2067,7 +2065,7 @@ namespace engine
         {
             bool ret_val = false;
 
-            int skill_lvl = player.Skill_A_lvl[skill];
+            int skill_lvl = player.class_lvls[skill];
 
             if (skill_lvl > 0)
             {
