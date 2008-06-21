@@ -996,7 +996,7 @@ namespace engine
 
         internal static void sub_3F9DB(out bool arg_0, Item item, byte arg_8, Player player01, Player player02)
         {
-            byte var_9 = 0;
+            byte dir = 0;
             Player playerBase;
             Item item_ptr;
 
@@ -1008,29 +1008,29 @@ namespace engine
             if (player01.actions.field_F < 2 &&
                 arg_8 == 0)
             {
-                var_9 = getTargetDirection(player02, player01);
+                dir = getTargetDirection(player02, player01);
 
-                player01.actions.direction = (byte)((var_9 + 4) % 8);
+                player01.actions.direction = (byte)((dir + 4) % 8);
             }
             else if (ovr033.sub_74761(false, player01) == true)
             {
-                var_9 = player01.actions.direction;
+                dir = player01.actions.direction;
 
                 if (arg_8 == 0)
                 {
-                    player01.actions.direction = (byte)((var_9 + 4) % 8);
+                    player01.actions.direction = (byte)((dir + 4) % 8);
                 }
             }
 
             if (ovr033.sub_74761(false, player01) == true)
             {
-                ovr033.draw_74B3F(0, 0, var_9, player01);
+                ovr033.draw_74B3F(0, 0, dir, player01);
             }
 
-            var_9 = getTargetDirection(player01, player02);
+            dir = getTargetDirection(player01, player02);
             ovr025.display_hitpoint_ac(player02);
 
-            ovr033.draw_74B3F(0, 1, var_9, player02);
+            ovr033.draw_74B3F(0, 1, dir, player02);
 
             player02.actions.target = player01;
 
