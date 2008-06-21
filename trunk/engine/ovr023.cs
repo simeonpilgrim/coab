@@ -795,7 +795,7 @@ namespace engine
 
                     while (gbl.sp_targets[gbl.sp_target_count].next_player != null)
                     {
-                        gbl.sp_targets[gbl.sp_target_count] = gbl.sp_targets[gbl.sp_target_count].next_player;
+                        gbl.sp_targets[gbl.sp_target_count+1] = gbl.sp_targets[gbl.sp_target_count].next_player;
 
                         gbl.sp_target_count++;
                     }

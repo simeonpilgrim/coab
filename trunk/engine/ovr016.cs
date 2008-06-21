@@ -762,6 +762,7 @@ namespace engine
 
                     if (has_name == true)
                     {
+                        var_13 = 1;
                         sub_44E89(" " + affect_name, 0, ref var_C);
                     }
 
