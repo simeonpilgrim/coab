@@ -49,8 +49,6 @@ namespace engine
 
         internal static void remove_affect(Affect affect, Affects affect_id, Player player)
         {
-            Affect var_8 = affect;
-
             if (affect == null)
             {
                 affect = player.affect_ptr;
@@ -291,7 +289,7 @@ namespace engine
                     calc_affect_effect(Affects.protection_from_good, player);
                     calc_affect_effect(Affects.prot_from_evil_10_radius, player);
                     calc_affect_effect(Affects.prot_from_good_10_radius, player);
-                    calc_affect_effect(Affects.affect_1e, player);
+                    calc_affect_effect(Affects.stinking_cloud, player);
                     calc_affect_effect(Affects.faerie_fire, player);
                     break;
 
@@ -336,9 +334,9 @@ namespace engine
 
                 case 15:
                     calc_affect_effect(Affects.silence_15_radius, player);
-                    calc_affect_effect(Affects.affect_1e, player);
+                    calc_affect_effect(Affects.stinking_cloud, player);
                     calc_affect_effect(Affects.charm_person, player);
-                    calc_affect_effect(Affects.affect_0d, player);
+                    calc_affect_effect(Affects.reduce, player);
                     calc_affect_effect(Affects.berserk, player);
                     break;
 
@@ -447,11 +445,11 @@ namespace engine
                         gbl.player_ptr = sub_63D03(gbl.unk_18AEA, 4, gbl.stru_1D885,
                             ovr033.PlayerMapYPos(player), ovr033.PlayerMapXPos(player));
 
-                        is_unaffected("starts to cough", save_passed, 0, false, 0xff, 1, Affects.affect_1e, player);
+                        is_unaffected("starts to cough", save_passed, 0, false, 0xff, 1, Affects.stinking_cloud, player);
 
-                        if (ovr025.find_affect(Affects.affect_1e, player) == true)
+                        if (ovr025.find_affect(Affects.stinking_cloud, player) == true)
                         {
-                            CallSpellJumpTable(Effect.Add, affect, player, Affects.affect_1e);
+                            CallSpellJumpTable(Effect.Add, affect, player, Affects.stinking_cloud);
                         }
 
                         gbl.player_ptr = tmp_player_ptr;
@@ -720,10 +718,10 @@ namespace engine
             Affects[] table = { 
 								  Affects.faerie_fire,
 								  Affects.charm_person,
-								  Affects.affect_0d,
+								  Affects.reduce,
 								  Affects.silence_15_radius,
 								  Affects.spiritual_hammer,
-								  Affects.affect_1e,
+								  Affects.stinking_cloud,
 								  Affects.helpless,
 								  Affects.funky__32,
 								  Affects.snake_charm,
@@ -754,7 +752,7 @@ namespace engine
 
         internal static void sub_6460D(Player arg_0)
         {
-            Affects[] table = {   Affects.affect_0d, 
+            Affects[] table = {   Affects.reduce, 
 								  Affects.affect_3a, 
 								  Affects.affect_8b, 
 								  Affects.affect_90 };

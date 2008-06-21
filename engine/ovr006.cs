@@ -176,7 +176,7 @@ namespace engine
         static Affects[] affects_array = new Affects[] {
 													Affects.affect_03,
 													Affects.charm_person,
-													Affects.affect_0d,
+													Affects.reduce,
 													Affects.silence_15_radius,
 													Affects.spiritual_hammer,
 													Affects.fumbling,

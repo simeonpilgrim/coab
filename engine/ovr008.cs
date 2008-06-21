@@ -85,7 +85,7 @@ namespace engine
         internal static ushort vm_GetCmdValue(int arg_0) // sub_30168
         {
             return gbl.cmd_opps[arg_0].GetCmdValue();
-            //TODO replace vm_GetCmdValue function with gbl.cmd_opps[arg_0].GetCmdValue();
+            //TODO replace calls to vm_GetCmdValue function with gbl.cmd_opps[arg_0].GetCmdValue();
         }
 
 
@@ -1460,9 +1460,9 @@ namespace engine
                     }
                     else
                     {
-                        Item item_bkup = playerC.itemsPtr;
+                        Item tmp_item = playerC.itemsPtr;
                         playerC.itemsPtr = item.ShallowClone();
-                        playerC.itemsPtr.next = item_bkup;
+                        playerC.itemsPtr.next = tmp_item;
                     }
                     item = item.next;
                 }

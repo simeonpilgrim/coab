@@ -854,7 +854,6 @@ namespace engine
             }
             else
             {
-                //TODO workout why players are put on same spot (arg_4, arg_2, & arg_5 == 0)
                 gbl.CombatMap[player_index].xPos = arg_8 + (arg_4 * 6) + (arg_2 * 5) + 22;
                 gbl.CombatMap[player_index].yPos = arg_6 + (arg_2 * 5) + 10;
 

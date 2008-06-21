@@ -781,27 +781,12 @@ namespace engine
                     switch ((int)item.affect_2)
                     {
                         case 0:
-                            ovr024.sub_648D9(0, player);
-                            break;
-
                         case 1:
-                            ovr024.sub_648D9(1, player);
-                            break;
-
                         case 2:
-                            ovr024.sub_648D9(2, player);
-                            break;
-
                         case 3:
-                            ovr024.sub_648D9(3, player);
-                            break;
-
                         case 4:
-                            ovr024.sub_648D9(4, player);
-                            break;
-
                         case 5:
-                            ovr024.sub_648D9(5, player);
+                            ovr024.sub_648D9((int)item.affect_2, player);
                             break;
                     }
                     break;

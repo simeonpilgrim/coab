@@ -363,7 +363,7 @@ namespace engine
                 {
                     if (isNoxiousCloud == true &&
                         ovr025.find_affect(Affects.funky__32, player) == false &&
-                        ovr025.find_affect(Affects.affect_1e, player) == false &&
+                        ovr025.find_affect(Affects.stinking_cloud, player) == false &&
                         ovr025.find_affect(Affects.affect_6f, player) == false &&
                         ovr025.find_affect(Affects.affect_7d, player) == false &&
                         ovr025.find_affect(Affects.affect_81, player) == false &&
@@ -937,7 +937,6 @@ namespace engine
             byte var_16;
             byte var_15;
             Item var_14;
-            Item var_10;
             Item var_C;
             Item var_8;
             Item var_4;
@@ -966,23 +965,23 @@ namespace engine
 
             var_17 = 0;
 
-            var_10 = arg_0.itemsPtr;
+            Item item = arg_0.itemsPtr;
 
-            while (var_10 != null)
+            while (item != null)
             {
-                var_19 = var_10.type;
+                var_19 = item.type;
 
                 if (gbl.unk_1C020[var_19].item_slot == 0 &&
                     (gbl.unk_1C020[var_19].classFlags & arg_0.classFlags) != 0)
                 {
-                    var_18 = sub_36535(var_10, arg_0);
+                    var_18 = sub_36535(item, arg_0);
 
                     if ((gbl.unk_1C020[var_19].field_E & 8) != 0 ||
                         (gbl.unk_1C020[var_19].field_E & 0x10) != 0)
                     {
                         if (var_18 > var_15)
                         {
-                            var_4 = var_10;
+                            var_4 = item;
                             var_15 = var_18;
                         }
                     }
@@ -990,7 +989,7 @@ namespace engine
                     if ((gbl.unk_1C020[var_19].field_E & 8) == 0 &&
                         var_18 > var_16)
                     {
-                        var_8 = var_10;
+                        var_8 = item;
                         var_16 = var_18;
                     }
                 }
@@ -1000,9 +999,9 @@ namespace engine
                 {
                     if ((gbl.unk_1C020[var_19].classFlags & arg_0.classFlags) != 0)
                     {
-                        if (var_10.plus >= 0)
+                        if (item.plus >= 0)
                         {
-                            var_18 = (byte)(var_10.plus + 1);
+                            var_18 = (byte)(item.plus + 1);
                         }
                         else
                         {
@@ -1011,12 +1010,12 @@ namespace engine
 
                         if (var_18 > var_17)
                         {
-                            var_C = var_10;
+                            var_C = item;
                             var_17 = var_18;
                         }
                     }
                 }
-                var_10 = var_10.next;
+                item = item.next;
             }
 
             bool var_1E = ovr025.item_is_ranged_melee(var_4);
@@ -1058,18 +1057,18 @@ namespace engine
                 var_1F == true &&
                 (var_1E == true || ovr025.near_enemy(1, arg_0) == 0))
             {
-                var_10 = var_4;
+                item = var_4;
             }
             else
             {
-                var_10 = var_8;
+                item = var_8;
             }
 
             var_1D = 0;
             var_1C = 1;
 
             if (arg_0.field_151 != null &&
-                (arg_0.field_151 == var_10 ||
+                (arg_0.field_151 == item ||
                  arg_0.field_151.cursed == true))
             {
                 var_1C = 0;
@@ -1090,9 +1089,9 @@ namespace engine
                     arg_0.field_185 -= gbl.unk_1C020[arg_0.field_155.type].field_1;
                 }
 
-                if (var_10 != null)
+                if (item != null)
                 {
-                    ovr020.ready_Item(var_10);
+                    ovr020.ready_Item(item);
                 }
 
                 var_1D = 1;
@@ -1113,7 +1112,7 @@ namespace engine
                 if (arg_0.field_155 == null ||
                     arg_0.field_155.cursed == true)
                 {
-                    ovr020.ready_Item(var_10);
+                    ovr020.ready_Item(item);
                     var_1D = 1;
                 }
                 else

@@ -333,9 +333,9 @@ namespace engine
                         }
                         else
                         {
-                            Item var_1CF = playerB.itemsPtr;
+                            Item tmp_item = playerB.itemsPtr;
                             playerB.itemsPtr = item_ptr.ShallowClone();
-                            playerB.itemsPtr.next = var_1CF;
+                            playerB.itemsPtr.next = tmp_item;
                         }
 
                         item_ptr = item_ptr.next;
@@ -352,9 +352,9 @@ namespace engine
                         }
                         else
                         {
-                            Affect var_1DB = playerB.affect_ptr;
+                            Affect tmp_affect = playerB.affect_ptr;
                             playerB.affect_ptr = affect_ptr.ShallowClone();
-                            playerB.affect_ptr.next = var_1DB;
+                            playerB.affect_ptr.next = tmp_affect;
 
                         }
                         affect_ptr = affect_ptr.next;

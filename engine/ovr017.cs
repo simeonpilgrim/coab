@@ -1696,23 +1696,24 @@ namespace engine
 
                 var_1BC = seg042.find_and_open_file(out file, 0, var_1BB, gbl.byte_1BF1A + var_100 + ".swg");
 
+                Item last_item = null;
                 do
                 {
                     seg051.BlockRead(out var_182, Item.StructSize, var_18A, file);
 
                     if (var_182 == Item.StructSize)
                     {
-                        item_ptr = new Item(var_18A, 0);
+                        Item new_item = new Item(var_18A, 0);
 
                         if (player_ptr.itemsPtr == null)
                         {
-                            player_ptr.itemsPtr = item_ptr;
+                            player_ptr.itemsPtr = new_item;
+                            last_item = player_ptr.itemsPtr;
                         }
                         else
                         {
-
-                            item_ptr.next = player_ptr.itemsPtr;
-                            player_ptr.itemsPtr = item_ptr;
+                            last_item.next = new_item;
+                            last_item = last_item.next;
                         }
                     }
                 } while (var_182 == Item.StructSize);
@@ -1733,16 +1734,16 @@ namespace engine
 
                     if (var_182 == Affect.StructSize)
                     {
-                        affect_ptr = new Affect(var_192, 0);
+                        Affect tmp_affect = new Affect(var_192, 0);
 
                         if (player_ptr.affect_ptr == null)
                         {
-                            player_ptr.affect_ptr = new Affect();
+                            player_ptr.affect_ptr = tmp_affect;
                             affect_ptr = player_ptr.affect_ptr;
                         }
                         else
                         {
-                            affect_ptr.next = new Affect();
+                            affect_ptr.next = tmp_affect;
                             affect_ptr = affect_ptr.next;
                         }
                     }
