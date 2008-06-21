@@ -891,7 +891,7 @@ namespace engine
         }
 
 
-        internal static void sub_3B386(Effect arg_0, object param, Player player)
+        internal static void heal_1hp_per_turn(Effect arg_0, object param, Player player) /* sub_3B386 */
         {
             Affect affect = (Affect)param;
 
@@ -903,7 +903,7 @@ namespace engine
         }
 
 
-        internal static void sub_3B3CA(Effect arg_0, object param, Player player)
+        internal static void blocks_spells_below_lvl4(Effect arg_0, object param, Player player) /* sub_3B3CA */
         {
             if (gbl.spell_id > 0 &&
                 gbl.spell_table[gbl.spell_id].spellLevel < 4)
@@ -1997,8 +1997,8 @@ namespace engine
             gbl.affect_jump_list[59] = ovr013.sub_3B2BA;
             gbl.affect_jump_list[60] = ovr013.sub_3B2D8;
             gbl.affect_jump_list[61] = ovr013.sub_3B32B;
-            gbl.affect_jump_list[62] = ovr013.sub_3B386;
-            gbl.affect_jump_list[63] = ovr013.sub_3B3CA;
+            gbl.affect_jump_list[62] = ovr013.heal_1hp_per_turn;
+            gbl.affect_jump_list[63] = ovr013.blocks_spells_below_lvl4;
             gbl.affect_jump_list[64] = ovr013.sub_3B520;
             gbl.affect_jump_list[65] = ovr013.sub_3B534;
             gbl.affect_jump_list[66] = ovr013.sub_3B548;

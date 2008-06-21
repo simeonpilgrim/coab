@@ -87,14 +87,11 @@ namespace engine
 
         internal static void sub_662A6(ref byte output, ref sbyte[] bonus, Item item, Player player)
         {
-            byte var_2;
-            byte var_1;
-
-            var_1 = gbl.unk_1C020[item.type].field_6;
+            byte var_1 = gbl.unk_1C020[item.type].field_6;
             if (var_1 > 0x7f)
             {
                 var_1 &= 0x7F;
-                var_2 = gbl.unk_1C020[item.type].item_slot;
+                byte var_2 = gbl.unk_1C020[item.type].item_slot;
                 if (var_2 == 1)
                 {
                     bonus[1] = (sbyte)(item.plus + var_1);
@@ -526,8 +523,6 @@ namespace engine
         internal static void reclac_player_values(Player player) /* sub_66C20 */
         {
             sbyte[] stat_bonus = new sbyte[5];
-            byte var_7;
-            Item item_ptr;
 
             player.field_151 = null;
             player.field_155 = null;
@@ -546,33 +541,33 @@ namespace engine
             bool var_8 = false ;
             player.field_14C = 0;
 
-            item_ptr = player.itemsPtr;
+            Item item = player.itemsPtr;
             player.field_185 = 0;
 
             player.weight = 0;
             gbl.word_1AFE0 = 0;
 
-            while (item_ptr != null)
+            while (item != null)
             {
                 player.field_14C++;
-                short item_weight = item_ptr.weight;
+                short item_weight = item.weight;
 
-                if (item_ptr.count > 0)
+                if (item.count > 0)
                 {
-                    item_weight *= (short)item_ptr.count;
+                    item_weight *= (short)item.count;
                 }
 
                 player.weight += item_weight;
 
-                if (item_ptr.readied)
+                if (item.readied)
                 {
                     gbl.word_1AFE0 += item_weight;
 
-                    int var_13 = gbl.unk_1C020[item_ptr.type].item_slot;
+                    int var_13 = gbl.unk_1C020[item.type].item_slot;
 
                     if (var_13 >= 0 && var_13 <= 8)
                     {
-                        player.itemArray[var_13] = item_ptr;
+                        player.itemArray[var_13] = item;
                     }
                     else if (var_13 == 9)
                     {
@@ -580,29 +575,29 @@ namespace engine
                         {
                             if (player.Item_ptr_02 == null)
                             {
-                                player.Item_ptr_02 = item_ptr;
+                                player.Item_ptr_02 = item;
                             }
                         }
                         else
                         {
-                            player.Item_ptr_01 = item_ptr;
+                            player.Item_ptr_01 = item;
                         }
                     }
 
-                    if (item_ptr.type == 0x49)
+                    if (item.type == 0x49)
                     {
-                        player.Item_ptr_03 = item_ptr;
+                        player.Item_ptr_03 = item;
                     }
 
-                    if (item_ptr.type == 0x1C)
+                    if (item.type == 0x1C)
                     {
-                        player.Item_ptr_04 = item_ptr;
+                        player.Item_ptr_04 = item;
                     }
 
-                    player.field_185 += gbl.unk_1C020[item_ptr.type].field_1;
+                    player.field_185 += gbl.unk_1C020[item.type].field_1;
                 }
 
-                item_ptr = item_ptr.next;
+                item = item.next;
             }
 
 
@@ -625,7 +620,7 @@ namespace engine
                 stat_bonus[i] = 0;
             }
 
-            var_7 = 0;
+            byte var_7 = 0;
 
             player.field_186 = 0;
             player.ac = player.field_124;
@@ -641,17 +636,17 @@ namespace engine
             }
 
             sub_66023(player);
-            item_ptr = player.itemsPtr;
+            item = player.itemsPtr;
 
-            while (item_ptr != null)
+            while (item != null)
             {
-                if (item_ptr.readied)
+                if (item.readied)
                 {
-                    sub_6621E(item_ptr, player);
-                    sub_662A6(ref var_7, ref stat_bonus, item_ptr, player);
+                    sub_6621E(item, player);
+                    sub_662A6(ref var_7, ref stat_bonus, item, player);
                 }
 
-                item_ptr = item_ptr.next;
+                item = item.next;
             }
 
             if (var_7 != 0)
@@ -1748,6 +1743,11 @@ namespace engine
         internal static int spell_target_count(int spell_id) /* sub_6886F */
         {
             int target_count = 0;
+
+            if (spell_id == 0)
+            {
+                return 0;
+            }
 
             if (gbl.player_ptr.cleric_lvl == 0 &&
                 gbl.player_ptr.magic_user_lvl == 0 &&

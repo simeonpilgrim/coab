@@ -16,17 +16,17 @@ namespace engine
             else
             {
                 bool var_B = false;
-                byte var_2 = 0;
+                byte player_count = 0;
 
                 do
                 {
-                    if (gbl.affects_timed_out[var_2] == true)
+                    if (gbl.affects_timed_out[player_count] == true)
                     {
                         var_B = true;
                     }
 
-                    var_2++;
-                } while (var_B == false && var_2 < gbl.area2_ptr.field_67C);
+                    player_count++;
+                } while (var_B == false && player_count < gbl.area2_ptr.field_67C);
 
                 if (var_B == false)
                 {
@@ -47,14 +47,14 @@ namespace engine
             {
                 int var_3 = System.Math.Min(10, var_5);
 
-                int var_2 = 0;
+                int player_count = 0;
                 Player player = gbl.player_next_ptr;
 
                 while (player != null)
                 {
-                    if (gbl.affects_timed_out[var_2] == true)
+                    if (gbl.affects_timed_out[player_count] == true)
                     {
-                        gbl.affects_timed_out[var_2] = false;
+                        gbl.affects_timed_out[player_count] = false;
 
                         Affect affect_a = player.affect_ptr;
                         Affect affect_b = player.affect_ptr;
@@ -68,14 +68,14 @@ namespace engine
                             }
                         }
 
-                        bool var_A = false;
+                        bool last = false;
 
                         while (affect_a != null &&
-                            var_A == false)
+                            last == false)
                         {
                             if (affect_a == affect_b)
                             {
-                                var_A = true;
+                                last = true;
                             }
 
                             if (affect_a.field_1 == 0)
@@ -84,8 +84,8 @@ namespace engine
                             }
                             else if (var_3 < affect_a.field_1)
                             {
-                                affect_a.field_1 = (ushort)var_3;
-                                gbl.affects_timed_out[var_2] = true;
+                                affect_a.field_1 -= (ushort)var_3;
+                                gbl.affects_timed_out[player_count] = true;
 
                                 affect_a = affect_a.next;
                             }
@@ -119,14 +119,14 @@ namespace engine
                         {
                             if (affect_a.field_1 > 0)
                             {
-                                gbl.affects_timed_out[var_2] = true;
+                                gbl.affects_timed_out[player_count] = true;
                             }
 
                             affect_a = affect_a.next;
                         }
                     }
 
-                    var_2++;
+                    player_count++;
                     player = player.next_player;
                 }
 

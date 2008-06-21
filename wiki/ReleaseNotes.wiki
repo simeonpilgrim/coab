@@ -1,6 +1,12 @@
 = The Release Notes =
 
 = Unreleased =
+  * Using the 'Dust of Disappearance' crashed the game in casting stage
+  * Displaying magic effects after using the Dust showed Invisible as well as <no spell effects>
+  * Effects were not be restored correctly from a saved game
+  * Player items were loaded in the opposite order compared to the DOS version
+  * Effects were wearing off too quickly. In the Mulmaster Beholder Corps battle the Dust was gone after round 3
+  
 
 = 1.0.10 =
   * Issue 9 - (Was fixed in rev 121), but now tested to prove that is fixed
@@ -20,7 +26,7 @@
   * Issue 21 - The treasure picture now is displayed when sharing out treasure
   * Issue 22 - The icon now flashes
   * Issue 20 - This encounter now works
-  * Fixed text problem on the large map, where the last four characters where not cleared off the screen
+  * Fixed text problem on the large map, where the last four characters were not cleared off the screen
   * Issue 19 - The correct event happen when dealing with Dracolich
 
 = 1.0.8 =
@@ -47,9 +53,9 @@
   * Issue 4 - combat screen background colour is now gray not black
   * Fixed 'Paul's save game E' play problem correctly
   * Fixed combat targeting via the Aim sub-menu
-  * Fixed logic in the remove affect code, that meant they where not being removed
+  * Fixed logic in the remove affect code, that meant they were not being removed
   * Translated more assembly, and name/renamed functions and variables as there purpose became clear
-  * Fixed the clipping of the combat screen. Large monsters where over drawing the board, which is not redrawn
+  * Fixed the clipping of the combat screen. Large monsters were over drawing the board, which is not redrawn
   * Implemented video ram save/restore so the missile items draw correctly in combat
   * Changed the DaxFileCache to copy data before returning. This slows the game down more, but stops merged pictures from being wrong on second viewings (camp fire in DEMO)
  
@@ -63,7 +69,7 @@
   * Fixed how losing combat was treated, so you now don't get shown the EXP rewarded screen.
   * Scrolling through the party list was broken.
   * Fixed small typo in the code-wheel (even though it turned off in the game)
-  * Fixed the display names on spells. The where many blank strings missing.
+  * Fixed the display names on spells. There was many blank strings missing.
   * Fixed spell memorizing screen
   * Fixed some menu that would not accept input like Exit
   * Fixed the treasure found code to handle not being in combat (SSI bug)

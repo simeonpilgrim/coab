@@ -2554,14 +2554,14 @@ namespace engine
             if (gbl.byte_1D2CA == 2 &&
                 target.in_combat == true &&
                 ovr025.find_affect(Affects.affect_3a, target) == false &&
-                ovr025.find_affect(Affects.affect_0d, target) == false)
+                ovr025.find_affect(Affects.reduce, target) == false)
             {
                 target = attacker.actions.target;
                 ovr025.DisplayPlayerStatusString(true, 12, "engulfs " + target.name, attacker);
                 ovr024.add_affect(false, ovr033.get_player_index(target), 0, Affects.affect_3a, target);
 
                 ovr024.CallSpellJumpTable(Effect.Add, null, target, Affects.affect_3a);
-                ovr024.add_affect(false, ovr024.roll_dice(4, 2), 0, Affects.affect_0d, target);
+                ovr024.add_affect(false, ovr024.roll_dice(4, 2), 0, Affects.reduce, target);
                 ovr024.add_affect(true, ovr033.get_player_index(target), 0, Affects.affect_8b, attacker);
             }
         }
@@ -2701,7 +2701,7 @@ namespace engine
                 gbl.spell_target.in_combat == false)
             {
                 ovr024.remove_affect(null, Affects.affect_3a, gbl.spell_target);
-                ovr024.remove_affect(null, Affects.affect_0d, gbl.spell_target);
+                ovr024.remove_affect(null, Affects.reduce, gbl.spell_target);
 
                 if (add_remove == Effect.Add)
                 {
@@ -2725,7 +2725,7 @@ namespace engine
                 {
                     ovr024.remove_affect(null, Affects.affect_8b, player);
                     ovr024.remove_affect(null, Affects.affect_3a, gbl.spell_target);
-                    ovr024.remove_affect(null, Affects.affect_0d, gbl.spell_target);
+                    ovr024.remove_affect(null, Affects.reduce, gbl.spell_target);
                 }
             }
         }
