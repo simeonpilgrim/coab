@@ -593,16 +593,32 @@ namespace Classes
             }
         }
 
+        public void field_19BArrayDec(int index)
+        {
+            switch (index)
+            {
+                case 1:
+                    field_19C -= 1;
+                    break;
+                case 2:
+                    field_19D -= 1;
+                    break;
+                default:
+                    throw new System.NotImplementedException();
+            }
+        }
+
         [DataOffset(0x19c, DataType.Byte)]
         public byte field_19C; // 0x19c
         [DataOffset(0x19d, DataType.Byte)]
         public byte field_19D; // 0x19d
+
         public byte field_19DArray(int index)
         {
             switch (index)
             {
                 case 1:
-                    return field_19E;
+                    return attack_dice_count;
                 case 2:
                     return field_19F;
                 default:
@@ -611,15 +627,16 @@ namespace Classes
         }
 
         [DataOffset(0x19E, DataType.Byte)]
-        public byte field_19E; // 0x19e
+        public byte attack_dice_count; // 0x19e field_19E
         [DataOffset(0x19F, DataType.Byte)]
         public byte field_19F; // 0x19f
+
         public byte field_19FArray(int index)
         {
             switch (index)
             {
                 case 1:
-                    return field_1A0;
+                    return attack_dice_size;
                 case 2:
                     return field_1A1;
                 default:
@@ -627,9 +644,10 @@ namespace Classes
             }
         }
         [DataOffset(0x1A0, DataType.Byte)]
-        public byte field_1A0; // 0x1a0
+        public byte attack_dice_size; // 0x1a0 field_1A0
         [DataOffset(0x1A1, DataType.Byte)]
         public byte field_1A1; // 0x1a1
+
         public byte field_1A1Array(int index)
         {
             switch (index)
@@ -648,7 +666,6 @@ namespace Classes
         public byte field_1A3; // 0x1a3
         [DataOffset(0x1a4, DataType.Byte)]
         public byte hit_point_current; // 0x1a4
-
 
         [DataOffsetAttribute(0x1A5, DataType.Byte)]
         public byte movement; // 0x1a5 initiative
