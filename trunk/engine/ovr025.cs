@@ -52,8 +52,8 @@ namespace engine
                 }
 
                 player.hitBonus += bonus;
-                player.field_19E = gbl.unk_1C020[item_type].field_9;
-                player.field_1A0 = gbl.unk_1C020[item_type].field_A;
+                player.attack_dice_count = gbl.unk_1C020[item_type].field_9;
+                player.attack_dice_size = gbl.unk_1C020[item_type].field_A;
             }
         }
 
@@ -606,10 +606,10 @@ namespace engine
                 player.weight += player.Money[money];
             }
 
-            player.field_19E = player.field_11E;
+            player.attack_dice_count = player.field_11E;
             player.field_19F = player.field_11F;
 
-            player.field_1A0 = player.field_120;
+            player.attack_dice_size = player.field_120;
             player.field_1A1 = player.field_121;
 
             player.damageBonus = player.field_122;

@@ -365,6 +365,23 @@ namespace Classes
         public static byte byte_1D8B7;
         public static byte byte_1D8B8;
         public static int[] near_targets = new int[0x48]; // byte_1D8B9
+
+        public static void inc_byte_byte_1D90x(int index)
+        {
+            switch (index)
+            {
+                case 1:
+                    byte_1D901 += 1;
+                    break;
+                case 2:
+                    byte_1D902 += 1;
+                    break;
+                default:
+                    /* byte_1D90x += 1; */
+                    throw new System.NotImplementedException();
+            }
+        }
+
         public static byte byte_1D901;
         public static byte byte_1D902;
         public static byte enemyHealthPercentage; /* byte_1D903 */

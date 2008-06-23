@@ -60,73 +60,110 @@ namespace engine
             return count;
         }
 
-        static Set unk_6C0BA = new Set(0x0606, new byte[] { 0xFF, 3, 0xFE, 0xFF, 0xFF, 7 });
+        static Set highlightable_text = new Set(0x0606, new byte[] { 0xFF, 3, 0xFE, 0xFF, 0xFF, 7 });
+
+        internal class highlight
+        {
+            internal int start = -1;
+            internal int end = -1;
+
+            public override string ToString()
+            {
+                return string.Format("{0} - {1}", start, end);
+            }
+        }
+
+        internal class HighlightSet
+        {
+            highlight[] highlights;
+            const int length = 20;
+
+            internal HighlightSet()
+            {
+                highlights = new highlight[length];
+
+                Clear();
+            }
+
+
+            internal highlight this[int index]
+            {
+                get { return highlights[index]; }
+                set { highlights[index] = value; }
+            }
+
+            internal void Clear()
+            {
+                for(int i = 0; i < length; i++)
+                {
+                    highlights[i] = new highlight();
+                }
+            }
+        }
 
         /// <summary>
         /// sub_6C0DA
         /// </summary>
-        internal static void buildInputKeys(string arg_2, byte[] bp_var_8D, out byte bp_var_8E)
+        internal static HighlightSet buildInputKeys(string arg_2, out int bp_var_8E)
         {
-            byte var_2C;
-            byte var_2B;
-            byte var_2A;
+            HighlightSet bp_var_8D = new HighlightSet();
 
-            seg051.FillChar(0xff, 0x28, bp_var_8D);
+            int var_2A = 0;
 
-            var_2A = 0;
-            var_2C = (byte)arg_2.Length;
-
-            for (var_2B = 0; var_2B < var_2C; var_2B++)
+            for (int var_2B = 0; var_2B < arg_2.Length; var_2B++)
             {
-                if (unk_6C0BA.MemberOf(arg_2[var_2B ]) == true)
+                if (highlightable_text.MemberOf(arg_2[var_2B ]) == true)
                 {
-                    if (bp_var_8D[var_2A << 1] == 0xff)
+                    if (bp_var_8D[var_2A].start == -1)
                     {
-                        bp_var_8D[var_2A << 1] = var_2B;
+                        bp_var_8D[var_2A].start = var_2B;
                     }
                     else
                     {
-                        bp_var_8D[(var_2A << 1) + 1] = (byte)(var_2B - 2);
+                        bp_var_8D[var_2A].end = var_2B - 2;
                         var_2A++;
-                        bp_var_8D[var_2A  << 1] = var_2B;
+                        bp_var_8D[var_2A].start = var_2B;
                     }
                 }
             }
 
-            bp_var_8D[(var_2A << 1) + 1] = var_2C;
+            bp_var_8D[var_2A].end = arg_2.Length;
             bp_var_8E = var_2A;
+
+            return bp_var_8D;
         }
 
 
-        internal static void sub_6C1E9(byte arg_2, int displayInputStringLen, byte highlightFgColor, string displayInputString, int xOffset, byte fgColor, byte[] bp_var_8D)
+        internal static void display_highlighed_text(int highlighed_word, byte highlightFgColor, 
+            string text, int xOffset, byte fgColor, HighlightSet highlights) /* sub_6C1E9 */
         {
-            if (displayInputStringLen > 0)
+            if (text.Length > 0)
             {
-                for (int i = 0; i < displayInputStringLen; i++)
+                for (int i = 0; i < text.Length; i++)
                 {
-                    if (bp_var_8D[arg_2 << 1] <= i &&
-                        bp_var_8D[(arg_2 << 1) + 1] >= i &&
+                    if (highlights[highlighed_word].start <= i &&
+                        highlights[highlighed_word].end >= i &&
                         highlightFgColor != 0)
                     {
-                        seg041.display_char01(true, displayInputString[i], 1, highlightFgColor, 0, 0x18, xOffset + i);
+                        seg041.display_char01(true, text[i], 1, highlightFgColor, 0, 0x18, xOffset + i);
                     }
                     else
                     {
-                        if (unk_6C0BA.MemberOf(displayInputString[i]) == true)
+                        if (highlightable_text.MemberOf(text[i]) == true)
                         {
-                            seg041.display_char01(true, displayInputString[i], 1, 0, highlightFgColor, 0x18, xOffset + i);
+                            seg041.display_char01(true, text[i], 1, 0, highlightFgColor, 0x18, xOffset + i);
                         }
                         else
                         {
-                            seg041.display_char01(true, displayInputString[i], 1, 0, fgColor, 0x18, xOffset + i);
+                            seg041.display_char01(true, text[i], 1, 0, fgColor, 0x18, xOffset + i);
                         }
                     }
                 }
 
-                if (displayInputStringLen + xOffset < 0x27)
+                if (text.Length + xOffset < 0x27)
                 {
-                    seg041.display_char01(true, ' ', (0x27 - displayInputStringLen - xOffset) + 1,
-                        0, 0, 0x18, xOffset + displayInputStringLen);
+                    seg041.display_char01(true, ' ', (0x27 - text.Length - xOffset) + 1,
+                        0, 0, 0x18, xOffset + text.Length);
                 }
 
                 Display.Update();
@@ -141,35 +178,28 @@ namespace engine
 
         internal static char displayInput(out bool specialKeyPressed, bool useOverlay, byte arg_6, byte highlightFgColor, byte fgColor, byte extraStringFgColor, string displayInputString, string displayExtraString)
         {
-            byte var_8E;
-            byte[] var_8D = new byte[0x28];
-            byte var_63;
-            byte var_62;
+            int var_8E;
             byte var_61;
-            char var_60;
-            int var_5F;
-            int var_5B;
 
             gbl.displayInput_specialKeyPressed = false;
 
             bool var_8F = (fgColor != 0) || (highlightFgColor != 0);
 
-            buildInputKeys(displayInputString, var_8D, out var_8E);
+            HighlightSet highlights = buildInputKeys(displayInputString, out var_8E);
 
             if (gbl.byte_1D5BE >= var_8E)
             {
                 gbl.byte_1D5BE = 0;
             }
 
-            int displayInputStringLen = displayInputString.Length;
-            var_60 = '\0';
+            char input_key = '\0';
             specialKeyPressed = false;
-            var_63 = 0;
+            bool var_63 = false;
 
             int timeStart = seg041.time01();
-            var_5B = seg041.time01() + 30;
+            int var_5B = seg041.time01() + 30;
 
-            var_5F = var_5B + 50;
+            int var_5F = var_5B + 50;
 
             if (displayExtraString.Length != 0)
             {
@@ -178,7 +208,8 @@ namespace engine
 
             int displayInputXOffset = displayExtraString.Length;
 
-            sub_6C1E9(gbl.byte_1D5BE, displayInputStringLen, highlightFgColor, displayInputString, displayInputXOffset, fgColor, var_8D);
+            display_highlighed_text(gbl.byte_1D5BE, highlightFgColor, 
+                displayInputString, displayInputXOffset, fgColor, highlights);
 
             if (gbl.game_state == 3 &&
                 gbl.bigpic_block_id == 0x79 &&
@@ -222,45 +253,45 @@ namespace engine
                 if (gbl.displayInputCentiSecondWait > 0 &&
                     (seg041.time01() - timeStart) >= gbl.displayInputCentiSecondWait)
                 {
-                    var_60 = gbl.displayInputTimeoutValue;
-                    var_63 = 1;
+                    input_key = gbl.displayInputTimeoutValue;
+                    var_63 = true;
                 }
                 else if (seg049.KEYPRESSED() == true)
                 {
-                    var_60 = (char)seg043.GetInputKey();
+                    input_key = (char)seg043.GetInputKey();
 
-                    if (var_60 == 0)
+                    if (input_key == 0)
                     {
-                        var_60 = (char)seg043.GetInputKey();
+                        input_key = (char)seg043.GetInputKey();
 
                         if (arg_6 != 0)
                         {
                             specialKeyPressed = true;
-                            var_63 = 1;
+                            var_63 = true;
                         }
                     }
-                    else if (var_60 == 0x1B)
+                    else if (input_key == 0x1B)
                     {
-                        var_63 = 1;
-                        var_60 = '\0';
+                        var_63 = true;
+                        input_key = '\0';
                     }
-                    else if (var_60 == 13)
+                    else if (input_key == 13)
                     {
                         if (var_8F)
                         {
-                            if (var_8D[(gbl.byte_1D5BE) << 1] != 0xff)
+                            if (highlights[gbl.byte_1D5BE].start != -1)
                             {
-                                var_60 = displayInputString[var_8D[(gbl.byte_1D5BE) << 1]];
+                                input_key = displayInputString[highlights[gbl.byte_1D5BE].start];
                             }
                             else
                             {
-                                var_60 = '\r';
+                                input_key = '\r';
                             }
 
-                            var_63 = 1;
+                            var_63 = true;
                         }
                     }
-                    else if (var_60 == 0x2C)
+                    else if (input_key == 0x2C)
                     {
                         if (gbl.byte_1D5BE == 0)
                         {
@@ -271,9 +302,9 @@ namespace engine
                             gbl.byte_1D5BE--;
                         }
 
-                        sub_6C1E9(gbl.byte_1D5BE, displayInputStringLen, highlightFgColor, displayInputString, displayInputXOffset, fgColor, var_8D);
+                        display_highlighed_text(gbl.byte_1D5BE, highlightFgColor, displayInputString, displayInputXOffset, fgColor, highlights);
                     }
-                    else if (var_60 == 0x2E)
+                    else if (input_key == 0x2E)
                     {
                         gbl.byte_1D5BE++;
 
@@ -282,53 +313,53 @@ namespace engine
                             gbl.byte_1D5BE = 0;
                         }
 
-                        sub_6C1E9(gbl.byte_1D5BE, displayInputStringLen, highlightFgColor, displayInputString, displayInputXOffset, fgColor, var_8D);
+                        display_highlighed_text(gbl.byte_1D5BE, highlightFgColor, displayInputString, displayInputXOffset, fgColor, highlights);
                     }
                     else
                     {
-                        var_60 = seg051.UpCase(var_60);
-                        if (unk_6C398.MemberOf(var_60) == true)
+                        input_key = seg051.UpCase(input_key);
+                        if (unk_6C398.MemberOf(input_key) == true)
                         {
-                            if (var_60 == 0x20)
+                            if (input_key == 0x20)
                             {
-                                var_63 = 1;
+                                var_63 = true;
                             }
                             else
                             {
-                                for (var_62 = 0; var_62 < displayInputStringLen; var_62++)
+                                for (int var_62 = 0; var_62 < displayInputString.Length; var_62++)
                                 {
-                                    if (displayInputString[var_62] == var_60)
+                                    if (displayInputString[var_62] == input_key)
                                     {
-                                        var_63 = 1;
+                                        var_63 = true;
                                         var_61 = 0;
 
-                                        while (var_8D[var_61 << 1] != var_62)
+                                        while (highlights[var_61].start != var_62)
                                         {
                                             var_61++;
                                         }
 
                                         gbl.byte_1D5BE = var_61;
 
-                                        sub_6C1E9(gbl.byte_1D5BE, displayInputStringLen, highlightFgColor, displayInputString, displayInputXOffset, fgColor, var_8D);
+                                        display_highlighed_text(gbl.byte_1D5BE, highlightFgColor, displayInputString, displayInputXOffset, fgColor, highlights);
                                     }
                                 }
                             }
                         }
 
                         if (arg_6 != 0 &&
-                            unk_6C3B8.MemberOf(var_60) == true)
+                            unk_6C3B8.MemberOf(input_key) == true)
                         {
-                            if (var_60 == 0x5C)
+                            if (input_key == 0x5C)
                             {
-                                var_60 = '7';
+                                input_key = '7';
                             }
                             else
                             {
-                                var_60 = (char)unk_18AE0[var_60 - 0x31];
+                                input_key = (char)unk_18AE0[input_key - 0x31];
                             }
 
                             specialKeyPressed = true;
-                            var_63 = 1;
+                            var_63 = true;
                         }
                     }
                 }
@@ -345,7 +376,7 @@ namespace engine
 
                 System.Threading.Thread.Sleep(20);
 
-            } while (var_63 == 0);
+            } while (var_63 == false);
 
             gbl.area_ptr.field_3FE = 0;
 
@@ -358,7 +389,7 @@ namespace engine
 
             gbl.displayInput_specialKeyPressed = specialKeyPressed;
 
-            return var_60;
+            return input_key;
         }
 
 

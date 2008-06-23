@@ -421,12 +421,12 @@ namespace engine
 
                                         player_ptr.actions.field_4 = var_1A;
 
-                                        Player var_23 = player_ptr.actions.target;
+                                        Player target = player_ptr.actions.target;
 
                                         sub_3F9DB(out gbl.byte_1D905, null, 1, player, player_ptr);
                                         var_12 = true;
 
-                                        player_ptr.actions.target = var_23;
+                                        player_ptr.actions.target = target;
 
                                         if (player.in_combat == true)
                                         {
@@ -806,20 +806,9 @@ namespace engine
                     attacker.actions.field_4--;
                 }
 
-                switch (attacker.actions.field_4)
-                {
-                    case 1:
-                        gbl.byte_1D901 += 1;
-                        break;
-                    case 2:
-                        gbl.byte_1D902 += 1;
-                        break;
-                    default:
-                        /* byte_1D90x += 1; */
-                        throw new System.NotImplementedException();
-                }
+                gbl.inc_byte_byte_1D90x(attacker.actions.field_4);
 
-                display_attack_message(true, 1, (byte)(target.hit_point_current + 5), 3, target, attacker);
+                display_attack_message(true, 1, target.hit_point_current + 5, 3, target, attacker);
                 ovr024.remove_invisibility(attacker);
 
                 attacker.field_19C = 0;
@@ -833,11 +822,12 @@ namespace engine
                 if (attacker.field_151 != null && 
                     (target.field_DE > 0x80 || (target.field_DE & 7) > 1))
                 {
-                    Struct_1C020 var_10 = gbl.unk_1C020[attacker.field_151.type].ShallowClone();
+                    Struct_1C020 var_10 = gbl.unk_1C020[attacker.field_151.type];
 
-                    attacker.field_19E = var_10.diceCount;
-                    attacker.field_1A0 = var_10.diceSize;
-                    attacker.damageBonus = (sbyte)((attacker.damageBonus - var_10.field_B) + var_10.field_4);
+                    attacker.attack_dice_count = var_10.diceCount;
+                    attacker.attack_dice_size = var_10.diceSize;
+                    attacker.damageBonus -= var_10.field_B;
+                    attacker.damageBonus += var_10.field_4;
                 }
 
                 ovr025.reclac_player_values(target);
@@ -884,22 +874,10 @@ namespace engine
                     while (attacker.field_19BArray(var_15) > 0 &&
                         var_12 == false)
                     {
-                        attacker.field_19BArraySet(var_15, (byte)(attacker.field_19BArray(var_15) - 1));
+                        attacker.field_19BArrayDec(var_15);
                         attacker.actions.field_4 = var_15;
 
-                        switch (var_15)
-                        {
-                            case 1:
-                                gbl.byte_1D901 += 1;
-                                break;
-
-                            case 2:
-                                gbl.byte_1D902 += 1;
-                                break;
-
-                            default:
-                                throw new System.NotImplementedException();
-                        }
+                        gbl.inc_byte_byte_1D90x(var_15);
 
                         if (ovr024.sub_64245(var_14, target, attacker) ||
                             ovr025.is_held(target) == true)
@@ -942,7 +920,9 @@ namespace engine
                     }
                 }
 
-                if (arg_0 != null && arg_0.count == 0 && arg_0.type == 0x64)
+                if (arg_0 != null && 
+                    arg_0.count == 0 && 
+                    arg_0.type == 0x64)
                 {
                     attacker.field_19C = 0;
                     attacker.field_19D = 0;
@@ -955,13 +935,12 @@ namespace engine
                 }
 
                 arg_4 = true;
-                for (byte var_15 = 1; var_15 <= 2; var_15++)
+                if (attacker.field_19C > 0 ||
+                    attacker.field_19D > 0)
                 {
-                    if (attacker.field_19BArray(var_15) > 0)
-                    {
-                        arg_4 = false;
-                    }
-                }
+                    arg_4 = false;
+                } 
+                
                 attacker.actions.field_5 = 0;
             }
 
@@ -994,70 +973,68 @@ namespace engine
         }
 
 
-        internal static void sub_3F9DB(out bool arg_0, Item item, byte arg_8, Player player01, Player player02)
+        internal static void sub_3F9DB(out bool arg_0, Item item, byte arg_8, Player target, Player attacker)
         {
             byte dir = 0;
-            Player playerBase;
-            Item item_ptr;
 
             gbl.byte_1D910 = true;
             gbl.display_hitpoints_ac = true;
 
             gbl.byte_1D8B8 = (byte)(gbl.byte_1D8B7 + 15);
 
-            if (player01.actions.field_F < 2 &&
+            if (target.actions.field_F < 2 &&
                 arg_8 == 0)
             {
-                dir = getTargetDirection(player02, player01);
+                dir = getTargetDirection(attacker, target);
 
-                player01.actions.direction = (byte)((dir + 4) % 8);
+                target.actions.direction = (byte)((dir + 4) % 8);
             }
-            else if (ovr033.sub_74761(false, player01) == true)
+            else if (ovr033.sub_74761(false, target) == true)
             {
-                dir = player01.actions.direction;
+                dir = target.actions.direction;
 
                 if (arg_8 == 0)
                 {
-                    player01.actions.direction = (byte)((dir + 4) % 8);
+                    target.actions.direction = (byte)((dir + 4) % 8);
                 }
             }
 
-            if (ovr033.sub_74761(false, player01) == true)
+            if (ovr033.sub_74761(false, target) == true)
             {
-                ovr033.draw_74B3F(0, 0, dir, player01);
+                ovr033.draw_74B3F(0, 0, dir, target);
             }
 
-            dir = getTargetDirection(player01, player02);
-            ovr025.display_hitpoint_ac(player02);
+            dir = getTargetDirection(target, attacker);
+            ovr025.display_hitpoint_ac(attacker);
 
-            ovr033.draw_74B3F(0, 1, dir, player02);
+            ovr033.draw_74B3F(0, 1, dir, attacker);
 
-            player02.actions.target = player01;
+            attacker.actions.target = target;
 
             seg049.SysDelay(100);
 
             if (item != null)
             {
-                sub_40BF1(item, player01, player02);
+                sub_40BF1(item, target, attacker);
             }
 
-            if (player02.field_151 != null && /* added to get passed this point when null, why null, should 151 ever be null? */
-                (player02.field_151.type == 0x2f ||
-                player02.field_151.type == 0x65))
+            if (attacker.field_151 != null && /* added to get passed this point when null, why null, should 151 ever be null? */
+                (attacker.field_151.type == 0x2f ||
+                attacker.field_151.type == 0x65))
             {
-                sub_40BF1(player02.field_151, player01, player02);
+                sub_40BF1(attacker.field_151, target, attacker);
             }
 
             arg_0 = true;
 
-            if (player02.field_19C > 0 ||
-                player02.field_19D > 0)
+            if (attacker.field_19C > 0 ||
+                attacker.field_19D > 0)
             {
-                playerBase = gbl.player_ptr;
+                Player player_bkup = gbl.player_ptr;
 
-                gbl.player_ptr = player02;
+                gbl.player_ptr = attacker;
 
-                sub_3F4EB(item, ref arg_0, arg_8, player01, player02);
+                sub_3F4EB(item, ref arg_0, arg_8, target, attacker);
 
                 if (item != null)
                 {
@@ -1068,40 +1045,40 @@ namespace engine
 
                     if (item.count == 0)
                     {
-                        if (ovr025.is_weapon_ranged_melee(player02) == true &&
+                        if (ovr025.is_weapon_ranged_melee(attacker) == true &&
                             item.affect_3 != Affects.affect_89)
                         {
-                            item_ptr = item.ShallowClone();
+                            Item new_item = item.ShallowClone();
 
-                            item_ptr.next = gbl.item_pointer;
+                            new_item.next = gbl.item_pointer;
 
-                            gbl.item_pointer = item_ptr;
+                            gbl.item_pointer = new_item;
 
-                            item_ptr.readied = false;
+                            new_item.readied = false;
 
-                            ovr025.lose_item(item, player02);
-                            gbl.item_ptr = item_ptr;
+                            ovr025.lose_item(item, attacker);
+                            gbl.item_ptr = new_item;
                         }
                         else
                         {
-                            ovr025.lose_item(item, player02);
+                            ovr025.lose_item(item, attacker);
                         }
                     }
                 }
 
-                ovr025.reclac_player_values(player02);
-                gbl.player_ptr = playerBase;
+                ovr025.reclac_player_values(attacker);
+                gbl.player_ptr = player_bkup;
             }
 
             if (arg_0 == true)
             {
-                arg_0 = ovr025.clear_actions(player02);
+                arg_0 = ovr025.clear_actions(attacker);
             }
 
-            if (ovr033.sub_74761(false, player02) == true)
+            if (ovr033.sub_74761(false, attacker) == true)
             {
-                ovr033.draw_74B3F(1, 1, player02.actions.direction, player02);
-                ovr033.draw_74B3F(0, 0, player02.actions.direction, player02);
+                ovr033.draw_74B3F(1, 1, attacker.actions.direction, attacker);
+                ovr033.draw_74B3F(0, 0, attacker.actions.direction, attacker);
             }
         }
 
@@ -2714,8 +2691,8 @@ namespace engine
             {
                 player.field_19C = 2;
                 player.field_19D = 0;
-                player.field_19E = 2;
-                player.field_1A0 = 8;
+                player.attack_dice_count = 2;
+                player.attack_dice_size = 8;
 
                 sub_3F9DB(out var_1, null, 1, gbl.spell_target, player);
 
@@ -2752,8 +2729,8 @@ namespace engine
             {
                 player.field_19C = 1;
                 player.field_19D = 0;
-                player.field_19E = 2;
-                player.field_1A0 = 8;
+                player.attack_dice_count = 2;
+                player.attack_dice_size = 8;
                 
                 bool dummy_bool;
 

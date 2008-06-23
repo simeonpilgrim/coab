@@ -24,7 +24,7 @@ namespace Classes
 		public byte field_8; //seg600:5D18
 		public byte field_9; //seg600:5D19
 		public byte field_A; //seg600:5D1A
-		public byte field_B; //seg600:5D1B
+		public sbyte field_B; //seg600:5D1B
 		public byte field_C; //seg600:5D1C unk_1C02C
 		public byte classFlags; //seg600:5D1D field_D
 		public byte field_E; //seg600:5D1E unk_1C02E
@@ -47,7 +47,7 @@ namespace Classes
             field_8 = data[offset + 8];
             field_9 = data[offset + 9];
             field_A = data[offset + 0xa];
-            field_B = data[offset + 0xb];
+            field_B = (sbyte)data[offset + 0xb];
             field_C = data[offset + 0xc];
             classFlags = data[offset + 0xd];
             field_E = data[offset + 0xe];

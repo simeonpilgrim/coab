@@ -179,7 +179,7 @@ namespace engine
             seg041.displayString((0x3c - player.hitBonus).ToString(), 0, 10, yCol, xCol + 7);
 
 
-            string damage = player.field_19E.ToString() + "d" + player.field_1A0.ToString();
+            string damage = player.attack_dice_count.ToString() + "d" + player.attack_dice_size.ToString();
             if (player.damageBonus > 0)
             {
                 damage += "+" + player.damageBonus.ToString();
