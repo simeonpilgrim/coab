@@ -300,7 +300,7 @@ namespace engine
             }
 
             player.actions.field_2 = 0;
-            player.actions.can_cast = 0;
+            player.actions.can_cast = false;
         }
 
 
@@ -424,7 +424,7 @@ namespace engine
             }
 
             player.actions.field_2 = 0;
-            player.actions.can_cast = 0;
+            player.actions.can_cast = false;
 
             ovr025.reclac_player_values(player);
             
@@ -973,7 +973,7 @@ namespace engine
 
             if (gbl.game_state == 5)
             {
-                player.actions.can_cast = 0;
+                player.actions.can_cast = false;
                 if (player.actions.spell_id > 0)
                 {
 
@@ -1085,7 +1085,7 @@ namespace engine
 
                     player.actions.target = gbl.player_array[gbl.SortedCombatantList[1].player_index];
 
-                    player.actions.can_cast = 0;
+                    player.actions.can_cast = false;
                     player.combat_team = ovr025.opposite_team(player.actions.target);
 
                     ovr025.DisplayPlayerStatusString(true, 10, "goes berzerk", player);

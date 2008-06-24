@@ -118,22 +118,22 @@ namespace engine
         }
 
 
-        internal static bool sub_352AF(byte arg_2, int mapY, int mapX)
+        internal static bool sub_352AF(int spell_id, int mapY, int mapX)
         {
             bool result = false;
 
             int save_bonus = (gbl.player_ptr.combat_team == CombatTeam.Ours)? -2 : 8;
 
-            ovr032.Rebuild_SortedCombatantList(gbl.mapToBackGroundTile, 1, 0xff, gbl.spell_table[arg_2].field_F, mapY, mapX);
+            ovr032.Rebuild_SortedCombatantList(gbl.mapToBackGroundTile, 1, 0xff, gbl.spell_table[spell_id].field_F, mapY, mapX);
    
             for (int i = 1; i <= gbl.sortedCombatantCount; i++)
             {
                 Player tmpPlayer = gbl.player_array[gbl.SortedCombatantList[i].player_index];
-                SpellEntry tmpS = gbl.spell_table[arg_2];
+                SpellEntry spell_entry = gbl.spell_table[spell_id];
 
                 if (ovr025.opposite_team(gbl.player_ptr) != tmpPlayer.combat_team &&
-                    tmpS.can_save_flag != 1 &&
-                    ovr024.do_saving_throw(save_bonus, tmpS.field_9, tmpPlayer) == false)
+                    spell_entry.can_save_flag != 1 &&
+                    ovr024.do_saving_throw(save_bonus, spell_entry.field_9, tmpPlayer) == false)
                 {
                     result = true;
                 }
@@ -145,42 +145,42 @@ namespace engine
 
         internal static bool sub_353B1(byte arg_0, byte arg_2, Player attacker)
         {
-            bool var_1 = false;
-
             if (gbl.spell_table[arg_2].field_D < arg_0)
             {
                 Player dummy_target;
                 if ((arg_2 != 3 && gbl.spell_table[arg_2].field_E == 0) ||
                     (arg_2 == 3 && ovr014.find_healing_target(out dummy_target, attacker)))
                 {
-                    var_1 = true;
+                    return true;
                 }
                 else
                 {
-                    int var_6 = ovr025.near_enemy(ovr023.sub_5CDE5(arg_2), attacker);
+                    int near_count = ovr025.near_enemy(ovr023.sub_5CDE5(arg_2), attacker);
 
-                    if (var_6 > 0)
+                    if (near_count > 0)
                     {
                         if (gbl.spell_table[arg_2].field_F == 0)
                         {
-                            var_1 = true;
+                            return true;
                         }
                         else
                         {
-                            for (int i = 1; i <= var_6; i++)
+                            for (int i = 1; i <= near_count; i++)
                             {
-                                if (sub_352AF(arg_2, gbl.CombatMap[gbl.near_targets[i]].yPos, gbl.CombatMap[gbl.near_targets[i]].xPos) == true)
+                                int index = gbl.near_targets[i];
+                                if (sub_352AF(arg_2, gbl.CombatMap[index].yPos, 
+                                        gbl.CombatMap[index].xPos) == true)
                                 {
-                                    return var_1;
+                                    return false;
                                 }
                             }
-                            var_1 = true;
+                            return true;
                         }
                     }
                 }
             }
 
-            return var_1;
+            return false;
         }
 
 
@@ -248,52 +248,45 @@ namespace engine
 
         internal static bool sub_3560B(Player player)
         {
-            byte var_62;
-            byte var_61;
-            byte var_60;
-            byte var_5F;
             byte var_5E;
-            byte var_5D;
-            bool spell_id;
-            byte var_5B;
             byte var_5A;
-            byte[] var_55 = new byte[gbl.max_spells];
+            byte[] spell_list = new byte[gbl.max_spells];
 
-            var_5F = 0;
+            int spells_count = 0;
 
-            if (player.actions.can_cast != 0)
+            if (player.actions.can_cast == true)
             {
-                for (var_60 = 1; var_60 < gbl.max_spells; var_60++)
+                for (int sp_index = 1; sp_index < gbl.max_spells; sp_index++)
                 {
-                    if (player.spell_list[var_60] > 0)
+                    if (player.spell_list[sp_index] > 0)
                     {
-                        var_55[var_5F] = player.spell_list[var_60];
-                        var_5F++;
+                        spell_list[spells_count] = player.spell_list[sp_index];
+                        spells_count++;
                     }
                 }
             }
 
-            var_62 = 0;
+            byte spell_id = 0;
             var_5A = 7;
-            var_5B = ovr024.roll_dice(7, 1);
-            var_5D = 1;
+            int var_5B = ovr024.roll_dice(7, 1);
+            int var_5D = 1;
 
 
-            if (var_5F > 0 &&
+            if (spells_count > 0 &&
                 (player.field_F7 > 0x7F || gbl.magicOn == true))
             {
                 if ((ovr025.opposite_team(player)== 0 ? gbl.friends_count : gbl.foe_count) > 0)
                 {
-                    while (var_5D <= var_5B && var_62 == 0)
+                    while (var_5D <= var_5B && spell_id == 0)
                     {
-                        for (var_5E = 1; var_5E < 4 && var_62 == 0; var_5E++)
+                        for (var_5E = 1; var_5E < 4 && spell_id == 0; var_5E++)
                         {
-                            var_60 = (byte)(ovr024.roll_dice(var_5F, 1) - 1);
-                            var_61 = var_55[var_60];
+                            int random_spell_index = ovr024.roll_dice(spells_count, 1) - 1;
+                            byte random_spell_id = spell_list[random_spell_index];
 
-                            if (sub_353B1(var_5A, var_61, player))
+                            if (sub_353B1(var_5A, random_spell_id, player))
                             {
-                                var_62 = var_61;
+                                spell_id = random_spell_id;
                             }
                         }
 
@@ -303,16 +296,18 @@ namespace engine
                 }
             }
 
-            if (var_62 > 0)
+            bool casting_spell;
+
+            if (spell_id > 0)
             {
-                ovr014.spell_menu3(out spell_id, QuickFight.True, var_62);
+                ovr014.spell_menu3(out casting_spell, QuickFight.True, spell_id);
             }
             else
             {
-                spell_id = false;
+                casting_spell = false;
             }
 
-            return spell_id;
+            return casting_spell;
         }
 
         static byte[] data_2B8 = new byte[]{ 

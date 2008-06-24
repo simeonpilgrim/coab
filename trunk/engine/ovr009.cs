@@ -360,7 +360,7 @@ namespace engine
             }
 
             if (var_2B == true &&
-                player.actions.can_cast != 0 &&
+                player.actions.can_cast == true &&
                 gbl.area_ptr.can_cast_spells == false)
             {
                 var_29 += "Cast ";

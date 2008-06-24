@@ -684,8 +684,17 @@ namespace Classes
             DataIO.ReadObject(this, data, offset);
 
             for (int i = 0; i < 3; i++)
+            {
                 for (int j = 0; j < 5; j++)
+                {
                     field_12D[i, j] = data[0x12d + j + (i * i)];
+                }
+            }
+
+//            if (field_E9 > 1)
+//            {
+//                int i = 0;
+//            }
         }
 
         private void Init()
