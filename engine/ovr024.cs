@@ -1302,7 +1302,7 @@ namespace engine
 
                 if (gbl.game_state == 5)
                 {
-                    player.actions.can_cast = 0;
+                    player.actions.can_cast = false;
 
                     if (player.actions.spell_id > 0)
                     {

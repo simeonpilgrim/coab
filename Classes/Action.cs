@@ -10,7 +10,7 @@ namespace Classes
         ///<summary>0x00</summary>
         public byte spell_id; // 0x00
         ///<summary>0x01</summary>
-        public byte can_cast; // 0x01
+        public bool can_cast; // 0x01
         public byte field_2;  // 0x02
         ///<summary>0x03</summary>
         public sbyte delay;   // 0x03

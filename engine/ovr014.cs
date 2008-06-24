@@ -6,12 +6,10 @@ namespace engine
     {
         internal static void sub_3E000(Player player)
         {
-            Action action;
-
-            action = player.actions;
+            Action action = player.actions;
 
             action.spell_id = 0;
-            action.can_cast = 1;
+            action.can_cast = true;
             action.field_2 = 1;
             action.field_8 = 0;
             action.field_4 = 2;
@@ -174,7 +172,7 @@ namespace engine
 
             if (actualDamage > 0)
             {
-                target.actions.can_cast = 0;
+                target.actions.can_cast = false;
                 if (target.actions.spell_id > 0)
                 {
                     seg041.GameDelay();
@@ -656,34 +654,28 @@ namespace engine
             return ret_val;
         }
 
-        static sbyte[] /*seg600:0369*/ unk_16679 = { 0, 0x11, 0x11, 0, 0, 1, 0x11, 0, 0, 0x20, 0x20, 0x0A, 7 };
+        static sbyte[] /*seg600:0369*/ unk_16679 = { 0, 
+            17, 17,  0,  0,  1, 17,  0,  0, 32, 32, 
+            10,  7,  4,  1,  1,  0,  0, -1, -1, -1 };
 
         internal static void turns_undead(Player player)
         {
             byte var_B;
-            Player var_A;
-            byte var_6;
-            byte var_5;
-            sbyte var_4;
-            byte var_3;
-            byte var_2;
-            byte var_1;
 
             ovr025.DisplayPlayerStatusString(false, 10, "turns undead...", player);
             ovr027.redraw_screen();
             seg041.GameDelay();
-            var_5 = 0;
-            var_6 = 0;
+
+            bool any_turned = false;
+            byte var_6 = 0;
 
             player.actions.field_11 = 1;
 
-            var_3 = 6;
-            var_2 = ovr024.roll_dice(12, 1);
+            byte var_3 = 6;
+            int var_2 = ovr024.roll_dice(12, 1);
+            int var_1 = ovr024.roll_dice(20, 1);
 
-            var_1 = ovr024.roll_dice(20, 1);
-
-
-            sbyte al = (sbyte)((ovr026.sub_6B3D1(player) * player.turn_undead) + player.cleric_lvl);
+            int al = (ovr026.sub_6B3D1(player) * player.turn_undead) + player.cleric_lvl;
 
             if (al >= 1 && al <= 8)
             {
@@ -695,32 +687,33 @@ namespace engine
             }
             else
             {
-                var_B = 0x0A;
+                var_B = 10;
             }
 
-            while (sub_3F433(out var_A, player) == true && var_2 > 0 && var_6 == 0)
+            Player target;
+            while (sub_3F433(out target, player) == true && var_2 > 0 && var_6 == 0)
             {
-                var_4 = unk_16679[(var_A.field_E9 * 10) + var_B];
+                int var_4 = unk_16679[(target.field_E9 * 10) + var_B];
 
                 if (var_1 >= System.Math.Abs(var_4))
                 {
-                    var_5 = 1;
+                    any_turned = true;
 
-                    ovr033.sub_75356(false, 3, var_A);
+                    ovr033.sub_75356(false, 3, target);
                     gbl.display_hitpoints_ac = true;
-                    ovr025.display_hitpoint_ac(var_A);
+                    ovr025.display_hitpoint_ac(target);
 
                     if (var_4 > 0)
                     {
-                        var_A.actions.field_10 = 1;
-                        ovr025.sub_6818A("is turned", true, var_A);
+                        target.actions.field_10 = 1;
+                        ovr025.sub_6818A("is turned", true, target);
                     }
                     else
                     {
-                        ovr025.DisplayPlayerStatusString(false, 10, "Is destroyed", var_A);
-                        ovr033.sub_74E6F(var_A);
-                        var_A.health_status = Status.gone;
-                        var_A.in_combat = false;
+                        ovr025.DisplayPlayerStatusString(false, 10, "Is destroyed", target);
+                        ovr033.sub_74E6F(target);
+                        target.health_status = Status.gone;
+                        target.in_combat = false;
                     }
 
                     if (var_3 > 0)
@@ -743,7 +736,7 @@ namespace engine
                 }
             }
 
-            if (var_5 == 0)
+            if (any_turned == false)
             {
                 ovr025.string_print01("Nothing Happens...");
             }
@@ -759,20 +752,20 @@ namespace engine
         {
             output = null;
 
-            byte var_4 = 0x0D;
-            int var_2 = ovr025.near_enemy(0xff, player);
+            byte var_4 = 13;
+            int near_count = ovr025.near_enemy(0xff, player);
             bool result = false;
 
-            for (int i = 1; i <= var_2; i++)
+            for (int i = 1; i <= near_count; i++)
             {
-                Player player_ptr = gbl.player_array[gbl.near_targets[i]];
+                Player target = gbl.player_array[gbl.near_targets[i]];
 
-                if (player_ptr.actions.field_10 == 0 &&
-                    player_ptr.field_E9 > 0 &&
-                    player_ptr.field_E9 < var_4)
+                if (target.actions.field_10 == 0 &&
+                    target.field_E9 > 0 &&
+                    target.field_E9 < var_4)
                 {
-                    var_4 = player_ptr.field_E9;
-                    output = player_ptr;
+                    var_4 = target.field_E9;
+                    output = target;
                     result = true;
                 }
             }
@@ -1481,31 +1474,23 @@ namespace engine
         }
 
 
-        internal static void spell_menu3(out bool arg_0, QuickFight quick_fight, byte arg_6)
+        internal static void spell_menu3(out bool casting_spell, QuickFight quick_fight, byte spell_id)
         {
-            Player var_A;
-            bool var_6;
-            short var_5;
-            sbyte var_3;
-            byte var_1;
+            Player player = gbl.player_ptr;
+            bool var_6 = true;
+            short var_5 = -1;
+            casting_spell = false;
 
-            var_A = gbl.player_ptr;
-            var_6 = true;
-            var_5 = -1;
-            arg_0 = false;
-
-            var_1 = arg_6;
-
-            if (var_1 == 0)
+            if (spell_id == 0)
             {
-                var_1 = ovr020.spell_menu2(out var_6, ref var_5, SpellSource.Cast, SpellLoc.memory);
+                spell_id = ovr020.spell_menu2(out var_6, ref var_5, SpellSource.Cast, SpellLoc.memory);
             }
 
-            if (var_1 > 0 &&
-                gbl.spell_table[var_1].field_B == 0)
+            if (spell_id > 0 &&
+                gbl.spell_table[spell_id].field_B == 0)
             {
                 ovr025.string_print01("Camp Only Spell");
-                var_1 = 0;
+                spell_id = 0;
             }
 
             if (quick_fight == QuickFight.False)
@@ -1514,34 +1499,34 @@ namespace engine
                 gbl.byte_1D910 = true;
                 gbl.display_hitpoints_ac = true;
 
-                ovr033.sub_75356(true, 3, var_A);
-                ovr025.display_hitpoint_ac(var_A);
+                ovr033.sub_75356(true, 3, player);
+                ovr025.display_hitpoint_ac(player);
             }
 
-            if (var_1 > 0)
+            if (spell_id > 0)
             {
-                var_3 = (sbyte)(gbl.spell_table[var_1].field_C / 3);
+                sbyte delay = (sbyte)(gbl.spell_table[spell_id].field_C / 3);
 
-                if (var_3 == 0)
+                if (delay == 0)
                 {
-                    ovr023.sub_5D2E1(1, quick_fight, var_1);
+                    ovr023.sub_5D2E1(1, quick_fight, spell_id);
 
-                    arg_0 = ovr025.clear_actions(var_A);
+                    casting_spell = ovr025.clear_actions(player);
                 }
                 else
                 {
-                    arg_0 = true;
-                    ovr025.DisplayPlayerStatusString(true, 10, "Begins Casting", var_A);
+                    casting_spell = true;
+                    ovr025.DisplayPlayerStatusString(true, 10, "Begins Casting", player);
 
-                    var_A.actions.spell_id = var_1;
+                    player.actions.spell_id = spell_id;
 
-                    if (var_A.actions.delay > var_3)
+                    if (player.actions.delay > delay)
                     {
-                        var_A.actions.delay = var_3;
+                        player.actions.delay = delay;
                     }
                     else
                     {
-                        var_A.actions.delay = 1;
+                        player.actions.delay = 1;
                     }
                 }
             }
