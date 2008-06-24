@@ -23,9 +23,9 @@
   * Issue 5 - The correct exit message now plays when you try leave the Moander temple
   * Issue 6 - Moander sigil now fades at the correct speed
   * Issue 23 - Magic Darts are now pluralised correctly 
-  * Issue 10 - Ranged weapons (fireball spell) can target through walls
+  * Issue 10 - Ranged weapons (fireball spell) can no longer target through walls
   * Issue 21 - The treasure picture now is displayed when sharing out treasure
-  * Issue 22 - The icon now flashes
+  * Issue 22 - The world map icon now flashes
   * Issue 20 - This encounter now works
   * Fixed text problem on the large map, where the last four characters were not cleared off the screen
   * Issue 19 - The correct event happen when dealing with Dracolich
@@ -38,8 +38,8 @@
   * Fixed a mistake, that said you had cast a combat spell in non-combat when you chose to cancel
 
 = 1.0.7 =
-  * Fixed the "You have lost the fight"/"Zero EXP" noticed fighting drow patrols in Save E
-  * Fixed crash when lighting bolt spell hits a wall
+  * Fixed the "You have lost the fight"/"Zero EXP" noticed fighting Drow patrols in Save E
+  * Fixed crash when lightning bolt spell hits a wall
   * Turned off the "always on" detect magic effect that was left in after debugging the issue
   * Fixed 'Paul's save game F' forward into big fight. The combat now actually begins
   * Added a cheat, to allow Saving Throws to always succeed for the party. Some spells however do not make saving throws, and other have lesser spells cast when the major fails
