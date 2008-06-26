@@ -1,7 +1,7 @@
 = The Release Notes =
 
 = Unreleased =
-  * Fixed crash, caused by trying to load the 8 frame Medusa animation
+  * Fixed crash, caused by trying to load the 8 frame Medusa animation - Issue 27
   * Using the 'Dust of Disappearance' crashed the game in casting stage
   * Displaying magic effects after using the Dust showed Invisible as well as <no spell effects>
   * Effects were not be restored correctly from a saved game
