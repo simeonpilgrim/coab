@@ -144,16 +144,16 @@
           </Component>
 
           <Component Id="MainComponent" Guid="{20B26580-D989-42db-AB5A-53DC13BA27C7}">
-            <File Id ="main.exe" Source="C:\dev\coab\Main\bin\Debug\main.exe" />
+            <File Id ="main.exe" Source="C:\coab_root\trunk\Main\bin\Debug\main.exe" />
           </Component>
           <Component Id="EngineComponent" Guid="{BA296A86-2188-4389-9DEE-FD773637B349}">
-            <File Id ="engine.dll" Source="C:\dev\coab\Main\bin\Debug\engine.dll" />
+            <File Id ="engine.dll" Source="C:\coab_root\trunk\Main\bin\Debug\engine.dll" />
           </Component>
           <Component Id="ClassesComponent" Guid="{193AEC02-2C90-47dc-931D-B8D6523B4779}">
-            <File Id ="classes.dll" Source="C:\dev\coab\Main\bin\Debug\classes.dll" />
+            <File Id ="classes.dll" Source="C:\coab_root\trunk\Main\bin\Debug\classes.dll" />
           </Component>
           <Component Id="LoggingComponent" Guid="{42F3391F-FA43-4cb2-90DE-344FC6C19EC4}">
-            <File Id ="logging.dll" Source="C:\dev\coab\Main\bin\Debug\logging.dll" />
+            <File Id ="logging.dll" Source="C:\coab_root\trunk\Main\bin\Debug\logging.dll" />
           </Component>
         </Directory>
       </Directory>

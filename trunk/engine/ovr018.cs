@@ -493,7 +493,7 @@ namespace engine
             var_53 = player;
             for (int i = 0; i < 6; i++)
             {
-                var_53.field_145[i] = (byte)(((gbl.unk_1A1D3[i] + 8) << 4) + gbl.unk_1A1D3[i]);
+                var_53.icon_colours[i] = (byte)(((gbl.default_icon_colours[i] + 8) << 4) + gbl.default_icon_colours[i]);
             }
 
             var_53.field_124 = 0x32;
@@ -1630,9 +1630,9 @@ namespace engine
                                             player_ptr.stats[stat_var].max = gbl.unk_1A484[(int)player_ptr._class].field_4;
                                         }
 
-                                        if (sub_50793(gbl.player_ptr) < player_ptr.hit_point_max)
+                                        if (calc_max_hp(gbl.player_ptr) < player_ptr.hit_point_max)
                                         {
-                                            player_ptr.hit_point_max = sub_50793(player_ptr);
+                                            player_ptr.hit_point_max = (byte)calc_max_hp(player_ptr);
                                         }
 
                                         player_ptr.hit_point_current = player_ptr.hit_point_max;
@@ -1661,7 +1661,7 @@ namespace engine
 
                                if (sub_506BA(gbl.player_ptr) > player_ptr.hit_point_max)
                                 {
-                                    player_ptr.hit_point_max = sub_506BA(player_ptr);
+                                    player_ptr.hit_point_max = (byte)sub_506BA(player_ptr);
                                 }
 
                                 player_ptr.hit_point_current = player_ptr.hit_point_max; ;
@@ -1735,7 +1735,7 @@ namespace engine
 
                                         if (sub_506BA(gbl.player_ptr) > player_ptr.hit_point_max)
                                         {
-                                            player_ptr.hit_point_max = sub_506BA(player_ptr);
+                                            player_ptr.hit_point_max = (byte)sub_506BA(player_ptr);
                                         }
 
                                         player_ptr.hit_point_current = player_ptr.hit_point_max;
@@ -1758,9 +1758,9 @@ namespace engine
                                 {
                                     player_ptr.hit_point_max += 1;
 
-                                    if (sub_50793(gbl.player_ptr) < player_ptr.hit_point_max)
+                                    if (calc_max_hp(gbl.player_ptr) < player_ptr.hit_point_max)
                                     {
-                                        player_ptr.hit_point_max = sub_50793(gbl.player_ptr);
+                                        player_ptr.hit_point_max = (byte)calc_max_hp(gbl.player_ptr);
                                     }
 
                                     player_ptr.hit_point_current = player_ptr.hit_point_max;
@@ -1903,11 +1903,11 @@ namespace engine
             var_8 = 0;
             var_40 = 0;
 
-            for (var_33 = 0; var_33 <= 7; var_33++)
+            for (var_33 = 0; var_33 < 8; var_33++)
             {
                 if (player_ptr.class_lvls[var_33] > 0)
                 {
-                    if (player_ptr.class_lvls[var_33] < gbl.byte_1A1CB[var_33])
+                    if (player_ptr.class_lvls[var_33] < gbl.max_class_levels[var_33])
                     {
                         if ((ClassId)var_33 == ClassId.ranger)
                         {
@@ -1920,7 +1920,7 @@ namespace engine
                     }
                     else
                     {
-                        var_8 += (byte)((gbl.byte_1A1CB[var_33] - 1) * con_bonus((ClassId)var_33));
+                        var_8 += (byte)((gbl.max_class_levels[var_33] - 1) * con_bonus((ClassId)var_33));
                     }
                     var_40++;
                 }
@@ -2195,8 +2195,8 @@ namespace engine
 
                 for (byte i = 0; i < 6; i++)
                 {
-                    newColors[gbl.unk_1A1D3[i]] = (byte)(var_28.field_145[i] & 0x0F);
-                    newColors[gbl.unk_1A1D3[i] + 8] = (byte)((var_28.field_145[i] & 0xF0) >> 4);
+                    newColors[gbl.default_icon_colours[i]] = (byte)(var_28.icon_colours[i] & 0x0F);
+                    newColors[gbl.default_icon_colours[i] + 8] = (byte)((var_28.icon_colours[i] & 0xF0) >> 4);
                 }
 
                 seg040.DaxBlockRecolor(gbl.combat_icons[destIndex, 0], 0, 0, newColors, oldColors);
@@ -2212,15 +2212,10 @@ namespace engine
             Player player_ptr;
             char var_1B = '\0'; /* Simeon */
             byte var_1A = 0; /* Simeon */
-            byte var_19;
-            byte var_18;
-            byte var_17 = 0; /* Simeon */
-            byte var_16 = 0; /* Simeon */
-            byte[] var_15;
-            string var_E;
+            bool second_color = false;
+            byte color_index = 0;
+            byte[] bkup_colours = new byte[6];
             byte var_8;
-            byte var_7;
-            byte var_6;
             byte var_5;
             byte var_4;
             bool var_3;
@@ -2243,16 +2238,16 @@ namespace engine
                 player_ptr = gbl.player_ptr;
 
                 var_8 = 1;
+                System.Array.Copy(player_ptr.icon_colours, bkup_colours, 6);
 
-                var_15 = player_ptr.field_145;
-
-                var_7 = player_ptr.icon_id;
+                byte bkup_icon_id = player_ptr.icon_id;
                 player_ptr.icon_id = 0x0C;
                 ovr017.LoadPlayerCombatIcon(false);
-                player_ptr.icon_id = var_7;
-                var_4 = player_ptr.field_141;
-                var_5 = player_ptr.field_142;
-                var_6 = player_ptr.icon_size;
+                player_ptr.icon_id = bkup_icon_id;
+
+                var_4 = player_ptr.head_icon;
+                var_5 = player_ptr.weapon_icon;
+                byte bkup_size = player_ptr.icon_size;
 
                 duplicateCombatIcon(true, 12, player_ptr.icon_id);
                 drawIconEditorIcons(2, 1);
@@ -2267,23 +2262,24 @@ namespace engine
 
                     drawIconEditorIcons(4, 1);
 
+                    string text;
                     if (var_8 == 4)
                     {
                         if (player_ptr.icon_size == 2)
                         {
-                            var_E = "Small" + iconStrings[var_8];
+                            text = "Small" + iconStrings[var_8];
                         }
                         else
                         {
-                            var_E = "Large" + iconStrings[var_8];
+                            text = "Large" + iconStrings[var_8];
                         }
                     }
                     else
                     {
-                        var_E = iconStrings[var_8];
+                        text = iconStrings[var_8];
                     }
 
-                    var_2 = ovr027.displayInput(out var_3, false, 0, 15, 10, 13, var_E, string.Empty);
+                    var_2 = ovr027.displayInput(out var_3, false, 0, 15, 10, 13, text, string.Empty);
 
                     if (var_3 == false)
                     {
@@ -2300,14 +2296,14 @@ namespace engine
 
                                     case '1':
                                         var_8 = 3;
-                                        var_17 = 0;
+                                        second_color = false;
 
                                         iconStrings[3] = "Weapon Body Hair Shield Arm Leg Exit";
                                         break;
 
                                     case '2':
                                         var_8 = 3;
-                                        var_17 = 1;
+                                        second_color = true;
 
                                         iconStrings[3] = "Weapon Body Face Shield Arm Leg Exit";
                                         break;
@@ -2342,35 +2338,35 @@ namespace engine
                                 switch (var_2)
                                 {
                                     case 'W':
-                                        var_16 = 6;
+                                        color_index = 5;
                                         break;
 
                                     case 'B':
-                                        var_16 = 1;
+                                        color_index = 0;
                                         break;
 
                                     case 'H':
-                                        var_16 = 4;
+                                        color_index = 3;
                                         break;
 
                                     case 'F':
-                                        var_16 = 4;
+                                        color_index = 3;
                                         break;
 
                                     case 'S':
-                                        var_16 = 5;
+                                        color_index = 4;
                                         break;
 
                                     case 'A':
-                                        var_16 = 2;
+                                        color_index = 1;
                                         break;
 
                                     case 'L':
-                                        var_16 = 3;
+                                        color_index = 2;
                                         break;
 
                                     default:
-                                        var_16 = 1;
+                                        color_index = 0;
                                         break;
                                 }
 
@@ -2398,7 +2394,7 @@ namespace engine
                                         break;
 
                                     case 'K':
-                                        var_6 = player_ptr.icon_size;
+                                        bkup_size = player_ptr.icon_size;
                                         var_8 = 1;
                                         var_2 = ' ';
                                         break;
@@ -2407,7 +2403,7 @@ namespace engine
                                         goto case '\0';
 
                                     case '\0':
-                                        player_ptr.icon_size = var_6;
+                                        player_ptr.icon_size = bkup_size;
                                         var_8 = 1;
                                         var_2 = ' ';
                                         break;
@@ -2423,37 +2419,37 @@ namespace engine
                                     {
                                         if (var_2 == 0x50)
                                         {
-                                            if (player_ptr.field_141 > 0)
+                                            if (player_ptr.head_icon > 0)
                                             {
-                                                player_ptr.field_141 -= 1;
+                                                player_ptr.head_icon -= 1;
                                             }
                                             else
                                             {
-                                                player_ptr.field_141 = 13;
+                                                player_ptr.head_icon = 13;
                                             }
                                         }
                                         else if (var_2 == 0x4E)
                                         {
-                                            if (player_ptr.field_141 < 13)
+                                            if (player_ptr.head_icon < 13)
                                             {
-                                                player_ptr.field_141 += 1;
+                                                player_ptr.head_icon += 1;
                                             }
                                             else
                                             {
 
-                                                player_ptr.field_141 = 0;
+                                                player_ptr.head_icon = 0;
                                             }
                                         }
                                         else if (var_2 == 0x4B)
                                         {
                                             player_ptr2 = gbl.player_ptr;
-                                            var_4 = player_ptr2.field_141;
+                                            var_4 = player_ptr2.head_icon;
                                             var_8 = var_1A;
                                             var_2 = ' ';
                                         }
                                         else if (var_2 == 0x45 || var_2 == '\0')
                                         {
-                                            player_ptr.field_141 = var_4;
+                                            player_ptr.head_icon = var_4;
                                             var_8 = var_1A;
                                             var_2 = ' ';
                                         }
@@ -2464,36 +2460,36 @@ namespace engine
                                     {
                                         if (var_2 == 0x50)
                                         {
-                                            if (player_ptr.field_142 > 0)
+                                            if (player_ptr.weapon_icon > 0)
                                             {
-                                                player_ptr.field_142 -= 1;
+                                                player_ptr.weapon_icon -= 1;
                                             }
                                             else
                                             {
-                                                player_ptr.field_142 = 0x1F;
+                                                player_ptr.weapon_icon = 0x1F;
                                             }
                                         }
                                         else if (var_2 == 0x4E)
                                         {
-                                            if (player_ptr.field_142 < 0x1F)
+                                            if (player_ptr.weapon_icon < 0x1F)
                                             {
-                                                player_ptr.field_142 += 1;
+                                                player_ptr.weapon_icon += 1;
                                             }
                                             else
                                             {
-                                                player_ptr.field_142 = 0;
+                                                player_ptr.weapon_icon = 0;
                                             }
                                         }
                                         else if (var_2 == 0x4B)
                                         {
                                             player_ptr2 = gbl.player_ptr;
-                                            var_5 = player_ptr2.field_142;
+                                            var_5 = player_ptr2.weapon_icon;
                                             var_8 = var_1A;
                                             var_2 = ' ';
                                         }
                                         else if (var_2 == 0x45 || var_2 == '\0')
                                         {
-                                            player_ptr.field_142 = var_5;
+                                            player_ptr.weapon_icon = var_5;
                                             var_8 = var_1A;
                                             var_2 = ' ';
                                         }
@@ -2503,44 +2499,44 @@ namespace engine
                                 }
                                 else if (var_1A == 3)
                                 {
-                                    var_18 = (byte)(player_ptr.field_145[var_16 - 1] & 0x0F);
-                                    var_19 = (byte)((player_ptr.field_145[var_16 - 1] & 0xF0) >> 4);
+                                    byte low_color = (byte)(player_ptr.icon_colours[color_index] & 0x0F);
+                                    byte high_color = (byte)((player_ptr.icon_colours[color_index] & 0xF0) >> 4);
 
                                     if (var_2 == 0x4E)
                                     {
-                                        if (var_17 != 0)
+                                        if (second_color == true)
                                         {
-                                            var_19 = (byte)((var_19 + 1) % 16);
+                                            high_color = (byte)((high_color + 1) % 16);
                                         }
                                         else
                                         {
-                                            var_18 = (byte)((var_18 + 1) % 16);
+                                            low_color = (byte)((low_color + 1) % 16);
                                         }
 
-                                        player_ptr.field_145[var_16 - 1] = (byte)(var_18 + (var_19 << 4));
+                                        player_ptr.icon_colours[color_index] = (byte)(low_color + (high_color << 4));
                                     }
                                     else if (var_2 == 0x50)
                                     {
-                                        if (var_17 != 0)
+                                        if (second_color == true)
                                         {
-                                            var_19 = (byte)((var_19 - 1) & 0x0F);
+                                            high_color = (byte)((high_color - 1) & 0x0F);
                                         }
                                         else
                                         {
-                                            var_18 = (byte)((var_18 - 1) & 0x0F);
+                                            low_color = (byte)((low_color - 1) & 0x0F);
                                         }
 
-                                        player_ptr.field_145[var_16 - 1] = (byte)(var_18 + (var_19 << 4));
+                                        player_ptr.icon_colours[color_index] = (byte)(low_color + (high_color << 4));
                                     }
                                     else if (var_2 == 0x4B)
                                     {
-                                        var_15 = player_ptr.field_145;
+                                        System.Array.Copy(player_ptr.icon_colours, bkup_colours, 6);
                                         var_8 = var_1A;
                                         var_2 = ' ';
                                     }
                                     else if (var_2 == 0x45 || var_2 == '\0')
                                     {
-                                        player_ptr.field_145 = var_15;
+                                        System.Array.Copy(bkup_colours, player_ptr.icon_colours, 6);
                                         var_8 = var_1A;
                                         var_2 = ' ';
                                     }
@@ -2553,10 +2549,12 @@ namespace engine
 
                 } while (var_1A != 0 || unk_4FE94.MemberOf(var_2) == false);
 
-                player_ptr.field_141 = var_4;
-                player_ptr.field_142 = var_5;
-                player_ptr.icon_size = var_6;
-                player_ptr.field_145 = var_15;
+                player_ptr.head_icon = var_4;
+                player_ptr.weapon_icon = var_5;
+                player_ptr.icon_size = bkup_size;
+
+                System.Array.Copy(bkup_colours, player_ptr.icon_colours, 6);
+
                 duplicateCombatIcon(true, 12, player_ptr.icon_id);
                 duplicateCombatIcon(false, player_ptr.icon_id, 12);
 
@@ -2571,30 +2569,24 @@ namespace engine
         }
 
         /// <summary> seg600:4281 </summary>
-        static sbyte[] con_hp_adj = { 
-            8, 0, 0, -2, -1, -1, -1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 2,2,2,2,2,2,2,2,2 };
+        static sbyte[] con_hp_adj = { 8, 0, 0, -2, -1, -1, -1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2 };
 
         internal static sbyte get_con_hp_adj(Player player)
         {
-            Player player_ptr;
-            byte loop1_var;
-            sbyte hp_adj;
+            sbyte hp_adj = 0;
 
-            hp_adj = 0;
-            player_ptr = player;
-
-            for (loop1_var = 0; loop1_var <= (byte)ClassId.monk; loop1_var++)
+            for (int class_index = 0; class_index <= (byte)ClassId.monk; class_index++)
             {
-                if (player_ptr.class_lvls[loop1_var] > 0 &&
-                    player_ptr.class_lvls[loop1_var] < gbl.byte_1A1CB[loop1_var])
+                if (player.class_lvls[class_index] > 0 &&
+                    player.class_lvls[class_index] < gbl.max_class_levels[class_index])
                 {
-                    hp_adj += con_hp_adj[player_ptr.con];
+                    hp_adj += con_hp_adj[player.con];
 
-                    if (player_ptr._class == ClassId.fighter ||
-                        player_ptr._class == ClassId.paladin ||
-                        player_ptr._class == ClassId.ranger)
+                    if (player._class == ClassId.fighter ||
+                        player._class == ClassId.paladin ||
+                        player._class == ClassId.ranger)
                     {
-                        byte con = player_ptr.con;
+                        byte con = player.con;
 
                         if (con == 17)
                         {
@@ -2618,8 +2610,8 @@ namespace engine
                         }
                     }
 
-                    if (loop1_var == (byte)ClassId.ranger &&
-                        player_ptr.class_lvls[loop1_var] == 1)
+                    if (class_index == (byte)ClassId.ranger &&
+                        player.class_lvls[class_index] == 1)
                     {
                         hp_adj *= 2;
                     }
@@ -2630,44 +2622,27 @@ namespace engine
         }
 
 
-        internal static byte sub_506BA(Player player)
+        internal static int sub_506BA(Player player)
         {
-            Player player_ptr;
-            byte loop1_var;
-            byte levels_total;
-            sbyte con_adj;
-            byte class_count;
-            byte ret_val;
+            int class_count = 0;
+            int levels_total = 0;
 
-            player_ptr = player;
-
-            class_count = 0;
-            levels_total = 0;
-            for (loop1_var = 0; loop1_var <= (byte)ClassId.monk; loop1_var++)
+            for (int class_index = 0; class_index <= (int)ClassId.monk; class_index++)
             {
-                if (player_ptr.class_lvls[loop1_var] > 0)
+                if (player.class_lvls[class_index] > 0)
                 {
-                    levels_total += (byte)player_ptr.class_lvls[loop1_var];
+                    levels_total += player.class_lvls[class_index] + hp_calc_table[class_index].lvl_bonus;
                     class_count++;
-
-                    if (loop1_var == (byte)ClassId.ranger)
-                    {
-                        levels_total++;
-                    }
-                    else if (loop1_var == 7)
-                    {
-                        levels_total++;
-                    }
                 }
             }
 
-            con_adj = get_con_hp_adj(player);
+            int con_adj = get_con_hp_adj(player);
 
             if (con_adj < 0)
             {
                 if (levels_total > (System.Math.Abs(con_adj) + class_count))
                 {
-                    levels_total = (byte)((levels_total + con_adj) / class_count);
+                    levels_total = (levels_total + con_adj) / class_count;
                 }
                 else
                 {
@@ -2676,113 +2651,64 @@ namespace engine
             }
             else
             {
-                levels_total = (byte)((levels_total + con_adj) / class_count);
+                levels_total = (levels_total + con_adj) / class_count;
             }
 
-            ret_val = levels_total;
-
-            return ret_val;
+            return levels_total;
         }
 
-
-        internal static byte sub_50793(Player player)
+        class hp_calc
         {
-            Player player_ptr;
-            byte var_6;
-            byte loop_var;
-            sbyte var_4;
-            byte var_3;
-            byte var_2;
-            byte ret_val;
+            public hp_calc(int _dice, int _lvl, int _base, int _mult) { dice = _dice; lvl_bonus = _lvl; max_base = _base; max_mult = _mult; }
 
-            player_ptr = player;
+            public int dice;
+            public int lvl_bonus;
+            public int max_base;
+            public int max_mult;
+        }
 
-            var_2 = 0;
-            var_3 = 0;
+        static hp_calc[] hp_calc_table = { 
+            new hp_calc(8, 0, 0x48, 2), // Cleric
+            new hp_calc(8, 0, 0x70, 0), // Druid
+            new hp_calc(10, 0, 0x5A, 3), // Fighter
+            new hp_calc(10, 0, 0x5A, 3), // Paladin
+            new hp_calc(8, 1, 0x58, 2), // Ranger
+            new hp_calc(4, 0, 0x2c, 1), // Magic User
+            new hp_calc(6, 0, 0x3c, 2), // Thief
+            new hp_calc(4, 1, 0x48, 0), // Monk
+        };
 
-            for (loop_var = 0; loop_var <= 7; loop_var++)
+        internal static int calc_max_hp(Player player) /* sub_50793 */
+        {
+            int class_count = 0;
+            int max_hp = 0;
+
+            for (int class_index = 0; class_index <= 7; class_index++)
             {
-                if (player_ptr.class_lvls[loop_var] > 0)
+                if (player.class_lvls[class_index] > 0)
                 {
-                    var_4 = con_bonus((ClassId)loop_var);
+                    hp_calc hpt = hp_calc_table[class_index];
 
-                    if (player_ptr.class_lvls[loop_var] < gbl.byte_1A1CB[loop_var])
+                    int var_4 = con_bonus((ClassId)class_index);
+
+                    if (player.class_lvls[class_index] < gbl.max_class_levels[class_index])
                     {
-                        var_2++;
-
-                        switch (loop_var)
-                        {
-                            case 0:
-                                var_3 += (byte)((var_4 + 8) * player_ptr.class_lvls[loop_var]);
-                                break;
-
-                            case 1:
-                                var_3 += (byte)((var_4 + 8) * player_ptr.class_lvls[loop_var]);
-                                break;
-
-                            case 2:
-                            case 3:
-                                var_3 += (byte)((var_4 + 10) * player_ptr.class_lvls[loop_var]);
-                                break;
-
-                            case 4:
-                                var_3 += (byte)((var_4 + 8) * (player_ptr.class_lvls[loop_var] + 1));
-                                break;
-
-                            case 5:
-                                var_3 += (byte)((var_4 + 4) * player_ptr.class_lvls[loop_var]);
-                                break;
-
-                            case 6:
-                                var_3 += (byte)((var_4 + 6) * player_ptr.class_lvls[loop_var]);
-                                break;
-
-                            case 7:
-                                var_3 += (byte)((var_4 + 4) * (player_ptr.class_lvls[loop_var] + 1));
-                                break;
-                        }
+                        class_count++;
+                        max_hp += (var_4 + hpt.dice) * (player.class_lvls[class_index] + hpt.lvl_bonus);
                     }
                     else
                     {
-                        var_2++;
-                        var_6 = (byte)((player_ptr.class_lvls[loop_var] - gbl.byte_1A1CB[loop_var]) + 1);
+                        class_count++;
+                        int over_count = (player.class_lvls[class_index] - gbl.max_class_levels[class_index]) + 1;
 
-                        if (loop_var == 0)
-                        {
-                            var_3 = (byte)((var_6 * 2) + 0x48);
-                        }
-                        else if (loop_var == 1)
-                        {
-                            var_3 = 0x70;
-                        }
-                        else if (loop_var == 2 || loop_var == 3)
-                        {
-                            var_3 = (byte)((var_6 * 3) + 0x5A);
-                        }
-                        else if (loop_var == 4)
-                        {
-                            var_3 = (byte)((var_6 * 2) + 0x58);
-                        }
-                        else if (loop_var == 5)
-                        {
-                            var_3 = (byte)(var_6 + 0x2C);
-                        }
-                        else if (loop_var == 6)
-                        {
-                            var_3 = (byte)((var_6 * 2) + 0x3C);
-                        }
-                        else if (loop_var == 7)
-                        {
-                            var_3 = 0x48;
-                        }
+                        max_hp = hpt.max_base + (over_count * hpt.max_mult);
                     }
                 }
             }
 
-            var_3 /= var_2;
-            ret_val = var_3 ;
+            max_hp /= class_count;
 
-            return ret_val;
+            return max_hp;
         }
 
         static byte[ ] /* seg600:081A */ unk_16B2A = { 1, 1, 1, 1, 2, 1, 1, 2 } ;
@@ -2806,7 +2732,7 @@ namespace engine
                 if (player.class_lvls[loop_var] > 0 &&
                     (unk_1A1BA[loop_var] & arg_0) != 0)
                 {
-                    if (player.class_lvls[loop_var] < gbl.byte_1A1CB[loop_var])
+                    if (player.class_lvls[loop_var] < gbl.max_class_levels[loop_var])
                     {
                         var_5 = unk_16B2A[loop_var];
 
