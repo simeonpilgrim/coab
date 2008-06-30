@@ -841,20 +841,20 @@ namespace engine
         }
 
 
-        internal static void sub_647BE(byte arg_2, int arg_4, byte bp_var_1, ref byte bp_var_A, Player bp_arg_2)
+        internal static void sub_647BE(byte arg_2, int class_index, byte bp_var_1, ref byte bp_var_A, Player player)
         {
-            if (gbl.byte_1A1CB[arg_4] <= arg_2)
+            if (gbl.max_class_levels[class_index] <= arg_2)
             {
-                arg_2 = (byte)(gbl.byte_1A1CB[arg_4] - 1);
+                arg_2 = (byte)(gbl.max_class_levels[class_index] - 1);
             }
 
-            if (arg_4 == 4 &&
-                (bp_arg_2.field_E6 == 0 || bp_arg_2.field_115 == bp_arg_2.field_E6))
+            if (class_index == 4 &&
+                (player.field_E6 == 0 || player.field_115 == player.field_E6))
             {
                 arg_2 += 1;
             }
 
-            if (arg_4 == 2 || arg_4 == 3 || arg_4 == 4)
+            if (class_index == 2 || class_index == 3 || class_index == 4)
             {
                 if (bp_var_1 >= 0x0F && bp_var_1 <= 0x13)
                 {
@@ -1134,9 +1134,9 @@ namespace engine
                         var_13++;
                     }
 
-                    if (gbl.byte_1A1CB[var_C] < var_B)
+                    if (gbl.max_class_levels[var_C] < var_B)
                     {
-                        var_B = gbl.byte_1A1CB[var_C];
+                        var_B = gbl.max_class_levels[var_C];
                     }
 
                     if (var_B > player.field_E6)

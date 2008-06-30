@@ -26,7 +26,7 @@ namespace engine
 
         internal static char buy_cure(short cost, string cure_name)
         {
-            string text = cure_name + " will only cost	" + cost.ToString() + "	gold pieces.";
+            string text = string.Format("{0} will only cost {1} gold pieces.", cure_name, cost);
             seg041.press_any_key(text, true, 0, 10, 0x16, 0x26, 0x11, 1);
 
             char input_key = ovr027.yes_no(15, 10, 13, "pay for cure ");

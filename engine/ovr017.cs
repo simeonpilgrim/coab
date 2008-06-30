@@ -268,8 +268,8 @@ namespace engine
 
             char[] unk_16827 = new char[] { '\0', 'S', 'T' };
 
-            ovr034.chead_cbody_comspr_icon(11, player_ptr.field_141, "CHEAD" + unk_16827[player_ptr.icon_size].ToString());
-            ovr034.chead_cbody_comspr_icon(player_ptr.icon_id, player_ptr.field_142, "CBODY" + unk_16827[player_ptr.icon_size].ToString());
+            ovr034.chead_cbody_comspr_icon(11, player_ptr.head_icon, "CHEAD" + unk_16827[player_ptr.icon_size].ToString());
+            ovr034.chead_cbody_comspr_icon(player_ptr.icon_id, player_ptr.weapon_icon, "CBODY" + unk_16827[player_ptr.icon_size].ToString());
 
             MergeIcons(gbl.combat_icons[player_ptr.icon_id, 0], gbl.combat_icons[11, 0]);
             MergeIcons(gbl.combat_icons[player_ptr.icon_id, 1], gbl.combat_icons[11, 1]);
@@ -285,10 +285,10 @@ namespace engine
                     var_23[i] = i;
                 }
 
-                for (byte i = 0; i < 6; i++)
+                for (int i = 0; i < 6; i++)
                 {
-                    var_23[gbl.unk_1A1D3[i]] = (byte)(player_ptr.field_145[i] & 0x0F);
-                    var_23[gbl.unk_1A1D3[i] + 8] = (byte)((player_ptr.field_145[i] & 0xF0) >> 4);
+                    var_23[gbl.default_icon_colours[i]] = (byte)(player_ptr.icon_colours[i] & 0x0F);
+                    var_23[gbl.default_icon_colours[i] + 8] = (byte)((player_ptr.icon_colours[i] & 0xF0) >> 4);
                 }
 
                 seg040.DaxBlockRecolor(gbl.combat_icons[player_ptr.icon_id, 0], 0, 0, var_23, var_13);
@@ -1119,7 +1119,7 @@ namespace engine
             throw new System.NotSupportedException();//les	di, int ptr [bp+player.offset]
             throw new System.NotSupportedException();//mov	es:[di+144h], al
 
-            System.Array.Copy(bp_var_1C0.field_C1, player.field_145, 6);
+            System.Array.Copy(bp_var_1C0.field_C1, player.icon_colours, 6);
 
             throw new System.NotSupportedException();//mov	di, [bp+arg_0]
             throw new System.NotSupportedException();//les	di, ss:[di-0x1C0]
@@ -1549,11 +1549,9 @@ namespace engine
 
                         player01_ptr = player_ptr;
 
-                        for (gbl.byte_1DA71 = 1; gbl.byte_1DA71 <= 6; gbl.byte_1DA71++)
+                        for (int i = 0; i < 6; i++)
                         {
-                            int i = gbl.byte_1DA71;
-
-                            player01_ptr.field_145[i] = (byte)(((gbl.unk_1A1D3[i] + 8) << 4) + gbl.unk_1A1D3[i]);
+                            player01_ptr.icon_colours[i] = (byte)(((gbl.default_icon_colours[i] + 8) << 4) + gbl.default_icon_colours[i]);
                         }
 
                         player01_ptr.field_124 = 0x32;

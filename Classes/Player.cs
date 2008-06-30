@@ -436,15 +436,15 @@ namespace Classes
         [DataOffset(0x140, DataType.Byte)]
         public byte field_140; // 0x140;
         [DataOffset(0x141, DataType.Byte)]
-        public byte field_141; // 0x141;
+        public byte head_icon; // 0x141;
         [DataOffset(0x142, DataType.Byte)]
-        public byte field_142; // 0x142;
+        public byte weapon_icon; // 0x142;
         [DataOffset(0x143, DataType.Byte)]
         public byte icon_id; // 0x143;
         [DataOffset(0x144, DataType.Byte)]
         public byte icon_size; // 0x144; field_144  1 small 2 normal
         [DataOffset(0x145, DataType.ByteArray,6)]
-        public byte[] field_145 = new byte[6]; // 0x145 = field_144[1] // byte[6]
+        public byte[] icon_colours = new byte[6]; // 0x145 = field_144[1] // byte[6]
         [DataOffset(0x14b, DataType.Byte)]
         public byte field_14B; // 0x14b;
         [DataOffset(0x14c, DataType.Byte)]
@@ -724,8 +724,12 @@ namespace Classes
             DataIO.WriteObject(this, data);
 
             for (int i = 0; i < 3; i++)
+            {
                 for (int j = 0; j < 5; j++)
+                {
                     data[0x12d + j + (i * i)] = field_12D[i, j];
+                }
+            }
 
             return data;
         }
