@@ -28,7 +28,7 @@ namespace Main
 
             if (key == Keys.Delete)
             {
-                return 0x08;
+                return 0x5300;
             }
 
             if (key == Keys.Back)

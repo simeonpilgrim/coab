@@ -245,31 +245,32 @@ namespace engine
  
                     do
                     {
-                        throw new System.NotSupportedException();//loc_1352D:
-                        throw new System.NotSupportedException();//mov	ax, [si+8]
-                        throw new System.NotSupportedException();//shr	ax, 1
-                        throw new System.NotSupportedException();//shr	ax, 1
-                        throw new System.NotSupportedException();//shr	al, 1
-                        throw new System.NotSupportedException();//shr	al, 1
-                        throw new System.NotSupportedException();//shr	al, 1
-                        throw new System.NotSupportedException();//shr	al, 1
-                        throw new System.NotSupportedException();//xor	al, dl
-                        throw new System.NotSupportedException();//out	0x0C0, al
-                        throw new System.NotSupportedException();//cmp	dl, 0x0E0
-                        throw new System.NotSupportedException();//jz	loc_13549
-                        throw new System.NotSupportedException();//mov	al, ah
-                        throw new System.NotSupportedException();//out	0x0C0, al
-                        throw new System.NotSupportedException();//loc_13549:
-                        throw new System.NotSupportedException();//mov	ax, 0x0FFFF
-                        throw new System.NotSupportedException();//sub	ax, [si+0Ah]
-                        throw new System.NotSupportedException();//shr	ah, 1
-                        throw new System.NotSupportedException();//shr	ah, 1
-                        throw new System.NotSupportedException();//shr	ah, 1
-                        throw new System.NotSupportedException();//shr	ah, 1
-                        throw new System.NotSupportedException();//mov	al, ah
-                        throw new System.NotSupportedException();//xor	al, dl
-                        throw new System.NotSupportedException();//add	al, 0x10
-                        throw new System.NotSupportedException();//out	0x0C0, al
+                        throw new System.NotSupportedException();
+                        //loc_1352D:
+                        //mov	ax, [si+8]
+                        //shr	ax, 1
+                        //shr	ax, 1
+                        //shr	al, 1
+                        //shr	al, 1
+                        //shr	al, 1
+                        //shr	al, 1
+                        //xor	al, dl
+                        //out	0x0C0, al
+                        //cmp	dl, 0x0E0
+                        //jz	loc_13549
+                        //mov	al, ah
+                        //out	0x0C0, al
+                        //loc_13549:
+                        //mov	ax, 0x0FFFF
+                        //sub	ax, [si+0Ah]
+                        //shr	ah, 1
+                        //shr	ah, 1
+                        //shr	ah, 1
+                        //shr	ah, 1
+                        //mov	al, ah
+                        //xor	al, dl
+                        //add	al, 0x10
+                        //out	0x0C0, al
 
                         dl += 0x20;
                         si += 0x30;
@@ -302,8 +303,8 @@ namespace engine
                 ax += unk_12230[si, 0x1C / 2];
 
                 throw new System.NotSupportedException();//mov	di, ax
-                throw new System.NotSupportedException();//mov	ah, [di]
-                throw new System.NotSupportedException();//mov	al, 0
+                //mov	ah, [di]
+                //mov	al, 0
 
                 ax *= unk_12230[si, 0x22 / 2];
             }
