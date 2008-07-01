@@ -2948,22 +2948,17 @@ namespace engine
 
         internal static void spell_poisonous_cloud()
         {
-            byte var_18;
-            byte var_17 = 0; /* Simeon */
+            byte dir = 0;
             byte var_16;
             byte var_15;
-            byte var_14 = 0; /* Simeon */
-            byte var_13;
-            byte var_12;
+            byte ground_tile = 0;
             byte[] var_11 = new byte[10];
-            Struct_1D885 var_8;
-            Struct_1D885 var_4;
 
             gbl.byte_1D2C7 = true;
 
             var_15 = (byte)ovr025.spell_target_count(gbl.spell_id);
-            var_13 = 0;
-            var_8 = gbl.stru_1D889;
+            int count = 0;
+            Struct_1D885 var_8 = gbl.stru_1D889;
 
             if (var_8 == null)
             {
@@ -2976,7 +2971,7 @@ namespace engine
                 {
                     if (var_8.player == gbl.player_ptr)
                     {
-                        var_13++;
+                        count++;
                     }
                     var_8 = var_8.next;
                 }
@@ -2985,23 +2980,23 @@ namespace engine
                 var_8 = var_8.next;
             }
 
-            ovr024.add_affect(true, (byte)(var_15 + (var_13 << 4)), var_15, Affects.affect_5b, gbl.player_ptr);
+            ovr024.add_affect(true, (byte)(var_15 + (count << 4)), var_15, Affects.affect_5b, gbl.player_ptr);
 
             var_8.player = gbl.player_ptr;
-            var_8.field_1C = var_13;
+            var_8.field_1C = count;
             var_8.target_x = gbl.targetX;
             var_8.target_y = gbl.targetY;
 
             for (var_16 = 1; var_16 <= 9; var_16++)
             {
-                var_17 = gbl.unk_18AED[var_16];
+                dir = gbl.unk_18AED[var_16];
 
-                ovr033.AtMapXY(out var_14, out var_11[var_16],
-                    gbl.targetY + gbl.MapDirectionYDelta[var_17],
-                    gbl.targetX + gbl.MapDirectionXDelta[var_17]);
+                ovr033.AtMapXY(out ground_tile, out var_11[var_16],
+                    gbl.targetY + gbl.MapDirectionYDelta[dir],
+                    gbl.targetX + gbl.MapDirectionXDelta[dir]);
 
-                if (var_14 > 0 &&
-                    gbl.BackGroundTiles[var_14].move_cost < 0xff)
+                if (ground_tile > 0 &&
+                    gbl.BackGroundTiles[ground_tile].move_cost < 0xff)
                 {
                     var_8.field_10[var_16] = 1;
                 }
@@ -3010,208 +3005,84 @@ namespace engine
                     var_8.field_10[var_16] = 0;
                 }
 
-                if (var_14 == 0x1E)
+                if (ground_tile == 0x1E)
                 {
-                    var_4 = gbl.stru_1D885;
-                    var_18 = 0;
+                    Struct_1D885 var_4 = gbl.stru_1D885;
+                    bool found = false;
 
-                    while (var_4 != null && var_18 == 0)
+                    while (var_4 != null && found == false)
                     {
-                        for (var_12 = 1; var_12 <= 4; var_12++)
+                        for (int var_12 = 1; var_12 <= 4; var_12++)
                         {
-                            if (var_4.field_10[var_12] != 0)
+                            if (var_4.field_10[var_12] != 0 &&
+                                (gbl.MapDirectionXDelta[gbl.unk_18AE9[var_12]] + var_4.target_x) == (gbl.MapDirectionXDelta[dir] + gbl.targetX) &&
+                                (gbl.MapDirectionYDelta[gbl.unk_18AE9[var_12]] + var_4.target_y) == (gbl.MapDirectionYDelta[dir] + gbl.targetY) &&
+                                var_4.field_7[var_12] != 0x1E &&
+                                var_4.field_7[var_12] != 0x1C)
                             {
-                                throw new System.NotSupportedException();//mov	al, [bp+var_17]
-                                throw new System.NotSupportedException();//xor	ah, ah
-                                throw new System.NotSupportedException();//mov	di, ax
-                                throw new System.NotSupportedException();//mov	al, gbl.MapDirectionXDelta[di]
-                                throw new System.NotSupportedException();//cbw
-                                throw new System.NotSupportedException();//mov	dx, ax
-                                throw new System.NotSupportedException();//mov	al, byte_1D883
-                                throw new System.NotSupportedException();//cbw
-                                throw new System.NotSupportedException();//add	ax, dx
-                                throw new System.NotSupportedException();//mov	cx, ax
-                                throw new System.NotSupportedException();//mov	al, [bp+var_12]
-                                throw new System.NotSupportedException();//xor	ah, ah
-                                throw new System.NotSupportedException();//mov	di, ax
-                                throw new System.NotSupportedException();//mov	al, gbl.unk_18AE9[di]
-                                throw new System.NotSupportedException();//xor	ah, ah
-                                throw new System.NotSupportedException();//mov	di, ax
-                                throw new System.NotSupportedException();//mov	al, gbl.MapDirectionXDelta[di]
-                                throw new System.NotSupportedException();//cbw
-                                throw new System.NotSupportedException();//mov	dx, ax
-                                throw new System.NotSupportedException();//les	di, [bp+var_4]
-                                throw new System.NotSupportedException();//mov	al, es:[di+1Ah]
-                                throw new System.NotSupportedException();//cbw
-                                throw new System.NotSupportedException();//add	ax, dx
-                                throw new System.NotSupportedException();//cmp	ax, cx
-                                throw new System.NotSupportedException();//jnz	loc_61235
-
-
-                                int cx = gbl.targetY + gbl.MapDirectionYDelta[var_17];
-                                int ax = var_4.target_y + gbl.MapDirectionYDelta[gbl.unk_18AE9[var_12]];
-
-                                if (ax == cx)
-                                {
-                                    if (var_4.field_7[var_12] != 0x1E &&
-                                        var_4.field_7[var_12] != 0x1C)
-                                    {
-                                        var_14 = var_4.field_7[var_12];
-                                        var_18 = 1;
-                                    }
-                                }
+                                ground_tile = var_4.field_7[var_12];
+                                found = true;
                             }
-                            //loc_61235:
                         }
 
                         var_4 = var_4.next;
                     }
                 }
-                else if (var_14 == 0x1C)
+                else if (ground_tile == 0x1C)
                 {
-                    var_4 = gbl.stru_1D889;
-                    var_18 = 0;
+                    Struct_1D885 var_4 = gbl.stru_1D889;
+                    bool found = false;
 
-                    while (var_4 != null && var_18 == 0)
+                    while (var_4 != null && found == false)
                     {
                         if (var_4 != var_8)
                         {
-                            for (var_12 = 1; var_12 <= 9; var_12++)
+                            for (int var_12 = 1; var_12 <= 9; var_12++)
                             {
-                                throw new System.NotSupportedException();//mov	al, [bp+var_12]
-                                throw new System.NotSupportedException();//xor	ah, ah
-                                throw new System.NotSupportedException();//les	di, [bp+var_4]
-                                throw new System.NotSupportedException();//add	di, ax
-                                throw new System.NotSupportedException();//cmp	byte ptr es:[di+10h], 0
-                                throw new System.NotSupportedException();//jnz	loc_612B1
-                                throw new System.NotSupportedException();//jmp	loc_6135C
-                                throw new System.NotSupportedException();//loc_612B1:
-                                throw new System.NotSupportedException();//mov	al, [bp+var_17]
-                                throw new System.NotSupportedException();//xor	ah, ah
-                                throw new System.NotSupportedException();//mov	di, ax
-                                throw new System.NotSupportedException();//mov	al, gbl.MapDirectionXDelta[di]
-                                throw new System.NotSupportedException();//cbw
-                                throw new System.NotSupportedException();//mov	dx, ax
-                                throw new System.NotSupportedException();//mov	al, byte_1D883
-                                throw new System.NotSupportedException();//cbw
-                                throw new System.NotSupportedException();//add	ax, dx
-                                throw new System.NotSupportedException();//mov	cx, ax
-                                throw new System.NotSupportedException();//mov	al, [bp+var_12]
-                                throw new System.NotSupportedException();//xor	ah, ah
-                                throw new System.NotSupportedException();//mov	di, ax
-                                throw new System.NotSupportedException();//mov	al, gbl.unk_18AED[di]
-                                throw new System.NotSupportedException();//xor	ah, ah
-                                throw new System.NotSupportedException();//mov	di, ax
-                                throw new System.NotSupportedException();//mov	al, gbl.MapDirectionXDelta[di]
-                                throw new System.NotSupportedException();//cbw
-                                throw new System.NotSupportedException();//mov	dx, ax
-                                throw new System.NotSupportedException();//les	di, [bp+var_4]
-                                throw new System.NotSupportedException();//mov	al, es:[di+1Ah]
-                                throw new System.NotSupportedException();//cbw
-                                throw new System.NotSupportedException();//add	ax, dx
-                                throw new System.NotSupportedException();//cmp	ax, cx
-                                throw new System.NotSupportedException();//jnz	loc_6135C
-                                throw new System.NotSupportedException();//mov	al, [bp+var_17]
-                                throw new System.NotSupportedException();//xor	ah, ah
-                                throw new System.NotSupportedException();//mov	di, ax
-                                throw new System.NotSupportedException();//mov	al, gbl.MapDirectionYDelta[di]
-                                throw new System.NotSupportedException();//cbw
-                                throw new System.NotSupportedException();//mov	dx, ax
-                                throw new System.NotSupportedException();//mov	al, gbl.targetY
-                                throw new System.NotSupportedException();//cbw
-                                throw new System.NotSupportedException();//add	ax, dx
-                                throw new System.NotSupportedException();//mov	cx, ax
-                                throw new System.NotSupportedException();//mov	al, [bp+var_12]
-                                throw new System.NotSupportedException();//xor	ah, ah
-                                throw new System.NotSupportedException();//mov	di, ax
-                                throw new System.NotSupportedException();//mov	al, gbl.unk_18AED[di]
-                                throw new System.NotSupportedException();//xor	ah, ah
-                                throw new System.NotSupportedException();//mov	di, ax
-                                throw new System.NotSupportedException();//mov	al, gbl.MapDirectionYDelta[di]
-                                throw new System.NotSupportedException();//cbw
-                                throw new System.NotSupportedException();//mov	dx, ax
-                                throw new System.NotSupportedException();//les	di, [bp+var_4]
-                                throw new System.NotSupportedException();//mov	al, es:[di+1Bh]
-                                throw new System.NotSupportedException();//cbw
-                                throw new System.NotSupportedException();//add	ax, dx
-                                throw new System.NotSupportedException();//cmp	ax, cx
-                                throw new System.NotSupportedException();//jnz	loc_6135C
-                                throw new System.NotSupportedException();//mov	al, [bp+var_12]
-                                throw new System.NotSupportedException();//xor	ah, ah
-                                throw new System.NotSupportedException();//les	di, [bp+var_4]
-                                throw new System.NotSupportedException();//add	di, ax
-                                throw new System.NotSupportedException();//cmp	byte ptr es:[di+7], 0x1E
-                                throw new System.NotSupportedException();//jz	loc_6135C
-                                throw new System.NotSupportedException();//mov	al, [bp+var_12]
-                                throw new System.NotSupportedException();//xor	ah, ah
-                                throw new System.NotSupportedException();//les	di, [bp+var_4]
-                                throw new System.NotSupportedException();//add	di, ax
-                                throw new System.NotSupportedException();//cmp	byte ptr es:[di+7], 0x1C
-                                throw new System.NotSupportedException();//jz	loc_6135C
-
-                                var_14 = var_4.field_7[var_12];
-                                var_18 = 1;
-                                throw new System.NotSupportedException();//loc_6135C:
+                                if (var_4.field_10[var_12] != 0 &&
+                                    (gbl.MapDirectionXDelta[gbl.unk_18AED[var_12]] + var_4.target_x) == (gbl.MapDirectionXDelta[dir] + gbl.targetX) &&
+                                    (gbl.MapDirectionYDelta[gbl.unk_18AED[var_12]] + var_4.target_y) == (gbl.MapDirectionYDelta[dir] + gbl.targetY) &&
+                                    var_4.field_7[var_12] != 0x1E &&
+                                    var_4.field_7[var_12] != 0x1C )
+                                {
+                                    ground_tile = var_4.field_7[var_12];
+                                    found = true;
+                                }
                             }
                         }
 
                         var_4 = var_4.next;
                     }
                 }
-                else if (var_14 == 0x1F)
+                else if (ground_tile == 0x1F)
                 {
-                    for (var_12 = 1; var_12 <= gbl.byte_1D1BB; var_12++)
+                    for (int var_12 = 1; var_12 <= gbl.byte_1D1BB; var_12++)
                     {
-                        throw new System.NotSupportedException();//mov	al, [bp+var_17]
-                        throw new System.NotSupportedException();//xor	ah, ah
-                        throw new System.NotSupportedException();//mov	di, ax
-                        throw new System.NotSupportedException();//mov	al, gbl.MapDirectionXDelta[di]
-                        throw new System.NotSupportedException();//cbw
-                        throw new System.NotSupportedException();//mov	dx, ax
-                        throw new System.NotSupportedException();//mov	al, byte_1D883
-                        throw new System.NotSupportedException();//cbw
-                        throw new System.NotSupportedException();//add	ax, dx
-                        throw new System.NotSupportedException();//mov	cx, ax
-                        throw new System.NotSupportedException();//mov	al, gbl.unk_1D183[ var_12 ].field_4
-                        throw new System.NotSupportedException();//cbw
-                        throw new System.NotSupportedException();//cmp	ax, cx
-                        throw new System.NotSupportedException();//jnz	loc_61401
-                        throw new System.NotSupportedException();//mov	al, [bp+var_17]
-                        throw new System.NotSupportedException();//xor	ah, ah
-                        throw new System.NotSupportedException();//mov	di, ax
-                        throw new System.NotSupportedException();//mov	al, gbl.MapDirectionYDelta[di]
-                        throw new System.NotSupportedException();//cbw
-                        throw new System.NotSupportedException();//mov	dx, ax
-                        throw new System.NotSupportedException();//mov	al, gbl.targetY
-                        throw new System.NotSupportedException();//cbw
-                        throw new System.NotSupportedException();//add	ax, dx
-                        throw new System.NotSupportedException();//mov	cx, ax
-                        throw new System.NotSupportedException();//mov	al, gbl.unk_1D183[ var_12 ].field_5
-                        throw new System.NotSupportedException();//cbw
-                        throw new System.NotSupportedException();//cmp	ax, cx
-                        throw new System.NotSupportedException();//jnz	loc_61401
-                        var_14 = gbl.unk_1D183[var_12].field_6;
-                        throw new System.NotSupportedException();//loc_61401:
+                        if (gbl.unk_1D183[var_12].mapX == (gbl.MapDirectionXDelta[dir] + gbl.targetX) &&
+                            gbl.unk_1D183[var_12].mapY == (gbl.MapDirectionYDelta[dir] + gbl.targetY))
+                        {
+                            ground_tile = gbl.unk_1D183[var_12].field_6;
+                        }
                     }
                 }
 
-                var_8.field_7[var_16] = var_14;
+                var_8.field_7[var_16] = ground_tile;
 
                 if (var_8.field_10[var_16] != 0)
                 {
-                    int cx = gbl.MapDirectionXDelta[var_17] + gbl.targetX;
-                    int ax = gbl.MapDirectionYDelta[var_17] + gbl.targetY;
+                    int cx = gbl.MapDirectionXDelta[dir] + gbl.targetX;
+                    int ax = gbl.MapDirectionYDelta[dir] + gbl.targetY;
 
                     gbl.mapToBackGroundTile[cx, ax] = 0x1C;
                 }
             }
 
-            var_8.field_7[var_16] = var_14;
+            var_8.field_7[var_16] = ground_tile;
 
             if (var_8.field_10[var_16] != 0)
             {
-                int tmp_x = gbl.MapDirectionXDelta[var_17] + gbl.targetX;
-                int tmp_y = gbl.MapDirectionYDelta[var_17] + gbl.targetY;
+                int tmp_x = gbl.MapDirectionXDelta[dir] + gbl.targetX;
+                int tmp_y = gbl.MapDirectionYDelta[dir] + gbl.targetY;
 
                 gbl.mapToBackGroundTile[tmp_x, tmp_y] = 0x1C;
             }
@@ -3235,7 +3106,7 @@ namespace engine
         internal static void sub_61550()
         {
             Player player = gbl.player_ptr;
-            int var_6 = ovr025.spell_target_count(gbl.spell_id);
+            int target_count = ovr025.spell_target_count(gbl.spell_id);
             int max_range = (ovr025.spell_target_count(gbl.spell_id) + 1) / 2;
 
             if (max_range < 1)
@@ -3245,7 +3116,7 @@ namespace engine
 
             sub_5D7CF(max_range, 2, gbl.targetY, gbl.targetX, ovr033.PlayerMapYPos(player), ovr033.PlayerMapXPos(player));
 
-            sub_5CF7F(string.Empty, 10, (sbyte)(var_6 + ovr024.roll_dice_save(4, var_6)), false, 0, gbl.spell_id);
+            sub_5CF7F(string.Empty, 10, (sbyte)(target_count + ovr024.roll_dice_save(4, target_count)), false, 0, gbl.spell_id);
         }
 
 

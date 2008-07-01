@@ -1198,10 +1198,10 @@ namespace engine
                     affect.field_3 |= 0x10;
                 }
             }
-            else
-            {
-                int i = 0;
-            }
+            //else
+            //{
+            //    int i = 0;
+            //}
         }
 
 

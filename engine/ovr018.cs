@@ -423,14 +423,14 @@ namespace engine
             internal byte[] str_100_max; // unk_1A29C
             internal byte int_min; // unk_1A29E
             internal byte int_max; // unk_1A29F
-            internal byte field_8; // unk_1A2A0
-            internal byte field_9; // unk_1A2A1
-            internal byte field_A; // unk_1A2A2
-            internal byte field_B; // unk_1A2A3
-            internal byte field_C; // unk_1A2A4
-            internal byte field_D; // unk_1A2A5
-            internal byte field_E; // unk_1A2A6
-            internal byte field_F; // max_cha_val
+            internal byte wis_min; // unk_1A2A0
+            internal byte wis_max; // unk_1A2A1
+            internal byte dex_min; // unk_1A2A2
+            internal byte dex_max; // unk_1A2A3
+            internal byte con_min; // unk_1A2A4
+            internal byte con_max; // unk_1A2A5
+            internal byte cha_min; // unk_1A2A6
+            internal byte cha_max; // max_cha_val
 
             internal stats_ranges(byte v0, byte v1, byte v2, byte v3, byte v4, byte v5, byte v6,
                 byte v7, byte v8, byte v9, byte vA, byte vB, byte vC, byte vD, byte vE, byte vF)
@@ -440,14 +440,14 @@ namespace engine
                 str_100_max = new byte[] { v4, v5 };
                 int_min = v6;
                 int_max = v7;
-                field_8 = v8;
-                field_9 = v9;
-                field_A = vA;
-                field_B = vB;
-                field_C = vC;
-                field_D = vD;
-                field_E = vE;
-                field_F = vF;
+                wis_min = v8;
+                wis_max = v9;
+                dex_min = vA;
+                dex_max = vB;
+                con_min = vC;
+                con_max = vD;
+                cha_min = vE;
+                cha_max = vF;
 
             }
         }
@@ -1045,14 +1045,14 @@ namespace engine
                                 var_53.stats[var_1B].max += 1;
                             }
 
-                            if (var_53.stats[var_1B].max < stru_1A298[(int)var_53.race].field_8)
+                            if (var_53.stats[var_1B].max < stru_1A298[(int)var_53.race].wis_min)
                             {
-                                var_53.stats[var_1B].max = stru_1A298[(int)var_53.race].field_8;
+                                var_53.stats[var_1B].max = stru_1A298[(int)var_53.race].wis_min;
                             }
 
-                            if (var_53.stats[var_1B].max > stru_1A298[(int)var_53.race].field_9)
+                            if (var_53.stats[var_1B].max > stru_1A298[(int)var_53.race].wis_max)
                             {
-                                var_53.stats[var_1B].max = stru_1A298[(int)var_53.race].field_9;
+                                var_53.stats[var_1B].max = stru_1A298[(int)var_53.race].wis_max;
                             }
 
                             if (var_53.stats[var_1B].max < gbl.unk_1A484[(int)var_53._class][var_1B])
@@ -1079,14 +1079,14 @@ namespace engine
                                 var_53.stats[var_1B].max -= 2;
                             }
 
-                            if (var_53.stats[var_1B].max < stru_1A298[(int)var_53.race].field_A)
+                            if (var_53.stats[var_1B].max < stru_1A298[(int)var_53.race].dex_min)
                             {
-                                var_53.stats[var_1B].max = stru_1A298[(int)var_53.race].field_A;
+                                var_53.stats[var_1B].max = stru_1A298[(int)var_53.race].dex_min;
                             }
 
-                            if (var_53.stats[var_1B].max > stru_1A298[(int)var_53.race].field_B)
+                            if (var_53.stats[var_1B].max > stru_1A298[(int)var_53.race].dex_max)
                             {
-                                var_53.stats[var_1B].max = stru_1A298[(int)var_53.race].field_B;
+                                var_53.stats[var_1B].max = stru_1A298[(int)var_53.race].dex_max;
                             }
 
                             if (var_53.stats[var_1B].max < gbl.unk_1A484[(int)var_53._class][var_1B])
@@ -1111,14 +1111,14 @@ namespace engine
                                 var_53.stats[var_1B].max -= 1;
                             }
 
-                            if (var_53.stats[var_1B].max < stru_1A298[(int)var_53.race].field_C)
+                            if (var_53.stats[var_1B].max < stru_1A298[(int)var_53.race].con_min)
                             {
-                                var_53.stats[var_1B].max = stru_1A298[(int)var_53.race].field_C;
+                                var_53.stats[var_1B].max = stru_1A298[(int)var_53.race].con_min;
                             }
 
-                            if (var_53.stats[var_1B].max > stru_1A298[(int)var_53.race].field_D)
+                            if (var_53.stats[var_1B].max > stru_1A298[(int)var_53.race].con_max)
                             {
-                                var_53.stats[var_1B].max = stru_1A298[(int)var_53.race].field_D;
+                                var_53.stats[var_1B].max = stru_1A298[(int)var_53.race].con_max;
                             }
 
                             if (var_53.stats[var_1B].max < gbl.unk_1A484[(int)var_53._class][var_1B])
@@ -1128,14 +1128,14 @@ namespace engine
                             break;
 
                         case Stat.CHA:
-                            if (var_53.stats[var_1B].max < stru_1A298[(int)var_53.race].field_E)
+                            if (var_53.stats[var_1B].max < stru_1A298[(int)var_53.race].cha_min)
                             {
-                                var_53.stats[var_1B].max = stru_1A298[(int)var_53.race].field_E;
+                                var_53.stats[var_1B].max = stru_1A298[(int)var_53.race].cha_min;
                             }
 
-                            if (var_53.stats[var_1B].max > stru_1A298[(int)var_53.race].field_F)
+                            if (var_53.stats[var_1B].max > stru_1A298[(int)var_53.race].cha_max)
                             {
-                                var_53.stats[var_1B].max = stru_1A298[(int)var_53.race].field_F;
+                                var_53.stats[var_1B].max = stru_1A298[(int)var_53.race].cha_max;
                             }
 
                             if (var_53.stats[var_1B].max < gbl.unk_1A484[(int)var_53._class][var_1B])
@@ -1422,12 +1422,10 @@ namespace engine
             byte edited_stat;
             bool var_36;
             char var_35;
-            byte stat_var;
             byte var_33;
             string var_31;
             byte var_8;
             byte var_7;
-            byte[] var_6 = new byte[6];
 
             if (Cheats.allow_player_modify == false &&
                 (gbl.player_ptr.exp != 0 &&
@@ -1442,9 +1440,10 @@ namespace engine
 
             ovr020.playerDisplayFull();
 
-            for (stat_var = 0; stat_var <= 5; stat_var++)
+            byte[] stats_bkup = new byte[6];
+            for (int stat_var = 0; stat_var < 6; stat_var++)
             {
-                var_6[stat_var] = gbl.player_ptr.stats[stat_var].max;
+                stats_bkup[stat_var] = gbl.player_ptr.stats[stat_var].max;
             }
 
             var_7 = gbl.player_ptr.tmp_str_00;
@@ -1501,31 +1500,14 @@ namespace engine
                             {
                                 if (name_cursor_pos == gbl.player_ptr.name.Length)
                                 {
-                                    throw new System.NotSupportedException();
-                                    //gbl.player_ptr.name.Length -= 1;
-                                    //var_3F = gbl.player_ptr.name.Length;
+                                    gbl.player_ptr.name = gbl.player_ptr.name.Substring(0, gbl.player_ptr.name.Length - 1);
+                                    name_cursor_pos = (byte)gbl.player_ptr.name.Length;
                                 }
                                 else
                                 {
-                                    var_45 = (byte)(gbl.player_ptr.name.Length - 1);
-
-                                    for (var_40 = name_cursor_pos; var_40 <= var_45; var_40++)
-                                    {
-
-                                        throw new System.NotSupportedException();//mov	al, [bp+var_40]
-                                        throw new System.NotSupportedException();//xor	ah, ah
-                                        throw new System.NotSupportedException();//inc	ax
-                                        throw new System.NotSupportedException();//les	di, int ptr player_ptr.offset
-                                        throw new System.NotSupportedException();//add	di, ax
-                                        throw new System.NotSupportedException();//mov	dl, es:[di]
-                                        throw new System.NotSupportedException();//mov	al, [bp+var_40]
-                                        throw new System.NotSupportedException();//xor	ah, ah
-                                        throw new System.NotSupportedException();//les	di, int ptr player_ptr.offset
-                                        throw new System.NotSupportedException();//add	di, ax
-                                        throw new System.NotSupportedException();//mov	es:[di], dl
-                                    }
-                                    throw new System.NotSupportedException();
-                                    //gbl.player_ptr.name.Length -= 1; 
+                                    string part_a = gbl.player_ptr.name.Substring(0, name_cursor_pos);
+                                    string part_b = gbl.player_ptr.name.Substring(name_cursor_pos + 1, gbl.player_ptr.name.Length - name_cursor_pos);
+                                    gbl.player_ptr.name = part_a + part_b;
                                 }
                             }
                             break;
@@ -1551,7 +1533,7 @@ namespace engine
                         case 'K':
                             if (edited_stat < 6)
                             {
-                                stat_var = edited_stat;
+                                int stat_var = edited_stat;
                                 player_ptr.stats[stat_var].max -= 1;
 
                                 switch ((Stat)stat_var)
@@ -1590,9 +1572,9 @@ namespace engine
                                         break;
 
                                     case Stat.WIS:
-                                        if (player_ptr.stats[stat_var].max < stru_1A298[(int)player_ptr.race].field_8)
+                                        if (player_ptr.stats[stat_var].max < stru_1A298[(int)player_ptr.race].wis_min)
                                         {
-                                            player_ptr.stats[stat_var].max = stru_1A298[(int)player_ptr.race].field_8;
+                                            player_ptr.stats[stat_var].max = stru_1A298[(int)player_ptr.race].wis_min;
                                         }
 
                                         if (player_ptr.stats[stat_var].max < gbl.unk_1A484[(int)player_ptr._class].field_2)
@@ -1607,9 +1589,9 @@ namespace engine
                                         break;
 
                                     case Stat.DEX:
-                                        if (player_ptr.stats[stat_var].max < stru_1A298[(int)player_ptr.race].field_A)
+                                        if (player_ptr.stats[stat_var].max < stru_1A298[(int)player_ptr.race].dex_min)
                                         {
-                                            player_ptr.stats[stat_var].max = stru_1A298[(int)player_ptr.race].field_A;
+                                            player_ptr.stats[stat_var].max = stru_1A298[(int)player_ptr.race].dex_min;
                                         }
 
                                         if (player_ptr.stats[stat_var].max < gbl.unk_1A484[(int)player_ptr._class].field_3)
@@ -1619,9 +1601,9 @@ namespace engine
                                         break;
 
                                     case Stat.CON:
-                                        if (player_ptr.stats[stat_var].max < stru_1A298[(int)player_ptr.race].field_C)
+                                        if (player_ptr.stats[stat_var].max < stru_1A298[(int)player_ptr.race].con_min)
                                         {
-                                            player_ptr.stats[stat_var].max = stru_1A298[(int)player_ptr.race].field_C;
+                                            player_ptr.stats[stat_var].max = stru_1A298[(int)player_ptr.race].con_min;
                                         }
 
                                         if (player_ptr.stats[stat_var].max < gbl.unk_1A484[(int)player_ptr._class].field_4)
@@ -1643,9 +1625,9 @@ namespace engine
                                         break;
 
                                     case Stat.CHA:
-                                        if (player_ptr.stats[stat_var].max < stru_1A298[(int)player_ptr.race].field_E)
+                                        if (player_ptr.stats[stat_var].max < stru_1A298[(int)player_ptr.race].cha_min)
                                         {
-                                            player_ptr.stats[stat_var].max = stru_1A298[(int)player_ptr.race].field_E;
+                                            player_ptr.stats[stat_var].max = stru_1A298[(int)player_ptr.race].cha_min;
                                         }
 
                                         if (player_ptr.stats[stat_var].max < gbl.unk_1A484[(int)player_ptr._class].field_5)
@@ -1682,7 +1664,7 @@ namespace engine
                         case 'M':
                             if (edited_stat < 6)
                             {
-                                stat_var = edited_stat;
+                                int stat_var = edited_stat;
 
                                 player_ptr.stats[stat_var].max += 1;
                                 switch ((Stat)stat_var)
@@ -1709,9 +1691,9 @@ namespace engine
                                         break;
 
                                     case Stat.WIS:
-                                        if (player_ptr.stats[stat_var].max > stru_1A298[(int)player_ptr.race].field_9)
+                                        if (player_ptr.stats[stat_var].max > stru_1A298[(int)player_ptr.race].wis_max)
                                         {
-                                            player_ptr.stats[stat_var].max = stru_1A298[(int)player_ptr.race].field_9;
+                                            player_ptr.stats[stat_var].max = stru_1A298[(int)player_ptr.race].wis_max;
                                         }
 
                                         if (player_ptr.field_12D[0,0] > 0)
@@ -1721,16 +1703,16 @@ namespace engine
                                         break;
 
                                     case Stat.DEX:
-                                        if (player_ptr.stats[stat_var].max > stru_1A298[(int)player_ptr.race].field_B)
+                                        if (player_ptr.stats[stat_var].max > stru_1A298[(int)player_ptr.race].dex_max)
                                         {
-                                            player_ptr.stats[stat_var].max = stru_1A298[(int)player_ptr.race].field_B;
+                                            player_ptr.stats[stat_var].max = stru_1A298[(int)player_ptr.race].dex_max;
                                         }
                                         break;
 
                                     case Stat.CON:
-                                        if (player_ptr.stats[stat_var].max > stru_1A298[(int)player_ptr.race].field_D)
+                                        if (player_ptr.stats[stat_var].max > stru_1A298[(int)player_ptr.race].con_max)
                                         {
-                                            player_ptr.stats[stat_var].max = stru_1A298[(int)player_ptr.race].field_D;
+                                            player_ptr.stats[stat_var].max = stru_1A298[(int)player_ptr.race].con_max;
                                         }
 
                                         if (sub_506BA(gbl.player_ptr) > player_ptr.hit_point_max)
@@ -1745,9 +1727,9 @@ namespace engine
                                         break;
 
                                     case Stat.CHA:
-                                        if (player_ptr.stats[stat_var].max > stru_1A298[(int)player_ptr.race].field_F)
+                                        if (player_ptr.stats[stat_var].max > stru_1A298[(int)player_ptr.race].cha_max)
                                         {
-                                            player_ptr.stats[stat_var].max = stru_1A298[(int)player_ptr.race].field_F;
+                                            player_ptr.stats[stat_var].max = stru_1A298[(int)player_ptr.race].cha_max;
                                         }
                                         break;
                                 }
@@ -1855,9 +1837,9 @@ namespace engine
                         }
                         else if( var_35 == 0x45 )
                         {
-                            for (stat_var = 0; stat_var <= 5; stat_var++)
+                            for (int stat_var = 0; stat_var < 6; stat_var++)
                             {
-                                player_ptr.stats[stat_var].max = var_6[stat_var];
+                                player_ptr.stats[stat_var].max = stats_bkup[stat_var];
                             }
 
                             gbl.player_ptr.tmp_str_00 = var_7;
@@ -1872,10 +1854,9 @@ namespace engine
                     }
                     else if (var_35 == 0)
                     {
-
-                        for (stat_var = 0; stat_var <= 5; stat_var++)
+                        for (int stat_var = 0; stat_var < 6; stat_var++)
                         {
-                            gbl.player_ptr.stats[stat_var].max = var_6[stat_var];
+                            gbl.player_ptr.stats[stat_var].max = stats_bkup[stat_var];
                         }
 
                         gbl.player_ptr.tmp_str_00 = var_7;
@@ -1885,7 +1866,6 @@ namespace engine
                         gbl.player_ptr.hit_point_current = gbl.player_ptr.hit_point_max;
                         ovr025.reclac_player_values(gbl.player_ptr);
                         return;
-
                     }
                 }
 
@@ -1930,7 +1910,7 @@ namespace engine
 
             player_ptr.field_12C = (byte)(player_ptr.hit_point_max - var_8);
 
-            for (stat_var = 0; stat_var <= 5; stat_var++)
+            for (int stat_var = 0; stat_var <= 5; stat_var++)
             {
                 gbl.player_ptr.stats[stat_var].tmp = gbl.player_ptr.stats[stat_var].max;
             }
@@ -1941,31 +1921,21 @@ namespace engine
 
         internal static void AddPlayer()
         {
-            bool var_4B;
-            string var_4A = string.Empty;
-            byte var_21;
-            byte var_20;
-            byte var_1F;
-            byte var_1E = 0; /* Simeon */
-            bool var_1D;
-            bool showExit = true; /* Simeon */
-            char var_1B;
-            short strList_index;
-            Player player_ptr2;
-            Player player_ptr1;
-            StringList var_10;
-            StringList var_C;
             StringList strList;
-            StringList var_4;
 
-            var_20 = 0;
-            var_21 = 0;
-            var_1F = 0;
+            int pc_count = 0; 
+            int ranger_count = 0;
+            bool showExit = true;
+            bool evil_present = false;
+            bool paladin_present = false;
+            string paladins_name = "";
+
             seg037.draw8x8_clear_area(0x16, 0x26, 1, 1);
 
-            var_1B = ovr027.displayInput(out var_4B, false, 0, 15, 10, 13, "Curse Pool Hillsfar Exit", "Add from where? ");
+            bool dummy_bool;
+            char input_key = ovr027.displayInput(out dummy_bool, false, 0, 15, 10, 13, "Curse Pool Hillsfar Exit", "Add from where? ");
 
-            switch (var_1B)
+            switch (input_key)
             {
                 case 'C':
                     gbl.import_from = 0;
@@ -1980,118 +1950,117 @@ namespace engine
                     break;
 
                 case 'E':
-                    goto case '\0';
-
                 case '\0':
                     return;
             }
 
+            StringList var_4;
             ovr017.sub_47465(out strList, out var_4);
 
             if (var_4 != null)
             {
-                strList_index = 0;
-                var_C = var_4;
-                var_1D = true;
+                short strList_index = 0;
+                StringList select_sl = var_4;
+                bool var_1D = true;
 
                 do
                 {
-                    var_1B = ovr027.sl_select_item(out var_C, ref strList_index, ref var_1D, showExit, var_4,
+                    input_key = ovr027.sl_select_item(out select_sl, ref strList_index, ref var_1D, showExit, var_4,
                         22, 38, 2, 1, 15, 10, 13, "Add", "Add a character: ");
 
-                    if ((var_1B == 13 || var_1B == 0x41) &&
-                        var_C.s[0] != 0x2A)
+                    if ((input_key == 13 || input_key == 'A') &&
+                        select_sl.s[0] != '*')
                     {
                         ovr027.redraw_screen();
 
-                        player_ptr1 = new Player();
+                        Player new_player = new Player();
 
-                        var_10 = ovr027.getStringListEntry(strList, strList_index);
+                        StringList var_10 = ovr027.getStringListEntry(strList, strList_index);
 
-                        ovr017.import_char01(1, 0, ref player_ptr1, var_10.s);
+                        ovr017.import_char01(1, 0, ref new_player, var_10.s);
 
-                        var_C.s = "* " + var_C.s;
-                        var_1E = 0;
+                        select_sl.s = "* " + select_sl.s;
+                        pc_count = 0;
 
                         if (gbl.player_next_ptr == null)
                         {
                             gbl.area2_ptr.field_67C = 0;
-                            ovr017.sub_4A60A(player_ptr1);
+                            ovr017.sub_4A60A(new_player);
 
                             ovr017.LoadPlayerCombatIcon(true);
                         }
                         else
                         {
-                            player_ptr2 = gbl.player_next_ptr;
-                            var_1F = 0;
+                            Player tmp_player = gbl.player_next_ptr;
+                            ranger_count = 0;
 
-                            while (player_ptr2 != null &&
-                                (player_ptr2.name != player_ptr1.name || player_ptr2.field_126 != player_ptr1.field_126))
+                            while (tmp_player != null &&
+                                (tmp_player.name != new_player.name || tmp_player.field_126 != new_player.field_126))
                             {
-                                if (player_ptr2.field_F7 < 0x80)
+                                if (tmp_player.field_F7 < 0x80)
                                 {
-                                    var_1E++;
+                                    pc_count++;
                                 }
 
-                                if (player_ptr2.ranger_lvl > 0)
+                                if (tmp_player.ranger_lvl > 0)
                                 {
-                                    var_1F++;
+                                    ranger_count++;
                                 }
 
-                                if ((player_ptr2.alignment + 1) % 3 == 0)
+                                if ((tmp_player.alignment + 1) % 3 == 0)
                                 {
-                                    var_20 = 1;
+                                    evil_present = true;
                                 }
 
-                                if (player_ptr2.paladin_lvl > 0)
+                                if (tmp_player.paladin_lvl > 0)
                                 {
-                                    var_21 = 1;
-                                    var_4A = player_ptr2.name;
+                                    paladin_present = true;
+                                    paladins_name = tmp_player.name;
                                 }
 
-                                player_ptr2 = player_ptr2.next_player;
+                                tmp_player = tmp_player.next_player;
                             }
 
-                            if (player_ptr2 == null &&
-                                ((player_ptr1.field_F7 < 0x80 && var_1E < 6) ||
-                                    (player_ptr1.field_F7 > 0x7F && gbl.area2_ptr.field_67C < 8)) &&
-                                (player_ptr1.paladin_lvl == 0 || var_20 == 0) &&
-                                (player_ptr1.ranger_lvl == 0 || var_1F < 3) &&
-                                (((player_ptr1.alignment + 1) % 3) != 0 || var_21 == 0))
+                            if (tmp_player == null &&
+                                ((new_player.field_F7 < 0x80 && pc_count < 6) ||
+                                    (new_player.field_F7 > 0x7F && gbl.area2_ptr.field_67C < 8)) &&
+                                (new_player.paladin_lvl == 0 || evil_present == false) &&
+                                (new_player.ranger_lvl == 0 || ranger_count < 3) &&
+                                (((new_player.alignment + 1) % 3) != 0 || paladin_present == false))
                             {
-                                ovr017.sub_4A60A(player_ptr1);
+                                ovr017.sub_4A60A(new_player);
                                 ovr017.LoadPlayerCombatIcon(true);
 
-                                if (player_ptr1.field_F7 < 0x80)
+                                if (new_player.field_F7 < 0x80)
                                 {
-                                    var_1E++;
+                                    pc_count++;
                                 }
                             }
                             else
                             {
-                                seg051.Delete(2, 1, ref var_C.s);
+                                seg051.Delete(2, 1, ref select_sl.s);
 
-                                if (player_ptr1.paladin_lvl > 0 && var_20 != 0)
+                                if (new_player.paladin_lvl > 0 && evil_present == true)
                                 {
                                     ovr025.string_print01("paladins do not join with evil scum");
                                     seg041.GameDelay();
                                 }
-                                else if (player_ptr1.ranger_lvl > 0 && var_1F > 2)
+                                else if (new_player.ranger_lvl > 0 && ranger_count > 2)
                                 {
                                     ovr025.string_print01("too many rangers in party");
                                 }
-                                else if (((player_ptr1.alignment + 1) % 3) == 0 &&
-                                        var_21 != 0)
+                                else if (((new_player.alignment + 1) % 3) == 0 &&
+                                        paladin_present == true)
                                 {
-                                    ovr025.string_print01(var_4A + " will tolerate no evil!");
+                                    ovr025.string_print01(paladins_name + " will tolerate no evil!");
                                 }
 
-                                player_ptr1 = null; // FreeMem( char_struct_size, player_ptr1 );
+                                new_player = null; // FreeMem( char_struct_size, player_ptr1 );
                             }
                         }
                     }
 
-                } while (var_1B != 0x45 && var_1B != '\0' && var_1E <= 5 && gbl.area2_ptr.field_67C <= 7);
+                } while (input_key != 0x45 && input_key != '\0' && pc_count <= 5 && gbl.area2_ptr.field_67C <= 7);
 
                 ovr027.free_stringList(ref var_4);
             }
