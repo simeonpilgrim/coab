@@ -1,6 +1,7 @@
 = The Release Notes =
 
 = Unreleased =
+  * Fixed the Fear spell, so it is removed when combat is ended 
   * The icon designer keep colour changes when you Exited a sub-menu instead of reverting the changes.
   * Fixed the price text when buying spells from a Temple
   * Fixed crash when removing cursed item
