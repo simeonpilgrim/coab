@@ -145,7 +145,7 @@ namespace Classes
         affect_8b = 0x8b,
         affect_8c = 0x8c,
         affect_8D = 0x8d,
-        affect_8e = 0x8e,
+        fear = 0x8e,
         affect_8f = 0x8f,
         affect_90 = 0x90,
         sp_dispel_evil = 0x91,
@@ -157,12 +157,16 @@ namespace Classes
 	/// </summary>
 	public class Affect
 	{
-		public Affect()
-		{
-			next = null;
-		}
-
         public const int StructSize = 9;
+
+        public Affect(Affects _type, ushort _field_1, byte _field_3, bool _call_spell_jump_list)
+        {
+            type = _type;
+            field_1 = _field_1;
+            field_3 = _field_3;
+            call_spell_jump_list = _call_spell_jump_list;
+            next = null;
+        }
 
         public Affect(byte[] data, int offset)
         {

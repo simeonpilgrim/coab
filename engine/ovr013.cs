@@ -508,7 +508,7 @@ namespace engine
 
                 player.actions.target = null;
 
-                ovr024.is_unaffected("runs away", false, 1, true, 0, 10, Affects.affect_8e, player);
+                ovr024.is_unaffected("runs away", false, 1, true, 0, 10, Affects.fear, player);
             }
             else if (var_1 >= 11 && var_1 <= 60)
             {
@@ -1062,7 +1062,7 @@ namespace engine
 
         internal static void spl_berzerk(Effect arg_0, object param, Player player)
         {
-            if (arg_0 == 0)
+            if (arg_0 == Effect.Add)
             {
                 player.quick_fight = QuickFight.True;
 
@@ -1783,7 +1783,7 @@ namespace engine
 
         internal static void sub_3C750(Effect arg_0, object param, Player player)
         {
-            protection_type_check(Affects.affect_8e);
+            protection_type_check(Affects.fear);
             protection_type_check(Affects.ray_of_enfeeblement);
             protection_type_check(Affects.feeble);
 
@@ -1824,7 +1824,7 @@ namespace engine
         {
             Affect affect = (Affect)param;
 
-            if (arg_0 == 0)
+            if (arg_0 == Effect.Add)
             {
                 player.quick_fight = QuickFight.True;
 
@@ -1832,7 +1832,6 @@ namespace engine
                     player.field_F7 == 0xb3)
                 {
                     player.field_F7 = 0x0B3;
-
                 }
                 else
                 {
@@ -1875,9 +1874,9 @@ namespace engine
         }
 
 
-        internal static void sub_3C932(Effect arg_0, object param, Player player)
+        internal static void sp_fear(Effect arg_0, object param, Player player) /* sub_3C932 */
         {
-            if (arg_0 == Effect.Add)
+            if (arg_0 == Effect.Remove)
             {
                 if (player.field_F7 == 0xb3)
                 {
@@ -2077,7 +2076,7 @@ namespace engine
             gbl.affect_jump_list[139] = ovr014.sub_425C6;
             gbl.affect_jump_list[140] = ovr013.empty;
             gbl.affect_jump_list[141] = ovr013.sub_3C8EF;
-            gbl.affect_jump_list[142] = ovr013.sub_3C932;
+            gbl.affect_jump_list[142] = ovr013.sp_fear;
             gbl.affect_jump_list[143] = ovr013.sub_3C975;
             gbl.affect_jump_list[144] = ovr014.sub_426FC;
             gbl.affect_jump_list[145] = ovr013.sp_dispel_evil;

@@ -334,7 +334,7 @@ namespace engine
             {
                 for (int j = i; j < gbl.max_spells; j++)
                 {
-                    if ((gbl.player_ptr.spell_list[i] & 0xF7) > (gbl.player_ptr.spell_list[j] & 0xF7))
+                    if ((gbl.player_ptr.spell_list[i] & 0x7F) > (gbl.player_ptr.spell_list[j] & 0x7F))
                     {
                         byte tmp_byte = gbl.player_ptr.spell_list[i];
                         gbl.player_ptr.spell_list[i] = gbl.player_ptr.spell_list[j];

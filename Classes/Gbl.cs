@@ -705,7 +705,7 @@ namespace Classes
             new SpellEntry(2, 4, 6, 0, 0, 0, 5, 0, 1, 4, Affects.charm_person, 1, 4, 6, 1, 0), 
             new SpellEntry(2, 4, 12, 0, 2, 1, 11, 0, 1, 4, Affects.confuse, 1, 4, 7, 1, 0), 
             new SpellEntry(2, 4, 0, 3, 0, 0, 8, 0, 0, 4, 0, 1, 1, 0, 1, 0), 
-            new SpellEntry(2, 4, 6, 0, 0, 1, 8, 0, 1, 4, Affects.affect_8e, 1, 4, 6, 1, 0), 
+            new SpellEntry(2, 4, 6, 0, 0, 1, 8, 0, 1, 4, Affects.fear, 1, 4, 6, 1, 0), 
             new SpellEntry(2, 4, 0, 0, 2, 1, 0, 1, 0, 4, 0, 2, 4, 8, 0, 0), 
             new SpellEntry(2, 4, 0, 1, 0, 1, 4, 0, 1, 4, Affects.fumbling, 1, 4, 4, 1, 0), 
             new SpellEntry(2, 4, 0, 1, 0, 0, 10, 0, 0, 4, 0, 1, 4, 7, 1, 0), 

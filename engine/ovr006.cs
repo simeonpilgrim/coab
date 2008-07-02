@@ -190,7 +190,7 @@ namespace engine
 													Affects.affect_88,
 													Affects.affect_89,
 													Affects.affect_8b,
-													Affects.affect_8e,
+													Affects.fear,
 													Affects.affect_90,
 													Affects.helpless
 												};

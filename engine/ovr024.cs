@@ -81,14 +81,16 @@ namespace engine
                     tmp_affect.next = affect.next;
                 }
 
-                seg051.FreeMem(9, affect);
+                affect = null; //seg051.FreeMem(9, affect);
 
                 if (affect_id == Affects.resist_fire)
                 {
                     sub_648D9(5, player);
                 }
 
-                if (affect_id == Affects.enlarge || affect_id == Affects.strength || affect_id == Affects.affect_92)
+                if (affect_id == Affects.enlarge || 
+                    affect_id == Affects.strength || 
+                    affect_id == Affects.affect_92)
                 {
                     sub_648D9(0, player);
                 }
@@ -641,7 +643,7 @@ namespace engine
 
         internal static void add_affect(bool call_spell_jump_list, int arg_2, ushort arg_4, Affects type, Player player)
         {
-            Affect affect = new Affect();
+            Affect affect = new Affect(type, arg_4, (byte)arg_2, call_spell_jump_list);
 
             if (player.affect_ptr == null)
             {
@@ -658,13 +660,6 @@ namespace engine
 
                 affect_tmp.next = affect;
             }
-
-            affect.next = null;
-
-            affect.type = type;
-            affect.field_1 = arg_4;
-            affect.field_3 = (byte)arg_2;
-            affect.call_spell_jump_list = call_spell_jump_list;
         }
 
 

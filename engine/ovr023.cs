@@ -1848,7 +1848,7 @@ namespace engine
                             player.spell_list[var_1] = 0;
                         }
 
-                        if (player.field_F7 > 0xf7)
+                        if (player.field_F7 > 0x7F)
                         {
                             player.field_F7 = 0xB2;
                         }
@@ -2822,7 +2822,7 @@ namespace engine
         }
 
 
-        internal static void cast_terror()
+        internal static void cast_fear() /* cast_terror */
         {
             Player caster = gbl.player_ptr;
 
@@ -2836,7 +2836,7 @@ namespace engine
 
                 if (saves == false)
                 {
-                    ovr024.is_unaffected("runs in terror", saves, 1, true, 0, sub_5CE92(0x54), Affects.affect_8e, target);
+                    ovr024.is_unaffected("runs in terror", saves, 1, true, 0, sub_5CE92(0x54), Affects.fear, target);
                     target.actions.field_10 = 1;
                     target.quick_fight = QuickFight.True;
 
@@ -3652,7 +3652,7 @@ namespace engine
             gbl.spells_func_table[0x51] = ovr023.cast_charmed;
             gbl.spells_func_table[0x52] = ovr023.cast_confuse;
             gbl.spells_func_table[0x53] = ovr023.cast_teleport;
-            gbl.spells_func_table[0x54] = ovr023.cast_terror;
+            gbl.spells_func_table[0x54] = ovr023.cast_fear;
             gbl.spells_func_table[0x55] = ovr023.cast_protection;
             gbl.spells_func_table[0x56] = ovr023.spell_slow;
             gbl.spells_func_table[0x57] = ovr023.sub_60F0B;
