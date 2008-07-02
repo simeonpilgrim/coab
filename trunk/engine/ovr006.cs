@@ -174,7 +174,7 @@ namespace engine
         }
 
         static Affects[] affects_array = new Affects[] {
-													Affects.affect_03,
+													Affects.sticks_to_snakes,
 													Affects.charm_person,
 													Affects.reduce,
 													Affects.silence_15_radius,
@@ -187,7 +187,7 @@ namespace engine
 													Affects.sleep,
 													Affects.affect_3a,
 													Affects.affect_5b,
-													Affects.affect_88,
+													Affects.entangle,
 													Affects.affect_89,
 													Affects.affect_8b,
 													Affects.fear,

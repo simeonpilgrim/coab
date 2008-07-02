@@ -357,7 +357,7 @@ namespace engine
                 if (playerIndex == 0 && var_A < player.actions.move)
                 {
                     if (isNoxiousCloud == true &&
-                        ovr025.find_affect(Affects.funky__32, player) == false &&
+                        ovr025.find_affect(Affects.animate_dead, player) == false &&
                         ovr025.find_affect(Affects.stinking_cloud, player) == false &&
                         ovr025.find_affect(Affects.affect_6f, player) == false &&
                         ovr025.find_affect(Affects.affect_7d, player) == false &&
