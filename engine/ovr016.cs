@@ -642,7 +642,7 @@ namespace engine
                         case Affects.invisibility:
                         case Affects.mirror_image:
                         case Affects.ray_of_enfeeblement:
-                        case Affects.funky__32:
+                        case Affects.animate_dead:
                         case Affects.blinded:
                         case Affects.cause_disease_1:
                         case Affects.bestow_curse:
@@ -727,7 +727,7 @@ namespace engine
                             affect_name = "Minor Globe of Invulnerability";
                             break;
 
-                        case Affects.feeble:
+                        case Affects.feeblemind:
                             affect_name = "enfeebled";
                             break;
 

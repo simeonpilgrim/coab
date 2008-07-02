@@ -1868,7 +1868,7 @@ namespace engine
 
                         if (ovr024.combat_heal(player.hit_point_max, player) == true)
                         {
-                            ovr024.is_unaffected("is animated", false, 0, true, var_2, 0, Affects.funky__32, player);
+                            ovr024.is_unaffected("is animated", false, 0, true, var_2, 0, Affects.animate_dead, player);
                             player.health_status = Status.animated;
                         }
                     }
@@ -2618,9 +2618,9 @@ namespace engine
                 sub_5CF7F(string.Empty, 8, 0, false, ovr025.spell_target_count(gbl.spell_id), gbl.spell_id);
 
                 Affect affect;
-                if (ovr025.find_affect(out affect, Affects.affect_03, gbl.sp_targets[1]) == true)
+                if (ovr025.find_affect(out affect, Affects.sticks_to_snakes, gbl.sp_targets[1]) == true)
                 {
-                    ovr024.CallSpellJumpTable(Effect.Add, affect, gbl.sp_targets[1], Affects.affect_03);
+                    ovr024.CallSpellJumpTable(Effect.Add, affect, gbl.sp_targets[1], Affects.sticks_to_snakes);
                 }
             }
             else
@@ -2669,7 +2669,7 @@ namespace engine
             {
                 gbl.byte_1D2C6 = true;
 
-                ovr024.remove_affect(null, Affects.funky__32, player);
+                ovr024.remove_affect(null, Affects.animate_dead, player);
                 ovr024.remove_affect(null, Affects.poisoned, player);
                 gbl.byte_1D2C6 = false;
 
@@ -2724,7 +2724,7 @@ namespace engine
 
                         bool saved = ovr024.do_saving_throw(0, 4, target);
 
-                        ovr024.is_unaffected("is entangled", saved, 1, false, 0, sub_5CE92(0x88), Affects.affect_88, target);
+                        ovr024.is_unaffected("is entangled", saved, 1, false, 0, sub_5CE92(0x88), Affects.entangle, target);
                     }
                 }
             }
@@ -3141,9 +3141,9 @@ namespace engine
 
             sub_5CF7F(string.Empty, 0, 0, false, 0, gbl.spell_id);
 
-            if (ovr025.find_affect(Affects.feeble, target) == true)
+            if (ovr025.find_affect(Affects.feeblemind, target) == true)
             {
-                ovr024.CallSpellJumpTable(Effect.Add, null, target, Affects.feeble);
+                ovr024.CallSpellJumpTable(Effect.Add, null, target, Affects.feeblemind);
             }
 
             target.field_E3 = bkup_val;

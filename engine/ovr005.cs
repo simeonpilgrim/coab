@@ -6,7 +6,7 @@ namespace engine
     {
         static Affects[] disease_types = {  Affects.helpless,  Affects.cause_disease_1,
                                             Affects.affect_2b, Affects.cause_disease_2,
-                                            Affects.funky__32, Affects.affect_39 };
+                                            Affects.animate_dead, Affects.affect_39 };
 
         static string[] temple_sl = { "Cure Blindness", "Cure Disease", "Cure Light Wounds", "Cure Serious Wounds", "Cure Critical Wounds", "Heal", "Neutralize Poison", "Raise Dead", "Remove Curse", "Stone to Flesh", "Exit" };
 
@@ -175,7 +175,7 @@ namespace engine
                             ovr024.remove_affect(null, disease_types[i], gbl.player_ptr);
                         }
 
-                        ovr024.remove_affect(null, Affects.feeble, gbl.player_ptr);
+                        ovr024.remove_affect(null, Affects.feeblemind, gbl.player_ptr);
 
                         ovr024.sub_648D9(1, gbl.player_ptr);
                         ovr024.sub_648D9(2, gbl.player_ptr);
@@ -214,7 +214,7 @@ namespace engine
                 {
                     gbl.byte_1D2C6 = true;
 
-                    ovr024.remove_affect(null, Affects.funky__32, player);
+                    ovr024.remove_affect(null, Affects.animate_dead, player);
                     ovr024.remove_affect(null, Affects.poisoned, player);
 
                     gbl.byte_1D2C6 = false;

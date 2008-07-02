@@ -243,9 +243,9 @@ namespace engine
                     calc_affect_effect(Affects.paralyze, player);
                     calc_affect_effect(Affects.sleep, player);
                     calc_affect_effect(Affects.helpless, player);
-                    calc_affect_effect(Affects.affect_03, player);
+                    calc_affect_effect(Affects.sticks_to_snakes, player);
                     calc_affect_effect(Affects.fumbling, player);
-                    calc_affect_effect(Affects.affect_88, player);
+                    calc_affect_effect(Affects.entangle, player);
                     break;
 
                 case 8:
@@ -434,7 +434,7 @@ namespace engine
 
                 if (isNoxiouxCloud && arg_0 != 0 &&
                     ovr025.find_affect(out affect, Affects.helpless, player) == false &&
-                    ovr025.find_affect(out affect, Affects.funky__32, player) == false &&
+                    ovr025.find_affect(out affect, Affects.animate_dead, player) == false &&
                     ovr025.find_affect(out affect, Affects.affect_6f, player) == false &&
                     ovr025.find_affect(out affect, Affects.affect_7d, player) == false)
                 {
@@ -718,7 +718,7 @@ namespace engine
 								  Affects.spiritual_hammer,
 								  Affects.stinking_cloud,
 								  Affects.helpless,
-								  Affects.funky__32,
+								  Affects.animate_dead,
 								  Affects.snake_charm,
 								  Affects.paralyze,
 								  Affects.sleep,
@@ -726,7 +726,7 @@ namespace engine
 								  Affects.regenerate,
 								  Affects.affect_5F,
 								  Affects.affect_62,
-								  Affects.affect_88,
+								  Affects.entangle,
 								  Affects.affect_89,
 								  Affects.affect_8b,
 								  Affects.affect_90
@@ -1178,7 +1178,7 @@ namespace engine
             }
             else if (stat_index == 1)
             {
-                if (ovr025.find_affect(Affects.feeble, player) == true &&
+                if (ovr025.find_affect(Affects.feeblemind, player) == true &&
                     var_11 > 7)
                 {
                     var_11 = 3;
@@ -1195,7 +1195,7 @@ namespace engine
             }
             else if (stat_index == 2)
             {
-                if (ovr025.find_affect(Affects.feeble, player) == true &&
+                if (ovr025.find_affect(Affects.feeblemind, player) == true &&
                     var_11 > 7)
                 {
                     var_11 = 3;

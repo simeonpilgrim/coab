@@ -81,7 +81,7 @@ namespace engine
             }
             else
             {
-                ovr024.remove_affect(null, Affects.affect_03, player);
+                ovr024.remove_affect(null, Affects.sticks_to_snakes, player);
             }
 
             ovr025.sub_6818A("is fighting with snakes", true, player);
@@ -1785,7 +1785,7 @@ namespace engine
         {
             protection_type_check(Affects.fear);
             protection_type_check(Affects.ray_of_enfeeblement);
-            protection_type_check(Affects.feeble);
+            protection_type_check(Affects.feeblemind);
 
             if ((gbl.damage_flags & 0x40) != 0)
             {
