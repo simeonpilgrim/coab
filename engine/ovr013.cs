@@ -151,7 +151,7 @@ namespace engine
         }
 
 
-        internal static void sub_3A224(Effect arg_0, object param, Player player)
+        internal static void affect_protect_evil(Effect arg_0, object param, Player player) /* sub_3A224 */
         {
             if (gbl.player_ptr.alignment == 2 ||
                 gbl.player_ptr.alignment == 5 ||
@@ -163,7 +163,7 @@ namespace engine
         }
 
 
-        internal static void sub_3A259(Effect arg_0, object param, Player player)
+        internal static void affect_protect_good(Effect arg_0, object param, Player player) /* sub_3A259 */
         {
             if (gbl.player_ptr.alignment == 0 ||
                 gbl.player_ptr.alignment == 3 ||
@@ -175,7 +175,7 @@ namespace engine
         }
 
 
-        internal static void sub_3A28E(Effect arg_0, object param, Player player)
+        internal static void affect_resist_cold(Effect arg_0, object param, Player player) /* sub_3A28E */
         {
             if ((gbl.damage_flags & 2) != 0)
             {
@@ -185,7 +185,7 @@ namespace engine
         }
 
 
-        internal static void sub_3A2AD(Effect arg_0, object param, Player player)
+        internal static void affect_charm_person(Effect arg_0, object param, Player player) /* sub_3A2AD */
         {
             Affect affect = (Affect)param;
 
@@ -254,16 +254,16 @@ namespace engine
         }
 
 
-        internal static void sub_3A41F(Effect arg_0, object param, Player player)
+        internal static void affect_shield(Effect arg_0, object param, Player player) /* sub_3A41F */
         {
-            if (player.ac < 0x39)
+            if (player.ac < 0x39) // AC 3
             {
-                player.ac = 0x39;
+                player.ac = 0x39; // AC 3
             }
 
             gbl.saving_throw_roll += 1;
 
-            if (gbl.spell_id == 15)
+            if (gbl.spell_id == 15) /* Magic Missle */
             {
                 gbl.damage = 0;
             }
@@ -281,9 +281,9 @@ namespace engine
         }
 
 
-        internal static void sub_3A480(Effect arg_0, object param, Player player)
+        internal static void affect_resist_fire(Effect add_remove, object param, Player player) /* sub_3A480 */
         {
-            if (arg_0 == 0 &&
+            if (add_remove == Effect.Add &&
                 (gbl.damage_flags & 1) != 0)
             {
                 gbl.damage /= 2;
@@ -319,7 +319,7 @@ namespace engine
         }
 
 
-        internal static void sub_3A583(Effect arg_0, object param, Player player)
+        internal static void affect_spiritual_hammer(Effect add_remove, object param, Player player) /* sub_3A583 */
         {
             Item item = player.itemsPtr;
             bool item_found = false;
@@ -337,12 +337,12 @@ namespace engine
                 }
             }
 
-            if (arg_0 != 0 && item != null)
+            if (add_remove == Effect.Remove && item != null)
             {
                 ovr025.lose_item(item, player);
             }
 
-            if (arg_0 == 0 &&
+            if (add_remove == Effect.Add &&
                 item_found == false &&
                 player.field_14C < 0x10)
             {
@@ -1942,22 +1942,22 @@ namespace engine
             gbl.affect_jump_list[5] = ovr013.empty;
             gbl.affect_jump_list[6] = ovr013.sub_3A17A;
             gbl.affect_jump_list[7] = ovr013.sub_3A1DF;
-            gbl.affect_jump_list[8] = ovr013.sub_3A224;
-            gbl.affect_jump_list[9] = ovr013.sub_3A259;
-            gbl.affect_jump_list[10] = ovr013.sub_3A28E;
-            gbl.affect_jump_list[11] = ovr013.sub_3A2AD;
+            gbl.affect_jump_list[8] = ovr013.affect_protect_evil;
+            gbl.affect_jump_list[9] = ovr013.affect_protect_good;
+            gbl.affect_jump_list[10] = ovr013.affect_resist_cold;
+            gbl.affect_jump_list[11] = ovr013.affect_charm_person;
             gbl.affect_jump_list[12] = ovr013.empty;
             gbl.affect_jump_list[13] = ovr013.Suffocates;
             gbl.affect_jump_list[14] = ovr013.empty;
             gbl.affect_jump_list[15] = ovr013.sub_3A3BC;
             gbl.affect_jump_list[16] = ovr013.empty;
-            gbl.affect_jump_list[17] = ovr013.sub_3A41F;
+            gbl.affect_jump_list[17] = ovr013.affect_shield;
             gbl.affect_jump_list[18] = ovr013.sub_3A44A;
             gbl.affect_jump_list[19] = ovr013.empty;
-            gbl.affect_jump_list[20] = ovr013.sub_3A480;
+            gbl.affect_jump_list[20] = ovr013.affect_resist_fire;
             gbl.affect_jump_list[21] = ovr013.is_silenced1;
             gbl.affect_jump_list[22] = ovr013.sub_3A517;
-            gbl.affect_jump_list[23] = ovr013.sub_3A583;
+            gbl.affect_jump_list[23] = ovr013.affect_spiritual_hammer;
             gbl.affect_jump_list[24] = ovr013.empty;
             gbl.affect_jump_list[25] = ovr013.sub_3A6C6;
             gbl.affect_jump_list[26] = ovr013.sub_3A6FB;
@@ -1979,8 +1979,8 @@ namespace engine
             gbl.affect_jump_list[42] = ovr013.sub_3B01B;
             gbl.affect_jump_list[43] = ovr013.weaken;
             gbl.affect_jump_list[44] = ovr013.sub_3B0C2;
-            gbl.affect_jump_list[45] = ovr013.sub_3A224;
-            gbl.affect_jump_list[46] = ovr013.sub_3A259;
+            gbl.affect_jump_list[45] = ovr013.affect_protect_evil;
+            gbl.affect_jump_list[46] = ovr013.affect_protect_good;
             gbl.affect_jump_list[47] = ovr013.sub_3B153;
             gbl.affect_jump_list[48] = ovr013.sub_3B1A2;
             gbl.affect_jump_list[49] = ovr013.sub_3B1C9;

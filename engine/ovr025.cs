@@ -1023,26 +1023,23 @@ namespace engine
 
         internal static void addItem(Item item, Player player)
         {
-            Item item_ptr;
-            Item item_ptr02;
+            Item new_item = item.ShallowClone();
+            new_item.next = null;
 
-            item_ptr = item.ShallowClone();
-            item_ptr.next = null;
-
-            item_ptr02 = player.itemsPtr;
-
-            if (item_ptr02 == null)
+            if (player.itemsPtr == null)
             {
-                player.itemsPtr = item_ptr;
+                player.itemsPtr = new_item;
             }
             else
             {
-                while (item_ptr02.next != null)
+                Item tmp_item = player.itemsPtr;
+
+                while (tmp_item.next != null)
                 {
-                    item_ptr02 = item_ptr02.next;
+                    tmp_item = tmp_item.next;
                 }
 
-                item_ptr02.next = item_ptr;
+                tmp_item.next = new_item;
             }
         }
 

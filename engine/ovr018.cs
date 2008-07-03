@@ -1346,11 +1346,9 @@ namespace engine
 
         internal static void dropPlayer()
         {
-            Player player;
-
             if (gbl.player_ptr != null)
             {
-                player = gbl.player_ptr;
+                Player player = gbl.player_ptr;
 
                 if (ovr027.yes_no(15, 10, 14, "Drop " + player.name + " forever? ") == 'Y' &&
                     ovr027.yes_no(15, 10, 14, "Are you sure? ") == 'Y')
@@ -1415,7 +1413,6 @@ namespace engine
 
         internal static void modifyPlayer()
         {
-            byte var_45;
             Player player_ptr;
             byte var_40;
             byte name_cursor_pos;
@@ -2687,32 +2684,26 @@ namespace engine
 
         internal static byte sub_509E0(byte arg_0, Player player)
         {
-            byte loop_var;
-            byte var_5;
-            byte var_4;
-            byte var_3;
-            byte var_2;
             byte var_1;
 
-            var_4 = 0;
+            byte var_4 = 0;
 
-            for (loop_var = 0; loop_var <= 7; loop_var++)
+            for (int _class = 0; _class <= 7; _class++)
             {
-                if (player.class_lvls[loop_var] > 0 &&
-                    (unk_1A1BA[loop_var] & arg_0) != 0)
+                if (player.class_lvls[_class] > 0 &&
+                    (unk_1A1BA[_class] & arg_0) != 0)
                 {
-                    if (player.class_lvls[loop_var] < gbl.max_class_levels[loop_var])
+                    if (player.class_lvls[_class] < gbl.max_class_levels[_class])
                     {
-                        var_5 = unk_16B2A[loop_var];
+                        int var_5 = unk_16B2A[_class];
 
-                        if (player.class_lvls[loop_var] > 1)
+                        if (player.class_lvls[_class] > 1)
                         {
                             var_5 = 1;
                         }
 
-                        var_2 = ovr024.roll_dice(unk_16B32[loop_var], var_5);
-
-                        var_3 = ovr024.roll_dice(unk_16B32[loop_var], var_5);
+                        byte var_2 = ovr024.roll_dice(unk_16B32[_class], var_5);
+                        byte var_3 = ovr024.roll_dice(unk_16B32[_class], var_5);
 
                         if (var_3 > var_2)
                         {
@@ -2723,15 +2714,15 @@ namespace engine
                     }
                     else
                     {
-                        if (loop_var == 2 || loop_var == 3)
+                        if (_class == 2 || _class == 3)
                         {
                             var_4 = 3;
                         }
-                        else if (loop_var == 4 || loop_var == 0 || loop_var == 6)
+                        else if (_class == 4 || _class == 0 || _class == 6)
                         {
                             var_4 = 2;
                         }
-                        else if (loop_var == 5)
+                        else if (_class == 5)
                         {
                             var_4 = 1;
                         }
@@ -2745,45 +2736,40 @@ namespace engine
         }
 
 
-        internal static void subtract_gold(Player player, int longint)
+        internal static void subtract_gold(Player player, int gold)
         {
-            Player player_ptr;
-            byte var_3;
-            short var_2;
+            int coppers = gold * 200;
 
-            longint *= 200;
+            byte var_3 = 0;
 
-            var_3 = 0;
-            player_ptr = player;
-
-            while (longint > 0)
+            while (coppers > 0)
             {
-                var_2 = (short)((longint / money.per_copper[var_3]) + 1);
+                short var_2 = (short)((coppers / money.per_copper[var_3]) + 1);
 
-                if (player_ptr.Money[var_3] < var_2)
+                if (player.Money[var_3] < var_2)
                 {
-                    var_2 = player_ptr.Money[var_3];
+                    var_2 = player.Money[var_3];
                 }
 
-                longint -= money.per_copper[var_3] * var_2;
+                coppers -= money.per_copper[var_3] * var_2;
 
-                player_ptr.Money[var_3] -= var_2;
+                player.Money[var_3] -= var_2;
 
                 var_3 += 1;
             }
 
-            if (longint < 0)
+            if (coppers < 0)
             {
 
-                longint = System.Math.Abs(longint);
+                coppers = System.Math.Abs(coppers);
                 var_3 = 4;
 
-                while (longint > 0)
+                while (coppers > 0)
                 {
-                    var_2 = (short)(longint / money.per_copper[var_3]);
-                    longint -= money.per_copper[var_3] * var_2;
+                    short var_2 = (short)(coppers / money.per_copper[var_3]);
+                    coppers -= money.per_copper[var_3] * var_2;
 
-                    player_ptr.Money[var_3] += var_2;
+                    player.Money[var_3] += var_2;
                     var_3 -= 1;
                 }
             }

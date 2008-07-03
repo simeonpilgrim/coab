@@ -17,7 +17,7 @@ namespace engine
 
             gbl.byte_1B2BA = gbl.unk_1B26A[0];
    
-            char option = 'N'; /* force None */
+            char option = 'P'; /* force None */
 
             if (option == 'P') // PC Speaker
 			{
