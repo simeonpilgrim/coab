@@ -17,9 +17,9 @@ namespace engine
 
             gbl.byte_1B2BA = gbl.unk_1B26A[0];
    
-            char option = 'P'; /* force None */
+            //char option = 'P'; /* force None */
 
-            if (option == 'P') // PC Speaker
+            if (seg044.load_dump_bin()) // PC Speaker
 			{
 				gbl.soundType = SoundType.PC;
 			}
@@ -28,7 +28,7 @@ namespace engine
 				gbl.soundType = SoundType.None;
 			}
 
-            option = 'F'; /* force normal play (vs. demo) */
+            char option = 'F'; /* force normal play (vs. demo) */
 
             if (option == 'F')
 			{

@@ -13,15 +13,15 @@ namespace engine
         static short word_12204;
         static short word_12206;
         static short word_12208;
+        static short word_1220A;
 
-        static byte[] byte_1220C = new byte[4];
+        static byte[] byte_1220C = new byte[5];
 
-        static byte byte_12210;
         const int unk_12230_len = 0x30 / 2; // each block is 0x30 long, but is words.
-        static short[,] unk_12230 = new short[4, unk_12230_len]; /* 4 x 0x30 */
+        static ushort[,] unk_12230 = new ushort[4, unk_12230_len]; /* 4 x 0x30 */
 
         static short word_123C8;
-        static short[] unk_123CA = new short[24*8]; /* seg044:030a */
+        static ushort[,] unk_123CA = new ushort[8,24]; /* seg044:030a */
 
         static short[] word_12562 =  /* seg044:04a2 */    { 
             0x0C6E,0x0C6E,0x0C6E,0x0C6E,0x0C76,0x0C6E,0x0C6E,0x0C6E,0x0B6E,
@@ -33,7 +33,7 @@ namespace engine
             0x0C6E,0x0C6E };
 
 
-        static short[] word_1260A = /* seg044:054A */ { 0x1102,0x1102,0x1102,0x1102 };
+        static ushort[] word_1260A = /* seg044:054A */ { 0x1102,0x1102,0x1102,0x1102 };
 
 
         static Set set_01 = new Set(0x0020, new byte[]{ 0xFF, 0xFF, 0 , 0 , 0, 0 ,  0 ,  
@@ -55,7 +55,7 @@ namespace engine
                 {
                     if (gbl.soundType != SoundType.None)
                     {
-                        byte_12210 = 1;
+                        byte_1220C[4] = 1;
                     }
                 }
                 else if (arg_0 == 0xff)
@@ -102,21 +102,25 @@ namespace engine
         }
 
         static System.Timers.Timer aTimer = null;
+        static object timer_lock = new object();
 
         private static void sound_sub_1337F()
         {
-            if (aTimer == null)
+            lock (timer_lock)
             {
-                aTimer = new System.Timers.Timer();
-                // Hook up the Elapsed event for the timer.
-                aTimer.Elapsed += new System.Timers.ElapsedEventHandler(sound_sub_133ED);
+                if (aTimer == null)
+                {
+                    aTimer = new System.Timers.Timer();
+                    // Hook up the Elapsed event for the timer.
+                    aTimer.Elapsed += new System.Timers.ElapsedEventHandler(sound_sub_133ED);
 
-                // Set the Interval to 5 milliseconds.
-                aTimer.Interval = 5;
-                aTimer.Enabled = true;
+                    // Set the Interval to 5 milliseconds.
+                    aTimer.Interval = 5;
+                    aTimer.Enabled = true;
 
-                // Keep the timer alive until the end of Main.
-                System.GC.KeepAlive(aTimer);
+                    // Keep the timer alive until the end of Main.
+                    System.GC.KeepAlive(aTimer);
+                }
             }
         }
 
@@ -133,26 +137,29 @@ namespace engine
         /* called with 236.6Hz clock */
         private static void sound_sub_133ED(object sender, System.Timers.ElapsedEventArgs e)
         {
-            if (word_121DE != 0)
+            lock (timer_lock)
             {
-                word_121DE--;
-
-                if (word_121DE == 0)
+                if (word_121DE != 0)
                 {
-                    throw new System.ApplicationException("Exit: -1");
-                }
-            }
+                    word_121DE--;
 
-            if (byte_121DB == 0)
-            {
-                byte_121DB = 1;
-                sound_sub_1347A();
-                sound_sub_134EF();
-                byte_121DB = 0;
+                    if (word_121DE == 0)
+                    {
+                        throw new System.ApplicationException("Exit: -1");
+                    }
+                }
+
+                if (byte_121DB == 0)
+                {
+                    byte_121DB = 1;
+                    sound_sub_1347A();
+                    sound_sub_134EF();
+                    byte_121DB = 0;
+                }
             }
         }
 
-        private static void SetTone(short ax)
+        private static void SetTone(ushort ax)
         {
             //TODO Set the tone...
         }
@@ -187,12 +194,12 @@ namespace engine
                 } while (--byte_121DC != 0);
 
 
-                if (byte_12210 != 0 &&
+                if (byte_1220C[4] != 0 &&
                     word_123C8 != 0)
                 {
                     si = word_123C8;
                     int i = (si-0x170)/0x30;
-                    short ax = unk_12230[i, 8];
+                    ushort ax = unk_12230[i, 8];
                     
                     SetTone(ax);
 
@@ -214,13 +221,16 @@ namespace engine
             }
         }
 
+        private static void out_c0(byte val)
+        {
+        }
 
         private static void sound_sub_134EF()
         {
             short bx = word_12202;
             if (bx != 0)
             {
-                gbl.byte_1642C = 4;
+                byte_121DC = 4;
 
                 word_12208 = 0x48A;
                 word_12206 = 0x30A;
@@ -228,53 +238,45 @@ namespace engine
 
                 do
                 {
-                    if (unk_123CA[si / 2] != 0)
+                    if (unk_123CA[si,0] != 0)
                     {
                         sound_sub_1357D(si);
                     }
 
-                    si += 0x30;
-                } while (--gbl.byte_1642C != 0);
+                    si += 1;
+                } while (--byte_121DC != 0);
 
-                if (byte_12210 != 0)
+                if (byte_1220C[4] != 0)
                 {
                     byte_121DC = 4;
 
-                    si = 0x30A;
+                    si = 0; //0x30A;
                     byte dl = 0x80;
  
                     do
                     {
-                        throw new System.NotSupportedException();
-                        //loc_1352D:
-                        //mov	ax, [si+8]
-                        //shr	ax, 1
-                        //shr	ax, 1
-                        //shr	al, 1
-                        //shr	al, 1
-                        //shr	al, 1
-                        //shr	al, 1
-                        //xor	al, dl
-                        //out	0x0C0, al
-                        //cmp	dl, 0x0E0
-                        //jz	loc_13549
-                        //mov	al, ah
-                        //out	0x0C0, al
-                        //loc_13549:
-                        //mov	ax, 0x0FFFF
-                        //sub	ax, [si+0Ah]
-                        //shr	ah, 1
-                        //shr	ah, 1
-                        //shr	ah, 1
-                        //shr	ah, 1
-                        //mov	al, ah
-                        //xor	al, dl
-                        //add	al, 0x10
-                        //out	0x0C0, al
+                        ushort ax = unk_123CA[si, 8 / 2];
+
+                        ax >>= 2;
+                        ax = (byte)((ax & 0xFF) >> 4);
+                        ax ^= dl;
+                        out_c0((byte)ax);
+
+                        if (dl != 0xe0)
+                        {
+                            out_c0((byte)(ax >> 8));
+                        }
+                        ax = 0xFFFF;
+                        ax -= unk_123CA[si, 0xA / 2];
+
+                        ax = (ushort)(ax >> 12);
+                        ax ^= dl;
+                        ax += 0x10;
+                        out_c0((byte)ax);
 
                         dl += 0x20;
-                        si += 0x30;
-                    } while (--gbl.byte_1642C != 0);
+                        si += 1;
+                    } while (--byte_121DC != 0);
 
                     return;
                 }
@@ -297,20 +299,21 @@ namespace engine
                     ax -= unk_12230[si, 0x24 / 2];
                 }
 
-                unk_12230[si, 0x1E / 2] = (short)ax;
+                unk_12230[si, 0x1E / 2] = (ushort)ax;
 
                 ax >>= 4;
                 ax += unk_12230[si, 0x1C / 2];
 
-                throw new System.NotSupportedException();
+
                 //mov	di, ax
                 //mov	ah, [di]
                 //mov	al, 0
+                ax = getbyte(ax) << 8;
 
                 ax *= unk_12230[si, 0x22 / 2];
             }
 
-            unk_12230[si, 0x8 / 2] = (short)(unk_12230[si, 0x4 / 2] + (ax >> 16));
+            unk_12230[si, 0x8 / 2] = (ushort)(unk_12230[si, 0x4 / 2] + (ax >> 16));
 
             if (unk_12230[si, 0x14 / 2] != 0 &&
                 --unk_12230[si, 0x14 / 2] == 0)
@@ -349,14 +352,32 @@ namespace engine
             }
         }
 
+        static byte[] bin_data;
+        internal static bool load_dump_bin()
+        {
+            if (System.IO.File.Exists("dump.bin"))
+            {
+                System.IO.FileStream fs = System.IO.File.Open("dump.bin", System.IO.FileMode.Open);
+                System.IO.BinaryReader br = new System.IO.BinaryReader(fs);
+                br.BaseStream.Seek(0x6A90, System.IO.SeekOrigin.Begin);
+                bin_data = br.ReadBytes(0x1300);
+
+                return true;         
+            }
+
+            return false;
+        }
+
         private static byte getbyte(int di)
         {
-            return 0;
+            byte b = bin_data[di];
+            return b;
         }
 
         private static ushort getword(int di)
         {
-            return 0;
+            ushort us = Sys.ArrayToUshort(bin_data, di);
+            return us;
         }
 
         private static void sound_sub_1360E(int si)
@@ -374,96 +395,107 @@ namespace engine
             byte bl = getbyte(di);
             di += 1;
 
-            if (bl >= 0xFA)
+            if (bl < 0xFA)
             {
-                bl -= 0xFA;
-
-                ushort[] jt = { 0x1591, 0x15EF, 0x15f6, 0x1588, 0x1571, 0x15c2 };
-
-                if (bl == 4) goto bl_4;
-                if (bl == 3) goto bl_3;
-
-                /* jump jt[bl] */
-
-            bl_4:
-                bl = getbyte(di);
-                di += 1;
-
-                ushort ax = getword(di);
-                di += 2;
-
-                if (unk_12230[si, bl / 2] != 0)
-                {
-                    unk_12230[si, bl / 2] -= 1;
-                    if (unk_12230[si, bl / 2] == 0)
-                    {
-                        goto loc_1361B;
-                    }
-                }
-
-                di = ax;
-                goto loc_1361B;
-
-            bl_3:
-                si = getword(di);
-                di += 2;
-                si += word_12206;
-
-                // bl = 0
-                unk_12230[si, 0x04 / 2] = 0;
-                unk_12230[si, 0x06 / 2] = 0;
-                unk_12230[si, 0x08 / 2] = 0;
-                unk_12230[si, 0x0A / 2] = 0;
-                unk_12230[si, 0x0C / 2] = 0;
-                unk_12230[si, 0x10 / 2] = 0;
-                unk_12230[si, 0x12 / 2] = 0;
-                unk_12230[si, 0x16 / 2] = 0;
-                unk_12230[si, 0x18 / 2] = 0;
-                unk_12230[si, 0x1A / 2] = 0;
-                unk_12230[si, 0x1C / 2] = 0;
-                unk_12230[si, 0x1E / 2] = 0;
-                unk_12230[si, 0x20 / 2] = 0;
-                unk_12230[si, 0x22 / 2] = 0;
-                unk_12230[si, 0x24 / 2] = 0;
-                goto loc_1361B;
-
-                // bl == 5
-                //mov     bl, [di]
-                //inc     di
-                //mov     bh, 0
-                //mov     ax, [di]
-                //inc     di
-                //inc     di
-                //mov     [bx+si], ax
-                //cmp     bl, 0
-                //jnz     short loc_1361B
-
-                throw new System.NotSupportedException();//loc_13692:
-                throw new System.NotSupportedException();//mov	si, ds:word_12204
-                throw new System.NotSupportedException();//cmp	short ptr [si], 0
-                throw new System.NotSupportedException();//jnz	loc_136AB
-                throw new System.NotSupportedException();//mov	bl, 4
-                throw new System.NotSupportedException();//sub	bl, byte_1642C
-                throw new System.NotSupportedException();//sub	bh, bh
-                throw new System.NotSupportedException();//mov	byte ptr [bx+14Ch], 0
-                throw new System.NotSupportedException();//mov	di, 0
-                throw new System.NotSupportedException();//loc_136AB:
-                throw new System.NotSupportedException();//mov	[si+2],	di
-                throw new System.NotSupportedException();//retn
-                // bl == 1
-                throw new System.NotSupportedException();//mov	di, short ptr byte_1645A
-                throw new System.NotSupportedException();//jmp	loc_1361B
-                // bl == 2
-                throw new System.NotSupportedException();//mov	ax, [di]
-                throw new System.NotSupportedException();//add	di, 2
-                throw new System.NotSupportedException();//mov	short ptr byte_1645A, di
-                throw new System.NotSupportedException();//mov	di, ax
-                throw new System.NotSupportedException();//jmp	loc_1361B
-                throw new System.NotSupportedException();//loc_136C4:
-                throw new System.NotSupportedException();//mov	bl, [di]
-                throw new System.NotSupportedException();//inc	di
+                goto loc_136C7;
             }
 
+
+            bl -= 0xFA;
+
+            //ushort[] jt = { 0x1591, 0x15EF, 0x15f6, 0x1588, 0x1571, 0x15c2 };
+            //jump jt[bl]
+
+            if (bl == 5) goto bl_5;
+            if (bl == 4) goto bl_4;
+            if (bl == 3) goto bl_3;
+            if (bl == 2) goto bl_2;
+            if (bl == 1) goto bl_1;
+            if (bl == 0) goto bl_0;
+
+
+        bl_4:
+            bl = getbyte(di);
+            di += 1;
+
+            ushort ax = getword(di);
+            di += 2;
+
+            if (unk_12230[si, bl / 2] != 0)
+            {
+                unk_12230[si, bl / 2] -= 1;
+                if (unk_12230[si, bl / 2] == 0)
+                {
+                    goto loc_1361B;
+                }
+            }
+
+            di = ax;
+            goto loc_1361B;
+
+        bl_3:
+            si = getword(di);
+            di += 2;
+            si += word_12206;
+
+        bl_0:
+            unk_12230[si, 0x04 / 2] = 0;
+            unk_12230[si, 0x06 / 2] = 0;
+            unk_12230[si, 0x08 / 2] = 0;
+            unk_12230[si, 0x0A / 2] = 0;
+            unk_12230[si, 0x0C / 2] = 0;
+            unk_12230[si, 0x10 / 2] = 0;
+            unk_12230[si, 0x12 / 2] = 0;
+            unk_12230[si, 0x16 / 2] = 0;
+            unk_12230[si, 0x18 / 2] = 0;
+            unk_12230[si, 0x1A / 2] = 0;
+            unk_12230[si, 0x1C / 2] = 0;
+            unk_12230[si, 0x1E / 2] = 0;
+            unk_12230[si, 0x20 / 2] = 0;
+            unk_12230[si, 0x22 / 2] = 0;
+            unk_12230[si, 0x24 / 2] = 0;
+            goto loc_1361B;
+
+        bl_5:
+            bl = getbyte(di);
+            di += 1;
+            ax = getword(di);
+            di += 2;
+            unk_12230[si, bl / 2] = ax;
+
+            if (bl != 0) goto loc_1361B;
+
+        loc_13692:
+            si = word_12204;
+            if (unk_12230[si, 0x0 / 2] == 0)
+            {
+                bl = 4;
+                bl -= byte_121DC;
+                byte_1220C[bl] = 0;
+                di = 0;
+            }
+            unk_12230[si, 0x2 / 2] = (ushort)di;
+            return;
+
+        bl_1:
+            di = word_1220A;
+            goto loc_1361B;
+
+        bl_2:
+            ax = getword(di);
+            di += 2;
+
+            word_1220A = (short)di;
+            di = ax;
+            goto loc_1361B;
+
+        loc_136C4:
+            bl = getbyte(di);
+            di += 1;
+
+        loc_136C7:
+
+            int push_di = di;
             throw new System.NotSupportedException();//push	di
             throw new System.NotSupportedException();//mov	al, bl
             throw new System.NotSupportedException();//mov	cl, 5
@@ -506,6 +538,7 @@ namespace engine
             throw new System.NotSupportedException();//add	bx, bx
             throw new System.NotSupportedException();//cmp	di, 0x39A
             throw new System.NotSupportedException();//jnz	$+2
+
             throw new System.NotSupportedException();//add	bx, ds:word_12208
             throw new System.NotSupportedException();//mov	ax, [bx]
             throw new System.NotSupportedException();//shr	ax, cl
@@ -513,14 +546,14 @@ namespace engine
             throw new System.NotSupportedException();//mov	[di+8],	ax
             throw new System.NotSupportedException();//loc_13737:
             throw new System.NotSupportedException();//pop	di
-            throw new System.NotSupportedException();//mov	al, [di]
-            throw new System.NotSupportedException();//inc	di
-            throw new System.NotSupportedException();//inc	di
-            throw new System.NotSupportedException();//and	al, 0x80
-            throw new System.NotSupportedException();//jnz	loc_13742
-            throw new System.NotSupportedException();//jmp	short loc_136C4
-            throw new System.NotSupportedException();//loc_13742:
-            throw new System.NotSupportedException();//jmp	loc_13692
+
+            byte al = getbyte(di);
+            di += 2;
+            if ((al & 0x80) != 0)
+            {
+                goto loc_136C4;
+            }
+            goto loc_13692;
         }
 
 
@@ -542,7 +575,7 @@ namespace engine
                         unk_12230[di, i] = 0;
                     }
 
-                    unk_12230[di, 1] = (short)ax;
+                    unk_12230[di, 1] = (ushort)ax;
                     unk_12230[di, 0] = 1;
 
                     byte_1220C[4 - byte_121DC] = (byte)word_12202;
@@ -567,19 +600,20 @@ namespace engine
 
             do
             {
-                short ax = word_1260A[si];
+                ushort ax = word_1260A[si];
                 if (ax != 0)
                 {
-                    System.Array.Clear(unk_123CA, di, 24);
+                    for (int i = 0; i < 24; i++)
+                        unk_123CA[di, i] = 0;
 
-                    unk_123CA[di + 1] = ax;
+                    unk_123CA[di,2/2] = ax;
 
                     byte_1220C[4 - byte_121DC] = (byte)word_12202;
 
-                    unk_123CA[di / 2] = 1;
+                    unk_123CA[di,0] = 1;
                 }
 
-                di += 24;
+                di += 1;
                 si += 1;
             } while (--byte_121DC != 0);
 
