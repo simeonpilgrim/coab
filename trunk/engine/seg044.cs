@@ -21,7 +21,7 @@ namespace engine
         static short[,] unk_12230 = new short[4, unk_12230_len]; /* 4 x 0x30 */
 
         static short word_123C8;
-        static short[] unk_123CA = new short[24]; /* seg044:030a */
+        static short[] unk_123CA = new short[24*8]; /* seg044:030a */
 
         static short[] word_12562 =  /* seg044:04a2 */    { 
             0x0C6E,0x0C6E,0x0C6E,0x0C6E,0x0C76,0x0C6E,0x0C6E,0x0C6E,0x0B6E,
@@ -299,10 +299,11 @@ namespace engine
 
                 unk_12230[si, 0x1E / 2] = (short)ax;
 
-                ax /= 4;
+                ax >>= 4;
                 ax += unk_12230[si, 0x1C / 2];
 
-                throw new System.NotSupportedException();//mov	di, ax
+                throw new System.NotSupportedException();
+                //mov	di, ax
                 //mov	ah, [di]
                 //mov	al, 0
 
@@ -348,10 +349,19 @@ namespace engine
             }
         }
 
+        private static byte getbyte(int di)
+        {
+            return 0;
+        }
+
+        private static ushort getword(int di)
+        {
+            return 0;
+        }
 
         private static void sound_sub_1360E(int si)
         {
-            int di = unk_12230[si, 0x2 /2];
+            int di = unk_12230[si, 0x2 / 2];
             if (di == 0)
             {
                 return;
@@ -359,137 +369,101 @@ namespace engine
 
             word_12204 = (short)si;
 
-            throw new System.NotSupportedException();//loc_1361B:
-            throw new System.NotSupportedException();//mov	bl, [di]
-            throw new System.NotSupportedException();//inc	di
-            throw new System.NotSupportedException();//cmp	bl, 0x0FA
-            throw new System.NotSupportedException();//jnb	loc_13626
-            throw new System.NotSupportedException();//jmp	loc_136C7
-            throw new System.NotSupportedException();//loc_13626:
-            throw new System.NotSupportedException();//sub	bh, bh
-            throw new System.NotSupportedException();//sub	bl, 0x0FA
-            throw new System.NotSupportedException();//add	bl, bl
-            throw new System.NotSupportedException();//jmp	short ptr [bx+164h]
-            throw new System.NotSupportedException();//db  0x8A
-            throw new System.NotSupportedException();//db  0x1D
-            throw new System.NotSupportedException();//db  0x47
-            throw new System.NotSupportedException();//db 0x0B7
-            throw new System.NotSupportedException();//db    0
-            throw new System.NotSupportedException();//db  0x8B
-            throw new System.NotSupportedException();//db    5
-            throw new System.NotSupportedException();//db  0x83
-            throw new System.NotSupportedException();//db 0x0C7
-            throw new System.NotSupportedException();//db    2
-            throw new System.NotSupportedException();//db  0x83
-            throw new System.NotSupportedException();//db  0x38
-            throw new System.NotSupportedException();//db    0
-            throw new System.NotSupportedException();//db  0x74
-            throw new System.NotSupportedException();//db    4
-            throw new System.NotSupportedException();//db 0x0FF
-            throw new System.NotSupportedException();//db    8
-            throw new System.NotSupportedException();//db  0x74
-            throw new System.NotSupportedException();//db 0x0D7
-            throw new System.NotSupportedException();//db  0x8B
-            throw new System.NotSupportedException();//db 0x0F8
-            throw new System.NotSupportedException();//db 0x0EB
-            throw new System.NotSupportedException();//db 0x0D3
-            throw new System.NotSupportedException();//db  0x8B
-            throw new System.NotSupportedException();//db  0x35
-            throw new System.NotSupportedException();//db  0x83
-            throw new System.NotSupportedException();//db 0x0C7
-            throw new System.NotSupportedException();//db    2
-            throw new System.NotSupportedException();//db    3
-            throw new System.NotSupportedException();//db  0x36
-            throw new System.NotSupportedException();//db  0x46
-            throw new System.NotSupportedException();//db    1
-            throw new System.NotSupportedException();//db  0x2B
-            throw new System.NotSupportedException();//db 0x0DB
-            throw new System.NotSupportedException();//db  0x89
-            throw new System.NotSupportedException();//db  0x5C
-            throw new System.NotSupportedException();//db    4
-            throw new System.NotSupportedException();//db  0x89
-            throw new System.NotSupportedException();//db  0x5C
-            throw new System.NotSupportedException();//db    6
-            throw new System.NotSupportedException();//db  0x89
-            throw new System.NotSupportedException();//db  0x5C
-            throw new System.NotSupportedException();//db    8
-            throw new System.NotSupportedException();//db  0x89
-            throw new System.NotSupportedException();//db  0x5C
-            throw new System.NotSupportedException();//db  0x0A
-            throw new System.NotSupportedException();//db  0x89
-            throw new System.NotSupportedException();//db  0x5C
-            throw new System.NotSupportedException();//db  0x0C
-            throw new System.NotSupportedException();//db  0x89
-            throw new System.NotSupportedException();//db  0x5C
-            throw new System.NotSupportedException();//db  0x10
-            throw new System.NotSupportedException();//db  0x89
-            throw new System.NotSupportedException();//db  0x5C
-            throw new System.NotSupportedException();//db  0x12
-            throw new System.NotSupportedException();//db  0x89
-            throw new System.NotSupportedException();//db  0x5C
-            throw new System.NotSupportedException();//db  0x16
-            throw new System.NotSupportedException();//db  0x89
-            throw new System.NotSupportedException();//db  0x5C
-            throw new System.NotSupportedException();//db  0x18
-            throw new System.NotSupportedException();//db  0x89
-            throw new System.NotSupportedException();//db  0x5C
-            throw new System.NotSupportedException();//db  0x1A
-            throw new System.NotSupportedException();//db  0x89
-            throw new System.NotSupportedException();//db  0x5C
-            throw new System.NotSupportedException();//db  0x1C
-            throw new System.NotSupportedException();//db  0x89
-            throw new System.NotSupportedException();//db  0x5C
-            throw new System.NotSupportedException();//db  0x1E
-            throw new System.NotSupportedException();//db  0x89
-            throw new System.NotSupportedException();//db  0x5C
-            throw new System.NotSupportedException();//db  0x20
-            throw new System.NotSupportedException();//db  0x89
-            throw new System.NotSupportedException();//db  0x5C
-            throw new System.NotSupportedException();//db  0x22
-            throw new System.NotSupportedException();//db  0x89
-            throw new System.NotSupportedException();//db  0x5C
-            throw new System.NotSupportedException();//db  0x24
-            throw new System.NotSupportedException();//db 0x0EB
-            throw new System.NotSupportedException();//db  0x99
-            throw new System.NotSupportedException();//db  0x8A
-            throw new System.NotSupportedException();//db  0x1D
-            throw new System.NotSupportedException();//db  0x47
-            throw new System.NotSupportedException();//db 0x0B7
-            throw new System.NotSupportedException();//db    0
-            throw new System.NotSupportedException();//db  0x8B
-            throw new System.NotSupportedException();//db    5
-            throw new System.NotSupportedException();//db  0x47
-            throw new System.NotSupportedException();//db  0x47
-            throw new System.NotSupportedException();//db  0x89
-            throw new System.NotSupportedException();//db    0
-            throw new System.NotSupportedException();//db  0x80
-            throw new System.NotSupportedException();//db 0x0FB
-            throw new System.NotSupportedException();//db    0
-            throw new System.NotSupportedException();//db  0x75
-            throw new System.NotSupportedException();//db  0x89
-            throw new System.NotSupportedException();//loc_13692:
-            throw new System.NotSupportedException();//mov	si, ds:word_12204
-            throw new System.NotSupportedException();//cmp	short ptr [si], 0
-            throw new System.NotSupportedException();//jnz	loc_136AB
-            throw new System.NotSupportedException();//mov	bl, 4
-            throw new System.NotSupportedException();//sub	bl, byte_1642C
-            throw new System.NotSupportedException();//sub	bh, bh
-            throw new System.NotSupportedException();//mov	byte ptr [bx+14Ch], 0
-            throw new System.NotSupportedException();//mov	di, 0
-            throw new System.NotSupportedException();//loc_136AB:
-            throw new System.NotSupportedException();//mov	[si+2],	di
-            throw new System.NotSupportedException();//retn
-            throw new System.NotSupportedException();//mov	di, short ptr byte_1645A
-            throw new System.NotSupportedException();//jmp	loc_1361B
-            throw new System.NotSupportedException();//mov	ax, [di]
-            throw new System.NotSupportedException();//add	di, 2
-            throw new System.NotSupportedException();//mov	short ptr byte_1645A, di
-            throw new System.NotSupportedException();//mov	di, ax
-            throw new System.NotSupportedException();//jmp	loc_1361B
-            throw new System.NotSupportedException();//loc_136C4:
-            throw new System.NotSupportedException();//mov	bl, [di]
-            throw new System.NotSupportedException();//inc	di
-            throw new System.NotSupportedException();//loc_136C7:
+        loc_1361B:
+
+            byte bl = getbyte(di);
+            di += 1;
+
+            if (bl >= 0xFA)
+            {
+                bl -= 0xFA;
+
+                ushort[] jt = { 0x1591, 0x15EF, 0x15f6, 0x1588, 0x1571, 0x15c2 };
+
+                if (bl == 4) goto bl_4;
+                if (bl == 3) goto bl_3;
+
+                /* jump jt[bl] */
+
+            bl_4:
+                bl = getbyte(di);
+                di += 1;
+
+                ushort ax = getword(di);
+                di += 2;
+
+                if (unk_12230[si, bl / 2] != 0)
+                {
+                    unk_12230[si, bl / 2] -= 1;
+                    if (unk_12230[si, bl / 2] == 0)
+                    {
+                        goto loc_1361B;
+                    }
+                }
+
+                di = ax;
+                goto loc_1361B;
+
+            bl_3:
+                si = getword(di);
+                di += 2;
+                si += word_12206;
+
+                // bl = 0
+                unk_12230[si, 0x04 / 2] = 0;
+                unk_12230[si, 0x06 / 2] = 0;
+                unk_12230[si, 0x08 / 2] = 0;
+                unk_12230[si, 0x0A / 2] = 0;
+                unk_12230[si, 0x0C / 2] = 0;
+                unk_12230[si, 0x10 / 2] = 0;
+                unk_12230[si, 0x12 / 2] = 0;
+                unk_12230[si, 0x16 / 2] = 0;
+                unk_12230[si, 0x18 / 2] = 0;
+                unk_12230[si, 0x1A / 2] = 0;
+                unk_12230[si, 0x1C / 2] = 0;
+                unk_12230[si, 0x1E / 2] = 0;
+                unk_12230[si, 0x20 / 2] = 0;
+                unk_12230[si, 0x22 / 2] = 0;
+                unk_12230[si, 0x24 / 2] = 0;
+                goto loc_1361B;
+
+                // bl == 5
+                //mov     bl, [di]
+                //inc     di
+                //mov     bh, 0
+                //mov     ax, [di]
+                //inc     di
+                //inc     di
+                //mov     [bx+si], ax
+                //cmp     bl, 0
+                //jnz     short loc_1361B
+
+                throw new System.NotSupportedException();//loc_13692:
+                throw new System.NotSupportedException();//mov	si, ds:word_12204
+                throw new System.NotSupportedException();//cmp	short ptr [si], 0
+                throw new System.NotSupportedException();//jnz	loc_136AB
+                throw new System.NotSupportedException();//mov	bl, 4
+                throw new System.NotSupportedException();//sub	bl, byte_1642C
+                throw new System.NotSupportedException();//sub	bh, bh
+                throw new System.NotSupportedException();//mov	byte ptr [bx+14Ch], 0
+                throw new System.NotSupportedException();//mov	di, 0
+                throw new System.NotSupportedException();//loc_136AB:
+                throw new System.NotSupportedException();//mov	[si+2],	di
+                throw new System.NotSupportedException();//retn
+                // bl == 1
+                throw new System.NotSupportedException();//mov	di, short ptr byte_1645A
+                throw new System.NotSupportedException();//jmp	loc_1361B
+                // bl == 2
+                throw new System.NotSupportedException();//mov	ax, [di]
+                throw new System.NotSupportedException();//add	di, 2
+                throw new System.NotSupportedException();//mov	short ptr byte_1645A, di
+                throw new System.NotSupportedException();//mov	di, ax
+                throw new System.NotSupportedException();//jmp	loc_1361B
+                throw new System.NotSupportedException();//loc_136C4:
+                throw new System.NotSupportedException();//mov	bl, [di]
+                throw new System.NotSupportedException();//inc	di
+            }
+
             throw new System.NotSupportedException();//push	di
             throw new System.NotSupportedException();//mov	al, bl
             throw new System.NotSupportedException();//mov	cl, 5
@@ -582,7 +556,7 @@ namespace engine
         }
 
 
-        private static void sound_sub_137B1()
+        private static void sound_sub_137B1(/* short arg_0 == 0 */)
         {
             word_12202 = 0;
             byte_121DB = 1;
