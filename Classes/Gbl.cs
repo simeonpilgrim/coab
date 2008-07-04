@@ -281,7 +281,7 @@ namespace Classes
         public static bool byte_1D2C6;
         public static bool byte_1D2C7;
         public static bool byte_1D2C8;
-        public static sbyte byte_1D2C9;
+        public static int attack_roll; // byte_1D2C9
         public static byte byte_1D2CA;
         public static byte byte_1D2CB; // not used.
         public static byte byte_1D2CC;

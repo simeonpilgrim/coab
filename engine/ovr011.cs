@@ -1202,7 +1202,7 @@ namespace engine
             gbl.magicOn = false;
             gbl.byte_1D8B7 = 0;
             gbl.byte_1D8B8 = 0x0F;
-            gbl.byte_1D2C9 = 0;
+            gbl.attack_roll = 0;
             gbl.byte_1D1BB = 0;
 
             gbl.stru_1D885 = null;

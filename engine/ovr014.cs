@@ -89,7 +89,7 @@ namespace engine
                 gbl.damage = 0;
             }
 
-            if (sub_408D7(target, attacker) != 0)
+            if (sub_408D7(target, attacker) == true)
             {
                 gbl.damage *= (((attacker.thief_lvl + (attacker.field_117 * ovr026.sub_6B3D1(attacker))) - 1) / 4) + 2;
             }
@@ -776,7 +776,7 @@ namespace engine
 
         internal static void sub_3F4EB(Item arg_0, ref bool arg_4, byte arg_8, Player target, Player attacker)
         {
-            byte var_14;
+            int target_ac;
 
             byte var_13 = arg_8;
             arg_4 = false;
@@ -826,9 +826,9 @@ namespace engine
                 ovr025.reclac_player_values(target);
                 ovr024.work_on_00(target, 11);
 
-                if (sub_408D7(target, attacker) != 0)
+                if (sub_408D7(target, attacker) == true)
                 {
-                    var_14 = (byte)(target.field_19B - 4);
+                    target_ac = target.field_19B - 4;
                 }
                 else
                 {
@@ -841,22 +841,22 @@ namespace engine
 
                     if (var_13 != 0)
                     {
-                        var_14 = target.field_19B;
+                        target_ac = target.field_19B;
                     }
                     else
                     {
-                        var_14 = target.ac;
+                        target_ac = target.ac;
                     }
                 }
 
-                sub_3FCED(ref var_14, target, attacker);
+                ranged_defence_bonus(ref target_ac, target, attacker);
                 byte var_17 = 0;
                 if (var_13 != 0)
                 {
                     var_17 = 1;
                 }
 
-                if (sub_408D7(target, attacker) != 0)
+                if (sub_408D7(target, attacker) == true)
                 {
                     var_17 = 2;
                 }
@@ -872,7 +872,7 @@ namespace engine
 
                         gbl.inc_byte_byte_1D90x(var_15);
 
-                        if (ovr024.sub_64245(var_14, target, attacker) ||
+                        if (ovr024.attacker_can_hit_target(target_ac, target, attacker) ||
                             ovr025.is_held(target) == true)
                         {
                             switch (var_15)
@@ -1076,7 +1076,7 @@ namespace engine
         }
 
 
-        internal static void sub_3FCED(ref byte arg_0, Player target, Player attacker)
+        internal static void ranged_defence_bonus(ref int target_ac, Player target, Player attacker) /* sub_3FCED */
         {
             int weapon_range;
             int range = ovr025.getTargetRange(target, attacker);
@@ -1093,13 +1093,13 @@ namespace engine
             if (range > weapon_range)
             {
                 range -= weapon_range;
-                arg_0 += 2;
+                target_ac += 2;
             }
 
             if (range > weapon_range)
             {
                 range -= weapon_range;
-                arg_0 += 3;
+                target_ac += 3;
             }
         }
 
@@ -1533,56 +1533,36 @@ namespace engine
         }
 
 
-        internal static byte sub_408D7(Player arg_0, Player arg_4)
+        internal static bool sub_408D7(Player target, Player attacker) /* sub_408D7 */
         {
-            byte var_B;
-            byte var_A;
-            Item var_9;
-            Item var_5;
-            byte var_1;
+            Item weapon = attacker.field_151;
 
-            var_B = 0;
+            bool var_B = false;
 
-            var_5 = arg_4.field_151;
-
-            if (var_5 != null)
+            if (attacker.thief_lvl > 0 ||
+                (attacker.field_117 > 0 && ovr026.sub_6B3D1(attacker) != 0))
             {
-                var_A = var_5.type;
-            }
-            else
-            {
-                var_A = 0; // Only needed as the compiler doesn't see var_A is only set when var_5 is not null...
-            }
-
-            var_9 = arg_4.field_159;
-
-
-            if (arg_4.thief_lvl > 0 ||
-                (arg_4.field_117 > 0 && ovr026.sub_6B3D1(arg_4) != 0))
-            {
-                if (var_5 == null ||
-                    var_A == 0x61 ||
-                    var_A == 7 ||
-                    var_A == 8 ||
-                    (var_A > 0x22 && var_A < 0x26))
+                if (weapon == null ||
+                    weapon.type == 0x61 ||
+                    weapon.type == 7 ||
+                    weapon.type == 8 ||
+                    (weapon.type > 0x22 && weapon.type < 0x26))
                 {
-                    var_B = 1;
+                    var_B = true;
                 }
             }
 
-            if (var_B != 0 &&
-                arg_0.actions.field_F > 1 &&
-                (arg_0.field_DE & 0x7F) <= 1 &&
-                getTargetDirection(arg_0, arg_4) == arg_0.actions.direction)
+            if (var_B == true &&
+                target.actions.field_F > 1 &&
+                (target.field_DE & 0x7F) <= 1 &&
+                getTargetDirection(target, attacker) == target.actions.direction)
             {
-                var_1 = 1;
+                return true;
             }
             else
             {
-                var_1 = 0;
+                return false;
             }
-
-            return var_1;
         }
 
 
@@ -2733,7 +2713,7 @@ namespace engine
 
         internal static void hugs(Effect arg_0, object param, Player player)
         {
-            if (gbl.byte_1D2C9 >= 18)
+            if (gbl.attack_roll >= 18)
             {
                 gbl.spell_target = player.actions.target;
                 ovr025.DisplayPlayerStatusString(true, 12, "hugs " + gbl.spell_target.name, player);

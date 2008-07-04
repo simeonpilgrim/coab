@@ -509,71 +509,69 @@ namespace engine
         }
 
 
-        internal static bool sub_641DD(byte arg_0, Player arg_2)
+        internal static bool sub_641DD(byte arg_0, Player target)
         {
-            bool var_1;
+            bool hit = false;
+            gbl.attack_roll = roll_dice(20, 1);
 
-            var_1 = false;
-            gbl.byte_1D2C9 = (sbyte)roll_dice(20, 1);
-
-            if (gbl.byte_1D2C9 > 1)
+            if (gbl.attack_roll > 1)
             {
-                if (gbl.byte_1D2C9 == 0x14)
+                if (gbl.attack_roll == 20)
                 {
-                    gbl.byte_1D2C9 = 0x64;
+                    gbl.attack_roll = 100;
                 }
 
-                work_on_00(arg_2, 16);
+                work_on_00(target, 16);
 
-                if (gbl.byte_1D2C9 >= 0)
+                if (gbl.attack_roll >= 0)
                 {
-                    if ((gbl.byte_1D2C9 + arg_0) > arg_2.ac)
+                    if ((gbl.attack_roll + arg_0) > target.ac)
                     {
-                        var_1 = true;
+                        hit = true;
                     }
                 }
             }
 
-            return var_1;
+            return hit;
         }
 
 
-        internal static bool sub_64245(byte arg_0, Player arg_2, Player arg_6)
+        internal static bool attacker_can_hit_target(int target_ac, Player target, Player attacker) /* sub_64245 */
         {
-            bool var_1 = false;
-            short var_2;
+            bool hit = false;
 
-            remove_invisibility(arg_6);
-            gbl.byte_1D2C9 = (sbyte)roll_dice(20, 1);
+            remove_invisibility(attacker);
+            gbl.attack_roll = roll_dice(20, 1);
 
-            if (gbl.byte_1D2C9 > 1)
+            if (gbl.attack_roll > 1)
             {
-                if (gbl.byte_1D2C9 == 20)
+                if (gbl.attack_roll == 20)
                 {
-                    gbl.byte_1D2C9 = 100;
+                    gbl.attack_roll = 100;
                 }
 
-                work_on_00(arg_6, 0x0a);
-                work_on_00(arg_2, 0x10);
+                work_on_00(attacker, 10);
+                work_on_00(target, 16);
 
-                if (arg_6.combat_team == CombatTeam.Ours)
+                int team_bonus;
+                if (attacker.combat_team == CombatTeam.Ours)
                 {
-                    var_2 = gbl.area2_ptr.field_6E2;
+                    team_bonus = gbl.area2_ptr.field_6E2;
                 }
                 else
                 {
-                    var_2 = gbl.area2_ptr.field_6E0;
+                    team_bonus = gbl.area2_ptr.field_6E0;
                 }
 
-                if (gbl.byte_1D2C9 >= 0)
+                if (gbl.attack_roll >= 0)
                 {
-                    if ((gbl.byte_1D2C9 + arg_6.hitBonus + var_2) >= arg_0)
+                    if ((gbl.attack_roll + attacker.hitBonus + team_bonus) >= target_ac)
                     {
-                        var_1 = true;
+                        hit = true;
                     }
                 }
             }
-            return var_1;
+            return hit;
         }
 
 

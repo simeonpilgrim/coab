@@ -687,7 +687,7 @@ namespace engine
         internal static void sub_5CF7F(string arg_0, byte arg_4, sbyte arg_6, bool arg_8, int TargetCount, byte spell_id)
         {
             bool var_30;
-            Player var_2F;
+            Player target;
             byte var_2B;
             int target_count;
 
@@ -715,7 +715,7 @@ namespace engine
                 {
                     if (gbl.sp_targets[var_2B] != null)
                     {
-                        var_2F = gbl.sp_targets[var_2B];
+                        target = gbl.sp_targets[var_2B];
 
                         if (gbl.spell_table[spell_id].can_save_flag == 0)
                         {
@@ -723,16 +723,16 @@ namespace engine
                         }
                         else
                         {
-                            var_30 = ovr024.do_saving_throw(0, gbl.spell_table[spell_id].field_9, var_2F);
+                            var_30 = ovr024.do_saving_throw(0, gbl.spell_table[spell_id].field_9, target);
                         }
 
                         if (gbl.spell_table[gbl.spell_id].field_2 == -1)
                         {
-                            ovr025.reclac_player_values(var_2F);
+                            ovr025.reclac_player_values(target);
 
-                            ovr024.work_on_00(var_2F, 11);
+                            ovr024.work_on_00(target, 11);
 
-                            if (ovr024.sub_64245(var_2F.ac, var_2F, gbl.player_ptr) == false)
+                            if (ovr024.attacker_can_hit_target(target.ac, target, gbl.player_ptr) == false)
                             {
                                 arg_6 = 0;
                                 var_30 = true;
@@ -741,14 +741,14 @@ namespace engine
 
                         if (arg_6 > 0)
                         {
-                            ovr024.damage_person(var_30, gbl.spell_table[spell_id].can_save_flag, arg_6, var_2F);
+                            ovr024.damage_person(var_30, gbl.spell_table[spell_id].can_save_flag, arg_6, target);
                         }
 
                         if (gbl.spell_table[spell_id].affect_id > 0)
                         {
                             ovr024.is_unaffected(arg_0, var_30, gbl.spell_table[spell_id].can_save_flag,
                                 arg_8, target_count, sub_5CE92(spell_id), gbl.spell_table[spell_id].affect_id,
-                                var_2F);
+                                target);
                         }
                     }
                 }
