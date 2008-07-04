@@ -44,14 +44,14 @@ namespace engine
         internal static void sub_3A087(Effect arg_0, object param, Player player)
         {
             gbl.saving_throw_roll += 1;
-            gbl.byte_1D2C9++;
+            gbl.attack_roll++;
         }
 
 
         internal static void sub_3A096(Effect add_remove, object param, Player player)
         {
             gbl.byte_1D2CC += 5;
-            gbl.byte_1D2C9++;
+            gbl.attack_roll++;
         }
 
 
@@ -65,7 +65,7 @@ namespace engine
             {
                 gbl.byte_1D2CC -= 5;
             }
-            gbl.byte_1D2C9--;
+            gbl.attack_roll--;
         }
 
 
@@ -95,7 +95,7 @@ namespace engine
         {
             if ((gbl.player_ptr.field_14B & 1) != 0)
             {
-                gbl.byte_1D2C9 -= 7;
+                gbl.attack_roll -= 7;
             }
         }
 
@@ -123,7 +123,7 @@ namespace engine
                 var_1 = 0;
             }
 
-            gbl.byte_1D2C9 += var_1;
+            gbl.attack_roll += var_1;
             gbl.damage += var_1;
             gbl.damage_flags = 9;
         }
@@ -158,7 +158,7 @@ namespace engine
                 gbl.player_ptr.alignment == 8)
             {
                 gbl.saving_throw_roll += 2;
-                gbl.byte_1D2C9 -= 2;
+                gbl.attack_roll -= 2;
             }
         }
 
@@ -170,7 +170,7 @@ namespace engine
                 gbl.player_ptr.alignment == 6)
             {
                 gbl.saving_throw_roll += 2;
-                gbl.byte_1D2C9 -= 2;
+                gbl.attack_roll -= 2;
             }
         }
 
@@ -276,7 +276,7 @@ namespace engine
             //HACK - why could gbl.spell_target be null?
             if (gbl.spell_target != null && (gbl.spell_target.field_14B & 2) != 0)
             {
-                gbl.byte_1D2C9++;
+                gbl.attack_roll++;
             }
         }
 
@@ -372,7 +372,7 @@ namespace engine
                 ovr025.find_affect(Affects.detect_invisibility, gbl.player_ptr) == false)
             {
                 gbl.byte_1D2C5 = 1;
-                gbl.byte_1D2C9 -= 4;
+                gbl.attack_roll -= 4;
             }
         }
 
@@ -383,7 +383,7 @@ namespace engine
 
             if ((gbl.spell_target.field_14B & 4) != 0)
             {
-                gbl.byte_1D2C9++;
+                gbl.attack_roll++;
             }
         }
 
@@ -475,7 +475,7 @@ namespace engine
 
         internal static void sub_3A951(Effect arg_0, object param, Player player)
         {
-            gbl.byte_1D2C9 -= 4;
+            gbl.attack_roll -= 4;
 
             player.ac -= 4;
             player.field_19B -= 4;
@@ -536,7 +536,7 @@ namespace engine
 
         internal static void sub_3AB6F(Effect arg_0, object param, Player player)
         {
-            gbl.byte_1D2C9 -= 4;
+            gbl.attack_roll -= 4;
             gbl.saving_throw_roll -= 4;
         }
 
@@ -546,7 +546,7 @@ namespace engine
             if (player.actions.delay == 0)
             {
                 gbl.byte_1D2C5 = 1;
-                gbl.byte_1D2C9 = -1;
+                gbl.attack_roll = -1;
             }
         }
 
@@ -672,7 +672,7 @@ namespace engine
             {
                 ovr025.DisplayPlayerStatusString(true, 10, "Avoids it", player);
                 gbl.damage = 0;
-                gbl.byte_1D2C9 = -1;
+                gbl.attack_roll = -1;
                 gbl.byte_1D2CA--;
             }
         }
@@ -767,7 +767,7 @@ namespace engine
             {
                 if ((gbl.player_ptr.field_DE & 0x7F) == 2)
                 {
-                    gbl.byte_1D2C9 -= 4;
+                    gbl.attack_roll -= 4;
                 }
             }
         }
@@ -778,7 +778,7 @@ namespace engine
             if (gbl.player_ptr.field_11A == 1 &&
                 (gbl.player_ptr.field_DE & 0x7F) == 2)
             {
-                gbl.byte_1D2C9 -= 4;
+                gbl.attack_roll -= 4;
             }
         }
 
@@ -795,7 +795,7 @@ namespace engine
             }
             else
             {
-                gbl.byte_1D2C9 -= 1;
+                gbl.attack_roll -= 1;
                 gbl.saving_throw_roll -= 1;
             }
         }
@@ -995,7 +995,7 @@ namespace engine
                     gbl.byte_1D2C5 = 1;
                 }
 
-                gbl.byte_1D2C9 -= 4;
+                gbl.attack_roll -= 4;
             }
         }
 
@@ -1009,7 +1009,7 @@ namespace engine
         internal static void sub_3B685(Effect arg_0, object param, Player player)
         {
             gbl.byte_1D2C5 = 1;
-            gbl.byte_1D2C9 -= 4;
+            gbl.attack_roll -= 4;
         }
 
 
@@ -1042,7 +1042,7 @@ namespace engine
                 if (gbl.spell_target.field_11A == 3)
                 {
                     gbl.damage = (ovr024.roll_dice(12, 1) * 3) + 4 + ovr025.strengthDamBonus(player);
-                    gbl.byte_1D2C9 += 2;
+                    gbl.attack_roll += 2;
                 }
             }
         }
@@ -1054,7 +1054,7 @@ namespace engine
 
             if (gbl.spell_target.field_11A == 8)
             {
-                gbl.byte_1D2C9 += 3;
+                gbl.attack_roll += 3;
                 gbl.damage += 3;
             }
         }
@@ -1188,13 +1188,13 @@ namespace engine
 
             if (affect != null)
             {
-                if (gbl.byte_1D8B7 == 0 && gbl.byte_1D2C9 == 0)
+                if (gbl.byte_1D8B7 == 0 && gbl.attack_roll == 0)
                 {
                     affect.field_3 &= 0x0f;
                 }
                 else if ((affect.field_3 & 0x10) == 0)
                 {
-                    gbl.byte_1D2C9 = -1;
+                    gbl.attack_roll = -1;
                     affect.field_3 |= 0x10;
                 }
             }
