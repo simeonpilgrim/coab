@@ -3,10 +3,11 @@
 = Unreleased =
 
 = 1.0.12 =
-  * Fixed the Fear spell, so it is removed when combat is ended 
-  * The icon designer keep colour changes when you Exited a sub-menu instead of reverting the changes.
-  * Fixed the price text when buying spells from a Temple
-  * Fixed crash when removing cursed item
+  * Fixed the Fear spell, so it is removed when combat is ended
+  * The icon designer now reverts to your original colours when you ‘Exit’ a sub-menu instead of keeping the changes
+  * Fixed the price text when buying healing from a Temple
+  * Fixed crash when removing cursed items
+
 
 = 1.0.11 =
   * Fixed crash, caused by trying to load the 8 frame Medusa animation - Issue 27
