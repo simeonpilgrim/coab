@@ -102,29 +102,32 @@ namespace engine
 
         internal static void sub_3A17A(Effect arg_0, object param, Player player)
         {
-            sbyte var_1;
+            int bonus = 0;
 
-            gbl.spell_target = player.actions.target;
+            if (player.actions != null &&
+                player.actions.target != null)
+            {
+                gbl.spell_target = player.actions.target;
 
-            if (gbl.spell_target.field_11A == 10)
-            {
-                var_1 = 1;
+                if (gbl.spell_target.field_11A == 10)
+                {
+                    bonus = 1;
+                }
+                else if (gbl.spell_target.field_11A == 9 || gbl.spell_target.field_11A == 12)
+                {
+                    bonus = 2;
+                }
+                else if (gbl.spell_target.field_11A == 4)
+                {
+                    bonus = 3;
+                }
+                else
+                {
+                    bonus = 0;
+                }
             }
-            else if (gbl.spell_target.field_11A == 9 || gbl.spell_target.field_11A == 12)
-            {
-                var_1 = 2;
-            }
-            else if (gbl.spell_target.field_11A == 4)
-            {
-                var_1 = 3;
-            }
-            else
-            {
-                var_1 = 0;
-            }
-
-            gbl.attack_roll += var_1;
-            gbl.damage += var_1;
+            gbl.attack_roll += bonus;
+            gbl.damage += bonus;
             gbl.damage_flags = 9;
         }
 
@@ -272,10 +275,11 @@ namespace engine
 
         internal static void sub_3A44A(Effect arg_0, object param, Player player)
         {
-            gbl.spell_target = player.actions.target;
-            //HACK - why could gbl.spell_target be null?
-            if (gbl.spell_target != null && (gbl.spell_target.field_14B & 2) != 0)
+            if (player.actions != null &&
+                player.actions.target != null &&
+                (player.actions.target.field_14B & 2) != 0)
             {
+                gbl.spell_target = player.actions.target;
                 gbl.attack_roll++;
             }
         }
@@ -1050,12 +1054,16 @@ namespace engine
 
         internal static void sub_3B772(Effect arg_0, object param, Player player)
         {
-            gbl.spell_target = player.actions.target;
-
-            if (gbl.spell_target.field_11A == 8)
+            if (player.actions != null)
             {
-                gbl.attack_roll += 3;
-                gbl.damage += 3;
+                gbl.spell_target = player.actions.target;
+
+                if (gbl.spell_target != null &&
+                    gbl.spell_target.field_11A == 8)
+                {
+                    gbl.attack_roll += 3;
+                    gbl.damage += 3;
+                }
             }
         }
 
@@ -1773,7 +1781,7 @@ namespace engine
             {
                 ovr024.add_affect(true, 0xff, 0, item.affect_2, player);
 
-                if (gbl.game_state == 5) // Simeon swaped from != 5 to == 5
+                if (gbl.game_state != 5)
                 {
                     ovr024.CallSpellJumpTable(Effect.Add, null, player, item.affect_2);
                 }

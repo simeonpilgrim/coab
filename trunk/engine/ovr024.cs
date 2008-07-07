@@ -37,7 +37,7 @@ namespace engine
 
         internal static void CallSpellJumpTable(Effect add_remove, object parameter, Player player, Affects affect) /* sub_630C7 */
         {
-            if (gbl.byte_1D8AC)
+            if (gbl.byte_1D8AC == true)
             {
                 gbl.affect_jump_list[147](add_remove, parameter, player);
             }
