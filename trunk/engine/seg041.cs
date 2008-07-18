@@ -122,119 +122,112 @@ namespace engine
         internal static void text_skip_space(string text, int text_max, ref int text_index) /* sub_10854 */
         {
             while (text_index < text_max &&
-                text[text_index] == ' ')
+                text[text_index-1] == ' ')
             {
                 text_index += 1;
             }
         }
 
-        static private byte[] unk_16FA6 = { 2, 70, 0, 0x8C };
+        static private byte[] unk_16FA6 = { 2, 0x70, 0, 0x8C };
 
-        internal static void press_any_key(string arg_0, bool clearArea, 
-            int bgColor, int fgColor, 
+        internal static void press_any_key(string text, bool clearArea,
+            int bgColor, int fgColor,
             int yEnd, int xEnd, int yStart, int xStart)
         {
-            Set var_125;
-            int text_length;
-            int text_index;
-            byte var_102;
-            string text;
-
-            text = arg_0;
-
-            if (xStart <= 0x27 && yStart <= 0x18 && 
-                xEnd <= 0x27 && yEnd <= 0x27)
+            if (xStart > 0x27 || yStart > 0x18 ||
+                xEnd > 0x27 && yEnd > 0x27)
             {
-                if (gbl.textXCol < xStart ||
-                    gbl.textXCol > xEnd ||
-                    gbl.textYCol < yStart ||
-                    gbl.textYCol > yEnd)
+                return;
+            }
+
+            if (gbl.textXCol < xStart ||
+                gbl.textXCol > xEnd ||
+                gbl.textYCol < yStart ||
+                gbl.textYCol > yEnd)
+            {
+                gbl.textXCol = xStart;
+                gbl.textYCol = yStart;
+            }
+
+            if (clearArea == true)
+            {
+                seg037.draw8x8_clear_area(yEnd, xEnd, yStart, xStart);
+                gbl.textXCol = xStart;
+                gbl.textYCol = yStart;
+            }
+
+            int text_start = 1;
+            int input_lenght = text.Length;
+
+            if (input_lenght != 0)
+            {
+                //int var_102 = (xEnd - xStart) + 1;
+
+                Set var_125 = new Set(0x404, unk_16FA6);
+                do
                 {
-                    gbl.textXCol = xStart;
-                    gbl.textYCol = yStart;
-                }
+                    int text_end = text_start;
 
-                if (clearArea == true)
-                {
-                    seg037.draw8x8_clear_area(yEnd, xEnd, yStart, xStart);
-                    gbl.textXCol = xStart;
-                    gbl.textYCol = yStart;
-                }
-
-                text_index = 1;
-                int var_101 = text.Length;
-
-                if (var_101 != 0)
-                {
-                    var_102 = (byte)((xEnd - xStart) + 1);
-
-                    var_125 = new Set(0x404, unk_16FA6);
-                    do
+                    while (text_end < input_lenght &&
+                        var_125.MemberOf(text[text_end - 1]) == true)
                     {
-                        text_length = text_index;
+                        text_end++;
+                    }
 
-                        while (text_length < var_101 &&
-                            var_125.MemberOf(text[text_length-1]) == true)
-                        {
-                            text_length++;
-                        }
-
-                        while (text_length < var_101 &&
-                            var_125.MemberOf(text[text_length-1]) == false &&
-                            text[text_length-1] != ' ')
-                        {
-                            text_length++;
-                        }
-
-                        if (text[text_length-1] != ' ')
-                        {
-                            while (text_length < var_101 &&
-                                var_125.MemberOf(text[text_length ]) == true)
-                            {
-                                text_length++;
-                            }
-                        }
-
-                        if (((text_length - text_index) + gbl.textXCol) > xEnd)
-                        {
-                            if (((text_length - text_index) + gbl.textXCol) == xEnd &&
-                                text[text_length-1] == ' ')
-                            {
-                                text_length -= 1;
-                                displayStringSlow(text, ref text_index, text_length, bgColor, fgColor);
-                            }
-
-                            gbl.textXCol = xStart;
-                            gbl.textYCol++;
-                            text_skip_space(text, var_101, ref text_index);
-
-                            if (gbl.textYCol > yEnd &&
-                                text_index < var_101)
-                            {
-                                gbl.textXCol = xStart;
-                                gbl.textYCol = yStart;
-
-                                displayAndDebug("Press any key to continue", 0, 13);
-                                seg043.clear_keyboard();
-
-                                seg037.draw8x8_clear_area(yEnd, xEnd, yStart, xStart);
-
-                                displayStringSlow(text, ref text_index, text_length, bgColor, fgColor);
-                            }
-                        }
-                        else
-                        {
-                            displayStringSlow(text, ref text_index, text_length, bgColor, fgColor);
-                            Display.Update();
-                        }
-
-                    } while (text_index <= var_101);
-
-                    if (gbl.textXCol > xEnd)
+                    while (text_end < input_lenght &&
+                        var_125.MemberOf(text[text_end - 1]) == false &&
+                        text[text_end - 1] != ' ')
                     {
+                        text_end++;
+                    }
+
+                    if (text[text_end - 1] != ' ')
+                    {
+                        while (text_end + 1 < input_lenght &&
+                            var_125.MemberOf(text[text_end]) == true)
+                        {
+                            text_end++;
+                        }
+                    }
+
+                    if (((text_end - text_start) + gbl.textXCol) > xEnd)
+                    {
+                        if (((text_end - text_start) + gbl.textXCol) == xEnd &&
+                            text[text_end - 1] == ' ')
+                        {
+                            text_end -= 1;
+                            displayStringSlow(text, ref text_start, text_end, bgColor, fgColor);
+                        }
+
                         gbl.textXCol = xStart;
                         gbl.textYCol++;
+                        text_skip_space(text, input_lenght, ref text_start);
+
+                        if (gbl.textYCol > yEnd &&
+                            text_start < input_lenght)
+                        {
+                            gbl.textXCol = xStart;
+                            gbl.textYCol = yStart;
+
+                            displayAndDebug("Press any key to continue", 0, 13);
+                            seg043.clear_keyboard();
+
+                            seg037.draw8x8_clear_area(yEnd, xEnd, yStart, xStart);
+
+                            displayStringSlow(text, ref text_start, text_end, bgColor, fgColor);
+                        }
                     }
+                    else
+                    {
+                        displayStringSlow(text, ref text_start, text_end, bgColor, fgColor);
+                        Display.Update();
+                    }
+                } while (text_start <= input_lenght);
+
+                if (gbl.textXCol > xEnd)
+                {
+                    gbl.textXCol = xStart;
+                    gbl.textYCol++;
                 }
             }
         }

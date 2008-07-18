@@ -527,7 +527,7 @@ namespace engine
 
         internal static byte sub_37991()
         {
-            byte var_1 = unk_16664[gbl.byte_1AD3C];
+            byte var_1 = unk_16664[gbl.current_city];
 
             return var_1;
         }
@@ -659,7 +659,6 @@ namespace engine
             else if (roll <= arg_A + arg_8)
             {
                 gbl.mapToBackGroundTile[map_x, map_y] = (byte)(ovr024.roll_dice(2, 1) + 0x2f);
-
             }
             else if( roll <= arg_A + arg_8 + arg_6 )
             {
@@ -748,7 +747,7 @@ namespace engine
 
             //byte var_1 = gbl.area_ptr.field_186;
             //byte var_2 = gbl.area_ptr.field_188;
-            gbl.byte_1AD3C = gbl.area_ptr.field_342;
+            gbl.current_city = gbl.area_ptr.current_city;
             sub_37A00();
             sub_37B0B();
             sub_37E4A();
@@ -1070,8 +1069,8 @@ namespace engine
             gbl.team_start_y[0] = 0;
             gbl.team_direction[0] = gbl.mapDirection / 2;
 
-            gbl.team_start_x[1] = (gbl.area2_ptr.field_582 * gbl.MapDirectionXDelta[gbl.mapDirection]) + gbl.team_start_x[0];
-            gbl.team_start_y[1] = (gbl.area2_ptr.field_582 * gbl.MapDirectionYDelta[gbl.mapDirection]) + gbl.team_start_y[0];
+            gbl.team_start_x[1] = (gbl.area2_ptr.encounter_distance * gbl.MapDirectionXDelta[gbl.mapDirection]) + gbl.team_start_x[0];
+            gbl.team_start_y[1] = (gbl.area2_ptr.encounter_distance * gbl.MapDirectionYDelta[gbl.mapDirection]) + gbl.team_start_y[0];
             gbl.team_direction[1] = ((gbl.mapDirection + 4) % 8) / 2;
 
             gbl.half_team_count[0] = (gbl.friends_count + 1) / 2;

@@ -12,18 +12,13 @@ namespace engine
         /// <param name="column"></param>
         static void SetPixel( byte colour, ushort row, ushort column )
         {
-            /* was int_0x0c which call int 10. ah 0C */
-            throw new System.NotImplementedException();
+            Display.SetPixel3(column, row, colour);
         }
 
 
         internal static byte GetPixel( ushort row, ushort column )
         {
-            /* was int_0x0d which call int 10. ah 0C */
-            throw new System.NotImplementedException();
-
-            //byte var_1 = 0;
-			//return var_1;
+            return Display.GetPixel(column, row);
         }
 
 
@@ -91,11 +86,15 @@ namespace engine
 
 			gbl.byte_1ADFA = 0;
 
+
+            unk_1ADFB[1] = new Struct_1ADFB();
+			unk_1ADFB[0] = new Struct_1ADFB();
+            unk_1ADFB[2] = new Struct_1ADFB();
 			unk_1ADFB[0].Reset();
-			unk_1ADFB[1].Reset();
+            unk_1ADFB[1].Reset();
 			unk_1ADFB[2].Reset();
 
-			for( var_5 = 1; var_5 <= 3; var_5++ )
+			for( var_5 = 0; var_5 < 3; var_5++ )
 			{
 				if( var_3[ var_5 ] > 1 )
 				{
@@ -134,12 +133,12 @@ namespace engine
 
 				for( var_4 = 1; var_4 <= 0x28; var_4++ )
 				{
-					var_21 = gbl.dword_1ADF6[ var_4 + (var_5 * 40) - 1];
+					var_21 = gbl.dword_1ADF6[ var_4 + ((var_5) * 40) - 1];
 
 					var_C = seg051.Random__Real() * (System.Math.PI * 2.0);
 					var_12 = seg051.Random__Real() * (System.Math.PI * 2.0);
 
-					var_21.field_00 = arg_A;
+                    var_21.field_00 = arg_A;
                     var_21.field_02 = arg_8;
 					var_21.field_08 = (short)(var_21.field_00 << 5);
 					var_21.field_0A = (short)(var_21.field_02 << 5);
@@ -376,7 +375,11 @@ namespace engine
 
         internal static void endgame_529F4() /* sub_529F4 */
         {
-            gbl.dword_1ADF6 = new Struct_1ADF6[120];  
+            gbl.dword_1ADF6 = new Struct_1ADF6[120];
+            for (int i = 0; i < 120; i++)
+            {
+                gbl.dword_1ADF6[i] = new Struct_1ADF6();
+            }
             gbl.byte_1AE0A = 0;
 
 			do
@@ -425,45 +428,39 @@ namespace engine
         }
 
 
-        internal static void sub_52B79( int num_loops, byte arg_2, short arg_4, short arg_6 )
+        internal static void sub_52B79( int num_loops, byte block_id, short row_y, short col_x )
         {
-            int loop_count;
-            int var_4A;
-            int var_46;
-            DaxArray var_42;
+            int loop_count = 0;
+			int start_time = seg041.time01();
 
-            loop_count = 0;
+            DaxArray animation = new DaxArray();
 
-			var_4A = seg041.time01();
-
-            var_42 = new DaxArray();
-
-            ovr030.load_pic_final( ref var_42, 2, arg_2, "PIC" );
-            seg040.OverlayBounded( var_42.ptrs[0].field_4, 0, 0, arg_4 - 1, arg_6 - 1);
+            ovr030.load_pic_final( ref animation, 2, block_id, "PIC" );
+            seg040.OverlayBounded( animation.frames[0].picture, 0, 0, row_y - 1, col_x - 1);
             seg040.DrawOverlay();
 
 			do
 			{
-                ovr030.sub_7000A(var_42.ptrs[var_42.curFrame - 1].field_4, true, arg_4, arg_6);
-				var_46 = seg041.time01();
+                ovr030.sub_7000A(animation.frames[animation.curFrame - 1].picture, true, row_y, col_x);
+				int current_time = seg041.time01();
 
-                int delay = var_42.ptrs[var_42.curFrame - 1].field_0 * (gbl.game_speed_var + 3);
+                int delay = animation.frames[animation.curFrame - 1].delay * (gbl.game_speed_var + 3);
 
-                if ((var_46 - var_4A) > delay)
+                 if ((current_time - start_time) > delay)
                 {
-                    var_42.curFrame += 1;
+                    animation.curFrame += 1;
 
-                    if (var_42.curFrame > var_42.numFrames)
+                    if (animation.curFrame > animation.numFrames)
                     {
-                        var_42.curFrame = 1;
+                        animation.curFrame = 1;
                         loop_count++;
                     }
  
-                    var_4A = var_46;
+                    start_time = current_time;
                 }
 			}while( loop_count != num_loops );
 
-            ovr030.DaxArrayFreeDaxBlocks( var_42 );
+            ovr030.DaxArrayFreeDaxBlocks( animation );
         }
 
         static string aTyranthraxusSp = "Tyranthraxus' spirit coalesces over the slain ";

@@ -41,9 +41,9 @@ namespace Classes
         [DataOffset(0x550, DataType.Byte)]
         public byte field_550; // 0x550
         [DataOffset(0x580, DataType.Word)]
-        public ushort field_580; // 0x580
+        public ushort max_encounter_distance; // 0x580
         [DataOffset(0x582, DataType.Word)]
-        public ushort field_582; // 0x582
+        public ushort encounter_distance; // 0x582
         [DataOffset(0x58C, DataType.Word)]
         public ushort field_58C; // 0x58c
         [DataOffset(0x58E, DataType.SWord)]

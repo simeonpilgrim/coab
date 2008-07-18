@@ -41,43 +41,46 @@ namespace engine
 
         internal static void sound_sub_120E0(short arg_0) /*sub_120E0*/
         {
-            if (set_01.MemberOf((byte)arg_0) == true)
+            lock (timer_lock)
             {
-                if (arg_0 == 0)
+                if (set_01.MemberOf((byte)arg_0) == true)
                 {
-                    if (gbl.soundType != SoundType.None)
+                    if (arg_0 == 0)
                     {
-                        sound_sub_137B1();
-                        sound_sub_13745(0);
+                        if (gbl.soundType != SoundType.None)
+                        {
+                            sound_sub_137B1();
+                            sound_sub_13745(0);
+                        }
                     }
-                }
-                else if (arg_0 == 1)
-                {
-                    if (gbl.soundType != SoundType.None)
+                    else if (arg_0 == 1)
                     {
-                        byte_1220C[4] = 1;
+                        if (gbl.soundType != SoundType.None)
+                        {
+                            byte_1220C[4] = 1;
+                        }
                     }
-                }
-                else if (arg_0 == 0xff)
-                {
-                    if (gbl.soundType != SoundType.None)
+                    else if (arg_0 == 0xff)
                     {
-                        sound_sub_137B1();
-                        sound_sub_13745(0);
-                        sound_sub_133B4();
-                        gbl.gameFlag01 = false;
+                        if (gbl.soundType != SoundType.None)
+                        {
+                            sound_sub_137B1();
+                            sound_sub_13745(0);
+                            sound_sub_133B4();
+                            gbl.gameFlag01 = false;
+                        }
                     }
-                }
-                else if (arg_0 >= 2 && arg_0 <= 14)
-                {
-                    if (gbl.soundType == SoundType.PC)
+                    else if (arg_0 >= 2 && arg_0 <= 14)
                     {
-                        sound_sub_13745((short)(arg_0 - 1));
+                        if (gbl.soundType == SoundType.PC)
+                        {
+                            sound_sub_13745((short)(arg_0 - 1));
+                        }
                     }
-                }
-                else if (arg_0 == 15)
-                {
-                    word_121DE = 0x1388;
+                    else if (arg_0 == 15)
+                    {
+                        word_121DE = 0x1388;
+                    }
                 }
             }
         }
@@ -85,14 +88,17 @@ namespace engine
 
         internal static void sound_sub_12194()
         {
-            gbl.soundTypeBackup = gbl.soundType;
-            gbl.gameFlag01 = true;
-
-            if (gbl.soundType != SoundType.None)
+            lock (timer_lock)
             {
-                sound_sub_1337F();
-                sound_sub_13745(0);
-                sound_sub_137B1();
+                gbl.soundTypeBackup = gbl.soundType;
+                gbl.gameFlag01 = true;
+
+                if (gbl.soundType != SoundType.None)
+                {
+                    sound_sub_1337F();
+                    sound_sub_13745(0);
+                    sound_sub_137B1();
+                }
             }
         }
 

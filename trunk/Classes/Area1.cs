@@ -123,7 +123,7 @@ namespace Classes
         [DataOffset(0x340, DataType.Byte)]
         public byte field_340;
         [DataOffset(0x342, DataType.Byte)]
-        public byte field_342;
+        public byte current_city; //field_342
         [DataOffset(0x344, DataType.Byte)]
         public byte field_344;
         [DataOffset(0x346, DataType.Byte)]
@@ -311,7 +311,7 @@ namespace Classes
                     field_340 = (byte)value;
                     break;
                 case 0x342:
-                    field_342 = (byte)value;
+                    current_city = (byte)value;
                     break;
                 case 0x346:
                     field_346 = (byte)value;
