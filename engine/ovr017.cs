@@ -1533,8 +1533,6 @@ namespace engine
 
             seg051.FreeMem(var_6);
 
-            gbl.byte_1C01A = 1;
-
             seg042.load_decode_dax(out var_6, out var_2, monster_id, "MON" + var_12 + "SPC.dax");
 
             if (var_2 != 0)
@@ -1591,7 +1589,6 @@ namespace engine
                 } while (var_8 < var_2);
             }
 
-            gbl.byte_1C01A = 0;
             seg043.clear_keyboard();
         }
 

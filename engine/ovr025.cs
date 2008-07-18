@@ -1830,7 +1830,7 @@ namespace engine
 
                     if (gbl.lastDaxBlockId == 0x50)
                     {
-                        ovr030.sub_7000A(gbl.byte_1D556.ptrs[0].field_4, true, 3, 3);
+                        ovr030.sub_7000A(gbl.byte_1D556.frames[0].picture, true, 3, 3);
                     }
                     else
                     {
@@ -1851,7 +1851,7 @@ namespace engine
 
                 case 4:
                     seg037.draw8x8_03();
-                    ovr029.sub_6F0BA();
+                    ovr029.update_3D_view();
                     Player_Summary(gbl.player_ptr);
                     display_map_position_time();
                     gbl.byte_1EE98 = 0;
@@ -1860,7 +1860,7 @@ namespace engine
                 case 3:
                     if (gbl.lastDaxBlockId != 0x50)
                     {
-                        ovr029.sub_6F0BA();
+                        ovr029.update_3D_view();
                     }
                     break;
 

@@ -91,15 +91,14 @@ namespace engine
 
         internal static void vm_init_ecl() // sub_301E8
         {
-            gbl.byte_1EE8C = 0;
+            gbl.byte_1EE8C = false;
             gbl.byte_1EE8E = 0;
-            gbl.byte_1EE7C = 0;
-            gbl.byte_1EE7D = 0;
-            gbl.byte_1D912 = 0x41;
-            gbl.byte_1D913 = 9;
-            gbl.byte_1EE91 = 1;
+            gbl.byte_1EE7C = false;
+            gbl.byte_1EE7D = false;
+            gbl.byte_1EE91 = true;
 
-            seg051.FillChar(0, 2, gbl.byte_1EE72);
+            gbl.encounter_flags[0] = false;
+            gbl.encounter_flags[1] = false;
             gbl.byte_1D92D = 8;
             gbl.ecl_offset = 0x8000;
             gbl.byte_1DA70 = false;
@@ -155,7 +154,6 @@ namespace engine
             short block_size = 0;
 
             gbl.ecl_ptr.Clear();
-            gbl.byte_1C01A = 0;
 
             do
             {
@@ -186,7 +184,7 @@ namespace engine
             if (gbl.area_ptr.field_1CC == 0)
             {
                 var_1 = 2;
-                gbl.area2_ptr.field_582 = 2;
+                gbl.area2_ptr.encounter_distance = 2;
             }
             else
             {
@@ -242,44 +240,42 @@ namespace engine
         }
 
 
-        internal static void sub_30580(byte[] arg_0, ushort arg_4, byte pic_block_id, byte sprite_block_id)
+        internal static void sub_30580(bool[] flags, int encounter_distance, byte pic_block_id, byte sprite_block_id)
         {
-            byte var_9 = (byte)(arg_4 + 1);
-
-            if (arg_0[1] == 0)
+            if (flags[1] == false)
             {
-                if (arg_0[0] == 0)
+                if (flags[0] == false)
                 {
                     if (gbl.mapAreaDisplay == true)
                     {
                         gbl.mapAreaDisplay = false;
                         gbl.can_draw_bigpic = true;
-                        ovr029.sub_6F0BA();
+                        ovr029.update_3D_view();
                     }
 
                     if (gbl.area_ptr.field_1CC != 0)
                     {
                         ovr030.load_pic_final(ref gbl.byte_1D556, 1, sprite_block_id, "SPRIT");
-                        arg_0[0] = 1;
+                        flags[0] = true;
                         gbl.displayPlayerSprite = true;
                     }
                 }
                 else
                 {
                     gbl.can_draw_bigpic = true;
-                    ovr029.sub_6F0BA();
+                    ovr029.update_3D_view();
                 }
 
                 if (gbl.game_state == 4)
                 {
-                    ovr030.Show3DSprite(gbl.byte_1D556, var_9);
+                    ovr030.Show3DSprite(gbl.byte_1D556, encounter_distance + 1);
                 }
             }
 
-            if (arg_0[1] == 0 ||
+            if (flags[1] == false ||
                 gbl.byte_1EE96 != gbl.area2_ptr.field_5C2)
             {
-                if (arg_4 == 0)
+                if (encounter_distance == 0)
                 {
                     if (gbl.game_state == 4)
                     {
@@ -287,18 +283,18 @@ namespace engine
                             gbl.byte_1B2E9 != 0)
                         {
                             gbl.byte_1EE96 = (byte)gbl.area2_ptr.field_5C2;
-                            gbl.byte_1EE8C = 1;
+                            gbl.byte_1EE8C = true;
                             if (gbl.area2_ptr.field_5C2 == 0xff)
                             {
                                 ovr030.load_pic_final(ref gbl.byte_1D556, 0, pic_block_id, "PIC");
-                                arg_0[1] = 1;
+                                flags[1] = true;
 
-                                ovr030.sub_7000A(gbl.byte_1D556.ptrs[0].field_4, true, 3, 3);
+                                ovr030.sub_7000A(gbl.byte_1D556.frames[0].picture, true, 3, 3);
                             }
                             else
                             {
                                 set_and_draw_head_body(pic_block_id, (byte)gbl.area2_ptr.field_5C2);
-                                arg_0[1] = 1;
+                                flags[1] = true;
                                 gbl.byte_1EE8D = false;
                             }
                         }
@@ -626,7 +622,7 @@ namespace engine
             {
                 if (set_value == 0)
                 {
-                    gbl.byte_1EE7D = 1;
+                    gbl.byte_1EE7D = true;
                 }
             }
             else if (switch_var >= 0x20 && switch_var <= 0x70)
@@ -685,7 +681,7 @@ namespace engine
 
                 if (set_value == 0)
                 {
-                    gbl.byte_1EE7C = 1;
+                    gbl.byte_1EE7C = true;
                 }
             }
             else if (switch_var == 0x10c)
@@ -865,13 +861,11 @@ namespace engine
                             break;
 
                         case 0xF1:
-                            gbl.byte_1D912 = (byte)(value);
-                            gbl.byte_1EE91 = 1;
+                            gbl.byte_1EE91 = true;
                             break;
 
                         case 0xF7:
-                            gbl.byte_1D913 = (byte)(value);
-                            gbl.byte_1EE91 = 1;
+                            gbl.byte_1EE91 = true;
                             break;
                     }
                 }
@@ -1191,9 +1185,9 @@ namespace engine
                     }
                     else
                     {
-                        while (gbl.area2_ptr.field_800_Get((offset + location) << 1) != 0)
+                        while (gbl.area2_ptr.field_800_Get(((offset + location) << 1)+0x800) != 0)
                         {
-                            gbl.unk_1D972[strIndex] += gbl.area2_ptr.field_800_Get((offset + location) << 1).ToString();
+                            gbl.unk_1D972[strIndex] += gbl.area2_ptr.field_800_Get(((offset + location) << 1)+0x800).ToString();
                             offset++;
                         }
                     }

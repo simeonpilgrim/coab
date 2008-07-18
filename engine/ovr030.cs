@@ -82,7 +82,7 @@ namespace engine
 
                         for (int frame = 1; frame <= daxArray.numFrames; frame++)
                         {
-                            daxArray.ptrs[frame - 1].field_0 = Sys.ArrayToInt(uncompressed_data, src_offset);
+                            daxArray.frames[frame - 1].delay = Sys.ArrayToInt(uncompressed_data, src_offset);
                             src_offset += 4;
 
                             short height = Sys.ArrayToShort(uncompressed_data, src_offset);
@@ -93,9 +93,9 @@ namespace engine
 
                             frames_count++;
 
-                            seg040.init_dax_block(out daxArray.ptrs[frame - 1].field_4, masked, 1, width, height);
+                            seg040.init_dax_block(out daxArray.frames[frame - 1].picture, masked, 1, width, height);
 
-                            DaxBlock dax_block = daxArray.ptrs[frame - 1].field_4;
+                            DaxBlock dax_block = daxArray.frames[frame - 1].picture;
 
                             dax_block.field_4 = Sys.ArrayToShort(uncompressed_data, src_offset);
                             src_offset += 2;
@@ -106,7 +106,7 @@ namespace engine
                             System.Array.Copy(uncompressed_data, src_offset, dax_block.field_9, 0, 8);
                             src_offset += 8;
 
-                            int ega_encoded_size = (daxArray.ptrs[frame - 1].field_4.bpp / 2) - 1;
+                            int ega_encoded_size = (daxArray.frames[frame - 1].picture.bpp / 2) - 1;
 
                             if (is_pic_or_final == true)
                             {
@@ -128,11 +128,11 @@ namespace engine
                                 }
                             }
 
-                            seg040.turn_dax_to_videolayout(daxArray.ptrs[frame - 1].field_4, 0, masked, src_offset, uncompressed_data);
+                            seg040.turn_dax_to_videolayout(daxArray.frames[frame - 1].picture, 0, masked, src_offset, uncompressed_data);
 
                             if ((masked & 1) > 0)
                             {
-                                seg040.DaxBlockRecolor(daxArray.ptrs[frame - 1].field_4, 0, 0, unk_16DDA, unk_16DCA);
+                                seg040.DaxBlockRecolor(daxArray.frames[frame - 1].picture, 0, 0, unk_16DDA, unk_16DCA);
                             }
 
                             src_offset += ega_encoded_size + 1;
@@ -163,7 +163,7 @@ namespace engine
         {
             for (gbl.byte_1DA71 = 1; gbl.byte_1DA71 <= arg_0.numFrames; gbl.byte_1DA71++)
             {
-                seg040.free_dax_block(ref arg_0.ptrs[gbl.byte_1DA71 - 1].field_4);
+                seg040.free_dax_block(ref arg_0.frames[gbl.byte_1DA71 - 1].picture);
             }
 
             arg_0.numFrames = 0;
@@ -221,17 +221,17 @@ namespace engine
         }
 
 
-        internal static void Show3DSprite(DaxArray arg_0, byte arg_4)
+        internal static void Show3DSprite(DaxArray arg_0, int sprite_index)
         {
-            if (arg_4 < 1 || arg_4 > 3)
+            if (sprite_index < 1 || sprite_index > 3)
             {
-                Logger.LogAndExit("Illegal range in Show3DSprite. {0}", arg_4);
+                Logger.LogAndExit("Illegal range in Show3DSprite. {0}", sprite_index);
             }
 
-            if (arg_0.ptrs[arg_4 - 1].field_4 != null)
+            if (arg_0.frames[sprite_index - 1].picture != null)
             {
-                DaxBlock var_46 = arg_0.ptrs[arg_4 - 1].field_4;
-                seg040.OverlayBounded(arg_0.ptrs[arg_4 - 1].field_4, 1, 0, var_46.field_6 + 3 - 1, var_46.field_4 + 3 - 1);
+                DaxBlock var_46 = arg_0.frames[sprite_index - 1].picture;
+                seg040.OverlayBounded(arg_0.frames[sprite_index - 1].picture, 1, 0, var_46.field_6 + 3 - 1, var_46.field_4 + 3 - 1);
                 seg040.DrawOverlay();
             }
         }

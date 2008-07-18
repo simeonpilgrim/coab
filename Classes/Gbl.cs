@@ -223,7 +223,7 @@ namespace Classes
         public static int dir_2_flags; // byte_1AD38
         public static int dir_4_flags; // byte_1AD39
         public static sbyte currentTeam; // field_197
-        public static byte byte_1AD3C;
+        public static byte current_city;
         public static byte byte_1AD3D;
         public static byte byte_1AD3E;
         public static byte byte_1AD44;
@@ -262,7 +262,6 @@ namespace Classes
                 return byte_1BF1a;
             }
         }
-        public static byte byte_1C01A;
         public static byte byte_1C01B;
         public static byte[] byte_1C8C2 = new byte[8];
         public static int textXCol; // byte_1C8CA
@@ -361,7 +360,7 @@ namespace Classes
         public static bool can_draw_bigpic; // byte_1D8AA
         public static bool byte_1D8AC; // byte_1D8AC
         public static byte byte_1D8B0;
-        public static byte byte_1D8B6; // not used.
+        //public static byte byte_1D8B6; // not used.
         public static byte byte_1D8B7;
         public static byte byte_1D8B8;
         public static int[] near_targets = new int[0x48]; // byte_1D8B9
@@ -390,19 +389,16 @@ namespace Classes
         public static bool byte_1D90E;
         public static bool display_hitpoints_ac; /* byte_1D90F */
         public static bool byte_1D910;
-        public static byte byte_1D912;
-        public static byte byte_1D913;
-        public static byte byte_1D928;
-        public static byte byte_1D92B;
-        public static byte byte_1D92C;
+        public static byte sprite_block_id; /* byte_1D92B */
+        public static byte pic_block_id; /* byte_1D92C */
         public static byte byte_1D92D;
 
         public static bool byte_1DA70;
         public static byte byte_1DA71;
 
-        public static byte[] byte_1EE72 = new byte[2];
-        public static byte byte_1EE7C;
-        public static byte byte_1EE7D;
+        public static bool[] encounter_flags = new bool[2]; /* byte_1EE72 */
+        public static bool byte_1EE7C;
+        public static bool byte_1EE7D;
         public static bool byte_1EE7E;
         public static byte byte_1EE81;
         public static byte byte_1EE86;
@@ -410,12 +406,12 @@ namespace Classes
         public static int search_flag_bkup; // byte_1EE89
         public static byte byte_1EE8A;
         public static byte byte_1EE8B;
-        public static byte byte_1EE8C;
+        public static bool byte_1EE8C;
         public static bool byte_1EE8D;
         public static byte byte_1EE8E;
         public static bool displayPlayerSprite; /* byte_1EE8F */
         public static byte byte_1EE90;
-        public static byte byte_1EE91;
+        public static bool byte_1EE91;
         public static byte byte_1EE92;
         public static byte byte_1EE93;
         public static byte byte_1EE94;

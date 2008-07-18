@@ -1851,7 +1851,7 @@ namespace engine
             else
             {
                 result = true;
-                gbl.byte_1D8B6 = 1;
+                //gbl.byte_1D8B6 = 1;
                 gbl.area2_ptr.field_666 = 1;
 
                 Player player = gbl.player_next_ptr;

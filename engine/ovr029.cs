@@ -7,7 +7,7 @@ namespace engine
         static int[] sky_colours = new int[]{ /* seg600:0A8A unk_16D9A*/
         0x00, 0x0F, 0x04, 0x0B, 0x0D, 0x02, 0x09, 0x0E, 0x00, 0x0F, 0x04, 0x0B, 0x0D, 0x02 , 0x09, 0x0E};
 
-        internal static void sub_6F0BA()
+        internal static void update_3D_view() /* sub_6F0BA */
         {
             if (gbl.lastDaxBlockId == 0x50)
             {

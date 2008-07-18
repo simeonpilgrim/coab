@@ -234,9 +234,9 @@ namespace engine
                 if ((gbl.area_ptr.field_3FE != 0 || useOverlay == true) &&
                     gbl.byte_1D556.curFrame > 0)
                 {
-                    ovr030.sub_7000A(gbl.byte_1D556.ptrs[gbl.byte_1D556.curFrame-1].field_4, useOverlay, 3, 3);
+                    ovr030.sub_7000A(gbl.byte_1D556.frames[gbl.byte_1D556.curFrame-1].picture, useOverlay, 3, 3);
 
-                    if ((seg041.time01() - timeStart) >= (gbl.byte_1D556.ptrs[gbl.byte_1D556.curFrame-1].field_0 * 10) ||
+                    if ((seg041.time01() - timeStart) >= (gbl.byte_1D556.frames[gbl.byte_1D556.curFrame-1].delay * 10) ||
                         gbl.area_ptr.field_3FE != 0)
                     {
                         gbl.byte_1D556.curFrame++;
