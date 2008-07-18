@@ -12,7 +12,7 @@ namespace engine
         static short word_12202;
         static short word_12204;
         static short word_12206;
-        static short word_12208;
+        //static short word_12208;
         static short word_1220A;
 
         static byte[] byte_1220C = new byte[5];
@@ -178,7 +178,7 @@ namespace engine
             {
                 word_123C8 = 0;
                 byte_121DC = 4;
-                word_12208 = 0x02f0;
+                //word_12208 = 0x02f0;
                 word_12206 = 0x0170;
                 
                 int si = 0;
@@ -238,7 +238,7 @@ namespace engine
             {
                 byte_121DC = 4;
 
-                word_12208 = 0x48A;
+                //word_12208 = 0x48A;
                 word_12206 = 0x30A;
                 short si = 0;
 

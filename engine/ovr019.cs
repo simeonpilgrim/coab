@@ -66,18 +66,10 @@ namespace engine
 
 		static Struct_1ADFB[] unk_1ADFB = new Struct_1ADFB[3];
 
-		internal static void sub_520B8( byte[] arg_0, short arg_4, ushort arg_6, ushort arg_8, ushort arg_A )
+		internal static void sub_520B8( byte[] arg_0, int arg_4, int arg_6, ushort arg_8, ushort arg_A )
 		{
-            Struct_1ADF6 var_21;
-			short var_1C;
-			short var_1A;
-			byte var_18;
-			byte var_16;
-			byte var_15;
 			double var_12;
 			double var_C;
-			byte var_5;
-			byte var_4;
 			byte[] var_3;
 
 			double d;
@@ -94,7 +86,7 @@ namespace engine
             unk_1ADFB[1].Reset();
 			unk_1ADFB[2].Reset();
 
-			for( var_5 = 0; var_5 < 3; var_5++ )
+			for( int var_5 = 0; var_5 < 3; var_5++ )
 			{
 				if( var_3[ var_5 ] > 1 )
 				{
@@ -112,28 +104,28 @@ namespace engine
 
 				unk_1ADFB[ var_5 ].field_4 = 1;
 
-				var_15 = (byte)(seg051.Random( 20 ) + 25);
+				byte var_15 = (byte)(seg051.Random( 20 ) + 25);
 
 				if( gbl.byte_1ADFA < var_15 )
 				{
 					gbl.byte_1ADFA = var_15;
 				}
 
-				var_16 = (byte)(seg051.Random( 5 ) + 5);
-				var_18 = (byte)(var_16 + 15);
+				int var_16 = seg051.Random( 5 ) + 5;
+				int var_18 = var_16 + 15;
 
 				var_C = seg051.Random__Real() * (System.Math.PI * 2.0);
 				var_12 = seg051.Random__Real() * (System.Math.PI * 2.0);
 
                 d = (seg051.Random(10) + 24) * System.Math.Sin(var_C) * System.Math.Sin(var_12);
-				var_1A = (short)( ((ushort)d) + arg_6);
+                int var_1A = (int)d + arg_6;
 
                 d = (seg051.Random(10) + 24) * System.Math.Cos(var_C) * System.Math.Sin(var_12);
-				var_1C = (short)( ((ushort)d) + arg_4);
+				int var_1C = (int)d + arg_4;
 
-				for( var_4 = 1; var_4 <= 0x28; var_4++ )
+				for( int var_4 = 1; var_4 <= 0x28; var_4++ )
 				{
-					var_21 = gbl.dword_1ADF6[ var_4 + ((var_5) * 40) - 1];
+                    Struct_1ADF6 var_21 = gbl.dword_1ADF6[var_4 + ((var_5) * 40) - 1];
 
 					var_C = seg051.Random__Real() * (System.Math.PI * 2.0);
 					var_12 = seg051.Random__Real() * (System.Math.PI * 2.0);
@@ -167,20 +159,15 @@ namespace engine
 		}
 
 
-        static void sub_524F7(Struct_1ADF6[] arg_2, byte arg_6, byte bp_var_6)
+        static void sub_524F7(Struct_1ADF6[] arg_2, int arg_6)
         {
-            Struct_1ADF6 var_7;
-            byte var_3;
-            byte var_2;
-            byte var_1;
+            int var_1 = arg_6 % 6;
 
-			var_1 = (byte)(bp_var_6 % 6);
-
-			for( var_3 = 1; var_3 <= 3; var_3++ )
+			for( int var_3 = 1; var_3 <= 3; var_3++ )
 			{
-				for( var_2 = 1; var_2 <= 0x28; var_2++ )
+				for( int var_2 = 1; var_2 <= 0x28; var_2++ )
 				{
-                    var_7 = arg_2[(var_2 - 1) + ((var_3 - 1) * 40)];
+                    Struct_1ADF6 var_7 = arg_2[(var_2 - 1) + ((var_3 - 1) * 40)];
 
                     var_7.field_08 = var_7.field_0C;
                     var_7.field_0A = var_7.field_0E;
@@ -209,11 +196,11 @@ namespace engine
 				}
 			}
 
-            for (var_2 = 0; var_2 < 40; var_2++)
+            for (int var_2 = 0; var_2 < 40; var_2++)
             {
-                for (var_3 = 0; var_3 < 3; var_3++)
+                for (int var_3 = 0; var_3 < 3; var_3++)
                 {
-                    var_7 = arg_2[var_2 + (var_3 * 40)];
+                    Struct_1ADF6 var_7 = arg_2[var_2 + (var_3 * 40)];
 
                     if (var_7.field_02 > 8 &&
                         var_7.field_02 < 0x41)
@@ -223,11 +210,11 @@ namespace engine
                 }
             }
 
-			for( var_2 = 0; var_2 < 40; var_2++ )
+			for( int var_2 = 0; var_2 < 40; var_2++ )
 			{
-                for (var_3 = 0; var_3 < 3; var_3++)
+                for (int var_3 = 0; var_3 < 3; var_3++)
                 {
-                    var_7 = arg_2[var_2 + (var_3 * 40)];
+                    Struct_1ADF6 var_7 = arg_2[var_2 + (var_3 * 40)];
 
                     var_7.field_00 = (ushort)var_7.field_04;
                     var_7.field_02 = (ushort)var_7.field_06;
@@ -240,11 +227,11 @@ namespace engine
                 }
 			}
 
-			for( var_2 = 0; var_2 < 40; var_2++ )
+			for( int var_2 = 0; var_2 < 40; var_2++ )
 			{
-                for (var_3 = 0; var_3 < 3; var_3++)
+                for (int var_3 = 0; var_3 < 3; var_3++)
                 {
-                    var_7 = arg_2[var_2  + (var_3  * 40)];
+                    Struct_1ADF6 var_7 = arg_2[var_2 + (var_3 * 40)];
 
                     if (var_7.field_02 > 8 &&
                         var_7.field_02 < 0x41)
@@ -263,26 +250,19 @@ namespace engine
 
         internal static void sub_5279B(byte[] arg_0)
         {
-            Struct_1ADF6 var_20;
-            int var_17;
-            byte var_6;
-            byte var_5;
-            byte var_4;
-            byte[] var_3;
+            byte[] var_3 = arg_0;
+            int var_17 = gbl.byte_1ADFA + 1;
 
-            var_3 = arg_0;
-            var_17 = gbl.byte_1ADFA + 1;
-
-            for (var_6 = 1; var_6 <= var_17; var_6++)
+            for (int var_6 = 1; var_6 <= var_17; var_6++)
             {
-                sub_524F7(gbl.dword_1ADF6, var_6, var_6);
+                sub_524F7(gbl.dword_1ADF6, var_6);
             }
 
-            for (var_4 = 0; var_4 < 40; var_4++)
+            for (int var_4 = 0; var_4 < 40; var_4++)
             {
-                for (var_5 = 0; var_5 < 3; var_5++)
+                for (int var_5 = 0; var_5 < 3; var_5++)
                 {
-                    var_20 = gbl.dword_1ADF6[var_4 + (var_5 * 40)];
+                    Struct_1ADF6 var_20 = gbl.dword_1ADF6[var_4 + (var_5 * 40)];
 
                     if (var_20.field_02 > 8 &&
                         var_20.field_02 < 0x41)

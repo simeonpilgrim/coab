@@ -80,9 +80,9 @@ namespace engine
 
                         byte[] first_frame_ega_layout = null;
 
-                        for (int frame = 1; frame <= daxArray.numFrames; frame++)
+                        for (int frame = 0; frame < daxArray.numFrames; frame++)
                         {
-                            daxArray.frames[frame - 1].delay = Sys.ArrayToInt(uncompressed_data, src_offset);
+                            daxArray.frames[frame].delay = Sys.ArrayToInt(uncompressed_data, src_offset);
                             src_offset += 4;
 
                             short height = Sys.ArrayToShort(uncompressed_data, src_offset);
@@ -93,9 +93,9 @@ namespace engine
 
                             frames_count++;
 
-                            seg040.init_dax_block(out daxArray.frames[frame - 1].picture, masked, 1, width, height);
+                            seg040.init_dax_block(out daxArray.frames[frame].picture, masked, 1, width, height);
 
-                            DaxBlock dax_block = daxArray.frames[frame - 1].picture;
+                            DaxBlock dax_block = daxArray.frames[frame].picture;
 
                             dax_block.field_4 = Sys.ArrayToShort(uncompressed_data, src_offset);
                             src_offset += 2;
@@ -106,11 +106,11 @@ namespace engine
                             System.Array.Copy(uncompressed_data, src_offset, dax_block.field_9, 0, 8);
                             src_offset += 8;
 
-                            int ega_encoded_size = (daxArray.frames[frame - 1].picture.bpp / 2) - 1;
+                            int ega_encoded_size = (daxArray.frames[frame].picture.bpp / 2) - 1;
 
                             if (is_pic_or_final == true)
                             {
-                                if (frame == 1)
+                                if (frame == 0)
                                 {
                                     first_frame_ega_layout = seg051.GetMem(ega_encoded_size + 1);
 
@@ -128,11 +128,11 @@ namespace engine
                                 }
                             }
 
-                            seg040.turn_dax_to_videolayout(daxArray.frames[frame - 1].picture, 0, masked, src_offset, uncompressed_data);
+                            seg040.turn_dax_to_videolayout(daxArray.frames[frame].picture, 0, masked, src_offset, uncompressed_data);
 
                             if ((masked & 1) > 0)
                             {
-                                seg040.DaxBlockRecolor(daxArray.frames[frame - 1].picture, 0, 0, unk_16DDA, unk_16DCA);
+                                seg040.DaxBlockRecolor(daxArray.frames[frame].picture, 0, 0, unk_16DDA, unk_16DCA);
                             }
 
                             src_offset += ega_encoded_size + 1;
