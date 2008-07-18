@@ -99,7 +99,7 @@ namespace engine
                 byte tmp = gbl.player_ptr02.Skill_B_lvl[var_6];
 
                 if (gbl.player_ptr02.class_lvls[var_6] > 0 ||
-                    (tmp < ovr026.hasAnySkills(gbl.player_ptr02) && tmp > 0))
+                    (tmp < ovr026.human_first_class_lvl(gbl.player_ptr02) && tmp > 0))
                 {
                     if (displaySlash )
                     {
@@ -1627,21 +1627,17 @@ namespace engine
 
         internal static bool CanCastCure(Player player) /* sub_57655 */
         {
-            bool result;
-
             if ((player._class == ClassId.paladin || (player.field_114 > 0 && ovr026.sub_6B3D1(player) != 0)) &&
                 gbl.game_state != 5 &&
                 player.health_status == Status.okey &&
                 player.field_191 > 0)
             {
-                result = true;
+                return true;
             }
             else
             {
-                result = false;
+                return false;
             }
-
-            return result;
         }
 
 

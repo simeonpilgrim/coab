@@ -468,8 +468,6 @@ namespace engine
         {
             Player var_53;
             byte var_4F;
-            string var_4E;
-            byte var_25;
             bool var_23;
             bool var_22;
             byte var_21;
@@ -477,7 +475,6 @@ namespace engine
             short var_1E;
             byte var_1C;
             byte var_1B;
-            byte loop4_var;
             byte loop2_var;
             byte loop1_var;
             char reroll_stats;
@@ -748,18 +745,18 @@ namespace engine
             var_53.classFlags = 0;
             var_53.field_73 = 0;
 
-            for (loop4_var = 0; loop4_var <= 7; loop4_var++)
+            for (int class_idx = 0; class_idx <= 7; class_idx++)
             {
-                if (var_53.class_lvls[loop4_var] > 0)
+                if (var_53.class_lvls[class_idx] > 0)
                 {
-                    sbyte t = (sbyte)(unk_1A14A[(loop4_var * 0x0D) + var_53.class_lvls[loop4_var]]);
+                    sbyte t = (sbyte)(unk_1A14A[(class_idx * 0x0D) + var_53.class_lvls[class_idx]]);
 
                     if (t > var_53.field_73)
                     {
                         var_53.field_73 = t;
                     }
 
-                    var_53.classFlags += unk_1A1B2[loop4_var];
+                    var_53.classFlags += unk_1A1B2[class_idx];
                 }
             }
 
@@ -860,11 +857,11 @@ namespace engine
 
             do
             {
-                for (loop4_var = 0; loop4_var <= 7; loop4_var++)
+                for (int class_idx = 0; class_idx <= 7; class_idx++)
                 {
-                    if (gbl.player_ptr.class_lvls[loop4_var] > 0)
+                    if (gbl.player_ptr.class_lvls[class_idx] > 0)
                     {
-                        gbl.player_ptr.class_lvls[loop4_var] = 1;
+                        gbl.player_ptr.class_lvls[class_idx] = 1;
                     }
                 }
 
@@ -1164,22 +1161,22 @@ namespace engine
                     var_53.field_12D[2, i] = 0;
                 }
 
-                for (loop4_var = 0; loop4_var <= 7; loop4_var++)
+                for (int class_idx = 0; class_idx <= 7; class_idx++)
                 {
-                    if (var_53.class_lvls[loop4_var] > 0)
+                    if (var_53.class_lvls[class_idx] > 0)
                     {
-                        if (loop4_var == 0)
+                        if (class_idx == 0)
                         {
                             var_53.field_12D[0, 0] = 1;
                         }
-                        else if (loop4_var == 5)
+                        else if (class_idx == 5)
                         {
                             var_53.field_12D[2, 0] = 1;
                         }
 
-                        var_21 += ovr024.roll_dice(unk_1A8C4[loop4_var], unk_1A8C3[loop4_var]);
+                        var_21 += ovr024.roll_dice(unk_1A8C4[class_idx], unk_1A8C3[class_idx]);
 
-                        if (loop4_var == 0)
+                        if (class_idx == 0)
                         {
                             ovr026.calc_cleric_spells(false, player);
 
@@ -1194,7 +1191,7 @@ namespace engine
                                 }
                             }
                         }
-                        else if (loop4_var == 5)
+                        else if (class_idx == 5)
                         {
                             var_53.field_79[0xB - 1] = 1;
                             var_53.field_79[0x12 - 1] = 1;
@@ -1242,30 +1239,30 @@ namespace engine
 
                 gbl.area2_ptr.field_550 = var_4F;
                 gbl.byte_1B2F1 = 0;
-                var_25 = 0;
-                var_4E = string.Empty;
+                bool first_lvl = true;
+                string text = string.Empty;
 
-                for (loop4_var = 0; loop4_var <= 7; loop4_var++)
+                for (int class_idx = 0; class_idx <= 7; class_idx++)
                 {
-                    if (gbl.player_ptr.class_lvls[loop4_var] > 0 ||
-                        (gbl.player_ptr.Skill_B_lvl[loop4_var] < ovr026.hasAnySkills(gbl.player_ptr) &&
-                         gbl.player_ptr.Skill_B_lvl[loop4_var] > 0))
+                    if (gbl.player_ptr.class_lvls[class_idx] > 0 ||
+                        (gbl.player_ptr.Skill_B_lvl[class_idx] < ovr026.human_first_class_lvl(gbl.player_ptr) &&
+                         gbl.player_ptr.Skill_B_lvl[class_idx] > 0))
                     {
-                        if (var_25 != 0)
+                        if (first_lvl == false)
                         {
-                            var_4E += "/";
+                            text += "/";
                         }
 
-                        byte b = gbl.player_ptr.Skill_B_lvl[loop4_var];
-                        b += gbl.player_ptr.class_lvls[loop4_var];
+                        byte b = gbl.player_ptr.Skill_B_lvl[class_idx];
+                        b += gbl.player_ptr.class_lvls[class_idx];
 
-                        var_4E += b.ToString();
+                        text += b.ToString();
 
-                        var_25 = 1;
+                        first_lvl = false;
                     }
                 }
 
-                seg041.displayString(var_4E, 0, 15, 15, 7);
+                seg041.displayString(text, 0, 15, 15, 7);
                 ovr020.display_player_stats01();
                 ovr020.displayMoney();
 

@@ -538,7 +538,7 @@ namespace engine
         }
 
 
-        internal static void sub_3AB6F(Effect arg_0, object param, Player player)
+        internal static void affect_curse(Effect arg_0, object param, Player player) /* sub_3AB6F */
         {
             gbl.attack_roll -= 4;
             gbl.saving_throw_roll -= 4;
@@ -1873,20 +1873,20 @@ namespace engine
         }
 
 
-        internal static void sub_3C8EF(Effect arg_0, object param, Player player)
+        internal static void sub_3C8EF(Effect add_remove, object param, Player player)
         {
-            if (arg_0 != 0)
+            if (add_remove == Effect.Remove)
             {
                 player.field_191 = (byte)((((player.field_114 * ovr026.sub_6B3D1(player)) + player.paladin_lvl - 1) / 5) + 1);
             }
         }
 
 
-        internal static void sp_fear(Effect arg_0, object param, Player player) /* sub_3C932 */
+        internal static void sp_fear(Effect add_remove, object param, Player player) /* sub_3C932 */
         {
-            if (arg_0 == Effect.Remove)
+            if (add_remove == Effect.Remove)
             {
-                if (player.field_F7 == 0xb3)
+                if (player.field_F7 == 0xB3)
                 {
                     player.field_F7 = 0;
                     player.quick_fight = QuickFight.False;
@@ -1978,7 +1978,7 @@ namespace engine
             gbl.affect_jump_list[33] = ovr013.sub_3A951;
             gbl.affect_jump_list[34] = ovr013.sub_3A974;
             gbl.affect_jump_list[35] = ovr013.sub_3A9D9;
-            gbl.affect_jump_list[36] = ovr013.sub_3AB6F;
+            gbl.affect_jump_list[36] = ovr013.affect_curse;
             gbl.affect_jump_list[37] = ovr013.has_action_timedout;
             gbl.affect_jump_list[38] = ovr013.empty;
             gbl.affect_jump_list[39] = ovr013.spl_age;
