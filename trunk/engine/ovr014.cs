@@ -481,18 +481,18 @@ namespace engine
         }
 
 
-        internal static void sub_3EDD4(Player arg_0)
+        internal static void sub_3EDD4(Player player)
         {
             bool var_5 = false;
             Item var_9 = null;
-            byte var_2 = arg_0.field_19C;
-            arg_0.field_19C = arg_0.field_11C;
+            byte var_2 = player.field_19C;
+            player.field_19C = player.field_11C;
 
-            if (ovr025.is_weapon_ranged(arg_0) == true &&
-                ovr025.sub_6906C(out var_9, arg_0) == true)
+            if (ovr025.is_weapon_ranged(player) == true &&
+                ovr025.sub_6906C(out var_9, player) == true)
             {
                 var_5 = true;
-                byte var_4 = gbl.unk_1C020[arg_0.field_151.type].field_5;
+                byte var_4 = gbl.unk_1C020[player.field_151.type].field_5;
 
                 if (var_4 < 2)
                 {
@@ -503,11 +503,11 @@ namespace engine
             }
             else
             {
-                gbl.byte_1D2C0 = arg_0.field_19C;
+                gbl.byte_1D2C0 = player.field_19C;
             }
 
             gbl.reset_byte_1D2C0 = false;
-            ovr024.work_on_00(arg_0, 18);
+            ovr024.work_on_00(player, 18);
             byte var_1 = sub_3EF0D(gbl.byte_1D2C0);
 
             if (var_5 == true &&
@@ -527,13 +527,13 @@ namespace engine
                 }
             }
 
-            if (arg_0.actions.field_8 == 0 ||
+            if (player.actions.field_8 == 0 ||
                 var_1 < var_2 ||
-                (arg_0.actions.field_8 != 0 &&
+                (player.actions.field_8 != 0 &&
                   var_1 < (var_2 * 2) &&
                   var_5 == false))
             {
-                arg_0.field_19C = var_1;
+                player.field_19C = var_1;
             }
         }
 

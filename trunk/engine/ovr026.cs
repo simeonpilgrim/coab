@@ -766,7 +766,7 @@ namespace engine
 
             ovr027.free_stringList(ref list);
 
-            player.Skill_B_lvl[getFirstSkill(player)] = hasAnySkills(player);
+            player.Skill_B_lvl[getFirstSkill(player)] = human_first_class_lvl(player);
 
             player.field_E6 = player.field_E5;
             player.field_E5 = 1;
@@ -881,16 +881,14 @@ namespace engine
         }
 
 
-        internal static byte hasAnySkills(Player player)
+        internal static byte human_first_class_lvl(Player player) /* hasAnySkills */
         {
-            byte loop_var;
-
             if (player.race != Race.human)
             {
                 return 0;
             }
 
-            loop_var = 0;
+            int loop_var = 0;
 
             while (loop_var < 7 &&
                 player.class_lvls[loop_var] != 0)
@@ -917,7 +915,7 @@ namespace engine
 
         internal static sbyte sub_6B3D1(Player player)
         {
-            if (hasAnySkills(player) > player.field_E6)
+            if (human_first_class_lvl(player) > player.field_E6)
             {
                 return 1;
             }
