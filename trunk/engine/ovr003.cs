@@ -2543,6 +2543,7 @@ namespace engine
             gbl.stopVM = false;
 
             //uncomment to debug end-game 
+            //gbl.game_area = 6;
             //ovr019.end_game_text(); 
 
             //System.Console.Out.WriteLine("RunEclVm {0,4:X} start", offset);

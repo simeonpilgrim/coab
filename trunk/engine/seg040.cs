@@ -74,7 +74,8 @@ namespace engine
                             byte a = (byte)((data[block_offset]) >> 4);
                             byte b = (byte)((data[block_offset]) & 0x0f);
 
-                            if (masked != 0 && a == mask_colour)
+                            if (masked == 1 && a == mask_colour)
+                            //if (masked != 0 && a == mask_colour)
                             {
                                 dax_block.data[dest_offset] = 16;
                             }
@@ -84,7 +85,8 @@ namespace engine
                             }
                             dest_offset += 1;
 
-                            if (masked != 0 && b == mask_colour)
+                            if (masked == 1 && b == mask_colour)
+                            //if (masked != 0 && b == mask_colour)
                             {
                                 dax_block.data[dest_offset] = 16;
                             }
