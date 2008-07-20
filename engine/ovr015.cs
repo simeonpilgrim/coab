@@ -530,13 +530,13 @@ namespace engine
             }
 
 
-            gbl.byte_1D53C = ovr031.getMap_XXX(gbl.mapDirection, gbl.mapPosY, gbl.mapPosX);
+            gbl.byte_1D53C = ovr031.getMap_wall_type(gbl.mapDirection, gbl.mapPosY, gbl.mapPosX);
 
 			gbl.can_bash_door = true;
 			gbl.can_pick_door = true;
 			gbl.can_knock_door = true;
 
-            gbl.byte_1D53D = ovr031.sub_717A5( gbl.mapPosY, gbl.mapPosX );
+            gbl.byte_1D53D = ovr031.get_wall_x2( gbl.mapPosY, gbl.mapPosX );
 
 			if( (gbl.area2_ptr.search_flags & 1) > 0 )
 			{
@@ -626,7 +626,7 @@ namespace engine
 							case 'P': // turn 180
 								gbl.mapDirection = (byte)((gbl.mapDirection + 4) % 8);
 
-								gbl.byte_1D53C = ovr031.getMap_XXX( gbl.mapDirection, gbl.mapPosY, gbl.mapPosX );
+								gbl.byte_1D53C = ovr031.getMap_wall_type( gbl.mapDirection, gbl.mapPosY, gbl.mapPosX );
 								ovr031.Draw3dWorld( gbl.mapDirection, gbl.mapPosY, gbl.mapPosX );
 								break;
 
@@ -634,7 +634,7 @@ namespace engine
 								gbl.mapDirection = (byte)(( gbl.mapDirection + 6 ) % 8);
 
 								seg044.sound_sub_120E0( gbl.sound_a_188D2 );
-								gbl.byte_1D53C = ovr031.getMap_XXX( gbl.mapDirection, gbl.mapPosY, gbl.mapPosX );
+								gbl.byte_1D53C = ovr031.getMap_wall_type( gbl.mapDirection, gbl.mapPosY, gbl.mapPosX );
 								ovr031.Draw3dWorld( gbl.mapDirection, gbl.mapPosY, gbl.mapPosX );
 								break;
 
@@ -643,7 +643,7 @@ namespace engine
 
 								seg044.sound_sub_120E0( gbl.sound_a_188D2 );
 
-								gbl.byte_1D53C = ovr031.getMap_XXX( gbl.mapDirection, gbl.mapPosY, gbl.mapPosX );
+								gbl.byte_1D53C = ovr031.getMap_wall_type( gbl.mapDirection, gbl.mapPosY, gbl.mapPosX );
 								ovr031.Draw3dWorld( gbl.mapDirection, gbl.mapPosY, gbl.mapPosX );
 								break;
 

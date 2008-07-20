@@ -30,33 +30,33 @@ namespace engine
                 {
                     int mapX = x + offsetX;
 
-                    short var_A = 0x104;
+                    short symbol_id = 0x104;
 
                     MapInfo mi = getMap_XXX(mapY, mapX);
                     if (mi != null)
                     {
-                        if (mi.x0_dir_0 > 0)
+                        if (mi.wall_type_dir_0 > 0)
                         {
-                            var_A += 1;
+                            symbol_id += 1;
                         }
 
-                        if (mi.x0_dir_2 > 0)
+                        if (mi.wall_type_dir_2 > 0)
                         {
-                            var_A += 2;
+                            symbol_id += 2;
                         }
 
-                        if (mi.x1_dir_4 > 0)
+                        if (mi.wall_type_dir_4 > 0)
                         {
-                            var_A += 4;
+                            symbol_id += 4;
                         }
 
-                        if (mi.x1_dir_6 > 0)
+                        if (mi.wall_type_dir_6 > 0)
                         {
-                            var_A += 8;
+                            symbol_id += 8;
                         }
                     }
 
-                    ovr038.Put8x8Symbol(0, true, var_A, y + displayOffset, x + displayOffset);
+                    ovr038.Put8x8Symbol(0, true, symbol_id, y + displayOffset, x + displayOffset);
                 }
             }
 
@@ -78,7 +78,7 @@ namespace engine
             seg040.DrawColorBlock(0, 2, 11, 0x3c, 2);
             seg040.DrawColorBlock(8, 0x2a, 11, 0x3e, 2);
 
-            if (sub_717A5(gbl.mapPosY, gbl.mapPosY) < 0x80 &&
+            if (get_wall_x2(gbl.mapPosY, gbl.mapPosY) < 0x80 &&
                 gbl.sky_colour == 11)
             {
                 var_3 = 2;
@@ -165,65 +165,61 @@ namespace engine
 
         internal static byte WallDoorFlagsGet(int mapDir, int mapY, int mapX) /*sub_71573*/
         {
-            byte var_1;
-
             if (MapCoordIsValid(mapY, mapX) == false &&
                 (gbl.byte_1EE88 == 0 || gbl.byte_1EE88 == 10))
             {
-                var_1 = 0;
+                return 0;
             }
-            else
+
+            if (mapX > 15)
             {
-                if (mapX > 15)
-                {
-                    mapX = 0;
-                }
-                else if (mapX < 0)
-                {
-                    mapX = 0x0F;
-                }
+                mapX = 0;
+            }
+            else if (mapX < 0)
+            {
+                mapX = 0x0F;
+            }
 
-                if (mapY > 15)
-                {
-                    mapY = 0;
-                }
-                else if (mapY < 0)
-                {
-                    mapY = 0x0F;
-                }
+            if (mapY > 15)
+            {
+                mapY = 0;
+            }
+            else if (mapY < 0)
+            {
+                mapY = 0x0F;
+            }
 
-                MapInfo mi = gbl.stru_1D530.maps[mapY, mapX];
-				var_1 = 1;
+            MapInfo mi = gbl.stru_1D530.maps[mapY, mapX];
+            byte var_1 = 1;
 
-                switch (mapDir)
-                {
-                    case 6:
-                        if (mi.x1_dir_6 != 0)
-                            var_1 = mi.x3_dir_6;
-                        break;
+            switch (mapDir)
+            {
+                case 6:
+                    if (mi.wall_type_dir_6 != 0)
+                        var_1 = mi.x3_dir_6;
+                    break;
 
-                    case 4:
-                        if (mi.x1_dir_4 != 0)
-                            var_1 = mi.x3_dir_4;
-                        break;
+                case 4:
+                    if (mi.wall_type_dir_4 != 0)
+                        var_1 = mi.x3_dir_4;
+                    break;
 
-                    case 2:
-                        if (mi.x0_dir_2 != 0)
-                            var_1 = mi.x3_dir_2;
-                        break;
+                case 2:
+                    if (mi.wall_type_dir_2 != 0)
+                        var_1 = mi.x3_dir_2;
+                    break;
 
-                    case 0:
-                        if (mi.x0_dir_0 != 0)
-                            var_1 = mi.x3_dir_0;
-                        break;
-                }
+                case 0:
+                    if (mi.wall_type_dir_0 != 0)
+                        var_1 = mi.x3_dir_0;
+                    break;
             }
 
             return var_1;
         }
 
 
-        internal static byte getMap_XXX(int direction, int mapY, int mapX)
+        internal static byte getMap_wall_type(int direction, int mapY, int mapX)
         {
             byte result = 0;
 
@@ -234,19 +230,19 @@ namespace engine
                 switch (direction)
                 {
                     case 0:
-                        result = mi.x0_dir_0;
+                        result = mi.wall_type_dir_0;
                         break;
 
                     case 2:
-                        result = mi.x0_dir_2;
+                        result = mi.wall_type_dir_2;
                         break;
 
                     case 4:
-                        result = mi.x1_dir_4;
+                        result = mi.wall_type_dir_4;
                         break;
 
                     case 6:
-                        result = mi.x1_dir_6;
+                        result = mi.wall_type_dir_6;
                         break;
                 }
             }
@@ -290,40 +286,35 @@ namespace engine
         }
 
 
-        internal static byte sub_717A5(int mapY, int mapX)
+        internal static byte get_wall_x2(int mapY, int mapX) /* sub_717A5 */
         {
-            byte var_1;
-
-            if (MapCoordIsValid(mapY, mapX) == false && 
+            if (MapCoordIsValid(mapY, mapX) == false &&
                 (gbl.byte_1EE88 == 0 || gbl.byte_1EE88 == 10))
             {
-                var_1 = 0;
+                return 0;
             }
-            else
+
+            if (mapX > 0x0F)
             {
-                if (mapX > 0x0F)
-                {
-                    mapX = 0;
-                }
-                if (mapX < 0)
-                {
-                    mapX = 0x0F;
-                }
-
-                if (mapY > 0x0F)
-                {
-                    mapY = 0;
-                }
-                if (mapY < 0)
-                {
-                    mapY = 0x0F;
-                }
-
-                MapInfo mi = gbl.stru_1D530.maps[mapY, mapX];
-                var_1 = mi.x2;
+                mapX = 0;
+            }
+            if (mapX < 0)
+            {
+                mapX = 0x0F;
             }
 
-            return var_1;
+            if (mapY > 0x0F)
+            {
+                mapY = 0;
+            }
+            if (mapY < 0)
+            {
+                mapY = 0x0F;
+            }
+
+            MapInfo mi = gbl.stru_1D530.maps[mapY, mapX];
+
+            return mi.x2;
         }
 
 
@@ -389,10 +380,10 @@ namespace engine
 
             while (var_10 < 4)
             {
-                byte var_14 = getMap_XXX(partyDir, tmpY, tmpX);
+                byte var_14 = getMap_wall_type(partyDir, tmpY, tmpX);
 
                 if (MapCoordIsValid(tmpY, tmpX) == false &&
-                    getMap_XXX(dir_right, tmpY, tmpX) == 0)
+                    getMap_wall_type(dir_right, tmpY, tmpX) == 0)
                 {
                     var_17 = 0;
                 }
@@ -411,7 +402,7 @@ namespace engine
                 else
                 {
                     if (var_17 > 0 &&
-                        getMap_XXX(dir_left, tmpY - gbl.MapDirectionYDelta[dir_left], tmpX - gbl.MapDirectionXDelta[dir_left]) != 0)
+                        getMap_wall_type(dir_left, tmpY - gbl.MapDirectionYDelta[dir_left], tmpX - gbl.MapDirectionXDelta[dir_left]) != 0)
                     {
                         //sub_71434(9, var_17, gbl.byte_16E2E, gbl.word_16E1A + var_12 + 1);
                     }
@@ -434,10 +425,10 @@ namespace engine
 
             while (var_10 < 4)
             {
-                byte var_14 = getMap_XXX(partyDir, tmpY, tmpX);
+                byte var_14 = getMap_wall_type(partyDir, tmpY, tmpX);
 
                 if (MapCoordIsValid(tmpY, tmpX) == false &&
-                    getMap_XXX(dir_left, tmpY, tmpX) == 0)
+                    getMap_wall_type(dir_left, tmpY, tmpX) == 0)
                 {
                     var_17 = 0;
                 }
@@ -455,7 +446,7 @@ namespace engine
                 else
                 {
                     if (var_17 > 0 &&
-                        getMap_XXX(dir_right, tmpY - gbl.MapDirectionYDelta[dir_right], tmpX - gbl.MapDirectionXDelta[dir_right]) != 0)
+                        getMap_wall_type(dir_right, tmpY - gbl.MapDirectionYDelta[dir_right], tmpX - gbl.MapDirectionXDelta[dir_right]) != 0)
                     {
                         sub_71434(9, var_17, gbl.byte_16E2E, gbl.word_16E1A + var_12 - 1);
                     }
@@ -477,7 +468,7 @@ namespace engine
 
             while (var_10 < 3)
             {
-                byte var_15 = getMap_XXX(dir_left, tmpY, tmpX);
+                byte var_15 = getMap_wall_type(dir_left, tmpY, tmpX);
 
                 if (var_15 != 0)
                 {
@@ -506,7 +497,7 @@ namespace engine
 
             while (var_10 < 3)
             {
-                byte var_15 = getMap_XXX(dir_right, tmpY, tmpX);
+                byte var_15 = getMap_wall_type(dir_right, tmpY, tmpX);
 
                 if (var_15 != 0)
                 {
@@ -538,13 +529,13 @@ namespace engine
 
             while (var_10 < 3)
             {
-                byte var_14 = getMap_XXX(partyDir, tmpY, tmpX);
+                byte var_14 = getMap_wall_type(partyDir, tmpY, tmpX);
                 if (var_14 != 0)
                 {
                     sub_71434(3, var_14, gbl.byte_16E22, gbl.word_16E0E + var_12);
                 }
 
-                byte var_15 = getMap_XXX(dir_left, tmpY, tmpX);
+                byte var_15 = getMap_wall_type(dir_left, tmpY, tmpX);
                 if (var_15 != 0)
                 {
                     sub_71434(4, var_15, gbl.byte_16E24, gbl.word_16E10 + var_12);
@@ -563,14 +554,14 @@ namespace engine
             var_12 = 6;
             while (var_10 < 3)
             {
-                byte var_14 = getMap_XXX(partyDir, tmpY, tmpX);
+                byte var_14 = getMap_wall_type(partyDir, tmpY, tmpX);
 
                 if (var_14 != 0)
                 {
                     sub_71434(3, var_14, gbl.byte_16E22, gbl.word_16E0E + var_12);
                 }
 
-                byte var_15 = getMap_XXX(dir_right, tmpY, tmpX);
+                byte var_15 = getMap_wall_type(dir_right, tmpY, tmpX);
 
                 if (var_15 != 0)
                 {
@@ -595,14 +586,14 @@ namespace engine
 
             while (var_10 < 2)
             {
-                byte var_14 = getMap_XXX(partyDir, tmpY, tmpX);
+                byte var_14 = getMap_wall_type(partyDir, tmpY, tmpX);
 
                 if (var_14 != 0)
                 {
                     sub_71434(6, var_14, gbl.byte_16E28, gbl.word_16E14 + var_12);
                 }
 
-                byte var_15 = getMap_XXX(dir_left, tmpY, tmpX);
+                byte var_15 = getMap_wall_type(dir_left, tmpY, tmpX);
 
                 if (var_15 != 0)
                 {
@@ -625,7 +616,7 @@ namespace engine
             while (var_10 < 2)
             {
 
-                byte var_14 = getMap_XXX(partyDir, tmpY, tmpX);
+                byte var_14 = getMap_wall_type(partyDir, tmpY, tmpX);
 
                 if (var_14 != 0)
                 {
@@ -633,7 +624,7 @@ namespace engine
                     sub_71434(6, var_14, gbl.byte_16E28, var_12 + gbl.word_16E14);
                 }
 
-                byte var_15 = getMap_XXX(dir_right, tmpY, tmpX);
+                byte var_15 = getMap_wall_type(dir_right, tmpY, tmpX);
 
                 if (var_15 != 0)
                 {

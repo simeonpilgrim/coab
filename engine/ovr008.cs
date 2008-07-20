@@ -193,7 +193,7 @@ namespace engine
 
                 while (var_3 < 2 && var_2 == false)
                 {
-                    if (ovr031.getMap_XXX(map_dir, map_y, map_x) == 0)
+                    if (ovr031.getMap_wall_type(map_dir, map_y, map_x) == 0)
                     {
                         var_3++;
                         var_1 = var_3;
@@ -1391,9 +1391,9 @@ namespace engine
                 }
             }
 
-            gbl.byte_1D53D = ovr031.sub_717A5(gbl.mapPosY, gbl.mapPosX);
+            gbl.byte_1D53D = ovr031.get_wall_x2(gbl.mapPosY, gbl.mapPosX);
 
-            gbl.byte_1D53C = ovr031.getMap_XXX(gbl.mapDirection, gbl.mapPosY, gbl.mapPosX);
+            gbl.byte_1D53C = ovr031.getMap_wall_type(gbl.mapDirection, gbl.mapPosY, gbl.mapPosX);
 
             gbl.byte_1EE92 = 1;
 

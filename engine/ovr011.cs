@@ -101,7 +101,7 @@ namespace engine
                 {
                     flags = 1;
                 }
-                else if (ovr031.getMap_XXX(dir, mapY, mapX) == 0)
+                else if (ovr031.getMap_wall_type(dir, mapY, mapX) == 0)
                 {
                     flags = 0;
                 }
@@ -512,7 +512,7 @@ namespace engine
                     build_background_tiles_2();
                     build_backgrould_tiles_3(mapX, mapY);
                     build_background_tiles_4(mapX, mapY);
-                    gbl.byte_1AD3D = (byte)(ovr031.sub_717A5(mapY, mapX) & 0x40);
+                    gbl.byte_1AD3D = (byte)(ovr031.get_wall_x2(mapY, mapX) & 0x40);
                     sub_370D3();
                 }
             }

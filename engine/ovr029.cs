@@ -18,7 +18,7 @@ namespace engine
             {
                 if (gbl.area_ptr.field_1CC != 0)
                 {
-                    gbl.byte_1D53D = ovr031.sub_717A5(gbl.mapPosY, gbl.mapPosX);
+                    gbl.byte_1D53D = ovr031.get_wall_x2(gbl.mapPosY, gbl.mapPosX);
 
                     if (gbl.byte_1D53D > 0x7F)
                     {
