@@ -28,10 +28,10 @@ namespace Classes
 
     public class MapInfo
     {
-        public byte x0_dir_0;
-        public byte x0_dir_2;
-        public byte x1_dir_4;
-        public byte x1_dir_6;
+        public byte wall_type_dir_0;
+        public byte wall_type_dir_2;
+        public byte wall_type_dir_4;
+        public byte wall_type_dir_6;
 
         public byte x2;
 
@@ -44,10 +44,10 @@ namespace Classes
         {
             int map_y_x16 = map_y << 4;
 
-            x0_dir_0 = (byte)((data[map_x + map_y_x16] >> 4) & 0x0f);
-            x0_dir_2 = (byte)((data[map_x + map_y_x16]) & 0x0f);
-            x1_dir_4 = (byte)((data[0x100 + map_x + map_y_x16] >> 4 ) & 0x0f);
-            x1_dir_6 = (byte)((data[0x100 + map_x + map_y_x16]) & 0x0f);
+            wall_type_dir_0 = (byte)((data[map_x + map_y_x16] >> 4) & 0x0f);
+            wall_type_dir_2 = (byte)((data[map_x + map_y_x16]) & 0x0f);
+            wall_type_dir_4 = (byte)((data[0x100 + map_x + map_y_x16] >> 4 ) & 0x0f);
+            wall_type_dir_6 = (byte)((data[0x100 + map_x + map_y_x16]) & 0x0f);
 
             x2 = data[0x200 + map_y_x16 + map_x];
 
