@@ -202,7 +202,7 @@ namespace engine
                     seg041.displayString("and is Dying", 0, 10, line, 0x17);
                 }
 
-                if (unk_3E2EE.MemberOf((byte)target.health_status) == true)
+                if (unk_3E2EE.MemberOf((int)target.health_status) == true)
                 {
                     ovr025.DisplayPlayerStatusString(false, line, "is killed", target);
                 }
@@ -1140,7 +1140,7 @@ namespace engine
                     for (int var_B = 1; var_B <= gbl.byte_1D1BB; var_B++)
                     {
                         if (gbl.unk_1D183[var_B].target != null &&
-                            word_3FDDE.MemberOf((byte)gbl.unk_1D183[var_B].target.health_status) == false &&
+                            word_3FDDE.MemberOf((int)gbl.unk_1D183[var_B].target.health_status) == false &&
                             gbl.unk_1D183[var_B].mapX == mapX &&
                             gbl.unk_1D183[var_B].mapY == mapY)
                         {

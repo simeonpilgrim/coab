@@ -30,40 +30,41 @@ namespace engine
                 {
                     int mapX = x + offsetX;
 
-                    short symbol_id = 0x104;
+                    int symbol_id = 0x104;
+                    int door_id = 0x104;                    
 
                     MapInfo mi = getMap_XXX(mapY, mapX);
                     if (mi != null)
                     {
-                        if (mi.wall_type_dir_0 > 0)
-                        {
-                            symbol_id += 1;
-                        }
+                        if (mi.wall_type_dir_0 > 0) symbol_id += 1;
+                        if (mi.wall_type_dir_2 > 0) symbol_id += 2;
+                        if (mi.wall_type_dir_4 > 0) symbol_id += 4;
+                        if (mi.wall_type_dir_6 > 0) symbol_id += 8;
 
-                        if (mi.wall_type_dir_2 > 0)
-                        {
-                            symbol_id += 2;
-                        }
-
-                        if (mi.wall_type_dir_4 > 0)
-                        {
-                            symbol_id += 4;
-                        }
-
-                        if (mi.wall_type_dir_6 > 0)
-                        {
-                            symbol_id += 8;
-                        }
+                        if (mi.x3_dir_0 > 0) door_id += 1;
+                        if (mi.x3_dir_2 > 0) door_id += 2;
+                        if (mi.x3_dir_4 > 0) door_id += 4;
+                        if (mi.x3_dir_6 > 0) door_id += 8;
                     }
 
                     ovr038.Put8x8Symbol(0, true, symbol_id, y + displayOffset, x + displayOffset);
+                    
+                    seg040.draw_clipped_nodraw(8);
+                    seg040.draw_clipped_recolor(7, 1);
+                    ovr038.Put8x8Symbol(0, true, door_id, y + displayOffset, x + displayOffset);
+                    seg040.draw_clipped_recolor(17, 17);
+                    seg040.draw_clipped_nodraw(17);
+
+
                 }
             }
 
             int partyScreenY = partyMapX - offsetX;
             int partyScreenX = partyMapY - offsetY;
 
+            seg040.draw_clipped_nodraw(8);
             ovr038.Put8x8Symbol(0, true, (partyDir >> 1) + 0x100, partyScreenX + displayOffset, partyScreenY + displayOffset);
+            seg040.draw_clipped_nodraw(17);
             seg040.DrawOverlay();
         }
 
@@ -126,8 +127,8 @@ namespace engine
         static int[] colOffsets = { 1, 1, 1, 3, 2, 2, 7, 2, 2, 1 };
         /*seg600:0AEE*/
         static int[] rowOffsets = { 2, 4, 4, 4, 8, 8, 8, 11, 11, 2 };
- 
-        internal static void sub_71434(int offsetIndex, int arg_2, int rowStart, int colStart)
+
+        internal static void draw_3D_8x8_titles(int offsetIndex, int arg_2, int rowStart, int colStart) /* sub_71434 */
         {
             int var_9 = dataOffset[offsetIndex];
 
@@ -392,19 +393,19 @@ namespace engine
                 {
                     if (var_17 > 0)
                     {
-                        sub_71434(9, var_17, gbl.byte_16E2E, gbl.word_16E1A + var_12 + 1);
+                        draw_3D_8x8_titles(9, var_17, gbl.byte_16E2E, gbl.word_16E1A + var_12 + 1);
                     }
 
                     var_17 = var_14;
 
-                    sub_71434(0, var_14, gbl.byte_16E1C, gbl.word_16E08 + var_12);
+                    draw_3D_8x8_titles(0, var_14, gbl.byte_16E1C, gbl.word_16E08 + var_12);
                 }
                 else
                 {
                     if (var_17 > 0 &&
                         getMap_wall_type(dir_left, tmpY - gbl.MapDirectionYDelta[dir_left], tmpX - gbl.MapDirectionXDelta[dir_left]) != 0)
                     {
-                        //sub_71434(9, var_17, gbl.byte_16E2E, gbl.word_16E1A + var_12 + 1);
+                        draw_3D_8x8_titles(9, var_17, gbl.byte_16E2E, gbl.word_16E1A + var_12 + 1);
                     }
 
                     var_17 = 0;
@@ -437,18 +438,18 @@ namespace engine
                 {
                     if (var_17 > 0)
                     {
-                        sub_71434(9, var_17, gbl.byte_16E2E, gbl.word_16E1A + var_12 - 1);
+                        draw_3D_8x8_titles(9, var_17, gbl.byte_16E2E, gbl.word_16E1A + var_12 - 1);
                     }
 
                     var_17 = var_14;
-                    sub_71434(0, var_14, gbl.byte_16E1C, gbl.word_16E08 + var_12);
+                    draw_3D_8x8_titles(0, var_14, gbl.byte_16E1C, gbl.word_16E08 + var_12);
                 }
                 else
                 {
                     if (var_17 > 0 &&
                         getMap_wall_type(dir_right, tmpY - gbl.MapDirectionYDelta[dir_right], tmpX - gbl.MapDirectionXDelta[dir_right]) != 0)
                     {
-                        sub_71434(9, var_17, gbl.byte_16E2E, gbl.word_16E1A + var_12 - 1);
+                        draw_3D_8x8_titles(9, var_17, gbl.byte_16E2E, gbl.word_16E1A + var_12 - 1);
                     }
 
                     var_17 = 0;
@@ -474,11 +475,11 @@ namespace engine
                 {
                     if (var_10 == 0)
                     {
-                        sub_71434(1, var_15, gbl.byte_16E1E, gbl.word_16E0A + var_12);
+                        draw_3D_8x8_titles(1, var_15, gbl.byte_16E1E, gbl.word_16E0A + var_12);
                     }
                     else
                     {
-                        sub_71434(1, var_15, gbl.byte_16E1E, gbl.word_16E0A + var_12 - 1);
+                        draw_3D_8x8_titles(1, var_15, gbl.byte_16E1E, gbl.word_16E0A + var_12 - 1);
                     }
 
                 }
@@ -503,11 +504,11 @@ namespace engine
                 {
                     if (var_10 == 0)
                     {
-                        sub_71434(2, var_15, gbl.byte_16E20, gbl.word_16E0C + var_12);
+                        draw_3D_8x8_titles(2, var_15, gbl.byte_16E20, gbl.word_16E0C + var_12);
                     }
                     else
                     {
-                        sub_71434(2, var_15, gbl.byte_16E20, gbl.word_16E0C + var_12 + 1);
+                        draw_3D_8x8_titles(2, var_15, gbl.byte_16E20, gbl.word_16E0C + var_12 + 1);
                     }
                 }
 
@@ -532,13 +533,13 @@ namespace engine
                 byte var_14 = getMap_wall_type(partyDir, tmpY, tmpX);
                 if (var_14 != 0)
                 {
-                    sub_71434(3, var_14, gbl.byte_16E22, gbl.word_16E0E + var_12);
+                    draw_3D_8x8_titles(3, var_14, gbl.byte_16E22, gbl.word_16E0E + var_12);
                 }
 
                 byte var_15 = getMap_wall_type(dir_left, tmpY, tmpX);
                 if (var_15 != 0)
                 {
-                    sub_71434(4, var_15, gbl.byte_16E24, gbl.word_16E10 + var_12);
+                    draw_3D_8x8_titles(4, var_15, gbl.byte_16E24, gbl.word_16E10 + var_12);
                 }
 
                 var_10++;
@@ -558,14 +559,14 @@ namespace engine
 
                 if (var_14 != 0)
                 {
-                    sub_71434(3, var_14, gbl.byte_16E22, gbl.word_16E0E + var_12);
+                    draw_3D_8x8_titles(3, var_14, gbl.byte_16E22, gbl.word_16E0E + var_12);
                 }
 
                 byte var_15 = getMap_wall_type(dir_right, tmpY, tmpX);
 
                 if (var_15 != 0)
                 {
-                    sub_71434(5, var_15, gbl.byte_16E26, gbl.word_16E12 + var_12);
+                    draw_3D_8x8_titles(5, var_15, gbl.byte_16E26, gbl.word_16E12 + var_12);
                 }
 
                 var_10++;
@@ -590,14 +591,14 @@ namespace engine
 
                 if (var_14 != 0)
                 {
-                    sub_71434(6, var_14, gbl.byte_16E28, gbl.word_16E14 + var_12);
+                    draw_3D_8x8_titles(6, var_14, gbl.byte_16E28, gbl.word_16E14 + var_12);
                 }
 
                 byte var_15 = getMap_wall_type(dir_left, tmpY, tmpX);
 
                 if (var_15 != 0)
                 {
-                    sub_71434(7, var_15, gbl.byte_16E2A, gbl.word_16E16 + var_12);
+                    draw_3D_8x8_titles(7, var_15, gbl.byte_16E2A, gbl.word_16E16 + var_12);
                 }
 
                 var_10++;
@@ -621,14 +622,14 @@ namespace engine
                 if (var_14 != 0)
                 {
 
-                    sub_71434(6, var_14, gbl.byte_16E28, var_12 + gbl.word_16E14);
+                    draw_3D_8x8_titles(6, var_14, gbl.byte_16E28, var_12 + gbl.word_16E14);
                 }
 
                 byte var_15 = getMap_wall_type(dir_right, tmpY, tmpX);
 
                 if (var_15 != 0)
                 {
-                    sub_71434(8, var_15, gbl.byte_16E2C, var_12 + gbl.word_16E18);
+                    draw_3D_8x8_titles(8, var_15, gbl.byte_16E2C, var_12 + gbl.word_16E18);
                 }
 
                 var_10++;
@@ -681,7 +682,7 @@ namespace engine
 
                 for (var_D = 1; var_D <= var_10; var_D++)
                 {
-                    if (unk_72005.MemberOf((byte)((arg_0 + var_D) - 1)) == true)
+                    if (unk_72005.MemberOf(arg_0 + var_D - 1) == true)
                     {
                         gbl.wordSetArray_1D53A((arg_0 + var_D - 1), -1);
                         gbl.wordSetArray_1D53C((arg_0 + var_D - 1), -1);

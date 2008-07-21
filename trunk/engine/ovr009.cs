@@ -395,7 +395,7 @@ namespace engine
 
         internal static void battle01(ref bool arg_0)
         {
-            ovr021.sub_583FA(1, 1);
+            ovr021.step_game_time(1, 1);
             gbl.byte_1D8B7++;
             ovr014.calc_enemy_health_percentage();
 

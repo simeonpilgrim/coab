@@ -108,7 +108,7 @@ namespace engine
             {
                 found = true;
             }
-            else if (unk_6325A.MemberOf((byte)affect_type) == true)
+            else if (unk_6325A.MemberOf((int)affect_type) == true)
             {
                 Player player_base = gbl.player_next_ptr;
 
@@ -1316,7 +1316,7 @@ namespace engine
                         text = text + ", and is Dying";
                     }
 
-                    if (unk_64F90.MemberOf((byte)player.health_status) == true)
+                    if (unk_64F90.MemberOf((int)player.health_status) == true)
                     {
                         text = "is killed";
                     }
@@ -1384,7 +1384,7 @@ namespace engine
 
         internal static bool heal_player(byte arg_0, byte amount_healed, Player player)
         {
-            if (unk_653B5.MemberOf((byte)player.health_status) == true)
+            if (unk_653B5.MemberOf((int)player.health_status) == true)
             {
                 if (player.hit_point_current < player.hit_point_max ||
                     (player.hit_point_current >= player.hit_point_max &&

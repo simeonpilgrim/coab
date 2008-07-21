@@ -291,8 +291,8 @@ namespace Classes
         public static sbyte mapPosX; // byte_1D539, 0 map left, + map right
         public static sbyte mapPosY; // byte_1D53A, 0 map top, +map bottom
         public static byte mapDirection; // byte_1D53B , 0 N, 2 E, 4 S, 6 W
-        public static byte byte_1D53C;
-        public static byte byte_1D53D;
+        public static byte mapWallType; // byte_1D53C
+        public static byte mapWallRoof; // byte_1D53D
 
         public static void wordSetArray_1D53A(int index, short value)
         {

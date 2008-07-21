@@ -200,7 +200,7 @@ namespace engine
                     break;
             }
 
-            string prompt_text = unk_5C1A2.MemberOf((byte)arg_4) ? "Choose Spell: " : "";
+            string prompt_text = unk_5C1A2.MemberOf((int)arg_4) ? "Choose Spell: " : "";
 
             int end_y = (arg_4 == SpellSource.Memorize) ? 0x0F : 0x16;
 

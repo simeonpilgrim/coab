@@ -5,6 +5,10 @@
   * Fixed the crash the happened when sword of Frost, or Flame readied
   * Fixed the way text wrapping happens, so the end game text is displayed the same as DOS
   * Fixed the animation picture code, so end-game animations are drawn correctly
+  * Fixed small 3D view rendering problem with the far distance wall
+  * Cheats settings are now saved in your user profile, so you don't have to keep turning them on
+  * Time now passes correctly when resting or searching and after combat
+  * Altered the Area Map to now overlay the arrow icon cleanly, and doors are shown in blue
 
 = 1.0.12 =
   * Fixed the Fear spell, so it is removed when combat is ended

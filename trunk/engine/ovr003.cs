@@ -2087,7 +2087,7 @@ namespace engine
             byte var_1 = (byte)ovr008.vm_GetCmdValue(1);
             byte var_2 = (byte)ovr008.vm_GetCmdValue(2);
 
-            ovr021.sub_583FA(var_2, var_1);
+            ovr021.step_game_time(var_2, var_1);
         }
 
 
@@ -2230,7 +2230,7 @@ namespace engine
             switch (var_4)
             {
                 case 0xAE11:
-                    gbl.byte_1D53D = ovr031.get_wall_x2(gbl.mapPosY, gbl.mapPosX);
+                    gbl.mapWallRoof = ovr031.get_wall_x2(gbl.mapPosY, gbl.mapPosX);
 
                     if (gbl.byte_1AB0B != 0)
                     {
@@ -2246,7 +2246,7 @@ namespace engine
                             gbl.byte_1EE8C = false;
                             gbl.displayPlayerSprite = false;
 
-                            gbl.byte_1D53C = ovr031.getMap_wall_type(gbl.mapDirection, gbl.mapPosY, gbl.mapPosX);
+                            gbl.mapWallType = ovr031.getMap_wall_type(gbl.mapDirection, gbl.mapPosY, gbl.mapPosX);
                         }
                     }
                     break;
@@ -2282,7 +2282,7 @@ namespace engine
                 case 0x4019:
                     if (gbl.area_ptr.field_1CC == 0)
                     {
-                        gbl.byte_1D53C = ovr031.getMap_wall_type(gbl.mapDirection, gbl.mapPosY, gbl.mapPosX);
+                        gbl.mapWallType = ovr031.getMap_wall_type(gbl.mapDirection, gbl.mapPosY, gbl.mapPosX);
                     }
                     break;
 
@@ -2578,7 +2578,7 @@ namespace engine
                 gbl.byte_1D5AB = string.Empty;
                 gbl.byte_1D5B5 = 0x0FF;
                 gbl.byte_1AB09 = 0;
-                gbl.byte_1D53D = ovr031.get_wall_x2(gbl.mapPosY, gbl.mapPosX);
+                gbl.mapWallRoof = ovr031.get_wall_x2(gbl.mapPosY, gbl.mapPosX);
 
                 gbl.area2_ptr.tried_to_exit_map = false;
 

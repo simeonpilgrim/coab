@@ -186,16 +186,13 @@ namespace engine
             }
         }
 
-        /*static byte[] unk_4BC6 = { 0x57, 0x87, 0x57, 0x9B, 0x57, 0xB6, 0x57 };*/
-        static ushort[] time_table = { 0x00AE, 0x010E, 0x00AE, 0x0136, 0x00AE, 0x016C, 0x00AE };
-
-        internal static void sub_583FA(int time_slot, int amount) /* sub_583FA */
+        internal static void step_game_time(int time_slot, int amount) /* sub_583FA */
         {
             RestTime rest_time = new RestTime();
 
             for (int i = 0; i <= 6; i++)
             {
-                rest_time[i] = gbl.area_ptr.field_6A00_Get(time_table[i]); // as WORD[]
+                rest_time[i] = gbl.area_ptr.field_6A00_Get(0x6A00 + ((0x4BC6 + i) * 2)); // as WORD[]
             }
 
             for (int i = 1; i <= amount; i++)
@@ -207,7 +204,7 @@ namespace engine
 
             for (int i = 0; i <= 6; i++)
             {
-                gbl.area_ptr.field_6A00_Set(time_table[i], rest_time[i]);
+                gbl.area_ptr.field_6A00_Set(0x6A00 + ((0x4BC6 + i) * 2), rest_time[i]);
             }
 
             sub_5801E(time_slot, amount);
@@ -651,7 +648,7 @@ namespace engine
                         display_counter = 0;
                     }
 
-                    sub_583FA(1, 5);
+                    step_game_time(1, 5);
                     rest_heal(interactive_resting);
                     sub_58B4D();
                     sub_58C03(ref var_C);

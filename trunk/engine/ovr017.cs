@@ -1751,8 +1751,8 @@ namespace engine
                         gbl.mapPosX = (sbyte)data[0];
                         gbl.mapPosY = (sbyte)data[1];
                         gbl.mapDirection = data[2];
-                        gbl.byte_1D53C = data[3];
-                        gbl.byte_1D53D = data[4];
+                        gbl.mapWallType = data[3];
+                        gbl.mapWallRoof = data[4];
 
                         seg051.BlockRead(1, data, var_1C8);
                         gbl.last_game_state = data[0];
@@ -1966,13 +1966,13 @@ namespace engine
                         seg051.Rewrite(save_file);
                         var_1FC = gbl.word_1EFBC;
 
-                        if (unk_4AEEF.MemberOf((char)var_1FC) == false)
+                        if (unk_4AEEF.MemberOf(var_1FC) == false)
                         {
                             seg041.displayAndDebug("Unexpected error during save: " + var_1FC.ToString(), 0, 14);
                             seg051.Close(save_file);
                             return;
                         }
-                    } while (unk_4AEEF.MemberOf((char)var_1FC) == false);
+                    } while (unk_4AEEF.MemberOf(var_1FC) == false);
 
                     ovr027.redraw_screen();
                     seg041.displayString("Saving...Please Wait", 0, 10, 0x18, 0);
@@ -1994,8 +1994,8 @@ namespace engine
                     data[0] = (byte)gbl.mapPosX;
                     data[1] = (byte)gbl.mapPosY;
                     data[2] = gbl.mapDirection;
-                    data[3] = gbl.byte_1D53C;
-                    data[4] = gbl.byte_1D53D;
+                    data[3] = gbl.mapWallType;
+                    data[4] = gbl.mapWallRoof;
                     seg051.BlockWrite(5, data, save_file);
 
                     data[0] = gbl.last_game_state;

@@ -38,27 +38,27 @@ namespace Classes
 
         protected byte[] origData;
 
-        [DataOffset(0xAE, DataType.Word)]
-        public ushort field_AE;
-        [DataOffset(0x10E, DataType.Word)]
-        public ushort field_10E;
-        [DataOffset(0x136, DataType.Word)]
-        public ushort field_136;
-        [DataOffset(0x16C, DataType.Word)]
-        public ushort field_16C;
-
         [DataOffset(0x186, DataType.Byte)]
         public byte field_186;
         [DataOffset(0x188, DataType.Byte)]
         public byte field_188;
         [DataOffset(0x18A, DataType.Byte)]
         public byte current_3DMap_block_id; // field_18A
-        [DataOffset(0x18E, DataType.SWord)]
-        public short time_minutes_ones; // field_18E
-        [DataOffset(0x190, DataType.SWord)]
-        public short time_minutes_tens; // field_190
+        
+        [DataOffset(0x18E, DataType.Word)]
+        public ushort field_18C;
+        [DataOffset(0x18E, DataType.Word)]
+        public ushort time_minutes_ones; // field_18E
+        [DataOffset(0x190, DataType.Word)]
+        public ushort time_minutes_tens; // field_190
         [DataOffset(0x192, DataType.Word)]
         public ushort time_hour; // field_192
+        [DataOffset(0x194, DataType.Word)]
+        public ushort time_day; // field_194
+        [DataOffset(0x196, DataType.Word)]
+        public ushort time_year; // field_196
+        [DataOffset(0x198, DataType.Word)]
+        public ushort field_198;
 
         [DataOffset(0x1CA, DataType.SWord)]
         public short field_1CA;
@@ -172,24 +172,26 @@ namespace Classes
             /* ovr021:0482 */
             switch (loc)
             {
-                case 0xAE:
-                    field_AE = value; 
+                case 0x18C:
+                    field_18C = value;
                     break;
-
-                case 0x10E:
-                    field_10E = value; 
+                case 0x18E:
+                    time_minutes_ones = value;
                     break;
-
-                case 0x136:
-                    field_136 = value;
+                case 0x190:
+                    time_minutes_tens = value;
                     break;
-
-                case 0x16C:
-                    field_16C = value;
-                    break;
-
                 case 0x192:
                     time_hour = value;
+                    break;
+                case 0x194:
+                    time_day = value;
+                    break;
+                case 0x196:
+                    time_year = value;
+                    break;
+                case 0x198:
+                    field_198 = value;
                     break;
 
                 case 0x1CC:
@@ -378,17 +380,20 @@ namespace Classes
             /* ovr021:0482 */
             switch (loc)
             {
-                case 0xAE:
-                    return field_AE;
-                case 0x10E:
-                    return field_10E;
-                case 0x136:
-                    return field_136;
-                case 0x16C:
-                    return field_16C;
-
+                case 0x18C:
+                    return field_18C;
+                case 0x18E:
+                    return time_minutes_ones;
+                case 0x190:
+                    return time_minutes_tens;
                 case 0x192:
                     return time_hour;
+                case 0x194:
+                    return time_day;
+                case 0x196:
+                    return time_year;
+                case 0x198:
+                    return field_198;
 
                 case 0x1E0:
                     return (ushort)field_1E0;

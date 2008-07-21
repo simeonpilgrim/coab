@@ -1567,7 +1567,7 @@ namespace engine
                 }
             }
 
-            if (unk_683B5.MemberOf((byte)player.health_status) == false)
+            if (unk_683B5.MemberOf((int)player.health_status) == false)
             {
                 player.in_combat = false;
                 player.hit_point_current = 0;

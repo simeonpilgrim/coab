@@ -6,6 +6,7 @@ using System.IO;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
+using Main.Properties;
 
 namespace Main
 {
@@ -16,6 +17,7 @@ namespace Main
             InitializeComponent();
 
             Classes.Display.UpdateCallback = UpdateDisplayCallback;
+            setSettings();
         }
 
         object obj = new object();
@@ -71,39 +73,87 @@ namespace Main
             }
         }
 
+        private void setSettings()
+        {
+            Classes.Cheats.PlayerAlwaysSavesSet(Settings.Default.PlayerAlwaysSaves);
+            Classes.Cheats.AlwayShowAreaMapSet(Settings.Default.AlwayShowAreaMap);
+            Classes.Cheats.FreeTrainingSet(Settings.Default.FreeTraining);
+            Classes.Cheats.SkipCopyProtectionSet(Settings.Default.SkipCopyProtection);
+            Classes.Cheats.AllowGodsInterveneSet(Settings.Default.AllowGodsIntervene);
+            Classes.Cheats.DisplayFullItemNamesSet(Settings.Default.DisplayFullItemNames);
+            Classes.Cheats.ViewItemStatsSet(Settings.Default.ViewItemsStats);
+            Classes.Cheats.SkipTitleScreenSet(Settings.Default.SkipTitleScreen);
+        }
+
         private void playersAlwayMakeSavingThrowToolStripMenuItem_CheckedChanged(object sender, EventArgs e)
         {
-            Classes.Cheats.PlayerAlwaysSavesToggle();
+            bool flipped = !Settings.Default.PlayerAlwaysSaves;
+            Settings.Default.PlayerAlwaysSaves = flipped;
+            Settings.Default.Save();
+
+            Classes.Cheats.PlayerAlwaysSavesSet(flipped);
         }
 
         private void alwayAllowAreaMapToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Classes.Cheats.AlwayShowAreaMapToggle();
+            Settings.Default.AlwayShowAreaMap = !Settings.Default.AlwayShowAreaMap;
+            Settings.Default.Save();
+
+            Classes.Cheats.AlwayShowAreaMapSet(Settings.Default.AlwayShowAreaMap);
         }
 
         private void freeTrainingToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Classes.Cheats.FreeTrainingToggle();
+            bool flipped = !Settings.Default.FreeTraining;
+            Settings.Default.FreeTraining = flipped;
+            Settings.Default.Save();
+
+            Classes.Cheats.FreeTrainingSet(flipped);
         }
 
         private void skipCopyProtectionToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Classes.Cheats.SkipCopyProtectionToggle();
+            bool flipped = !Settings.Default.SkipCopyProtection;
+            Settings.Default.SkipCopyProtection = flipped;
+            Settings.Default.Save();
+
+            Classes.Cheats.SkipCopyProtectionSet(flipped);
+        }
+
+        private void skipTitleScreenToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            bool flipped = !Settings.Default.SkipTitleScreen;
+            Settings.Default.SkipTitleScreen = flipped;
+            Settings.Default.Save();
+
+            Classes.Cheats.SkipTitleScreenSet(flipped);
         }
 
         private void allowGodsInterveneToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Classes.Cheats.AllowGodsInterveneToggle();
+            bool flipped = !Settings.Default.AllowGodsIntervene;
+            Settings.Default.AllowGodsIntervene = flipped;
+            Settings.Default.Save();
+
+            Classes.Cheats.AllowGodsInterveneSet(flipped);
         }
 
         private void displayItemsFullNameToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Classes.Cheats.DisplayFullItemNamesToggle();
+            bool flipped = !Settings.Default.DisplayFullItemNames;
+            Settings.Default.DisplayFullItemNames = flipped;
+            Settings.Default.Save();
+
+            Classes.Cheats.DisplayFullItemNamesSet(flipped);
         }
 
         private void viewItemsStatsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Classes.Cheats.ViewItemStatsTogle();
+            bool flipped = !Settings.Default.ViewItemsStats;
+            Settings.Default.ViewItemsStats = flipped;
+            Settings.Default.Save();
+
+            Classes.Cheats.ViewItemStatsSet(flipped);
         }
     }
 }
