@@ -43,7 +43,7 @@ namespace engine
         {
             lock (timer_lock)
             {
-                if (set_01.MemberOf((byte)arg_0) == true)
+                if (set_01.MemberOf(arg_0) == true)
                 {
                     if (arg_0 == 0)
                     {

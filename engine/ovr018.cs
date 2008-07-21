@@ -178,7 +178,7 @@ namespace engine
 
                 if (var_3 == true)
                 {
-                    if (unk_4C13D.MemberOf((byte)inputkey) == true)
+                    if (unk_4C13D.MemberOf(inputkey) == true)
                     {
                         if (ovr026.is_human(gbl.player_ptr) == false ||
                             ovr026.getExtraFirstSkill(gbl.player_ptr) != 0x11)
@@ -216,7 +216,7 @@ namespace engine
                 }
                 else
                 {
-                    if (unk_4C15D.MemberOf((byte)inputkey) == false)
+                    if (unk_4C15D.MemberOf(inputkey) == false)
                     {
                         gbl.byte_1C01B = 0;
                     }
@@ -1058,7 +1058,7 @@ namespace engine
                             }
 
                             if (var_53.stats[var_1B].max < 13 &&
-                                asc_4C707.MemberOf((byte)var_53._class) == true)
+                                asc_4C707.MemberOf((int)var_53._class) == true)
                             {
                                 var_53.stats[var_1B].max = 13;
                             }

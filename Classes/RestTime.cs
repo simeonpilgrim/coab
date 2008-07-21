@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Classes
 {
-    public struct RestTime
+    public class RestTime
     {
         public ushort field_0;
         public ushort field_2;
@@ -13,6 +13,10 @@ namespace Classes
         public ushort field_8;
         public ushort field_A;
         public int field_C;
+
+        public RestTime()
+        {
+        }
 
         public RestTime(RestTime old)
         {

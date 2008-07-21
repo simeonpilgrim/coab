@@ -18,9 +18,9 @@ namespace engine
             {
                 if (gbl.area_ptr.field_1CC != 0)
                 {
-                    gbl.byte_1D53D = ovr031.get_wall_x2(gbl.mapPosY, gbl.mapPosX);
+                    gbl.mapWallRoof = ovr031.get_wall_x2(gbl.mapPosY, gbl.mapPosX);
 
-                    if (gbl.byte_1D53D > 0x7F)
+                    if (gbl.mapWallRoof > 0x7F)
                     {
                         // indoor  
                         gbl.sky_colour = sky_colours[gbl.area_ptr.indoor_sky_colour];

@@ -767,7 +767,7 @@ namespace engine
                     }
                 }
 
-                gbl.area_ptr.field_6A00_Set((location*2) + 0x6a00, value);
+                gbl.area_ptr.field_6A00_Set(0x6A00 + (location * 2), value);
             }
             else if (memType == 1)
             {
@@ -776,8 +776,7 @@ namespace engine
             }
             else if (memType == 2)
             {
-                
-                gbl.stru_1B2CA[(location<<1)+0x0C00] = value;
+                gbl.stru_1B2CA[(location << 1) + 0x0C00] = value;
             }
             else if (memType == 3)
             {
@@ -785,7 +784,6 @@ namespace engine
             }
             else if (memType == 4)
             {
-                
                 if (location < 0xBF68)
                 {
                     switch (location)
@@ -882,7 +880,7 @@ namespace engine
             switch (mem_type)
             {
                 case 0:
-                    var_2 = gbl.area_ptr.field_6A00_Get((arg_0 * 2)+0x6A00);
+                    var_2 = gbl.area_ptr.field_6A00_Get(0x6A00 + (arg_0 * 2));
                     break;
 
                 case 1:
@@ -947,11 +945,11 @@ namespace engine
                                 break;
 
                             case 0x03:
-                                var_2 = gbl.byte_1D53C;
+                                var_2 = gbl.mapWallType;
                                 break;
 
                             case 0x04:
-                                var_2 = gbl.byte_1D53D;
+                                var_2 = gbl.mapWallRoof;
                                 break;
 
                             case 0x0E:
@@ -996,7 +994,7 @@ namespace engine
                     }
                 }
 
-                gbl.area_ptr.field_6A00_Set(0x6A00 + ((var_102 + arg_4) << 1), 0);
+                gbl.area_ptr.field_6A00_Set(0x6A00 + ((var_102 + arg_4) *2), 0);
             }
             else if (mem_type == 1)
             {
@@ -1171,9 +1169,9 @@ namespace engine
             switch (vm_GetMemoryValueType(location))
             {
                 case 0:
-                    while (gbl.area_ptr.field_6A00_Get(((offset + location) << 1) + 0x6A00) != 0)
+                    while (gbl.area_ptr.field_6A00_Get(((offset + location) * 2) + 0x6A00) != 0)
                     {
-                        gbl.unk_1D972[strIndex] += (char)((byte)gbl.area_ptr.field_6A00_Get(((offset + location) << 1) + 0x6A00));
+                        gbl.unk_1D972[strIndex] += (char)((byte)gbl.area_ptr.field_6A00_Get(((offset + location) * 2) + 0x6A00));
                         offset++;
                     }
                     break;
@@ -1391,9 +1389,9 @@ namespace engine
                 }
             }
 
-            gbl.byte_1D53D = ovr031.get_wall_x2(gbl.mapPosY, gbl.mapPosX);
+            gbl.mapWallRoof = ovr031.get_wall_x2(gbl.mapPosY, gbl.mapPosX);
 
-            gbl.byte_1D53C = ovr031.getMap_wall_type(gbl.mapDirection, gbl.mapPosY, gbl.mapPosX);
+            gbl.mapWallType = ovr031.getMap_wall_type(gbl.mapDirection, gbl.mapPosY, gbl.mapPosX);
 
             gbl.byte_1EE92 = 1;
 

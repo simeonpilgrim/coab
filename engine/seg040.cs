@@ -166,7 +166,19 @@ namespace engine
             }
         }
 
+        static byte color_no_draw = 17;
+        static byte color_re_color_from = 17;
+        static byte color_re_color_to = 17;
+        internal static void draw_clipped_recolor(byte from, byte to)
+        {
+            color_re_color_from = from;
+            color_re_color_to = to;
+        }
 
+        internal static void draw_clipped_nodraw(byte color)
+        {
+            color_no_draw = color;
+        }
 
         internal static void draw_clipped_picture(DaxBlock dax_block, int rowY, int colX, int index, 
             int clipMinX, int clipMaxX, int clipMinY, int clipMaxY)
@@ -188,7 +200,18 @@ namespace engine
                         if (pixX >= clipMinX && pixX < clipMaxX && 
                             pixY >= clipMinY && pixY < clipMaxY)
                         {
-                            Display.SetPixel3(pixX, pixY, dax_block.data[var_10]);
+                            byte color = dax_block.data[var_10];
+
+                            if (color == color_no_draw)
+                            { }
+                            else if (color == color_re_color_from)
+                            {
+                                Display.SetPixel3(pixX, pixY, color_re_color_to);
+                            }
+                            else
+                            {
+                                Display.SetPixel3(pixX, pixY, color);
+                            }
                         }
 
                         var_10++;

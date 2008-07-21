@@ -68,19 +68,10 @@ namespace Classes
             }
         }
 
-
-        public bool MemberOf(char arg_4)
+        public bool MemberOf(int bit)
         {
-            byte lhs = bits[arg_4 >> shift];
-            byte rhs = (byte)(1 << (arg_4 & mask));
-
-            return ((lhs & rhs) != 0);
-        }
-
-        public bool MemberOf(byte arg_4)
-        {
-            byte lhs = bits[arg_4 >> shift];
-            byte rhs = (byte)(1 << (arg_4 & mask));
+            int lhs = bits[bit >> shift];
+            int rhs = 1 << (bit & mask);
 
             return ((lhs & rhs) != 0);
         }      

@@ -9,7 +9,7 @@ namespace engine
 
     class ovr015
     {
-        internal static void sub_4303C( byte arg_0, sbyte arg_2, sbyte arg_4 )
+        internal static void sub_4303C(byte arg_0, sbyte arg_2, sbyte arg_4)
         {
             if (false)
             {
@@ -166,237 +166,237 @@ namespace engine
         }
 
 
-        internal static bool any_player_has_skill( Skills skill )
+        internal static bool any_player_has_skill(Skills skill)
         {
             bool has_skill;
             Player player_ptr;
             int s = (int)skill;
- 
-			has_skill = false;			
-			player_ptr = gbl.player_next_ptr;
 
-			while ( player_ptr != null &&
-					has_skill == false )
-			{
+            has_skill = false;
+            player_ptr = gbl.player_next_ptr;
+
+            while (player_ptr != null &&
+                    has_skill == false)
+            {
                 if (player_ptr.class_lvls[s] > 0 ||
                     (player_ptr.Skill_B_lvl[s] > 0 &&
-					  ovr026.sub_6B3D1( player_ptr ) != 0 ) )
-				{
-					has_skill = true;
-				}
-				player_ptr = player_ptr.next_player;
-			}
-			return has_skill;
+                      ovr026.sub_6B3D1(player_ptr) != 0))
+                {
+                    has_skill = true;
+                }
+                player_ptr = player_ptr.next_player;
+            }
+            return has_skill;
         }
 
 
-        internal static bool bash_door( )
+        internal static bool bash_door()
         {
             bool bash_worked = false;
             Player player_ptr = gbl.player_next_ptr;
 
-			while ( player_ptr != null &&
-					bash_worked == false )
-			{
+            while (player_ptr != null &&
+                    bash_worked == false)
+            {
                 Player player = player_ptr;
 
-				if ( ovr031.WallDoorFlagsGet( gbl.mapDirection, gbl.mapPosY , gbl.mapPosX ) == 3 )
-				{
-					if ( player.strength == 18 )
-					{
-						if( player.tmp_str_00 >= 0x5b &&
-							player.tmp_str_00 <= 99 )
-						{
-							if( ovr024.roll_dice( 6, 1 ) == 1 )
-							{
-								bash_worked = true;
-							}
-						}
-						else if( player.tmp_str_00 == 100 )
-						{
-							if( ovr024.roll_dice( 6, 1 ) <= 2 )
-							{
-								bash_worked = true;
-							}
-						}
-						else
-						{
-							gbl.can_bash_door = false;
-						}
-					}
-					else if( player.strength == 19 ||
-							 player.strength == 20 )
-					{
-						if( ovr024.roll_dice( 6, 1 ) <= 3 )
-						{
-							bash_worked = true;
-						}
-					}
-					else if( player.strength == 21 ||
-							 player.strength == 22 )
-					{
-						if( ovr024.roll_dice( 6, 1 ) <= 4 )
-						{
-							bash_worked = true;
-						}
-					}
-					else if ( player.strength == 23 )
-					{
-						if( ovr024.roll_dice( 6, 1 ) <= 5 )
-						{
-							bash_worked = true;
-						}
-					}
-					else if ( player.strength == 24 )
-					{
-						if( ovr024.roll_dice( 8, 1 ) <= 7 )
-						{
-							bash_worked = true;
-						}
-					}
-					else if ( player.strength == 25 )
-					{
-						bash_worked = true;
-					}
-					else
-					{
-						gbl.can_bash_door = false;
-					}
-				}
-				else
-				{
-					byte al = player.strength;
+                if (ovr031.WallDoorFlagsGet(gbl.mapDirection, gbl.mapPosY, gbl.mapPosX) == 3)
+                {
+                    if (player.strength == 18)
+                    {
+                        if (player.tmp_str_00 >= 0x5b &&
+                            player.tmp_str_00 <= 99)
+                        {
+                            if (ovr024.roll_dice(6, 1) == 1)
+                            {
+                                bash_worked = true;
+                            }
+                        }
+                        else if (player.tmp_str_00 == 100)
+                        {
+                            if (ovr024.roll_dice(6, 1) <= 2)
+                            {
+                                bash_worked = true;
+                            }
+                        }
+                        else
+                        {
+                            gbl.can_bash_door = false;
+                        }
+                    }
+                    else if (player.strength == 19 ||
+                             player.strength == 20)
+                    {
+                        if (ovr024.roll_dice(6, 1) <= 3)
+                        {
+                            bash_worked = true;
+                        }
+                    }
+                    else if (player.strength == 21 ||
+                             player.strength == 22)
+                    {
+                        if (ovr024.roll_dice(6, 1) <= 4)
+                        {
+                            bash_worked = true;
+                        }
+                    }
+                    else if (player.strength == 23)
+                    {
+                        if (ovr024.roll_dice(6, 1) <= 5)
+                        {
+                            bash_worked = true;
+                        }
+                    }
+                    else if (player.strength == 24)
+                    {
+                        if (ovr024.roll_dice(8, 1) <= 7)
+                        {
+                            bash_worked = true;
+                        }
+                    }
+                    else if (player.strength == 25)
+                    {
+                        bash_worked = true;
+                    }
+                    else
+                    {
+                        gbl.can_bash_door = false;
+                    }
+                }
+                else
+                {
+                    byte al = player.strength;
 
-					if ( al >= 3 && al <= 7 )
-					{
-						if ( ovr024.roll_dice( 6, 1 ) == 1 )
-						{
-							bash_worked = true;
-						}
-					}
-					else if ( al >= 8 && al <= 15 )
-					{
-						if ( ovr024.roll_dice( 6, 1 ) <= 2 )
-						{
-							bash_worked = true;
-						}
-					}
-					else if ( al == 15 || al == 17 ) 
-					{
-						if ( ovr024.roll_dice( 6, 1 ) <= 3 )
-						{
-							bash_worked = true;
-						}
-					}
-					else if ( al == 18 )
-					{
-						if( player.tmp_str_00 >= 0 &&
-							player.tmp_str_00 <= 50 )
-						{
-							bash_worked = true;
+                    if (al >= 3 && al <= 7)
+                    {
+                        if (ovr024.roll_dice(6, 1) == 1)
+                        {
+                            bash_worked = true;
+                        }
+                    }
+                    else if (al >= 8 && al <= 15)
+                    {
+                        if (ovr024.roll_dice(6, 1) <= 2)
+                        {
+                            bash_worked = true;
+                        }
+                    }
+                    else if (al == 15 || al == 17)
+                    {
+                        if (ovr024.roll_dice(6, 1) <= 3)
+                        {
+                            bash_worked = true;
+                        }
+                    }
+                    else if (al == 18)
+                    {
+                        if (player.tmp_str_00 >= 0 &&
+                            player.tmp_str_00 <= 50)
+                        {
+                            bash_worked = true;
 
-							if ( ovr024.roll_dice( 6, 1 ) <= 3 )
-							{
-								bash_worked = true;
-							}
-						}
-						else if ( player.tmp_str_00 >= 51 &&
-							player.tmp_str_00 <= 99 )
-						{
-							if ( ovr024.roll_dice( 6, 1 ) <= 4 )
-							{
-								bash_worked = true;
-							}
+                            if (ovr024.roll_dice(6, 1) <= 3)
+                            {
+                                bash_worked = true;
+                            }
+                        }
+                        else if (player.tmp_str_00 >= 51 &&
+                            player.tmp_str_00 <= 99)
+                        {
+                            if (ovr024.roll_dice(6, 1) <= 4)
+                            {
+                                bash_worked = true;
+                            }
 
-						}
-						else if ( player.tmp_str_00 == 100 )
-						{
-							if ( ovr024.roll_dice( 6, 1 ) <= 5 )
-							{
-								bash_worked = true;
-							}
-						}
-					}
-					else if ( al == 19 || al == 20 )
-					{
-						if ( ovr024.roll_dice( 8, 1 ) <= 7 )
-						{
-							bash_worked = true;
-						}
-					}
-					else if ( al == 21 )
-					{
-						if ( ovr024.roll_dice( 10, 1 ) <= 9 )
-						{
-							bash_worked = true;
-						}
-					}
-					else if ( al == 22 || al == 23 )
-					{
-						if ( ovr024.roll_dice( 12, 1 ) <= 11 )
-						{
-							bash_worked = true;
-						}
-					}
-					else if ( al == 24 )
-					{
-						if ( ovr024.roll_dice( 20, 1 ) <= 19 )
-						{
-							bash_worked = true;
-						}
-					}
-					else if ( al == 25 )
-					{
-						bash_worked = true;
-					}
-				}
-				
-				player_ptr = player_ptr.next_player;
-			}
+                        }
+                        else if (player.tmp_str_00 == 100)
+                        {
+                            if (ovr024.roll_dice(6, 1) <= 5)
+                            {
+                                bash_worked = true;
+                            }
+                        }
+                    }
+                    else if (al == 19 || al == 20)
+                    {
+                        if (ovr024.roll_dice(8, 1) <= 7)
+                        {
+                            bash_worked = true;
+                        }
+                    }
+                    else if (al == 21)
+                    {
+                        if (ovr024.roll_dice(10, 1) <= 9)
+                        {
+                            bash_worked = true;
+                        }
+                    }
+                    else if (al == 22 || al == 23)
+                    {
+                        if (ovr024.roll_dice(12, 1) <= 11)
+                        {
+                            bash_worked = true;
+                        }
+                    }
+                    else if (al == 24)
+                    {
+                        if (ovr024.roll_dice(20, 1) <= 19)
+                        {
+                            bash_worked = true;
+                        }
+                    }
+                    else if (al == 25)
+                    {
+                        bash_worked = true;
+                    }
+                }
 
-			if ( bash_worked == true )
-			{
-				MapSetDoorUnlocked( gbl.mapDirection , gbl.mapPosY , gbl.mapPosX );
+                player_ptr = player_ptr.next_player;
+            }
+
+            if (bash_worked == true)
+            {
+                MapSetDoorUnlocked(gbl.mapDirection, gbl.mapPosY, gbl.mapPosX);
 
                 int map_x = gbl.MapDirectionXDelta[gbl.mapDirection] + gbl.mapPosX;
                 int map_y = gbl.MapDirectionYDelta[gbl.mapDirection] + gbl.mapPosY;
                 int map_dir = (gbl.mapDirection + 4) % 8;
 
-				MapSetDoorUnlocked( map_dir, map_y, map_x );
-			}
+                MapSetDoorUnlocked(map_dir, map_y, map_x);
+            }
 
-			return bash_worked;
+            return bash_worked;
         }
 
 
-        internal static bool pick_lock( ) /*sub_435B6*/
+        internal static bool pick_lock() /*sub_435B6*/
         {
             bool door_picked = false;
             Player player = gbl.player_next_ptr;
 
-			while( player != null && door_picked == false )
-			{
+            while (player != null && door_picked == false)
+            {
                 if (ovr024.roll_dice(100, 1) <= player.field_EA[1] &&
-					player.health_status == Status.okey )
-				{
-					door_picked = true;
-				}
+                    player.health_status == Status.okey)
+                {
+                    door_picked = true;
+                }
 
-				player = player.next_player;
-			}
+                player = player.next_player;
+            }
 
             gbl.can_pick_door = false;
 
-			if( door_picked == true )
-			{
-				MapSetDoorUnlocked( gbl.mapDirection, gbl.mapPosY, gbl.mapPosX );
+            if (door_picked == true)
+            {
+                MapSetDoorUnlocked(gbl.mapDirection, gbl.mapPosY, gbl.mapPosX);
 
-				MapSetDoorUnlocked( ( gbl.mapDirection + 4 ) % 8, 
-					gbl.MapDirectionYDelta[ gbl.mapDirection ] + gbl.mapPosY,
-					gbl.MapDirectionXDelta[ gbl.mapDirection ] + gbl.mapPosX );
-			}
- 
-			return door_picked;
+                MapSetDoorUnlocked((gbl.mapDirection + 4) % 8,
+                    gbl.MapDirectionYDelta[gbl.mapDirection] + gbl.mapPosY,
+                    gbl.MapDirectionXDelta[gbl.mapDirection] + gbl.mapPosX);
+            }
+
+            return door_picked;
         }
 
         internal static int find_spell(Player player, SpellId spell_id)
@@ -406,71 +406,71 @@ namespace engine
 
             loop_var = 0;
 
-			while( loop_var <= 83 && player.spell_list[ loop_var ] != (byte)spell_id )
-			{
-				loop_var++;
-			}
+            while (loop_var <= 83 && player.spell_list[loop_var] != (byte)spell_id)
+            {
+                loop_var++;
+            }
 
-			if( loop_var <= 83 )
-			{
-				ret_val = loop_var;
-			}
-			else
-			{
-				ret_val = -1;
-			}
+            if (loop_var <= 83)
+            {
+                ret_val = loop_var;
+            }
+            else
+            {
+                ret_val = -1;
+            }
 
             return ret_val;
         }
 
 
-        internal static Player find_player_with_spell( SpellId spell_id )
+        internal static Player find_player_with_spell(SpellId spell_id)
         {
             Player player;
 
             player = gbl.player_next_ptr;
 
-			while( player != null && find_spell( player, spell_id ) == -1 )
-			{
-				player = player.next_player;
-			}
+            while (player != null && find_spell(player, spell_id) == -1)
+            {
+                player = player.next_player;
+            }
 
-			return player;
+            return player;
         }
 
 
-        internal static bool find_knock_spell( )
+        internal static bool find_knock_spell()
         {
             Player player;
             bool var_1;
 
-			player = find_player_with_spell( SpellId.knock );
+            player = find_player_with_spell(SpellId.knock);
 
-			if( player != null )
-			{
+            if (player != null)
+            {
                 player.spell_list[find_spell(player, SpellId.knock)] = 0;
 
-				var_1 = true;
-			}
-			else
-			{
-				var_1 = false;
-			}
+                var_1 = true;
+            }
+            else
+            {
+                var_1 = false;
+            }
 
-			return var_1;
+            return var_1;
         }
 
 
-        internal static void sub_43765( )
+        internal static void sub_43765()
         {
-			int mapX = gbl.mapPosX;
-			int mapY = gbl.mapPosY;
-			int mapDir = gbl.mapDirection;
+            int mapX = gbl.mapPosX;
+            int mapY = gbl.mapPosY;
+            int mapDir = gbl.mapDirection;
 
-			gbl.area2_ptr.tried_to_exit_map = false;
+            gbl.area2_ptr.tried_to_exit_map = false;
 
-			if( ovr031.WallDoorFlagsGet( mapDir, mapY, mapX ) != 0 )
-			{
+            if (ovr031.WallDoorFlagsGet(mapDir, mapY, mapX) != 0)
+            {
                 mapX += gbl.MapDirectionXDelta[mapDir];
                 mapY += gbl.MapDirectionYDelta[mapDir];
 
@@ -497,14 +497,14 @@ namespace engine
                     gbl.mapPosY = 0;
                     gbl.area2_ptr.tried_to_exit_map = true;
                 }
-			}
+            }
         }
 
 
-        internal static void MovePartyForward( ) /* sub_43813 */
+        internal static void MovePartyForward() /* sub_43813 */
         {
-            seg044.sound_sub_120E0( gbl.sound_a_188D2 );
-			seg049.SysDelay( 50 );
+            seg044.sound_sub_120E0(gbl.sound_a_188D2);
+            seg049.SysDelay(50);
 
             gbl.mapPosX += gbl.MapDirectionXDelta[gbl.mapDirection];
             gbl.mapPosY += gbl.MapDirectionYDelta[gbl.mapDirection];
@@ -530,198 +530,197 @@ namespace engine
             }
 
 
-            gbl.byte_1D53C = ovr031.getMap_wall_type(gbl.mapDirection, gbl.mapPosY, gbl.mapPosX);
+            gbl.mapWallType = ovr031.getMap_wall_type(gbl.mapDirection, gbl.mapPosY, gbl.mapPosX);
 
-			gbl.can_bash_door = true;
-			gbl.can_pick_door = true;
-			gbl.can_knock_door = true;
+            gbl.can_bash_door = true;
+            gbl.can_pick_door = true;
+            gbl.can_knock_door = true;
 
-            gbl.byte_1D53D = ovr031.get_wall_x2( gbl.mapPosY, gbl.mapPosX );
+            gbl.mapWallRoof = ovr031.get_wall_x2(gbl.mapPosY, gbl.mapPosX);
 
-			if( (gbl.area2_ptr.search_flags & 1) > 0 )
-			{
-				ovr021.sub_583FA( 2, 1 );
-			}
-			else
-			{
-				ovr021.sub_583FA( 1, 1 );
-			}
+            if ((gbl.area2_ptr.search_flags & 1) > 0)
+            {
+                ovr021.step_game_time(2, 1);
+            }
+            else
+            {
+                ovr021.step_game_time(1, 1);
+            }
         }
 
 
         internal static char main_3d_world_menu() /* sub_438DF */
         {
-            char input_key = '\0'; /* simeon */ 
-		
-			gbl.area2_ptr.field_592 = 0;
+            char input_key = '\0'; /* simeon */
 
-			if( gbl.game_state == 4 )
-			{
-				bool stop_loop = false;
+            gbl.area2_ptr.field_592 = 0;
 
-				do
-				{
+            if (gbl.game_state == 4)
+            {
+                bool stop_loop = false;
+
+                do
+                {
                     bool special_key;
 
-					input_key = ovr027.displayInput( out special_key, false, 1, 15, 10, 13, "Area Cast View Encamp Search Look", string.Empty );
+                    input_key = ovr027.displayInput(out special_key, false, 1, 15, 10, 13, "Area Cast View Encamp Search Look", string.Empty);
 
-					if( special_key == false )
-					{
-						switch( input_key )
-						{
-							case 'A':
-								if( gbl.area_ptr.block_area_view == 0 ||
+                    if (special_key == false)
+                    {
+                        switch (input_key)
+                        {
+                            case 'A':
+                                if (gbl.area_ptr.block_area_view == 0 ||
                                     Cheats.always_show_areamap)
-								{
-									gbl.mapAreaDisplay = !gbl.mapAreaDisplay;
+                                {
+                                    gbl.mapAreaDisplay = !gbl.mapAreaDisplay;
 
-									ovr031.Draw3dWorld( gbl.mapDirection, gbl.mapPosY, gbl.mapPosX );
-								}
-								else
-								{
-									seg041.DisplayStatusText( 0, 14, "Not Here" );
-								}
-								break;
+                                    ovr031.Draw3dWorld(gbl.mapDirection, gbl.mapPosY, gbl.mapPosX);
+                                }
+                                else
+                                {
+                                    seg041.DisplayStatusText(0, 14, "Not Here");
+                                }
+                                break;
 
-							case 'C':
-								if( gbl.player_ptr.health_status == Status.okey )
-								{
-									gbl.byte_1D5BE = 1;
-									ovr016.cast_spell();
-								}
-								break;
+                            case 'C':
+                                if (gbl.player_ptr.health_status == Status.okey)
+                                {
+                                    gbl.byte_1D5BE = 1;
+                                    ovr016.cast_spell();
+                                }
+                                break;
 
-							case 'V':
-								gbl.byte_1D5BE = 1;
+                            case 'V':
+                                gbl.byte_1D5BE = 1;
                                 bool dummyBool;
-								ovr020.viewPlayer( out dummyBool );
-								break;
+                                ovr020.viewPlayer(out dummyBool);
+                                break;
 
-							case 'E':
-								stop_loop = true;
-								gbl.byte_1D5BE = 1;
-								break;
+                            case 'E':
+                                stop_loop = true;
+                                gbl.byte_1D5BE = 1;
+                                break;
 
-							case 'S':
-								gbl.area2_ptr.search_flags ^= 1;
-								break;
+                            case 'S':
+                                gbl.area2_ptr.search_flags ^= 1;
+                                break;
 
-							case 'L':
-								gbl.area2_ptr.search_flags |= 2;
-								ovr021.sub_583FA( 2, 1 );
-								gbl.ecl_offset = gbl.word_1B2D5;
-								stop_loop = true;
-								break;
-						}
-					}
-					else
-					{
-						switch( input_key )
-						{
-							case 'H': // forward
-								sub_43765();
-								stop_loop = true;
-								break;
+                            case 'L':
+                                gbl.area2_ptr.search_flags |= 2;
+                                ovr021.step_game_time(2, 1);
+                                gbl.ecl_offset = gbl.word_1B2D5;
+                                stop_loop = true;
+                                break;
+                        }
+                    }
+                    else
+                    {
+                        switch (input_key)
+                        {
+                            case 'H': // forward
+                                sub_43765();
+                                stop_loop = true;
+                                break;
 
-							case 'P': // turn 180
-								gbl.mapDirection = (byte)((gbl.mapDirection + 4) % 8);
+                            case 'P': // turn 180
+                                gbl.mapDirection = (byte)((gbl.mapDirection + 4) % 8);
 
-								gbl.byte_1D53C = ovr031.getMap_wall_type( gbl.mapDirection, gbl.mapPosY, gbl.mapPosX );
-								ovr031.Draw3dWorld( gbl.mapDirection, gbl.mapPosY, gbl.mapPosX );
-								break;
+                                gbl.mapWallType = ovr031.getMap_wall_type(gbl.mapDirection, gbl.mapPosY, gbl.mapPosX);
+                                ovr031.Draw3dWorld(gbl.mapDirection, gbl.mapPosY, gbl.mapPosX);
+                                break;
 
-							case 'K': // turn left
-								gbl.mapDirection = (byte)(( gbl.mapDirection + 6 ) % 8);
+                            case 'K': // turn left
+                                gbl.mapDirection = (byte)((gbl.mapDirection + 6) % 8);
 
-								seg044.sound_sub_120E0( gbl.sound_a_188D2 );
-								gbl.byte_1D53C = ovr031.getMap_wall_type( gbl.mapDirection, gbl.mapPosY, gbl.mapPosX );
-								ovr031.Draw3dWorld( gbl.mapDirection, gbl.mapPosY, gbl.mapPosX );
-								break;
+                                seg044.sound_sub_120E0(gbl.sound_a_188D2);
+                                gbl.mapWallType = ovr031.getMap_wall_type(gbl.mapDirection, gbl.mapPosY, gbl.mapPosX);
+                                ovr031.Draw3dWorld(gbl.mapDirection, gbl.mapPosY, gbl.mapPosX);
+                                break;
 
-							case 'M': // turn right
-								gbl.mapDirection = (byte)(( gbl.mapDirection + 2 ) % 8);
+                            case 'M': // turn right
+                                gbl.mapDirection = (byte)((gbl.mapDirection + 2) % 8);
 
-								seg044.sound_sub_120E0( gbl.sound_a_188D2 );
+                                seg044.sound_sub_120E0(gbl.sound_a_188D2);
 
-								gbl.byte_1D53C = ovr031.getMap_wall_type( gbl.mapDirection, gbl.mapPosY, gbl.mapPosX );
-								ovr031.Draw3dWorld( gbl.mapDirection, gbl.mapPosY, gbl.mapPosX );
-								break;
+                                gbl.mapWallType = ovr031.getMap_wall_type(gbl.mapDirection, gbl.mapPosY, gbl.mapPosX);
+                                ovr031.Draw3dWorld(gbl.mapDirection, gbl.mapPosY, gbl.mapPosX);
+                                break;
 
-							default:
-								ovr020.scroll_team_list( input_key );
-								ovr025.Player_Summary( gbl.player_ptr );
-								break;
-						}
-					}
+                            default:
+                                ovr020.scroll_team_list(input_key);
+                                ovr025.Player_Summary(gbl.player_ptr);
+                                break;
+                        }
+                    }
 
-					ovr025.display_map_position_time();
+                    ovr025.display_map_position_time();
 
-				}while( stop_loop == false );
-			}
+                } while (stop_loop == false);
+            }
 
-			if( gbl.byte_1EE90 == 0 )
-			{
-				seg037.draw8x8_clear_area( 0x16, 0x26, 0x11, 1 );
+            if (gbl.byte_1EE90 == 0)
+            {
+                seg037.draw8x8_clear_area(0x16, 0x26, 0x11, 1);
 
-				gbl.byte_1EE90 = 1;
-			}
+                gbl.byte_1EE90 = 1;
+            }
 
-			return input_key;
+            return input_key;
         }
 
 
-        internal static void locked_door( )
+        internal static void locked_door()
         {
             char input;
-            string var_2B;
             bool var_2;
 
             bool var_1 = false;
 
-            if( gbl.game_state == 4 )
+            if (gbl.game_state == 4)
             {
-                if( gbl.area2_ptr.field_592 < 0xff )
+                if (gbl.area2_ptr.field_592 < 0xff)
                 {
                     gbl.can_draw_bigpic = true;
 
-                    byte al = ovr031.WallDoorFlagsGet( gbl.mapDirection, gbl.mapPosY, gbl.mapPosX );
+                    byte al = ovr031.WallDoorFlagsGet(gbl.mapDirection, gbl.mapPosY, gbl.mapPosX);
 
-                    if( al == 1 )
+                    if (al == 1)
                     {
                         var_1 = true;
                     }
-                    else if( al == 2 )
+                    else if (al == 2)
                     {
-                        var_2B = string.Empty;
+                        string prompt = string.Empty;
 
-                        if( gbl.can_bash_door == true )
+                        if (gbl.can_bash_door == true)
                         {
-                            var_2B = "Bash";
+                            prompt = "Bash";
                         }
 
-                        if( gbl.can_pick_door == true &&
-                            any_player_has_skill( Skills.thief ) == true )
+                        if (gbl.can_pick_door == true &&
+                            any_player_has_skill(Skills.thief) == true)
                         {
-                            var_2B += " Pick";
+                            prompt += " Pick";
                         }
 
-                        if( gbl.can_knock_door == true &&
+                        if (gbl.can_knock_door == true &&
                             find_player_with_spell(SpellId.knock) != null)
                         {
-                            var_2B += " Knock";
+                            prompt += " Knock";
                         }
 
-                        var_2B += " Exit";
+                        prompt += " Exit";
 
-                        if( var_2B == " Exit" )
+                        if (prompt == " Exit")
                         {
-                            sub_4303C( gbl.mapDirection, gbl.mapPosY, gbl.mapPosX );
+                            sub_4303C(gbl.mapDirection, gbl.mapPosY, gbl.mapPosX);
                         }
                         else
                         {
-                            input = ovr027.displayInput( out var_2, false, 0, 15, 10, 13, var_2B, "Locked. " );
+                            input = ovr027.displayInput(out var_2, false, 0, 15, 10, 13, prompt, "Locked. ");
 
-                            switch( input )
+                            switch (input)
                             {
                                 case 'B':
                                     var_1 = bash_door();
@@ -737,38 +736,38 @@ namespace engine
                             }
                         }
                     }
-                    else if( al == 3 )
+                    else if (al == 3)
                     {
-                        var_2B = string.Empty;
+                        string prompt = string.Empty;
 
-                        if( gbl.can_bash_door == true )
+                        if (gbl.can_bash_door == true)
                         {
-                            var_2B = "Bash";
+                            prompt = "Bash";
                         }
 
-                        if( gbl.can_pick_door == true &&
+                        if (gbl.can_pick_door == true &&
                             any_player_has_skill(Skills.thief) == true)
                         {
-                            var_2B += " Pick";
+                            prompt += " Pick";
                         }
 
                         if (gbl.can_knock_door == true &&
                             find_player_with_spell(SpellId.knock) != null)
                         {
-                            var_2B += " Knock";
+                            prompt += " Knock";
                         }
 
-                        var_2B += " Exit";
+                        prompt += " Exit";
 
-                        if( var_2B == " Exit" )
+                        if (prompt == " Exit")
                         {
-                            sub_4303C( gbl.mapDirection, gbl.mapPosY, gbl.mapPosX );
+                            sub_4303C(gbl.mapDirection, gbl.mapPosY, gbl.mapPosX);
                         }
                         else
                         {
-                            input = ovr027.displayInput( out var_2, false, 0, 15, 10, 13, var_2B, "Locked. " );
+                            input = ovr027.displayInput(out var_2, false, 0, 15, 10, 13, prompt, "Locked. ");
 
-                            switch ( input )
+                            switch (input)
                             {
                                 case 'B':
                                     var_1 = bash_door();
@@ -785,7 +784,7 @@ namespace engine
                         }
                     }
 
-                    if( var_1 == true )
+                    if (var_1 == true)
                     {
                         MovePartyForward();
                     }
@@ -798,11 +797,11 @@ namespace engine
                 }
             }
 
-            ovr030.DaxArrayFreeDaxBlocks( gbl.byte_1D556 );
+            ovr030.DaxArrayFreeDaxBlocks(gbl.byte_1D556);
 
-			seg040.free_dax_block( ref gbl.headX_dax );
-			seg040.free_dax_block( ref gbl.bodyX_dax );
-			gbl.current_head_id = 0xFF;
+            seg040.free_dax_block(ref gbl.headX_dax);
+            seg040.free_dax_block(ref gbl.bodyX_dax);
+            gbl.current_head_id = 0xFF;
             gbl.current_body_id = 0xFF;
         }
     }

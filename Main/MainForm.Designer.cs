@@ -38,11 +38,12 @@ namespace Main
             this.cheatsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.playersAlwayMakeSavingThrowToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.freeTrainingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.alwayAllowAreaMapToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.skipCopyProtectionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.alwayAllowAreaMapToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.allowGodsInterveneToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.displayItemsFullNameToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.viewItemsStatsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.skipTitleScreenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.displayArea)).BeginInit();
             this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -102,17 +103,19 @@ namespace Main
             this.cheatsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.playersAlwayMakeSavingThrowToolStripMenuItem,
             this.freeTrainingToolStripMenuItem,
-            this.alwayAllowAreaMapToolStripMenuItem,
             this.skipCopyProtectionToolStripMenuItem,
+            this.alwayAllowAreaMapToolStripMenuItem,
             this.allowGodsInterveneToolStripMenuItem,
             this.displayItemsFullNameToolStripMenuItem,
-            this.viewItemsStatsToolStripMenuItem});
+            this.viewItemsStatsToolStripMenuItem,
+            this.skipTitleScreenToolStripMenuItem});
             this.cheatsToolStripMenuItem.Name = "cheatsToolStripMenuItem";
             this.cheatsToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
             this.cheatsToolStripMenuItem.Text = "Cheats";
             // 
             // playersAlwayMakeSavingThrowToolStripMenuItem
             // 
+            this.playersAlwayMakeSavingThrowToolStripMenuItem.Checked = global::Main.Properties.Settings.Default.PlayerAlwaysSaves;
             this.playersAlwayMakeSavingThrowToolStripMenuItem.CheckOnClick = true;
             this.playersAlwayMakeSavingThrowToolStripMenuItem.Name = "playersAlwayMakeSavingThrowToolStripMenuItem";
             this.playersAlwayMakeSavingThrowToolStripMenuItem.Size = new System.Drawing.Size(248, 22);
@@ -121,32 +124,34 @@ namespace Main
             // 
             // freeTrainingToolStripMenuItem
             // 
+            this.freeTrainingToolStripMenuItem.Checked = global::Main.Properties.Settings.Default.FreeTraining;
             this.freeTrainingToolStripMenuItem.CheckOnClick = true;
             this.freeTrainingToolStripMenuItem.Name = "freeTrainingToolStripMenuItem";
             this.freeTrainingToolStripMenuItem.Size = new System.Drawing.Size(248, 22);
             this.freeTrainingToolStripMenuItem.Text = "Free Training";
             this.freeTrainingToolStripMenuItem.Click += new System.EventHandler(this.freeTrainingToolStripMenuItem_Click);
             // 
+            // skipCopyProtectionToolStripMenuItem
+            // 
+            this.skipCopyProtectionToolStripMenuItem.Checked = global::Main.Properties.Settings.Default.SkipCopyProtection;
+            this.skipCopyProtectionToolStripMenuItem.CheckOnClick = true;
+            this.skipCopyProtectionToolStripMenuItem.Name = "skipCopyProtectionToolStripMenuItem";
+            this.skipCopyProtectionToolStripMenuItem.Size = new System.Drawing.Size(248, 22);
+            this.skipCopyProtectionToolStripMenuItem.Text = "Skip Copy Protection";
+            this.skipCopyProtectionToolStripMenuItem.Click += new System.EventHandler(this.skipCopyProtectionToolStripMenuItem_Click);
+            // 
             // alwayAllowAreaMapToolStripMenuItem
             // 
+            this.alwayAllowAreaMapToolStripMenuItem.Checked = global::Main.Properties.Settings.Default.AlwayShowAreaMap;
             this.alwayAllowAreaMapToolStripMenuItem.CheckOnClick = true;
             this.alwayAllowAreaMapToolStripMenuItem.Name = "alwayAllowAreaMapToolStripMenuItem";
             this.alwayAllowAreaMapToolStripMenuItem.Size = new System.Drawing.Size(248, 22);
             this.alwayAllowAreaMapToolStripMenuItem.Text = "Alway Allow Area Map";
             this.alwayAllowAreaMapToolStripMenuItem.Click += new System.EventHandler(this.alwayAllowAreaMapToolStripMenuItem_Click);
             // 
-            // skipCopyProtectionToolStripMenuItem
-            // 
-            this.skipCopyProtectionToolStripMenuItem.Checked = true;
-            this.skipCopyProtectionToolStripMenuItem.CheckOnClick = true;
-            this.skipCopyProtectionToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.skipCopyProtectionToolStripMenuItem.Name = "skipCopyProtectionToolStripMenuItem";
-            this.skipCopyProtectionToolStripMenuItem.Size = new System.Drawing.Size(248, 22);
-            this.skipCopyProtectionToolStripMenuItem.Text = "Skip Copy Protection";
-            this.skipCopyProtectionToolStripMenuItem.Click += new System.EventHandler(this.skipCopyProtectionToolStripMenuItem_Click);
-            // 
             // allowGodsInterveneToolStripMenuItem
             // 
+            this.allowGodsInterveneToolStripMenuItem.Checked = global::Main.Properties.Settings.Default.AllowGodsIntervene;
             this.allowGodsInterveneToolStripMenuItem.CheckOnClick = true;
             this.allowGodsInterveneToolStripMenuItem.Name = "allowGodsInterveneToolStripMenuItem";
             this.allowGodsInterveneToolStripMenuItem.Size = new System.Drawing.Size(248, 22);
@@ -155,6 +160,7 @@ namespace Main
             // 
             // displayItemsFullNameToolStripMenuItem
             // 
+            this.displayItemsFullNameToolStripMenuItem.Checked = global::Main.Properties.Settings.Default.DisplayFullItemNames;
             this.displayItemsFullNameToolStripMenuItem.CheckOnClick = true;
             this.displayItemsFullNameToolStripMenuItem.Name = "displayItemsFullNameToolStripMenuItem";
             this.displayItemsFullNameToolStripMenuItem.Size = new System.Drawing.Size(248, 22);
@@ -163,11 +169,21 @@ namespace Main
             // 
             // viewItemsStatsToolStripMenuItem
             // 
+            this.viewItemsStatsToolStripMenuItem.Checked = global::Main.Properties.Settings.Default.ViewItemsStats;
             this.viewItemsStatsToolStripMenuItem.CheckOnClick = true;
             this.viewItemsStatsToolStripMenuItem.Name = "viewItemsStatsToolStripMenuItem";
             this.viewItemsStatsToolStripMenuItem.Size = new System.Drawing.Size(248, 22);
             this.viewItemsStatsToolStripMenuItem.Text = "View Items Stats";
             this.viewItemsStatsToolStripMenuItem.Click += new System.EventHandler(this.viewItemsStatsToolStripMenuItem_Click);
+            // 
+            // skipTitleScreenToolStripMenuItem
+            // 
+            this.skipTitleScreenToolStripMenuItem.Checked = global::Main.Properties.Settings.Default.SkipTitleScreen;
+            this.skipTitleScreenToolStripMenuItem.CheckOnClick = true;
+            this.skipTitleScreenToolStripMenuItem.Name = "skipTitleScreenToolStripMenuItem";
+            this.skipTitleScreenToolStripMenuItem.Size = new System.Drawing.Size(248, 22);
+            this.skipTitleScreenToolStripMenuItem.Text = "Skip Title Screen";
+            this.skipTitleScreenToolStripMenuItem.Click += new System.EventHandler(this.skipTitleScreenToolStripMenuItem_Click);
             // 
             // MainForm
             // 
@@ -205,6 +221,7 @@ namespace Main
         private System.Windows.Forms.ToolStripMenuItem allowGodsInterveneToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem displayItemsFullNameToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem viewItemsStatsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem skipTitleScreenToolStripMenuItem;
     }
 }
 

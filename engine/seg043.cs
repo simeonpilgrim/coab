@@ -36,8 +36,6 @@ namespace engine
             }
         }
 
-        static Set unk_11F12 = new Set(0x0001, new byte[] { 03 });
-
         internal static byte GetInputKey()
         {
             byte key;
@@ -60,19 +58,16 @@ namespace engine
 
             if (key == 0x13)
             {
-                if (gbl.soundType != SoundType.None)
+                if (gbl.soundType == SoundType.PC)
                 {
                     gbl.soundTypeBackup = gbl.soundType;
                     seg044.sound_sub_120E0(gbl.sound_0_188BE);
                     gbl.soundType = SoundType.None;
                 }
-                else
+                else if (gbl.soundTypeBackup == SoundType.PC)
                 {
-                    if (unk_11F12.MemberOf((byte)gbl.soundTypeBackup))
-                    {
-                        gbl.soundType = gbl.soundTypeBackup;
-                        seg044.sound_sub_120E0(gbl.sound_1_188C0);
-                    }
+                    gbl.soundType = gbl.soundTypeBackup;
+                    seg044.sound_sub_120E0(gbl.sound_1_188C0);
                 }
             }
 
