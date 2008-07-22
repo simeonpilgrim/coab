@@ -1,6 +1,8 @@
 = The Release Notes =
 
 = Unreleased =
+
+= 1.0.13 =
   * Fixed issues stopping the end-game sequence from working, so the game is now winnable
   * Fixed the crash the happened when sword of Frost, or Flame readied
   * Fixed the way text wrapping happens, so the end game text is displayed the same as DOS
