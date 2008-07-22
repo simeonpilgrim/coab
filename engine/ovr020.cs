@@ -1073,8 +1073,8 @@ namespace engine
 
                 if (ovr023.item_is_scroll(item) == true)
                 {
-                    if (ovr026.getExtraFirstSkill(gbl.player_ptr) == (sbyte)Skills.magic_user ||
-                        ovr026.getFirstSkill(gbl.player_ptr) == (sbyte)Skills.magic_user ||
+                    if (ovr026.getExtraFirstSkill(gbl.player_ptr) == (int)Skills.magic_user ||
+                        ovr026.getFirstSkill(gbl.player_ptr) == (int)Skills.magic_user ||
                         ovr026.getExtraFirstSkill(gbl.player_ptr) == 0 ||
                         ovr026.getFirstSkill(gbl.player_ptr) == 0 ||
                         gbl.player_ptr.magic_user_lvl > 0 ||
@@ -1694,9 +1694,9 @@ namespace engine
             else
             {
                 bool is_diseased = false;
-                for (gbl.byte_1DA71 = 1; gbl.byte_1DA71 < 7; gbl.byte_1DA71++)
+                for (gbl.global_index = 1; gbl.global_index < 7; gbl.global_index++)
                 {
-                    if (ovr025.find_affect(unk_16B39[gbl.byte_1DA71], target) == true)
+                    if (ovr025.find_affect(unk_16B39[gbl.global_index], target) == true)
                     {
                         is_diseased = true;
                     }
@@ -1716,9 +1716,9 @@ namespace engine
                 if (input == 'Y')
                 {
                     gbl.byte_1D2C6 = true;
-                    for (gbl.byte_1DA71 = 1; gbl.byte_1DA71 < 7; gbl.byte_1DA71++)
+                    for (gbl.global_index = 1; gbl.global_index < 7; gbl.global_index++)
                     {
-                        ovr024.remove_affect(null, unk_16B39[gbl.byte_1DA71], target);
+                        ovr024.remove_affect(null, unk_16B39[gbl.global_index], target);
                     }
 
                     gbl.byte_1D2C6 = false;

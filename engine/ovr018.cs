@@ -97,9 +97,7 @@ namespace engine
         internal static void startGameMenu()
         {
             string var_111;
-            byte var_11;
             byte gameState;
-            bool var_F;
             byte var_E;
             bool var_3;
             char inputkey;
@@ -107,7 +105,7 @@ namespace engine
 
             gameState = gbl.game_state;
             gbl.game_state = 0;
-            var_F = true;
+            bool var_F = true;
 
             while (true)
             {
@@ -120,21 +118,20 @@ namespace engine
                         menuFlags[allow_drop] = true;
                         menuFlags[allow_modify] = true;
 
-                        if (gbl.area2_ptr.field_550 > 0 ||
-                            Cheats.free_training == true)
+                        if (gbl.area2_ptr.field_550 > 0 || Cheats.free_training == true)
                         {
                             menuFlags[allow_training] = true;
                         }
 
-                        if ((gbl.area2_ptr.field_550 <= 0 && Cheats.free_training == false) ||
-                            ovr026.is_human(gbl.player_ptr) == false ||
-                            ovr026.getExtraFirstSkill(gbl.player_ptr) != 0x11)
+                        if ((gbl.area2_ptr.field_550 > 0 || Cheats.free_training == true) &&
+                            ovr026.is_human(gbl.player_ptr) &&
+                            ovr026.getExtraFirstSkill(gbl.player_ptr) == 0x11)
                         {
-                            menuFlags[allow_multiclass] = false;
+                            menuFlags[allow_multiclass] = true;
                         }
                         else
                         {
-                            menuFlags[allow_multiclass] = true;
+                            menuFlags[allow_multiclass] = false;
                         }
 
                         menuFlags[allow_view] = true;
@@ -180,15 +177,7 @@ namespace engine
                 {
                     if (unk_4C13D.MemberOf(inputkey) == true)
                     {
-                        if (ovr026.is_human(gbl.player_ptr) == false ||
-                            ovr026.getExtraFirstSkill(gbl.player_ptr) != 0x11)
-                        {
-                            var_11 = 0;
-                        }
-                        else
-                        {
-                            var_11 = 1;
-                        }
+                        bool var_11 = (ovr026.is_human(gbl.player_ptr) && ovr026.getExtraFirstSkill(gbl.player_ptr) == 0x11);
 
                         ovr020.scroll_team_list(inputkey);
                         ovr025.Player_Summary(gbl.player_ptr);
@@ -196,22 +185,14 @@ namespace engine
                         if (ovr026.is_human(gbl.player_ptr) == false ||
                             ovr026.getExtraFirstSkill(gbl.player_ptr) != 0x11)
                         {
-                            var_11 ^= 0;
+                            var_11 ^= false;
                         }
                         else
                         {
-                            var_11 ^= 0;
+                            var_11 ^= true;
                         }
 
-                        if (var_11 == 0 ||
-                            gbl.area2_ptr.field_550 <= 0)
-                        {
-                            var_F = false;
-                        }
-                        else
-                        {
-                            var_F = true;
-                        }
+                        var_F = var_11 && gbl.area2_ptr.field_550 > 0;
                     }
                 }
                 else
@@ -387,33 +368,43 @@ namespace engine
             0x28, 0x28, 0x28, 0x28, 0x2A, 0x2A, 0x2A, 0x2C, 0x2C, 0x2C, 0x2E, 0x2E, 0x2E };
 
 
-        class Struct_1A434
+        class AgeBrackets
         {
-            internal short field_0; // unk_1A434
-            internal short field_1; // unk_1A436
-            internal short field_2; // unk_1A438
-            internal short field_3; // unk_1A43A
-            internal short field_4; // unk_1A43C
+            internal int age_0; // unk_1A434
+            internal int age_1; // unk_1A436
+            internal int age_2; // unk_1A438
+            internal int age_3; // unk_1A43A
+            internal int age_4; // unk_1A43C
 
-            internal Struct_1A434(short f0, short f1, short f2, short f3, short f4)
+            internal AgeBrackets(int age0, int age1, int age2, int age3, int age4)
             {
-                field_0 = f0;
-                field_1 = f1;
-                field_2 = f2;
-                field_3 = f3;
-                field_4 = f4;
+                age_0 = age0;
+                age_1 = age1;
+                age_2 = age2;
+                age_3 = age3;
+                age_4 = age4;
             }
         }
 
-        static Struct_1A434[] unk_1A434 = { 
-            new Struct_1A434(0x401, 0x18, 0x402, 0x12, 0x401), 
-            new Struct_1A434(0x32, 0x96, 0xFA, 0x15E, 0x1C2), 
-            new Struct_1A434(0xAF, 0x226, 0x36B, 0x4B0, 0x640),
-            new Struct_1A434(0x5A, 0x12C, 0x1C2, 0x258, 0x2EE),
-            new Struct_1A434(0x28, 0x64, 0xAF, 0x0FA, 0x145),
-            new Struct_1A434(0x21, 0x44, 0x65, 0x90, 0x0C7), 
-            new Struct_1A434(0x0F, 0x1E, 0x2D, 0x3C, 0x50),
-            new Struct_1A434(0x14, 0x28, 0x3C, 0x5A, 0x78) };
+        class RaceAgeBrackets
+        {
+            static AgeBrackets[] data = { // unk_1A434
+            null, // monster 
+            new AgeBrackets(0x32, 0x96, 0xFA, 0x15E, 0x1C2), // dwarf
+            new AgeBrackets(0xAF, 0x226, 0x36B, 0x4B0, 0x640), //elf
+            new AgeBrackets(0x5A, 0x12C, 0x1C2, 0x258, 0x2EE), // gnome
+            new AgeBrackets(0x28, 0x64, 0xAF, 0x0FA, 0x145), // half elf
+            new AgeBrackets(0x21, 0x44, 0x65, 0x90, 0x0C7), // halfling  
+            new AgeBrackets(0x0F, 0x1E, 0x2D, 0x3C, 0x50), // half orc
+            new AgeBrackets(0x14, 0x28, 0x3C, 0x5A, 0x78) }; // human
+
+            internal AgeBrackets this[Race race]
+            {
+                get { return data[(int)race]; }
+            }
+        }
+
+        static RaceAgeBrackets race_age_brackets = new RaceAgeBrackets();
 
 
         internal class stats_ranges
@@ -452,9 +443,8 @@ namespace engine
             }
         }
 
-        static Set asc_4C707 = new Set(0x0002, new byte[]{ 0x00, 0x1F } );
 
-        internal static stats_ranges[] stru_1A298 = new stats_ranges[] { 
+        internal static stats_ranges[] racial_stats_limits = new stats_ranges[] { // stru_1A298
             new stats_ranges(0, 5, 0xa, 0, 5, 5, 0xa, 0xF, 5, 0xA, 0xA, 0xF, 0x14, 0xA, 0xC, 0xC), 
             new stats_ranges(8, 8, 0x12, 0x11, 0x63, 0, 3, 0x12, 3, 0x12, 3, 0x11, 0xC, 0x13, 3, 0x10), 
             new stats_ranges(3, 3, 0x12, 0x10, 0x4B, 0, 8, 0x12, 3, 0x12, 7, 0x13, 6, 0x12, 8, 0x12), 
@@ -473,7 +463,6 @@ namespace engine
             byte var_21;
             byte var_20;
             short var_1E;
-            byte var_1C;
             byte var_1B;
             byte loop2_var;
             byte loop1_var;
@@ -624,17 +613,17 @@ namespace engine
             player.sex = (byte)(var_12 - 1);
             ovr027.free_stringList(ref var_C);
 
-            var_1C = gbl.unk_1A30A[(int)player.race, 0];
+            int classes = gbl.race_classes[(int)player.race, 0];
 
-            var_C = ovr027.alloc_stringList(var_1C + 1);
+            var_C = ovr027.alloc_stringList(classes + 1);
 
             var_C.field_29 = 1;
             var_C.s = "Pick Class";
 
-            for (int i = 1; i <= var_1C; i++)
+            for (int index = 1; index <= classes; index++)
             {
-                var_10 = ovr027.getStringListEntry(var_C, i);
-                var_10.s = "  " + ovr020.classString[gbl.unk_1A30A[(int)player.race, i]];
+                var_10 = ovr027.getStringListEntry(var_C, index);
+                var_10.s = "  " + ovr020.classString[gbl.race_classes[(int)player.race, index]];
             }
 
             var_10 = var_C;
@@ -657,7 +646,7 @@ namespace engine
 
             var_53 = player;
             var_53.exp = 25000;
-            var_53._class = (ClassId)gbl.unk_1A30A[(int)var_53.race, var_12];
+            var_53._class = (ClassId)gbl.race_classes[(int)var_53.race, var_12];
             var_53.field_E5 = 1;
 
             if (var_53._class >= ClassId.cleric && var_53._class <= ClassId.fighter)
@@ -763,17 +752,17 @@ namespace engine
             ovr026.sub_6A7FB(player);
             ovr027.free_stringList(ref var_C);
 
-            var_1C = gbl.unk_1A4EA[(int)player._class, 0];
+            int alignments = gbl.class_alignments[(int)player._class, 0];
 
-            var_C = ovr027.alloc_stringList(var_1C + 1);
+            var_C = ovr027.alloc_stringList(alignments + 1);
 
             var_C.field_29 = 1;
             var_C.s = "Pick Alignment";
 
-            for (int i = 1; i <= var_1C; i++)
+            for (int i = 1; i <= alignments; i++)
             {
                 var_10 = ovr027.getStringListEntry(var_C, i);
-                var_10.s = "  " + ovr020.alignmentString[gbl.unk_1A4EA[(int)player._class, i]];
+                var_10.s = "  " + ovr020.alignmentString[gbl.class_alignments[(int)player._class, i]];
             }
 
             var_10 = var_C;
@@ -796,7 +785,7 @@ namespace engine
                 }
             } while (reroll_stats != 'S');
 
-            player.alignment = gbl.unk_1A4EA[(int)player._class, var_12];
+            player.alignment = gbl.class_alignments[(int)player._class, var_12];
 
             ovr027.free_stringList(ref var_C);
 
@@ -939,42 +928,42 @@ namespace engine
                     {
                         case Stat.STR:
                             if (var_53.stats[var_1B].max > 0 &&
-                                unk_1A434[(int)var_53.race].field_0 < var_53.age)
+                                race_age_brackets[var_53.race].age_0 < var_53.age)
                             {
                                 var_53.stats[var_1B].max += 1;
                             }
 
                             if (var_53.stats[var_1B].max > 0 &&
-                                unk_1A434[(int)var_53.race].field_1 < var_53.age)
+                                race_age_brackets[var_53.race].age_1 < var_53.age)
                             {
                                 var_53.stats[var_1B].max -= 1;
                             }
 
                             if (var_53.stats[var_1B].max > 0 &&
-                                unk_1A434[(int)var_53.race].field_2 < var_53.age)
+                                race_age_brackets[var_53.race].age_2 < var_53.age)
                             {
                                 var_53.stats[var_1B].max -= 2;
                             }
 
                             if (var_53.stats[var_1B].max > 0 &&
-                                unk_1A434[(int)var_53.race].field_3 < var_53.age)
+                                race_age_brackets[var_53.race].age_3 < var_53.age)
                             {
                                 var_53.stats[var_1B].max -= 1;
                             }
 
-                            if (var_53.stats[var_1B].max < stru_1A298[(int)var_53.race].str_min[var_53.sex])
+                            if (var_53.stats[var_1B].max < racial_stats_limits[(int)var_53.race].str_min[var_53.sex])
                             {
-                                var_53.stats[var_1B].max = stru_1A298[(int)var_53.race].str_min[var_53.sex];
+                                var_53.stats[var_1B].max = racial_stats_limits[(int)var_53.race].str_min[var_53.sex];
                             }
 
-                            if (var_53.stats[var_1B].max > stru_1A298[(int)var_53.race].str_max[var_53.sex])
+                            if (var_53.stats[var_1B].max > racial_stats_limits[(int)var_53.race].str_max[var_53.sex])
                             {
-                                var_53.stats[var_1B].max = stru_1A298[(int)var_53.race].str_max[var_53.sex];
+                                var_53.stats[var_1B].max = racial_stats_limits[(int)var_53.race].str_max[var_53.sex];
                             }
 
-                            if (var_53.stats[var_1B].max < gbl.unk_1A484[(int)var_53._class][var_1B])
+                            if (var_53.stats[var_1B].max < gbl.class_stats_min[(int)var_53._class][var_1B])
                             {
-                                var_53.stats[var_1B].max = gbl.unk_1A484[(int)var_53._class][var_1B];
+                                var_53.stats[var_1B].max = gbl.class_stats_min[(int)var_53._class][var_1B];
                             }
 
                             if (var_53.strength == 18)
@@ -985,9 +974,9 @@ namespace engine
                                 {
                                     var_53.tmp_str_00 = (byte)(seg051.Random(100) + 1);
 
-                                    if (var_53.tmp_str_00 > stru_1A298[(int)var_53.race].str_100_max[var_53.sex])
+                                    if (var_53.tmp_str_00 > racial_stats_limits[(int)var_53.race].str_100_max[var_53.sex])
                                     {
-                                        var_53.tmp_str_00 = stru_1A298[(int)var_53.race].str_100_max[var_53.sex];
+                                        var_53.tmp_str_00 = racial_stats_limits[(int)var_53.race].str_100_max[var_53.sex];
                                     }
                                 }
                             }
@@ -995,149 +984,150 @@ namespace engine
 
                         case Stat.INT:
 
-                            if (unk_1A434[(int)var_53.race].field_1 < var_53.age)
+                            if (race_age_brackets[var_53.race].age_1 < var_53.age)
                             {
                                 var_53.stats[var_1B].max += 1;
                             }
 
-                            if (unk_1A434[(int)var_53.race].field_3 < var_53.age)
+                            if (race_age_brackets[var_53.race].age_3 < var_53.age)
                             {
                                 var_53.stats[var_1B].max += 1;
                             }
 
-                            if (var_53.stats[var_1B].max < stru_1A298[(int)var_53.race].int_min)
+                            if (var_53.stats[var_1B].max < racial_stats_limits[(int)var_53.race].int_min)
                             {
-                                var_53.stats[var_1B].max = stru_1A298[(int)var_53.race].int_min;
+                                var_53.stats[var_1B].max = racial_stats_limits[(int)var_53.race].int_min;
                             }
 
-                            if (var_53.stats[var_1B].max > stru_1A298[(int)var_53.race].int_max)
+                            if (var_53.stats[var_1B].max > racial_stats_limits[(int)var_53.race].int_max)
                             {
-                                var_53.stats[var_1B].max = stru_1A298[(int)var_53.race].int_max;
+                                var_53.stats[var_1B].max = racial_stats_limits[(int)var_53.race].int_max;
                             }
 
-                            if (var_53.stats[var_1B].max < gbl.unk_1A484[(int)var_53._class][var_1B])
+                            if (var_53.stats[var_1B].max < gbl.class_stats_min[(int)var_53._class][var_1B])
                             {
-                                var_53.stats[var_1B].max = gbl.unk_1A484[(int)var_53._class][var_1B];
+                                var_53.stats[var_1B].max = gbl.class_stats_min[(int)var_53._class][var_1B];
                             }
                             break;
 
                         case Stat.WIS:
-                            if (unk_1A434[(int)var_53.race].field_0 >= var_53.age)
+                            if (race_age_brackets[var_53.race].age_0 >= var_53.age)
                             {
                                 var_53.stats[var_1B].max -= 1;
                             }
 
-                            if (unk_1A434[(int)var_53.race].field_1 < var_53.age)
+                            if (race_age_brackets[var_53.race].age_1 < var_53.age)
                             {
                                 var_53.stats[var_1B].max += 1;
                             }
 
-                            if (unk_1A434[(int)var_53.race].field_2 < var_53.age)
+                            if (race_age_brackets[var_53.race].age_2 < var_53.age)
                             {
                                 var_53.stats[var_1B].max += 1;
                             }
 
-                            if (unk_1A434[(int)var_53.race].field_3 < var_53.age)
+                            if (race_age_brackets[var_53.race].age_3 < var_53.age)
                             {
                                 var_53.stats[var_1B].max += 1;
                             }
 
-                            if (var_53.stats[var_1B].max < stru_1A298[(int)var_53.race].wis_min)
+                            if (var_53.stats[var_1B].max < racial_stats_limits[(int)var_53.race].wis_min)
                             {
-                                var_53.stats[var_1B].max = stru_1A298[(int)var_53.race].wis_min;
+                                var_53.stats[var_1B].max = racial_stats_limits[(int)var_53.race].wis_min;
                             }
 
-                            if (var_53.stats[var_1B].max > stru_1A298[(int)var_53.race].wis_max)
+                            if (var_53.stats[var_1B].max > racial_stats_limits[(int)var_53.race].wis_max)
                             {
-                                var_53.stats[var_1B].max = stru_1A298[(int)var_53.race].wis_max;
+                                var_53.stats[var_1B].max = racial_stats_limits[(int)var_53.race].wis_max;
                             }
 
-                            if (var_53.stats[var_1B].max < gbl.unk_1A484[(int)var_53._class][var_1B])
+                            if (var_53.stats[var_1B].max < gbl.class_stats_min[(int)var_53._class][var_1B])
                             {
-                                var_53.stats[var_1B].max = gbl.unk_1A484[(int)var_53._class][var_1B];
+                                var_53.stats[var_1B].max = gbl.class_stats_min[(int)var_53._class][var_1B];
                             }
 
                             if (var_53.stats[var_1B].max < 13 &&
-                                asc_4C707.MemberOf((int)var_53._class) == true)
+                                var_53._class >= ClassId.mc_c_f && var_53._class <= ClassId.mc_c_t )
                             {
+                                // Multi-Class Cleric
                                 var_53.stats[var_1B].max = 13;
                             }
                             break;
 
                         case Stat.DEX:
 
-                            if (unk_1A434[(int)var_53.race].field_2 < var_53.age)
+                            if (race_age_brackets[var_53.race].age_2 < var_53.age)
                             {
                                 var_53.stats[var_1B].max -= 2;
                             }
 
-                            if (unk_1A434[(int)var_53.race].field_3 < var_53.age)
+                            if (race_age_brackets[var_53.race].age_3 < var_53.age)
                             {
                                 var_53.stats[var_1B].max -= 2;
                             }
 
-                            if (var_53.stats[var_1B].max < stru_1A298[(int)var_53.race].dex_min)
+                            if (var_53.stats[var_1B].max < racial_stats_limits[(int)var_53.race].dex_min)
                             {
-                                var_53.stats[var_1B].max = stru_1A298[(int)var_53.race].dex_min;
+                                var_53.stats[var_1B].max = racial_stats_limits[(int)var_53.race].dex_min;
                             }
 
-                            if (var_53.stats[var_1B].max > stru_1A298[(int)var_53.race].dex_max)
+                            if (var_53.stats[var_1B].max > racial_stats_limits[(int)var_53.race].dex_max)
                             {
-                                var_53.stats[var_1B].max = stru_1A298[(int)var_53.race].dex_max;
+                                var_53.stats[var_1B].max = racial_stats_limits[(int)var_53.race].dex_max;
                             }
 
-                            if (var_53.stats[var_1B].max < gbl.unk_1A484[(int)var_53._class][var_1B])
+                            if (var_53.stats[var_1B].max < gbl.class_stats_min[(int)var_53._class][var_1B])
                             {
-                                var_53.stats[var_1B].max = gbl.unk_1A484[(int)var_53._class][var_1B];
+                                var_53.stats[var_1B].max = gbl.class_stats_min[(int)var_53._class][var_1B];
                             }
                             break;
 
                         case Stat.CON:
-                            if (unk_1A434[(int)var_53.race].field_1 < var_53.age)
+                            if (race_age_brackets[var_53.race].age_1 < var_53.age)
                             {
                                 var_53.stats[var_1B].max -= 1;
                             }
 
-                            if (unk_1A434[(int)var_53.race].field_2 < var_53.age)
+                            if (race_age_brackets[var_53.race].age_2 < var_53.age)
                             {
                                 var_53.stats[var_1B].max -= 1;
                             }
 
-                            if (unk_1A434[(int)var_53.race].field_3 < var_53.age)
+                            if (race_age_brackets[var_53.race].age_3 < var_53.age)
                             {
                                 var_53.stats[var_1B].max -= 1;
                             }
 
-                            if (var_53.stats[var_1B].max < stru_1A298[(int)var_53.race].con_min)
+                            if (var_53.stats[var_1B].max < racial_stats_limits[(int)var_53.race].con_min)
                             {
-                                var_53.stats[var_1B].max = stru_1A298[(int)var_53.race].con_min;
+                                var_53.stats[var_1B].max = racial_stats_limits[(int)var_53.race].con_min;
                             }
 
-                            if (var_53.stats[var_1B].max > stru_1A298[(int)var_53.race].con_max)
+                            if (var_53.stats[var_1B].max > racial_stats_limits[(int)var_53.race].con_max)
                             {
-                                var_53.stats[var_1B].max = stru_1A298[(int)var_53.race].con_max;
+                                var_53.stats[var_1B].max = racial_stats_limits[(int)var_53.race].con_max;
                             }
 
-                            if (var_53.stats[var_1B].max < gbl.unk_1A484[(int)var_53._class][var_1B])
+                            if (var_53.stats[var_1B].max < gbl.class_stats_min[(int)var_53._class][var_1B])
                             {
-                                var_53.stats[var_1B].max = gbl.unk_1A484[(int)var_53._class][var_1B];
+                                var_53.stats[var_1B].max = gbl.class_stats_min[(int)var_53._class][var_1B];
                             }
                             break;
 
                         case Stat.CHA:
-                            if (var_53.stats[var_1B].max < stru_1A298[(int)var_53.race].cha_min)
+                            if (var_53.stats[var_1B].max < racial_stats_limits[(int)var_53.race].cha_min)
                             {
-                                var_53.stats[var_1B].max = stru_1A298[(int)var_53.race].cha_min;
+                                var_53.stats[var_1B].max = racial_stats_limits[(int)var_53.race].cha_min;
                             }
 
-                            if (var_53.stats[var_1B].max > stru_1A298[(int)var_53.race].cha_max)
+                            if (var_53.stats[var_1B].max > racial_stats_limits[(int)var_53.race].cha_max)
                             {
-                                var_53.stats[var_1B].max = stru_1A298[(int)var_53.race].cha_max;
+                                var_53.stats[var_1B].max = racial_stats_limits[(int)var_53.race].cha_max;
                             }
 
-                            if (var_53.stats[var_1B].max < gbl.unk_1A484[(int)var_53._class][var_1B])
+                            if (var_53.stats[var_1B].max < gbl.class_stats_min[(int)var_53._class][var_1B])
                             {
-                                var_53.stats[var_1B].max = gbl.unk_1A484[(int)var_53._class][var_1B];
+                                var_53.stats[var_1B].max = gbl.class_stats_min[(int)var_53._class][var_1B];
                             }
                             break;
                     }
@@ -1541,39 +1531,39 @@ namespace engine
                                         }
                                         else
                                         {
-                                            if (player_ptr.stats[stat_var].max < stru_1A298[(int)player_ptr.race].str_min[player_ptr.sex])
+                                            if (player_ptr.stats[stat_var].max < racial_stats_limits[(int)player_ptr.race].str_min[player_ptr.sex])
                                             {
-                                                player_ptr.stats[stat_var].max = stru_1A298[(int)player_ptr.race].str_min[player_ptr.sex];
+                                                player_ptr.stats[stat_var].max = racial_stats_limits[(int)player_ptr.race].str_min[player_ptr.sex];
                                             }
                                         }
 
-                                        if (player_ptr.stats[stat_var].max < gbl.unk_1A484[(int)player_ptr._class].field_0)
+                                        if (player_ptr.stats[stat_var].max < gbl.class_stats_min[(int)player_ptr._class].str_min)
                                         {
-                                            player_ptr.stats[stat_var].max = gbl.unk_1A484[(int)player_ptr._class].field_0;
+                                            player_ptr.stats[stat_var].max = gbl.class_stats_min[(int)player_ptr._class].str_min;
                                         }
                                         break;
 
                                     case Stat.INT:
-                                        if (player_ptr.stats[stat_var].max < stru_1A298[(int)player_ptr.race].int_min)
+                                        if (player_ptr.stats[stat_var].max < racial_stats_limits[(int)player_ptr.race].int_min)
                                         {
-                                            player_ptr.stats[stat_var].max = stru_1A298[(int)player_ptr.race].int_min;
+                                            player_ptr.stats[stat_var].max = racial_stats_limits[(int)player_ptr.race].int_min;
                                         }
 
-                                        if (player_ptr.stats[stat_var].max < gbl.unk_1A484[(int)player_ptr._class].field_1)
+                                        if (player_ptr.stats[stat_var].max < gbl.class_stats_min[(int)player_ptr._class].int_min)
                                         {
-                                            player_ptr.stats[stat_var].max = gbl.unk_1A484[(int)player_ptr._class].field_1;
+                                            player_ptr.stats[stat_var].max = gbl.class_stats_min[(int)player_ptr._class].int_min;
                                         }
                                         break;
 
                                     case Stat.WIS:
-                                        if (player_ptr.stats[stat_var].max < stru_1A298[(int)player_ptr.race].wis_min)
+                                        if (player_ptr.stats[stat_var].max < racial_stats_limits[(int)player_ptr.race].wis_min)
                                         {
-                                            player_ptr.stats[stat_var].max = stru_1A298[(int)player_ptr.race].wis_min;
+                                            player_ptr.stats[stat_var].max = racial_stats_limits[(int)player_ptr.race].wis_min;
                                         }
 
-                                        if (player_ptr.stats[stat_var].max < gbl.unk_1A484[(int)player_ptr._class].field_2)
+                                        if (player_ptr.stats[stat_var].max < gbl.class_stats_min[(int)player_ptr._class].wis_min)
                                         {
-                                            player_ptr.stats[stat_var].max = gbl.unk_1A484[(int)player_ptr._class].field_2;
+                                            player_ptr.stats[stat_var].max = gbl.class_stats_min[(int)player_ptr._class].wis_min;
                                         }
                                         
                                         if (player_ptr.field_12D[0,0] > 0)
@@ -1583,32 +1573,32 @@ namespace engine
                                         break;
 
                                     case Stat.DEX:
-                                        if (player_ptr.stats[stat_var].max < stru_1A298[(int)player_ptr.race].dex_min)
+                                        if (player_ptr.stats[stat_var].max < racial_stats_limits[(int)player_ptr.race].dex_min)
                                         {
-                                            player_ptr.stats[stat_var].max = stru_1A298[(int)player_ptr.race].dex_min;
+                                            player_ptr.stats[stat_var].max = racial_stats_limits[(int)player_ptr.race].dex_min;
                                         }
 
-                                        if (player_ptr.stats[stat_var].max < gbl.unk_1A484[(int)player_ptr._class].field_3)
+                                        if (player_ptr.stats[stat_var].max < gbl.class_stats_min[(int)player_ptr._class].dex_min)
                                         {
-                                            player_ptr.stats[stat_var].max = gbl.unk_1A484[(int)player_ptr._class].field_3;
+                                            player_ptr.stats[stat_var].max = gbl.class_stats_min[(int)player_ptr._class].dex_min;
                                         }
                                         break;
 
                                     case Stat.CON:
-                                        if (player_ptr.stats[stat_var].max < stru_1A298[(int)player_ptr.race].con_min)
+                                        if (player_ptr.stats[stat_var].max < racial_stats_limits[(int)player_ptr.race].con_min)
                                         {
-                                            player_ptr.stats[stat_var].max = stru_1A298[(int)player_ptr.race].con_min;
+                                            player_ptr.stats[stat_var].max = racial_stats_limits[(int)player_ptr.race].con_min;
                                         }
 
-                                        if (player_ptr.stats[stat_var].max < gbl.unk_1A484[(int)player_ptr._class].field_4)
+                                        if (player_ptr.stats[stat_var].max < gbl.class_stats_min[(int)player_ptr._class].con_min)
                                         {
-
-                                            player_ptr.stats[stat_var].max = gbl.unk_1A484[(int)player_ptr._class].field_4;
+                                            player_ptr.stats[stat_var].max = gbl.class_stats_min[(int)player_ptr._class].con_min;
                                         }
 
-                                        if (calc_max_hp(gbl.player_ptr) < player_ptr.hit_point_max)
+                                        int max_hp = calc_max_hp(gbl.player_ptr);
+                                        if (max_hp < player_ptr.hit_point_max)
                                         {
-                                            player_ptr.hit_point_max = (byte)calc_max_hp(player_ptr);
+                                            player_ptr.hit_point_max = (byte)max_hp;
                                         }
 
                                         player_ptr.hit_point_current = player_ptr.hit_point_max;
@@ -1619,14 +1609,14 @@ namespace engine
                                         break;
 
                                     case Stat.CHA:
-                                        if (player_ptr.stats[stat_var].max < stru_1A298[(int)player_ptr.race].cha_min)
+                                        if (player_ptr.stats[stat_var].max < racial_stats_limits[(int)player_ptr.race].cha_min)
                                         {
-                                            player_ptr.stats[stat_var].max = stru_1A298[(int)player_ptr.race].cha_min;
+                                            player_ptr.stats[stat_var].max = racial_stats_limits[(int)player_ptr.race].cha_min;
                                         }
 
-                                        if (player_ptr.stats[stat_var].max < gbl.unk_1A484[(int)player_ptr._class].field_5)
+                                        if (player_ptr.stats[stat_var].max < gbl.class_stats_min[(int)player_ptr._class].cha_min)
                                         {
-                                            player_ptr.stats[stat_var].max = gbl.unk_1A484[(int)player_ptr._class].field_5;
+                                            player_ptr.stats[stat_var].max = gbl.class_stats_min[(int)player_ptr._class].cha_min;
                                         }
                                         break;
                                 }
@@ -1664,30 +1654,30 @@ namespace engine
                                 switch ((Stat)stat_var)
                                 {
                                     case Stat.STR:
-                                        if (player_ptr.stats[stat_var].max > stru_1A298[(int)player_ptr.race].str_max[player_ptr.sex])
+                                        if (player_ptr.stats[stat_var].max > racial_stats_limits[(int)player_ptr.race].str_max[player_ptr.sex])
                                         {
                                             if( player_ptr.stats[stat_var].max > 18 &&
                                                 (player_ptr.fighter_lvl > 0 || player_ptr.paladin_lvl > 0 || player_ptr.ranger_lvl > 0 ) &&
-                                                stru_1A298[(int)player_ptr.race].str_100_max[player_ptr.sex] > player_ptr.tmp_str_00 )
+                                                racial_stats_limits[(int)player_ptr.race].str_100_max[player_ptr.sex] > player_ptr.tmp_str_00 )
                                             {
                                                 player_ptr.tmp_str_00 += 1;
                                             }
 
-                                            player_ptr.stats[stat_var].max = stru_1A298[(int)player_ptr.race].str_max[player_ptr.sex];
+                                            player_ptr.stats[stat_var].max = racial_stats_limits[(int)player_ptr.race].str_max[player_ptr.sex];
                                         }
                                         break;
 
                                     case Stat.INT:
-                                        if (player_ptr.stats[stat_var].max > stru_1A298[(int)player_ptr.race].int_max)
+                                        if (player_ptr.stats[stat_var].max > racial_stats_limits[(int)player_ptr.race].int_max)
                                         {
-                                            player_ptr.stats[stat_var].max = stru_1A298[(int)player_ptr.race].int_max;
+                                            player_ptr.stats[stat_var].max = racial_stats_limits[(int)player_ptr.race].int_max;
                                         }
                                         break;
 
                                     case Stat.WIS:
-                                        if (player_ptr.stats[stat_var].max > stru_1A298[(int)player_ptr.race].wis_max)
+                                        if (player_ptr.stats[stat_var].max > racial_stats_limits[(int)player_ptr.race].wis_max)
                                         {
-                                            player_ptr.stats[stat_var].max = stru_1A298[(int)player_ptr.race].wis_max;
+                                            player_ptr.stats[stat_var].max = racial_stats_limits[(int)player_ptr.race].wis_max;
                                         }
 
                                         if (player_ptr.field_12D[0,0] > 0)
@@ -1697,16 +1687,16 @@ namespace engine
                                         break;
 
                                     case Stat.DEX:
-                                        if (player_ptr.stats[stat_var].max > stru_1A298[(int)player_ptr.race].dex_max)
+                                        if (player_ptr.stats[stat_var].max > racial_stats_limits[(int)player_ptr.race].dex_max)
                                         {
-                                            player_ptr.stats[stat_var].max = stru_1A298[(int)player_ptr.race].dex_max;
+                                            player_ptr.stats[stat_var].max = racial_stats_limits[(int)player_ptr.race].dex_max;
                                         }
                                         break;
 
                                     case Stat.CON:
-                                        if (player_ptr.stats[stat_var].max > stru_1A298[(int)player_ptr.race].con_max)
+                                        if (player_ptr.stats[stat_var].max > racial_stats_limits[(int)player_ptr.race].con_max)
                                         {
-                                            player_ptr.stats[stat_var].max = stru_1A298[(int)player_ptr.race].con_max;
+                                            player_ptr.stats[stat_var].max = racial_stats_limits[(int)player_ptr.race].con_max;
                                         }
 
                                         if (sub_506BA(gbl.player_ptr) > player_ptr.hit_point_max)
@@ -1721,9 +1711,9 @@ namespace engine
                                         break;
 
                                     case Stat.CHA:
-                                        if (player_ptr.stats[stat_var].max > stru_1A298[(int)player_ptr.race].cha_max)
+                                        if (player_ptr.stats[stat_var].max > racial_stats_limits[(int)player_ptr.race].cha_max)
                                         {
-                                            player_ptr.stats[stat_var].max = stru_1A298[(int)player_ptr.race].cha_max;
+                                            player_ptr.stats[stat_var].max = racial_stats_limits[(int)player_ptr.race].cha_max;
                                         }
                                         break;
                                 }
@@ -2773,14 +2763,14 @@ namespace engine
         }
 
         internal static int[,] exp_table = { /* seg600:4293 unk_1A5A3 */ 
-            /* Cleric */    { 0, 1501, 3001,  6001, 13001, 27501, 55001, 110001, 225001, 450001, -1, -1 },
-                            { 0, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 },
-            /* Fighter */   { 0, 2001, 4001,  8001, 18001, 35001, 70001, 125001, 250001, 500001,  750001, 1000001,  },
-            /* Paladin */   { 0, 2751, 5501, 12001, 24001, 45001, 95001, 175001, 350001, 700001, 1050001, -1  },
-            /* Ranger */    { 0, 2251, 4501, 10001, 20001, 40001, 90001, 150001, 225001, 325001,  650001, -1 },
-            /* MU */        { 0, 2501, 5001, 10001, 22501, 40001, 60001,  90001, 135001, 250001,  375001, -1 }, 
-            /* Thief */     { 0, 1251, 2501,  5001, 10001, 20001, 42501,  70001, 110001, 160001,  220001, 440001}, 
-                            { 0, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 }};
+            /* Cleric */    { 0, 1501, 3001,  6001, 13001, 27501, 55001, 110001, 225001, 450001, -1, -1, -1 },
+            /* Druid */     { 0, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 },
+            /* Fighter */   { 0, 2001, 4001,  8001, 18001, 35001, 70001, 125001, 250001, 500001,  750001, 1000001, -1  },
+            /* Paladin */   { 0, 2751, 5501, 12001, 24001, 45001, 95001, 175001, 350001, 700001, 1050001, -1, -1 },
+            /* Ranger */    { 0, 2251, 4501, 10001, 20001, 40001, 90001, 150001, 225001, 325001,  650001, -1, -1 },
+            /* MU */        { 0, 2501, 5001, 10001, 22501, 40001, 60001,  90001, 135001, 250001,  375001, -1, -1 }, 
+            /* Thief */     { 0, 1251, 2501,  5001, 10001, 20001, 42501,  70001, 110001, 160001,  220001, 440001, -1}, 
+            /* Monk */      { 0, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 }};
 
         internal static void train_player()
         {

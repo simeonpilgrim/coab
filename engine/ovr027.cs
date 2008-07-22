@@ -14,13 +14,9 @@ namespace engine
 
         internal static T getStringListEntry<T>( T list, int index ) where T : class, Classes.IListBase
         {
-            int loop_var;
-            T current;
-            T retList;
+            int loop_var = 0;
 
-            loop_var = 0;
-
-            current = list;
+            T current = list;
 
             while( current != null && loop_var != index )
             {
@@ -30,14 +26,12 @@ namespace engine
 
             if( loop_var == index )
             {
-                retList = current;
+                return current;
             }
             else
             {
-                retList = null;
+                return null;
             }
-
-            return retList;
         }
 
 

@@ -492,74 +492,74 @@ namespace engine
                 switch ((Stat)var_1)
                 {
                     case Stat.STR:
-                        if (player.stats[var_1].tmp < ovr018.stru_1A298[race].str_min[player.sex])
+                        if (player.stats[var_1].tmp < ovr018.racial_stats_limits[race].str_min[player.sex])
                         {
-                            player.stats[var_1].tmp = ovr018.stru_1A298[race].str_min[player.sex];
+                            player.stats[var_1].tmp = ovr018.racial_stats_limits[race].str_min[player.sex];
                         }
 
-                        if (player.stats[var_1].tmp > ovr018.stru_1A298[race].str_max[player.sex])
+                        if (player.stats[var_1].tmp > ovr018.racial_stats_limits[race].str_max[player.sex])
                         {
-                            player.stats[var_1].tmp = ovr018.stru_1A298[race].str_max[player.sex];
+                            player.stats[var_1].tmp = ovr018.racial_stats_limits[race].str_max[player.sex];
                         }
                         break;
 
                     case Stat.INT:
-                        if (player.stats[var_1].tmp < ovr018.stru_1A298[race].int_min)
+                        if (player.stats[var_1].tmp < ovr018.racial_stats_limits[race].int_min)
                         {
-                            player.stats[var_1].tmp = ovr018.stru_1A298[race].int_min;
+                            player.stats[var_1].tmp = ovr018.racial_stats_limits[race].int_min;
                         }
 
-                        if (player.stats[var_1].tmp > ovr018.stru_1A298[race].int_max)
+                        if (player.stats[var_1].tmp > ovr018.racial_stats_limits[race].int_max)
                         {
-                            player.stats[var_1].tmp = ovr018.stru_1A298[race].int_max;
+                            player.stats[var_1].tmp = ovr018.racial_stats_limits[race].int_max;
                         }
                         break;
 
                     case Stat.WIS:
-                        if (player.stats[var_1].tmp < ovr018.stru_1A298[race].wis_min)
+                        if (player.stats[var_1].tmp < ovr018.racial_stats_limits[race].wis_min)
                         {
-                            player.stats[var_1].tmp = ovr018.stru_1A298[race].wis_min;
+                            player.stats[var_1].tmp = ovr018.racial_stats_limits[race].wis_min;
                         }
 
-                        if (player.stats[var_1].tmp > ovr018.stru_1A298[race].wis_max)
+                        if (player.stats[var_1].tmp > ovr018.racial_stats_limits[race].wis_max)
                         {
-                            player.stats[var_1].tmp = ovr018.stru_1A298[race].wis_max;
+                            player.stats[var_1].tmp = ovr018.racial_stats_limits[race].wis_max;
                         }
                         break;
 
                     case Stat.DEX:
-                        if (player.stats[var_1].tmp < ovr018.stru_1A298[race].dex_min)
+                        if (player.stats[var_1].tmp < ovr018.racial_stats_limits[race].dex_min)
                         {
-                            player.stats[var_1].tmp = ovr018.stru_1A298[race].dex_min;
+                            player.stats[var_1].tmp = ovr018.racial_stats_limits[race].dex_min;
                         }
 
-                        if (player.stats[var_1].tmp > ovr018.stru_1A298[race].dex_max)
+                        if (player.stats[var_1].tmp > ovr018.racial_stats_limits[race].dex_max)
                         {
-                            player.stats[var_1].tmp = ovr018.stru_1A298[race].dex_max;
+                            player.stats[var_1].tmp = ovr018.racial_stats_limits[race].dex_max;
                         }
                         break;
 
                     case Stat.CON:
-                        if (player.stats[var_1].tmp < ovr018.stru_1A298[race].con_min)
+                        if (player.stats[var_1].tmp < ovr018.racial_stats_limits[race].con_min)
                         {
-                            player.stats[var_1].tmp = ovr018.stru_1A298[race].con_min;
+                            player.stats[var_1].tmp = ovr018.racial_stats_limits[race].con_min;
                         }
 
-                        if (player.stats[var_1].tmp > ovr018.stru_1A298[race].con_max)
+                        if (player.stats[var_1].tmp > ovr018.racial_stats_limits[race].con_max)
                         {
-                            player.stats[var_1].tmp = ovr018.stru_1A298[race].con_max;
+                            player.stats[var_1].tmp = ovr018.racial_stats_limits[race].con_max;
                         }
                         break;
 
                     case Stat.CHA:
-                        if (player.stats[var_1].tmp < ovr018.stru_1A298[race].cha_min)
+                        if (player.stats[var_1].tmp < ovr018.racial_stats_limits[race].cha_min)
                         {
-                            player.stats[var_1].tmp = ovr018.stru_1A298[race].cha_min;
+                            player.stats[var_1].tmp = ovr018.racial_stats_limits[race].cha_min;
                         }
 
-                        if (player.stats[var_1].tmp > ovr018.stru_1A298[race].cha_max)
+                        if (player.stats[var_1].tmp > ovr018.racial_stats_limits[race].cha_max)
                         {
-                            player.stats[var_1].tmp = ovr018.stru_1A298[race].cha_max;
+                            player.stats[var_1].tmp = ovr018.racial_stats_limits[race].cha_max;
                         }
                         break;
                 }

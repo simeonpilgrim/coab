@@ -656,12 +656,11 @@ namespace engine
 
         internal static bool player_can_be_class(int _class, Player player) /* sub_6AD3E */
         {
-            bool var_2 = (gbl.unk_1A30A[(int)player.race, gbl.byte_1DA71] != getFirstSkill(player));
+            bool var_2 = (_class != getFirstSkill(player));
             sbyte var_3 = 0;
 
             while (var_3 <= 5 &&
-            (gbl.unk_1A484[getFirstSkill(player)][var_3] < 9 ||
-                    player.stats[var_3].tmp > 0x0E))
+                (gbl.class_stats_min[getFirstSkill(player)][var_3] < 9 || player.stats[var_3].tmp > 14))
             {
                 var_3++;
             }
@@ -670,7 +669,7 @@ namespace engine
             var_3 = 0;
 
             while (var_3 <= 5 &&
-                (gbl.unk_1A484[_class][var_3] < 9 || player.stats[var_3].tmp > 0x10))
+                (gbl.class_stats_min[_class][var_3] < 9 || player.stats[var_3].tmp > 16))
             {
                 var_3++;
             }
@@ -679,14 +678,14 @@ namespace engine
 
             byte var_4 = 1;
 
-            while (gbl.unk_1A4EA[_class, 0] >= var_4 &&
-                gbl.unk_1A4EA[_class, var_4] != player.alignment)
+            while (gbl.class_alignments[_class, 0] >= var_4 &&
+                gbl.class_alignments[_class, var_4] != player.alignment)
             {
                 var_4++;
             }
 
             if (var_2 == false ||
-                gbl.unk_1A4EA[_class, 0] < var_4)
+                gbl.class_alignments[_class, 0] < var_4)
             {
                 var_2 = false;
             }
@@ -701,8 +700,7 @@ namespace engine
 
         internal static void multiclass(Player player)
         {
-
-            byte var_3 = gbl.unk_1A30A[(int)player.race, 0];
+            int classes = gbl.race_classes[(int)player.race, 0];
 
             StringList list = new StringList();
             StringList list_ptr = list;
@@ -713,9 +711,9 @@ namespace engine
 
             int count = 1;
 
-            for (gbl.byte_1DA71 = 1; gbl.byte_1DA71 < var_3; gbl.byte_1DA71++)
+            for (int index = 1; index <= classes; index++)
             {
-                int _class = gbl.unk_1A30A[(int)player.race, gbl.byte_1DA71];
+                int _class = gbl.race_classes[(int)player.race, index];
 
                 if (player_can_be_class(_class, player) == true)
                 {
@@ -738,22 +736,22 @@ namespace engine
             }
 
             list_ptr = list;
-            short index = 1;
+            short dummy_index = 1;
             bool show_exit = true;
             bool var_F = true;
 
-            char var_1;
+            char input_key;
 
             do
             {
-                var_1 = ovr027.sl_select_item(out list_ptr, ref index, ref var_F, show_exit, list,
+                input_key = ovr027.sl_select_item(out list_ptr, ref dummy_index, ref var_F, show_exit, list,
                     0x16, 0x26, 2, 1, 15, 10, 13, "Select", string.Empty);
 
-                if (var_1 == 0)
+                if (input_key == 0)
                 {
                     return;
                 }
-            } while (var_1 != 0x53);
+            } while (input_key != 0x53);
 
             player.exp = 0;
             player.field_11C = 2;
@@ -819,67 +817,37 @@ namespace engine
         }
 
 
-        internal static byte getExtraFirstSkill(Player player)
+        internal static int getExtraFirstSkill(Player player)
         {
-            byte skill_index;
-            byte var_1;
-
             if (player.race != Race.human)
             {
-                var_1 = 0x11;
+                return 0x11;
             }
-            else
+
+            for (int index = 0; index < 7; index++)
             {
-                skill_index = 0;
-
-                while (skill_index < 7 && player.Skill_B_lvl[skill_index] == 0)
-                {
-                    skill_index++;
-                }
-
-                if (player.Skill_B_lvl[skill_index] > 0)
-                {
-                    var_1 = skill_index;
-                }
-                else
-                {
-                    var_1 = 0x11;
-                }
+                if (player.Skill_B_lvl[index] > 0)
+                    return index;
             }
 
-            return var_1;
+            return 0x11;
         }
-
 
         internal static int getFirstSkill(Player player)
         {
-            int index;
-
             if (player.race != Race.human)
             {
-                index = 0x11;
+                return 0x11;
             }
-            else
+
+            for (int index = 0; index < 7; index++)
             {
-                int skill_index = 0;
-                while (skill_index < 7 && player.class_lvls[skill_index] == 0)
-                {
-                    skill_index++;
-                }
-
-                if (player.class_lvls[skill_index] > 0)
-                {
-                    index = skill_index;
-                }
-                else
-                {
-                    index = 0x11;
-                }
+                if (player.class_lvls[index] > 0)
+                    return index;
             }
 
-            return index;
+            return 0x11;
         }
-
 
         internal static byte human_first_class_lvl(Player player) /* hasAnySkills */
         {

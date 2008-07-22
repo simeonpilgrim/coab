@@ -159,15 +159,15 @@ namespace engine
         }
 
 
-        internal static void DaxArrayFreeDaxBlocks(DaxArray arg_0)
+        internal static void DaxArrayFreeDaxBlocks(DaxArray animation)
         {
-            for (gbl.byte_1DA71 = 1; gbl.byte_1DA71 <= arg_0.numFrames; gbl.byte_1DA71++)
+            for (int index = 0; index < animation.numFrames; index++)
             {
-                seg040.free_dax_block(ref arg_0.frames[gbl.byte_1DA71 - 1].picture);
+                seg040.free_dax_block(ref animation.frames[index].picture);
             }
 
-            arg_0.numFrames = 0;
-            arg_0.curFrame = 0;
+            animation.numFrames = 0;
+            animation.curFrame = 0;
 
             gbl.lastDaxFile = string.Empty;
             gbl.lastDaxBlockId = 0x0FF;
