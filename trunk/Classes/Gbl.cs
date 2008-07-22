@@ -187,16 +187,15 @@ namespace Classes
         public readonly static byte[] max_class_levels =  { 10, 15, 10, 10, 11, 12, 11, 13 }; // byte_1A1CB seg600:3EBB
         public readonly static byte[] default_icon_colours = { 1, 2, 3, 4, 6, 7 }; // unk_1A1D3[0] == unk_1A1D2[1];
 
-        /// <summary> seg600:3FFA </summary>
-        public readonly static byte[,] unk_1A30A = { 
-            { 0x12, 0x12, 0x64, 0x32, 3, 0x12, 3, 0x12, 3, 0x12, 3, 0x12, 3, 0x12}, 
-            { 3, 2, 6, 0xE, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-            { 7, 2, 5, 6, 0xD, 0xE, 0xF, 0x10, 0, 0, 0, 0, 0, 0},
-            { 3, 2, 6, 0xE, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-            { 0xD, 0, 2, 5, 6, 4, 8, 0xA, 9, 0xB, 0xD, 0xE, 0xF, 0x10},
-            { 3, 2, 6, 0xE, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-            { 6, 0, 2, 6, 8, 0xC, 0xE, 0, 0, 0, 0, 0, 0, 0},
-            { 6, 0, 2, 5, 6, 3, 4, 0, 0, 0, 0, 0, 0, 0} };
+        public readonly static int[,] race_classes = { // unk_1A30A - seg600:3FFA
+            { 0,    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, // Monster
+            { 3,    2, 6, 14, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+            { 7,    2, 5, 6, 13, 14, 15, 16, 0, 0, 0, 0, 0, 0},
+            { 3,    2, 6, 14, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+            { 13,   0, 2, 5, 6, 4, 8, 10, 9, 11, 13, 14, 15, 16},
+            { 3,    2, 6, 14, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+            { 6,    0, 2, 6, 8, 12, 14, 0, 0, 0, 0, 0, 0, 0},
+            { 6,    0, 2, 5, 6, 3, 4, 0, 0, 0, 0, 0, 0, 0} };
 
 
         public static char byte_1AB06;
@@ -394,7 +393,7 @@ namespace Classes
         public static byte byte_1D92D;
 
         public static bool byte_1DA70;
-        public static byte byte_1DA71;
+        public static byte global_index; // byte_1DA71
 
         public static bool[] encounter_flags = new bool[2]; /* byte_1EE72 */
         public static bool byte_1EE7C;
@@ -756,24 +755,24 @@ namespace Classes
         public static affectDelegate[] affect_jump_list; /* spell_jump_list */
 
 
-        public static Struct_1A484[] unk_1A484 = new Struct_1A484[] { 
-            new Struct_1A484(6, 6, 9, 0, 0, 0), 
-            new Struct_1A484(0, 0, 0xC, 0, 0, 0xF), 
-            new Struct_1A484(9, 0, 6, 6, 7, 0), 
-            new Struct_1A484(0xC, 9, 0xD, 0, 9, 0x11),
-            new Struct_1A484(0xD, 0xD, 0xE, 0, 0xE, 0),
-            new Struct_1A484(0, 9, 6, 6, 0, 0),
-            new Struct_1A484(6, 6, 0, 9, 0, 0),
-            new Struct_1A484(0xF, 0, 0xF, 0xF, 0xB, 0),
-            new Struct_1A484(9, 0, 9, 0, 0, 0),
-            new Struct_1A484(9, 9, 9, 0, 0, 0), 
-            new Struct_1A484(0, 0xD, 0xE, 0, 0xE, 0),
-            new Struct_1A484(0, 9, 9, 0, 0, 0),
-            new Struct_1A484(0, 0, 9, 9, 0, 0), 
-            new Struct_1A484(9, 9, 0, 0, 0, 0), 
-            new Struct_1A484(9, 0, 0, 9, 0, 0), 
-            new Struct_1A484(9, 9, 0, 9, 0, 0), 
-            new Struct_1A484(0, 9, 0, 9, 0, 0) };
+        public static ClassStatsMin[] class_stats_min = new ClassStatsMin[] { // unk_1A484
+            new ClassStatsMin(6, 6, 9, 0, 0, 0), 
+            new ClassStatsMin(0, 0, 0xC, 0, 0, 0xF), 
+            new ClassStatsMin(9, 0, 6, 6, 7, 0), 
+            new ClassStatsMin(0xC, 9, 0xD, 0, 9, 0x11),
+            new ClassStatsMin(0xD, 0xD, 0xE, 0, 0xE, 0),
+            new ClassStatsMin(0, 9, 6, 6, 0, 0),
+            new ClassStatsMin(6, 6, 0, 9, 0, 0),
+            new ClassStatsMin(0xF, 0, 0xF, 0xF, 0xB, 0),
+            new ClassStatsMin(9, 0, 9, 0, 0, 0),
+            new ClassStatsMin(9, 9, 9, 0, 0, 0), 
+            new ClassStatsMin(0, 0xD, 0xE, 0, 0xE, 0),
+            new ClassStatsMin(0, 9, 9, 0, 0, 0),
+            new ClassStatsMin(0, 0, 9, 9, 0, 0), 
+            new ClassStatsMin(9, 9, 0, 0, 0, 0), 
+            new ClassStatsMin(9, 0, 0, 9, 0, 0), 
+            new ClassStatsMin(9, 9, 0, 9, 0, 0), 
+            new ClassStatsMin(0, 9, 0, 9, 0, 0) };
 
         public static string unk_1B21A;
         public static string unk_1B26A;
@@ -862,7 +861,7 @@ namespace Classes
         public static byte[] unk_16E40 = new byte[16]; // seg600:0B30
         public static byte[] unk_16E50 = new byte[16]; // seg600:0B40
 
-        public readonly static byte[,] unk_1A4EA = { 
+        public readonly static byte[,] class_alignments = { // unk_1A4EA
             { 9,0,1,2,3,4,5,6,7,8},
             { 5,1,3,4,5,7,0,0,0,0},
             { 9,0,1,2,3,4,5,6,7,8},

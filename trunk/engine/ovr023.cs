@@ -2013,9 +2013,9 @@ namespace engine
             int var_12 = 0; 
             int var_11 = 0;
 
-            for (gbl.byte_1DA71 = 0; gbl.byte_1DA71 <= 8; gbl.byte_1DA71++)
+            for (gbl.global_index = 0; gbl.global_index <= 8; gbl.global_index++)
             {
-                switch (gbl.byte_1DA71)
+                switch (gbl.global_index)
                 {
                     case 0:
                         var_11 = gbl.targetX;
