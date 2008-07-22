@@ -83,6 +83,7 @@ namespace Main
             Classes.Cheats.DisplayFullItemNamesSet(Settings.Default.DisplayFullItemNames);
             Classes.Cheats.ViewItemStatsSet(Settings.Default.ViewItemsStats);
             Classes.Cheats.SkipTitleScreenSet(Settings.Default.SkipTitleScreen);
+            Classes.Cheats.ImprovedAreaMapSet(Settings.Default.ImprovedAreaMap);
         }
 
         private void playersAlwayMakeSavingThrowToolStripMenuItem_CheckedChanged(object sender, EventArgs e)
@@ -154,6 +155,15 @@ namespace Main
             Settings.Default.Save();
 
             Classes.Cheats.ViewItemStatsSet(flipped);
+        }
+
+        private void improvedAreaMapToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            bool flipped = !Settings.Default.ImprovedAreaMap;
+            Settings.Default.ImprovedAreaMap = flipped;
+            Settings.Default.Save();
+
+            Classes.Cheats.ImprovedAreaMapSet(flipped);
         }
     }
 }

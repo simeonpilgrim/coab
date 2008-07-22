@@ -48,14 +48,15 @@ namespace engine
                     }
 
                     ovr038.Put8x8Symbol(0, true, symbol_id, y + displayOffset, x + displayOffset);
-                    
-                    seg040.draw_clipped_nodraw(8);
-                    seg040.draw_clipped_recolor(7, 1);
-                    ovr038.Put8x8Symbol(0, true, door_id, y + displayOffset, x + displayOffset);
-                    seg040.draw_clipped_recolor(17, 17);
-                    seg040.draw_clipped_nodraw(17);
 
-
+                    if (Cheats.improved_area_map)
+                    {
+                        seg040.draw_clipped_nodraw(8);
+                        seg040.draw_clipped_recolor(7, 1);
+                        ovr038.Put8x8Symbol(0, true, door_id, y + displayOffset, x + displayOffset);
+                        seg040.draw_clipped_recolor(17, 17);
+                        seg040.draw_clipped_nodraw(17);
+                    }
                 }
             }
 
