@@ -118,5 +118,17 @@ namespace Main.Properties {
                 this["SkipTitleScreen"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool ImprovedAreaMap {
+            get {
+                return ((bool)(this["ImprovedAreaMap"]));
+            }
+            set {
+                this["ImprovedAreaMap"] = value;
+            }
+        }
     }
 }

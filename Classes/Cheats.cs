@@ -61,5 +61,11 @@ namespace Classes
         {
             skip_title_screen = value;
         }
+
+        public static bool improved_area_map = false;
+        public static void ImprovedAreaMapSet(bool value)
+        {
+            improved_area_map = value;
+        }
     }
 }
