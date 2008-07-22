@@ -8,7 +8,8 @@
   * Fixed small 3D view rendering problem with the far distance wall
   * Cheats settings are now saved in your user profile, so you don't have to keep turning them on
   * Time now passes correctly when resting or searching and after combat
-  * Altered the Area Map to now overlay the arrow icon cleanly, and doors are shown in blue
+  * Altered the Area Map to now overlay the arrow icon cleanly
+  * Added new cheat "Improved Area Map" that shows doors in blue 
 
 = 1.0.12 =
   * Fixed the Fear spell, so it is removed when combat is ended
