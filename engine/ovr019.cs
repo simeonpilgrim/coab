@@ -408,25 +408,25 @@ namespace engine
         }
 
 
-        internal static void sub_52B79( int num_loops, byte block_id, short row_y, short col_x )
+        internal static void sub_52B79(int num_loops, byte block_id, short row_y, short col_x)
         {
             int loop_count = 0;
-			int start_time = seg041.time01();
+            int start_time = seg041.time01();
 
             DaxArray animation = new DaxArray();
 
-            ovr030.load_pic_final( ref animation, 2, block_id, "PIC" );
-            seg040.OverlayBounded( animation.frames[0].picture, 0, 0, row_y - 1, col_x - 1);
+            ovr030.load_pic_final(ref animation, 2, block_id, "PIC");
+            seg040.OverlayBounded(animation.frames[0].picture, 0, 0, row_y - 1, col_x - 1);
             seg040.DrawOverlay();
 
-			do
-			{
+            do
+            {
                 ovr030.sub_7000A(animation.frames[animation.curFrame - 1].picture, true, row_y, col_x);
-				int current_time = seg041.time01();
+                int current_time = seg041.time01();
 
                 int delay = animation.frames[animation.curFrame - 1].delay * (gbl.game_speed_var + 3);
 
-                 if ((current_time - start_time) > delay)
+                if ((current_time - start_time) > delay)
                 {
                     animation.curFrame += 1;
 
@@ -435,12 +435,12 @@ namespace engine
                         animation.curFrame = 1;
                         loop_count++;
                     }
- 
+
                     start_time = current_time;
                 }
-			}while( loop_count != num_loops );
+            } while (loop_count != num_loops);
 
-            ovr030.DaxArrayFreeDaxBlocks( animation );
+            ovr030.DaxArrayFreeDaxBlocks(animation);
         }
 
         static string aTyranthraxusSp = "Tyranthraxus' spirit coalesces over the slain ";
@@ -507,11 +507,11 @@ namespace engine
 			seg041.press_any_key( aHasFinallyBeen, false, 0, 10, 0x16, 0x26, 0x11, 1 );
 			seg041.press_any_key( aLast, false, 0, 10, 0x16, 0x26, 0x11, 1 );
 
-			gbl.area_ptr.field_3FE = 1;
+			gbl.area_ptr.picture_fade = 1;
 
             sub_52B79((10 - gbl.game_speed_var) * 2, 0x4d, 3, 3);
             
-			gbl.area_ptr.field_3FE = 0;
+			gbl.area_ptr.picture_fade = 0;
 
 			ovr030.head_body( 0x41, 0x41 );
             ovr030.draw_head_and_body( true, 3, 3 );

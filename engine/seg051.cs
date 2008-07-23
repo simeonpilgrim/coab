@@ -189,7 +189,7 @@ namespace engine
         }
 
 
-        internal static void FillChar( byte fill_byte, ushort buffer_size, byte[] buffer )
+        internal static void FillChar( byte fill_byte, int buffer_size, byte[] buffer )
         {
 			for(int i = 0; i < buffer_size; i++)
 			{

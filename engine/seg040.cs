@@ -253,16 +253,9 @@ namespace engine
 
         internal static void DaxBlockRecolor(DaxBlock dax_block, byte arg_4, short arg_6, byte[] newColors, byte[] oldColors)
         {
-            byte var_3F;
-            DaxBlock var_3A;
-            byte var_36;
-            byte[] var_2E = new byte[4];
-            byte var_2A;
-            short posY;
-            short posX;
-            byte var_25;
-            short var_24;
-            short var_22;
+            DaxBlock tmp_block;
+            //byte[] var_2E = new byte[4];
+            int var_25;
 
             if (dax_block != null)
             {
@@ -276,81 +269,56 @@ namespace engine
                     var_25 = 1;
                 }
 
-                var_22 = (short)(dax_block.bpp * arg_6);
-                var_24 = 0;
-                init_dax_block(out var_3A, 0, var_25, dax_block.width, dax_block.height);
+                int src_offset = dax_block.bpp * arg_6;
+                int dest_offset = 0;
+                init_dax_block(out tmp_block, 0, var_25, dax_block.width, dax_block.height);
 
-                System.Array.Copy(dax_block.field_9, var_3A.field_9, dax_block.field_9.Length);
+                System.Array.Copy(dax_block.field_9, tmp_block.field_9, dax_block.field_9.Length);
+                System.Array.Copy(dax_block.data, src_offset, tmp_block.data, dest_offset, tmp_block.item_count * tmp_block.bpp);
 
-                System.Array.Copy(dax_block.data, var_22, var_3A.data, var_24, var_3A.item_count * var_3A.bpp);
-
-                for (var_36 = 0; var_36 <= 15; var_36++)
+                for (int color_index = 0; color_index <= 15; color_index++)
                 {
-                    if (arg_6 < 0)
-                    {
-                        arg_6 = 0;
-                        var_25 = dax_block.item_count;
-                    }
-                    else
-                    {
-                        var_25 = 1;
-                    }
+                    src_offset = dax_block.bpp * arg_6;
+                    dest_offset = 0;
 
-                    var_22 = (short)(dax_block.bpp * arg_6);
-                    var_24 = 0;
-
-                    if (oldColors[var_36] != newColors[var_36])
+                    if (oldColors[color_index] != newColors[color_index])
                     {
-                        var_3F = (byte)(var_25 + arg_6 - 1);
+                        int var_3F = var_25 + arg_6 - 1;
 
                         for (int block = arg_6; block <= var_3F; block++)
                         {
-                            for (posY = 1; posY <= var_3A.height; posY++)
+                            for (int posY = 0; posY < tmp_block.height; posY++)
                             {
-                                for (posX = 1; posX <= var_3A.width * 8; posX++)
+                                for (int posX = 0; posX < (tmp_block.width * 8); posX++)
                                 {
-                                    if (arg_4 != 0)
+                                    if (dax_block.data[src_offset] == oldColors[color_index] &&
+                                        (arg_4 == 0 || (seg051.Random(4) == 0)))
                                     {
-                                        //Todo with this random fade stuff
-                                        var_2A = (byte)(seg051.Random(0x100) & seg051.Random(0x100));
-                                    }
-                                    else
-                                    {
-                                        var_2A = 0x0FF;
+                                        tmp_block.data[dest_offset] = newColors[color_index];
                                     }
 
-
-                                    if (dax_block.data[var_22] == oldColors[var_36] &&
-                                        (arg_4 == 0 || seg051.Random(4) == 0 ) )
-                                    {
-                                        var_3A.data[var_24] = newColors[var_36];
-                                    }
-
-
-                                    var_22 += 1;
-                                    var_24 += 1;
+                                    src_offset += 1;
+                                    dest_offset += 1;
                                 }
                             }
                         }
                     }
                 }
 
-                System.Array.Copy(var_3A.data, 0, dax_block.data, dax_block.bpp * arg_6, var_25 * dax_block.bpp);
-                seg040.free_dax_block(ref var_3A);
+                System.Array.Copy(tmp_block.data, 0, dax_block.data, dax_block.bpp * arg_6, var_25 * dax_block.bpp);
+                seg040.free_dax_block(ref tmp_block);
             }
         }
 
 
         internal static void init_dax_block(out DaxBlock out_buff, byte masked, byte item_count, short width, short height)
         {
-            ushort ram_size;
             short bpp;
 
             bpp = (short)(height * width * 8);
-            ram_size = (ushort)(item_count * bpp);
+            int ram_size = item_count * bpp;
 
             out_buff = new DaxBlock(ram_size);
-
             seg051.FillChar(0, ram_size, out_buff.data);
 
             out_buff.height = height;
@@ -361,7 +329,6 @@ namespace engine
             if ((masked & 1) != 0)
             {
                 out_buff.data_ptr = new byte[ram_size];
-
                 seg051.FillChar(0, ram_size, out_buff.data_ptr);
             }
         }

@@ -159,7 +159,7 @@ namespace Classes
         [DataOffset(0x3FA, DataType.Byte)]
         public byte field_3FA;
         [DataOffset(0x3FE, DataType.SWord)]
-        public short field_3FE;
+        public short picture_fade; //field_3FE
 
         [DataOffset(0x596, DataType.Word)]
         public ushort field_596;
@@ -359,7 +359,7 @@ namespace Classes
 
 
                 case 0x3fe:
-                    field_3FE = (short)value;
+                    picture_fade = (short)value;
                     break;
 
                 case 0x596:
