@@ -2,33 +2,33 @@ using Classes;
 
 namespace engine
 {
-	class ovr002
-	{
-		internal static void delay_or_key( int seconds )
-		{
-			seg043.clear_keyboard();
+    class ovr002
+    {
+        internal static void delay_or_key(int seconds)
+        {
+            seg043.clear_keyboard();
 
-			int timeNow = seg041.time01();
+            int timeNow = seg041.time01();
             int timeEnd = timeNow + (seconds * 100);
 
-			while ( seg049.KEYPRESSED() == false &&
+            while (seg049.KEYPRESSED() == false &&
                 timeNow < timeEnd)
-			{
+            {
                 System.Threading.Thread.Sleep(100);
                 timeNow = seg041.time01();
-			}
+            }
 
-			seg043.clear_keyboard();
-		}
- 
- 
-		internal static void credits( )
-		{
+            seg043.clear_keyboard();
+        }
+
+
+        internal static void credits()
+        {
             Display.UpdateStop();
 
-			seg037.draw8x8_02();
+            seg037.draw8x8_02();
 
-			seg041.displayString( "based on the tsr novel 'azure bonds'", 0, 10, 1, 2 );
+            seg041.displayString("based on the tsr novel 'azure bonds'", 0, 10, 1, 2);
             seg041.displayString("by:", 0, 10, 2, 6);
             seg041.displayString("kate novak", 0, 11, 2, 9);
             seg041.displayString("and", 0, 10, 2, 0x14);
@@ -64,21 +64,21 @@ namespace engine
             seg041.displayString("robert daly", 0x0, 0x0B, 0x16, 0x16);
 
             Display.UpdateStart();
-		}
+        }
 
 
-		internal static void title_screen( )
-		{
-			DaxBlock dax_ptr;
+        internal static void title_screen()
+        {
+            DaxBlock dax_ptr;
 
-			dax_ptr = null;
+            dax_ptr = null;
             seg040.load_dax(ref dax_ptr, 0, 0, 1, "Title");
             seg040.draw_picture(dax_ptr, 0, 0, 0);
 
             delay_or_key(5);
 
-			if ( gbl.DisplayFullTitleScreen == true ) 
-			{
+            if (gbl.DisplayFullTitleScreen == true)
+            {
                 seg040.load_dax(ref dax_ptr, 0, 0, 2, "Title");
                 seg040.draw_picture(dax_ptr, 0, 0, 0);
                 seg040.free_dax_block(ref dax_ptr);
@@ -88,7 +88,7 @@ namespace engine
                 seg040.free_dax_block(ref dax_ptr);
                 delay_or_key(10);
 
-                seg040.load_dax( ref dax_ptr, 0, 0, 4, "Title" );
+                seg040.load_dax(ref dax_ptr, 0, 0, 4, "Title");
 
                 seg044.sound_sub_120E0(gbl.sound_d_188D8);
 
@@ -96,12 +96,12 @@ namespace engine
                 seg040.free_dax_block(ref dax_ptr);
                 delay_or_key(10);
 
-				seg041.clear_screan();
-				credits();
-				delay_or_key( 10 );
+                seg041.clear_screan();
+                credits();
+                delay_or_key(10);
 
-				seg041.clear_screan();
-			}
-		}	
-	}
+                seg041.clear_screan();
+            }
+        }
+    }
 }

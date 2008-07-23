@@ -225,13 +225,15 @@ namespace engine
                     var_5B = var_5F + 30;
                 }
 
-                if ((gbl.area_ptr.field_3FE != 0 || useOverlay == true) &&
+                if ((gbl.area_ptr.picture_fade != 0 || useOverlay == true) &&
                     gbl.byte_1D556.curFrame > 0)
                 {
                     ovr030.sub_7000A(gbl.byte_1D556.frames[gbl.byte_1D556.curFrame-1].picture, useOverlay, 3, 3);
 
-                    if ((seg041.time01() - timeStart) >= (gbl.byte_1D556.frames[gbl.byte_1D556.curFrame-1].delay * 10) ||
-                        gbl.area_ptr.field_3FE != 0)
+                    int delay = gbl.byte_1D556.frames[gbl.byte_1D556.curFrame - 1].delay * 10;
+
+					if ((seg041.time01() - timeStart) >= delay ||
+                        gbl.area_ptr.picture_fade != 0)
                     {
                         gbl.byte_1D556.curFrame++;
 
@@ -372,7 +374,7 @@ namespace engine
 
             } while (var_63 == false);
 
-            gbl.area_ptr.field_3FE = 0;
+            gbl.area_ptr.picture_fade = 0;
 
             if (gbl.game_state == 3 &&
                 gbl.bigpic_block_id == 0x79 &&

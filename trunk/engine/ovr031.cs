@@ -72,10 +72,6 @@ namespace engine
 
         internal static void Draw3dWorldBackground()
         {
-            byte var_5;
-            byte var_4;
-            byte var_3;
-
             seg040.DrawColorBlock(gbl.sky_colour, 0x2c, 11, 16, 2);
             seg040.DrawColorBlock(0, 2, 11, 0x3c, 2);
             seg040.DrawColorBlock(8, 0x2a, 11, 0x3e, 2);
@@ -83,38 +79,38 @@ namespace engine
             if (get_wall_x2(gbl.mapPosY, gbl.mapPosY) < 0x80 &&
                 gbl.sky_colour == 11)
             {
-                var_3 = 2;
-                var_4 = 2;
-                var_5 = 0x0C;
+                int var_3 = 2;
+                int row_y = 2;
+                int col_x = 0x0C;
 
-                int var_2 = gbl.area_ptr.time_hour;
+                int hour = gbl.area_ptr.time_hour;
 
-                if (var_2 >= 1 && var_2 <= 5)
+                if (hour >= 1 && hour <= 5)
                 {
                     if (gbl.mapDirection == 2)
                     {
-                        seg040.OverlayBounded(gbl.sky_dax_251, 1, 0, (var_4 + 5) - var_2, var_5 - 3);
+                        seg040.OverlayBounded(gbl.sky_dax_251, 1, 0, (row_y + 5) - hour, col_x - 3);
                     }
-                    else if (gbl.mapDirection == 4 && var_2 > 2)
+                    else if (gbl.mapDirection == 4 && hour > 2)
                     {
-                        seg040.OverlayBounded(gbl.sky_dax_251, 1, 0, (var_4 + 5) - var_2, (var_3 + var_2) - 3);
+                        seg040.OverlayBounded(gbl.sky_dax_251, 1, 0, (row_y + 5) - hour, (var_3 + hour) - 3);
                     }
                 }
-                else if (var_2 >= 13 && var_2 <= 18)
+                else if (hour >= 13 && hour <= 18)
                 {
                     if (gbl.mapDirection == 6)
                     {
-                        seg040.OverlayBounded(gbl.sky_dax_251, 1, 0, (var_4 + var_2) - 13, var_3);
+                        seg040.OverlayBounded(gbl.sky_dax_251, 1, 0, (row_y + hour) - 13, var_3);
                     }
-                    else if (gbl.mapDirection == 4 && var_2 >= 16)
+                    else if (gbl.mapDirection == 4 && hour >= 16)
                     {
-                        seg040.OverlayBounded(gbl.sky_dax_251, 1, 0, (var_4 + var_2) - 13, (var_3 + var_2) - 8);
+                        seg040.OverlayBounded(gbl.sky_dax_251, 1, 0, (row_y + hour) - 13, (var_3 + hour) - 8);
                     }
                 }
 
                 if (gbl.mapDirection == 0)
                 {
-                    seg040.OverlayBounded(gbl.sky_dax_250, 1, 0, var_4, var_3);
+                    seg040.OverlayBounded(gbl.sky_dax_250, 1, 0, row_y, var_3);
                 }
             }
 

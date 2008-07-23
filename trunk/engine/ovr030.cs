@@ -8,16 +8,17 @@ namespace engine
         static byte[] unk_16DAA = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 };
         static byte[] unk_16DBA = { 12, 12, 12, 12, 4, 5, 6, 7, 12, 12, 10, 12, 12, 12, 14, 12 };
         static byte[] unk_16DCA = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 };
-        static byte[] unk_16DDA = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 0, 14, 15 };
+        static byte[] unk_16DDA = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 16, 14, 15 };
+        //TODO see what this does  static byte[] unk_16DDA = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 0, 14, 15 };
 
         internal static void sub_7000A(DaxBlock dax_block, bool useOverlay, int rowY, int colX)
         {
             if (dax_block != null)
             {
-                if (gbl.area_ptr.field_3FE > 0 ||
+                if (gbl.area_ptr.picture_fade > 0 ||
                     useOverlay == true)
                 {
-                    if (gbl.area_ptr.field_3FE > 0)
+                    if (gbl.area_ptr.picture_fade > 0)
                     {
                         seg040.DaxBlockRecolor(dax_block, 1, 0, unk_16DBA, unk_16DAA);
                     }
