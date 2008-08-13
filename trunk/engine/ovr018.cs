@@ -2128,7 +2128,7 @@ namespace engine
             byte[] newColors = new byte[16];
             byte[] oldColors = new byte[16];
 
-            short bitPerPixel = gbl.combat_icons[destIndex, 0].bpp;
+            int bitPerPixel = gbl.combat_icons[destIndex, 0].bpp;
 
             System.Array.Copy(gbl.combat_icons[sourceIndex, 0].data, gbl.combat_icons[destIndex, 0].data, gbl.combat_icons[sourceIndex, 0].data.Length);
             System.Array.Copy(gbl.combat_icons[sourceIndex, 1].data, gbl.combat_icons[destIndex, 1].data, gbl.combat_icons[sourceIndex, 1].data.Length);

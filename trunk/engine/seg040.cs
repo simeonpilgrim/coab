@@ -12,10 +12,7 @@ namespace engine
             short pic_size;
             byte[] field_9 = new byte[8];
             byte item_count;
-            short field_6;
-            short field_4;
-            short width;
-            short height;
+
             string file_string;
 
             file_string = fileName;
@@ -29,19 +26,18 @@ namespace engine
 
             if (pic_size != 0)
             {
-                height = Sys.ArrayToShort(pic_data, 0);
-
-                width = Sys.ArrayToShort(pic_data, 2);
-                field_4 = Sys.ArrayToShort(pic_data, 4);
-                field_6 = Sys.ArrayToShort(pic_data, 6);
+                int height = Sys.ArrayToShort(pic_data, 0);
+                int width = Sys.ArrayToShort(pic_data, 2);
+                int x_pos = Sys.ArrayToShort(pic_data, 4);
+                int y_pos = Sys.ArrayToShort(pic_data, 6);
                 item_count = pic_data[8];
                 System.Array.Copy(pic_data, 9, field_9, 0, 8);
 
                 init_dax_block(out mem_ptr, masked, item_count, width, height);
 
                 dax_ptr = mem_ptr;
-                dax_ptr.field_4 = field_4;
-                dax_ptr.field_6 = field_6;
+                dax_ptr.x_pos = x_pos;
+                dax_ptr.y_pos = y_pos;
                 dax_ptr.field_9 = field_9;
 
                 pic_data_offset = 17;
@@ -311,11 +307,9 @@ namespace engine
         }
 
 
-        internal static void init_dax_block(out DaxBlock out_buff, byte masked, byte item_count, short width, short height)
+        internal static void init_dax_block(out DaxBlock out_buff, byte masked, int item_count, int width, int height)
         {
-            short bpp;
-
-            bpp = (short)(height * width * 8);
+            int bpp = height * width * 8;
             int ram_size = item_count * bpp;
 
             out_buff = new DaxBlock(ram_size);
