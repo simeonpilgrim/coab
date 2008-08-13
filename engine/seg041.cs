@@ -238,13 +238,12 @@ namespace engine
             string var_22B;
             char var_12B;
             string var_12A;
-            int var_2A;
 
             displaySpaceChar(0x28, 0, 0x18, 0);
 
             displayString(prompt, bgColor, fgColor, 0x18, 0);
 
-            var_2A = prompt.Length;
+            int var_2A = prompt.Length;
 
             var_12A = string.Empty;
 
@@ -281,37 +280,30 @@ namespace engine
 
         internal static ushort getUserInputShort(byte bgColor, byte fgColor, string prompt)
         {
-            bool var_5A = true;
-            int var_2F = 0; /* Simeon */
-            ushort var_2;
+            bool bad_input = true;
+            int value = 0;
 
             do
             {
-                string var_58 = getUserInputString(6, bgColor, fgColor, prompt);
+                string input = getUserInputString(6, bgColor, fgColor, prompt);
 
                 try
                 {
-                    var_2F = int.Parse(var_58);
-                    var_5A = false;
+                    value = int.Parse(input);
+                    bad_input = false;
                 }
                 catch (System.Exception)
                 {
-                    var_5A = true;
+                    bad_input = true;
                 }
 
-                if (var_5A == false)
+                if (bad_input == false)
                 {
-                    if (var_2F > 0x00010000 ||
-                        var_2F < 0)
-                    {
-                        var_5A = true;
-                    }
+                    bad_input = (value > 0x00010000 || value < 0);
                 }
-            } while (var_5A == true);
+            } while (bad_input == true);
 
-            var_2 = (ushort)var_2F;
-
-            return var_2;
+            return (ushort)value;
         }
 
 

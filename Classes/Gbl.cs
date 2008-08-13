@@ -509,11 +509,11 @@ namespace Classes
         public static DaxBlock missile_dax; /* */
         public static int exp_to_add;
 
-        public class class_1D91A
-        {
-            public ushort field_0;
-            public class_1D91A field_2;
-        }
+        //public class class_1D91A
+        //{
+        //    public ushort field_0;
+        //    public class_1D91A field_2;
+        //}
 
         public static Stack<ushort> vmCallStack = new Stack<ushort>(); // dword_1D91A
 
@@ -750,8 +750,6 @@ namespace Classes
         public static byte friends_count;
         public static byte foe_count;
 
-        public static bool unk_1AB07; // seg600:47F7
-
         public static affectDelegate[] affect_jump_list; /* spell_jump_list */
 
 
@@ -776,7 +774,7 @@ namespace Classes
 
         public static string unk_1B21A;
         public static string unk_1B26A;
-        public static string unk_1B1C9;
+
 
         static Struct_1A35E stru_1A35E_0 = new Struct_1A35E(new SubStruct_1A35E[] {
             new SubStruct_1A35E(6, 2, 6), 

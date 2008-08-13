@@ -98,10 +98,10 @@ namespace engine
 
                             DaxBlock dax_block = daxArray.frames[frame].picture;
 
-                            dax_block.field_4 = Sys.ArrayToShort(uncompressed_data, src_offset);
+                            dax_block.x_pos = Sys.ArrayToShort(uncompressed_data, src_offset);
                             src_offset += 2;
 
-                            dax_block.field_6 = Sys.ArrayToShort(uncompressed_data, src_offset);
+                            dax_block.y_pos = Sys.ArrayToShort(uncompressed_data, src_offset);
                             src_offset += 3;
 
                             System.Array.Copy(uncompressed_data, src_offset, dax_block.field_9, 0, 8);
@@ -232,7 +232,7 @@ namespace engine
             if (arg_0.frames[sprite_index - 1].picture != null)
             {
                 DaxBlock var_46 = arg_0.frames[sprite_index - 1].picture;
-                seg040.OverlayBounded(arg_0.frames[sprite_index - 1].picture, 1, 0, var_46.field_6 + 3 - 1, var_46.field_4 + 3 - 1);
+                seg040.OverlayBounded(arg_0.frames[sprite_index - 1].picture, 1, 0, var_46.y_pos + 3 - 1, var_46.x_pos + 3 - 1);
                 seg040.DrawOverlay();
             }
         }
