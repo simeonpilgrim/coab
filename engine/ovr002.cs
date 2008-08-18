@@ -77,31 +77,28 @@ namespace engine
 
             delay_or_key(5);
 
-            if (gbl.DisplayFullTitleScreen == true)
-            {
-                seg040.load_dax(ref dax_ptr, 0, 0, 2, "Title");
-                seg040.draw_picture(dax_ptr, 0, 0, 0);
-                seg040.free_dax_block(ref dax_ptr);
+            seg040.load_dax(ref dax_ptr, 0, 0, 2, "Title");
+            seg040.draw_picture(dax_ptr, 0, 0, 0);
+            seg040.free_dax_block(ref dax_ptr);
 
-                seg040.load_dax(ref dax_ptr, 0, 0, 3, "Title");
-                seg040.draw_picture(dax_ptr, 0x0b, 6, 0);
-                seg040.free_dax_block(ref dax_ptr);
-                delay_or_key(10);
+            seg040.load_dax(ref dax_ptr, 0, 0, 3, "Title");
+            seg040.draw_picture(dax_ptr, 0x0b, 6, 0);
+            seg040.free_dax_block(ref dax_ptr);
+            delay_or_key(10);
 
-                seg040.load_dax(ref dax_ptr, 0, 0, 4, "Title");
+            seg040.load_dax(ref dax_ptr, 0, 0, 4, "Title");
 
-                seg044.sound_sub_120E0(gbl.sound_d_188D8);
+            seg044.sound_sub_120E0(gbl.sound_d_188D8);
 
-                seg040.draw_picture(dax_ptr, 0x0b, 0, 0);
-                seg040.free_dax_block(ref dax_ptr);
-                delay_or_key(10);
+            seg040.draw_picture(dax_ptr, 0x0b, 0, 0);
+            seg040.free_dax_block(ref dax_ptr);
+            delay_or_key(10);
 
-                seg041.clear_screan();
-                credits();
-                delay_or_key(10);
+            seg041.clear_screan();
+            credits();
+            delay_or_key(10);
 
-                seg041.clear_screan();
-            }
+            seg041.clear_screan();
         }
     }
 }

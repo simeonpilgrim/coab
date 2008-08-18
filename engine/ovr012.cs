@@ -146,7 +146,6 @@ namespace engine
             gbl.word_1D546 = -1;
             gbl.word_1D548 = -1;
 
-            gbl.byte_1B2C0 = 0;
             gbl.AnimationsOn = true;
             gbl.PicsOn = true;
             gbl.DelayBetweenCharacters = true;
@@ -162,7 +161,7 @@ namespace engine
             gbl.game_area = 1;
             gbl.game_area_backup = 1;
             gbl.mapAreaDisplay = false;
-            gbl.area2_ptr.field_67C = 0;
+            gbl.area2_ptr.party_size = 0;
             gbl.word_1D5BC = 1;
             gbl.combat_type = gbl.combatType.normal;
             gbl.displayPlayerStatusLine18 = false;
@@ -211,7 +210,7 @@ namespace engine
             seg040.load_dax(ref gbl.sky_dax_251, 13, 1, 251, "SKY");
             seg040.load_dax(ref gbl.sky_dax_252, 13, 1, 252, "SKY");
 
-            gbl.byte_1AD48 = seg042.find_and_open_file(out unk_1AD74, 0, "", "ITEMS");
+            gbl.byte_1AD48 = seg042.find_and_open_file(out unk_1AD74, false, "ITEMS");
             
             seg051.Reset(unk_1AD74);
             seg051.Seek(2, unk_1AD74);
@@ -232,8 +231,6 @@ namespace engine
 
         internal static void init_values_b() /* sub_396E5 */
         {
-            gbl.byte_1B2C0 = 1;
-
             gbl.area_ptr.Clear();
             gbl.area_ptr.field_1CC = 1;
             gbl.area_ptr.field_1E4 = 0;
@@ -275,7 +272,7 @@ namespace engine
             gbl.game_area = 1;
             gbl.game_area_backup = 1;
             gbl.mapAreaDisplay = false;
-            gbl.area2_ptr.field_67C = 0;
+            gbl.area2_ptr.party_size = 0;
             gbl.word_1D5BC = 1;
             gbl.combat_type = gbl.combatType.normal;
             gbl.displayPlayerStatusLine18 = false;

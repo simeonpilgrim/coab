@@ -82,7 +82,7 @@ namespace engine
                     item_ptr = item_ptr.next;
                 }
 
-                longint_ptr = total / (gbl.area2_ptr.field_67C - gbl.byte_1EE81);
+                longint_ptr = total / (gbl.area2_ptr.party_size - gbl.byte_1EE81);
             }
         }
 
@@ -362,7 +362,7 @@ namespace engine
                         player = player.next_player;
                     }
 
-                    gbl.area2_ptr.field_67C = 0;
+                    gbl.area2_ptr.party_size = 0;
                 }
             }
             else

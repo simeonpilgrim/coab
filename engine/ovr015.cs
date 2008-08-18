@@ -609,7 +609,7 @@ namespace engine
                             case 'L':
                                 gbl.area2_ptr.search_flags |= 2;
                                 ovr021.step_game_time(2, 1);
-                                gbl.ecl_offset = gbl.word_1B2D5;
+                                gbl.ecl_offset = gbl.vm_run_addr_2;
                                 stop_loop = true;
                                 break;
                         }

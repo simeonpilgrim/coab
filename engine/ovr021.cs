@@ -26,7 +26,7 @@ namespace engine
                     }
 
                     player_count++;
-                } while (var_B == false && player_count < gbl.area2_ptr.field_67C);
+                } while (var_B == false && player_count < gbl.area2_ptr.party_size);
 
                 if (var_B == false)
                 {
@@ -574,11 +574,13 @@ namespace engine
             }
         }
 
-
+        /// <summary>
+        /// returns if the party is interrupted
+        /// </summary>
         internal static bool resting(bool interactive_resting) /* reseting */
         {
             bool stop_resting;
-            bool resting_interupted = false;
+            bool resting_intetrupted = false;
 
             int var_B = 1;
             Player var_5 = gbl.player_next_ptr;
@@ -667,7 +669,7 @@ namespace engine
                                 display_resting_time(0);
                                 seg041.displayString("Your repose is suddenly interrupted!", 0, 15, 0x13, 1);
                                 stop_resting = true;
-                                resting_interupted = true;
+                                resting_intetrupted = true;
                                 seg041.GameDelay();
                             }
                         }
@@ -678,7 +680,7 @@ namespace engine
             seg037.draw8x8_clear_area(0x16, 0x26, 0x11, 1);
             gbl.displayPlayerStatusLine18 = false;
 
-            return resting_interupted;
+            return resting_intetrupted;
         }
     }
 }

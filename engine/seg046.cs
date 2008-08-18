@@ -48,7 +48,7 @@ namespace engine
 
             if (System.IO.Directory.Exists(root) == false)
             {
-                gbl.word_1EFBC = SearchRec.PathNotFound;
+                gbl.FIND_result = SearchRec.PathNotFound;
                 return;
             } 
             
@@ -60,11 +60,11 @@ namespace engine
 
             if (record.files.Length == 0)
             {
-                gbl.word_1EFBC = SearchRec.NoMoreFiles;
+                gbl.FIND_result = SearchRec.NoMoreFiles;
                 return;
             }
 
-            gbl.word_1EFBC = 0;
+            gbl.FIND_result = 0;
             record.fileName = record.files[0].Name;
             record.index = 0;
         }
@@ -75,26 +75,11 @@ namespace engine
             record.index++;
             if (record.index >= record.files.Length)
             {
-                gbl.word_1EFBC = SearchRec.NoMoreFiles;
+                gbl.FIND_result = SearchRec.NoMoreFiles;
                 return;
             }
 
             record.fileName = record.files[record.index].Name;
-        }
-
-
-        internal static string getCurrentDirectory( string arg_0 )
-        {
-            string cwd = System.IO.Directory.GetCurrentDirectory();
-            return System.IO.Path.Combine(cwd, arg_0);
-        }
-
-
-        internal static void FSplit(out string ExtStr, out string NameStr, out string DirStr, string PathStr)
-        {
-            ExtStr = System.IO.Path.GetExtension(PathStr);
-            NameStr = System.IO.Path.GetFileNameWithoutExtension(PathStr);
-            DirStr = System.IO.Path.GetDirectoryName(PathStr);
         }
     }
 }

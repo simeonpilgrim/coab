@@ -270,7 +270,7 @@ namespace engine
                         case 'L':
                             if (menuFlags[allow_load] == true)
                             {
-                                ovr017.loadGame();
+                                ovr017.loadGameMenu();
                             }
                             break;
 
@@ -487,7 +487,7 @@ namespace engine
             var_53.health_status = Status.okey;
             var_53.in_combat = true;
             var_53.field_DE = 1;
-            var_53.field_126 = (byte)seg051.Random(256);
+            var_53.mod_id = (byte)seg051.Random(256);
             var_53.icon_id = 0x0A;
 
             StringList var_C = ovr027.alloc_stringList(7);
@@ -780,7 +780,7 @@ namespace engine
                 {
                     ovr027.free_stringList(ref var_C);
 
-                    seg051.FreeMem(0x1A6, player);
+                    seg051.FreeMem(Player.StructSize, player);
                     return;
                 }
             } while (reroll_stats != 'S');
@@ -1922,15 +1922,15 @@ namespace engine
             switch (input_key)
             {
                 case 'C':
-                    gbl.import_from = 0;
+                    gbl.import_from = ImportSource.Curse;
                     break;
 
                 case 'P':
-                    gbl.import_from = 1;
+                    gbl.import_from = ImportSource.Pool;
                     break;
 
                 case 'H':
-                    gbl.import_from = 2;
+                    gbl.import_from = ImportSource.Hillsfar;
                     break;
 
                 case 'E':
@@ -1968,7 +1968,7 @@ namespace engine
 
                         if (gbl.player_next_ptr == null)
                         {
-                            gbl.area2_ptr.field_67C = 0;
+                            gbl.area2_ptr.party_size = 0;
                             ovr017.sub_4A60A(new_player);
 
                             ovr017.LoadPlayerCombatIcon(true);
@@ -1979,7 +1979,7 @@ namespace engine
                             ranger_count = 0;
 
                             while (tmp_player != null &&
-                                (tmp_player.name != new_player.name || tmp_player.field_126 != new_player.field_126))
+                                (tmp_player.name != new_player.name || tmp_player.mod_id != new_player.mod_id))
                             {
                                 if (tmp_player.field_F7 < 0x80)
                                 {
@@ -2007,7 +2007,7 @@ namespace engine
 
                             if (tmp_player == null &&
                                 ((new_player.field_F7 < 0x80 && pc_count < 6) ||
-                                    (new_player.field_F7 > 0x7F && gbl.area2_ptr.field_67C < 8)) &&
+                                    (new_player.field_F7 > 0x7F && gbl.area2_ptr.party_size < 8)) &&
                                 (new_player.paladin_lvl == 0 || evil_present == false) &&
                                 (new_player.ranger_lvl == 0 || ranger_count < 3) &&
                                 (((new_player.alignment + 1) % 3) != 0 || paladin_present == false))
@@ -2044,7 +2044,7 @@ namespace engine
                         }
                     }
 
-                } while (input_key != 0x45 && input_key != '\0' && pc_count <= 5 && gbl.area2_ptr.field_67C <= 7);
+                } while (input_key != 0x45 && input_key != '\0' && pc_count <= 5 && gbl.area2_ptr.party_size <= 7);
 
                 ovr027.free_stringList(ref var_4);
             }
@@ -2078,7 +2078,7 @@ namespace engine
 
                         if (arg_2 == false)
                         {
-                            gbl.area2_ptr.field_67C--;
+                            gbl.area2_ptr.party_size--;
                         }
                     }
                 }
@@ -2097,7 +2097,7 @@ namespace engine
 
                     if (arg_2 == false)
                     {
-                        gbl.area2_ptr.field_67C--;
+                        gbl.area2_ptr.party_size--;
                     }
                 }
 
