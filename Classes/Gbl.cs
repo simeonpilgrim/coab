@@ -419,7 +419,7 @@ namespace Classes
         public static byte byte_1EE94;
         public static byte byte_1EE95;
         public static byte byte_1EE96;
-        public static byte byte_1EE97;
+        public static bool player_not_found; // byte_1EE97
         public static byte byte_1EE98;
         public static bool gameWon; // byte_1EE99
         public static byte byte_1EF9A;
@@ -531,7 +531,8 @@ namespace Classes
 
 
         public static byte command;
-        public static Player player_next_ptr;
+        public static List<Player> player_next_ptr;
+        //public static Player player_next_ptr;
         public static Item item_ptr;
         public static Player spell_target;
         public static Player[] sp_targets = new Player[256]; /* sp_target */ 

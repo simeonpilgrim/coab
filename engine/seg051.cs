@@ -49,13 +49,6 @@ namespace engine
             return OutString;
         }
 
-		internal static string Copy( int CopyLen, int StartAt, string InString, out string OutString )
-        {
-            OutString = Copy(CopyLen, StartAt, InString);
-
-            return OutString;
-        }
-
 
         internal static int Pos( string arg_0, string arg_4 )
         {

@@ -48,9 +48,8 @@ namespace engine
                 int var_3 = System.Math.Min(10, var_5);
 
                 int player_count = 0;
-                Player player = gbl.player_next_ptr;
 
-                while (player != null)
+                foreach (Player player in gbl.player_next_ptr)
                 {
                     if (gbl.affects_timed_out[player_count] == true)
                     {
@@ -127,7 +126,6 @@ namespace engine
                     }
 
                     player_count++;
-                    player = player.next_player;
                 }
 
                 if (var_5 > 10)
@@ -155,13 +153,9 @@ namespace engine
                     }
                     else
                     {
-                        Player player = gbl.player_next_ptr;
-
-                        while (player != null)
+                        foreach (Player player in gbl.player_next_ptr)
                         {
                             player.age += 1;
-
-                            player = player.next_player;
                         }
                     }
                 }
@@ -401,16 +395,13 @@ namespace engine
             if (gbl.rest_10_seconds >= (8 * 36))
             {
                 bool update_ui = false;
-                Player player = gbl.player_next_ptr;
 
-                while (player != null)
+                foreach (Player player in gbl.player_next_ptr)
                 {
                     if (ovr024.heal_player(0, 1, player) == true)
                     {
                         update_ui = true;
                     }
-
-                    player = player.next_player;
                 }
 
                 if (show_text == true)
@@ -512,17 +503,15 @@ namespace engine
 
         internal static void sub_58B4D()
         {
-            int var_1 = 1;
-            Player player = gbl.player_next_ptr;
-
-            while (player != null)
+            int index = 1;
+            foreach (Player player in gbl.player_next_ptr)
             {
-                if (gbl.unk_1D89D[var_1] > 0)
+                if (gbl.unk_1D89D[index] > 0)
                 {
-                    gbl.unk_1D89D[var_1] -= 1;
+                    gbl.unk_1D89D[index] -= 1;
                 }
 
-                if (gbl.unk_1D89D[var_1] == 0 &&
+                if (gbl.unk_1D89D[index] == 0 &&
                     player.spell_to_learn_count == 0)
                 {
                     bool var_7 = false;
@@ -533,11 +522,10 @@ namespace engine
                         var_2 = rest_memorize(ref var_7, player);
                     }
 
-                    gbl.unk_1D89D[var_1] = (byte)(var_2 * 3);
+                    gbl.unk_1D89D[index] = (byte)(var_2 * 3);
                 }
 
-                player = player.next_player;
-                var_1++;
+                index++;
             }
         }
 
@@ -550,9 +538,8 @@ namespace engine
             {
                 arg_0 = 0;
 
-                int var_1 = 1;
-                Player player = gbl.player_next_ptr;
-                while (player != null)
+                int index = 1;
+                foreach (Player player in gbl.player_next_ptr)
                 {
                     if (player.spell_to_learn_count > 0 &&
                         --player.spell_to_learn_count == 0)
@@ -565,11 +552,10 @@ namespace engine
                             var_2 = rest_memorize(ref var_7, player);
                         }
 
-                        gbl.unk_1D89D[var_1] = (byte)(var_2 * 2);
+                        gbl.unk_1D89D[index] = (byte)(var_2 * 2);
                     }
 
-                    player = player.next_player;
-                    var_1++;
+                    index++;
                 }
             }
         }
@@ -583,13 +569,11 @@ namespace engine
             bool resting_intetrupted = false;
 
             int var_B = 1;
-            Player var_5 = gbl.player_next_ptr;
-
-            while (var_5 != null)
+            
+            foreach(Player var_5 in gbl.player_next_ptr)
             {
                 gbl.unk_1D89D[var_B] = 0;
                 var_B++;
-                var_5 = var_5.next_player;
             }
 
             for (int i = 0; i < 0x48; i++)

@@ -6,8 +6,6 @@ namespace engine
     {
         internal static void sub_4708B(ref StringList arg_2, ref StringList arg_6, short arg_A, short arg_C, short arg_E, string arg_10)
         {
-            string var_475;
-            string var_275;
             byte var_164;
             string var_163;
             File var_112 = new File();
@@ -57,7 +55,7 @@ namespace engine
 
                     var_5D.s = var_90.fileName;
 
-                    if (seg051.Copy(4, 9, var_90.fileName, out var_275) == ".SAV")
+                    if (seg051.Copy(4, 9, var_90.fileName) == ".SAV")
                     {
                         var_163 = "from saved game " + var_90.fileName[7].ToString();
                     }
@@ -66,22 +64,17 @@ namespace engine
                         var_163 = string.Empty;
                     }
 
-                    var_55.s += seg051.Copy(15 - var_55.s.Length, 1, "         ", out var_275) + var_163;
+                    var_55.s += seg051.Copy(15 - var_55.s.Length, 1, "         ") + var_163;
 
-                    player_ptr = gbl.player_next_ptr;
-
-                    while (player_ptr != null)
+                    foreach(player_ptr in gbl.player_next_ptr)
                     {
-                        var_275 = seg051.Copy(15, 1, var_55.s, out var_275);
-
-                        var_475 = string.Format("{0,-15}", player_ptr.name);
+                        string var_275 = seg051.Copy(15, 1, var_55.s);
+                        string var_475 = string.Format("{0,-15}", player_ptr.name);
 
                         if (var_275 == var_475)
                         {
                             break;
                         }
-
-                        player_ptr = player_ptr.next_player;
                     }
 
                     if (var_164 > 0x7F ||
@@ -146,7 +139,6 @@ namespace engine
 
         internal static bool save()
         {
-            string var_12F;
             SearchRec var_2E;
             short var_3;
 
@@ -188,7 +180,7 @@ namespace engine
             {
                 do
                 {
-                    seg046.FINDFIRST(out var_2E, 16, seg051.Copy(gbl.SavePath.Length - 1, 1, gbl.SavePath, out var_12F));
+                    seg046.FINDFIRST(out var_2E, 16, seg051.Copy(gbl.SavePath.Length - 1, 1, gbl.SavePath));
                     var_3 = gbl.FIND_result;
 
                     if (var_3 != 0)
@@ -1531,36 +1523,17 @@ namespace engine
         {
             new_player.icon_id = 0xff;
 
-            if (gbl.player_next_ptr == null)
-            {
-                gbl.player_next_ptr = new_player;
-            }
-            else
-            {
-                Player tmp_player = gbl.player_next_ptr;
-
-                while (tmp_player.next_player != null)
-                {
-                    tmp_player = tmp_player.next_player;
-                }
-
-                tmp_player.next_player = new_player;
-            }
-
+            gbl.player_next_ptr.Add(new_player);
             gbl.player_ptr = new_player;
 
             bool[] icon_slot = new bool[8];
 
-            Player player = gbl.player_next_ptr;
-
-            while (player != null)
+            foreach (Player tmp in gbl.player_next_ptr)
             {
-                if (unk_4A5EA.MemberOf(player.icon_id) == true)
+                if (unk_4A5EA.MemberOf(tmp.icon_id) == true)
                 {
-                    icon_slot[player.icon_id] = true;
+                    icon_slot[tmp.icon_id] = true;
                 }
-
-                player = player.next_player;
             }
 
             Player var_10 = gbl.player_ptr;

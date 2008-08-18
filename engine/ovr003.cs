@@ -190,8 +190,6 @@ namespace engine
 
             Player player_ptr = gbl.player_next_ptr;
             byte var_8 = (byte)(player_index & 0x80);
-
-
             player_index = (byte)(player_index & 0x7f);
 
 
@@ -209,11 +207,11 @@ namespace engine
             if (player_ptr != null)
             {
                 gbl.player_ptr = player_ptr;
-                gbl.byte_1EE97 = 0;
+                gbl.player_not_found = false;
             }
             else
             {
-                gbl.byte_1EE97 = 1;
+                gbl.player_not_found = true;
             }
 
             if (var_8 != 0 &&
@@ -1036,19 +1034,16 @@ namespace engine
         {
             ovr008.vm_LoadCmdSets(2);
 
-            Player player = gbl.player_next_ptr;
-
             byte val_a = 0;
             byte val_b = 0;
 
-            while (player != null)
+            foreach (Player player in gbl.player_next_ptr)
             {
                 if (player._class == ClassId.ranger ||
                     player._class == ClassId.mc_c_r)
                 {
                     val_a = 1;
                 }
-                player = player.next_player;
             }
 
             ushort loc_a = gbl.cmd_opps[1].Word;
@@ -1515,16 +1510,12 @@ namespace engine
 
         internal static void CMD_Rob() /* sub_27F76*/
         {
-            object var_B;
-            Player player;
-            byte var_3;
-
             ovr008.vm_LoadCmdSets(3);
             byte allParty = (byte)ovr008.vm_GetCmdValue(1);
             byte var_2 = (byte)ovr008.vm_GetCmdValue(2);
 
             double percentage = (100 - var_2) / 100.0;
-            var_3 = (byte)ovr008.vm_GetCmdValue(3);
+            byte var_3 = (byte)ovr008.vm_GetCmdValue(3);
 
             if (allParty == 0)
             {
@@ -1533,14 +1524,11 @@ namespace engine
             }
             else
             {
-                player = gbl.player_next_ptr;
-
-                while (player != null)
+                foreach (Player player in gbl.player_next_ptr)
                 {
-                    var_B = player.itemsPtr;
+                    object var_B = player.itemsPtr;
                     ovr008.RobMoney(player, percentage);
                     ovr008.RobItems(player, var_3);
-                    player = player.next_player;
                 }
             }
         }
@@ -1893,25 +1881,23 @@ namespace engine
                 gbl.compare_flags[i] = false;
             }
 
-            gbl.compare_flags[1] = true;
-            Player player = gbl.player_next_ptr;
+            gbl.compare_flags[1] = true;       
 
-            while (player != null && found == false)
+            foreach( Player player in gbl.player_next_ptr)
             {
                 Item item = player.itemsPtr;
-
                 while (item != null && found == false)
                 {
                     if (item_type == item.type)
                     {
                         gbl.compare_flags[0] = true;
                         gbl.compare_flags[1] = false;
-                        found = true;
+                        break;
                     }
 
                     item = item.next;
                 }
-                player = player.next_player;
+                if( found ) break;
             }
         }
 

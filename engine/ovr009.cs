@@ -50,17 +50,15 @@ namespace engine
             while (end_combat == false)
             {
                 ovr025.count_teams();
-                Player player = gbl.player_next_ptr;
 
-                while (player != null)
+                foreach (Player tmp_player in gbl.player_next_ptr)
                 {
-                    ovr014.sub_3E000(player);
-
-                    player = player.next_player;
+                    ovr014.sub_3E000(tmp_player);
                 }
 
                 gbl.area2_ptr.field_596 = 0;
 
+                Player player;
                 find_next_delayed_player(out player);
 
                 while (player != null)
@@ -84,9 +82,7 @@ namespace engine
             int max_delay = 0;
             int max_roll = 0;
 
-            Player player = gbl.player_next_ptr;
-
-            while (player != null)
+            foreach (Player player in gbl.player_next_ptr)
             {
                 int roll = ovr024.roll_dice(100, 1);
 
@@ -103,8 +99,6 @@ namespace engine
 
                     output_player = player;
                 }
-
-                player = player.next_player;
             }
 
             if (max_delay == 0)
@@ -164,7 +158,6 @@ namespace engine
         {
             byte spell_id;
             Struct_1D183 var_D = new Struct_1D183();
-            Player player_ptr;
             char var_1;
 
             if (player.in_combat == true)
@@ -240,15 +233,12 @@ namespace engine
 
                                 case ' ':
                                     /* Turn off auto-fight. */
-                                    player_ptr = gbl.player_next_ptr;
-
-                                    while (player_ptr != null)
+                                    foreach (Player player_ptr in gbl.player_next_ptr)
                                     {
                                         if (player_ptr.field_F7 < 0x80)
                                         {
                                             player_ptr.quick_fight = QuickFight.False;
                                         }
-                                        player_ptr = player_ptr.next_player;
                                     }
                                     break;
                             }
@@ -283,11 +273,9 @@ namespace engine
 
                                 case (char)0x10:
                                     player.actions.delay = 20;
-                                    player_ptr = gbl.player_next_ptr;
-                                    while (player_ptr != null)
+                                    foreach (Player player_ptr in gbl.player_next_ptr)
                                     {
                                         sub_3432F(player_ptr);
-                                        player_ptr = player_ptr.next_player;
                                     }
                                     ovr027.redraw_screen();
                                     seg049.SysDelay(0x0C8);
@@ -399,10 +387,9 @@ namespace engine
             gbl.byte_1D8B7++;
             ovr014.calc_enemy_health_percentage();
 
-            Player player = gbl.player_next_ptr;
             byte var_6 = 1;
 
-            while (player != null)
+            foreach (Player player in gbl.player_next_ptr)
             {
                 ovr024.work_on_00(player, 0x13);
                 ovr024.in_poison_cloud(0, player);
@@ -418,7 +405,6 @@ namespace engine
 
                 }
                 var_6++;
-                player = player.next_player;
             }
 
             if (ovr025.bandage(false))

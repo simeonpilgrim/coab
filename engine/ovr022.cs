@@ -100,7 +100,6 @@ namespace engine
 
         internal static short sub_592AD(byte arg_0, string arg_2, short coinAvailable)
         {
-            string var_144;
             short var_44;
             short var_40;
             char var_3C;
@@ -149,7 +148,7 @@ namespace engine
                 else if (var_3C == 8 && var_3B.Length > 0)
                 {
                     int i = var_3B.Length - 1;
-                    var_3B = seg051.Copy(i, 1, var_3B, out var_144);
+                    var_3B = seg051.Copy(i, 1, var_3B);
 
                     seg041.displaySpaceChar(1, 0, 0x18, var_2C);
                     var_2C--;
@@ -192,10 +191,9 @@ namespace engine
 
         internal static void poolMoney()
         {
-            Player player = gbl.player_next_ptr;
             gbl.something01 = true;
 
-            while (player != null)
+            foreach(Player player in gbl.player_next_ptr)
             {
                 if (player.field_F7 == 0 ||
                     player.field_F7 == 0x0B3)
@@ -209,29 +207,21 @@ namespace engine
                         player.Money[i] = 0;
                     }
                 }
-
-                player = player.next_player;
             }
         }
 
 
         internal static int GetPartyCount() /* sub_595FF */
         {
-            int count;
-            Player player;
+            int count = 0;
 
-            player = gbl.player_next_ptr;
-            count = 0;
-
-            while (player != null)
+            foreach (Player player in gbl.player_next_ptr)
             {
                 if (player.field_F7 == 0 ||
                     player.field_F7 == 0xB3)
                 {
                     count++;
                 }
-
-                player = player.next_player;
             }
 
             return count;
@@ -243,10 +233,7 @@ namespace engine
             short[] money_remander;
             short[] money_each;
             short var_C;
-            Player var_4;
 
-
-            var_4 = gbl.player_next_ptr;
             int partySize = GetPartyCount();
 
             money_each = new short[7];
@@ -266,7 +253,7 @@ namespace engine
                 }
             }
 
-            while (var_4 != null)
+            foreach(Player var_4 in gbl.player_next_ptr)
             {
                 if (var_4.field_F7 < 0x80)
                 {
@@ -297,16 +284,13 @@ namespace engine
                         }
                     }
                 }
-
-                var_4 = var_4.next_player;
             }
 
             for (int var_29 = 6; var_29 >= 0; var_29--)
             {
                 if (money_remander[var_29] > 0)
                 {
-                    var_4 = gbl.player_next_ptr;
-                    while (var_4 != null)
+                    foreach(Player var_4 in gbl.player_next_ptr)
                     {
                         var_C = (short)(get_max_load(var_4) - var_4.weight);
 
@@ -325,8 +309,6 @@ namespace engine
                                 money_remander[var_29] = 0;
                             }
                         }
-
-                        var_4 = var_4.next_player;
                     }
                 }
             }

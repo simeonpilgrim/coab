@@ -791,15 +791,10 @@ namespace engine
                     break;
 
                 case 4:
-                    gbl.sp_targets[gbl.sp_target_count] = gbl.player_next_ptr;
-
-                    while (gbl.sp_targets[gbl.sp_target_count].next_player != null)
-                    {
-                        gbl.sp_targets[gbl.sp_target_count+1] = gbl.sp_targets[gbl.sp_target_count].next_player;
-
-                        gbl.sp_target_count++;
-                    }
-
+                    // prepend all players
+                    int count = gbl.player_next_ptr.Count;
+                    System.Array.Copy(gbl.player_next_ptr.ToArray(), 0, gbl.player_next_ptr, gbl.sp_target_count, count);
+                    gbl.sp_target_count += count;
                     break;
 
                 default:
@@ -1563,9 +1558,8 @@ namespace engine
         {
             gbl.byte_1AFDD = gbl.player_ptr.hit_point_current;
             gbl.sp_target_count = 0;
-            Player player = gbl.player_next_ptr;
 
-            while (player != null)
+            foreach (Player player in gbl.player_next_ptr)
             {
                 if (player.field_11A == 0x0e &&
                     gbl.byte_1AFDD >= player.hit_point_current)
@@ -1574,8 +1568,6 @@ namespace engine
                     gbl.sp_target_count++;
                     gbl.sp_targets[gbl.sp_target_count] = player;
                 }
-
-                player = player.next_player;
             }
 
             sub_5CF7F("is charmed", 0, 0, false, 0, gbl.spell_id);
@@ -1826,9 +1818,8 @@ namespace engine
             int var_3 = ovr025.spell_target_count(gbl.spell_id);
 
             gbl.sp_target_count = 0;
-            Player player = gbl.player_next_ptr;
 
-            while (player != null && var_3 > 0)
+            foreach (Player player in gbl.player_next_ptr)
             {
                 if (player.health_status == Status.dead &&
                     player.field_11A == 0)
@@ -1874,7 +1865,7 @@ namespace engine
                     }
                 }
 
-                player = player.next_player;
+                if (var_3 <= 0) break;
             }
         }
 

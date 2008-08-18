@@ -497,7 +497,6 @@ namespace engine
 
         static void ListItemNormal<T>(short arg_2, T bp_arg_10, int startY, int startX, byte bp_arg_1C, byte bp_arg_1E) where T : class, IListBase
         {
-            string var_106;
             byte var_5;
             T var_4;
 
@@ -507,14 +506,14 @@ namespace engine
 
             int copyLen = (byte)((getEndOfString(var_4.String()) - var_5));
 
-            seg051.Copy(copyLen, var_5, var_4.String(), out var_106);
+            string text = seg051.Copy(copyLen, var_5, var_4.String());
             if (var_4.Field29() != 0)
             {
-                seg041.displayString(var_106, 0, bp_arg_1E, startY + (arg_2 - gbl.word_1D5BC), startX + var_5);
+                seg041.displayString(text, 0, bp_arg_1E, startY + (arg_2 - gbl.word_1D5BC), startX + var_5);
             }
             else
             {
-                seg041.displayString(var_106, 0, bp_arg_1C, startY + (arg_2 - gbl.word_1D5BC), startX + var_5);
+                seg041.displayString(text, 0, bp_arg_1C, startY + (arg_2 - gbl.word_1D5BC), startX + var_5);
             }
         }
 

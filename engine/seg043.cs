@@ -89,12 +89,9 @@ namespace engine
 
         public static void DumpPlayerAffects()
         {
-            Player player = gbl.player_next_ptr;
-
-            while (player != null)
+            foreach (Player player in gbl.player_next_ptr)
             {
                 display_players_affects(player);
-                player = player.next_player;
             }
         }
 
