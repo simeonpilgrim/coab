@@ -117,16 +117,16 @@ namespace engine
             gbl.area_ptr.can_cast_spells = false;
 
             vm_LoadCmdSets(1);
-            gbl.word_1B2D3 = gbl.cmd_opps[1].Word;
+            gbl.vm_run_addr_1 = gbl.cmd_opps[1].Word;
 
             vm_LoadCmdSets(1);
-            gbl.word_1B2D5 = gbl.cmd_opps[1].Word;
+            gbl.vm_run_addr_2 = gbl.cmd_opps[1].Word;
 
             vm_LoadCmdSets(1);
-            gbl.word_1B2D7 = gbl.cmd_opps[1].Word;
+            gbl.vm_run_addr_3 = gbl.cmd_opps[1].Word;
 
             vm_LoadCmdSets(1);
-            gbl.word_1B2D9 = gbl.cmd_opps[1].Word;
+            gbl.vm_run_addr_4 = gbl.cmd_opps[1].Word;
 
             vm_LoadCmdSets(1);
             gbl.ecl_initial_entryPoint = gbl.cmd_opps[1].Word;
@@ -168,9 +168,9 @@ namespace engine
             ovr027.redraw_screen();
         }
 
-        internal static void load_mob(out Affect affect, out Item item, out Player player, byte mod_id)
+        internal static void load_mob(out Affect affect, out Item item, out Player player, int mod_id)
         {
-            ovr017.load_mob(out player, mod_id);
+            player = ovr017.load_mob(mod_id);
 
             item = player.itemsPtr;
             affect = player.affect_ptr;
@@ -602,7 +602,7 @@ namespace engine
             }
             else if (arg_4 == 0x33E)
             {
-                return_val = gbl.area2_ptr.field_67C;
+                return_val = gbl.area2_ptr.party_size;
             }
             else
             {

@@ -295,12 +295,10 @@ namespace engine
         }
 
 
-        internal static void rest_menu(out bool arg_0)
+        internal static void rest_menu(out bool action_interrupted)
         {
-            Player player;
-
             int var_6 = 0;
-            player = gbl.player_next_ptr;
+            Player player = gbl.player_next_ptr;
 
             while (player != null)
             {
@@ -320,7 +318,7 @@ namespace engine
 
             gbl.unk_1D890.field_2 = (ushort)(var_6 % 10);
 
-            arg_0 = ovr021.resting(true);
+            action_interrupted = ovr021.resting(true);
 
             gbl.unk_1D890.Clear();
 
@@ -1357,14 +1355,9 @@ namespace engine
         }
 
 
-        internal static void fix_menu(out bool arg_0)
+        internal static void fix_menu(out bool action_interrupted)
         {
-            RestTime rest_time;
-            int var_8;
-            int var_6;
-            int var_4;
-
-            arg_0 = false;
+            action_interrupted = false;
 
             if (total_hitpoints_lost() != 0)
             {
@@ -1378,13 +1371,16 @@ namespace engine
                 }
                 else
                 {
-                    rest_time = new RestTime(gbl.unk_1D890);
+                    RestTime rest_time = new RestTime(gbl.unk_1D890);
 
+                    int var_8;
+                    int var_6;
+                    int var_4;
                     sub_460ED(out var_8, out var_6, out var_4);
 
-                    arg_0 = ovr021.resting(false);
+                    action_interrupted = ovr021.resting(false);
 
-                    if (arg_0 == false)
+                    if (action_interrupted == false)
                     {
                         sub_45FDD(ref var_2, var_4, var_6, var_8);
                         sub_46280(ref var_2);
@@ -1399,7 +1395,7 @@ namespace engine
 
         static Set unk_463F4 = new Set(0x0009, new byte[] { 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x20 });
 
-        internal static void make_camp(out bool arg_0)
+        internal static void make_camp(out bool action_interrupted)
         {
             byte game_state_bkup = gbl.game_state;
             gbl.game_state = 2;
@@ -1415,10 +1411,10 @@ namespace engine
 
             seg041.displayString("The party makes camp...", 0, 10, 18, 1);
             cancel_spells();
-            arg_0 = false;
+            action_interrupted = false;
             char input_key = ' ';
 
-            while (arg_0 == false &&
+            while (action_interrupted == false &&
                 unk_463F4.MemberOf(input_key) == false)
             {
                 bool special_key;
@@ -1449,16 +1445,16 @@ namespace engine
 
                         case 'M':
                             gbl.byte_1D5BE = 1;
-                            magic_menu(ref arg_0);
+                            magic_menu(ref action_interrupted);
                             break;
 
                         case 'R':
                             gbl.byte_1D5BE = 1;
-                            rest_menu(out arg_0);
+                            rest_menu(out action_interrupted);
                             break;
 
                         case 'F':
-                            fix_menu(out arg_0);
+                            fix_menu(out action_interrupted);
                             break;
 
                         case 'A':

@@ -416,7 +416,7 @@ namespace Classes
         [DataOffset(0x125, DataType.Byte)]
         public byte field_125; // 0x125;
         [DataOffset(0x126, DataType.Byte)]
-        public byte field_126; // 0x126;
+        public byte mod_id; // 0x126; field_126
         [DataOffset(0x127, DataType.Int)]
         public int exp; // 0x127
         [DataOffset(0x12b, DataType.Byte)]

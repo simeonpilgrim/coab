@@ -796,7 +796,7 @@ namespace engine
 
                 player.actions = new Action();
 
-                if (var_5 > gbl.area2_ptr.field_67C)
+                if (var_5 > gbl.area2_ptr.party_size)
                 {
                     player.actions.field_13 = 1;
                 }

@@ -23,7 +23,13 @@ namespace Classes
         Scribe = 3,
         Learn = 4
     }
-    
+
+    public enum ImportSource
+    {
+        Curse = 0,
+        Pool = 1,
+        Hillsfar = 2
+    }
 
     public delegate void spellDelegate(out bool arg_0, QuickFight quick_fight, byte arg_6);
     public delegate void spellDelegate2();
@@ -235,9 +241,6 @@ namespace Classes
         public static byte byte_1AFDD;
         public static byte byte_1AFDE;
 
-        public static char byte_1B2BA;
-        public static byte byte_1B2C0;
-        public static bool DisplayFullTitleScreen; // byte_1B2C1
         public static byte last_game_state; // byte_1B2E4
         public static byte byte_1B2E9 = 0;
         public static byte byte_1B2EB;
@@ -252,13 +255,13 @@ namespace Classes
         public static SoundType soundType = SoundType.None; // byte_1BF14
         public static SoundType soundTypeBackup; // byte_1BF15
 
-        public static string byte_1BF1a = "Save\\";
+        public static string save_path = "Save\\"; // byte_1BF1A
 
-        public static string byte_1BF1A
+        public static string SavePath
         {
             get
             {
-                return byte_1BF1a;
+                return save_path;
             }
         }
         public static byte byte_1C01B;
@@ -465,10 +468,10 @@ namespace Classes
         public static short word_1AFE0;
 
 
-        public static ushort word_1B2D3;
-        public static ushort word_1B2D5;
-        public static ushort word_1B2D7;
-        public static ushort word_1B2D9;
+        public static ushort vm_run_addr_1; // word_1B2D3
+        public static ushort vm_run_addr_2; // word_1B2D5
+        public static ushort vm_run_addr_3; // word_1B2D7
+        public static ushort vm_run_addr_4; // word_1B2D9
         public static ushort ecl_initial_entryPoint; // word_1B2DB
         public static short rest_incounter_count;
         public static DaxBlock dword_1C8FC;
@@ -491,7 +494,7 @@ namespace Classes
         public static ushort word_1EE78;
         public static ushort word_1EE7A;
 
-        public static short word_1EFBC;
+        public static short FIND_result; // word_1EFBC
 
         public static object dword_1AAC8;
         public static Item[] unk_1AF18 = new Item[0x30]; // array 01-0x30; seg600:4C08
@@ -508,12 +511,6 @@ namespace Classes
         public static spellDelegate dword_1D5CA;
         public static DaxBlock missile_dax; /* */
         public static int exp_to_add;
-
-        //public class class_1D91A
-        //{
-        //    public ushort field_0;
-        //    public class_1D91A field_2;
-        //}
 
         public static Stack<ushort> vmCallStack = new Stack<ushort>(); // dword_1D91A
 
@@ -742,10 +739,7 @@ namespace Classes
         public readonly static sbyte[] MapDirectionXDelta = /*unk_189A6 seg600:2696*/ {  0,  1, 1, 1, 0, -1, -1, -1, 0 };
         public readonly static sbyte[] MapDirectionYDelta = /*unk_189AF seg600:269F*/ { -1, -1, 0, 1, 1,  1,  0, -1, 0 };
 
-        /// <summary>
-        /// 0 - curse, 1 - pool, 2 - hillsfar
-        /// </summary>
-        public static byte import_from;
+        public static ImportSource import_from;
 
         public static byte friends_count;
         public static byte foe_count;
@@ -772,8 +766,8 @@ namespace Classes
             new ClassStatsMin(9, 9, 0, 9, 0, 0), 
             new ClassStatsMin(0, 9, 0, 9, 0, 0) };
 
-        public static string unk_1B21A;
-        public static string unk_1B26A;
+        public static string exe_path; // unk_1B21A
+        public static string data_path; // unk_1B26A
 
 
         static Struct_1A35E stru_1A35E_0 = new Struct_1A35E(new SubStruct_1A35E[] {

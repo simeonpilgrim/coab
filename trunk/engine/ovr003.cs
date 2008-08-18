@@ -271,9 +271,9 @@ namespace engine
                 Player playerA = null;
                 Player playerC;
 
-                byte var_1 = (byte)ovr008.vm_GetCmdValue(1);
+                int mod_id = (byte)ovr008.vm_GetCmdValue(1);
 
-                ovr008.load_mob(out affect_ptr, out item_ptr, out playerC, var_1);
+                ovr008.load_mob(out affect_ptr, out item_ptr, out playerC, mod_id);
 
                 Player player_bkup = playerC.ShallowClone();
                 Item item_ptr2 = item_ptr;
@@ -1951,7 +1951,7 @@ namespace engine
             }
             else
             {
-                var_8 = ovr024.roll_dice(gbl.area2_ptr.field_67C, 1);
+                var_8 = ovr024.roll_dice(gbl.area2_ptr.party_size, 1);
             }
 
             if ((var_1 & 0x80) != 0)
@@ -2021,7 +2021,7 @@ namespace engine
                 for (int var_4 = 1; var_4 <= var_1; var_4++)
                 {
                     player03 = gbl.player_next_ptr;
-                    var_8 = ovr024.roll_dice(gbl.area2_ptr.field_67C, 1);
+                    var_8 = ovr024.roll_dice(gbl.area2_ptr.party_size, 1);
 
                     int var_A = 1;
 
@@ -2142,9 +2142,9 @@ namespace engine
         internal static void CMD_AddNPC() // sub_28DCA
         {
             ovr008.vm_LoadCmdSets(2);
-            byte var_5 = (byte)ovr008.vm_GetCmdValue(1);
+            int npc_id = (byte)ovr008.vm_GetCmdValue(1);
 
-            ovr017.sub_4A57D(var_5);
+            ovr017.load_npc(npc_id);
 
             byte var_6 = (byte)ovr008.vm_GetCmdValue(2);
 
@@ -2303,15 +2303,15 @@ namespace engine
 
         internal static void sub_29094()
         {
-            bool var_1 = false;
+            bool action_interrupted = false;
 
-            RunEclVm(gbl.word_1B2D7);
-            ovr016.make_camp(out var_1);
+            RunEclVm(gbl.vm_run_addr_3);
+            ovr016.make_camp(out action_interrupted);
 
-            if (var_1 == true)
+            if (action_interrupted == true)
             {
                 ovr025.load_pic();
-                RunEclVm(gbl.word_1B2D9);
+                RunEclVm(gbl.vm_run_addr_4);
             }
             gbl.can_draw_bigpic = true;
             ovr029.update_3D_view();
@@ -2600,11 +2600,11 @@ namespace engine
                     }
                     gbl.byte_1AB09 = 0;
 
-                    RunEclVm(gbl.word_1B2D3);
+                    RunEclVm(gbl.vm_run_addr_1);
 
                     if (gbl.byte_1AB09 == 0)
                     {
-                        RunEclVm(gbl.word_1B2D5);
+                        RunEclVm(gbl.vm_run_addr_2);
 
                         if (gbl.byte_1AB09 == 0)
                         {
@@ -2732,7 +2732,7 @@ namespace engine
                             gbl.can_draw_bigpic = true;
                             ovr029.update_3D_view();
 
-                            RunEclVm(gbl.word_1B2D5);
+                            RunEclVm(gbl.vm_run_addr_2);
 
                             if (gbl.byte_1AB09 != 0)
                             {
@@ -2752,7 +2752,7 @@ namespace engine
 
                     if (gbl.party_killed == false)
                     {
-                        RunEclVm(gbl.word_1B2D3);
+                        RunEclVm(gbl.vm_run_addr_1);
                     }
 
                     if (gbl.byte_1AB09 != 0)
@@ -2777,7 +2777,7 @@ namespace engine
 
                             gbl.byte_1EE8C = false;
                             gbl.byte_1EE8D = true;
-                            RunEclVm(gbl.word_1B2D5);
+                            RunEclVm(gbl.vm_run_addr_2);
                             if (gbl.byte_1AB09 != 0)
                             {
                                 sub_29677();

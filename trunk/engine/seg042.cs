@@ -25,56 +25,45 @@ namespace engine
 
 
 
-        internal static bool find_and_open_file(out File file_ptr, byte arg_4, string arg_6, string arg_A)
+        internal static bool find_and_open_file(out File file_ptr, bool arg_4, string full_file_name)
         {
-            string var_146;
-            string var_141;
-            string var_138;
-            string var_F4;
-            bool var_A4;
+            string file_name = System.IO.Path.GetFileName(full_file_name);
+            string dir_path = System.IO.Path.GetDirectoryName(full_file_name);
 
-            seg046.FSplit(out var_146, out var_141, out var_138, arg_A);
-
-            if (var_138.Length == 0)
+            if (dir_path.Length == 0)
             {
-                var_138 = gbl.unk_1B21A;
+                dir_path = gbl.exe_path;
             }
 
+            bool file_found;
             do
             {
+                file_found = file_find(System.IO.Path.Combine(dir_path, file_name));
 
-                var_A4 = file_find(System.IO.Path.Combine(var_138, var_141 + var_146));
-
-                if (var_A4 == false &&
-                    var_138 == gbl.unk_1B21A)
+                if (file_found == false &&
+                    dir_path == gbl.exe_path)
                 {
-                    var_F4 = gbl.unk_1B21A;
+                    string tmp_path = gbl.exe_path;
 
-                    gbl.unk_1B21A = gbl.unk_1B26A;
-                    gbl.unk_1B26A = var_F4;
-                    var_138 = gbl.unk_1B21A;
+                    gbl.exe_path = gbl.data_path;
+                    gbl.data_path = tmp_path;
 
-                    var_A4 = file_find(System.IO.Path.Combine(var_138, var_141 + var_146));
+                    dir_path = gbl.exe_path;
+
+                    file_found = file_find(System.IO.Path.Combine(dir_path, file_name));
                 }
 
-                if (var_A4 == false &&
-                    arg_4 == 0)
+                if (file_found == false &&
+                    arg_4 == false)
                 {
-                    if (var_138[0] < 0x43)
-                    {
-                        debug_display(arg_6 + gbl.byte_1B2BA.ToString() + ":");
-                    }
-                    else
-                    {
-                        debug_display("Couldn't find " + var_141 + var_146 + ". Check install.");
-                    }
+                    debug_display("Couldn't find " + file_name + ". Check install.");
                 }
-            } while (var_A4 == false && arg_4 == 0);
+            } while (file_found == false && arg_4 == false);
 
-            if (var_A4 == true)
+            if (file_found == true)
             {
                 file_ptr = new File();
-                file_ptr.Assign(System.IO.Path.Combine(var_138 ,var_141 + var_146));
+                file_ptr.Assign(System.IO.Path.Combine(dir_path ,file_name));
 
                 seg051.Reset(file_ptr);
             }
@@ -83,7 +72,7 @@ namespace engine
                 file_ptr = null;
             }
 
-            return var_A4;
+            return file_found;
         }
 
 
@@ -97,7 +86,7 @@ namespace engine
 
             seg046.FINDFIRST(out var_7D, 0, local_string);
 
-			if( gbl.word_1EFBC != 0 ||
+			if( gbl.FIND_result != 0 ||
 				local_string.Length == 0 )
 			{
 				ret_val = false;

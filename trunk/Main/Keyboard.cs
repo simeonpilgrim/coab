@@ -87,6 +87,11 @@ namespace Main
                 return 0x2d00;
             }
 
+            if (key == Keys.Escape)
+            {
+                return 0x1b;
+            }
+
             return 0x0020;
         }
     }

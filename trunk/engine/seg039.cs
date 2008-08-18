@@ -6,19 +6,9 @@ namespace engine
     {
         internal static void config_game( )
         {
-            string unk_1B1C4;
-            string unk_1B1BB;
-
-            seg046.FSplit(out unk_1B1C4, out unk_1B1BB, out gbl.unk_1B21A, seg046.getCurrentDirectory("*.exe"));
-            
-			gbl.unk_1B26A = gbl.unk_1B21A;
-			
-
-
-            gbl.byte_1B2BA = gbl.unk_1B26A[0];
-   
-            //char option = 'P'; /* force None */
-
+            gbl.exe_path = System.IO.Directory.GetCurrentDirectory();
+			gbl.data_path = gbl.exe_path;
+		   
             if (seg044.load_dump_bin()) // PC Speaker
 			{
 				gbl.soundType = SoundType.PC;
@@ -26,17 +16,6 @@ namespace engine
 			else // No Sounds
 			{
 				gbl.soundType = SoundType.None;
-			}
-
-            char option = 'F'; /* force normal play (vs. demo) */
-
-            if (option == 'F')
-			{
-				gbl.DisplayFullTitleScreen = true;
-			}
-			else
-			{
-				gbl.DisplayFullTitleScreen = false;
 			}
         }
     }

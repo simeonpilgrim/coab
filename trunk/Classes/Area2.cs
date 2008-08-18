@@ -75,7 +75,7 @@ namespace Classes
         [DataOffset(0x666, DataType.SWord)]
         public short field_666; // 0x666
         [DataOffset(0x67C, DataType.Byte)]
-        public byte field_67C; // 0x67c
+        public byte party_size; // 0x67c field_67C
         [DataOffset(0x67E, DataType.SWord)]
         public short field_67E; // 0x67e
         [DataOffset(0x6D8, DataType.SWord)]
