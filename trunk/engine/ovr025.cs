@@ -1,5 +1,6 @@
 using Classes;
 using System;
+using System.Collections.Generic;
 
 namespace engine
 {
@@ -255,8 +256,6 @@ namespace engine
 
         internal static void ItemDisplayNameBuild(bool display_new_name, bool displayReadied, byte arg_4, byte arg_6, Item item, Player player) /*id_item*/
         {
-            Player player_ptr;
-
             item.name = string.Empty;
 
             if (displayReadied == true)
@@ -272,16 +271,14 @@ namespace engine
             }
 
             bool detectMagic = false;
-            player_ptr = gbl.player_next_ptr;
 
-            while (player_ptr != null && detectMagic == false)
+            foreach (Player tmp_player in gbl.player_next_ptr)
             {
-                if (find_affect(Affects.detect_magic, player_ptr) == true)
+                if (find_affect(Affects.detect_magic, tmp_player) == true)
                 {
                     detectMagic = true;
+                    break;
                 }
-
-                player_ptr = player_ptr.next_player;
             }
 
             if (detectMagic == true &&
@@ -349,11 +346,9 @@ namespace engine
             int var_7;
             int y_pos;
             int x_pos;
-            Player player_ptr;
 
             if (gbl.game_state != 3)
             {
-
                 if (gbl.game_state == 0)
                 {
                     x_pos = 1;
@@ -370,30 +365,28 @@ namespace engine
 
                 y_pos += 2;
 
-                player_ptr = gbl.player_next_ptr;
-
-                while (player_ptr != null)
+                foreach (Player tmp_player in gbl.player_next_ptr)
                 {
                     seg037.draw8x8_clear_area(y_pos, 0x26, y_pos, x_pos);
 
-                    if (player_ptr == player)
+                    if (tmp_player == player)
                     {
-                        seg041.displayString(player_ptr.name, 0, 15, y_pos, x_pos);
+                        seg041.displayString(tmp_player.name, 0, 15, y_pos, x_pos);
                     }
                     else
                     {
-                        displayPlayerName(false, y_pos, x_pos, player_ptr);
+                        displayPlayerName(false, y_pos, x_pos, tmp_player);
                     }
 
-                    if (player_ptr.ac >= 0 && player_ptr.ac <= 0x32)
+                    if (tmp_player.ac >= 0 && tmp_player.ac <= 0x32)
                     {
                         var_7 = 1;
                     }
-                    else if (player_ptr.ac >= 0x33 && player_ptr.ac <= 0x3C)
+                    else if (tmp_player.ac >= 0x33 && tmp_player.ac <= 0x3C)
                     {
                         var_7 = 2;
                     }
-                    else if (player_ptr.ac >= 0x3D && player_ptr.ac <= 0x45)
+                    else if (tmp_player.ac >= 0x3D && tmp_player.ac <= 0x45)
                     {
                         var_7 = 1;
                     }
@@ -402,13 +395,13 @@ namespace engine
                         var_7 = 0;
                     }
 
-                    display_AC(y_pos, var_7 + 0x1F /*+0x20*/, player_ptr);
+                    display_AC(y_pos, var_7 + 0x1F /*+0x20*/, tmp_player);
 
-                    if (player_ptr.hit_point_current >= 0 && player_ptr.hit_point_current <= 9)
+                    if (tmp_player.hit_point_current >= 0 && tmp_player.hit_point_current <= 9)
                     {
                         var_7 = 2;
                     }
-                    else if (player_ptr.hit_point_current >= 10 && player_ptr.hit_point_current <= 99)
+                    else if (tmp_player.hit_point_current >= 10 && tmp_player.hit_point_current <= 99)
                     {
                         var_7 = 1;
                     }
@@ -417,9 +410,8 @@ namespace engine
                         var_7 = 0;
                     }
 
-                    display_hp(false, y_pos, var_7 + 0x24, player_ptr);
+                    display_hp(false, y_pos, var_7 + 0x24, tmp_player);
                     y_pos++;
-                    player_ptr = player_ptr.next_player;
                 }
 
                 seg037.draw8x8_clear_area(y_pos, 0x26, y_pos, x_pos);
@@ -538,7 +530,7 @@ namespace engine
             player.Item_ptr_03 = null;
             player.Item_ptr_04 = null;
 
-            bool var_8 = false ;
+            bool var_8 = false;
             player.field_14C = 0;
 
             Item item = player.itemsPtr;
@@ -1626,9 +1618,7 @@ namespace engine
             gbl.friends_count = 0;
             gbl.foe_count = 0;
 
-            Player player = gbl.player_next_ptr;
-
-            while (player != null)
+            foreach(Player player in gbl.player_next_ptr)
             {
                 if (player.in_combat == true)
                 {
@@ -1641,8 +1631,6 @@ namespace engine
                         gbl.foe_count++;
                     }
                 }
-
-                player = player.next_player;
             }
         }
 
@@ -1664,7 +1652,7 @@ namespace engine
                     Player tmp = gbl.player_array[gbl.SortedCombatantList[i].player_index];
                     //int steps = gbl.SortedCombatantList[i].steps;
                     //int index = gbl.SortedCombatantList[i].player_index;
-					
+
                     if (tmp.combat_team == opposite_team(player))
                     {
                         tmpCount++;
@@ -1941,7 +1929,7 @@ namespace engine
 
         internal static void selectAPlayer(ref Player player, bool showExit, string prompt)
         {
-            string text = showExit ? " Exit" : string.Empty;
+            string text = showExit ? " Exit" : "";
 
             char input_key = ' ';
             while (unk_68DFA.MemberOf(input_key) == false)
@@ -1952,37 +1940,22 @@ namespace engine
                 bool special_key;
 
                 input_key = ovr027.displayInput(out special_key, useOverlay, 1, 15, 10, 13, "Select" + text, prompt + " ");
-                Player player_ptr = player;
+
+                int index = gbl.player_next_ptr.IndexOf(player);
 
                 if (special_key == true)
                 {
                     if (input_key == 'O')
                     {
-                        player_ptr = player_ptr.next_player;
-
-                        if (player_ptr == null)
-                        {
-                            player_ptr = gbl.player_next_ptr;
-                        }
+                        //next
+                        index = (index + 1) % gbl.player_next_ptr.Count;
+                        player = gbl.player_next_ptr[index];
                     }
                     else if (input_key == 'G')
                     {
-                        player_ptr = gbl.player_next_ptr;
-
-                        if (player != gbl.player_next_ptr)
-                        {
-                            while (player_ptr.next_player != player)
-                            {
-                                player_ptr = player_ptr.next_player;
-                            }
-                        }
-                        else
-                        {
-                            while (player_ptr.next_player != null)
-                            {
-                                player_ptr = player_ptr.next_player;
-                            }
-                        }
+                        // previous
+                        index = (index - 1 + gbl.player_next_ptr.Count) % gbl.player_next_ptr.Count;
+                        player = gbl.player_next_ptr[index];
                     }
                 }
                 else if (showExit == true)
@@ -1990,11 +1963,9 @@ namespace engine
                     if (input_key == 'E' ||
                         input_key == 0)
                     {
-                        player_ptr = null;
+                        player = null;
                     }
                 }
-
-                player = player_ptr;
             }
         }
 
@@ -2169,27 +2140,24 @@ namespace engine
         {
             bool someone_bleeding = false;
 
-            Player player_ptr = gbl.player_next_ptr;
-
-            while (player_ptr != null)
+            foreach (Player player in gbl.player_next_ptr)
             {
-                if (player_ptr.actions.field_13 == 0 &&
-                    player_ptr.combat_team == CombatTeam.Ours &&
-                    player_ptr.health_status == Status.dying)
+                if (player.actions.field_13 == 0 &&
+                    player.combat_team == CombatTeam.Ours &&
+                    player.health_status == Status.dying)
                 {
                     someone_bleeding = true;
 
                     if (bandage_flag == true)
                     {
-                        player_ptr.health_status = Status.unconscious;
-                        player_ptr.actions.bleeding = 0;
+                        player.health_status = Status.unconscious;
+                        player.actions.bleeding = 0;
 
-                        DisplayPlayerStatusString(true, 10, "is bandaged", player_ptr);
+                        DisplayPlayerStatusString(true, 10, "is bandaged", player);
 
                         bandage_flag = false;
                     }
                 }
-                player_ptr = player_ptr.next_player;
             }
 
             return someone_bleeding;

@@ -414,7 +414,7 @@ namespace engine
                 }
             }
 
-            Player player_base = (found) ? arg_6.player : gbl.player_next_ptr;
+            Player player_base = (found) ? arg_6.player : gbl.player_next_ptr[0];
 
             return player_base;
         }

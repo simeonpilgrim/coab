@@ -96,7 +96,6 @@ namespace engine
 
         internal static void startGameMenu()
         {
-            string var_111;
             byte gameState;
             byte var_E;
             bool var_3;
@@ -160,7 +159,7 @@ namespace engine
                         {
                             seg041.displayString(menuStrings[loop_cx][0].ToString(), 0, 15, var_E + 12, 2);
 
-                            seg051.Copy(menuStrings[loop_cx].Length, 1, menuStrings[loop_cx], out var_111);
+                            string var_111 = seg051.Copy(menuStrings[loop_cx].Length, 1, menuStrings[loop_cx]);
                             seg041.displayString(var_111, 0, 10, var_E + 12, 3);
                             var_E++;
                         }

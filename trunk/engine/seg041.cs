@@ -235,7 +235,6 @@ namespace engine
 
         internal static string getUserInputString(byte inputLen, byte bgColor, byte fgColor, string prompt)
         {
-            string var_22B;
             char var_12B;
             string var_12A;
 
@@ -264,7 +263,7 @@ namespace engine
                 }
                 else if (var_12B == 8 && var_12A.Length > 0)
                 {
-                    var_12A = seg051.Copy(var_12A.Length - 1, 0, var_12A, out var_22B);
+                    var_12A = seg051.Copy(var_12A.Length - 1, 0, var_12A);
 
                     displaySpaceChar(1, 0, 0x18, var_2A);
                     var_2A -= 1;

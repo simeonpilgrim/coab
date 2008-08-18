@@ -365,28 +365,12 @@ namespace engine
 
         internal static byte find_gbl_player_index(Player arg_0)
         {
-            Player var_6;
-            byte var_2;
+            int index = gbl.player_next_ptr.IndexOf(arg_0);
 
+            if (index == -1)
+                index = gbl.player_next_ptr.Count;
 
-            var_6 = gbl.player_next_ptr;
-            bool plyr_found = false;
-            var_2 = 0;
-
-            while (var_6 != null && plyr_found == false)
-            {
-                if (var_6 == arg_0)
-                {
-                    plyr_found = true;
-                }
-                else
-                {
-                    var_2++;
-                    var_6 = var_6.next_player;
-                }
-            }
-
-            return var_2;
+            return (byte)index;
         }
 
 
@@ -487,12 +471,12 @@ namespace engine
                     return_val = 0x80;
                 }
 
-                if (gbl.byte_1EE97 == 1)
+                if (gbl.player_not_found == true)
                 {
                     return_val = 0;
                 }
 
-                gbl.byte_1EE97 = 0;
+                gbl.player_not_found = false;
             }
             else if (arg_4 == 0x10C)
             {

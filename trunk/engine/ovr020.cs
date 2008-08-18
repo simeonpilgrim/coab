@@ -1468,38 +1468,23 @@ namespace engine
 
         internal static void scroll_team_list(char input_key)
         {
-            Player player = gbl.player_next_ptr;
+            int index = gbl.player_next_ptr.IndexOf(gbl.player_ptr);
+
+            Player player = gbl.player_next_ptr[0];
 
             if (player != null)
             {
-                if (input_key == 'G')
+                if (input_key == 'O')
                 {
-                    if (player == gbl.player_ptr)
-                    {
-                        while (player.next_player != null)
-                        {
-                            player = player.next_player;
-                        }
-                    }
-                    else
-                    {
-                        while (player != null &&
-                            player.next_player != gbl.player_ptr)
-                        {
-                            player = player.next_player;
-                        }
-                    }
+                    //next
+                    index = (index + 1) % gbl.player_next_ptr.Count;
+                    player = gbl.player_next_ptr[index];
                 }
-                else if (input_key == 'O')
+                else if (input_key == 'G')
                 {
-                    if (gbl.player_ptr.next_player != null)
-                    {
-                        player = gbl.player_ptr.next_player;
-                    }
-                }
-                else
-                {
-                    player = gbl.player_next_ptr;
+                    // previous
+                    index = (index - 1 + gbl.player_next_ptr.Count) % gbl.player_next_ptr.Count;
+                    player = gbl.player_next_ptr[index];
                 }
             }
 
@@ -1644,7 +1629,7 @@ namespace engine
         internal static void sub_576D7(Player player)
         {
             ovr025.load_pic();
-            Player player_ptr = gbl.player_next_ptr;
+            Player player_ptr = gbl.player_next_ptr[0];
 
             ovr025.selectAPlayer(ref player_ptr, true, "Heal whom? ");
 
@@ -1683,7 +1668,7 @@ namespace engine
         internal static void paladin_cure_disease(Player player) /* sub_577EC */
         {
             ovr025.load_pic();
-            Player target = gbl.player_next_ptr;
+            Player target = gbl.player_next_ptr[0];
 
             ovr025.selectAPlayer(ref target, true, "Cure whom? ");
 
