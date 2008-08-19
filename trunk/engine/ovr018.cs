@@ -275,7 +275,7 @@ namespace engine
 
                         case 'S':
                             if (menuFlags[allow_save] == true &&
-                                gbl.player_next_ptr != null)
+                                gbl.player_next_ptr.Count > 0)
                             {
                                 ovr017.SaveGame();
                             }
@@ -285,7 +285,7 @@ namespace engine
                         case 'B':
                             if (menuFlags[allow_begin] == true)
                             {
-                                if ((gbl.player_next_ptr == null && gbl.inDemo == true) ||
+                                if ((gbl.player_next_ptr.Count > 0 && gbl.inDemo == true) ||
                                     gbl.area_ptr.field_3FA == 0 || gbl.inDemo == true)
                                 {
                                     gbl.game_state = gameState;
@@ -326,7 +326,7 @@ namespace engine
 
                                 if (inputkey == 'Y')
                                 {
-                                    if (gbl.player_next_ptr != null &&
+                                    if (gbl.player_next_ptr.Count > 0 &&
                                         gbl.byte_1C01B == 0)
                                     {
 
@@ -1965,7 +1965,7 @@ namespace engine
                         select_sl.s = "* " + select_sl.s;
                         pc_count = 0;
 
-                        if (gbl.player_next_ptr == null)
+                        if (gbl.player_next_ptr.Count == 0)
                         {
                             gbl.area2_ptr.party_size = 0;
                             ovr017.sub_4A60A(new_player);
@@ -1974,12 +1974,17 @@ namespace engine
                         }
                         else
                         {
-                            Player tmp_player = gbl.player_next_ptr;
                             ranger_count = 0;
-
-                            while (tmp_player != null &&
-                                (tmp_player.name != new_player.name || tmp_player.mod_id != new_player.mod_id))
+                            bool found = false;
+                            foreach (Player tmp_player in gbl.player_next_ptr)
                             {
+                                if (tmp_player.name == new_player.name &&
+                                    tmp_player.mod_id == new_player.mod_id)
+                                {
+                                    found = true;
+                                    break;
+                                }
+
                                 if (tmp_player.field_F7 < 0x80)
                                 {
                                     pc_count++;
@@ -2000,11 +2005,9 @@ namespace engine
                                     paladin_present = true;
                                     paladins_name = tmp_player.name;
                                 }
-
-                                tmp_player = tmp_player.next_player;
                             }
 
-                            if (tmp_player == null &&
+                            if (found == false &&
                                 ((new_player.field_F7 < 0x80 && pc_count < 6) ||
                                     (new_player.field_F7 > 0x7F && gbl.area2_ptr.party_size < 8)) &&
                                 (new_player.paladin_lvl == 0 || evil_present == false) &&
@@ -2050,59 +2053,32 @@ namespace engine
         }
 
 
-        internal static void free_players(bool free_icon, bool arg_2)
+        internal static void free_players(bool free_icon, bool leave_party_size)
         {
-            if (gbl.player_next_ptr != null)
+            int index = gbl.player_next_ptr.IndexOf(gbl.player_ptr);
+
+            if (index >= 0)
             {
-                Player player = gbl.player_next_ptr;
+                gbl.player_next_ptr.RemoveAt(index);
 
-                if (player != gbl.player_ptr)
+                if (free_icon)
                 {
-                    while (player.next_player != gbl.player_ptr && player.next_player != null)
-                    {
-                        player = player.next_player;
-                    }
+                    ovr034.free_icon(gbl.player_ptr.icon_id);
+                }
+                if (leave_party_size == false)
+                {
+                    gbl.area2_ptr.party_size--;
+                }
+                free_player(ref gbl.player_ptr);
 
-                    if (player.next_player != null)
-                    {
-                        if (free_icon)
-                        {
-                            ovr034.free_icon(gbl.player_ptr.icon_id);
-                        }
-
-                        player.next_player = gbl.player_ptr.next_player;
-
-                        free_player(ref gbl.player_ptr);
-                        gbl.player_ptr = player;
-
-                        if (arg_2 == false)
-                        {
-                            gbl.area2_ptr.party_size--;
-                        }
-                    }
+                index = index > 0 ? index - 1 : 0;
+                if (gbl.player_next_ptr.Count > 0)
+                {
+                    gbl.player_ptr = gbl.player_next_ptr[index];
                 }
                 else
                 {
-                    if (free_icon)
-                    {
-                        ovr034.free_icon(gbl.player_ptr.icon_id);
-                    }
-
-                    gbl.player_next_ptr = gbl.player_ptr.next_player;
-                    player = gbl.player_ptr.next_player;
-
-                    free_player(ref gbl.player_ptr);
-                    gbl.player_ptr = player;
-
-                    if (arg_2 == false)
-                    {
-                        gbl.area2_ptr.party_size--;
-                    }
-                }
-
-                if (gbl.player_ptr == null)
-                {
-                    gbl.player_ptr = gbl.player_next_ptr;
+                    gbl.player_ptr = null;
                 }
             }
         }

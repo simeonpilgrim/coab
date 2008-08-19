@@ -1642,7 +1642,7 @@ namespace engine
                 int dx = player.field_114 * ovr026.sub_6B3D1(player);
                 int ax = (player.paladin_lvl + dx) * 2;
 
-                if (ovr024.heal_player(0, (byte)ax, player_ptr) == true)
+                if (ovr024.heal_player(0, ax, player_ptr) == true)
                 {
                     ovr025.string_print01(player_ptr.name + " feels better");
                 }

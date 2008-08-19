@@ -793,7 +793,7 @@ namespace engine
                 case 4:
                     // prepend all players
                     int count = gbl.player_next_ptr.Count;
-                    System.Array.Copy(gbl.player_next_ptr.ToArray(), 0, gbl.player_next_ptr, gbl.sp_target_count, count);
+                    System.Array.Copy(gbl.player_next_ptr.ToArray(), 0, gbl.sp_targets, gbl.sp_target_count, count);
                     gbl.sp_target_count += count;
                     break;
 
@@ -2488,7 +2488,7 @@ namespace engine
         internal static void sub_5FF6D()
         {
             if (gbl.sp_target_count != 0 &&
-                ovr024.heal_player(0, (byte)(ovr024.roll_dice(8, 2) + 1), gbl.sp_targets[1]) == true)
+                ovr024.heal_player(0, ovr024.roll_dice(8, 2) + 1, gbl.sp_targets[1]) == true)
             {
                 ovr025.describeHealing(gbl.sp_targets[1]);
             }
@@ -2526,7 +2526,7 @@ namespace engine
 
         internal static void cast_heal()
         {
-            if (ovr024.heal_player(0, (byte)(ovr024.roll_dice(4, 2) + 2), gbl.sp_targets[1]) == true)
+            if (ovr024.heal_player(0, ovr024.roll_dice(4, 2) + 2, gbl.sp_targets[1]) == true)
             {
                 ovr025.sub_6818A("is Healed", true, gbl.sp_targets[1]);
             }
@@ -2624,7 +2624,7 @@ namespace engine
         internal static void sub_603F0()
         {
             if (gbl.sp_target_count != 0 &&
-                ovr024.heal_player(0, (byte)(ovr024.roll_dice(8, 3) + 3), gbl.sp_targets[1]) == true)
+                ovr024.heal_player(0, ovr024.roll_dice(8, 3) + 3, gbl.sp_targets[1]) == true)
             {
                 ovr025.describeHealing(gbl.sp_targets[1]);
             }
@@ -3168,7 +3168,7 @@ namespace engine
 
         internal static void cast_heal2()
         {
-            if (ovr024.heal_player(0, (byte)(ovr024.roll_dice(4, 2) + 2), gbl.sp_targets[1]) == true)
+            if (ovr024.heal_player(0, ovr024.roll_dice(4, 2) + 2, gbl.sp_targets[1]) == true)
             {
                 ovr025.sub_6818A("is Healed", true, gbl.sp_targets[1]);
             }

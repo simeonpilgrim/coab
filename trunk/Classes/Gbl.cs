@@ -211,7 +211,7 @@ namespace Classes
         public static byte byte_1AB0B;
         public static byte byte_1AB0C;
         public static byte byte_1AB0D;
-        public static byte byte_1AB0E;
+        public static byte byte_1AB0E; //TODO number of monsters?
         public static byte byte_1AB14 = 0x73;
         public static bool byte_1AB16;
         public static byte byte_1AB18;
@@ -531,7 +531,7 @@ namespace Classes
 
 
         public static byte command;
-        public static List<Player> player_next_ptr;
+        public static List<Player> player_next_ptr = new List<Player>();
         //public static Player player_next_ptr;
         public static Item item_ptr;
         public static Player spell_target;

@@ -10,7 +10,6 @@ namespace engine
             string var_163;
             File var_112 = new File();
             SearchRec var_90;
-            Player player_ptr;
             StringList var_61 = null;
             StringList var_5D;
             StringList var_59 = null;
@@ -66,19 +65,21 @@ namespace engine
 
                     var_55.s += seg051.Copy(15 - var_55.s.Length, 1, "         ") + var_163;
 
-                    foreach(player_ptr in gbl.player_next_ptr)
+                    bool found = false;
+                    foreach(Player player_ptr in gbl.player_next_ptr)
                     {
                         string var_275 = seg051.Copy(15, 1, var_55.s);
                         string var_475 = string.Format("{0,-15}", player_ptr.name);
 
                         if (var_275 == var_475)
                         {
+                            found = true;
                             break;
                         }
                     }
 
                     if (var_164 > 0x7F ||
-                        player_ptr != null)
+                        found == true)
                     {
                         var_55 = null;
                         var_5D = null;
@@ -256,15 +257,15 @@ namespace engine
         {
             seg042.set_game_area(1);
 
-            Player player_ptr = gbl.player_ptr;
+            Player player = gbl.player_ptr;
 
             char[] unk_16827 = new char[] { '\0', 'S', 'T' };
 
-            ovr034.chead_cbody_comspr_icon(11, player_ptr.head_icon, "CHEAD" + unk_16827[player_ptr.icon_size].ToString());
-            ovr034.chead_cbody_comspr_icon(player_ptr.icon_id, player_ptr.weapon_icon, "CBODY" + unk_16827[player_ptr.icon_size].ToString());
+            ovr034.chead_cbody_comspr_icon(11, player.head_icon, "CHEAD" + unk_16827[player.icon_size].ToString());
+            ovr034.chead_cbody_comspr_icon(player.icon_id, player.weapon_icon, "CBODY" + unk_16827[player.icon_size].ToString());
 
-            MergeIcons(gbl.combat_icons[player_ptr.icon_id, 0], gbl.combat_icons[11, 0]);
-            MergeIcons(gbl.combat_icons[player_ptr.icon_id, 1], gbl.combat_icons[11, 1]);
+            MergeIcons(gbl.combat_icons[player.icon_id, 0], gbl.combat_icons[11, 0]);
+            MergeIcons(gbl.combat_icons[player.icon_id, 1], gbl.combat_icons[11, 1]);
 
             if (recolour)
             {
@@ -279,12 +280,12 @@ namespace engine
 
                 for (int i = 0; i < 6; i++)
                 {
-                    var_23[gbl.default_icon_colours[i]] = (byte)(player_ptr.icon_colours[i] & 0x0F);
-                    var_23[gbl.default_icon_colours[i] + 8] = (byte)((player_ptr.icon_colours[i] & 0xF0) >> 4);
+                    var_23[gbl.default_icon_colours[i]] = (byte)(player.icon_colours[i] & 0x0F);
+                    var_23[gbl.default_icon_colours[i] + 8] = (byte)((player.icon_colours[i] & 0xF0) >> 4);
                 }
 
-                seg040.DaxBlockRecolor(gbl.combat_icons[player_ptr.icon_id, 0], 0, 0, var_23, var_13);
-                seg040.DaxBlockRecolor(gbl.combat_icons[player_ptr.icon_id, 1], 0, 0, var_23, var_13);
+                seg040.DaxBlockRecolor(gbl.combat_icons[player.icon_id, 0], 0, 0, var_23, var_13);
+                seg040.DaxBlockRecolor(gbl.combat_icons[player.icon_id, 1], 0, 0, var_23, var_13);
             }
 
             ovr034.free_icon(11);
@@ -1587,7 +1588,7 @@ namespace engine
                         stop_loop = input_key == 0x00; // Escape
                         save_letter = '\0';
 
-                        if (save_game_keys.MemberOf(save_letter) == true)
+                        if (save_game_keys.MemberOf(input_key) == true)
                         {
                             save_letter = input_key;
                             string file_name = gbl.SavePath + "savgam" + save_letter.ToString() + ".dat";
@@ -1693,18 +1694,15 @@ namespace engine
                 }
             }
 
-            Player tmp_player = gbl.player_next_ptr;
-
-            while (tmp_player != null)
+            foreach (Player tmp_player in gbl.player_next_ptr)
             {
                 remove_player_file(tmp_player);
-                tmp_player = tmp_player.next_player;
             }
 
-            gbl.player_ptr = gbl.player_next_ptr;
-
-            while (gbl.player_ptr != null)
+            foreach (Player tmp_player in gbl.player_next_ptr)
             {
+                gbl.player_ptr = tmp_player;
+
                 if (gbl.player_ptr.field_F7 < 0x80)
                 {
                     LoadPlayerCombatIcon(true);
@@ -1713,11 +1711,10 @@ namespace engine
                 {
                     ovr034.chead_cbody_comspr_icon(gbl.player_ptr.icon_id, gbl.player_ptr.mod_id, "CPIC");
                 }
-
-                gbl.player_ptr = gbl.player_ptr.next_player;
             }
+        
 
-            gbl.player_ptr = gbl.player_next_ptr;
+            gbl.player_ptr = gbl.player_next_ptr[0];
 
             gbl.game_area = gbl.area2_ptr.game_area;
 
@@ -1756,60 +1753,46 @@ namespace engine
 
             gbl.game_state = 0;
         }
-             
-   
+ 
         
-
-        static short save_space_required()
+        static int save_space_required()
         {
-            short var_10;
-            Affect var_E;
-            Item var_A;
-            Player var_6;
-
-            var_10 = 0;
-            var_6 = gbl.player_next_ptr;
-
-            while (var_6 != null)
+            int size = 0;
+            foreach (Player var_6 in gbl.player_next_ptr)
             {
-                var_10 += 0x1A6;
+                size += 0x1A6;
 
-                var_A = var_6.itemsPtr;
-
-                while (var_A != null)
+                Item item = var_6.itemsPtr;
+                while (item != null)
                 {
-                    var_10 += 0x3F;
+                    size += Item.StructSize;
 
-                    var_A = var_A.next;
+                    item = item.next;
                 }
 
-                var_E = var_6.affect_ptr;
-
-                while (var_E != null)
+                Affect affect = var_6.affect_ptr;
+                while (affect != null)
                 {
-                    var_10 += 9;
+                    size += Affect.StructSize;
 
-                    var_E = var_E.next;
+                    affect = affect.next;
                 }
-
-                var_6 = var_6.next_player;
             }
 
-            return var_10;
+            return size;
         }
+
 
         static Set unk_4AEA0 = new Set (0x000a , new byte[ ] { 0x01, 0x00, 0x00, 0x00 , 0x00 , 0x00 , 0x00 , 0x00, 0xFE, 0x07 });
         static Set unk_4AEEF = new Set(0x0003, new byte[] { 0x05, 0x00, 0x04 });
 
         internal static void SaveGame()
         {
-            short var_1FE;
             short var_1FC;
             char var_1FA;
             bool var_1F9;
             string var_1CF;
             Player player_ptr;
-            byte var_1C9;
             File save_file = new File();
             string[] var_171 = new string[9];
 
@@ -1825,18 +1808,19 @@ namespace engine
 
                 if (save() == true)
                 {
+                    int space_required;
                     if (seg042.file_find(gbl.SavePath + "savgam" + var_1FA + ".dat") == true)
                     {
-                        var_1FE = 0;
+                        space_required = 0;
                     }
                     else
                     {
-                        var_1FE = 0x3208;
+                        space_required = 0x3208;
                     }
 
-                    var_1FE = save_space_required();
+                    space_required += save_space_required();
 
-                    if (var_1FE > seg046.getDiskSpace((byte)(char.ToUpper(gbl.SavePath[0]) - 0x40)))
+                    if (space_required > seg046.getDiskSpace((byte)(char.ToUpper(gbl.SavePath[0]) - 0x40)))
                     {
                         seg041.displayAndDebug("Can't save.  No room on this disk.", 0, 14);
                         return;
@@ -1896,38 +1880,29 @@ namespace engine
 
                     seg051.BlockWrite(12, data, save_file);
 
-                    var_1C9 = 0;
-                    player_ptr = gbl.player_next_ptr;
-
-                    while (player_ptr != null)
+                    int party_count = 0;
+                    foreach (Player tmp_player in gbl.player_next_ptr)
                     {
-                        var_1C9++;
- 
-                        var_171[var_1C9 - 1] = "CHRDAT" + var_1FA + var_1C9.ToString();
-
-                        player_ptr = player_ptr.next_player;
+                        party_count++;
+                        var_171[party_count - 1] = "CHRDAT" + var_1FA + party_count.ToString();
                     }
 
-                    data[0] = var_1C9;
+                    data[0] = (byte)party_count;
                     seg051.BlockWrite(1, data, save_file);
 
-                    for (int i = 0; i < var_1C9; i++)
+                    for (int i = 0; i < party_count; i++)
                     {
                         Sys.StringToArray(data, 0x29*i, 0x29, var_171[i]);
                     }
                     seg051.BlockWrite(0x148, data, save_file);
                     seg051.Close(save_file);
-                    player_ptr = gbl.player_next_ptr;
-                    var_1C9 = 0;
-
-                    while (player_ptr != null)
+                    
+                    party_count = 0;
+                    foreach (Player tmp_player in gbl.player_next_ptr)
                     {
-                        var_1C9++;
-                        seg051.Str(1, out var_1CF, 0, var_1C9);
-
-                        sub_47DFC("CHRDAT" + var_1FA + var_1CF, player_ptr);
-                        remove_player_file(player_ptr);
-                        player_ptr = player_ptr.next_player;
+                        party_count++;
+                        sub_47DFC("CHRDAT" + var_1FA + party_count.ToString(), tmp_player);
+                        remove_player_file(tmp_player);
                     }
 
                     gbl.byte_1C01B = 1;

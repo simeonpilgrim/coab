@@ -1,4 +1,5 @@
 using Classes;
+using System.Collections.Generic;
 
 namespace engine
 {
@@ -16,11 +17,9 @@ namespace engine
                  * Add the money from each monster
                  */
                 int total = 0;
-
-                Player player = gbl.player_next_ptr;
                 int var_12 = 0;
 
-                while (player != null)
+                foreach (Player player in gbl.player_next_ptr)
                 {
                     Item item = player.itemsPtr;
 
@@ -57,7 +56,6 @@ namespace engine
                             }
                         }
                     }
-                    player = player.next_player;
                 }
 
                 total += gbl.pooled_money[money.copper] / 200;
@@ -89,17 +87,12 @@ namespace engine
 
         internal static void addExp(int exp_to_add)
         {
-            int new_exp;
-            Player player;
-
-            player = gbl.player_next_ptr;
-
-            while (player != null)
+            foreach (Player player in gbl.player_next_ptr)
             {
                 if (player.in_combat == true &&
                     player.health_status != Status.animated)
                 {
-                    new_exp = exp_to_add;
+                    int new_exp = exp_to_add;
 
                     switch (player._class)
                     {
@@ -168,8 +161,6 @@ namespace engine
 
                     player.exp += new_exp;
                 }
-
-                player = player.next_player;
             }
         }
 
@@ -200,22 +191,24 @@ namespace engine
             gbl.byte_1EE81 = 0;
             gbl.party_killed = true;
             gbl.party_fled = false;
-            Player player = gbl.player_next_ptr;
 
-            while (player != null && (player.actions == null || player.actions.field_12 != 1))
+            foreach (Player player in gbl.player_next_ptr)
             {
+                if (player.actions != null &&
+                    player.actions.field_12 == 1)
+                {
+                    break;
+                }
+
                 if (player.health_status == Status.running)
                 {
                     gbl.party_fled = true;
                 }
-
-                player = player.next_player;
             }
 
-            player = gbl.player_next_ptr;
             bool no_exp = false;
 
-            while (player != null && no_exp == false)
+            foreach (Player player in gbl.player_next_ptr)
             {
                 if (player.in_combat == true ||
                     player.health_status == Status.unconscious ||
@@ -223,9 +216,9 @@ namespace engine
                     player.health_status == Status.dying)
                 {
                     no_exp = true;
+                    break;
                 }
 
-                player = player.next_player;
             }
 
             if (gbl.combat_type == gbl.combatType.duel ||
@@ -235,13 +228,17 @@ namespace engine
             }
 
             gbl.byte_1EE86 = 0;
-            player = gbl.player_next_ptr;
 
             if (gbl.combat_type == gbl.combatType.normal ||
                 gbl.inDemo == false)
             {
-                while (player != null && (player.actions == null || player.actions.field_13 != 1))
+                foreach (Player player in gbl.player_next_ptr)
                 {
+                    if (player.actions != null && player.actions.field_13 == 1)
+                    {
+                        break;
+                    }
+
                     if (player.health_status == Status.running ||
                         player.health_status == Status.animated ||
                         player.health_status == Status.okey)
@@ -270,7 +267,6 @@ namespace engine
                     {
                         ovr024.remove_affect(null, affects_array[i], player);
                     }
-                    player = player.next_player;
                 }
 
                 if (gbl.byte_1EE86 != 0)
@@ -279,12 +275,18 @@ namespace engine
                     addExp(gbl.exp_to_add);
                 }
 
-                player = gbl.player_next_ptr;
 
                 if (gbl.party_killed == false)
                 {
-                    while (player != null && (player.actions == null || player.actions.field_13 != 1))
+                    List<Player> to_remove = new List<Player>();
+
+                    foreach (Player player in gbl.player_next_ptr)
                     {
+                        if (player.actions != null && player.actions.field_13 == 1)
+                        {
+                            break;
+                        }
+
                         if (gbl.party_fled == false)
                         {
                             switch (player.health_status)
@@ -321,7 +323,6 @@ namespace engine
                                     }
                                     break;
                             }
-                            player = player.next_player;
                         }
                         else
                         {
@@ -331,35 +332,41 @@ namespace engine
                             {
                                 player.health_status = Status.okey;
                                 player.in_combat = true;
-                                player = player.next_player;
+
                             }
                             else
                             {
-                                gbl.player_ptr = player;
-                                player = player.next_player;
-                                ovr018.free_players(true, false);
+                                to_remove.Add(player);
                             }
                         }
+                    }
+
+                    foreach (Player player in to_remove)
+                    {
+                        gbl.player_ptr = player;
+                        ovr018.free_players(true, false);
                     }
                 }
                 else
                 {
-                    player = gbl.player_next_ptr;
-                    bool stop_loop = false;
-
-                    while (player != null && stop_loop == false)
+                    List<Player> to_remove = new List<Player>();
+                    foreach (Player player in gbl.player_next_ptr)
                     {
-                        if (player.actions.field_13 != 1)
+                        if (player.actions != null &&
+                            player.actions.field_13 != 1)
                         {
-                            gbl.player_ptr = player;
-                            ovr018.free_players(true, false);
+                            to_remove.Add(player);
                         }
                         else
                         {
-                            stop_loop = true;
+                            break;
                         }
+                    }
 
-                        player = player.next_player;
+                    foreach (Player player in to_remove)
+                    {
+                        gbl.player_ptr = player;
+                        ovr018.free_players(true, false);
                     }
 
                     gbl.area2_ptr.party_size = 0;
@@ -367,8 +374,7 @@ namespace engine
             }
             else
             {
-                player = gbl.player_next_ptr;
-                while (player != null)
+                foreach (Player player in gbl.player_next_ptr)
                 {
                     if (player.in_combat == true &&
                         player.health_status == Status.okey &&
@@ -378,13 +384,9 @@ namespace engine
                         calc_battle_exp(ref gbl.exp_to_add);
                         addExp(gbl.exp_to_add);
                     }
-
-                    player = player.next_player;
                 }
-
-                player = gbl.player_next_ptr;
-
-                while (player != null)
+                
+                foreach (Player player in gbl.player_next_ptr)
                 {
                     if (player.health_status == Status.okey ||
                         player.health_status == Status.animated)
@@ -396,8 +398,6 @@ namespace engine
                     {
                         player.health_status = Status.unconscious;
                     }
-
-                    player = player.next_player;
                 }
             }
         }
@@ -733,12 +733,13 @@ namespace engine
         internal static void sub_2E3C7()
         {
             gbl.area2_ptr.field_590 = 0;
-            Player player = gbl.player_next_ptr;
 
-            while (player != null)
+            Dictionary<Player, bool> to_remove = new Dictionary<Player, bool>();
+            foreach (Player player in gbl.player_next_ptr)
             {
-                if ((player.actions != null && player.actions.field_13 == 1) ||
-                    player.combat_team == CombatTeam.Enemy)
+                bool check = (player.actions != null && player.actions.field_13 == 1);
+                
+                if (check || player.combat_team == CombatTeam.Enemy)
                 {
                     gbl.byte_1AB14 = 1;
                     if (player.in_combat == false)
@@ -746,13 +747,7 @@ namespace engine
                         gbl.area2_ptr.field_590++;
                     }
 
-                    Player next_player = player.next_player;
-
-                    gbl.player_ptr = player;
-
-                    ovr018.free_players(true, (player.actions != null && player.actions.field_13 == 1));
-
-                    player = next_player;
+                    to_remove.Add(player, check);
                 }
                 else
                 {
@@ -760,12 +755,16 @@ namespace engine
                     {
                         player.actions = null;
                     }
-
-                    player = player.next_player;
                 }
             }
 
-            gbl.player_ptr = gbl.player_next_ptr;
+            foreach (KeyValuePair<Player, bool> kvp in to_remove)
+            {
+                gbl.player_ptr = kvp.Key;
+                ovr018.free_players(true, kvp.Value);
+            }
+
+            gbl.player_ptr = gbl.player_next_ptr[0];
         }
 
 
@@ -776,8 +775,7 @@ namespace engine
             int npcParts = 0;
             int totalParts = 0;
 
-            Player player = gbl.player_next_ptr;
-            while (player != null)
+            foreach (Player player in gbl.player_next_ptr)
             {
                 if (player.field_F7 > 0x7f &&
                     player.health_status == Status.okey)
@@ -789,8 +787,6 @@ namespace engine
                 {
                     totalParts++;
                 }
-
-                player = player.next_player;
             }
 
             if (npcParts > 0)
@@ -809,10 +805,9 @@ namespace engine
             if (treasureTaken)
             {
                 seg037.draw8x8_outer_frame();
-                player = gbl.player_next_ptr;
                 int yCol = 0;
 
-                while (player != null)
+                foreach (Player player in gbl.player_next_ptr)
                 {
                     if (player.field_F7 > 0x7f &&
                         player.health_status == Status.okey &&
@@ -824,8 +819,6 @@ namespace engine
 
                         yCol += 2;
                     }
-
-                    player = player.next_player;
                 }
 
                 bool tmpBool;
@@ -836,8 +829,6 @@ namespace engine
 
         internal static void sub_2E7A2()
         {
-            Player player;
-
             gbl.area2_ptr.field_58E = 0;
             gbl.byte_1AB14 = 0;
 
@@ -852,12 +843,9 @@ namespace engine
 
             if (gbl.inDemo == false)
             {
-                player = gbl.player_next_ptr;
-
-                while (player != null)
+                foreach (Player player in gbl.player_next_ptr)
                 {
                     ovr025.reclac_player_values(player);
-                    player = player.next_player;
                 }
 
                 if (gbl.party_killed == false ||

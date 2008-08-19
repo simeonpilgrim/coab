@@ -168,37 +168,31 @@ namespace engine
 
         internal static bool any_player_has_skill(Skills skill)
         {
-            bool has_skill;
-            Player player_ptr;
             int s = (int)skill;
 
-            has_skill = false;
-            player_ptr = gbl.player_next_ptr;
-
-            while (player_ptr != null &&
-                    has_skill == false)
+            foreach (Player player in gbl.player_next_ptr)
             {
-                if (player_ptr.class_lvls[s] > 0 ||
-                    (player_ptr.Skill_B_lvl[s] > 0 &&
-                      ovr026.sub_6B3D1(player_ptr) != 0))
+                if (player.class_lvls[s] > 0 ||
+                    (player.Skill_B_lvl[s] > 0 &&
+                      ovr026.sub_6B3D1(player) != 0))
                 {
-                    has_skill = true;
+                    return true;
                 }
-                player_ptr = player_ptr.next_player;
             }
-            return has_skill;
+            return false;
         }
 
 
         internal static bool bash_door()
         {
             bool bash_worked = false;
-            Player player_ptr = gbl.player_next_ptr;
 
-            while (player_ptr != null &&
-                    bash_worked == false)
+            foreach (Player player in gbl.player_next_ptr)
             {
-                Player player = player_ptr;
+                if (bash_worked == true)
+                {
+                    break;
+                }
 
                 if (ovr031.WallDoorFlagsGet(gbl.mapDirection, gbl.mapPosY, gbl.mapPosX) == 3)
                 {
@@ -350,8 +344,6 @@ namespace engine
                         bash_worked = true;
                     }
                 }
-
-                player_ptr = player_ptr.next_player;
             }
 
             if (bash_worked == true)
@@ -372,17 +364,16 @@ namespace engine
         internal static bool pick_lock() /*sub_435B6*/
         {
             bool door_picked = false;
-            Player player = gbl.player_next_ptr;
 
-            while (player != null && door_picked == false)
+            foreach (Player player in gbl.player_next_ptr)
             {
+                if (door_picked) break;
+
                 if (ovr024.roll_dice(100, 1) <= player.field_EA[1] &&
                     player.health_status == Status.okey)
                 {
                     door_picked = true;
                 }
-
-                player = player.next_player;
             }
 
             gbl.can_pick_door = false;
@@ -426,16 +417,14 @@ namespace engine
 
         internal static Player find_player_with_spell(SpellId spell_id)
         {
-            Player player;
-
-            player = gbl.player_next_ptr;
-
-            while (player != null && find_spell(player, spell_id) == -1)
+            foreach (Player player in gbl.player_next_ptr)
             {
-                player = player.next_player;
+                if (find_spell(player, spell_id) >= 0)
+                {
+                    return player;
+                }
             }
-
-            return player;
+            return null;
         }
 
 

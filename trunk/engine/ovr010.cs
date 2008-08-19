@@ -768,17 +768,13 @@ namespace engine
                 }
                 else if (var_6 == 0x20)
                 {
-                    Player player_ptr = gbl.player_next_ptr;
-
-                    while (player_ptr != null)
+                    foreach (Player player_ptr in gbl.player_next_ptr)
                     {
                         if (player_ptr.field_F7 < 0x80 &&
                             player_ptr.health_status != Status.animated)
                         {
                             player_ptr.quick_fight = QuickFight.False;
                         }
-
-                        player_ptr = player_ptr.next_player;
                     }
 
                     if (player.quick_fight == QuickFight.False)

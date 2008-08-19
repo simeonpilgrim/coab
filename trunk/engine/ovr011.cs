@@ -1,4 +1,5 @@
 using Classes;
+using System.Collections.Generic;
 
 namespace engine
 {
@@ -357,7 +358,7 @@ namespace engine
         {
             byte var_5;
             byte var_4;
-            byte var_3; 
+            byte var_3;
             byte var_2;
 
             int var_7 = get_dir_flags(2, mapY - 1, mapX);
@@ -523,7 +524,7 @@ namespace engine
             0x08, 0x01, 0x00, 0x21, 0x71, 0x09, 0x06, 0x04, // 35C - 363
             0x01, 0x09, 0x09, 0x08, 0x59, 0x00, 0x11, 0x11, // 364 - 36B
             0x00, 0x00, 0x01, 0x11, 0x00, 0x00, 0x20, 0x20, // 36C - 373
-            0x0A}; 
+            0x0A};
 
         internal static byte sub_37991()
         {
@@ -660,11 +661,11 @@ namespace engine
             {
                 gbl.mapToBackGroundTile[map_x, map_y] = (byte)(ovr024.roll_dice(2, 1) + 0x2f);
             }
-            else if( roll <= arg_A + arg_8 + arg_6 )
+            else if (roll <= arg_A + arg_8 + arg_6)
             {
                 gbl.mapToBackGroundTile[map_x, map_y] = (byte)(ovr024.roll_dice(4, 1) + 0x2B);
             }
-            else if( roll <= arg_A + arg_8 + arg_6 + arg_4 )
+            else if (roll <= arg_A + arg_8 + arg_6 + arg_4)
             {
                 gbl.mapToBackGroundTile[map_x, map_y] = (byte)(ovr024.roll_dice(3, 1) + 0x36);
             }
@@ -785,11 +786,10 @@ namespace engine
 
         internal static void sub_380E0()
         {
-            Player player = gbl.player_next_ptr;
 
             int var_5 = 0;
 
-            while (player != null)
+            foreach (Player player in gbl.player_next_ptr)
             {
                 ovr025.reclac_player_values(player);
                 var_5++;
@@ -821,8 +821,6 @@ namespace engine
                         }
                     }
                 }
-
-                player = player.next_player;
             }
         }
 
@@ -907,7 +905,7 @@ namespace engine
             int base_y = 0; /* Simeon */
             int base_x = 0; /* Simeon */
             byte var_13 = 0; /* Simeon */
-            
+
             bool placed = false;
             bool first_row = true;
             bool var_4 = false;
@@ -1110,10 +1108,9 @@ namespace engine
 
             int loop_var = 1;
             gbl.CombatantCount = 0;
-            Player player_ptr2 = gbl.player_next_ptr;
-            Player player_ptr = gbl.player_next_ptr;
 
-            while (player_ptr != null)
+            List<Player> to_remove = new List<Player>();
+            foreach (Player player_ptr in gbl.player_next_ptr)
             {
                 seg043.clear_one_keypress();
 
@@ -1126,8 +1123,6 @@ namespace engine
 
                 if (place_combatant(loop_var) == true)
                 {
-                    player_ptr2 = player_ptr;
-
                     if (player_ptr.in_combat == false)
                     {
                         gbl.CombatMap[loop_var].size = 0;
@@ -1161,28 +1156,25 @@ namespace engine
                         var_F++;
 
                         gbl.player_array[loop_var] = null;
-                        gbl.player_ptr = player_ptr;
-                        ovr018.free_players(false, true);
-                        player_ptr2 = player_ptr;
+                        to_remove.Add(player_ptr);
                     }
                     else
                     {
-                        player_ptr2 = player_ptr;
                         gbl.CombatantCount++;
                     }
                 }
-
-                player_ptr = player_ptr2.next_player;
             }
 
-            player_ptr2.next_player = null;
+            foreach (Player player in to_remove)
+            {
+                gbl.player_ptr = player;
+                ovr018.free_players(false, true);
+            }
         }
 
 
         internal static void battle_begins()
         {
-            Player player;
-
             gbl.DelayBetweenCharacters = false;
 
             ovr030.DaxArrayFreeDaxBlocks(gbl.byte_1D556);
@@ -1224,18 +1216,14 @@ namespace engine
             seg043.clear_one_keypress();
             seg040.init_dax_block(out gbl.missile_dax, 1, 4, 3, 0x18);
 
-            gbl.mapToBackGroundTile.mapScreenLeftX = ovr033.PlayerMapXPos(gbl.player_next_ptr) - 3;
-            gbl.mapToBackGroundTile.mapScreenTopY = ovr033.PlayerMapYPos(gbl.player_next_ptr) - 3;
+            gbl.mapToBackGroundTile.mapScreenLeftX = ovr033.PlayerMapXPos(gbl.player_next_ptr[0]) - 3;
+            gbl.mapToBackGroundTile.mapScreenTopY = ovr033.PlayerMapYPos(gbl.player_next_ptr[0]) - 3;
 
             ovr025.sub_68DC0();
-            player = gbl.player_next_ptr;
-
-            while (player != null)
+            foreach (Player player in gbl.player_next_ptr)
             {
                 ovr024.work_on_00(player, 8);
                 ovr024.work_on_00(player, 22);
-
-                player = player.next_player;
             }
 
             ovr014.calc_enemy_health_percentage();

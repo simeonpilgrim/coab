@@ -110,13 +110,13 @@ namespace engine
             }
             else if (unk_6325A.MemberOf((int)affect_type) == true)
             {
-                Player player_base = gbl.player_next_ptr;
-
                 SortedCombatant[] bkup_list = new SortedCombatant[gbl.MaxSortedCombatantCount];
                 System.Array.Copy(gbl.SortedCombatantList, bkup_list, gbl.MaxSortedCombatantCount);
 
-                while (player_base != null && found == false)
+                foreach (Player player_base in gbl.player_next_ptr)
                 {
+                    if (found) break;
+
                     if (ovr025.find_affect(out affect, affect_type, player_base) == true)
                     {
                         if (gbl.game_state == 5)
@@ -139,8 +139,6 @@ namespace engine
                             found = true;
                         }
                     }
-
-                    player_base = player_base.next_player;
                 }
 
                 System.Array.Copy(bkup_list, gbl.SortedCombatantList, gbl.MaxSortedCombatantCount);
@@ -1382,7 +1380,7 @@ namespace engine
 
         static Set unk_653B5 = new Set(0x0001, new byte[] { 0x33 });
 
-        internal static bool heal_player(byte arg_0, byte amount_healed, Player player)
+        internal static bool heal_player(byte arg_0, int amount_healed, Player player)
         {
             if (unk_653B5.MemberOf((int)player.health_status) == true)
             {
