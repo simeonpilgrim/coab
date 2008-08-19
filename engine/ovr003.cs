@@ -188,22 +188,11 @@ namespace engine
             gbl.byte_1AB0A = 1;
 
 
-            Player player_ptr = gbl.player_next_ptr;
             byte var_8 = (byte)(player_index & 0x80);
             player_index = (byte)(player_index & 0x7f);
 
-
-            if (player_index > 0)
-            {
-                byte count = 0;
-                while (count <= player_index &&
-                    player_ptr != null)
-                {
-                    player_ptr = player_ptr.next_player;
-                    count++;
-                }
-            }
-
+            Player player_ptr = player_index > 0 ? player_ptr = gbl.player_next_ptr[player_index] : null;
+ 
             if (player_ptr != null)
             {
                 gbl.player_ptr = player_ptr;
@@ -259,14 +248,13 @@ namespace engine
             Affect affect_ptr;
             Item item_ptr;
 
-            Player player_ptr_bkup = gbl.player_ptr;
-            byte var_4 = 1;
+            Player current_player_bkup = gbl.player_ptr;
+            int copy_count = 1;
             ovr008.vm_LoadCmdSets(3);
 
-            if (gbl.byte_1AB0E < 0x3f)
+            if (gbl.byte_1AB0E < 63)
             {
                 Player playerB = null;
-                Player playerA = null;
                 Player playerC;
 
                 int mod_id = (byte)ovr008.vm_GetCmdValue(1);
@@ -277,48 +265,40 @@ namespace engine
                 Item item_ptr2 = item_ptr;
                 Affect bkup_affect = affect_ptr;
 
-                byte var_2 = (byte)ovr008.vm_GetCmdValue(2);
+                int num_copies = (byte)ovr008.vm_GetCmdValue(2);
 
-                if (var_2 <= 0)
+                if (num_copies <= 0)
                 {
-                    var_2 = 1;
+                    num_copies = 1;
                 }
 
                 byte var_3 = (byte)ovr008.vm_GetCmdValue(3);
-                playerB = gbl.player_next_ptr;
 
                 ovr034.chead_cbody_comspr_icon(gbl.byte_1D92D, var_3, "CPIC");
 
-                while (playerB.next_player != null)
-                {
-                    playerB = playerB.next_player;
-                }
-
-                playerB.next_player = playerC;
-                playerB = playerB.next_player;
+                gbl.player_next_ptr.Add(playerC);
+                playerB = playerC;
 
                 playerB.icon_id = gbl.byte_1D92D;
-                playerB.next_player = null;
 
                 gbl.byte_1AB0E++;
-                var_4++;
+                copy_count++;
 
 
-                while (var_4 <= var_2 &&
-                       gbl.byte_1AB0E < 0x3f)
+                while (copy_count <= num_copies &&
+                       gbl.byte_1AB0E < 63)
                 {
-                    playerA = player_bkup.ShallowClone();
+                    Player playerA = player_bkup.ShallowClone();
 
-                    playerB.next_player = playerA;
-
-                    playerB = playerB.next_player;
+                    gbl.player_next_ptr.Add(playerA);
+                    playerB = playerA;
                     playerB.icon_id = gbl.byte_1D92D;
 
                     playerB.next_player = null;
                     playerB.affect_ptr = null;
                     playerB.itemsPtr = null;
 
-                    var_4++;
+                    copy_count++;
                     gbl.byte_1AB0E++;
 
                     while (item_ptr != null)
@@ -360,7 +340,7 @@ namespace engine
                 }
                 gbl.byte_1D92D++;
                 gbl.byte_1EE93 = 1;
-                gbl.player_ptr = player_ptr_bkup;
+                gbl.player_ptr = current_player_bkup;
             }
         }
 
@@ -875,9 +855,8 @@ namespace engine
 
             ovr008.vm_LoadCmdSets(1);
             var_6 = 0;
-            Player player = gbl.player_next_ptr;
 
-            while (player != null)
+            foreach (Player player in gbl.player_next_ptr)
             {
                 byte hit_points = player.hit_point_current;
                 byte armor_class = player.ac;
@@ -905,8 +884,6 @@ namespace engine
                 }
 
                 var_6 = (byte)(((var_4 * 4) + hit_points + (armor_class * 5) + (hit_bonus * 5) + (var_3 * 8)) / 10);
-
-                player = player.next_player;
             }
 
             ushort loc = gbl.cmd_opps[1].Word;
@@ -937,7 +914,6 @@ namespace engine
             ushort var_2;
 
             ovr008.vm_LoadCmdSets(6);
-            Player player = gbl.player_next_ptr;
 
             if (gbl.cmd_opps[1].Code == 1)
             {
@@ -967,10 +943,10 @@ namespace engine
             {
                 bool affect_found = false;
 
-                while (player != null && affect_found == false)
+                foreach (Player player in gbl.player_next_ptr)
                 {
                     affect_found = ovr025.find_affect(affect_id, player);
-                    player = player.next_player;
+                    if (affect_found) break;
                 }
 
                 setMemoryFour(affect_found, 0, 0, 0, loc_a, loc_b, loc_c, loc_d);
@@ -979,7 +955,7 @@ namespace engine
             {
                 var_1B = (byte)(var_2 - 0xA4);
 
-                while (player != null)
+                foreach (Player player in gbl.player_next_ptr)
                 {
                     var_1A++;
 
@@ -994,8 +970,6 @@ namespace engine
                     }
 
                     var_4 += player.field_EA[var_1B - 1];
-
-                    player = player.next_player;
                 }
 
                 val_c = (byte)(var_4 / var_1A);
@@ -1004,7 +978,7 @@ namespace engine
             }
             else if (var_2 == 0x9f)
             {
-                while (player != null)
+                foreach (Player player in gbl.player_next_ptr)
                 {
                     var_1A++;
 
@@ -1019,8 +993,6 @@ namespace engine
                     }
 
                     var_4 += player.movement;
-
-                    player = player.next_player;
                 }
 
                 val_c = (byte)(var_4 / var_1A);
@@ -1918,7 +1890,6 @@ namespace engine
             Player player01 = gbl.player_ptr;
             /*byte var_19 = 0; */
             byte var_1A = 0;
-            Player player03 = gbl.player_next_ptr;
             ovr008.vm_LoadCmdSets(5);
             byte var_1 = (byte)ovr008.vm_GetCmdValue(1);
             byte var_2 = (byte)ovr008.vm_GetCmdValue(2);
@@ -1947,7 +1918,7 @@ namespace engine
 
                 if (var_1A != 0)
                 {
-                    while (player03 != null)
+                    foreach (Player player03 in gbl.player_next_ptr)
                     {
                         if ((var_1 & 0x20) != 0)
                         {
@@ -1964,7 +1935,6 @@ namespace engine
                                 ovr008.sub_32200(player03, var_C);
                             }
                         }
-                        player03 = player03.next_player;
                     }
                 }
                 else
@@ -1986,10 +1956,7 @@ namespace engine
                     }
                     else
                     {
-                        for (int var_4 = 2; var_4 <= var_8; var_4++)
-                        {
-                            player03 = player03.next_player;
-                        }
+                        Player player03 = gbl.player_next_ptr[var_8-1];
 
                         if (ovr024.do_saving_throw(var_5, var_9, player03) == false)
                         {
@@ -2006,16 +1973,8 @@ namespace engine
             {
                 for (int var_4 = 1; var_4 <= var_1; var_4++)
                 {
-                    player03 = gbl.player_next_ptr;
                     var_8 = ovr024.roll_dice(gbl.area2_ptr.party_size, 1);
-
-                    int var_A = 1;
-
-                    while (var_A < var_8)
-                    {
-                        player03 = player03.next_player;
-                        var_A++;
-                    }
+                    Player player03 = gbl.player_next_ptr[var_8]; // TODO may be off by 1
 
                     if (ovr024.sub_641DD(var_6, player03) == true)
                     {
@@ -2026,17 +1985,14 @@ namespace engine
                 }
             }
 
-            Player player02 = gbl.player_next_ptr;
             gbl.party_killed = true;
 
-            while (player02 != null)
+            foreach (Player player02 in gbl.player_next_ptr)
             {
                 if (player02.in_combat == true)
                 {
                     gbl.party_killed = false;
                 }
-
-                player02 = player02.next_player;
             }
 
             if (gbl.party_killed == true)
@@ -2151,56 +2107,58 @@ namespace engine
             byte spell_id = (byte)ovr008.vm_GetCmdValue(1);
             ushort loc_a = gbl.cmd_opps[2].Word;
             ushort loc_b = gbl.cmd_opps[3].Word;
-            byte val_a = 1;
-            byte val_b = 0;
+            
+            byte spell_index = 1;
+            byte player_index = 0;
 
-            bool var_9 = false;
-            bool var_8 = false;
-            Player player = gbl.player_next_ptr;
+            bool spell_found = false;
 
-            while (player != null && var_8 == false)
+            foreach (Player player in gbl.player_next_ptr)
             {
-                val_a = 1;
+                if (spell_found) break;
+                spell_index = 1;
+                bool not_found = false;
 
                 do
                 {
-                    if (player.spell_list[val_a] == spell_id)
+                    if (player.spell_list[spell_index] == spell_id)
                     {
-                        var_8 = true;
+                        spell_found = true;
                     }
                     else
                     {
-                        if (val_a <= 100)
+                        if (spell_index <= 100)
                         {
-                            val_a++;
+                            spell_index++;
                         }
                         else
                         {
-                            var_9 = true;
+                            not_found = true;
                         }
                     }
-                } while (var_9 == false && var_8 == false);
+                } while (not_found == false && spell_found == false);
 
-                var_9 = false;
-                player = player.next_player;
-
-                if (player != null &&
-                    var_8 == false)
+                if (spell_found == false)
                 {
-                    val_b++;
+                    player_index++;
                 }
             }
 
-            if (val_a > 100)
+            if (spell_found == false)
             {
-                val_a = 0x0FF;
+                player_index--;
+            }
+
+            if (spell_index > 100)
+            {
+                spell_index = 0x0FF;
             }
 
             VmLog.WriteLine("CMD_Spell: spell_id: {0} loc a: {1} val a: {2} loc b: {3} val b: {4}",
-                spell_id, new MemLoc(loc_a), val_a, new MemLoc(loc_b), val_b);
+                spell_id, new MemLoc(loc_a), spell_index, new MemLoc(loc_b), player_index);
 
-            ovr008.vm_SetMemoryValue(val_a, loc_a);
-            ovr008.vm_SetMemoryValue(val_b, loc_b);
+            ovr008.vm_SetMemoryValue(spell_index, loc_a);
+            ovr008.vm_SetMemoryValue(player_index, loc_b);
         }
 
 
@@ -2332,16 +2290,13 @@ namespace engine
                 gbl.gameWon = true;
                 gbl.area_ptr.field_3FA = 0xff;
                 gbl.area2_ptr.field_550 = 0xff;
-                Player player = gbl.player_next_ptr;
 
-                while (player != null)
+                foreach (Player player in gbl.player_next_ptr)
                 {
                     Player play_ptr = player;
                     play_ptr.hit_point_current = play_ptr.hit_point_max;
                     play_ptr.health_status = Status.okey;
                     play_ptr.in_combat = true;
-
-                    player = player.next_player;
                 }
 
                 ovr018.startGameMenu();
@@ -2427,9 +2382,7 @@ namespace engine
 
             VmLog.WriteLine("CMD_DestroyItems: type: {0}", item_type);
 
-            Player player = gbl.player_next_ptr;
-
-            while (player != null)
+            foreach (Player player in gbl.player_next_ptr)
             {
                 Item item = player.itemsPtr;
                 while (item != null)
@@ -2444,7 +2397,6 @@ namespace engine
                 }
 
                 ovr025.reclac_player_values(player);
-                player = player.next_player;
             }
         }
 
@@ -2666,7 +2618,7 @@ namespace engine
                 do
                 {
                     ovr018.free_players(true, true);
-                } while (gbl.player_next_ptr != null);
+                } while (gbl.player_next_ptr.Count > 0);
             }
             else
             {

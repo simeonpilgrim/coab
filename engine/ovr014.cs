@@ -1786,9 +1786,8 @@ namespace engine
         {
             int maxTotal = 0;
             int currentTotal = 0;
-            Player player = gbl.player_next_ptr;
 
-            while (player != null)
+            foreach (Player player in gbl.player_next_ptr)
             {
                 if (player.combat_team == CombatTeam.Enemy)
                 {
@@ -1799,8 +1798,6 @@ namespace engine
 
                     maxTotal += player.hit_point_max;
                 }
-
-                player = player.next_player;
             }
 
             if (maxTotal > 0)
@@ -1813,22 +1810,19 @@ namespace engine
         internal static int sub_40E8F(Player arg_0)
         {
             int var_2 = 0;
-            Player player = gbl.player_next_ptr;
 
-            while (player != null)
+            foreach (Player player in gbl.player_next_ptr)
             {
                 if (ovr025.opposite_team(arg_0) == player.combat_team &&
                     player.in_combat == true)
                 {
-                    int var_3 = sub_3E124(player) /2;
+                    int var_3 = sub_3E124(player) / 2;
 
                     if (var_3 > var_2)
                     {
                         var_2 = var_3;
                     }
                 }
-
-                player = player.next_player;
             }
 
             return var_2;
@@ -1854,9 +1848,7 @@ namespace engine
                 //gbl.byte_1D8B6 = 1;
                 gbl.area2_ptr.field_666 = 1;
 
-                Player player = gbl.player_next_ptr;
-
-                while (player != null)
+                foreach (Player player in gbl.player_next_ptr)
                 {
                     if (player.health_status == Status.okey &&
                         player.field_F7 > 0x7F)
@@ -1864,8 +1856,6 @@ namespace engine
                         player.combat_team = CombatTeam.Enemy;
                         player.actions.target = null;
                     }
-
-                    player = player.next_player;
                 }
 
                 ovr025.count_teams();
@@ -2734,9 +2724,8 @@ namespace engine
             {
                 intervened = true;
                 ovr025.string_print01("The Gods intervene!");
-                Player player = gbl.player_next_ptr;
 
-                while (player != null)
+                foreach (Player player in gbl.player_next_ptr)
                 {
                     if (player.combat_team == CombatTeam.Enemy)
                     {
@@ -2747,7 +2736,6 @@ namespace engine
                     }
 
                     ovr025.clear_actions(player);
-                    player = player.next_player;
                 }
 
                 ovr033.redrawCombatArea(8, 0xff, gbl.mapToBackGroundTile.mapScreenTopY + 3, gbl.mapToBackGroundTile.mapScreenLeftX + 3);

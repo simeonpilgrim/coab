@@ -1388,26 +1388,18 @@ namespace engine
 
             gbl.area2_ptr.field_5CC = arg_0;
             Player playerA = gbl.player_ptr;
-            Player playerC = gbl.player_next_ptr;
 
-            while (playerC != null)
+            foreach (Player playerC in gbl.player_next_ptr)
             {
                 if (playerC.name != playerA.name)
                 {
                     playerC.in_combat = false;
                 }
-                playerC = playerC.next_player;
             }
 
             if (arg_0 != 0)
             {
                 ovr034.chead_cbody_comspr_icon(gbl.byte_1D92D, 11, "CPIC");
-                playerC = gbl.player_next_ptr;
-
-                while (playerC.next_player != null)
-                {
-                    playerC = playerC.next_player;
-                }
 
                 Player DuelMaster = playerA.ShallowClone();
                 DuelMaster.in_combat = true;
@@ -1422,23 +1414,22 @@ namespace engine
                 DuelMaster.affect_ptr = null;
                 DuelMaster.itemsPtr = null;
 
-                playerC.next_player = DuelMaster;
-                playerC = playerC.next_player;
+                gbl.player_next_ptr.Add(DuelMaster);
 
                 Item item = playerA.itemsPtr;
 
                 while (item != null)
                 {
-                    if (playerC.itemsPtr == null)
+                    if (DuelMaster.itemsPtr == null)
                     {
-                        playerC.itemsPtr = item.ShallowClone();
-                        playerC.itemsPtr.next = null;
+                        DuelMaster.itemsPtr = item.ShallowClone();
+                        DuelMaster.itemsPtr.next = null;
                     }
                     else
                     {
-                        Item tmp_item = playerC.itemsPtr;
-                        playerC.itemsPtr = item.ShallowClone();
-                        playerC.itemsPtr.next = tmp_item;
+                        Item tmp_item = DuelMaster.itemsPtr;
+                        DuelMaster.itemsPtr = item.ShallowClone();
+                        DuelMaster.itemsPtr.next = tmp_item;
                     }
                     item = item.next;
                 }
@@ -1595,12 +1586,10 @@ namespace engine
 
         internal static void calc_group_movement(out byte mov_min, out byte mov_max) /* calc_group_inituative */
         {
-            Player player = gbl.player_next_ptr;
+            mov_max = byte.MinValue;
+            mov_min = byte.MaxValue;
 
-            mov_max = player.movement;
-            mov_min = player.movement;
-
-            while (player != null)
+            foreach (Player player in gbl.player_next_ptr)
             {
                 byte movement = player.movement;
 
@@ -1622,8 +1611,6 @@ namespace engine
                 {
                     mov_min = movement;
                 }
-
-                player = player.next_player;
             }
         }
 

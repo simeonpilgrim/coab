@@ -152,7 +152,7 @@ namespace engine
             gbl.byte_1B2EB = 0;
             gbl.rest_incounter_count = 0;
 
-            gbl.player_next_ptr = null;
+            gbl.player_next_ptr.Clear();
             gbl.player_ptr = null;
 
             gbl.ecl_offset = 0x8000;
@@ -265,7 +265,7 @@ namespace engine
             gbl.DelayBetweenCharacters = true;
             gbl.byte_1B2EB = 0;
             gbl.rest_incounter_count = 0;
-            gbl.player_next_ptr = null;
+            gbl.player_next_ptr.Clear();
             gbl.player_ptr = null;
             gbl.ecl_offset = 0x8000;
             gbl.game_speed_var = 4;

@@ -102,13 +102,10 @@ namespace engine
 
         internal static void cancel_spells()
         {
-            Player player = gbl.player_next_ptr;
-
-            while (player != null)
+            foreach (Player player in gbl.player_next_ptr)
             {
                 cancel_memorize(player);
                 cancel_scribes(player);
-                player = player.next_player;
             }
         }
 
@@ -297,26 +294,22 @@ namespace engine
 
         internal static void rest_menu(out bool action_interrupted)
         {
-            int var_6 = 0;
-            Player player = gbl.player_next_ptr;
-
-            while (player != null)
+            int max_rest_time = 0;
+            foreach (Player player in gbl.player_next_ptr)
             {
-                int var_8 = sub_44032(player);
+                int rest_time = sub_44032(player);
 
-                if (var_6 < var_8)
+                if (max_rest_time < rest_time)
                 {
-                    var_6 = var_8;
+                    max_rest_time = rest_time;
                 }
-
-                player = player.next_player;
             }
 
-            gbl.unk_1D890.field_6 = (ushort)(var_6 / 60);
+            gbl.unk_1D890.field_6 = (ushort)(max_rest_time / 60);
 
-            gbl.unk_1D890.field_4 = (ushort)((var_6 - (gbl.unk_1D890.field_6 * 60)) / 10);
+            gbl.unk_1D890.field_4 = (ushort)((max_rest_time - (gbl.unk_1D890.field_6 * 60)) / 10);
 
-            gbl.unk_1D890.field_2 = (ushort)(var_6 % 10);
+            gbl.unk_1D890.field_2 = (ushort)(max_rest_time % 10);
 
             action_interrupted = ovr021.resting(true);
 
@@ -602,9 +595,7 @@ namespace engine
             var_C.s = " ";
             var_C.next = null;
 
-            Player player = gbl.player_next_ptr;
-
-            while (player != null)
+            foreach (Player player in gbl.player_next_ptr)
             {
                 var_13 = 0;
                 sub_44E89(player.name, 1, ref var_C);
@@ -773,8 +764,6 @@ namespace engine
                 }
 
                 sub_44E89(" ", 0, ref var_C);
-
-                player = player.next_player;
             }
 
             var_17 = true;
@@ -834,102 +823,42 @@ namespace engine
         }
 
 
-        internal static void sub_4558D()
+        internal static void move_current_player_up() // sub_4558D
         {
-            Player var_C;
-            Player var_8;
-            Player var_4;
+            // move gbl.player_ptr up the list by one, if at head, move to tail.
 
-            var_8 = gbl.player_next_ptr;
-            var_4 = null;
-
-            if (var_8 == gbl.player_ptr)
+            int index = gbl.player_next_ptr.IndexOf(gbl.player_ptr);
+            if (index >= 0)
             {
-                while (var_8.next_player != null)
+                gbl.player_next_ptr.RemoveAt(index);
+
+                if (index > 0)
                 {
-                    var_8 = var_8.next_player;
-                }
-            }
-            else
-            {
-                while (var_8.next_player != gbl.player_ptr)
-                {
-                    var_4 = var_8;
-                    var_8 = var_8.next_player;
-                }
-            }
-
-            var_C = gbl.player_ptr.next_player;
-
-            if (gbl.player_next_ptr == gbl.player_ptr)
-            {
-                if (var_C != null)
-                {
-                    gbl.player_next_ptr = var_C;
-                }
-
-                var_8.next_player = gbl.player_ptr;
-
-                gbl.player_ptr.next_player = null;
-            }
-            else
-            {
-                var_8.next_player = var_C;
-                gbl.player_ptr.next_player = var_8;
-
-
-                if (var_8 == gbl.player_next_ptr ||
-                    var_4 == null)
-                {
-                    gbl.player_next_ptr = gbl.player_ptr;
+                    gbl.player_next_ptr.Insert(index - 1, gbl.player_ptr);
                 }
                 else
                 {
-                    var_4.next_player = gbl.player_ptr;
+                    gbl.player_next_ptr.Add(gbl.player_ptr);
                 }
             }
         }
 
 
-        internal static void sub_456E5()
+        internal static void move_current_player_down() // sub_456E5
         {
-            Player player_ptr2;
-            Player player_ptr;
-
-            player_ptr = gbl.player_next_ptr;
-
-            if (player_ptr != gbl.player_ptr)
+            int index = gbl.player_next_ptr.IndexOf(gbl.player_ptr);
+            if (index >= 0)
             {
-                while (player_ptr.next_player != gbl.player_ptr)
+                gbl.player_next_ptr.RemoveAt(index);
+
+                if (index == gbl.player_next_ptr.Count)
                 {
-                    player_ptr = player_ptr.next_player;
+                    gbl.player_next_ptr.Insert(0, gbl.player_ptr);
                 }
-            }
-
-            player_ptr2 = gbl.player_ptr.next_player;
-
-            if (player_ptr2 == null)
-            {
-
-                gbl.player_ptr.next_player = gbl.player_next_ptr;
-                gbl.player_next_ptr = gbl.player_ptr;
-                gbl.player_ptr.next_player = player_ptr2;
-            }
-            else
-            {
-                gbl.player_ptr.next_player = player_ptr2.next_player;
-
-                if (gbl.player_next_ptr == gbl.player_ptr)
+                else
                 {
-                    gbl.player_next_ptr = player_ptr2;
+                    gbl.player_next_ptr.Insert(index + 1, gbl.player_ptr);
                 }
-
-                if (player_ptr != gbl.player_ptr)
-                {
-                    player_ptr.next_player = player_ptr2;
-                }
-
-                player_ptr2.next_player = gbl.player_ptr;
             }
         }
 
@@ -958,11 +887,11 @@ namespace engine
                     {
                         if (var_3 == 0x47)
                         {
-                            sub_4558D();
+                            move_current_player_up();
                         }
                         else if (var_3 == 0x4F)
                         {
-                            sub_456E5();
+                            move_current_player_down();
                         }
                         ovr025.Player_Summary(gbl.player_ptr);
                     }
@@ -987,8 +916,7 @@ namespace engine
 
         internal static void drop_player()
         {
-            if (gbl.player_ptr.next_player == null &&
-                gbl.player_ptr == gbl.player_next_ptr)
+            if (gbl.player_next_ptr.Count == 1)
             {
                 if (ovr027.yes_no(15, 10, 14, "quit TO DOS: ") == 'Y')
                 {
@@ -1177,9 +1105,7 @@ namespace engine
 
         internal static void sub_45F22(ref int var_2)
         {
-            Player player = gbl.player_next_ptr;
-
-            while (player != null)
+            foreach (Player player in gbl.player_next_ptr)
             {
                 if (player_is_okey(player) == true)
                 {
@@ -1201,8 +1127,6 @@ namespace engine
                         }
                     }
                 }
-
-                player = player.next_player;
             }
         }
 
@@ -1229,12 +1153,9 @@ namespace engine
         internal static int total_hitpoints_lost() /* sub_4608F */
         {
             int lost_points = 0;
-            Player player = gbl.player_next_ptr;
-
-            while (player != null)
+            foreach (Player player in gbl.player_next_ptr)
             {
                 lost_points += player.hit_point_max - player.hit_point_current;
-                player = player.next_player;
             }
 
             return lost_points;
@@ -1247,10 +1168,8 @@ namespace engine
             short var_E;
             short var_C;
             short var_A;
-            Player player_ptr;
             short var_2 = 0; /* Simeon */
 
-            player_ptr = gbl.player_next_ptr;
             var_A = 0;
             var_C = 0;
             var_E = 0;
@@ -1260,20 +1179,20 @@ namespace engine
             bp_var_8 = 0;
             int var_8 = 0;
 
-            while (player_ptr != null)
+            foreach (Player player in gbl.player_next_ptr)
             {
                 var_10 = 0;
 
-                if (player_is_okey(player_ptr) == true)
+                if (player_is_okey(player) == true)
                 {
-                    bp_var_4 += player_ptr.field_12D[0,0];
-                    var_A = (short)(player_ptr.field_12D[0,0] * 15);
+                    bp_var_4 += player.field_12D[0, 0];
+                    var_A = (short)(player.field_12D[0, 0] * 15);
 
-                    bp_var_6 += player_ptr.field_12D[0,3];
-                    var_C = (short)(player_ptr.field_12D[0,3] * 60);
+                    bp_var_6 += player.field_12D[0, 3];
+                    var_C = (short)(player.field_12D[0, 3] * 60);
 
-                    bp_var_8 += player_ptr.field_12D[0,4];
-                    var_E = (short)(player_ptr.field_12D[0,4] * 75);
+                    bp_var_8 += player.field_12D[0, 4];
+                    var_E = (short)(player.field_12D[0, 4] * 75);
                 }
 
                 if (var_A > 0)
@@ -1302,8 +1221,6 @@ namespace engine
                 {
                     var_8 = var_10;
                 }
-
-                player_ptr = player_ptr.next_player;
             }
 
             if (total_hitpoints_lost() < var_2)
@@ -1314,43 +1231,36 @@ namespace engine
             }
 
             gbl.unk_1D890.field_6 = (ushort)(var_8 / 60);
-
             gbl.unk_1D890.field_4 = (ushort)((var_8 - (gbl.unk_1D890.field_6 * 60)) / 10);
-
             gbl.unk_1D890.field_2 = (ushort)(var_8 % 10);
         }
 
 
-        internal static void sub_46280(ref int bp_var_2)
+        internal static void sub_46280(ref int bp_var_2) //sub_46280
         {
-            int var_6;
-
-            Player player = gbl.player_next_ptr;
-
-            while (player != null)
+            foreach (Player player in gbl.player_next_ptr)
             {
                 if (player.hit_point_max > player.hit_point_current)
                 {
-                    var_6 = player.hit_point_max - player.hit_point_current;
+                    int damge_taken = player.hit_point_max - player.hit_point_current;
 
-                    if (var_6 > bp_var_2)
+                    if (damge_taken > bp_var_2)
                     {
-                        var_6 = bp_var_2;
+                        damge_taken = bp_var_2;
                     }
 
-                    if (var_6 < 1)
+                    if (damge_taken < 1)
                     {
-                        var_6 = 0;
+                        damge_taken = 0;
                     }
 
-                    if (var_6 > 0 &&
-                        ovr024.heal_player(0, (byte)var_6, player) == true &&
-                        var_6 <= bp_var_2)
+                    if (damge_taken > 0 &&
+                        ovr024.heal_player(0, damge_taken, player) == true &&
+                        damge_taken <= bp_var_2)
                     {
-                        bp_var_2 -= var_6;
+                        bp_var_2 -= damge_taken;
                     }
                 }
-                player = player.next_player;
             }
         }
 

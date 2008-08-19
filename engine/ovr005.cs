@@ -128,7 +128,6 @@ namespace engine
         {
             bool var_4;
             char input_key;
-            byte heal_amount;
 
             switch (arg_0)
             {
@@ -136,7 +135,7 @@ namespace engine
                     input_key = buy_cure(100, "Cure Light Wounds");
                     if (input_key == 'Y')
                     {
-                        heal_amount = ovr024.roll_dice(8, 1);
+                        int heal_amount = ovr024.roll_dice(8, 1);
                         var_4 = ovr024.heal_player(0, heal_amount, gbl.player_ptr);
                     }
                     break;
@@ -145,7 +144,7 @@ namespace engine
                     input_key = buy_cure(350, "Cure Serious Wounds");
                     if (input_key == 'Y')
                     {
-                        heal_amount = (byte)(ovr024.roll_dice(8, 2) + 1);
+                        int heal_amount = ovr024.roll_dice(8, 2) + 1;
                         var_4 = ovr024.heal_player(0, heal_amount, gbl.player_ptr);
                     }
                     break;
@@ -154,7 +153,7 @@ namespace engine
                     input_key = buy_cure(600, "Cure Critical Wounds");
                     if (input_key == 'Y')
                     {
-                        heal_amount = (byte)(ovr024.roll_dice(8, 3) + 3);
+                        int heal_amount = ovr024.roll_dice(8, 3) + 3;
                         var_4 = ovr024.heal_player(0, heal_amount, gbl.player_ptr);
                     }
                     break;
@@ -163,7 +162,7 @@ namespace engine
                     input_key = buy_cure(5000, "Heal");
                     if (input_key == 'Y')
                     {
-                        heal_amount = gbl.player_ptr.hit_point_max;
+                        int heal_amount = gbl.player_ptr.hit_point_max;
                         heal_amount -= gbl.player_ptr.hit_point_current;
                         heal_amount -= ovr024.roll_dice(4, 1);
 
