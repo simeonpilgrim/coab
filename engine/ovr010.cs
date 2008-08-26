@@ -199,7 +199,7 @@ namespace engine
             var_3 = ovr024.roll_dice(7, 1);
 
             int teamCount = (ovr025.opposite_team(player) == 0) ? gbl.friends_count : gbl.foe_count;
-            if (player.actions.field_2 != 0 &&
+            if (player.actions.can_use == true &&
                 teamCount > 0 &&
                 gbl.area_ptr.can_cast_spells == false)
             {
@@ -856,36 +856,32 @@ namespace engine
         }
 
 
-        internal static byte sub_36535(Item arg_0, Player arg_4)
+        internal static int sub_36535(Item item, Player player)
         {
-            Struct_1C020 var_12;
+            Struct_1C020 var_12 = gbl.unk_1C020[item.type];
 
-            byte var_2;
+            int var_2 = var_12.diceSizeX * var_12.diceCountX;
 
-            var_12 = gbl.unk_1C020[arg_0.type].ShallowClone();
-
-            var_2 = (byte)(var_12.field_A * var_12.field_9);
-
-            if (arg_0.plus > 0)
+            if (item.plus > 0)
             {
-                var_2 += (byte)(arg_0.plus << 3);
+                var_2 += item.plus * 8;
             }
 
             if (var_12.field_B > 0)
             {
-                var_2 += (byte)(var_12.field_B << 1);
+                var_2 += var_12.field_B * 2;
             }
 
-            if (arg_0.type == 0x55 &&
-                arg_4.actions.target != null &&
-                arg_4.actions.target.field_E9 > 0)
+            if (item.type == 0x55 &&
+                player.actions.target != null &&
+                player.actions.target.field_E9 > 0)
             {
                 var_2 = 8;
             }
 
             if ((var_12.field_E & 8) > 0)
             {
-                var_2 += (byte)((var_12.field_5 - 1) << 1);
+                var_2 += (var_12.field_5 - 1) * 2;
             }
 
             if (var_12.field_1 <= 1)
@@ -893,23 +889,23 @@ namespace engine
                 var_2 += 3;
             }
 
-            if ((var_12.field_1 + arg_4.field_185) > 3)
+            if ((var_12.field_1 + player.field_185) > 3)
             {
                 var_2 = 0;
             }
 
-            if (arg_0.affect_3 == Affects.cast_throw_lightening &&
-                ((int)arg_0.affect_2 & 0x0f) != arg_4.alignment)
+            if (item.affect_3 == Affects.cast_throw_lightening &&
+                ((int)item.affect_2 & 0x0f) != player.alignment)
             {
                 var_2 = 0;
             }
 
-            if (arg_0.affect_2 == Affects.affect_53)
+            if (item.affect_2 == Affects.affect_53)
             {
                 var_2 = 0;
             }
 
-            if (arg_0.cursed == true)
+            if (item.cursed == true)
             {
                 var_2 = 0;
             }
@@ -918,57 +914,47 @@ namespace engine
         }
 
 
-        internal static void sub_36673(Player arg_0)
+        internal static void sub_36673(Player player)
         {
             byte var_1D;
-            byte var_1C;
-            byte var_19;
-            byte var_18;
-            byte var_17;
-            byte var_16;
-            byte var_15;
-            Item var_14;
-            Item var_C;
-            Item var_8;
-            Item var_4;
-
-            if (arg_0.field_151 != null)
+            
+            if (player.field_151 != null)
             {
-                arg_0.field_185 -= gbl.unk_1C020[arg_0.field_151.type].field_1;
+                player.field_185 -= gbl.unk_1C020[player.field_151.type].field_1;
             }
 
-            if (arg_0.field_155 != null)
+            if (player.field_155 != null)
             {
-                arg_0.field_185 -= gbl.unk_1C020[arg_0.field_155.type].field_1;
+                player.field_185 -= gbl.unk_1C020[player.field_155.type].field_1;
             }
 
-            var_4 = null;
-            var_8 = null;
-            var_C = null;
-            var_15 = 1;
+            Item var_4 = null;
+            Item var_8 = null;
+            Item var_C = null;
+            int var_15 = 1;
 
-            var_16 = (byte)(arg_0.field_120 * arg_0.field_11E);
+            int var_16 = (byte)(player.field_120 * player.field_11E);
 
-            if (arg_0.field_122 > 0)
+            if (player.field_122 > 0)
             {
-                var_16 += (byte)(arg_0.field_122 * 2);
+                var_16 += (byte)(player.field_122 * 2);
             }
 
-            var_17 = 0;
+            int max_bonus = 0;
 
-            Item item = arg_0.itemsPtr;
+            Item item = player.itemsPtr;
 
             while (item != null)
             {
-                var_19 = item.type;
+                int item_type = item.type;
 
-                if (gbl.unk_1C020[var_19].item_slot == 0 &&
-                    (gbl.unk_1C020[var_19].classFlags & arg_0.classFlags) != 0)
+                if (gbl.unk_1C020[item_type].item_slot == 0 &&
+                    (gbl.unk_1C020[item_type].classFlags & player.classFlags) != 0)
                 {
-                    var_18 = sub_36535(item, arg_0);
+                    int var_18 = sub_36535(item, player);
 
-                    if ((gbl.unk_1C020[var_19].field_E & 8) != 0 ||
-                        (gbl.unk_1C020[var_19].field_E & 0x10) != 0)
+                    if ((gbl.unk_1C020[item_type].field_E & 8) != 0 ||
+                        (gbl.unk_1C020[item_type].field_E & 0x10) != 0)
                     {
                         if (var_18 > var_15)
                         {
@@ -977,7 +963,7 @@ namespace engine
                         }
                     }
 
-                    if ((gbl.unk_1C020[var_19].field_E & 8) == 0 &&
+                    if ((gbl.unk_1C020[item_type].field_E & 8) == 0 &&
                         var_18 > var_16)
                     {
                         var_8 = item;
@@ -986,32 +972,25 @@ namespace engine
                 }
 
 
-                if (gbl.unk_1C020[var_19].item_slot == 1)
+                if (gbl.unk_1C020[item_type].item_slot == 1)
                 {
-                    if ((gbl.unk_1C020[var_19].classFlags & arg_0.classFlags) != 0)
+                    if ((gbl.unk_1C020[item_type].classFlags & player.classFlags) != 0)
                     {
-                        if (item.plus >= 0)
-                        {
-                            var_18 = (byte)(item.plus + 1);
-                        }
-                        else
-                        {
-                            var_18 = 0;
-                        }
+                        int bonus = item.plus >= 0 ? item.plus + 1 : 0;
 
-                        if (var_18 > var_17)
+                        if (bonus > max_bonus)
                         {
                             var_C = item;
-                            var_17 = var_18;
+                            max_bonus = bonus;
                         }
                     }
                 }
                 item = item.next;
             }
 
-            bool var_1E = ovr025.item_is_ranged_melee(var_4);
+            bool ranged_melee = ovr025.item_is_ranged_melee(var_4);
             bool var_1F = false;
-            var_14 = null;
+            Item var_14 = null;
             byte var_1A = 0;
 
             if (var_4 != null)
@@ -1027,12 +1006,12 @@ namespace engine
                 {
                     if ((var_1A & 0x01) != 0)
                     {
-                        var_14 = arg_0.Item_ptr_03;
+                        var_14 = player.Item_ptr_03;
                     }
 
                     if ((var_1A & 0x80) != 0)
                     {
-                        var_14 = arg_0.Item_ptr_04;
+                        var_14 = player.Item_ptr_04;
                     }
                 }
             }
@@ -1046,7 +1025,7 @@ namespace engine
             if (var_4 != null &&
                 var_15 > (var_16 >> 1) &&
                 var_1F == true &&
-                (var_1E == true || ovr025.near_enemy(1, arg_0) == 0))
+                (ranged_melee == true || ovr025.near_enemy(1, player) == 0))
             {
                 item = var_4;
             }
@@ -1056,28 +1035,28 @@ namespace engine
             }
 
             var_1D = 0;
-            var_1C = 1;
+            bool replace_weapon = true;
 
-            if (arg_0.field_151 != null &&
-                (arg_0.field_151 == item ||
-                 arg_0.field_151.cursed == true))
+            if (player.field_151 != null &&
+                (player.field_151 == item ||
+                 player.field_151.cursed == true))
             {
-                var_1C = 0;
+                replace_weapon = false;
             }
 
-            if (var_1C != 0)
+            if (replace_weapon)
             {
-                if (arg_0.field_151 != null)
+                if (player.field_151 != null)
                 {
-                    ovr020.ready_Item(arg_0.field_151);
+                    ovr020.ready_Item(player.field_151);
                 }
 
-                ovr025.reclac_player_values(arg_0);
+                ovr025.reclac_player_values(player);
 
-                if (arg_0.field_155 != null &&
-                    arg_0.field_155.cursed == false)
+                if (player.field_155 != null &&
+                    player.field_155.cursed == false)
                 {
-                    arg_0.field_185 -= gbl.unk_1C020[arg_0.field_155.type].field_1;
+                    player.field_185 -= gbl.unk_1C020[player.field_155.type].field_1;
                 }
 
                 if (item != null)
@@ -1088,37 +1067,37 @@ namespace engine
                 var_1D = 1;
             }
 
-            ovr025.reclac_player_values(arg_0);
-            ovr014.sub_3EDD4(arg_0);
-            var_1C = 1;
+            ovr025.reclac_player_values(player);
+            ovr014.sub_3EDD4(player);
+            replace_weapon = true;
 
-            if (arg_0.field_155 != null &&
-                (arg_0.field_155 == var_C || arg_0.field_155.cursed == true))
+            if (player.field_155 != null &&
+                (player.field_155 == var_C || player.field_155.cursed == true))
             {
-                var_1C = 0;
+                replace_weapon = false;
             }
             
-            if (arg_0.field_185 > 2)
+            if (player.field_185 > 2)
             {
-                if (arg_0.field_155 == null ||
-                    arg_0.field_155.cursed == true)
+                if (player.field_155 == null ||
+                    player.field_155.cursed == true)
                 {
                     ovr020.ready_Item(item);
                     var_1D = 1;
                 }
                 else
                 {
-                    ovr020.ready_Item(arg_0.field_155);
+                    ovr020.ready_Item(player.field_155);
                     var_1D = 1;
                 }
             }
-            else if (arg_0.field_185 < 2 && var_1C != 0)
+            else if (player.field_185 < 2 && replace_weapon)
             {
-                if (arg_0.field_155 != null)
+                if (player.field_155 != null)
                 {
-                    ovr020.ready_Item(arg_0.field_155);
+                    ovr020.ready_Item(player.field_155);
                 }
-                ovr025.reclac_player_values(arg_0);
+                ovr025.reclac_player_values(player);
 
                 if (var_C != null)
                 {
@@ -1129,11 +1108,11 @@ namespace engine
             }
 
 
-            ovr025.reclac_player_values(arg_0);
+            ovr025.reclac_player_values(player);
 
             if (var_1D != 0)
             {
-                ovr025.display_hitpoint_ac(arg_0);
+                ovr025.display_hitpoint_ac(player);
             }
         }
     }

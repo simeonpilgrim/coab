@@ -53,8 +53,8 @@ namespace engine
                 }
 
                 player.hitBonus += bonus;
-                player.attack_dice_count = gbl.unk_1C020[item_type].field_9;
-                player.attack_dice_size = gbl.unk_1C020[item_type].field_A;
+                player.attack_dice_count = gbl.unk_1C020[item_type].diceCountX;
+                player.attack_dice_size = gbl.unk_1C020[item_type].diceSizeX;
             }
         }
 
@@ -67,7 +67,7 @@ namespace engine
             {
                 if (item.weight >= 0 && item.weight <= 0x96)
                 {
-                    player.movement = player.field_E4;
+                    player.movement = player.base_movement;
                 }
                 else if (item.weight >= 0x97 && item.weight <= 0x18F)
                 {
@@ -616,7 +616,7 @@ namespace engine
 
             player.field_186 = 0;
             player.ac = player.field_124;
-            player.movement = player.field_E4;
+            player.movement = player.base_movement;
             player.hitBonus = player.field_73;
 
             stat_bonus[0] = ovr025.dex_ac_bonus(player);

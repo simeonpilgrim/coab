@@ -10,7 +10,7 @@ namespace engine
 
             action.spell_id = 0;
             action.can_cast = true;
-            action.field_2 = 1;
+            action.can_use = true;
             action.field_8 = 0;
             action.field_4 = 2;
 
@@ -774,7 +774,7 @@ namespace engine
         }
 
 
-        internal static void sub_3F4EB(Item arg_0, ref bool arg_4, byte arg_8, Player target, Player attacker)
+        internal static void sub_3F4EB(Item item, ref bool arg_4, byte arg_8, Player target, Player attacker)
         {
             int target_ac;
 
@@ -913,9 +913,9 @@ namespace engine
                     }
                 }
 
-                if (arg_0 != null && 
-                    arg_0.count == 0 && 
-                    arg_0.type == 0x64)
+                if (item != null && 
+                    item.count == 0 && 
+                    item.type == 0x64)
                 {
                     attacker.field_19C = 0;
                     attacker.field_19D = 0;

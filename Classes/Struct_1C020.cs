@@ -9,21 +9,15 @@ namespace Classes
 	{
         public byte item_slot; //seg600:5D10 unk_1C020 - field_0
 		public byte field_1; //seg600:5D11 unk_1C021
-        /// <summary>
-        /// field_2
-        /// </summary>
         public byte diceCount; //seg600:5D12 unk_1C022
-        /// <summary>
-        /// field_3
-        /// </summary>
         public byte diceSize; //seg600:5D13 unk_1C023
 		public sbyte field_4; //seg600:5D14
 		public byte field_5; //seg600:5D15
 		public byte field_6; //seg600:5D16 unk_1C026
 		public byte field_7; //seg600:5D17 unk_1C027
 		public byte field_8; //seg600:5D18
-		public byte field_9; //seg600:5D19
-		public byte field_A; //seg600:5D1A
+        public byte diceCountX; //seg600:5D19 field_9 maybe ranged 
+        public byte diceSizeX; //seg600:5D1A field_A  maybe ranged
 		public sbyte field_B; //seg600:5D1B
 		public byte field_C; //seg600:5D1C unk_1C02C
 		public byte classFlags; //seg600:5D1D field_D
@@ -45,19 +39,13 @@ namespace Classes
             field_6 = data[offset + 6];
             field_7 = data[offset + 7];
             field_8 = data[offset + 8];
-            field_9 = data[offset + 9];
-            field_A = data[offset + 0xa];
+            diceCountX = data[offset + 9];
+            diceSizeX = data[offset + 0xa];
             field_B = (sbyte)data[offset + 0xb];
             field_C = data[offset + 0xc];
             classFlags = data[offset + 0xd];
             field_E = data[offset + 0xe];
             field_F = data[offset + 0xf];
-        }
-
-        public Struct_1C020 ShallowClone()
-        {
-            Struct_1C020 i = (Struct_1C020)this.MemberwiseClone();
-            return i;
         }
 	}
 }

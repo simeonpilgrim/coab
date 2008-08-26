@@ -1832,7 +1832,7 @@ namespace engine
                         player.quick_fight = QuickFight.True;
                         player.field_E9 = 1;
                         player.field_DD = 0;
-                        player.field_E4 = 6;
+                        player.base_movement = 6;
 
                         for (int var_1 = 0; var_1 < gbl.max_spells; var_1++)
                         {
