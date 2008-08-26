@@ -416,7 +416,6 @@ namespace engine
                     {
                         cancel_memorize(gbl.player_ptr);
                     }
-
                 }
 
                 if (var_3 != 0)

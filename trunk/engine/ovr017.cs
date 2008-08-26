@@ -1203,7 +1203,7 @@ namespace engine
                         player01_ptr.field_11E = 1;
                         player01_ptr.field_120 = 2;
                         player01_ptr.field_125 = 1;
-                        player01_ptr.field_E4 = 0x0C;
+                        player01_ptr.base_movement = 0x0C;
 
                         player01_ptr.name = var_1C4.field_4;
                         player01_ptr.tmp_str = var_1C4.field_14;

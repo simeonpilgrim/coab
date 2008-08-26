@@ -298,12 +298,12 @@ namespace engine
 
         internal static void is_silenced1(Effect arg_0, object param, Player player)
         {
-            if (player.actions.field_2 != 0)
+            if (player.actions.can_use == true)
             {
                 ovr025.DisplayPlayerStatusString(true, 10, "is silenced", player);
             }
 
-            player.actions.field_2 = 0;
+            player.actions.can_use = false;
             player.actions.can_cast = false;
         }
 
@@ -422,12 +422,12 @@ namespace engine
 
         internal static void sub_3A7E8(Effect arg_0, object param, Player player)
         {
-            if (player.actions.field_2 != 0)
+            if (player.actions.can_use == true)
             {
                 ovr025.DisplayPlayerStatusString(true, 10, "is coughing", player);
             }
 
-            player.actions.field_2 = 0;
+            player.actions.can_use = false;
             player.actions.can_cast = false;
 
             ovr025.reclac_player_values(player);
@@ -466,7 +466,7 @@ namespace engine
             player.field_E9 = 0;
 
             player.field_DD = (byte)(player.fighter_lvl + (player.field_113 * ovr026.sub_6B3D1(player)));
-            player.field_E4 = 0x0C;
+            player.base_movement = 0x0C;
 
             if (player.field_F7 == 0xB3)
             {

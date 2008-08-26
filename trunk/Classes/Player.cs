@@ -239,7 +239,7 @@ namespace Classes
         [DataOffset(0xe3, DataType.Byte)]
         public byte field_E3; // 0xe3;
         [DataOffset(0xe4, DataType.Byte)]
-        public byte field_E4; // 0xe4;
+        public byte base_movement; // 0xe4;
         [DataOffset(0xe5, DataType.Byte)]
         public byte field_E5; // 0xe5;
         [DataOffset(0xe6, DataType.Byte)]

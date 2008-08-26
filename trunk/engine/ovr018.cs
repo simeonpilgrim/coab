@@ -1139,7 +1139,7 @@ namespace engine
                 var_53.field_11E = 1;
                 var_53.field_120 = 2;
                 var_53.field_125 = 1;
-                var_53.field_E4 = 0x0C;
+                var_53.base_movement = 0x0C;
                 var_21 = 0;
                 var_20 = 0;
 
