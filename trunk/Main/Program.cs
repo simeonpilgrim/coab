@@ -18,6 +18,8 @@ namespace Main
         [STAThread]
         static void Main()
         {
+            //Environment.OSVersion.Platform
+
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 

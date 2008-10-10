@@ -1,13 +1,18 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using System.Drawing;
+
 
 namespace Classes
 {
+    public interface IOSDisplay
+    {
+        void Init(int height, int width);
+        void RawCopy(byte[] videoRam, int videoRamSize);
+    }
+
     public class Display
     {
-        public static Bitmap bm;
         static byte[,] OrigEgaColors = { { 0, 0, 0 }, { 0, 0, 173 }, { 0, 173, 0 }, { 0, 173, 173 }, { 173, 0, 0 }, { 173, 0, 173 }, { 173, 82, 0 }, { 173, 173, 173 }, { 82, 82, 82 }, { 82, 82, 255 }, { 82, 255, 82 }, { 82, 255, 255 }, { 255, 82, 82 }, { 255, 82, 255 }, { 255, 255, 82 }, { 255, 255, 255 } };
         static byte[,] egaColors = { { 0, 0, 0 }, { 0, 0, 173 }, { 0, 173, 0 }, { 0, 173, 173 }, { 173, 0, 0 }, { 173, 0, 173 }, { 173, 82, 0 }, { 173, 173, 173 }, { 82, 82, 82 }, { 82, 82, 255 }, { 82, 255, 82 }, { 82, 255, 255 }, { 255, 82, 82 }, { 255, 82, 255 }, { 255, 255, 82 }, { 255, 255, 255 } };
         static int[,] ram;
@@ -17,6 +22,15 @@ namespace Classes
         static int scanLineWidth;
         static int outputWidth;
         static int outputHeight;
+
+        static IOSDisplay lowLevelDisplay;
+        public static IOSDisplay LowLevelDisplay
+        {
+            set {
+                lowLevelDisplay = value;
+                lowLevelDisplay.Init(outputHeight, outputWidth);
+            }
+        }
 
         public delegate void VoidDeledate();
 
@@ -35,7 +49,6 @@ namespace Classes
             outputHeight = 200;
             outputWidth = 320;
 
-            bm = new Bitmap(outputWidth, outputHeight, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
             ram = new int[outputHeight, outputWidth];
             scanLineWidth = outputWidth * 3;
             videoRamSize = scanLineWidth * outputHeight;
@@ -83,8 +96,6 @@ namespace Classes
             videoRam[(y * scanLineWidth) + (x * 3) + 2] = egaColors[egaColor, 0];
         }
 
-        static Rectangle rect = new Rectangle(0, 0, 320, 200);
-
         static int noUpdateCount;
 
         public static void UpdateStop()
@@ -102,15 +113,7 @@ namespace Classes
         {
             if (noUpdateCount == 0)
             {
-                System.Drawing.Imaging.BitmapData bmpData =
-                    bm.LockBits(rect, System.Drawing.Imaging.ImageLockMode.WriteOnly,
-                    bm.PixelFormat);
-
-                IntPtr ptr = bmpData.Scan0;
-
-                System.Runtime.InteropServices.Marshal.Copy(videoRam, 0, ptr, videoRamSize);
-
-                bm.UnlockBits(bmpData);
+                lowLevelDisplay.RawCopy(videoRam, videoRamSize);
 
                 if (updateCallback != null)
                 {
