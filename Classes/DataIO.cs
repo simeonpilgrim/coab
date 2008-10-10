@@ -149,7 +149,7 @@ namespace Classes
 
         static private void SetObjectUshortValue(object obj, FieldInfo fInfo, DataOffsetAttribute attr, ushort value)
         {
-            object o = fInfo.GetValue(obj);
+            //object o = fInfo.GetValue(obj);
             switch (attr.Type)
             {
                 case DataType.SByte:

@@ -157,7 +157,7 @@ namespace engine
         }
 
 
-        internal static void CMD_Save()
+        internal static void CMD_Save() 
         {
             ovr008.vm_LoadCmdSets(2);
 
@@ -1498,7 +1498,7 @@ namespace engine
             {
                 foreach (Player player in gbl.player_next_ptr)
                 {
-                    object var_B = player.itemsPtr;
+                    //object var_B = player.itemsPtr;
                     ovr008.RobMoney(player, percentage);
                     ovr008.RobItems(player, var_3);
                 }

@@ -16,6 +16,7 @@ namespace Main
         {
             InitializeComponent();
 
+            Classes.Display.LowLevelDisplay = new Win32.Win32Display();
             Classes.Display.UpdateCallback = UpdateDisplayCallback;
             setSettings();
         }
@@ -30,7 +31,7 @@ namespace Main
             }
             else
             {
-                displayArea.Image = (Image)Classes.Display.bm.Clone();
+                displayArea.Image = (Image)Win32.Win32Display.bm.Clone();
             }
         }      
 
