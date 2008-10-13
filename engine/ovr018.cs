@@ -117,12 +117,12 @@ namespace engine
                         menuFlags[allow_drop] = true;
                         menuFlags[allow_modify] = true;
 
-                        if (gbl.area2_ptr.field_550 > 0 || Cheats.free_training == true)
+                        if (gbl.area2_ptr.training_class_mask > 0 || Cheats.free_training == true)
                         {
                             menuFlags[allow_training] = true;
                         }
 
-                        if ((gbl.area2_ptr.field_550 > 0 || Cheats.free_training == true) &&
+                        if ((gbl.area2_ptr.training_class_mask > 0 || Cheats.free_training == true) &&
                             ovr026.is_human(gbl.player_ptr) &&
                             ovr026.getExtraFirstSkill(gbl.player_ptr) == 0x11)
                         {
@@ -191,7 +191,7 @@ namespace engine
                             var_11 ^= true;
                         }
 
-                        var_F = var_11 && gbl.area2_ptr.field_550 > 0;
+                        var_F = var_11 && gbl.area2_ptr.training_class_mask > 0;
                     }
                 }
                 else
@@ -312,7 +312,7 @@ namespace engine
                                     }
 
                                     ovr027.redraw_screen();
-                                    gbl.area2_ptr.field_550 = 0;
+                                    gbl.area2_ptr.training_class_mask = 0;
 
                                     return;
                                 }
@@ -456,7 +456,6 @@ namespace engine
         internal static void createPlayer()
         {
             Player var_53;
-            byte var_4F;
             bool var_23;
             bool var_22;
             byte var_21;
@@ -1046,7 +1045,7 @@ namespace engine
                             }
 
                             if (var_53.stats[var_1B].max < 13 &&
-                                var_53._class >= ClassId.mc_c_f && var_53._class <= ClassId.mc_c_t )
+                                var_53._class >= ClassId.mc_c_f && var_53._class <= ClassId.mc_c_t)
                             {
                                 // Multi-Class Cleric
                                 var_53.stats[var_1B].max = 13;
@@ -1216,8 +1215,8 @@ namespace engine
 
                 var_53.hit_point_current = var_53.hit_point_max;
                 var_53.field_12C = (byte)(var_53.field_12C / var_20);
-                var_4F = gbl.area2_ptr.field_550;
-                gbl.area2_ptr.field_550 = 0xff;
+                byte trainingClassMaskBackup = gbl.area2_ptr.training_class_mask;
+                gbl.area2_ptr.training_class_mask = 0xff;
                 gbl.byte_1D8B0 = 0;
                 gbl.byte_1B2F1 = 1;
 
@@ -1226,7 +1225,7 @@ namespace engine
                     train_player();
                 } while (gbl.byte_1D8B0 == 0);
 
-                gbl.area2_ptr.field_550 = var_4F;
+                gbl.area2_ptr.training_class_mask = trainingClassMaskBackup;
                 gbl.byte_1B2F1 = 0;
                 bool first_lvl = true;
                 string text = string.Empty;
@@ -1380,13 +1379,13 @@ namespace engine
                     seg041.displaySpaceChar(1, 0, 1, gbl.player_ptr.name.Length + 1);
                     seg041.displayString(gbl.player_ptr.name, 0, 13, 1, 1);
 
-                    if (name_cursor_pos > gbl.player_ptr.name.Length || gbl.player_ptr.name[name_cursor_pos-1] == ' ')
+                    if (name_cursor_pos > gbl.player_ptr.name.Length || gbl.player_ptr.name[name_cursor_pos - 1] == ' ')
                     {
                         seg041.displayString("%", 0, 15, 1, name_cursor_pos);
                     }
                     else
                     {
-                        seg041.displayString(gbl.player_ptr.name[name_cursor_pos-1].ToString(), 0, 15, 1, name_cursor_pos);
+                        seg041.displayString(gbl.player_ptr.name[name_cursor_pos - 1].ToString(), 0, 15, 1, name_cursor_pos);
                     }
                 }
                 else
@@ -1564,10 +1563,10 @@ namespace engine
                                         {
                                             player_ptr.stats[stat_var].max = gbl.class_stats_min[(int)player_ptr._class].wis_min;
                                         }
-                                        
-                                        if (player_ptr.field_12D[0,0] > 0)
+
+                                        if (player_ptr.field_12D[0, 0] > 0)
                                         {
-                                            player_ptr.field_12D[0,0] = 1;
+                                            player_ptr.field_12D[0, 0] = 1;
                                         }
                                         break;
 
@@ -1624,7 +1623,7 @@ namespace engine
                             {
                                 player_ptr.hit_point_max -= 1;
 
-                               if (sub_506BA(gbl.player_ptr) > player_ptr.hit_point_max)
+                                if (sub_506BA(gbl.player_ptr) > player_ptr.hit_point_max)
                                 {
                                     player_ptr.hit_point_max = (byte)sub_506BA(player_ptr);
                                 }
@@ -1655,9 +1654,9 @@ namespace engine
                                     case Stat.STR:
                                         if (player_ptr.stats[stat_var].max > racial_stats_limits[(int)player_ptr.race].str_max[player_ptr.sex])
                                         {
-                                            if( player_ptr.stats[stat_var].max > 18 &&
-                                                (player_ptr.fighter_lvl > 0 || player_ptr.paladin_lvl > 0 || player_ptr.ranger_lvl > 0 ) &&
-                                                racial_stats_limits[(int)player_ptr.race].str_100_max[player_ptr.sex] > player_ptr.tmp_str_00 )
+                                            if (player_ptr.stats[stat_var].max > 18 &&
+                                                (player_ptr.fighter_lvl > 0 || player_ptr.paladin_lvl > 0 || player_ptr.ranger_lvl > 0) &&
+                                                racial_stats_limits[(int)player_ptr.race].str_100_max[player_ptr.sex] > player_ptr.tmp_str_00)
                                             {
                                                 player_ptr.tmp_str_00 += 1;
                                             }
@@ -1679,9 +1678,9 @@ namespace engine
                                             player_ptr.stats[stat_var].max = racial_stats_limits[(int)player_ptr.race].wis_max;
                                         }
 
-                                        if (player_ptr.field_12D[0,0] > 0)
+                                        if (player_ptr.field_12D[0, 0] > 0)
                                         {
-                                            player_ptr.field_12D[0,0] = 1;
+                                            player_ptr.field_12D[0, 0] = 1;
                                         }
                                         break;
 
@@ -1732,7 +1731,7 @@ namespace engine
                                 }
                                 else
                                 {
-                                    if (name_cursor_pos == player_ptr.name.Length+1)
+                                    if (name_cursor_pos == player_ptr.name.Length + 1)
                                     {
                                         name_cursor_pos = 1;
                                     }
@@ -1772,10 +1771,10 @@ namespace engine
 
                             if ((len - del) > 0)
                             {
-                                s += gbl.player_ptr.name.Substring(del+1);
+                                s += gbl.player_ptr.name.Substring(del + 1);
                             }
 
-                             gbl.player_ptr.name = s;
+                            gbl.player_ptr.name = s;
 
                             if (name_cursor_pos > gbl.player_ptr.name.Length)
                             {
@@ -1813,12 +1812,12 @@ namespace engine
 
                                 if (name_cursor_pos > player_ptr.name.Length)
                                 {
-                                   player_ptr.name.PadRight(name_cursor_pos, ' ');
+                                    player_ptr.name.PadRight(name_cursor_pos, ' ');
                                 }
                                 var_35 = '\0';
                             }
                         }
-                        else if( var_35 == 0x45 )
+                        else if (var_35 == 0x45)
                         {
                             for (int stat_var = 0; stat_var < 6; stat_var++)
                             {
@@ -1904,15 +1903,6 @@ namespace engine
 
         internal static void AddPlayer()
         {
-            StringList strList;
-
-            int pc_count = 0; 
-            int ranger_count = 0;
-            bool showExit = true;
-            bool evil_present = false;
-            bool paladin_present = false;
-            string paladins_name = "";
-
             seg037.draw8x8_clear_area(0x16, 0x26, 1, 1);
 
             bool dummy_bool;
@@ -1937,17 +1927,21 @@ namespace engine
                     return;
             }
 
+            StringList strList;
             StringList var_4;
             ovr017.sub_47465(out strList, out var_4);
 
             if (var_4 != null)
             {
+                int pc_count = 0;
+
                 short strList_index = 0;
                 StringList select_sl = var_4;
                 bool var_1D = true;
 
                 do
                 {
+                    bool showExit = true;
                     input_key = ovr027.sl_select_item(out select_sl, ref strList_index, ref var_1D, showExit, var_4,
                         22, 38, 2, 1, 15, 10, 13, "Add", "Add a character: ");
 
@@ -1968,14 +1962,18 @@ namespace engine
                         if (gbl.player_next_ptr.Count == 0)
                         {
                             gbl.area2_ptr.party_size = 0;
-                            ovr017.sub_4A60A(new_player);
+                            ovr017.AssignPlayerIconId(new_player);
 
                             ovr017.LoadPlayerCombatIcon(true);
                         }
                         else
                         {
-                            ranger_count = 0;
+                            bool paladin_present = false;
+                            string paladins_name = "";
+                            bool evil_present = false;
+                            int ranger_count = 0;
                             bool found = false;
+
                             foreach (Player tmp_player in gbl.player_next_ptr)
                             {
                                 if (tmp_player.name == new_player.name &&
@@ -2014,7 +2012,7 @@ namespace engine
                                 (new_player.ranger_lvl == 0 || ranger_count < 3) &&
                                 (((new_player.alignment + 1) % 3) != 0 || paladin_present == false))
                             {
-                                ovr017.sub_4A60A(new_player);
+                                ovr017.AssignPlayerIconId(new_player);
                                 ovr017.LoadPlayerCombatIcon(true);
 
                                 if (new_player.field_F7 < 0x80)
@@ -2086,7 +2084,7 @@ namespace engine
 
         internal static void drawIconEditorIcons(sbyte titleY, sbyte titleX) /* sub_4FB7C */
         {
-            seg040.DrawColorBlock( 0, 24, 12, titleY * 24, titleX * 3);
+            seg040.DrawColorBlock(0, 24, 12, titleY * 24, titleX * 3);
 
             ovr034.draw_combat_icon(25, 0, 0, titleY, titleX);
             ovr034.draw_combat_icon(25, 1, 0, titleY, titleX + 3);
@@ -2132,7 +2130,7 @@ namespace engine
             }
         }
 
-        static Set unk_4FE94 = new Set( 0x0009, new byte [] { 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x20 });
+        static Set unk_4FE94 = new Set(0x0009, new byte[] { 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x20 });
 
         internal static void icon_builder()
         {
@@ -2639,21 +2637,19 @@ namespace engine
             return max_hp;
         }
 
-        static byte[ ] /* seg600:081A */ unk_16B2A = { 1, 1, 1, 1, 2, 1, 1, 2 } ;
-        static byte[ ] /* seg600:0822 */ unk_16B32 = { 8, 8, 0xA, 0xA, 8, 4, 6, 4 } ;
-        static byte[ ] /* seg600:3EAA */ unk_1A1BA = { 2, 2, 8, 0x10, 0x20, 1, 4, 4 };
+        static byte[] /* seg600:081A */ unk_16B2A = { 1, 1, 1, 1, 2, 1, 1, 2 };
+        static byte[] /* seg600:0822 */ unk_16B32 = { 8, 8, 0xA, 0xA, 8, 4, 6, 4 };
+        static byte[] /* seg600:3EAA unk_1A1BA */ classMasks = { 2, 2, 8, 0x10, 0x20, 1, 4, 4 };
 
 
         internal static byte sub_509E0(byte arg_0, Player player)
         {
-            byte var_1;
-
             byte var_4 = 0;
 
             for (int _class = 0; _class <= 7; _class++)
             {
                 if (player.class_lvls[_class] > 0 &&
-                    (unk_1A1BA[_class] & arg_0) != 0)
+                    (classMasks[_class] & arg_0) != 0)
                 {
                     if (player.class_lvls[_class] < gbl.max_class_levels[_class])
                     {
@@ -2692,9 +2688,7 @@ namespace engine
                 }
             }
 
-            var_1 = var_4;
-
-            return var_1;
+            return var_4;
         }
 
 
@@ -2749,403 +2743,396 @@ namespace engine
 
         internal static void train_player()
         {
-            byte var_1F;
-            byte var_19 = 123; /* Simeon */
-            byte var_18;
-            byte var_17;
-            byte var_16;
-            short var_15;
-            byte var_12;
-            short var_11;
-            short var_F;
-            byte var_D;
             byte var_C;
-            byte var_B;
-            byte var_A;
-            int var_5;
-            byte var_1;
 
             if (gbl.player_ptr.health_status != Status.okey &&
                 Cheats.free_training == false)
             {
                 seg041.DisplayStatusText(0, 14, "we only train conscious people");
+                return;
             }
-            else if (ovr020.getPlayerGold(gbl.player_ptr) < 1000 &&
+
+            if (ovr020.getPlayerGold(gbl.player_ptr) < 1000 &&
                 Cheats.free_training == false &&
                 gbl.byte_1B2F1 == 0 &&
                 gbl.gameWon == false)
             {
                 seg041.DisplayStatusText(0, 14, "Training costs 1000 gp.");
+                return;
             }
-            else
+
+
+            byte var_A = 0;
+            byte classesToTrainMask = 0;
+            byte class_lvl = 123; /* Simeon */
+
+            byte training_class_mask = gbl.area2_ptr.training_class_mask;
+            Player player_ptr = gbl.player_ptr;
+
+            int var_5 = 0;
+
+            for (int _class = 0; _class <= 7; _class++)
             {
-                var_A = 0;
-                var_B = 0;
-
-                var_5 = 0;
-
-                var_1F = gbl.area2_ptr.field_550;
-                Player player_ptr = gbl.player_ptr;
-
-                var_5 = 0;
-
-                for (int var_13 = 0; var_13 <= 7; var_13++)
+                if (player_ptr.class_lvls[_class] > 0)
                 {
-                    if (player_ptr.class_lvls[var_13] > 0)
+                    classesToTrainMask += classMasks[_class];
+                    class_lvl = player_ptr.class_lvls[_class];
+
+                    bool race_limited = RaceClassLimit(class_lvl, player_ptr, (ClassId)_class);
+
+                    if (race_limited == false || 
+                        Cheats.no_race_class_limits == true)
                     {
-                        var_B += unk_1A1BA[var_13];
-                        var_1 = 0;
-                        var_19 = player_ptr.class_lvls[var_13];
-
-                        switch (player_ptr.race)
+                        if ((exp_table[_class, class_lvl] > 0) &&
+                            (exp_table[_class, class_lvl] <= player_ptr.exp ||
+                             Cheats.free_training == true))
                         {
-                            case Race.dwarf:
-                                if (var_13 == 2)
-                                {
-                                    if (var_19 == 9 ||
-                                        (var_19 == 8 && player_ptr.strength == 0x11) ||
-                                        (var_19 == 7 && player_ptr.strength < 0x11))
-                                    {
-
-                                        var_1 = 1;
-                                    }
-                                }
-                                break;
-
-                            case Race.elf:
-                                if (var_13 == 2)
-                                {
-                                    if (var_19 == 7 ||
-                                        (var_19 == 6 && player_ptr.strength == 0x11) ||
-                                        (var_19 == 5 && player_ptr.strength < 0x11))
-                                    {
-                                        var_1 = 1;
-                                    }
-                                }
-
-                                if (var_13 == 5)
-                                {
-                                    if (var_19 == 0x0B ||
-                                        (var_19 == 9 && player_ptr._int < 0x11) ||
-                                        (var_19 == 0x0A && player_ptr._int == 0x11))
-                                    {
-                                        var_1 = 1;
-                                    }
-                                }
-                                break;
-
-                            case Race.gnome:
-                                if (var_13 == 2)
-                                {
-                                    if (var_19 == 6 ||
-                                        (var_19 == 5 && player_ptr.strength < 18))
-                                    {
-                                        var_1 = 1;
-                                    }
-                                }
-                                break;
-
-                            case Race.half_elf:
-                                if (var_13 == 0 && var_19 == 5)
-                                {
-                                    var_1 = 1;
-                                }
-                                else
-                                {
-                                    if (var_13 == 2 || var_13 == 4)
-                                    {
-                                        if (var_19 == 8 ||
-                                            (var_19 == 7 && player_ptr.strength == 0x11) ||
-                                            (var_19 == 6 && player_ptr.strength < 0x11))
-                                        {
-                                            var_1 = 1;
-                                        }
-                                    }
-
-                                    if (var_13 == 5)
-                                    {
-                                        if (var_19 == 8 ||
-                                            (var_19 == 7 && player_ptr.strength == 0x11) ||
-                                            (var_19 == 6 && player_ptr.strength < 0x11))
-                                        {
-                                            var_1 = 1;
-                                        }
-                                    }
-                                } 
-                                break;
-
-                            case Race.halfling:
-                                if (var_13 == 2)
-                                {
-                                    if (var_19 == 6 ||
-                                        (var_19 == 5 && player_ptr.strength == 0x11) ||
-                                        (var_19 == 4 && player_ptr.strength < 0x11))
-                                    {
-                                        var_1 = 1;
-                                    }
-                                }
-
-                                break;
-
-                        }
-
-                        if (var_1 == 0)
-                        {
-                            if ((exp_table[var_13, var_19] <= player_ptr.exp ||
-                                Cheats.free_training == true) &&
-                                (exp_table[var_13, var_19] > 0))
+                            if (Cheats.free_training == true)
                             {
-                                if (Cheats.free_training == true)
+                                if (exp_table[_class, class_lvl] > 0)
                                 {
-                                    if (exp_table[var_13, var_19] > 0)
+                                    if (exp_table[_class, class_lvl] > player_ptr.exp)
                                     {
-                                        if (exp_table[var_13, var_19] > player_ptr.exp)
-                                        {
-                                            player_ptr.exp = exp_table[var_13, var_19];
-                                        }
+                                        player_ptr.exp = exp_table[_class, class_lvl];
                                     }
                                 }
+                            }
 
-                                var_A += unk_1A1BA[var_13];
+                            var_A += classMasks[_class];
 
-                                int var_9 = exp_table[var_13, (var_19 + 1)];
+                            int next_lvl_exp = exp_table[_class, (class_lvl + 1)];
 
-                                if (var_9 > 0)
+                            if (next_lvl_exp > 0)
+                            {
+                                if (player_ptr.exp >= next_lvl_exp &&
+                                    next_lvl_exp > var_5)
                                 {
-                                    if (player_ptr.exp >= var_9 &&
-                                        var_9 > var_5)
-                                    {
-                                        var_5 = var_9 - 1;
-                                    }
+                                    var_5 = next_lvl_exp - 1;
                                 }
                             }
                         }
                     }
                 }
+            }
 
-                if (gbl.byte_1B2F1 == 0)
+            if (gbl.byte_1B2F1 == 0)
+            {
+                int max_class = 0;
+                int max_exp = 0;
+
+                for (int _class = 0; _class <= 7; _class++)
                 {
-                    int var_24 = 0;
-                    int var_23 = 0;
-                    
-                    for (int var_13 = 0; var_13 <= 7; var_13++)
+                    if ((classMasks[_class] & var_A) != 0)
                     {
-                        if ((unk_1A1BA[var_13] & var_A) != 0)
+                        if (exp_table[_class, class_lvl] > max_exp)
                         {
-                            if (exp_table[var_13, var_19] > var_23)
-                            {
-                                var_23 = exp_table[var_13, var_19];
-                                var_24 = var_13;
-                            }
-                        }
-                    }
-
-
-                    if (var_23 > 0)
-                    {
-                        var_A = unk_1A1BA[var_24];
-                        int var_9 = exp_table[var_24, (var_19 + 1)];
-
-                        if (var_9 > 0 &&
-                            player_ptr.exp >= var_9 &&
-                            var_9 > var_5)
-                        {
-                            var_5 = var_9 - 1;
+                            max_exp = exp_table[_class, class_lvl];
+                            max_class = _class;
                         }
                     }
                 }
 
-                if (var_5 > 0 && gbl.byte_1B2F1 == 0)
+
+                if (max_exp > 0)
                 {
-                    player_ptr.exp = var_5;
-                }
+                    var_A = classMasks[max_class];
+                    int var_9 = exp_table[max_class, class_lvl + 1];
 
-                if (Cheats.free_training == false)
-                {
-                    if ((var_B & var_1F) == 0 &&
-                        gbl.byte_1B2F1 == 0)
+                    if (var_9 > 0 &&
+                        player_ptr.exp >= var_9 &&
+                        var_9 > var_5)
                     {
-                        seg041.DisplayStatusText(0, 14, "We don't train that class here");
-                        return;
-                    }
-
-                    if ((var_A & var_1F) == 0)
-                    {
-                        gbl.byte_1D8B0 = 1;
-
-                        if (gbl.byte_1B2F1 == 0)
-                        {
-                            seg041.DisplayStatusText(0, 14, "Not Enough Experience");
-                            return;
-                        }
+                        var_5 = var_9 - 1;
                     }
                 }
+            }
 
-                if (Cheats.free_training == false)
+            if (var_5 > 0 && gbl.byte_1B2F1 == 0)
+            {
+                player_ptr.exp = var_5;
+            }
+
+            if (Cheats.free_training == false)
+            {
+                if ((classesToTrainMask & training_class_mask) == 0 &&
+                    gbl.byte_1B2F1 == 0)
                 {
-                    var_C = (byte)(var_A & var_1F);
-                }
-                else
-                {
-                    var_C = var_A;
-                }
-
-                bool skipBits = false;
-                if (gbl.byte_1B2F1 != 0)
-                {
-                    skipBits = true;
-                }
-
-                if (skipBits == false)
-                {
-                    seg037.draw8x8_clear_area(0x16, 0x26, 1, 1);
-
-                    var_16 = 4;
-
-                    ovr025.displayPlayerName(false, var_16, 4, gbl.player_ptr);
-
-                    seg041.displayString(" will become:", 0, 10, var_16, player_ptr.name.Length + 4);
-
-                    for (int var_13 = 0; var_13 <= 7; var_13++)
-                    {
-                        if (player_ptr.class_lvls[var_13] > 0 &&
-                            (unk_1A1BA[var_13] & var_C) != 0)
-                        {
-                            var_16++;
-
-                            if (var_16 == 5)
-                            {
-                                string text = System.String.Format("    a level {0} {1}",
-                                    player_ptr.class_lvls[var_13] + 1, ovr020.classString[var_13]);
-
-                                seg041.displayString(text, 0, 10, var_16, 6);
-                            }
-                            else
-                            {
-                                string text = System.String.Format("and a level {0} {1}",
-                                    player_ptr.class_lvls[var_13] + 1, ovr020.classString[var_13]);
-
-                                seg041.displayString(text, 0, 10, var_16, 6);
-                            }
-                        }
-                    }
+                    seg041.DisplayStatusText(0, 14, "We don't train that class here");
+                    return;
                 }
 
-                if (skipBits || ovr027.yes_no(15, 10, 13, "Do you wish to train? ") == 'Y')
+                if ((var_A & training_class_mask) == 0)
                 {
-                    if (skipBits == false)
-                    {
-                        ovr025.string_print01("Congratulations...");
-
-                        if (Cheats.free_training == false &&
-                            gbl.gameWon == false)
-                        {
-                            subtract_gold(player_ptr, 1000);
-                        }
-                    }
-
-                    var_D = 0;
-                    var_17 = player_ptr.magic_user_lvl;
-                    var_18 = player_ptr.ranger_lvl;
-                    player_ptr.classFlags = 0;
-
-                    for (int var_13 = 0; var_13 <= 7; var_13++)
-                    {
-                        if (player_ptr.class_lvls[var_13] > 0)
-                        {
-                            var_D++;
-
-                            if ((unk_1A1BA[var_13] & var_C) != 0)
-                            {
-                                player_ptr.class_lvls[var_13] += 1;
-                                if (player_ptr.field_E7 > 0)
-                                {
-                                    player_ptr.field_E8 -= (byte)(player_ptr.field_E8 / player_ptr.field_E7);
-                                    player_ptr.field_E7 -= 1;
-                                }
-                            }
-                        }
-                    }
-
-                    ovr026.sub_6A3C6(gbl.player_ptr);
+                    gbl.byte_1D8B0 = 1;
 
                     if (gbl.byte_1B2F1 == 0)
                     {
-                        if (player_ptr.magic_user_lvl > var_17 ||
-                            player_ptr.ranger_lvl > 8)
+                        seg041.DisplayStatusText(0, 14, "Not Enough Experience");
+                        return;
+                    }
+                }
+            }
+
+            if (Cheats.free_training == false)
+            {
+                var_C = (byte)(var_A & training_class_mask);
+            }
+            else
+            {
+                var_C = var_A;
+            }
+
+            bool skipBits = false;
+            if (gbl.byte_1B2F1 != 0)
+            {
+                skipBits = true;
+            }
+
+            if (skipBits == false)
+            {
+                seg037.draw8x8_clear_area(0x16, 0x26, 1, 1);
+
+                int y_offset = 4;
+
+                ovr025.displayPlayerName(false, y_offset, 4, gbl.player_ptr);
+
+                seg041.displayString(" will become:", 0, 10, y_offset, player_ptr.name.Length + 4);
+
+                for (int var_13 = 0; var_13 <= 7; var_13++)
+                {
+                    if (player_ptr.class_lvls[var_13] > 0 &&
+                        (classMasks[var_13] & var_C) != 0)
+                    {
+                        y_offset++;
+
+                        if (y_offset == 5)
                         {
-                            short var_1C = -1;
-                            byte var_1A;
-                            bool var_1D;
+                            string text = System.String.Format("    a level {0} {1}",
+                                player_ptr.class_lvls[var_13] + 1, ovr020.classString[var_13]);
 
-                            do
-                            {
-                                var_1A = ovr020.spell_menu2(out var_1D, ref var_1C, SpellSource.Learn, SpellLoc.choose);
-                            } while (var_1A <= 0 && var_1D == true);
+                            seg041.displayString(text, 0, 10, y_offset, 6);
+                        }
+                        else
+                        {
+                            string text = System.String.Format("and a level {0} {1}",
+                                player_ptr.class_lvls[var_13] + 1, ovr020.classString[var_13]);
 
-                            if (var_1A > 0)
+                            seg041.displayString(text, 0, 10, y_offset, 6);
+                        }
+                    }
+                }
+            }
+
+            if (skipBits || ovr027.yes_no(15, 10, 13, "Do you wish to train? ") == 'Y')
+            {
+                if (skipBits == false)
+                {
+                    ovr025.string_print01("Congratulations...");
+
+                    if (Cheats.free_training == false &&
+                        gbl.gameWon == false)
+                    {
+                        subtract_gold(player_ptr, 1000);
+                    }
+                }
+
+                byte class_count = 0;
+                byte var_17 = player_ptr.magic_user_lvl;
+                byte var_18 = player_ptr.ranger_lvl;
+                player_ptr.classFlags = 0;
+
+                for (int _class = 0; _class <= 7; _class++)
+                {
+                    if (player_ptr.class_lvls[_class] > 0)
+                    {
+                        class_count++;
+
+                        if ((classMasks[_class] & var_C) != 0)
+                        {
+                            player_ptr.class_lvls[_class] += 1;
+                            if (player_ptr.field_E7 > 0)
                             {
-                                player_ptr.field_79[var_1A - 1] = 1;
+                                player_ptr.field_E8 -= (byte)(player_ptr.field_E8 / player_ptr.field_E7);
+                                player_ptr.field_E7 -= 1;
                             }
                         }
                     }
+                }
 
-                    if (gbl.byte_1B2F1 != 0)
+                ovr026.sub_6A3C6(gbl.player_ptr);
+
+                if (gbl.byte_1B2F1 == 0)
+                {
+                    if (player_ptr.magic_user_lvl > var_17 ||
+                        player_ptr.ranger_lvl > 8)
                     {
-                        switch (player_ptr.magic_user_lvl)
+                        short var_1C = -1;
+                        byte var_1A;
+                        bool var_1D;
+
+                        do
                         {
-                            case 2:
-                                player_ptr.field_79[0xF - 1] = 1;
-                                break;
+                            var_1A = ovr020.spell_menu2(out var_1D, ref var_1C, SpellSource.Learn, SpellLoc.choose);
+                        } while (var_1A <= 0 && var_1D == true);
 
-                            case 3:
-                                player_ptr.field_79[0x22 - 1] = 1;
-                                player_ptr.field_79[0x10 - 1] = 1;
-                                break;
+                        if (var_1A > 0)
+                        {
+                            player_ptr.field_79[var_1A - 1] = 1;
+                        }
+                    }
+                }
 
-                            case 4:
-                                player_ptr.field_79[0x1F - 1] = 1;
-                                break;
+                if (gbl.byte_1B2F1 != 0)
+                {
+                    switch (player_ptr.magic_user_lvl)
+                    {
+                        case 2:
+                            player_ptr.field_79[0xF - 1] = 1;
+                            break;
 
-                            case 5:
-                                player_ptr.field_79[0x2F - 1] = 1;
-                                break;
+                        case 3:
+                            player_ptr.field_79[0x22 - 1] = 1;
+                            player_ptr.field_79[0x10 - 1] = 1;
+                            break;
+
+                        case 4:
+                            player_ptr.field_79[0x1F - 1] = 1;
+                            break;
+
+                        case 5:
+                            player_ptr.field_79[0x2F - 1] = 1;
+                            break;
+                    }
+                }
+
+                if (player_ptr.field_E5 <= player_ptr.field_E6)
+                {
+                    return;
+                }
+
+                short var_F = sub_509E0(var_C, gbl.player_ptr);
+
+                int max_hp_increase = var_F / class_count;
+
+                if (max_hp_increase == 0)
+                {
+                    max_hp_increase = 1;
+                }
+
+                player_ptr.field_12C += (byte)max_hp_increase;
+
+                int var_15 = get_con_hp_adj(gbl.player_ptr);
+
+                max_hp_increase = (var_F + var_15) / class_count;
+
+                if (max_hp_increase < 1)
+                {
+                    max_hp_increase = 1;
+                }
+
+                int hp_lost = player_ptr.hit_point_max - player_ptr.hit_point_current;
+
+                player_ptr.hit_point_max += (byte)max_hp_increase;
+                player_ptr.hit_point_current = (byte)(player_ptr.hit_point_max - hp_lost);
+            }
+        }
+
+        private static bool RaceClassLimit(int class_lvl, Player player, ClassId _class )
+        {
+            bool race_limited = false;
+
+            switch (player.race)
+            {
+                case Race.dwarf:
+                    if (_class == ClassId.fighter)
+                    {
+                        if (class_lvl == 9 ||
+                            (class_lvl == 8 && player.strength == 17) ||
+                            (class_lvl == 7 && player.strength < 17))
+                        {
+                            race_limited = true;
+                        }
+                    }
+                    break;
+
+                case Race.elf:
+                    if (_class == ClassId.fighter)
+                    {
+                        if (class_lvl == 7 ||
+                            (class_lvl == 6 && player.strength == 17) ||
+                            (class_lvl == 5 && player.strength < 17))
+                        {
+                            race_limited = true;
                         }
                     }
 
-                    if (player_ptr.field_E5 <= player_ptr.field_E6)
+                    if (_class == ClassId.magic_user)
                     {
-                        return;
+                        if (class_lvl == 11 ||
+                            (class_lvl == 9 && player._int < 17) ||
+                            (class_lvl == 10 && player._int == 17))
+                        {
+                            race_limited = true;
+                        }
+                    }
+                    break;
+
+                case Race.gnome:
+                    if (_class == ClassId.fighter)
+                    {
+                        if (class_lvl == 6 ||
+                            (class_lvl == 5 && player.strength < 18))
+                        {
+                            race_limited = true;
+                        }
+                    }
+                    break;
+
+                case Race.half_elf:
+                    if (_class == ClassId.cleric && class_lvl == 5)
+                    {
+                        race_limited = true;
+                    }
+                    else
+                    {
+                        if (_class == ClassId.fighter || _class == ClassId.ranger)
+                        {
+                            if (class_lvl == 8 ||
+                                (class_lvl == 7 && player.strength == 17) ||
+                                (class_lvl == 6 && player.strength < 17))
+                            {
+                                race_limited = true;
+                            }
+                        }
+
+                        if (_class == ClassId.magic_user)
+                        {
+                            if (class_lvl == 8 ||
+                                (class_lvl == 7 && player.strength == 17) ||
+                                (class_lvl == 6 && player.strength < 17))
+                            {
+                                race_limited = true;
+                            }
+                        }
+                    }
+                    break;
+
+                case Race.halfling:
+                    if (_class == ClassId.fighter)
+                    {
+                        if (class_lvl == 6 ||
+                            (class_lvl == 5 && player.strength == 17) ||
+                            (class_lvl == 4 && player.strength < 17))
+                        {
+                            race_limited = true;
+                        }
                     }
 
-                    var_F = sub_509E0(var_C, gbl.player_ptr);
+                    break;
 
-                    var_11 = (short)(var_F / var_D);
-
-                    if (var_11 == 0)
-                    {
-                        var_11 = 1;
-                    }
-
-                    player_ptr.field_12C += (byte)var_11;
-
-                    var_15 = get_con_hp_adj(gbl.player_ptr);
-
-                    var_11 = (short)((var_F + var_15) / var_D);
-
-                    if (var_11 < 1)
-                    {
-                        var_11 = 1;
-                    }
-
-                    var_12 = (byte)(player_ptr.hit_point_max - player_ptr.hit_point_current);
-
-                    player_ptr.hit_point_max += (byte)var_11;
-
-                    player_ptr.hit_point_current = (byte)(player_ptr.hit_point_max - var_12);
-                }
             }
-            //func_end:
+
+            return race_limited;
         }
     }
 }

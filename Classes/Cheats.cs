@@ -67,5 +67,11 @@ namespace Classes
         {
             improved_area_map = value;
         }
+
+        public static bool no_race_class_limits = false;
+        public static void NoRaceClassLimits(bool value)
+        {
+            no_race_class_limits = value;
+        }
     }
 }

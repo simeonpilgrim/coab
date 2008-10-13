@@ -2289,7 +2289,7 @@ namespace engine
                 ovr019.end_game_text();
                 gbl.gameWon = true;
                 gbl.area_ptr.field_3FA = 0xff;
-                gbl.area2_ptr.field_550 = 0xff;
+                gbl.area2_ptr.training_class_mask = 0xff;
 
                 foreach (Player player in gbl.player_next_ptr)
                 {
