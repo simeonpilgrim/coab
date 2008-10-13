@@ -64,7 +64,7 @@ namespace engine
             gbl.area2_ptr = new Area2();
             gbl.stru_1B2CA = new Struct_1B2CA();
             gbl.ecl_ptr = new EclBlock();
-            gbl.dax_8x8d1_201 = new byte[177, 8]; //seg051.GetMem( 0x0588 );
+            gbl.dax_8x8d1_201 = new byte[177, 8];
             gbl.stru_1D52C = new byte[3][];
             gbl.stru_1D52C[0] = new byte[780];
             gbl.stru_1D52C[1] = new byte[780];

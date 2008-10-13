@@ -995,7 +995,7 @@ namespace engine
                 var_7.field_192 = 1;
             }
 
-            gbl.area2_ptr.field_550 = 0xff;
+            gbl.area2_ptr.training_class_mask = 0xff;
             gbl.byte_1D8B0 = 0;
             gbl.byte_1B2F1 = 1;
 
@@ -1025,24 +1025,17 @@ namespace engine
         internal static void import_char01(byte arg_0, byte arg_2, ref Player player_ptr, string arg_8)
         {
             Player player01_ptr;
-            string var_2DF;
-            string var_2DA;
             string var_2CA;
             Player player02_ptr;
             HillsFarPlayer var_1C4;
-            PoolRadPlayer var_1C0;
-            bool var_1BC;
+            
             string var_1BB = string.Empty;
             byte[] var_192;
             Affect affect_ptr = null;
-            Item item_ptr;
             short var_182;
             File file;
-            string var_100;
 
-            var_100 = arg_8;
-
-            var_1BC = seg042.find_and_open_file(out file, false, gbl.SavePath + var_100);
+            bool var_1BC = seg042.find_and_open_file(out file, false, gbl.SavePath + arg_8);
 
             seg041.displayString("Loading...Please Wait", 0, 10, 0x18, 0);
 
@@ -1064,11 +1057,9 @@ namespace engine
                 seg051.BlockRead(0x11D, data, file);
                 seg051.Close(file);
 
-                var_1C0 = new PoolRadPlayer(data);
+                PoolRadPlayer poolRadPlayer = new PoolRadPlayer(data);
 
-                load_pool_rad_player(player_ptr, var_1C0);
-
-                var_1C0 = null;
+                load_pool_rad_player(player_ptr, poolRadPlayer);
             }
             else if (gbl.import_from == ImportSource.Hillsfar)
             {
@@ -1084,17 +1075,15 @@ namespace engine
                 player_ptr.actions = null;
                 player_ptr.next_player = null;
 
-                var_2DA = var_1C4.field_4;
-
-                var_2DF = ".guy";
-                var_1BC = sub_483AE(ref var_182, ref var_1BC, var_1BB, var_2DF, var_2DA);
+                string fileExt = ".guy";
+                var_1BC = sub_483AE(ref var_182, ref var_1BC, var_1BB, fileExt, var_1C4.field_4);
 
                 if (var_1BC == true)
                 {
-                    var_2CA = var_100;
-                    seg051.Delete(4, seg051.Pos(var_100, "."), ref var_2CA);
+                    var_2CA = arg_8;
+                    seg051.Delete(4, seg051.Pos(arg_8, "."), ref var_2CA);
 
-                    var_1BC = seg042.find_and_open_file(out file, false, gbl.SavePath + var_2CA + var_2DF);
+                    var_1BC = seg042.find_and_open_file(out file, false, gbl.SavePath + var_2CA + fileExt);
 
                     data = new byte[Player.StructSize];
 
@@ -1115,61 +1104,61 @@ namespace engine
 
                     if (var_1C4.field_1D > 0)
                     {
-                        item_ptr = ovr025.new_Item(0, Affects.helpless, (Affects)var_1C4.field_1D, (short)(var_1C4.field_1D * 200),
-                            0, 0, false, 0, false, 0, 0, 0x57, -89, -88, 0x46);
+                        Item item_ptr = ovr025.new_Item(0, Affects.helpless, (Affects)var_1C4.field_1D,
+                            (short)(var_1C4.field_1D * 200), 0, 0,
+                            false, 0, false, 0, 0, 0x57, -89, -88, 0x46);
                         ovr025.addItem(item_ptr, player_ptr);
                     }
 
                     if (var_1C4.field_23 > 0)
                     {
-                        item_ptr = ovr025.new_Item(0, Affects.affect_41, (Affects)var_1C4.field_23, (short)(var_1C4.field_23 * 0x15E),
-                            0, 1, false, 0, false, 0, 1, 0x45, -89, -50, 0x4F);
+                        Item item_ptr = ovr025.new_Item(0, Affects.affect_41, (Affects)var_1C4.field_23,
+                            (short)(var_1C4.field_23 * 0x15E), 0, 1,
+                            false, 0, false, 0, 1, 0x45, -89, -50, 0x4F);
 
                         ovr025.addItem(item_ptr, player_ptr);
                     }
 
                     if (var_1C4.field_86 > 0)
                     {
-                        item_ptr = ovr025.new_Item(0, Affects.helpless, (Affects)var_1C4.field_86, (short)(var_1C4.field_86 * 0xc8),
-                            0, 0, false, 0, false, 0, 0, 0x42, -89, -88, 0x45);
+                        Item item_ptr = ovr025.new_Item(0, Affects.helpless, (Affects)var_1C4.field_86,
+                            (short)(var_1C4.field_86 * 0xc8), 0, 0,
+                            false, 0, false, 0, 0, 0x42, -89, -88, 0x45);
 
                         ovr025.addItem(item_ptr, player_ptr);
                     }
 
                     if (var_1C4.field_87 > 0)
                     {
-                        item_ptr = ovr025.new_Item(0, Affects.affect_3e, (Affects)var_1C4.field_87, (short)(var_1C4.field_87 * 0x190),
-                            0, (short)(var_1C4.field_87 * 10), false, 0, false, 0, 0, 0x40, -89, -71, 0x46);
+                        Item item_ptr = ovr025.new_Item(0, Affects.affect_3e, (Affects)var_1C4.field_87,
+                            (short)(var_1C4.field_87 * 0x190), 0, (short)(var_1C4.field_87 * 10),
+                            false, 0, false, 0, 0, 0x40, -89, -71, 0x46);
 
                         ovr025.addItem(item_ptr, player_ptr);
                     }
                 }
                 else
                 {
-                    var_2DA = var_1C4.field_4;
+                    fileExt = ".cha";
 
-                    var_2DF = ".cha";
-
-                    var_1BC = sub_483AE(ref var_182, ref var_1BC, var_1BB, var_2DF, var_2DA);
+                    var_1BC = sub_483AE(ref var_182, ref var_1BC, var_1BB, fileExt, var_1C4.field_4);
 
                     if (var_1BC == true)
                     {
-                        data = seg051.GetMem(0x11D);
+                        data = seg051.GetMem(PoolRadPlayer.StructSize);
 
-                        var_2CA = var_100;
-                        var_2CA = var_100;
-                        seg051.Delete(4, seg051.Pos(var_100, "."), ref var_2CA);
+                        var_2CA = arg_8;
 
-                        var_1BC = seg042.find_and_open_file(out file, false, gbl.SavePath + var_2CA + var_2DF);
+                        seg051.Delete(4, seg051.Pos(arg_8, "."), ref var_2CA);
 
-                        seg051.BlockRead(out var_182, 0x011D, data, file);
+                        var_1BC = seg042.find_and_open_file(out file, false, gbl.SavePath + var_2CA + fileExt);
+
+                        seg051.BlockRead(out var_182, PoolRadPlayer.StructSize, data, file);
                         seg051.Close(file);
 
-                        var_1C0 = new PoolRadPlayer(data);
+                        PoolRadPlayer poolRadPlayer = new PoolRadPlayer(data);
 
-                        load_pool_rad_player(player_ptr, var_1C0);
-
-                        var_1C0 = null;
+                        load_pool_rad_player(player_ptr, poolRadPlayer);
 
                         player02_ptr = gbl.player_ptr;
                         gbl.player_ptr = player_ptr;
@@ -1290,7 +1279,7 @@ namespace engine
                             player01_ptr.field_79[0x15 - 1] = 1;
                         }
 
-                        gbl.area2_ptr.field_550 = 0xff;
+                        gbl.area2_ptr.training_class_mask = 0xff;
 
                         gbl.byte_1D8B0 = 0;
                         gbl.byte_1B2F1 = 1;
@@ -1315,18 +1304,18 @@ namespace engine
 
             if (gbl.import_from == ImportSource.Curse)
             {
-                seg051.Delete(4, seg051.Pos(var_100, "."), ref var_100);
+                seg051.Delete(4, seg051.Pos(arg_8, "."), ref arg_8);
             }
             else
             {
-                var_100 = seg042.clean_string(player_ptr.name);
+                arg_8 = seg042.clean_string(player_ptr.name);
             }
 
-            if (seg042.file_find(gbl.SavePath + var_100 + ".swg") == true)
+            if (seg042.file_find(gbl.SavePath + arg_8 + ".swg") == true)
             {
                 byte[] var_18A = new byte[Item.StructSize];
 
-                var_1BC = seg042.find_and_open_file(out file, false, gbl.SavePath + var_100 + ".swg");
+                var_1BC = seg042.find_and_open_file(out file, false, gbl.SavePath + arg_8 + ".swg");
 
                 Item last_item = null;
                 do
@@ -1355,10 +1344,10 @@ namespace engine
             }
 
 
-            if (seg042.file_find(gbl.SavePath + var_100 + ".fx") == true)
+            if (seg042.file_find(gbl.SavePath + arg_8 + ".fx") == true)
             {
-                var_192 = seg051.GetMem(9);
-                var_1BC = seg042.find_and_open_file(out file, false, gbl.SavePath + var_100 + ".fx");
+                var_192 = seg051.GetMem(Affect.StructSize);
+                var_1BC = seg042.find_and_open_file(out file, false, gbl.SavePath + arg_8 + ".fx");
 
                 do
                 {
@@ -1387,15 +1376,15 @@ namespace engine
 
             if (gbl.import_from == ImportSource.Pool)
             {
-                if (seg042.file_find(gbl.SavePath + var_100 + ".spc") == true)
+                if (seg042.file_find(gbl.SavePath + arg_8 + ".spc") == true)
                 {
-                    var_192 = seg051.GetMem(9);
+                    var_192 = seg051.GetMem(Affect.StructSize);
 
-                    var_1BC = seg042.find_and_open_file(out file, false, gbl.SavePath + var_100 + ".spc");
+                    var_1BC = seg042.find_and_open_file(out file, false, gbl.SavePath + arg_8 + ".spc");
 
                     do
                     {
-                        seg051.BlockRead(out var_182, 9, var_192, file);
+                        seg051.BlockRead(out var_182, Affect.StructSize, var_192, file);
 
                         if (var_182 == 9 &&
                             asc_49280.MemberOf(var_192[0]) == true)
@@ -1428,10 +1417,10 @@ namespace engine
 
         internal static Player load_mob(int monster_id)
         {
+            string area_text = gbl.game_area.ToString();
+
             byte[] data;
             short decode_size;
-
-            string area_text = gbl.game_area.ToString();
             seg042.load_decode_dax(out data, out decode_size, monster_id, "MON" + area_text + "CHA.dax");
 
             if (decode_size == 0)
@@ -1512,45 +1501,43 @@ namespace engine
 
                 player.mod_id = (byte)monster_id;
 
-                sub_4A60A(player);
+                AssignPlayerIconId(player);
 
                 ovr034.chead_cbody_comspr_icon(player.icon_id, monster_id, "CPIC");
             }
         }
 
-        static Set unk_4A5EA = new Set(0x0001, new byte[] { 0xFF });
-
-        internal static void sub_4A60A(Player new_player)
+        internal static void AssignPlayerIconId(Player player) // sub_4A60A
         {
-            new_player.icon_id = 0xff;
+            player.icon_id = 0xff;
 
-            gbl.player_next_ptr.Add(new_player);
-            gbl.player_ptr = new_player;
+            gbl.player_next_ptr.Add(player);
+            gbl.player_ptr = player;
 
             bool[] icon_slot = new bool[8];
 
-            foreach (Player tmp in gbl.player_next_ptr)
+            foreach (Player tmpPlayer in gbl.player_next_ptr)
             {
-                if (unk_4A5EA.MemberOf(tmp.icon_id) == true)
+                if (tmpPlayer.icon_id >= 0 && tmpPlayer.icon_id < 8)
                 {
-                    icon_slot[tmp.icon_id] = true;
+                    icon_slot[tmpPlayer.icon_id] = true;
                 }
             }
 
-            Player var_10 = gbl.player_ptr;
-            var_10.icon_id = 0;
+            // Now find the lowest free icon slot.
+            player.icon_id = 0;
 
-            while (var_10.icon_id < 8 &&
-                icon_slot[var_10.icon_id] == true)
+            while (player.icon_id < 8 &&
+                icon_slot[player.icon_id] == true)
             {
-                var_10.icon_id += 1;
+                player.icon_id += 1;
             }
 
             gbl.area2_ptr.party_size++;
 
-            if (new_player.field_F7 > 0x7f)
+            if (player.field_F7 > 0x7f)
             {
-                ovr026.sub_6A3C6(new_player);
+                ovr026.sub_6A3C6(player);
             }
         }
 
@@ -1685,7 +1672,7 @@ namespace engine
                     Player player = new Player();
 
                     import_char01(1, 1, ref player, var_1F6 + ".sav");
-                    sub_4A60A(player);
+                    AssignPlayerIconId(player);
 
                     if (save() == false)
                     {

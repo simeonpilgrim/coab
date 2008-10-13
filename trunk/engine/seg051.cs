@@ -9,7 +9,7 @@ namespace engine
         /*static int random_number;*/
 
 
-        internal static byte[] GetMem( int arg_0 )
+        internal static byte[] GetMem(int arg_0)
         /*TODO REMOVE THIS*/
         {
             return new byte[arg_0];

@@ -6,6 +6,8 @@ namespace Classes
 {
     public class PoolRadPlayer
     {
+        public const int StructSize = 0x011D;
+
         public string name; // 0x0	16
         public byte[] strength; // 0x10
         public byte strength_100; // 0x16

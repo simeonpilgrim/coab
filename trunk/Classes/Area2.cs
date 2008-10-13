@@ -39,7 +39,7 @@ namespace Classes
         protected byte[] origData;
 
         [DataOffset(0x550, DataType.Byte)]
-        public byte field_550; // 0x550
+        public byte training_class_mask; // 0x550
         [DataOffset(0x580, DataType.Word)]
         public ushort max_encounter_distance; // 0x580
         [DataOffset(0x582, DataType.Word)]
@@ -147,7 +147,7 @@ namespace Classes
 
             switch (loc)
             {
-                case 0x550: return field_550;
+                case 0x550: return training_class_mask;
                 case 0x58e: return (ushort)field_58E;
                 case 0x592: return (ushort)field_592;
                 case 0x594: return search_flags;
@@ -179,7 +179,7 @@ namespace Classes
             switch (loc)
             {
                 case 0x550:
-                    field_550 = (byte)value;
+                    training_class_mask = (byte)value;
                     break;
 
                 case 0x58C:
