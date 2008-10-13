@@ -319,29 +319,25 @@ namespace engine
 
         internal static void combat_menu(out char arg_0, Player player)
         {
-            bool var_2B;
-            byte var_2A;
-            string var_29;
-
-            var_29 = string.Empty;
+            string menuText = string.Empty;
 
             if (player.actions.move > 0)
             {
-                var_29 += "Move ";
+                menuText += "Move ";
             }
 
-            var_29 += "View Aim ";
+            menuText += "View Aim ";
 
             if (player.field_14C > 0)
             {
-                var_29 += "Use ";
+                menuText += "Use ";
             }
 
-            var_2B = false;
+            bool var_2B = false;
 
-            for (var_2A = 0; var_2A < gbl.max_spells; var_2A++)
+            for (int spellIdx = 0; spellIdx < gbl.max_spells; spellIdx++)
             {
-                if (player.spell_list[var_2A] > 0)
+                if (player.spell_list[spellIdx] > 0)
                 {
                     var_2B = true;
                 }
@@ -351,7 +347,7 @@ namespace engine
                 player.actions.can_cast == true &&
                 gbl.area_ptr.can_cast_spells == false)
             {
-                var_29 += "Cast ";
+                menuText += "Cast ";
             }
 
             if (player.cleric_lvl > 0 ||
@@ -359,15 +355,15 @@ namespace engine
             {
                 if (player.actions.field_11 == 0)
                 {
-                    var_29 += "Turn ";
+                    menuText += "Turn ";
                 }
             }
 
-            var_29 += "Quick Done";
+            menuText += "Quick Done";
 
             do
             {
-                arg_0 = ovr027.displayInput(out var_2B, false, 1, 15, 10, 13, var_29, string.Empty);
+                arg_0 = ovr027.displayInput(out var_2B, false, 1, 15, 10, 13, menuText, string.Empty);
 
                 if (var_2B == true &&
                     unk_33748.MemberOf(arg_0) == false)

@@ -212,7 +212,7 @@ namespace Classes
         public static byte byte_1AB0C;
         public static byte byte_1AB0D;
         public static byte byte_1AB0E; //TODO number of monsters?
-        public static byte byte_1AB14 = 0x73;
+        public static bool byte_1AB14;
         public static bool byte_1AB16;
         public static byte byte_1AB18;
         public static byte byte_1AB19 = 0x40;

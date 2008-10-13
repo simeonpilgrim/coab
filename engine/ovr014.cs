@@ -554,65 +554,63 @@ namespace engine
             bool var_1 = false;
 
             if (attacker.field_19C < attacker.actions.field_5 &&
-                target.field_E5 == 0)
+                target.field_E5 == 0 &&
+                ovr025.getTargetRange(target, attacker) == 1)
             {
-                if (ovr025.getTargetRange(target, attacker) == 1)
-                {
-                    int near_count = ovr025.near_enemy(1, attacker);
-                    byte var_3 = 0;
+                int near_count = ovr025.near_enemy(1, attacker);
+                byte var_3 = 0;
 
-                    int var_5 = 0xff;
+                int var_5 = 0xff;
+
+                for (int i = 1; i <= near_count; i++)
+                {
+                    Player near_target = gbl.player_array[gbl.near_targets[i]];
+
+                    if (near_target == target)
+                    {
+                        var_5 = i;
+                    }
+
+                    if (near_target.field_E5 == 0)
+                    {
+                        var_3++;
+                    }
+                }
+
+                if (var_3 > attacker.field_19C)
+                {
+                    if (var_3 > attacker.actions.field_5)
+                    {
+                        var_3 = attacker.actions.field_5;
+                    }
+
+                    ovr025.DisplayPlayerStatusString(true, 10, "sweeps", attacker);
+
+                    Player near_target = gbl.player_array[gbl.near_targets[1]];
+
+                    if (near_target != target)
+                    {
+                        gbl.near_targets[var_5] = gbl.near_targets[1];
+                        gbl.near_targets[1] = ovr033.get_player_index(target);
+                    }
+
 
                     for (int var_4 = 1; var_4 <= near_count; var_4++)
                     {
-                        Player near_target = gbl.player_array[gbl.near_targets[var_4]];
-
-                        if (near_target == target)
+                        if (var_3 > 0 &&
+                            gbl.player_array[gbl.near_targets[var_4]].field_E5 == 0)
                         {
-                            var_5 = var_4;
-                        }
+                            near_target = gbl.player_array[gbl.near_targets[var_4]];
 
-                        if (near_target.field_E5 == 0)
-                        {
-                            var_3++;
+                            sub_3F94D(near_target, attacker);
+
+                            attacker.field_19C = 1;
+
+                            sub_3F9DB(out gbl.byte_1D905, null, 0, near_target, attacker);
+                            var_3--;
                         }
                     }
-
-                    if (var_3 > attacker.field_19C)
-                    {
-                        if (var_3 > attacker.actions.field_5)
-                        {
-                            var_3 = attacker.actions.field_5;
-                        }
-
-                        ovr025.DisplayPlayerStatusString(true, 10, "sweeps", attacker);
-
-                        Player near_target = gbl.player_array[gbl.near_targets[1]];
-
-                        if (near_target != target)
-                        {
-                            gbl.near_targets[var_5] = gbl.near_targets[1];
-                            gbl.near_targets[1] = ovr033.get_player_index(target);
-                        }
-
-
-                        for (int var_4 = 1; var_4 <= near_count; var_4++)
-                        {
-                            if (var_3 > 0 &&
-                                gbl.player_array[gbl.near_targets[var_4]].field_E5 == 0)
-                            {
-                                near_target = gbl.player_array[gbl.near_targets[var_4]];
-
-                                sub_3F94D(near_target, attacker);
-
-                                attacker.field_19C = 1;
-
-                                sub_3F9DB(out gbl.byte_1D905, null, 0, near_target, attacker);
-                                var_3--;
-                            }
-                        }
-                        var_1 = true;
-                    }
+                    var_1 = true;
                 }
             }
 

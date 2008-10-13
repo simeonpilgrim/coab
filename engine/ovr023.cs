@@ -1747,10 +1747,6 @@ namespace engine
 
         internal static void sub_5EC5B()
         {
-            byte var_8;
-            byte var_7;
-
-
             byte var_6 = 0; /* simeon added */
             byte var_5 = 0;
             Player target = gbl.sp_targets[1];
@@ -1776,7 +1772,7 @@ namespace engine
                 var_6 = ovr024.roll_dice(8, 1);
             }
 
-            var_7 = (byte)(target.strength + var_6);
+            byte var_7 = (byte)(target.strength + var_6);
 
             if (var_7 > 18)
             {
@@ -1801,11 +1797,14 @@ namespace engine
                     var_7 = 18;
                 }
             }
-            if (ovr024.sub_64728(out var_8, var_5, var_7, target) == true)
-            {
-                var_8 = (byte)(var_6 + 100);
 
-                ovr024.add_affect(true, var_8, sub_5CE92(gbl.spell_id), Affects.strength, target);
+            byte encoded_str;
+
+            if (ovr024.sub_64728(out encoded_str, var_5, var_7, target) == true)
+            {
+                encoded_str = (byte)(var_6 + 100);
+
+                ovr024.add_affect(true, encoded_str, sub_5CE92(gbl.spell_id), Affects.strength, target);
                 ovr024.sub_648D9(0, target);
             }
         }

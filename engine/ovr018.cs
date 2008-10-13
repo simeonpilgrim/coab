@@ -7,46 +7,38 @@ namespace engine
         static Set unk_4C13D = new Set(0x0802, new byte[] { 0x80, 0x80 });
         static Set unk_4C15D = new Set(0x0803, new byte[] { 0x20, 0x00, 0x08 });
 
-        internal static void free_player(ref Player playerBase)
+        internal static void free_player(ref Player player)
         {
-            Player playerPtr;
-            Affect affect_ptr;
-            Affect next_affect;
-            Item itemPtr;
-            Item next_item_ptr;
-
-            playerPtr = playerBase;
-
-            if (playerPtr.actions != null)
+            if (player.actions != null)
             {
-                playerPtr.actions = null; // FreeMem( action_struct_size, playerPtr.actions );
+                player.actions = null; // FreeMem( action_struct_size, playerPtr.actions );
             }
 
-            itemPtr = playerPtr.itemsPtr;
-            playerPtr.itemsPtr = null;
+            Item item = player.itemsPtr;
+            player.itemsPtr = null;
 
-            while (itemPtr != null)
+            while (item != null)
             {
-                next_item_ptr = itemPtr;
-                itemPtr = next_item_ptr.next;
+                Item tmpItem = item;
+                item = tmpItem.next;
 
-                next_item_ptr.next = null;
-                next_item_ptr = null; // FreeMem( item_struct_size, next_item_ptr );
+                tmpItem.next = null;
+                tmpItem = null; // FreeMem( item_struct_size, next_item_ptr );
             }
 
-            affect_ptr = playerPtr.affect_ptr;
-            playerPtr.affect_ptr = null;
+            Affect affect = player.affect_ptr;
+            player.affect_ptr = null;
 
-            while (affect_ptr != null)
+            while (affect != null)
             {
-                next_affect = affect_ptr;
-                affect_ptr = next_affect.next;
+                Affect tmpAffect = affect;
+                affect = tmpAffect.next;
 
-                next_affect.next = null;
-                next_affect = null; // FreeMem( Affect.StructSize, next_affect );
+                tmpAffect.next = null;
+                tmpAffect = null; // FreeMem( Affect.StructSize, next_affect );
             }
 
-            playerBase = null; // FreeMem( char_struct_size, playerBase );
+            player = null; // FreeMem( char_struct_size, playerBase );
         }
 
         static string[] menuStrings = {   
@@ -96,13 +88,7 @@ namespace engine
 
         internal static void startGameMenu()
         {
-            byte gameState;
-            byte var_E;
-            bool var_3;
-            char inputkey;
-            byte loop_cx;
-
-            gameState = gbl.game_state;
+            byte gameStateBackup = gbl.game_state;
             gbl.game_state = 0;
             bool var_F = true;
 
@@ -152,27 +138,29 @@ namespace engine
                         menuFlags[allow_begin] = false;
                     }
 
-                    var_E = 0;
-                    for (loop_cx = 0; loop_cx <= 11; loop_cx++)
+                    int yCol = 0;
+                    for (int i = 0; i <= 11; i++)
                     {
-                        if (menuFlags[loop_cx] == true)
+                        if (menuFlags[i] == true)
                         {
-                            seg041.displayString(menuStrings[loop_cx][0].ToString(), 0, 15, var_E + 12, 2);
+                            seg041.displayString(menuStrings[i][0].ToString(), 0, 15, yCol + 12, 2);
 
-                            string var_111 = seg051.Copy(menuStrings[loop_cx].Length, 1, menuStrings[loop_cx]);
-                            seg041.displayString(var_111, 0, 10, var_E + 12, 3);
-                            var_E++;
+                            string var_111 = seg051.Copy(menuStrings[i].Length, 1, menuStrings[i]);
+                            seg041.displayString(var_111, 0, 10, yCol + 12, 3);
+                            yCol++;
                         }
                     }
 
                     var_F = false;
                 }
 
-                inputkey = ovr027.displayInput(out var_3, false, 1, 0, 0, 13, "C D M T H V A R L S B E J", "Choose a function ");
+                bool controlKey;
+
+                char inputkey = ovr027.displayInput(out controlKey, false, 1, 0, 0, 13, "C D M T H V A R L S B E J", "Choose a function ");
 
                 ovr027.redraw_screen();
 
-                if (var_3 == true)
+                if (controlKey == true)
                 {
                     if (unk_4C13D.MemberOf(inputkey) == true)
                     {
@@ -288,7 +276,7 @@ namespace engine
                                 if ((gbl.player_next_ptr.Count > 0 && gbl.inDemo == true) ||
                                     gbl.area_ptr.field_3FA == 0 || gbl.inDemo == true)
                                 {
-                                    gbl.game_state = gameState;
+                                    gbl.game_state = gameStateBackup;
 
                                     if (gbl.byte_1B2EB == 0 &&
                                         gbl.lastDaxBlockId != 0x50)
@@ -1233,7 +1221,7 @@ namespace engine
                 for (int class_idx = 0; class_idx <= 7; class_idx++)
                 {
                     if (gbl.player_ptr.class_lvls[class_idx] > 0 ||
-                        (gbl.player_ptr.Skill_B_lvl[class_idx] < ovr026.human_first_class_lvl(gbl.player_ptr) &&
+                        (gbl.player_ptr.Skill_B_lvl[class_idx] < ovr026.HumanFirstClassLevelOrZero(gbl.player_ptr) &&
                          gbl.player_ptr.Skill_B_lvl[class_idx] > 0))
                     {
                         if (first_lvl == false)
@@ -1291,9 +1279,9 @@ namespace engine
         }
 
 
-        internal static sbyte con_bonus(ClassId classId)
+        internal static int con_bonus(ClassId classId)
         {
-            sbyte bonus;
+            int bonus;
             int stat = gbl.player_ptr.con;
 
             if (stat == 3)
@@ -1318,7 +1306,7 @@ namespace engine
             }
             else if (classId == ClassId.fighter || classId == ClassId.ranger || classId == ClassId.paladin)
             {
-                bonus = (sbyte)(stat - 14);
+                bonus = stat - 14;
             }
             else
             {
@@ -1362,19 +1350,19 @@ namespace engine
         /// <summary>
         /// nested function, has not been fix to be not nested.
         /// </summary>
-        internal static void draw_highlight_stat(bool arg_2, byte edited_stat, byte name_cursor_pos) /* sub_4E6F2 */
+        internal static void draw_highlight_stat(bool highlighted, byte edited_stat, byte name_cursor_pos) /* sub_4E6F2 */
         {
             if (edited_stat >= 0 && edited_stat <= 5)
             {
-                ovr020.display_stat(arg_2, edited_stat);
+                ovr020.display_stat(highlighted, edited_stat);
             }
             else if (edited_stat == 6)
             {
-                ovr025.display_hp(arg_2, 18, 4, gbl.player_ptr);
+                ovr025.display_hp(highlighted, 18, 4, gbl.player_ptr);
             }
             else if (edited_stat == 7)
             {
-                if (arg_2 == true)
+                if (highlighted == true)
                 {
                     seg041.displaySpaceChar(1, 0, 1, gbl.player_ptr.name.Length + 1);
                     seg041.displayString(gbl.player_ptr.name, 0, 13, 1, 1);
@@ -1398,16 +1386,9 @@ namespace engine
 
         internal static void modifyPlayer()
         {
-            Player player_ptr;
-            byte var_40;
             byte name_cursor_pos;
-            byte edited_stat;
             bool var_36;
             char var_35;
-            byte var_33;
-            string var_31;
-            byte var_8;
-            byte var_7;
 
             if (Cheats.allow_player_modify == false &&
                 (gbl.player_ptr.exp != 0 &&
@@ -1428,17 +1409,17 @@ namespace engine
                 stats_bkup[stat_var] = gbl.player_ptr.stats[stat_var].max;
             }
 
-            var_7 = gbl.player_ptr.tmp_str_00;
-            var_8 = gbl.player_ptr.hit_point_max;
+            byte var_7 = gbl.player_ptr.tmp_str_00;
+            byte var_8 = gbl.player_ptr.hit_point_max;
 
-            var_31 = gbl.player_ptr.name;
+            string nameBackup = gbl.player_ptr.name;
 
             name_cursor_pos = 1;
-            edited_stat = 7;
+            byte edited_stat = 7;
             draw_highlight_stat(false, edited_stat, name_cursor_pos);
             edited_stat = 0;
             draw_highlight_stat(true, edited_stat, name_cursor_pos);
-            player_ptr = gbl.player_ptr;
+            Player player_ptr = gbl.player_ptr;
 
             do
             {
@@ -1828,7 +1809,7 @@ namespace engine
                             gbl.player_ptr.hit_point_max = var_8;
                             gbl.player_ptr.hit_point_current = gbl.player_ptr.hit_point_max;
 
-                            gbl.player_ptr.name = var_31;
+                            gbl.player_ptr.name = nameBackup;
 
                             ovr025.reclac_player_values(gbl.player_ptr);
                             return;
@@ -1843,7 +1824,7 @@ namespace engine
 
                         gbl.player_ptr.tmp_str_00 = var_7;
                         gbl.player_ptr.hit_point_max = var_8;
-                        gbl.player_ptr.name = var_31;
+                        gbl.player_ptr.name = nameBackup;
 
                         gbl.player_ptr.hit_point_current = gbl.player_ptr.hit_point_max;
                         ovr025.reclac_player_values(gbl.player_ptr);
@@ -1863,9 +1844,9 @@ namespace engine
 
             player_ptr = gbl.player_ptr;
             var_8 = 0;
-            var_40 = 0;
+            byte var_40 = 0;
 
-            for (var_33 = 0; var_33 < 8; var_33++)
+            for (int var_33 = 0; var_33 < 8; var_33++)
             {
                 if (player_ptr.class_lvls[var_33] > 0)
                 {
@@ -2063,10 +2044,12 @@ namespace engine
                 {
                     ovr034.free_icon(gbl.player_ptr.icon_id);
                 }
+
                 if (leave_party_size == false)
                 {
                     gbl.area2_ptr.party_size--;
                 }
+
                 free_player(ref gbl.player_ptr);
 
                 index = index > 0 ? index - 1 : 0;
@@ -2716,7 +2699,6 @@ namespace engine
 
             if (coppers < 0)
             {
-
                 coppers = System.Math.Abs(coppers);
                 var_3 = 4;
 
@@ -2743,8 +2725,6 @@ namespace engine
 
         internal static void train_player()
         {
-            byte var_C;
-
             if (gbl.player_ptr.health_status != Status.okey &&
                 Cheats.free_training == false)
             {
@@ -2873,6 +2853,7 @@ namespace engine
                 }
             }
 
+            byte var_C;
             if (Cheats.free_training == false)
             {
                 var_C = (byte)(var_A & training_class_mask);

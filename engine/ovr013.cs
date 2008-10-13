@@ -1624,27 +1624,19 @@ namespace engine
 
         internal static void sub_3C356(Effect arg_0, object param, Player player)
         {
-            Item var_4;
+            Item weapon = get_primary_weapon(gbl.player_ptr);
 
-            var_4 = get_primary_weapon(gbl.player_ptr);
-
-            if (var_4 == null ||
-                var_4.plus == 0)
+            if ((weapon == null || weapon.plus == 0) &&
+                (gbl.player_ptr.race > 0 || gbl.player_ptr.field_E5 < 4))
             {
-                if (gbl.player_ptr.race > 0 ||
-                    gbl.player_ptr.field_E5 < 4)
-                {
-                    gbl.damage = 0;
-                }
+                gbl.damage = 0;
             }
         }
 
 
         internal static void sub_3C3A2(Effect arg_0, object param, Player player)
         {
-            Item field_151;
-
-            field_151 = player.field_151;
+            Item field_151 = player.field_151;
 
             if (field_151 != null)
             {
@@ -1822,7 +1814,7 @@ namespace engine
         }
 
 
-        internal static void sub_3C7CC(Effect arg_0, object param, Player player)
+        internal static void attacker_zero_moves(Effect arg_0, object param, Player player) // sub_3C7CC
         {
             player.actions.move = 0;
         }
@@ -2078,7 +2070,7 @@ namespace engine
             gbl.affect_jump_list[133] = ovr013.sub_3C750;
             gbl.affect_jump_list[134] = ovr013.sub_3C77C;
             gbl.affect_jump_list[135] = ovr013.sub_3C7B5;
-            gbl.affect_jump_list[136] = ovr013.sub_3C7CC;
+            gbl.affect_jump_list[136] = ovr013.attacker_zero_moves;
             gbl.affect_jump_list[137] = ovr013.sub_3C7E0;
             gbl.affect_jump_list[138] = ovr013.add_affect_19;
             gbl.affect_jump_list[139] = ovr014.sub_425C6;
