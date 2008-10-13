@@ -5,11 +5,11 @@ namespace engine
 {
     class ovr006
     {
-        internal static void calc_battle_exp(ref int longint_ptr)
+        internal static int calc_battle_exp()
         {
             if (gbl.combat_type == gbl.combatType.duel)
             {
-                longint_ptr = gbl.player_ptr.field_E5 * 100;
+                return gbl.player_ptr.field_E5 * 100;
             }
             else
             {
@@ -27,7 +27,7 @@ namespace engine
                         player.health_status != Status.okey &&
                         player.health_status != Status.running)
                     {
-                        gbl.byte_1AB14 = 1;
+                        gbl.byte_1AB14 = true;
 
                         for (int money_type = 0; money_type <= 6; money_type++)
                         {
@@ -80,7 +80,7 @@ namespace engine
                     item_ptr = item_ptr.next;
                 }
 
-                longint_ptr = total / (gbl.area2_ptr.party_size - gbl.byte_1EE81);
+                return total / (gbl.area2_ptr.party_size - gbl.byte_1EE81);
             }
         }
 
@@ -271,7 +271,7 @@ namespace engine
 
                 if (gbl.byte_1EE86 != 0)
                 {
-                    calc_battle_exp(ref gbl.exp_to_add);
+                    gbl.exp_to_add = calc_battle_exp();
                     addExp(gbl.exp_to_add);
                 }
 
@@ -381,7 +381,7 @@ namespace engine
                         player.combat_team == CombatTeam.Ours)
                     {
                         gbl.byte_1EE86 = 1;
-                        calc_battle_exp(ref gbl.exp_to_add);
+                        gbl.exp_to_add = calc_battle_exp();
                         addExp(gbl.exp_to_add);
                     }
                 }
@@ -403,18 +403,18 @@ namespace engine
         }
 
 
-        internal static void displayCombatResults(int arg_0) /* sub_2DABC */
+        internal static void displayCombatResults(int exp) /* sub_2DABC */
         {
             seg037.draw8x8_outer_frame();
 
-            if (gbl.byte_1AB14 != 0 ||
+            if (gbl.byte_1AB14 == true ||
                 gbl.combat_type == gbl.combatType.duel)
             {
                 if (gbl.party_fled == true)
                 {
                     seg041.displayString("The party has fled.", 0, 10, 3, 1);
 
-                    arg_0 = 0;
+                    exp = 0;
 
                     Item item_ptr = gbl.item_pointer;
                     while (item_ptr != null)
@@ -437,7 +437,7 @@ namespace engine
                         gbl.area2_ptr.field_58E = 0x80;
                         seg041.displayString("You have lost the fight.", 0, 10, 3, 1);
 
-                        arg_0 = 0;
+                        exp = 0;
                     }
                     else
                     {
@@ -460,12 +460,11 @@ namespace engine
             string text;
             if (gbl.combat_type == gbl.combatType.duel)
             {
-
-                text = "The duelist receives " + arg_0.ToString();
+                text = "The duelist receives " + exp.ToString();
             }
             else
             {
-                text = "Each character receives " + arg_0.ToString();
+                text = "Each character receives " + exp.ToString();
             }
 
             seg041.displayString(text, 0, 10, 5, 1);
@@ -520,20 +519,20 @@ namespace engine
 
                     if (willOverload == false)
                     {
-                        Item var_8 = gbl.item_pointer;
+                        Item tmpItem = gbl.item_pointer;
 
-                        if (var_8 == item)
+                        if (tmpItem == item)
                         {
                             gbl.item_pointer = item.next;
                         }
                         else
                         {
-                            while (var_8.next != item)
+                            while (tmpItem.next != item)
                             {
-                                var_8 = var_8.next;
+                                tmpItem = tmpItem.next;
                             }
 
-                            var_8.next = item.next;
+                            tmpItem.next = item.next;
                         }
 
                         item.next = null;
@@ -741,7 +740,7 @@ namespace engine
                 
                 if (check || player.combat_team == CombatTeam.Enemy)
                 {
-                    gbl.byte_1AB14 = 1;
+                    gbl.byte_1AB14 = true;
                     if (player.in_combat == false)
                     {
                         gbl.area2_ptr.field_590++;
@@ -830,7 +829,7 @@ namespace engine
         internal static void sub_2E7A2()
         {
             gbl.area2_ptr.field_58E = 0;
-            gbl.byte_1AB14 = 0;
+            gbl.byte_1AB14 = false;
 
             if (gbl.inDemo == false)
             {

@@ -42,13 +42,6 @@ namespace engine
 
         internal static void playerDisplayFull()
         {
-            string var_307;
-            string var_106;
-            byte var_6;
-            byte var_5;
-            int xCol;
-            byte var_2;
-
             gbl.player_ptr02 = gbl.player_ptr;
 
             seg037.draw8x8_outer_frame();
@@ -60,88 +53,88 @@ namespace engine
                 seg041.displayString("(NPC)", 0, 10, 1, gbl.player_ptr02.name.Length + 3);
             }
 
-            xCol = 1;
+            int xCol = 1;
 
-            var_106 = sexString[gbl.player_ptr02.sex];
+            string text2 = sexString[gbl.player_ptr02.sex];
 
             seg041.displayString(sexString[gbl.player_ptr02.sex], 0, 15, 3, xCol);
 
-            xCol += (byte)(var_106.Length + 1);
-            var_106 = raceString[(int)gbl.player_ptr02.race];
-            seg041.displayString(var_106, 0, 15, 3, xCol);
+            xCol += (byte)(text2.Length + 1);
+            text2 = raceString[(int)gbl.player_ptr02.race];
+            seg041.displayString(text2, 0, 15, 3, xCol);
 
-            xCol += (byte)(var_106.Length + 1);
-            var_307 = "Age " + gbl.player_ptr02.age.ToString();
+            xCol += (byte)(text2.Length + 1);
+            string text = "Age " + gbl.player_ptr02.age.ToString();
 
-            seg041.displayString(var_307, 0, 15, 3, xCol);
+            seg041.displayString(text, 0, 15, 3, xCol);
 
-            var_106 = alignmentString[gbl.player_ptr02.alignment];
-            seg041.displayString(var_106, 0, 15, 4, 1);
+            text2 = alignmentString[gbl.player_ptr02.alignment];
+            seg041.displayString(text2, 0, 15, 4, 1);
 
-            var_106 = classString[(int)gbl.player_ptr02._class];
-            seg041.displayString(var_106, 0, 15, 5, 1);
+            text2 = classString[(int)gbl.player_ptr02._class];
+            seg041.displayString(text2, 0, 15, 5, 1);
 
-            for (var_5 = 0; var_5 < 6; var_5++)
+            for (int stat = 0; stat < 6; stat++)
             {
-                var_106 = statShortString[var_5];
-                seg041.displayString(var_106, 0, 10, var_5 + 7, 1);
-                display_stat(false, var_5);
+                text2 = statShortString[stat];
+                seg041.displayString(text2, 0, 10, stat + 7, 1);
+                display_stat(false, stat);
             }
 
             displayMoney();
             seg041.displayString("Level", 0, 15, 15, 1);
 
             bool displaySlash = false;
-            var_106 = string.Empty;
+            text2 = string.Empty;
 
-            for (var_6 = 0; var_6 <= 7; var_6++)
+            for (int classIdx = 0; classIdx <= 7; classIdx++)
             {
-                byte tmp = gbl.player_ptr02.Skill_B_lvl[var_6];
+                byte tmp = gbl.player_ptr02.Skill_B_lvl[classIdx];
 
-                if (gbl.player_ptr02.class_lvls[var_6] > 0 ||
-                    (tmp < ovr026.human_first_class_lvl(gbl.player_ptr02) && tmp > 0))
+                if (gbl.player_ptr02.class_lvls[classIdx] > 0 ||
+                    (tmp < ovr026.HumanFirstClassLevelOrZero(gbl.player_ptr02) && tmp > 0))
                 {
                     if (displaySlash )
                     {
-                        var_106 += "/";
+                        text2 += "/";
                     }
 
-                    var_106 += (gbl.player_ptr02.class_lvls[var_6] + gbl.player_ptr02.Skill_B_lvl[var_6]).ToString();
+                    text2 += (gbl.player_ptr02.class_lvls[classIdx] + gbl.player_ptr02.Skill_B_lvl[classIdx]).ToString();
 
                     displaySlash = true;
                 }
             }
 
-            seg041.displayString(var_106, 0, 15, 15, 7);
+            seg041.displayString(text2, 0, 15, 15, 7);
 
-            var_307 = "Exp " + gbl.player_ptr02.exp.ToString();
-            seg041.displayString(var_307, 0, 15, 15, 17);
+            text = "Exp " + gbl.player_ptr02.exp.ToString();
+            seg041.displayString(text, 0, 15, 15, 17);
 
             ovr020.display_player_stats01();
-            var_2 = 0x14;
+            int yCol = 20;
 
             if (gbl.player_ptr02.field_151 != null)
             {
-                seg041.displayString("Weapon", 0, 15, var_2, 1);
-                ovr025.ItemDisplayNameBuild(true, false, var_2, 8, gbl.player_ptr02.field_151, gbl.player_ptr02);
+                seg041.displayString("Weapon", 0, 15, yCol, 1);
+                ovr025.ItemDisplayNameBuild(true, false, yCol, 8, gbl.player_ptr02.field_151, gbl.player_ptr02);
             }
 
-            var_2++;
+            yCol++;
             if (gbl.player_ptr02.field_159 != null)
             {
-                seg041.displayString("Armor", 0, 15, var_2, 2);
-                ovr025.ItemDisplayNameBuild(true, false, var_2, 8, gbl.player_ptr02.field_159, gbl.player_ptr02);
+                seg041.displayString("Armor", 0, 15, yCol, 2);
+                ovr025.ItemDisplayNameBuild(true, false, yCol, 8, gbl.player_ptr02.field_159, gbl.player_ptr02);
             }
 
-            var_2++;
+            yCol++;
 
-            seg041.displayString("Status", 0, 15, var_2, 1);
-            seg041.displayString(statusString[(int)gbl.player_ptr02.health_status], 0, 10, var_2, 8);
+            seg041.displayString("Status", 0, 15, yCol, 1);
+            seg041.displayString(statusString[(int)gbl.player_ptr02.health_status], 0, 10, yCol, 8);
         }
 
         internal static void displayMoney()
         {
-            seg037.draw8x8_clear_area(0x0e, 0x1a, 7, 0x0c);
+            seg037.draw8x8_clear_area(0x0e, 0x1a, 7, 12);
 
             int yCol = 7;
 
@@ -213,9 +206,9 @@ namespace engine
         }
 
 
-        internal static void display_stat(bool arg_0, byte stat_index)
+        internal static void display_stat(bool highlighted, int stat_index)
         {
-            int color = arg_0 ? 0x0D : 0x0A;
+            int color = highlighted ? 0x0D : 0x0A;
             int col_x = 5;
             seg037.draw8x8_clear_area(stat_index + 7, 0x0b, stat_index + 7, col_x);
 
@@ -371,20 +364,18 @@ namespace engine
         }
 
 
-        internal static bool sub_54EC1(Item arg_0)
+        internal static bool CanSellDropTradeItem(Item item) // sub_54EC1
         {
-            bool var_1;
-
-            var_1 = false;
-            if (arg_0.readied)
+            bool canSellDropTradeItem = false;
+            if (item.readied)
             {
                 ovr025.string_print01("Must be unreadied");
             }
-            else if (ovr023.item_is_scroll(arg_0) == false)
+            else if (ovr023.item_is_scroll(item) == false)
             {
-                var_1 = true;
+                canSellDropTradeItem = true;
             }
-            else if ((int)arg_0.affect_1 > 0x7F || (int)arg_0.affect_2 > 0x7F || (int)arg_0.affect_3 > 0x7F)
+            else if ((int)item.affect_1 > 0x7F || (int)item.affect_2 > 0x7F || (int)item.affect_3 > 0x7F)
             {
                 ovr025.displayPlayerName(false, 15, 1, gbl.player_ptr);
 
@@ -394,18 +385,19 @@ namespace engine
                 seg041.press_any_key(" was going to scribe from that scroll", false, 0, 0x0E, 0x16, 0x26, 0x15, 1);
                 if (ovr027.yes_no(15, 10, 13, "is it Okay to lose it? ") == 'Y')
                 {
-                    var_1 = true;
+                    canSellDropTradeItem = true;
                 }
             }
             else
             {
-                var_1 = true;
+                canSellDropTradeItem = true;
             }
 
             seg037.draw8x8_clear_area(0x16, 0x26, 0x15, 1);
 
-            return var_1;
+            return canSellDropTradeItem;
         }
+
 
         internal static void ItemDisplayStats(Item arg_0) /*sub_550A6*/
         {
@@ -464,24 +456,19 @@ namespace engine
         internal static void PlayerItemsMenu(ref bool arg_0) /*use_item*/
         {
             byte var_40;
-            Player player;
-            short var_37;
-            Item curr_item;
             bool var_2D;
             byte var_2C;
             string text;
-            char var_1;
 
-            player = gbl.player_ptr;
-            var_1 = ' ';
+            Player player = gbl.player_ptr;
+            char inputKey = ' ';
 
-            curr_item = player.itemsPtr;
+            Item curr_item = player.itemsPtr;
 
-            var_37 = 0;
             var_2D = true;
             var_2C = 1;
 
-            while (unk_554EE.MemberOf(var_1) == false &&
+            while (unk_554EE.MemberOf(inputKey) == false &&
                 arg_0 == false &&
                 player.field_14C > 0)
             {
@@ -562,12 +549,13 @@ namespace engine
                         gbl.byte_1D2C8 = false;
                     }
 
-                    var_1 = ovr027.sl_select_item(out curr_item, ref var_37, ref var_2D, true,
+                    short index = 0;
+                    inputKey = ovr027.sl_select_item(out curr_item, ref index, ref var_2D, true,
                         player.itemsPtr, 0x16, 0x26, 5, 1, 15, 10, 13, text, string.Empty);
 
                     if (curr_item != null)
                     {
-                        switch (var_1)
+                        switch (inputKey)
                         {
                             case 'V':
                                 ItemDisplayStats(curr_item);
@@ -583,7 +571,7 @@ namespace engine
                                 if (curr_item.readied == false)
                                 {
                                     ovr025.string_print01("Must be Readied");
-                                    var_1 = ' ';
+                                    inputKey = ' ';
                                 }
                                 else if (ovr023.item_is_scroll(curr_item) == true ||
                                     (curr_item.affect_2 > 0 && (int)curr_item.affect_3 < 0x80))
@@ -603,19 +591,19 @@ namespace engine
                                 break;
 
                             case 'T':
-                                if (sub_54EC1(curr_item) == true)
+                                if (CanSellDropTradeItem(curr_item) == true)
                                 {
                                     trade_item(curr_item);
                                 }
                                 else
                                 {
-                                    var_1 = ' ';
+                                    inputKey = ' ';
                                 }
                                 var_2C = 1;
                                 break;
 
                             case 'D':
-                                if (sub_54EC1(curr_item) == true)
+                                if (CanSellDropTradeItem(curr_item) == true)
                                 {
                                     ovr025.ItemDisplayNameBuild(false, false, 0, 0, curr_item, player);
 
@@ -631,7 +619,7 @@ namespace engine
                                 }
                                 else
                                 {
-                                    var_1 = ' ';
+                                    inputKey = ' ';
                                 }
                                 break;
 
@@ -644,13 +632,13 @@ namespace engine
                                 break;
 
                             case 'S':
-                                if (sub_54EC1(curr_item) == true)
+                                if (CanSellDropTradeItem(curr_item) == true)
                                 {
                                     sell_Item(curr_item);
                                 }
                                 else
                                 {
-                                    var_1 = ' ';
+                                    inputKey = ' ';
                                 }
                                 break;
 
@@ -1074,9 +1062,9 @@ namespace engine
                 if (ovr023.item_is_scroll(item) == true)
                 {
                     if (ovr026.getExtraFirstSkill(gbl.player_ptr) == (int)Skills.magic_user ||
-                        ovr026.getFirstSkill(gbl.player_ptr) == (int)Skills.magic_user ||
+                        ovr026.HumanFirstClassOrSeventeen(gbl.player_ptr) == (int)Skills.magic_user ||
                         ovr026.getExtraFirstSkill(gbl.player_ptr) == 0 ||
-                        ovr026.getFirstSkill(gbl.player_ptr) == 0 ||
+                        ovr026.HumanFirstClassOrSeventeen(gbl.player_ptr) == 0 ||
                         gbl.player_ptr.magic_user_lvl > 0 ||
                         gbl.player_ptr.cleric_lvl > 0)
                     {

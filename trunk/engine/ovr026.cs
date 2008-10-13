@@ -178,12 +178,12 @@ namespace engine
                 }
             }
 
-            Item var_A = player.itemsPtr;
+            Item item = player.itemsPtr;
 
-            while (var_A != null)
+            while (item != null)
             {
-                if (var_A.affect_3 == Affects.affect_81 &&
-                    var_A.readied)
+                if (item.affect_3 == Affects.affect_81 &&
+                    item.readied)
                 {
                     for (int sp_lvl = 0; sp_lvl < 3; sp_lvl++)
                     {
@@ -191,7 +191,7 @@ namespace engine
                     }
                 }
 
-                var_A = var_A.next;
+                item = item.next;
             }
         }
 
@@ -403,28 +403,27 @@ namespace engine
 
         internal static void sub_6A7FB(Player player)
         {
-            byte var_2;
-            byte var_1;
-
             bool var_9 = false;
 
-            Item player_ptr = player.itemsPtr;
+            Item item = player.itemsPtr;
 
-            while (player_ptr != null && var_9 == false)
+            while (item != null && var_9 == false)
             {
-                if ((int)player_ptr.affect_3 > 0x80 &&
-                    player_ptr.readied)
+                if ((int)item.affect_3 > 0x80 &&
+                    item.readied)
                 {
-                    int var_4 = (int)player_ptr.affect_3 & 0x7F;
+                    int var_4 = (int)item.affect_3 & 0x7F;
 
                     var_9 = (var_4 == 6);
                 }
 
-                player_ptr = player_ptr.next;
+                item = item.next;
             }
 
-            for (var_1 = 0; var_1 <= 4; var_1++)
+            for (int var_1 = 0; var_1 <= 4; var_1++)
             {
+                int var_2;
+
                 player.field_DFArraySet(var_1, 0x14);
                 for (var_2 = 0; var_2 <= 7; var_2++)
                 {
@@ -562,9 +561,7 @@ namespace engine
 
         internal static void sub_6AAEA(Player player)
         {
-            sbyte var_5;
             byte var_2 = 0; //Simeon
-            byte var_1;
 
             Player player_ptr = player;
             bool var_A = false;
@@ -586,7 +583,7 @@ namespace engine
             }
 
 
-            sbyte var_4 = (sbyte)(player.thief_lvl + (sub_6B3D1(player) * player.field_117));
+            int var_4 = (sbyte)(player.thief_lvl + (sub_6B3D1(player) * player.field_117));
 
             if (var_4 < 4 && var_B == true)
             {
@@ -594,9 +591,9 @@ namespace engine
                 var_B = false;
             }
 
-            var_5 = var_4;
+            int var_5 = var_4;
 
-            for (var_1 = 1; var_1 <= 8; var_1++)
+            for (int var_1 = 1; var_1 <= 8; var_1++)
             {
                 if (var_A == true)
                 {
@@ -612,8 +609,8 @@ namespace engine
                             {
                                 var_2 = 5;
                             }
-
                             break;
+
                         case 2:
                             if (var_4 < 7)
                             {
@@ -656,11 +653,11 @@ namespace engine
 
         internal static bool player_can_be_class(int _class, Player player) /* sub_6AD3E */
         {
-            bool var_2 = (_class != getFirstSkill(player));
-            sbyte var_3 = 0;
+            bool var_2 = (_class != HumanFirstClassOrSeventeen(player));
+            int var_3 = 0;
 
             while (var_3 <= 5 &&
-                (gbl.class_stats_min[getFirstSkill(player)][var_3] < 9 || player.stats[var_3].tmp > 14))
+                (gbl.class_stats_min[HumanFirstClassOrSeventeen(player)][var_3] < 9 || player.stats[var_3].tmp > 14))
             {
                 var_3++;
             }
@@ -764,12 +761,12 @@ namespace engine
 
             ovr027.free_stringList(ref list);
 
-            player.Skill_B_lvl[getFirstSkill(player)] = human_first_class_lvl(player);
+            player.Skill_B_lvl[HumanFirstClassOrSeventeen(player)] = HumanFirstClassLevelOrZero(player);
 
             player.field_E6 = player.field_E5;
             player.field_E5 = 1;
 
-            player.class_lvls[getFirstSkill(player)] = 0;
+            player.class_lvls[HumanFirstClassOrSeventeen(player)] = 0;
             player.class_lvls[var_2] = 1;
 
             for (int i = 0; i < 5; i++)
@@ -833,23 +830,23 @@ namespace engine
             return 0x11;
         }
 
-        internal static int getFirstSkill(Player player)
+        internal static int HumanFirstClassOrSeventeen(Player player) // getFirstSkill
         {
             if (player.race != Race.human)
             {
-                return 0x11;
+                return 17;
             }
 
-            for (int index = 0; index < 7; index++)
+            for (int index = 0; index <= 7; index++)
             {
                 if (player.class_lvls[index] > 0)
                     return index;
             }
 
-            return 0x11;
+            return 17;
         }
 
-        internal static byte human_first_class_lvl(Player player) /* hasAnySkills */
+        internal static byte HumanFirstClassLevelOrZero(Player player) /* hasAnySkills */
         {
             if (player.race != Race.human)
             {
@@ -859,7 +856,7 @@ namespace engine
             int loop_var = 0;
 
             while (loop_var < 7 &&
-                player.class_lvls[loop_var] != 0)
+                player.class_lvls[loop_var] == 0)
             {
                 loop_var++;
             }
@@ -870,20 +867,13 @@ namespace engine
 
         internal static bool is_human(Player player)
         {
-            if (player.race == Race.human)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return (player.race == Race.human);
         }
 
 
         internal static sbyte sub_6B3D1(Player player)
         {
-            if (human_first_class_lvl(player) > player.field_E6)
+            if (HumanFirstClassLevelOrZero(player) > player.field_E6)
             {
                 return 1;
             }

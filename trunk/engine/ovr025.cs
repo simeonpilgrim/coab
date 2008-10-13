@@ -254,7 +254,8 @@ namespace engine
             }
         }
 
-        internal static void ItemDisplayNameBuild(bool display_new_name, bool displayReadied, byte arg_4, byte arg_6, Item item, Player player) /*id_item*/
+        internal static void ItemDisplayNameBuild(bool display_new_name, bool displayReadied, 
+            int yCol, int xCol, Item item, Player player) /*id_item*/
         {
             item.name = string.Empty;
 
@@ -336,7 +337,7 @@ namespace engine
 
             if (display_new_name)
             {
-                seg041.displayString(item.name, 0, 10, arg_4, arg_6);
+                seg041.displayString(item.name, 0, 10, yCol, xCol);
             }
         }
 
@@ -427,7 +428,7 @@ namespace engine
         }
 
 
-        internal static void display_hp(bool arg_0, int y_pos, int x_pos, Player player)
+        internal static void display_hp(bool hightlighted, int y_pos, int x_pos, Player player)
         {
             int colour;
 
@@ -440,7 +441,7 @@ namespace engine
                 colour = 0x0A;
             }
 
-            if (arg_0 == true)
+            if (hightlighted == true)
             {
                 colour = 0x0D;
             }
