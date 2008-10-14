@@ -98,72 +98,62 @@ namespace engine
         }
 
 
-        internal static short sub_592AD(byte arg_0, string arg_2, short coinAvailable)
+        internal static short sub_592AD(byte fgColor, string prompt, int maxValue) // sub_592AD
         {
-            short var_44;
-            short var_40;
-            char var_3C;
-            string var_3B;
-            string var_34;
-            int var_2E;
-            int var_2C;
-            string var_2B;
-
-            var_2B = arg_2;
-
             seg041.displaySpaceChar(0x28, 0, 0x18, 0);
-            seg041.displayString(var_2B, 0, arg_0, 0x18, 0);
+            seg041.displayString(prompt, 0, fgColor, 0x18, 0);
 
-            var_2E = var_2B.Length;
-            var_2C = var_2E;
+            int prompt_width = prompt.Length;
+            int xCol = prompt_width;
 
-            var_34 = coinAvailable.ToString();
-
-            var_3B = string.Empty;
+            char inputKey;
+            string maxValueStr = maxValue.ToString();
+            string currentValueStr = string.Empty;
 
             do
             {
-                var_3C = (char)seg043.GetInputKey();
+                inputKey = (char)seg043.GetInputKey();
 
-                if (var_3C >= 0x30 &&
-                    var_3C <= 0x39)
+                if (inputKey >= 0x30 &&
+                    inputKey <= 0x39)
                 {
-                    var_3B += var_3C.ToString();
+                    currentValueStr += inputKey.ToString();
 
-                    var_40 = (short)(int.Parse(var_3B));
+                    int tmpValue = int.Parse(currentValueStr);
 
-                    if (coinAvailable >= var_40)
+                    if (maxValue >= tmpValue)
                     {
-                        var_2C++;
+                        xCol++;
                     }
                     else
                     {
-                        var_3B = var_34;
+                        currentValueStr = maxValueStr;
 
-                        var_2C = var_34.Length + var_2E;
+                        xCol = maxValueStr.Length + prompt_width;
                     }
 
-                    seg041.displayString(var_3B, 0, 15, 0x18, (byte)var_2E);
+                    seg041.displayString(currentValueStr, 0, 15, 0x18, prompt_width);
                 }
-                else if (var_3C == 8 && var_3B.Length > 0)
+                else if (inputKey == 8 && currentValueStr.Length > 0)
                 {
-                    int i = var_3B.Length - 1;
-                    var_3B = seg051.Copy(i, 1, var_3B);
+                    int i = currentValueStr.Length - 1;
+                    currentValueStr = seg051.Copy(i, 1, currentValueStr);
 
-                    seg041.displaySpaceChar(1, 0, 0x18, var_2C);
-                    var_2C--;
+                    seg041.displaySpaceChar(1, 0, 0x18, xCol);
+                    xCol--;
                 }
-            } while (var_3C != 0x0D && var_3C != 0x1B);
+            } while (inputKey != 0x0D && inputKey != 0x1B);
 
             seg041.displaySpaceChar(0x28, 0, 0x18, 0);
 
-            if (var_3C == 0x1B)
+            int var_44;
+            if (inputKey == 0x1B)
             {
                 var_44 = 0;
             }
             else
             {
-                var_44 = (short)(int.Parse(var_3B));
+                var_44 = (short)(int.Parse(currentValueStr));
             }
 
             return var_44;
@@ -193,7 +183,7 @@ namespace engine
         {
             gbl.something01 = true;
 
-            foreach(Player player in gbl.player_next_ptr)
+            foreach (Player player in gbl.player_next_ptr)
             {
                 if (player.field_F7 == 0 ||
                     player.field_F7 == 0x0B3)
@@ -253,7 +243,7 @@ namespace engine
                 }
             }
 
-            foreach(Player var_4 in gbl.player_next_ptr)
+            foreach (Player var_4 in gbl.player_next_ptr)
             {
                 if (var_4.field_F7 < 0x80)
                 {
@@ -290,7 +280,7 @@ namespace engine
             {
                 if (money_remander[var_29] > 0)
                 {
-                    foreach(Player var_4 in gbl.player_next_ptr)
+                    foreach (Player var_4 in gbl.player_next_ptr)
                     {
                         var_C = (short)(get_max_load(var_4) - var_4.weight);
 
@@ -364,11 +354,11 @@ namespace engine
         }
 
 
-        internal static int sub_59BAB(out string arg_0, string input)
+        internal static int GetMoneyIndexFromString(out string displayText, string input) // sub_59BAB
         {
             int offset = 0;
             int index = 7; // this is outofbounds.
-            arg_0 = string.Empty;
+            displayText = string.Empty;
 
             while (input[offset] == ' ')
             {
@@ -382,37 +372,37 @@ namespace engine
                 if (char.ToUpper(ch) == 'E')
                 {
                     index = 5;
-                    arg_0 = "Gems ";
+                    displayText = "Gems ";
                 }
                 else
                 {
-                    arg_0 = "Gold ";
+                    displayText = "Gold ";
                     index = 3;
                 }
             }
             else if (ch == 'P')
             {
-                arg_0 = "Platinum ";
+                displayText = "Platinum ";
                 index = 4;
             }
             else if (ch == 'E')
             {
-                arg_0 = "Electrum ";
+                displayText = "Electrum ";
                 index = 2;
             }
             else if (ch == 'S')
             {
-                arg_0 = "Silver ";
+                displayText = "Silver ";
                 index = 1;
             }
             else if (ch == 'C')
             {
-                arg_0 = "Copper ";
+                displayText = "Copper ";
                 index = 0;
             }
             else if (ch == 'J')
             {
-                arg_0 = "Jewelry ";
+                displayText = "Jewelry ";
                 index = 6;
             }
 
@@ -422,16 +412,13 @@ namespace engine
 
         internal static void takeItems()
         {
-            byte var_117;
-            string var_114;
-            short var_14;
+            bool noMoneyLeft;
 
             StringList var_C;
             StringList item_ptr;
             sbyte var_1;
 
             seg037.draw8x8_outer_frame();
-            var_14 = 0;
 
             do
             {
@@ -455,39 +442,41 @@ namespace engine
 
                 var_C = item_ptr;
                 StringList var_10 = item_ptr;
+                short dummyIndex = 0;
 
-                char input_key = ovr027.sl_select_item(out var_C, ref var_14, ref var_118, true, item_ptr,
+                char input_key = ovr027.sl_select_item(out var_C, ref dummyIndex, ref var_118, true, item_ptr,
                     8, 15, 2, 2, 15, 10, 13, "Select", "Select type of coin ");
 
                 if (var_C == null || input_key == 0)
                 {
-                    var_117 = 1;
+                    noMoneyLeft = true;
                 }
                 else
                 {
-                    var_117 = 0;
+                    noMoneyLeft = false;
+                    string text;
 
-                    int money_slot = sub_59BAB(out var_114, var_C.s);
+                    int money_slot = GetMoneyIndexFromString(out text, var_C.s);
 
-                    var_114 = string.Format("How much {0} will you take? ", var_114);
+                    text = string.Format("How much {0} will you take? ", text);
 
-                    short num_coins = sub_592AD(10, var_114, (short)gbl.pooled_money[money_slot]);
+                    short num_coins = sub_592AD(10, text, gbl.pooled_money[money_slot]);
 
                     sub_59AA0(money_slot, num_coins, gbl.player_ptr);
                     ovr027.free_stringList(ref var_10);
+
                     gbl.something01 = false;
-                    var_117 = 1;
+                    noMoneyLeft = true;
                     for (var_1 = 0; var_1 < 7; var_1++)
                     {
                         if (gbl.pooled_money[var_1] > 0)
                         {
                             gbl.something01 = true;
-                            var_117 = 0;
+                            noMoneyLeft = false;
                         }
                     }
                 }
-
-            } while (var_117 == 0);
+            } while (noMoneyLeft == false);
         }
 
 
@@ -511,22 +500,22 @@ namespace engine
         }
 
 
-        internal static sbyte sub_59FCF()
+        internal static sbyte randomBonus() // sub_59FCF
         {
-            sbyte var_1 = 0;
+            sbyte bonus = 0;
 
             int roll = ovr024.roll_dice(20, 1);
 
             if (roll >= 1 && roll <= 14)
             {
-                var_1 = 1;
+                bonus = 1;
             }
             else if (roll >= 15 && roll <= 20)
             {
-                var_1 = 2;
+                bonus = 2;
             }
 
-            return var_1;
+            return bonus;
         }
 
         static short[] /*seg600:082E*/	unk_16B3E = { 
@@ -539,125 +528,119 @@ namespace engine
             0x00E2, 0x00A7, 0x0064, 0x000A, 0x3A98, 0x0000, 0x0026, 0x0083,
             0x009d, 0x00a7, 0x0015, 0x0014, 0x0bb8, 0x0001, 0x0033, 0x0000 };
 
-        internal static void create_item(out Item arg_0, int item_type) /* sub_5A007 */
+        internal static Item create_item(int item_type) /* sub_5A007 */
         {
-            byte var_A;
-            Item var_9;
             byte var_5 = 0; /* Simeon */
-            byte var_4;
-            byte var_3;
             byte var_2;
-            byte var_1;
 
-            arg_0 = new Item();
-            var_4 = 0;
-            var_9 = arg_0;
+            Item item = new Item();
+            byte var_4 = 0;
 
-            var_9.affect_1 = 0;
-            var_9.affect_2 = 0;
-            var_9.affect_3 = 0;
+            item.affect_1 = 0;
+            item.affect_2 = 0;
+            item.affect_3 = 0;
 
-            var_9.next = null;
-            var_9.readied = false;
-            var_9.hidden_names_flag = 6;
-            var_9.cursed = false;
+            item.next = null;
+            item.readied = false;
+            item.hidden_names_flag = 6;
+            item.cursed = false;
 
-            var_9.type = (byte)item_type;
+            item.type = (byte)item_type;
 
-            var_9.field_2F = 0;
-            var_9.field_30 = 0;
-            var_9.field_31 = 0;
+            item.field_2F = 0;
+            item.field_30 = 0;
+            item.field_31 = 0;
 
-            byte al = var_9.type;
+            byte al = item.type;
 
             if ((al >= 1 && al <= 0x3B) ||
                 al == 0x49 || al == 0x4D || al == 0x5D)
             {
-                var_9.plus = sub_59FCF();
+                item.plus = randomBonus();
 
-                if (var_9.type == 0x15)
+                if (item.type == 0x15)
                 {
 
-                    var_1 = ovr024.roll_dice(5, 1);
+                    int var_1 = ovr024.roll_dice(5, 1);
                     if (var_1 == 5)
                     {
                         var_4 = 0x31;
                     }
 
-                    var_9.field_31 = 0x15;
+                    item.field_31 = 0x15;
 
-                    var_9.field_30 = (sbyte)(var_9.plus + 0xA1);
+                    item.field_30 = (sbyte)(item.plus + 0xA1);
                 }
-                else if (var_9.type == 0x1C)
+                else if (item.type == 0x1C)
                 {
-                    var_9.field_31 = 0x1C;
-                    var_9.field_30 = (sbyte)(var_9.plus + 0xA1);
+                    item.field_31 = 0x1C;
+                    item.field_30 = (sbyte)(item.plus + 0xA1);
                 }
-                else if (var_9.type == 0x32 ||
-                    var_9.type == 0x33)
+                else if (item.type == 0x32 ||
+               item.type == 0x33)
                 {
-                    var_9.field_31 = var_9.type;
-                    var_9.field_30 = 0x31;
-                    var_9.field_2F = (sbyte)(var_9.plus + 0xA1);
-                    var_9.hidden_names_flag = 4;
+                    item.field_31 = item.type;
+                    item.field_30 = 0x31;
+                    item.field_2F = (sbyte)(item.plus + 0xA1);
+                    item.hidden_names_flag = 4;
                 }
-                else if (var_9.type == 0x34)
+                else if (item.type == 0x34)
                 {
-                    var_9.field_31 = var_9.type;
-                    var_9.field_30 = 0x32;
-                    var_9.field_2F = (sbyte)(var_9.plus + 0xA1);
-                    var_9.hidden_names_flag = 4;
+                    item.field_31 = item.type;
+                    item.field_30 = 0x32;
+                    item.field_2F = (sbyte)(item.plus + 0xA1);
+                    item.hidden_names_flag = 4;
                 }
-                else if (var_9.type >= 0x35 &&
-                    var_9.type <= 0x3a)
+                else if (item.type >= 0x35 &&
+               item.type <= 0x3a)
                 {
-                    var_9.field_31 = var_9.type;
-                    var_9.field_30 = 0x30;
-                    var_9.field_2F = (sbyte)(var_9.plus + 0xA1);
-                    var_9.hidden_names_flag = 4;
+                    item.field_31 = item.type;
+                    item.field_30 = 0x30;
+                    item.field_2F = (sbyte)(item.plus + 0xA1);
+                    item.hidden_names_flag = 4;
                 }
-                else if (var_9.type == 0x49)
+                else if (item.type == 0x49)
                 {
-                    var_9.field_31 = 0x3D;
-                    var_9.field_30 = (sbyte)(var_9.plus + 0xA1);
+                    item.field_31 = 0x3D;
+                    item.field_30 = (sbyte)(item.plus + 0xA1);
                 }
-                else if (var_9.type == 0x4d)
+                else if (item.type == 0x4d)
                 {
-                    var_9.field_31 = 0x4F;
-                    var_9.field_30 = -89;
-                    var_9.plus = (sbyte)((var_9.plus << 1) + 2);
+                    item.field_31 = 0x4F;
+                    item.field_30 = -89;
+                    item.plus = (sbyte)((item.plus << 1) + 2);
 
-                    if (var_9.plus == 4)
+                    if (item.plus == 4)
                     {
-                        var_9.field_2F = -35;
+                        item.field_2F = -35;
                     }
-                    else if (var_9.plus == 6)
+                    else if (item.plus == 6)
                     {
-                        var_9.field_2F = -34;
+                        item.field_2F = -34;
                     }
                 }
-                else if (var_9.type == 0x5d)
+                else if (item.type == 0x5d)
                 {
-                    var_9.field_31 = 0x42;
-                    var_9.field_30 = -32;
-                    var_9.field_2F = (sbyte)(var_9.plus + 0xA1);
+                    item.field_31 = 0x42;
+                    item.field_30 = -32;
+                    item.field_2F = (sbyte)(item.plus + 0xA1);
                 }
                 else
                 {
-                    var_9.field_31 = var_9.type;
-                    var_9.field_30 = (sbyte)(var_9.plus + 0xA1);
+                    item.field_31 = item.type;
+                    item.field_30 = (sbyte)(item.plus + 0xA1);
                 }
 
-                var_9.plus_save = 0;
-                var_9.count = 0;
+                item.plus_save = 0;
+                item.count = 0;
 
-                switch (var_9.type)
+                switch (item.type)
                 {
                     case 1:
                     case 0x0d:
                     case 0x0e:
                     case 0x23:
-                        var_9.weight = 0x4B;
+                        item.weight = 0x4B;
                         break;
 
                     case 2:
@@ -672,13 +655,13 @@ namespace engine
                     case 0x2e:
                     case 0x3b:
 
-                        var_9.weight = 0x32;
+                        item.weight = 0x32;
                         break;
 
                     case 3:
                     case 0x18:
                     case 0x28:
-                        var_9.weight = 0x7D;
+                        item.weight = 0x7D;
                         break;
 
                     case 4:
@@ -688,7 +671,7 @@ namespace engine
                     case 0x2b:
                     case 0x2d:
                     case 0x33:
-                        var_9.weight = 0x64;
+                        item.weight = 0x64;
                         break;
 
                     case 5:
@@ -696,31 +679,31 @@ namespace engine
                     case 0x11:
                     case 0x13:
                     case 0x32:
-                        var_9.weight = 0x96;
+                        item.weight = 0x96;
                         break;
 
                     case 6:
-                        var_9.weight = 0x0F;
+                        item.weight = 0x0F;
                         break;
 
                     case 7:
-                        var_9.weight = 0x1E;
+                        item.weight = 0x1E;
                         break;
 
                     case 8:
                     case 0x4d:
-                        var_9.weight = 0x0A;
+                        item.weight = 0x0A;
                         break;
 
                     case 9:
-                        var_9.weight = 0x19;
-                        var_9.count = 5;
+                        item.weight = 0x19;
+                        item.count = 5;
                         break;
 
                     case 0x0a:
                     case 0x1a:
                     case 0x24:
-                        var_9.weight = 0x3C;
+                        item.weight = 0x3C;
                         break;
 
                     case 0x0b:
@@ -729,116 +712,115 @@ namespace engine
                     case 0x1b:
                     case 0x29:
                     case 0x2f:
-                        var_9.weight = 0x50;
+                        item.weight = 0x50;
                         break;
                     case 0x12:
-                        var_9.weight = 0xAF;
+                        item.weight = 0xAF;
                         break;
 
                     case 0x15:
-                        var_9.weight = 0x14;
+                        item.weight = 0x14;
                         break;
 
                     case 0x16:
                     case 0x1e:
-                        var_9.weight = 0x28;
+                        item.weight = 0x28;
                         break;
                     case 0x25:
-                        var_9.weight = 0x23;
+                        item.weight = 0x23;
                         break;
                     case 0x26:
                     case 0x35:
-                        var_9.weight = 0x0FA;
+                        item.weight = 0x0FA;
                         break;
                     case 0x34:
-                        var_9.weight = 0x0C8;
+                        item.weight = 0x0C8;
                         break;
                     case 0x36:
                     case 0x38:
-                        var_9.weight = 0x190;
+                        item.weight = 0x190;
                         break;
                     case 0x37:
-                        var_9.weight = 0x12C;
+                        item.weight = 0x12C;
                         break;
                     case 0x39:
-                        var_9.weight = 0x15E;
+                        item.weight = 0x15E;
                         break;
                     case 0x3a:
-                        var_9.weight = 0x1C2;
+                        item.weight = 0x1C2;
                         break;
                     //case 0x2f: //wonder if this should have been 0x3f
                     case 0x5d:
-                        var_9.weight = 1;
+                        item.weight = 1;
                         break;
 
                     default:
-                        var_9.weight = 0x28;
-                        var_9.count = 0x0A;
+                        item.weight = 0x28;
+                        item.count = 0x0A;
                         break;
                 }
 
-                if (var_9.type == 0x3b)
+                if (item.type == 0x3b)
                 {
-                    var_9._value = (short)(var_9.plus * 2500);
+                    item._value = (short)(item.plus * 2500);
                 }
-                else if (var_9.type == 0x49 || var_9.type == 0x1c)
+                else if (item.type == 0x49 || item.type == 0x1c)
                 {
-                    var_9._value = (short)(var_9.plus * 150);
+                    item._value = (short)(item.plus * 150);
                 }
-                else if (var_9.type == 0x35 || var_9.type == 0x36)
+                else if (item.type == 0x35 || item.type == 0x36)
                 {
-                    var_9._value = (short)(var_9.plus * 3000);
+                    item._value = (short)(item.plus * 3000);
                 }
-                else if (var_9.type == 0x37 || var_9.type == 0x38)
+                else if (item.type == 0x37 || item.type == 0x38)
                 {
-                    var_9._value = (short)(var_9.plus * 3500);
+                    item._value = (short)(item.plus * 3500);
                 }
-                else if (var_9.type == 0x39)
+                else if (item.type == 0x39)
                 {
-                    var_9._value = (short)(var_9.plus * 4000);
+                    item._value = (short)(item.plus * 4000);
 
                 }
-                else if (var_9.type == 0x3a)
+                else if (item.type == 0x3a)
                 {
-                    var_9._value = (short)(var_9.plus * 5000);
-                
+                    item._value = (short)(item.plus * 5000);
+
                 }
-                else if (var_9.type == 0x4d)
+                else if (item.type == 0x4d)
                 {
-                    var_9._value = (short)(var_9.plus * 3000);
+                    item._value = (short)(item.plus * 3000);
                 }
                 else
                 {
-                    var_9._value = (short)(var_9.plus * 2000);
+                    item._value = (short)(item.plus * 2000);
                 }
             }
             else if (al == 0x3d || al == 0x3e)
             {
 
-                var_2 = ovr024.roll_dice(3, 1);
+                byte var_2 = ovr024.roll_dice(3, 1);
 
-                if (var_9.type == 0x3d)
+                if (item.type == 0x3d)
                 {
-                    var_9.field_31 = 0xD1;
+                    item.field_31 = 0xD1;
                 }
                 else
                 {
-                    var_9.field_31 = 0xD0;
+                    item.field_31 = 0xD0;
                 }
 
-                var_9.field_30 = (sbyte)(var_2 + 0xd1);
-                var_9.field_2F = 0;
-                var_9.plus = 1;
-                var_9.weight = 0x19;
-                var_9.count = 0;
-                var_9._value = 0;
-                var_A = var_2;
+                item.field_30 = (sbyte)(var_2 + 0xd1);
+                item.field_2F = 0;
+                item.plus = 1;
+                item.weight = 0x19;
+                item.count = 0;
+                item._value = 0;
 
-                for (var_3 = 1; var_3 <= var_A; var_3++)
+                for (int var_3 = 1; var_3 <= var_2; var_3++)
                 {
-                    var_1 = ovr024.roll_dice(5, 1);
+                    int var_1 = ovr024.roll_dice(5, 1);
 
-                    if (var_9.type == 0x3D)
+                    if (item.type == 0x3D)
                     {
                         switch (var_1)
                         {
@@ -889,8 +871,8 @@ namespace engine
                         }
                     }
 
-                    var_9.setAffect(var_3, (Affects)var_5);
-                    var_9._value += (short)(var_1 * 300);
+                    item.setAffect(var_3, (Affects)var_5);
+                    item._value += (short)(var_1 * 300);
                 }
             }
             else if (al == 0x3f || al == 0x43)
@@ -907,7 +889,7 @@ namespace engine
             }
             else if (al == 0x47)
             {
-                var_1 = ovr024.roll_dice(8, 1);
+                int var_1 = ovr024.roll_dice(8, 1);
 
                 if (var_1 >= 1 && var_1 <= 5)
                 {
@@ -921,23 +903,25 @@ namespace engine
 
             if (var_4 != 0)
             {
-                var_9.field_2F = (sbyte)unk_16B3E[var_4 + 0];
-                var_9.field_30 = (sbyte)unk_16B3E[var_4 + 1];
-                var_9.field_31 = (byte)unk_16B3E[var_4 + 2];
+                item.field_2F = (sbyte)unk_16B3E[var_4 + 0];
+                item.field_30 = (sbyte)unk_16B3E[var_4 + 1];
+                item.field_31 = (byte)unk_16B3E[var_4 + 2];
 
-                var_9.plus = 1;
-                var_9.plus_save = 1;
+                item.plus = 1;
+                item.plus_save = 1;
 
-                var_9.weight = unk_16B3E[var_4 + 3];
-                var_9.count = 0;
+                item.weight = unk_16B3E[var_4 + 3];
+                item.count = 0;
 
-                var_9._value = unk_16B3E[var_4 + 4];
+                item._value = unk_16B3E[var_4 + 4];
 
-                for (var_3 = 1; var_3 <= 3; var_3++)
+                for (int var_3 = 1; var_3 <= 3; var_3++)
                 {
-                    var_9.setAffect(var_3, (Affects)(byte)unk_16B3E[(var_4 + 4 + var_3)]);
+                    item.setAffect(var_3, (Affects)(byte)unk_16B3E[(var_4 + 4 + var_3)]);
                 }
             }
+
+            return item;
         }
 
 

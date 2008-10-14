@@ -1452,8 +1452,7 @@ namespace engine
                         item_type = 0x3B;
                     }
 
-                    Item item;
-                    ovr022.create_item(out item, item_type);
+                    Item item = ovr022.create_item(item_type);
 
                     if (gbl.item_pointer == null)
                     {

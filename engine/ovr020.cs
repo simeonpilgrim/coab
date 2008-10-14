@@ -455,9 +455,6 @@ namespace engine
 
         internal static void PlayerItemsMenu(ref bool arg_0) /*use_item*/
         {
-            byte var_40;
-            bool var_2D;
-            byte var_2C;
             string text;
 
             Player player = gbl.player_ptr;
@@ -465,14 +462,14 @@ namespace engine
 
             Item curr_item = player.itemsPtr;
 
-            var_2D = true;
-            var_2C = 1;
+            bool var_2D = true;
+            byte var_2C = 1;
 
             while (unk_554EE.MemberOf(inputKey) == false &&
                 arg_0 == false &&
                 player.field_14C > 0)
             {
-                var_40 = player.field_14C;
+                byte var_40 = player.field_14C;
 
                 if (player.itemsPtr != null)
                 {
@@ -586,7 +583,6 @@ namespace engine
                                     {
                                         var_2C = 1;
                                     }
-
                                 }
                                 break;
 
@@ -657,6 +653,7 @@ namespace engine
                 }
             }
         }
+
 
         /*seg600:44B6 unk_1A7C6*/
         public readonly static byte[,] unk_1A7C6 = { 
@@ -1246,15 +1243,6 @@ namespace engine
 
         internal static void tradeCoin()
         {
-            bool var_132;
-            short var_130;
-            char var_12E;
-            string var_12D;
-
-            short var_18;
-            StringList var_14;
-            StringList var_C;
-
             bool finished = false;
             do
             {
@@ -1269,15 +1257,17 @@ namespace engine
                 }
                 else
                 {
+                    bool noMoneyLeft;
+                    
                     playerDisplayFull();
                     do
                     {
                         displayMoney();
                         gbl.player_ptr01 = source;
-                        var_C = null;
 
-                        var_14 = null;
-                        int counter = 0; // var_16
+                        StringList var_C = null;
+                        StringList var_14 = null;
+                        int counter = 0;
 
                         for (int coin = 0; coin <= 6; coin++)
                         {
@@ -1295,35 +1285,37 @@ namespace engine
                         }
 
                         var_14 = var_C;
-                        var_18 = 0;
-                        bool var_133 = true;
+                        short dummyIndex = 0;
+                        bool dummyBool = true;
                         StringList var_10;
 
-                        var_12E = ovr027.sl_select_item(out var_10, ref var_18, ref var_133, true,
+                        ovr027.sl_select_item(out var_10, ref dummyIndex, ref dummyBool, true,
                             var_C, 13, 0x19, 7, 12, 15, 10, 13, " Select", "Select type of coin ");
 
                         if (var_10 == null)
                         {
-                            var_132 = true;
+                            noMoneyLeft = true;
                         }
                         else
                         {
-                            int money_slot = ovr022.sub_59BAB(out var_12D, var_10.s);
+                            string text;
 
-                            var_12D = "How much " + var_12D + "will you trade? ";
+                            int money_slot = ovr022.GetMoneyIndexFromString(out text, var_10.s);
 
-                            var_130 = ovr022.sub_592AD(10, var_12D, gbl.player_ptr.Money[money_slot]);
+                            text = "How much " + text + "will you trade? ";
+
+                            short var_130 = ovr022.sub_592AD(10, text, gbl.player_ptr.Money[money_slot]);
 
                             ovr022.trade_money(money_slot, var_130, source, gbl.player_ptr);
-                            var_132 = true;
+                            noMoneyLeft = true;
                             finished = true;
 
-                            for (int var_5 = 0; var_5 <= 6; var_5++)
+                            for (int coin = 0; coin <= 6; coin++)
                             {
-                                if (gbl.player_ptr.Money[var_5] > 0)
+                                if (gbl.player_ptr.Money[coin] > 0)
                                 {
                                     finished = false;
-                                    var_132 = false;
+                                    noMoneyLeft = false;
                                 }
                             }
                         }
@@ -1333,7 +1325,7 @@ namespace engine
                             ovr027.free_stringList(ref var_14);
                         }
 
-                    } while (var_132 == false);
+                    } while (noMoneyLeft == false);
                 }
             } while (finished == false);
         }
@@ -1341,41 +1333,30 @@ namespace engine
 
         internal static void drop_coin()
         {
-            char var_12C;
-            string var_12B;
             string var_2B;
             string var_26;
             bool var_16;
-            bool var_15;
-            StringList var_12;
-            StringList var_10;
-            StringList var_C;
-            short var_8;
-            short var_6;
+            bool noMoreMoney;
             byte var_4;
-            int var_3;
-            byte var_1;
 
             do
             {
                 displayMoney();
-                var_C = null;
-                var_10 = null;
-                var_12 = null;
-                var_6 = 0;
+                StringList var_C = null;
+                StringList var_10 = null;
+                StringList var_12 = null;
+                int var_6 = 0;
 
-                for (var_1 = 0; var_1 <= 6; var_1++)
+                for (int coin = 0; coin <= 6; coin++)
                 {
-                    if (gbl.player_ptr.Money[var_1] != 0)
+                    if (gbl.player_ptr.Money[coin] != 0)
                     {
-                        var_6++;
-
                         var_10 = var_C;
                         var_C = new StringList();
                         var_C.next = var_10;
 
-                        seg051.Str(15, out var_26, 0, gbl.player_ptr.Money[var_1]);
-                        var_3 = 8 - moneyString[var_1].Length;
+                        seg051.Str(15, out var_26, 0, gbl.player_ptr.Money[coin]);
+                        int var_3 = 8 - moneyString[coin].Length;
                         var_2B = string.Empty;
 
                         for (var_4 = 0; var_4 < var_3; var_4++)
@@ -1383,39 +1364,41 @@ namespace engine
                             var_2B += ' ';
                         }
 
-                        var_C.s = var_2B + moneyString[var_1] + " " + var_26;
+                        var_C.s = var_2B + moneyString[coin] + " " + var_26;
                         var_C.field_29 = 0;
                     }
                 }
 
                 var_12 = var_C;
 
-                var_8 = 0;
+                short index = 0;
                 var_16 = true;
 
-                var_12C = ovr027.sl_select_item(out var_10, ref var_8, ref var_16, true, var_C, 13, 0x19, 7,
+                ovr027.sl_select_item(out var_10, ref index, ref var_16, true, var_C, 13, 0x19, 7,
                     12, 15, 10, 13, " Select", "Select type of coin ");
 
                 if (var_10 == null)
                 {
-                    var_15 = true;
+                    noMoreMoney = true;
                 }
                 else
                 {
-                    int money_slot = ovr022.sub_59BAB(out var_12B, var_10.s);
+                    string text;
 
-                    var_12B = "How much " + var_12B + "will you drop? ";
+                    int money_slot = ovr022.GetMoneyIndexFromString(out text, var_10.s);
 
-                    short num_coins = ovr022.sub_592AD(10, var_12B, gbl.player_ptr.Money[money_slot]);
+                    text = "How much " + text + "will you drop? ";
+
+                    short num_coins = ovr022.sub_592AD(10, text, gbl.player_ptr.Money[money_slot]);
 
                     ovr022.drop_coins(money_slot, num_coins, gbl.player_ptr);
-                    var_15 = true;
+                    noMoreMoney = true;
 
-                    for (var_1 = 0; var_1 <= 6; var_1++)
+                    for (int coin = 0; coin <= 6; coin++)
                     {
-                        if (gbl.player_ptr.Money[var_1] > 0)
+                        if (gbl.player_ptr.Money[coin] > 0)
                         {
-                            var_15 = false;
+                            noMoreMoney = false;
                         }
                     }
                 }
@@ -1424,7 +1407,7 @@ namespace engine
                 {
                     ovr027.free_stringList(ref var_12);
                 }
-            } while (var_15 == false);
+            } while (noMoreMoney == false);
         }
 
 
@@ -1688,13 +1671,13 @@ namespace engine
 
                 if (input == 'Y')
                 {
-                    gbl.byte_1D2C6 = true;
+                    gbl.cureSpell = true;
                     for (gbl.global_index = 1; gbl.global_index < 7; gbl.global_index++)
                     {
                         ovr024.remove_affect(null, unk_16B39[gbl.global_index], target);
                     }
 
-                    gbl.byte_1D2C6 = false;
+                    gbl.cureSpell = false;
 
                     if (player.field_191 > 0)
                     {

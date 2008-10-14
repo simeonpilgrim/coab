@@ -112,13 +112,13 @@ namespace engine
 
                 if (input_key == 'Y')
                 {
-                    gbl.byte_1D2C6 = true;
+                    gbl.cureSpell = true;
                     for (int i = 0; i < 6; i++)
                     {
                         ovr024.remove_affect(null, disease_types[i], gbl.player_ptr);
                     }
 
-                    gbl.byte_1D2C6 = false;
+                    gbl.cureSpell = false;
                 }
             }
         }
@@ -211,12 +211,12 @@ namespace engine
                 if (input_key == 'Y' &&
                     player_dead ==true)
                 {
-                    gbl.byte_1D2C6 = true;
+                    gbl.cureSpell = true;
 
                     ovr024.remove_affect(null, Affects.animate_dead, player);
                     ovr024.remove_affect(null, Affects.poisoned, player);
 
-                    gbl.byte_1D2C6 = false;
+                    gbl.cureSpell = false;
 
                     player.hit_point_current = 1;
                     player.health_status = Status.okey;
@@ -278,28 +278,19 @@ namespace engine
 
         internal static void cure_poison2()
         {
-            byte var_106;
-            char var_105;
+            bool isPoisoned = ovr025.find_affect(Affects.poisoned, gbl.player_ptr;
 
-            var_106 = 0;
-
-            var_105 = 'Y';
-
-            if (ovr025.find_affect(Affects.poisoned, gbl.player_ptr) == true)
+            char inutKey = 'Y';
+            if (isPoisoned == false)
             {
-                var_106 = 1;
+                inutKey = cast_cure_anyway("is not poisoned.");
             }
 
-            if (var_106 == 0)
+            if (inutKey == 'Y')
             {
-                var_105 = cast_cure_anyway("is not poisoned.");
-            }
+                inutKey = buy_cure(1000, "Neutralize Poison");
 
-            if (var_105 == 'Y')
-            {
-                var_105 = buy_cure(1000, "Neutralize Poison");
-
-                if (var_105 == 'Y')
+                if (inutKey == 'Y')
                 {
                     gbl.byte_1D2C6 = true;
 
