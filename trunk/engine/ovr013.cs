@@ -22,7 +22,7 @@ namespace engine
         {
             bool var_1;
 
-            if (gbl.byte_1D2C6 == true)
+            if (gbl.cureSpell == true)
             {
                 var_1 = false;
             }
@@ -315,11 +315,11 @@ namespace engine
                 ovr024.sub_63014("dies from poison", Status.dead, player);
             }
 
-            gbl.byte_1D2C6 = true;
+            gbl.cureSpell = true;
 
             ovr024.remove_affect(null, Affects.affect_0f, player);
 
-            gbl.byte_1D2C6 = false;
+            gbl.cureSpell = false;
         }
 
 
@@ -456,7 +456,7 @@ namespace engine
 
             affect.call_spell_jump_list = false;
 
-            if (gbl.byte_1D2C6 == false)
+            if (gbl.cureSpell == false)
             {
                 ovr024.sub_63014("collapses", Status.dead, player);
             }

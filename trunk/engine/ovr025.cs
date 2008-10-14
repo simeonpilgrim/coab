@@ -237,10 +237,9 @@ namespace engine
 
         internal static void DebugItems()
         {
-            Item it;
             for (int i = 0; i < 0x81; i++)
             {
-                ovr022.create_item(out it, i);
+                Item it = ovr022.create_item(i);
                 int a = it.field_2F < itemNames.Length ? (int)(byte)it.field_2F : 0;
                 int b = it.field_30 < itemNames.Length ? (int)(byte)it.field_30 : 0;
                 int c = it.field_31 < itemNames.Length ? (int)(byte)it.field_31 : 0;
@@ -344,79 +343,70 @@ namespace engine
 
         internal static void Player_Summary(Player player)
         {
-            int var_7;
-            int y_pos;
-            int x_pos;
-
-            if (gbl.game_state != 3)
+            if (gbl.game_state == 3)
             {
-                if (gbl.game_state == 0)
+                return;
+            }
+
+            int x_pos = (gbl.game_state == 0) ? 1 : 17;
+            int y_pos = 2;
+
+            seg041.displayString("Name", 0, 15, y_pos, x_pos);
+            seg041.displayString("AC  HP", 0, 15, y_pos, 0x21);
+
+            y_pos += 2;
+
+            foreach (Player tmp_player in gbl.player_next_ptr)
+            {
+                seg037.draw8x8_clear_area(y_pos, 0x26, y_pos, x_pos);
+
+                if (tmp_player == player)
                 {
-                    x_pos = 1;
+                    seg041.displayString(tmp_player.name, 0, 15, y_pos, x_pos);
                 }
                 else
                 {
-                    x_pos = 17;
+                    displayPlayerName(false, y_pos, x_pos, tmp_player);
                 }
 
-                y_pos = 2;
-
-                seg041.displayString("Name", 0, 15, y_pos, x_pos);
-                seg041.displayString("AC  HP", 0, 15, y_pos, 0x21);
-
-                y_pos += 2;
-
-                foreach (Player tmp_player in gbl.player_next_ptr)
+                int ac_x_pos;
+                if (tmp_player.ac >= 0 && tmp_player.ac <= 0x32)
                 {
-                    seg037.draw8x8_clear_area(y_pos, 0x26, y_pos, x_pos);
-
-                    if (tmp_player == player)
-                    {
-                        seg041.displayString(tmp_player.name, 0, 15, y_pos, x_pos);
-                    }
-                    else
-                    {
-                        displayPlayerName(false, y_pos, x_pos, tmp_player);
-                    }
-
-                    if (tmp_player.ac >= 0 && tmp_player.ac <= 0x32)
-                    {
-                        var_7 = 1;
-                    }
-                    else if (tmp_player.ac >= 0x33 && tmp_player.ac <= 0x3C)
-                    {
-                        var_7 = 2;
-                    }
-                    else if (tmp_player.ac >= 0x3D && tmp_player.ac <= 0x45)
-                    {
-                        var_7 = 1;
-                    }
-                    else
-                    {
-                        var_7 = 0;
-                    }
-
-                    display_AC(y_pos, var_7 + 0x1F /*+0x20*/, tmp_player);
-
-                    if (tmp_player.hit_point_current >= 0 && tmp_player.hit_point_current <= 9)
-                    {
-                        var_7 = 2;
-                    }
-                    else if (tmp_player.hit_point_current >= 10 && tmp_player.hit_point_current <= 99)
-                    {
-                        var_7 = 1;
-                    }
-                    else
-                    {
-                        var_7 = 0;
-                    }
-
-                    display_hp(false, y_pos, var_7 + 0x24, tmp_player);
-                    y_pos++;
+                    ac_x_pos = 1;
+                }
+                else if (tmp_player.ac >= 0x33 && tmp_player.ac <= 0x3C)
+                {
+                    ac_x_pos = 2;
+                }
+                else if (tmp_player.ac >= 0x3D && tmp_player.ac <= 0x45)
+                {
+                    ac_x_pos = 1;
+                }
+                else
+                {
+                    ac_x_pos = 0;
                 }
 
-                seg037.draw8x8_clear_area(y_pos, 0x26, y_pos, x_pos);
+                display_AC(y_pos, ac_x_pos + 0x1F /*+0x20*/, tmp_player);
+
+                if (tmp_player.hit_point_current >= 0 && tmp_player.hit_point_current <= 9)
+                {
+                    ac_x_pos = 2;
+                }
+                else if (tmp_player.hit_point_current >= 10 && tmp_player.hit_point_current <= 99)
+                {
+                    ac_x_pos = 1;
+                }
+                else
+                {
+                    ac_x_pos = 0;
+                }
+
+                display_hp(false, y_pos, ac_x_pos + 0x24, tmp_player);
+                y_pos++;
             }
+
+            seg037.draw8x8_clear_area(y_pos, 0x26, y_pos, x_pos);
         }
 
 

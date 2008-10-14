@@ -1888,7 +1888,7 @@ namespace engine
         {
             bool var_1 = false;
 
-            gbl.byte_1D2C6 = true;
+            gbl.cureSpell = true;
 
             if (ovr024.cure_affect(Affects.cause_disease_1, gbl.sp_targets[1]) == true)
             {
@@ -1909,7 +1909,7 @@ namespace engine
                 ovr024.remove_affect(null, Affects.affect_39, gbl.sp_targets[1]);
             }
 
-            gbl.byte_1D2C6 = false;
+            gbl.cureSpell = false;
 
             return var_1;
         }
@@ -2565,13 +2565,13 @@ namespace engine
                     target.hit_point_current = 1;
                 }
                 
-                gbl.byte_1D2C6 = true;
+                gbl.cureSpell = true;
 
                 ovr024.remove_affect(null, Affects.poisoned, target);
                 ovr024.remove_affect(null, Affects.slow_poison, target);
                 ovr024.remove_affect(null, Affects.affect_0f, target);
 
-                gbl.byte_1D2C6 = false;
+                gbl.cureSpell = false;
 
                 ovr025.DisplayPlayerStatusString(true, 10, "is unpoisoned", target);
 
@@ -2657,11 +2657,11 @@ namespace engine
                 player.tmp_con > 0 &&
                 player.race != Race.elf)
             {
-                gbl.byte_1D2C6 = true;
+                gbl.cureSpell = true;
 
                 ovr024.remove_affect(null, Affects.animate_dead, player);
                 ovr024.remove_affect(null, Affects.poisoned, player);
-                gbl.byte_1D2C6 = false;
+                gbl.cureSpell = false;
 
                 player.health_status = Status.okey;
                 player.in_combat = true;
@@ -3551,7 +3551,7 @@ namespace engine
 
         internal static void setup_spells()
         {
-            gbl.byte_1D2C6 = false;
+            gbl.cureSpell = false;
             gbl.spell_from_item = false;
             gbl.dword_1D87F = null;
             gbl.byte_1D2C8 = true;
