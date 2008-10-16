@@ -638,7 +638,7 @@ namespace engine
 
                             default:
                                 ovr020.scroll_team_list(input_key);
-                                ovr025.Player_Summary(gbl.player_ptr);
+                                ovr025.PartySummary(gbl.player_ptr);
                                 break;
                         }
                     }
@@ -648,11 +648,11 @@ namespace engine
                 } while (stop_loop == false);
             }
 
-            if (gbl.byte_1EE90 == 0)
+            if (gbl.bottomTextHasBeenCleared == false)
             {
                 seg037.draw8x8_clear_area(0x16, 0x26, 0x11, 1);
 
-                gbl.byte_1EE90 = 1;
+                gbl.bottomTextHasBeenCleared = true;
             }
 
             return input_key;

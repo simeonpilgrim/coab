@@ -599,9 +599,7 @@ namespace engine
                 var_13 = 0;
                 sub_44E89(player.name, 1, ref var_C);
 
-                Affect affect = player.affect_ptr;
-
-                while (affect != null)
+                foreach(Affect affect in player.affects)
                 {
                     bool has_name = true;
 
@@ -753,8 +751,6 @@ namespace engine
                         var_13 = 1;
                         sub_44E89(" " + affect_name, 0, ref var_C);
                     }
-
-                    affect = affect.next;
                 }
 
                 if (var_13 == 0)
@@ -791,7 +787,7 @@ namespace engine
                 if (var_2 == true)
                 {
                     ovr020.scroll_team_list(var_1);
-                    ovr025.Player_Summary(gbl.player_ptr);
+                    ovr025.PartySummary(gbl.player_ptr);
                 }
                 else
                 {
@@ -880,7 +876,7 @@ namespace engine
                     if (var_1 == 0)
                     {
                         ovr020.scroll_team_list(var_3);
-                        ovr025.Player_Summary(gbl.player_ptr);
+                        ovr025.PartySummary(gbl.player_ptr);
                     }
                     else
                     {
@@ -892,7 +888,7 @@ namespace engine
                         {
                             move_current_player_down();
                         }
-                        ovr025.Player_Summary(gbl.player_ptr);
+                        ovr025.PartySummary(gbl.player_ptr);
                     }
                 }
                 else if( unk_45832.MemberOf(var_3) == true )
@@ -941,7 +937,7 @@ namespace engine
                     ovr018.free_players(true, false);
                     seg037.draw8x8_clear_area(0x0b, 0x26, 1, 0x11);
 
-                    ovr025.Player_Summary(gbl.player_ptr);
+                    ovr025.PartySummary(gbl.player_ptr);
                 }
                 else
                 {
@@ -1031,7 +1027,7 @@ namespace engine
                 if (var_3 == true)
                 {
                     ovr020.scroll_team_list(var_1);
-                    ovr025.Player_Summary(gbl.player_ptr);
+                    ovr025.PartySummary(gbl.player_ptr);
                 }
                 else
                 {
@@ -1275,7 +1271,7 @@ namespace engine
 
                 if (total_hitpoints_lost() == 0)
                 {
-                    ovr025.Player_Summary(gbl.player_ptr);
+                    ovr025.PartySummary(gbl.player_ptr);
                     ovr025.display_map_position_time();
                 }
                 else
@@ -1293,7 +1289,7 @@ namespace engine
                     {
                         sub_45FDD(ref var_2, var_4, var_6, var_8);
                         sub_46280(ref var_2);
-                        ovr025.Player_Summary(gbl.player_ptr);
+                        ovr025.PartySummary(gbl.player_ptr);
                         ovr025.display_map_position_time();
 
                         gbl.unk_1D890 = new RestTime(rest_time);
@@ -1332,7 +1328,7 @@ namespace engine
                 if (special_key == true)
                 {
                     ovr020.scroll_team_list(input_key);
-                    ovr025.Player_Summary(gbl.player_ptr);
+                    ovr025.PartySummary(gbl.player_ptr);
                 }
                 else
                 {

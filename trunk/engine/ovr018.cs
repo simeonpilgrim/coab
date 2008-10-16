@@ -26,17 +26,7 @@ namespace engine
                 tmpItem = null; // FreeMem( item_struct_size, next_item_ptr );
             }
 
-            Affect affect = player.affect_ptr;
-            player.affect_ptr = null;
-
-            while (affect != null)
-            {
-                Affect tmpAffect = affect;
-                affect = tmpAffect.next;
-
-                tmpAffect.next = null;
-                tmpAffect = null; // FreeMem( Affect.StructSize, next_affect );
-            }
+            player.affects.Clear();
 
             player = null; // FreeMem( char_struct_size, playerBase );
         }
@@ -99,7 +89,7 @@ namespace engine
                     seg037.draw8x8_outer_frame();
                     if (gbl.player_ptr != null)
                     {
-                        ovr025.Player_Summary(gbl.player_ptr);
+                        ovr025.PartySummary(gbl.player_ptr);
                         menuFlags[allow_drop] = true;
                         menuFlags[allow_modify] = true;
 
@@ -167,7 +157,7 @@ namespace engine
                         bool var_11 = (ovr026.is_human(gbl.player_ptr) && ovr026.getExtraFirstSkill(gbl.player_ptr) == 0x11);
 
                         ovr020.scroll_team_list(inputkey);
-                        ovr025.Player_Summary(gbl.player_ptr);
+                        ovr025.PartySummary(gbl.player_ptr);
 
                         if (ovr026.is_human(gbl.player_ptr) == false ||
                             ovr026.getExtraFirstSkill(gbl.player_ptr) != 0x11)
@@ -289,7 +279,7 @@ namespace engine
                                         {
                                             seg037.draw8x8_03();
                                         }
-                                        ovr025.Player_Summary(gbl.player_ptr);
+                                        ovr025.PartySummary(gbl.player_ptr);
                                     }
                                     else
                                     {
@@ -1344,7 +1334,7 @@ namespace engine
                 }
             }
 
-            ovr025.Player_Summary(gbl.player_ptr);
+            ovr025.PartySummary(gbl.player_ptr);
         }
 
         /// <summary>

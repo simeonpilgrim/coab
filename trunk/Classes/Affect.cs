@@ -165,7 +165,6 @@ namespace Classes
             field_1 = _field_1;
             field_3 = _field_3;
             call_spell_jump_list = _call_spell_jump_list;
-            next = null;
         }
 
         public Affect(byte[] data, int offset)
@@ -174,7 +173,6 @@ namespace Classes
             field_1 = Sys.ArrayToUshort(data, offset + 0x1);
             field_3 = data[offset + 0x3];
             call_spell_jump_list = (data[offset + 0x4] != 0);
-            next = null;
         }
 
 		public Affect ShallowClone()
@@ -191,7 +189,6 @@ namespace Classes
         public byte field_3;
         [DataOffset(0x04, DataType.Bool)]
         public bool call_spell_jump_list;
-		public Affect next; // pointer to next affect.
 
         public byte[] ToByteArray()
         {

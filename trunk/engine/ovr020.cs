@@ -908,23 +908,23 @@ namespace engine
 
         internal static void trade_item(Item item)
         {
-            Player player_ptr = gbl.player_ptr01;
+            Player player = gbl.player_ptr01;
             ovr025.load_pic();
 
-            ovr025.selectAPlayer(ref player_ptr, true, "Trade with Whom?");
+            ovr025.selectAPlayer(ref player, true, "Trade with Whom?");
 
-            if (player_ptr != null)
+            if (player != null)
             {
-                gbl.player_ptr01 = player_ptr;
-                if (canCarry(item, player_ptr) == true)
+                gbl.player_ptr01 = player;
+                if (canCarry(item, player) == true)
                 {
                     ovr025.string_print01("Overloaded");
                 }
                 else
                 {
-                    ovr025.addItem(item, player_ptr);
+                    ovr025.addItem(item, player);
                     ovr025.lose_item(item, gbl.player_ptr);
-                    ovr025.reclac_player_values(player_ptr);
+                    ovr025.reclac_player_values(player);
                 }
             }
         }
@@ -1345,7 +1345,6 @@ namespace engine
                 StringList var_C = null;
                 StringList var_10 = null;
                 StringList var_12 = null;
-                int var_6 = 0;
 
                 for (int coin = 0; coin <= 6; coin++)
                 {

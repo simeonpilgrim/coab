@@ -1,4 +1,5 @@
 using Classes;
+using System.Collections.Generic;
 
 namespace engine
 {
@@ -55,73 +56,37 @@ namespace engine
                     {
                         gbl.affects_timed_out[player_count] = false;
 
-                        Affect affect_a = player.affect_ptr;
-                        Affect affect_b = player.affect_ptr;
-                        Affect affect_c = player.affect_ptr;
+                        List<Affect> removeList = new List<Affect>();
 
-                        if (player.affect_ptr != null)
+                        foreach (Affect affect in player.affects)
                         {
-                            while (affect_b.next != null)
+                            if (affect.field_1 == 0)
                             {
-                                affect_b = affect_b.next;
+                                // Do nothing
                             }
-                        }
-
-                        bool last = false;
-
-                        while (affect_a != null &&
-                            last == false)
-                        {
-                            if (affect_a == affect_b)
+                            else if (var_3 < affect.field_1)
                             {
-                                last = true;
-                            }
-
-                            if (affect_a.field_1 == 0)
-                            {
-                                affect_a = affect_a.next;
-                            }
-                            else if (var_3 < affect_a.field_1)
-                            {
-                                affect_a.field_1 -= (ushort)var_3;
+                                affect.field_1 -= (ushort)var_3;
                                 gbl.affects_timed_out[player_count] = true;
-
-                                affect_a = affect_a.next;
                             }
                             else
                             {
-                                Affect next_affect = affect_a.next;
-
-                                ovr024.remove_affect(affect_a, affect_a.type, player);
-
-                                if (affect_c == player.affect_ptr)
-                                {
-                                    affect_a = player.affect_ptr;
-                                }
-                                else
-                                {
-                                    affect_a = next_affect;
-                                }
-                            }
-
-                            affect_c = player.affect_ptr;
-
-                            while (affect_c != null &&
-                                affect_c != affect_a &&
-                                affect_c.next != affect_a)
-                            {
-                                affect_c = affect_c.next;
+                                removeList.Add(affect);
                             }
                         }
 
-                        while (affect_a != null)
+                        foreach (Affect remove in removeList)
                         {
-                            if (affect_a.field_1 > 0)
+                            ovr024.remove_affect(remove, remove.type, player);
+                        }
+
+                        // Not sure why we are doing this again, but this is what the orig code did...
+                        foreach (Affect affect in player.affects)
+                        {
+                            if (affect.field_1 > 0)
                             {
                                 gbl.affects_timed_out[player_count] = true;
                             }
-
-                            affect_a = affect_a.next;
                         }
                     }
 
@@ -413,7 +378,7 @@ namespace engine
 
                 if (update_ui)
                 {
-                    ovr025.Player_Summary(gbl.player_ptr);
+                    ovr025.PartySummary(gbl.player_ptr);
                 }
 
                 seg041.GameDelay();

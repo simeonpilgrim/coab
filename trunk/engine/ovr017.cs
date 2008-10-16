@@ -317,22 +317,7 @@ namespace engine
                     return;
                 }
 
-                int required_space = Player.StructSize;
-
-                Item item = player.itemsPtr;
-
-                while (item != null)
-                {
-                    required_space += Item.StructSize;
-                    item = item.next;
-                }
-
-                Affect affect = player.affect_ptr;
-                while (affect != null)
-                {
-                    required_space += 9;
-                    affect = affect.next;
-                }
+                int required_space = PlayerDataSize(player);
 
                 input_key = 'O';
 
@@ -405,21 +390,35 @@ namespace engine
 
             seg042.delete_file(gbl.SavePath + file_text + ".fx");
 
-            if (player.affect_ptr != null)
+            if (player.affects.Count > 0)
             {
                 file.Assign(gbl.SavePath + file_text + ".fx");
                 seg051.Rewrite(file);
 
-                Affect affect = player.affect_ptr;
-                while (affect != null)
+                foreach(Affect affect in player.affects)
                 {
                     seg051.BlockWrite(Affect.StructSize, affect.ToByteArray(), file);
-
-                    affect = affect.next;
                 }
 
                 seg051.Close(file);
             }
+        }
+
+        private static int PlayerDataSize(Player player)
+        {
+            int required_space = Player.StructSize;
+
+            Item item = player.itemsPtr;
+
+            while (item != null)
+            {
+                required_space += Item.StructSize;
+                item = item.next;
+            }
+
+            required_space += Affect.StructSize * player.affects.Count;
+
+            return required_space;
         }
 
 
@@ -1031,7 +1030,6 @@ namespace engine
             
             string var_1BB = string.Empty;
             byte[] var_192;
-            Affect affect_ptr = null;
             short var_182;
             File file;
 
@@ -1071,7 +1069,7 @@ namespace engine
                 var_1C4 = new HillsFarPlayer(data);
 
                 player_ptr.itemsPtr = null;
-                player_ptr.affect_ptr = null;
+                player_ptr.affects = new System.Collections.Generic.List<Affect>();
                 player_ptr.actions = null;
                 player_ptr.next_player = null;
 
@@ -1091,11 +1089,6 @@ namespace engine
                     seg051.Close(file);
 
                     player_ptr = new Player(data, 0);
-
-                    player_ptr.itemsPtr = null;
-                    player_ptr.affect_ptr = null;
-                    player_ptr.actions = null;
-                    player_ptr.next_player = null;
 
                     player02_ptr = gbl.player_ptr;
                     gbl.player_ptr = player_ptr;
@@ -1357,16 +1350,7 @@ namespace engine
                     {
                         Affect tmp_affect = new Affect(var_192, 0);
 
-                        if (player_ptr.affect_ptr == null)
-                        {
-                            player_ptr.affect_ptr = tmp_affect;
-                            affect_ptr = player_ptr.affect_ptr;
-                        }
-                        else
-                        {
-                            affect_ptr.next = tmp_affect;
-                            affect_ptr = affect_ptr.next;
-                        }
+                        player_ptr.affects.Add(tmp_affect);
                     }
                 } while (var_182 == Affect.StructSize);
 
@@ -1379,7 +1363,6 @@ namespace engine
                 if (seg042.file_find(gbl.SavePath + arg_8 + ".spc") == true)
                 {
                     var_192 = seg051.GetMem(Affect.StructSize);
-
                     var_1BC = seg042.find_and_open_file(out file, false, gbl.SavePath + arg_8 + ".spc");
 
                     do
@@ -1390,17 +1373,7 @@ namespace engine
                             asc_49280.MemberOf(var_192[0]) == true)
                         {
                             Affect tmpAffect = new Affect(var_192, 0);
-
-                            if (player_ptr.affect_ptr == null)
-                            {
-                                player_ptr.affect_ptr = tmpAffect;
-                                affect_ptr = player_ptr.affect_ptr;
-                            }
-                            else
-                            {
-                                affect_ptr.next = tmpAffect;
-                                affect_ptr = affect_ptr.next;
-                            }
+                            player_ptr.affects.Add(tmpAffect);
                         }
                     } while (var_182 == 9);
 
@@ -1438,22 +1411,11 @@ namespace engine
             if (decode_size != 0)
             {
                 int offset = 0;
-                Affect lastAffect = null;
 
                 do
                 {
                     Affect affect = new Affect(data, offset);
-
-                    if (offset == 0)
-                    {
-                        player.affect_ptr = affect;
-                        lastAffect = affect;
-                    }
-                    else
-                    {
-                        lastAffect.next = affect;
-                        lastAffect = affect;
-                    }
+                    player.affects.Add(affect);
 
                     offset += 9;
                 } while (offset < decode_size);
@@ -1745,25 +1707,9 @@ namespace engine
         static int save_space_required()
         {
             int size = 0;
-            foreach (Player var_6 in gbl.player_next_ptr)
+            foreach (Player player in gbl.player_next_ptr)
             {
-                size += 0x1A6;
-
-                Item item = var_6.itemsPtr;
-                while (item != null)
-                {
-                    size += Item.StructSize;
-
-                    item = item.next;
-                }
-
-                Affect affect = var_6.affect_ptr;
-                while (affect != null)
-                {
-                    size += Affect.StructSize;
-
-                    affect = affect.next;
-                }
+                size += PlayerDataSize(player); 
             }
 
             return size;
@@ -1775,28 +1721,25 @@ namespace engine
 
         internal static void SaveGame()
         {
-            short var_1FC;
-            char var_1FA;
-            bool var_1F9;
-            string var_1CF;
-            Player player_ptr;
+            char inputKey;
+            bool dummyBool;
             File save_file = new File();
             string[] var_171 = new string[9];
 
             do
             {
-                var_1FA = ovr027.displayInput(out var_1F9, (gbl.game_state == 2), 0, 15, 10, 13, "A B C D E F G H I J", "Save Which Game: ");
+                inputKey = ovr027.displayInput(out dummyBool, (gbl.game_state == 2), 0, 15, 10, 13, "A B C D E F G H I J", "Save Which Game: ");
 
-            } while (unk_4AEA0.MemberOf(var_1FA) == false);
+            } while (unk_4AEA0.MemberOf(inputKey) == false);
 
-            if (var_1FA != '\0')
+            if (inputKey != '\0')
             {
                 gbl.import_from = ImportSource.Curse;
 
                 if (save() == true)
                 {
                     int space_required;
-                    if (seg042.file_find(gbl.SavePath + "savgam" + var_1FA + ".dat") == true)
+                    if (seg042.file_find(gbl.SavePath + "savgam" + inputKey + ".dat") == true)
                     {
                         space_required = 0;
                     }
@@ -1813,9 +1756,11 @@ namespace engine
                         return;
                     }
 
+                    short var_1FC;
+
                     do
                     {
-                        save_file.Assign(gbl.SavePath + "savgam" + var_1FA + ".dat");
+                        save_file.Assign(gbl.SavePath + "savgam" + inputKey + ".dat");
                         seg051.Rewrite(save_file);
                         var_1FC = gbl.FIND_result;
 
@@ -1871,7 +1816,7 @@ namespace engine
                     foreach (Player tmp_player in gbl.player_next_ptr)
                     {
                         party_count++;
-                        var_171[party_count - 1] = "CHRDAT" + var_1FA + party_count.ToString();
+                        var_171[party_count - 1] = "CHRDAT" + inputKey + party_count.ToString();
                     }
 
                     data[0] = (byte)party_count;
@@ -1888,7 +1833,7 @@ namespace engine
                     foreach (Player tmp_player in gbl.player_next_ptr)
                     {
                         party_count++;
-                        sub_47DFC("CHRDAT" + var_1FA + party_count.ToString(), tmp_player);
+                        sub_47DFC("CHRDAT" + inputKey + party_count.ToString(), tmp_player);
                         remove_player_file(tmp_player);
                     }
 

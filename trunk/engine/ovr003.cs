@@ -7,26 +7,19 @@ namespace engine
     {
         internal static void CMD_Exit()
         {
-            VmLog.WriteLine("CMD_Exit: byte_1AB0A {0}", gbl.byte_1AB0A);
+            VmLog.WriteLine("CMD_Exit: byte_1AB0A {0}", gbl.restore_player_ptr);
             VmLog.WriteLine("");
 
-            if (gbl.byte_1EE8E != 0)
-            {
-                seg037.draw8x8_03();
-            }
-
-
-            if (gbl.byte_1AB0A != 0)
+            if (gbl.restore_player_ptr == true)
             {
                 gbl.player_ptr = gbl.player_ptr2;
-                gbl.byte_1AB0A = 0;
+                gbl.restore_player_ptr = false;
             }
 
             gbl.encounter_flags[0] = false;
             gbl.encounter_flags[1] = false;
 
             gbl.byte_1EE8C = false;
-            gbl.byte_1EE8E = 0;
             gbl.stopVM = true;
 
             gbl.ecl_offset++;
@@ -185,7 +178,7 @@ namespace engine
             byte player_index = (byte)ovr008.vm_GetCmdValue(1);
             VmLog.WriteLine("CMD_LoadCharacter: 0x{0:X}", player_index);
 
-            gbl.byte_1AB0A = 1;
+            gbl.restore_player_ptr = true;
 
 
             byte var_8 = (byte)(player_index & 0x80);
@@ -204,18 +197,18 @@ namespace engine
             }
 
             if (var_8 != 0 &&
-                gbl.byte_1EE7C == true &&
-                gbl.byte_1EE7D == true)
+                gbl.redrawPartySummary1 == true &&
+                gbl.redrawPartySummary2 == true)
             {
                 if (gbl.player_ptr2 == player_ptr)
                 {
-                    gbl.byte_1AB0A = 0;
+                    gbl.restore_player_ptr = false;
                 }
                 ovr018.free_players(true, false);
 
-                ovr025.Player_Summary(gbl.player_ptr);
-                gbl.byte_1EE7C = false;
-                gbl.byte_1EE7D = false;
+                ovr025.PartySummary(gbl.player_ptr);
+                gbl.redrawPartySummary1 = false;
+                gbl.redrawPartySummary2 = false;
             }
         }
 
@@ -245,25 +238,18 @@ namespace engine
 
         internal static void CMD_LoadMonster() /* sub_26465 */
         {
-            Affect affect_ptr;
-            Item item_ptr;
-
             Player current_player_bkup = gbl.player_ptr;
             int copy_count = 1;
             ovr008.vm_LoadCmdSets(3);
 
-            if (gbl.byte_1AB0E < 63)
+            if (gbl.numLoadedMonsters < 63)
             {
-                Player playerB = null;
-                Player playerC;
-
                 int mod_id = (byte)ovr008.vm_GetCmdValue(1);
 
-                ovr008.load_mob(out affect_ptr, out item_ptr, out playerC, mod_id);
+                Player playerB = ovr017.load_mob(mod_id);
 
-                Player player_bkup = playerC.ShallowClone();
-                Item item_ptr2 = item_ptr;
-                Affect bkup_affect = affect_ptr;
+                Player player_bkup = playerB.ShallowClone();
+                Item item_ptr2 = playerB.itemsPtr;
 
                 int num_copies = (byte)ovr008.vm_GetCmdValue(2);
 
@@ -274,72 +260,56 @@ namespace engine
 
                 byte var_3 = (byte)ovr008.vm_GetCmdValue(3);
 
-                ovr034.chead_cbody_comspr_icon(gbl.byte_1D92D, var_3, "CPIC");
+                ovr034.chead_cbody_comspr_icon(gbl.monster_icon_id, var_3, "CPIC");
 
-                gbl.player_next_ptr.Add(playerC);
-                playerB = playerC;
+                gbl.player_next_ptr.Add(playerB);
 
-                playerB.icon_id = gbl.byte_1D92D;
+                playerB.icon_id = gbl.monster_icon_id;
 
-                gbl.byte_1AB0E++;
+                gbl.numLoadedMonsters++;
                 copy_count++;
 
-
                 while (copy_count <= num_copies &&
-                       gbl.byte_1AB0E < 63)
+                       gbl.numLoadedMonsters < 63)
                 {
                     Player playerA = player_bkup.ShallowClone();
 
                     gbl.player_next_ptr.Add(playerA);
-                    playerB = playerA;
-                    playerB.icon_id = gbl.byte_1D92D;
+                    playerA.icon_id = gbl.monster_icon_id;
 
-                    playerB.next_player = null;
-                    playerB.affect_ptr = null;
-                    playerB.itemsPtr = null;
+                    playerA.next_player = null;
+                    playerA.affects = new System.Collections.Generic.List<Affect>();
+                    playerA.itemsPtr = null;
 
                     copy_count++;
-                    gbl.byte_1AB0E++;
+                    gbl.numLoadedMonsters++;
+
+                    Item item_ptr = item_ptr2;
 
                     while (item_ptr != null)
                     {
-                        if (playerB.itemsPtr == null)
+                        if (playerA.itemsPtr == null)
                         {
-                            playerB.itemsPtr = item_ptr.ShallowClone();
-                            playerB.itemsPtr.next = null;
+                            playerA.itemsPtr = item_ptr.ShallowClone();
+                            playerA.itemsPtr.next = null;
                         }
                         else
                         {
-                            Item tmp_item = playerB.itemsPtr;
-                            playerB.itemsPtr = item_ptr.ShallowClone();
-                            playerB.itemsPtr.next = tmp_item;
+                            Item tmp_item = playerA.itemsPtr;
+                            playerA.itemsPtr = item_ptr.ShallowClone();
+                            playerA.itemsPtr.next = tmp_item;
                         }
 
                         item_ptr = item_ptr.next;
                     }
 
-                    item_ptr = item_ptr2;
-
-                    while (affect_ptr != null)
+                    foreach(Affect affect in player_bkup.affects)
                     {
-                        if (playerB.affect_ptr == null)
-                        {
-                            playerB.affect_ptr = affect_ptr.ShallowClone();
-                            playerB.affect_ptr.next = null;
-                        }
-                        else
-                        {
-                            Affect tmp_affect = playerB.affect_ptr;
-                            playerB.affect_ptr = affect_ptr.ShallowClone();
-                            playerB.affect_ptr.next = tmp_affect;
-
-                        }
-                        affect_ptr = affect_ptr.next;
+                        playerA.affects.Add(affect.ShallowClone());
                     }
-                    affect_ptr = bkup_affect;
                 }
-                gbl.byte_1D92D++;
-                gbl.byte_1EE93 = 1;
+                gbl.monster_icon_id++;
+                gbl.monstersLoaded = true;
                 gbl.player_ptr = current_player_bkup;
             }
         }
@@ -443,7 +413,7 @@ namespace engine
             VmLog.WriteLine("CMD_Print: '{0}'",
                 gbl.cmd_opps[1].Code < 0x80 ? ovr008.vm_GetCmdValue(1).ToString() : gbl.unk_1D972[1]);
 
-            gbl.byte_1EE90 = 0;
+            gbl.bottomTextHasBeenCleared = false;
             gbl.DelayBetweenCharacters = true;
 
             if (gbl.cmd_opps[1].Code < 0x80)
@@ -541,7 +511,7 @@ namespace engine
             ovr008.load_ecl_dax(block_id);
             ovr008.vm_init_ecl();
             gbl.stopVM = true;
-            gbl.byte_1AB09 = 1;
+            gbl.vmFlag01 = true;
 
             gbl.encounter_flags[0] = false;
             gbl.encounter_flags[1] = false;
@@ -552,7 +522,7 @@ namespace engine
         {
             ovr008.vm_LoadCmdSets(3);
 
-            gbl.byte_1AB0B = 1;
+            gbl.byte_1AB0B = true;
 
             byte var_3 = (byte)ovr008.vm_GetCmdValue(1);
             byte var_2 = (byte)ovr008.vm_GetCmdValue(2);
@@ -564,7 +534,7 @@ namespace engine
 
             if (gbl.command == 0x21)
             {
-                gbl.byte_1AB0D = 1;
+                gbl.filesLoaded = true;
 
                 if (var_3 != 0xff &&
                     var_3 != 0x7f &&
@@ -584,7 +554,7 @@ namespace engine
             }
             else
             {
-                gbl.byte_1AB0C = 1;
+                gbl.byte_1AB0C = true;
 
                 if (var_3 == 0x7F)
                 {
@@ -641,18 +611,18 @@ namespace engine
             }
 
 
-            if (gbl.byte_1AB0C != 0 &&
-                gbl.byte_1AB0D != 0 &&
+            if (gbl.byte_1AB0C == true &&
+                gbl.filesLoaded == true &&
                 gbl.last_game_state == 3)
             {
                 if (gbl.game_state != 3 &&
-                    gbl.byte_1EE98 != 0)
+                    gbl.byte_1EE98 == true)
                 {
                     seg037.draw8x8_03();
-                    ovr025.Player_Summary(gbl.player_ptr);
+                    ovr025.PartySummary(gbl.player_ptr);
                     ovr025.display_map_position_time();
                 }
-                gbl.byte_1EE98 = 0;
+                gbl.byte_1EE98 = false;
             }
         }
 
@@ -718,7 +688,7 @@ namespace engine
         {
             StringList var_10A;
 
-            gbl.byte_1EE90 = 0;
+            gbl.bottomTextHasBeenCleared = false;
             bool var_10F = true;
             byte var_2 = 1;
             ovr008.vm_LoadCmdSets(3);
@@ -827,9 +797,9 @@ namespace engine
         internal static void CMD_ClearMonsters() /* sub_27240 */
         {
             gbl.ecl_offset++;
-            gbl.byte_1AB0E = 0;
-            gbl.byte_1EE93 = 0;
-            gbl.byte_1D92D = 8;
+            gbl.numLoadedMonsters = 0;
+            gbl.monstersLoaded = false;
+            gbl.monster_icon_id = 8;
 
             VmLog.WriteLine("CMD_ClearMonsters:");
 
@@ -1067,19 +1037,19 @@ namespace engine
         {
             gbl.ecl_offset++;
 
-            if (gbl.byte_1EE93 == 0 &&
+            if (gbl.monstersLoaded == false &&
                 gbl.combat_type == gbl.combatType.normal)
             {
                 if (gbl.area2_ptr.field_6D8 == 1)
                 {
                     gbl.area2_ptr.field_6D8 = 0;
 
-                    if (gbl.gameFlag01 == true)
+                    if (gbl.soundFlag01 == true)
                     {
                         seg044.sound_sub_120E0(gbl.sound_FF_188BC);
                     }
 
-                    if (gbl.gameFlag01 == false)
+                    if (gbl.soundFlag01 == false)
                     {
                         seg044.sound_sub_12194();
                     }
@@ -1088,24 +1058,24 @@ namespace engine
 
                     if (gbl.area_ptr.field_1CC == 0)
                     {
-                        if (gbl.gameFlag01 == true)
+                        if (gbl.soundFlag01 == true)
                         {
                             seg044.sound_sub_120E0(gbl.sound_FF_188BC);
                         }
 
-                        if (gbl.gameFlag01 == false)
+                        if (gbl.soundFlag01 == false)
                         {
                             seg044.sound_sub_12194();
                         }
                     }
                     else
                     {
-                        if (gbl.gameFlag01 == true)
+                        if (gbl.soundFlag01 == true)
                         {
                             seg044.sound_sub_120E0(gbl.sound_FF_188BC);
                         }
 
-                        if (gbl.gameFlag01 == false)
+                        if (gbl.soundFlag01 == false)
                         {
                             seg044.sound_sub_12194();
                         }
@@ -1117,12 +1087,12 @@ namespace engine
                     {
                         gbl.area2_ptr.field_5C4 = 0;
 
-                        if (gbl.gameFlag01 == true)
+                        if (gbl.soundFlag01 == true)
                         {
                             seg044.sound_sub_120E0(gbl.sound_FF_188BC);
                         }
 
-                        if (gbl.gameFlag01 == false)
+                        if (gbl.soundFlag01 == false)
                         {
                             seg044.sound_sub_12194();
                         }
@@ -1132,24 +1102,24 @@ namespace engine
                         if (gbl.area_ptr.field_1CC == 0)
                         {
 
-                            if (gbl.gameFlag01 == true)
+                            if (gbl.soundFlag01 == true)
                             {
                                 seg044.sound_sub_120E0(gbl.sound_FF_188BC);
                             }
 
-                            if (gbl.gameFlag01 == false)
+                            if (gbl.soundFlag01 == false)
                             {
                                 seg044.sound_sub_12194();
                             }
                         }
                         else
                         {
-                            if (gbl.gameFlag01 == true)
+                            if (gbl.soundFlag01 == true)
                             {
                                 seg044.sound_sub_120E0(gbl.sound_FF_188BC);
                             }
 
-                            if (gbl.gameFlag01 == false)
+                            if (gbl.soundFlag01 == false)
                             {
                                 seg044.sound_sub_12194();
                             }
@@ -1157,12 +1127,12 @@ namespace engine
                     }
                     else
                     {
-                        if (gbl.gameFlag01 == true)
+                        if (gbl.soundFlag01 == true)
                         {
                             seg044.sound_sub_120E0(gbl.sound_FF_188BC);
                         }
 
-                        if (gbl.gameFlag01 == false)
+                        if (gbl.soundFlag01 == false)
                         {
                             seg044.sound_sub_12194();
                         }
@@ -1171,24 +1141,24 @@ namespace engine
 
                         if (gbl.area_ptr.field_1CC == 0)
                         {
-                            if (gbl.gameFlag01 == true)
+                            if (gbl.soundFlag01 == true)
                             {
                                 seg044.sound_sub_120E0(gbl.sound_FF_188BC);
                             }
 
-                            if (gbl.gameFlag01 == false)
+                            if (gbl.soundFlag01 == false)
                             {
                                 seg044.sound_sub_12194();
                             }
                         }
                         else
                         {
-                            if (gbl.gameFlag01 == true)
+                            if (gbl.soundFlag01 == true)
                             {
                                 seg044.sound_sub_120E0(gbl.sound_FF_188BC);
                             }
 
-                            if (gbl.gameFlag01 == false)
+                            if (gbl.soundFlag01 == false)
                             {
                                 seg044.sound_sub_12194();
                             }
@@ -1198,12 +1168,12 @@ namespace engine
             }
             else
             {
-                if (gbl.gameFlag01 == true)
+                if (gbl.soundFlag01 == true)
                 {
                     seg044.sound_sub_120E0(gbl.sound_FF_188BC);
                 }
 
-                if (gbl.gameFlag01 == false)
+                if (gbl.soundFlag01 == false)
                 {
                     seg044.sound_sub_12194();
                 }
@@ -1217,26 +1187,26 @@ namespace engine
 
                 ovr009.sub_33100();
 
-                if (gbl.gameFlag01 == true)
+                if (gbl.soundFlag01 == true)
                 {
                     seg044.sound_sub_120E0(gbl.sound_FF_188BC);
                 }
 
                 ovr006.sub_2E7A2();
 
-                if (gbl.gameFlag01 == false)
+                if (gbl.soundFlag01 == false)
                 {
                     seg044.sound_sub_12194();
                 }
 
                 if (gbl.area_ptr.field_1CC == 0)
                 {
-                    if (gbl.gameFlag01 == true)
+                    if (gbl.soundFlag01 == true)
                     {
                         seg044.sound_sub_120E0(gbl.sound_FF_188BC);
                     }
 
-                    if (gbl.gameFlag01 == false)
+                    if (gbl.soundFlag01 == false)
                     {
                         seg044.sound_sub_12194();
                     }
@@ -1244,12 +1214,12 @@ namespace engine
                 }
                 else
                 {
-                    if (gbl.gameFlag01 == true)
+                    if (gbl.soundFlag01 == true)
                     {
                         seg044.sound_sub_120E0(gbl.sound_FF_188BC);
                     }
 
-                    if (gbl.gameFlag01 == false)
+                    if (gbl.soundFlag01 == false)
                     {
                         seg044.sound_sub_12194();
                     }
@@ -1526,7 +1496,7 @@ namespace engine
             int menu_selected;
 
             gbl.byte_1EE95 = 1;
-            gbl.byte_1EE90 = 0;
+            gbl.bottomTextHasBeenCleared = false;
             gbl.DelayBetweenCharacters = true;
 
             ovr008.calc_group_movement(out init_min, out var_40A);
@@ -2037,17 +2007,9 @@ namespace engine
             gbl.ecl_offset++;
 
             VmLog.WriteLine("CMD_PrintReturn:");
-            if (gbl.byte_1EE8B != 0)
-            {
+
                 gbl.textXCol = 1;
                 gbl.textYCol++;
-                gbl.byte_1EE8B = 0;
-            }
-            else
-            {
-                gbl.textXCol = 1;
-                gbl.textYCol++;
-            }
         }
 
 
@@ -2058,12 +2020,12 @@ namespace engine
             VmLog.WriteLine("CMD_ClearBox:");
 
             seg037.draw8x8_03();
-            ovr025.Player_Summary(gbl.player_ptr);
+            ovr025.PartySummary(gbl.player_ptr);
             ovr025.display_map_position_time();
 
             ovr030.sub_7000A(gbl.byte_1D556.frames[0].picture, true, 3, 3);
             ovr025.display_map_position_time();
-            gbl.byte_1EE98 = 0;
+            gbl.byte_1EE98 = false;
             gbl.byte_1EE8A = 1;
         }
 
@@ -2095,7 +2057,7 @@ namespace engine
             gbl.player_ptr.field_F7 = var_6;
 
             ovr025.reclac_player_values(gbl.player_ptr);
-            ovr025.Player_Summary(gbl.player_ptr);
+            ovr025.PartySummary(gbl.player_ptr);
         }
 
 
@@ -2175,17 +2137,20 @@ namespace engine
                 case 0xAE11:
                     gbl.mapWallRoof = ovr031.get_wall_x2(gbl.mapPosY, gbl.mapPosX);
 
-                    if (gbl.byte_1AB0B != 0)
+                    if (gbl.byte_1AB0B == true)
                     {
-                        if (gbl.byte_1EE8C == true || gbl.displayPlayerSprite || gbl.byte_1EE91 == true ||
-                            gbl.byte_1EE92 != 0 || gbl.byte_1EE94 != 0)
+                        if (gbl.byte_1EE8C == true || 
+                            gbl.displayPlayerSprite || 
+                            gbl.byte_1EE91 == true ||
+                            gbl.positionChanged == true ||
+                            gbl.byte_1EE94 == true)
                         {
                             gbl.can_draw_bigpic = true;
                             ovr029.update_3D_view();
                             ovr025.display_map_position_time();
-                            gbl.byte_1EE94 = 0;
+                            gbl.byte_1EE94 = false;
                             gbl.byte_1EE91 = false;
-                            gbl.byte_1EE92 = 0;
+                            gbl.positionChanged = false;
                             gbl.byte_1EE8C = false;
                             gbl.displayPlayerSprite = false;
 
@@ -2267,10 +2232,10 @@ namespace engine
             ovr008.vm_LoadCmdSets(1);
             byte var_1 = (byte)ovr008.vm_GetCmdValue(1);
 
-            if (gbl.byte_1AB0A != 0)
+            if (gbl.restore_player_ptr == true)
             {
                 gbl.player_ptr = gbl.player_ptr2;
-                gbl.byte_1AB0A = 0;
+                gbl.restore_player_ptr = false;
             }
 
 
@@ -2349,7 +2314,7 @@ namespace engine
 
             gbl.player_ptr2 = gbl.player_ptr;
 
-            ovr025.Player_Summary(gbl.player_ptr);
+            ovr025.PartySummary(gbl.player_ptr);
         }
 
 
@@ -2514,7 +2479,7 @@ namespace engine
                 ovr030.DaxArrayFreeDaxBlocks(gbl.byte_1D556);
                 gbl.byte_1D5AB = string.Empty;
                 gbl.byte_1D5B5 = 0x0FF;
-                gbl.byte_1AB09 = 0;
+                gbl.vmFlag01 = false;
                 gbl.mapWallRoof = ovr031.get_wall_x2(gbl.mapPosY, gbl.mapPosX);
 
                 gbl.area2_ptr.tried_to_exit_map = false;
@@ -2523,35 +2488,35 @@ namespace engine
 
                 RunEclVm(gbl.ecl_initial_entryPoint);
 
-                if (gbl.byte_1AB09 == 0)
+                if (gbl.vmFlag01 == false)
                 {
                     gbl.area_ptr.field_1E4 = gbl.byte_1EE88;
                 }
 
-                if (gbl.byte_1AB09 == 0)
+                if (gbl.vmFlag01 == false)
                 {
-                    if (((gbl.last_game_state != 4 || gbl.game_state == 4) && gbl.byte_1AB0B != 0) ||
+                    if (((gbl.last_game_state != 4 || gbl.game_state == 4) && gbl.byte_1AB0B == true) ||
                         (gbl.last_game_state == 4 && gbl.game_state == 4))
                     {
                         ovr029.update_3D_view();
                     }
-                    gbl.byte_1AB09 = 0;
+                    gbl.vmFlag01 = false;
 
                     RunEclVm(gbl.vm_run_addr_1);
 
-                    if (gbl.byte_1AB09 == 0)
+                    if (gbl.vmFlag01 == false)
                     {
                         RunEclVm(gbl.vm_run_addr_2);
 
-                        if (gbl.byte_1AB09 == 0)
+                        if (gbl.vmFlag01 == false)
                         {
                             gbl.player_ptr = gbl.player_ptr2;
-                            ovr025.Player_Summary(gbl.player_ptr);
+                            ovr025.PartySummary(gbl.player_ptr);
                         }
                     }
 
                 }
-            } while (gbl.byte_1AB09 != 0);
+            } while (gbl.vmFlag01 == true);
 
             gbl.last_game_state = gbl.game_state;
         }
@@ -2564,18 +2529,17 @@ namespace engine
             gbl.player_ptr2 = gbl.player_ptr;
 
             gbl.can_draw_bigpic = true;
-            gbl.byte_1EE8E = 0;
-            gbl.byte_1AB0C = 0;
-            gbl.byte_1AB0D = 0;
-            gbl.byte_1AB0A = 0;
-            gbl.byte_1AB0B = 0;
-            gbl.byte_1EE98 = 1;
+            gbl.byte_1AB0C = false;
+            gbl.filesLoaded = false;
+            gbl.restore_player_ptr = false;
+            gbl.byte_1AB0B = false;
+            gbl.byte_1EE98 = true;
             gbl.game_state = 4;
-            gbl.byte_1AB09 = 0;
+            gbl.vmFlag01 = false;
 
             if (gbl.area_ptr.field_1E4 == 0)
             {
-                gbl.byte_1EE98 = 0;
+                gbl.byte_1EE98 = false;
 
                 if (gbl.inDemo == true)
                 {
@@ -2585,7 +2549,7 @@ namespace engine
                 {
                     gbl.byte_1EE88 = 1;
 
-                    ovr025.Player_Summary(gbl.player_ptr);
+                    ovr025.PartySummary(gbl.player_ptr);
                 }
             }
             else
@@ -2605,7 +2569,7 @@ namespace engine
             }
             else
             {
-                gbl.byte_1AB0B = 1;
+                gbl.byte_1AB0B = true;
             }
 
             ovr008.vm_init_ecl();
@@ -2621,7 +2585,7 @@ namespace engine
             }
             else
             {
-                if (gbl.byte_1AB09 == 0)
+                if (gbl.vmFlag01 == false)
                 {
                     gbl.area_ptr.field_1E4 = gbl.byte_1EE88;
                 }
@@ -2633,7 +2597,7 @@ namespace engine
                 if (gbl.game_state != 3 &&
                     gbl.byte_1B2EB != 0)
                 {
-                    if (gbl.byte_1EE98 == 1)
+                    if (gbl.byte_1EE98 == true)
                     {
                         ovr025.load_pic();
                     }
@@ -2650,7 +2614,7 @@ namespace engine
 
                     gbl.player_ptr2 = gbl.player_ptr;
 
-                    if (gbl.byte_1AB09 == 0)
+                    if (gbl.vmFlag01 == false)
                     {
                         gbl.area_ptr.field_1E4 = gbl.byte_1EE88;
                     }
@@ -2671,7 +2635,7 @@ namespace engine
 
                             RunEclVm(gbl.vm_run_addr_2);
 
-                            if (gbl.byte_1AB09 != 0)
+                            if (gbl.vmFlag01 == true)
                             {
                                 sub_29677();
                             }
@@ -2692,7 +2656,7 @@ namespace engine
                         RunEclVm(gbl.vm_run_addr_1);
                     }
 
-                    if (gbl.byte_1AB09 != 0)
+                    if (gbl.vmFlag01 == true)
                     {
                         sub_29677();
                     }
@@ -2715,7 +2679,7 @@ namespace engine
                             gbl.byte_1EE8C = false;
                             gbl.byte_1EE8D = true;
                             RunEclVm(gbl.vm_run_addr_2);
-                            if (gbl.byte_1AB09 != 0)
+                            if (gbl.vmFlag01 == true)
                             {
                                 sub_29677();
                             }

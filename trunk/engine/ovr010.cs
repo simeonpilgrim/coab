@@ -536,7 +536,6 @@ namespace engine
         {
             gbl.byte_1AB18 = 8;
             gbl.byte_1AB19 = 0;
-            gbl.byte_1AB1A = 0;
 
             byte var_13 = 0;
             bool var_3 = true;
@@ -584,7 +583,7 @@ namespace engine
                     if (var_13 > 20)
                     {
                         var_2 = true;
-
+                        
                         var_3 = false;
                         if (sub_361F7(player) == false)
                         {

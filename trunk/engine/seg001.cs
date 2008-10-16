@@ -42,14 +42,14 @@ namespace engine
 
             seg044.sound_sub_12194();
 
-            if (gbl.gameFlag01 == true)
+            if (gbl.soundFlag01 == true)
             {
                 seg044.sound_sub_120E0(gbl.sound_FF_188BC);
             }
 
             ovr012.init_values_a();
 
-            if (gbl.gameFlag01 == false)
+            if (gbl.soundFlag01 == false)
             {
                 seg044.sound_sub_12194();
             }
@@ -66,12 +66,12 @@ namespace engine
             gbl.displayInputTimeoutValue = 'D';
 
             bool dummyBool;
-            gbl.byte_1AB06 = ovr027.displayInput(out dummyBool, false, 0, 15, 10, 13, "Play Demo", "Curse of the Azure Bonds v1.3 ");
+            char inputKey = ovr027.displayInput(out dummyBool, false, 0, 15, 10, 13, "Play Demo", "Curse of the Azure Bonds v1.3 ");
 
             gbl.displayInputCentiSecondWait = 0;
             gbl.displayInputTimeoutValue = '\0';
 
-            if (gbl.byte_1AB06 == 'D')
+            if (inputKey == 'D')
             {
                 gbl.inDemo = true;
             }
@@ -94,12 +94,12 @@ namespace engine
                     gbl.game_area = 2;
                 }
 
-                if (gbl.gameFlag01 == true)
+                if (gbl.soundFlag01 == true)
                 {
                     seg044.sound_sub_120E0(gbl.sound_FF_188BC);
                 }
 
-                if (gbl.gameFlag01 == false)
+                if (gbl.soundFlag01 == false)
                 {
                     seg044.sound_sub_12194();
                 }
@@ -109,34 +109,34 @@ namespace engine
                     ovr018.startGameMenu();
                 }
 
-                if (gbl.gameFlag01 == true)
+                if (gbl.soundFlag01 == true)
                 {
                     seg044.sound_sub_120E0(gbl.sound_FF_188BC);
                 }
 
-                if (gbl.gameFlag01 == false)
+                if (gbl.soundFlag01 == false)
                 {
                     seg044.sound_sub_12194();
                 }
 
-                if (gbl.gameFlag01 == true)
+                if (gbl.soundFlag01 == true)
                 {
                     seg044.sound_sub_120E0(gbl.sound_FF_188BC);
                 }
 
-                if (gbl.gameFlag01 == false)
+                if (gbl.soundFlag01 == false)
                 {
                     seg044.sound_sub_12194();
                 }
 
                 ovr003.sub_29758();
 
-                if (gbl.gameFlag01 == true)
+                if (gbl.soundFlag01 == true)
                 {
                     seg044.sound_sub_120E0(gbl.sound_FF_188BC);
                 }
 
-                if (gbl.gameFlag01 == false)
+                if (gbl.soundFlag01 == false)
                 {
                     seg044.sound_sub_12194();
                 }
@@ -151,12 +151,12 @@ namespace engine
                     gbl.displayInputCentiSecondWait = 1000;
                     gbl.displayInputTimeoutValue = 'D';
 
-                    gbl.byte_1AB06 = ovr027.displayInput(out dummyBool, false, 0, 15, 10, 13, "Play Demo", "Curse of the Azure Bonds v1.3 ");
+                    inputKey = ovr027.displayInput(out dummyBool, false, 0, 15, 10, 13, "Play Demo", "Curse of the Azure Bonds v1.3 ");
 
                     gbl.displayInputCentiSecondWait = 0;
                     gbl.displayInputTimeoutValue = '\0';
 
-                    gbl.inDemo = (gbl.byte_1AB06 == 0x44);
+                    gbl.inDemo = (inputKey == 'D');
 
                     if (Cheats.skip_copy_protection == false &&
                         gbl.inDemo == false)

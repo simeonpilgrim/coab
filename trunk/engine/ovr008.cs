@@ -92,14 +92,13 @@ namespace engine
         internal static void vm_init_ecl() // sub_301E8
         {
             gbl.byte_1EE8C = false;
-            gbl.byte_1EE8E = 0;
-            gbl.byte_1EE7C = false;
-            gbl.byte_1EE7D = false;
+            gbl.redrawPartySummary1 = false;
+            gbl.redrawPartySummary2 = false;
             gbl.byte_1EE91 = true;
 
             gbl.encounter_flags[0] = false;
             gbl.encounter_flags[1] = false;
-            gbl.byte_1D92D = 8;
+            gbl.monster_icon_id = 8;
             gbl.ecl_offset = 0x8000;
             gbl.byte_1DA70 = false;
 
@@ -166,14 +165,6 @@ namespace engine
             gbl.ecl_ptr.SetData(block_mem, 2, block_size - 2);
 
             ovr027.redraw_screen();
-        }
-
-        internal static void load_mob(out Affect affect, out Item item, out Player player, int mod_id)
-        {
-            player = ovr017.load_mob(mod_id);
-
-            item = player.itemsPtr;
-            affect = player.affect_ptr;
         }
 
 
@@ -606,7 +597,7 @@ namespace engine
             {
                 if (set_value == 0)
                 {
-                    gbl.byte_1EE7D = true;
+                    gbl.redrawPartySummary2 = true;
                 }
             }
             else if (switch_var >= 0x20 && switch_var <= 0x70)
@@ -665,7 +656,7 @@ namespace engine
 
                 if (set_value == 0)
                 {
-                    gbl.byte_1EE7C = true;
+                    gbl.redrawPartySummary1 = true;
                 }
             }
             else if (switch_var == 0x10c)
@@ -736,7 +727,7 @@ namespace engine
                 if ((location - 0x4B00) == 0x0FD || (location - 0x4B00) == 0x0FE)
                 {
                     //System.Console.WriteLine("    gbl.byte_1EE94 = 1");
-                    gbl.byte_1EE94 = 1;
+                    gbl.byte_1EE94 = true;
                 }
                 else if ((location - 0x4B00) == 0x0E6 && gbl.area_ptr.field_1CC != value)
                 {
@@ -801,13 +792,13 @@ namespace engine
                     switch (location)
                     {
                         case 0xE3:
-                            gbl.byte_1EE92 = 1;
+                            gbl.positionChanged = true;
                             gbl.mapPosX = (sbyte)(value);
                             break;
 
                         case 0xE4:
                             gbl.mapPosY = (sbyte)(value);
-                            gbl.byte_1EE92 = 1;
+                            gbl.positionChanged = true;
                             break;
 
                         case 0xE5:
@@ -839,7 +830,7 @@ namespace engine
                                 }
                             } while (var_2 != 1);
 
-                            gbl.byte_1EE92 = 1;
+                            gbl.positionChanged = true;
                             break;
 
                         case 0xF1:
@@ -1251,7 +1242,7 @@ namespace engine
                 if (special_key_pressed == true)
                 {
                     ovr020.scroll_team_list(key_pressed);
-                    ovr025.Player_Summary(gbl.player_ptr);
+                    ovr025.PartySummary(gbl.player_ptr);
                     key_pressed = '\0';
                 }
 
@@ -1377,7 +1368,7 @@ namespace engine
 
             gbl.mapWallType = ovr031.getMap_wall_type(gbl.mapDirection, gbl.mapPosY, gbl.mapPosX);
 
-            gbl.byte_1EE92 = 1;
+            gbl.positionChanged = true;
 
         }
 
@@ -1399,7 +1390,7 @@ namespace engine
 
             if (arg_0 != 0)
             {
-                ovr034.chead_cbody_comspr_icon(gbl.byte_1D92D, 11, "CPIC");
+                ovr034.chead_cbody_comspr_icon(gbl.monster_icon_id, 11, "CPIC");
 
                 Player DuelMaster = playerA.ShallowClone();
                 DuelMaster.in_combat = true;
@@ -1409,9 +1400,9 @@ namespace engine
                 DuelMaster.combat_team = CombatTeam.Enemy;
 
                 DuelMaster.field_F7 = 0xB2;
-                DuelMaster.icon_id = gbl.byte_1D92D;
+                DuelMaster.icon_id = gbl.monster_icon_id;
 
-                DuelMaster.affect_ptr = null;
+                DuelMaster.affects = new System.Collections.Generic.List<Affect>();
                 DuelMaster.itemsPtr = null;
 
                 gbl.player_next_ptr.Add(DuelMaster);
@@ -1649,7 +1640,7 @@ namespace engine
                 ovr025.damage_player(damage, player);
                 seg037.draw8x8_clear_area(0x0f, 0x26, 1, 0x11);
 
-                ovr025.Player_Summary(player);
+                ovr025.PartySummary(player);
             }
         }
     }

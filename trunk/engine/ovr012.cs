@@ -4,59 +4,9 @@ namespace engine
 {
     class ovr012
     {
-        internal static byte keyboardStatus_0417
-        {
-            /* 0040:0017 keyboard status code. 
-             * 0x80 insert on
-             * 0x40 caps lock on
-             * 0x20 num lock on
-             * 0x10 scroll lock on
-             * 0x08 alt key down
-             * 0x04 control down
-             * 0x02 left shift down
-             * 0x01 right shift down
-             */
-
-            get
-            {
-                return 0x00;
-            }
-            set
-            {
-                //x = value;
-            }
-        }
-
-        internal static byte keyboardStatus_0418
-        {
-            /* 0040:0018 keyboard status code. 
-             * 0x80 insert key down
-             * 0x40 caps lock down
-             * 0x20 num lock down
-             * 0x10 scroll lock down
-             * 0x08 pause on
-             * 0x04 sys req down
-             * 0x02 left alt down
-             * 0x01 left control down
-             */
-
-            get
-            {
-                return 0x00;
-            }
-            set
-            {
-                //x = value;
-            }
-        }
-
         internal static void init_values_a() /* sub_39054 */
         {
             File unk_1AD74;
-
-            gbl.byte_1EFBA = keyboardStatus_0417;
-            keyboardStatus_0417 |= 0x20; // turn num lock on
-            keyboardStatus_0418 |= 0x20; // num lock down
 
             seg051.Randomize();
 
@@ -167,7 +117,6 @@ namespace engine
             gbl.displayPlayerStatusLine18 = false;
             gbl.search_flag_bkup = 0;
             gbl.byte_1EE8A = 0;
-            gbl.byte_1EE8B = 0;
             gbl.byte_1EE8C = false;
             gbl.party_killed = false;
             gbl.byte_1BF12 = 1;
@@ -180,13 +129,11 @@ namespace engine
             gbl.byte_1EE95 = 0;
             gbl.byte_1D910 = true;
             gbl.bigpic_block_id = 0x0FF;
-            gbl.byte_1EF9A = 0;
-            gbl.byte_1EF9B = 0;
             gbl.byte_1B2F1 = 0;
             gbl.byte_1D5BE = 1;
             gbl.game_state = 4;
             gbl.last_game_state = 0;
-            gbl.gameFlag01 = true;
+            gbl.soundFlag01 = true;
             gbl.byte_1D8AC = false;
             gbl.sky_dax_250 = null;
             gbl.sky_dax_251 = null;
@@ -278,7 +225,6 @@ namespace engine
             gbl.displayPlayerStatusLine18 = false;
             gbl.search_flag_bkup = 0;
             gbl.byte_1EE8A = 0;
-            gbl.byte_1EE8B = 0;
             gbl.byte_1EE8C = false;
             gbl.party_killed = false;
             gbl.byte_1BF12 = 1;
@@ -291,14 +237,12 @@ namespace engine
             gbl.byte_1EE95 = 0;
             gbl.byte_1D910 = true;
             gbl.bigpic_block_id = 0x0FF;
-            gbl.byte_1EF9A = 0;
-            gbl.byte_1EF9B = 0;
             gbl.byte_1B2F1 = 0;
             ovr027.redraw_screen();
             gbl.byte_1D5BE = 1;
             gbl.game_state = 4;
             gbl.last_game_state = 0;
-            gbl.gameFlag01 = true;
+            gbl.soundFlag01 = true;
             gbl.byte_1D8AC = false;
             gbl.gameWon = false;
         }

@@ -204,19 +204,17 @@ namespace Classes
             { 6,    0, 2, 5, 6, 3, 4, 0, 0, 0, 0, 0, 0, 0} };
 
 
-        public static char byte_1AB06;
         public static bool stopVM = false; //byte_1AB08
-        public static byte byte_1AB09;
-        public static byte byte_1AB0A;
-        public static byte byte_1AB0B;
-        public static byte byte_1AB0C;
-        public static byte byte_1AB0D;
-        public static byte byte_1AB0E; //TODO number of monsters?
+        public static bool vmFlag01; // byte_1AB09 
+        public static bool restore_player_ptr; // byte_1AB0A
+        public static bool byte_1AB0B;
+        public static bool byte_1AB0C;
+        public static bool filesLoaded; // byte_1AB0D
+        public static byte numLoadedMonsters; // byte_1AB0E
         public static bool byte_1AB14;
         public static bool byte_1AB16;
         public static byte byte_1AB18;
         public static byte byte_1AB19 = 0x40;
-        public static byte byte_1AB1A; // not sure what's this is for.
         public static int[] team_start_x = { 0, 0 }; /* byte_1AD2C */
         public static int[] team_start_y = { 0, 0 }; /* byte_1AD2E */
         public static int[] half_team_count = { 0, 0 }; /* unk_1AD30 */
@@ -393,39 +391,33 @@ namespace Classes
         public static bool byte_1D910;
         public static byte sprite_block_id; /* byte_1D92B */
         public static byte pic_block_id; /* byte_1D92C */
-        public static byte byte_1D92D;
+        public static byte monster_icon_id; // byte_1D92D
 
         public static bool byte_1DA70;
         public static byte global_index; // byte_1DA71
 
         public static bool[] encounter_flags = new bool[2]; /* byte_1EE72 */
-        public static bool byte_1EE7C;
-        public static bool byte_1EE7D;
-        public static bool byte_1EE7E;
-        public static byte byte_1EE81;
-        public static byte byte_1EE86;
+        public static bool redrawPartySummary1; // byte_1EE7C
+        public static bool redrawPartySummary2; // byte_1EE7D
+        public static bool redrawBoarder; // byte_1EE7E
+        public static int partyAnimatedCount; // byte_1EE81
+        public static bool battleWon; // byte_1EE86
         public static byte byte_1EE88;
         public static int search_flag_bkup; // byte_1EE89
         public static byte byte_1EE8A;
-        public static byte byte_1EE8B;
         public static bool byte_1EE8C;
         public static bool byte_1EE8D;
-        public static byte byte_1EE8E;
         public static bool displayPlayerSprite; /* byte_1EE8F */
-        public static byte byte_1EE90;
+        public static bool bottomTextHasBeenCleared; // byte_1EE90
         public static bool byte_1EE91;
-        public static byte byte_1EE92;
-        public static byte byte_1EE93;
-        public static byte byte_1EE94;
+        public static bool positionChanged; // byte_1EE92 
+        public static bool monstersLoaded; // byte_1EE93 
+        public static bool byte_1EE94;
         public static byte byte_1EE95;
         public static byte byte_1EE96;
         public static bool player_not_found; // byte_1EE97
-        public static byte byte_1EE98;
+        public static bool byte_1EE98;
         public static bool gameWon; // byte_1EE99
-        public static byte byte_1EF9A;
-        public static byte byte_1EF9B;
-
-        public static byte byte_1EFBA;
 
         public const short word_16E08 = 5;
         public const short word_16E0A = 4;
@@ -474,7 +466,7 @@ namespace Classes
         public static ushort vm_run_addr_4; // word_1B2D9
         public static ushort ecl_initial_entryPoint; // word_1B2DB
         public static short rest_incounter_count;
-        public static DaxBlock dword_1C8FC;
+        public static DaxBlock dword_1C8FC; //TODO - overlay dax block, not currently used.
         public static DaxBlock bigpic_dax; /* word_1D5B6 */
         public static short word_1D5BC;
         public static int displayInputCentiSecondWait; // word_1D5C0 & word_1D5C2
@@ -496,7 +488,6 @@ namespace Classes
 
         public static short FIND_result; // word_1EFBC
 
-        public static object dword_1AAC8;
         public static Item[] unk_1AF18 = new Item[0x30]; // array 01-0x30; seg600:4C08
         
         public const int max_spells = 0x54;
@@ -532,7 +523,7 @@ namespace Classes
 
         public static byte command;
         public static List<Player> player_next_ptr = new List<Player>();
-        //public static Player player_next_ptr;
+    
         public static Item item_ptr;
         public static Player spell_target;
         public static Player[] sp_targets = new Player[256]; /* sp_target */ 
@@ -601,7 +592,7 @@ namespace Classes
 
         public static int saving_throw_roll;
         public static bool save_made;
-        public static bool gameFlag01;
+        public static bool soundFlag01; // gameFlag01
         public static bool printCommands = false;
 
         public static DaxBlock sky_dax_250;

@@ -1,5 +1,6 @@
 using Classes;
 using System;
+using System.Collections.Generic;
 
 namespace engine
 {
@@ -622,7 +623,7 @@ namespace engine
 
             if (gbl.spell_from_item == false)
             {
-                var_2 = (byte)(gbl.spell_table[arg_0].field_2 + (gbl.spell_table[arg_0].field_3 * ovr025.spell_target_count(arg_0)));
+                var_2 = (byte)(gbl.spell_table[arg_0].field_2 + (gbl.spell_table[arg_0].field_3 * ovr025.spellMaxTargetCount(arg_0)));
             }
             else
             {
@@ -677,7 +678,7 @@ namespace engine
             }
             else
             {
-                var_4 = (ushort)(gbl.spell_table[arg_0].field_4 + (gbl.spell_table[arg_0].field_5 * ovr025.spell_target_count(arg_0)));
+                var_4 = (ushort)(gbl.spell_table[arg_0].field_4 + (gbl.spell_table[arg_0].field_5 * ovr025.spellMaxTargetCount(arg_0)));
             }
 
             return var_4;
@@ -704,7 +705,7 @@ namespace engine
             {
                 if (TargetCount == 0)
                 {
-                    target_count = ovr025.spell_target_count(spell_id);
+                    target_count = ovr025.spellMaxTargetCount(spell_id);
                 }
                 else
                 {
@@ -1213,7 +1214,7 @@ namespace engine
                         saved = true;
                     }
 
-                    ovr024.is_unaffected(text, saved, can_save_flag, false, ovr025.spell_target_count(gbl.spell_id), sub_5CE92(gbl.spell_id),
+                    ovr024.is_unaffected(text, saved, can_save_flag, false, ovr025.spellMaxTargetCount(gbl.spell_id), sub_5CE92(gbl.spell_id),
                         gbl.spell_table[gbl.spell_id].affect_id, target);
                 }
             }
@@ -1287,7 +1288,7 @@ namespace engine
 
         internal static void sub_5DEE1()
         {
-            sub_5CF7F(string.Empty, 9, (sbyte)ovr025.spell_target_count(gbl.spell_id), false, 0, gbl.spell_id);
+            sub_5CF7F(string.Empty, 9, (sbyte)ovr025.spellMaxTargetCount(gbl.spell_id), false, 0, gbl.spell_id);
         }
 
 
@@ -1302,7 +1303,7 @@ namespace engine
             }
             else
             {
-                sub_5CF7F("is charmed", 0, 0, true, (byte)(((int)gbl.player_ptr.combat_team << 7) + ovr025.spell_target_count(gbl.spell_id)), gbl.spell_id);
+                sub_5CF7F("is charmed", 0, 0, true, (byte)(((int)gbl.player_ptr.combat_team << 7) + ovr025.spellMaxTargetCount(gbl.spell_id)), gbl.spell_id);
 
                 Affect affect;
 
@@ -1320,7 +1321,7 @@ namespace engine
             gbl.byte_1AFDD = 0x12;
             gbl.byte_1AFDE = 0;
 
-            switch (ovr025.spell_target_count(gbl.spell_id))
+            switch (ovr025.spellMaxTargetCount(gbl.spell_id))
             {
                 case 1:
                     gbl.byte_1AFDE = 0;
@@ -1408,7 +1409,7 @@ namespace engine
 
         internal static void sub_5E221()
         {
-            sbyte var_1 = (sbyte)(ovr025.spell_target_count(gbl.spell_id) + 1);
+            sbyte var_1 = (sbyte)(ovr025.spellMaxTargetCount(gbl.spell_id) + 1);
 
             sub_5CF7F(string.Empty, 8, (sbyte)((var_1 >> 1) + ovr024.roll_dice_save(4, (sbyte)(var_1 >> 1))), false, 0, gbl.spell_id);
         }
@@ -1422,7 +1423,7 @@ namespace engine
 
         internal static void sub_5E2B2()
         {
-            sub_5CF7F(string.Empty, 12, (sbyte)(ovr024.roll_dice_save(8, 1) + ovr025.spell_target_count(gbl.spell_id)),
+            sub_5CF7F(string.Empty, 12, (sbyte)(ovr024.roll_dice_save(8, 1) + ovr025.spellMaxTargetCount(gbl.spell_id)),
                 false, 0, gbl.spell_id);
         }
 
@@ -1598,7 +1599,7 @@ namespace engine
         {
             int var_1 = ovr024.roll_dice(4, 1) << 4;
 
-            var_1 += ovr025.spell_target_count(gbl.spell_id);
+            var_1 += ovr025.spellMaxTargetCount(gbl.spell_id);
 
             sub_5CF7F("is duplicated", 0, 0, false, var_1, gbl.spell_id);
         }
@@ -1619,7 +1620,7 @@ namespace engine
 
             gbl.byte_1D2C7 = true;
 
-            byte var_10 = (byte)ovr025.spell_target_count(gbl.spell_id);
+            byte var_10 = (byte)ovr025.spellMaxTargetCount(gbl.spell_id);
             byte var_E = 0;
             Struct_1D885 var_8 = gbl.stru_1D885;
 
@@ -1814,7 +1815,7 @@ namespace engine
         {
             gbl.byte_1D2C7 = true;
 
-            int var_3 = ovr025.spell_target_count(gbl.spell_id);
+            int var_3 = ovr025.spellMaxTargetCount(gbl.spell_id);
 
             gbl.sp_target_count = 0;
 
@@ -1825,7 +1826,7 @@ namespace engine
                 {
                     if (ovr033.sub_7515A(true, ovr033.PlayerMapYPos(player), ovr033.PlayerMapXPos(player), player) == true)
                     {
-                        byte var_2 = (byte)(((int)player.combat_team << 4) + ovr025.spell_target_count(gbl.spell_id));
+                        byte var_2 = (byte)(((int)player.combat_team << 4) + ovr025.spellMaxTargetCount(gbl.spell_id));
 
                         player.combat_team = gbl.player_ptr.combat_team;
                         player.quick_fight = QuickFight.True;
@@ -1951,33 +1952,43 @@ namespace engine
             return var_1;
         }
 
+        public class Tuple<S,T,U>
+        {
+            public S s;
+            public T t;
+            public U u;
+
+            public Tuple(S _s, T _t, U _u)
+            { s = _s; t = _t; u = _u; }
+
+        }
+
 
         internal static void is_affected3()
         {
             gbl.byte_1D2C7 = true;
-            int var_2 = ovr025.spell_target_count(gbl.spell_id);
+            int maxTargetCount = ovr025.spellMaxTargetCount(gbl.spell_id);
 
             for (int i = 1; i <= gbl.sp_target_count; i++)
             {
                 bool is_affected = false;
                 Player target = gbl.sp_targets[1];
-                Affect var_C = target.affect_ptr;
 
-                while (var_C != null)
+                List<Tuple<Affect, byte, byte>> removeList = new List<Tuple<Affect,byte,byte>>();
+
+                foreach(Affect var_C in target.affects)
                 {
-                    Affect next_affect = var_C.next;
-
                     if (var_C.field_3 < 0xff)
                     {
                         gbl.byte_1AFDE = (byte)(var_C.field_3 & 0x0f);
 
-                        if (var_2 > gbl.byte_1AFDE)
+                        if (maxTargetCount > gbl.byte_1AFDE)
                         {
-                            gbl.byte_1AFDD = (byte)(50 + ((var_2 - gbl.byte_1AFDE) * 5));
+                            gbl.byte_1AFDD = (byte)(50 + ((maxTargetCount - gbl.byte_1AFDE) * 5));
                         }
-                        else if (var_2 < gbl.byte_1AFDE)
+                        else if (maxTargetCount < gbl.byte_1AFDE)
                         {
-                            gbl.byte_1AFDD = (byte)(50 - ((gbl.byte_1AFDE - var_2) * 2));
+                            gbl.byte_1AFDD = (byte)(50 - ((gbl.byte_1AFDE - maxTargetCount) * 2));
                         }
                         else
                         {
@@ -1986,13 +1997,20 @@ namespace engine
 
                         if (ovr024.roll_dice(100, 1) <= gbl.byte_1AFDD)
                         {
-                            ovr024.remove_affect(var_C, var_C.type, target);
+                            removeList.Add(new Tuple<Affect,byte,byte>(var_C, gbl.byte_1AFDD, gbl.byte_1AFDE));
                             is_affected = true;
                         }
                     }
-
-                    var_C = next_affect;
                 }
+
+                foreach (Tuple<Affect, byte, byte> remove in removeList)
+                {
+                    gbl.byte_1AFDD = remove.t;
+                    gbl.byte_1AFDE = remove.u;
+                    Affect affect = remove.s;
+                    ovr024.remove_affect(affect, affect.type, target);
+                }
+                removeList.Clear();
 
                 if (is_affected == true)
                 {
@@ -2076,22 +2094,20 @@ namespace engine
                                 if (var_12 == tmp_int &&                       
                                     var_18.field_1D == 0)
                                 {
-                                    if (sub_5F126(var_18.player, var_2) == true)
+                                    if (sub_5F126(var_18.player, maxTargetCount) == true)
                                     {
-                                        Affect affect = var_18.player.affect_ptr;
+                                        Affect affect = null;
                                         bool found = false;
 
-                                        while (affect != null && found == false)
+                                        foreach(Affect tmpAffect in var_18.player.affects)
                                         {
                                             if (((affect.type == Affects.affect_5b && ground_tile == 0x1c) ||
                                                  (affect.type == Affects.affect_28 && ground_tile == 0x1E)) &&
                                                 (affect.field_3 >> 4) == var_18.field_1C)
                                             {
+                                                affect = tmpAffect;
                                                 found = true;
-                                            }
-                                            else
-                                            {
-                                                affect = affect.next;
+                                                break;
                                             }
                                         }
 
@@ -2124,7 +2140,7 @@ namespace engine
 
         internal static void is_praying()
         {
-            byte tmpByte = (byte)(((int)gbl.player_ptr.combat_team * 16) + ovr025.spell_target_count(gbl.spell_id));
+            byte tmpByte = (byte)(((int)gbl.player_ptr.combat_team * 16) + ovr025.spellMaxTargetCount(gbl.spell_id));
 
             sub_5CF7F("is praying", 0, 0, false, tmpByte, gbl.spell_id);
         }
@@ -2196,7 +2212,7 @@ namespace engine
             }
             else
             {
-                dice_count = ovr025.spell_target_count(gbl.spell_id);
+                dice_count = ovr025.spellMaxTargetCount(gbl.spell_id);
             }
 
             if (gbl.area_ptr.field_1CC == 0)
@@ -2221,7 +2237,7 @@ namespace engine
         {
             gbl.byte_1D2C7 = true;
 
-            int var_2A = ovr025.spell_target_count(gbl.spell_id);
+            int var_2A = ovr025.spellMaxTargetCount(gbl.spell_id);
 
             for (int index = 1; index <= gbl.sp_target_count; index++)
             {
@@ -2411,7 +2427,7 @@ namespace engine
         {
             bool var_2 = false; /* Simeon */
 
-            int damage = ovr024.roll_dice(6, ovr025.spell_target_count(gbl.spell_id));
+            int damage = ovr024.roll_dice(6, ovr025.spellMaxTargetCount(gbl.spell_id));
 
             sub_5F986(ref var_2, 0, 4, damage, gbl.targetY, gbl.targetX);
             sub_5FA44(1, 4, damage, 7);
@@ -2605,7 +2621,7 @@ namespace engine
         {
             if (gbl.sp_targets[1].field_E5 < 6)
             {
-                sub_5CF7F(string.Empty, 8, 0, false, ovr025.spell_target_count(gbl.spell_id), gbl.spell_id);
+                sub_5CF7F(string.Empty, 8, 0, false, ovr025.spellMaxTargetCount(gbl.spell_id), gbl.spell_id);
 
                 Affect affect;
                 if (ovr025.find_affect(out affect, Affects.sticks_to_snakes, gbl.sp_targets[1]) == true)
@@ -2946,7 +2962,7 @@ namespace engine
 
             gbl.byte_1D2C7 = true;
 
-            var_15 = (byte)ovr025.spell_target_count(gbl.spell_id);
+            var_15 = (byte)ovr025.spellMaxTargetCount(gbl.spell_id);
             int count = 0;
             Struct_1D885 var_8 = gbl.stru_1D889;
 
@@ -3096,8 +3112,8 @@ namespace engine
         internal static void sub_61550()
         {
             Player player = gbl.player_ptr;
-            int target_count = ovr025.spell_target_count(gbl.spell_id);
-            int max_range = (ovr025.spell_target_count(gbl.spell_id) + 1) / 2;
+            int target_count = ovr025.spellMaxTargetCount(gbl.spell_id);
+            int max_range = (ovr025.spellMaxTargetCount(gbl.spell_id) + 1) / 2;
 
             if (max_range < 1)
             {

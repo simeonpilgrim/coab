@@ -156,7 +156,7 @@ namespace engine
                 var_44 = (short)(int.Parse(currentValueStr));
             }
 
-            return var_44;
+            return (short)var_44;
         }
 
 
@@ -531,7 +531,6 @@ namespace engine
         internal static Item create_item(int item_type) /* sub_5A007 */
         {
             byte var_5 = 0; /* Simeon */
-            byte var_2;
 
             Item item = new Item();
             byte var_4 = 0;
