@@ -29,7 +29,7 @@ namespace engine
 
                 if (gbl.game_state != 5)
                 {
-                    ovr025.Player_Summary(gbl.player_ptr);
+                    ovr025.PartySummary(gbl.player_ptr);
                 }
             }
         }
@@ -51,11 +51,7 @@ namespace engine
         {
             if (affect == null)
             {
-                affect = player.affect_ptr;
-                while (affect != null && affect.type != affect_id)
-                {
-                    affect = affect.next;
-                }
+                ovr025.find_affect(out affect, affect_id, player);
             }
 
             if (affect != null)
@@ -65,23 +61,7 @@ namespace engine
                     CallSpellJumpTable(Effect.Remove, affect, player, affect_id);
                 }
 
-                if (player.affect_ptr == affect)
-                {
-                    player.affect_ptr = affect.next;
-                }
-                else
-                {
-                    Affect tmp_affect = player.affect_ptr;
-
-                    while (tmp_affect != null && tmp_affect.next != affect)
-                    {
-                        tmp_affect = tmp_affect.next;
-                    }
-
-                    tmp_affect.next = affect.next;
-                }
-
-                affect = null; //seg051.FreeMem(9, affect);
+                player.affects.Remove(affect);
 
                 if (affect_id == Affects.resist_fire)
                 {
@@ -641,21 +621,8 @@ namespace engine
         {
             Affect affect = new Affect(type, arg_4, (byte)arg_2, call_spell_jump_list);
 
-            if (player.affect_ptr == null)
-            {
-                player.affect_ptr = affect;
-            }
-            else
-            {
-                Affect affect_tmp = player.affect_ptr;
-
-                while (affect_tmp.next != null)
-                {
-                    affect_tmp = affect_tmp.next;
-                }
-
-                affect_tmp.next = affect;
-            }
+            player.affects.Add(affect);
+            //TODO simplify this funcation.
         }
 
 

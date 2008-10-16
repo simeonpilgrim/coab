@@ -341,7 +341,7 @@ namespace engine
         }
 
 
-        internal static void Player_Summary(Player player)
+        internal static void PartySummary(Player player)
         {
             if (gbl.game_state == 3)
             {
@@ -1470,46 +1470,34 @@ namespace engine
         }
 
 
-        internal static bool find_affect(out Affect affect, Affects affect_type, Player playerBase)
+        internal static bool find_affect(out Affect affectFound, Affects affect_type, Player player)
         {
-            bool found_one_yet = false;
-            affect = playerBase.affect_ptr;
-
-            while (affect != null &&
-                   found_one_yet == false)
+            foreach (Affect affect in player.affects)
             {
                 if (affect.type == affect_type)
                 {
-                    found_one_yet = true;
-                }
-                else
-                {
-                    affect = affect.next;
+                    affectFound = affect;
+                    return true;
                 }
             }
 
-            return found_one_yet;
+            affectFound = null;
+            return false;
         }
+
 
         internal static bool find_affect(Affects affect_type, Player player)
         {
-            bool found_one = false;
-            Affect affect = player.affect_ptr;
-
-            while (affect != null &&
-                   found_one == false)
+            //player.affects.Exists(
+            foreach (Affect affect in player.affects)
             {
                 if (affect.type == affect_type)
                 {
-                    found_one = true;
-                }
-                else
-                {
-                    affect = affect.next;
+                    return true;
                 }
             }
 
-            return found_one;
+            return false;
         }
 
         static Set unk_683B5 = new Set(0x0001, new byte[] { 0x03 });
@@ -1593,7 +1581,7 @@ namespace engine
 
             if (gbl.game_state != 5)
             {
-                Player_Summary(gbl.player_ptr);
+                PartySummary(gbl.player_ptr);
             }
         }
 
@@ -1716,7 +1704,7 @@ namespace engine
         }
 
 
-        internal static int spell_target_count(int spell_id) /* sub_6886F */
+        internal static int spellMaxTargetCount(int spell_id) /* sub_6886F */
         {
             int target_count = 0;
 
@@ -1802,7 +1790,7 @@ namespace engine
                     break;
 
                 case 1:
-                    if (gbl.byte_1EE7E == true)
+                    if (gbl.redrawBoarder == true)
                     {
                         seg037.draw8x8_03();
                     }
@@ -1817,23 +1805,23 @@ namespace engine
                         ovr030.draw_head_and_body(true, 3, 3);
                     }
 
-                    Player_Summary(gbl.player_ptr);
+                    PartySummary(gbl.player_ptr);
                     display_map_position_time();
                     break;
 
                 case 2:
                     seg037.draw8x8_03();
                     ovr030.load_pic_final(ref gbl.byte_1D556, 0, 0x1d, "PIC");
-                    Player_Summary(gbl.player_ptr);
+                    PartySummary(gbl.player_ptr);
                     display_map_position_time();
                     break;
 
                 case 4:
                     seg037.draw8x8_03();
                     ovr029.update_3D_view();
-                    Player_Summary(gbl.player_ptr);
+                    PartySummary(gbl.player_ptr);
                     display_map_position_time();
-                    gbl.byte_1EE98 = 0;
+                    gbl.byte_1EE98 = false;
                     break;
 
                 case 3:
@@ -1846,7 +1834,7 @@ namespace engine
                 case 6:
                     seg037.draw8x8_03();
                     ovr030.load_pic_final(ref gbl.byte_1D556, 0, 1, "PIC");
-                    Player_Summary(gbl.player_ptr);
+                    PartySummary(gbl.player_ptr);
                     break;
             }
         }
@@ -1925,7 +1913,7 @@ namespace engine
             char input_key = ' ';
             while (unk_68DFA.MemberOf(input_key) == false)
             {
-                Player_Summary(player);
+                PartySummary(player);
 
                 bool useOverlay = (gbl.game_state == 2 || gbl.game_state == 6);
                 bool special_key;

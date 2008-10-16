@@ -15,41 +15,7 @@ namespace engine
 					item_ptr._value = 1;
 				}
 
-				int val;
-				switch( gbl.area2_ptr.field_6DA )
-				{
-					case 1:
-						val = item_ptr._value >> 4;
-						break;
-
-					case 2:
-						val = item_ptr._value >> 3;
-						break;
-
-					case 4:
-						val = item_ptr._value >> 2;
-						break;
-
-					case 8:
-						val = item_ptr._value >> 1;
-						break;
-
-					case 0x20:
-						val = item_ptr._value << 1;
-						break;
-
-					case 0x40:
-						val = item_ptr._value << 2;
-						break;
-
-					case 0x80:
-						val = item_ptr._value << 3;
-						break;
-
-					default:
-						val = item_ptr._value;
-						break;
-				}
+                int val = ItemsValue(item_ptr);
 
                 item_ptr.name = string.Format("{0,-21}{1,9}", item_ptr.name, val);
                 item_ptr = item_ptr.next;
@@ -71,6 +37,46 @@ namespace engine
 
                 item_ptr = item_ptr.next;
             }
+        }
+
+        private static int ItemsValue(Item item_ptr)
+        {
+            int val;
+            switch (gbl.area2_ptr.field_6DA)
+            {
+                case 0x01:
+                    val = item_ptr._value >> 4;
+                    break;
+
+                case 0x02:
+                    val = item_ptr._value >> 3;
+                    break;
+
+                case 0x04:
+                    val = item_ptr._value >> 2;
+                    break;
+
+                case 0x08:
+                    val = item_ptr._value >> 1;
+                    break;
+
+                case 0x20:
+                    val = item_ptr._value << 1;
+                    break;
+
+                case 0x40:
+                    val = item_ptr._value << 2;
+                    break;
+
+                case 0x80:
+                    val = item_ptr._value << 3;
+                    break;
+
+                default:
+                    val = item_ptr._value;
+                    break;
+            }
+            return val;
         }
 
 
@@ -133,40 +139,7 @@ namespace engine
                 else
                 {
                     stop_loop = false;
-                    int item_cost = var_4._value;
-
-                    switch (gbl.area2_ptr.field_6DA)
-                    {
-                        case 0x01:
-                            item_cost = var_4._value >> 4;
-
-                            break;
-
-                        case 0x02:
-                            item_cost = var_4._value >> 3;
-
-                            break;
-
-                        case 0x04:
-                            item_cost = var_4._value >> 2;
-                            break;
-
-                        case 0x08:
-                            item_cost = var_4._value >> 1;
-                            break;
-
-                        case 0x20:
-                            item_cost = var_4._value << 1;
-                            break;
-
-                        case 0x40:
-                            item_cost = var_4._value << 2;
-                            break;
-
-                        case 0x80:
-                            item_cost = var_4._value << 3;
-                            break;
-                    }
+                    int item_cost = ItemsValue(var_4);
 
                     int player_gold = ovr020.getPlayerGold(gbl.player_ptr);
 
@@ -215,11 +188,11 @@ namespace engine
             bool var_2C;
 
             gbl.game_state = 1;
-            gbl.byte_1EE7E = (gbl.area_ptr.field_1CC == 0);
+            gbl.redrawBoarder = (gbl.area_ptr.field_1CC == 0);
 
             ovr025.load_pic();
-            gbl.byte_1EE7E = true;
-            ovr025.Player_Summary( gbl.player_ptr );
+            gbl.redrawBoarder = true;
+            ovr025.PartySummary( gbl.player_ptr );
 
 			for( int var_1 = 0; var_1 < 7; var_1++ )
 			{
@@ -330,7 +303,7 @@ namespace engine
                     ovr025.load_pic();
                 }
 
-                ovr025.Player_Summary( gbl.player_ptr );
+                ovr025.PartySummary( gbl.player_ptr );
 
             }while( var_2D == false );
         }

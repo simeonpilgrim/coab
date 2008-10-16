@@ -278,7 +278,7 @@ namespace engine
 
         internal static void cure_poison2()
         {
-            bool isPoisoned = ovr025.find_affect(Affects.poisoned, gbl.player_ptr;
+            bool isPoisoned = ovr025.find_affect(Affects.poisoned, gbl.player_ptr);
 
             char inutKey = 'Y';
             if (isPoisoned == false)
@@ -292,13 +292,13 @@ namespace engine
 
                 if (inutKey == 'Y')
                 {
-                    gbl.byte_1D2C6 = true;
+                    gbl.cureSpell = true;
 
                     ovr024.remove_affect(null, Affects.poisoned, gbl.player_ptr);
                     ovr024.remove_affect(null, Affects.slow_poison, gbl.player_ptr);
                     ovr024.remove_affect(null, Affects.affect_0f, gbl.player_ptr);
 
-                    gbl.byte_1D2C6 = false;
+                    gbl.cureSpell = false;
                 }
             }
         }
@@ -457,7 +457,7 @@ namespace engine
             ovr027.free_stringList(ref stringList);
 
             ovr025.load_pic();
-            ovr025.Player_Summary(gbl.player_ptr);
+            ovr025.PartySummary(gbl.player_ptr);
         }
 
 
@@ -467,16 +467,11 @@ namespace engine
             bool money_present;
 
             gbl.game_state = 1;
-            gbl.byte_1EE7E = false;
-
-            if (gbl.area_ptr.field_1CC == 0)
-            {
-                gbl.byte_1EE7E = true;
-            }
+            gbl.redrawBoarder = (gbl.area_ptr.field_1CC == 0);
 
             ovr025.load_pic();
-            gbl.byte_1EE7E = true;
-            ovr025.Player_Summary(gbl.player_ptr);
+            gbl.redrawBoarder = true;
+            ovr025.PartySummary(gbl.player_ptr);
 
             for (int i = 0; i < 7; i++)
             {
@@ -582,7 +577,7 @@ namespace engine
                     ovr025.load_pic();
                 }
 
-                ovr025.Player_Summary(gbl.player_ptr);
+                ovr025.PartySummary(gbl.player_ptr);
             } while (stop_loop == false);
         }
     }

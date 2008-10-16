@@ -18,21 +18,16 @@ namespace engine
 
                 Logger.Close();            
 
-                ovr012.keyboardStatus_0417 = gbl.byte_1EFBA;
-
                 seg001.EngineStop();
             }
         }
 
 
-        static void display_players_affects(Player player)
+        static void DebugPlayerAffects(Player player)
         {
-            Affect affect = player.affect_ptr;
-
-            while (affect != null)
+            foreach(Affect affect in player.affects)
             {
                 Logger.Debug("who: {0}  sp#: {1} - {2}", player.name, (int)affect.type, affect.type);
-                affect = affect.next;
             }
         }
 
@@ -91,7 +86,7 @@ namespace engine
         {
             foreach (Player player in gbl.player_next_ptr)
             {
-                display_players_affects(player);
+                DebugPlayerAffects(player);
             }
         }
 

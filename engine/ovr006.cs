@@ -80,7 +80,7 @@ namespace engine
                     item_ptr = item_ptr.next;
                 }
 
-                return total / (gbl.area2_ptr.party_size - gbl.byte_1EE81);
+                return total / (gbl.area2_ptr.party_size - gbl.partyAnimatedCount);
             }
         }
 
@@ -188,7 +188,7 @@ namespace engine
 
         internal static void sub_2D556()
         {
-            gbl.byte_1EE81 = 0;
+            gbl.partyAnimatedCount = 0;
             gbl.party_killed = true;
             gbl.party_fled = false;
 
@@ -227,7 +227,7 @@ namespace engine
                 gbl.party_killed = false;
             }
 
-            gbl.byte_1EE86 = 0;
+            gbl.battleWon = false;
 
             if (gbl.combat_type == gbl.combatType.normal ||
                 gbl.inDemo == false)
@@ -253,14 +253,14 @@ namespace engine
                     if (player.health_status == Status.animated ||
                         player.health_status == Status.okey)
                     {
-                        gbl.byte_1EE86 = 1;
+                        gbl.battleWon = true;
                         gbl.party_fled = false;
                     }
 
                     if (player.in_combat == false ||
                         player.health_status == Status.animated)
                     {
-                        gbl.byte_1EE81++;
+                        gbl.partyAnimatedCount++;
                     }
 
                     for (int i = 0; i < 0x13; i++)
@@ -269,7 +269,7 @@ namespace engine
                     }
                 }
 
-                if (gbl.byte_1EE86 != 0)
+                if (gbl.battleWon == true)
                 {
                     gbl.exp_to_add = calc_battle_exp();
                     addExp(gbl.exp_to_add);
@@ -380,7 +380,7 @@ namespace engine
                         player.health_status == Status.okey &&
                         player.combat_team == CombatTeam.Ours)
                     {
-                        gbl.byte_1EE86 = 1;
+                        gbl.battleWon = true;
                         gbl.exp_to_add = calc_battle_exp();
                         addExp(gbl.exp_to_add);
                     }
@@ -431,8 +431,8 @@ namespace engine
                 }
                 else
                 {
-                    if ((gbl.combat_type == gbl.combatType.duel && gbl.byte_1EE86 == 0) ||
-                        (gbl.byte_1EE86 == 0 && gbl.area2_ptr.field_5CC != 0))
+                    if ((gbl.combat_type == gbl.combatType.duel && gbl.battleWon == false) ||
+                        (gbl.battleWon == false && gbl.area2_ptr.field_5CC != 0))
                     {
                         gbl.area2_ptr.field_58E = 0x80;
                         seg041.displayString("You have lost the fight.", 0, 10, 3, 1);
@@ -587,7 +587,7 @@ namespace engine
                                 break;
                         }
 
-                        ovr025.Player_Summary(gbl.player_ptr);
+                        ovr025.PartySummary(gbl.player_ptr);
                         ovr022.treasureOnGround(out items_present, out money_present);
 
                         if (money_present == false ||
@@ -717,12 +717,12 @@ namespace engine
 
                     case 'G':
                         ovr020.scroll_team_list(input_key);
-                        ovr025.Player_Summary(gbl.player_ptr);
+                        ovr025.PartySummary(gbl.player_ptr);
                         break;
 
                     case 'O':
                         ovr020.scroll_team_list(input_key);
-                        ovr025.Player_Summary(gbl.player_ptr);
+                        ovr025.PartySummary(gbl.player_ptr);
                         break;
                 }
             } while (done == false);

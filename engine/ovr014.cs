@@ -1264,7 +1264,7 @@ namespace engine
 
                 if (arg_6 == 0x4F)
                 {
-                    var_4 = ovr025.spell_target_count(0x4F);
+                    var_4 = ovr025.spellMaxTargetCount(0x4F);
                 }
                 else
                 {

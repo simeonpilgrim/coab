@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 
 namespace Classes
@@ -252,7 +253,7 @@ namespace Classes
         public byte field_E9; // 0xe9;
         [DataOffset(0xeA, DataType.ByteArray,8)]
         public byte[] field_EA = new byte[8]; // 0xeA; [] was 1 offset @ 0xe9
-        public Affect affect_ptr; // f2
+        public List<Affect> affects; // f2 - affect_ptr
 
         [DataOffset(0xf7, DataType.Byte)]
         public byte field_F7; // 0xf7; // if 0 or 0xB3 you can pool money
@@ -690,11 +691,6 @@ namespace Classes
                     field_12D[i, j] = data[0x12d + j + (i * i)];
                 }
             }
-
-//            if (field_E9 > 1)
-//            {
-//                int i = 0;
-//            }
         }
 
         private void Init()
@@ -704,7 +700,7 @@ namespace Classes
 
             name = string.Empty;
             itemsPtr = null;
-            affect_ptr = null;
+            affects = new List<Affect>();
             next_player = null;
             actions = null;
         }

@@ -251,7 +251,7 @@ namespace engine
 
                 if (gbl.game_state != 5)
                 {
-                    ovr025.Player_Summary(gbl.player_ptr);
+                    ovr025.PartySummary(gbl.player_ptr);
                 }
             }
         }
@@ -751,7 +751,7 @@ namespace engine
 
                     if (gbl.game_state != 5)
                     {
-                        ovr025.Player_Summary(gbl.player_ptr);
+                        ovr025.PartySummary(gbl.player_ptr);
                     }
                 }
                 else if (ovr025.find_affect(Affects.helpless, player) == false)
@@ -1469,7 +1469,7 @@ namespace engine
 
         internal static void sub_3C0EE(byte arg_0)
         {
-            int target_count = ovr025.spell_target_count(gbl.spell_id);
+            int target_count = ovr025.spellMaxTargetCount(gbl.spell_id);
             int var_2 = (byte)(arg_0 + ((0x0b - target_count) * 5));
 
             if (gbl.current_affect != 0 ||

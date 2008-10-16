@@ -67,7 +67,7 @@ namespace engine
                             sound_sub_137B1();
                             sound_sub_13745(0);
                             sound_sub_133B4();
-                            gbl.gameFlag01 = false;
+                            gbl.soundFlag01 = false;
                         }
                     }
                     else if (arg_0 >= 2 && arg_0 <= 14)
@@ -91,7 +91,7 @@ namespace engine
             lock (timer_lock)
             {
                 gbl.soundTypeBackup = gbl.soundType;
-                gbl.gameFlag01 = true;
+                gbl.soundFlag01 = true;
 
                 if (gbl.soundType != SoundType.None)
                 {
