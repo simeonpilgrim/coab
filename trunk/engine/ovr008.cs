@@ -132,7 +132,7 @@ namespace engine
 
             gbl.area_ptr.field_1CC = 1;
 
-            if (gbl.byte_1B2EB == 0)
+            if (gbl.reload_ecl_and_pictures == false)
             {
                 for (int loop_var = 1; loop_var <= 32; loop_var++)
                 {

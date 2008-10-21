@@ -2562,7 +2562,7 @@ namespace engine
                 gbl.game_state = 3;
             }
 
-            if (gbl.byte_1B2EB != 0 ||
+            if (gbl.reload_ecl_and_pictures == true ||
                 gbl.area_ptr.field_1E4 == 0)
             {
                 ovr008.load_ecl_dax(gbl.byte_1EE88);
@@ -2595,7 +2595,7 @@ namespace engine
                 }
 
                 if (gbl.game_state != 3 &&
-                    gbl.byte_1B2EB != 0)
+                    gbl.reload_ecl_and_pictures == true)
                 {
                     if (gbl.byte_1EE98 == true)
                     {
@@ -2606,7 +2606,7 @@ namespace engine
                     ovr029.update_3D_view();
                 }
 
-                gbl.byte_1B2EB = 0;
+                gbl.reload_ecl_and_pictures = false;
 
                 do
                 {

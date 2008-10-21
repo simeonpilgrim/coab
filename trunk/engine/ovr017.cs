@@ -994,21 +994,26 @@ namespace engine
                 var_7.field_192 = 1;
             }
 
-            gbl.area2_ptr.training_class_mask = 0xff;
-            gbl.byte_1D8B0 = 0;
-            gbl.byte_1B2F1 = 1;
-
-            do
-            {
-                ovr018.train_player();
-            } while (gbl.byte_1D8B0 == 0);
-
-            gbl.byte_1B2F1 = 0;
+            SilentTrainPlayer();
             gbl.player_ptr = bp_var_1CA;
 
             var_7.hit_point_max = hills_far_player.field_21;
             var_7.field_12C = (byte)(var_7.hit_point_max - ovr018.get_con_hp_adj(bp_player_ptr));
             var_7.hit_point_current = hills_far_player.field_20;
+        }
+
+        internal static void SilentTrainPlayer()
+        {
+            gbl.area2_ptr.training_class_mask = 0xff;
+            gbl.can_train_no_more = false;
+            gbl.silent_training = true;
+
+            do
+            {
+                ovr018.train_player();
+            } while (gbl.can_train_no_more == false);
+
+            gbl.silent_training = false;
         }
 
 
@@ -1272,17 +1277,7 @@ namespace engine
                             player01_ptr.field_79[0x15 - 1] = 1;
                         }
 
-                        gbl.area2_ptr.training_class_mask = 0xff;
-
-                        gbl.byte_1D8B0 = 0;
-                        gbl.byte_1B2F1 = 1;
-
-                        do
-                        {
-                            ovr018.train_player();
-                        } while (gbl.byte_1D8B0 == 0);
-
-                        gbl.byte_1B2F1 = 0;
+                        SilentTrainPlayer();
 
                         ovr022.addPlayerGold(300);
                         gbl.player_ptr = player02_ptr;
@@ -1562,7 +1557,7 @@ namespace engine
 
             ovr027.redraw_screen();
             seg041.displayString("Loading...Please Wait", 0, 10, 0x18, 0);
-            gbl.byte_1B2EB = 1;
+            gbl.reload_ecl_and_pictures = true;
 
             byte[] data = new byte[0x2000];
 
