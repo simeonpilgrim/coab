@@ -99,7 +99,7 @@ namespace engine
             gbl.AnimationsOn = true;
             gbl.PicsOn = true;
             gbl.DelayBetweenCharacters = true;
-            gbl.byte_1B2EB = 0;
+            gbl.reload_ecl_and_pictures = false;
             gbl.rest_incounter_count = 0;
 
             gbl.player_next_ptr.Clear();
@@ -129,7 +129,7 @@ namespace engine
             gbl.byte_1EE95 = 0;
             gbl.byte_1D910 = true;
             gbl.bigpic_block_id = 0x0FF;
-            gbl.byte_1B2F1 = 0;
+            gbl.silent_training = false;
             gbl.byte_1D5BE = 1;
             gbl.game_state = 4;
             gbl.last_game_state = 0;
@@ -210,7 +210,7 @@ namespace engine
             gbl.word_1D548 = -1;
 
             gbl.DelayBetweenCharacters = true;
-            gbl.byte_1B2EB = 0;
+            gbl.reload_ecl_and_pictures = false;
             gbl.rest_incounter_count = 0;
             gbl.player_next_ptr.Clear();
             gbl.player_ptr = null;
@@ -237,7 +237,7 @@ namespace engine
             gbl.byte_1EE95 = 0;
             gbl.byte_1D910 = true;
             gbl.bigpic_block_id = 0x0FF;
-            gbl.byte_1B2F1 = 0;
+            gbl.silent_training = false;
             ovr027.redraw_screen();
             gbl.byte_1D5BE = 1;
             gbl.game_state = 4;

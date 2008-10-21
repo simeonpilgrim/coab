@@ -268,7 +268,7 @@ namespace engine
                                 {
                                     gbl.game_state = gameStateBackup;
 
-                                    if (gbl.byte_1B2EB == 0 &&
+                                    if (gbl.reload_ecl_and_pictures == false &&
                                         gbl.lastDaxBlockId != 0x50)
                                     {
                                         if (gbl.game_state == 3)
@@ -1194,17 +1194,10 @@ namespace engine
                 var_53.hit_point_current = var_53.hit_point_max;
                 var_53.field_12C = (byte)(var_53.field_12C / var_20);
                 byte trainingClassMaskBackup = gbl.area2_ptr.training_class_mask;
-                gbl.area2_ptr.training_class_mask = 0xff;
-                gbl.byte_1D8B0 = 0;
-                gbl.byte_1B2F1 = 1;
 
-                do
-                {
-                    train_player();
-                } while (gbl.byte_1D8B0 == 0);
+                ovr017.SilentTrainPlayer();
 
                 gbl.area2_ptr.training_class_mask = trainingClassMaskBackup;
-                gbl.byte_1B2F1 = 0;
                 bool first_lvl = true;
                 string text = string.Empty;
 
@@ -2724,7 +2717,7 @@ namespace engine
 
             if (ovr020.getPlayerGold(gbl.player_ptr) < 1000 &&
                 Cheats.free_training == false &&
-                gbl.byte_1B2F1 == 0 &&
+                gbl.silent_training == false &&
                 gbl.gameWon == false)
             {
                 seg041.DisplayStatusText(0, 14, "Training costs 1000 gp.");
@@ -2732,11 +2725,11 @@ namespace engine
             }
 
 
-            byte var_A = 0;
+            byte classesExpTrainMask = 0;
             byte classesToTrainMask = 0;
             byte class_lvl = 123; /* Simeon */
 
-            byte training_class_mask = gbl.area2_ptr.training_class_mask;
+            byte trainerClassMask = gbl.area2_ptr.training_class_mask;
             Player player_ptr = gbl.player_ptr;
 
             int var_5 = 0;
@@ -2768,7 +2761,7 @@ namespace engine
                                 }
                             }
 
-                            var_A += classMasks[_class];
+                            classesExpTrainMask += classMasks[_class];
 
                             int next_lvl_exp = exp_table[_class, (class_lvl + 1)];
 
@@ -2785,14 +2778,14 @@ namespace engine
                 }
             }
 
-            if (gbl.byte_1B2F1 == 0)
+            if (gbl.silent_training == false)
             {
                 int max_class = 0;
                 int max_exp = 0;
 
                 for (int _class = 0; _class <= 7; _class++)
                 {
-                    if ((classMasks[_class] & var_A) != 0)
+                    if ((classMasks[_class] & classesExpTrainMask) != 0)
                     {
                         if (exp_table[_class, class_lvl] > max_exp)
                         {
@@ -2805,7 +2798,7 @@ namespace engine
 
                 if (max_exp > 0)
                 {
-                    var_A = classMasks[max_class];
+                    classesExpTrainMask = classMasks[max_class];
                     int var_9 = exp_table[max_class, class_lvl + 1];
 
                     if (var_9 > 0 &&
@@ -2817,25 +2810,25 @@ namespace engine
                 }
             }
 
-            if (var_5 > 0 && gbl.byte_1B2F1 == 0)
+            if (var_5 > 0 && gbl.silent_training == false)
             {
                 player_ptr.exp = var_5;
             }
 
             if (Cheats.free_training == false)
             {
-                if ((classesToTrainMask & training_class_mask) == 0 &&
-                    gbl.byte_1B2F1 == 0)
+                if ((classesToTrainMask & trainerClassMask) == 0 &&
+                    gbl.silent_training == false)
                 {
                     seg041.DisplayStatusText(0, 14, "We don't train that class here");
                     return;
                 }
 
-                if ((var_A & training_class_mask) == 0)
+                if ((classesExpTrainMask & trainerClassMask) == 0)
                 {
-                    gbl.byte_1D8B0 = 1;
+                    gbl.can_train_no_more = true;
 
-                    if (gbl.byte_1B2F1 == 0)
+                    if (gbl.silent_training == false)
                     {
                         seg041.DisplayStatusText(0, 14, "Not Enough Experience");
                         return;
@@ -2843,18 +2836,18 @@ namespace engine
                 }
             }
 
-            byte var_C;
+            byte actualTrainingClassesMask;
             if (Cheats.free_training == false)
             {
-                var_C = (byte)(var_A & training_class_mask);
+                actualTrainingClassesMask = (byte)(classesExpTrainMask & trainerClassMask);
             }
             else
             {
-                var_C = var_A;
+                actualTrainingClassesMask = classesExpTrainMask;
             }
 
             bool skipBits = false;
-            if (gbl.byte_1B2F1 != 0)
+            if (gbl.silent_training == true)
             {
                 skipBits = true;
             }
@@ -2869,24 +2862,24 @@ namespace engine
 
                 seg041.displayString(" will become:", 0, 10, y_offset, player_ptr.name.Length + 4);
 
-                for (int var_13 = 0; var_13 <= 7; var_13++)
+                for (int _class = 0; _class <= 7; _class++)
                 {
-                    if (player_ptr.class_lvls[var_13] > 0 &&
-                        (classMasks[var_13] & var_C) != 0)
+                    if (player_ptr.class_lvls[_class] > 0 &&
+                        (classMasks[_class] & actualTrainingClassesMask) != 0)
                     {
                         y_offset++;
 
                         if (y_offset == 5)
                         {
                             string text = System.String.Format("    a level {0} {1}",
-                                player_ptr.class_lvls[var_13] + 1, ovr020.classString[var_13]);
+                                player_ptr.class_lvls[_class] + 1, ovr020.classString[_class]);
 
                             seg041.displayString(text, 0, 10, y_offset, 6);
                         }
                         else
                         {
                             string text = System.String.Format("and a level {0} {1}",
-                                player_ptr.class_lvls[var_13] + 1, ovr020.classString[var_13]);
+                                player_ptr.class_lvls[_class] + 1, ovr020.classString[_class]);
 
                             seg041.displayString(text, 0, 10, y_offset, 6);
                         }
@@ -2918,7 +2911,7 @@ namespace engine
                     {
                         class_count++;
 
-                        if ((classMasks[_class] & var_C) != 0)
+                        if ((classMasks[_class] & actualTrainingClassesMask) != 0)
                         {
                             player_ptr.class_lvls[_class] += 1;
                             if (player_ptr.field_E7 > 0)
@@ -2932,7 +2925,7 @@ namespace engine
 
                 ovr026.sub_6A3C6(gbl.player_ptr);
 
-                if (gbl.byte_1B2F1 == 0)
+                if (gbl.silent_training == false)
                 {
                     if (player_ptr.magic_user_lvl > var_17 ||
                         player_ptr.ranger_lvl > 8)
@@ -2953,7 +2946,7 @@ namespace engine
                     }
                 }
 
-                if (gbl.byte_1B2F1 != 0)
+                if (gbl.silent_training == true)
                 {
                     switch (player_ptr.magic_user_lvl)
                     {
@@ -2981,7 +2974,7 @@ namespace engine
                     return;
                 }
 
-                short var_F = sub_509E0(var_C, gbl.player_ptr);
+                short var_F = sub_509E0(actualTrainingClassesMask, gbl.player_ptr);
 
                 int max_hp_increase = var_F / class_count;
 

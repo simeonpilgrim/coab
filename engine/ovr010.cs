@@ -796,10 +796,7 @@ namespace engine
 
         internal static bool sub_3637F(Player player)
         {
-            byte var_3;
-            bool var_1;
-
-            var_1 = false;
+            bool var_1 = false;
             player.actions.field_14 = 0;
 
             ovr024.sub_6460D(player);
@@ -811,7 +808,6 @@ namespace engine
             }
             else if (player.field_F7 > 0x7F)
             {
-
                 gbl.byte_1D2CC = (byte)((player.field_F7 & 0x7F) << 1);
 
                 if (gbl.byte_1D2CC > 0x66)
@@ -820,11 +816,10 @@ namespace engine
                 }
                 ovr024.work_on_00(player, 0x11);
 
-
                 if (gbl.byte_1D2CC < (100 - ((player.hit_point_current * 100) / player.hit_point_max)) ||
                     gbl.byte_1D2CC == 0)
                 {
-                    var_3 = gbl.byte_1D2CC;
+                    //byte var_3 = gbl.byte_1D2CC;
                     gbl.byte_1D2CC = gbl.enemyHealthPercentage;
 
                     ovr024.work_on_00(player, 17);
@@ -914,9 +909,7 @@ namespace engine
 
 
         internal static void sub_36673(Player player)
-        {
-            byte var_1D;
-            
+        {            
             if (player.field_151 != null)
             {
                 player.field_185 -= gbl.unk_1C020[player.field_151.type].field_1;
@@ -989,7 +982,7 @@ namespace engine
 
             bool ranged_melee = ovr025.item_is_ranged_melee(var_4);
             bool var_1F = false;
-            Item var_14 = null;
+            Item tmpItem = null;
             byte var_1A = 0;
 
             if (var_4 != null)
@@ -998,24 +991,24 @@ namespace engine
 
                 if ((var_1A & 0x10) != 0)
                 {
-                    var_14 = var_4;
+                    tmpItem = var_4;
                 }
 
                 if ((var_1A & 8) != 0)
                 {
                     if ((var_1A & 0x01) != 0)
                     {
-                        var_14 = player.Item_ptr_03;
+                        tmpItem = player.Item_ptr_03;
                     }
 
                     if ((var_1A & 0x80) != 0)
                     {
-                        var_14 = player.Item_ptr_04;
+                        tmpItem = player.Item_ptr_04;
                     }
                 }
             }
 
-            if (var_14 != null ||
+            if (tmpItem != null ||
                 var_1A == 10)
             {
                 var_1F = true;
@@ -1033,7 +1026,7 @@ namespace engine
                 item = var_8;
             }
 
-            var_1D = 0;
+            bool itemsChanged = false;
             bool replace_weapon = true;
 
             if (player.field_151 != null &&
@@ -1063,7 +1056,7 @@ namespace engine
                     ovr020.ready_Item(item);
                 }
 
-                var_1D = 1;
+                itemsChanged = true;
             }
 
             ovr025.reclac_player_values(player);
@@ -1082,12 +1075,12 @@ namespace engine
                     player.field_155.cursed == true)
                 {
                     ovr020.ready_Item(item);
-                    var_1D = 1;
+                    itemsChanged = true;
                 }
                 else
                 {
                     ovr020.ready_Item(player.field_155);
-                    var_1D = 1;
+                    itemsChanged = true;
                 }
             }
             else if (player.field_185 < 2 && replace_weapon)
@@ -1103,13 +1096,13 @@ namespace engine
                     ovr020.ready_Item(var_C);
                 }
 
-                var_1D = 1;
+                itemsChanged = true;
             }
 
 
             ovr025.reclac_player_values(player);
 
-            if (var_1D != 0)
+            if (itemsChanged == true)
             {
                 ovr025.display_hitpoint_ac(player);
             }

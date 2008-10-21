@@ -240,15 +240,17 @@ namespace Classes
         public static byte byte_1AFDE;
 
         public static byte last_game_state; // byte_1B2E4
-        public static byte byte_1B2E9 = 0;
-        public static byte byte_1B2EB;
+        public static bool reload_ecl_and_pictures; // byte_1B2EB
         public static byte head_block_id; // byte_1B2EE
         public static byte body_block_id; // byte_1B2EF
         public static bool party_killed; // byte_1B2F0
-        public static byte byte_1B2F1;
+        
+        public static bool can_train_no_more; // byte_1D8B0
+        public static bool silent_training; // byte_1B2F1
         public static bool DelayBetweenCharacters; // byte_1B2F2
 
-        public static byte byte_1BF12; // ??
+        public static byte byte_1B2E9 = 0; // TODO remove only set here, but check if non-negative
+        public static byte byte_1BF12; // TODO remove or workout what it's was for?
 
         public static SoundType soundType = SoundType.None; // byte_1BF14
         public static SoundType soundTypeBackup; // byte_1BF15
@@ -359,7 +361,6 @@ namespace Classes
         public static bool displayPlayerStatusLine18; /* byte_1D8A8 */
         public static bool can_draw_bigpic; // byte_1D8AA
         public static bool byte_1D8AC; // byte_1D8AC
-        public static byte byte_1D8B0;
         //public static byte byte_1D8B6; // not used.
         public static byte byte_1D8B7;
         public static byte byte_1D8B8;

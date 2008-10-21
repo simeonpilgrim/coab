@@ -146,11 +146,11 @@ namespace engine
 
         internal static void build_background_tiles_1() /* sub_373FC */
         {
-            for (int var_2 = 2; var_2 <= 4; var_2++)
+            for (int y_pos = 2; y_pos <= 4; y_pos++)
             {
-                for (int var_1 = 0; var_1 <= 5; var_1++)
+                for (int x_pos = 0; x_pos <= 5; x_pos++)
                 {
-                    set_background_tile(0x16, var_2, var_1);
+                    set_background_tile(22, y_pos, x_pos);
                 }
             }
 
@@ -182,10 +182,10 @@ namespace engine
             }
             else
             {
-                set_background_tile(0x16, 0, 3);
-                set_background_tile(0x16, 0, 4);
-                set_background_tile(0x16, 1, 3);
-                set_background_tile(0x16, 1, 4);
+                set_background_tile(22, 0, 3);
+                set_background_tile(22, 0, 4);
+                set_background_tile(22, 1, 3);
+                set_background_tile(22, 1, 4);
             }
         }
 
@@ -786,7 +786,6 @@ namespace engine
 
         internal static void sub_380E0()
         {
-
             int var_5 = 0;
 
             foreach (Player player in gbl.player_next_ptr)
