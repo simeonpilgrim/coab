@@ -583,8 +583,8 @@ namespace engine
                         }
                         else
                         {
-                            gbl.word_1D53E = -1;
-                            gbl.word_1D540 = -1;
+                            gbl.setBlocks[0].blockId = -1;
+                            gbl.setBlocks[0].setId = -1;
                         }
 
                         if (var_2 != 0xff)
@@ -593,8 +593,8 @@ namespace engine
                         }
                         else
                         {
-                            gbl.word_1D542 = -1;
-                            gbl.word_1D544 = -1;
+                            gbl.setBlocks[1].blockId = -1;
+                            gbl.setBlocks[1].setId = -1;
                         }
 
                         if (var_1 != 0xff)
@@ -603,8 +603,8 @@ namespace engine
                         }
                         else
                         {
-                            gbl.word_1D546 = -1;
-                            gbl.word_1D548 = -1;
+                            gbl.setBlocks[2].blockId = -1;
+                            gbl.setBlocks[2].setId = -1;
                         }
                     }
                 }

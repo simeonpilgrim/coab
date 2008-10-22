@@ -86,15 +86,14 @@ namespace engine
             gbl.can_pick_door = true;
             gbl.can_knock_door = true;
 
-            gbl.word_1D53E = 0;
-            gbl.word_1D540 = 1;
             gbl.byte_1AD44 = 3;
 
-            gbl.word_1D542 = -1;
-            gbl.word_1D544 = -1;
-
-            gbl.word_1D546 = -1;
-            gbl.word_1D548 = -1;
+            gbl.setBlocks[0].blockId = 0;
+            gbl.setBlocks[0].setId = 1;
+            gbl.setBlocks[1].blockId = -1;
+            gbl.setBlocks[1].setId = -1;
+            gbl.setBlocks[2].blockId = -1;
+            gbl.setBlocks[2].setId = -1;
 
             gbl.AnimationsOn = true;
             gbl.PicsOn = true;
@@ -199,15 +198,14 @@ namespace engine
             gbl.can_pick_door = true;
             gbl.can_knock_door = true;
 
-            gbl.word_1D53E = 0;
-            gbl.word_1D540 = 1;
-
             gbl.byte_1AD44 = 3;
 
-            gbl.word_1D542 = -1;
-            gbl.word_1D544 = -1;
-            gbl.word_1D546 = -1;
-            gbl.word_1D548 = -1;
+            gbl.setBlocks[0].blockId = 0;
+            gbl.setBlocks[0].setId = 1;
+            gbl.setBlocks[1].blockId = -1;
+            gbl.setBlocks[1].setId = -1;
+            gbl.setBlocks[2].blockId = -1;
+            gbl.setBlocks[2].setId = -1;
 
             gbl.DelayBetweenCharacters = true;
             gbl.reload_ecl_and_pictures = false;

@@ -296,55 +296,13 @@ namespace Classes
         public static byte mapWallType; // byte_1D53C
         public static byte mapWallRoof; // byte_1D53D
 
-        public static void wordSetArray_1D53A(int index, short value)
+        public class SetBlock
         {
-            switch (index)
-            {
-                case 1: word_1D53E = value; break;
-                case 2: word_1D542 = value; break;
-                case 3: word_1D546 = value; break;
-            }
+            public int blockId; // byte_1D53A[di] 1*4
+            public int setId; // byte_1D53C[di] 1*4
         }
 
-        public static short wordGetArray_1D53A(int index)
-        {
-            switch (index)
-            {
-                case 1: return word_1D53E;
-                case 2: return word_1D542;
-                case 3: return word_1D546;
-                default: throw new System.NotSupportedException();
-            }
-        }
-
-        public static void wordSetArray_1D53C(int index, short value)
-        {
-            switch (index)
-            {
-                case 1: word_1D540 = value; break;
-                case 2: word_1D544 = value; break;
-                case 3: word_1D548 = value; break;
-                default: throw new System.NotSupportedException();
-            }
-        }
-
-        public static short wordGetArray_1D53C(int index)
-        {
-            switch (index)
-            {
-                case 1: return word_1D540;
-                case 2: return word_1D544;
-                case 3: return word_1D548;
-                default: throw new System.NotSupportedException();
-            }
-        }
-
-        public static short word_1D53E; // byte_1D53A[di] 1*4
-        public static short word_1D540; // byte_1D53C[di] 1*4
-        public static short word_1D542; // byte_1D53A[di] 2*4
-        public static short word_1D544; // byte_1D53C[di] 2*4
-        public static short word_1D546; // byte_1D53A[di] 3*4
-        public static short word_1D548; // byte_1D53C[di] 3*4
+        public static SetBlock[] setBlocks = new SetBlock[3]; 
 
         public static DaxArray byte_1D556;
         public static string lastDaxFile;

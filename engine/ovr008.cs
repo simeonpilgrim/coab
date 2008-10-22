@@ -266,28 +266,26 @@ namespace engine
             if (flags[1] == false ||
                 gbl.byte_1EE96 != gbl.area2_ptr.field_5C2)
             {
-                if (encounter_distance == 0)
+                if (encounter_distance == 0 &&
+                    gbl.game_state == 4)
                 {
-                    if (gbl.game_state == 4)
+                    if (gbl.byte_1EE95 == 0 ||
+                        gbl.byte_1B2E9 != 0)
                     {
-                        if (gbl.byte_1EE95 == 0 ||
-                            gbl.byte_1B2E9 != 0)
+                        gbl.byte_1EE96 = (byte)gbl.area2_ptr.field_5C2;
+                        gbl.byte_1EE8C = true;
+                        if (gbl.area2_ptr.field_5C2 == 0xff)
                         {
-                            gbl.byte_1EE96 = (byte)gbl.area2_ptr.field_5C2;
-                            gbl.byte_1EE8C = true;
-                            if (gbl.area2_ptr.field_5C2 == 0xff)
-                            {
-                                ovr030.load_pic_final(ref gbl.byte_1D556, 0, pic_block_id, "PIC");
-                                flags[1] = true;
+                            ovr030.load_pic_final(ref gbl.byte_1D556, 0, pic_block_id, "PIC");
+                            flags[1] = true;
 
-                                ovr030.sub_7000A(gbl.byte_1D556.frames[0].picture, true, 3, 3);
-                            }
-                            else
-                            {
-                                set_and_draw_head_body(pic_block_id, (byte)gbl.area2_ptr.field_5C2);
-                                flags[1] = true;
-                                gbl.byte_1EE8D = false;
-                            }
+                            ovr030.sub_7000A(gbl.byte_1D556.frames[0].picture, true, 3, 3);
+                        }
+                        else
+                        {
+                            set_and_draw_head_body(pic_block_id, (byte)gbl.area2_ptr.field_5C2);
+                            flags[1] = true;
+                            gbl.byte_1EE8D = false;
                         }
                     }
                 }
