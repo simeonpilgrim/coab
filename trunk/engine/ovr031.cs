@@ -5,7 +5,6 @@ namespace engine
 {
     class ovr031
     {
-
         internal static void DrawAreaMap(int partyDir, int partyMapY, int partyMapX)
         { /* sub_7100F */
             const int displayWidth = 11;
@@ -79,9 +78,8 @@ namespace engine
             if (get_wall_x2(gbl.mapPosY, gbl.mapPosY) < 0x80 &&
                 gbl.sky_colour == 11)
             {
-                int var_3 = 2;
+                int col_x = 2;
                 int row_y = 2;
-                int col_x = 0x0C;
 
                 int hour = gbl.area_ptr.time_hour;
 
@@ -89,28 +87,28 @@ namespace engine
                 {
                     if (gbl.mapDirection == 2)
                     {
-                        seg040.OverlayBounded(gbl.sky_dax_251, 1, 0, (row_y + 5) - hour, col_x - 3);
+                        seg040.OverlayBounded(gbl.sky_dax_251, 1, 0, (row_y + 5) - hour, 12 - 3);
                     }
                     else if (gbl.mapDirection == 4 && hour > 2)
                     {
-                        seg040.OverlayBounded(gbl.sky_dax_251, 1, 0, (row_y + 5) - hour, (var_3 + hour) - 3);
+                        seg040.OverlayBounded(gbl.sky_dax_251, 1, 0, (row_y + 5) - hour, (col_x + hour) - 3);
                     }
                 }
                 else if (hour >= 13 && hour <= 18)
                 {
                     if (gbl.mapDirection == 6)
                     {
-                        seg040.OverlayBounded(gbl.sky_dax_251, 1, 0, (row_y + hour) - 13, var_3);
+                        seg040.OverlayBounded(gbl.sky_dax_251, 1, 0, (row_y + hour) - 13, col_x);
                     }
                     else if (gbl.mapDirection == 4 && hour >= 16)
                     {
-                        seg040.OverlayBounded(gbl.sky_dax_251, 1, 0, (row_y + hour) - 13, (var_3 + hour) - 8);
+                        seg040.OverlayBounded(gbl.sky_dax_251, 1, 0, (row_y + hour) - 13, (col_x + hour) - 8);
                     }
                 }
 
                 if (gbl.mapDirection == 0)
                 {
-                    seg040.OverlayBounded(gbl.sky_dax_250, 1, 0, row_y, var_3);
+                    seg040.OverlayBounded(gbl.sky_dax_250, 1, 0, row_y, col_x);
                 }
             }
 
@@ -640,75 +638,70 @@ namespace engine
 
         static Set unk_72005 = new Set(0x0001, new byte[] { 0xE });
 
-        internal static void LoadWalldef(byte arg_0, byte block_id)
+        internal static void LoadWalldef(int symbolSet, int block_id)
         {
-            short var_D;
-            short var_A;
-            short var_8;
-            short decode_size;
-
-            if (arg_0 >= 1 && arg_0 <= 3)
+            if (symbolSet >= 1 && symbolSet < 4)
             {
                 string area_text = gbl.game_area.ToString();
                 byte[] data;
 
+                short decode_size;
                 seg042.load_decode_dax(out data, out decode_size, block_id, "WALLDEF" + area_text + ".dax");
 
                 if (decode_size == 0 ||
-                    ((decode_size / 0x30C) + arg_0) > 4)
+                    ((decode_size / 0x30C) + symbolSet) > 4)
                 {
                     Logger.LogAndExit("Unable to load {0} from WALLDEF{1}.", block_id, area_text);
                 }
 
-                var_A = (short)(gbl.symbol_set_fix[arg_0] - gbl.symbol_set_fix[1]);
+                int var_A = gbl.symbol_set_fix[symbolSet] - gbl.symbol_set_fix[1];
 
-                var_8 = 0;
-                var_D = 1;
+                int dataOffset = 0;
+                int var_D = 0;
 
                 do
                 {
-                    System.Array.Copy(data, var_8, gbl.stru_1D52C[arg_0 + var_D-2], 0, 0x30C);
+                    System.Array.Copy(data, dataOffset, gbl.stru_1D52C[symbolSet + var_D - 1], 0, 0x30C);
 
-                    var_8 += 0x30C;
+                    dataOffset += 0x30C;
                     var_D += 1;
-                } while (var_8 < decode_size);
+                } while (dataOffset < decode_size);
 
                 seg051.FreeMem(decode_size, data);
 
-                int var_10 = var_D - 1;
+                int var_10 = var_D;
 
-                for (var_D = 1; var_D <= var_10; var_D++)
+                for (var_D = 0; var_D < var_10; var_D++)
                 {
-                    if (unk_72005.MemberOf(arg_0 + var_D - 1) == true)
+                    if (unk_72005.MemberOf(symbolSet + var_D) == true)
                     {
-                        gbl.wordSetArray_1D53A((arg_0 + var_D - 1), -1);
-                        gbl.wordSetArray_1D53C((arg_0 + var_D - 1), -1);
+                        gbl.setBlocks[symbolSet + var_D - 1].blockId = -1;
+                        gbl.setBlocks[symbolSet + var_D - 1].setId = -1;
 
-                        for (int var_B = 1; var_B <= 5; var_B++)
+                        for (int var_B = 0; var_B < 5; var_B++)
                         {
-                            for (int var_F = 0; var_F <= 0x9B; var_F++)
+                            for (int var_F = 0; var_F < 0x9C; var_F++)
                             {
-                                if (gbl.stru_1D52C[arg_0 + var_D - 2][var_F + ((var_B - 1) * 0x9C)] >= gbl.word_1899C)
+                                if (gbl.stru_1D52C[symbolSet + var_D - 1][var_F + (var_B * 0x9C)] >= gbl.word_1899C)
                                 {
-                                    gbl.stru_1D52C[arg_0 + var_D - 2][var_F + ((var_B - 1) * 0x9C)] += (byte)var_A;
+                                    gbl.stru_1D52C[symbolSet + var_D - 1][var_F + (var_B * 0x9C)] += (byte)var_A;
                                 }
                             }
                         }
 
                         if (var_10 > 1)
                         {
-                            ovr038.Load8x8D((byte)(arg_0 + var_D - 1), (byte)((block_id * 10) + var_D));
+                            ovr038.Load8x8D(symbolSet + var_D, (block_id * 10) + var_D + 1);
                         }
                         else
                         {
-                            ovr038.Load8x8D((byte)(arg_0 + var_D - 1), block_id);
+                            ovr038.Load8x8D(symbolSet + var_D, block_id);
                         }
-
                     }
                 }
 
-                gbl.wordSetArray_1D53A(arg_0, block_id);
-                gbl.wordSetArray_1D53C(arg_0, arg_0);
+                gbl.setBlocks[symbolSet - 1].blockId = block_id;
+                gbl.setBlocks[symbolSet - 1].setId = symbolSet;
             }
         }
 

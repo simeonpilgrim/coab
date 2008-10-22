@@ -7,20 +7,20 @@ namespace engine
     {
 		static Set Load8x8D_flags = new Set( 0x0001, new byte[] { 0x1F } );
 
-        internal static void Load8x8D( byte arg_0, byte block_id )
+        internal static void Load8x8D( int symbolSet, int block_id )
         {
-			if( Load8x8D_flags.MemberOf( arg_0 ) == true )
-			{
+            if (symbolSet >= 0 && symbolSet < 5)
+            {
                 string text = "8x8d" + gbl.game_area.ToString();
-				seg040.load_dax( ref gbl.symbol_8x8_set[arg_0], 13, 1, block_id, text );
+                seg040.load_dax(ref gbl.symbol_8x8_set[symbolSet], 13, 1, block_id, text);
 
-                if( gbl.symbol_8x8_set[arg_0] == null )
+                if (gbl.symbol_8x8_set[symbolSet] == null)
                 {
                     Logger.LogAndExit("Unable to load {0} from 8x8D{1}", block_id, gbl.game_area);
                 }
 
-				seg043.clear_keyboard();
-			}
+                seg043.clear_keyboard();
+            }
         }
 
 

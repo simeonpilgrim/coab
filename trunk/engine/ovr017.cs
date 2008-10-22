@@ -1589,23 +1589,14 @@ namespace engine
             seg051.BlockRead(1, data, file);
             gbl.game_state = data[0];
 
-            seg051.BlockRead(2, data, file);
-            gbl.word_1D53E = Sys.ArrayToShort(data, 0);
+            for (int i = 0; i < 3; i++)
+            {
+                seg051.BlockRead(2, data, file);
+                gbl.setBlocks[i].blockId = Sys.ArrayToShort(data, 0);
 
-            seg051.BlockRead(2, data, file);
-            gbl.word_1D540 = Sys.ArrayToShort(data, 0);
-
-            seg051.BlockRead(2, data, file);
-            gbl.word_1D542 = Sys.ArrayToShort(data, 0);
-
-            seg051.BlockRead(2, data, file);
-            gbl.word_1D544 = Sys.ArrayToShort(data, 0);
-
-            seg051.BlockRead(2, data, file);
-            gbl.word_1D546 = Sys.ArrayToShort(data, 0);
-
-            seg051.BlockRead(2, data, file);
-            gbl.word_1D548 = Sys.ArrayToShort(data, 0);
+                seg051.BlockRead(2, data, file);
+                gbl.setBlocks[i].setId = Sys.ArrayToShort(data, 0);
+            }
 
             seg051.BlockRead(1, data, file);
             int number_of_players = data[0];
@@ -1666,22 +1657,17 @@ namespace engine
             {
                 if (gbl.game_state != 0)
                 {
-                    if (gbl.word_1D53E > 0)
+                    if (gbl.setBlocks[0].blockId > 0)
                     {
                         ovr031.Load3DMap(gbl.area_ptr.current_3DMap_block_id);
                     }
 
-                    if (gbl.word_1D53E > 0)
+                    for (int i = 0; i < 3; i++)
                     {
-                        ovr031.LoadWalldef((byte)gbl.word_1D540, (byte)gbl.word_1D53E);
-                    }
-                    if (gbl.word_1D542 > 0)
-                    {
-                        ovr031.LoadWalldef((byte)gbl.word_1D544, (byte)gbl.word_1D542);
-                    }
-                    if (gbl.word_1D546 > 0)
-                    {
-                        ovr031.LoadWalldef((byte)gbl.word_1D548, (byte)gbl.word_1D546);
+                        if (gbl.setBlocks[i].blockId > 0)
+                        {
+                            ovr031.LoadWalldef(gbl.setBlocks[i].setId, gbl.setBlocks[i].blockId);
+                        }
                     }
                 }
             }
@@ -1796,15 +1782,11 @@ namespace engine
                     data[0] = gbl.game_state;
                     seg051.BlockWrite(1, data, save_file);
 
-                    Sys.ShortToArray(gbl.word_1D53E, data, 0);
-                    Sys.ShortToArray(gbl.word_1D540, data, 2);
-
-                    Sys.ShortToArray(gbl.word_1D542, data, 4);
-                    Sys.ShortToArray(gbl.word_1D544, data, 6);
-
-                    Sys.ShortToArray(gbl.word_1D546, data, 8);
-                    Sys.ShortToArray(gbl.word_1D548, data, 10);
-
+                    for (int i = 0; i < 3; i++)
+                    {
+                        Sys.ShortToArray((short)gbl.setBlocks[i].blockId, data, (i * 4) + 0);
+                        Sys.ShortToArray((short)gbl.setBlocks[i].setId, data, (i * 4) + 2);
+                    }
                     seg051.BlockWrite(12, data, save_file);
 
                     int party_count = 0;
