@@ -88,12 +88,9 @@ namespace engine
 
             gbl.byte_1AD44 = 3;
 
-            gbl.setBlocks[0].blockId = 0;
-            gbl.setBlocks[0].setId = 1;
-            gbl.setBlocks[1].blockId = -1;
-            gbl.setBlocks[1].setId = -1;
-            gbl.setBlocks[2].blockId = -1;
-            gbl.setBlocks[2].setId = -1;
+            gbl.setBlocks[0] = new gbl.SetBlock(1, 0);
+            gbl.setBlocks[1] = new gbl.SetBlock();
+            gbl.setBlocks[2] = new gbl.SetBlock();
 
             gbl.AnimationsOn = true;
             gbl.PicsOn = true;
