@@ -45,6 +45,7 @@ namespace Main
             this.skipCopyProtectionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.skipTitleScreenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.viewItemsStatsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.noRaceClassLimitsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.displayArea)).BeginInit();
             this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -66,7 +67,7 @@ namespace Main
             this.screenCaptureToolStripMenuItem,
             this.cheatsToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(161, 92);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(161, 70);
             // 
             // ddfsdToolStripMenuItem
             // 
@@ -110,7 +111,8 @@ namespace Main
             this.playersAlwayMakeSavingThrowToolStripMenuItem,
             this.skipCopyProtectionToolStripMenuItem,
             this.skipTitleScreenToolStripMenuItem,
-            this.viewItemsStatsToolStripMenuItem});
+            this.viewItemsStatsToolStripMenuItem,
+            this.noRaceClassLimitsToolStripMenuItem});
             this.cheatsToolStripMenuItem.Name = "cheatsToolStripMenuItem";
             this.cheatsToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
             this.cheatsToolStripMenuItem.Text = "Cheats";
@@ -197,6 +199,15 @@ namespace Main
             this.viewItemsStatsToolStripMenuItem.Text = "View Items Stats";
             this.viewItemsStatsToolStripMenuItem.Click += new System.EventHandler(this.viewItemsStatsToolStripMenuItem_Click);
             // 
+            // noRaceClassLimitsToolStripMenuItem
+            // 
+            this.noRaceClassLimitsToolStripMenuItem.Checked = global::Main.Properties.Settings.Default.NoRaceClassLimits;
+            this.noRaceClassLimitsToolStripMenuItem.CheckOnClick = true;
+            this.noRaceClassLimitsToolStripMenuItem.Name = "noRaceClassLimitsToolStripMenuItem";
+            this.noRaceClassLimitsToolStripMenuItem.Size = new System.Drawing.Size(248, 22);
+            this.noRaceClassLimitsToolStripMenuItem.Text = "No Race Class Limits";
+            this.noRaceClassLimitsToolStripMenuItem.Click += new System.EventHandler(this.noRaceClassLimitsToolStripMenuItem_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -235,6 +246,7 @@ namespace Main
         private System.Windows.Forms.ToolStripMenuItem viewItemsStatsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem skipTitleScreenToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem improvedAreaMapToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem noRaceClassLimitsToolStripMenuItem;
     }
 }
 

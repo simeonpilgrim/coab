@@ -1,6 +1,7 @@
 = The Release Notes =
 
 = Unreleased =
+  * Added cheat to remove the race based level limits. 
 
 = 1.0.13 =
   * Fixed issues stopping the end-game sequence from working, so the game is now winnable
