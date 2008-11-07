@@ -85,6 +85,7 @@ namespace Main
             Classes.Cheats.ViewItemStatsSet(Settings.Default.ViewItemsStats);
             Classes.Cheats.SkipTitleScreenSet(Settings.Default.SkipTitleScreen);
             Classes.Cheats.ImprovedAreaMapSet(Settings.Default.ImprovedAreaMap);
+            Classes.Cheats.NoRaceClassLimits(Settings.Default.NoRaceClassLimits);
         }
 
         private void playersAlwayMakeSavingThrowToolStripMenuItem_CheckedChanged(object sender, EventArgs e)
@@ -165,6 +166,15 @@ namespace Main
             Settings.Default.Save();
 
             Classes.Cheats.ImprovedAreaMapSet(flipped);
+        }
+
+        private void noRaceClassLimitsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            bool flipped = !Settings.Default.NoRaceClassLimits;
+            Settings.Default.NoRaceClassLimits = flipped;
+            Settings.Default.Save();
+
+            Classes.Cheats.NoRaceClassLimits(flipped);
         }
     }
 }

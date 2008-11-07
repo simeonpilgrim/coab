@@ -130,5 +130,17 @@ namespace Main.Properties {
                 this["ImprovedAreaMap"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool NoRaceClassLimits {
+            get {
+                return ((bool)(this["NoRaceClassLimits"]));
+            }
+            set {
+                this["NoRaceClassLimits"] = value;
+            }
+        }
     }
 }
