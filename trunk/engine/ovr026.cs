@@ -1,4 +1,5 @@
 using Classes;
+using System.Collections.Generic;
 
 namespace engine
 {
@@ -47,8 +48,8 @@ namespace engine
             {1, 0, 0, 0, 0},
             {0, 0, 0, 1, 0},
             {0, 1, 0, 0, 0} 
-        }; 
-   
+        };
+
 
 
         internal static void sub_6A00F(Player player)
@@ -178,20 +179,15 @@ namespace engine
                 }
             }
 
-            Item item = player.itemsPtr;
-
-            while (item != null)
+            foreach (Item item in player.items)
             {
-                if (item.affect_3 == Affects.affect_81 &&
-                    item.readied)
+                if (item.affect_3 == Affects.affect_81 && item.readied)
                 {
                     for (int sp_lvl = 0; sp_lvl < 3; sp_lvl++)
                     {
                         player.field_12D[2, sp_lvl] *= 2;
                     }
                 }
-
-                item = item.next;
             }
         }
 
@@ -403,22 +399,8 @@ namespace engine
 
         internal static void sub_6A7FB(Player player)
         {
-            bool var_9 = false;
-
-            Item item = player.itemsPtr;
-
-            while (item != null && var_9 == false)
-            {
-                if ((int)item.affect_3 > 0x80 &&
-                    item.readied)
-                {
-                    int var_4 = (int)item.affect_3 & 0x7F;
-
-                    var_9 = (var_4 == 6);
-                }
-
-                item = item.next;
-            }
+            Item item = player.items.Find(i => (int)i.affect_3 > 0x80 && i.readied && ((int)i.affect_3 & 0x7F) == 6);
+            bool var_9 = item != null && ((int)item.affect_3 & 0x7F) == 6;
 
             for (int var_1 = 0; var_1 <= 4; var_1++)
             {
@@ -563,25 +545,9 @@ namespace engine
         {
             byte var_2 = 0; //Simeon
 
-            Player player_ptr = player;
-            bool var_A = false;
-            bool var_B = false;
-            Item item_ptr = player_ptr.itemsPtr;
-
-            while (item_ptr != null && var_A == false && var_B == false)
-            {
-                if ((int)item_ptr.affect_3 > 0x80 &&
-                    item_ptr.readied)
-                {
-                    int var_3 = (int)item_ptr.affect_3 & 0x7f;
-
-                    var_A = (var_3 == 11);
-                    var_B = (var_3 == 2);
-                }
-
-                item_ptr = item_ptr.next;
-            }
-
+            var item_found = player.items.Find(item => item.readied && (item.ScrollLearning(3, 2) || item.ScrollLearning(3, 11)));
+            var var_A = item_found != null && item_found.ScrollLearning(3, 11);
+            var var_B = item_found != null && item_found.ScrollLearning(3, 2);
 
             int var_4 = (sbyte)(player.thief_lvl + (sub_6B3D1(player) * player.field_117));
 
@@ -626,24 +592,24 @@ namespace engine
                 }
 
                 if (unk_1A230[(int)player.race, var_1] < 0 &&
-                    unk_1A1D0[var_4, var_1] < (System.Math.Abs(unk_1A230[(int)player_ptr.race, var_1]) + var_2))
+                    unk_1A1D0[var_4, var_1] < (System.Math.Abs(unk_1A230[(int)player.race, var_1]) + var_2))
                 {
-                    player_ptr.field_EA[var_1 - 1] = 0;
+                    player.field_EA[var_1 - 1] = 0;
                 }
                 else
                 {
-                    player_ptr.field_EA[var_1 - 1] = (byte)(var_2 + unk_1A1D0[var_4, var_1] + unk_1A230[(int)player_ptr.race, var_1]);
+                    player.field_EA[var_1 - 1] = (byte)(var_2 + unk_1A1D0[var_4, var_1] + unk_1A230[(int)player.race, var_1]);
 
                     if (var_1 < 6)
                     {
-                        player_ptr.field_EA[var_1 - 1] += (byte)unk_1A243[player_ptr.dex, var_1];
+                        player.field_EA[var_1 - 1] += (byte)unk_1A243[player.dex, var_1];
                     }
 
                 }
 
                 if (var_B == true)
                 {
-                    player_ptr.field_EA[var_1 - 1] += 10;
+                    player.field_EA[var_1 - 1] += 10;
                 }
 
                 var_4 = var_5;
@@ -699,41 +665,29 @@ namespace engine
         {
             int classes = gbl.race_classes[(int)player.race, 0];
 
-            StringList list = new StringList();
-            StringList list_ptr = list;
+            List<MenuItem> list = new List<MenuItem>();
 
-            list_ptr.next = null;
-            list_ptr.field_29 = 1;
-            list_ptr.s = "Pick New Class";
-
-            int count = 1;
-
-            for (int index = 1; index <= classes; index++)
+            list.Add(new MenuItem("Pick New Class", true));
+ 
+            for (int i = 1; i <= classes; i++)
             {
-                int _class = gbl.race_classes[(int)player.race, index];
+                int _class = gbl.race_classes[(int)player.race, i];
 
                 if (player_can_be_class(_class, player) == true)
                 {
-                    list_ptr.next = new StringList();
-                    list_ptr = list_ptr.next;
-
-                    list_ptr.next = null;
-                    list_ptr.field_29 = 0;
-                    list_ptr.s = ovr020.classString[_class];
-
-                    count++;
+                    list.Add(new MenuItem(ovr020.classString[_class]));
                 }
             }
 
-            if (count == 1)
+            if (list.Count == 1)
             {
                 seg041.DisplayStatusText(15, 4, player.name + " doesn't qualify.");
-                ovr027.free_stringList(ref list);
+                list.Clear();
                 return;
             }
 
-            list_ptr = list;
-            short dummy_index = 1;
+            MenuItem list_ptr;
+            int index = 1;
             bool show_exit = true;
             bool var_F = true;
 
@@ -741,7 +695,7 @@ namespace engine
 
             do
             {
-                input_key = ovr027.sl_select_item(out list_ptr, ref dummy_index, ref var_F, show_exit, list,
+                input_key = ovr027.sl_select_item(out list_ptr, ref index, ref var_F, show_exit, list,
                     0x16, 0x26, 2, 1, 15, 10, 13, "Select", string.Empty);
 
                 if (input_key == 0)
@@ -754,12 +708,12 @@ namespace engine
             player.field_11C = 2;
             byte var_2 = 0;
 
-            while (var_2 <= 7 && ovr020.classString[var_2] != list_ptr.s)
+            while (var_2 <= 7 && ovr020.classString[var_2] != list_ptr.Text)
             {
                 var_2++;
             }
 
-            ovr027.free_stringList(ref list);
+            list.Clear();
 
             player.Skill_B_lvl[HumanFirstClassOrSeventeen(player)] = HumanFirstClassLevelOrZero(player);
 
@@ -799,17 +753,13 @@ namespace engine
             sub_6A7FB(player);
             sub_6AAEA(player);
 
-            Item item = player.itemsPtr;
-
-            while (item != null)
+            foreach(var item in player.items)
             {
                 if ((gbl.unk_1C020[item.type].classFlags & player.classFlags) == 0 &&
                     item.cursed == false)
                 {
                     item.readied = false;
                 }
-
-                item = item.next;
             }
         }
 

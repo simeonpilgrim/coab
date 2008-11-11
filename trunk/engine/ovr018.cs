@@ -1,4 +1,5 @@
 using Classes;
+using System.Collections.Generic;
 
 namespace engine
 {
@@ -14,18 +15,7 @@ namespace engine
                 player.actions = null; // FreeMem( action_struct_size, playerPtr.actions );
             }
 
-            Item item = player.itemsPtr;
-            player.itemsPtr = null;
-
-            while (item != null)
-            {
-                Item tmpItem = item;
-                item = tmpItem.next;
-
-                tmpItem.next = null;
-                tmpItem = null; // FreeMem( item_struct_size, next_item_ptr );
-            }
-
+            player.items.Clear();
             player.affects.Clear();
 
             player = null; // FreeMem( char_struct_size, playerBase );
@@ -433,7 +423,6 @@ namespace engine
 
         internal static void createPlayer()
         {
-            Player var_53;
             bool var_23;
             bool var_22;
             byte var_21;
@@ -445,14 +434,13 @@ namespace engine
             char reroll_stats;
             byte stat_value;
             byte var_14;
-            short var_12;
-            StringList var_10;
+            int index;
+            MenuItem var_10;
             Player var_8;
-            Player player;
 
-            player = new Player();
+            Player player = new Player();
 
-            var_53 = player;
+            Player var_53 = player;
             for (int i = 0; i < 6; i++)
             {
                 var_53.icon_colours[i] = (byte)(((gbl.default_icon_colours[i] + 8) << 4) + gbl.default_icon_colours[i]);
@@ -466,52 +454,41 @@ namespace engine
             var_53.mod_id = (byte)seg051.Random(256);
             var_53.icon_id = 0x0A;
 
-            StringList var_C = ovr027.alloc_stringList(7);
-            var_C.field_29 = 1;
-            var_C.s = "Pick Race";
+            List<MenuItem> var_C = new List<MenuItem>();
+            var_C.Add(new MenuItem("Pick Race", true));
 
-            for (loop1_var = 1; loop1_var <= 7; loop1_var++)
-            {
-                if (loop1_var >= 1 && loop1_var <= 5)
-                {
-                    var_10 = ovr027.getStringListEntry(var_C, loop1_var);
-                    var_10.s = "  " + ovr020.raceString[loop1_var];
-                }
-                else if (loop1_var == 7)
-                {
-                    var_10 = ovr027.getStringListEntry(var_C, loop1_var - 1);
-                    var_10.s = "  " + ovr020.raceString[loop1_var];
-                }
-            }
+            var_C.Add(new MenuItem("  " + ovr020.raceString[1]));
+            var_C.Add(new MenuItem("  " + ovr020.raceString[2]));
+            var_C.Add(new MenuItem("  " + ovr020.raceString[3]));
+            var_C.Add(new MenuItem("  " + ovr020.raceString[4]));
+            var_C.Add(new MenuItem("  " + ovr020.raceString[5]));
+            var_C.Add(new MenuItem("  " + ovr020.raceString[7]));
 
-            var_10 = var_C;
-
-            var_12 = 1;
+            index = 1;
             var_23 = true;
             var_22 = true;
 
             do
             {
-
-                reroll_stats = ovr027.sl_select_item(out var_10, ref var_12, ref var_23, var_22, var_C,
+                reroll_stats = ovr027.sl_select_item(out var_10, ref index, ref var_23, var_22, var_C,
                     22, 38, 2, 1, 15, 10, 13, "Select", string.Empty);
 
                 if (reroll_stats == '\0')
                 {
-                    ovr027.free_stringList(ref var_C);
+                    var_C.Clear();
                     player = null;
                     return;
                 }
 
             } while (reroll_stats != 'S');
 
-            if (var_12 == 6)
+            if (index == 6)
             {
-                var_12++;
+                index++;
             }
 
             var_53 = player;
-            var_53.race = (Race)var_12;
+            var_53.race = (Race)index;
 
             switch (var_53.race)
             {
@@ -553,32 +530,24 @@ namespace engine
 
             /* Gender */
 
-            ovr027.free_stringList(ref var_C);
+            var_C.Clear();
 
-            var_C = ovr027.alloc_stringList(3);
-            var_C.field_29 = 1;
-            var_C.s = "Pick Gender";
+            var_C.Add(new MenuItem("Pick Gender", true));
+            var_C.Add(new MenuItem("  " + ovr020.sexString[0]));
+            var_C.Add(new MenuItem("  " + ovr020.sexString[1]));
 
-            for (loop2_var = 0; loop2_var <= 1; loop2_var++)
-            {
-                var_10 = ovr027.getStringListEntry(var_C, loop2_var + 1);
-                var_10.s = "  " + ovr020.sexString[loop2_var];
-            }
-
-            var_10 = var_C;
-
-            var_12 = 1;
+            index = 1;
             var_22 = true;
             var_23 = true;
 
             do
             {
-                reroll_stats = ovr027.sl_select_item(out var_10, ref var_12, ref var_23, var_22, var_C,
+                reroll_stats = ovr027.sl_select_item(out var_10, ref index, ref var_23, var_22, var_C,
                     22, 38, 2, 1, 15, 10, 13, "Select", string.Empty);
 
                 if (reroll_stats == '\0')
                 {
-                    ovr027.free_stringList(ref var_C);
+                    var_C.Clear();
                     player = null;
                     return;
                 }
@@ -586,35 +555,30 @@ namespace engine
             } while (reroll_stats != 'S');
 
 
-            player.sex = (byte)(var_12 - 1);
-            ovr027.free_stringList(ref var_C);
+            player.sex = (byte)(index - 1);
+            var_C.Clear();
 
             int classes = gbl.race_classes[(int)player.race, 0];
 
-            var_C = ovr027.alloc_stringList(classes + 1);
+            var_C.Add(new MenuItem("Pick Class", true));
 
-            var_C.field_29 = 1;
-            var_C.s = "Pick Class";
-
-            for (int index = 1; index <= classes; index++)
+            for (int i = 1; i <= classes; i++)
             {
-                var_10 = ovr027.getStringListEntry(var_C, index);
-                var_10.s = "  " + ovr020.classString[gbl.race_classes[(int)player.race, index]];
+                var_C.Add(new MenuItem("  " + ovr020.classString[gbl.race_classes[(int)player.race, i]]));
             }
 
-            var_10 = var_C;
-            var_12 = 1;
+            index = 1;
             var_22 = true;
             var_23 = true;
 
             do
             {
-                reroll_stats = ovr027.sl_select_item(out var_10, ref var_12, ref var_23, var_22, var_C,
+                reroll_stats = ovr027.sl_select_item(out var_10, ref index, ref var_23, var_22, var_C,
                     22, 38, 2, 1, 15, 10, 13, "Select", string.Empty);
 
                 if (reroll_stats == '\0')
                 {
-                    ovr027.free_stringList(ref var_C);
+                    var_C.Clear();
                     player = null;
                     return;
                 }
@@ -622,7 +586,7 @@ namespace engine
 
             var_53 = player;
             var_53.exp = 25000;
-            var_53._class = (ClassId)gbl.race_classes[(int)var_53.race, var_12];
+            var_53._class = (ClassId)gbl.race_classes[(int)var_53.race, index];
             var_53.field_E5 = 1;
 
             if (var_53._class >= ClassId.cleric && var_53._class <= ClassId.fighter)
@@ -726,44 +690,39 @@ namespace engine
             }
 
             ovr026.sub_6A7FB(player);
-            ovr027.free_stringList(ref var_C);
+            var_C.Clear();
 
             int alignments = gbl.class_alignments[(int)player._class, 0];
 
-            var_C = ovr027.alloc_stringList(alignments + 1);
-
-            var_C.field_29 = 1;
-            var_C.s = "Pick Alignment";
-
+            var_C.Add(new MenuItem("Pick Alignment", true)); 
+                
             for (int i = 1; i <= alignments; i++)
             {
-                var_10 = ovr027.getStringListEntry(var_C, i);
-                var_10.s = "  " + ovr020.alignmentString[gbl.class_alignments[(int)player._class, i]];
+                var_C.Add(new MenuItem("  " + ovr020.alignmentString[gbl.class_alignments[(int)player._class, i]]));
             }
 
-            var_10 = var_C;
-            var_12 = 1;
+            index = 1;
             var_22 = true;
             var_23 = true;
 
             do
             {
-                reroll_stats = ovr027.sl_select_item(out var_10, ref var_12, ref var_23, var_22, var_C,
+                reroll_stats = ovr027.sl_select_item(out var_10, ref index, ref var_23, var_22, var_C,
                     22, 38, 2, 1, 15, 10, 13, "Select", string.Empty);
 
 
                 if (reroll_stats == '\0')
                 {
-                    ovr027.free_stringList(ref var_C);
+                    var_C.Clear();
 
                     seg051.FreeMem(Player.StructSize, player);
                     return;
                 }
             } while (reroll_stats != 'S');
 
-            player.alignment = gbl.class_alignments[(int)player._class, var_12];
+            player.alignment = gbl.class_alignments[(int)player._class, index];
 
-            ovr027.free_stringList(ref var_C);
+            var_C.Clear();
 
             if (player._class <= ClassId.monk)
             {
@@ -840,7 +799,7 @@ namespace engine
                     {
                         stat_value = (byte)(ovr024.roll_dice(6, 3) + 1);
 
-                        switch (loop1_var)
+                        switch (7) // was loop1_var but that's always 7 after the race building loop.
                         {
                             case 1:
                                 if (var_1B == 4)
@@ -1891,36 +1850,36 @@ namespace engine
                     return;
             }
 
-            StringList strList;
-            StringList var_4;
-            ovr017.sub_47465(out strList, out var_4);
+            List<MenuItem> strList;
+            List<MenuItem> nameList;
+            ovr017.sub_47465(out strList, out nameList);
 
-            if (var_4 != null)
+            if (nameList.Count > 0 )
             {
                 int pc_count = 0;
 
-                short strList_index = 0;
-                StringList select_sl = var_4;
+                int strList_index = 0;
+                MenuItem select_sl;
                 bool var_1D = true;
 
                 do
                 {
                     bool showExit = true;
-                    input_key = ovr027.sl_select_item(out select_sl, ref strList_index, ref var_1D, showExit, var_4,
+                    input_key = ovr027.sl_select_item(out select_sl, ref strList_index, ref var_1D, showExit, nameList,
                         22, 38, 2, 1, 15, 10, 13, "Add", "Add a character: ");
 
                     if ((input_key == 13 || input_key == 'A') &&
-                        select_sl.s[0] != '*')
+                        select_sl.Text[0] != '*')
                     {
                         ovr027.redraw_screen();
 
                         Player new_player = new Player();
 
-                        StringList var_10 = ovr027.getStringListEntry(strList, strList_index);
+                        MenuItem var_10 = ovr027.getStringListEntry(strList, strList_index);
 
-                        ovr017.import_char01(1, 0, ref new_player, var_10.s);
+                        ovr017.import_char01(1, 0, ref new_player, var_10.Text);
 
-                        select_sl.s = "* " + select_sl.s;
+                        select_sl.Text = "* " + select_sl.Text;
                         pc_count = 0;
 
                         if (gbl.player_next_ptr.Count == 0)
@@ -1986,7 +1945,7 @@ namespace engine
                             }
                             else
                             {
-                                seg051.Delete(2, 1, ref select_sl.s);
+                                select_sl.Text = select_sl.Text.Substring(2);
 
                                 if (new_player.paladin_lvl > 0 && evil_present == true)
                                 {
@@ -2010,7 +1969,7 @@ namespace engine
 
                 } while (input_key != 0x45 && input_key != '\0' && pc_count <= 5 && gbl.area2_ptr.party_size <= 7);
 
-                ovr027.free_stringList(ref var_4);
+                nameList.Clear();
             }
         }
 
@@ -2666,14 +2625,14 @@ namespace engine
 
             while (coppers > 0)
             {
-                short var_2 = (short)((coppers / money.per_copper[var_3]) + 1);
+                short var_2 = (short)((coppers / Money.per_copper[var_3]) + 1);
 
                 if (player.Money[var_3] < var_2)
                 {
                     var_2 = player.Money[var_3];
                 }
 
-                coppers -= money.per_copper[var_3] * var_2;
+                coppers -= Money.per_copper[var_3] * var_2;
 
                 player.Money[var_3] -= var_2;
 
@@ -2687,8 +2646,8 @@ namespace engine
 
                 while (coppers > 0)
                 {
-                    short var_2 = (short)(coppers / money.per_copper[var_3]);
-                    coppers -= money.per_copper[var_3] * var_2;
+                    short var_2 = (short)(coppers / Money.per_copper[var_3]);
+                    coppers -= Money.per_copper[var_3] * var_2;
 
                     player.Money[var_3] += var_2;
                     var_3 -= 1;
@@ -2930,13 +2889,13 @@ namespace engine
                     if (player_ptr.magic_user_lvl > var_17 ||
                         player_ptr.ranger_lvl > 8)
                     {
-                        short var_1C = -1;
+                        int index = -1;
                         byte var_1A;
                         bool var_1D;
 
                         do
                         {
-                            var_1A = ovr020.spell_menu2(out var_1D, ref var_1C, SpellSource.Learn, SpellLoc.choose);
+                            var_1A = ovr020.spell_menu2(out var_1D, ref index, SpellSource.Learn, SpellLoc.choose);
                         } while (var_1A <= 0 && var_1D == true);
 
                         if (var_1A > 0)

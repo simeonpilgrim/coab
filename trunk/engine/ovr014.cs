@@ -1040,12 +1040,9 @@ namespace engine
                             item.affect_3 != Affects.affect_89)
                         {
                             Item new_item = item.ShallowClone();
-
-                            new_item.next = gbl.item_pointer;
-
-                            gbl.item_pointer = new_item;
-
                             new_item.readied = false;
+
+                            gbl.items_pointer.Add(new_item);
 
                             ovr025.lose_item(item, attacker);
                             gbl.item_ptr = new_item;
@@ -1476,7 +1473,7 @@ namespace engine
         {
             Player player = gbl.player_ptr;
             bool var_6 = true;
-            short var_5 = -1;
+            int var_5 = -1;
             casting_spell = false;
 
             if (spell_id == 0)

@@ -42,7 +42,7 @@ namespace Classes
         None
     }
 
-    public class money
+    public class Money
     {
         public const int copper = 0;
         public const int silver = 1;
@@ -52,6 +52,7 @@ namespace Classes
         public const int gem = 5;
         public const int jewelry = 6;
 
+        public const int maxNameLen = 8;
         public static string[] names = { "Copper", "Silver", "Electrum", "Gold", "Platinum", "Gems", "Jewelry" };
 
         public static int[] per_copper = { 1, 10, 100, 200, 1000 };
@@ -429,7 +430,7 @@ namespace Classes
         public static short rest_incounter_count;
         public static DaxBlock dword_1C8FC; //TODO - overlay dax block, not currently used.
         public static DaxBlock bigpic_dax; /* word_1D5B6 */
-        public static short word_1D5BC;
+        public static int menuScreenIndex; 
         public static int displayInputCentiSecondWait; // word_1D5C0 & word_1D5C2
          public static char displayInputTimeoutValue; // byte_1D5C4
 
@@ -456,7 +457,7 @@ namespace Classes
         public static int[] memorize_count = new int[max_spells]; /* unk_1AE70 */
         
         public static Struct_1ADF6[] dword_1ADF6;
-        public static StringList spell_string_list; // dword_1AE6C
+        public static List<MenuItem> spell_string_list = new List<MenuItem>(); // dword_1AE6C
         public static DaxBlock cursor_bkup; // dword_1C8F4
         public static DaxBlock dax24x24Set; //dword_1C8F8;
         public static Item dword_1D5C6;
@@ -485,7 +486,7 @@ namespace Classes
         public static byte command;
         public static List<Player> player_next_ptr = new List<Player>();
     
-        public static Item item_ptr;
+        public static Item item_ptr; // rename current item
         public static Player spell_target;
         public static Player[] sp_targets = new Player[256]; /* sp_target */ 
         // 744Bh[1] == sp_target[0]
@@ -525,7 +526,7 @@ namespace Classes
 
         public static DaxBlock[] symbol_8x8_set; // seg600:65D0 - seg600:65E3 DaxBlock[5]
 
-        public static Item item_pointer;
+        public static List<Item> items_pointer;
 
         public static int[] pooled_money = new int[7];
 

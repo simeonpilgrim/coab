@@ -1,5 +1,6 @@
 using Classes;
 using Logging;
+using System.Collections.Generic;
 
 namespace engine
 {
@@ -1185,7 +1186,7 @@ namespace engine
 
         static Set unk_31673 = new Set(0x0606, new byte[] { 0xff, 0x03, 0xfe, 0xff, 0xff, 0x07 });
 
-        internal static void buildMenuStrings(out string MenuKeys, ref string MenuString)
+        internal static string buildMenuStrings( ref string MenuString)
         {
             System.Text.StringBuilder sbA = new System.Text.StringBuilder();
             System.Text.StringBuilder sbB = new System.Text.StringBuilder();
@@ -1217,8 +1218,8 @@ namespace engine
                 sbB.Append(ch);
             }
 
-            MenuKeys = sbA.ToString();
             MenuString = sbB.ToString();
+            return sbA.ToString();
         }
 
         static Set unk_3178A = new Set(0x0606, new byte[] { 0xff, 0x03, 0xfe, 0xff, 0xff, 0x07 });
@@ -1227,10 +1228,9 @@ namespace engine
 			byte fgColor, string displayString, string extraString)
         {
             char key_pressed;
-            string menu_keys;
             int ret_val;
 
-            buildMenuStrings(out menu_keys, ref displayString);
+            string menu_keys = buildMenuStrings(ref displayString);
 
             do
             {
@@ -1274,17 +1274,18 @@ namespace engine
         }
 
 
-        internal static void sub_318AE(StringList arg_0, ref short arg_4, ref bool arg_8, bool showExit, 
-			StringList arg_E, sbyte endY, sbyte endX, int startY, sbyte startX, 
-			byte arg_1A, byte arg_1C, byte arg_1E, string inputString, string extraString)
+        internal static void sub_318AE(ref int index, ref bool arg_8, bool showExit, 
+			List<MenuItem> list, sbyte endY, sbyte endX, int startY, sbyte startX, 
+			byte arg_1A, byte arg_1C, byte headingColor, string inputString, string extraString)
         {
-            string menuKeys;
             string newInputString = inputString;
 
-            buildMenuStrings(out menuKeys, ref newInputString);
+            string menuKeys = buildMenuStrings(ref newInputString);
 
-            ovr027.sl_select_item(out arg_0, ref arg_4, ref arg_8, showExit, arg_E, endY, endX,
-                startY, startX, arg_1A, arg_1C, arg_1E, newInputString, extraString);
+            MenuItem dummyMenuItem;
+
+            ovr027.sl_select_item(out dummyMenuItem, ref index, ref arg_8, showExit, list, endY, endX,
+                startY, startX, arg_1A, arg_1C, headingColor, newInputString, extraString);
         }
 
 
@@ -1401,26 +1402,13 @@ namespace engine
                 DuelMaster.icon_id = gbl.monster_icon_id;
 
                 DuelMaster.affects = new System.Collections.Generic.List<Affect>();
-                DuelMaster.itemsPtr = null;
+                DuelMaster.items = new System.Collections.Generic.List<Item>();
 
                 gbl.player_next_ptr.Add(DuelMaster);
 
-                Item item = playerA.itemsPtr;
-
-                while (item != null)
+                foreach(Item item in playerA.items)
                 {
-                    if (DuelMaster.itemsPtr == null)
-                    {
-                        DuelMaster.itemsPtr = item.ShallowClone();
-                        DuelMaster.itemsPtr.next = null;
-                    }
-                    else
-                    {
-                        Item tmp_item = DuelMaster.itemsPtr;
-                        DuelMaster.itemsPtr = item.ShallowClone();
-                        DuelMaster.itemsPtr.next = tmp_item;
-                    }
-                    item = item.next;
+                    DuelMaster.items.Add(item);
                 }
             }
         }
@@ -1438,50 +1426,21 @@ namespace engine
         }
 
 
-        internal static void RobItems(Player player, byte arg_4) /* sub_31F1C */
+        internal static void RobItems(Player player, int arg_4) /* sub_31F1C */
         {
-            Item next_item_ptr;
-            Item item_ptr;
-            byte dice_roll;
-
-            item_ptr = player.itemsPtr;
-
-            while (item_ptr != null)
+            player.items.RemoveAll(item =>
             {
-                if (item_ptr.weight > 255)
+                if (item.weight > 255)
                 {
-                    if (arg_4 > 90)
-                    {
-                        arg_4 -= 90;
-                    }
-                    else
-                    {
-                        arg_4 = 0;
-                    }
+                    arg_4 = (arg_4 > 90) ? arg_4 - 90 : 0;
                 }
-                else if (item_ptr.weight > 24)
+                else if (item.weight > 24)
                 {
-                    if (arg_4 > 50)
-                    {
-                        arg_4 -= 50;
-                    }
-                    else
-                    {
-                        arg_4 = 0;
-                    }
+                    arg_4 = (arg_4 > 50) ? arg_4 - 50 : 0;
                 }
 
-                dice_roll = ovr024.roll_dice(100, 1);
-
-                next_item_ptr = item_ptr.next;
-
-                if (dice_roll <= arg_4)
-                {
-                    ovr025.lose_item(item_ptr, player);
-                }
-
-                item_ptr = next_item_ptr;
-            }
+                return (ovr024.roll_dice(100, 1) <= arg_4);
+            });
         }
 
 

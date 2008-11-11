@@ -325,21 +325,8 @@ namespace engine
 
         internal static void affect_spiritual_hammer(Effect add_remove, object param, Player player) /* sub_3A583 */
         {
-            Item item = player.itemsPtr;
-            bool item_found = false;
-
-            while (item != null && item_found == false)
-            {
-                if (item.type == 0x14 &&
-                    item.field_31 == 0xf3)
-                {
-                    item_found = true;
-                }
-                else
-                {
-                    item = item.next;
-                }
-            }
+            Item item = player.items.Find(i => i.type == 0x14 && i.field_31 == 0xf3);
+            bool item_found = item != null;
 
             if (add_remove == Effect.Remove && item != null)
             {
@@ -358,7 +345,7 @@ namespace engine
                 item.affect_2 = Affects.spiritual_hammer;
                 item.affect_3 = (Affects)160;
 
-                ovr025.addItem(item, player);
+                player.items.Add(item);
                 ovr020.ready_Item(item);
 
                 seg051.FreeMem(Item.StructSize, item);

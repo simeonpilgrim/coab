@@ -421,12 +421,8 @@ namespace engine
 
         internal static byte reset_scribe(ref bool arg_0, Player player)
         {
-            /*byte var_9 = 0;*/
-
             byte var_4 = 0;
-            Item item = player.itemsPtr;
-
-            while (item != null && var_4 == 0)
+            foreach(Item item in player.items)
             {
                 int var_2 = 1;
 
@@ -436,8 +432,6 @@ namespace engine
                     {
                         if (item.getAffect(var_2) > (Affects)0x80)
                         {
-                            /*var_9 = 1;*/
-
                             if (arg_0 == true)
                             {
                                 var_4 = (byte)gbl.spell_table[(int)item.getAffect(var_2) & 0x7F].spellLevel;
@@ -459,7 +453,7 @@ namespace engine
                     }
                 }
 
-                item = item.next;
+                if( var_4 != 0 ) break;
             }
 
             return var_4;

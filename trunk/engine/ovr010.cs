@@ -186,30 +186,22 @@ namespace engine
 
         internal static bool sub_354AA(Player player)
         {
-            Item item_ptr;
-            byte var_8;
-            byte var_4;
-            byte var_3;
-            byte var_2;
-
             bool var_1 = false;
 
             Item var_14 = null;
-            var_2 = 7;
-            var_3 = ovr024.roll_dice(7, 1);
+            byte var_2 = 7;
+            int var_3 = ovr024.roll_dice(7, 1);
 
             int teamCount = (ovr025.opposite_team(player) == 0) ? gbl.friends_count : gbl.foe_count;
             if (player.actions.can_use == true &&
                 teamCount > 0 &&
                 gbl.area_ptr.can_cast_spells == false)
             {
-                for (var_4 = 1; var_4 <= var_3; var_4++)
+                for (int var_4 = 1; var_4 <= var_3; var_4++)
                 {
-                    item_ptr = player.itemsPtr;
-
-                    while (item_ptr != null && var_14 == null)
+                    foreach (var item_ptr in player.items)
                     {
-                        var_8 = (byte)item_ptr.affect_2;
+                        byte var_8 = (byte)item_ptr.affect_2;
                         byte var_7 = gbl.unk_1C020[item_ptr.type].item_slot;
 
 
@@ -223,13 +215,12 @@ namespace engine
                                 var_8 -= 0x17;
                             }
 
-                            if (sub_353B1(var_2, var_8, player) )
+                            if (sub_353B1(var_2, var_8, player))
                             {
                                 var_14 = item_ptr;
+                                break;
                             }
                         }
-
-                        item_ptr = item_ptr.next;
                     }
                     var_2 -= 1;
                 }
@@ -934,9 +925,7 @@ namespace engine
 
             int max_bonus = 0;
 
-            Item item = player.itemsPtr;
-
-            while (item != null)
+            foreach(Item item in player.items)
             {
                 int item_type = item.type;
 
@@ -977,7 +966,6 @@ namespace engine
                         }
                     }
                 }
-                item = item.next;
             }
 
             bool ranged_melee = ovr025.item_is_ranged_melee(var_4);
@@ -1014,23 +1002,25 @@ namespace engine
                 var_1F = true;
             }
 
+            Item weapon;
+
             if (var_4 != null &&
                 var_15 > (var_16 >> 1) &&
                 var_1F == true &&
                 (ranged_melee == true || ovr025.near_enemy(1, player) == 0))
             {
-                item = var_4;
+                weapon = var_4;
             }
             else
             {
-                item = var_8;
+                weapon = var_8;
             }
 
             bool itemsChanged = false;
             bool replace_weapon = true;
 
             if (player.field_151 != null &&
-                (player.field_151 == item ||
+                (player.field_151 == weapon ||
                  player.field_151.cursed == true))
             {
                 replace_weapon = false;
@@ -1051,9 +1041,9 @@ namespace engine
                     player.field_185 -= gbl.unk_1C020[player.field_155.type].field_1;
                 }
 
-                if (item != null)
+                if (weapon != null)
                 {
-                    ovr020.ready_Item(item);
+                    ovr020.ready_Item(weapon);
                 }
 
                 itemsChanged = true;
@@ -1074,7 +1064,7 @@ namespace engine
                 if (player.field_155 == null ||
                     player.field_155.cursed == true)
                 {
-                    ovr020.ready_Item(item);
+                    ovr020.ready_Item(weapon);
                     itemsChanged = true;
                 }
                 else

@@ -6,33 +6,38 @@ namespace Classes
 	/// <summary>
 	/// Summary description for StringList.
 	/// </summary>
-	public class StringList : IListBase // size = 0x2E
+	public class MenuItem
 	{
-		public string s;        // 0x00;
-		public byte field_29;   // 0x29;
-		public StringList next; // 0x2a; 
+		public string Text { get; set;}  // 0x00;
+		public bool Heading { get; protected set;} // 0x29;
+        public Item Item { get; protected set;}
 
-		public StringList()
+        public MenuItem()
 		{
-			next = null;
-			field_29 = 0;
-			s = string.Empty;
+            Heading = false;
+			Text = string.Empty;
+            Item = null;
 		}
 
-        [DebuggerStepThroughAttribute]
-        public string String()
+        public MenuItem(string text)
         {
-            return s;
+            Heading = false;
+            Text = text;
+            Item = null;
         }
 
-        public IListBase Next()
+        public MenuItem(string text, bool heading)
         {
-            return next;
+            Heading = heading;
+            Text = text;
+            Item = null;
         }
 
-        public byte Field29()
+        public MenuItem(string text, Item item)
         {
-            return field_29;
+            Heading = false;
+            Text = text;
+            Item = item;
         }
 	}
 }

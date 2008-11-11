@@ -1,4 +1,6 @@
 using Classes;
+using System;
+using System.Collections.Generic;
 
 namespace engine
 {
@@ -307,21 +309,10 @@ namespace engine
         internal static void remove_curse()
         {
             char input_key = 'Y';
-            bool cursed_item_found = false;
 
-            Item item = gbl.player_ptr.itemsPtr;
+            bool has_curse_items = gbl.player_ptr.items.Find(item => item.cursed) != null;
 
-            while (item != null && cursed_item_found == false)
-            {
-                if (item.cursed)
-                {
-                    cursed_item_found = true;
-                }
-
-                item = item.next;
-            }
-
-            if (cursed_item_found == false &&
+            if (has_curse_items == false &&
                 ovr025.find_affect(Affects.bestow_curse, gbl.player_ptr) == false)
             {
                 input_key = cast_cure_anyway("is not cursed.");
@@ -366,25 +357,16 @@ namespace engine
 
         internal static void temple_heal()
         {
-            short sl_index = 0;
+            int sl_index = 0;
 
             bool end_shop = false;
-            StringList stringListPtr = null;
-            StringList stringList = ovr027.alloc_stringList(10);
 
-            stringListPtr = stringList;
-            int temple_index = 0;
+            List<MenuItem> stringList = new List<MenuItem>(10);
 
-            while (stringList != null)
+            for (int i = 0; i < 10; i++)
             {
-                stringList.s = temple_sl[temple_index];
-                stringList.field_29 = 0;
-
-                stringList = stringList.next;
-                temple_index++;
+                stringList.Add(new MenuItem(temple_sl[i]));
             }
-
-            stringList = stringListPtr;
 
             seg037.draw8x8_clear_area(0x18, 0x27, 0x18, 0);
             bool var_9 = true;
@@ -394,8 +376,9 @@ namespace engine
             {
                 string text = gbl.player_ptr.name + ", how can we help you?";
                 seg041.displayString(text, 0, 15, 1, 1);
+                MenuItem dummySelected;
 
-                char sl_output = ovr027.sl_select_item(out stringListPtr, ref sl_index, ref var_9, false,
+                char sl_output = ovr027.sl_select_item(out dummySelected, ref sl_index, ref var_9, false,
                     stringList, 15, 0x26, 4, 2, 15, 10, 13, "Heal Exit", string.Empty);
 
                 if (sl_output == 'H' || sl_output == 0x0d)
@@ -454,7 +437,7 @@ namespace engine
 
             } while (end_shop == false);
 
-            ovr027.free_stringList(ref stringList);
+            stringList.Clear();
 
             ovr025.load_pic();
             ovr025.PartySummary(gbl.player_ptr);
@@ -513,7 +496,7 @@ namespace engine
                         break;
 
                     case 'T':
-                        ovr022.takeItems();
+                        ovr022.TakePoolMoney();
                         break;
 
                     case 'P':

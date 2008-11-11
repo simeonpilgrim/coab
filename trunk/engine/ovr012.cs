@@ -70,7 +70,7 @@ namespace engine
             gbl.byte_1D556 = new DaxArray();
 
             gbl.bigpic_dax = null;
-            gbl.item_pointer = null;
+            gbl.items_pointer = new System.Collections.Generic.List<Item>();
 
             gbl.mapPosX = 0;
             gbl.mapPosY = 0;
@@ -108,7 +108,7 @@ namespace engine
             gbl.game_area_backup = 1;
             gbl.mapAreaDisplay = false;
             gbl.area2_ptr.party_size = 0;
-            gbl.word_1D5BC = 1;
+            gbl.menuScreenIndex = 1;
             gbl.combat_type = gbl.combatType.normal;
             gbl.displayPlayerStatusLine18 = false;
             gbl.search_flag_bkup = 0;
@@ -215,7 +215,7 @@ namespace engine
             gbl.game_area_backup = 1;
             gbl.mapAreaDisplay = false;
             gbl.area2_ptr.party_size = 0;
-            gbl.word_1D5BC = 1;
+            gbl.menuScreenIndex = 1;
             gbl.combat_type = gbl.combatType.normal;
             gbl.displayPlayerStatusLine18 = false;
             gbl.search_flag_bkup = 0;
