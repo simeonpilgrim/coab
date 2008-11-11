@@ -1,42 +1,40 @@
 using Classes;
+using System.Collections.Generic;
 
 namespace engine
 {
     class ovr007
     {
-        internal static void sub_2F04E( ref short index, out Item arg_4, out Item arg_8, out char arg_C )
+        internal static char ShopChooseItem(ref int index, out Item arg_4) // sub_2F04E
         {
-            Item item_ptr = gbl.item_pointer;
-
-            while( item_ptr != null )
+            List<MenuItem> list = new List<MenuItem>();
+            foreach(var item in gbl.items_pointer)
             {
-				if( item_ptr._value == 0 )
+				if( item._value == 0 )
 				{
-					item_ptr._value = 1;
+					item._value = 1;
 				}
 
-                int val = ItemsValue(item_ptr);
+                int val = ItemsValue(item);
 
-                item_ptr.name = string.Format("{0,-21}{1,9}", item_ptr.name, val);
-                item_ptr = item_ptr.next;
+                list.Add(new MenuItem(string.Format("{0,-21}{1,9}", item.name, val), item));
             }
 
-            Item item_list = gbl.item_pointer;
             gbl.byte_1D5BE = 0;
 
-            arg_C = ovr027.sl_select_item(out arg_4, ref index, ref gbl.byte_1AB16, true, item_list,
+            MenuItem mi;
+
+            char input_key = ovr027.sl_select_item(out mi, ref index, ref gbl.byte_1AB16, true, list,
                 0x16, 0x26, 1, 1, 15, 10, 13, "Buy", "Items: " );
 
-			arg_8 = arg_4;
+            arg_4 = mi.Item;
 
-            item_ptr = gbl.item_pointer;
-
-            while( item_ptr != null )
+            foreach (var item in gbl.items_pointer)
             {
-                ovr025.ItemDisplayNameBuild( false, false, 0, 0, item_ptr, null );
-
-                item_ptr = item_ptr.next;
+                ovr025.ItemDisplayNameBuild(false, false, 0, 0, item, null);
             }
+
+            return input_key;
         }
 
         private static int ItemsValue(Item item_ptr)
@@ -90,26 +88,8 @@ namespace engine
             else
             {
                 isOverloaded = false;
-                Item item_ptr = gbl.player_ptr.itemsPtr;
 
-                if (item_ptr == null)
-                {
-                    item_ptr = item.ShallowClone();
-                    item_ptr.next = null;
-                    gbl.player_ptr.itemsPtr = item_ptr;
-                }
-                else
-                {
-                    while (item_ptr.next != null)
-                    {
-                        item_ptr = item_ptr.next;
-                    }
-
-                    Item var_8 = item.ShallowClone();
-                    var_8.next = null;
-
-                    item_ptr.next = var_8;
-                }
+                gbl.player_ptr.items.Add(item.ShallowClone());
 
                 ovr025.reclac_player_values(gbl.player_ptr);
             }
@@ -118,35 +98,28 @@ namespace engine
 
         internal static void shop_buy() /* sub_2F474 */
         {
-            bool stop_loop;
-            char input_key;
-
-            Item var_4 = null;
-            Item var_13 = gbl.item_pointer;
-            short var_15 = 0;
             seg037.draw8x8_outer_frame();
             gbl.byte_1AB16 = true;
 
-            do
+            int index = 0;
+            while(true)
             {
-                sub_2F04E(ref var_15, out var_13, out var_4, out input_key);
+                Item item;
+                char input_key = ShopChooseItem(ref index, out item);
 
-                if (input_key != 'B' &&
-                    input_key != 0x0d)
+                if (input_key != 'B' && input_key != 0x0d)
                 {
-                    stop_loop = true;
+                    return;
                 }
                 else
                 {
-                    stop_loop = false;
-                    int item_cost = ItemsValue(var_4);
-
+                    int item_cost = ItemsValue(item);
                     int player_gold = ovr020.getPlayerGold(gbl.player_ptr);
 
                     if (item_cost <= player_gold)
                     {
                         bool overloaded;
-                        PlayerAddItem(out overloaded, var_4);
+                        PlayerAddItem(out overloaded, item);
 
                         if (overloaded == false)
                         {
@@ -161,7 +134,7 @@ namespace engine
                         if (item_cost <= pooled_gold)
                         {
                             bool overloaded;
-                            PlayerAddItem(out overloaded, var_4);
+                            PlayerAddItem(out overloaded, item);
 
                             if (overloaded == false)
                             {
@@ -175,7 +148,7 @@ namespace engine
                         }
                     }
                 }
-            } while (stop_loop == false);
+            }
         }
 
 
@@ -201,14 +174,8 @@ namespace engine
 
             gbl.something01 = false;
             bool var_2D = false;
-            Item item_ptr = gbl.item_pointer;
 
-            while( item_ptr != null )
-            {
-                ovr025.ItemDisplayNameBuild(false, false, 0, 0, item_ptr, null);
-
-                item_ptr = item_ptr.next;
-            }
+            gbl.items_pointer.ForEach(item => ovr025.ItemDisplayNameBuild(false, false, 0, 0, item, null));
 
             do
             {
@@ -238,7 +205,7 @@ namespace engine
                         break;
 
                     case 'T':
-                        ovr022.takeItems();
+                        ovr022.TakePoolMoney();
                         break;
 
                     case 'P':

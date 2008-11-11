@@ -174,11 +174,11 @@ namespace engine
         static Set asc_5C1D1 = new Set(0x000B, new byte[] { 1, 0, 0, 0, 0, 0, 0, 0, 0x28, 0x30, 8 });
         static Set unk_5C1F1 = new Set(0x0009, new byte[] { 1, 0, 0, 0, 0, 0, 0, 0, 0x20 });
 
-        internal static byte spell_menu(ref short arg_0, SpellSource arg_4)
+        internal static byte spell_menu(ref int index, SpellSource spellSource)
         {
             string text;
 
-            switch (arg_4)
+            switch (spellSource)
             {
                 case SpellSource.Cast:
                     text = "Cast";
@@ -201,46 +201,34 @@ namespace engine
                     break;
             }
 
-            string prompt_text = unk_5C1A2.MemberOf((int)arg_4) ? "Choose Spell: " : "";
+            string prompt_text = text.Length > 0 ? "Choose Spell: " : "";
 
-            int end_y = (arg_4 == SpellSource.Memorize) ? 0x0F : 0x16;
+            int end_y = (spellSource == SpellSource.Memorize) ? 0x0F : 0x16;
 
-            bool show_exit = arg_4 != SpellSource.Learn;
+            bool show_exit = spellSource != SpellSource.Learn;
             bool var_61 = false;
 
-            if (arg_0 < 0)
+            if (index < 0)
             {
                 var_61 = true;
-                arg_0 = 0;
+                index = 0;
             }
 
-            if (arg_4 == SpellSource.Learn || arg_4 == SpellSource.Cast)
+            if (spellSource == SpellSource.Learn || spellSource == SpellSource.Cast)
             {
                 var_61 = true;
             }
 
-            StringList selected = null;
+            MenuItem selected;
             char input_key;
 
             do
             {
-                input_key = ovr027.sl_select_item(out selected, ref arg_0, ref var_61, show_exit, gbl.spell_string_list,
+                input_key = ovr027.sl_select_item(out selected, ref index, ref var_61, show_exit, gbl.spell_string_list,
                     end_y, 0x26, 5, 1, 15, 10, 13, text, prompt_text);
 
             } while (asc_5C1D1.MemberOf(input_key) == false);
 
-            int selected_index = 0;
-            StringList tmp_sl = gbl.spell_string_list;
-
-            while (tmp_sl != selected)
-            {
-                if (tmp_sl.field_29 == 0)
-                {
-                    selected_index++;
-                }
-
-                tmp_sl = tmp_sl.next;
-            }
 
             byte spell_id;
             if (unk_5C1F1.MemberOf(input_key) == true)
@@ -249,15 +237,15 @@ namespace engine
             }
             else
             {
+                int selected_index = gbl.spell_string_list.GetRange(0, gbl.spell_string_list.IndexOf(selected)).FindAll(mi => mi.Heading == false).Count;
                 spell_id = gbl.memorize_spell_id[selected_index];
-            }
 
-            if (arg_4 == SpellSource.Scribe)
-            {
-                gbl.dword_1D5C6 = gbl.unk_1AF18[selected_index];
+                if (spellSource == SpellSource.Scribe)
+                {
+                    gbl.dword_1D5C6 = gbl.unk_1AF18[selected_index];
+                }
             }
-
-            ovr027.free_stringList(ref gbl.spell_string_list);
+            gbl.spell_string_list.Clear();
 
             return spell_id;
         }
@@ -265,56 +253,24 @@ namespace engine
 
         internal static void add_spell_to_list(byte spell_id) /* sub_5C3ED */
         {
-            sbyte last_spell_level;
-            byte index;
             byte masked_id = (byte)(spell_id & 0x7F);
 
-            StringList string_list = gbl.spell_string_list;
+            var string_list = gbl.spell_string_list;
 
-            if (string_list == null)
+            int last_spell_level = 0;
+            int index = 0;
+            if (string_list.Count > 0)
             {
-                string_list = new StringList();
-
-                gbl.spell_string_list = string_list;
-                last_spell_level = 0;
-                index = 0;
-            }
-            else
-            {
-                index = 1;
-
-                while (string_list.next != null)
-                {
-                    if (string_list.field_29 == 0)
-                    {
-                        index++;
-                    }
-                    string_list = string_list.next;
-                }
-
+                index = string_list.FindAll(mi => mi.Heading == false).Count + 1;
                 last_spell_level = gbl.spell_table[gbl.memorize_spell_id[index - 1]].spellLevel;
-
-                string_list.next = new StringList();
-
-                string_list = string_list.next;
             }
-
-            string_list.next = null;
 
             if (gbl.spell_table[masked_id].spellLevel != last_spell_level)
             {
-                string_list.s = LevelStrings[gbl.spell_table[masked_id].spellLevel];
-
-                string_list.field_29 = 1;
-                string_list.next = new StringList();
-
-                string_list = string_list.next;
-                string_list.next = null;
+                string_list.Add(new MenuItem(LevelStrings[gbl.spell_table[masked_id].spellLevel], true));
             }
 
-            string_list.s = (spell_id > 0x7F) ? " *" : "  ";
-            string_list.s += SpellNames[masked_id];
-            string_list.field_29 = 0;
+            string_list.Add(new MenuItem(string.Format(" {0}{1}", (spell_id > 0x7F) ? '*' : ' ', SpellNames[masked_id])));
 
             gbl.memorize_spell_id[index] = masked_id;
         }
@@ -325,18 +281,13 @@ namespace engine
             int memorize_index;
             byte masked_id = (byte)(spell_id & 0x7F);
          
-            StringList spell_list = gbl.spell_string_list;
-            bool found = false;
+            var spell_list = gbl.spell_string_list;
 
             int sp_lvl = gbl.spell_table[masked_id].spellLevel;
-
-            if (gbl.spell_string_list == null)
+            
+            if (gbl.spell_string_list.Count == 0)
             {
                 System.Array.Clear(gbl.memorize_count, 0, gbl.max_spells);
-
-                spell_list = new StringList();
-
-                gbl.spell_string_list = spell_list;
 
                 memorize_index = 0;
                 gbl.memorize_count[memorize_index] = 1;
@@ -345,52 +296,21 @@ namespace engine
             {
                 memorize_index = 0;
 
-                while (spell_list != null && found == false)
+                foreach (var mi in spell_list)
                 {
-                    if (spell_list.field_29 == 0)
+                    if (mi.Heading == false)
                     {
-                        if (gbl.spell_table[gbl.memorize_spell_id[memorize_index]].spellLevel <= sp_lvl &&
-                            gbl.memorize_spell_id[memorize_index] != masked_id)
+                        if (gbl.spell_table[gbl.memorize_spell_id[memorize_index]].spellLevel > sp_lvl ||
+                            gbl.memorize_spell_id[memorize_index] == masked_id)
                         {
-                            memorize_index++;
-                            spell_list = spell_list.next;
-                        }
-                        else
-                        {
-                            found = true;
+                            break;
                         }
                     }
-                    else
-                    {
-                        spell_list = spell_list.next;
-                        memorize_index++;
-                    }
+                    memorize_index++;
                 }
 
                 if (gbl.memorize_spell_id[memorize_index] != masked_id)
                 {
-                    if (gbl.spell_string_list != spell_list)
-                    {
-                        StringList sl = gbl.spell_string_list;
-
-                        while (sl.next != spell_list)
-                        {
-                            sl = sl.next;
-                        }
-
-                        StringList tmp_sl = new StringList();
-                        tmp_sl.next = sl.next;
-                        sl.next = tmp_sl;
-                        spell_list = tmp_sl;
-                    }
-                    else
-                    {
-                        StringList tmp_sl = new StringList();
-                        tmp_sl.next = spell_list;
-                        gbl.spell_string_list = tmp_sl;
-                        spell_list = tmp_sl;
-                    }
-
                     int insert_count = 1;
                     for (int i = memorize_index; i < gbl.max_spells; i++)
                     {
@@ -401,18 +321,19 @@ namespace engine
                 }
                 else
                 {
+                    gbl.spell_string_list.RemoveAt(memorize_index);
                     gbl.memorize_count[memorize_index] += 1;
                 }
             }
 
-            spell_list.s = (spell_id > 0x7F) ? " *" : "  ";
-            spell_list.s += SpellNames[masked_id];
-            spell_list.field_29 = 0;
+            string menu_text = string.Format(" {0}{1}{2}", 
+                spell_id > 0x7F? '*' : ' ',
+                SpellNames[masked_id],
+                gbl.memorize_count[memorize_index] > 1 ? string.Format(" ({0})", gbl.memorize_count[memorize_index]) : "" );
 
-            if (gbl.memorize_count[memorize_index] > 1)
-            {
-                spell_list.s += string.Format(" ({0})", gbl.memorize_count[memorize_index]);
-            }
+            // insert before memorize_index
+            gbl.spell_string_list.Insert(memorize_index, new MenuItem(menu_text));
+
 
             if (gbl.memorize_spell_id[memorize_index] != masked_id)
             {
@@ -463,31 +384,24 @@ namespace engine
 
             gbl.byte_1AFDC = 0;
 
-            gbl.dword_1D5C6 = gbl.player_ptr.itemsPtr;
-
-            while (gbl.dword_1D5C6 != null)
+            foreach(var item in gbl.player_ptr.items)
             {
-                if (item_is_scroll(gbl.dword_1D5C6) == true)
+                gbl.dword_1D5C6 = item;
+
+                if (item.IsScroll())
                 {
                     scroll_5C912(arg_0);
                 }
-
-                gbl.dword_1D5C6 = gbl.dword_1D5C6.next;
             }
         }
 
 
         internal static bool sub_5CA74(SpellLoc spl_location)
         {
-            sbyte var_C;
-            sbyte var_B;
-            StringList var_A;
-            StringList var_6;
-
             bool result = false;
             bool var_D = true;
 
-            gbl.spell_string_list = null;
+            gbl.spell_string_list.Clear();
 
             for (int var_2 = 0; var_2 < gbl.max_spells; var_2++)
             {
@@ -568,47 +482,42 @@ namespace engine
                     break;
             }
 
-            if (gbl.spell_string_list != null)
+            if (gbl.spell_string_list.Count > 0)
             {
                 if (var_D == true)
                 {
                     int var_2 = 0;
 
-                    var_C = gbl.spell_table[gbl.memorize_spell_id[var_2]].spellLevel;
+                    var spellLvl = gbl.spell_table[gbl.memorize_spell_id[var_2]].spellLevel;
 
-                    var_A = new StringList();
+                    gbl.spell_string_list.Add(new MenuItem(LevelStrings[spellLvl], true));
 
-                    var_A.next = gbl.spell_string_list;
-                    gbl.spell_string_list = var_A;
+                    int insert = 0;
+                    var inserts = new Queue<KeyValuePair<int, int>>();
 
-                    gbl.spell_string_list.s = LevelStrings[gbl.spell_table[gbl.memorize_spell_id[var_2]].spellLevel];
-                    gbl.spell_string_list.field_29 = 1;
-                    var_6 = gbl.spell_string_list;
-
-                    do
+                    foreach( var mi in  gbl.spell_string_list)
                     {
-                        var_B = var_C;
+                        var var_B = spellLvl;
 
                         if (gbl.memorize_spell_id[var_2] != 0)
                         {
-                            var_C = gbl.spell_table[gbl.memorize_spell_id[var_2]].spellLevel;
+                            spellLvl = gbl.spell_table[gbl.memorize_spell_id[var_2]].spellLevel;
                         }
 
-                        if (var_B < var_C)
+                        if (var_B < spellLvl)
                         {
-                            var_A = new StringList();
-                            var_A.next = var_6.next;
-                            var_6.next = var_A;
-
-                            var_6 = var_6.next;
-
-                            var_6.s = LevelStrings[var_C];
-                            var_6.field_29 = 1;
+                            inserts.Enqueue(new KeyValuePair<int, int>(insert, spellLvl));
+                            insert++;
                         }
 
+                        insert++;
                         var_2++;
-                        var_6 = var_6.next;
-                    } while (var_6 != null);
+                    }
+
+                    foreach (var vp in inserts)
+                    {
+                        gbl.spell_string_list.Insert(vp.Key, new MenuItem(LevelStrings[vp.Value], true));
+                    }
                 }
                 result = true;
             }
@@ -2154,34 +2063,24 @@ namespace engine
             }
             else
             {
-                bool var_5 = false;
-                Item item = gbl.sp_targets[1].itemsPtr;
+                Item item = gbl.sp_targets[1].items.Find(i => i.cursed);
 
-                while (item != null && var_5 == false)
+                if (item != null)
                 {
-                    if (item.cursed == true)
+                    item.readied = false;
+
+                    if ((int)item.affect_3 > 0x7F)
                     {
-                        var_5 = true;
-                        item.readied = false;
+                        gbl.byte_1D8AC = true;
+                        ovr024.CallSpellJumpTable(Effect.Remove, item, gbl.sp_targets[1], item.affect_3);
 
-                        if ((int)item.affect_3 > 0x7F)
+                        for (int var_6 = 0; var_6 <= 5; var_6++)
                         {
-                            gbl.byte_1D8AC = true;
-                            ovr024.CallSpellJumpTable(Effect.Remove, item, gbl.sp_targets[1], item.affect_3);
-
-                            for (int var_6 = 0; var_6 <= 5; var_6++)
-                            {
-                                ovr024.sub_648D9(var_6, gbl.sp_targets[1]);
-                            }
-
+                            ovr024.sub_648D9(var_6, gbl.sp_targets[1]);
                         }
+
                     }
 
-                    item = item.next;
-                }
-
-                if (var_5 == true)
-                {
                     ovr025.sub_6818A("has an item un-cursed", true, gbl.sp_targets[1]);
                 }
             }
@@ -2956,13 +2855,12 @@ namespace engine
         {
             byte dir = 0;
             byte var_16;
-            byte var_15;
             byte ground_tile = 0;
             byte[] var_11 = new byte[10];
 
             gbl.byte_1D2C7 = true;
 
-            var_15 = (byte)ovr025.spellMaxTargetCount(gbl.spell_id);
+            byte var_15 = (byte)ovr025.spellMaxTargetCount(gbl.spell_id);
             int count = 0;
             Struct_1D885 var_8 = gbl.stru_1D889;
 
@@ -3208,25 +3106,16 @@ namespace engine
 
                 if (ovr025.find_affect(Affects.affect_7f, player) == true)
                 {
-                    bool item_found = false;
-                    Item item = gbl.spell_target.itemsPtr;
+                    Item item = gbl.spell_target.items.Find(i => i.readied && (i.field_2F == 0x76 || i.field_30 == 0x76 || i.field_31 == 0x76));
 
-                    while (item != null && item_found == false)
+                    if (item != null)
                     {
-                        if (item.readied &&
-                             (item.field_2F == 0x76 ||
-                              item.field_30 == 0x76 ||
-                              item.field_31 == 0x76))
-                        {
-                            ovr025.DisplayPlayerStatusString(false, 12, "reflects it!", gbl.spell_target);
+                        ovr025.DisplayPlayerStatusString(false, 12, "reflects it!", gbl.spell_target);
 
-                            ovr025.draw_missile_attack(0x2d, 4, ovr033.PlayerMapYPos(player), ovr033.PlayerMapXPos(player),
-                                ovr033.PlayerMapYPos(gbl.spell_target), ovr033.PlayerMapXPos(gbl.spell_target));
-                            item_found = true;
-                            gbl.spell_target = player;
-                        }
-
-                        item = item.next;
+                        ovr025.draw_missile_attack(0x2d, 4, 
+                            ovr033.PlayerMapYPos(player), ovr033.PlayerMapXPos(player),
+                            ovr033.PlayerMapYPos(gbl.spell_target), ovr033.PlayerMapXPos(gbl.spell_target));
+                        gbl.spell_target = player;
                     }
                 }
 

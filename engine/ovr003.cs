@@ -1,5 +1,6 @@
 using Classes;
 using Logging;
+using System.Collections.Generic;
 
 namespace engine
 {
@@ -249,7 +250,7 @@ namespace engine
                 Player playerB = ovr017.load_mob(mod_id);
 
                 Player player_bkup = playerB.ShallowClone();
-                Item item_ptr2 = playerB.itemsPtr;
+                List<Item> itemsList = playerB.items;
 
                 int num_copies = (byte)ovr008.vm_GetCmdValue(2);
 
@@ -278,29 +279,15 @@ namespace engine
                     playerA.icon_id = gbl.monster_icon_id;
 
                     playerA.next_player = null;
-                    playerA.affects = new System.Collections.Generic.List<Affect>();
-                    playerA.itemsPtr = null;
-
+                    playerA.affects = new List<Affect>();
+                    playerA.items = new List<Item>();
+                    
                     copy_count++;
                     gbl.numLoadedMonsters++;
 
-                    Item item_ptr = item_ptr2;
-
-                    while (item_ptr != null)
+                    foreach(Item item in itemsList)
                     {
-                        if (playerA.itemsPtr == null)
-                        {
-                            playerA.itemsPtr = item_ptr.ShallowClone();
-                            playerA.itemsPtr.next = null;
-                        }
-                        else
-                        {
-                            Item tmp_item = playerA.itemsPtr;
-                            playerA.itemsPtr = item_ptr.ShallowClone();
-                            playerA.itemsPtr.next = tmp_item;
-                        }
-
-                        item_ptr = item_ptr.next;
+                        playerA.items.Add(item.ShallowClone());
                     }
 
                     foreach(Affect affect in player_bkup.affects)
@@ -686,48 +673,37 @@ namespace engine
 
         internal static void CMD_VertMenu() /* sub_26EE9 */
         {
-            StringList var_10A;
-
             gbl.bottomTextHasBeenCleared = false;
-            bool var_10F = true;
-            byte var_2 = 1;
-            ovr008.vm_LoadCmdSets(3);
-            ushort var_111 = gbl.cmd_opps[1].Word;
 
-            string var_102 = gbl.unk_1D972[1];
+            ovr008.vm_LoadCmdSets(3);
+            ushort mem_loc = gbl.cmd_opps[1].Word;
+
+            string delay_text = gbl.unk_1D972[1];
 
             byte var_1 = (byte)ovr008.vm_GetCmdValue(3);
             gbl.ecl_offset--;
             ovr008.vm_LoadCmdSets(var_1);
 
-            StringList var_106 = ovr027.alloc_stringList(var_1);
-
-            var_10A = var_106;
+            List<MenuItem> var_106 = new List<MenuItem>();
 
             gbl.textXCol = 1;
             gbl.textYCol = 0x11;
 
-            seg041.press_any_key(var_102, true, 0, 10, 22, 38, 17, 1);
+            seg041.press_any_key(delay_text, true, 0, 10, 22, 38, 17, 1);
 
-            while (var_106 != null)
+            for (int i = 0; i < var_1; i++)
             {
-                var_106.s = gbl.unk_1D972[var_2];
-                var_106.field_29 = 0;
-
-                var_106 = var_106.next;
-
-                var_2++;
+                var_106.Add(new MenuItem(gbl.unk_1D972[i + 1]));
             }
 
-            var_106 = var_10A;
-
-            short var_10E = 0;
-
-            ovr008.sub_318AE(var_106, ref var_10E, ref var_10F, false, var_106, 0x16, 0x26, gbl.textYCol + 1,
+            int index = 0;
+            bool var_10F = true;
+            ovr008.sub_318AE(ref index, ref var_10F, false, var_106, 0x16, 0x26, gbl.textYCol + 1,
                 1, 15, 10, 13, string.Empty, string.Empty);
-            ovr008.vm_SetMemoryValue((ushort)var_10E, var_111);
 
-            ovr027.free_stringList(ref var_106);
+            ovr008.vm_SetMemoryValue((ushort)index, mem_loc);
+
+            var_106.Clear();
             seg037.draw8x8_clear_area(0x16, 0x26, 0x11, 1);
         }
 
@@ -808,12 +784,7 @@ namespace engine
                 gbl.pooled_money[i] = 0;
             }
 
-            while (gbl.item_pointer != null)
-            {
-                Item item = gbl.item_pointer.next;
-
-                gbl.item_pointer = item;
-            }
+            gbl.items_pointer.Clear();
         }
 
 
@@ -1312,18 +1283,7 @@ namespace engine
 
                 for (int offset = 0; offset < dataSize; offset += Item.StructSize)
                 {
-                    Item item = new Item(data, offset);
-
-                    if (gbl.item_pointer == null)
-                    {
-                        gbl.item_pointer = item;
-                    }
-                    else
-                    {
-                        Item tmpItem = gbl.item_pointer;
-                        gbl.item_pointer = item;
-                        gbl.item_pointer.next = tmpItem;
-                    }
+                    gbl.items_pointer.Add(new Item(data, offset));
                 }
 
                 data = null;
@@ -1422,29 +1382,10 @@ namespace engine
                         item_type = 0x3B;
                     }
 
-                    Item item = ovr022.create_item(item_type);
-
-                    if (gbl.item_pointer == null)
-                    {
-                        gbl.item_pointer = item.ShallowClone();
-                        gbl.item_pointer.next = null;
-                    }
-                    else
-                    {
-                        Item next_item = gbl.item_pointer;
-
-                        gbl.item_pointer = item.ShallowClone();
-                        gbl.item_pointer.next = next_item;
-                    }
+                    gbl.items_pointer.Add(ovr022.create_item(item_type));
                 }
 
-                Item tmp_item = gbl.item_pointer;
-
-                while (tmp_item != null)
-                {
-                    ovr025.ItemDisplayNameBuild(false, false, 0, 0, tmp_item, gbl.player_ptr);
-                    tmp_item = tmp_item.next;
-                }
+                gbl.items_pointer.ForEach(item => ovr025.ItemDisplayNameBuild(false, false, 0, 0, item, gbl.player_ptr));
             }
         }
 
@@ -1822,23 +1763,19 @@ namespace engine
                 gbl.compare_flags[i] = false;
             }
 
-            gbl.compare_flags[1] = true;       
+            gbl.compare_flags[1] = true;
 
-            foreach( Player player in gbl.player_next_ptr)
+            foreach (Player player in gbl.player_next_ptr)
             {
-                Item item = player.itemsPtr;
-                while (item != null && found == false)
+                foreach (Item item in player.items)
                 {
                     if (item_type == item.type)
                     {
                         gbl.compare_flags[0] = true;
                         gbl.compare_flags[1] = false;
-                        break;
+                        return;
                     }
-
-                    item = item.next;
                 }
-                if( found ) break;
             }
         }
 
@@ -2348,17 +2285,7 @@ namespace engine
 
             foreach (Player player in gbl.player_next_ptr)
             {
-                Item item = player.itemsPtr;
-                while (item != null)
-                {
-                    Item next_item = item.next;
-
-                    if (item_type == item.type)
-                    {
-                        ovr025.lose_item(item, player);
-                    }
-                    item = next_item;
-                }
+                player.items.RemoveAll(item => item.type == item_type);
 
                 ovr025.reclac_player_values(player);
             }

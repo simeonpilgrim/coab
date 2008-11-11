@@ -854,12 +854,12 @@ namespace engine
             byte str_00_b = 0;
             byte var_11 = 0x0FF;
 
-            Item item = player.itemsPtr;
+            
 
             byte stat_a = player.stats[stat_index].tmp;
             byte str_00_a = player.max_str_00;
 
-            while (item != null)
+            foreach (Item item in player.items)
             {
                 if ((int)item.affect_3 > 0x80 &&
                     item.readied == true)
@@ -1003,8 +1003,6 @@ namespace engine
                         }
                     }
                 }
-
-                item = item.next;
             }
 
             if (stat_index == 0)

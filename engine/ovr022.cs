@@ -1,4 +1,5 @@
 using Classes;
+using System.Collections.Generic;
 
 namespace engine
 {
@@ -47,10 +48,10 @@ namespace engine
             int total = 0;
             for (int i = 0; i <= 4; i++)
             {
-                total += money.per_copper[i] * arg_0[i];
+                total += Money.per_copper[i] * arg_0[i];
             }
 
-            return total / money.per_copper[money.gold];
+            return total / Money.per_copper[Money.gold];
         }
 
 
@@ -73,8 +74,8 @@ namespace engine
                 gbl.pooled_money[i] = 0;
             }
 
-            gbl.pooled_money[money.platum] = arg_0 / 5;
-            gbl.pooled_money[money.gold] = arg_0 % 5;
+            gbl.pooled_money[Money.platum] = arg_0 / 5;
+            gbl.pooled_money[Money.gold] = arg_0 % 5;
         }
 
 
@@ -88,7 +89,7 @@ namespace engine
                 gbl.player_ptr.platinum += capasity;
                 add_weight(capasity, gbl.player_ptr);
 
-                gbl.pooled_money[money.platum] += item_weight - capasity;
+                gbl.pooled_money[Money.platum] += item_weight - capasity;
             }
             else
             {
@@ -410,12 +411,11 @@ namespace engine
         }
 
 
-        internal static void takeItems()
+        internal static void TakePoolMoney() // takeItems
         {
             bool noMoneyLeft;
 
-            StringList var_C;
-            StringList item_ptr;
+            List<MenuItem> money = new List<MenuItem>();
             sbyte var_1;
 
             seg037.draw8x8_outer_frame();
@@ -424,27 +424,20 @@ namespace engine
             {
                 bool var_118 = true;
 
-                item_ptr = null;
-                var_C = null;
+                money.Clear();
+
                 for (var_1 = 6; var_1 >= 0; var_1--)
                 {
                     if (gbl.pooled_money[var_1] > 0)
                     {
-                        var_C = item_ptr;
-                        item_ptr = new StringList();
-                        item_ptr.next = var_C;
-
-                        item_ptr.s = money.names[var_1] + " " + gbl.pooled_money[var_1].ToString();
-                        item_ptr.field_29 = 0;
-
+                        money.Add(new MenuItem(string.Format("{0} {1}", Money.names[var_1], gbl.pooled_money[var_1])));
                     }
                 }
 
-                var_C = item_ptr;
-                StringList var_10 = item_ptr;
-                short dummyIndex = 0;
+                int dummyIndex = 0;
 
-                char input_key = ovr027.sl_select_item(out var_C, ref dummyIndex, ref var_118, true, item_ptr,
+                MenuItem var_C;
+                char input_key = ovr027.sl_select_item(out var_C, ref dummyIndex, ref var_118, true, money,
                     8, 15, 2, 2, 15, 10, 13, "Select", "Select type of coin ");
 
                 if (var_C == null || input_key == 0)
@@ -456,14 +449,14 @@ namespace engine
                     noMoneyLeft = false;
                     string text;
 
-                    int money_slot = GetMoneyIndexFromString(out text, var_C.s);
+                    int money_slot = GetMoneyIndexFromString(out text, var_C.Text);
 
                     text = string.Format("How much {0} will you take? ", text);
 
                     short num_coins = sub_592AD(10, text, gbl.pooled_money[money_slot]);
 
                     sub_59AA0(money_slot, num_coins, gbl.player_ptr);
-                    ovr027.free_stringList(ref var_10);
+                    money.Clear();
 
                     gbl.something01 = false;
                     noMoneyLeft = true;
@@ -483,7 +476,6 @@ namespace engine
         internal static void treasureOnGround(out bool items, out bool money)
         {
             money = false;
-            items = false;
 
             for (int i = 0; i < 7; i++)
             {
@@ -493,10 +485,7 @@ namespace engine
                 }
             }
 
-            if (gbl.item_pointer != null)
-            {
-                items = true;
-            }
+            items = gbl.items_pointer.Count > 0;
         }
 
 
@@ -539,7 +528,6 @@ namespace engine
             item.affect_2 = 0;
             item.affect_3 = 0;
 
-            item.next = null;
             item.readied = false;
             item.hidden_names_flag = 6;
             item.cursed = false;
@@ -1062,7 +1050,6 @@ namespace engine
                                 if (input_key == 'K' && must_sell == false)
                                 {
                                     Item gem_item = new Item();
-                                    gem_item.next = null;
                                     gem_item.weight = 1;
                                     gem_item.hidden_names_flag = 0;
                                     gem_item.readied = false;
@@ -1072,21 +1059,7 @@ namespace engine
                                     gem_item.type = 0x46;
                                     gem_item._value = value;
 
-                                    Item item = gbl.player_ptr.itemsPtr;
-
-                                    if (item == null)
-                                    {
-                                        gbl.player_ptr.itemsPtr = gem_item;
-                                    }
-                                    else
-                                    {
-                                        while (item.next != null)
-                                        {
-                                            item = item.next;
-                                        }
-
-                                        item.next = gem_item;
-                                    }
+                                    gbl.player_ptr.items.Add(gem_item);
                                 }
                                 else
                                 {
@@ -1158,7 +1131,6 @@ namespace engine
                                 if (input_key == 'K' && must_sell == false)
                                 {
                                     Item jewel_item = new Item();
-                                    jewel_item.next = null;
                                     jewel_item.readied = false;
                                     jewel_item.field_31 = 0xD6;
                                     jewel_item.field_30 = 0;
@@ -1169,21 +1141,7 @@ namespace engine
                                     jewel_item.hidden_names_flag = 0;
                                     jewel_item.weight = 1;
 
-                                    Item var_AE = gbl.player_ptr.itemsPtr;
-
-                                    if (var_AE == null)
-                                    {
-                                        gbl.player_ptr.itemsPtr = jewel_item;
-                                    }
-                                    else
-                                    {
-                                        while (var_AE.next != null)
-                                        {
-                                            var_AE = var_AE.next;
-                                        }
-
-                                        var_AE.next = jewel_item;
-                                    }
+                                    gbl.player_ptr.items.Add(jewel_item);
                                 }
                                 else
                                 {

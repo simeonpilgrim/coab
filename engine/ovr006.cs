@@ -17,12 +17,9 @@ namespace engine
                  * Add the money from each monster
                  */
                 int total = 0;
-                int var_12 = 0;
 
                 foreach (Player player in gbl.player_next_ptr)
                 {
-                    Item item = player.itemsPtr;
-
                     if (player.combat_team == CombatTeam.Enemy &&
                         player.health_status != Status.okey &&
                         player.health_status != Status.running)
@@ -39,45 +36,35 @@ namespace engine
 
                         if (gbl.area2_ptr.field_5C6 != 1)
                         {
-                            while (item != null)
+                            foreach (Item item in player.items)
                             {
-                                var_12++;
-
-                                Item item_bkup = gbl.item_pointer;
-
                                 ovr025.ItemDisplayNameBuild(false, false, 0, 0, item, player);
 
-                                gbl.item_pointer = item.ShallowClone();
-
-                                gbl.item_pointer.readied = false;
-                                gbl.item_pointer.next = item_bkup;
-
-                                item = item.next;
+                                Item newItem = item.ShallowClone();
+                                newItem.readied = false;
+                                gbl.items_pointer.Add(newItem);
                             }
                         }
                     }
                 }
 
-                total += gbl.pooled_money[money.copper] / 200;
-                total += gbl.pooled_money[money.silver] / 20;
-                total += gbl.pooled_money[money.electrum] / 2;
-                total += gbl.pooled_money[money.gold];
-                total += gbl.pooled_money[money.platum] * 5;
+                total += gbl.pooled_money[Money.copper] / 200;
+                total += gbl.pooled_money[Money.silver] / 20;
+                total += gbl.pooled_money[Money.electrum] / 2;
+                total += gbl.pooled_money[Money.gold];
+                total += gbl.pooled_money[Money.platum] * 5;
 
-                total += gbl.pooled_money[money.gem] * 250;
-                total += gbl.pooled_money[money.jewelry] * 2200;
+                total += gbl.pooled_money[Money.gem] * 250;
+                total += gbl.pooled_money[Money.jewelry] * 2200;
 
-                Item item_ptr = gbl.item_pointer;
-
-                while (gbl.item_pointer != null &&
-                       item_ptr != gbl.item_ptr)
+                foreach (Item item_ptr in gbl.items_pointer)
                 {
+                    if (item_ptr == gbl.item_ptr) break;
+
                     if (item_ptr.plus > 0)
                     {
                         total += item_ptr.plus * 400;
                     }
-
-                    item_ptr = item_ptr.next;
                 }
 
                 return total / (gbl.area2_ptr.party_size - gbl.partyAnimatedCount);
@@ -416,13 +403,7 @@ namespace engine
 
                     exp = 0;
 
-                    Item item_ptr = gbl.item_pointer;
-                    while (item_ptr != null)
-                    {
-                        Item var_115 = item_ptr.next;
-
-                        item_ptr = var_115;
-                    }
+                    gbl.items_pointer.Clear();
 
                     for (int i = 0; i < 7; i++)
                     {
@@ -475,35 +456,37 @@ namespace engine
         }
 
 
-        internal static void select_treasure(ref short index, out Item selectedItem, out char key) /* sub_2DD2B */
+        internal static void select_treasure(ref int index, out Item selectedItem, out char key) /* sub_2DD2B */
         {
             seg037.draw8x8_outer_frame();
 
-            Item tmpItem = gbl.item_pointer;
-            while (tmpItem != null)
-            {
-                ovr025.ItemDisplayNameBuild(false, false, 0, 0, tmpItem, null);
-                tmpItem = tmpItem.next;
-            }
+            var list = new List<MenuItem>();
+            gbl.items_pointer.ForEach(item =>
+                {
+                    ovr025.ItemDisplayNameBuild(false, false, 0, 0, item, null);
+                    list.Add(new MenuItem(item.name, item));
+                });
 
             bool var_18 = true;
-            key = ovr027.sl_select_item(out selectedItem, ref index, ref var_18, true, gbl.item_pointer,
+            MenuItem selected;
+            key = ovr027.sl_select_item(out selected, ref index, ref var_18, true, list,
                  0x16, 0x26, 1, 1, 15, 10, 13, "Take", "Items: ");
 
+            selectedItem = selected != null ? selected.Item : null;
         }
 
 
         internal static void take_items_treasure() /* sub_2DDFC */
         {
             bool stop;
+            int index = 0;
 
             do
             {
                 Item item;
                 char key;
-                short dummyShort = 0;
 
-                select_treasure(ref dummyShort, out item, out key);
+                select_treasure(ref index, out item, out key);
 
                 if (key != 'T' &&
                     key != '\r')
@@ -519,29 +502,9 @@ namespace engine
 
                     if (willOverload == false)
                     {
-                        Item tmpItem = gbl.item_pointer;
+                        gbl.items_pointer.Remove(item);
 
-                        if (tmpItem == item)
-                        {
-                            gbl.item_pointer = item.next;
-                        }
-                        else
-                        {
-                            while (tmpItem.next != item)
-                            {
-                                tmpItem = tmpItem.next;
-                            }
-
-                            tmpItem.next = item.next;
-                        }
-
-                        item.next = null;
-                        item = null;
-
-                        if (gbl.item_pointer == null)
-                        {
-                            stop = true;
-                        }
+                        stop = gbl.items_pointer.Count == 0;
                     }
                 }
             } while (stop == false);
@@ -565,7 +528,7 @@ namespace engine
                         switch (key)
                         {
                             case 'M':
-                                ovr022.takeItems();
+                                ovr022.TakePoolMoney();
                                 ovr025.load_pic();
                                 break;
 
@@ -599,7 +562,7 @@ namespace engine
                 }
                 else
                 {
-                    ovr022.takeItems();
+                    ovr022.TakePoolMoney();
                     ovr025.load_pic();
                 }
             }
@@ -852,16 +815,7 @@ namespace engine
                 {
                     if (gbl.party_fled == true)
                     {
-                        Item item = gbl.item_pointer;
-                        while (item != null)
-                        {
-                            Item item_ptr = item;
-                            item = item.next;
-
-                            item_ptr = null;
-                        }
-
-                        gbl.item_pointer = null;
+                        gbl.items_pointer.Clear();
                     }
 
                     if (gbl.inDemo == false)
@@ -871,16 +825,7 @@ namespace engine
                         distributeCombatTreasure();
                     }
 
-                    Item free_item = gbl.item_pointer;
-                    while (free_item != null)
-                    {
-                        Item item_ptr = free_item;
-                        free_item = free_item.next;
-
-                        item_ptr = null;
-                    }
-
-                    gbl.item_pointer = null;
+                    gbl.items_pointer.Clear();
                 }
                 else
                 {

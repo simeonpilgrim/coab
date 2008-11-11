@@ -524,13 +524,12 @@ namespace engine
             bool var_8 = false;
             player.field_14C = 0;
 
-            Item item = player.itemsPtr;
             player.field_185 = 0;
 
             player.weight = 0;
             gbl.word_1AFE0 = 0;
 
-            while (item != null)
+            foreach (var item in player.items)
             {
                 player.field_14C++;
                 short item_weight = item.weight;
@@ -579,8 +578,6 @@ namespace engine
 
                     player.field_185 += gbl.unk_1C020[item.type].field_1;
                 }
-
-                item = item.next;
             }
 
 
@@ -619,17 +616,14 @@ namespace engine
             }
 
             sub_66023(player);
-            item = player.itemsPtr;
 
-            while (item != null)
+            foreach(var item in player.items)
             {
                 if (item.readied)
                 {
                     sub_6621E(item, player);
                     sub_662A6(ref var_7, ref stat_bonus, item, player);
                 }
-
-                item = item.next;
             }
 
             if (var_7 != 0)
@@ -966,63 +960,9 @@ namespace engine
 
         internal static void lose_item(Item item, Player player)
         {
-            Item item_ptr;
-
-            if (item == null)
+            if (!player.items.Remove(item))
             {
-                seg041.displayAndDebug("Nil Item pointer...", 0, 14);
-            }
-            else
-            {
-                item_ptr = player.itemsPtr;
-
-                if (item_ptr == item)
-                {
-                    player.itemsPtr = item.next;
-                }
-                else
-                {
-                    while (item_ptr != null &&
-                        item_ptr.next != item)
-                    {
-                        item_ptr = item_ptr.next;
-                    }
-                }
-
-                if (item_ptr == null)
-                {
-                    seg041.displayAndDebug("Tried to Lose item & couldn't find it!", 0, 14);
-                }
-                else
-                {
-                    item_ptr.next = item.next;
-                    item.next = null;
-
-                    seg051.FreeMem(0x3f, item);
-                }
-            }
-        }
-
-
-        internal static void addItem(Item item, Player player)
-        {
-            Item new_item = item.ShallowClone();
-            new_item.next = null;
-
-            if (player.itemsPtr == null)
-            {
-                player.itemsPtr = new_item;
-            }
-            else
-            {
-                Item tmp_item = player.itemsPtr;
-
-                while (tmp_item.next != null)
-                {
-                    tmp_item = tmp_item.next;
-                }
-
-                tmp_item.next = new_item;
+                seg041.displayAndDebug("Tried to Lose item & couldn't find it!", 0, 14);
             }
         }
 
@@ -2094,7 +2034,6 @@ namespace engine
             Item item = new Item();
 
             item.name = string.Empty;
-            item.next = null;
             item.type = type;
             item.field_2F = arg_1A;
             item.field_30 = arg_18;

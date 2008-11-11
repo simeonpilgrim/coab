@@ -4,11 +4,10 @@ using System.Text;
 
 namespace Classes
 {
-    /// <summary>
-    /// 0xBC in size. Import type 02
-    /// </summary>
     public class HillsFarPlayer
     {
+        public const int StructSize = 0xBC;
+
         public string field_4; // name char[?]
         public byte field_14; // str
         public byte field_15; // str 100

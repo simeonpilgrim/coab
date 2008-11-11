@@ -78,25 +78,9 @@ namespace engine
 
 		internal static bool file_find( string arg_0 )
 		{
-			SearchRec var_7D;
-			string local_string;
-			bool ret_val;
-            
-			local_string = arg_0;
+            seg046.FINDFIRST(arg_0);
 
-            seg046.FINDFIRST(out var_7D, 0, local_string);
-
-			if( gbl.FIND_result != 0 ||
-				local_string.Length == 0 )
-			{
-				ret_val = false;
-			}
-			else
-			{
-				ret_val = true;
-			}
-
-			return ret_val;
+            return (gbl.FIND_result == 0 && arg_0.Length != 0);
 		}
 
 

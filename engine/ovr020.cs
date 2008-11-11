@@ -1,4 +1,5 @@
 using Classes;
+using System.Collections.Generic;
 
 namespace engine
 {
@@ -134,7 +135,7 @@ namespace engine
 
         internal static void displayMoney()
         {
-            seg037.draw8x8_clear_area(0x0e, 0x1a, 7, 12);
+            seg037.draw8x8_clear_area(14, 26, 7, 12);
 
             int yCol = 7;
 
@@ -142,10 +143,8 @@ namespace engine
             {
                 if (gbl.player_ptr.Money[coinType] > 0)
                 {
-                    string mString = moneyString[coinType];
-
-                    seg041.displayString(mString, 0, 10, yCol, 20 - mString.Length);
-                    seg041.displayString(gbl.player_ptr.Money[coinType].ToString(), 0, 10, yCol, 21);
+                    string text = string.Format("{0,8} {1}", Money.names[coinType], gbl.player_ptr.Money[coinType]);
+                    seg041.displayString(text, 0, 10, yCol, 12);
 
                     yCol++;
                 }
@@ -279,7 +278,7 @@ namespace engine
                     }
                 }
 
-                if (gbl.player_ptr02.itemsPtr != null)
+                if (gbl.player_ptr02.items.Count > 0)
                 {
                     text += "Items ";
                 }
@@ -319,7 +318,7 @@ namespace engine
                 bool dummyBool;
                 input_key = ovr027.displayInput(out dummyBool, false, 0, 15, 10, 13, text, string.Empty);
 
-                short var_32 = -1;
+                int index = -1;
 
                 switch (input_key)
                 {
@@ -328,7 +327,7 @@ namespace engine
                         break;
 
                     case 'S':
-                        spell_menu2(out hasSpells, ref var_32, 0, SpellLoc.memory);
+                        spell_menu2(out hasSpells, ref index, 0, SpellLoc.memory);
                         break;
 
                     case 'T':
@@ -379,7 +378,7 @@ namespace engine
             {
                 ovr025.displayPlayerName(false, 15, 1, gbl.player_ptr);
 
-                gbl.textXCol = (byte)(gbl.player_ptr.name.Length + 2);
+                gbl.textXCol = gbl.player_ptr.name.Length + 2;
                 gbl.textYCol = 0x15;
 
                 seg041.press_any_key(" was going to scribe from that scroll", false, 0, 0x0E, 0x16, 0x26, 0x15, 1);
@@ -455,15 +454,11 @@ namespace engine
 
         internal static void PlayerItemsMenu(ref bool arg_0) /*use_item*/
         {
-            string text;
-
             Player player = gbl.player_ptr;
             char inputKey = ' ';
 
-            Item curr_item = player.itemsPtr;
-
             bool var_2D = true;
-            byte var_2C = 1;
+            bool var_2C = true;
 
             while (unk_554EE.MemberOf(inputKey) == false &&
                 arg_0 == false &&
@@ -471,9 +466,9 @@ namespace engine
             {
                 byte var_40 = player.field_14C;
 
-                if (player.itemsPtr != null)
+                if (player.items.Count > 0)
                 {
-                    text = "Ready";
+                    string text = "Ready";
 
                     if (Cheats.view_item_stats)
                     {
@@ -523,16 +518,10 @@ namespace engine
                         text += " Id";
                     }
 
-                    Item tmpItem = player.itemsPtr;
+                    player.items.ForEach(item => ovr025.ItemDisplayNameBuild(false, true, 0, 0, item, player));
 
-                    while (tmpItem != null)
-                    {
-                        ovr025.ItemDisplayNameBuild(false, true, 0, 0, tmpItem, player);
 
-                        tmpItem = tmpItem.next;
-                    }
-
-                    if (var_2C != 0 || gbl.byte_1D2C8 == true)
+                    if (var_2C == true || gbl.byte_1D2C8 == true)
                     {
                         seg037.draw8x8_07();
 
@@ -542,13 +531,18 @@ namespace engine
                         seg041.displayString("Ready Item", 0, 15, 3, 1);
 
                         var_2D = true;
-                        var_2C = 0;
+                        var_2C = false;
                         gbl.byte_1D2C8 = false;
                     }
 
-                    short index = 0;
-                    inputKey = ovr027.sl_select_item(out curr_item, ref index, ref var_2D, true,
-                        player.itemsPtr, 0x16, 0x26, 5, 1, 15, 10, 13, text, string.Empty);
+                    var menulist = player.items.ConvertAll<MenuItem>(item => new MenuItem(item.name, item));
+                    MenuItem menuitem;
+
+                    int dummy_index = 0;
+                    inputKey = ovr027.sl_select_item(out menuitem, ref dummy_index, ref var_2D, true,
+                        menulist, 0x16, 0x26, 5, 1, 15, 10, 13, text, string.Empty);
+
+                    Item curr_item = menuitem != null ? menuitem.Item : null;
 
                     if (curr_item != null)
                     {
@@ -557,7 +551,7 @@ namespace engine
                             case 'V':
                                 ItemDisplayStats(curr_item);
                                 var_2D = true;
-                                var_2C = 1;
+                                var_2C = true;
                                 break;
 
                             case 'R':
@@ -581,7 +575,7 @@ namespace engine
 
                                     if (arg_0 == false)
                                     {
-                                        var_2C = 1;
+                                        var_2C = true;
                                     }
                                 }
                                 break;
@@ -595,7 +589,7 @@ namespace engine
                                 {
                                     inputKey = ' ';
                                 }
-                                var_2C = 1;
+                                var_2C = true;
                                 break;
 
                             case 'D':
@@ -922,7 +916,7 @@ namespace engine
                 }
                 else
                 {
-                    ovr025.addItem(item, player);
+                    player.items.Add(item);
                     ovr025.lose_item(item, gbl.player_ptr);
                     ovr025.reclac_player_values(player);
                 }
@@ -932,24 +926,19 @@ namespace engine
 
         internal static void halve_items(Item item)
         {
-            Item item_ptr;
-
             int half_number = item.count / 2;
 
             if (half_number > 0)
             {
                 int half_and_remander = item.count - half_number;
 
-                item_ptr = item.ShallowClone();
+                Item item_ptr = item.ShallowClone();
+                item.count = half_and_remander;
 
                 item_ptr.count = half_number;
                 item_ptr.readied = false;
 
-                item_ptr.next = item.next;
-
-                item.count = half_and_remander;
-
-                item.next = item_ptr;
+                gbl.player_ptr.items.Add(item_ptr);
             }
             else
             {
@@ -960,45 +949,42 @@ namespace engine
 
         internal static void join_items(Item item) /*sub_56285*/
         {
+            var match = gbl.player_ptr.items.FindAll(i =>
+                {
+                    return (i != item &&
+                    i.count > 0 &&
+                    i.field_2F == item.field_2F &&
+                    i.field_30 == item.field_30 &&
+                    i.field_31 == item.field_31 &&
+                    i.type == item.type &&
+                    i.plus == item.plus &&
+                    i.plus_save == item.plus_save &&
+                    i.cursed == item.cursed &&
+                    i.weight == item.weight &&
+                    i.affect_1 == item.affect_1 &&
+                    (int)i.affect_1 < 2 &&
+                    i.affect_2 == item.affect_2 &&
+                    i.affect_3 == item.affect_3);
+                });
+
             Item this_item = item;
             int items_count = this_item.count;
 
-            Item item_ptr = gbl.player_ptr.itemsPtr;
-            while (item_ptr != null)
+            foreach (var item_ptr in match)
             {
-                Item next_item = item_ptr.next;
-
-                if (item_ptr != this_item &&
-                    item_ptr.count > 0 &&
-                    item_ptr.field_2F == this_item.field_2F &&
-                    item_ptr.field_30 == this_item.field_30 &&
-                    item_ptr.field_31 == this_item.field_31 &&
-                    item_ptr.type == this_item.type &&
-                    item_ptr.plus == this_item.plus &&
-                    item_ptr.plus_save == this_item.plus_save &&
-                    item_ptr.cursed == this_item.cursed &&
-                    item_ptr.weight == this_item.weight &&
-                    item_ptr.affect_1 == this_item.affect_1 &&
-                    (int)item_ptr.affect_1 < 2 &&
-                    item_ptr.affect_2 == this_item.affect_2 &&
-                    item_ptr.affect_3 == this_item.affect_3 )
+                if (item_ptr.count + items_count <= 255)
                 {
-                    if (item_ptr.count + items_count <= 255)
-                    {
-                        items_count += item_ptr.count;
-                        ovr025.lose_item(item_ptr, gbl.player_ptr);
-                    }
-                    else
-                    {
-                        this_item.count = 255;
-
-                        item_ptr.count -= (byte)(255 - items_count);
-                        items_count = item_ptr.count;
-                        this_item = item_ptr;
-                    }
+                    items_count += item_ptr.count;
+                    ovr025.lose_item(item_ptr, gbl.player_ptr);
                 }
+                else
+                {
+                    this_item.count = 255;
+                    item_ptr.count -= 255 - items_count;
 
-                item_ptr = next_item;
+                    items_count = item_ptr.count;
+                    this_item = item_ptr;
+                }
             }
             this_item.count = items_count;
         }
@@ -1007,7 +993,6 @@ namespace engine
         internal static void sub_56478(ref bool arg_0, Item item)
         {
             gbl.spell_from_item = false;
-            short var_3 = -1;
             byte var_1 = 0;
 
             if (ovr023.item_is_scroll(item) == true)
@@ -1015,7 +1000,8 @@ namespace engine
                 gbl.dword_1D5C6 = item;
 
                 bool dummy_bool;
-                var_1 = spell_menu2(out dummy_bool, ref var_3, SpellSource.Cast, SpellLoc.scroll);
+                int dummy_index = -1;
+                var_1 = spell_menu2(out dummy_bool, ref dummy_index, SpellSource.Cast, SpellLoc.scroll);
             }
             else if( item.affect_2 > 0 && (int)item.affect_3 < 0x80 )
             {
@@ -1168,7 +1154,7 @@ namespace engine
                     else
                     {
                         gbl.player_ptr.platinum += var_8;
-                        gbl.pooled_money[money.platum] += plat - var_8;
+                        gbl.pooled_money[Money.platum] += plat - var_8;
                     }
 
                     gbl.player_ptr.gold += gold;
@@ -1265,34 +1251,24 @@ namespace engine
                         displayMoney();
                         gbl.player_ptr01 = source;
 
-                        StringList var_C = null;
-                        StringList var_14 = null;
-                        int counter = 0;
+                        List<MenuItem> list = new List<MenuItem>();
 
                         for (int coin = 0; coin <= 6; coin++)
                         {
-                            if (gbl.player_ptr.Money[coin] != 0)
+                            if (gbl.player_ptr.Money[coin] > 0)
                             {
-                                counter++;
-
-                                StringList tmp_sl = var_C;
-                                var_C = new StringList();
-                                var_C.next = tmp_sl;
-
-                                var_C.s = moneyString[coin].PadLeft(8, ' ') + ' ' + gbl.player_ptr.Money[coin].ToString();
-                                var_C.field_29 = 0;
+                                list.Add(new MenuItem(string.Format("{0,8} {1}", moneyString[coin], gbl.player_ptr.Money[coin])));
                             }
                         }
 
-                        var_14 = var_C;
-                        short dummyIndex = 0;
+                        int dummyIndex = 0;
                         bool dummyBool = true;
-                        StringList var_10;
+                        MenuItem selected;
 
-                        ovr027.sl_select_item(out var_10, ref dummyIndex, ref dummyBool, true,
-                            var_C, 13, 0x19, 7, 12, 15, 10, 13, " Select", "Select type of coin ");
+                        ovr027.sl_select_item(out selected, ref dummyIndex, ref dummyBool, true,
+                            list, 13, 0x19, 7, 12, 15, 10, 13, " Select", "Select type of coin ");
 
-                        if (var_10 == null)
+                        if (selected == null)
                         {
                             noMoneyLeft = true;
                         }
@@ -1300,7 +1276,7 @@ namespace engine
                         {
                             string text;
 
-                            int money_slot = ovr022.GetMoneyIndexFromString(out text, var_10.s);
+                            int money_slot = ovr022.GetMoneyIndexFromString(out text, selected.Text);
 
                             text = "How much " + text + "will you trade? ";
 
@@ -1320,10 +1296,7 @@ namespace engine
                             }
                         }
 
-                        if (var_14 != null)
-                        {
-                            ovr027.free_stringList(ref var_14);
-                        }
+                        list.Clear();
 
                     } while (noMoneyLeft == false);
                 }
@@ -1333,46 +1306,26 @@ namespace engine
 
         internal static void drop_coin()
         {
-            string var_2B;
-            string var_26;
             bool var_16;
             bool noMoreMoney;
-            byte var_4;
 
             do
             {
                 displayMoney();
-                StringList var_C = null;
-                StringList var_10 = null;
-                StringList var_12 = null;
+                List<MenuItem> var_C = new List<MenuItem>();
 
-                for (int coin = 0; coin <= 6; coin++)
+                for (int coin = 0; coin < 7; coin++)
                 {
                     if (gbl.player_ptr.Money[coin] != 0)
                     {
-                        var_10 = var_C;
-                        var_C = new StringList();
-                        var_C.next = var_10;
-
-                        seg051.Str(15, out var_26, 0, gbl.player_ptr.Money[coin]);
-                        int var_3 = 8 - moneyString[coin].Length;
-                        var_2B = string.Empty;
-
-                        for (var_4 = 0; var_4 < var_3; var_4++)
-                        {
-                            var_2B += ' ';
-                        }
-
-                        var_C.s = var_2B + moneyString[coin] + " " + var_26;
-                        var_C.field_29 = 0;
+                        var_C.Add(new MenuItem(string.Format("{0,8} {1}", moneyString[coin], gbl.player_ptr.Money[coin])));
                     }
                 }
 
-                var_12 = var_C;
-
-                short index = 0;
+                int index = 0;
                 var_16 = true;
 
+                MenuItem var_10;
                 ovr027.sl_select_item(out var_10, ref index, ref var_16, true, var_C, 13, 0x19, 7,
                     12, 15, 10, 13, " Select", "Select type of coin ");
 
@@ -1384,7 +1337,7 @@ namespace engine
                 {
                     string text;
 
-                    int money_slot = ovr022.GetMoneyIndexFromString(out text, var_10.s);
+                    int money_slot = ovr022.GetMoneyIndexFromString(out text, var_10.Text);
 
                     text = "How much " + text + "will you drop? ";
 
@@ -1393,7 +1346,7 @@ namespace engine
                     ovr022.drop_coins(money_slot, num_coins, gbl.player_ptr);
                     noMoreMoney = true;
 
-                    for (int coin = 0; coin <= 6; coin++)
+                    for (int coin = 0; coin < 7; coin++)
                     {
                         if (gbl.player_ptr.Money[coin] > 0)
                         {
@@ -1402,10 +1355,7 @@ namespace engine
                     }
                 }
 
-                if (var_12 != null)
-                {
-                    ovr027.free_stringList(ref var_12);
-                }
+                var_C.Clear();
             } while (noMoreMoney == false);
         }
 
@@ -1471,15 +1421,15 @@ namespace engine
 
             for (int i = 0; i < 5; i++)
             {
-                var_6 += player.Money[i] * money.per_copper[i];
+                var_6 += player.Money[i] * Money.per_copper[i];
             }
 
-            var_2 = (var_6 + 100) / money.per_copper[money.gold];
+            var_2 = (var_6 + 100) / Money.per_copper[Money.gold];
 
             return var_2;
         }
 
-        internal static byte spell_menu2(out bool arg_0, ref short arg_4, SpellSource arg_8, SpellLoc spl_location)
+        internal static byte spell_menu2(out bool arg_0, ref int index, SpellSource arg_8, SpellLoc spl_location)
         {
             string text;
             byte result;
@@ -1525,7 +1475,7 @@ namespace engine
 
             if (arg_0 == true )
             {
-                if (arg_4 < 0 ||
+                if (index < 0 ||
                     arg_8 == SpellSource.Cast)
                 {
                     if (gbl.game_state != 5)
@@ -1549,7 +1499,7 @@ namespace engine
 
                 seg041.displayString("Spells " + text, 0, 10, 1, gbl.player_ptr.name.Length + 4);
 
-                result = ovr023.spell_menu(ref arg_4, arg_8);
+                result = ovr023.spell_menu(ref index, arg_8);
             }
             else
             {

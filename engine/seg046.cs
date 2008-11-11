@@ -22,12 +22,8 @@ namespace engine
         }
 
 
-        internal static void FINDFIRST(out SearchRec record, short search_attrib, string arg_file_string)
+        internal static SearchRec FINDFIRST(string arg_file_string)
         {
-            record = new SearchRec();
-            
-            System.IO.DirectoryInfo di;
-
             string root = string.Empty;
             string filter = System.IO.Path.GetFileName(arg_file_string);
 
@@ -49,24 +45,24 @@ namespace engine
             if (System.IO.Directory.Exists(root) == false)
             {
                 gbl.FIND_result = SearchRec.PathNotFound;
-                return;
+                return null;
             } 
             
-            di = new System.IO.DirectoryInfo(root);
-
-
-
+            var di = new System.IO.DirectoryInfo(root);
+            var record = new SearchRec();
             record.files = di.GetFiles(filter);
 
             if (record.files.Length == 0)
             {
                 gbl.FIND_result = SearchRec.NoMoreFiles;
-                return;
+                return null;
             }
 
             gbl.FIND_result = 0;
             record.fileName = record.files[0].Name;
             record.index = 0;
+
+            return record;
         }
 
 

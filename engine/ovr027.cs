@@ -1,4 +1,5 @@
 using Classes;
+using System.Collections.Generic;
 
 namespace engine
 {
@@ -12,46 +13,9 @@ namespace engine
             yesNoFlags += (11*8) + 1;
         }
 
-        internal static T getStringListEntry<T>( T list, int index ) where T : class, Classes.IListBase
+        internal static MenuItem getStringListEntry(List<MenuItem> list, int index)
         {
-            int loop_var = 0;
-
-            T current = list;
-
-            while( current != null && loop_var != index )
-            {
-                current = (T)current.Next();
-                loop_var++;
-            }
-
-            if( loop_var == index )
-            {
-                return current;
-            }
-            else
-            {
-                return null;
-            }
-        }
-
-
-        internal static short StringListCount<T>(T list) where T : class, IListBase
-        {
-            short count;
-            T current;
-
-            count = 0;
-
-            current = list;
-
-            while (current != null)
-            {
-                count++;
-
-                current = (T)current.Next();
-            }
-
-            return count;
+            return (list.Count > index) ? list[index] : null;
         }
 
         static Set highlightable_text = new Set(0x0606, new byte[] { 0xFF, 3, 0xFE, 0xFF, 0xFF, 7 });
@@ -128,8 +92,8 @@ namespace engine
         }
 
 
-        internal static void display_highlighed_text(int highlighed_word, byte highlightFgColor, 
-            string text, int xOffset, byte fgColor, HighlightSet highlights) /* sub_6C1E9 */
+        internal static void display_highlighed_text(int highlighed_word, int highlightFgColor, 
+            string text, int xOffset, int fgColor, HighlightSet highlights) /* sub_6C1E9 */
         {
             if (text.Length > 0)
             {
@@ -170,7 +134,7 @@ namespace engine
         static byte[] unk_18AE0 = { 0x4F, 0x50, 0x51, 0x4B, 0x20, 0x4D, 0x47, 0x48, 0x49 };
 
 
-        internal static char displayInput(out bool specialKeyPressed, bool useOverlay, byte arg_6, byte highlightFgColor, byte fgColor, byte extraStringFgColor, string displayInputString, string displayExtraString)
+        internal static char displayInput(out bool specialKeyPressed, bool useOverlay, byte arg_6, int highlightFgColor, int fgColor, int extraStringFgColor, string displayInputString, string displayExtraString)
         {
             int var_8E;
             byte var_61;
@@ -396,259 +360,191 @@ namespace engine
             Display.Update();
 		}
 
-
-		internal static T sub_6C804<T>( T arg_2, int index )where T: class,IListBase
-		{
-            T var_C;
-            T var_8;
-            T var_4;
-
-			int count = 0;
-
-			var_8 = arg_2;
-			var_C = null;
-
-			while( var_8 != null && count < index )
-			{
-				if( var_8.Field29() != 0 )
-				{
-					var_C = var_8;
-				}
-
-				var_8 = (T)var_8.Next();
-				count++;
-			}
-
-			if( var_C == null &&
-                arg_2.Field29() != 0)
-			{
-				var_4 = arg_2;
-			}
-			else
-			{
-				var_4 = var_C;
-			}
-
-			return var_4;
-		}
-
-
-        internal static void sub_6C897<T>(short arg_2,
-            int yEnd, int xEnd, int yStart, int xStart, T bp_arg_E,
-            byte bp_arg_1C, byte bp_arg_1E, int displayFillWidth) where T : class, IListBase
+        internal static void sub_6C897(int index,
+            int yEnd, int xEnd, int yStart, int xStart, List<MenuItem> list,
+            int normalColor, int headingColor, int displayFillWidth) // sub_6C897
         {
             seg037.draw8x8_clear_area(yEnd, xEnd, yStart, xStart);
 
-            T var_4 = getStringListEntry(bp_arg_E, arg_2);
-            T var_8 = sub_6C804(bp_arg_E, arg_2);
+            MenuItem var_4 = getStringListEntry(list, index);
 
             int yCol = yStart;
+            int count = System.Math.Min(yEnd - yStart + 1, list.Count - index);
 
-            while (var_4 != null && yCol <= yEnd)
+            foreach (var menu in list.GetRange(index, count))
             {
-                if (var_4.Field29() != 0)
-                {
-                    seg041.displayString(var_4.String(), 0, bp_arg_1E, yCol, xStart);
-                }
-                else
-                {
-                    seg041.displayString(var_4.String(), 0, bp_arg_1C, yCol, xStart);
-                }
+                seg041.displayString(menu.Text, 0, menu.Heading ? headingColor : normalColor, yCol, xStart);
 
-                if (var_4.String().Length < displayFillWidth)
+                if (menu.Text.Length < displayFillWidth)
                 {
-                    seg041.display_char01(true, ' ', displayFillWidth - var_4.String().Length, 0, 0, 
-                        yCol, var_4.String().Length + xStart);
+                    seg041.display_char01(true, ' ', displayFillWidth - menu.Text.Length, 0, 0,
+                        yCol, menu.Text.Length + xStart);
                 }
-
-                var_4 = (T)var_4.Next();
                 yCol++;
             }
         }
 
 
-		static byte getBegingOfString( string arg_2 )
+		static int getBegingOfString( string text )
 		{
-            return (byte)(arg_2.Length - arg_2.TrimStart(' ').Length);
+            return text.Length - text.TrimStart(' ').Length;
 		}
 
-        static byte getEndOfString(string arg_2)
+        static void ListItemHighlighted(int index, List<MenuItem> stringList, int yCol, int xCol, int bgColor) 
 		{
-            return (byte)arg_2.TrimEnd(' ').Length;	
-		}
+			MenuItem menu_item = getStringListEntry( stringList, index );
 
+            int stringStart = getBegingOfString(menu_item.Text);
 
-        static void ListItemHighlighted<T>(short index, T stringList, int listDisplayStartY, int listDisplayStartX,
-            byte bgColor) where T : class, IListBase
-		{
-			T var_4 = getStringListEntry( stringList, index );
-
-			int stringStart = getBegingOfString( var_4.String() );
-			int stringEnd = getEndOfString( var_4.String() ) - stringStart ;
-
-			seg041.displayString( 
-				seg051.Copy( stringEnd, stringStart, var_4.String() ),
+			seg041.displayString(
+                menu_item.Text.Trim(),
 				bgColor, 
 				0, 
-				listDisplayStartY + ( index - gbl.word_1D5BC ),
-				listDisplayStartX + stringStart );
+				yCol + ( index - gbl.menuScreenIndex ),
+				xCol + stringStart );
 		}
 
 
-        static void ListItemNormal<T>(short arg_2, T bp_arg_10, int startY, int startX, byte bp_arg_1C, byte bp_arg_1E) where T : class, IListBase
+        static void ListItemNormal(int index, List<MenuItem> list, int yCol, int xCol, int normalColor, int headingColor)
         {
-            byte var_5;
-            T var_4;
+            MenuItem menu_item = getStringListEntry(list, index);
 
-            var_4 = getStringListEntry(bp_arg_10, arg_2);
+            int var_5 = getBegingOfString(menu_item.Text);
 
-            var_5 = getBegingOfString(var_4.String());
+            string text = menu_item.Text.Trim();
 
-            int copyLen = (byte)((getEndOfString(var_4.String()) - var_5));
-
-            string text = seg051.Copy(copyLen, var_5, var_4.String());
-            if (var_4.Field29() != 0)
+            if (menu_item.Heading)
             {
-                seg041.displayString(text, 0, bp_arg_1E, startY + (arg_2 - gbl.word_1D5BC), startX + var_5);
+                seg041.displayString(text, 0, headingColor, yCol + (index - gbl.menuScreenIndex), xCol + var_5);
             }
             else
             {
-                seg041.displayString(text, 0, bp_arg_1C, startY + (arg_2 - gbl.word_1D5BC), startX + var_5);
+                seg041.displayString(text, 0, normalColor, yCol + (index - gbl.menuScreenIndex), xCol + var_5);
             }
         }
 
 
-        internal static void sub_6CC08<T>( bool arg_2, ref short bp_arg_4, T bp_arg_E, short bp_var_56, short bp_var_59) where T: class,IListBase
+        internal static int skipHeadings(bool backwardsStep, int index, List<MenuItem> list, int listDisplayHeight) // sub_6CC08
         {
-            short var_2;
+            short var_2 = 0;
 
-			var_2 = 0;
-
-            if (arg_2 == true)
+            if (backwardsStep == true)
             {
-                while (var_2 < bp_var_59 &&
-                    getStringListEntry(bp_arg_E, bp_arg_4).Field29() != 0 )
+                while (var_2 < listDisplayHeight && list[index].Heading)
                 {
                     var_2++;
-                    bp_arg_4 += 1;
+                    index += 1;
 
-                    if ((gbl.word_1D5BC + bp_var_59 - 1) < bp_arg_4)
+                    if ((gbl.menuScreenIndex + listDisplayHeight - 1) < index)
                     {
-                        bp_arg_4 = gbl.word_1D5BC;
+                        index = gbl.menuScreenIndex;
                     }
 
-                    if ((bp_var_56 - 1) < bp_arg_4)
+                    if ((list.Count - 1) < index)
                     {
-                        bp_arg_4 = gbl.word_1D5BC;
+                        index = gbl.menuScreenIndex;
                     }
                 }
             }
             else
             {
-                while (var_2 < bp_var_59 &&
-                    getStringListEntry(bp_arg_E, bp_arg_4).Field29() != 0)
+                while (var_2 < listDisplayHeight && list[index].Heading)
                 {
                     var_2++;
-                    bp_arg_4 -= 1;
+                    index -= 1;
 
-                    if (bp_arg_4 < gbl.word_1D5BC)
+                    if (index < gbl.menuScreenIndex)
                     {
-                        bp_arg_4 = (short)(gbl.word_1D5BC + bp_var_59 - 1);
+                        index = (short)(gbl.menuScreenIndex + listDisplayHeight - 1);
                     }
 
-                    if ((bp_var_56 - 1) < bp_arg_4)
+                    if ((list.Count - 1) < index)
                     {
-                        bp_arg_4 = (short)(bp_var_56 - 1);
+                        index = (short)(list.Count - 1);
                     }
                 }
             }
+
+            return index;
         }
 
 
-        internal static void sub_6CD38<T>(bool arg_2, ref short bp_arg_4, T bp_arg_E, short bp_var_56,
-            short bp_var_59,
+        internal static void sub_6CD38(bool backwardsStep, ref int index, List<MenuItem> list, int listDisplayHeight,
             int yEnd, int xEnd, int yStart, int xStart,
-            byte bp_arg_1C, byte bp_arg_1E, int displayFillWidth) where T : class,IListBase
+            int normalColor, int headingColor, int displayFillWidth)
         {
-            short var_2;
+            int screenOffset = index - gbl.menuScreenIndex;
 
-            var_2 = (short)(bp_arg_4 - gbl.word_1D5BC);
-
-            if (arg_2 == true)
+            if (backwardsStep == true)
             {
-                gbl.word_1D5BC += bp_var_59;
-                if ((bp_var_56 - bp_var_59) < gbl.word_1D5BC)
+                gbl.menuScreenIndex += listDisplayHeight;
+                if ((list.Count - listDisplayHeight) < gbl.menuScreenIndex)
                 {
-                    gbl.word_1D5BC = (short)(bp_var_56 - bp_var_59);
+                    gbl.menuScreenIndex = (short)(list.Count - listDisplayHeight);
                 }
             }
             else
             {
-                gbl.word_1D5BC -= bp_var_59;
+                gbl.menuScreenIndex -= listDisplayHeight;
 
-                if (gbl.word_1D5BC < 0)
+                if (gbl.menuScreenIndex < 0)
                 {
-                    gbl.word_1D5BC = 0;
+                    gbl.menuScreenIndex = 0;
                 }
             }
 
-            bp_arg_4 = (short)(gbl.word_1D5BC + var_2);
+            index = gbl.menuScreenIndex + screenOffset;
 
-            sub_6CC08(arg_2, ref bp_arg_4, bp_arg_E, bp_var_56, bp_var_59);
+            index = skipHeadings(backwardsStep, index, list, listDisplayHeight);
 
-            sub_6C897(gbl.word_1D5BC, yEnd, xEnd, yStart, xStart,
-                bp_arg_E, bp_arg_1C, bp_arg_1E, displayFillWidth);
+            sub_6C897(gbl.menuScreenIndex, yEnd, xEnd, yStart, xStart,
+                list, normalColor, headingColor, displayFillWidth);
         }
 
 
-        internal static void sub_6CDCA<T>(bool arg_2, ref short index, T list, short bp_var_56, short bp_var_59 ) where T : class, IListBase
+        internal static int sub_6CDCA(bool backwardsStep, int index, List<MenuItem> list, int listDisplayHeight )
         {
-			if( arg_2 == true )
+			if( backwardsStep == true )
 			{
                 index += 1;
 
-                if ((gbl.word_1D5BC + bp_var_59 - 1) < index)
+                if ((gbl.menuScreenIndex + listDisplayHeight - 1) < index)
                 {
-                    index = gbl.word_1D5BC;
+                    index = gbl.menuScreenIndex;
                 }
 
-                if ((bp_var_56 - 1) < index)
+                if ((list.Count - 1) < index)
                 {
-                    index = gbl.word_1D5BC;
+                    index = gbl.menuScreenIndex;
                 }
 			}
 			else
 			{
                 index -= 1;
 
-                if (index < gbl.word_1D5BC)
+                if (index < gbl.menuScreenIndex)
                 {
-                    index = (short)(gbl.word_1D5BC + bp_var_59 - 1);
+                    index = (short)(gbl.menuScreenIndex + listDisplayHeight - 1);
                 }
 
-                if ((bp_var_56 - 1) < index)
+                if ((list.Count - 1) < index)
                 {
-                    index = (short)(bp_var_56 - 1);
+                    index = (short)(list.Count - 1);
                 }
 			}
 
-            sub_6CC08( arg_2, ref index, list, bp_var_56, bp_var_59 );
+            return skipHeadings( backwardsStep, index, list, listDisplayHeight );
         }
 
 
-        internal static char sl_select_item<T>(out T result_ptr, ref short index_ptr,
-            ref bool arg_8, bool showExit, T stringList, 
+        internal static char sl_select_item(out MenuItem result_ptr, ref int index_ptr,
+            ref bool arg_8, bool showExit, List<MenuItem> stringList, 
             int endY, int endX, int startY, int startX, 
-            byte highlightBgColor, byte arg_1C, byte arg_1E,
-            string inputString, string extraTextString) where T : class, IListBase
+            int highlightBgColor, int normalColor, int headingColor,
+            string inputString, string extraTextString)
         {
-            short var_8D;
-            short stringList_size;
-            T tmpStringList;
             bool showPrevious;
             bool showNext;
-            short var_59;
-            short var_56;
 
             char ret_val = '\0'; /* Simeon */
             result_ptr = null; /*Simeon*/
@@ -663,52 +559,35 @@ namespace engine
             
             gbl.byte_1D5BE = 1;
 
-            int listDisplayWidth = (byte)((endX - startX) + 1);
-            var_56 = StringListCount(stringList);
-            var_59 = (short)((endY - startY) + 1);
+            int listDisplayWidth = (endX - startX) + 1;
+            int listDisplayHeight = (short)((endY - startY) + 1);
 
-            tmpStringList = stringList;
-            stringList_size = 0;
+            int listCount = stringList.Count;
 
-            while (tmpStringList != null && tmpStringList.Field29() != 0)
+            if (listCount <= listDisplayHeight)
             {
-                tmpStringList = (T)tmpStringList.Next();
-                stringList_size++;
+                gbl.menuScreenIndex = 0;
             }
 
-            tmpStringList = stringList;
-            var_8D = 0;
-
-            while (tmpStringList != null)
+            if (gbl.menuScreenIndex > index_ptr)
             {
-                tmpStringList = (T)tmpStringList.Next();
-                var_8D++;
-            }
-
-            if (var_8D <= var_59)
-            {
-                gbl.word_1D5BC = 0;
-            }
-
-            if (gbl.word_1D5BC > index_ptr)
-            {
-                gbl.word_1D5BC = index_ptr;
+                gbl.menuScreenIndex = index_ptr;
                 arg_8 = true;
             }
 
-            if (gbl.word_1D5BC > var_8D)
+            if (gbl.menuScreenIndex > listCount)
             {
-                gbl.word_1D5BC = 0;
+                gbl.menuScreenIndex = 0;
                 arg_8 = true;
             }
 
             index_ptr++;
-            sub_6CDCA(false, ref index_ptr, stringList, var_56, var_59);
+            index_ptr = sub_6CDCA(false, index_ptr, stringList, listDisplayHeight);
 
             if (arg_8 == true)
             {
-                sub_6C897(gbl.word_1D5BC, endY, endX, startY, startX,
-                    stringList, arg_1C, arg_1E, listDisplayWidth);
+                sub_6C897(gbl.menuScreenIndex, endY, endX, startY, startX,
+                    stringList, normalColor, headingColor, listDisplayWidth);
             }
 
             arg_8 = false;
@@ -723,13 +602,13 @@ namespace engine
                 showNext = false;
                 showPrevious = false;
 
-                if ((var_56 - var_59) > gbl.word_1D5BC)
+                if ((listCount - listDisplayHeight) > gbl.menuScreenIndex)
                 {
                     displayString += " Next";
                     showNext = true;
                 }
 
-                if (gbl.word_1D5BC > stringList_size)
+                if (gbl.menuScreenIndex > listCount)
                 {
                     displayString += " Prev";
                     showPrevious = true;
@@ -741,33 +620,33 @@ namespace engine
                 }
 
                 bool speical_key;
-                char input_key = displayInput(out speical_key, false, 1, highlightBgColor, arg_1C, arg_1E, displayString, extraTextString);
+                char input_key = displayInput(out speical_key, false, 1, highlightBgColor, normalColor, headingColor, displayString, extraTextString);
 
-                ListItemNormal(index_ptr, stringList, startY, startX, arg_1C, arg_1E);
+                ListItemNormal(index_ptr, stringList, startY, startX, normalColor, headingColor);
 
                 if (speical_key == true)
                 {
                     switch (input_key)
                     {
                         case 'G':
-                            sub_6CDCA(false, ref index_ptr, stringList, var_56, var_59);
+                            index_ptr = sub_6CDCA(false, index_ptr, stringList, listDisplayHeight);
                             break;
 
                         case 'O':
-                            sub_6CDCA(true, ref index_ptr, stringList, var_56, var_59);
+                            index_ptr = sub_6CDCA(true, index_ptr, stringList, listDisplayHeight);
                             break;
 
                         case 'I':
                             if (showPrevious == true)
                             {
-                                sub_6CD38(false, ref index_ptr, stringList, var_56, var_59, endY, endX, startY, startX, arg_1C, arg_1E, listDisplayWidth);
+                                sub_6CD38(false, ref index_ptr, stringList, listDisplayHeight, endY, endX, startY, startX, normalColor, headingColor, listDisplayWidth);
                             }
                             break;
 
                         case 'Q':
                             if (showNext == true)
                             {
-                                sub_6CD38(true, ref index_ptr, stringList, var_56, var_59, endY, endX, startY, startX, arg_1C, arg_1E, listDisplayWidth);
+                                sub_6CD38(true, ref index_ptr, stringList, listDisplayHeight, endY, endX, startY, startX, normalColor, headingColor, listDisplayWidth);
                             }
                             break;
                     }
@@ -777,12 +656,12 @@ namespace engine
                     switch (input_key)
                     {
                         case 'P':
-                            sub_6CD38(false, ref index_ptr, stringList, var_56, var_59, endY, endX, startY, startX, arg_1C, arg_1E, listDisplayWidth);
+                            sub_6CD38(false, ref index_ptr, stringList, listDisplayHeight, endY, endX, startY, startX, normalColor, headingColor, listDisplayWidth);
                             break;
 
                         case 'N':
 
-                            sub_6CD38(true, ref index_ptr, stringList, var_56, var_59, endY, endX, startY, startX, arg_1C, arg_1E, listDisplayWidth);
+                            sub_6CD38(true, ref index_ptr, stringList, listDisplayHeight, endY, endX, startY, startX, normalColor, headingColor, listDisplayWidth);
                             break;
 
                         case (char)0x1B:
@@ -820,40 +699,6 @@ namespace engine
             } while (yesNoFlags.MemberOf(inputKey) == false);
 
             return inputKey;
-        }
-
-
-        internal static StringList alloc_stringList(int numEntries)
-        {
-            StringList sl = new StringList();
-            StringList sl_ptr = sl;
-
-			for( int i = 1; i < numEntries; i++ )
-			{
-				sl_ptr.next = new StringList();
-
-                sl_ptr = sl_ptr.next;
-			}
-
-            return sl;
-        }
-
-
-        internal static void free_stringList( ref StringList arg_0 )
-        {
-            object tmp_thing;
-            StringList thing;
-
-			thing = arg_0;
-
-			while( thing != null )
-			{
-				tmp_thing = thing;
-
-				thing = thing.next;
-
-				seg051.FreeMem( 0x2E, tmp_thing );
-			}
         }
 	}
 }

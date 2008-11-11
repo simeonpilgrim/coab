@@ -1,44 +1,31 @@
 using Classes;
+using System.Collections.Generic;
 
 namespace engine
 {
     class ovr017
     {
-        internal static void sub_4708B(ref StringList arg_2, ref StringList arg_6, short arg_A, short arg_C, short arg_E, string arg_10)
+        internal static void sub_4708B(ref List<MenuItem> arg_2, ref List<MenuItem> arg_6, 
+            short playerFileSize, short arg_C, short nameOffset, string fileFilter)
         {
             byte var_164;
-            string var_163;
             File var_112 = new File();
-            SearchRec var_90;
-            StringList var_61 = null;
-            StringList var_5D;
-            StringList var_59 = null;
-            StringList var_55;
-            string var_51;
 
-            var_51 = arg_10;
-
-            var_55 = null;
-            var_5D = null;
             byte[] data = new byte[16];
 
-            seg046.FINDFIRST(out var_90, 0, var_51);
+            var var_90 = seg046.FINDFIRST(fileFilter);
 
             while (gbl.FIND_result == 0)
             {
                 var_112.Assign(gbl.SavePath + var_90.fileName);
                 seg051.Reset(var_112);
 
-                if (seg051.FileSize(var_112) == arg_A)
+                if (seg051.FileSize(var_112) == playerFileSize)
                 {
-
-                    var_55 = new StringList();
-                    var_5D = new StringList();
-
-                    seg051.Seek(arg_E, var_112);
-
+                    seg051.Seek(nameOffset, var_112);
                     seg051.BlockRead(16, data, var_112);
-                    var_55.s = Sys.ArrayToString(data, 0, 16);
+
+                    string playerName = Sys.ArrayToString(data, 0, 16).Trim();
 
                     seg051.Seek(arg_C, var_112);
 
@@ -52,55 +39,17 @@ namespace engine
                         var_164 = data[0];
                     }
 
-                    var_5D.s = var_90.fileName;
+                    string fullNameText =
+                        string.Compare(System.IO.Path.GetExtension(var_90.fileName), ".sav", true) == 0 ?
+                        string.Format("{0,-15} from save game {1}", playerName, var_90.fileName[7]) : playerName;
 
-                    if (seg051.Copy(4, 9, var_90.fileName) == ".SAV")
+                    bool found = gbl.player_next_ptr.Find(player => playerName == player.name.Trim()) != null;
+
+                    if (found == false && var_164 <= 0x7F)
                     {
-                        var_163 = "from saved game " + var_90.fileName[7].ToString();
-                    }
-                    else
-                    {
-                        var_163 = string.Empty;
-                    }
+                        arg_2.Add(new MenuItem(var_90.fileName));
+                        arg_6.Add(new MenuItem(fullNameText));
 
-                    var_55.s += seg051.Copy(15 - var_55.s.Length, 1, "         ") + var_163;
-
-                    bool found = false;
-                    foreach(Player player_ptr in gbl.player_next_ptr)
-                    {
-                        string var_275 = seg051.Copy(15, 1, var_55.s);
-                        string var_475 = string.Format("{0,-15}", player_ptr.name);
-
-                        if (var_275 == var_475)
-                        {
-                            found = true;
-                            break;
-                        }
-                    }
-
-                    if (var_164 > 0x7F ||
-                        found == true)
-                    {
-                        var_55 = null;
-                        var_5D = null;
-                    }
-
-                    if (var_55 != null)
-                    {
-                        if (arg_6 == null)
-                        {
-                            arg_6 = var_55;
-                            var_59 = arg_6;
-                            arg_2 = var_5D;
-                            var_61 = arg_2;
-                        }
-                        else
-                        {
-                            var_59.next = var_55;
-                            var_59 = var_59.next;
-                            var_61.next = var_5D;
-                            var_61 = var_61.next;
-                        }
                     }
                 }
 
@@ -109,29 +58,28 @@ namespace engine
             }
         }
 
-        static byte[] unk_16818 = { 0, 0, 4 };
+        static byte[] PlayerNameOffset = { 0, 0, 4 };
         static short[] unk_1681B = { 0xf7, 0x84, 0x13 };
-        static short[] unk_16821 = { 0x01a6, 0x11d, 0xbc };
 
-        internal static void sub_47465(out StringList arg_0, out StringList arg_4)
+        internal static void sub_47465(out List<MenuItem> arg_0, out List<MenuItem> arg_4)
         {
-            arg_4 = null;
-            arg_0 = null;
+            arg_4 = new List<MenuItem>();
+            arg_0 = new List<MenuItem>();
 
             if (save() == true)
             {
                 if (gbl.import_from == ImportSource.Curse)
                 {
-                    sub_4708B(ref arg_0, ref arg_4, unk_16821[0], unk_1681B[0], unk_16818[0], gbl.SavePath + "*.guy");
+                    sub_4708B(ref arg_0, ref arg_4, Player.StructSize, unk_1681B[0], PlayerNameOffset[0], gbl.SavePath + "*.guy");
                 }
                 else if (gbl.import_from == ImportSource.Pool)
                 {
-                    sub_4708B(ref arg_0, ref arg_4, unk_16821[1], unk_1681B[1], unk_16818[1], gbl.SavePath + "*.cha");
-                    sub_4708B(ref arg_0, ref arg_4, unk_16821[1], unk_1681B[1], unk_16818[1], gbl.SavePath + "*.sav");
+                    sub_4708B(ref arg_0, ref arg_4, PoolRadPlayer.StructSize, unk_1681B[1], PlayerNameOffset[1], gbl.SavePath + "*.cha");
+                    sub_4708B(ref arg_0, ref arg_4, PoolRadPlayer.StructSize, unk_1681B[1], PlayerNameOffset[1], gbl.SavePath + "*.sav");
                 }
                 else if (gbl.import_from == ImportSource.Hillsfar)
                 {
-                    sub_4708B(ref arg_0, ref  arg_4, unk_16821[2], unk_1681B[2], unk_16818[2], gbl.SavePath + "*.hil");
+                    sub_4708B(ref arg_0, ref  arg_4, HillsFarPlayer.StructSize, unk_1681B[2], PlayerNameOffset[2], gbl.SavePath + "*.hil");
                 }
             }
         }
@@ -140,7 +88,6 @@ namespace engine
 
         internal static bool save()
         {
-            SearchRec var_2E;
             short var_3;
 
             if (gbl.import_from == ImportSource.Curse)
@@ -164,7 +111,7 @@ namespace engine
             {
                 do
                 {
-                    seg046.FINDFIRST(out var_2E, 16, gbl.SavePath);
+                    seg046.FINDFIRST(gbl.SavePath);
                     var_3 = gbl.FIND_result;
 
                     if (var_3 != 0)
@@ -181,7 +128,7 @@ namespace engine
             {
                 do
                 {
-                    seg046.FINDFIRST(out var_2E, 16, seg051.Copy(gbl.SavePath.Length - 1, 1, gbl.SavePath));
+                    seg046.FINDFIRST(seg051.Copy(gbl.SavePath.Length - 1, 1, gbl.SavePath));
                     var_3 = gbl.FIND_result;
 
                     if (var_3 != 0)
@@ -372,18 +319,12 @@ namespace engine
 
             seg042.delete_file(gbl.SavePath + file_text + ".swg");
 
-            if (player.itemsPtr != null)
+            if (player.items.Count > 0)
             {
-
                 file.Assign(gbl.SavePath + file_text + ".swg");
                 seg051.Rewrite(file);
-                Item item = player.itemsPtr;
 
-                while (item != null)
-                {
-                    seg051.BlockWrite(Item.StructSize, item.ToByteArray(), file);
-                    item = item.next;
-                }
+                player.items.ForEach(item => seg051.BlockWrite(Item.StructSize, item.ToByteArray(), file));
 
                 seg051.Close(file);
             }
@@ -408,15 +349,9 @@ namespace engine
         {
             int required_space = Player.StructSize;
 
-            Item item = player.itemsPtr;
+            required_space += player.items.Count * Item.StructSize;
 
-            while (item != null)
-            {
-                required_space += Item.StructSize;
-                item = item.next;
-            }
-
-            required_space += Affect.StructSize * player.affects.Count;
+            required_space += player.affects.Count * Affect.StructSize;
 
             return required_space;
         }
@@ -424,12 +359,10 @@ namespace engine
 
         internal static bool sub_483AE(ref short bp_var_182, ref bool bp_var_1BC, string bp_var_1BB, string bp_var_2DF, string bp_var_2DA)
         {
-            SearchRec var_2C;
-
             byte[] data = new byte[0x10];
             string var_3C = string.Empty;
 
-            seg046.FINDFIRST(out var_2C, 0, gbl.SavePath + "*" + bp_var_2DF);
+            var var_2C = seg046.FINDFIRST(gbl.SavePath + "*" + bp_var_2DF);
 
             while (gbl.FIND_result == 0 &&
                 var_3C != bp_var_2DA)
@@ -1073,8 +1006,8 @@ namespace engine
 
                 var_1C4 = new HillsFarPlayer(data);
 
-                player_ptr.itemsPtr = null;
-                player_ptr.affects = new System.Collections.Generic.List<Affect>();
+                player_ptr.items = new List<Item>();
+                player_ptr.affects = new List<Affect>();
                 player_ptr.actions = null;
                 player_ptr.next_player = null;
 
@@ -1083,10 +1016,9 @@ namespace engine
 
                 if (var_1BC == true)
                 {
-                    var_2CA = arg_8;
-                    seg051.Delete(4, seg051.Pos(arg_8, "."), ref var_2CA);
+                    string savename = System.IO.Path.Combine(gbl.SavePath, System.IO.Path.ChangeExtension(arg_8, fileExt));
 
-                    var_1BC = seg042.find_and_open_file(out file, false, gbl.SavePath + var_2CA + fileExt);
+                    var_1BC = seg042.find_and_open_file(out file, false, savename);
 
                     data = new byte[Player.StructSize];
 
@@ -1105,7 +1037,8 @@ namespace engine
                         Item item_ptr = ovr025.new_Item(0, Affects.helpless, (Affects)var_1C4.field_1D,
                             (short)(var_1C4.field_1D * 200), 0, 0,
                             false, 0, false, 0, 0, 0x57, -89, -88, 0x46);
-                        ovr025.addItem(item_ptr, player_ptr);
+                        
+                        player_ptr.items.Add(item_ptr);
                     }
 
                     if (var_1C4.field_23 > 0)
@@ -1114,7 +1047,7 @@ namespace engine
                             (short)(var_1C4.field_23 * 0x15E), 0, 1,
                             false, 0, false, 0, 1, 0x45, -89, -50, 0x4F);
 
-                        ovr025.addItem(item_ptr, player_ptr);
+                        player_ptr.items.Add(item_ptr);
                     }
 
                     if (var_1C4.field_86 > 0)
@@ -1123,7 +1056,7 @@ namespace engine
                             (short)(var_1C4.field_86 * 0xc8), 0, 0,
                             false, 0, false, 0, 0, 0x42, -89, -88, 0x45);
 
-                        ovr025.addItem(item_ptr, player_ptr);
+                        player_ptr.items.Add(item_ptr);
                     }
 
                     if (var_1C4.field_87 > 0)
@@ -1132,7 +1065,7 @@ namespace engine
                             (short)(var_1C4.field_87 * 0x190), 0, (short)(var_1C4.field_87 * 10),
                             false, 0, false, 0, 0, 0x40, -89, -71, 0x46);
 
-                        ovr025.addItem(item_ptr, player_ptr);
+                        player_ptr.items.Add(item_ptr);
                     }
                 }
                 else
@@ -1145,11 +1078,9 @@ namespace engine
                     {
                         data = seg051.GetMem(PoolRadPlayer.StructSize);
 
-                        var_2CA = arg_8;
+                        string savename = System.IO.Path.Combine(gbl.SavePath, System.IO.Path.ChangeExtension(arg_8, fileExt));
 
-                        seg051.Delete(4, seg051.Pos(arg_8, "."), ref var_2CA);
-
-                        var_1BC = seg042.find_and_open_file(out file, false, gbl.SavePath + var_2CA + fileExt);
+                        var_1BC = seg042.find_and_open_file(out file, false, savename);
 
                         seg051.BlockRead(out var_182, PoolRadPlayer.StructSize, data, file);
                         seg051.Close(file);
@@ -1305,25 +1236,13 @@ namespace engine
 
                 var_1BC = seg042.find_and_open_file(out file, false, gbl.SavePath + arg_8 + ".swg");
 
-                Item last_item = null;
                 do
                 {
                     seg051.BlockRead(out var_182, Item.StructSize, var_18A, file);
 
                     if (var_182 == Item.StructSize)
                     {
-                        Item new_item = new Item(var_18A, 0);
-
-                        if (player_ptr.itemsPtr == null)
-                        {
-                            player_ptr.itemsPtr = new_item;
-                            last_item = player_ptr.itemsPtr;
-                        }
-                        else
-                        {
-                            last_item.next = new_item;
-                            last_item = last_item.next;
-                        }
+                        player_ptr.items.Add(new Item(var_18A, 0));
                     }
                 } while (var_182 == Item.StructSize);
 
@@ -1422,26 +1341,10 @@ namespace engine
 
             if (decode_size != 0)
             {
-                int offset = 0;
-                Item lastItem = null;
-
-                do
+                for (int offset = 0; offset < decode_size; offset += Item.StructSize)
                 {
-                    Item item = new Item(data, offset);
-
-                    if (offset == 0)
-                    {
-                        player.itemsPtr = item;
-                    }
-                    else
-                    {
-                        lastItem.next = item;
-                    }
-                    lastItem = item;
-
-                    offset += Item.StructSize;
-
-                } while (offset < decode_size);
+                    player.items.Add(new Item(data, offset));
+                }
             }
 
             seg043.clear_keyboard();

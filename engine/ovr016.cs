@@ -1,4 +1,5 @@
 using Classes;
+using System.Collections.Generic;
 
 namespace engine
 {
@@ -24,11 +25,10 @@ namespace engine
                 }
             }
 
-            Item item = player.itemsPtr;
             int max_scribe_level = 0;
             int total_scribe_level = 0;
 
-            while (item != null)
+            foreach(Item item in player.items)
             {
                 if (ovr023.item_is_scroll(item) == true)
                 {
@@ -47,8 +47,6 @@ namespace engine
                         }
                     }
                 }
-
-                item = item.next;
             }
 
             byte count = 0;
@@ -85,9 +83,7 @@ namespace engine
 
         internal static void cancel_scribes(Player player)
         {
-            Item item = player.itemsPtr;
-
-            while (item != null)
+            foreach(Item item in player.items)
             {
                 if (ovr023.item_is_scroll(item) == true)
                 {
@@ -95,7 +91,6 @@ namespace engine
                     item.affect_2 &= (Affects)0x7F;
                     item.affect_3 &= (Affects)0x7F;
                 }
-                item = item.next;
             }
         }
 
@@ -179,8 +174,7 @@ namespace engine
 
         internal static void cast_spell()
         {
-            bool var_4 = false;
-            short var_2 = -1;
+            bool redraw = false;
 
             gbl.dword_1D87F = null;
 
@@ -189,23 +183,24 @@ namespace engine
             if (sub_443A0(1) == true)
             {
                 byte spell_id;
+                int index = -1;
 
                 do
                 {
                     bool var_3;
 
-                    spell_id = ovr020.spell_menu2(out var_3, ref var_2, SpellSource.Cast, SpellLoc.memory);
+                    spell_id = ovr020.spell_menu2(out var_3, ref index, SpellSource.Cast, SpellLoc.memory);
 
                     if (spell_id != 0)
                     {
-                        var_4 = true;
+                        redraw = true;
                         seg037.draw8x8_clear_area(0x16, 0x26, 0x11, 1);
 
                         ovr023.sub_5D2E1(1, 0, spell_id);
                     }
                     else if (var_3 == true)
                     {
-                        var_4 = true;
+                        redraw = true;
                     }
                     else
                     {
@@ -214,7 +209,7 @@ namespace engine
                 } while (spell_id != 0);
             }
 
-            if (var_4 == true)
+            if (redraw == true)
             {
                 ovr025.load_pic();
             }
@@ -338,21 +333,16 @@ namespace engine
 
         internal static void memorize_spell()
         {
-            short var_7;
-            byte var_5;
-            byte var_4;
-            byte var_3;
             bool var_2;
-            bool var_1;
 
             if (sub_443A0(2) == true)
             {
-                var_1 = false;
-                var_7 = -1;
+                bool var_1 = false;
+                int index = -1;
                 gbl.byte_1D5BE = 1;
 
-                var_4 = ovr020.spell_menu2(out var_2, ref var_7, 0, SpellLoc.memorize);
-                var_3 = 1;
+                byte var_4 = ovr020.spell_menu2(out var_2, ref index, 0, SpellLoc.memorize);
+                bool redraw = true;
 
                 if (var_2 == true)
                 {
@@ -367,10 +357,10 @@ namespace engine
                 }
                 else
                 {
-                    var_3 = 0;
+                    redraw = false;
                 }
 
-                var_7 = -1;
+                index = -1;
 
                 while (var_1 == false)
                 {
@@ -382,8 +372,8 @@ namespace engine
                     }
                     else
                     {
-                        var_4 = ovr020.spell_menu2(out var_2, ref var_7, SpellSource.Memorize, SpellLoc.grimoire);
-                        var_3 = 1;
+                        var_4 = ovr020.spell_menu2(out var_2, ref index, SpellSource.Memorize, SpellLoc.grimoire);
+                        redraw = true;
 
                         if (var_4 == 0)
                         {
@@ -391,7 +381,7 @@ namespace engine
                         }
                         else if (HowManySpellsPlayerCanLearn(gbl.spell_table[var_4].spellClass, gbl.spell_table[var_4].spellLevel) > 0)
                         {
-                            var_5 = 0;
+                            int var_5 = 0;
 
                             while (gbl.player_ptr.spell_list[var_5] != 0)
                             {
@@ -405,11 +395,11 @@ namespace engine
                     }
                 }
 
-                if (var_7 != -1)
+                if (index != -1)
                 {
-                    var_7 = -1;
+                    index = -1;
 
-                    var_4 = ovr020.spell_menu2(out var_2, ref var_7, 0, SpellLoc.memorize);
+                    var_4 = ovr020.spell_menu2(out var_2, ref index, 0, SpellLoc.memorize);
 
                     if (var_2 == true &&
                         ovr027.yes_no(15, 10, 14, "Memorize these spells? ") == 0x4e)
@@ -418,7 +408,7 @@ namespace engine
                     }
                 }
 
-                if (var_3 != 0)
+                if (redraw == true)
                 {
                     ovr025.load_pic();
                 }
@@ -428,21 +418,18 @@ namespace engine
 
         internal static void scribe_spell()
         {
-            bool var_D;
-            Item var_C;
-            short var_8;
             byte var_4;
-            byte var_3;
+            bool redraw;
             bool var_2;
             byte var_1;
 
             if (sub_443A0(3) == true)
             {
                 var_1 = 0;
-                var_8 = -1;
+                int var_8 = -1;
 
                 var_4 = ovr020.spell_menu2(out var_2, ref var_8, 0, SpellLoc.scribe);
-                var_3 = 1;
+                redraw = true;
 
                 if (var_2 == true)
                 {
@@ -457,7 +444,7 @@ namespace engine
                 }
                 else
                 {
-                    var_3 = 0;
+                    redraw = false;
                 }
 
                 var_8 = -1;
@@ -476,49 +463,39 @@ namespace engine
                         }
                         else
                         {
-                            var_3 = 1;
+                            redraw = true;
                         }
                     }
                     else
                     {
-                        var_3 = 1;
+                        redraw = true;
                         if (gbl.player_ptr.field_79[var_4 - 1] != 0)
                         {
                             ovr025.string_print01("You already know that spell");
                         }
                         else
                         {
-                            var_C = gbl.player_ptr.itemsPtr;
-                            var_D = false;
-
-                            while (var_C != null && var_D == false)
+                            bool var_D = gbl.player_ptr.items.Find(item =>
                             {
-                                if (ovr023.item_is_scroll(var_C) == true)
-                                {
-                                    for (int var_6 = 1; var_6 <= 3; var_6++)
-                                    {
-                                        if ((int)var_C.getAffect(var_6) > 0x7F &&
-                                            ((int)var_C.getAffect(var_6) & 0x7F) == var_4)
-                                        {
-                                            ovr025.string_print01("You are already scibing that spell");
-                                            var_D = true;
-                                        }
-                                    }
-                                }
+                                return (item.IsScroll() == true &&
+                                    (item.ScrollLearning(1, var_4) ||
+                                    item.ScrollLearning(2, var_4) ||
+                                    item.ScrollLearning(3, var_4)));
+                            }) != null;
 
-                                var_C = var_C.next;
+
+                            if (var_D == true)
+                            {
+                                ovr025.string_print01("You are already scibing that spell");
                             }
-
-                            if (var_D == false)
+                            else
                             {
                                 int spell_level = gbl.spell_table[var_4].spellLevel;
                                 int spell_class = gbl.spell_table[var_4].spellClass;
 
                                 if (gbl.player_ptr.field_12D[spell_class, spell_level - 1] > 0)
                                 {
-                                    var_C = gbl.player_ptr.itemsPtr;
-
-                                    while (var_C != null && var_D == false)
+                                    foreach (Item var_C in gbl.player_ptr.items)
                                     {
                                         int var_6 = 1;
                                         do
@@ -528,11 +505,11 @@ namespace engine
                                                 var_C.setAffect(var_6, (Affects)((int)var_C.getAffect(var_6) | 0x80));
                                                 var_D = true;
                                             }
- 
+
                                             var_6++;
                                         } while (var_6 <= 3 && var_D == false);
 
-                                        var_C = var_C.next;
+                                        if (var_D) break;
                                     }
                                 }
                                 else
@@ -557,49 +534,28 @@ namespace engine
                     }
                 }
 
-                if (var_3 != 0)
+                if (redraw)
                 {
                     ovr025.load_pic();
                 }
             }
         }
 
-        /// <summary>
-        /// addes a new StringList item onto var_C
-        /// </summary>
-        /// <param name="s"></param>
-        /// <param name="arg_6"></param>
-        /// <param name="var_C"></param>
-        internal static void sub_44E89(string s, byte arg_6, ref StringList var_C)
-        {
-            var_C.next = new StringList();
-
-            var_C = var_C.next;
-            var_C.next = null;
-            var_C.s = s;
-            var_C.field_29 = arg_6;
-        }
 
 
         internal static void display_magic_effects()
         {
-            short var_42;
-            bool var_17;
-            byte var_13;
+            List<MenuItem> var_C = new List<MenuItem>();
 
-            StringList var_8 = new StringList();
-            StringList var_C = var_8;
-
-            var_C.field_29 = 0;
-            var_C.s = " ";
-            var_C.next = null;
+            var_C.Add(new MenuItem());
 
             foreach (Player player in gbl.player_next_ptr)
             {
-                var_13 = 0;
-                sub_44E89(player.name, 1, ref var_C);
+                bool var_13 = false;
 
-                foreach(Affect affect in player.affects)
+                var_C.Add(new MenuItem(player.name, true));
+
+                foreach (Affect affect in player.affects)
                 {
                     bool has_name = true;
 
@@ -748,27 +704,28 @@ namespace engine
 
                     if (has_name == true)
                     {
-                        var_13 = 1;
-                        sub_44E89(" " + affect_name, 0, ref var_C);
+                        var_13 = true;
+                        var_C.Add(new MenuItem(" " + affect_name));
                     }
                 }
 
-                if (var_13 == 0)
+                if (var_13 == false)
                 {
-                    sub_44E89(" <No Spell Effects>", 0, ref var_C);
+                    var_C.Add(new MenuItem(" <No Spell Effects>"));
                 }
 
-                sub_44E89(" ", 0, ref var_C);
+                var_C.Add(new MenuItem(" "));
             }
 
-            var_17 = true;
-            var_42 = 0;
+            bool var_17 = true;
+            int var_42 = 0;
             seg037.draw8x8_outer_frame();
 
-            ovr027.sl_select_item(out var_C, ref var_42, ref var_17, true, var_8,
+            MenuItem var_8;
+            ovr027.sl_select_item(out var_8, ref var_42, ref var_17, true, var_C,
                 0x16, 0x26, 4, 1, 15, 10, 11, string.Empty, string.Empty);
 
-            ovr027.free_stringList(ref var_8);
+            var_C.Clear();
             ovr025.load_pic();
         }
 

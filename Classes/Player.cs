@@ -452,7 +452,9 @@ namespace Classes
         public byte field_14C; // 0x14c; // 0 no item to use?
 
 
-        public Item itemsPtr; // 0x14d
+        public List<Item> items; // 0x14d
+        //public Item itemsPtr; // 0x14d
+        
         public Item[] itemArray = new Item[13]; // 0x151[]
         public Item field_151
         {// 0x151
@@ -699,7 +701,7 @@ namespace Classes
             stats = new StatValue[6];
 
             name = string.Empty;
-            itemsPtr = null;
+            items = new List<Item>();
             affects = new List<Affect>();
             next_player = null;
             actions = null;

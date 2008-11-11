@@ -8,7 +8,7 @@ namespace Classes
     public class Item : IListBase
     {
         public string name; // 0x00
-        public Item next; // 0x2a;
+       // public Item next; // 0x2a;
         public byte type; // 0x2e; /* 11 - 14 = scroll */
         public byte field_2EArray(int index)
         {
@@ -38,6 +38,16 @@ namespace Classes
         public Affects affect_1; // 0x3C
         public Affects affect_2; // 0x3D
         public Affects affect_3; // 0x3E
+
+        public bool ScrollLearning(int i, int spell)
+        {
+            return ((int)getAffect(i) > 0x7F && ((int)getAffect(i) & 0x7F) == spell);
+        }
+
+        public bool IsScroll()
+        {
+            return (gbl.unk_1C020[type].item_slot > 10 && gbl.unk_1C020[type].item_slot < 14);
+        }
 
         public Affects getAffect(int i)
         {
@@ -80,7 +90,7 @@ namespace Classes
 
         public IListBase Next()
         {
-            return next;
+            return null; //TODO FIX THIS
         }
 
         public byte Field29()
@@ -98,7 +108,6 @@ namespace Classes
         {
             name = Sys.ArrayToString(data, offset, 0x2a);
 
-            next = null;
             type = data[offset + 0x2e];
             field_2F = (sbyte)data[offset + 0x2f];
             field_30 = (sbyte)data[offset + 0x30];
@@ -126,7 +135,6 @@ namespace Classes
         public void Clear()
         {
             name = string.Empty;
-            next = null;
 
             type = 0;
             field_2F = 0;
