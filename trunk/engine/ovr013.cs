@@ -560,30 +560,11 @@ namespace engine
 
         internal static void sub_3AC1D(Effect arg_0, object param, Player player)
         {
-            Struct_1D885 var_8;
-            Struct_1D885 var_4;
-
             Affect affect = (Affect)param;
 
-            byte var_A = (byte)(affect.field_3 >> 4);
+            var var_8 = gbl.NoxiousCloud.Find(cell => cell.player == player && cell.field_1C == (affect.field_3 >> 4));
 
-            bool var_9 = false;
-            var_8 = gbl.stru_1D885;
-
-            while (var_8 != null && var_9 == false)
-            {
-                if (var_8.player == player &&
-                    var_8.field_1C == var_A)
-                {
-                    var_9 = true;
-                }
-                else
-                {
-                    var_8 = var_8.next;
-                }
-            }
-
-            if (var_9 == true)
+            if (var_8 != null)
             {
                 ovr025.string_print01("The air clears a little...");
 
@@ -594,7 +575,7 @@ namespace engine
                         int tmp_x = var_8.target_x + gbl.MapDirectionXDelta[gbl.unk_18AE9[var_B]];
                         int tmp_y = var_8.target_y + gbl.MapDirectionYDelta[gbl.unk_18AE9[var_B]];
 
-                        var_9 = false;
+                       bool var_9 = false;
 
                         for (int i = 1; i <= gbl.byte_1D1BB; i++)
                         {
@@ -617,26 +598,9 @@ namespace engine
                     }
                 }
 
-                var_4 = gbl.stru_1D885;
+                gbl.NoxiousCloud.Remove(var_8);
 
-                if (var_4 == var_8)
-                {
-                    gbl.stru_1D885 = var_4.next;
-                }
-                else
-                {
-                    while (var_4.next != var_8)
-                    {
-                        var_4 = var_4.next;
-                    }
-                }
-
-                var_4.next = var_8.next;
-
-                seg051.FreeMem(0x1E, var_8);
-                var_4 = gbl.stru_1D885;
-
-                while (var_4 != null)
+                foreach(var var_4 in gbl.NoxiousCloud)
                 {
                     for (int var_B = 1; var_B <= 4; var_B++)
                     {
@@ -648,8 +612,6 @@ namespace engine
                             gbl.mapToBackGroundTile[tmp_x, tmp_y] = 0x1E;
                         }
                     }
-
-                    var_4 = var_4.next;
                 }
             }
         }
@@ -1202,35 +1164,15 @@ namespace engine
 
         internal static void sub_3BAB9(Effect arg_0, object param, Player player)
         {
-            byte var_B;
-            Struct_1D885 var_8;
-            Struct_1D885 var_4;
-
             Affect affect = (Affect)param;
 
-            byte var_A = (byte)(affect.field_3 >> 4);
+            GasCloud var_8 = gbl.PoisonousCloud.Find(cell => cell.player == player && cell.field_1C == (affect.field_3 >> 4));
 
-            bool var_9 = false;
-            var_8 = gbl.stru_1D889;
-
-            while (var_8 != null && var_9 == false)
-            {
-                if (var_8.player == player &&
-                    var_8.field_1C == var_A)
-                {
-                    var_9 = true;
-                }
-                else
-                {
-                    var_8 = var_8.next;
-                }
-            }
-
-            if (var_9 == true)
+            if (var_8 != null)
             {
                 ovr025.string_print01("The air clears a little...");
 
-                for (var_B = 1; var_B <= 9; var_B++)
+                for (int var_B = 1; var_B <= 9; var_B++)
                 {
                     if (var_8.field_10[var_B] != 0)
                     {
@@ -1260,27 +1202,12 @@ namespace engine
                     }
                 }
 
-                var_4 = gbl.stru_1D889;
 
-                if (var_4 == var_8)
-                {
-                    gbl.stru_1D889 = var_4.next;
-                }
-                else
-                {
-                    while (var_4.next != var_8)
-                    {
-                        var_4 = var_4.next;
-                    }
-                }
+                gbl.PoisonousCloud.Remove(var_8);
 
-                var_4.next = var_8.next;
-                seg051.FreeMem(0x1E, var_8);
-                var_4 = gbl.stru_1D889;
-
-                while (var_4 != null)
+                foreach(var var_4 in gbl.PoisonousCloud)
                 {
-                    for (var_B = 1; var_B <= 9; var_B++)
+                    for (int var_B = 1; var_B <= 9; var_B++)
                     {
                         if (var_4.field_10[var_B] != 0)
                         {
@@ -1290,8 +1217,6 @@ namespace engine
                             gbl.mapToBackGroundTile[tmp_x, tmp_y] = 0x1C;
                         }
                     }
-
-                    var_4 = var_4.next;
                 }
             }
         }

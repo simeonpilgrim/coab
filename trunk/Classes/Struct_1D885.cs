@@ -5,22 +5,23 @@ namespace Classes
     /// <summary>
     /// Summary description for Struct_1D885.
     /// </summary>
-    public class Struct_1D885
+    public class GasCloud
     {
-        public Struct_1D885()
+        public GasCloud(Player _player, int count, int x, int y)
         {
-            player = null;
-            next = null;
-            // zero the rest.
+            player = _player;
+            field_1C = count;
+            target_x = x;
+            target_y = y;
 
+            // zero the rest.
             field_7 = new byte[10];
             field_10 = new byte[10];
         }
 
-        /// <summary>0x00</summary>
         public Player player; // 0x00;
-        /// <summary>0x04</summary>
-        public Struct_1D885 next; // 0x04;
+        //public Struct_1D885 next; // 0x04;
+
         /// <summary>
         /// 0x07 base-1 array
         /// </summary>
@@ -33,6 +34,7 @@ namespace Classes
         // 0x0D
         // 0x0E
         // 0x0F
+
         /// <summary>
         /// 0x10 base-1 array
         /// </summary>

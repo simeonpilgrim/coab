@@ -1520,7 +1520,7 @@ namespace engine
         }
 
 
-        internal static void create_noxious_cloud()
+        internal static void create_noxious_cloud() //TODO similar to spell_poisonous_cloud
         {
             byte var_12;
             byte var_F;
@@ -1530,36 +1530,12 @@ namespace engine
             gbl.byte_1D2C7 = true;
 
             byte var_10 = (byte)ovr025.spellMaxTargetCount(gbl.spell_id);
-            byte var_E = 0;
-            Struct_1D885 var_8 = gbl.stru_1D885;
+            int count = gbl.NoxiousCloud.FindAll(cell => cell.player == gbl.player_ptr).Count;
 
-            if (gbl.stru_1D885 == null)
-            {
-                gbl.stru_1D885 = new Struct_1D885();
-                var_8 = gbl.stru_1D885;
-            }
-            else
-            {
-                while (var_8.next != null)
-                {
-                    if (var_8.player == gbl.player_ptr)
-                    {
-                        var_E++;
-                    }
+            GasCloud var_8 = new GasCloud(gbl.player_ptr, count, gbl.targetX, gbl.targetY);
+            gbl.NoxiousCloud.Add(var_8);
 
-                    var_8 = var_8.next;
-                }
-
-                var_8.next = new Struct_1D885();
-                var_8 = var_8.next;
-            }
-
-            ovr024.add_affect(true, (byte)(var_10 + (var_E << 4)), var_10, Affects.affect_28, gbl.player_ptr);
-
-            var_8.player = gbl.player_ptr;
-            var_8.field_1C = var_E;
-            var_8.target_x = gbl.targetX;
-            var_8.target_y = gbl.targetY;
+            ovr024.add_affect(true, (byte)(var_10 + (count << 4)), var_10, Affects.affect_28, gbl.player_ptr);
 
             for (int var_11 = 1; var_11 <= 4; var_11++)
             {
@@ -1582,9 +1558,7 @@ namespace engine
 
                 if (var_F == 0x1E)
                 {
-                    Struct_1D885 var_4 = gbl.stru_1D885;
-
-                    while (var_4 != null)
+                    foreach(var var_4 in gbl.NoxiousCloud)
                     {
                         if (var_4 != var_8)
                         {
@@ -1603,7 +1577,6 @@ namespace engine
                                 }
                             }
                         }
-                        var_4 = var_4.next;
                     }
                 }
                 else if (var_F == 0x1F)
@@ -1978,21 +1951,12 @@ namespace engine
 
                 if (ground_tile == 0x1C || ground_tile == 0x1E)
                 {
-                    Struct_1D885 var_18;
-                    int var_14;
+                   // Struct_1D885 var_18;
+                    int var_14 = (ground_tile == 0x1C) ? 9 : 4;
+                    var looplist = (ground_tile == 0x1C) ? gbl.PoisonousCloud : gbl.NoxiousCloud;
 
-                    if (ground_tile == 0x1C)
-                    {
-                        var_18 = gbl.stru_1D889;
-                        var_14 = 9;
-                    }
-                    else
-                    {
-                        var_18 = gbl.stru_1D885;
-                        var_14 = 4;
-                    }
 
-                    while (var_18 != null)
+                    looplist.ForEach(var_18 =>
                     {
                         for (int var_1 = 1; var_1 <= var_14; var_1++)
                         {
@@ -2000,7 +1964,7 @@ namespace engine
                             {
                                 int tmp_int = (var_18.target_y + gbl.MapDirectionYDelta[gbl.unk_18AE9[var_1]]);
 
-                                if (var_12 == tmp_int &&                       
+                                if (var_12 == tmp_int &&
                                     var_18.field_1D == 0)
                                 {
                                     if (sub_5F126(var_18.player, maxTargetCount) == true)
@@ -2008,7 +1972,7 @@ namespace engine
                                         Affect affect = null;
                                         bool found = false;
 
-                                        foreach(Affect tmpAffect in var_18.player.affects)
+                                        foreach (Affect tmpAffect in var_18.player.affects)
                                         {
                                             if (((affect.type == Affects.affect_5b && ground_tile == 0x1c) ||
                                                  (affect.type == Affects.affect_28 && ground_tile == 0x1E)) &&
@@ -2039,9 +2003,9 @@ namespace engine
                                 }
                             }
                         }
+                    });
 
-                        var_18 = var_18.next;
-                    }
+
                 }
             }
         }
@@ -2851,7 +2815,7 @@ namespace engine
         }
 
 
-        internal static void spell_poisonous_cloud()
+        internal static void spell_poisonous_cloud() // similar to create_noxious_cloud
         {
             byte dir = 0;
             byte var_16;
@@ -2861,35 +2825,12 @@ namespace engine
             gbl.byte_1D2C7 = true;
 
             byte var_15 = (byte)ovr025.spellMaxTargetCount(gbl.spell_id);
-            int count = 0;
-            Struct_1D885 var_8 = gbl.stru_1D889;
+            int count = gbl.PoisonousCloud.FindAll(cell => cell.player == gbl.player_ptr).Count;
 
-            if (var_8 == null)
-            {
-                gbl.stru_1D889 = new Struct_1D885();
-                var_8 = gbl.stru_1D889;
-            }
-            else
-            {
-                while (var_8.next != null)
-                {
-                    if (var_8.player == gbl.player_ptr)
-                    {
-                        count++;
-                    }
-                    var_8 = var_8.next;
-                }
-
-                var_8.next = new Struct_1D885();
-                var_8 = var_8.next;
-            }
+            GasCloud var_8 = new GasCloud(gbl.player_ptr, count, gbl.targetX, gbl.targetY);
+            gbl.PoisonousCloud.Add(var_8);
 
             ovr024.add_affect(true, (byte)(var_15 + (count << 4)), var_15, Affects.affect_5b, gbl.player_ptr);
-
-            var_8.player = gbl.player_ptr;
-            var_8.field_1C = count;
-            var_8.target_x = gbl.targetX;
-            var_8.target_y = gbl.targetY;
 
             for (var_16 = 1; var_16 <= 9; var_16++)
             {
@@ -2911,10 +2852,8 @@ namespace engine
 
                 if (ground_tile == 0x1E)
                 {
-                    Struct_1D885 var_4 = gbl.stru_1D885;
                     bool found = false;
-
-                    while (var_4 != null && found == false)
+                    foreach(var var_4 in gbl.NoxiousCloud) 
                     {
                         for (int var_12 = 1; var_12 <= 4; var_12++)
                         {
@@ -2929,15 +2868,13 @@ namespace engine
                             }
                         }
 
-                        var_4 = var_4.next;
+                        if (found) break;
                     }
                 }
                 else if (ground_tile == 0x1C)
                 {
-                    Struct_1D885 var_4 = gbl.stru_1D889;
                     bool found = false;
-
-                    while (var_4 != null && found == false)
+                    foreach (GasCloud var_4 in gbl.PoisonousCloud)
                     {
                         if (var_4 != var_8)
                         {
@@ -2947,7 +2884,7 @@ namespace engine
                                     (gbl.MapDirectionXDelta[gbl.unk_18AED[var_12]] + var_4.target_x) == (gbl.MapDirectionXDelta[dir] + gbl.targetX) &&
                                     (gbl.MapDirectionYDelta[gbl.unk_18AED[var_12]] + var_4.target_y) == (gbl.MapDirectionYDelta[dir] + gbl.targetY) &&
                                     var_4.field_7[var_12] != 0x1E &&
-                                    var_4.field_7[var_12] != 0x1C )
+                                    var_4.field_7[var_12] != 0x1C)
                                 {
                                     ground_tile = var_4.field_7[var_12];
                                     found = true;
@@ -2955,7 +2892,7 @@ namespace engine
                             }
                         }
 
-                        var_4 = var_4.next;
+                        if (found) break;
                     }
                 }
                 else if (ground_tile == 0x1F)
