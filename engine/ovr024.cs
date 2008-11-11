@@ -1,4 +1,5 @@
 using Classes;
+using System.Collections.Generic;
 
 namespace engine
 {
@@ -370,29 +371,24 @@ namespace engine
         }
 
 
-        static Player sub_63D03(byte[] arg_0, byte arg_4, Struct_1D885 arg_6, int mapY, int mapX)
+        static Player sub_63D03(byte[] arg_0, int arraySize, List<GasCloud> list, int mapY, int mapX)
         {
-            bool found = false;
-
-            while (arg_6 != null && found == false)
+            var arg_6 = list.Find(cell =>
             {
-                for (int i = 1; i <= arg_4; i++)
+                for (int i = 1; i <= arraySize; i++)
                 {
-                    if (arg_6.field_10[i] != 0 &&
-                        arg_6.target_x + gbl.MapDirectionXDelta[arg_0[i]] == mapX &&
-                        arg_6.target_y + gbl.MapDirectionYDelta[arg_0[i]] == mapY)
+                    if (cell.field_10[i] != 0 &&
+                        cell.target_x + gbl.MapDirectionXDelta[arg_0[i]] == mapX &&
+                        cell.target_y + gbl.MapDirectionYDelta[arg_0[i]] == mapY)
                     {
-                        found = true;
+                        return true;
                     }
                 }
 
-                if (found == false)
-                {
-                    arg_6 = arg_6.next;
-                }
-            }
+                return false;
+            });
 
-            Player player_base = (found) ? arg_6.player : gbl.player_next_ptr[0];
+            Player player_base = (arg_6 != null) ? arg_6.player : gbl.player_next_ptr[0];
 
             return player_base;
         }
@@ -422,7 +418,7 @@ namespace engine
                     {
                         Player tmp_player_ptr = gbl.player_ptr;
 
-                        gbl.player_ptr = sub_63D03(gbl.unk_18AEA, 4, gbl.stru_1D885,
+                        gbl.player_ptr = sub_63D03(gbl.unk_18AEA, 4, gbl.NoxiousCloud,
                             ovr033.PlayerMapYPos(player), ovr033.PlayerMapXPos(player));
 
                         is_unaffected("starts to cough", save_passed, 0, false, 0xff, 1, Affects.stinking_cloud, player);
@@ -438,7 +434,7 @@ namespace engine
                     {
                         Player tmp_player_ptr = gbl.player_ptr;
 
-                        gbl.player_ptr = sub_63D03(gbl.unk_18AEA, 4, gbl.stru_1D885,
+                        gbl.player_ptr = sub_63D03(gbl.unk_18AEA, 4, gbl.NoxiousCloud,
                             ovr033.PlayerMapYPos(player), ovr033.PlayerMapXPos(player));
 
                         is_unaffected("chokes and gags from nausea", save_passed, 0, false, 0xff, (ushort)(roll_dice(4, 1) + 1), Affects.helpless, player);

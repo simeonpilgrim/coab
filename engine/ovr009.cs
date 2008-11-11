@@ -7,23 +7,8 @@ namespace engine
     {
         internal static void free_combat_stuff() /* sub_3304B */
         {
-            while (gbl.stru_1D885 != null)
-            {
-                Struct_1D885 var_4 = gbl.stru_1D885.next;
-
-                seg051.FreeMem(0x1E, gbl.stru_1D885);
-
-                gbl.stru_1D885 = var_4;
-            }
-
-            while (gbl.stru_1D889 != null)
-            {
-                Struct_1D885 var_4 = gbl.stru_1D889.next;
-
-                seg051.FreeMem(0x1E, gbl.stru_1D889);
-
-                gbl.stru_1D889 = var_4;
-            }
+            gbl.NoxiousCloud.Clear();
+            gbl.PoisonousCloud.Clear();
 
             seg051.FreeMem(0x4e9, gbl.mapToBackGroundTile);
             gbl.mapToBackGroundTile = null;

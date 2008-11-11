@@ -1195,8 +1195,8 @@ namespace engine
             gbl.attack_roll = 0;
             gbl.byte_1D1BB = 0;
 
-            gbl.stru_1D885 = null;
-            gbl.stru_1D889 = null;
+            gbl.NoxiousCloud = new List<GasCloud>();
+            gbl.PoisonousCloud = new List<GasCloud>();
             gbl.item_ptr = null;
 
             gbl.unk_1D183 = new Struct_1D183[8 + 1];

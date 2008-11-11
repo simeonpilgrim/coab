@@ -687,8 +687,8 @@ namespace Classes
 
         public readonly static byte[] /* seg600:27DD */ unk_18AED = { 4, 8, 0, 1, 2, 3, 4, 5, 6, 7 };
 
-        public static Struct_1D885 stru_1D885;
-        public static Struct_1D885 stru_1D889;
+        public static List<GasCloud> NoxiousCloud; // stru_1D885
+        public static List<GasCloud> PoisonousCloud; // stru_1D889 
 
         public readonly static sbyte[] MapDirectionXDelta = /*unk_189A6 seg600:2696*/ {  0,  1, 1, 1, 0, -1, -1, -1, 0 };
         public readonly static sbyte[] MapDirectionYDelta = /*unk_189AF seg600:269F*/ { -1, -1, 0, 1, 1,  1,  0, -1, 0 };
