@@ -31,6 +31,24 @@ namespace Classes
         Hillsfar = 2
     }
 
+    public enum GameState
+    {
+        State0 = 0,
+        Shop = 1,
+        State2 = 2,
+        State3 = 3,
+        State4 = 4,
+        Combat = 5,
+        State6 = 6,
+        EndGame = 7
+    }
+
+    public enum CombatType
+    {
+        normal = 0,
+        duel = 1
+    }
+
     public delegate void spellDelegate(out bool arg_0, QuickFight quick_fight, byte arg_6);
     public delegate void spellDelegate2();
     public delegate void affectDelegate(Effect arg_0, object affect, Player player);
@@ -240,7 +258,6 @@ namespace Classes
         public static byte byte_1AFDD;
         public static byte byte_1AFDE;
 
-        public static byte last_game_state; // byte_1B2E4
         public static bool reload_ecl_and_pictures; // byte_1B2EB
         public static byte head_block_id; // byte_1B2EE
         public static byte body_block_id; // byte_1B2EF
@@ -266,7 +283,7 @@ namespace Classes
             }
         }
         public static byte byte_1C01B;
-        public static byte[] byte_1C8C2 = new byte[8];
+        public static byte[] monoCharData = new byte[8]; // byte_1C8C2
         public static int textXCol; // byte_1C8CA
         public static int textYCol; // byte_1C8CB
         public static byte byte_1D1BB;
@@ -313,7 +330,7 @@ namespace Classes
         public static byte lastDaxBlockId; // byte_1D5B4
         public static byte byte_1D5B5;
         public static byte bigpic_block_id; /* byte_1D5BA */
-        public static byte byte_1D5BE;
+        public static int menuSelectedWord; // byte_1D5BE
         public static bool displayInput_specialKeyPressed; // byte_1D5BF displayInput
         public static int sp_target_count; // byte_1D75E
         public static int targetX; // byte_1D883
@@ -472,13 +489,11 @@ namespace Classes
         public static Player player_ptr2;
         public static Player player_ptr;
 
-        public static byte game_state; // 1- shop, 5 - combat
-        public enum combatType
-        {
-            normal = 0,
-            duel = 1
-        }
-        public static combatType combat_type;
+        public static GameState game_state; // 1- shop, 5 - combat
+        public static GameState last_game_state; // byte_1B2E4
+
+
+        public static CombatType combat_type;
         public static ushort ecl_offset;
 
 
@@ -673,11 +688,9 @@ namespace Classes
 
         public static byte[] unk_1D89D = new byte[9]; // seg600:758D
 
- 
         public static bool party_fled;
 
         public static Struct_1C020[] unk_1C020;
-        public static short unk_1C8BC;
         public static Struct_1D183[] unk_1D183; // array[8] but 1 offset.
         public static Struct_1D1BC mapToBackGroundTile; // stru_1D1BC
 
@@ -695,8 +708,8 @@ namespace Classes
 
         public static ImportSource import_from;
 
-        public static byte friends_count;
-        public static byte foe_count;
+        public static int friends_count;
+        public static int foe_count;
 
         public static affectDelegate[] affect_jump_list; /* spell_jump_list */
 

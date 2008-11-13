@@ -474,7 +474,7 @@ namespace engine
         internal static void end_game_text( )
         {
             gbl.last_game_state = gbl.game_state;
-            gbl.game_state = 7;
+            gbl.game_state = GameState.EndGame;
 
 			seg041.press_any_key( aTyranthraxusSp, true, 0, 10, 0x16, 0x26, 0x11, 1 );
 			seg041.press_any_key( aStormGiant_You, false, 0, 10, 0x16, 0x26, 0x11, 1 );

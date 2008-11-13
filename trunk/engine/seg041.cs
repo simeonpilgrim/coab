@@ -21,7 +21,7 @@ namespace engine
         }
 
 
-        internal static void load_8x8d1_201()
+        internal static void Load8x8Tiles() // load_8x8d1_201
         {
             byte[] block_ptr;
             short block_size;
@@ -37,49 +37,35 @@ namespace engine
                         gbl.dax_8x8d1_201[j, k] = block_ptr[i + k];
                     }
                 }
-
-                seg051.FreeMem(block_size, block_ptr);
             }
         }
 
 
-        internal static void display_char01(bool arg_0, char ch, int repeatCount, int bgColor, int fgColor,
-            int YCol, int XCol)
+        internal static void display_char01(char ch, int repeatCount, int bgColor, int fgColor, int YCol, int XCol) // display_char01
         {
-            char var_2;
-
-            if (XCol <= 39 &&
-                YCol <= 24 &&
-                gbl.dax_8x8d1_201 != null)
+            if (XCol < 40 &&
+                YCol < 25 )
             {
-                if (arg_0 == true)
-                {
-                    var_2 = (char)(seg051.UpCase(ch) % 0x40);
-                }
-                else
-                {
-                    var_2 = ch;
-                }
+                char index = (char)(char.ToUpper(ch) % 0x40);
 
                 for (int i = 0; i < 8; i++)
                 {
-                    gbl.byte_1C8C2[i] = gbl.dax_8x8d1_201[var_2, i];
+                    gbl.monoCharData[i] = gbl.dax_8x8d1_201[index, i];
                 }
 
                 for (int i = 0; i < repeatCount; i++)
                 {
-                    ega_char_out(bgColor, fgColor, YCol, XCol + i);
+                    Display.DisplayMono8x8(XCol + i, YCol, gbl.monoCharData, bgColor, fgColor);
                 }
             }
         }
-
 
         internal static void displaySpaceChar(int count, int color, int yCol, int xCol)
         {
             if (xCol >= 0 && xCol <= 0x27 &&
                 yCol >= 0 && yCol <= 0x18)
             {
-                display_char01(true, ' ', count, color, color, yCol, xCol);
+                display_char01(' ', count, color, color, yCol, xCol);
 
                 Display.Update();
             }
@@ -92,7 +78,7 @@ namespace engine
             {
                 foreach (char ch in str)
                 {
-                    display_char01(true, ch, 1, bgColor, fgColor, yCol, xCol);
+                    display_char01(ch, 1, bgColor, fgColor, yCol, xCol);
                     xCol++;
                 }
                 Display.Update();
@@ -106,7 +92,7 @@ namespace engine
         {
             while (text_index <= text_length)
             {
-                display_char01(true, text[text_index-1], 1, bgColor, fgColor, gbl.textYCol, gbl.textXCol);
+                display_char01(text[text_index-1], 1, bgColor, fgColor, gbl.textYCol, gbl.textXCol);
 
                 if (gbl.DelayBetweenCharacters)
                 {
@@ -347,15 +333,6 @@ namespace engine
         internal static void GameDelay()
         {
             seg049.SysDelay(gbl.game_speed_var * 100);
-        }
-
-
-        static void ega_char_out(int bgColor, int fgColor, int Y, int X)
-        {
-            for (int i = 0; i < 8; i++)
-            {
-                Display.DisplayMono8x1(X, (Y * 8) + i, gbl.byte_1C8C2[i], bgColor, fgColor);
-            }
         }
     }
 }

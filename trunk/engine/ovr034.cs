@@ -12,8 +12,7 @@ namespace engine
                 Logger.LogAndExit("Start range error in Load24x24Set. {0}", destCellOffset);
             }
 
-            DaxBlock tmp_block = null;
-            seg040.load_dax(ref tmp_block, 0, 0, block_id, fileName);
+            DaxBlock tmp_block = seg040.LoadDax(0, 0, block_id, fileName);
 
             int dateLength = cellCount * tmp_block.bpp;
             int destByteOffset = destCellOffset * tmp_block.bpp;
@@ -66,20 +65,20 @@ namespace engine
             if (sub == "CHEAD" ||
                 sub == "CBODY")
             {
-                if (seg051.UpCase(file_text[file_text.Length - 1]) == 'T')
+                if (char.ToUpper(file_text[file_text.Length - 1]) == 'T')
                 {
                     block_id += 0x40;
                 }
 
                 file_text = seg051.Copy(file_text.Length - 1, 0, file_text);
 
-                seg040.load_dax(ref gbl.combat_icons[combat_icon_index, 0], 0, 1, block_id, file_text);
-                seg040.load_dax(ref gbl.combat_icons[combat_icon_index, 1], 0, 1, block_id + 0x80, file_text);
+                gbl.combat_icons[combat_icon_index, 0] = seg040.LoadDax(0, 1, block_id, file_text);
+                gbl.combat_icons[combat_icon_index, 1] = seg040.LoadDax(0, 1, block_id + 0x80, file_text);
             }
             else if (file_text == "COMSPR" || file_text == "ICON")
             {
-                seg040.load_dax(ref gbl.combat_icons[combat_icon_index, 0], 0, 1, block_id, file_text);
-                seg040.load_dax(ref gbl.combat_icons[combat_icon_index, 1], 0, 1, block_id + 0x80, file_text);
+                gbl.combat_icons[combat_icon_index, 0] = seg040.LoadDax(0, 1, block_id, file_text);
+                gbl.combat_icons[combat_icon_index, 1] = seg040.LoadDax(0, 1, block_id + 0x80, file_text);
 
                 if (file_text == "ICON")
                 {
@@ -91,10 +90,10 @@ namespace engine
             {
                 file_text += gbl.game_area.ToString();
 
-                seg040.load_dax(ref gbl.combat_icons[combat_icon_index, 0], 0, 1, block_id, file_text);
+                gbl.combat_icons[combat_icon_index, 0] = seg040.LoadDax(0, 1, block_id, file_text);
                 seg040.DaxBlockRecolor(gbl.combat_icons[combat_icon_index, 0], 0, 0, gbl.unk_16E40, gbl.unk_16E30);
 
-                seg040.load_dax(ref gbl.combat_icons[combat_icon_index, 1], 0, 1, block_id + 0x80, file_text);
+                gbl.combat_icons[combat_icon_index, 1] = seg040.LoadDax(0, 1, block_id + 0x80, file_text);
                 seg040.DaxBlockRecolor(gbl.combat_icons[combat_icon_index, 1], 0, 0, gbl.unk_16E40, gbl.unk_16E30);
             }
 
@@ -110,8 +109,7 @@ namespace engine
             {
                 if (direction > 3)
                 {
-                    DaxBlock flipped;
-                    seg040.init_dax_block(out flipped, 1, 1, icon.width, icon.height); // was 3 and 0x18
+                    DaxBlock flipped = new DaxBlock(1, 1, icon.width, icon.height); // was 3 and 0x18
                     seg040.flipIconLeftToRight(flipped, icon);
                     icon = flipped;
                 }

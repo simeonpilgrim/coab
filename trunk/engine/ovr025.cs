@@ -343,12 +343,12 @@ namespace engine
 
         internal static void PartySummary(Player player)
         {
-            if (gbl.game_state == 3)
+            if (gbl.game_state == GameState.State3)
             {
                 return;
             }
 
-            int x_pos = (gbl.game_state == 0) ? 1 : 17;
+            int x_pos = (gbl.game_state == GameState.State0) ? 1 : 17;
             int y_pos = 2;
 
             seg041.displayString("Name", 0, 15, y_pos, x_pos);
@@ -981,7 +981,7 @@ namespace engine
 
         internal static void DisplayPlayerStatusString(bool clearDisplay, int lineY, string text, Player player) /* sub_67788 */
         {
-            if (gbl.game_state == 5)
+            if (gbl.game_state == GameState.Combat)
             {
                 seg037.draw8x8_clear_area(0x15, 0x26, lineY, 0x17);
 
@@ -1008,7 +1008,7 @@ namespace engine
 
         internal static void ClearPlayerTextArea() /* sub_6786F */
         {
-            if (gbl.game_state == 5)
+            if (gbl.game_state == GameState.Combat)
             {
                 seg037.draw8x8_clear_area(0x15, 0x26, 0x0a, 0x17);
             }
@@ -1051,8 +1051,7 @@ namespace engine
 
             if (flipIcon == true)
             {
-                DaxBlock var_4;
-                seg040.init_dax_block(out var_4, 1, 1, 3, 0x18);
+                DaxBlock var_4 = new DaxBlock( 1, 1, 3, 0x18);
                 seg040.flipIconLeftToRight(var_4, gbl.combat_icons[iconIdx, iconAction]);
 
                 System.Array.Copy(var_4.data, 0, gbl.missile_dax.data, iconOffset * dataSize, dataSize);
@@ -1354,7 +1353,7 @@ namespace engine
 
         internal static void sub_6818A(string text, bool arg_4, Player player)
         {
-            if (gbl.game_state == 5)
+            if (gbl.game_state == GameState.Combat)
             {
                 int iconId = arg_4 ? 0x16 : 0x17;
 
@@ -1467,7 +1466,7 @@ namespace engine
                 {
                     player.health_status = Status.dying;
 
-                    if (gbl.game_state == 5)
+                    if (gbl.game_state == GameState.Combat)
                     {
                         player.actions.bleeding = neg_hp;
                     }
@@ -1483,7 +1482,7 @@ namespace engine
                 player.in_combat = false;
                 player.hit_point_current = 0;
 
-                if (gbl.game_state == 5)
+                if (gbl.game_state == GameState.Combat)
                 {
                     if (player.combat_team == CombatTeam.Ours)
                     {
@@ -1519,7 +1518,7 @@ namespace engine
 
             DisplayPlayerStatusString(true, 10, text, player);
 
-            if (gbl.game_state != 5)
+            if (gbl.game_state == GameState.Combat)
             {
                 PartySummary(gbl.player_ptr);
             }
@@ -1725,11 +1724,11 @@ namespace engine
 
             switch (gbl.game_state)
             {
-                case 0:
+                case GameState.State0:
                     seg037.draw8x8_outer_frame();
                     break;
 
-                case 1:
+                case GameState.Shop:
                     if (gbl.redrawBoarder == true)
                     {
                         seg037.draw8x8_03();
@@ -1749,14 +1748,14 @@ namespace engine
                     display_map_position_time();
                     break;
 
-                case 2:
+                case GameState.State2:
                     seg037.draw8x8_03();
                     ovr030.load_pic_final(ref gbl.byte_1D556, 0, 0x1d, "PIC");
                     PartySummary(gbl.player_ptr);
                     display_map_position_time();
                     break;
 
-                case 4:
+                case GameState.State4:
                     seg037.draw8x8_03();
                     ovr029.update_3D_view();
                     PartySummary(gbl.player_ptr);
@@ -1764,14 +1763,14 @@ namespace engine
                     gbl.byte_1EE98 = false;
                     break;
 
-                case 3:
+                case GameState.State3:
                     if (gbl.lastDaxBlockId != 0x50)
                     {
                         ovr029.update_3D_view();
                     }
                     break;
 
-                case 6:
+                case GameState.State6:
                     seg037.draw8x8_03();
                     ovr030.load_pic_final(ref gbl.byte_1D556, 0, 1, "PIC");
                     PartySummary(gbl.player_ptr);
@@ -1799,7 +1798,7 @@ namespace engine
 
         internal static void display_map_position_time() // camping_search
         {
-            if (gbl.game_state != 3)
+            if (gbl.game_state != GameState.State3)
             {
                 string output = string.Empty;
 
@@ -1819,7 +1818,7 @@ namespace engine
                     output += "*";
                 }
 
-                if (gbl.game_state == 2)
+                if (gbl.game_state == GameState.State2)
                 {
                     output += " camping";
                 }
@@ -1855,7 +1854,7 @@ namespace engine
             {
                 PartySummary(player);
 
-                bool useOverlay = (gbl.game_state == 2 || gbl.game_state == 6);
+                bool useOverlay = (gbl.game_state == GameState.State2 || gbl.game_state == GameState.State6);
                 bool special_key;
 
                 input_key = ovr027.displayInput(out special_key, useOverlay, 1, 15, 10, 13, "Select" + text, prompt + " ");

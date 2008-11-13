@@ -3,9 +3,6 @@ using System.Diagnostics;
 
 namespace Classes
 {
-	/// <summary>
-	/// Summary description for StringList.
-	/// </summary>
 	public class MenuItem
 	{
 		public string Text { get; set;}  // 0x00;

@@ -449,7 +449,7 @@ namespace engine
             bool var_30 = false; /* Simeon */
             bool money_present;
 
-            gbl.game_state = 1;
+            gbl.game_state = GameState.Shop;
             gbl.redrawBoarder = (gbl.area_ptr.field_1CC == 0);
 
             ovr025.load_pic();
@@ -491,8 +491,7 @@ namespace engine
                         break;
 
                     case 'V':
-                        bool dummyBool;
-                        ovr020.viewPlayer(out dummyBool);
+                        ovr020.viewPlayer();
                         break;
 
                     case 'T':

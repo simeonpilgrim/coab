@@ -21,7 +21,22 @@ namespace engine
             EngineStoppedCallback = stoppedCallback;
 
             seg044.sound_sub_121BF();
-            seg039.config_game();
+            ConfigGame();
+        }
+
+        internal static void ConfigGame()
+        {
+            gbl.exe_path = System.IO.Directory.GetCurrentDirectory();
+            gbl.data_path = gbl.exe_path;
+
+            if (seg044.load_dump_bin()) // PC Speaker
+            {
+                gbl.soundType = SoundType.PC;
+            }
+            else // No Sounds
+            {
+                gbl.soundType = SoundType.None;
+            }
         }
 
         public static void PROGRAM()

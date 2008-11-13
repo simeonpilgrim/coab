@@ -55,14 +55,22 @@ namespace Classes
             videoRam = new byte[videoRamSize];
         }
 
-        static public void DisplayMono8x1(int x, int y, int value, int bgColor, int fgColor)
-        {
-            int px = x * 8;
+        static int[] MonoBitMask = { 0x80, 0x40, 0x20, 0x10, 0x08, 0x04, 0x02, 0x01 };
 
-            for (int i = 0; i < 8; i++)
+        public static void DisplayMono8x8(int xCol, int yCol, byte[] monoData8x8, int bgColor, int fgColor)
+        {
+            int pX = xCol * 8;
+
+            for (int yStep = 0; yStep < 8; yStep++)
             {
-                ram[y, px + i] = (value & (0x80 >> i)) != 0 ? fgColor : bgColor;
-                SetVidPixel(px + i, y, ram[y, px + i]);
+                int pY = (yCol * 8) + yStep;
+                int value = gbl.monoCharData[yStep];
+
+                for (int i = 0; i < 8; i++)
+                {
+                    ram[pY, pX + i] = (value & MonoBitMask[i]) != 0 ? fgColor : bgColor;
+                    SetVidPixel(pX + i, pY, ram[pY, pX + i]);
+                }
             }
         }
 

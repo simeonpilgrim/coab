@@ -152,7 +152,7 @@ namespace engine
                     if (player._int > 8 &&
                         ((player.race != Race.human) ||
                      (player.field_159 == null) ||
-                     (gbl.game_state != 5) ||
+                     (gbl.game_state != GameState.Combat) ||
                      (player.ranger_lvl > 8) ||
                      (ovr026.sub_6B3D1(player) != 0 && player.field_115 > 8 && player.magic_user_lvl > 0) ||
                      (ovr026.sub_6B3D1(player) != 0 && player.field_116 > 0)))
@@ -572,7 +572,7 @@ namespace engine
             }
             else if (arg_0 == 0x3F)
             {
-                if (gbl.game_state == 5)
+                if (gbl.game_state == GameState.Combat)
                 {
                     var_4 = (ushort)(ovr024.roll_dice(10, 2) * 10);
                 }
@@ -726,7 +726,7 @@ namespace engine
             Player caster = gbl.player_ptr;
             bool var_1 = true;
 
-            if (gbl.game_state != 5 &&
+            if (gbl.game_state == GameState.Combat &&
                 gbl.spell_table[spell_id].field_7 == 0)
             {
                 if (gbl.spell_from_item == false)
@@ -779,7 +779,7 @@ namespace engine
                 {
                     var_1 = false;
 
-                    if (gbl.game_state == 5)
+                    if (gbl.game_state == GameState.Combat)
                     {
                         ovr025.load_missile_icons(0x12);
                         int casterX = ovr033.PlayerMapXPos(caster);
@@ -833,7 +833,7 @@ namespace engine
                 }
                 else
                 {
-                    if (gbl.game_state != 5)
+                    if (gbl.game_state != GameState.Combat)
                     {
                         var_1 = false;
                     }
@@ -856,7 +856,7 @@ namespace engine
 
             ovr025.ClearPlayerTextArea();
 
-            if (gbl.game_state == 5)
+            if (gbl.game_state == GameState.Combat)
             {
                 seg037.draw8x8_clear_area(0x17, 0x27, 0x17, 0);
             }
@@ -1138,7 +1138,7 @@ namespace engine
             {
                 if (gbl.sp_targets[i] != null &&
                     (gbl.sp_targets[i].combat_team != team ||
-                    (gbl.spell_id == 1 && gbl.game_state == 5 &&
+                    (gbl.spell_id == 1 && gbl.game_state == GameState.Combat &&
                      ovr025.near_enemy(1, gbl.sp_targets[i]) > 0)))
                 {
                     gbl.sp_targets[i] = null;
@@ -1523,7 +1523,7 @@ namespace engine
         internal static void create_noxious_cloud() //TODO similar to spell_poisonous_cloud
         {
             byte var_12;
-            byte var_F;
+            byte groundTile;
             byte var_D;
             byte[] var_C = new byte[4];
 
@@ -1541,12 +1541,12 @@ namespace engine
             {
                 var_12 = gbl.unk_18AE9[var_11];
 
-                ovr033.AtMapXY(out var_F, out var_C[var_11 - 1],
+                ovr033.AtMapXY(out groundTile, out var_C[var_11 - 1],
                     gbl.targetY + gbl.MapDirectionYDelta[var_12],
                     gbl.targetX + gbl.MapDirectionXDelta[var_12]);
 
 
-                if (var_F > 0 && gbl.BackGroundTiles[var_F].move_cost < 0xFF)
+                if (groundTile > 0 && gbl.BackGroundTiles[groundTile].move_cost < 0xFF)
                 {
                     var_8.field_10[var_11] = 1;
                 }
@@ -1556,7 +1556,7 @@ namespace engine
                 }
 
 
-                if (var_F == 0x1E)
+                if (groundTile == 0x1E)
                 {
                     foreach(var var_4 in gbl.NoxiousCloud)
                     {
@@ -1571,7 +1571,7 @@ namespace engine
                                     {
                                         if (var_4.field_7[var_D] != 0x1E)
                                         {
-                                            var_F = var_4.field_7[var_D];
+                                            groundTile = var_4.field_7[var_D];
                                         }
                                     }
                                 }
@@ -1579,19 +1579,19 @@ namespace engine
                         }
                     }
                 }
-                else if (var_F == 0x1F)
+                else if (groundTile == 0x1F)
                 {
                     for (var_D = 1; var_D <= gbl.byte_1D1BB; var_D++)
                     {
                         if (gbl.unk_1D183[var_D].mapX == gbl.targetX + gbl.MapDirectionXDelta[var_12] &&
                             gbl.unk_1D183[var_D].mapY == gbl.targetY + gbl.MapDirectionYDelta[var_12])
                         {
-                            var_F = gbl.unk_1D183[var_D].field_6;
+                            groundTile = gbl.unk_1D183[var_D].field_6;
                         }
                     }
                 }
 
-                var_8.field_7[var_11] = var_F;
+                var_8.field_7[var_11] = groundTile;
                 if (var_8.field_10[var_11] != 0)
                 {
                     int tmp_x = gbl.MapDirectionXDelta[var_12] + gbl.targetX;
@@ -1732,7 +1732,7 @@ namespace engine
 
                         player.field_11A = 4;
 
-                        if (gbl.game_state == 5)
+                        if (gbl.game_state == GameState.Combat)
                         {
                             player.actions.target = null;
                         }
@@ -1965,7 +1965,7 @@ namespace engine
                                 int tmp_int = (var_18.target_y + gbl.MapDirectionYDelta[gbl.unk_18AE9[var_1]]);
 
                                 if (var_12 == tmp_int &&
-                                    var_18.field_1D == 0)
+                                    var_18.field_1D == false)
                                 {
                                     if (sub_5F126(var_18.player, maxTargetCount) == true)
                                     {
@@ -1998,7 +1998,7 @@ namespace engine
                                     }
                                     else
                                     {
-                                        var_18.field_1D = 1;
+                                        var_18.field_1D = true;
                                     }
                                 }
                             }
@@ -2164,38 +2164,30 @@ namespace engine
 
         internal static void sub_5FA44(byte arg_0, byte arg_2, int damage, byte arg_6)
         {
-            byte var_3D;
-            byte var_3C;
-            byte var_3B;
             byte var_3A = 0; /* Simeon */
-            byte var_39;
-            byte var_38;
-            bool var_37;
-            bool var_36;
-            sbyte var_35;
-            SteppingPath path_b;
-            SteppingPath path_a;
-
-            var_36 = false;
+            bool var_36 = false;
             ovr025.load_missile_icons(0x13);
 
-            ovr033.AtMapXY(out var_3B, out var_39, gbl.targetY, gbl.targetX);
-            var_3D = 0;
-            var_35 = 1;
+            byte var_39;
+            byte groundTile;
+   
+            ovr033.AtMapXY(out groundTile, out var_39, gbl.targetY, gbl.targetX);
+            int var_3D = 0;
+            int var_35 = 1;
 
             int var_31 = ovr033.PlayerMapXPos(gbl.player_ptr);
             int var_32 = ovr033.PlayerMapYPos(gbl.player_ptr);
-            var_38 = arg_0;
+            byte var_38 = arg_0;
 
             if (var_31 != gbl.targetX ||
                 var_32 != gbl.targetY)
             {
-                var_3C = (byte)(arg_6 * 2);
+                int var_3C = arg_6 * 2;
                 gbl.byte_1D2C7 = true;
 
                 while (var_3C > 0)
                 {
-                    path_a = new SteppingPath();
+                    var path_a = new SteppingPath();
 
                     path_a.attacker_x = gbl.targetX;
                     path_a.attacker_y = gbl.targetY;
@@ -2212,22 +2204,27 @@ namespace engine
                         if (path_a.attacker_x != path_a.target_x ||
                             path_a.attacker_y != path_a.target_y)
                         {
+                            bool stepping;
+
                             do
                             {
-                                var_37 = path_a.Step();
+                                stepping = path_a.Step();
 
-                                ovr033.AtMapXY(out var_3B, out var_3A, path_a.current_y, path_a.current_x);
+                                ovr033.AtMapXY(out groundTile, out var_3A, path_a.current_y, path_a.current_x);
 
-                                if (gbl.BackGroundTiles[var_3B].move_cost == 1)
+                                if (gbl.BackGroundTiles[groundTile].move_cost == 1)
                                 {
                                     var_36 = false;
                                 }
 
-                            } while (var_37 == true && (var_3A <= 0 || var_3A == var_39) && var_3B != 0 &&
-                            gbl.BackGroundTiles[var_3B].move_cost <= 1 && path_a.steps < var_3C);
+                            } while (stepping == true && 
+                                (var_3A <= 0 || var_3A == var_39) && 
+                                groundTile != 0 &&
+                                gbl.BackGroundTiles[groundTile].move_cost <= 1 && 
+                                path_a.steps < var_3C);
                         }
 
-                        if (var_3B == 0)
+                        if (groundTile == 0)
                         {
                             var_3C = 0;
                         }
@@ -2242,7 +2239,7 @@ namespace engine
                             gbl.targetX = path_a.current_x;
                             gbl.targetY = path_a.current_y;
 
-                            path_b = new SteppingPath();
+                            var path_b = new SteppingPath();
 
                             path_b.attacker_x = gbl.targetX;
                             path_b.attacker_y = gbl.targetY;
@@ -2261,7 +2258,7 @@ namespace engine
                                 path_a.steps += 8;
                             }
 
-                            var_35 = (sbyte)-var_35;
+                            var_35 = -var_35;
                             var_38 = 0;
                             var_39 = 0;
                         }
@@ -3370,7 +3367,7 @@ namespace engine
 
         internal static void cast_spell_text(byte arg_0, string arg_2, Player arg_6) /* cast_a_spell */
         {
-            if (gbl.game_state == 5)
+            if (gbl.game_state == GameState.Combat)
             {
                 ovr025.DisplayPlayerStatusString(true, 10, "Casts a Spell", arg_6);
                 seg037.draw8x8_clear_area(0x17, 0x27, 0x17, 0);

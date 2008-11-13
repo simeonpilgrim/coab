@@ -103,24 +103,21 @@ namespace engine
                         highlights[highlighed_word].end >= i &&
                         highlightFgColor != 0)
                     {
-                        seg041.display_char01(true, text[i], 1, highlightFgColor, 0, 0x18, xOffset + i);
+                        seg041.display_char01(text[i], 1, highlightFgColor, 0, 0x18, xOffset + i);
+                    }
+                    else if (highlightable_text.MemberOf(text[i]) == true)
+                    {
+                        seg041.display_char01(text[i], 1, 0, highlightFgColor, 0x18, xOffset + i);
                     }
                     else
                     {
-                        if (highlightable_text.MemberOf(text[i]) == true)
-                        {
-                            seg041.display_char01(true, text[i], 1, 0, highlightFgColor, 0x18, xOffset + i);
-                        }
-                        else
-                        {
-                            seg041.display_char01(true, text[i], 1, 0, fgColor, 0x18, xOffset + i);
-                        }
+                        seg041.display_char01(text[i], 1, 0, fgColor, 0x18, xOffset + i);
                     }
                 }
 
                 if (text.Length + xOffset < 0x27)
                 {
-                    seg041.display_char01(true, ' ', (0x27 - text.Length - xOffset) + 1,
+                    seg041.display_char01(' ', (0x27 - text.Length - xOffset) + 1,
                         0, 0, 0x18, xOffset + text.Length);
                 }
 
@@ -145,9 +142,9 @@ namespace engine
 
             HighlightSet highlights = buildInputKeys(displayInputString, out var_8E);
 
-            if (gbl.byte_1D5BE >= var_8E)
+            if (gbl.menuSelectedWord >= var_8E)
             {
-                gbl.byte_1D5BE = 0;
+                gbl.menuSelectedWord = 0;
             }
 
             char input_key = '\0';
@@ -166,10 +163,10 @@ namespace engine
 
             int displayInputXOffset = displayExtraString.Length;
 
-            display_highlighed_text(gbl.byte_1D5BE, highlightFgColor, 
+            display_highlighed_text(gbl.menuSelectedWord, highlightFgColor, 
                 displayInputString, displayInputXOffset, fgColor, highlights);
 
-            if (gbl.game_state == 3 &&
+            if (gbl.game_state == GameState.State3 &&
                 gbl.bigpic_block_id == 0x79 &&
                 gbl.lastDaxBlockId != 0x50)
             {
@@ -180,7 +177,7 @@ namespace engine
 
             do
             {
-                if (gbl.game_state == 3 &&
+                if (gbl.game_state == GameState.State3 &&
                     gbl.bigpic_block_id == 0x79 &&
                     gbl.lastDaxBlockId != 0x50 &&
                     seg041.time01() >= var_5B)
@@ -239,9 +236,9 @@ namespace engine
                     {
                         if (var_8F)
                         {
-                            if (highlights[gbl.byte_1D5BE].start != -1)
+                            if (highlights[gbl.menuSelectedWord].start != -1)
                             {
-                                input_key = displayInputString[highlights[gbl.byte_1D5BE].start];
+                                input_key = displayInputString[highlights[gbl.menuSelectedWord].start];
                             }
                             else
                             {
@@ -253,31 +250,31 @@ namespace engine
                     }
                     else if (input_key == 0x2C)
                     {
-                        if (gbl.byte_1D5BE == 0)
+                        if (gbl.menuSelectedWord == 0)
                         {
-                            gbl.byte_1D5BE = (byte)(var_8E - 1);
+                            gbl.menuSelectedWord = (byte)(var_8E - 1);
                         }
                         else
                         {
-                            gbl.byte_1D5BE--;
+                            gbl.menuSelectedWord--;
                         }
 
-                        display_highlighed_text(gbl.byte_1D5BE, highlightFgColor, displayInputString, displayInputXOffset, fgColor, highlights);
+                        display_highlighed_text(gbl.menuSelectedWord, highlightFgColor, displayInputString, displayInputXOffset, fgColor, highlights);
                     }
                     else if (input_key == 0x2E)
                     {
-                        gbl.byte_1D5BE++;
+                        gbl.menuSelectedWord++;
 
-                        if (gbl.byte_1D5BE >= var_8E)
+                        if (gbl.menuSelectedWord >= var_8E)
                         {
-                            gbl.byte_1D5BE = 0;
+                            gbl.menuSelectedWord = 0;
                         }
 
-                        display_highlighed_text(gbl.byte_1D5BE, highlightFgColor, displayInputString, displayInputXOffset, fgColor, highlights);
+                        display_highlighed_text(gbl.menuSelectedWord, highlightFgColor, displayInputString, displayInputXOffset, fgColor, highlights);
                     }
                     else
                     {
-                        input_key = seg051.UpCase(input_key);
+                        input_key = char.ToUpper(input_key);
                         if (unk_6C398.MemberOf(input_key) == true)
                         {
                             if (input_key == 0x20)
@@ -298,9 +295,9 @@ namespace engine
                                             var_61++;
                                         }
 
-                                        gbl.byte_1D5BE = var_61;
+                                        gbl.menuSelectedWord = var_61;
 
-                                        display_highlighed_text(gbl.byte_1D5BE, highlightFgColor, displayInputString, displayInputXOffset, fgColor, highlights);
+                                        display_highlighed_text(gbl.menuSelectedWord, highlightFgColor, displayInputString, displayInputXOffset, fgColor, highlights);
                                     }
                                 }
                             }
@@ -324,7 +321,7 @@ namespace engine
                     }
                 }
 
-                if (gbl.game_state == 3 &&
+                if (gbl.game_state == GameState.State3 &&
                     gbl.bigpic_block_id == 0x79 &&
                     gbl.lastDaxBlockId != 0x50 &&
                     seg041.time01() >= var_5F)
@@ -340,7 +337,7 @@ namespace engine
 
             gbl.area_ptr.picture_fade = 0;
 
-            if (gbl.game_state == 3 &&
+            if (gbl.game_state == GameState.State3 &&
                 gbl.bigpic_block_id == 0x79 &&
                 gbl.lastDaxBlockId != 0x50)
             {
@@ -377,8 +374,7 @@ namespace engine
 
                 if (menu.Text.Length < displayFillWidth)
                 {
-                    seg041.display_char01(true, ' ', displayFillWidth - menu.Text.Length, 0, 0,
-                        yCol, menu.Text.Length + xStart);
+                    seg041.display_char01(' ', displayFillWidth - menu.Text.Length, 0, 0, yCol, menu.Text.Length + xStart);
                 }
                 yCol++;
             }
@@ -469,9 +465,9 @@ namespace engine
         }
 
 
-        internal static void sub_6CD38(bool backwardsStep, ref int index, List<MenuItem> list, int listDisplayHeight,
+        internal static void menu_sub_6CD38(bool backwardsStep, ref int index, List<MenuItem> list, int listDisplayHeight,
             int yEnd, int xEnd, int yStart, int xStart,
-            int normalColor, int headingColor, int displayFillWidth)
+            int normalColor, int headingColor, int displayFillWidth) // sub_6CD38
         {
             int screenOffset = index - gbl.menuScreenIndex;
 
@@ -502,7 +498,7 @@ namespace engine
         }
 
 
-        internal static int sub_6CDCA(bool backwardsStep, int index, List<MenuItem> list, int listDisplayHeight )
+        internal static int menu_sub_6CDCA(bool backwardsStep, int index, List<MenuItem> list, int listDisplayHeight) // sub_6CDCA
         {
 			if( backwardsStep == true )
 			{
@@ -557,7 +553,7 @@ namespace engine
                 return '\0';
             }
             
-            gbl.byte_1D5BE = 1;
+            gbl.menuSelectedWord = 1;
 
             int listDisplayWidth = (endX - startX) + 1;
             int listDisplayHeight = (short)((endY - startY) + 1);
@@ -582,7 +578,7 @@ namespace engine
             }
 
             index_ptr++;
-            index_ptr = sub_6CDCA(false, index_ptr, stringList, listDisplayHeight);
+            index_ptr = menu_sub_6CDCA(false, index_ptr, stringList, listDisplayHeight);
 
             if (arg_8 == true)
             {
@@ -629,24 +625,24 @@ namespace engine
                     switch (input_key)
                     {
                         case 'G':
-                            index_ptr = sub_6CDCA(false, index_ptr, stringList, listDisplayHeight);
+                            index_ptr = menu_sub_6CDCA(false, index_ptr, stringList, listDisplayHeight);
                             break;
 
                         case 'O':
-                            index_ptr = sub_6CDCA(true, index_ptr, stringList, listDisplayHeight);
+                            index_ptr = menu_sub_6CDCA(true, index_ptr, stringList, listDisplayHeight);
                             break;
 
                         case 'I':
                             if (showPrevious == true)
                             {
-                                sub_6CD38(false, ref index_ptr, stringList, listDisplayHeight, endY, endX, startY, startX, normalColor, headingColor, listDisplayWidth);
+                                menu_sub_6CD38(false, ref index_ptr, stringList, listDisplayHeight, endY, endX, startY, startX, normalColor, headingColor, listDisplayWidth);
                             }
                             break;
 
                         case 'Q':
                             if (showNext == true)
                             {
-                                sub_6CD38(true, ref index_ptr, stringList, listDisplayHeight, endY, endX, startY, startX, normalColor, headingColor, listDisplayWidth);
+                                menu_sub_6CD38(true, ref index_ptr, stringList, listDisplayHeight, endY, endX, startY, startX, normalColor, headingColor, listDisplayWidth);
                             }
                             break;
                     }
@@ -656,12 +652,12 @@ namespace engine
                     switch (input_key)
                     {
                         case 'P':
-                            sub_6CD38(false, ref index_ptr, stringList, listDisplayHeight, endY, endX, startY, startX, normalColor, headingColor, listDisplayWidth);
+                            menu_sub_6CD38(false, ref index_ptr, stringList, listDisplayHeight, endY, endX, startY, startX, normalColor, headingColor, listDisplayWidth);
                             break;
 
                         case 'N':
 
-                            sub_6CD38(true, ref index_ptr, stringList, listDisplayHeight, endY, endX, startY, startX, normalColor, headingColor, listDisplayWidth);
+                            menu_sub_6CD38(true, ref index_ptr, stringList, listDisplayHeight, endY, endX, startY, startX, normalColor, headingColor, listDisplayWidth);
                             break;
 
                         case (char)0x1B:
@@ -690,7 +686,7 @@ namespace engine
             char inputKey;
             bool dummyBool;
 
-            gbl.byte_1D5BE = 2;
+            gbl.menuSelectedWord = 2;
 
             do
             {

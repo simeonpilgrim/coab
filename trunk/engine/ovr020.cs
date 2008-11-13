@@ -242,15 +242,15 @@ namespace engine
         static Set asc_54B50 = new Set(0x0902, new byte[] { 0x02, 0x18 });
         static Set unk_54B03 = new Set(0x0009, new byte[] { 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x20 });
 
-        internal static void viewPlayer(out bool arg_0)
+        internal static bool viewPlayer()
         {
-            if (gbl.game_state == 5)
+            if (gbl.game_state == GameState.Combat)
             {
                 ovr033.Color_0_8_normal();
             }
 
             char input_key = ' ';
-            arg_0 = false;
+            bool arg_0 = false;
 
             gbl.player_ptr01 = gbl.player_ptr;
 
@@ -292,7 +292,7 @@ namespace engine
                     gbl.player_ptr02.in_combat == false ||
                     gbl.player_ptr02.health_status == Status.animated)
                 {
-                    if (hasMoney && gbl.game_state != 5)
+                    if (hasMoney && gbl.game_state != GameState.Combat)
                     {
                         text += "Trade ";
                     }
@@ -355,11 +355,13 @@ namespace engine
                 }
             }
 
-            if (gbl.game_state == 5)
+            if (gbl.game_state == GameState.Combat)
             {
                 ovr033.Color_0_8_inverse();
             }
             ovr025.load_pic();
+
+            return arg_0;
         }
 
 
@@ -477,8 +479,8 @@ namespace engine
 
                     if (player.in_combat == true &&
                         gbl.area_ptr.field_1CA == 0 &&
-                        (gbl.game_state == 2 || gbl.game_state == 3 ||
-                         gbl.game_state == 4 || gbl.game_state == 5 ||
+                        (gbl.game_state == GameState.State2 || gbl.game_state == GameState.State3 ||
+                         gbl.game_state == GameState.State4 || gbl.game_state == GameState.Combat ||
                          (player.actions != null && player.actions.can_use == true)))
                     {
                         text += " Use";
@@ -488,7 +490,7 @@ namespace engine
                         player.in_combat == false ||
                         player.health_status == Status.animated)
                     {
-                        if (gbl.game_state != 5)
+                        if (gbl.game_state != GameState.Combat)
                         {
                             text += " Trade";
                         }
@@ -507,13 +509,13 @@ namespace engine
                         player.in_combat == false ||
                         player.health_status == Status.animated)
                     {
-                        if (gbl.game_state == 1)
+                        if (gbl.game_state == GameState.Shop)
                         {
                             text += " Sell";
                         }
                     }
 
-                    if (gbl.game_state == 1)
+                    if (gbl.game_state == GameState.Shop)
                     {
                         text += " Id";
                     }
@@ -568,7 +570,7 @@ namespace engine
                                     (curr_item.affect_2 > 0 && (int)curr_item.affect_3 < 0x80))
                                 {
                                     sub_56478(ref arg_0, curr_item);
-                                    if (gbl.game_state != 5)
+                                    if (gbl.game_state != GameState.Combat)
                                     {
                                         arg_0 = false;
                                     }
@@ -737,7 +739,7 @@ namespace engine
                         int var_3 = (int)item.affect_2 << 4;
 
                         gbl.damage_flags = 8;
-                        if (gbl.game_state == 5)
+                        if (gbl.game_state == GameState.Combat)
                         {
                             ovr025.sub_68DC0();
                         }
@@ -889,7 +891,7 @@ namespace engine
                         break;
 
                     case 3:
-                        if (gbl.game_state != 5 ||
+                        if (gbl.game_state != GameState.Combat ||
                             player.quick_fight == QuickFight.False)
                         {
                             ovr025.string_print01("Your hands are full!");
@@ -1015,7 +1017,7 @@ namespace engine
             }
             else
             {
-                if (gbl.game_state == 5 &&
+                if (gbl.game_state == GameState.Combat &&
                     gbl.player_ptr.quick_fight == QuickFight.False)
                 {
                     ovr025.sub_68DC0();
@@ -1025,7 +1027,7 @@ namespace engine
                 {
                     ovr025.DisplayPlayerStatusString(false, 10, "uses an item", gbl.player_ptr);
 
-                    if (gbl.game_state == 5)
+                    if (gbl.game_state == GameState.Combat)
                     {
                         seg041.displayString("Item:", 0, 10, 0x17, 0);
 
@@ -1073,7 +1075,7 @@ namespace engine
 
                 gbl.spell_from_item = false;
 
-                if (gbl.game_state == 5 &&
+                if (gbl.game_state == GameState.Combat &&
                     gbl.spell_table[var_1].field_B != 0)
                 {
                     arg_0 = ovr025.clear_actions(gbl.player_ptr);
@@ -1306,7 +1308,6 @@ namespace engine
 
         internal static void drop_coin()
         {
-            bool var_16;
             bool noMoreMoney;
 
             do
@@ -1323,13 +1324,13 @@ namespace engine
                 }
 
                 int index = 0;
-                var_16 = true;
+                bool var_16 = true;
 
-                MenuItem var_10;
-                ovr027.sl_select_item(out var_10, ref index, ref var_16, true, var_C, 13, 0x19, 7,
+                MenuItem selected;
+                ovr027.sl_select_item(out selected, ref index, ref var_16, true, var_C, 13, 0x19, 7,
                     12, 15, 10, 13, " Select", "Select type of coin ");
 
-                if (var_10 == null)
+                if (selected == null)
                 {
                     noMoreMoney = true;
                 }
@@ -1337,7 +1338,7 @@ namespace engine
                 {
                     string text;
 
-                    int money_slot = ovr022.GetMoneyIndexFromString(out text, var_10.Text);
+                    int money_slot = ovr022.GetMoneyIndexFromString(out text, selected.Text);
 
                     text = "How much " + text + "will you drop? ";
 
@@ -1478,7 +1479,7 @@ namespace engine
                 if (index < 0 ||
                     arg_8 == SpellSource.Cast)
                 {
-                    if (gbl.game_state != 5)
+                    if (gbl.game_state != GameState.Combat)
                     {
                         if (arg_8 == SpellSource.Memorize)
                         {
@@ -1515,7 +1516,7 @@ namespace engine
             bool result;
 
             if ((player._class == ClassId.paladin || (player.field_114 > 0 && ovr026.sub_6B3D1(player) != 0)) &&
-                 gbl.game_state != 5 &&
+                 gbl.game_state != GameState.Combat &&
                     player.health_status == Status.okey &&
                     ovr025.find_affect(Affects.affect_8c, player) == false)
             {
@@ -1533,7 +1534,7 @@ namespace engine
         internal static bool CanCastCure(Player player) /* sub_57655 */
         {
             if ((player._class == ClassId.paladin || (player.field_114 > 0 && ovr026.sub_6B3D1(player) != 0)) &&
-                gbl.game_state != 5 &&
+                gbl.game_state != GameState.Combat &&
                 player.health_status == Status.okey &&
                 player.field_191 > 0)
             {

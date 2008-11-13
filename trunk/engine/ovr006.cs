@@ -7,7 +7,7 @@ namespace engine
     {
         internal static int calc_battle_exp()
         {
-            if (gbl.combat_type == gbl.combatType.duel)
+            if (gbl.combat_type == CombatType.duel)
             {
                 return gbl.player_ptr.field_E5 * 100;
             }
@@ -208,7 +208,7 @@ namespace engine
 
             }
 
-            if (gbl.combat_type == gbl.combatType.duel ||
+            if (gbl.combat_type == CombatType.duel ||
                 (gbl.area2_ptr.field_5CC != 0 && no_exp == true))
             {
                 gbl.party_killed = false;
@@ -216,7 +216,7 @@ namespace engine
 
             gbl.battleWon = false;
 
-            if (gbl.combat_type == gbl.combatType.normal ||
+            if (gbl.combat_type == CombatType.normal ||
                 gbl.inDemo == false)
             {
                 foreach (Player player in gbl.player_next_ptr)
@@ -395,7 +395,7 @@ namespace engine
             seg037.draw8x8_outer_frame();
 
             if (gbl.byte_1AB14 == true ||
-                gbl.combat_type == gbl.combatType.duel)
+                gbl.combat_type == CombatType.duel)
             {
                 if (gbl.party_fled == true)
                 {
@@ -412,7 +412,7 @@ namespace engine
                 }
                 else
                 {
-                    if ((gbl.combat_type == gbl.combatType.duel && gbl.battleWon == false) ||
+                    if ((gbl.combat_type == CombatType.duel && gbl.battleWon == false) ||
                         (gbl.battleWon == false && gbl.area2_ptr.field_5CC != 0))
                     {
                         gbl.area2_ptr.field_58E = 0x80;
@@ -422,7 +422,7 @@ namespace engine
                     }
                     else
                     {
-                        if (gbl.combat_type == gbl.combatType.duel)
+                        if (gbl.combat_type == CombatType.duel)
                         {
                             seg041.displayString("You have won the duel.", 0, 10, 3, 1);
                         }
@@ -439,7 +439,7 @@ namespace engine
             }
 
             string text;
-            if (gbl.combat_type == gbl.combatType.duel)
+            if (gbl.combat_type == CombatType.duel)
             {
                 text = "The duelist receives " + exp.ToString();
             }
@@ -630,8 +630,7 @@ namespace engine
                 switch (input_key)
                 {
                     case 'V':
-                        bool dummyBool;
-                        ovr020.viewPlayer(out dummyBool);
+                        ovr020.viewPlayer();
                         break;
 
                     case 'T':
@@ -799,7 +798,7 @@ namespace engine
                 sub_2D556();
             }
 
-            gbl.game_state = 6;
+            gbl.game_state = GameState.State6;
 
             sub_2E3C7();
 
@@ -811,7 +810,7 @@ namespace engine
                 }
 
                 if (gbl.party_killed == false ||
-                    gbl.combat_type == gbl.combatType.duel)
+                    gbl.combat_type == CombatType.duel)
                 {
                     if (gbl.party_fled == true)
                     {

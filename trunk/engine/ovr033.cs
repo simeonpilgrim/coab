@@ -536,7 +536,7 @@ namespace engine
 
         internal static void sub_74E6F(Player player)
         {
-            if (gbl.game_state != 5)
+            if (gbl.game_state != GameState.Combat)
             {
                 seg044.sound_sub_120E0(gbl.sound_5_188C8);
                 seg041.GameDelay();
@@ -623,7 +623,7 @@ namespace engine
         {
             bool ret_val;
 
-            if (gbl.game_state == 5)
+            if (gbl.game_state == GameState.Combat)
             {
                 ret_val = false;
 

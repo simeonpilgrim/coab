@@ -68,13 +68,13 @@ namespace engine
 
         internal static void startGameMenu()
         {
-            byte gameStateBackup = gbl.game_state;
+            var gameStateBackup = gbl.game_state;
             gbl.game_state = 0;
-            bool var_F = true;
+            bool reclac_menus = true;
 
             while (true)
             {
-                while (var_F == true)
+                if (reclac_menus == true)
                 {
                     seg037.draw8x8_outer_frame();
                     if (gbl.player_ptr != null)
@@ -131,7 +131,7 @@ namespace engine
                         }
                     }
 
-                    var_F = false;
+                    reclac_menus = false;
                 }
 
                 bool controlKey;
@@ -159,7 +159,7 @@ namespace engine
                             var_11 ^= true;
                         }
 
-                        var_F = var_11 && gbl.area2_ptr.training_class_mask > 0;
+                        reclac_menus = var_11 && gbl.area2_ptr.training_class_mask > 0;
                     }
                 }
                 else
@@ -206,8 +206,7 @@ namespace engine
                         case 'V':
                             if (menuFlags[allow_view] == true)
                             {
-                                bool dummyBool;
-                                ovr020.viewPlayer(out dummyBool);
+                                ovr020.viewPlayer();
                             }
                             break;
 
@@ -261,7 +260,7 @@ namespace engine
                                     if (gbl.reload_ecl_and_pictures == false &&
                                         gbl.lastDaxBlockId != 0x50)
                                     {
-                                        if (gbl.game_state == 3)
+                                        if (gbl.game_state == GameState.State3)
                                         {
                                             seg037.draw8x8_04();
                                         }
@@ -314,7 +313,7 @@ namespace engine
                             break;
                     }
 
-                    var_F = true;
+                    reclac_menus = true;
                 }
             }
         }
@@ -429,9 +428,8 @@ namespace engine
             byte var_20;
             short var_1E;
             byte var_1B;
-            byte loop2_var;
-            byte loop1_var;
-            char reroll_stats;
+
+            char input_key;
             byte stat_value;
             byte var_14;
             int index;
@@ -470,17 +468,17 @@ namespace engine
 
             do
             {
-                reroll_stats = ovr027.sl_select_item(out var_10, ref index, ref var_23, var_22, var_C,
+                input_key = ovr027.sl_select_item(out var_10, ref index, ref var_23, var_22, var_C,
                     22, 38, 2, 1, 15, 10, 13, "Select", string.Empty);
 
-                if (reroll_stats == '\0')
+                if (input_key == '\0')
                 {
                     var_C.Clear();
                     player = null;
                     return;
                 }
 
-            } while (reroll_stats != 'S');
+            } while (input_key != 'S');
 
             if (index == 6)
             {
@@ -542,17 +540,17 @@ namespace engine
 
             do
             {
-                reroll_stats = ovr027.sl_select_item(out var_10, ref index, ref var_23, var_22, var_C,
+                input_key = ovr027.sl_select_item(out var_10, ref index, ref var_23, var_22, var_C,
                     22, 38, 2, 1, 15, 10, 13, "Select", string.Empty);
 
-                if (reroll_stats == '\0')
+                if (input_key == '\0')
                 {
                     var_C.Clear();
                     player = null;
                     return;
                 }
 
-            } while (reroll_stats != 'S');
+            } while (input_key != 'S');
 
 
             player.sex = (byte)(index - 1);
@@ -573,16 +571,16 @@ namespace engine
 
             do
             {
-                reroll_stats = ovr027.sl_select_item(out var_10, ref index, ref var_23, var_22, var_C,
+                input_key = ovr027.sl_select_item(out var_10, ref index, ref var_23, var_22, var_C,
                     22, 38, 2, 1, 15, 10, 13, "Select", string.Empty);
 
-                if (reroll_stats == '\0')
+                if (input_key == '\0')
                 {
                     var_C.Clear();
                     player = null;
                     return;
                 }
-            } while (reroll_stats != 'S');
+            } while (input_key != 'S');
 
             var_53 = player;
             var_53.exp = 25000;
@@ -707,18 +705,18 @@ namespace engine
 
             do
             {
-                reroll_stats = ovr027.sl_select_item(out var_10, ref index, ref var_23, var_22, var_C,
+                input_key = ovr027.sl_select_item(out var_10, ref index, ref var_23, var_22, var_C,
                     22, 38, 2, 1, 15, 10, 13, "Select", string.Empty);
 
 
-                if (reroll_stats == '\0')
+                if (input_key == '\0')
                 {
                     var_C.Clear();
 
                     seg051.FreeMem(Player.StructSize, player);
                     return;
                 }
-            } while (reroll_stats != 'S');
+            } while (input_key != 'S');
 
             player.alignment = gbl.class_alignments[(int)player._class, index];
 
@@ -1184,9 +1182,9 @@ namespace engine
                 ovr020.display_player_stats01();
                 ovr020.displayMoney();
 
-                reroll_stats = ovr027.yes_no(15, 10, 13, "Reroll stats? ");
+                input_key = ovr027.yes_no(15, 10, 13, "Reroll stats? ");
 
-            } while (reroll_stats != 'N');
+            } while (input_key != 'N');
 
             ovr020.playerDisplayFull();
 
@@ -1204,9 +1202,9 @@ namespace engine
 
             player.max_str_00 = player.tmp_str_00;
 
-            reroll_stats = ovr027.yes_no(15, 10, 13, "Save " + player.name + "? ");
+            input_key = ovr027.yes_no(15, 10, 13, "Save " + player.name + "? ");
 
-            if (reroll_stats == 'N')
+            if (input_key == 'N')
             {
                 seg051.FreeMem(gbl.char_struct_size, player);
                 gbl.player_ptr = var_8;
@@ -1877,7 +1875,7 @@ namespace engine
 
                         MenuItem var_10 = ovr027.getStringListEntry(strList, strList_index);
 
-                        ovr017.import_char01(1, 0, ref new_player, var_10.Text);
+                        ovr017.import_char01(ref new_player, var_10.Text);
 
                         select_sl.Text = "* " + select_sl.Text;
                         pc_count = 0;

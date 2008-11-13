@@ -323,8 +323,8 @@ namespace engine
             player.Money[money_slot] -= num_coins;
             remove_weight(num_coins, player);
 
-            if (gbl.game_state == 6 ||
-                gbl.game_state == 1)
+            if (gbl.game_state == GameState.State6 ||
+                gbl.game_state == GameState.Shop)
             {
                 gbl.pooled_money[money_slot] += num_coins;
             }

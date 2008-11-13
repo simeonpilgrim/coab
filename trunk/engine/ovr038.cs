@@ -12,7 +12,7 @@ namespace engine
             if (symbolSet >= 0 && symbolSet < 5)
             {
                 string text = "8x8d" + gbl.game_area.ToString();
-                seg040.load_dax(ref gbl.symbol_8x8_set[symbolSet], 13, 1, block_id, text);
+                gbl.symbol_8x8_set[symbolSet] = seg040.LoadDax(13, 1, block_id, text);
 
                 if (gbl.symbol_8x8_set[symbolSet] == null)
                 {

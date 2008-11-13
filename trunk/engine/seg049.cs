@@ -8,11 +8,11 @@ namespace engine
     {
         private static byte skipReadFlag;
 
-        internal static void SysDelay(int arg_0)
+        internal static void SysDelay(int milliseconds)
         {
-            if (arg_0 != 0)
+            if (milliseconds != 0)
             {
-                System.Threading.Thread.Sleep(arg_0);
+                System.Threading.Thread.Sleep(milliseconds);
             }
         }
 

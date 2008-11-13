@@ -544,7 +544,7 @@ namespace engine
 
             gbl.area2_ptr.field_592 = 0;
 
-            if (gbl.game_state == 4)
+            if (gbl.game_state == GameState.State4)
             {
                 bool stop_loop = false;
 
@@ -575,20 +575,19 @@ namespace engine
                             case 'C':
                                 if (gbl.player_ptr.health_status == Status.okey)
                                 {
-                                    gbl.byte_1D5BE = 1;
+                                    gbl.menuSelectedWord = 1;
                                     ovr016.cast_spell();
                                 }
                                 break;
 
                             case 'V':
-                                gbl.byte_1D5BE = 1;
-                                bool dummyBool;
-                                ovr020.viewPlayer(out dummyBool);
+                                gbl.menuSelectedWord = 1;
+                                ovr020.viewPlayer();
                                 break;
 
                             case 'E':
                                 stop_loop = true;
-                                gbl.byte_1D5BE = 1;
+                                gbl.menuSelectedWord = 1;
                                 break;
 
                             case 'S':
@@ -666,7 +665,7 @@ namespace engine
 
             bool var_1 = false;
 
-            if (gbl.game_state == 4)
+            if (gbl.game_state == GameState.State4)
             {
                 if (gbl.area2_ptr.field_592 < 0xff)
                 {

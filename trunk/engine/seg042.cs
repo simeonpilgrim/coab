@@ -5,12 +5,9 @@ namespace engine
 {
 	class seg042
 	{
-		//static byte[] dax_raw;
-
-		static void debug_display( string arg_0 )
+		static void debug_display( string text )
 		{
-            
-            System.Console.Write(arg_0);
+            System.Console.Write(text);
 			seg043.GetInputKey();
 		}
 

@@ -27,8 +27,8 @@ namespace engine
                 gbl.cmd_opps[i].getMemoryValue = ovr008.vm_GetMemoryValue;
             }
 
-            seg040.init_dax_block(out gbl.cursor_bkup, 0, 1, 1, 8);
-            seg040.init_dax_block(out gbl.cursor, 0, 1, 1, 8);
+            gbl.cursor_bkup = new DaxBlock( 0, 1, 1, 8);
+            gbl.cursor = new DaxBlock( 0, 1, 1, 8);
 
             seg051.FillChar(0xf, gbl.cursor.bpp, gbl.cursor.data);
 
@@ -42,7 +42,7 @@ namespace engine
             gbl.dax24x24Set = null;
             gbl.dword_1C8FC = null;
 
-            seg040.init_dax_block(out gbl.dax24x24Set, 0, 0x30, 3, 0x18);
+            gbl.dax24x24Set = new DaxBlock( 0, 0x30, 3, 0x18);
 
             gbl.area_ptr.Clear();
 
@@ -109,7 +109,7 @@ namespace engine
             gbl.mapAreaDisplay = false;
             gbl.area2_ptr.party_size = 0;
             gbl.menuScreenIndex = 1;
-            gbl.combat_type = gbl.combatType.normal;
+            gbl.combat_type = CombatType.normal;
             gbl.displayPlayerStatusLine18 = false;
             gbl.search_flag_bkup = 0;
             gbl.byte_1EE8A = 0;
@@ -126,8 +126,8 @@ namespace engine
             gbl.byte_1D910 = true;
             gbl.bigpic_block_id = 0x0FF;
             gbl.silent_training = false;
-            gbl.byte_1D5BE = 1;
-            gbl.game_state = 4;
+            gbl.menuSelectedWord = 1;
+            gbl.game_state = GameState.State4;
             gbl.last_game_state = 0;
             gbl.soundFlag01 = true;
             gbl.byte_1D8AC = false;
@@ -135,7 +135,7 @@ namespace engine
             gbl.sky_dax_251 = null;
             gbl.sky_dax_252 = null;
             gbl.gameWon = false;
-            seg041.load_8x8d1_201();
+            seg041.Load8x8Tiles();
             ovr027.redraw_screen();
             seg041.displayString("Loading...Please Wait", 0, 10, 0x18, 0);
 
@@ -149,9 +149,9 @@ namespace engine
 
             ovr034.chead_cbody_comspr_icon(0x19, 0x19, "COMSPR");
 
-            seg040.load_dax(ref gbl.sky_dax_250, 13, 1, 250, "SKY");
-            seg040.load_dax(ref gbl.sky_dax_251, 13, 1, 251, "SKY");
-            seg040.load_dax(ref gbl.sky_dax_252, 13, 1, 252, "SKY");
+            gbl.sky_dax_250 = seg040.LoadDax(13, 1, 250, "SKY");
+            gbl.sky_dax_251 = seg040.LoadDax(13, 1, 251, "SKY");
+            gbl.sky_dax_252 = seg040.LoadDax(13, 1, 252, "SKY");
 
             gbl.byte_1AD48 = seg042.find_and_open_file(out unk_1AD74, false, "ITEMS");
             
@@ -159,7 +159,7 @@ namespace engine
             seg051.Seek(2, unk_1AD74);
 
             byte[] data = new byte[0x810];
-            seg051.BlockRead(out gbl.unk_1C8BC, 0x810, data, unk_1AD74);
+            seg051.BlockRead(0x810, data, unk_1AD74);
             gbl.unk_1C020 = new Struct_1C020[0x81];
             for (int i = 0; i < 0x81; i++)
             {
@@ -216,7 +216,7 @@ namespace engine
             gbl.mapAreaDisplay = false;
             gbl.area2_ptr.party_size = 0;
             gbl.menuScreenIndex = 1;
-            gbl.combat_type = gbl.combatType.normal;
+            gbl.combat_type = CombatType.normal;
             gbl.displayPlayerStatusLine18 = false;
             gbl.search_flag_bkup = 0;
             gbl.byte_1EE8A = 0;
@@ -234,8 +234,8 @@ namespace engine
             gbl.bigpic_block_id = 0x0FF;
             gbl.silent_training = false;
             ovr027.redraw_screen();
-            gbl.byte_1D5BE = 1;
-            gbl.game_state = 4;
+            gbl.menuSelectedWord = 1;
+            gbl.game_state = GameState.State4;
             gbl.last_game_state = 0;
             gbl.soundFlag01 = true;
             gbl.byte_1D8AC = false;

@@ -5,10 +5,10 @@ namespace Classes
 	/// <summary>
 	/// Summary description for Item.
 	/// </summary>
-    public class Item : IListBase
+    public class Item
     {
         public string name; // 0x00
-       // public Item next; // 0x2a;
+
         public byte type; // 0x2e; /* 11 - 14 = scroll */
         public byte field_2EArray(int index)
         {
@@ -82,22 +82,6 @@ namespace Classes
         }
 
         public const int StructSize = 0x3F;
-
-        public string String()
-        {
-            return name;
-        }
-
-        public IListBase Next()
-        {
-            return null; //TODO FIX THIS
-        }
-
-        public byte Field29()
-        {
-            //TODO workout if the 30th char is non-zero...
-            return 0;
-        }
 
         public Item()
         {
