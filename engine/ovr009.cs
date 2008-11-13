@@ -21,7 +21,7 @@ namespace engine
 
         internal static void sub_33100()
         {
-            gbl.game_state = 5;
+            gbl.game_state = GameState.Combat;
             gbl.dword_1D5CA = new spellDelegate(ovr014.target);
             ovr011.battle_begins();
             bool end_combat = false;
@@ -181,7 +181,7 @@ namespace engine
                                     break;
 
                                 case 'V':
-                                    ovr020.viewPlayer(out var_2);
+                                    var_2 = ovr020.viewPlayer();
                                     ovr014.sub_3EDD4(player);
                                     if (var_2 == false)
                                     {
@@ -194,7 +194,7 @@ namespace engine
                                     break;
 
                                 case 'U':
-                                    gbl.byte_1D5BE = 2;
+                                    gbl.menuSelectedWord = 2;
                                     ovr020.PlayerItemsMenu(ref var_2);
                                     ovr014.sub_3EDD4(player);
                                     if (var_2 == false)

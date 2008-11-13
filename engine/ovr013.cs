@@ -249,7 +249,7 @@ namespace engine
 
                 ovr024.damage_person(false, 0, 1, player);
 
-                if (gbl.game_state != 5)
+                if (gbl.game_state != GameState.Combat)
                 {
                     ovr025.PartySummary(gbl.player_ptr);
                 }
@@ -347,8 +347,6 @@ namespace engine
 
                 player.items.Add(item);
                 ovr020.ready_Item(item);
-
-                seg051.FreeMem(Item.StructSize, item);
 
                 ovr025.DisplayPlayerStatusString(true, 10, "Gains an item", player);
             }
@@ -698,7 +696,7 @@ namespace engine
 
                     ovr024.damage_person(false, 0, 1, player);
 
-                    if (gbl.game_state != 5)
+                    if (gbl.game_state != GameState.Combat)
                     {
                         ovr025.PartySummary(gbl.player_ptr);
                     }
@@ -924,7 +922,7 @@ namespace engine
 
             ovr025.DisplayPlayerStatusString(true, 10, "is stupid", player);
 
-            if (gbl.game_state == 5)
+            if (gbl.game_state == GameState.Combat)
             {
                 player.actions.can_cast = false;
                 if (player.actions.spell_id > 0)
@@ -1033,7 +1031,7 @@ namespace engine
                     player.field_F7 = 0x0B2;
                 }
 
-                if (gbl.game_state == 5)
+                if (gbl.game_state == GameState.Combat)
                 {
                     player.actions.target = null;
 
@@ -1685,7 +1683,7 @@ namespace engine
             {
                 ovr024.add_affect(true, 0xff, 0, item.affect_2, player);
 
-                if (gbl.game_state != 5)
+                if (gbl.game_state != GameState.Combat)
                 {
                     ovr024.CallSpellJumpTable(Effect.Add, null, player, item.affect_2);
                 }

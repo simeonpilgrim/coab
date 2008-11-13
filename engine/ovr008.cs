@@ -258,7 +258,7 @@ namespace engine
                     ovr029.update_3D_view();
                 }
 
-                if (gbl.game_state == 4)
+                if (gbl.game_state == GameState.State4)
                 {
                     ovr030.Show3DSprite(gbl.byte_1D556, encounter_distance + 1);
                 }
@@ -268,7 +268,7 @@ namespace engine
                 gbl.byte_1EE96 != gbl.area2_ptr.field_5C2)
             {
                 if (encounter_distance == 0 &&
-                    gbl.game_state == 4)
+                    gbl.game_state == GameState.State4)
                 {
                     if (gbl.byte_1EE95 == 0 ||
                         gbl.byte_1B2E9 != 0)
@@ -733,11 +733,11 @@ namespace engine
                     gbl.last_game_state = gbl.game_state;
                     if (value == 0)
                     {
-                        gbl.game_state = 3;
+                        gbl.game_state = GameState.State3;
                     }
                     else
                     {
-                        gbl.game_state = 4;
+                        gbl.game_state = GameState.State4;
                     }
                 }
 
@@ -1374,7 +1374,7 @@ namespace engine
 
         internal static void duel(byte arg_0)
         {
-            gbl.combat_type = gbl.combatType.duel;
+            gbl.combat_type = CombatType.duel;
 
             gbl.area2_ptr.field_5CC = arg_0;
             Player playerA = gbl.player_ptr;

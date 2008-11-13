@@ -357,27 +357,26 @@ namespace engine
         }
 
 
-        internal static bool sub_483AE(ref short bp_var_182, ref bool bp_var_1BC, string bp_var_1BB, string bp_var_2DF, string bp_var_2DA)
+        internal static bool sub_483AE(ref int bp_var_182, string bp_var_1BB, string bp_var_2DF, string bp_var_2DA)
         {
             byte[] data = new byte[0x10];
             string var_3C = string.Empty;
 
-            var var_2C = seg046.FINDFIRST(gbl.SavePath + "*" + bp_var_2DF);
+            var searchRec = seg046.FINDFIRST(gbl.SavePath + "*" + bp_var_2DF);
 
-            while (gbl.FIND_result == 0 &&
-                var_3C != bp_var_2DA)
+            while (gbl.FIND_result == 0 && var_3C != bp_var_2DA)
             {
                 File file;
-                bp_var_1BC = seg042.find_and_open_file(out file, false, gbl.SavePath + var_2C.fileName);
+                seg042.find_and_open_file(out file, false, gbl.SavePath + searchRec.fileName);
 
                 seg051.Seek(0, file);
 
-                seg051.BlockRead(out bp_var_182, 0x10, data, file);
+                bp_var_182 = seg051.BlockRead(0x10, data, file);
                 var_3C = Sys.ArrayToString(data, 0, 0x10);
 
                 seg051.Close(file);
 
-                seg046.FINDNEXT(var_2C);
+                seg046.FINDNEXT(searchRec);
             }
 
             bool result = (var_3C == bp_var_2DA);
@@ -385,9 +384,10 @@ namespace engine
         }
 
 
-        internal static void load_pool_rad_player(Player player, PoolRadPlayer bp_var_1C0)
+        internal static Player ConvertPoolRadPlayer(PoolRadPlayer bp_var_1C0)
         {
             /* nested function, arg_0 is BP */
+            Player player = new Player();
 
             player.race = (Race)bp_var_1C0.race;
             player.sex = bp_var_1C0.sex;
@@ -959,16 +959,14 @@ namespace engine
             ClassId.mc_c_f,     ClassId.unknown,    ClassId.mc_c_mu,    ClassId.unknown, ClassId.mc_c_f_m, 
             ClassId.unknown};
 
-        internal static void import_char01(byte arg_0, byte arg_2, ref Player player_ptr, string arg_8)
+        internal static void import_char01(ref Player player_ptr, string arg_8)
         {
             Player player01_ptr;
-            string var_2CA;
             Player player02_ptr;
-            HillsFarPlayer var_1C4;
             
             string var_1BB = string.Empty;
             byte[] var_192;
-            short var_182;
+            int var_182;
             File file;
 
             bool var_1BC = seg042.find_and_open_file(out file, false, gbl.SavePath + arg_8);
@@ -995,16 +993,16 @@ namespace engine
 
                 PoolRadPlayer poolRadPlayer = new PoolRadPlayer(data);
 
-                load_pool_rad_player(player_ptr, poolRadPlayer);
+                player_ptr = ConvertPoolRadPlayer(poolRadPlayer);
             }
             else if (gbl.import_from == ImportSource.Hillsfar)
             {
                 byte[] data = new byte[0xBC];
 
-                seg051.BlockRead(out var_182, 0xBC, data, file);
+                var_182 = seg051.BlockRead(0xBC, data, file);
                 seg051.Close(file);
 
-                var_1C4 = new HillsFarPlayer(data);
+                HillsFarPlayer var_1C4 = new HillsFarPlayer(data);
 
                 player_ptr.items = new List<Item>();
                 player_ptr.affects = new List<Affect>();
@@ -1012,7 +1010,7 @@ namespace engine
                 player_ptr.next_player = null;
 
                 string fileExt = ".guy";
-                var_1BC = sub_483AE(ref var_182, ref var_1BC, var_1BB, fileExt, var_1C4.field_4);
+                var_1BC = sub_483AE(ref var_182, var_1BB, fileExt, var_1C4.field_4);
 
                 if (var_1BC == true)
                 {
@@ -1022,7 +1020,7 @@ namespace engine
 
                     data = new byte[Player.StructSize];
 
-                    seg051.BlockRead(out var_182, Player.StructSize, data, file);
+                    var_182 = seg051.BlockRead(Player.StructSize, data, file);
                     seg051.Close(file);
 
                     player_ptr = new Player(data, 0);
@@ -1072,7 +1070,7 @@ namespace engine
                 {
                     fileExt = ".cha";
 
-                    var_1BC = sub_483AE(ref var_182, ref var_1BC, var_1BB, fileExt, var_1C4.field_4);
+                    var_1BC = sub_483AE(ref var_182, var_1BB, fileExt, var_1C4.field_4);
 
                     if (var_1BC == true)
                     {
@@ -1082,12 +1080,12 @@ namespace engine
 
                         var_1BC = seg042.find_and_open_file(out file, false, savename);
 
-                        seg051.BlockRead(out var_182, PoolRadPlayer.StructSize, data, file);
+                        var_182 = seg051.BlockRead(PoolRadPlayer.StructSize, data, file);
                         seg051.Close(file);
 
                         PoolRadPlayer poolRadPlayer = new PoolRadPlayer(data);
 
-                        load_pool_rad_player(player_ptr, poolRadPlayer);
+                        player_ptr = ConvertPoolRadPlayer(poolRadPlayer);
 
                         player02_ptr = gbl.player_ptr;
                         gbl.player_ptr = player_ptr;
@@ -1223,7 +1221,7 @@ namespace engine
 
             if (gbl.import_from == ImportSource.Curse)
             {
-                seg051.Delete(4, seg051.Pos(arg_8, "."), ref arg_8);
+                arg_8 = System.IO.Path.GetFileName(arg_8);
             }
             else
             {
@@ -1238,7 +1236,7 @@ namespace engine
 
                 do
                 {
-                    seg051.BlockRead(out var_182, Item.StructSize, var_18A, file);
+                    var_182 = seg051.BlockRead(Item.StructSize, var_18A, file);
 
                     if (var_182 == Item.StructSize)
                     {
@@ -1258,7 +1256,7 @@ namespace engine
 
                 do
                 {
-                    seg051.BlockRead(out var_182, Affect.StructSize, var_192, file);
+                    var_182 = seg051.BlockRead(Affect.StructSize, var_192, file);
 
                     if (var_182 == Affect.StructSize)
                     {
@@ -1281,7 +1279,7 @@ namespace engine
 
                     do
                     {
-                        seg051.BlockRead(out var_182, Affect.StructSize, var_192, file);
+                        var_182 = seg051.BlockRead(Affect.StructSize, var_192, file);
 
                         if (var_182 == 9 &&
                             asc_49280.MemberOf(var_192[0]) == true)
@@ -1317,8 +1315,6 @@ namespace engine
             }
 
             Player player = new Player(data, 0);
-
-            seg051.FreeMem(data);
 
             seg042.load_decode_dax(out data, out decode_size, monster_id, "MON" + area_text + "SPC.dax");
 
@@ -1487,10 +1483,10 @@ namespace engine
             gbl.mapWallRoof = data[4];
 
             seg051.BlockRead(1, data, file);
-            gbl.last_game_state = data[0];
+            gbl.last_game_state = (GameState)data[0];
 
             seg051.BlockRead(1, data, file);
-            gbl.game_state = data[0];
+            gbl.game_state = (GameState)data[0];
 
             for (int i = 0; i < 3; i++)
             {
@@ -1522,7 +1518,7 @@ namespace engine
                 {
                     Player player = new Player();
 
-                    import_char01(1, 1, ref player, var_1F6 + ".sav");
+                    import_char01(ref player, var_1F6 + ".sav");
                     AssignPlayerIconId(player);
 
                     if (save() == false)
@@ -1558,7 +1554,7 @@ namespace engine
 
             if (gbl.area_ptr.field_1CC != 0)
             {
-                if (gbl.game_state != 0)
+                if (gbl.game_state != GameState.State0)
                 {
                     if (gbl.setBlocks[0].blockId > 0)
                     {
@@ -1612,7 +1608,7 @@ namespace engine
 
             do
             {
-                inputKey = ovr027.displayInput(out dummyBool, (gbl.game_state == 2), 0, 15, 10, 13, "A B C D E F G H I J", "Save Which Game: ");
+                inputKey = ovr027.displayInput(out dummyBool, (gbl.game_state == GameState.State2), 0, 15, 10, 13, "A B C D E F G H I J", "Save Which Game: ");
 
             } while (unk_4AEA0.MemberOf(inputKey) == false);
 
@@ -1680,9 +1676,9 @@ namespace engine
                     data[4] = gbl.mapWallRoof;
                     seg051.BlockWrite(5, data, save_file);
 
-                    data[0] = gbl.last_game_state;
+                    data[0] = (byte)gbl.last_game_state;
                     seg051.BlockWrite(1, data, save_file);
-                    data[0] = gbl.game_state;
+                    data[0] = (byte)gbl.game_state;
                     seg051.BlockWrite(1, data, save_file);
 
                     for (int i = 0; i < 3; i++)

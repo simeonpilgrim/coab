@@ -2,9 +2,6 @@ using System;
 
 namespace Classes
 {
-    /// <summary>
-    /// Summary description for Struct_1D885.
-    /// </summary>
     public class GasCloud
     {
         public GasCloud(Player _player, int count, int x, int y)
@@ -13,6 +10,7 @@ namespace Classes
             field_1C = count;
             target_x = x;
             target_y = y;
+            field_1D = false;
 
             // zero the rest.
             field_7 = new byte[10];
@@ -20,7 +18,6 @@ namespace Classes
         }
 
         public Player player; // 0x00;
-        //public Struct_1D885 next; // 0x04;
 
         /// <summary>
         /// 0x07 base-1 array
@@ -51,6 +48,6 @@ namespace Classes
         public int target_x;// 0x1A - field_1A
         public int target_y;// 0x1B - field_1B
         public int field_1C;// 0x1C - field_1C
-        public byte field_1D;// 0x1D
+        public bool field_1D;// 0x1D
     }
 }

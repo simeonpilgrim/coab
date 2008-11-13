@@ -178,7 +178,7 @@ namespace engine
 
             gbl.dword_1D87F = null;
 
-            gbl.byte_1D5BE = 1;
+            gbl.menuSelectedWord = 1;
 
             if (sub_443A0(1) == true)
             {
@@ -339,7 +339,7 @@ namespace engine
             {
                 bool var_1 = false;
                 int index = -1;
-                gbl.byte_1D5BE = 1;
+                gbl.menuSelectedWord = 1;
 
                 byte var_4 = ovr020.spell_menu2(out var_2, ref index, 0, SpellLoc.memorize);
                 bool redraw = true;
@@ -1259,8 +1259,8 @@ namespace engine
 
         internal static void make_camp(out bool action_interrupted)
         {
-            byte game_state_bkup = gbl.game_state;
-            gbl.game_state = 2;
+            var game_state_bkup = gbl.game_state;
+            gbl.game_state = GameState.State2;
             gbl.rest_10_seconds = 0;
 
             gbl.unk_1D890.Clear();
@@ -1300,18 +1300,17 @@ namespace engine
                             break;
 
                         case 'V':
-                            gbl.byte_1D5BE = 1;
-                            bool dummyBool;
-                            ovr020.viewPlayer(out dummyBool);
+                            gbl.menuSelectedWord = 1;
+                            ovr020.viewPlayer();
                             break;
 
                         case 'M':
-                            gbl.byte_1D5BE = 1;
+                            gbl.menuSelectedWord = 1;
                             magic_menu(ref action_interrupted);
                             break;
 
                         case 'R':
-                            gbl.byte_1D5BE = 1;
+                            gbl.menuSelectedWord = 1;
                             rest_menu(out action_interrupted);
                             break;
 
@@ -1320,7 +1319,7 @@ namespace engine
                             break;
 
                         case 'A':
-                            gbl.byte_1D5BE = 1;
+                            gbl.menuSelectedWord = 1;
                             alter_menu();
                             break;
                     }

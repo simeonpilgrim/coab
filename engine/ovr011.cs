@@ -989,7 +989,7 @@ namespace engine
                             {
                                 int tmpDir = direction_165EC[gbl.team_direction[gbl.currentTeam], var_A];
 
-                                if (gbl.game_state == 3 ||
+                                if (gbl.game_state == GameState.State3 ||
                                     get_dir_flags(tmpDir, tmpY, tmpX) != 1)
                                 {
                                     found = true;
@@ -1022,7 +1022,7 @@ namespace engine
 
                         int tmpDir = direction_165EC[gbl.team_direction[gbl.currentTeam], var_14];
 
-                        if (gbl.game_state == 3 ||
+                        if (gbl.game_state == GameState.State3 ||
                             get_dir_flags(tmpDir, tmpY, tmpX) != 1)
                         {
                             team_x = gbl.team_start_x[gbl.currentTeam] + gbl.MapDirectionXDelta[tmpDir];
@@ -1126,7 +1126,7 @@ namespace engine
                     {
                         gbl.CombatMap[loop_var].size = 0;
 
-                        if (gbl.combat_type == gbl.combatType.normal &&
+                        if (gbl.combat_type == CombatType.normal &&
                             player_ptr.actions.field_13 == 0)
                         {
                             int tmpX = gbl.CombatMap[loop_var].xPos;
@@ -1213,7 +1213,7 @@ namespace engine
             seg043.clear_one_keypress();
             place_combatants();
             seg043.clear_one_keypress();
-            seg040.init_dax_block(out gbl.missile_dax, 1, 4, 3, 0x18);
+            gbl.missile_dax = new DaxBlock( 1, 4, 3, 0x18);
 
             gbl.mapToBackGroundTile.mapScreenLeftX = ovr033.PlayerMapXPos(gbl.player_next_ptr[0]) - 3;
             gbl.mapToBackGroundTile.mapScreenTopY = ovr033.PlayerMapYPos(gbl.player_next_ptr[0]) - 3;
@@ -1226,7 +1226,7 @@ namespace engine
             }
 
             ovr014.calc_enemy_health_percentage();
-            gbl.game_state = 5;
+            gbl.game_state = GameState.Combat;
         }
     }
 }

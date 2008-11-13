@@ -36,9 +36,8 @@ namespace Classes
         }
 
         /// <summary>
-        /// 
+        /// Return if step was taken
         /// </summary>
-        /// <returns>if a step was done</returns>
         public bool Step() /* sub_7324C */
         {
             bool stepMade = false;
@@ -93,11 +92,6 @@ namespace Classes
         }
 
         static byte[] directions = { 7, 0, 1, 6, 8, 2, 5, 4, 3, 8 };
-        //, 4, 2, 1, 0, 0,  
-		//							  0x55, 0x55, 0xAA, 0xAA, 0xFF, 0xFF, 0, 0, 0,  
-		//							  1, 2, 2, 2, 3, 0, 1, 1, 1, 2, 2, 3, 3 
-		//						  };
-
 
         public void CalculateDeltas() /* sub_731A5 */
         {
@@ -112,7 +106,5 @@ namespace Classes
             delta_count = 0;
             steps = 0;
         }
- 
-
     }
 }

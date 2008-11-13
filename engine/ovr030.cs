@@ -94,7 +94,7 @@ namespace engine
 
                             frames_count++;
 
-                            seg040.init_dax_block(out daxArray.frames[frame].picture, masked, 1, width, height);
+                            daxArray.frames[frame].picture = new DaxBlock( masked, 1, width, height);
 
                             DaxBlock dax_block = daxArray.frames[frame].picture;
 
@@ -141,12 +141,6 @@ namespace engine
 
                         daxArray.numFrames = frames_count; // also pointless
 
-
-                        if (is_pic_or_final == true && allocated_first_frame == true)
-                        {
-                            //seg051.FreeMem(var_20 + 1, mem);
-                        }
-
                         seg051.FreeMem(uncompressed_size, uncompressed_data);
                         seg043.clear_keyboard();
 
@@ -182,7 +176,7 @@ namespace engine
             if (head_id != 0xff &&
                 (gbl.current_head_id == 0xff || gbl.current_head_id != head_id))
             {
-                seg040.load_dax(ref gbl.headX_dax, 0, 0, head_id, "HEAD" + text);
+                gbl.headX_dax = seg040.LoadDax(0, 0, head_id, "HEAD" + text);
 
                 if (gbl.headX_dax == null)
                 {
@@ -195,7 +189,7 @@ namespace engine
             if (body_id != 0xff &&
                 (gbl.current_body_id == 0xff || gbl.current_body_id != body_id))
             {
-                seg040.load_dax(ref gbl.bodyX_dax, 0, 0, body_id, "BODY" + text);
+                gbl.bodyX_dax = seg040.LoadDax(0, 0, body_id, "BODY" + text);
                 if (gbl.bodyX_dax == null)
                 {
                     seg041.displayAndDebug("body not found", 0, 14);
@@ -244,7 +238,7 @@ namespace engine
 
             if (gbl.bigpic_block_id != block_id)
             {
-                seg040.load_dax(ref gbl.bigpic_dax, 0, 0, block_id, "bigpic" + gbl.game_area.ToString());
+                gbl.bigpic_dax = seg040.LoadDax(0, 0, block_id, "bigpic" + gbl.game_area.ToString());
                 gbl.bigpic_block_id = block_id;
             }
         }

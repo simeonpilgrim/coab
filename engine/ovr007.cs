@@ -20,7 +20,7 @@ namespace engine
                 list.Add(new MenuItem(string.Format("{0,-21}{1,9}", item.name, val), item));
             }
 
-            gbl.byte_1D5BE = 0;
+            gbl.menuSelectedWord = 0;
 
             MenuItem mi;
 
@@ -160,7 +160,7 @@ namespace engine
             char var_2E;
             bool var_2C;
 
-            gbl.game_state = 1;
+            gbl.game_state = GameState.Shop;
             gbl.redrawBoarder = (gbl.area_ptr.field_1CC == 0);
 
             ovr025.load_pic();
@@ -200,8 +200,7 @@ namespace engine
                         break;
 
                     case 'V':
-                        bool dummyBool;
-                        ovr020.viewPlayer(out dummyBool);
+                        ovr020.viewPlayer();
                         break;
 
                     case 'T':

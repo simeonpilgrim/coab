@@ -347,8 +347,8 @@ namespace engine
             }
             else
             {
-                if ((gbl.last_game_state != 4 ||
-                      gbl.game_state == 4) &&
+                if ((gbl.last_game_state != GameState.State4 ||
+                      gbl.game_state == GameState.State4) &&
                     (gbl.byte_1EE8C == true ||
                       gbl.displayPlayerSprite))
                 {
@@ -600,9 +600,9 @@ namespace engine
 
             if (gbl.byte_1AB0C == true &&
                 gbl.filesLoaded == true &&
-                gbl.last_game_state == 3)
+                gbl.last_game_state == GameState.State3)
             {
-                if (gbl.game_state != 3 &&
+                if (gbl.game_state != GameState.State3 &&
                     gbl.byte_1EE98 == true)
                 {
                     seg037.draw8x8_03();
@@ -1009,7 +1009,7 @@ namespace engine
             gbl.ecl_offset++;
 
             if (gbl.monstersLoaded == false &&
-                gbl.combat_type == gbl.combatType.normal)
+                gbl.combat_type == CombatType.normal)
             {
                 if (gbl.area2_ptr.field_6D8 == 1)
                 {
@@ -1196,19 +1196,19 @@ namespace engine
                     }
                 }
 
-                if (gbl.combat_type == gbl.combatType.duel)
+                if (gbl.combat_type == CombatType.duel)
                 {
-                    gbl.combat_type = gbl.combatType.normal;
+                    gbl.combat_type = CombatType.normal;
                 }
             }
 
             if (gbl.area_ptr.field_1CC != 0)
             {
-                gbl.game_state = 4;
+                gbl.game_state = GameState.State4;
             }
             else
             {
-                gbl.game_state = 3;
+                gbl.game_state = GameState.State3;
             }
 
             gbl.area2_ptr.search_flags &= 1;
@@ -1755,7 +1755,7 @@ namespace engine
         internal static void CMD_FindItem() // sub_28856
         {
             ovr008.vm_LoadCmdSets(1);
-            bool found = false;
+
             byte item_type = (byte)ovr008.vm_GetCmdValue(1);
 
             for (int i = 0; i < 6; i++)
@@ -2422,8 +2422,8 @@ namespace engine
 
                 if (gbl.vmFlag01 == false)
                 {
-                    if (((gbl.last_game_state != 4 || gbl.game_state == 4) && gbl.byte_1AB0B == true) ||
-                        (gbl.last_game_state == 4 && gbl.game_state == 4))
+                    if (((gbl.last_game_state != GameState.State4 || gbl.game_state == GameState.State4) && gbl.byte_1AB0B == true) ||
+                        (gbl.last_game_state == GameState.State4 && gbl.game_state == GameState.State4))
                     {
                         ovr029.update_3D_view();
                     }
@@ -2461,7 +2461,7 @@ namespace engine
             gbl.restore_player_ptr = false;
             gbl.byte_1AB0B = false;
             gbl.byte_1EE98 = true;
-            gbl.game_state = 4;
+            gbl.game_state = GameState.State4;
             gbl.vmFlag01 = false;
 
             if (gbl.area_ptr.field_1E4 == 0)
@@ -2486,7 +2486,7 @@ namespace engine
 
             if (gbl.area_ptr.field_1CC == 0)
             {
-                gbl.game_state = 3;
+                gbl.game_state = GameState.State3;
             }
 
             if (gbl.reload_ecl_and_pictures == true ||
@@ -2521,7 +2521,7 @@ namespace engine
                     sub_29677();
                 }
 
-                if (gbl.game_state != 3 &&
+                if (gbl.game_state != GameState.State3 &&
                     gbl.reload_ecl_and_pictures == true)
                 {
                     if (gbl.byte_1EE98 == true)

@@ -28,7 +28,7 @@ namespace engine
                 seg041.GameDelay();
                 ovr025.ClearPlayerTextArea();
 
-                if (gbl.game_state != 5)
+                if (gbl.game_state == GameState.Combat)
                 {
                     ovr025.PartySummary(gbl.player_ptr);
                 }
@@ -100,7 +100,7 @@ namespace engine
 
                     if (ovr025.find_affect(out affect, affect_type, player_base) == true)
                     {
-                        if (gbl.game_state == 5)
+                        if (gbl.game_state == GameState.Combat)
                         {
                             int max_range = (affect_type == Affects.prayer) ? 6 : 1;
 
@@ -1252,7 +1252,7 @@ namespace engine
                 ovr025.sub_6818A(text, false, player);
                 ovr025.damage_player(gbl.damage, player);
 
-                if (gbl.game_state == 5)
+                if (gbl.game_state == GameState.Combat)
                 {
                     player.actions.can_cast = false;
 
@@ -1282,7 +1282,7 @@ namespace engine
 
                     ovr025.DisplayPlayerStatusString(false, (byte)(gbl.textYCol + 1), text, player);
 
-                    if (gbl.game_state != 5)
+                    if (gbl.game_state == GameState.Combat)
                     {
                         seg041.GameDelay();
                     }
@@ -1364,7 +1364,7 @@ namespace engine
                         }
 
                         if (player.health_status == Status.unconscious &&
-                            gbl.game_state != 5)
+                            gbl.game_state != GameState.Combat)
                         {
                             CallSpellJumpTable(Effect.Remove, null, player, Affects.affect_4e);
                         }
@@ -1386,7 +1386,7 @@ namespace engine
                 player.in_combat = true;
                 player.hit_point_current = arg_0;
 
-                if (gbl.game_state == 5)
+                if (gbl.game_state == GameState.Combat)
                 {
                     ovr033.sub_75356(false, 3, player);
                 }

@@ -7,7 +7,7 @@ namespace engine
     {
         internal static void sub_5801E(int arg_0, int arg_2)
         {
-            if (gbl.game_state != 2)
+            if (gbl.game_state != GameState.State2)
             {
                 for (int i = 0; i < 0x48; i++)
                 {
