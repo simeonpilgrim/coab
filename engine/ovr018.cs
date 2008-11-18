@@ -138,7 +138,7 @@ namespace engine
 
                 char inputkey = ovr027.displayInput(out controlKey, false, 1, 0, 0, 13, "C D M T H V A R L S B E J", "Choose a function ");
 
-                ovr027.redraw_screen();
+                ovr027.ClearPromptArea();
 
                 if (controlKey == true)
                 {
@@ -278,7 +278,7 @@ namespace engine
                                         }
                                     }
 
-                                    ovr027.redraw_screen();
+                                    ovr027.ClearPromptArea();
                                     gbl.area2_ptr.training_class_mask = 0;
 
                                     return;
@@ -1869,7 +1869,7 @@ namespace engine
                     if ((input_key == 13 || input_key == 'A') &&
                         select_sl.Text[0] != '*')
                     {
-                        ovr027.redraw_screen();
+                        ovr027.ClearPromptArea();
 
                         Player new_player = new Player();
 
@@ -2407,7 +2407,7 @@ namespace engine
                 duplicateCombatIcon(true, 12, player_ptr.icon_id);
                 duplicateCombatIcon(false, player_ptr.icon_id, 12);
 
-                ovr027.redraw_screen();
+                ovr027.ClearPromptArea();
                 ovr034.free_icon(12);
 
                 var_2 = ovr027.yes_no(15, 10, 13, "Is this icon ok? ");

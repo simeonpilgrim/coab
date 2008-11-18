@@ -136,7 +136,7 @@ namespace engine
             gbl.sky_dax_252 = null;
             gbl.gameWon = false;
             seg041.Load8x8Tiles();
-            ovr027.redraw_screen();
+            ovr027.ClearPromptArea();
             seg041.displayString("Loading...Please Wait", 0, 10, 0x18, 0);
 
             ovr038.Load8x8D(4, 0xca);
@@ -233,7 +233,7 @@ namespace engine
             gbl.byte_1D910 = true;
             gbl.bigpic_block_id = 0x0FF;
             gbl.silent_training = false;
-            ovr027.redraw_screen();
+            ovr027.ClearPromptArea();
             gbl.menuSelectedWord = 1;
             gbl.game_state = GameState.State4;
             gbl.last_game_state = 0;

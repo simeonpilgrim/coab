@@ -1366,11 +1366,11 @@ namespace engine
 
                 if (arg_4)
                 {
-                    seg044.sound_sub_120E0(gbl.sound_4_188C6);
+                    seg044.sound_sub_120E0(Sound.sound_4);
                 }
                 else
                 {
-                    seg044.sound_sub_120E0(gbl.sound_3_188C4);
+                    seg044.sound_sub_120E0(Sound.sound_3);
                 }
 
                 DisplayPlayerStatusString(false, 10, text, player);

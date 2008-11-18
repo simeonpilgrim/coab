@@ -1391,25 +1391,21 @@ namespace engine
         {
             int index = gbl.player_next_ptr.IndexOf(gbl.player_ptr);
 
-            Player player = gbl.player_next_ptr[0];
-
-            if (player != null)
+            if (gbl.player_next_ptr.Count > 0)
             {
                 if (input_key == 'O')
                 {
                     //next
                     index = (index + 1) % gbl.player_next_ptr.Count;
-                    player = gbl.player_next_ptr[index];
+                    gbl.player_ptr = gbl.player_next_ptr[index];
                 }
                 else if (input_key == 'G')
                 {
                     // previous
                     index = (index - 1 + gbl.player_next_ptr.Count) % gbl.player_next_ptr.Count;
-                    player = gbl.player_next_ptr[index];
+                    gbl.player_ptr = gbl.player_next_ptr[index];
                 }
             }
-
-            gbl.player_ptr = player;
         }
 
 

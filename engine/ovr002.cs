@@ -85,7 +85,7 @@ namespace engine
 
             dax_ptr = seg040.LoadDax(0, 0, 4, "Title");
 
-            seg044.sound_sub_120E0(gbl.sound_d_188D8);
+            seg044.sound_sub_120E0(Sound.sound_d);
 
             seg040.draw_picture(dax_ptr, 0x0b, 0, 0);
             delay_or_key(10);

@@ -59,7 +59,7 @@ namespace engine
 
             if (gbl.soundFlag01 == true)
             {
-                seg044.sound_sub_120E0(gbl.sound_FF_188BC);
+                seg044.sound_sub_120E0(Sound.sound_FF);
             }
 
             ovr012.init_values_a();
@@ -69,7 +69,7 @@ namespace engine
                 seg044.sound_sub_12194();
             }
 
-            seg044.sound_sub_120E0(gbl.sound_0_188BE);
+            seg044.sound_sub_120E0(Sound.sound_0);
             seg044.sound_sub_12194();
 
             if (Cheats.skip_title_screen == false)
@@ -111,7 +111,7 @@ namespace engine
 
                 if (gbl.soundFlag01 == true)
                 {
-                    seg044.sound_sub_120E0(gbl.sound_FF_188BC);
+                    seg044.sound_sub_120E0(Sound.sound_FF);
                 }
 
                 if (gbl.soundFlag01 == false)
@@ -126,7 +126,7 @@ namespace engine
 
                 if (gbl.soundFlag01 == true)
                 {
-                    seg044.sound_sub_120E0(gbl.sound_FF_188BC);
+                    seg044.sound_sub_120E0(Sound.sound_FF);
                 }
 
                 if (gbl.soundFlag01 == false)
@@ -136,7 +136,7 @@ namespace engine
 
                 if (gbl.soundFlag01 == true)
                 {
-                    seg044.sound_sub_120E0(gbl.sound_FF_188BC);
+                    seg044.sound_sub_120E0(Sound.sound_FF);
                 }
 
                 if (gbl.soundFlag01 == false)
@@ -148,7 +148,7 @@ namespace engine
 
                 if (gbl.soundFlag01 == true)
                 {
-                    seg044.sound_sub_120E0(gbl.sound_FF_188BC);
+                    seg044.sound_sub_120E0(Sound.sound_FF);
                 }
 
                 if (gbl.soundFlag01 == false)
@@ -179,7 +179,7 @@ namespace engine
                         ovr004.copy_protection();
                     }
 
-                    seg044.sound_sub_120E0(gbl.sound_0_188BE);
+                    seg044.sound_sub_120E0(Sound.sound_0);
                 }
             }
         }

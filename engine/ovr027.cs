@@ -350,9 +350,10 @@ namespace engine
         }
 
 
-		internal static void redraw_screen( )
+        internal static void ClearPromptArea() // redraw_screen
 		{
-			seg041.displaySpaceChar( 0x28, 0, 0x18, 0 );
+            seg041.DrawRectangle(0, 0x18, 0x27, 0x18, 0);
+			//seg041.displaySpaceChar( 0x28, 0, 0x18, 0 );
 
             Display.Update();
 		}

@@ -169,7 +169,7 @@ namespace engine
                             {
                                 case 'Q':
                                     sub_3432F(player);
-                                    ovr027.redraw_screen();
+                                    ovr027.ClearPromptArea();
                                     seg043.clear_keyboard();
                                     seg049.SysDelay(0x0C8);
                                     var_2 = true;
@@ -262,7 +262,7 @@ namespace engine
                                     {
                                         sub_3432F(player_ptr);
                                     }
-                                    ovr027.redraw_screen();
+                                    ovr027.ClearPromptArea();
                                     seg049.SysDelay(0x0C8);
 
                                     var_2 = true;
@@ -358,7 +358,7 @@ namespace engine
 
             } while (unk_33768.MemberOf(arg_0) == false);
 
-            ovr027.redraw_screen();
+            ovr027.ClearPromptArea();
         }
 
 
