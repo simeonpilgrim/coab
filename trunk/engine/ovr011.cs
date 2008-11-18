@@ -1184,7 +1184,7 @@ namespace engine
             gbl.bigpic_block_id = 0xff;
             gbl.current_head_id = 0xff;
             gbl.current_body_id = 0xff;
-            ovr027.redraw_screen();
+            ovr027.ClearPromptArea();
             seg041.GameDelay();
 
             seg041.displayString("A battle begins...", 0, 0x0a, 0x18, 0);

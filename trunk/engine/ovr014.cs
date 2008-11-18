@@ -314,7 +314,7 @@ namespace engine
 
             player.actions.field_F = 0;
             player.actions.field_12 = 0;
-            seg044.sound_sub_120E0(gbl.sound_a_188D2);
+            seg044.sound_sub_120E0(Sound.sound_a);
 
             move_step_into_attack(player);
 
@@ -661,7 +661,7 @@ namespace engine
             byte var_B;
 
             ovr025.DisplayPlayerStatusString(false, 10, "turns undead...", player);
-            ovr027.redraw_screen();
+            ovr027.ClearPromptArea();
             seg041.GameDelay();
 
             bool any_turned = false;
@@ -790,7 +790,7 @@ namespace engine
 
             if (ovr025.is_held(target) == true)
             {
-                seg044.sound_sub_120E0(gbl.sound_7_188CC);
+                seg044.sound_sub_120E0(Sound.sound_7);
 
                 while (attacker.field_19BArray(attacker.actions.field_4) == 0)
                 {
@@ -887,7 +887,7 @@ namespace engine
                                     throw new System.NotImplementedException();
                             }
 
-                            seg044.sound_sub_120E0(gbl.sound_7_188CC);
+                            seg044.sound_sub_120E0(Sound.sound_7);
                             var_11 = true;
                             sub_3E192(var_15, target, attacker);
                             display_attack_message(true, gbl.damage, gbl.damage, var_17, target, attacker);
@@ -921,7 +921,7 @@ namespace engine
 
                 if (var_11 == false)
                 {
-                    seg044.sound_sub_120E0(gbl.sound_9_188D0);
+                    seg044.sound_sub_120E0(Sound.sound_9);
                     display_attack_message(false, 0, 0, var_17, target, attacker);
                 }
 
@@ -1699,7 +1699,7 @@ namespace engine
             byte var_3;
             byte var_1;
 
-            seg044.sound_sub_120E0(gbl.sound_c_188D6);
+            seg044.sound_sub_120E0(Sound.sound_c);
 
             var_3 = getTargetDirection(playerA, playerB);
 
@@ -1730,7 +1730,7 @@ namespace engine
                     {
                         ovr025.load_missile_dax(false, 0, var_3 >> 2, var_1 + (var_3 % 4));
                     }
-                    seg044.sound_sub_120E0(gbl.sound_c_188D6);
+                    seg044.sound_sub_120E0(Sound.sound_c);
                     break;
 
                 case 2:
@@ -1739,7 +1739,7 @@ namespace engine
                     ovr025.load_missile_icons(var_1 + 3);
                     frame_count = 4;
                     delay = 50;
-                    seg044.sound_sub_120E0(gbl.sound_9_188D0);
+                    seg044.sound_sub_120E0(Sound.sound_9);
                     break;
 
 
@@ -1748,7 +1748,7 @@ namespace engine
                     ovr025.load_missile_icons(var_1 + 4);
                     frame_count = 4;
                     delay = 50;
-                    seg044.sound_sub_120E0(gbl.sound_6_188CA);
+                    seg044.sound_sub_120E0(Sound.sound_6);
                     break;
 
                 case 0x65:
@@ -1759,7 +1759,7 @@ namespace engine
                     ovr025.load_missile_dax(false, 1, 1, var_1 + 7);
                     frame_count = 2;
                     delay = 10;
-                    seg044.sound_sub_120E0(gbl.sound_6_188CA);
+                    seg044.sound_sub_120E0(Sound.sound_6);
 
                     break;
 
@@ -1768,7 +1768,7 @@ namespace engine
                     ovr025.load_missile_dax(false, 1, 1, var_1 + 7);
                     frame_count = 2;
                     delay = 20;
-                    seg044.sound_sub_120E0(gbl.sound_9_188D0);
+                    seg044.sound_sub_120E0(Sound.sound_9);
                     break;
             }
             

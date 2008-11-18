@@ -538,7 +538,7 @@ namespace engine
         {
             if (gbl.game_state != GameState.Combat)
             {
-                seg044.sound_sub_120E0(gbl.sound_5_188C8);
+                seg044.sound_sub_120E0(Sound.sound_5);
                 seg041.GameDelay();
             }
             else
@@ -562,7 +562,7 @@ namespace engine
                     }
 
                     draw_74572(player_index, 0, 0);
-                    seg044.sound_sub_120E0(gbl.sound_5_188C8);
+                    seg044.sound_sub_120E0(Sound.sound_5);
 
                     for (int var_3 = 0; var_3 <= 8; var_3++)
                     {

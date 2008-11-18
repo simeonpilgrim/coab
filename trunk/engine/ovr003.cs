@@ -790,21 +790,17 @@ namespace engine
 
         internal static void CMD_PartyStrength() /* sub_272A9 */
         {
-            byte var_6;
-            byte var_4;
-            byte var_3;
-
             ovr008.vm_LoadCmdSets(1);
-            var_6 = 0;
+            byte power_value = 0;
 
             foreach (Player player in gbl.player_next_ptr)
             {
-                byte hit_points = player.hit_point_current;
-                byte armor_class = player.ac;
+                int hit_points = player.hit_point_current;
+                int armor_class = player.ac;
                 int hit_bonus = player.hitBonus;
 
-                var_3 = (byte)(player.magic_user_lvl + (ovr026.sub_6B3D1(player) * player.field_116));
-                var_4 = (byte)(player.cleric_lvl + (ovr026.sub_6B3D1(player) * player.turn_undead));
+                int magic_power = player.magic_user_lvl + (ovr026.sub_6B3D1(player) * player.field_116);
+                int cleric_power = player.cleric_lvl + (ovr026.sub_6B3D1(player) * player.turn_undead);
 
                 if (armor_class > 0x3c)
                 {
@@ -824,11 +820,11 @@ namespace engine
                     hit_bonus = 0;
                 }
 
-                var_6 = (byte)(((var_4 * 4) + hit_points + (armor_class * 5) + (hit_bonus * 5) + (var_3 * 8)) / 10);
+                power_value += (byte)(((cleric_power * 4) + hit_points + (armor_class * 5) + (hit_bonus * 5) + (magic_power * 8)) / 10);
             }
 
             ushort loc = gbl.cmd_opps[1].Word;
-            ovr008.vm_SetMemoryValue(var_6, loc);
+            ovr008.vm_SetMemoryValue(power_value, loc);
         }
 
 
@@ -844,14 +840,7 @@ namespace engine
 
         internal static void CMD_CheckParty() /* sub_27454 */
         {
-            byte var_1B;
-            byte var_1A;
-            ushort loc_d;
-            ushort loc_c;
-            ushort loc_b;
-            ushort loc_a;
-
-            short var_4;
+            int var_4;
             ushort var_2;
 
             ovr008.vm_LoadCmdSets(6);
@@ -867,13 +856,12 @@ namespace engine
 
             Affects affect_id = (Affects)ovr008.vm_GetCmdValue(2);
 
-            loc_a = gbl.cmd_opps[3].Word;
-            loc_b = gbl.cmd_opps[4].Word;
-            loc_c = gbl.cmd_opps[5].Word;
-            loc_d = gbl.cmd_opps[6].Word;
+            var loc_a = gbl.cmd_opps[3].Word;
+            var loc_b = gbl.cmd_opps[4].Word;
+            var loc_c = gbl.cmd_opps[5].Word;
+            var loc_d = gbl.cmd_opps[6].Word;
 
             var_4 = 0;
-            var_1A = 0;
             byte val_a = 0x0FF;
             byte val_b = 0;
             byte val_c;
@@ -894,34 +882,35 @@ namespace engine
             }
             else if (var_2 >= 0x00A5 && var_2 <= 0x00AC)
             {
-                var_1B = (byte)(var_2 - 0xA4);
-
+                int index = var_2 - 0xA4;
+                int count = 0;
                 foreach (Player player in gbl.player_next_ptr)
                 {
-                    var_1A++;
+                    count++;
 
-                    if (player.field_EA[var_1B - 1] < val_a)
+                    if (player.field_EA[index - 1] < val_a)
                     {
-                        val_a = player.field_EA[var_1B - 1];
+                        val_a = player.field_EA[index - 1];
                     }
 
-                    if (player.field_EA[var_1B - 1] > val_b)
+                    if (player.field_EA[index - 1] > val_b)
                     {
-                        val_b = player.field_EA[var_1B - 1];
+                        val_b = player.field_EA[index - 1];
                     }
 
-                    var_4 += player.field_EA[var_1B - 1];
+                    var_4 += player.field_EA[index - 1];
                 }
 
-                val_c = (byte)(var_4 / var_1A);
+                val_c = (byte)(var_4 / count);
 
                 setMemoryFour(false, val_c, val_b, val_a, loc_a, loc_b, loc_c, loc_d);
             }
             else if (var_2 == 0x9f)
             {
+                int count = 0;
                 foreach (Player player in gbl.player_next_ptr)
                 {
-                    var_1A++;
+                    count++;
 
                     if (player.movement < val_a)
                     {
@@ -936,7 +925,7 @@ namespace engine
                     var_4 += player.movement;
                 }
 
-                val_c = (byte)(var_4 / var_1A);
+                val_c = (byte)(var_4 / count);
 
                 setMemoryFour(false, val_c, val_b, val_a, loc_a, loc_b, loc_c, loc_d);
             }
@@ -1017,7 +1006,7 @@ namespace engine
 
                     if (gbl.soundFlag01 == true)
                     {
-                        seg044.sound_sub_120E0(gbl.sound_FF_188BC);
+                        seg044.sound_sub_120E0(Sound.sound_FF);
                     }
 
                     if (gbl.soundFlag01 == false)
@@ -1031,7 +1020,7 @@ namespace engine
                     {
                         if (gbl.soundFlag01 == true)
                         {
-                            seg044.sound_sub_120E0(gbl.sound_FF_188BC);
+                            seg044.sound_sub_120E0(Sound.sound_FF);
                         }
 
                         if (gbl.soundFlag01 == false)
@@ -1043,7 +1032,7 @@ namespace engine
                     {
                         if (gbl.soundFlag01 == true)
                         {
-                            seg044.sound_sub_120E0(gbl.sound_FF_188BC);
+                            seg044.sound_sub_120E0(Sound.sound_FF);
                         }
 
                         if (gbl.soundFlag01 == false)
@@ -1060,7 +1049,7 @@ namespace engine
 
                         if (gbl.soundFlag01 == true)
                         {
-                            seg044.sound_sub_120E0(gbl.sound_FF_188BC);
+                            seg044.sound_sub_120E0(Sound.sound_FF);
                         }
 
                         if (gbl.soundFlag01 == false)
@@ -1075,7 +1064,7 @@ namespace engine
 
                             if (gbl.soundFlag01 == true)
                             {
-                                seg044.sound_sub_120E0(gbl.sound_FF_188BC);
+                                seg044.sound_sub_120E0(Sound.sound_FF);
                             }
 
                             if (gbl.soundFlag01 == false)
@@ -1087,7 +1076,7 @@ namespace engine
                         {
                             if (gbl.soundFlag01 == true)
                             {
-                                seg044.sound_sub_120E0(gbl.sound_FF_188BC);
+                                seg044.sound_sub_120E0(Sound.sound_FF);
                             }
 
                             if (gbl.soundFlag01 == false)
@@ -1100,7 +1089,7 @@ namespace engine
                     {
                         if (gbl.soundFlag01 == true)
                         {
-                            seg044.sound_sub_120E0(gbl.sound_FF_188BC);
+                            seg044.sound_sub_120E0(Sound.sound_FF);
                         }
 
                         if (gbl.soundFlag01 == false)
@@ -1114,7 +1103,7 @@ namespace engine
                         {
                             if (gbl.soundFlag01 == true)
                             {
-                                seg044.sound_sub_120E0(gbl.sound_FF_188BC);
+                                seg044.sound_sub_120E0(Sound.sound_FF);
                             }
 
                             if (gbl.soundFlag01 == false)
@@ -1126,7 +1115,7 @@ namespace engine
                         {
                             if (gbl.soundFlag01 == true)
                             {
-                                seg044.sound_sub_120E0(gbl.sound_FF_188BC);
+                                seg044.sound_sub_120E0(Sound.sound_FF);
                             }
 
                             if (gbl.soundFlag01 == false)
@@ -1141,7 +1130,7 @@ namespace engine
             {
                 if (gbl.soundFlag01 == true)
                 {
-                    seg044.sound_sub_120E0(gbl.sound_FF_188BC);
+                    seg044.sound_sub_120E0(Sound.sound_FF);
                 }
 
                 if (gbl.soundFlag01 == false)
@@ -1160,7 +1149,7 @@ namespace engine
 
                 if (gbl.soundFlag01 == true)
                 {
-                    seg044.sound_sub_120E0(gbl.sound_FF_188BC);
+                    seg044.sound_sub_120E0(Sound.sound_FF);
                 }
 
                 ovr006.sub_2E7A2();
@@ -1174,7 +1163,7 @@ namespace engine
                 {
                     if (gbl.soundFlag01 == true)
                     {
-                        seg044.sound_sub_120E0(gbl.sound_FF_188BC);
+                        seg044.sound_sub_120E0(Sound.sound_FF);
                     }
 
                     if (gbl.soundFlag01 == false)
@@ -1187,7 +1176,7 @@ namespace engine
                 {
                     if (gbl.soundFlag01 == true)
                     {
-                        seg044.sound_sub_120E0(gbl.sound_FF_188BC);
+                        seg044.sound_sub_120E0(Sound.sound_FF);
                     }
 
                     if (gbl.soundFlag01 == false)
@@ -1408,7 +1397,6 @@ namespace engine
             {
                 foreach (Player player in gbl.player_next_ptr)
                 {
-                    //object var_B = player.itemsPtr;
                     ovr008.RobMoney(player, percentage);
                     ovr008.RobItems(player, var_3);
                 }
@@ -1726,7 +1714,7 @@ namespace engine
                 }
             } while (init_max != 0);
 
-            ovr027.redraw_screen();
+            ovr027.ClearPromptArea();
             gbl.DelayBetweenCharacters = false;
             gbl.byte_1EE95 = 0;
         }
@@ -1793,7 +1781,7 @@ namespace engine
             byte var_8 = 0; /* Simeon */
             byte var_5;
 
-            Player player01 = gbl.player_ptr;
+            Player currentPlayerBackup = gbl.player_ptr;
             /*byte var_19 = 0; */
             byte var_1A = 0;
             ovr008.vm_LoadCmdSets(5);
@@ -1830,16 +1818,13 @@ namespace engine
                         {
                             ovr008.sub_32200(player03, var_C);
                         }
-                        else
+                        else if (ovr024.do_saving_throw(var_5, var_9, player03) == false)
                         {
-                            if (ovr024.do_saving_throw(var_5, var_9, player03) == false)
-                            {
-                                ovr008.sub_32200(player03, var_C);
-                            }
-                            else if (var_1B != 0)
-                            {
-                                ovr008.sub_32200(player03, var_C);
-                            }
+                            ovr008.sub_32200(player03, var_C);
+                        }
+                        else if (var_1B != 0)
+                        {
+                            ovr008.sub_32200(player03, var_C);
                         }
                     }
                 }
@@ -1852,17 +1837,14 @@ namespace engine
                         {
                             ovr008.sub_32200(gbl.player_ptr, var_C);
                         }
-                        else
+                        else if (var_1B != 0)
                         {
-                            if (var_1B != 0)
-                            {
-                                ovr008.sub_32200(gbl.player_ptr, var_C);
-                            }
+                            ovr008.sub_32200(gbl.player_ptr, var_C);
                         }
                     }
                     else
                     {
-                        Player player03 = gbl.player_next_ptr[var_8-1];
+                        Player player03 = gbl.player_next_ptr[var_8 - 1];
 
                         if (ovr024.do_saving_throw(var_5, var_9, player03) == false)
                         {
@@ -1877,7 +1859,7 @@ namespace engine
             }
             else
             {
-                for (int var_4 = 1; var_4 <= var_1; var_4++)
+                for (int i = 1; i <= var_1; i++)
                 {
                     var_8 = ovr024.roll_dice(gbl.area2_ptr.party_size, 1);
                     Player player03 = gbl.player_next_ptr[var_8]; // TODO may be off by 1
@@ -1893,9 +1875,9 @@ namespace engine
 
             gbl.party_killed = true;
 
-            foreach (Player player02 in gbl.player_next_ptr)
+            foreach (Player player in gbl.player_next_ptr)
             {
-                if (player02.in_combat == true)
+                if (player.in_combat == true)
                 {
                     gbl.party_killed = false;
                 }
@@ -1911,7 +1893,7 @@ namespace engine
                 seg049.SysDelay(3000);
             }
 
-            gbl.player_ptr = player01;
+            gbl.player_ptr = currentPlayerBackup;
             seg041.displayAndDebug("press <enter>/<return> to continue", 0, 15);
         }
 
@@ -2108,15 +2090,15 @@ namespace engine
 
                     if (gbl.word_1EE76 == 8)
                     {
-                        seg044.sound_sub_120E0(gbl.sound_a_188D2);
+                        seg044.sound_sub_120E0(Sound.sound_a);
                     }
                     else if (gbl.word_1EE76 == 10)
                     {
-                        seg044.sound_sub_120E0(gbl.sound_b_188D4);
+                        seg044.sound_sub_120E0(Sound.sound_b);
                     }
                     else
                     {
-                        seg044.sound_sub_120E0(gbl.sound_a_188D2);
+                        seg044.sound_sub_120E0(Sound.sound_a);
                     }
                     break;
 
@@ -2600,7 +2582,7 @@ namespace engine
                             if (gbl.area_ptr.field_1E0 != gbl.mapPosX ||
                                 gbl.area_ptr.field_1E2 != gbl.mapPosY)
                             {
-                                seg044.sound_sub_120E0(gbl.sound_a_188D2);
+                                seg044.sound_sub_120E0(Sound.sound_a);
                             }
 
                             gbl.byte_1EE8C = false;

@@ -492,7 +492,7 @@ namespace engine
 
         internal static void MovePartyForward() /* sub_43813 */
         {
-            seg044.sound_sub_120E0(gbl.sound_a_188D2);
+            seg044.sound_sub_120E0(Sound.sound_a);
             seg049.SysDelay(50);
 
             gbl.mapPosX += gbl.MapDirectionXDelta[gbl.mapDirection];
@@ -621,7 +621,7 @@ namespace engine
                             case 'K': // turn left
                                 gbl.mapDirection = (byte)((gbl.mapDirection + 6) % 8);
 
-                                seg044.sound_sub_120E0(gbl.sound_a_188D2);
+                                seg044.sound_sub_120E0(Sound.sound_a);
                                 gbl.mapWallType = ovr031.getMap_wall_type(gbl.mapDirection, gbl.mapPosY, gbl.mapPosX);
                                 ovr031.Draw3dWorld(gbl.mapDirection, gbl.mapPosY, gbl.mapPosX);
                                 break;
@@ -629,7 +629,7 @@ namespace engine
                             case 'M': // turn right
                                 gbl.mapDirection = (byte)((gbl.mapDirection + 2) % 8);
 
-                                seg044.sound_sub_120E0(gbl.sound_a_188D2);
+                                seg044.sound_sub_120E0(Sound.sound_a);
 
                                 gbl.mapWallType = ovr031.getMap_wall_type(gbl.mapDirection, gbl.mapPosY, gbl.mapPosX);
                                 ovr031.Draw3dWorld(gbl.mapDirection, gbl.mapPosY, gbl.mapPosX);

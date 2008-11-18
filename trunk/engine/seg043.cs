@@ -14,7 +14,7 @@ namespace engine
 
                 gbl.soundType = gbl.soundTypeBackup;
 
-                seg044.sound_sub_120E0(gbl.sound_FF_188BC);
+                seg044.sound_sub_120E0(Sound.sound_FF);
 
                 Logger.Close();            
 
@@ -56,13 +56,13 @@ namespace engine
                 if (gbl.soundType == SoundType.PC)
                 {
                     gbl.soundTypeBackup = gbl.soundType;
-                    seg044.sound_sub_120E0(gbl.sound_0_188BE);
+                    seg044.sound_sub_120E0(Sound.sound_0);
                     gbl.soundType = SoundType.None;
                 }
                 else if (gbl.soundTypeBackup == SoundType.PC)
                 {
                     gbl.soundType = gbl.soundTypeBackup;
-                    seg044.sound_sub_120E0(gbl.sound_1_188C0);
+                    seg044.sound_sub_120E0(Sound.sound_1);
                 }
             }
 

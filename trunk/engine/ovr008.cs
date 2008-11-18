@@ -157,7 +157,7 @@ namespace engine
 
             do
             {
-                ovr027.redraw_screen();
+                ovr027.ClearPromptArea();
                 seg041.displayString("Loading...Please Wait", 0, 10, 0x18, 0);
 
                 seg042.load_decode_dax(out block_mem, out block_size, block_id, string.Format("ECL{0}.dax", gbl.game_area));
@@ -165,7 +165,7 @@ namespace engine
 
             gbl.ecl_ptr.SetData(block_mem, 2, block_size - 2);
 
-            ovr027.redraw_screen();
+            ovr027.ClearPromptArea();
         }
 
 

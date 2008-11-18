@@ -49,6 +49,27 @@ namespace Classes
         duel = 1
     }
 
+    public enum Sound
+    {
+        sound_FF = -1,
+        sound_0 = 0,
+        sound_1 = 1,
+        sound_2 = 2,
+        sound_3 = 3,
+        sound_4 = 4,
+        sound_5 = 5,
+        sound_6 = 6,
+        sound_7 = 7,
+        sound_8 = 8,
+        sound_9 = 9,
+        sound_a = 0xa,
+        sound_b = 0xb,
+        sound_c = 0xc,
+        sound_d = 0xd,
+        sound_e = 0xe,
+        sound_f = 0xf
+    }
+
     public delegate void spellDelegate(out bool arg_0, QuickFight quick_fight, byte arg_6);
     public delegate void spellDelegate2();
     public delegate void affectDelegate(Effect arg_0, object affect, Player player);
@@ -409,21 +430,7 @@ namespace Classes
         public const short word_16E18 = 9;
         public const short word_16E1A = 5;
 
-        public const short sound_FF_188BC = 0x00ff;
-        public const short sound_0_188BE = 0;
-        public const short sound_1_188C0 = 1;
-        public const short sound_2_188C2 = 2;
-        public const short sound_3_188C4 = 3;
-        public const short sound_4_188C6 = 4;
-        public const short sound_5_188C8 = 5;
-        public const short sound_6_188CA = 6;
-        public const short sound_7_188CC = 7;
-        public const short sound_8_188CE = 8;
-        public const short sound_9_188D0 = 9;
-        public const short sound_a_188D2 = 0xa;
-        public const short sound_b_188D4 = 0xb;
-        public const short sound_c_188D6 = 0xc;
-        public const short sound_d_188D8 = 0xd;
+
 
         public readonly static short[] symbol_set_fix = { 0x0001, 0x002E, 0x0074, 0x00BA, 0x0100 };
         public const short word_1899C = 0x2D;

@@ -1454,7 +1454,7 @@ namespace engine
             File file;
             seg042.find_and_open_file(out file, true, file_name);
 
-            ovr027.redraw_screen();
+            ovr027.ClearPromptArea();
             seg041.displayString("Loading...Please Wait", 0, 10, 0x18, 0);
             gbl.reload_ecl_and_pictures = true;
 
@@ -1576,7 +1576,7 @@ namespace engine
             }
 
             seg043.clear_keyboard();
-            ovr027.redraw_screen();
+            ovr027.ClearPromptArea();
 
             gbl.last_game_state = gbl.game_state;
 
@@ -1652,7 +1652,7 @@ namespace engine
                         }
                     } while (unk_4AEEF.MemberOf(var_1FC) == false);
 
-                    ovr027.redraw_screen();
+                    ovr027.ClearPromptArea();
                     seg041.displayString("Saving...Please Wait", 0, 10, 0x18, 0);
 
                     gbl.area_ptr.game_speed = (byte)gbl.game_speed_var;
@@ -1714,7 +1714,7 @@ namespace engine
                     }
 
                     gbl.byte_1C01B = 1;
-                    ovr027.redraw_screen();
+                    ovr027.ClearPromptArea();
                 }
             }
         }

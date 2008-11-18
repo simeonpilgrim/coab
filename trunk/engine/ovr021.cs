@@ -577,7 +577,7 @@ namespace engine
                     }
                     else
                     {
-                        ovr027.redraw_screen();
+                        ovr027.ClearPromptArea();
                     }
                 }
 

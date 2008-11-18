@@ -797,15 +797,15 @@ namespace engine
 
                         if (spell_id == 0x2F)
                         {
-                            seg044.sound_sub_120E0(gbl.sound_b_188D4);
+                            seg044.sound_sub_120E0(Sound.sound_b);
                         }
                         else if (spell_id == 0x33)
                         {
-                            seg044.sound_sub_120E0(gbl.sound_8_188CE);
+                            seg044.sound_sub_120E0(Sound.sound_8);
                         }
                         else
                         {
-                            seg044.sound_sub_120E0(gbl.sound_2_188C2);
+                            seg044.sound_sub_120E0(Sound.sound_2);
                         }
 
                         ovr025.draw_missile_attack(0x1E, 4, gbl.targetY, gbl.targetX, casterY, casterX);
@@ -1095,7 +1095,7 @@ namespace engine
 
                     if (target_index < gbl.sp_target_count)
                     {
-                        seg044.sound_sub_120E0(gbl.sound_2_188C2);
+                        seg044.sound_sub_120E0(Sound.sound_2);
                         ovr025.load_missile_icons(0x12);
 
                         ovr025.draw_missile_attack(0x1E, 4, ovr033.PlayerMapYPos(target), ovr033.PlayerMapXPos(target),

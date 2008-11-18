@@ -10,7 +10,7 @@ namespace engine
             byte var_1;
 
             var_2 = process_input_in_monsters_turn(player);
-            ovr027.redraw_screen();
+            ovr027.ClearPromptArea();
             ovr025.ClearPlayerTextArea();
 
             if (player.in_combat == false)

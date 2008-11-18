@@ -490,7 +490,7 @@ namespace engine
             sub_52B79( 1, 0x4a, 3 ,3 );
 
 			seg041.displayAndDebug( "Press any key to continue.", 0, 13 );
-			ovr027.redraw_screen();
+			ovr027.ClearPromptArea();
 
 			seg041.press_any_key( aIAmTrappedWith, true, 0, 10, 0x16, 0x26, 0x11, 1 );
 			seg041.press_any_key( aWhereArmiesHav, false, 0, 10, 0x16, 0x26, 0x11, 1 );
@@ -500,7 +500,7 @@ namespace engine
 			sub_52B79( 1, 0x4B, 3 ,3 );
 
 			seg041.displayAndDebug( "Press any key to continue.", 0, 13 );
-			ovr027.redraw_screen();
+			ovr027.ClearPromptArea();
 
 			seg041.press_any_key( aYouAreCertainH, true, 0, 10, 0x16, 0x26, 0x11, 1 );
 			seg041.press_any_key( aFinalBondFades, false, 0, 10, 0x16, 0x26, 0x11, 1 );
@@ -522,7 +522,7 @@ namespace engine
 			seg041.press_any_key( aThisFoulPlaceT, false, 0, 10, 0x16, 0x26, 0x11, 1 );
 
             seg041.displayAndDebug( "Press any key to continue.", 0, 13 );
-			ovr027.redraw_screen();
+			ovr027.ClearPromptArea();
 			ovr030.load_bigpic( 0x7A );
 
             ovr030.draw_bigpic();

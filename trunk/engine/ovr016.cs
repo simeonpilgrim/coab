@@ -1336,7 +1336,7 @@ namespace engine
             gbl.game_state = game_state_bkup;
             ovr025.display_map_position_time();
             ovr025.ClearPlayerTextArea();
-            ovr027.redraw_screen();
+            ovr027.ClearPromptArea();
         }
     }
 }
