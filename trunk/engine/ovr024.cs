@@ -574,14 +574,7 @@ namespace engine
                 gbl.byte_1D2D1 = arg_2;
 
                 work_on_00(player, 12);
-                if (player.field_DFArrayGet(arg_2) > gbl.saving_throw_roll)
-                {
-                    gbl.save_made = false;
-                }
-                else
-                {
-                    gbl.save_made = true;
-                }
+                gbl.save_made = player.field_DF[arg_2] <= gbl.saving_throw_roll;
             }
 
             return gbl.save_made;
@@ -603,13 +596,11 @@ namespace engine
         }
 
 
-        internal static sbyte roll_dice_save(int dice_size, int dice_count)
+        internal static int roll_dice_save(int dice_size, int dice_count)
         {
             gbl.dice_count = dice_count;
 
-            byte var_1 = roll_dice(dice_size, dice_count);
-
-            return (sbyte)var_1;
+            return roll_dice(dice_size, dice_count);
         }
 
 

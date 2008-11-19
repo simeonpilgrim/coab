@@ -15,9 +15,25 @@ namespace Classes
         public byte race; // 0x2e
         public byte _class; // 0x2F
         public short age; // 0x30
-        public byte hp_max; // 0x33
+        public byte hp_max; // 0x32
+        public byte[] field_33; // 0x33 Array 0x38, 0x33 - 0x6A
+        public byte field_6B; // 0x6B
+        public byte field_6C; // 0x6C
+        public byte[] field_6D; // 0x6D Array 5, 0x6D - 0x71
+        public byte field_72; // 0x72
+        public byte field_73; // 0x73
+        public byte field_74; // 0x74
+        public byte field_75; // 0x75
+        public byte field_76; // 0x76
+
         public byte sex; // 0x9e
         public byte[] field_C1; // 0xC1
+
+        public byte field_10C; // 0x10C
+        public byte field_10D; // 0x10D
+        public byte field_10E; // 0x10E
+        public sbyte field_110; // 0x110
+
         public byte field_111; // 0x111
         public byte field_112; // 0x112
         public byte field_113; // 0x113
@@ -35,7 +51,9 @@ namespace Classes
 
         public PoolRadPlayer()
         {
+            field_33 = new byte[0x38];
             field_C1 = new byte[6];
+
         }
 
         public PoolRadPlayer(byte[] data)

@@ -594,14 +594,14 @@ namespace engine
         }
 
 
-        internal static void sub_5CF7F(string arg_0, byte arg_4, sbyte arg_6, bool arg_8, int TargetCount, byte spell_id)
+        internal static void sub_5CF7F(string arg_0, byte arg_4, int damage, bool arg_8, int TargetCount, byte spell_id)
         {
             bool var_30;
             Player target;
             byte var_2B;
             int target_count;
 
-            if (arg_6 == 0)
+            if (damage == 0)
             {
                 gbl.damage_flags = 0;
             }
@@ -644,14 +644,14 @@ namespace engine
 
                             if (ovr024.attacker_can_hit_target(target.ac, target, gbl.player_ptr) == false)
                             {
-                                arg_6 = 0;
+                                damage = 0;
                                 var_30 = true;
                             }
                         }
 
-                        if (arg_6 > 0)
+                        if (damage > 0)
                         {
-                            ovr024.damage_person(var_30, gbl.spell_table[spell_id].can_save_flag, arg_6, target);
+                            ovr024.damage_person(var_30, gbl.spell_table[spell_id].can_save_flag, damage, target);
                         }
 
                         if (gbl.spell_table[spell_id].affect_id > 0)
@@ -1197,7 +1197,7 @@ namespace engine
 
         internal static void sub_5DEE1()
         {
-            sub_5CF7F(string.Empty, 9, (sbyte)ovr025.spellMaxTargetCount(gbl.spell_id), false, 0, gbl.spell_id);
+            sub_5CF7F(string.Empty, 9, ovr025.spellMaxTargetCount(gbl.spell_id), false, 0, gbl.spell_id);
         }
 
 
@@ -1320,7 +1320,7 @@ namespace engine
         {
             sbyte var_1 = (sbyte)(ovr025.spellMaxTargetCount(gbl.spell_id) + 1);
 
-            sub_5CF7F(string.Empty, 8, (sbyte)((var_1 >> 1) + ovr024.roll_dice_save(4, (sbyte)(var_1 >> 1))), false, 0, gbl.spell_id);
+            sub_5CF7F(string.Empty, 8, (var_1 / 2) + ovr024.roll_dice_save(4, var_1 / 2), false, 0, gbl.spell_id);
         }
 
 
@@ -1332,7 +1332,7 @@ namespace engine
 
         internal static void sub_5E2B2()
         {
-            sub_5CF7F(string.Empty, 12, (sbyte)(ovr024.roll_dice_save(8, 1) + ovr025.spellMaxTargetCount(gbl.spell_id)),
+            sub_5CF7F(string.Empty, 12, ovr024.roll_dice_save(8, 1) + ovr025.spellMaxTargetCount(gbl.spell_id),
                 false, 0, gbl.spell_id);
         }
 
@@ -2414,15 +2414,15 @@ namespace engine
         }
 
 
-        internal static void sub_6014A()
+        internal static void dam2d4plus2()
         {
-            sub_5CF7F(string.Empty, 8, (sbyte)(ovr024.roll_dice_save(4, 2) + 2), false, 0, gbl.spell_id);
+            sub_5CF7F(string.Empty, 8, ovr024.roll_dice_save(4, 2) + 2, false, 0, gbl.spell_id);
         }
 
 
-        internal static void sub_60185()
+        internal static void dam2d8plus1() // sub_60185
         {
-            sub_5CF7F(string.Empty, 8, (sbyte)(ovr024.roll_dice_save(8, 2) + 1), false, 0, gbl.spell_id);
+            sub_5CF7F(string.Empty, 8, ovr024.roll_dice_save(8, 2) + 1, false, 0, gbl.spell_id);
         }
 
 
@@ -2506,9 +2506,9 @@ namespace engine
         }
 
 
-        internal static void sub_60431()
+        internal static void dam3d8plus3() // sub_60431
         {
-            sub_5CF7F(string.Empty, 8, (sbyte)(ovr024.roll_dice_save(8, 3) + 3), false, 0, gbl.spell_id);
+            sub_5CF7F(string.Empty, 8, ovr024.roll_dice_save(8, 3) + 3, false, 0, gbl.spell_id);
         }
 
 
@@ -2954,7 +2954,7 @@ namespace engine
 
             sub_5D7CF(max_range, 2, gbl.targetY, gbl.targetX, ovr033.PlayerMapYPos(player), ovr033.PlayerMapXPos(player));
 
-            sub_5CF7F(string.Empty, 10, (sbyte)(target_count + ovr024.roll_dice_save(4, target_count)), false, 0, gbl.spell_id);
+            sub_5CF7F(string.Empty, 10, target_count + ovr024.roll_dice_save(4, target_count), false, 0, gbl.spell_id);
         }
 
 
@@ -2962,19 +2962,19 @@ namespace engine
         {
             Player target = gbl.sp_targets[1];
 
-            byte bkup_val = target.field_E3;
+            var bkup_val = target.field_DF[4];
 
             if (target._class == ClassId.cleric)
             {
-                target.field_E3 -= 1;
+                target.field_DF[4] -= 1;
             }
             else if (target._class == ClassId.magic_user)
             {
-                target.field_E3 += 4;
+                target.field_DF[4] += 4;
             }
             else
             {
-                target.field_E3 += 2;
+                target.field_DF[4] += 2;
             }
 
             sub_5CF7F(string.Empty, 0, 0, false, 0, gbl.spell_id);
@@ -2984,7 +2984,7 @@ namespace engine
                 ovr024.CallSpellJumpTable(Effect.Add, null, target, Affects.feeblemind);
             }
 
-            target.field_E3 = bkup_val;
+            target.field_DF[4] = bkup_val;
         }
 
 
@@ -3462,14 +3462,14 @@ namespace engine
             gbl.spells_func_table[0x3e] = ovr023.cast_heal;
             gbl.spells_func_table[0x3f] = ovr023.cast_invisible;
             gbl.spells_func_table[0x40] = ovr023.sub_5F782;
-            gbl.spells_func_table[0x41] = ovr023.sub_6014A;
-            gbl.spells_func_table[0x42] = ovr023.sub_60185;
+            gbl.spells_func_table[0x41] = ovr023.dam2d4plus2;
+            gbl.spells_func_table[0x42] = ovr023.dam2d8plus1;
             gbl.spells_func_table[0x43] = ovr023.cure_poison;
             gbl.spells_func_table[0x44] = ovr023.sub_602D0;
             gbl.spells_func_table[0x45] = ovr023.is_protected;
             gbl.spells_func_table[0x46] = ovr023.cast_flattern;
             gbl.spells_func_table[0x47] = ovr023.sub_603F0;
-            gbl.spells_func_table[0x48] = ovr023.sub_60431;
+            gbl.spells_func_table[0x48] = ovr023.dam3d8plus3;
             gbl.spells_func_table[0x49] = ovr023.is_affected4;
             gbl.spells_func_table[0x4a] = ovr023.sub_604DA;
             gbl.spells_func_table[0x4b] = ovr023.cast_raise;

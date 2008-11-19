@@ -390,7 +390,7 @@ namespace engine
             }
             else if (arg_4 == 0x9b)
             {
-                return_val = gbl.player_ptr.field_E0;
+                return_val = gbl.player_ptr.field_DF[1];
             }
             else if (arg_4 == 0xa0)
             {

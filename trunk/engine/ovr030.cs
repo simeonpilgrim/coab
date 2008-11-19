@@ -66,7 +66,6 @@ namespace engine
                     else
                     {
                         int src_offset = 0;
-                        bool allocated_first_frame = false;
 
                         daxArray.numFrames = uncompressed_data[src_offset];
                         src_offset++;
@@ -116,8 +115,6 @@ namespace engine
                                     first_frame_ega_layout = seg051.GetMem(ega_encoded_size + 1);
 
                                     System.Array.Copy(uncompressed_data, src_offset, first_frame_ega_layout, 0, ega_encoded_size + 1);
-
-                                    allocated_first_frame = true;
                                 }
                                 else
                                 {

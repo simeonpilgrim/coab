@@ -406,16 +406,16 @@ namespace engine
             {
                 int var_2;
 
-                player.field_DFArraySet(var_1, 0x14);
+                player.field_DF[var_1] = 0x14;
                 for (var_2 = 0; var_2 <= 7; var_2++)
                 {
                     if (player.class_lvls[var_2] > 0)
                     {
                         byte dl = byte_1A8CE[(var_2 * 60) + (player.class_lvls[var_2] * 5) + var_1];
 
-                        if (player.field_DFArrayGet(var_1) > dl)
+                        if (player.field_DF[var_1] > dl)
                         {
-                            player.field_DFArraySet(var_1, dl);
+                            player.field_DF[var_1] = dl;
                         }
                     }
                 }
@@ -427,58 +427,55 @@ namespace engine
                 {
                     byte dl = byte_1A8CE[(var_2 * 60) + (player.Skill_B_lvl[var_2] * 5) + var_1];
 
-                    if (player.field_DFArrayGet(var_1) > dl)
+                    if (player.field_DF[var_1] > dl)
                     {
-                        player.field_DFArraySet(var_1, dl);
+                        player.field_DF[var_1] = dl;
                     }
                 }
 
                 if (var_1 == 0)
                 {
-                    if (player.race == Race.dwarf || player.race == Race.halfling ||
+                    if (player.race == Race.dwarf || 
+                        player.race == Race.halfling ||
                         var_9 == true)
                     {
                         if (player.con >= 4 && player.con <= 6)
                         {
-                            player.field_DFArraySet(var_1, (byte)(player.field_DFArrayGet(var_1) + 1));
+                            player.field_DF[var_1] += 1;
                         }
                         else if (player.con >= 7 && player.con <= 10)
                         {
-                            player.field_DFArraySet(var_1, (byte)(player.field_DFArrayGet(var_1) + 2));
+                            player.field_DF[var_1] += 2;
                         }
                         else if (player.con >= 11 && player.con <= 13)
                         {
-
-                            player.field_DFArraySet(var_1, (byte)(player.field_DFArrayGet(var_1) + 3));
+                            player.field_DF[var_1] += 3;
                         }
                         else if (player.con >= 14 && player.con <= 17)
                         {
-                            player.field_DFArraySet(var_1, (byte)(player.field_DFArrayGet(var_1) + 4));
+                            player.field_DF[var_1] += 4;
                         }
                         else if (player.con == 18)
                         {
-                            player.field_DFArraySet(var_1, (byte)(player.field_DFArrayGet(var_1) + 5));
+                            player.field_DF[var_1] += 5;
                         }
                     }
-                }
 
-                if (var_1 == 0)
-                {
-                    if (player.con == 0x13 || player.con == 0x14)
+                    if (player.con == 19 || player.con == 20)
                     {
-                        player.field_DFArraySet(var_1, (byte)(player.field_DFArrayGet(var_1) + 1));
+                        player.field_DF[var_1] += 1;
                     }
-                    else if (player.con == 0x15 || player.con == 0x16)
+                    else if (player.con == 21 || player.con == 22)
                     {
-                        player.field_DFArraySet(var_1, (byte)(player.field_DFArrayGet(var_1) + 2));
+                        player.field_DF[var_1] += 2;
                     }
-                    else if (player.con == 0x17 || player.con == 0x18)
+                    else if (player.con == 23 || player.con == 24)
                     {
-                        player.field_DFArraySet(var_1, (byte)(player.field_DFArrayGet(var_1) + 3));
+                        player.field_DF[var_1] += 3;
                     }
-                    else if (player.con == 0x19)
+                    else if (player.con == 25)
                     {
-                        player.field_DFArraySet(var_1, (byte)(player.field_DFArrayGet(var_1) + 4));
+                        player.field_DF[var_1] += 4;
                     }
                 }
             }
