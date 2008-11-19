@@ -116,5 +116,61 @@ namespace engine
                 GetInputKey();
             }
         }
+
+
+        public static void DumpTreasureItems()
+        {
+            for (int i = 0; i < 0x81; i++)
+            {
+                Item it = ovr022.create_item(i);
+                string name = ovr025.ItemName(it, 0);
+                Player pl = new Player();
+                pl.field_151 = it;
+                bool ranged = ovr025.is_weapon_ranged(pl);
+                bool rangedMelee = ovr025.is_weapon_ranged_melee(pl);
+             
+                Logging.Logger.Debug("Id: {0} {1} Ranged: {2} Ranged-Melee: {3}", i, name, ranged, rangedMelee );
+            }
+        }
+
+        public static void DumpMonsters()
+        {
+            var bkupArea = gbl.game_area;
+
+            for (byte area = 1; area <= 6; area++)
+            {
+                gbl.game_area = area;
+                for (int id = 0; id < 256; id++)
+                {
+                    Player p = ovr017.load_mob(id, false);
+                    if (p != null)
+                    {
+                        ovr025.reclac_player_values(p);
+
+                        string str100 = p.strength == 18 ? string.Format("({0})", p.max_str_00) : "";
+                        Logger.Debug("Area {0} Id {1} {2} exp: {3} hp: {4} ac: {5} thac0: {6}", area, id, p.name, p.exp, p.hit_point_max, 0x3c - p.ac, 0x3c - p.hitBonus);
+                        Logger.Debug("   S: {0}{1} D: {2} C: {3} I: {4} W: {5} Ch: {6}", p.strength, str100, p.dex, p.con, p._int, p.wis, p.charisma);
+                        Logger.Debug("   Lvls: {0} {1} {2} {3} {4} {5} {6} {7}", p.class_lvls[0], p.class_lvls[1], p.class_lvls[2], p.class_lvls[3], p.class_lvls[4], p.class_lvls[5], p.class_lvls[6], p.class_lvls[7]);
+                        if (p.field_151 != null)
+                            Logger.Debug("   Weapon: {0}", ovr025.ItemName(p.field_151, 0));
+                        if (p.armor != null)
+                            Logger.Debug("   Armor: {0}", ovr025.ItemName(p.armor, 0));
+
+                        Logger.Debug("   Damage: {0}d{1}{2}{3}", p.attack_dice_count, p.attack_dice_size,
+                            p.damageBonus > 0 ? "+" : "", p.damageBonus != 0 ? p.damageBonus.ToString() : "");
+
+                        foreach (int sp in p.spell_list)
+                        {
+                            if (sp != 0)
+                            {
+                                Logger.Debug("    {0}", ovr023.SpellNames[sp]);
+                            }
+                        }            
+                    }
+                }
+            }
+
+            gbl.game_area = bkupArea;
+        }
     }
 }

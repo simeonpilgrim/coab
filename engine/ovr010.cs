@@ -407,7 +407,7 @@ namespace engine
                         player.combat_team == CombatTeam.Enemy)
                     {
                         if (player.actions.field_14 != 0 ||
-                            player.field_159 != null ||
+                            player.armor != null ||
                             player._class != ClassId.magic_user)
                         {
                             if (player.actions.field_14 == 0)

@@ -234,25 +234,6 @@ namespace engine
 							 };
 
 
-
-        internal static void DebugItems()
-        {
-            for (int i = 0; i < 0x81; i++)
-            {
-                Item it = ovr022.create_item(i);
-                int a = it.field_2F < itemNames.Length ? (int)(byte)it.field_2F : 0;
-                int b = it.field_30 < itemNames.Length ? (int)(byte)it.field_30 : 0;
-                int c = it.field_31 < itemNames.Length ? (int)(byte)it.field_31 : 0;
-                Player pl = new Player();
-                pl.field_151 = it;
-                bool o1 = is_weapon_ranged(pl);
-                bool o20 = is_weapon_ranged_melee(pl);
-                System.Console.WriteLine("{0} {1} {2} {3} {4} {5} {6}",
-                    i, itemNames[c], itemNames[b], itemNames[a],
-                    it.type, o1, o20);
-            }
-        }
-
         internal static void ItemDisplayNameBuild(bool display_new_name, bool displayReadied, 
             int yCol, int xCol, Item item, Player player) /*id_item*/
         {
@@ -296,43 +277,10 @@ namespace engine
 
             if (Cheats.display_full_item_names)
             {
-                //item.hidden_names_flag = 0;
                 hidden_names_flag = 0;
             }
 
-            int display_flags = 0;
-            display_flags |= (item.field_2F != 0 && (hidden_names_flag & 0x4) == 0) ? 0x1 : 0;
-            display_flags |= (item.field_30 != 0 && (hidden_names_flag & 0x2) == 0) ? 0x2 : 0;
-            display_flags |= (item.field_31 != 0 && (hidden_names_flag & 0x1) == 0) ? 0x4 : 0;
-
-            bool pural_added = false;
-
-            for (int var_1 = 3; var_1 >= 1; var_1--)
-            {
-                if (((display_flags >> (var_1 - 1)) & 1) > 0)
-                {
-                    item.name += itemNames[item.field_2EArray(var_1)];
-
-                    if (item.count < 2 ||
-                        pural_added == true)
-                    {
-                        item.name += " ";
-                    }
-                    else if ((1 << (var_1 - 1) == display_flags) ||
-                            (var_1 == 1 && display_flags > 4 && item.type != 0x56) ||
-                            (var_1 == 2 && (display_flags & 1) == 0) ||
-                            (var_1 == 3 && item.type == 0x56) ||
-                            (item.field_31 != 0x87 && (item.type == 0x49 || item.type == 0x1c || item.type == 0x09) && item.field_31 != 0xb1))
-                    {
-                        item.name += "s ";
-                        pural_added = true;
-                    }
-                    else
-                    {
-                        item.name += " ";
-                    }
-                }
-            }
+            item.name = ItemName(item, hidden_names_flag);
 
             if (display_new_name)
             {
@@ -340,6 +288,46 @@ namespace engine
             }
         }
 
+
+        internal static string ItemName(Item item, int hidden_names_flag)
+        {
+            int display_flags = 0;
+            display_flags |= (item.field_2F != 0 && (hidden_names_flag & 0x4) == 0) ? 0x1 : 0;
+            display_flags |= (item.field_30 != 0 && (hidden_names_flag & 0x2) == 0) ? 0x2 : 0;
+            display_flags |= (item.field_31 != 0 && (hidden_names_flag & 0x1) == 0) ? 0x4 : 0;
+
+            bool pural_added = false;
+            string name = "";
+
+            for (int var_1 = 3; var_1 >= 1; var_1--)
+            {
+                if (((display_flags >> (var_1 - 1)) & 1) > 0)
+                {
+                    name += itemNames[item.field_2EArray(var_1)];
+
+                    if (item.count < 2 ||
+                        pural_added == true)
+                    {
+                        name += " ";
+                    }
+                    else if ((1 << (var_1 - 1) == display_flags) ||
+                            (var_1 == 1 && display_flags > 4 && item.type != 0x56) ||
+                            (var_1 == 2 && (display_flags & 1) == 0) ||
+                            (var_1 == 3 && item.type == 0x56) ||
+                            (item.field_31 != 0x87 && (item.type == 0x49 || item.type == 0x1c || item.type == 0x09) && item.field_31 != 0xb1))
+                    {
+                        name += "s ";
+                        pural_added = true;
+                    }
+                    else
+                    {
+                        name += " ";
+                    }
+                }
+            }
+
+            return name;
+        }
 
         internal static void PartySummary(Player player)
         {
@@ -509,7 +497,7 @@ namespace engine
 
             player.field_151 = null;
             player.field_155 = null;
-            player.field_159 = null;
+            player.armor = null;
             player.field_15D = null;
             player.field_161 = null;
             player.field_165 = null;

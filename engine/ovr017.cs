@@ -1212,8 +1212,12 @@ namespace engine
             ovr026.sub_6A3C6(player_ptr);
         }
 
-
         internal static Player load_mob(int monster_id)
+        {
+            return load_mob(monster_id, true);
+        }
+
+        internal static Player load_mob(int monster_id, bool exit)
         {
             string area_text = gbl.game_area.ToString();
 
@@ -1223,8 +1227,15 @@ namespace engine
 
             if (decode_size == 0)
             {
-                seg041.displayAndDebug("Unable to load monster", 0, 15);
-                seg043.print_and_exit();
+                if (exit)
+                {
+                    seg041.displayAndDebug("Unable to load monster", 0, 15);
+                    seg043.print_and_exit();
+                }
+                else
+                {
+                    return null;
+                }
             }
 
             Player player = new Player(data, 0);

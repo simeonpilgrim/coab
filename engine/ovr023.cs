@@ -151,7 +151,7 @@ namespace engine
                 case 2: // Magic-User
                     if (player._int > 8 &&
                         ((player.race != Race.human) ||
-                     (player.field_159 == null) ||
+                     (player.armor == null) ||
                      (gbl.game_state != GameState.Combat) ||
                      (player.ranger_lvl > 8) ||
                      (ovr026.sub_6B3D1(player) != 0 && player.field_115 > 8 && player.magic_user_lvl > 0) ||

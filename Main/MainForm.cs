@@ -176,5 +176,15 @@ namespace Main
 
             Classes.Cheats.NoRaceClassLimits(flipped);
         }
+
+        private void dumpMonstersToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            engine.seg043.DumpMonsters();
+        }
+
+        private void dumpTreasureItemsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            engine.seg043.DumpTreasureItems();
+        }
     }
 }

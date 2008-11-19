@@ -121,10 +121,10 @@ namespace engine
             }
 
             yCol++;
-            if (gbl.player_ptr02.field_159 != null)
+            if (gbl.player_ptr02.armor != null)
             {
                 seg041.displayString("Armor", 0, 15, yCol, 2);
-                ovr025.ItemDisplayNameBuild(true, false, yCol, 8, gbl.player_ptr02.field_159, gbl.player_ptr02);
+                ovr025.ItemDisplayNameBuild(true, false, yCol, 8, gbl.player_ptr02.armor, gbl.player_ptr02);
             }
 
             yCol++;
@@ -171,15 +171,8 @@ namespace engine
             seg041.displayString((0x3c - player.hitBonus).ToString(), 0, 10, yCol, xCol + 7);
 
 
-            string damage = player.attack_dice_count.ToString() + "d" + player.attack_dice_size.ToString();
-            if (player.damageBonus > 0)
-            {
-                damage += "+" + player.damageBonus.ToString();
-            }
-            if (player.damageBonus < 0)
-            {
-                damage += player.damageBonus.ToString();
-            }
+            string damage = string.Format("{0}d{1}{2}{3}", player.attack_dice_count, player.attack_dice_size,
+                player.damageBonus > 0 ? "+" : "", player.damageBonus != 0 ? player.damageBonus.ToString() : ""); 
 
             seg041.displayString("Damage  ", 0, 15, yCol + 1, xCol);
             seg041.displayString(damage, 0, 10, yCol + 1, xCol + 7);
