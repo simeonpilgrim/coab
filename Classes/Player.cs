@@ -191,54 +191,9 @@ namespace Classes
         public byte field_DD; // 0xdd;
         [DataOffset(0xde, DataType.Byte)]
         public byte field_DE; // 0xde;
-        [DataOffset(0xdf, DataType.Byte)]
-        public byte field_DF; // 0xdf;
-        public byte field_DFArrayGet(int index)
-        {
-            switch (index)
-            {
-                case 0:
-                    return field_DF;
-                case 1:
-                    return field_E0;
-                case 2:
-                    return field_E1;
-                case 3:
-                    return field_E2;
-                case 4:
-                    return field_E3;
-
-                default:
-                    throw new System.NotImplementedException();
-            }
-        }
-        public void field_DFArraySet(int index, byte value)
-        {
-            switch (index)
-            {
-                case 0:
-                    field_DF = value; break;
-                case 1:
-                    field_E0 = value; break;
-                case 2:
-                    field_E1 = value; break;
-                case 3:
-                    field_E2 = value; break;
-                case 4:
-                    field_E3 = value; break;
-
-                default:
-                    throw new System.NotImplementedException();
-            }
-        }
-        [DataOffset(0xe0, DataType.Byte)]
-        public byte field_E0; // 0xe0;
-        [DataOffset(0xe1, DataType.Byte)]
-        public byte field_E1; // 0xe1;
-        [DataOffset(0xe2, DataType.Byte)]
-        public byte field_E2; // 0xe2;
-        [DataOffset(0xe3, DataType.Byte)]
-        public byte field_E3; // 0xe3;
+        [DataOffset(0xdf, DataType.ByteArray,5)]
+        public byte[] field_DF = new byte[5]; // 0xdf; 
+ 
         [DataOffset(0xe4, DataType.Byte)]
         public byte base_movement; // 0xe4;
         [DataOffset(0xe5, DataType.Byte)]
