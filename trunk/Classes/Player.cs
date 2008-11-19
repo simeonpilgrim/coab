@@ -422,7 +422,7 @@ namespace Classes
             set { itemArray[1] = value; }
         }
 
-        public Item field_159
+        public Item armor // field_159
         { // 0x159 
             get { return itemArray[2]; }
             set { itemArray[2] = value; }

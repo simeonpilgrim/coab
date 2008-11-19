@@ -34,6 +34,7 @@ namespace Main
             this.ddfsdToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.commandDebuggingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dumpPlayerAffectsToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.dumpMonstersToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.screenCaptureToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.cheatsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.alwayAllowAreaMapToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -46,6 +47,7 @@ namespace Main
             this.skipTitleScreenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.viewItemsStatsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.noRaceClassLimitsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.dumpTreasureItemsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.displayArea)).BeginInit();
             this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -67,13 +69,15 @@ namespace Main
             this.screenCaptureToolStripMenuItem,
             this.cheatsToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(161, 70);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(161, 92);
             // 
             // ddfsdToolStripMenuItem
             // 
             this.ddfsdToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.commandDebuggingToolStripMenuItem,
-            this.dumpPlayerAffectsToolStripMenuItem1});
+            this.dumpPlayerAffectsToolStripMenuItem1,
+            this.dumpMonstersToolStripMenuItem,
+            this.dumpTreasureItemsToolStripMenuItem});
             this.ddfsdToolStripMenuItem.Name = "ddfsdToolStripMenuItem";
             this.ddfsdToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
             this.ddfsdToolStripMenuItem.Text = "Debugging";
@@ -82,16 +86,23 @@ namespace Main
             // 
             this.commandDebuggingToolStripMenuItem.CheckOnClick = true;
             this.commandDebuggingToolStripMenuItem.Name = "commandDebuggingToolStripMenuItem";
-            this.commandDebuggingToolStripMenuItem.Size = new System.Drawing.Size(186, 22);
+            this.commandDebuggingToolStripMenuItem.Size = new System.Drawing.Size(188, 22);
             this.commandDebuggingToolStripMenuItem.Text = "Command Debugging";
             this.commandDebuggingToolStripMenuItem.CheckedChanged += new System.EventHandler(this.commandDebuggingToolStripMenuItem_CheckedChanged);
             // 
             // dumpPlayerAffectsToolStripMenuItem1
             // 
             this.dumpPlayerAffectsToolStripMenuItem1.Name = "dumpPlayerAffectsToolStripMenuItem1";
-            this.dumpPlayerAffectsToolStripMenuItem1.Size = new System.Drawing.Size(186, 22);
+            this.dumpPlayerAffectsToolStripMenuItem1.Size = new System.Drawing.Size(188, 22);
             this.dumpPlayerAffectsToolStripMenuItem1.Text = "Dump Player Affects";
             this.dumpPlayerAffectsToolStripMenuItem1.Click += new System.EventHandler(this.dumpPlayerAffectsToolStripMenuItem1_Click);
+            // 
+            // dumpMonstersToolStripMenuItem
+            // 
+            this.dumpMonstersToolStripMenuItem.Name = "dumpMonstersToolStripMenuItem";
+            this.dumpMonstersToolStripMenuItem.Size = new System.Drawing.Size(188, 22);
+            this.dumpMonstersToolStripMenuItem.Text = "Dump Monsters";
+            this.dumpMonstersToolStripMenuItem.Click += new System.EventHandler(this.dumpMonstersToolStripMenuItem_Click);
             // 
             // screenCaptureToolStripMenuItem
             // 
@@ -208,6 +219,13 @@ namespace Main
             this.noRaceClassLimitsToolStripMenuItem.Text = "No Race Class Limits";
             this.noRaceClassLimitsToolStripMenuItem.Click += new System.EventHandler(this.noRaceClassLimitsToolStripMenuItem_Click);
             // 
+            // dumpTreasureItemsToolStripMenuItem
+            // 
+            this.dumpTreasureItemsToolStripMenuItem.Name = "dumpTreasureItemsToolStripMenuItem";
+            this.dumpTreasureItemsToolStripMenuItem.Size = new System.Drawing.Size(188, 22);
+            this.dumpTreasureItemsToolStripMenuItem.Text = "Dump Treasure Items";
+            this.dumpTreasureItemsToolStripMenuItem.Click += new System.EventHandler(this.dumpTreasureItemsToolStripMenuItem_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -247,6 +265,8 @@ namespace Main
         private System.Windows.Forms.ToolStripMenuItem skipTitleScreenToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem improvedAreaMapToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem noRaceClassLimitsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem dumpMonstersToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem dumpTreasureItemsToolStripMenuItem;
     }
 }
 
