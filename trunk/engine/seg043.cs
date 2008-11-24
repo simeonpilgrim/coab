@@ -163,9 +163,14 @@ namespace engine
                         {
                             if (sp != 0)
                             {
-                                Logger.Debug("    {0}", ovr023.SpellNames[sp]);
+                                Logger.Debug("   Spell: {0}", ovr023.SpellNames[sp]);
                             }
-                        }            
+                        }
+
+                        foreach (var af in p.affects)
+                        {
+                            Logger.Debug("   Affect: {0}", af.type);
+                        }
                     }
                 }
             }
