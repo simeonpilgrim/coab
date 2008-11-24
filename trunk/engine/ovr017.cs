@@ -920,7 +920,6 @@ namespace engine
                 player_ptr.items = new List<Item>();
                 player_ptr.affects = new List<Affect>();
                 player_ptr.actions = null;
-                player_ptr.next_player = null;
 
                 string fileExt = ".guy";
                 var_1BC = sub_483AE(ref var_182, var_1BB, fileExt, var_1C4.field_4);

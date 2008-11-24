@@ -1393,7 +1393,6 @@ namespace engine
 
                 Player DuelMaster = playerA.ShallowClone();
                 DuelMaster.in_combat = true;
-                DuelMaster.next_player = null;
                 DuelMaster.name = "ROLF";
                 DuelMaster.quick_fight = QuickFight.True;
                 DuelMaster.combat_team = CombatTeam.Enemy;

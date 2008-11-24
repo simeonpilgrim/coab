@@ -498,7 +498,6 @@ namespace Classes
         [DataOffset(0x187, DataType.SWord)]
         public short weight; // 0x187
 
-        public Player next_player; // 0x189
         public Action actions; // 0x18d
         [DataOffset(0x191, DataType.Byte)]
         public byte field_191; // 0x191
@@ -658,7 +657,7 @@ namespace Classes
             name = string.Empty;
             items = new List<Item>();
             affects = new List<Affect>();
-            next_player = null;
+
             actions = null;
         }
 
