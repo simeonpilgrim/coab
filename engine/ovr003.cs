@@ -278,7 +278,6 @@ namespace engine
                     gbl.player_next_ptr.Add(playerA);
                     playerA.icon_id = gbl.monster_icon_id;
 
-                    playerA.next_player = null;
                     playerA.affects = new List<Affect>();
                     playerA.items = new List<Item>();
                     
