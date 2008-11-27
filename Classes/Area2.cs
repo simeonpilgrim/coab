@@ -68,8 +68,8 @@ namespace Classes
         public short field_5C4; // 0x5c4
         [DataOffset(0x5C6, DataType.SWord)]
         public short field_5C6; // 0x5c6
-        [DataOffset(0x5CC, DataType.SWord)]
-        public short field_5CC; // 0x5cc
+        //[DataOffset(0x5CC, DataType.SWord)]
+        public bool isDuel; // 0x5cc field_5CC
         [DataOffset(0x624, DataType.Byte)]
         public byte game_area; // 0x624
         [DataOffset(0x666, DataType.SWord)]
@@ -213,7 +213,7 @@ namespace Classes
                     break;
 
                 case 0x5cc:
-                    field_5CC = (short)value;
+                    isDuel = value != 0;
                     break;
 
                 case 0x624:

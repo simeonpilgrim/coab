@@ -22,6 +22,12 @@ namespace engine
             player.weight += amount;
         }
 
+        internal static bool willOverload(int item_weight, Player player)
+        {
+            short dummyShort;
+            return willOverload(out dummyShort, item_weight, player);
+        }
+
 
         internal static bool willOverload(out short weight, int item_weight, Player player)
         {
@@ -29,14 +35,13 @@ namespace engine
 
             if ((player.weight + item_weight) > get_max_load(player))
             {
-                ret_val = true;
-
                 weight = (short)(get_max_load(player) - player.weight);
+                ret_val = true;
             }
             else
             {
-                ret_val = false;
                 weight = 0;
+                ret_val = false;
             }
 
             return ret_val;
@@ -46,7 +51,7 @@ namespace engine
         internal static int getPooledGold(int[] arg_0)
         {
             int total = 0;
-            for (int i = 0; i <= 4; i++)
+            for (int i = 0; i < 5; i++)
             {
                 total += Money.per_copper[i] * arg_0[i];
             }
@@ -55,27 +60,27 @@ namespace engine
         }
 
 
-        internal static void setPlayerMoney(int arg_0)
+        internal static void setPlayerMoney(int gold)
         {
-            for (int i = 0; i <= 4; i++)
+            for (int i = 0; i < 5; i++)
             {
                 gbl.player_ptr.Money[i] = 0;
             }
 
-            gbl.player_ptr.platinum = (short)(arg_0 / 5);
-            gbl.player_ptr.gold = (short)(arg_0 % 5);
+            gbl.player_ptr.platinum = (short)(gold / 5);
+            gbl.player_ptr.gold = (short)(gold % 5);
         }
 
 
-        internal static void setPooledGold(int arg_0)
+        internal static void setPooledGold(int gold)
         {
             for (int i = 0; i < 5; i++)
             {
                 gbl.pooled_money[i] = 0;
             }
 
-            gbl.pooled_money[Money.platum] = arg_0 / 5;
-            gbl.pooled_money[Money.gold] = arg_0 % 5;
+            gbl.pooled_money[Money.platum] = gold / 5;
+            gbl.pooled_money[Money.gold] = gold % 5;
         }
 
 
@@ -101,7 +106,7 @@ namespace engine
 
         internal static short sub_592AD(byte fgColor, string prompt, int maxValue) // sub_592AD
         {
-            seg041.displaySpaceChar(0x28, 0, 0x18, 0);
+            ovr027.ClearPromptAreaNoUpdate();
             seg041.displayString(prompt, 0, fgColor, 0x18, 0);
 
             int prompt_width = prompt.Length;
@@ -145,7 +150,7 @@ namespace engine
                 }
             } while (inputKey != 0x0D && inputKey != 0x1B);
 
-            seg041.displaySpaceChar(0x28, 0, 0x18, 0);
+            ovr027.ClearPromptAreaNoUpdate();
 
             int var_44;
             if (inputKey == 0x1B)
@@ -154,7 +159,7 @@ namespace engine
             }
             else
             {
-                var_44 = (short)(int.Parse(currentValueStr));
+                var_44 = int.Parse(currentValueStr);
             }
 
             return (short)var_44;
@@ -182,8 +187,6 @@ namespace engine
 
         internal static void poolMoney()
         {
-            gbl.something01 = true;
-
             foreach (Player player in gbl.player_next_ptr)
             {
                 if (player.field_F7 == 0 ||
@@ -223,7 +226,6 @@ namespace engine
         {
             short[] money_remander;
             short[] money_each;
-            short var_C;
 
             int partySize = GetPartyCount();
 
@@ -250,6 +252,7 @@ namespace engine
                 {
                     for (int var_29 = 6; var_29 >= 0; var_29--)
                     {
+                        short var_C;
                         if (willOverload(out var_C, money_each[var_29], var_4) == false)
                         {
                             var_4.Money[var_29] += money_each[var_29];
@@ -257,7 +260,7 @@ namespace engine
                             add_weight(money_each[var_29], var_4);
 
                             if (money_remander[var_29] > 0 &&
-                                willOverload(out var_C, 1, var_4) == false)
+                                willOverload(1, var_4) == false)
                             {
                                 var_4.Money[var_29] += 1;
 
@@ -283,7 +286,7 @@ namespace engine
                 {
                     foreach (Player var_4 in gbl.player_next_ptr)
                     {
-                        var_C = (short)(get_max_load(var_4) - var_4.weight);
+                        short var_C = (short)(get_max_load(var_4) - var_4.weight);
 
                         if (var_C > 0)
                         {
@@ -304,16 +307,9 @@ namespace engine
                 }
             }
 
-            gbl.something01 = false;
-
             for (int var_29 = 0; var_29 <= 6; var_29++)
             {
                 gbl.pooled_money[var_29] = money_remander[var_29];
-
-                if (gbl.pooled_money[var_29] != 0)
-                {
-                    gbl.something01 = true;
-                }
             }
         }
 
@@ -458,13 +454,11 @@ namespace engine
                     sub_59AA0(money_slot, num_coins, gbl.player_ptr);
                     money.Clear();
 
-                    gbl.something01 = false;
                     noMoneyLeft = true;
                     for (var_1 = 0; var_1 < 7; var_1++)
                     {
                         if (gbl.pooled_money[var_1] > 0)
                         {
-                            gbl.something01 = true;
                             noMoneyLeft = false;
                         }
                     }
@@ -912,254 +906,251 @@ namespace engine
         }
 
 
-        internal static void appraiseGemsJewels(out bool arg_0)
+        internal static bool appraiseGemsJewels()
         {
             bool special_key;
-            bool stop_loop;
             short value;
             string sell_text;
-
-            arg_0 = true;
 
             if (gbl.player_ptr.gems == 0 && gbl.player_ptr.jewels == 0)
             {
                 ovr025.string_print01("No Gems or Jewelry");
-                arg_0 = false;
+                return false;
             }
-            else
+
+            bool stop_loop;
+
+            do
             {
-                do
+                if (gbl.player_ptr.gems == 0 && gbl.player_ptr.jewels == 0)
                 {
-                    if (gbl.player_ptr.gems == 0 && gbl.player_ptr.jewels == 0)
+                    stop_loop = true;
+                }
+                else
+                {
+                    stop_loop = false;
+
+                    string gem_text = gbl.player_ptr.gems.ToString();
+                    string jewel_text = gbl.player_ptr.jewels.ToString();
+
+                    if (gbl.player_ptr.gems == 0)
                     {
-                        stop_loop = true;
+                        gem_text = string.Empty;
+                    }
+                    else if (gbl.player_ptr.gems == 1)
+                    {
+                        gem_text += " Gem";
                     }
                     else
                     {
-                        stop_loop = false;
-
-                        string gem_text = gbl.player_ptr.gems.ToString();
-                        string jewel_text = gbl.player_ptr.jewels.ToString();
-
-                        if (gbl.player_ptr.gems == 0)
-                        {
-                            gem_text = string.Empty;
-                        }
-                        else if (gbl.player_ptr.gems == 1)
-                        {
-                            gem_text += " Gem";
-                        }
-                        else
-                        {
-                            gem_text += " Gems";
-                        }
-
-                        if (gbl.player_ptr.jewels == 0)
-                        {
-                            jewel_text = string.Empty;
-                        }
-                        else if (gbl.player_ptr.jewels == 1)
-                        {
-                            jewel_text += " piece of Jewelry";
-                        }
-                        else
-                        {
-                            jewel_text += " pieces of Jewelry";
-                        }
-
-                        seg037.draw8x8_clear_area(0x16, 0x26, 1, 1);
-                        ovr025.displayPlayerName(false, 1, 1, gbl.player_ptr);
-
-                        seg041.displayString("You have a fine collection of:", 0, 0xf, 7, 1);
-                        seg041.displayString(gem_text, 0, 0x0f, 9, 1);
-                        seg041.displayString(jewel_text, 0, 0x0f, 0x0a, 1);
-                        string prompt = string.Empty;
-
-                        if (gbl.player_ptr.gems != 0)
-                        {
-                            prompt = "  Gems";
-                        }
-
-                        if (gbl.player_ptr.jewels != 0)
-                        {
-                            prompt += " Jewelry";
-                        }
-
-                        prompt += " Exit";
-
-                        char input_key = ovr027.displayInput(out special_key, false, 1, 15, 10, 13, prompt, "Appraise : ");
-
-                        if (input_key == 'G')
-                        {
-                            if (gbl.player_ptr.gems != 0)
-                            {
-                                gbl.player_ptr.gems -= 1;
-
-                                int roll = ovr024.roll_dice(100, 1);
-
-                                if (roll >= 1 && roll <= 25)
-                                {
-                                    value = 10;
-                                }
-                                else if (roll >= 26 && roll <= 50)
-                                {
-                                    value = 50;
-                                }
-                                else if (roll >= 51 && roll <= 70)
-                                {
-                                    value = 100;
-                                }
-                                else if (roll >= 71 && roll <= 90)
-                                {
-                                    value = 500;
-                                }
-                                else if (roll >= 91 && roll <= 99)
-                                {
-                                    value = 1000;
-                                }
-                                else if (roll == 100)
-                                {
-                                    value = 5000;
-                                }
-                                else
-                                {
-                                    value = 0;
-                                }
-
-                                string value_text = "The Gem is Valued at " + value.ToString() + " gp.";
-
-                                seg041.displayString(value_text, 0, 15, 12, 1);
-
-                                short dummy_short;
-                                bool must_sell;
-
-                                if (willOverload(out dummy_short, 1, gbl.player_ptr) == true ||
-                                    gbl.player_ptr.field_14C >= 0x10)
-                                {
-                                    sell_text = "Sell";
-                                    must_sell = true;
-                                }
-                                else
-                                {
-                                    sell_text = "Sell Keep";
-                                    must_sell = false;
-                                }
-
-                                input_key = ovr027.displayInput(out special_key, false, 1, 15, 10, 13, sell_text, "You can : ");
-
-                                if (input_key == 'K' && must_sell == false)
-                                {
-                                    Item gem_item = new Item();
-                                    gem_item.weight = 1;
-                                    gem_item.hidden_names_flag = 0;
-                                    gem_item.readied = false;
-                                    gem_item.field_31 = 0x65;
-                                    gem_item.field_30 = 0;
-                                    gem_item.field_2F = 0;
-                                    gem_item.type = 0x46;
-                                    gem_item._value = value;
-
-                                    gbl.player_ptr.items.Add(gem_item);
-                                }
-                                else
-                                {
-                                    value /= 5;
-                                    addPlayerGold(value);
-                                }
-                            }
-                        }
-                        else if (input_key == 'J')
-                        {
-                            if (gbl.player_ptr.jewels != 0)
-                            {
-                                gbl.player_ptr.jewels -= 1;
-
-                                int roll = ovr024.roll_dice(100, 1);
-
-                                if (roll >= 1 && roll <= 10)
-                                {
-                                    value = (short)(seg051.Random(900) + 100);
-                                }
-                                else if (roll >= 11 && roll <= 20)
-                                {
-                                    value = (short)(seg051.Random(1000) + 200);
-                                }
-                                else if (roll >= 21 && roll <= 40)
-                                {
-                                    value = (short)(seg051.Random(1500) + 300);
-                                }
-                                else if (roll >= 41 && roll <= 50)
-                                {
-                                    value = (short)(seg051.Random(2500) + 500);
-                                }
-                                else if (roll >= 51 && roll <= 70)
-                                {
-                                    value = (short)(seg051.Random(5000) + 1000);
-                                }
-                                else if (roll >= 0x47 && roll <= 0x5A)
-                                {
-                                    value = (short)(seg051.Random(6000) + 2000);
-                                }
-                                else if (roll >= 0x5B && roll <= 0x64)
-                                {
-                                    value = (short)(seg051.Random(10000) + 2000);
-                                }
-                                else
-                                {
-                                    value = 0;
-                                }
-
-                                string value_text = string.Format("The Jewel is Valued at {0} gp.", value);
-                                seg041.displayString(value_text, 0, 15, 12, 1);
-
-                                short dummy_short;
-                                bool must_sell;
-                                if (willOverload(out dummy_short, 1, gbl.player_ptr) == true ||
-                                    gbl.player_ptr.field_14C > 16)
-                                {
-                                    sell_text = "Sell";
-                                    must_sell = true;
-                                }
-                                else
-                                {
-                                    sell_text = "Sell Keep";
-                                    must_sell = false;
-                                }
-
-                                input_key = ovr027.displayInput(out special_key, false, 1, 15, 10, 13, sell_text, "You can : ");
-
-                                if (input_key == 'K' && must_sell == false)
-                                {
-                                    Item jewel_item = new Item();
-                                    jewel_item.readied = false;
-                                    jewel_item.field_31 = 0xD6;
-                                    jewel_item.field_30 = 0;
-                                    jewel_item.type = 0x46;
-                                    jewel_item.field_2F = 0;
-
-                                    jewel_item._value = value;
-                                    jewel_item.hidden_names_flag = 0;
-                                    jewel_item.weight = 1;
-
-                                    gbl.player_ptr.items.Add(jewel_item);
-                                }
-                                else
-                                {
-                                    value /= 5;
-                                    addPlayerGold(value);
-                                }
-                            }
-                        }
-                        else if (input_key == 'E' || input_key == 0)
-                        {
-                            stop_loop = true;
-                        }
-
-                        ovr025.reclac_player_values(gbl.player_ptr);
+                        gem_text += " Gems";
                     }
 
-                } while (stop_loop == false);
-            }
+                    if (gbl.player_ptr.jewels == 0)
+                    {
+                        jewel_text = string.Empty;
+                    }
+                    else if (gbl.player_ptr.jewels == 1)
+                    {
+                        jewel_text += " piece of Jewelry";
+                    }
+                    else
+                    {
+                        jewel_text += " pieces of Jewelry";
+                    }
+
+                    seg037.draw8x8_clear_area(0x16, 0x26, 1, 1);
+                    ovr025.displayPlayerName(false, 1, 1, gbl.player_ptr);
+
+                    seg041.displayString("You have a fine collection of:", 0, 0xf, 7, 1);
+                    seg041.displayString(gem_text, 0, 0x0f, 9, 1);
+                    seg041.displayString(jewel_text, 0, 0x0f, 0x0a, 1);
+                    string prompt = string.Empty;
+
+                    if (gbl.player_ptr.gems != 0)
+                    {
+                        prompt = "  Gems";
+                    }
+
+                    if (gbl.player_ptr.jewels != 0)
+                    {
+                        prompt += " Jewelry";
+                    }
+
+                    prompt += " Exit";
+
+                    char input_key = ovr027.displayInput(out special_key, false, 1, 15, 10, 13, prompt, "Appraise : ");
+
+                    if (input_key == 'G')
+                    {
+                        if (gbl.player_ptr.gems != 0)
+                        {
+                            gbl.player_ptr.gems -= 1;
+
+                            int roll = ovr024.roll_dice(100, 1);
+
+                            if (roll >= 1 && roll <= 25)
+                            {
+                                value = 10;
+                            }
+                            else if (roll >= 26 && roll <= 50)
+                            {
+                                value = 50;
+                            }
+                            else if (roll >= 51 && roll <= 70)
+                            {
+                                value = 100;
+                            }
+                            else if (roll >= 71 && roll <= 90)
+                            {
+                                value = 500;
+                            }
+                            else if (roll >= 91 && roll <= 99)
+                            {
+                                value = 1000;
+                            }
+                            else if (roll == 100)
+                            {
+                                value = 5000;
+                            }
+                            else
+                            {
+                                value = 0;
+                            }
+
+                            string value_text = "The Gem is Valued at " + value.ToString() + " gp.";
+
+                            seg041.displayString(value_text, 0, 15, 12, 1);
+
+                            bool must_sell;
+
+                            if (willOverload(1, gbl.player_ptr) == true ||
+                                gbl.player_ptr.items.Count >= Player.MaxItems)
+                            {
+                                sell_text = "Sell";
+                                must_sell = true;
+                            }
+                            else
+                            {
+                                sell_text = "Sell Keep";
+                                must_sell = false;
+                            }
+
+                            input_key = ovr027.displayInput(out special_key, false, 1, 15, 10, 13, sell_text, "You can : ");
+
+                            if (input_key == 'K' && must_sell == false)
+                            {
+                                Item gem_item = new Item();
+                                gem_item.weight = 1;
+                                gem_item.hidden_names_flag = 0;
+                                gem_item.readied = false;
+                                gem_item.field_31 = 0x65;
+                                gem_item.field_30 = 0;
+                                gem_item.field_2F = 0;
+                                gem_item.type = 0x46;
+                                gem_item._value = value;
+
+                                gbl.player_ptr.items.Add(gem_item);
+                            }
+                            else
+                            {
+                                value /= 5;
+                                addPlayerGold(value);
+                            }
+                        }
+                    }
+                    else if (input_key == 'J')
+                    {
+                        if (gbl.player_ptr.jewels != 0)
+                        {
+                            gbl.player_ptr.jewels -= 1;
+
+                            int roll = ovr024.roll_dice(100, 1);
+
+                            if (roll >= 1 && roll <= 10)
+                            {
+                                value = (short)(seg051.Random(900) + 100);
+                            }
+                            else if (roll >= 11 && roll <= 20)
+                            {
+                                value = (short)(seg051.Random(1000) + 200);
+                            }
+                            else if (roll >= 21 && roll <= 40)
+                            {
+                                value = (short)(seg051.Random(1500) + 300);
+                            }
+                            else if (roll >= 41 && roll <= 50)
+                            {
+                                value = (short)(seg051.Random(2500) + 500);
+                            }
+                            else if (roll >= 51 && roll <= 70)
+                            {
+                                value = (short)(seg051.Random(5000) + 1000);
+                            }
+                            else if (roll >= 0x47 && roll <= 0x5A)
+                            {
+                                value = (short)(seg051.Random(6000) + 2000);
+                            }
+                            else if (roll >= 0x5B && roll <= 0x64)
+                            {
+                                value = (short)(seg051.Random(10000) + 2000);
+                            }
+                            else
+                            {
+                                value = 0;
+                            }
+
+                            string value_text = string.Format("The Jewel is Valued at {0} gp.", value);
+                            seg041.displayString(value_text, 0, 15, 12, 1);
+
+                            bool must_sell;
+                            if (willOverload(1, gbl.player_ptr) == true ||
+                                gbl.player_ptr.items.Count >= Player.MaxItems)
+                            {
+                                sell_text = "Sell";
+                                must_sell = true;
+                            }
+                            else
+                            {
+                                sell_text = "Sell Keep";
+                                must_sell = false;
+                            }
+
+                            input_key = ovr027.displayInput(out special_key, false, 1, 15, 10, 13, sell_text, "You can : ");
+
+                            if (input_key == 'K' && must_sell == false)
+                            {
+                                Item jewel_item = new Item();
+                                jewel_item.readied = false;
+                                jewel_item.field_31 = 0xD6;
+                                jewel_item.field_30 = 0;
+                                jewel_item.type = 0x46;
+                                jewel_item.field_2F = 0;
+
+                                jewel_item._value = value;
+                                jewel_item.hidden_names_flag = 0;
+                                jewel_item.weight = 1;
+
+                                gbl.player_ptr.items.Add(jewel_item);
+                            }
+                            else
+                            {
+                                value /= 5;
+                                addPlayerGold(value);
+                            }
+                        }
+                    }
+                    else if (input_key == 'E' || input_key == 0)
+                    {
+                        stop_loop = true;
+                    }
+
+                    ovr025.reclac_player_values(gbl.player_ptr);
+                }
+
+            } while (stop_loop == false);
+
+            return true;
         }
     }
 }

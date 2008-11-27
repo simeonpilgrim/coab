@@ -221,16 +221,14 @@ namespace engine
 
         internal static string getUserInputString(byte inputLen, byte bgColor, byte fgColor, string prompt)
         {
-            char var_12B;
-            string var_12A;
-
-            displaySpaceChar(0x28, 0, 0x18, 0);
+            ovr027.ClearPromptAreaNoUpdate();
 
             displayString(prompt, bgColor, fgColor, 0x18, 0);
 
             int var_2A = prompt.Length;
 
-            var_12A = string.Empty;
+            char var_12B;
+            string var_12A = string.Empty;
 
             do
             {
@@ -257,7 +255,7 @@ namespace engine
 
             } while (var_12B != 0x0d && var_12B != 0x1B && gbl.inDemo == false);
 
-            displaySpaceChar(0x28, 0, 0x18, 0);
+            ovr027.ClearPromptAreaNoUpdate();
 
             return var_12A.ToUpper();
         }
@@ -294,7 +292,7 @@ namespace engine
 
         internal static void displayAndDebug(string arg_0, byte arg_4, byte arg_6)
         {
-            displaySpaceChar(0x28, 0, 0x18, 0);
+            ovr027.ClearPromptAreaNoUpdate();
 
             displayString(arg_0, arg_4, arg_6, 0x18, 0);
             seg043.GetInputKey();
@@ -320,13 +318,13 @@ namespace engine
 
         internal static void DisplayStatusText(byte bgColor, byte fgColor, string text) /* sub_10ECF */
         {
-            displaySpaceChar(0x28, 0, 0x18, 0);
+            ovr027.ClearPromptAreaNoUpdate();
 
             displayString(text, bgColor, fgColor, 0x18, 0);
 
             GameDelay();
 
-            displaySpaceChar(0x28, 0, 0x18, 0);
+            ovr027.ClearPromptAreaNoUpdate();
         }
 
 

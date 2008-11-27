@@ -5,11 +5,10 @@ namespace engine
 {
     class ovr030
     {
-        static byte[] unk_16DAA = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 };
-        static byte[] unk_16DBA = { 12, 12, 12, 12, 4, 5, 6, 7, 12, 12, 10, 12, 12, 12, 14, 12 };
-        static byte[] unk_16DCA = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 };
-        static byte[] unk_16DDA = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 16, 14, 15 };
-        //TODO see what this does  static byte[] unk_16DDA = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 0, 14, 15 };
+        static byte[] fadeOldColors = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 };
+        static byte[] fadeNewColors = { 12, 12, 12, 12, 4, 5, 6, 7, 12, 12, 10, 12, 12, 12, 14, 12 };
+        static byte[] transparentOldColors = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 };
+        static byte[] transparentNewColors = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 16, 14, 15 };
 
         internal static void sub_7000A(DaxBlock dax_block, bool useOverlay, int rowY, int colX)
         {
@@ -20,7 +19,7 @@ namespace engine
                 {
                     if (gbl.area_ptr.picture_fade > 0)
                     {
-                        seg040.DaxBlockRecolor(dax_block, 1, 0, unk_16DBA, unk_16DAA);
+                        seg040.DaxBlockRecolor(dax_block, 1, 0, fadeNewColors, fadeOldColors);
                     }
 
                     seg040.OverlayBounded(dax_block, 0, 0, rowY - 1, colX - 1);
@@ -43,7 +42,7 @@ namespace engine
                 {
                     if (gbl.AnimationsOn == true)
                     {
-                        seg041.displaySpaceChar(0x28, 0, 0x18, 0);
+                        ovr027.ClearPromptAreaNoUpdate();
                         seg041.displayString("Loading...Please Wait", 0, 10, 0x18, 0);
                     }
 
@@ -130,7 +129,7 @@ namespace engine
 
                             if ((masked & 1) > 0)
                             {
-                                seg040.DaxBlockRecolor(daxArray.frames[frame].picture, 0, 0, unk_16DDA, unk_16DCA);
+                                seg040.DaxBlockRecolor(daxArray.frames[frame].picture, 0, 0, transparentNewColors, transparentOldColors);
                             }
 
                             src_offset += ega_encoded_size + 1;
@@ -143,7 +142,7 @@ namespace engine
 
                         if (gbl.AnimationsOn == true)
                         {
-                            seg041.displaySpaceChar(0x28, 0, 0x18, 0);
+                            ovr027.ClearPromptAreaNoUpdate();
                         }
                     }
                 }

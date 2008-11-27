@@ -11,7 +11,7 @@ namespace Classes
         public string name; // 0x0	16
         public byte[] strength; // 0x10
         public byte strength_100; // 0x16
-        public sbyte field_2D; // 0x2D
+        public sbyte thac0; // 0x2D
         public byte race; // 0x2e
         public byte _class; // 0x2F
         public short age; // 0x30

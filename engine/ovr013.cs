@@ -310,7 +310,7 @@ namespace engine
 
         internal static void sub_3A517(Effect arg_0, object param, Player player)
         {
-            if (ovr025.find_affect(Affects.poisoned, player) == true)
+            if (player.HasAffect(Affects.poisoned) == true)
             {
                 ovr024.sub_63014("dies from poison", Status.dead, player);
             }
@@ -335,7 +335,7 @@ namespace engine
 
             if (add_remove == Effect.Add &&
                 item_found == false &&
-                player.field_14C < 0x10)
+                player.items.Count < Player.MaxItems)
             {
                 item = new Item();
                 item.type = 20;
@@ -358,7 +358,7 @@ namespace engine
         internal static void sub_3A6C6(Effect arg_0, object param, Player player)
         {
             if (player.name.Length == 0 &&
-                ovr025.find_affect(Affects.detect_invisibility, gbl.player_ptr) == false)
+                gbl.player_ptr.HasAffect(Affects.detect_invisibility) == false)
             {
                 gbl.byte_1D2C5 = 1;
                 gbl.attack_roll -= 4;
@@ -676,7 +676,7 @@ namespace engine
                     ovr025.DisplayPlayerStatusString(true, 10, "is weakened", player);
                     player.strength--;
                 }
-                else if (ovr025.find_affect(Affects.helpless, player) == true)
+                else if (player.HasAffect(Affects.helpless) == true)
                 {
                     ovr024.add_affect(false, 0xff, 0, Affects.helpless, player);
                 }
@@ -701,7 +701,7 @@ namespace engine
                         ovr025.PartySummary(gbl.player_ptr);
                     }
                 }
-                else if (ovr025.find_affect(Affects.helpless, player) == false)
+                else if (player.HasAffect(Affects.helpless) == false)
                 {
                     ovr024.add_affect(false, 0xff, 0, Affects.helpless, player);
                 }
@@ -941,7 +941,7 @@ namespace engine
         {
             if (gbl.player_ptr.field_11A == 0x13)
             {
-                if (ovr025.find_affect(Affects.detect_invisibility, gbl.player_ptr) == false)
+                if (gbl.player_ptr.HasAffect(Affects.detect_invisibility) == false)
                 {
                     gbl.byte_1D2C5 = 1;
                 }
@@ -1041,7 +1041,7 @@ namespace engine
                     player.actions.target = gbl.player_array[gbl.SortedCombatantList[1].player_index];
 
                     player.actions.can_cast = false;
-                    player.combat_team = ovr025.opposite_team(player.actions.target);
+                    player.combat_team = player.actions.target.OppositeTeam();
 
                     ovr025.DisplayPlayerStatusString(true, 10, "goes berzerk", player);
                 }
@@ -1339,8 +1339,8 @@ namespace engine
 
         internal static void sp_regenerate(Effect arg_0, object param, Player player)
         {
-            if (ovr025.find_affect(Affects.affect_62, player) == false &&
-                ovr025.find_affect(Affects.regenerate, player) == false)
+            if (player.HasAffect(Affects.affect_62) == false &&
+                player.HasAffect(Affects.regenerate) == false)
             {
                 ovr024.add_affect(true, 0xff, 3, Affects.regenerate, player);
             }
@@ -1362,9 +1362,9 @@ namespace engine
         {
             gbl.spell_target = player.actions.target;
 
-            if (ovr025.find_affect(Affects.resist_fire, gbl.spell_target) == false &&
-                ovr025.find_affect(Affects.cold_fire_shield, gbl.spell_target) == false &&
-                ovr025.find_affect(Affects.fire_resist, gbl.spell_target) == false)
+            if (gbl.spell_target.HasAffect(Affects.resist_fire) == false &&
+                gbl.spell_target.HasAffect(Affects.cold_fire_shield) == false &&
+                gbl.spell_target.HasAffect(Affects.fire_resist) == false)
             {
                 gbl.damage += ovr024.roll_dice(6, 1);
             }
@@ -1755,7 +1755,7 @@ namespace engine
 
                 player.actions.target = gbl.player_array[gbl.SortedCombatantList[1].player_index];
 
-                player.combat_team = ovr025.opposite_team(player.actions.target);
+                player.combat_team = player.actions.target.OppositeTeam();
             }
             else
             {

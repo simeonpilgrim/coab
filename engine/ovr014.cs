@@ -238,7 +238,7 @@ namespace engine
                     Player attacker = gbl.player_array[gbl.near_targets[i]];
 
                     if (attacker.actions.guarding == true &&
-                        ovr025.is_held(attacker) == false)
+                        attacker.IsHeld() == false)
                     {
                         ovr033.redrawCombatArea(8, 2, ovr033.PlayerMapYPos(target), ovr033.PlayerMapXPos(target));
 
@@ -319,7 +319,7 @@ namespace engine
             move_step_into_attack(player);
 
             if (player.in_combat == false ||
-                ovr025.is_held(player) == true)
+                player.IsHeld() == true)
             {
                 player.actions.move = 0;
             }
@@ -381,10 +381,10 @@ namespace engine
 
                         Player player_ptr = gbl.player_array[var_D[var_18]];
 
-                        if (ovr025.is_held(player_ptr) == false &&
+                        if (player_ptr.IsHeld() == false &&
                             sub_3F143(player, player_ptr) == true &&
-                            ovr025.find_affect(Affects.affect_4b, player_ptr) == false &&
-                            ovr025.find_affect(Affects.affect_4a, player_ptr) == false)
+                            player_ptr.HasAffect(Affects.affect_4b) == false &&
+                            player_ptr.HasAffect(Affects.affect_4a) == false)
                         {
                             int end_dir = player_ptr.actions.direction + 10;
 
@@ -788,7 +788,7 @@ namespace engine
 
             attacker.actions.field_8 = 1;
 
-            if (ovr025.is_held(target) == true)
+            if (target.IsHeld() == true)
             {
                 seg044.sound_sub_120E0(Sound.sound_7);
 
@@ -871,7 +871,7 @@ namespace engine
                         gbl.inc_byte_byte_1D90x(var_15);
 
                         if (ovr024.attacker_can_hit_target(target_ac, target, attacker) ||
-                            ovr025.is_held(target) == true)
+                            target.IsHeld() == true)
                         {
                             switch (var_15)
                             {
@@ -1196,7 +1196,7 @@ namespace engine
                     {
                         Player target = gbl.player_ptr.actions.target;
 
-                        if (ovr025.is_held(target) == true)
+                        if (target.IsHeld() == true)
                         {
                             for (int i = 1; i <= 4; i++)
                             {
@@ -1808,8 +1808,7 @@ namespace engine
 
             foreach (Player player in gbl.player_next_ptr)
             {
-                if (ovr025.opposite_team(arg_0) == player.combat_team &&
-                    player.in_combat == true)
+                if (arg_0.OppositeTeam() == player.combat_team && player.in_combat == true)
                 {
                     int var_3 = sub_3E124(player) / 2;
 
@@ -1828,7 +1827,7 @@ namespace engine
         {
             bool result;
 
-            if (ovr025.opposite_team(target) == attacker.combat_team ||
+            if (target.OppositeTeam() == attacker.combat_team ||
                 attacker.quick_fight == QuickFight.True)
             {
                 result = true;
@@ -2480,8 +2479,8 @@ namespace engine
 
             if (gbl.byte_1D2CA == 2 &&
                 target.in_combat == true &&
-                ovr025.find_affect(Affects.affect_3a, target) == false &&
-                ovr025.find_affect(Affects.reduce, target) == false)
+                target.HasAffect(Affects.affect_3a) == false &&
+                target.HasAffect(Affects.reduce) == false)
             {
                 target = attacker.actions.target;
                 ovr025.DisplayPlayerStatusString(true, 12, "engulfs " + target.name, attacker);

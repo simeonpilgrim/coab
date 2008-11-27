@@ -131,7 +131,7 @@ namespace engine
                 Player tmpPlayer = gbl.player_array[gbl.SortedCombatantList[i].player_index];
                 SpellEntry spell_entry = gbl.spell_table[spell_id];
 
-                if (ovr025.opposite_team(gbl.player_ptr) != tmpPlayer.combat_team &&
+                if (gbl.player_ptr.OppositeTeam() != tmpPlayer.combat_team &&
                     spell_entry.can_save_flag != 1 &&
                     ovr024.do_saving_throw(save_bonus, spell_entry.field_9, tmpPlayer) == false)
                 {
@@ -186,24 +186,21 @@ namespace engine
 
         internal static bool sub_354AA(Player player)
         {
-            bool var_1 = false;
-
             Item var_14 = null;
-            byte var_2 = 7;
-            int var_3 = ovr024.roll_dice(7, 1);
 
-            int teamCount = (ovr025.opposite_team(player) == 0) ? gbl.friends_count : gbl.foe_count;
+            int teamCount = player.OppositeTeam() == CombatTeam.Ours ? gbl.friends_count : gbl.foe_count;
             if (player.actions.can_use == true &&
                 teamCount > 0 &&
                 gbl.area_ptr.can_cast_spells == false)
             {
+                int var_3 = ovr024.roll_dice(7, 1);
+                byte var_2 = 7;
                 for (int var_4 = 1; var_4 <= var_3; var_4++)
                 {
                     foreach (var item_ptr in player.items)
                     {
                         byte var_8 = (byte)item_ptr.affect_2;
                         byte var_7 = gbl.unk_1C020[item_ptr.type].item_slot;
-
 
                         if (ovr023.item_is_scroll(item_ptr) == false &&
                             (int)item_ptr.affect_3 < 0x80 &&
@@ -226,6 +223,7 @@ namespace engine
                 }
             }
 
+            bool var_1 = false;
             if (var_14 != null)
             {
                 bool var_15 = false; /* simeon */
@@ -266,7 +264,7 @@ namespace engine
             if (spells_count > 0 &&
                 (player.field_F7 > 0x7F || gbl.magicOn == true))
             {
-                if ((ovr025.opposite_team(player)== 0 ? gbl.friends_count : gbl.foe_count) > 0)
+                if ((player.OppositeTeam()== CombatTeam.Ours ? gbl.friends_count : gbl.foe_count) > 0)
                 {
                     while (var_5D <= var_5B && spell_id == 0)
                     {
@@ -348,12 +346,12 @@ namespace engine
                 if (playerIndex == 0 && var_A < player.actions.move)
                 {
                     if (isNoxiousCloud == true &&
-                        ovr025.find_affect(Affects.animate_dead, player) == false &&
-                        ovr025.find_affect(Affects.stinking_cloud, player) == false &&
-                        ovr025.find_affect(Affects.affect_6f, player) == false &&
-                        ovr025.find_affect(Affects.affect_7d, player) == false &&
-                        ovr025.find_affect(Affects.affect_81, player) == false &&
-                        ovr025.find_affect(Affects.minor_globe_of_invulnerability, player) == false &&
+                        player.HasAffect(Affects.animate_dead) == false &&
+                        player.HasAffect(Affects.stinking_cloud) == false &&
+                        player.HasAffect(Affects.affect_6f) == false &&
+                        player.HasAffect(Affects.affect_7d) == false &&
+                        player.HasAffect(Affects.affect_81) == false &&
+                        player.HasAffect(Affects.minor_globe_of_invulnerability) == false &&
                         player.actions.field_10 == 0)
                     {
                         if (ovr024.do_saving_throw(0, 0, player) == false)
@@ -365,10 +363,10 @@ namespace engine
 
                     if (isPoisonousCloud == true &&
                         player.field_E5 < 7 &&
-                        ovr025.find_affect(Affects.affect_81, player) == false &&
-                        ovr025.find_affect(Affects.affect_6f, player) == false &&
-                        ovr025.find_affect(Affects.affect_85, player) == false &&
-                        ovr025.find_affect(Affects.affect_7d, player) == false &&
+                        player.HasAffect(Affects.affect_81) == false &&
+                        player.HasAffect(Affects.affect_6f) == false &&
+                        player.HasAffect(Affects.affect_85) == false &&
+                        player.HasAffect(Affects.affect_7d) == false &&
                         player.actions.field_10 == 0)
                     {
                         var_A = (byte)(player.actions.move + 1);
@@ -712,7 +710,7 @@ namespace engine
 
             ovr025.ClearPlayerTextArea();
 
-            if (ovr025.is_held(player) == true ||
+            if (player.IsHeld() == true ||
                 ovr025.is_weapon_ranged(player) == true ||
                 player.actions.delay == 0)
             {

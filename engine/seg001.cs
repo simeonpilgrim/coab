@@ -42,10 +42,10 @@ namespace engine
         public static void PROGRAM()
         {
             /* Memory Init - Start */
-            gbl.CombatMap = new gbl.Struct_1C9CD[gbl.MaxCombatantCount + 1]; /* God damm 1-n arrays */
+            gbl.CombatMap = new Struct_1C9CD[gbl.MaxCombatantCount + 1]; /* God damm 1-n arrays */
             for (int i = 0; i <= gbl.MaxCombatantCount; i++)
             {
-                gbl.CombatMap[i] = new gbl.Struct_1C9CD();
+                gbl.CombatMap[i] = new Struct_1C9CD();
             }
 
             gbl.SortedCombatantList = new SortedCombatant[gbl.MaxSortedCombatantCount];

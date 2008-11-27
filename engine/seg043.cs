@@ -16,7 +16,7 @@ namespace engine
 
                 seg044.sound_sub_120E0(Sound.sound_FF);
 
-                Logger.Close();            
+                Logger.Close();
 
                 seg001.EngineStop();
             }
@@ -25,7 +25,7 @@ namespace engine
 
         static void DebugPlayerAffects(Player player)
         {
-            foreach(Affect affect in player.affects)
+            foreach (Affect affect in player.affects)
             {
                 Logger.Debug("who: {0}  sp#: {1} - {2}", player.name, (int)affect.type, affect.type);
             }
@@ -91,7 +91,7 @@ namespace engine
         }
 
         public static void ToggleCommandDebugging()
-        {    
+        {
             gbl.printCommands = !gbl.printCommands;
 
             if (gbl.printCommands == true)
@@ -128,9 +128,124 @@ namespace engine
                 pl.field_151 = it;
                 bool ranged = ovr025.is_weapon_ranged(pl);
                 bool rangedMelee = ovr025.is_weapon_ranged_melee(pl);
-             
-                Logging.Logger.Debug("Id: {0} {1} Ranged: {2} Ranged-Melee: {3}", i, name, ranged, rangedMelee );
+
+                Logging.Logger.Debug("Id: {0} {1} Ranged: {2} Ranged-Melee: {3}", i, name, ranged, rangedMelee);
             }
+        }
+
+        static void TxtDumpPlayer(Player p, int area, int id)
+        {
+            string str100 = p.strength == 18 ? string.Format("({0})", p.max_str_00) : "";
+            Logger.Debug("Area {0} Id {1} {2} exp: {3} hp: {4} ac: {5} thac0: {6}", area, id, p.name, p.exp, p.hit_point_max, 0x3c - p.ac, 0x3c - p.hitBonus);
+            Logger.Debug("   S: {0}{1} D: {2} C: {3} I: {4} W: {5} Ch: {6}", p.strength, str100, p.dex, p.con, p._int, p.wis, p.charisma);
+            Logger.Debug("   Lvls: {0} {1} {2} {3} {4} {5} {6} {7}", p.class_lvls[0], p.class_lvls[1], p.class_lvls[2], p.class_lvls[3], p.class_lvls[4], p.class_lvls[5], p.class_lvls[6], p.class_lvls[7]);
+            if (p.field_151 != null)
+                Logger.Debug("   Weapon: {0}", ovr025.ItemName(p.field_151, 0));
+            if (p.armor != null)
+                Logger.Debug("   Armor: {0}", ovr025.ItemName(p.armor, 0));
+
+            Logger.Debug("   Damage: {0}d{1}{2}{3}", p.attack_dice_count, p.attack_dice_size,
+                p.damageBonus > 0 ? "+" : "", p.damageBonus != 0 ? p.damageBonus.ToString() : "");
+
+            foreach (int sp in p.spell_list)
+            {
+                if (sp != 0)
+                {
+                    Logger.Debug("   Spell: {0}", ovr023.SpellNames[sp]);
+                }
+            }
+
+            foreach (var af in p.affects)
+            {
+                Logger.Debug("   Affect: {0}", af.type);
+            }
+        }
+
+        private static void HtmlTableDumpPlayer(Player p, byte area, int id)
+        {
+            Logger.DebugWrite("<tr>");
+            Logger.DebugWrite("<td>{0}</td>", area);
+            Logger.DebugWrite("<td>{0}</td>", id);
+            Logger.DebugWrite("<td nowrap=\"nowrap\">{0}</td>", p.name);
+            Logger.DebugWrite("<td>{0}</td>", p.exp);
+            Logger.DebugWrite("<td>{0}</td>", p.hit_point_max);
+            Logger.DebugWrite("<td>{0}</td>", 0x3c - p.ac);
+            Logger.DebugWrite("<td>{0}</td>", 0x3c - p.hitBonus);
+            string str100 = p.strength == 18 ? string.Format("({0})", p.max_str_00) : "";
+            Logger.DebugWrite("<td>{0}{1}</td>", p.strength, str100);
+            Logger.DebugWrite("<td>{0}</td>", p.dex);
+            Logger.DebugWrite("<td>{0}</td>", p.con);
+            Logger.DebugWrite("<td>{0}</td>", p._int);
+            Logger.DebugWrite("<td>{0}</td>", p.wis);
+            Logger.DebugWrite("<td>{0}</td>", p.charisma);
+            Logger.DebugWrite("<td>{0}</td>", p.class_lvls[0]);
+            Logger.DebugWrite("<td>{0}</td>", p.class_lvls[1]);
+            Logger.DebugWrite("<td>{0}</td>", p.class_lvls[2]);
+            Logger.DebugWrite("<td>{0}</td>", p.class_lvls[3]);
+            Logger.DebugWrite("<td>{0}</td>", p.class_lvls[4]);
+            Logger.DebugWrite("<td>{0}</td>", p.class_lvls[5]);
+            Logger.DebugWrite("<td>{0}</td>", p.class_lvls[6]);
+            Logger.DebugWrite("<td>{0}</td>", p.class_lvls[7]);
+
+            Logger.DebugWrite("<td nowrap=\"nowrap\">{0}</td>", p.field_151 != null ? ovr025.ItemName(p.field_151, 0) : "");
+            Logger.DebugWrite("<td nowrap=\"nowrap\">{0}</td>", p.armor != null ? ovr025.ItemName(p.armor, 0) : "");
+            Logger.DebugWrite("<td nowrap=\"nowrap\">{0}d{1}{2}{3}</td>", p.attack_dice_count, p.attack_dice_size,
+                p.damageBonus > 0 ? "+" : "", p.damageBonus != 0 ? p.damageBonus.ToString() : "");
+
+            int last = 0;
+            int count = 0;
+            System.Text.StringBuilder sb = new System.Text.StringBuilder();
+
+            foreach (int sp in p.spell_list)
+            {
+                if (sp != 0)
+                {
+                    if (sp != last)
+                    {
+                        if (last != 0)
+                        {
+                            sb.Append(ovr023.SpellNames[last]);
+                            if (count > 1)
+                            {
+                                sb.Append(string.Format(" ({0})", count));
+                            }
+                            sb.Append(", ");
+                        }
+                        last = sp;
+                        count = 1;
+                    }
+                    else
+                    {
+                        count += 1;
+                    }
+                }
+            }
+
+            if (last != 0)
+            {
+                sb.Append(ovr023.SpellNames[last]);
+                if (count > 1)
+                {
+                    sb.Append(string.Format(" ({0})", count));
+                }
+            }
+
+            Logger.DebugWrite("<td>{0}</td>", sb.ToString());
+            
+
+            sb = new System.Text.StringBuilder();
+            foreach (var af in p.affects)
+            {
+                sb.Append(af.type.ToString());
+                sb.Append(", ");
+            }
+            if (sb.Length > 0)
+            {
+                sb.Remove(sb.Length - 2, 2);
+            }
+
+            Logger.DebugWrite("<td>{0}</td>", sb.ToString());
+            Logger.Debug("</tr>");
         }
 
         public static void DumpMonsters()
@@ -147,30 +262,8 @@ namespace engine
                     {
                         ovr025.reclac_player_values(p);
 
-                        string str100 = p.strength == 18 ? string.Format("({0})", p.max_str_00) : "";
-                        Logger.Debug("Area {0} Id {1} {2} exp: {3} hp: {4} ac: {5} thac0: {6}", area, id, p.name, p.exp, p.hit_point_max, 0x3c - p.ac, 0x3c - p.hitBonus);
-                        Logger.Debug("   S: {0}{1} D: {2} C: {3} I: {4} W: {5} Ch: {6}", p.strength, str100, p.dex, p.con, p._int, p.wis, p.charisma);
-                        Logger.Debug("   Lvls: {0} {1} {2} {3} {4} {5} {6} {7}", p.class_lvls[0], p.class_lvls[1], p.class_lvls[2], p.class_lvls[3], p.class_lvls[4], p.class_lvls[5], p.class_lvls[6], p.class_lvls[7]);
-                        if (p.field_151 != null)
-                            Logger.Debug("   Weapon: {0}", ovr025.ItemName(p.field_151, 0));
-                        if (p.armor != null)
-                            Logger.Debug("   Armor: {0}", ovr025.ItemName(p.armor, 0));
-
-                        Logger.Debug("   Damage: {0}d{1}{2}{3}", p.attack_dice_count, p.attack_dice_size,
-                            p.damageBonus > 0 ? "+" : "", p.damageBonus != 0 ? p.damageBonus.ToString() : "");
-
-                        foreach (int sp in p.spell_list)
-                        {
-                            if (sp != 0)
-                            {
-                                Logger.Debug("   Spell: {0}", ovr023.SpellNames[sp]);
-                            }
-                        }
-
-                        foreach (var af in p.affects)
-                        {
-                            Logger.Debug("   Affect: {0}", af.type);
-                        }
+                        TxtDumpPlayer(p, area, id);
+                        //HtmlTableDumpPlayer(p, area, id);
                     }
                 }
             }

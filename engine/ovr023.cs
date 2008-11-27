@@ -352,7 +352,7 @@ namespace engine
 
         internal static void scroll_5C912(byte arg_0) /* sub_5C912 */
         {
-            if (ovr025.find_affect(Affects.read_magic, gbl.player_ptr) == true ||
+            if (gbl.player_ptr.HasAffect(Affects.read_magic) == true ||
                 ((gbl.player_ptr.cleric_lvl > 0 || gbl.player_ptr.turn_undead > gbl.player_ptr.field_E6) &&
                   gbl.unk_1C020[gbl.dword_1D5C6.type].item_slot == 12))
             {
@@ -554,43 +554,43 @@ namespace engine
         }
 
 
-        internal static ushort sub_5CE92(byte arg_0)
+        internal static ushort sub_5CE92(int spellId)
         {
-            ushort var_4;
+            int var_4;
 
-            if (arg_0 == 0x28)
+            if (spellId == 0x28)
             {
-                var_4 = (ushort)(ovr024.roll_dice(6, 1) * 10);
+                var_4 = ovr024.roll_dice(6, 1) * 10;
             }
-            else if( arg_0 == 0x39 || arg_0 == 0x3D )
+            else if( spellId == 0x39 || spellId == 0x3D )
             {
                 var_4 = ovr024.roll_dice(4, 5);
             }
-            else if (arg_0 == 0x3B )
+            else if (spellId == 0x3B )
             {
-                var_4 = (ushort)((ovr024.roll_dice(4, 1) * 10) + 0x28);
+                var_4 = (ovr024.roll_dice(4, 1) * 10) + 40;
             }
-            else if (arg_0 == 0x3F)
+            else if (spellId == 0x3F)
             {
                 if (gbl.game_state == GameState.Combat)
                 {
-                    var_4 = (ushort)(ovr024.roll_dice(10, 2) * 10);
+                    var_4 = ovr024.roll_dice(10, 2) * 10;
                 }
                 else
                 {
-                    var_4 = (ushort)((ovr024.roll_dice(10, 1) + 10) * 10);
+                    var_4 = (ovr024.roll_dice(10, 1) + 10) * 10;
                 }
             }
-            else if (arg_0 == 0x43)
+            else if (spellId == 0x43)
             {
-                var_4 = 0x5A0;
+                var_4 = 1440;
             }
             else
             {
-                var_4 = (ushort)(gbl.spell_table[arg_0].field_4 + (gbl.spell_table[arg_0].field_5 * ovr025.spellMaxTargetCount(arg_0)));
+                var_4 = gbl.spell_table[spellId].field_4 + (gbl.spell_table[spellId].field_5 * ovr025.spellMaxTargetCount(spellId));
             }
 
-            return var_4;
+            return (ushort)var_4;
         }
 
 
@@ -754,7 +754,7 @@ namespace engine
                 var_1 = false;
             }
 
-            if (ovr025.find_affect(Affects.affect_4a, caster) == true)
+            if (caster.HasAffect(Affects.affect_4a) == true)
             {
                 byte dice_roll = ovr024.roll_dice(2, 1);
 
@@ -1157,7 +1157,7 @@ namespace engine
 
         internal static void cleric_curse() /* is_Cursed */
         {
-            sub_5DCA0("is Cursed", ovr025.opposite_team(gbl.player_ptr));
+            sub_5DCA0("is Cursed", gbl.player_ptr.OppositeTeam());
         }
 
 
@@ -1300,7 +1300,7 @@ namespace engine
             if (target != null &&
                 gbl.sp_target_count > 0 &&
                 ovr024.do_saving_throw(0, 4, target) == false &&
-                ovr025.find_affect(Affects.enlarge, target) == true)
+                target.HasAffect(Affects.enlarge) == true)
             {
                 ovr024.remove_affect(null, Affects.enlarge, target);
                 ovr024.sub_648D9(0, target);
@@ -1381,7 +1381,7 @@ namespace engine
 
 
                 if (gbl.sp_targets[target_index].health_status != Status.animated &&
-                    ovr025.find_affect(Affects.sleep, gbl.sp_targets[target_index]) == false &&
+                    gbl.sp_targets[target_index].HasAffect(Affects.sleep) == false &&
                     gbl.byte_1AFDD >= gbl.byte_1AFDE)
                 {
                     gbl.byte_1AFDD -= gbl.byte_1AFDE;
@@ -1450,7 +1450,7 @@ namespace engine
             {
                 gbl.sp_targets[1] = null;
             }
-            else if (ovr025.find_affect(Affects.poisoned, player) == true)
+            else if (player.HasAffect(Affects.poisoned) == true)
             {
                 if (player.hit_point_current == 0)
                 {
@@ -2096,18 +2096,18 @@ namespace engine
         }
 
 
-        internal static void sub_5F87B(string text, CombatTeam combatTeam, Affects affect)
+        internal static void RemoveComplimentSpellFirst(string text, CombatTeam combatTeam, Affects affect) //sub_5F87B
         {
             gbl.byte_1D2C7 = true;
 
-            int var_2A = ovr025.spellMaxTargetCount(gbl.spell_id);
+            int maxTargets = ovr025.spellMaxTargetCount(gbl.spell_id);
 
             for (int index = 1; index <= gbl.sp_target_count; index++)
             {
                 if (gbl.sp_targets[index].combat_team == combatTeam &&
-                    var_2A > 0)
+                    maxTargets > 0)
                 {
-                    var_2A -= 1;
+                    maxTargets -= 1;
 
                     if (ovr024.cure_affect(affect, gbl.sp_targets[index]) == true)
                     {
@@ -2126,7 +2126,7 @@ namespace engine
 
         internal static void cast_haste()
         {
-            sub_5F87B("is Hasted", gbl.player_ptr.combat_team, Affects.slow);
+            RemoveComplimentSpellFirst("is Hasted", gbl.player_ptr.combat_team, Affects.slow);
         }
 
 
@@ -2297,7 +2297,7 @@ namespace engine
 
         internal static void sub_5FD2E()
         {
-            sub_5F87B("is Slowed", ovr025.opposite_team(gbl.player_ptr), Affects.haste);
+            RemoveComplimentSpellFirst("is Slowed", gbl.player_ptr.OppositeTeam(), Affects.haste);
         }
 
 
@@ -2434,7 +2434,7 @@ namespace engine
             {
                 gbl.sp_targets[1] = null;
             }
-            else if (ovr025.find_affect(Affects.poisoned, target) == true)
+            else if (target.HasAffect(Affects.poisoned) == true)
             {
                 if (target.hit_point_current == 0)
                 {
@@ -2782,7 +2782,7 @@ namespace engine
             {
                 ovr024.is_unaffected("is clumsy", false, 0, false, 0, sub_5CE92(0x56), Affects.fumbling, target);
 
-                if (ovr025.find_affect(Affects.fumbling, target) == true)
+                if (target.HasAffect(Affects.fumbling) == true)
                 {
                     ovr024.CallSpellJumpTable(Effect.Add, null, target, Affects.fumbling);
                 }
@@ -2791,7 +2791,7 @@ namespace engine
             {
                 ovr024.is_unaffected("is slowed", false, 0, false, 0, sub_5CE92(0x56), Affects.slow, target);
 
-                if (ovr025.find_affect(Affects.slow, target) == true)
+                if (target.HasAffect(Affects.slow) == true)
                 {
                     ovr024.CallSpellJumpTable(Effect.Add, null, target, Affects.slow);
                 }
@@ -2979,7 +2979,7 @@ namespace engine
 
             sub_5CF7F(string.Empty, 0, 0, false, 0, gbl.spell_id);
 
-            if (ovr025.find_affect(Affects.feeblemind, target) == true)
+            if (target.HasAffect(Affects.feeblemind) == true)
             {
                 ovr024.CallSpellJumpTable(Effect.Add, null, target, Affects.feeblemind);
             }
@@ -3038,7 +3038,7 @@ namespace engine
                 ovr025.draw_missile_attack(0x2d, 4, ovr033.PlayerMapYPos(gbl.spell_target), ovr033.PlayerMapXPos(gbl.spell_target),
                     ovr033.PlayerMapYPos(player), ovr033.PlayerMapXPos(player));
 
-                if (ovr025.find_affect(Affects.affect_7f, player) == true)
+                if (player.HasAffect(Affects.affect_7f) == true)
                 {
                     Item item = gbl.spell_target.items.Find(i => i.readied && (i.field_2F == 0x76 || i.field_30 == 0x76 || i.field_31 == 0x76));
 
@@ -3168,7 +3168,7 @@ namespace engine
 
                 for (int i = 1; i <= gbl.sp_target_count; i++)
                 {
-                    if (ovr025.opposite_team(attacker) == gbl.sp_targets[i].combat_team)
+                    if (attacker.OppositeTeam() == gbl.sp_targets[i].combat_team)
                     {
                         gbl.byte_1DA70 = false;
                     }

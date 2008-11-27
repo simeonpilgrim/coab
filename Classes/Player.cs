@@ -171,7 +171,7 @@ namespace Classes
         [DataOffset(0x72, DataType.Byte)]
         public byte spell_to_learn_count; // 0x72;
         [DataOffset(0x73, DataType.SByte)]
-        public sbyte field_73; // 0x73;
+        public sbyte thac0; // 0x73; field_73
 
         [DataOffset(0x74, DataType.IByte)]
         public Race race; // 0x74;
@@ -403,8 +403,10 @@ namespace Classes
         public byte[] icon_colours = new byte[6]; // 0x145 = field_144[1] // byte[6]
         [DataOffset(0x14b, DataType.Byte)]
         public byte field_14B; // 0x14b;
-        [DataOffset(0x14c, DataType.Byte)]
-        public byte field_14C; // 0x14c; // 0 no item to use?
+        
+        //[DataOffset(0x14c, DataType.Byte)]
+        //public byte field_14C; // 0x14c; // items.Count
+        public const int MaxItems = 16;
 
 
         public List<Item> items; // 0x14d
@@ -689,6 +691,24 @@ namespace Classes
         public override string ToString()
         {
             return name;
+        }
+
+
+        public CombatTeam OppositeTeam()
+        {
+            return (combat_team == CombatTeam.Ours) ? CombatTeam.Enemy : CombatTeam.Ours;
+        }
+
+        public bool HasAffect(Affects type)
+        {
+            return affects.Exists(aff => aff.type == type);
+        }
+
+        static Affects[] held_affects = { Affects.snake_charm, Affects.paralyze, Affects.sleep, Affects.helpless };
+
+        public bool IsHeld()
+        {
+            return Array.Exists(held_affects, affect => HasAffect(affect));
         }
     }
 }

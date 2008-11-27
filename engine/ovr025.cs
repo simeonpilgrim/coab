@@ -14,7 +14,7 @@ namespace engine
             {
                 uint item_type = item.type;
 
-                player.hitBonus = player.field_73;
+                player.hitBonus = player.thac0;
 
                 if ((gbl.unk_1C020[item_type].field_E & 2) != 0)
                 {
@@ -251,17 +251,8 @@ namespace engine
                 }
             }
 
-            bool detectMagic = false;
-
-            foreach (Player tmp_player in gbl.player_next_ptr)
-            {
-                if (find_affect(Affects.detect_magic, tmp_player) == true)
-                {
-                    detectMagic = true;
-                    break;
-                }
-            }
-
+            bool detectMagic = gbl.player_next_ptr.Exists(pla => pla.HasAffect(Affects.detect_magic));
+      
             if (detectMagic == true &&
                 (item.plus > 0 || item.plus_save > 0 || item.cursed == true))
             {
@@ -466,29 +457,13 @@ namespace engine
                 {
                     seg041.displayString(ovr020.statusString[(int)player.health_status], 0, 15, line + 1, 0x17);
                 }
-                else if (is_held(player) == true)
+                else if (player.IsHeld() == true)
                 {
                     seg041.displayString("(Helpless)", 0, 15, line + 1, 0x17);
                 }
             }
         }
 
-        static Affects[] affects_01 = { Affects.snake_charm, Affects.paralyze, Affects.sleep, Affects.helpless };
-
-
-        internal static bool is_held(Player player)
-        {
-            bool held = false;
-            for (int loop_var = 0; loop_var < 4; loop_var++)
-            {
-                if (find_affect(affects_01[loop_var], player) == true)
-                {
-                    held = true;
-                }
-            }
-
-            return held;
-        }
 
 
         internal static void reclac_player_values(Player player) /* sub_66C20 */
@@ -510,7 +485,6 @@ namespace engine
             player.Item_ptr_04 = null;
 
             bool var_8 = false;
-            player.field_14C = 0;
 
             player.field_185 = 0;
 
@@ -519,7 +493,6 @@ namespace engine
 
             foreach (var item in player.items)
             {
-                player.field_14C++;
                 short item_weight = item.weight;
 
                 if (item.count > 0)
@@ -593,7 +566,7 @@ namespace engine
             player.field_186 = 0;
             player.ac = player.field_124;
             player.movement = player.base_movement;
-            player.hitBonus = player.field_73;
+            player.hitBonus = player.thac0;
 
             stat_bonus[0] = ovr025.dex_ac_bonus(player);
 
@@ -1413,20 +1386,6 @@ namespace engine
         }
 
 
-        internal static bool find_affect(Affects affect_type, Player player)
-        {
-            //player.affects.Exists(
-            foreach (Affect affect in player.affects)
-            {
-                if (affect.type == affect_type)
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
         static Set unk_683B5 = new Set(0x0001, new byte[] { 0x03 });
 
         internal static void damage_player(int damage, Player player)
@@ -1513,10 +1472,7 @@ namespace engine
         }
 
 
-        internal static CombatTeam opposite_team(Player player) /* on_our_team */
-        {
-            return (player.combat_team == CombatTeam.Ours) ? CombatTeam.Enemy : CombatTeam.Ours;
-        }
+
 
 
         internal static void count_teams()
@@ -1559,7 +1515,7 @@ namespace engine
                     //int steps = gbl.SortedCombatantList[i].steps;
                     //int index = gbl.SortedCombatantList[i].player_index;
 
-                    if (tmp.combat_team == opposite_team(player))
+                    if (tmp.combat_team == player.OppositeTeam())
                     {
                         tmpCount++;
                         gbl.SortedCombatantList[tmpCount] = new SortedCombatant(gbl.SortedCombatantList[i]);

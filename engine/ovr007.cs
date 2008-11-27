@@ -24,7 +24,7 @@ namespace engine
 
             MenuItem mi;
 
-            char input_key = ovr027.sl_select_item(out mi, ref index, ref gbl.byte_1AB16, true, list,
+            char input_key = ovr027.sl_select_item(out mi, ref index, ref gbl.shopRedrawMenuItems, true, list,
                 0x16, 0x26, 1, 1, 15, 10, 13, "Buy", "Items: " );
 
             arg_4 = mi.Item;
@@ -78,28 +78,31 @@ namespace engine
         }
 
 
-        internal static void PlayerAddItem( out bool isOverloaded, Item item ) /*was overloaded */
+        internal static bool PlayerAddItem( Item item ) /*was overloaded */
         {
+            bool wouldOverload;
             if (ovr020.canCarry(item, gbl.player_ptr) == true)
             {
                 ovr025.string_print01("Overloaded");
-                isOverloaded = true;
+                wouldOverload = true;
             }
             else
             {
-                isOverloaded = false;
+                wouldOverload = false;
 
                 gbl.player_ptr.items.Add(item.ShallowClone());
 
                 ovr025.reclac_player_values(gbl.player_ptr);
             }
+
+            return wouldOverload;
         }
 
 
         internal static void shop_buy() /* sub_2F474 */
         {
             seg037.draw8x8_outer_frame();
-            gbl.byte_1AB16 = true;
+            gbl.shopRedrawMenuItems = true;
 
             int index = 0;
             while(true)
@@ -118,8 +121,7 @@ namespace engine
 
                     if (item_cost <= player_gold)
                     {
-                        bool overloaded;
-                        PlayerAddItem(out overloaded, item);
+                        bool overloaded = PlayerAddItem(item);
 
                         if (overloaded == false)
                         {
@@ -133,8 +135,7 @@ namespace engine
 
                         if (item_cost <= pooled_gold)
                         {
-                            bool overloaded;
-                            PlayerAddItem(out overloaded, item);
+                            bool overloaded = PlayerAddItem(item);
 
                             if (overloaded == false)
                             {
@@ -158,7 +159,6 @@ namespace engine
             bool items_on_ground;
             bool money_on_ground;
             char var_2E;
-            bool var_2C;
 
             gbl.game_state = GameState.Shop;
             gbl.redrawBoarder = (gbl.area_ptr.field_1CC == 0);
@@ -172,8 +172,7 @@ namespace engine
 				gbl.pooled_money[ var_1 ] = 0;
 			}
 
-            gbl.something01 = false;
-            bool var_2D = false;
+            bool exitShop = false;
 
             gbl.items_pointer.ForEach(item => ovr025.ItemDisplayNameBuild(false, false, 0, 0, item, null));
 
@@ -191,7 +190,9 @@ namespace engine
                     text = "Buy View Pool Appraise Exit";
                 }
 
-                var_2E = ovr027.displayInput(out var_2C, false, 1, 15, 10, 13, text, string.Empty);
+                bool controlKey;
+
+                var_2E = ovr027.displayInput(out controlKey, false, 1, 15, 10, 13, text, string.Empty);
 
                 switch ( var_2E )
                 {
@@ -208,7 +209,7 @@ namespace engine
                         break;
 
                     case 'P':
-                        if( var_2C == false )
+                        if( controlKey == false )
                         {
                             ovr022.poolMoney();
                         }
@@ -221,7 +222,7 @@ namespace engine
 
 
                     case 'A':
-                        ovr022.appraiseGemsJewels( out var_32 );
+                        var_32 = ovr022.appraiseGemsJewels();
                         break;
 
                     case 'E':
@@ -236,7 +237,7 @@ namespace engine
                 
                             if( menu_selected == 1 )
                             {
-                                var_2D = true;
+                                exitShop = true;
                             }
                             else
                             {
@@ -245,7 +246,7 @@ namespace engine
                         }
                         else
                         {
-                            var_2D = true;
+                            exitShop = true;
                         }
                         break;
 
@@ -271,7 +272,7 @@ namespace engine
 
                 ovr025.PartySummary( gbl.player_ptr );
 
-            }while( var_2D == false );
+            }while( exitShop == false );
         }
     }
 }
