@@ -423,7 +423,7 @@ namespace engine
 
                         is_unaffected("starts to cough", save_passed, 0, false, 0xff, 1, Affects.stinking_cloud, player);
 
-                        if (ovr025.find_affect(Affects.stinking_cloud, player) == true)
+                        if (player.HasAffect(Affects.stinking_cloud) == true)
                         {
                             CallSpellJumpTable(Effect.Add, affect, player, Affects.stinking_cloud);
                         }
@@ -682,30 +682,23 @@ namespace engine
 								  Affects.affect_90
 							  };
 
-            for (int i = 0; i < 19; i++)
-            {
-                remove_affect(null, table[i], player);
-            }
+            System.Array.ForEach(table, affect => remove_affect(null, affect, player));
 
-            if (ovr025.find_affect(Affects.berserk, player) == true &&
-                player.field_F7 == 0xB3)
+            if (player.HasAffect(Affects.berserk) == true && player.field_F7 == 0xB3)
             {
                 player.combat_team = CombatTeam.Ours;
             }
         }
 
 
-        internal static void sub_6460D(Player arg_0)
+        internal static void sub_6460D(Player player) // sub_6460D
         {
             Affects[] table = {   Affects.reduce, 
 								  Affects.affect_3a, 
 								  Affects.affect_8b, 
 								  Affects.affect_90 };
 
-            for (int var_1 = 0; var_1 < 4; var_1++)
-            {
-                remove_affect(null, table[var_1], arg_0);
-            }
+            System.Array.ForEach(table, affect => remove_affect(null, affect, player));
         }
 
 
@@ -1114,7 +1107,7 @@ namespace engine
 
                 if (player.con > 20)
                 {
-                    if (ovr025.find_affect(Affects.affect_3e, player) == true)
+                    if (player.HasAffect(Affects.affect_3e) == true)
                     {
                         add_affect(false, 0xff, 0x3c, Affects.affect_3e, player);
                     }
@@ -1126,8 +1119,7 @@ namespace engine
             }
             else if (stat_index == 1)
             {
-                if (ovr025.find_affect(Affects.feeblemind, player) == true &&
-                    var_11 > 7)
+                if (player.HasAffect(Affects.feeblemind) == true && var_11 > 7)
                 {
                     var_11 = 3;
                 }
@@ -1143,7 +1135,7 @@ namespace engine
             }
             else if (stat_index == 2)
             {
-                if (ovr025.find_affect(Affects.feeblemind, player) == true &&
+                if (player.HasAffect(Affects.feeblemind) == true &&
                     var_11 > 7)
                 {
                     var_11 = 3;

@@ -12,13 +12,13 @@ namespace engine
         {
             if (player.actions != null)
             {
-                player.actions = null; // FreeMem( action_struct_size, playerPtr.actions );
+                player.actions = null;
             }
 
             player.items.Clear();
             player.affects.Clear();
 
-            player = null; // FreeMem( char_struct_size, playerBase );
+            player = null;
         }
 
         static string[] menuStrings = {   
@@ -320,18 +320,18 @@ namespace engine
 
         internal static byte[] /*seg600:3EA2 */ unk_1A1B2 = { 0x02, 0x10, 0x08, 0x40, 0x40, 0x01, 0x04, 0x20 };
 
-        static byte[] /*seg600:45B3 */ unk_1A8C3 = { 3, 3, 5, 5, 5, 2, 2, 5 };
-        static byte[] /*seg600:45B4 */ unk_1A8C4 = { 6, 6, 4, 4, 4, 4, 6, 4 };
+        //static byte[] /*seg600:45B3 */ unk_1A8C3 = { 3, 3, 5, 5, 5, 2, 2, 5 };
+        //static byte[] /*seg600:45B4 */ unk_1A8C4 = { 6, 6, 4, 4, 4, 4, 6, 4 };
 
-        internal static sbyte[] /* seg600:3E3A */ unk_1A14A = { 
-            0x28, 0x28, 0x28, 0x28, 0x2A, 0x2A, 0x2A, 0x2C, 0x2C, 0x2C, 0x2E, 0x2E, 0x2E,
-            0x28, 0x28, 0x28, 0x28, 0x2A, 0x2A, 0x2A, 0x2C, 0x2C, 0x2C, 0x2E, 0x2E, 0x2E,
-            0x27, 0x28, 0x28, 0x2A, 0x2B, 0x2C, 0x2D, 0x2E, 0x2F, 0x30, 0x31, 0x32, 0x33,
-            0x28, 0x28, 0x28, 0x2A, 0x2B, 0x2C, 0x2D, 0x2E, 0x2F, 0x30, 0x31, 0x32, 0x33,
-            0x28, 0x28, 0x28, 0x2A, 0x2B, 0x2C, 0x2D, 0x2E, 0x2F, 0x30, 0x31, 0x32, 0x33,
-            0x27, 0x27, 0x27, 0x27, 0x27, 0x27, 0x29, 0x29, 0x29, 0x29, 0x29, 0x2B, 0x2B,
-            0x28, 0x28, 0x28, 0x28, 0x28, 0x29, 0x29, 0x29, 0x29, 0x2C, 0x2C, 0x2C, 0x2C,
-            0x28, 0x28, 0x28, 0x28, 0x2A, 0x2A, 0x2A, 0x2C, 0x2C, 0x2C, 0x2E, 0x2E, 0x2E };
+        internal static sbyte[,] /* seg600:3E3A unk_1A14A */ thac0_table = { 
+            {40, 40, 40, 40, 0x2A, 0x2A, 0x2A, 0x2C, 0x2C, 0x2C, 0x2E, 0x2E, 0x2E},
+            {40, 40, 40, 40, 0x2A, 0x2A, 0x2A, 0x2C, 0x2C, 0x2C, 0x2E, 0x2E, 0x2E},
+            {0x27, 40, 40, 0x2A, 0x2B, 0x2C, 0x2D, 0x2E, 0x2F, 0x30, 0x31, 0x32, 0x33},
+            {40, 40, 40, 0x2A, 0x2B, 0x2C, 0x2D, 0x2E, 0x2F, 0x30, 0x31, 0x32, 0x33},
+            {40, 40, 40, 0x2A, 0x2B, 0x2C, 0x2D, 0x2E, 0x2F, 0x30, 0x31, 0x32, 0x33},
+            {0x27, 0x27, 0x27, 0x27, 0x27, 0x27, 0x29, 0x29, 0x29, 0x29, 0x29, 0x2B, 0x2B},
+            {40, 40, 40, 40, 40, 0x29, 0x29, 0x29, 0x29, 0x2C, 0x2C, 0x2C, 0x2C},
+            {40, 40, 40, 40, 0x2A, 0x2A, 0x2A, 0x2C, 0x2C, 0x2C, 0x2E, 0x2E, 0x2E} };
 
 
         class AgeBrackets
@@ -422,9 +422,8 @@ namespace engine
 
         internal static void createPlayer()
         {
-            bool var_23;
-            bool var_22;
-            byte var_21;
+            bool menuRedraw;
+            bool showExit;
             byte var_20;
             short var_1E;
             byte var_1B;
@@ -444,8 +443,8 @@ namespace engine
                 var_53.icon_colours[i] = (byte)(((gbl.default_icon_colours[i] + 8) << 4) + gbl.default_icon_colours[i]);
             }
 
-            var_53.field_124 = 0x32;
-            var_53.field_73 = 0x28;
+            var_53.field_124 = 50;
+            var_53.thac0 = 40;
             var_53.health_status = Status.okey;
             var_53.in_combat = true;
             var_53.field_DE = 1;
@@ -463,12 +462,12 @@ namespace engine
             var_C.Add(new MenuItem("  " + ovr020.raceString[7]));
 
             index = 1;
-            var_23 = true;
-            var_22 = true;
+            menuRedraw = true;
+            showExit = true;
 
             do
             {
-                input_key = ovr027.sl_select_item(out var_10, ref index, ref var_23, var_22, var_C,
+                input_key = ovr027.sl_select_item(out var_10, ref index, ref menuRedraw, showExit, var_C,
                     22, 38, 2, 1, 15, 10, 13, "Select", string.Empty);
 
                 if (input_key == '\0')
@@ -535,12 +534,12 @@ namespace engine
             var_C.Add(new MenuItem("  " + ovr020.sexString[1]));
 
             index = 1;
-            var_22 = true;
-            var_23 = true;
+            showExit = true;
+            menuRedraw = true;
 
             do
             {
-                input_key = ovr027.sl_select_item(out var_10, ref index, ref var_23, var_22, var_C,
+                input_key = ovr027.sl_select_item(out var_10, ref index, ref menuRedraw, showExit, var_C,
                     22, 38, 2, 1, 15, 10, 13, "Select", string.Empty);
 
                 if (input_key == '\0')
@@ -566,12 +565,12 @@ namespace engine
             }
 
             index = 1;
-            var_22 = true;
-            var_23 = true;
+            showExit = true;
+            menuRedraw = true;
 
             do
             {
-                input_key = ovr027.sl_select_item(out var_10, ref index, ref var_23, var_22, var_C,
+                input_key = ovr027.sl_select_item(out var_10, ref index, ref menuRedraw, showExit, var_C,
                     22, 38, 2, 1, 15, 10, 13, "Select", string.Empty);
 
                 if (input_key == '\0')
@@ -670,17 +669,17 @@ namespace engine
             }
 
             var_53.classFlags = 0;
-            var_53.field_73 = 0;
+            var_53.thac0 = 0;
 
             for (int class_idx = 0; class_idx <= 7; class_idx++)
             {
                 if (var_53.class_lvls[class_idx] > 0)
                 {
-                    sbyte t = (sbyte)(unk_1A14A[(class_idx * 0x0D) + var_53.class_lvls[class_idx]]);
+                    int skill_lvl = var_53.class_lvls[class_idx];
 
-                    if (t > var_53.field_73)
+                    if (thac0_table[class_idx, skill_lvl] > var_53.thac0)
                     {
-                        var_53.field_73 = t;
+                        var_53.thac0 = thac0_table[class_idx, skill_lvl];
                     }
 
                     var_53.classFlags += unk_1A1B2[class_idx];
@@ -700,12 +699,12 @@ namespace engine
             }
 
             index = 1;
-            var_22 = true;
-            var_23 = true;
+            showExit = true;
+            menuRedraw = true;
 
             do
             {
-                input_key = ovr027.sl_select_item(out var_10, ref index, ref var_23, var_22, var_C,
+                input_key = ovr027.sl_select_item(out var_10, ref index, ref menuRedraw, showExit, var_C,
                     22, 38, 2, 1, 15, 10, 13, "Select", string.Empty);
 
 
@@ -1074,7 +1073,7 @@ namespace engine
                 var_53.field_120 = 2;
                 var_53.field_125 = 1;
                 var_53.base_movement = 0x0C;
-                var_21 = 0;
+                //int var_21 = 0;
                 var_20 = 0;
 
                 for (int i = 0; i < 5; i++)
@@ -1097,7 +1096,8 @@ namespace engine
                             var_53.field_12D[2, 0] = 1;
                         }
 
-                        var_21 += ovr024.roll_dice(unk_1A8C4[class_idx], unk_1A8C3[class_idx]);
+                        //var_21 += ovr024.roll_dice(unk_1A8C4[class_idx], unk_1A8C3[class_idx]);
+                        //TODO this was not used in original code.
 
                         if (class_idx == 0)
                         {
@@ -1206,14 +1206,14 @@ namespace engine
 
             if (input_key == 'N')
             {
-                seg051.FreeMem(gbl.char_struct_size, player);
+                seg051.FreeMem(Player.StructSize, player);
                 gbl.player_ptr = var_8;
             }
             else
             {
                 ovr017.sub_47DFC(string.Empty, player);
 
-                seg051.FreeMem(gbl.char_struct_size, player);
+                seg051.FreeMem(Player.StructSize, player);
                 gbl.player_ptr = var_8;
             }
         }
@@ -1858,12 +1858,12 @@ namespace engine
 
                 int strList_index = 0;
                 MenuItem select_sl;
-                bool var_1D = true;
+                bool menuRedraw = true;
 
                 do
                 {
                     bool showExit = true;
-                    input_key = ovr027.sl_select_item(out select_sl, ref strList_index, ref var_1D, showExit, nameList,
+                    input_key = ovr027.sl_select_item(out select_sl, ref strList_index, ref menuRedraw, showExit, nameList,
                         22, 38, 2, 1, 15, 10, 13, "Add", "Add a character: ");
 
                     if ((input_key == 13 || input_key == 'A') &&
@@ -1960,7 +1960,7 @@ namespace engine
                                     ovr025.string_print01(paladins_name + " will tolerate no evil!");
                                 }
 
-                                new_player = null; // FreeMem( char_struct_size, player_ptr1 );
+                                new_player = null; // FreeMem( Player.StructSize, player_ptr1 );
                             }
                         }
                     }

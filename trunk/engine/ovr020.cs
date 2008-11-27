@@ -183,12 +183,12 @@ namespace engine
 
             int movement = player.movement;
 
-            if (ovr025.find_affect(Affects.slow, player) == true)
+            if (player.HasAffect(Affects.slow) == true)
             {
                 movement *= 2;
             }
 
-            if (ovr025.find_affect(Affects.haste, player) == true)
+            if (player.HasAffect(Affects.haste) == true)
             {
                 movement /= 2;
             }
@@ -452,14 +452,14 @@ namespace engine
             Player player = gbl.player_ptr;
             char inputKey = ' ';
 
-            bool var_2D = true;
-            bool var_2C = true;
+            bool redraw_items = true;
+            bool redraw_player = true;
 
             while (unk_554EE.MemberOf(inputKey) == false &&
                 arg_0 == false &&
-                player.field_14C > 0)
+                player.items.Count > 0)
             {
-                byte var_40 = player.field_14C;
+                int oldItemCount = player.items.Count;
 
                 if (player.items.Count > 0)
                 {
@@ -491,32 +491,30 @@ namespace engine
 
                     text += " Drop";
 
-                    if (player.field_14C < 16)
+                    if (player.items.Count < Player.MaxItems)
                     {
                         text += " Halve";
                     }
 
                     text += " Join";
 
-                    if (player.field_F7 < 0x80 ||
-                        player.in_combat == false ||
-                        player.health_status == Status.animated)
-                    {
-                        if (gbl.game_state == GameState.Shop)
-                        {
-                            text += " Sell";
-                        }
-                    }
-
                     if (gbl.game_state == GameState.Shop)
                     {
+                        if (player.field_F7 < 0x80 ||
+                            player.in_combat == false ||
+                            player.health_status == Status.animated)
+                        {
+
+                            text += " Sell";
+                        }
+
                         text += " Id";
                     }
 
                     player.items.ForEach(item => ovr025.ItemDisplayNameBuild(false, true, 0, 0, item, player));
 
 
-                    if (var_2C == true || gbl.byte_1D2C8 == true)
+                    if (redraw_player == true || gbl.byte_1D2C8 == true)
                     {
                         seg037.draw8x8_07();
 
@@ -525,8 +523,8 @@ namespace engine
                         seg041.displayString("Items", 0, 10, 1, player.name.Length + 4);
                         seg041.displayString("Ready Item", 0, 15, 3, 1);
 
-                        var_2D = true;
-                        var_2C = false;
+                        redraw_items = true;
+                        redraw_player = false;
                         gbl.byte_1D2C8 = false;
                     }
 
@@ -534,7 +532,7 @@ namespace engine
                     MenuItem menuitem;
 
                     int dummy_index = 0;
-                    inputKey = ovr027.sl_select_item(out menuitem, ref dummy_index, ref var_2D, true,
+                    inputKey = ovr027.sl_select_item(out menuitem, ref dummy_index, ref redraw_items, true,
                         menulist, 0x16, 0x26, 5, 1, 15, 10, 13, text, string.Empty);
 
                     Item curr_item = menuitem != null ? menuitem.Item : null;
@@ -545,8 +543,8 @@ namespace engine
                         {
                             case 'V':
                                 ItemDisplayStats(curr_item);
-                                var_2D = true;
-                                var_2C = true;
+                                redraw_items = true;
+                                redraw_player = true;
                                 break;
 
                             case 'R':
@@ -570,7 +568,7 @@ namespace engine
 
                                     if (arg_0 == false)
                                     {
-                                        var_2C = true;
+                                        redraw_player = true;
                                     }
                                 }
                                 break;
@@ -584,7 +582,7 @@ namespace engine
                                 {
                                     inputKey = ' ';
                                 }
-                                var_2C = true;
+                                redraw_player = true;
                                 break;
 
                             case 'D':
@@ -597,7 +595,7 @@ namespace engine
                                     if (ovr027.yes_no(15, 10, 13, "Drop It? ") == 'Y')
                                     {
                                         ovr025.lose_item(curr_item, gbl.player_ptr);
-                                        var_2D = true;
+                                        redraw_items = true;
                                     }
 
                                     seg037.draw8x8_clear_area(0x16, 0x26, 0x15, 1);
@@ -628,7 +626,7 @@ namespace engine
                                 break;
 
                             case 'I':
-                                IdentifyItem(ref var_2D, curr_item);
+                                IdentifyItem(ref redraw_items, curr_item);
                                 break;
                         }
                     }
@@ -636,9 +634,9 @@ namespace engine
                     ovr025.reclac_player_values(player);
                 }
 
-                if (player.field_14C != var_40)
+                if (player.items.Count != oldItemCount)
                 {
-                    var_2D = true;
+                    redraw_items = true;
                 }
             }
         }
@@ -927,13 +925,13 @@ namespace engine
             {
                 int half_and_remander = item.count - half_number;
 
-                Item item_ptr = item.ShallowClone();
+                Item new_item = item.ShallowClone();
                 item.count = half_and_remander;
 
-                item_ptr.count = half_number;
-                item_ptr.readied = false;
+                new_item.count = half_number;
+                new_item.readied = false;
 
-                gbl.player_ptr.items.Add(item_ptr);
+                gbl.player_ptr.items.Add(new_item);
             }
             else
             {
@@ -1359,7 +1357,7 @@ namespace engine
             ovr025.reclac_player_values(player);
             bool too_heavy = false;
 
-            if (player.field_14C > 15)
+            if (player.items.Count >= Player.MaxItems)
             {
                 too_heavy = true;
             }
@@ -1507,7 +1505,7 @@ namespace engine
             if ((player._class == ClassId.paladin || (player.field_114 > 0 && ovr026.sub_6B3D1(player) != 0)) &&
                  gbl.game_state != GameState.Combat &&
                     player.health_status == Status.okey &&
-                    ovr025.find_affect(Affects.affect_8c, player) == false)
+                    player.HasAffect(Affects.affect_8c) == false)
             {
                 result = true;
             }
@@ -1567,7 +1565,6 @@ namespace engine
         }
 
         static Affects[] unk_16B39 = { 
-            Affects.dispel_evil /* not used one offset array */,
             Affects.helpless, 
             Affects.cause_disease_1, 
             Affects.affect_2b, 
@@ -1588,14 +1585,7 @@ namespace engine
             }
             else
             {
-                bool is_diseased = false;
-                for (gbl.global_index = 1; gbl.global_index < 7; gbl.global_index++)
-                {
-                    if (ovr025.find_affect(unk_16B39[gbl.global_index], target) == true)
-                    {
-                        is_diseased = true;
-                    }
-                }
+                bool is_diseased = System.Array.Exists(unk_16B39, affect => target.HasAffect(affect));
 
                 char input = 'Y';
 
@@ -1611,10 +1601,7 @@ namespace engine
                 if (input == 'Y')
                 {
                     gbl.cureSpell = true;
-                    for (gbl.global_index = 1; gbl.global_index < 7; gbl.global_index++)
-                    {
-                        ovr024.remove_affect(null, unk_16B39[gbl.global_index], target);
-                    }
+                    System.Array.ForEach(unk_16B39, affect => ovr024.remove_affect(null, affect, target));
 
                     gbl.cureSpell = false;
 
@@ -1623,7 +1610,7 @@ namespace engine
                         player.field_191--;
                     }
 
-                    if (ovr025.find_affect(Affects.affect_8D, player) == false)
+                    if (player.HasAffect(Affects.affect_8D) == false)
                     {
                         ovr024.add_affect(true, 0, 0x2760, Affects.affect_8D, player);
                     }

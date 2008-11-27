@@ -209,7 +209,7 @@ namespace engine
             }
 
             if (gbl.combat_type == CombatType.duel ||
-                (gbl.area2_ptr.field_5CC != 0 && no_exp == true))
+                (gbl.area2_ptr.isDuel == true && no_exp == true))
             {
                 gbl.party_killed = false;
             }
@@ -284,7 +284,7 @@ namespace engine
                                     break;
 
                                 case Status.dying:
-                                    if (gbl.area2_ptr.field_5CC != 0)
+                                    if (gbl.area2_ptr.isDuel == true)
                                     {
                                         player.health_status = Status.okey;
                                         player.in_combat = true;
@@ -302,7 +302,7 @@ namespace engine
                                         player.health_status = Status.okey;
                                         player.in_combat = true;
                                     }
-                                    else if (gbl.area2_ptr.field_5CC != 0)
+                                    else if (gbl.area2_ptr.isDuel == true)
                                     {
                                         player.health_status = Status.okey;
                                         player.in_combat = true;
@@ -413,7 +413,7 @@ namespace engine
                 else
                 {
                     if ((gbl.combat_type == CombatType.duel && gbl.battleWon == false) ||
-                        (gbl.battleWon == false && gbl.area2_ptr.field_5CC != 0))
+                        (gbl.battleWon == false && gbl.area2_ptr.isDuel == true))
                     {
                         gbl.area2_ptr.field_58E = 0x80;
                         seg041.displayString("You have lost the fight.", 0, 10, 3, 1);
@@ -467,9 +467,9 @@ namespace engine
                     list.Add(new MenuItem(item.name, item));
                 });
 
-            bool var_18 = true;
+            bool redrawMenuItems = true;
             MenuItem selected;
-            key = ovr027.sl_select_item(out selected, ref index, ref var_18, true, list,
+            key = ovr027.sl_select_item(out selected, ref index, ref redrawMenuItems, true, list,
                  0x16, 0x26, 1, 1, 15, 10, 13, "Take", "Items: ");
 
             selectedItem = selected != null ? selected.Item : null;
@@ -497,8 +497,7 @@ namespace engine
                 {
                     stop = false;
 
-                    bool willOverload;
-                    ovr007.PlayerAddItem(out willOverload, item);
+                    bool willOverload = ovr007.PlayerAddItem(item);
 
                     if (willOverload == false)
                     {
@@ -841,7 +840,7 @@ namespace engine
                 gbl.area2_ptr.field_6E2 = 0;
                 gbl.area2_ptr.field_6E4 = 0;
                 gbl.area2_ptr.field_5C6 = 0;
-                gbl.area2_ptr.field_5CC = 0;
+                gbl.area2_ptr.isDuel = false;
             }
         }
     }

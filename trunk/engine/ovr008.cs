@@ -268,39 +268,26 @@ namespace engine
                 gbl.byte_1EE96 != gbl.area2_ptr.field_5C2)
             {
                 if (encounter_distance == 0 &&
-                    gbl.game_state == GameState.State4)
+                    gbl.game_state == GameState.State4 &&
+                    gbl.byte_1EE95 == false)
                 {
-                    if (gbl.byte_1EE95 == 0 ||
-                        gbl.byte_1B2E9 != 0)
+                    gbl.byte_1EE96 = (byte)gbl.area2_ptr.field_5C2;
+                    gbl.byte_1EE8C = true;
+                    if (gbl.area2_ptr.field_5C2 == 0xff)
                     {
-                        gbl.byte_1EE96 = (byte)gbl.area2_ptr.field_5C2;
-                        gbl.byte_1EE8C = true;
-                        if (gbl.area2_ptr.field_5C2 == 0xff)
-                        {
-                            ovr030.load_pic_final(ref gbl.byte_1D556, 0, pic_block_id, "PIC");
-                            flags[1] = true;
+                        ovr030.load_pic_final(ref gbl.byte_1D556, 0, pic_block_id, "PIC");
+                        flags[1] = true;
 
-                            ovr030.sub_7000A(gbl.byte_1D556.frames[0].picture, true, 3, 3);
-                        }
-                        else
-                        {
-                            set_and_draw_head_body(pic_block_id, (byte)gbl.area2_ptr.field_5C2);
-                            flags[1] = true;
-                            gbl.byte_1EE8D = false;
-                        }
+                        ovr030.sub_7000A(gbl.byte_1D556.frames[0].picture, true, 3, 3);
+                    }
+                    else
+                    {
+                        set_and_draw_head_body(pic_block_id, (byte)gbl.area2_ptr.field_5C2);
+                        flags[1] = true;
+                        gbl.byte_1EE8D = false;
                     }
                 }
             }
-        }
-
-
-        internal static ushort bytes_to_word(byte high_byte, byte low_byte)
-        {
-            ushort word;
-
-            word = (ushort)(low_byte + (high_byte << 8));
-
-            return word;
         }
 
 
@@ -353,14 +340,14 @@ namespace engine
         }
 
 
-        internal static byte find_gbl_player_index(Player arg_0)
+        internal static ushort find_gbl_player_index(Player player)
         {
-            int index = gbl.player_next_ptr.IndexOf(arg_0);
+            int index = gbl.player_next_ptr.IndexOf(player);
 
             if (index == -1)
                 index = gbl.player_next_ptr.Count;
 
-            return (byte)index;
+            return (ushort)index;
         }
 
 
@@ -845,55 +832,55 @@ namespace engine
         }
 
 
-        internal static ushort vm_GetMemoryValue(ushort arg_0) // sub_30F16
+        internal static ushort vm_GetMemoryValue(ushort loc) // sub_30F16
         {
-            ushort var_2 = 0;
+            ushort val = 0;
 
-            int mem_type = vm_GetMemoryValueType(arg_0);
+            int mem_type = vm_GetMemoryValueType(loc);
 
             switch (mem_type)
             {
                 case 0:
-                    var_2 = gbl.area_ptr.field_6A00_Get(0x6A00 + (arg_0 * 2));
+                    val = gbl.area_ptr.field_6A00_Get(0x6A00 + (loc * 2));
                     break;
 
                 case 1:
                     bool var_4 = false;
-                    var_2 = get_player_values(ref var_4, arg_0);
+                    val = get_player_values(ref var_4, loc);
 
                     if (var_4 == false)
                     {
-                        var_2 = gbl.area2_ptr.field_800_Get((arg_0 * 2) + 0x800);
+                        val = gbl.area2_ptr.field_800_Get((loc * 2) + 0x800);
                     }
                     break;
 
                 case 2:
-                    var_2 = gbl.stru_1B2CA[(arg_0 << 1) + 0x0C00];
+                    val = gbl.stru_1B2CA[(loc << 1) + 0x0C00];
                     break;
 
                 case 3:
-                    var_2 = gbl.ecl_ptr[arg_0 + 0x8000]; // When does this happen?
+                    val = gbl.ecl_ptr[loc + 0x8000]; // When does this happen?
                     break;
 
                 case 4:
-                    if (arg_0 < 0xC04B)
+                    if (loc < 0xC04B)
                     {
-                        switch (arg_0)
+                        switch (loc)
                         {
                             case 0x00B1:
-                                var_2 = (ushort)gbl.word_1D918;
+                                val = (ushort)gbl.word_1D918;
                                 break;
 
                             case 0x00FB:
-                                var_2 = (ushort)gbl.word_1D914;
+                                val = (ushort)gbl.word_1D914;
                                 break;
 
                             case 0x00FC:
-                                var_2 = (ushort)gbl.word_1D916;
+                                val = (ushort)gbl.word_1D916;
                                 break;
 
                             case 0x033D:
-                                var_2 = gbl.mapDirection;
+                                val = gbl.mapDirection;
                                 break;
 
                             case 0x035F:
@@ -902,28 +889,28 @@ namespace engine
                     }
                     else
                     {
-                        arg_0 -= 0xC04B;
+                        loc -= 0xC04B;
 
-                        switch (arg_0)
+                        switch (loc)
                         {
                             case 0:
-                                var_2 = (ushort)gbl.mapPosX;
+                                val = (ushort)gbl.mapPosX;
                                 break;
 
                             case 0x01:
-                                var_2 = (ushort)gbl.mapPosY;
+                                val = (ushort)gbl.mapPosY;
                                 break;
 
                             case 0x02:
-                                var_2 = (ushort)(gbl.mapDirection / 2);
+                                val = (ushort)(gbl.mapDirection / 2);
                                 break;
 
                             case 0x03:
-                                var_2 = gbl.mapWallType;
+                                val = gbl.mapWallType;
                                 break;
 
                             case 0x04:
-                                var_2 = gbl.mapWallRoof;
+                                val = gbl.mapWallRoof;
                                 break;
 
                             case 0x0E:
@@ -933,22 +920,17 @@ namespace engine
                     break;
             }
 
-            return var_2;
+            return val;
         }
 
 
-        internal static void vm_WriteStringToMemory(string arg_0, ushort arg_4) // sub_3105D
+        internal static void vm_WriteStringToMemory(string text, ushort loc) // sub_3105D
         {
             byte var_104;
-            byte var_103;
-            byte var_102;
-            string var_100;
 
-            var_100 = arg_0;
+            int mem_type = vm_GetMemoryValueType(loc);
 
-            int mem_type = vm_GetMemoryValueType(arg_4);
-
-            var_102 = (byte)var_100.Length;
+            int text_len = text.Length;
 
             //System.Console.WriteLine("  vm_WriteStringToMemory: str: '{0}' loc: {1:X} type: {2:X}",
             //    arg_0, arg_4, var_101);
@@ -956,66 +938,61 @@ namespace engine
 
             if (mem_type == 0)
             {
-                if (var_102 > 0)
+                if (text_len > 0)
                 {
-                    var_104 = (byte)(var_102 - 1);
+                    var_104 = (byte)(text_len - 1);
 
-                    for (var_103 = 0; var_103 <= var_104; var_103++)
+                    for (int i = 0; i <= var_104; i++)
                     {
-                        ushort val = var_100[var_103];
-
-                        gbl.area_ptr.field_6A00_Set(0x6A00 + ((var_103 + arg_4) * 2), val);
+                        gbl.area_ptr.field_6A00_Set(0x6A00 + ((loc + i) * 2), text[i]);
                     }
                 }
 
-                gbl.area_ptr.field_6A00_Set(0x6A00 + ((var_102 + arg_4) *2), 0);
+                gbl.area_ptr.field_6A00_Set(0x6A00 + ((text_len + loc) *2), 0);
             }
             else if (mem_type == 1)
             {
-                if (arg_4 == 0x7C00)
+                if (loc == 0x7C00)
                 {
-                    gbl.player_ptr.name = var_100;
+                    gbl.player_ptr.name = text;
                 }
                 else
                 {
-                    if (var_102 > 0)
+                    if (text_len > 0)
                     {
-                        var_104 = (byte)(var_102 - 1);
-                        for (var_103 = 0; var_103 <= var_104; var_103++)
+                        for (int i = 0; i <= text_len - 1; i++)
                         {
-                            gbl.area2_ptr.field_800_Set(((var_103 + arg_4) * 2) + 0x800, var_100[var_103]);
+                            gbl.area2_ptr.field_800_Set(((loc + i) * 2) + 0x800, text[i]);
                         }
                     }
 
-                    gbl.area2_ptr.field_800_Set(((var_102 + arg_4) * 2) + 0x800, 0);
+                    gbl.area2_ptr.field_800_Set(((text_len + loc) * 2) + 0x800, 0);
                 }
             }
             else if (mem_type == 2)
             {
-                if (var_102 > 0)
+                if (text_len > 0)
                 {
-                    var_104 = (byte)(var_102 - 1);
-                    for (var_103 = 0; var_103 <= var_104; var_103++)
+                    var_104 = (byte)(text_len - 1);
+                    for (int i = 0; i <= var_104; i++)
                     {
-                        gbl.stru_1B2CA[((var_103 + arg_4) << 1) + 0x0C00] = var_100[var_103];
+                        gbl.stru_1B2CA[((i + loc) *2) + 0x0C00] = text[i];
                     }
                 }
 
-                gbl.stru_1B2CA[((var_102 + arg_4) << 1) + 0x0C00] = 0;
+                gbl.stru_1B2CA[((text_len + loc) *2) + 0x0C00] = 0;
             }
             else if (mem_type == 3)
             {
-                if (var_102 > 0)
+                if (text_len > 0)
                 {
-                    var_104 = (byte)(var_102 - 1);
-
-                    for (var_103 = 0; var_103 <= var_104; var_103++)
+                    for (int i = 0; i <= text_len - 1; i++)
                     {
-                        gbl.ecl_ptr[0x8000 + var_103 + arg_4] = (byte)var_100[var_103];
+                        gbl.ecl_ptr[0x8000 + i + loc] = (byte)text[i];
                     }
                 }
 
-                gbl.ecl_ptr[0x8000 + var_102 + arg_4] = 0;
+                gbl.ecl_ptr[0x8000 + text_len + loc] = 0;
             }
         }
 
@@ -1274,17 +1251,17 @@ namespace engine
         }
 
 
-        internal static void sub_318AE(ref int index, ref bool arg_8, bool showExit, 
+        internal static void sub_318AE(ref int index, ref bool menuRedraw, bool showExit, 
 			List<MenuItem> list, sbyte endY, sbyte endX, int startY, sbyte startX, 
 			byte arg_1A, byte arg_1C, byte headingColor, string inputString, string extraString)
         {
             string newInputString = inputString;
 
-            string menuKeys = buildMenuStrings(ref newInputString);
+            buildMenuStrings(ref newInputString);
 
             MenuItem dummyMenuItem;
 
-            ovr027.sl_select_item(out dummyMenuItem, ref index, ref arg_8, showExit, list, endY, endX,
+            ovr027.sl_select_item(out dummyMenuItem, ref index, ref menuRedraw, showExit, list, endY, endX,
                 startY, startX, arg_1A, arg_1C, headingColor, newInputString, extraString);
         }
 
@@ -1372,26 +1349,26 @@ namespace engine
         }
 
 
-        internal static void duel(byte arg_0)
+        internal static void SetupDuel(bool isDuel)
         {
             gbl.combat_type = CombatType.duel;
 
-            gbl.area2_ptr.field_5CC = arg_0;
-            Player playerA = gbl.player_ptr;
+            gbl.area2_ptr.isDuel = isDuel;
+            Player dueler = gbl.player_ptr;
 
-            foreach (Player playerC in gbl.player_next_ptr)
+            foreach (Player player in gbl.player_next_ptr)
             {
-                if (playerC.name != playerA.name)
+                if (player.name != dueler.name)
                 {
-                    playerC.in_combat = false;
+                    player.in_combat = false;
                 }
             }
 
-            if (arg_0 != 0)
+            if (isDuel)
             {
                 ovr034.chead_cbody_comspr_icon(gbl.monster_icon_id, 11, "CPIC");
 
-                Player DuelMaster = playerA.ShallowClone();
+                Player DuelMaster = dueler.ShallowClone();
                 DuelMaster.in_combat = true;
                 DuelMaster.name = "ROLF";
                 DuelMaster.quick_fight = QuickFight.True;
@@ -1405,9 +1382,9 @@ namespace engine
 
                 gbl.player_next_ptr.Add(DuelMaster);
 
-                foreach(Item item in playerA.items)
+                foreach(Item item in dueler.items)
                 {
-                    DuelMaster.items.Add(item);
+                    DuelMaster.items.Add(item.ShallowClone());
                 }
             }
         }
@@ -1540,11 +1517,11 @@ namespace engine
             {
                 byte movement = player.movement;
 
-                if (ovr025.find_affect(Affects.haste, player) == true)
+                if (player.HasAffect(Affects.haste) == true)
                 {
                     movement *= 2;
                 }
-                else if (ovr025.find_affect(Affects.slow, player) == true)
+                else if (player.HasAffect(Affects.slow) == true)
                 {
                     movement /= 2;
                 }

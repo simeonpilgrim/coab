@@ -313,7 +313,7 @@ namespace engine
 
             menuText += "View Aim ";
 
-            if (player.field_14C > 0)
+            if (player.items.Count > 0)
             {
                 menuText += "Use ";
             }
@@ -564,7 +564,7 @@ namespace engine
 
                                 ovr024.in_poison_cloud(1, player);
 
-                                if (ovr025.is_held(player))
+                                if (player.IsHeld())
                                 {
                                     arg_0 = ovr025.clear_actions(player);
                                 }

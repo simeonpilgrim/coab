@@ -801,18 +801,18 @@ namespace engine
                 int magic_power = player.magic_user_lvl + (ovr026.sub_6B3D1(player) * player.field_116);
                 int cleric_power = player.cleric_lvl + (ovr026.sub_6B3D1(player) * player.turn_undead);
 
-                if (armor_class > 0x3c)
+                if (armor_class > 60)
                 {
-                    armor_class -= 0x3c;
+                    armor_class -= 60;
                 }
                 else
                 {
                     armor_class = 0;
                 }
 
-                if (hit_bonus > 0x27)
+                if (hit_bonus > 39)
                 {
-                    hit_bonus -= 0x27;
+                    hit_bonus -= 39;
                 }
                 else
                 {
@@ -869,13 +869,7 @@ namespace engine
 
             if (var_2 == 8001)
             {
-                bool affect_found = false;
-
-                foreach (Player player in gbl.player_next_ptr)
-                {
-                    affect_found = ovr025.find_affect(affect_id, player);
-                    if (affect_found) break;
-                }
+                bool affect_found = gbl.player_next_ptr.Exists(player => player.HasAffect(affect_id));
 
                 setMemoryFour(affect_found, 0, 0, 0, loc_a, loc_b, loc_c, loc_d);
             }
@@ -1423,7 +1417,7 @@ namespace engine
             byte[] var_6 = new byte[5];
             int menu_selected;
 
-            gbl.byte_1EE95 = 1;
+            gbl.byte_1EE95 = true;
             gbl.bottomTextHasBeenCleared = false;
             gbl.DelayBetweenCharacters = true;
 
@@ -1715,7 +1709,7 @@ namespace engine
 
             ovr027.ClearPromptArea();
             gbl.DelayBetweenCharacters = false;
-            gbl.byte_1EE95 = 0;
+            gbl.byte_1EE95 = false;
         }
 
 
@@ -2078,15 +2072,14 @@ namespace engine
                     break;
 
                 case 1:
-                    ovr008.duel(1);
+                    ovr008.SetupDuel(true);
                     break;
 
                 case 2:
-                    ovr008.duel(0);
+                    ovr008.SetupDuel(false);
                     break;
 
                 case 0x3201:
-
                     if (gbl.word_1EE76 == 8)
                     {
                         seg044.sound_sub_120E0(Sound.sound_a);
@@ -2246,7 +2239,7 @@ namespace engine
             ovr008.vm_LoadCmdSets(1);
             Affects affect_type = (Affects)ovr008.vm_GetCmdValue(1);
 
-            if (ovr025.find_affect(affect_type, gbl.player_ptr) == true)
+            if (gbl.player_ptr.HasAffect(affect_type) == true)
             {
                 gbl.compare_flags[0] = true;
             }

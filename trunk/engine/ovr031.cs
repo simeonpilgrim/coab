@@ -5,6 +5,27 @@ namespace engine
 {
     class ovr031
     {
+        const int Column_A = 5; //word_16E08
+        const int Column_B = 4; //word_16E0A
+        const int Column_C = 6; // word_16E0C
+        const int Column_D = 4; // word_16E0E
+        const int Column_E = 2; // word_16E10
+        const int Column_F = 7; // word_16E12
+        const int Column_G = 2; // word_16E14
+        const int Column_H = 0; // word_16E16
+        const int Column_I = 9; // word_16E18
+        const int Column_J = 5; // word_16E1A
+        const int Row_A = 4; // byte_16E1C
+        const int Row_B = 3; // byte_16E1E
+        const int Row_C = 3; // byte_16E20
+        const int Row_D = 3; // byte_16E22
+        const int Row_E = 1; // byte_16E24
+        const int Row_F = 1; // byte_16E26
+        const int Row_G = 1; // byte_16E28
+        const int Row_H = 0; // byte_16E2A
+        const int Row_I = 0; // byte_16E2C
+        const int Row_J = 4; // byte_16E2E
+
         internal static void DrawAreaMap(int partyDir, int partyMapY, int partyMapX)
         { /* sub_7100F */
             const int displayWidth = 11;
@@ -371,7 +392,7 @@ namespace engine
             int tmpX = drawX;
             int tmpY = drawY;
             int var_10 = 0;
-            int var_12 = 0;
+            int Col = 0;
             byte var_17 = 0;
 
             while (var_10 < 4)
@@ -388,26 +409,26 @@ namespace engine
                 {
                     if (var_17 > 0)
                     {
-                        draw_3D_8x8_titles(9, var_17, gbl.byte_16E2E, gbl.word_16E1A + var_12 + 1);
+                        draw_3D_8x8_titles(9, var_17, Row_J, Column_J + Col + 1);
                     }
 
                     var_17 = var_14;
 
-                    draw_3D_8x8_titles(0, var_14, gbl.byte_16E1C, gbl.word_16E08 + var_12);
+                    draw_3D_8x8_titles(0, var_14, Row_A, Column_A + Col);
                 }
                 else
                 {
                     if (var_17 > 0 &&
                         getMap_wall_type(dir_left, tmpY - gbl.MapDirectionYDelta[dir_left], tmpX - gbl.MapDirectionXDelta[dir_left]) != 0)
                     {
-                        draw_3D_8x8_titles(9, var_17, gbl.byte_16E2E, gbl.word_16E1A + var_12 + 1);
+                        draw_3D_8x8_titles(9, var_17, Row_J, Column_J + Col + 1);
                     }
 
                     var_17 = 0;
                 }
 
                 var_10++;
-                var_12 -= 2;
+                Col -= 2;
 
                 tmpX += gbl.MapDirectionXDelta[dir_left];
                 tmpY += gbl.MapDirectionYDelta[dir_left];
@@ -416,7 +437,7 @@ namespace engine
             tmpX = drawX;
             tmpY = drawY;
             var_10 = 0;
-            var_12 = 0;
+            Col = 0;
             var_17 = 0;
 
             while (var_10 < 4)
@@ -433,25 +454,25 @@ namespace engine
                 {
                     if (var_17 > 0)
                     {
-                        draw_3D_8x8_titles(9, var_17, gbl.byte_16E2E, gbl.word_16E1A + var_12 - 1);
+                        draw_3D_8x8_titles(9, var_17, Row_J, Column_J + Col - 1);
                     }
 
                     var_17 = var_14;
-                    draw_3D_8x8_titles(0, var_14, gbl.byte_16E1C, gbl.word_16E08 + var_12);
+                    draw_3D_8x8_titles(0, var_14, Row_A, Column_A + Col);
                 }
                 else
                 {
                     if (var_17 > 0 &&
                         getMap_wall_type(dir_right, tmpY - gbl.MapDirectionYDelta[dir_right], tmpX - gbl.MapDirectionXDelta[dir_right]) != 0)
                     {
-                        draw_3D_8x8_titles(9, var_17, gbl.byte_16E2E, gbl.word_16E1A + var_12 - 1);
+                        draw_3D_8x8_titles(9, var_17, Row_J, Column_J + Col - 1);
                     }
 
                     var_17 = 0;
                 }
 
                 var_10++;
-                var_12 += 2;
+                Col += 2;
 
                 tmpX += gbl.MapDirectionXDelta[dir_right];
                 tmpY += gbl.MapDirectionYDelta[dir_right];
@@ -460,7 +481,7 @@ namespace engine
             tmpX = drawX;
             tmpY = drawY;
             var_10 = 0;
-            var_12 = 0;
+            Col = 0;
 
             while (var_10 < 3)
             {
@@ -470,17 +491,17 @@ namespace engine
                 {
                     if (var_10 == 0)
                     {
-                        draw_3D_8x8_titles(1, var_15, gbl.byte_16E1E, gbl.word_16E0A + var_12);
+                        draw_3D_8x8_titles(1, var_15, Row_B, Column_B + Col);
                     }
                     else
                     {
-                        draw_3D_8x8_titles(1, var_15, gbl.byte_16E1E, gbl.word_16E0A + var_12 - 1);
+                        draw_3D_8x8_titles(1, var_15, Row_B, Column_B + Col - 1);
                     }
 
                 }
 
                 var_10++;
-                var_12 -= 2;
+                Col -= 2;
 
                 tmpX += gbl.MapDirectionXDelta[dir_left];
                 tmpY += gbl.MapDirectionYDelta[dir_left];
@@ -489,7 +510,7 @@ namespace engine
             tmpX = drawX;
             tmpY = drawY;
             var_10 = 0;
-            var_12 = 0;
+            Col = 0;
 
             while (var_10 < 3)
             {
@@ -499,16 +520,16 @@ namespace engine
                 {
                     if (var_10 == 0)
                     {
-                        draw_3D_8x8_titles(2, var_15, gbl.byte_16E20, gbl.word_16E0C + var_12);
+                        draw_3D_8x8_titles(2, var_15, Row_C, Column_C + Col);
                     }
                     else
                     {
-                        draw_3D_8x8_titles(2, var_15, gbl.byte_16E20, gbl.word_16E0C + var_12 + 1);
+                        draw_3D_8x8_titles(2, var_15,Row_C, Column_C + Col + 1);
                     }
                 }
 
                 var_10++;
-                var_12 += 2;
+                Col += 2;
 
                 tmpX += gbl.MapDirectionXDelta[dir_right];
                 tmpY += gbl.MapDirectionYDelta[dir_right];
@@ -528,13 +549,13 @@ namespace engine
                 byte var_14 = getMap_wall_type(partyDir, tmpY, tmpX);
                 if (var_14 != 0)
                 {
-                    draw_3D_8x8_titles(3, var_14, gbl.byte_16E22, gbl.word_16E0E + var_12);
+                    draw_3D_8x8_titles(3, var_14, Row_D, Column_D + var_12);
                 }
 
                 byte var_15 = getMap_wall_type(dir_left, tmpY, tmpX);
                 if (var_15 != 0)
                 {
-                    draw_3D_8x8_titles(4, var_15, gbl.byte_16E24, gbl.word_16E10 + var_12);
+                    draw_3D_8x8_titles(4, var_15, Row_E, Column_E + var_12);
                 }
 
                 var_10++;
@@ -554,14 +575,14 @@ namespace engine
 
                 if (var_14 != 0)
                 {
-                    draw_3D_8x8_titles(3, var_14, gbl.byte_16E22, gbl.word_16E0E + var_12);
+                    draw_3D_8x8_titles(3, var_14, Row_D, Column_D + var_12);
                 }
 
                 byte var_15 = getMap_wall_type(dir_right, tmpY, tmpX);
 
                 if (var_15 != 0)
                 {
-                    draw_3D_8x8_titles(5, var_15, gbl.byte_16E26, gbl.word_16E12 + var_12);
+                    draw_3D_8x8_titles(5, var_15, Row_F, Column_F + var_12);
                 }
 
                 var_10++;
@@ -586,14 +607,14 @@ namespace engine
 
                 if (var_14 != 0)
                 {
-                    draw_3D_8x8_titles(6, var_14, gbl.byte_16E28, gbl.word_16E14 + var_12);
+                    draw_3D_8x8_titles(6, var_14, Row_G, Column_G + var_12);
                 }
 
                 byte var_15 = getMap_wall_type(dir_left, tmpY, tmpX);
 
                 if (var_15 != 0)
                 {
-                    draw_3D_8x8_titles(7, var_15, gbl.byte_16E2A, gbl.word_16E16 + var_12);
+                    draw_3D_8x8_titles(7, var_15, Row_H, Column_H + var_12);
                 }
 
                 var_10++;
@@ -617,14 +638,14 @@ namespace engine
                 if (var_14 != 0)
                 {
 
-                    draw_3D_8x8_titles(6, var_14, gbl.byte_16E28, var_12 + gbl.word_16E14);
+                    draw_3D_8x8_titles(6, var_14, Row_G, var_12 + Column_G);
                 }
 
                 byte var_15 = getMap_wall_type(dir_right, tmpY, tmpX);
 
                 if (var_15 != 0)
                 {
-                    draw_3D_8x8_titles(8, var_15, gbl.byte_16E2C, var_12 + gbl.word_16E18);
+                    draw_3D_8x8_titles(8, var_15, Row_I, var_12 + Column_I);
                 }
 
                 var_10++;

@@ -122,7 +122,7 @@ namespace engine
             gbl.lastDaxBlockId = 0x0FF;
             gbl.byte_1D5B5 = 0x0FF;
             gbl.byte_1C01B = 0;
-            gbl.byte_1EE95 = 0;
+            gbl.byte_1EE95 = false;
             gbl.byte_1D910 = true;
             gbl.bigpic_block_id = 0x0FF;
             gbl.silent_training = false;
@@ -229,7 +229,7 @@ namespace engine
             gbl.lastDaxBlockId = 0x0FF;
             gbl.byte_1D5B5 = 0x0FF;
             gbl.byte_1C01B = 0;
-            gbl.byte_1EE95 = 0;
+            gbl.byte_1EE95 = false;
             gbl.byte_1D910 = true;
             gbl.bigpic_block_id = 0x0FF;
             gbl.silent_training = false;

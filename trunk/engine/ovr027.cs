@@ -163,7 +163,7 @@ namespace engine
 
             int displayInputXOffset = displayExtraString.Length;
 
-            display_highlighed_text(gbl.menuSelectedWord, highlightFgColor, 
+            display_highlighed_text(gbl.menuSelectedWord, highlightFgColor,
                 displayInputString, displayInputXOffset, fgColor, highlights);
 
             if (gbl.game_state == GameState.State3 &&
@@ -189,11 +189,11 @@ namespace engine
                 if ((gbl.area_ptr.picture_fade != 0 || useOverlay == true) &&
                     gbl.byte_1D556.curFrame > 0)
                 {
-                    ovr030.sub_7000A(gbl.byte_1D556.frames[gbl.byte_1D556.curFrame-1].picture, useOverlay, 3, 3);
+                    ovr030.sub_7000A(gbl.byte_1D556.frames[gbl.byte_1D556.curFrame - 1].picture, useOverlay, 3, 3);
 
                     int delay = gbl.byte_1D556.frames[gbl.byte_1D556.curFrame - 1].delay * 10;
 
-					if ((seg041.time01() - timeStart) >= delay ||
+                    if ((seg041.time01() - timeStart) >= delay ||
                         gbl.area_ptr.picture_fade != 0)
                     {
                         gbl.byte_1D556.curFrame++;
@@ -351,12 +351,16 @@ namespace engine
 
 
         internal static void ClearPromptArea() // redraw_screen
-		{
+        {
             seg041.DrawRectangle(0, 0x18, 0x27, 0x18, 0);
-			//seg041.displaySpaceChar( 0x28, 0, 0x18, 0 );
 
             Display.Update();
-		}
+        }
+
+        internal static void ClearPromptAreaNoUpdate()
+        {
+            seg041.DrawRectangle(0, 0x18, 0x27, 0x18, 0);
+        }
 
         internal static void sub_6C897(int index,
             int yEnd, int xEnd, int yStart, int xStart, List<MenuItem> list,
@@ -535,7 +539,7 @@ namespace engine
 
 
         internal static char sl_select_item(out MenuItem result_ptr, ref int index_ptr,
-            ref bool arg_8, bool showExit, List<MenuItem> stringList, 
+            ref bool redrawMenuItems, bool showExit, List<MenuItem> stringList, 
             int endY, int endX, int startY, int startX, 
             int highlightBgColor, int normalColor, int headingColor,
             string inputString, string extraTextString)
@@ -569,25 +573,25 @@ namespace engine
             if (gbl.menuScreenIndex > index_ptr)
             {
                 gbl.menuScreenIndex = index_ptr;
-                arg_8 = true;
+                redrawMenuItems = true;
             }
 
             if (gbl.menuScreenIndex > listCount)
             {
                 gbl.menuScreenIndex = 0;
-                arg_8 = true;
+                redrawMenuItems = true;
             }
 
             index_ptr++;
             index_ptr = menu_sub_6CDCA(false, index_ptr, stringList, listDisplayHeight);
 
-            if (arg_8 == true)
+            if (redrawMenuItems == true)
             {
                 sub_6C897(gbl.menuScreenIndex, endY, endX, startY, startX,
                     stringList, normalColor, headingColor, listDisplayWidth);
             }
 
-            arg_8 = false;
+            redrawMenuItems = false;
 
             bool loop_end = false;
 

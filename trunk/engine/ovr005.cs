@@ -73,7 +73,7 @@ namespace engine
         {
             char input_key = 'Y';
 
-            if (ovr025.find_affect(Affects.blinded, gbl.player_ptr) == false)
+            if (gbl.player_ptr.HasAffect(Affects.blinded) == false)
             {
                 input_key = cast_cure_anyway("is not blind.");
             }
@@ -92,15 +92,7 @@ namespace engine
 
         internal static void cure_disease()
         {
-            bool is_diseased = false;
-
-            for (int i = 0; i < 6; i++)
-            {
-                if (ovr025.find_affect(disease_types[i], gbl.player_ptr) == true)
-                {
-                    is_diseased = true;
-                }
-            }
+            bool is_diseased = Array.Exists(disease_types, aff => gbl.player_ptr.HasAffect(aff));
 
             char input_key = 'Y';
             if (is_diseased == false)
@@ -280,7 +272,7 @@ namespace engine
 
         internal static void cure_poison2()
         {
-            bool isPoisoned = ovr025.find_affect(Affects.poisoned, gbl.player_ptr);
+            bool isPoisoned = gbl.player_ptr.HasAffect(Affects.poisoned);
 
             char inutKey = 'Y';
             if (isPoisoned == false)
@@ -313,7 +305,7 @@ namespace engine
             bool has_curse_items = gbl.player_ptr.items.Find(item => item.cursed) != null;
 
             if (has_curse_items == false &&
-                ovr025.find_affect(Affects.bestow_curse, gbl.player_ptr) == false)
+                gbl.player_ptr.HasAffect(Affects.bestow_curse) == false)
             {
                 input_key = cast_cure_anyway("is not cursed.");
             }
@@ -369,7 +361,7 @@ namespace engine
             }
 
             seg037.draw8x8_clear_area(0x18, 0x27, 0x18, 0);
-            bool var_9 = true;
+            bool redrawMenuItems = true;
             seg037.draw8x8_04();
 
             do
@@ -378,7 +370,7 @@ namespace engine
                 seg041.displayString(text, 0, 15, 1, 1);
                 MenuItem dummySelected;
 
-                char sl_output = ovr027.sl_select_item(out dummySelected, ref sl_index, ref var_9, false,
+                char sl_output = ovr027.sl_select_item(out dummySelected, ref sl_index, ref redrawMenuItems, false,
                     stringList, 15, 0x26, 4, 2, 15, 10, 13, "Heal Exit", string.Empty);
 
                 if (sl_output == 'H' || sl_output == 0x0d)
@@ -447,7 +439,6 @@ namespace engine
         internal static void temple_shop()
         {
             bool var_30 = false; /* Simeon */
-            bool money_present;
 
             gbl.game_state = GameState.Shop;
             gbl.redrawBoarder = (gbl.area_ptr.field_1CC == 0);
@@ -461,12 +452,13 @@ namespace engine
                 gbl.pooled_money[i] = 0;
             }
 
-            gbl.something01 = false;
             bool stop_loop = false;
 
             do
             {
                 bool items_present;
+                bool money_present;
+
                 ovr022.treasureOnGround(out items_present, out money_present);
                 string text;
                 if (money_present == true)
@@ -510,7 +502,7 @@ namespace engine
                         break;
 
                     case 'A':
-                        ovr022.appraiseGemsJewels(out var_30);
+                        var_30 = ovr022.appraiseGemsJewels();
                         break;
 
                     case 'E':
@@ -549,8 +541,8 @@ namespace engine
                         break;
                 }
 
-                if (input_key == 0x42 ||
-                    input_key == 0x54)
+                if (input_key == 'B' ||
+                    input_key == 'T')
                 {
                     ovr025.load_pic();
                 }

@@ -81,6 +81,14 @@ namespace Classes
         None
     }
 
+    public class Struct_1C9CD
+    {
+        public int xPos; // 0x00
+        public int yPos; // 0x01
+        public int player_index;  // field_2
+        public byte size; // field_3
+    }
+
     public class Money
     {
         public const int copper = 0;
@@ -127,28 +135,8 @@ namespace Classes
     }
 
 
-    /// <summary>
-    /// Summary description for Class1.
-    /// </summary>
     public class gbl
     {
-        public const ushort action_struct_size = 0x16;
-        public const ushort char_struct_size = 0x1a6;
-
-        public static byte byte_1642C;
-        public static byte byte_1645A;
-
-        public const sbyte byte_16E1C = 4;
-        public const sbyte byte_16E1E = 3;
-        public const sbyte byte_16E20 = 3;
-        public const sbyte byte_16E22 = 3;
-        public const byte byte_16E24 = 1;
-        public const sbyte byte_16E26 = 1;
-        public const sbyte byte_16E28 = 1;
-        public const sbyte byte_16E2A = 0;
-        public const byte byte_16E2C = 0;
-        public const sbyte byte_16E2E = 4;
-
         public const int BackGroundTiles_count = 64; /* 64 is a guess */
         public static Struct_189B4[] BackGroundTiles = { /* unk_189B4 */
             new Struct_189B4( 1 , 0 , 0xFF, 0),
@@ -228,7 +216,7 @@ namespace Classes
         };
 
 
-        public const byte byte_1A114 = 1;
+
 
         public readonly static byte[] max_class_levels =  { 10, 15, 10, 10, 11, 12, 11, 13 }; // byte_1A1CB seg600:3EBB
         public readonly static byte[] default_icon_colours = { 1, 2, 3, 4, 6, 7 }; // unk_1A1D3[0] == unk_1A1D2[1];
@@ -252,7 +240,7 @@ namespace Classes
         public static bool filesLoaded; // byte_1AB0D
         public static byte numLoadedMonsters; // byte_1AB0E
         public static bool byte_1AB14;
-        public static bool byte_1AB16;
+        public static bool shopRedrawMenuItems; // byte_1AB16
         public static byte byte_1AB18;
         public static byte byte_1AB19 = 0x40;
         public static int[] team_start_x = { 0, 0 }; /* byte_1AD2C */
@@ -288,7 +276,6 @@ namespace Classes
         public static bool silent_training; // byte_1B2F1
         public static bool DelayBetweenCharacters; // byte_1B2F2
 
-        public static byte byte_1B2E9 = 0; // TODO remove only set here, but check if non-negative
         public static byte byte_1BF12; // TODO remove or workout what it's was for?
 
         public static SoundType soundType = SoundType.None; // byte_1BF14
@@ -413,22 +400,13 @@ namespace Classes
         public static bool positionChanged; // byte_1EE92 
         public static bool monstersLoaded; // byte_1EE93 
         public static bool byte_1EE94;
-        public static byte byte_1EE95;
+        public static bool byte_1EE95;
         public static byte byte_1EE96;
         public static bool player_not_found; // byte_1EE97
         public static bool byte_1EE98;
         public static bool gameWon; // byte_1EE99
 
-        public const short word_16E08 = 5;
-        public const short word_16E0A = 4;
-        public const short word_16E0C = 6;
-        public const short word_16E0E = 4;
-        public const short word_16E10 = 2;
-        public const short word_16E12 = 7;
-        public const short word_16E14 = 2;
-        public const short word_16E16 = 0;
-        public const short word_16E18 = 9;
-        public const short word_16E1A = 5;
+
 
 
 
@@ -517,14 +495,6 @@ namespace Classes
         public const int MaxSortedCombatantCount = 72; /*unk_1D1C1_count*/
         public static SortedCombatant[] SortedCombatantList; // seg600:6EB1 - 6EAEh[1] == unk_1D1C1[0]
 
-        public class Struct_1C9CD
-        {
-            public int xPos; // 0x00
-            public int yPos; // 0x01
-            public int player_index;  // field_2
-            public byte size; // field_3
-        }
-
         public const int MaxCombatantCount = 0xff; /* stru_1C9CD_count */
         public static int CombatantCount; // gbl.stru_1C9CD[0].field_3
         public static Struct_1C9CD[] CombatMap; // seg600:66BD stru_1C9CD
@@ -562,7 +532,6 @@ namespace Classes
         public static bool inDemo;
         public static bool AnimationsOn;
         public static bool PicsOn;
-        public static bool something01;
 
         public static byte current_head_id;
         public static DaxBlock headX_dax;
@@ -692,6 +661,7 @@ namespace Classes
             new SpellEntry(2, 4, 0, 0, 0, 10, 4, 0, 1, 4, 0, 1, 4, 4, 1, 0), 
             new SpellEntry(10, 0, 10, 0, 6, 0, 0x18, 0, 0x1E, 0, Affects.enlarge, 0, 0, 1, 0x28, 0x28) };
 
+        public const byte byte_1A114 = 1;
 
         public static byte[] unk_1D89D = new byte[9]; // seg600:758D
 

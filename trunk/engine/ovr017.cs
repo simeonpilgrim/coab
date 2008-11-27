@@ -357,30 +357,29 @@ namespace engine
         }
 
 
-        internal static bool sub_483AE(ref int bp_var_182, string bp_var_1BB, string bp_var_2DF, string bp_var_2DA)
+        internal static bool sub_483AE(string fileExt, string bp_var_2DA)
         {
             byte[] data = new byte[0x10];
-            string var_3C = string.Empty;
+            string lastName = string.Empty;
 
-            var searchRec = seg046.FINDFIRST(gbl.SavePath + "*" + bp_var_2DF);
+            var searchRec = seg046.FINDFIRST(gbl.SavePath + "*" + fileExt);
 
-            while (gbl.FIND_result == 0 && var_3C != bp_var_2DA)
+            while (gbl.FIND_result == 0 && lastName != bp_var_2DA)
             {
                 File file;
                 seg042.find_and_open_file(out file, false, gbl.SavePath + searchRec.fileName);
 
                 seg051.Seek(0, file);
 
-                bp_var_182 = seg051.BlockRead(0x10, data, file);
-                var_3C = Sys.ArrayToString(data, 0, 0x10);
+                seg051.BlockRead(0x10, data, file);
+                lastName = Sys.ArrayToString(data, 0, 0x10);
 
                 seg051.Close(file);
 
                 seg046.FINDNEXT(searchRec);
             }
 
-            bool result = (var_3C == bp_var_2DA);
-            return result;
+            return (lastName == bp_var_2DA); ;
         }
 
 
@@ -485,7 +484,7 @@ namespace engine
             }
 
             player.max_str_00 = bp_var_1C0.strength_100;
-            player.field_73 = bp_var_1C0.field_2D;
+            player.thac0 = bp_var_1C0.thac0;
             player._class = (ClassId)bp_var_1C0._class;
             player.age = bp_var_1C0.age;
             player.hit_point_max = bp_var_1C0.hp_max;
@@ -877,24 +876,20 @@ namespace engine
             Player player01_ptr;
             Player player02_ptr;
             
-            string var_1BB = string.Empty;
-            byte[] var_192;
-            int var_182;
             File file;
 
-            bool var_1BC = seg042.find_and_open_file(out file, false, gbl.SavePath + arg_8);
+            seg042.find_and_open_file(out file, false, gbl.SavePath + arg_8);
 
             seg041.displayString("Loading...Please Wait", 0, 10, 0x18, 0);
 
 
             if (gbl.import_from == ImportSource.Curse)
             {
-                var_192 = new byte[Player.StructSize];
+                byte[] data = new byte[Player.StructSize];
 
-                seg051.BlockRead(0x1a6, var_192, file);
-                player_ptr = new Player(var_192, 0);
+                seg051.BlockRead(0x1a6, data, file);
+                player_ptr = new Player(data, 0);
 
-                var_192 = null;
                 seg051.Close(file);
             }
             else if (gbl.import_from == ImportSource.Pool)
@@ -912,7 +907,7 @@ namespace engine
             {
                 byte[] data = new byte[0xBC];
 
-                var_182 = seg051.BlockRead(0xBC, data, file);
+                seg051.BlockRead(0xBC, data, file);
                 seg051.Close(file);
 
                 HillsFarPlayer var_1C4 = new HillsFarPlayer(data);
@@ -922,17 +917,17 @@ namespace engine
                 player_ptr.actions = null;
 
                 string fileExt = ".guy";
-                var_1BC = sub_483AE(ref var_182, var_1BB, fileExt, var_1C4.field_4);
+                bool var_1BC = sub_483AE(fileExt, var_1C4.field_4);
 
                 if (var_1BC == true)
                 {
                     string savename = System.IO.Path.Combine(gbl.SavePath, System.IO.Path.ChangeExtension(arg_8, fileExt));
 
-                    var_1BC = seg042.find_and_open_file(out file, false, savename);
+                    seg042.find_and_open_file(out file, false, savename);
 
                     data = new byte[Player.StructSize];
 
-                    var_182 = seg051.BlockRead(Player.StructSize, data, file);
+                    seg051.BlockRead(Player.StructSize, data, file);
                     seg051.Close(file);
 
                     player_ptr = new Player(data, 0);
@@ -944,45 +939,45 @@ namespace engine
 
                     if (var_1C4.field_1D > 0)
                     {
-                        Item item_ptr = ovr025.new_Item(0, Affects.helpless, (Affects)var_1C4.field_1D,
+                        Item newItem = ovr025.new_Item(0, Affects.helpless, (Affects)var_1C4.field_1D,
                             (short)(var_1C4.field_1D * 200), 0, 0,
                             false, 0, false, 0, 0, 0x57, -89, -88, 0x46);
                         
-                        player_ptr.items.Add(item_ptr);
+                        player_ptr.items.Add(newItem);
                     }
 
                     if (var_1C4.field_23 > 0)
                     {
-                        Item item_ptr = ovr025.new_Item(0, Affects.affect_41, (Affects)var_1C4.field_23,
+                        Item newItem = ovr025.new_Item(0, Affects.affect_41, (Affects)var_1C4.field_23,
                             (short)(var_1C4.field_23 * 0x15E), 0, 1,
                             false, 0, false, 0, 1, 0x45, -89, -50, 0x4F);
 
-                        player_ptr.items.Add(item_ptr);
+                        player_ptr.items.Add(newItem);
                     }
 
                     if (var_1C4.field_86 > 0)
                     {
-                        Item item_ptr = ovr025.new_Item(0, Affects.helpless, (Affects)var_1C4.field_86,
+                        Item newItem = ovr025.new_Item(0, Affects.helpless, (Affects)var_1C4.field_86,
                             (short)(var_1C4.field_86 * 0xc8), 0, 0,
                             false, 0, false, 0, 0, 0x42, -89, -88, 0x45);
 
-                        player_ptr.items.Add(item_ptr);
+                        player_ptr.items.Add(newItem);
                     }
 
                     if (var_1C4.field_87 > 0)
                     {
-                        Item item_ptr = ovr025.new_Item(0, Affects.affect_3e, (Affects)var_1C4.field_87,
+                        Item newItem = ovr025.new_Item(0, Affects.affect_3e, (Affects)var_1C4.field_87,
                             (short)(var_1C4.field_87 * 0x190), 0, (short)(var_1C4.field_87 * 10),
                             false, 0, false, 0, 0, 0x40, -89, -71, 0x46);
 
-                        player_ptr.items.Add(item_ptr);
+                        player_ptr.items.Add(newItem);
                     }
                 }
                 else
                 {
                     fileExt = ".cha";
 
-                    var_1BC = sub_483AE(ref var_182, var_1BB, fileExt, var_1C4.field_4);
+                    var_1BC = sub_483AE(fileExt, var_1C4.field_4);
 
                     if (var_1BC == true)
                     {
@@ -990,9 +985,9 @@ namespace engine
 
                         string savename = System.IO.Path.Combine(gbl.SavePath, System.IO.Path.ChangeExtension(arg_8, fileExt));
 
-                        var_1BC = seg042.find_and_open_file(out file, false, savename);
+                        seg042.find_and_open_file(out file, false, savename);
 
-                        var_182 = seg051.BlockRead(PoolRadPlayer.StructSize, data, file);
+                        seg051.BlockRead(PoolRadPlayer.StructSize, data, file);
                         seg051.Close(file);
 
                         PoolRadPlayer poolRadPlayer = new PoolRadPlayer(data);
@@ -1016,8 +1011,8 @@ namespace engine
                             player01_ptr.icon_colours[i] = (byte)(((gbl.default_icon_colours[i] + 8) << 4) + gbl.default_icon_colours[i]);
                         }
 
-                        player01_ptr.field_124 = 0x32;
-                        player01_ptr.field_73 = 0x28;
+                        player01_ptr.field_124 = 50;
+                        player01_ptr.thac0 = 40;
                         player01_ptr.health_status = Status.okey;
                         player01_ptr.in_combat = true;
                         player01_ptr.field_13F = 1;
@@ -1142,68 +1137,73 @@ namespace engine
 
             if (seg042.file_find(gbl.SavePath + arg_8 + ".swg") == true)
             {
-                byte[] var_18A = new byte[Item.StructSize];
+                byte[] data = new byte[Item.StructSize];
 
-                var_1BC = seg042.find_and_open_file(out file, false, gbl.SavePath + arg_8 + ".swg");
-
-                do
+                seg042.find_and_open_file(out file, false, gbl.SavePath + arg_8 + ".swg");
+                 
+                while(true)
                 {
-                    var_182 = seg051.BlockRead(Item.StructSize, var_18A, file);
-
-                    if (var_182 == Item.StructSize)
+                    if (seg051.BlockRead(Item.StructSize, data, file) == Item.StructSize)
                     {
-                        player_ptr.items.Add(new Item(var_18A, 0));
+                        player_ptr.items.Add(new Item(data, 0));
                     }
-                } while (var_182 == Item.StructSize);
+                    else
+                    {
+                        break;
+                    }
+                } 
 
                 seg051.Close(file);
-                seg051.FreeMem(Item.StructSize, var_18A);
             }
 
 
             if (seg042.file_find(gbl.SavePath + arg_8 + ".fx") == true)
             {
-                var_192 = seg051.GetMem(Affect.StructSize);
-                var_1BC = seg042.find_and_open_file(out file, false, gbl.SavePath + arg_8 + ".fx");
+                byte[] data = seg051.GetMem(Affect.StructSize);
+                seg042.find_and_open_file(out file, false, gbl.SavePath + arg_8 + ".fx");
 
-                do
+                while (true)
                 {
-                    var_182 = seg051.BlockRead(Affect.StructSize, var_192, file);
-
-                    if (var_182 == Affect.StructSize)
+                    if (seg051.BlockRead(Affect.StructSize, data, file) == Affect.StructSize)
                     {
-                        Affect tmp_affect = new Affect(var_192, 0);
+                        Affect tmp_affect = new Affect(data, 0);
 
-                        player_ptr.affects.Add(tmp_affect);
+                        player_ptr.affects.Add(new Affect(data, 0));
                     }
-                } while (var_182 == Affect.StructSize);
+                    else
+                    {
+                        break;
+                    }
+                }
 
                 seg051.Close(file);
-                seg051.FreeMem(Affect.StructSize, var_192);
             }
 
             if (gbl.import_from == ImportSource.Pool)
             {
                 if (seg042.file_find(gbl.SavePath + arg_8 + ".spc") == true)
                 {
-                    var_192 = seg051.GetMem(Affect.StructSize);
-                    var_1BC = seg042.find_and_open_file(out file, false, gbl.SavePath + arg_8 + ".spc");
+                    byte[] data = seg051.GetMem(Affect.StructSize);
+                    seg042.find_and_open_file(out file, false, gbl.SavePath + arg_8 + ".spc");
 
-                    do
+                    while(true)
                     {
-                        var_182 = seg051.BlockRead(Affect.StructSize, var_192, file);
-
-                        if (var_182 == 9 &&
-                            asc_49280.MemberOf(var_192[0]) == true)
+                        if (seg051.BlockRead(Affect.StructSize, data, file) == Affect.StructSize)
                         {
-                            Affect tmpAffect = new Affect(var_192, 0);
-                            player_ptr.affects.Add(tmpAffect);
+                            if (asc_49280.MemberOf(data[0]) == true)
+                            {
+                                Affect tmpAffect = new Affect(data, 0);
+                                player_ptr.affects.Add(tmpAffect);
+                            }
                         }
-                    } while (var_182 == 9);
+                        else
+                        {
+                            break;
+                        }
+                    }
 
                     seg051.Close(file);
 
-                    var_192 = null;
                 }
             }
             seg043.clear_keyboard();
