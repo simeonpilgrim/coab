@@ -26,7 +26,7 @@ namespace engine
 
             if (player.in_combat == true)
             {
-                action.delay = (sbyte)(ovr024.roll_dice(6, 1) + ovr025.dexReactionAdj(player));
+                action.delay = (sbyte)(ovr024.roll_dice(6, 1) + ovr025.DexReactionAdj(player));
 
                 if (action.delay < 1)
                 {
@@ -101,7 +101,7 @@ namespace engine
 
         static Set unk_3E2EE = new Set(0x0002, new byte[] { 0xC0, 0x01 });
 
-        static void display_attack_message(bool attackHits, int attackDamge, int actualDamage, byte arg_6, Player target, Player attacker) /* backstab */
+        static void DisplayAttackMessage(bool attackHits, int attackDamge, int actualDamage, byte arg_6, Player target, Player attacker) /* backstab */
         {
             string text;
 
@@ -170,26 +170,11 @@ namespace engine
 
             line = gbl.textYCol + 1;
 
+            seg041.GameDelay();
+
             if (actualDamage > 0)
             {
-                target.actions.can_cast = false;
-                if (target.actions.spell_id > 0)
-                {
-                    seg041.GameDelay();
-
-                    ovr025.DisplayPlayerStatusString(true, 12, "lost a spell", target);
-
-                    ovr025.clear_spell(target.actions.spell_id, target);
-                    target.actions.spell_id = 0;
-                }
-                else
-                {
-                    seg041.GameDelay();
-                }
-            }
-            else
-            {
-                seg041.GameDelay();
+                ovr024.TryLooseSpell(target);
             }
 
             if (target.in_combat == false)
@@ -799,7 +784,7 @@ namespace engine
 
                 gbl.inc_byte_byte_1D90x(attacker.actions.field_4);
 
-                display_attack_message(true, 1, target.hit_point_current + 5, 3, target, attacker);
+                DisplayAttackMessage(true, 1, target.hit_point_current + 5, 3, target, attacker);
                 ovr024.remove_invisibility(attacker);
 
                 attacker.field_19C = 0;
@@ -890,7 +875,7 @@ namespace engine
                             seg044.sound_sub_120E0(Sound.sound_7);
                             var_11 = true;
                             sub_3E192(var_15, target, attacker);
-                            display_attack_message(true, gbl.damage, gbl.damage, var_17, target, attacker);
+                            DisplayAttackMessage(true, gbl.damage, gbl.damage, var_17, target, attacker);
 
                             if (target.in_combat == true)
                             {
@@ -922,7 +907,7 @@ namespace engine
                 if (var_11 == false)
                 {
                     seg044.sound_sub_120E0(Sound.sound_9);
-                    display_attack_message(false, 0, 0, var_17, target, attacker);
+                    DisplayAttackMessage(false, 0, 0, var_17, target, attacker);
                 }
 
                 arg_4 = true;
@@ -1839,7 +1824,6 @@ namespace engine
             else
             {
                 result = true;
-                //gbl.byte_1D8B6 = 1;
                 gbl.area2_ptr.field_666 = 1;
 
                 foreach (Player player in gbl.player_next_ptr)

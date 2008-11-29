@@ -166,7 +166,7 @@ namespace engine
                 {
                     if (unk_4C15D.MemberOf(inputkey) == false)
                     {
-                        gbl.byte_1C01B = 0;
+                        gbl.gameSaved = false;
                     }
 
                     switch (inputkey)
@@ -294,7 +294,7 @@ namespace engine
                                 if (inputkey == 'Y')
                                 {
                                     if (gbl.player_next_ptr.Count > 0 &&
-                                        gbl.byte_1C01B == 0)
+                                        gbl.gameSaved == false)
                                     {
 
                                         inputkey = ovr027.yes_no(15, 10, 14, "Game not saved.  Quit anyway? ");
@@ -596,7 +596,7 @@ namespace engine
             }
             else if (var_53._class == ClassId.paladin)
             {
-                player.field_191 = 1;
+                player.paladinCuresLeft = 1;
                 var_53.paladin_lvl = 1;
                 ovr024.add_affect(false, 0xff, 0, Affects.protection_from_evil, player);
             }

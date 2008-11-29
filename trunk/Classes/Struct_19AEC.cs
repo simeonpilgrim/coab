@@ -8,7 +8,7 @@ namespace Classes
     public class SpellEntry /* Struct_19AEC */
 	{
         public SpellEntry(sbyte f0, sbyte f1, sbyte f2, byte f3, byte f4, byte f5,
-            byte f6, byte f7, byte f8, byte f9, Affects fa, byte fb, byte fc, byte fd, byte fe, byte ff)
+            byte f6, byte f7, DamageOnSave f8, byte f9, Affects fa, byte fb, byte fc, byte fd, byte fe, byte ff)
         {
             spellClass = f0;
             spellLevel = f1;
@@ -39,7 +39,7 @@ namespace Classes
         public byte field_5; //seg600:37E1            
         public byte field_6; //seg600:37E2              
         public byte field_7; //seg600:37E3             
-        public byte can_save_flag; //seg600:37E4 unk_19AF4  // field_8 
+        public DamageOnSave can_save_flag; //seg600:37E4 unk_19AF4  // field_8 
         public byte field_9; //seg600:37E5 unk_19AF5    
         public Affects affect_id; //seg600:37E6 unk_19AF6   // field_A
         public byte field_B; //seg600:37E7 unk_19AF7    

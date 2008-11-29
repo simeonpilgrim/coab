@@ -18,7 +18,7 @@ namespace engine
 
                 if ((gbl.unk_1C020[item_type].field_E & 2) != 0)
                 {
-                    player.hitBonus += (sbyte)dexReactionAdj(player);
+                    player.hitBonus += (sbyte)DexReactionAdj(player);
                 }
 
                 player.damageBonus = (sbyte)gbl.unk_1C020[item_type].field_B;
@@ -235,7 +235,7 @@ namespace engine
 
 
         internal static void ItemDisplayNameBuild(bool display_new_name, bool displayReadied, 
-            int yCol, int xCol, Item item, Player player) /*id_item*/
+            int yCol, int xCol, Item item) /*id_item*/
         {
             item.name = string.Empty;
 
@@ -446,7 +446,7 @@ namespace engine
                 {
                     line += 2;
                     /*var_1 = 0x17;*/
-                    ItemDisplayNameBuild(false, false, 0, 0, player.field_151, player);
+                    ItemDisplayNameBuild(false, false, 0, 0, player.field_151);
 
                     seg041.press_any_key(player.field_151.name, true, 0, 10, line + 3, 0x26, line + 1, 0x17);
                 }
@@ -489,7 +489,7 @@ namespace engine
             player.field_185 = 0;
 
             player.weight = 0;
-            gbl.word_1AFE0 = 0;
+            int totalItemWeight = 0;
 
             foreach (var item in player.items)
             {
@@ -504,7 +504,7 @@ namespace engine
 
                 if (item.readied)
                 {
-                    gbl.word_1AFE0 += item_weight;
+                    totalItemWeight += item_weight;
 
                     int var_13 = gbl.unk_1C020[item.type].item_slot;
 
@@ -568,7 +568,7 @@ namespace engine
             player.movement = player.base_movement;
             player.hitBonus = player.thac0;
 
-            stat_bonus[0] = ovr025.dex_ac_bonus(player);
+            stat_bonus[0] = ovr025.DexAcBonus(player);
 
             if (player.field_151 == null)
             {
@@ -603,9 +603,9 @@ namespace engine
                     player.weight -= 5000;
                 }
 
-                if (player.weight < gbl.word_1AFE0)
+                if (player.weight < totalItemWeight)
                 {
-                    player.weight = gbl.word_1AFE0;
+                    player.weight = (short)totalItemWeight;
                 }
             }
 
@@ -638,7 +638,7 @@ namespace engine
         }
 
 
-        internal static sbyte dex_ac_bonus(Player player) /* stat_bonus */
+        internal static sbyte DexAcBonus(Player player) /* stat_bonus */
         {
             sbyte bonus;
 
@@ -677,7 +677,7 @@ namespace engine
         }
 
 
-        internal static int dexReactionAdj(Player player)
+        internal static int DexReactionAdj(Player player)
         {
             int bonus;
 
@@ -906,17 +906,7 @@ namespace engine
         }
 
 
-        internal static void clear_spell(byte spell_id, Player player)
-        {
-            for (int i = 0; i < gbl.max_spells; i++)
-            {
-                if (player.spell_list[i] == spell_id)
-                {
-                    player.spell_list[i] = 0;
-                    break;
-                }
-            }
-        }
+
 
 
         internal static void lose_item(Item item, Player player)

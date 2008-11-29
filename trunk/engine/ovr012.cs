@@ -121,7 +121,7 @@ namespace engine
             gbl.byte_1D5AB = string.Empty;
             gbl.lastDaxBlockId = 0x0FF;
             gbl.byte_1D5B5 = 0x0FF;
-            gbl.byte_1C01B = 0;
+            gbl.gameSaved = false;
             gbl.byte_1EE95 = false;
             gbl.byte_1D910 = true;
             gbl.bigpic_block_id = 0x0FF;
@@ -228,7 +228,7 @@ namespace engine
             gbl.byte_1D5AB = string.Empty;
             gbl.lastDaxBlockId = 0x0FF;
             gbl.byte_1D5B5 = 0x0FF;
-            gbl.byte_1C01B = 0;
+            gbl.gameSaved = false;
             gbl.byte_1EE95 = false;
             gbl.byte_1D910 = true;
             gbl.bigpic_block_id = 0x0FF;

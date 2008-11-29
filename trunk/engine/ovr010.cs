@@ -54,7 +54,7 @@ namespace engine
 
             if (sub_354AA(player))
             {
-                var_2 = ovr025.clear_actions(player);
+                ovr025.clear_actions(player);
                 return;
             }
 
@@ -62,19 +62,18 @@ namespace engine
             {
                 ovr023.sub_5D2E1(1, QuickFight.True, player.actions.spell_id);
 
-                var_2 = ovr025.clear_actions(player);
+                ovr025.clear_actions(player);
                 return;
             }
 
             if (turn_undead(player) != 0)
             {
-                var_2 = ovr025.clear_actions(player);
+                ovr025.clear_actions(player);
                 return;
             }
 
             if (sub_3560B(player) == true)
             {
-                var_2 = true;
                 return;
             }
 
@@ -132,7 +131,7 @@ namespace engine
                 SpellEntry spell_entry = gbl.spell_table[spell_id];
 
                 if (gbl.player_ptr.OppositeTeam() != tmpPlayer.combat_team &&
-                    spell_entry.can_save_flag != 1 &&
+                    spell_entry.can_save_flag != DamageOnSave.Zero &&
                     ovr024.do_saving_throw(save_bonus, spell_entry.field_9, tmpPlayer) == false)
                 {
                     result = true;

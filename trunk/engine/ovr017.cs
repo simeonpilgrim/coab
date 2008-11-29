@@ -1128,7 +1128,7 @@ namespace engine
 
             if (gbl.import_from == ImportSource.Curse)
             {
-                arg_8 = System.IO.Path.GetFileName(arg_8);
+                arg_8 = System.IO.Path.GetFileNameWithoutExtension(arg_8);
             }
             else
             {
@@ -1636,7 +1636,7 @@ namespace engine
                         remove_player_file(tmp_player);
                     }
 
-                    gbl.byte_1C01B = 1;
+                    gbl.gameSaved = true;
                     ovr027.ClearPromptArea();
                 }
             }

@@ -45,7 +45,7 @@ namespace engine
                 }
                 else
                 {
-                    int pool_money = ovr022.getPooledGold(gbl.pooled_money);
+                    int pool_money = ovr022.getPooledGold();
 
                     if (cost <= pool_money)
                     {

@@ -48,27 +48,15 @@ namespace engine
         }
 
 
-        internal static int getPooledGold(int[] arg_0)
+        internal static int getPooledGold()
         {
             int total = 0;
             for (int i = 0; i < 5; i++)
             {
-                total += Money.per_copper[i] * arg_0[i];
+                total += Money.per_copper[i] * gbl.pooled_money[i];
             }
 
             return total / Money.per_copper[Money.gold];
-        }
-
-
-        internal static void setPlayerMoney(int gold)
-        {
-            for (int i = 0; i < 5; i++)
-            {
-                gbl.player_ptr.Money[i] = 0;
-            }
-
-            gbl.player_ptr.platinum = (short)(gold / 5);
-            gbl.player_ptr.gold = (short)(gold % 5);
         }
 
 
@@ -81,6 +69,18 @@ namespace engine
 
             gbl.pooled_money[Money.platum] = gold / 5;
             gbl.pooled_money[Money.gold] = gold % 5;
+        }
+
+
+        internal static void setPlayerMoney(int gold)
+        {
+            for (int i = 0; i < 5; i++)
+            {
+                gbl.player_ptr.Money[i] = 0;
+            }
+
+            gbl.player_ptr.platinum = (short)(gold / 5);
+            gbl.player_ptr.gold = (short)(gold % 5);
         }
 
 
@@ -208,7 +208,7 @@ namespace engine
         internal static int GetPartyCount() /* sub_595FF */
         {
             int count = 0;
-
+            
             foreach (Player player in gbl.player_next_ptr)
             {
                 if (player.field_F7 == 0 ||

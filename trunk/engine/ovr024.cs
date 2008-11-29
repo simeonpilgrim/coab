@@ -827,22 +827,17 @@ namespace engine
 
         internal static void sub_648D9(int stat_index, Player player)
         {
-            Affect affect_ptr;
-
             byte var_A = 0;
             byte stat_b = 0;
             byte str_00_b = 0;
             byte var_11 = 0x0FF;
-
-            
 
             byte stat_a = player.stats[stat_index].tmp;
             byte str_00_a = player.max_str_00;
 
             foreach (Item item in player.items)
             {
-                if ((int)item.affect_3 > 0x80 &&
-                    item.readied == true)
+                if ((int)item.affect_3 > 0x80 && item.readied == true)
                 {
                     int var_12 = (int)item.affect_3 & 0x7F;
 
@@ -987,6 +982,8 @@ namespace engine
 
             if (stat_index == 0)
             {
+                Affect affect_ptr;
+
                 if (ovr025.find_affect(out affect_ptr, Affects.strength, player) == true)
                 {
                     decode_strength(out str_00_b, out stat_b, affect_ptr);
@@ -1163,9 +1160,10 @@ namespace engine
             }
             else if (stat_index == 5)
             {
-                if (ovr025.find_affect(out affect_ptr, Affects.friends, player) == true)
+                Affect affect;
+                if (ovr025.find_affect(out affect, Affects.friends, player) == true)
                 {
-                    stat_a = affect_ptr.field_3;
+                    stat_a = affect.field_3;
                 }
 
                 player.charisma = stat_a;
@@ -1174,7 +1172,7 @@ namespace engine
 
         static Set unk_64F90 = new Set(0x0002, new byte[] { 0xC0, 0x01 });
 
-        internal static void damage_person(bool change_damage, byte arg_2, int damage, Player player)
+        internal static void damage_person(bool change_damage, DamageOnSave arg_2, int damage, Player player)
         {
             string text;
 
@@ -1184,11 +1182,11 @@ namespace engine
 
             if (change_damage == true)
             {
-                if (arg_2 == 1)
+                if (arg_2 == DamageOnSave.Zero)
                 {
                     gbl.damage = 0;
                 }
-                else if (arg_2 == 2)
+                else if (arg_2 == DamageOnSave.Half)
                 {
                     gbl.damage /= 2;
                 }
@@ -1209,7 +1207,7 @@ namespace engine
                     text = "takes 1 point of damage ";
                 }
 
-                int mask = gbl.damage_flags & 0xf7;
+                int mask = (int)gbl.damage_flags & 0xf7;
                 if (mask == 0x01)
                 {
                     text += "from Fire";
@@ -1227,7 +1225,7 @@ namespace engine
                     text += "from Acid";
                 }
 
-                if ((gbl.damage_flags & 8) == gbl.damage_flags)
+                if ((gbl.damage_flags & DamageType.Magic) == gbl.damage_flags)
                 {
                     text += "from Magic";
                 }
@@ -1237,16 +1235,7 @@ namespace engine
 
                 if (gbl.game_state == GameState.Combat)
                 {
-                    player.actions.can_cast = false;
-
-                    if (player.actions.spell_id > 0)
-                    {
-                        ovr025.DisplayPlayerStatusString(true, 12, "lost a spell", player);
-
-                        ovr025.clear_spell(player.actions.spell_id, player);
-
-                        player.actions.spell_id = 0;
-                    }
+                    TryLooseSpell(player);
                 }
 
                 if (player.in_combat == false)
@@ -1290,15 +1279,28 @@ namespace engine
             }
         }
 
+        internal static void TryLooseSpell(Player player)
+        {
+            player.actions.can_cast = false;
 
-        internal static void is_unaffected(string text, bool saved, byte can_save, bool call_spell_jump_list, int arg_A, ushort arg_C, Affects affect_id, Player target)
+            if (player.actions.spell_id > 0)
+            {
+                ovr025.DisplayPlayerStatusString(true, 12, "lost a spell", player);
+
+                player.ClearSpell(player.actions.spell_id);
+                player.actions.spell_id = 0;
+            }
+        }
+
+
+        internal static void is_unaffected(string text, bool saved, DamageOnSave can_save, bool call_spell_jump_list, int arg_A, ushort arg_C, Affects affect_id, Player target)
         {
             gbl.current_affect = affect_id;
 
             work_on_00(target, 9);
 
             if (gbl.current_affect == 0 ||
-                (saved == true && can_save == 1))
+                (saved == true && can_save == DamageOnSave.Zero))
             {
                 ovr025.DisplayPlayerStatusString(true, 10, "is Unaffected", target);
             }
