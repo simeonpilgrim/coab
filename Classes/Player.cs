@@ -502,7 +502,7 @@ namespace Classes
 
         public Action actions; // 0x18d
         [DataOffset(0x191, DataType.Byte)]
-        public byte field_191; // 0x191
+        public byte paladinCuresLeft; // 0x191 field_191
         [DataOffset(0x192, DataType.Byte)]
         public byte field_192; // 0x192
         [DataOffset(0x193, DataType.Byte)]
@@ -709,6 +709,18 @@ namespace Classes
         public bool IsHeld()
         {
             return Array.Exists(held_affects, affect => HasAffect(affect));
+        }
+
+        public void ClearSpell(int spellId)
+        {
+            for (int i = 0; i < gbl.max_spells; i++)
+            {
+                if (spell_list[i] == spellId)
+                {
+                    spell_list[i] = 0;
+                    return;
+                }
+            }
         }
     }
 }

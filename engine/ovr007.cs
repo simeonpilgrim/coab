@@ -31,7 +31,7 @@ namespace engine
 
             foreach (var item in gbl.items_pointer)
             {
-                ovr025.ItemDisplayNameBuild(false, false, 0, 0, item, null);
+                ovr025.ItemDisplayNameBuild(false, false, 0, 0, item);
             }
 
             return input_key;
@@ -131,7 +131,7 @@ namespace engine
                     }
                     else
                     {
-                        int pooled_gold = ovr022.getPooledGold(gbl.pooled_money);
+                        int pooled_gold = ovr022.getPooledGold();
 
                         if (item_cost <= pooled_gold)
                         {
@@ -174,7 +174,7 @@ namespace engine
 
             bool exitShop = false;
 
-            gbl.items_pointer.ForEach(item => ovr025.ItemDisplayNameBuild(false, false, 0, 0, item, null));
+            gbl.items_pointer.ForEach(item => ovr025.ItemDisplayNameBuild(false, false, 0, 0, item));
 
             do
             {

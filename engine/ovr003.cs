@@ -1367,7 +1367,7 @@ namespace engine
                     gbl.items_pointer.Add(ovr022.create_item(item_type));
                 }
 
-                gbl.items_pointer.ForEach(item => ovr025.ItemDisplayNameBuild(false, false, 0, 0, item, gbl.player_ptr));
+                gbl.items_pointer.ForEach(item => ovr025.ItemDisplayNameBuild(false, false, 0, 0, item));
             }
         }
 
@@ -2134,7 +2134,7 @@ namespace engine
             }
             gbl.can_draw_bigpic = true;
             ovr029.update_3D_view();
-            gbl.byte_1C01B = 0;
+            gbl.gameSaved = false;
         }
 
 

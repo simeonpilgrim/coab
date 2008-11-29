@@ -38,7 +38,7 @@ namespace engine
                         {
                             foreach (Item item in player.items)
                             {
-                                ovr025.ItemDisplayNameBuild(false, false, 0, 0, item, player);
+                                ovr025.ItemDisplayNameBuild(false, false, 0, 0, item);
 
                                 Item newItem = item.ShallowClone();
                                 newItem.readied = false;
@@ -463,7 +463,7 @@ namespace engine
             var list = new List<MenuItem>();
             gbl.items_pointer.ForEach(item =>
                 {
-                    ovr025.ItemDisplayNameBuild(false, false, 0, 0, item, null);
+                    ovr025.ItemDisplayNameBuild(false, false, 0, 0, item);
                     list.Add(new MenuItem(item.name, item));
                 });
 

@@ -117,14 +117,14 @@ namespace engine
             if (gbl.player_ptr02.field_151 != null)
             {
                 seg041.displayString("Weapon", 0, 15, yCol, 1);
-                ovr025.ItemDisplayNameBuild(true, false, yCol, 8, gbl.player_ptr02.field_151, gbl.player_ptr02);
+                ovr025.ItemDisplayNameBuild(true, false, yCol, 8, gbl.player_ptr02.field_151);
             }
 
             yCol++;
             if (gbl.player_ptr02.armor != null)
             {
                 seg041.displayString("Armor", 0, 15, yCol, 2);
-                ovr025.ItemDisplayNameBuild(true, false, yCol, 8, gbl.player_ptr02.armor, gbl.player_ptr02);
+                ovr025.ItemDisplayNameBuild(true, false, yCol, 8, gbl.player_ptr02.armor);
             }
 
             yCol++;
@@ -245,7 +245,7 @@ namespace engine
             char input_key = ' ';
             bool arg_0 = false;
 
-            gbl.player_ptr01 = gbl.player_ptr;
+            gbl.tradeWith = gbl.player_ptr;
 
             playerDisplayFull();
 
@@ -301,7 +301,7 @@ namespace engine
                     text += "Heal ";
                 }
 
-                if (CanCastCure(gbl.player_ptr) == true)
+                if (CanCastCureDiseases(gbl.player_ptr) == true)
                 {
                     text += "Cure ";
                 }
@@ -333,11 +333,11 @@ namespace engine
                         break;
 
                     case 'H':
-                        sub_576D7(gbl.player_ptr);
+                        PaladinHeal(gbl.player_ptr);
                         break;
 
                     case 'C':
-                        paladin_cure_disease(gbl.player_ptr);
+                        PaladinCureDisease(gbl.player_ptr);
                         break;
                 }
 
@@ -511,7 +511,7 @@ namespace engine
                         text += " Id";
                     }
 
-                    player.items.ForEach(item => ovr025.ItemDisplayNameBuild(false, true, 0, 0, item, player));
+                    player.items.ForEach(item => ovr025.ItemDisplayNameBuild(false, true, 0, 0, item));
 
 
                     if (redraw_player == true || gbl.byte_1D2C8 == true)
@@ -588,7 +588,7 @@ namespace engine
                             case 'D':
                                 if (CanSellDropTradeItem(curr_item) == true)
                                 {
-                                    ovr025.ItemDisplayNameBuild(false, false, 0, 0, curr_item, player);
+                                    ovr025.ItemDisplayNameBuild(false, false, 0, 0, curr_item);
 
                                     seg041.press_any_key("Your " + curr_item.name + "will be gone forever", true, 0, 14, 22, 0x26, 21, 1);
 
@@ -729,7 +729,7 @@ namespace engine
                         item.readied = false;
                         int var_3 = (int)item.affect_2 << 4;
 
-                        gbl.damage_flags = 8;
+                        gbl.damage_flags = DamageType.Magic;
                         if (gbl.game_state == GameState.Combat)
                         {
                             ovr025.sub_68DC0();
@@ -877,7 +877,7 @@ namespace engine
                         break;
 
                     case 2:
-                        ovr025.ItemDisplayNameBuild(false, false, 0, 0, player.itemArray[item_slot], player);
+                        ovr025.ItemDisplayNameBuild(false, false, 0, 0, player.itemArray[item_slot]);
                         ovr025.string_print01("already using " + player.itemArray[item_slot].name);
                         break;
 
@@ -895,14 +895,14 @@ namespace engine
 
         internal static void trade_item(Item item)
         {
-            Player player = gbl.player_ptr01;
+            Player player = gbl.tradeWith;
             ovr025.load_pic();
 
             ovr025.selectAPlayer(ref player, true, "Trade with Whom?");
 
             if (player != null)
             {
-                gbl.player_ptr01 = player;
+                gbl.tradeWith = player;
                 if (canCarry(item, player) == true)
                 {
                     ovr025.string_print01("Overloaded");
@@ -1022,11 +1022,11 @@ namespace engine
                     {
                         seg041.displayString("Item:", 0, 10, 0x17, 0);
 
-                        ovr025.ItemDisplayNameBuild(true, false, 0x17, 5, item, gbl.player_ptr);
+                        ovr025.ItemDisplayNameBuild(true, false, 0x17, 5, item);
                     }
                     else
                     {
-                        ovr025.ItemDisplayNameBuild(true, false, 0x16, 1, item, gbl.player_ptr);
+                        ovr025.ItemDisplayNameBuild(true, false, 0x16, 1, item);
                     }
 
                     seg041.GameDelay();
@@ -1120,7 +1120,7 @@ namespace engine
                 }
             }
 
-            ovr025.ItemDisplayNameBuild(false, false, 0, 0, item, gbl.player_ptr02);
+            ovr025.ItemDisplayNameBuild(false, false, 0, 0, item);
 
             string offer = "I'll give you " + item_value.ToString() + " gold pieces for your " + item.name;
 
@@ -1166,7 +1166,7 @@ namespace engine
         internal static void IdentifyItem(ref bool arg_0, Item item)
         {
             bool id_item = false;
-            ovr025.ItemDisplayNameBuild(false, false, 0, 0, item, gbl.player_ptr02);
+            ovr025.ItemDisplayNameBuild(false, false, 0, 0, item);
 
             seg041.press_any_key("For 200 gold pieces I'll identify your " + item.name, true, 0, 0x0e, 0x16, 0x26, 0x15, 1);
 
@@ -1182,7 +1182,7 @@ namespace engine
                 }
                 else
                 {
-                    int pooled_gold = ovr022.getPooledGold(gbl.pooled_money);
+                    int pooled_gold = ovr022.getPooledGold();
 
                     if (pooled_gold > 200)
                     {
@@ -1206,7 +1206,7 @@ namespace engine
                 else
                 {
                     item.hidden_names_flag = 0;
-                    ovr025.ItemDisplayNameBuild(false, false, 0, 0, item, gbl.player_ptr02);
+                    ovr025.ItemDisplayNameBuild(false, false, 0, 0, item);
 
                     seg041.press_any_key("It looks like some sort of " + item.name, true, 0, 0x0e, 0x16, 0x26, 0x15, 1);
 
@@ -1225,12 +1225,12 @@ namespace engine
             bool finished = false;
             do
             {
-                Player source = gbl.player_ptr01;
+                Player dest = gbl.tradeWith;
                 ovr025.load_pic();
 
-                ovr025.selectAPlayer(ref source, true, "Trade to?");
+                ovr025.selectAPlayer(ref dest, true, "Trade to?");
 
-                if (source == null)
+                if (dest == null)
                 {
                     finished = true;
                 }
@@ -1242,7 +1242,7 @@ namespace engine
                     do
                     {
                         displayMoney();
-                        gbl.player_ptr01 = source;
+                        gbl.tradeWith = dest;
 
                         List<MenuItem> list = new List<MenuItem>();
 
@@ -1275,7 +1275,7 @@ namespace engine
 
                             short var_130 = ovr022.sub_592AD(10, text, gbl.player_ptr.Money[money_slot]);
 
-                            ovr022.trade_money(money_slot, var_130, source, gbl.player_ptr);
+                            ovr022.trade_money(money_slot, var_130, dest, gbl.player_ptr);
                             noMoneyLeft = true;
                             finished = true;
 
@@ -1402,19 +1402,16 @@ namespace engine
 
         internal static int getPlayerGold(Player player)
         {
-            int var_6;
-            int var_2;
-
-            var_6 = 0;
+            int coppers = 0;
 
             for (int i = 0; i < 5; i++)
             {
-                var_6 += player.Money[i] * Money.per_copper[i];
+                coppers += player.Money[i] * Money.per_copper[i];
             }
 
-            var_2 = (var_6 + 100) / Money.per_copper[Money.gold];
+            int gold = (coppers + 100) / Money.per_copper[Money.gold];
 
-            return var_2;
+            return gold;
         }
 
         internal static byte spell_menu2(out bool arg_0, ref int index, SpellSource arg_8, SpellLoc spl_location)
@@ -1505,7 +1502,7 @@ namespace engine
             if ((player._class == ClassId.paladin || (player.field_114 > 0 && ovr026.sub_6B3D1(player) != 0)) &&
                  gbl.game_state != GameState.Combat &&
                     player.health_status == Status.okey &&
-                    player.HasAffect(Affects.affect_8c) == false)
+                    player.HasAffect(Affects.paladinDailyHealCast) == false)
             {
                 result = true;
             }
@@ -1518,53 +1515,45 @@ namespace engine
         }
 
 
-        internal static bool CanCastCure(Player player) /* sub_57655 */
+        internal static bool CanCastCureDiseases(Player player) /* sub_57655 */
         {
-            if ((player._class == ClassId.paladin || (player.field_114 > 0 && ovr026.sub_6B3D1(player) != 0)) &&
+            return ((player._class == ClassId.paladin || (player.field_114 > 0 && ovr026.sub_6B3D1(player) != 0)) &&
                 gbl.game_state != GameState.Combat &&
                 player.health_status == Status.okey &&
-                player.field_191 > 0)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+                player.paladinCuresLeft > 0);
         }
 
 
-        internal static void sub_576D7(Player player)
+        internal static void PaladinHeal(Player player)
         {
             ovr025.load_pic();
-            Player player_ptr = gbl.player_next_ptr[0];
+            Player target = gbl.player_next_ptr[0];
 
-            ovr025.selectAPlayer(ref player_ptr, true, "Heal whom? ");
+            ovr025.selectAPlayer(ref target, true, "Heal whom? ");
 
-            if (player_ptr == null)
+            if (target == null)
             {
                 playerDisplayFull();
+                return;
+            }
+
+            int dx = player.field_114 * ovr026.sub_6B3D1(player);
+            int healAmount = (player.paladin_lvl + dx) * 2;
+
+            if (ovr024.heal_player(0, healAmount, target) == true)
+            {
+                ovr025.string_print01(target.name + " feels better");
             }
             else
             {
-                int dx = player.field_114 * ovr026.sub_6B3D1(player);
-                int ax = (player.paladin_lvl + dx) * 2;
-
-                if (ovr024.heal_player(0, ax, player_ptr) == true)
-                {
-                    ovr025.string_print01(player_ptr.name + " feels better");
-                }
-                else
-                {
-                    ovr025.string_print01(player_ptr.name + " is unaffected");
-                }
-
-                ovr024.add_affect(false, 0, 0x5a0, Affects.affect_8c, player);
-                playerDisplayFull();
+                ovr025.string_print01(target.name + " is unaffected");
             }
+
+            ovr024.add_affect(false, 0, 0x5a0, Affects.paladinDailyHealCast, player);
+            playerDisplayFull();
         }
 
-        static Affects[] unk_16B39 = { 
+        static Affects[] paladinCureableDiseases = { // unk_16B39
             Affects.helpless, 
             Affects.cause_disease_1, 
             Affects.affect_2b, 
@@ -1572,7 +1561,7 @@ namespace engine
             Affects.hot_fire_shield, 
             Affects.affect_39 };
 
-        internal static void paladin_cure_disease(Player player) /* sub_577EC */
+        internal static void PaladinCureDisease(Player player) /* sub_577EC */
         {
             ovr025.load_pic();
             Player target = gbl.player_next_ptr[0];
@@ -1585,7 +1574,7 @@ namespace engine
             }
             else
             {
-                bool is_diseased = System.Array.Exists(unk_16B39, affect => target.HasAffect(affect));
+                bool is_diseased = System.Array.Exists(paladinCureableDiseases, affect => target.HasAffect(affect));
 
                 char input = 'Y';
 
@@ -1601,18 +1590,18 @@ namespace engine
                 if (input == 'Y')
                 {
                     gbl.cureSpell = true;
-                    System.Array.ForEach(unk_16B39, affect => ovr024.remove_affect(null, affect, target));
+                    System.Array.ForEach(paladinCureableDiseases, affect => ovr024.remove_affect(null, affect, target));
 
                     gbl.cureSpell = false;
 
-                    if (player.field_191 > 0)
+                    if (player.paladinCuresLeft > 0)
                     {
-                        player.field_191--;
+                        player.paladinCuresLeft--;
                     }
 
-                    if (player.HasAffect(Affects.affect_8D) == false)
+                    if (player.HasAffect(Affects.paladinDailyCureRefresh) == false)
                     {
-                        ovr024.add_affect(true, 0, 0x2760, Affects.affect_8D, player);
+                        ovr024.add_affect(true, 0, 0x2760, Affects.paladinDailyCureRefresh, player);
                     }
 
                     ovr025.string_print01(target.name + " is cured");

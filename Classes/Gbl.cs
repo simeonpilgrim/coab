@@ -74,6 +74,25 @@ namespace Classes
     public delegate void spellDelegate2();
     public delegate void affectDelegate(Effect arg_0, object affect, Player player);
 
+    [Flags]
+    public enum DamageType
+    {
+        Fire = 0x01,
+        Cold = 0x02,
+        Electricity = 0x04,
+        Magic = 0x08,
+        Acid = 0x10,
+        Unknown20 = 0x20,
+        Unknown40 = 0x40
+    }
+
+    public enum DamageOnSave
+    {
+        Zero = 1,
+        Half = 2,
+        Unknown_3 = 3,
+        Unknown_1E = 0x1e
+    }
 
     public enum SoundType
     {
@@ -290,16 +309,15 @@ namespace Classes
                 return save_path;
             }
         }
-        public static byte byte_1C01B;
+        public static bool gameSaved; // byte_1C01B
         public static byte[] monoCharData = new byte[8]; // byte_1C8C2
         public static int textXCol; // byte_1C8CA
         public static int textYCol; // byte_1C8CB
         public static byte byte_1D1BB;
         public static int sortedCombatantCount; // byte_1D1C0
-        //public static byte byte_1D1C4;
         public static Affects current_affect; // byte_1D2BD
         public static int damage; // byte_1D2BE
-        public static byte damage_flags; // byte_1D2BF
+        public static DamageType damage_flags; // byte_1D2BF
         public static byte byte_1D2C0;
         public static byte spell_id; // byte_1D2C1
         public static int dice_count; // byte_1D2C2
@@ -347,7 +365,6 @@ namespace Classes
         public static bool displayPlayerStatusLine18; /* byte_1D8A8 */
         public static bool can_draw_bigpic; // byte_1D8AA
         public static bool byte_1D8AC; // byte_1D8AC
-        //public static byte byte_1D8B6; // not used.
         public static byte byte_1D8B7;
         public static byte byte_1D8B8;
         public static int[] near_targets = new int[0x48]; // byte_1D8B9
@@ -421,7 +438,6 @@ namespace Classes
         public static short word_1AE15;
         public static ushort word_1AE17;
         public static short word_1AE19;
-        public static short word_1AFE0;
 
 
         public static ushort vm_run_addr_1; // word_1B2D3
@@ -499,7 +515,7 @@ namespace Classes
         public static int CombatantCount; // gbl.stru_1C9CD[0].field_3
         public static Struct_1C9CD[] CombatMap; // seg600:66BD stru_1C9CD
 
-        public static Player player_ptr01;
+        public static Player tradeWith; //player_ptr01
         public static Player player_ptr02;
 
         public static byte game_area;
@@ -568,10 +584,11 @@ namespace Classes
             new SpellEntry(0, 1, 0, 0, 0, 3, 4, 2, 0, 4, Affects.protection_from_good, 2, 4, 1, 0, 0), 
             new SpellEntry(0, 1, 0, 0, 0, 10, 4, 2, 0, 4, Affects.resist_cold, 2, 10, 0, 0, 0), 
             new SpellEntry(2, 1, 0, 0, 0, 0, 4, 0, 0, 4, 0, 1, 1, 2, 1, 0), 
-            new SpellEntry(2, 1, 12, 0, 0, 0, 4, 0, 1, 4, Affects.charm_person, 1, 1, 4, 1, 0), 
+            new SpellEntry(2, 1, 12, 0, 0, 0, 4, 0, DamageOnSave.Zero, 4, Affects.charm_person, 1, 1, 4, 
+                1, 0), 
             new SpellEntry(2, 1, 0, 0, 0, 2, 0, 1, 0, 4, Affects.detect_magic, 2, 1, 0, 0, 0), 
             new SpellEntry(2, 1, 0, 2, 0, 10, 4, 2, 0, 4, Affects.enlarge, 2, 1, 0, 0, 0), 
-            new SpellEntry(2, 1, 0, 2, 0, 10, 4, 2, 1, 4, Affects.reduce, 2, 1, 0, 1, 0), 
+            new SpellEntry(2, 1, 0, 2, 0, 10, 4, 2, DamageOnSave.Zero, 4, Affects.reduce, 2, 1, 0, 1, 0), 
             new SpellEntry(2, 1, 0, 0, 0, 1, 0, 1, 0, 4, Affects.friends, 0, 1, 0, 0, 0), 
             new SpellEntry(2, 1, 6, 4, 0, 0, 4, 0, 0, 4, 0, 1, 1, 4, 1, 0), 
             new SpellEntry(2, 1, 0, 0, 0, 2, 4, 2, 0, 4, Affects.protection_from_evil, 2, 1, 1, 0, 0), 
@@ -581,9 +598,9 @@ namespace Classes
             new SpellEntry(2, 1, -1, 0, 0, 0, 4, 0, 0, 4, 0, 1, 1, 2, 1, 0), 
             new SpellEntry(2, 1, 3, 4, 0, 5, 9, 0, 0, 4, Affects.sleep, 1, 1, 2, 1, 1), 
             new SpellEntry(0, 2, 0, 0, 0x1E, 0, 0, 1, 0, 4, Affects.find_traps, 0, 5, 0, 0, 0), 
-            new SpellEntry(0, 2, 6, 0, 4, 1, 6, 0, 1, 4, Affects.paralyze, 1, 5, 6, 1, 0), 
+            new SpellEntry(0, 2, 6, 0, 4, 1, 6, 0, DamageOnSave.Zero, 4, Affects.paralyze, 1, 5, 6, 1, 0), 
             new SpellEntry(0, 2, 0, 0, 0, 10, 4, 2, 0, 4, Affects.resist_fire, 2, 5, 1, 0, 0), 
-            new SpellEntry(0, 2, 12, 0, 0, 2, 0x1F, 0, 3, 4, Affects.silence_15_radius, 1, 5, 4, 1, 1), /* 396C - */            
+            new SpellEntry(0, 2, 12, 0, 0, 2, 0x1F, 0, DamageOnSave.Unknown_3, 4, Affects.silence_15_radius, 1, 5, 4, 1, 1), /* 396C - */            
             new SpellEntry(0, 2, 0, 0, 0, 0x3C, 4, 2, 0, 4, Affects.slow_poison, 2, 1, 0, 0, 0), 
             new SpellEntry(0, 2, 3, 0, 0, 0, 0xF0, 0, 0, 4, Affects.snake_charm, 1, 5, 0, 1, 0), 
             new SpellEntry(0, 2, 3, 0, 0, 1, 0, 1, 0, 4, Affects.spiritual_hammer, 2, 5, 1, 0, 0), 
@@ -591,25 +608,25 @@ namespace Classes
             new SpellEntry(2, 2, 0, 0, 0, 0, 4, 2, 0, 4, Affects.invisibility, 2, 2, 2, 0, 0), 
             new SpellEntry(2, 2, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 1, 0, 0, 0), 
             new SpellEntry(2, 2, 0, 0, 0, 2, 0, 1, 0, 4, Affects.mirror_image, 2, 2, 3, 0, 0), 
-            new SpellEntry(2, 2, 1, 1, 0, 1, 4, 0, 1, 4, Affects.ray_of_enfeeblement, 1, 2, 2, 1, 0), 
-            new SpellEntry(2, 2, 3, 0, 0, 1, 9, 0, 3, 0, Affects.stinking_cloud, 1, 2, 5, 1, 1), 
+            new SpellEntry(2, 2, 1, 1, 0, 1, 4, 0, DamageOnSave.Zero, 4, Affects.ray_of_enfeeblement, 1, 2, 2, 1, 0), 
+            new SpellEntry(2, 2, 3, 0, 0, 1, 9, 0, DamageOnSave.Unknown_3, 0, Affects.stinking_cloud, 1, 2, 5, 1, 1), 
             new SpellEntry(2, 2, 0, 0, 0, 0x3C, 0, 2, 0, 4, Affects.strength, 0, 10, 0, 0, 0), 
-            new SpellEntry(3, 7, 4, 0, 0, 0, 8, 4, 1, 4, 0, 2, 0, 2, 0, 0), 
+            new SpellEntry(3, 7, 4, 0, 0, 0, 8, 4, DamageOnSave.Zero, 4, 0, 2, 0, 2, 0, 0), 
             new SpellEntry(0, 3, 0, 0, 0, 0, 4, 2, 0, 4, 0, 2, 10, 0, 0, 0), 
-            new SpellEntry(0, 3, -1, 0, 0, 0, 4, 0, 1, 4, Affects.blinded, 1, 10, 3, 1, 0), 
+            new SpellEntry(0, 3, -1, 0, 0, 0, 4, 0, DamageOnSave.Zero, 4, Affects.blinded, 1, 10, 3, 1, 0), 
             new SpellEntry(0, 3, 0, 0, 0, 0, 0, 2, 0, 4, 0, 0, 100, 0, 0, 0), 
-            new SpellEntry(0, 3, -1, 0, 0, 0, 4, 0, 1, 4, Affects.cause_disease_1, 1, 100, 4, 1, 0), 
+            new SpellEntry(0, 3, -1, 0, 0, 0, 4, 0, DamageOnSave.Zero, 4, Affects.cause_disease_1, 1, 100, 4, 1, 0), 
             new SpellEntry(0, 3, 6, 0, 0, 0, 9, 2, 0, 4, 0, 2, 4, 3, 1, 1), 
             new SpellEntry(0, 3, 0, 0, 0, 1, 0, 4, 0, 4, Affects.prayer, 2, 6, 5, 0, 0), 
             new SpellEntry(0, 3, 0, 0, 0, 0, 4, 2, 0, 4, 0, 2, 6, 0, 0, 0), 
-            new SpellEntry(0, 3, -1, 0, 0, 10, 4, 0, 1, 4, Affects.bestow_curse, 1, 6, 5, 1, 0), 
+            new SpellEntry(0, 3, -1, 0, 0, 10, 4, 0, DamageOnSave.Zero, 4, Affects.bestow_curse, 1, 6, 5, 1, 0), 
             new SpellEntry(2, 3, 0, 0, 0, 1, 0, 0, 0, 4, Affects.blink, 1, 1, 2, 0, 0), 
             new SpellEntry(2, 3, 12, 0, 0, 1, 9, 2, 0, 4, 0, 2, 3, 2, 1, 1), 
-            new SpellEntry(2, 3, 10, 1, 0, 0, 11, 0, 2, 4, 0, 1, 3, 7, 1, 3), 
+            new SpellEntry(2, 3, 10, 1, 0, 0, 11, 0, DamageOnSave.Half, 4, 0, 1, 3, 7, 1, 3), 
             new SpellEntry(2, 3, 6, 0, 3, 1, 10, 4, 0, 4, Affects.haste, 2, 3, 3, 0, 0), 
-            new SpellEntry(2, 3, 12, 0, 0, 2, 7, 0, 1, 4, Affects.paralyze, 1, 3, 6, 1, 0), 
+            new SpellEntry(2, 3, 12, 0, 0, 2, 7, 0, DamageOnSave.Zero, 4, Affects.paralyze, 1, 3, 6, 1, 0), 
             new SpellEntry(2, 3, 0, 0, 0, 0, 9, 4, 0, 4, Affects.invisibility, 2, 3, 1, 0, 0), 
-            new SpellEntry(2, 3, 4, 1, 0, 0, 8, 0, 2, 4, 0, 1, 3, 6, 1, 0), 
+            new SpellEntry(2, 3, 4, 1, 0, 0, 8, 0, DamageOnSave.Half, 4, 0, 1, 3, 6, 1, 0), 
             new SpellEntry(2, 3, 0, 0, 0, 2, 4, 2, 0, 4, Affects.prot_from_evil_10_radius, 2, 3, 1, 0, 0), 
             new SpellEntry(2, 3, 0, 0, 0, 2, 4, 2, 0, 4, Affects.prot_from_good_10_radius, 2, 3, 2, 0, 0), 
             new SpellEntry(2, 3, 0, 0, 0, 10, 4, 2, 0, 4, Affects.prot_from_normal_missiles, 2, 3, 3, 0, 0), 
@@ -618,54 +635,53 @@ namespace Classes
             new SpellEntry(3, 6, 0, 0, 0, 0, 0, 1, 0, 4, Affects.haste, 2, 0, 3, 0, 0), 
             new SpellEntry(0, 4, 0, 0, 0, 0, 4, 2, 0, 4, 0, 2, 7, 1, 0, 0), 
             new SpellEntry(3, 6, 0, 0, 0, 0, 0, 1, 0, 4, Affects.strength, 2, 0, 1, 0, 0), 
-            new SpellEntry(3, 6, 4, 4, 0, 0, 4, 0, 2, 4, 0, 1, 0, 7, 1, 0), 
-            new SpellEntry(3, 6, 6, 0, 0, 0, 4, 0, 1, 0, Affects.paralyze, 1, 0, 7, 1, 0), 
+            new SpellEntry(3, 6, 4, 4, 0, 0, 4, 0, DamageOnSave.Half, 4, 0, 1, 0, 7, 1, 0), 
+            new SpellEntry(3, 6, 6, 0, 0, 0, 4, 0, DamageOnSave.Zero, 0, Affects.paralyze, 1, 0, 7, 1, 0), 
             new SpellEntry(3, 6, 0, 0, 0, 0, 0, 1, 0, 4, Affects.haste, 2, 0, 1, 0, 0), 
             new SpellEntry(3, 6, 0, 0, 0, 0, 7, 4, 0, 4, Affects.invisible, 2, 0, 2, 0, 0), 
-            new SpellEntry(3, 6, 7, 0, 0, 0, 11, 0, 2, 4, 0, 1, 0, 7, 1, 3), 
+            new SpellEntry(3, 6, 7, 0, 0, 0, 11, 0, DamageOnSave.Half, 4, 0, 1, 0, 7, 1, 3), 
             new SpellEntry(3, 6, 12, 0, 0, 0, 4, 0, 0, 4, 0, 1, 0, 6, 1, 0), 
             new SpellEntry(0, 4, 0, 0, 0, 0, 4, 0, 0, 4, 0, 1, 7, 5, 1, 0), 
             new SpellEntry(0, 4, 0, 0, 0, 0, 0, 2, 0, 4, 0, 0, 7, 0, 0, 0), 
-            new SpellEntry(0, 4, 0, 0, 0, 0, 4, 0, 1, 0, 0, 1, 7, 6, 1, 0), 
+            new SpellEntry(0, 4, 0, 0, 0, 0, 4, 0, DamageOnSave.Zero, 0, 0, 1, 7, 6, 1, 0), 
             new SpellEntry(0, 4, 3, 0, 0, 10, 4, 2, 0, 4, Affects.prot_from_evil_10_radius, 2, 7, 2, 0, 0), 
             new SpellEntry(0, 4, 3, 0, 0, 2, 4, 0, 0, 4, Affects.sticks_to_snakes, 1, 7, 4, 1, 0), 
             new SpellEntry(0, 5, 0, 0, 0, 0, 4, 2, 0, 4, 0, 2, 8, 2, 0, 0), 
-            new SpellEntry(0, 5, -1, 0, 0, 0, 4, 0, 1, 4, 0, 1, 8, 6, 1, 0), 
+            new SpellEntry(0, 5, -1, 0, 0, 0, 4, 0, DamageOnSave.Zero, 4, 0, 1, 8, 6, 1, 0), 
             new SpellEntry(0, 5, 0, 0, 0, 1, 0, 0, 0, 4, Affects.sp_dispel_evil, 1, 8, 3, 0, 0), 
-            new SpellEntry(0, 5, 6, 0, 0, 0, 4, 0, 2, 4, 0, 1, 8, 6, 1, 0), 
+            new SpellEntry(0, 5, 6, 0, 0, 0, 4, 0, DamageOnSave.Half, 4, 0, 1, 8, 6, 1, 0), 
             new SpellEntry(0, 5, 0, 0, 0, 0, 0, 2, 0, 4, 0, 0, 10, 1, 0, 0), 
-            new SpellEntry(0, 5, 3, 0, 0, 0, 4, 0, 1, 4, 0, 1, 10, 7, 1, 0), 
+            new SpellEntry(0, 5, 3, 0, 0, 0, 4, 0, DamageOnSave.Zero, 4, 0, 1, 10, 7, 1, 0), 
             new SpellEntry(1, 1, 3, 0, 12, 0, 0, 1, 0, 4, Affects.detect_magic, 2, 3, 1, 0, 0), 
-            new SpellEntry(1, 1, 8, 0, 10, 0, 11, 0, 1, 4, Affects.entangle, 1, 3, 3, 1, 0), 
-            new SpellEntry(1, 1, 8, 0, 0, 4, 5, 0, 1, 4, Affects.faerie_fire, 1, 3, 4, 1, 0), 
+            new SpellEntry(1, 1, 8, 0, 10, 0, 11, 0, DamageOnSave.Zero, 4, Affects.entangle, 1, 3, 3, 1, 0), 
+            new SpellEntry(1, 1, 8, 0, 0, 4, 5, 0, DamageOnSave.Zero, 4, Affects.faerie_fire, 1, 3, 4, 1, 0), 
             new SpellEntry(1, 1, -1, 0, 10, 1, 4, 2, 0, 4, Affects.invisible_to_animals, 2, 4, 1, 1, 0), 
-            new SpellEntry(2, 4, 6, 0, 0, 0, 5, 0, 1, 4, Affects.charm_person, 1, 4, 6, 1, 0), 
-            new SpellEntry(2, 4, 12, 0, 2, 1, 11, 0, 1, 4, Affects.confuse, 1, 4, 7, 1, 0), 
+            new SpellEntry(2, 4, 6, 0, 0, 0, 5, 0, DamageOnSave.Zero, 4, Affects.charm_person, 1, 4, 6, 1, 0), 
+            new SpellEntry(2, 4, 12, 0, 2, 1, 11, 0, DamageOnSave.Zero, 4, Affects.confuse, 1, 4, 7, 1, 0), 
             new SpellEntry(2, 4, 0, 3, 0, 0, 8, 0, 0, 4, 0, 1, 1, 0, 1, 0), 
-            new SpellEntry(2, 4, 6, 0, 0, 1, 8, 0, 1, 4, Affects.fear, 1, 4, 6, 1, 0), 
+            new SpellEntry(2, 4, 6, 0, 0, 1, 8, 0, DamageOnSave.Zero, 4, Affects.fear, 1, 4, 6, 1, 0), 
             new SpellEntry(2, 4, 0, 0, 2, 1, 0, 1, 0, 4, 0, 2, 4, 8, 0, 0), 
-            new SpellEntry(2, 4, 0, 1, 0, 1, 4, 0, 1, 4, Affects.fumbling, 1, 4, 4, 1, 0), 
+            new SpellEntry(2, 4, 0, 1, 0, 1, 4, 0, DamageOnSave.Zero, 4, Affects.fumbling, 1, 4, 4, 1, 0), 
             new SpellEntry(2, 4, 0, 1, 0, 0, 10, 0, 0, 4, 0, 1, 4, 7, 1, 0), 
             new SpellEntry(2, 4, 0, 1, 0, 1, 0, 1, 0, 4, Affects.minor_globe_of_invulnerability, 2, 4, 5, 0, 0), 
             new SpellEntry(2, 4, 0, 0, 0, 0, 4, 2, 0, 4, 0, 2, 4, 0, 0, 0), 
             new SpellEntry(3, 5, 1, 0, 0, 0, 0xF0, 4, 0, 4, Affects.animate_dead, 2, 5, 0, 0, 0), 
             new SpellEntry(2, 5, 2, 0, 0, 1, 9, 0, 0, 4, 0, 2, 5, 5, 1, 0), 
-            new SpellEntry(2, 5, 6, 0, 0, 0, 8, 0, 2, 4, 0, 1, 5, 6, 1, 0), 
-            new SpellEntry(2, 5, 16, 0, 0, 0, 4, 0, 1, 4, Affects.feeblemind, 1, 5, 6, 1, 0), 
-            new SpellEntry(2, 5, 0, 1, 0, 1, 7, 0, 1, 4, Affects.paralyze, 1, 5, 7, 1, 0), 
+            new SpellEntry(2, 5, 6, 0, 0, 0, 8, 0, DamageOnSave.Half, 4, 0, 1, 5, 6, 1, 0), 
+            new SpellEntry(2, 5, 16, 0, 0, 0, 4, 0, DamageOnSave.Zero, 4, Affects.feeblemind, 1, 5, 6, 1, 0), 
+            new SpellEntry(2, 5, 0, 1, 0, 1, 7, 0, DamageOnSave.Zero, 4, Affects.paralyze, 1, 5, 7, 1, 0), 
             new SpellEntry(3, 6, 0, 0, 0, 0, 0, 1, 0, 4, Affects.prot_drag_breath, 2, 10, 1, 0, 0), 
             new SpellEntry(3, 6, 0, 0, 0, 0, 0, 1, 0, 4, Affects.affect_6d, 2, 10, 1, 0, 0), 
             new SpellEntry(3, 6, 0, 0, 0, 0, 0, 1, 0, 4, Affects.invisibility, 2, 0, 1, 0, 0), 
-            new SpellEntry(3, 6, 3, 0, 0, 0, 11, 0, 1, 4, 0, 1, 0, 1, 1, 0), 
+            new SpellEntry(3, 6, 3, 0, 0, 0, 11, 0, DamageOnSave.Zero, 4, 0, 1, 0, 1, 1, 0), 
             new SpellEntry(3, 6, 0, 0, 0, 0, 0, 1, 0, 4, 0, 2, 0, 1, 0, 0), 
-            new SpellEntry(2, 4, 0, 0, 0, 10, 4, 0, 1, 4, 0, 1, 4, 4, 1, 0), 
-            new SpellEntry(10, 0, 10, 0, 6, 0, 0x18, 0, 0x1E, 0, Affects.enlarge, 0, 0, 1, 0x28, 0x28) };
+            new SpellEntry(2, 4, 0, 0, 0, 10, 4, 0, DamageOnSave.Zero, 4, 0, 1, 4, 4, 1, 0), 
+            new SpellEntry(10, 0, 10, 0, 6, 0, 0x18, 0, DamageOnSave.Unknown_1E, 0, Affects.enlarge, 0, 0, 1, 0x28, 0x28) };
 
-        public const byte byte_1A114 = 1;
+        public const DamageOnSave byte_1A114 = DamageOnSave.Zero;
 
         public static byte[] unk_1D89D = new byte[9]; // seg600:758D
 
-        public static bool party_fled;
 
         public static Struct_1C020[] unk_1C020;
         public static Struct_1D183[] unk_1D183; // array[8] but 1 offset.
@@ -684,6 +700,7 @@ namespace Classes
         public readonly static sbyte[] MapDirectionYDelta = /*unk_189AF seg600:269F*/ { -1, -1, 0, 1, 1,  1,  0, -1, 0 };
 
         public static ImportSource import_from;
+        public static bool party_fled;
 
         public static int friends_count;
         public static int foe_count;
