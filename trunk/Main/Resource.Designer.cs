@@ -90,6 +90,18 @@ namespace Main {
             }
         }
         
+        public static System.IO.UnmanagedMemoryStream sound_10 {
+            get {
+                return ResourceManager.GetStream("sound_10", resourceCulture);
+            }
+        }
+        
+        public static System.IO.UnmanagedMemoryStream sound_5 {
+            get {
+                return ResourceManager.GetStream("sound_5", resourceCulture);
+            }
+        }
+        
         public static System.IO.UnmanagedMemoryStream start_sound {
             get {
                 return ResourceManager.GetStream("start_sound", resourceCulture);

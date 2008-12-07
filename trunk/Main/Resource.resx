@@ -133,6 +133,12 @@
   <data name="missle" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>sounds\missle.wav;System.IO.MemoryStream, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="sound_10" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>sounds\sound_10.wav;System.IO.MemoryStream, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="sound_5" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>sounds\sound_5.wav;System.IO.MemoryStream, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="start_sound" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>sounds\start_sound.wav;System.IO.MemoryStream, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>

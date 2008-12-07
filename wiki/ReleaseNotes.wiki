@@ -1,6 +1,9 @@
 = The Release Notes =
 
 = Unreleased =
+  * Added ripped sounds to the games as working out how the PC Speaker worked was taking too long, and sounded to bad. Ripped samples are from PC Speaker, but in process of sampling the Tandy sounds which are much better
+  * Enhanced the 'Dump Monsters' debugging, it now dumps all monsters plus all details shown in my blog post, to an monsters.html file in the current working directory
+  * Started working on decoding the affects and their mean, to clean-up above monsters.html
 
 = 1.0.14 =
   * Added cheat to remove the race based level limits. 
