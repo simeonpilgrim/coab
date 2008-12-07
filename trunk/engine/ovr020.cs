@@ -665,8 +665,8 @@ namespace engine
             switch (masked_affect)
             {
                 case 0:
-                    gbl.byte_1D8AC = true;
-                    ovr024.CallSpellJumpTable((add_item) ? Effect.Add : Effect.Remove, item, player, item.affect_3);
+                    gbl.applyItemAffect = true;
+                    ovr013.CallAffectTable((add_item) ? Effect.Add : Effect.Remove, item, player, item.affect_3);
                     break;
 
                 case 1:
@@ -1549,7 +1549,7 @@ namespace engine
                 ovr025.string_print01(target.name + " is unaffected");
             }
 
-            ovr024.add_affect(false, 0, 0x5a0, Affects.paladinDailyHealCast, player);
+            ovr024.add_affect(false, 0, 1440, Affects.paladinDailyHealCast, player);
             playerDisplayFull();
         }
 

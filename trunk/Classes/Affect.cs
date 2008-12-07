@@ -29,7 +29,7 @@ namespace Classes
         spiritual_hammer = 0x17,
         detect_invisibility = 0x18,
         invisibility = 0x19,
-        affect_1a = 0x1a,
+        dwarf_vs_orc = 0x1a,
         fumbling = 0x1b,
         mirror_image = 0x1c,
         ray_of_enfeeblement = 0x1d,
@@ -50,7 +50,7 @@ namespace Classes
         cause_disease_2 = 0x2c,
         prot_from_evil_10_radius = 0x2d,
         prot_from_good_10_radius = 0x2e,
-        affect_2f = 0x2f,
+        dwarf_and_gnome_vs_giants = 0x2f,
         affect_30 = 0x30,
         prayer = 0x31,
         hot_fire_shield = 0x32,
@@ -65,7 +65,7 @@ namespace Classes
         regenerate = 0x3b,
         affect_3c = 0x3c,
         fire_resist = 0x3d,
-        affect_3e = 0x3e,
+        highConRegen = 0x3e,
         minor_globe_of_invulnerability = 0x3f,
         affect_40 = 0x40,
         affect_41 = 0x41,
@@ -84,14 +84,14 @@ namespace Classes
         affect_4e = 0x4e,
         affect_4f = 0x4f,
         affect_50 = 0x50,
-        affect_51 = 0x51,
+        half_damge = 0x51,
         affect_52 = 0x52,
-        affect_53 = 0x53,
+        paralizing_gaze = 0x53,
         affect_54 = 0x54,
         affect_55 = 0x55,
         spit_acid = 0x56,
         affect_57 = 0x57,
-        affect_58 = 0x58,
+        breath_elec = 0x58,
         displace = 0x59,
         breath_acid = 0x5a,
         affect_5b = 0x5b,
@@ -100,11 +100,11 @@ namespace Classes
         affect_5e = 0x5e,
         affect_5F = 0x5f,
         affect_60 = 0x60,
-        affect_61 = 0x61,
-        affect_62 = 0x62,
+        con_saving_bonus = 0x61,
+        regen_3_hp = 0x62,
         affect_63 = 0x63,
-        affect_64 = 0x64,
-        affect_65 = 0x65,
+        troll_fire_or_acid = 0x64,
+        troll_regen = 0x65,
         affect_66 = 0x66,
         affect_67 = 0x67,
         affect_68 = 0x68,
@@ -137,8 +137,8 @@ namespace Classes
         cast_breath_fire = 0x83,
         cast_throw_lightening = 0x84,
         affect_85 = 0x85,
-        affect_86 = 0x86,
-        affect_87 = 0x87,
+        range_vs_giant = 0x86,
+        protect_elec = 0x87,
         entangle = 0x88,
         affect_89 = 0x89,
         affect_8a = 0x8a,
@@ -149,7 +149,8 @@ namespace Classes
         affect_8f = 0x8f,
         affect_90 = 0x90,
         sp_dispel_evil = 0x91,
-        affect_92 = 0x92
+        strenght_spell = 0x92,
+        do_items_affect = 0x93
     }
 
     /// <summary>
@@ -159,20 +160,20 @@ namespace Classes
 	{
         public const int StructSize = 9;
 
-        public Affect(Affects _type, ushort _field_1, byte _field_3, bool _call_spell_jump_list)
+        public Affect(Affects _type, ushort _minutes, byte _affect_data, bool _call_spell_jump_list)
         {
             type = _type;
-            field_1 = _field_1;
-            field_3 = _field_3;
-            call_spell_jump_list = _call_spell_jump_list;
+            minutes = _minutes;
+            affect_data = _affect_data;
+            callAffectTable = _call_spell_jump_list;
         }
 
         public Affect(byte[] data, int offset)
         {
             type = (Affects)data[offset + 0x0];
-            field_1 = Sys.ArrayToUshort(data, offset + 0x1);
-            field_3 = data[offset + 0x3];
-            call_spell_jump_list = (data[offset + 0x4] != 0);
+            minutes = Sys.ArrayToUshort(data, offset + 0x1);
+            affect_data = data[offset + 0x3];
+            callAffectTable = (data[offset + 0x4] != 0);
         }
 
 		public Affect ShallowClone()
@@ -184,11 +185,11 @@ namespace Classes
         [DataOffset(0x00, DataType.IByte)]
 		public Affects type;
         [DataOffset(0x01, DataType.Word)]
-		public ushort field_1;
+		public ushort minutes;
         [DataOffset(0x03, DataType.Byte)]
-        public byte field_3;
+        public byte affect_data;
         [DataOffset(0x04, DataType.Bool)]
-        public bool call_spell_jump_list;
+        public bool callAffectTable;
 
         public byte[] ToByteArray()
         {

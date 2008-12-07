@@ -48,18 +48,18 @@ namespace Logging
         }
     }
 
-    class DebugWriter
+    public class DebugWriter
     {
         string filename;
         System.IO.TextWriter writer;
         object iolock = new object();
 
-        internal DebugWriter(string _filename)
+        public DebugWriter(string _filename)
         {
             filename = _filename;
         }
 
-        internal void WriteLine(string fmt, params object[] args)
+        public void WriteLine(string fmt, params object[] args)
         {
             lock (iolock)
             {
@@ -75,7 +75,7 @@ namespace Logging
             }
         }
 
-        internal void Write(string fmt, params object[] args)
+        public void Write(string fmt, params object[] args)
         {
             lock (iolock)
             {
@@ -91,7 +91,7 @@ namespace Logging
             }
         }
 
-        internal void Close()
+        public void Close()
         {
             lock (iolock)
             {

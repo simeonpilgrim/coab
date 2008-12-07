@@ -1455,7 +1455,7 @@ namespace engine
 
             DisplayPlayerStatusString(true, 10, text, player);
 
-            if (gbl.game_state == GameState.Combat)
+            if (gbl.game_state != GameState.Combat)
             {
                 PartySummary(gbl.player_ptr);
             }

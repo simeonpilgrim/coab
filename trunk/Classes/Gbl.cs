@@ -82,7 +82,7 @@ namespace Classes
         Electricity = 0x04,
         Magic = 0x08,
         Acid = 0x10,
-        Unknown20 = 0x20,
+        DragonBreath = 0x20,
         Unknown40 = 0x40
     }
 
@@ -298,7 +298,6 @@ namespace Classes
         public static byte byte_1BF12; // TODO remove or workout what it's was for?
 
         public static SoundType soundType = SoundType.None; // byte_1BF14
-        public static SoundType soundTypeBackup; // byte_1BF15
 
         public static string save_path = "Save\\"; // byte_1BF1A
 
@@ -364,9 +363,9 @@ namespace Classes
         public static bool spell_from_item; // byte_1D88D
         public static bool displayPlayerStatusLine18; /* byte_1D8A8 */
         public static bool can_draw_bigpic; // byte_1D8AA
-        public static bool byte_1D8AC; // byte_1D8AC
-        public static byte byte_1D8B7;
-        public static byte byte_1D8B8;
+        public static bool applyItemAffect; // byte_1D8AC
+        public static int combat_round; // byte_1D8B7
+        public static int combat_round_no_action_limit; // byte_1D8B8
         public static int[] near_targets = new int[0x48]; // byte_1D8B9
 
         public static void inc_byte_byte_1D90x(int index)
@@ -429,8 +428,6 @@ namespace Classes
 
         public readonly static short[] symbol_set_fix = { 0x0001, 0x002E, 0x0074, 0x00BA, 0x0100 };
         public const short word_1899C = 0x2D;
-
-        public static RestTime word_1A13C = new RestTime( 10, 10, 6, 24, 30, 12, 0x100 );
 
         public static ushort word_1AE0F;
         public static ushort word_1AE11;
@@ -704,8 +701,6 @@ namespace Classes
 
         public static int friends_count;
         public static int foe_count;
-
-        public static affectDelegate[] affect_jump_list; /* spell_jump_list */
 
 
         public static ClassStatsMin[] class_stats_min = new ClassStatsMin[] { // unk_1A484

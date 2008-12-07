@@ -19,7 +19,7 @@ namespace engine
         }
 
 
-        internal static void sub_33100()
+        internal static void MainCombatLoop() //sub_33100
         {
             gbl.game_state = GameState.Combat;
             gbl.dword_1D5CA = new spellDelegate(ovr014.target);
@@ -43,16 +43,12 @@ namespace engine
 
                 gbl.area2_ptr.field_596 = 0;
 
-                Player player;
-                find_next_delayed_player(out player);
-
-                while (player != null)
+                foreach(Player player in FindNextCombatant())
                 {
-                    sub_33281(player);
-                    find_next_delayed_player(out player);
+                    DoPlayerCombatTurn(player);
                 }
 
-                battle01(ref end_combat);
+                BattleRoundChecks(ref end_combat);
             }
 
             free_combat_stuff();
@@ -60,45 +56,56 @@ namespace engine
         }
 
 
-        internal static void find_next_delayed_player(out Player output_player) /* sub_331BC */
+        internal static System.Collections.Generic.IEnumerable<Player> FindNextCombatant() /* sub_331BC */
         {
-            output_player = null;
+            Player output_player;
 
-            int max_delay = 0;
-            int max_roll = 0;
-
-            foreach (Player player in gbl.player_next_ptr)
-            {
-                int roll = ovr024.roll_dice(100, 1);
-
-                if (player.actions.delay > max_delay)
-                {
-                    max_roll = roll;
-                }
-
-                if (player.actions.delay >= max_delay &&
-                    roll >= max_roll)
-                {
-                    max_roll = roll;
-                    max_delay = player.actions.delay;
-
-                    output_player = player;
-                }
-            }
-
-            if (max_delay == 0)
+            do
             {
                 output_player = null;
-            }
+
+                int max_delay = 0;
+                int max_roll = 0;
+
+                foreach (Player player in gbl.player_next_ptr)
+                {
+                    int roll = ovr024.roll_dice(100, 1);
+
+                    if (player.actions.delay > max_delay)
+                    {
+                        max_roll = roll;
+                    }
+
+                    if (player.actions.delay >= max_delay &&
+                        roll >= max_roll)
+                    {
+                        max_roll = roll;
+                        max_delay = player.actions.delay;
+
+                        output_player = player;
+                    }
+                }
+
+                if (max_delay == 0)
+                {
+                    output_player = null;
+                }
+
+                if (output_player != null)
+                {
+                    yield return output_player;
+                }
+
+            } while (output_player != null);
         }
 
 
-        internal static void sub_33281(Player player)
+        internal static void DoPlayerCombatTurn(Player player) // sub_33281
         {
             player.actions.field_F = 0;
             player.actions.field_12 = 0;
             player.actions.guarding = false;
-            ovr024.work_on_00(player, 7);
+            ovr024.CheckAffectsEffect(player, CheckType.Type_7);
 
             if (player.actions.delay > 0)
             {
@@ -115,11 +122,11 @@ namespace engine
                 ovr025.reclac_player_values(player);
                 gbl.display_hitpoints_ac = true;
                 ovr025.display_hitpoint_ac(player);
-                ovr024.work_on_00(player, 15);
+                ovr024.CheckAffectsEffect(player, CheckType.Type_15);
 
                 if (player.actions.spell_id == 0)
                 {
-                    ovr024.work_on_00(player, 0x15);
+                    ovr024.CheckAffectsEffect(player, CheckType.Type_21);
                 }
 
                 if (player.actions.delay > 0)
@@ -362,17 +369,15 @@ namespace engine
         }
 
 
-        internal static void battle01(ref bool arg_0)
+        internal static void BattleRoundChecks(ref bool battleOver) // battle01
         {
             ovr021.step_game_time(1, 1);
-            gbl.byte_1D8B7++;
+            gbl.combat_round++;
             ovr014.calc_enemy_health_percentage();
-
-            byte var_6 = 1;
 
             foreach (Player player in gbl.player_next_ptr)
             {
-                ovr024.work_on_00(player, 0x13);
+                ovr024.CheckAffectsEffect(player, CheckType.Type_19);
                 ovr024.in_poison_cloud(0, player);
 
                 if (player.health_status == Status.dying)
@@ -385,7 +390,6 @@ namespace engine
                     }
 
                 }
-                var_6++;
             }
 
             if (ovr025.bandage(false))
@@ -399,9 +403,9 @@ namespace engine
 
             if (gbl.friends_count == 0 ||
                 gbl.foe_count == 0 ||
-                gbl.byte_1D8B7 >= gbl.byte_1D8B8)
+                gbl.combat_round >= gbl.combat_round_no_action_limit)
             {
-                arg_0 = true;
+                battleOver = true;
             }
 
             if (gbl.friends_count > 1 &&
@@ -409,7 +413,7 @@ namespace engine
                 gbl.inDemo == false &&
                 ovr027.yes_no(15, 10, 13, "Continue Battle:") == 'Y')
             {
-                arg_0 = false;
+                battleOver = false;
             }
         }
 

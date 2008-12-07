@@ -20,7 +20,6 @@ namespace engine
             EngineThread = System.Threading.Thread.CurrentThread;
             EngineStoppedCallback = stoppedCallback;
 
-            seg044.sound_sub_121BF();
             ConfigGame();
         }
 
@@ -29,7 +28,9 @@ namespace engine
             gbl.exe_path = System.IO.Directory.GetCurrentDirectory();
             gbl.data_path = gbl.exe_path;
 
-            if (seg044.load_dump_bin()) // PC Speaker
+            seg044.SoundInit();
+
+            if (true) // PC Speaker //TODO make this configured
             {
                 gbl.soundType = SoundType.PC;
             }
@@ -55,8 +56,6 @@ namespace engine
             }
             /* Memory Init - End */
 
-            seg044.sound_sub_12194();
-
             if (gbl.soundFlag01 == true)
             {
                 seg044.sound_sub_120E0(Sound.sound_FF);
@@ -64,13 +63,7 @@ namespace engine
 
             ovr012.init_values_a();
 
-            if (gbl.soundFlag01 == false)
-            {
-                seg044.sound_sub_12194();
-            }
-
             seg044.sound_sub_120E0(Sound.sound_0);
-            seg044.sound_sub_12194();
 
             if (Cheats.skip_title_screen == false)
             {
@@ -114,11 +107,6 @@ namespace engine
                     seg044.sound_sub_120E0(Sound.sound_FF);
                 }
 
-                if (gbl.soundFlag01 == false)
-                {
-                    seg044.sound_sub_12194();
-                }
-
                 if (gbl.inDemo == false)
                 {
                     ovr018.startGameMenu();
@@ -129,19 +117,9 @@ namespace engine
                     seg044.sound_sub_120E0(Sound.sound_FF);
                 }
 
-                if (gbl.soundFlag01 == false)
-                {
-                    seg044.sound_sub_12194();
-                }
-
                 if (gbl.soundFlag01 == true)
                 {
                     seg044.sound_sub_120E0(Sound.sound_FF);
-                }
-
-                if (gbl.soundFlag01 == false)
-                {
-                    seg044.sound_sub_12194();
                 }
 
                 ovr003.sub_29758();
@@ -149,11 +127,6 @@ namespace engine
                 if (gbl.soundFlag01 == true)
                 {
                     seg044.sound_sub_120E0(Sound.sound_FF);
-                }
-
-                if (gbl.soundFlag01 == false)
-                {
-                    seg044.sound_sub_12194();
                 }
 
                 ovr012.init_values_b();

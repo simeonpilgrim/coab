@@ -20,7 +20,7 @@ namespace Classes
         public Player target; // 0x0A 4 bytes
         public int bleeding; // 0x0E
         public byte field_F;  // 0x0F
-        public byte field_10; // 0x10
+        public bool fleeing; // 0x10
         public byte field_11; // 0x11
         public byte field_12; // 0x12
         public byte field_13; // 0x13

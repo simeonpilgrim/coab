@@ -1190,8 +1190,8 @@ namespace engine
             seg041.displayString("A battle begins...", 0, 0x0a, 0x18, 0);
 
             gbl.magicOn = false;
-            gbl.byte_1D8B7 = 0;
-            gbl.byte_1D8B8 = 0x0F;
+            gbl.combat_round = 0;
+            gbl.combat_round_no_action_limit = 15;
             gbl.attack_roll = 0;
             gbl.byte_1D1BB = 0;
 
@@ -1221,8 +1221,8 @@ namespace engine
             ovr025.sub_68DC0();
             foreach (Player player in gbl.player_next_ptr)
             {
-                ovr024.work_on_00(player, 8);
-                ovr024.work_on_00(player, 22);
+                ovr024.CheckAffectsEffect(player, CheckType.Type_8);
+                ovr024.CheckAffectsEffect(player, CheckType.Type_22);
             }
 
             ovr014.calc_enemy_health_percentage();

@@ -12,8 +12,6 @@ namespace engine
             {
                 in_print_and_exit = true;
 
-                gbl.soundType = gbl.soundTypeBackup;
-
                 seg044.sound_sub_120E0(Sound.sound_FF);
 
                 Logger.Close();
@@ -55,14 +53,7 @@ namespace engine
             {
                 if (gbl.soundType == SoundType.PC)
                 {
-                    gbl.soundTypeBackup = gbl.soundType;
                     seg044.sound_sub_120E0(Sound.sound_0);
-                    gbl.soundType = SoundType.None;
-                }
-                else if (gbl.soundTypeBackup == SoundType.PC)
-                {
-                    gbl.soundType = gbl.soundTypeBackup;
-                    seg044.sound_sub_120E0(Sound.sound_1);
                 }
             }
 
@@ -161,35 +152,35 @@ namespace engine
             }
         }
 
-        private static void HtmlTableDumpPlayer(Player p, byte area, int id)
+        private static void HtmlTableDumpPlayer(DebugWriter dw, Player p, byte area, int id)
         {
-            Logger.DebugWrite("<tr>");
-            Logger.DebugWrite("<td>{0}</td>", area);
-            Logger.DebugWrite("<td>{0}</td>", id);
-            Logger.DebugWrite("<td nowrap=\"nowrap\">{0}</td>", p.name);
-            Logger.DebugWrite("<td>{0}</td>", p.exp);
-            Logger.DebugWrite("<td>{0}</td>", p.hit_point_max);
-            Logger.DebugWrite("<td>{0}</td>", 0x3c - p.ac);
-            Logger.DebugWrite("<td>{0}</td>", 0x3c - p.hitBonus);
+            dw.Write("<tr>");
+            dw.Write("<td>{0}</td>", area);
+            dw.Write("<td>{0}</td>", id);
+            dw.Write("<td nowrap=\"nowrap\">{0}</td>", p.name);
+            dw.Write("<td>{0}</td>", p.exp);
+            dw.Write("<td>{0}</td>", p.hit_point_max);
+            dw.Write("<td>{0}</td>", 0x3c - p.ac);
+            dw.Write("<td>{0}</td>", 0x3c - p.hitBonus);
             string str100 = p.strength == 18 ? string.Format("({0})", p.max_str_00) : "";
-            Logger.DebugWrite("<td>{0}{1}</td>", p.strength, str100);
-            Logger.DebugWrite("<td>{0}</td>", p.dex);
-            Logger.DebugWrite("<td>{0}</td>", p.con);
-            Logger.DebugWrite("<td>{0}</td>", p._int);
-            Logger.DebugWrite("<td>{0}</td>", p.wis);
-            Logger.DebugWrite("<td>{0}</td>", p.charisma);
-            Logger.DebugWrite("<td>{0}</td>", p.class_lvls[0]);
-            Logger.DebugWrite("<td>{0}</td>", p.class_lvls[1]);
-            Logger.DebugWrite("<td>{0}</td>", p.class_lvls[2]);
-            Logger.DebugWrite("<td>{0}</td>", p.class_lvls[3]);
-            Logger.DebugWrite("<td>{0}</td>", p.class_lvls[4]);
-            Logger.DebugWrite("<td>{0}</td>", p.class_lvls[5]);
-            Logger.DebugWrite("<td>{0}</td>", p.class_lvls[6]);
-            Logger.DebugWrite("<td>{0}</td>", p.class_lvls[7]);
+            dw.Write("<td>{0}{1}</td>", p.strength, str100);
+            dw.Write("<td>{0}</td>", p.dex);
+            dw.Write("<td>{0}</td>", p.con);
+            dw.Write("<td>{0}</td>", p._int);
+            dw.Write("<td>{0}</td>", p.wis);
+            dw.Write("<td>{0}</td>", p.charisma);
+            dw.Write("<td>{0}</td>", p.class_lvls[0]);
+            dw.Write("<td>{0}</td>", p.class_lvls[1]);
+            dw.Write("<td>{0}</td>", p.class_lvls[2]);
+            dw.Write("<td>{0}</td>", p.class_lvls[3]);
+            dw.Write("<td>{0}</td>", p.class_lvls[4]);
+            dw.Write("<td>{0}</td>", p.class_lvls[5]);
+            dw.Write("<td>{0}</td>", p.class_lvls[6]);
+            dw.Write("<td>{0}</td>", p.class_lvls[7]);
 
-            Logger.DebugWrite("<td nowrap=\"nowrap\">{0}</td>", p.field_151 != null ? ovr025.ItemName(p.field_151, 0) : "");
-            Logger.DebugWrite("<td nowrap=\"nowrap\">{0}</td>", p.armor != null ? ovr025.ItemName(p.armor, 0) : "");
-            Logger.DebugWrite("<td nowrap=\"nowrap\">{0}d{1}{2}{3}</td>", p.attack_dice_count, p.attack_dice_size,
+            dw.Write("<td nowrap=\"nowrap\">{0}</td>", p.field_151 != null ? ovr025.ItemName(p.field_151, 0) : "");
+            dw.Write("<td nowrap=\"nowrap\">{0}</td>", p.armor != null ? ovr025.ItemName(p.armor, 0) : "");
+            dw.Write("<td nowrap=\"nowrap\">{0}d{1}{2}{3}</td>", p.attack_dice_count, p.attack_dice_size,
                 p.damageBonus > 0 ? "+" : "", p.damageBonus != 0 ? p.damageBonus.ToString() : "");
 
             int last = 0;
@@ -230,7 +221,7 @@ namespace engine
                 }
             }
 
-            Logger.DebugWrite("<td>{0}</td>", sb.ToString());
+            dw.Write("<td nowrap=\"nowrap\">{0}</td>", sb.ToString());
             
 
             sb = new System.Text.StringBuilder();
@@ -244,13 +235,17 @@ namespace engine
                 sb.Remove(sb.Length - 2, 2);
             }
 
-            Logger.DebugWrite("<td>{0}</td>", sb.ToString());
-            Logger.Debug("</tr>");
+            dw.Write("<td nowrap=\"nowrap\">{0}</td>", sb.ToString());
+            dw.WriteLine("</tr>");
         }
 
         public static void DumpMonsters()
         {
             var bkupArea = gbl.game_area;
+
+            DebugWriter dw = new DebugWriter("Monster.html");
+
+            dw.WriteLine("<html><body><table><tbody>");
 
             for (byte area = 1; area <= 6; area++)
             {
@@ -262,11 +257,14 @@ namespace engine
                     {
                         ovr025.reclac_player_values(p);
 
-                        TxtDumpPlayer(p, area, id);
-                        //HtmlTableDumpPlayer(p, area, id);
+                        //TxtDumpPlayer(p, area, id);
+                        HtmlTableDumpPlayer(dw, p, area, id);
                     }
                 }
             }
+
+            dw.WriteLine("</tbody></table></body></html>");
+            dw.Close();
 
             gbl.game_area = bkupArea;
         }

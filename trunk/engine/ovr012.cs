@@ -130,7 +130,7 @@ namespace engine
             gbl.game_state = GameState.State4;
             gbl.last_game_state = 0;
             gbl.soundFlag01 = true;
-            gbl.byte_1D8AC = false;
+            gbl.applyItemAffect = false;
             gbl.sky_dax_250 = null;
             gbl.sky_dax_251 = null;
             gbl.sky_dax_252 = null;
@@ -168,7 +168,7 @@ namespace engine
 
             seg051.Close(unk_1AD74);
             ovr023.setup_spells();
-            ovr013.setup_spells2();
+            ovr013.SetupAffectTables();
         }
 
 
@@ -238,7 +238,7 @@ namespace engine
             gbl.game_state = GameState.State4;
             gbl.last_game_state = 0;
             gbl.soundFlag01 = true;
-            gbl.byte_1D8AC = false;
+            gbl.applyItemAffect = false;
             gbl.gameWon = false;
         }
     }
