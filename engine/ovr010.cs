@@ -42,7 +42,7 @@ namespace engine
             }
 
             if (player.actions.field_14 != 0 &&
-                player.actions.field_10 == 0)
+                player.actions.fleeing == false)
             {
                 ovr025.DisplayPlayerStatusString(true, 10, "flees in panic", player);
             }
@@ -142,23 +142,23 @@ namespace engine
         }
 
 
-        internal static bool sub_353B1(byte arg_0, byte arg_2, Player attacker)
+        internal static bool sub_353B1(byte arg_0, byte spellId, Player attacker)
         {
-            if (gbl.spell_table[arg_2].field_D < arg_0)
+            if (gbl.spell_table[spellId].field_D < arg_0)
             {
                 Player dummy_target;
-                if ((arg_2 != 3 && gbl.spell_table[arg_2].field_E == 0) ||
-                    (arg_2 == 3 && ovr014.find_healing_target(out dummy_target, attacker)))
+                if ((spellId != 3 && gbl.spell_table[spellId].field_E == 0) ||
+                    (spellId == 3 && ovr014.find_healing_target(out dummy_target, attacker)))
                 {
                     return true;
                 }
                 else
                 {
-                    int near_count = ovr025.near_enemy(ovr023.sub_5CDE5(arg_2), attacker);
+                    int near_count = ovr025.near_enemy(ovr023.sub_5CDE5(spellId), attacker);
 
                     if (near_count > 0)
                     {
-                        if (gbl.spell_table[arg_2].field_F == 0)
+                        if (gbl.spell_table[spellId].field_F == 0)
                         {
                             return true;
                         }
@@ -167,7 +167,7 @@ namespace engine
                             for (int i = 1; i <= near_count; i++)
                             {
                                 int index = gbl.near_targets[i];
-                                if (sub_352AF(arg_2, gbl.CombatMap[index].yPos, 
+                                if (sub_352AF(spellId, gbl.CombatMap[index].yPos, 
                                         gbl.CombatMap[index].xPos) == true)
                                 {
                                     return false;
@@ -351,7 +351,7 @@ namespace engine
                         player.HasAffect(Affects.affect_7d) == false &&
                         player.HasAffect(Affects.affect_81) == false &&
                         player.HasAffect(Affects.minor_globe_of_invulnerability) == false &&
-                        player.actions.field_10 == 0)
+                        player.actions.fleeing == false)
                     {
                         if (ovr024.do_saving_throw(0, 0, player) == false)
                         {
@@ -366,7 +366,7 @@ namespace engine
                         player.HasAffect(Affects.affect_6f) == false &&
                         player.HasAffect(Affects.affect_85) == false &&
                         player.HasAffect(Affects.affect_7d) == false &&
-                        player.actions.field_10 == 0)
+                        player.actions.fleeing == false)
                     {
                         var_A = (byte)(player.actions.move + 1);
                     }
@@ -529,7 +529,7 @@ namespace engine
             bool var_3 = true;
             bool var_2 = false;
 
-            ovr024.work_on_00(player, 14);
+            ovr024.CheckAffectsEffect(player, CheckType.Type_14);
 
             if (player.combat_team == CombatTeam.Ours &&
                 ovr025.bandage(true) == true)
@@ -789,7 +789,7 @@ namespace engine
 
             ovr024.sub_6460D(player);
 
-            if (player.actions.field_10 != 0)
+            if (player.actions.fleeing == true)
             {
                 player.actions.field_14 = 1;
                 ovr025.DisplayPlayerStatusString(true, 10, "is forced to flee", player);
@@ -802,7 +802,7 @@ namespace engine
                 {
                     gbl.byte_1D2CC = 0;
                 }
-                ovr024.work_on_00(player, 0x11);
+                ovr024.CheckAffectsEffect(player, CheckType.Type_17);
 
                 if (gbl.byte_1D2CC < (100 - ((player.hit_point_current * 100) / player.hit_point_max)) ||
                     gbl.byte_1D2CC == 0)
@@ -810,7 +810,7 @@ namespace engine
                     //byte var_3 = gbl.byte_1D2CC;
                     gbl.byte_1D2CC = gbl.enemyHealthPercentage;
 
-                    ovr024.work_on_00(player, 17);
+                    ovr024.CheckAffectsEffect(player, CheckType.Type_17);
 
                     if (gbl.byte_1D2CC < (100 - gbl.area2_ptr.field_58C) ||
                         gbl.byte_1D2CC == 0 ||
@@ -882,7 +882,7 @@ namespace engine
                 var_2 = 0;
             }
 
-            if (item.affect_2 == Affects.affect_53)
+            if (item.affect_2 == Affects.paralizing_gaze)
             {
                 var_2 = 0;
             }

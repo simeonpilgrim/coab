@@ -491,21 +491,21 @@ namespace engine
             {
                 case Race.halfling:
                     var_53.icon_size = 1;
-                    ovr024.add_affect(false, 0xff, 0, Affects.affect_61, player);
+                    ovr024.add_affect(false, 0xff, 0, Affects.con_saving_bonus, player);
                     break;
 
                 case Race.dwarf:
                     var_53.icon_size = 1;
-                    ovr024.add_affect(false, 0xff, 0, Affects.affect_61, player);
-                    ovr024.add_affect(false, 0xff, 0, Affects.affect_1a, player);
-                    ovr024.add_affect(false, 0xff, 0, Affects.affect_2f, player);
+                    ovr024.add_affect(false, 0xff, 0, Affects.con_saving_bonus, player);
+                    ovr024.add_affect(false, 0xff, 0, Affects.dwarf_vs_orc, player);
+                    ovr024.add_affect(false, 0xff, 0, Affects.dwarf_and_gnome_vs_giants, player);
                     break;
 
                 case Race.gnome:
                     var_53.icon_size = 1;
-                    ovr024.add_affect(false, 0xff, 0, Affects.affect_61, player);
+                    ovr024.add_affect(false, 0xff, 0, Affects.con_saving_bonus, player);
                     ovr024.add_affect(false, 0xff, 0, Affects.affect_12, player);
-                    ovr024.add_affect(false, 0xff, 0, Affects.affect_2f, player);
+                    ovr024.add_affect(false, 0xff, 0, Affects.dwarf_and_gnome_vs_giants, player);
                     ovr024.add_affect(false, 0xff, 0, Affects.affect_30, player);
                     break;
 
@@ -603,7 +603,7 @@ namespace engine
             else if (var_53._class == ClassId.ranger)
             {
                 var_53.ranger_lvl = 1;
-                ovr024.add_affect(false, 0xff, 0, Affects.affect_86, player);
+                ovr024.add_affect(false, 0xff, 0, Affects.range_vs_giant, player);
             }
             else if (var_53._class == ClassId.mc_c_f)
             {
@@ -622,7 +622,7 @@ namespace engine
             {
                 var_53.cleric_lvl = 1;
                 var_53.ranger_lvl = 1;
-                ovr024.add_affect(false, 0xff, 0, Affects.affect_86, player);
+                ovr024.add_affect(false, 0xff, 0, Affects.range_vs_giant, player);
                 var_53.exp = 12500;
             }
             else if (var_53._class == ClassId.mc_c_mu)

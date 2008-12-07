@@ -5,7 +5,10 @@ namespace engine
 {
     class ovr021
     {
-        internal static void sub_5801E(int arg_0, int arg_2)
+        static int[] timeScales = {10, 10, 6, 24, 30, 12, 0x100}; //word_1A13C
+
+
+        internal static void CheckAffectsTimingOut(int timeSlot, int timeSteps) // sub_5801E
         {
             if (gbl.game_state != GameState.State2)
             {
@@ -35,13 +38,12 @@ namespace engine
                 }
             }
 
-            int var_5 = arg_2;
-            int var_1 = arg_0;
+            int var_5 = timeSteps;
 
-            while (var_1 > 1)
+            while (timeSlot > 1)
             {
-                var_5 *= gbl.word_1A13C[var_1 - 1];
-                var_1 -= 1;
+                var_5 *= timeScales[timeSlot - 1];
+                timeSlot -= 1;
             }
 
             while (var_5 > 0)
@@ -60,13 +62,13 @@ namespace engine
 
                         foreach (Affect affect in player.affects)
                         {
-                            if (affect.field_1 == 0)
+                            if (affect.minutes == 0)
                             {
                                 // Do nothing
                             }
-                            else if (var_3 < affect.field_1)
+                            else if (var_3 < affect.minutes)
                             {
-                                affect.field_1 -= (ushort)var_3;
+                                affect.minutes -= (ushort)var_3;
                                 gbl.affects_timed_out[player_count] = true;
                             }
                             else
@@ -83,7 +85,7 @@ namespace engine
                         // Not sure why we are doing this again, but this is what the orig code did...
                         foreach (Affect affect in player.affects)
                         {
-                            if (affect.field_1 > 0)
+                            if (affect.minutes > 0)
                             {
                                 gbl.affects_timed_out[player_count] = true;
                             }
@@ -109,12 +111,12 @@ namespace engine
         {
             for (int i = 0; i <= 6; i++)
             {
-                if (arg_0[i] >= gbl.word_1A13C[i])/* short arrays */
+                if (arg_0[i] >= timeScales[i])/* short arrays */
                 {
                     if (i != 6)
                     {
                         arg_0[i + 1] += 1;
-                        arg_0[i] -= gbl.word_1A13C[i]; ;
+                        arg_0[i] -= timeScales[i]; ;
                     }
                     else
                     {
@@ -134,7 +136,7 @@ namespace engine
 
             if (gbl.unk_1D890.field_A > 0)
             {
-                gbl.unk_1D890.field_8 += (ushort)(gbl.word_1A13C.field_8 * gbl.unk_1D890.field_A);
+                gbl.unk_1D890.field_8 += (ushort)(timeScales[4] * gbl.unk_1D890.field_A);
 
                 gbl.unk_1D890.field_A = 0;
 
@@ -163,10 +165,10 @@ namespace engine
 
             for (int i = 0; i <= 6; i++)
             {
-                gbl.area_ptr.field_6A00_Set(0x6A00 + ((0x4BC6 + i) * 2), rest_time[i]);
+                gbl.area_ptr.field_6A00_Set(0x6A00 + ((0x4BC6 + i) * 2), (ushort)rest_time[i]);
             }
 
-            sub_5801E(time_slot, amount);
+            CheckAffectsTimingOut(time_slot, amount);
         }
 
 
@@ -197,7 +199,7 @@ namespace engine
                         for (int i = var_1; i >= (time_index + 1); i--)
                         {
                             gbl.unk_1D890[i] -= 1;
-                            gbl.unk_1D890[i - 1] += gbl.word_1A13C[i - 1];
+                            gbl.unk_1D890[i - 1] += timeScales[i - 1];
                         }
                     }
                 }

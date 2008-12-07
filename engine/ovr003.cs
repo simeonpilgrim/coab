@@ -1002,11 +1002,6 @@ namespace engine
                         seg044.sound_sub_120E0(Sound.sound_FF);
                     }
 
-                    if (gbl.soundFlag01 == false)
-                    {
-                        seg044.sound_sub_12194();
-                    }
-
                     ovr007.sub_2F6E7();
 
                     if (gbl.area_ptr.field_1CC == 0)
@@ -1015,22 +1010,12 @@ namespace engine
                         {
                             seg044.sound_sub_120E0(Sound.sound_FF);
                         }
-
-                        if (gbl.soundFlag01 == false)
-                        {
-                            seg044.sound_sub_12194();
-                        }
                     }
                     else
                     {
                         if (gbl.soundFlag01 == true)
                         {
                             seg044.sound_sub_120E0(Sound.sound_FF);
-                        }
-
-                        if (gbl.soundFlag01 == false)
-                        {
-                            seg044.sound_sub_12194();
                         }
                     }
                 }
@@ -1045,11 +1030,6 @@ namespace engine
                             seg044.sound_sub_120E0(Sound.sound_FF);
                         }
 
-                        if (gbl.soundFlag01 == false)
-                        {
-                            seg044.sound_sub_12194();
-                        }
-
                         ovr005.temple_shop();
 
                         if (gbl.area_ptr.field_1CC == 0)
@@ -1059,22 +1039,12 @@ namespace engine
                             {
                                 seg044.sound_sub_120E0(Sound.sound_FF);
                             }
-
-                            if (gbl.soundFlag01 == false)
-                            {
-                                seg044.sound_sub_12194();
-                            }
                         }
                         else
                         {
                             if (gbl.soundFlag01 == true)
                             {
                                 seg044.sound_sub_120E0(Sound.sound_FF);
-                            }
-
-                            if (gbl.soundFlag01 == false)
-                            {
-                                seg044.sound_sub_12194();
                             }
                         }
                     }
@@ -1085,11 +1055,6 @@ namespace engine
                             seg044.sound_sub_120E0(Sound.sound_FF);
                         }
 
-                        if (gbl.soundFlag01 == false)
-                        {
-                            seg044.sound_sub_12194();
-                        }
-
                         ovr006.sub_2E7A2();
 
                         if (gbl.area_ptr.field_1CC == 0)
@@ -1098,22 +1063,12 @@ namespace engine
                             {
                                 seg044.sound_sub_120E0(Sound.sound_FF);
                             }
-
-                            if (gbl.soundFlag01 == false)
-                            {
-                                seg044.sound_sub_12194();
-                            }
                         }
                         else
                         {
                             if (gbl.soundFlag01 == true)
                             {
                                 seg044.sound_sub_120E0(Sound.sound_FF);
-                            }
-
-                            if (gbl.soundFlag01 == false)
-                            {
-                                seg044.sound_sub_12194();
                             }
                         }
                     }
@@ -1126,11 +1081,6 @@ namespace engine
                     seg044.sound_sub_120E0(Sound.sound_FF);
                 }
 
-                if (gbl.soundFlag01 == false)
-                {
-                    seg044.sound_sub_12194();
-                }
-
                 ushort var_2 = ovr008.sub_304B4(gbl.mapDirection, gbl.mapPosY, gbl.mapPosX);
 
                 if (var_2 < gbl.area2_ptr.encounter_distance)
@@ -1138,7 +1088,7 @@ namespace engine
                     gbl.area2_ptr.encounter_distance = var_2;
                 }
 
-                ovr009.sub_33100();
+                ovr009.MainCombatLoop();
 
                 if (gbl.soundFlag01 == true)
                 {
@@ -1147,11 +1097,6 @@ namespace engine
 
                 ovr006.sub_2E7A2();
 
-                if (gbl.soundFlag01 == false)
-                {
-                    seg044.sound_sub_12194();
-                }
-
                 if (gbl.area_ptr.field_1CC == 0)
                 {
                     if (gbl.soundFlag01 == true)
@@ -1159,10 +1104,6 @@ namespace engine
                         seg044.sound_sub_120E0(Sound.sound_FF);
                     }
 
-                    if (gbl.soundFlag01 == false)
-                    {
-                        seg044.sound_sub_12194();
-                    }
                     ovr030.load_bigpic(0x79);
                 }
                 else
@@ -1170,11 +1111,6 @@ namespace engine
                     if (gbl.soundFlag01 == true)
                     {
                         seg044.sound_sub_120E0(Sound.sound_FF);
-                    }
-
-                    if (gbl.soundFlag01 == false)
-                    {
-                        seg044.sound_sub_12194();
                     }
                 }
 

@@ -18,7 +18,7 @@ namespace engine
             gbl.byte_1D2C0 = player.field_11D;
             gbl.reset_byte_1D2C0 = false;
 
-            ovr024.work_on_00(player, 18);
+            ovr024.CheckAffectsEffect(player, CheckType.Type_18);
 
             player.field_19D = sub_3EF0D(gbl.byte_1D2C0);
 
@@ -71,7 +71,7 @@ namespace engine
 
             gbl.byte_1D2C0 = (byte)(moves * 2);
 
-            ovr024.work_on_00(player, 18);
+            ovr024.CheckAffectsEffect(player, CheckType.Type_18);
 
             gbl.reset_byte_1D2C0 = false;
 
@@ -95,8 +95,8 @@ namespace engine
             }
 
             gbl.damage_flags = 0;
-            ovr024.work_on_00(attacker, 4);
-            ovr024.work_on_00(target, 5);
+            ovr024.CheckAffectsEffect(attacker, CheckType.Type_4);
+            ovr024.CheckAffectsEffect(target, CheckType.Type_5);
         }
 
         static Set unk_3E2EE = new Set(0x0002, new byte[] { 0xC0, 0x01 });
@@ -196,7 +196,7 @@ namespace engine
 
                 ovr024.sub_645AB(target);
 
-                ovr024.work_on_00(target, 13);
+                ovr024.CheckAffectsEffect(target, CheckType.Type_13);
 
                 if (target.in_combat == false)
                 {
@@ -492,7 +492,7 @@ namespace engine
             }
 
             gbl.reset_byte_1D2C0 = false;
-            ovr024.work_on_00(player, 18);
+            ovr024.CheckAffectsEffect(player, CheckType.Type_18);
             byte var_1 = sub_3EF0D(gbl.byte_1D2C0);
 
             if (var_5 == true &&
@@ -525,7 +525,7 @@ namespace engine
 
         internal static byte sub_3EF0D(byte arg_0)
         {
-            if ((gbl.byte_1D8B7 & 1) == 1)
+            if ((gbl.combat_round & 1) == 1)
             {
                 arg_0++;
             }
@@ -617,7 +617,7 @@ namespace engine
                 {
                     gbl.byte_1D2C5 = 0;
 
-                    ovr024.work_on_00(player01, 1);
+                    ovr024.CheckAffectsEffect(player01, CheckType.Visibility);
 
                     if (gbl.byte_1D2C5 == 0)
                     {
@@ -625,7 +625,7 @@ namespace engine
 
                         player02.actions.target = player01;
 
-                        ovr024.work_on_00(player02, 0);
+                        ovr024.CheckAffectsEffect(player02, 0);
 
                         player02.actions.target = old_target;
                     }
@@ -688,7 +688,7 @@ namespace engine
 
                     if (var_4 > 0)
                     {
-                        target.actions.field_10 = 1;
+                        target.actions.fleeing = true;
                         ovr025.sub_6818A("is turned", true, target);
                     }
                     else
@@ -743,7 +743,7 @@ namespace engine
             {
                 Player target = gbl.player_array[gbl.near_targets[i]];
 
-                if (target.actions.field_10 == 0 &&
+                if (target.actions.fleeing == false &&
                     target.field_E9 > 0 &&
                     target.field_E9 < var_4)
                 {
@@ -807,7 +807,7 @@ namespace engine
                 }
 
                 ovr025.reclac_player_values(target);
-                ovr024.work_on_00(target, 11);
+                ovr024.CheckAffectsEffect(target, CheckType.Type_11);
 
                 if (sub_408D7(target, attacker) == true)
                 {
@@ -879,7 +879,7 @@ namespace engine
 
                             if (target.in_combat == true)
                             {
-                                ovr024.work_on_00(attacker, var_15 + 1);
+                                ovr024.CheckAffectsEffect(attacker, (CheckType)var_15 + 1);
                             }
 
                             if (target.in_combat == false)
@@ -956,7 +956,7 @@ namespace engine
             gbl.byte_1D910 = true;
             gbl.display_hitpoints_ac = true;
 
-            gbl.byte_1D8B8 = (byte)(gbl.byte_1D8B7 + 15);
+            gbl.combat_round_no_action_limit = gbl.combat_round + 15;
 
             if (target.actions.field_F < 2 &&
                 arg_8 == 0)
@@ -1147,21 +1147,21 @@ namespace engine
 
         static Affects[] unk_18ADB = { Affects.bless, Affects.snake_charm, Affects.paralyze, Affects.sleep, Affects.helpless }; // seg600:27CB first is filler (off by 1)
 
-        internal static bool sub_4001C(Struct_1D183 arg_0, byte arg_4, QuickFight quick_fight, byte arg_8)
+        internal static bool sub_4001C(Struct_1D183 arg_0, byte arg_4, QuickFight quick_fight, byte spellId)
         {
             bool var_2 = false;
             if (quick_fight == QuickFight.False)
             {
-                byte var_A = arg_8 != 0x53 ? (byte)1 : (byte)0;
+                byte var_A = spellId != 0x53 ? (byte)1 : (byte)0;
 
-                aim_menu(arg_0, out var_2, var_A, arg_4, 0, ovr023.sub_5CDE5(arg_8), gbl.player_ptr);
+                aim_menu(arg_0, out var_2, var_A, arg_4, 0, ovr023.sub_5CDE5(spellId), gbl.player_ptr);
                 gbl.player_ptr.actions.target = arg_0.target;
             }
-            else if (gbl.spell_table[arg_8].field_E == 0)
+            else if (gbl.spell_table[spellId].field_E == 0)
             {
                 arg_0.target = gbl.player_ptr;
 
-                if (arg_8 != 3 || find_healing_target(out arg_0.target, gbl.player_ptr))
+                if (spellId != 3 || find_healing_target(out arg_0.target, gbl.player_ptr))
                 {
                     arg_0.mapX = ovr033.PlayerMapXPos(arg_0.target);
                     arg_0.mapY = ovr033.PlayerMapYPos(arg_0.target);
@@ -1177,7 +1177,7 @@ namespace engine
                 {
                     bool var_3 = true;
 
-                    if (find_target(true, 0, ovr023.sub_5CDE5(arg_8), gbl.player_ptr) == true)
+                    if (find_target(true, 0, ovr023.sub_5CDE5(spellId), gbl.player_ptr) == true)
                     {
                         Player target = gbl.player_ptr.actions.target;
 
@@ -1185,7 +1185,7 @@ namespace engine
                         {
                             for (int i = 1; i <= 4; i++)
                             {
-                                if (gbl.spell_table[arg_8].affect_id == unk_18ADB[i])
+                                if (gbl.spell_table[spellId].affect_id == unk_18ADB[i])
                                 {
                                     var_3 = false;
                                 }
@@ -1219,7 +1219,7 @@ namespace engine
             return var_2;
         }
 
-        internal static void target(out bool arg_0, QuickFight quick_fight, byte arg_6)
+        internal static void target(out bool arg_0, QuickFight quick_fight, byte spellId)
         {
             Struct_1D183 var_C = new Struct_1D183();
 
@@ -1230,7 +1230,7 @@ namespace engine
             gbl.targetX = ovr033.PlayerMapXPos(gbl.player_ptr);
             gbl.targetY = ovr033.PlayerMapYPos(gbl.player_ptr);
 
-            byte tmp1 = (byte)(gbl.spell_table[arg_6].field_6 & 0x0F);
+            byte tmp1 = (byte)(gbl.spell_table[spellId].field_6 & 0x0F);
 
             if (tmp1 == 0)
             {
@@ -1244,7 +1244,7 @@ namespace engine
 
                 int var_4;
 
-                if (arg_6 == 0x4F)
+                if (spellId == 0x4F)
                 {
                     var_4 = ovr025.spellMaxTargetCount(0x4F);
                 }
@@ -1257,7 +1257,7 @@ namespace engine
 
                 do
                 {
-                    if (sub_4001C(var_C, 0, quick_fight, arg_6) == true)
+                    if (sub_4001C(var_C, 0, quick_fight, spellId) == true)
                     {
                         bool found = false;
 
@@ -1279,7 +1279,7 @@ namespace engine
                             gbl.targetY = ovr033.PlayerMapYPos(var_C.target);
                             gbl.sp_target_count++;
 
-                            if (arg_6 != 0x4f)
+                            if (spellId != 0x4f)
                             {
                                 byte al = gbl.sp_targets[sp_target_index].field_E5;
 
@@ -1346,7 +1346,7 @@ namespace engine
             else if (tmp1 == 0x0F)
             {
 
-                if (sub_4001C(var_C, 0, quick_fight, arg_6) == true)
+                if (sub_4001C(var_C, 0, quick_fight, spellId) == true)
                 {
                     if (gbl.player_ptr.actions.target != null)
                     {
@@ -1356,7 +1356,7 @@ namespace engine
                     else
                     {
                         /* TODO it doesn't make sense to mask the low nibble then shift it out */
-                        ovr032.Rebuild_SortedCombatantList(gbl.mapToBackGroundTile, 1, 0xff, (gbl.spell_table[arg_6].field_6 & 0x0f) >> 4, gbl.targetY, gbl.targetX);
+                        ovr032.Rebuild_SortedCombatantList(gbl.mapToBackGroundTile, 1, 0xff, (gbl.spell_table[spellId].field_6 & 0x0f) >> 4, gbl.targetY, gbl.targetX);
                         // test with it how it would make sense...
 						//ovr032.Rebuild_SortedCombatantList(gbl.mapToBackGroundTile, 1, 0xff, (gbl.unk_19AEC[arg_6].field_6 & 0xf0) >> 4, gbl.targetY, gbl.targetX);
 
@@ -1376,9 +1376,9 @@ namespace engine
             }
             else if (tmp1 >= 8 && tmp1 <= 0x0E)
             {
-                if (sub_4001C(var_C, 1, quick_fight, arg_6) == true)
+                if (sub_4001C(var_C, 1, quick_fight, spellId) == true)
                 {
-                    ovr032.Rebuild_SortedCombatantList(gbl.mapToBackGroundTile, 1, 0xff, (short)(gbl.spell_table[arg_6].field_6 & 7), gbl.targetY, gbl.targetX);
+                    ovr032.Rebuild_SortedCombatantList(gbl.mapToBackGroundTile, 1, 0xff, (short)(gbl.spell_table[spellId].field_6 & 7), gbl.targetY, gbl.targetX);
 
                     for (int i = 1; i <= gbl.sortedCombatantCount; i++)
                     {
@@ -1395,12 +1395,12 @@ namespace engine
             }
             else
             {
-                int var_1 = (gbl.spell_table[arg_6].field_6 & 3) + 1;
+                int var_1 = (gbl.spell_table[spellId].field_6 & 3) + 1;
                 int sp_target_index = 0;
 
                 while (var_1 > 0)
                 {
-                    if (sub_4001C(var_C, 0, quick_fight, arg_6) == true)
+                    if (sub_4001C(var_C, 0, quick_fight, spellId) == true)
                     {
                         bool found = false;
 
@@ -2470,7 +2470,7 @@ namespace engine
                 ovr025.DisplayPlayerStatusString(true, 12, "engulfs " + target.name, attacker);
                 ovr024.add_affect(false, ovr033.get_player_index(target), 0, Affects.affect_3a, target);
 
-                ovr024.CallSpellJumpTable(Effect.Add, null, target, Affects.affect_3a);
+                ovr013.CallAffectTable(Effect.Add, null, target, Affects.affect_3a);
                 ovr024.add_affect(false, ovr024.roll_dice(4, 2), 0, Affects.reduce, target);
                 ovr024.add_affect(true, ovr033.get_player_index(target), 0, Affects.affect_8b, attacker);
             }
@@ -2604,7 +2604,7 @@ namespace engine
             Affect affect = (Affect)param;
             bool var_1;
 
-            gbl.spell_target = gbl.player_array[affect.field_3];
+            gbl.spell_target = gbl.player_array[affect.affect_data];
 
             if (add_remove == Effect.Remove ||
                 player.in_combat == false ||
@@ -2615,7 +2615,7 @@ namespace engine
 
                 if (add_remove == Effect.Add)
                 {
-                    affect.call_spell_jump_list = false;
+                    affect.callAffectTable = false;
 
                     ovr024.remove_affect(affect, Affects.affect_8b, player);
                 }
@@ -2645,7 +2645,7 @@ namespace engine
         {
             Affect affect = (Affect)param;
 
-            gbl.spell_target = gbl.player_array[affect.field_3];
+            gbl.spell_target = gbl.player_array[affect.affect_data];
 
             if (arg_0 == Effect.Remove ||
                 player.in_combat == false ||
@@ -2654,7 +2654,7 @@ namespace engine
                 ovr024.remove_affect(null, Affects.affect_3a, gbl.spell_target);
                 if (arg_0 == Effect.Add)
                 {
-                    affect.call_spell_jump_list = false;
+                    affect.callAffectTable = false;
                     ovr024.remove_affect(affect, Affects.affect_90, player);
                 }
             }
@@ -2687,7 +2687,7 @@ namespace engine
                 ovr025.DisplayPlayerStatusString(true, 12, "hugs " + gbl.spell_target.name, player);
 
                 ovr024.add_affect(false, ovr033.get_player_index(gbl.spell_target), 0, Affects.affect_3a, gbl.spell_target);
-                ovr024.CallSpellJumpTable(Effect.Add, null, gbl.spell_target, Affects.affect_3a);
+                ovr013.CallAffectTable(Effect.Add, null, gbl.spell_target, Affects.affect_3a);
 
                 ovr024.add_affect(true, ovr033.get_player_index(gbl.spell_target), 0, Affects.affect_90, player);
             }

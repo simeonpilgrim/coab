@@ -966,7 +966,7 @@ namespace engine
 
                     if (var_1C4.field_87 > 0)
                     {
-                        Item newItem = ovr025.new_Item(0, Affects.affect_3e, (Affects)var_1C4.field_87,
+                        Item newItem = ovr025.new_Item(0, Affects.highConRegen, (Affects)var_1C4.field_87,
                             (short)(var_1C4.field_87 * 0x190), 0, (short)(var_1C4.field_87 * 10),
                             false, 0, false, 0, 0, 0x40, -89, -71, 0x46);
 
@@ -1053,28 +1053,25 @@ namespace engine
                             player01_ptr.race = Race.human;
                         }
 
-
                         switch (player01_ptr.race)
                         {
                             case Race.halfling:
                                 player01_ptr.icon_size = 1;
-                                ovr024.add_affect(false, 0xff, 0, Affects.affect_61, player_ptr);
+                                ovr024.add_affect(false, 0xff, 0, Affects.con_saving_bonus, player_ptr);
                                 break;
 
                             case Race.dwarf:
                                 player01_ptr.icon_size = 1;
-
-                                ovr024.add_affect(false, 0xff, 0, Affects.affect_61, player_ptr);
-                                ovr024.add_affect(false, 0xff, 0, Affects.affect_1a, player_ptr);
-                                ovr024.add_affect(false, 0xff, 0, Affects.affect_2f, player_ptr);
+                                ovr024.add_affect(false, 0xff, 0, Affects.con_saving_bonus, player_ptr);
+                                ovr024.add_affect(false, 0xff, 0, Affects.dwarf_vs_orc, player_ptr);
+                                ovr024.add_affect(false, 0xff, 0, Affects.dwarf_and_gnome_vs_giants, player_ptr);
                                 break;
 
                             case Race.gnome:
                                 player01_ptr.icon_size = 1;
-
-                                ovr024.add_affect(false, 0xff, 0, Affects.affect_61, player_ptr);
+                                ovr024.add_affect(false, 0xff, 0, Affects.con_saving_bonus, player_ptr);
                                 ovr024.add_affect(false, 0xff, 0, Affects.affect_12, player_ptr);
-                                ovr024.add_affect(false, 0xff, 0, Affects.affect_2f, player_ptr);
+                                ovr024.add_affect(false, 0xff, 0, Affects.dwarf_and_gnome_vs_giants, player_ptr);
                                 ovr024.add_affect(false, 0xff, 0, Affects.affect_30, player_ptr);
                                 break;
 

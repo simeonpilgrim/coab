@@ -6,12 +6,12 @@ namespace Classes
 {
     public class RestTime
     {
-        public ushort field_0;
-        public ushort field_2;
-        public ushort field_4;
-        public ushort field_6;
-        public ushort field_8;
-        public ushort field_A;
+        public int field_0;
+        public int field_2;
+        public int field_4;
+        public int field_6;
+        public int field_8;
+        public int field_A;
         public int field_C;
 
         public RestTime()
@@ -29,7 +29,7 @@ namespace Classes
             field_C = old.field_C;
         }
 
-        public RestTime(ushort f0, ushort f2,ushort f4,ushort f6,ushort f8,ushort fA,ushort fC)
+        public RestTime(int f0, int f2, int f4, int f6, int f8, int fA, int fC)
         {
             field_0 = f0;
             field_2 = f2;
@@ -51,7 +51,7 @@ namespace Classes
             field_C = 0;
         }
 
-        public ushort this[int index]
+        public int this[int index]
         {
             get
             {
@@ -70,7 +70,7 @@ namespace Classes
                     case 5:
                         return field_A;
                     case 6:
-                        return (ushort)field_C;
+                        return field_C;
                     default:
                         throw new NotSupportedException();
                 }

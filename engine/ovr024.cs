@@ -3,6 +3,34 @@ using System.Collections.Generic;
 
 namespace engine
 {
+    internal enum CheckType
+    {
+        None = 0,
+        Visibility = 1,
+        Type_2 = 2,
+        Type_3 = 3,
+        Type_4 = 4,
+        Type_5 = 5,
+        Type_6 = 6,
+        Type_7 = 7,
+        Type_8 = 8,
+        Type_9 = 9,
+        Type_10 = 10,
+        Type_11 = 11,
+        Type_12 = 12,
+        Type_13 = 13,
+        Type_14 = 14,
+        Type_15 = 15,
+        Type_16 = 16,
+        Type_17 = 17,
+        Type_18 = 18,
+        Type_19 = 19,
+        Type_20 = 20,
+        Type_21 = 21,
+        Type_22 = 22,
+        Type_23 = 23
+    }
+
     public class ovr024
     {
         internal static void sub_63014(string text, Status new_health_status, Player player)
@@ -18,7 +46,7 @@ namespace engine
                 player.hit_point_current = 0;
 
                 sub_645AB(player);
-                work_on_00(player, 13);
+                CheckAffectsEffect(player, CheckType.Type_13);
 
                 if (player.in_combat == false)
                 {
@@ -36,18 +64,6 @@ namespace engine
         }
 
 
-        internal static void CallSpellJumpTable(Effect add_remove, object parameter, Player player, Affects affect) /* sub_630C7 */
-        {
-            if (gbl.byte_1D8AC == true)
-            {
-                gbl.affect_jump_list[147](add_remove, parameter, player);
-            }
-            else
-            {
-                gbl.affect_jump_list[(int)affect](add_remove, parameter, player);
-            }
-        }
-
         internal static void remove_affect(Affect affect, Affects affect_id, Player player)
         {
             if (affect == null)
@@ -57,9 +73,9 @@ namespace engine
 
             if (affect != null)
             {
-                if (affect.call_spell_jump_list == true)
+                if (affect.callAffectTable == true)
                 {
-                    CallSpellJumpTable(Effect.Remove, affect, player, affect_id);
+                    ovr013.CallAffectTable(Effect.Remove, affect, player, affect_id);
                 }
 
                 player.affects.Remove(affect);
@@ -71,7 +87,7 @@ namespace engine
 
                 if (affect_id == Affects.enlarge || 
                     affect_id == Affects.strength || 
-                    affect_id == Affects.affect_92)
+                    affect_id == Affects.strenght_spell)
                 {
                     sub_648D9(0, player);
                 }
@@ -127,25 +143,25 @@ namespace engine
 
             if (found == true)
             {
-                CallSpellJumpTable(Effect.Add, affect, player, affect_type);
+                ovr013.CallAffectTable(Effect.Add, affect, player, affect_type);
             }
         }
 
-        static internal void work_on_00(Player player, int arg_4)
+        static internal void CheckAffectsEffect(Player player, CheckType type) // work_on_00
         {
-            switch (arg_4)
+            switch (type)
             {
-                case 0:
+                case CheckType.None:
                     break;
 
-                case 1:
+                case CheckType.Visibility:
                     calc_affect_effect(Affects.blink, player);
                     calc_affect_effect(Affects.invisibility, player);
                     calc_affect_effect(Affects.invisible, player);
                     calc_affect_effect(Affects.invisible_to_animals, player);
                     break;
 
-                case 2:
+                case CheckType.Type_2:
                     calc_affect_effect(Affects.affect_4f, player);
                     calc_affect_effect(Affects.affect_50, player);
                     calc_affect_effect(Affects.sp_dispel_evil, player);
@@ -155,7 +171,7 @@ namespace engine
                     calc_affect_effect(Affects.affect_7b, player);
                     break;
 
-                case 3:
+                case CheckType.Type_3:
                     calc_affect_effect(Affects.affect_40, player);
                     calc_affect_effect(Affects.affect_41, player);
                     calc_affect_effect(Affects.affect_42, player);
@@ -165,35 +181,35 @@ namespace engine
                     calc_affect_effect(Affects.affect_57, player);
                     break;
 
-                case 4:
+                case CheckType.Type_4:
                     calc_affect_effect(Affects.ray_of_enfeeblement, player);
                     calc_affect_effect(Affects.affect_06, player);
                     calc_affect_effect(Affects.affect_67, player);
                     calc_affect_effect(Affects.affect_4b, player);
                     calc_affect_effect(Affects.affect_4c, player);
-                    calc_affect_effect(Affects.affect_86, player);
+                    calc_affect_effect(Affects.range_vs_giant, player);
                     break;
 
-                case 5:
+                case CheckType.Type_5:
                     calc_affect_effect(Affects.mirror_image, player);
                     calc_affect_effect(Affects.prot_from_normal_missiles, player);
                     calc_affect_effect(Affects.affect_68, player);
                     calc_affect_effect(Affects.affect_78, player);
-                    calc_affect_effect(Affects.affect_65, player);
+                    calc_affect_effect(Affects.troll_regen, player);
                     calc_affect_effect(Affects.affect_73, player);
                     calc_affect_effect(Affects.affect_74, player);
                     calc_affect_effect(Affects.affect_77, player);
                     calc_affect_effect(Affects.affect_5e, player);
                     calc_affect_effect(Affects.affect_75, player);
                     calc_affect_effect(Affects.affect_3c, player);
-                    calc_affect_effect(Affects.affect_51, player);
+                    calc_affect_effect(Affects.half_damge, player);
                     calc_affect_effect(Affects.affect_52, player);
                     calc_affect_effect(Affects.affect_55, player);
                     calc_affect_effect(Affects.affect_82, player);
                     calc_affect_effect(Affects.affect_8f, player);
                     break;
 
-                case 6:
+                case CheckType.Type_6:
                     calc_affect_effect(Affects.affect_71, player);
                     calc_affect_effect(Affects.fire_resist, player);
                     calc_affect_effect(Affects.resist_cold, player);
@@ -205,7 +221,7 @@ namespace engine
                     calc_affect_effect(Affects.affect_76, player);
                     calc_affect_effect(Affects.shield, player);
                     calc_affect_effect(Affects.affect_5d, player);
-                    calc_affect_effect(Affects.affect_65, player);
+                    calc_affect_effect(Affects.troll_regen, player);
                     calc_affect_effect(Affects.mirror_image, player);
                     calc_affect_effect(Affects.affect_6e, player);
                     calc_affect_effect(Affects.prot_drag_breath, player);
@@ -213,11 +229,11 @@ namespace engine
                     calc_affect_effect(Affects.affect_54, player);
                     calc_affect_effect(Affects.affect_81, player);
                     calc_affect_effect(Affects.affect_85, player);
-                    calc_affect_effect(Affects.affect_87, player);
+                    calc_affect_effect(Affects.protect_elec, player);
                     calc_affect_effect(Affects.minor_globe_of_invulnerability, player);
                     break;
 
-                case 7:
+                case CheckType.Type_7:
                     calc_affect_effect(Affects.snake_charm, player);
                     calc_affect_effect(Affects.paralyze, player);
                     calc_affect_effect(Affects.sleep, player);
@@ -227,7 +243,7 @@ namespace engine
                     calc_affect_effect(Affects.entangle, player);
                     break;
 
-                case 8:
+                case CheckType.Type_8:
                     calc_affect_effect(Affects.affect_63, player);
                     calc_affect_effect(Affects.affect_52, player);
                     calc_affect_effect(Affects.displace, player);
@@ -235,7 +251,7 @@ namespace engine
                     calc_affect_effect(Affects.affect_38, player);
                     break;
 
-                case 9:
+                case CheckType.Type_9:
                     calc_affect_effect(Affects.affect_69, player);
                     calc_affect_effect(Affects.affect_6a, player);
                     calc_affect_effect(Affects.affect_6b, player);
@@ -250,7 +266,7 @@ namespace engine
                     calc_affect_effect(Affects.affect_81, player);
                     break;
 
-                case 10:
+                case CheckType.Type_10:
                     calc_affect_effect(Affects.bless, player);
                     calc_affect_effect(Affects.cursed, player);
                     calc_affect_effect(Affects.blinded, player);
@@ -258,12 +274,12 @@ namespace engine
                     calc_affect_effect(Affects.prayer, player);
                     calc_affect_effect(Affects.affect_06, player);
                     calc_affect_effect(Affects.affect_12, player);
-                    calc_affect_effect(Affects.affect_1a, player);
+                    calc_affect_effect(Affects.dwarf_vs_orc, player);
                     calc_affect_effect(Affects.affect_4b, player);
                     calc_affect_effect(Affects.affect_4c, player);
                     break;
 
-                case 11:
+                case CheckType.Type_11:
                     calc_affect_effect(Affects.blinded, player);
                     calc_affect_effect(Affects.shield, player);
                     calc_affect_effect(Affects.protection_from_evil, player);
@@ -274,7 +290,7 @@ namespace engine
                     calc_affect_effect(Affects.faerie_fire, player);
                     break;
 
-                case 12:
+                case CheckType.Type_12:
                     calc_affect_effect(Affects.protection_from_evil, player);
                     calc_affect_effect(Affects.protection_from_good, player);
                     calc_affect_effect(Affects.resist_cold, player);
@@ -288,20 +304,20 @@ namespace engine
                     calc_affect_effect(Affects.fire_resist, player);
                     calc_affect_effect(Affects.affect_6f, player);
                     calc_affect_effect(Affects.affect_7d, player);
-                    calc_affect_effect(Affects.affect_61, player);
+                    calc_affect_effect(Affects.con_saving_bonus, player);
                     calc_affect_effect(Affects.hot_fire_shield, player);
                     calc_affect_effect(Affects.cold_fire_shield, player);
                     break;
 
-                case 13:
+                case CheckType.Type_13:
                     calc_affect_effect(Affects.affect_63, player);
-                    calc_affect_effect(Affects.affect_64, player);
+                    calc_affect_effect(Affects.troll_fire_or_acid, player);
                     calc_affect_effect(Affects.affect_4b, player);
                     break;
 
-                case 14:
-                    calc_affect_effect(Affects.affect_53, player);
-                    calc_affect_effect(Affects.affect_58, player);
+                case CheckType.Type_14:
+                    calc_affect_effect(Affects.paralizing_gaze, player);
+                    calc_affect_effect(Affects.breath_elec, player);
                     calc_affect_effect(Affects.affect_79, player);
                     calc_affect_effect(Affects.spit_acid, player);
                     calc_affect_effect(Affects.affect_57, player);
@@ -313,7 +329,7 @@ namespace engine
                     calc_affect_effect(Affects.affect_8b, player);
                     break;
 
-                case 15:
+                case CheckType.Type_15:
                     calc_affect_effect(Affects.silence_15_radius, player);
                     calc_affect_effect(Affects.stinking_cloud, player);
                     calc_affect_effect(Affects.charm_person, player);
@@ -321,50 +337,50 @@ namespace engine
                     calc_affect_effect(Affects.berserk, player);
                     break;
 
-                case 16:
+                case CheckType.Type_16:
                     calc_affect_effect(Affects.invisibility, player);
                     calc_affect_effect(Affects.invisible, player);
                     calc_affect_effect(Affects.blink, player);
-                    calc_affect_effect(Affects.affect_2f, player);
+                    calc_affect_effect(Affects.dwarf_and_gnome_vs_giants, player);
                     calc_affect_effect(Affects.affect_30, player);
                     calc_affect_effect(Affects.displace, player);
                     calc_affect_effect(Affects.dispel_evil, player);
                     break;
 
-                case 17:
+                case CheckType.Type_17:
                     calc_affect_effect(Affects.bless, player);
                     calc_affect_effect(Affects.cursed, player);
                     calc_affect_effect(Affects.charm_person, player);
                     break;
 
-                case 18:
+                case CheckType.Type_18:
                     calc_affect_effect(Affects.haste, player);
                     calc_affect_effect(Affects.slow, player);
                     calc_affect_effect(Affects.affect_3a, player);
                     break;
 
-                case 19:
-                    calc_affect_effect(Affects.affect_62, player);
+                case CheckType.Type_19:
+                    calc_affect_effect(Affects.regen_3_hp, player);
                     calc_affect_effect(Affects.spiritual_hammer, player);
                     calc_affect_effect(Affects.camouflage, player);
                     calc_affect_effect(Affects.affect_38, player);
                     calc_affect_effect(Affects.charm_person, player);
                     break;
 
-                case 20:
+                case CheckType.Type_20:
                     calc_affect_effect(Affects.hot_fire_shield, player);
                     calc_affect_effect(Affects.cold_fire_shield, player);
                     break;
 
-                case 21:
+                case CheckType.Type_21:
                     calc_affect_effect(Affects.confuse, player);
                     break;
 
-                case 22:
+                case CheckType.Type_22:
                     calc_affect_effect(Affects.affect_8a, player);
                     break;
 
-                case 23:
+                case CheckType.Type_23:
                     calc_affect_effect(Affects.affect_4a, player);
                     break;
             }
@@ -425,7 +441,7 @@ namespace engine
 
                         if (player.HasAffect(Affects.stinking_cloud) == true)
                         {
-                            CallSpellJumpTable(Effect.Add, affect, player, Affects.stinking_cloud);
+                            ovr013.CallAffectTable(Effect.Add, affect, player, Affects.stinking_cloud);
                         }
 
                         gbl.player_ptr = tmp_player_ptr;
@@ -441,7 +457,7 @@ namespace engine
 
                         if (ovr025.find_affect(out affect, Affects.helpless, player) == true)
                         {
-                            CallSpellJumpTable(Effect.Add, affect, player, Affects.helpless);
+                            ovr013.CallAffectTable(Effect.Add, affect, player, Affects.helpless);
                         }
 
                         gbl.player_ptr = tmp_player_ptr;
@@ -495,7 +511,7 @@ namespace engine
                     gbl.attack_roll = 100;
                 }
 
-                work_on_00(target, 16);
+                CheckAffectsEffect(target, CheckType.Type_16);
 
                 if (gbl.attack_roll >= 0)
                 {
@@ -524,8 +540,8 @@ namespace engine
                     gbl.attack_roll = 100;
                 }
 
-                work_on_00(attacker, 10);
-                work_on_00(target, 16);
+                CheckAffectsEffect(attacker, CheckType.Type_10);
+                CheckAffectsEffect(target, CheckType.Type_16);
 
                 int team_bonus;
                 if (attacker.combat_team == CombatTeam.Ours)
@@ -573,7 +589,7 @@ namespace engine
                 gbl.saving_throw_roll += save_bonus + player.field_186;
                 gbl.byte_1D2D1 = arg_2;
 
-                work_on_00(player, 12);
+                CheckAffectsEffect(player, CheckType.Type_12);
                 gbl.save_made = player.field_DF[arg_2] <= gbl.saving_throw_roll;
             }
 
@@ -604,9 +620,9 @@ namespace engine
         }
 
 
-        internal static void add_affect(bool call_spell_jump_list, int arg_2, ushort arg_4, Affects type, Player player)
+        internal static void add_affect(bool call_spell_jump_list, int data, ushort minutes, Affects type, Player player)
         {
-            Affect affect = new Affect(type, arg_4, (byte)arg_2, call_spell_jump_list);
+            Affect affect = new Affect(type, minutes, (byte)data, call_spell_jump_list);
 
             player.affects.Add(affect);
             //TODO simplify this funcation.
@@ -675,7 +691,7 @@ namespace engine
 								  Affects.affect_3a,
 								  Affects.regenerate,
 								  Affects.affect_5F,
-								  Affects.affect_62,
+								  Affects.regen_3_hp,
 								  Affects.entangle,
 								  Affects.affect_89,
 								  Affects.affect_8b,
@@ -734,7 +750,7 @@ namespace engine
         internal static void decode_strength(out byte str_00, out byte str, Affect arg_8) /* sub_646D9 */
         {
             str_00 = 0;
-            str = (byte)(arg_8.field_3 & 0x7F);
+            str = (byte)(arg_8.affect_data & 0x7F);
 
             if (str <= 101)
             {
@@ -1022,7 +1038,7 @@ namespace engine
                     max_strength(ref stat_a, stat_b, ref str_00_a, str_00_b);
                 }
 
-                if (ovr025.find_affect(out affect_ptr, Affects.affect_92, player) == true)
+                if (ovr025.find_affect(out affect_ptr, Affects.strenght_spell, player) == true)
                 {
                     decode_strength(out str_00_b, out stat_b, affect_ptr);
                     max_strength(ref stat_a, stat_b, ref str_00_a, str_00_b);
@@ -1104,14 +1120,14 @@ namespace engine
 
                 if (player.con > 20)
                 {
-                    if (player.HasAffect(Affects.affect_3e) == true)
+                    if (player.HasAffect(Affects.highConRegen) == true)
                     {
-                        add_affect(false, 0xff, 0x3c, Affects.affect_3e, player);
+                        add_affect(false, 0xff, 0x3c, Affects.highConRegen, player);
                     }
                 }
                 else
                 {
-                    remove_affect(null, Affects.affect_3e, player);
+                    remove_affect(null, Affects.highConRegen, player);
                 }
             }
             else if (stat_index == 1)
@@ -1163,7 +1179,7 @@ namespace engine
                 Affect affect;
                 if (ovr025.find_affect(out affect, Affects.friends, player) == true)
                 {
-                    stat_a = affect.field_3;
+                    stat_a = affect.affect_data;
                 }
 
                 player.charisma = stat_a;
@@ -1178,7 +1194,7 @@ namespace engine
 
             gbl.damage = damage;
 
-            work_on_00(player, 6);
+            CheckAffectsEffect(player, CheckType.Type_6);
 
             if (change_damage == true)
             {
@@ -1193,7 +1209,7 @@ namespace engine
             }
             else
             {
-                work_on_00(player, 20);
+                CheckAffectsEffect(player, CheckType.Type_20);
             }
 
             if (gbl.damage > 0)
@@ -1262,7 +1278,7 @@ namespace engine
                     {
                         sub_645AB(player);
 
-                        work_on_00(player, 13);
+                        CheckAffectsEffect(player, CheckType.Type_13);
 
                         if (player.in_combat == false)
                         {
@@ -1293,11 +1309,11 @@ namespace engine
         }
 
 
-        internal static void is_unaffected(string text, bool saved, DamageOnSave can_save, bool call_spell_jump_list, int arg_A, ushort arg_C, Affects affect_id, Player target)
+        internal static void is_unaffected(string text, bool saved, DamageOnSave can_save, bool call_affect_table, int data, ushort time, Affects affect_id, Player target)
         {
             gbl.current_affect = affect_id;
 
-            work_on_00(target, 9);
+            CheckAffectsEffect(target, CheckType.Type_9);
 
             if (gbl.current_affect == 0 ||
                 (saved == true && can_save == DamageOnSave.Zero))
@@ -1309,12 +1325,12 @@ namespace engine
                 Affect found_affect;
 
                 if (ovr025.find_affect(out found_affect, affect_id, target) == true &&
-                    found_affect.field_1 > 0)
+                    found_affect.minutes > 0)
                 {
                     remove_affect(found_affect, affect_id, target);
                 }
 
-                add_affect(call_spell_jump_list, arg_A, arg_C, affect_id, target);
+                add_affect(call_affect_table, data, time, affect_id, target);
 
                 if (text.Length != 0)
                 {
@@ -1351,7 +1367,7 @@ namespace engine
                         if (player.health_status == Status.unconscious &&
                             gbl.game_state != GameState.Combat)
                         {
-                            CallSpellJumpTable(Effect.Remove, null, player, Affects.affect_4e);
+                            ovr013.CallAffectTable(Effect.Remove, null, player, Affects.affect_4e);
                         }
                     }
 
