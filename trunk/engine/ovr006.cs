@@ -205,7 +205,6 @@ namespace engine
                     no_exp = true;
                     break;
                 }
-
             }
 
             if (gbl.combat_type == CombatType.duel ||
@@ -250,10 +249,7 @@ namespace engine
                         gbl.partyAnimatedCount++;
                     }
 
-                    for (int i = 0; i < 0x13; i++)
-                    {
-                        ovr024.remove_affect(null, affects_array[i], player);
-                    }
+                    System.Array.ForEach(affects_array, affect => ovr024.remove_affect(null, affect, player));
                 }
 
                 if (gbl.battleWon == true)
@@ -331,7 +327,7 @@ namespace engine
                     foreach (Player player in to_remove)
                     {
                         gbl.player_ptr = player;
-                        ovr018.free_players(true, false);
+                        ovr018.FreeCurrentPlayer(true, false);
                     }
                 }
                 else
@@ -353,7 +349,7 @@ namespace engine
                     foreach (Player player in to_remove)
                     {
                         gbl.player_ptr = player;
-                        ovr018.free_players(true, false);
+                        ovr018.FreeCurrentPlayer(true, false);
                     }
 
                     gbl.area2_ptr.party_size = 0;
@@ -721,7 +717,7 @@ namespace engine
             foreach (KeyValuePair<Player, bool> kvp in to_remove)
             {
                 gbl.player_ptr = kvp.Key;
-                ovr018.free_players(true, kvp.Value);
+                ovr018.FreeCurrentPlayer(true, kvp.Value);
             }
 
             gbl.player_ptr = gbl.player_next_ptr[0];

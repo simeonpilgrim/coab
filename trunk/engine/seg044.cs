@@ -2,13 +2,18 @@ using Classes;
 
 namespace engine
 {
-    class seg044
+    public class seg044
     {
+        public static void SetSound(bool On)
+        {
+            gbl.soundType = On ? SoundType.PC : SoundType.None;
+        }
+
         internal static void sound_sub_120E0(Sound arg_0) /*sub_120E0*/
         {
-            if (arg_0 == Sound.sound_0)
+            if (gbl.soundType == SoundType.PC)
             {
-                if (gbl.soundType != SoundType.None)
+                if (arg_0 == Sound.sound_0)
                 {
                     foreach (var sp in sounds)
                     {
@@ -18,13 +23,10 @@ namespace engine
                         }
                     }
                 }
-            }
-            else if (arg_0 == Sound.sound_1)
-            {
-            }
-            else if (arg_0 == Sound.sound_FF) // off maybe.
-            {
-                if (gbl.soundType != SoundType.None)
+                else if (arg_0 == Sound.sound_1)
+                {
+                }
+                else if (arg_0 == Sound.sound_FF) // off maybe.
                 {
                     foreach (var sp in sounds)
                     {
@@ -33,12 +35,8 @@ namespace engine
                             sp.Stop();
                         }
                     }
-                    gbl.soundFlag01 = false;
                 }
-            }
-            else if (arg_0 >= Sound.sound_2 && arg_0 <= Sound.sound_e)
-            {
-                if (gbl.soundType == SoundType.PC)
+                else if (arg_0 >= Sound.sound_2 && arg_0 <= Sound.sound_e)
                 {
                     int sampleId = (int)arg_0 - 1;
                     if (sounds[sampleId] != null)
@@ -49,9 +47,9 @@ namespace engine
                     {
                     }
                 }
-            }
-            else if (arg_0 == Sound.sound_f)
-            {
+                else if (arg_0 == Sound.sound_f)
+                {
+                }
             }
         }
 

@@ -86,6 +86,8 @@ namespace Main
             Classes.Cheats.SkipTitleScreenSet(Settings.Default.SkipTitleScreen);
             Classes.Cheats.ImprovedAreaMapSet(Settings.Default.ImprovedAreaMap);
             Classes.Cheats.NoRaceClassLimits(Settings.Default.NoRaceClassLimits);
+
+            engine.seg044.SetSound(Settings.Default.SoundOn);
         }
 
         private void playersAlwayMakeSavingThrowToolStripMenuItem_CheckedChanged(object sender, EventArgs e)
@@ -185,6 +187,15 @@ namespace Main
         private void dumpTreasureItemsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             engine.seg043.DumpTreasureItems();
+        }
+
+        private void soundOnToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            bool flipped = !Settings.Default.SoundOn;
+            Settings.Default.SoundOn = flipped;
+            Settings.Default.Save();
+
+            engine.seg044.SetSound(flipped);
         }
     }
 }

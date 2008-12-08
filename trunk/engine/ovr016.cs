@@ -28,7 +28,7 @@ namespace engine
             int max_scribe_level = 0;
             int total_scribe_level = 0;
 
-            foreach(Item item in player.items)
+            foreach (Item item in player.items)
             {
                 if (ovr023.item_is_scroll(item) == true)
                 {
@@ -83,7 +83,7 @@ namespace engine
 
         internal static void cancel_scribes(Player player)
         {
-            foreach(Item item in player.items)
+            foreach (Item item in player.items)
             {
                 if (ovr023.item_is_scroll(item) == true)
                 {
@@ -125,7 +125,7 @@ namespace engine
                 }
             }
 
-            return gbl.player_ptr.field_12D[spellClass, spellLevel-1] - alreadyLearning;
+            return gbl.player_ptr.field_12D[spellClass, spellLevel - 1] - alreadyLearning;
         }
 
 
@@ -232,11 +232,11 @@ namespace engine
 
                 for (int spellLevel = 0; spellLevel < MaxSpellLevel; spellLevel++)
                 {
-                    var_60[spellClass, spellLevel] = HowManySpellsPlayerCanLearn(spellClass, spellLevel+1).ToString();
-                    
+                    var_60[spellClass, spellLevel] = HowManySpellsPlayerCanLearn(spellClass, spellLevel + 1).ToString();
+
                     if (gbl.player_ptr.field_12D[spellClass, spellLevel] == 0)
                     {
-                        var_60[spellClass,spellLevel] = " ";
+                        var_60[spellClass, spellLevel] = " ";
                     }
                     else
                     {
@@ -300,15 +300,13 @@ namespace engine
                 }
             }
 
-            gbl.unk_1D890.field_6 = (ushort)(max_rest_time / 60);
-
-            gbl.unk_1D890.field_4 = (ushort)((max_rest_time - (gbl.unk_1D890.field_6 * 60)) / 10);
-
-            gbl.unk_1D890.field_2 = (ushort)(max_rest_time % 10);
+            gbl.timeToRest.field_6 = (ushort)(max_rest_time / 60);
+            gbl.timeToRest.field_4 = (ushort)((max_rest_time - (gbl.timeToRest.field_6 * 60)) / 10);
+            gbl.timeToRest.field_2 = (ushort)(max_rest_time % 10);
 
             action_interrupted = ovr021.resting(true);
 
-            gbl.unk_1D890.Clear();
+            gbl.timeToRest.Clear();
 
             ovr025.display_map_position_time();
         }
@@ -542,8 +540,7 @@ namespace engine
         }
 
 
-
-        internal static void display_magic_effects()
+        static void DisplayMagicEffects()
         {
             List<MenuItem> var_C = new List<MenuItem>();
 
@@ -732,23 +729,21 @@ namespace engine
 
         internal static void magic_menu(ref bool arg_0)
         {
-            bool var_2;
-            char var_1;
+            char inputKey = ' ';
 
-            var_1 = ' ';
-
-            while (arg_0 == false && unk_45CD7.MemberOf(var_1) == false)
+            while (arg_0 == false && AlterSet.MemberOf(inputKey) == false)
             {
-                var_1 = ovr027.displayInput(out var_2, true, 1, 15, 10, 13, "Cast Memorize Scribe Display Rest Exit", string.Empty);
+                bool controlKey;
+                inputKey = ovr027.displayInput(out controlKey, true, 1, 15, 10, 13, "Cast Memorize Scribe Display Rest Exit", string.Empty);
 
-                if (var_2 == true)
+                if (controlKey == true)
                 {
-                    ovr020.scroll_team_list(var_1);
+                    ovr020.scroll_team_list(inputKey);
                     ovr025.PartySummary(gbl.player_ptr);
                 }
                 else
                 {
-                    switch (var_1)
+                    switch (inputKey)
                     {
                         case 'C':
                             cast_spell();
@@ -763,7 +758,7 @@ namespace engine
                             break;
 
                         case 'D':
-                            display_magic_effects();
+                            DisplayMagicEffects();
                             break;
 
                         case 'R':
@@ -775,7 +770,7 @@ namespace engine
         }
 
 
-        internal static void move_current_player_up() // sub_4558D
+        static void MoveCurrentPlayerUp() // sub_4558D
         {
             // move gbl.player_ptr up the list by one, if at head, move to tail.
 
@@ -796,7 +791,7 @@ namespace engine
         }
 
 
-        internal static void move_current_player_down() // sub_456E5
+        static void MoveCurrentPlayerDown() // sub_456E5
         {
             int index = gbl.player_next_ptr.IndexOf(gbl.player_ptr);
             if (index >= 0)
@@ -814,45 +809,44 @@ namespace engine
             }
         }
 
-        static string[] seg600_04A6 = { "Select Exit", "Place Exit" };
-        static Set unk_45832 = new Set(0x0101, new byte[] { 0x020 });
+        static string[] reorderStrings = { "Select Exit", "Place Exit" }; //seg600_04A6
+        static Set reorderSet = new Set(0x0101, new byte[] { 0x020 });
 
-        internal static void reorder_party()
+        static void reorder_party()
         {
-            bool var_2;
+            int reorderState = 0;
+            char inputKey = ' ';
 
-            int var_1 = 0;
-            char var_3 = ' ';
-
-            while (unk_45CD7.MemberOf(var_3) == false)
+            while (AlterSet.MemberOf(inputKey) == false)
             {
-                var_3 = ovr027.displayInput(out var_2, true, 1, 15, 10, 13, seg600_04A6[var_1], "Party Order: ");
-                
-                if (var_2 == true)
+                bool controlKey;
+                inputKey = ovr027.displayInput(out controlKey, true, 1, 15, 10, 13, reorderStrings[reorderState], "Party Order: ");
+
+                if (controlKey == true)
                 {
-                    if (var_1 == 0)
+                    if (reorderState == 0)
                     {
-                        ovr020.scroll_team_list(var_3);
+                        ovr020.scroll_team_list(inputKey);
                         ovr025.PartySummary(gbl.player_ptr);
                     }
                     else
                     {
-                        if (var_3 == 0x47)
+                        if (inputKey == 0x47)
                         {
-                            move_current_player_up();
+                            MoveCurrentPlayerUp();
                         }
-                        else if (var_3 == 0x4F)
+                        else if (inputKey == 0x4F)
                         {
-                            move_current_player_down();
+                            MoveCurrentPlayerDown();
                         }
                         ovr025.PartySummary(gbl.player_ptr);
                     }
                 }
-                else if( unk_45832.MemberOf(var_3) == true )
+                else if (reorderSet.MemberOf(inputKey) == true)
                 {
-                    var_1 = (var_1 == 0) ? 1 : 0;
+                    reorderState = (reorderState == 0) ? 1 : 0;
 
-                    if (var_1 != 0)
+                    if (reorderState != 0)
                     {
                         ovr025.DisplayPlayerStatusString(false, 10, "has been selected", gbl.player_ptr);
                     }
@@ -866,13 +860,13 @@ namespace engine
         }
 
 
-        internal static void drop_player()
+        static void DropPlayer() // drop_player
         {
             if (gbl.player_next_ptr.Count == 1)
             {
                 if (ovr027.yes_no(15, 10, 14, "quit TO DOS: ") == 'Y')
                 {
-                    ovr018.free_players(true, false);
+                    ovr018.FreeCurrentPlayer(true, false);
                     seg043.print_and_exit();
                 }
             }
@@ -891,7 +885,7 @@ namespace engine
                         ovr025.DisplayPlayerStatusString(true, 10, "is dumped in a ditch", gbl.player_ptr);
                     }
 
-                    ovr018.free_players(true, false);
+                    ovr018.FreeCurrentPlayer(true, false);
                     seg037.draw8x8_clear_area(0x0b, 0x26, 1, 0x11);
 
                     ovr025.PartySummary(gbl.player_ptr);
@@ -906,42 +900,39 @@ namespace engine
 
         internal static void game_speed()
         {
-            string var_22B;
-            string var_2B;
-            bool var_2;
-            char var_1;
+            char inputKey;
 
             do
             {
-                var_22B = "Game Speed = " + gbl.game_speed_var.ToString() + " (0=fastest 9=slowest)";
-                seg041.displayString(var_22B, 0, 10, 18, 1);
+                seg041.displayString(string.Format("Game Speed = {0} (0=fastest 9=slowest)", gbl.game_speed_var), 0, 10, 18, 1);
 
-                var_2B = string.Empty;
+                string text = string.Empty;
 
                 if (gbl.game_speed_var > 0)
                 {
-                    var_2B += " Faster";
+                    text += " Faster";
                 }
 
                 if (gbl.game_speed_var < 9)
                 {
-                    var_2B += " Slower";
+                    text += " Slower";
                 }
 
-                var_2B += " Exit";
+                text += " Exit";
 
-                var_1 = ovr027.displayInput(out var_2, true, 1, 15, 10, 13, var_2B, "Game Speed:");
+                bool controlKey;
+                inputKey = ovr027.displayInput(out controlKey, true, 1, 15, 10, 13, text, "Game Speed:");
 
-                if (var_2 == true)
+                if (controlKey == true)
                 {
-                    if (var_1 == 0x50)
+                    if (inputKey == 0x50)
                     {
                         if (gbl.game_speed_var > 0)
                         {
                             gbl.game_speed_var--;
                         }
                     }
-                    else if (var_1 == 0x48)
+                    else if (inputKey == 0x48)
                     {
                         if (gbl.game_speed_var < 9)
                         {
@@ -951,51 +942,47 @@ namespace engine
                 }
                 else
                 {
-                    if (var_1 == 0x46)
+                    if (inputKey == 0x46)
                     {
                         gbl.game_speed_var--;
                     }
-                    else if (var_1 == 0x53)
+                    else if (inputKey == 0x53)
                     {
                         gbl.game_speed_var++;
                     }
                 }
 
-            } while (unk_45CD7.MemberOf(var_1) == false);
+            } while (AlterSet.MemberOf(inputKey) == false);
 
             ovr025.ClearPlayerTextArea();
         }
 
-        static Set unk_45CD7 = new Set(0x0009, new byte[] { 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x20 });
+        static Set AlterSet = new Set(0x0009, new byte[] { 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x20 });
 
         internal static void alter_menu()
         {
-            string var_2C;
-            bool var_3;
-            char var_2;
-            char var_1;
+            char inputKey = ' ';
 
-            var_1 = ' ';
-
-            while (unk_45CD7.MemberOf(var_1) == false)
+            while (AlterSet.MemberOf(inputKey) == false)
             {
-                var_1 = ovr027.displayInput(out var_3, true, 1, 15, 10, 13, "Order Drop Speed Icon Pics Exit", "Alter: ");
+                bool controlKey;
+                inputKey = ovr027.displayInput(out controlKey, true, 1, 15, 10, 13, "Order Drop Speed Icon Pics Exit", "Alter: ");
 
-                if (var_3 == true)
+                if (controlKey == true)
                 {
-                    ovr020.scroll_team_list(var_1);
+                    ovr020.scroll_team_list(inputKey);
                     ovr025.PartySummary(gbl.player_ptr);
                 }
                 else
                 {
-                    switch (var_1)
+                    switch (inputKey)
                     {
                         case 'O':
                             reorder_party();
                             break;
 
                         case 'D':
-                            drop_player();
+                            DropPlayer();
                             break;
 
                         case 'S':
@@ -1008,40 +995,44 @@ namespace engine
                             break;
 
                         case 'P':
+                            char inputKey2;
+
                             do
                             {
+                                string text;
+
                                 if (gbl.PicsOn == true)
                                 {
-                                    var_2C = "Pics on  ";
+                                    text = "Pics on  ";
 
                                     if (gbl.AnimationsOn == true)
                                     {
-                                        var_2C += "Animation on  ";
+                                        text += "Animation on  ";
                                     }
                                     else
                                     {
-                                        var_2C += "Animation off ";
+                                        text += "Animation off ";
                                     }
                                 }
                                 else
                                 {
-                                    var_2C = "Pics off  ";
+                                    text = "Pics off  ";
                                 }
 
-                                var_2C += "Exit";
+                                text += "Exit";
 
-                                var_2 = ovr027.displayInput(out var_3, true, 0, 15, 10, 13, var_2C, string.Empty);
+                                inputKey2 = ovr027.displayInput(out controlKey, true, 0, 15, 10, 13, text, string.Empty);
 
-                                if (var_2 == 0x50)
+                                if (inputKey2 == 0x50)
                                 {
                                     gbl.PicsOn = !gbl.PicsOn;
                                 }
-                                else if (var_2 == 0x41)
+                                else if (inputKey2 == 0x41)
                                 {
                                     gbl.AnimationsOn = !gbl.AnimationsOn;
                                 }
 
-                            } while (unk_45CD7.MemberOf(var_2) == false);
+                            } while (AlterSet.MemberOf(inputKey2) == false);
                             break;
                     }
                 }
@@ -1049,60 +1040,59 @@ namespace engine
         }
 
 
-        internal static bool player_is_okey(Player player)
-        {
-            return (player.health_status == Status.okey);
-        }
 
-
-        internal static void sub_45F22(ref int var_2)
+        static int CalculateInitialHealing() // sub_45F22
         {
+            int HealingAvailable = 0;
+
             foreach (Player player in gbl.player_next_ptr)
             {
-                if (player_is_okey(player) == true)
+                if (player.health_status == Status.okey)
                 {
                     for (int i = 0; i < gbl.max_spells; i++)
                     {
                         switch (player.spell_list[i])
                         {
                             case 3:
-                                var_2 += ovr024.roll_dice(8, 1);
+                                HealingAvailable += ovr024.roll_dice(8, 1);
                                 break;
 
                             case 0x3A:
-                                var_2 += ovr024.roll_dice(8, 2) + 1;
+                                HealingAvailable += ovr024.roll_dice(8, 2) + 1;
                                 break;
 
                             case 0x47:
-                                var_2 += ovr024.roll_dice(8, 3) + 3;
+                                HealingAvailable += ovr024.roll_dice(8, 3) + 3;
                                 break;
                         }
                     }
                 }
             }
+
+            return HealingAvailable;
         }
 
 
-        internal static void sub_45FDD(ref int var_2, int bp_var_4, int bp_var_6, int bp_var_8)
+        static void CalculateHealing(ref int healingAvailable, int numCureLight, int numCureSerious, int numCureCritical) // sub_45FDD
         {
-            for (int var_3 = 1; var_3 <= bp_var_4; var_3++)
+            for (int i = 0; i < numCureLight; i++)
             {
-                var_2 += ovr024.roll_dice(8, 1);
+                healingAvailable += ovr024.roll_dice(8, 1);
             }
 
-            for (int var_3 = 1; var_3 <= bp_var_6; var_3++)
+            for (int i = 0; i < numCureSerious; i++)
             {
-                var_2 += ovr024.roll_dice(8, 2) + 1;
+                healingAvailable += ovr024.roll_dice(8, 2) + 1;
             }
 
-            for (int var_3 = 1; var_3 <= bp_var_8; var_3++)
+            for (int i = 0; i < numCureCritical; i++)
             {
-                var_2 += ovr024.roll_dice(8, 3) + 3;
+                healingAvailable += ovr024.roll_dice(8, 3) + 3;
             }
         }
 
 
-        internal static int total_hitpoints_lost() /* sub_4608F */
+        static int TotalHitpointsLost() /* sub_4608F */
         {
             int lost_points = 0;
             foreach (Player player in gbl.player_next_ptr)
@@ -1114,43 +1104,38 @@ namespace engine
         }
 
 
-        internal static void sub_460ED(out int bp_var_8,out int bp_var_6,out int bp_var_4 )
+        internal static void CalculateTimeAndSpellNumbers(out int numCureCritical, out int numCureSerious, out int numCureLight) //sub_460ED
         {
-            short var_10;
-            short var_E;
-            short var_C;
-            short var_A;
-            short var_2 = 0; /* Simeon */
+            numCureLight = 0;
+            numCureSerious = 0;
+            numCureCritical = 0;
 
-            var_A = 0;
-            var_C = 0;
-            var_E = 0;
-
-            bp_var_4 = 0;
-            bp_var_6 = 0;
-            bp_var_8 = 0;
-            int var_8 = 0;
+            int maxHealing = 0;
+            int maxTime = 0;
 
             foreach (Player player in gbl.player_next_ptr)
             {
-                var_10 = 0;
+                int var_10 = 0;
+                int var_A = 0;
+                int var_C = 0;
+                int var_E = 0;
 
-                if (player_is_okey(player) == true)
+                if (player.health_status == Status.okey)
                 {
-                    bp_var_4 += player.field_12D[0, 0];
-                    var_A = (short)(player.field_12D[0, 0] * 15);
+                    numCureLight += player.field_12D[0, 0];
+                    var_A = player.field_12D[0, 0] * 15;
 
-                    bp_var_6 += player.field_12D[0, 3];
-                    var_C = (short)(player.field_12D[0, 3] * 60);
+                    numCureSerious += player.field_12D[0, 3];
+                    var_C = player.field_12D[0, 3] * 60;
 
-                    bp_var_8 += player.field_12D[0, 4];
-                    var_E = (short)(player.field_12D[0, 4] * 75);
+                    numCureCritical += player.field_12D[0, 4];
+                    var_E = player.field_12D[0, 4] * 75;
                 }
 
                 if (var_A > 0)
                 {
                     var_10 = 240;
-                    var_2 += 27;
+                    maxHealing += 27;
                 }
 
                 if ((var_C + var_E) != 0)
@@ -1159,36 +1144,36 @@ namespace engine
 
                     if (var_E > 0)
                     {
-                        var_2 += 78;
+                        maxHealing += 78;
                     }
                     else
                     {
-                        var_2 += 34;
+                        maxHealing += 34;
                     }
                 }
 
-                var_10 += (short)(var_A + var_C + var_E);
+                var_10 += var_A + var_C + var_E;
 
-                if (var_8 < var_10)
+                if (maxTime < var_10)
                 {
-                    var_8 = var_10;
+                    maxTime = var_10;
                 }
             }
 
-            if (total_hitpoints_lost() < var_2)
+            if (TotalHitpointsLost() < maxHealing)
             {
-                int var_11 = var_2 / total_hitpoints_lost();
+                int var_11 = maxHealing / TotalHitpointsLost();
 
-                var_8 /= var_11;
+                maxTime /= var_11;
             }
 
-            gbl.unk_1D890.field_6 = (ushort)(var_8 / 60);
-            gbl.unk_1D890.field_4 = (ushort)((var_8 - (gbl.unk_1D890.field_6 * 60)) / 10);
-            gbl.unk_1D890.field_2 = (ushort)(var_8 % 10);
+            gbl.timeToRest.field_6 = maxTime / 60;
+            gbl.timeToRest.field_4 = (maxTime - (gbl.timeToRest.field_6 * 60)) / 10;
+            gbl.timeToRest.field_2 = maxTime % 10;
         }
 
 
-        internal static void sub_46280(ref int bp_var_2) //sub_46280
+        static void DoTeamHealing(ref int healingAvailable) //sub_46280
         {
             foreach (Player player in gbl.player_next_ptr)
             {
@@ -1196,9 +1181,9 @@ namespace engine
                 {
                     int damge_taken = player.hit_point_max - player.hit_point_current;
 
-                    if (damge_taken > bp_var_2)
+                    if (damge_taken > healingAvailable)
                     {
-                        damge_taken = bp_var_2;
+                        damge_taken = healingAvailable;
                     }
 
                     if (damge_taken < 1)
@@ -1208,48 +1193,48 @@ namespace engine
 
                     if (damge_taken > 0 &&
                         ovr024.heal_player(0, damge_taken, player) == true &&
-                        damge_taken <= bp_var_2)
+                        damge_taken <= healingAvailable)
                     {
-                        bp_var_2 -= damge_taken;
+                        healingAvailable -= damge_taken;
                     }
                 }
             }
         }
 
 
-        internal static void fix_menu(out bool action_interrupted)
+        static void FixTeam(out bool action_interrupted) // fix_menu
         {
             action_interrupted = false;
 
-            if (total_hitpoints_lost() != 0)
+            if (TotalHitpointsLost() != 0)
             {
-                int var_2 = 0;
-                sub_45F22(ref var_2);
+                int healingAvailable = CalculateInitialHealing();
 
-                if (total_hitpoints_lost() == 0)
+                if (TotalHitpointsLost() == 0)
                 {
                     ovr025.PartySummary(gbl.player_ptr);
                     ovr025.display_map_position_time();
                 }
                 else
                 {
-                    RestTime rest_time = new RestTime(gbl.unk_1D890);
+                    RestTime timeBackup = new RestTime(gbl.timeToRest);
 
-                    int var_8;
-                    int var_6;
-                    int var_4;
-                    sub_460ED(out var_8, out var_6, out var_4);
+                    int numCureCritical;
+                    int numCureSerious;
+                    int numCureLight;
+                    CalculateTimeAndSpellNumbers(out numCureCritical, out numCureSerious, out numCureLight);
 
                     action_interrupted = ovr021.resting(false);
 
                     if (action_interrupted == false)
                     {
-                        sub_45FDD(ref var_2, var_4, var_6, var_8);
-                        sub_46280(ref var_2);
+                        CalculateHealing(ref healingAvailable, numCureLight, numCureSerious, numCureCritical);
+                        DoTeamHealing(ref healingAvailable);
+                        
                         ovr025.PartySummary(gbl.player_ptr);
                         ovr025.display_map_position_time();
 
-                        gbl.unk_1D890 = new RestTime(rest_time);
+                        gbl.timeToRest = new RestTime(timeBackup);
                     }
                 }
             }
@@ -1263,7 +1248,7 @@ namespace engine
             gbl.game_state = GameState.State2;
             gbl.rest_10_seconds = 0;
 
-            gbl.unk_1D890.Clear();
+            gbl.timeToRest.Clear();
 
             gbl.byte_1D5AB = gbl.lastDaxFile;
             gbl.byte_1D5B5 = gbl.lastDaxBlockId;
@@ -1315,7 +1300,7 @@ namespace engine
                             break;
 
                         case 'F':
-                            fix_menu(out action_interrupted);
+                            FixTeam(out action_interrupted);
                             break;
 
                         case 'A':

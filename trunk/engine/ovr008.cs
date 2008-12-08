@@ -126,7 +126,7 @@ namespace engine
             gbl.vm_run_addr_3 = gbl.cmd_opps[1].Word;
 
             vm_LoadCmdSets(1);
-            gbl.vm_run_addr_4 = gbl.cmd_opps[1].Word;
+            gbl.CampInterruptedAddr = gbl.cmd_opps[1].Word;
 
             vm_LoadCmdSets(1);
             gbl.ecl_initial_entryPoint = gbl.cmd_opps[1].Word;

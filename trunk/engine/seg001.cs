@@ -29,15 +29,6 @@ namespace engine
             gbl.data_path = gbl.exe_path;
 
             seg044.SoundInit();
-
-            if (true) // PC Speaker //TODO make this configured
-            {
-                gbl.soundType = SoundType.PC;
-            }
-            else // No Sounds
-            {
-                gbl.soundType = SoundType.None;
-            }
         }
 
         public static void PROGRAM()
@@ -55,11 +46,6 @@ namespace engine
                 gbl.SortedCombatantList[i] = new SortedCombatant();
             }
             /* Memory Init - End */
-
-            if (gbl.soundFlag01 == true)
-            {
-                seg044.sound_sub_120E0(Sound.sound_FF);
-            }
 
             ovr012.init_values_a();
 
@@ -102,32 +88,12 @@ namespace engine
                     gbl.game_area = 2;
                 }
 
-                if (gbl.soundFlag01 == true)
-                {
-                    seg044.sound_sub_120E0(Sound.sound_FF);
-                }
-
                 if (gbl.inDemo == false)
                 {
                     ovr018.startGameMenu();
                 }
 
-                if (gbl.soundFlag01 == true)
-                {
-                    seg044.sound_sub_120E0(Sound.sound_FF);
-                }
-
-                if (gbl.soundFlag01 == true)
-                {
-                    seg044.sound_sub_120E0(Sound.sound_FF);
-                }
-
                 ovr003.sub_29758();
-
-                if (gbl.soundFlag01 == true)
-                {
-                    seg044.sound_sub_120E0(Sound.sound_FF);
-                }
 
                 ovr012.init_values_b();
 
