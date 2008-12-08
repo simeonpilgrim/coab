@@ -440,7 +440,7 @@ namespace Classes
         public static ushort vm_run_addr_1; // word_1B2D3
         public static ushort vm_run_addr_2; // word_1B2D5
         public static ushort vm_run_addr_3; // word_1B2D7
-        public static ushort vm_run_addr_4; // word_1B2D9
+        public static ushort CampInterruptedAddr; // word_1B2D9 vm_run_addr_4
         public static ushort ecl_initial_entryPoint; // word_1B2DB
         public static short rest_incounter_count;
         public static DaxBlock dword_1C8FC; //TODO - overlay dax block, not currently used.
@@ -453,7 +453,7 @@ namespace Classes
 
         public static Player dword_1D87F;
 
-        public static RestTime unk_1D890 = new RestTime();
+        public static RestTime timeToRest = new RestTime(); // unk_1D890
         public static int rest_10_seconds; // word_1D8A6 seg600:7596
         public static short word_1D914;
         public static short word_1D916;
@@ -558,7 +558,6 @@ namespace Classes
 
         public static int saving_throw_roll;
         public static bool save_made;
-        public static bool soundFlag01; // gameFlag01
         public static bool printCommands = false;
 
         public static DaxBlock sky_dax_250;
@@ -676,9 +675,6 @@ namespace Classes
             new SpellEntry(10, 0, 10, 0, 6, 0, 0x18, 0, DamageOnSave.Unknown_1E, 0, Affects.enlarge, 0, 0, 1, 0x28, 0x28) };
 
         public const DamageOnSave byte_1A114 = DamageOnSave.Zero;
-
-        public static byte[] unk_1D89D = new byte[9]; // seg600:758D
-
 
         public static Struct_1C020[] unk_1C020;
         public static Struct_1D183[] unk_1D183; // array[8] but 1 offset.

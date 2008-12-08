@@ -8,7 +8,7 @@ namespace engine
         static int[] timeScales = {10, 10, 6, 24, 30, 12, 0x100}; //word_1A13C
 
 
-        internal static void CheckAffectsTimingOut(int timeSlot, int timeSteps) // sub_5801E
+        static void CheckAffectsTimingOut(int timeSlot, int timeSteps) // sub_5801E
         {
             if (gbl.game_state != GameState.State2)
             {
@@ -107,7 +107,7 @@ namespace engine
         }
 
 
-        internal static void normalize_clock(RestTime arg_0) /* sub_58317 */
+        static void NormalizeClock(RestTime arg_0) /* sub_58317 */
         {
             for (int i = 0; i <= 6; i++)
             {
@@ -130,19 +130,19 @@ namespace engine
         }
 
 
-        internal static void clock_583C8() /* sub_583C8 */
+        static void clock_583C8() /* sub_583C8 */
         {
-            normalize_clock(gbl.unk_1D890);
+            NormalizeClock(gbl.timeToRest);
 
-            if (gbl.unk_1D890.field_A > 0)
+            if (gbl.timeToRest.field_A > 0)
             {
-                gbl.unk_1D890.field_8 += (ushort)(timeScales[4] * gbl.unk_1D890.field_A);
+                gbl.timeToRest.field_8 += timeScales[4] * gbl.timeToRest.field_A;
 
-                gbl.unk_1D890.field_A = 0;
+                gbl.timeToRest.field_A = 0;
 
-                if (gbl.unk_1D890.field_8 > 99)
+                if (gbl.timeToRest.field_8 > 99)
                 {
-                    gbl.unk_1D890.field_8 = 99;
+                    gbl.timeToRest.field_8 = 99;
                 }
             }
         }
@@ -160,7 +160,7 @@ namespace engine
             {
                 rest_time[time_slot] += 1;
 
-                normalize_clock(rest_time);
+                NormalizeClock(rest_time);
             }
 
             for (int i = 0; i <= 6; i++)
@@ -174,16 +174,16 @@ namespace engine
 
         internal static void rest_time_5849F(int time_index, byte arg_2) /* sub_5849F */
         {
-            if (gbl.unk_1D890.field_8 != 0 ||
-                gbl.unk_1D890.field_6 != 0 ||
-                gbl.unk_1D890.field_4 != 0 ||
-                gbl.unk_1D890.field_2 != 0)
+            if (gbl.timeToRest.field_8 != 0 ||
+                gbl.timeToRest.field_6 != 0 ||
+                gbl.timeToRest.field_4 != 0 ||
+                gbl.timeToRest.field_2 != 0)
             {
-                while (arg_2 > gbl.unk_1D890[time_index])
+                while (arg_2 > gbl.timeToRest[time_index])
                 {
                     int var_1 = time_index + 1;
 
-                    while (gbl.unk_1D890[var_1] == 0 &&
+                    while (gbl.timeToRest[var_1] == 0 &&
                         var_1 < 5)
                     {
                         var_1 += 1;
@@ -191,20 +191,20 @@ namespace engine
 
                     if (var_1 == 5)
                     {
-                        gbl.unk_1D890.Clear();
+                        gbl.timeToRest.Clear();
                         arg_2 = 0;
                     }
                     else
                     {
                         for (int i = var_1; i >= (time_index + 1); i--)
                         {
-                            gbl.unk_1D890[i] -= 1;
-                            gbl.unk_1D890[i - 1] += timeScales[i - 1];
+                            gbl.timeToRest[i] -= 1;
+                            gbl.timeToRest[i - 1] += timeScales[i - 1];
                         }
                     }
                 }
 
-                gbl.unk_1D890[time_index] -= arg_2;
+                gbl.timeToRest[time_index] -= arg_2;
 
                 clock_583C8();
             }
@@ -217,7 +217,7 @@ namespace engine
         }
 
 
-        internal static void display_resting_time(int highlight_time) /* sub_58615 */
+        static void display_resting_time(int highlight_time) /* sub_58615 */
         {
             int[] colors = new int[6];
 
@@ -231,17 +231,17 @@ namespace engine
             seg041.displayString("Rest Time:", 0, 10, 17, 1);
             int col_x = 11;
 
-            string text = format_time(gbl.unk_1D890.field_8);
+            string text = format_time(gbl.timeToRest.field_8);
             seg041.displayString(text, 0, colors[4], 0x11, col_x + 1);
             seg041.displayString(":", 0, 10, 17, col_x + 3);
             col_x += 3;
 
-            text = format_time(gbl.unk_1D890.field_6);
+            text = format_time(gbl.timeToRest.field_6);
             seg041.displayString(text, 0, colors[3], 0x11, col_x + 1);
             seg041.displayString(":", 0, 10, 17, col_x + 3);
             col_x += 3;
 
-            text = format_time((gbl.unk_1D890.field_4 * 10) + gbl.unk_1D890.field_2);
+            text = format_time((gbl.timeToRest.field_4 * 10) + gbl.timeToRest.field_2);
 
             seg041.displayString(text, 0, colors[2], 0x11, col_x + 1);
         }
@@ -249,7 +249,7 @@ namespace engine
 
         static Set unk_58731 = new Set(0x000B, new byte[] { 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x20, 0x00, 0x04 });
 
-        internal static bool resting_time_menu() /* sub_58751 */
+        static bool resting_time_menu() /* sub_58751 */
         {
             char input_key;
 
@@ -326,11 +326,11 @@ namespace engine
                     case 'A':
                         if (time_index == 2)
                         {
-                            gbl.unk_1D890.field_2 += 5;
+                            gbl.timeToRest.field_2 += 5;
                         }
                         else
                         {
-                            gbl.unk_1D890[time_index] += 1;
+                            gbl.timeToRest[time_index] += 1;
                         }
 
                         clock_583C8();
@@ -355,7 +355,7 @@ namespace engine
         }
 
 
-        internal static void rest_heal(bool show_text) /* reset_heal */
+        static void rest_heal(bool show_text) /* reset_heal */
         {
             gbl.rest_10_seconds++;
 
@@ -390,7 +390,7 @@ namespace engine
         }
 
 
-        internal static byte rest_memorize(ref bool output, Player player)
+        static byte rest_memorize(ref bool output, Player player)
         {
             byte var_2 = 0;
             int spell_index = 0;
@@ -421,7 +421,7 @@ namespace engine
         }
 
 
-        internal static byte reset_scribe(ref bool arg_0, Player player)
+        static byte reset_scribe(ref bool arg_0, Player player)
         {
             byte var_4 = 0;
             foreach(Item item in player.items)
@@ -461,18 +461,19 @@ namespace engine
             return var_4;
         }
 
+        static int[] spellLaernTimeout = new int[9]; // seg600:758D
 
-        internal static void sub_58B4D()
+        static void CheckForSpellLearning() // sub_58B4D
         {
             int index = 1;
             foreach (Player player in gbl.player_next_ptr)
             {
-                if (gbl.unk_1D89D[index] > 0)
+                if (spellLaernTimeout[index] > 0)
                 {
-                    gbl.unk_1D89D[index] -= 1;
+                    spellLaernTimeout[index] -= 1;
                 }
 
-                if (gbl.unk_1D89D[index] == 0 &&
+                if (spellLaernTimeout[index] == 0 &&
                     player.spell_to_learn_count == 0)
                 {
                     bool var_7 = false;
@@ -483,7 +484,7 @@ namespace engine
                         var_2 = rest_memorize(ref var_7, player);
                     }
 
-                    gbl.unk_1D89D[index] = (byte)(var_2 * 3);
+                    spellLaernTimeout[index] = var_2 * 3;
                 }
 
                 index++;
@@ -491,7 +492,7 @@ namespace engine
         }
 
 
-        internal static void sub_58C03(ref int arg_0)
+        static void sub_58C03(ref int arg_0)
         {
             arg_0 += 1;
 
@@ -513,7 +514,7 @@ namespace engine
                             var_2 = rest_memorize(ref var_7, player);
                         }
 
-                        gbl.unk_1D89D[index] = (byte)(var_2 * 2);
+                        spellLaernTimeout[index] = var_2 * 2;
                     }
 
                     index++;
@@ -529,13 +530,7 @@ namespace engine
             bool stop_resting;
             bool resting_intetrupted = false;
 
-            int var_B = 1;
-            
-            foreach(Player var_5 in gbl.player_next_ptr)
-            {
-                gbl.unk_1D89D[var_B] = 0;
-                var_B++;
-            }
+            System.Array.Clear(spellLaernTimeout, 0, gbl.player_next_ptr.Count);
 
             for (int i = 0; i < 0x48; i++)
             {
@@ -563,10 +558,10 @@ namespace engine
             }
 
             while (stop_resting == false &&
-                (gbl.unk_1D890.field_8 > 0 ||
-                 gbl.unk_1D890.field_6 > 0 ||
-                 gbl.unk_1D890.field_4 > 0 ||
-                 gbl.unk_1D890.field_2 > 0))
+                (gbl.timeToRest.field_8 > 0 ||
+                 gbl.timeToRest.field_6 > 0 ||
+                 gbl.timeToRest.field_4 > 0 ||
+                 gbl.timeToRest.field_2 > 0))
             {
                 if (interactive_resting == true &&
                     seg049.KEYPRESSED() == true)
@@ -597,7 +592,7 @@ namespace engine
 
                     step_game_time(1, 5);
                     rest_heal(interactive_resting);
-                    sub_58B4D();
+                    CheckForSpellLearning();
                     sub_58C03(ref var_C);
 
                     if (gbl.area2_ptr.rest_incounter_period > 0)

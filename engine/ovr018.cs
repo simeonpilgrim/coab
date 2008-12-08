@@ -224,7 +224,7 @@ namespace engine
                                 if (gbl.player_ptr.field_F7 < 0x80)
                                 {
                                     ovr017.sub_47DFC(string.Empty, gbl.player_ptr);
-                                    free_players(true, false);
+                                    FreeCurrentPlayer(true, false);
                                 }
                                 else
                                 {
@@ -1276,7 +1276,7 @@ namespace engine
                     }
 
                     ovr017.remove_player_file(gbl.player_ptr);
-                    free_players(true, false);
+                    FreeCurrentPlayer(true, false);
                 }
                 else
                 {
@@ -1972,7 +1972,7 @@ namespace engine
         }
 
 
-        internal static void free_players(bool free_icon, bool leave_party_size)
+        internal static void FreeCurrentPlayer(bool free_icon, bool leave_party_size) // free_players
         {
             int index = gbl.player_next_ptr.IndexOf(gbl.player_ptr);
 

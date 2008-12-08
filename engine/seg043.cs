@@ -51,10 +51,7 @@ namespace engine
 
             if (key == 0x13)
             {
-                if (gbl.soundType == SoundType.PC)
-                {
-                    seg044.sound_sub_120E0(Sound.sound_0);
-                }
+                seg044.sound_sub_120E0(Sound.sound_0);
             }
 
             if (Cheats.allow_keyboard_exit && key == 3)

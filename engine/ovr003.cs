@@ -205,7 +205,7 @@ namespace engine
                 {
                     gbl.restore_player_ptr = false;
                 }
-                ovr018.free_players(true, false);
+                ovr018.FreeCurrentPlayer(true, false);
 
                 ovr025.PartySummary(gbl.player_ptr);
                 gbl.redrawPartySummary1 = false;
@@ -997,89 +997,21 @@ namespace engine
                 {
                     gbl.area2_ptr.field_6D8 = 0;
 
-                    if (gbl.soundFlag01 == true)
-                    {
-                        seg044.sound_sub_120E0(Sound.sound_FF);
-                    }
-
                     ovr007.sub_2F6E7();
+                }
+                else if (gbl.area2_ptr.field_5C4 == 1)
+                {
+                    gbl.area2_ptr.field_5C4 = 0;
 
-                    if (gbl.area_ptr.field_1CC == 0)
-                    {
-                        if (gbl.soundFlag01 == true)
-                        {
-                            seg044.sound_sub_120E0(Sound.sound_FF);
-                        }
-                    }
-                    else
-                    {
-                        if (gbl.soundFlag01 == true)
-                        {
-                            seg044.sound_sub_120E0(Sound.sound_FF);
-                        }
-                    }
+                    ovr005.temple_shop();
                 }
                 else
                 {
-                    if (gbl.area2_ptr.field_5C4 == 1)
-                    {
-                        gbl.area2_ptr.field_5C4 = 0;
-
-                        if (gbl.soundFlag01 == true)
-                        {
-                            seg044.sound_sub_120E0(Sound.sound_FF);
-                        }
-
-                        ovr005.temple_shop();
-
-                        if (gbl.area_ptr.field_1CC == 0)
-                        {
-
-                            if (gbl.soundFlag01 == true)
-                            {
-                                seg044.sound_sub_120E0(Sound.sound_FF);
-                            }
-                        }
-                        else
-                        {
-                            if (gbl.soundFlag01 == true)
-                            {
-                                seg044.sound_sub_120E0(Sound.sound_FF);
-                            }
-                        }
-                    }
-                    else
-                    {
-                        if (gbl.soundFlag01 == true)
-                        {
-                            seg044.sound_sub_120E0(Sound.sound_FF);
-                        }
-
-                        ovr006.sub_2E7A2();
-
-                        if (gbl.area_ptr.field_1CC == 0)
-                        {
-                            if (gbl.soundFlag01 == true)
-                            {
-                                seg044.sound_sub_120E0(Sound.sound_FF);
-                            }
-                        }
-                        else
-                        {
-                            if (gbl.soundFlag01 == true)
-                            {
-                                seg044.sound_sub_120E0(Sound.sound_FF);
-                            }
-                        }
-                    }
+                    ovr006.sub_2E7A2();
                 }
             }
             else
             {
-                if (gbl.soundFlag01 == true)
-                {
-                    seg044.sound_sub_120E0(Sound.sound_FF);
-                }
 
                 ushort var_2 = ovr008.sub_304B4(gbl.mapDirection, gbl.mapPosY, gbl.mapPosX);
 
@@ -1090,33 +1022,11 @@ namespace engine
 
                 ovr009.MainCombatLoop();
 
-                if (gbl.soundFlag01 == true)
-                {
-                    seg044.sound_sub_120E0(Sound.sound_FF);
-                }
-
                 ovr006.sub_2E7A2();
 
                 if (gbl.area_ptr.field_1CC == 0)
                 {
-                    if (gbl.soundFlag01 == true)
-                    {
-                        seg044.sound_sub_120E0(Sound.sound_FF);
-                    }
-
                     ovr030.load_bigpic(0x79);
-                }
-                else
-                {
-                    if (gbl.soundFlag01 == true)
-                    {
-                        seg044.sound_sub_120E0(Sound.sound_FF);
-                    }
-                }
-
-                if (gbl.combat_type == CombatType.duel)
-                {
-                    gbl.combat_type = CombatType.normal;
                 }
             }
 
@@ -2066,7 +1976,7 @@ namespace engine
             if (action_interrupted == true)
             {
                 ovr025.load_pic();
-                RunEclVm(gbl.vm_run_addr_4);
+                RunEclVm(gbl.CampInterruptedAddr);
             }
             gbl.can_draw_bigpic = true;
             ovr029.update_3D_view();
@@ -2157,7 +2067,7 @@ namespace engine
 
             VmLog.WriteLine("CMD_Dump: Player: {0}", gbl.player_ptr);
 
-            ovr018.free_players(true, false);
+            ovr018.FreeCurrentPlayer(true, false);
 
             gbl.player_ptr2 = gbl.player_ptr;
 
@@ -2417,7 +2327,7 @@ namespace engine
             {
                 do
                 {
-                    ovr018.free_players(true, true);
+                    ovr018.FreeCurrentPlayer(true, true);
                 } while (gbl.player_next_ptr.Count > 0);
             }
             else

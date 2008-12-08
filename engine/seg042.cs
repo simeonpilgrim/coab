@@ -270,8 +270,6 @@ namespace engine
 
             out_data = dfc.GetData(block_id);
             decodeSize = out_data == null ? (short)0:(short)out_data.Length;
-
-            seg044.sound_sub_120E0(Sound.sound_1);
         }
          
 

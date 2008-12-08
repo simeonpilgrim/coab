@@ -129,7 +129,6 @@ namespace engine
             gbl.menuSelectedWord = 1;
             gbl.game_state = GameState.State4;
             gbl.last_game_state = 0;
-            gbl.soundFlag01 = true;
             gbl.applyItemAffect = false;
             gbl.sky_dax_250 = null;
             gbl.sky_dax_251 = null;
@@ -237,7 +236,6 @@ namespace engine
             gbl.menuSelectedWord = 1;
             gbl.game_state = GameState.State4;
             gbl.last_game_state = 0;
-            gbl.soundFlag01 = true;
             gbl.applyItemAffect = false;
             gbl.gameWon = false;
         }

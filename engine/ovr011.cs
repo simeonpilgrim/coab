@@ -1167,7 +1167,7 @@ namespace engine
             foreach (Player player in to_remove)
             {
                 gbl.player_ptr = player;
-                ovr018.free_players(false, true);
+                ovr018.FreeCurrentPlayer(false, true);
             }
         }
 

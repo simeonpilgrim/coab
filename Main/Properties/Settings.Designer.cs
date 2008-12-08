@@ -142,5 +142,17 @@ namespace Main.Properties {
                 this["NoRaceClassLimits"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool SoundOn {
+            get {
+                return ((bool)(this["SoundOn"]));
+            }
+            set {
+                this["SoundOn"] = value;
+            }
+        }
     }
 }
