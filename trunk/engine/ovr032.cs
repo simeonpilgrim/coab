@@ -89,8 +89,6 @@ namespace engine
         /// </summary>
         internal static bool CanSeeCombatant(byte direction, int playerAY, int playerAX, int playerBY, int playerBX) /* sub_7354A */
         {
-            bool var_1;
-
             if (playerBX < 0 ||
                 playerBX > 0x31 ||
                 playerBY < 0 ||
@@ -116,6 +114,8 @@ namespace engine
             {
                 return true;
             }
+
+            bool var_1;
 
             switch (direction)
             {

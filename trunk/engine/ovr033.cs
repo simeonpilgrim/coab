@@ -84,10 +84,7 @@ namespace engine
                 }
             }
 
-            byte ground_tile;
-            byte player_index;
-
-            AtMapXY(out ground_tile, out player_index, posY, posX);
+            int player_index = PlayerIndexAtMapXY(posY, posX);
 
             if (player_index > 0 &&
                 sub_74761(false, gbl.player_array[player_index]) == true)
@@ -103,14 +100,11 @@ namespace engine
 
         internal static void sub_7431C(int mapX, int mapY)
         {
-            byte groundTile;
-            byte playerIndex;
-
             int newMapX = mapY - gbl.mapToBackGroundTile.mapScreenLeftX;
             int newMapY = mapX - gbl.mapToBackGroundTile.mapScreenTopY;
 
             draw_74572(0, newMapY, newMapX);
-            AtMapXY(out groundTile, out playerIndex, mapX, mapY);
+            int playerIndex = PlayerIndexAtMapXY(mapX, mapY);
 
             if (playerIndex > 0 &&
                 sub_74761(false, gbl.player_array[playerIndex]) == true)
@@ -151,6 +145,18 @@ namespace engine
             }
         }
 
+        internal static byte PlayerIndexAtMapXY(int posY, int posX) /* sub_74505 */
+        {
+            if (posX >= 0 && posX <= 0x31 &&
+                posY >= 0 && posY <= 0x18)
+            {
+                return (byte)mapToPlayerIndex[posX, posY];
+            }
+            else
+            {
+                return 0;
+            }
+        }
 
         internal static void AtMapXY(out byte groundTile, out byte playerIndex, int posY, int posX) /* sub_74505 */
         {
@@ -168,7 +174,7 @@ namespace engine
         }
 
 
-        internal static void draw_74572(byte player_index, int mapY, int mapX) /* sub_74572 */
+        internal static void draw_74572(int player_index, int mapY, int mapX) /* sub_74572 */
         {
             int screenY = -120; /*Simeon*/
             int screenX = -120; /*Simeon*/
@@ -178,8 +184,7 @@ namespace engine
                 screenX = mapX + gbl.mapToBackGroundTile.mapScreenLeftX;
                 screenY = mapY + gbl.mapToBackGroundTile.mapScreenTopY;
 
-                byte dummyGroundTile;
-                AtMapXY(out dummyGroundTile, out player_index, screenY, screenX);
+                player_index = PlayerIndexAtMapXY(screenY, screenX);
             }
             
             if (player_index > 0)

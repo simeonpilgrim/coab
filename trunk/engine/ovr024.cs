@@ -655,10 +655,8 @@ namespace engine
 
                 ovr033.setup_mapToPlayerIndex_and_playerScreen();
 
-                if (ovr025.clear_actions(player) == true)
-                {
-                    sub_645AB(player);
-                }
+                ovr025.clear_actions(player);
+                sub_645AB(player);
             }
         }
 

@@ -1555,25 +1555,21 @@ namespace engine
         }
 
 
-        internal static bool clear_actions(Player player)
+        internal static void clear_actions(Player player)
         {
             player.actions.delay = 0;
             player.actions.spell_id = 0;
             player.actions.guarding = false;
             player.actions.move = 0;
-
-            return true;
         }
 
 
-        internal static bool guarding(Player player)
+        internal static void guarding(Player player)
         {
-            bool ret_val = clear_actions(player);
+            clear_actions(player);
             player.actions.guarding = true;
 
             string_print01("Guarding");
-
-            return ret_val;
         }
 
 

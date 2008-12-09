@@ -166,7 +166,7 @@ namespace engine
         }
 
 
-        internal static bool any_player_has_skill(Skills skill)
+        static bool any_player_has_skill(Skills skill)
         {
             int s = (int)skill;
 
@@ -183,7 +183,7 @@ namespace engine
         }
 
 
-        internal static bool bash_door()
+        static bool bash_door()
         {
             bool bash_worked = false;
 
@@ -390,67 +390,31 @@ namespace engine
             return door_picked;
         }
 
-        internal static int find_spell(Player player, SpellId spell_id)
+
+        static bool AnyPlayerHaveSpell(SpellId spellId)
         {
-            int loop_var;
-            int ret_val;
-
-            loop_var = 0;
-
-            while (loop_var <= 83 && player.spell_list[loop_var] != (byte)spell_id)
-            {
-                loop_var++;
-            }
-
-            if (loop_var <= 83)
-            {
-                ret_val = loop_var;
-            }
-            else
-            {
-                ret_val = -1;
-            }
-
-            return ret_val;
+            return gbl.player_next_ptr.Exists(p => System.Array.Exists(p.spell_list, s => (byte)spellId == s));
         }
 
 
-        internal static Player find_player_with_spell(SpellId spell_id)
+        static bool RemoveKnockSpell()
         {
             foreach (Player player in gbl.player_next_ptr)
             {
-                if (find_spell(player, spell_id) >= 0)
+                int idx = System.Array.FindIndex(player.spell_list, spId => (byte)SpellId.knock == spId);
+
+                if (idx != -1)
                 {
-                    return player;
+                    player.spell_list[idx] = 0;
+                    return true;
                 }
             }
-            return null;
+
+            return false;
         }
 
 
-        internal static bool find_knock_spell()
-        {
-            Player player;
-            bool var_1;
-
-            player = find_player_with_spell(SpellId.knock);
-
-            if (player != null)
-            {
-                player.spell_list[find_spell(player, SpellId.knock)] = 0;
-
-                var_1 = true;
-            }
-            else
-            {
-                var_1 = false;
-            }
-
-            return var_1;
-        }
-
-
-        internal static void sub_43765()
+        static void TryStepForward() // sub_43765
         {
             int mapX = gbl.mapPosX;
             int mapY = gbl.mapPosY;
@@ -607,7 +571,7 @@ namespace engine
                         switch (input_key)
                         {
                             case 'H': // forward
-                                sub_43765();
+                                TryStepForward();
                                 stop_loop = true;
                                 break;
 
@@ -693,7 +657,7 @@ namespace engine
                         }
 
                         if (gbl.can_knock_door == true &&
-                            find_player_with_spell(SpellId.knock) != null)
+                            AnyPlayerHaveSpell(SpellId.knock))
                         {
                             prompt += " Knock";
                         }
@@ -719,7 +683,7 @@ namespace engine
                                     break;
 
                                 case 'K':
-                                    var_1 = find_knock_spell();
+                                    var_1 = RemoveKnockSpell();
                                     break;
                             }
                         }
@@ -740,7 +704,7 @@ namespace engine
                         }
 
                         if (gbl.can_knock_door == true &&
-                            find_player_with_spell(SpellId.knock) != null)
+                            AnyPlayerHaveSpell(SpellId.knock))
                         {
                             prompt += " Knock";
                         }
@@ -766,7 +730,7 @@ namespace engine
                                     break;
 
                                 case 'K':
-                                    var_1 = find_knock_spell();
+                                    var_1 = RemoveKnockSpell();
                                     break;
                             }
                         }

@@ -1069,7 +1069,8 @@ namespace engine
                 if (gbl.game_state == GameState.Combat &&
                     gbl.spell_table[var_1].field_B != 0)
                 {
-                    arg_0 = ovr025.clear_actions(gbl.player_ptr);
+                    arg_0 = true;
+                    ovr025.clear_actions(gbl.player_ptr);
                 }
             }
 

@@ -406,7 +406,8 @@ namespace engine
 
                                         Player target = player_ptr.actions.target;
 
-                                        sub_3F9DB(out gbl.byte_1D905, null, 1, player, player_ptr);
+                                        bool dummyBool;
+                                        sub_3F9DB(out dummyBool, null, 1, player, player_ptr);
                                         var_12 = true;
 
                                         player_ptr.actions.target = target;
@@ -439,7 +440,7 @@ namespace engine
             else
             {
                 int var_4 = sub_3E124(player) >> 1;
-                int var_3 = sub_40E8F(player);
+                int var_3 = MaxOppositionMoves(player);
 
                 if (var_3 < var_4)
                 {
@@ -460,7 +461,8 @@ namespace engine
                 ovr025.string_print01("Escape is blocked");
             }
 
-            ret_val = ovr025.clear_actions(player);
+            ret_val = true;
+            ovr025.clear_actions(player);
 
             return ret_val;
         }
@@ -591,7 +593,8 @@ namespace engine
 
                             attacker.field_19C = 1;
 
-                            sub_3F9DB(out gbl.byte_1D905, null, 0, near_target, attacker);
+                            bool dummyBool;
+                            sub_3F9DB(out dummyBool, null, 0, near_target, attacker);
                             var_3--;
                         }
                     }
@@ -725,7 +728,7 @@ namespace engine
             }
 
             ovr025.count_teams();
-            gbl.byte_1D905 = ovr025.clear_actions(player);
+            ovr025.clear_actions(player);
 
             ovr025.ClearPlayerTextArea();
         }
@@ -927,7 +930,7 @@ namespace engine
 
             if (arg_4 == true)
             {
-                arg_4 = ovr025.clear_actions(attacker);
+                ovr025.clear_actions(attacker);
             }
         }
 
@@ -1045,7 +1048,8 @@ namespace engine
 
             if (arg_0 == true)
             {
-                arg_0 = ovr025.clear_actions(attacker);
+                arg_0 = true;
+                ovr025.clear_actions(attacker);
             }
 
             if (ovr033.sub_74761(false, attacker) == true)
@@ -1491,7 +1495,8 @@ namespace engine
                 {
                     ovr023.sub_5D2E1(1, quick_fight, spell_id);
 
-                    casting_spell = ovr025.clear_actions(player);
+                    casting_spell = true;
+                    ovr025.clear_actions(player);
                 }
                 else
                 {
@@ -1679,18 +1684,15 @@ namespace engine
         }
 
 
-        internal static void sub_40BF1(Item item, Player playerA, Player playerB) /* sub_40BF1 */
+        internal static void sub_40BF1(Item item, Player target, Player attacker) /* sub_40BF1 */
         {
-            byte var_3;
-            byte var_1;
-
             seg044.sound_sub_120E0(Sound.sound_c);
 
-            var_3 = getTargetDirection(playerA, playerB);
+            byte dir = getTargetDirection(target, attacker);
 
             int frame_count = 1;
             int delay = 10;
-            var_1 = 0x0D;
+            byte var_1 = 0x0D;
 
             switch (item.type)
             {
@@ -1700,20 +1702,20 @@ namespace engine
                 case 0x1C:
                 case 0x1F:
                 case 0x49:
-                    if ((var_3 & 1) == 1)
+                    if ((dir & 1) == 1)
                     {
-                        if (var_3 == 3 || var_3 == 5)
+                        if (dir == 3 || dir == 5)
                         {
-                            ovr025.load_missile_dax((var_3 == 5), 0, 1, var_1 + 1);
+                            ovr025.load_missile_dax((dir == 5), 0, 1, var_1 + 1);
                         }
                         else
                         {
-                            ovr025.load_missile_dax((var_3 == 7), 0, 0, var_1 + 1);
+                            ovr025.load_missile_dax((dir == 7), 0, 0, var_1 + 1);
                         }
                     }
                     else
                     {
-                        ovr025.load_missile_dax(false, 0, var_3 >> 2, var_1 + (var_3 % 4));
+                        ovr025.load_missile_dax(false, 0, dir >> 2, var_1 + (dir % 4));
                     }
                     seg044.sound_sub_120E0(Sound.sound_c);
                     break;
@@ -1757,8 +1759,8 @@ namespace engine
                     break;
             }
             
-            ovr025.draw_missile_attack(delay, frame_count, ovr033.PlayerMapYPos(playerA), ovr033.PlayerMapXPos(playerA),
-                ovr033.PlayerMapYPos(playerB), ovr033.PlayerMapXPos(playerB));
+            ovr025.draw_missile_attack(delay, frame_count, ovr033.PlayerMapYPos(target), ovr033.PlayerMapXPos(target),
+                ovr033.PlayerMapYPos(attacker), ovr033.PlayerMapXPos(attacker));
         }
 
 
@@ -1782,29 +1784,29 @@ namespace engine
 
             if (maxTotal > 0)
             {
-                gbl.enemyHealthPercentage = (byte)(((20 * currentTotal) / maxTotal) * 5);
+                gbl.enemyHealthPercentage = ((20 * currentTotal) / maxTotal) * 5;
             }
         }
 
 
-        internal static int sub_40E8F(Player arg_0)
+        internal static int MaxOppositionMoves(Player arg_0) // sub_40E8F
         {
-            int var_2 = 0;
+            int maxMoves = 0;
 
             foreach (Player player in gbl.player_next_ptr)
             {
                 if (arg_0.OppositeTeam() == player.combat_team && player.in_combat == true)
                 {
-                    int var_3 = sub_3E124(player) / 2;
+                    int moves = sub_3E124(player) / 2;
 
-                    if (var_3 > var_2)
+                    if (moves > maxMoves)
                     {
-                        var_2 = var_3;
+                        maxMoves = moves;
                     }
                 }
             }
 
-            return var_2;
+            return maxMoves;
         }
 
 
@@ -1921,7 +1923,8 @@ namespace engine
                 {
                     if (sub_3EF3D(target, attacker) == true)
                     {
-                        arg_4 = ovr025.clear_actions(attacker);
+                        arg_4 = true;
+                        ovr025.clear_actions(attacker);
                     }
                     else
                     {
@@ -2096,7 +2099,8 @@ namespace engine
                     var_29 = "Target " + var_29;
                 }
 
-                input_key = ovr027.displayInput(out gbl.byte_1D905, false, 1, 15, 10, 13, var_29, "(Use Cursor keys) ");
+                bool dummyBool;
+                input_key = ovr027.displayInput(out dummyBool, false, 1, 15, 10, 13, var_29, "(Use Cursor keys) ");
 
                 switch (input_key)
                 {
@@ -2629,7 +2633,8 @@ namespace engine
 
                 sub_3F9DB(out var_1, null, 1, gbl.spell_target, player);
 
-                var_1 = ovr025.clear_actions(player);
+                var_1 = true;
+                ovr025.clear_actions(player);
 
                 if (gbl.spell_target.in_combat == false)
                 {
@@ -2668,7 +2673,8 @@ namespace engine
                 bool dummy_bool;
 
                 sub_3F9DB(out dummy_bool, null, 2, gbl.spell_target, player);
-                dummy_bool = ovr025.clear_actions(player);
+                dummy_bool = true;
+                ovr025.clear_actions(player);
 
                 if (gbl.spell_target.in_combat == false)
                 {

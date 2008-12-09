@@ -67,7 +67,7 @@ namespace engine
         }
 
 
-        internal static void cancel_memorize(Player player)
+        static void cancel_memorize(Player player)
         {
             for (int i = 0; i < gbl.max_spells; i++)
             {
@@ -81,7 +81,7 @@ namespace engine
         }
 
 
-        internal static void cancel_scribes(Player player)
+        static void cancel_scribes(Player player)
         {
             foreach (Item item in player.items)
             {
