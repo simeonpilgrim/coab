@@ -216,7 +216,8 @@ namespace engine
 
                                 case 'T':
                                     ovr014.turns_undead(player);
-                                    var_2 = ovr025.clear_actions(player);
+                                    var_2 = true;
+                                    ovr025.clear_actions(player);
                                     break;
 
                                 case 'D':
@@ -438,7 +439,8 @@ namespace engine
                 {
                     string text = "Move/Attack, Move Left = " + (player.actions.move / 2).ToString() + " ";
 
-                    arg_4 = ovr027.displayInput(out gbl.byte_1D905, false, 1, 15, 10, 10, string.Empty, text);
+                    bool dummyBool;
+                    arg_4 = ovr027.displayInput(out dummyBool, false, 1, 15, 10, 10, string.Empty, text);
                 }
 
                 switch (arg_4)
@@ -552,7 +554,8 @@ namespace engine
 
                             if (player.in_combat == false)
                             {
-                                arg_0 = ovr025.clear_actions(player);
+                                arg_0 = true;
+                                ovr025.clear_actions(player);
                             }
                             else
                             {
@@ -563,14 +566,16 @@ namespace engine
 
                                 if (player.in_combat == false)
                                 {
-                                    arg_0 = ovr025.clear_actions(player);
+                                    arg_0 = true;
+                                    ovr025.clear_actions(player);
                                 }
 
                                 ovr024.in_poison_cloud(1, player);
 
                                 if (player.IsHeld())
                                 {
-                                    arg_0 = ovr025.clear_actions(player);
+                                    arg_0 = true;
+                                    ovr025.clear_actions(player);
                                 }
                             }
                         }
@@ -643,12 +648,14 @@ namespace engine
 
             while (unk_341B3.MemberOf(var_2A) == false && arg_0 == false)
             {
-                var_2A = ovr027.displayInput(out gbl.byte_1D905, false, 0, 15, 10, 13, var_29, string.Empty);
+                bool dummyBool;
+                var_2A = ovr027.displayInput(out dummyBool, false, 0, 15, 10, 13, var_29, string.Empty);
 
                 switch (var_2A)
                 {
                     case 'G':
-                        arg_0 = ovr025.guarding(player_ptr);
+                        arg_0 = true;
+                        ovr025.guarding(player_ptr);
                         break;
 
                     case 'D':
@@ -657,12 +664,14 @@ namespace engine
                         break;
 
                     case 'Q':
-                        arg_0 = ovr025.clear_actions(player_ptr);
+                        arg_0 = true;
+                        ovr025.clear_actions(player_ptr);
                         break;
 
                     case 'B':
                         arg_0 = ovr025.bandage(true);
-                        arg_0 = ovr025.clear_actions(player_ptr);
+                        arg_0 = true;
+                        ovr025.clear_actions(player_ptr);
                         break;
 
                     case 'S':
@@ -699,7 +708,8 @@ namespace engine
 
                 var_29 += "Exit";
 
-                var_53 = ovr027.displayInput(out gbl.byte_1D905, false, 0, 15, 10, 13, var_29, var_52);
+                bool dummyBool;
+                var_53 = ovr027.displayInput(out dummyBool, false, 0, 15, 10, 13, var_29, var_52);
 
                 if (var_53 == 0x53)
                 {

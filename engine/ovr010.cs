@@ -6,19 +6,17 @@ namespace engine
     {
         internal static void sub_3504B(Player player)
         {
-            bool var_2;
-            byte var_1;
-
-            var_2 = process_input_in_monsters_turn(player);
+            bool var_2 = process_input_in_monsters_turn(player);
             ovr027.ClearPromptArea();
             ovr025.ClearPlayerTextArea();
 
             if (player.in_combat == false)
             {
-                var_2 = ovr025.clear_actions(player);
+                var_2 = true;
+                ovr025.clear_actions(player);
             }
 
-            var_1 = player.actions.field_15;
+            byte var_1 = player.actions.field_15;
 
             if (var_1 == 0 || var_1 == 4 || ovr024.roll_dice(4, 1) == 1)
             {
@@ -90,7 +88,8 @@ namespace engine
                 }
                 else
                 {
-                    var_2 = sub_361F7(player);
+                    var_2 = true;
+                    TryGuarding(player);
                 }
             }
         }
@@ -446,7 +445,8 @@ namespace engine
                             {
                                 player.actions.move = 0;
                                 player.actions.field_14 = 0;
-                                var_5 = ovr025.clear_actions(player);
+                                var_5 = true;
+                                ovr025.clear_actions(player);
                             }
                             else
                             {
@@ -469,7 +469,8 @@ namespace engine
                                         }
                                         else if (ovr014.find_target(false, 1, 0xFF, player) == false)
                                         {
-                                            var_5 = sub_361F7(player);
+                                            var_5 = true;
+                                            TryGuarding(player);
                                         }
                                     }
                                 }
@@ -493,7 +494,8 @@ namespace engine
 
                                 if (player.in_combat == false)
                                 {
-                                    var_5 = ovr025.clear_actions(player);
+                                    var_5 = true;
+                                    ovr025.clear_actions(player);
                                 }
                                 else
                                 {
@@ -504,7 +506,8 @@ namespace engine
 
                                     if (player.in_combat == false)
                                     {
-                                        var_5 = ovr025.clear_actions(player);
+                                        var_5 = true;
+                                        ovr025.clear_actions(player);
                                     }
 
                                     ovr024.in_poison_cloud(1, player);
@@ -515,7 +518,8 @@ namespace engine
                     }
                 }
 
-                var_5 = sub_361F7(player);
+                var_5 = true;
+                TryGuarding(player);
             }
         }
 
@@ -573,10 +577,7 @@ namespace engine
                         var_2 = true;
                         
                         var_3 = false;
-                        if (sub_361F7(player) == false)
-                        {
-                            var_3 = true;
-                        }
+                        TryGuarding(player);
                     }
 
                     gbl.byte_1D90E = false;
@@ -630,7 +631,8 @@ namespace engine
                             }
                             else
                             {
-                                var_2 = sub_361F7(player);
+                                var_2 = true;
+                                TryGuarding(player);
                             }
                         }
                         else
@@ -664,7 +666,8 @@ namespace engine
                     {
                         if (ovr014.sub_3EF3D(target, player) == true)
                         {
-                            var_2 = ovr025.clear_actions(player);
+                            var_2 = true;
+                            ovr025.clear_actions(player);
                         }
                         else
                         {
@@ -703,31 +706,27 @@ namespace engine
         }
 
 
-        internal static bool sub_361F7(Player player)
+        static void TryGuarding(Player player) // sub_361F7
         {
-            bool var_1;
-
             ovr025.ClearPlayerTextArea();
 
             if (player.IsHeld() == true ||
                 ovr025.is_weapon_ranged(player) == true ||
                 player.actions.delay == 0)
             {
-                var_1 = ovr025.clear_actions(player);
+                ovr025.clear_actions(player);
             }
             else
             {
-                var_1 = ovr025.guarding(player);
+                ovr025.guarding(player);
             }
-
-            return var_1;
         }
 
 
         /// <summary>
         /// processes keyboard input during combat. Returns if current player is user controlled
         /// </summary>
-        internal static bool process_input_in_monsters_turn(Player player) /* sub_36269 */
+        static bool process_input_in_monsters_turn(Player player) /* sub_36269 */
         {
             bool player_turn = false;
 
@@ -782,7 +781,7 @@ namespace engine
         }
 
 
-        internal static bool sub_3637F(Player player)
+        static bool sub_3637F(Player player)
         {
             bool var_1 = false;
             player.actions.field_14 = 0;
@@ -796,7 +795,7 @@ namespace engine
             }
             else if (player.field_F7 > 0x7F)
             {
-                gbl.byte_1D2CC = (byte)((player.field_F7 & 0x7F) << 1);
+                gbl.byte_1D2CC = (player.field_F7 & 0x7F) << 1;
 
                 if (gbl.byte_1D2CC > 0x66)
                 {
@@ -816,7 +815,7 @@ namespace engine
                         gbl.byte_1D2CC == 0 ||
                         player.combat_team == CombatTeam.Ours)
                     {
-                        int var_2 = ovr014.sub_40E8F(player);
+                        int var_2 = ovr014.MaxOppositionMoves(player);
 
                         if (var_2 <= (ovr014.sub_3E124(player) >> 1))
                         {
@@ -828,7 +827,8 @@ namespace engine
                         {
                             ovr024.sub_644A7("Surrenders", Status.unconscious, player);
 
-                            var_1 = ovr025.clear_actions(player);
+                            var_1 = true;
+                            ovr025.clear_actions(player);
                         }
                     }
                 }
@@ -838,7 +838,7 @@ namespace engine
         }
 
 
-        internal static int sub_36535(Item item, Player player)
+        static int sub_36535(Item item, Player player)
         {
             Struct_1C020 var_12 = gbl.unk_1C020[item.type];
 
@@ -896,7 +896,7 @@ namespace engine
         }
 
 
-        internal static void sub_36673(Player player)
+        static void sub_36673(Player player)
         {            
             if (player.field_151 != null)
             {

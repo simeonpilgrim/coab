@@ -875,43 +875,24 @@ namespace engine
         }
 
 
-        internal static void find_players_on_path(SteppingPath path, out bool finished, byte[] player_list) /* sub_5D702 */
+        internal static int find_players_on_path(SteppingPath path, List<int> player_list) /* sub_5D702 */
         {
-            do
+            int dir = 0;
+            while (!path.Step())
             {
-                finished = !path.Step();
+                byte playerIndex = ovr033.PlayerIndexAtMapXY(path.current_y, path.current_x);
 
-                if (finished == false)
+                if (playerIndex > 0)
                 {
-                    byte dummyGroundTile;
-                    byte playerIndex;
-                    ovr033.AtMapXY(out dummyGroundTile, out playerIndex, path.current_y, path.current_x);
-
-                    int index = 1;
-                    bool inserted = false;
-
-                    if (playerIndex > 0)
+                    if (player_list.Contains(playerIndex) == false)
                     {
-                        do
-                        {
-                            if (player_list[index] == playerIndex)
-                            {
-                                inserted = true;
-                            }
-                            else if (player_list[index] == 0)
-                            {
-                                player_list[index] = playerIndex;
-                                inserted = true;
-                            }
-                            else
-                            {
-                                index++;
-                            }
-
-                        } while (inserted == false);
+                        player_list.Add(playerIndex);
                     }
                 }
-            } while (finished == false);
+                dir = path.direction;
+            }
+
+            return dir;
         }
 
 
@@ -920,28 +901,22 @@ namespace engine
         static sbyte[] unk_16D32 = { 1, 1, 0, 0, -1, -1, 0, 0 };
         static sbyte[] unk_16D3A = { 0, 0, 1, 1, 0, 0, -1, -1 };
 
-        internal static void sub_5D7CF(int max_range, int arg_2, int targetY, int targetX, int casterY, int casterX)
+        internal static void sub_5D7CF(int max_range, int playerSize, int targetY, int targetX, int casterY, int casterX)
         {
-            byte var_76 = 0; /* Simeon */
+            List<int> players_on_path = new List<int>();
 
-            byte[] players_on_path = new byte[0x1E];
-            byte[] directions = new byte[0x32];
             bool finished;
             SteppingPath path = new SteppingPath();
 
             localSteppingPathInit(targetY, targetX, casterY, casterX, path);
 
+            byte[] directions = new byte[0x32];
             int index = 0;
-            do
+            while (!path.Step())
             {
-                finished = !path.Step();
-
-                if (finished == false)
-                {
-                    directions[index] = path.direction;
-                    index++;
-                }
-            } while (finished == false);
+                directions[index] = path.direction;
+                index++;
+            }
 
             int count = index - 1;
 
@@ -993,82 +968,43 @@ namespace engine
             BoundCoords(ref targetY, ref targetX);
 
             int range = 0xff; /* Simeon */
-            bool var_1E = ovr032.canReachTarget(gbl.mapToBackGroundTile, ref range, ref targetY, ref targetX, casterY, casterX);
+            ovr032.canReachTarget(gbl.mapToBackGroundTile, ref range, ref targetY, ref targetX, casterY, casterX);
 
             localSteppingPathInit(targetY, targetX, casterY, casterX, path);
+            int var_76 = find_players_on_path(path, players_on_path);
 
-            seg051.FillChar(0, 0x1E, players_on_path);
-
-            int list_index = 1;
-
-            do
+            if (playerSize > 1)
             {
-                finished = !path.Step();
-
-                if (finished == false)
-                {
-                    byte groundTile;
-                    byte player_index;
-                    ovr033.AtMapXY(out groundTile, out player_index, path.current_y, path.current_x);
-
-                    if (player_index > 0)
-                    {
-                        bool player_in_list = false;
-
-                        if (list_index > 1)
-                        {
-                            for (int i = 0; i < list_index; i++)
-                            {
-                                if (players_on_path[i] == player_index)
-                                {
-                                    player_in_list = true;
-                                }
-                            }
-                        }
-
-                        if (player_in_list == false)
-                        {
-                            players_on_path[list_index] = player_index;
-                            list_index++;
-                        }
-
-                        var_76 = path.direction;
-                    }
-                }
-            } while (finished == false);
-
-
-            if (arg_2 > 1)
-            {
-                int map_a_x = targetX + unk_16D22[var_76];
-                int map_a_y = targetY + unk_16D2A[var_76];
-
-                BoundCoords(ref map_a_y, ref map_a_x);
-
                 int map_b_x = targetX + unk_16D32[var_76];
                 int map_b_y = targetY + unk_16D3A[var_76];
 
                 BoundCoords(ref map_b_y, ref map_b_x);
 
                 localSteppingPathInit(map_b_y, map_b_x, casterY, casterX, path);
-                find_players_on_path(path, out finished, players_on_path);
+                find_players_on_path(path, players_on_path);
 
-                if (arg_2 > 2)
+                if (playerSize > 2)
                 {
+                    int map_a_x = targetX + unk_16D22[var_76];
+                    int map_a_y = targetY + unk_16D2A[var_76];
+
+                    BoundCoords(ref map_a_y, ref map_a_x);
+
                     localSteppingPathInit(map_a_y, map_a_x, casterY, casterX, path);
-                    find_players_on_path(path, out finished, players_on_path);
+                    find_players_on_path(path, players_on_path);
                 }
             }
 
             int sp_target_index = 1;
             gbl.sp_target_count = 0;
 
-            for (int path_index = 1; players_on_path[path_index] != 0; path_index++)
+            foreach(var idx in players_on_path)
             {
-                if (gbl.player_array[players_on_path[path_index]] != gbl.player_ptr)
+                var player = gbl.player_array[idx];
+                if( player != gbl.player_ptr)
                 {
                     gbl.sp_target_count += 1;
-                    gbl.sp_targets[sp_target_index] = gbl.player_array[players_on_path[path_index]];
+                    gbl.sp_targets[sp_target_index] = player;
                     sp_target_index++;
                 }
             }
@@ -3091,7 +3027,8 @@ namespace engine
                     ovr024.remove_affect(affect, Affects.breath_elec, player);
                 }
 
-                var_1 = ovr025.clear_actions(player);
+                var_1 = true;
+                ovr025.clear_actions(player);
             }
         }
 
@@ -3245,7 +3182,8 @@ namespace engine
                 ovr025.getTargetRange(gbl.spell_target, arg_6) < 2)
             {
                 gbl.damage_flags = DamageType.Fire;
-                gbl.byte_1DA70 = ovr025.clear_actions(arg_6);
+                gbl.byte_1DA70 = true;
+                ovr025.clear_actions(arg_6);
 
                 ovr025.DisplayPlayerStatusString(true, 10, "Breathes Fire", arg_6);
                 ovr025.load_missile_icons(0x17);
@@ -3276,7 +3214,8 @@ namespace engine
 
                 sub_5F986(ref var_1, 0, 4, ovr024.roll_dice_save(6, 16), gbl.targetY, gbl.targetX);
                 sub_5FA44(0, 0, ovr024.roll_dice_save(6, 16), 10);
-                var_1 = ovr025.clear_actions(caster);
+                var_1 = true;
+                ovr025.clear_actions(caster);
             }
         }
 

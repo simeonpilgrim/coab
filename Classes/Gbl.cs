@@ -328,7 +328,7 @@ namespace Classes
         public static int attack_roll; // byte_1D2C9
         public static byte byte_1D2CA;
         public static byte byte_1D2CB; // not used.
-        public static byte byte_1D2CC;
+        public static int byte_1D2CC;
         public static byte byte_1D2D1;
         public static int sky_colour; /* byte_1D534 */
 
@@ -386,9 +386,8 @@ namespace Classes
 
         public static byte byte_1D901;
         public static byte byte_1D902;
-        public static byte enemyHealthPercentage; /* byte_1D903 */
+        public static int enemyHealthPercentage; /* byte_1D903 */
         public static bool magicOn; /* byte_1D904 */
-        public static bool byte_1D905;
         public static bool byte_1D90E;
         public static bool display_hitpoints_ac; /* byte_1D90F */
         public static bool byte_1D910;

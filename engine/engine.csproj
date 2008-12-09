@@ -129,9 +129,6 @@
     <Compile Include="ovr011.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ovr012.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="ovr013.cs">
       <SubType>Code</SubType>
     </Compile>
