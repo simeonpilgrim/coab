@@ -22,7 +22,7 @@ namespace engine
             ovr034.Load24x24Set(0x1A, 0, 1, "tiles");
             ovr034.Load24x24Set(0x16, 0x1A, 2, "tiles");
 
-            seg037.draw8x8_outer_frame();
+            seg037.DrawFrame_Outer();
 
             seg041.displayString("Align the espruar and dethek runes", 0, 10, 2, 3);
             seg041.displayString("shown below, on translation wheel", 0, 10, 3, 3);
@@ -35,8 +35,8 @@ namespace engine
                 int var_6 = seg051.Random(26);
                 int var_7 = seg051.Random(22);
              
-                ovr034.draw_iso_title(0, var_6, 3, 0x11);
-                ovr034.draw_iso_title(0, var_7 + 0x1a, 7, 0x11);
+                ovr034.DrawIsoTile(var_6, 3, 0x11);
+                ovr034.DrawIsoTile(var_7 + 0x1a, 7, 0x11);
 
                 seg040.DrawOverlay();
                 int code_path = seg051.Random(3);

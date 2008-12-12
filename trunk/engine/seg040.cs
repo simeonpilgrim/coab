@@ -90,35 +90,40 @@ namespace engine
         }
 
 
-        internal static void OverlayBounded(DaxBlock source, byte arg_8, int itemIndex, int rowY, int colX) /* sub_E353 */
+        internal static void OverlayBounded(DaxBlock source, int arg_8, int itemIndex, int rowY, int colX) /* sub_E353 */
         {
             draw_combat_picture(source, rowY + 1, colX + 1, itemIndex);
         }
 
 
-        internal static void flipIconLeftToRight(DaxBlock dest, DaxBlock source)
+        internal static void FlipIconLeftToRight(DaxBlock source)
         {
-            if (source != null && dest != null)
+            if (source != null)
             {
-                System.Array.Copy(source.field_9, dest.field_9, 8);
+                byte[] data = new byte[source.data.Length];
+                byte[] dataPtr = new byte[source.data.Length];
 
                 int width = source.width * 8;
-                for( int y = 0; y < source.height; y++ )
+                for (int y = 0; y < source.height; y++)
                 {
                     for (int x = 0; x < width; x++)
                     {
                         int di = (y * width) + x;
-                        int si = (y*width) + (width - x) - 1;
-                        byte[] dd = dest.data;
-                        dest.data[di] = source.data[si];
-                        //dest.data[di+1] = source.data[si+0];
+                        int si = (y * width) + (width - x) - 1;
+
+                        data[di] = source.data[si];
 
                         if (source.data_ptr != null)
                         {
-                            dest.data_ptr[di] = source.data_ptr[si];
-                            //dest.data_ptr[di+1] = source.data_ptr[si+0];
+                            dataPtr[di] = source.data_ptr[si];
                         }
                     }
+                }
+
+                System.Array.Copy(data, source.data, source.data.Length);
+                if (source.data_ptr != null)
+                {
+                    System.Array.Copy(dataPtr, source.data_ptr, source.data.Length);
                 }
             }
         }
@@ -128,7 +133,7 @@ namespace engine
         {
             if (dax_block != null)
             {
-                int var_10 = 0;
+                int offset = 0;
 
                 int minY = rowY * 8;
                 int maxY = minY + dax_block.height;
@@ -140,23 +145,24 @@ namespace engine
                 {
                     for (int pixX = minX; pixX < maxX; pixX++)
                     {
-                        dax_block.data[var_10] = Display.GetPixel(pixX, pixY);
-                        var_10++;
+                        dax_block.data[offset] = Display.GetPixel(pixX, pixY);
+                        offset++;
                     }
                 }
             }
         }
 
-        static byte color_no_draw = 17;
-        static byte color_re_color_from = 17;
-        static byte color_re_color_to = 17;
-        internal static void draw_clipped_recolor(byte from, byte to)
+        static int color_no_draw = 17;
+        static int color_re_color_from = 17;
+        static int color_re_color_to = 17;
+
+        internal static void draw_clipped_recolor(int from, int to)
         {
             color_re_color_from = from;
             color_re_color_to = to;
         }
 
-        internal static void draw_clipped_nodraw(byte color)
+        internal static void draw_clipped_nodraw(int color)
         {
             color_no_draw = color;
         }
@@ -166,7 +172,7 @@ namespace engine
         {
             if (dax_block != null)
             {
-                int var_10 = index * dax_block.bpp;
+                int offset = index * dax_block.bpp;
 
                 int minY = rowY * 8;
                 int maxY = minY + dax_block.height;
@@ -181,7 +187,7 @@ namespace engine
                         if (pixX >= clipMinX && pixX < clipMaxX && 
                             pixY >= clipMinY && pixY < clipMaxY)
                         {
-                            byte color = dax_block.data[var_10];
+                            byte color = dax_block.data[offset];
 
                             if (color == color_no_draw)
                             { }
@@ -195,7 +201,7 @@ namespace engine
                             }
                         }
 
-                        var_10++;
+                        offset++;
                     }
                 }
 
@@ -213,78 +219,50 @@ namespace engine
             draw_clipped_picture(dax_block, rowY, colX, index, 0, 320, 0, 200);
         }
         
-        //static int backcolor = 0;
-
         internal static void DrawOverlay()
         {
             //TODO this might be useful when we move to OpenGL.
         }
 
-        internal static void SetPaletteColor(byte color, byte index)
+        internal static void SetPaletteColor(int color, int index)
         {
-            byte newColor = color;
+            int newColor = color;
 
-            if (color >= 8)
-            {
-                //newColor += 8;
-            }
+            //if (color >= 8)
+            //{
+            //  newColor += 8;
+            //}
 
             Display.SetEgaPalette(index, newColor);
         }
 
-        internal static void DaxBlockRecolor(DaxBlock dax_block, byte arg_4, short arg_6, byte[] newColors, byte[] oldColors)
+        internal static void DaxBlockRecolor(DaxBlock block, bool useRandom, byte[] newColors, byte[] oldColors)
         {
-            if (dax_block != null)
+            if (block != null)
             {
-                int item_count;
-                if (arg_6 < 0)
+                for (int colorIdx = 0; colorIdx < 16; colorIdx++)
                 {
-                    arg_6 = 0;
-                    item_count = dax_block.item_count;
-                }
-                else
-                {
-                    item_count = 1;
-                }
-
-                int src_offset = dax_block.bpp * arg_6;
-                int dest_offset = 0;
-                DaxBlock tmp_block = new DaxBlock(0, item_count, dax_block.width, dax_block.height);
-
-                System.Array.Copy(dax_block.field_9, tmp_block.field_9, dax_block.field_9.Length);
-                System.Array.Copy(dax_block.data, src_offset, tmp_block.data, dest_offset, tmp_block.item_count * tmp_block.bpp);
-
-                for (int color_index = 0; color_index <= 15; color_index++)
-                {
-                    src_offset = dax_block.bpp * arg_6;
-                    dest_offset = 0;
-
-                    if (oldColors[color_index] != newColors[color_index])
+                    if (oldColors[colorIdx] != newColors[colorIdx])
                     {
-                        int var_3F = item_count + arg_6 - 1;
+                        int srcOffset = 0;
+                        int destOffset = 0;
 
-                        for (int block = arg_6; block <= var_3F; block++)
+                        for (int posY = 0; posY < block.height; posY++)
                         {
-                            for (int posY = 0; posY < tmp_block.height; posY++)
+                            for (int posX = 0; posX < (block.width * 8); posX++)
                             {
-                                for (int posX = 0; posX < (tmp_block.width * 8); posX++)
+                                if (block.data[srcOffset] == oldColors[colorIdx] &&
+                                    (useRandom == false || (seg051.Random(4) == 0)))
                                 {
-                                    if (dax_block.data[src_offset] == oldColors[color_index] &&
-                                        (arg_4 == 0 || (seg051.Random(4) == 0)))
-                                    {
-                                        tmp_block.data[dest_offset] = newColors[color_index];
-                                    }
-
-                                    src_offset += 1;
-                                    dest_offset += 1;
+                                    block.data[destOffset] = newColors[colorIdx];
                                 }
+
+                                srcOffset += 1;
+                                destOffset += 1;
                             }
                         }
                     }
                 }
-
-                System.Array.Copy(tmp_block.data, 0, dax_block.data, dax_block.bpp * arg_6, item_count * dax_block.bpp);
-                seg040.free_dax_block(ref tmp_block);
             }
         }
 

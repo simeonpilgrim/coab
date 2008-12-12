@@ -62,8 +62,8 @@ namespace Classes
         public short rest_incounter_percentage; // 0x5a6
         [DataOffset(0x5AA, DataType.Bool)]
         public bool tried_to_exit_map; // 0x5aa
-        [DataOffset(0x5C2, DataType.SWord)]
-        public short field_5C2; // 0x5c2
+        [DataOffset(0x5C2, DataType.Byte)]
+        public byte HeadBlockId; // 0x5c2
         [DataOffset(0x5C4, DataType.SWord)]
         public short field_5C4; // 0x5c4
         [DataOffset(0x5C6, DataType.SWord)]
@@ -203,7 +203,7 @@ namespace Classes
                     break;
 
                 case 0x5c2:
-                    field_5C2 = (short)value;
+                    HeadBlockId = (byte)value;
                     break;
                 case 0x5c4:
                     field_5C4 = (short)value;

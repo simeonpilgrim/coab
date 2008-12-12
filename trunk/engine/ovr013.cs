@@ -7,14 +7,18 @@ namespace engine
         /// <summary>
         /// If same as current affect damage set to zero, or if affect is zero
         /// </summary>
-        internal static void protection_type_check(Affects affect) /* sub_3A019 */
+        static void ProtectedIf(Affects affect) /* sub_3A019 */
         {
-            if (affect == 0 ||
-                gbl.current_affect == affect)
+            if (gbl.current_affect == affect)
             {
-                gbl.damage = 0;
-                gbl.current_affect = 0;
+                Protected();
             }
+        }
+
+        internal static void Protected()
+        {
+            gbl.damage = 0;
+            gbl.current_affect = 0;
         }
 
 
@@ -40,7 +44,7 @@ namespace engine
 
         internal static void sub_3A087(Effect arg_0, object param, Player player)
         {
-            gbl.saving_throw_roll += 1;
+            gbl.savingThrowRoll += 1;
             gbl.attack_roll++;
         }
 
@@ -157,7 +161,7 @@ namespace engine
                 gbl.player_ptr.alignment == 5 ||
                 gbl.player_ptr.alignment == 8)
             {
-                gbl.saving_throw_roll += 2;
+                gbl.savingThrowRoll += 2;
                 gbl.attack_roll -= 2;
             }
         }
@@ -169,7 +173,7 @@ namespace engine
                 gbl.player_ptr.alignment == 3 ||
                 gbl.player_ptr.alignment == 6)
             {
-                gbl.saving_throw_roll += 2;
+                gbl.savingThrowRoll += 2;
                 gbl.attack_roll -= 2;
             }
         }
@@ -180,7 +184,7 @@ namespace engine
             if ((gbl.damage_flags & DamageType.Cold) != 0)
             {
                 gbl.damage /= 2;
-                gbl.saving_throw_roll += 3;
+                gbl.savingThrowRoll += 3;
             }
         }
 
@@ -213,7 +217,7 @@ namespace engine
                     }
 
                     player.actions.target = null;
-                    ovr025.count_teams();
+                    ovr025.CountCombatTeamMembers();
                 }
                 gbl.byte_1D2CC = 100;
             }
@@ -226,7 +230,7 @@ namespace engine
 
             if (affect.affect_data == 0)
             {
-                ovr024.sub_63014("Suffocates", Status.dead, player);
+                ovr024.KillPlayer("Suffocates", Status.dead, player);
             }
             else
             {
@@ -254,14 +258,14 @@ namespace engine
         }
 
 
-        internal static void affect_shield(Effect arg_0, object param, Player player) /* sub_3A41F */
+        internal static void AffectShield(Effect arg_0, object param, Player player) /* sub_3A41F */
         {
             if (player.ac < 0x39) // AC 3
             {
                 player.ac = 0x39; // AC 3
             }
 
-            gbl.saving_throw_roll += 1;
+            gbl.savingThrowRoll += 1;
 
             if (gbl.spell_id == 15) /* Magic Missle */
             {
@@ -288,7 +292,7 @@ namespace engine
                 (gbl.damage_flags & DamageType.Fire) != 0)
             {
                 gbl.damage /= 2;
-                gbl.saving_throw_roll += 3;
+                gbl.savingThrowRoll += 3;
             }
         }
 
@@ -305,11 +309,11 @@ namespace engine
         }
 
 
-        internal static void sub_3A517(Effect arg_0, object param, Player player)
+        internal static void AffectSlowPoison(Effect arg_0, object param, Player player) // sub_3A517
         {
             if (player.HasAffect(Affects.poisoned) == true)
             {
-                ovr024.sub_63014("dies from poison", Status.dead, player);
+                ovr024.KillPlayer("dies from poison", Status.dead, player);
             }
 
             gbl.cureSpell = true;
@@ -382,7 +386,7 @@ namespace engine
                 gbl.spell_id > 0 &&
                 gbl.byte_1D2C7 == false)
             {
-                protection_type_check(0);
+                Protected();
 
                 ovr025.DisplayPlayerStatusString(true, 10, "lost an image", player);
 
@@ -440,7 +444,7 @@ namespace engine
 
             if (gbl.cureSpell == false)
             {
-                ovr024.sub_63014("collapses", Status.dead, player);
+                ovr024.KillPlayer("collapses", Status.dead, player);
             }
 
             player.combat_team = (CombatTeam)(affect.affect_data >> 4);
@@ -466,7 +470,7 @@ namespace engine
             player.ac -= 4;
             player.field_19B -= 4;
 
-            gbl.saving_throw_roll -= 4;
+            gbl.savingThrowRoll -= 4;
         }
 
 
@@ -513,7 +517,7 @@ namespace engine
                 ovr025.ClearPlayerTextArea();
             }
 
-            if (ovr024.do_saving_throw(-2, 4, player) == true)
+            if (ovr024.RollSavingThrow(-2, SaveVerseType.type4, player) == true)
             {
                 ovr024.remove_affect(null, Affects.confuse, player);
             }
@@ -523,11 +527,11 @@ namespace engine
         internal static void affect_curse(Effect arg_0, object param, Player player) /* sub_3AB6F */
         {
             gbl.attack_roll -= 4;
-            gbl.saving_throw_roll -= 4;
+            gbl.savingThrowRoll -= 4;
         }
 
 
-        internal static void has_action_timedout(Effect arg_0, object param, Player player)
+        internal static void AffectBlink(Effect arg_0, object param, Player player) // has_action_timedout
         {
             if (player.actions.delay == 0)
             {
@@ -537,7 +541,7 @@ namespace engine
         }
 
 
-        internal static void spl_age(Effect arg_0, object param, Player player)
+        internal static void AffectHaste(Effect arg_0, object param, Player player) // spl_age
         {
             Affect affect = (Affect)param;
 
@@ -549,7 +553,7 @@ namespace engine
                 player.age++;
             }
 
-            gbl.byte_1D2C0 *= 2;
+            gbl.movesLeft *= 2;
         }
 
 
@@ -656,9 +660,9 @@ namespace engine
         }
 
 
-        internal static void sub_3B01B(Effect arg_0, object param, Player player)
+        internal static void AffectSlow(Effect arg_0, object param, Player player) //sub_3B01B
         {
-            gbl.byte_1D2C0 /= 2;
+            gbl.movesLeft /= 2;
         }
 
 
@@ -744,7 +748,7 @@ namespace engine
             else
             {
                 gbl.attack_roll -= 1;
-                gbl.saving_throw_roll -= 1;
+                gbl.savingThrowRoll -= 1;
             }
         }
 
@@ -753,9 +757,9 @@ namespace engine
         {
             if ((gbl.damage_flags & DamageType.Cold) != 0)
             {
-                gbl.saving_throw_roll += 2;
+                gbl.savingThrowRoll += 2;
             }
-            else if ((gbl.damage_flags & DamageType.Fire) != 0 && gbl.save_made == false)
+            else if ((gbl.damage_flags & DamageType.Fire) != 0 && gbl.savingThrowMade == false)
             {
                 gbl.damage *= 2;
             }
@@ -766,9 +770,9 @@ namespace engine
         {
             if ((gbl.damage_flags & DamageType.Fire) != 0)
             {
-                gbl.saving_throw_roll += 2;
+                gbl.savingThrowRoll += 2;
             }
-            else if ((gbl.damage_flags & DamageType.Cold) != 0 && gbl.save_made == false)
+            else if ((gbl.damage_flags & DamageType.Cold) != 0 && gbl.savingThrowMade == false)
             {
                 gbl.damage *= 2;
             }
@@ -781,13 +785,13 @@ namespace engine
         }
 
 
-        internal static void sub_3B29A(Effect arg_0, object param, Player player)
+        internal static void sub_3B29A(Effect arg_0, object param, Player player) //sub_3B29A
         {
             player.actions.move = 0;
 
-            if (gbl.reset_byte_1D2C0 == true)
+            if (gbl.resetMovesLeft == true)
             {
-                gbl.byte_1D2C0 = 0;
+                gbl.movesLeft = 0;
             }
         }
 
@@ -829,11 +833,11 @@ namespace engine
                     }
                 }
 
-                gbl.saving_throw_roll += 4;
+                gbl.savingThrowRoll += 4;
 
                 if ((gbl.damage_flags & DamageType.Magic) == 0)
                 {
-                    protection_type_check(0);
+                    Protected();
                 }
             }
         }
@@ -846,7 +850,7 @@ namespace engine
             if (addAffect(0x3C, affect.affect_data, Affects.highConRegen, player) == true &&
                 ovr024.heal_player(1, 1, player) == true)
             {
-                ovr025.describeHealing(player);
+                ovr025.DescribeHealing(player);
             }
         }
 
@@ -856,22 +860,22 @@ namespace engine
             if (gbl.spell_id > 0 &&
                 gbl.spell_table[gbl.spell_id].spellLevel < 4)
             {
-                protection_type_check(0);
+                Protected();
             }
         }
 
 
-        internal static void sub_3B407(int save_bonus, Player player)
+        internal static void PoisonAttack(int save_bonus, Player player)
         {
             gbl.spell_target = player.actions.target;
 
-            if (ovr024.do_saving_throw(save_bonus, 0, gbl.spell_target) == false)
+            if (ovr024.RollSavingThrow(save_bonus, SaveVerseType.Poison, gbl.spell_target) == false)
             {
                 ovr025.DisplayPlayerStatusString(false, 10, "is Poisoned", gbl.spell_target);
                 seg041.GameDelay();
                 ovr024.add_affect(false, 0xff, 0, Affects.poisoned, gbl.spell_target);
 
-                ovr024.sub_63014("is killed", Status.dead, gbl.spell_target);
+                ovr024.KillPlayer("is killed", Status.dead, gbl.spell_target);
             }
         }
 
@@ -880,7 +884,7 @@ namespace engine
         {
             gbl.spell_target = player.actions.target;
 
-            if (ovr024.do_saving_throw(0, 0, gbl.spell_target) == false)
+            if (ovr024.RollSavingThrow(0, 0, gbl.spell_target) == false)
             {
                 ovr025.sub_6818A("is Paralyzed", true, gbl.spell_target);
                 ovr024.add_affect(false, 12, affect, Affects.paralyze, gbl.spell_target);
@@ -888,21 +892,21 @@ namespace engine
         }
 
 
-        internal static void sub_3B520(Effect arg_0, object param, Player player)
+        internal static void AffectPoisonPlus0(Effect arg_0, object param, Player player) // sub_3B520
         {
-            sub_3B407(0, player);
+            PoisonAttack(0, player);
         }
 
 
-        internal static void sub_3B534(Effect arg_0, object param, Player player)
+        internal static void AffectPoisonPlus4(Effect arg_0, object param, Player player) // sub_3B534
         {
-            sub_3B407(4, player);
+            PoisonAttack(4, player);
         }
 
 
-        internal static void sub_3B548(Effect arg_0, object param, Player player)
+        internal static void AffectPoisonPlus2(Effect arg_0, object param, Player player) // sub_3B548
         {
-            sub_3B407(2, player);
+            PoisonAttack(2, player);
         }
 
 
@@ -912,7 +916,7 @@ namespace engine
         }
 
 
-        internal static void FeebleMind(Effect arg_0, object param, Player player) // spell_stupid
+        internal static void AffectFeebleMind(Effect arg_0, object param, Player player) // spell_stupid
         {
             player._int = 7;
             player.wis = 7;
@@ -940,9 +944,9 @@ namespace engine
         }
 
 
-        internal static void sub_3B671(Effect arg_0, object param, Player player)
+        internal static void AffectPoisonNeg2(Effect arg_0, object param, Player player) // sub_3B671
         {
-            sub_3B407(-2, player);
+            PoisonAttack(-2, player);
         }
 
 
@@ -966,7 +970,7 @@ namespace engine
         {
             if ((gbl.damage_flags & DamageType.DragonBreath) > 0)
             {
-                protection_type_check(0);
+                Protected();
                 ovr025.DisplayPlayerStatusString(true, 10, "is unaffected", player);
             }
         }
@@ -1085,7 +1089,7 @@ namespace engine
             if ((gbl.damage_flags & DamageType.Fire) != 0 ||
                 (gbl.damage_flags & DamageType.Cold) != 0)
             {
-                if (ovr024.do_saving_throw(0, 4, player) == true &&
+                if (ovr024.RollSavingThrow(0, SaveVerseType.type4, player) == true &&
                     gbl.spell_table[gbl.spell_id].can_save_flag != 0)
                 {
                     gbl.damage = 0;
@@ -1102,7 +1106,7 @@ namespace engine
         {
             if ((gbl.damage_flags & DamageType.Electricity) != 0)
             {
-                protection_type_check(0);
+                Protected();
                 //byte var_1 = ovr024.roll_dice(8, 1);
 
                 player.ac += 8;
@@ -1222,22 +1226,22 @@ namespace engine
         }
 
 
-        internal static void sub_3BE06(Effect arg_0, object param, Player arg_6)
+        internal static void sub_3BE06(Effect arg_0, object param, Player player)
         {
             Affect affect = (Affect)param;
             affect.callAffectTable = false;
 
-            if (arg_6.in_combat == true)
+            if (player.in_combat == true)
             {
-                ovr024.sub_63014("Falls dead", Status.dead, arg_6);
+                ovr024.KillPlayer("Falls dead", Status.dead, player);
             }
         }
 
 
         internal static void con_saving_bonus(Effect arg_0, object param, Player player) /* sub_3BE42 */
         {
-            if (gbl.byte_1D2D1 == 4 ||
-                gbl.byte_1D2D1 == 2)
+            if (gbl.saveVerseType == SaveVerseType.type4 ||
+                gbl.saveVerseType == SaveVerseType.type2)
             {
                 int save_bonus = 0;
 
@@ -1262,7 +1266,7 @@ namespace engine
                     save_bonus = 5;
                 }
 
-                gbl.saving_throw_roll += save_bonus;
+                gbl.savingThrowRoll += save_bonus;
             }
         }
 
@@ -1355,17 +1359,16 @@ namespace engine
         }
 
 
-        internal static void sub_3C0EE(byte arg_0)
+        internal static void sub_3C0EE(int rollBase)
         {
             int target_count = ovr025.spellMaxTargetCount(gbl.spell_id);
-            int var_2 = (byte)(arg_0 + ((0x0b - target_count) * 5));
+            int rollNeeded = rollBase + ((11 - target_count) * 5);
 
-            if (gbl.current_affect != 0 ||
-                (gbl.damage_flags & DamageType.Magic) != 0)
+            if (gbl.current_affect != 0 || (gbl.damage_flags & DamageType.Magic) != 0)
             {
-                if (ovr024.roll_dice(100, 1) <= var_2)
+                if (ovr024.roll_dice(100, 1) <= rollNeeded)
                 {
-                    protection_type_check(0);
+                    Protected();
                 }
             }
         }
@@ -1385,24 +1388,24 @@ namespace engine
 
         internal static void sub_3C16B(Effect arg_0, object param, Player arg_6)
         {
-            if (ovr024.roll_dice(100, 1) <= 0x5a)
+            if (ovr024.roll_dice(100, 1) <= 90)
             {
-                protection_type_check(Affects.sleep);
-                protection_type_check(Affects.charm_person);
+                ProtectedIf(Affects.sleep);
+                ProtectedIf(Affects.charm_person);
             }
         }
 
 
-        internal static void sub_3C18F(Effect arg_0, object param, Player arg_6)
+        internal static void AffectProtCharmSleep(Effect arg_0, object param, Player arg_6) // sub_3C18F
         {
-            protection_type_check(Affects.charm_person);
-            protection_type_check(Affects.sleep);
+            ProtectedIf(Affects.charm_person);
+            ProtectedIf(Affects.sleep);
         }
 
 
         internal static void sub_3C1A4(Effect arg_0, object param, Player arg_6)
         {
-            protection_type_check(Affects.paralyze);
+            ProtectedIf(Affects.paralyze);
         }
 
 
@@ -1410,19 +1413,19 @@ namespace engine
         {
             if ((gbl.damage_flags & DamageType.Cold) != 0)
             {
-                protection_type_check(0);
+                Protected();
             }
         }
 
 
         internal static void sub_3C1C9(Effect arg_0, object param, Player arg_6)
         {
-            protection_type_check(Affects.poisoned);
-            protection_type_check(Affects.paralyze);
+            ProtectedIf(Affects.poisoned);
+            ProtectedIf(Affects.paralyze);
 
-            if (gbl.byte_1D2D1 == 0)
+            if (gbl.saveVerseType == SaveVerseType.Poison)
             {
-                gbl.saving_throw_roll = 100;
+                gbl.savingThrowRoll = 100;
             }
         }
 
@@ -1431,7 +1434,7 @@ namespace engine
         {
             if ((gbl.damage_flags & DamageType.Fire) != 0)
             {
-                protection_type_check(0);
+                Protected();
             }
         }
 
@@ -1501,7 +1504,7 @@ namespace engine
         }
 
 
-        internal static void sub_3C33C(Effect arg_0, object param, Player player)
+        internal static void AffectProtCold(Effect arg_0, object param, Player player) // sub_3C33C
         {
             if ((gbl.damage_flags & DamageType.Cold) != 0)
             {
@@ -1510,7 +1513,7 @@ namespace engine
         }
 
 
-        internal static void sub_3C356(Effect arg_0, object param, Player player)
+        internal static void AffectProtNonMagicWeapons(Effect arg_0, object param, Player player) // sub_3C356
         {
             Item weapon = get_primary_weapon(gbl.player_ptr);
 
@@ -1558,7 +1561,7 @@ namespace engine
                         ovr033.PlayerMapYPos(player), ovr033.PlayerMapXPos(player));
 
                     int damage = ovr024.roll_dice_save(4, 8);
-                    bool saved = ovr024.do_saving_throw(0, 3, gbl.spell_target);
+                    bool saved = ovr024.RollSavingThrow(0, SaveVerseType.type3, gbl.spell_target);
 
                     ovr024.damage_person(saved, DamageOnSave.Half, damage, gbl.spell_target);
 
@@ -1569,11 +1572,11 @@ namespace engine
         }
 
 
-        internal static void spl_paralyze(Effect arg_0, object param, Player player)
+        internal static void AffectDracolichParalysis(Effect arg_0, object param, Player player) // spl_paralyze
         {
             gbl.spell_target = player.actions.target;
 
-            if (ovr024.do_saving_throw(0, 0, gbl.spell_target) == false)
+            if (ovr024.RollSavingThrow(0, 0, gbl.spell_target) == false)
             {
                 ovr024.add_affect(false, 0xff, 0, Affects.paralyze, gbl.spell_target);
 
@@ -1590,36 +1593,36 @@ namespace engine
         }
 
 
-        internal static void sub_3C5D0(Effect arg_0, object param, Player player)
+        internal static void AffectHalfElfResistance(Effect arg_0, object param, Player player) // sub_3C5D0
         {
             if (ovr024.roll_dice(100, 1) <= 30)
             {
-                protection_type_check(Affects.charm_person);
-                protection_type_check(Affects.sleep);
+                ProtectedIf(Affects.charm_person);
+                ProtectedIf(Affects.sleep);
             }
         }
 
 
         internal static void sub_3C5F4(Effect arg_0, object param, Player player)
         {
-            protection_type_check(Affects.charm_person);
-            protection_type_check(Affects.sleep);
-            protection_type_check(Affects.paralyze);
-            protection_type_check(Affects.poisoned);
+            ProtectedIf(Affects.charm_person);
+            ProtectedIf(Affects.sleep);
+            ProtectedIf(Affects.paralyze);
+            ProtectedIf(Affects.poisoned);
 
-            if (gbl.byte_1D2D1 != 0)
+            if (gbl.saveVerseType != SaveVerseType.Poison)
             {
-                gbl.saving_throw_roll = 100;
+                gbl.savingThrowRoll = 100;
             }
         }
 
 
-        internal static void sub_3C623(Effect arg_0, object param, Player player)
+        internal static void AffectProtMagic(Effect arg_0, object param, Player player) // sub_3C623
         {
             if (gbl.current_affect != 0 ||
                 (gbl.damage_flags & DamageType.Magic) != 0)
             {
-                protection_type_check(0);
+                Protected();
             }
         }
 
@@ -1637,7 +1640,7 @@ namespace engine
                 player.in_combat = false;
                 player.hit_point_current = 0;
                 ovr024.sub_645AB(player);
-                ovr024.CheckAffectsEffect(player, CheckType.Type_13);
+                ovr024.CheckAffectsEffect(player, CheckType.Death);
 
                 if (player.in_combat == true)
                 {
@@ -1669,15 +1672,15 @@ namespace engine
         }
 
 
-        internal static void sub_3C750(Effect arg_0, object param, Player player)
+        internal static void AffectDracolichA(Effect arg_0, object param, Player player) //sub_3C750
         {
-            protection_type_check(Affects.fear);
-            protection_type_check(Affects.ray_of_enfeeblement);
-            protection_type_check(Affects.feeblemind);
+            ProtectedIf(Affects.fear);
+            ProtectedIf(Affects.ray_of_enfeeblement);
+            ProtectedIf(Affects.feeblemind);
 
             if ((gbl.damage_flags & DamageType.Electricity) != 0)
             {
-                protection_type_check(0);
+                Protected();
             }
         }
 
@@ -1697,7 +1700,7 @@ namespace engine
         {
             if ((gbl.damage_flags & DamageType.Electricity) != 0)
             {
-                protection_type_check(0);
+                Protected();
             }
         }
 
@@ -1801,9 +1804,9 @@ namespace engine
             gbl.spell_target = player.actions.target;
 
             if ((gbl.spell_target.field_14B & 1) != 0 &&
-                ovr024.do_saving_throw(0, 4, gbl.spell_target) == false)
+                ovr024.RollSavingThrow(0, SaveVerseType.type4, gbl.spell_target) == false)
             {
-                ovr024.sub_63014("is dispelled", Status.gone, gbl.spell_target);
+                ovr024.KillPlayer("is dispelled", Status.gone, gbl.spell_target);
 
                 ovr024.remove_affect(null, Affects.dispel_evil, gbl.player_ptr);
                 ovr024.remove_affect(null, Affects.sp_dispel_evil, gbl.player_ptr);
@@ -1840,12 +1843,12 @@ namespace engine
             affect_table.Add(Affects.friends, ovr013.empty);
             affect_table.Add(Affects.affect_0f, ovr013.sub_3A3BC);
             affect_table.Add(Affects.read_magic, ovr013.empty);
-            affect_table.Add(Affects.shield, ovr013.affect_shield);
+            affect_table.Add(Affects.shield, ovr013.AffectShield);
             affect_table.Add(Affects.affect_12, ovr013.sub_3A44A);
             affect_table.Add(Affects.find_traps, ovr013.empty);
             affect_table.Add(Affects.resist_fire, ovr013.affect_resist_fire);
             affect_table.Add(Affects.silence_15_radius, ovr013.is_silenced1);
-            affect_table.Add(Affects.slow_poison, ovr013.sub_3A517);
+            affect_table.Add(Affects.slow_poison, ovr013.AffectSlowPoison);
             affect_table.Add(Affects.spiritual_hammer, ovr013.affect_spiritual_hammer);
             affect_table.Add(Affects.detect_invisibility, ovr013.empty);
             affect_table.Add(Affects.invisibility, ovr013.sub_3A6C6);
@@ -1860,12 +1863,12 @@ namespace engine
             affect_table.Add(Affects.cause_disease_1, ovr013.sub_3A974);
             affect_table.Add(Affects.confuse, ovr013.AffectConfuse);
             affect_table.Add(Affects.bestow_curse, ovr013.affect_curse);
-            affect_table.Add(Affects.blink, ovr013.has_action_timedout);
+            affect_table.Add(Affects.blink, ovr013.AffectBlink);
             affect_table.Add(Affects.strength, ovr013.empty);
-            affect_table.Add(Affects.haste, ovr013.spl_age);
+            affect_table.Add(Affects.haste, ovr013.AffectHaste);
             affect_table.Add(Affects.affect_28, ovr013.sub_3AC1D);
             affect_table.Add(Affects.prot_from_normal_missiles, ovr013.sub_3AFE0);
-            affect_table.Add(Affects.slow, ovr013.sub_3B01B);
+            affect_table.Add(Affects.slow, ovr013.AffectSlow);
             affect_table.Add(Affects.affect_2b, ovr013.weaken);
             affect_table.Add(Affects.cause_disease_2, ovr013.sub_3B0C2);
             affect_table.Add(Affects.prot_from_evil_10_radius, ovr013.affect_protect_evil);
@@ -1887,13 +1890,13 @@ namespace engine
             affect_table.Add(Affects.fire_resist, ovr013.AffectFireResist);
             affect_table.Add(Affects.highConRegen, ovr013.AffectHighConRegen);
             affect_table.Add(Affects.minor_globe_of_invulnerability, ovr013.AffectMinorGlobeOfInvulnerability);
-            affect_table.Add(Affects.affect_40, ovr013.sub_3B520);
-            affect_table.Add(Affects.affect_41, ovr013.sub_3B534);
-            affect_table.Add(Affects.affect_42, ovr013.sub_3B548);
+            affect_table.Add(Affects.poison_plus_0, ovr013.AffectPoisonPlus0);
+            affect_table.Add(Affects.poison_plus_4, ovr013.AffectPoisonPlus4);
+            affect_table.Add(Affects.poison_plus_2, ovr013.AffectPoisonPlus2);
             affect_table.Add(Affects.affect_43, ovr013.sub_3B55C);
-            affect_table.Add(Affects.feeblemind, ovr013.FeebleMind);
+            affect_table.Add(Affects.feeblemind, ovr013.AffectFeebleMind);
             affect_table.Add(Affects.invisible_to_animals, ovr013.AffectInvisToAnimals);
-            affect_table.Add(Affects.affect_46, ovr013.sub_3B671);
+            affect_table.Add(Affects.poison_neg_2, ovr013.AffectPoisonNeg2);
             affect_table.Add(Affects.invisible, ovr013.sub_3B685);
             affect_table.Add(Affects.camouflage, ovr013.sub_3B696);
             affect_table.Add(Affects.prot_drag_breath, ovr013.ProtDragonsBreath);
@@ -1931,7 +1934,7 @@ namespace engine
             affect_table.Add(Affects.affect_69, ovr013.sub_3C14F);
             affect_table.Add(Affects.affect_6a, ovr013.sub_3C15D);
             affect_table.Add(Affects.affect_6b, ovr013.sub_3C16B);
-            affect_table.Add(Affects.affect_6c, ovr013.sub_3C18F);
+            affect_table.Add(Affects.protect_charm_sleep, ovr013.AffectProtCharmSleep);
             affect_table.Add(Affects.affect_6d, ovr013.sub_3C1A4);
             affect_table.Add(Affects.affect_6e, ovr013.sub_3C1B2);
             affect_table.Add(Affects.affect_6f, ovr013.sub_3C1C9);
@@ -1941,22 +1944,22 @@ namespace engine
             affect_table.Add(Affects.affect_73, ovr013.sub_3C260);
             affect_table.Add(Affects.affect_74, ovr013.half_damage_if_weap_magic);
             affect_table.Add(Affects.affect_75, ovr013.sub_3C2F9);
-            affect_table.Add(Affects.affect_76, ovr013.sub_3C33C);
-            affect_table.Add(Affects.affect_77, ovr013.sub_3C356);
+            affect_table.Add(Affects.affect_76, ovr013.AffectProtCold);
+            affect_table.Add(Affects.affect_77, ovr013.AffectProtNonMagicWeapons);
             affect_table.Add(Affects.affect_78, ovr013.sub_3C3A2);
             affect_table.Add(Affects.affect_79, ovr013.sub_3C3F6);
-            affect_table.Add(Affects.affect_7a, ovr013.spl_paralyze);
+            affect_table.Add(Affects.dracolich_paralysis, ovr013.AffectDracolichParalysis);
             affect_table.Add(Affects.affect_7b, ovr013.sub_3C59D);
-            affect_table.Add(Affects.affect_7c, ovr013.sub_3C5D0);
+            affect_table.Add(Affects.halfelf_resistance, ovr013.AffectHalfElfResistance);
             affect_table.Add(Affects.affect_7d, ovr013.sub_3C5F4);
             affect_table.Add(Affects.affect_7e, ovr023.cast_gaze_paralyze);
             affect_table.Add(Affects.affect_7f, ovr013.empty);
             affect_table.Add(Affects.affect_80, ovr023.DragonBreathFire);
-            affect_table.Add(Affects.affect_81, ovr013.sub_3C623);
+            affect_table.Add(Affects.protect_magic, ovr013.AffectProtMagic);
             affect_table.Add(Affects.affect_82, ovr013.sub_3C643);
             affect_table.Add(Affects.cast_breath_fire, ovr023.cast_breath_fire);
             affect_table.Add(Affects.cast_throw_lightening, ovr023.cast_throw_lightening);
-            affect_table.Add(Affects.affect_85, ovr013.sub_3C750);
+            affect_table.Add(Affects.affect_85, ovr013.AffectDracolichA);
             affect_table.Add(Affects.range_vs_giant, ovr013.AffectRangeVsGiant);
             affect_table.Add(Affects.protect_elec, ovr013.AffectProtElec);
             affect_table.Add(Affects.entangle, ovr013.AffectEntangle);

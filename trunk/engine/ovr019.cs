@@ -421,7 +421,7 @@ namespace engine
 
             do
             {
-                ovr030.sub_7000A(animation.frames[animation.curFrame - 1].picture, true, row_y, col_x);
+                ovr030.DrawMaybeOverlayed(animation.frames[animation.curFrame - 1].picture, true, row_y, col_x);
                 int current_time = seg041.time01();
 
                 int delay = animation.frames[animation.curFrame - 1].delay * (gbl.game_speed_var + 3);

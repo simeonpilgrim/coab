@@ -192,12 +192,12 @@ namespace Classes
         [DataOffset(0xde, DataType.Byte)]
         public byte field_DE; // 0xde;
         [DataOffset(0xdf, DataType.ByteArray,5)]
-        public byte[] field_DF = new byte[5]; // 0xdf; 
+        public byte[] saveVerse = new byte[5]; // 0xdf; field_DF 
  
         [DataOffset(0xe4, DataType.Byte)]
         public byte base_movement; // 0xe4;
         [DataOffset(0xe5, DataType.Byte)]
-        public byte field_E5; // 0xe5;
+        public byte field_E5; // 0xe5; maybe monster power?
         [DataOffset(0xe6, DataType.Byte)]
         public byte field_E6; // 0xe6;
         [DataOffset(0xe7, DataType.Byte)]

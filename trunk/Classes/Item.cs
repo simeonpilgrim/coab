@@ -24,14 +24,11 @@ namespace Classes
         public sbyte field_30;
         public byte field_31;
 
-        /// <summary>
-        /// 0x32
-        /// </summary>
-        public sbyte plus; // 0x32 exp_value
-        public byte plus_save; // 0x33 field_33
-        public bool readied; // field_34
-        public byte hidden_names_flag; // 0x35 field_35
-        public bool cursed; // 0x36 field_36
+        public sbyte plus; // 0x32 
+        public byte plus_save; // 0x33 
+        public bool readied; // 0x34
+        public byte hidden_names_flag; // 0x35 
+        public bool cursed; // 0x36 
         public short weight; // 0x37
         public int count;   // 0x39 
         public short _value; // 0x3A "seams like value is in electrum, as value is doubled.";

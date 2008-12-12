@@ -165,7 +165,7 @@ namespace engine
 
             gbl.area_ptr.Clear();
 
-            gbl.area_ptr.field_1CC = 1;
+            gbl.area_ptr.inDungeon = 1;
             gbl.area_ptr.field_1E4 = 0;
 
             gbl.area2_ptr.Clear();
@@ -242,7 +242,7 @@ namespace engine
             gbl.byte_1D5B5 = 0x0FF;
             gbl.gameSaved = false;
             gbl.byte_1EE95 = false;
-            gbl.byte_1D910 = true;
+            gbl.focusCombatAreaOnPlayer = true;
             gbl.bigpic_block_id = 0x0FF;
             gbl.silent_training = false;
             gbl.menuSelectedWord = 1;
@@ -293,7 +293,7 @@ namespace engine
         static void InitAgain() /* sub_396E5 */
         {
             gbl.area_ptr.Clear();
-            gbl.area_ptr.field_1CC = 1;
+            gbl.area_ptr.inDungeon = 1;
             gbl.area_ptr.field_1E4 = 0;
             gbl.area2_ptr.Clear();
             gbl.stru_1B2CA.Clear();
@@ -325,8 +325,10 @@ namespace engine
             gbl.DelayBetweenCharacters = true;
             gbl.reload_ecl_and_pictures = false;
             gbl.rest_incounter_count = 0;
+
             gbl.player_next_ptr.Clear();
             gbl.player_ptr = null;
+
             gbl.ecl_offset = 0x8000;
             gbl.game_speed_var = 4;
             gbl.game_area = 1;
@@ -348,7 +350,7 @@ namespace engine
             gbl.byte_1D5B5 = 0x0FF;
             gbl.gameSaved = false;
             gbl.byte_1EE95 = false;
-            gbl.byte_1D910 = true;
+            gbl.focusCombatAreaOnPlayer = true;
             gbl.bigpic_block_id = 0x0FF;
             gbl.silent_training = false;
             ovr027.ClearPromptArea();

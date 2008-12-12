@@ -166,18 +166,18 @@ namespace engine
             display_highlighed_text(gbl.menuSelectedWord, highlightFgColor,
                 displayInputString, displayInputXOffset, fgColor, highlights);
 
-            if (gbl.game_state == GameState.State3 &&
+            if (gbl.game_state == GameState.WildernessMap &&
                 gbl.bigpic_block_id == 0x79 &&
                 gbl.lastDaxBlockId != 0x50)
             {
-                ovr028.sub_6E005();
+                ovr028.SetMapCursorPosition();
                 ovr028.map_cursor_draw();
                 ovr028.map_cursor_restore();
             }
 
             do
             {
-                if (gbl.game_state == GameState.State3 &&
+                if (gbl.game_state == GameState.WildernessMap &&
                     gbl.bigpic_block_id == 0x79 &&
                     gbl.lastDaxBlockId != 0x50 &&
                     seg041.time01() >= var_5B)
@@ -189,7 +189,7 @@ namespace engine
                 if ((gbl.area_ptr.picture_fade != 0 || useOverlay == true) &&
                     gbl.byte_1D556.curFrame > 0)
                 {
-                    ovr030.sub_7000A(gbl.byte_1D556.frames[gbl.byte_1D556.curFrame - 1].picture, useOverlay, 3, 3);
+                    ovr030.DrawMaybeOverlayed(gbl.byte_1D556.frames[gbl.byte_1D556.curFrame - 1].picture, useOverlay, 3, 3);
 
                     int delay = gbl.byte_1D556.frames[gbl.byte_1D556.curFrame - 1].delay * 10;
 
@@ -321,7 +321,7 @@ namespace engine
                     }
                 }
 
-                if (gbl.game_state == GameState.State3 &&
+                if (gbl.game_state == GameState.WildernessMap &&
                     gbl.bigpic_block_id == 0x79 &&
                     gbl.lastDaxBlockId != 0x50 &&
                     seg041.time01() >= var_5F)
@@ -337,7 +337,7 @@ namespace engine
 
             gbl.area_ptr.picture_fade = 0;
 
-            if (gbl.game_state == GameState.State3 &&
+            if (gbl.game_state == GameState.WildernessMap &&
                 gbl.bigpic_block_id == 0x79 &&
                 gbl.lastDaxBlockId != 0x50)
             {

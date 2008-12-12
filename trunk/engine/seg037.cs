@@ -28,7 +28,7 @@ namespace engine
 
 
 
-        internal static void draw8x8_outer_frame() /* draw8x8_01 */
+        internal static void DrawFrame_Outer() /* draw8x8_01 */
         {
             Display.UpdateStop();
 
@@ -58,7 +58,7 @@ namespace engine
         {
             Display.UpdateStop();
 
-            draw8x8_outer_frame();
+            DrawFrame_Outer();
 
             for (int col_x = 0; col_x <= 0x27; col_x++)
             {
@@ -74,7 +74,7 @@ namespace engine
         {
             Display.UpdateStop();
 
-            draw8x8_outer_frame();
+            DrawFrame_Outer();
 
             for (int colX = 0; colX <= 0x27; colX++)
             {
@@ -102,11 +102,11 @@ namespace engine
         }
 
 
-        internal static void draw8x8_04()
+        internal static void DrawFrame_WildernessMap() // draw8x8_04
         {
             Display.UpdateStop();
 
-            draw8x8_outer_frame();
+            DrawFrame_Outer();
 
             for (int col_x = 0; col_x <= 0x27; col_x++)
             {
@@ -148,18 +148,19 @@ namespace engine
         }
 
 
-        internal static void draw8x8_06()
+        internal static void DrawFrame_Combat() // draw8x8_06
         {
             Display.UpdateStop();
 
             draw8x8_clear_area(0x17, 0x27, 0, 0);
 
+            // Top Bar
             for (int col_x = 0; col_x <= 0x27; col_x++)
             {
                 ovr038.Put8x8Symbol(0, false, outer_frame_top[col_x] + 0x11E, 0, col_x);
             }
 
-
+            // Three Vert Bars
             for (int row_y = 0; row_y <= 0x16; row_y++)
             {
                 ovr038.Put8x8Symbol(0, false, unk_16F4D[row_y] + 0x11e, row_y, 0);
@@ -167,6 +168,7 @@ namespace engine
                 ovr038.Put8x8Symbol(0, false, unk_16F7B[row_y] + 0x11e, row_y, 0x27);
             }
 
+            // Bottom Bar
             for (int col_x = 0; col_x <= 0x27; col_x++)
             {
                 ovr038.Put8x8Symbol(0, false, outer_frame_bottom[col_x] + 0x11e, 0x16, col_x);
@@ -180,7 +182,7 @@ namespace engine
         {
             Display.UpdateStop();
 
-            draw8x8_outer_frame();
+            DrawFrame_Outer();
 
             for (int col_x = 0; col_x <= 0x27; col_x++)
             {

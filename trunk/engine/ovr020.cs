@@ -45,7 +45,7 @@ namespace engine
         {
             gbl.player_ptr02 = gbl.player_ptr;
 
-            seg037.draw8x8_outer_frame();
+            seg037.DrawFrame_Outer();
 
             ovr025.displayPlayerName(false, 1, 1, gbl.player_ptr02);
 
@@ -395,7 +395,7 @@ namespace engine
 
         internal static void ItemDisplayStats(Item arg_0) /*sub_550A6*/
         {
-            seg037.draw8x8_outer_frame();
+            seg037.DrawFrame_Outer();
 
             seg041.displayString("itemptr:      ", 0, 10, 1, 1);
             seg041.displayString(arg_0.type.ToString(), 0, 10, 1, 0x14);
@@ -472,7 +472,7 @@ namespace engine
 
                     if (player.in_combat == true &&
                         gbl.area_ptr.field_1CA == 0 &&
-                        (gbl.game_state == GameState.State2 || gbl.game_state == GameState.State3 ||
+                        (gbl.game_state == GameState.Camping || gbl.game_state == GameState.WildernessMap ||
                          gbl.game_state == GameState.State4 || gbl.game_state == GameState.Combat ||
                          (player.actions != null && player.actions.can_use == true)))
                     {
@@ -732,7 +732,7 @@ namespace engine
                         gbl.damage_flags = DamageType.Magic;
                         if (gbl.game_state == GameState.Combat)
                         {
-                            ovr025.sub_68DC0();
+                            ovr025.RedrawCombatScreen();
                         }
 
                         ovr024.damage_person(false, 0, var_3, player);
@@ -1011,7 +1011,7 @@ namespace engine
                 if (gbl.game_state == GameState.Combat &&
                     gbl.player_ptr.quick_fight == QuickFight.False)
                 {
-                    ovr025.sub_68DC0();
+                    ovr025.RedrawCombatScreen();
                 }
 
                 if (gbl.spell_from_item == true)
@@ -1477,7 +1477,7 @@ namespace engine
                     }
                     else
                     {
-                        seg037.draw8x8_outer_frame();
+                        seg037.DrawFrame_Outer();
                     }
                 }
 

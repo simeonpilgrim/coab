@@ -131,7 +131,7 @@ namespace engine
 
                 if (gbl.player_ptr.OppositeTeam() != tmpPlayer.combat_team &&
                     spell_entry.can_save_flag != DamageOnSave.Zero &&
-                    ovr024.do_saving_throw(save_bonus, spell_entry.field_9, tmpPlayer) == false)
+                    ovr024.RollSavingThrow(save_bonus, spell_entry.saveVerse, tmpPlayer) == false)
                 {
                     result = true;
                 }
@@ -153,7 +153,7 @@ namespace engine
                 }
                 else
                 {
-                    int near_count = ovr025.near_enemy(ovr023.sub_5CDE5(spellId), attacker);
+                    int near_count = ovr025.BuildNearTargets(ovr023.SpellRange(spellId), attacker);
 
                     if (near_count > 0)
                     {
@@ -198,7 +198,6 @@ namespace engine
                     foreach (var item_ptr in player.items)
                     {
                         byte var_8 = (byte)item_ptr.affect_2;
-                        byte var_7 = gbl.unk_1C020[item_ptr.type].item_slot;
 
                         if (ovr023.item_is_scroll(item_ptr) == false &&
                             (int)item_ptr.affect_3 < 0x80 &&
@@ -348,11 +347,11 @@ namespace engine
                         player.HasAffect(Affects.stinking_cloud) == false &&
                         player.HasAffect(Affects.affect_6f) == false &&
                         player.HasAffect(Affects.affect_7d) == false &&
-                        player.HasAffect(Affects.affect_81) == false &&
+                        player.HasAffect(Affects.protect_magic) == false &&
                         player.HasAffect(Affects.minor_globe_of_invulnerability) == false &&
                         player.actions.fleeing == false)
                     {
-                        if (ovr024.do_saving_throw(0, 0, player) == false)
+                        if (ovr024.RollSavingThrow(0, 0, player) == false)
                         {
                             var_A = (byte)(player.actions.move + 1);
                         }
@@ -361,7 +360,7 @@ namespace engine
 
                     if (isPoisonousCloud == true &&
                         player.field_E5 < 7 &&
-                        player.HasAffect(Affects.affect_81) == false &&
+                        player.HasAffect(Affects.protect_magic) == false &&
                         player.HasAffect(Affects.affect_6f) == false &&
                         player.HasAffect(Affects.affect_85) == false &&
                         player.HasAffect(Affects.affect_7d) == false &&
@@ -487,7 +486,7 @@ namespace engine
 
                             if (var_5 == false)
                             {
-                                gbl.byte_1D910 = (gbl.byte_1D90E || ovr033.sub_74761(false, player) || player.combat_team == CombatTeam.Ours);
+                                gbl.focusCombatAreaOnPlayer = (gbl.byte_1D90E || ovr033.PlayerOnScreen(false, player) || player.combat_team == CombatTeam.Ours);
 
                                 ovr033.draw_74B3F(0, 0, var_2, player);
                                 ovr014.move_step_away_attack(player.actions.direction, player);
@@ -603,17 +602,17 @@ namespace engine
                     }
 
                     if (target != null &&
-                        ovr014.sub_3F143(target, player) == true)
+                        ovr014.CanSeeTargetA(target, player) == true)
                     {
                         int tmpX = ovr033.PlayerMapXPos(target);
                         int tmpY = ovr033.PlayerMapYPos(target);
 
-                        int var_6 = range;
+                        int steps = range;
 
                         gbl.mapToBackGroundTile.field_6 = false;
 
-                        if (ovr032.canReachTarget(gbl.mapToBackGroundTile, ref var_6, ref tmpY, ref tmpX, ovr033.PlayerMapYPos(player), ovr033.PlayerMapXPos(player)) == true &&
-                            (var_6 / 2) <= range)
+                        if (ovr032.canReachTarget(gbl.mapToBackGroundTile, ref steps, ref tmpY, ref tmpX, ovr033.PlayerMapYPos(player), ovr033.PlayerMapXPos(player)) == true &&
+                            (steps / 2) <= range)
                         {
                             gbl.byte_1D90E = true;
                         }
@@ -621,7 +620,7 @@ namespace engine
 
                     if (gbl.byte_1D90E == false)
                     {
-                        int enemy_near = ovr025.near_enemy(range, player);
+                        int enemy_near = ovr025.BuildNearTargets(range, player);
 
                         if (enemy_near == 0)
                         {
@@ -643,13 +642,13 @@ namespace engine
 
                             if (ovr025.is_weapon_ranged(player) == true &&
                                 ovr025.is_weapon_ranged_melee(player) == false &&
-                                ovr025.near_enemy(1, player) > 0)
+                                ovr025.BuildNearTargets(1, player) > 0)
                             {
                                 sub_36673(player);
                                 var_2 = true;
                             }
                             else if (ovr025.getTargetRange(target, player) == 1 ||
-                                ovr014.sub_3F143(target, player) == true)
+                                ovr014.CanSeeTargetA(target, player) == true)
                             {
                                 gbl.byte_1D90E = true;
                             }
@@ -1004,7 +1003,7 @@ namespace engine
             if (var_4 != null &&
                 var_15 > (var_16 >> 1) &&
                 var_1F == true &&
-                (ranged_melee == true || ovr025.near_enemy(1, player) == 0))
+                (ranged_melee == true || ovr025.BuildNearTargets(1, player) == 0))
             {
                 weapon = var_4;
             }

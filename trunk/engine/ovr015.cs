@@ -2,14 +2,9 @@ using Classes;
 
 namespace engine
 {
-    internal enum SpellId
-    {
-        knock = 0x1f
-    }
-
     class ovr015
     {
-        internal static void sub_4303C(byte arg_0, sbyte arg_2, sbyte arg_4)
+        internal static void sub_4303C(int arg_0, int arg_2, int arg_4)
         {
             if (false)
             {
@@ -391,7 +386,7 @@ namespace engine
         }
 
 
-        static bool AnyPlayerHaveSpell(SpellId spellId)
+        static bool AnyPlayerHaveSpell(Spells spellId)
         {
             return gbl.player_next_ptr.Exists(p => System.Array.Exists(p.spell_list, s => (byte)spellId == s));
         }
@@ -401,7 +396,7 @@ namespace engine
         {
             foreach (Player player in gbl.player_next_ptr)
             {
-                int idx = System.Array.FindIndex(player.spell_list, spId => (byte)SpellId.knock == spId);
+                int idx = System.Array.FindIndex(player.spell_list, spId => (byte)Spells.knock == spId);
 
                 if (idx != -1)
                 {
@@ -657,7 +652,7 @@ namespace engine
                         }
 
                         if (gbl.can_knock_door == true &&
-                            AnyPlayerHaveSpell(SpellId.knock))
+                            AnyPlayerHaveSpell(Spells.knock))
                         {
                             prompt += " Knock";
                         }
@@ -704,7 +699,7 @@ namespace engine
                         }
 
                         if (gbl.can_knock_door == true &&
-                            AnyPlayerHaveSpell(SpellId.knock))
+                            AnyPlayerHaveSpell(Spells.knock))
                         {
                             prompt += " Knock";
                         }
@@ -751,8 +746,8 @@ namespace engine
 
             ovr030.DaxArrayFreeDaxBlocks(gbl.byte_1D556);
 
-            seg040.free_dax_block(ref gbl.headX_dax);
-            seg040.free_dax_block(ref gbl.bodyX_dax);
+            gbl.headX_dax = null;
+            gbl.bodyX_dax = null;
             gbl.current_head_id = 0xFF;
             gbl.current_body_id = 0xFF;
         }

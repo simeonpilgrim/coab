@@ -181,7 +181,7 @@ namespace engine
 
             foreach (Item item in player.items)
             {
-                if (item.affect_3 == Affects.affect_81 && item.readied)
+                if (item.affect_3 == Affects.protect_magic && item.readied)
                 {
                     for (int sp_lvl = 0; sp_lvl < 3; sp_lvl++)
                     {
@@ -373,16 +373,16 @@ namespace engine
             {
                 int var_2;
 
-                player.field_DF[var_1] = 20;
+                player.saveVerse[var_1] = 20;
                 for (var_2 = 0; var_2 <= 7; var_2++)
                 {
                     if (player.class_lvls[var_2] > 0)
                     {
                         byte dl = byte_1A8CE[var_2, player.class_lvls[var_2], var_1];
 
-                        if (player.field_DF[var_1] > dl)
+                        if (player.saveVerse[var_1] > dl)
                         {
-                            player.field_DF[var_1] = dl;
+                            player.saveVerse[var_1] = dl;
                         }
                     }
                 }
@@ -394,9 +394,9 @@ namespace engine
                 {
                     byte dl = byte_1A8CE[var_2 ,player.Skill_B_lvl[var_2] , var_1];
 
-                    if (player.field_DF[var_1] > dl)
+                    if (player.saveVerse[var_1] > dl)
                     {
-                        player.field_DF[var_1] = dl;
+                        player.saveVerse[var_1] = dl;
                     }
                 }
 
@@ -408,41 +408,41 @@ namespace engine
                     {
                         if (player.con >= 4 && player.con <= 6)
                         {
-                            player.field_DF[var_1] += 1;
+                            player.saveVerse[var_1] += 1;
                         }
                         else if (player.con >= 7 && player.con <= 10)
                         {
-                            player.field_DF[var_1] += 2;
+                            player.saveVerse[var_1] += 2;
                         }
                         else if (player.con >= 11 && player.con <= 13)
                         {
-                            player.field_DF[var_1] += 3;
+                            player.saveVerse[var_1] += 3;
                         }
                         else if (player.con >= 14 && player.con <= 17)
                         {
-                            player.field_DF[var_1] += 4;
+                            player.saveVerse[var_1] += 4;
                         }
                         else if (player.con == 18)
                         {
-                            player.field_DF[var_1] += 5;
+                            player.saveVerse[var_1] += 5;
                         }
                     }
 
                     if (player.con == 19 || player.con == 20)
                     {
-                        player.field_DF[var_1] += 1;
+                        player.saveVerse[var_1] += 1;
                     }
                     else if (player.con == 21 || player.con == 22)
                     {
-                        player.field_DF[var_1] += 2;
+                        player.saveVerse[var_1] += 2;
                     }
                     else if (player.con == 23 || player.con == 24)
                     {
-                        player.field_DF[var_1] += 3;
+                        player.saveVerse[var_1] += 3;
                     }
                     else if (player.con == 25)
                     {
-                        player.field_DF[var_1] += 4;
+                        player.saveVerse[var_1] += 4;
                     }
                 }
             }

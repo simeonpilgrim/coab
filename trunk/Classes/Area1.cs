@@ -63,16 +63,16 @@ namespace Classes
         [DataOffset(0x1CA, DataType.SWord)]
         public short field_1CA;
         [DataOffset(0x1CC, DataType.SWord)]
-        public short field_1CC;
+        public short inDungeon;
         [DataOffset(0x1CE, DataType.SWord)]
         public short field_1CE;
         [DataOffset(0x1D0, DataType.SWord)]
         public short field_1D0;
 
         [DataOffset(0x1E0, DataType.SWord)]
-        public short field_1E0;
+        public short lastXPos;
         [DataOffset(0x1E2, DataType.SWord)]
-        public short field_1E2;
+        public short lastYPos;
         [DataOffset(0x1E4, DataType.Word)]
         public ushort field_1E4;
         [DataOffset(0x1F6, DataType.SWord)]
@@ -195,7 +195,7 @@ namespace Classes
                     break;
 
                 case 0x1CC:
-                    field_1CC = (short)value;
+                    inDungeon = (short)value;
                     break;
 
                 case 0x1CE:
@@ -207,11 +207,12 @@ namespace Classes
                     break;
 
                 case 0x1E0:
-                    field_1E0 = (short)value;
+                    lastXPos = (short)value;
                     break;
                 case 0x1E2:
-                    field_1E2 = (short)value;
+                    lastYPos = (short)value;
                     break;
+
                 case 0x1E4:
                     field_1E4 = value;
                     break;
@@ -396,13 +397,13 @@ namespace Classes
                     return field_198;
 
                 case 0x1E0:
-                    return (ushort)field_1E0;
+                    return (ushort)lastXPos;
 
                 case 0x1E2:
-                    return (ushort)field_1E2;
+                    return (ushort)lastYPos;
                 
                 case 0x1CC:
-                    return (ushort)field_1CC;
+                    return (ushort)inDungeon;
 
                 case 0x1E4:
                     return field_1E4;
