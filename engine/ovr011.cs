@@ -519,22 +519,20 @@ namespace engine
             }
         }
 
-        static byte[] unk_16664 = { /* unk_16664 seg600:0354 */
+        static int[] CityInfo = { /* unk_16664 seg600:0354 */
             0x00, 0x18, 0x11, 0x15, 0x01, 0x01, 0x60, 0x14, // 354 - 35B
             0x08, 0x01, 0x00, 0x21, 0x71, 0x09, 0x06, 0x04, // 35C - 363
             0x01, 0x09, 0x09, 0x08, 0x59, 0x00, 0x11, 0x11, // 364 - 36B
             0x00, 0x00, 0x01, 0x11, 0x00, 0x00, 0x20, 0x20, // 36C - 373
             0x0A};
 
-        internal static byte sub_37991()
+        static int GetCityInfo() // sub_37991
         {
-            byte var_1 = unk_16664[gbl.current_city];
-
-            return var_1;
+            return CityInfo[gbl.current_city];
         }
 
 
-        internal static void sub_379AC(int map_x, int map_y)
+        static void SetGroundTile_40(int map_x, int map_y) // sub_379AC
         {
             if (map_x < 0x31)
             {
@@ -552,12 +550,12 @@ namespace engine
         {
             byte var_1 = 0;
 
-            if ((sub_37991() & 0x20) != 0)
+            if ((GetCityInfo() & 0x20) != 0)
             {
                 var_1 = 0x23;
             }
 
-            if ((sub_37991() & 0x10) != 0)
+            if ((GetCityInfo() & 0x10) != 0)
             {
                 var_1 = 0x4B;
             }
@@ -584,7 +582,7 @@ namespace engine
 
                         if (ovr024.roll_dice(20, 1) == 1)
                         {
-                            sub_379AC(map_x, map_y);
+                            SetGroundTile_40(map_x, map_y);
                         }
 
                         map_x++;
@@ -594,53 +592,54 @@ namespace engine
         }
 
 
-        internal static void sub_37B0B()
+        static void BuildGroundMap01() // sub_37B0B
         {
-            if ((sub_37991() & 0x80) == 0)
+            int cityFlags = GetCityInfo();
+            if ((cityFlags & 0x80) == 0)
             {
-                sbyte var_4 = 10;
+                int neededRoll = 10;
 
-                if ((sub_37991() & 2) != 0)
+                if ((cityFlags & 2) != 0)
                 {
-                    var_4 -= 5;
+                    neededRoll -= 5;
                 }
 
-                if ((sub_37991() & 4) != 0)
+                if ((cityFlags & 4) != 0)
                 {
-                    var_4 -= 2;
+                    neededRoll -= 2;
                 }
 
-                if ((sub_37991() & 0x40) != 0)
+                if ((cityFlags & 0x40) != 0)
                 {
-                    var_4 += 5;
+                    neededRoll += 5;
                 }
 
-                if ((sub_37991() & 8) != 0)
+                if ((cityFlags & 8) != 0)
                 {
-                    var_4 += 10;
+                    neededRoll += 10;
                 }
 
-                if (var_4 < 0)
+                if (neededRoll < 0)
                 {
-                    var_4 = 1;
+                    neededRoll = 1;
                 }
 
-                for (int map_x = 0; map_x <= 0x31; map_x++)
+                for (int mapX = 0; mapX <= 0x31; mapX++)
                 {
-                    for (int map_y = 1; map_y <= 0x18; map_y++)
+                    for (int mapY = 1; mapY <= 0x18; mapY++)
                     {
-                        if (gbl.BackGroundTiles[gbl.mapToBackGroundTile[map_x, map_y]].tile_index == 22 &&
-                            gbl.BackGroundTiles[gbl.mapToBackGroundTile[map_x, map_y - 1]].tile_index == 22 &&
-                            var_4 >= ovr024.roll_dice(100, 1))
+                        if (gbl.BackGroundTiles[gbl.mapToBackGroundTile[mapX, mapY]].tile_index == 22 &&
+                            gbl.BackGroundTiles[gbl.mapToBackGroundTile[mapX, mapY - 1]].tile_index == 22 &&
+                            neededRoll >= ovr024.roll_dice(100, 1))
                         {
-                            if (var_4 >= ovr024.roll_dice(100, 1))
+                            if (neededRoll >= ovr024.roll_dice(100, 1))
                             {
-                                gbl.mapToBackGroundTile[map_x, map_y] = (byte)(ovr024.roll_dice(2, 1) + 0x29);
+                                gbl.mapToBackGroundTile[mapX, mapY] = ovr024.roll_dice(2, 1) + 0x29;
                             }
                             else
                             {
-                                gbl.mapToBackGroundTile[map_x, map_y - 1] = (byte)(ovr024.roll_dice(5, 1) + 0x1F);
-                                gbl.mapToBackGroundTile[map_x, map_y] = (byte)(ovr024.roll_dice(5, 1) + 0x24);
+                                gbl.mapToBackGroundTile[mapX, mapY - 1] = ovr024.roll_dice(5, 1) + 0x1F;
+                                gbl.mapToBackGroundTile[mapX, mapY] = ovr024.roll_dice(5, 1) + 0x24;
                             }
                         }
                     }
@@ -649,63 +648,63 @@ namespace engine
         }
 
 
-        internal static void sub_37CA2(byte arg_2, byte arg_4, byte arg_6, byte arg_8, byte arg_A, int map_y, int map_x)
+        static void SetGroupMapStepped(int stepE, int stepD, int stepC, int stepB, int stepA, int map_y, int map_x) // sub_37CA2
         {
             int roll = ovr024.roll_dice(100, 1);
 
-            if (roll <= arg_A)
+            if (roll <= stepA)
             {
-                gbl.mapToBackGroundTile[map_x, map_y] = (byte)(ovr024.roll_dice(2, 1) + 0x39);
+                gbl.mapToBackGroundTile[map_x, map_y] = ovr024.roll_dice(2, 1) + 0x39;
             }
-            else if (roll <= arg_A + arg_8)
+            else if (roll <= stepA + stepB)
             {
-                gbl.mapToBackGroundTile[map_x, map_y] = (byte)(ovr024.roll_dice(2, 1) + 0x2f);
+                gbl.mapToBackGroundTile[map_x, map_y] = ovr024.roll_dice(2, 1) + 0x2f;
             }
-            else if (roll <= arg_A + arg_8 + arg_6)
+            else if (roll <= stepA + stepB + stepC)
             {
-                gbl.mapToBackGroundTile[map_x, map_y] = (byte)(ovr024.roll_dice(4, 1) + 0x2B);
+                gbl.mapToBackGroundTile[map_x, map_y] = ovr024.roll_dice(4, 1) + 0x2B;
             }
-            else if (roll <= arg_A + arg_8 + arg_6 + arg_4)
+            else if (roll <= stepA + stepB + stepC + stepD)
             {
-                gbl.mapToBackGroundTile[map_x, map_y] = (byte)(ovr024.roll_dice(3, 1) + 0x36);
+                gbl.mapToBackGroundTile[map_x, map_y] = ovr024.roll_dice(3, 1) + 0x36;
             }
-            else if (roll <= arg_A + arg_8 + arg_6 + arg_4 + arg_2)
+            else if (roll <= stepA + stepB + stepC + stepD + stepE)
             {
-                gbl.mapToBackGroundTile[map_x, map_y] = (byte)(ovr024.roll_dice(4, 1) + 0x31);
+                gbl.mapToBackGroundTile[map_x, map_y] = ovr024.roll_dice(4, 1) + 0x31;
             }
         }
 
 
-        internal static void sub_37E4A()
+        static void sub_37E4A()
         {
             int var_4 = 50;
 
-            if ((sub_37991() & 0x10) != 0)
+            if ((GetCityInfo() & 0x10) != 0)
             {
                 var_4 += 10;
             }
 
-            if ((sub_37991() & 0x20) != 0)
+            if ((GetCityInfo() & 0x20) != 0)
             {
                 var_4 += 30;
             }
 
-            if ((sub_37991() & 0x40) != 0)
+            if ((GetCityInfo() & 0x40) != 0)
             {
                 var_4 += 20;
             }
 
-            if ((sub_37991() & 4) != 0)
+            if ((GetCityInfo() & 4) != 0)
             {
                 var_4 -= 10;
             }
 
-            if ((sub_37991() & 2) != 0)
+            if ((GetCityInfo() & 2) != 0)
             {
                 var_4 -= 20;
             }
 
-            if ((sub_37991() & 0x80) != 0)
+            if ((GetCityInfo() & 0x80) != 0)
             {
                 var_4 -= 50;
             }
@@ -718,23 +717,23 @@ namespace engine
                     {
                         if (var_4 >= -30 && var_4 <= 9)
                         {
-                            sub_37CA2(15, 30, 0, 0, 0, map_y, map_x);
+                            SetGroupMapStepped(15, 30, 0, 0, 0, map_y, map_x);
                         }
                         else if (var_4 >= 10 && var_4 <= 29)
                         {
-                            sub_37CA2(10, 14, 5, 1, 0, map_y, map_x);
+                            SetGroupMapStepped(10, 14, 5, 1, 0, map_y, map_x);
                         }
                         else if (var_4 >= 30 && var_4 <= 69)
                         {
-                            sub_37CA2(5, 10, 5, 2, 0, map_y, map_x);
+                            SetGroupMapStepped(5, 10, 5, 2, 0, map_y, map_x);
                         }
                         else if (var_4 >= 60 && var_4 <= 89)
                         {
-                            sub_37CA2(1, 10, 10, 2, 10, map_y, map_x);
+                            SetGroupMapStepped(1, 10, 10, 2, 10, map_y, map_x);
                         }
                         else if (var_4 >= 90 && var_4 <= 110)
                         {
-                            sub_37CA2(1, 10, 15, 5, 15, map_y, map_x);
+                            SetGroupMapStepped(1, 10, 15, 5, 15, map_y, map_x);
                         }
                     }
                 }
@@ -742,22 +741,20 @@ namespace engine
         }
 
 
-        internal static void sub_37FC8()
+        static void sub_37FC8()
         {
-            gbl.mapToBackGroundTile.SetField_7(0x17);
+            gbl.mapToBackGroundTile.SetField_7(23);
 
-            //byte var_1 = gbl.area_ptr.field_186;
-            //byte var_2 = gbl.area_ptr.field_188;
             gbl.current_city = gbl.area_ptr.current_city;
             sub_37A00();
-            sub_37B0B();
+            BuildGroundMap01();
             sub_37E4A();
         }
 
 
-        internal static void sub_38030()
+        static void SetupGroundTiles() // sub_38030
         {
-            if (gbl.area_ptr.field_1CC != 0)
+            if (gbl.area_ptr.inDungeon != 0)
             {
                 ovr034.Load24x24Set(0x19, 0, 1, "DungCom");
             }
@@ -774,7 +771,7 @@ namespace engine
             gbl.mapToBackGroundTile.size = 1;
             gbl.mapToBackGroundTile.field_6 = false;
 
-            if (gbl.area_ptr.field_1CC != 0)
+            if (gbl.area_ptr.inDungeon != 0)
             {
                 sub_378CD();
             }
@@ -784,23 +781,24 @@ namespace engine
             }
         }
 
-        internal static void sub_380E0()
+        
+        static void sub_380E0()
         {
-            int var_5 = 0;
+            int playerCount = 0;
 
             foreach (Player player in gbl.player_next_ptr)
             {
                 ovr025.reclac_player_values(player);
-                var_5++;
+                playerCount++;
 
                 player.actions = new Action();
 
-                if (var_5 > gbl.area2_ptr.party_size)
+                if (playerCount > gbl.area2_ptr.party_size)
                 {
                     player.actions.field_13 = 1;
                 }
 
-                player.actions.direction = HalfDirToIso[gbl.mapDirection >> 1];
+                player.actions.direction = HalfDirToIso[gbl.mapDirection / 2];
 
                 if (player.combat_team == CombatTeam.Enemy)
                 {
@@ -824,7 +822,7 @@ namespace engine
         }
 
 
-        internal static bool both_invalid(int arg_0, int arg_2) /* sub_38202 */
+        static bool both_invalid(int arg_0, int arg_2) /* sub_38202 */
         {
             if ((arg_2 >= 0 && arg_2 < 11) ||
                 (arg_0 >= 0 && arg_0 < 6))
@@ -838,7 +836,7 @@ namespace engine
         }
 
 
-        internal static bool try_place_combatant(byte arg_0, int arg_2, int arg_4, int arg_6, int arg_8, int player_index) /* sub_38233 */
+        static bool try_place_combatant(int arg_0, int arg_2, int arg_4, int arg_6, int arg_8, int player_index) /* sub_38233 */
         {
             bool var_1;
 
@@ -912,7 +910,7 @@ namespace engine
             tri_state state = tri_state.start;
             int row_scale = 0;
             int col_scale = 0;
-            byte var_14 = 0;
+            int var_14 = 0;
 
             int team_x = gbl.team_start_x[gbl.currentTeam];
             int team_y = gbl.team_start_y[gbl.currentTeam];
@@ -989,7 +987,7 @@ namespace engine
                             {
                                 int tmpDir = direction_165EC[gbl.team_direction[gbl.currentTeam], var_A];
 
-                                if (gbl.game_state == GameState.State3 ||
+                                if (gbl.game_state == GameState.WildernessMap ||
                                     get_dir_flags(tmpDir, tmpY, tmpX) != 1)
                                 {
                                     found = true;
@@ -1022,7 +1020,7 @@ namespace engine
 
                         int tmpDir = direction_165EC[gbl.team_direction[gbl.currentTeam], var_14];
 
-                        if (gbl.game_state == GameState.State3 ||
+                        if (gbl.game_state == GameState.WildernessMap ||
                             get_dir_flags(tmpDir, tmpY, tmpX) != 1)
                         {
                             team_x = gbl.team_start_x[gbl.currentTeam] + gbl.MapDirectionXDelta[tmpDir];
@@ -1050,9 +1048,9 @@ namespace engine
         }
 
 
-        internal static void place_combatants() /* sub_387FE */
+        static void PlaceCombatants() /* sub_387FE */
         {
-            ovr025.count_teams();
+            ovr025.CountCombatTeamMembers();
             byte var_F = 0;
             byte var_E = 0;
 
@@ -1178,9 +1176,9 @@ namespace engine
 
             ovr030.DaxArrayFreeDaxBlocks(gbl.byte_1D556);
 
-            seg040.free_dax_block(ref gbl.headX_dax);
-            seg040.free_dax_block(ref gbl.bodyX_dax);
-            seg040.free_dax_block(ref gbl.bigpic_dax);
+            gbl.headX_dax = null;
+            gbl.bodyX_dax = null;
+            gbl.bigpic_dax = null;
             gbl.bigpic_block_id = 0xff;
             gbl.current_head_id = 0xff;
             gbl.current_body_id = 0xff;
@@ -1207,18 +1205,19 @@ namespace engine
 
             gbl.area2_ptr.field_666 = 0;
 
-            sub_38030();
-            seg043.clear_one_keypress();
+            SetupGroundTiles();
+
             sub_380E0();
+            PlaceCombatants();
+
             seg043.clear_one_keypress();
-            place_combatants();
-            seg043.clear_one_keypress();
+
             gbl.missile_dax = new DaxBlock( 1, 4, 3, 0x18);
 
             gbl.mapToBackGroundTile.mapScreenLeftX = ovr033.PlayerMapXPos(gbl.player_next_ptr[0]) - 3;
             gbl.mapToBackGroundTile.mapScreenTopY = ovr033.PlayerMapYPos(gbl.player_next_ptr[0]) - 3;
 
-            ovr025.sub_68DC0();
+            ovr025.RedrawCombatScreen();
             foreach (Player player in gbl.player_next_ptr)
             {
                 ovr024.CheckAffectsEffect(player, CheckType.Type_8);

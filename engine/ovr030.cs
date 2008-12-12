@@ -10,16 +10,15 @@ namespace engine
         static byte[] transparentOldColors = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 };
         static byte[] transparentNewColors = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 16, 14, 15 };
 
-        internal static void sub_7000A(DaxBlock dax_block, bool useOverlay, int rowY, int colX)
+        internal static void DrawMaybeOverlayed(DaxBlock dax_block, bool useOverlay, int rowY, int colX)// sub_7000A
         {
             if (dax_block != null)
             {
-                if (gbl.area_ptr.picture_fade > 0 ||
-                    useOverlay == true)
+                if (gbl.area_ptr.picture_fade > 0 || useOverlay == true)
                 {
                     if (gbl.area_ptr.picture_fade > 0)
                     {
-                        seg040.DaxBlockRecolor(dax_block, 1, 0, fadeNewColors, fadeOldColors);
+                        seg040.DaxBlockRecolor(dax_block, true, fadeNewColors, fadeOldColors);
                     }
 
                     seg040.OverlayBounded(dax_block, 0, 0, rowY - 1, colX - 1);
@@ -129,7 +128,7 @@ namespace engine
 
                             if ((masked & 1) > 0)
                             {
-                                seg040.DaxBlockRecolor(daxArray.frames[frame].picture, 0, 0, transparentNewColors, transparentOldColors);
+                                seg040.DaxBlockRecolor(daxArray.frames[frame].picture, false, transparentNewColors, transparentOldColors);
                             }
 
                             src_offset += ega_encoded_size + 1;
@@ -154,7 +153,8 @@ namespace engine
         {
             for (int index = 0; index < animation.numFrames; index++)
             {
-                seg040.free_dax_block(ref animation.frames[index].picture);
+                animation.frames[index].picture = null;
+                animation.frames[index].delay = 0;
             }
 
             animation.numFrames = 0;
@@ -202,12 +202,12 @@ namespace engine
         {
             if (draw_body == true)
             {
-                sub_7000A(gbl.headX_dax, false, rowY, colX);
-                sub_7000A(gbl.bodyX_dax, false, rowY + 5, colX);
+                DrawMaybeOverlayed(gbl.headX_dax, false, rowY, colX);
+                DrawMaybeOverlayed(gbl.bodyX_dax, false, rowY + 5, colX);
             }
             else
             {
-                sub_7000A(gbl.headX_dax, false, rowY, colX);
+                DrawMaybeOverlayed(gbl.headX_dax, false, rowY, colX);
             }
         }
 
@@ -221,8 +221,8 @@ namespace engine
 
             if (arg_0.frames[sprite_index - 1].picture != null)
             {
-                DaxBlock var_46 = arg_0.frames[sprite_index - 1].picture;
-                seg040.OverlayBounded(arg_0.frames[sprite_index - 1].picture, 1, 0, var_46.y_pos + 3 - 1, var_46.x_pos + 3 - 1);
+                DaxBlock block = arg_0.frames[sprite_index - 1].picture;
+                seg040.OverlayBounded(arg_0.frames[sprite_index - 1].picture, 1, 0, block.y_pos + 3 - 1, block.x_pos + 3 - 1);
                 seg040.DrawOverlay();
             }
         }
@@ -242,7 +242,7 @@ namespace engine
 
         internal static void draw_bigpic() /* sub_7087A */
         {
-            seg037.draw8x8_04();
+            seg037.DrawFrame_WildernessMap();
             seg040.draw_picture(gbl.bigpic_dax, 1, 1, 0);
         }
     }

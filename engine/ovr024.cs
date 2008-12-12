@@ -17,13 +17,13 @@ namespace engine
         Type_9 = 9,
         Type_10 = 10,
         Type_11 = 11,
-        Type_12 = 12,
-        Type_13 = 13,
+        SavingThrow = 12,
+        Death = 13,
         Type_14 = 14,
         Type_15 = 15,
         Type_16 = 16,
         Type_17 = 17,
-        Type_18 = 18,
+        Movement = 18,
         Type_19 = 19,
         Type_20 = 20,
         Type_21 = 21,
@@ -33,7 +33,7 @@ namespace engine
 
     public class ovr024
     {
-        internal static void sub_63014(string text, Status new_health_status, Player player)
+        internal static void KillPlayer(string text, Status new_health_status, Player player) // sub_63014
         {
             ovr025.DisplayPlayerStatusString(false, 10, text, player);
 
@@ -46,7 +46,7 @@ namespace engine
                 player.hit_point_current = 0;
 
                 sub_645AB(player);
-                CheckAffectsEffect(player, CheckType.Type_13);
+                CheckAffectsEffect(player, CheckType.Death);
 
                 if (player.in_combat == false)
                 {
@@ -167,16 +167,16 @@ namespace engine
                     calc_affect_effect(Affects.sp_dispel_evil, player);
                     calc_affect_effect(Affects.affect_39, player);
                     calc_affect_effect(Affects.affect_60, player);
-                    calc_affect_effect(Affects.affect_7a, player);
+                    calc_affect_effect(Affects.dracolich_paralysis, player);
                     calc_affect_effect(Affects.affect_7b, player);
                     break;
 
                 case CheckType.Type_3:
-                    calc_affect_effect(Affects.affect_40, player);
-                    calc_affect_effect(Affects.affect_41, player);
-                    calc_affect_effect(Affects.affect_42, player);
+                    calc_affect_effect(Affects.poison_plus_0, player);
+                    calc_affect_effect(Affects.poison_plus_4, player);
+                    calc_affect_effect(Affects.poison_plus_2, player);
                     calc_affect_effect(Affects.affect_43, player);
-                    calc_affect_effect(Affects.affect_46, player);
+                    calc_affect_effect(Affects.poison_neg_2, player);
                     calc_affect_effect(Affects.affect_4f, player);
                     calc_affect_effect(Affects.affect_57, player);
                     break;
@@ -227,7 +227,7 @@ namespace engine
                     calc_affect_effect(Affects.prot_drag_breath, player);
                     calc_affect_effect(Affects.affect_52, player);
                     calc_affect_effect(Affects.affect_54, player);
-                    calc_affect_effect(Affects.affect_81, player);
+                    calc_affect_effect(Affects.protect_magic, player);
                     calc_affect_effect(Affects.affect_85, player);
                     calc_affect_effect(Affects.protect_elec, player);
                     calc_affect_effect(Affects.minor_globe_of_invulnerability, player);
@@ -255,15 +255,15 @@ namespace engine
                     calc_affect_effect(Affects.affect_69, player);
                     calc_affect_effect(Affects.affect_6a, player);
                     calc_affect_effect(Affects.affect_6b, player);
-                    calc_affect_effect(Affects.affect_6c, player);
+                    calc_affect_effect(Affects.protect_charm_sleep, player);
                     calc_affect_effect(Affects.affect_6d, player);
                     calc_affect_effect(Affects.affect_6e, player);
                     calc_affect_effect(Affects.affect_6f, player);
                     calc_affect_effect(Affects.affect_70, player);
-                    calc_affect_effect(Affects.affect_7c, player);
+                    calc_affect_effect(Affects.halfelf_resistance, player);
                     calc_affect_effect(Affects.affect_7d, player);
                     calc_affect_effect(Affects.minor_globe_of_invulnerability, player);
-                    calc_affect_effect(Affects.affect_81, player);
+                    calc_affect_effect(Affects.protect_magic, player);
                     break;
 
                 case CheckType.Type_10:
@@ -290,7 +290,7 @@ namespace engine
                     calc_affect_effect(Affects.faerie_fire, player);
                     break;
 
-                case CheckType.Type_12:
+                case CheckType.SavingThrow:
                     calc_affect_effect(Affects.protection_from_evil, player);
                     calc_affect_effect(Affects.protection_from_good, player);
                     calc_affect_effect(Affects.resist_cold, player);
@@ -309,7 +309,7 @@ namespace engine
                     calc_affect_effect(Affects.cold_fire_shield, player);
                     break;
 
-                case CheckType.Type_13:
+                case CheckType.Death:
                     calc_affect_effect(Affects.affect_63, player);
                     calc_affect_effect(Affects.troll_fire_or_acid, player);
                     calc_affect_effect(Affects.affect_4b, player);
@@ -353,7 +353,7 @@ namespace engine
                     calc_affect_effect(Affects.charm_person, player);
                     break;
 
-                case CheckType.Type_18:
+                case CheckType.Movement:
                     calc_affect_effect(Affects.haste, player);
                     calc_affect_effect(Affects.slow, player);
                     calc_affect_effect(Affects.affect_3a, player);
@@ -428,7 +428,7 @@ namespace engine
                     ovr025.find_affect(out affect, Affects.affect_6f, player) == false &&
                     ovr025.find_affect(out affect, Affects.affect_7d, player) == false)
                 {
-                    bool save_passed = do_saving_throw(0, 0, player);
+                    bool save_passed = RollSavingThrow(0, 0, player);
 
                     if (save_passed == true)
                     {
@@ -472,26 +472,26 @@ namespace engine
                         ovr025.DisplayPlayerStatusString(false, 10, "is Poisoned", player);
                         seg041.GameDelay();
                         add_affect(false, 0xff, 0, Affects.minor_globe_of_invulnerability, player);
-                        sub_63014("is killed", Status.dead, player);
+                        KillPlayer("is killed", Status.dead, player);
                     }
                     else if (player.field_E5 == 5)
                     {
-                        if (do_saving_throw(-4, 0, player) == false)
+                        if (RollSavingThrow(-4, 0, player) == false)
                         {
                             ovr025.DisplayPlayerStatusString(false, 10, "is Poisoned", player);
                             seg041.GameDelay();
                             add_affect(false, 0xff, 0, Affects.poisoned, player);
-                            sub_63014("is killed", Status.dead, player);
+                            KillPlayer("is killed", Status.dead, player);
                         }
                     }
                     else if (player.field_E5 == 6)
                     {
-                        if (do_saving_throw(0, 0, player) == false)
+                        if (RollSavingThrow(0, 0, player) == false)
                         {
                             ovr025.DisplayPlayerStatusString(false, 10, "is Poisoned", player);
                             seg041.GameDelay();
                             add_affect(false, 0xff, 0, Affects.poisoned, player);
-                            sub_63014("is killed", Status.dead, player);
+                            KillPlayer("is killed", Status.dead, player);
                         }
                     }
                 }
@@ -565,35 +565,35 @@ namespace engine
         }
 
 
-        internal static bool do_saving_throw(int save_bonus, byte arg_2, Player player)
+        internal static bool RollSavingThrow(int saveBonus, SaveVerseType saveType, Player player) // do_saving_throw
         {
-            gbl.save_made = true;
-
-            gbl.saving_throw_roll = roll_dice(20, 1);
+            gbl.savingThrowMade = true;
+            gbl.savingThrowRoll = roll_dice(20, 1);
 
             if (Cheats.player_always_saves && player.combat_team == 0)
             {
-                gbl.saving_throw_roll = 20;
+                gbl.savingThrowRoll = 20;
             }
 
-            if (gbl.saving_throw_roll == 1)
+            if (gbl.savingThrowRoll == 1)
             {
-                gbl.save_made = false;
+                gbl.savingThrowMade = false;
             }
-            else if (gbl.saving_throw_roll == 20)
+            else if (gbl.savingThrowRoll == 20)
             {
-                gbl.save_made = true;
+                gbl.savingThrowMade = true;
             }
             else
             {
-                gbl.saving_throw_roll += save_bonus + player.field_186;
-                gbl.byte_1D2D1 = arg_2;
+                gbl.savingThrowRoll += saveBonus + player.field_186;
+                gbl.saveVerseType = saveType;
 
-                CheckAffectsEffect(player, CheckType.Type_12);
-                gbl.save_made = player.field_DF[arg_2] <= gbl.saving_throw_roll;
+                CheckAffectsEffect(player, CheckType.SavingThrow);
+
+                gbl.savingThrowMade = gbl.savingThrowRoll >= player.saveVerse[(int)saveType];
             }
 
-            return gbl.save_made;
+            return gbl.savingThrowMade;
         }
 
 
@@ -648,7 +648,7 @@ namespace engine
                     player.hit_point_current = 0;
                 }
 
-                ovr033.draw_74572(player_index, 0, 0);
+                ovr033.RedrawPlayerBackground(player_index);
                 seg040.DrawOverlay();
 
                 gbl.CombatMap[player_index].size = 0;
@@ -1276,7 +1276,7 @@ namespace engine
                     {
                         sub_645AB(player);
 
-                        CheckAffectsEffect(player, CheckType.Type_13);
+                        CheckAffectsEffect(player, CheckType.Death);
 
                         if (player.in_combat == false)
                         {
@@ -1402,7 +1402,7 @@ namespace engine
 
                 ovr025.DisplayPlayerStatusString(true, 10, text, player);
 
-                ovr025.count_teams();
+                ovr025.CountCombatTeamMembers();
 
                 return true;
             }

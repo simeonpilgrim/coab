@@ -10,7 +10,7 @@ namespace engine
 
         static void CheckAffectsTimingOut(int timeSlot, int timeSteps) // sub_5801E
         {
-            if (gbl.game_state != GameState.State2)
+            if (gbl.game_state != GameState.Camping)
             {
                 for (int i = 0; i < 0x48; i++)
                 {

@@ -76,7 +76,7 @@ namespace engine
             {
                 if (reclac_menus == true)
                 {
-                    seg037.draw8x8_outer_frame();
+                    seg037.DrawFrame_Outer();
                     if (gbl.player_ptr != null)
                     {
                         ovr025.PartySummary(gbl.player_ptr);
@@ -260,9 +260,9 @@ namespace engine
                                     if (gbl.reload_ecl_and_pictures == false &&
                                         gbl.lastDaxBlockId != 0x50)
                                     {
-                                        if (gbl.game_state == GameState.State3)
+                                        if (gbl.game_state == GameState.WildernessMap)
                                         {
-                                            seg037.draw8x8_04();
+                                            seg037.DrawFrame_WildernessMap();
                                         }
                                         else
                                         {
@@ -517,7 +517,7 @@ namespace engine
 
                 case Race.half_elf:
                     var_53.icon_size = 2;
-                    ovr024.add_affect(false, 0xff, 0, Affects.affect_7c, player);
+                    ovr024.add_affect(false, 0xff, 0, Affects.halfelf_resistance, player);
                     break;
 
                 default:
@@ -1982,7 +1982,7 @@ namespace engine
 
                 if (free_icon)
                 {
-                    ovr034.free_icon(gbl.player_ptr.icon_id);
+                    ovr034.ReleaseCombatIcon(gbl.player_ptr.icon_id);
                 }
 
                 if (leave_party_size == false)
@@ -2048,8 +2048,8 @@ namespace engine
                     newColors[gbl.default_icon_colours[i] + 8] = (byte)((var_28.icon_colours[i] & 0xF0) >> 4);
                 }
 
-                seg040.DaxBlockRecolor(gbl.combat_icons[destIndex, 0], 0, 0, newColors, oldColors);
-                seg040.DaxBlockRecolor(gbl.combat_icons[destIndex, 1], 0, 0, newColors, oldColors);
+                seg040.DaxBlockRecolor(gbl.combat_icons[destIndex, 0], false, newColors, oldColors);
+                seg040.DaxBlockRecolor(gbl.combat_icons[destIndex, 1], false, newColors, oldColors);
             }
         }
 
@@ -2077,7 +2077,7 @@ namespace engine
 									   " Keep Exit", 
 									   "Next Prev Keep Exit" };
 
-            seg037.draw8x8_outer_frame();
+            seg037.DrawFrame_Outer();
             ovr033.Color_0_8_inverse();
 
             do
@@ -2408,7 +2408,7 @@ namespace engine
                 duplicateCombatIcon(false, player_ptr.icon_id, 12);
 
                 ovr027.ClearPromptArea();
-                ovr034.free_icon(12);
+                ovr034.ReleaseCombatIcon(12);
 
                 var_2 = ovr027.yes_no(15, 10, 13, "Is this icon ok? ");
 

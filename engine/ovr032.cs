@@ -227,7 +227,7 @@ namespace engine
         }
 
 
-        internal static void Rebuild_SortedCombatantList(Struct_1D1BC arg_0, int size, byte dir, int max_range, int mapY, int mapX) /* sub_738D8 */
+        internal static void Rebuild_SortedCombatantList(Struct_1D1BC groundTileMap, int size, byte dir, int max_range, int mapY, int mapX) /* sub_738D8 */
         {
             int[] targetMapSizeY = new int[4];
             int[] targetMapSizeX = new int[4];
@@ -290,7 +290,7 @@ namespace engine
                                     int target_y = targetMapSizeY[targetSize];
                                     int tmp_range = max_range;
 
-                                    if (canReachTarget(arg_0, ref tmp_range, ref target_y, ref target_x, attackerMapSizeY[attackerSize], attackerMapSizeX[attackerSize]) == true)
+                                    if (canReachTarget(groundTileMap, ref tmp_range, ref target_y, ref target_x, attackerMapSizeY[attackerSize], attackerMapSizeX[attackerSize]) == true)
                                     {
                                         found = true;
 

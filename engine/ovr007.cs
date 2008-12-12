@@ -101,7 +101,7 @@ namespace engine
 
         internal static void shop_buy() /* sub_2F474 */
         {
-            seg037.draw8x8_outer_frame();
+            seg037.DrawFrame_Outer();
             gbl.shopRedrawMenuItems = true;
 
             int index = 0;
@@ -161,7 +161,7 @@ namespace engine
             char var_2E;
 
             gbl.game_state = GameState.Shop;
-            gbl.redrawBoarder = (gbl.area_ptr.field_1CC == 0);
+            gbl.redrawBoarder = (gbl.area_ptr.inDungeon == 0);
 
             ovr025.load_pic();
             gbl.redrawBoarder = true;

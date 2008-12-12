@@ -5,7 +5,7 @@ namespace engine
     class ovr033
     {
         const int MaxSize = 4;
-        static int[, ,] unk_xxxx = new int[4, MaxSize, 2] { 
+        static int[, ,] sizeStep = new int[4, MaxSize, 2] { 
             { { 0, 0 }, { -1, -1 }, { -1, -1 }, { -1, -1 } },
             { { 0, 0 }, {  0,  1 }, { -1, -1 }, { -1, -1 } },
             { { 0, 0 }, {  1,  0 }, { -1, -1 }, { -1, -1 } },
@@ -14,22 +14,16 @@ namespace engine
 
         internal static bool GetSizeBasedMapDelta(out int deltaY, out int deltaX, int step, int size) /*sub_7400F*/
         {
-            bool var_1 = false;
-            deltaY = 0; /* Added because of 'out' attribute */
-            deltaX = 0; /* Added because of 'out' attribute */
+            deltaY = -1;
+            deltaX = -1;
 
             if (size != 0)
             {
-                deltaX = unk_xxxx[size - 1, step, 0];
-                deltaY = unk_xxxx[size - 1, step, 1];
-
-                if (deltaX >= 0)
-                {
-                    var_1 = true;
-                }
+                deltaX = sizeStep[size - 1, step, 0];
+                deltaY = sizeStep[size - 1, step, 1];
             }
 
-            return var_1;
+            return deltaX >= 0;
         }
 
 
@@ -74,7 +68,7 @@ namespace engine
                 {
                     int i = gbl.mapToBackGroundTile[deltaX + posX, deltaY + posY];
 
-                    ovr034.draw_iso_title(0, gbl.BackGroundTiles[i].tile_index, (screenPosY + deltaY) * 3, (screenPosX + deltaX) * 3);
+                    ovr034.DrawIsoTile(gbl.BackGroundTiles[i].tile_index, (screenPosY + deltaY) * 3, (screenPosX + deltaX) * 3);
 
                     if (gbl.mapToBackGroundTile.draw_target_cursor == true)
                     {
@@ -87,7 +81,7 @@ namespace engine
             int player_index = PlayerIndexAtMapXY(posY, posX);
 
             if (player_index > 0 &&
-                sub_74761(false, gbl.player_array[player_index]) == true)
+                PlayerOnScreen(false, player_index) == true)
             {
                 // draws the player icon over focus box
                 ovr034.draw_combat_icon(gbl.player_array[player_index].icon_id, 0,
@@ -100,14 +94,12 @@ namespace engine
 
         internal static void sub_7431C(int mapX, int mapY)
         {
-            int newMapX = mapY - gbl.mapToBackGroundTile.mapScreenLeftX;
-            int newMapY = mapX - gbl.mapToBackGroundTile.mapScreenTopY;
-
-            draw_74572(0, newMapY, newMapX);
             int playerIndex = PlayerIndexAtMapXY(mapX, mapY);
 
+            RedrawPlayerBackground(playerIndex, mapY, mapX);
+
             if (playerIndex > 0 &&
-                sub_74761(false, gbl.player_array[playerIndex]) == true)
+                PlayerOnScreen(false, gbl.player_array[playerIndex]) == true)
             {
                 ovr034.draw_combat_icon(gbl.player_array[playerIndex].icon_id,  0, 
                     gbl.player_array[playerIndex].actions.direction,
@@ -174,26 +166,31 @@ namespace engine
         }
 
 
-        internal static void draw_74572(int player_index, int mapY, int mapX) /* sub_74572 */
+        internal static void RedrawPlayerBackground(int player_index, int mapY, int mapX) /* sub_74572 */
         {
-            int screenY = -120; /*Simeon*/
-            int screenX = -120; /*Simeon*/
-
-            if (player_index == 0)
-            {
-                screenX = mapX + gbl.mapToBackGroundTile.mapScreenLeftX;
-                screenY = mapY + gbl.mapToBackGroundTile.mapScreenTopY;
-
-                player_index = PlayerIndexAtMapXY(screenY, screenX);
-            }
-            
+            int screenX = mapX - gbl.mapToBackGroundTile.mapScreenLeftX;
+            int screenY = mapY - gbl.mapToBackGroundTile.mapScreenTopY;
+          
             if (player_index > 0)
             {
-                mapX = gbl.playerScreenX[player_index];
-                mapY = gbl.playerScreenY[player_index];
+                RedrawPlayerBackground(player_index);
+            }
+            else if ( CoordOnScreen(screenY, screenX) == true )
+            {
+                var tileIdx = gbl.mapToBackGroundTile[mapX, mapY];
+                ovr034.DrawIsoTile(gbl.BackGroundTiles[tileIdx].tile_index, screenY * 3, screenX * 3);
+            }
+        }
 
-                screenX = mapX + gbl.mapToBackGroundTile.mapScreenLeftX;
-                screenY = mapY + gbl.mapToBackGroundTile.mapScreenTopY;
+        internal static void RedrawPlayerBackground(int player_index) /* sub_74572 */
+        {
+            if (player_index != 0)
+            {
+                int screenX = gbl.playerScreenX[player_index];
+                int screenY = gbl.playerScreenY[player_index];
+
+                int mapX = screenX + gbl.mapToBackGroundTile.mapScreenLeftX;
+                int mapY = screenY + gbl.mapToBackGroundTile.mapScreenTopY;
 
                 int size = gbl.CombatMap[player_index].size;
 
@@ -203,19 +200,16 @@ namespace engine
                     int deltaX;
 
                     if (GetSizeBasedMapDelta(out deltaY, out deltaX, size_step, size) == true &&
-                        CoordOnScreen(deltaY + mapY, deltaX + mapX) == true)
+                        CoordOnScreen(deltaY + screenY, deltaX + screenX) == true)
                     {
-                        int i1 = gbl.mapToBackGroundTile[screenX + deltaX, deltaY + screenY];
+                        int tileIdx = gbl.mapToBackGroundTile[mapX + deltaX, deltaY + mapY];
                         //THIS DRAWS BACKGROUND MAP.
-                        ovr034.draw_iso_title(0, gbl.BackGroundTiles[i1].tile_index, (mapY + deltaY) * 3, (mapX + deltaX) * 3);
+                        ovr034.DrawIsoTile(gbl.BackGroundTiles[tileIdx].tile_index, (screenY + deltaY) * 3, (screenX + deltaX) * 3);
                     }
                 }
             }
-            else if ( CoordOnScreen(mapY, mapX) == true )
-            {
-                ovr034.draw_iso_title(0, gbl.BackGroundTiles[gbl.mapToBackGroundTile[screenX, screenY]].tile_index, mapY * 3, mapX * 3);
-            }
         }
+
 
 
         internal static bool CoordOnScreen(int screenY, int screenX) /* sub_74730 */
@@ -224,44 +218,82 @@ namespace engine
         }
 
 
-        internal static bool sub_74761(bool arg_0, Player player)
+        internal static bool PlayerOnScreen(bool AllOnScreen, Player player) // sub_74761
         {
-            bool result = true;
-
             int player_index = get_player_index(player);
 
             if (gbl.CombatMap[player_index].size == 0)
             {
-                result = false;
+                return false;
             }
-            else
-            {
-                for (int step = 0; step <= 3; step++)
-                {
-                    int deltaY;
-                    int deltaX;
 
-                    if (GetSizeBasedMapDelta(out deltaY, out deltaX, step, gbl.CombatMap[player_index].size) == true)
+
+            bool result = true;
+
+            for (int step = 0; step <= 3; step++)
+            {
+                int deltaY;
+                int deltaX;
+
+                if (GetSizeBasedMapDelta(out deltaY, out deltaX, step, gbl.CombatMap[player_index].size) == true)
+                {
+                    if (CoordOnScreen(gbl.playerScreenY[player_index] + deltaY, gbl.playerScreenX[player_index] + deltaX) == false)
                     {
-                        if (CoordOnScreen(gbl.playerScreenY[player_index] + deltaY, gbl.playerScreenX[player_index] + deltaX) == false)
+                        result = false;
+                        if (AllOnScreen == true)
                         {
-                            result = false;
-                            if (arg_0 == true)
-                            {
-                                break;
-                            }
+                            return false;
                         }
-                        else
+                    }
+                    else
+                    {
+                        result = true;
+                        if (AllOnScreen == false)
                         {
-                            result = true;
-                            if (arg_0 == false)
-                            {
-                                break;
-                            }
+                            return true;
                         }
                     }
                 }
             }
+
+            return result;
+        }
+
+        internal static bool PlayerOnScreen(bool AllOnScreen, int player_index) // sub_74761
+        {
+            if (gbl.CombatMap[player_index].size == 0)
+            {
+                return false;
+            }
+
+            bool result = true;
+
+            for (int step = 0; step <= 3; step++)
+            {
+                int deltaY;
+                int deltaX;
+
+                if (GetSizeBasedMapDelta(out deltaY, out deltaX, step, gbl.CombatMap[player_index].size) == true)
+                {
+                    if (CoordOnScreen(gbl.playerScreenY[player_index] + deltaY, gbl.playerScreenX[player_index] + deltaX) == false)
+                    {
+                        result = false;
+                        if (AllOnScreen == true)
+                        {
+                            return false;
+                        }
+                    }
+                    else
+                    {
+                        result = true;
+                        if (AllOnScreen == false)
+                        {
+                            return true;
+                        }
+                    }
+                }
+            }
+
             return result;
         }
 
@@ -338,7 +370,7 @@ namespace engine
 
                     for (int j = 0; j <= 6; j++)
                     {
-                        ovr034.draw_iso_title(0, gbl.BackGroundTiles[gbl.mapToBackGroundTile[mapY, mapX]].tile_index, screenRowY, screenColX);
+                        ovr034.DrawIsoTile(gbl.BackGroundTiles[gbl.mapToBackGroundTile[mapY, mapX]].tile_index, screenRowY, screenColX);
 
                         screenColX += IconColumnSize;
                         mapY++;
@@ -368,7 +400,7 @@ namespace engine
 
                     if (player.in_combat == true &&
                         gbl.CombatMap[index].size > 0 &&
-                        sub_74761(false, player) == true)
+                        PlayerOnScreen(false, player) == true)
                     {
                         ovr034.draw_combat_icon(player.icon_id, 0, player.actions.direction, gbl.playerScreenY[index], gbl.playerScreenX[index]);
                     }
@@ -379,25 +411,11 @@ namespace engine
 
             if (CoordOnScreen(newYPos - gbl.mapToBackGroundTile.mapScreenTopY, newXPos - gbl.mapToBackGroundTile.mapScreenLeftX) == false)
             {
-                if (newXPos > 0x31)
-                {
-                    newXPos = 0x31;
-                }
+                newXPos = System.Math.Min(newXPos, 0x31);
+                newXPos = System.Math.Max(newXPos, 0);
 
-                if (newXPos < 0)
-                {
-                    newXPos = 0;
-                }
-
-                if (newYPos > 0x18)
-                {
-                    newYPos = 0x18;
-                }
-
-                if (newYPos < 0)
-                {
-                    newYPos = 0;
-                }
+                newYPos = System.Math.Min(newYPos, 0x18);
+                newYPos = System.Math.Max(newYPos, 0);
             }
 
             sub_7416E(newYPos, newXPos);
@@ -409,8 +427,8 @@ namespace engine
         {
             byte player_index = get_player_index(player);
 
-            if (sub_74761(true, player) == false &&
-                gbl.byte_1D910 == true)
+            if (PlayerOnScreen(true, player) == false &&
+                gbl.focusCombatAreaOnPlayer == true)
             {
                 redrawCombatArea(8, 3, PlayerMapYPos(player), PlayerMapXPos(player));
             }
@@ -419,17 +437,17 @@ namespace engine
                 arg_2 != 0 ||
                 arg_0 != 0)
             {
-                if (gbl.byte_1D910 == true)
+                if (gbl.focusCombatAreaOnPlayer == true)
                 {
-                    draw_74572(player_index, 0, 0);
+                    RedrawPlayerBackground(player_index);
                 }
             }
 
             player.actions.direction = direction;
 
             if (arg_0 == 0 &&
-                sub_74761(false, player) == true &&
-                gbl.byte_1D910 == true)
+                PlayerOnScreen(false, player) == true &&
+                gbl.focusCombatAreaOnPlayer == true)
             {
                 ovr034.draw_combat_icon(player.icon_id, arg_2, direction, gbl.playerScreenY[player_index], gbl.playerScreenX[player_index]);
                 seg040.DrawOverlay();
@@ -561,12 +579,12 @@ namespace engine
                     int map_x = ovr033.PlayerMapXPos(player);
                     int map_y = ovr033.PlayerMapYPos(player);
 
-                    if (sub_74761(true, player) == false)
+                    if (PlayerOnScreen(true, player) == false)
                     {
                         redrawCombatArea(8, 3, map_y, map_x);
                     }
 
-                    draw_74572(player_index, 0, 0);
+                    RedrawPlayerBackground(player_index);
                     seg044.sound_sub_120E0(Sound.sound_5);
 
                     for (int var_3 = 0; var_3 <= 8; var_3++)
@@ -607,7 +625,7 @@ namespace engine
                     }
 
                     seg041.GameDelay();
-                    draw_74572(player_index, 0, 0);
+                    RedrawPlayerBackground(player_index);
 
                     gbl.CombatMap[get_player_index(player)].size = 0;
 
@@ -707,7 +725,7 @@ namespace engine
             gbl.mapToBackGroundTile.draw_target_cursor = draw_cursor;
             gbl.mapToBackGroundTile.size = gbl.CombatMap[get_player_index(player)].size;
 
-            if (gbl.byte_1D910 == true)
+            if (gbl.focusCombatAreaOnPlayer == true)
             {
                 redrawCombatArea(8, radius, PlayerMapYPos(player), PlayerMapXPos(player));
             }

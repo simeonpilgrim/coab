@@ -110,7 +110,7 @@ namespace engine
                 gbl.compare_flags[i] = false;
             }
 
-            gbl.area2_ptr.field_5C2 = 0xFF;
+            gbl.area2_ptr.HeadBlockId = 0xFF;
 
             gbl.area2_ptr.rest_incounter_period = 0;
             gbl.area2_ptr.rest_incounter_percentage = 0;
@@ -131,7 +131,7 @@ namespace engine
             vm_LoadCmdSets(1);
             gbl.ecl_initial_entryPoint = gbl.cmd_opps[1].Word;
 
-            gbl.area_ptr.field_1CC = 1;
+            gbl.area_ptr.inDungeon = 1;
 
             if (gbl.reload_ecl_and_pictures == false)
             {
@@ -173,7 +173,7 @@ namespace engine
         {
             byte var_1 = 0;
 
-            if (gbl.area_ptr.field_1CC == 0)
+            if (gbl.area_ptr.inDungeon == 0)
             {
                 var_1 = 2;
                 gbl.area2_ptr.encounter_distance = 2;
@@ -242,10 +242,10 @@ namespace engine
                     {
                         gbl.mapAreaDisplay = false;
                         gbl.can_draw_bigpic = true;
-                        ovr029.update_3D_view();
+                        ovr029.RedrawView();
                     }
 
-                    if (gbl.area_ptr.field_1CC != 0)
+                    if (gbl.area_ptr.inDungeon != 0)
                     {
                         ovr030.load_pic_final(ref gbl.byte_1D556, 1, sprite_block_id, "SPRIT");
                         flags[0] = true;
@@ -255,7 +255,7 @@ namespace engine
                 else
                 {
                     gbl.can_draw_bigpic = true;
-                    ovr029.update_3D_view();
+                    ovr029.RedrawView();
                 }
 
                 if (gbl.game_state == GameState.State4)
@@ -265,24 +265,24 @@ namespace engine
             }
 
             if (flags[1] == false ||
-                gbl.byte_1EE96 != gbl.area2_ptr.field_5C2)
+                gbl.byte_1EE96 != gbl.area2_ptr.HeadBlockId)
             {
                 if (encounter_distance == 0 &&
                     gbl.game_state == GameState.State4 &&
                     gbl.byte_1EE95 == false)
                 {
-                    gbl.byte_1EE96 = (byte)gbl.area2_ptr.field_5C2;
+                    gbl.byte_1EE96 = (byte)gbl.area2_ptr.HeadBlockId;
                     gbl.byte_1EE8C = true;
-                    if (gbl.area2_ptr.field_5C2 == 0xff)
+                    if (gbl.area2_ptr.HeadBlockId == 0xff)
                     {
                         ovr030.load_pic_final(ref gbl.byte_1D556, 0, pic_block_id, "PIC");
                         flags[1] = true;
 
-                        ovr030.sub_7000A(gbl.byte_1D556.frames[0].picture, true, 3, 3);
+                        ovr030.DrawMaybeOverlayed(gbl.byte_1D556.frames[0].picture, true, 3, 3);
                     }
                     else
                     {
-                        set_and_draw_head_body(pic_block_id, (byte)gbl.area2_ptr.field_5C2);
+                        set_and_draw_head_body(pic_block_id, (byte)gbl.area2_ptr.HeadBlockId);
                         flags[1] = true;
                         gbl.byte_1EE8D = false;
                     }
@@ -377,7 +377,7 @@ namespace engine
             }
             else if (arg_4 == 0x9b)
             {
-                return_val = gbl.player_ptr.field_DF[1];
+                return_val = gbl.player_ptr.saveVerse[1];
             }
             else if (arg_4 == 0xa0)
             {
@@ -715,12 +715,12 @@ namespace engine
                     //System.Console.WriteLine("    gbl.byte_1EE94 = 1");
                     gbl.byte_1EE94 = true;
                 }
-                else if ((location - 0x4B00) == 0x0E6 && gbl.area_ptr.field_1CC != value)
+                else if ((location - 0x4B00) == 0x0E6 && gbl.area_ptr.inDungeon != value)
                 {
                     gbl.last_game_state = gbl.game_state;
                     if (value == 0)
                     {
-                        gbl.game_state = GameState.State3;
+                        gbl.game_state = GameState.WildernessMap;
                     }
                     else
                     {
@@ -1293,61 +1293,54 @@ namespace engine
         }
 
 
-        internal static void sub_31B01()
+        internal static void MovePositionForward() // sub_31B01
         {
             if (gbl.mapDirection == 0)
             {
-                if (gbl.mapPosY > 0)
-                {
-                    gbl.mapPosY--;
-                }
-                else
-                {
-                    gbl.mapPosY = 0x0F;
-                }
+                gbl.mapPosY = DecrimentWrap(gbl.mapPosY, 15);
             }
             else if (gbl.mapDirection == 2)
             {
-                if (gbl.mapPosX < 15)
-                {
-                    gbl.mapPosX++;
-                }
-                else
-                {
-                    gbl.mapPosX = 0;
-                }
+                gbl.mapPosX = IncrementWrap(gbl.mapPosX, 15);
             }
             else if (gbl.mapDirection == 4)
             {
-                if (gbl.mapPosY < 15)
-                {
-                    gbl.mapPosY++;
-                }
-                else
-                {
-                    gbl.mapPosY = 0;
-                }
+                gbl.mapPosY = IncrementWrap(gbl.mapPosY, 15);
             }
             else if (gbl.mapDirection == 6)
             {
-                if (gbl.mapPosX > 0)
-                {
-                    gbl.mapPosX--;
-                }
-                else
-                {
-                    gbl.mapPosX = 0x0F;
-                }
+                gbl.mapPosX = DecrimentWrap(gbl.mapPosX, 15);
             }
 
             gbl.mapWallRoof = ovr031.get_wall_x2(gbl.mapPosY, gbl.mapPosX);
-
             gbl.mapWallType = ovr031.getMap_wall_type(gbl.mapDirection, gbl.mapPosY, gbl.mapPosX);
 
             gbl.positionChanged = true;
-
         }
 
+        static int DecrimentWrap(int value, int max)
+        {
+            if (value > 0)
+            {
+                return value - 1;
+            }
+            else
+            {
+                return max;
+            }
+        }
+
+        static int IncrementWrap(int value, int max)
+        {
+            if (value < max)
+            {
+                return value + 1;
+            }
+            else
+            {
+                return 0;
+            }
+        }
 
         internal static void SetupDuel(bool isDuel)
         {
@@ -1427,7 +1420,7 @@ namespace engine
             if (gbl.printCommands == true)
             {
                 Logger.Debug("SKIPPING: ");
-                ovr003.print_command();
+                ovr003.DebugCommand();
             }
 
             switch (gbl.command)

@@ -15,12 +15,13 @@ namespace engine
             action.field_4 = 2;
 
             sub_3EDD4(player);
-            gbl.byte_1D2C0 = player.field_11D;
-            gbl.reset_byte_1D2C0 = false;
+            gbl.movesLeft = player.field_11D;
 
-            ovr024.CheckAffectsEffect(player, CheckType.Type_18);
+            gbl.resetMovesLeft = false;
 
-            player.field_19D = sub_3EF0D(gbl.byte_1D2C0);
+            ovr024.CheckAffectsEffect(player, CheckType.Movement);
+
+            player.field_19D = sub_3EF0D(gbl.movesLeft);
 
             action.field_5 = player.field_DD;
 
@@ -62,34 +63,35 @@ namespace engine
                 moves += gbl.area2_ptr.field_6E4;
             }
 
-            gbl.reset_byte_1D2C0 = true;
 
             if (moves < 1 || moves > 96)
             {
                 moves = 1;
             }
 
-            gbl.byte_1D2C0 = (byte)(moves * 2);
+            gbl.movesLeft = (byte)(moves * 2);
 
-            ovr024.CheckAffectsEffect(player, CheckType.Type_18);
+            gbl.resetMovesLeft = true;
+            
+            ovr024.CheckAffectsEffect(player, CheckType.Movement);
 
-            gbl.reset_byte_1D2C0 = false;
+            gbl.resetMovesLeft = false;
 
-            return gbl.byte_1D2C0;
+            return gbl.movesLeft;
         }
 
 
-        static void sub_3E192(byte arg_0, Player target, Player attacker)
+        static void sub_3E192(int index, Player target, Player attacker)
         {
-            gbl.damage = ovr024.roll_dice_save(attacker.field_19FArray(arg_0), attacker.field_19DArray(arg_0));
-            gbl.damage += attacker.field_1A1Array(arg_0);
+            gbl.damage = ovr024.roll_dice_save(attacker.field_19FArray(index), attacker.field_19DArray(index));
+            gbl.damage += attacker.field_1A1Array(index);
 
             if (gbl.damage < 0)
             {
                 gbl.damage = 0;
             }
 
-            if (sub_408D7(target, attacker) == true)
+            if (CanBackStabTarget(target, attacker) == true)
             {
                 gbl.damage *= (((attacker.thief_lvl + (attacker.field_117 * ovr026.sub_6B3D1(attacker))) - 1) / 4) + 2;
             }
@@ -101,15 +103,24 @@ namespace engine
 
         static Set unk_3E2EE = new Set(0x0002, new byte[] { 0xC0, 0x01 });
 
-        static void DisplayAttackMessage(bool attackHits, int attackDamge, int actualDamage, byte arg_6, Player target, Player attacker) /* backstab */
+
+        enum AttackType
+        {
+            Normal = 0,
+            Behind = 1,
+            Backstab = 2,
+            Slay = 3
+        }
+
+        static void DisplayAttackMessage(bool attackHits, int attackDamge, int actualDamage, AttackType attack, Player target, Player attacker) /* backstab */
         {
             string text;
 
-            if (arg_6 == 2)
+            if (attack == AttackType.Backstab)
             {
                 text = "-Backstabs-";
             }
-            else if (arg_6 == 3)
+            else if (attack == AttackType.Slay)
             {
                 text = "slays helpless";
             }
@@ -124,7 +135,7 @@ namespace engine
             ovr025.displayPlayerName(false, line, 0x17, target);
             line++;
 
-            if (arg_6 == 1)
+            if (attack == AttackType.Behind)
             {
                 text = "(from behind) ";
             }
@@ -135,7 +146,7 @@ namespace engine
 
             if (attackHits == true)
             {
-                if (arg_6 == 3)
+                if (attack == AttackType.Slay)
                 {
                     text = "with one cruel blow";
                 }
@@ -196,7 +207,7 @@ namespace engine
 
                 ovr024.sub_645AB(target);
 
-                ovr024.CheckAffectsEffect(target, CheckType.Type_13);
+                ovr024.CheckAffectsEffect(target, CheckType.Death);
 
                 if (target.in_combat == false)
                 {
@@ -214,7 +225,7 @@ namespace engine
 
         static void move_step_into_attack(Player target) /* sub_3E65D */
         {
-            int near_count = ovr025.near_enemy(1, target);
+            int near_count = ovr025.BuildNearTargets(1, target);
 
             for (int i = 1; i <= near_count; i++)
             {
@@ -276,15 +287,15 @@ namespace engine
                 radius = 3;
 
                 if (ovr033.CoordOnScreen(newYPos - gbl.mapToBackGroundTile.mapScreenTopY, newXPos - gbl.mapToBackGroundTile.mapScreenLeftX) == false &&
-                    gbl.byte_1D910 == true)
+                    gbl.focusCombatAreaOnPlayer == true)
                 {
                     ovr033.redrawCombatArea(8, 2, oldYPos, oldXPos);
                 }
             }
 
-            if (gbl.byte_1D910 == true)
+            if (gbl.focusCombatAreaOnPlayer == true)
             {
-                ovr033.draw_74572(player_index, 0, 0);
+                ovr033.RedrawPlayerBackground(player_index);
             }
 
             gbl.CombatMap[player_index].xPos = newXPos;
@@ -292,7 +303,7 @@ namespace engine
 
             ovr033.setup_mapToPlayerIndex_and_playerScreen();
 
-            if (gbl.byte_1D910 == true)
+            if (gbl.focusCombatAreaOnPlayer == true)
             {
                 ovr033.redrawCombatArea(8, radius, newYPos, newXPos);
             }
@@ -320,7 +331,7 @@ namespace engine
             System.Array.Clear(var_D, 0, var_D_size);
 
             byte player_index = ovr033.get_player_index(player);
-            int var_15 = ovr025.near_enemy(1, player);
+            int var_15 = ovr025.BuildNearTargets(1, player);
 
             if (var_15 != 0)
             {
@@ -332,7 +343,7 @@ namespace engine
                 gbl.CombatMap[player_index].xPos += gbl.MapDirectionXDelta[direction];
                 gbl.CombatMap[player_index].yPos += gbl.MapDirectionYDelta[direction];
 
-                int var_16 = ovr025.near_enemy(1, player);
+                int var_16 = ovr025.BuildNearTargets(1, player);
 
                 gbl.CombatMap[player_index].xPos -= gbl.MapDirectionXDelta[direction];
                 gbl.CombatMap[player_index].yPos -= gbl.MapDirectionYDelta[direction];
@@ -361,13 +372,13 @@ namespace engine
                         player.in_combat == true)
                     {
                         gbl.display_hitpoints_ac = true;
-                        gbl.byte_1D910 = true;
+                        gbl.focusCombatAreaOnPlayer = true;
                         bool var_12 = false;
 
                         Player player_ptr = gbl.player_array[var_D[var_18]];
 
                         if (player_ptr.IsHeld() == false &&
-                            sub_3F143(player, player_ptr) == true &&
+                            CanSeeTargetA(player, player_ptr) == true &&
                             player_ptr.HasAffect(Affects.affect_4b) == false &&
                             player_ptr.HasAffect(Affects.affect_4a) == false)
                         {
@@ -433,7 +444,7 @@ namespace engine
 
             bool gets_away = false;
 
-            if (ovr025.near_enemy(0xff, player) == 0)
+            if (ovr025.BuildNearTargets(0xff, player) == 0)
             {
                 gets_away = true;
             }
@@ -486,16 +497,17 @@ namespace engine
                     var_4 = 2;
                 }
 
-                gbl.byte_1D2C0 = var_4;
+                gbl.movesLeft = var_4;
             }
             else
             {
-                gbl.byte_1D2C0 = player.field_19C;
+                gbl.movesLeft = player.field_19C;
             }
 
-            gbl.reset_byte_1D2C0 = false;
-            ovr024.CheckAffectsEffect(player, CheckType.Type_18);
-            byte var_1 = sub_3EF0D(gbl.byte_1D2C0);
+            gbl.resetMovesLeft = false;
+            ovr024.CheckAffectsEffect(player, CheckType.Movement);
+
+            byte var_1 = sub_3EF0D(gbl.movesLeft);
 
             if (var_5 == true &&
                 var_9 != null)
@@ -544,7 +556,7 @@ namespace engine
                 target.field_E5 == 0 &&
                 ovr025.getTargetRange(target, attacker) == 1)
             {
-                int near_count = ovr025.near_enemy(1, attacker);
+                int near_count = ovr025.BuildNearTargets(1, attacker);
                 byte var_3 = 0;
 
                 int var_5 = 0xff;
@@ -606,13 +618,13 @@ namespace engine
         }
 
 
-        internal static bool sub_3F143(Player player01, Player player02)
+        internal static bool CanSeeTargetA(Player targetA, Player targetB) //sub_3F143 
         {
             bool ret_val = false;
 
-            if (player01 != null)
+            if (targetA != null)
             {
-                if (player02 == player01)
+                if (targetB == targetA)
                 {
                     ret_val = true;
                 }
@@ -620,17 +632,17 @@ namespace engine
                 {
                     gbl.byte_1D2C5 = 0;
 
-                    ovr024.CheckAffectsEffect(player01, CheckType.Visibility);
+                    ovr024.CheckAffectsEffect(targetA, CheckType.Visibility);
 
                     if (gbl.byte_1D2C5 == 0)
                     {
-                        Player old_target = player02.actions.target;
+                        var old_target = targetB.actions.target;
 
-                        player02.actions.target = player01;
+                        targetB.actions.target = targetA;
 
-                        ovr024.CheckAffectsEffect(player02, 0);
+                        ovr024.CheckAffectsEffect(targetB, CheckType.None);
 
-                        player02.actions.target = old_target;
+                        targetB.actions.target = old_target;
                     }
 
                     ret_val = (gbl.byte_1D2C5 == 0);
@@ -727,7 +739,7 @@ namespace engine
                 ovr025.string_print01("Nothing Happens...");
             }
 
-            ovr025.count_teams();
+            ovr025.CountCombatTeamMembers();
             ovr025.clear_actions(player);
 
             ovr025.ClearPlayerTextArea();
@@ -739,7 +751,7 @@ namespace engine
             output = null;
 
             byte var_4 = 13;
-            int near_count = ovr025.near_enemy(0xff, player);
+            int near_count = ovr025.BuildNearTargets(0xff, player);
             bool result = false;
 
             for (int i = 1; i <= near_count; i++)
@@ -787,7 +799,7 @@ namespace engine
 
                 gbl.inc_byte_byte_1D90x(attacker.actions.field_4);
 
-                DisplayAttackMessage(true, 1, target.hit_point_current + 5, 3, target, attacker);
+                DisplayAttackMessage(true, 1, target.hit_point_current + 5, AttackType.Slay, target, attacker);
                 ovr024.remove_invisibility(attacker);
 
                 attacker.field_19C = 0;
@@ -812,7 +824,7 @@ namespace engine
                 ovr025.reclac_player_values(target);
                 ovr024.CheckAffectsEffect(target, CheckType.Type_11);
 
-                if (sub_408D7(target, attacker) == true)
+                if (CanBackStabTarget(target, attacker) == true)
                 {
                     target_ac = target.field_19B - 4;
                 }
@@ -836,15 +848,15 @@ namespace engine
                 }
 
                 ranged_defence_bonus(ref target_ac, target, attacker);
-                byte var_17 = 0;
+                AttackType attack_type = AttackType.Normal;
                 if (var_13 != 0)
                 {
-                    var_17 = 1;
+                    attack_type = AttackType.Behind;
                 }
 
-                if (sub_408D7(target, attacker) == true)
+                if (CanBackStabTarget(target, attacker) == true)
                 {
-                    var_17 = 2;
+                    attack_type = AttackType.Backstab;
                 }
 
                 byte var_16 = attacker.actions.field_4;
@@ -878,7 +890,7 @@ namespace engine
                             seg044.sound_sub_120E0(Sound.sound_7);
                             var_11 = true;
                             sub_3E192(var_15, target, attacker);
-                            DisplayAttackMessage(true, gbl.damage, gbl.damage, var_17, target, attacker);
+                            DisplayAttackMessage(true, gbl.damage, gbl.damage, attack_type, target, attacker);
 
                             if (target.in_combat == true)
                             {
@@ -910,7 +922,7 @@ namespace engine
                 if (var_11 == false)
                 {
                     seg044.sound_sub_120E0(Sound.sound_9);
-                    DisplayAttackMessage(false, 0, 0, var_17, target, attacker);
+                    DisplayAttackMessage(false, 0, 0, attack_type, target, attacker);
                 }
 
                 arg_4 = true;
@@ -956,7 +968,7 @@ namespace engine
         {
             byte dir = 0;
 
-            gbl.byte_1D910 = true;
+            gbl.focusCombatAreaOnPlayer = true;
             gbl.display_hitpoints_ac = true;
 
             gbl.combat_round_no_action_limit = gbl.combat_round + 15;
@@ -968,7 +980,7 @@ namespace engine
 
                 target.actions.direction = (byte)((dir + 4) % 8);
             }
-            else if (ovr033.sub_74761(false, target) == true)
+            else if (ovr033.PlayerOnScreen(false, target) == true)
             {
                 dir = target.actions.direction;
 
@@ -978,7 +990,7 @@ namespace engine
                 }
             }
 
-            if (ovr033.sub_74761(false, target) == true)
+            if (ovr033.PlayerOnScreen(false, target) == true)
             {
                 ovr033.draw_74B3F(0, 0, dir, target);
             }
@@ -1052,7 +1064,7 @@ namespace engine
                 ovr025.clear_actions(attacker);
             }
 
-            if (ovr033.sub_74761(false, attacker) == true)
+            if (ovr033.PlayerOnScreen(false, attacker) == true)
             {
                 ovr033.draw_74B3F(1, 1, attacker.actions.direction, attacker);
                 ovr033.draw_74B3F(0, 0, attacker.actions.direction, attacker);
@@ -1158,7 +1170,7 @@ namespace engine
             {
                 byte var_A = spellId != 0x53 ? (byte)1 : (byte)0;
 
-                aim_menu(arg_0, out var_2, var_A, arg_4, 0, ovr023.sub_5CDE5(spellId), gbl.player_ptr);
+                aim_menu(arg_0, out var_2, var_A, arg_4, 0, ovr023.SpellRange(spellId), gbl.player_ptr);
                 gbl.player_ptr.actions.target = arg_0.target;
             }
             else if (gbl.spell_table[spellId].field_E == 0)
@@ -1181,7 +1193,7 @@ namespace engine
                 {
                     bool var_3 = true;
 
-                    if (find_target(true, 0, ovr023.sub_5CDE5(spellId), gbl.player_ptr) == true)
+                    if (find_target(true, 0, ovr023.SpellRange(spellId), gbl.player_ptr) == true)
                     {
                         Player target = gbl.player_ptr.actions.target;
 
@@ -1479,8 +1491,8 @@ namespace engine
 
             if (quick_fight == QuickFight.False)
             {
-                ovr025.sub_68DC0();
-                gbl.byte_1D910 = true;
+                ovr025.RedrawCombatScreen();
+                gbl.focusCombatAreaOnPlayer = true;
                 gbl.display_hitpoints_ac = true;
 
                 ovr033.sub_75356(true, 3, player);
@@ -1518,7 +1530,7 @@ namespace engine
         }
 
 
-        internal static bool sub_408D7(Player target, Player attacker) /* sub_408D7 */
+        internal static bool CanBackStabTarget(Player target, Player attacker) /* sub_408D7 */
         {
             Item weapon = attacker.field_151;
 
@@ -1838,18 +1850,18 @@ namespace engine
                     }
                 }
 
-                ovr025.count_teams();
+                ovr025.CountCombatTeamMembers();
             }
 
             return result;
         }
 
 
-        internal static char aim_sub_menu(byte arg_0, byte arg_2, byte arg_4, byte arg_6, Player target, Player playerA) /* Aim_menu */
+        internal static char aim_sub_menu(byte arg_0, byte arg_2, byte arg_4, int maxRange, Player target, Player attacker) /* Aim_menu */
         {
             string text = string.Empty;
-            int range = ovr025.getTargetRange(target, playerA);
-            int direction = getTargetDirection(target, playerA);
+            int range = ovr025.getTargetRange(target, attacker);
+            int direction = getTargetDirection(target, attacker);
 
             if (arg_4 != 0)
             {
@@ -1857,7 +1869,7 @@ namespace engine
                 seg041.displayString(range_txt, 0, 10, 0x17, 0);
             }
 
-            if (range <= arg_6)
+            if (range <= maxRange)
             {
                 if (arg_4 == 0)
                 {
@@ -1870,17 +1882,17 @@ namespace engine
                         text = string.Empty;
                     }
                 }
-                else if (target != playerA)
+                else if (target != attacker)
                 {
-                    if (ovr025.is_weapon_ranged(playerA) == false)
+                    if (ovr025.is_weapon_ranged(attacker) == false)
                     {
                         text = "Target ";
                     }
                     else
                     {
                         Item dummyItem;
-                        if (ovr025.sub_6906C(out dummyItem, playerA) == true &&
-                            (ovr025.near_enemy(1, playerA) == 0 || ovr025.is_weapon_ranged_melee(playerA) == true))
+                        if (ovr025.sub_6906C(out dummyItem, attacker) == true &&
+                            (ovr025.BuildNearTargets(1, attacker) == 0 || ovr025.is_weapon_ranged_melee(attacker) == true))
                         {
                             text = "Target ";
                         }
@@ -1952,14 +1964,14 @@ namespace engine
 
         static Set asc_41342 = new Set(0x000B, new byte[] { 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x20, 0x00, 0x10 });
 
-        internal static void Target(Struct_1D183 arg_0, out bool arg_4, byte arg_8, byte arg_A, byte arg_C, byte arg_E, Player player02, Player player01)
+        internal static void Target(Struct_1D183 arg_0, out bool arg_4, byte arg_8, byte arg_A, byte arg_C, int maxRange, Player target, Player player01)
         {
             Item dummyItem;
 
             arg_0.Clear();
 
-            int posX = ovr033.PlayerMapXPos(player02);
-            int posY = ovr033.PlayerMapYPos(player02);
+            int posX = ovr033.PlayerMapXPos(target);
+            int posY = ovr033.PlayerMapYPos(target);
 
             char input_key = ' ';
             byte dir = 8;
@@ -2026,13 +2038,13 @@ namespace engine
                 }
 
                 range /= 2;
-                player02 = null;
+                target = null;
 
                 if (can_target)
                 {
                     if (playerAtXY > 0)
                     {
-                        player02 = gbl.player_array[playerAtXY];
+                        target = gbl.player_array[playerAtXY];
                     }
                     else if (groundTile == 0x1f)
                     {
@@ -2041,31 +2053,31 @@ namespace engine
                             if (gbl.unk_1D183[i].mapX == posX &&
                                 gbl.unk_1D183[i].mapY == posY)
                             {
-                                player02 = gbl.unk_1D183[i].target;
+                                target = gbl.unk_1D183[i].target;
                             }
                         }
                     }
                 }
 
-                if (player02 != null)
+                if (target != null)
                 {
                     gbl.display_hitpoints_ac = true;
-                    ovr025.display_hitpoint_ac(player02);
+                    ovr025.display_hitpoint_ac(target);
                 }
                 else
                 {
                     seg037.draw8x8_clear_area(0x15, 0x26, 1, 0x17);
                 }
 
-                if (arg_E < range ||
+                if (range > maxRange ||
                     gbl.BackGroundTiles[groundTile].move_cost == 0xff)
                 {
                     can_target = false;
                 }
 
-                if (player02 != null)
+                if (target != null)
                 {
-                    if (sub_3F143(player02, player01) == false ||
+                    if (CanSeeTargetA(target, player01) == false ||
                         arg_8 == 0)
                     {
                         can_target = false;
@@ -2073,14 +2085,14 @@ namespace engine
 
                     if (arg_C == 1)
                     {
-                        if (player01 == player02 ||
+                        if (player01 == target ||
                             (playerAtXY == 0 && groundTile == 0x1f))
                         {
                             can_target = false;
                         }
                         else if (ovr025.is_weapon_ranged(player01) == true &&
                              (ovr025.sub_6906C(out dummyItem, player01) == true ||
-                             (ovr025.near_enemy(1, player01) >= 0 &&
+                             (ovr025.BuildNearTargets(1, player01) >= 0 &&
                                 ovr025.is_weapon_ranged_melee(player01) == false)))
                         {
                             can_target = false;
@@ -2113,9 +2125,9 @@ namespace engine
                             arg_0.mapX = posX;
                             arg_0.mapY = posY;
 
-                            if (player02 != null)
+                            if (target != null)
                             {
-                                arg_0.target = player02;
+                                arg_0.target = target;
                             }
                             else
                             {
@@ -2256,13 +2268,12 @@ namespace engine
         static Set unk_41AE5 = new Set(0x0009, new byte[] { 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x20 });
         static Set unk_41B05 = new Set(0x0803, new byte[] { 0x80, 0xAB, 3 });
 
-        internal static void aim_menu(Struct_1D183 arg_0, out bool arg_4, byte arg_8, byte arg_A, byte arg_C, byte arg_E, Player arg_10) /* sub_41B25 */
+        internal static void aim_menu(Struct_1D183 arg_0, out bool arg_4, byte arg_8, byte arg_A, byte arg_C, int maxRange, Player attacker) /* sub_41B25 */
         {
-            Player player_ptr; /* var_E5 */ 
+            Player target; /* var_E5 */ 
             int attacker_y = 0;
             int attacker_x = 0;
             int sorted_count;
-            byte var_D9;
             SortedCombatant[] sorted_list = new SortedCombatant[gbl.MaxSortedCombatantCount];
 
             ovr025.load_missile_dax(false, 0, 0, 0x19);
@@ -2271,46 +2282,44 @@ namespace engine
 
             arg_4 = false;
 
-            var_D9 = arg_E;
-
-            if (var_D9 == 0xff)
+            if (maxRange == 0xff)
             {
-                if (arg_10.field_151 != null)
+                if (attacker.field_151 != null)
                 {
-                    var_D9 = (byte)(gbl.unk_1C020[arg_10.field_151.type].field_C - 1);
+                    maxRange = (byte)(gbl.unk_1C020[attacker.field_151.type].field_C - 1);
                 }
                 else
                 {
-                    var_D9 = 1;
+                    maxRange = 1;
                 }
             }
 
-            if (var_D9 == 0 ||
-                var_D9 == 0xff)
+            if (maxRange == 0 ||
+                maxRange == 0xff)
             {
-                var_D9 = 1;
+                maxRange = 1;
             }
 
-            copy_sorted_players(arg_10, sorted_list, out sorted_count);
+            copy_sorted_players(attacker, sorted_list, out sorted_count);
 
             int list_index = 1;
             int next_prev_step = 0;
             int target_step = 0;
 
-            player_ptr = step_combat_list(true, next_prev_step, sorted_count, ref list_index, ref attacker_x, ref attacker_y, sorted_list);
+            target = step_combat_list(true, next_prev_step, sorted_count, ref list_index, ref attacker_x, ref attacker_y, sorted_list);
 
             next_prev_step = 1;
             char input = ' ';
 
             while (arg_4 == false && unk_41AE5.MemberOf(input) == false)
             {
-                if (sub_3F143(player_ptr, arg_10) == false)
+                if (CanSeeTargetA(target, attacker) == false)
                 {
-                    player_ptr = step_combat_list(false, next_prev_step, sorted_count, ref list_index, ref attacker_x, ref attacker_y, sorted_list);
+                    target = step_combat_list(false, next_prev_step, sorted_count, ref list_index, ref attacker_x, ref attacker_y, sorted_list);
                 }
                 else
                 {
-                    input = aim_sub_menu(arg_8, arg_A, arg_C, var_D9, player_ptr, arg_10);
+                    input = aim_sub_menu(arg_8, arg_A, arg_C, maxRange, target, attacker);
 
                     if (gbl.displayInput_specialKeyPressed == false)
                     {
@@ -2333,38 +2342,38 @@ namespace engine
                             case 'O':
                             case 'Q':
                             case 'I':
-                                Target(arg_0, out arg_4, arg_8, arg_A, arg_C, var_D9, player_ptr, arg_10);
+                                Target(arg_0, out arg_4, arg_8, arg_A, arg_C, maxRange, target, attacker);
                                 ovr025.load_missile_dax(false, 0, 0, 0x19);
 
-                                copy_sorted_players(arg_10, sorted_list, out sorted_count);
+                                copy_sorted_players(attacker, sorted_list, out sorted_count);
                                 target_step = 0;
                                 break;
 
                             case 'T':
-                                sub_411D8(arg_0, out arg_4, arg_C, player_ptr, arg_10);
+                                sub_411D8(arg_0, out arg_4, arg_C, target, attacker);
                                 ovr025.load_missile_dax(false, 0, 0, 0x19);
 
-                                copy_sorted_players(arg_10, sorted_list, out sorted_count);
+                                copy_sorted_players(attacker, sorted_list, out sorted_count);
                                 target_step = 0;
                                 break;
 
                             case 'C':
-                                ovr033.redrawCombatArea(8, 0, ovr033.PlayerMapYPos(player_ptr), ovr033.PlayerMapXPos(player_ptr));
+                                ovr033.redrawCombatArea(8, 0, ovr033.PlayerMapYPos(target), ovr033.PlayerMapXPos(target));
                                 target_step = 0;
                                 break;
                         }
                     }
                     else if (unk_41B05.MemberOf(input) == true)
                     {
-                        Target(arg_0, out arg_4, arg_8, arg_A, arg_C, var_D9, player_ptr, arg_10);
+                        Target(arg_0, out arg_4, arg_8, arg_A, arg_C, maxRange, target, attacker);
                         ovr025.load_missile_dax(false, 0, 0, 0x19);
-                        copy_sorted_players(arg_10, sorted_list, out sorted_count);
+                        copy_sorted_players(attacker, sorted_list, out sorted_count);
                         target_step = 0;
                     }
 
-                    ovr033.sub_7431C(ovr033.PlayerMapYPos(player_ptr), ovr033.PlayerMapXPos(player_ptr));
+                    ovr033.sub_7431C(ovr033.PlayerMapYPos(target), ovr033.PlayerMapXPos(target));
 
-                    player_ptr = step_combat_list((arg_4 == false && unk_41AE5.MemberOf(input) == false), target_step,
+                    target = step_combat_list((arg_4 == false && unk_41AE5.MemberOf(input) == false), target_step,
                         sorted_count, ref list_index, ref attacker_x, ref attacker_y, sorted_list);
                 }
             }
@@ -2388,7 +2397,7 @@ namespace engine
                  (target != null &&
                    (target.combat_team == player.combat_team ||
                     target.in_combat == false ||
-                    sub_3F143(target, player) == false)))
+                    CanSeeTargetA(target, player) == false)))
             {
                 player.actions.target = null;
             }
@@ -2408,7 +2417,7 @@ namespace engine
                 }
 
                 int var_3 = 20;
-                int var_2 = ovr025.near_enemy(max_range, player);
+                int var_2 = ovr025.BuildNearTargets(max_range, player);
 
                 while (var_3 > 0 && target_found == false && var_2 > 0)
                 {
@@ -2420,7 +2429,7 @@ namespace engine
                         target = gbl.player_array[gbl.near_targets[roll]];
 
                         if ((arg_2 != 0 && gbl.mapToBackGroundTile.field_6 == true) ||
-                            sub_3F143(target, player) == true)
+                            CanSeeTargetA(target, player) == true)
                         {
                             target_found = true;
                             player.actions.target = target;
@@ -2491,9 +2500,10 @@ namespace engine
         }
 
 
-        internal static void sub_421C1(bool clear_target, ref int range, out bool var_5, Player player)
+        internal static bool sub_421C1(bool clear_target, int range, Player player)
         {
-            var_5 = true;
+            bool var_5 = true;
+
             if (find_target(clear_target, 0, 0xff, player) == true)
             {
                 int target_x = ovr033.PlayerMapXPos(player.actions.target);
@@ -2508,6 +2518,8 @@ namespace engine
                     var_5 = false;
                 }
             }
+
+            return var_5;
         }
 
 
@@ -2517,10 +2529,9 @@ namespace engine
 
             byte var_4 = 0;
             byte var_1 = 4;
-            bool var_5 = false;
 
             attacker.actions.target = null;
-            sub_421C1(true, ref range, out var_5, attacker);
+            sub_421C1(true, range, attacker);
 
             do
             {
@@ -2538,12 +2549,12 @@ namespace engine
                         ovr025.DisplayPlayerStatusString(true, 10, "fires a disintegrate ray", attacker);
                         sub_42159(5, target, attacker);
 
-                        if (ovr024.do_saving_throw(0, 3, target) == false)
+                        if (ovr024.RollSavingThrow(0, SaveVerseType.type3, target) == false)
                         {
-                            ovr024.sub_63014("is disintergrated", Status.gone, target);
+                            ovr024.KillPlayer("is disintergrated", Status.gone, target);
                         }
 
-                        sub_421C1(false, ref range, out var_5, attacker);
+                        sub_421C1(false, range, attacker);
                     }
                     else if (range == 3 && (var_4 & 2) == 0)
                     {
@@ -2552,12 +2563,12 @@ namespace engine
                         ovr025.DisplayPlayerStatusString(true, 10, "fires a stone to flesh ray", attacker);
                         sub_42159(10, target, attacker);
 
-                        if (ovr024.do_saving_throw(0, 1, target) == false)
+                        if (ovr024.RollSavingThrow(0, SaveVerseType.type1, target) == false)
                         {
-                            ovr024.sub_63014("is Stoned", Status.stoned, target);
+                            ovr024.KillPlayer("is Stoned", Status.stoned, target);
                         }
 
-                        sub_421C1(false, ref range, out var_5, attacker);
+                        sub_421C1(false, range, attacker);
                     }
                     else if (range == 4 && (var_4 & 4) == 0)
                     {
@@ -2566,12 +2577,12 @@ namespace engine
                         ovr025.DisplayPlayerStatusString(true, 10, "fires a death ray", attacker);
                         sub_42159(5, target, attacker);
 
-                        if (ovr024.do_saving_throw(0, 0, target) == false)
+                        if (ovr024.RollSavingThrow(0, 0, target) == false)
                         {
-                            ovr024.sub_63014("is killed", Status.dead, target);
+                            ovr024.KillPlayer("is killed", Status.dead, target);
                         }
 
-                        sub_421C1(false, ref range, out var_5, attacker);
+                        sub_421C1(false, range, attacker);
                     }
                     else if (range == 5 && (var_4 & 8) == 0)
                     {
@@ -2581,7 +2592,7 @@ namespace engine
                         sub_42159(5, target, attacker);
 
                         ovr024.damage_person(false, 0, ovr024.roll_dice_save(8, 2) + 1, target);
-                        sub_421C1(false, ref range, out var_5, attacker);
+                        sub_421C1(false, range, attacker);
                     }
                     else if ((var_4 & 0x10) == 0)
                     {

@@ -414,7 +414,7 @@ namespace engine
             List<MenuItem> money = new List<MenuItem>();
             sbyte var_1;
 
-            seg037.draw8x8_outer_frame();
+            seg037.DrawFrame_Outer();
 
             do
             {

@@ -526,31 +526,31 @@ namespace engine
         }
 
 
-        internal static byte sub_5CDE5(byte arg_0)
+        internal static int SpellRange(int spellId) // sub_5CDE5
         {
-            byte var_2;
+            int range;
 
             if (gbl.spell_from_item == false)
             {
-                var_2 = (byte)(gbl.spell_table[arg_0].field_2 + (gbl.spell_table[arg_0].field_3 * ovr025.spellMaxTargetCount(arg_0)));
+                range = (gbl.spell_table[spellId].field_3 * ovr025.spellMaxTargetCount(spellId)) + gbl.spell_table[spellId].field_2;
             }
             else
             {
-                var_2 = (byte)((gbl.spell_table[arg_0].field_3 * 6) + gbl.spell_table[arg_0].field_2);
+                range = (gbl.spell_table[spellId].field_3 * 6) + gbl.spell_table[spellId].field_2;
             }
 
-            if (var_2 == 0 &&
-                gbl.spell_table[arg_0].field_6 != 0)
+            if (range == 0 &&
+                gbl.spell_table[spellId].field_6 != 0)
             {
-                var_2 = 1;
+                range = 1;
             }
 
-            if (var_2 == 0xff)
+            if (range == 0xff)
             {
-                var_2 = 1;
+                range = 1;
             }
 
-            return var_2;
+            return range;
         }
 
 
@@ -594,16 +594,9 @@ namespace engine
         }
 
 
-        internal static void sub_5CF7F(string arg_0, DamageType arg_4, int damage, bool arg_8, int TargetCount, byte spell_id)
+        internal static void sub_5CF7F(string arg_0, DamageType damageFlags, int damage, bool arg_8, int TargetCount, byte spell_id)
         {
-            if (damage == 0)
-            {
-                gbl.damage_flags = 0;
-            }
-            else
-            {
-                gbl.damage_flags = arg_4;
-            }
+            gbl.damage_flags = (damage == 0)? 0 : damageFlags;
 
             if (gbl.sp_target_count != 0)
             {
@@ -623,7 +616,7 @@ namespace engine
                         }
                         else
                         {
-                            var_30 = ovr024.do_saving_throw(0, gbl.spell_table[spell_id].field_9, target);
+                            var_30 = ovr024.RollSavingThrow(0, gbl.spell_table[spell_id].saveVerse, target);
                         }
 
                         if (gbl.spell_table[gbl.spell_id].field_2 == -1)
@@ -782,7 +775,7 @@ namespace engine
                             direction++;
                         }
 
-                        gbl.byte_1D910 = true;
+                        gbl.focusCombatAreaOnPlayer = true;
                         ovr033.draw_74B3F(0, 1, direction, caster);
 
                         if (spell_id == 0x2F)
@@ -800,7 +793,7 @@ namespace engine
 
                         ovr025.draw_missile_attack(0x1E, 4, gbl.targetY, gbl.targetX, casterY, casterX);
 
-                        if (ovr033.sub_74761(false, caster) == true)
+                        if (ovr033.PlayerOnScreen(false, caster) == true)
                         {
                             ovr033.draw_74B3F(1, 1, caster.actions.direction, caster);
                             ovr033.draw_74B3F(0, 0, caster.actions.direction, caster);
@@ -816,7 +809,8 @@ namespace engine
 
                     gbl.spell_id = spell_id;
 
-                    gbl.spells_func_table[gbl.spell_id]();
+                    var func = gbl.spellTable[(Spells)spell_id];
+                    func();
 
                     gbl.spell_id = 0;
                     gbl.byte_1D2C7 = false;
@@ -1011,7 +1005,7 @@ namespace engine
         }
 
 
-        internal static void sub_5DB24(string text, int save_bonus)
+        internal static void MultiTargetedSpell(string text, int save_bonus) // sub_5DB24
         {
             for (int target_index = gbl.sp_target_count; target_index >= 1; target_index--)
             {
@@ -1039,7 +1033,7 @@ namespace engine
                     }
                     else
                     {
-                        saved = ovr024.do_saving_throw(save_bonus, gbl.spell_table[gbl.spell_id].field_9, target);
+                        saved = ovr024.RollSavingThrow(save_bonus, gbl.spell_table[gbl.spell_id].saveVerse, target);
                         can_save_flag = gbl.spell_table[gbl.spell_id].can_save_flag;
                     }
 
@@ -1056,7 +1050,7 @@ namespace engine
         }
 
 
-        internal static void sub_5DCA0(string text, CombatTeam team)
+        static void CastTeamSpell(string text, CombatTeam team) // sub_5DCA0
         {
             gbl.byte_1D2C7 = true;
 
@@ -1065,7 +1059,7 @@ namespace engine
                 if (gbl.sp_targets[i] != null &&
                     (gbl.sp_targets[i].combat_team != team ||
                     (gbl.spell_id == 1 && gbl.game_state == GameState.Combat &&
-                     ovr025.near_enemy(1, gbl.sp_targets[i]) > 0)))
+                     ovr025.BuildNearTargets(1, gbl.sp_targets[i]) > 0)))
                 {
                     gbl.sp_targets[i] = null;
                 }
@@ -1077,13 +1071,13 @@ namespace engine
 
         internal static void cleric_bless() /* is_Blessed */
         {
-            sub_5DCA0("is Blessed", gbl.player_ptr.combat_team);
+            CastTeamSpell("is Blessed", gbl.player_ptr.combat_team);
         }
 
 
         internal static void cleric_curse() /* is_Cursed */
         {
-            sub_5DCA0("is Cursed", gbl.player_ptr.OppositeTeam());
+            CastTeamSpell("is Cursed", gbl.player_ptr.OppositeTeam());
         }
 
 
@@ -1092,7 +1086,7 @@ namespace engine
             if (gbl.sp_target_count != 0 &&
                 ovr024.heal_player(0, ovr024.roll_dice(8, 1), gbl.sp_targets[1]) == true)
             {
-                ovr025.describeHealing(gbl.sp_targets[1]);
+                ovr025.DescribeHealing(gbl.sp_targets[1]);
             }
         }
 
@@ -1127,7 +1121,7 @@ namespace engine
         }
 
 
-        internal static void is_charmed()
+        internal static void SpellCharm() // is_charmed
         {
             Player target = gbl.sp_targets[1];
 
@@ -1225,7 +1219,7 @@ namespace engine
 
             if (target != null &&
                 gbl.sp_target_count > 0 &&
-                ovr024.do_saving_throw(0, 4, target) == false &&
+                ovr024.RollSavingThrow(0, SaveVerseType.type4, target) == false &&
                 target.HasAffect(Affects.enlarge) == true)
             {
                 ovr024.remove_affect(null, Affects.enlarge, target);
@@ -1350,7 +1344,7 @@ namespace engine
                 throw new System.NotSupportedException();
             }
 
-            sub_5DB24("is held", save_bonus);
+            MultiTargetedSpell("is held", save_bonus);
         }
 
 
@@ -1424,7 +1418,7 @@ namespace engine
         }
 
 
-        internal static void knock_Knock()
+        internal static void SpellKnock()
         {
             sub_5CF7F("Knock-Knock", 0, 0, false, 0, gbl.spell_id);
         }
@@ -2004,7 +1998,7 @@ namespace engine
                 dice_count = ovr025.spellMaxTargetCount(gbl.spell_id);
             }
 
-            if (gbl.area_ptr.field_1CC == 0)
+            if (gbl.area_ptr.inDungeon == 0)
             {
                 ovr032.Rebuild_SortedCombatantList(gbl.mapToBackGroundTile, 1, 0xff, 2, gbl.targetY, gbl.targetX);
 
@@ -2056,7 +2050,29 @@ namespace engine
         }
 
 
-        internal static void sub_5F986(ref bool arg_0, byte player_index, byte arg_6, int damage, int posY, int posX)
+        static void DoElecDamage(int player_index, SaveVerseType bonusType, int damage, int posY, int posX)
+        {
+            int playerIndex = ovr033.PlayerIndexAtMapXY(posY, posX);
+
+            DoActualElecDamage(player_index, bonusType, damage, playerIndex);
+        }
+
+        private static void DoActualElecDamage(int player_index, SaveVerseType bonusType, int damage, int playerIndex)
+        {
+            if (playerIndex > 0 &&
+                playerIndex != player_index)
+            {
+                Player player = gbl.player_array[playerIndex];
+                gbl.damage_flags = DamageType.Magic | DamageType.Electricity;
+
+                ovr024.damage_person(ovr024.RollSavingThrow(0, bonusType, player), DamageOnSave.Half, damage, player);
+                ovr025.load_missile_icons(0x13);
+                gbl.damage_flags = 0;
+            }
+        }
+
+
+        static bool DoElecDamage(bool arg_0, int player_index, SaveVerseType bonusType, int damage, int posY, int posX)// sub_5F986
         {
             byte groundTile;
             byte playerIndex;
@@ -2065,7 +2081,7 @@ namespace engine
 
             if (groundTile > 0 &&
                 gbl.BackGroundTiles[groundTile].move_cost == 0xff &&
-                gbl.area_ptr.field_1CC == 1 &&
+                gbl.area_ptr.inDungeon == 1 &&
                 arg_0 == false)
             {
                 arg_0 = true;
@@ -2075,20 +2091,13 @@ namespace engine
                 arg_0 = false;
             }
 
-            if (playerIndex > 0 &&
-                playerIndex != player_index)
-            {
-                Player player = gbl.player_array[playerIndex];
-                gbl.damage_flags = DamageType.Magic | DamageType.Electricity;
+            DoActualElecDamage(player_index, bonusType, damage, playerIndex);
 
-                ovr024.damage_person(ovr024.do_saving_throw(0, arg_6, player), DamageOnSave.Half, damage, player);
-                ovr025.load_missile_icons(0x13);
-                gbl.damage_flags = 0;
-            }
+            return arg_0;
         }
 
 
-        internal static void sub_5FA44(byte arg_0, byte arg_2, int damage, byte arg_6)
+        internal static void sub_5FA44(byte arg_0, SaveVerseType bonusType, int damage, byte arg_6)
         {
             byte var_3A = 0; /* Simeon */
             bool var_36 = false;
@@ -2157,7 +2166,7 @@ namespace engine
 
                         ovr025.draw_missile_attack(0x32, 4, path_a.current_y, path_a.current_x, tmp_y, tmp_x);
 
-                        sub_5F986(ref var_36, var_39, arg_2, damage, path_a.current_y, path_a.current_x);
+                        var_36 = DoElecDamage(var_36, var_39, bonusType, damage, path_a.current_y, path_a.current_x);
                         var_39 = var_3A;
 
                         if (var_36 == true)
@@ -2211,13 +2220,10 @@ namespace engine
 
         internal static void sub_5FCD9()
         {
-            bool var_2 = false; /* Simeon */
-
             int damage = ovr024.roll_dice(6, ovr025.spellMaxTargetCount(gbl.spell_id));
 
-            sub_5F986(ref var_2, 0, 4, damage, gbl.targetY, gbl.targetX);
-            sub_5FA44(1, 4, damage, 7);
-
+            DoElecDamage(0, SaveVerseType.type4, damage, gbl.targetY, gbl.targetX);
+            sub_5FA44(1, SaveVerseType.type4, damage, 7);
         }
 
 
@@ -2291,7 +2297,7 @@ namespace engine
             if (gbl.sp_target_count != 0 &&
                 ovr024.heal_player(0, ovr024.roll_dice(8, 2) + 1, gbl.sp_targets[1]) == true)
             {
-                ovr025.describeHealing(gbl.sp_targets[1]);
+                ovr025.DescribeHealing(gbl.sp_targets[1]);
             }
         }
 
@@ -2312,10 +2318,8 @@ namespace engine
 
         internal static void sub_6003C()
         {
-            bool var_1 = false;
-
-            sub_5F986(ref var_1, 0, 4, ovr024.roll_dice(6, 1) + 20, gbl.targetY, gbl.targetX);
-            sub_5FA44(0, 4, 20, 3);
+            DoElecDamage(0, SaveVerseType.type4, ovr024.roll_dice(6, 1) + 20, gbl.targetY, gbl.targetX);
+            sub_5FA44(0, SaveVerseType.type4, 20, 3);
         }
 
 
@@ -2352,7 +2356,7 @@ namespace engine
         }
 
 
-        internal static void cure_poison()
+        internal static void SpellNeutralizePoison() // cure_poison
         {
             Player target = gbl.sp_targets[1];
 
@@ -2387,18 +2391,18 @@ namespace engine
         }
 
 
-        internal static void sub_602D0()
+        internal static void SpellPoison() // sub_602D0
         {
-            Affect var_2 = null; /* Simeon */
-
             sub_5CF7F(string.Empty, DamageType.Magic, 0, false, 0, gbl.spell_id);
+
             Player target = gbl.player_ptr.actions.target;
-            gbl.current_affect = Affects.affect_40;
+
+            gbl.current_affect = Affects.poison_plus_0;
             ovr024.CheckAffectsEffect(target, CheckType.Type_9);
 
-            if (gbl.current_affect == Affects.affect_40)
+            if (gbl.current_affect == Affects.poison_plus_0)
             {
-                ovr013.CallAffectTable(Effect.Add, var_2, gbl.player_ptr, Affects.affect_40);
+                ovr013.CallAffectTable(Effect.Add, null, gbl.player_ptr, Affects.poison_plus_0);
             }
         }
 
@@ -2427,7 +2431,7 @@ namespace engine
             if (gbl.sp_target_count != 0 &&
                 ovr024.heal_player(0, ovr024.roll_dice(8, 3) + 3, gbl.sp_targets[1]) == true)
             {
-                ovr025.describeHealing(gbl.sp_targets[1]);
+                ovr025.DescribeHealing(gbl.sp_targets[1]);
             }
         }
 
@@ -2451,7 +2455,7 @@ namespace engine
         }
 
 
-        internal static void cast_raise()
+        internal static void SpellRaiseDead() // cast_raise
         {
             Player player = gbl.sp_targets[1];
 
@@ -2477,18 +2481,18 @@ namespace engine
         }
 
 
-        internal static void cast_slay()
+        internal static void SpellSlayLiving() //cast_slay
         {
             Player target = gbl.sp_targets[1];
             gbl.damage_flags = DamageType.Unknown40;
-            gbl.damage = 0x43;
+            gbl.damage = 67;
             ovr024.CheckAffectsEffect(target, CheckType.Type_9);
 
             if (gbl.damage != 0)
             {
-                if (ovr024.do_saving_throw(0, 4, target) == false)
+                if (ovr024.RollSavingThrow(0, SaveVerseType.type4, target) == false)
                 {
-                    ovr024.sub_63014("is slain", Status.dead, target);
+                    ovr024.KillPlayer("is slain", Status.dead, target);
                 }
                 else
                 {
@@ -2504,9 +2508,9 @@ namespace engine
         }
 
 
-        internal static void cast_entangle()
+        internal static void SpellEntangle() // cast_entangle
         {
-            if (gbl.area_ptr.field_1CC == 0)
+            if (gbl.area_ptr.inDungeon == 0)
             {
                 for (int i = 1; i <= gbl.sp_target_count; i++)
                 {
@@ -2514,7 +2518,7 @@ namespace engine
                     {
                         Player target = gbl.sp_targets[i];
 
-                        bool saved = ovr024.do_saving_throw(0, 4, target);
+                        bool saved = ovr024.RollSavingThrow(0, SaveVerseType.type4, target);
 
                         ovr024.is_unaffected("is entangled", saved, DamageOnSave.Zero, false, 0, GetSpellAffectTimeout(0x88), Affects.entangle, target);
                     }
@@ -2523,21 +2527,21 @@ namespace engine
         }
 
 
-        internal static void cast_faerie_fire() /* cast_highlisht */
+        internal static void SpellFaerieFire() /* cast_highlisht */
         {
-            sub_5DB24("is highlighted", 0);
+            MultiTargetedSpell("is highlighted", 0);
         }
 
 
-        internal static void cast_invisible2()
+        internal static void SpellInvisToAnimals() // cast_invisible2
         {
             sub_5CF7F("is invisible", 0, 0, false, 0, gbl.spell_id);
         }
 
 
-        internal static void cast_charmed()
+        internal static void SpellCharmPerson() // cast_charmed
         {
-            sub_5DB24("is charmed", 0);
+            MultiTargetedSpell("is charmed", 0);
 
             for (int i = 1; i <= gbl.sp_target_count; i++)
             {
@@ -2566,7 +2570,7 @@ namespace engine
                 {
                     Player target = gbl.sp_targets[target_idx];
 
-                    bool saved = ovr024.do_saving_throw(0, 6, target);
+                    bool saved = ovr024.RollSavingThrow(0, SaveVerseType.type6, target);
 
                     ovr024.is_unaffected("is confused", saved, DamageOnSave.Zero, false, 0, GetSpellAffectTimeout(0x52), Affects.cause_disease_2, target);
                 }
@@ -2599,7 +2603,7 @@ namespace engine
                 }
             }
 
-            ovr033.draw_74572(ovr033.get_player_index(player), 0, 0);
+            ovr033.RedrawPlayerBackground(ovr033.get_player_index(player));
 
             ovr033.sub_7515A(false, gbl.targetY, gbl.targetX, player);
 
@@ -2619,7 +2623,7 @@ namespace engine
             {
                 Player target = gbl.sp_targets[var_9];
 
-                bool saves = ovr024.do_saving_throw(0, 4, target);
+                bool saves = ovr024.RollSavingThrow(0, SaveVerseType.type4, target);
 
                 if (saves == false)
                 {
@@ -2699,7 +2703,7 @@ namespace engine
             Player target = gbl.sp_targets[1];
             gbl.damage_flags = DamageType.Unknown40;
 
-            if (ovr024.do_saving_throw(0, 4, target) == false)
+            if (ovr024.RollSavingThrow(0, SaveVerseType.type4, target) == false)
             {
                 ovr024.is_unaffected("is clumsy", false, 0, false, 0, GetSpellAffectTimeout(0x56), Affects.fumbling, target);
 
@@ -2879,33 +2883,34 @@ namespace engine
         }
 
 
-        internal static void sub_615F2()
+        internal static void SpellFeeblemind() // sub_615F2
         {
             Player target = gbl.sp_targets[1];
 
-            var bkup_val = target.field_DF[4];
+            var oldBonus = target.saveVerse[4];
 
             if (target._class == ClassId.cleric)
             {
-                target.field_DF[4] -= 1;
+                target.saveVerse[4] -= 1;
             }
             else if (target._class == ClassId.magic_user)
             {
-                target.field_DF[4] += 4;
+                target.saveVerse[4] += 4;
             }
             else
             {
-                target.field_DF[4] += 2;
+                target.saveVerse[4] += 2;
             }
 
-            sub_5CF7F(string.Empty, 0, 0, false, 0, gbl.spell_id);
+            gbl.damage_flags = 0;
 
             if (target.HasAffect(Affects.feeblemind) == true)
             {
                 ovr013.CallAffectTable(Effect.Add, null, target, Affects.feeblemind);
             }
 
-            target.field_DF[4] = bkup_val;
+            //Todo Feeblemind does not seam to have a lasting effect.
+            target.saveVerse[4] = oldBonus;
         }
 
 
@@ -2974,9 +2979,9 @@ namespace engine
                     }
                 }
 
-                if (ovr024.do_saving_throw(0, 1, gbl.spell_target) == false)
+                if (ovr024.RollSavingThrow(0, SaveVerseType.type1, gbl.spell_target) == false)
                 {
-                    ovr024.sub_63014("is Stoned", Status.stoned, gbl.spell_target);
+                    ovr024.KillPlayer("is Stoned", Status.stoned, gbl.spell_target);
                 }
             }
         }
@@ -3015,8 +3020,8 @@ namespace engine
                 ovr025.load_missile_icons(0x13);
 
                 ovr025.draw_missile_attack(0x32, 4, gbl.targetY, gbl.targetX, var_3, var_2);
-                sub_5F986(ref var_1, 0, 3, player.hit_point_max, gbl.targetY, gbl.targetX);
-                sub_5FA44(0, 3, player.hit_point_max, 10);
+                var_1 = DoElecDamage(var_1, 0, SaveVerseType.type3, player.hit_point_max, gbl.targetY, gbl.targetX);
+                sub_5FA44(0, SaveVerseType.type3, player.hit_point_max, 10);
 
                 if (affect.affect_data > 0xFD)
                 {
@@ -3053,7 +3058,7 @@ namespace engine
                         ovr033.PlayerMapYPos(gbl.spell_target), ovr033.PlayerMapXPos(gbl.spell_target),
                         ovr033.PlayerMapYPos(player), ovr033.PlayerMapXPos(player));
 
-                    ovr024.damage_person(ovr024.do_saving_throw(0, 3, gbl.spell_target), DamageOnSave.Half, player.hit_point_max, gbl.spell_target);
+                    ovr024.damage_person(ovr024.RollSavingThrow(0, SaveVerseType.type3, gbl.spell_target), DamageOnSave.Half, player.hit_point_max, gbl.spell_target);
                 }
                 else
                 {
@@ -3111,7 +3116,7 @@ namespace engine
                         {
                             Player target = gbl.sp_targets[i];
 
-                            bool save_made = ovr024.do_saving_throw(0, 3, target);
+                            bool save_made = ovr024.RollSavingThrow(0, SaveVerseType.type3, target);
                             ovr024.damage_person(save_made, DamageOnSave.Half, attacker.hit_point_max, target);
                         }
                     }
@@ -3159,7 +3164,7 @@ namespace engine
                             if (gbl.sp_targets[var_4] != null)
                             {
                                 Player target = gbl.sp_targets[var_4];
-                                bool saves = ovr024.do_saving_throw(0, 3, target);
+                                bool saves = ovr024.RollSavingThrow(0, SaveVerseType.type3, target);
 
                                 ovr024.damage_person(saves, DamageOnSave.Half, attacker.hit_point_max, target);
                             }
@@ -3191,7 +3196,7 @@ namespace engine
                 ovr025.draw_missile_attack(0x1E, 1, ovr033.PlayerMapYPos(gbl.spell_target), ovr033.PlayerMapXPos(gbl.spell_target),
                     ovr033.PlayerMapYPos(arg_6), ovr033.PlayerMapXPos(arg_6));
 
-                ovr024.damage_person(ovr024.do_saving_throw(0, 3, gbl.spell_target), DamageOnSave.Half, 7, gbl.spell_target);
+                ovr024.damage_person(ovr024.RollSavingThrow(0, SaveVerseType.type3, gbl.spell_target), DamageOnSave.Half, 7, gbl.spell_target);
             }
         }
 
@@ -3212,7 +3217,7 @@ namespace engine
                 ovr025.load_missile_icons(0x13);
                 ovr025.draw_missile_attack(0x32, 4, gbl.targetY, gbl.targetX, pos_y, pos_x);
 
-                sub_5F986(ref var_1, 0, 4, ovr024.roll_dice_save(6, 16), gbl.targetY, gbl.targetX);
+                var_1 = DoElecDamage(var_1, 0, SaveVerseType.type4, ovr024.roll_dice_save(6, 16), gbl.targetY, gbl.targetX);
                 sub_5FA44(0, 0, ovr024.roll_dice_save(6, 16), 10);
                 var_1 = true;
                 ovr025.clear_actions(caster);
@@ -3237,7 +3242,7 @@ namespace engine
                 ovr025.draw_missile_attack(0x2d, 4, ovr033.PlayerMapYPos(gbl.spell_target), ovr033.PlayerMapXPos(gbl.spell_target),
                     ovr033.PlayerMapYPos(arg_6), ovr033.PlayerMapXPos(arg_6));
 
-                if (ovr024.do_saving_throw(0, 1, gbl.spell_target) == false)
+                if (ovr024.RollSavingThrow(0, SaveVerseType.type1, gbl.spell_target) == false)
                 {
                     ovr024.add_affect(false, 0xff, 0x3c, Affects.paralyze, gbl.spell_target);
                     ovr025.DisplayPlayerStatusString(false, 10, "is paralyzed", gbl.spell_target);
@@ -3321,107 +3326,108 @@ namespace engine
 
             gbl.dword_1D5CA = new spellDelegate(ovr023.cast_spell_on);
 
-            gbl.spells_func_table[0x00] = null;
-            gbl.spells_func_table[0x01] = ovr023.cleric_bless;
-            gbl.spells_func_table[0x02] = ovr023.cleric_curse;
-            gbl.spells_func_table[0x03] = ovr023.cleric_cure_light;
-            gbl.spells_func_table[0x04] = ovr023.cleric_cause_light;
-            gbl.spells_func_table[0x05] = ovr023.is_affected;
-            gbl.spells_func_table[0x06] = ovr023.is_protected;
-            gbl.spells_func_table[0x07] = ovr023.is_protected;
-            gbl.spells_func_table[0x08] = ovr023.cleric_resist_cold;
-            gbl.spells_func_table[0x09] = ovr023.sub_5DEE1;
-            gbl.spells_func_table[0x0a] = ovr023.is_charmed;
-            gbl.spells_func_table[0x0b] = ovr023.is_affected;
-            gbl.spells_func_table[0x0c] = ovr023.is_stronger;
-            gbl.spells_func_table[0x0d] = ovr023.enlarge_end;
-            gbl.spells_func_table[0x0e] = ovr023.is_friendly;
-            gbl.spells_func_table[0x0f] = ovr023.sub_5E221;
-            gbl.spells_func_table[0x10] = ovr023.is_protected;
-            gbl.spells_func_table[0x11] = ovr023.is_protected;
-            gbl.spells_func_table[0x12] = ovr023.is_affected;
-            gbl.spells_func_table[0x13] = ovr023.is_shielded;
-            gbl.spells_func_table[0x14] = ovr023.sub_5E2B2;
-            gbl.spells_func_table[0x15] = ovr023.falls_asleep;
-            gbl.spells_func_table[0x16] = ovr023.is_affected;
-            gbl.spells_func_table[0x17] = ovr023.is_held;
-            gbl.spells_func_table[0x18] = ovr023.is_fire_resistant;
-            gbl.spells_func_table[0x19] = ovr023.is_silenced;
-            gbl.spells_func_table[0x1a] = ovr023.is_affected2;
-            gbl.spells_func_table[0x1b] = ovr023.is_charmed2;
-            gbl.spells_func_table[0x1c] = ovr023.sub_5E681;
-            gbl.spells_func_table[0x1d] = ovr023.is_affected;
-            gbl.spells_func_table[0x1e] = ovr023.is_invisible;
-            gbl.spells_func_table[0x1f] = ovr023.knock_Knock;
-            gbl.spells_func_table[0x20] = ovr023.is_duplicated;
-            gbl.spells_func_table[0x21] = ovr023.is_weakened;
-            gbl.spells_func_table[0x22] = ovr023.create_noxious_cloud;
-            gbl.spells_func_table[0x23] = ovr023.sub_5EC5B;
-            gbl.spells_func_table[0x24] = ovr023.is_animated;
-            gbl.spells_func_table[0x25] = ovr023.can_see;
-            gbl.spells_func_table[0x26] = ovr023.is_blind;
-            gbl.spells_func_table[0x27] = ovr023.sub_5F0DC;
-            gbl.spells_func_table[0x28] = ovr023.is_diseased;
-            gbl.spells_func_table[0x29] = ovr023.is_affected3;
-            gbl.spells_func_table[0x2a] = ovr023.is_praying;
-            gbl.spells_func_table[0x2b] = ovr023.uncurse;
-            gbl.spells_func_table[0x2c] = ovr023.curse;
-            gbl.spells_func_table[0x2d] = ovr023.spell_blinking;
-            gbl.spells_func_table[0x2e] = ovr023.is_affected3;
-            gbl.spells_func_table[0x2f] = ovr023.sub_5F782;
-            gbl.spells_func_table[0x30] = ovr023.cast_haste;
-            gbl.spells_func_table[0x31] = ovr023.is_held;
-            gbl.spells_func_table[0x32] = ovr023.is_invisible;
-            gbl.spells_func_table[0x33] = ovr023.sub_5FCD9;
-            gbl.spells_func_table[0x34] = ovr023.is_protected;
-            gbl.spells_func_table[0x35] = ovr023.is_protected;
-            gbl.spells_func_table[0x36] = ovr023.is_protected;
-            gbl.spells_func_table[0x37] = ovr023.sub_5FD2E;
-            gbl.spells_func_table[0x38] = ovr023.cast_restore;
-            gbl.spells_func_table[0x39] = ovr023.cast_speed;
-            gbl.spells_func_table[0x3a] = ovr023.sub_5FF6D;
-            gbl.spells_func_table[0x3b] = ovr023.cast_strength;
-            gbl.spells_func_table[0x3c] = ovr023.sub_6003C;
-            gbl.spells_func_table[0x3d] = ovr023.cast_paralyzed;
-            gbl.spells_func_table[0x3e] = ovr023.cast_heal;
-            gbl.spells_func_table[0x3f] = ovr023.cast_invisible;
-            gbl.spells_func_table[0x40] = ovr023.sub_5F782;
-            gbl.spells_func_table[0x41] = ovr023.dam2d4plus2;
-            gbl.spells_func_table[0x42] = ovr023.dam2d8plus1;
-            gbl.spells_func_table[0x43] = ovr023.cure_poison;
-            gbl.spells_func_table[0x44] = ovr023.sub_602D0;
-            gbl.spells_func_table[0x45] = ovr023.is_protected;
-            gbl.spells_func_table[0x46] = ovr023.cast_flattern;
-            gbl.spells_func_table[0x47] = ovr023.sub_603F0;
-            gbl.spells_func_table[0x48] = ovr023.dam3d8plus3;
-            gbl.spells_func_table[0x49] = ovr023.is_affected4;
-            gbl.spells_func_table[0x4a] = ovr023.sub_604DA;
-            gbl.spells_func_table[0x4b] = ovr023.cast_raise;
-            gbl.spells_func_table[0x4c] = ovr023.cast_slay;
-            gbl.spells_func_table[0x4d] = ovr023.is_affected;
-            gbl.spells_func_table[0x4e] = ovr023.cast_entangle;
-            gbl.spells_func_table[0x4f] = ovr023.cast_faerie_fire;
-            gbl.spells_func_table[0x50] = ovr023.cast_invisible2;
-            gbl.spells_func_table[0x51] = ovr023.cast_charmed;
-            gbl.spells_func_table[0x52] = ovr023.cast_confuse;
-            gbl.spells_func_table[0x53] = ovr023.cast_teleport;
-            gbl.spells_func_table[0x54] = ovr023.cast_fear;
-            gbl.spells_func_table[0x55] = ovr023.cast_protection;
-            gbl.spells_func_table[0x56] = ovr023.spell_slow;
-            gbl.spells_func_table[0x57] = ovr023.sub_60F0B;
-            gbl.spells_func_table[0x58] = ovr023.sub_60F4E;
-            gbl.spells_func_table[0x59] = ovr023.uncurse;
-            gbl.spells_func_table[0x5a] = ovr023.is_animated;
-            gbl.spells_func_table[0x5b] = ovr023.spell_poisonous_cloud;
-            gbl.spells_func_table[0x5c] = ovr023.sub_61550;
-            gbl.spells_func_table[0x5d] = ovr023.sub_615F2;
-            gbl.spells_func_table[0x5e] = ovr023.is_held;
-            gbl.spells_func_table[0x5f] = ovr023.sub_616CC;
-            gbl.spells_func_table[0x60] = ovr023.sub_616CC;
-            gbl.spells_func_table[0x61] = ovr023.sub_616CC;
-            gbl.spells_func_table[0x62] = ovr023.sub_61727;
-            gbl.spells_func_table[0x63] = ovr023.cast_heal2;
-            gbl.spells_func_table[0x64] = ovr023.curse;
+            gbl.spellTable = new Dictionary<Spells, spellDelegate2>();
+
+            gbl.spellTable.Add(Spells.spell_01, ovr023.cleric_bless);
+            gbl.spellTable.Add(Spells.spell_02, ovr023.cleric_curse);
+            gbl.spellTable.Add(Spells.spell_03, ovr023.cleric_cure_light);
+            gbl.spellTable.Add(Spells.spell_04, ovr023.cleric_cause_light);
+            gbl.spellTable.Add(Spells.spell_05, ovr023.is_affected);
+            gbl.spellTable.Add(Spells.spell_06, ovr023.is_protected);
+            gbl.spellTable.Add(Spells.spell_07, ovr023.is_protected);
+            gbl.spellTable.Add(Spells.spell_08, ovr023.cleric_resist_cold);
+            gbl.spellTable.Add(Spells.spell_09, ovr023.sub_5DEE1);
+            gbl.spellTable.Add(Spells.spell_0a, ovr023.SpellCharm);
+            gbl.spellTable.Add(Spells.spell_0b, ovr023.is_affected);
+            gbl.spellTable.Add(Spells.spell_0c, ovr023.is_stronger);
+            gbl.spellTable.Add(Spells.spell_0d, ovr023.enlarge_end);
+            gbl.spellTable.Add(Spells.spell_0e, ovr023.is_friendly);
+            gbl.spellTable.Add(Spells.spell_0f, ovr023.sub_5E221);
+            gbl.spellTable.Add(Spells.spell_10, ovr023.is_protected);
+            gbl.spellTable.Add(Spells.spell_11, ovr023.is_protected);
+            gbl.spellTable.Add(Spells.spell_12, ovr023.is_affected);
+            gbl.spellTable.Add(Spells.spell_13, ovr023.is_shielded);
+            gbl.spellTable.Add(Spells.spell_14, ovr023.sub_5E2B2);
+            gbl.spellTable.Add(Spells.spell_15, ovr023.falls_asleep);
+            gbl.spellTable.Add(Spells.spell_16, ovr023.is_affected);
+            gbl.spellTable.Add(Spells.spell_17, ovr023.is_held);
+            gbl.spellTable.Add(Spells.spell_18, ovr023.is_fire_resistant);
+            gbl.spellTable.Add(Spells.spell_19, ovr023.is_silenced);
+            gbl.spellTable.Add(Spells.spell_1a, ovr023.is_affected2);
+            gbl.spellTable.Add(Spells.spell_1b, ovr023.is_charmed2);
+            gbl.spellTable.Add(Spells.spell_1c, ovr023.sub_5E681);
+            gbl.spellTable.Add(Spells.spell_1d, ovr023.is_affected);
+            gbl.spellTable.Add(Spells.spell_1e, ovr023.is_invisible);
+            gbl.spellTable.Add(Spells.knock, ovr023.SpellKnock);
+            gbl.spellTable.Add(Spells.spell_20, ovr023.is_duplicated);
+            gbl.spellTable.Add(Spells.spell_21, ovr023.is_weakened);
+            gbl.spellTable.Add(Spells.spell_22, ovr023.create_noxious_cloud);
+            gbl.spellTable.Add(Spells.spell_23, ovr023.sub_5EC5B);
+            gbl.spellTable.Add(Spells.spell_24, ovr023.is_animated);
+            gbl.spellTable.Add(Spells.spell_25, ovr023.can_see);
+            gbl.spellTable.Add(Spells.spell_26, ovr023.is_blind);
+            gbl.spellTable.Add(Spells.spell_27, ovr023.sub_5F0DC);
+            gbl.spellTable.Add(Spells.spell_28, ovr023.is_diseased);
+            gbl.spellTable.Add(Spells.spell_29, ovr023.is_affected3);
+            gbl.spellTable.Add(Spells.spell_2a, ovr023.is_praying);
+            gbl.spellTable.Add(Spells.spell_2b, ovr023.uncurse);
+            gbl.spellTable.Add(Spells.spell_2c, ovr023.curse);
+            gbl.spellTable.Add(Spells.spell_2d, ovr023.spell_blinking);
+            gbl.spellTable.Add(Spells.spell_2e, ovr023.is_affected3);
+            gbl.spellTable.Add(Spells.spell_2f, ovr023.sub_5F782);
+            gbl.spellTable.Add(Spells.spell_30, ovr023.cast_haste);
+            gbl.spellTable.Add(Spells.spell_31, ovr023.is_held);
+            gbl.spellTable.Add(Spells.spell_32, ovr023.is_invisible);
+            gbl.spellTable.Add(Spells.spell_33, ovr023.sub_5FCD9);
+            gbl.spellTable.Add(Spells.spell_34, ovr023.is_protected);
+            gbl.spellTable.Add(Spells.spell_35, ovr023.is_protected);
+            gbl.spellTable.Add(Spells.spell_36, ovr023.is_protected);
+            gbl.spellTable.Add(Spells.spell_37, ovr023.sub_5FD2E);
+            gbl.spellTable.Add(Spells.spell_38, ovr023.cast_restore);
+            gbl.spellTable.Add(Spells.spell_39, ovr023.cast_speed);
+            gbl.spellTable.Add(Spells.spell_3a, ovr023.sub_5FF6D);
+            gbl.spellTable.Add(Spells.spell_3b, ovr023.cast_strength);
+            gbl.spellTable.Add(Spells.spell_3c, ovr023.sub_6003C);
+            gbl.spellTable.Add(Spells.spell_3d, ovr023.cast_paralyzed);
+            gbl.spellTable.Add(Spells.spell_3e, ovr023.cast_heal);
+            gbl.spellTable.Add(Spells.spell_3f, ovr023.cast_invisible);
+            gbl.spellTable.Add(Spells.spell_40, ovr023.sub_5F782);
+            gbl.spellTable.Add(Spells.spell_41, ovr023.dam2d4plus2);
+            gbl.spellTable.Add(Spells.spell_42, ovr023.dam2d8plus1);
+            gbl.spellTable.Add(Spells.spell_43, ovr023.SpellNeutralizePoison);
+            gbl.spellTable.Add(Spells.spell_44, ovr023.SpellPoison);
+            gbl.spellTable.Add(Spells.spell_45, ovr023.is_protected);
+            gbl.spellTable.Add(Spells.spell_46, ovr023.cast_flattern);
+            gbl.spellTable.Add(Spells.spell_47, ovr023.sub_603F0);
+            gbl.spellTable.Add(Spells.spell_48, ovr023.dam3d8plus3);
+            gbl.spellTable.Add(Spells.spell_49, ovr023.is_affected4);
+            gbl.spellTable.Add(Spells.spell_4a, ovr023.sub_604DA);
+            gbl.spellTable.Add(Spells.spell_4b, ovr023.SpellRaiseDead);
+            gbl.spellTable.Add(Spells.spell_4c, ovr023.SpellSlayLiving);
+            gbl.spellTable.Add(Spells.spell_4d, ovr023.is_affected);
+            gbl.spellTable.Add(Spells.spell_4e, ovr023.SpellEntangle);
+            gbl.spellTable.Add(Spells.spell_4f, ovr023.SpellFaerieFire);
+            gbl.spellTable.Add(Spells.spell_50, ovr023.SpellInvisToAnimals);
+            gbl.spellTable.Add(Spells.spell_51, ovr023.SpellCharmPerson);
+            gbl.spellTable.Add(Spells.spell_52, ovr023.cast_confuse);
+            gbl.spellTable.Add(Spells.spell_53, ovr023.cast_teleport);
+            gbl.spellTable.Add(Spells.spell_54, ovr023.cast_fear);
+            gbl.spellTable.Add(Spells.spell_55, ovr023.cast_protection);
+            gbl.spellTable.Add(Spells.spell_56, ovr023.spell_slow);
+            gbl.spellTable.Add(Spells.spell_57, ovr023.sub_60F0B);
+            gbl.spellTable.Add(Spells.spell_58, ovr023.sub_60F4E);
+            gbl.spellTable.Add(Spells.spell_59, ovr023.uncurse);
+            gbl.spellTable.Add(Spells.spell_5a, ovr023.is_animated);
+            gbl.spellTable.Add(Spells.spell_5b, ovr023.spell_poisonous_cloud);
+            gbl.spellTable.Add(Spells.spell_5c, ovr023.sub_61550);
+            gbl.spellTable.Add(Spells.spell_5d, ovr023.SpellFeeblemind);
+            gbl.spellTable.Add(Spells.spell_5e, ovr023.is_held);
+            gbl.spellTable.Add(Spells.spell_5f, ovr023.sub_616CC);
+            gbl.spellTable.Add(Spells.spell_60, ovr023.sub_616CC);
+            gbl.spellTable.Add(Spells.spell_61, ovr023.sub_616CC);
+            gbl.spellTable.Add(Spells.spell_62, ovr023.sub_61727);
+            gbl.spellTable.Add(Spells.spell_63, ovr023.cast_heal2);
+            gbl.spellTable.Add(Spells.spell_64, ovr023.curse);
         }
     }
 }

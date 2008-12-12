@@ -113,7 +113,7 @@ namespace engine
                         bonus[2] += (sbyte)(item.plus);
                     }
 
-                    player.field_186 = (sbyte)(player.field_186 + item.plus_save);
+                    player.field_186 += (sbyte)item.plus_save;
                     return;
                 }
 
@@ -322,7 +322,7 @@ namespace engine
 
         internal static void PartySummary(Player player)
         {
-            if (gbl.game_state == GameState.State3)
+            if (gbl.game_state == GameState.WildernessMap)
             {
                 return;
             }
@@ -1002,13 +1002,7 @@ namespace engine
 
             if (flipIcon == true)
             {
-                DaxBlock var_4 = new DaxBlock( 1, 1, 3, 0x18);
-                seg040.flipIconLeftToRight(var_4, gbl.combat_icons[iconIdx, iconAction]);
-
-                System.Array.Copy(var_4.data, 0, gbl.missile_dax.data, iconOffset * dataSize, dataSize);
-                System.Array.Copy(var_4.data_ptr, 0, gbl.missile_dax.data_ptr, iconOffset * dataSize, dataSize);
-
-                seg040.free_dax_block(ref var_4);
+                seg040.FlipIconLeftToRight(gbl.combat_icons[iconIdx, iconAction]);
             }
             else
             {
@@ -1310,7 +1304,7 @@ namespace engine
 
                 load_missile_icons(iconId);
 
-                if (ovr033.sub_74761(true, player) == false)
+                if (ovr033.PlayerOnScreen(true, player) == false)
                 {
                     ovr033.redrawCombatArea(8, 3, ovr033.PlayerMapYPos(player), ovr033.PlayerMapXPos(player));
                 }
@@ -1376,8 +1370,6 @@ namespace engine
         }
 
 
-        static Set unk_683B5 = new Set(0x0001, new byte[] { 0x03 });
-
         internal static void damage_player(int damage, Player player)
         {
             int neg_hp = 0;
@@ -1414,7 +1406,12 @@ namespace engine
                 }
             }
 
-            if (unk_683B5.MemberOf((int)player.health_status) == false)
+            if (player.health_status == Status.okey || 
+                player.health_status == Status.animated)
+            {
+                player.hit_point_current = (byte)new_hp;
+            }
+            else
             {
                 player.in_combat = false;
                 player.hit_point_current = 0;
@@ -1433,14 +1430,10 @@ namespace engine
                     player.actions.delay = 0;
                 }
             }
-            else
-            {
-                player.hit_point_current = (byte)new_hp;
-            }
         }
 
 
-        internal static void describeHealing(Player player) /* sub_684F7 */
+        internal static void DescribeHealing(Player player) /* sub_684F7 */
         {
             string text;
 
@@ -1462,10 +1455,7 @@ namespace engine
         }
 
 
-
-
-
-        internal static void count_teams()
+        internal static void CountCombatTeamMembers() // count_teams
         {
             gbl.friends_count = 0;
             gbl.foe_count = 0;
@@ -1487,10 +1477,8 @@ namespace engine
         }
 
 
-        internal static int near_enemy(int max_range, Player player) /*near_enermy*/
+        internal static int BuildNearTargets(int max_range, Player player) /*near_enermy*/
         {
-            int ret_val;
-
             ovr032.Rebuild_SortedCombatantList(gbl.mapToBackGroundTile,
                 ovr033.PlayerMapSize(player), 0xff, max_range,
                 ovr033.PlayerMapYPos(player), ovr033.PlayerMapXPos(player));
@@ -1502,8 +1490,6 @@ namespace engine
                 for (int i = 1; i <= gbl.sortedCombatantCount; i++)
                 {
                     Player tmp = gbl.player_array[gbl.SortedCombatantList[i].player_index];
-                    //int steps = gbl.SortedCombatantList[i].steps;
-                    //int index = gbl.SortedCombatantList[i].player_index;
 
                     if (tmp.combat_team == player.OppositeTeam())
                     {
@@ -1515,7 +1501,7 @@ namespace engine
                 gbl.sortedCombatantCount = tmpCount;
             }
 
-            ret_val = gbl.sortedCombatantCount;
+            int ret_val = gbl.sortedCombatantCount;
             for (int i = 1; i <= gbl.sortedCombatantCount; i++)
             {
                 gbl.near_targets[i] = gbl.SortedCombatantList[i].player_index;
@@ -1655,7 +1641,7 @@ namespace engine
             switch (gbl.game_state)
             {
                 case GameState.State0:
-                    seg037.draw8x8_outer_frame();
+                    seg037.DrawFrame_Outer();
                     break;
 
                 case GameState.Shop:
@@ -1666,7 +1652,7 @@ namespace engine
 
                     if (gbl.lastDaxBlockId == 0x50)
                     {
-                        ovr030.sub_7000A(gbl.byte_1D556.frames[0].picture, true, 3, 3);
+                        ovr030.DrawMaybeOverlayed(gbl.byte_1D556.frames[0].picture, true, 3, 3);
                     }
                     else
                     {
@@ -1678,7 +1664,7 @@ namespace engine
                     display_map_position_time();
                     break;
 
-                case GameState.State2:
+                case GameState.Camping:
                     seg037.draw8x8_03();
                     ovr030.load_pic_final(ref gbl.byte_1D556, 0, 0x1d, "PIC");
                     PartySummary(gbl.player_ptr);
@@ -1687,16 +1673,16 @@ namespace engine
 
                 case GameState.State4:
                     seg037.draw8x8_03();
-                    ovr029.update_3D_view();
+                    ovr029.RedrawView();
                     PartySummary(gbl.player_ptr);
                     display_map_position_time();
                     gbl.byte_1EE98 = false;
                     break;
 
-                case GameState.State3:
+                case GameState.WildernessMap:
                     if (gbl.lastDaxBlockId != 0x50)
                     {
-                        ovr029.update_3D_view();
+                        ovr029.RedrawView();
                     }
                     break;
 
@@ -1728,7 +1714,7 @@ namespace engine
 
         internal static void display_map_position_time() // camping_search
         {
-            if (gbl.game_state != GameState.State3)
+            if (gbl.game_state != GameState.WildernessMap)
             {
                 string output = string.Empty;
 
@@ -1748,7 +1734,7 @@ namespace engine
                     output += "*";
                 }
 
-                if (gbl.game_state == GameState.State2)
+                if (gbl.game_state == GameState.Camping)
                 {
                     output += " camping";
                 }
@@ -1764,10 +1750,10 @@ namespace engine
         }
 
 
-        internal static void sub_68DC0()
+        internal static void RedrawCombatScreen() // sub_68DC0
         {
             ovr033.Color_0_8_inverse();
-            seg037.draw8x8_06();
+            seg037.DrawFrame_Combat();
 
             ovr033.redrawCombatArea(8, 0xff, gbl.mapToBackGroundTile.mapScreenTopY + 3, gbl.mapToBackGroundTile.mapScreenLeftX + 3);
         }
@@ -1784,7 +1770,7 @@ namespace engine
             {
                 PartySummary(player);
 
-                bool useOverlay = (gbl.game_state == GameState.State2 || gbl.game_state == GameState.State6);
+                bool useOverlay = (gbl.game_state == GameState.Camping || gbl.game_state == GameState.State6);
                 bool special_key;
 
                 input_key = ovr027.displayInput(out special_key, useOverlay, 1, 15, 10, 13, "Select" + text, prompt + " ");
@@ -1956,8 +1942,8 @@ namespace engine
         }
 
 
-        internal static Item new_Item(Affects arg_0, Affects arg_2, Affects arg_4, short arg_6, byte arg_8,
-            short arg_A, bool cursed, byte arg_E, bool readied, byte arg_12, sbyte exp_value, byte arg_16,
+        internal static Item new_Item(Affects affect_3, Affects affect_2, Affects affect_1, short _value, byte count,
+            short weight, bool cursed, byte name_flags, bool readied, byte plus_save, sbyte plus, byte arg_16,
             sbyte arg_18, sbyte arg_1A, byte type)
         {
             Item item = new Item();
@@ -1967,25 +1953,25 @@ namespace engine
             item.field_2F = arg_1A;
             item.field_30 = arg_18;
             item.field_31 = arg_16;
-            item.plus = exp_value;
-            item.plus_save = arg_12;
+            item.plus = plus;
+            item.plus_save = plus_save;
             item.readied = readied;
-            item.hidden_names_flag = arg_E;
+            item.hidden_names_flag = name_flags;
             item.cursed = cursed;
-            item.weight = arg_A;
-            item.count = arg_8;
-            item._value = arg_6;
-            item.affect_1 = arg_4;
-            item.affect_2 = arg_2;
-            item.affect_3 = arg_0;
+            item.weight = weight;
+            item.count = count;
+            item._value = _value;
+            item.affect_1 = affect_1;
+            item.affect_2 = affect_2;
+            item.affect_3 = affect_3;
 
             return item;
         }
 
 
-        internal static bool bandage(bool bandage_flag)
+        internal static bool bandage(bool applyBandage)
         {
-            bool someone_bleeding = false;
+            bool someoneBleeding = false;
 
             foreach (Player player in gbl.player_next_ptr)
             {
@@ -1993,21 +1979,21 @@ namespace engine
                     player.combat_team == CombatTeam.Ours &&
                     player.health_status == Status.dying)
                 {
-                    someone_bleeding = true;
+                    someoneBleeding = true;
 
-                    if (bandage_flag == true)
+                    if (applyBandage == true)
                     {
                         player.health_status = Status.unconscious;
                         player.actions.bleeding = 0;
 
                         DisplayPlayerStatusString(true, 10, "is bandaged", player);
 
-                        bandage_flag = false;
+                        applyBandage = false;
                     }
                 }
             }
 
-            return someone_bleeding;
+            return someoneBleeding;
         }
     }
 }

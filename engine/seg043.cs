@@ -240,6 +240,10 @@ namespace engine
         {
             var bkupArea = gbl.game_area;
 
+            if (System.IO.File.Exists("Monster.html"))
+            {
+                System.IO.File.Delete("Monster.html");
+            }
             DebugWriter dw = new DebugWriter("Monster.html");
 
             dw.WriteLine("<html><body><table><tbody>");

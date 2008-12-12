@@ -13,7 +13,7 @@ namespace engine
             seg051.FreeMem(0x4e9, gbl.mapToBackGroundTile);
             gbl.mapToBackGroundTile = null;
 
-            seg040.free_dax_block(ref gbl.missile_dax);
+            gbl.missile_dax = null;
             ovr033.Color_0_8_normal();
             gbl.dword_1D5CA = ovr023.cast_spell_on;
         }
@@ -34,7 +34,7 @@ namespace engine
 
             while (end_combat == false)
             {
-                ovr025.count_teams();
+                ovr025.CountCombatTeamMembers();
 
                 foreach (Player tmp_player in gbl.player_next_ptr)
                 {
@@ -116,7 +116,7 @@ namespace engine
 
                 gbl.player_ptr = player;
 
-                gbl.byte_1D910 = ((player.combat_team == CombatTeam.Ours) || (ovr033.sub_74761(false, player) == true));
+                gbl.focusCombatAreaOnPlayer = ((player.combat_team == CombatTeam.Ours) || (ovr033.PlayerOnScreen(false, player) == true));
 
                 ovr033.sub_75356(true, 2, player);
                 ovr025.reclac_player_values(player);
@@ -192,7 +192,7 @@ namespace engine
                                     ovr014.sub_3EDD4(player);
                                     if (var_2 == false)
                                     {
-                                        ovr025.sub_68DC0();
+                                        ovr025.RedrawCombatScreen();
                                     }
                                     break;
 
@@ -206,7 +206,7 @@ namespace engine
                                     ovr014.sub_3EDD4(player);
                                     if (var_2 == false)
                                     {
-                                        ovr025.sub_68DC0();
+                                        ovr025.RedrawCombatScreen();
                                     }
                                     break;
 
@@ -398,7 +398,7 @@ namespace engine
                 ovr025.string_print01("Your Teammate is Dying");
             }
 
-            ovr025.count_teams();
+            ovr025.CountCombatTeamMembers();
 
             ovr033.redrawCombatArea(8, 0xff, gbl.mapToBackGroundTile.mapScreenTopY + 3, gbl.mapToBackGroundTile.mapScreenLeftX + 3);
 
@@ -448,7 +448,7 @@ namespace engine
                     case '\0':
                         player.actions.move = var_1;
 
-                        ovr033.draw_74572(ovr033.get_player_index(player), 0, 0);
+                        ovr033.RedrawPlayerBackground(ovr033.get_player_index(player));
 
                         if (ovr033.sub_7515A(false, var_4, var_3, player) == false)
                         {

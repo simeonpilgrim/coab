@@ -362,7 +362,7 @@ namespace engine
 
             seg037.draw8x8_clear_area(0x18, 0x27, 0x18, 0);
             bool redrawMenuItems = true;
-            seg037.draw8x8_04();
+            seg037.DrawFrame_WildernessMap();
 
             do
             {
@@ -441,7 +441,7 @@ namespace engine
             bool var_30 = false; /* Simeon */
 
             gbl.game_state = GameState.Shop;
-            gbl.redrawBoarder = (gbl.area_ptr.field_1CC == 0);
+            gbl.redrawBoarder = (gbl.area_ptr.inDungeon == 0);
 
             ovr025.load_pic();
             gbl.redrawBoarder = true;

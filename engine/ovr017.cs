@@ -206,36 +206,36 @@ namespace engine
 
             Player player = gbl.player_ptr;
 
-            char[] unk_16827 = new char[] { '\0', 'S', 'T' };
+            char[] sizeToken = new char[] { '\0', 'S', 'T' };
 
-            ovr034.chead_cbody_comspr_icon(11, player.head_icon, "CHEAD" + unk_16827[player.icon_size].ToString());
-            ovr034.chead_cbody_comspr_icon(player.icon_id, player.weapon_icon, "CBODY" + unk_16827[player.icon_size].ToString());
+            ovr034.chead_cbody_comspr_icon(11, player.head_icon, "CHEAD" + sizeToken[player.icon_size].ToString());
+            ovr034.chead_cbody_comspr_icon(player.icon_id, player.weapon_icon, "CBODY" + sizeToken[player.icon_size].ToString());
 
             MergeIcons(gbl.combat_icons[player.icon_id, 0], gbl.combat_icons[11, 0]);
             MergeIcons(gbl.combat_icons[player.icon_id, 1], gbl.combat_icons[11, 1]);
 
             if (recolour)
             {
-                byte[] var_23 = new byte[16];
-                byte[] var_13 = new byte[16];
+                byte[] newColors = new byte[16];
+                byte[] oldColors = new byte[16];
 
                 for (byte i = 0; i <= 15; i++)
                 {
-                    var_13[i] = i;
-                    var_23[i] = i;
+                    oldColors[i] = i;
+                    newColors[i] = i;
                 }
 
                 for (int i = 0; i < 6; i++)
                 {
-                    var_23[gbl.default_icon_colours[i]] = (byte)(player.icon_colours[i] & 0x0F);
-                    var_23[gbl.default_icon_colours[i] + 8] = (byte)((player.icon_colours[i] & 0xF0) >> 4);
+                    newColors[gbl.default_icon_colours[i]] = (byte)(player.icon_colours[i] & 0x0F);
+                    newColors[gbl.default_icon_colours[i] + 8] = (byte)((player.icon_colours[i] & 0xF0) >> 4);
                 }
 
-                seg040.DaxBlockRecolor(gbl.combat_icons[player.icon_id, 0], 0, 0, var_23, var_13);
-                seg040.DaxBlockRecolor(gbl.combat_icons[player.icon_id, 1], 0, 0, var_23, var_13);
+                seg040.DaxBlockRecolor(gbl.combat_icons[player.icon_id, 0], false, newColors, oldColors);
+                seg040.DaxBlockRecolor(gbl.combat_icons[player.icon_id, 1], false, newColors, oldColors);
             }
 
-            ovr034.free_icon(11);
+            ovr034.ReleaseCombatIcon(11);
             seg042.restore_game_area();
             seg043.clear_keyboard();
         }
@@ -495,7 +495,7 @@ namespace engine
             player.field_DD = bp_var_1C0.field_6B;
             player.field_DE = bp_var_1C0.field_6C;
 
-            System.Array.Copy(bp_var_1C0.field_6D, player.field_DF, 5);
+            System.Array.Copy(bp_var_1C0.field_6D, player.saveVerse, 5);
 
             player.base_movement = bp_var_1C0.field_72;
             player.field_E5 = bp_var_1C0.field_73;
@@ -948,7 +948,7 @@ namespace engine
 
                     if (var_1C4.field_23 > 0)
                     {
-                        Item newItem = ovr025.new_Item(0, Affects.affect_41, (Affects)var_1C4.field_23,
+                        Item newItem = ovr025.new_Item(0, Affects.poison_plus_4, (Affects)var_1C4.field_23,
                             (short)(var_1C4.field_23 * 0x15E), 0, 1,
                             false, 0, false, 0, 1, 0x45, -89, -50, 0x4F);
 
@@ -1082,7 +1082,7 @@ namespace engine
 
                             case Race.half_elf:
                                 player01_ptr.icon_size = 2;
-                                ovr024.add_affect(false, 0xff, 0, Affects.affect_7c, player_ptr);
+                                ovr024.add_affect(false, 0xff, 0, Affects.halfelf_resistance, player_ptr);
                                 break;
 
                             default:
@@ -1472,7 +1472,7 @@ namespace engine
 
             gbl.game_area = gbl.area2_ptr.game_area;
 
-            if (gbl.area_ptr.field_1CC != 0)
+            if (gbl.area_ptr.inDungeon != 0)
             {
                 if (gbl.game_state != GameState.State0)
                 {
@@ -1528,7 +1528,7 @@ namespace engine
 
             do
             {
-                inputKey = ovr027.displayInput(out dummyBool, (gbl.game_state == GameState.State2), 0, 15, 10, 13, "A B C D E F G H I J", "Save Which Game: ");
+                inputKey = ovr027.displayInput(out dummyBool, (gbl.game_state == GameState.Camping), 0, 15, 10, 13, "A B C D E F G H I J", "Save Which Game: ");
 
             } while (unk_4AEA0.MemberOf(inputKey) == false);
 

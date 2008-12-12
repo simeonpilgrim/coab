@@ -716,7 +716,7 @@ namespace engine
 
             bool var_17 = true;
             int var_42 = 0;
-            seg037.draw8x8_outer_frame();
+            seg037.DrawFrame_Outer();
 
             MenuItem var_8;
             ovr027.sl_select_item(out var_8, ref var_42, ref var_17, true, var_C,
@@ -1245,7 +1245,7 @@ namespace engine
         internal static void make_camp(out bool action_interrupted)
         {
             var game_state_bkup = gbl.game_state;
-            gbl.game_state = GameState.State2;
+            gbl.game_state = GameState.Camping;
             gbl.rest_10_seconds = 0;
 
             gbl.timeToRest.Clear();
