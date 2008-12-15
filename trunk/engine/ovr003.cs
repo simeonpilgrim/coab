@@ -240,60 +240,59 @@ namespace engine
         internal static void CMD_LoadMonster() /* sub_26465 */
         {
             Player current_player_bkup = gbl.player_ptr;
-            int copy_count = 1;
             ovr008.vm_LoadCmdSets(3);
 
             if (gbl.numLoadedMonsters < 63)
             {
-                int mod_id = (byte)ovr008.vm_GetCmdValue(1);
+                int mod_id = ovr008.vm_GetCmdValue(1) & 0xFF;
 
-                Player playerB = ovr017.load_mob(mod_id);
+                Player mobMasterCopy = ovr017.load_mob(mod_id);
 
-                Player player_bkup = playerB.ShallowClone();
-                List<Item> itemsList = playerB.items;
+                Player newMob = mobMasterCopy.ShallowClone();
 
-                int num_copies = (byte)ovr008.vm_GetCmdValue(2);
+                int num_copies = ovr008.vm_GetCmdValue(2) & 0xFF;
 
                 if (num_copies <= 0)
                 {
                     num_copies = 1;
                 }
 
-                byte var_3 = (byte)ovr008.vm_GetCmdValue(3);
+                int blockId = ovr008.vm_GetCmdValue(3) & 0xFF;
+                ovr034.chead_cbody_comspr_icon(gbl.monster_icon_id, blockId, "CPIC");
 
-                ovr034.chead_cbody_comspr_icon(gbl.monster_icon_id, var_3, "CPIC");
-
-                gbl.player_next_ptr.Add(playerB);
-
-                playerB.icon_id = gbl.monster_icon_id;
+                newMob.icon_id = gbl.monster_icon_id;
+             
+                gbl.player_next_ptr.Add(newMob);
 
                 gbl.numLoadedMonsters++;
-                copy_count++;
+                int copy_count = 1;
 
-                while (copy_count <= num_copies &&
+                while (copy_count < num_copies &&
                        gbl.numLoadedMonsters < 63)
                 {
-                    Player playerA = player_bkup.ShallowClone();
+                    newMob = mobMasterCopy.ShallowClone();
 
-                    gbl.player_next_ptr.Add(playerA);
-                    playerA.icon_id = gbl.monster_icon_id;
+                    newMob.icon_id = gbl.monster_icon_id;
 
-                    playerA.affects = new List<Affect>();
-                    playerA.items = new List<Item>();
+                    newMob.affects = new List<Affect>();
+                    newMob.items = new List<Item>();
                     
+                    foreach (Item item in mobMasterCopy.items)
+                    {
+                        newMob.items.Add(item.ShallowClone());
+                    }
+
+                    foreach(Affect affect in mobMasterCopy.affects)
+                    {
+                        newMob.affects.Add(affect.ShallowClone());
+                    }
+
                     copy_count++;
                     gbl.numLoadedMonsters++;
+                    gbl.player_next_ptr.Add(newMob);
 
-                    foreach(Item item in itemsList)
-                    {
-                        playerA.items.Add(item.ShallowClone());
-                    }
-
-                    foreach(Affect affect in player_bkup.affects)
-                    {
-                        playerA.affects.Add(affect.ShallowClone());
-                    }
                 }
+
                 gbl.monster_icon_id++;
                 gbl.monstersLoaded = true;
                 gbl.player_ptr = current_player_bkup;
@@ -1627,7 +1626,7 @@ namespace engine
             byte var_6 = (byte)ovr008.vm_GetCmdValue(5);
 
 
-            short var_C = (short)(ovr024.roll_dice(var_3, var_2) + var_7);
+            int damage = ovr024.roll_dice(var_3, var_2) + var_7;
 
             byte var_1B = (byte)(var_1 & 0x10);
 
@@ -1651,15 +1650,15 @@ namespace engine
                     {
                         if ((var_1 & 0x20) != 0)
                         {
-                            ovr008.sub_32200(player03, var_C);
+                            ovr008.sub_32200(player03, damage);
                         }
                         else if (ovr024.RollSavingThrow(saveBonus, (SaveVerseType)bonusType, player03) == false)
                         {
-                            ovr008.sub_32200(player03, var_C);
+                            ovr008.sub_32200(player03, damage);
                         }
                         else if (var_1B != 0)
                         {
-                            ovr008.sub_32200(player03, var_C);
+                            ovr008.sub_32200(player03, damage);
                         }
                     }
                 }
@@ -1670,41 +1669,41 @@ namespace engine
                         if (bonusType == 0 ||
                             ovr024.RollSavingThrow(saveBonus, (SaveVerseType)(bonusType - 1), gbl.player_ptr) == false)
                         {
-                            ovr008.sub_32200(gbl.player_ptr, var_C);
+                            ovr008.sub_32200(gbl.player_ptr, damage);
                         }
                         else if (var_1B != 0)
                         {
-                            ovr008.sub_32200(gbl.player_ptr, var_C);
+                            ovr008.sub_32200(gbl.player_ptr, damage);
                         }
                     }
                     else
                     {
-                        Player player03 = gbl.player_next_ptr[var_8 - 1];
+                        Player target = gbl.player_next_ptr[var_8 - 1];
 
-                        if (ovr024.RollSavingThrow(saveBonus, (SaveVerseType)bonusType, player03) == false)
+                        if (ovr024.RollSavingThrow(saveBonus, (SaveVerseType)bonusType, target) == false)
                         {
-                            ovr008.sub_32200(player03, var_C);
+                            ovr008.sub_32200(target, damage);
                         }
                         else if (var_1B != 0)
                         {
-                            ovr008.sub_32200(player03, var_C);
+                            ovr008.sub_32200(target, damage);
                         }
                     }
                 }
             }
             else
             {
-                for (int i = 1; i <= var_1; i++)
+                for (int i = 0; i < var_1; i++)
                 {
                     var_8 = ovr024.roll_dice(gbl.area2_ptr.party_size, 1);
-                    Player player03 = gbl.player_next_ptr[var_8]; // TODO may be off by 1
+                    Player player03 = gbl.player_next_ptr[var_8 - 1];
 
-                    if (ovr024.sub_641DD(var_6, player03) == true)
+                    if (ovr024.CanHitTarget(var_6, player03) == true)
                     {
-                        ovr008.sub_32200(player03, var_C);
+                        ovr008.sub_32200(player03, damage);
                     }
 
-                    var_C = (short)(var_7 + ovr024.roll_dice(var_3, var_2));
+                    damage = ovr024.roll_dice(var_3, var_2) + var_7;
                 }
             }
 

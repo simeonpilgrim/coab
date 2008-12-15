@@ -129,7 +129,7 @@ namespace engine
 
             switch (gbl.spell_table[spell_id].spellClass)
             {
-                case 0: // Cleric
+                case SpellClass.Cleric:
                     if (player.wis > 8 &&
                         ((player.cleric_lvl > 0) ||
                          (ovr026.sub_6B3D1(player) != 0 && player.turn_undead > 0) ||
@@ -140,7 +140,7 @@ namespace engine
                     }
                     break;
 
-                case 1: // Druid
+                case SpellClass.Druid:
                     if ((player.wis > 8 && player.ranger_lvl > 6) ||
                         (ovr026.sub_6B3D1(player) != 0 && player.field_115 > 6))
                     {
@@ -148,7 +148,7 @@ namespace engine
                     }
                     break;
 
-                case 2: // Magic-User
+                case SpellClass.MagicUser:
                     if (player._int > 8 &&
                         ((player.race != Race.human) ||
                      (player.armor == null) ||
@@ -161,7 +161,7 @@ namespace engine
                     }
                     break;
 
-                case 3: // Monster?
+                case SpellClass.Monster:
                     can_learn = false;
                     break;
 
@@ -242,7 +242,7 @@ namespace engine
 
                 if (spellSource == SpellSource.Scribe)
                 {
-                    gbl.dword_1D5C6 = gbl.unk_1AF18[selected_index];
+                    gbl.currentScroll = gbl.scribeScrolls[selected_index];
                 }
             }
             gbl.spell_string_list.Clear();
@@ -350,47 +350,47 @@ namespace engine
         }
 
 
-        internal static void scroll_5C912(byte arg_0) /* sub_5C912 */
+        internal static void scroll_5C912(bool learning) /* sub_5C912 */
         {
             if (gbl.player_ptr.HasAffect(Affects.read_magic) == true ||
                 ((gbl.player_ptr.cleric_lvl > 0 || gbl.player_ptr.turn_undead > gbl.player_ptr.field_E6) &&
-                  gbl.unk_1C020[gbl.dword_1D5C6.type].item_slot == 12))
+                  gbl.unk_1C020[gbl.currentScroll.type].item_slot == 12))
             {
-                gbl.dword_1D5C6.hidden_names_flag = 0;
+                gbl.currentScroll.hidden_names_flag = 0;
             }
 
-            if (gbl.dword_1D5C6.hidden_names_flag == 0)
+            if (gbl.currentScroll.hidden_names_flag == 0)
             {
                 for (byte var_1 = 1; var_1 <= 3; var_1++)
                 {
-                    if ((arg_0 != 0 && (int)gbl.dword_1D5C6.getAffect(var_1) > 0x80) ||
-                        (arg_0 == 0 && (int)gbl.dword_1D5C6.getAffect(var_1) > 0))
+                    if ((learning == true && (int)gbl.currentScroll.getAffect(var_1) > 0x80) ||
+                        (learning == false && (int)gbl.currentScroll.getAffect(var_1) > 0))
                     {
-                        add_spell_to_list((byte)gbl.dword_1D5C6.getAffect(var_1));
-                        gbl.unk_1AF18[gbl.byte_1AFDC] = gbl.dword_1D5C6;
-                        gbl.byte_1AFDC++;
+                        add_spell_to_list((byte)gbl.currentScroll.getAffect(var_1));
+                        gbl.scribeScrolls[gbl.scribeScrollsCount] = gbl.currentScroll;
+                        gbl.scribeScrollsCount++;
                     }
                 }
             }
         }
 
 
-        internal static void sub_5C9F4(byte arg_0)
+        internal static void BuildScrollSpellLists(bool showLearning) // sub_5C9F4
         {
             for (int var_1 = 0; var_1 < 0x30; var_1++)
             {
-                gbl.unk_1AF18[var_1] = null;
+                gbl.scribeScrolls[var_1] = null;
             }
 
-            gbl.byte_1AFDC = 0;
+            gbl.scribeScrollsCount = 0;
 
             foreach (var item in gbl.player_ptr.items)
             {
-                gbl.dword_1D5C6 = item;
+                gbl.currentScroll = item;
 
                 if (item.IsScroll())
                 {
-                    scroll_5C912(arg_0);
+                    scroll_5C912(showLearning);
                 }
             }
         }
@@ -398,8 +398,7 @@ namespace engine
 
         internal static bool sub_5CA74(SpellLoc spl_location)
         {
-            bool result = false;
-            bool var_D = true;
+            bool buildSpellList = true;
 
             gbl.spell_string_list.Clear();
 
@@ -411,72 +410,69 @@ namespace engine
             switch (spl_location)
             {
                 case SpellLoc.memory:
-                    for (int var_2 = 0; var_2 < gbl.max_spells; var_2++)
+                    for (int idx = 0; idx < gbl.max_spells; idx++)
                     {
-                        if (gbl.player_ptr.spell_list[var_2] > 0 &&
-                            can_learn_spell(gbl.player_ptr.spell_list[var_2] & 0x7F, gbl.player_ptr) == true &&
-                            gbl.player_ptr.spell_list[var_2] < 0x80)
+                        if (gbl.player_ptr.spell_list[idx] > 0 &&
+                            can_learn_spell(gbl.player_ptr.spell_list[idx], gbl.player_ptr) == true &&
+                            gbl.player_ptr.spell_list[idx] < 0x80)
                         {
-                            add_spell_to_learning_list(gbl.player_ptr.spell_list[var_2]);
+                            add_spell_to_learning_list(gbl.player_ptr.spell_list[idx]);
                         }
                     }
                     break;
 
                 case SpellLoc.memorize:
-                    for (int var_2 = 0; var_2 < gbl.max_spells; var_2++)
+                    for (int idx = 0; idx < gbl.max_spells; idx++)
                     {
-                        if (gbl.player_ptr.spell_list[var_2] > 0x7F &&
-                            can_learn_spell(gbl.player_ptr.spell_list[var_2] & 0x7F, gbl.player_ptr) == true)
+                        if (gbl.player_ptr.spell_list[idx] > 0x7F &&
+                            can_learn_spell(gbl.player_ptr.spell_list[idx], gbl.player_ptr) == true)
                         {
-                            add_spell_to_learning_list(gbl.player_ptr.spell_list[var_2]);
+                            add_spell_to_learning_list(gbl.player_ptr.spell_list[idx]);
                         }
                     }
                     break;
 
                 case SpellLoc.grimoire:
-                    for (int var_2 = 1; var_2 <= 100; var_2++)
+                    foreach (Spells spell in System.Enum.GetValues(typeof(Spells)))
                     {
-                        if (gbl.player_ptr.field_79[var_2 - 1] != 0 &&
-                            can_learn_spell(var_2, gbl.player_ptr) == true)
+                        if (gbl.player_ptr.KnowsSpell(spell) && 
+                            can_learn_spell((int)spell, gbl.player_ptr))
                         {
-                            add_spell_to_learning_list(var_2);
+                            add_spell_to_learning_list((int)spell);
                         }
                     }
                     break;
 
                 case SpellLoc.scroll:
-                    scroll_5C912(0);
-                    var_D = false;
+                    scroll_5C912(false);
+                    buildSpellList = false;
                     break;
 
                 case SpellLoc.scrolls:
-                    sub_5C9F4(0);
-                    var_D = false;
+                    BuildScrollSpellLists(false);
+                    buildSpellList = false;
                     break;
 
                 case SpellLoc.scribe:
-                    sub_5C9F4(1);
-                    var_D = false;
+                    BuildScrollSpellLists(true);
+                    buildSpellList = false;
                     break;
 
                 case SpellLoc.choose:
-                    for (int var_2 = 1; var_2 <= 100; var_2++)
+                    foreach (Spells spell in System.Enum.GetValues(typeof(Spells)))
                     {
-                        int sp_lvl = gbl.spell_table[var_2].spellLevel;
-                        int sp_class = gbl.spell_table[var_2].spellClass;
-                        //int tmp = (sp_class * 5) + sp_lvl - 1;
-                        //sp_lvl = tmp % 5;
-                        //sp_class = tmp / 5;
+                        int sp_lvl = gbl.spell_table[(int)spell].spellLevel;
+                        SpellClass sp_class = gbl.spell_table[(int)spell].spellClass;
 
-                        if (sp_lvl >= 5 || sp_class >= 3)
+                        if (sp_lvl >= 5 || sp_class >= SpellClass.Monster)
                         {
                             //skip this spell
                         }
-                        else if (gbl.player_ptr.field_12D[sp_class, sp_lvl] > 0 &&
-                            can_learn_spell(var_2, gbl.player_ptr) == true &&
-                            gbl.player_ptr.field_79[var_2 - 1] == 0)
+                        else if (gbl.player_ptr.field_12D[(int)sp_class, sp_lvl] > 0 &&
+                            can_learn_spell((int)spell, gbl.player_ptr) == true &&
+                            gbl.player_ptr.KnowsSpell(spell))
                         {
-                            add_spell_to_learning_list(var_2);
+                            add_spell_to_learning_list((int)spell);
                         }
                     }
                     break;
@@ -484,34 +480,31 @@ namespace engine
 
             if (gbl.spell_string_list.Count > 0)
             {
-                if (var_D == true)
+                if (buildSpellList == true)
                 {
-                    int var_2 = 0;
-
-                    var spellLvl = gbl.spell_table[gbl.memorize_spell_id[var_2]].spellLevel;
-
-                    gbl.spell_string_list.Insert(0, new MenuItem(LevelStrings[spellLvl], true));
+                    int idx = 0;
+                    int spellLvl = 0; 
 
                     int insert = 0;
                     var inserts = new Queue<KeyValuePair<int, int>>();
 
                     foreach (var mi in gbl.spell_string_list)
                     {
-                        var var_B = spellLvl;
+                        var lastLvl = spellLvl;
 
-                        if (gbl.memorize_spell_id[var_2] != 0)
+                        if (gbl.memorize_spell_id[idx] != 0)
                         {
-                            spellLvl = gbl.spell_table[gbl.memorize_spell_id[var_2]].spellLevel;
+                            spellLvl = gbl.spell_table[gbl.memorize_spell_id[idx]].spellLevel;
                         }
 
-                        if (var_B < spellLvl)
+                        if (spellLvl > lastLvl)
                         {
                             inserts.Enqueue(new KeyValuePair<int, int>(insert, spellLvl));
                             insert++;
                         }
 
                         insert++;
-                        var_2++;
+                        idx++;
                     }
 
                     foreach (var vp in inserts)
@@ -519,10 +512,10 @@ namespace engine
                         gbl.spell_string_list.Insert(vp.Key, new MenuItem(LevelStrings[vp.Value], true));
                     }
                 }
-                result = true;
+                return true;
             }
 
-            return result;
+            return false;
         }
 
 
@@ -625,7 +618,7 @@ namespace engine
 
                             ovr024.CheckAffectsEffect(target, CheckType.Type_11);
 
-                            if (ovr024.attacker_can_hit_target(target.ac, target, gbl.player_ptr) == false)
+                            if (ovr024.PC_CanHitTarget(target.ac, target, gbl.player_ptr) == false)
                             {
                                 damage = 0;
                                 var_30 = true;
@@ -1820,54 +1813,54 @@ namespace engine
                 }
             }
 
-            int var_12 = 0;
-            int var_11 = 0;
+            int yPos = 0;
+            int xPos = 0;
 
             for (gbl.global_index = 0; gbl.global_index <= 8; gbl.global_index++)
             {
                 switch (gbl.global_index)
                 {
                     case 0:
-                        var_11 = gbl.targetX;
-                        var_12 = gbl.targetY;
+                        xPos = gbl.targetX;
+                        yPos = gbl.targetY;
                         break;
 
                     case 1:
-                        var_12 = gbl.targetY - 1;
+                        yPos = gbl.targetY - 1;
                         break;
 
                     case 2:
-                        var_11 = gbl.targetX - 1;
+                        xPos = gbl.targetX - 1;
                         break;
 
                     case 3:
-                        var_12 = gbl.targetY;
+                        yPos = gbl.targetY;
                         break;
 
                     case 4:
-                        var_12 = gbl.targetY + 1;
+                        yPos = gbl.targetY + 1;
                         break;
 
                     case 5:
-                        var_11 = gbl.targetX;
+                        xPos = gbl.targetX;
                         break;
 
                     case 6:
-                        var_11 = gbl.targetX - 1;
+                        xPos = gbl.targetX - 1;
                         break;
 
                     case 7:
-                        var_12 = gbl.targetY;
+                        yPos = gbl.targetY;
                         break;
 
                     case 8:
-                        var_12 = gbl.targetY - 1;
+                        yPos = gbl.targetY - 1;
                         break;
                 }
 
                 byte dummy_byte;
                 byte ground_tile;
-                ovr033.AtMapXY(out ground_tile, out dummy_byte, var_12, var_11);
+                ovr033.AtMapXY(out ground_tile, out dummy_byte, yPos, xPos);
 
                 if (ground_tile == 0x1C || ground_tile == 0x1E)
                 {
@@ -1880,11 +1873,11 @@ namespace engine
                     {
                         for (int var_1 = 1; var_1 <= var_14; var_1++)
                         {
-                            if (var_11 == var_18.target_x + gbl.MapDirectionXDelta[gbl.unk_18AE9[var_1]])
+                            if (xPos == var_18.target_x + gbl.MapDirectionXDelta[gbl.unk_18AE9[var_1]])
                             {
                                 int tmp_int = (var_18.target_y + gbl.MapDirectionYDelta[gbl.unk_18AE9[var_1]]);
 
-                                if (var_12 == tmp_int &&
+                                if (yPos == tmp_int &&
                                     var_18.field_1D == false)
                                 {
                                     if (sub_5F126(var_18.player, maxTargetCount) == true)

@@ -14,10 +14,10 @@ namespace engine
 
 		internal static void delete_file( string fileString )
 		{
-			if( file_find( fileString ) == true )
-			{
+            if (System.IO.File.Exists(fileString))
+            {
                 System.IO.File.Delete(fileString);
-			}
+            }
 		}
 
 

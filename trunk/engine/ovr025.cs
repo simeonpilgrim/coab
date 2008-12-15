@@ -1577,55 +1577,36 @@ namespace engine
             }
             else
             {
-                sbyte spell_class = gbl.spell_table[spell_id].spellClass;
-                if (spell_class == 0)
+                switch (gbl.spell_table[spell_id].spellClass)
                 {
-                    int var_2 = gbl.player_ptr.cleric_lvl + (ovr026.sub_6B3D1(gbl.player_ptr) * gbl.player_ptr.turn_undead);
-                    int var_3 = gbl.player_ptr.paladin_lvl + (ovr026.sub_6B3D1(gbl.player_ptr) * gbl.player_ptr.field_114) - 8;
+                    case SpellClass.Cleric:
+                        int cleric_count = gbl.player_ptr.cleric_lvl + (ovr026.sub_6B3D1(gbl.player_ptr) * gbl.player_ptr.turn_undead);
+                        int paladin_count = gbl.player_ptr.paladin_lvl + (ovr026.sub_6B3D1(gbl.player_ptr) * gbl.player_ptr.field_114) - 8;
 
-                    if (var_2 > var_3)
-                    {
-                        target_count = var_2;
-                    }
-                    else
-                    {
-                        target_count = var_3;
-                    }
-                }
-                else if (spell_class == 1)
-                {
-                    int var_2 = gbl.player_ptr.ranger_lvl + (ovr026.sub_6B3D1(gbl.player_ptr) * gbl.player_ptr.field_115) - 7;
-                    if (var_2 > 0)
-                    {
-                        target_count = var_2;
-                    }
-                    else
-                    {
-                        target_count = 0;
-                    }
-                }
-                else if (spell_class == 2)
-                {
-                    int var_2 = gbl.player_ptr.magic_user_lvl + (ovr026.sub_6B3D1(gbl.player_ptr) * gbl.player_ptr.field_116);
-                    int var_3 = gbl.player_ptr.ranger_lvl + (ovr026.sub_6B3D1(gbl.player_ptr) * gbl.player_ptr.field_115) - 8;
+                        target_count = Math.Max(cleric_count, paladin_count);
+                        break;
 
-                    if (var_2 > var_3)
-                    {
-                        target_count = var_2;
-                    }
-                    else
-                    {
-                        target_count = var_3;
-                    }
-                }
-                else if (spell_class == 3)
-                {
-                    target_count = 12;
+                    case SpellClass.Druid:
+                        int ranger_count = gbl.player_ptr.ranger_lvl + (ovr026.sub_6B3D1(gbl.player_ptr) * gbl.player_ptr.field_115) - 7;
+                        
+                        target_count = Math.Max(ranger_count, 0);
+                        break;
+
+                    case SpellClass.MagicUser:
+                        int magicuser_count = gbl.player_ptr.magic_user_lvl + (ovr026.sub_6B3D1(gbl.player_ptr) * gbl.player_ptr.field_116);
+                        int ranger_count2 = gbl.player_ptr.ranger_lvl + (ovr026.sub_6B3D1(gbl.player_ptr) * gbl.player_ptr.field_115) - 8;
+
+                        target_count = Math.Max(magicuser_count, ranger_count2);
+                        break;
+
+                    case SpellClass.Monster:
+                        target_count = 12;
+                        break;
                 }
             }
 
             if (gbl.spell_from_item == true &&
-                gbl.spell_table[spell_id].spellClass != 3)
+                gbl.spell_table[spell_id].spellClass != SpellClass.Monster)
             {
                 target_count = 6;
             }

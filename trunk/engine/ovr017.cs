@@ -5,29 +5,28 @@ namespace engine
 {
     class ovr017
     {
-        internal static void sub_4708B(ref List<MenuItem> arg_2, ref List<MenuItem> arg_6, 
-            short playerFileSize, short arg_C, short nameOffset, string fileFilter)
+        static void BuildLoadablePlayersLists(ref List<MenuItem> fileNames, ref List<MenuItem> displayNames,
+            short playerFileSize, int npcOffset, int nameOffset, string fileFilter) // sub_4708B
         {
-            byte var_164;
-            File var_112 = new File();
+            File file = new File();
 
             byte[] data = new byte[16];
 
-            var var_90 = seg046.FINDFIRST(fileFilter);
+            var search = seg046.FINDFIRST(fileFilter);
 
             while (gbl.FIND_result == 0)
             {
-                var_112.Assign(gbl.SavePath + var_90.fileName);
-                seg051.Reset(var_112);
+                file.Assign(gbl.SavePath + search.fileName);
+                seg051.Reset(file);
 
-                if (seg051.FileSize(var_112) == playerFileSize)
+                if (seg051.FileSize(file) == playerFileSize)
                 {
-                    seg051.Seek(nameOffset, var_112);
-                    seg051.BlockRead(16, data, var_112);
+                    seg051.Seek(nameOffset, file);
+                    seg051.BlockRead(16, data, file);
 
                     string playerName = Sys.ArrayToString(data, 0, 16).Trim();
 
-                    seg051.Seek(arg_C, var_112);
+                    byte var_164;
 
                     if (gbl.import_from == ImportSource.Hillsfar)
                     {
@@ -35,51 +34,51 @@ namespace engine
                     }
                     else
                     {
-                        seg051.BlockRead(1, data, var_112);
+                        seg051.Seek(npcOffset, file);
+                        seg051.BlockRead(1, data, file);
                         var_164 = data[0];
                     }
 
                     string fullNameText =
-                        string.Compare(System.IO.Path.GetExtension(var_90.fileName), ".sav", true) == 0 ?
-                        string.Format("{0,-15} from save game {1}", playerName, var_90.fileName[7]) : playerName;
+                        string.Compare(System.IO.Path.GetExtension(search.fileName), ".sav", true) == 0 ?
+                        string.Format("{0,-15} from save game {1}", playerName, search.fileName[7]) : playerName;
 
                     bool found = gbl.player_next_ptr.Find(player => playerName == player.name.Trim()) != null;
 
                     if (found == false && var_164 <= 0x7F)
                     {
-                        arg_2.Add(new MenuItem(var_90.fileName));
-                        arg_6.Add(new MenuItem(fullNameText));
-
+                        fileNames.Add(new MenuItem(search.fileName));
+                        displayNames.Add(new MenuItem(fullNameText));
                     }
                 }
 
-                seg051.Close(var_112);
-                seg046.FINDNEXT(var_90);
+                seg051.Close(file);
+                seg046.FINDNEXT(search);
             }
         }
 
-        static byte[] PlayerNameOffset = { 0, 0, 4 };
-        static short[] unk_1681B = { 0xf7, 0x84, 0x13 };
+        static int[] PlayerNameOffset = { 0, 0, 4 };
+        static int[] NpcFileOffset = { 0xf7, 0x84, 0x13 };
 
-        internal static void sub_47465(out List<MenuItem> arg_0, out List<MenuItem> arg_4)
+        internal static void BuildLoadablePlayersLists(out List<MenuItem> fileNames, out List<MenuItem> displayNames) // sub_47465
         {
-            arg_4 = new List<MenuItem>();
-            arg_0 = new List<MenuItem>();
+            displayNames = new List<MenuItem>();
+            fileNames = new List<MenuItem>();
 
             if (save() == true)
             {
                 if (gbl.import_from == ImportSource.Curse)
                 {
-                    sub_4708B(ref arg_0, ref arg_4, Player.StructSize, unk_1681B[0], PlayerNameOffset[0], gbl.SavePath + "*.guy");
+                    BuildLoadablePlayersLists(ref fileNames, ref displayNames, Player.StructSize, NpcFileOffset[0], PlayerNameOffset[0], gbl.SavePath + "*.guy");
                 }
                 else if (gbl.import_from == ImportSource.Pool)
                 {
-                    sub_4708B(ref arg_0, ref arg_4, PoolRadPlayer.StructSize, unk_1681B[1], PlayerNameOffset[1], gbl.SavePath + "*.cha");
-                    sub_4708B(ref arg_0, ref arg_4, PoolRadPlayer.StructSize, unk_1681B[1], PlayerNameOffset[1], gbl.SavePath + "*.sav");
+                    BuildLoadablePlayersLists(ref fileNames, ref displayNames, PoolRadPlayer.StructSize, NpcFileOffset[1], PlayerNameOffset[1], gbl.SavePath + "*.cha");
+                    BuildLoadablePlayersLists(ref fileNames, ref displayNames, PoolRadPlayer.StructSize, NpcFileOffset[1], PlayerNameOffset[1], gbl.SavePath + "*.sav");
                 }
                 else if (gbl.import_from == ImportSource.Hillsfar)
                 {
-                    sub_4708B(ref arg_0, ref  arg_4, HillsFarPlayer.StructSize, unk_1681B[2], PlayerNameOffset[2], gbl.SavePath + "*.hil");
+                    BuildLoadablePlayersLists(ref fileNames, ref  displayNames, HillsFarPlayer.StructSize, NpcFileOffset[2], PlayerNameOffset[2], gbl.SavePath + "*.hil");
                 }
             }
         }
@@ -489,9 +488,9 @@ namespace engine
             player.age = bp_var_1C0.age;
             player.hit_point_max = bp_var_1C0.hp_max;
 
-            System.Array.Copy(bp_var_1C0.field_33, player.field_79, 0x38);
+            System.Array.Copy(bp_var_1C0.field_33, player.spellBook, 0x38);
+            player.spellBook[(int)Spells.spell_24 - 1] = 0;
 
-            player.field_79[0x23] = 0;
             player.field_DD = bp_var_1C0.field_6B;
             player.field_DE = bp_var_1C0.field_6C;
 
@@ -1104,10 +1103,10 @@ namespace engine
 
                         if (player01_ptr.magic_user_lvl > 0)
                         {
-                            player01_ptr.field_79[0xB - 1] = 1;
-                            player01_ptr.field_79[0x12 - 1] = 1;
-                            player01_ptr.field_79[0x13 - 1] = 1;
-                            player01_ptr.field_79[0x15 - 1] = 1;
+                            player01_ptr.LearnSpell(Spells.spell_0b);
+                            player01_ptr.LearnSpell(Spells.spell_12);
+                            player01_ptr.LearnSpell(Spells.spell_13);
+                            player01_ptr.LearnSpell(Spells.spell_15);
                         }
 
                         SilentTrainPlayer();

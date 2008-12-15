@@ -7,18 +7,18 @@ namespace Classes
 	/// </summary>
     public class SpellEntry /* Struct_19AEC */
 	{
-        public SpellEntry(sbyte f0, sbyte f1, sbyte f2, byte f3, byte f4, byte f5,
-            byte f6, byte f7, DamageOnSave f8, SaveVerseType f9, Affects fa, byte fb, byte fc, byte fd, byte fe, byte ff)
+        public SpellEntry(SpellClass _spellClass, sbyte _spellLevel, sbyte f2, byte f3, byte f4, byte f5,
+            byte f6, byte f7, DamageOnSave _damageOnSave, SaveVerseType f9, Affects fa, byte fb, byte fc, byte fd, byte fe, byte ff)
         {
-            spellClass = f0;
-            spellLevel = f1;
+            spellClass = _spellClass;
+            spellLevel = _spellLevel;
             field_2 = f2;
             field_3 = f3;
             field_4 = f4;
             field_5 = f5;
             field_6 = f6;
             field_7 = f7;
-            can_save_flag = f8;
+            can_save_flag = _damageOnSave;
             saveVerse = f9;
             affect_id = fa;
             field_B = fb;
@@ -31,7 +31,7 @@ namespace Classes
         /// <summary>
         /// 0 - Cleric, 1 - Druid, 2 - Magic-User
         /// </summary>
-        public sbyte spellClass; //seg600:37DC asc_19AEC    // field_0
+        public SpellClass spellClass; //seg600:37DC asc_19AEC    // field_0
         public sbyte spellLevel; //seg600:37DD unk_19AED    // field_1
         public sbyte field_2; //seg600:37DE              
         public byte field_3; //seg600:37DF            

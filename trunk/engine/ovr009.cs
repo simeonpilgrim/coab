@@ -159,7 +159,7 @@ namespace engine
                     spell_id = player.actions.spell_id;
                     player.actions.spell_id = 0;
 
-                    ovr023.sub_5D2E1(1, 0, spell_id);
+                    ovr023.sub_5D2E1(1, QuickFight.False, spell_id);
                     ovr025.clear_actions(player);
                 }
                 else

@@ -704,7 +704,7 @@ namespace engine
                         for (int i = 0; i < gbl.max_spells; i++)
                         {
                             if (player.spell_list[i] != 0 &&
-                                gbl.spell_table[player.spell_list[i]].spellClass == 2)
+                                gbl.spell_table[player.spell_list[i]].spellClass == SpellClass.MagicUser)
                             {
                                 int var_C = gbl.spell_table[player.spell_list[i]].spellLevel;
                                 var_11[var_C - 1] += 1;
@@ -990,7 +990,7 @@ namespace engine
 
             if (ovr023.item_is_scroll(item) == true)
             {
-                gbl.dword_1D5C6 = item;
+                gbl.currentScroll = item;
 
                 bool dummy_bool;
                 int dummy_index = -1;

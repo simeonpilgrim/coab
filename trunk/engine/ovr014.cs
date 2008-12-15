@@ -870,7 +870,7 @@ namespace engine
 
                         gbl.inc_byte_byte_1D90x(var_15);
 
-                        if (ovr024.attacker_can_hit_target(target_ac, target, attacker) ||
+                        if (ovr024.PC_CanHitTarget(target_ac, target, attacker) ||
                             target.IsHeld() == true)
                         {
                             switch (var_15)
