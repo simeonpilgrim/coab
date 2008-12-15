@@ -105,7 +105,7 @@ namespace engine
         }
 
 
-        internal static int HowManySpellsPlayerCanLearn(int spellClass, int spellLevel) //sub_4428E
+        internal static int HowManySpellsPlayerCanLearn(SpellClass spellClass, int spellLevel) //sub_4428E
         {
             int alreadyLearning = 0;
 
@@ -125,7 +125,7 @@ namespace engine
                 }
             }
 
-            return gbl.player_ptr.field_12D[spellClass, spellLevel - 1] - alreadyLearning;
+            return gbl.player_ptr.field_12D[(int)spellClass, spellLevel - 1] - alreadyLearning;
         }
 
 
@@ -196,7 +196,7 @@ namespace engine
                         redraw = true;
                         seg037.draw8x8_clear_area(0x16, 0x26, 0x11, 1);
 
-                        ovr023.sub_5D2E1(1, 0, spell_id);
+                        ovr023.sub_5D2E1(1, QuickFight.False, spell_id);
                     }
                     else if (var_3 == true)
                     {
@@ -216,7 +216,7 @@ namespace engine
         }
 
 
-        internal static bool sub_445D4()
+        static bool BuildMemorizeSpellText() // sub_445D4
         {
             const int MaxSpellLevel = 5;
             const int MaxSpellClass = 3;
@@ -226,21 +226,21 @@ namespace engine
 
             bool found = false;
 
-            for (int spellClass = 0; spellClass < MaxSpellClass; spellClass++)
+            for (var spellClass = SpellClass.Cleric; spellClass < SpellClass.Monster; spellClass++)
             {
-                canLearnSpellClass[spellClass] = false;
+                canLearnSpellClass[(int)spellClass] = false;
 
                 for (int spellLevel = 0; spellLevel < MaxSpellLevel; spellLevel++)
                 {
-                    var_60[spellClass, spellLevel] = HowManySpellsPlayerCanLearn(spellClass, spellLevel + 1).ToString();
+                    var_60[(int)spellClass, spellLevel] = HowManySpellsPlayerCanLearn(spellClass, spellLevel + 1).ToString();
 
-                    if (gbl.player_ptr.field_12D[spellClass, spellLevel] == 0)
+                    if (gbl.player_ptr.field_12D[(int)spellClass, spellLevel] == 0)
                     {
-                        var_60[spellClass, spellLevel] = " ";
+                        var_60[(int)spellClass, spellLevel] = " ";
                     }
                     else
                     {
-                        canLearnSpellClass[spellClass] = true;
+                        canLearnSpellClass[(int)spellClass] = true;
                         found = true;
                     }
                 }
@@ -362,7 +362,7 @@ namespace engine
 
                 while (var_1 == false)
                 {
-                    var_1 = (sub_445D4() == false);
+                    var_1 = (BuildMemorizeSpellText() == false);
 
                     if (var_1 == true)
                     {
@@ -400,7 +400,7 @@ namespace engine
                     var_4 = ovr020.spell_menu2(out var_2, ref index, 0, SpellLoc.memorize);
 
                     if (var_2 == true &&
-                        ovr027.yes_no(15, 10, 14, "Memorize these spells? ") == 0x4e)
+                        ovr027.yes_no(15, 10, 14, "Memorize these spells? ") == 'N')
                     {
                         cancel_memorize(gbl.player_ptr);
                     }
@@ -416,7 +416,6 @@ namespace engine
 
         internal static void scribe_spell()
         {
-            byte var_4;
             bool redraw;
             bool var_2;
             byte var_1;
@@ -426,7 +425,7 @@ namespace engine
                 var_1 = 0;
                 int var_8 = -1;
 
-                var_4 = ovr020.spell_menu2(out var_2, ref var_8, 0, SpellLoc.scribe);
+                ovr020.spell_menu2(out var_2, ref var_8, 0, SpellLoc.scribe);
                 redraw = true;
 
                 if (var_2 == true)
@@ -449,7 +448,7 @@ namespace engine
 
                 while (var_1 == 0)
                 {
-                    var_4 = ovr020.spell_menu2(out var_2, ref var_8, SpellSource.Scribe, SpellLoc.scrolls);
+                    int var_4 = ovr020.spell_menu2(out var_2, ref var_8, SpellSource.Scribe, SpellLoc.scrolls);
 
                     if (var_4 == 0)
                     {
@@ -467,7 +466,7 @@ namespace engine
                     else
                     {
                         redraw = true;
-                        if (gbl.player_ptr.field_79[var_4 - 1] != 0)
+                        if (gbl.player_ptr.KnowsSpell((Spells)var_4))
                         {
                             ovr025.string_print01("You already know that spell");
                         }
@@ -489,7 +488,7 @@ namespace engine
                             else
                             {
                                 int spell_level = gbl.spell_table[var_4].spellLevel;
-                                int spell_class = gbl.spell_table[var_4].spellClass;
+                                int spell_class = (int)gbl.spell_table[var_4].spellClass;
 
                                 if (gbl.player_ptr.field_12D[spell_class, spell_level - 1] > 0)
                                 {
@@ -523,10 +522,10 @@ namespace engine
                 {
                     var_8 = -1;
 
-                    var_4 = ovr020.spell_menu2(out var_2, ref var_8, 0, SpellLoc.scribe);
+                    ovr020.spell_menu2(out var_2, ref var_8, 0, SpellLoc.scribe);
 
                     if (var_2 == true &&
-                        ovr027.yes_no(15, 10, 14, "Scribe these spells? ") == 0x4e)
+                        ovr027.yes_no(15, 10, 14, "Scribe these spells? ") == 'N')
                     {
                         cancel_scribes(gbl.player_ptr);
                     }

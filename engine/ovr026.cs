@@ -91,19 +91,19 @@ namespace engine
                             }
 
                             calc_cleric_spells(false, player);
-
-                            for (int i = 1; i <= 100; i++)
+                                                            
+                            foreach (Spells spell in System.Enum.GetValues(typeof(Spells)))
                             {
-                                SpellEntry var_12 = gbl.spell_table[i];
+                                SpellEntry se = gbl.spell_table[(int)spell];
 
-                                int sp_class = (var_12.spellLevel - 1) / 5;
-                                int sp_lvl = (var_12.spellLevel - 1) % 5;
+                                int sp_class = (se.spellLevel - 1) / 5;
+                                int sp_lvl = (se.spellLevel - 1) % 5;
 
-                                if (var_12.spellClass == 0 &&
+                                if (se.spellClass == 0 &&
                                     player.field_12D[sp_class, sp_lvl] > 0 &&
-                                    i != 0x24)
+                                    spell != Spells.spell_24)
                                 {
-                                    player.field_79[i - 1] = 1;
+                                    player.LearnSpell(spell);
                                 }
                             }
                             break;
@@ -119,17 +119,16 @@ namespace engine
                                     }
                                 }
 
-                                for (int i = 1; i <= 100; i++)
+                                foreach (Spells spell in System.Enum.GetValues(typeof(Spells)))
                                 {
-                                    SpellEntry var_12 = gbl.spell_table[i];
+                                    SpellEntry se = gbl.spell_table[(int)spell];
+                                    int sp_class = (se.spellLevel - 1) / 5;
+                                    int sp_lvl = (se.spellLevel - 1) % 5;
 
-                                    int sp_class = (var_12.spellLevel - 1) / 5;
-                                    int sp_lvl = (var_12.spellLevel - 1) % 5;
-
-                                    if (var_12.spellClass == 0 &&
+                                    if (se.spellClass == 0 &&
                                         player.field_12D[sp_class, sp_lvl] > 0)
                                     {
-                                        player.field_79[i - 1] = 1;
+                                        player.LearnSpell(spell);
                                     }
                                 }
                             }
@@ -151,11 +150,11 @@ namespace engine
                                     }
                                 }
 
-                                for (int i = 1; i <= 100; i++)
+                                foreach (Spells spell in System.Enum.GetValues(typeof(Spells)))
                                 {
-                                    if (gbl.spell_table[i].spellClass == 1)
+                                    if (gbl.spell_table[(int)spell].spellClass == SpellClass.Druid)
                                     {
-                                        player.field_79[i - 1] = 1;
+                                        player.LearnSpell(spell);
                                     }
                                 }
                             }
@@ -701,9 +700,9 @@ namespace engine
             else if (var_2 == 5)
             {
                 player.field_12D[2,0] = 1;
-                player.field_79[0xB - 1] = 1;
-                player.field_79[0x12 - 1] = 1;
-                player.field_79[0x15 - 1] = 1;
+                player.LearnSpell(Spells.spell_0b);
+                player.LearnSpell(Spells.spell_12);
+                player.LearnSpell(Spells.spell_15);
             }
 
             player._class = (ClassId)var_2;

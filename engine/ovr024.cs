@@ -499,13 +499,14 @@ namespace engine
         }
 
 
-        internal static bool sub_641DD(byte arg_0, Player target)
+        internal static bool CanHitTarget(int bonus, Player target) // sub_641DD
         {
             bool hit = false;
             gbl.attack_roll = roll_dice(20, 1);
 
             if (gbl.attack_roll > 1)
             {
+                // natural 20, always hits, so make it huge, so it always beats the AC.
                 if (gbl.attack_roll == 20)
                 {
                     gbl.attack_roll = 100;
@@ -515,7 +516,7 @@ namespace engine
 
                 if (gbl.attack_roll >= 0)
                 {
-                    if ((gbl.attack_roll + arg_0) > target.ac)
+                    if ((gbl.attack_roll + bonus) > target.ac)
                     {
                         hit = true;
                     }
@@ -526,7 +527,7 @@ namespace engine
         }
 
 
-        internal static bool attacker_can_hit_target(int target_ac, Player target, Player attacker) /* sub_64245 */
+        internal static bool PC_CanHitTarget(int target_ac, Player target, Player attacker) /* sub_64245 */
         {
             bool hit = false;
 

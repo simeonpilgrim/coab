@@ -13,12 +13,10 @@ namespace engine
         static string[] temple_sl = { "Cure Blindness", "Cure Disease", "Cure Light Wounds", "Cure Serious Wounds", "Cure Critical Wounds", "Heal", "Neutralize Poison", "Raise Dead", "Remove Curse", "Stone to Flesh", "Exit" };
 
 
-        internal static char cast_cure_anyway(string arg_0)
+        static char cast_cure_anyway(string arg_0)
         {
-            char ret_val;
-
             ovr025.DisplayPlayerStatusString(false, 0, arg_0, gbl.player_ptr);
-            ret_val = ovr027.yes_no(15, 10, 13, "cast cure anyway: ");
+            char ret_val = ovr027.yes_no(15, 10, 13, "cast cure anyway: ");
 
             ovr025.ClearPlayerTextArea();
 

@@ -185,7 +185,9 @@ namespace Classes
         public byte hit_point_max; // 0x78;
         
         [DataOffset(0x79, DataType.ByteArray,100)]
-        public byte[] field_79 = new byte[100]; //78[di]; // 1- 100 or 0x79 - 0xDC
+        public byte[] spellBook = new byte[100]; //78[di]; // 1- 100 or 0x79 - 0xDC
+        public bool KnowsSpell(Spells spell) { return spellBook[(int)spell - 1] != 0; }
+        public void LearnSpell(Spells spell) { spellBook[(int)spell - 1] = 1; }
 
         [DataOffset(0xdd, DataType.Byte)]
         public byte field_DD; // 0xdd;

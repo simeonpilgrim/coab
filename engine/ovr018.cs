@@ -1103,23 +1103,22 @@ namespace engine
                         {
                             ovr026.calc_cleric_spells(false, player);
 
-                            for (int i = 1; i <= 100; i++)
+                            foreach (Spells spell in System.Enum.GetValues(typeof(Spells)))
                             {
-                                SpellEntry stru = gbl.spell_table[i];
+                                SpellEntry stru = gbl.spell_table[(int)spell];
 
-                                if (stru.spellClass == 0 &&
-                                    stru.spellLevel == 1)
+                                if (stru.spellClass == 0 && stru.spellLevel == 1)
                                 {
-                                    var_53.field_79[i - 1] = 1;
+                                    var_53.LearnSpell(spell);
                                 }
                             }
                         }
                         else if (class_idx == 5)
                         {
-                            var_53.field_79[0xB - 1] = 1;
-                            var_53.field_79[0x12 - 1] = 1;
-                            var_53.field_79[0xC - 1] = 1;
-                            var_53.field_79[0x15 - -1] = 1;
+                            var_53.LearnSpell(Spells.spell_0b);
+                            var_53.LearnSpell(Spells.spell_12);
+                            var_53.LearnSpell(Spells.spell_0c);
+                            var_53.LearnSpell(Spells.spell_15);
                         }
 
                         var_20++;
@@ -1850,7 +1849,7 @@ namespace engine
 
             List<MenuItem> strList;
             List<MenuItem> nameList;
-            ovr017.sub_47465(out strList, out nameList);
+            ovr017.BuildLoadablePlayersLists(out strList, out nameList);
 
             if (nameList.Count > 0 )
             {
@@ -2898,7 +2897,7 @@ namespace engine
 
                         if (var_1A > 0)
                         {
-                            player_ptr.field_79[var_1A - 1] = 1;
+                            player_ptr.LearnSpell((Spells)var_1A);
                         }
                     }
                 }
@@ -2908,20 +2907,20 @@ namespace engine
                     switch (player_ptr.magic_user_lvl)
                     {
                         case 2:
-                            player_ptr.field_79[0xF - 1] = 1;
+                            player_ptr.LearnSpell(Spells.spell_0f);
                             break;
 
                         case 3:
-                            player_ptr.field_79[0x22 - 1] = 1;
-                            player_ptr.field_79[0x10 - 1] = 1;
+                            player_ptr.LearnSpell(Spells.spell_22);
+                            player_ptr.LearnSpell(Spells.spell_10);
                             break;
 
                         case 4:
-                            player_ptr.field_79[0x1F - 1] = 1;
+                            player_ptr.LearnSpell(Spells.knock);
                             break;
 
                         case 5:
-                            player_ptr.field_79[0x2F - 1] = 1;
+                            player_ptr.LearnSpell(Spells.spell_2f);
                             break;
                     }
                 }

@@ -147,8 +147,6 @@ namespace engine
 
             if (input_lenght != 0)
             {
-                //int var_102 = (xEnd - xStart) + 1;
-
                 Set var_125 = new Set(0x404, unk_16FA6);
                 do
                 {

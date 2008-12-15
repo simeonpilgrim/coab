@@ -440,13 +440,13 @@ namespace engine
                             }
                             else
                             {
-                                byte affect = (byte)((int)item.getAffect(var_2) & 0x7F);
-                                player.field_79[affect - 1] = 1;
-                                ovr023.remove_spell_from_scroll(affect, item, player);
+                                byte spellId = (byte)((int)item.getAffect(var_2) & 0x7F);
+                                player.LearnSpell((Spells)spellId); 
+                                ovr023.remove_spell_from_scroll(spellId, item, player);
 
                                 display_resting_time(0);
 
-                                ovr023.cast_spell_text(affect, "has scribed", player);
+                                ovr023.cast_spell_text(spellId, "has scribed", player);
                                 arg_0 = true;
                             }
                         }
