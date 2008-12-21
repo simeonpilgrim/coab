@@ -22,11 +22,11 @@ namespace engine
         Type_14 = 14,
         Type_15 = 15,
         Type_16 = 16,
-        Type_17 = 17,
+        Morale = 17,
         Movement = 18,
         Type_19 = 19,
-        Type_20 = 20,
-        Type_21 = 21,
+        FireShield = 20,
+        Confusion = 21,
         Type_22 = 22,
         Type_23 = 23
     }
@@ -68,7 +68,7 @@ namespace engine
         {
             if (affect == null)
             {
-                ovr025.find_affect(out affect, affect_id, player);
+                affect = player.GetAffect(affect_id);
             }
 
             if (affect != null)
@@ -101,7 +101,7 @@ namespace engine
             bool found = false;
 
             Affect affect;
-            if (ovr025.find_affect(out affect, affect_type, player) == true)
+            if (ovr025.FindAffect(out affect, affect_type, player) == true)
             {
                 found = true;
             }
@@ -114,18 +114,18 @@ namespace engine
                 {
                     if (found) break;
 
-                    if (ovr025.find_affect(out affect, affect_type, player_base) == true)
+                    if (ovr025.FindAffect(out affect, affect_type, player_base) == true)
                     {
                         if (gbl.game_state == GameState.Combat)
                         {
                             int max_range = (affect_type == Affects.prayer) ? 6 : 1;
 
                             ovr032.Rebuild_SortedCombatantList(gbl.mapToBackGroundTile, ovr033.PlayerMapSize(player_base), 0xff,
-                                max_range, ovr033.PlayerMapYPos(player_base), ovr033.PlayerMapXPos(player_base));
+                                max_range, ovr033.PlayerMapPos(player_base));
 
                             for (int i = 0; i < gbl.sortedCombatantCount; i++)
                             {
-                                if (gbl.SortedCombatantList[i].player_index == ovr033.get_player_index(player))
+                                if (gbl.SortedCombatantList[i].player_index == ovr033.GetPlayerIndex(player))
                                 {
                                     found = true;
                                 }
@@ -162,8 +162,8 @@ namespace engine
                     break;
 
                 case CheckType.Type_2:
-                    calc_affect_effect(Affects.affect_4f, player);
-                    calc_affect_effect(Affects.affect_50, player);
+                    calc_affect_effect(Affects.fireAttack_2d10, player);
+                    calc_affect_effect(Affects.ankhegAcidAttack, player);
                     calc_affect_effect(Affects.sp_dispel_evil, player);
                     calc_affect_effect(Affects.affect_39, player);
                     calc_affect_effect(Affects.affect_60, player);
@@ -175,9 +175,9 @@ namespace engine
                     calc_affect_effect(Affects.poison_plus_0, player);
                     calc_affect_effect(Affects.poison_plus_4, player);
                     calc_affect_effect(Affects.poison_plus_2, player);
-                    calc_affect_effect(Affects.affect_43, player);
+                    calc_affect_effect(Affects.thriKreenParalyze, player);
                     calc_affect_effect(Affects.poison_neg_2, player);
-                    calc_affect_effect(Affects.affect_4f, player);
+                    calc_affect_effect(Affects.fireAttack_2d10, player);
                     calc_affect_effect(Affects.affect_57, player);
                     break;
 
@@ -347,7 +347,7 @@ namespace engine
                     calc_affect_effect(Affects.dispel_evil, player);
                     break;
 
-                case CheckType.Type_17:
+                case CheckType.Morale:
                     calc_affect_effect(Affects.bless, player);
                     calc_affect_effect(Affects.cursed, player);
                     calc_affect_effect(Affects.charm_person, player);
@@ -367,12 +367,12 @@ namespace engine
                     calc_affect_effect(Affects.charm_person, player);
                     break;
 
-                case CheckType.Type_20:
+                case CheckType.FireShield:
                     calc_affect_effect(Affects.hot_fire_shield, player);
                     calc_affect_effect(Affects.cold_fire_shield, player);
                     break;
 
-                case CheckType.Type_21:
+                case CheckType.Confusion:
                     calc_affect_effect(Affects.confuse, player);
                     break;
 
@@ -387,15 +387,14 @@ namespace engine
         }
 
 
-        static Player sub_63D03(byte[] arg_0, int arraySize, List<GasCloud> list, int mapY, int mapX)
+        static Player sub_63D03(byte[] arg_0, int arraySize, List<GasCloud> list, Point mapPos)
         {
             var arg_6 = list.Find(cell =>
             {
                 for (int i = 1; i <= arraySize; i++)
                 {
-                    if (cell.field_10[i] != 0 &&
-                        cell.target_x + gbl.MapDirectionXDelta[arg_0[i]] == mapX &&
-                        cell.target_y + gbl.MapDirectionYDelta[arg_0[i]] == mapY)
+                    if (cell.present[i] == true &&
+                        cell.targetPos + gbl.MapDirectionDelta[arg_0[i]] == mapPos)
                     {
                         return true;
                     }
@@ -416,17 +415,17 @@ namespace engine
             {
                 bool isPoisonousCloud;
                 bool isNoxiouxCloud;
-                byte dummyGroundTile;
-                byte dummyPlayerIndex;
+                int dummyGroundTile;
+                int dummyPlayerIndex;
                 ovr033.getGroundInformation(out isPoisonousCloud, out isNoxiouxCloud, out dummyGroundTile, out dummyPlayerIndex, 8, player);
 
                 Affect affect;
 
                 if (isNoxiouxCloud && arg_0 != 0 &&
-                    ovr025.find_affect(out affect, Affects.helpless, player) == false &&
-                    ovr025.find_affect(out affect, Affects.animate_dead, player) == false &&
-                    ovr025.find_affect(out affect, Affects.affect_6f, player) == false &&
-                    ovr025.find_affect(out affect, Affects.affect_7d, player) == false)
+                    ovr025.FindAffect(out affect, Affects.helpless, player) == false &&
+                    ovr025.FindAffect(out affect, Affects.animate_dead, player) == false &&
+                    ovr025.FindAffect(out affect, Affects.affect_6f, player) == false &&
+                    ovr025.FindAffect(out affect, Affects.affect_7d, player) == false)
                 {
                     bool save_passed = RollSavingThrow(0, 0, player);
 
@@ -434,8 +433,7 @@ namespace engine
                     {
                         Player tmp_player_ptr = gbl.player_ptr;
 
-                        gbl.player_ptr = sub_63D03(gbl.unk_18AEA, 4, gbl.NoxiousCloud,
-                            ovr033.PlayerMapYPos(player), ovr033.PlayerMapXPos(player));
+                        gbl.player_ptr = sub_63D03(gbl.unk_18AEA, 4, gbl.NoxiousCloud, ovr033.PlayerMapPos(player));
 
                         is_unaffected("starts to cough", save_passed, 0, false, 0xff, 1, Affects.stinking_cloud, player);
 
@@ -450,12 +448,11 @@ namespace engine
                     {
                         Player tmp_player_ptr = gbl.player_ptr;
 
-                        gbl.player_ptr = sub_63D03(gbl.unk_18AEA, 4, gbl.NoxiousCloud,
-                            ovr033.PlayerMapYPos(player), ovr033.PlayerMapXPos(player));
+                        gbl.player_ptr = sub_63D03(gbl.unk_18AEA, 4, gbl.NoxiousCloud, ovr033.PlayerMapPos(player));
 
                         is_unaffected("chokes and gags from nausea", save_passed, 0, false, 0xff, (ushort)(roll_dice(4, 1) + 1), Affects.helpless, player);
 
-                        if (ovr025.find_affect(out affect, Affects.helpless, player) == true)
+                        if (ovr025.FindAffect(out affect, Affects.helpless, player) == true)
                         {
                             ovr013.CallAffectTable(Effect.Add, affect, player, Affects.helpless);
                         }
@@ -467,14 +464,14 @@ namespace engine
                 if (isPoisonousCloud == true &&
                     player.in_combat == true)
                 {
-                    if (player.field_E5 >= 0 && player.field_E5 <= 4)
+                    if (player.HitDice >= 0 && player.HitDice <= 4)
                     {
                         ovr025.DisplayPlayerStatusString(false, 10, "is Poisoned", player);
                         seg041.GameDelay();
                         add_affect(false, 0xff, 0, Affects.minor_globe_of_invulnerability, player);
                         KillPlayer("is killed", Status.dead, player);
                     }
-                    else if (player.field_E5 == 5)
+                    else if (player.HitDice == 5)
                     {
                         if (RollSavingThrow(-4, 0, player) == false)
                         {
@@ -484,7 +481,7 @@ namespace engine
                             KillPlayer("is killed", Status.dead, player);
                         }
                     }
-                    else if (player.field_E5 == 6)
+                    else if (player.HitDice == 6)
                     {
                         if (RollSavingThrow(0, 0, player) == false)
                         {
@@ -634,7 +631,7 @@ namespace engine
         {
             if (player.in_combat == true)
             {
-                byte player_index = ovr033.get_player_index(player);
+                int player_index = ovr033.GetPlayerIndex(player);
 
                 ovr033.sub_75356(false, 3, player);
 
@@ -666,7 +663,7 @@ namespace engine
         {
             Affect affect;
 
-            while (ovr025.find_affect(out affect, Affects.invisibility, player) == true)
+            while (ovr025.FindAffect(out affect, Affects.invisibility, player) == true)
             {
                 remove_affect(affect, Affects.invisibility, player);
             }
@@ -719,8 +716,8 @@ namespace engine
 
         internal static bool cure_affect(Affects affectId, Player player) /* is_cured */
         {
-            Affect affect;
-            if (ovr025.find_affect(out affect, affectId, player) == true)
+            Affect affect = player.GetAffect(affectId);
+            if (affect != null)
             {
                 ovr025.DisplayPlayerStatusString(true, 10, "is Cured", player);
 
@@ -999,7 +996,7 @@ namespace engine
             {
                 Affect affect_ptr;
 
-                if (ovr025.find_affect(out affect_ptr, Affects.strength, player) == true)
+                if (ovr025.FindAffect(out affect_ptr, Affects.strength, player) == true)
                 {
                     decode_strength(out str_00_b, out stat_b, affect_ptr);
 
@@ -1037,13 +1034,13 @@ namespace engine
                     max_strength(ref stat_a, stat_b, ref str_00_a, str_00_b);
                 }
 
-                if (ovr025.find_affect(out affect_ptr, Affects.strenght_spell, player) == true)
+                if (ovr025.FindAffect(out affect_ptr, Affects.strenght_spell, player) == true)
                 {
                     decode_strength(out str_00_b, out stat_b, affect_ptr);
                     max_strength(ref stat_a, stat_b, ref str_00_a, str_00_b);
                 }
 
-                if (ovr025.find_affect(out affect_ptr, Affects.enlarge, player) == true)
+                if (ovr025.FindAffect(out affect_ptr, Affects.enlarge, player) == true)
                 {
                     decode_strength(out str_00_b, out stat_b, affect_ptr);
                     max_strength(ref stat_a, stat_b, ref str_00_a, str_00_b);
@@ -1176,7 +1173,7 @@ namespace engine
             else if (stat_index == 5)
             {
                 Affect affect;
-                if (ovr025.find_affect(out affect, Affects.friends, player) == true)
+                if (ovr025.FindAffect(out affect, Affects.friends, player) == true)
                 {
                     stat_a = affect.affect_data;
                 }
@@ -1208,7 +1205,7 @@ namespace engine
             }
             else
             {
-                CheckAffectsEffect(player, CheckType.Type_20);
+                CheckAffectsEffect(player, CheckType.FireShield);
             }
 
             if (gbl.damage > 0)
@@ -1245,7 +1242,7 @@ namespace engine
                     text += "from Magic";
                 }
 
-                ovr025.sub_6818A(text, false, player);
+                ovr025.MagicAttackDisplay(text, false, player);
                 ovr025.damage_player(gbl.damage, player);
 
                 if (gbl.game_state == GameState.Combat)
@@ -1323,7 +1320,7 @@ namespace engine
             {
                 Affect found_affect;
 
-                if (ovr025.find_affect(out found_affect, affect_id, target) == true &&
+                if (ovr025.FindAffect(out found_affect, affect_id, target) == true &&
                     found_affect.minutes > 0)
                 {
                     remove_affect(found_affect, affect_id, target);
@@ -1333,7 +1330,7 @@ namespace engine
 
                 if (text.Length != 0)
                 {
-                    ovr025.sub_6818A(text, true, target);
+                    ovr025.MagicAttackDisplay(text, true, target);
                     ovr025.ClearPlayerTextArea();
                 }
             }
@@ -1380,7 +1377,7 @@ namespace engine
 
         internal static bool combat_heal(byte arg_0, Player player)
         {
-            if (ovr033.sub_7515A(true, ovr033.PlayerMapYPos(player), ovr033.PlayerMapXPos(player), player) == true)
+            if (ovr033.sub_7515A(true, ovr033.PlayerMapPos(player), player) == true)
             {
                 player.health_status = Status.okey;
                 player.in_combat = true;

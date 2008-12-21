@@ -454,6 +454,7 @@ namespace engine
 
             bool redraw_items = true;
             bool redraw_player = true;
+            int dummy_index = 0;
 
             while (unk_554EE.MemberOf(inputKey) == false &&
                 arg_0 == false &&
@@ -504,7 +505,6 @@ namespace engine
                             player.in_combat == false ||
                             player.health_status == Status.animated)
                         {
-
                             text += " Sell";
                         }
 
@@ -531,7 +531,6 @@ namespace engine
                     var menulist = player.items.ConvertAll<MenuItem>(item => new MenuItem(item.name, item));
                     MenuItem menuitem;
 
-                    int dummy_index = 0;
                     inputKey = ovr027.sl_select_item(out menuitem, ref dummy_index, ref redraw_items, true,
                         menulist, 0x16, 0x26, 5, 1, 15, 10, 13, text, string.Empty);
 
@@ -727,7 +726,7 @@ namespace engine
                     if (((int)item.affect_2 & 0x0f) != player.alignment)
                     {
                         item.readied = false;
-                        int var_3 = (int)item.affect_2 << 4;
+                        int damage = (int)item.affect_2 << 4;
 
                         gbl.damage_flags = DamageType.Magic;
                         if (gbl.game_state == GameState.Combat)
@@ -735,7 +734,7 @@ namespace engine
                             ovr025.RedrawCombatScreen();
                         }
 
-                        ovr024.damage_person(false, 0, var_3, player);
+                        ovr024.damage_person(false, 0, damage, player);
                         gbl.byte_1D2C8 = true;
                     }
                     break;
@@ -1067,7 +1066,7 @@ namespace engine
                 gbl.spell_from_item = false;
 
                 if (gbl.game_state == GameState.Combat &&
-                    gbl.spell_table[var_1].field_B != 0)
+                    gbl.spell_table[var_1].whenCast != SpellWhen.Camp)
                 {
                     arg_0 = true;
                     ovr025.clear_actions(gbl.player_ptr);

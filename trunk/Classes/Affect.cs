@@ -4,6 +4,7 @@ namespace Classes
 {
     public enum Affects
     {
+        none = 0,
         bless = 0x1,
         cursed = 0x2,
         sticks_to_snakes = 0x3,
@@ -70,7 +71,7 @@ namespace Classes
         poison_plus_0 = 0x40,
         poison_plus_4 = 0x41,
         poison_plus_2 = 0x42,
-        affect_43 = 0x43,
+        thriKreenParalyze = 0x43,
         feeblemind = 0x44,
         invisible_to_animals = 0x45,
         poison_neg_2 = 0x46,
@@ -82,8 +83,8 @@ namespace Classes
         affect_4c = 0x4c,
         berserk = 0x4d,
         affect_4e = 0x4e,
-        affect_4f = 0x4f,
-        affect_50 = 0x50,
+        fireAttack_2d10 = 0x4f,
+        ankhegAcidAttack = 0x50,
         half_damge = 0x51,
         affect_52 = 0x52,
         paralizing_gaze = 0x53,

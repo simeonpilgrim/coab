@@ -116,13 +116,13 @@ namespace engine
         }
 
 
-        internal static bool sub_352AF(int spell_id, int mapY, int mapX)
+        internal static bool sub_352AF(int spell_id, Point pos)
         {
             bool result = false;
 
             int save_bonus = (gbl.player_ptr.combat_team == CombatTeam.Ours)? -2 : 8;
 
-            ovr032.Rebuild_SortedCombatantList(gbl.mapToBackGroundTile, 1, 0xff, gbl.spell_table[spell_id].field_F, mapY, mapX);
+            ovr032.Rebuild_SortedCombatantList(gbl.mapToBackGroundTile, 1, 0xff, gbl.spell_table[spell_id].field_F, pos);
    
             for (int i = 1; i <= gbl.sortedCombatantCount; i++)
             {
@@ -130,7 +130,7 @@ namespace engine
                 SpellEntry spell_entry = gbl.spell_table[spell_id];
 
                 if (gbl.player_ptr.OppositeTeam() != tmpPlayer.combat_team &&
-                    spell_entry.can_save_flag != DamageOnSave.Zero &&
+                    spell_entry.damageOnSave != DamageOnSave.Zero &&
                     ovr024.RollSavingThrow(save_bonus, spell_entry.saveVerse, tmpPlayer) == false)
                 {
                     result = true;
@@ -166,8 +166,7 @@ namespace engine
                             for (int i = 1; i <= near_count; i++)
                             {
                                 int index = gbl.near_targets[i];
-                                if (sub_352AF(spellId, gbl.CombatMap[index].yPos, 
-                                        gbl.CombatMap[index].xPos) == true)
+                                if (sub_352AF(spellId, gbl.CombatMap[index].pos) == true)
                                 {
                                     return false;
                                 }
@@ -296,26 +295,24 @@ namespace engine
             return casting_spell;
         }
 
-        static byte[] data_2B8 = new byte[]{ 
+        static int[] data_2B8 = new int[]{ 
             0, 8, 7, 6, 1, 2, 8, 1, 2, 7,
-            6, 7 ,1 ,8 ,6 ,2 ,1 ,7 ,8 ,2 ,
-            6, 8 ,7, 6 ,5 ,4 ,8 ,1 ,2 ,3,  
-            4 ,8 ,4 ,6 ,2 ,8 ,6, 4 ,0 ,8 ,
-            0 ,6 ,2 ,8 ,2 ,0 ,4 ,0, 0 ,2 ,
-            6 ,2 ,2 ,0 ,4 ,4 ,4 ,2, 6, 6 };/* actual from seg600:02BD - seg600:02F8 */
+            6, 7, 1, 8, 6, 2, 1, 7, 8, 2,
+            6, 8, 7, 6, 5, 4, 8, 1, 2, 3,  
+            4, 8, 4, 6, 2, 8 ,6, 4, 0, 8,
+            0, 6, 2, 8, 2, 0, 4, 0, 0, 2,
+            6, 2, 2, 0, 4, 4, 4, 2, 6, 6 };/* actual from seg600:02BD - seg600:02F8 */
 
-        internal static bool sub_3573B(out bool arg_0, byte arg_4, byte arg_6, Player player)
+        internal static bool sub_3573B(out bool arg_0, int arg_4, int arg_6, Player player)
         {
-            byte var_A;
-
             arg_0 = false;
             bool result = false;
 
-            byte var_6 = data_2B8[(player.actions.field_15 * 5) + arg_6];
+            int var_6 = data_2B8[(player.actions.field_15 * 5) + arg_6];
             byte playerDirection = (byte)((arg_4 + var_6) % 8);
 
-            byte groundTile;
-            byte playerIndex;  
+            int groundTile;
+            int playerIndex;  
             bool isPoisonousCloud;
             bool isNoxiousCloud;
             ovr033.getGroundInformation(out isPoisonousCloud, out isNoxiousCloud, out groundTile, out playerIndex, playerDirection, player);
@@ -331,13 +328,14 @@ namespace engine
                     return false;
                 }
 
+                byte var_A = gbl.BackGroundTiles[groundTile].move_cost;
                 if ((playerDirection & 1) != 0)
                 {
-                    var_A = (byte)(gbl.BackGroundTiles[groundTile].move_cost * 3);
+                    var_A *= 3;
                 }
                 else
                 {
-                    var_A = (byte)(gbl.BackGroundTiles[groundTile].move_cost * 2);
+                    var_A *= 2;
                 }
 
                 if (playerIndex == 0 && var_A < player.actions.move)
@@ -359,7 +357,7 @@ namespace engine
 
 
                     if (isPoisonousCloud == true &&
-                        player.field_E5 < 7 &&
+                        player.HitDice < 7 &&
                         player.HasAffect(Affects.protect_magic) == false &&
                         player.HasAffect(Affects.affect_6f) == false &&
                         player.HasAffect(Affects.affect_85) == false &&
@@ -398,7 +396,7 @@ namespace engine
                     player.actions.delay > 0)
                 {
                     if (player.field_F7 < 0x80 ||
-                       (player.field_F7 > 0x7F && gbl.enemyHealthPercentage <= (ovr024.roll_dice(100, 1) + gbl.byte_1D2CC)) ||
+                       (player.field_F7 > 0x7F && gbl.enemyHealthPercentage <= (ovr024.roll_dice(100, 1) + gbl.monster_morale)) ||
                         player.combat_team == CombatTeam.Enemy)
                     {
                         if (player.actions.field_14 != 0 ||
@@ -574,7 +572,6 @@ namespace engine
                     if (var_13 > 20)
                     {
                         var_2 = true;
-                        
                         var_3 = false;
                         TryGuarding(player);
                     }
@@ -604,14 +601,13 @@ namespace engine
                     if (target != null &&
                         ovr014.CanSeeTargetA(target, player) == true)
                     {
-                        int tmpX = ovr033.PlayerMapXPos(target);
-                        int tmpY = ovr033.PlayerMapYPos(target);
+                        var tmpPos = ovr033.PlayerMapPos(target);
 
                         int steps = range;
 
                         gbl.mapToBackGroundTile.field_6 = false;
 
-                        if (ovr032.canReachTarget(gbl.mapToBackGroundTile, ref steps, ref tmpY, ref tmpX, ovr033.PlayerMapYPos(player), ovr033.PlayerMapXPos(player)) == true &&
+                        if (ovr032.canReachTarget(gbl.mapToBackGroundTile, ref steps, ovr033.PlayerMapPos(target), ovr033.PlayerMapPos(player)) == true &&
                             (steps / 2) <= range)
                         {
                             gbl.byte_1D90E = true;
@@ -657,7 +653,7 @@ namespace engine
 
                     if (gbl.byte_1D90E == true)
                     {
-                        ovr033.redrawCombatArea(ovr014.getTargetDirection(target, player), 2, ovr033.PlayerMapYPos(player), ovr033.PlayerMapXPos(player));
+                        ovr033.redrawCombatArea(ovr014.getTargetDirection(target, player), 2, ovr033.PlayerMapPos(player));
 
                     }
 
@@ -794,24 +790,24 @@ namespace engine
             }
             else if (player.field_F7 > 0x7F)
             {
-                gbl.byte_1D2CC = (player.field_F7 & 0x7F) << 1;
+                gbl.monster_morale = (player.field_F7 & 0x7F) << 1;
 
-                if (gbl.byte_1D2CC > 0x66)
+                if (gbl.monster_morale > 102)
                 {
-                    gbl.byte_1D2CC = 0;
+                    gbl.monster_morale = 0;
                 }
-                ovr024.CheckAffectsEffect(player, CheckType.Type_17);
+                ovr024.CheckAffectsEffect(player, CheckType.Morale);
 
-                if (gbl.byte_1D2CC < (100 - ((player.hit_point_current * 100) / player.hit_point_max)) ||
-                    gbl.byte_1D2CC == 0)
+                if (gbl.monster_morale < (100 - ((player.hit_point_current * 100) / player.hit_point_max)) ||
+                    gbl.monster_morale == 0)
                 {
                     //byte var_3 = gbl.byte_1D2CC;
-                    gbl.byte_1D2CC = gbl.enemyHealthPercentage;
+                    gbl.monster_morale = gbl.enemyHealthPercentage;
 
-                    ovr024.CheckAffectsEffect(player, CheckType.Type_17);
+                    ovr024.CheckAffectsEffect(player, CheckType.Morale);
 
-                    if (gbl.byte_1D2CC < (100 - gbl.area2_ptr.field_58C) ||
-                        gbl.byte_1D2CC == 0 ||
+                    if (gbl.monster_morale < (100 - gbl.area2_ptr.field_58C) ||
+                        gbl.monster_morale == 0 ||
                         player.combat_team == CombatTeam.Ours)
                     {
                         int var_2 = ovr014.MaxOppositionMoves(player);

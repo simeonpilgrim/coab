@@ -138,9 +138,6 @@
     <Compile Include="Struct_189B4.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Struct_19AEC.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Struct_1A35E.cs" />
     <Compile Include="Struct_1ADF6.cs" />
     <Compile Include="Struct_1B2CA.cs" />

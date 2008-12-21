@@ -497,8 +497,8 @@ namespace engine
             System.Array.Copy(bp_var_1C0.field_6D, player.saveVerse, 5);
 
             player.base_movement = bp_var_1C0.field_72;
-            player.field_E5 = bp_var_1C0.field_73;
-            player.field_E6 = player.field_E5;
+            player.HitDice = bp_var_1C0.field_73;
+            player.field_E6 = player.HitDice;
             player.field_E7 = bp_var_1C0.field_74;
             player.field_E8 = bp_var_1C0.field_75;
             player.field_E9 = bp_var_1C0.field_76;
@@ -708,38 +708,25 @@ namespace engine
 
             System.Array.Copy(bp_var_1C0.field_C1, player.icon_colours, 6);
 
-            throw new System.NotSupportedException();//mov	di, [bp+arg_0]
-            throw new System.NotSupportedException();//les	di, ss:[di-0x1C0]
-            throw new System.NotSupportedException();//mov	al, es:[di+0C7h]
-            throw new System.NotSupportedException();//les	di, int ptr [bp+player.offset]
-            throw new System.NotSupportedException();//mov	es:[di+14Ch], al
-            throw new System.NotSupportedException();//mov	di, [bp+arg_0]
-            throw new System.NotSupportedException();//les	di, ss:[di-0x1C0]
-            throw new System.NotSupportedException();//add	di, 0x0CC
-            throw new System.NotSupportedException();//push	es
-            throw new System.NotSupportedException();//push	di
-            throw new System.NotSupportedException();//les	di, int ptr [bp+player.offset]
-            throw new System.NotSupportedException();//add	di, 0x151
-            throw new System.NotSupportedException();//push	es
-            throw new System.NotSupportedException();//push	di
-            throw new System.NotSupportedException();//mov	ax, 0x34
-            throw new System.NotSupportedException();//push	ax
-            throw new System.NotSupportedException();//call	Move(Any &,Any &,Word)
-            throw new System.NotSupportedException();//mov	di, [bp+arg_0]
-            throw new System.NotSupportedException();//les	di, ss:[di-0x1C0]
-            throw new System.NotSupportedException();//mov	al, es:[di+100h]
-            throw new System.NotSupportedException();//les	di, int ptr [bp+player.offset]
-            throw new System.NotSupportedException();//mov	es:[di+185h], al
-            throw new System.NotSupportedException();//mov	di, [bp+arg_0]
-            throw new System.NotSupportedException();//les	di, ss:[di-0x1C0]
-            throw new System.NotSupportedException();//mov	al, es:[di+101h]
-            throw new System.NotSupportedException();//les	di, int ptr [bp+player.offset]
-            throw new System.NotSupportedException();//mov	es:[di+186h], al
-            throw new System.NotSupportedException();//mov	di, [bp+arg_0]
-            throw new System.NotSupportedException();//les	di, ss:[di-0x1C0]
-            throw new System.NotSupportedException();//mov	ax, es:[di+102h]
-            throw new System.NotSupportedException();//les	di, int ptr [bp+player.offset]
-            throw new System.NotSupportedException();//mov	es:[di+187h], ax
+            
+            //player.field_14c = bp_var_1C0.field_C7; // Item count
+
+           //mov	di, [bp+arg_0] // copy item pointers...
+            //les	di, ss:[di-0x1C0]
+            //add	di, 0x0CC
+            //push	es
+            //push	di
+            //les	di, int ptr [bp+player.offset]
+            //add	di, 0x151
+            //push	es
+            //push	di
+            //mov	ax, 0x34
+            //push	ax
+            //call	Move(Any &,Any &,Word)
+
+            player.field_185 = bp_var_1C0.field_100;
+            player.field_186 = (sbyte)bp_var_1C0.field_101;
+            player.weight = bp_var_1C0.field_1C0;
 
             player.health_status = (Status)bp_var_1C0.field_10C;
             player.in_combat = bp_var_1C0.field_10D != 0;
@@ -831,7 +818,7 @@ namespace engine
             var_7.fighter_lvl = (hills_far_player.field_B9 > 0) ? (byte)1 : (byte)0;
             var_7.thief_lvl = (hills_far_player.field_BA > 0) ? (byte)1 : (byte)0;
 
-            var_7.field_E5 = 1;
+            var_7.HitDice = 1;
 
             if (hills_far_player.field_26 != 0)
             {
@@ -1096,7 +1083,7 @@ namespace engine
                         player01_ptr.magic_user_lvl = (var_1C4.field_B8 > 0) ? (byte)1 : (byte)0;
                         player01_ptr.fighter_lvl = (var_1C4.field_B9 > 0) ? (byte)1 : (byte)0;
                         player01_ptr.thief_lvl = (var_1C4.field_BA > 0) ? (byte)1 : (byte)0;
-                        player01_ptr.field_E5 = 1;
+                        player01_ptr.HitDice = 1;
                         player01_ptr.sex = var_1C4.field_2C;
                         player01_ptr.alignment = var_1C4.field_1C;
                         player01_ptr.exp = var_1C4.field_2E;

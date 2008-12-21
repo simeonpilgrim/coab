@@ -51,20 +51,20 @@ namespace engine
 
         internal static void Bless(Effect add_remove, object param, Player player)
         {
-            gbl.byte_1D2CC += 5;
+            gbl.monster_morale += 5;
             gbl.attack_roll++;
         }
 
 
         internal static void Curse(Effect arg_0, object param, Player player)
         {
-            if (gbl.byte_1D2CC < 5)
+            if (gbl.monster_morale < 5)
             {
-                gbl.byte_1D2CC = 0;
+                gbl.monster_morale = 0;
             }
             else
             {
-                gbl.byte_1D2CC -= 5;
+                gbl.monster_morale -= 5;
             }
             gbl.attack_roll--;
         }
@@ -85,7 +85,7 @@ namespace engine
                 ovr024.remove_affect(null, Affects.sticks_to_snakes, player);
             }
 
-            ovr025.sub_6818A("is fighting with snakes", true, player);
+            ovr025.MagicAttackDisplay("is fighting with snakes", true, player);
             ovr025.ClearPlayerTextArea();
 
             ovr025.clear_actions(player);
@@ -219,7 +219,7 @@ namespace engine
                     player.actions.target = null;
                     ovr025.CountCombatTeamMembers();
                 }
-                gbl.byte_1D2CC = 100;
+                gbl.monster_morale = 100;
             }
         }
 
@@ -502,7 +502,7 @@ namespace engine
             }
             else if (var_1 >= 11 && var_1 <= 60)
             {
-                ovr025.sub_6818A("is confused", true, player);
+                ovr025.MagicAttackDisplay("is confused", true, player);
                 ovr025.ClearPlayerTextArea();
                 sub_3A071(0, arg_2, player);
             }
@@ -513,7 +513,7 @@ namespace engine
             }
             else if (var_1 >= 81 && var_1 <= 100)
             {
-                ovr025.sub_6818A("is enraged", true, player);
+                ovr025.MagicAttackDisplay("is enraged", true, player);
                 ovr025.ClearPlayerTextArea();
             }
 
@@ -569,18 +569,16 @@ namespace engine
 
                 for (int var_B = 1; var_B <= 4; var_B++)
                 {
-                    if (var_8.field_10[var_B] != 0)
+                    if (var_8.present[var_B] == true)
                     {
-                        int tmp_x = var_8.target_x + gbl.MapDirectionXDelta[gbl.unk_18AE9[var_B]];
-                        int tmp_y = var_8.target_y + gbl.MapDirectionYDelta[gbl.unk_18AE9[var_B]];
+                        var tmp = var_8.targetPos + gbl.MapDirectionDelta[gbl.unk_18AE9[var_B]];
 
-                       bool var_9 = false;
+                        bool var_9 = false;
 
                         for (int i = 1; i <= gbl.byte_1D1BB; i++)
                         {
                             if (gbl.unk_1D183[i].target != null &&
-                                gbl.unk_1D183[i].mapX == tmp_x &&
-                                gbl.unk_1D183[i].mapY == tmp_y)
+                                gbl.unk_1D183[i].map == tmp)
                             {
                                 var_9 = true;
                             }
@@ -588,11 +586,11 @@ namespace engine
 
                         if (var_9 == true)
                         {
-                            gbl.mapToBackGroundTile[tmp_x, tmp_y] = 0x1F;
+                            gbl.mapToBackGroundTile[tmp] = 0x1F;
                         }
                         else
                         {
-                            gbl.mapToBackGroundTile[tmp_x, tmp_y] = var_8.field_7[var_B];
+                            gbl.mapToBackGroundTile[tmp] = var_8.groundTile[var_B];
                         }
                     }
                 }
@@ -603,12 +601,11 @@ namespace engine
                 {
                     for (int var_B = 1; var_B <= 4; var_B++)
                     {
-                        if (var_4.field_10[var_B] != 0)
+                        if (var_4.present[var_B] == true)
                         {
-                            int tmp_x = gbl.MapDirectionXDelta[gbl.unk_18AE9[var_B]] + var_4.target_x;
-                            int tmp_y = gbl.MapDirectionYDelta[gbl.unk_18AE9[var_B]] + var_4.target_y;
+                            var tmp = gbl.MapDirectionDelta[gbl.unk_18AE9[var_B]] + var_4.targetPos;
 
-                            gbl.mapToBackGroundTile[tmp_x, tmp_y] = 0x1E;
+                            gbl.mapToBackGroundTile[tmp.x, tmp.y] = 0x1E;
                         }
                     }
                 }
@@ -616,11 +613,11 @@ namespace engine
         }
 
 
-        internal static void sub_3AF06(byte arg_0, Player player)
+        static void AvoidMissleAttack(int percentage, Player player) // sub_3AF06
         {
             if (gbl.player_ptr.field_151 != null &&
                 ovr025.getTargetRange(player, gbl.player_ptr) == 0 &&
-                ovr024.roll_dice(100, 1) <= arg_0)
+                ovr024.roll_dice(100, 1) <= percentage)
             {
                 ovr025.DisplayPlayerStatusString(true, 10, "Avoids it", player);
                 gbl.damage = 0;
@@ -649,13 +646,13 @@ namespace engine
         }
 
 
-        internal static void sub_3AFE0(Effect arg_0, object param, Player player)
+        internal static void AffectProtNormalMissles(Effect arg_0, object param, Player player) // sub_3AFE0
         {
             Item item = get_primary_weapon(gbl.player_ptr);
 
             if (item != null && item.plus == 0)
             {
-                sub_3AF06(100, player);
+                AvoidMissleAttack(100, player);
             }
         }
 
@@ -880,18 +877,6 @@ namespace engine
         }
 
 
-        internal static void sub_3B4AE(byte arg_0, ushort affect, Player player)
-        {
-            gbl.spell_target = player.actions.target;
-
-            if (ovr024.RollSavingThrow(0, 0, gbl.spell_target) == false)
-            {
-                ovr025.sub_6818A("is Paralyzed", true, gbl.spell_target);
-                ovr024.add_affect(false, 12, affect, Affects.paralyze, gbl.spell_target);
-            }
-        }
-
-
         internal static void AffectPoisonPlus0(Effect arg_0, object param, Player player) // sub_3B520
         {
             PoisonAttack(0, player);
@@ -910,9 +895,17 @@ namespace engine
         }
 
 
-        internal static void sub_3B55C(Effect arg_0, object param, Player player)
+        internal static void ThriKreenParalyze(Effect arg_0, object param, Player player) // sub_3B55C
         {
-            sub_3B4AE(0, ovr024.roll_dice(8, 2), player);
+            ushort time = ovr024.roll_dice(8, 2);
+
+            gbl.spell_target = player.actions.target;
+
+            if (ovr024.RollSavingThrow(0, SaveVerseType.Poison, gbl.spell_target) == false)
+            {
+                ovr025.MagicAttackDisplay("is Paralyzed", true, gbl.spell_target);
+                ovr024.add_affect(false, 12, time, Affects.paralyze, gbl.spell_target);
+            }
         }
 
 
@@ -1008,7 +1001,7 @@ namespace engine
         }
 
 
-        internal static void spl_berzerk(Effect arg_0, object param, Player player)
+        internal static void AffectBerzerk(Effect arg_0, object param, Player player)
         {
             if (arg_0 == Effect.Add)
             {
@@ -1029,7 +1022,7 @@ namespace engine
                     player.actions.target = null;
 
                     ovr032.Rebuild_SortedCombatantList(gbl.mapToBackGroundTile, ovr033.PlayerMapSize(player), 0xff, 0xff,
-                        ovr033.PlayerMapYPos(player), ovr033.PlayerMapXPos(player));
+                        ovr033.PlayerMapPos(player));
 
                     player.actions.target = gbl.player_array[gbl.SortedCombatantList[1].player_index];
 
@@ -1062,7 +1055,7 @@ namespace engine
         }
 
 
-        internal static void sub_3B919(Effect arg_0, object param, Player player)
+        internal static void MagicFireAttack_2d10(Effect arg_0, object param, Player player) // sub_3B919
         {
             gbl.damage_flags = DamageType.Magic | DamageType.Fire;
 
@@ -1070,7 +1063,7 @@ namespace engine
         }
 
 
-        internal static void sub_3B94C(Effect arg_0, object param, Player player)
+        internal static void AnkhegAcidAttack(Effect arg_0, object param, Player player) // sub_3B94C
         {
             gbl.damage_flags = DamageType.Acid;
 
@@ -1090,7 +1083,7 @@ namespace engine
                 (gbl.damage_flags & DamageType.Cold) != 0)
             {
                 if (ovr024.RollSavingThrow(0, SaveVerseType.type4, player) == true &&
-                    gbl.spell_table[gbl.spell_id].can_save_flag != 0)
+                    gbl.spell_table[gbl.spell_id].damageOnSave != 0)
                 {
                     gbl.damage = 0;
                 }
@@ -1157,18 +1150,16 @@ namespace engine
 
                 for (int var_B = 1; var_B <= 9; var_B++)
                 {
-                    if (var_8.field_10[var_B] != 0)
+                    if (var_8.present[var_B] == true)
                     {
-                        int tmp_x = var_8.target_x + gbl.MapDirectionXDelta[gbl.unk_18AED[var_B]];
-                        int tmp_y = var_8.target_y + gbl.MapDirectionYDelta[gbl.unk_18AED[var_B]];
+                        var tmp = var_8.targetPos + gbl.MapDirectionDelta[gbl.unk_18AED[var_B]];
 
                         bool var_E = false;
 
                         for (int i = 1; i <= gbl.byte_1D1BB; i++)
                         {
                             if (gbl.unk_1D183[i].target != null &&
-                                gbl.unk_1D183[i].mapX == tmp_x &&
-                                gbl.unk_1D183[i].mapY == tmp_y)
+                                gbl.unk_1D183[i].map == tmp)
                             {
                                 var_E = true;
                             }
@@ -1176,11 +1167,11 @@ namespace engine
 
                         if (var_E == true)
                         {
-                            gbl.mapToBackGroundTile[tmp_x, tmp_y] = 0x1F;
+                            gbl.mapToBackGroundTile[tmp.x, tmp.y] = 0x1F;
                         }
                         else
                         {
-                            gbl.mapToBackGroundTile[tmp_x, tmp_y] = var_8.field_7[var_B];
+                            gbl.mapToBackGroundTile[tmp.x, tmp.y] = var_8.groundTile[var_B];
                         }
                     }
                 }
@@ -1192,12 +1183,11 @@ namespace engine
                 {
                     for (int var_B = 1; var_B <= 9; var_B++)
                     {
-                        if (var_4.field_10[var_B] != 0)
+                        if (var_4.present[var_B] == true)
                         {
-                            int tmp_x = gbl.MapDirectionXDelta[gbl.unk_18AED[var_B]] + var_4.target_x;
-                            int tmp_y = gbl.MapDirectionYDelta[gbl.unk_18AED[var_B]] + var_4.target_y;
+                            var tmp = var_4.targetPos + gbl.MapDirectionDelta[gbl.unk_18AED[var_B]];
 
-                            gbl.mapToBackGroundTile[tmp_x, tmp_y] = 0x1C;
+                            gbl.mapToBackGroundTile[tmp.x, tmp.y] = 0x1C;
                         }
                     }
                 }
@@ -1355,7 +1345,7 @@ namespace engine
 
         internal static void sub_3C0DA(Effect arg_0, object param, Player player)
         {
-            sub_3AF06(0x3c, player);
+            AvoidMissleAttack(60, player);
         }
 
 
@@ -1518,7 +1508,7 @@ namespace engine
             Item weapon = get_primary_weapon(gbl.player_ptr);
 
             if ((weapon == null || weapon.plus == 0) &&
-                (gbl.player_ptr.race > 0 || gbl.player_ptr.field_E5 < 4))
+                (gbl.player_ptr.race > 0 || gbl.player_ptr.HitDice < 4))
             {
                 gbl.damage = 0;
             }
@@ -1534,7 +1524,7 @@ namespace engine
                 if (field_151.type == 0x57 ||
                     field_151.type == 0x58)
                 {
-                    sub_3AF06(0x32, player);
+                    AvoidMissleAttack(50, player);
                 }
             }
         }
@@ -1556,9 +1546,7 @@ namespace engine
 
                     ovr025.load_missile_icons(0x17);
 
-                    ovr025.draw_missile_attack(0x1e, 1,
-                        ovr033.PlayerMapYPos(gbl.spell_target), ovr033.PlayerMapXPos(gbl.spell_target),
-                        ovr033.PlayerMapYPos(player), ovr033.PlayerMapXPos(player));
+                    ovr025.draw_missile_attack(0x1e, 1, ovr033.PlayerMapPos(gbl.spell_target), ovr033.PlayerMapPos(player));
 
                     int damage = ovr024.roll_dice_save(4, 8);
                     bool saved = ovr024.RollSavingThrow(0, SaveVerseType.type3, gbl.spell_target);
@@ -1566,7 +1554,7 @@ namespace engine
                     ovr024.damage_person(saved, DamageOnSave.Half, damage, gbl.spell_target);
 
                     ovr024.remove_affect(affect, Affects.affect_79, player);
-                    ovr024.remove_affect(null, Affects.affect_50, player);
+                    ovr024.remove_affect(null, Affects.ankhegAcidAttack, player);
                 }
             }
         }
@@ -1731,8 +1719,7 @@ namespace engine
 
                 player.actions.target = null;
 
-                ovr032.Rebuild_SortedCombatantList(gbl.mapToBackGroundTile, ovr033.PlayerMapSize(player), 0xff, 0xff,
-                    ovr033.PlayerMapYPos(player), ovr033.PlayerMapXPos(player));
+                ovr032.Rebuild_SortedCombatantList(gbl.mapToBackGroundTile, ovr033.PlayerMapSize(player), 0xff, 0xff, ovr033.PlayerMapPos(player));
 
                 player.actions.target = gbl.player_array[gbl.SortedCombatantList[1].player_index];
 
@@ -1867,7 +1854,7 @@ namespace engine
             affect_table.Add(Affects.strength, ovr013.empty);
             affect_table.Add(Affects.haste, ovr013.AffectHaste);
             affect_table.Add(Affects.affect_28, ovr013.sub_3AC1D);
-            affect_table.Add(Affects.prot_from_normal_missiles, ovr013.sub_3AFE0);
+            affect_table.Add(Affects.prot_from_normal_missiles, ovr013.AffectProtNormalMissles);
             affect_table.Add(Affects.slow, ovr013.AffectSlow);
             affect_table.Add(Affects.affect_2b, ovr013.weaken);
             affect_table.Add(Affects.cause_disease_2, ovr013.sub_3B0C2);
@@ -1893,7 +1880,7 @@ namespace engine
             affect_table.Add(Affects.poison_plus_0, ovr013.AffectPoisonPlus0);
             affect_table.Add(Affects.poison_plus_4, ovr013.AffectPoisonPlus4);
             affect_table.Add(Affects.poison_plus_2, ovr013.AffectPoisonPlus2);
-            affect_table.Add(Affects.affect_43, ovr013.sub_3B55C);
+            affect_table.Add(Affects.thriKreenParalyze, ovr013.ThriKreenParalyze);
             affect_table.Add(Affects.feeblemind, ovr013.AffectFeebleMind);
             affect_table.Add(Affects.invisible_to_animals, ovr013.AffectInvisToAnimals);
             affect_table.Add(Affects.poison_neg_2, ovr013.AffectPoisonNeg2);
@@ -1903,10 +1890,10 @@ namespace engine
             affect_table.Add(Affects.affect_4a, ovr013.empty);
             affect_table.Add(Affects.affect_4b, ovr013.sub_3B71A);
             affect_table.Add(Affects.affect_4c, ovr013.sub_3B772);
-            affect_table.Add(Affects.berserk, ovr013.spl_berzerk);
+            affect_table.Add(Affects.berserk, ovr013.AffectBerzerk);
             affect_table.Add(Affects.affect_4e, ovr013.sub_3B8D9);
-            affect_table.Add(Affects.affect_4f, ovr013.sub_3B919);
-            affect_table.Add(Affects.affect_50, ovr013.sub_3B94C);
+            affect_table.Add(Affects.fireAttack_2d10, ovr013.MagicFireAttack_2d10);
+            affect_table.Add(Affects.ankhegAcidAttack, ovr013.AnkhegAcidAttack);
             affect_table.Add(Affects.half_damge, ovr013.half_damage);
             affect_table.Add(Affects.affect_52, ovr013.sub_3B990);
             affect_table.Add(Affects.paralizing_gaze, ovr023.AffectParalizingGaze);

@@ -15,7 +15,14 @@ namespace Classes
         type6,
         type7
     }
-    
+
+    public enum SpellWhen
+    {
+        Camp = 0,
+        Combat = 1,
+        Both = 2
+    }
+
     public enum SpellSource
     {
         Cast = 1,
@@ -135,5 +142,54 @@ namespace Classes
         spell_62 = 0x62,
         spell_63 = 0x63,
         spell_64 = 0x64,
+    }
+
+    public class SpellEntry /* Struct_19AEC */
+    {
+        public SpellEntry(SpellClass _spellClass, sbyte _spellLevel, 
+            int _fixedRange, int _perLvlRange, 
+            int _fixedDuration, byte _perLvlDuration,
+            byte f6, byte f7, 
+            DamageOnSave _damageOnSave, SaveVerseType _saveVerse, 
+            Affects _affectId, SpellWhen _whenCast, 
+            int _castingDelay, byte fd, byte fe, byte ff)
+        {
+            spellClass = _spellClass;
+            spellLevel = _spellLevel;
+            fixedRange = _fixedRange;
+            perLvlRange = _perLvlRange;
+            fixedDuration = _fixedDuration;
+            perLvlDuration = _perLvlDuration;
+            field_6 = f6;
+            field_7 = f7;
+            damageOnSave = _damageOnSave;
+            saveVerse = _saveVerse;
+            affect_id = _affectId;
+            whenCast = _whenCast;
+            castingDelay = _castingDelay;
+            field_D = fd;
+            field_E = fe;
+            field_F = ff;
+        }
+
+        /// <summary>
+        /// 0 - Cleric, 1 - Druid, 2 - Magic-User
+        /// </summary>
+        public SpellClass spellClass; //seg600:37DC asc_19AEC    // field_0
+        public int spellLevel; //seg600:37DD unk_19AED    // field_1
+        public int fixedRange; //seg600:37DE              
+        public int perLvlRange; //seg600:37DF            
+        public int fixedDuration; //seg600:37E0             
+        public int perLvlDuration; //seg600:37E1            
+        public byte field_6; //seg600:37E2              
+        public byte field_7; //seg600:37E3             
+        public DamageOnSave damageOnSave; //seg600:37E4 unk_19AF4  // field_8 
+        public SaveVerseType saveVerse; //seg600:37E5 unk_19AF5    
+        public Affects affect_id; //seg600:37E6 unk_19AF6   // field_A
+        public SpellWhen whenCast; //seg600:37E7 unk_19AF7    
+        public int castingDelay; //seg600:37E8 unk_19AF8    
+        public byte field_D; //seg600:37E9 unk_19AF9    
+        public byte field_E; //seg600:37EA unk_19AFA    
+        public byte field_F; //seg600:37EB unk_19AFB   
     }
 }

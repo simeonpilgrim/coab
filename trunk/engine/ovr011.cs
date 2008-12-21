@@ -767,7 +767,7 @@ namespace engine
 
             gbl.mapToBackGroundTile = new Struct_1D1BC();
 
-            gbl.mapToBackGroundTile.draw_target_cursor = false;
+            gbl.mapToBackGroundTile.drawTargetCursor = false;
             gbl.mapToBackGroundTile.size = 1;
             gbl.mapToBackGroundTile.field_6 = false;
 
@@ -848,13 +848,12 @@ namespace engine
             }
             else
             {
-                gbl.CombatMap[player_index].xPos = arg_8 + (arg_4 * 6) + (arg_2 * 5) + 22;
-                gbl.CombatMap[player_index].yPos = arg_6 + (arg_2 * 5) + 10;
+                gbl.CombatMap[player_index].pos.x = arg_8 + (arg_4 * 6) + (arg_2 * 5) + 22;
+                gbl.CombatMap[player_index].pos.y = arg_6 + (arg_2 * 5) + 10;
 
-                bool dummyBoolA, dummyBoolB;
-                byte groundTile;
-                byte tmp_player_index;
-                ovr033.getGroundInformation(out dummyBoolA, out dummyBoolB, out groundTile, out tmp_player_index, 8, gbl.player_array[player_index]);
+                int groundTile;
+                int tmp_player_index;
+                ovr033.getGroundInformation(out groundTile, out tmp_player_index, 8, gbl.player_array[player_index]);
 
                 if (tmp_player_index == 0 &&
                     groundTile > 0 &&
@@ -1116,7 +1115,7 @@ namespace engine
                 gbl.currentTeam = (sbyte)player_ptr.combat_team;
 
                 gbl.CombatMap[loop_var].player_index = loop_var;
-                gbl.CombatMap[loop_var].size = (byte)(player_ptr.field_DE & 7);
+                gbl.CombatMap[loop_var].size = player_ptr.field_DE & 7;
 
                 if (place_combatant(loop_var) == true)
                 {
@@ -1127,15 +1126,13 @@ namespace engine
                         if (gbl.combat_type == CombatType.normal &&
                             player_ptr.actions.field_13 == 0)
                         {
-                            int tmpX = gbl.CombatMap[loop_var].xPos;
-                            int tmpY = gbl.CombatMap[loop_var].yPos;
+                            var pos = gbl.CombatMap[loop_var].pos;
                             gbl.byte_1D1BB++;
 
-                            gbl.unk_1D183[gbl.byte_1D1BB].field_6 = (byte)gbl.mapToBackGroundTile[tmpX, tmpY];
-                            gbl.mapToBackGroundTile[tmpX, tmpY] = 0x1F;
+                            gbl.unk_1D183[gbl.byte_1D1BB].field_6 = (byte)gbl.mapToBackGroundTile[pos];
+                            gbl.mapToBackGroundTile[pos] = 0x1F;
                             gbl.unk_1D183[gbl.byte_1D1BB].target = player_ptr;
-                            gbl.unk_1D183[gbl.byte_1D1BB].mapX = tmpX;
-                            gbl.unk_1D183[gbl.byte_1D1BB].mapY = tmpY;
+                            gbl.unk_1D183[gbl.byte_1D1BB].map = pos;
                         }
                     }
 
@@ -1214,8 +1211,8 @@ namespace engine
 
             gbl.missile_dax = new DaxBlock( 1, 4, 3, 0x18);
 
-            gbl.mapToBackGroundTile.mapScreenLeftX = ovr033.PlayerMapXPos(gbl.player_next_ptr[0]) - 3;
-            gbl.mapToBackGroundTile.mapScreenTopY = ovr033.PlayerMapYPos(gbl.player_next_ptr[0]) - 3;
+            Point pos = ovr033.PlayerMapPos(gbl.player_next_ptr[0]);
+            gbl.mapToBackGroundTile.mapScreenTopLeft = pos - Point.ScreenCenter;
 
             ovr025.RedrawCombatScreen();
             foreach (Player player in gbl.player_next_ptr)

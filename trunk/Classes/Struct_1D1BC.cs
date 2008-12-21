@@ -23,12 +23,25 @@ namespace Classes
 
         //public byte field_0;
         //public byte field_1;
-        public int mapScreenLeftX; // field_2, was sbyte
-        public int mapScreenTopY; // field_3, was sbyte
-        public bool draw_target_cursor; // field_4, was byte
-        public byte size; // field_5
+        public Point mapScreenTopLeft;
+        public bool drawTargetCursor; // field_4, was byte
+        public int size; // field_5
         public bool field_6; // field_6, was byte
         public int[] field_7;
+
+        public int this[Point pos]
+        {
+            get
+            {
+                int index = (pos.y * 50) + pos.x;
+                return field_7[index];
+            }
+            set
+            {
+                int index = (pos.y * 50) + pos.x;
+                field_7[index] = value;
+            }
+        }
 
         public int this[int indexA, int indexB]
         {

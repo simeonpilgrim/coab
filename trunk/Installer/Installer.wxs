@@ -2,7 +2,7 @@
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
   <?define SkuName = "Curse of the Azure Bonds"?>
 
-  <?define ProductVersion="1.0.14" ?>
+  <?define ProductVersion="1.0.15" ?>
   <?define Manufacturer="ReActive Systems"?>
   <?define UpgradeCode="6acb18e9-9a80-4ed4-a8ef-3634fa2b3e9b"?>
 
@@ -155,6 +155,9 @@
           <Component Id="LoggingComponent" Guid="{42F3391F-FA43-4cb2-90DE-344FC6C19EC4}">
             <File Id ="logging.dll" Source="C:\coab_root\trunk\Main\bin\Debug\logging.dll" />
           </Component>
+          <Component Id="WinFormsComponent" Guid="{3692DC5A-EACD-4ee8-AB34-15589EE87779}">
+            <File Id ="win32.dll" Source="C:\coab_root\trunk\Main\bin\Debug\win32.dll" />
+          </Component>
         </Directory>
       </Directory>
     </Directory>
@@ -166,6 +169,7 @@
       <ComponentRef Id="EngineComponent" />
       <ComponentRef Id="ClassesComponent" />
       <ComponentRef Id="LoggingComponent" />
+      <ComponentRef Id="WinFormsComponent" />
     </Feature>
 
 

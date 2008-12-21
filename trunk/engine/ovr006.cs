@@ -9,7 +9,7 @@ namespace engine
         {
             if (gbl.combat_type == CombatType.duel)
             {
-                return gbl.player_ptr.field_E5 * 100;
+                return gbl.player_ptr.HitDice * 100;
             }
             else
             {

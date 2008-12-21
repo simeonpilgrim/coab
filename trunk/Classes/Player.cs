@@ -199,7 +199,7 @@ namespace Classes
         [DataOffset(0xe4, DataType.Byte)]
         public byte base_movement; // 0xe4;
         [DataOffset(0xe5, DataType.Byte)]
-        public byte field_E5; // 0xe5; maybe monster power?
+        public byte HitDice; // 0xe5; HitDice?
         [DataOffset(0xe6, DataType.Byte)]
         public byte field_E6; // 0xe6;
         [DataOffset(0xe7, DataType.Byte)]
@@ -467,30 +467,18 @@ namespace Classes
             get { return itemArray[9]; }
             set { itemArray[9] = value; }
         }
-
-        /// <summary>
-        /// 0x179
-        /// </summary>
         public Item Item_ptr_02
-        {
+        {// 0x179
             get { return itemArray[10]; }
             set { itemArray[10] = value; }
         }
-
-        /// <summary>
-        /// 0x17d
-        /// </summary>
         public Item Item_ptr_03
-        {
+        {// 0x17d
             get { return itemArray[11]; }
             set { itemArray[11] = value; }
         }
-
-        /// <summary>
-        /// 0x181
-        /// </summary>
         public Item Item_ptr_04
-        { 
+        { // 0x181
             get { return itemArray[12]; }
             set { itemArray[12] = value; }
         }
@@ -704,6 +692,11 @@ namespace Classes
         public bool HasAffect(Affects type)
         {
             return affects.Exists(aff => aff.type == type);
+        }
+
+        public Affect GetAffect(Affects type)
+        {
+            return affects.Find(aff => aff.type == type);
         }
 
         static Affects[] held_affects = { Affects.snake_charm, Affects.paralyze, Affects.sleep, Affects.helpless };

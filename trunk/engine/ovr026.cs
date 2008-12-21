@@ -204,9 +204,9 @@ namespace engine
                     player.thac0 = ovr018.thac0_table[skill, skill_lvl];
                 }
 
-                if (player.field_E5 < skill_lvl)
+                if (player.HitDice < skill_lvl)
                 {
-                    player.field_E5 = skill_lvl;
+                    player.HitDice = skill_lvl;
                 }
 
                 if (skill == 2 || skill == 3)
@@ -238,7 +238,7 @@ namespace engine
             for (int skill = 0; skill <= 7; skill++)
             {
                 if (player.class_lvls[skill] > 0 ||
-                    (player.Skill_B_lvl[skill] > 0 && player.Skill_B_lvl[skill] < player.field_E5))
+                    (player.Skill_B_lvl[skill] > 0 && player.Skill_B_lvl[skill] < player.HitDice))
                 {
                     player.classFlags += ovr018.unk_1A1B2[skill];
                 }
@@ -680,8 +680,8 @@ namespace engine
 
             player.Skill_B_lvl[HumanFirstClassOrSeventeen(player)] = HumanFirstClassLevelOrZero(player);
 
-            player.field_E6 = player.field_E5;
-            player.field_E5 = 1;
+            player.field_E6 = player.HitDice;
+            player.HitDice = 1;
 
             player.class_lvls[HumanFirstClassOrSeventeen(player)] = 0;
             player.class_lvls[var_2] = 1;

@@ -314,7 +314,8 @@ namespace engine
 
                 if (input_key == 'Y')
                 {
-                    gbl.sp_targets[1] = gbl.player_ptr;
+                    gbl.spellTargets.Clear();
+                    gbl.spellTargets.Add(gbl.player_ptr);
                     ovr023.uncurse();
                 }
             }

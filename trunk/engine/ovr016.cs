@@ -176,7 +176,7 @@ namespace engine
         {
             bool redraw = false;
 
-            gbl.dword_1D87F = null;
+            gbl.lastSelectetSpellTarget = null;
 
             gbl.menuSelectedWord = 1;
 
@@ -1316,7 +1316,7 @@ namespace engine
             }
 
             cancel_spells();
-            gbl.dword_1D87F = null;
+            gbl.lastSelectetSpellTarget = null;
             gbl.game_state = game_state_bkup;
             ovr025.display_map_position_time();
             ovr025.ClearPlayerTextArea();
