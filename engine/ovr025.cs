@@ -271,7 +271,7 @@ namespace engine
                 hidden_names_flag = 0;
             }
 
-            item.name = ItemName(item, hidden_names_flag);
+            item.name += ItemName(item, hidden_names_flag);
 
             if (display_new_name)
             {
@@ -385,7 +385,7 @@ namespace engine
                 y_pos++;
             }
 
-            seg037.draw8x8_clear_area(y_pos, 0x26, y_pos, x_pos);
+            //seg037.draw8x8_clear_area(y_pos, 0x26, y_pos, x_pos);
         }
 
 
@@ -1030,41 +1030,30 @@ namespace engine
         }
 
 
-        internal static void draw_missile_attack(int delay, int frameCount, int target_y, int target_x, int attacker_y, int attacker_x) /* sub_67AA4 */
+        internal static void draw_missile_attack(int delay, int frameCount, Point target, Point attacker) /* sub_67AA4 */
         {
-            int cur_y;
-            int cur_x;
-            short var_C8;
-            short var_C6;
-            short var_C0;
-            short var_BE;
-            int center_y;
-            int center_x;
+            Point center;
             bool var_B4;
             bool var_B3;
-            SteppingPath var_AC = new SteppingPath();
-            byte[] var_94 = new byte[0x94];
+            SteppingPath path = new SteppingPath();
+            byte[] pathDir = new byte[0x94];
 
-            int var_BA = attacker_x;
-            int var_BC = attacker_y;
 
-            seg051.FillChar(8, 0x94, var_94);
+            seg051.FillChar(8, 0x94, pathDir);
 
             int var_AF = 0;
             int frame = 0;
 
-            var_AC.attacker_x = attacker_x * 3;
-            var_AC.attacker_y = attacker_y * 3;
-            var_AC.target_x = target_x * 3;
-            var_AC.target_y = target_y * 3;
+            path.attacker = attacker * 3;
+            path.target = target * 3;
 
-            var_AC.CalculateDeltas();
+            path.CalculateDeltas();
 
             do
             {
-                var_B4 = !var_AC.Step();
+                var_B4 = !path.Step();
 
-                var_94[var_AF] = var_AC.direction;
+                pathDir[var_AF] = path.direction;
 
                 var_AF++;
             } while (var_B4 == false);
@@ -1076,60 +1065,50 @@ namespace engine
                 return;
             }
 
-            int diff_x = target_x - attacker_x;
-            int diff_y = target_y - attacker_y;
+            var diff = target - attacker;
 
-            if (ovr033.CoordOnScreen((attacker_y - gbl.mapToBackGroundTile.mapScreenTopY), (attacker_x - gbl.mapToBackGroundTile.mapScreenLeftX)) == false ||
-                ovr033.CoordOnScreen((target_y - gbl.mapToBackGroundTile.mapScreenTopY), (target_x - gbl.mapToBackGroundTile.mapScreenLeftX)) == false)
+            if (ovr033.CoordOnScreen(attacker - gbl.mapToBackGroundTile.mapScreenTopLeft) == false ||
+                ovr033.CoordOnScreen(target - gbl.mapToBackGroundTile.mapScreenTopLeft) == false)
             {
-                if (System.Math.Abs(diff_x) <= 6 &&
-                    System.Math.Abs(diff_y) <= 6)
+                if (System.Math.Abs(diff.x) <= 6 &&
+                    System.Math.Abs(diff.y) <= 6)
                 {
                     var_B3 = true;
-                    center_x = (diff_x / 2) + attacker_x;
-                    center_y = (diff_y / 2) + attacker_y;
+                    center = (diff / 2) + attacker;
                 }
                 else
                 {
                     var_B3 = false;
-                    center_x = gbl.mapToBackGroundTile.mapScreenLeftX + 3;
-                    center_y = gbl.mapToBackGroundTile.mapScreenTopY + 3;
+                    center = gbl.mapToBackGroundTile.mapScreenTopLeft + Point.ScreenCenter;
                 }
             }
             else
             {
                 var_B3 = true;
-                center_x = gbl.mapToBackGroundTile.mapScreenLeftX + 3;
-                center_y = gbl.mapToBackGroundTile.mapScreenTopY + 3;
+                center = gbl.mapToBackGroundTile.mapScreenTopLeft + Point.ScreenCenter;
             }
 
-            ovr033.redrawCombatArea(8, 0xFF, center_y, center_x);
+            ovr033.redrawCombatArea(8, 0xFF, center);
             var_AF = 0;
-            var_BE = 0;
-            var_C0 = 0;
+            Point delta = new Point(0,0);
 
             do
             {
-                cur_x = ((attacker_x - gbl.mapToBackGroundTile.mapScreenLeftX) * 3) + var_BE;
-                cur_y = ((attacker_y - gbl.mapToBackGroundTile.mapScreenTopY) * 3) + var_C0;
-                var_BA = attacker_x;
-                var_BC = attacker_y;
+                Point cur = ((attacker - gbl.mapToBackGroundTile.mapScreenTopLeft) * 3) + delta;
+
                 var_B4 = false;
 
                 do
                 {
-                    var_C6 = gbl.MapDirectionXDelta[var_94[var_AF]];
-                    var_C8 = gbl.MapDirectionYDelta[var_94[var_AF]];
-                    cur_x += var_C6;
-                    cur_y += var_C8;
-
+                    Point var_C6 = gbl.MapDirectionDelta[pathDir[var_AF]];
+                    cur += var_C6;
 
                     if (delay > 0 ||
-                        (cur_x % 3) == 0 ||
-                        (cur_y % 3) == 0)
+                        (cur.x % 3) == 0 ||
+                        (cur.y % 3) == 0)
                     {
                         Display.SaveVidRam();
-                        seg040.OverlayBounded(gbl.missile_dax, 5, frame, cur_y, cur_x);
+                        seg040.OverlayBounded(gbl.missile_dax, 5, frame, cur.y, cur.x);
                         seg040.DrawOverlay();
 
                         seg049.SysDelay(delay);
@@ -1145,7 +1124,7 @@ namespace engine
 
 
                     var_AF++;
-                    if (cur_x < 0 || cur_x > 0x12 || cur_y < 0 || cur_y > 0x12)
+                    if (cur.x < 0 || cur.x > 0x12 || cur.y < 0 || cur.y > 0x12)
                     {
                         var_B4 = true;
                     }
@@ -1153,21 +1132,20 @@ namespace engine
                     if (var_B4 == false &&
                         var_AF < var_B0)
                     {
-                        var_BE += var_C6;
-                        var_C0 += var_C8;
+                        delta += var_C6;
 
-                        if (Math.Abs(var_BE) == 3)
+                        if (Math.Abs(delta.x) == 3)
                         {
-                            attacker_x += Math.Sign(var_BE);
-                            center_x += Math.Sign(var_BE);
-                            var_BE = 0;
+                            attacker.x += Math.Sign(delta.x);
+                            center.x += Math.Sign(delta.x);
+                            delta.x = 0;
                         }
 
-                        if (Math.Abs(var_C0) == 3)
+                        if (Math.Abs(delta.y) == 3)
                         {
-                            attacker_y += Math.Sign(var_C0);
-                            center_y += Math.Sign(var_C0);
-                            var_C0 = 0;
+                            attacker.y += Math.Sign(delta.y);
+                            center.y += Math.Sign(delta.y);
+                            delta.y = 0;
                         }
                     }
 
@@ -1177,88 +1155,81 @@ namespace engine
                 {
                     int var_CE = 0;
                     int var_D0 = 0;
-                    var_C0 = 0;
-                    var_BE = 0;
-                    attacker_x = target_x;
-                    attacker_y = target_y;
-                    var_BA = attacker_x;
-                    var_BC = attacker_y;
+                    delta = new Point(0,0);
+                    attacker = target;
 
-                    if ((target_x + 3) > 0x31)
+                    if ((target.x + Point.ScreenHalfX) > Point.MapMaxX)
                     {
-                        var_CE = target_x - 0x31;
+                        var_CE = target.x - Point.MapMaxX;
 
                     }
-                    else if (target_x < 3)
+                    else if (target.x < Point.ScreenHalfX)
                     {
-                        var_CE = 3 - target_x;
+                        var_CE = Point.ScreenHalfX - target.x;
                     }
 
-                    if ((target_y + 3) > 0x18)
+                    if ((target.y + Point.ScreenHalfY) > Point.MapMaxY)
                     {
-                        var_D0 = target_y - 0x18;
+                        var_D0 = target.y - Point.MapMaxY;
                     }
-                    else if (target_y < 3)
+                    else if (target.y < Point.ScreenHalfY)
                     {
-                        var_D0 = 3 - target_y;
+                        var_D0 = Point.ScreenHalfY - target.y;
                     }
 
-                    center_x = target_x + var_CE;
-                    center_y = target_y + var_D0;
+                    center.x = target.x + var_CE;
+                    center.y = target.y + var_D0;
 
-                    ovr033.redrawCombatArea(8, 0xff, center_y, center_x);
-                    cur_x = (target_x - gbl.mapToBackGroundTile.mapScreenLeftX) * 3;
-                    cur_y = (target_y - gbl.mapToBackGroundTile.mapScreenTopY) * 3;
+                    ovr033.redrawCombatArea(8, 0xff, center);
+                    cur = (target - gbl.mapToBackGroundTile.mapScreenTopLeft) * 3;
                     var_AF = var_B0;
                     var_B4 = false;
 
                     do
                     {
-                        var_C6 = (short)(-gbl.MapDirectionXDelta[var_94[var_AF]]);
-                        var_C8 = (short)(-gbl.MapDirectionYDelta[var_94[var_AF]]);
+                        Point var_C6 = new Point(0, 0) - gbl.MapDirectionDelta[pathDir[var_AF]];
 
-                        cur_x += var_C6;
-                        cur_y += var_C8;
+                        cur += var_C6;
 
-                        if (cur_x > 0x12)
+                        if (cur.x > 18)
                         {
-                            attacker_x = gbl.mapToBackGroundTile.mapScreenLeftX + 6;
+                            attacker.x = gbl.mapToBackGroundTile.mapScreenTopLeft.x + Point.ScreenMaxX;
                         }
-                        else if (cur_x < 0)
+                        else if (cur.x < 0)
                         {
-                            attacker_x = gbl.mapToBackGroundTile.mapScreenLeftX;
+                            attacker.x = gbl.mapToBackGroundTile.mapScreenTopLeft.x;
                         }
 
-                        if (cur_y > 0x12)
+                        if (cur.y > 18)
                         {
-                            attacker_y = gbl.mapToBackGroundTile.mapScreenTopY + 6;
+                            attacker.y = gbl.mapToBackGroundTile.mapScreenTopLeft.y + Point.ScreenMaxY;
                         }
-                        else if (cur_y < 0)
+                        else if (cur.y < 0)
                         {
-                            attacker_y = gbl.mapToBackGroundTile.mapScreenTopY;
+                            attacker.y = gbl.mapToBackGroundTile.mapScreenTopLeft.y;
                         }
 
-                        if (cur_x < 0 || cur_x > 0x12 || cur_y < 0 || cur_y > 0x12)
+                        if (cur.x < 0 || cur.x > 18 || cur.y < 0 || cur.y > 18)
                         {
                             var_B4 = true;
                         }
 
                         if (var_B4 == false)
                         {
-                            var_BE += var_C6;
-                            var_C0 += var_C8;
-                            if (System.Math.Abs(var_BE) == 3)
+                            delta += var_C6;
+
+                            if (System.Math.Abs(delta.x) == Point.ScreenHalfX)
                             {
-                                attacker_x += Math.Sign(var_BE);
-                                center_x += Math.Sign(var_BE);
-                                var_BE = 0;
+                                attacker.x += Math.Sign(delta.x);
+                                center.x += Math.Sign(delta.x);
+                                delta.x = 0;
                             }
 
-                            if (System.Math.Abs(var_C0) == 3)
+                            if (System.Math.Abs(delta.y) == Point.ScreenHalfY)
                             {
-                                attacker_y += Math.Sign(var_C0);
-                                center_y += Math.Sign(var_C0);
-                                var_C0 = 0;
+                                attacker.y += Math.Sign(delta.y);
+                                center.y += Math.Sign(delta.y);
+                                delta.y = 0;
                             }
 
                             var_AF -= 1;
@@ -1270,16 +1241,15 @@ namespace engine
                 {
                     var_B3 = true;
 
-                    if (ovr033.CoordOnScreen(target_y - gbl.mapToBackGroundTile.mapScreenTopY, target_x - gbl.mapToBackGroundTile.mapScreenLeftX) == false)
+                    if (ovr033.CoordOnScreen(target - gbl.mapToBackGroundTile.mapScreenTopLeft) == false)
                     {
-                        ovr033.redrawCombatArea(8, 3, target_y, target_x);
+                        ovr033.redrawCombatArea(8, 3, target);
                     }
 
-                    cur_x = (target_x - gbl.mapToBackGroundTile.mapScreenLeftX) * 3;
-                    cur_y = (target_y - gbl.mapToBackGroundTile.mapScreenTopY) * 3;
+                    cur = (target - gbl.mapToBackGroundTile.mapScreenTopLeft) * 3;
 
                     Display.SaveVidRam();
-                    seg040.OverlayBounded(gbl.missile_dax, 5, frame, cur_y, cur_x);
+                    seg040.OverlayBounded(gbl.missile_dax, 5, frame, cur.y, cur.x);
 
                     if (delay > 0)
                     {
@@ -1296,20 +1266,20 @@ namespace engine
         }
 
 
-        internal static void sub_6818A(string text, bool arg_4, Player player)
+        internal static void MagicAttackDisplay(string text, bool showMagicStars, Player player) // sub_6818A
         {
             if (gbl.game_state == GameState.Combat)
             {
-                int iconId = arg_4 ? 0x16 : 0x17;
+                int iconId = showMagicStars ? 0x16 : 0x17;
 
                 load_missile_icons(iconId);
 
                 if (ovr033.PlayerOnScreen(true, player) == false)
                 {
-                    ovr033.redrawCombatArea(8, 3, ovr033.PlayerMapYPos(player), ovr033.PlayerMapXPos(player));
+                    ovr033.redrawCombatArea(8, 3, ovr033.PlayerMapPos(player));
                 }
 
-                if (arg_4)
+                if (showMagicStars)
                 {
                     seg044.sound_sub_120E0(Sound.sound_4);
                 }
@@ -1320,12 +1290,12 @@ namespace engine
 
                 DisplayPlayerStatusString(false, 10, text, player);
 
-                int var_106 = arg_4 ? gbl.game_speed_var : 0;
+                int idx = ovr033.GetPlayerIndex(player);
+                int colX = gbl.playerScreen[idx].x * 3;
+                int rowY = gbl.playerScreen[idx].y * 3;
 
-                int colX = gbl.playerScreenX[ovr033.get_player_index(player)] * 3;
-                int rowY = gbl.playerScreenY[ovr033.get_player_index(player)] * 3;
-
-                for (int var_105 = 0; var_105 <= var_106; var_105++)
+                int loops = showMagicStars ? gbl.game_speed_var : 0;
+                for (int loop = 0; loop <= loops; loop++)
                 {
                     for (int frame = 0; frame <= 3; frame++)
                     {
@@ -1342,7 +1312,7 @@ namespace engine
 
                 seg040.DrawOverlay();
 
-                if (var_106 == 0)
+                if (loops == 0)
                 {
                     seg041.GameDelay();
                 }
@@ -1354,19 +1324,11 @@ namespace engine
         }
 
 
-        internal static bool find_affect(out Affect affectFound, Affects affect_type, Player player)
+        internal static bool FindAffect(out Affect affectFound, Affects affect_type, Player player)
         {
-            foreach (Affect affect in player.affects)
-            {
-                if (affect.type == affect_type)
-                {
-                    affectFound = affect;
-                    return true;
-                }
-            }
+            affectFound = player.affects.Find(aff => aff.type == affect_type);
 
-            affectFound = null;
-            return false;
+            return affectFound != null;
         }
 
 
@@ -1479,9 +1441,7 @@ namespace engine
 
         internal static int BuildNearTargets(int max_range, Player player) /*near_enermy*/
         {
-            ovr032.Rebuild_SortedCombatantList(gbl.mapToBackGroundTile,
-                ovr033.PlayerMapSize(player), 0xff, max_range,
-                ovr033.PlayerMapYPos(player), ovr033.PlayerMapXPos(player));
+            ovr032.Rebuild_SortedCombatantList(gbl.mapToBackGroundTile, ovr033.PlayerMapSize(player), 0xff, max_range, ovr033.PlayerMapPos(player));
 
             if (gbl.sortedCombatantCount > 0)
             {
@@ -1520,9 +1480,7 @@ namespace engine
             gbl.mapToBackGroundTile.field_6 = true;
 
             ovr032.Rebuild_SortedCombatantList(gbl.mapToBackGroundTile,
-                ovr033.PlayerMapSize(attacker), 0xff, 0xff,
-                ovr033.PlayerMapYPos(attacker),
-                ovr033.PlayerMapXPos(attacker));
+                ovr033.PlayerMapSize(attacker), 0xff, 0xff, ovr033.PlayerMapPos(attacker));
 
             gbl.mapToBackGroundTile.field_6 = false;
 
@@ -1736,7 +1694,7 @@ namespace engine
             ovr033.Color_0_8_inverse();
             seg037.DrawFrame_Combat();
 
-            ovr033.redrawCombatArea(8, 0xff, gbl.mapToBackGroundTile.mapScreenTopY + 3, gbl.mapToBackGroundTile.mapScreenLeftX + 3);
+            ovr033.redrawCombatArea(8, 0xff, gbl.mapToBackGroundTile.mapScreenTopLeft + Point.ScreenCenter);
         }
 
         static Set unk_68DFA = new Set(0x010A, new byte[] { 0x20, 0, 8, 0, 0, 0, 0, 0x20, 0, 8 });

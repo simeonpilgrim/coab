@@ -28,6 +28,10 @@ namespace Classes
 
         public byte sex; // 0x9e
         public byte[] field_C1; // 0xC1
+        public byte field_C7;// 0xC7
+
+        public byte field_100; // 0x100
+        public byte field_101; // 0x101
 
         public byte field_10C; // 0x10C
         public byte field_10D; // 0x10D
@@ -47,7 +51,7 @@ namespace Classes
         public byte field_11B; // 0x11b
         public sbyte field_11C; // 0x11c
 
-        
+        public short field_1C0; // 0x1C0
 
         public PoolRadPlayer()
         {

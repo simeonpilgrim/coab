@@ -126,7 +126,7 @@ namespace engine
 
                 if (player.actions.spell_id == 0)
                 {
-                    ovr024.CheckAffectsEffect(player, CheckType.Type_21);
+                    ovr024.CheckAffectsEffect(player, CheckType.Confusion);
                 }
 
                 if (player.actions.delay > 0)
@@ -141,7 +141,7 @@ namespace engine
                     }
                 }
 
-                ovr033.sub_7431C(ovr033.PlayerMapYPos(player), ovr033.PlayerMapXPos(player));
+                ovr033.sub_7431C(ovr033.PlayerMapPos(player));
             }
         }
 
@@ -400,7 +400,7 @@ namespace engine
 
             ovr025.CountCombatTeamMembers();
 
-            ovr033.redrawCombatArea(8, 0xff, gbl.mapToBackGroundTile.mapScreenTopY + 3, gbl.mapToBackGroundTile.mapScreenLeftX + 3);
+            ovr033.redrawCombatArea(8, 0xff, gbl.mapToBackGroundTile.mapScreenTopLeft + Point.ScreenCenter);
 
             if (gbl.friends_count == 0 ||
                 gbl.foe_count == 0 ||
@@ -423,8 +423,7 @@ namespace engine
         {
             byte var_1 = player.actions.move;
             byte var_2 = player.actions.direction;
-            int var_3 = ovr033.PlayerMapXPos(player);
-            int var_4 = ovr033.PlayerMapYPos(player);
+            Point pos = ovr033.PlayerMapPos(player);
 
             arg_0 = false;
             byte dir = 8;
@@ -448,9 +447,9 @@ namespace engine
                     case '\0':
                         player.actions.move = var_1;
 
-                        ovr033.RedrawPlayerBackground(ovr033.get_player_index(player));
+                        ovr033.RedrawPlayerBackground(ovr033.GetPlayerIndex(player));
 
-                        if (ovr033.sub_7515A(false, var_4, var_3, player) == false)
+                        if (ovr033.sub_7515A(false, pos, player) == false)
                         {
                             arg_0 = true;
                         }
@@ -459,7 +458,7 @@ namespace engine
                             arg_0 = false;
                         }
 
-                        ovr033.redrawCombatArea(8, 0, ovr033.PlayerMapYPos(player), ovr033.PlayerMapXPos(player));
+                        ovr033.redrawCombatArea(8, 0, ovr033.PlayerMapPos(player));
                         player.actions.direction = var_2;
                         dir = 8;
                         break;
@@ -504,11 +503,10 @@ namespace engine
                 if (dir < 8)
                 {
                     ovr033.draw_74B3F(0, 0, dir, player);
-                    bool dummyBoolA, dummyBoolB;
-                    byte ground_tile;
-                    byte target_index;
+                    int ground_tile;
+                    int target_index;
 
-                    ovr033.getGroundInformation(out dummyBoolA, out dummyBoolB, out ground_tile, out target_index, dir, player);
+                    ovr033.getGroundInformation(out ground_tile, out target_index, dir, player);
 
                     if (target_index > 0)
                     {

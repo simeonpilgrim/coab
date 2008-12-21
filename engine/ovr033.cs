@@ -5,36 +5,37 @@ namespace engine
     class ovr033
     {
         const int MaxSize = 4;
-        static int[, ,] sizeStep = new int[4, MaxSize, 2] { 
-            { { 0, 0 }, { -1, -1 }, { -1, -1 }, { -1, -1 } },
-            { { 0, 0 }, {  0,  1 }, { -1, -1 }, { -1, -1 } },
-            { { 0, 0 }, {  1,  0 }, { -1, -1 }, { -1, -1 } },
-            { { 0, 0 }, {  1,  0 }, {  0,  1 }, {  1,  1 } },
+ 
+        static Point[][] Steps = new Point[][] {
+            new Point[] { },
+            new Point[] { new Point( 0, 0 ) },
+            new Point[] { new Point( 0, 0 ), new Point(  0,  1 ) },
+            new Point[] { new Point( 0, 0 ), new Point(  1,  0 ) },
+            new Point[] { new Point( 0, 0 ), new Point(  1,  0 ), new Point( 0,  1 ), new Point(  1,  1 ) }   
         };
 
-        internal static bool GetSizeBasedMapDelta(out int deltaY, out int deltaX, int step, int size) /*sub_7400F*/
+        internal static Point[] GetSizeBasedMapDeltas(int size) /*sub_7400F*/
         {
-            deltaY = -1;
-            deltaX = -1;
+            return Steps[size];
+        }
 
-            if (size != 0)
+        internal static Point[] BuildSizeMap(int size, Point pos)
+        {
+            var map = new System.Collections.Generic.List<Point>();
+            foreach (var delta in Steps[size])
             {
-                deltaX = sizeStep[size - 1, step, 0];
-                deltaY = sizeStep[size - 1, step, 1];
+                map.Add(pos + delta);
             }
 
-            return deltaX >= 0;
+            return map.ToArray();
         }
 
 
         static void calculatePlayerScreenPositions() /* sub_74077 */
         {
-            int playerCount = gbl.CombatantCount;
-
-            for (int i = 1; i <= playerCount; i++)
+            for (int i = 1; i <= gbl.CombatantCount; i++)
             {
-                gbl.playerScreenX[i] = gbl.CombatMap[i].xPos - gbl.mapToBackGroundTile.mapScreenLeftX;
-                gbl.playerScreenY[i] = gbl.CombatMap[i].yPos - gbl.mapToBackGroundTile.mapScreenTopY;
+                gbl.playerScreen[i] = gbl.CombatMap[i].pos - gbl.mapToBackGroundTile.mapScreenTopLeft;
             }
         }
 
@@ -53,32 +54,29 @@ namespace engine
         }
 
 
-        internal static void sub_7416E(int posY, int posX)
+        internal static void sub_7416E(Point pos)
         {
-            int screenPosX = posX - gbl.mapToBackGroundTile.mapScreenLeftX;
-            int screenPosY = posY - gbl.mapToBackGroundTile.mapScreenTopY;
+            var screenPos = pos - gbl.mapToBackGroundTile.mapScreenTopLeft;
 
-            for (int step = 0; step <= 3; step++)
+            var map = BuildSizeMap(gbl.mapToBackGroundTile.size, new Point(0, 0));
+
+            foreach (var p in map)
             {
-                int deltaY;
-                int deltaX;
-
-                if (GetSizeBasedMapDelta(out deltaY, out deltaX, step, gbl.mapToBackGroundTile.size) == true &&
-                    CoordOnScreen(screenPosY + deltaY, screenPosX + deltaX) == true)
+                if (CoordOnScreen(screenPos + p) == true)
                 {
-                    int i = gbl.mapToBackGroundTile[deltaX + posX, deltaY + posY];
+                    int i = gbl.mapToBackGroundTile[p + pos];
 
-                    ovr034.DrawIsoTile(gbl.BackGroundTiles[i].tile_index, (screenPosY + deltaY) * 3, (screenPosX + deltaX) * 3);
+                    ovr034.DrawIsoTile(gbl.BackGroundTiles[i].tile_index, (screenPos.y + p.y) * 3, (screenPos.x + p.x) * 3);
 
-                    if (gbl.mapToBackGroundTile.draw_target_cursor == true)
+                    if (gbl.mapToBackGroundTile.drawTargetCursor == true)
                     {
                         // draws grey focus box
-                        ovr034.draw_combat_icon(0x19, 0, 0, screenPosY + deltaY, screenPosX + deltaX);
+                        ovr034.draw_combat_icon(0x19, 0, 0, screenPos.y + p.y, screenPos.x + p.x);
                     }
                 }
             }
 
-            int player_index = PlayerIndexAtMapXY(posY, posX);
+            int player_index = PlayerIndexAtMapXY(pos.y, pos.x);
 
             if (player_index > 0 &&
                 PlayerOnScreen(false, player_index) == true)
@@ -86,63 +84,66 @@ namespace engine
                 // draws the player icon over focus box
                 ovr034.draw_combat_icon(gbl.player_array[player_index].icon_id, 0,
                     gbl.player_array[player_index].actions.direction, 
-                    gbl.playerScreenY[player_index],
-                    gbl.playerScreenX[player_index]);
+                    gbl.playerScreen[player_index].y,
+                    gbl.playerScreen[player_index].x);
             }
         }
 
 
         internal static void sub_7431C(int mapX, int mapY)
         {
-            int playerIndex = PlayerIndexAtMapXY(mapX, mapY);
+            sub_7431C(new Point(mapX, mapY)); // TODO tidy-up
+        }
 
-            RedrawPlayerBackground(playerIndex, mapY, mapX);
+        internal static void sub_7431C(Point pos)
+        {
+            int playerIndex = PlayerIndexAtMapXY(pos.y, pos.x);
+
+            RedrawPlayerBackground(playerIndex, pos);
 
             if (playerIndex > 0 &&
                 PlayerOnScreen(false, gbl.player_array[playerIndex]) == true)
             {
                 ovr034.draw_combat_icon(gbl.player_array[playerIndex].icon_id,  0, 
                     gbl.player_array[playerIndex].actions.direction,
-                    gbl.playerScreenY[playerIndex], 
-                    gbl.playerScreenX[playerIndex]);
+                    gbl.playerScreen[playerIndex].y, 
+                    gbl.playerScreen[playerIndex].x);
             }
         }
 
-        static Struct_1D1BC mapToPlayerIndex = new Struct_1D1BC(); /*unk_1CB81*/
+        static int[,] mapToPlayerIndex = new int[Point.MapMaxY, Point.MapMaxX];
 
         internal static void setup_mapToPlayerIndex_and_playerScreen() /* sub_743E7 */
         {
-            mapToPlayerIndex.SetField_7(0x00);
+            for (int y = 0; y < Point.MapMaxY; y++)
+            {
+                for (int x = 0; x < Point.MapMaxX; x++)
+                {
+                    mapToPlayerIndex[y, x] = 0;
+                }
+            }
 
             for (int index = 1; index <= gbl.CombatantCount; index++)
             {
-                if (gbl.CombatMap[index].size > 0)
+                var combatantMap = gbl.CombatMap[index];
+                if (combatantMap.size > 0)
                 {
-                    for (int step = 0; step <= 3; step++)
+                    foreach (var pos in BuildSizeMap(combatantMap.size, combatantMap.pos))
                     {
-                        int deltaY;
-                        int deltaX;
-                        if (GetSizeBasedMapDelta(out deltaY, out deltaX, step, gbl.CombatMap[index].size) == true)
-                        {
-                            int xPos = gbl.CombatMap[index].xPos + deltaX;
-                            int yPos = gbl.CombatMap[index].yPos + deltaY;
-
-                            mapToPlayerIndex[xPos, yPos] = index;
-                        }
+                        mapToPlayerIndex[pos.y, pos.x] = index;
                     }
 
-                    gbl.playerScreenX[index] = gbl.CombatMap[index].xPos - gbl.mapToBackGroundTile.mapScreenLeftX;
-                    gbl.playerScreenY[index] = gbl.CombatMap[index].yPos - gbl.mapToBackGroundTile.mapScreenTopY;
+                    gbl.playerScreen[index] = combatantMap.pos - gbl.mapToBackGroundTile.mapScreenTopLeft;
                 }
             }
         }
 
-        internal static byte PlayerIndexAtMapXY(int posY, int posX) /* sub_74505 */
+        internal static int PlayerIndexAtMapXY(int posY, int posX) /* sub_74505 */
         {
-            if (posX >= 0 && posX <= 0x31 &&
-                posY >= 0 && posY <= 0x18)
+            if (posX >= Point.MapMinX && posX < Point.MapMaxX &&
+                posY >= Point.MapMinY && posY < Point.MapMaxY)
             {
-                return (byte)mapToPlayerIndex[posX, posY];
+                return mapToPlayerIndex[posY, posX];
             }
             else
             {
@@ -150,13 +151,19 @@ namespace engine
             }
         }
 
-        internal static void AtMapXY(out byte groundTile, out byte playerIndex, int posY, int posX) /* sub_74505 */
+        internal static void AtMapXY(out int groundTile, out int playerIndex, Point pos)
         {
-            if (posX >= 0 && posX <= 0x31 &&
-                posY >= 0 && posY <= 0x18 )
+            AtMapXY(out groundTile, out playerIndex, pos.y, pos.x);
+        }
+
+        internal static void AtMapXY(out int groundTile, out int playerIndex, int posY, int posX) /* sub_74505 */
+        {
+            if (gbl.mapToBackGroundTile != null &&
+                posX >= Point.MapMinX && posX < Point.MapMaxX &&
+                posY >= Point.MapMinY && posY < Point.MapMaxY)
             {
-                groundTile = (byte)gbl.mapToBackGroundTile[posX, posY];
-                playerIndex = (byte)mapToPlayerIndex[posX, posY];
+                groundTile = gbl.mapToBackGroundTile[posX, posY];
+                playerIndex = mapToPlayerIndex[posY, posX];
             }
             else
             {
@@ -166,19 +173,18 @@ namespace engine
         }
 
 
-        internal static void RedrawPlayerBackground(int player_index, int mapY, int mapX) /* sub_74572 */
+        internal static void RedrawPlayerBackground(int player_index, Point map) /* sub_74572 */
         {
-            int screenX = mapX - gbl.mapToBackGroundTile.mapScreenLeftX;
-            int screenY = mapY - gbl.mapToBackGroundTile.mapScreenTopY;
+            var screen = map - gbl.mapToBackGroundTile.mapScreenTopLeft;
           
             if (player_index > 0)
             {
                 RedrawPlayerBackground(player_index);
             }
-            else if ( CoordOnScreen(screenY, screenX) == true )
+            else if ( CoordOnScreen(screen) == true )
             {
-                var tileIdx = gbl.mapToBackGroundTile[mapX, mapY];
-                ovr034.DrawIsoTile(gbl.BackGroundTiles[tileIdx].tile_index, screenY * 3, screenX * 3);
+                var tileIdx = gbl.mapToBackGroundTile[map];
+                ovr034.DrawIsoTile(gbl.BackGroundTiles[tileIdx].tile_index, screen.y * 3, screen.x * 3);
             }
         }
 
@@ -186,78 +192,38 @@ namespace engine
         {
             if (player_index != 0)
             {
-                int screenX = gbl.playerScreenX[player_index];
-                int screenY = gbl.playerScreenY[player_index];
+                var screen = gbl.playerScreen[player_index];
 
-                int mapX = screenX + gbl.mapToBackGroundTile.mapScreenLeftX;
-                int mapY = screenY + gbl.mapToBackGroundTile.mapScreenTopY;
+                var map = screen + gbl.mapToBackGroundTile.mapScreenTopLeft;
 
                 int size = gbl.CombatMap[player_index].size;
 
-                for (int size_step = 0; size_step < MaxSize; size_step++)
+                foreach(var delta in GetSizeBasedMapDeltas(size))
                 {
-                    int deltaY;
-                    int deltaX;
-
-                    if (GetSizeBasedMapDelta(out deltaY, out deltaX, size_step, size) == true &&
-                        CoordOnScreen(deltaY + screenY, deltaX + screenX) == true)
+                    if (CoordOnScreen(delta + screen) == true)
                     {
-                        int tileIdx = gbl.mapToBackGroundTile[mapX + deltaX, deltaY + mapY];
+                        int tileIdx = gbl.mapToBackGroundTile[map + delta];
                         //THIS DRAWS BACKGROUND MAP.
-                        ovr034.DrawIsoTile(gbl.BackGroundTiles[tileIdx].tile_index, (screenY + deltaY) * 3, (screenX + deltaX) * 3);
+                        ovr034.DrawIsoTile(gbl.BackGroundTiles[tileIdx].tile_index, (screen.y + delta.y) * 3, (screen.x + delta.x) * 3);
                     }
                 }
             }
         }
 
 
-
-        internal static bool CoordOnScreen(int screenY, int screenX) /* sub_74730 */
+        internal static bool CoordOnScreen(Point pos) /* sub_74730 */
         {
-            return (screenX >= 0 && screenX <= 6 && screenY >= 0 && screenY <= 6);
+            return (pos.x >= 0 && pos.x <= Point.ScreenMaxX && pos.y >= 0 && pos.y <= Point.ScreenMaxY);
         }
 
 
         internal static bool PlayerOnScreen(bool AllOnScreen, Player player) // sub_74761
         {
-            int player_index = get_player_index(player);
+            int player_index = GetPlayerIndex(player);
 
-            if (gbl.CombatMap[player_index].size == 0)
-            {
-                return false;
-            }
-
-
-            bool result = true;
-
-            for (int step = 0; step <= 3; step++)
-            {
-                int deltaY;
-                int deltaX;
-
-                if (GetSizeBasedMapDelta(out deltaY, out deltaX, step, gbl.CombatMap[player_index].size) == true)
-                {
-                    if (CoordOnScreen(gbl.playerScreenY[player_index] + deltaY, gbl.playerScreenX[player_index] + deltaX) == false)
-                    {
-                        result = false;
-                        if (AllOnScreen == true)
-                        {
-                            return false;
-                        }
-                    }
-                    else
-                    {
-                        result = true;
-                        if (AllOnScreen == false)
-                        {
-                            return true;
-                        }
-                    }
-                }
-            }
-
-            return result;
+            return PlayerOnScreen(AllOnScreen, player_index);
         }
+
 
         internal static bool PlayerOnScreen(bool AllOnScreen, int player_index) // sub_74761
         {
@@ -268,28 +234,22 @@ namespace engine
 
             bool result = true;
 
-            for (int step = 0; step <= 3; step++)
+            foreach (var pos in BuildSizeMap(gbl.CombatMap[player_index].size, gbl.playerScreen[player_index]))
             {
-                int deltaY;
-                int deltaX;
-
-                if (GetSizeBasedMapDelta(out deltaY, out deltaX, step, gbl.CombatMap[player_index].size) == true)
+                if (CoordOnScreen(pos) == false)
                 {
-                    if (CoordOnScreen(gbl.playerScreenY[player_index] + deltaY, gbl.playerScreenX[player_index] + deltaX) == false)
+                    result = false;
+                    if (AllOnScreen == true)
                     {
-                        result = false;
-                        if (AllOnScreen == true)
-                        {
-                            return false;
-                        }
+                        return false;
                     }
-                    else
+                }
+                else
+                {
+                    result = true;
+                    if (AllOnScreen == false)
                     {
-                        result = true;
-                        if (AllOnScreen == false)
-                        {
-                            return true;
-                        }
+                        return true;
                     }
                 }
             }
@@ -297,86 +257,80 @@ namespace engine
             return result;
         }
 
+
         /// <summary>
         /// check's a given position is visable within the current display screen (via a radius)
         /// </summary>
         /// <param name="radius">if this is 0xff the re-check is forced</param>
         /// <returns></returns>
-        static bool ScreenMapCheck(byte radius, int yPos, int xPos)
+        static bool ScreenMapCheck(int radius, Point pos)
         {
-            int screenCentreX = gbl.mapToBackGroundTile.mapScreenLeftX + 3;
-            int screenCentreY = gbl.mapToBackGroundTile.mapScreenTopY + 3;
+            Point screenCentre = gbl.mapToBackGroundTile.mapScreenTopLeft + Point.ScreenCenter;
 
-            int var_2 = radius;
+            int var_2 = (radius == 0xff) ? 0 : radius;
 
-            if (radius == 0xff)
-            {
-                var_2 = 0;
-            }
+            int minX = screenCentre.x - var_2;
+            int maxX = screenCentre.x + var_2;
 
-            int leftX = screenCentreX - var_2;
-            int rightX = screenCentreX + var_2;
-
-            int topY = screenCentreY - var_2;
-            int bottomY = screenCentreY + var_2;
+            int minY = screenCentre.y - var_2;
+            int maxY = screenCentre.y + var_2;
 
             if (radius == 0xff ||
-                xPos < leftX ||
-                xPos > rightX ||
-                yPos < topY ||
-                yPos > bottomY)
+                pos.x < minX ||
+                pos.x > maxX ||
+                pos.y < minY ||
+                pos.y > maxY)
             {
-                if (xPos < leftX)
+                if (pos.x < minX)
                 {
-                    while (xPos < screenCentreX && screenCentreX > 3)
+                    while (pos.x < screenCentre.x && screenCentre.x > (Point.MapMinX+ Point.ScreenHalfX))
                     {
-                        screenCentreX -= 1;
+                        screenCentre.x -= 1;
                     }
                 }
-                else if (xPos > rightX)
+                else if (pos.x > maxX)
                 {
-                    while (xPos > screenCentreX && screenCentreX < 0x2E)
+                    while (pos.x > screenCentre.x && screenCentre.x < (Point.MapMaxX - Point.ScreenHalfX))
                     {
-                        screenCentreX += 1;
-                    }
-                }
-
-                if (yPos < topY)
-                {
-                    while (yPos < screenCentreY && screenCentreY > 3)
-                    {
-                        screenCentreY -= 1;
-                    }
-                }
-                else if (yPos > bottomY)
-                {
-                    while (yPos > screenCentreY && screenCentreY < 0x15)
-                    {
-                        screenCentreY += 1;
+                        screenCentre.x += 1;
                     }
                 }
 
-                gbl.mapToBackGroundTile.mapScreenLeftX = screenCentreX - 3;
-                gbl.mapToBackGroundTile.mapScreenTopY = screenCentreY - 3;
+                if (pos.y < minY)
+                {
+                    while (pos.y < screenCentre.y && screenCentre.y > (Point.MapMinY + Point.ScreenHalfY))
+                    {
+                        screenCentre.y -= 1;
+                    }
+                }
+                else if (pos.y > maxY)
+                {
+                    while (pos.y > screenCentre.y && screenCentre.y < (Point.MapMaxY - Point.ScreenHalfY))
+                    {
+                        screenCentre.y += 1;
+                    }
+                }
+
+                gbl.mapToBackGroundTile.mapScreenTopLeft = screenCentre - Point.ScreenCenter;
 
                 int screenRowY = 0;
-                int mapX = gbl.mapToBackGroundTile.mapScreenTopY;
+                int mapY = gbl.mapToBackGroundTile.mapScreenTopLeft.y;
                 const int IconColumnSize = 3;
 
                 for (int i = 0; i <= 6; i++)
                 {
                     int screenColX = 0;
-                    int mapY = gbl.mapToBackGroundTile.mapScreenLeftX;
+                    int mapX = gbl.mapToBackGroundTile.mapScreenTopLeft.x;
 
                     for (int j = 0; j <= 6; j++)
                     {
-                        ovr034.DrawIsoTile(gbl.BackGroundTiles[gbl.mapToBackGroundTile[mapY, mapX]].tile_index, screenRowY, screenColX);
+                        ovr034.DrawIsoTile(gbl.BackGroundTiles[gbl.mapToBackGroundTile[mapX, mapY]].tile_index, screenRowY, screenColX);
 
                         screenColX += IconColumnSize;
-                        mapY++;
+                        mapX++;
                     }
                     screenRowY += IconColumnSize;
-                    mapX++;
+                    mapY++;
                 }
                 calculatePlayerScreenPositions();
 
@@ -387,12 +341,11 @@ namespace engine
         }
 
 
-        internal static void redrawCombatArea(byte dir, byte radius, int mapY, int mapX) /*sub_749DD*/
+        internal static void redrawCombatArea(byte dir, byte radius, Point map) /*sub_749DD*/
         {
-            int newXPos = mapX + gbl.MapDirectionXDelta[dir];
-            int newYPos = mapY + gbl.MapDirectionYDelta[dir];
+            var newPos = map + gbl.MapDirectionDelta[dir];
 
-            if (ScreenMapCheck(radius, newYPos, newXPos) == true)
+            if (ScreenMapCheck(radius, newPos) == true)
             {
                 for (int index = 1; index <= gbl.CombatantCount; index++)
                 {
@@ -402,35 +355,32 @@ namespace engine
                         gbl.CombatMap[index].size > 0 &&
                         PlayerOnScreen(false, player) == true)
                     {
-                        ovr034.draw_combat_icon(player.icon_id, 0, player.actions.direction, gbl.playerScreenY[index], gbl.playerScreenX[index]);
+                        var pos = gbl.playerScreen[index];
+                        ovr034.draw_combat_icon(player.icon_id, 0, player.actions.direction, pos.y, pos.x);
                     }
                 }
             }
 
-            sub_7431C(mapY, mapX);
+            sub_7431C(map);
 
-            if (CoordOnScreen(newYPos - gbl.mapToBackGroundTile.mapScreenTopY, newXPos - gbl.mapToBackGroundTile.mapScreenLeftX) == false)
+            if (CoordOnScreen(newPos - gbl.mapToBackGroundTile.mapScreenTopLeft) == false)
             {
-                newXPos = System.Math.Min(newXPos, 0x31);
-                newXPos = System.Math.Max(newXPos, 0);
-
-                newYPos = System.Math.Min(newYPos, 0x18);
-                newYPos = System.Math.Max(newYPos, 0);
+                newPos.MapBoundaryTrunc();
             }
 
-            sub_7416E(newYPos, newXPos);
+            sub_7416E(newPos);
             seg040.DrawOverlay();
         }
 
 
         internal static void draw_74B3F(byte arg_0, byte arg_2, byte direction, Player player) /* sub_74B3F */
         {
-            byte player_index = get_player_index(player);
+            int player_index = GetPlayerIndex(player);
 
             if (PlayerOnScreen(true, player) == false &&
                 gbl.focusCombatAreaOnPlayer == true)
             {
-                redrawCombatArea(8, 3, PlayerMapYPos(player), PlayerMapXPos(player));
+                redrawCombatArea(8, 3, PlayerMapPos(player));
             }
 
             if ((direction >> 2) != (player.actions.direction >> 2) ||
@@ -449,52 +399,80 @@ namespace engine
                 PlayerOnScreen(false, player) == true &&
                 gbl.focusCombatAreaOnPlayer == true)
             {
-                ovr034.draw_combat_icon(player.icon_id, arg_2, direction, gbl.playerScreenY[player_index], gbl.playerScreenX[player_index]);
+                var pos = gbl.playerScreen[player_index];
+                ovr034.draw_combat_icon(player.icon_id, arg_2, direction, pos.y, pos.x);
                 seg040.DrawOverlay();
             }
         }
 
-
-        internal static int PlayerMapXPos(Player player) /* sub_74C32 */
+        internal static Point PlayerMapPos(Player player) /* sub_74C5A */
         {
-            return gbl.CombatMap[get_player_index(player)].xPos;
-        }
-
-
-        internal static int PlayerMapYPos(Player player) /* sub_74C5A */
-        {
-            return gbl.CombatMap[get_player_index(player)].yPos;
+            return gbl.CombatMap[GetPlayerIndex(player)].pos;
         }
 
 
         internal static int PlayerMapSize(Player player) /*sub_74C82*/
         {
-            return gbl.CombatMap[get_player_index(player)].size;
+            return gbl.CombatMap[GetPlayerIndex(player)].size;
         }
 
 
-        internal static byte get_player_index(Player player)
+        internal static int GetPlayerIndex(Player player)
         {
-            bool found = false;
-            byte loop_var = 0;
-            do
-            {
-                loop_var++;
+            int index = System.Array.FindIndex(gbl.player_array, p => p == player);
 
-                if (gbl.player_array[loop_var] == player)
+            if (index == -1) index = 0;
+
+            return index;
+        }
+
+
+        internal static void getGroundInformation(out int groundTile, out int playerIndex, byte direction, Player player) /* sub_74D04 */
+        {
+            playerIndex = 0;
+            groundTile = 0x17;
+
+            byte maxMoveCost = 1;
+            int currentPlayerIndex = GetPlayerIndex(player);
+
+            var map = gbl.CombatMap[currentPlayerIndex];
+            var playerPos = map.pos;
+
+            foreach (var pos in BuildSizeMap(map.size, map.pos))
+            {
+                var tmpPos = pos + gbl.MapDirectionDelta[direction];
+
+                int atGroundTile;
+                int atPlayerIdx;
+
+                AtMapXY(out atGroundTile, out atPlayerIdx, tmpPos);
+
+                if (atPlayerIdx == currentPlayerIndex)
                 {
-                    found = true;
+                    atPlayerIdx = 0;
                 }
 
-            } while (found == false && loop_var <= gbl.CombatantCount);
+                if (atPlayerIdx > 0)
+                {
+                    playerIndex = atPlayerIdx;
+                }
 
-            byte ret_val = (found == true) ? loop_var : (byte)0;
-
-            return ret_val;
+                if (atGroundTile == 0)
+                {
+                    groundTile = 0;
+                }
+                else if (groundTile != 0)
+                {
+                    if (gbl.BackGroundTiles[atGroundTile].move_cost >= maxMoveCost)
+                    {
+                        maxMoveCost = gbl.BackGroundTiles[atGroundTile].move_cost;
+                        groundTile = atGroundTile;
+                    }
+                }
+            }
         }
 
-
-        internal static void getGroundInformation(out bool isPoisonousCloud, out bool isNoxiousCloud, out byte groundTile, out byte playerIndex, byte direction, Player player) /* sub_74D04 */
+        internal static void getGroundInformation(out bool isPoisonousCloud, out bool isNoxiousCloud, out int groundTile, out int playerIndex, byte direction, Player player) /* sub_74D04 */
         {
             playerIndex = 0;
             groundTile = 0x17;
@@ -502,55 +480,48 @@ namespace engine
             isPoisonousCloud = false;
 
             byte maxMoveCost = 1;
-            byte currentPlayerIndex = get_player_index(player);
+            int currentPlayerIndex = GetPlayerIndex(player);
 
-            int playerPosX = gbl.CombatMap[currentPlayerIndex].xPos;
-            int playerPosY = gbl.CombatMap[currentPlayerIndex].yPos;
+            var map = gbl.CombatMap[currentPlayerIndex];
+            var playerPos = map.pos;
 
-            for (int step = 0; step <= 3; step++)
+            foreach(var pos in BuildSizeMap(map.size, map.pos ))
             {
-                int deltaY;
-                int deltaX;
+                var tmpPos = pos + gbl.MapDirectionDelta[direction];
 
-                if (GetSizeBasedMapDelta(out deltaY, out deltaX, step, gbl.CombatMap[currentPlayerIndex].size) == true)
+                int atGroundTile;
+                int atPlayerIdx;
+
+                AtMapXY(out atGroundTile, out atPlayerIdx, tmpPos);
+
+                if (atPlayerIdx == currentPlayerIndex)
                 {
-                    int posX = playerPosX + deltaX + gbl.MapDirectionXDelta[direction];
-                    int posY = playerPosY + deltaY + gbl.MapDirectionYDelta[direction];
+                    atPlayerIdx = 0;
+                }
 
-                    byte atGroundTile;
-                    byte atPlayerIdx;
+                if (atPlayerIdx > 0)
+                {
+                    playerIndex = atPlayerIdx;
+                }
 
-                    AtMapXY(out atGroundTile, out atPlayerIdx, posY, posX);
-
-                    if (atPlayerIdx == currentPlayerIndex)
+                if (atGroundTile == 0)
+                {
+                    groundTile = 0;
+                }
+                else if (groundTile != 0)
+                {
+                    if (atGroundTile == 0x1e) // Noxious_cloud
                     {
-                        atPlayerIdx = 0;
+                        isNoxiousCloud = true;
                     }
-
-                    if (atPlayerIdx > 0)
+                    else if (atGroundTile == 0x1c) // Poisonous cloud
                     {
-                        playerIndex = atPlayerIdx;
+                        isPoisonousCloud = true;
                     }
-
-                    if (atGroundTile == 0)
+                    else if (gbl.BackGroundTiles[atGroundTile].move_cost >= maxMoveCost)
                     {
-                        groundTile = 0;
-                    }
-                    else if (groundTile != 0)
-                    {
-                        if (atGroundTile == 0x1e) // Noxious_cloud
-                        {
-                            isNoxiousCloud = true;
-                        }
-                        else if (atGroundTile == 0x1c) // Poisonous cloud
-                        {
-                            isPoisonousCloud = true;
-                        }
-                        else if (gbl.BackGroundTiles[atGroundTile].move_cost >= maxMoveCost)
-                        {
-                            maxMoveCost = gbl.BackGroundTiles[atGroundTile].move_cost;
-                            groundTile = atGroundTile;
-                        }
+                        maxMoveCost = gbl.BackGroundTiles[atGroundTile].move_cost;
+                        groundTile = atGroundTile;
                     }
                 }
             }
@@ -575,13 +546,12 @@ namespace engine
 
                 if (var_2 >= 9)
                 {
-                    byte player_index = get_player_index(player);
-                    int map_x = ovr033.PlayerMapXPos(player);
-                    int map_y = ovr033.PlayerMapYPos(player);
+                    int player_index = GetPlayerIndex(player);
+                    var map = ovr033.PlayerMapPos(player);
 
                     if (PlayerOnScreen(true, player) == false)
                     {
-                        redrawCombatArea(8, 3, map_y, map_x);
+                        redrawCombatArea(8, 3, map);
                     }
 
                     RedrawPlayerBackground(player_index);
@@ -589,19 +559,14 @@ namespace engine
 
                     for (int var_3 = 0; var_3 <= 8; var_3++)
                     {
-                        for (int step = 0; step <= 3; step++)
+                        foreach (var pos in BuildSizeMap(gbl.CombatMap[player_index].size, gbl.playerScreen[player_index]))
                         {
-                            int delta_y;
-                            int delta_x;
-
-                            if (GetSizeBasedMapDelta(out delta_y, out delta_x, step, gbl.CombatMap[player_index].size) == true &&
-                                CoordOnScreen(gbl.playerScreenY[player_index] + delta_y, gbl.playerScreenX[player_index] + delta_x) == true)
+                            if (CoordOnScreen(pos) == true)
                             {
                                 DaxBlock tmp = ((var_3 & 1) == 0) ? gbl.combat_icons[24, 1] : gbl.combat_icons[25, 0];
 
-                                seg040.OverlayBounded(tmp, 5, 0, (gbl.playerScreenY[player_index] + delta_y) * 3, (gbl.playerScreenX[player_index] + delta_x) * 3);
+                                seg040.OverlayBounded(tmp, 5, 0, (pos.y) * 3, (pos.x) * 3);
                             }
-
                         }
 
                         seg040.DrawOverlay();
@@ -612,26 +577,25 @@ namespace engine
                     {
                         gbl.byte_1D1BB++;
 
-                        gbl.unk_1D183[gbl.byte_1D1BB].field_6 = (byte)gbl.mapToBackGroundTile[map_x, map_y];
+                        gbl.unk_1D183[gbl.byte_1D1BB].field_6 = (byte)gbl.mapToBackGroundTile[map];
 
-                        if (gbl.mapToBackGroundTile[map_x, map_y] != 0x1E)
+                        if (gbl.mapToBackGroundTile[map] != 0x1E)
                         {
-                            gbl.mapToBackGroundTile[map_x, map_y] = 0x1F;
+                            gbl.mapToBackGroundTile[map] = 0x1F;
                         }
 
                         gbl.unk_1D183[gbl.byte_1D1BB].target = player;
-                        gbl.unk_1D183[gbl.byte_1D1BB].mapX = map_x;
-                        gbl.unk_1D183[gbl.byte_1D1BB].mapY = map_y;
+                        gbl.unk_1D183[gbl.byte_1D1BB].map = map;
                     }
 
                     seg041.GameDelay();
                     RedrawPlayerBackground(player_index);
 
-                    gbl.CombatMap[get_player_index(player)].size = 0;
+                    gbl.CombatMap[GetPlayerIndex(player)].size = 0;
 
                     setup_mapToPlayerIndex_and_playerScreen();
 
-                    redrawCombatArea(8, 3, gbl.mapToBackGroundTile.mapScreenTopY + 3, gbl.mapToBackGroundTile.mapScreenLeftX + 3);
+                    redrawCombatArea(8, 3, gbl.mapToBackGroundTile.mapScreenTopLeft + Point.ScreenCenter);
 
                     player.actions.delay = 0;
                     player.actions.move = 0;
@@ -642,7 +606,7 @@ namespace engine
         }
 
 
-        internal static bool sub_7515A(bool arg_0, int pos_y, int pos_x, Player player)
+        internal static bool sub_7515A(bool arg_0, Point pos, Player player)
         {
             bool ret_val;
 
@@ -650,18 +614,16 @@ namespace engine
             {
                 ret_val = false;
 
-                int player_index = get_player_index(player);
+                int player_index = GetPlayerIndex(player);
 
                 gbl.CombatMap[player_index].size = (byte)(player.field_DE & 0x7F);
-                gbl.CombatMap[player_index].xPos = pos_x;
-                gbl.CombatMap[player_index].yPos = pos_y;
+                gbl.CombatMap[player_index].pos = pos;
 
-                byte var_4;
-                byte ground_tile;
-                bool dummyBoolA, dummyBoolB;
-                getGroundInformation(out dummyBoolA, out dummyBoolB, out ground_tile, out var_4, 8, player);
+                int playerIdx;
+                int ground_tile;
+                getGroundInformation(out ground_tile, out playerIdx, 8, player);
 
-                if (var_4 != 0 ||
+                if (playerIdx != 0 ||
                     ground_tile == 0 ||
                     gbl.BackGroundTiles[ground_tile].move_cost == 0xff)
                 {
@@ -683,10 +645,7 @@ namespace engine
                                     ground_tile = gbl.unk_1D183[i].field_6;
                                 }
 
-                                gbl.unk_1D183[i].target = null;
-                                gbl.unk_1D183[i].mapX = 0;
-                                gbl.unk_1D183[i].mapY = 0;
-                                gbl.unk_1D183[i].field_6 = 0;
+                                gbl.unk_1D183[i].Clear();
                             }
                         }
 
@@ -695,8 +654,7 @@ namespace engine
                         for (int i = 1; i <= gbl.byte_1D1BB; i++)
                         {
                             if (gbl.unk_1D183[i].target != null &&
-                                gbl.unk_1D183[i].mapX == pos_x &&
-                                gbl.unk_1D183[i].mapY == pos_y)
+                                gbl.unk_1D183[i].map == pos)
                             {
                                 found = true;
                             }
@@ -704,7 +662,7 @@ namespace engine
 
                         if (found == false)
                         {
-                            gbl.mapToBackGroundTile[pos_x, pos_y] = ground_tile;
+                            gbl.mapToBackGroundTile[pos] = ground_tile;
                         }
                     }
 
@@ -722,15 +680,15 @@ namespace engine
 
         internal static void sub_75356(bool draw_cursor, byte radius, Player player)
         {
-            gbl.mapToBackGroundTile.draw_target_cursor = draw_cursor;
-            gbl.mapToBackGroundTile.size = gbl.CombatMap[get_player_index(player)].size;
+            gbl.mapToBackGroundTile.drawTargetCursor = draw_cursor;
+            gbl.mapToBackGroundTile.size = gbl.CombatMap[GetPlayerIndex(player)].size;
 
             if (gbl.focusCombatAreaOnPlayer == true)
             {
-                redrawCombatArea(8, radius, PlayerMapYPos(player), PlayerMapXPos(player));
+                redrawCombatArea(8, radius, PlayerMapPos(player));
             }
 
-            gbl.mapToBackGroundTile.draw_target_cursor = false;
+            gbl.mapToBackGroundTile.drawTargetCursor = false;
             gbl.mapToBackGroundTile.size = 1;
         }
     }

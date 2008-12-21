@@ -381,7 +381,7 @@ namespace engine
             }
             else if (arg_4 == 0xa0)
             {
-                return_val = gbl.player_ptr.field_E5;
+                return_val = gbl.player_ptr.HitDice;
             }
             else if (arg_4 >= 0xA5 && arg_4 <= 0xAC)
             {

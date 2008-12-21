@@ -157,10 +157,5 @@ namespace Classes
             {
             }
         }
-
-        public const int MaxRow = 0x18;
-        public const int MinRow = 0x00;
-        public const int MaxCol = 0x31;
-        public const int MinCol = 0x00;
     }
 }

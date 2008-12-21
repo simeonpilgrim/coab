@@ -584,7 +584,7 @@ namespace engine
             var_53 = player;
             var_53.exp = 25000;
             var_53._class = (ClassId)gbl.race_classes[(int)var_53.race, index];
-            var_53.field_E5 = 1;
+            var_53.HitDice = 1;
 
             if (var_53._class >= ClassId.cleric && var_53._class <= ClassId.fighter)
             {
@@ -2925,7 +2925,7 @@ namespace engine
                     }
                 }
 
-                if (player_ptr.field_E5 <= player_ptr.field_E6)
+                if (player_ptr.HitDice <= player_ptr.field_E6)
                 {
                     return;
                 }

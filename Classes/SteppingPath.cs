@@ -4,31 +4,28 @@ namespace Classes
     public class SteppingPath
     {
         // 0x17 or 23 long
-        public int attacker_x;      // 00
-        public int attacker_y;      // 02
-        public int target_x;        // 04
-        public int target_y;        // 06
-        public int delta_count;     // 08
+        public Point attacker;      // 00
+        public Point target;        // 04
+        int delta_count;     // 08
         public int diff_x;          // 0a 
-        public int diff_y;          // 0c
-        public int current_x;       // 0e
-        public int current_y;       // 10
-        public int sign_x;          // 12
-        public int sign_y;          // 14
+        public int diff_y;          // 0a 
+        public Point current;       // 0e
+        int sign_x;          // 12
+        int sign_y;          // 14
         public byte steps;          // 16
         public byte direction;      // 17 
 
         public void Clear()
         {
-            attacker_x = 0;
-            attacker_y = 0;
-            target_x = 0;
-            target_y = 0;
+            attacker.x = 0;
+            attacker.y = 0;
+            target.x = 0;
+            target.y = 0;
             delta_count = 0;
             diff_x = 0;
             diff_y = 0;
-            current_x = 0;
-            current_y = 0;
+            current.x = 0;
+            current.y = 0;
             sign_x = 0;
             sign_y = 0;
             steps = 0;
@@ -46,9 +43,9 @@ namespace Classes
 
             if (diff_x >= diff_y)
             {
-                if (current_x != target_x)
+                if (current.x != target.x)
                 {
-                    current_x += sign_x;
+                    current.x += sign_x;
                     delta_count += diff_y * 2;
                     steps += 2;
 
@@ -56,7 +53,7 @@ namespace Classes
 
                     if (delta_count >= diff_x)
                     {
-                        current_y += sign_y;
+                        current.y += sign_y;
                         delta_count -= diff_x * 2;
                         steps += 1;
 
@@ -66,9 +63,9 @@ namespace Classes
                     stepMade = true;
                 }
             }
-            else if (current_y != target_y)
+            else if (current.y != target.y)
             {
-                current_y += sign_y;
+                current.y += sign_y;
                 delta_count += diff_x * 2;
                 steps += 2;
 
@@ -76,7 +73,7 @@ namespace Classes
 
                 if (delta_count >= diff_y)
                 {
-                    current_x += sign_x;
+                    current.x += sign_x;
                     delta_count -= diff_y * 2;
                     steps += 1;
 
@@ -95,13 +92,14 @@ namespace Classes
 
         public void CalculateDeltas() /* sub_731A5 */
         {
-            current_x = attacker_x;
-            current_y = attacker_y;
-            diff_x = Math.Abs(target_x - attacker_x);
-            diff_y = Math.Abs(target_y - attacker_y);
+            current = attacker;
 
-            sign_x = Math.Sign(target_x - attacker_x);
-            sign_y = Math.Sign(target_y - attacker_y);
+            var tmp = target - attacker;
+            diff_x = Math.Abs(tmp.x);
+            diff_y = Math.Abs(tmp.y);
+
+            sign_x = Math.Sign(tmp.x);
+            sign_y = Math.Sign(tmp.y);
 
             delta_count = 0;
             steps = 0;
