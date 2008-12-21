@@ -3,11 +3,11 @@
 = Unreleased =
 
 = 1.0.15 =
-  * some major refactoring thay may have broken game play.
+  * some major refactoring that may have broken game play.
   * Fixed the 1.0.14 Installer which was missing an .dll
   * Added ripped sounds to the games as working out how the PC Speaker worked was taking too long, and sounded to bad. Ripped samples are from part PC Speaker and part Tandy sounds, which are much better
   * Enhanced the 'Dump Monsters' debugging, it now dumps all monsters plus all details shown in my blog post, to an monsters.html file in the current working directory
-  * Started working on decoding the affects and their mean, to clean-up above monsters.html
+  * Started working on decoding the affects and their meaning, to clean-up above monsters.html
 
 = 1.0.14 =
   * Added cheat to remove the race based level limits. 
