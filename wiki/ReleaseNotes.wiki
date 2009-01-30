@@ -1,6 +1,7 @@
 = The Release Notes =
 
 = Unreleased =
+  * Fixed crash when you lose a battle (introduced in 1.0.15)
 
 = 1.0.15 =
   * some major refactoring that may have broken game play.
