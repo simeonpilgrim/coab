@@ -720,7 +720,8 @@ namespace engine
                 ovr018.FreeCurrentPlayer(true, kvp.Value);
             }
 
-            gbl.player_ptr = gbl.player_next_ptr[0];
+            
+            gbl.player_ptr = gbl.player_next_ptr.Count > 0 ? gbl.player_next_ptr[0] : null;
         }
 
 
