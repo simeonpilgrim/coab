@@ -573,11 +573,11 @@ namespace engine
                 {
                     if (map_x <= 0x31)
                     {
-                        gbl.mapToBackGroundTile[map_x, map_y] = (byte)(ovr024.roll_dice(2, 1) + 0x3B);
+                        gbl.mapToBackGroundTile[map_x, map_y] = ovr024.roll_dice(2, 1) + 0x3B;
 
                         if (map_x < 0x31)
                         {
-                            gbl.mapToBackGroundTile[map_x + 1, map_y] = (byte)(ovr024.roll_dice(2, 1) + 0x3D);
+                            gbl.mapToBackGroundTile[map_x + 1, map_y] = ovr024.roll_dice(2, 1) + 0x3D;
                         }
 
                         if (ovr024.roll_dice(20, 1) == 1)
@@ -781,8 +781,8 @@ namespace engine
             }
         }
 
-        
-        static void sub_380E0()
+
+        static void SetupCombatActions() // sub_380E0
         {
             int playerCount = 0;
 
@@ -795,7 +795,7 @@ namespace engine
 
                 if (playerCount > gbl.area2_ptr.party_size)
                 {
-                    player.actions.field_13 = 1;
+                    player.actions.nonTeamMember = true;
                 }
 
                 player.actions.direction = HalfDirToIso[gbl.mapDirection / 2];
@@ -809,7 +809,7 @@ namespace engine
 
                 if (player.combat_team == CombatTeam.Ours)
                 {
-                    if (player.actions.field_13 == 1)
+                    if (player.actions.nonTeamMember)
                     {
                         if (var_6 == 0 ||
                             var_6 > 0x66)
@@ -1124,15 +1124,19 @@ namespace engine
                         gbl.CombatMap[loop_var].size = 0;
 
                         if (gbl.combat_type == CombatType.normal &&
-                            player_ptr.actions.field_13 == 0)
+                            player_ptr.actions.nonTeamMember == false)
                         {
                             var pos = gbl.CombatMap[loop_var].pos;
-                            gbl.byte_1D1BB++;
+                            
+                            var b = new Struct_1D183();
+                            gbl.downedPlayers.Add(b);
 
-                            gbl.unk_1D183[gbl.byte_1D1BB].field_6 = (byte)gbl.mapToBackGroundTile[pos];
+                            b.originalBackgroundTile = gbl.mapToBackGroundTile[pos];
+                            b.target = player_ptr;
+                            b.map = pos;
+
                             gbl.mapToBackGroundTile[pos] = 0x1F;
-                            gbl.unk_1D183[gbl.byte_1D1BB].target = player_ptr;
-                            gbl.unk_1D183[gbl.byte_1D1BB].map = pos;
+                            
                         }
                     }
 
@@ -1145,7 +1149,7 @@ namespace engine
                 {
                     gbl.CombatMap[loop_var].size = 0;
 
-                    if (player_ptr.actions.field_13 == 1)
+                    if (player_ptr.actions.nonTeamMember == true)
                     {
                         var_F++;
 
@@ -1188,23 +1192,18 @@ namespace engine
             gbl.combat_round = 0;
             gbl.combat_round_no_action_limit = 15;
             gbl.attack_roll = 0;
-            gbl.byte_1D1BB = 0;
 
             gbl.NoxiousCloud = new List<GasCloud>();
             gbl.PoisonousCloud = new List<GasCloud>();
             gbl.item_ptr = null;
 
-            gbl.unk_1D183 = new Struct_1D183[8 + 1];
-            for (int i = 0; i < 8 + 1; i++)
-            {
-                gbl.unk_1D183[i] = new Struct_1D183();
-            }
+            gbl.downedPlayers = new List<Struct_1D183>();
 
             gbl.area2_ptr.field_666 = 0;
 
             SetupGroundTiles();
 
-            sub_380E0();
+            SetupCombatActions();
             PlaceCombatants();
 
             seg043.clear_one_keypress();

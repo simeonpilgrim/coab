@@ -48,7 +48,7 @@ namespace engine
             var_19.CalculateDeltas();
 
             var_31.attacker.x = 0;
-            var_31.attacker.y = gbl.BackGroundTiles[groundTilesMap[attacker.x, attacker.y]].field_1;
+            var_31.attacker.y = gbl.BackGroundTiles[groundTilesMap[attacker]].field_1;
 
             if (var_19.diff_x > var_19.diff_y)
             {
@@ -59,7 +59,7 @@ namespace engine
                 var_31.target.x = var_19.diff_y;
             }
 
-            var_31.target.y = gbl.BackGroundTiles[groundTilesMap[attacker.x, attacker.y]].field_1;
+            var_31.target.y = gbl.BackGroundTiles[groundTilesMap[attacker]].field_1;
             var_31.CalculateDeltas();
             bool finished = false;
 

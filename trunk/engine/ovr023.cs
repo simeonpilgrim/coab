@@ -1432,12 +1432,10 @@ namespace engine
                 }
                 else if (groundTile == 0x1F)
                 {
-                    for (var_D = 1; var_D <= gbl.byte_1D1BB; var_D++)
+                    var c = gbl.downedPlayers.FindLast(cell => cell.map == gbl.targetPos + gbl.MapDirectionDelta[var_12]);
+                    if (c != null)
                     {
-                        if (gbl.unk_1D183[var_D].map == gbl.targetPos + gbl.MapDirectionDelta[var_12])
-                        {
-                            groundTile = gbl.unk_1D183[var_D].field_6;
-                        }
+                        groundTile = c.originalBackgroundTile;
                     }
                 }
 
@@ -2717,12 +2715,12 @@ namespace engine
                 }
                 else if (ground_tile == 0x1F)
                 {
-                    for (int var_12 = 1; var_12 <= gbl.byte_1D1BB; var_12++)
+                    var pos = gbl.MapDirectionDelta[dir] + gbl.targetPos;
+
+                    var c = gbl.downedPlayers.FindLast(cell => cell.map == pos);
+                    if (c != null)
                     {
-                        if (gbl.unk_1D183[var_12].map == (gbl.MapDirectionDelta[dir] + gbl.targetPos))
-                        {
-                            ground_tile = gbl.unk_1D183[var_12].field_6;
-                        }
+                        ground_tile = c.originalBackgroundTile;
                     }
                 }
 

@@ -573,16 +573,7 @@ namespace engine
                     {
                         var tmp = var_8.targetPos + gbl.MapDirectionDelta[gbl.unk_18AE9[var_B]];
 
-                        bool var_9 = false;
-
-                        for (int i = 1; i <= gbl.byte_1D1BB; i++)
-                        {
-                            if (gbl.unk_1D183[i].target != null &&
-                                gbl.unk_1D183[i].map == tmp)
-                            {
-                                var_9 = true;
-                            }
-                        }
+                        bool var_9 = gbl.downedPlayers.Exists(cell => cell.target != null && cell.map == tmp);
 
                         if (var_9 == true)
                         {
@@ -605,7 +596,7 @@ namespace engine
                         {
                             var tmp = gbl.MapDirectionDelta[gbl.unk_18AE9[var_B]] + var_4.targetPos;
 
-                            gbl.mapToBackGroundTile[tmp.x, tmp.y] = 0x1E;
+                            gbl.mapToBackGroundTile[tmp] = 0x1E;
                         }
                     }
                 }
@@ -1154,24 +1145,15 @@ namespace engine
                     {
                         var tmp = var_8.targetPos + gbl.MapDirectionDelta[gbl.unk_18AED[var_B]];
 
-                        bool var_E = false;
-
-                        for (int i = 1; i <= gbl.byte_1D1BB; i++)
-                        {
-                            if (gbl.unk_1D183[i].target != null &&
-                                gbl.unk_1D183[i].map == tmp)
-                            {
-                                var_E = true;
-                            }
-                        }
+                        bool var_E = gbl.downedPlayers.Exists(cell => cell.target != null && cell.map == tmp);
 
                         if (var_E == true)
                         {
-                            gbl.mapToBackGroundTile[tmp.x, tmp.y] = 0x1F;
+                            gbl.mapToBackGroundTile[tmp] = 0x1F;
                         }
                         else
                         {
-                            gbl.mapToBackGroundTile[tmp.x, tmp.y] = var_8.groundTile[var_B];
+                            gbl.mapToBackGroundTile[tmp] = var_8.groundTile[var_B];
                         }
                     }
                 }
@@ -1187,7 +1169,7 @@ namespace engine
                         {
                             var tmp = var_4.targetPos + gbl.MapDirectionDelta[gbl.unk_18AED[var_B]];
 
-                            gbl.mapToBackGroundTile[tmp.x, tmp.y] = 0x1C;
+                            gbl.mapToBackGroundTile[tmp] = 0x1C;
                         }
                     }
                 }

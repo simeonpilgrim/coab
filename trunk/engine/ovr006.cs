@@ -220,7 +220,7 @@ namespace engine
             {
                 foreach (Player player in gbl.player_next_ptr)
                 {
-                    if (player.actions != null && player.actions.field_13 == 1)
+                    if (player.actions != null && player.actions.nonTeamMember == true)
                     {
                         break;
                     }
@@ -265,7 +265,7 @@ namespace engine
 
                     foreach (Player player in gbl.player_next_ptr)
                     {
-                        if (player.actions != null && player.actions.field_13 == 1)
+                        if (player.actions != null && player.actions.nonTeamMember == true)
                         {
                             break;
                         }
@@ -336,7 +336,7 @@ namespace engine
                     foreach (Player player in gbl.player_next_ptr)
                     {
                         if (player.actions != null &&
-                            player.actions.field_13 != 1)
+                            player.actions.nonTeamMember == false)
                         {
                             to_remove.Add(player);
                         }
@@ -693,7 +693,7 @@ namespace engine
             Dictionary<Player, bool> to_remove = new Dictionary<Player, bool>();
             foreach (Player player in gbl.player_next_ptr)
             {
-                bool check = (player.actions != null && player.actions.field_13 == 1);
+                bool check = (player.actions != null && player.actions.nonTeamMember == true);
                 
                 if (check || player.combat_team == CombatTeam.Enemy)
                 {
@@ -737,8 +737,8 @@ namespace engine
                 if (player.field_F7 > 0x7f &&
                     player.health_status == Status.okey)
                 {
-                    npcParts += (byte)(player.field_F8 & 7);
-                    totalParts += (byte)(player.field_F8 & 7);
+                    npcParts += player.field_F8 & 7;
+                    totalParts += player.field_F8 & 7;
                 }
                 else
                 {
