@@ -537,14 +537,9 @@ namespace engine
             }
             else
             {
-                int var_2 = 1;
-                while (var_2 < 9 &&
-                    gbl.unk_1D183[var_2].target != player) // First SIS BUG!!!
-                {
-                    var_2++;
-                }
+                bool downedPlayer = gbl.downedPlayers.Exists(cell => cell.target == player);
 
-                if (var_2 >= 9)
+                if (!downedPlayer)
                 {
                     int player_index = GetPlayerIndex(player);
                     var map = ovr033.PlayerMapPos(player);
@@ -573,19 +568,19 @@ namespace engine
                         seg049.SysDelay(10);
                     }
 
-                    if (player.actions.field_13 == 0)
+                    if (player.actions.nonTeamMember == false)
                     {
-                        gbl.byte_1D1BB++;
+                        var b = new Struct_1D183();
 
-                        gbl.unk_1D183[gbl.byte_1D1BB].field_6 = (byte)gbl.mapToBackGroundTile[map];
+                        gbl.downedPlayers.Add(b);
+                        b.originalBackgroundTile = gbl.mapToBackGroundTile[map];
+                        b.target = player;
+                        b.map = map;
 
                         if (gbl.mapToBackGroundTile[map] != 0x1E)
                         {
                             gbl.mapToBackGroundTile[map] = 0x1F;
                         }
-
-                        gbl.unk_1D183[gbl.byte_1D1BB].target = player;
-                        gbl.unk_1D183[gbl.byte_1D1BB].map = map;
                     }
 
                     seg041.GameDelay();
@@ -634,31 +629,16 @@ namespace engine
                     ret_val = true;
 
                     if (arg_0 == true &&
-                        player.actions.field_13 == 0)
+                        player.actions.nonTeamMember == false)
                     {
-                        for (int i = 1; i <= gbl.byte_1D1BB; i++)
+                        var downed = gbl.downedPlayers.FindLast(cell => cell.target == player && cell.originalBackgroundTile != 0x1f);
+                        if (downed !=null)
                         {
-                            if (gbl.unk_1D183[i].target == player)
-                            {
-                                if (gbl.unk_1D183[i].field_6 != 0x1F)
-                                {
-                                    ground_tile = gbl.unk_1D183[i].field_6;
-                                }
-
-                                gbl.unk_1D183[i].Clear();
-                            }
+                            ground_tile = downed.originalBackgroundTile;
                         }
+                        gbl.downedPlayers.RemoveAll(cell => cell.target == player);
 
-                        bool found = false;
-
-                        for (int i = 1; i <= gbl.byte_1D1BB; i++)
-                        {
-                            if (gbl.unk_1D183[i].target != null &&
-                                gbl.unk_1D183[i].map == pos)
-                            {
-                                found = true;
-                            }
-                        }
+                        bool found = gbl.downedPlayers.Exists(cell => cell.target != null && cell.map == pos);
 
                         if (found == false)
                         {
@@ -678,7 +658,7 @@ namespace engine
         }
 
 
-        internal static void sub_75356(bool draw_cursor, byte radius, Player player)
+        internal static void RedrawCombatIfFocusOn(bool draw_cursor, byte radius, Player player) // sub_75356
         {
             gbl.mapToBackGroundTile.drawTargetCursor = draw_cursor;
             gbl.mapToBackGroundTile.size = gbl.CombatMap[GetPlayerIndex(player)].size;

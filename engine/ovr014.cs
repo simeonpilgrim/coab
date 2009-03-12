@@ -693,7 +693,7 @@ namespace engine
                 {
                     any_turned = true;
 
-                    ovr033.sub_75356(false, 3, target);
+                    ovr033.RedrawCombatIfFocusOn(false, 3, target);
                     gbl.display_hitpoints_ac = true;
                     ovr025.display_hitpoint_ac(target);
 
@@ -1095,13 +1095,11 @@ namespace engine
             }
         }
 
-        static Set word_3FDDE = new Set(0x0002, new byte[] { 0xC0, 0x01 });
-
         internal static bool find_healing_target(out Player target, Player healer) /* sub_3FDFE */
         {
             Player lowest_target = null;
             int lowest_hp = 0x0FF;
-            int var_8 = 0;
+            Struct_1D183 var_8 = null;
 
             for (int dir = 0; dir <= 8; dir++)
             {
@@ -1128,26 +1126,20 @@ namespace engine
                 }
                 else if (ground_tile == 0x1F)
                 {
-                    for (int var_B = 1; var_B <= gbl.byte_1D1BB; var_B++)
-                    {
-                        if (gbl.unk_1D183[var_B].target != null &&
-                            word_3FDDE.MemberOf((int)gbl.unk_1D183[var_B].target.health_status) == false &&
-                            gbl.unk_1D183[var_B].map == map)
-                        {
-                            var_8 = var_B;
-                        }
-                    }
+                    var_8 = gbl.downedPlayers.FindLast( cell => cell.target != null && cell.map == map && 
+                        cell.target.health_status != Status.tempgone && cell.target.health_status != Status.running &&
+                        cell.target.health_status != Status.unconscious );
                 }
             }
 
             if (lowest_hp < 8 ||
-                var_8 == 0)
+                var_8 == null)
             {
                 target = lowest_target;
             }
             else
             {
-                target = gbl.unk_1D183[var_8].target;
+                target = var_8.target;
             }
 
             bool target_found = (target != null);
@@ -1462,7 +1454,7 @@ namespace engine
                 gbl.focusCombatAreaOnPlayer = true;
                 gbl.display_hitpoints_ac = true;
 
-                ovr033.sub_75356(true, 3, player);
+                ovr033.RedrawCombatIfFocusOn(true, 3, player);
                 ovr025.display_hitpoint_ac(player);
             }
 
@@ -1864,7 +1856,7 @@ namespace engine
             }
             
             text = "Next Prev Manual " + text + "Center Exit";
-            ovr033.sub_75356(true, 3, target);
+            ovr033.RedrawCombatIfFocusOn(true, 3, target);
             gbl.display_hitpoints_ac = true;
             ovr025.display_hitpoint_ac(target);
 
@@ -1986,12 +1978,10 @@ namespace engine
                     }
                     else if (groundTile == 0x1f)
                     {
-                        for (int i = 1; i <= gbl.byte_1D1BB; i++)
+                        var c = gbl.downedPlayers.Find(cell => cell.map == pos);
+                        if (c != null && c.target != null)
                         {
-                            if (gbl.unk_1D183[i].map == pos)
-                            {
-                                target = gbl.unk_1D183[i].target;
-                            }
+                            target = c.target;
                         }
                     }
                 }

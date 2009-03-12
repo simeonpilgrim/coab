@@ -118,7 +118,7 @@ namespace engine
 
                 gbl.focusCombatAreaOnPlayer = ((player.combat_team == CombatTeam.Ours) || (ovr033.PlayerOnScreen(false, player) == true));
 
-                ovr033.sub_75356(true, 2, player);
+                ovr033.RedrawCombatIfFocusOn(true, 2, player);
                 ovr025.reclac_player_values(player);
                 gbl.display_hitpoints_ac = true;
                 ovr025.display_hitpoint_ac(player);
@@ -175,7 +175,7 @@ namespace engine
                             switch (var_1)
                             {
                                 case 'Q':
-                                    sub_3432F(player);
+                                    SetPlayerQuickFight(player);
                                     ovr027.ClearPromptArea();
                                     seg043.clear_keyboard();
                                     seg049.SysDelay(0x0C8);
@@ -268,7 +268,7 @@ namespace engine
                                     player.actions.delay = 20;
                                     foreach (Player player_ptr in gbl.player_next_ptr)
                                     {
-                                        sub_3432F(player_ptr);
+                                        SetPlayerQuickFight(player_ptr);
                                     }
                                     ovr027.ClearPromptArea();
                                     seg049.SysDelay(0x0C8);
@@ -279,7 +279,7 @@ namespace engine
                                 case '-':
                                     if (ovr014.god_intervene() == true)
                                     {
-                                        ovr033.sub_75356(false, 3, player);
+                                        ovr033.RedrawCombatIfFocusOn(false, 3, player);
                                         var_2 = true;
                                     }
                                     else
@@ -293,7 +293,7 @@ namespace engine
 
                         if (var_2 == false)
                         {
-                            ovr033.sub_75356(true, 2, player);
+                            ovr033.RedrawCombatIfFocusOn(true, 2, player);
                             gbl.display_hitpoints_ac = true;
                             ovr025.display_hitpoint_ac(player);
                         }
@@ -619,56 +619,52 @@ namespace engine
         }
 
 
-        internal static void delay_menu(ref bool arg_0, Player player_ptr)
+        internal static void delay_menu(ref bool turnEnded, Player player_ptr)
         {
-            char var_2A;
-            string var_29;
-
-            arg_0 = false;
-            var_29 = string.Empty;
-
+            turnEnded = false;
+            string menuText = string.Empty;
 
             if (ovr025.is_weapon_ranged(player_ptr) == false ||
                 ovr025.is_weapon_ranged_melee(player_ptr) == true)
             {
-                var_29 += "Guard ";
+                menuText += "Guard ";
             }
 
-            var_29 += "Delay Quit ";
+            menuText += "Delay Quit ";
 
             if (ovr025.bandage(false) == true)
             {
-                var_29 += "Bandage ";
+                menuText += "Bandage ";
             }
 
-            var_29 += "Speed Exit";
-            var_2A = ' ';
+            menuText += "Speed Exit";
+            char input = ' ';
 
-            while (unk_341B3.MemberOf(var_2A) == false && arg_0 == false)
+            while (input != '\0' && input != 'E' && turnEnded == false)
             {
                 bool dummyBool;
-                var_2A = ovr027.displayInput(out dummyBool, false, 0, 15, 10, 13, var_29, string.Empty);
+                input = ovr027.displayInput(out dummyBool, false, 0, 15, 10, 13, menuText, string.Empty);
 
-                switch (var_2A)
+                switch (input)
                 {
                     case 'G':
-                        arg_0 = true;
+                        turnEnded = true;
                         ovr025.guarding(player_ptr);
                         break;
 
                     case 'D':
                         player_ptr.actions.delay = 1;
-                        arg_0 = true;
+                        turnEnded = true;
                         break;
 
                     case 'Q':
-                        arg_0 = true;
+                        turnEnded = true;
                         ovr025.clear_actions(player_ptr);
                         break;
 
                     case 'B':
-                        arg_0 = ovr025.bandage(true);
-                        arg_0 = true;
+                        turnEnded = ovr025.bandage(true);
+                        turnEnded = true;
                         ovr025.clear_actions(player_ptr);
                         break;
 
@@ -679,41 +675,36 @@ namespace engine
             }
         }
 
-        static Set unk_341B3 = new Set(0x0009, new byte[] { 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x20 });
 
         internal static void set_gamespeed()
         {
-            char var_53;
-            string var_52;
-            string var_29;
+            char input = ' ';
 
-            var_53 = ' ';
-
-            while (unk_341B3.MemberOf(var_53) == false)
+            while (input != '\0' && input != 'E')
             {
-                var_52 = "GameSpeed (" + gbl.game_speed_var.ToString() + ") :";
-                var_29 = " ";
+                string text = "GameSpeed (" + gbl.game_speed_var.ToString() + ") :";
+                string menu = " ";
 
                 if (gbl.game_speed_var < 9)
                 {
-                    var_29 += "Slower ";
+                    menu += "Slower ";
                 }
 
                 if (gbl.game_speed_var > 0)
                 {
-                    var_29 += "Faster ";
+                    menu += "Faster ";
                 }
 
-                var_29 += "Exit";
+                menu += "Exit";
 
                 bool dummyBool;
-                var_53 = ovr027.displayInput(out dummyBool, false, 0, 15, 10, 13, var_29, var_52);
+                input = ovr027.displayInput(out dummyBool, false, 0, 15, 10, 13, menu, text);
 
-                if (var_53 == 0x53)
+                if (input == 0x53)
                 {
                     gbl.game_speed_var++;
                 }
-                else if (var_53 == 0x46)
+                else if (input == 0x46)
                 {
                     gbl.game_speed_var--;
                 }
@@ -721,15 +712,13 @@ namespace engine
         }
 
 
-        internal static void sub_3432F(Player player)
+        internal static void SetPlayerQuickFight(Player player) // sub_3432F
         {
             player.quick_fight = QuickFight.True;
-            if (player.actions.target != null)
+            if (player.actions.target != null &&
+                player.actions.target.combat_team == player.combat_team)
             {
-                if (player.actions.target.combat_team == player.combat_team)
-                {
-                    player.actions.target = null;
-                }
+                player.actions.target = null;
             }
         }
     }

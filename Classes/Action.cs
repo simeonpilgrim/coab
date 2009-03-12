@@ -23,7 +23,7 @@ namespace Classes
         public bool fleeing; // 0x10
         public byte field_11; // 0x11
         public byte field_12; // 0x12
-        public byte field_13; // 0x13
+        public bool nonTeamMember; // 0x13 field_13
         public byte field_14; // 0x14
         public byte field_15; // 0x15
 

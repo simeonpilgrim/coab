@@ -373,7 +373,6 @@ namespace Classes
         public static byte[] monoCharData = new byte[8]; // byte_1C8C2
         public static int textXCol; // byte_1C8CA
         public static int textYCol; // byte_1C8CB
-        public static byte byte_1D1BB;
         public static int sortedCombatantCount; // byte_1D1C0
         public static Affects current_affect; // byte_1D2BD
         public static int damage; // byte_1D2BE
@@ -733,7 +732,9 @@ namespace Classes
             new SpellEntry(SpellClass.Unknown10, 0, 10, 0, 6, 0, 24, 0, DamageOnSave.Unknown_1E, SaveVerseType.Poison, Affects.enlarge, SpellWhen.Camp, 0, 1, 0x28, 0x28) };
 
         public static Struct_1C020[] unk_1C020;
-        public static Struct_1D183[] unk_1D183; // array[8] but 1 offset.
+
+        public static List<Struct_1D183> downedPlayers; // unk_1D183 
+
         public static Struct_1D1BC mapToBackGroundTile; // stru_1D1BC
 
 

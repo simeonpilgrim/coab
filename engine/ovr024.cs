@@ -633,7 +633,7 @@ namespace engine
             {
                 int player_index = ovr033.GetPlayerIndex(player);
 
-                ovr033.sub_75356(false, 3, player);
+                ovr033.RedrawCombatIfFocusOn(false, 3, player);
 
                 ovr025.DisplayPlayerStatusString(true, 10, msg, player);
 
@@ -1385,7 +1385,7 @@ namespace engine
 
                 if (gbl.game_state == GameState.Combat)
                 {
-                    ovr033.sub_75356(false, 3, player);
+                    ovr033.RedrawCombatIfFocusOn(false, 3, player);
                 }
 
                 string text;

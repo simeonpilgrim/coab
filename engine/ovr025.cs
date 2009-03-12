@@ -1914,7 +1914,7 @@ namespace engine
 
             foreach (Player player in gbl.player_next_ptr)
             {
-                if (player.actions.field_13 == 0 &&
+                if (player.actions.nonTeamMember == false &&
                     player.combat_team == CombatTeam.Ours &&
                     player.health_status == Status.dying)
                 {
