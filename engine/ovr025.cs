@@ -16,14 +16,14 @@ namespace engine
 
                 player.hitBonus = player.thac0;
 
-                if ((gbl.unk_1C020[item_type].field_E & 2) != 0)
+                if ((gbl.ItemDataTable[item_type].field_E & 2) != 0)
                 {
                     player.hitBonus += (sbyte)DexReactionAdj(player);
                 }
 
-                player.damageBonus = (sbyte)gbl.unk_1C020[item_type].field_B;
+                player.damageBonus = (sbyte)gbl.ItemDataTable[item_type].field_B;
 
-                if ((gbl.unk_1C020[item_type].field_E & 0x04) != 0)
+                if ((gbl.ItemDataTable[item_type].field_E & 0x04) != 0)
                 {
                     player.hitBonus += strengthHitBonus(player);
                     player.damageBonus += strengthDamBonus(player);
@@ -31,45 +31,47 @@ namespace engine
 
                 sbyte bonus = item.plus;
 
-                if (gbl.unk_1C020[item_type].field_E > 0x7F &&
-                    player.Item_ptr_04 != null)
+                if (gbl.ItemDataTable[item_type].field_E > 0x7F &&
+                    player.quarrels != null)
                 {
-                    bonus += player.Item_ptr_04.plus;
+                    bonus += player.quarrels.plus;
                 }
 
-                if ((gbl.unk_1C020[item_type].field_E & 0x01) != 0 &&
-                    player.Item_ptr_03 != null)
+                if ((gbl.ItemDataTable[item_type].field_E & 0x01) != 0 &&
+                    player.arrows != null)
                 {
-                    bonus += player.Item_ptr_03.plus;
+                    bonus += player.arrows.plus;
                 }
 
                 player.damageBonus += bonus;
 
                 if (player.race == Race.elf &&
-                    ((item.type > 0x28 && item.type < 0x2D) ||
-                      item.type == 0x25 || item.type == 0x24))
+                    (item.type == 41 || // CompositeLongBow
+                     item.type == 42 || // CompositeShortBow
+                     item.type == 43 || // LongBow
+                     item.type == 44 || // ShortBow
+                     item.type == 37 || // ShortSword
+                     item.type == 36)) // LongSword
                 {
                     bonus++;
                 }
 
                 player.hitBonus += bonus;
-                player.attack_dice_count = gbl.unk_1C020[item_type].diceCountX;
-                player.attack_dice_size = gbl.unk_1C020[item_type].diceSizeX;
+                player.attack_dice_count = gbl.ItemDataTable[item_type].diceCountX;
+                player.attack_dice_size = gbl.ItemDataTable[item_type].diceSizeX;
             }
         }
 
-        /// <summary>
-        /// Item weight initiative effect check.
-        /// </summary>
-        internal static void sub_6621E(Item item, Player player)
+
+        internal static void CalcArmorWeightEffect(Item item, Player player) // sub_6621E
         {
-            if (gbl.unk_1C020[item.type].item_slot == 2)
+            if (gbl.ItemDataTable[item.type].item_slot == 2) // Armor
             {
-                if (item.weight >= 0 && item.weight <= 0x96)
+                if (item.weight >= 0 && item.weight <= 150)
                 {
                     player.movement = player.base_movement;
                 }
-                else if (item.weight >= 0x97 && item.weight <= 0x18F)
+                else if (item.weight >= 151 && item.weight <= 399)
                 {
                     player.movement = 9;
                 }
@@ -88,11 +90,11 @@ namespace engine
 
         internal static void sub_662A6(ref byte output, ref sbyte[] bonus, Item item, Player player)
         {
-            byte var_1 = gbl.unk_1C020[item.type].field_6;
+            byte var_1 = gbl.ItemDataTable[item.type].field_6;
             if (var_1 > 0x7f)
             {
                 var_1 &= 0x7F;
-                byte var_2 = gbl.unk_1C020[item.type].item_slot;
+                byte var_2 = gbl.ItemDataTable[item.type].item_slot;
                 if (var_2 == 1)
                 {
                     bonus[1] = (sbyte)(item.plus + var_1);
@@ -302,10 +304,10 @@ namespace engine
                         name += " ";
                     }
                     else if ((1 << (var_1 - 1) == display_flags) ||
-                            (var_1 == 1 && display_flags > 4 && item.type != 0x56) ||
+                            (var_1 == 1 && display_flags > 4 && item.type != 86) ||
                             (var_1 == 2 && (display_flags & 1) == 0) ||
-                            (var_1 == 3 && item.type == 0x56) ||
-                            (item.field_31 != 0x87 && (item.type == 0x49 || item.type == 0x1c || item.type == 0x09) && item.field_31 != 0xb1))
+                            (var_1 == 3 && item.type == 86) ||
+                            (item.field_31 != 0x87 && (item.type == 73 /*Arrow*/ || item.type == 28 /*Quarrel*/ || item.type == 9 /*Dart*/) && item.field_31 != 0xb1))
                     {
                         name += "s ";
                         pural_added = true;
@@ -481,8 +483,8 @@ namespace engine
             player.field_171 = null;
             player.Item_ptr_01 = null;
             player.Item_ptr_02 = null;
-            player.Item_ptr_03 = null;
-            player.Item_ptr_04 = null;
+            player.arrows = null;
+            player.quarrels = null;
 
             bool var_8 = false;
 
@@ -506,7 +508,7 @@ namespace engine
                 {
                     totalItemWeight += item_weight;
 
-                    int var_13 = gbl.unk_1C020[item.type].item_slot;
+                    int var_13 = gbl.ItemDataTable[item.type].item_slot;
 
                     if (var_13 >= 0 && var_13 <= 8)
                     {
@@ -527,17 +529,17 @@ namespace engine
                         }
                     }
 
-                    if (item.type == 0x49)
+                    if (item.type == 73) // Arrow
                     {
-                        player.Item_ptr_03 = item;
+                        player.arrows = item;
                     }
 
-                    if (item.type == 0x1C)
+                    if (item.type == 28) // Quarrel
                     {
-                        player.Item_ptr_04 = item;
+                        player.quarrels = item;
                     }
 
-                    player.field_185 += gbl.unk_1C020[item.type].field_1;
+                    player.field_185 += gbl.ItemDataTable[item.type].field_1;
                 }
             }
 
@@ -582,7 +584,7 @@ namespace engine
             {
                 if (item.readied)
                 {
-                    sub_6621E(item, player);
+                    CalcArmorWeightEffect(item, player);
                     sub_662A6(ref var_7, ref stat_bonus, item, player);
                 }
             }
@@ -972,7 +974,7 @@ namespace engine
 
         internal static void displayPlayerName(bool pural, int y_offset, int x_offset, Player player) /*sub_678A2*/
         {
-            byte color;
+            int color;
 
             if (player.in_combat == false)
             {
@@ -987,12 +989,9 @@ namespace engine
                 color = 0x0B;
             }
 
-            seg041.displayString(player.name, 0, color, y_offset, x_offset);
+            string name = player.name + ((pural)? "s" : "");
 
-            if (pural == true)
-            {
-                seg041.displayString("s", 0, color, y_offset, x_offset + player.name.Length);
-            }
+            seg041.displayString(name, 0, color, y_offset, x_offset);
         }
 
 
@@ -1439,7 +1438,7 @@ namespace engine
         }
 
 
-        internal static int BuildNearTargets(int max_range, Player player) /*near_enermy*/
+        internal static List<CombatPlayerIndex> BuildNearTargets(int max_range, Player player) /*near_enermy*/
         {
             ovr032.Rebuild_SortedCombatantList(gbl.mapToBackGroundTile, ovr033.PlayerMapSize(player), 0xff, max_range, ovr033.PlayerMapPos(player));
 
@@ -1461,13 +1460,16 @@ namespace engine
                 gbl.sortedCombatantCount = tmpCount;
             }
 
+            List<CombatPlayerIndex> nearTargets = new List<CombatPlayerIndex>();
             int ret_val = gbl.sortedCombatantCount;
             for (int i = 1; i <= gbl.sortedCombatantCount; i++)
             {
-                gbl.near_targets[i] = gbl.SortedCombatantList[i].player_index;
+                int index = gbl.SortedCombatantList[i].player_index;
+                Player target = gbl.player_array[index];
+                nearTargets.Add( new CombatPlayerIndex( target, index) );
             }
 
-            return ret_val;
+            return nearTargets;
         }
 
 
@@ -1746,13 +1748,13 @@ namespace engine
         internal static bool item_is_ranged(Item item)
         {
             return item != null &&
-                gbl.unk_1C020[item.type].field_C > 1;
+                gbl.ItemDataTable[item.type].range > 1;
         }
 
         internal static bool item_is_ranged_melee(Item item)
         {
             return item_is_ranged(item) &&
-                 (gbl.unk_1C020[item.type].field_E & 0x14) == 0x14;
+                 (gbl.ItemDataTable[item.type].field_E & 0x14) == 0x14;
         }
 
         internal static bool is_weapon_ranged(Player player) /* offset_above_1 */
@@ -1775,7 +1777,7 @@ namespace engine
             Item item = player.field_151;
             if (item != null)
             {
-                flags = gbl.unk_1C020[item.type].field_E;
+                flags = gbl.ItemDataTable[item.type].field_E;
 
                 if ((flags & 0x10) != 0)
                 {
@@ -1786,12 +1788,12 @@ namespace engine
                 {
                     if ((flags & 0x01) != 0)
                     {
-                        found_item = player.Item_ptr_03;
+                        found_item = player.arrows;
                     }
 
                     if ((flags & 0x80) != 0)
                     {
-                        found_item = player.Item_ptr_04;
+                        found_item = player.quarrels;
                     }
                 }
             }

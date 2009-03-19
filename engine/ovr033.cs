@@ -78,12 +78,17 @@ namespace engine
 
             int player_index = PlayerIndexAtMapXY(pos.y, pos.x);
 
+            DrawPlayerIconIfOnScreen(player_index);
+        }
+
+        private static void DrawPlayerIconIfOnScreen(int player_index)
+        {
             if (player_index > 0 &&
                 PlayerOnScreen(false, player_index) == true)
             {
                 // draws the player icon over focus box
                 ovr034.draw_combat_icon(gbl.player_array[player_index].icon_id, 0,
-                    gbl.player_array[player_index].actions.direction, 
+                    gbl.player_array[player_index].actions.direction,
                     gbl.playerScreen[player_index].y,
                     gbl.playerScreen[player_index].x);
             }
@@ -101,14 +106,7 @@ namespace engine
 
             RedrawPlayerBackground(playerIndex, pos);
 
-            if (playerIndex > 0 &&
-                PlayerOnScreen(false, gbl.player_array[playerIndex]) == true)
-            {
-                ovr034.draw_combat_icon(gbl.player_array[playerIndex].icon_id,  0, 
-                    gbl.player_array[playerIndex].actions.direction,
-                    gbl.playerScreen[playerIndex].y, 
-                    gbl.playerScreen[playerIndex].x);
-            }
+            DrawPlayerIconIfOnScreen(playerIndex);
         }
 
         static int[,] mapToPlayerIndex = new int[Point.MapMaxY, Point.MapMaxX];

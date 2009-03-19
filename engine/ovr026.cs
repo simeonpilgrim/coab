@@ -247,7 +247,7 @@ namespace engine
             for (int item_slot = 0; item_slot <= 12; item_slot++)
             {
                 if (player.itemArray[item_slot] != null &&
-                    (gbl.unk_1C020[player.itemArray[item_slot].type].classFlags & player.classFlags) == 0 &&
+                    (gbl.ItemDataTable[player.itemArray[item_slot].type].classFlags & player.classFlags) == 0 &&
                     player.itemArray[item_slot].cursed == false)
                 {
                     player.itemArray[item_slot].readied = false;
@@ -718,7 +718,7 @@ namespace engine
 
             foreach(var item in player.items)
             {
-                if ((gbl.unk_1C020[item.type].classFlags & player.classFlags) == 0 &&
+                if ((gbl.ItemDataTable[item.type].classFlags & player.classFlags) == 0 &&
                     item.cursed == false)
                 {
                     item.readied = false;

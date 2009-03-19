@@ -517,7 +517,8 @@ namespace engine
                         char b = ovr027.yes_no(15, 10, 13, "Flee:");
                         if (b == 'Y')
                         {
-                            arg_0 = ovr014.flee_battle(player);
+                            arg_0 = true;
+                            ovr014.flee_battle(player);
                         }
                         else if (b == 'N')
                         {
@@ -605,7 +606,7 @@ namespace engine
             {
                 player.actions.target = target;
 
-                if (ovr014.sub_3EF3D(target, player) == true)
+                if (ovr014.TrySweepAttack(target, player) == true)
                 {
                     arg_0 = true;
                 }
@@ -647,9 +648,9 @@ namespace engine
 
                 switch (input)
                 {
-                    case 'G':
-                        turnEnded = true;
+                    case 'G':                 
                         ovr025.guarding(player_ptr);
+                        turnEnded = true;
                         break;
 
                     case 'D':
@@ -658,14 +659,14 @@ namespace engine
                         break;
 
                     case 'Q':
-                        turnEnded = true;
                         ovr025.clear_actions(player_ptr);
+                        turnEnded = true;
                         break;
 
                     case 'B':
-                        turnEnded = ovr025.bandage(true);
-                        turnEnded = true;
+                        ovr025.bandage(true);
                         ovr025.clear_actions(player_ptr);
+                        turnEnded = true;
                         break;
 
                     case 'S':

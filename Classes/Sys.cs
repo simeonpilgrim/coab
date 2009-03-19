@@ -110,5 +110,18 @@ namespace Classes
 
             return strs.ToArray();
         }
+
+        public static int WrapMinMax(int val, int min, int max)
+        {
+            if (val > max)
+            {
+                val = min;
+            }
+            else if ( val < min )
+            {
+                val = max;
+            }
+            return val;
+        }
     }
 }

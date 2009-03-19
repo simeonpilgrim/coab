@@ -326,7 +326,7 @@ namespace engine
 
         internal static void affect_spiritual_hammer(Effect add_remove, object param, Player player) /* sub_3A583 */
         {
-            Item item = player.items.Find(i => i.type == 0x14 && i.field_31 == 0xf3);
+            Item item = player.items.Find(i => i.type == 20 && i.field_31 == 0xf3); // ItemType.Hammer
             bool item_found = item != null;
 
             if (add_remove == Effect.Remove && item != null)
@@ -339,7 +339,7 @@ namespace engine
                 player.items.Count < Player.MaxItems)
             {
                 item = new Item();
-                item.type = 20;
+                item.type = 20; // ItemType.Hammer
                 item.field_30 = 20;
                 item.field_31 = 243;
                 item.plus = 1;
@@ -1103,7 +1103,7 @@ namespace engine
             Item var_4 = get_primary_weapon(gbl.player_ptr);
 
             if (var_4 != null &&
-                gbl.unk_1C020[var_4.type].field_7 == 1)
+                gbl.ItemDataTable[var_4.type].field_7 == 1)
             {
                 gbl.damage = 1;
             }
@@ -1191,7 +1191,7 @@ namespace engine
             Item item = get_primary_weapon(gbl.player_ptr);
 
             if (item != null &&
-                (gbl.unk_1C020[item.type].field_7 & 0x81) != 0)
+                (gbl.ItemDataTable[item.type].field_7 & 0x81) != 0)
             {
                 gbl.damage /= 2;
             }
@@ -1443,8 +1443,8 @@ namespace engine
 
             if (weapon != null)
             {
-                if (gbl.unk_1C020[weapon.type].field_7 == 0 ||
-                    (gbl.unk_1C020[weapon.type].field_7 & 1) != 0)
+                if (gbl.ItemDataTable[weapon.type].field_7 == 0 ||
+                    (gbl.ItemDataTable[weapon.type].field_7 & 1) != 0)
                 {
                     gbl.damage /= 2;
                 }
@@ -1469,7 +1469,7 @@ namespace engine
             Item item = gbl.player_ptr.field_151;
 
             if (item != null &&
-                item.type == 0x55)
+                item.type == 85)
             {
                 gbl.damage = ovr024.roll_dice_save(6, 1) + 1;
             }
@@ -1503,8 +1503,7 @@ namespace engine
 
             if (field_151 != null)
             {
-                if (field_151.type == 0x57 ||
-                    field_151.type == 0x58)
+                if (field_151.type == 87 || field_151.type == 88)
                 {
                     AvoidMissleAttack(50, player);
                 }
@@ -1603,7 +1602,7 @@ namespace engine
 
             if (ovr025.sub_6906C(out item, gbl.player_ptr) == true &&
                 item != null &&
-                item.type == 0x1c &&
+                item.type == 28 && //ItemType.Quarrel
                 item.field_31 == 0x87)
             {
                 player.health_status = Status.gone;
