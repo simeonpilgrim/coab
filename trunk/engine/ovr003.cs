@@ -39,7 +39,6 @@ namespace engine
 
             gbl.textYCol = 0x11;
             gbl.textXCol = 1;
-            gbl.byte_1EE8A = 0;
         }
 
 
@@ -676,30 +675,28 @@ namespace engine
 
             string delay_text = gbl.unk_1D972[1];
 
-            byte var_1 = (byte)ovr008.vm_GetCmdValue(3);
+            byte menuCount = (byte)ovr008.vm_GetCmdValue(3);
             gbl.ecl_offset--;
-            ovr008.vm_LoadCmdSets(var_1);
+            ovr008.vm_LoadCmdSets(menuCount);
 
-            List<MenuItem> var_106 = new List<MenuItem>();
+            List<MenuItem> menuList = new List<MenuItem>();
 
             gbl.textXCol = 1;
             gbl.textYCol = 0x11;
 
             seg041.press_any_key(delay_text, true, 0, 10, 22, 38, 17, 1);
 
-            for (int i = 0; i < var_1; i++)
+            for (int i = 0; i < menuCount; i++)
             {
-                var_106.Add(new MenuItem(gbl.unk_1D972[i + 1]));
+                menuList.Add(new MenuItem(gbl.unk_1D972[i + 1]));
             }
 
             int index = 0;
-            bool var_10F = true;
-            ovr008.sub_318AE(ref index, ref var_10F, false, var_106, 0x16, 0x26, gbl.textYCol + 1,
-                1, 15, 10, 13, string.Empty, string.Empty);
+            ovr008.sub_318AE(ref index, true, false, menuList, 0x16, 0x26, gbl.textYCol + 1, 1, 15, 10, 13);
 
             ovr008.vm_SetMemoryValue((ushort)index, mem_loc);
 
-            var_106.Clear();
+            menuList.Clear();
             seg037.draw8x8_clear_area(0x16, 0x26, 0x11, 1);
         }
 
@@ -1779,7 +1776,6 @@ namespace engine
             ovr030.DrawMaybeOverlayed(gbl.byte_1D556.frames[0].picture, true, 3, 3);
             ovr025.display_map_position_time();
             gbl.byte_1EE98 = false;
-            gbl.byte_1EE8A = 1;
         }
 
 
@@ -2266,8 +2262,6 @@ namespace engine
 
         internal static void sub_29758()
         {
-            char var_1;
-
             gbl.player_ptr2 = gbl.player_ptr;
 
             gbl.can_draw_bigpic = true;
@@ -2352,7 +2346,7 @@ namespace engine
 
                 do
                 {
-                    var_1 = ovr015.main_3d_world_menu();
+                    char var_1 = ovr015.main_3d_world_menu();
 
                     gbl.player_ptr2 = gbl.player_ptr;
 

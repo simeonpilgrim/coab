@@ -354,7 +354,7 @@ namespace engine
         {
             if (gbl.player_ptr.HasAffect(Affects.read_magic) == true ||
                 ((gbl.player_ptr.cleric_lvl > 0 || gbl.player_ptr.turn_undead > gbl.player_ptr.field_E6) &&
-                  gbl.unk_1C020[gbl.currentScroll.type].item_slot == 12))
+                  gbl.ItemDataTable[gbl.currentScroll.type].item_slot == 12))
             {
                 gbl.currentScroll.hidden_names_flag = 0;
             }
@@ -1004,7 +1004,7 @@ namespace engine
             gbl.byte_1D2C7 = true;
 
             gbl.spellTargets.RemoveAll(target => target.combat_team != team ||
-                (gbl.spell_id == (int)Spells.spell_01 && gbl.game_state == GameState.Combat && ovr025.BuildNearTargets(1, target) > 0));
+                (gbl.spell_id == (int)Spells.spell_01 && gbl.game_state == GameState.Combat && ovr025.BuildNearTargets(1, target).Count > 0));
 
             sub_5CF7F(text, 0, 0, false, 0, gbl.spell_id);
         }
@@ -3117,20 +3117,9 @@ namespace engine
 
         internal static bool item_is_scroll(Item item)
         {
-            bool var_1;
-
-            if (item != null &&
-                gbl.unk_1C020[item.type].item_slot > 10 &&
-                gbl.unk_1C020[item.type].item_slot < 14)
-            {
-                var_1 = true;
-            }
-            else
-            {
-                var_1 = false;
-            }
-
-            return var_1;
+            return (item != null &&
+                gbl.ItemDataTable[item.type].item_slot >= 11 &&
+                gbl.ItemDataTable[item.type].item_slot <= 13);
         }
 
 

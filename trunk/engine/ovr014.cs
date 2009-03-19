@@ -21,7 +21,7 @@ namespace engine
 
             ovr024.CheckAffectsEffect(player, CheckType.Movement);
 
-            player.field_19D = sub_3EF0D(gbl.movesLeft);
+            player.field_19D = (byte)sub_3EF0D(gbl.movesLeft);
 
             action.field_5 = player.field_DD;
 
@@ -50,11 +50,11 @@ namespace engine
                 action.delay = 0;
             }
 
-            player.actions.move = sub_3E124(player);
+            player.actions.move = (byte)sub_3E124(player);
         }
 
 
-        internal static byte sub_3E124(Player player)
+        internal static int sub_3E124(Player player)
         {
             int moves = player.movement;
 
@@ -63,13 +63,12 @@ namespace engine
                 moves += gbl.area2_ptr.field_6E4;
             }
 
-
             if (moves < 1 || moves > 96)
             {
                 moves = 1;
             }
 
-            gbl.movesLeft = (byte)(moves * 2);
+            gbl.movesLeft = moves * 2;
 
             gbl.resetMovesLeft = true;
             
@@ -225,13 +224,13 @@ namespace engine
 
         static void move_step_into_attack(Player target) /* sub_3E65D */
         {
-            int near_count = ovr025.BuildNearTargets(1, target);
+            var nearTargets = ovr025.BuildNearTargets(1, target);
 
-            for (int i = 1; i <= near_count; i++)
+            if (target.in_combat)
             {
-                if (target.in_combat == true)
+                foreach(var cpi in nearTargets) 
                 {
-                    Player attacker = gbl.player_array[gbl.near_targets[i]];
+                    Player attacker = cpi.player;
 
                     if (attacker.actions.guarding == true &&
                         attacker.IsHeld() == false)
@@ -327,51 +326,34 @@ namespace engine
             System.Array.Clear(var_D, 0, var_D_size);
 
             int player_index = ovr033.GetPlayerIndex(player);
-            int var_15 = ovr025.BuildNearTargets(1, player);
+            var nearTargetsA = ovr025.BuildNearTargets(1, player);
 
-            if (var_15 != 0)
+            if (nearTargetsA.Count > 0)
             {
-                for (int i = 1; i <= var_15; i++)
-                {
-                    var_D[i] = gbl.near_targets[i];
-                }
+                // var_D == nearTargetsA;
 
                 gbl.CombatMap[player_index].pos.x += gbl.MapDirectionXDelta[direction];
                 gbl.CombatMap[player_index].pos.y += gbl.MapDirectionYDelta[direction];
 
-                int var_16 = ovr025.BuildNearTargets(1, player);
+                var nearTargetsB = ovr025.BuildNearTargets(1, player);
 
                 gbl.CombatMap[player_index].pos.x -= gbl.MapDirectionXDelta[direction];
                 gbl.CombatMap[player_index].pos.y -= gbl.MapDirectionYDelta[direction];
 
-                for (int i = 1; i <= var_15; i++)
+                foreach (var cpiB in nearTargetsB)
                 {
-                    bool found = false;
-
-                    for (int j = 1; j <= var_16; j++)
-                    {
-                        if (gbl.near_targets[j] == var_D[i])
-                        {
-                            found = true;
-                        }
-                    }
-
-                    if (found == true)
-                    {
-                        var_D[i] = 0;
-                    }
+                    nearTargetsA.RemoveAll(cpiA => cpiA.player == cpiB.player);
                 }
 
-                for (int var_18 = 1; var_18 <= var_15; var_18++)
+                if (player.in_combat)
                 {
-                    if (var_D[var_18] > 0 &&
-                        player.in_combat == true)
+                    foreach (var cpiA in nearTargetsA)
                     {
                         gbl.display_hitpoints_ac = true;
                         gbl.focusCombatAreaOnPlayer = true;
                         bool var_12 = false;
 
-                        Player player_ptr = gbl.player_array[var_D[var_18]];
+                        Player player_ptr = cpiA.player;
 
                         if (player_ptr.IsHeld() == false &&
                             CanSeeTargetA(player, player_ptr) == true &&
@@ -386,7 +368,7 @@ namespace engine
                                 {
                                     if (player_ptr.actions.delay > 0 ||
                                         player_ptr.actions.field_F == 0 ||
-                                        ovr032.CanSeeCombatant((byte)(var_1B % 8), ovr033.PlayerMapPos(player),ovr033.PlayerMapPos(player_ptr)) == true)
+                                        ovr032.CanSeeCombatant((byte)(var_1B % 8), ovr033.PlayerMapPos(player), ovr033.PlayerMapPos(player_ptr)) == true)
                                     {
                                         byte var_1A = 1;
                                         if (player_ptr.field_11C == 0)
@@ -434,13 +416,11 @@ namespace engine
         }
 
 
-        internal static bool flee_battle(Player player)
+        internal static void flee_battle(Player player)
         {
-            bool ret_val;
-
             bool gets_away = false;
 
-            if (ovr025.BuildNearTargets(0xff, player) == 0)
+            if (ovr025.BuildNearTargets(0xff, player).Count == 0)
             {
                 gets_away = true;
             }
@@ -468,10 +448,7 @@ namespace engine
                 ovr025.string_print01("Escape is blocked");
             }
 
-            ret_val = true;
             ovr025.clear_actions(player);
-
-            return ret_val;
         }
 
 
@@ -486,7 +463,7 @@ namespace engine
                 ovr025.sub_6906C(out var_9, player) == true)
             {
                 var_5 = true;
-                byte var_4 = gbl.unk_1C020[player.field_151.type].field_5;
+                byte var_4 = gbl.ItemDataTable[player.field_151.type].field_5;
 
                 if (var_4 < 2)
                 {
@@ -503,7 +480,7 @@ namespace engine
             gbl.resetMovesLeft = false;
             ovr024.CheckAffectsEffect(player, CheckType.Movement);
 
-            byte var_1 = sub_3EF0D(gbl.movesLeft);
+            int var_1 = sub_3EF0D(gbl.movesLeft);
 
             if (var_5 == true &&
                 var_9 != null)
@@ -518,7 +495,7 @@ namespace engine
                 if (var_3 < var_1 &&
                     var_9.count > 0)
                 {
-                    var_1 = (byte)var_3;
+                    var_1 = var_3;
                 }
             }
 
@@ -528,89 +505,61 @@ namespace engine
                   var_1 < (var_2 * 2) &&
                   var_5 == false))
             {
-                player.field_19C = var_1;
+                player.field_19C = (byte)var_1;
             }
         }
 
 
-        internal static byte sub_3EF0D(byte arg_0)
+        internal static int sub_3EF0D(int movesleft)
         {
             if ((gbl.combat_round & 1) == 1)
             {
-                arg_0++;
+                movesleft++;
             }
 
-            return (byte)(arg_0 / 2);
+            return movesleft / 2;
         }
 
 
-        internal static bool sub_3EF3D(Player target, Player attacker)
+        internal static bool TrySweepAttack(Player target, Player attacker) // sub_3EF3D
         {
-            bool var_1 = false;
-
             if (attacker.field_19C < attacker.actions.field_5 &&
                 target.HitDice == 0 &&
                 ovr025.getTargetRange(target, attacker) == 1)
             {
-                int near_count = ovr025.BuildNearTargets(1, attacker);
-                byte var_3 = 0;
+                var nearTargets = ovr025.BuildNearTargets(1, attacker);
 
-                int var_5 = 0xff;
+                var targetepi = nearTargets.Find(epi => epi.player == target);
+                int sweapableCount = nearTargets.FindAll(epi => epi.player.HitDice == 0).Count;
 
-                for (int i = 1; i <= near_count; i++)
+                if (sweapableCount > attacker.field_19C)
                 {
-                    Player near_target = gbl.player_array[gbl.near_targets[i]];
-
-                    if (near_target == target)
+                    if (sweapableCount > attacker.actions.field_5)
                     {
-                        var_5 = i;
-                    }
-
-                    if (near_target.HitDice == 0)
-                    {
-                        var_3++;
-                    }
-                }
-
-                if (var_3 > attacker.field_19C)
-                {
-                    if (var_3 > attacker.actions.field_5)
-                    {
-                        var_3 = attacker.actions.field_5;
+                        sweapableCount = attacker.actions.field_5;
                     }
 
                     ovr025.DisplayPlayerStatusString(true, 10, "sweeps", attacker);
 
-                    Player near_target = gbl.player_array[gbl.near_targets[1]];
+                    nearTargets.Remove(targetepi);
+                    nearTargets.Insert(0, targetepi);
 
-                    if (near_target != target)
+                    foreach (var sweapepi in nearTargets.FindAll(e => e.player.hitBonus == 0).GetRange(0, sweapableCount))
                     {
-                        gbl.near_targets[var_5] = gbl.near_targets[1];
-                        gbl.near_targets[1] = ovr033.GetPlayerIndex(target);
+                        var sweaptarget = sweapepi.player;
+                        sub_3F94D(sweaptarget, attacker);
+
+                        attacker.field_19C = 1;
+
+                        bool dummyBool;
+                        sub_3F9DB(out dummyBool, null, 0, sweaptarget, attacker);
                     }
-
-
-                    for (int var_4 = 1; var_4 <= near_count; var_4++)
-                    {
-                        if (var_3 > 0 &&
-                            gbl.player_array[gbl.near_targets[var_4]].HitDice == 0)
-                        {
-                            near_target = gbl.player_array[gbl.near_targets[var_4]];
-
-                            sub_3F94D(near_target, attacker);
-
-                            attacker.field_19C = 1;
-
-                            bool dummyBool;
-                            sub_3F9DB(out dummyBool, null, 0, near_target, attacker);
-                            var_3--;
-                        }
-                    }
-                    var_1 = true;
+                    
+                    return true;
                 }
             }
 
-            return var_1;
+            return false;
         }
 
 
@@ -747,12 +696,13 @@ namespace engine
             output = null;
 
             byte var_4 = 13;
-            int near_count = ovr025.BuildNearTargets(0xff, player);
+
+            var nearTargets = ovr025.BuildNearTargets(0xff, player);
             bool result = false;
 
-            for (int i = 1; i <= near_count; i++)
+            foreach(var epi in nearTargets)
             {
-                Player target = gbl.player_array[gbl.near_targets[i]];
+                Player target = epi.player;
 
                 if (target.actions.fleeing == false &&
                     target.field_E9 > 0 &&
@@ -809,12 +759,12 @@ namespace engine
                 if (attacker.field_151 != null && 
                     (target.field_DE > 0x80 || (target.field_DE & 7) > 1))
                 {
-                    Struct_1C020 var_10 = gbl.unk_1C020[attacker.field_151.type];
+                    ItemData itemData = gbl.ItemDataTable[attacker.field_151.type];
 
-                    attacker.attack_dice_count = var_10.diceCount;
-                    attacker.attack_dice_size = var_10.diceSize;
-                    attacker.damageBonus -= var_10.field_B;
-                    attacker.damageBonus += var_10.field_4;
+                    attacker.attack_dice_count = itemData.diceCount;
+                    attacker.attack_dice_size = itemData.diceSize;
+                    attacker.damageBonus -= itemData.field_B;
+                    attacker.damageBonus += itemData.field_4;
                 }
 
                 ovr025.reclac_player_values(target);
@@ -843,7 +793,7 @@ namespace engine
                     }
                 }
 
-                ranged_defence_bonus(ref target_ac, target, attacker);
+                target_ac += RangedDefenseBonus(target, attacker);
                 AttackType attack_type = AttackType.Normal;
                 if (var_13 != 0)
                 {
@@ -909,7 +859,7 @@ namespace engine
 
                 if (item != null && 
                     item.count == 0 && 
-                    item.type == 0x64)
+                    item.type == 100)
                 {
                     attacker.field_19C = 0;
                     attacker.field_19D = 0;
@@ -1006,8 +956,8 @@ namespace engine
             }
 
             if (attacker.field_151 != null && /* added to get passed this point when null, why null, should 151 ever be null? */
-                (attacker.field_151.type == 0x2f ||
-                attacker.field_151.type == 0x65))
+                (attacker.field_151.type == 47 || // ItemType.Sling
+                attacker.field_151.type == 101)) 
             {
                 sub_40BF1(attacker.field_151, target, attacker);
             }
@@ -1068,31 +1018,35 @@ namespace engine
         }
 
 
-        internal static void ranged_defence_bonus(ref int target_ac, Player target, Player attacker) /* sub_3FCED */
+        internal static int RangedDefenseBonus(Player target, Player attacker) /* sub_3FCED */
         {
-            int weapon_range;
+            int oneThirdRange;
             int range = ovr025.getTargetRange(target, attacker);
 
             if (ovr025.is_weapon_ranged(attacker) == true)
             {
-                weapon_range = (gbl.unk_1C020[attacker.field_151.type].field_C - 1) / 3;
+                oneThirdRange = (gbl.ItemDataTable[attacker.field_151.type].range - 1) / 3;
             }
             else
             {
-                weapon_range = range;
+                oneThirdRange = range;
             }
 
-            if (range > weapon_range)
+            int acAdjustment = 0;
+
+            if (range > oneThirdRange)
             {
-                range -= weapon_range;
-                target_ac += 2;
+                range -= oneThirdRange;
+                acAdjustment += 2;
             }
 
-            if (range > weapon_range)
+            if (range > oneThirdRange)
             {
-                range -= weapon_range;
-                target_ac += 3;
+                range -= oneThirdRange;
+                acAdjustment += 3;
             }
+
+            return acAdjustment;
         }
 
         internal static bool find_healing_target(out Player target, Player healer) /* sub_3FDFE */
@@ -1493,22 +1447,24 @@ namespace engine
         {
             Item weapon = attacker.field_151;
 
-            bool var_B = false;
+            bool correctWeapon = false;
 
             if (attacker.thief_lvl > 0 ||
                 (attacker.field_117 > 0 && ovr026.sub_6B3D1(attacker) != 0))
             {
                 if (weapon == null ||
-                    weapon.type == 0x61 ||
-                    weapon.type == 7 ||
-                    weapon.type == 8 ||
-                    (weapon.type > 0x22 && weapon.type < 0x26))
+                    weapon.type == 97 ||
+                    weapon.type == 7 || // ItemType.Club
+                    weapon.type == 8 || // ItemType.Dagger
+                    weapon.type == 35 || // ItemType.BroadSword
+                    weapon.type == 36 || // ItemType.LongSword
+                    weapon.type == 37) // ItemType.ShortSword
                 {
-                    var_B = true;
+                    correctWeapon = true;
                 }
             }
 
-            if (var_B == true &&
+            if (correctWeapon == true &&
                 target.actions.field_F > 1 &&
                 (target.field_DE & 0x7F) <= 1 &&
                 getTargetDirection(target, attacker) == target.actions.direction)
@@ -1664,12 +1620,12 @@ namespace engine
 
             switch (item.type)
             {
-                case 9:
-                case 0x15:
-                case 0x64:
-                case 0x1C:
-                case 0x1F:
-                case 0x49:
+                case 9: // ItemType.Dart
+                case 21: // ItemType.Javelin
+                case 100:
+                case 28: // ItemType.Quarrel
+                case 31: // ItemType.Spear
+                case 73: // ItemType.Arrow
                     if ((dir & 1) == 1)
                     {
                         if (dir == 3 || dir == 5)
@@ -1688,34 +1644,32 @@ namespace engine
                     seg044.sound_sub_120E0(Sound.sound_c);
                     break;
 
-                case 2:
-                case 7:
-                case 14:
+                case 2: // ItemType.HandAxe
+                case 7: // ItemType.Club
+                case 14: // ItemType.Glaive
                     ovr025.load_missile_icons(var_1 + 3);
                     frame_count = 4;
                     delay = 50;
                     seg044.sound_sub_120E0(Sound.sound_9);
                     break;
 
-
-                case 0x55:
-                case 0x56:
+                case 85:
+                case 86:
                     ovr025.load_missile_icons(var_1 + 4);
                     frame_count = 4;
                     delay = 50;
                     seg044.sound_sub_120E0(Sound.sound_6);
                     break;
 
-                case 0x65:
-                case 0x2F:
-                case 0x62:
+                case 101:
+                case 47: // ItemType.Sling
+                case 98:
                     var_1++;
                     ovr025.load_missile_dax(false, 0, 0, var_1 + 7);
                     ovr025.load_missile_dax(false, 1, 1, var_1 + 7);
                     frame_count = 2;
                     delay = 10;
                     seg044.sound_sub_120E0(Sound.sound_6);
-
                     break;
 
                 default:
@@ -1847,7 +1801,7 @@ namespace engine
                     {
                         Item dummyItem;
                         if (ovr025.sub_6906C(out dummyItem, attacker) == true &&
-                            (ovr025.BuildNearTargets(1, attacker) == 0 || ovr025.is_weapon_ranged_melee(attacker) == true))
+                            (ovr025.BuildNearTargets(1, attacker).Count == 0 || ovr025.is_weapon_ranged_melee(attacker) == true))
                         {
                             text = "Target ";
                         }
@@ -1887,7 +1841,7 @@ namespace engine
 
                 if (arg_8 == 1)
                 {
-                    if (sub_3EF3D(target, attacker) == true)
+                    if (TrySweepAttack(target, attacker) == true)
                     {
                         arg_4 = true;
                         ovr025.clear_actions(attacker);
@@ -2019,7 +1973,7 @@ namespace engine
                         }
                         else if (ovr025.is_weapon_ranged(player01) == true &&
                              (ovr025.sub_6906C(out dummyItem, player01) == true ||
-                             (ovr025.BuildNearTargets(1, player01) >= 0 &&
+                             (ovr025.BuildNearTargets(1, player01).Count >= 0 &&
                                 ovr025.is_weapon_ranged_melee(player01) == false)))
                         {
                             can_target = false;
@@ -2204,7 +2158,7 @@ namespace engine
             {
                 if (attacker.field_151 != null)
                 {
-                    maxRange = (byte)(gbl.unk_1C020[attacker.field_151.type].field_C - 1);
+                    maxRange = gbl.ItemDataTable[attacker.field_151.type].range - 1;
                 }
                 else
                 {
@@ -2336,45 +2290,26 @@ namespace engine
                     gbl.mapToBackGroundTile.field_6 = true;
                 }
 
-                int var_3 = 20;
-                int var_2 = ovr025.BuildNearTargets(max_range, player);
+                int tryCount = 20;
+                var nearTargets = ovr025.BuildNearTargets(max_range, player);
 
-                while (var_3 > 0 && target_found == false && var_2 > 0)
+                while (tryCount > 0 && target_found == false && nearTargets.Count > 0)
                 {
-                    var_3--;
-                    int roll = ovr024.roll_dice(var_2, 1);
+                    tryCount--;
+                    int roll = ovr024.roll_dice(nearTargets.Count, 1);
 
-                    if (gbl.near_targets[roll] > 0)
+                    var epi = nearTargets[roll - 1];
+                    target = epi.player;
+
+                    if ((arg_2 != 0 && gbl.mapToBackGroundTile.field_6 == true) ||
+                        CanSeeTargetA(target, player) == true)
                     {
-                        target = gbl.player_array[gbl.near_targets[roll]];
-
-                        if ((arg_2 != 0 && gbl.mapToBackGroundTile.field_6 == true) ||
-                            CanSeeTargetA(target, player) == true)
-                        {
-                            target_found = true;
-                            player.actions.target = target;
-                        }
-                        else
-                        {
-                            gbl.near_targets[roll] = 0;
-                            
-                            for (int i = 1; i <= var_2; i++)
-                            {
-                                if (gbl.near_targets[i] > 0)
-                                {
-                                    target_found = true;
-                                }
-                            }
-
-                            if (target_found == true)
-                            {
-                                target_found = false;
-                            }
-                            else
-                            {
-                                var_2 = 0;
-                            }
-                        }
+                        target_found = true;
+                        player.actions.target = target;
+                    }
+                    else
+                    {
+                        nearTargets.Remove(epi);
                     }
                 }
 

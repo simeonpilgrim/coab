@@ -188,23 +188,8 @@ namespace engine
                 return 0;
             }
 
-            if (mapX > 15)
-            {
-                mapX = 0;
-            }
-            else if (mapX < 0)
-            {
-                mapX = 0x0F;
-            }
-
-            if (mapY > 15)
-            {
-                mapY = 0;
-            }
-            else if (mapY < 0)
-            {
-                mapY = 0x0F;
-            }
+            mapX = Sys.WrapMinMax(mapX, 0, 15);
+            mapY = Sys.WrapMinMax(mapY, 0, 15);
 
             MapInfo mi = gbl.stru_1D530.maps[mapY, mapX];
             byte var_1 = 1;

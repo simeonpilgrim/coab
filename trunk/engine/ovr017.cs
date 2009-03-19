@@ -249,7 +249,7 @@ namespace engine
             seg042.delete_file(full_path + ".fx");
         }
 
-        internal static void sub_47DFC(string arg_0, Player player)
+        internal static void SavePlayer(string arg_0, Player player) // sub_47DFC
         {
             char input_key;
             File file = new File();
@@ -1615,7 +1615,7 @@ namespace engine
                     foreach (Player tmp_player in gbl.player_next_ptr)
                     {
                         party_count++;
-                        sub_47DFC("CHRDAT" + inputKey + party_count.ToString(), tmp_player);
+                        SavePlayer("CHRDAT" + inputKey + party_count.ToString(), tmp_player);
                         remove_player_file(tmp_player);
                     }
 

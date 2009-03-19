@@ -223,7 +223,7 @@ namespace engine
                             {
                                 if (gbl.player_ptr.field_F7 < 0x80)
                                 {
-                                    ovr017.sub_47DFC(string.Empty, gbl.player_ptr);
+                                    ovr017.SavePlayer(string.Empty, gbl.player_ptr);
                                     FreeCurrentPlayer(true, false);
                                 }
                                 else
@@ -433,23 +433,21 @@ namespace engine
             byte var_14;
             int index;
             MenuItem var_10;
-            Player var_8;
 
             Player player = new Player();
 
-            Player var_53 = player;
             for (int i = 0; i < 6; i++)
             {
-                var_53.icon_colours[i] = (byte)(((gbl.default_icon_colours[i] + 8) << 4) + gbl.default_icon_colours[i]);
+                player.icon_colours[i] = (byte)(((gbl.default_icon_colours[i] + 8) << 4) + gbl.default_icon_colours[i]);
             }
 
-            var_53.field_124 = 50;
-            var_53.thac0 = 40;
-            var_53.health_status = Status.okey;
-            var_53.in_combat = true;
-            var_53.field_DE = 1;
-            var_53.mod_id = (byte)seg051.Random(256);
-            var_53.icon_id = 0x0A;
+            player.field_124 = 50;
+            player.thac0 = 40;
+            player.health_status = Status.okey;
+            player.in_combat = true;
+            player.field_DE = 1;
+            player.mod_id = (byte)seg051.Random(256);
+            player.icon_id = 0x0A;
 
             List<MenuItem> var_C = new List<MenuItem>();
             var_C.Add(new MenuItem("Pick Race", true));
@@ -473,10 +471,8 @@ namespace engine
                 if (input_key == '\0')
                 {
                     var_C.Clear();
-                    player = null;
                     return;
                 }
-
             } while (input_key != 'S');
 
             if (index == 6)
@@ -484,25 +480,24 @@ namespace engine
                 index++;
             }
 
-            var_53 = player;
-            var_53.race = (Race)index;
+            player.race = (Race)index;
 
-            switch (var_53.race)
+            switch (player.race)
             {
                 case Race.halfling:
-                    var_53.icon_size = 1;
+                    player.icon_size = 1;
                     ovr024.add_affect(false, 0xff, 0, Affects.con_saving_bonus, player);
                     break;
 
                 case Race.dwarf:
-                    var_53.icon_size = 1;
+                    player.icon_size = 1;
                     ovr024.add_affect(false, 0xff, 0, Affects.con_saving_bonus, player);
                     ovr024.add_affect(false, 0xff, 0, Affects.dwarf_vs_orc, player);
                     ovr024.add_affect(false, 0xff, 0, Affects.dwarf_and_gnome_vs_giants, player);
                     break;
 
                 case Race.gnome:
-                    var_53.icon_size = 1;
+                    player.icon_size = 1;
                     ovr024.add_affect(false, 0xff, 0, Affects.con_saving_bonus, player);
                     ovr024.add_affect(false, 0xff, 0, Affects.affect_12, player);
                     ovr024.add_affect(false, 0xff, 0, Affects.dwarf_and_gnome_vs_giants, player);
@@ -510,18 +505,18 @@ namespace engine
                     break;
 
                 case Race.elf:
-                    var_53.icon_size = 2;
+                    player.icon_size = 2;
                     ovr024.add_affect(false, 0xff, 0, Affects.affect_6b, player);
 
                     break;
 
                 case Race.half_elf:
-                    var_53.icon_size = 2;
+                    player.icon_size = 2;
                     ovr024.add_affect(false, 0xff, 0, Affects.halfelf_resistance, player);
                     break;
 
                 default:
-                    var_53.icon_size = 2;
+                    player.icon_size = 2;
                     break;
             }
 
@@ -581,108 +576,107 @@ namespace engine
                 }
             } while (input_key != 'S');
 
-            var_53 = player;
-            var_53.exp = 25000;
-            var_53._class = (ClassId)gbl.race_classes[(int)var_53.race, index];
-            var_53.HitDice = 1;
+            player.exp = 25000;
+            player._class = (ClassId)gbl.race_classes[(int)player.race, index];
+            player.HitDice = 1;
 
-            if (var_53._class >= ClassId.cleric && var_53._class <= ClassId.fighter)
+            if (player._class >= ClassId.cleric && player._class <= ClassId.fighter)
             {
-                var_53.class_lvls[(int)var_53._class] = 1;
+                player.class_lvls[(int)player._class] = 1;
             }
-            else if (var_53._class >= ClassId.magic_user && var_53._class <= ClassId.monk)
+            else if (player._class >= ClassId.magic_user && player._class <= ClassId.monk)
             {
-                var_53.class_lvls[(int)var_53._class] = 1;
+                player.class_lvls[(int)player._class] = 1;
             }
-            else if (var_53._class == ClassId.paladin)
+            else if (player._class == ClassId.paladin)
             {
                 player.paladinCuresLeft = 1;
-                var_53.paladin_lvl = 1;
+                player.paladin_lvl = 1;
                 ovr024.add_affect(false, 0xff, 0, Affects.protection_from_evil, player);
             }
-            else if (var_53._class == ClassId.ranger)
+            else if (player._class == ClassId.ranger)
             {
-                var_53.ranger_lvl = 1;
+                player.ranger_lvl = 1;
                 ovr024.add_affect(false, 0xff, 0, Affects.range_vs_giant, player);
             }
-            else if (var_53._class == ClassId.mc_c_f)
+            else if (player._class == ClassId.mc_c_f)
             {
-                var_53.cleric_lvl = 1;
-                var_53.fighter_lvl = 1;
-                var_53.exp = 12500;
+                player.cleric_lvl = 1;
+                player.fighter_lvl = 1;
+                player.exp = 12500;
             }
-            else if (var_53._class == ClassId.mc_c_f_m)
+            else if (player._class == ClassId.mc_c_f_m)
             {
-                var_53.cleric_lvl = 1;
-                var_53.fighter_lvl = 1;
-                var_53.magic_user_lvl = 1;
-                var_53.exp = 8333;
+                player.cleric_lvl = 1;
+                player.fighter_lvl = 1;
+                player.magic_user_lvl = 1;
+                player.exp = 8333;
             }
-            else if (var_53._class == ClassId.mc_c_r)
+            else if (player._class == ClassId.mc_c_r)
             {
-                var_53.cleric_lvl = 1;
-                var_53.ranger_lvl = 1;
+                player.cleric_lvl = 1;
+                player.ranger_lvl = 1;
                 ovr024.add_affect(false, 0xff, 0, Affects.range_vs_giant, player);
-                var_53.exp = 12500;
+                player.exp = 12500;
             }
-            else if (var_53._class == ClassId.mc_c_mu)
+            else if (player._class == ClassId.mc_c_mu)
             {
-                var_53.cleric_lvl = 1;
-                var_53.magic_user_lvl = 1;
-                var_53.exp = 12500;
+                player.cleric_lvl = 1;
+                player.magic_user_lvl = 1;
+                player.exp = 12500;
             }
-            else if (var_53._class == ClassId.mc_c_t)
+            else if (player._class == ClassId.mc_c_t)
             {
-                var_53.cleric_lvl = 1;
-                var_53.thief_lvl = 1;
-                var_53.exp = 12500;
+                player.cleric_lvl = 1;
+                player.thief_lvl = 1;
+                player.exp = 12500;
             }
-            else if (var_53._class == ClassId.mc_f_mu)
+            else if (player._class == ClassId.mc_f_mu)
             {
-                var_53.fighter_lvl = 1;
-                var_53.magic_user_lvl = 1;
-                var_53.exp = 12500;
+                player.fighter_lvl = 1;
+                player.magic_user_lvl = 1;
+                player.exp = 12500;
             }
-            else if (var_53._class == ClassId.mc_f_t)
+            else if (player._class == ClassId.mc_f_t)
             {
-                var_53.fighter_lvl = 1;
-                var_53.thief_lvl = 1;
-                var_53.exp = 12500;
+                player.fighter_lvl = 1;
+                player.thief_lvl = 1;
+                player.exp = 12500;
             }
-            else if (var_53._class == ClassId.mc_f_mu_t)
+            else if (player._class == ClassId.mc_f_mu_t)
             {
-                var_53.fighter_lvl = 1;
-                var_53.magic_user_lvl = 1;
-                var_53.thief_lvl = 1;
-                var_53.exp = 8333;
+                player.fighter_lvl = 1;
+                player.magic_user_lvl = 1;
+                player.thief_lvl = 1;
+                player.exp = 8333;
             }
-            else if (var_53._class == ClassId.mc_mu_t)
+            else if (player._class == ClassId.mc_mu_t)
             {
-                var_53.magic_user_lvl = 1;
-                var_53.thief_lvl = 1;
-                var_53.exp = 8333;
+                player.magic_user_lvl = 1;
+                player.thief_lvl = 1;
+                player.exp = 8333;
             }
 
-            if (var_53.thief_lvl > 0)
+            if (player.thief_lvl > 0)
             {
                 ovr026.sub_6AAEA(player);
             }
 
-            var_53.classFlags = 0;
-            var_53.thac0 = 0;
+            player.classFlags = 0;
+            player.thac0 = 0;
 
             for (int class_idx = 0; class_idx <= 7; class_idx++)
             {
-                if (var_53.class_lvls[class_idx] > 0)
+                if (player.class_lvls[class_idx] > 0)
                 {
-                    int skill_lvl = var_53.class_lvls[class_idx];
+                    int skill_lvl = player.class_lvls[class_idx];
 
-                    if (thac0_table[class_idx, skill_lvl] > var_53.thac0)
+                    if (thac0_table[class_idx, skill_lvl] > player.thac0)
                     {
-                        var_53.thac0 = thac0_table[class_idx, skill_lvl];
+                        player.thac0 = thac0_table[class_idx, skill_lvl];
                     }
 
-                    var_53.classFlags += unk_1A1B2[class_idx];
+                    player.classFlags += unk_1A1B2[class_idx];
                 }
             }
 
@@ -723,56 +717,36 @@ namespace engine
 
             if (player._class <= ClassId.monk)
             {
-                SubStruct_1A35E v5 = gbl.unk_1A35E[(int)player.race][player._class];
+                SubStruct_1A35E v5 = gbl.race_ages[(int)player.race][player._class];
 
-                player.age = (short)(ovr024.roll_dice(v5.field_3, v5.field_2) + v5.field_0);
+                player.age = (short)(ovr024.roll_dice(v5.dice_size, v5.dice_count) + v5.base_age);
             }
             else
             {
-                var_53 = player;
-                int race = (int)var_53.race;
+                int race = (int)player.race;
 
-                switch (var_53._class)
+                switch (player._class)
                 {
                     case ClassId.mc_c_f:
-                        var_53.age = (short)(gbl.unk_1A35E[race][0].field_0 + (gbl.unk_1A35E[race][0].field_2 * gbl.unk_1A35E[race][0].field_3));
-                        break;
-
                     case ClassId.mc_c_f_m:
-                        var_53.age = (short)(gbl.unk_1A35E[race][0].field_0 + (gbl.unk_1A35E[race][0].field_2 * gbl.unk_1A35E[race][0].field_3));
-                        break;
-
-                    case ClassId.mc_c_mu:
-                        var_53.age = (short)(gbl.unk_1A35E[race][0].field_0 + (gbl.unk_1A35E[race][0].field_2 * gbl.unk_1A35E[race][0].field_3));
-                        break;
-
                     case ClassId.mc_c_t:
-                        var_53.age = (short)(gbl.unk_1A35E[race][0].field_0 + (gbl.unk_1A35E[race][0].field_2 * gbl.unk_1A35E[race][0].field_3));
+                    case ClassId.mc_c_r:
+                        player.age = (short)(gbl.race_ages[race][0].base_age + (gbl.race_ages[race][0].dice_count * gbl.race_ages[race][0].dice_size));
                         break;
 
                     case ClassId.mc_f_mu:
-                        var_53.age = (short)(gbl.unk_1A35E[race][6].field_0 + (gbl.unk_1A35E[race][6].field_2 * gbl.unk_1A35E[race][6].field_3));
+                    case ClassId.mc_f_mu_t:
+                    case ClassId.mc_mu_t:
+                        player.age = (short)(gbl.race_ages[race][6].base_age + (gbl.race_ages[race][6].dice_count * gbl.race_ages[race][6].dice_size));
                         break;
 
                     case ClassId.mc_f_t:
-                        var_53.age = (short)(gbl.unk_1A35E[race][2].field_0 + (gbl.unk_1A35E[race][2].field_2 * gbl.unk_1A35E[race][2].field_3));
-                        break;
-
-                    case ClassId.mc_f_mu_t:
-                        var_53.age = (short)(gbl.unk_1A35E[race][6].field_0 + (gbl.unk_1A35E[race][6].field_2 * gbl.unk_1A35E[race][6].field_3));
-                        break;
-
-                    case ClassId.mc_mu_t:
-                        var_53.age = (short)(gbl.unk_1A35E[race][6].field_0 + (gbl.unk_1A35E[race][6].field_2 * gbl.unk_1A35E[race][6].field_3));
-                        break;
-
-                    case ClassId.mc_c_r:
-                        var_53.age = (short)(gbl.unk_1A35E[race][0].field_0 + (gbl.unk_1A35E[race][0].field_2 * gbl.unk_1A35E[race][0].field_3));
+                        player.age = (short)(gbl.race_ages[race][2].base_age + (gbl.race_ages[race][2].dice_count * gbl.race_ages[race][2].dice_size));
                         break;
                 }
             }
 
-            var_8 = gbl.player_ptr;
+            Player gblPlayerPtrBkup = gbl.player_ptr;
             gbl.player_ptr = player;
             ovr020.playerDisplayFull();
 
@@ -854,61 +828,59 @@ namespace engine
                         }
                     }
 
-                    var_53 = player;
-
                     switch ((Stat)var_1B)
                     {
                         case Stat.STR:
-                            if (var_53.stats[var_1B].max > 0 &&
-                                race_age_brackets[var_53.race].age_0 < var_53.age)
+                            if (player.stats[var_1B].max > 0 &&
+                                race_age_brackets[player.race].age_0 < player.age)
                             {
-                                var_53.stats[var_1B].max += 1;
+                                player.stats[var_1B].max += 1;
                             }
 
-                            if (var_53.stats[var_1B].max > 0 &&
-                                race_age_brackets[var_53.race].age_1 < var_53.age)
+                            if (player.stats[var_1B].max > 0 &&
+                                race_age_brackets[player.race].age_1 < player.age)
                             {
-                                var_53.stats[var_1B].max -= 1;
+                                player.stats[var_1B].max -= 1;
                             }
 
-                            if (var_53.stats[var_1B].max > 0 &&
-                                race_age_brackets[var_53.race].age_2 < var_53.age)
+                            if (player.stats[var_1B].max > 0 &&
+                                race_age_brackets[player.race].age_2 < player.age)
                             {
-                                var_53.stats[var_1B].max -= 2;
+                                player.stats[var_1B].max -= 2;
                             }
 
-                            if (var_53.stats[var_1B].max > 0 &&
-                                race_age_brackets[var_53.race].age_3 < var_53.age)
+                            if (player.stats[var_1B].max > 0 &&
+                                race_age_brackets[player.race].age_3 < player.age)
                             {
-                                var_53.stats[var_1B].max -= 1;
+                                player.stats[var_1B].max -= 1;
                             }
 
-                            if (var_53.stats[var_1B].max < racial_stats_limits[(int)var_53.race].str_min[var_53.sex])
+                            if (player.stats[var_1B].max < racial_stats_limits[(int)player.race].str_min[player.sex])
                             {
-                                var_53.stats[var_1B].max = racial_stats_limits[(int)var_53.race].str_min[var_53.sex];
+                                player.stats[var_1B].max = racial_stats_limits[(int)player.race].str_min[player.sex];
                             }
 
-                            if (var_53.stats[var_1B].max > racial_stats_limits[(int)var_53.race].str_max[var_53.sex])
+                            if (player.stats[var_1B].max > racial_stats_limits[(int)player.race].str_max[player.sex])
                             {
-                                var_53.stats[var_1B].max = racial_stats_limits[(int)var_53.race].str_max[var_53.sex];
+                                player.stats[var_1B].max = racial_stats_limits[(int)player.race].str_max[player.sex];
                             }
 
-                            if (var_53.stats[var_1B].max < gbl.class_stats_min[(int)var_53._class][var_1B])
+                            if (player.stats[var_1B].max < gbl.class_stats_min[(int)player._class][var_1B])
                             {
-                                var_53.stats[var_1B].max = gbl.class_stats_min[(int)var_53._class][var_1B];
+                                player.stats[var_1B].max = gbl.class_stats_min[(int)player._class][var_1B];
                             }
 
-                            if (var_53.strength == 18)
+                            if (player.strength == 18)
                             {
-                                if (var_53.fighter_lvl > 0 ||
-                                    var_53.ranger_lvl > 0 ||
-                                    var_53.paladin_lvl > 0)
+                                if (player.fighter_lvl > 0 ||
+                                    player.ranger_lvl > 0 ||
+                                    player.paladin_lvl > 0)
                                 {
-                                    var_53.tmp_str_00 = (byte)(seg051.Random(100) + 1);
+                                    player.tmp_str_00 = (byte)(seg051.Random(100) + 1);
 
-                                    if (var_53.tmp_str_00 > racial_stats_limits[(int)var_53.race].str_100_max[var_53.sex])
+                                    if (player.tmp_str_00 > racial_stats_limits[(int)player.race].str_100_max[player.sex])
                                     {
-                                        var_53.tmp_str_00 = racial_stats_limits[(int)var_53.race].str_100_max[var_53.sex];
+                                        player.tmp_str_00 = racial_stats_limits[(int)player.race].str_100_max[player.sex];
                                     }
                                 }
                             }
@@ -916,184 +888,182 @@ namespace engine
 
                         case Stat.INT:
 
-                            if (race_age_brackets[var_53.race].age_1 < var_53.age)
+                            if (race_age_brackets[player.race].age_1 < player.age)
                             {
-                                var_53.stats[var_1B].max += 1;
+                                player.stats[var_1B].max += 1;
                             }
 
-                            if (race_age_brackets[var_53.race].age_3 < var_53.age)
+                            if (race_age_brackets[player.race].age_3 < player.age)
                             {
-                                var_53.stats[var_1B].max += 1;
+                                player.stats[var_1B].max += 1;
                             }
 
-                            if (var_53.stats[var_1B].max < racial_stats_limits[(int)var_53.race].int_min)
+                            if (player.stats[var_1B].max < racial_stats_limits[(int)player.race].int_min)
                             {
-                                var_53.stats[var_1B].max = racial_stats_limits[(int)var_53.race].int_min;
+                                player.stats[var_1B].max = racial_stats_limits[(int)player.race].int_min;
                             }
 
-                            if (var_53.stats[var_1B].max > racial_stats_limits[(int)var_53.race].int_max)
+                            if (player.stats[var_1B].max > racial_stats_limits[(int)player.race].int_max)
                             {
-                                var_53.stats[var_1B].max = racial_stats_limits[(int)var_53.race].int_max;
+                                player.stats[var_1B].max = racial_stats_limits[(int)player.race].int_max;
                             }
 
-                            if (var_53.stats[var_1B].max < gbl.class_stats_min[(int)var_53._class][var_1B])
+                            if (player.stats[var_1B].max < gbl.class_stats_min[(int)player._class][var_1B])
                             {
-                                var_53.stats[var_1B].max = gbl.class_stats_min[(int)var_53._class][var_1B];
+                                player.stats[var_1B].max = gbl.class_stats_min[(int)player._class][var_1B];
                             }
                             break;
 
                         case Stat.WIS:
-                            if (race_age_brackets[var_53.race].age_0 >= var_53.age)
+                            if (race_age_brackets[player.race].age_0 >= player.age)
                             {
-                                var_53.stats[var_1B].max -= 1;
+                                player.stats[var_1B].max -= 1;
                             }
 
-                            if (race_age_brackets[var_53.race].age_1 < var_53.age)
+                            if (race_age_brackets[player.race].age_1 < player.age)
                             {
-                                var_53.stats[var_1B].max += 1;
+                                player.stats[var_1B].max += 1;
                             }
 
-                            if (race_age_brackets[var_53.race].age_2 < var_53.age)
+                            if (race_age_brackets[player.race].age_2 < player.age)
                             {
-                                var_53.stats[var_1B].max += 1;
+                                player.stats[var_1B].max += 1;
                             }
 
-                            if (race_age_brackets[var_53.race].age_3 < var_53.age)
+                            if (race_age_brackets[player.race].age_3 < player.age)
                             {
-                                var_53.stats[var_1B].max += 1;
+                                player.stats[var_1B].max += 1;
                             }
 
-                            if (var_53.stats[var_1B].max < racial_stats_limits[(int)var_53.race].wis_min)
+                            if (player.stats[var_1B].max < racial_stats_limits[(int)player.race].wis_min)
                             {
-                                var_53.stats[var_1B].max = racial_stats_limits[(int)var_53.race].wis_min;
+                                player.stats[var_1B].max = racial_stats_limits[(int)player.race].wis_min;
                             }
 
-                            if (var_53.stats[var_1B].max > racial_stats_limits[(int)var_53.race].wis_max)
+                            if (player.stats[var_1B].max > racial_stats_limits[(int)player.race].wis_max)
                             {
-                                var_53.stats[var_1B].max = racial_stats_limits[(int)var_53.race].wis_max;
+                                player.stats[var_1B].max = racial_stats_limits[(int)player.race].wis_max;
                             }
 
-                            if (var_53.stats[var_1B].max < gbl.class_stats_min[(int)var_53._class][var_1B])
+                            if (player.stats[var_1B].max < gbl.class_stats_min[(int)player._class][var_1B])
                             {
-                                var_53.stats[var_1B].max = gbl.class_stats_min[(int)var_53._class][var_1B];
+                                player.stats[var_1B].max = gbl.class_stats_min[(int)player._class][var_1B];
                             }
 
-                            if (var_53.stats[var_1B].max < 13 &&
-                                var_53._class >= ClassId.mc_c_f && var_53._class <= ClassId.mc_c_t)
+                            if (player.stats[var_1B].max < 13 &&
+                                player._class >= ClassId.mc_c_f && player._class <= ClassId.mc_c_t)
                             {
                                 // Multi-Class Cleric
-                                var_53.stats[var_1B].max = 13;
+                                player.stats[var_1B].max = 13;
                             }
                             break;
 
                         case Stat.DEX:
-
-                            if (race_age_brackets[var_53.race].age_2 < var_53.age)
+                            if (race_age_brackets[player.race].age_2 < player.age)
                             {
-                                var_53.stats[var_1B].max -= 2;
+                                player.stats[var_1B].max -= 2;
                             }
 
-                            if (race_age_brackets[var_53.race].age_3 < var_53.age)
+                            if (race_age_brackets[player.race].age_3 < player.age)
                             {
-                                var_53.stats[var_1B].max -= 2;
+                                player.stats[var_1B].max -= 2;
                             }
 
-                            if (var_53.stats[var_1B].max < racial_stats_limits[(int)var_53.race].dex_min)
+                            if (player.stats[var_1B].max < racial_stats_limits[(int)player.race].dex_min)
                             {
-                                var_53.stats[var_1B].max = racial_stats_limits[(int)var_53.race].dex_min;
+                                player.stats[var_1B].max = racial_stats_limits[(int)player.race].dex_min;
                             }
 
-                            if (var_53.stats[var_1B].max > racial_stats_limits[(int)var_53.race].dex_max)
+                            if (player.stats[var_1B].max > racial_stats_limits[(int)player.race].dex_max)
                             {
-                                var_53.stats[var_1B].max = racial_stats_limits[(int)var_53.race].dex_max;
+                                player.stats[var_1B].max = racial_stats_limits[(int)player.race].dex_max;
                             }
 
-                            if (var_53.stats[var_1B].max < gbl.class_stats_min[(int)var_53._class][var_1B])
+                            if (player.stats[var_1B].max < gbl.class_stats_min[(int)player._class][var_1B])
                             {
-                                var_53.stats[var_1B].max = gbl.class_stats_min[(int)var_53._class][var_1B];
+                                player.stats[var_1B].max = gbl.class_stats_min[(int)player._class][var_1B];
                             }
                             break;
 
                         case Stat.CON:
-                            if (race_age_brackets[var_53.race].age_1 < var_53.age)
+                            if (race_age_brackets[player.race].age_1 < player.age)
                             {
-                                var_53.stats[var_1B].max -= 1;
+                                player.stats[var_1B].max -= 1;
                             }
 
-                            if (race_age_brackets[var_53.race].age_2 < var_53.age)
+                            if (race_age_brackets[player.race].age_2 < player.age)
                             {
-                                var_53.stats[var_1B].max -= 1;
+                                player.stats[var_1B].max -= 1;
                             }
 
-                            if (race_age_brackets[var_53.race].age_3 < var_53.age)
+                            if (race_age_brackets[player.race].age_3 < player.age)
                             {
-                                var_53.stats[var_1B].max -= 1;
+                                player.stats[var_1B].max -= 1;
                             }
 
-                            if (var_53.stats[var_1B].max < racial_stats_limits[(int)var_53.race].con_min)
+                            if (player.stats[var_1B].max < racial_stats_limits[(int)player.race].con_min)
                             {
-                                var_53.stats[var_1B].max = racial_stats_limits[(int)var_53.race].con_min;
+                                player.stats[var_1B].max = racial_stats_limits[(int)player.race].con_min;
                             }
 
-                            if (var_53.stats[var_1B].max > racial_stats_limits[(int)var_53.race].con_max)
+                            if (player.stats[var_1B].max > racial_stats_limits[(int)player.race].con_max)
                             {
-                                var_53.stats[var_1B].max = racial_stats_limits[(int)var_53.race].con_max;
+                                player.stats[var_1B].max = racial_stats_limits[(int)player.race].con_max;
                             }
 
-                            if (var_53.stats[var_1B].max < gbl.class_stats_min[(int)var_53._class][var_1B])
+                            if (player.stats[var_1B].max < gbl.class_stats_min[(int)player._class][var_1B])
                             {
-                                var_53.stats[var_1B].max = gbl.class_stats_min[(int)var_53._class][var_1B];
+                                player.stats[var_1B].max = gbl.class_stats_min[(int)player._class][var_1B];
                             }
                             break;
 
                         case Stat.CHA:
-                            if (var_53.stats[var_1B].max < racial_stats_limits[(int)var_53.race].cha_min)
+                            if (player.stats[var_1B].max < racial_stats_limits[(int)player.race].cha_min)
                             {
-                                var_53.stats[var_1B].max = racial_stats_limits[(int)var_53.race].cha_min;
+                                player.stats[var_1B].max = racial_stats_limits[(int)player.race].cha_min;
                             }
 
-                            if (var_53.stats[var_1B].max > racial_stats_limits[(int)var_53.race].cha_max)
+                            if (player.stats[var_1B].max > racial_stats_limits[(int)player.race].cha_max)
                             {
-                                var_53.stats[var_1B].max = racial_stats_limits[(int)var_53.race].cha_max;
+                                player.stats[var_1B].max = racial_stats_limits[(int)player.race].cha_max;
                             }
 
-                            if (var_53.stats[var_1B].max < gbl.class_stats_min[(int)var_53._class][var_1B])
+                            if (player.stats[var_1B].max < gbl.class_stats_min[(int)player._class][var_1B])
                             {
-                                var_53.stats[var_1B].max = gbl.class_stats_min[(int)var_53._class][var_1B];
+                                player.stats[var_1B].max = gbl.class_stats_min[(int)player._class][var_1B];
                             }
                             break;
                     }
 
                     ovr020.display_stat(false, var_1B);
                 }
-                var_53 = player;
-                var_53.hit_point_current = var_53.hit_point_max;
-                var_53.field_11C = 2;
-                var_53.field_11E = 1;
-                var_53.field_120 = 2;
-                var_53.field_125 = 1;
-                var_53.base_movement = 0x0C;
-                //int var_21 = 0;
+
+                player.hit_point_current = player.hit_point_max;
+                player.field_11C = 2;
+                player.field_11E = 1;
+                player.field_120 = 2;
+                player.field_125 = 1;
+                player.base_movement = 0x0C;
                 var_20 = 0;
 
                 for (int i = 0; i < 5; i++)
                 {
-                    var_53.field_12D[0, i] = 0;
-                    var_53.field_12D[1, i] = 0;
-                    var_53.field_12D[2, i] = 0;
+                    player.field_12D[0, i] = 0;
+                    player.field_12D[1, i] = 0;
+                    player.field_12D[2, i] = 0;
                 }
 
                 for (int class_idx = 0; class_idx <= 7; class_idx++)
                 {
-                    if (var_53.class_lvls[class_idx] > 0)
+                    if (player.class_lvls[class_idx] > 0)
                     {
                         if (class_idx == 0)
                         {
-                            var_53.field_12D[0, 0] = 1;
+                            player.field_12D[0, 0] = 1;
                         }
                         else if (class_idx == 5)
                         {
-                            var_53.field_12D[2, 0] = 1;
+                            player.field_12D[2, 0] = 1;
                         }
 
                         //var_21 += ovr024.roll_dice(unk_1A8C4[class_idx], unk_1A8C3[class_idx]);
@@ -1109,46 +1079,46 @@ namespace engine
 
                                 if (stru.spellClass == 0 && stru.spellLevel == 1)
                                 {
-                                    var_53.LearnSpell(spell);
+                                    player.LearnSpell(spell);
                                 }
                             }
                         }
                         else if (class_idx == 5)
                         {
-                            var_53.LearnSpell(Spells.spell_0b);
-                            var_53.LearnSpell(Spells.spell_12);
-                            var_53.LearnSpell(Spells.spell_0c);
-                            var_53.LearnSpell(Spells.spell_15);
+                            player.LearnSpell(Spells.spell_0b);
+                            player.LearnSpell(Spells.spell_12);
+                            player.LearnSpell(Spells.spell_0c);
+                            player.LearnSpell(Spells.spell_15);
                         }
 
                         var_20++;
                     }
                 }
 
-                var_53.platinum = 300;
-                var_53.field_12C = sub_509E0(0xff, player);
-                var_53.hit_point_max = var_53.field_12C;
+                player.platinum = 300;
+                player.field_12C = sub_509E0(0xff, player);
+                player.hit_point_max = player.field_12C;
 
                 var_1E = get_con_hp_adj(player);
 
                 if (var_1E < 0)
                 {
-                    if (var_53.hit_point_max > (System.Math.Abs(var_1E) + var_20))
+                    if (player.hit_point_max > (System.Math.Abs(var_1E) + var_20))
                     {
-                        var_53.hit_point_max = (byte)((var_53.hit_point_max + var_1E) / var_20);
+                        player.hit_point_max = (byte)((player.hit_point_max + var_1E) / var_20);
                     }
                     else
                     {
-                        var_53.hit_point_max = 1;
+                        player.hit_point_max = 1;
                     }
                 }
                 else
                 {
-                    var_53.hit_point_max = (byte)((var_53.hit_point_max + var_1E) / var_20);
+                    player.hit_point_max = (byte)((player.hit_point_max + var_1E) / var_20);
                 }
 
-                var_53.hit_point_current = var_53.hit_point_max;
-                var_53.field_12C = (byte)(var_53.field_12C / var_20);
+                player.hit_point_current = player.hit_point_max;
+                player.field_12C = (byte)(player.field_12C / var_20);
                 byte trainingClassMaskBackup = gbl.area2_ptr.training_class_mask;
 
                 ovr017.SilentTrainPlayer();
@@ -1206,14 +1176,14 @@ namespace engine
             if (input_key == 'N')
             {
                 seg051.FreeMem(Player.StructSize, player);
-                gbl.player_ptr = var_8;
+                gbl.player_ptr = gblPlayerPtrBkup;
             }
             else
             {
-                ovr017.sub_47DFC(string.Empty, player);
+                ovr017.SavePlayer(string.Empty, player);
 
                 seg051.FreeMem(Player.StructSize, player);
-                gbl.player_ptr = var_8;
+                gbl.player_ptr = gblPlayerPtrBkup;
             }
         }
 
@@ -1274,7 +1244,7 @@ namespace engine
                         ovr025.string_print01(player.name + " bids you farewell.");
                     }
 
-                    ovr017.remove_player_file(gbl.player_ptr);
+                    ovr017.remove_player_file(player);
                     FreeCurrentPlayer(true, false);
                 }
                 else
@@ -2033,18 +2003,17 @@ namespace engine
 
             if (recolour)
             {
-                Player var_28 = gbl.player_ptr;
-
                 for (byte i = 0; i < 16; i++)
                 {
                     oldColors[i] = i;
                     newColors[i] = i;
                 }
 
+                Player player = gbl.player_ptr;
                 for (byte i = 0; i < 6; i++)
                 {
-                    newColors[gbl.default_icon_colours[i]] = (byte)(var_28.icon_colours[i] & 0x0F);
-                    newColors[gbl.default_icon_colours[i] + 8] = (byte)((var_28.icon_colours[i] & 0xF0) >> 4);
+                    newColors[gbl.default_icon_colours[i]] = (byte)(player.icon_colours[i] & 0x0F);
+                    newColors[gbl.default_icon_colours[i] + 8] = (byte)((player.icon_colours[i] & 0xF0) >> 4);
                 }
 
                 seg040.DaxBlockRecolor(gbl.combat_icons[destIndex, 0], false, newColors, oldColors);
@@ -2064,10 +2033,9 @@ namespace engine
             byte color_index = 0;
             byte[] bkup_colours = new byte[6];
             byte var_8;
-            byte var_5;
-            byte var_4;
-            bool var_3;
-            char var_2;
+            byte weaponIcon;
+            byte headIcon;
+            char inputKey;
 
             string[] iconStrings = {   "", 
 									   "Parts 1st-color 2nd-color Size Exit", 
@@ -2093,8 +2061,8 @@ namespace engine
                 ovr017.LoadPlayerCombatIcon(false);
                 player_ptr.icon_id = bkup_icon_id;
 
-                var_4 = player_ptr.head_icon;
-                var_5 = player_ptr.weapon_icon;
+                headIcon = player_ptr.head_icon;
+                weaponIcon = player_ptr.weapon_icon;
                 byte bkup_size = player_ptr.icon_size;
 
                 duplicateCombatIcon(true, 12, player_ptr.icon_id);
@@ -2107,7 +2075,6 @@ namespace engine
 
                 do
                 {
-
                     drawIconEditorIcons(4, 1);
 
                     string text;
@@ -2115,11 +2082,11 @@ namespace engine
                     {
                         if (player_ptr.icon_size == 2)
                         {
-                            text = "Small" + iconStrings[var_8];
+                            text = "Small" + iconStrings[4];
                         }
                         else
                         {
-                            text = "Large" + iconStrings[var_8];
+                            text = "Large" + iconStrings[4];
                         }
                     }
                     else
@@ -2127,16 +2094,18 @@ namespace engine
                         text = iconStrings[var_8];
                     }
 
-                    var_2 = ovr027.displayInput(out var_3, false, 0, 15, 10, 13, text, string.Empty);
+                    bool specialKey;
 
-                    if (var_3 == false)
+                    inputKey = ovr027.displayInput(out specialKey, false, 0, 15, 10, 13, text, string.Empty);
+
+                    if (specialKey == false)
                     {
                         switch (var_8)
                         {
                             case 1:
                                 var_1A = 1;
 
-                                switch (var_2)
+                                switch (inputKey)
                                 {
                                     case 'P':
                                         var_8 = 2;
@@ -2169,13 +2138,13 @@ namespace engine
 
                             case 2:
                                 var_1A = 2;
-                                if (unk_4FE94.MemberOf(var_2) == true)
+                                if (unk_4FE94.MemberOf(inputKey) == true)
                                 {
                                     var_8 = 1;
                                 }
                                 else
                                 {
-                                    var_1B = var_2;
+                                    var_1B = inputKey;
                                     var_8 = 5;
                                 }
                                 break;
@@ -2183,7 +2152,7 @@ namespace engine
                             case 3:
                                 var_1A = 3;
 
-                                switch (var_2)
+                                switch (inputKey)
                                 {
                                     case 'W':
                                         color_index = 5;
@@ -2218,7 +2187,7 @@ namespace engine
                                         break;
                                 }
 
-                                if (unk_4FE94.MemberOf(var_2) == true)
+                                if (unk_4FE94.MemberOf(inputKey) == true)
                                 {
                                     var_8 = 1;
                                 }
@@ -2229,7 +2198,7 @@ namespace engine
                                 break;
 
                             case 4:
-                                switch (var_2)
+                                switch (inputKey)
                                 {
                                     case 'L':
                                         player_ptr.icon_size = 2;
@@ -2244,7 +2213,7 @@ namespace engine
                                     case 'K':
                                         bkup_size = player_ptr.icon_size;
                                         var_8 = 1;
-                                        var_2 = ' ';
+                                        inputKey = ' ';
                                         break;
 
                                     case 'E':
@@ -2253,7 +2222,7 @@ namespace engine
                                     case '\0':
                                         player_ptr.icon_size = bkup_size;
                                         var_8 = 1;
-                                        var_2 = ' ';
+                                        inputKey = ' ';
                                         break;
                                 }
 
@@ -2263,50 +2232,35 @@ namespace engine
                             case 5:
                                 if (var_1A == 2)
                                 {
-                                    if (var_1B == 0x48)
+                                    if (var_1B == 'P')
                                     {
-                                        if (var_2 == 0x50)
+                                        if (inputKey == 0x50)
                                         {
-                                            if (player_ptr.head_icon > 0)
-                                            {
-                                                player_ptr.head_icon -= 1;
-                                            }
-                                            else
-                                            {
-                                                player_ptr.head_icon = 13;
-                                            }
+                                            player_ptr.head_icon = (byte)Sys.WrapMinMax(player_ptr.head_icon - 1, 0, 13);
                                         }
-                                        else if (var_2 == 0x4E)
+                                        else if (inputKey == 'N')
                                         {
-                                            if (player_ptr.head_icon < 13)
-                                            {
-                                                player_ptr.head_icon += 1;
-                                            }
-                                            else
-                                            {
-
-                                                player_ptr.head_icon = 0;
-                                            }
+                                            player_ptr.head_icon = (byte)Sys.WrapMinMax(player_ptr.head_icon + 1, 0, 13);
                                         }
-                                        else if (var_2 == 0x4B)
+                                        else if (inputKey == 'K')
                                         {
                                             player_ptr2 = gbl.player_ptr;
-                                            var_4 = player_ptr2.head_icon;
+                                            headIcon = player_ptr2.head_icon;
                                             var_8 = var_1A;
-                                            var_2 = ' ';
+                                            inputKey = ' ';
                                         }
-                                        else if (var_2 == 0x45 || var_2 == '\0')
+                                        else if (inputKey == 'E' || inputKey == '\0')
                                         {
-                                            player_ptr.head_icon = var_4;
+                                            player_ptr.head_icon = headIcon;
                                             var_8 = var_1A;
-                                            var_2 = ' ';
+                                            inputKey = ' ';
                                         }
 
                                         ovr017.LoadPlayerCombatIcon(false);
                                     }
                                     else if (var_1B == 0x57)
                                     {
-                                        if (var_2 == 0x50)
+                                        if (inputKey == 0x50)
                                         {
                                             if (player_ptr.weapon_icon > 0)
                                             {
@@ -2317,7 +2271,7 @@ namespace engine
                                                 player_ptr.weapon_icon = 0x1F;
                                             }
                                         }
-                                        else if (var_2 == 0x4E)
+                                        else if (inputKey == 0x4E)
                                         {
                                             if (player_ptr.weapon_icon < 0x1F)
                                             {
@@ -2328,18 +2282,18 @@ namespace engine
                                                 player_ptr.weapon_icon = 0;
                                             }
                                         }
-                                        else if (var_2 == 0x4B)
+                                        else if (inputKey == 0x4B)
                                         {
                                             player_ptr2 = gbl.player_ptr;
-                                            var_5 = player_ptr2.weapon_icon;
+                                            weaponIcon = player_ptr2.weapon_icon;
                                             var_8 = var_1A;
-                                            var_2 = ' ';
+                                            inputKey = ' ';
                                         }
-                                        else if (var_2 == 0x45 || var_2 == '\0')
+                                        else if (inputKey == 0x45 || inputKey == '\0')
                                         {
-                                            player_ptr.weapon_icon = var_5;
+                                            player_ptr.weapon_icon = weaponIcon;
                                             var_8 = var_1A;
-                                            var_2 = ' ';
+                                            inputKey = ' ';
                                         }
 
                                         ovr017.LoadPlayerCombatIcon(false);
@@ -2350,7 +2304,7 @@ namespace engine
                                     byte low_color = (byte)(player_ptr.icon_colours[color_index] & 0x0F);
                                     byte high_color = (byte)((player_ptr.icon_colours[color_index] & 0xF0) >> 4);
 
-                                    if (var_2 == 0x4E)
+                                    if (inputKey == 0x4E)
                                     {
                                         if (second_color == true)
                                         {
@@ -2363,7 +2317,7 @@ namespace engine
 
                                         player_ptr.icon_colours[color_index] = (byte)(low_color + (high_color << 4));
                                     }
-                                    else if (var_2 == 0x50)
+                                    else if (inputKey == 0x50)
                                     {
                                         if (second_color == true)
                                         {
@@ -2376,17 +2330,17 @@ namespace engine
 
                                         player_ptr.icon_colours[color_index] = (byte)(low_color + (high_color << 4));
                                     }
-                                    else if (var_2 == 0x4B)
+                                    else if (inputKey == 0x4B)
                                     {
                                         System.Array.Copy(player_ptr.icon_colours, bkup_colours, 6);
                                         var_8 = var_1A;
-                                        var_2 = ' ';
+                                        inputKey = ' ';
                                     }
-                                    else if (var_2 == 0x45 || var_2 == '\0')
+                                    else if (inputKey == 0x45 || inputKey == '\0')
                                     {
                                         System.Array.Copy(bkup_colours, player_ptr.icon_colours, 6);
                                         var_8 = var_1A;
-                                        var_2 = ' ';
+                                        inputKey = ' ';
                                     }
                                 }
                                 break;
@@ -2395,10 +2349,10 @@ namespace engine
 
                     duplicateCombatIcon(true, 12, player_ptr.icon_id);
 
-                } while (var_1A != 0 || unk_4FE94.MemberOf(var_2) == false);
+                } while (var_1A != 0 || unk_4FE94.MemberOf(inputKey) == false);
 
-                player_ptr.head_icon = var_4;
-                player_ptr.weapon_icon = var_5;
+                player_ptr.head_icon = headIcon;
+                player_ptr.weapon_icon = weaponIcon;
                 player_ptr.icon_size = bkup_size;
 
                 System.Array.Copy(bkup_colours, player_ptr.icon_colours, 6);
@@ -2409,15 +2363,15 @@ namespace engine
                 ovr027.ClearPromptArea();
                 ovr034.ReleaseCombatIcon(12);
 
-                var_2 = ovr027.yes_no(15, 10, 13, "Is this icon ok? ");
+                inputKey = ovr027.yes_no(15, 10, 13, "Is this icon ok? ");
 
-            } while (var_2 != 'Y');
+            } while (inputKey != 'Y');
 
             ovr033.Color_0_8_normal();
         }
 
         /// <summary> seg600:4281 </summary>
-        static sbyte[] con_hp_adj = { 8, 0, 0, -2, -1, -1, -1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2 };
+        static sbyte[] con_hp_adj = { 0, 0, 0, -2, -1, -1, -1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2 };
 
         internal static sbyte get_con_hp_adj(Player player)
         {

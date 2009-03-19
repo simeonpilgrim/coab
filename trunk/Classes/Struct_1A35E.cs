@@ -8,20 +8,20 @@ namespace Classes
     {
         public SubStruct_1A35E(short f0, byte f2, byte f3) 
         {
-            field_0 = f0; 
-            field_2 = f2;
-            field_3 = f3;
+            base_age = f0; 
+            dice_count = f2;
+            dice_size = f3;
         }
 
-        public short field_0;
-        public byte field_2;
-        public byte field_3;
+        public short base_age;
+        public byte dice_count;
+        public byte dice_size;
     }
 
     public class Struct_1A35E
     {
         // 0x1C long.
-        public SubStruct_1A35E[] field_00;
+        SubStruct_1A35E[] field_00;
 
 
         public Struct_1A35E()

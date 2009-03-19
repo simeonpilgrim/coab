@@ -21,13 +21,11 @@ namespace Classes
             }
         }
 
-        //public byte field_0;
-        //public byte field_1;
         public Point mapScreenTopLeft;
         public bool drawTargetCursor; // field_4, was byte
         public int size; // field_5
         public bool field_6; // field_6, was byte
-        public int[] field_7;
+        int[] field_7;
 
         public int this[Point pos]
         {
@@ -43,22 +41,16 @@ namespace Classes
             }
         }
 
-        public int this[int indexA, int indexB]
+        public int this[int x, int y]
         {
             get
             {
-                int index = indexA + (indexB * 0x32);
-                if (index < 0 || index > dataSize)
-                {
-                    index = 0;
-                    throw new Exception("shouldn't be here");
-                }
-
+                int index = x + (y * 50);
                 return field_7[index];
             }
             set
             {
-                int index = indexA + (indexB * 0x32);
+                int index = x + (y * 0x32);
                 field_7[index] = value;
             }
         }

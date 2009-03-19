@@ -262,12 +262,12 @@ namespace Classes
             new Struct_189B4 ( 1, 1, 0, 7 ),
             new Struct_189B4 ( 1, 1, 0, 8 ),
             new Struct_189B4 ( 1, 1, 0, 9 ),
-            new Struct_189B4 ( 0xff, 1, 2, 0x0A ),
-            new Struct_189B4 ( 0xff, 1, 2, 0x0B ),
-            new Struct_189B4 ( 1, 1, 0, 0x0C ),
-            new Struct_189B4 ( 1, 1, 0, 0x0D ),
-            new Struct_189B4 ( 1, 1, 0, 0x0E ),
-            new Struct_189B4 ( 1, 1, 0, 0x0F ),
+            new Struct_189B4 ( 0xff, 1, 2, 10 ),
+            new Struct_189B4 ( 0xff, 1, 2, 11 ),
+            new Struct_189B4 ( 1, 1, 0, 12 ),
+            new Struct_189B4 ( 1, 1, 0, 13 ),
+            new Struct_189B4 ( 1, 1, 0, 14 ),
+            new Struct_189B4 ( 1, 1, 0, 15 ),
             new Struct_189B4 ( 2, 1, 0, 0x10 ),
             new Struct_189B4 ( 2, 1, 0, 0x11 ),
             new Struct_189B4 ( 2, 1, 0, 0x12 ),
@@ -377,7 +377,7 @@ namespace Classes
         public static Affects current_affect; // byte_1D2BD
         public static int damage; // byte_1D2BE
         public static DamageType damage_flags; // byte_1D2BF
-        public static byte movesLeft; // byte_1D2C0
+        public static int movesLeft; // byte_1D2C0
         public static bool resetMovesLeft; // byte_1D2C4, reset_byte_1D2C0
         public static byte spell_id; // byte_1D2C1
         public static int dice_count; // byte_1D2C2
@@ -423,7 +423,6 @@ namespace Classes
         public static bool applyItemAffect; // byte_1D8AC
         public static int combat_round; // byte_1D8B7
         public static int combat_round_no_action_limit; // byte_1D8B8
-        public static int[] near_targets = new int[0x48]; // byte_1D8B9
 
         public static void inc_byte_byte_1D90x(int index)
         {
@@ -462,7 +461,6 @@ namespace Classes
         public static bool battleWon; // byte_1EE86
         public static byte byte_1EE88;
         public static int search_flag_bkup; // byte_1EE89
-        public static byte byte_1EE8A;
         public static bool byte_1EE8C;
         public static bool byte_1EE8D;
         public static bool displayPlayerSprite; /* byte_1EE8F */
@@ -731,7 +729,7 @@ namespace Classes
             new SpellEntry(SpellClass.MagicUser, 4, 0, 0, 0, 10, 4, 0, DamageOnSave.Zero, SaveVerseType.type4, Affects.none, SpellWhen.Combat, 4, 4, 1, 0), 
             new SpellEntry(SpellClass.Unknown10, 0, 10, 0, 6, 0, 24, 0, DamageOnSave.Unknown_1E, SaveVerseType.Poison, Affects.enlarge, SpellWhen.Camp, 0, 1, 0x28, 0x28) };
 
-        public static Struct_1C020[] unk_1C020;
+        public static ItemData[] ItemDataTable; // unk_1C020
 
         public static List<Struct_1D183> downedPlayers; // unk_1D183 
 
@@ -780,43 +778,43 @@ namespace Classes
         public static string data_path; // unk_1B26A
 
 
-        static Struct_1A35E stru_1A35E_0 = new Struct_1A35E(new SubStruct_1A35E[] {
-            new SubStruct_1A35E(6, 2, 6), 
+        static Struct_1A35E monster_ages = new Struct_1A35E(new SubStruct_1A35E[] {
+            new SubStruct_1A35E( 6, 2, 6), 
             new SubStruct_1A35E( 0x0c08, 0xe, 0),
-            new SubStruct_1A35E(0, 0, 0), 
-            new SubStruct_1A35E(0, 6, 0), 
-            new SubStruct_1A35E(0x502, 6, 3), 
-            new SubStruct_1A35E(4, 0, 0), 
-            new SubStruct_1A35E(0, 0, 0) });
+            new SubStruct_1A35E( 0, 0, 0), 
+            new SubStruct_1A35E( 0, 6, 0), 
+            new SubStruct_1A35E( 0x502, 6, 3), 
+            new SubStruct_1A35E( 4, 0, 0), 
+            new SubStruct_1A35E( 0, 0, 0) });
 
-        static Struct_1A35E stru_1A35E_1 = new Struct_1A35E(new SubStruct_1A35E[] {
-            new SubStruct_1A35E(0xfa, 2, 0x14), 
+        static Struct_1A35E dwarf_ages = new Struct_1A35E(new SubStruct_1A35E[] {
+            new SubStruct_1A35E( 0xfa, 2, 0x14), 
             new SubStruct_1A35E( 0, 0, 0),
-            new SubStruct_1A35E(0x28, 5, 4), 
-            new SubStruct_1A35E(0, 0, 0), 
-            new SubStruct_1A35E(0, 0, 0), 
-            new SubStruct_1A35E(0, 0, 0), 
-            new SubStruct_1A35E(0x4B, 3, 6) });
+            new SubStruct_1A35E( 0x28, 5, 4), 
+            new SubStruct_1A35E( 0, 0, 0), 
+            new SubStruct_1A35E( 0, 0, 0), 
+            new SubStruct_1A35E( 0, 0, 0), 
+            new SubStruct_1A35E( 0x4B, 3, 6) });
 
-        static Struct_1A35E stru_1A35E_2 = new Struct_1A35E(new SubStruct_1A35E[] {
-            new SubStruct_1A35E(0x28a, 10, 10), 
+        static Struct_1A35E elf_ages = new Struct_1A35E(new SubStruct_1A35E[] {
+            new SubStruct_1A35E( 0x28a, 10, 10), 
             new SubStruct_1A35E( 0, 0, 0),
-            new SubStruct_1A35E(0x82, 5, 6), 
-            new SubStruct_1A35E(0, 0, 0), 
-            new SubStruct_1A35E(0, 0, 0), 
-            new SubStruct_1A35E(0x96, 5, 6), 
-            new SubStruct_1A35E(0x64, 5, 6) });
+            new SubStruct_1A35E( 0x82, 5, 6), 
+            new SubStruct_1A35E( 0, 0, 0), 
+            new SubStruct_1A35E( 0, 0, 0), 
+            new SubStruct_1A35E( 0x96, 5, 6), 
+            new SubStruct_1A35E( 100, 5, 6) });
 
-        static Struct_1A35E stru_1A35E_3 = new Struct_1A35E(new SubStruct_1A35E[] {
-            new SubStruct_1A35E(0x12C, 3, 0xC),
-            new SubStruct_1A35E(0, 0, 0),
-            new SubStruct_1A35E(0x3C, 5, 4),
-            new SubStruct_1A35E(0, 0, 0),
-            new SubStruct_1A35E(0, 0, 0), 
-            new SubStruct_1A35E(0x64, 2, 0x0C),
-            new SubStruct_1A35E(0x50, 5, 4)});
+        static Struct_1A35E gnome_ages = new Struct_1A35E(new SubStruct_1A35E[] {
+            new SubStruct_1A35E( 0x12C, 3, 0xC),
+            new SubStruct_1A35E( 0, 0, 0),
+            new SubStruct_1A35E( 0x3C, 5, 4),
+            new SubStruct_1A35E( 0, 0, 0),
+            new SubStruct_1A35E( 0, 0, 0), 
+            new SubStruct_1A35E( 100, 2, 0x0C),
+            new SubStruct_1A35E( 0x50, 5, 4)});
 
-        static Struct_1A35E stru_1A35E_4 = new Struct_1A35E(new SubStruct_1A35E[] {
+        static Struct_1A35E halfelf_ages = new Struct_1A35E(new SubStruct_1A35E[] {
             new SubStruct_1A35E( 0x28, 2, 4),
             new SubStruct_1A35E( 0, 0, 0),
             new SubStruct_1A35E( 0x16, 3, 4),
@@ -825,38 +823,36 @@ namespace Classes
             new SubStruct_1A35E( 0x1E, 2,  8),
             new SubStruct_1A35E( 0x16, 3, 8)});
 
-        static Struct_1A35E stru_1A35E_5 = new Struct_1A35E(new SubStruct_1A35E[] {
-            new SubStruct_1A35E(0, 0, 0),
+        static Struct_1A35E halfling_ages = new Struct_1A35E(new SubStruct_1A35E[] {
             new SubStruct_1A35E( 0, 0, 0),
-            new SubStruct_1A35E( 0x14, 3, 4),
+            new SubStruct_1A35E( 0, 0, 0),
+            new SubStruct_1A35E( 20, 3, 4),
             new SubStruct_1A35E( 0, 0, 0),
             new SubStruct_1A35E( 0, 0, 0),
             new SubStruct_1A35E( 0, 0, 0),
             new SubStruct_1A35E( 0x28, 2, 4)});
 
-        static Struct_1A35E stru_1A35E_6 = new Struct_1A35E(new SubStruct_1A35E[] {
-            new SubStruct_1A35E(0x14, 1, 4),
+        static Struct_1A35E halforc_ages = new Struct_1A35E(new SubStruct_1A35E[] {
+            new SubStruct_1A35E( 20, 1, 4),
             new SubStruct_1A35E( 0, 0, 0),
             new SubStruct_1A35E( 0xD, 1, 4),
             new SubStruct_1A35E( 0, 0, 0),
             new SubStruct_1A35E( 0, 0, 0),
             new SubStruct_1A35E( 0, 0, 0),
-            new SubStruct_1A35E( 0x14, 2, 4)});
+            new SubStruct_1A35E( 20, 2, 4)});
 
-        static Struct_1A35E stru_1A35E_7 = new Struct_1A35E(new SubStruct_1A35E[] {
-            new SubStruct_1A35E( 0x12, 1, 4),
-            new SubStruct_1A35E( 0x12, 1, 4),
-            new SubStruct_1A35E( 0xF, 1, 4),
-            new SubStruct_1A35E( 0x11, 1, 4),
-            new SubStruct_1A35E( 0x14 , 1, 4),
-            new SubStruct_1A35E( 0x18 , 2, 4),
-            new SubStruct_1A35E( 0x12 , 1, 4)});
+        static Struct_1A35E human_ages = new Struct_1A35E(new SubStruct_1A35E[] {
+            new SubStruct_1A35E( 18, 1, 4),
+            new SubStruct_1A35E( 18, 1, 4),
+            new SubStruct_1A35E( 15, 1, 4),
+            new SubStruct_1A35E( 17, 1, 4),
+            new SubStruct_1A35E( 20, 1, 4),
+            new SubStruct_1A35E( 0x18, 2, 4),
+            new SubStruct_1A35E( 18 , 1, 4)});
 
-        public static Struct_1A35E[] unk_1A35E = new Struct_1A35E[] { stru_1A35E_0, stru_1A35E_1, stru_1A35E_2, stru_1A35E_3, stru_1A35E_4, stru_1A35E_5, stru_1A35E_6, stru_1A35E_7 };
+        public static Struct_1A35E[] race_ages = new Struct_1A35E[] { monster_ages, dwarf_ages, elf_ages, gnome_ages, halfelf_ages, halfling_ages, halforc_ages, human_ages }; // unk_1A35E
 
         public static Point[] playerScreen = new Point[256]; 
-        //public static int[] playerScreenX = new int[256]; /* unk_1CAF0 */
-        //public static int[] playerScreenY = new int[256]; /* unk_1CB38 */
 
         public static byte[] unk_1AE0B = new byte[3];
 

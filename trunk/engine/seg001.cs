@@ -231,7 +231,6 @@ namespace engine
             gbl.combat_type = CombatType.normal;
             gbl.displayPlayerStatusLine18 = false;
             gbl.search_flag_bkup = 0;
-            gbl.byte_1EE8A = 0;
             gbl.byte_1EE8C = false;
             gbl.party_killed = false;
             gbl.byte_1BF12 = 1;
@@ -278,10 +277,10 @@ namespace engine
 
             byte[] data = new byte[0x810];
             seg051.BlockRead(0x810, data, unk_1AD74);
-            gbl.unk_1C020 = new Struct_1C020[0x81];
+            gbl.ItemDataTable = new ItemData[0x81];
             for (int i = 0; i < 0x81; i++)
             {
-                gbl.unk_1C020[i] = new Struct_1C020(data, i * 0x10);
+                gbl.ItemDataTable[i] = new ItemData(data, i * 0x10);
             }
 
             seg051.Close(unk_1AD74);
@@ -339,7 +338,6 @@ namespace engine
             gbl.combat_type = CombatType.normal;
             gbl.displayPlayerStatusLine18 = false;
             gbl.search_flag_bkup = 0;
-            gbl.byte_1EE8A = 0;
             gbl.byte_1EE8C = false;
             gbl.party_killed = false;
             gbl.byte_1BF12 = 1;

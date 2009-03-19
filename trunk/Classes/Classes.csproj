@@ -103,6 +103,7 @@
     </Compile>
     <Compile Include="Cheats.cs" />
     <Compile Include="ClassStatsMin.cs" />
+    <Compile Include="Combat.cs" />
     <Compile Include="DataIO.cs" />
     <Compile Include="DaxArray.cs" />
     <Compile Include="DaxBlock.cs">
@@ -123,6 +124,7 @@
     <Compile Include="Item.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ItemData.cs" />
     <Compile Include="MenuItem.cs" />
     <Compile Include="Opperation.cs" />
     <Compile Include="Player.cs">
@@ -141,9 +143,6 @@
     <Compile Include="Struct_1A35E.cs" />
     <Compile Include="Struct_1ADF6.cs" />
     <Compile Include="Struct_1B2CA.cs" />
-    <Compile Include="Struct_1C020.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Struct_1D183.cs">
       <SubType>Code</SubType>
     </Compile>

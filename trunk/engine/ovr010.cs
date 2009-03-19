@@ -153,9 +153,9 @@ namespace engine
                 }
                 else
                 {
-                    int near_count = ovr025.BuildNearTargets(ovr023.SpellRange(spellId), attacker);
+                    var nearTargets = ovr025.BuildNearTargets(ovr023.SpellRange(spellId), attacker);
 
-                    if (near_count > 0)
+                    if (nearTargets.Count > 0)
                     {
                         if (gbl.spell_table[spellId].field_F == 0)
                         {
@@ -163,10 +163,9 @@ namespace engine
                         }
                         else
                         {
-                            for (int i = 1; i <= near_count; i++)
+                            foreach(var cpi in nearTargets)
                             {
-                                int index = gbl.near_targets[i];
-                                if (sub_352AF(spellId, gbl.CombatMap[index].pos) == true)
+                                if (sub_352AF(spellId, gbl.CombatMap[cpi.index].pos) == true)
                                 {
                                     return false;
                                 }
@@ -355,7 +354,6 @@ namespace engine
                         }
                     }
 
-
                     if (isPoisonousCloud == true &&
                         player.HitDice < 7 &&
                         player.HasAffect(Affects.protect_magic) == false &&
@@ -430,7 +428,8 @@ namespace engine
                                 if (player.actions.field_14 != 0 &&
                                     var_4 == true)
                                 {
-                                    var_5 = ovr014.flee_battle(player);
+                                    var_5 = true;
+                                    ovr014.flee_battle(player);
                                 }
                                 else
                                 {
@@ -527,7 +526,6 @@ namespace engine
             gbl.byte_1AB19 = 0;
 
             byte var_13 = 0;
-            bool var_3 = true;
             bool var_2 = false;
 
             ovr024.CheckAffectsEffect(player, CheckType.Type_14);
@@ -538,10 +536,7 @@ namespace engine
                 player.actions.delay = 0;
             }
 
-            if (player.actions.delay == 0)
-            {
-                var_3 = false;
-            }
+            bool var_3 = player.actions.delay != 0;
 
             while (var_2 == false && var_3 == true)
             {
@@ -581,7 +576,7 @@ namespace engine
 
                     if (player.field_151 != null)
                     {
-                        range = gbl.unk_1C020[player.field_151.type].field_C - 1;
+                        range = gbl.ItemDataTable[player.field_151.type].range - 1;
                     }
 
                     if (range == 0 || range == 0xff || range == -1)
@@ -616,9 +611,9 @@ namespace engine
 
                     if (gbl.byte_1D90E == false)
                     {
-                        int enemy_near = ovr025.BuildNearTargets(range, player);
+                        var nearTargets = ovr025.BuildNearTargets(range, player);
 
-                        if (enemy_near == 0)
+                        if (nearTargets.Count == 0)
                         {
                             if (ovr014.find_target(false, 0, 0xff, player) == true)
                             {
@@ -632,13 +627,13 @@ namespace engine
                         }
                         else
                         {
-                            int roll = ovr024.roll_dice(enemy_near, 1);
+                            int roll = ovr024.roll_dice(nearTargets.Count, 1);
 
-                            target = gbl.player_array[gbl.near_targets[roll]];
+                            target = nearTargets[roll - 1].player;
 
                             if (ovr025.is_weapon_ranged(player) == true &&
                                 ovr025.is_weapon_ranged_melee(player) == false &&
-                                ovr025.BuildNearTargets(1, player) > 0)
+                                ovr025.BuildNearTargets(1, player).Count > 0)
                             {
                                 sub_36673(player);
                                 var_2 = true;
@@ -659,7 +654,7 @@ namespace engine
 
                     if (gbl.byte_1D90E == true)
                     {
-                        if (ovr014.sub_3EF3D(target, player) == true)
+                        if (ovr014.TrySweepAttack(target, player) == true)
                         {
                             var_2 = true;
                             ovr025.clear_actions(player);
@@ -835,38 +830,38 @@ namespace engine
 
         static int sub_36535(Item item, Player player)
         {
-            Struct_1C020 var_12 = gbl.unk_1C020[item.type];
+            ItemData itemData = gbl.ItemDataTable[item.type];
 
-            int var_2 = var_12.diceSizeX * var_12.diceCountX;
+            int var_2 = itemData.diceSizeX * itemData.diceCountX;
 
             if (item.plus > 0)
             {
                 var_2 += item.plus * 8;
             }
 
-            if (var_12.field_B > 0)
+            if (itemData.field_B > 0)
             {
-                var_2 += var_12.field_B * 2;
+                var_2 += itemData.field_B * 2;
             }
 
-            if (item.type == 0x55 &&
+            if (item.type == 85 &&
                 player.actions.target != null &&
                 player.actions.target.field_E9 > 0)
             {
                 var_2 = 8;
             }
 
-            if ((var_12.field_E & 8) > 0)
+            if ((itemData.field_E & 8) > 0)
             {
-                var_2 += (var_12.field_5 - 1) * 2;
+                var_2 += (itemData.field_5 - 1) * 2;
             }
 
-            if (var_12.field_1 <= 1)
+            if (itemData.field_1 <= 1)
             {
                 var_2 += 3;
             }
 
-            if ((var_12.field_1 + player.field_185) > 3)
+            if ((itemData.field_1 + player.field_185) > 3)
             {
                 var_2 = 0;
             }
@@ -895,12 +890,12 @@ namespace engine
         {            
             if (player.field_151 != null)
             {
-                player.field_185 -= gbl.unk_1C020[player.field_151.type].field_1;
+                player.field_185 -= gbl.ItemDataTable[player.field_151.type].field_1;
             }
 
             if (player.field_155 != null)
             {
-                player.field_185 -= gbl.unk_1C020[player.field_155.type].field_1;
+                player.field_185 -= gbl.ItemDataTable[player.field_155.type].field_1;
             }
 
             Item var_4 = null;
@@ -921,13 +916,13 @@ namespace engine
             {
                 int item_type = item.type;
 
-                if (gbl.unk_1C020[item_type].item_slot == 0 &&
-                    (gbl.unk_1C020[item_type].classFlags & player.classFlags) != 0)
+                if (gbl.ItemDataTable[item_type].item_slot == 0 &&
+                    (gbl.ItemDataTable[item_type].classFlags & player.classFlags) != 0)
                 {
                     int var_18 = sub_36535(item, player);
 
-                    if ((gbl.unk_1C020[item_type].field_E & 8) != 0 ||
-                        (gbl.unk_1C020[item_type].field_E & 0x10) != 0)
+                    if ((gbl.ItemDataTable[item_type].field_E & 8) != 0 ||
+                        (gbl.ItemDataTable[item_type].field_E & 0x10) != 0)
                     {
                         if (var_18 > var_15)
                         {
@@ -936,7 +931,7 @@ namespace engine
                         }
                     }
 
-                    if ((gbl.unk_1C020[item_type].field_E & 8) == 0 &&
+                    if ((gbl.ItemDataTable[item_type].field_E & 8) == 0 &&
                         var_18 > var_16)
                     {
                         var_8 = item;
@@ -945,9 +940,9 @@ namespace engine
                 }
 
 
-                if (gbl.unk_1C020[item_type].item_slot == 1)
+                if (gbl.ItemDataTable[item_type].item_slot == 1)
                 {
-                    if ((gbl.unk_1C020[item_type].classFlags & player.classFlags) != 0)
+                    if ((gbl.ItemDataTable[item_type].classFlags & player.classFlags) != 0)
                     {
                         int bonus = item.plus >= 0 ? item.plus + 1 : 0;
 
@@ -967,7 +962,7 @@ namespace engine
 
             if (var_4 != null)
             {
-                var_1A = gbl.unk_1C020[var_4.type].field_E;
+                var_1A = gbl.ItemDataTable[var_4.type].field_E;
 
                 if ((var_1A & 0x10) != 0)
                 {
@@ -978,12 +973,12 @@ namespace engine
                 {
                     if ((var_1A & 0x01) != 0)
                     {
-                        tmpItem = player.Item_ptr_03;
+                        tmpItem = player.arrows;
                     }
 
                     if ((var_1A & 0x80) != 0)
                     {
-                        tmpItem = player.Item_ptr_04;
+                        tmpItem = player.quarrels;
                     }
                 }
             }
@@ -999,7 +994,7 @@ namespace engine
             if (var_4 != null &&
                 var_15 > (var_16 >> 1) &&
                 var_1F == true &&
-                (ranged_melee == true || ovr025.BuildNearTargets(1, player) == 0))
+                (ranged_melee == true || ovr025.BuildNearTargets(1, player).Count == 0))
             {
                 weapon = var_4;
             }
@@ -1030,7 +1025,7 @@ namespace engine
                 if (player.field_155 != null &&
                     player.field_155.cursed == false)
                 {
-                    player.field_185 -= gbl.unk_1C020[player.field_155.type].field_1;
+                    player.field_185 -= gbl.ItemDataTable[player.field_155.type].field_1;
                 }
 
                 if (weapon != null)

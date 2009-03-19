@@ -361,6 +361,7 @@ namespace engine
         internal static bool CanSellDropTradeItem(Item item) // sub_54EC1
         {
             bool canSellDropTradeItem = false;
+
             if (item.readied)
             {
                 ovr025.string_print01("Must be unreadied");
@@ -437,10 +438,10 @@ namespace engine
             seg041.displayString(arg_0.affect_3.ToString(), 0, 10, 13, 0x14);
             
             seg041.displayString("dice large:   ", 0, 10, 14, 1);
-            seg041.displayString(gbl.unk_1C020[arg_0.type].diceCount.ToString(), 0, 10, 14, 0x14);
+            seg041.displayString(gbl.ItemDataTable[arg_0.type].diceCount.ToString(), 0, 10, 14, 0x14);
             
             seg041.displayString("sides large:  ", 0, 10, 15, 1);
-            seg041.displayString(gbl.unk_1C020[arg_0.type].diceSize.ToString(), 0, 10, 15, 0x14);
+            seg041.displayString(gbl.ItemDataTable[arg_0.type].diceSize.ToString(), 0, 10, 15, 0x14);
 
             seg041.displayAndDebug("press a key", 0, 10);
         }
@@ -797,6 +798,7 @@ namespace engine
 
             if (item.readied)
             {
+                // Remove
                 if (item.cursed == true)
                 {
                     ovr025.string_print01("It's Cursed");
@@ -814,14 +816,15 @@ namespace engine
             }
             else
             {
+                // Weld
                 int var_2 = 0;
 
-                if ((player.field_185 + gbl.unk_1C020[item.type].field_1) > 2)
+                if ((player.field_185 + gbl.ItemDataTable[item.type].field_1) > 2)
                 {
                     var_2 = 3;
                 }
    
-                int item_slot = gbl.unk_1C020[item.type].item_slot;
+                int item_slot = gbl.ItemDataTable[item.type].item_slot;
 
                 if (item_slot >= 0 && item_slot <= 8)
                 {
@@ -838,25 +841,25 @@ namespace engine
                     }
                 }
 
-                if (item.type == 0x49) // Arrows
+                if (item.type == 73) // ItemType.Arrow
                 {
-                    if (player.Item_ptr_03 != null)
+                    if (player.arrows != null)
                     {
                         var_2 = 2;
                         item_slot = 0x0B;
                     }
                 }
 
-                if (item.type == 0x1C) // Quarrels
+                if (item.type == 28) // ItemType.Quarrel
                 {
-                    if (player.Item_ptr_04 != null)
+                    if (player.quarrels != null)
                     {
                         var_2 = 2;
                         item_slot = 0x0C;
                     }
                 }
 
-                if ((player.classFlags & gbl.unk_1C020[item.type].classFlags) == 0)
+                if ((player.classFlags & gbl.ItemDataTable[item.type].classFlags) == 0)
                 {
                     var_2 = 1;
                 }
@@ -1109,8 +1112,8 @@ namespace engine
 
             if (item.count > 1)
             {
-                if (item.type != 73 || // TODO this has to be a bug!
-                    item.type != 28)
+                if (item.type != 73 && // ItemType.Arrow 
+                    item.type != 28) // ItemType.Quarrel
                 {
                     item_value = (item.count * item_value) / 20;
                 }

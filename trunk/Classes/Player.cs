@@ -472,12 +472,12 @@ namespace Classes
             get { return itemArray[10]; }
             set { itemArray[10] = value; }
         }
-        public Item Item_ptr_03
+        public Item arrows
         {// 0x17d
             get { return itemArray[11]; }
             set { itemArray[11] = value; }
         }
-        public Item Item_ptr_04
+        public Item quarrels
         { // 0x181
             get { return itemArray[12]; }
             set { itemArray[12] = value; }

@@ -1251,18 +1251,14 @@ namespace engine
         }
 
 
-        internal static void sub_318AE(ref int index, ref bool menuRedraw, bool showExit, 
+        internal static void sub_318AE(ref int index, bool menuRedraw, bool showExit, 
 			List<MenuItem> list, sbyte endY, sbyte endX, int startY, sbyte startX, 
-			byte arg_1A, byte arg_1C, byte headingColor, string inputString, string extraString)
+			byte highlighBgColor, byte normalColor, byte headingColor)
         {
-            string newInputString = inputString;
-
-            buildMenuStrings(ref newInputString);
-
             MenuItem dummyMenuItem;
 
             ovr027.sl_select_item(out dummyMenuItem, ref index, ref menuRedraw, showExit, list, endY, endX,
-                startY, startX, arg_1A, arg_1C, headingColor, newInputString, extraString);
+                startY, startX, highlighBgColor, normalColor, headingColor, string.Empty, string.Empty);
         }
 
 

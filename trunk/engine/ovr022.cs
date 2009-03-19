@@ -532,16 +532,15 @@ namespace engine
             item.field_30 = 0;
             item.field_31 = 0;
 
-            byte al = item.type;
+            byte type = item.type;
 
-            if ((al >= 1 && al <= 0x3B) ||
-                al == 0x49 || al == 0x4D || al == 0x5D)
+            if ((type >= 1 && type <= 0x3B) ||
+                type == 0x49 || type == 0x4D || type == 0x5D)
             {
                 item.plus = randomBonus();
 
-                if (item.type == 0x15)
+                if (item.type == 21) // Javelin
                 {
-
                     int var_1 = ovr024.roll_dice(5, 1);
                     if (var_1 == 5)
                     {
@@ -549,16 +548,15 @@ namespace engine
                     }
 
                     item.field_31 = 0x15;
-
                     item.field_30 = (sbyte)(item.plus + 0xA1);
                 }
-                else if (item.type == 0x1C)
+                else if (item.type == 28) // ItemType.Quarrel
                 {
                     item.field_31 = 0x1C;
                     item.field_30 = (sbyte)(item.plus + 0xA1);
                 }
                 else if (item.type == 0x32 ||
-               item.type == 0x33)
+                         item.type == 0x33)
                 {
                     item.field_31 = item.type;
                     item.field_30 = 0x31;
@@ -573,7 +571,7 @@ namespace engine
                     item.hidden_names_flag = 4;
                 }
                 else if (item.type >= 0x35 &&
-               item.type <= 0x3a)
+                         item.type <= 0x3a)
                 {
                     item.field_31 = item.type;
                     item.field_30 = 0x30;
@@ -617,14 +615,14 @@ namespace engine
 
                 switch (item.type)
                 {
-                    case 1:
-                    case 0x0d:
-                    case 0x0e:
-                    case 0x23:
-                        item.weight = 0x4B;
+                    case 1: // BattleAxe
+                    case 13: // MilitaryFork
+                    case 14: // Glaive
+                    case 35: // BroadSword
+                        item.weight = 75;
                         break;
 
-                    case 2:
+                    case 2: // HandAxe
                     case 0x14:
                     case 0x1d:
                     case 0x1f:
@@ -635,12 +633,11 @@ namespace engine
                     case 0x2c:
                     case 0x2e:
                     case 0x3b:
-
-                        item.weight = 0x32;
+                        item.weight = 50;
                         break;
 
-                    case 3:
-                    case 0x18:
+                    case 3: // Bardiche
+                    case 24: // MorningStar
                     case 0x28:
                         item.weight = 0x7D;
                         break;
@@ -652,7 +649,7 @@ namespace engine
                     case 0x2b:
                     case 0x2d:
                     case 0x33:
-                        item.weight = 0x64;
+                        item.weight = 100;
                         break;
 
                     case 5:
@@ -664,7 +661,7 @@ namespace engine
                         break;
 
                     case 6:
-                        item.weight = 0x0F;
+                        item.weight = 15;
                         break;
 
                     case 7:
@@ -673,7 +670,7 @@ namespace engine
 
                     case 8:
                     case 0x4d:
-                        item.weight = 0x0A;
+                        item.weight = 10;
                         break;
 
                     case 9:
@@ -681,63 +678,71 @@ namespace engine
                         item.count = 5;
                         break;
 
-                    case 0x0a:
+                    case 10: // Fauchard
                     case 0x1a:
                     case 0x24:
                         item.weight = 0x3C;
                         break;
 
-                    case 0x0b:
-                    case 0x10:
-                    case 0x19:
+                    case 11: // FauchardFork
+                    case 16: // Guisarme
+                    case 25: // Partisan
                     case 0x1b:
                     case 0x29:
-                    case 0x2f:
-                        item.weight = 0x50;
-                        break;
-                    case 0x12:
-                        item.weight = 0xAF;
+                    case 47: // Sling
+                        item.weight = 80;
                         break;
 
-                    case 0x15:
-                        item.weight = 0x14;
+                    case 18: // Halberd
+                        item.weight = 175;
                         break;
 
-                    case 0x16:
-                    case 0x1e:
-                        item.weight = 0x28;
+                    case 21: // Javelin
+                        item.weight = 20;
                         break;
-                    case 0x25:
-                        item.weight = 0x23;
+
+                    case 22: // JoStick
+                    case 30: // Scimitar
+                        item.weight = 40;
                         break;
-                    case 0x26:
-                    case 0x35:
-                        item.weight = 0x0FA;
+
+                    case 37: // ShortSword
+                        item.weight = 35;
                         break;
-                    case 0x34:
+
+                    case 38: // TwoHandedSword
+                    case 53: // RingMail
+                        item.weight = 250;
+                        break;
+
+                    case 52: // StuddedLeather
                         item.weight = 0x0C8;
                         break;
-                    case 0x36:
-                    case 0x38:
-                        item.weight = 0x190;
+
+                    case 54: // ScaleMail
+                    case 56: // SplintMail
+                        item.weight = 400;
                         break;
+
                     case 0x37:
                         item.weight = 0x12C;
                         break;
                     case 0x39:
                         item.weight = 0x15E;
                         break;
-                    case 0x3a:
-                        item.weight = 0x1C2;
+
+                    case 58: // PlateMail
+                        item.weight = 450;
                         break;
+
                     //case 0x2f: //wonder if this should have been 0x3f
-                    case 0x5d:
+                    case 93: // RingOfProtection
                         item.weight = 1;
                         break;
 
                     default:
-                        item.weight = 0x28;
-                        item.count = 0x0A;
+                        item.weight = 40;
+                        item.count = 10;
                         break;
                 }
 
@@ -757,17 +762,16 @@ namespace engine
                 {
                     item._value = (short)(item.plus * 3500);
                 }
-                else if (item.type == 0x39)
+                else if (item.type == 57) // ItemType.BandedMail
                 {
                     item._value = (short)(item.plus * 4000);
 
                 }
-                else if (item.type == 0x3a)
+                else if (item.type == 58) // ItemType.PlateMail
                 {
                     item._value = (short)(item.plus * 5000);
-
                 }
-                else if (item.type == 0x4d)
+                else if (item.type == 77) // ItemType.Bracers
                 {
                     item._value = (short)(item.plus * 3000);
                 }
@@ -776,12 +780,11 @@ namespace engine
                     item._value = (short)(item.plus * 2000);
                 }
             }
-            else if (al == 0x3d || al == 0x3e)
+            else if (type == 61 || type == 62) // MagicUserScrol || ClericScroll
             {
+                byte spellsCount = ovr024.roll_dice(3, 1);
 
-                byte var_2 = ovr024.roll_dice(3, 1);
-
-                if (item.type == 0x3d)
+                if (item.type == 61) // MagicUserScrol
                 {
                     item.field_31 = 0xD1;
                 }
@@ -790,14 +793,14 @@ namespace engine
                     item.field_31 = 0xD0;
                 }
 
-                item.field_30 = (sbyte)(var_2 + 0xd1);
+                item.field_30 = (sbyte)(spellsCount + 0xd1);
                 item.field_2F = 0;
                 item.plus = 1;
                 item.weight = 0x19;
                 item.count = 0;
                 item._value = 0;
 
-                for (int var_3 = 1; var_3 <= var_2; var_3++)
+                for (int var_3 = 1; var_3 <= spellsCount; var_3++)
                 {
                     int var_1 = ovr024.roll_dice(5, 1);
 
@@ -856,19 +859,19 @@ namespace engine
                     item._value += (short)(var_1 * 300);
                 }
             }
-            else if (al == 0x3f || al == 0x43)
+            else if (type == 0x3f || type == 0x43)
             {
                 var_4 = 0x29;
             }
-            else if (al == 0x4E || al == 0x4F)
+            else if (type == 0x4E || type == 0x4F)
             {
                 var_4 = 0x21;
             }
-            else if (al == 0x54 || al == 0x5C)
+            else if (type == 0x54 || type == 0x5C)
             {
                 var_4 = 9;
             }
-            else if (al == 0x47)
+            else if (type == 71) // PotionOfHealing
             {
                 int var_1 = ovr024.roll_dice(8, 1);
 
@@ -1047,7 +1050,7 @@ namespace engine
                                 gem_item.field_31 = 0x65;
                                 gem_item.field_30 = 0;
                                 gem_item.field_2F = 0;
-                                gem_item.type = 0x46;
+                                gem_item.type = 70; // ItemType.GemJewel
                                 gem_item._value = value;
 
                                 gbl.player_ptr.items.Add(gem_item);
@@ -1124,7 +1127,7 @@ namespace engine
                                 jewel_item.readied = false;
                                 jewel_item.field_31 = 0xD6;
                                 jewel_item.field_30 = 0;
-                                jewel_item.type = 0x46;
+                                jewel_item.type = 70; // ItemType.GemJewel
                                 jewel_item.field_2F = 0;
 
                                 jewel_item._value = value;
