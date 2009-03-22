@@ -8,7 +8,7 @@ namespace engine
         static Set unk_4C13D = new Set(0x0802, new byte[] { 0x80, 0x80 });
         static Set unk_4C15D = new Set(0x0803, new byte[] { 0x20, 0x00, 0x08 });
 
-        internal static void free_player(ref Player player)
+        internal static void FreePlayer(Player player) // free_player
         {
             if (player.actions != null)
             {
@@ -17,8 +17,6 @@ namespace engine
 
             player.items.Clear();
             player.affects.Clear();
-
-            player = null;
         }
 
         static string[] menuStrings = {   
@@ -224,7 +222,7 @@ namespace engine
                                 if (gbl.player_ptr.field_F7 < 0x80)
                                 {
                                     ovr017.SavePlayer(string.Empty, gbl.player_ptr);
-                                    FreeCurrentPlayer(true, false);
+                                    gbl.player_ptr = FreeCurrentPlayer(gbl.player_ptr, true, false);
                                 }
                                 else
                                 {
@@ -432,7 +430,7 @@ namespace engine
             byte stat_value;
             byte var_14;
             int index;
-            MenuItem var_10;
+            MenuItem selected;
 
             Player player = new Player();
 
@@ -465,7 +463,7 @@ namespace engine
 
             do
             {
-                input_key = ovr027.sl_select_item(out var_10, ref index, ref menuRedraw, showExit, var_C,
+                input_key = ovr027.sl_select_item(out selected, ref index, ref menuRedraw, showExit, var_C,
                     22, 38, 2, 1, 15, 10, 13, "Select", string.Empty);
 
                 if (input_key == '\0')
@@ -534,7 +532,7 @@ namespace engine
 
             do
             {
-                input_key = ovr027.sl_select_item(out var_10, ref index, ref menuRedraw, showExit, var_C,
+                input_key = ovr027.sl_select_item(out selected, ref index, ref menuRedraw, showExit, var_C,
                     22, 38, 2, 1, 15, 10, 13, "Select", string.Empty);
 
                 if (input_key == '\0')
@@ -565,7 +563,7 @@ namespace engine
 
             do
             {
-                input_key = ovr027.sl_select_item(out var_10, ref index, ref menuRedraw, showExit, var_C,
+                input_key = ovr027.sl_select_item(out selected, ref index, ref menuRedraw, showExit, var_C,
                     22, 38, 2, 1, 15, 10, 13, "Select", string.Empty);
 
                 if (input_key == '\0')
@@ -698,7 +696,7 @@ namespace engine
 
             do
             {
-                input_key = ovr027.sl_select_item(out var_10, ref index, ref menuRedraw, showExit, var_C,
+                input_key = ovr027.sl_select_item(out selected, ref index, ref menuRedraw, showExit, var_C,
                     22, 38, 2, 1, 15, 10, 13, "Select", string.Empty);
 
 
@@ -748,15 +746,15 @@ namespace engine
 
             Player gblPlayerPtrBkup = gbl.player_ptr;
             gbl.player_ptr = player;
-            ovr020.playerDisplayFull();
+            ovr020.playerDisplayFull(player);
 
             do
             {
                 for (int class_idx = 0; class_idx <= 7; class_idx++)
                 {
-                    if (gbl.player_ptr.class_lvls[class_idx] > 0)
+                    if (player.class_lvls[class_idx] > 0)
                     {
-                        gbl.player_ptr.class_lvls[class_idx] = 1;
+                        player.class_lvls[class_idx] = 1;
                     }
                 }
 
@@ -1129,17 +1127,17 @@ namespace engine
 
                 for (int class_idx = 0; class_idx <= 7; class_idx++)
                 {
-                    if (gbl.player_ptr.class_lvls[class_idx] > 0 ||
-                        (gbl.player_ptr.Skill_B_lvl[class_idx] < ovr026.HumanFirstClassLevelOrZero(gbl.player_ptr) &&
-                         gbl.player_ptr.Skill_B_lvl[class_idx] > 0))
+                    if (player.class_lvls[class_idx] > 0 ||
+                        (player.Skill_B_lvl[class_idx] < ovr026.HumanFirstClassLevelOrZero(player) &&
+                         player.Skill_B_lvl[class_idx] > 0))
                     {
                         if (first_lvl == false)
                         {
                             text += "/";
                         }
 
-                        byte b = gbl.player_ptr.Skill_B_lvl[class_idx];
-                        b += gbl.player_ptr.class_lvls[class_idx];
+                        byte b = player.Skill_B_lvl[class_idx];
+                        b += player.class_lvls[class_idx];
 
                         text += b.ToString();
 
@@ -1155,7 +1153,7 @@ namespace engine
 
             } while (input_key != 'N');
 
-            ovr020.playerDisplayFull();
+            ovr020.playerDisplayFull(player);
 
             do
             {
@@ -1245,7 +1243,7 @@ namespace engine
                     }
 
                     ovr017.remove_player_file(player);
-                    FreeCurrentPlayer(true, false);
+                    gbl.player_ptr = FreeCurrentPlayer(gbl.player_ptr, true, false);
                 }
                 else
                 {
@@ -1310,7 +1308,7 @@ namespace engine
                 return;
             }
 
-            ovr020.playerDisplayFull();
+            ovr020.playerDisplayFull(gbl.player_ptr);
 
             byte[] stats_bkup = new byte[6];
             for (int stat_var = 0; stat_var < 6; stat_var++)
@@ -1795,8 +1793,7 @@ namespace engine
         {
             seg037.draw8x8_clear_area(0x16, 0x26, 1, 1);
 
-            bool dummy_bool;
-            char input_key = ovr027.displayInput(out dummy_bool, false, 0, 15, 10, 13, "Curse Pool Hillsfar Exit", "Add from where? ");
+            char input_key = ovr027.displayInput(false, 0, 15, 10, 13, "Curse Pool Hillsfar Exit", "Add from where? ");
 
             switch (input_key)
             {
@@ -1941,9 +1938,9 @@ namespace engine
         }
 
 
-        internal static void FreeCurrentPlayer(bool free_icon, bool leave_party_size) // free_players
+        internal static Player FreeCurrentPlayer(Player player, bool free_icon, bool leave_party_size) // free_players
         {
-            int index = gbl.player_next_ptr.IndexOf(gbl.player_ptr);
+            int index = gbl.player_next_ptr.IndexOf(player);
 
             if (index >= 0)
             {
@@ -1951,7 +1948,7 @@ namespace engine
 
                 if (free_icon)
                 {
-                    ovr034.ReleaseCombatIcon(gbl.player_ptr.icon_id);
+                    ovr034.ReleaseCombatIcon(player.icon_id);
                 }
 
                 if (leave_party_size == false)
@@ -1959,18 +1956,16 @@ namespace engine
                     gbl.area2_ptr.party_size--;
                 }
 
-                free_player(ref gbl.player_ptr);
+                FreePlayer(player);
 
                 index = index > 0 ? index - 1 : 0;
                 if (gbl.player_next_ptr.Count > 0)
                 {
-                    gbl.player_ptr = gbl.player_next_ptr[index];
-                }
-                else
-                {
-                    gbl.player_ptr = null;
+                    return gbl.player_next_ptr[index];
                 }
             }
+
+            return null;
         }
 
 

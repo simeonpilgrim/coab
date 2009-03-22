@@ -107,9 +107,6 @@ namespace engine
             }
             else if (unk_6325A.MemberOf((int)affect_type) == true)
             {
-                SortedCombatant[] bkup_list = new SortedCombatant[gbl.MaxSortedCombatantCount];
-                System.Array.Copy(gbl.SortedCombatantList, bkup_list, gbl.MaxSortedCombatantCount);
-
                 foreach (Player player_base in gbl.player_next_ptr)
                 {
                     if (found) break;
@@ -120,16 +117,10 @@ namespace engine
                         {
                             int max_range = (affect_type == Affects.prayer) ? 6 : 1;
 
-                            ovr032.Rebuild_SortedCombatantList(gbl.mapToBackGroundTile, ovr033.PlayerMapSize(player_base), 0xff,
+                            var scl = ovr032.Rebuild_SortedCombatantList(gbl.mapToBackGroundTile, ovr033.PlayerMapSize(player_base), 0xff,
                                 max_range, ovr033.PlayerMapPos(player_base));
 
-                            for (int i = 0; i < gbl.sortedCombatantCount; i++)
-                            {
-                                if (gbl.SortedCombatantList[i].player_index == ovr033.GetPlayerIndex(player))
-                                {
-                                    found = true;
-                                }
-                            }
+                            found = scl.Exists(sc => sc.player == player);
                         }
                         else
                         {
@@ -137,8 +128,6 @@ namespace engine
                         }
                     }
                 }
-
-                System.Array.Copy(bkup_list, gbl.SortedCombatantList, gbl.MaxSortedCombatantCount);
             }
 
             if (found == true)

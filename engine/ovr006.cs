@@ -326,8 +326,7 @@ namespace engine
 
                     foreach (Player player in to_remove)
                     {
-                        gbl.player_ptr = player;
-                        ovr018.FreeCurrentPlayer(true, false);
+                        gbl.player_ptr = ovr018.FreeCurrentPlayer(player, true, false);
                     }
                 }
                 else
@@ -348,8 +347,7 @@ namespace engine
 
                     foreach (Player player in to_remove)
                     {
-                        gbl.player_ptr = player;
-                        ovr018.FreeCurrentPlayer(true, false);
+                        gbl.player_ptr = ovr018.FreeCurrentPlayer(player, true, false);
                     }
 
                     gbl.area2_ptr.party_size = 0;
@@ -447,8 +445,7 @@ namespace engine
             seg041.displayString(text, 0, 10, 5, 1);
             seg041.displayString("experience points.", 0, 10, 7, 1);
 
-            bool dummyBool;
-            ovr027.displayInput(out dummyBool, false, 1, 15, 15, 15, "press <enter>/<return> to continue", string.Empty);
+            ovr027.displayInput(false, 1, 15, 15, 15, "press <enter>/<return> to continue", string.Empty);
         }
 
 
@@ -517,8 +514,7 @@ namespace engine
                     bool done = false;
                     do
                     {
-                        bool dummy_bool;
-                        char key = ovr027.displayInput(out dummy_bool, true, 1, 15, 10, 13, "Money Items Exit", "Take: ");
+                        char key = ovr027.displayInput(true, 1, 15, 10, 13, "Money Items Exit", "Take: ");
 
                         switch (key)
                         {
@@ -716,10 +712,8 @@ namespace engine
 
             foreach (KeyValuePair<Player, bool> kvp in to_remove)
             {
-                gbl.player_ptr = kvp.Key;
-                ovr018.FreeCurrentPlayer(true, kvp.Value);
+                ovr018.FreeCurrentPlayer(kvp.Key, true, kvp.Value);
             }
-
             
             gbl.player_ptr = gbl.player_next_ptr.Count > 0 ? gbl.player_next_ptr[0] : null;
         }
@@ -778,8 +772,7 @@ namespace engine
                     }
                 }
 
-                bool tmpBool;
-                ovr027.displayInput(out tmpBool, false, 1, 15, 15, 15, "press <enter>/<return> to continue", string.Empty);
+                ovr027.displayInput(false, 1, 15, 15, 15, "press <enter>/<return> to continue", string.Empty);
             }
         }
 

@@ -361,7 +361,7 @@ namespace engine
             if (player.name.Length == 0 &&
                 gbl.player_ptr.HasAffect(Affects.detect_invisibility) == false)
             {
-                gbl.byte_1D2C5 = 1;
+                gbl.byte_1D2C5 = true;
                 gbl.attack_roll -= 4;
             }
         }
@@ -535,7 +535,7 @@ namespace engine
         {
             if (player.actions.delay == 0)
             {
-                gbl.byte_1D2C5 = 1;
+                gbl.byte_1D2C5 = true;
                 gbl.attack_roll = -1;
             }
         }
@@ -920,7 +920,7 @@ namespace engine
             {
                 if (gbl.player_ptr.HasAffect(Affects.detect_invisibility) == false)
                 {
-                    gbl.byte_1D2C5 = 1;
+                    gbl.byte_1D2C5 = true;
                 }
 
                 gbl.attack_roll -= 4;
@@ -936,7 +936,7 @@ namespace engine
 
         internal static void sub_3B685(Effect arg_0, object param, Player player)
         {
-            gbl.byte_1D2C5 = 1;
+            gbl.byte_1D2C5 = true;
             gbl.attack_roll -= 4;
         }
 
@@ -1012,10 +1012,10 @@ namespace engine
                 {
                     player.actions.target = null;
 
-                    ovr032.Rebuild_SortedCombatantList(gbl.mapToBackGroundTile, ovr033.PlayerMapSize(player), 0xff, 0xff,
+                    var scl = ovr032.Rebuild_SortedCombatantList(gbl.mapToBackGroundTile, ovr033.PlayerMapSize(player), 0xff, 0xff,
                         ovr033.PlayerMapPos(player));
 
-                    player.actions.target = gbl.player_array[gbl.SortedCombatantList[1].player_index];
+                    player.actions.target = scl[0].player;
 
                     player.actions.can_cast = false;
                     player.combat_team = player.actions.target.OppositeTeam();
@@ -1700,10 +1700,9 @@ namespace engine
 
                 player.actions.target = null;
 
-                ovr032.Rebuild_SortedCombatantList(gbl.mapToBackGroundTile, ovr033.PlayerMapSize(player), 0xff, 0xff, ovr033.PlayerMapPos(player));
+                var scl = ovr032.Rebuild_SortedCombatantList(gbl.mapToBackGroundTile, ovr033.PlayerMapSize(player), 0xff, 0xff, ovr033.PlayerMapPos(player));
 
-                player.actions.target = gbl.player_array[gbl.SortedCombatantList[1].player_index];
-
+                player.actions.target = scl[0].player;
                 player.combat_team = player.actions.target.OppositeTeam();
             }
             else

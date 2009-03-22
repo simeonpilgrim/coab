@@ -39,7 +39,7 @@ namespace engine
                 var_2 = sub_3637F(player);
             }
 
-            if (player.actions.field_14 != 0 &&
+            if (player.actions.field_14 == true &&
                 player.actions.fleeing == false)
             {
                 ovr025.DisplayPlayerStatusString(true, 10, "flees in panic", player);
@@ -100,7 +100,7 @@ namespace engine
             Player var_5;
             byte ret_val;
 
-            if (player.actions.field_11 == 0 &&
+            if (player.actions.hasTurnedUndead == false &&
                 (player.cleric_lvl > 0 || player.turn_undead > player.field_E6) &&
                 ovr014.sub_3F433(out var_5, player) == true)
             {
@@ -122,11 +122,11 @@ namespace engine
 
             int save_bonus = (gbl.player_ptr.combat_team == CombatTeam.Ours)? -2 : 8;
 
-            ovr032.Rebuild_SortedCombatantList(gbl.mapToBackGroundTile, 1, 0xff, gbl.spell_table[spell_id].field_F, pos);
-   
-            for (int i = 1; i <= gbl.sortedCombatantCount; i++)
+            var sortedCombatants = ovr032.Rebuild_SortedCombatantList(gbl.mapToBackGroundTile, 1, 0xff, gbl.spell_table[spell_id].field_F, pos);
+
+            foreach (var sc in sortedCombatants)
             {
-                Player tmpPlayer = gbl.player_array[gbl.SortedCombatantList[i].player_index];
+                Player tmpPlayer = sc.player;
                 SpellEntry spell_entry = gbl.spell_table[spell_id];
 
                 if (gbl.player_ptr.OppositeTeam() != tmpPlayer.combat_team &&
@@ -165,7 +165,7 @@ namespace engine
                         {
                             foreach(var cpi in nearTargets)
                             {
-                                if (sub_352AF(spellId, gbl.CombatMap[cpi.index].pos) == true)
+                                if (sub_352AF(spellId, cpi.pos) == true)
                                 {
                                     return false;
                                 }
@@ -397,11 +397,11 @@ namespace engine
                        (player.field_F7 > 0x7F && gbl.enemyHealthPercentage <= (ovr024.roll_dice(100, 1) + gbl.monster_morale)) ||
                         player.combat_team == CombatTeam.Enemy)
                     {
-                        if (player.actions.field_14 != 0 ||
+                        if (player.actions.field_14 == true ||
                             player.armor != null ||
                             player._class != ClassId.magic_user)
                         {
-                            if (player.actions.field_14 == 0)
+                            if (player.actions.field_14 == false)
                             {
                                 var_1 = ovr014.getTargetDirection(player.actions.target, player);
                             }
@@ -425,7 +425,7 @@ namespace engine
                             while (var_3 < 6 && var_5 == false &&
                                 sub_3573B(out var_4, var_1, var_3, player) == false)
                             {
-                                if (player.actions.field_14 != 0 &&
+                                if (player.actions.field_14 == true &&
                                     var_4 == true)
                                 {
                                     var_5 = true;
@@ -440,7 +440,7 @@ namespace engine
                             if (var_5 == true)
                             {
                                 player.actions.move = 0;
-                                player.actions.field_14 = 0;
+                                player.actions.field_14 = false;
                                 var_5 = true;
                                 ovr025.clear_actions(player);
                             }
@@ -540,7 +540,7 @@ namespace engine
 
             while (var_2 == false && var_3 == true)
             {
-                if (player.actions.field_14 != 0)
+                if (player.actions.field_14 == true)
                 {
                     while (player.actions.move > 0 &&
                         player.actions.delay > 0 &&
@@ -774,13 +774,13 @@ namespace engine
         static bool sub_3637F(Player player)
         {
             bool var_1 = false;
-            player.actions.field_14 = 0;
+            player.actions.field_14 = false;
 
             ovr024.sub_6460D(player);
 
             if (player.actions.fleeing == true)
             {
-                player.actions.field_14 = 1;
+                player.actions.field_14 = true;
                 ovr025.DisplayPlayerStatusString(true, 10, "is forced to flee", player);
             }
             else if (player.field_F7 > 0x7F)
@@ -807,9 +807,9 @@ namespace engine
                     {
                         int var_2 = ovr014.MaxOppositionMoves(player);
 
-                        if (var_2 <= (ovr014.sub_3E124(player) >> 1))
+                        if (var_2 <= (ovr014.sub_3E124(player) / 2))
                         {
-                            player.actions.field_14 = 1;
+                            player.actions.field_14 = true;
                             ovr024.remove_affect(null, Affects.affect_4a, player);
                             ovr024.remove_affect(null, Affects.affect_4b, player);
                         }
