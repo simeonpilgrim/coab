@@ -326,17 +326,17 @@ namespace engine
                 menuText += "Use ";
             }
 
-            bool var_2B = false;
+            bool hasSpells = false;
 
             for (int spellIdx = 0; spellIdx < gbl.max_spells; spellIdx++)
             {
                 if (player.spell_list[spellIdx] > 0)
                 {
-                    var_2B = true;
+                    hasSpells = true;
                 }
             }
 
-            if (var_2B == true &&
+            if (hasSpells == true &&
                 player.actions.can_cast == true &&
                 gbl.area_ptr.can_cast_spells == false)
             {
@@ -346,7 +346,7 @@ namespace engine
             if (player.cleric_lvl > 0 ||
                 (player.turn_undead > 0 && ovr026.sub_6B3D1(player) != 0))
             {
-                if (player.actions.field_11 == 0)
+                if (player.actions.hasTurnedUndead == false)
                 {
                     menuText += "Turn ";
                 }
@@ -356,9 +356,10 @@ namespace engine
 
             do
             {
-                arg_0 = ovr027.displayInput(out var_2B, false, 1, 15, 10, 13, menuText, string.Empty);
+                bool ctrlKey;
+                arg_0 = ovr027.displayInput(out ctrlKey, false, 1, 15, 10, 13, menuText, string.Empty);
 
-                if (var_2B == true &&
+                if (ctrlKey == true &&
                     unk_33748.MemberOf(arg_0) == false)
                 {
                     arg_0 = '\0';
@@ -421,8 +422,8 @@ namespace engine
 
         internal static void sub_33B26(ref bool arg_0, char arg_4, Player player)
         {
-            byte var_1 = player.actions.move;
-            byte var_2 = player.actions.direction;
+            int movesBackup = player.actions.move;
+            int dirBackup = player.actions.direction;
             Point pos = ovr033.PlayerMapPos(player);
 
             arg_0 = false;
@@ -436,16 +437,15 @@ namespace engine
 
                 if (arg_4 == ' ')
                 {
-                    string text = "Move/Attack, Move Left = " + (player.actions.move / 2).ToString() + " ";
+                    string text = string.Format("Move/Attack, Move Left = {0} ", player.actions.move / 2);
 
-                    bool dummyBool;
-                    arg_4 = ovr027.displayInput(out dummyBool, false, 1, 15, 10, 10, string.Empty, text);
+                    arg_4 = ovr027.displayInput(false, 1, 15, 10, 10, string.Empty, text);
                 }
 
                 switch (arg_4)
                 {
                     case '\0':
-                        player.actions.move = var_1;
+                        player.actions.move = movesBackup;
 
                         ovr033.RedrawPlayerBackground(ovr033.GetPlayerIndex(player));
 
@@ -459,7 +459,7 @@ namespace engine
                         }
 
                         ovr033.redrawCombatArea(8, 0, ovr033.PlayerMapPos(player));
-                        player.actions.direction = var_2;
+                        player.actions.direction = dirBackup;
                         dir = 8;
                         break;
 
@@ -643,8 +643,7 @@ namespace engine
 
             while (input != '\0' && input != 'E' && turnEnded == false)
             {
-                bool dummyBool;
-                input = ovr027.displayInput(out dummyBool, false, 0, 15, 10, 13, menuText, string.Empty);
+                input = ovr027.displayInput(false, 0, 15, 10, 13, menuText, string.Empty);
 
                 switch (input)
                 {
@@ -698,8 +697,7 @@ namespace engine
 
                 menu += "Exit";
 
-                bool dummyBool;
-                input = ovr027.displayInput(out dummyBool, false, 0, 15, 10, 13, menu, text);
+                input = ovr027.displayInput(false, 0, 15, 10, 13, menu, text);
 
                 if (input == 0x53)
                 {

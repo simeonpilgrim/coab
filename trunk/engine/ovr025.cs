@@ -1440,33 +1440,15 @@ namespace engine
 
         internal static List<CombatPlayerIndex> BuildNearTargets(int max_range, Player player) /*near_enermy*/
         {
-            ovr032.Rebuild_SortedCombatantList(gbl.mapToBackGroundTile, ovr033.PlayerMapSize(player), 0xff, max_range, ovr033.PlayerMapPos(player));
-
-            if (gbl.sortedCombatantCount > 0)
-            {
-                int tmpCount = 0;
-
-                for (int i = 1; i <= gbl.sortedCombatantCount; i++)
-                {
-                    Player tmp = gbl.player_array[gbl.SortedCombatantList[i].player_index];
-
-                    if (tmp.combat_team == player.OppositeTeam())
-                    {
-                        tmpCount++;
-                        gbl.SortedCombatantList[tmpCount] = new SortedCombatant(gbl.SortedCombatantList[i]);
-                    }
-                }
-
-                gbl.sortedCombatantCount = tmpCount;
-            }
+            var scl = ovr032.Rebuild_SortedCombatantList(gbl.mapToBackGroundTile, ovr033.PlayerMapSize(player), 0xff, max_range, ovr033.PlayerMapPos(player));
+            
+            scl.RemoveAll(sc => sc.player.combat_team == player.combat_team);
 
             List<CombatPlayerIndex> nearTargets = new List<CombatPlayerIndex>();
-            int ret_val = gbl.sortedCombatantCount;
-            for (int i = 1; i <= gbl.sortedCombatantCount; i++)
+
+            foreach (var sc in scl)
             {
-                int index = gbl.SortedCombatantList[i].player_index;
-                Player target = gbl.player_array[index];
-                nearTargets.Add( new CombatPlayerIndex( target, index) );
+                nearTargets.Add(new CombatPlayerIndex(sc.player, sc.pos));
             }
 
             return nearTargets;
@@ -1475,29 +1457,25 @@ namespace engine
 
         internal static int getTargetRange(Player target, Player attacker) /* sub_68708 */
         {
-            // Backup previous sort
-            SortedCombatant[] backupList = new SortedCombatant[gbl.MaxSortedCombatantCount];
-            System.Array.Copy(gbl.SortedCombatantList, backupList, gbl.MaxSortedCombatantCount);
-
             gbl.mapToBackGroundTile.field_6 = true;
 
-            ovr032.Rebuild_SortedCombatantList(gbl.mapToBackGroundTile,
+            var scl = ovr032.Rebuild_SortedCombatantList(gbl.mapToBackGroundTile,
                 ovr033.PlayerMapSize(attacker), 0xff, 0xff, ovr033.PlayerMapPos(attacker));
 
             gbl.mapToBackGroundTile.field_6 = false;
 
-            int i = 0;
-            while (gbl.player_array[gbl.SortedCombatantList[i].player_index] != target &&
-                i < (gbl.sortedCombatantCount - 1))
+            var combatant = scl.Find(sc => sc.player == target);
+
+            if (combatant != null)
             {
-                i++;
+                return combatant.steps / 2;
             }
-
-            int range = gbl.SortedCombatantList[i].steps / 2;
-
-            // Restore previous sorting
-            System.Array.Copy(backupList, gbl.SortedCombatantList, gbl.MaxSortedCombatantCount);
-            return range;
+            else
+            {
+                //Not sure what to return just yet...
+                //return combatant.steps / 2; 
+                return 0xFF;
+            }
         }
 
 

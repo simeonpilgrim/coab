@@ -865,7 +865,7 @@ namespace engine
             {
                 if (ovr027.yes_no(15, 10, 14, "quit TO DOS: ") == 'Y')
                 {
-                    ovr018.FreeCurrentPlayer(true, false);
+                    ovr018.FreeCurrentPlayer(gbl.player_next_ptr[0], true, false);
                     seg043.print_and_exit();
                 }
             }
@@ -884,7 +884,7 @@ namespace engine
                         ovr025.DisplayPlayerStatusString(true, 10, "is dumped in a ditch", gbl.player_ptr);
                     }
 
-                    ovr018.FreeCurrentPlayer(true, false);
+                    gbl.player_ptr = ovr018.FreeCurrentPlayer(gbl.player_ptr, true, false);
                     seg037.draw8x8_clear_area(0x0b, 0x26, 1, 0x11);
 
                     ovr025.PartySummary(gbl.player_ptr);
@@ -1026,7 +1026,7 @@ namespace engine
                                 {
                                     gbl.PicsOn = !gbl.PicsOn;
                                 }
-                                else if (inputKey2 == 0x41)
+                                else if (inputKey2 == 'A')
                                 {
                                     gbl.AnimationsOn = !gbl.AnimationsOn;
                                 }

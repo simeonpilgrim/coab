@@ -802,7 +802,7 @@ namespace engine
 
                 if (player.combat_team == CombatTeam.Enemy)
                 {
-                    player.actions.direction = (byte)((player.actions.direction + 4) % 8);
+                    player.actions.direction = (player.actions.direction + 4) % 8;
                 }
 
                 int var_6 = player.field_F7 & 0x7f;
@@ -874,7 +874,7 @@ namespace engine
         static int[,] direction_165EC = { { 8, 4, 6, 2 }, { 8, 6, 4, 0 }, { 8, 0, 6, 2 }, { 8, 2, 0, 4 } }; /*seg600:02DC unk_165EC*/
         static int[,] direction_165FC = { { 0, 0, 2, 6 }, { 2, 2, 0, 4 }, { 4, 4, 2, 6 }, { 6, 6, 4, 0 } }; /*seg600:02EC unk_165FC*/
 
-        static byte[] HalfDirToIso = { 7, 2, 3, 6 }; /*seg600:02FC unk_1660C */
+        static int[] HalfDirToIso = { 7, 2, 3, 6 }; /*seg600:02FC unk_1660C */
 
         static byte[] /*seg600:0300*/ unk_16610 = { 5, 4, 5, 6, 3, 8, 7, 2 };
         static byte[] /*seg600:0308*/ unk_16618 = { 3, 2, 2, 3, 0, 2, 5, 3 };
@@ -1050,8 +1050,6 @@ namespace engine
         static void PlaceCombatants() /* sub_387FE */
         {
             ovr025.CountCombatTeamMembers();
-            byte var_F = 0;
-            byte var_E = 0;
 
             for (int i = 1; i <= gbl.MaxCombatantCount; i++)
             {
@@ -1114,7 +1112,7 @@ namespace engine
 
                 gbl.currentTeam = (sbyte)player_ptr.combat_team;
 
-                gbl.CombatMap[loop_var].player_index = loop_var;
+                //gbl.CombatMap[loop_var].player_index = loop_var;
                 gbl.CombatMap[loop_var].size = player_ptr.field_DE & 7;
 
                 if (place_combatant(loop_var) == true)
@@ -1143,7 +1141,6 @@ namespace engine
                     gbl.CombatantCount++;
                     ovr033.setup_mapToPlayerIndex_and_playerScreen();
                     loop_var++;
-                    var_E++;
                 }
                 else
                 {
@@ -1151,8 +1148,6 @@ namespace engine
 
                     if (player_ptr.actions.nonTeamMember == true)
                     {
-                        var_F++;
-
                         gbl.player_array[loop_var] = null;
                         to_remove.Add(player_ptr);
                     }
@@ -1165,8 +1160,7 @@ namespace engine
 
             foreach (Player player in to_remove)
             {
-                gbl.player_ptr = player;
-                ovr018.FreeCurrentPlayer(false, true);
+                gbl.player_ptr = ovr018.FreeCurrentPlayer(player, false, true);
             }
         }
 

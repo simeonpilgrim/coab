@@ -437,7 +437,7 @@ namespace engine
 
         internal static void temple_shop()
         {
-            bool var_30 = false; /* Simeon */
+            bool reloadPics = false;
 
             gbl.game_state = GameState.Shop;
             gbl.redrawBoarder = (gbl.area_ptr.inDungeon == 0);
@@ -501,7 +501,7 @@ namespace engine
                         break;
 
                     case 'A':
-                        var_30 = ovr022.appraiseGemsJewels();
+                        reloadPics = ovr022.appraiseGemsJewels();
                         break;
 
                     case 'E':
@@ -545,9 +545,10 @@ namespace engine
                 {
                     ovr025.load_pic();
                 }
-                else if (input_key == 'A' && var_30 == true)
+                else if (reloadPics == true)
                 {
                     ovr025.load_pic();
+                    reloadPics = false;
                 }
 
                 ovr025.PartySummary(gbl.player_ptr);

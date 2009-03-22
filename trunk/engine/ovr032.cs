@@ -1,35 +1,11 @@
 using Classes;
 using System;
+using System.Collections.Generic;
 
 namespace engine
 {
     class ovr032
     {
-        static void Sort_SortedCombatabtList() /* sub_73033 */
-        {
-            if (gbl.sortedCombatantCount > 1)
-            {
-                for (int indexA = 1; indexA <= (gbl.sortedCombatantCount - 1); indexA++)
-                {
-                    for (int indexB = indexA + 1; indexB <= gbl.sortedCombatantCount; indexB++)
-                    {
-                        int dirA = gbl.SortedCombatantList[indexA].direction;
-                        int dirB = gbl.SortedCombatantList[indexB].direction;
-
-                        if (gbl.SortedCombatantList[indexB].steps < gbl.SortedCombatantList[indexA].steps ||
-                            (gbl.SortedCombatantList[indexB].steps == gbl.SortedCombatantList[indexA].steps &&
-                              dirB < dirA && (dirB % 2) <= (dirA % 2)))
-                        {
-                            // swap them.
-                            SortedCombatant tmp = gbl.SortedCombatantList[indexA];
-                            gbl.SortedCombatantList[indexA] = gbl.SortedCombatantList[indexB];
-                            gbl.SortedCombatantList[indexB] = tmp;
-                        }
-                    }
-                }
-            }
-        }
-
         internal static bool canReachTarget(Struct_1D1BC groundTilesMap, ref int range, Point target, Point attacker)
         {
             var tmpPos = target;
@@ -166,12 +142,12 @@ namespace engine
         }
 
 
-        internal static void Rebuild_SortedCombatantList(Struct_1D1BC groundTileMap, int size, byte dir, int max_range, Point pos) /* sub_738D8 */
+        internal static List<SortedCombatant> Rebuild_SortedCombatantList(Struct_1D1BC groundTileMap, int size, byte dir, int max_range, Point pos) /* sub_738D8 */
         {
             var deltas = ovr033.GetSizeBasedMapDeltas(size);
             var attackerMap = ovr033.BuildSizeMap(size, pos);
 
-            gbl.sortedCombatantCount = 0;
+            var sortedCombatants = new List<SortedCombatant>();
 
             for (int playerIndex = 1; playerIndex <= gbl.CombatantCount; playerIndex++)
             {
@@ -210,10 +186,6 @@ namespace engine
 
                     if (found == true)
                     {
-                        gbl.sortedCombatantCount++;
-
-                        gbl.SortedCombatantList[gbl.sortedCombatantCount].player_index = playerIndex;
-                        gbl.SortedCombatantList[gbl.sortedCombatantCount].steps = found_range;
                         byte tmpDir = 0;
 
                         if (dir < 8)
@@ -222,18 +194,36 @@ namespace engine
                         }
                         else
                         {
-                            while (CanSeeCombatant(tmpDir, found_target, found_attacker) == false)
-                            {
-                                tmpDir++;
-                            }
+                            tmpDir = FindCombatantDirection(found_target, found_attacker);
                         }
 
-                        gbl.SortedCombatantList[gbl.sortedCombatantCount].direction = tmpDir;
+                        var combatant = new SortedCombatant(gbl.player_array[playerIndex], gbl.CombatMap[playerIndex].pos, found_range, tmpDir);
+                        sortedCombatants.Add(combatant);
                     }
                 }
             }
 
-            Sort_SortedCombatabtList();
+            sortedCombatants.Sort();
+
+            return sortedCombatants;
         }
+
+
+        internal static byte FindCombatantDirection(Point target, Point attacker)
+        {
+            byte dir = 0;
+
+            while (CanSeeCombatant(dir, target, attacker) == false)
+            {
+                dir++;
+            }
+
+            return dir;
+        }
+    
+    
     }
+
+
 }
+

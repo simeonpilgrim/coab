@@ -39,12 +39,6 @@ namespace engine
             {
                 gbl.CombatMap[i] = new CombatantMap();
             }
-
-            gbl.SortedCombatantList = new SortedCombatant[gbl.MaxSortedCombatantCount];
-            for (int i = 0; i < gbl.MaxSortedCombatantCount; i++)
-            {
-                gbl.SortedCombatantList[i] = new SortedCombatant();
-            }
             /* Memory Init - End */
 
             InitFirst();
@@ -59,8 +53,7 @@ namespace engine
             gbl.displayInputCentiSecondWait = 3000;
             gbl.displayInputTimeoutValue = 'D';
 
-            bool dummyBool;
-            char inputKey = ovr027.displayInput(out dummyBool, false, 0, 15, 10, 13, "Play Demo", "Curse of the Azure Bonds v1.3 ");
+            char inputKey = ovr027.displayInput(false, 0, 15, 10, 13, "Play Demo", "Curse of the Azure Bonds v1.3 ");
 
             gbl.displayInputCentiSecondWait = 0;
             gbl.displayInputTimeoutValue = '\0';
@@ -105,7 +98,7 @@ namespace engine
                     gbl.displayInputCentiSecondWait = 1000;
                     gbl.displayInputTimeoutValue = 'D';
 
-                    inputKey = ovr027.displayInput(out dummyBool, false, 0, 15, 10, 13, "Play Demo", "Curse of the Azure Bonds v1.3 ");
+                    inputKey = ovr027.displayInput(false, 0, 15, 10, 13, "Play Demo", "Curse of the Azure Bonds v1.3 ");
 
                     gbl.displayInputCentiSecondWait = 0;
                     gbl.displayInputTimeoutValue = '\0';

@@ -155,7 +155,7 @@ namespace engine
 
         internal static void sub_2F6E7( )
         {
-            bool var_32 = false; /* Simeon */
+            bool reloadPics = false; /* Simeon */
             bool items_on_ground;
             bool money_on_ground;
             char var_2E;
@@ -222,7 +222,7 @@ namespace engine
 
 
                     case 'A':
-                        var_32 = ovr022.appraiseGemsJewels();
+                        reloadPics = ovr022.appraiseGemsJewels();
                         break;
 
                     case 'E':
@@ -259,15 +259,15 @@ namespace engine
                         break;
                 }
                 
-                if( var_2E == 0x42 ||
-                    var_2E == 0x54 )
+                if( var_2E == 'B' ||
+                    var_2E == 'T' )
                 {
                     ovr025.load_pic();
                 }
-                else if( var_2E == 0x41 &&
-                    var_32 == true )
+                else if( reloadPics == true )
                 {
                     ovr025.load_pic();
+                    reloadPics = false;
                 }
 
                 ovr025.PartySummary( gbl.player_ptr );

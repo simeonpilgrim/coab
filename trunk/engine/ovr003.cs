@@ -204,7 +204,7 @@ namespace engine
                 {
                     gbl.restore_player_ptr = false;
                 }
-                ovr018.FreeCurrentPlayer(true, false);
+                gbl.player_ptr = ovr018.FreeCurrentPlayer(gbl.player_ptr, true, false);
 
                 ovr025.PartySummary(gbl.player_ptr);
                 gbl.redrawPartySummary1 = false;
@@ -691,8 +691,7 @@ namespace engine
                 menuList.Add(new MenuItem(gbl.unk_1D972[i + 1]));
             }
 
-            int index = 0;
-            ovr008.sub_318AE(ref index, true, false, menuList, 0x16, 0x26, gbl.textYCol + 1, 1, 15, 10, 13);
+            int index = ovr008.VertMenuSelect(0, true, false, menuList, 0x16, 0x26, gbl.textYCol + 1, 1, 15, 10, 13);
 
             ovr008.vm_SetMemoryValue((ushort)index, mem_loc);
 
@@ -1242,18 +1241,16 @@ namespace engine
             ushort var_43D;
             int var_43B;
             byte var_43A;
-            string var_439;
-            string var_437;
+            string displayText;
             bool useOverlay;
-            bool var_40D;
+            bool clearTextArea;
             byte init_max;
             byte init_min;
             byte var_40A;
-            byte var_409;
             byte var_408;
             byte var_407;
-            string var_406 = string.Empty; /* Simeon */
-            string[] var_405 = new string[3];
+            string text = string.Empty; /* Simeon */
+            string[] strings = new string[3];
             byte[] var_6 = new byte[5];
             int menu_selected;
 
@@ -1263,7 +1260,6 @@ namespace engine
 
             ovr008.calc_group_movement(out init_min, out var_40A);
 
-            var_439 = string.Empty;
             ovr008.vm_LoadCmdSets(0x0e);
 
             gbl.sprite_block_id = (byte)ovr008.vm_GetCmdValue(1);
@@ -1277,9 +1273,9 @@ namespace engine
                 var_6[i] = (byte)ovr008.vm_GetCmdValue(i + 5);
             }
 
-            for (var_409 = 0; var_409 < 3; var_409++)
+            for (int i = 0; i < 3; i++)
             {
-                var_405[var_409] = gbl.unk_1D972[var_409 + 1];
+                strings[i] = gbl.unk_1D972[i + 1];
             }
 
             var_407 = (byte)ovr008.vm_GetCmdValue(0x0d);
@@ -1308,7 +1304,7 @@ namespace engine
                     useOverlay = true;
                 }
 
-                var_40D = (gbl.area_ptr.inDungeon != 0);
+                clearTextArea = (gbl.area_ptr.inDungeon != 0);
 
                 init_max = 0;
                 gbl.textXCol = 1;
@@ -1321,9 +1317,9 @@ namespace engine
 
                         do
                         {
-                            var_406 = var_405[var_43B];
+                            text = strings[var_43B];
                             var_43B++;
-                        } while (var_406.Length == 0 && var_43B < 3);
+                        } while (text.Length == 0 && var_43B < 3);
                         break;
 
                     case 1:
@@ -1331,14 +1327,14 @@ namespace engine
 
                         do
                         {
-                            var_406 = var_405[var_43B];
+                            text = strings[var_43B];
                             var_43B++;
 
                             if (var_43B > 2)
                             {
                                 var_43B = 0;
                             }
-                        } while (var_406.Length == 0 && var_43B != 1);
+                        } while (text.Length == 0 && var_43B != 1);
                         break;
 
                     case 2:
@@ -1346,7 +1342,7 @@ namespace engine
 
                         do
                         {
-                            var_406 = var_405[var_43B];
+                            text = strings[var_43B];
 
                             var_43B++;
                             if (var_43B > 2)
@@ -1354,28 +1350,28 @@ namespace engine
                                 var_43B = 0;
                             }
 
-                        } while (var_406.Length == 0 && var_43B != 2);
+                        } while (text.Length == 0 && var_43B != 2);
                         break;
                 }
 
-                if (var_406.Length == 0)
+                if (text.Length == 0)
                 {
-                    var_40D = false;
+                    clearTextArea = false;
                 }
 
-                seg041.press_any_key(var_406, var_40D, 0, 10, 0x16, 0x26, 0x11, 1);
+                seg041.press_any_key(text, clearTextArea, 0, 10, 0x16, 0x26, 0x11, 1);
 
                 if (gbl.area2_ptr.encounter_distance == 0 ||
                     gbl.area_ptr.inDungeon == 0)
                 {
-                    var_437 = "~COMBAT ~WAIT ~FLEE ~PARLAY";
+                    displayText = "~COMBAT ~WAIT ~FLEE ~PARLAY";
                 }
                 else
                 {
-                    var_437 = "~COMBAT ~WAIT ~FLEE ~ADVANCE";
+                    displayText = "~COMBAT ~WAIT ~FLEE ~ADVANCE";
                 }
 
-                menu_selected = ovr008.sub_317AA(useOverlay, 0, 15, 10, 13, var_437, var_439);
+                menu_selected = ovr008.sub_317AA(useOverlay, 0, 15, 10, 13, displayText, string.Empty);
 
                 if (gbl.area2_ptr.encounter_distance == 0 ||
                     gbl.area_ptr.inDungeon == 0)
@@ -2058,7 +2054,7 @@ namespace engine
 
             VmLog.WriteLine("CMD_Dump: Player: {0}", gbl.player_ptr);
 
-            ovr018.FreeCurrentPlayer(true, false);
+            gbl.player_ptr = ovr018.FreeCurrentPlayer(gbl.player_ptr, true, false);
 
             gbl.player_ptr2 = gbl.player_ptr;
 
@@ -2314,10 +2310,11 @@ namespace engine
 
             if (gbl.inDemo == true)
             {
-                do
+                while(gbl.player_next_ptr.Count > 0)
                 {
-                    ovr018.FreeCurrentPlayer(true, true);
-                } while (gbl.player_next_ptr.Count > 0);
+                    ovr018.FreeCurrentPlayer(gbl.player_next_ptr[0], true, true);
+                }
+                gbl.player_ptr = null;
             }
             else
             {

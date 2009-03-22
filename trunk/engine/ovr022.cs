@@ -908,7 +908,10 @@ namespace engine
             return item;
         }
 
-
+    
+        /// <summary>
+        /// Turns if pictures need re-loading
+        /// </summary>
         internal static bool appraiseGemsJewels()
         {
             bool special_key;

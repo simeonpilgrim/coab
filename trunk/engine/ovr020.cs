@@ -41,38 +41,36 @@ namespace engine
                                         "Gems", "Jewelry" };
 
 
-        internal static void playerDisplayFull()
+        internal static void playerDisplayFull(Player player)
         {
-            gbl.player_ptr02 = gbl.player_ptr;
-
             seg037.DrawFrame_Outer();
 
-            ovr025.displayPlayerName(false, 1, 1, gbl.player_ptr02);
+            ovr025.displayPlayerName(false, 1, 1, player);
 
-            if (gbl.player_ptr02.field_F7 > 0x7F)
+            if (player.field_F7 > 0x7F)
             {
-                seg041.displayString("(NPC)", 0, 10, 1, gbl.player_ptr02.name.Length + 3);
+                seg041.displayString("(NPC)", 0, 10, 1, player.name.Length + 3);
             }
 
             int xCol = 1;
 
-            string text2 = sexString[gbl.player_ptr02.sex];
+            string text2 = sexString[player.sex];
 
-            seg041.displayString(sexString[gbl.player_ptr02.sex], 0, 15, 3, xCol);
+            seg041.displayString(sexString[player.sex], 0, 15, 3, xCol);
 
             xCol += (byte)(text2.Length + 1);
-            text2 = raceString[(int)gbl.player_ptr02.race];
+            text2 = raceString[(int)player.race];
             seg041.displayString(text2, 0, 15, 3, xCol);
 
             xCol += (byte)(text2.Length + 1);
-            string text = "Age " + gbl.player_ptr02.age.ToString();
+            string text = "Age " + player.age.ToString();
 
             seg041.displayString(text, 0, 15, 3, xCol);
 
-            text2 = alignmentString[gbl.player_ptr02.alignment];
+            text2 = alignmentString[player.alignment];
             seg041.displayString(text2, 0, 15, 4, 1);
 
-            text2 = classString[(int)gbl.player_ptr02._class];
+            text2 = classString[(int)player._class];
             seg041.displayString(text2, 0, 15, 5, 1);
 
             for (int stat = 0; stat < 6; stat++)
@@ -90,17 +88,17 @@ namespace engine
 
             for (int classIdx = 0; classIdx <= 7; classIdx++)
             {
-                byte tmp = gbl.player_ptr02.Skill_B_lvl[classIdx];
+                byte tmp = player.Skill_B_lvl[classIdx];
 
-                if (gbl.player_ptr02.class_lvls[classIdx] > 0 ||
-                    (tmp < ovr026.HumanFirstClassLevelOrZero(gbl.player_ptr02) && tmp > 0))
+                if (player.class_lvls[classIdx] > 0 ||
+                    (tmp < ovr026.HumanFirstClassLevelOrZero(player) && tmp > 0))
                 {
                     if (displaySlash )
                     {
                         text2 += "/";
                     }
 
-                    text2 += (gbl.player_ptr02.class_lvls[classIdx] + gbl.player_ptr02.Skill_B_lvl[classIdx]).ToString();
+                    text2 += (player.class_lvls[classIdx] + player.Skill_B_lvl[classIdx]).ToString();
 
                     displaySlash = true;
                 }
@@ -108,29 +106,29 @@ namespace engine
 
             seg041.displayString(text2, 0, 15, 15, 7);
 
-            text = "Exp " + gbl.player_ptr02.exp.ToString();
+            text = "Exp " + player.exp.ToString();
             seg041.displayString(text, 0, 15, 15, 17);
 
             ovr020.display_player_stats01();
             int yCol = 20;
 
-            if (gbl.player_ptr02.field_151 != null)
+            if (player.field_151 != null)
             {
                 seg041.displayString("Weapon", 0, 15, yCol, 1);
-                ovr025.ItemDisplayNameBuild(true, false, yCol, 8, gbl.player_ptr02.field_151);
+                ovr025.ItemDisplayNameBuild(true, false, yCol, 8, player.field_151);
             }
 
             yCol++;
-            if (gbl.player_ptr02.armor != null)
+            if (player.armor != null)
             {
                 seg041.displayString("Armor", 0, 15, yCol, 2);
-                ovr025.ItemDisplayNameBuild(true, false, yCol, 8, gbl.player_ptr02.armor);
+                ovr025.ItemDisplayNameBuild(true, false, yCol, 8, player.armor);
             }
 
             yCol++;
 
             seg041.displayString("Status", 0, 15, yCol, 1);
-            seg041.displayString(statusString[(int)gbl.player_ptr02.health_status], 0, 10, yCol, 8);
+            seg041.displayString(statusString[(int)player.health_status], 0, 10, yCol, 8);
         }
 
         internal static void displayMoney()
@@ -247,7 +245,7 @@ namespace engine
 
             gbl.tradeWith = gbl.player_ptr;
 
-            playerDisplayFull();
+            playerDisplayFull(gbl.player_ptr);
 
             while (unk_54B03.MemberOf(input_key) == false && arg_0 == false)
             {
@@ -257,7 +255,7 @@ namespace engine
 
                 for (int i = 0; i < gbl.max_spells; i++)
                 {
-                    if (gbl.player_ptr02.spell_list[i] > 0)
+                    if (gbl.player_ptr.spell_list[i] > 0)
                     {
                         hasSpells = true;
                     }
@@ -265,13 +263,13 @@ namespace engine
 
                 for (int i = 0; i <= 6; i++)
                 {
-                    if (gbl.player_ptr02.Money[i] > 0)
+                    if (gbl.player_ptr.Money[i] > 0)
                     {
                         hasMoney = true;
                     }
                 }
 
-                if (gbl.player_ptr02.items.Count > 0)
+                if (gbl.player_ptr.items.Count > 0)
                 {
                     text += "Items ";
                 }
@@ -281,9 +279,9 @@ namespace engine
                     text += "Spells ";
                 }
 
-                if (gbl.player_ptr02.field_F7 < 0x80 ||
-                    gbl.player_ptr02.in_combat == false ||
-                    gbl.player_ptr02.health_status == Status.animated)
+                if (gbl.player_ptr.field_F7 < 0x80 ||
+                    gbl.player_ptr.in_combat == false ||
+                    gbl.player_ptr.health_status == Status.animated)
                 {
                     if (hasMoney && gbl.game_state != GameState.Combat)
                     {
@@ -308,8 +306,7 @@ namespace engine
 
                 text += "Exit";
 
-                bool dummyBool;
-                input_key = ovr027.displayInput(out dummyBool, false, 0, 15, 10, 13, text, string.Empty);
+                input_key = ovr027.displayInput(false, 0, 15, 10, 13, text, string.Empty);
 
                 int index = -1;
 
@@ -344,7 +341,7 @@ namespace engine
                 if (arg_0 == false &&
                     asc_54B50.MemberOf(input_key) == true)
                 {
-                    playerDisplayFull();
+                    playerDisplayFull(gbl.player_ptr);
                 }
             }
 
@@ -1240,8 +1237,8 @@ namespace engine
                 else
                 {
                     bool noMoneyLeft;
-                    
-                    playerDisplayFull();
+
+                    playerDisplayFull(gbl.player_ptr);
                     do
                     {
                         displayMoney();
@@ -1307,21 +1304,21 @@ namespace engine
             do
             {
                 displayMoney();
-                List<MenuItem> var_C = new List<MenuItem>();
+                List<MenuItem> menuList = new List<MenuItem>();
 
                 for (int coin = 0; coin < 7; coin++)
                 {
                     if (gbl.player_ptr.Money[coin] != 0)
                     {
-                        var_C.Add(new MenuItem(string.Format("{0,8} {1}", moneyString[coin], gbl.player_ptr.Money[coin])));
+                        menuList.Add(new MenuItem(string.Format("{0,8} {1}", moneyString[coin], gbl.player_ptr.Money[coin])));
                     }
                 }
 
                 int index = 0;
-                bool var_16 = true;
+                bool redrawMenuItems = true;
 
                 MenuItem selected;
-                ovr027.sl_select_item(out selected, ref index, ref var_16, true, var_C, 13, 0x19, 7,
+                ovr027.sl_select_item(out selected, ref index, ref redrawMenuItems, true, menuList, 13, 0x19, 7,
                     12, 15, 10, 13, " Select", "Select type of coin ");
 
                 if (selected == null)
@@ -1350,7 +1347,7 @@ namespace engine
                     }
                 }
 
-                var_C.Clear();
+                menuList.Clear();
             } while (noMoreMoney == false);
         }
 
@@ -1536,7 +1533,7 @@ namespace engine
 
             if (target == null)
             {
-                playerDisplayFull();
+                playerDisplayFull(gbl.player_ptr);
                 return;
             }
 
@@ -1553,7 +1550,7 @@ namespace engine
             }
 
             ovr024.add_affect(false, 0, 1440, Affects.paladinDailyHealCast, player);
-            playerDisplayFull();
+            playerDisplayFull(gbl.player_ptr);
         }
 
         static Affects[] paladinCureableDiseases = { // unk_16B39
@@ -1573,7 +1570,7 @@ namespace engine
 
             if (target == null)
             {
-                playerDisplayFull();
+                playerDisplayFull(gbl.player_ptr);
             }
             else
             {
@@ -1610,7 +1607,7 @@ namespace engine
                     ovr025.string_print01(target.name + " is cured");
                 }
 
-                playerDisplayFull();
+                playerDisplayFull(gbl.player_ptr);
             }
         }
     }

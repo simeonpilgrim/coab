@@ -130,6 +130,11 @@ namespace engine
 
         static byte[] unk_18AE0 = { 0x4F, 0x50, 0x51, 0x4B, 0x20, 0x4D, 0x47, 0x48, 0x49 };
 
+        internal static char displayInput(bool useOverlay, byte arg_6, int highlightFgColor, int fgColor, int extraStringFgColor, string displayInputString, string displayExtraString)
+        {
+            bool dummyBool;
+            return displayInput(out dummyBool, useOverlay, arg_6, highlightFgColor, fgColor, extraStringFgColor, displayInputString, displayExtraString);
+        }
 
         internal static char displayInput(out bool specialKeyPressed, bool useOverlay, byte arg_6, int highlightFgColor, int fgColor, int extraStringFgColor, string displayInputString, string displayExtraString)
         {
@@ -689,13 +694,12 @@ namespace engine
         internal static char yes_no(byte highlightFgColor, byte fgColor, byte extraStringFgColor, string inputString)
         {
             char inputKey;
-            bool dummyBool;
 
             gbl.menuSelectedWord = 2;
 
             do
             {
-                inputKey = displayInput(out dummyBool, false, 0, highlightFgColor, fgColor, extraStringFgColor, "Yes No", inputString);
+                inputKey = displayInput(false, 0, highlightFgColor, fgColor, extraStringFgColor, "Yes No", inputString);
             
             } while (yesNoFlags.MemberOf(inputKey) == false);
 

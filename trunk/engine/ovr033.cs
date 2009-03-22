@@ -371,7 +371,7 @@ namespace engine
         }
 
 
-        internal static void draw_74B3F(byte arg_0, byte arg_2, byte direction, Player player) /* sub_74B3F */
+        internal static void draw_74B3F(byte arg_0, byte arg_2, int direction, Player player) /* sub_74B3F */
         {
             int player_index = GetPlayerIndex(player);
 

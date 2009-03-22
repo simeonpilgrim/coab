@@ -48,7 +48,7 @@ namespace engine
 
                     if (strLen > 0)
                     {
-                        decompressString(strIndex, strLen);
+                        LoadCompressedEclString(strIndex, strLen);
                     }
                     else
                     {
@@ -1037,92 +1037,76 @@ namespace engine
             return data;
         }
 
-        internal static void decompressString(int strIndex, int inputLength)
+        internal static string DecompressString(byte[] data)
         {
-            System.Text.StringBuilder sb = new System.Text.StringBuilder();
-
-            int inputConsumed = 0;
+            var sb = new System.Text.StringBuilder();
             int state = 1;
-            uint curr = 0;
-            uint lastByte = 0;
-            uint thisByte = 0;
 
-            //byte[] bkup = new byte[inputLength];
-
-            while (inputConsumed < inputLength)
+            foreach (uint thisByte in data)
             {
-                if (state < 4)
-                {
-                    lastByte = thisByte;
-                    gbl.ecl_offset++;
-                    thisByte = gbl.ecl_ptr[gbl.ecl_offset + 0x8000];
-                    //bkup[inputConsumed] = gbl.ecl_ptr[gbl.ecl_offset + 0x8000];
-                    inputConsumed++;
-                }
+                uint lastByte = thisByte;
 
+                uint curr = 0;
                 switch (state)
                 {
                     case 1:
-                        curr = thisByte >> 2;
+                        curr = (thisByte >> 2) & 0x3F;
+                        if (curr != 0) sb.Append(inflateChar(curr));
+                        state = 2;
                         break;
 
                     case 2:
-                        curr = (lastByte << 4) | (thisByte >> 4);
+                        curr = ((lastByte << 4) | (thisByte >> 4)) & 0x3F;
+                        if (curr != 0) sb.Append(inflateChar(curr));
+                        state = 3;
                         break;
 
                     case 3:
-                        curr = (lastByte << 2) | (thisByte >> 6);
+                        curr = ((lastByte << 2) | (thisByte >> 6)) & 0x3F;
+                        if (curr != 0) sb.Append(inflateChar(curr));
+
+                        curr = thisByte & 0x3F;
+                        if (curr != 0) sb.Append(inflateChar(curr));
+                        state = 1;
                         break;
-
-                    case 4:
-                        curr = thisByte;
-                        break;
-                }
-
-                curr &= 0x3F;
-
-                state = (state % 4) + 1;
-
-                if (curr != 0)
-                {
-                    char ch = inflateChar(curr);
-                    sb.Append(ch);
                 }
             }
 
-            if (state == 4)
+            return sb.ToString();
+        }
+
+        internal static byte[] EclData(int baseAddr, int lenght)
+        {
+            byte[] data = new byte[lenght];
+
+            for (int i = 0; i < lenght; i++)
             {
-                curr = thisByte & 0x3F;
-
-                if (curr != 0)
-                {
-                    char ch = inflateChar(curr);
-                    sb.Append(ch);
-                }
+                data[i] = gbl.ecl_ptr[baseAddr + i];
             }
 
-            //byte[] bytes = compressString("THE WAY IS BLOCKED WITH RUBBLE");
-            //gbl.ecl_ptr.SearchForBytes(bytes, bytes.Length - 1);
+            return data;
+        }
 
-            gbl.unk_1D972[strIndex] = sb.ToString();
-            //int elco = gbl.ecl_offset;
-            //bytes = compressString(sb.ToString());
-            //gbl.ecl_ptr.SearchForBytes(bytes, bytes.Length - 1);
+        internal static void LoadCompressedEclString(int strIndex, int inputLength)
+        {
+            byte[] data = EclData(gbl.ecl_offset + 0x8000, inputLength);
+            gbl.ecl_offset += (ushort)inputLength;
+
+            gbl.unk_1D972[strIndex] = DecompressString(data);
         }
 
 
         internal static void vm_CopyStringFromMemory(ushort location, byte strIndex) // sub_31421
         {
             int offset = 0;
-
-            gbl.unk_1D972[strIndex] = string.Empty;
+            var sb = new System.Text.StringBuilder();
 
             switch (vm_GetMemoryValueType(location))
             {
                 case 0:
                     while (gbl.area_ptr.field_6A00_Get(((offset + location) * 2) + 0x6A00) != 0)
                     {
-                        gbl.unk_1D972[strIndex] += (char)((byte)gbl.area_ptr.field_6A00_Get(((offset + location) * 2) + 0x6A00));
+                        sb.Append((char)((byte)gbl.area_ptr.field_6A00_Get(((offset + location) * 2) + 0x6A00)));
                         offset++;
                     }
                     break;
@@ -1130,13 +1114,13 @@ namespace engine
                 case 1:
                     if (location == 0x7C00)
                     {
-                        gbl.unk_1D972[strIndex] = gbl.player_ptr.name;
+                        sb.Append(gbl.player_ptr.name);
                     }
                     else
                     {
                         while (gbl.area2_ptr.field_800_Get(((offset + location) << 1)+0x800) != 0)
                         {
-                            gbl.unk_1D972[strIndex] += gbl.area2_ptr.field_800_Get(((offset + location) << 1)+0x800).ToString();
+                            sb.Append((char)((byte)gbl.area2_ptr.field_800_Get(((offset + location) << 1) + 0x800)));
                             offset++;
                         }
                     }
@@ -1145,8 +1129,7 @@ namespace engine
                 case 2:
                     while (gbl.stru_1B2CA[((offset + location) << 1) + 0x0C00] != 0)
                     {
-                        char ch = (char)gbl.stru_1B2CA[((offset + location) << 1) + 0x0C00];
-                        gbl.unk_1D972[strIndex] += ch.ToString();
+                        sb.Append((char)gbl.stru_1B2CA[((offset + location) << 1) + 0x0C00]);
                         offset++;
                     }
                     break;
@@ -1154,11 +1137,13 @@ namespace engine
                 case 3:
                     while (gbl.ecl_ptr[offset + location + 0x8000] != 0)
                     {
-                        gbl.unk_1D972[strIndex] += gbl.ecl_ptr[offset + location + 0x8000].ToString();
+                        sb.Append((char)gbl.ecl_ptr[offset + location + 0x8000]);
                         offset++;
                     }
                     break;
             }
+
+            gbl.unk_1D972[strIndex] = sb.ToString();
         }
 
         static Set unk_31673 = new Set(0x0606, new byte[] { 0xff, 0x03, 0xfe, 0xff, 0xff, 0x07 });
@@ -1201,8 +1186,8 @@ namespace engine
 
         static Set unk_3178A = new Set(0x0606, new byte[] { 0xff, 0x03, 0xfe, 0xff, 0xff, 0x07 });
 
-        internal static int sub_317AA(bool useOverlay, byte arg_2, byte arg_4, byte arg_6, 
-			byte fgColor, string displayString, string extraString)
+        internal static int sub_317AA(bool useOverlay, byte arg_2, byte highlightFgColor, byte fgColor, 
+			byte extraFgColor, string displayString, string extraString)
         {
             char key_pressed;
             int ret_val;
@@ -1212,7 +1197,7 @@ namespace engine
             do
             {
                 bool special_key_pressed;
-                key_pressed = ovr027.displayInput(out special_key_pressed, useOverlay, 1, arg_4, arg_6, fgColor, displayString, extraString);
+                key_pressed = ovr027.displayInput(out special_key_pressed, useOverlay, 1, highlightFgColor, fgColor, extraFgColor, displayString, extraString);
 
                 if (special_key_pressed == true)
                 {
@@ -1251,14 +1236,16 @@ namespace engine
         }
 
 
-        internal static void sub_318AE(ref int index, bool menuRedraw, bool showExit, 
+        internal static int VertMenuSelect(int index, bool menuRedraw, bool showExit, 
 			List<MenuItem> list, sbyte endY, sbyte endX, int startY, sbyte startX, 
 			byte highlighBgColor, byte normalColor, byte headingColor)
         {
             MenuItem dummyMenuItem;
-
+            
             ovr027.sl_select_item(out dummyMenuItem, ref index, ref menuRedraw, showExit, list, endY, endX,
                 startY, startX, highlighBgColor, normalColor, headingColor, string.Empty, string.Empty);
+
+            return index;
         }
 
 

@@ -746,12 +746,7 @@ namespace engine
                         ovr025.load_missile_icons(0x12);
                         var casterPos = ovr033.PlayerMapPos(caster);
 
-                        byte direction = 0;
-
-                        while (ovr032.CanSeeCombatant(direction, gbl.targetPos, casterPos) == false)
-                        {
-                            direction++;
-                        }
+                        byte direction = ovr032.FindCombatantDirection(gbl.targetPos, casterPos);
 
                         gbl.focusCombatAreaOnPlayer = true;
                         ovr033.draw_74B3F(0, 1, direction, caster);
@@ -1921,12 +1916,12 @@ namespace engine
 
             if (gbl.area_ptr.inDungeon == 0)
             {
-                ovr032.Rebuild_SortedCombatantList(gbl.mapToBackGroundTile, 1, 0xff, 2, gbl.targetPos);
+                var scl = ovr032.Rebuild_SortedCombatantList(gbl.mapToBackGroundTile, 1, 0xff, 2, gbl.targetPos);
 
                 gbl.spellTargets.Clear();
-                for (int i = 1; i <= gbl.sortedCombatantCount; i++)
+                foreach(var sc in scl)
                 {
-                    gbl.spellTargets.Add(gbl.player_array[gbl.SortedCombatantList[i].player_index]);
+                    gbl.spellTargets.Add(sc.player);
                 }
             }
 
@@ -2487,11 +2482,11 @@ namespace engine
 
             if (ovr025.FindAffect(out affect, Affects.affect_3a, player) == true)
             {
-                ovr032.Rebuild_SortedCombatantList(gbl.mapToBackGroundTile, 1, 0xff, 1, ovr033.PlayerMapPos(player));
+                var scl = ovr032.Rebuild_SortedCombatantList(gbl.mapToBackGroundTile, 1, 0xff, 1, ovr033.PlayerMapPos(player));
 
-                for (int i = 0; i < gbl.sortedCombatantCount; i++)
+                foreach (var sc in scl)
                 {
-                    Player playerB = gbl.player_array[gbl.SortedCombatantList[i].player_index];
+                    Player playerB = sc.player;
 
                     if (ovr025.FindAffect(out affect, Affects.affect_90, playerB) == true ||
                         ovr025.FindAffect(out affect, Affects.affect_8b, playerB) == true)
@@ -2567,8 +2562,7 @@ namespace engine
                 }
                 else
                 {
-                    bool dummy_bool;
-                    input_key = ovr027.displayInput(out dummy_bool, false, 0, 15, 10, 13, "Hot Cold", "flame type: ");
+                    input_key = ovr027.displayInput(false, 0, 15, 10, 13, "Hot Cold", "flame type: ");
                 }
 
                 if (input_key == 'H')
@@ -2585,8 +2579,7 @@ namespace engine
                 }
                 else
                 {
-                    bool dummy_bool;
-                    input_key = ovr027.displayInput(out dummy_bool, false, 0, 15, 10, 13, "Yes No", "Abort spell? ");
+                    input_key = ovr027.displayInput(false, 0, 15, 10, 13, "Yes No", "Abort spell? ");
 
                     if (input_key == 'Y')
                     {

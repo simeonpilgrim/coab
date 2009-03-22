@@ -271,8 +271,7 @@ namespace engine
                 {
                     seg041.displayAndDebug("Can't save.  No room on this disk.", 0, 14);
 
-                    bool dummy_bool;
-                    input_key = ovr027.displayInput(out dummy_bool, false, 0, 15, 10, 13, "Ok  Try another disk", "Lose character? ");
+                    input_key = ovr027.displayInput(false, 0, 15, 10, 13, "Ok  Try another disk", "Lose character? ");
                 }
             } while (input_key != 0x4F);
 
@@ -1508,13 +1507,12 @@ namespace engine
         internal static void SaveGame()
         {
             char inputKey;
-            bool dummyBool;
             File save_file = new File();
             string[] var_171 = new string[9];
 
             do
             {
-                inputKey = ovr027.displayInput(out dummyBool, (gbl.game_state == GameState.Camping), 0, 15, 10, 13, "A B C D E F G H I J", "Save Which Game: ");
+                inputKey = ovr027.displayInput((gbl.game_state == GameState.Camping), 0, 15, 10, 13, "A B C D E F G H I J", "Save Which Game: ");
 
             } while (unk_4AEA0.MemberOf(inputKey) == false);
 

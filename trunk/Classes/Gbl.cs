@@ -163,12 +163,7 @@ namespace Classes
         }
     }
 
-    public class CombatantMap // Struct_1C9CD
-    {
-        public Point pos;
-        public int player_index;  
-        public int size;
-    }
+
 
     public class Money
     {
@@ -186,35 +181,7 @@ namespace Classes
         public static int[] per_copper = { 1, 10, 100, 200, 1000 };
     }
 
-    public class SortedCombatant /*Struct_1D1C1*/
-    {
-        public SortedCombatant()
-        {
-            player_index = 0;
-            steps = 0;
-            direction = 0;
-        }
-
-        public SortedCombatant(SortedCombatant source)
-        {
-            player_index = source.player_index;
-            steps = source.steps;
-            direction = source.direction;
-        }
-
-        public int player_index; //field_0
-        /// <summary>
-        /// steps to counted in 2's, so that diagional steps can be 3 (thus 1.5)
-        /// </summary>
-        public int steps; // field_1
-        public int direction; // field_2
-
-        public override string ToString()
-        {
-            return "index: " + player_index + " dir: " + direction + " steps: " + steps;
-        }
-    }
-
+ 
 
     public class gbl
     {
@@ -381,7 +348,7 @@ namespace Classes
         public static bool resetMovesLeft; // byte_1D2C4, reset_byte_1D2C0
         public static byte spell_id; // byte_1D2C1
         public static int dice_count; // byte_1D2C2
-        public static byte byte_1D2C5;
+        public static bool byte_1D2C5;
         public static bool cureSpell; // byte_1D2C6
         public static bool byte_1D2C7;
         public static bool byte_1D2C8;
@@ -559,15 +526,11 @@ namespace Classes
         // 744Bh[1] == sp_target[0]
         public static Player[] player_array = new Player[256];
 
-        public const int MaxSortedCombatantCount = 72; /*unk_1D1C1_count*/
-        public static SortedCombatant[] SortedCombatantList; // seg600:6EB1 - 6EAEh[1] == unk_1D1C1[0]
-
         public const int MaxCombatantCount = 0xff; /* stru_1C9CD_count */
         public static int CombatantCount; // gbl.stru_1C9CD[0].field_3
         public static CombatantMap[] CombatMap; // seg600:66BD stru_1C9CD
 
         public static Player tradeWith; //player_ptr01
-        public static Player player_ptr02;
 
         public static byte game_area;
         public static byte game_area_backup;
