@@ -35,7 +35,7 @@ namespace engine
         {
             for (int i = 1; i <= gbl.CombatantCount; i++)
             {
-                gbl.playerScreen[i] = gbl.CombatMap[i].pos - gbl.mapToBackGroundTile.mapScreenTopLeft;
+                gbl.CombatMap[i].screenPos = gbl.CombatMap[i].pos - gbl.mapToBackGroundTile.mapScreenTopLeft;
             }
         }
 
@@ -89,8 +89,8 @@ namespace engine
                 // draws the player icon over focus box
                 ovr034.draw_combat_icon(gbl.player_array[player_index].icon_id, 0,
                     gbl.player_array[player_index].actions.direction,
-                    gbl.playerScreen[player_index].y,
-                    gbl.playerScreen[player_index].x);
+                    gbl.CombatMap[player_index].screenPos.y,
+                    gbl.CombatMap[player_index].screenPos.x);
             }
         }
 
@@ -131,7 +131,7 @@ namespace engine
                         mapToPlayerIndex[pos.y, pos.x] = index;
                     }
 
-                    gbl.playerScreen[index] = combatantMap.pos - gbl.mapToBackGroundTile.mapScreenTopLeft;
+                    combatantMap.screenPos = combatantMap.pos - gbl.mapToBackGroundTile.mapScreenTopLeft;
                 }
             }
         }
@@ -190,7 +190,8 @@ namespace engine
         {
             if (player_index != 0)
             {
-                var screen = gbl.playerScreen[player_index];
+                var combatmap = gbl.CombatMap[player_index];
+                var screen = combatmap.screenPos;
 
                 var map = screen + gbl.mapToBackGroundTile.mapScreenTopLeft;
 
@@ -225,14 +226,15 @@ namespace engine
 
         internal static bool PlayerOnScreen(bool AllOnScreen, int player_index) // sub_74761
         {
-            if (gbl.CombatMap[player_index].size == 0)
+            var combatmap = gbl.CombatMap[player_index];
+            if (combatmap.size == 0)
             {
                 return false;
             }
 
             bool result = true;
 
-            foreach (var pos in BuildSizeMap(gbl.CombatMap[player_index].size, gbl.playerScreen[player_index]))
+            foreach (var pos in BuildSizeMap(combatmap.size, combatmap.screenPos))
             {
                 if (CoordOnScreen(pos) == false)
                 {
@@ -353,7 +355,7 @@ namespace engine
                         gbl.CombatMap[index].size > 0 &&
                         PlayerOnScreen(false, player) == true)
                     {
-                        var pos = gbl.playerScreen[index];
+                        var pos = gbl.CombatMap[index].screenPos;
                         ovr034.draw_combat_icon(player.icon_id, 0, player.actions.direction, pos.y, pos.x);
                     }
                 }
@@ -397,7 +399,7 @@ namespace engine
                 PlayerOnScreen(false, player) == true &&
                 gbl.focusCombatAreaOnPlayer == true)
             {
-                var pos = gbl.playerScreen[player_index];
+                var pos = gbl.CombatMap[player_index].screenPos;
                 ovr034.draw_combat_icon(player.icon_id, arg_2, direction, pos.y, pos.x);
                 seg040.DrawOverlay();
             }
@@ -419,7 +421,10 @@ namespace engine
         {
             int index = System.Array.FindIndex(gbl.player_array, p => p == player);
 
-            if (index == -1) index = 0;
+            if (index == -1)
+            {
+                index = 0;
+            }
 
             return index;
         }
@@ -552,7 +557,7 @@ namespace engine
 
                     for (int var_3 = 0; var_3 <= 8; var_3++)
                     {
-                        foreach (var pos in BuildSizeMap(gbl.CombatMap[player_index].size, gbl.playerScreen[player_index]))
+                        foreach (var pos in BuildSizeMap(gbl.CombatMap[player_index].size, gbl.CombatMap[player_index].screenPos))
                         {
                             if (CoordOnScreen(pos) == true)
                             {

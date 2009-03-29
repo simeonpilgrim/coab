@@ -319,18 +319,19 @@ namespace engine
 
         internal static void move_step_away_attack(int direction, Player player) /* sub_3E954 */
         {
-            int player_index = ovr033.GetPlayerIndex(player);
             var originAttackers = ovr025.BuildNearTargets(1, player);
 
             if (originAttackers.Count > 0)
             {
+                var combatmap = gbl.CombatMap[ovr033.GetPlayerIndex(player)];
+                
                 // move to destination position
-                gbl.CombatMap[player_index].pos += gbl.MapDirectionDelta[direction];
+                combatmap.pos += gbl.MapDirectionDelta[direction];
 
                 var destAttackers = ovr025.BuildNearTargets(1, player);
 
                 // move back to original position
-                gbl.CombatMap[player_index].pos -= gbl.MapDirectionDelta[direction];
+                combatmap.pos -= gbl.MapDirectionDelta[direction];
 
                 // remove attackers from both locations
                 foreach (var cpiB in destAttackers)

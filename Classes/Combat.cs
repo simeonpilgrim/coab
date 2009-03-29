@@ -21,6 +21,8 @@ namespace Classes
     {
         public Point pos;
         public int size;
+
+        public Point screenPos;
     }
 
 

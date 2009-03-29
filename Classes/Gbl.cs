@@ -815,8 +815,6 @@ namespace Classes
 
         public static Struct_1A35E[] race_ages = new Struct_1A35E[] { monster_ages, dwarf_ages, elf_ages, gnome_ages, halfelf_ages, halfling_ages, halforc_ages, human_ages }; // unk_1A35E
 
-        public static Point[] playerScreen = new Point[256]; 
-
         public static byte[] unk_1AE0B = new byte[3];
 
         public static byte[] unk_16E30 = new byte[16]; // seg600:0B20
