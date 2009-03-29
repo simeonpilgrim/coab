@@ -1290,8 +1290,7 @@ namespace engine
                 DisplayPlayerStatusString(false, 10, text, player);
 
                 int idx = ovr033.GetPlayerIndex(player);
-                int colX = gbl.playerScreen[idx].x * 3;
-                int rowY = gbl.playerScreen[idx].y * 3;
+                Point pos = gbl.CombatMap[idx].screenPos * 3; 
 
                 int loops = showMagicStars ? gbl.game_speed_var : 0;
                 for (int loop = 0; loop <= loops; loop++)
@@ -1300,7 +1299,7 @@ namespace engine
                     {
                         Display.SaveVidRam();
 
-                        seg040.OverlayBounded(gbl.missile_dax, 5, frame, rowY, colX);
+                        seg040.OverlayBounded(gbl.missile_dax, 5, frame, pos.y, pos.x);
                         seg040.DrawOverlay();
 
                         seg049.SysDelay(70);

@@ -1041,11 +1041,10 @@ namespace engine
         {
             var sb = new System.Text.StringBuilder();
             int state = 1;
+            uint lastByte = 0;
 
             foreach (uint thisByte in data)
             {
-                uint lastByte = thisByte;
-
                 uint curr = 0;
                 switch (state)
                 {
@@ -1070,6 +1069,7 @@ namespace engine
                         state = 1;
                         break;
                 }
+                lastByte = thisByte;
             }
 
             return sb.ToString();
@@ -1089,7 +1089,7 @@ namespace engine
 
         internal static void LoadCompressedEclString(int strIndex, int inputLength)
         {
-            byte[] data = EclData(gbl.ecl_offset + 0x8000, inputLength);
+            byte[] data = EclData(gbl.ecl_offset + 0x8000 + 1, inputLength);
             gbl.ecl_offset += (ushort)inputLength;
 
             gbl.unk_1D972[strIndex] = DecompressString(data);

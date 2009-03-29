@@ -197,7 +197,7 @@ namespace engine
                             tmpDir = FindCombatantDirection(found_target, found_attacker);
                         }
 
-                        var combatant = new SortedCombatant(gbl.player_array[playerIndex], gbl.CombatMap[playerIndex].pos, found_range, tmpDir);
+                        var combatant = new SortedCombatant(gbl.player_array[playerIndex], combatantMap.pos, found_range, tmpDir);
                         sortedCombatants.Add(combatant);
                     }
                 }

@@ -596,13 +596,14 @@ namespace engine
                     if (target != null &&
                         ovr014.CanSeeTargetA(target, player) == true)
                     {
-                        var tmpPos = ovr033.PlayerMapPos(target);
+                        var targetPos = ovr033.PlayerMapPos(target);
+                        var attackPos = ovr033.PlayerMapPos(player);
 
                         int steps = range;
 
                         gbl.mapToBackGroundTile.field_6 = false;
 
-                        if (ovr032.canReachTarget(gbl.mapToBackGroundTile, ref steps, ovr033.PlayerMapPos(target), ovr033.PlayerMapPos(player)) == true &&
+                        if (ovr032.canReachTarget(gbl.mapToBackGroundTile, ref steps, targetPos, attackPos) == true &&
                             (steps / 2) <= range)
                         {
                             gbl.byte_1D90E = true;
