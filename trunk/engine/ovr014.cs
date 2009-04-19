@@ -397,7 +397,7 @@ namespace engine
                                         if (player.in_combat == true)
                                         {
                                             gbl.display_hitpoints_ac = true;
-                                            ovr025.display_hitpoint_ac(player);
+                                            ovr025.CombatDisplayPlayerSummary(player);
                                         }
                                     }
                                 }
@@ -634,7 +634,7 @@ namespace engine
 
                     ovr033.RedrawCombatIfFocusOn(false, 3, target);
                     gbl.display_hitpoints_ac = true;
-                    ovr025.display_hitpoint_ac(target);
+                    ovr025.CombatDisplayPlayerSummary(target);
 
                     if (var_4 > 0)
                     {
@@ -938,7 +938,7 @@ namespace engine
             }
 
             dir = getTargetDirection(target, attacker);
-            ovr025.display_hitpoint_ac(attacker);
+            ovr025.CombatDisplayPlayerSummary(attacker);
 
             ovr033.draw_74B3F(0, 1, dir, attacker);
 
@@ -1402,7 +1402,7 @@ namespace engine
                 gbl.display_hitpoints_ac = true;
 
                 ovr033.RedrawCombatIfFocusOn(true, 3, player);
-                ovr025.display_hitpoint_ac(player);
+                ovr025.CombatDisplayPlayerSummary(player);
             }
 
             if (spell_id > 0)
@@ -1805,7 +1805,7 @@ namespace engine
             text = "Next Prev Manual " + text + "Center Exit";
             ovr033.RedrawCombatIfFocusOn(true, 3, target);
             gbl.display_hitpoints_ac = true;
-            ovr025.display_hitpoint_ac(target);
+            ovr025.CombatDisplayPlayerSummary(target);
 
             char input_key = ovr027.displayInput(false, 1, 15, 10, 13, text, "Aim:");
 
@@ -1935,11 +1935,11 @@ namespace engine
                 if (target != null)
                 {
                     gbl.display_hitpoints_ac = true;
-                    ovr025.display_hitpoint_ac(target);
+                    ovr025.CombatDisplayPlayerSummary(target);
                 }
                 else
                 {
-                    seg037.draw8x8_clear_area(0x15, 0x26, 1, 0x17);
+                    seg037.draw8x8_clear_area(TextRegion.CombatSummary);
                 }
 
                 if (range > maxRange ||

@@ -114,10 +114,19 @@ namespace engine
             }
         }
 
-        static private byte[] unk_16FA6 = { 2, 0x70, 0, 0x8C };
+        internal static int[,] bounds = new int[3, 4] { 
+            { 0x16, 0x26, 0x11, 1 }, 
+            { 0x16, 0x26, 0x15, 1 },
+            { 0x15, 0x26, 1, 0x17 } // TextRegion.CombatSummary
+        };
 
-        internal static void press_any_key(string text, bool clearArea,
-            int bgColor, int fgColor,
+        internal static void press_any_key(string text, bool clearArea, int bgColor, int fgColor, TextRegion region)
+        {
+            int r = (int)region;
+            press_any_key(text, clearArea, bgColor, fgColor, bounds[r, 0], bounds[r, 1], bounds[r, 2], bounds[r, 3]);
+        }
+
+        internal static void press_any_key(string text, bool clearArea, int bgColor, int fgColor,
             int yEnd, int xEnd, int yStart, int xStart)
         {
             if (xStart > 0x27 || yStart > 0x18 ||
@@ -147,7 +156,7 @@ namespace engine
 
             if (input_lenght != 0)
             {
-                Set var_125 = new Set(0x404, unk_16FA6);
+                Set var_125 = new Set(0x404, new byte[] { 2, 0x70, 0, 0x8C });
                 do
                 {
                     int text_end = text_start;
@@ -308,7 +317,7 @@ namespace engine
         }
 
 
-        internal static void clear_screan()
+        internal static void ClearScreen()
         {
             DrawRectangle(0, 0x18, 0x27, 0, 0);
         }

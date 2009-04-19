@@ -405,14 +405,14 @@ namespace engine
 
             if (gbl.command == 0x11)
             {
-                seg041.press_any_key(gbl.unk_1D972[1], false, 0, 10, 0x16, 0x26, 0x11, 1);
+                seg041.press_any_key(gbl.unk_1D972[1], false, 0, 10, TextRegion.NormalBottom);
             }
             else
             {
                 gbl.textYCol = 0x11;
                 gbl.textXCol = 1;
 
-                seg041.press_any_key(gbl.unk_1D972[1], true, 0, 10, 0x16, 0x26, 0x11, 1);
+                seg041.press_any_key(gbl.unk_1D972[1], true, 0, 10, TextRegion.NormalBottom);
             }
 
             gbl.DelayBetweenCharacters = false;
@@ -696,7 +696,7 @@ namespace engine
             ovr008.vm_SetMemoryValue((ushort)index, mem_loc);
 
             menuList.Clear();
-            seg037.draw8x8_clear_area(0x16, 0x26, 0x11, 1);
+            seg037.draw8x8_clear_area(TextRegion.NormalBottom);
         }
 
 
@@ -756,7 +756,7 @@ namespace engine
 
             ovr008.vm_SetMemoryValue(menu_selected, loc);
 
-            seg037.draw8x8_clear_area(0x18, 0x27, 0x18, 0);
+            ovr027.ClearPromptAreaNoUpdate();
         }
 
         /// <summary>
@@ -1359,7 +1359,7 @@ namespace engine
                     clearTextArea = false;
                 }
 
-                seg041.press_any_key(text, clearTextArea, 0, 10, 0x16, 0x26, 0x11, 1);
+                seg041.press_any_key(text, clearTextArea, 0, 10, TextRegion.NormalBottom);
 
                 if (gbl.area2_ptr.encounter_distance == 0 ||
                     gbl.area_ptr.inDungeon == 0)
@@ -1412,7 +1412,7 @@ namespace engine
                         else if (menu_selected == 1)
                         {
                             init_max = 1;
-                            seg041.press_any_key("Both sides wait.", true, 0, 10, 0x16, 0x26, 0x11, 1);
+                            seg041.press_any_key("Both sides wait.", true, 0, 10, TextRegion.NormalBottom);
                         }
                         else if (menu_selected == 2)
                         {
@@ -1428,7 +1428,7 @@ namespace engine
                             }
                             else
                             {
-                                seg041.press_any_key("Both sides wait.", true, 0, 10, 0x16, 0x26, 0x11, 1);
+                                seg041.press_any_key("Both sides wait.", true, 0, 10, TextRegion.NormalBottom);
                             }
 
                             init_max = 1;
@@ -1457,7 +1457,7 @@ namespace engine
 
                                 gbl.textXCol = 1;
                                 gbl.textYCol = 0x11;
-                                seg041.press_any_key("The monsters flee.", true, 0, 10, 0x16, 0x26, 0x11, 1);
+                                seg041.press_any_key("The monsters flee.", true, 0, 10, TextRegion.NormalBottom);
                             }
                             else
                             {
@@ -1470,7 +1470,7 @@ namespace engine
 
                             gbl.textXCol = 1;
                             gbl.textYCol = 0x11;
-                            seg041.press_any_key("The monsters flee.", true, 0, 10, 0x16, 0x26, 0x11, 1);
+                            seg041.press_any_key("The monsters flee.", true, 0, 10, TextRegion.NormalBottom);
                         }
                         break;
 
@@ -1489,7 +1489,7 @@ namespace engine
                             }
                             else
                             {
-                                seg041.press_any_key("Both sides wait.", true, 0, 10, 0x16, 0x26, 0x11, 1);
+                                seg041.press_any_key("Both sides wait.", true, 0, 10, TextRegion.NormalBottom);
                             }
 
                             init_max = 1;
@@ -1782,7 +1782,7 @@ namespace engine
 
             VmLog.WriteLine("CMD_Who: Prompt: '{0}'", prompt);
 
-            seg037.draw8x8_clear_area(0x16, 0x26, 0x11, 1);
+            seg037.draw8x8_clear_area(TextRegion.NormalBottom);
             ovr025.selectAPlayer(ref gbl.player_ptr, false, prompt);
         }
 

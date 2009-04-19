@@ -37,6 +37,11 @@ namespace Main
 
         private void MainForm_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
         {
+            if (e.KeyCode == Keys.F5)
+            {
+                Classes.Display.ForceUpdate();
+            }
+
             engine.seg049.AddKey( Keyboard.KeyToIBMKey(e.KeyCode) );
         }
 

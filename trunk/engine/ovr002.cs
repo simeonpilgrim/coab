@@ -90,11 +90,11 @@ namespace engine
             seg040.draw_picture(dax_ptr, 0x0b, 0, 0);
             delay_or_key(10);
 
-            seg041.clear_screan();
+            seg041.ClearScreen();
             credits();
             delay_or_key(10);
 
-            seg041.clear_screan();
+            seg041.ClearScreen();
         }
     }
 }

@@ -121,7 +121,7 @@ namespace engine
                 ovr033.RedrawCombatIfFocusOn(true, 2, player);
                 ovr025.reclac_player_values(player);
                 gbl.display_hitpoints_ac = true;
-                ovr025.display_hitpoint_ac(player);
+                ovr025.CombatDisplayPlayerSummary(player);
                 ovr024.CheckAffectsEffect(player, CheckType.Type_15);
 
                 if (player.actions.spell_id == 0)
@@ -295,7 +295,7 @@ namespace engine
                         {
                             ovr033.RedrawCombatIfFocusOn(true, 2, player);
                             gbl.display_hitpoints_ac = true;
-                            ovr025.display_hitpoint_ac(player);
+                            ovr025.CombatDisplayPlayerSummary(player);
                         }
                     }
                 }

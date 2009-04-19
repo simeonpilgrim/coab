@@ -11,6 +11,13 @@ namespace Classes
         void RawCopy(byte[] videoRam, int videoRamSize);
     }
 
+    public enum TextRegion
+    {
+        NormalBottom,
+        Normal2,
+        CombatSummary,
+    }
+
     public class Display
     {
         static byte[,] OrigEgaColors = { { 0, 0, 0 }, { 0, 0, 173 }, { 0, 173, 0 }, { 0, 173, 173 }, { 173, 0, 0 }, { 173, 0, 173 }, { 173, 82, 0 }, { 173, 173, 173 }, { 82, 82, 82 }, { 82, 82, 255 }, { 82, 255, 82 }, { 82, 255, 255 }, { 255, 82, 82 }, { 255, 82, 255 }, { 255, 255, 82 }, { 255, 255, 255 } };
@@ -127,6 +134,16 @@ namespace Classes
                 {
                     updateCallback.Invoke();
                 }
+            }
+        }
+
+        static public void ForceUpdate()
+        {
+            lowLevelDisplay.RawCopy(videoRam, videoRamSize);
+
+            if (updateCallback != null)
+            {
+                updateCallback.Invoke();
             }
         }
 

@@ -542,7 +542,7 @@ namespace engine
 
             if (interactive_resting == true)
             {
-                seg037.draw8x8_clear_area(0x16, 0x26, 0x11, 1);
+                seg037.draw8x8_clear_area(TextRegion.NormalBottom);
                 display_resting_time(0);
             }
 
@@ -617,7 +617,7 @@ namespace engine
                 }
             }
 
-            seg037.draw8x8_clear_area(0x16, 0x26, 0x11, 1);
+            seg037.draw8x8_clear_area(TextRegion.NormalBottom);
             gbl.displayPlayerStatusLine18 = false;
 
             return resting_intetrupted;

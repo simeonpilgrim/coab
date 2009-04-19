@@ -421,12 +421,12 @@ namespace engine
         }
 
 
-        internal static void display_hitpoint_ac(Player player) /* hitpoint_ac */
+        internal static void CombatDisplayPlayerSummary(Player player) /* hitpoint_ac */
         {
             if (gbl.display_hitpoints_ac == true)
             {
                 gbl.display_hitpoints_ac = false;
-                seg037.draw8x8_clear_area(0x15, 0x26, 1, 0x17);
+                seg037.draw8x8_clear_area(TextRegion.CombatSummary);
 
                 int line = 1;
 
@@ -922,13 +922,13 @@ namespace engine
 
         internal static void string_print01(string arg_0)
         {
-            seg037.draw8x8_clear_area(0x18, 0x27, 0x18, 0);
+            ovr027.ClearPromptAreaNoUpdate();
 
             seg041.displayString(arg_0, 0, 10, 0x18, 0);
 
             seg041.GameDelay();
 
-            seg037.draw8x8_clear_area(0x18, 0x27, 0x18, 0);
+            ovr027.ClearPromptAreaNoUpdate();
         }
 
 
