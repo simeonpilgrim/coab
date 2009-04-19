@@ -1253,7 +1253,7 @@ namespace engine
                         text = "is killed";
                     }
 
-                    ovr025.DisplayPlayerStatusString(false, (byte)(gbl.textYCol + 1), text, player);
+                    ovr025.DisplayPlayerStatusString(false, gbl.textYCol + 1, text, player);
 
                     if (gbl.game_state == GameState.Combat)
                     {

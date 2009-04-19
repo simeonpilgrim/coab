@@ -374,7 +374,7 @@ namespace engine
                 gbl.textXCol = gbl.player_ptr.name.Length + 2;
                 gbl.textYCol = 0x15;
 
-                seg041.press_any_key(" was going to scribe from that scroll", false, 0, 0x0E, 0x16, 0x26, 0x15, 1);
+                seg041.press_any_key(" was going to scribe from that scroll", false, 0, 0x0E, TextRegion.Normal2);
                 if (ovr027.yes_no(15, 10, 13, "is it Okay to lose it? ") == 'Y')
                 {
                     canSellDropTradeItem = true;
@@ -385,7 +385,7 @@ namespace engine
                 canSellDropTradeItem = true;
             }
 
-            seg037.draw8x8_clear_area(0x16, 0x26, 0x15, 1);
+            seg037.draw8x8_clear_area(TextRegion.Normal2);
 
             return canSellDropTradeItem;
         }
@@ -595,7 +595,7 @@ namespace engine
                                         redraw_items = true;
                                     }
 
-                                    seg037.draw8x8_clear_area(0x16, 0x26, 0x15, 1);
+                                    seg037.draw8x8_clear_area(TextRegion.Normal2);
                                 }
                                 else
                                 {
@@ -1124,7 +1124,7 @@ namespace engine
 
             string offer = "I'll give you " + item_value.ToString() + " gold pieces for your " + item.name;
 
-            seg041.press_any_key(offer, true, 0, 14, 0x16, 0x26, 0x15, 1);
+            seg041.press_any_key(offer, true, 0, 14, TextRegion.Normal2);
 
             if (ovr027.yes_no(15, 10, 13, "Is It a Deal? ") == 'Y')
             {
@@ -1159,7 +1159,7 @@ namespace engine
                 }
             }
 
-            seg037.draw8x8_clear_area(0x16, 0x26, 0x15, 1);
+            seg037.draw8x8_clear_area(TextRegion.Normal2);
         }
 
 
@@ -1168,7 +1168,7 @@ namespace engine
             bool id_item = false;
             ovr025.ItemDisplayNameBuild(false, false, 0, 0, item);
 
-            seg041.press_any_key("For 200 gold pieces I'll identify your " + item.name, true, 0, 0x0e, 0x16, 0x26, 0x15, 1);
+            seg041.press_any_key("For 200 gold pieces I'll identify your " + item.name, true, 0, 0x0e, TextRegion.Normal2);
 
             if (ovr027.yes_no(15, 10, 13, "Is It a Deal? ") == 'Y')
             {
@@ -1201,14 +1201,14 @@ namespace engine
             {
                 if (item.hidden_names_flag == 0)
                 {
-                    seg041.press_any_key("I can't tell anything new about your " + item.name, true, 0, 0x0e, 0x16, 0x26, 0x15, 1);
+                    seg041.press_any_key("I can't tell anything new about your " + item.name, true, 0, 0x0e, TextRegion.Normal2);
                 }
                 else
                 {
                     item.hidden_names_flag = 0;
                     ovr025.ItemDisplayNameBuild(false, false, 0, 0, item);
 
-                    seg041.press_any_key("It looks like some sort of " + item.name, true, 0, 0x0e, 0x16, 0x26, 0x15, 1);
+                    seg041.press_any_key("It looks like some sort of " + item.name, true, 0, 0x0e, TextRegion.Normal2);
 
                     arg_0 = true;
                 }
@@ -1216,7 +1216,7 @@ namespace engine
                 seg041.GameDelay();
             }
 
-            seg037.draw8x8_clear_area(0x16, 0x26, 0x15, 1);
+            seg037.draw8x8_clear_area(TextRegion.Normal2);
         }
 
 

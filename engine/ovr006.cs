@@ -649,8 +649,8 @@ namespace engine
 
                         if (money_present == true || items_present == true)
                         {
-                            seg041.press_any_key("There is still treasure left.  ", true, 0, 10, 0x16, 0x26, 0x11, 1);
-                            seg041.press_any_key("Do you want to go back and claim your treasure?", false, 0, 15, 0x16, 0x26, 0x11, 1);
+                            seg041.press_any_key("There is still treasure left.  ", true, 0, 10, TextRegion.NormalBottom);
+                            seg041.press_any_key("Do you want to go back and claim your treasure?", false, 0, 15, TextRegion.NormalBottom);
                             int menu_selected = ovr008.sub_317AA(false, 0, 15, 10, 13, "~Yes ~No", "");
 
                             if (menu_selected == 1)

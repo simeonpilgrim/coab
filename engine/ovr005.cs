@@ -13,9 +13,9 @@ namespace engine
         static string[] temple_sl = { "Cure Blindness", "Cure Disease", "Cure Light Wounds", "Cure Serious Wounds", "Cure Critical Wounds", "Heal", "Neutralize Poison", "Raise Dead", "Remove Curse", "Stone to Flesh", "Exit" };
 
 
-        static char cast_cure_anyway(string arg_0)
+        static char CastCureAnyway(string text)
         {
-            ovr025.DisplayPlayerStatusString(false, 0, arg_0, gbl.player_ptr);
+            ovr025.DisplayPlayerStatusString(false, 0, text, gbl.player_ptr);
             char ret_val = ovr027.yes_no(15, 10, 13, "cast cure anyway: ");
 
             ovr025.ClearPlayerTextArea();
@@ -27,7 +27,7 @@ namespace engine
         internal static char buy_cure(short cost, string cure_name)
         {
             string text = string.Format("{0} will only cost {1} gold pieces.", cure_name, cost);
-            seg041.press_any_key(text, true, 0, 10, 0x16, 0x26, 0x11, 1);
+            seg041.press_any_key(text, true, 0, 10, TextRegion.NormalBottom);
 
             char input_key = ovr027.yes_no(15, 10, 13, "pay for cure ");
 
@@ -73,7 +73,7 @@ namespace engine
 
             if (gbl.player_ptr.HasAffect(Affects.blinded) == false)
             {
-                input_key = cast_cure_anyway("is not blind.");
+                input_key = CastCureAnyway("is not blind.");
             }
 
             if (input_key == 'Y')
@@ -95,7 +95,7 @@ namespace engine
             char input_key = 'Y';
             if (is_diseased == false)
             {
-                input_key = cast_cure_anyway("is not Diseased.");
+                input_key = CastCureAnyway("is not diseased.");
             }
 
             if (input_key == 'Y')
@@ -178,9 +178,6 @@ namespace engine
 
         internal static void raise_dead()
         {
-            byte var_108;
-            byte var_107;
-
             Player player = gbl.player_ptr;
             bool player_dead = false;
             char input_key = 'Y';
@@ -193,7 +190,7 @@ namespace engine
 
             if (player_dead == false)
             {
-                input_key = cast_cure_anyway("is not dead.");
+                input_key = CastCureAnyway("is not dead.");
             }
 
             if (input_key == 'Y')
@@ -219,34 +216,35 @@ namespace engine
                         player.con--;
                     }
 
+                    int var_107;
                     if (player.hit_point_max > player.field_12C)
                     {
-                        var_107 = (byte)(player.hit_point_max - player.field_12C);
+                        var_107 = player.hit_point_max - player.field_12C;
                     }
                     else
                     {
                         var_107 = 0;
                     }
 
-                    var_108 = 0;
+                    int var_108 = 0;
 
                     if (player.con >= 14)
                     {
-                        for (int var_109 = 0; var_109 <= 7; var_109++)
+                        for (int classIdx = 0; classIdx <= 7; classIdx++)
                         {
-                            if (player.class_lvls[var_109] > 0)
+                            if (player.class_lvls[classIdx] > 0)
                             {
-                                if (var_109 == 2)
+                                if (classIdx == 2)
                                 {
-                                    var_108 += (byte)((player.con - 14) * player.fighter_lvl);
+                                    var_108 += (player.con - 14) * player.fighter_lvl;
                                 }
                                 else if (player.con > 15)
                                 {
-                                    var_108 += (byte)(player.class_lvls[var_109] * 2);
+                                    var_108 += player.class_lvls[classIdx] * 2;
                                 }
                                 else
                                 {
-                                    var_108 += player.class_lvls[var_109];
+                                    var_108 += player.class_lvls[classIdx];
                                 }
                             }
                         }
@@ -260,7 +258,7 @@ namespace engine
                             player.fighter_lvl > 0 ||
                             player.fighter_lvl > player.field_E6)
                         {
-                            player.hit_point_max = var_107;
+                            player.hit_point_max = (byte)var_107;
                         }
                     }
                 }
@@ -275,7 +273,7 @@ namespace engine
             char inutKey = 'Y';
             if (isPoisoned == false)
             {
-                inutKey = cast_cure_anyway("is not poisoned.");
+                inutKey = CastCureAnyway("is not poisoned.");
             }
 
             if (inutKey == 'Y')
@@ -305,7 +303,7 @@ namespace engine
             if (has_curse_items == false &&
                 gbl.player_ptr.HasAffect(Affects.bestow_curse) == false)
             {
-                input_key = cast_cure_anyway("is not cursed.");
+                input_key = CastCureAnyway("is not cursed.");
             }
 
             if (input_key == 'Y')
@@ -328,7 +326,7 @@ namespace engine
 
             if (gbl.player_ptr.health_status != Status.stoned)
             {
-                input_key = cast_cure_anyway("is not stoned.");
+                input_key = CastCureAnyway("is not stoned.");
             }
 
             if (input_key == 'Y')
@@ -359,7 +357,7 @@ namespace engine
                 stringList.Add(new MenuItem(temple_sl[i]));
             }
 
-            seg037.draw8x8_clear_area(0x18, 0x27, 0x18, 0);
+            ovr027.ClearPromptAreaNoUpdate();
             bool redrawMenuItems = true;
             seg037.DrawFrame_WildernessMap();
 
@@ -511,8 +509,8 @@ namespace engine
                         {
                             string prompt = "~Yes ~No";
 
-                            seg041.press_any_key("As you leave a priest says, \"Excuse me but you have left some money here\" ", true, 0, 10, 0x16, 0x26, 0x11, 1);
-                            seg041.press_any_key("Do you want to go back and retrieve your money?", true, 0, 10, 0x16, 0x26, 0x11, 1);
+                            seg041.press_any_key("As you leave a priest says, \"Excuse me but you have left some money here\" ", true, 0, 10, TextRegion.NormalBottom);
+                            seg041.press_any_key("Do you want to go back and retrieve your money?", true, 0, 10,  TextRegion.NormalBottom);
                             int menu_selected = ovr008.sub_317AA(false, 0, 15, 10, 13, prompt, string.Empty);
 
                             if (menu_selected == 1)

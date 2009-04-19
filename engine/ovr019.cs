@@ -476,36 +476,36 @@ namespace engine
             gbl.last_game_state = gbl.game_state;
             gbl.game_state = GameState.EndGame;
 
-			seg041.press_any_key( aTyranthraxusSp, true, 0, 10, 0x16, 0x26, 0x11, 1 );
-			seg041.press_any_key( aStormGiant_You, false, 0, 10, 0x16, 0x26, 0x11, 1 );
-			seg041.press_any_key( aTheAmuletOfLyt, false, 0, 10, 0x16, 0x26, 0x11, 1 );
-			seg041.press_any_key( aYouOfYourVicto, false, 0, 10, 0x16, 0x26, 0x11, 1 );
+            seg041.press_any_key(aTyranthraxusSp, true, 0, 10, TextRegion.NormalBottom);
+            seg041.press_any_key(aStormGiant_You, false, 0, 10, TextRegion.NormalBottom);
+            seg041.press_any_key(aTheAmuletOfLyt, false, 0, 10, TextRegion.NormalBottom);
+            seg041.press_any_key(aYouOfYourVicto, false, 0, 10, TextRegion.NormalBottom);
 			seg041.displayAndDebug( "Press any key to continue.", 0, 13 );
 
-			seg041.press_any_key( aAsYouReachForT, true, 0, 10, 0x16, 0x26, 0x11, 1 );
-			seg041.press_any_key( aOutKeepTheGaun, false, 0, 10, 0x16, 0x26, 0x11, 1 );
-			seg041.press_any_key( aWillUnleashDan, false, 0, 10, 0x16, 0x26, 0x11, 1 );
-			seg041.press_any_key( aGauntletContac, false, 0, 10, 0x16, 0x26, 0x11, 1 );
+            seg041.press_any_key(aAsYouReachForT, true, 0, 10, TextRegion.NormalBottom);
+            seg041.press_any_key(aOutKeepTheGaun, false, 0, 10, TextRegion.NormalBottom);
+            seg041.press_any_key(aWillUnleashDan, false, 0, 10, TextRegion.NormalBottom);
+            seg041.press_any_key(aGauntletContac, false, 0, 10, TextRegion.NormalBottom);
 
             sub_52B79( 1, 0x4a, 3 ,3 );
 
 			seg041.displayAndDebug( "Press any key to continue.", 0, 13 );
 			ovr027.ClearPromptArea();
 
-			seg041.press_any_key( aIAmTrappedWith, true, 0, 10, 0x16, 0x26, 0x11, 1 );
-			seg041.press_any_key( aWhereArmiesHav, false, 0, 10, 0x16, 0x26, 0x11, 1 );
-			seg041.press_any_key( aIsSlainThisDay, false, 0, 10, 0x16, 0x26, 0x11, 1 );
-			seg041.press_any_key( aNothingness_, false, 0, 10, 0x16, 0x26, 0x11, 1 );
+            seg041.press_any_key(aIAmTrappedWith, true, 0, 10, TextRegion.NormalBottom);
+            seg041.press_any_key(aWhereArmiesHav, false, 0, 10, TextRegion.NormalBottom);
+            seg041.press_any_key(aIsSlainThisDay, false, 0, 10, TextRegion.NormalBottom);
+            seg041.press_any_key(aNothingness_, false, 0, 10, TextRegion.NormalBottom);
 
 			sub_52B79( 1, 0x4B, 3 ,3 );
 
 			seg041.displayAndDebug( "Press any key to continue.", 0, 13 );
 			ovr027.ClearPromptArea();
 
-			seg041.press_any_key( aYouAreCertainH, true, 0, 10, 0x16, 0x26, 0x11, 1 );
-			seg041.press_any_key( aFinalBondFades, false, 0, 10, 0x16, 0x26, 0x11, 1 );
-			seg041.press_any_key( aHasFinallyBeen, false, 0, 10, 0x16, 0x26, 0x11, 1 );
-			seg041.press_any_key( aLast, false, 0, 10, 0x16, 0x26, 0x11, 1 );
+            seg041.press_any_key(aYouAreCertainH, true, 0, 10, TextRegion.NormalBottom);
+            seg041.press_any_key(aFinalBondFades, false, 0, 10, TextRegion.NormalBottom);
+            seg041.press_any_key(aHasFinallyBeen, false, 0, 10, TextRegion.NormalBottom);
+            seg041.press_any_key(aLast, false, 0, 10, TextRegion.NormalBottom);
 
 			gbl.area_ptr.picture_fade = 1;
 
@@ -516,10 +516,10 @@ namespace engine
 			ovr030.head_body( 0x41, 0x41 );
             ovr030.draw_head_and_body( true, 3, 3 );
 
-			seg041.press_any_key( aTheKnightsOfMy, true, 0, 10, 0x16, 0x26, 0x11, 1 );
-			seg041.press_any_key( aCongratulati_0, false, 0, 10, 0x16, 0x26, 0x11, 1 );
-			seg041.press_any_key( aWithThePowerOf, false, 0, 10, 0x16, 0x26, 0x11, 1 );
-			seg041.press_any_key( aThisFoulPlaceT, false, 0, 10, 0x16, 0x26, 0x11, 1 );
+            seg041.press_any_key(aTheKnightsOfMy, true, 0, 10, TextRegion.NormalBottom);
+            seg041.press_any_key(aCongratulati_0, false, 0, 10, TextRegion.NormalBottom);
+            seg041.press_any_key(aWithThePowerOf, false, 0, 10, TextRegion.NormalBottom);
+            seg041.press_any_key(aThisFoulPlaceT, false, 0, 10, TextRegion.NormalBottom);
 
             seg041.displayAndDebug( "Press any key to continue.", 0, 13 );
 			ovr027.ClearPromptArea();
@@ -527,10 +527,10 @@ namespace engine
 
             ovr030.draw_bigpic();
 
-            seg041.press_any_key( aYouAreTeleport, true, 0, 10, 0x16, 0x26, 0x11, 1 );
-            seg041.press_any_key( aHaveAlreadyBeg, false, 0, 10, 0x16, 0x26, 0x11, 1 );
-			seg041.press_any_key( aGharriAndNacac, false, 0, 10, 0x16, 0x26, 0x11, 1 );
-            seg041.press_any_key( aFromTheNearbyS, false, 0, 10, 0x16, 0x26, 0x11, 1 );
+            seg041.press_any_key(aYouAreTeleport, true, 0, 10, TextRegion.NormalBottom);
+            seg041.press_any_key(aHaveAlreadyBeg, false, 0, 10, TextRegion.NormalBottom);
+            seg041.press_any_key(aGharriAndNacac, false, 0, 10, TextRegion.NormalBottom);
+            seg041.press_any_key(aFromTheNearbyS, false, 0, 10, TextRegion.NormalBottom);
 			endgame_529F4();
 
             gbl.game_state = gbl.last_game_state;

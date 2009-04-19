@@ -1082,7 +1082,7 @@ namespace engine
 
             if (itemsChanged == true)
             {
-                ovr025.display_hitpoint_ac(player);
+                ovr025.CombatDisplayPlayerSummary(player);
             }
         }
     }

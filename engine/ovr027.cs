@@ -357,7 +357,7 @@ namespace engine
 
         internal static void ClearPromptArea() // redraw_screen
         {
-            seg041.DrawRectangle(0, 0x18, 0x27, 0x18, 0);
+            ClearPromptAreaNoUpdate();
 
             Display.Update();
         }

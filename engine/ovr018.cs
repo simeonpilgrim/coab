@@ -2253,9 +2253,9 @@ namespace engine
 
                                         ovr017.LoadPlayerCombatIcon(false);
                                     }
-                                    else if (var_1B == 0x57)
+                                    else if (var_1B == 'W')
                                     {
-                                        if (inputKey == 0x50)
+                                        if (inputKey == 'P')
                                         {
                                             if (player_ptr.weapon_icon > 0)
                                             {
@@ -2266,7 +2266,7 @@ namespace engine
                                                 player_ptr.weapon_icon = 0x1F;
                                             }
                                         }
-                                        else if (inputKey == 0x4E)
+                                        else if (inputKey == 'N')
                                         {
                                             if (player_ptr.weapon_icon < 0x1F)
                                             {
@@ -2277,14 +2277,14 @@ namespace engine
                                                 player_ptr.weapon_icon = 0;
                                             }
                                         }
-                                        else if (inputKey == 0x4B)
+                                        else if (inputKey == 'K')
                                         {
                                             player_ptr2 = gbl.player_ptr;
                                             weaponIcon = player_ptr2.weapon_icon;
                                             var_8 = var_1A;
                                             inputKey = ' ';
                                         }
-                                        else if (inputKey == 0x45 || inputKey == '\0')
+                                        else if (inputKey == 'E' || inputKey == '\0')
                                         {
                                             player_ptr.weapon_icon = weaponIcon;
                                             var_8 = var_1A;
@@ -2299,7 +2299,7 @@ namespace engine
                                     byte low_color = (byte)(player_ptr.icon_colours[color_index] & 0x0F);
                                     byte high_color = (byte)((player_ptr.icon_colours[color_index] & 0xF0) >> 4);
 
-                                    if (inputKey == 0x4E)
+                                    if (inputKey == 'N')
                                     {
                                         if (second_color == true)
                                         {
@@ -2312,7 +2312,7 @@ namespace engine
 
                                         player_ptr.icon_colours[color_index] = (byte)(low_color + (high_color << 4));
                                     }
-                                    else if (inputKey == 0x50)
+                                    else if (inputKey == 'P')
                                     {
                                         if (second_color == true)
                                         {
@@ -2325,13 +2325,13 @@ namespace engine
 
                                         player_ptr.icon_colours[color_index] = (byte)(low_color + (high_color << 4));
                                     }
-                                    else if (inputKey == 0x4B)
+                                    else if (inputKey == 'K')
                                     {
                                         System.Array.Copy(player_ptr.icon_colours, bkup_colours, 6);
                                         var_8 = var_1A;
                                         inputKey = ' ';
                                     }
-                                    else if (inputKey == 0x45 || inputKey == '\0')
+                                    else if (inputKey == 'E' || inputKey == '\0')
                                     {
                                         System.Array.Copy(bkup_colours, player_ptr.icon_colours, 6);
                                         var_8 = var_1A;

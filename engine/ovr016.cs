@@ -194,7 +194,7 @@ namespace engine
                     if (spell_id != 0)
                     {
                         redraw = true;
-                        seg037.draw8x8_clear_area(0x16, 0x26, 0x11, 1);
+                        seg037.draw8x8_clear_area(TextRegion.NormalBottom);
 
                         ovr023.sub_5D2E1(1, QuickFight.False, spell_id);
                     }
@@ -1253,7 +1253,7 @@ namespace engine
             gbl.byte_1D5B5 = gbl.lastDaxBlockId;
 
             ovr025.load_pic();
-            seg037.draw8x8_clear_area(0x16, 0x26, 0x11, 1);
+            seg037.draw8x8_clear_area(TextRegion.NormalBottom);
 
             seg041.displayString("The party makes camp...", 0, 10, 18, 1);
             cancel_spells();
