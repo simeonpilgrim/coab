@@ -351,7 +351,7 @@ namespace engine
 
                         if (attacker.IsHeld() == false &&
                             CanSeeTargetA(player, attacker) == true &&
-                            attacker.HasAffect(Affects.affect_4b) == false &&
+                            attacker.HasAffect(Affects.dragon_slayer) == false &&
                             attacker.HasAffect(Affects.affect_4a) == false)
                         {
                             int end_dir = attacker.actions.direction + 10;

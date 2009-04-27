@@ -311,8 +311,6 @@ namespace Classes
         public static byte byte_1AE0A;
         public static byte byte_1AE1B;
         public static bool[] affects_timed_out = new bool[0x48]; /* unk_1AE24 */
-        public static byte byte_1AFDD;
-        public static byte byte_1AFDE;
 
         public static bool reload_ecl_and_pictures; // byte_1B2EB
         public static byte head_block_id; // byte_1B2EE

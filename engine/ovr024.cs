@@ -174,7 +174,7 @@ namespace engine
                     calc_affect_effect(Affects.ray_of_enfeeblement, player);
                     calc_affect_effect(Affects.affect_06, player);
                     calc_affect_effect(Affects.affect_67, player);
-                    calc_affect_effect(Affects.affect_4b, player);
+                    calc_affect_effect(Affects.dragon_slayer, player);
                     calc_affect_effect(Affects.affect_4c, player);
                     calc_affect_effect(Affects.range_vs_giant, player);
                     break;
@@ -190,7 +190,7 @@ namespace engine
                     calc_affect_effect(Affects.affect_77, player);
                     calc_affect_effect(Affects.affect_5e, player);
                     calc_affect_effect(Affects.affect_75, player);
-                    calc_affect_effect(Affects.affect_3c, player);
+                    calc_affect_effect(Affects.resist_normal_weapons, player);
                     calc_affect_effect(Affects.half_damge, player);
                     calc_affect_effect(Affects.affect_52, player);
                     calc_affect_effect(Affects.affect_55, player);
@@ -237,7 +237,7 @@ namespace engine
                     calc_affect_effect(Affects.affect_52, player);
                     calc_affect_effect(Affects.displace, player);
                     calc_affect_effect(Affects.camouflage, player);
-                    calc_affect_effect(Affects.affect_38, player);
+                    calc_affect_effect(Affects.item_invisibility, player);
                     break;
 
                 case CheckType.Type_9:
@@ -264,7 +264,7 @@ namespace engine
                     calc_affect_effect(Affects.affect_06, player);
                     calc_affect_effect(Affects.affect_12, player);
                     calc_affect_effect(Affects.dwarf_vs_orc, player);
-                    calc_affect_effect(Affects.affect_4b, player);
+                    calc_affect_effect(Affects.dragon_slayer, player);
                     calc_affect_effect(Affects.affect_4c, player);
                     break;
 
@@ -301,7 +301,7 @@ namespace engine
                 case CheckType.Death:
                     calc_affect_effect(Affects.affect_63, player);
                     calc_affect_effect(Affects.troll_fire_or_acid, player);
-                    calc_affect_effect(Affects.affect_4b, player);
+                    calc_affect_effect(Affects.dragon_slayer, player);
                     break;
 
                 case CheckType.Type_14:
@@ -352,7 +352,7 @@ namespace engine
                     calc_affect_effect(Affects.regen_3_hp, player);
                     calc_affect_effect(Affects.spiritual_hammer, player);
                     calc_affect_effect(Affects.camouflage, player);
-                    calc_affect_effect(Affects.affect_38, player);
+                    calc_affect_effect(Affects.item_invisibility, player);
                     calc_affect_effect(Affects.charm_person, player);
                     break;
 
@@ -719,13 +719,13 @@ namespace engine
         }
 
 
-        internal static byte encode_strength(byte str_00, byte str) /* odd_math */
+        internal static int encode_strength(int str_00, int str) /* odd_math */
         {
-            byte ret_val = (byte)(str + 100);
+            int ret_val = str + 100;
 
             if (str == 18)
             {
-                ret_val = (byte)(str_00 + 1);
+                ret_val = str_00 + 1;
             }
 
             return ret_val;
@@ -749,7 +749,7 @@ namespace engine
         }
 
 
-        internal static bool sub_64728(out byte encoded_str, byte str_100, byte str, Player player)
+        internal static bool TryEncodeStrength(out int encoded_str, int str_100, int str, Player player) // sub_64728
         {
             bool encoded;
 

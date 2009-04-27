@@ -767,7 +767,7 @@ namespace engine
         }
 
 
-        internal static void sub_3B27B(Effect arg_0, object param, Player player)
+        internal static void sub_3B27B(Effect arg_0, object param, Player player) // sub_3B27B
         {
             ovr024.add_affect(false, 12, 1, Affects.invisibility, player);
         }
@@ -790,7 +790,7 @@ namespace engine
         }
 
 
-        internal static void sub_3B2D8(Effect arg_0, object param, Player player)
+        internal static void AffectResistWeapons(Effect arg_0, object param, Player player) // sub_3B2D8
         {
             Item weapon = get_primary_weapon(gbl.player_ptr);
 
@@ -799,8 +799,7 @@ namespace engine
             {
                 gbl.damage = 0;
             }
-            else if (weapon != null &&
-                weapon.plus < 3)
+            else if (weapon.plus < 3)
             {
                 gbl.damage /= 2;
             }
@@ -960,7 +959,7 @@ namespace engine
         }
 
 
-        internal static void sub_3B71A(Effect arg_0, object param, Player player)
+        internal static void AffectDragonSlayer(Effect arg_0, object param, Player player) // sub_3B71A
         {
             if (player.actions != null &&
                 player.actions.target != null)
@@ -1849,11 +1848,11 @@ namespace engine
             affect_table.Add(Affects.sleep, ovr013.sub_3A071);
             affect_table.Add(Affects.cold_fire_shield, ovr013.ColdFireShield);
             affect_table.Add(Affects.poisoned, ovr013.empty);
-            affect_table.Add(Affects.affect_38, ovr013.sub_3B27B);
+            affect_table.Add(Affects.item_invisibility, ovr013.sub_3B27B);
             affect_table.Add(Affects.affect_39, ovr014.engulfs);
             affect_table.Add(Affects.affect_3a, ovr013.sub_3B29A);
             affect_table.Add(Affects.regenerate, ovr013.AffectRegenration);
-            affect_table.Add(Affects.affect_3c, ovr013.sub_3B2D8);
+            affect_table.Add(Affects.resist_normal_weapons, ovr013.AffectResistWeapons);
             affect_table.Add(Affects.fire_resist, ovr013.AffectFireResist);
             affect_table.Add(Affects.highConRegen, ovr013.AffectHighConRegen);
             affect_table.Add(Affects.minor_globe_of_invulnerability, ovr013.AffectMinorGlobeOfInvulnerability);
@@ -1868,7 +1867,7 @@ namespace engine
             affect_table.Add(Affects.camouflage, ovr013.sub_3B696);
             affect_table.Add(Affects.prot_drag_breath, ovr013.ProtDragonsBreath);
             affect_table.Add(Affects.affect_4a, ovr013.empty);
-            affect_table.Add(Affects.affect_4b, ovr013.sub_3B71A);
+            affect_table.Add(Affects.dragon_slayer, ovr013.AffectDragonSlayer);
             affect_table.Add(Affects.affect_4c, ovr013.sub_3B772);
             affect_table.Add(Affects.berserk, ovr013.AffectBerzerk);
             affect_table.Add(Affects.affect_4e, ovr013.sub_3B8D9);

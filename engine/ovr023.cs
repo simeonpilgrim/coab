@@ -7,65 +7,65 @@ namespace engine
     class ovr023
     {
         internal static string[] SpellNames = { /* AffectNames */
-                                   string.Empty,
-                                   "Bless",
-                                   "Curse",
-                                   "Cure Light Wounds",
-                                   "Cause Light Wounds",
-                                   "Detect Magic",
-                                   "Protection From Evil",
-                                   "Protection from Good",
-                                   "Resist Cold",
-                                   "Burning Hands",
-                                   "Charm Person",
-                                   "Detect Magic",
-                                   "Enlarge",
-                                   "Reduce",
-                                   "Friends",
-                                   "Magic Missile",
-                                   "Protection From Evil",
-                                   "Protection From Good",
-                                   "Read Magic",
-                                   "Shield",
-                                   "Shocking Grasp",
-                                   "Sleep",
-                                   "Find Traps",
-                                   "Hold Person",
-                                   "Resist Fire",
-                                   "Silence, 15' Radius",
-                                   "Slow Poison",
-                                   "Snake Charm",
-                                   "Spiritual Hammer",
-                                   "Detect Invisibility",
-                                   "Invisibility",
-                                   "Knock",
-                                   "Mirror Image",
-                                   "Ray of Enfeeblement",
-                                   "Stinking Cloud",
-                                   "Strength",
-                                   "Animate Dead",
-                                   "Cure Blindness",
-                                   "Cause Blindness",
-                                   "Cure Disease",
-                                   "Cause Disease",
-                                   "Dispel Magic",
-                                   "Prayer",
-                                   "Remove Curse",
-                                   "Bestow Curse",
-                                   "Blink",
-                                   "Dispel Magic",
-                                   "Fireball",
-                                   "Haste",
-                                   "Hold Person",
-                                   "Invisibility, 10' Radius",
-                                   "Lightning Bolt",
-                                   "Protection From Evil, 10' Radius",
-                                   "Protection From Good, 10' Radius",
-                                   "Protection From Normal Missiles",
-                                   "Slow",
-                                   "Restoration",
                                     string.Empty,
-                                   "Cure Serious Wounds",
+                                    "Bless",
+                                    "Curse",
+                                    "Cure Light Wounds",
+                                    "Cause Light Wounds",
+                                    "Detect Magic",
+                                    "Protection from Evil",
+                                    "Protection from Good",
+                                    "Resist Cold",
+                                    "Burning Hands",
+                                    "Charm Person",
+                                    "Detect Magic",
+                                    "Enlarge",
+                                    "Reduce",
+                                    "Friends",
+                                    "Magic Missile",
+                                    "Protection From Evil",
+                                    "Protection From Good",
+                                    "Read Magic",
+                                    "Shield",
+                                    "Shocking Grasp",
+                                    "Sleep",
+                                    "Find Traps",
+                                    "Hold Person",
+                                    "Resist Fire",
+                                    "Silence, 15' Radius",
+                                    "Slow Poison",
+                                    "Snake Charm",
+                                    "Spiritual Hammer",
+                                    "Detect Invisibility",
+                                    "Invisibility",
+                                    "Knock",
+                                    "Mirror Image",
+                                    "Ray of Enfeeblement",
+                                    "Stinking Cloud",
+                                    "Strength",
+                                    "Animate Dead",
+                                    "Cure Blindness",
+                                    "Cause Blindness",
+                                    "Cure Disease",
+                                    "Cause Disease",
+                                    "Dispel Magic",
+                                    "Prayer",
+                                    "Remove Curse",
+                                    "Bestow Curse",
+                                    "Blink",
+                                    "Dispel Magic",
+                                    "Fireball",
+                                    "Haste",
+                                    "Hold Person",
+                                    "Invisibility, 10' Radius",
+                                    "Lightning Bolt",
+                                    "Protection From Evil, 10' Radius",
+                                    "Protection From Good, 10' Radius",
+                                    "Protection From Normal Missiles",
+                                    "Slow",
+                                    "Restoration",
+                                    string.Empty,
+                                    "Cure Serious Wounds",
                                     string.Empty,
                                     string.Empty,
                                     string.Empty,
@@ -74,40 +74,40 @@ namespace engine
                                     string.Empty,
                                     string.Empty,                                   
                                     "Cause Serious Wounds",
-                                   "Neutralize Poison",
-                                   "Poison",
-                                   "Protection Evil, 10' Radius",
-                                   "Sticks to Snakes",
-                                   "Cure Critical Wounds",
-                                   "Cause Critical Wounds",
-                                   "Dispel Evil",
-                                   "Flame Strike",
-                                   "Raise Dead",
-                                   "Slay Living",
-                                   "Detect Magic",
-                                   "Entangle",
-                                   "Faerie Fire",
-                                   "Invisibility to Animals",
-                                   "Charm Monsters",
-                                   "Confusion",
-                                   "Dimension Door",
-                                   "Fear",
-                                   "Fire Shield",
-                                   "Fumble",
-                                   "Ice Storm",
-                                   "Minor Globe Of Invulnerability",
-                                   "Remove Curse",
-                                   "Animate Dead",
-                                   "Cloud Kill",
-                                   "Cone of Cold",
-                                   "Feeblemind",
-                                   "Hold Monsters",
-                                   string.Empty,
-                                   string.Empty,
-                                   string.Empty,
-                                   string.Empty,
-                                   string.Empty,
-                                   "Bestow Curse" };
+                                    "Neutralize Poison",
+                                    "Poison",
+                                    "Protection Evil, 10' Radius",
+                                    "Sticks to Snakes",
+                                    "Cure Critical Wounds",
+                                    "Cause Critical Wounds",
+                                    "Dispel Evil",
+                                    "Flame Strike",
+                                    "Raise Dead",
+                                    "Slay Living",
+                                    "Detect Magic",
+                                    "Entangle",
+                                    "Faerie Fire",
+                                    "Invisibility to Animals",
+                                    "Charm Monsters",
+                                    "Confusion",
+                                    "Dimension Door",
+                                    "Fear",
+                                    "Fire Shield",
+                                    "Fumble",
+                                    "Ice Storm",
+                                    "Minor Globe Of Invulnerability",
+                                    "Remove Curse",
+                                    "Animate Dead",
+                                    "Cloud Kill",
+                                    "Cone of Cold",
+                                    "Feeblemind",
+                                    "Hold Monsters",
+                                    string.Empty,
+                                    string.Empty,
+                                    string.Empty,
+                                    string.Empty,
+                                    string.Empty,
+                                    "Bestow Curse" };
 
         static string[] LevelStrings = {
                                     string.Empty,
@@ -261,7 +261,7 @@ namespace engine
             int index = 0;
             if (string_list.Count > 0)
             {
-                index = string_list.FindAll(mi => mi.Heading == false).Count + 1;
+                index = string_list.FindAll(mi => mi.Heading == false).Count /*+1*/ ;
                 last_spell_level = gbl.spell_table[gbl.memorize_spell_id[index - 1]].spellLevel;
             }
 
@@ -999,7 +999,7 @@ namespace engine
             gbl.byte_1D2C7 = true;
 
             gbl.spellTargets.RemoveAll(target => target.combat_team != team ||
-                (gbl.spell_id == (int)Spells.spell_01 && gbl.game_state == GameState.Combat && ovr025.BuildNearTargets(1, target).Count > 0));
+                (gbl.spell_id == (int)Spells.bless && gbl.game_state == GameState.Combat && ovr025.BuildNearTargets(1, target).Count > 0));
 
             sub_5CF7F(text, 0, 0, false, 0, gbl.spell_id);
         }
@@ -1017,7 +1017,7 @@ namespace engine
         }
 
 
-        internal static void cleric_cure_light() /* sub_5DDBC */
+        internal static void SpellCureLight() /* sub_5DDBC */
         {
             if (gbl.spellTargets.Count > 0 &&
                 ovr024.heal_player(0, ovr024.roll_dice(8, 1), gbl.spellTargets[0]) == true)
@@ -1027,7 +1027,7 @@ namespace engine
         }
 
 
-        internal static void cleric_cause_light() /* sub_5DDF8 */
+        internal static void SpellCauseLight() /* sub_5DDF8 */
         {
             sub_5CF7F(string.Empty, DamageType.Magic, ovr024.roll_dice_save(8, 1), false, 0, gbl.spell_id);
         }
@@ -1039,19 +1039,19 @@ namespace engine
         }
 
 
-        internal static void is_protected()
+        internal static void SpellProtectionFromX() // is_protected
         {
             sub_5CF7F("is protected", 0, 0, false, 0, gbl.spell_id);
         }
 
 
-        internal static void cleric_resist_cold() /* is_cold_resistant */
+        internal static void SpellResistCold() // is_cold_resistant
         {
             sub_5CF7F("is cold-resistant", 0, 0, false, 0, gbl.spell_id);
         }
 
 
-        internal static void sub_5DEE1()
+        internal static void SpellBuringHands() // sub_5DEE1
         {
             sub_5CF7F(string.Empty, DamageType.Magic | DamageType.Fire, ovr025.spellMaxTargetCount(gbl.spell_id), false, 0, gbl.spell_id);
         }
@@ -1080,61 +1080,58 @@ namespace engine
         }
 
 
-        internal static void is_stronger()
+        internal static void SpellEnlarge() // is_stronger
         {
             Player target = gbl.spellTargets[0];
-            gbl.byte_1AFDD = 0x12;
-            gbl.byte_1AFDE = 0;
+            int new_str = 18;
+            int new_str100 = 0;
 
             switch (ovr025.spellMaxTargetCount(gbl.spell_id))
             {
                 case 1:
-                    gbl.byte_1AFDE = 0;
+                    new_str100 = 0;
                     break;
 
                 case 2:
-                    gbl.byte_1AFDE = 1;
+                    new_str100 = 1;
                     break;
 
                 case 3:
-                    gbl.byte_1AFDE = 0x33;
+                    new_str100 = 51;
                     break;
 
                 case 4:
-                    gbl.byte_1AFDE = 0x4C;
+                    new_str100 = 76;
                     break;
 
                 case 5:
-                    gbl.byte_1AFDE = 0x5B;
+                    new_str100 = 91;
                     break;
 
                 case 6:
-                    gbl.byte_1AFDE = 0x64;
+                    new_str100 = 100;
                     break;
 
                 case 7:
-                    gbl.byte_1AFDD = 0x13;
+                    new_str = 19;
                     break;
 
                 case 8:
-                    gbl.byte_1AFDD = 0x14;
+                    new_str = 20;
                     break;
 
                 case 9:
-                    gbl.byte_1AFDD = 0x15;
+                    new_str = 21;
                     break;
 
                 case 10:
-                    gbl.byte_1AFDD = 0x16;
-                    break;
-
                 case 11:
-                    gbl.byte_1AFDD = 0x16;
+                    new_str = 22;
                     break;
             }
 
-            byte encoded_strength;
-            if (ovr024.sub_64728(out encoded_strength, gbl.byte_1AFDE, gbl.byte_1AFDD, target) == true)
+            int encoded_strength;
+            if (ovr024.TryEncodeStrength(out encoded_strength, new_str100, new_str, target) == true)
             {
                 ovr025.DisplayPlayerStatusString(true, 10, "is stronger", target);
 
@@ -1149,7 +1146,7 @@ namespace engine
         }
 
 
-        internal static void enlarge_end() /* has_been_reduced */
+        internal static void SpellReduce() // has_been_reduced
         {
             Player target = gbl.spellTargets[0];
 
@@ -1165,14 +1162,14 @@ namespace engine
         }
 
 
-        internal static void is_friendly()
+        internal static void SpellFriends() // is_friendly
         {
             sub_5CF7F("is friendly", 0, 0, true, ovr024.roll_dice(4, 2), gbl.spell_id);
             ovr024.sub_648D9(5, gbl.player_ptr);
         }
 
 
-        internal static void sub_5E221()
+        internal static void SpellMagicMissile() // sub_5E221
         {
             sbyte var_1 = (sbyte)(ovr025.spellMaxTargetCount(gbl.spell_id) + 1);
 
@@ -1180,33 +1177,33 @@ namespace engine
         }
 
 
-        internal static void is_shielded()
+        internal static void SpellShield() // is_shielded
         {
             sub_5CF7F("is shielded", 0, 0, false, 0, gbl.spell_id);
         }
 
 
-        internal static void sub_5E2B2()
+        internal static void SpellShockingGrasp() // sub_5E2B2
         {
             sub_5CF7F(string.Empty, DamageType.Acid | DamageType.Cold, ovr024.roll_dice_save(8, 1) + ovr025.spellMaxTargetCount(gbl.spell_id),
                 false, 0, gbl.spell_id);
         }
 
 
-        internal static void falls_asleep()
+        internal static void SpellSleep() // falls_asleep
         {
             gbl.byte_1D2C7 = true;
-            gbl.byte_1AFDD = ovr024.roll_dice(4, 4);
+            int totalSpellPower = ovr024.roll_dice(4, 4);
 
             gbl.spellTargets.RemoveAll(target =>
             {
-                gbl.byte_1AFDE = (byte)CalcSleepCost(target);
+                int spellCost = CalcSleepCost(target);
 
                 if (target.health_status != Status.animated &&
                     target.HasAffect(Affects.sleep) == false &&
-                    gbl.byte_1AFDD >= gbl.byte_1AFDE)
+                    totalSpellPower >= spellCost)
                 {
-                    gbl.byte_1AFDD -= gbl.byte_1AFDE;
+                    totalSpellPower -= spellCost;
                     return false;
                 }
                 else
@@ -1253,7 +1250,7 @@ namespace engine
         }
 
 
-        internal static void is_held()
+        internal static void SpellHoldX() // is_held
         {
             int save_bonus;
 
@@ -1285,13 +1282,13 @@ namespace engine
         }
 
 
-        internal static void is_fire_resistant()
+        internal static void SpellFireResistant() // is_fire_resistant
         {
             sub_5CF7F("is fire resistant", 0, 0, false, 0, gbl.spell_id);
         }
 
 
-        internal static void is_silenced()
+        internal static void SpellSilence15Radius() // is_silenced
         {
             sub_5CF7F("is silenced", 0, 0, false, 0, gbl.spell_id);
         }
@@ -1319,26 +1316,29 @@ namespace engine
         }
 
 
-        internal static void is_charmed2()
+        internal static void SpellSnakeCharm() // is_charmed2
         {
-            gbl.byte_1AFDD = gbl.player_ptr.hit_point_current;
-            gbl.spellTargets.Clear();
+            int totalSpellPower = gbl.player_ptr.hit_point_current;
 
-            foreach (Player player in gbl.player_next_ptr)
-            {
-                if (player.field_11A == 0x0e &&
-                    gbl.byte_1AFDD >= player.hit_point_current)
+            gbl.spellTargets = gbl.player_next_ptr.FindAll(target =>
                 {
-                    gbl.byte_1AFDD -= player.hit_point_current;
-                    gbl.spellTargets.Add(player);
-                }
-            }
+                    if (target.field_11A == 0x0e &&
+                       totalSpellPower >= target.hit_point_current)
+                    {
+                        totalSpellPower -= target.hit_point_current;
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                });
 
             sub_5CF7F("is charmed", 0, 0, false, 0, gbl.spell_id);
         }
 
 
-        internal static void sub_5E681()
+        internal static void SpellSpiritualHammer() // sub_5E681
         {
             sub_5CF7F(string.Empty, 0, 0, true, 0, gbl.spell_id);
 
@@ -1358,7 +1358,7 @@ namespace engine
         }
 
 
-        internal static void is_duplicated()
+        internal static void SpellMirrorImage() // is_duplicated
         {
             int var_1 = ovr024.roll_dice(4, 1) << 4;
 
@@ -1368,13 +1368,13 @@ namespace engine
         }
 
 
-        internal static void is_weakened()
+        internal static void SpellRayOfEnfeeblement() // is_weakened
         {
             sub_5CF7F("is weakened", 0, 0, false, 0, gbl.spell_id);
         }
 
 
-        internal static void create_noxious_cloud() //TODO similar to spell_poisonous_cloud
+        internal static void SpellStinkingCloud() //TODO similar to spell_poisonous_cloud
         {
             byte var_12;
             int groundTile;
@@ -1470,10 +1470,9 @@ namespace engine
         }
 
 
-        internal static void sub_5EC5B()
+        internal static void SpellStrength() // sub_5EC5B
         {
-            byte var_6 = 0; /* simeon added */
-            byte var_5 = 0;
+            int var_6 = 0; /* simeon added */
             Player target = gbl.spellTargets[0];
 
             if (target.magic_user_lvl > 0 ||
@@ -1493,13 +1492,13 @@ namespace engine
             if (target.fighter_lvl > 0 ||
                 target.field_113 > target.field_E6)
             {
-
                 var_6 = ovr024.roll_dice(8, 1);
             }
 
-            byte var_7 = (byte)(target.strength + var_6);
+            int str = target.strength + var_6;
+            int str_100 = 0;
 
-            if (var_7 > 18)
+            if (str > 18)
             {
                 if (target.fighter_lvl > 0 ||
                     target.field_113 > target.field_E6 ||
@@ -1508,26 +1507,26 @@ namespace engine
                     target.ranger_lvl > 0 ||
                     target.field_115 > target.field_E6)
                 {
-                    var_5 = (byte)(target.tmp_str_00 + ((var_7 - 18) * 10));
+                    str_100 = target.tmp_str_00 + ((str - 18) * 10);
 
-                    if (var_5 > 100)
+                    if (str_100 > 100)
                     {
-                        var_5 = 100;
+                        str_100 = 100;
                     }
 
-                    var_7 = 18;
+                    str = 18;
                 }
                 else
                 {
-                    var_7 = 18;
+                    str = 18;
                 }
             }
 
-            byte encoded_str;
+            int encoded_str;
 
-            if (ovr024.sub_64728(out encoded_str, var_5, var_7, target) == true)
+            if (ovr024.TryEncodeStrength(out encoded_str, str_100, str, target) == true)
             {
-                encoded_str = (byte)(var_6 + 100);
+                encoded_str = var_6 + 100;
 
                 ovr024.add_affect(true, encoded_str, GetSpellAffectTimeout(gbl.spell_id), Affects.strength, target);
                 ovr024.sub_648D9(0, target);
@@ -1535,7 +1534,7 @@ namespace engine
         }
 
 
-        internal static void is_animated()
+        internal static void SpellAnimateDead() // is_animated
         {
             gbl.byte_1D2C7 = true;
 
@@ -1594,7 +1593,7 @@ namespace engine
         }
 
 
-        internal static void can_see()
+        internal static void SpellCureBlindness() // can_see
         {
             if (ovr024.cure_affect(Affects.blinded, gbl.spellTargets[0]) == true)
             {
@@ -1603,7 +1602,7 @@ namespace engine
         }
 
 
-        internal static void is_blind()
+        internal static void SpellCauseBlindness() // is_blind
         {
             sub_5CF7F("is blind", 0, 0, false, 0, gbl.spell_id);
         }
@@ -1640,13 +1639,13 @@ namespace engine
         }
 
 
-        internal static void sub_5F0DC()
+        internal static void SpellCureDisease() // sub_5F0DC
         {
             sub_5F037();
         }
 
 
-        internal static void is_diseased()
+        internal static void SpellCauseDisease() // is_diseased
         {
             sub_5CF7F("is diseased", 0, 0, true, 0, gbl.spell_id);
         }
@@ -1654,41 +1653,29 @@ namespace engine
 
         internal static bool sub_5F126(Player arg_2, int target_count)
         {
-            bool var_1;
+            int byte_1AFDE = arg_2.magic_user_lvl + (arg_2.field_116 * ovr026.sub_6B3D1(gbl.player_ptr));
+            int byte_1AFDD;
 
-            gbl.byte_1AFDE = (byte)(arg_2.magic_user_lvl + (arg_2.field_116 * ovr026.sub_6B3D1(gbl.player_ptr)));
-
-            if (target_count > gbl.byte_1AFDE)
+            if (target_count > byte_1AFDE)
             {
-                gbl.byte_1AFDD = (byte)(((target_count - gbl.byte_1AFDE) * 5) + 50);
+                byte_1AFDD = ((target_count - byte_1AFDE) * 5) + 50;
             }
-            else if (target_count < gbl.byte_1AFDE)
+            else if (target_count < byte_1AFDE)
             {
-                gbl.byte_1AFDD = (byte)(50 - ((gbl.byte_1AFDE - target_count) * 2));
+                byte_1AFDD = 50 - ((byte_1AFDE - target_count) * 2);
             }
             else
             {
-                gbl.byte_1AFDD = 50;
+                byte_1AFDD = 50;
             }
 
-            var_1 = (ovr024.roll_dice(100, 1) <= gbl.byte_1AFDD);
+            bool var_1 = (ovr024.roll_dice(100, 1) <= byte_1AFDD);
 
             return var_1;
         }
 
-        public class Tuple<S, T, U>
-        {
-            public S s;
-            public T t;
-            public U u;
 
-            public Tuple(S _s, T _t, U _u)
-            { s = _s; t = _t; u = _u; }
-
-        }
-
-
-        internal static void is_affected3()
+        internal static void SpellDispelMagic() // is_affected3
         {
             gbl.byte_1D2C7 = true;
             int maxTargetCount = ovr025.spellMaxTargetCount(gbl.spell_id);
@@ -1698,40 +1685,38 @@ namespace engine
                 bool is_affected = false;
                 Player target = gbl.spellTargets[0];
 
-                List<Tuple<Affect, byte, byte>> removeList = new List<Tuple<Affect, byte, byte>>();
+                var removeList = new List<Affect>();
 
                 foreach (Affect var_C in target.affects)
                 {
                     if (var_C.affect_data < 0xff)
                     {
-                        gbl.byte_1AFDE = (byte)(var_C.affect_data & 0x0f);
+                        int byte_1AFDE = var_C.affect_data & 0x0f;
+                        int rollNeeded;
 
-                        if (maxTargetCount > gbl.byte_1AFDE)
+                        if (maxTargetCount > byte_1AFDE)
                         {
-                            gbl.byte_1AFDD = (byte)(50 + ((maxTargetCount - gbl.byte_1AFDE) * 5));
+                            rollNeeded = 50 + ((maxTargetCount - byte_1AFDE) * 5);
                         }
-                        else if (maxTargetCount < gbl.byte_1AFDE)
+                        else if (maxTargetCount < byte_1AFDE)
                         {
-                            gbl.byte_1AFDD = (byte)(50 - ((gbl.byte_1AFDE - maxTargetCount) * 2));
+                            rollNeeded = 50 - ((byte_1AFDE - maxTargetCount) * 2);
                         }
                         else
                         {
-                            gbl.byte_1AFDD = 50;
+                            rollNeeded = 50;
                         }
 
-                        if (ovr024.roll_dice(100, 1) <= gbl.byte_1AFDD)
+                        if (ovr024.roll_dice(100, 1) <= rollNeeded)
                         {
-                            removeList.Add(new Tuple<Affect, byte, byte>(var_C, gbl.byte_1AFDD, gbl.byte_1AFDE));
+                            removeList.Add(var_C);
                             is_affected = true;
                         }
                     }
                 }
 
-                foreach (Tuple<Affect, byte, byte> remove in removeList)
+                foreach (Affect affect in removeList)
                 {
-                    gbl.byte_1AFDD = remove.t;
-                    gbl.byte_1AFDE = remove.u;
-                    Affect affect = remove.s;
                     ovr024.remove_affect(affect, affect.type, target);
                 }
                 removeList.Clear();
@@ -1793,7 +1778,6 @@ namespace engine
 
                 if (ground_tile == 0x1C || ground_tile == 0x1E)
                 {
-                    // Struct_1D885 var_18;
                     int var_14 = (ground_tile == 0x1C) ? 9 : 4;
                     var looplist = (ground_tile == 0x1C) ? gbl.PoisonousCloud : gbl.NoxiousCloud;
 
@@ -1847,7 +1831,7 @@ namespace engine
         }
 
 
-        internal static void is_praying()
+        internal static void SpellPrayer() // is_praying
         {
             byte tmpByte = (byte)(((int)gbl.player_ptr.combat_team * 16) + ovr025.spellMaxTargetCount(gbl.spell_id));
 
@@ -1855,7 +1839,7 @@ namespace engine
         }
 
 
-        internal static void uncurse()
+        internal static void SpellRemoveCurse() // uncurse
         {
             if (ovr024.cure_affect(Affects.bestow_curse, gbl.spellTargets[0]) == true)
             {
@@ -2124,7 +2108,7 @@ namespace engine
         }
 
 
-        internal static void sub_5FCD9()
+        internal static void SpellLightningBolt() // sub_5FCD9
         {
             int damage = ovr024.roll_dice(6, ovr025.spellMaxTargetCount(gbl.spell_id));
 
@@ -2133,13 +2117,13 @@ namespace engine
         }
 
 
-        internal static void sub_5FD2E()
+        internal static void SpellSlow() // sub_5FD2E
         {
             RemoveComplimentSpellFirst("is Slowed", gbl.player_ptr.OppositeTeam(), Affects.haste);
         }
 
 
-        internal static void cast_restore()
+        internal static void SpellRestoration() // cast_restore
         {
             int var_C = 30; /* simeon */
 
@@ -2198,7 +2182,7 @@ namespace engine
         }
 
 
-        internal static void sub_5FF6D()
+        internal static void SpellCureSeriousWounds() // sub_5FF6D
         {
             if (gbl.spellTargets.Count > 0 &&
                 ovr024.heal_player(0, ovr024.roll_dice(8, 2) + 1, gbl.spellTargets[0]) == true)
@@ -2210,15 +2194,15 @@ namespace engine
 
         internal static void cast_strength()
         {
-            byte var_1 = 0;
+            int encodedStrength = 0;
             var target = gbl.spellTargets[0];
 
-            if (ovr024.sub_64728(out var_1, 0, 0x15, target) == true)
+            if (ovr024.TryEncodeStrength(out encodedStrength, 0, 0x15, target) == true)
             {
                 ovr025.DisplayPlayerStatusString(true, 10, "is stronger", target);
             }
 
-            ovr024.add_affect(true, var_1, (ushort)((ovr024.roll_dice(4, 1) * 10) + 0x28), Affects.strenght_spell, target);
+            ovr024.add_affect(true, encodedStrength, (ushort)((ovr024.roll_dice(4, 1) * 10) + 0x28), Affects.strenght_spell, target);
             ovr024.sub_648D9(0, target);
         }
 
@@ -2257,7 +2241,7 @@ namespace engine
         }
 
 
-        internal static void dam2d8plus1() // sub_60185
+        internal static void SpellCauseSeriousWounds() // sub_60185
         {
             sub_5CF7F(string.Empty, DamageType.Magic, ovr024.roll_dice_save(8, 2) + 1, false, 0, gbl.spell_id);
         }
@@ -2314,7 +2298,7 @@ namespace engine
         }
 
 
-        internal static void cast_flattern()
+        internal static void SpellSticksToSnakes() // cast_flattern
         {
             if (gbl.spellTargets[0].HitDice < 6)
             {
@@ -2333,7 +2317,7 @@ namespace engine
         }
 
 
-        internal static void sub_603F0()
+        internal static void SpellCureCriticalWounds() // sub_603F0
         {
             if (gbl.spellTargets.Count > 0 &&
                 ovr024.heal_player(0, ovr024.roll_dice(8, 3) + 3, gbl.spellTargets[0]) == true)
@@ -2343,20 +2327,20 @@ namespace engine
         }
 
 
-        internal static void dam3d8plus3() // sub_60431
+        internal static void SpellCauseCriticalWounds() // sub_60431
         {
             sub_5CF7F(string.Empty, DamageType.Magic, ovr024.roll_dice_save(8, 3) + 3, false, 0, gbl.spell_id);
         }
 
 
-        internal static void is_affected4()
+        internal static void SpellDispelEvil() // is_affected4
         {
             ovr024.is_unaffected(string.Empty, false, 0, false, 0, GetSpellAffectTimeout(0x49), Affects.dispel_evil, gbl.player_ptr);
             sub_5CF7F("is affected", 0, 0, false, 0, gbl.spell_id);
         }
 
 
-        internal static void sub_604DA()
+        internal static void SpellFlameStrike() // sub_604DA
         {
             sub_5CF7F(string.Empty, DamageType.Magic | DamageType.Fire, ovr024.roll_dice_save(8, 6), false, 0, gbl.spell_id);
         }
@@ -2441,7 +2425,7 @@ namespace engine
         }
 
 
-        internal static void SpellCharmPerson() // cast_charmed
+        internal static void SpellCharmMonsters() // cast_charmed
         {
             MultiTargetedSpell("is charmed", 0);
 
@@ -2457,7 +2441,7 @@ namespace engine
         }
 
 
-        internal static void cast_confuse()
+        internal static void SpellConfusion() // cast_confuse
         {
             int target_count = ovr024.roll_dice(8, 2);
 
@@ -2475,7 +2459,7 @@ namespace engine
         }
 
 
-        internal static void cast_teleport()
+        internal static void SpellDimensionDoor() // cast_teleport
         {
             Affect affect;
             Player player = gbl.player_ptr;
@@ -2510,7 +2494,7 @@ namespace engine
         }
 
 
-        internal static void cast_fear() /* cast_terror */
+        internal static void SpellFear() /* cast_terror */
         {
             Player caster = gbl.player_ptr;
 
@@ -2541,7 +2525,7 @@ namespace engine
         }
 
 
-        internal static void cast_protection()
+        internal static void SpellFireProtection() // cast_protection
         {
             char input_key;
 
@@ -2591,7 +2575,7 @@ namespace engine
         }
 
 
-        internal static void spell_slow()
+        internal static void SpellFumble() // spell_slow
         {
             Player target = gbl.spellTargets[0];
             gbl.damage_flags = DamageType.Unknown40;
@@ -2618,19 +2602,19 @@ namespace engine
         }
 
 
-        internal static void sub_60F0B()
+        internal static void SpellIceStorm() // sub_60F0B
         {
             sub_5CF7F(string.Empty, DamageType.Acid, ovr024.roll_dice_save(10, 3), false, 0, gbl.spell_id);
         }
 
 
-        internal static void sub_60F4E()
+        internal static void SpellMinorGlobeOfInvulnerability() // sub_60F4E
         {
             sub_5CF7F("is protected", 0, 0, false, 0, gbl.spell_id);
         }
 
 
-        internal static void spell_poisonous_cloud() // similar to create_noxious_cloud
+        internal static void SpellCloudKill() // spell_poisonous_cloud // similar to create_noxious_cloud
         {
             byte dir = 0;
             byte var_16;
@@ -2752,7 +2736,7 @@ namespace engine
         }
 
 
-        internal static void sub_61550()
+        internal static void SpellConeOfCold() // sub_61550
         {
             Player player = gbl.player_ptr;
             int target_count = ovr025.spellMaxTargetCount(gbl.spell_id);
@@ -3174,64 +3158,64 @@ namespace engine
 
             gbl.spellTable = new Dictionary<Spells, spellDelegate2>();
 
-            gbl.spellTable.Add(Spells.spell_01, ovr023.cleric_bless);
-            gbl.spellTable.Add(Spells.spell_02, ovr023.cleric_curse);
-            gbl.spellTable.Add(Spells.spell_03, ovr023.cleric_cure_light);
-            gbl.spellTable.Add(Spells.spell_04, ovr023.cleric_cause_light);
-            gbl.spellTable.Add(Spells.spell_05, ovr023.is_affected);
-            gbl.spellTable.Add(Spells.spell_06, ovr023.is_protected);
-            gbl.spellTable.Add(Spells.spell_07, ovr023.is_protected);
-            gbl.spellTable.Add(Spells.spell_08, ovr023.cleric_resist_cold);
-            gbl.spellTable.Add(Spells.spell_09, ovr023.sub_5DEE1);
-            gbl.spellTable.Add(Spells.spell_0a, ovr023.SpellCharm);
-            gbl.spellTable.Add(Spells.spell_0b, ovr023.is_affected);
-            gbl.spellTable.Add(Spells.spell_0c, ovr023.is_stronger);
-            gbl.spellTable.Add(Spells.spell_0d, ovr023.enlarge_end);
-            gbl.spellTable.Add(Spells.spell_0e, ovr023.is_friendly);
-            gbl.spellTable.Add(Spells.spell_0f, ovr023.sub_5E221);
-            gbl.spellTable.Add(Spells.spell_10, ovr023.is_protected);
-            gbl.spellTable.Add(Spells.spell_11, ovr023.is_protected);
-            gbl.spellTable.Add(Spells.spell_12, ovr023.is_affected);
-            gbl.spellTable.Add(Spells.spell_13, ovr023.is_shielded);
-            gbl.spellTable.Add(Spells.spell_14, ovr023.sub_5E2B2);
-            gbl.spellTable.Add(Spells.spell_15, ovr023.falls_asleep);
-            gbl.spellTable.Add(Spells.spell_16, ovr023.is_affected);
-            gbl.spellTable.Add(Spells.spell_17, ovr023.is_held);
-            gbl.spellTable.Add(Spells.spell_18, ovr023.is_fire_resistant);
-            gbl.spellTable.Add(Spells.spell_19, ovr023.is_silenced);
-            gbl.spellTable.Add(Spells.spell_1a, ovr023.is_affected2);
-            gbl.spellTable.Add(Spells.spell_1b, ovr023.is_charmed2);
-            gbl.spellTable.Add(Spells.spell_1c, ovr023.sub_5E681);
-            gbl.spellTable.Add(Spells.spell_1d, ovr023.is_affected);
-            gbl.spellTable.Add(Spells.spell_1e, ovr023.is_invisible);
+            gbl.spellTable.Add(Spells.bless, ovr023.cleric_bless);
+            gbl.spellTable.Add(Spells.curse, ovr023.cleric_curse);
+            gbl.spellTable.Add(Spells.cure_light_wounds, ovr023.SpellCureLight);
+            gbl.spellTable.Add(Spells.cause_light_wounds, ovr023.SpellCauseLight);
+            gbl.spellTable.Add(Spells.detect_magic_CL, ovr023.is_affected);
+            gbl.spellTable.Add(Spells.protect_from_evil_CL, ovr023.SpellProtectionFromX);
+            gbl.spellTable.Add(Spells.protect_from_good_CL, ovr023.SpellProtectionFromX);
+            gbl.spellTable.Add(Spells.resist_cold, ovr023.SpellResistCold);
+            gbl.spellTable.Add(Spells.burning_hands, ovr023.SpellBuringHands);
+            gbl.spellTable.Add(Spells.charm_person, ovr023.SpellCharm);
+            gbl.spellTable.Add(Spells.detect_magic_MU, ovr023.is_affected);
+            gbl.spellTable.Add(Spells.enlarge, ovr023.SpellEnlarge);
+            gbl.spellTable.Add(Spells.reduce, ovr023.SpellReduce);
+            gbl.spellTable.Add(Spells.friends, ovr023.SpellFriends);
+            gbl.spellTable.Add(Spells.magic_missile, ovr023.SpellMagicMissile);
+            gbl.spellTable.Add(Spells.protect_from_evil_MU, ovr023.SpellProtectionFromX);
+            gbl.spellTable.Add(Spells.protect_from_good_MU, ovr023.SpellProtectionFromX);
+            gbl.spellTable.Add(Spells.read_magic, ovr023.is_affected);
+            gbl.spellTable.Add(Spells.shield, ovr023.SpellShield);
+            gbl.spellTable.Add(Spells.shocking_grasp, ovr023.SpellShockingGrasp);
+            gbl.spellTable.Add(Spells.sleep, ovr023.SpellSleep);
+            gbl.spellTable.Add(Spells.find_traps, ovr023.is_affected);
+            gbl.spellTable.Add(Spells.hold_person_CL, ovr023.SpellHoldX);
+            gbl.spellTable.Add(Spells.resist_fire, ovr023.SpellFireResistant);
+            gbl.spellTable.Add(Spells.silence_15_radius, ovr023.SpellSilence15Radius);
+            gbl.spellTable.Add(Spells.slow_poison, ovr023.is_affected2);
+            gbl.spellTable.Add(Spells.snake_charm, ovr023.SpellSnakeCharm);
+            gbl.spellTable.Add(Spells.spiritual_hammer, ovr023.SpellSpiritualHammer);
+            gbl.spellTable.Add(Spells.detect_invisibility, ovr023.is_affected);
+            gbl.spellTable.Add(Spells.invisibility, ovr023.is_invisible);
             gbl.spellTable.Add(Spells.knock, ovr023.SpellKnock);
-            gbl.spellTable.Add(Spells.spell_20, ovr023.is_duplicated);
-            gbl.spellTable.Add(Spells.spell_21, ovr023.is_weakened);
-            gbl.spellTable.Add(Spells.spell_22, ovr023.create_noxious_cloud);
-            gbl.spellTable.Add(Spells.spell_23, ovr023.sub_5EC5B);
-            gbl.spellTable.Add(Spells.spell_24, ovr023.is_animated);
-            gbl.spellTable.Add(Spells.spell_25, ovr023.can_see);
-            gbl.spellTable.Add(Spells.spell_26, ovr023.is_blind);
-            gbl.spellTable.Add(Spells.spell_27, ovr023.sub_5F0DC);
-            gbl.spellTable.Add(Spells.spell_28, ovr023.is_diseased);
-            gbl.spellTable.Add(Spells.spell_29, ovr023.is_affected3);
-            gbl.spellTable.Add(Spells.spell_2a, ovr023.is_praying);
-            gbl.spellTable.Add(Spells.spell_2b, ovr023.uncurse);
-            gbl.spellTable.Add(Spells.spell_2c, ovr023.curse);
-            gbl.spellTable.Add(Spells.spell_2d, ovr023.spell_blinking);
-            gbl.spellTable.Add(Spells.spell_2e, ovr023.is_affected3);
-            gbl.spellTable.Add(Spells.spell_2f, ovr023.sub_5F782);
-            gbl.spellTable.Add(Spells.spell_30, ovr023.cast_haste);
-            gbl.spellTable.Add(Spells.spell_31, ovr023.is_held);
-            gbl.spellTable.Add(Spells.spell_32, ovr023.is_invisible);
-            gbl.spellTable.Add(Spells.spell_33, ovr023.sub_5FCD9);
-            gbl.spellTable.Add(Spells.spell_34, ovr023.is_protected);
-            gbl.spellTable.Add(Spells.spell_35, ovr023.is_protected);
-            gbl.spellTable.Add(Spells.spell_36, ovr023.is_protected);
-            gbl.spellTable.Add(Spells.spell_37, ovr023.sub_5FD2E);
-            gbl.spellTable.Add(Spells.spell_38, ovr023.cast_restore);
+            gbl.spellTable.Add(Spells.mirror_image, ovr023.SpellMirrorImage);
+            gbl.spellTable.Add(Spells.ray_of_enfeeblement, ovr023.SpellRayOfEnfeeblement);
+            gbl.spellTable.Add(Spells.stinking_cloud, ovr023.SpellStinkingCloud);
+            gbl.spellTable.Add(Spells.strength, ovr023.SpellStrength);
+            gbl.spellTable.Add(Spells.animate_dead, ovr023.SpellAnimateDead);
+            gbl.spellTable.Add(Spells.cure_blindness, ovr023.SpellCureBlindness);
+            gbl.spellTable.Add(Spells.cause_blindness, ovr023.SpellCauseBlindness);
+            gbl.spellTable.Add(Spells.cure_disease, ovr023.SpellCureDisease);
+            gbl.spellTable.Add(Spells.cause_disease, ovr023.SpellCauseDisease);
+            gbl.spellTable.Add(Spells.dispel_magic_CL, ovr023.SpellDispelMagic);
+            gbl.spellTable.Add(Spells.prayer, ovr023.SpellPrayer);
+            gbl.spellTable.Add(Spells.remove_curse, ovr023.SpellRemoveCurse);
+            gbl.spellTable.Add(Spells.bestow_curse_CL, ovr023.curse);
+            gbl.spellTable.Add(Spells.blink, ovr023.spell_blinking);
+            gbl.spellTable.Add(Spells.dispel_magic_MU, ovr023.SpellDispelMagic);
+            gbl.spellTable.Add(Spells.fireball, ovr023.sub_5F782);
+            gbl.spellTable.Add(Spells.haste, ovr023.cast_haste);
+            gbl.spellTable.Add(Spells.hold_person_MU, ovr023.SpellHoldX);
+            gbl.spellTable.Add(Spells.invisibility_10_radius, ovr023.is_invisible);
+            gbl.spellTable.Add(Spells.lightning_bolt, ovr023.SpellLightningBolt);
+            gbl.spellTable.Add(Spells.protect_from_evil_10_rad, ovr023.SpellProtectionFromX);
+            gbl.spellTable.Add(Spells.protect_from_good_10_rad, ovr023.SpellProtectionFromX);
+            gbl.spellTable.Add(Spells.protect_from_normal_missiles, ovr023.SpellProtectionFromX);
+            gbl.spellTable.Add(Spells.slow, ovr023.SpellSlow);
+            gbl.spellTable.Add(Spells.restoration, ovr023.SpellRestoration);
             gbl.spellTable.Add(Spells.spell_39, ovr023.cast_speed);
-            gbl.spellTable.Add(Spells.spell_3a, ovr023.sub_5FF6D);
+            gbl.spellTable.Add(Spells.cure_serious_wounds, ovr023.SpellCureSeriousWounds);
             gbl.spellTable.Add(Spells.spell_3b, ovr023.cast_strength);
             gbl.spellTable.Add(Spells.spell_3c, ovr023.sub_6003C);
             gbl.spellTable.Add(Spells.spell_3d, ovr023.cast_paralyzed);
@@ -3239,41 +3223,41 @@ namespace engine
             gbl.spellTable.Add(Spells.spell_3f, ovr023.cast_invisible);
             gbl.spellTable.Add(Spells.spell_40, ovr023.sub_5F782);
             gbl.spellTable.Add(Spells.spell_41, ovr023.dam2d4plus2);
-            gbl.spellTable.Add(Spells.spell_42, ovr023.dam2d8plus1);
-            gbl.spellTable.Add(Spells.spell_43, ovr023.SpellNeutralizePoison);
-            gbl.spellTable.Add(Spells.spell_44, ovr023.SpellPoison);
-            gbl.spellTable.Add(Spells.spell_45, ovr023.is_protected);
-            gbl.spellTable.Add(Spells.spell_46, ovr023.cast_flattern);
-            gbl.spellTable.Add(Spells.spell_47, ovr023.sub_603F0);
-            gbl.spellTable.Add(Spells.spell_48, ovr023.dam3d8plus3);
-            gbl.spellTable.Add(Spells.spell_49, ovr023.is_affected4);
-            gbl.spellTable.Add(Spells.spell_4a, ovr023.sub_604DA);
-            gbl.spellTable.Add(Spells.spell_4b, ovr023.SpellRaiseDead);
-            gbl.spellTable.Add(Spells.spell_4c, ovr023.SpellSlayLiving);
-            gbl.spellTable.Add(Spells.spell_4d, ovr023.is_affected);
-            gbl.spellTable.Add(Spells.spell_4e, ovr023.SpellEntangle);
-            gbl.spellTable.Add(Spells.spell_4f, ovr023.SpellFaerieFire);
-            gbl.spellTable.Add(Spells.spell_50, ovr023.SpellInvisToAnimals);
-            gbl.spellTable.Add(Spells.spell_51, ovr023.SpellCharmPerson);
-            gbl.spellTable.Add(Spells.spell_52, ovr023.cast_confuse);
-            gbl.spellTable.Add(Spells.spell_53, ovr023.cast_teleport);
-            gbl.spellTable.Add(Spells.spell_54, ovr023.cast_fear);
-            gbl.spellTable.Add(Spells.spell_55, ovr023.cast_protection);
-            gbl.spellTable.Add(Spells.spell_56, ovr023.spell_slow);
-            gbl.spellTable.Add(Spells.spell_57, ovr023.sub_60F0B);
-            gbl.spellTable.Add(Spells.spell_58, ovr023.sub_60F4E);
-            gbl.spellTable.Add(Spells.spell_59, ovr023.uncurse);
-            gbl.spellTable.Add(Spells.spell_5a, ovr023.is_animated);
-            gbl.spellTable.Add(Spells.spell_5b, ovr023.spell_poisonous_cloud);
-            gbl.spellTable.Add(Spells.spell_5c, ovr023.sub_61550);
-            gbl.spellTable.Add(Spells.spell_5d, ovr023.SpellFeeblemind);
-            gbl.spellTable.Add(Spells.spell_5e, ovr023.is_held);
+            gbl.spellTable.Add(Spells.cause_serious_wounds, ovr023.SpellCauseSeriousWounds);
+            gbl.spellTable.Add(Spells.neutralize_poison, ovr023.SpellNeutralizePoison);
+            gbl.spellTable.Add(Spells.poison, ovr023.SpellPoison);
+            gbl.spellTable.Add(Spells.protect_evil_10_rad, ovr023.SpellProtectionFromX);
+            gbl.spellTable.Add(Spells.sticks_to_snakes, ovr023.SpellSticksToSnakes);
+            gbl.spellTable.Add(Spells.cure_critical_wounds, ovr023.SpellCureCriticalWounds);
+            gbl.spellTable.Add(Spells.cause_critical_wounds, ovr023.SpellCauseCriticalWounds);
+            gbl.spellTable.Add(Spells.dispel_evil, ovr023.SpellDispelEvil);
+            gbl.spellTable.Add(Spells.flame_strike, ovr023.SpellFlameStrike);
+            gbl.spellTable.Add(Spells.raise_dead, ovr023.SpellRaiseDead);
+            gbl.spellTable.Add(Spells.slay_living, ovr023.SpellSlayLiving);
+            gbl.spellTable.Add(Spells.detect_magic_DR, ovr023.is_affected);
+            gbl.spellTable.Add(Spells.entangle, ovr023.SpellEntangle);
+            gbl.spellTable.Add(Spells.faerie_fire, ovr023.SpellFaerieFire);
+            gbl.spellTable.Add(Spells.invisibility_to_animals, ovr023.SpellInvisToAnimals);
+            gbl.spellTable.Add(Spells.charm_monsters, ovr023.SpellCharmMonsters);
+            gbl.spellTable.Add(Spells.confusion, ovr023.SpellConfusion);
+            gbl.spellTable.Add(Spells.dimension_door, ovr023.SpellDimensionDoor);
+            gbl.spellTable.Add(Spells.fear, ovr023.SpellFear);
+            gbl.spellTable.Add(Spells.fire_shield, ovr023.SpellFireProtection);
+            gbl.spellTable.Add(Spells.fumble, ovr023.SpellFumble);
+            gbl.spellTable.Add(Spells.ice_storm, ovr023.SpellIceStorm);
+            gbl.spellTable.Add(Spells.minor_globe_of_invuln, ovr023.SpellMinorGlobeOfInvulnerability);
+            gbl.spellTable.Add(Spells.spell_59, ovr023.SpellRemoveCurse);
+            gbl.spellTable.Add(Spells.spell_5a, ovr023.SpellAnimateDead);
+            gbl.spellTable.Add(Spells.cloud_kill, ovr023.SpellCloudKill);
+            gbl.spellTable.Add(Spells.cone_of_cold, ovr023.SpellConeOfCold);
+            gbl.spellTable.Add(Spells.feeblemind, ovr023.SpellFeeblemind);
+            gbl.spellTable.Add(Spells.hold_monsters, ovr023.SpellHoldX);
             gbl.spellTable.Add(Spells.spell_5f, ovr023.sub_616CC);
             gbl.spellTable.Add(Spells.spell_60, ovr023.sub_616CC);
             gbl.spellTable.Add(Spells.spell_61, ovr023.sub_616CC);
             gbl.spellTable.Add(Spells.spell_62, ovr023.sub_61727);
             gbl.spellTable.Add(Spells.spell_63, ovr023.cast_heal2);
-            gbl.spellTable.Add(Spells.spell_64, ovr023.curse);
+            gbl.spellTable.Add(Spells.bestow_curse_MU, ovr023.curse);
         }
     }
 }
