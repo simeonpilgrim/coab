@@ -812,7 +812,7 @@ namespace engine
                         {
                             player.actions.field_14 = true;
                             ovr024.remove_affect(null, Affects.affect_4a, player);
-                            ovr024.remove_affect(null, Affects.affect_4b, player);
+                            ovr024.remove_affect(null, Affects.dragon_slayer, player);
                         }
                         else if (player._int > 5)
                         {

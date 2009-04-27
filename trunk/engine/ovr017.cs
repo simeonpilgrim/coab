@@ -488,7 +488,7 @@ namespace engine
             player.hit_point_max = bp_var_1C0.hp_max;
 
             System.Array.Copy(bp_var_1C0.field_33, player.spellBook, 0x38);
-            player.spellBook[(int)Spells.spell_24 - 1] = 0;
+            player.spellBook[(int)Spells.animate_dead - 1] = 0;
 
             player.field_DD = bp_var_1C0.field_6B;
             player.field_DE = bp_var_1C0.field_6C;
@@ -1089,10 +1089,10 @@ namespace engine
 
                         if (player01_ptr.magic_user_lvl > 0)
                         {
-                            player01_ptr.LearnSpell(Spells.spell_0b);
-                            player01_ptr.LearnSpell(Spells.spell_12);
-                            player01_ptr.LearnSpell(Spells.spell_13);
-                            player01_ptr.LearnSpell(Spells.spell_15);
+                            player01_ptr.LearnSpell(Spells.detect_magic_MU);
+                            player01_ptr.LearnSpell(Spells.read_magic);
+                            player01_ptr.LearnSpell(Spells.shield);
+                            player01_ptr.LearnSpell(Spells.sleep);
                         }
 
                         SilentTrainPlayer();

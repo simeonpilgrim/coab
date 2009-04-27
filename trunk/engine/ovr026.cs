@@ -101,7 +101,7 @@ namespace engine
 
                                 if (se.spellClass == 0 &&
                                     player.field_12D[sp_class, sp_lvl] > 0 &&
-                                    spell != Spells.spell_24)
+                                    spell != Spells.animate_dead)
                                 {
                                     player.LearnSpell(spell);
                                 }
@@ -700,9 +700,9 @@ namespace engine
             else if (var_2 == 5)
             {
                 player.field_12D[2,0] = 1;
-                player.LearnSpell(Spells.spell_0b);
-                player.LearnSpell(Spells.spell_12);
-                player.LearnSpell(Spells.spell_15);
+                player.LearnSpell(Spells.detect_magic_MU);
+                player.LearnSpell(Spells.read_magic);
+                player.LearnSpell(Spells.sleep);
             }
 
             player._class = (ClassId)var_2;

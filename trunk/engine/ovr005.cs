@@ -314,7 +314,7 @@ namespace engine
                 {
                     gbl.spellTargets.Clear();
                     gbl.spellTargets.Add(gbl.player_ptr);
-                    ovr023.uncurse();
+                    ovr023.SpellRemoveCurse();
                 }
             }
         }

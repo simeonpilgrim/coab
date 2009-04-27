@@ -1083,10 +1083,10 @@ namespace engine
                         }
                         else if (class_idx == 5)
                         {
-                            player.LearnSpell(Spells.spell_0b);
-                            player.LearnSpell(Spells.spell_12);
-                            player.LearnSpell(Spells.spell_0c);
-                            player.LearnSpell(Spells.spell_15);
+                            player.LearnSpell(Spells.detect_magic_MU);
+                            player.LearnSpell(Spells.read_magic);
+                            player.LearnSpell(Spells.enlarge);
+                            player.LearnSpell(Spells.sleep);
                         }
 
                         var_20++;
@@ -2856,12 +2856,12 @@ namespace engine
                     switch (player_ptr.magic_user_lvl)
                     {
                         case 2:
-                            player_ptr.LearnSpell(Spells.spell_0f);
+                            player_ptr.LearnSpell(Spells.magic_missile);
                             break;
 
                         case 3:
-                            player_ptr.LearnSpell(Spells.spell_22);
-                            player_ptr.LearnSpell(Spells.spell_10);
+                            player_ptr.LearnSpell(Spells.stinking_cloud);
+                            player_ptr.LearnSpell(Spells.protect_from_evil_MU);
                             break;
 
                         case 4:
@@ -2869,7 +2869,7 @@ namespace engine
                             break;
 
                         case 5:
-                            player_ptr.LearnSpell(Spells.spell_2f);
+                            player_ptr.LearnSpell(Spells.fireball);
                             break;
                     }
                 }
