@@ -163,13 +163,13 @@ namespace engine
 													Affects.snake_charm,
 													Affects.paralyze,
 													Affects.sleep,
-													Affects.affect_3a,
+													Affects.clear_movement,
 													Affects.affect_5b,
 													Affects.entangle,
 													Affects.affect_89,
 													Affects.affect_8b,
 													Affects.fear,
-													Affects.affect_90,
+													Affects.owlbear_hug_round_attack,
 													Affects.helpless
 												};
 

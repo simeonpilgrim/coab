@@ -155,7 +155,7 @@ namespace engine
                     calc_affect_effect(Affects.ankheg_acid_attack, player);
                     calc_affect_effect(Affects.sp_dispel_evil, player);
                     calc_affect_effect(Affects.affect_39, player);
-                    calc_affect_effect(Affects.affect_60, player);
+                    calc_affect_effect(Affects.owlbear_hug_check, player);
                     calc_affect_effect(Affects.dracolich_paralysis, player);
                     calc_affect_effect(Affects.affect_7b, player);
                     break;
@@ -192,7 +192,7 @@ namespace engine
                     calc_affect_effect(Affects.affect_75, player);
                     calc_affect_effect(Affects.resist_normal_weapons, player);
                     calc_affect_effect(Affects.half_damge, player);
-                    calc_affect_effect(Affects.affect_52, player);
+                    calc_affect_effect(Affects.resist_fire_and_cold, player);
                     calc_affect_effect(Affects.affect_55, player);
                     calc_affect_effect(Affects.affect_82, player);
                     calc_affect_effect(Affects.affect_8f, player);
@@ -205,7 +205,7 @@ namespace engine
                     calc_affect_effect(Affects.resist_fire, player);
                     calc_affect_effect(Affects.affect_69, player);
                     calc_affect_effect(Affects.affect_6a, player);
-                    calc_affect_effect(Affects.affect_70, player);
+                    calc_affect_effect(Affects.immune_to_fire, player);
                     calc_affect_effect(Affects.affect_72, player);
                     calc_affect_effect(Affects.affect_76, player);
                     calc_affect_effect(Affects.shield, player);
@@ -214,8 +214,8 @@ namespace engine
                     calc_affect_effect(Affects.mirror_image, player);
                     calc_affect_effect(Affects.affect_6e, player);
                     calc_affect_effect(Affects.prot_drag_breath, player);
-                    calc_affect_effect(Affects.affect_52, player);
-                    calc_affect_effect(Affects.affect_54, player);
+                    calc_affect_effect(Affects.resist_fire_and_cold, player);
+                    calc_affect_effect(Affects.shambling_absorb_lightning, player);
                     calc_affect_effect(Affects.protect_magic, player);
                     calc_affect_effect(Affects.affect_85, player);
                     calc_affect_effect(Affects.protect_elec, player);
@@ -234,7 +234,7 @@ namespace engine
 
                 case CheckType.Type_8:
                     calc_affect_effect(Affects.affect_63, player);
-                    calc_affect_effect(Affects.affect_52, player);
+                    calc_affect_effect(Affects.resist_fire_and_cold, player);
                     calc_affect_effect(Affects.displace, player);
                     calc_affect_effect(Affects.camouflage, player);
                     calc_affect_effect(Affects.item_invisibility, player);
@@ -248,7 +248,7 @@ namespace engine
                     calc_affect_effect(Affects.affect_6d, player);
                     calc_affect_effect(Affects.affect_6e, player);
                     calc_affect_effect(Affects.affect_6f, player);
-                    calc_affect_effect(Affects.affect_70, player);
+                    calc_affect_effect(Affects.immune_to_fire, player);
                     calc_affect_effect(Affects.halfelf_resistance, player);
                     calc_affect_effect(Affects.affect_7d, player);
                     calc_affect_effect(Affects.minor_globe_of_invulnerability, player);
@@ -345,7 +345,7 @@ namespace engine
                 case CheckType.Movement:
                     calc_affect_effect(Affects.haste, player);
                     calc_affect_effect(Affects.slow, player);
-                    calc_affect_effect(Affects.affect_3a, player);
+                    calc_affect_effect(Affects.clear_movement, player);
                     break;
 
                 case CheckType.Type_19:
@@ -673,14 +673,14 @@ namespace engine
 								  Affects.snake_charm,
 								  Affects.paralyze,
 								  Affects.sleep,
-								  Affects.affect_3a,
+								  Affects.clear_movement,
 								  Affects.regenerate,
 								  Affects.affect_5F,
 								  Affects.regen_3_hp,
 								  Affects.entangle,
 								  Affects.affect_89,
 								  Affects.affect_8b,
-								  Affects.affect_90
+								  Affects.owlbear_hug_round_attack
 							  };
 
             System.Array.ForEach(table, affect => remove_affect(null, affect, player));
@@ -695,9 +695,9 @@ namespace engine
         internal static void sub_6460D(Player player) // sub_6460D
         {
             Affects[] table = {   Affects.reduce, 
-								  Affects.affect_3a, 
+								  Affects.clear_movement, 
 								  Affects.affect_8b, 
-								  Affects.affect_90 };
+								  Affects.owlbear_hug_round_attack };
 
             System.Array.ForEach(table, affect => remove_affect(null, affect, player));
         }

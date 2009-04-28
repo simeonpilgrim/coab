@@ -614,7 +614,7 @@ namespace engine
                 {
                     ovr014.sub_3F94D(target, player);
 
-                    ovr014.sub_3F9DB(out arg_0, null, 0, target, player);
+                    ovr014.AttackTarget(out arg_0, null, 0, target, player);
                 }
             }
         }

@@ -678,7 +678,7 @@ namespace engine
                                 }
                             }
 
-                            ovr014.sub_3F9DB(out var_2, item, 0, target, player);
+                            ovr014.AttackTarget(out var_2, item, 0, target, player);
 
                             if (var_2 == true)
                             {

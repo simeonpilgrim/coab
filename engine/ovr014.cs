@@ -241,7 +241,7 @@ namespace engine
 
                         sub_3F94D(target, attacker);
 
-                        sub_3F9DB(0, target, attacker);
+                        AttackTarget(0, target, attacker);
                     }
                 }
             }
@@ -389,7 +389,7 @@ namespace engine
 
                                         Player backupTarget = attacker.actions.target;
 
-                                        sub_3F9DB(1, player, attacker);
+                                        AttackTarget(1, player, attacker);
                                         var_12 = true;
 
                                         attacker.actions.target = backupTarget;
@@ -544,7 +544,7 @@ namespace engine
 
                         attacker.field_19C = 1;
 
-                        sub_3F9DB(0, sweaptarget, attacker);
+                        AttackTarget(0, sweaptarget, attacker);
                     }
                     
                     return true;
@@ -708,11 +708,11 @@ namespace engine
         }
 
 
-        internal static void sub_3F4EB(Item item, ref bool arg_4, byte arg_8, Player target, Player attacker)
+        internal static void sub_3F4EB(Item item, ref bool arg_4, int arg_8, Player target, Player attacker)
         {
             int target_ac;
 
-            byte var_13 = arg_8;
+            int var_13 = arg_8;
             arg_4 = false;
             gbl.byte_1D2CA = 0;
             gbl.byte_1D2CB = 0;
@@ -900,14 +900,14 @@ namespace engine
         }
 
 
-        internal static void sub_3F9DB(byte arg_8, Player target, Player attacker)
+        internal static void AttackTarget(byte arg_8, Player target, Player attacker) // sub_3F9DB
         {
             bool dummyBool;
-            sub_3F9DB(out dummyBool, null, arg_8, target, attacker);
+            AttackTarget(out dummyBool, null, arg_8, target, attacker);
         }
 
 
-        internal static void sub_3F9DB(out bool arg_0, Item item, byte arg_8, Player target, Player attacker)
+        internal static void AttackTarget(out bool arg_0, Item item, byte arg_8, Player target, Player attacker) // sub_3F9DB
         {
             int dir = 0;
 
@@ -1852,7 +1852,7 @@ namespace engine
                             var_5 = null;
                         }
 
-                        sub_3F9DB(out arg_4, var_5, 0, target, attacker);
+                        AttackTarget(out arg_4, var_5, 0, target, attacker);
                     }
                 }
             }
@@ -2310,14 +2310,14 @@ namespace engine
 
             if (gbl.byte_1D2CA == 2 &&
                 target.in_combat == true &&
-                target.HasAffect(Affects.affect_3a) == false &&
+                target.HasAffect(Affects.clear_movement) == false &&
                 target.HasAffect(Affects.reduce) == false)
             {
                 target = attacker.actions.target;
                 ovr025.DisplayPlayerStatusString(true, 12, "engulfs " + target.name, attacker);
-                ovr024.add_affect(false, ovr033.GetPlayerIndex(target), 0, Affects.affect_3a, target);
+                ovr024.add_affect(false, ovr033.GetPlayerIndex(target), 0, Affects.clear_movement, target);
 
-                ovr013.CallAffectTable(Effect.Add, null, target, Affects.affect_3a);
+                ovr013.CallAffectTable(Effect.Add, null, target, Affects.clear_movement);
                 ovr024.add_affect(false, ovr024.roll_dice(4, 2), 0, Affects.reduce, target);
                 ovr024.add_affect(true, ovr033.GetPlayerIndex(target), 0, Affects.affect_8b, attacker);
             }
@@ -2451,7 +2451,7 @@ namespace engine
                 player.in_combat == false ||
                 gbl.spell_target.in_combat == false)
             {
-                ovr024.remove_affect(null, Affects.affect_3a, gbl.spell_target);
+                ovr024.remove_affect(null, Affects.clear_movement, gbl.spell_target);
                 ovr024.remove_affect(null, Affects.reduce, gbl.spell_target);
 
                 if (add_remove == Effect.Add)
@@ -2468,21 +2468,21 @@ namespace engine
                 player.attack_dice_count = 2;
                 player.attack_dice_size = 8;
 
-                sub_3F9DB(1, gbl.spell_target, player);
+                AttackTarget(1, gbl.spell_target, player);
 
                 ovr025.clear_actions(player);
 
                 if (gbl.spell_target.in_combat == false)
                 {
                     ovr024.remove_affect(null, Affects.affect_8b, player);
-                    ovr024.remove_affect(null, Affects.affect_3a, gbl.spell_target);
+                    ovr024.remove_affect(null, Affects.clear_movement, gbl.spell_target);
                     ovr024.remove_affect(null, Affects.reduce, gbl.spell_target);
                 }
             }
         }
 
 
-        internal static void sub_426FC(Effect arg_0, object param, Player player)
+        internal static void AffectOwlbearHugRoundAttack(Effect arg_0, object param, Player player) // sub_426FC
         {
             Affect affect = (Affect)param;
 
@@ -2492,11 +2492,11 @@ namespace engine
                 player.in_combat == false ||
                 gbl.spell_target.in_combat == false)
             {
-                ovr024.remove_affect(null, Affects.affect_3a, gbl.spell_target);
+                ovr024.remove_affect(null, Affects.clear_movement, gbl.spell_target);
                 if (arg_0 == Effect.Add)
                 {
                     affect.callAffectTable = false;
-                    ovr024.remove_affect(affect, Affects.affect_90, player);
+                    ovr024.remove_affect(affect, Affects.owlbear_hug_round_attack, player);
                 }
             }
             else
@@ -2507,30 +2507,30 @@ namespace engine
                 player.attack_dice_size = 8;
                 
 
-                sub_3F9DB(2, gbl.spell_target, player);
+                AttackTarget(2, gbl.spell_target, player);
 
                 ovr025.clear_actions(player);
 
                 if (gbl.spell_target.in_combat == false)
                 {
-                    ovr024.remove_affect(null, Affects.affect_90, player);
-                    ovr024.remove_affect(null, Affects.affect_3a, gbl.spell_target);
+                    ovr024.remove_affect(null, Affects.owlbear_hug_round_attack, player);
+                    ovr024.remove_affect(null, Affects.clear_movement, gbl.spell_target);
                 }
             }
         }
 
 
-        internal static void hugs(Effect arg_0, object param, Player player)
+        internal static void AffectOwlbearHugAttackCheck(Effect arg_0, object param, Player player) // hugs
         {
             if (gbl.attack_roll >= 18)
             {
                 gbl.spell_target = player.actions.target;
                 ovr025.DisplayPlayerStatusString(true, 12, "hugs " + gbl.spell_target.name, player);
 
-                ovr024.add_affect(false, ovr033.GetPlayerIndex(gbl.spell_target), 0, Affects.affect_3a, gbl.spell_target);
-                ovr013.CallAffectTable(Effect.Add, null, gbl.spell_target, Affects.affect_3a);
+                ovr024.add_affect(false, ovr033.GetPlayerIndex(gbl.spell_target), 0, Affects.clear_movement, gbl.spell_target);
+                ovr013.CallAffectTable(Effect.Add, null, gbl.spell_target, Affects.clear_movement);
 
-                ovr024.add_affect(true, ovr033.GetPlayerIndex(gbl.spell_target), 0, Affects.affect_90, player);
+                ovr024.add_affect(true, ovr033.GetPlayerIndex(gbl.spell_target), 0, Affects.owlbear_hug_round_attack, player);
             }
         }
 
