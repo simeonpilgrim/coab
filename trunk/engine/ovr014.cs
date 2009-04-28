@@ -351,7 +351,7 @@ namespace engine
 
                         if (attacker.IsHeld() == false &&
                             CanSeeTargetA(player, attacker) == true &&
-                            attacker.HasAffect(Affects.dragon_slayer) == false &&
+                            attacker.HasAffect(Affects.weap_dragon_slayer) == false &&
                             attacker.HasAffect(Affects.affect_4a) == false)
                         {
                             int end_dir = attacker.actions.direction + 10;
@@ -456,7 +456,7 @@ namespace engine
                 ovr025.sub_6906C(out var_9, player) == true)
             {
                 var_5 = true;
-                byte var_4 = gbl.ItemDataTable[player.field_151.type].field_5;
+                byte var_4 = gbl.ItemDataTable[player.field_151.type].numberAttacks;
 
                 if (var_4 < 2)
                 {
@@ -751,10 +751,10 @@ namespace engine
                 {
                     ItemData itemData = gbl.ItemDataTable[attacker.field_151.type];
 
-                    attacker.attack_dice_count = itemData.diceCount;
-                    attacker.attack_dice_size = itemData.diceSize;
-                    attacker.damageBonus -= itemData.field_B;
-                    attacker.damageBonus += itemData.field_4;
+                    attacker.attack_dice_count = itemData.diceCountLarge;
+                    attacker.attack_dice_size = itemData.diceSizeLarge;
+                    attacker.damageBonus -= itemData.bonusNormal;
+                    attacker.damageBonus += itemData.bonusLarge;
                 }
 
                 ovr025.reclac_player_values(target);

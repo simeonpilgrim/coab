@@ -975,7 +975,7 @@ namespace engine
         }
 
 
-        internal static void sub_3B772(Effect arg_0, object param, Player player)
+        internal static void AffectFrostBrand(Effect arg_0, object param, Player player) // sub_3B772
         {
             if (player.actions != null)
             {
@@ -1357,7 +1357,7 @@ namespace engine
         }
 
 
-        internal static void sub_3C16B(Effect arg_0, object param, Player arg_6)
+        internal static void AffectElfRisistSleep(Effect arg_0, object param, Player arg_6) // sub_3C16B
         {
             if (ovr024.roll_dice(100, 1) <= 90)
             {
@@ -1534,7 +1534,7 @@ namespace engine
                     ovr024.damage_person(saved, DamageOnSave.Half, damage, gbl.spell_target);
 
                     ovr024.remove_affect(affect, Affects.affect_79, player);
-                    ovr024.remove_affect(null, Affects.ankhegAcidAttack, player);
+                    ovr024.remove_affect(null, Affects.ankheg_acid_attack, player);
                 }
             }
         }
@@ -1653,7 +1653,7 @@ namespace engine
         }
 
 
-        internal static void AffectRangeVsGiant(Effect arg_0, object param, Player player) // sub_3C77C
+        internal static void AffectRangerVsGiant(Effect arg_0, object param, Player player) // sub_3C77C
         {
             gbl.spell_target = player.actions.target;
 
@@ -1859,7 +1859,7 @@ namespace engine
             affect_table.Add(Affects.poison_plus_0, ovr013.AffectPoisonPlus0);
             affect_table.Add(Affects.poison_plus_4, ovr013.AffectPoisonPlus4);
             affect_table.Add(Affects.poison_plus_2, ovr013.AffectPoisonPlus2);
-            affect_table.Add(Affects.thriKreenParalyze, ovr013.ThriKreenParalyze);
+            affect_table.Add(Affects.thri_kreen_paralyze, ovr013.ThriKreenParalyze);
             affect_table.Add(Affects.feeblemind, ovr013.AffectFeebleMind);
             affect_table.Add(Affects.invisible_to_animals, ovr013.AffectInvisToAnimals);
             affect_table.Add(Affects.poison_neg_2, ovr013.AffectPoisonNeg2);
@@ -1867,18 +1867,18 @@ namespace engine
             affect_table.Add(Affects.camouflage, ovr013.sub_3B696);
             affect_table.Add(Affects.prot_drag_breath, ovr013.ProtDragonsBreath);
             affect_table.Add(Affects.affect_4a, ovr013.empty);
-            affect_table.Add(Affects.dragon_slayer, ovr013.AffectDragonSlayer);
-            affect_table.Add(Affects.affect_4c, ovr013.sub_3B772);
+            affect_table.Add(Affects.weap_dragon_slayer, ovr013.AffectDragonSlayer);
+            affect_table.Add(Affects.weap_frost_brand, ovr013.AffectFrostBrand);
             affect_table.Add(Affects.berserk, ovr013.AffectBerzerk);
             affect_table.Add(Affects.affect_4e, ovr013.sub_3B8D9);
             affect_table.Add(Affects.fireAttack_2d10, ovr013.MagicFireAttack_2d10);
-            affect_table.Add(Affects.ankhegAcidAttack, ovr013.AnkhegAcidAttack);
+            affect_table.Add(Affects.ankheg_acid_attack, ovr013.AnkhegAcidAttack);
             affect_table.Add(Affects.half_damge, ovr013.half_damage);
             affect_table.Add(Affects.affect_52, ovr013.sub_3B990);
             affect_table.Add(Affects.paralizing_gaze, ovr023.AffectParalizingGaze);
             affect_table.Add(Affects.affect_54, ovr013.sub_3B9E1);
             affect_table.Add(Affects.affect_55, ovr013.sub_3BA14);
-            affect_table.Add(Affects.spit_acid, ovr023.spell_spit_acid);
+            affect_table.Add(Affects.spit_acid, ovr023.AffectSpitAcid);
             affect_table.Add(Affects.affect_57, ovr014.attack_or_kill);
             affect_table.Add(Affects.breath_elec, ovr023.DragonBreathElec);
             affect_table.Add(Affects.displace, ovr013.AffectDisplace);
@@ -1899,7 +1899,7 @@ namespace engine
             affect_table.Add(Affects.affect_68, ovr013.sub_3C0DA);
             affect_table.Add(Affects.affect_69, ovr013.sub_3C14F);
             affect_table.Add(Affects.affect_6a, ovr013.sub_3C15D);
-            affect_table.Add(Affects.affect_6b, ovr013.sub_3C16B);
+            affect_table.Add(Affects.elf_resist_sleep, ovr013.AffectElfRisistSleep);
             affect_table.Add(Affects.protect_charm_sleep, ovr013.AffectProtCharmSleep);
             affect_table.Add(Affects.affect_6d, ovr013.sub_3C1A4);
             affect_table.Add(Affects.affect_6e, ovr013.sub_3C1B2);
@@ -1926,7 +1926,7 @@ namespace engine
             affect_table.Add(Affects.cast_breath_fire, ovr023.cast_breath_fire);
             affect_table.Add(Affects.cast_throw_lightening, ovr023.cast_throw_lightening);
             affect_table.Add(Affects.affect_85, ovr013.AffectDracolichA);
-            affect_table.Add(Affects.range_vs_giant, ovr013.AffectRangeVsGiant);
+            affect_table.Add(Affects.ranger_vs_giant, ovr013.AffectRangerVsGiant);
             affect_table.Add(Affects.protect_elec, ovr013.AffectProtElec);
             affect_table.Add(Affects.entangle, ovr013.AffectEntangle);
             affect_table.Add(Affects.affect_89, ovr013.sub_3C7E0);

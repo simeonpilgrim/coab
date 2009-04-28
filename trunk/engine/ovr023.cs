@@ -1137,7 +1137,7 @@ namespace engine
 
                 ovr024.add_affect(true, encoded_strength, GetSpellAffectTimeout(gbl.spell_id), Affects.affect_12, target);
 
-                ovr024.sub_648D9(0, target);
+                ovr024.sub_648D9(Stat.STR, target);
             }
             else
             {
@@ -1156,7 +1156,7 @@ namespace engine
                 target.HasAffect(Affects.enlarge) == true)
             {
                 ovr024.remove_affect(null, Affects.enlarge, target);
-                ovr024.sub_648D9(0, target);
+                ovr024.sub_648D9(Stat.STR, target);
                 ovr025.DisplayPlayerStatusString(true, 10, "has been reduced", target);
             }
         }
@@ -1165,7 +1165,7 @@ namespace engine
         internal static void SpellFriends() // is_friendly
         {
             sub_5CF7F("is friendly", 0, 0, true, ovr024.roll_dice(4, 2), gbl.spell_id);
-            ovr024.sub_648D9(5, gbl.player_ptr);
+            ovr024.sub_648D9(Stat.CHA, gbl.player_ptr);
         }
 
 
@@ -1529,7 +1529,7 @@ namespace engine
                 encoded_str = var_6 + 100;
 
                 ovr024.add_affect(true, encoded_str, GetSpellAffectTimeout(gbl.spell_id), Affects.strength, target);
-                ovr024.sub_648D9(0, target);
+                ovr024.sub_648D9(Stat.STR, target);
             }
         }
 
@@ -1858,11 +1858,14 @@ namespace engine
                         gbl.applyItemAffect = true;
                         ovr013.CallAffectTable(Effect.Remove, item, gbl.spellTargets[0], item.affect_3);
 
-                        for (int var_6 = 0; var_6 <= 5; var_6++)
-                        {
-                            ovr024.sub_648D9(var_6, gbl.spellTargets[0]);
-                        }
+                        var target = gbl.spellTargets[0];
 
+                        ovr024.sub_648D9(Stat.STR, target);
+                        ovr024.sub_648D9(Stat.INT, target);
+                        ovr024.sub_648D9(Stat.WIS, target);
+                        ovr024.sub_648D9(Stat.DEX, target);
+                        ovr024.sub_648D9(Stat.CON, target);
+                        ovr024.sub_648D9(Stat.CHA, target);
                     }
 
                     ovr025.MagicAttackDisplay("has an item un-cursed", true, gbl.spellTargets[0]);
@@ -2203,7 +2206,7 @@ namespace engine
             }
 
             ovr024.add_affect(true, encodedStrength, (ushort)((ovr024.roll_dice(4, 1) * 10) + 0x28), Affects.strenght_spell, target);
-            ovr024.sub_648D9(0, target);
+            ovr024.sub_648D9(Stat.STR, target);
         }
 
 
@@ -2364,7 +2367,7 @@ namespace engine
                 player.in_combat = true;
                 player.tmp_con--;
 
-                ovr024.sub_648D9(4, player);
+                ovr024.sub_648D9(Stat.CON, player);
                 player.hit_point_current = 1;
 
                 ovr025.DisplayPlayerStatusString(true, 10, "is raised", player);
@@ -2740,7 +2743,7 @@ namespace engine
         {
             Player player = gbl.player_ptr;
             int target_count = ovr025.spellMaxTargetCount(gbl.spell_id);
-            int max_range = (ovr025.spellMaxTargetCount(gbl.spell_id) + 1) / 2;
+            int max_range = (target_count + 1) / 2;
 
             if (max_range < 1)
             {
@@ -2900,7 +2903,7 @@ namespace engine
         }
 
 
-        internal static void spell_spit_acid(Effect arg_0, object param, Player player)
+        internal static void AffectSpitAcid(Effect arg_0, object param, Player player) // spell_spit_acid
         {
             gbl.dword_1D5CA(out gbl.byte_1DA70, QuickFight.True, 0x41);
 

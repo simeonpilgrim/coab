@@ -504,7 +504,7 @@ namespace engine
 
                 case Race.elf:
                     player.icon_size = 2;
-                    ovr024.add_affect(false, 0xff, 0, Affects.affect_6b, player);
+                    ovr024.add_affect(false, 0xff, 0, Affects.elf_resist_sleep, player);
 
                     break;
 
@@ -595,7 +595,7 @@ namespace engine
             else if (player._class == ClassId.ranger)
             {
                 player.ranger_lvl = 1;
-                ovr024.add_affect(false, 0xff, 0, Affects.range_vs_giant, player);
+                ovr024.add_affect(false, 0xff, 0, Affects.ranger_vs_giant, player);
             }
             else if (player._class == ClassId.mc_c_f)
             {
@@ -614,7 +614,7 @@ namespace engine
             {
                 player.cleric_lvl = 1;
                 player.ranger_lvl = 1;
-                ovr024.add_affect(false, 0xff, 0, Affects.range_vs_giant, player);
+                ovr024.add_affect(false, 0xff, 0, Affects.ranger_vs_giant, player);
                 player.exp = 12500;
             }
             else if (player._class == ClassId.mc_c_mu)

@@ -168,8 +168,8 @@ namespace engine
 
                         ovr024.remove_affect(null, Affects.feeblemind, gbl.player_ptr);
 
-                        ovr024.sub_648D9(1, gbl.player_ptr);
-                        ovr024.sub_648D9(2, gbl.player_ptr);
+                        ovr024.sub_648D9(Stat.INT, gbl.player_ptr);
+                        ovr024.sub_648D9(Stat.WIS, gbl.player_ptr);
                     }
                     break;
             }

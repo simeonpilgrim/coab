@@ -19,12 +19,12 @@ namespace Classes
 
     public enum Stat
     {
-        STR,
-        INT,
-        WIS,
-        DEX,
-        CON,
-        CHA
+        STR, // 0
+        INT, // 1
+        WIS, // 2
+        DEX, // 3
+        CON, // 4
+        CHA  // 5
     }
 
     public enum Race
