@@ -21,7 +21,7 @@ namespace engine
                     player.hitBonus += (sbyte)DexReactionAdj(player);
                 }
 
-                player.damageBonus = (sbyte)gbl.ItemDataTable[item_type].field_B;
+                player.damageBonus = gbl.ItemDataTable[item_type].bonusNormal;
 
                 if ((gbl.ItemDataTable[item_type].field_E & 0x04) != 0)
                 {
@@ -57,8 +57,8 @@ namespace engine
                 }
 
                 player.hitBonus += bonus;
-                player.attack_dice_count = gbl.ItemDataTable[item_type].diceCountX;
-                player.attack_dice_size = gbl.ItemDataTable[item_type].diceSizeX;
+                player.attack_dice_count = gbl.ItemDataTable[item_type].diceCountNormal;
+                player.attack_dice_size = gbl.ItemDataTable[item_type].diceSizeNormal;
             }
         }
 
@@ -539,7 +539,7 @@ namespace engine
                         player.quarrels = item;
                     }
 
-                    player.field_185 += gbl.ItemDataTable[item.type].field_1;
+                    player.field_185 += gbl.ItemDataTable[item.type].handsCount;
                 }
             }
 
@@ -989,7 +989,7 @@ namespace engine
                 color = 0x0B;
             }
 
-            string name = player.name + ((pural)? "s" : "");
+            string name = player.name + ((pural)? "'s" : "");
 
             seg041.displayString(name, 0, color, y_offset, x_offset);
         }

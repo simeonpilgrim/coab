@@ -8,17 +8,17 @@ namespace Classes
 	public class ItemData
 	{
         public byte item_slot; //seg600:5D10 unk_1C020 - field_0
-		public byte field_1; //seg600:5D11 unk_1C021
-        public byte diceCount; //seg600:5D12 unk_1C022
-        public byte diceSize; //seg600:5D13 unk_1C023
-		public sbyte field_4; //seg600:5D14
-		public byte field_5; //seg600:5D15
+		public byte handsCount; //seg600:5D11 unk_1C021
+        public byte diceCountLarge; //seg600:5D12 unk_1C022
+        public byte diceSizeLarge; //seg600:5D13 unk_1C023
+		public sbyte bonusLarge; //seg600:5D14
+		public byte numberAttacks; //seg600:5D15
 		public byte field_6; //seg600:5D16 unk_1C026
 		public byte field_7; //seg600:5D17 unk_1C027
 		public byte field_8; //seg600:5D18
-        public byte diceCountX; //seg600:5D19 field_9 maybe ranged 
-        public byte diceSizeX; //seg600:5D1A field_A  maybe ranged
-		public sbyte field_B; //seg600:5D1B
+        public byte diceCountNormal; //seg600:5D19 field_9 maybe ranged 
+        public byte diceSizeNormal; //seg600:5D1A field_A  maybe ranged
+		public sbyte bonusNormal; //seg600:5D1B
 		public int range; //seg600:5D1C unk_1C02C
 		public byte classFlags; //seg600:5D1D field_D
 		public byte field_E; //seg600:5D1E unk_1C02E
@@ -31,17 +31,17 @@ namespace Classes
         public ItemData(byte[] data, int offset)
         {
             item_slot = data[offset + 0];
-            field_1 = data[offset + 1];
-            diceCount = data[offset + 2];
-            diceSize = data[offset + 3];
-            field_4 = (sbyte)data[offset + 4];
-            field_5 = data[offset + 5];
+            handsCount = data[offset + 1];
+            diceCountLarge = data[offset + 2];
+            diceSizeLarge = data[offset + 3];
+            bonusLarge = (sbyte)data[offset + 4];
+            numberAttacks = data[offset + 5];
             field_6 = data[offset + 6];
             field_7 = data[offset + 7];
             field_8 = data[offset + 8];
-            diceCountX = data[offset + 9];
-            diceSizeX = data[offset + 0xa];
-            field_B = (sbyte)data[offset + 0xb];
+            diceCountNormal = data[offset + 9];
+            diceSizeNormal = data[offset + 0xa];
+            bonusNormal = (sbyte)data[offset + 0xb];
             range = data[offset + 0xc];
             classFlags = data[offset + 0xd];
             field_E = data[offset + 0xe];

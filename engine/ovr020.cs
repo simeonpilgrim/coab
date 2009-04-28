@@ -435,10 +435,10 @@ namespace engine
             seg041.displayString(arg_0.affect_3.ToString(), 0, 10, 13, 0x14);
             
             seg041.displayString("dice large:   ", 0, 10, 14, 1);
-            seg041.displayString(gbl.ItemDataTable[arg_0.type].diceCount.ToString(), 0, 10, 14, 0x14);
+            seg041.displayString(gbl.ItemDataTable[arg_0.type].diceCountLarge.ToString(), 0, 10, 14, 0x14);
             
             seg041.displayString("sides large:  ", 0, 10, 15, 1);
-            seg041.displayString(gbl.ItemDataTable[arg_0.type].diceSize.ToString(), 0, 10, 15, 0x14);
+            seg041.displayString(gbl.ItemDataTable[arg_0.type].diceSizeLarge.ToString(), 0, 10, 15, 0x14);
 
             seg041.displayAndDebug("press a key", 0, 10);
         }
@@ -716,7 +716,7 @@ namespace engine
                     break;
 
                 case 2:
-                    ovr024.sub_648D9(3, player);
+                    ovr024.sub_648D9(Stat.DEX, player);
                     ovr026.sub_6AAEA(player);
                     break;
 
@@ -738,12 +738,12 @@ namespace engine
                     break;
 
                 case 5:
-                    ovr024.sub_648D9(0, player);
+                    ovr024.sub_648D9(Stat.STR, player);
                     break;
 
                 case 6:
-                    ovr024.sub_648D9(4, player);
-                    ovr024.sub_648D9(5, player);
+                    ovr024.sub_648D9(Stat.CON, player);
+                    ovr024.sub_648D9(Stat.CHA, player);
                     break;
 
                 case 8:
@@ -755,7 +755,7 @@ namespace engine
                         case 3:
                         case 4:
                         case 5:
-                            ovr024.sub_648D9((int)item.affect_2, player);
+                            ovr024.sub_648D9((Stat)item.affect_2, player);
                             break;
                     }
                     break;
@@ -768,7 +768,7 @@ namespace engine
                     break;
 
                 case 10:
-                    ovr024.sub_648D9(3, player);
+                    ovr024.sub_648D9(Stat.DEX, player);
                     break;
 
                 case 11:
@@ -776,12 +776,12 @@ namespace engine
                     break;
 
                 case 12:
-                    ovr024.sub_648D9(1, player);
+                    ovr024.sub_648D9(Stat.INT, player);
                     break;
 
                 case 13:
-                    ovr024.sub_648D9(0, player);
-                    ovr024.sub_648D9(1, player);
+                    ovr024.sub_648D9(Stat.STR, player);
+                    ovr024.sub_648D9(Stat.INT, player);
                     break;
             }
         }
@@ -816,7 +816,7 @@ namespace engine
                 // Weld
                 int var_2 = 0;
 
-                if ((player.field_185 + gbl.ItemDataTable[item.type].field_1) > 2)
+                if ((player.field_185 + gbl.ItemDataTable[item.type].handsCount) > 2)
                 {
                     var_2 = 3;
                 }

@@ -812,7 +812,7 @@ namespace engine
                         {
                             player.actions.field_14 = true;
                             ovr024.remove_affect(null, Affects.affect_4a, player);
-                            ovr024.remove_affect(null, Affects.dragon_slayer, player);
+                            ovr024.remove_affect(null, Affects.weap_dragon_slayer, player);
                         }
                         else if (player._int > 5)
                         {
@@ -833,16 +833,16 @@ namespace engine
         {
             ItemData itemData = gbl.ItemDataTable[item.type];
 
-            int var_2 = itemData.diceSizeX * itemData.diceCountX;
+            int var_2 = itemData.diceSizeNormal * itemData.diceCountNormal;
 
             if (item.plus > 0)
             {
                 var_2 += item.plus * 8;
             }
 
-            if (itemData.field_B > 0)
+            if (itemData.bonusNormal > 0)
             {
-                var_2 += itemData.field_B * 2;
+                var_2 += itemData.bonusNormal * 2;
             }
 
             if (item.type == 85 &&
@@ -854,15 +854,15 @@ namespace engine
 
             if ((itemData.field_E & 8) > 0)
             {
-                var_2 += (itemData.field_5 - 1) * 2;
+                var_2 += (itemData.numberAttacks - 1) * 2;
             }
 
-            if (itemData.field_1 <= 1)
+            if (itemData.handsCount <= 1)
             {
                 var_2 += 3;
             }
 
-            if ((itemData.field_1 + player.field_185) > 3)
+            if ((itemData.handsCount + player.field_185) > 3)
             {
                 var_2 = 0;
             }
@@ -891,12 +891,12 @@ namespace engine
         {            
             if (player.field_151 != null)
             {
-                player.field_185 -= gbl.ItemDataTable[player.field_151.type].field_1;
+                player.field_185 -= gbl.ItemDataTable[player.field_151.type].handsCount;
             }
 
             if (player.field_155 != null)
             {
-                player.field_185 -= gbl.ItemDataTable[player.field_155.type].field_1;
+                player.field_185 -= gbl.ItemDataTable[player.field_155.type].handsCount;
             }
 
             Item var_4 = null;
@@ -1026,7 +1026,7 @@ namespace engine
                 if (player.field_155 != null &&
                     player.field_155.cursed == false)
                 {
-                    player.field_185 -= gbl.ItemDataTable[player.field_155.type].field_1;
+                    player.field_185 -= gbl.ItemDataTable[player.field_155.type].handsCount;
                 }
 
                 if (weapon != null)

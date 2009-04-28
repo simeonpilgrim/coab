@@ -1062,7 +1062,7 @@ namespace engine
 
                             case Race.elf:
                                 player01_ptr.icon_size = 2;
-                                ovr024.add_affect(false, 0xff, 0, Affects.affect_6b, player_ptr);
+                                ovr024.add_affect(false, 0xff, 0, Affects.elf_resist_sleep, player_ptr);
                                 break;
 
                             case Race.half_elf:

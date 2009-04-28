@@ -82,14 +82,14 @@ namespace engine
 
                 if (affect_id == Affects.resist_fire)
                 {
-                    sub_648D9(5, player);
+                    sub_648D9(Stat.CHA, player);
                 }
 
                 if (affect_id == Affects.enlarge || 
                     affect_id == Affects.strength || 
                     affect_id == Affects.strenght_spell)
                 {
-                    sub_648D9(0, player);
+                    sub_648D9(Stat.STR, player);
                 }
             }
         }
@@ -152,7 +152,7 @@ namespace engine
 
                 case CheckType.Type_2:
                     calc_affect_effect(Affects.fireAttack_2d10, player);
-                    calc_affect_effect(Affects.ankhegAcidAttack, player);
+                    calc_affect_effect(Affects.ankheg_acid_attack, player);
                     calc_affect_effect(Affects.sp_dispel_evil, player);
                     calc_affect_effect(Affects.affect_39, player);
                     calc_affect_effect(Affects.affect_60, player);
@@ -164,7 +164,7 @@ namespace engine
                     calc_affect_effect(Affects.poison_plus_0, player);
                     calc_affect_effect(Affects.poison_plus_4, player);
                     calc_affect_effect(Affects.poison_plus_2, player);
-                    calc_affect_effect(Affects.thriKreenParalyze, player);
+                    calc_affect_effect(Affects.thri_kreen_paralyze, player);
                     calc_affect_effect(Affects.poison_neg_2, player);
                     calc_affect_effect(Affects.fireAttack_2d10, player);
                     calc_affect_effect(Affects.affect_57, player);
@@ -174,9 +174,9 @@ namespace engine
                     calc_affect_effect(Affects.ray_of_enfeeblement, player);
                     calc_affect_effect(Affects.affect_06, player);
                     calc_affect_effect(Affects.affect_67, player);
-                    calc_affect_effect(Affects.dragon_slayer, player);
-                    calc_affect_effect(Affects.affect_4c, player);
-                    calc_affect_effect(Affects.range_vs_giant, player);
+                    calc_affect_effect(Affects.weap_dragon_slayer, player);
+                    calc_affect_effect(Affects.weap_frost_brand, player);
+                    calc_affect_effect(Affects.ranger_vs_giant, player);
                     break;
 
                 case CheckType.Type_5:
@@ -243,7 +243,7 @@ namespace engine
                 case CheckType.Type_9:
                     calc_affect_effect(Affects.affect_69, player);
                     calc_affect_effect(Affects.affect_6a, player);
-                    calc_affect_effect(Affects.affect_6b, player);
+                    calc_affect_effect(Affects.elf_resist_sleep, player);
                     calc_affect_effect(Affects.protect_charm_sleep, player);
                     calc_affect_effect(Affects.affect_6d, player);
                     calc_affect_effect(Affects.affect_6e, player);
@@ -264,8 +264,8 @@ namespace engine
                     calc_affect_effect(Affects.affect_06, player);
                     calc_affect_effect(Affects.affect_12, player);
                     calc_affect_effect(Affects.dwarf_vs_orc, player);
-                    calc_affect_effect(Affects.dragon_slayer, player);
-                    calc_affect_effect(Affects.affect_4c, player);
+                    calc_affect_effect(Affects.weap_dragon_slayer, player);
+                    calc_affect_effect(Affects.weap_frost_brand, player);
                     break;
 
                 case CheckType.Type_11:
@@ -301,7 +301,7 @@ namespace engine
                 case CheckType.Death:
                     calc_affect_effect(Affects.affect_63, player);
                     calc_affect_effect(Affects.troll_fire_or_acid, player);
-                    calc_affect_effect(Affects.dragon_slayer, player);
+                    calc_affect_effect(Affects.weap_dragon_slayer, player);
                     break;
 
                 case CheckType.Type_14:
@@ -826,14 +826,14 @@ namespace engine
         }
 
 
-        internal static void sub_648D9(int stat_index, Player player)
+        internal static void sub_648D9(Stat stat_index, Player player)
         {
             byte var_A = 0;
             byte stat_b = 0;
             byte str_00_b = 0;
             byte var_11 = 0x0FF;
 
-            byte stat_a = player.stats[stat_index].tmp;
+            byte stat_a = player.stats[(int)stat_index].tmp;
             byte str_00_a = player.max_str_00;
 
             foreach (Item item in player.items)
@@ -894,7 +894,7 @@ namespace engine
 
                         max_strength(ref stat_a, stat_b, ref str_00_a, str_00_b);
                     }
-                    else if (stat_index == 4)
+                    else if (stat_index == Stat.CON)
                     {
                         if (var_12 == 6)
                         {
@@ -907,7 +907,7 @@ namespace engine
                             stat_a++;
                         }
                     }
-                    else if (stat_index == 1)
+                    else if (stat_index == Stat.INT)
                     {
                         if (var_12 == 8)
                         {
@@ -926,7 +926,7 @@ namespace engine
                             var_11 = 3;
                         }
                     }
-                    else if (stat_index == 2)
+                    else if (stat_index == Stat.WIS)
                     {
                         if (var_12 == 8 &&
                             (int)item.affect_2 == 2 &&
@@ -935,7 +935,7 @@ namespace engine
                             stat_a++;
                         }
                     }
-                    else if (stat_index == 3)
+                    else if (stat_index == Stat.DEX)
                     {
                         if (var_12 == 2)
                         {
@@ -965,7 +965,7 @@ namespace engine
                             stat_a -= 2;
                         }
                     }
-                    else if (stat_index == 5)
+                    else if (stat_index == Stat.CHA)
                     {
                         if (var_12 == 6)
                         {
@@ -981,7 +981,7 @@ namespace engine
                 }
             }
 
-            if (stat_index == 0)
+            if (stat_index == 0) // Strength
             {
                 Affect affect_ptr;
 
@@ -1046,7 +1046,7 @@ namespace engine
                     player.tmp_str_00 = str_00_a;
                 }
             }
-            else if (stat_index == 4)
+            else if (stat_index == Stat.CON)
             {
                 byte var_13 = 0;
                 byte map_hp = player.hit_point_max;
@@ -1115,7 +1115,7 @@ namespace engine
                     remove_affect(null, Affects.highConRegen, player);
                 }
             }
-            else if (stat_index == 1)
+            else if (stat_index == Stat.INT)
             {
                 if (player.HasAffect(Affects.feeblemind) == true && var_11 > 7)
                 {
@@ -1131,7 +1131,7 @@ namespace engine
                     player._int = stat_a;
                 }
             }
-            else if (stat_index == 2)
+            else if (stat_index == Stat.WIS)
             {
                 if (player.HasAffect(Affects.feeblemind) == true &&
                     var_11 > 7)
@@ -1148,7 +1148,7 @@ namespace engine
                     player.wis = stat_a;
                 }
             }
-            else if (stat_index == 3)
+            else if (stat_index == Stat.DEX)
             {
                 if (var_11 != 0xff)
                 {
@@ -1159,7 +1159,7 @@ namespace engine
                     player.dex = stat_a;
                 }
             }
-            else if (stat_index == 5)
+            else if (stat_index == Stat.CHA)
             {
                 Affect affect;
                 if (ovr025.FindAffect(out affect, Affects.friends, player) == true)
