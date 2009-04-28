@@ -773,7 +773,7 @@ namespace engine
         }
 
 
-        internal static void sub_3B29A(Effect arg_0, object param, Player player) //sub_3B29A
+        internal static void AffectClearMovement(Effect arg_0, object param, Player player) //sub_3B29A
         {
             player.actions.move = 0;
 
@@ -1067,7 +1067,7 @@ namespace engine
         }
 
 
-        internal static void sub_3B990(Effect arg_0, object param, Player player)
+        internal static void AffectResistFireAndCold(Effect arg_0, object param, Player player) // sub_3B990
         {
             if ((gbl.damage_flags & DamageType.Fire) != 0 ||
                 (gbl.damage_flags & DamageType.Cold) != 0)
@@ -1085,8 +1085,10 @@ namespace engine
         }
 
 
-        internal static void sub_3B9E1(Effect arg_0, object param, Player player)
+        internal static void AffectShamblerAbsorbLightning(Effect arg_0, object param, Player player) // sub_3B9E1
         {
+            // Shambling Mounds absorb lighting and get more powerful.
+
             if ((gbl.damage_flags & DamageType.Electricity) != 0)
             {
                 Protected();
@@ -1401,7 +1403,7 @@ namespace engine
         }
 
 
-        internal static void sub_3C1EA(Effect arg_0, object param, Player arg_6)
+        internal static void AffectImmuneToFire(Effect arg_0, object param, Player arg_6) // sub_3C1EA
         {
             if ((gbl.damage_flags & DamageType.Fire) != 0)
             {
@@ -1850,7 +1852,7 @@ namespace engine
             affect_table.Add(Affects.poisoned, ovr013.empty);
             affect_table.Add(Affects.item_invisibility, ovr013.sub_3B27B);
             affect_table.Add(Affects.affect_39, ovr014.engulfs);
-            affect_table.Add(Affects.affect_3a, ovr013.sub_3B29A);
+            affect_table.Add(Affects.clear_movement, ovr013.AffectClearMovement);
             affect_table.Add(Affects.regenerate, ovr013.AffectRegenration);
             affect_table.Add(Affects.resist_normal_weapons, ovr013.AffectResistWeapons);
             affect_table.Add(Affects.fire_resist, ovr013.AffectFireResist);
@@ -1874,9 +1876,9 @@ namespace engine
             affect_table.Add(Affects.fireAttack_2d10, ovr013.MagicFireAttack_2d10);
             affect_table.Add(Affects.ankheg_acid_attack, ovr013.AnkhegAcidAttack);
             affect_table.Add(Affects.half_damge, ovr013.half_damage);
-            affect_table.Add(Affects.affect_52, ovr013.sub_3B990);
+            affect_table.Add(Affects.resist_fire_and_cold, ovr013.AffectResistFireAndCold);
             affect_table.Add(Affects.paralizing_gaze, ovr023.AffectParalizingGaze);
-            affect_table.Add(Affects.affect_54, ovr013.sub_3B9E1);
+            affect_table.Add(Affects.shambling_absorb_lightning, ovr013.AffectShamblerAbsorbLightning);
             affect_table.Add(Affects.affect_55, ovr013.sub_3BA14);
             affect_table.Add(Affects.spit_acid, ovr023.AffectSpitAcid);
             affect_table.Add(Affects.affect_57, ovr014.attack_or_kill);
@@ -1888,7 +1890,7 @@ namespace engine
             affect_table.Add(Affects.affect_5d, ovr013.half_fire_damage);
             affect_table.Add(Affects.affect_5e, ovr013.sub_3BDB2);
             affect_table.Add(Affects.affect_5F, ovr013.sub_3BE06);
-            affect_table.Add(Affects.affect_60, ovr014.hugs);
+            affect_table.Add(Affects.owlbear_hug_check, ovr014.AffectOwlbearHugAttackCheck);
             affect_table.Add(Affects.con_saving_bonus, ovr013.con_saving_bonus);
             affect_table.Add(Affects.regen_3_hp, ovr013.AffectRegen3Hp);
             affect_table.Add(Affects.affect_63, ovr013.sub_3BEE8);
@@ -1904,7 +1906,7 @@ namespace engine
             affect_table.Add(Affects.affect_6d, ovr013.sub_3C1A4);
             affect_table.Add(Affects.affect_6e, ovr013.sub_3C1B2);
             affect_table.Add(Affects.affect_6f, ovr013.sub_3C1C9);
-            affect_table.Add(Affects.affect_70, ovr013.sub_3C1EA);
+            affect_table.Add(Affects.immune_to_fire, ovr013.AffectImmuneToFire);
             affect_table.Add(Affects.affect_71, ovr013.sub_3C201);
             affect_table.Add(Affects.affect_72, ovr013.sub_3C246);
             affect_table.Add(Affects.affect_73, ovr013.sub_3C260);
@@ -1936,7 +1938,7 @@ namespace engine
             affect_table.Add(Affects.paladinDailyCureRefresh, ovr013.PaladinCastCureRefresh);
             affect_table.Add(Affects.fear, ovr013.AffectFear);
             affect_table.Add(Affects.affect_8f, ovr013.sub_3C975);
-            affect_table.Add(Affects.affect_90, ovr014.sub_426FC);
+            affect_table.Add(Affects.owlbear_hug_round_attack, ovr014.AffectOwlbearHugRoundAttack);
             affect_table.Add(Affects.sp_dispel_evil, ovr013.sp_dispel_evil);
             affect_table.Add(Affects.strenght_spell, ovr013.empty);
             affect_table.Add(Affects.do_items_affect, ovr013.do_items_affect);

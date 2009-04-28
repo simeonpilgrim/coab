@@ -110,6 +110,10 @@ namespace engine
         {
             for (int i = 0; i < 0x81; i++)
             {
+                //var older = new System.Collections.Generic.List<string>();
+
+                //for (int j = 0; j < 1000; j++)
+                //{
                 Item it = ovr022.create_item(i);
                 string name = ovr025.ItemName(it, 0);
                 Player pl = new Player();
@@ -117,7 +121,12 @@ namespace engine
                 bool ranged = ovr025.is_weapon_ranged(pl);
                 bool rangedMelee = ovr025.is_weapon_ranged_melee(pl);
 
+                //if (older.Contains(name) == false)
+                //{
                 Logging.Logger.Debug("Id: {0} {1} Ranged: {2} Ranged-Melee: {3}", i, name, ranged, rangedMelee);
+                //older.Add(name);
+                //}
+                //}
             }
         }
 
@@ -235,6 +244,7 @@ namespace engine
             dw.Write("<td nowrap=\"nowrap\">{0}</td>", sb.ToString());
             dw.WriteLine("</tr>");
         }
+
 
         public static void DumpMonsters()
         {
