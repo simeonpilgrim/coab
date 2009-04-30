@@ -158,6 +158,7 @@ namespace engine
             }
         }
 
+
         private static void HtmlTableDumpPlayer(DebugWriter dw, Player p, byte area, int id)
         {
             dw.Write("<tr>");
@@ -245,9 +246,100 @@ namespace engine
             dw.WriteLine("</tr>");
         }
 
+        public static void DumpMonstersFiltered()
+        {
+            var bkupArea = gbl.game_area;
+
+            string filename = "MonsterFiltered.txt";
+            if (System.IO.File.Exists(filename))
+            {
+                System.IO.File.Delete(filename);
+            }
+            DebugWriter dw = new DebugWriter(filename);
+
+            dw.WriteLine("GnomeVsManSizedGiant");
+            DumpMonstersFilteredSub(dw, p => (p.field_14B & 2) != 0);
+            dw.WriteLine("");
+
+            dw.WriteLine("field_11A == 1");
+            DumpMonstersFilteredSub(dw, p => (p.monsterType == MonsterType.type_1));
+            dw.WriteLine("");
+
+            dw.WriteLine("field_11A == giant");
+            DumpMonstersFilteredSub(dw, p => (p.monsterType == MonsterType.giant));
+            dw.WriteLine("");
+
+            dw.WriteLine("field_11A == dragon");
+            DumpMonstersFilteredSub(dw, p => (p.monsterType == MonsterType.dragon));
+            dw.WriteLine("");
+
+            dw.WriteLine("field_11A == animated_dead");
+            DumpMonstersFilteredSub(dw, p => (p.monsterType == MonsterType.animated_dead));
+            dw.WriteLine("");
+
+            dw.WriteLine("field_11A == 9");
+            DumpMonstersFilteredSub(dw, p => (p.monsterType == MonsterType.type_9));
+            dw.WriteLine("");
+
+            dw.WriteLine("field_11A == fire");
+            DumpMonstersFilteredSub(dw, p => (p.monsterType == MonsterType.fire));
+            dw.WriteLine("");
+
+            dw.WriteLine("field_11A == 10");
+            DumpMonstersFilteredSub(dw, p => (p.monsterType == MonsterType.type_10));
+            dw.WriteLine("");
+
+            dw.WriteLine("field_11A == 12");
+            DumpMonstersFilteredSub(dw, p => (p.monsterType == MonsterType.type_12));
+            dw.WriteLine("");
+
+            dw.WriteLine("field_11A == snake");
+            DumpMonstersFilteredSub(dw, p => (p.monsterType == MonsterType.snake));
+            dw.WriteLine("");
+
+            dw.WriteLine("field_11A == plant");
+            DumpMonstersFilteredSub(dw, p => (p.monsterType == MonsterType.plant));
+            dw.WriteLine("");
+
+            dw.WriteLine("field_11A == animal");
+            DumpMonstersFilteredSub(dw, p => (p.monsterType == MonsterType.animal));
+            dw.WriteLine("");
+
+            dw.WriteLine("field_11A > type_1");
+            DumpMonstersFilteredSub(dw, p => (p.monsterType > MonsterType.type_1));
+            dw.WriteLine("");
+
+
+            dw.Close();
+
+            gbl.game_area = bkupArea;
+        }
+
+        static void DumpMonstersFilteredSub(DebugWriter dw, System.Predicate<Player> filter)
+        {
+            for (byte area = 1; area <= 6; area++)
+            {
+                gbl.game_area = area;
+                for (int id = 0; id < 256; id++)
+                {
+                    Player p = ovr017.load_mob(id, false);
+                    if (p != null)
+                    {
+                        ovr025.reclac_player_values(p);
+
+                        if (filter(p))
+                        {
+                            dw.WriteLine(p.ToString());
+                        }
+                    }
+                }
+            }
+        }
 
         public static void DumpMonsters()
         {
+            DumpMonstersFiltered();
+
             var bkupArea = gbl.game_area;
 
             if (System.IO.File.Exists("Monster.html"))

@@ -346,7 +346,7 @@ namespace Classes
         public static bool resetMovesLeft; // byte_1D2C4, reset_byte_1D2C0
         public static byte spell_id; // byte_1D2C1
         public static int dice_count; // byte_1D2C2
-        public static bool byte_1D2C5;
+        public static bool targetInvisible; // byte_1D2C5
         public static bool cureSpell; // byte_1D2C6
         public static bool byte_1D2C7;
         public static bool byte_1D2C8;

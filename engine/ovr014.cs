@@ -565,11 +565,11 @@ namespace engine
                 }
                 else
                 {
-                    gbl.byte_1D2C5 = false;
+                    gbl.targetInvisible = false;
 
                     ovr024.CheckAffectsEffect(targetA, CheckType.Visibility);
 
-                    if (gbl.byte_1D2C5 == false)
+                    if (gbl.targetInvisible == false)
                     {
                         var old_target = targetB.actions.target;
 
@@ -580,7 +580,7 @@ namespace engine
                         targetB.actions.target = old_target;
                     }
 
-                    return (gbl.byte_1D2C5 == false);
+                    return (gbl.targetInvisible == false);
                 }
             }
 
