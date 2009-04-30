@@ -1055,7 +1055,7 @@ namespace engine
                             case Race.gnome:
                                 player01_ptr.icon_size = 1;
                                 ovr024.add_affect(false, 0xff, 0, Affects.con_saving_bonus, player_ptr);
-                                ovr024.add_affect(false, 0xff, 0, Affects.affect_12, player_ptr);
+                                ovr024.add_affect(false, 0xff, 0, Affects.gnome_vs_man_sized_giant, player_ptr);
                                 ovr024.add_affect(false, 0xff, 0, Affects.dwarf_and_gnome_vs_giants, player_ptr);
                                 ovr024.add_affect(false, 0xff, 0, Affects.affect_30, player_ptr);
                                 break;

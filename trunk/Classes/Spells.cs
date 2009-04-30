@@ -142,7 +142,7 @@ namespace Classes
         spell_62 = 0x62,
         spell_63 = 0x63,
         bestow_curse_MU = 0x64,
-        spell_88 = 0x88,
+        //spell_88 = 0x88,
     }
 
     public class SpellEntry /* Struct_19AEC */

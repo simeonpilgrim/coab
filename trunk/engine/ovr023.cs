@@ -982,7 +982,7 @@ namespace engine
                     can_save_flag = gbl.spell_table[gbl.spell_id].damageOnSave;
                 }
 
-                if ((target.field_11A > 1 || target.field_DE > 1) &&
+                if ((target.monsterType > MonsterType.type_1 || target.field_DE > 1) &&
                     gbl.spell_id != 0x53)
                 {
                     saved = true;
@@ -1061,7 +1061,7 @@ namespace engine
         {
             Player target = gbl.spellTargets[0];
 
-            if (target.field_11A > 1 ||
+            if (target.monsterType > MonsterType.type_1 ||
                 target.field_DE > 1)
             {
                 ovr025.DisplayPlayerStatusString(true, 10, "is unaffected", target);
@@ -1135,9 +1135,9 @@ namespace engine
             {
                 ovr025.DisplayPlayerStatusString(true, 10, "is stronger", target);
 
-                ovr024.add_affect(true, encoded_strength, GetSpellAffectTimeout((Spells)gbl.spell_id), Affects.affect_12, target);
+                ovr024.add_affect(true, encoded_strength, GetSpellAffectTimeout((Spells)gbl.spell_id), Affects.enlarge, target);
 
-                ovr024.sub_648D9(Stat.STR, target);
+                ovr024.CalcStatBonuses(Stat.STR, target);
             }
             else
             {
@@ -1156,7 +1156,7 @@ namespace engine
                 target.HasAffect(Affects.enlarge) == true)
             {
                 ovr024.remove_affect(null, Affects.enlarge, target);
-                ovr024.sub_648D9(Stat.STR, target);
+                ovr024.CalcStatBonuses(Stat.STR, target);
                 ovr025.DisplayPlayerStatusString(true, 10, "has been reduced", target);
             }
         }
@@ -1165,7 +1165,7 @@ namespace engine
         internal static void SpellFriends() // is_friendly
         {
             sub_5CF7F("is friendly", 0, 0, true, ovr024.roll_dice(4, 2), gbl.spell_id);
-            ovr024.sub_648D9(Stat.CHA, gbl.player_ptr);
+            ovr024.CalcStatBonuses(Stat.CHA, gbl.player_ptr);
         }
 
 
@@ -1311,7 +1311,7 @@ namespace engine
 
                 sub_5CF7F("is affected", 0, 0, true, 0xff, gbl.spell_id);
                 ovr013.CallAffectTable(Effect.Remove, null, player, Affects.affect_4e);
-                ovr024.add_affect(true, 0xff, 10, Affects.affect_0f, player);
+                ovr024.add_affect(true, 0xff, 10, Affects.poison_damage, player);
             }
         }
 
@@ -1322,7 +1322,7 @@ namespace engine
 
             gbl.spellTargets = gbl.player_next_ptr.FindAll(target =>
                 {
-                    if (target.field_11A == 0x0e &&
+                    if (target.monsterType == MonsterType.snake &&
                        totalSpellPower >= target.hit_point_current)
                     {
                         totalSpellPower -= target.hit_point_current;
@@ -1529,7 +1529,7 @@ namespace engine
                 encoded_str = var_6 + 100;
 
                 ovr024.add_affect(true, encoded_str, GetSpellAffectTimeout((Spells)gbl.spell_id), Affects.strength, target);
-                ovr024.sub_648D9(Stat.STR, target);
+                ovr024.CalcStatBonuses(Stat.STR, target);
             }
         }
 
@@ -1545,7 +1545,7 @@ namespace engine
             foreach (Player player in gbl.player_next_ptr)
             {
                 if (player.health_status == Status.dead &&
-                    player.field_11A == 0)
+                    player.monsterType == 0)
                 {
                     if (ovr033.sub_7515A(true, ovr033.PlayerMapPos(player), player) == true)
                     {
@@ -1571,7 +1571,7 @@ namespace engine
                             player.field_F7 = 0xB3;
                         }
 
-                        player.field_11A = 4;
+                        player.monsterType = MonsterType.animated_dead;
 
                         if (gbl.game_state == GameState.Combat)
                         {
@@ -1860,12 +1860,12 @@ namespace engine
 
                         var target = gbl.spellTargets[0];
 
-                        ovr024.sub_648D9(Stat.STR, target);
-                        ovr024.sub_648D9(Stat.INT, target);
-                        ovr024.sub_648D9(Stat.WIS, target);
-                        ovr024.sub_648D9(Stat.DEX, target);
-                        ovr024.sub_648D9(Stat.CON, target);
-                        ovr024.sub_648D9(Stat.CHA, target);
+                        ovr024.CalcStatBonuses(Stat.STR, target);
+                        ovr024.CalcStatBonuses(Stat.INT, target);
+                        ovr024.CalcStatBonuses(Stat.WIS, target);
+                        ovr024.CalcStatBonuses(Stat.DEX, target);
+                        ovr024.CalcStatBonuses(Stat.CON, target);
+                        ovr024.CalcStatBonuses(Stat.CHA, target);
                     }
 
                     ovr025.MagicAttackDisplay("has an item un-cursed", true, gbl.spellTargets[0]);
@@ -2206,7 +2206,7 @@ namespace engine
             }
 
             ovr024.add_affect(true, encodedStrength, (ushort)((ovr024.roll_dice(4, 1) * 10) + 0x28), Affects.strenght_spell, target);
-            ovr024.sub_648D9(Stat.STR, target);
+            ovr024.CalcStatBonuses(Stat.STR, target);
         }
 
 
@@ -2269,7 +2269,7 @@ namespace engine
 
                 ovr024.remove_affect(null, Affects.poisoned, target);
                 ovr024.remove_affect(null, Affects.slow_poison, target);
-                ovr024.remove_affect(null, Affects.affect_0f, target);
+                ovr024.remove_affect(null, Affects.poison_damage, target);
 
                 gbl.cureSpell = false;
 
@@ -2367,7 +2367,7 @@ namespace engine
                 player.in_combat = true;
                 player.tmp_con--;
 
-                ovr024.sub_648D9(Stat.CON, player);
+                ovr024.CalcStatBonuses(Stat.CON, player);
                 player.hit_point_current = 1;
 
                 ovr025.DisplayPlayerStatusString(true, 10, "is raised", player);
@@ -2410,7 +2410,7 @@ namespace engine
                 {
                     bool saved = ovr024.RollSavingThrow(0, SaveVerseType.type4, target);
 
-                    ovr024.is_unaffected("is entangled", saved, DamageOnSave.Zero, false, 0, GetSpellAffectTimeout(Spells.spell_88), Affects.entangle, target);
+                    ovr024.is_unaffected("is entangled", saved, DamageOnSave.Zero, false, 0, GetSpellAffectTimeout((Spells)0x88), Affects.entangle, target);
                 }
             }
         }
@@ -2801,7 +2801,7 @@ namespace engine
 
             foreach (var target in gbl.spellTargets)
             {
-                bool change_damage = target.field_11A != 18;
+                bool change_damage = target.monsterType != MonsterType.plant;
 
                 ovr024.damage_person(change_damage, gbl.spell_table[(int)Spells.spell_62].damageOnSave, ovr024.roll_dice_save(6, 6), target);
             }

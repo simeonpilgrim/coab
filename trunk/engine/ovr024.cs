@@ -82,14 +82,14 @@ namespace engine
 
                 if (affect_id == Affects.resist_fire)
                 {
-                    sub_648D9(Stat.CHA, player);
+                    CalcStatBonuses(Stat.CHA, player);
                 }
 
                 if (affect_id == Affects.enlarge || 
                     affect_id == Affects.strength || 
                     affect_id == Affects.strenght_spell)
                 {
-                    sub_648D9(Stat.STR, player);
+                    CalcStatBonuses(Stat.STR, player);
                 }
             }
         }
@@ -173,7 +173,7 @@ namespace engine
                 case CheckType.Type_4:
                     calc_affect_effect(Affects.ray_of_enfeeblement, player);
                     calc_affect_effect(Affects.affect_06, player);
-                    calc_affect_effect(Affects.affect_67, player);
+                    calc_affect_effect(Affects.salamander_heat_damage, player);
                     calc_affect_effect(Affects.weap_dragon_slayer, player);
                     calc_affect_effect(Affects.weap_frost_brand, player);
                     calc_affect_effect(Affects.ranger_vs_giant, player);
@@ -182,7 +182,7 @@ namespace engine
                 case CheckType.Type_5:
                     calc_affect_effect(Affects.mirror_image, player);
                     calc_affect_effect(Affects.prot_from_normal_missiles, player);
-                    calc_affect_effect(Affects.affect_68, player);
+                    calc_affect_effect(Affects.thri_kreen_dodge_missile, player);
                     calc_affect_effect(Affects.affect_78, player);
                     calc_affect_effect(Affects.troll_regen, player);
                     calc_affect_effect(Affects.affect_73, player);
@@ -191,7 +191,7 @@ namespace engine
                     calc_affect_effect(Affects.affect_5e, player);
                     calc_affect_effect(Affects.affect_75, player);
                     calc_affect_effect(Affects.resist_normal_weapons, player);
-                    calc_affect_effect(Affects.half_damge, player);
+                    calc_affect_effect(Affects.half_damage, player);
                     calc_affect_effect(Affects.resist_fire_and_cold, player);
                     calc_affect_effect(Affects.affect_55, player);
                     calc_affect_effect(Affects.affect_82, player);
@@ -262,7 +262,7 @@ namespace engine
                     calc_affect_effect(Affects.bestow_curse, player);
                     calc_affect_effect(Affects.prayer, player);
                     calc_affect_effect(Affects.affect_06, player);
-                    calc_affect_effect(Affects.affect_12, player);
+                    calc_affect_effect(Affects.gnome_vs_man_sized_giant, player);
                     calc_affect_effect(Affects.dwarf_vs_orc, player);
                     calc_affect_effect(Affects.weap_dragon_slayer, player);
                     calc_affect_effect(Affects.weap_frost_brand, player);
@@ -826,7 +826,7 @@ namespace engine
         }
 
 
-        internal static void sub_648D9(Stat stat_index, Player player)
+        internal static void CalcStatBonuses(Stat stat_index, Player player) // sub_648D9
         {
             byte var_A = 0;
             byte stat_b = 0;

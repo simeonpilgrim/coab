@@ -17,6 +17,21 @@ namespace Classes
         gone = 0x8
     }
 
+    public enum MonsterType
+    {
+        type_1 = 1,
+        giant = 2,
+        dragon = 3,
+        animated_dead = 4,
+        fire = 8,
+        type_9 = 9,
+        type_10 = 10,
+        type_12 = 12,
+        snake = 14,
+        plant = 18,
+        animal = 19,
+    }
+
     public enum Stat
     {
         STR, // 0
@@ -350,7 +365,7 @@ namespace Classes
         [DataOffset(0x119, DataType.Byte)]
         public byte sex; // 0x119;
         [DataOffset(0x11a, DataType.Byte)]
-        public byte field_11A; // 0x11a;
+        public MonsterType monsterType; // 0x11a;
         [DataOffset(0x11b, DataType.Byte)]
         public byte alignment; // 0x11b;
         [DataOffset(0x11c, DataType.Byte)]

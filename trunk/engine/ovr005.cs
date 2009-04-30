@@ -168,8 +168,8 @@ namespace engine
 
                         ovr024.remove_affect(null, Affects.feeblemind, gbl.player_ptr);
 
-                        ovr024.sub_648D9(Stat.INT, gbl.player_ptr);
-                        ovr024.sub_648D9(Stat.WIS, gbl.player_ptr);
+                        ovr024.CalcStatBonuses(Stat.INT, gbl.player_ptr);
+                        ovr024.CalcStatBonuses(Stat.WIS, gbl.player_ptr);
                     }
                     break;
             }
@@ -286,7 +286,7 @@ namespace engine
 
                     ovr024.remove_affect(null, Affects.poisoned, gbl.player_ptr);
                     ovr024.remove_affect(null, Affects.slow_poison, gbl.player_ptr);
-                    ovr024.remove_affect(null, Affects.affect_0f, gbl.player_ptr);
+                    ovr024.remove_affect(null, Affects.poison_damage, gbl.player_ptr);
 
                     gbl.cureSpell = false;
                 }

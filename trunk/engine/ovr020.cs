@@ -716,7 +716,7 @@ namespace engine
                     break;
 
                 case 2:
-                    ovr024.sub_648D9(Stat.DEX, player);
+                    ovr024.CalcStatBonuses(Stat.DEX, player);
                     ovr026.sub_6AAEA(player);
                     break;
 
@@ -738,12 +738,12 @@ namespace engine
                     break;
 
                 case 5:
-                    ovr024.sub_648D9(Stat.STR, player);
+                    ovr024.CalcStatBonuses(Stat.STR, player);
                     break;
 
                 case 6:
-                    ovr024.sub_648D9(Stat.CON, player);
-                    ovr024.sub_648D9(Stat.CHA, player);
+                    ovr024.CalcStatBonuses(Stat.CON, player);
+                    ovr024.CalcStatBonuses(Stat.CHA, player);
                     break;
 
                 case 8:
@@ -755,7 +755,7 @@ namespace engine
                         case 3:
                         case 4:
                         case 5:
-                            ovr024.sub_648D9((Stat)item.affect_2, player);
+                            ovr024.CalcStatBonuses((Stat)item.affect_2, player);
                             break;
                     }
                     break;
@@ -768,7 +768,7 @@ namespace engine
                     break;
 
                 case 10:
-                    ovr024.sub_648D9(Stat.DEX, player);
+                    ovr024.CalcStatBonuses(Stat.DEX, player);
                     break;
 
                 case 11:
@@ -776,12 +776,12 @@ namespace engine
                     break;
 
                 case 12:
-                    ovr024.sub_648D9(Stat.INT, player);
+                    ovr024.CalcStatBonuses(Stat.INT, player);
                     break;
 
                 case 13:
-                    ovr024.sub_648D9(Stat.STR, player);
-                    ovr024.sub_648D9(Stat.INT, player);
+                    ovr024.CalcStatBonuses(Stat.STR, player);
+                    ovr024.CalcStatBonuses(Stat.INT, player);
                     break;
             }
         }
