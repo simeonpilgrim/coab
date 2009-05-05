@@ -415,7 +415,7 @@ namespace engine
             }
             else if (arg_4 == 0xC9)
             {
-                return_val = (ushort)(gbl.player_ptr.magic_user_lvl + (ovr026.sub_6B3D1(gbl.player_ptr) * gbl.player_ptr.field_116));
+                return_val = (ushort)(gbl.player_ptr.magic_user_lvl + (ovr026.sub_6B3D1(gbl.player_ptr) * gbl.player_ptr.magic_user_old_lvl));
             }
             else if (arg_4 == 0xD6)
             {

@@ -497,7 +497,7 @@ namespace engine
 
             player.base_movement = bp_var_1C0.field_72;
             player.HitDice = bp_var_1C0.field_73;
-            player.field_E6 = player.HitDice;
+            player.multiclassLevel = player.HitDice;
             player.field_E7 = bp_var_1C0.field_74;
             player.field_E8 = bp_var_1C0.field_75;
             player.field_E9 = bp_var_1C0.field_76;
@@ -738,14 +738,14 @@ namespace engine
             player.field_19C = bp_var_1C0.field_113;
             player.field_19D = bp_var_1C0.field_114;
 
-            player.attack_dice_count = bp_var_1C0.field_115;
-            player.field_19F = bp_var_1C0.field_116;
+            player.attack1_DiceCount = bp_var_1C0.field_115;
+            player.attack2_DiceCount = bp_var_1C0.field_116;
 
-            player.attack_dice_size = bp_var_1C0.field_117;
-            player.field_1A1 = bp_var_1C0.field_118;
+            player.attack1_DiceSize = bp_var_1C0.field_117;
+            player.attack2_DiceSize = bp_var_1C0.field_118;
 
-            player.damageBonus = (sbyte)bp_var_1C0.field_119;
-            player.field_1A3 = bp_var_1C0.field_11A;
+            player.attack1_DamageBonus = (sbyte)bp_var_1C0.field_119;
+            player.attack2_DamageBonus = bp_var_1C0.field_11A;
             player.hit_point_current = bp_var_1C0.field_11B;
             player.movement = (byte)bp_var_1C0.field_11C;
         }
@@ -924,36 +924,36 @@ namespace engine
 
                     if (var_1C4.field_1D > 0)
                     {
-                        Item newItem = ovr025.new_Item(0, Affects.helpless, (Affects)var_1C4.field_1D,
+                        Item newItem = new Item(0, Affects.helpless, (Affects)var_1C4.field_1D,
                             (short)(var_1C4.field_1D * 200), 0, 0,
-                            false, 0, false, 0, 0, 0x57, -89, -88, 0x46);
+                            false, 0, false, 0, 0, 0x57, 0xa7, 0xa8, 0x46);
                         
                         player_ptr.items.Add(newItem);
                     }
 
                     if (var_1C4.field_23 > 0)
                     {
-                        Item newItem = ovr025.new_Item(0, Affects.poison_plus_4, (Affects)var_1C4.field_23,
+                        Item newItem = new Item(0, Affects.poison_plus_4, (Affects)var_1C4.field_23,
                             (short)(var_1C4.field_23 * 0x15E), 0, 1,
-                            false, 0, false, 0, 1, 0x45, -89, -50, 0x4F);
+                            false, 0, false, 0, 1, 0x45, 0xa7, 0xce, 0x4F);
 
                         player_ptr.items.Add(newItem);
                     }
 
                     if (var_1C4.field_86 > 0)
                     {
-                        Item newItem = ovr025.new_Item(0, Affects.helpless, (Affects)var_1C4.field_86,
+                        Item newItem = new Item(0, Affects.helpless, (Affects)var_1C4.field_86,
                             (short)(var_1C4.field_86 * 0xc8), 0, 0,
-                            false, 0, false, 0, 0, 0x42, -89, -88, 0x45);
+                            false, 0, false, 0, 0, 0x42, 0xa7, 0xa8, 0x45);
 
                         player_ptr.items.Add(newItem);
                     }
 
                     if (var_1C4.field_87 > 0)
                     {
-                        Item newItem = ovr025.new_Item(0, Affects.highConRegen, (Affects)var_1C4.field_87,
+                        Item newItem = new Item(0, Affects.highConRegen, (Affects)var_1C4.field_87,
                             (short)(var_1C4.field_87 * 0x190), 0, (short)(var_1C4.field_87 * 10),
-                            false, 0, false, 0, 0, 0x40, -89, -71, 0x46);
+                            false, 0, false, 0, 0, 0x40, 0xa7, 0xb9, 0x46);
 
                         player_ptr.items.Add(newItem);
                     }
@@ -996,7 +996,7 @@ namespace engine
                             player01_ptr.icon_colours[i] = (byte)(((gbl.default_icon_colours[i] + 8) << 4) + gbl.default_icon_colours[i]);
                         }
 
-                        player01_ptr.field_124 = 50;
+                        player01_ptr.base_ac = 50;
                         player01_ptr.thac0 = 40;
                         player01_ptr.health_status = Status.okey;
                         player01_ptr.in_combat = true;
@@ -1007,11 +1007,11 @@ namespace engine
                         player01_ptr.mod_id = seg051.Random((byte)0xff);
                         player01_ptr.icon_id = 0x0A;
 
-                        player01_ptr.field_11C = 2;
-                        player01_ptr.field_11E = 1;
-                        player01_ptr.field_120 = 2;
+                        player01_ptr.attacksCount = 2;
+                        player01_ptr.attack1_DiceCountBase = 1;
+                        player01_ptr.attack1_DiceSizeBase = 2;
                         player01_ptr.field_125 = 1;
-                        player01_ptr.base_movement = 0x0C;
+                        player01_ptr.base_movement = 12;
 
                         player01_ptr.name = var_1C4.field_4;
                         player01_ptr.tmp_str = var_1C4.field_14;

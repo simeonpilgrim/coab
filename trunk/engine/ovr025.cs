@@ -6,7 +6,7 @@ namespace engine
 {
     class ovr025
     {
-        internal static void sub_66023(Player player)
+        internal static void CalculateAttackValues(Player player) // sub_66023
         {
             Item item = player.field_151;
 
@@ -16,34 +16,34 @@ namespace engine
 
                 player.hitBonus = player.thac0;
 
-                if ((gbl.ItemDataTable[item_type].field_E & 2) != 0)
+                if ((gbl.ItemDataTable[item_type].field_E & ItemDataFlags.flag_02) != 0)
                 {
-                    player.hitBonus += (sbyte)DexReactionAdj(player);
+                    player.hitBonus += DexReactionAdj(player);
                 }
 
-                player.damageBonus = gbl.ItemDataTable[item_type].bonusNormal;
+                player.attack1_DamageBonus = gbl.ItemDataTable[item_type].bonusNormal;
 
-                if ((gbl.ItemDataTable[item_type].field_E & 0x04) != 0)
+                if ((gbl.ItemDataTable[item_type].field_E & ItemDataFlags.melee) != 0)
                 {
                     player.hitBonus += strengthHitBonus(player);
-                    player.damageBonus += strengthDamBonus(player);
+                    player.attack1_DamageBonus += strengthDamBonus(player);
                 }
 
-                sbyte bonus = item.plus;
+                int bonus = item.plus;
 
-                if (gbl.ItemDataTable[item_type].field_E > 0x7F &&
+                if ((gbl.ItemDataTable[item_type].field_E & ItemDataFlags.quarrels) != 0 &&
                     player.quarrels != null)
                 {
                     bonus += player.quarrels.plus;
                 }
 
-                if ((gbl.ItemDataTable[item_type].field_E & 0x01) != 0 &&
+                if ((gbl.ItemDataTable[item_type].field_E & ItemDataFlags.arrows) != 0 &&
                     player.arrows != null)
                 {
                     bonus += player.arrows.plus;
                 }
 
-                player.damageBonus += bonus;
+                player.attack1_DamageBonus += (sbyte)bonus;
 
                 if (player.race == Race.elf &&
                     (item.type == 41 || // CompositeLongBow
@@ -57,8 +57,8 @@ namespace engine
                 }
 
                 player.hitBonus += bonus;
-                player.attack_dice_count = gbl.ItemDataTable[item_type].diceCountNormal;
-                player.attack_dice_size = gbl.ItemDataTable[item_type].diceSizeNormal;
+                player.attack1_DiceCount = gbl.ItemDataTable[item_type].diceCountNormal;
+                player.attack1_DiceSize = gbl.ItemDataTable[item_type].diceSizeNormal;
             }
         }
 
@@ -107,7 +107,7 @@ namespace engine
                     {
                         if (item.plus > bonus[3])
                         {
-                            bonus[3] = item.plus;
+                            bonus[3] = (sbyte)item.plus;
                         }
                     }
                     else
@@ -170,7 +170,7 @@ namespace engine
         }
 
 
-        static string[] itemNames = { "",
+        public static string[] itemNames = { "",
             "Battle Axe","Hand Axe","Bardiche","Bec De Corbin","Bill-Guisarme",
             "Bo Stick", "Club","Dagger","Dart","Fauchard",
             
@@ -285,9 +285,9 @@ namespace engine
         internal static string ItemName(Item item, int hidden_names_flag)
         {
             int display_flags = 0;
-            display_flags |= (item.field_2F != 0 && (hidden_names_flag & 0x4) == 0) ? 0x1 : 0;
-            display_flags |= (item.field_30 != 0 && (hidden_names_flag & 0x2) == 0) ? 0x2 : 0;
-            display_flags |= (item.field_31 != 0 && (hidden_names_flag & 0x1) == 0) ? 0x4 : 0;
+            display_flags |= (item.namenum1 != 0 && (hidden_names_flag & 0x4) == 0) ? 0x1 : 0;
+            display_flags |= (item.namenum2 != 0 && (hidden_names_flag & 0x2) == 0) ? 0x2 : 0;
+            display_flags |= (item.namenum3 != 0 && (hidden_names_flag & 0x1) == 0) ? 0x4 : 0;
 
             bool pural_added = false;
             string name = "";
@@ -307,7 +307,7 @@ namespace engine
                             (var_1 == 1 && display_flags > 4 && item.type != 86) ||
                             (var_1 == 2 && (display_flags & 1) == 0) ||
                             (var_1 == 3 && item.type == 86) ||
-                            (item.field_31 != 0x87 && (item.type == 73 /*Arrow*/ || item.type == 28 /*Quarrel*/ || item.type == 9 /*Dart*/) && item.field_31 != 0xb1))
+                            (item.namenum3 != 0x87 && (item.type == 73 /*Arrow*/ || item.type == 28 /*Quarrel*/ || item.type == 9 /*Dart*/) && item.namenum3 != 0xb1))
                     {
                         name += "s ";
                         pural_added = true;
@@ -549,14 +549,15 @@ namespace engine
                 player.weight += player.Money[money];
             }
 
-            player.attack_dice_count = player.field_11E;
-            player.field_19F = player.field_11F;
+            player.attack1_DiceCount = player.attack1_DiceCountBase;
+            player.attack2_DiceCount = player.attack2_DiceCountBase;
 
-            player.attack_dice_size = player.field_120;
-            player.field_1A1 = player.field_121;
+            player.attack1_DiceSize = player.attack1_DiceSizeBase;
+            player.attack2_DiceSize = player.attack2_DiceSizeBase;
 
-            player.damageBonus = player.field_122;
-            player.field_1A3 = player.field_123;
+            player.attack1_DamageBonus = player.attack1_DamageBonusBase;
+            player.attack2_DamageBonus = player.attack2_DamageBonusBase;
+
 
             for (int i = 0; i <= 4; i++)
             {
@@ -566,7 +567,7 @@ namespace engine
             byte var_7 = 0;
 
             player.field_186 = 0;
-            player.ac = player.field_124;
+            player.ac = player.base_ac;
             player.movement = player.base_movement;
             player.hitBonus = player.thac0;
 
@@ -575,12 +576,12 @@ namespace engine
             if (player.field_151 == null)
             {
                 player.hitBonus += strengthHitBonus(player);
-                player.damageBonus += strengthDamBonus(player);
+                player.attack1_DamageBonus += strengthDamBonus(player);
             }
 
-            sub_66023(player);
+            CalculateAttackValues(player);
 
-            foreach(var item in player.items)
+            foreach (var item in player.items)
             {
                 if (item.readied)
                 {
@@ -628,15 +629,19 @@ namespace engine
             player.field_19B = (byte)((stat_bonus[4] + stat_bonus[2] + stat_bonus[3]) - 2);
 
             if ((player.fighter_lvl > 0 ||
-                (player.field_113 > 0 && ovr026.sub_6B3D1(player) != 0)) &&
+                (player.fighter_old_lvl > 0 && ovr026.sub_6B3D1(player) != 0)) &&
                 player.race > Race.monster)
             {
-                player.field_DD = (byte)((player.field_113 * ovr026.sub_6B3D1(player)) + player.fighter_lvl);
+                player.field_DD = (byte)((player.fighter_old_lvl * ovr026.sub_6B3D1(player)) + player.fighter_lvl);
             }
             else
             {
                 player.field_DD = 1;
             }
+
+            System.Console.WriteLine("{0} {1} {2}, {3} {4}, {5} {6}", player.name, player.attack1_DiceCount, player.attack2_DiceCount,
+       player.attack1_DiceSize, player.attack2_DiceSize, player.attack1_DamageBonus, player.attack2_DamageBonus);
+
         }
 
 
@@ -770,7 +775,7 @@ namespace engine
         }
 
 
-        internal static sbyte strengthHitBonus(Player player)
+        internal static int strengthHitBonus(Player player)
         {
             int str_bonus = 0;
             int str_stat = player_strenght_group(player);
@@ -811,7 +816,7 @@ namespace engine
                 }
             }
 
-            return (sbyte)str_bonus;
+            return str_bonus;
         }
 
 
@@ -1517,21 +1522,21 @@ namespace engine
                 switch (gbl.spell_table[spell_id].spellClass)
                 {
                     case SpellClass.Cleric:
-                        int cleric_count = gbl.player_ptr.cleric_lvl + (ovr026.sub_6B3D1(gbl.player_ptr) * gbl.player_ptr.turn_undead);
-                        int paladin_count = gbl.player_ptr.paladin_lvl + (ovr026.sub_6B3D1(gbl.player_ptr) * gbl.player_ptr.field_114) - 8;
+                        int cleric_count = gbl.player_ptr.cleric_lvl + (ovr026.sub_6B3D1(gbl.player_ptr) * gbl.player_ptr.cleric_old_lvl);
+                        int paladin_count = gbl.player_ptr.paladin_lvl + (ovr026.sub_6B3D1(gbl.player_ptr) * gbl.player_ptr.paladin_old_lvl) - 8;
 
                         target_count = Math.Max(cleric_count, paladin_count);
                         break;
 
                     case SpellClass.Druid:
-                        int ranger_count = gbl.player_ptr.ranger_lvl + (ovr026.sub_6B3D1(gbl.player_ptr) * gbl.player_ptr.field_115) - 7;
+                        int ranger_count = gbl.player_ptr.ranger_lvl + (ovr026.sub_6B3D1(gbl.player_ptr) * gbl.player_ptr.ranger_old_lvl) - 7;
                         
                         target_count = Math.Max(ranger_count, 0);
                         break;
 
                     case SpellClass.MagicUser:
-                        int magicuser_count = gbl.player_ptr.magic_user_lvl + (ovr026.sub_6B3D1(gbl.player_ptr) * gbl.player_ptr.field_116);
-                        int ranger_count2 = gbl.player_ptr.ranger_lvl + (ovr026.sub_6B3D1(gbl.player_ptr) * gbl.player_ptr.field_115) - 8;
+                        int magicuser_count = gbl.player_ptr.magic_user_lvl + (ovr026.sub_6B3D1(gbl.player_ptr) * gbl.player_ptr.magic_user_old_lvl);
+                        int ranger_count2 = gbl.player_ptr.ranger_lvl + (ovr026.sub_6B3D1(gbl.player_ptr) * gbl.player_ptr.ranger_old_lvl) - 8;
 
                         target_count = Math.Max(magicuser_count, ranger_count2);
                         break;
@@ -1730,8 +1735,9 @@ namespace engine
 
         internal static bool item_is_ranged_melee(Item item)
         {
+            var rangedMelee = (ItemDataFlags.flag_10 | ItemDataFlags.melee);
             return item_is_ranged(item) &&
-                 (gbl.ItemDataTable[item.type].field_E & 0x14) == 0x14;
+                 (gbl.ItemDataTable[item.type].field_E & rangedMelee) == rangedMelee;
         }
 
         internal static bool is_weapon_ranged(Player player) /* offset_above_1 */
@@ -1746,56 +1752,56 @@ namespace engine
         }
 
 
-        internal static bool sub_6906C(out Item found_item, Player player)
+        internal static bool sub_6906C(out Item found_item, Player player) // sub_6906C
         {
             found_item = null;
-            byte flags = 0;
+            var flags = ItemDataFlags.None;
 
             Item item = player.field_151;
             if (item != null)
             {
                 flags = gbl.ItemDataTable[item.type].field_E;
 
-                if ((flags & 0x10) != 0)
+                if ((flags & ItemDataFlags.flag_10) != 0)
                 {
                     found_item = item;
                 }
 
-                if ((flags & 0x08) != 0)
+                if ((flags & ItemDataFlags.flag_08) != 0)
                 {
-                    if ((flags & 0x01) != 0)
+                    if ((flags & ItemDataFlags.arrows) != 0)
                     {
                         found_item = player.arrows;
                     }
 
-                    if ((flags & 0x80) != 0)
+                    if ((flags & ItemDataFlags.quarrels) != 0)
                     {
                         found_item = player.quarrels;
                     }
                 }
             }
 
-            bool item_found = (found_item != null || flags == 10);
+            bool item_found = (found_item != null || flags == (ItemDataFlags.flag_08 | ItemDataFlags.flag_02));
 
             return item_found;
         }
 
 
-        internal static bool sub_69138(int skill, Player player)
+        internal static bool RaceStatLevelRestricted(ClassId _class, Player player) // sub_69138
         {
             bool ret_val = false;
 
-            int skill_lvl = player.class_lvls[skill];
+            int class_lvl = player.ClassLevel[(int)_class];
 
-            if (skill_lvl > 0)
+            if (class_lvl > 0)
             {
                 switch (player.race)
                 {
                     case Race.dwarf:
-                        if (skill == 2)
+                        if (_class == ClassId.fighter)
                         {
-                            if ((skill_lvl == 8 && player.strength == 17) ||
-                                (skill_lvl == 7 && player.strength < 17))
+                            if ((class_lvl == 8 && player.strength == 17) ||
+                                (class_lvl == 7 && player.strength < 17))
                             {
                                 ret_val = true;
                             }
@@ -1803,11 +1809,11 @@ namespace engine
                         break;
 
                     case Race.elf:
-                        if (skill == 2)
+                        if (_class == ClassId.fighter)
                         {
-                            if ((skill_lvl == 7) ||
-                                (skill_lvl == 6 && player.strength == 17) ||
-                                (skill_lvl == 5 && player.strength < 17))
+                            if ((class_lvl == 7) ||
+                                (class_lvl == 6 && player.strength == 17) ||
+                                (class_lvl == 5 && player.strength < 17))
                             {
                                 ret_val = true;
                             }
@@ -1815,10 +1821,10 @@ namespace engine
                         break;
 
                     case Race.gnome:
-                        if (skill == 2)
+                        if (_class == ClassId.fighter)
                         {
-                            if ((skill_lvl == 6) ||
-                                (skill_lvl == 5 && player.strength < 18))
+                            if ((class_lvl == 6) ||
+                                (class_lvl == 5 && player.strength < 18))
                             {
                                 ret_val = true;
                             }
@@ -1826,16 +1832,16 @@ namespace engine
                         break;
 
                     case Race.half_elf:
-                        if (skill == 0 &&
-                            skill_lvl == 5)
+                        if (_class == ClassId.cleric &&
+                            class_lvl == 5)
                         {
                             ret_val = true;
                         }
-                        else if (skill == 2)
+                        else if (_class == ClassId.fighter)
                         {
-                            if (skill_lvl == 8 ||
-                                (skill_lvl == 7 && player.strength == 17) ||
-                                (skill_lvl == 6 && player.strength < 17))
+                            if (class_lvl == 8 ||
+                                (class_lvl == 7 && player.strength == 17) ||
+                                (class_lvl == 6 && player.strength < 17))
                             {
                                 ret_val = true;
                             }
@@ -1843,11 +1849,11 @@ namespace engine
                         break;
 
                     case Race.halfling:
-                        if (skill == 2)
+                        if (_class == ClassId.fighter)
                         {
-                            if ((skill_lvl == 6) ||
-                                (skill_lvl == 5 && player.strength == 17) ||
-                                (skill_lvl == 4 && player.strength < 17))
+                            if ((class_lvl == 6) ||
+                                (class_lvl == 5 && player.strength == 17) ||
+                                (class_lvl == 4 && player.strength < 17))
                             {
                                 ret_val = true;
                             }
@@ -1857,33 +1863,6 @@ namespace engine
             }
 
             return ret_val;
-        }
-
-
-        internal static Item new_Item(Affects affect_3, Affects affect_2, Affects affect_1, short _value, byte count,
-            short weight, bool cursed, byte name_flags, bool readied, byte plus_save, sbyte plus, byte arg_16,
-            sbyte arg_18, sbyte arg_1A, byte type)
-        {
-            Item item = new Item();
-
-            item.name = string.Empty;
-            item.type = type;
-            item.field_2F = arg_1A;
-            item.field_30 = arg_18;
-            item.field_31 = arg_16;
-            item.plus = plus;
-            item.plus_save = plus_save;
-            item.readied = readied;
-            item.hidden_names_flag = name_flags;
-            item.cursed = cursed;
-            item.weight = weight;
-            item.count = count;
-            item._value = _value;
-            item.affect_1 = affect_1;
-            item.affect_2 = affect_2;
-            item.affect_3 = affect_3;
-
-            return item;
         }
 
 

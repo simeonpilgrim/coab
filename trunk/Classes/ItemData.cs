@@ -2,34 +2,50 @@ using System;
 
 namespace Classes
 {
+    [FlagsAttribute]
+    public enum ItemDataFlags : byte
+    {
+        None = 0,
+        arrows = 0x01,
+        flag_02 = 0x02,
+        melee = 0x04,
+        flag_08 = 0x08,
+        flag_10 = 0x10,
+        flag_20 = 0x20,
+        flag_40 = 0x40,
+        quarrels = 0x80,
+
+    }
+
 	/// <summary>
 	/// Summary description for Struct_1C020.
 	/// </summary>
-	public class ItemData
-	{
+    public class ItemData
+    {
+        public int index;
+
         public byte item_slot; //seg600:5D10 unk_1C020 - field_0
-		public byte handsCount; //seg600:5D11 unk_1C021
+        public byte handsCount; //seg600:5D11 unk_1C021
         public byte diceCountLarge; //seg600:5D12 unk_1C022
         public byte diceSizeLarge; //seg600:5D13 unk_1C023
-		public sbyte bonusLarge; //seg600:5D14
-		public byte numberAttacks; //seg600:5D15
-		public byte field_6; //seg600:5D16 unk_1C026
-		public byte field_7; //seg600:5D17 unk_1C027
-		public byte field_8; //seg600:5D18
+        public sbyte bonusLarge; //seg600:5D14
+        public byte numberAttacks; //seg600:5D15
+        public byte field_6; //seg600:5D16 unk_1C026
+        public byte field_7; //seg600:5D17 unk_1C027
+        public byte field_8; //seg600:5D18
         public byte diceCountNormal; //seg600:5D19 field_9 maybe ranged 
         public byte diceSizeNormal; //seg600:5D1A field_A  maybe ranged
-		public sbyte bonusNormal; //seg600:5D1B
-		public int range; //seg600:5D1C unk_1C02C
-		public byte classFlags; //seg600:5D1D field_D
-		public byte field_E; //seg600:5D1E unk_1C02E
-		public byte field_F; //seg600:5D1F 
+        public sbyte bonusNormal; //seg600:5D1B
+        public int range; //seg600:5D1C unk_1C02C
+        public byte classFlags; //seg600:5D1D field_D
+        public ItemDataFlags field_E; //seg600:5D1E unk_1C02E
+        public byte field_F; //seg600:5D1F 
 
-        //public ItemData()
-        //{
-        //}
 
-        public ItemData(byte[] data, int offset)
+        public ItemData(byte[] data, int offset, int _index)
         {
+            index = _index;
+
             item_slot = data[offset + 0];
             handsCount = data[offset + 1];
             diceCountLarge = data[offset + 2];
@@ -44,10 +60,17 @@ namespace Classes
             bonusNormal = (sbyte)data[offset + 0xb];
             range = data[offset + 0xc];
             classFlags = data[offset + 0xd];
-            field_E = data[offset + 0xe];
+            field_E = (ItemDataFlags)data[offset + 0xe];
             field_F = data[offset + 0xf];
         }
-	}
+
+        public override string ToString()
+        {
+            return string.Format("{0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}, {8}, {9}, {10}, {11}, {12}, {13}, {14}, {15}",
+                   item_slot, handsCount, diceCountLarge, diceSizeLarge, bonusLarge, numberAttacks, field_6, field_7, field_8,
+                   diceCountNormal, diceSizeNormal, bonusNormal, range, classFlags, field_E, field_F);
+        }
+    }
 
     enum ItemType
     {

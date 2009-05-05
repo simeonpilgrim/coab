@@ -501,22 +501,21 @@ namespace engine
             return bonus;
         }
 
-        static short[] /*seg600:082E*/	unk_16B3E = { 
-            0x3932, 
-            0x00B9, 0x00BB, 0x0040, 0x0001, 0x0320, 0x0003, 0x0063, 0x0000,
-            0x00EF, 0x00A7, 0x0040, 0x0001, 0x044C, 0x0001, 0x003b, 0x0000,
-            0x00b9, 0x00a7, 0x0040, 0x0001, 0x0190, 0x0001, 0x0003, 0x0000,
-            0x00AD, 0x00a7, 0x0040, 0x0001, 0x01C2, 0x0001, 0x0030, 0x0000,
-            0x00CE, 0x00A7, 0x0045, 0x0001, 0x2AF8, 0x001E, 0x000F, 0x0000,
-            0x00E2, 0x00A7, 0x0064, 0x000A, 0x3A98, 0x0000, 0x0026, 0x0083,
-            0x009d, 0x00a7, 0x0015, 0x0014, 0x0bb8, 0x0001, 0x0033, 0x0000 };
+        static short[,] /*seg600:082E unk_16B3E */	preconfiiguredItems = { 
+            {0x00B9, 0x00BB, 0x0040, 0x0001, 0x0320, 0x0003, 0x0063, 0x0000},
+            {0x00EF, 0x00A7, 0x0040, 0x0001, 0x044C, 0x0001, 0x003b, 0x0000},
+            {0x00b9, 0x00a7, 0x0040, 0x0001, 0x0190, 0x0001, 0x0003, 0x0000},
+            {0x00AD, 0x00a7, 0x0040, 0x0001, 0x01C2, 0x0001, 0x0030, 0x0000},
+            {0x00CE, 0x00A7, 0x0045, 0x0001, 0x2AF8, 0x001E, 0x000F, 0x0000},
+            {0x00E2, 0x00A7, 0x0064, 0x000A, 0x3A98, 0x0000, 0x0026, 0x0083},
+            {0x009d, 0x00a7, 0x0015, 0x0014, 0x0bb8, 0x0001, 0x0033, 0x0000} };
 
         internal static Item create_item(int item_type) /* sub_5A007 */
         {
             byte var_5 = 0; /* Simeon */
 
             Item item = new Item();
-            byte var_4 = 0;
+            int var_4 = -1;
 
             item.affect_1 = 0;
             item.affect_2 = 0;
@@ -528,9 +527,9 @@ namespace engine
 
             item.type = (byte)item_type;
 
-            item.field_2F = 0;
-            item.field_30 = 0;
-            item.field_31 = 0;
+            item.namenum1 = 0;
+            item.namenum2 = 0;
+            item.namenum3 = 0;
 
             byte type = item.type;
 
@@ -544,70 +543,70 @@ namespace engine
                     int var_1 = ovr024.roll_dice(5, 1);
                     if (var_1 == 5)
                     {
-                        var_4 = 0x31;
+                        var_4 = 6;
                     }
 
-                    item.field_31 = 0x15;
-                    item.field_30 = (sbyte)(item.plus + 0xA1);
+                    item.namenum3 = 0x15;
+                    item.namenum2 = item.plus + 0xA1;
                 }
                 else if (item.type == 28) // ItemType.Quarrel
                 {
-                    item.field_31 = 0x1C;
-                    item.field_30 = (sbyte)(item.plus + 0xA1);
+                    item.namenum3 = 0x1C;
+                    item.namenum2 = item.plus + 0xA1;
                 }
                 else if (item.type == 0x32 ||
                          item.type == 0x33)
                 {
-                    item.field_31 = item.type;
-                    item.field_30 = 0x31;
-                    item.field_2F = (sbyte)(item.plus + 0xA1);
+                    item.namenum3 = item.type;
+                    item.namenum2 = 0x31;
+                    item.namenum1 = item.plus + 0xA1;
                     item.hidden_names_flag = 4;
                 }
                 else if (item.type == 0x34)
                 {
-                    item.field_31 = item.type;
-                    item.field_30 = 0x32;
-                    item.field_2F = (sbyte)(item.plus + 0xA1);
+                    item.namenum3 = item.type;
+                    item.namenum2 = 0x32;
+                    item.namenum1 =item.plus + 0xA1;
                     item.hidden_names_flag = 4;
                 }
                 else if (item.type >= 0x35 &&
                          item.type <= 0x3a)
                 {
-                    item.field_31 = item.type;
-                    item.field_30 = 0x30;
-                    item.field_2F = (sbyte)(item.plus + 0xA1);
+                    item.namenum3 = item.type;
+                    item.namenum2 = 0x30;
+                    item.namenum1 = item.plus + 0xA1;
                     item.hidden_names_flag = 4;
                 }
                 else if (item.type == 0x49)
                 {
-                    item.field_31 = 0x3D;
-                    item.field_30 = (sbyte)(item.plus + 0xA1);
+                    item.namenum3 = 0x3D;
+                    item.namenum2 = item.plus + 0xA1;
                 }
                 else if (item.type == 0x4d)
                 {
-                    item.field_31 = 0x4F;
-                    item.field_30 = -89;
+                    item.namenum3 = 0x4F;
+                    item.namenum2 = 0xA7;
                     item.plus = (sbyte)((item.plus << 1) + 2);
 
                     if (item.plus == 4)
                     {
-                        item.field_2F = -35;
+                        item.namenum1 = 0xdd;
                     }
                     else if (item.plus == 6)
                     {
-                        item.field_2F = -34;
+                        item.namenum1 = 0xde;
                     }
                 }
                 else if (item.type == 0x5d)
                 {
-                    item.field_31 = 0x42;
-                    item.field_30 = -32;
-                    item.field_2F = (sbyte)(item.plus + 0xA1);
+                    item.namenum3 = 0x42;
+                    item.namenum2 = 0xE0;
+                    item.namenum1 = item.plus + 0xA1;
                 }
                 else
                 {
-                    item.field_31 = item.type;
-                    item.field_30 = (sbyte)(item.plus + 0xA1);
+                    item.namenum3 = item.type;
+                    item.namenum2 = item.plus + 0xA1;
                 }
 
                 item.plus_save = 0;
@@ -786,15 +785,15 @@ namespace engine
 
                 if (item.type == 61) // MagicUserScrol
                 {
-                    item.field_31 = 0xD1;
+                    item.namenum3 = 0xD1;
                 }
                 else
                 {
-                    item.field_31 = 0xD0;
+                    item.namenum3 = 0xD0;
                 }
 
-                item.field_30 = (sbyte)(spellsCount + 0xd1);
-                item.field_2F = 0;
+                item.namenum2 = spellsCount + 0xd1;
+                item.namenum1 = 0;
                 item.plus = 1;
                 item.weight = 0x19;
                 item.count = 0;
@@ -861,15 +860,15 @@ namespace engine
             }
             else if (type == 0x3f || type == 0x43)
             {
-                var_4 = 0x29;
+                var_4 = 5;
             }
             else if (type == 0x4E || type == 0x4F)
             {
-                var_4 = 0x21;
+                var_4 = 4;
             }
             else if (type == 0x54 || type == 0x5C)
             {
-                var_4 = 9;
+                var_4 = 1;
             }
             else if (type == 71) // PotionOfHealing
             {
@@ -877,31 +876,31 @@ namespace engine
 
                 if (var_1 >= 1 && var_1 <= 5)
                 {
-                    var_4 = 17;
+                    var_4 = 2;
                 }
                 else if (var_1 >= 6 && var_1 <= 8)
                 {
-                    var_4 = 1;
+                    var_4 = 0;
                 }
             }
 
-            if (var_4 != 0)
+            if (var_4 > -1)
             {
-                item.field_2F = (sbyte)unk_16B3E[var_4 + 0];
-                item.field_30 = (sbyte)unk_16B3E[var_4 + 1];
-                item.field_31 = (byte)unk_16B3E[var_4 + 2];
+                item.namenum1 = preconfiiguredItems[var_4, 0];
+                item.namenum2 = preconfiiguredItems[var_4, 1];
+                item.namenum3 = preconfiiguredItems[var_4, 2];
 
                 item.plus = 1;
                 item.plus_save = 1;
 
-                item.weight = unk_16B3E[var_4 + 3];
+                item.weight = preconfiiguredItems[var_4, 3];
                 item.count = 0;
 
-                item._value = unk_16B3E[var_4 + 4];
+                item._value = preconfiiguredItems[var_4, 4];
 
                 for (int var_3 = 1; var_3 <= 3; var_3++)
                 {
-                    item.setAffect(var_3, (Affects)(byte)unk_16B3E[(var_4 + 4 + var_3)]);
+                    item.setAffect(var_3, (Affects)(byte)preconfiiguredItems[var_4, 4 + var_3]);
                 }
             }
 
@@ -1050,9 +1049,9 @@ namespace engine
                                 gem_item.weight = 1;
                                 gem_item.hidden_names_flag = 0;
                                 gem_item.readied = false;
-                                gem_item.field_31 = 0x65;
-                                gem_item.field_30 = 0;
-                                gem_item.field_2F = 0;
+                                gem_item.namenum3 = 0x65;
+                                gem_item.namenum2 = 0;
+                                gem_item.namenum1 = 0;
                                 gem_item.type = 70; // ItemType.GemJewel
                                 gem_item._value = value;
 
@@ -1128,10 +1127,10 @@ namespace engine
                             {
                                 Item jewel_item = new Item();
                                 jewel_item.readied = false;
-                                jewel_item.field_31 = 0xD6;
-                                jewel_item.field_30 = 0;
+                                jewel_item.namenum3 = 0xD6;
+                                jewel_item.namenum2 = 0;
                                 jewel_item.type = 70; // ItemType.GemJewel
-                                jewel_item.field_2F = 0;
+                                jewel_item.namenum1 = 0;
 
                                 jewel_item._value = value;
                                 jewel_item.hidden_names_flag = 0;

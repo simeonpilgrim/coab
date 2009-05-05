@@ -232,7 +232,7 @@ namespace engine
                     {
                         for (int classIdx = 0; classIdx <= 7; classIdx++)
                         {
-                            if (player.class_lvls[classIdx] > 0)
+                            if (player.ClassLevel[classIdx] > 0)
                             {
                                 if (classIdx == 2)
                                 {
@@ -240,11 +240,11 @@ namespace engine
                                 }
                                 else if (player.con > 15)
                                 {
-                                    var_108 += player.class_lvls[classIdx] * 2;
+                                    var_108 += player.ClassLevel[classIdx] * 2;
                                 }
                                 else
                                 {
-                                    var_108 += player.class_lvls[classIdx];
+                                    var_108 += player.ClassLevel[classIdx];
                                 }
                             }
                         }
@@ -256,7 +256,7 @@ namespace engine
 
                         if (player.con < 17 ||
                             player.fighter_lvl > 0 ||
-                            player.fighter_lvl > player.field_E6)
+                            player.fighter_lvl > player.multiclassLevel)
                         {
                             player.hit_point_max = (byte)var_107;
                         }

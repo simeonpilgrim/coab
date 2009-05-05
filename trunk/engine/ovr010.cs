@@ -101,7 +101,7 @@ namespace engine
             byte ret_val;
 
             if (player.actions.hasTurnedUndead == false &&
-                (player.cleric_lvl > 0 || player.turn_undead > player.field_E6) &&
+                (player.cleric_lvl > 0 || player.cleric_old_lvl > player.multiclassLevel) &&
                 ovr014.sub_3F433(out var_5, player) == true)
             {
                 ret_val = 1;
@@ -829,61 +829,61 @@ namespace engine
         }
 
 
-        static int sub_36535(Item item, Player player)
+        static int CalcItemPowerRating(Item item, Player player) // sub_36535
         {
             ItemData itemData = gbl.ItemDataTable[item.type];
 
-            int var_2 = itemData.diceSizeNormal * itemData.diceCountNormal;
+            int rating = itemData.diceSizeNormal * itemData.diceCountNormal;
 
             if (item.plus > 0)
             {
-                var_2 += item.plus * 8;
+                rating += item.plus * 8;
             }
 
             if (itemData.bonusNormal > 0)
             {
-                var_2 += itemData.bonusNormal * 2;
+                rating += itemData.bonusNormal * 2;
             }
 
             if (item.type == 85 &&
                 player.actions.target != null &&
                 player.actions.target.field_E9 > 0)
             {
-                var_2 = 8;
+                rating = 8;
             }
 
-            if ((itemData.field_E & 8) > 0)
+            if ((itemData.field_E & ItemDataFlags.flag_08) > 0)
             {
-                var_2 += (itemData.numberAttacks - 1) * 2;
+                rating += (itemData.numberAttacks - 1) * 2;
             }
 
             if (itemData.handsCount <= 1)
             {
-                var_2 += 3;
+                rating += 3;
             }
 
             if ((itemData.handsCount + player.field_185) > 3)
             {
-                var_2 = 0;
+                rating = 0;
             }
 
             if (item.affect_3 == Affects.cast_throw_lightening &&
                 ((int)item.affect_2 & 0x0f) != player.alignment)
             {
-                var_2 = 0;
+                rating = 0;
             }
 
             if (item.affect_2 == Affects.paralizing_gaze)
             {
-                var_2 = 0;
+                rating = 0;
             }
 
             if (item.cursed == true)
             {
-                var_2 = 0;
+                rating = 0;
             }
 
-            return var_2;
+            return rating;
         }
 
 
@@ -904,11 +904,11 @@ namespace engine
             Item var_C = null;
             int var_15 = 1;
 
-            int var_16 = (byte)(player.field_120 * player.field_11E);
+            int var_16 = player.attack1_DiceSizeBase * player.attack1_DiceCountBase;
 
-            if (player.field_122 > 0)
+            if (player.attack1_DamageBonusBase > 0)
             {
-                var_16 += (byte)(player.field_122 * 2);
+                var_16 += player.attack1_DamageBonusBase * 2;
             }
 
             int max_bonus = 0;
@@ -920,10 +920,10 @@ namespace engine
                 if (gbl.ItemDataTable[item_type].item_slot == 0 &&
                     (gbl.ItemDataTable[item_type].classFlags & player.classFlags) != 0)
                 {
-                    int var_18 = sub_36535(item, player);
+                    int var_18 = CalcItemPowerRating(item, player);
 
-                    if ((gbl.ItemDataTable[item_type].field_E & 8) != 0 ||
-                        (gbl.ItemDataTable[item_type].field_E & 0x10) != 0)
+                    if ((gbl.ItemDataTable[item_type].field_E & ItemDataFlags.flag_08) != 0 ||
+                        (gbl.ItemDataTable[item_type].field_E & ItemDataFlags.flag_10) != 0)
                     {
                         if (var_18 > var_15)
                         {
@@ -932,7 +932,7 @@ namespace engine
                         }
                     }
 
-                    if ((gbl.ItemDataTable[item_type].field_E & 8) == 0 &&
+                    if ((gbl.ItemDataTable[item_type].field_E & ItemDataFlags.flag_08) == 0 &&
                         var_18 > var_16)
                     {
                         var_8 = item;
@@ -959,25 +959,25 @@ namespace engine
             bool ranged_melee = ovr025.item_is_ranged_melee(var_4);
             bool var_1F = false;
             Item tmpItem = null;
-            byte var_1A = 0;
+            var itemFlags = ItemDataFlags.None;
 
             if (var_4 != null)
             {
-                var_1A = gbl.ItemDataTable[var_4.type].field_E;
+                itemFlags = gbl.ItemDataTable[var_4.type].field_E;
 
-                if ((var_1A & 0x10) != 0)
+                if ((itemFlags & ItemDataFlags.flag_10) != 0)
                 {
                     tmpItem = var_4;
                 }
 
-                if ((var_1A & 8) != 0)
+                if ((itemFlags & ItemDataFlags.flag_08) != 0)
                 {
-                    if ((var_1A & 0x01) != 0)
+                    if ((itemFlags & ItemDataFlags.arrows) != 0)
                     {
                         tmpItem = player.arrows;
                     }
 
-                    if ((var_1A & 0x80) != 0)
+                    if ((itemFlags & ItemDataFlags.quarrels) != 0)
                     {
                         tmpItem = player.quarrels;
                     }
@@ -985,7 +985,7 @@ namespace engine
             }
 
             if (tmpItem != null ||
-                var_1A == 10)
+                itemFlags == (ItemDataFlags.flag_02 | ItemDataFlags.flag_08))
             {
                 var_1F = true;
             }

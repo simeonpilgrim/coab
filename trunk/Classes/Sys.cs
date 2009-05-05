@@ -53,7 +53,10 @@ namespace Classes
             for (int i = 1; i <= len; i++)
             {
                 char c = (char)data[i + offset];
-                sb.Append(c);
+                if (c > 0)
+                {
+                    sb.Append(c);
+                }
             }
 
             return sb.ToString();

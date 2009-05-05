@@ -56,24 +56,24 @@ namespace Classes
 
     public enum ClassId
     {
-        cleric = 0x0,
-        druid = 0x1,
-        fighter = 0x2,
-        paladin = 0x3,
-        ranger = 0x4,
-        magic_user = 0x5,
-        thief = 0x6,
-        monk = 0x7,
-        mc_c_f = 0x8,
-        mc_c_f_m = 0x9,
-        mc_c_r = 0xa,
-        mc_c_mu = 0xb,
-        mc_c_t = 0xc,
-        mc_f_mu = 0xd,
-        mc_f_t = 0xe,
-        mc_f_mu_t = 0xf,
-        mc_mu_t = 0x10,
-        unknown = 0x11
+        cleric = 0,
+        druid = 1,
+        fighter = 2,
+        paladin = 3,
+        ranger = 4,
+        magic_user = 5,
+        thief = 6,
+        monk = 7,
+        mc_c_f = 8,
+        mc_c_f_m = 9,
+        mc_c_r = 10,
+        mc_c_mu = 11,
+        mc_c_t = 12,
+        mc_f_mu = 13,
+        mc_f_t = 14,
+        mc_f_mu_t = 15,
+        mc_mu_t = 16,
+        unknown = 17
     }
 
     public enum Skills
@@ -216,7 +216,7 @@ namespace Classes
         [DataOffset(0xe5, DataType.Byte)]
         public byte HitDice; // 0xe5; HitDice?
         [DataOffset(0xe6, DataType.Byte)]
-        public byte field_E6; // 0xe6;
+        public byte multiclassLevel; // 0xe6;
         [DataOffset(0xe7, DataType.Byte)]
         public byte field_E7; // 0xe7;
         [DataOffset(0xe8, DataType.Byte)]
@@ -274,92 +274,92 @@ namespace Classes
         }
 
         [DataOffset(0x109, DataType.ByteArray,8)]
-        public byte[] class_lvls = new byte[8]; /* Skill_A_lvl */
+        public byte[] ClassLevel = new byte[8]; /* Skill_A_lvl */
 
         public byte cleric_lvl // 0x109;
         {
-            get { return class_lvls[0]; }
-            set { class_lvls[0] = value; }
+            get { return ClassLevel[0]; }
+            set { ClassLevel[0] = value; }
         }
         public byte druid_lvl // 0x10a;
         {
-            get { return class_lvls[1]; }
-            set { class_lvls[1] = value; }
+            get { return ClassLevel[1]; }
+            set { ClassLevel[1] = value; }
         }
         public byte fighter_lvl // 0x10b;
         {
-            get { return class_lvls[2]; }
-            set { class_lvls[2] = value; }
+            get { return ClassLevel[2]; }
+            set { ClassLevel[2] = value; }
         }
         public byte paladin_lvl // 0x10c;
         {
-            get { return class_lvls[3]; }
-            set { class_lvls[3] = value; }
+            get { return ClassLevel[3]; }
+            set { ClassLevel[3] = value; }
         }
         public byte ranger_lvl // 0x10d;
         {
-            get { return class_lvls[4]; }
-            set { class_lvls[4] = value; }
+            get { return ClassLevel[4]; }
+            set { ClassLevel[4] = value; }
         }
         public byte magic_user_lvl // 0x10e;
         {
-            get { return class_lvls[5]; }
-            set { class_lvls[5] = value; }
+            get { return ClassLevel[5]; }
+            set { ClassLevel[5] = value; }
         }
         public byte thief_lvl // 0x10f;
         {
-            get { return class_lvls[6]; }
-            set { class_lvls[6] = value; }
+            get { return ClassLevel[6]; }
+            set { ClassLevel[6] = value; }
         }
         public byte monk_lvl // 0x110;
         {
-            get { return class_lvls[7]; }
-            set { class_lvls[7] = value; }
+            get { return ClassLevel[7]; }
+            set { ClassLevel[7] = value; }
         }
 
         [DataOffset(0x111, DataType.ByteArray, 8)]
-        public byte[] Skill_B_lvl = new byte[8];
+        public byte[] ClassLevelsOld = new byte[8];
 
 
-        public byte turn_undead // 0x111;
+        public byte cleric_old_lvl // 0x111;
         {
-            get { return Skill_B_lvl[0]; }
-            set { Skill_B_lvl[0] = value; }
+            get { return ClassLevelsOld[0]; }
+            set { ClassLevelsOld[0] = value; }
         }
-        public byte field_112 // 0x112;
+        public byte druid_old_lvl // 0x112;
         {
-            get { return Skill_B_lvl[1]; }
-            set { Skill_B_lvl[1] = value; }
+            get { return ClassLevelsOld[1]; }
+            set { ClassLevelsOld[1] = value; }
         }
-        public byte field_113 // 0x113;
+        public byte fighter_old_lvl // 0x113;
         {
-            get { return Skill_B_lvl[2]; }
-            set { Skill_B_lvl[2] = value; }
+            get { return ClassLevelsOld[2]; }
+            set { ClassLevelsOld[2] = value; }
         }
-        public byte field_114 // 0x114;
+        public byte paladin_old_lvl // 0x114;
         {
-            get { return Skill_B_lvl[3]; }
-            set { Skill_B_lvl[3] = value; }
+            get { return ClassLevelsOld[3]; }
+            set { ClassLevelsOld[3] = value; }
         }
-        public byte field_115 // 0x115;
+        public byte ranger_old_lvl // 0x115;
         {
-            get { return Skill_B_lvl[4]; }
-            set { Skill_B_lvl[4] = value; }
+            get { return ClassLevelsOld[4]; }
+            set { ClassLevelsOld[4] = value; }
         }
-        public byte field_116 // 0x116;
+        public byte magic_user_old_lvl // 0x116;
         {
-            get { return Skill_B_lvl[5]; }
-            set { Skill_B_lvl[5] = value; }
+            get { return ClassLevelsOld[5]; }
+            set { ClassLevelsOld[5] = value; }
         }
-        public byte field_117 // 0x117;
+        public byte thief_old_lvl // 0x117;
         {
-            get { return Skill_B_lvl[6]; }
-            set { Skill_B_lvl[6] = value; }
+            get { return ClassLevelsOld[6]; }
+            set { ClassLevelsOld[6] = value; }
         }
-        public byte field_118 // 0x118;
+        public byte monk_old_level // 0x118;
         {
-            get { return Skill_B_lvl[7]; }
-            set { Skill_B_lvl[7] = value; }
+            get { return ClassLevelsOld[7]; }
+            set { ClassLevelsOld[7] = value; }
         }
 
         [DataOffset(0x119, DataType.Byte)]
@@ -368,24 +368,27 @@ namespace Classes
         public MonsterType monsterType; // 0x11a;
         [DataOffset(0x11b, DataType.Byte)]
         public byte alignment; // 0x11b;
-        [DataOffset(0x11c, DataType.Byte)]
-        public byte field_11C; // 0x11c;
+        /// <summary>
+        /// half-attacks count
+        /// </summary>
+        [DataOffset(0x11c, DataType.Byte)] 
+        public byte attacksCount; // 0x11c;
         [DataOffset(0x11d, DataType.Byte)]
         public byte field_11D; // 0x11d;
         [DataOffset(0x11e, DataType.Byte)]
-        public byte field_11E; // 0x11e;
+        public byte attack1_DiceCountBase; // 0x11e;
         [DataOffset(0x11f, DataType.Byte)]
-        public byte field_11F; // 0x11f;
+        public byte attack2_DiceCountBase; // 0x11f;
         [DataOffset(0x120, DataType.Byte)]
-        public byte field_120; // 0x120;
+        public byte attack1_DiceSizeBase; // 0x120;
         [DataOffset(0x121, DataType.Byte)]
-        public byte field_121; // 0x121;
+        public byte attack2_DiceSizeBase; // 0x121;
         [DataOffset(0x122, DataType.SByte)]
-        public sbyte field_122; // 0x122;
+        public sbyte attack1_DamageBonusBase; // 0x122;
         [DataOffset(0x123, DataType.Byte)]
-        public byte field_123; // 0x123;
+        public byte attack2_DamageBonusBase; // 0x123;
         [DataOffset(0x124, DataType.Byte)]
-        public byte field_124; // 0x124;
+        public byte base_ac; // 0x124;
         [DataOffset(0x125, DataType.Byte)]
         public byte field_125; // 0x125;
         [DataOffset(0x126, DataType.Byte)]
@@ -523,7 +526,7 @@ namespace Classes
         [DataOffset(0x198, DataType.IByte)]
         public QuickFight quick_fight; // 0x198
         [DataOffset(0x199, DataType.SByte)]
-        public sbyte hitBonus; // 0x199 field_199
+        public int hitBonus; // 0x199 field_199
         [DataOffset(0x19a, DataType.Byte)]
         public byte ac; // 0x19a
         [DataOffset(0x19b, DataType.Byte)]
@@ -582,52 +585,52 @@ namespace Classes
             switch (index)
             {
                 case 1:
-                    return attack_dice_count;
+                    return attack1_DiceCount;
                 case 2:
-                    return field_19F;
+                    return attack2_DiceCount;
                 default:
                     throw new System.NotImplementedException();
             }
         }
 
         [DataOffset(0x19E, DataType.Byte)]
-        public byte attack_dice_count; // 0x19e field_19E
+        public byte attack1_DiceCount; // 0x19e field_19E
         [DataOffset(0x19F, DataType.Byte)]
-        public byte field_19F; // 0x19f
+        public byte attack2_DiceCount; // 0x19f
 
         public byte field_19FArray(int index)
         {
             switch (index)
             {
                 case 1:
-                    return attack_dice_size;
+                    return attack1_DiceSize;
                 case 2:
-                    return field_1A1;
+                    return attack2_DiceSize;
                 default:
                     throw new System.NotImplementedException();
             }
         }
         [DataOffset(0x1A0, DataType.Byte)]
-        public byte attack_dice_size; // 0x1a0 field_1A0
+        public byte attack1_DiceSize; // 0x1a0 field_1A0
         [DataOffset(0x1A1, DataType.Byte)]
-        public byte field_1A1; // 0x1a1
+        public byte attack2_DiceSize; // 0x1a1
 
         public byte field_1A1Array(int index)
         {
             switch (index)
             {
                 case 1:
-                    return (byte)damageBonus;
+                    return (byte)attack1_DamageBonus;
                 case 2:
-                    return field_1A3;
+                    return attack2_DamageBonus;
                 default:
                     throw new System.NotImplementedException();
             }
         }
         [DataOffset(0x1a2, DataType.SByte)]
-        public sbyte damageBonus; // 0x1a2
+        public sbyte attack1_DamageBonus; // 0x1a2
         [DataOffset(0x1a3, DataType.Byte)]
-        public byte field_1A3; // 0x1a3
+        public byte attack2_DamageBonus; // 0x1a3
         [DataOffset(0x1a4, DataType.Byte)]
         public byte hit_point_current; // 0x1a4
 

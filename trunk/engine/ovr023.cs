@@ -132,9 +132,9 @@ namespace engine
                 case SpellClass.Cleric:
                     if (player.wis > 8 &&
                         ((player.cleric_lvl > 0) ||
-                         (ovr026.sub_6B3D1(player) != 0 && player.turn_undead > 0) ||
+                         (ovr026.sub_6B3D1(player) != 0 && player.cleric_old_lvl > 0) ||
                          (player.paladin_lvl > 8) ||
-                         (player.field_114 > 8 && ovr026.sub_6B3D1(player) != 0)))
+                         (player.paladin_old_lvl > 8 && ovr026.sub_6B3D1(player) != 0)))
                     {
                         can_learn = true;
                     }
@@ -142,7 +142,7 @@ namespace engine
 
                 case SpellClass.Druid:
                     if ((player.wis > 8 && player.ranger_lvl > 6) ||
-                        (ovr026.sub_6B3D1(player) != 0 && player.field_115 > 6))
+                        (ovr026.sub_6B3D1(player) != 0 && player.ranger_old_lvl > 6))
                     {
                         can_learn = true;
                     }
@@ -154,8 +154,8 @@ namespace engine
                      (player.armor == null) ||
                      (gbl.game_state != GameState.Combat) ||
                      (player.ranger_lvl > 8) ||
-                     (ovr026.sub_6B3D1(player) != 0 && player.field_115 > 8 && player.magic_user_lvl > 0) ||
-                     (ovr026.sub_6B3D1(player) != 0 && player.field_116 > 0)))
+                     (ovr026.sub_6B3D1(player) != 0 && player.ranger_old_lvl > 8 && player.magic_user_lvl > 0) ||
+                     (ovr026.sub_6B3D1(player) != 0 && player.magic_user_old_lvl > 0)))
                     {
                         can_learn = true;
                     }
@@ -353,7 +353,7 @@ namespace engine
         internal static void scroll_5C912(bool learning) /* sub_5C912 */
         {
             if (gbl.player_ptr.HasAffect(Affects.read_magic) == true ||
-                ((gbl.player_ptr.cleric_lvl > 0 || gbl.player_ptr.turn_undead > gbl.player_ptr.field_E6) &&
+                ((gbl.player_ptr.cleric_lvl > 0 || gbl.player_ptr.cleric_old_lvl > gbl.player_ptr.multiclassLevel) &&
                   gbl.ItemDataTable[gbl.currentScroll.type].item_slot == 12))
             {
                 gbl.currentScroll.hidden_names_flag = 0;
@@ -1476,21 +1476,21 @@ namespace engine
             Player target = gbl.spellTargets[0];
 
             if (target.magic_user_lvl > 0 ||
-                target.field_116 > target.field_E6)
+                target.magic_user_old_lvl > target.multiclassLevel)
             {
                 var_6 = ovr024.roll_dice(4, 1);
             }
 
             if (target.cleric_lvl > 0 ||
-                target.turn_undead > target.field_E6 ||
+                target.cleric_old_lvl > target.multiclassLevel ||
                 target.thief_lvl > 0 ||
-                target.field_117 > target.field_E6)
+                target.thief_old_lvl > target.multiclassLevel)
             {
                 var_6 = ovr024.roll_dice(6, 1);
             }
 
             if (target.fighter_lvl > 0 ||
-                target.field_113 > target.field_E6)
+                target.fighter_old_lvl > target.multiclassLevel)
             {
                 var_6 = ovr024.roll_dice(8, 1);
             }
@@ -1501,11 +1501,11 @@ namespace engine
             if (str > 18)
             {
                 if (target.fighter_lvl > 0 ||
-                    target.field_113 > target.field_E6 ||
+                    target.fighter_old_lvl > target.multiclassLevel ||
                     target.paladin_lvl > 0 ||
-                    target.field_114 > target.field_E6 ||
+                    target.paladin_old_lvl > target.multiclassLevel ||
                     target.ranger_lvl > 0 ||
-                    target.field_115 > target.field_E6)
+                    target.ranger_old_lvl > target.multiclassLevel)
                 {
                     str_100 = target.tmp_str_00 + ((str - 18) * 10);
 
@@ -1653,7 +1653,7 @@ namespace engine
 
         internal static bool sub_5F126(Player arg_2, int target_count)
         {
-            int byte_1AFDE = arg_2.magic_user_lvl + (arg_2.field_116 * ovr026.sub_6B3D1(gbl.player_ptr));
+            int byte_1AFDE = arg_2.magic_user_lvl + (arg_2.magic_user_old_lvl * ovr026.sub_6B3D1(gbl.player_ptr));
             int byte_1AFDD;
 
             if (target_count > byte_1AFDE)
@@ -2147,14 +2147,14 @@ namespace engine
 
                 for (int skill = 0; skill <= 7; skill++)
                 {
-                    int lvl = player.class_lvls[skill];
+                    int lvl = player.ClassLevel[skill];
 
                     if (lvl > 0 &&
                         lvl <= max_lvl)
                     {
                         if (ovr018.exp_table[skill, lvl] > 0 &&
                             ovr018.exp_table[skill, lvl] < max_exp &&
-                            ovr025.sub_69138(skill, player) == false)
+                            ovr025.RaceStatLevelRestricted((ClassId)skill, player) == false)
                         {
                             max_lvl = lvl;
                             var_C = skill;
@@ -2163,7 +2163,7 @@ namespace engine
                     }
                 }
 
-                player.class_lvls[var_C]++;
+                player.ClassLevel[var_C]++;
 
                 if (player.exp < max_exp)
                 {
@@ -2834,7 +2834,7 @@ namespace engine
 
                 if (player.HasAffect(Affects.affect_7f) == true)
                 {
-                    Item item = gbl.spell_target.items.Find(i => i.readied && (i.field_2F == 0x76 || i.field_30 == 0x76 || i.field_31 == 0x76));
+                    Item item = gbl.spell_target.items.Find(i => i.readied && (i.namenum1 == 0x76 || i.namenum2 == 0x76 || i.namenum3 == 0x76));
 
                     if (item != null)
                     {
@@ -3118,8 +3118,8 @@ namespace engine
             if (affect_index != 0)
             {
                 item.setAffect(affect_index, 0);
-                item.field_30 -= 1;
-                if (item.field_30 < -46)
+                item.namenum2 -= 1;
+                if (item.namenum2 < 0xd2)
                 {
                     ovr025.lose_item(item, player);
                 }

@@ -135,14 +135,14 @@ namespace engine
             string str100 = p.strength == 18 ? string.Format("({0})", p.max_str_00) : "";
             Logger.Debug("Area {0} Id {1} {2} exp: {3} hp: {4} ac: {5} thac0: {6}", area, id, p.name, p.exp, p.hit_point_max, 0x3c - p.ac, 0x3c - p.hitBonus);
             Logger.Debug("   S: {0}{1} D: {2} C: {3} I: {4} W: {5} Ch: {6}", p.strength, str100, p.dex, p.con, p._int, p.wis, p.charisma);
-            Logger.Debug("   Lvls: {0} {1} {2} {3} {4} {5} {6} {7}", p.class_lvls[0], p.class_lvls[1], p.class_lvls[2], p.class_lvls[3], p.class_lvls[4], p.class_lvls[5], p.class_lvls[6], p.class_lvls[7]);
+            Logger.Debug("   Lvls: {0} {1} {2} {3} {4} {5} {6} {7}", p.ClassLevel[0], p.ClassLevel[1], p.ClassLevel[2], p.ClassLevel[3], p.ClassLevel[4], p.ClassLevel[5], p.ClassLevel[6], p.ClassLevel[7]);
             if (p.field_151 != null)
                 Logger.Debug("   Weapon: {0}", ovr025.ItemName(p.field_151, 0));
             if (p.armor != null)
                 Logger.Debug("   Armor: {0}", ovr025.ItemName(p.armor, 0));
 
-            Logger.Debug("   Damage: {0}d{1}{2}{3}", p.attack_dice_count, p.attack_dice_size,
-                p.damageBonus > 0 ? "+" : "", p.damageBonus != 0 ? p.damageBonus.ToString() : "");
+            Logger.Debug("   Damage: {0}d{1}{2}{3}", p.attack1_DiceCount, p.attack1_DiceSize,
+                p.attack1_DamageBonus > 0 ? "+" : "", p.attack1_DamageBonus != 0 ? p.attack1_DamageBonus.ToString() : "");
 
             foreach (int sp in p.spell_list)
             {
@@ -176,19 +176,19 @@ namespace engine
             dw.Write("<td>{0}</td>", p._int);
             dw.Write("<td>{0}</td>", p.wis);
             dw.Write("<td>{0}</td>", p.charisma);
-            dw.Write("<td>{0}</td>", p.class_lvls[0]);
-            dw.Write("<td>{0}</td>", p.class_lvls[1]);
-            dw.Write("<td>{0}</td>", p.class_lvls[2]);
-            dw.Write("<td>{0}</td>", p.class_lvls[3]);
-            dw.Write("<td>{0}</td>", p.class_lvls[4]);
-            dw.Write("<td>{0}</td>", p.class_lvls[5]);
-            dw.Write("<td>{0}</td>", p.class_lvls[6]);
-            dw.Write("<td>{0}</td>", p.class_lvls[7]);
+            dw.Write("<td>{0}</td>", p.ClassLevel[0]);
+            dw.Write("<td>{0}</td>", p.ClassLevel[1]);
+            dw.Write("<td>{0}</td>", p.ClassLevel[2]);
+            dw.Write("<td>{0}</td>", p.ClassLevel[3]);
+            dw.Write("<td>{0}</td>", p.ClassLevel[4]);
+            dw.Write("<td>{0}</td>", p.ClassLevel[5]);
+            dw.Write("<td>{0}</td>", p.ClassLevel[6]);
+            dw.Write("<td>{0}</td>", p.ClassLevel[7]);
 
             dw.Write("<td nowrap=\"nowrap\">{0}</td>", p.field_151 != null ? ovr025.ItemName(p.field_151, 0) : "");
             dw.Write("<td nowrap=\"nowrap\">{0}</td>", p.armor != null ? ovr025.ItemName(p.armor, 0) : "");
-            dw.Write("<td nowrap=\"nowrap\">{0}d{1}{2}{3}</td>", p.attack_dice_count, p.attack_dice_size,
-                p.damageBonus > 0 ? "+" : "", p.damageBonus != 0 ? p.damageBonus.ToString() : "");
+            dw.Write("<td nowrap=\"nowrap\">{0}d{1}{2}{3}</td>", p.attack1_DiceCount, p.attack1_DiceSize,
+                p.attack1_DamageBonus > 0 ? "+" : "", p.attack1_DamageBonus != 0 ? p.attack1_DamageBonus.ToString() : "");
 
             int last = 0;
             int count = 0;

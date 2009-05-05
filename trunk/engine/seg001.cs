@@ -263,7 +263,7 @@ namespace engine
             gbl.sky_dax_251 = seg040.LoadDax(13, 1, 251, "SKY");
             gbl.sky_dax_252 = seg040.LoadDax(13, 1, 252, "SKY");
 
-            gbl.byte_1AD48 = seg042.find_and_open_file(out unk_1AD74, false, "ITEMS");
+            seg042.find_and_open_file(out unk_1AD74, false, "ITEMS");
 
             seg051.Reset(unk_1AD74);
             seg051.Seek(2, unk_1AD74);
@@ -273,8 +273,13 @@ namespace engine
             gbl.ItemDataTable = new ItemData[0x81];
             for (int i = 0; i < 0x81; i++)
             {
-                gbl.ItemDataTable[i] = new ItemData(data, i * 0x10);
+                gbl.ItemDataTable[i] = new ItemData(data, i * 0x10, i);
             }
+
+            //foreach (var id in gbl.ItemDataTable)
+            //{
+            //  System.Console.WriteLine(id.index.ToString() + " " + id.field_E);
+            //}
 
             seg051.Close(unk_1AD74);
             ovr023.setup_spells();

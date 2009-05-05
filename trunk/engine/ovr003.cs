@@ -791,8 +791,8 @@ namespace engine
                 int armor_class = player.ac;
                 int hit_bonus = player.hitBonus;
 
-                int magic_power = player.magic_user_lvl + (ovr026.sub_6B3D1(player) * player.field_116);
-                int cleric_power = player.cleric_lvl + (ovr026.sub_6B3D1(player) * player.turn_undead);
+                int magic_power = player.magic_user_lvl + (ovr026.sub_6B3D1(player) * player.magic_user_old_lvl);
+                int cleric_power = player.cleric_lvl + (ovr026.sub_6B3D1(player) * player.cleric_old_lvl);
 
                 if (armor_class > 60)
                 {

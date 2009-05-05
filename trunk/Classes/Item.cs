@@ -14,17 +14,17 @@ namespace Classes
         {
             switch (index)
             {
-                case 1: return (byte)field_2F;
-                case 2: return (byte)field_30;
-                case 3: return (byte)field_31;
+                case 1: return (byte)namenum1;
+                case 2: return (byte)namenum2;
+                case 3: return (byte)namenum3;
                 default: throw new NotSupportedException();
             }
         }
-        public sbyte field_2F;
-        public sbyte field_30;
-        public byte field_31;
+        public int namenum1;
+        public int namenum2;
+        public int namenum3;
 
-        public sbyte plus; // 0x32 
+        public int plus; // 0x32 
         public byte plus_save; // 0x33 
         public bool readied; // 0x34
         public byte hidden_names_flag; // 0x35 
@@ -85,14 +85,37 @@ namespace Classes
             Clear();
         }
 
+
+        public Item(Affects _affect_3, Affects _affect_2, Affects _affect_1, short __value, byte _count,
+            short _weight, bool _cursed, byte _name_flags, bool _readied, byte _plus_save, sbyte _plus, byte _namenum3,
+            byte _namenum2, byte _namenum1, byte _type)
+        {
+            name = string.Empty;
+            type = _type;
+            namenum1 = _namenum1;
+            namenum2 = _namenum2;
+            namenum3 = _namenum3;
+            plus = _plus;
+            plus_save = _plus_save;
+            readied = _readied;
+            hidden_names_flag = _name_flags;
+            cursed = _cursed;
+            weight = _weight;
+            count = _count;
+            _value = __value;
+            affect_1 = _affect_1;
+            affect_2 = _affect_2;
+            affect_3 = _affect_3;
+        }
+
         public Item(byte[] data, int offset)
         {
             name = Sys.ArrayToString(data, offset, 0x2a);
 
             type = data[offset + 0x2e];
-            field_2F = (sbyte)data[offset + 0x2f];
-            field_30 = (sbyte)data[offset + 0x30];
-            field_31 = data[offset + 0x31];
+            namenum1 = data[offset + 0x2f];
+            namenum2 = data[offset + 0x30];
+            namenum3 = data[offset + 0x31];
             plus = (sbyte)data[offset + 0x32];
             plus_save = data[offset + 0x33];
             readied = (data[offset + 0x34] != 0);
@@ -105,6 +128,8 @@ namespace Classes
             affect_1 = (Affects)data[offset + 0x3C];
             affect_2 = (Affects)data[offset + 0x3D];
             affect_3 = (Affects)data[offset + 0x3E];
+
+            System.Console.WriteLine("ITEM:,{0},{1},{2},{3},{4}", type, namenum1, namenum2, namenum3, name); 
         }
 
         public Item ShallowClone()
@@ -118,9 +143,9 @@ namespace Classes
             name = string.Empty;
 
             type = 0;
-            field_2F = 0;
-            field_30 = 0;
-            field_31 = 0;
+            namenum1 = 0;
+            namenum2 = 0;
+            namenum3 = 0;
             plus = 0;
             plus_save = 0;
             readied = false;
@@ -141,9 +166,9 @@ namespace Classes
             Sys.StringToArray(data, 0, 0x2a, name);
 
             data[0x2e] = type;
-            data[0x2f] = (byte)field_2F;
-            data[0x30] = (byte)field_30;
-            data[0x31] = field_31;
+            data[0x2f] = (byte)namenum1;
+            data[0x30] = (byte)namenum2;
+            data[0x31] = (byte)namenum3;
             data[0x32] = (byte)plus;
             data[0x33] = plus_save;
             data[0x34] = readied ? (byte)1 : (byte)0;
