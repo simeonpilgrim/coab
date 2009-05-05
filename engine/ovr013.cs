@@ -326,7 +326,7 @@ namespace engine
 
         internal static void affect_spiritual_hammer(Effect add_remove, object param, Player player) /* sub_3A583 */
         {
-            Item item = player.items.Find(i => i.type == 20 && i.field_31 == 0xf3); // ItemType.Hammer
+            Item item = player.items.Find(i => i.type == 20 && i.namenum3 == 0xf3); // ItemType.Hammer
             bool item_found = item != null;
 
             if (add_remove == Effect.Remove && item != null)
@@ -340,8 +340,8 @@ namespace engine
             {
                 item = new Item();
                 item.type = 20; // ItemType.Hammer
-                item.field_30 = 20;
-                item.field_31 = 243;
+                item.namenum2 = 20;
+                item.namenum3 = 243;
                 item.plus = 1;
                 item.affect_2 = Affects.spiritual_hammer;
                 item.affect_3 = (Affects)160;
@@ -451,7 +451,7 @@ namespace engine
             player.quick_fight = QuickFight.True;
             player.field_E9 = 0;
 
-            player.field_DD = (byte)(player.fighter_lvl + (player.field_113 * ovr026.sub_6B3D1(player)));
+            player.field_DD = (byte)(player.fighter_lvl + (player.fighter_old_lvl * ovr026.sub_6B3D1(player)));
             player.base_movement = 0x0C;
 
             if (player.field_F7 == 0xB3)
@@ -553,7 +553,7 @@ namespace engine
                 player.age++;
             }
 
-            gbl.movesLeft *= 2;
+            gbl.attacksLeft *= 2;
         }
 
 
@@ -626,8 +626,7 @@ namespace engine
             {
                 bool item_found = ovr025.sub_6906C(out item, player);
 
-                if (item_found == false ||
-                    item == null)
+                if (item_found == false || item == null)
                 {
                     item = player.field_151;
                 }
@@ -650,7 +649,7 @@ namespace engine
 
         internal static void AffectSlow(Effect arg_0, object param, Player player) //sub_3B01B
         {
-            gbl.movesLeft /= 2;
+            gbl.attacksLeft /= 2;
         }
 
 
@@ -779,7 +778,7 @@ namespace engine
 
             if (gbl.resetMovesLeft == true)
             {
-                gbl.movesLeft = 0;
+                gbl.attacksLeft = 0;
             }
         }
 
@@ -1101,10 +1100,10 @@ namespace engine
 
         internal static void sub_3BA14(Effect arg_0, object param, Player player)
         {
-            Item var_4 = get_primary_weapon(gbl.player_ptr);
+            Item item = get_primary_weapon(gbl.player_ptr);
 
-            if (var_4 != null &&
-                gbl.ItemDataTable[var_4.type].field_7 == 1)
+            if (item != null &&
+                gbl.ItemDataTable[item.type].field_7 == 1)
             {
                 gbl.damage = 1;
             }
@@ -1604,7 +1603,7 @@ namespace engine
             if (ovr025.sub_6906C(out item, gbl.player_ptr) == true &&
                 item != null &&
                 item.type == 28 && //ItemType.Quarrel
-                item.field_31 == 0x87)
+                item.namenum3 == 0x87)
             {
                 player.health_status = Status.gone;
                 player.in_combat = false;
@@ -1728,7 +1727,7 @@ namespace engine
         {
             if (add_remove == Effect.Remove)
             {
-                player.paladinCuresLeft = (byte)((((player.field_114 * ovr026.sub_6B3D1(player)) + player.paladin_lvl - 1) / 5) + 1);
+                player.paladinCuresLeft = (byte)((((player.paladin_old_lvl * ovr026.sub_6B3D1(player)) + player.paladin_lvl - 1) / 5) + 1);
             }
         }
 

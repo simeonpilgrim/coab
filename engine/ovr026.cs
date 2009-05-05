@@ -66,13 +66,13 @@ namespace engine
             for (int skill = 0; skill <= 7; skill++)
             {
                 if (sub_6B3D1(player) != 0 &&
-                    player.Skill_B_lvl[skill] != 0)
+                    player.ClassLevelsOld[skill] != 0)
                 {
-                    var_2 = (sbyte)player.Skill_B_lvl[skill];
+                    var_2 = (sbyte)player.ClassLevelsOld[skill];
                 }
                 else
                 {
-                    var_2 = (sbyte)player.class_lvls[skill];
+                    var_2 = (sbyte)player.ClassLevel[skill];
                 }
 
                 if (var_2 > 0)
@@ -195,32 +195,32 @@ namespace engine
         {
             player.thac0 = 0;
 
-            for (int skill = 0; skill <= 7; skill++)
+            for (int _class = 0; _class <= 7; _class++)
             {
-                byte skill_lvl = player.class_lvls[skill];
+                byte class_lvl = player.ClassLevel[_class];
 
-                if (ovr018.thac0_table[skill, skill_lvl] > player.thac0)
+                if (ovr018.thac0_table[_class, class_lvl] > player.thac0)
                 {
-                    player.thac0 = ovr018.thac0_table[skill, skill_lvl];
+                    player.thac0 = ovr018.thac0_table[_class, class_lvl];
                 }
 
-                if (player.HitDice < skill_lvl)
+                if (player.HitDice < class_lvl)
                 {
-                    player.HitDice = skill_lvl;
+                    player.HitDice = class_lvl;
                 }
 
-                if (skill == 2 || skill == 3)
+                if (_class == 2 || _class == 3)
                 {
-                    if (skill_lvl > 6)
+                    if (class_lvl >= 7)
                     {
-                        player.field_11C = 3;
+                        player.attacksCount = 3;
                     }
                 }
-                else if (skill == 4)
+                else if (_class == 4)
                 {
-                    if (skill_lvl > 7)
+                    if (class_lvl >= 8)
                     {
-                        player.field_11C = 3;
+                        player.attacksCount = 3;
                     }
                 }
             }
@@ -237,8 +237,8 @@ namespace engine
 
             for (int skill = 0; skill <= 7; skill++)
             {
-                if (player.class_lvls[skill] > 0 ||
-                    (player.Skill_B_lvl[skill] > 0 && player.Skill_B_lvl[skill] < player.HitDice))
+                if (player.ClassLevel[skill] > 0 ||
+                    (player.ClassLevelsOld[skill] > 0 && player.ClassLevelsOld[skill] < player.HitDice))
                 {
                     player.classFlags += ovr018.unk_1A1B2[skill];
                 }
@@ -258,20 +258,20 @@ namespace engine
             {
                 for (int class_index = 0; class_index <= 7; class_index++)
                 {
-                    byte skill_lvl = player.Skill_B_lvl[class_index];
+                    byte skill_lvl = player.ClassLevelsOld[class_index];
 
                     if (class_index == 2 || class_index == 3)
                     {
                         if (skill_lvl > 6)
                         {
-                            player.field_11C = 3;
+                            player.attacksCount = 3;
                         }
                     }
                     else if (class_index == 4)
                     {
                         if (skill_lvl > 7)
                         {
-                            player.field_11C = 3;
+                            player.attacksCount = 3;
                         }
                     }
 
@@ -281,14 +281,14 @@ namespace engine
                     }
                 }
 
-                if (player.field_113 > 6 ||
-                    player.field_115 > 7 ||
-                    player.field_114 > 6)
+                if (player.fighter_old_lvl > 6 ||
+                    player.ranger_old_lvl > 7 ||
+                    player.paladin_old_lvl > 6)
                 {
-                    player.field_11C = 3;
+                    player.attacksCount = 3;
                 }
 
-                if (player.field_117 > 0)
+                if (player.thief_old_lvl > 0)
                 {
                     sub_6AAEA(player);
                 }
@@ -298,7 +298,7 @@ namespace engine
 
         internal static void calc_cleric_spells(bool arg_0, Player player) /* sub_6A686 */
         {
-            int var_3 = player.cleric_lvl + player.turn_undead * sub_6B3D1(player);
+            int var_3 = player.cleric_lvl + player.cleric_old_lvl * sub_6B3D1(player);
 
             if (var_3 > 0)
             {
@@ -375,9 +375,9 @@ namespace engine
                 player.saveVerse[var_1] = 20;
                 for (var_2 = 0; var_2 <= 7; var_2++)
                 {
-                    if (player.class_lvls[var_2] > 0)
+                    if (player.ClassLevel[var_2] > 0)
                     {
-                        byte dl = byte_1A8CE[var_2, player.class_lvls[var_2], var_1];
+                        byte dl = byte_1A8CE[var_2, player.ClassLevel[var_2], var_1];
 
                         if (player.saveVerse[var_1] > dl)
                         {
@@ -389,9 +389,9 @@ namespace engine
                 var_2 = 7; /* Orignal code had a post use test and would exit on 7,
                             * but this for loops uses are pre-test increment so fix var_2 */
 
-                if (player.class_lvls[var_2] > player.Skill_B_lvl[var_2])
+                if (player.ClassLevel[var_2] > player.ClassLevelsOld[var_2])
                 {
-                    byte dl = byte_1A8CE[var_2 ,player.Skill_B_lvl[var_2] , var_1];
+                    byte dl = byte_1A8CE[var_2 ,player.ClassLevelsOld[var_2] , var_1];
 
                     if (player.saveVerse[var_1] > dl)
                     {
@@ -512,7 +512,7 @@ namespace engine
             var var_A = item_found != null && item_found.ScrollLearning(3, 11);
             var var_B = item_found != null && item_found.ScrollLearning(3, 2);
 
-            int var_4 = (sbyte)(player.thief_lvl + (sub_6B3D1(player) * player.field_117));
+            int var_4 = (sbyte)(player.thief_lvl + (sub_6B3D1(player) * player.thief_old_lvl));
 
             if (var_4 < 4 && var_B == true)
             {
@@ -580,13 +580,15 @@ namespace engine
         }
 
 
-        internal static bool player_can_be_class(int _class, Player player) /* sub_6AD3E */
+        internal static bool player_can_be_class(ClassId _class, Player player) /* sub_6AD3E */
         {
-            bool var_2 = (_class != HumanFirstClassOrSeventeen(player));
+            bool var_2 = (_class != HumanCurrentClass_Unknown(player));
             int var_3 = 0;
 
+            var firstClass = HumanCurrentClass_Unknown(player);
+
             while (var_3 <= 5 &&
-                (gbl.class_stats_min[HumanFirstClassOrSeventeen(player)][var_3] < 9 || player.stats[var_3].tmp > 14))
+                (gbl.class_stats_min[(int)firstClass][var_3] < 9 || player.stats[var_3].tmp > 14))
             {
                 var_3++;
             }
@@ -595,7 +597,7 @@ namespace engine
             var_3 = 0;
 
             while (var_3 <= 5 &&
-                (gbl.class_stats_min[_class][var_3] < 9 || player.stats[var_3].tmp > 16))
+                (gbl.class_stats_min[(int)_class][var_3] < 9 || player.stats[var_3].tmp > 16))
             {
                 var_3++;
             }
@@ -604,14 +606,14 @@ namespace engine
 
             byte var_4 = 1;
 
-            while (gbl.class_alignments[_class, 0] >= var_4 &&
-                gbl.class_alignments[_class, var_4] != player.alignment)
+            while (gbl.class_alignments[(int)_class, 0] >= var_4 &&
+                gbl.class_alignments[(int)_class, var_4] != player.alignment)
             {
                 var_4++;
             }
 
             if (var_2 == false ||
-                gbl.class_alignments[_class, 0] < var_4)
+                gbl.class_alignments[(int)_class, 0] < var_4)
             {
                 var_2 = false;
             }
@@ -626,19 +628,15 @@ namespace engine
 
         internal static void multiclass(Player player)
         {
-            int classes = gbl.race_classes[(int)player.race, 0];
-
             List<MenuItem> list = new List<MenuItem>();
 
             list.Add(new MenuItem("Pick New Class", true));
- 
-            for (int i = 1; i <= classes; i++)
-            {
-                int _class = gbl.race_classes[(int)player.race, i];
 
+            foreach (var _class in gbl.RaceClasses[(int)player.race])
+            {
                 if (player_can_be_class(_class, player) == true)
                 {
-                    list.Add(new MenuItem(ovr020.classString[_class]));
+                    list.Add(new MenuItem(ovr020.classString[(int)_class]));
                 }
             }
 
@@ -668,7 +666,7 @@ namespace engine
             } while (input_key != 0x53);
 
             player.exp = 0;
-            player.field_11C = 2;
+            player.attacksCount = 2;
             byte var_2 = 0;
 
             while (var_2 <= 7 && ovr020.classString[var_2] != list_ptr.Text)
@@ -678,13 +676,13 @@ namespace engine
 
             list.Clear();
 
-            player.Skill_B_lvl[HumanFirstClassOrSeventeen(player)] = HumanFirstClassLevelOrZero(player);
+            player.ClassLevelsOld[(int)HumanCurrentClass_Unknown(player)] = HumanCurrentClassLevel_Zero(player);
 
-            player.field_E6 = player.HitDice;
+            player.multiclassLevel = player.HitDice;
             player.HitDice = 1;
 
-            player.class_lvls[HumanFirstClassOrSeventeen(player)] = 0;
-            player.class_lvls[var_2] = 1;
+            player.ClassLevel[(int)HumanCurrentClass_Unknown(player)] = 0;
+            player.ClassLevel[var_2] = 1;
 
             for (int i = 0; i < 5; i++)
             {
@@ -727,39 +725,41 @@ namespace engine
         }
 
 
-        internal static int getExtraFirstSkill(Player player)
+        internal static ClassId HumanFirstOldClass_Unknown(Player player) // getExtraFirstSkill
         {
             if (player.race != Race.human)
             {
-                return 0x11;
+                return ClassId.unknown;
             }
 
-            for (int index = 0; index < 7; index++)
+            for (ClassId index = ClassId.cleric; index <= ClassId.monk; index++)
             {
-                if (player.Skill_B_lvl[index] > 0)
+                if (player.ClassLevelsOld[(int)index] > 0)
                     return index;
             }
 
-            return 0x11;
+            return ClassId.unknown;
         }
 
-        internal static int HumanFirstClassOrSeventeen(Player player) // getFirstSkill
+        internal static ClassId HumanCurrentClass_Unknown(Player player) // getFirstSkill
         {
             if (player.race != Race.human)
             {
-                return 17;
+                return ClassId.unknown;
             }
 
-            for (int index = 0; index <= 7; index++)
+            for (ClassId index = ClassId.cleric; index <= ClassId.monk; index++)
             {
-                if (player.class_lvls[index] > 0)
+                if (player.ClassLevel[(int)index] > 0)
+                {
                     return index;
+                }
             }
 
-            return 17;
+            return ClassId.unknown;
         }
 
-        internal static byte HumanFirstClassLevelOrZero(Player player) /* hasAnySkills */
+        internal static byte HumanCurrentClassLevel_Zero(Player player) /* hasAnySkills */
         {
             if (player.race != Race.human)
             {
@@ -769,16 +769,16 @@ namespace engine
             int loop_var = 0;
 
             while (loop_var < 7 &&
-                player.class_lvls[loop_var] == 0)
+                player.ClassLevel[loop_var] == 0)
             {
                 loop_var++;
             }
 
-            return player.class_lvls[loop_var];
+            return player.ClassLevel[loop_var];
         }
 
 
-        internal static bool is_human(Player player)
+        internal static bool IsHuman(Player player)
         {
             return (player.race == Race.human);
         }
@@ -786,7 +786,7 @@ namespace engine
 
         internal static sbyte sub_6B3D1(Player player)
         {
-            if (HumanFirstClassLevelOrZero(player) > player.field_E6)
+            if (HumanCurrentClassLevel_Zero(player) > player.multiclassLevel)
             {
                 return 1;
             }

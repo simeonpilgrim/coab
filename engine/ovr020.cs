@@ -88,17 +88,17 @@ namespace engine
 
             for (int classIdx = 0; classIdx <= 7; classIdx++)
             {
-                byte tmp = player.Skill_B_lvl[classIdx];
+                byte tmp = player.ClassLevelsOld[classIdx];
 
-                if (player.class_lvls[classIdx] > 0 ||
-                    (tmp < ovr026.HumanFirstClassLevelOrZero(player) && tmp > 0))
+                if (player.ClassLevel[classIdx] > 0 ||
+                    (tmp < ovr026.HumanCurrentClassLevel_Zero(player) && tmp > 0))
                 {
                     if (displaySlash )
                     {
                         text2 += "/";
                     }
 
-                    text2 += (player.class_lvls[classIdx] + player.Skill_B_lvl[classIdx]).ToString();
+                    text2 += (player.ClassLevel[classIdx] + player.ClassLevelsOld[classIdx]).ToString();
 
                     displaySlash = true;
                 }
@@ -169,8 +169,8 @@ namespace engine
             seg041.displayString((0x3c - player.hitBonus).ToString(), 0, 10, yCol, xCol + 7);
 
 
-            string damage = string.Format("{0}d{1}{2}{3}", player.attack_dice_count, player.attack_dice_size,
-                player.damageBonus > 0 ? "+" : "", player.damageBonus != 0 ? player.damageBonus.ToString() : ""); 
+            string damage = string.Format("{0}d{1}{2}{3}", player.attack1_DiceCount, player.attack1_DiceSize,
+                player.attack1_DamageBonus > 0 ? "+" : "", player.attack1_DamageBonus != 0 ? player.attack1_DamageBonus.ToString() : ""); 
 
             seg041.displayString("Damage  ", 0, 15, yCol + 1, xCol);
             seg041.displayString(damage, 0, 10, yCol + 1, xCol + 7);
@@ -399,13 +399,13 @@ namespace engine
             seg041.displayString(arg_0.type.ToString(), 0, 10, 1, 0x14);
             
             seg041.displayString("namenum(1):   ", 0, 10, 2, 1);
-            seg041.displayString(arg_0.field_2F.ToString(), 0, 10, 2, 0x14);
+            seg041.displayString(arg_0.namenum1.ToString(), 0, 10, 2, 0x14);
             
             seg041.displayString("namenum(2):   ", 0, 10, 3, 1);
-            seg041.displayString(arg_0.field_30.ToString(), 0, 10, 3, 0x14);
+            seg041.displayString(arg_0.namenum2.ToString(), 0, 10, 3, 0x14);
             
             seg041.displayString("namenum(3):   ", 0, 10, 4, 1);
-            seg041.displayString(arg_0.field_31.ToString(), 0, 10, 4, 0x14);
+            seg041.displayString(arg_0.namenum3.ToString(), 0, 10, 4, 0x14);
             
             seg041.displayString("plus:         ", 0, 10, 5, 1);
             seg041.displayString(arg_0.plus.ToString(), 0, 10, 5, 0x14);
@@ -675,7 +675,7 @@ namespace engine
                     }
                     else
                     {
-                        int var_9 = player.magic_user_lvl + (player.field_116 * ovr026.sub_6B3D1(player));
+                        int var_9 = player.magic_user_lvl + (player.magic_user_old_lvl * ovr026.sub_6B3D1(player));
 
                         player.field_12D[2,0] = 0;
                         player.field_12D[2,1] = 0;
@@ -945,9 +945,9 @@ namespace engine
                 {
                     return (i != item &&
                     i.count > 0 &&
-                    i.field_2F == item.field_2F &&
-                    i.field_30 == item.field_30 &&
-                    i.field_31 == item.field_31 &&
+                    i.namenum1 == item.namenum1 &&
+                    i.namenum2 == item.namenum2 &&
+                    i.namenum3 == item.namenum3 &&
                     i.type == item.type &&
                     i.plus == item.plus &&
                     i.plus_save == item.plus_save &&
@@ -1036,10 +1036,10 @@ namespace engine
 
                 if (ovr023.item_is_scroll(item) == true)
                 {
-                    if (ovr026.getExtraFirstSkill(gbl.player_ptr) == (int)Skills.magic_user ||
-                        ovr026.HumanFirstClassOrSeventeen(gbl.player_ptr) == (int)Skills.magic_user ||
-                        ovr026.getExtraFirstSkill(gbl.player_ptr) == 0 ||
-                        ovr026.HumanFirstClassOrSeventeen(gbl.player_ptr) == 0 ||
+                    if (ovr026.HumanFirstOldClass_Unknown(gbl.player_ptr) == ClassId.magic_user ||
+                        ovr026.HumanCurrentClass_Unknown(gbl.player_ptr) == ClassId.magic_user ||
+                        ovr026.HumanFirstOldClass_Unknown(gbl.player_ptr) == ClassId.cleric ||
+                        ovr026.HumanCurrentClass_Unknown(gbl.player_ptr) == ClassId.cleric ||
                         gbl.player_ptr.magic_user_lvl > 0 ||
                         gbl.player_ptr.cleric_lvl > 0)
                     {
@@ -1499,7 +1499,7 @@ namespace engine
         {
             bool result;
 
-            if ((player._class == ClassId.paladin || (player.field_114 > 0 && ovr026.sub_6B3D1(player) != 0)) &&
+            if ((player._class == ClassId.paladin || (player.paladin_old_lvl > 0 && ovr026.sub_6B3D1(player) != 0)) &&
                  gbl.game_state != GameState.Combat &&
                     player.health_status == Status.okey &&
                     player.HasAffect(Affects.paladinDailyHealCast) == false)
@@ -1517,7 +1517,7 @@ namespace engine
 
         internal static bool CanCastCureDiseases(Player player) /* sub_57655 */
         {
-            return ((player._class == ClassId.paladin || (player.field_114 > 0 && ovr026.sub_6B3D1(player) != 0)) &&
+            return ((player._class == ClassId.paladin || (player.paladin_old_lvl > 0 && ovr026.sub_6B3D1(player) != 0)) &&
                 gbl.game_state != GameState.Combat &&
                 player.health_status == Status.okey &&
                 player.paladinCuresLeft > 0);
@@ -1537,7 +1537,7 @@ namespace engine
                 return;
             }
 
-            int dx = player.field_114 * ovr026.sub_6B3D1(player);
+            int dx = player.paladin_old_lvl * ovr026.sub_6B3D1(player);
             int healAmount = (player.paladin_lvl + dx) * 2;
 
             if (ovr024.heal_player(0, healAmount, target) == true)

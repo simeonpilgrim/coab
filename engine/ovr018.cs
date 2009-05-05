@@ -87,8 +87,8 @@ namespace engine
                         }
 
                         if ((gbl.area2_ptr.training_class_mask > 0 || Cheats.free_training == true) &&
-                            ovr026.is_human(gbl.player_ptr) &&
-                            ovr026.getExtraFirstSkill(gbl.player_ptr) == 0x11)
+                            ovr026.IsHuman(gbl.player_ptr) &&
+                            ovr026.HumanFirstOldClass_Unknown(gbl.player_ptr) == ClassId.unknown)
                         {
                             menuFlags[allow_multiclass] = true;
                         }
@@ -142,13 +142,13 @@ namespace engine
                 {
                     if (unk_4C13D.MemberOf(inputkey) == true)
                     {
-                        bool var_11 = (ovr026.is_human(gbl.player_ptr) && ovr026.getExtraFirstSkill(gbl.player_ptr) == 0x11);
+                        bool var_11 = (ovr026.IsHuman(gbl.player_ptr) && ovr026.HumanFirstOldClass_Unknown(gbl.player_ptr) == ClassId.unknown);
 
                         ovr020.scroll_team_list(inputkey);
                         ovr025.PartySummary(gbl.player_ptr);
 
-                        if (ovr026.is_human(gbl.player_ptr) == false ||
-                            ovr026.getExtraFirstSkill(gbl.player_ptr) != 0x11)
+                        if (ovr026.IsHuman(gbl.player_ptr) == false ||
+                            ovr026.HumanFirstOldClass_Unknown(gbl.player_ptr) != ClassId.unknown)
                         {
                             var_11 ^= false;
                         }
@@ -439,7 +439,7 @@ namespace engine
                 player.icon_colours[i] = (byte)(((gbl.default_icon_colours[i] + 8) << 4) + gbl.default_icon_colours[i]);
             }
 
-            player.field_124 = 50;
+            player.base_ac = 50;
             player.thac0 = 40;
             player.health_status = Status.okey;
             player.in_combat = true;
@@ -548,13 +548,11 @@ namespace engine
             player.sex = (byte)(index - 1);
             var_C.Clear();
 
-            int classes = gbl.race_classes[(int)player.race, 0];
-
             var_C.Add(new MenuItem("Pick Class", true));
 
-            for (int i = 1; i <= classes; i++)
+            foreach (var _class in gbl.RaceClasses[(int)player.race])
             {
-                var_C.Add(new MenuItem("  " + ovr020.classString[gbl.race_classes[(int)player.race, i]]));
+                var_C.Add(new MenuItem("  " + ovr020.classString[(int)_class]));
             }
 
             index = 1;
@@ -575,16 +573,16 @@ namespace engine
             } while (input_key != 'S');
 
             player.exp = 25000;
-            player._class = (ClassId)gbl.race_classes[(int)player.race, index];
+            player._class = gbl.RaceClasses[(int)player.race][index];
             player.HitDice = 1;
 
             if (player._class >= ClassId.cleric && player._class <= ClassId.fighter)
             {
-                player.class_lvls[(int)player._class] = 1;
+                player.ClassLevel[(int)player._class] = 1;
             }
             else if (player._class >= ClassId.magic_user && player._class <= ClassId.monk)
             {
-                player.class_lvls[(int)player._class] = 1;
+                player.ClassLevel[(int)player._class] = 1;
             }
             else if (player._class == ClassId.paladin)
             {
@@ -665,9 +663,9 @@ namespace engine
 
             for (int class_idx = 0; class_idx <= 7; class_idx++)
             {
-                if (player.class_lvls[class_idx] > 0)
+                if (player.ClassLevel[class_idx] > 0)
                 {
-                    int skill_lvl = player.class_lvls[class_idx];
+                    int skill_lvl = player.ClassLevel[class_idx];
 
                     if (thac0_table[class_idx, skill_lvl] > player.thac0)
                     {
@@ -752,9 +750,9 @@ namespace engine
             {
                 for (int class_idx = 0; class_idx <= 7; class_idx++)
                 {
-                    if (player.class_lvls[class_idx] > 0)
+                    if (player.ClassLevel[class_idx] > 0)
                     {
-                        player.class_lvls[class_idx] = 1;
+                        player.ClassLevel[class_idx] = 1;
                     }
                 }
 
@@ -1037,11 +1035,11 @@ namespace engine
                 }
 
                 player.hit_point_current = player.hit_point_max;
-                player.field_11C = 2;
-                player.field_11E = 1;
-                player.field_120 = 2;
+                player.attacksCount = 2;
+                player.attack1_DiceCountBase = 1;
+                player.attack1_DiceSizeBase = 2;
                 player.field_125 = 1;
-                player.base_movement = 0x0C;
+                player.base_movement = 12;
                 var_20 = 0;
 
                 for (int i = 0; i < 5; i++)
@@ -1053,7 +1051,7 @@ namespace engine
 
                 for (int class_idx = 0; class_idx <= 7; class_idx++)
                 {
-                    if (player.class_lvls[class_idx] > 0)
+                    if (player.ClassLevel[class_idx] > 0)
                     {
                         if (class_idx == 0)
                         {
@@ -1127,17 +1125,17 @@ namespace engine
 
                 for (int class_idx = 0; class_idx <= 7; class_idx++)
                 {
-                    if (player.class_lvls[class_idx] > 0 ||
-                        (player.Skill_B_lvl[class_idx] < ovr026.HumanFirstClassLevelOrZero(player) &&
-                         player.Skill_B_lvl[class_idx] > 0))
+                    if (player.ClassLevel[class_idx] > 0 ||
+                        (player.ClassLevelsOld[class_idx] < ovr026.HumanCurrentClassLevel_Zero(player) &&
+                         player.ClassLevelsOld[class_idx] > 0))
                     {
                         if (first_lvl == false)
                         {
                             text += "/";
                         }
 
-                        byte b = player.Skill_B_lvl[class_idx];
-                        b += player.class_lvls[class_idx];
+                        byte b = player.ClassLevelsOld[class_idx];
+                        b += player.ClassLevel[class_idx];
 
                         text += b.ToString();
 
@@ -1302,7 +1300,7 @@ namespace engine
                 gbl.player_ptr.exp != 8333 &&
                 gbl.player_ptr.exp != 12500 &&
                 gbl.player_ptr.exp != 25000) ||
-                gbl.player_ptr.field_E6 != 0)
+                gbl.player_ptr.multiclassLevel != 0)
             {
                 seg041.DisplayStatusText(0, 14, gbl.player_ptr.name + " can't be modified.");
                 return;
@@ -1755,17 +1753,17 @@ namespace engine
 
             for (int var_33 = 0; var_33 < 8; var_33++)
             {
-                if (player_ptr.class_lvls[var_33] > 0)
+                if (player_ptr.ClassLevel[var_33] > 0)
                 {
-                    if (player_ptr.class_lvls[var_33] < gbl.max_class_levels[var_33])
+                    if (player_ptr.ClassLevel[var_33] < gbl.max_class_levels[var_33])
                     {
                         if ((ClassId)var_33 == ClassId.ranger)
                         {
-                            var_8 += (byte)((player_ptr.class_lvls[var_33] + 1) * (con_bonus((ClassId)var_33)));
+                            var_8 += (byte)((player_ptr.ClassLevel[var_33] + 1) * (con_bonus((ClassId)var_33)));
                         }
                         else
                         {
-                            var_8 += (byte)(player_ptr.class_lvls[var_33] * (con_bonus((ClassId)var_33)));
+                            var_8 += (byte)(player_ptr.ClassLevel[var_33] * (con_bonus((ClassId)var_33)));
                         }
                     }
                     else
@@ -2374,8 +2372,8 @@ namespace engine
 
             for (int class_index = 0; class_index <= (byte)ClassId.monk; class_index++)
             {
-                if (player.class_lvls[class_index] > 0 &&
-                    player.class_lvls[class_index] < gbl.max_class_levels[class_index])
+                if (player.ClassLevel[class_index] > 0 &&
+                    player.ClassLevel[class_index] < gbl.max_class_levels[class_index])
                 {
                     hp_adj += con_hp_adj[player.con];
 
@@ -2408,7 +2406,7 @@ namespace engine
                     }
 
                     if (class_index == (byte)ClassId.ranger &&
-                        player.class_lvls[class_index] == 1)
+                        player.ClassLevel[class_index] == 1)
                     {
                         hp_adj *= 2;
                     }
@@ -2426,9 +2424,9 @@ namespace engine
 
             for (int class_index = 0; class_index <= (int)ClassId.monk; class_index++)
             {
-                if (player.class_lvls[class_index] > 0)
+                if (player.ClassLevel[class_index] > 0)
                 {
-                    levels_total += player.class_lvls[class_index] + hp_calc_table[class_index].lvl_bonus;
+                    levels_total += player.ClassLevel[class_index] + hp_calc_table[class_index].lvl_bonus;
                     class_count++;
                 }
             }
@@ -2482,21 +2480,21 @@ namespace engine
 
             for (int class_index = 0; class_index <= 7; class_index++)
             {
-                if (player.class_lvls[class_index] > 0)
+                if (player.ClassLevel[class_index] > 0)
                 {
                     hp_calc hpt = hp_calc_table[class_index];
 
                     int var_4 = con_bonus((ClassId)class_index);
 
-                    if (player.class_lvls[class_index] < gbl.max_class_levels[class_index])
+                    if (player.ClassLevel[class_index] < gbl.max_class_levels[class_index])
                     {
                         class_count++;
-                        max_hp += (var_4 + hpt.dice) * (player.class_lvls[class_index] + hpt.lvl_bonus);
+                        max_hp += (var_4 + hpt.dice) * (player.ClassLevel[class_index] + hpt.lvl_bonus);
                     }
                     else
                     {
                         class_count++;
-                        int over_count = (player.class_lvls[class_index] - gbl.max_class_levels[class_index]) + 1;
+                        int over_count = (player.ClassLevel[class_index] - gbl.max_class_levels[class_index]) + 1;
 
                         max_hp = hpt.max_base + (over_count * hpt.max_mult);
                     }
@@ -2519,14 +2517,14 @@ namespace engine
 
             for (int _class = 0; _class <= 7; _class++)
             {
-                if (player.class_lvls[_class] > 0 &&
+                if (player.ClassLevel[_class] > 0 &&
                     (classMasks[_class] & arg_0) != 0)
                 {
-                    if (player.class_lvls[_class] < gbl.max_class_levels[_class])
+                    if (player.ClassLevel[_class] < gbl.max_class_levels[_class])
                     {
                         int var_5 = unk_16B2A[_class];
 
-                        if (player.class_lvls[_class] > 1)
+                        if (player.ClassLevel[_class] > 1)
                         {
                             var_5 = 1;
                         }
@@ -2641,10 +2639,10 @@ namespace engine
 
             for (int _class = 0; _class <= 7; _class++)
             {
-                if (player_ptr.class_lvls[_class] > 0)
+                if (player_ptr.ClassLevel[_class] > 0)
                 {
                     classesToTrainMask += classMasks[_class];
-                    class_lvl = player_ptr.class_lvls[_class];
+                    class_lvl = player_ptr.ClassLevel[_class];
 
                     bool race_limited = RaceClassLimit(class_lvl, player_ptr, (ClassId)_class);
 
@@ -2769,7 +2767,7 @@ namespace engine
 
                 for (int _class = 0; _class <= 7; _class++)
                 {
-                    if (player_ptr.class_lvls[_class] > 0 &&
+                    if (player_ptr.ClassLevel[_class] > 0 &&
                         (classMasks[_class] & actualTrainingClassesMask) != 0)
                     {
                         y_offset++;
@@ -2777,14 +2775,14 @@ namespace engine
                         if (y_offset == 5)
                         {
                             string text = System.String.Format("    a level {0} {1}",
-                                player_ptr.class_lvls[_class] + 1, ovr020.classString[_class]);
+                                player_ptr.ClassLevel[_class] + 1, ovr020.classString[_class]);
 
                             seg041.displayString(text, 0, 10, y_offset, 6);
                         }
                         else
                         {
                             string text = System.String.Format("and a level {0} {1}",
-                                player_ptr.class_lvls[_class] + 1, ovr020.classString[_class]);
+                                player_ptr.ClassLevel[_class] + 1, ovr020.classString[_class]);
 
                             seg041.displayString(text, 0, 10, y_offset, 6);
                         }
@@ -2812,13 +2810,13 @@ namespace engine
 
                 for (int _class = 0; _class <= 7; _class++)
                 {
-                    if (player_ptr.class_lvls[_class] > 0)
+                    if (player_ptr.ClassLevel[_class] > 0)
                     {
                         class_count++;
 
                         if ((classMasks[_class] & actualTrainingClassesMask) != 0)
                         {
-                            player_ptr.class_lvls[_class] += 1;
+                            player_ptr.ClassLevel[_class] += 1;
                             if (player_ptr.field_E7 > 0)
                             {
                                 player_ptr.field_E8 -= (byte)(player_ptr.field_E8 / player_ptr.field_E7);
@@ -2874,7 +2872,7 @@ namespace engine
                     }
                 }
 
-                if (player_ptr.HitDice <= player_ptr.field_E6)
+                if (player_ptr.HitDice <= player_ptr.multiclassLevel)
                 {
                     return;
                 }

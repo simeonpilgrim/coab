@@ -269,15 +269,15 @@ namespace Classes
         public readonly static byte[] max_class_levels =  { 10, 15, 10, 10, 11, 12, 11, 13 }; // byte_1A1CB seg600:3EBB
         public readonly static byte[] default_icon_colours = { 1, 2, 3, 4, 6, 7 }; // unk_1A1D3[0] == unk_1A1D2[1];
 
-        public readonly static int[,] race_classes = { // unk_1A30A - seg600:3FFA
-            { 0,    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, // Monster
-            { 3,    2, 6, 14, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-            { 7,    2, 5, 6, 13, 14, 15, 16, 0, 0, 0, 0, 0, 0},
-            { 3,    2, 6, 14, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-            { 13,   0, 2, 5, 6, 4, 8, 10, 9, 11, 13, 14, 15, 16},
-            { 3,    2, 6, 14, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-            { 6,    0, 2, 6, 8, 12, 14, 0, 0, 0, 0, 0, 0, 0},
-            { 6,    0, 2, 5, 6, 3, 4, 0, 0, 0, 0, 0, 0, 0} };
+        public readonly static ClassId[][] RaceClasses = { 
+                new ClassId[] /*MonsterType*/{ },
+                new ClassId[] /*Dwarf*/{ ClassId.fighter, ClassId.thief, ClassId.mc_f_t},
+                new ClassId[] /*Elf*/{ ClassId.fighter, ClassId.magic_user, ClassId.thief, ClassId.mc_f_mu, ClassId.mc_f_t, ClassId.mc_f_mu_t, ClassId.mc_mu_t},
+                new ClassId[] /*Gnome*/{ ClassId.fighter, ClassId.thief, ClassId.mc_f_t},
+                new ClassId[] /*Half-Elf*/{ ClassId.cleric, ClassId.fighter, ClassId.magic_user, ClassId.thief, ClassId.ranger,ClassId.mc_c_f, ClassId.mc_c_r, ClassId.mc_c_f_m, ClassId.mc_c_mu, ClassId.mc_f_mu, ClassId.mc_f_t, ClassId.mc_f_mu_t, ClassId.mc_mu_t},
+                new ClassId[] /*Halfling*/{ ClassId.fighter, ClassId.thief, ClassId.mc_f_t},
+                new ClassId[] /*Half-Orc*/{ ClassId.cleric, ClassId.fighter, ClassId.thief, ClassId.mc_c_f, ClassId.mc_c_t,ClassId.mc_f_t},
+                new ClassId[] /*Human*/{ ClassId.cleric, ClassId.fighter, ClassId.magic_user, ClassId.thief, ClassId.paladin, ClassId.ranger}};
 
 
         public static bool stopVM = false; //byte_1AB08
@@ -306,7 +306,6 @@ namespace Classes
         public static byte byte_1AD3D;
         public static byte byte_1AD3E;
         public static byte byte_1AD44;
-        public static bool byte_1AD48;
         public static byte byte_1ADFA;
         public static byte byte_1AE0A;
         public static byte byte_1AE1B;
@@ -342,7 +341,7 @@ namespace Classes
         public static Affects current_affect; // byte_1D2BD
         public static int damage; // byte_1D2BE
         public static DamageType damage_flags; // byte_1D2BF
-        public static int movesLeft; // byte_1D2C0
+        public static int attacksLeft; // byte_1D2C0
         public static bool resetMovesLeft; // byte_1D2C4, reset_byte_1D2C0
         public static byte spell_id; // byte_1D2C1
         public static int dice_count; // byte_1D2C2

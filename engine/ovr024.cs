@@ -788,7 +788,7 @@ namespace engine
             }
 
             if (class_index == 4 &&
-                (player.field_E6 == 0 || player.field_115 == player.field_E6))
+                (player.multiclassLevel == 0 || player.ranger_old_lvl == player.multiclassLevel))
             {
                 arg_2 += 1;
             }
@@ -997,11 +997,11 @@ namespace engine
                         if (stat_b > 18)
                         {
                             if (player.fighter_lvl > 0 ||
-                                player.field_113 > 0 ||
+                                player.fighter_old_lvl > 0 ||
                                 player.paladin_lvl > 0 ||
-                                player.field_114 > 0 ||
+                                player.paladin_old_lvl > 0 ||
                                 player.ranger_lvl > 0 ||
-                                player.field_115 > 0)
+                                player.ranger_old_lvl > 0)
                             {
                                 str_00_b = (byte)(player.tmp_str_00 + ((stat_b - 18) * 10));
 
@@ -1054,14 +1054,14 @@ namespace engine
 
                 for (int var_C = 0; var_C <= 7; var_C++)
                 {
-                    byte var_B = player.Skill_B_lvl[var_C];
+                    byte var_B = player.ClassLevelsOld[var_C];
 
                     if (var_B > 0)
                     {
                         sub_647BE(var_B, var_C, stat_a, ref var_A, player);
                     }
 
-                    var_B = player.class_lvls[var_C];
+                    var_B = player.ClassLevel[var_C];
 
                     if (var_B > 0)
                     {
@@ -1073,9 +1073,9 @@ namespace engine
                         var_B = gbl.max_class_levels[var_C];
                     }
 
-                    if (var_B > player.field_E6)
+                    if (var_B > player.multiclassLevel)
                     {
-                        var_B = player.field_E6;
+                        var_B = player.multiclassLevel;
 
                         sub_647BE(var_B, var_C, stat_a, ref var_A, player);
                     }

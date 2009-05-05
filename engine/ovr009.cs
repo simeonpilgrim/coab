@@ -344,7 +344,7 @@ namespace engine
             }
 
             if (player.cleric_lvl > 0 ||
-                (player.turn_undead > 0 && ovr026.sub_6B3D1(player) != 0))
+                (player.cleric_old_lvl > 0 && ovr026.sub_6B3D1(player) != 0))
             {
                 if (player.actions.hasTurnedUndead == false)
                 {
