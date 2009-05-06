@@ -791,8 +791,8 @@ namespace engine
                 int armor_class = player.ac;
                 int hit_bonus = player.hitBonus;
 
-                int magic_power = player.magic_user_lvl + (ovr026.sub_6B3D1(player) * player.magic_user_old_lvl);
-                int cleric_power = player.cleric_lvl + (ovr026.sub_6B3D1(player) * player.cleric_old_lvl);
+                int magic_power = player.magic_user_lvl + (ovr026.MulticlassExceedLastLevel(player) * player.magic_user_old_lvl);
+                int cleric_power = player.cleric_lvl + (ovr026.MulticlassExceedLastLevel(player) * player.cleric_old_lvl);
 
                 if (armor_class > 60)
                 {
@@ -1794,12 +1794,9 @@ namespace engine
 
             ovr017.load_npc(npc_id);
 
-            byte var_6 = (byte)ovr008.vm_GetCmdValue(2);
+            byte morale = (byte)ovr008.vm_GetCmdValue(2);
 
-            var_6 >>= 1;
-            var_6 |= 0x80;
-
-            gbl.player_ptr.field_F7 = var_6;
+            gbl.player_ptr.control_morale = (byte)((morale >> 1) + 0x80);
 
             ovr025.reclac_player_values(gbl.player_ptr);
             ovr025.PartySummary(gbl.player_ptr);

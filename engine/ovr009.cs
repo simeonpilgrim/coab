@@ -228,7 +228,7 @@ namespace engine
                                     /* Turn off auto-fight. */
                                     foreach (Player player_ptr in gbl.player_next_ptr)
                                     {
-                                        if (player_ptr.field_F7 < 0x80)
+                                        if (player_ptr.control_morale < Control.NPC_Base)
                                         {
                                             player_ptr.quick_fight = QuickFight.False;
                                         }
@@ -344,7 +344,7 @@ namespace engine
             }
 
             if (player.cleric_lvl > 0 ||
-                (player.cleric_old_lvl > 0 && ovr026.sub_6B3D1(player) != 0))
+                (player.cleric_old_lvl > 0 && ovr026.MulticlassExceedLastLevel(player) != 0))
             {
                 if (player.actions.hasTurnedUndead == false)
                 {

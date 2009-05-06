@@ -391,7 +391,7 @@ namespace engine
             }
             else if (arg_4 == 0xb8)
             {
-                return_val = gbl.player_ptr.field_F7;
+                return_val = gbl.player_ptr.control_morale;
             }
             else if (arg_4 == 0xBB)
             {
@@ -415,7 +415,7 @@ namespace engine
             }
             else if (arg_4 == 0xC9)
             {
-                return_val = (ushort)(gbl.player_ptr.magic_user_lvl + (ovr026.sub_6B3D1(gbl.player_ptr) * gbl.player_ptr.magic_user_old_lvl));
+                return_val = (ushort)(gbl.player_ptr.magic_user_lvl + (ovr026.MulticlassExceedLastLevel(gbl.player_ptr) * gbl.player_ptr.magic_user_old_lvl));
             }
             else if (arg_4 == 0xD6)
             {
@@ -599,7 +599,7 @@ namespace engine
                     set_value -= 0x32;
                 }
 
-                gbl.player_ptr.field_F7 = (byte)(set_value);
+                gbl.player_ptr.control_morale = (byte)(set_value);
             }
             else if (switch_var == 0xbb)
             {
@@ -1350,7 +1350,7 @@ namespace engine
                 DuelMaster.quick_fight = QuickFight.True;
                 DuelMaster.combat_team = CombatTeam.Enemy;
 
-                DuelMaster.field_F7 = 0xB2;
+                DuelMaster.control_morale = Control.NPC_Berzerk;
                 DuelMaster.icon_id = gbl.monster_icon_id;
 
                 DuelMaster.affects = new System.Collections.Generic.List<Affect>();

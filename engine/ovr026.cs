@@ -65,7 +65,7 @@ namespace engine
 
             for (int skill = 0; skill <= 7; skill++)
             {
-                if (sub_6B3D1(player) != 0 &&
+                if (MulticlassExceedLastLevel(player) != 0 &&
                     player.ClassLevelsOld[skill] != 0)
                 {
                     var_2 = (sbyte)player.ClassLevelsOld[skill];
@@ -254,7 +254,7 @@ namespace engine
                 }
             }
 
-            if (sub_6B3D1(player) != 0)
+            if (MulticlassExceedLastLevel(player) != 0)
             {
                 for (int class_index = 0; class_index <= 7; class_index++)
                 {
@@ -298,7 +298,7 @@ namespace engine
 
         internal static void calc_cleric_spells(bool arg_0, Player player) /* sub_6A686 */
         {
-            int var_3 = player.cleric_lvl + player.cleric_old_lvl * sub_6B3D1(player);
+            int var_3 = player.cleric_lvl + player.cleric_old_lvl * MulticlassExceedLastLevel(player);
 
             if (var_3 > 0)
             {
@@ -512,7 +512,7 @@ namespace engine
             var var_A = item_found != null && item_found.ScrollLearning(3, 11);
             var var_B = item_found != null && item_found.ScrollLearning(3, 2);
 
-            int var_4 = (sbyte)(player.thief_lvl + (sub_6B3D1(player) * player.thief_old_lvl));
+            int var_4 = (sbyte)(player.thief_lvl + (MulticlassExceedLastLevel(player) * player.thief_old_lvl));
 
             if (var_4 < 4 && var_B == true)
             {
@@ -784,7 +784,7 @@ namespace engine
         }
 
 
-        internal static sbyte sub_6B3D1(Player player)
+        internal static sbyte MulticlassExceedLastLevel(Player player) // sub_6B3D1
         {
             if (HumanCurrentClassLevel_Zero(player) > player.multiclassLevel)
             {

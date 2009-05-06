@@ -257,7 +257,7 @@ namespace engine
 
 
             if (spells_count > 0 &&
-                (player.field_F7 > 0x7F || gbl.magicOn == true))
+                (player.control_morale >= Control.NPC_Base || gbl.magicOn == true))
             {
                 if ((player.OppositeTeam()== CombatTeam.Ours ? gbl.friends_count : gbl.foe_count) > 0)
                 {
@@ -393,8 +393,8 @@ namespace engine
                 if ((player.actions.move / 2) > 0 &&
                     player.actions.delay > 0)
                 {
-                    if (player.field_F7 < 0x80 ||
-                       (player.field_F7 > 0x7F && gbl.enemyHealthPercentage <= (ovr024.roll_dice(100, 1) + gbl.monster_morale)) ||
+                    if (player.control_morale < Control.NPC_Base ||
+                       (player.control_morale >= Control.NPC_Base && gbl.enemyHealthPercentage <= (ovr024.roll_dice(100, 1) + gbl.monster_morale)) ||
                         player.combat_team == CombatTeam.Enemy)
                     {
                         if (player.actions.field_14 == true ||
@@ -747,7 +747,7 @@ namespace engine
                 {
                     foreach (Player player_ptr in gbl.player_next_ptr)
                     {
-                        if (player_ptr.field_F7 < 0x80 &&
+                        if (player_ptr.control_morale < Control.NPC_Base &&
                             player_ptr.health_status != Status.animated)
                         {
                             player_ptr.quick_fight = QuickFight.False;
@@ -784,9 +784,9 @@ namespace engine
                 player.actions.field_14 = true;
                 ovr025.DisplayPlayerStatusString(true, 10, "is forced to flee", player);
             }
-            else if (player.field_F7 > 0x7F)
+            else if (player.control_morale >= Control.NPC_Base)
             {
-                gbl.monster_morale = (player.field_F7 & 0x7F) << 1;
+                gbl.monster_morale = (player.control_morale & Control.PC_Mask) << 1;
 
                 if (gbl.monster_morale > 102)
                 {

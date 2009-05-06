@@ -100,6 +100,15 @@ namespace Classes
         Enemy = 1
     }
 
+    public class Control
+    {
+        public const byte PC_Base = 0;
+        public const byte PC_Mask = 0x7F;
+        public const byte NPC_Base = 0x80;
+        public const byte NPC_Berzerk = 0xB2;
+        public const byte PC_Berzerk = 0xB3;
+    }
+
     /// <summary>
     /// Summary description for Player.
     /// </summary>
@@ -228,9 +237,9 @@ namespace Classes
         public List<Affect> affects; // f2 - affect_ptr
 
         [DataOffset(0xf7, DataType.Byte)]
-        public byte field_F7; // 0xf7; // if 0 or 0xB3 you can pool money
+        public byte control_morale; // 0xf7; field_F7
         [DataOffset(0xf8, DataType.Byte)]
-        public byte field_F8; // 0xf8;
+        public byte npcTreasureShareCount; // 0xf8;
         [DataOffset(0xfa, DataType.Byte)]
         public byte field_FA; // 0xfa;
 

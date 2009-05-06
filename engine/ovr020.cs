@@ -47,7 +47,7 @@ namespace engine
 
             ovr025.displayPlayerName(false, 1, 1, player);
 
-            if (player.field_F7 > 0x7F)
+            if (player.control_morale >= Control.NPC_Base)
             {
                 seg041.displayString("(NPC)", 0, 10, 1, player.name.Length + 3);
             }
@@ -279,7 +279,7 @@ namespace engine
                     text += "Spells ";
                 }
 
-                if (gbl.player_ptr.field_F7 < 0x80 ||
+                if (gbl.player_ptr.control_morale < Control.NPC_Base ||
                     gbl.player_ptr.in_combat == false ||
                     gbl.player_ptr.health_status == Status.animated)
                 {
@@ -478,7 +478,7 @@ namespace engine
                         text += " Use";
                     }
 
-                    if (player.field_F7 < 0x80 ||
+                    if (player.control_morale < Control.NPC_Base ||
                         player.in_combat == false ||
                         player.health_status == Status.animated)
                     {
@@ -499,7 +499,7 @@ namespace engine
 
                     if (gbl.game_state == GameState.Shop)
                     {
-                        if (player.field_F7 < 0x80 ||
+                        if (player.control_morale < Control.NPC_Base ||
                             player.in_combat == false ||
                             player.health_status == Status.animated)
                         {
@@ -675,7 +675,7 @@ namespace engine
                     }
                     else
                     {
-                        int var_9 = player.magic_user_lvl + (player.magic_user_old_lvl * ovr026.sub_6B3D1(player));
+                        int var_9 = player.magic_user_lvl + (player.magic_user_old_lvl * ovr026.MulticlassExceedLastLevel(player));
 
                         player.field_12D[2,0] = 0;
                         player.field_12D[2,1] = 0;
@@ -1497,27 +1497,23 @@ namespace engine
 
         internal static bool CanCastHeal(Player player) /* sub_575F0 */
         {
-            bool result;
-
-            if ((player._class == ClassId.paladin || (player.paladin_old_lvl > 0 && ovr026.sub_6B3D1(player) != 0)) &&
+            if ((player._class == ClassId.paladin || (player.paladin_old_lvl > 0 && ovr026.MulticlassExceedLastLevel(player) != 0)) &&
                  gbl.game_state != GameState.Combat &&
                     player.health_status == Status.okey &&
                     player.HasAffect(Affects.paladinDailyHealCast) == false)
             {
-                result = true;
+                return true;
             }
             else
             {
-                result = false;
+                return false;
             }
-
-            return result;
         }
 
 
         internal static bool CanCastCureDiseases(Player player) /* sub_57655 */
         {
-            return ((player._class == ClassId.paladin || (player.paladin_old_lvl > 0 && ovr026.sub_6B3D1(player) != 0)) &&
+            return ((player._class == ClassId.paladin || (player.paladin_old_lvl > 0 && ovr026.MulticlassExceedLastLevel(player) != 0)) &&
                 gbl.game_state != GameState.Combat &&
                 player.health_status == Status.okey &&
                 player.paladinCuresLeft > 0);
@@ -1537,7 +1533,7 @@ namespace engine
                 return;
             }
 
-            int dx = player.paladin_old_lvl * ovr026.sub_6B3D1(player);
+            int dx = player.paladin_old_lvl * ovr026.MulticlassExceedLastLevel(player);
             int healAmount = (player.paladin_lvl + dx) * 2;
 
             if (ovr024.heal_player(0, healAmount, target) == true)

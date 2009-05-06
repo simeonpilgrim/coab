@@ -629,10 +629,10 @@ namespace engine
             player.field_19B = (byte)((stat_bonus[4] + stat_bonus[2] + stat_bonus[3]) - 2);
 
             if ((player.fighter_lvl > 0 ||
-                (player.fighter_old_lvl > 0 && ovr026.sub_6B3D1(player) != 0)) &&
+                (player.fighter_old_lvl > 0 && ovr026.MulticlassExceedLastLevel(player) != 0)) &&
                 player.race > Race.monster)
             {
-                player.field_DD = (byte)((player.fighter_old_lvl * ovr026.sub_6B3D1(player)) + player.fighter_lvl);
+                player.field_DD = (byte)((player.fighter_old_lvl * ovr026.MulticlassExceedLastLevel(player)) + player.fighter_lvl);
             }
             else
             {
@@ -1522,21 +1522,21 @@ namespace engine
                 switch (gbl.spell_table[spell_id].spellClass)
                 {
                     case SpellClass.Cleric:
-                        int cleric_count = gbl.player_ptr.cleric_lvl + (ovr026.sub_6B3D1(gbl.player_ptr) * gbl.player_ptr.cleric_old_lvl);
-                        int paladin_count = gbl.player_ptr.paladin_lvl + (ovr026.sub_6B3D1(gbl.player_ptr) * gbl.player_ptr.paladin_old_lvl) - 8;
+                        int cleric_count = gbl.player_ptr.cleric_lvl + (ovr026.MulticlassExceedLastLevel(gbl.player_ptr) * gbl.player_ptr.cleric_old_lvl);
+                        int paladin_count = gbl.player_ptr.paladin_lvl + (ovr026.MulticlassExceedLastLevel(gbl.player_ptr) * gbl.player_ptr.paladin_old_lvl) - 8;
 
                         target_count = Math.Max(cleric_count, paladin_count);
                         break;
 
                     case SpellClass.Druid:
-                        int ranger_count = gbl.player_ptr.ranger_lvl + (ovr026.sub_6B3D1(gbl.player_ptr) * gbl.player_ptr.ranger_old_lvl) - 7;
+                        int ranger_count = gbl.player_ptr.ranger_lvl + (ovr026.MulticlassExceedLastLevel(gbl.player_ptr) * gbl.player_ptr.ranger_old_lvl) - 7;
                         
                         target_count = Math.Max(ranger_count, 0);
                         break;
 
                     case SpellClass.MagicUser:
-                        int magicuser_count = gbl.player_ptr.magic_user_lvl + (ovr026.sub_6B3D1(gbl.player_ptr) * gbl.player_ptr.magic_user_old_lvl);
-                        int ranger_count2 = gbl.player_ptr.ranger_lvl + (ovr026.sub_6B3D1(gbl.player_ptr) * gbl.player_ptr.ranger_old_lvl) - 8;
+                        int magicuser_count = gbl.player_ptr.magic_user_lvl + (ovr026.MulticlassExceedLastLevel(gbl.player_ptr) * gbl.player_ptr.magic_user_old_lvl);
+                        int ranger_count2 = gbl.player_ptr.ranger_lvl + (ovr026.MulticlassExceedLastLevel(gbl.player_ptr) * gbl.player_ptr.ranger_old_lvl) - 8;
 
                         target_count = Math.Max(magicuser_count, ranger_count2);
                         break;

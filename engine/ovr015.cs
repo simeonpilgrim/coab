@@ -168,7 +168,7 @@ namespace engine
             foreach (Player player in gbl.player_next_ptr)
             {
                 if (player.ClassLevel[c] > 0 ||
-                    (player.ClassLevelsOld[c] > 0 && ovr026.sub_6B3D1(player) != 0))
+                    (player.ClassLevelsOld[c] > 0 && ovr026.MulticlassExceedLastLevel(player) != 0))
                 {
                     return true;
                 }

@@ -132,9 +132,9 @@ namespace engine
                 case SpellClass.Cleric:
                     if (player.wis > 8 &&
                         ((player.cleric_lvl > 0) ||
-                         (ovr026.sub_6B3D1(player) != 0 && player.cleric_old_lvl > 0) ||
+                         (ovr026.MulticlassExceedLastLevel(player) != 0 && player.cleric_old_lvl > 0) ||
                          (player.paladin_lvl > 8) ||
-                         (player.paladin_old_lvl > 8 && ovr026.sub_6B3D1(player) != 0)))
+                         (player.paladin_old_lvl > 8 && ovr026.MulticlassExceedLastLevel(player) != 0)))
                     {
                         can_learn = true;
                     }
@@ -142,7 +142,7 @@ namespace engine
 
                 case SpellClass.Druid:
                     if ((player.wis > 8 && player.ranger_lvl > 6) ||
-                        (ovr026.sub_6B3D1(player) != 0 && player.ranger_old_lvl > 6))
+                        (ovr026.MulticlassExceedLastLevel(player) != 0 && player.ranger_old_lvl > 6))
                     {
                         can_learn = true;
                     }
@@ -154,8 +154,8 @@ namespace engine
                      (player.armor == null) ||
                      (gbl.game_state != GameState.Combat) ||
                      (player.ranger_lvl > 8) ||
-                     (ovr026.sub_6B3D1(player) != 0 && player.ranger_old_lvl > 8 && player.magic_user_lvl > 0) ||
-                     (ovr026.sub_6B3D1(player) != 0 && player.magic_user_old_lvl > 0)))
+                     (ovr026.MulticlassExceedLastLevel(player) != 0 && player.ranger_old_lvl > 8 && player.magic_user_lvl > 0) ||
+                     (ovr026.MulticlassExceedLastLevel(player) != 0 && player.magic_user_old_lvl > 0)))
                     {
                         can_learn = true;
                     }
@@ -1562,13 +1562,13 @@ namespace engine
                             player.spell_list[var_1] = 0;
                         }
 
-                        if (player.field_F7 > 0x7F)
+                        if (player.control_morale >= Control.NPC_Base)
                         {
-                            player.field_F7 = 0xB2;
+                            player.control_morale = Control.NPC_Berzerk;
                         }
                         else
                         {
-                            player.field_F7 = 0xB3;
+                            player.control_morale = Control.PC_Berzerk;
                         }
 
                         player.monsterType = MonsterType.animated_dead;
@@ -1653,7 +1653,7 @@ namespace engine
 
         internal static bool sub_5F126(Player arg_2, int target_count)
         {
-            int byte_1AFDE = arg_2.magic_user_lvl + (arg_2.magic_user_old_lvl * ovr026.sub_6B3D1(gbl.player_ptr));
+            int byte_1AFDE = arg_2.magic_user_lvl + (arg_2.magic_user_old_lvl * ovr026.MulticlassExceedLastLevel(gbl.player_ptr));
             int byte_1AFDD;
 
             if (target_count > byte_1AFDE)
@@ -2513,9 +2513,9 @@ namespace engine
                     target.actions.fleeing = true;
                     target.quick_fight = QuickFight.True;
 
-                    if (target.field_F7 <= 0x7F)
+                    if (target.control_morale < Control.NPC_Base)
                     {
-                        target.field_F7 = 0xB3;
+                        target.control_morale = Control.PC_Berzerk;
                     }
 
                     target.actions.target = null;
