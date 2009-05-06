@@ -685,7 +685,7 @@ namespace engine
 
             System.Array.ForEach(table, affect => remove_affect(null, affect, player));
 
-            if (player.HasAffect(Affects.berserk) == true && player.field_F7 == 0xB3)
+            if (player.HasAffect(Affects.berserk) == true && player.control_morale == Control.PC_Berzerk)
             {
                 player.combat_team = CombatTeam.Ours;
             }

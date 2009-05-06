@@ -219,7 +219,7 @@ namespace engine
                             if (menuFlags[allow_remove] == true &&
                                 gbl.player_ptr != null)
                             {
-                                if (gbl.player_ptr.field_F7 < 0x80)
+                                if (gbl.player_ptr.control_morale < Control.NPC_Base)
                                 {
                                     ovr017.SavePlayer(string.Empty, gbl.player_ptr);
                                     gbl.player_ptr = FreeCurrentPlayer(gbl.player_ptr, true, false);
@@ -1745,7 +1745,7 @@ namespace engine
 
             ovr026.calc_cleric_spells(true, gbl.player_ptr);
 
-            gbl.player_ptr.field_F8 = 1;
+            gbl.player_ptr.npcTreasureShareCount = 1;
 
             player_ptr = gbl.player_ptr;
             var_8 = 0;
@@ -1868,7 +1868,7 @@ namespace engine
                                     break;
                                 }
 
-                                if (tmp_player.field_F7 < 0x80)
+                                if (tmp_player.control_morale < Control.NPC_Base)
                                 {
                                     pc_count++;
                                 }
@@ -1891,8 +1891,8 @@ namespace engine
                             }
 
                             if (found == false &&
-                                ((new_player.field_F7 < 0x80 && pc_count < 6) ||
-                                    (new_player.field_F7 > 0x7F && gbl.area2_ptr.party_size < 8)) &&
+                                ((new_player.control_morale < Control.NPC_Base && pc_count < 6) ||
+                                 (new_player.control_morale >= Control.NPC_Base && gbl.area2_ptr.party_size < 8)) &&
                                 (new_player.paladin_lvl == 0 || evil_present == false) &&
                                 (new_player.ranger_lvl == 0 || ranger_count < 3) &&
                                 (((new_player.alignment + 1) % 3) != 0 || paladin_present == false))
@@ -1900,7 +1900,7 @@ namespace engine
                                 ovr017.AssignPlayerIconId(new_player);
                                 ovr017.LoadPlayerCombatIcon(true);
 
-                                if (new_player.field_F7 < 0x80)
+                                if (new_player.control_morale < Control.NPC_Base)
                                 {
                                     pc_count++;
                                 }

@@ -805,16 +805,16 @@ namespace engine
                     player.actions.direction = (player.actions.direction + 4) % 8;
                 }
 
-                int var_6 = player.field_F7 & 0x7f;
+                int morale = player.control_morale & Control.PC_Mask;
 
                 if (player.combat_team == CombatTeam.Ours)
                 {
                     if (player.actions.nonTeamMember)
                     {
-                        if (var_6 == 0 ||
-                            var_6 > 0x66)
+                        if (morale == 0 ||
+                            morale > 0x66)
                         {
-                            player.field_F7 = (byte)(gbl.area2_ptr.field_58C + 0x80);
+                            player.control_morale = (byte)(gbl.area2_ptr.field_58C + Control.NPC_Base);
                         }
                     }
                 }

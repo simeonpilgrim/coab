@@ -197,9 +197,9 @@ namespace engine
             {
                 player.combat_team = (CombatTeam)((affect.affect_data & 0x40) >> 6);
 
-                if (player.field_F7 == 0xB3)
+                if (player.control_morale == Control.PC_Berzerk)
                 {
-                    player.field_F7 = 0;
+                    player.control_morale = Control.PC_Base;
                 }
             }
             else
@@ -211,9 +211,9 @@ namespace engine
                     player.combat_team = (CombatTeam)(affect.affect_data >> 7);
                     player.quick_fight = QuickFight.True;
 
-                    if (player.field_F7 <= 0x7F)
+                    if (player.control_morale < Control.NPC_Base)
                     {
-                        player.field_F7 = 0x0B3;
+                        player.control_morale = Control.PC_Berzerk;
                     }
 
                     player.actions.target = null;
@@ -451,12 +451,12 @@ namespace engine
             player.quick_fight = QuickFight.True;
             player.field_E9 = 0;
 
-            player.field_DD = (byte)(player.fighter_lvl + (player.fighter_old_lvl * ovr026.sub_6B3D1(player)));
+            player.field_DD = (byte)(player.fighter_lvl + (player.fighter_old_lvl * ovr026.MulticlassExceedLastLevel(player)));
             player.base_movement = 0x0C;
 
-            if (player.field_F7 == 0xB3)
+            if (player.control_morale == Control.PC_Berzerk)
             {
-                player.field_F7 = 0;
+                player.control_morale = Control.PC_Base;
             }
 
             player.monsterType = 0;
@@ -491,9 +491,9 @@ namespace engine
                 player.actions.fleeing = true;
                 player.quick_fight = QuickFight.True;
 
-                if (player.field_F7 <= 0x7f)
+                if (player.control_morale < Control.NPC_Base)
                 {
-                    player.field_F7 = 0xb3;
+                    player.control_morale = Control.PC_Berzerk;
                 }
 
                 player.actions.target = null;
@@ -996,14 +996,14 @@ namespace engine
             {
                 player.quick_fight = QuickFight.True;
 
-                if (player.field_F7 <= 0x7F ||
-                    player.field_F7 == 0xb3)
+                if (player.control_morale < Control.NPC_Base ||
+                    player.control_morale == Control.PC_Berzerk)
                 {
-                    player.field_F7 = 0x0B3;
+                    player.control_morale = Control.PC_Berzerk;
                 }
                 else
                 {
-                    player.field_F7 = 0x0B2;
+                    player.control_morale = Control.NPC_Berzerk;
                 }
 
                 if (gbl.game_state == GameState.Combat)
@@ -1023,9 +1023,9 @@ namespace engine
             }
             else
             {
-                if (player.field_F7 == 0xb3)
+                if (player.control_morale == Control.PC_Berzerk)
                 {
-                    player.field_F7 = 0;
+                    player.control_morale = Control.PC_Base;
                 }
 
                 player.combat_team = CombatTeam.Ours;
@@ -1688,14 +1688,14 @@ namespace engine
             {
                 player.quick_fight = QuickFight.True;
 
-                if (player.field_F7 <= 0x7f ||
-                    player.field_F7 == 0xb3)
+                if (player.control_morale < Control.NPC_Base ||
+                    player.control_morale == Control.PC_Berzerk)
                 {
-                    player.field_F7 = 0x0B3;
+                    player.control_morale = Control.PC_Berzerk;
                 }
                 else
                 {
-                    player.field_F7 = 0x0B2;
+                    player.control_morale = Control.NPC_Berzerk;
                 }
 
                 player.actions.target = null;
@@ -1707,9 +1707,9 @@ namespace engine
             }
             else
             {
-                if (player.field_F7 == 0xb3)
+                if (player.control_morale == Control.PC_Berzerk)
                 {
-                    player.field_F7 = 0;
+                    player.control_morale = 0;
                 }
 
                 player.combat_team = (CombatTeam)affect.affect_data;
@@ -1727,7 +1727,7 @@ namespace engine
         {
             if (add_remove == Effect.Remove)
             {
-                player.paladinCuresLeft = (byte)((((player.paladin_old_lvl * ovr026.sub_6B3D1(player)) + player.paladin_lvl - 1) / 5) + 1);
+                player.paladinCuresLeft = (byte)((((player.paladin_old_lvl * ovr026.MulticlassExceedLastLevel(player)) + player.paladin_lvl - 1) / 5) + 1);
             }
         }
 
@@ -1736,9 +1736,9 @@ namespace engine
         {
             if (add_remove == Effect.Remove)
             {
-                if (player.field_F7 == 0xB3)
+                if (player.control_morale == Control.PC_Berzerk)
                 {
-                    player.field_F7 = 0;
+                    player.control_morale = Control.PC_Base;
                     player.quick_fight = QuickFight.False;
                 }
 

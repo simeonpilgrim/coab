@@ -92,7 +92,7 @@ namespace engine
 
             if (CanBackStabTarget(target, attacker) == true)
             {
-                gbl.damage *= (((attacker.thief_lvl + (attacker.thief_old_lvl * ovr026.sub_6B3D1(attacker))) - 1) / 4) + 2;
+                gbl.damage *= (((attacker.thief_lvl + (attacker.thief_old_lvl * ovr026.MulticlassExceedLastLevel(attacker))) - 1) / 4) + 2;
             }
 
             gbl.damage_flags = 0;
@@ -608,13 +608,13 @@ namespace engine
             int var_2 = ovr024.roll_dice(12, 1);
             int var_1 = ovr024.roll_dice(20, 1);
 
-            int al = (ovr026.sub_6B3D1(player) * player.cleric_old_lvl) + player.cleric_lvl;
+            int clericLvl = (ovr026.MulticlassExceedLastLevel(player) * player.cleric_old_lvl) + player.cleric_lvl;
 
-            if (al >= 1 && al <= 8)
+            if (clericLvl >= 1 && clericLvl <= 8)
             {
                 var_B = player.cleric_lvl;
             }
-            else if (al >= 9 && al <= 0x0d)
+            else if (clericLvl >= 9 && clericLvl <= 13)
             {
                 var_B = 9;
             }
@@ -1443,7 +1443,7 @@ namespace engine
             bool correctWeapon = false;
 
             if (attacker.thief_lvl > 0 ||
-                (attacker.thief_old_lvl > 0 && ovr026.sub_6B3D1(attacker) != 0))
+                (attacker.thief_old_lvl > 0 && ovr026.MulticlassExceedLastLevel(attacker) != 0))
             {
                 if (weapon == null ||
                     weapon.type == 97 ||
@@ -1745,7 +1745,7 @@ namespace engine
                 foreach (Player player in gbl.player_next_ptr)
                 {
                     if (player.health_status == Status.okey &&
-                        player.field_F7 > 0x7F)
+                        player.control_morale >= Control.NPC_Base)
                     {
                         player.combat_team = CombatTeam.Enemy;
                         player.actions.target = null;

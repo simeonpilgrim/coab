@@ -189,8 +189,8 @@ namespace engine
         {
             foreach (Player player in gbl.player_next_ptr)
             {
-                if (player.field_F7 == 0 ||
-                    player.field_F7 == 0x0B3)
+                if (player.control_morale == Control.PC_Base ||
+                    player.control_morale == Control.PC_Berzerk)
                 {
                     for (int i = 0; i < 7; i++)
                     {
@@ -211,8 +211,8 @@ namespace engine
             
             foreach (Player player in gbl.player_next_ptr)
             {
-                if (player.field_F7 == 0 ||
-                    player.field_F7 == 0xB3)
+                if (player.control_morale == Control.PC_Base ||
+                    player.control_morale == Control.PC_Berzerk)
                 {
                     count++;
                 }
@@ -248,7 +248,7 @@ namespace engine
 
             foreach (Player var_4 in gbl.player_next_ptr)
             {
-                if (var_4.field_F7 < 0x80)
+                if (var_4.control_morale < Control.NPC_Base)
                 {
                     for (int var_29 = 6; var_29 >= 0; var_29--)
                     {

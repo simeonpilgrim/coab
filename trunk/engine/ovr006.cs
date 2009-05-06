@@ -230,7 +230,7 @@ namespace engine
                         player.health_status == Status.okey)
                     {
                         if (player.combat_team == CombatTeam.Ours &&
-                            player.field_F7 < 0x80)
+                            player.control_morale < Control.NPC_Base)
                         {
                             gbl.party_killed = false;
                         }
@@ -728,11 +728,11 @@ namespace engine
 
             foreach (Player player in gbl.player_next_ptr)
             {
-                if (player.field_F7 > 0x7f &&
+                if (player.control_morale >= Control.NPC_Base &&
                     player.health_status == Status.okey)
                 {
-                    npcParts += player.field_F8 & 7;
-                    totalParts += player.field_F8 & 7;
+                    npcParts += player.npcTreasureShareCount & 7;
+                    totalParts += player.npcTreasureShareCount & 7;
                 }
                 else
                 {
@@ -760,13 +760,13 @@ namespace engine
 
                 foreach (Player player in gbl.player_next_ptr)
                 {
-                    if (player.field_F7 > 0x7f &&
+                    if (player.control_morale >= Control.NPC_Base &&
                         player.health_status == Status.okey &&
-                        player.field_F8 > 0)
+                        player.npcTreasureShareCount > 0)
                     {
                         string output = player.name + " takes and hides " + ((player.sex == 0) ? "his" : "her") + " share.";
 
-                        seg041.press_any_key(output, true, 0, 10, 0x16, 0x22, (byte)(yCol + 5), 5);
+                        seg041.press_any_key(output, true, 0, 10, 0x16, 0x22, yCol + 5, 5);
 
                         yCol += 2;
                     }

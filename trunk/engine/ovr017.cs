@@ -1296,7 +1296,7 @@ namespace engine
 
             gbl.area2_ptr.party_size++;
 
-            if (player.field_F7 > 0x7f)
+            if (player.control_morale >= Control.NPC_Base)
             {
                 ovr026.sub_6A3C6(player);
             }
@@ -1442,7 +1442,7 @@ namespace engine
             {
                 gbl.player_ptr = tmp_player;
 
-                if (gbl.player_ptr.field_F7 < 0x80)
+                if (gbl.player_ptr.control_morale < Control.NPC_Base)
                 {
                     LoadPlayerCombatIcon(true);
                 }
