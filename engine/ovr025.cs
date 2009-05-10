@@ -12,7 +12,7 @@ namespace engine
 
             if (item != null)
             {
-                uint item_type = item.type;
+                ItemType item_type = item.type;
 
                 player.hitBonus = player.thac0;
 
@@ -46,12 +46,12 @@ namespace engine
                 player.attack1_DamageBonus += (sbyte)bonus;
 
                 if (player.race == Race.elf &&
-                    (item.type == 41 || // CompositeLongBow
-                     item.type == 42 || // CompositeShortBow
-                     item.type == 43 || // LongBow
-                     item.type == 44 || // ShortBow
-                     item.type == 37 || // ShortSword
-                     item.type == 36)) // LongSword
+                    (item.type == ItemType.CompositeLongBow || 
+                     item.type == ItemType.CompositeShortBow || 
+                     item.type == ItemType.LongBow || 
+                     item.type == ItemType.ShortBow ||
+                     item.type == ItemType.ShortSword ||
+                     item.type == ItemType.LongSword)) 
                 {
                     bonus++;
                 }
@@ -169,73 +169,6 @@ namespace engine
             }
         }
 
-
-        public static string[] itemNames = { "",
-            "Battle Axe","Hand Axe","Bardiche","Bec De Corbin","Bill-Guisarme",
-            "Bo Stick", "Club","Dagger","Dart","Fauchard",
-            
-            "Fauchard-Fork","Flail","Military Fork","Glaive","Glaive-Guisarme",
-            "Guisarme","Guisarme-Voulge","Halberd","Lucern Hammer","Hammer",
-            
-            "Javelin","Jo Stick","Mace","Morning Star","Partisan",      
-            "Military Pick","Awl Pike","Quarrel","Ranseur","Scimitar",
- 
-            "Spear","Spetum","Quarter Staff","Bastard Sword","Broad Sword",
-            
-            "Long Sword","Short Sword","Two-Handed Sword","Trident","Voulge",
-            "Composite Long Bow","Composite Short Bow","Long Bow","Short Bow","Heavy Crossbow",
-            
-            "Light Crossbow","Sling","Mail","Armor","Leather",
-            "Padded","Studded","Ring","Scale","Chain",					 
-            "Splint","Banded","Plate","Shield","Woods",
-            
-            "Arrow",string.Empty,string.Empty,"Potion","Scroll",
-            "Ring","Rod","Stave","Wand","Jug",
-            "Amulet","Dragon Breath","Bag","Defoliation","Ice Storm",
-            "Book","Boots","Hornets Nest","Bracers","Piercing",
-
-            "Brooch","Elfin Chain","Wizardry","ac10", "Dexterity",
-            "Fumbling","Chime","Cloak","Crystal","Cube",
-			"Cubic","The Dwarves","Decanter","Gloves","Drums",
-            "Dust","Thievery","Hat","Flask","Gauntlets",
-            
-            "Gem","Girdle","Helm","Horn","Stupidity",
-            "Incense","Stone","Ioun Stone", "Javelin","Jewel",
-            "Ointment","Pale Blue","Scarlet And","Manual","Incandescent",
-            
-            "Deep Red","Pink","Mirror","Necklace","And Green",
-            "Blue","Pearl","Powerlessness",
-								 "Vermin","Pipes","Hole","Dragon Slayer","Robe","Rope",
-								 "Frost Brand","Berserker","Scarab","Spade","Sphere",
-								 "Blessed","Talisman","Tome","Trident","Grimoire","Well",
-								 "Wings","Vial","Lantern",string.Empty,"Flask of Oil",
-								 "10 ft. Pole","50 ft. Rope","Iron","Thf Prickly Tools",
-								 "Iron Rations","Standard Rations","Holy Symbol",
-								 "Holy Water vial","Unholy Water vial","Barding","Dragon",
-								 "Lightning","Saddle","Staff","Drow","Wagon","+1",
-								 "+2","+3","+4","+5","of","Vulnerability","Cloak",
-								 "Displacement","Torches","Oil","Speed","Tapestry",
-								 "Spine","Copper","Silver","Electrum","Gold","Platinum",
-								 "Ointment","Keoghtum's","Sheet","Strength","Healing",
-								 
-                                 "Holding","Extra","Gaseous Form","Slipperiness",
-								 "Jewelled","Flying","Treasure Finding","Fear",
-								 "Disappearance","Statuette","Fungus","Chain","Pendant",
-								 "Broach","Of Seeking","-1","-2","-3","Lightning Bolt",
-								 "Fire Resistance","Magic Missiles","Save","Clrc Scroll",
-								 "MU Scroll","With 1 Spell","With 2 Spells","With 3 Spells",
-								 "Prot. Scroll","Jewelry","Fine","Huge","Bone","Brass",
-								 "Key","AC 2","AC 6","AC 4","AC 3","Of Prot.","Paralyzation",
-								 "Ogre Power","Invisibility","Missiles","Elvenkind",
-								 "Rotting","Covered","Efreeti","Bottle","Missile Attractor",
-								 "Of Maglubiyet","Secr Door & Trap Det","Gd Dragon Control",
-								 "Feather Falling","Giant Strength","Restoring Level(s)",
-								 "Flame Tongue","Fireballs","Spiritual","Boulder","Diamond",
-								 "Emerald","Opal","Saphire","Of Tyr","Of Tempus","Of Sune",
-								 "Wooden","+3 vs Undead","Pass","Cursed" 
-							 };
-
-
         internal static void ItemDisplayNameBuild(bool display_new_name, bool displayReadied, 
             int yCol, int xCol, Item item) /*id_item*/
         {
@@ -273,7 +206,7 @@ namespace engine
                 hidden_names_flag = 0;
             }
 
-            item.name += ItemName(item, hidden_names_flag);
+            item.name = item.GenerateName(hidden_names_flag);
 
             if (display_new_name)
             {
@@ -281,46 +214,6 @@ namespace engine
             }
         }
 
-
-        internal static string ItemName(Item item, int hidden_names_flag)
-        {
-            int display_flags = 0;
-            display_flags |= (item.namenum1 != 0 && (hidden_names_flag & 0x4) == 0) ? 0x1 : 0;
-            display_flags |= (item.namenum2 != 0 && (hidden_names_flag & 0x2) == 0) ? 0x2 : 0;
-            display_flags |= (item.namenum3 != 0 && (hidden_names_flag & 0x1) == 0) ? 0x4 : 0;
-
-            bool pural_added = false;
-            string name = "";
-
-            for (int var_1 = 3; var_1 >= 1; var_1--)
-            {
-                if (((display_flags >> (var_1 - 1)) & 1) > 0)
-                {
-                    name += itemNames[item.field_2EArray(var_1)];
-
-                    if (item.count < 2 ||
-                        pural_added == true)
-                    {
-                        name += " ";
-                    }
-                    else if ((1 << (var_1 - 1) == display_flags) ||
-                            (var_1 == 1 && display_flags > 4 && item.type != 86) ||
-                            (var_1 == 2 && (display_flags & 1) == 0) ||
-                            (var_1 == 3 && item.type == 86) ||
-                            (item.namenum3 != 0x87 && (item.type == 73 /*Arrow*/ || item.type == 28 /*Quarrel*/ || item.type == 9 /*Dart*/) && item.namenum3 != 0xb1))
-                    {
-                        name += "s ";
-                        pural_added = true;
-                    }
-                    else
-                    {
-                        name += " ";
-                    }
-                }
-            }
-
-            return name;
-        }
 
         internal static void PartySummary(Player player)
         {
@@ -529,12 +422,12 @@ namespace engine
                         }
                     }
 
-                    if (item.type == 73) // Arrow
+                    if (item.type == ItemType.Arrow)
                     {
                         player.arrows = item;
                     }
 
-                    if (item.type == 28) // Quarrel
+                    if (item.type == ItemType.Quarrel)
                     {
                         player.quarrels = item;
                     }
@@ -1594,7 +1487,7 @@ namespace engine
                     display_map_position_time();
                     break;
 
-                case GameState.State4:
+                case GameState.DungeonMap:
                     seg037.draw8x8_03();
                     ovr029.RedrawView();
                     PartySummary(gbl.player_ptr);
@@ -1752,7 +1645,7 @@ namespace engine
         }
 
 
-        internal static bool sub_6906C(out Item found_item, Player player) // sub_6906C
+        internal static bool GetCurrentAttackItem(out Item found_item, Player player) // sub_6906C
         {
             found_item = null;
             var flags = ItemDataFlags.None;

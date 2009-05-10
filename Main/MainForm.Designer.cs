@@ -38,8 +38,6 @@ namespace Main
             this.dumpTreasureItemsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.screenCaptureToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.cheatsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.optionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.soundOnToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.alwayAllowAreaMapToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.allowGodsInterveneToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.displayItemsFullNameToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -50,6 +48,9 @@ namespace Main
             this.skipTitleScreenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.viewItemsStatsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.noRaceClassLimitsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.optionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.soundOnToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.noRaceLevelLimitsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.displayArea)).BeginInit();
             this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -72,7 +73,7 @@ namespace Main
             this.cheatsToolStripMenuItem,
             this.optionsToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(161, 92);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(161, 114);
             // 
             // ddfsdToolStripMenuItem
             // 
@@ -133,28 +134,11 @@ namespace Main
             this.skipCopyProtectionToolStripMenuItem,
             this.skipTitleScreenToolStripMenuItem,
             this.viewItemsStatsToolStripMenuItem,
-            this.noRaceClassLimitsToolStripMenuItem});
+            this.noRaceClassLimitsToolStripMenuItem,
+            this.noRaceLevelLimitsToolStripMenuItem});
             this.cheatsToolStripMenuItem.Name = "cheatsToolStripMenuItem";
             this.cheatsToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
             this.cheatsToolStripMenuItem.Text = "Cheats";
-            // 
-            // optionsToolStripMenuItem
-            // 
-            this.optionsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.soundOnToolStripMenuItem});
-            this.optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
-            this.optionsToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
-            this.optionsToolStripMenuItem.Text = "Options";
-            // 
-            // soundOnToolStripMenuItem
-            // 
-            this.soundOnToolStripMenuItem.Checked = global::Main.Properties.Settings.Default.SoundOn;
-            this.soundOnToolStripMenuItem.CheckOnClick = true;
-            this.soundOnToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.soundOnToolStripMenuItem.Name = "soundOnToolStripMenuItem";
-            this.soundOnToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.soundOnToolStripMenuItem.Text = "Sound On";
-            this.soundOnToolStripMenuItem.Click += new System.EventHandler(this.soundOnToolStripMenuItem_Click);
             // 
             // alwayAllowAreaMapToolStripMenuItem
             // 
@@ -244,8 +228,33 @@ namespace Main
             this.noRaceClassLimitsToolStripMenuItem.CheckOnClick = true;
             this.noRaceClassLimitsToolStripMenuItem.Name = "noRaceClassLimitsToolStripMenuItem";
             this.noRaceClassLimitsToolStripMenuItem.Size = new System.Drawing.Size(248, 22);
-            this.noRaceClassLimitsToolStripMenuItem.Text = "No Race Class Limits";
+            this.noRaceClassLimitsToolStripMenuItem.Text = "No Race Class Restrictions";
             this.noRaceClassLimitsToolStripMenuItem.Click += new System.EventHandler(this.noRaceClassLimitsToolStripMenuItem_Click);
+            // 
+            // optionsToolStripMenuItem
+            // 
+            this.optionsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.soundOnToolStripMenuItem});
+            this.optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
+            this.optionsToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
+            this.optionsToolStripMenuItem.Text = "Options";
+            // 
+            // soundOnToolStripMenuItem
+            // 
+            this.soundOnToolStripMenuItem.Checked = global::Main.Properties.Settings.Default.SoundOn;
+            this.soundOnToolStripMenuItem.CheckOnClick = true;
+            this.soundOnToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.soundOnToolStripMenuItem.Name = "soundOnToolStripMenuItem";
+            this.soundOnToolStripMenuItem.Size = new System.Drawing.Size(132, 22);
+            this.soundOnToolStripMenuItem.Text = "Sound On";
+            this.soundOnToolStripMenuItem.Click += new System.EventHandler(this.soundOnToolStripMenuItem_Click);
+            // 
+            // noRaceLevelLimitsToolStripMenuItem
+            // 
+            this.noRaceLevelLimitsToolStripMenuItem.Name = "noRaceLevelLimitsToolStripMenuItem";
+            this.noRaceLevelLimitsToolStripMenuItem.Size = new System.Drawing.Size(248, 22);
+            this.noRaceLevelLimitsToolStripMenuItem.Text = "No Race Level Limits";
+            this.noRaceLevelLimitsToolStripMenuItem.Click += new System.EventHandler(this.noRaceLevelLimitsToolStripMenuItem_Click);
             // 
             // MainForm
             // 
@@ -290,6 +299,7 @@ namespace Main
         private System.Windows.Forms.ToolStripMenuItem dumpTreasureItemsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem optionsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem soundOnToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem noRaceLevelLimitsToolStripMenuItem;
     }
 }
 

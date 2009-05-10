@@ -29,7 +29,7 @@ namespace Classes
         Shop = 1,
         Camping = 2,
         WildernessMap = 3,
-        State4 = 4,
+        DungeonMap = 4,
         Combat = 5,
         State6 = 6,
         EndGame = 7
@@ -277,7 +277,8 @@ namespace Classes
                 new ClassId[] /*Half-Elf*/{ ClassId.cleric, ClassId.fighter, ClassId.magic_user, ClassId.thief, ClassId.ranger,ClassId.mc_c_f, ClassId.mc_c_r, ClassId.mc_c_f_m, ClassId.mc_c_mu, ClassId.mc_f_mu, ClassId.mc_f_t, ClassId.mc_f_mu_t, ClassId.mc_mu_t},
                 new ClassId[] /*Halfling*/{ ClassId.fighter, ClassId.thief, ClassId.mc_f_t},
                 new ClassId[] /*Half-Orc*/{ ClassId.cleric, ClassId.fighter, ClassId.thief, ClassId.mc_c_f, ClassId.mc_c_t,ClassId.mc_f_t},
-                new ClassId[] /*Human*/{ ClassId.cleric, ClassId.fighter, ClassId.magic_user, ClassId.thief, ClassId.paladin, ClassId.ranger}};
+                new ClassId[] /*Human*/{ ClassId.cleric, ClassId.fighter, ClassId.magic_user, ClassId.thief, ClassId.paladin, ClassId.ranger},
+                new ClassId[] /*Cheaters*/{ ClassId.cleric, ClassId.fighter, ClassId.magic_user, ClassId.thief, ClassId.ranger,ClassId.mc_c_f, ClassId.mc_c_r, ClassId.mc_c_f_m, ClassId.mc_c_mu, ClassId.mc_f_mu, ClassId.mc_f_t, ClassId.mc_f_mu_t, ClassId.mc_mu_t}};
 
 
         public static bool stopVM = false; //byte_1AB08
@@ -689,7 +690,7 @@ namespace Classes
             new SpellEntry(SpellClass.MagicUser, 4, 0, 0, 0, 10, 4, 0, DamageOnSave.Zero, SaveVerseType.type4, Affects.none, SpellWhen.Combat, 4, 4, 1, 0), 
             new SpellEntry(SpellClass.Unknown10, 0, 10, 0, 6, 0, 24, 0, DamageOnSave.Unknown_1E, SaveVerseType.Poison, Affects.enlarge, SpellWhen.Camp, 0, 1, 0x28, 0x28) };
 
-        public static ItemData[] ItemDataTable; // unk_1C020
+        public static ItemDataTable ItemDataTable; // unk_1C020
 
         public static List<Struct_1D183> downedPlayers; // unk_1D183 
 

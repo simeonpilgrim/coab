@@ -531,7 +531,7 @@ namespace engine
         }
 
 
-        internal static void sub_74E6F(Player player)
+        internal static void CombatantKilled(Player player) // sub_74E6F
         {
             if (gbl.game_state != GameState.Combat)
             {
@@ -555,6 +555,7 @@ namespace engine
                     RedrawPlayerBackground(player_index);
                     seg044.sound_sub_120E0(Sound.sound_5);
 
+                    // Draw skull overlay
                     for (int var_3 = 0; var_3 <= 8; var_3++)
                     {
                         foreach (var pos in BuildSizeMap(gbl.CombatMap[player_index].size, gbl.CombatMap[player_index].screenPos))
@@ -571,6 +572,7 @@ namespace engine
                         seg049.SysDelay(10);
                     }
 
+                    // Add downed corpse for team players.
                     if (player.actions.nonTeamMember == false)
                     {
                         var b = new Struct_1D183();
@@ -586,6 +588,8 @@ namespace engine
                         }
                     }
 
+
+                    // clean-up combat stuff
                     seg041.GameDelay();
                     RedrawPlayerBackground(player_index);
 

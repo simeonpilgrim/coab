@@ -23,11 +23,15 @@ namespace engine
             gbl.menuSelectedWord = 0;
 
             MenuItem mi;
+            arg_4 = null;
 
             char input_key = ovr027.sl_select_item(out mi, ref index, ref gbl.shopRedrawMenuItems, true, list,
                 0x16, 0x26, 1, 1, 15, 10, 13, "Buy", "Items: " );
 
-            arg_4 = mi.Item;
+            if (mi != null)
+            {
+                arg_4 = mi.Item;
+            }
 
             foreach (var item in gbl.items_pointer)
             {

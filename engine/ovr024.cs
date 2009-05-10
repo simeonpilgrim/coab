@@ -45,12 +45,12 @@ namespace engine
                 player.in_combat = false;
                 player.hit_point_current = 0;
 
-                sub_645AB(player);
+                RemoveCombatAffects(player);
                 CheckAffectsEffect(player, CheckType.Death);
 
                 if (player.in_combat == false)
                 {
-                    ovr033.sub_74E6F(player);
+                    ovr033.CombatantKilled(player);
                 }
 
                 seg041.GameDelay();
@@ -616,7 +616,7 @@ namespace engine
         }
 
 
-        internal static void sub_644A7(string msg, Status health_status, Player player)
+        internal static void RemoveFromCombat(string msg, Status health_status, Player player) // sub_644A7
         {
             if (player.in_combat == true)
             {
@@ -643,7 +643,7 @@ namespace engine
                 ovr033.setup_mapToPlayerIndex_and_playerScreen();
 
                 ovr025.clear_actions(player);
-                sub_645AB(player);
+                RemoveCombatAffects(player);
             }
         }
 
@@ -659,7 +659,7 @@ namespace engine
         }
 
 
-        internal static void sub_645AB(Player player)
+        internal static void RemoveCombatAffects(Player player) // sub_645AB
         {
             Affects[] table = { 
 								  Affects.faerie_fire,
@@ -692,7 +692,7 @@ namespace engine
         }
 
 
-        internal static void sub_6460D(Player player) // sub_6460D
+        internal static void RemoveAttackersAffects(Player player) // sub_6460D
         {
             Affects[] table = {   Affects.reduce, 
 								  Affects.clear_movement, 
@@ -1261,13 +1261,13 @@ namespace engine
                     }
                     else
                     {
-                        sub_645AB(player);
+                        RemoveCombatAffects(player);
 
                         CheckAffectsEffect(player, CheckType.Death);
 
                         if (player.in_combat == false)
                         {
-                            ovr033.sub_74E6F(player);
+                            ovr033.CombatantKilled(player);
                         }
                         else
                         {

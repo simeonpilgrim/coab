@@ -36,7 +36,7 @@ namespace engine
 
             if (var_2 == false)
             {
-                var_2 = sub_3637F(player);
+                var_2 = FleeCheck_001(player);
             }
 
             if (player.actions.field_14 == true &&
@@ -668,7 +668,7 @@ namespace engine
 
                             if (ovr025.is_weapon_ranged(player) == true)
                             {
-                                gbl.byte_1D90E = ovr025.sub_6906C(out item, player);
+                                gbl.byte_1D90E = ovr025.GetCurrentAttackItem(out item, player);
 
                                 if (ovr025.is_weapon_ranged_melee(player) == true &&
                                     ovr025.getTargetRange(target, player) == 1)
@@ -772,12 +772,12 @@ namespace engine
         }
 
 
-        static bool sub_3637F(Player player)
+        static bool FleeCheck_001(Player player) // sub_3637F
         {
             bool var_1 = false;
             player.actions.field_14 = false;
 
-            ovr024.sub_6460D(player);
+            ovr024.RemoveAttackersAffects(player);
 
             if (player.actions.fleeing == true)
             {
@@ -816,7 +816,7 @@ namespace engine
                         }
                         else if (player._int > 5)
                         {
-                            ovr024.sub_644A7("Surrenders", Status.unconscious, player);
+                            ovr024.RemoveFromCombat("Surrenders", Status.unconscious, player);
 
                             var_1 = true;
                             ovr025.clear_actions(player);
@@ -845,7 +845,7 @@ namespace engine
                 rating += itemData.bonusNormal * 2;
             }
 
-            if (item.type == 85 &&
+            if (item.type == ItemType.Type_85 &&
                 player.actions.target != null &&
                 player.actions.target.field_E9 > 0)
             {
@@ -915,7 +915,7 @@ namespace engine
 
             foreach(Item item in player.items)
             {
-                int item_type = item.type;
+                ItemType item_type = item.type;
 
                 if (gbl.ItemDataTable[item_type].item_slot == 0 &&
                     (gbl.ItemDataTable[item_type].classFlags & player.classFlags) != 0)

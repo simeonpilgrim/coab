@@ -108,26 +108,28 @@ namespace engine
 
         public static void DumpTreasureItems()
         {
-            for (int i = 0; i < 0x81; i++)
-            {
-                //var older = new System.Collections.Generic.List<string>();
+            //for (int i = 0; i < 0x81; i++)
+            //{
+            //    //var older = new System.Collections.Generic.List<string>();
 
-                //for (int j = 0; j < 1000; j++)
-                //{
-                Item it = ovr022.create_item(i);
-                string name = ovr025.ItemName(it, 0);
-                Player pl = new Player();
-                pl.field_151 = it;
-                bool ranged = ovr025.is_weapon_ranged(pl);
-                bool rangedMelee = ovr025.is_weapon_ranged_melee(pl);
+            //    //for (int j = 0; j < 1000; j++)
+            //    //{
+            //    Item it = ovr022.create_item(i);
+            //    it.name = it.GenerateName(0);
+            //    Player pl = new Player();
+            //    pl.field_151 = it;
+            //    bool ranged = ovr025.is_weapon_ranged(pl);
+            //    bool rangedMelee = ovr025.is_weapon_ranged_melee(pl);
 
-                //if (older.Contains(name) == false)
-                //{
-                Logging.Logger.Debug("Id: {0} {1} Ranged: {2} Ranged-Melee: {3}", i, name, ranged, rangedMelee);
-                //older.Add(name);
-                //}
-                //}
-            }
+            //    //if (older.Contains(name) == false)
+            //    //{
+            //    Logging.Logger.Debug("Id: {0} {1} Ranged: {2} Ranged-Melee: {3}", i, it.name, ranged, rangedMelee);
+            //    //older.Add(name);
+            //    //}
+            //    //}
+            //}
+
+            Item.DumpItemsText("allitems.txt");
         }
 
         static void TxtDumpPlayer(Player p, int area, int id)
@@ -137,9 +139,9 @@ namespace engine
             Logger.Debug("   S: {0}{1} D: {2} C: {3} I: {4} W: {5} Ch: {6}", p.strength, str100, p.dex, p.con, p._int, p.wis, p.charisma);
             Logger.Debug("   Lvls: {0} {1} {2} {3} {4} {5} {6} {7}", p.ClassLevel[0], p.ClassLevel[1], p.ClassLevel[2], p.ClassLevel[3], p.ClassLevel[4], p.ClassLevel[5], p.ClassLevel[6], p.ClassLevel[7]);
             if (p.field_151 != null)
-                Logger.Debug("   Weapon: {0}", ovr025.ItemName(p.field_151, 0));
+                Logger.Debug("   Weapon: {0}", p.field_151.GenerateName(0));
             if (p.armor != null)
-                Logger.Debug("   Armor: {0}", ovr025.ItemName(p.armor, 0));
+                Logger.Debug("   Armor: {0}", p.armor.GenerateName(0));
 
             Logger.Debug("   Damage: {0}d{1}{2}{3}", p.attack1_DiceCount, p.attack1_DiceSize,
                 p.attack1_DamageBonus > 0 ? "+" : "", p.attack1_DamageBonus != 0 ? p.attack1_DamageBonus.ToString() : "");
@@ -185,8 +187,8 @@ namespace engine
             dw.Write("<td>{0}</td>", p.ClassLevel[6]);
             dw.Write("<td>{0}</td>", p.ClassLevel[7]);
 
-            dw.Write("<td nowrap=\"nowrap\">{0}</td>", p.field_151 != null ? ovr025.ItemName(p.field_151, 0) : "");
-            dw.Write("<td nowrap=\"nowrap\">{0}</td>", p.armor != null ? ovr025.ItemName(p.armor, 0) : "");
+            dw.Write("<td nowrap=\"nowrap\">{0}</td>", p.field_151 != null ? p.field_151.GenerateName(0) : "");
+            dw.Write("<td nowrap=\"nowrap\">{0}</td>", p.armor != null ? p.armor.GenerateName(0) : "");
             dw.Write("<td nowrap=\"nowrap\">{0}d{1}{2}{3}</td>", p.attack1_DiceCount, p.attack1_DiceSize,
                 p.attack1_DamageBonus > 0 ? "+" : "", p.attack1_DamageBonus != 0 ? p.attack1_DamageBonus.ToString() : "");
 

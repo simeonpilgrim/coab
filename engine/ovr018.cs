@@ -550,7 +550,13 @@ namespace engine
 
             var_C.Add(new MenuItem("Pick Class", true));
 
-            foreach (var _class in gbl.RaceClasses[(int)player.race])
+            var ClassList = gbl.RaceClasses[(int)player.race];
+            if (player.race != Race.human && Cheats.no_race_class_restrictions)
+            {
+                ClassList = gbl.RaceClasses[(int)Race.human + 1];
+            }
+
+            foreach (var _class in ClassList)
             {
                 var_C.Add(new MenuItem("  " + ovr020.classString[(int)_class]));
             }
@@ -573,7 +579,7 @@ namespace engine
             } while (input_key != 'S');
 
             player.exp = 25000;
-            player._class = gbl.RaceClasses[(int)player.race][index];
+            player._class = ClassList[index];
             player.HitDice = 1;
 
             if (player._class >= ClassId.cleric && player._class <= ClassId.fighter)
@@ -2647,7 +2653,7 @@ namespace engine
                     bool race_limited = RaceClassLimit(class_lvl, player_ptr, (ClassId)_class);
 
                     if (race_limited == false || 
-                        Cheats.no_race_class_limits == true)
+                        Cheats.no_race_level_limits == true)
                     {
                         if ((exp_table[_class, class_lvl] > 0) &&
                             (exp_table[_class, class_lvl] <= player_ptr.exp ||

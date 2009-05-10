@@ -472,7 +472,7 @@ namespace engine
                     if (player.in_combat == true &&
                         gbl.area_ptr.field_1CA == 0 &&
                         (gbl.game_state == GameState.Camping || gbl.game_state == GameState.WildernessMap ||
-                         gbl.game_state == GameState.State4 || gbl.game_state == GameState.Combat ||
+                         gbl.game_state == GameState.DungeonMap || gbl.game_state == GameState.Combat ||
                          (player.actions != null && player.actions.can_use == true)))
                     {
                         text += " Use";
@@ -838,7 +838,7 @@ namespace engine
                     }
                 }
 
-                if (item.type == 73) // ItemType.Arrow
+                if (item.type == ItemType.Arrow)
                 {
                     if (player.arrows != null)
                     {
@@ -847,7 +847,7 @@ namespace engine
                     }
                 }
 
-                if (item.type == 28) // ItemType.Quarrel
+                if (item.type == ItemType.Quarrel)
                 {
                     if (player.quarrels != null)
                     {
@@ -1109,8 +1109,8 @@ namespace engine
 
             if (item.count > 1)
             {
-                if (item.type != 73 && // ItemType.Arrow 
-                    item.type != 28) // ItemType.Quarrel
+                if (item.type != ItemType.Arrow && 
+                    item.type != ItemType.Quarrel) 
                 {
                     item_value = (item.count * item_value) / 20;
                 }

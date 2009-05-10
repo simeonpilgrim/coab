@@ -204,13 +204,13 @@ namespace engine
 
                 line += 2;
 
-                ovr024.sub_645AB(target);
+                ovr024.RemoveCombatAffects(target);
 
                 ovr024.CheckAffectsEffect(target, CheckType.Death);
 
                 if (target.in_combat == false)
                 {
-                    ovr033.sub_74E6F(target);
+                    ovr033.CombatantKilled(target);
                 }
                 else
                 {
@@ -434,7 +434,7 @@ namespace engine
 
             if (gets_away == true)
             {
-                ovr024.sub_644A7("Got Away", Status.running, player);
+                ovr024.RemoveFromCombat("Got Away", Status.running, player);
             }
             else
             {
@@ -453,7 +453,7 @@ namespace engine
             player.field_19C = player.attacksCount;
 
             if (ovr025.is_weapon_ranged(player) == true &&
-                ovr025.sub_6906C(out var_9, player) == true)
+                ovr025.GetCurrentAttackItem(out var_9, player) == true)
             {
                 var_5 = true;
                 byte var_4 = gbl.ItemDataTable[player.field_151.type].numberAttacks;
@@ -644,7 +644,7 @@ namespace engine
                     else
                     {
                         ovr025.DisplayPlayerStatusString(false, 10, "Is destroyed", target);
-                        ovr033.sub_74E6F(target);
+                        ovr033.CombatantKilled(target);
                         target.health_status = Status.gone;
                         target.in_combat = false;
                     }
@@ -848,8 +848,8 @@ namespace engine
                 }
 
                 if (item != null && 
-                    item.count == 0 && 
-                    item.type == 100)
+                    item.count == 0 &&
+                    item.type == ItemType.DartOfHornetsNest)
                 {
                     attacker.field_19C = 0;
                     attacker.field_19D = 0;
@@ -952,8 +952,8 @@ namespace engine
             }
 
             if (attacker.field_151 != null && /* added to get passed this point when null, why null, should 151 ever be null? */
-                (attacker.field_151.type == 47 || // ItemType.Sling
-                attacker.field_151.type == 101)) 
+                (attacker.field_151.type == ItemType.Sling ||
+                attacker.field_151.type == ItemType.StaffSling)) 
             {
                 sub_40BF1(attacker.field_151, target, attacker);
             }
@@ -1446,12 +1446,12 @@ namespace engine
                 (attacker.thief_old_lvl > 0 && ovr026.MulticlassExceedLastLevel(attacker) != 0))
             {
                 if (weapon == null ||
-                    weapon.type == 97 ||
-                    weapon.type == 7 || // ItemType.Club
-                    weapon.type == 8 || // ItemType.Dagger
-                    weapon.type == 35 || // ItemType.BroadSword
-                    weapon.type == 36 || // ItemType.LongSword
-                    weapon.type == 37) // ItemType.ShortSword
+                    weapon.type == ItemType.DrowLongSword ||
+                    weapon.type == ItemType.Club || 
+                    weapon.type == ItemType.Dagger ||
+                    weapon.type == ItemType.BroadSword ||
+                    weapon.type == ItemType.LongSword ||
+                    weapon.type == ItemType.ShortSword) 
                 {
                     correctWeapon = true;
                 }
@@ -1613,12 +1613,12 @@ namespace engine
 
             switch (item.type)
             {
-                case 9: // ItemType.Dart
-                case 21: // ItemType.Javelin
-                case 100:
-                case 28: // ItemType.Quarrel
-                case 31: // ItemType.Spear
-                case 73: // ItemType.Arrow
+                case ItemType.Dart: 
+                case ItemType.Javelin: // ItemType.Javelin
+                case ItemType.DartOfHornetsNest:
+                case ItemType.Quarrel: 
+                case ItemType.Spear: 
+                case ItemType.Arrow:
                     if ((dir & 1) == 1)
                     {
                         if (dir == 3 || dir == 5)
@@ -1637,26 +1637,26 @@ namespace engine
                     seg044.sound_sub_120E0(Sound.sound_c);
                     break;
 
-                case 2: // ItemType.HandAxe
-                case 7: // ItemType.Club
-                case 14: // ItemType.Glaive
+                case ItemType.HandAxe:
+                case ItemType.Club:
+                case ItemType.Glaive:
                     ovr025.load_missile_icons(var_1 + 3);
                     frame_count = 4;
                     delay = 50;
                     seg044.sound_sub_120E0(Sound.sound_9);
                     break;
 
-                case 85:
-                case 86:
+                case ItemType.Type_85:
+                case ItemType.FlaskOfOil:
                     ovr025.load_missile_icons(var_1 + 4);
                     frame_count = 4;
                     delay = 50;
                     seg044.sound_sub_120E0(Sound.sound_6);
                     break;
 
-                case 101:
-                case 47: // ItemType.Sling
-                case 98:
+                case ItemType.StaffSling:
+                case ItemType.Sling: 
+                case ItemType.Spine:
                     var_1++;
                     ovr025.load_missile_dax(false, 0, 0, var_1 + 7);
                     ovr025.load_missile_dax(false, 1, 1, var_1 + 7);
@@ -1793,7 +1793,7 @@ namespace engine
                     else
                     {
                         Item dummyItem;
-                        if (ovr025.sub_6906C(out dummyItem, attacker) == true &&
+                        if (ovr025.GetCurrentAttackItem(out dummyItem, attacker) == true &&
                             (ovr025.BuildNearTargets(1, attacker).Count == 0 || ovr025.is_weapon_ranged_melee(attacker) == true))
                         {
                             text = "Target ";
@@ -1845,7 +1845,7 @@ namespace engine
                         Item var_5 = null;
 
                         if (ovr025.is_weapon_ranged(attacker) == true &&
-                            ovr025.sub_6906C(out var_5, attacker) == true &&
+                            ovr025.GetCurrentAttackItem(out var_5, attacker) == true &&
                             ovr025.is_weapon_ranged_melee(attacker) == true &&
                             ovr025.getTargetRange(target, attacker) == 0)
                         {
@@ -1964,7 +1964,7 @@ namespace engine
                             can_target = false;
                         }
                         else if (ovr025.is_weapon_ranged(player01) == true &&
-                             (ovr025.sub_6906C(out dummyItem, player01) == true ||
+                             (ovr025.GetCurrentAttackItem(out dummyItem, player01) == true ||
                              (ovr025.BuildNearTargets(1, player01).Count >= 0 &&
                                 ovr025.is_weapon_ranged_melee(player01) == false)))
                         {

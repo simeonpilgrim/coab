@@ -502,7 +502,7 @@ namespace engine
 
             gbl.area2_ptr.field_592 = 0;
 
-            if (gbl.game_state == GameState.State4)
+            if (gbl.game_state == GameState.DungeonMap)
             {
                 bool stop_loop = false;
 
@@ -623,7 +623,7 @@ namespace engine
 
             bool var_1 = false;
 
-            if (gbl.game_state == GameState.State4)
+            if (gbl.game_state == GameState.DungeonMap)
             {
                 if (gbl.area2_ptr.field_592 < 0xff)
                 {
