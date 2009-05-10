@@ -68,10 +68,17 @@ namespace Classes
             improved_area_map = value;
         }
 
-        public static bool no_race_class_limits = false;
-        public static void NoRaceClassLimits(bool value)
+        public static bool no_race_level_limits = false;
+        public static void NoRaceLevelLimits(bool value)
         {
-            no_race_class_limits = value;
+            no_race_level_limits = value;
         }
+
+        public static bool no_race_class_restrictions = false;
+        public static void NoRaceClassRestrictions(bool value)
+        {
+            no_race_class_restrictions = value;
+        }
+
     }
 }

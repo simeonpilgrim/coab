@@ -344,7 +344,7 @@ namespace engine
             }
             else
             {
-                if ((gbl.last_game_state != GameState.State4 || gbl.game_state == GameState.State4) &&
+                if ((gbl.last_game_state != GameState.DungeonMap || gbl.game_state == GameState.DungeonMap) &&
                     (gbl.byte_1EE8C == true || gbl.displayPlayerSprite))
                 {
                     gbl.can_draw_bigpic = true;
@@ -1025,7 +1025,7 @@ namespace engine
 
             if (gbl.area_ptr.inDungeon != 0)
             {
-                gbl.game_state = GameState.State4;
+                gbl.game_state = GameState.DungeonMap;
             }
             else
             {
@@ -1573,7 +1573,7 @@ namespace engine
         {
             ovr008.vm_LoadCmdSets(1);
 
-            byte item_type = (byte)ovr008.vm_GetCmdValue(1);
+            ItemType item_type = (ItemType)ovr008.vm_GetCmdValue(1);
 
             for (int i = 0; i < 6; i++)
             {
@@ -2083,7 +2083,7 @@ namespace engine
         internal static void CMD_DestroyItems() // sub_292F9
         {
             ovr008.vm_LoadCmdSets(1);
-            byte item_type = (byte)ovr008.vm_GetCmdValue(1);
+            ItemType item_type = (ItemType)ovr008.vm_GetCmdValue(1);
 
             VmLog.WriteLine("CMD_DestroyItems: type: {0}", item_type);
 
@@ -2226,8 +2226,8 @@ namespace engine
 
                 if (gbl.vmFlag01 == false)
                 {
-                    if (((gbl.last_game_state != GameState.State4 || gbl.game_state == GameState.State4) && gbl.byte_1AB0B == true) ||
-                        (gbl.last_game_state == GameState.State4 && gbl.game_state == GameState.State4))
+                    if (((gbl.last_game_state != GameState.DungeonMap || gbl.game_state == GameState.DungeonMap) && gbl.byte_1AB0B == true) ||
+                        (gbl.last_game_state == GameState.DungeonMap && gbl.game_state == GameState.DungeonMap))
                     {
                         ovr029.RedrawView();
                     }
@@ -2263,7 +2263,7 @@ namespace engine
             gbl.restore_player_ptr = false;
             gbl.byte_1AB0B = false;
             gbl.byte_1EE98 = true;
-            gbl.game_state = GameState.State4;
+            gbl.game_state = GameState.DungeonMap;
             gbl.vmFlag01 = false;
 
             if (gbl.area_ptr.field_1E4 == 0)

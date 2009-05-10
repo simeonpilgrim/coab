@@ -326,7 +326,7 @@ namespace engine
 
         internal static void affect_spiritual_hammer(Effect add_remove, object param, Player player) /* sub_3A583 */
         {
-            Item item = player.items.Find(i => i.type == 20 && i.namenum3 == 0xf3); // ItemType.Hammer
+            Item item = player.items.Find(i => i.type == ItemType.Hammer && i.namenum3 == 0xf3);
             bool item_found = item != null;
 
             if (add_remove == Effect.Remove && item != null)
@@ -339,7 +339,7 @@ namespace engine
                 player.items.Count < Player.MaxItems)
             {
                 item = new Item();
-                item.type = 20; // ItemType.Hammer
+                item.type = ItemType.Hammer;
                 item.namenum2 = 20;
                 item.namenum3 = 243;
                 item.plus = 1;
@@ -624,7 +624,7 @@ namespace engine
 
             if (player.field_151 != null)
             {
-                bool item_found = ovr025.sub_6906C(out item, player);
+                bool item_found = ovr025.GetCurrentAttackItem(out item, player);
 
                 if (item_found == false || item == null)
                 {
@@ -1464,12 +1464,11 @@ namespace engine
         }
 
 
-        internal static void sub_3C2F9(Effect arg_0, object param, Player player)
+        internal static void sub_3C2F9(Effect arg_0, object param, Player player) // sub_3C2F9
         {
             Item item = gbl.player_ptr.field_151;
 
-            if (item != null &&
-                item.type == 85)
+            if (item != null && item.type == ItemType.Type_85)
             {
                 gbl.damage = ovr024.roll_dice_save(6, 1) + 1;
             }
@@ -1503,7 +1502,7 @@ namespace engine
 
             if (field_151 != null)
             {
-                if (field_151.type == 87 || field_151.type == 88)
+                if (field_151.type == ItemType.Type_87 || field_151.type == ItemType.Type_88)
                 {
                     AvoidMissleAttack(50, player);
                 }
@@ -1600,20 +1599,20 @@ namespace engine
         {
             Item item;
 
-            if (ovr025.sub_6906C(out item, gbl.player_ptr) == true &&
+            if (ovr025.GetCurrentAttackItem(out item, gbl.player_ptr) == true &&
                 item != null &&
-                item.type == 28 && //ItemType.Quarrel
+                item.type == ItemType.Quarrel && 
                 item.namenum3 == 0x87)
             {
                 player.health_status = Status.gone;
                 player.in_combat = false;
                 player.hit_point_current = 0;
-                ovr024.sub_645AB(player);
+                ovr024.RemoveCombatAffects(player);
                 ovr024.CheckAffectsEffect(player, CheckType.Death);
 
                 if (player.in_combat == true)
                 {
-                    ovr033.sub_74E6F(player);
+                    ovr033.CombatantKilled(player);
                 }
             }
         }

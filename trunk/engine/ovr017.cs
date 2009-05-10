@@ -850,7 +850,7 @@ namespace engine
         static Set asc_49280 = new Set(0x020E, new byte[] { 
             0x04, 0x04, 0x00, 0x80, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0x08, 0x00, 0x10	});
 
-        static ClassId[] unk_1682A = {
+        static ClassId[] HillsFarClassMap = {
             ClassId.unknown,    ClassId.thief,      ClassId.fighter,    ClassId.mc_f_t, ClassId.magic_user,
             ClassId.mc_mu_t,    ClassId.mc_f_mu,    ClassId.mc_f_mu_t,  ClassId.cleric, ClassId.mc_c_t,
             ClassId.mc_c_f,     ClassId.unknown,    ClassId.mc_c_mu,    ClassId.unknown, ClassId.mc_c_f_m, 
@@ -926,7 +926,7 @@ namespace engine
                     {
                         Item newItem = new Item(0, Affects.helpless, (Affects)var_1C4.field_1D,
                             (short)(var_1C4.field_1D * 200), 0, 0,
-                            false, 0, false, 0, 0, 0x57, 0xa7, 0xa8, 0x46);
+                            false, 0, false, 0, 0, 0x57, 0xa7, 0xa8, ItemType.Necklace);
                         
                         player_ptr.items.Add(newItem);
                     }
@@ -935,7 +935,7 @@ namespace engine
                     {
                         Item newItem = new Item(0, Affects.poison_plus_4, (Affects)var_1C4.field_23,
                             (short)(var_1C4.field_23 * 0x15E), 0, 1,
-                            false, 0, false, 0, 1, 0x45, 0xa7, 0xce, 0x4F);
+                            false, 0, false, 0, 1, 0x45, 0xa7, 0xce, ItemType.WandB);
 
                         player_ptr.items.Add(newItem);
                     }
@@ -944,7 +944,7 @@ namespace engine
                     {
                         Item newItem = new Item(0, Affects.helpless, (Affects)var_1C4.field_86,
                             (short)(var_1C4.field_86 * 0xc8), 0, 0,
-                            false, 0, false, 0, 0, 0x42, 0xa7, 0xa8, 0x45);
+                            false, 0, false, 0, 0, 0x42, 0xa7, 0xa8, ItemType.RingInvis);
 
                         player_ptr.items.Add(newItem);
                     }
@@ -953,7 +953,7 @@ namespace engine
                     {
                         Item newItem = new Item(0, Affects.highConRegen, (Affects)var_1C4.field_87,
                             (short)(var_1C4.field_87 * 0x190), 0, (short)(var_1C4.field_87 * 10),
-                            false, 0, false, 0, 0, 0x40, 0xa7, 0xb9, 0x46);
+                            false, 0, false, 0, 0, 0x40, 0xa7, 0xb9, ItemType.Necklace);
 
                         player_ptr.items.Add(newItem);
                     }
@@ -1075,7 +1075,7 @@ namespace engine
                                 break;
                         }
 
-                        player01_ptr._class = unk_1682A[var_1C4.field_35 & 0x0F];
+                        player01_ptr._class = HillsFarClassMap[var_1C4.field_35 & 0x0F];
                         player01_ptr.age = var_1C4.field_1E;
 
                         player01_ptr.cleric_lvl = (var_1C4.field_B7 > 0) ? (byte)1 : (byte)0;

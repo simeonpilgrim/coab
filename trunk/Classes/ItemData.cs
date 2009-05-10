@@ -17,6 +17,26 @@ namespace Classes
 
     }
 
+    public class ItemDataTable
+    {
+        ItemData[] table;
+
+        public ItemDataTable(byte[] data)
+        {
+            table = new ItemData[0x81];
+            for (int i = 0; i < 0x81; i++)
+            {
+                table[i] = new ItemData(data, i * 0x10, i);
+            }
+        }
+
+        public ItemData this[ItemType index]
+        {
+            get { return table[(int)index]; }
+            set { table[(int)index] = value; }
+        }
+    }
+
 	/// <summary>
 	/// Summary description for Struct_1C020.
 	/// </summary>
@@ -72,7 +92,8 @@ namespace Classes
         }
     }
 
-    enum ItemType
+
+    public enum ItemType
     {
         BattleAxe = 1,
         HandAxe = 2,
@@ -121,8 +142,6 @@ namespace Classes
         HeavyCrossbow = 45,
         LightCrossbow = 46,
         Sling = 47,
-        //Mail = 48,
-        //Armor = 49,
         LeatherArmor = 50,
         PaddedArmor = 51,
         StuddedLeather = 52,
@@ -133,18 +152,33 @@ namespace Classes
         BandedMail = 57,
         PlateMail = 58,
         Shield = 59,
-        MagicUserScroll = 61,
-        ClericScroll = 62,
-        GauntletsOfOgrePowerA = 63,
-        GauntletsOfOgrePowerB = 67,
-        GemJewel = 70,
-        PotionOfHealing = 71,
+        ScrollOfProt = 60,
+        MUScroll = 61,
+        ClrcScroll = 62,
+        Gauntlets = 63, // Gloves, Gauntlets
+        Girdle = 65,
+        Type_67 = 67,
+        RingInvis = 69,
+        Necklace = 70, // Gems, Jewel, Necklace, Dust
+        Potion = 71,
         Arrow = 73,
         Bracers = 77,
-        WandOfMagicMissilesA = 78,
-        WandOfMagicMissilesB = 79,
-        PotionOfGiantStrengthA = 84,
-        PotionOfGiantStrengthB = 92,
-        RingOfProtection = 93,
+        WandA = 78,
+        WandB = 79,
+        Type_85 = 85,
+        FlaskOfOil = 86,
+        Type_87 = 87,
+        Type_88 = 88,
+        Type_89 = 89,
+        Cloak = 92,
+        RingOfProt = 93,
+        DrowMage = 94,
+        DrowChainMail = 96,
+        DrowLongSword = 97,
+        Spine = 98,
+        RingOfWizardry = 99,
+        DartOfHornetsNest = 100,
+        StaffSling = 101  
     }
+
 }

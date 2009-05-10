@@ -76,18 +76,6 @@ namespace Classes
         unknown = 17
     }
 
-    public enum Skills
-    {
-        cleric = 0,
-        druid = 1,
-        fighter = 2,
-        paladin = 3,
-        ranger = 4,
-        magic_user = 5,
-        thief = 6,
-        monk = 7
-    }
-
     public struct StatValue
     {
         public byte tmp;

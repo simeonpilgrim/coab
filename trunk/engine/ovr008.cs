@@ -258,7 +258,7 @@ namespace engine
                     ovr029.RedrawView();
                 }
 
-                if (gbl.game_state == GameState.State4)
+                if (gbl.game_state == GameState.DungeonMap)
                 {
                     ovr030.Show3DSprite(gbl.byte_1D556, encounter_distance + 1);
                 }
@@ -268,7 +268,7 @@ namespace engine
                 gbl.byte_1EE96 != gbl.area2_ptr.HeadBlockId)
             {
                 if (encounter_distance == 0 &&
-                    gbl.game_state == GameState.State4 &&
+                    gbl.game_state == GameState.DungeonMap &&
                     gbl.byte_1EE95 == false)
                 {
                     gbl.byte_1EE96 = (byte)gbl.area2_ptr.HeadBlockId;
@@ -724,7 +724,7 @@ namespace engine
                     }
                     else
                     {
-                        gbl.game_state = GameState.State4;
+                        gbl.game_state = GameState.DungeonMap;
                     }
                 }
 
