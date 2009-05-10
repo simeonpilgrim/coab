@@ -361,7 +361,7 @@ namespace Classes
 
         [DataOffset(0x119, DataType.Byte)]
         public byte sex; // 0x119;
-        [DataOffset(0x11a, DataType.Byte)]
+        [DataOffset(0x11a, DataType.IByte)]
         public MonsterType monsterType; // 0x11a;
         [DataOffset(0x11b, DataType.Byte)]
         public byte alignment; // 0x11b;
@@ -522,7 +522,7 @@ namespace Classes
         public CombatTeam combat_team; // 0x197 0 - our team, 1 - enemy
         [DataOffset(0x198, DataType.IByte)]
         public QuickFight quick_fight; // 0x198
-        [DataOffset(0x199, DataType.SByte)]
+        [DataOffset(0x199, DataType.IByte)]
         public int hitBonus; // 0x199 field_199
         [DataOffset(0x19a, DataType.Byte)]
         public byte ac; // 0x19a

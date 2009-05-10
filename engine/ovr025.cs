@@ -206,7 +206,7 @@ namespace engine
                 hidden_names_flag = 0;
             }
 
-            item.name = item.GenerateName(hidden_names_flag);
+            item.name += item.GenerateName(hidden_names_flag);
 
             if (display_new_name)
             {
