@@ -26,7 +26,7 @@ namespace Classes
             table = new ItemData[0x81];
             for (int i = 0; i < 0x81; i++)
             {
-                table[i] = new ItemData(data, i * 0x10, i);
+                table[i] = new ItemData(data, i * 0x10);
             }
         }
 
@@ -42,8 +42,6 @@ namespace Classes
 	/// </summary>
     public class ItemData
     {
-        public int index;
-
         public byte item_slot; //seg600:5D10 unk_1C020 - field_0
         public byte handsCount; //seg600:5D11 unk_1C021
         public byte diceCountLarge; //seg600:5D12 unk_1C022
@@ -62,10 +60,8 @@ namespace Classes
         public byte field_F; //seg600:5D1F 
 
 
-        public ItemData(byte[] data, int offset, int _index)
+        public ItemData(byte[] data, int offset)
         {
-            index = _index;
-
             item_slot = data[offset + 0];
             handsCount = data[offset + 1];
             diceCountLarge = data[offset + 2];
@@ -95,6 +91,7 @@ namespace Classes
 
     public enum ItemType
     {
+        Type_0 = 0,
         BattleAxe = 1,
         HandAxe = 2,
         Bardiche = 3,
@@ -142,6 +139,8 @@ namespace Classes
         HeavyCrossbow = 45,
         LightCrossbow = 46,
         Sling = 47,
+        Type_48 = 48,
+        Type_49 = 49,
         LeatherArmor = 50,
         PaddedArmor = 51,
         StuddedLeather = 52,
@@ -156,29 +155,54 @@ namespace Classes
         MUScroll = 61,
         ClrcScroll = 62,
         Gauntlets = 63, // Gloves, Gauntlets
+        Type_64 = 64,
         Girdle = 65,
+        Type_66 = 66,
         Type_67 = 67,
+        Type_68 = 68,
         RingInvis = 69,
         Necklace = 70, // Gems, Jewel, Necklace, Dust
         Potion = 71,
+        Type_72 = 72,
         Arrow = 73,
+        Type_74 = 74,
+        Type_75 = 75,
+        Type_76 = 76,
         Bracers = 77,
         WandA = 78,
         WandB = 79,
+        Type_80 = 80,
+        Type_81 = 81,
+        Type_82 = 82,
+        Type_83 = 83,
+        Type_84 = 84,
         Type_85 = 85,
         FlaskOfOil = 86,
         Type_87 = 87,
         Type_88 = 88,
         Type_89 = 89,
+        Type_90 = 90,
+        Type_91 = 91,
         Cloak = 92,
         RingOfProt = 93,
-        DrowMage = 94,
+        DrowMace = 94,
+        Type_95 = 95,
         DrowChainMail = 96,
         DrowLongSword = 97,
         Spine = 98,
         RingOfWizardry = 99,
         DartOfHornetsNest = 100,
-        StaffSling = 101  
+        StaffSling = 101,
+        Type_102 = 102,
+        Type_103 = 103,
+        Type_104 = 104,
+        Type_105 = 105,
+        Type_106 = 106,
+        Type_107 = 107,
+        Type_108 = 108,
+        Type_109 = 109,
+        Type_110 = 110,
+        Type_128 = 128,
     }
 
 }
