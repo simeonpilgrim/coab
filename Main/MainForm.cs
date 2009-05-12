@@ -91,6 +91,7 @@ namespace Main
             Classes.Cheats.SkipTitleScreenSet(Settings.Default.SkipTitleScreen);
             Classes.Cheats.ImprovedAreaMapSet(Settings.Default.ImprovedAreaMap);
             Classes.Cheats.NoRaceLevelLimits(Settings.Default.NoRaceClassLimits);
+            Classes.Cheats.NoRaceClassRestrictions(Settings.Default.NoRaceClassLimits);
 
             engine.seg044.SetSound(Settings.Default.SoundOn);
         }
@@ -190,7 +191,7 @@ namespace Main
             Settings.Default.NoRaceClassLimits = flipped;
             Settings.Default.Save();
 
-            Classes.Cheats.NoRaceLevelLimits(flipped);
+            Classes.Cheats.NoRaceClassRestrictions(flipped);
         }
 
         private void dumpMonstersToolStripMenuItem_Click(object sender, EventArgs e)

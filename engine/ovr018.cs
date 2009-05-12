@@ -579,7 +579,7 @@ namespace engine
             } while (input_key != 'S');
 
             player.exp = 25000;
-            player._class = ClassList[index];
+            player._class = ClassList[index-1];
             player.HitDice = 1;
 
             if (player._class >= ClassId.cleric && player._class <= ClassId.fighter)
