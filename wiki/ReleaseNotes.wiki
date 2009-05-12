@@ -1,6 +1,8 @@
 = The Release Notes =
 
 = Unreleased =
+  * Fixed Character creation class choosing
+  * Made the new cheat actually work
 
 = 1.0.16 =
   * Added new cheat, to allows demi-humans to play any class.

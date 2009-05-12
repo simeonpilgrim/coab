@@ -48,9 +48,9 @@ namespace Main
             this.skipTitleScreenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.viewItemsStatsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.noRaceClassLimitsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.noRaceLevelLimitsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.optionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.soundOnToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.noRaceLevelLimitsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.displayArea)).BeginInit();
             this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -231,6 +231,15 @@ namespace Main
             this.noRaceClassLimitsToolStripMenuItem.Text = "No Race Class Restrictions";
             this.noRaceClassLimitsToolStripMenuItem.Click += new System.EventHandler(this.noRaceClassLimitsToolStripMenuItem_Click);
             // 
+            // noRaceLevelLimitsToolStripMenuItem
+            // 
+            this.noRaceLevelLimitsToolStripMenuItem.Checked = global::Main.Properties.Settings.Default.NoRaceLevelLimits;
+            this.noRaceLevelLimitsToolStripMenuItem.CheckOnClick = true;
+            this.noRaceLevelLimitsToolStripMenuItem.Name = "noRaceLevelLimitsToolStripMenuItem";
+            this.noRaceLevelLimitsToolStripMenuItem.Size = new System.Drawing.Size(248, 22);
+            this.noRaceLevelLimitsToolStripMenuItem.Text = "No Race Level Limits";
+            this.noRaceLevelLimitsToolStripMenuItem.Click += new System.EventHandler(this.noRaceLevelLimitsToolStripMenuItem_Click);
+            // 
             // optionsToolStripMenuItem
             // 
             this.optionsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -245,16 +254,9 @@ namespace Main
             this.soundOnToolStripMenuItem.CheckOnClick = true;
             this.soundOnToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.soundOnToolStripMenuItem.Name = "soundOnToolStripMenuItem";
-            this.soundOnToolStripMenuItem.Size = new System.Drawing.Size(132, 22);
+            this.soundOnToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.soundOnToolStripMenuItem.Text = "Sound On";
             this.soundOnToolStripMenuItem.Click += new System.EventHandler(this.soundOnToolStripMenuItem_Click);
-            // 
-            // noRaceLevelLimitsToolStripMenuItem
-            // 
-            this.noRaceLevelLimitsToolStripMenuItem.Name = "noRaceLevelLimitsToolStripMenuItem";
-            this.noRaceLevelLimitsToolStripMenuItem.Size = new System.Drawing.Size(248, 22);
-            this.noRaceLevelLimitsToolStripMenuItem.Text = "No Race Level Limits";
-            this.noRaceLevelLimitsToolStripMenuItem.Click += new System.EventHandler(this.noRaceLevelLimitsToolStripMenuItem_Click);
             // 
             // MainForm
             // 
