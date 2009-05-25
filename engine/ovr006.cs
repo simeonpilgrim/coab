@@ -173,7 +173,7 @@ namespace engine
 													Affects.helpless
 												};
 
-        internal static void sub_2D556()
+        internal static void CleanupPlayersStateAfterCombat() // sub_2D556
         {
             gbl.partyAnimatedCount = 0;
             gbl.party_killed = true;
@@ -457,7 +457,7 @@ namespace engine
             gbl.items_pointer.ForEach(item =>
                 {
                     ovr025.ItemDisplayNameBuild(false, false, 0, 0, item);
-                    list.Add(new MenuItem(item.name, item));
+                    list.Insert(0, new MenuItem(item.name, item));
                 });
 
             bool redrawMenuItems = true;
@@ -682,7 +682,7 @@ namespace engine
         }
 
 
-        internal static void sub_2E3C7()
+        internal static void DeallocateNonTeamMemebers() // sub_2E3C7
         {
             gbl.area2_ptr.field_590 = 0;
 
@@ -777,19 +777,19 @@ namespace engine
         }
 
 
-        internal static void sub_2E7A2()
+        internal static void AfterCombatExpAndTreasure() // sub_2E7A2
         {
             gbl.area2_ptr.field_58E = 0;
             gbl.byte_1AB14 = false;
 
             if (gbl.inDemo == false)
             {
-                sub_2D556();
+                CleanupPlayersStateAfterCombat();
             }
 
-            gbl.game_state = GameState.State6;
+            gbl.game_state = GameState.AfterCombat;
 
-            sub_2E3C7();
+            DeallocateNonTeamMemebers();
 
             if (gbl.inDemo == false)
             {

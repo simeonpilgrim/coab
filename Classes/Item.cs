@@ -311,5 +311,10 @@ namespace Classes
             tw.Flush();
             tw.Close();
         }
+
+        public override string ToString()
+        {
+            return GenerateName(0);
+        }
     }
 }

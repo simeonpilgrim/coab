@@ -986,26 +986,25 @@ namespace engine
             if (gbl.monstersLoaded == false &&
                 gbl.combat_type == CombatType.normal)
             {
-                if (gbl.area2_ptr.field_6D8 == 1)
+                if (gbl.area2_ptr.EnterShop == 1)
                 {
-                    gbl.area2_ptr.field_6D8 = 0;
+                    gbl.area2_ptr.EnterShop = 0;
 
-                    ovr007.sub_2F6E7();
+                    ovr007.CityShop();
                 }
-                else if (gbl.area2_ptr.field_5C4 == 1)
+                else if (gbl.area2_ptr.EnterTemple == 1)
                 {
-                    gbl.area2_ptr.field_5C4 = 0;
+                    gbl.area2_ptr.EnterTemple = 0;
 
                     ovr005.temple_shop();
                 }
                 else
                 {
-                    ovr006.sub_2E7A2();
+                    ovr006.AfterCombatExpAndTreasure();
                 }
             }
             else
             {
-
                 ushort var_2 = ovr008.sub_304B4(gbl.mapDirection, gbl.mapPosY, gbl.mapPosX);
 
                 if (var_2 < gbl.area2_ptr.encounter_distance)
@@ -1015,7 +1014,7 @@ namespace engine
 
                 ovr009.MainCombatLoop();
 
-                ovr006.sub_2E7A2();
+                ovr006.AfterCombatExpAndTreasure();
 
                 if (gbl.area_ptr.inDungeon == 0)
                 {
@@ -1090,12 +1089,12 @@ namespace engine
                 gbl.pooled_money[i] = ovr008.vm_GetCmdValue(i + 1);
             }
 
-            byte var_2 = (byte)ovr008.vm_GetCmdValue(8);
+            byte block_id = (byte)ovr008.vm_GetCmdValue(8);
 
-            if (var_2 < 0x80)
+            if (block_id < 0x80)
             {
                 string filename = string.Format("ITEM{0}.dax", gbl.game_area);
-                seg042.load_decode_dax(out data, out dataSize, var_2, filename);
+                seg042.load_decode_dax(out data, out dataSize, block_id, filename);
 
                 if (dataSize == 0)
                 {
@@ -1109,9 +1108,9 @@ namespace engine
 
                 data = null;
             }
-            else if (var_2 != 0xff)
+            else if (block_id != 0xff)
             {
-                for (int count = 0; count < (var_2 - 0x80); count++)
+                for (int count = 0; count < (block_id - 0x80); count++)
                 {
                     int var_63 = ovr024.roll_dice(100, 1);
 

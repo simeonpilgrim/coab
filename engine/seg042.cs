@@ -202,6 +202,8 @@ namespace engine
 
                     entries.Add(dhe.id, raw);
                 }
+
+                fileA.Close();
             }
 
             void Decode(int decodeSize, int dataLength, byte[] output_ptr, byte[] input_ptr)

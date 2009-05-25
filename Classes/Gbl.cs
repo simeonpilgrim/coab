@@ -31,7 +31,7 @@ namespace Classes
         WildernessMap = 3,
         DungeonMap = 4,
         Combat = 5,
-        State6 = 6,
+        AfterCombat = 6,
         EndGame = 7
     }
 
