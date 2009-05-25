@@ -1502,7 +1502,7 @@ namespace engine
                     }
                     break;
 
-                case GameState.State6:
+                case GameState.AfterCombat:
                     seg037.draw8x8_03();
                     ovr030.load_pic_final(ref gbl.byte_1D556, 0, 1, "PIC");
                     PartySummary(gbl.player_ptr);
@@ -1586,7 +1586,7 @@ namespace engine
             {
                 PartySummary(player);
 
-                bool useOverlay = (gbl.game_state == GameState.Camping || gbl.game_state == GameState.State6);
+                bool useOverlay = (gbl.game_state == GameState.Camping || gbl.game_state == GameState.AfterCombat);
                 bool special_key;
 
                 input_key = ovr027.displayInput(out special_key, useOverlay, 1, 15, 10, 13, "Select" + text, prompt + " ");

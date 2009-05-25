@@ -64,8 +64,8 @@ namespace Classes
         public bool tried_to_exit_map; // 0x5aa
         [DataOffset(0x5C2, DataType.Byte)]
         public byte HeadBlockId; // 0x5c2
-        [DataOffset(0x5C4, DataType.SWord)]
-        public short field_5C4; // 0x5c4
+        [DataOffset(0x5C4, DataType.Word)]
+        public ushort EnterTemple; // 0x5c4
         [DataOffset(0x5C6, DataType.SWord)]
         public short field_5C6; // 0x5c6
         //[DataOffset(0x5CC, DataType.SWord)]
@@ -78,8 +78,8 @@ namespace Classes
         public byte party_size; // 0x67c field_67C
         [DataOffset(0x67E, DataType.SWord)]
         public short field_67E; // 0x67e
-        [DataOffset(0x6D8, DataType.SWord)]
-        public short field_6D8; // 0x6d8
+        [DataOffset(0x6D8, DataType.Word)]
+        public ushort EnterShop; // 0x6d8
         [DataOffset(0x6DA, DataType.SWord)]
         public short field_6DA; // 0x6da
         [DataOffset(0x6E0, DataType.SWord)]
@@ -206,7 +206,7 @@ namespace Classes
                     HeadBlockId = (byte)value;
                     break;
                 case 0x5c4:
-                    field_5C4 = (short)value;
+                    EnterTemple = value;
                     break;
                 case 0x5c6:
                     field_5C6 = (short)value;
@@ -221,7 +221,7 @@ namespace Classes
                     break;
 
                 case 0x6d8:
-                    field_6D8 = (short)value;
+                    EnterShop = value;
                     break;
 
                 case 0x6da:

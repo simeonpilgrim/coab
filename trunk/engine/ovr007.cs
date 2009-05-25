@@ -17,7 +17,7 @@ namespace engine
 
                 int val = ItemsValue(item);
 
-                list.Add(new MenuItem(string.Format("{0,-21}{1,9}", item.name, val), item));
+                list.Insert(0, new MenuItem(string.Format("{0,-21}{1,9}", item.name, val), item));
             }
 
             gbl.menuSelectedWord = 0;
@@ -157,7 +157,7 @@ namespace engine
         }
 
 
-        internal static void sub_2F6E7( )
+        internal static void CityShop() // sub_2F6E7
         {
             bool reloadPics = false; /* Simeon */
             bool items_on_ground;
