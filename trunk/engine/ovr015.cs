@@ -4,134 +4,6 @@ namespace engine
 {
     class ovr015
     {
-        internal static void sub_4303C(int arg_0, int arg_2, int arg_4)
-        {
-            if (false)
-            {
-                /* TODO - this code was hard coded to do nothing.... 
-                switch( arg_0 )
-                {
-                    case 6:
-						
-                        mov	al, [bp+arg_4]
-                        cbw
-                        mov	dx, ax
-                        mov	al, [bp+arg_2]
-                        cbw
-                        mov	cl, 4
-                        shl	ax, cl
-                        les	di, int ptr stru_1D530.offset
-                        add	di, ax
-                        add	di, dx
-                        mov	al, es:[di+300h]
-                        and	al, 0x3F
-                        mov	bl, al
-                        mov	al, [bp+0Ah]
-                        cbw
-                        mov	dx, ax
-                        mov	al, [bp+arg_2]
-                        cbw
-                        mov	cl, 4
-                        shl	ax, cl
-                        les	di, int ptr stru_1D530.offset
-                        add	di, ax
-                        add	di, dx
-                        mov	es:[di+300h], bl
-						
-                        break;
-
-                    case 4:
-						
-                        mov	al, [bp+0Ah]
-                        cbw
-                        mov	dx, ax
-                        mov	al, [bp+arg_2]
-                        cbw
-                        mov	cl, 4
-                        shl	ax, cl
-                        les	di, int ptr stru_1D530.offset
-                        add	di, ax
-                        add	di, dx
-                        mov	al, es:[di+300h]
-                        and	al, 0x0CF
-                        mov	bl, al
-                        mov	al, [bp+0Ah]
-                        cbw
-                        mov	dx, ax
-                        mov	al, [bp+arg_2]
-                        cbw
-                        mov	cl, 4
-                        shl	ax, cl
-                        les	di, int ptr stru_1D530.offset
-                        add	di, ax
-                        add	di, dx
-                        mov	es:[di+300h], bl
-						
-                        break;
-
-                    case 2:
-						
-                        mov	al, [bp+0Ah]
-                        cbw
-                        mov	dx, ax
-                        mov	al, [bp+arg_2]
-                        cbw
-                        mov	cl, 4
-                        shl	ax, cl
-                        les	di, int ptr stru_1D530.offset
-                        add	di, ax
-                        add	di, dx
-                        mov	al, es:[di+300h]
-                        and	al, 0x0F3
-                        mov	bl, al
-                        mov	al, [bp+arg_4]
-                        cbw
-                        mov	dx, ax
-                        mov	al, [bp+arg_2]
-                        cbw
-                        mov	cl, 4
-                        shl	ax, cl
-                        les	di, int ptr stru_1D530.offset
-                        add	di, ax
-                        add	di, dx
-                        mov	es:[di+300h], bl
-						
-                        break;
-
-                    case 0:
-						
-                        mov	al, [bp+0Ah]
-                        cbw
-                        mov	dx, ax
-                        mov	al, [bp+arg_2]
-                        cbw
-                        mov	cl, 4
-                        shl	ax, cl
-                        les	di, int ptr stru_1D530.offset
-                        add	di, ax
-                        add	di, dx
-                        mov	al, es:[di+300h]
-                        and	al, 0x0FC
-                        mov	bl, al
-                        mov	al, [bp+0Ah]
-                        cbw
-                        mov	dx, ax
-                        mov	al, [bp+arg_2]
-                        cbw
-                        mov	cl, 4
-                        shl	ax, cl
-                        les	di, int ptr stru_1D530.offset
-                        add	di, ax
-                        add	di, dx
-                        mov	es:[di+300h], bl
-
-                        break;
-                }
-                        */
-            }
-        }
-
-
         internal static void MapSetDoorUnlocked(int mapDir, int mapY, int mapX) /*sub_43148*/
         {
             if (mapX < 0 || mapX > 15 ||
@@ -656,14 +528,10 @@ namespace engine
                             prompt += " Knock";
                         }
 
-                        prompt += " Exit";
+                        if (prompt != "")
+                        {
+                            prompt += " Exit";
 
-                        if (prompt == " Exit")
-                        {
-                            sub_4303C(gbl.mapDirection, gbl.mapPosY, gbl.mapPosX);
-                        }
-                        else
-                        {
                             input = ovr027.displayInput(out var_2, false, 0, 15, 10, 13, prompt, "Locked. ");
 
                             switch (input)
@@ -682,7 +550,7 @@ namespace engine
                             }
                         }
                     }
-                    else if (al == 3)
+                    else if (al == 3) // unpickable
                     {
                         string prompt = string.Empty;
 
@@ -703,14 +571,10 @@ namespace engine
                             prompt += " Knock";
                         }
 
-                        prompt += " Exit";
+                        if (prompt != "")
+                        {
+                            prompt += " Exit";
 
-                        if (prompt == " Exit")
-                        {
-                            sub_4303C(gbl.mapDirection, gbl.mapPosY, gbl.mapPosX);
-                        }
-                        else
-                        {
                             input = ovr027.displayInput(out var_2, false, 0, 15, 10, 13, prompt, "Locked. ");
 
                             switch (input)

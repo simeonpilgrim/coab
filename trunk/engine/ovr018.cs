@@ -2231,7 +2231,7 @@ namespace engine
                             case 5:
                                 if (var_1A == 2)
                                 {
-                                    if (var_1B == 'P')
+                                    if (var_1B == 'H')
                                     {
                                         if (inputKey == 0x50)
                                         {
