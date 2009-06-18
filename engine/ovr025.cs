@@ -532,8 +532,8 @@ namespace engine
                 player.field_DD = 1;
             }
 
-            System.Console.WriteLine("{0} {1} {2}, {3} {4}, {5} {6}", player.name, player.attack1_DiceCount, player.attack2_DiceCount,
-       player.attack1_DiceSize, player.attack2_DiceSize, player.attack1_DamageBonus, player.attack2_DamageBonus);
+            //System.Console.WriteLine("{0} {1} {2}, {3} {4}, {5} {6}", player.name, player.attack1_DiceCount, player.attack2_DiceCount,
+            //    player.attack1_DiceSize, player.attack2_DiceSize, player.attack1_DamageBonus, player.attack2_DamageBonus);
 
         }
 
@@ -1534,8 +1534,8 @@ namespace engine
             {
                 string output = string.Empty;
 
-                string minutes = gbl.area_ptr.time_hour.ToString("00");
-                string hours = ((gbl.area_ptr.time_minutes_tens * 10) + gbl.area_ptr.time_minutes_ones).ToString("00");
+                string hours = gbl.area_ptr.time_hour.ToString("00");
+                string minutes = ((gbl.area_ptr.time_minutes_tens * 10) + gbl.area_ptr.time_minutes_ones).ToString("00");
 
                 if (gbl.area_ptr.block_area_view == 0 ||
                     Cheats.always_show_areamap)
@@ -1543,7 +1543,7 @@ namespace engine
                     output = string.Format("{0},{1} ", gbl.mapPosX, gbl.mapPosY);
                 }
 
-                output += direction(gbl.mapDirection) + " " + minutes + ":" + hours;
+                output += direction(gbl.mapDirection) + " " + hours + ":" + minutes;
 
                 if (gbl.printCommands == true)
                 {
