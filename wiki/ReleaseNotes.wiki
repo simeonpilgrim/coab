@@ -1,6 +1,7 @@
 = The Release Notes =
 
 = Unreleased =
+  * Fixed issue with the icon editor getting stuck if you try change the head of your icon
 
 = 1.0.17 =
   * Fixed the order of items in the shop, to be the same as original (after changes in 1.0.15)
