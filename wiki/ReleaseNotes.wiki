@@ -1,6 +1,9 @@
 = The Release Notes =
 
 = Unreleased =
+
+= 1.0.18 =
+  * Add UI to Installer, and Short-cut added to Start Menu
   * Fixed issue with the icon editor getting stuck if you try change the head of your icon
 
 = 1.0.17 =
