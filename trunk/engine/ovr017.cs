@@ -389,10 +389,12 @@ namespace engine
             player.race = (Race)bp_var_1C0.race;
             player.sex = bp_var_1C0.sex;
 
+            player.name = bp_var_1C0.name;
+
             int race = (int)player.race;
             for (int stat = 0; stat < 6; stat++)
             {
-                player.stats[stat].tmp = bp_var_1C0.strength[stat];
+                player.stats[stat].tmp = bp_var_1C0.stats[stat];
 
                 switch ((Stat)stat)
                 {
@@ -502,208 +504,52 @@ namespace engine
             player.field_E8 = bp_var_1C0.field_75;
             player.field_E9 = bp_var_1C0.field_76;
 
+            System.Array.Copy(bp_var_1C0.field_77, player.field_EA, 8);
 
-            throw new System.NotSupportedException();//mov	di, [bp+arg_0]
-            throw new System.NotSupportedException();//les	di, ss:[di-0x1C0]
-            throw new System.NotSupportedException();//add	di, 0x77
-            throw new System.NotSupportedException();//push	es
-            throw new System.NotSupportedException();//push	di
-            throw new System.NotSupportedException();//les	di, int ptr [bp+player.offset]
-            throw new System.NotSupportedException();//add	di, 0x0EA
-            throw new System.NotSupportedException();//push	es
-            throw new System.NotSupportedException();//push	di
-            throw new System.NotSupportedException();//mov	ax, 8
-            throw new System.NotSupportedException();//push	ax
-            throw new System.NotSupportedException();//call	Move(Any &,Any &,Word)
-            throw new System.NotSupportedException();//mov	di, [bp+arg_0]
-            throw new System.NotSupportedException();//les	di, ss:[di-0x1C0]
-            throw new System.NotSupportedException();//mov	al, es:[di+83h]
-            throw new System.NotSupportedException();//les	di, int ptr [bp+player.offset]
-            throw new System.NotSupportedException();//mov	es:[di+0F6h], al
-            throw new System.NotSupportedException();//mov	di, [bp+arg_0]
-            throw new System.NotSupportedException();//les	di, ss:[di-0x1C0]
-            throw new System.NotSupportedException();//mov	al, es:[di+84h]
-            throw new System.NotSupportedException();//les	di, int ptr [bp+player.offset]
-            throw new System.NotSupportedException();//mov	es:[di+0F7h], al
-            throw new System.NotSupportedException();//mov	di, [bp+arg_0]
-            throw new System.NotSupportedException();//les	di, ss:[di-0x1C0]
-            throw new System.NotSupportedException();//mov	al, es:[di+85h]
-            throw new System.NotSupportedException();//les	di, int ptr [bp+player.offset]
-            throw new System.NotSupportedException();//mov	es:[di+0F8h], al
-            throw new System.NotSupportedException();//mov	di, [bp+arg_0]
-            throw new System.NotSupportedException();//les	di, ss:[di-0x1C0]
-            throw new System.NotSupportedException();//mov	al, es:[di+86h]
-            throw new System.NotSupportedException();//les	di, int ptr [bp+player.offset]
-            throw new System.NotSupportedException();//mov	es:[di+0F9h], al
-            throw new System.NotSupportedException();//mov	di, [bp+arg_0]
-            throw new System.NotSupportedException();//les	di, ss:[di-0x1C0]
-            throw new System.NotSupportedException();//mov	al, es:[di+87h]
-            throw new System.NotSupportedException();//les	di, int ptr [bp+player.offset]
-            throw new System.NotSupportedException();//mov	es:[di+0FAh], al
-            throw new System.NotSupportedException();//les	di, int ptr [bp+player.offset]
-            throw new System.NotSupportedException();//mov	short ptr es:[di+103h], 0x12C
-            throw new System.NotSupportedException();//mov	di, [bp+arg_0]
-            throw new System.NotSupportedException();//les	di, ss:[di-0x1C0]
-            throw new System.NotSupportedException();//add	di, 0x96
-            throw new System.NotSupportedException();//push	es
-            throw new System.NotSupportedException();//push	di
-            throw new System.NotSupportedException();//les	di, int ptr [bp+player.offset]
-            throw new System.NotSupportedException();//add	di, 0x109
-            throw new System.NotSupportedException();//push	es
-            throw new System.NotSupportedException();//push	di
-            throw new System.NotSupportedException();//mov	ax, 8
-            throw new System.NotSupportedException();//push	ax
-            throw new System.NotSupportedException();//call	Move(Any &,Any &,Word)
-            throw new System.NotSupportedException();//mov	di, [bp+arg_0]
-            throw new System.NotSupportedException();//les	di, ss:[di-0x1C0]
-            throw new System.NotSupportedException();//mov	al, es:[di+9Fh]
-            throw new System.NotSupportedException();//les	di, int ptr [bp+player.offset]
-            throw new System.NotSupportedException();//mov	es:[di+11Ah], al
-            throw new System.NotSupportedException();//mov	di, [bp+arg_0]
-            throw new System.NotSupportedException();//les	di, ss:[di-0x1C0]
-            throw new System.NotSupportedException();//mov	al, es:[di+0A0h]
-            throw new System.NotSupportedException();//les	di, int ptr [bp+player.offset]
-            throw new System.NotSupportedException();//mov	es:[di+11Bh], al
-            throw new System.NotSupportedException();//mov	di, [bp+arg_0]
-            throw new System.NotSupportedException();//les	di, ss:[di-0x1C0]
-            throw new System.NotSupportedException();//add	di, 0x0A1
-            throw new System.NotSupportedException();//push	es
-            throw new System.NotSupportedException();//push	di
-            throw new System.NotSupportedException();//les	di, int ptr [bp+player.offset]
-            throw new System.NotSupportedException();//add	di, 0x11C
-            throw new System.NotSupportedException();//push	es
-            throw new System.NotSupportedException();//push	di
-            throw new System.NotSupportedException();//mov	ax, 2
-            throw new System.NotSupportedException();//push	ax
-            throw new System.NotSupportedException();//call	Move(Any &,Any &,Word)
-            throw new System.NotSupportedException();//mov	di, [bp+arg_0]
-            throw new System.NotSupportedException();//les	di, ss:[di-0x1C0]
-            throw new System.NotSupportedException();//add	di, 0x0A3
-            throw new System.NotSupportedException();//push	es
-            throw new System.NotSupportedException();//push	di
-            throw new System.NotSupportedException();//les	di, int ptr [bp+player.offset]
-            throw new System.NotSupportedException();//add	di, 0x11E
-            throw new System.NotSupportedException();//push	es
-            throw new System.NotSupportedException();//push	di
-            throw new System.NotSupportedException();//mov	ax, 2
-            throw new System.NotSupportedException();//push	ax
-            throw new System.NotSupportedException();//call	Move(Any &,Any &,Word)
-            throw new System.NotSupportedException();//mov	di, [bp+arg_0]
-            throw new System.NotSupportedException();//les	di, ss:[di-0x1C0]
-            throw new System.NotSupportedException();//add	di, 0x0A5
-            throw new System.NotSupportedException();//push	es
-            throw new System.NotSupportedException();//push	di
-            throw new System.NotSupportedException();//les	di, int ptr [bp+player.offset]
-            throw new System.NotSupportedException();//add	di, 0x120
-            throw new System.NotSupportedException();//push	es
-            throw new System.NotSupportedException();//push	di
-            throw new System.NotSupportedException();//mov	ax, 2
-            throw new System.NotSupportedException();//push	ax
-            throw new System.NotSupportedException();//call	Move(Any &,Any &,Word)
-            throw new System.NotSupportedException();//mov	di, [bp+arg_0]
-            throw new System.NotSupportedException();//les	di, ss:[di-0x1C0]
-            throw new System.NotSupportedException();//add	di, 0x0A7
-            throw new System.NotSupportedException();//push	es
-            throw new System.NotSupportedException();//push	di
-            throw new System.NotSupportedException();//les	di, int ptr [bp+player.offset]
-            throw new System.NotSupportedException();//add	di, 0x122
-            throw new System.NotSupportedException();//push	es
-            throw new System.NotSupportedException();//push	di
-            throw new System.NotSupportedException();//mov	ax, 2
-            throw new System.NotSupportedException();//push	ax
-            throw new System.NotSupportedException();//call	Move(Any &,Any &,Word)
-            throw new System.NotSupportedException();//mov	di, [bp+arg_0]
-            throw new System.NotSupportedException();//les	di, ss:[di-0x1C0]
-            throw new System.NotSupportedException();//mov	al, es:[di+0A9h]
-            throw new System.NotSupportedException();//les	di, int ptr [bp+player.offset]
-            throw new System.NotSupportedException();//mov	es:[di+124h], al
-            throw new System.NotSupportedException();//mov	di, [bp+arg_0]
-            throw new System.NotSupportedException();//les	di, ss:[di-0x1C0]
-            throw new System.NotSupportedException();//mov	al, es:[di+0AAh]
-            throw new System.NotSupportedException();//les	di, int ptr [bp+player.offset]
-            throw new System.NotSupportedException();//mov	es:[di+125h], al
-            throw new System.NotSupportedException();//mov	di, [bp+arg_0]
-            throw new System.NotSupportedException();//les	di, ss:[di-0x1C0]
-            throw new System.NotSupportedException();//mov	al, es:[di+0ABh]
-            throw new System.NotSupportedException();//les	di, int ptr [bp+player.offset]
-            throw new System.NotSupportedException();//mov	es:[di+126h], al
-            throw new System.NotSupportedException();//mov	di, [bp+arg_0]
-            throw new System.NotSupportedException();//les	di, ss:[di-0x1C0]
-            throw new System.NotSupportedException();//mov	ax, es:[di+0ACh]
-            throw new System.NotSupportedException();//mov	dx, es:[di+0AEh]
-            throw new System.NotSupportedException();//les	di, int ptr [bp+player.offset]
-            throw new System.NotSupportedException();//mov	es:[di+127h], ax
-            throw new System.NotSupportedException();//mov	es:[di+129h], dx
-            throw new System.NotSupportedException();//mov	di, [bp+arg_0]
-            throw new System.NotSupportedException();//les	di, ss:[di-0x1C0]
-            throw new System.NotSupportedException();//mov	al, es:[di+0B0h]
-            throw new System.NotSupportedException();//les	di, int ptr [bp+player.offset]
-            throw new System.NotSupportedException();//mov	es:[di+12Bh], al
-            throw new System.NotSupportedException();//mov	di, [bp+arg_0]
-            throw new System.NotSupportedException();//les	di, ss:[di-0x1C0]
-            throw new System.NotSupportedException();//mov	al, es:[di+0B1h]
-            throw new System.NotSupportedException();//les	di, int ptr [bp+player.offset]
-            throw new System.NotSupportedException();//mov	es:[di+12Ch], al
+            player.field_F6 = bp_var_1C0.field_83;
+            player.control_morale = bp_var_1C0.field_84;
+            player.npcTreasureShareCount = bp_var_1C0.field_85;
+            player.field_F9 = bp_var_1C0.field_86;
+            player.field_FA = bp_var_1C0.field_87;
+
+            player.platinum = 300;
+            System.Array.Copy(bp_var_1C0.field_96, player.ClassLevel, 8);
+
+            player.monsterType = (MonsterType)bp_var_1C0.field_9F;
+            player.alignment = bp_var_1C0.field_A0;
+
+            player.attacksCount = bp_var_1C0.field_A1;
+            player.field_11D = bp_var_1C0.field_A2;
+            player.attack1_DiceCountBase = bp_var_1C0.field_A3;
+            player.attack2_DiceCountBase = bp_var_1C0.field_A4;
+            player.attack1_DiceSizeBase = bp_var_1C0.field_A5;
+            player.attack2_DiceSizeBase = bp_var_1C0.field_A6;
+            player.attack1_DamageBonusBase = bp_var_1C0.field_A7;
+            player.attack2_DamageBonusBase = bp_var_1C0.field_A8;
+
+            player.base_ac = bp_var_1C0.field_A9;
+            player.field_125 = bp_var_1C0.field_AA;
+            player.mod_id = bp_var_1C0.field_AB;
+
+            player.exp = bp_var_1C0.field_AC;
+            player.classFlags = bp_var_1C0.field_B0;
+            player.field_12C = bp_var_1C0.field_B1;
+
             for (int var_2 = 1; var_2 <= 3; var_2++)
             {
-                throw new System.NotSupportedException();//mov	al, [bp+var_2]
-                throw new System.NotSupportedException();//cbw
-                throw new System.NotSupportedException();//mov	di, [bp+arg_0]
-                throw new System.NotSupportedException();//les	di, ss:[di-0x1C0]
-                throw new System.NotSupportedException();//add	di, ax
-                throw new System.NotSupportedException();//mov	dl, es:[di+0B1h]
-                throw new System.NotSupportedException();//mov	al, [bp+var_2]
-                throw new System.NotSupportedException();//cbw
-                throw new System.NotSupportedException();//les	di, int ptr [bp+player.offset]
-                throw new System.NotSupportedException();//add	di, ax
-                throw new System.NotSupportedException();//mov	es:[di+12Ch], dl
-                throw new System.NotSupportedException();//mov	al, [bp+var_2]
-                throw new System.NotSupportedException();//cbw
-                throw new System.NotSupportedException();//mov	di, [bp+arg_0]
-                throw new System.NotSupportedException();//les	di, ss:[di-0x1C0]
-                throw new System.NotSupportedException();//add	di, ax
-                throw new System.NotSupportedException();//mov	dl, es:[di+0B4h]
-                throw new System.NotSupportedException();//mov	al, [bp+var_2]
-                throw new System.NotSupportedException();//cbw
-                throw new System.NotSupportedException();//les	di, int ptr [bp+player.offset]
-                throw new System.NotSupportedException();//add	di, ax
-                throw new System.NotSupportedException();//mov	es:[di+136h], dl
+                player.field_12D[0, var_2 - 1] = bp_var_1C0.field_B2[var_2 - 1];
+                player.field_12D[2, var_2 - 1] = bp_var_1C0.field_B5[var_2 - 1];
             }
-            throw new System.NotSupportedException();//mov	di, [bp+arg_0]
-            throw new System.NotSupportedException();//les	di, ss:[di-0x1C0]
-            throw new System.NotSupportedException();//mov	ax, es:[di+0B8h]
-            throw new System.NotSupportedException();//les	di, int ptr [bp+player.offset]
-            throw new System.NotSupportedException();//mov	es:[di+13Ch], ax
-            throw new System.NotSupportedException();//mov	di, [bp+arg_0]
-            throw new System.NotSupportedException();//les	di, ss:[di-0x1C0]
-            throw new System.NotSupportedException();//mov	al, es:[di+0BAh]
-            throw new System.NotSupportedException();//les	di, int ptr [bp+player.offset]
-            throw new System.NotSupportedException();//mov	es:[di+13Eh], al
-            throw new System.NotSupportedException();//mov	di, [bp+arg_0]
-            throw new System.NotSupportedException();//les	di, ss:[di-0x1C0]
-            throw new System.NotSupportedException();//mov	al, es:[di+0BBh]
-            throw new System.NotSupportedException();//les	di, int ptr [bp+player.offset]
-            throw new System.NotSupportedException();//mov	es:[di+13Fh], al
-            throw new System.NotSupportedException();//mov	di, [bp+arg_0]
-            throw new System.NotSupportedException();//les	di, ss:[di-0x1C0]
-            throw new System.NotSupportedException();//mov	al, es:[di+0BCh]
-            throw new System.NotSupportedException();//les	di, int ptr [bp+player.offset]
-            throw new System.NotSupportedException();//mov	es:[di+140h], al
-            throw new System.NotSupportedException();//mov	di, [bp+arg_0]
-            throw new System.NotSupportedException();//les	di, ss:[di-0x1C0]
-            throw new System.NotSupportedException();//mov	al, es:[di+0BDh]
-            throw new System.NotSupportedException();//les	di, int ptr [bp+player.offset]
-            throw new System.NotSupportedException();//mov	es:[di+141h], al
-            throw new System.NotSupportedException();//mov	di, [bp+arg_0]
-            throw new System.NotSupportedException();//les	di, ss:[di-0x1C0]
-            throw new System.NotSupportedException();//mov	al, es:[di+0BEh]
-            throw new System.NotSupportedException();//les	di, int ptr [bp+player.offset]
-            throw new System.NotSupportedException();//mov	es:[di+142h], al
-            throw new System.NotSupportedException();//mov	di, [bp+arg_0]
-            throw new System.NotSupportedException();//les	di, ss:[di-0x1C0]
-            throw new System.NotSupportedException();//mov	al, es:[di+0C0h]
-            throw new System.NotSupportedException();//les	di, int ptr [bp+player.offset]
-            throw new System.NotSupportedException();//mov	es:[di+144h], al
+
+            player.field_13C = bp_var_1C0.field_B8;
+
+            player.field_13E = bp_var_1C0.field_BA;
+            player.field_13F = bp_var_1C0.field_BB;
+
+            player.field_140 = bp_var_1C0.field_BC;
+            player.head_icon = bp_var_1C0.field_BD;
+            player.weapon_icon = bp_var_1C0.field_BE;
+            player.icon_size = bp_var_1C0.field_C0;
 
             System.Array.Copy(bp_var_1C0.field_C1, player.icon_colours, 6);
 
@@ -725,7 +571,7 @@ namespace engine
 
             player.field_185 = bp_var_1C0.field_100;
             player.field_186 = (sbyte)bp_var_1C0.field_101;
-            player.weight = bp_var_1C0.field_1C0;
+            player.weight = bp_var_1C0.field_102;
 
             player.health_status = (Status)bp_var_1C0.field_10C;
             player.in_combat = bp_var_1C0.field_10D != 0;
@@ -748,6 +594,8 @@ namespace engine
             player.attack2_DamageBonus = bp_var_1C0.field_11A;
             player.hit_point_current = bp_var_1C0.field_11B;
             player.movement = (byte)bp_var_1C0.field_11C;
+
+            return player;
         }
 
 
