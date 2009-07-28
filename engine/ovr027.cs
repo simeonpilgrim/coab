@@ -612,9 +612,9 @@ namespace engine
                 {
                     displayString += " Next";
                     showNext = true;
-                }
-
-                if (gbl.menuScreenIndex > listCount)
+                }            
+                
+                if (gbl.menuScreenIndex > 0)
                 {
                     displayString += " Prev";
                     showPrevious = true;
