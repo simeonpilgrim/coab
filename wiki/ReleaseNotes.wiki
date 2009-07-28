@@ -1,7 +1,9 @@
 = The Release Notes =
 
 = Unreleased =
-  * Fixed the Pool of Radiance player import code. You may now transfer you older saved games.
+  * Fixed the Pool of Radiance player import code. You may now transfer you older saved games
+  * Fixed shop items displaying so the long items display correctly (same as DOS)
+  * Fixed the way the list code controls when to display 'Prev' as it was not showing always correctly
 
 = 1.0.18 =
   * Add UI to Installer, and Short-cut added to Start Menu

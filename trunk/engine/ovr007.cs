@@ -17,7 +17,7 @@ namespace engine
 
                 int val = ItemsValue(item);
 
-                list.Insert(0, new MenuItem(string.Format("{0,-21}{1,9}", item.name, val), item));
+                list.Insert(0, new MenuItem(string.Format("{0,-21}{1,9}", item.name.Trim(), val), item));
             }
 
             gbl.menuSelectedWord = 0;
