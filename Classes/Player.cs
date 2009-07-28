@@ -224,10 +224,14 @@ namespace Classes
         public byte[] field_EA = new byte[8]; // 0xeA; [] was 1 offset @ 0xe9
         public List<Affect> affects; // f2 - affect_ptr
 
+        [DataOffset(0xf6, DataType.Byte)]
+        public byte field_F6; // 0xf6; field_F6
         [DataOffset(0xf7, DataType.Byte)]
         public byte control_morale; // 0xf7; field_F7
         [DataOffset(0xf8, DataType.Byte)]
         public byte npcTreasureShareCount; // 0xf8;
+        [DataOffset(0xf9, DataType.Byte)]
+        public byte field_F9; // 0xf9
         [DataOffset(0xfa, DataType.Byte)]
         public byte field_FA; // 0xfa;
 
@@ -380,8 +384,8 @@ namespace Classes
         public byte attack1_DiceSizeBase; // 0x120;
         [DataOffset(0x121, DataType.Byte)]
         public byte attack2_DiceSizeBase; // 0x121;
-        [DataOffset(0x122, DataType.SByte)]
-        public sbyte attack1_DamageBonusBase; // 0x122;
+        [DataOffset(0x122, DataType.Byte)]
+        public byte attack1_DamageBonusBase; // 0x122;
         [DataOffset(0x123, DataType.Byte)]
         public byte attack2_DamageBonusBase; // 0x123;
         [DataOffset(0x124, DataType.Byte)]

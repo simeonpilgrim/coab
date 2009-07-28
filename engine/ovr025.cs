@@ -448,7 +448,7 @@ namespace engine
             player.attack1_DiceSize = player.attack1_DiceSizeBase;
             player.attack2_DiceSize = player.attack2_DiceSizeBase;
 
-            player.attack1_DamageBonus = player.attack1_DamageBonusBase;
+            player.attack1_DamageBonus = (sbyte)player.attack1_DamageBonusBase;
             player.attack2_DamageBonus = player.attack2_DamageBonusBase;
 
 
