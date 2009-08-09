@@ -530,7 +530,7 @@ namespace engine
                 range = 1;
             }
 
-            if (range == 0xff)
+            if (range == -1 || range == 0xff)
             {
                 range = 1;
             }
