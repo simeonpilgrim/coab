@@ -1,6 +1,7 @@
 = The Release Notes =
 
 = Unreleased =
+  * Fixed manual targetting was described in Issue 32
 
 = 1.0.19 =
   * Fixed the Pool of Radiance player import code. You may now transfer you older saved games

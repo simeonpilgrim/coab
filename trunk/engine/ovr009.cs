@@ -197,7 +197,7 @@ namespace engine
                                     break;
 
                                 case 'A':
-                                    ovr014.aim_menu( var_D, out var_2, 1, 0, 1, 0xff, player);
+                                    ovr014.aim_menu( var_D, out var_2, 1, 0, 1, -1, player);
                                     break;
 
                                 case 'U':

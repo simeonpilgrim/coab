@@ -2133,7 +2133,7 @@ namespace engine
 
             arg_4 = false;
 
-            if (maxRange == 0xff)
+            if (maxRange == -1 || maxRange == 0xff)
             {
                 if (attacker.field_151 != null)
                 {
@@ -2146,7 +2146,7 @@ namespace engine
             }
 
             if (maxRange == 0 ||
-                maxRange == 0xff)
+                maxRange == -1 || maxRange == 0xff)
             {
                 maxRange = 1;
             }
