@@ -464,13 +464,13 @@ namespace engine
                         int sp_lvl = gbl.spell_table[(int)spell].spellLevel;
                         SpellClass sp_class = gbl.spell_table[(int)spell].spellClass;
 
-                        if (sp_lvl >= 5 || sp_class >= SpellClass.Monster)
+                        if (sp_lvl > 5 || sp_class >= SpellClass.Monster)
                         {
                             //skip this spell
                         }
-                        else if (gbl.player_ptr.field_12D[(int)sp_class, sp_lvl] > 0 &&
+                        else if (gbl.player_ptr.field_12D[(int)sp_class, sp_lvl - 1] > 0 &&
                             can_learn_spell((int)spell, gbl.player_ptr) == true &&
-                            gbl.player_ptr.KnowsSpell(spell) == false )
+                            gbl.player_ptr.KnowsSpell(spell) == false)
                         {
                             add_spell_to_learning_list((int)spell);
                         }
