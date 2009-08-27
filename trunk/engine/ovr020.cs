@@ -1456,7 +1456,7 @@ namespace engine
                     break;
             }
 
-            arg_0 = ovr023.sub_5CA74(spl_location);
+            arg_0 = ovr023.BuildSpellList(spl_location);
 
             if (arg_0 == true )
             {

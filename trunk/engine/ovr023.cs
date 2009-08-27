@@ -396,7 +396,7 @@ namespace engine
         }
 
 
-        internal static bool sub_5CA74(SpellLoc spl_location)
+        internal static bool BuildSpellList(SpellLoc spl_location) // sub_5CA74
         {
             bool buildSpellList = true;
 
@@ -470,7 +470,7 @@ namespace engine
                         }
                         else if (gbl.player_ptr.field_12D[(int)sp_class, sp_lvl] > 0 &&
                             can_learn_spell((int)spell, gbl.player_ptr) == true &&
-                            gbl.player_ptr.KnowsSpell(spell))
+                            gbl.player_ptr.KnowsSpell(spell) == false )
                         {
                             add_spell_to_learning_list((int)spell);
                         }
