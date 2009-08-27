@@ -408,7 +408,7 @@ namespace engine
         }
 
 
-        internal static void sub_52B79(int num_loops, byte block_id, short row_y, short col_x)
+        internal static void ShowAnimation(int num_loops, byte block_id, short row_y, short col_x) // sub_52B79
         {
             int loop_count = 0;
             int start_time = seg041.time01();
@@ -421,10 +421,10 @@ namespace engine
 
             do
             {
-                ovr030.DrawMaybeOverlayed(animation.frames[animation.curFrame - 1].picture, true, row_y, col_x);
+                ovr030.DrawMaybeOverlayed(animation.CurrentPicture(), true, row_y, col_x);
                 int current_time = seg041.time01();
 
-                int delay = animation.frames[animation.curFrame - 1].delay * (gbl.game_speed_var + 3);
+                int delay = animation.CurrentDelay() * (gbl.game_speed_var + 3);
 
                 if ((current_time - start_time) > delay)
                 {
@@ -487,7 +487,7 @@ namespace engine
             seg041.press_any_key(aWillUnleashDan, false, 0, 10, TextRegion.NormalBottom);
             seg041.press_any_key(aGauntletContac, false, 0, 10, TextRegion.NormalBottom);
 
-            sub_52B79( 1, 0x4a, 3 ,3 );
+            ShowAnimation( 1, 0x4a, 3 ,3 );
 
 			seg041.displayAndDebug( "Press any key to continue.", 0, 13 );
 			ovr027.ClearPromptArea();
@@ -497,7 +497,7 @@ namespace engine
             seg041.press_any_key(aIsSlainThisDay, false, 0, 10, TextRegion.NormalBottom);
             seg041.press_any_key(aNothingness_, false, 0, 10, TextRegion.NormalBottom);
 
-			sub_52B79( 1, 0x4B, 3 ,3 );
+			ShowAnimation( 1, 0x4B, 3 ,3 );
 
 			seg041.displayAndDebug( "Press any key to continue.", 0, 13 );
 			ovr027.ClearPromptArea();
@@ -509,7 +509,7 @@ namespace engine
 
 			gbl.area_ptr.picture_fade = 1;
 
-            sub_52B79((10 - gbl.game_speed_var) * 2, 0x4d, 3, 3);
+            ShowAnimation((10 - gbl.game_speed_var) * 2, 0x4d, 3, 3);
             
 			gbl.area_ptr.picture_fade = 0;
 

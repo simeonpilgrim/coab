@@ -30,5 +30,25 @@ namespace Classes
             frames[6] = new AnimationFrame(); // 1D588 - seg600:7278
             frames[7] = new AnimationFrame(); // 1D590 - seg600:7280
         }
+
+        public void NextFrame()
+        {
+            curFrame++;
+
+            if (curFrame > numFrames)
+            {
+                curFrame = 1;
+            }
+        }
+
+        public DaxBlock CurrentPicture()
+        {
+            return frames[curFrame - 1].picture;
+        }
+
+        public int CurrentDelay()
+        {
+            return frames[curFrame - 1].delay;
+        }
     }
 }

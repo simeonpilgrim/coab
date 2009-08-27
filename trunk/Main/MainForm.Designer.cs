@@ -49,6 +49,7 @@ namespace Main
             this.viewItemsStatsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.noRaceClassLimitsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.noRaceLevelLimitsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.sortTreasureToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.optionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.soundOnToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.displayArea)).BeginInit();
@@ -135,7 +136,8 @@ namespace Main
             this.skipTitleScreenToolStripMenuItem,
             this.viewItemsStatsToolStripMenuItem,
             this.noRaceClassLimitsToolStripMenuItem,
-            this.noRaceLevelLimitsToolStripMenuItem});
+            this.noRaceLevelLimitsToolStripMenuItem,
+            this.sortTreasureToolStripMenuItem});
             this.cheatsToolStripMenuItem.Name = "cheatsToolStripMenuItem";
             this.cheatsToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
             this.cheatsToolStripMenuItem.Text = "Cheats";
@@ -240,6 +242,15 @@ namespace Main
             this.noRaceLevelLimitsToolStripMenuItem.Text = "No Race Level Limits";
             this.noRaceLevelLimitsToolStripMenuItem.Click += new System.EventHandler(this.noRaceLevelLimitsToolStripMenuItem_Click);
             // 
+            // sortTreasureToolStripMenuItem
+            // 
+            this.sortTreasureToolStripMenuItem.Checked = global::Main.Properties.Settings.Default.SortTreasure;
+            this.sortTreasureToolStripMenuItem.CheckOnClick = true;
+            this.sortTreasureToolStripMenuItem.Name = "sortTreasureToolStripMenuItem";
+            this.sortTreasureToolStripMenuItem.Size = new System.Drawing.Size(248, 22);
+            this.sortTreasureToolStripMenuItem.Text = "Sort Treasure";
+            this.sortTreasureToolStripMenuItem.Click += new System.EventHandler(this.sortTreasureToolStripMenuItem_Click);
+            // 
             // optionsToolStripMenuItem
             // 
             this.optionsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -254,7 +265,7 @@ namespace Main
             this.soundOnToolStripMenuItem.CheckOnClick = true;
             this.soundOnToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.soundOnToolStripMenuItem.Name = "soundOnToolStripMenuItem";
-            this.soundOnToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.soundOnToolStripMenuItem.Size = new System.Drawing.Size(132, 22);
             this.soundOnToolStripMenuItem.Text = "Sound On";
             this.soundOnToolStripMenuItem.Click += new System.EventHandler(this.soundOnToolStripMenuItem_Click);
             // 
@@ -302,6 +313,7 @@ namespace Main
         private System.Windows.Forms.ToolStripMenuItem optionsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem soundOnToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem noRaceLevelLimitsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem sortTreasureToolStripMenuItem;
     }
 }
 

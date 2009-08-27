@@ -538,6 +538,53 @@ namespace engine
             }
         }
 
+        static Dictionary<Affects, string> EffectNameMap = new Dictionary<Affects,string>();
+
+        internal static void BuildEffectNameMap()
+        {
+            Affects[] affects = { Affects.bless, Affects.cursed, Affects.detect_magic, Affects.protection_from_evil, Affects.protection_from_good, Affects.resist_cold, Affects.charm_person, Affects.enlarge, Affects.friends, Affects.read_magic, Affects.shield, Affects.find_traps, Affects.resist_fire, Affects.silence_15_radius, Affects.slow_poison, Affects.spiritual_hammer, Affects.detect_invisibility, Affects.invisibility, Affects.mirror_image, Affects.ray_of_enfeeblement, Affects.animate_dead, Affects.blinded, Affects.cause_disease_1, Affects.bestow_curse, Affects.blink, Affects.strength, Affects.haste, Affects.prot_from_normal_missiles, Affects.slow, Affects.prot_from_evil_10_radius, Affects.prot_from_good_10_radius, Affects.prayer, Affects.snake_charm, Affects.paralyze, Affects.sleep };
+
+            foreach (Affects aff in affects)
+            {
+                bool found = false;
+
+                for (int spId = 1; spId <= 0x38 && found == false; spId++)
+                {
+                    if (gbl.spell_table[spId].affect_id == aff)
+                    {
+                        EffectNameMap.Add(aff, ovr023.SpellNames[spId]);
+                        found = true;
+                    }
+                }
+
+                if (found == false)
+                {
+                    EffectNameMap.Add(aff, "Funky--" + aff.ToString());
+                }
+            }
+
+            EffectNameMap.Add(Affects.dispel_evil, "Dispel Evil");
+            EffectNameMap.Add(Affects.faerie_fire, "Faerie Fire");
+            EffectNameMap.Add(Affects.fumbling, "Fumbling");
+            EffectNameMap.Add(Affects.helpless, "Helpless");
+            EffectNameMap.Add(Affects.confuse, "Confused");
+            EffectNameMap.Add(Affects.cause_disease_2, "Cause Disease");
+            EffectNameMap.Add(Affects.hot_fire_shield, "Hot Fire Shield");
+            EffectNameMap.Add(Affects.cold_fire_shield, "Cold Fire Shield");
+            EffectNameMap.Add(Affects.poisoned, "Poisoned");
+            EffectNameMap.Add(Affects.regenerate, "Regenerating");
+            EffectNameMap.Add(Affects.fire_resist, "Fire Resistance");
+            EffectNameMap.Add(Affects.minor_globe_of_invulnerability, "Minor Globe of Invulnerability");
+            EffectNameMap.Add(Affects.feeblemind, "enfeebled");
+            EffectNameMap.Add(Affects.invisible_to_animals, "invisible to animals");
+            EffectNameMap.Add(Affects.invisible, "Invisible");
+            EffectNameMap.Add(Affects.camouflage, "Camouflaged");
+            EffectNameMap.Add(Affects.prot_drag_breath, "protected from dragon breath");
+            EffectNameMap.Add(Affects.berserk, "berserk");
+            EffectNameMap.Add(Affects.displace, "Displaced");
+
+        }
+
 
         static void DisplayMagicEffects()
         {
@@ -547,165 +594,22 @@ namespace engine
 
             foreach (Player player in gbl.player_next_ptr)
             {
-                bool var_13 = false;
+                bool any_effects = false;
 
                 var_C.Add(new MenuItem(player.name, true));
 
                 foreach (Affect affect in player.affects)
                 {
-                    bool has_name = true;
+                    string affect_name;
 
-                    Affects affect_type = affect.type;
-                    string affect_name = string.Empty;
-
-                    switch (affect_type)
+                    if (EffectNameMap.TryGetValue(affect.type, out affect_name))
                     {
-                        case Affects.bless:
-                        case Affects.cursed:
-                        case Affects.detect_magic:
-                        case Affects.protection_from_evil:
-                        case Affects.protection_from_good:
-                        case Affects.resist_cold:
-                        case Affects.charm_person:
-                        case Affects.enlarge:
-                        case Affects.friends:
-                        case Affects.read_magic:
-                        case Affects.shield:
-                        case Affects.find_traps:
-                        case Affects.resist_fire:
-                        case Affects.silence_15_radius:
-                        case Affects.slow_poison:
-                        case Affects.spiritual_hammer:
-                        case Affects.detect_invisibility:
-                        case Affects.invisibility:
-                        case Affects.mirror_image:
-                        case Affects.ray_of_enfeeblement:
-                        case Affects.animate_dead:
-                        case Affects.blinded:
-                        case Affects.cause_disease_1:
-                        case Affects.bestow_curse:
-                        case Affects.blink:
-                        case Affects.strength:
-                        case Affects.haste:
-                        case Affects.prot_from_normal_missiles:
-                        case Affects.slow:
-                        case Affects.prot_from_evil_10_radius:
-                        case Affects.prot_from_good_10_radius:
-                        case Affects.prayer:
-                        case Affects.snake_charm:
-                        case Affects.paralyze:
-                        case Affects.sleep:
-                            int spell_id = 1;
-                            bool found = false;
-
-                            while (spell_id <= 0x38 && found == false)
-                            {
-                                if (gbl.spell_table[spell_id].affect_id == affect_type)
-                                {
-                                    affect_name = ovr023.SpellNames[spell_id];
-                                    found = true;
-                                }
-                                else
-                                {
-                                    spell_id++;
-                                }
-                            }
-
-                            if (found == false)
-                            {
-                                affect_name = "Funky--" + affect_type.ToString();
-                            }
-                            break;
-
-                        case Affects.dispel_evil:
-                            affect_name = "Dispel Evil";
-                            break;
-
-                        case Affects.faerie_fire:
-                            affect_name = "Faerie Fire";
-                            break;
-
-                        case Affects.fumbling:
-                            affect_name = "Fumbling";
-                            break;
-
-                        case Affects.helpless:
-                            affect_name = "Helpless";
-                            break;
-
-                        case Affects.confuse:
-                            affect_name = "Confused";
-                            break;
-
-                        case Affects.cause_disease_2:
-                            affect_name = "Cause Disease";
-                            break;
-
-                        case Affects.hot_fire_shield:
-                            affect_name = "Hot Fire Shield";
-                            break;
-
-                        case Affects.cold_fire_shield:
-                            affect_name = "Cold Fire Shield";
-                            break;
-
-                        case Affects.poisoned:
-                            affect_name = "Poisoned";
-                            break;
-
-                        case Affects.regenerate:
-                            affect_name = "Regenerating";
-                            break;
-
-                        case Affects.fire_resist:
-                            affect_name = "Fire Resistance";
-                            break;
-
-                        case Affects.minor_globe_of_invulnerability:
-                            affect_name = "Minor Globe of Invulnerability";
-                            break;
-
-                        case Affects.feeblemind:
-                            affect_name = "enfeebled";
-                            break;
-
-                        case Affects.invisible_to_animals:
-                            affect_name = "invisible to animals";
-                            break;
-
-                        case Affects.invisible:
-                            affect_name = "Invisible";
-                            break;
-
-                        case Affects.camouflage:
-                            affect_name = "Camouflaged";
-                            break;
-
-                        case Affects.prot_drag_breath:
-                            affect_name = "protected from dragon breath";
-                            break;
-
-                        case Affects.berserk:
-                            affect_name = "berserk";
-                            break;
-
-                        case Affects.displace:
-                            affect_name = "Displaced";
-                            break;
-
-                        default:
-                            has_name = false;
-                            break;
-                    }
-
-                    if (has_name == true)
-                    {
-                        var_13 = true;
+                        any_effects = true;
                         var_C.Add(new MenuItem(" " + affect_name));
                     }
                 }
 
-                if (var_13 == false)
+                if (any_effects == false)
                 {
                     var_C.Add(new MenuItem(" <No Spell Effects>"));
                 }

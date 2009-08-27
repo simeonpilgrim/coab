@@ -166,5 +166,17 @@ namespace Main.Properties {
                 this["NoRaceLevelLimits"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool SortTreasure {
+            get {
+                return ((bool)(this["SortTreasure"]));
+            }
+            set {
+                this["SortTreasure"] = value;
+            }
+        }
     }
 }

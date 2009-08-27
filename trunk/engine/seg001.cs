@@ -133,6 +133,8 @@ namespace engine
             gbl.stru_1D52C[2] = new byte[780];
             gbl.stru_1D530.LoadData(new byte[0x402]);
 
+            ovr016.BuildEffectNameMap();
+
             for (int i = 0; i < gbl.cmdOppsLimit; i++)
             {
                 gbl.cmd_opps[i] = new Opperation();

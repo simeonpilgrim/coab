@@ -2810,8 +2810,8 @@ namespace engine
                 }
 
                 byte class_count = 0;
-                byte var_17 = player_ptr.magic_user_lvl;
-                byte var_18 = player_ptr.ranger_lvl;
+                byte oldMagicUserLvl = player_ptr.magic_user_lvl;
+                byte oldRangeLevel = player_ptr.ranger_lvl;
                 player_ptr.classFlags = 0;
 
                 for (int _class = 0; _class <= 7; _class++)
@@ -2836,21 +2836,21 @@ namespace engine
 
                 if (gbl.silent_training == false)
                 {
-                    if (player_ptr.magic_user_lvl > var_17 ||
+                    if (player_ptr.magic_user_lvl > oldMagicUserLvl ||
                         player_ptr.ranger_lvl > 8)
                     {
                         int index = -1;
-                        byte var_1A;
+                        byte newSpellId;
                         bool var_1D;
 
                         do
                         {
-                            var_1A = ovr020.spell_menu2(out var_1D, ref index, SpellSource.Learn, SpellLoc.choose);
-                        } while (var_1A <= 0 && var_1D == true);
+                            newSpellId = ovr020.spell_menu2(out var_1D, ref index, SpellSource.Learn, SpellLoc.choose);
+                        } while (newSpellId <= 0 && var_1D == true);
 
-                        if (var_1A > 0)
+                        if (newSpellId > 0)
                         {
-                            player_ptr.LearnSpell((Spells)var_1A);
+                            player_ptr.LearnSpell((Spells)newSpellId);
                         }
                     }
                 }
