@@ -454,6 +454,12 @@ namespace engine
             seg037.DrawFrame_Outer();
 
             var list = new List<MenuItem>();
+
+            if (Cheats.sort_treasure)
+            {
+                gbl.items_pointer.Sort((a, b) => a._value.CompareTo(b._value));
+            }
+
             gbl.items_pointer.ForEach(item =>
                 {
                     ovr025.ItemDisplayNameBuild(false, false, 0, 0, item);

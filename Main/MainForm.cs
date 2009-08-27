@@ -92,6 +92,7 @@ namespace Main
             Classes.Cheats.ImprovedAreaMapSet(Settings.Default.ImprovedAreaMap);
             Classes.Cheats.NoRaceLevelLimits(Settings.Default.NoRaceClassLimits);
             Classes.Cheats.NoRaceClassRestrictions(Settings.Default.NoRaceClassLimits);
+            Classes.Cheats.SortTreasureSet(Settings.Default.SortTreasure);
 
             engine.seg044.SetSound(Settings.Default.SoundOn);
         }
@@ -211,6 +212,15 @@ namespace Main
             Settings.Default.Save();
 
             engine.seg044.SetSound(flipped);
+        }
+
+        private void sortTreasureToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            bool flipped = !Settings.Default.SortTreasure;
+            Settings.Default.SortTreasure = flipped;
+            Settings.Default.Save();
+
+            Classes.Cheats.SortTreasureSet(flipped);
         }
     }
 }

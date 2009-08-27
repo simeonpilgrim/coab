@@ -1935,13 +1935,9 @@ namespace engine
                     break;
 
                 case 0xE804:
-                    ovr030.DrawMaybeOverlayed(gbl.byte_1D556.frames[gbl.byte_1D556.curFrame - 1].picture, true, 3, 3);
-                    gbl.byte_1D556.curFrame++;
-
-                    if (gbl.byte_1D556.curFrame > gbl.byte_1D556.numFrames)
-                    {
-                        gbl.byte_1D556.curFrame = 1;
-                    }
+                    ovr030.DrawMaybeOverlayed(gbl.byte_1D556.CurrentPicture(), true, 3, 3);
+                    
+                    gbl.byte_1D556.NextFrame();
 
                     seg041.GameDelay();
                     break;

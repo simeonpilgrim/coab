@@ -194,19 +194,14 @@ namespace engine
                 if ((gbl.area_ptr.picture_fade != 0 || useOverlay == true) &&
                     gbl.byte_1D556.curFrame > 0)
                 {
-                    ovr030.DrawMaybeOverlayed(gbl.byte_1D556.frames[gbl.byte_1D556.curFrame - 1].picture, useOverlay, 3, 3);
+                    ovr030.DrawMaybeOverlayed(gbl.byte_1D556.CurrentPicture(), useOverlay, 3, 3);
 
-                    int delay = gbl.byte_1D556.frames[gbl.byte_1D556.curFrame - 1].delay * 10;
+                    int delay = gbl.byte_1D556.CurrentDelay() * 10;
 
                     if ((seg041.time01() - timeStart) >= delay ||
                         gbl.area_ptr.picture_fade != 0)
                     {
-                        gbl.byte_1D556.curFrame++;
-
-                        if (gbl.byte_1D556.curFrame > gbl.byte_1D556.numFrames)
-                        {
-                            gbl.byte_1D556.curFrame = 1;
-                        }
+                        gbl.byte_1D556.NextFrame();
 
                         timeStart = seg041.time01();
                     }
