@@ -283,14 +283,14 @@ namespace engine
             {
                 if (pos.x < minX)
                 {
-                    while (pos.x < screenCentre.x && screenCentre.x > (Point.MapMinX+ Point.ScreenHalfX))
+                    while (pos.x < screenCentre.x && screenCentre.x > (Point.MapMinX + Point.ScreenHalfX))
                     {
                         screenCentre.x -= 1;
                     }
                 }
                 else if (pos.x > maxX)
                 {
-                    while (pos.x > screenCentre.x && screenCentre.x < (Point.MapMaxX - Point.ScreenHalfX))
+                    while (pos.x > screenCentre.x && screenCentre.x < (Point.MapMaxX - Point.ScreenHalfX - 1))
                     {
                         screenCentre.x += 1;
                     }
@@ -305,7 +305,7 @@ namespace engine
                 }
                 else if (pos.y > maxY)
                 {
-                    while (pos.y > screenCentre.y && screenCentre.y < (Point.MapMaxY - Point.ScreenHalfY))
+                    while (pos.y > screenCentre.y && screenCentre.y < (Point.MapMaxY - Point.ScreenHalfY - 1))
                     {
                         screenCentre.y += 1;
                     }
