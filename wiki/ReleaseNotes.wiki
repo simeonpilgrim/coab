@@ -3,10 +3,10 @@
 = Unreleased =
 
 = 1.0.20 =
-  * Issue 32, Fixed manual targetting
-  * Issue 33, Fixed Magic-Users spell selection on leveling to show new spells, not current
+  * Issue 32, Fixed manual targeting
+  * Issue 33, Fixed Magic-Users spell selection on levelling to show new spells, not current
   * Issue 34, Fixed the combat Aiming crash at the edges of the screen
-  * Issue 35, Fixed Magic-Users spell selection on leveling to show level 5 spells
+  * Issue 35, Fixed Magic-Users spell selection on levelling to show level 5 spells
   * Issue 38, Loss of excess Exp when level, was in original DOS game, but I've removed it
   * Add new cheat to sort treasure (most valuable at top)
   * Screen Capture now save to "My Pictures" as "Curse - xxxx.png"
