@@ -65,10 +65,25 @@ namespace Main
             engine.seg043.ToggleCommandDebugging();
         }
 
+        string Picture_Prefix = "Curse - ";
+
         private void screenCaptureToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            string path = Path.ChangeExtension(Path.GetTempFileName(), ".jpg");
-            displayArea.Image.Save(path, System.Drawing.Imaging.ImageFormat.Jpeg);
+            string path = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
+            int largest = 0;
+            foreach (string filename in Directory.GetFiles(path, Picture_Prefix + "*.png", SearchOption.TopDirectoryOnly))
+            {
+                int num;
+                string substr = Path.GetFileNameWithoutExtension(filename).Substring(Picture_Prefix.Length);
+                if (Int32.TryParse(substr, out num))
+                {
+                    largest = Math.Max(num, largest);
+                }
+            }
+            largest++;
+
+            string newfilepath = Path.Combine(path, Picture_Prefix + largest.ToString("D4") + ".png");
+            displayArea.Image.Save(newfilepath, System.Drawing.Imaging.ImageFormat.Png);
         }
 
         protected override void OnPaint(PaintEventArgs e)
