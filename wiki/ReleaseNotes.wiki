@@ -1,6 +1,8 @@
 = The Release Notes =
 
 = Unreleased =
+
+= 1.0.20 =
   * Issue 32, Fixed manual targetting
   * Issue 33, Fixed Magic-Users spell selection on leveling to show new spells, not current
   * Issue 34, Fixed the combat Aiming crash at the edges of the screen
