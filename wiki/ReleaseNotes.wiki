@@ -7,6 +7,7 @@
   * Issue 35, Fixed Magic-Users spell selection on leveling to show level 5 spells
   * Add new cheat to sort treasure (most valuable at top)
   * Screen Capture now save to "My Pictures" as "Curse - xxxx.png"
+  * Settings are now kept across upgrades
 
 = 1.0.19 =
   * Fixed the Pool of Radiance player import code. You may now transfer you older saved games

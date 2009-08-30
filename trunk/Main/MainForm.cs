@@ -14,11 +14,12 @@ namespace Main
     {
         public MainForm()
         {
+            setSettings();
+
             InitializeComponent();
 
             Classes.Display.LowLevelDisplay = new Win32.Win32Display();
             Classes.Display.UpdateCallback = UpdateDisplayCallback;
-            setSettings();
         }
 
         object obj = new object();
@@ -96,6 +97,9 @@ namespace Main
 
         private void setSettings()
         {
+            Settings.Default.Upgrade(); 
+            Settings.Default.Save();
+
             Classes.Cheats.PlayerAlwaysSavesSet(Settings.Default.PlayerAlwaysSaves);
             Classes.Cheats.AlwayShowAreaMapSet(Settings.Default.AlwayShowAreaMap);
             Classes.Cheats.FreeTrainingSet(Settings.Default.FreeTraining);
