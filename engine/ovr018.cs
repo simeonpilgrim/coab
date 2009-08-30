@@ -2661,11 +2661,12 @@ namespace engine
                         {
                             if (Cheats.free_training == true)
                             {
-                                if (exp_table[_class, class_lvl] > 0)
+                                int tmpExp = exp_table[_class, class_lvl];
+                                if (tmpExp > 0)
                                 {
-                                    if (exp_table[_class, class_lvl] > player_ptr.exp)
+                                    if (tmpExp > player_ptr.exp)
                                     {
-                                        player_ptr.exp = exp_table[_class, class_lvl];
+                                        player_ptr.exp = tmpExp;
                                     }
                                 }
                             }
@@ -2721,7 +2722,7 @@ namespace engine
 
             if (var_5 > 0 && gbl.silent_training == false)
             {
-                player_ptr.exp = var_5;
+                //player_ptr.exp = var_5;
             }
 
             if (Cheats.free_training == false)
