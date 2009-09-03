@@ -1,6 +1,7 @@
 = The Release Notes =
 
 = Unreleased =
+  * Issue 36, Fixed staff-sling weapon targetting
 
 = 1.0.20 =
   * Issue 32, Fixed manual targeting
