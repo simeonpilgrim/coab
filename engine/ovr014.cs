@@ -1964,8 +1964,8 @@ namespace engine
                             can_target = false;
                         }
                         else if (ovr025.is_weapon_ranged(player01) == true &&
-                             (ovr025.GetCurrentAttackItem(out dummyItem, player01) == true ||
-                             (ovr025.BuildNearTargets(1, player01).Count >= 0 &&
+                             (ovr025.GetCurrentAttackItem(out dummyItem, player01) == false ||
+                             (ovr025.BuildNearTargets(1, player01).Count > 0 &&
                                 ovr025.is_weapon_ranged_melee(player01) == false)))
                         {
                             can_target = false;
