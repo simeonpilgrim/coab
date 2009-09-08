@@ -424,7 +424,7 @@ namespace engine
         static byte reset_scribe(ref bool arg_0, Player player)
         {
             byte var_4 = 0;
-            foreach(Item item in player.items)
+            foreach(Item item in player.items.ToArray())
             {
                 int var_2 = 1;
 

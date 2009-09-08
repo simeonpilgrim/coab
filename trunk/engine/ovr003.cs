@@ -175,16 +175,16 @@ namespace engine
         {
             ovr008.vm_LoadCmdSets(1);
 
-            byte player_index = (byte)ovr008.vm_GetCmdValue(1);
+            int player_index = (byte)ovr008.vm_GetCmdValue(1);
             VmLog.WriteLine("CMD_LoadCharacter: 0x{0:X}", player_index);
 
             gbl.restore_player_ptr = true;
 
 
-            byte var_8 = (byte)(player_index & 0x80);
-            player_index = (byte)(player_index & 0x7f);
+            bool high_bit_set = (player_index & 0x80) != 0;
+            player_index = player_index & 0x7f;
 
-            Player player_ptr = player_index > 0 ? player_ptr = gbl.player_next_ptr[player_index] : null;
+            Player player_ptr = player_index > 0 && player_index < gbl.player_next_ptr.Count ? gbl.player_next_ptr[player_index] : null;
  
             if (player_ptr != null)
             {
@@ -196,7 +196,7 @@ namespace engine
                 gbl.player_not_found = true;
             }
 
-            if (var_8 != 0 &&
+            if (high_bit_set == true &&
                 gbl.redrawPartySummary1 == true &&
                 gbl.redrawPartySummary2 == true)
             {
@@ -289,7 +289,6 @@ namespace engine
                     copy_count++;
                     gbl.numLoadedMonsters++;
                     gbl.player_next_ptr.Add(newMob);
-
                 }
 
                 gbl.monster_icon_id++;
