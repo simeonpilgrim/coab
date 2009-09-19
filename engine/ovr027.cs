@@ -62,33 +62,33 @@ namespace engine
         /// <summary>
         /// sub_6C0DA
         /// </summary>
-        internal static HighlightSet buildInputKeys(string arg_2, out int bp_var_8E)
+        internal static HighlightSet BuildInputKeys(string menuText, out int highlighCount)
         {
-            HighlightSet bp_var_8D = new HighlightSet();
+            HighlightSet highlighSet = new HighlightSet();
 
-            int var_2A = 0;
+            int index = 0;
 
-            for (int var_2B = 0; var_2B < arg_2.Length; var_2B++)
+            for (int var_2B = 0; var_2B < menuText.Length; var_2B++)
             {
-                if (highlightable_text.MemberOf(arg_2[var_2B ]) == true)
+                if (highlightable_text.MemberOf(menuText[var_2B ]) == true)
                 {
-                    if (bp_var_8D[var_2A].start == -1)
+                    if (highlighSet[index].start == -1)
                     {
-                        bp_var_8D[var_2A].start = var_2B;
+                        highlighSet[index].start = var_2B;
                     }
                     else
                     {
-                        bp_var_8D[var_2A].end = var_2B - 2;
-                        var_2A++;
-                        bp_var_8D[var_2A].start = var_2B;
+                        highlighSet[index].end = var_2B - 2;
+                        index++;
+                        highlighSet[index].start = var_2B;
                     }
                 }
             }
 
-            bp_var_8D[var_2A].end = arg_2.Length;
-            bp_var_8E = var_2A;
+            highlighSet[index].end = menuText.Length;
+            highlighCount = index + 1;
 
-            return bp_var_8D;
+            return highlighSet;
         }
 
 
@@ -138,16 +138,16 @@ namespace engine
 
         internal static char displayInput(out bool specialKeyPressed, bool useOverlay, byte arg_6, int highlightFgColor, int fgColor, int extraStringFgColor, string displayInputString, string displayExtraString)
         {
-            int var_8E;
+            int highlistCount;
             byte var_61;
 
             gbl.displayInput_specialKeyPressed = false;
 
             bool var_8F = (fgColor != 0) || (highlightFgColor != 0);
 
-            HighlightSet highlights = buildInputKeys(displayInputString, out var_8E);
+            HighlightSet highlights = BuildInputKeys(displayInputString, out highlistCount);
 
-            if (gbl.menuSelectedWord >= var_8E)
+            if (gbl.menuSelectedWord >= highlistCount)
             {
                 gbl.menuSelectedWord = 0;
             }
@@ -252,7 +252,7 @@ namespace engine
                     {
                         if (gbl.menuSelectedWord == 0)
                         {
-                            gbl.menuSelectedWord = (byte)(var_8E - 1);
+                            gbl.menuSelectedWord = highlistCount - 1;
                         }
                         else
                         {
@@ -265,7 +265,7 @@ namespace engine
                     {
                         gbl.menuSelectedWord++;
 
-                        if (gbl.menuSelectedWord >= var_8E)
+                        if (gbl.menuSelectedWord >= highlistCount)
                         {
                             gbl.menuSelectedWord = 0;
                         }

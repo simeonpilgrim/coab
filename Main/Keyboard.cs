@@ -92,6 +92,16 @@ namespace Main
                 return 0x1b;
             }
 
+            if (key == Keys.Oemcomma)
+            {
+                return 0x2c;
+            }
+
+            if (key == Keys.OemPeriod)
+            {
+                return 0x2e;
+            }
+
             return 0x0020;
         }
     }
