@@ -1098,8 +1098,8 @@ namespace engine
                 }
 
                 player.platinum = 300;
-                player.field_12C = sub_509E0(0xff, player);
-                player.hit_point_max = player.field_12C;
+                player.hit_point_rolled = sub_509E0(0xff, player);
+                player.hit_point_max = player.hit_point_rolled;
 
                 var_1E = get_con_hp_adj(player);
 
@@ -1120,7 +1120,7 @@ namespace engine
                 }
 
                 player.hit_point_current = player.hit_point_max;
-                player.field_12C = (byte)(player.field_12C / var_20);
+                player.hit_point_rolled = (byte)(player.hit_point_rolled / var_20);
                 byte trainingClassMaskBackup = gbl.area2_ptr.training_class_mask;
 
                 ovr017.SilentTrainPlayer();
@@ -1261,7 +1261,7 @@ namespace engine
         /// <summary>
         /// nested function, has not been fix to be not nested.
         /// </summary>
-        internal static void draw_highlight_stat(bool highlighted, byte edited_stat, byte name_cursor_pos) /* sub_4E6F2 */
+        internal static void draw_highlight_stat(bool highlighted, byte edited_stat, int name_cursor_pos) /* sub_4E6F2 */
         {
             if (edited_stat >= 0 && edited_stat <= 5)
             {
@@ -1297,7 +1297,6 @@ namespace engine
 
         internal static void modifyPlayer()
         {
-            byte name_cursor_pos;
             bool var_36;
             char var_35;
 
@@ -1320,12 +1319,12 @@ namespace engine
                 stats_bkup[stat_var] = gbl.player_ptr.stats[stat_var].max;
             }
 
-            byte var_7 = gbl.player_ptr.tmp_str_00;
-            byte var_8 = gbl.player_ptr.hit_point_max;
+            byte orig_str_100 = gbl.player_ptr.tmp_str_00;
+            byte orig_hp_max = gbl.player_ptr.hit_point_max;
 
             string nameBackup = gbl.player_ptr.name;
 
-            name_cursor_pos = 1;
+            int name_cursor_pos = 1;
             byte edited_stat = 7;
             draw_highlight_stat(false, edited_stat, name_cursor_pos);
             edited_stat = 0;
@@ -1716,8 +1715,8 @@ namespace engine
                                 player_ptr.stats[stat_var].max = stats_bkup[stat_var];
                             }
 
-                            gbl.player_ptr.tmp_str_00 = var_7;
-                            gbl.player_ptr.hit_point_max = var_8;
+                            gbl.player_ptr.tmp_str_00 = orig_str_100;
+                            gbl.player_ptr.hit_point_max = orig_hp_max;
                             gbl.player_ptr.hit_point_current = gbl.player_ptr.hit_point_max;
 
                             gbl.player_ptr.name = nameBackup;
@@ -1733,8 +1732,8 @@ namespace engine
                             gbl.player_ptr.stats[stat_var].max = stats_bkup[stat_var];
                         }
 
-                        gbl.player_ptr.tmp_str_00 = var_7;
-                        gbl.player_ptr.hit_point_max = var_8;
+                        gbl.player_ptr.tmp_str_00 = orig_str_100;
+                        gbl.player_ptr.hit_point_max = orig_hp_max;
                         gbl.player_ptr.name = nameBackup;
 
                         gbl.player_ptr.hit_point_current = gbl.player_ptr.hit_point_max;
@@ -1754,7 +1753,7 @@ namespace engine
             gbl.player_ptr.npcTreasureShareCount = 1;
 
             player_ptr = gbl.player_ptr;
-            var_8 = 0;
+            orig_hp_max = 0;
             byte var_40 = 0;
 
             for (int var_33 = 0; var_33 < 8; var_33++)
@@ -1765,31 +1764,31 @@ namespace engine
                     {
                         if ((ClassId)var_33 == ClassId.ranger)
                         {
-                            var_8 += (byte)((player_ptr.ClassLevel[var_33] + 1) * (con_bonus((ClassId)var_33)));
+                            orig_hp_max += (byte)((player_ptr.ClassLevel[var_33] + 1) * (con_bonus((ClassId)var_33)));
                         }
                         else
                         {
-                            var_8 += (byte)(player_ptr.ClassLevel[var_33] * (con_bonus((ClassId)var_33)));
+                            orig_hp_max += (byte)(player_ptr.ClassLevel[var_33] * (con_bonus((ClassId)var_33)));
                         }
                     }
                     else
                     {
-                        var_8 += (byte)((gbl.max_class_hit_dice[var_33] - 1) * con_bonus((ClassId)var_33));
+                        orig_hp_max += (byte)((gbl.max_class_hit_dice[var_33] - 1) * con_bonus((ClassId)var_33));
                     }
                     var_40++;
                 }
             }
 
-            var_8 /= var_40;
+            orig_hp_max /= var_40;
 
-            player_ptr.field_12C = (byte)(player_ptr.hit_point_max - var_8);
+            player_ptr.hit_point_rolled = (byte)(player_ptr.hit_point_max - orig_hp_max);
 
             for (int stat_var = 0; stat_var <= 5; stat_var++)
             {
                 gbl.player_ptr.stats[stat_var].tmp = gbl.player_ptr.stats[stat_var].max;
             }
 
-            gbl.player_ptr.tmp_str_00 = gbl.player_ptr.max_str_00;
+            gbl.player_ptr.max_str_00 = gbl.player_ptr.tmp_str_00;
         }
 
 
@@ -2824,10 +2823,10 @@ namespace engine
                         if ((classMasks[_class] & actualTrainingClassesMask) != 0)
                         {
                             player_ptr.ClassLevel[_class] += 1;
-                            if (player_ptr.field_E7 > 0)
+                            if (player_ptr.lost_lvls > 0)
                             {
-                                player_ptr.field_E8 -= (byte)(player_ptr.field_E8 / player_ptr.field_E7);
-                                player_ptr.field_E7 -= 1;
+                                player_ptr.lost_hp -= (byte)(player_ptr.lost_hp / player_ptr.lost_lvls);
+                                player_ptr.lost_lvls -= 1;
                             }
                         }
                     }
@@ -2893,7 +2892,7 @@ namespace engine
                     max_hp_increase = 1;
                 }
 
-                player_ptr.field_12C += (byte)max_hp_increase;
+                player_ptr.hit_point_rolled += (byte)max_hp_increase;
 
                 int var_15 = get_con_hp_adj(gbl.player_ptr);
 

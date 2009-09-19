@@ -217,9 +217,9 @@ namespace engine
                     }
 
                     int var_107;
-                    if (player.hit_point_max > player.field_12C)
+                    if (player.hit_point_max > player.hit_point_rolled)
                     {
-                        var_107 = player.hit_point_max - player.field_12C;
+                        var_107 = player.hit_point_max - player.hit_point_rolled;
                     }
                     else
                     {

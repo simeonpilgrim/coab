@@ -87,7 +87,7 @@ namespace engine
 
                 if (affect_id == Affects.enlarge || 
                     affect_id == Affects.strength || 
-                    affect_id == Affects.strenght_spell)
+                    affect_id == Affects.strength_spell)
                 {
                     CalcStatBonuses(Stat.STR, player);
                 }
@@ -1023,7 +1023,7 @@ namespace engine
                     max_strength(ref stat_a, stat_b, ref str_00_a, str_00_b);
                 }
 
-                if (ovr025.FindAffect(out affect_ptr, Affects.strenght_spell, player) == true)
+                if (ovr025.FindAffect(out affect_ptr, Affects.strength_spell, player) == true)
                 {
                     decode_strength(out str_00_b, out stat_b, affect_ptr);
                     max_strength(ref stat_a, stat_b, ref str_00_a, str_00_b);
@@ -1050,7 +1050,7 @@ namespace engine
             {
                 byte var_13 = 0;
                 byte max_hp = player.hit_point_max;
-                player.hit_point_max = player.field_12C;
+                player.hit_point_max = player.hit_point_rolled;
 
                 for (int classId = 0; classId <= 7; classId++)
                 {

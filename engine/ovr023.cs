@@ -2132,15 +2132,15 @@ namespace engine
 
             Player player = gbl.spellTargets[0];
 
-            if (player.field_E7 > 0)
+            if (player.lost_lvls > 0)
             {
-                byte var_5 = (byte)(player.field_E8 / player.field_E7);
+                byte restored_hp = (byte)(player.lost_hp / player.lost_lvls);
 
-                player.hit_point_max += var_5;
-                player.hit_point_current += var_5;
-                player.field_12C += var_5;
-                player.field_E8 -= var_5;
-                player.field_E7 -= 1;
+                player.hit_point_max += restored_hp;
+                player.hit_point_current += restored_hp;
+                player.hit_point_rolled += restored_hp;
+                player.lost_hp -= restored_hp;
+                player.lost_lvls -= 1;
 
                 int max_lvl = 13;
                 int max_exp = 10000000;
@@ -2205,7 +2205,7 @@ namespace engine
                 ovr025.DisplayPlayerStatusString(true, 10, "is stronger", target);
             }
 
-            ovr024.add_affect(true, encodedStrength, (ushort)((ovr024.roll_dice(4, 1) * 10) + 0x28), Affects.strenght_spell, target);
+            ovr024.add_affect(true, encodedStrength, (ushort)((ovr024.roll_dice(4, 1) * 10) + 0x28), Affects.strength_spell, target);
             ovr024.CalcStatBonuses(Stat.STR, target);
         }
 

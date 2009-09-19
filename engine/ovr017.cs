@@ -500,8 +500,8 @@ namespace engine
             player.base_movement = bp_var_1C0.field_72;
             player.HitDice = bp_var_1C0.field_73;
             player.multiclassLevel = player.HitDice;
-            player.field_E7 = bp_var_1C0.field_74;
-            player.field_E8 = bp_var_1C0.field_75;
+            player.lost_lvls = bp_var_1C0.field_74;
+            player.lost_hp = bp_var_1C0.field_75;
             player.field_E9 = bp_var_1C0.field_76;
 
             System.Array.Copy(bp_var_1C0.field_77, player.field_EA, 8);
@@ -533,7 +533,7 @@ namespace engine
 
             player.exp = bp_var_1C0.field_AC;
             player.classFlags = bp_var_1C0.field_B0;
-            player.field_12C = bp_var_1C0.field_B1;
+            player.hit_point_rolled = bp_var_1C0.field_B1;
 
             for (int var_2 = 1; var_2 <= 3; var_2++)
             {
@@ -676,7 +676,7 @@ namespace engine
             gbl.player_ptr = bp_var_1CA;
 
             var_7.hit_point_max = hills_far_player.field_21;
-            var_7.field_12C = (byte)(var_7.hit_point_max - ovr018.get_con_hp_adj(bp_player_ptr));
+            var_7.hit_point_rolled = (byte)(var_7.hit_point_max - ovr018.get_con_hp_adj(bp_player_ptr));
             var_7.hit_point_current = hills_far_player.field_20;
         }
 
@@ -948,7 +948,7 @@ namespace engine
                         ovr022.addPlayerGold(300);
                         gbl.player_ptr = player02_ptr;
                         player01_ptr.hit_point_max = var_1C4.field_21;
-                        player01_ptr.field_12C = (byte)(player01_ptr.hit_point_max - ovr018.get_con_hp_adj(player_ptr));
+                        player01_ptr.hit_point_rolled = (byte)(player01_ptr.hit_point_max - ovr018.get_con_hp_adj(player_ptr));
                         player01_ptr.hit_point_current = var_1C4.field_20;
                     }
                 }

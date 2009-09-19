@@ -215,9 +215,9 @@ namespace Classes
         [DataOffset(0xe6, DataType.Byte)]
         public byte multiclassLevel; // 0xe6;
         [DataOffset(0xe7, DataType.Byte)]
-        public byte field_E7; // 0xe7;
+        public byte lost_lvls; // 0xe7;
         [DataOffset(0xe8, DataType.Byte)]
-        public byte field_E8; // 0xe8;
+        public byte lost_hp; // 0xe8;
         [DataOffset(0xe9, DataType.Byte)]
         public byte field_E9; // 0xe9;
         [DataOffset(0xeA, DataType.ByteArray,8)]
@@ -399,7 +399,7 @@ namespace Classes
         [DataOffset(0x12b, DataType.Byte)]
         public byte classFlags; // 0x12b;
         [DataOffset(0x12c, DataType.Byte)]
-        public byte field_12C; // 0x12c;
+        public byte hit_point_rolled; // 0x12c;
 
         //[DataOffset(0x12d, DataType.ByteArray,15)]
         public byte[,] field_12D = new byte[3,5]; // 0x12d - field_12D

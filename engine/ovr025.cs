@@ -616,7 +616,7 @@ namespace engine
         }
 
 
-        internal static int player_strenght_group(Player player) /* playerStrengh */
+        internal static int player_strength_group(Player player) /* playerStrengh */
         {
             int ret_val;
 
@@ -671,7 +671,7 @@ namespace engine
         internal static int strengthHitBonus(Player player)
         {
             int str_bonus = 0;
-            int str_stat = player_strenght_group(player);
+            int str_stat = player_strength_group(player);
 
             if (player.field_125 != 0)
             {
@@ -705,7 +705,7 @@ namespace engine
                 }
                 else if (str_stat >= 28 && str_stat <= 30)
                 {
-                    str_bonus = str_stat - 23; ;
+                    str_bonus = str_stat - 23;
                 }
             }
 
@@ -717,7 +717,7 @@ namespace engine
         {
             int damage_bonus = 0;
 
-            int var_2 = player_strenght_group(player);
+            int var_2 = player_strength_group(player);
 
             if (player.field_125 != 0)
             {
@@ -755,7 +755,7 @@ namespace engine
         {
             int max_encumberance;
 
-            int str = player_strenght_group(player);
+            int str = player_strength_group(player);
 
             if (str >= 1 && str <= 3)
             {

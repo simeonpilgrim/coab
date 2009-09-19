@@ -31,7 +31,7 @@ namespace engine
                             gbl.pooled_money[money_type] += player.Money[money_type];
                         }
 
-                        total += player.field_13E * player.field_12C;
+                        total += player.field_13E * player.hit_point_rolled;
                         total += player.field_13C;
 
                         if (gbl.area2_ptr.field_5C6 != 1)

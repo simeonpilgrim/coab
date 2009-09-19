@@ -1938,7 +1938,7 @@ namespace engine
             affect_table.Add(Affects.affect_8f, ovr013.sub_3C975);
             affect_table.Add(Affects.owlbear_hug_round_attack, ovr014.AffectOwlbearHugRoundAttack);
             affect_table.Add(Affects.sp_dispel_evil, ovr013.sp_dispel_evil);
-            affect_table.Add(Affects.strenght_spell, ovr013.empty);
+            affect_table.Add(Affects.strength_spell, ovr013.empty);
             affect_table.Add(Affects.do_items_affect, ovr013.do_items_affect);
         }
 
