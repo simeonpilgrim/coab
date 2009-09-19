@@ -390,18 +390,18 @@ namespace engine
         }
 
 
-        static byte rest_memorize(ref bool output, Player player)
+        static int rest_memorize(ref bool findNext, Player player)
         {
-            byte var_2 = 0;
+            int next_spell_level = 0;
             int spell_index = 0;
 
-            while (spell_index <= 83 && var_2 == 0)
+            while (spell_index <= 83 && next_spell_level == 0)
             {
                 if (player.spell_list[spell_index] > 0x7F)
                 {
-                    if (output == true)
+                    if (findNext == true)
                     {
-                        var_2 = (byte)gbl.spell_table[player.spell_list[spell_index] & 0x7F].spellLevel;
+                        next_spell_level = gbl.spell_table[player.spell_list[spell_index] & 0x7F].spellLevel;
                     }
                     else
                     {
@@ -410,55 +410,51 @@ namespace engine
                         display_resting_time(0);
 
                         ovr023.cast_spell_text(player.spell_list[spell_index], "has memorized", player);
-                        output = true;
+                        findNext = true;
                     }
                 }
 
                 spell_index++;
             }
 
-            return var_2;
+            return next_spell_level;
         }
 
 
-        static byte reset_scribe(ref bool arg_0, Player player)
+        static int rest_scribe(ref bool findNext, Player player)
         {
-            byte var_4 = 0;
+            int next_scribe_lvl = 0;
             foreach(Item item in player.items.ToArray())
             {
-                int var_2 = 1;
-
                 if (ovr023.item_is_scroll(item) == true)
                 {
-                    while (var_2 <= 3 && var_4 == 0)
+                    for( int spellIdx = 1; spellIdx < 4 && next_scribe_lvl == 0; spellIdx++)
                     {
-                        if (item.getAffect(var_2) > (Affects)0x80)
+                        if (item.getAffect(spellIdx) > (Affects)0x80)
                         {
-                            if (arg_0 == true)
+                            if (findNext == true)
                             {
-                                var_4 = (byte)gbl.spell_table[(int)item.getAffect(var_2) & 0x7F].spellLevel;
+                                next_scribe_lvl = gbl.spell_table[(int)item.getAffect(spellIdx) & 0x7F].spellLevel;
                             }
                             else
                             {
-                                byte spellId = (byte)((int)item.getAffect(var_2) & 0x7F);
-                                player.LearnSpell((Spells)spellId); 
+                                byte spellId = (byte)((int)item.getAffect(spellIdx) & 0x7F);
+                                player.LearnSpell((Spells)spellId);
                                 ovr023.remove_spell_from_scroll(spellId, item, player);
 
                                 display_resting_time(0);
 
                                 ovr023.cast_spell_text(spellId, "has scribed", player);
-                                arg_0 = true;
+                                findNext = true;
                             }
                         }
-
-                        var_2++;
                     }
                 }
 
-                if( var_4 != 0 ) break;
+                if( next_scribe_lvl != 0 ) break;
             }
 
-            return var_4;
+            return next_scribe_lvl;
         }
 
         static int[] spellLaernTimeout = new int[9]; // seg600:758D
@@ -477,14 +473,14 @@ namespace engine
                     player.spell_to_learn_count == 0)
                 {
                     bool var_7 = false;
-                    byte var_2 = reset_scribe(ref var_7, player);
+                    int next_lvl = rest_scribe(ref var_7, player);
 
-                    if (var_2 == 0)
+                    if (next_lvl == 0)
                     {
-                        var_2 = rest_memorize(ref var_7, player);
+                        next_lvl = rest_memorize(ref var_7, player);
                     }
 
-                    spellLaernTimeout[index] = var_2 * 3;
+                    spellLaernTimeout[index] = next_lvl * 3;
                 }
 
                 index++;
@@ -507,14 +503,14 @@ namespace engine
                         --player.spell_to_learn_count == 0)
                     {
                         bool var_7 = true;
-                        byte var_2 = reset_scribe(ref var_7, player);
+                        int next_lvl = rest_scribe(ref var_7, player);
 
-                        if (var_2 == 0)
+                        if (next_lvl == 0)
                         {
-                            var_2 = rest_memorize(ref var_7, player);
+                            next_lvl = rest_memorize(ref var_7, player);
                         }
 
-                        spellLaernTimeout[index] = var_2 * 2;
+                        spellLaernTimeout[index] = next_lvl * 2;
                     }
 
                     index++;
