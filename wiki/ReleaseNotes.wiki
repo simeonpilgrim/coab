@@ -2,6 +2,7 @@
 
 = Unreleased =
   * Issue 36, Fixed staff-sling weapon targetting
+  * Issue 46, Fixed horizontal menu scroll via comma and dot keys
 
 = 1.0.20 =
   * Issue 32, Fixed manual targeting
