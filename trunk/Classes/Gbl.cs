@@ -266,7 +266,7 @@ namespace Classes
 
 
 
-        public readonly static byte[] max_class_levels =  { 10, 15, 10, 10, 11, 12, 11, 13 }; // byte_1A1CB seg600:3EBB
+        public readonly static byte[] max_class_hit_dice =  { 10, 15, 10, 10, 11, 12, 11, 13 }; // byte_1A1CB seg600:3EBB
         public readonly static byte[] default_icon_colours = { 1, 2, 3, 4, 6, 7 }; // unk_1A1D3[0] == unk_1A1D2[1];
 
         public readonly static ClassId[][] RaceClasses = { 

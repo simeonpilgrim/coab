@@ -1761,7 +1761,7 @@ namespace engine
             {
                 if (player_ptr.ClassLevel[var_33] > 0)
                 {
-                    if (player_ptr.ClassLevel[var_33] < gbl.max_class_levels[var_33])
+                    if (player_ptr.ClassLevel[var_33] < gbl.max_class_hit_dice[var_33])
                     {
                         if ((ClassId)var_33 == ClassId.ranger)
                         {
@@ -1774,7 +1774,7 @@ namespace engine
                     }
                     else
                     {
-                        var_8 += (byte)((gbl.max_class_levels[var_33] - 1) * con_bonus((ClassId)var_33));
+                        var_8 += (byte)((gbl.max_class_hit_dice[var_33] - 1) * con_bonus((ClassId)var_33));
                     }
                     var_40++;
                 }
@@ -2379,7 +2379,7 @@ namespace engine
             for (int class_index = 0; class_index <= (byte)ClassId.monk; class_index++)
             {
                 if (player.ClassLevel[class_index] > 0 &&
-                    player.ClassLevel[class_index] < gbl.max_class_levels[class_index])
+                    player.ClassLevel[class_index] < gbl.max_class_hit_dice[class_index])
                 {
                     hp_adj += con_hp_adj[player.con];
 
@@ -2492,7 +2492,7 @@ namespace engine
 
                     int var_4 = con_bonus((ClassId)class_index);
 
-                    if (player.ClassLevel[class_index] < gbl.max_class_levels[class_index])
+                    if (player.ClassLevel[class_index] < gbl.max_class_hit_dice[class_index])
                     {
                         class_count++;
                         max_hp += (var_4 + hpt.dice) * (player.ClassLevel[class_index] + hpt.lvl_bonus);
@@ -2500,7 +2500,7 @@ namespace engine
                     else
                     {
                         class_count++;
-                        int over_count = (player.ClassLevel[class_index] - gbl.max_class_levels[class_index]) + 1;
+                        int over_count = (player.ClassLevel[class_index] - gbl.max_class_hit_dice[class_index]) + 1;
 
                         max_hp = hpt.max_base + (over_count * hpt.max_mult);
                     }
@@ -2526,7 +2526,7 @@ namespace engine
                 if (player.ClassLevel[_class] > 0 &&
                     (classMasks[_class] & arg_0) != 0)
                 {
-                    if (player.ClassLevel[_class] < gbl.max_class_levels[_class])
+                    if (player.ClassLevel[_class] < gbl.max_class_hit_dice[_class])
                     {
                         int var_5 = unk_16B2A[_class];
 

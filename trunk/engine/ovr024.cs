@@ -782,9 +782,9 @@ namespace engine
 
         internal static void sub_647BE(byte arg_2, int class_index, byte bp_var_1, ref byte bp_var_A, Player player)
         {
-            if (gbl.max_class_levels[class_index] <= arg_2)
+            if (gbl.max_class_hit_dice[class_index] <= arg_2)
             {
-                arg_2 = (byte)(gbl.max_class_levels[class_index] - 1);
+                arg_2 = (byte)(gbl.max_class_hit_dice[class_index] - 1);
             }
 
             if (class_index == 4 &&
@@ -1052,32 +1052,32 @@ namespace engine
                 byte map_hp = player.hit_point_max;
                 player.hit_point_max = player.field_12C;
 
-                for (int var_C = 0; var_C <= 7; var_C++)
+                for (int classId = 0; classId <= 7; classId++)
                 {
-                    byte var_B = player.ClassLevelsOld[var_C];
+                    byte var_B = player.ClassLevelsOld[classId];
 
                     if (var_B > 0)
                     {
-                        sub_647BE(var_B, var_C, stat_a, ref var_A, player);
+                        sub_647BE(var_B, classId, stat_a, ref var_A, player);
                     }
 
-                    var_B = player.ClassLevel[var_C];
+                    var_B = player.ClassLevel[classId];
 
                     if (var_B > 0)
                     {
                         var_13++;
                     }
 
-                    if (gbl.max_class_levels[var_C] < var_B)
+                    if (gbl.max_class_hit_dice[classId] < var_B)
                     {
-                        var_B = gbl.max_class_levels[var_C];
+                        var_B = gbl.max_class_hit_dice[classId];
                     }
 
                     if (var_B > player.multiclassLevel)
                     {
                         var_B = player.multiclassLevel;
 
-                        sub_647BE(var_B, var_C, stat_a, ref var_A, player);
+                        sub_647BE(var_B, classId, stat_a, ref var_A, player);
                     }
                 }
 
