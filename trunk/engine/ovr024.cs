@@ -1049,7 +1049,7 @@ namespace engine
             else if (stat_index == Stat.CON)
             {
                 byte var_13 = 0;
-                byte map_hp = player.hit_point_max;
+                byte max_hp = player.hit_point_max;
                 player.hit_point_max = player.field_12C;
 
                 for (int classId = 0; classId <= 7; classId++)
@@ -1084,16 +1084,16 @@ namespace engine
                 var_A /= var_13;
                 player.hit_point_max += var_A;
 
-                if (player.hit_point_max > map_hp)
+                if (player.hit_point_max > max_hp)
                 {
-                    player.hit_point_current = (byte)(player.hit_point_max - map_hp);
+                    player.hit_point_current = (byte)(player.hit_point_max - max_hp);
                 }
 
-                if (player.hit_point_max < map_hp)
+                if (player.hit_point_max < max_hp)
                 {
-                    if (player.hit_point_current > map_hp - player.hit_point_max)
+                    if (player.hit_point_current > max_hp - player.hit_point_max)
                     {
-                        player.hit_point_current = (byte)(map_hp - player.hit_point_max);
+                        player.hit_point_current = (byte)(max_hp - player.hit_point_max);
                     }
                     else
                     {
