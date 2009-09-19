@@ -3103,7 +3103,7 @@ namespace engine
         }
 
 
-        internal static void remove_spell_from_scroll(byte affect, Item item, Player player) /* sub_623FF */
+        internal static void remove_spell_from_scroll(int affect, Item item, Player player) /* sub_623FF */
         {
             int affect_index = 0;
 
