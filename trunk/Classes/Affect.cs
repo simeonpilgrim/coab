@@ -150,7 +150,7 @@ namespace Classes
         affect_8f = 0x8f,
         owlbear_hug_round_attack = 0x90,
         sp_dispel_evil = 0x91,
-        strenght_spell = 0x92,
+        strength_spell = 0x92,
         do_items_affect = 0x93
     }
 
