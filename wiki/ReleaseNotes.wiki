@@ -2,8 +2,9 @@
 
 = Unreleased =
   * Issue 36, Fixed staff-sling weapon targetting
+  * Issue 45, Fixed the Order menu (found off Encamp, Alter), so you can select and place the party members
   * Issue 46, Fixed horizontal menu scroll via comma and dot keys
-
+  
 = 1.0.20 =
   * Issue 32, Fixed manual targeting
   * Issue 33, Fixed Magic-Users spell selection on levelling to show new spells, not current

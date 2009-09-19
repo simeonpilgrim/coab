@@ -713,7 +713,7 @@ namespace engine
         }
 
         static string[] reorderStrings = { "Select Exit", "Place Exit" }; //seg600_04A6
-        static Set reorderSet = new Set(0x0101, new byte[] { 0x020 });
+        static Set reorderSet = new Set(0x010a, new byte[] { 0x020, 0, 0, 0, 0, 0, 0, 0, 0, 9 });
 
         static void reorder_party()
         {
