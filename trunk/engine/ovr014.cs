@@ -82,8 +82,8 @@ namespace engine
 
         static void sub_3E192(int index, Player target, Player attacker)
         {
-            gbl.damage = ovr024.roll_dice_save(attacker.field_19FArray(index), attacker.field_19DArray(index));
-            gbl.damage += attacker.field_1A1Array(index);
+            gbl.damage = ovr024.roll_dice_save(attacker.attackDiceSize(index), attacker.attackDiceCount(index));
+            gbl.damage += attacker.attackDamageBonus(index);
 
             if (gbl.damage < 0)
             {
@@ -92,7 +92,7 @@ namespace engine
 
             if (CanBackStabTarget(target, attacker) == true)
             {
-                gbl.damage *= (((attacker.thief_lvl + (attacker.thief_old_lvl * ovr026.MulticlassExceedLastLevel(attacker))) - 1) / 4) + 2;
+                gbl.damage *= ((attacker.SkillLevel(SkillType.Thief) - 1) / 4) + 2;
             }
 
             gbl.damage_flags = 0;
@@ -608,7 +608,7 @@ namespace engine
             int var_2 = ovr024.roll_dice(12, 1);
             int var_1 = ovr024.roll_dice(20, 1);
 
-            int clericLvl = (ovr026.MulticlassExceedLastLevel(player) * player.cleric_old_lvl) + player.cleric_lvl;
+            int clericLvl = player.SkillLevel(SkillType.Cleric);
 
             if (clericLvl >= 1 && clericLvl <= 8)
             {
@@ -712,7 +712,7 @@ namespace engine
         {
             int target_ac;
 
-            int var_13 = arg_8;
+            bool var_13 = arg_8 != 0;
             arg_4 = false;
             gbl.byte_1D2CA = 0;
             gbl.byte_1D2CB = 0;
@@ -762,7 +762,7 @@ namespace engine
 
                 if (CanBackStabTarget(target, attacker) == true)
                 {
-                    target_ac = target.field_19B - 4;
+                    target_ac = target.ac_behind - 4;
                 }
                 else
                 {
@@ -770,12 +770,12 @@ namespace engine
                         getTargetDirection(target, attacker) == target.actions.direction &&
                         target.actions.field_12 > 4)
                     {
-                        var_13 = 1;
+                        var_13 = true;
                     }
 
-                    if (var_13 != 0)
+                    if (var_13 == true)
                     {
-                        target_ac = target.field_19B;
+                        target_ac = target.ac_behind;
                     }
                     else
                     {
@@ -785,7 +785,7 @@ namespace engine
 
                 target_ac += RangedDefenseBonus(target, attacker);
                 AttackType attack_type = AttackType.Normal;
-                if (var_13 != 0)
+                if (var_13 == true)
                 {
                     attack_type = AttackType.Behind;
                 }
@@ -1442,8 +1442,7 @@ namespace engine
 
             bool correctWeapon = false;
 
-            if (attacker.thief_lvl > 0 ||
-                (attacker.thief_old_lvl > 0 && ovr026.MulticlassExceedLastLevel(attacker) != 0))
+            if (attacker.SkillLevel(SkillType.Thief) > 0)
             {
                 if (weapon == null ||
                     weapon.type == ItemType.DrowLongSword ||

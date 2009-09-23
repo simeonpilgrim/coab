@@ -415,7 +415,7 @@ namespace engine
             }
             else if (arg_4 == 0xC9)
             {
-                return_val = (ushort)(gbl.player_ptr.magic_user_lvl + (ovr026.MulticlassExceedLastLevel(gbl.player_ptr) * gbl.player_ptr.magic_user_old_lvl));
+                return_val = (ushort)gbl.player_ptr.SkillLevel(SkillType.MagicUser);
             }
             else if (arg_4 == 0xD6)
             {

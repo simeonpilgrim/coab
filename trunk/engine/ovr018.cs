@@ -39,7 +39,7 @@ namespace engine
         const int allow_drop = 1;
         const int allow_modify = 2;
         const int allow_training = 3;
-        const int allow_multiclass = 4;
+        const int allow_duelclass = 4;
         const int allow_view = 5;
         const int allow_add = 6;
         const int allow_remove = 7;
@@ -84,17 +84,12 @@ namespace engine
                         if (gbl.area2_ptr.training_class_mask > 0 || Cheats.free_training == true)
                         {
                             menuFlags[allow_training] = true;
-                        }
-
-                        if ((gbl.area2_ptr.training_class_mask > 0 || Cheats.free_training == true) &&
-                            ovr026.IsHuman(gbl.player_ptr) &&
-                            ovr026.HumanFirstOldClass_Unknown(gbl.player_ptr) == ClassId.unknown)
-                        {
-                            menuFlags[allow_multiclass] = true;
+                            menuFlags[allow_duelclass] = gbl.player_ptr.CanDuelClass();
                         }
                         else
                         {
-                            menuFlags[allow_multiclass] = false;
+                            menuFlags[allow_training] = false;
+                            menuFlags[allow_duelclass] = false;
                         }
 
                         menuFlags[allow_view] = true;
@@ -108,7 +103,7 @@ namespace engine
                         menuFlags[allow_drop] = false;
                         menuFlags[allow_modify] = false;
                         menuFlags[allow_training] = false;
-                        menuFlags[allow_multiclass] = false;
+                        menuFlags[allow_duelclass] = false;
                         menuFlags[allow_view] = false;
                         menuFlags[allow_remove] = false;
                         menuFlags[allow_load] = true;
@@ -142,22 +137,14 @@ namespace engine
                 {
                     if (unk_4C13D.MemberOf(inputkey) == true)
                     {
-                        bool var_11 = (ovr026.IsHuman(gbl.player_ptr) && ovr026.HumanFirstOldClass_Unknown(gbl.player_ptr) == ClassId.unknown);
+                        bool previousDuelClassState = gbl.player_ptr.CanDuelClass();
 
                         ovr020.scroll_team_list(inputkey);
                         ovr025.PartySummary(gbl.player_ptr);
 
-                        if (ovr026.IsHuman(gbl.player_ptr) == false ||
-                            ovr026.HumanFirstOldClass_Unknown(gbl.player_ptr) != ClassId.unknown)
-                        {
-                            var_11 ^= false;
-                        }
-                        else
-                        {
-                            var_11 ^= true;
-                        }
+                        previousDuelClassState ^= gbl.player_ptr.CanDuelClass();
 
-                        reclac_menus = var_11 && gbl.area2_ptr.training_class_mask > 0;
+                        reclac_menus = previousDuelClassState && gbl.area2_ptr.training_class_mask > 0;
                     }
                 }
                 else
@@ -195,9 +182,9 @@ namespace engine
                             }
                             break;
                         case 'H':
-                            if (menuFlags[allow_multiclass] == true)
+                            if (menuFlags[allow_duelclass] == true)
                             {
-                                ovr026.multiclass(gbl.player_ptr);
+                                ovr026.DuelClass(gbl.player_ptr);
                             }
                             break;
 
@@ -1050,9 +1037,9 @@ namespace engine
 
                 for (int i = 0; i < 5; i++)
                 {
-                    player.field_12D[0, i] = 0;
-                    player.field_12D[1, i] = 0;
-                    player.field_12D[2, i] = 0;
+                    player.spellCastCount[0, i] = 0;
+                    player.spellCastCount[1, i] = 0;
+                    player.spellCastCount[2, i] = 0;
                 }
 
                 for (int class_idx = 0; class_idx <= 7; class_idx++)
@@ -1061,11 +1048,11 @@ namespace engine
                     {
                         if (class_idx == 0)
                         {
-                            player.field_12D[0, 0] = 1;
+                            player.spellCastCount[0, 0] = 1;
                         }
                         else if (class_idx == 5)
                         {
-                            player.field_12D[2, 0] = 1;
+                            player.spellCastCount[2, 0] = 1;
                         }
 
                         //var_21 += ovr024.roll_dice(unk_1A8C4[class_idx], unk_1A8C3[class_idx]);
@@ -1455,9 +1442,9 @@ namespace engine
                                             player_ptr.stats[stat_var].max = gbl.class_stats_min[(int)player_ptr._class].wis_min;
                                         }
 
-                                        if (player_ptr.field_12D[0, 0] > 0)
+                                        if (player_ptr.spellCastCount[0, 0] > 0)
                                         {
-                                            player_ptr.field_12D[0, 0] = 1;
+                                            player_ptr.spellCastCount[0, 0] = 1;
                                         }
                                         break;
 
@@ -1569,9 +1556,9 @@ namespace engine
                                             player_ptr.stats[stat_var].max = racial_stats_limits[(int)player_ptr.race].wis_max;
                                         }
 
-                                        if (player_ptr.field_12D[0, 0] > 0)
+                                        if (player_ptr.spellCastCount[0, 0] > 0)
                                         {
-                                            player_ptr.field_12D[0, 0] = 1;
+                                            player_ptr.spellCastCount[0, 0] = 1;
                                         }
                                         break;
 

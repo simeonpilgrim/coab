@@ -54,6 +54,18 @@ namespace Classes
         human = 7
     }
 
+    public enum SkillType
+    {
+        Cleric = 0,
+        Druid = 1,
+        Fighter = 2,
+        Paladin = 3,
+        Ranger = 4,
+        MagicUser = 5,
+        Thief = 6,
+        Monk = 7
+    }
+
     public enum ClassId
     {
         cleric = 0,
@@ -327,11 +339,11 @@ namespace Classes
             get { return ClassLevelsOld[0]; }
             set { ClassLevelsOld[0] = value; }
         }
-        public byte druid_old_lvl // 0x112;
-        {
-            get { return ClassLevelsOld[1]; }
-            set { ClassLevelsOld[1] = value; }
-        }
+        //public byte druid_old_lvl // 0x112;
+        //{
+        //    get { return ClassLevelsOld[1]; }
+        //    set { ClassLevelsOld[1] = value; }
+        //}
         public byte fighter_old_lvl // 0x113;
         {
             get { return ClassLevelsOld[2]; }
@@ -357,10 +369,63 @@ namespace Classes
             get { return ClassLevelsOld[6]; }
             set { ClassLevelsOld[6] = value; }
         }
-        public byte monk_old_level // 0x118;
+        //public byte monk_old_level // 0x118;
+        //{
+        //    get { return ClassLevelsOld[7]; }
+        //    set { ClassLevelsOld[7] = value; }
+        //}
+
+        public int SkillLevel(SkillType skill)
         {
-            get { return ClassLevelsOld[7]; }
-            set { ClassLevelsOld[7] = value; }
+            return ClassLevel[(int)skill] + (ClassLevelsOld[(int)skill] * DualClassExceedsPreviousLevel());
+        }
+
+        public bool CanDuelClass()
+        {
+            if (race != Race.human)
+            {
+                return false;
+            }
+
+            for (ClassId index = ClassId.cleric; index <= ClassId.monk; index++)
+            {
+                if (ClassLevelsOld[(int)index] > 0)
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        int DualClassExceedsPreviousLevel() // sub_6B3D1
+        {
+            if (DuelClassCurrentLevel() > multiclassLevel)
+            {
+                return 1;
+            }
+            else
+            {
+                return 0;
+            }
+        }
+
+        int DuelClassCurrentLevel()
+        {
+            if (race != Race.human)
+            {
+                return 0;
+            }
+
+            int loop_var = 0;
+
+            while (loop_var < 7 &&
+                ClassLevel[loop_var] == 0)
+            {
+                loop_var++;
+            }
+
+            return ClassLevel[loop_var];
         }
 
         [DataOffset(0x119, DataType.Byte)]
@@ -402,7 +467,7 @@ namespace Classes
         public byte hit_point_rolled; // 0x12c;
 
         //[DataOffset(0x12d, DataType.ByteArray,15)]
-        public byte[,] field_12D = new byte[3,5]; // 0x12d - field_12D
+        public byte[,] spellCastCount = new byte[3,5]; // 0x12d - field_12D
 
         [DataOffset(0x13c, DataType.SWord)]
         public short field_13C; // 0x13c
@@ -531,7 +596,7 @@ namespace Classes
         [DataOffset(0x19a, DataType.Byte)]
         public byte ac; // 0x19a
         [DataOffset(0x19b, DataType.Byte)]
-        public byte field_19B; // 0x19b
+        public byte ac_behind; // 0x19b field_19B
 
         public byte field_19BArray(int index)
         {
@@ -581,7 +646,7 @@ namespace Classes
         [DataOffset(0x19d, DataType.Byte)]
         public byte field_19D; // 0x19d
 
-        public byte field_19DArray(int index)
+        public byte attackDiceCount(int index)
         {
             switch (index)
             {
@@ -593,13 +658,12 @@ namespace Classes
                     throw new System.NotImplementedException();
             }
         }
-
         [DataOffset(0x19E, DataType.Byte)]
         public byte attack1_DiceCount; // 0x19e field_19E
         [DataOffset(0x19F, DataType.Byte)]
         public byte attack2_DiceCount; // 0x19f
 
-        public byte field_19FArray(int index)
+        public byte attackDiceSize(int index)
         {
             switch (index)
             {
@@ -616,7 +680,7 @@ namespace Classes
         [DataOffset(0x1A1, DataType.Byte)]
         public byte attack2_DiceSize; // 0x1a1
 
-        public byte field_1A1Array(int index)
+        public byte attackDamageBonus(int index)
         {
             switch (index)
             {
@@ -632,6 +696,7 @@ namespace Classes
         public sbyte attack1_DamageBonus; // 0x1a2
         [DataOffset(0x1a3, DataType.Byte)]
         public byte attack2_DamageBonus; // 0x1a3
+        
         [DataOffset(0x1a4, DataType.Byte)]
         public byte hit_point_current; // 0x1a4
 
@@ -655,14 +720,14 @@ namespace Classes
             {
                 for (int j = 0; j < 5; j++)
                 {
-                    field_12D[i, j] = data[0x12d + j + (i * i)];
+                    spellCastCount[i, j] = data[0x12d + j + (i * i)];
                 }
             }
         }
 
         private void Init()
         {
-            field_12D = new byte[3, 5];
+            spellCastCount = new byte[3, 5];
             stats = new StatValue[6];
 
             name = string.Empty;
@@ -690,7 +755,7 @@ namespace Classes
             {
                 for (int j = 0; j < 5; j++)
                 {
-                    data[0x12d + j + (i * i)] = field_12D[i, j];
+                    data[0x12d + j + (i * i)] = spellCastCount[i, j];
                 }
             }
 

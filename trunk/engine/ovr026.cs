@@ -54,39 +54,29 @@ namespace engine
 
         internal static void sub_6A00F(Player player)
         {
-            sbyte var_2;
-
             for (int i = 0; i < 5; i++)
             {
-                player.field_12D[0, i] = 0;
-                player.field_12D[1, i] = 0;
-                player.field_12D[2, i] = 0;
+                player.spellCastCount[0, i] = 0;
+                player.spellCastCount[1, i] = 0;
+                player.spellCastCount[2, i] = 0;
             }
 
-            for (int skill = 0; skill <= 7; skill++)
+            for (SkillType skill = SkillType.Cleric; skill <= SkillType.Monk; skill++)
             {
-                if (MulticlassExceedLastLevel(player) != 0 &&
-                    player.ClassLevelsOld[skill] != 0)
-                {
-                    var_2 = (sbyte)player.ClassLevelsOld[skill];
-                }
-                else
-                {
-                    var_2 = (sbyte)player.ClassLevel[skill];
-                }
+                int var_2 = player.SkillLevel(skill);
 
                 if (var_2 > 0)
                 {
                     switch (skill)
                     {
-                        case 0:
-                            player.field_12D[0, 0] += 1;
+                        case SkillType.Cleric:
+                            player.spellCastCount[0, 0] += 1;
 
                             for (int sp_class = 0; sp_class <= (var_2 - 2); sp_class++)
                             {
                                 for (int sp_lvl = 0; sp_lvl < 5; sp_lvl++)
                                 {
-                                    player.field_12D[0, sp_lvl] += unk_1A5CC[sp_class, sp_lvl];
+                                    player.spellCastCount[0, sp_lvl] += unk_1A5CC[sp_class, sp_lvl];
                                 }
                             }
 
@@ -100,7 +90,7 @@ namespace engine
                                 int sp_lvl = (se.spellLevel - 1) % 5;
 
                                 if (se.spellClass == 0 &&
-                                    player.field_12D[sp_class, sp_lvl] > 0 &&
+                                    player.spellCastCount[sp_class, sp_lvl] > 0 &&
                                     spell != Spells.animate_dead)
                                 {
                                     player.LearnSpell(spell);
@@ -108,14 +98,14 @@ namespace engine
                             }
                             break;
 
-                        case 3:
+                        case SkillType.Paladin:
                             if (var_2 > 8)
                             {
                                 for (int var_3 = 8; var_3 < var_2; var_3++)
                                 {
                                     for (int sp_lvl = 0; sp_lvl < 5; sp_lvl++)
                                     {
-                                        player.field_12D[0, sp_lvl] += unk_1A6F5[var_3, sp_lvl];
+                                        player.spellCastCount[0, sp_lvl] += unk_1A6F5[var_3, sp_lvl];
                                     }
                                 }
 
@@ -126,7 +116,7 @@ namespace engine
                                     int sp_lvl = (se.spellLevel - 1) % 5;
 
                                     if (se.spellClass == 0 &&
-                                        player.field_12D[sp_class, sp_lvl] > 0)
+                                        player.spellCastCount[sp_class, sp_lvl] > 0)
                                     {
                                         player.LearnSpell(spell);
                                     }
@@ -134,19 +124,19 @@ namespace engine
                             }
                             break;
 
-                        case 4:
+                        case SkillType.Ranger:
                             if (var_2 > 7)
                             {
                                 for (int var_3 = 8; var_3 <= var_2; var_3++)
                                 {
                                     for (int sp_lvl = 0; sp_lvl < 3; sp_lvl++)
                                     {
-                                        player.field_12D[1, sp_lvl] += unk_1A758[var_3, sp_lvl];
+                                        player.spellCastCount[1, sp_lvl] += unk_1A758[var_3, sp_lvl];
                                     }
 
                                     for (int sp_lvl = 3; sp_lvl < 5; sp_lvl++)
                                     {
-                                        player.field_12D[2, sp_lvl - 3] += unk_1A758[var_3, sp_lvl];
+                                        player.spellCastCount[2, sp_lvl - 3] += unk_1A758[var_3, sp_lvl];
                                     }
                                 }
 
@@ -161,17 +151,17 @@ namespace engine
 
                             break;
 
-                        case 5:
-                            player.field_12D[2, 0] += 1;
+                        case SkillType.MagicUser:
+                            player.spellCastCount[2, 0] += 1;
 
                             for (int lvl = 0; lvl <= (var_2 - 2); lvl++)
                             {
                                 /* unk_1A7C6 = seg600:44B6 */
-                                player.field_12D[2, 0] += ovr020.unk_1A7C6[lvl, 0];
-                                player.field_12D[2, 1] += ovr020.unk_1A7C6[lvl, 1];
-                                player.field_12D[2, 2] += ovr020.unk_1A7C6[lvl, 2];
-                                player.field_12D[2, 3] += ovr020.unk_1A7C6[lvl, 3];
-                                player.field_12D[2, 4] += ovr020.unk_1A7C6[lvl, 4];
+                                player.spellCastCount[2, 0] += ovr020.MU_spell_lvl_learn[lvl, 0];
+                                player.spellCastCount[2, 1] += ovr020.MU_spell_lvl_learn[lvl, 1];
+                                player.spellCastCount[2, 2] += ovr020.MU_spell_lvl_learn[lvl, 2];
+                                player.spellCastCount[2, 3] += ovr020.MU_spell_lvl_learn[lvl, 3];
+                                player.spellCastCount[2, 4] += ovr020.MU_spell_lvl_learn[lvl, 4];
                             }
                             break;
                     }
@@ -184,7 +174,7 @@ namespace engine
                 {
                     for (int sp_lvl = 0; sp_lvl < 3; sp_lvl++)
                     {
-                        player.field_12D[2, sp_lvl] *= 2;
+                        player.spellCastCount[2, sp_lvl] *= 2;
                     }
                 }
             }
@@ -254,7 +244,7 @@ namespace engine
                 }
             }
 
-            if (MulticlassExceedLastLevel(player) != 0)
+            if (DualClassExceedLastLevel(player) == true)
             {
                 for (int class_index = 0; class_index <= 7; class_index++)
                 {
@@ -298,56 +288,56 @@ namespace engine
 
         internal static void calc_cleric_spells(bool arg_0, Player player) /* sub_6A686 */
         {
-            int var_3 = player.cleric_lvl + player.cleric_old_lvl * MulticlassExceedLastLevel(player);
+            int clericLvl = player.SkillLevel(SkillType.Cleric);
 
-            if (var_3 > 0)
+            if (clericLvl > 0)
             {
                 if (arg_0 == true)
                 {
                     for (int sp_lvl = 1; sp_lvl < 5; sp_lvl++)
                     {
-                        player.field_12D[0, sp_lvl] = 0;
+                        player.spellCastCount[0, sp_lvl] = 0;
                     }
 
-                    player.field_12D[0, 0] = 1;
+                    player.spellCastCount[0, 0] = 1;
 
-                    for (int sp_class = 0; sp_class <= (var_3 - 2); sp_class++)
+                    for (int sp_class = 0; sp_class <= (clericLvl - 2); sp_class++)
                     {
                         for (int sp_lvl = 0; sp_lvl < 5; sp_lvl++)
                         {
-                            player.field_12D[0, sp_lvl] += unk_1A5CC[sp_class, sp_lvl];
+                            player.spellCastCount[0, sp_lvl] += unk_1A5CC[sp_class, sp_lvl];
                         }
                     }
                 }
 
-                if (player.wis > 12 && player.field_12D[0, 0] > 0)
+                if (player.wis > 12 && player.spellCastCount[0, 0] > 0)
                 {
-                    player.field_12D[0, 0] += 1;
+                    player.spellCastCount[0, 0] += 1;
                 }
 
-                if (player.wis > 13 && player.field_12D[0, 0] > 0)
+                if (player.wis > 13 && player.spellCastCount[0, 0] > 0)
                 {
-                    player.field_12D[0, 0] += 1;
+                    player.spellCastCount[0, 0] += 1;
                 }
 
-                if (player.wis > 14 && player.field_12D[0, 1] > 0)
+                if (player.wis > 14 && player.spellCastCount[0, 1] > 0)
                 {
-                    player.field_12D[0, 1] += 1;
+                    player.spellCastCount[0, 1] += 1;
                 }
 
-                if (player.wis > 15 && player.field_12D[0, 1] > 0)
+                if (player.wis > 15 && player.spellCastCount[0, 1] > 0)
                 {
-                    player.field_12D[0, 1] += 1;
+                    player.spellCastCount[0, 1] += 1;
                 }
 
-                if (player.wis > 16 && player.field_12D[0, 2] > 0)
+                if (player.wis > 16 && player.spellCastCount[0, 2] > 0)
                 {
-                    player.field_12D[0, 2] += 1;
+                    player.spellCastCount[0, 2] += 1;
                 }
 
-                if (player.wis > 17 && player.field_12D[0, 3] > 0)
+                if (player.wis > 17 && player.spellCastCount[0, 3] > 0)
                 {
-                    player.field_12D[0, 3] += 1;
+                    player.spellCastCount[0, 3] += 1;
                 }
             }
         }
@@ -512,15 +502,15 @@ namespace engine
             var var_A = item_found != null && item_found.ScrollLearning(3, 11);
             var var_B = item_found != null && item_found.ScrollLearning(3, 2);
 
-            int var_4 = (sbyte)(player.thief_lvl + (MulticlassExceedLastLevel(player) * player.thief_old_lvl));
+            int thiefLvl = player.SkillLevel(SkillType.Thief);
 
-            if (var_4 < 4 && var_B == true)
+            if (thiefLvl < 4 && var_B == true)
             {
-                var_4 = 4;
+                thiefLvl = 4;
                 var_B = false;
             }
 
-            int var_5 = var_4;
+            int var_5 = thiefLvl;
 
             for (int var_1 = 1; var_1 <= 8; var_1++)
             {
@@ -529,9 +519,9 @@ namespace engine
                     switch (var_1)
                     {
                         case 1:
-                            if (var_4 < 5)
+                            if (thiefLvl < 5)
                             {
-                                var_4 = 5;
+                                thiefLvl = 5;
                                 var_2 = 0;
                             }
                             else
@@ -541,9 +531,9 @@ namespace engine
                             break;
 
                         case 2:
-                            if (var_4 < 7)
+                            if (thiefLvl < 7)
                             {
-                                var_4 = 7;
+                                thiefLvl = 7;
                                 var_2 = 0;
                             }
                             else
@@ -555,13 +545,13 @@ namespace engine
                 }
 
                 if (unk_1A230[(int)player.race, var_1] < 0 &&
-                    unk_1A1D0[var_4, var_1] < (System.Math.Abs(unk_1A230[(int)player.race, var_1]) + var_2))
+                    unk_1A1D0[thiefLvl, var_1] < (System.Math.Abs(unk_1A230[(int)player.race, var_1]) + var_2))
                 {
                     player.field_EA[var_1 - 1] = 0;
                 }
                 else
                 {
-                    player.field_EA[var_1 - 1] = (byte)(var_2 + unk_1A1D0[var_4, var_1] + unk_1A230[(int)player.race, var_1]);
+                    player.field_EA[var_1 - 1] = (byte)(var_2 + unk_1A1D0[thiefLvl, var_1] + unk_1A230[(int)player.race, var_1]);
 
                     if (var_1 < 6)
                     {
@@ -575,17 +565,17 @@ namespace engine
                     player.field_EA[var_1 - 1] += 10;
                 }
 
-                var_4 = var_5;
+                thiefLvl = var_5;
             }
         }
 
 
         internal static bool player_can_be_class(ClassId _class, Player player) /* sub_6AD3E */
         {
-            bool var_2 = (_class != HumanCurrentClass_Unknown(player));
+            var firstClass = HumanCurrentClass_Unknown(player);
+            bool var_2 = _class != firstClass;
             int var_3 = 0;
 
-            var firstClass = HumanCurrentClass_Unknown(player);
 
             while (var_3 <= 5 &&
                 (gbl.class_stats_min[(int)firstClass][var_3] < 9 || player.stats[var_3].tmp > 14))
@@ -626,7 +616,7 @@ namespace engine
         }
 
 
-        internal static void multiclass(Player player)
+        internal static void DuelClass(Player player)
         {
             List<MenuItem> list = new List<MenuItem>();
 
@@ -667,11 +657,11 @@ namespace engine
 
             player.exp = 0;
             player.attacksCount = 2;
-            byte var_2 = 0;
+            int newClass = 0;
 
-            while (var_2 <= 7 && ovr020.classString[var_2] != list_ptr.Text)
+            while (newClass <= 7 && ovr020.classString[newClass] != list_ptr.Text)
             {
-                var_2++;
+                newClass++;
             }
 
             list.Clear();
@@ -682,30 +672,30 @@ namespace engine
             player.HitDice = 1;
 
             player.ClassLevel[(int)HumanCurrentClass_Unknown(player)] = 0;
-            player.ClassLevel[var_2] = 1;
+            player.ClassLevel[newClass] = 1;
 
             for (int i = 0; i < 5; i++)
             {
-                player.field_12D[0, i] = 0;
-                player.field_12D[1, i] = 0;
-                player.field_12D[2, i] = 0;
+                player.spellCastCount[0, i] = 0;
+                player.spellCastCount[1, i] = 0;
+                player.spellCastCount[2, i] = 0;
             }
 
-            if (var_2 == 0)
+            if (newClass == 0)
             {
-                player.field_12D[0,0] = 1;
+                player.spellCastCount[0,0] = 1;
             }
-            else if (var_2 == 5)
+            else if (newClass == 5)
             {
-                player.field_12D[2,0] = 1;
+                player.spellCastCount[2,0] = 1;
                 player.LearnSpell(Spells.detect_magic_MU);
                 player.LearnSpell(Spells.read_magic);
                 player.LearnSpell(Spells.sleep);
             }
 
-            player._class = (ClassId)var_2;
+            player._class = (ClassId)newClass;
 
-            seg041.DisplayStatusText(0, 10, player.name + " is now a 1st level " + ovr020.classString[var_2] + ".");
+            seg041.DisplayStatusText(0, 10, player.name + " is now a 1st level " + ovr020.classString[newClass] + ".");
 
             seg051.FillChar(0, 0x54, player.spell_list);
 
@@ -724,22 +714,6 @@ namespace engine
             }
         }
 
-
-        internal static ClassId HumanFirstOldClass_Unknown(Player player) // getExtraFirstSkill
-        {
-            if (player.race != Race.human)
-            {
-                return ClassId.unknown;
-            }
-
-            for (ClassId index = ClassId.cleric; index <= ClassId.monk; index++)
-            {
-                if (player.ClassLevelsOld[(int)index] > 0)
-                    return index;
-            }
-
-            return ClassId.unknown;
-        }
 
         internal static ClassId HumanCurrentClass_Unknown(Player player) // getFirstSkill
         {
@@ -778,22 +752,9 @@ namespace engine
         }
 
 
-        internal static bool IsHuman(Player player)
+        internal static bool DualClassExceedLastLevel(Player player) // sub_6B3D1
         {
-            return (player.race == Race.human);
-        }
-
-
-        internal static sbyte MulticlassExceedLastLevel(Player player) // sub_6B3D1
-        {
-            if (HumanCurrentClassLevel_Zero(player) > player.multiclassLevel)
-            {
-                return 1;
-            }
-            else
-            {
-                return 0;
-            }
+            return HumanCurrentClassLevel_Zero(player) > player.multiclassLevel;
         }
     }
 }

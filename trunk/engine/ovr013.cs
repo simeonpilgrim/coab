@@ -144,13 +144,13 @@ namespace engine
                 player.ac = 0x3C;
             }
 
-            if (player.field_19B < 0x3A)
+            if (player.ac_behind < 0x3A)
             {
-                player.field_19B += 2;
+                player.ac_behind += 2;
             }
             else
             {
-                player.field_19B = 0x3C;
+                player.ac_behind = 0x3C;
             }
         }
 
@@ -418,16 +418,16 @@ namespace engine
 
             ovr025.reclac_player_values(player);
             
-            if( player.field_19B > 0x34 )
+            if( player.ac_behind > 0x34 )
             {
-                player.field_19B -= 2;
+                player.ac_behind -= 2;
             }
             else
             {
-                player.field_19B = 0x32;
+                player.ac_behind = 0x32;
             }
 
-            player.ac = player.field_19B;
+            player.ac = player.ac_behind;
 
             if (player == gbl.player_ptr)
             {
@@ -451,7 +451,7 @@ namespace engine
             player.quick_fight = QuickFight.True;
             player.field_E9 = 0;
 
-            player.field_DD = (byte)(player.fighter_lvl + (player.fighter_old_lvl * ovr026.MulticlassExceedLastLevel(player)));
+            player.field_DD = (byte)player.SkillLevel(SkillType.Fighter);
             player.base_movement = 0x0C;
 
             if (player.control_morale == Control.PC_Berzerk)
@@ -468,7 +468,7 @@ namespace engine
             gbl.attack_roll -= 4;
 
             player.ac -= 4;
-            player.field_19B -= 4;
+            player.ac_behind -= 4;
 
             gbl.savingThrowRoll -= 4;
         }
@@ -1726,7 +1726,7 @@ namespace engine
         {
             if (add_remove == Effect.Remove)
             {
-                player.paladinCuresLeft = (byte)((((player.paladin_old_lvl * ovr026.MulticlassExceedLastLevel(player)) + player.paladin_lvl - 1) / 5) + 1);
+                player.paladinCuresLeft = (byte)(((player.SkillLevel(SkillType.Paladin) - 1) / 5) + 1);
             }
         }
 

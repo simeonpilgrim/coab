@@ -537,8 +537,8 @@ namespace engine
 
             for (int var_2 = 1; var_2 <= 3; var_2++)
             {
-                player.field_12D[0, var_2 - 1] = bp_var_1C0.field_B2[var_2 - 1];
-                player.field_12D[2, var_2 - 1] = bp_var_1C0.field_B5[var_2 - 1];
+                player.spellCastCount[0, var_2 - 1] = bp_var_1C0.field_B2[var_2 - 1];
+                player.spellCastCount[2, var_2 - 1] = bp_var_1C0.field_B5[var_2 - 1];
             }
 
             player.field_13C = bp_var_1C0.field_B8;
@@ -579,7 +579,7 @@ namespace engine
             player.hitBonus = bp_var_1C0.field_110;
 
             player.ac = bp_var_1C0.field_111;
-            player.field_19B = bp_var_1C0.field_112;
+            player.ac_behind = bp_var_1C0.field_112;
 
             player.field_19C = bp_var_1C0.field_113;
             player.field_19D = bp_var_1C0.field_114;

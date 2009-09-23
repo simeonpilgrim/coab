@@ -125,7 +125,7 @@ namespace engine
                 }
             }
 
-            return gbl.player_ptr.field_12D[(int)spellClass, spellLevel - 1] - alreadyLearning;
+            return gbl.player_ptr.spellCastCount[(int)spellClass, spellLevel - 1] - alreadyLearning;
         }
 
 
@@ -234,7 +234,7 @@ namespace engine
                 {
                     var_60[(int)spellClass, spellLevel] = HowManySpellsPlayerCanLearn(spellClass, spellLevel + 1).ToString();
 
-                    if (gbl.player_ptr.field_12D[(int)spellClass, spellLevel] == 0)
+                    if (gbl.player_ptr.spellCastCount[(int)spellClass, spellLevel] == 0)
                     {
                         var_60[(int)spellClass, spellLevel] = " ";
                     }
@@ -490,7 +490,7 @@ namespace engine
                                 int spell_level = gbl.spell_table[var_4].spellLevel;
                                 int spell_class = (int)gbl.spell_table[var_4].spellClass;
 
-                                if (gbl.player_ptr.field_12D[spell_class, spell_level - 1] > 0)
+                                if (gbl.player_ptr.spellCastCount[spell_class, spell_level - 1] > 0)
                                 {
                                     foreach (Item var_C in gbl.player_ptr.items)
                                     {
@@ -1025,14 +1025,14 @@ namespace engine
 
                 if (player.health_status == Status.okey)
                 {
-                    numCureLight += player.field_12D[0, 0];
-                    var_A = player.field_12D[0, 0] * 15;
+                    numCureLight += player.spellCastCount[0, 0];
+                    var_A = player.spellCastCount[0, 0] * 15;
 
-                    numCureSerious += player.field_12D[0, 3];
-                    var_C = player.field_12D[0, 3] * 60;
+                    numCureSerious += player.spellCastCount[0, 3];
+                    var_C = player.spellCastCount[0, 3] * 60;
 
-                    numCureCritical += player.field_12D[0, 4];
-                    var_E = player.field_12D[0, 4] * 75;
+                    numCureCritical += player.spellCastCount[0, 4];
+                    var_E = player.spellCastCount[0, 4] * 75;
                 }
 
                 if (var_A > 0)

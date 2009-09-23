@@ -640,7 +640,7 @@ namespace engine
 
 
         /*seg600:44B6 unk_1A7C6*/
-        public readonly static byte[,] unk_1A7C6 = { 
+        public readonly static byte[,] MU_spell_lvl_learn = { 
             {1, 0, 0, 0, 0},
             {0, 1, 0, 0, 0},
             {1, 1, 0, 0, 0},
@@ -669,30 +669,30 @@ namespace engine
                 case 1:
                     if (add_item == true)
                     {
-                        player.field_12D[2,0] *= 2;
-                        player.field_12D[2,1] *= 2;
-                        player.field_12D[2,2] *= 2;
+                        player.spellCastCount[2,0] *= 2;
+                        player.spellCastCount[2,1] *= 2;
+                        player.spellCastCount[2,2] *= 2;
                     }
                     else
                     {
-                        int var_9 = player.magic_user_lvl + (player.magic_user_old_lvl * ovr026.MulticlassExceedLastLevel(player));
+                        int muSkillLevel = player.SkillLevel(SkillType.MagicUser);
 
-                        player.field_12D[2,0] = 0;
-                        player.field_12D[2,1] = 0;
-                        player.field_12D[2,2] = 0;
-                        player.field_12D[2,3] = 0;
-                        player.field_12D[2,4] = 0;
+                        player.spellCastCount[2,0] = 0;
+                        player.spellCastCount[2,1] = 0;
+                        player.spellCastCount[2,2] = 0;
+                        player.spellCastCount[2,3] = 0;
+                        player.spellCastCount[2,4] = 0;
 
-                        player.field_12D[2,0] = 1;
+                        player.spellCastCount[2,0] = 1;
 
-                        for (int sp_lvl = 0; sp_lvl <= (var_9 - 2); sp_lvl++)
+                        for (int sp_lvl = 0; sp_lvl < (muSkillLevel - 1); sp_lvl++)
                         {
                             /* unk_1A7C6 = seg600:44B6 */
-                            player.field_12D[2,0] += unk_1A7C6[sp_lvl, 0];
-                            player.field_12D[2,1] += unk_1A7C6[sp_lvl, 1];
-                            player.field_12D[2,2] += unk_1A7C6[sp_lvl, 2];
-                            player.field_12D[2,3] += unk_1A7C6[sp_lvl, 3];
-                            player.field_12D[2,4] += unk_1A7C6[sp_lvl, 4];
+                            player.spellCastCount[2,0] += MU_spell_lvl_learn[sp_lvl, 0];
+                            player.spellCastCount[2,1] += MU_spell_lvl_learn[sp_lvl, 1];
+                            player.spellCastCount[2,2] += MU_spell_lvl_learn[sp_lvl, 2];
+                            player.spellCastCount[2,3] += MU_spell_lvl_learn[sp_lvl, 3];
+                            player.spellCastCount[2,4] += MU_spell_lvl_learn[sp_lvl, 4];
                         }
 
                         byte[] var_11 = new byte[5];
@@ -706,7 +706,7 @@ namespace engine
                                 int var_C = gbl.spell_table[player.spell_list[i]].spellLevel;
                                 var_11[var_C - 1] += 1;
 
-                                if (var_11[var_C - 1] > player.field_12D[2, var_C - 1])
+                                if (var_11[var_C - 1] > player.spellCastCount[2, var_C - 1])
                                 {
                                     player.spell_list[i] = 0;
                                 }
@@ -1036,26 +1036,19 @@ namespace engine
 
                 if (ovr023.item_is_scroll(item) == true)
                 {
-                    if (ovr026.HumanFirstOldClass_Unknown(gbl.player_ptr) == ClassId.magic_user ||
-                        ovr026.HumanCurrentClass_Unknown(gbl.player_ptr) == ClassId.magic_user ||
-                        ovr026.HumanFirstOldClass_Unknown(gbl.player_ptr) == ClassId.cleric ||
-                        ovr026.HumanCurrentClass_Unknown(gbl.player_ptr) == ClassId.cleric ||
-                        gbl.player_ptr.magic_user_lvl > 0 ||
-                        gbl.player_ptr.cleric_lvl > 0)
+                    if (gbl.player_ptr.SkillLevel(SkillType.MagicUser) > 0 ||
+                        gbl.player_ptr.SkillLevel(SkillType.Cleric) > 0)
+                    {
+                        ovr023.sub_5D2E1(ref arg_0, 0, gbl.player_ptr.quick_fight, var_1);
+                    }
+                    else if (gbl.player_ptr.thief_lvl > 9 &&
+                            ovr024.roll_dice(100, 1) <= 75)
                     {
                         ovr023.sub_5D2E1(ref arg_0, 0, gbl.player_ptr.quick_fight, var_1);
                     }
                     else
                     {
-                        if (gbl.player_ptr.thief_lvl > 9 &&
-                            ovr024.roll_dice(100, 1) <= 0x4b)
-                        {
-                            ovr023.sub_5D2E1(ref arg_0, 0, gbl.player_ptr.quick_fight, var_1);
-                        }
-                        else
-                        {
-                            ovr025.DisplayPlayerStatusString(true, gbl.textYCol, "oops!", gbl.player_ptr);
-                        }
+                        ovr025.DisplayPlayerStatusString(true, gbl.textYCol, "oops!", gbl.player_ptr);
                     }
                 }
                 else
@@ -1497,23 +1490,16 @@ namespace engine
 
         internal static bool CanCastHeal(Player player) /* sub_575F0 */
         {
-            if ((player._class == ClassId.paladin || (player.paladin_old_lvl > 0 && ovr026.MulticlassExceedLastLevel(player) != 0)) &&
-                 gbl.game_state != GameState.Combat &&
-                    player.health_status == Status.okey &&
-                    player.HasAffect(Affects.paladinDailyHealCast) == false)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return (player.SkillLevel(SkillType.Paladin) > 0 &&
+                gbl.game_state != GameState.Combat &&
+                player.health_status == Status.okey &&
+                player.HasAffect(Affects.paladinDailyHealCast) == false);
         }
 
 
         internal static bool CanCastCureDiseases(Player player) /* sub_57655 */
         {
-            return ((player._class == ClassId.paladin || (player.paladin_old_lvl > 0 && ovr026.MulticlassExceedLastLevel(player) != 0)) &&
+            return (player.SkillLevel(SkillType.Paladin) > 0 &&
                 gbl.game_state != GameState.Combat &&
                 player.health_status == Status.okey &&
                 player.paladinCuresLeft > 0);
@@ -1533,8 +1519,7 @@ namespace engine
                 return;
             }
 
-            int dx = player.paladin_old_lvl * ovr026.MulticlassExceedLastLevel(player);
-            int healAmount = (player.paladin_lvl + dx) * 2;
+            int healAmount = player.SkillLevel(SkillType.Paladin) * 2;
 
             if (ovr024.heal_player(0, healAmount, target) == true)
             {
