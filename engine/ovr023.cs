@@ -131,18 +131,15 @@ namespace engine
             {
                 case SpellClass.Cleric:
                     if (player.wis > 8 &&
-                        ((player.cleric_lvl > 0) ||
-                         (ovr026.MulticlassExceedLastLevel(player) != 0 && player.cleric_old_lvl > 0) ||
-                         (player.paladin_lvl > 8) ||
-                         (player.paladin_old_lvl > 8 && ovr026.MulticlassExceedLastLevel(player) != 0)))
+                        (player.SkillLevel(SkillType.Cleric) > 0 ||
+                         player.SkillLevel(SkillType.Paladin) > 8))
                     {
                         can_learn = true;
                     }
                     break;
 
                 case SpellClass.Druid:
-                    if ((player.wis > 8 && player.ranger_lvl > 6) ||
-                        (ovr026.MulticlassExceedLastLevel(player) != 0 && player.ranger_old_lvl > 6))
+                    if ((player.wis > 8 && player.SkillLevel(SkillType.Ranger) > 6) )
                     {
                         can_learn = true;
                     }
@@ -151,11 +148,10 @@ namespace engine
                 case SpellClass.MagicUser:
                     if (player._int > 8 &&
                         ((player.race != Race.human) ||
-                     (player.armor == null) ||
-                     (gbl.game_state != GameState.Combat) ||
-                     (player.ranger_lvl > 8) ||
-                     (ovr026.MulticlassExceedLastLevel(player) != 0 && player.ranger_old_lvl > 8 && player.magic_user_lvl > 0) ||
-                     (ovr026.MulticlassExceedLastLevel(player) != 0 && player.magic_user_old_lvl > 0)))
+                         (player.armor == null) ||
+                         (gbl.game_state != GameState.Combat) ||
+                         (player.SkillLevel(SkillType.Ranger) > 8) ||
+                         (player.SkillLevel(SkillType.MagicUser) > 0)))
                     {
                         can_learn = true;
                     }
@@ -164,7 +160,6 @@ namespace engine
                 case SpellClass.Monster:
                     can_learn = false;
                     break;
-
             }
 
             return can_learn;
@@ -468,7 +463,7 @@ namespace engine
                         {
                             //skip this spell
                         }
-                        else if (gbl.player_ptr.field_12D[(int)sp_class, sp_lvl - 1] > 0 &&
+                        else if (gbl.player_ptr.spellCastCount[(int)sp_class, sp_lvl - 1] > 0 &&
                             can_learn_spell((int)spell, gbl.player_ptr) == true &&
                             gbl.player_ptr.KnowsSpell(spell) == false)
                         {
@@ -1472,13 +1467,13 @@ namespace engine
 
         internal static void SpellStrength() // sub_5EC5B
         {
-            int var_6 = 0; /* simeon added */
+            int strIncrease = 0;
             Player target = gbl.spellTargets[0];
 
             if (target.magic_user_lvl > 0 ||
                 target.magic_user_old_lvl > target.multiclassLevel)
             {
-                var_6 = ovr024.roll_dice(4, 1);
+                strIncrease = ovr024.roll_dice(4, 1);
             }
 
             if (target.cleric_lvl > 0 ||
@@ -1486,16 +1481,16 @@ namespace engine
                 target.thief_lvl > 0 ||
                 target.thief_old_lvl > target.multiclassLevel)
             {
-                var_6 = ovr024.roll_dice(6, 1);
+                strIncrease = ovr024.roll_dice(6, 1);
             }
 
             if (target.fighter_lvl > 0 ||
                 target.fighter_old_lvl > target.multiclassLevel)
             {
-                var_6 = ovr024.roll_dice(8, 1);
+                strIncrease = ovr024.roll_dice(8, 1);
             }
 
-            int str = target.strength + var_6;
+            int str = target.strength + strIncrease;
             int str_100 = 0;
 
             if (str > 18)
@@ -1526,7 +1521,7 @@ namespace engine
 
             if (ovr024.TryEncodeStrength(out encoded_str, str_100, str, target) == true)
             {
-                encoded_str = var_6 + 100;
+                encoded_str = strIncrease + 100;
 
                 ovr024.add_affect(true, encoded_str, GetSpellAffectTimeout((Spells)gbl.spell_id), Affects.strength, target);
                 ovr024.CalcStatBonuses(Stat.STR, target);
@@ -1651,27 +1646,25 @@ namespace engine
         }
 
 
-        internal static bool sub_5F126(Player arg_2, int target_count)
+        internal static bool sub_5F126(Player arg_2, int target_count) // sub_5F126
         {
-            int byte_1AFDE = arg_2.magic_user_lvl + (arg_2.magic_user_old_lvl * ovr026.MulticlassExceedLastLevel(gbl.player_ptr));
-            int byte_1AFDD;
+            int muLvl = arg_2.SkillLevel(SkillType.MagicUser);
+            int roll;
 
-            if (target_count > byte_1AFDE)
+            if (target_count > muLvl)
             {
-                byte_1AFDD = ((target_count - byte_1AFDE) * 5) + 50;
+                roll = ((target_count - muLvl) * 5) + 50;
             }
-            else if (target_count < byte_1AFDE)
+            else if (target_count < muLvl)
             {
-                byte_1AFDD = 50 - ((byte_1AFDE - target_count) * 2);
+                roll = 50 - ((muLvl - target_count) * 2);
             }
             else
             {
-                byte_1AFDD = 50;
+                roll = 50;
             }
 
-            bool var_1 = (ovr024.roll_dice(100, 1) <= byte_1AFDD);
-
-            return var_1;
+            return ovr024.roll_dice(100, 1) <= roll;
         }
 
 

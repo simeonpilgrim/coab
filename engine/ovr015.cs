@@ -33,14 +33,11 @@ namespace engine
         }
 
 
-        static bool AnyPlayerHasClass(ClassId _class) // any_player_has_skill
+        static bool AnyPlayerHasSkill(SkillType skill) // any_player_has_skill
         {
-            int c = (int)_class;
-
             foreach (Player player in gbl.player_next_ptr)
             {
-                if (player.ClassLevel[c] > 0 ||
-                    (player.ClassLevelsOld[c] > 0 && ovr026.MulticlassExceedLastLevel(player) != 0))
+                if( player.SkillLevel(skill) > 0)
                 {
                     return true;
                 }
@@ -517,7 +514,7 @@ namespace engine
                         }
 
                         if (gbl.can_pick_door == true &&
-                            AnyPlayerHasClass(ClassId.thief))
+                            AnyPlayerHasSkill(SkillType.Thief))
                         {
                             prompt += " Pick";
                         }
@@ -560,7 +557,7 @@ namespace engine
                         }
 
                         if (gbl.can_pick_door == true &&
-                            AnyPlayerHasClass(ClassId.thief))
+                            AnyPlayerHasSkill(SkillType.Thief))
                         {
                             prompt += " Pick";
                         }

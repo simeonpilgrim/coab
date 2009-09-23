@@ -343,13 +343,10 @@ namespace engine
                 menuText += "Cast ";
             }
 
-            if (player.cleric_lvl > 0 ||
-                (player.cleric_old_lvl > 0 && ovr026.MulticlassExceedLastLevel(player) != 0))
+            if (player.SkillLevel(SkillType.Cleric) > 0 &&
+                player.actions.hasTurnedUndead == false)
             {
-                if (player.actions.hasTurnedUndead == false)
-                {
-                    menuText += "Turn ";
-                }
+                menuText += "Turn ";
             }
 
             menuText += "Quick Done";
