@@ -4,26 +4,6 @@ using System.Text;
 
 namespace Classes
 {
-    public class CombatPlayerIndex
-    {
-        public Player player; // { get; protected set; }
-        public Point pos;//{ get; protected set; }
-
-        public CombatPlayerIndex(Player Player, Point Pos)
-        {
-            player = Player;
-            pos = Pos;
-        }
-    }
-
-
-    public class CombatantMap // Struct_1C9CD
-    {
-        public Point pos;
-        public int size;
-
-        public Point screenPos;
-    }
 
 
     public class SortedCombatant : IComparable<SortedCombatant>   /*Struct_1D1C1*/

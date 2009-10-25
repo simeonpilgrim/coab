@@ -4,7 +4,7 @@ namespace engine
 {
     class ovr014
     {
-        internal static void sub_3E000(Player player)
+        internal static void CalculateInitiative(Player player) // sub_3E000
         {
             Action action = player.actions;
 
@@ -12,18 +12,18 @@ namespace engine
             action.can_cast = true;
             action.can_use = true;
             action.field_8 = 0;
-            action.field_4 = 2;
+            action.attackIdx = 2;
 
             sub_3EDD4(player);
-            gbl.attacksLeft = player.field_11D;
+            gbl.halfActionsLeft = player.baseHalfMoves;
 
             gbl.resetMovesLeft = false;
 
             ovr024.CheckAffectsEffect(player, CheckType.Movement);
 
-            player.field_19D = (byte)RoundDownAttackCount(gbl.attacksLeft);
+            player.field_19D = (byte)ThisRoundActionCount(gbl.halfActionsLeft);
 
-            action.field_5 = player.field_DD;
+            action.field_5 = player.attackLevel;
 
             if (player.in_combat == true)
             {
@@ -40,7 +40,7 @@ namespace engine
                 }
 
                 if (action.delay < 0 ||
-                    action.delay > 0x14)
+                    action.delay > 20)
                 {
                     action.delay = 0;
                 }
@@ -68,7 +68,7 @@ namespace engine
                 moves = 1;
             }
 
-            gbl.attacksLeft = moves * 2;
+            gbl.halfActionsLeft = moves * 2;
 
             gbl.resetMovesLeft = true;
             
@@ -76,7 +76,7 @@ namespace engine
 
             gbl.resetMovesLeft = false;
 
-            return gbl.attacksLeft;
+            return gbl.halfActionsLeft;
         }
 
 
@@ -239,7 +239,7 @@ namespace engine
 
                         attacker.actions.guarding = false;
 
-                        sub_3F94D(target, attacker);
+                        recalc_action_12(target, attacker);
 
                         AttackTarget(0, target, attacker);
                     }
@@ -254,6 +254,12 @@ namespace engine
 
             Point oldPos = gbl.CombatMap[player_index].pos;
             Point newPos = oldPos + gbl.MapDirectionDelta[direction];
+
+			// TODO does this solve problems than it causes? Regarding AI flee
+            //if (newPos.MapInBounds() == false)
+            //{
+            //    return;
+            //}
 
             int costToMove = 0;
             if ((direction & 0x01) != 0)
@@ -302,7 +308,7 @@ namespace engine
                 ovr033.redrawCombatArea(8, radius, newPos);
             }
 
-            player.actions.field_F = 0;
+            player.actions.AttacksReceived = 0;
             player.actions.field_12 = 0;
             seg044.sound_sub_120E0(Sound.sound_a);
 
@@ -321,92 +327,100 @@ namespace engine
         {
             var originAttackers = ovr025.BuildNearTargets(1, player);
 
-            if (originAttackers.Count > 0)
+            if (originAttackers.Count == 0)
             {
-                var combatmap = gbl.CombatMap[ovr033.GetPlayerIndex(player)];
-                
-                // move to destination position
-                combatmap.pos += gbl.MapDirectionDelta[direction];
+                return;
+            }
 
-                var destAttackers = ovr025.BuildNearTargets(1, player);
+            var combatmap = gbl.CombatMap[ovr033.GetPlayerIndex(player)];
 
-                // move back to original position
-                combatmap.pos -= gbl.MapDirectionDelta[direction];
+            // move to destination position
+            combatmap.pos += gbl.MapDirectionDelta[direction];
 
-                // remove attackers from both locations
-                foreach (var cpiB in destAttackers)
+            var destAttackers = ovr025.BuildNearTargets(1, player);
+
+            // move back to original position
+            combatmap.pos -= gbl.MapDirectionDelta[direction];
+
+            // remove attackers from both locations
+            foreach (var cpiB in destAttackers)
+            {
+                originAttackers.RemoveAll(cpiA => cpiA.player == cpiB.player);
+            }
+
+            if (player.in_combat == false)
+            {
+                //what the heck are we doing here then?
+                // and why is this test not earlier in the function.
+                //throw new System.NotSupportedException();
+                return;
+            }
+
+            foreach (var cpiA in originAttackers)
+            {
+                gbl.display_hitpoints_ac = true;
+                gbl.focusCombatAreaOnPlayer = true;
+                bool found = false;
+
+                Player attacker = cpiA.player;
+
+                if (attacker.IsHeld() == false &&
+                    CanSeeTargetA(player, attacker) == true &&
+                    attacker.HasAffect(Affects.weap_dragon_slayer) == false &&
+                    attacker.HasAffect(Affects.affect_4a) == false)
                 {
-                    originAttackers.RemoveAll(cpiA => cpiA.player == cpiB.player);
-                }
+                    int end_dir = attacker.actions.direction + 10;
 
-                if (player.in_combat)
-                {
-                    foreach (var cpiA in originAttackers)
+                    for (int tmpDir = attacker.actions.direction + 6; tmpDir <= end_dir; tmpDir++)
                     {
-                        gbl.display_hitpoints_ac = true;
-                        gbl.focusCombatAreaOnPlayer = true;
-                        bool var_12 = false;
-
-                        Player attacker = cpiA.player;
-
-                        if (attacker.IsHeld() == false &&
-                            CanSeeTargetA(player, attacker) == true &&
-                            attacker.HasAffect(Affects.weap_dragon_slayer) == false &&
-                            attacker.HasAffect(Affects.affect_4a) == false)
+                        if (found == false)
                         {
-                            int end_dir = attacker.actions.direction + 10;
-
-                            for (int var_1B = attacker.actions.direction + 6; var_1B <= end_dir; var_1B++)
+                            if (attacker.actions.delay > 0 ||
+                                attacker.actions.AttacksReceived == 0 ||
+                                ovr032.CanSeeCombatant(tmpDir % 8, ovr033.PlayerMapPos(player), ovr033.PlayerMapPos(attacker)) == true)
                             {
-                                if (var_12 == false)
+                                byte attackIndex = 1;
+                                if (attacker.attacksCount == 0)
                                 {
-                                    if (attacker.actions.delay > 0 ||
-                                        attacker.actions.field_F == 0 ||
-                                        ovr032.CanSeeCombatant(var_1B % 8, ovr033.PlayerMapPos(player), ovr033.PlayerMapPos(attacker)) == true)
-                                    {
-                                        byte attackIndex = 1;
-                                        if (attacker.attacksCount == 0)
-                                        {
-                                            attackIndex = 2;
-                                        }
+                                    attackIndex = 2;
+                                }
 
-                                        if (attacker.field_19C > 0)
-                                        {
-                                            attackIndex = 1;
-                                        }
+                                if (attacker.field_19C > 0)
+                                {
+                                    attackIndex = 1;
+                                }
 
-                                        if (attacker.field_19D > 0)
-                                        {
-                                            attackIndex = 2;
-                                        }
+                                if (attacker.field_19D > 0)
+                                {
+                                    attackIndex = 2;
+                                }
 
-                                        if (attacker.field_19BArray(attackIndex) == 0)
-                                        {
-                                            attacker.field_19BArraySet(attackIndex, 1);
-                                        }
+                                if (attacker.field_19BArray(attackIndex) == 0)
+                                {
+                                    attacker.field_19BArraySet(attackIndex, 1);
+                                }
 
-                                        attacker.actions.field_4 = attackIndex;
+                                attacker.actions.attackIdx = attackIndex;
 
-                                        Player backupTarget = attacker.actions.target;
+                                Player backupTarget = attacker.actions.target;
 
-                                        AttackTarget(1, player, attacker);
-                                        var_12 = true;
+                                AttackTarget(1, player, attacker);
+                                found = true;
 
-                                        attacker.actions.target = backupTarget;
+                                attacker.actions.target = backupTarget;
 
-                                        if (player.in_combat == true)
-                                        {
-                                            gbl.display_hitpoints_ac = true;
-                                            ovr025.CombatDisplayPlayerSummary(player);
-                                        }
-                                    }
+                                if (player.in_combat == true)
+                                {
+                                    gbl.display_hitpoints_ac = true;
+                                    ovr025.CombatDisplayPlayerSummary(player);
                                 }
                             }
                         }
                     }
                 }
             }
-        }
+        }    
+        
 
 
         internal static void flee_battle(Player player)
@@ -463,17 +477,17 @@ namespace engine
                     var_4 = 2;
                 }
 
-                gbl.attacksLeft = var_4;
+                gbl.halfActionsLeft = var_4;
             }
             else
             {
-                gbl.attacksLeft = player.field_19C;
+                gbl.halfActionsLeft = player.field_19C;
             }
 
             gbl.resetMovesLeft = false;
             ovr024.CheckAffectsEffect(player, CheckType.Movement);
 
-            int var_1 = RoundDownAttackCount(gbl.attacksLeft);
+            int attacks = ThisRoundActionCount(gbl.halfActionsLeft);
 
             if (var_5 == true &&
                 var_9 != null)
@@ -485,32 +499,32 @@ namespace engine
                     var_3 = var_9.count;
                 }
 
-                if (var_3 < var_1 &&
+                if (var_3 < attacks &&
                     var_9.count > 0)
                 {
-                    var_1 = var_3;
+                    attacks = var_3;
                 }
             }
 
             if (player.actions.field_8 == 0 ||
-                var_1 < var_2 ||
+                attacks < var_2 ||
                 (player.actions.field_8 != 0 &&
-                  var_1 < (var_2 * 2) &&
+                  attacks < (var_2 * 2) &&
                   var_5 == false))
             {
-                player.field_19C = (byte)var_1;
+                player.field_19C = (byte)attacks;
             }
         }
 
 
-        internal static int RoundDownAttackCount(int movesleft) // sub_3EF0D
+        internal static int ThisRoundActionCount(int halfActionsLeft) // sub_3EF0D
         {
             if ((gbl.combat_round & 1) == 1)
             {
-                movesleft++;
+                halfActionsLeft++;
             }
 
-            return movesleft / 2;
+            return halfActionsLeft / 2;
         }
 
 
@@ -540,7 +554,7 @@ namespace engine
                     foreach (var sweapepi in nearTargets.FindAll(e => e.player.hitBonus == 0).GetRange(0, sweapableCount))
                     {
                         var sweaptarget = sweapepi.player;
-                        sub_3F94D(sweaptarget, attacker);
+                        recalc_action_12(sweaptarget, attacker);
 
                         attacker.field_19C = 1;
 
@@ -593,8 +607,6 @@ namespace engine
 
         internal static void turns_undead(Player player)
         {
-            byte var_B;
-
             ovr025.DisplayPlayerStatusString(false, 10, "turns undead...", player);
             ovr027.ClearPromptArea();
             seg041.GameDelay();
@@ -609,6 +621,8 @@ namespace engine
             int var_1 = ovr024.roll_dice(20, 1);
 
             int clericLvl = player.SkillLevel(SkillType.Cleric);
+
+            byte var_B;
 
             if (clericLvl >= 1 && clericLvl <= 8)
             {
@@ -712,7 +726,7 @@ namespace engine
         {
             int target_ac;
 
-            bool var_13 = arg_8 != 0;
+            bool BehindAttack = arg_8 != 0;
             arg_4 = false;
             gbl.byte_1D2CA = 0;
             gbl.byte_1D2CB = 0;
@@ -728,12 +742,12 @@ namespace engine
             {
                 seg044.sound_sub_120E0(Sound.sound_7);
 
-                while (attacker.field_19BArray(attacker.actions.field_4) == 0)
+                while (attacker.field_19BArray(attacker.actions.attackIdx) == 0)
                 {
-                    attacker.actions.field_4--;
+                    attacker.actions.attackIdx--;
                 }
 
-                gbl.inc_byte_byte_1D90x(attacker.actions.field_4);
+                gbl.inc_byte_byte_1D90x(attacker.actions.attackIdx);
 
                 DisplayAttackMessage(true, 1, target.hit_point_current + 5, AttackType.Slay, target, attacker);
                 ovr024.remove_invisibility(attacker);
@@ -766,14 +780,14 @@ namespace engine
                 }
                 else
                 {
-                    if (target.actions.field_F > 1 &&
+                    if (target.actions.AttacksReceived > 1 &&
                         getTargetDirection(target, attacker) == target.actions.direction &&
                         target.actions.field_12 > 4)
                     {
-                        var_13 = true;
+                        BehindAttack = true;
                     }
 
-                    if (var_13 == true)
+                    if (BehindAttack == true)
                     {
                         target_ac = target.ac_behind;
                     }
@@ -785,7 +799,7 @@ namespace engine
 
                 target_ac += RangedDefenseBonus(target, attacker);
                 AttackType attack_type = AttackType.Normal;
-                if (var_13 == true)
+                if (BehindAttack == true)
                 {
                     attack_type = AttackType.Behind;
                 }
@@ -795,14 +809,14 @@ namespace engine
                     attack_type = AttackType.Backstab;
                 }
 
-                byte var_16 = attacker.actions.field_4;
+                byte var_16 = attacker.actions.attackIdx;
                 for (byte var_15 = var_16; var_15 >= 1; var_15--)
                 {
                     while (attacker.field_19BArray(var_15) > 0 &&
                         var_12 == false)
                     {
                         attacker.field_19BArrayDec(var_15);
-                        attacker.actions.field_4 = var_15;
+                        attacker.actions.attackIdx = var_15;
 
                         gbl.inc_byte_byte_1D90x(var_15);
 
@@ -883,20 +897,20 @@ namespace engine
         }
 
 
-        internal static void sub_3F94D(Player target, Player attacker)
+        internal static void recalc_action_12(Player target, Player attacker) // sub_3F94D
         {
-            target.actions.field_F++;
+            target.actions.AttacksReceived++;
 
-            byte var_2 = getTargetDirection(attacker, target);
+            int targetDir = getTargetDirection(attacker, target);
 
-            int var_1 = ((var_2 - target.actions.direction) + 8) % 8;
+            int dirDiff = ((targetDir - target.actions.direction) + 8) % 8;
 
-            if (var_1 > 4)
+            if (dirDiff > 4)
             {
-                var_1 = 8 - var_1;
+                dirDiff = 8 - dirDiff;
             }
 
-            target.actions.field_12 = (target.actions.field_12 + var_1) % 8;
+            target.actions.field_12 = (target.actions.field_12 + dirDiff) % 8;
         }
 
 
@@ -914,9 +928,9 @@ namespace engine
             gbl.focusCombatAreaOnPlayer = true;
             gbl.display_hitpoints_ac = true;
 
-            gbl.combat_round_no_action_limit = gbl.combat_round + 15;
+            gbl.combat_round_no_action_limit = gbl.combat_round + gbl.combat_round_no_action_value;
 
-            if (target.actions.field_F < 2 && arg_8 == 0)
+            if (target.actions.AttacksReceived < 2 && arg_8 == 0)
             {
                 dir = getTargetDirection(attacker, target);
 
@@ -1292,7 +1306,7 @@ namespace engine
                     else
                     {
                         /* TODO it doesn't make sense to mask the low nibble then shift it out */
-                        var scl = ovr032.Rebuild_SortedCombatantList(gbl.mapToBackGroundTile, 1, 0xff, (gbl.spell_table[spellId].field_6 & 0x0f) >> 4, gbl.targetPos);
+                        var scl = ovr032.Rebuild_SortedCombatantList(1, (gbl.spell_table[spellId].field_6 & 0x0f) >> 4, gbl.targetPos);
                         
 
                         gbl.spellTargets.Clear();
@@ -1312,7 +1326,7 @@ namespace engine
             {
                 if (sub_4001C(var_C, 1, quick_fight, spellId) == true)
                 {
-                    var scl = ovr032.Rebuild_SortedCombatantList(gbl.mapToBackGroundTile, 1, 0xff, gbl.spell_table[spellId].field_6 & 7, gbl.targetPos);
+                    var scl = ovr032.Rebuild_SortedCombatantList(1, gbl.spell_table[spellId].field_6 & 7, gbl.targetPos);
 
                     gbl.spellTargets.Clear();
                     foreach (var sc in scl)
@@ -1457,7 +1471,7 @@ namespace engine
             }
 
             if (correctWeapon == true &&
-                target.actions.field_F > 1 &&
+                target.actions.AttacksReceived > 1 &&
                 (target.field_DE & 0x7F) <= 1 &&
                 getTargetDirection(target, attacker) == target.actions.direction)
             {
@@ -1839,7 +1853,7 @@ namespace engine
                     }
                     else
                     {
-                        sub_3F94D(target, attacker);
+                        recalc_action_12(target, attacker);
 
                         Item var_5 = null;
 
@@ -1893,7 +1907,7 @@ namespace engine
                 bool can_target = false;
                 int range = 255;
 
-                if (ovr032.canReachTarget(gbl.mapToBackGroundTile, ref range, pos, ovr033.PlayerMapPos(player01)) == true)
+                if (ovr032.canReachTarget(ref range, pos, ovr033.PlayerMapPos(player01)) == true)
                 {
                     can_target = true;
 
@@ -2077,7 +2091,7 @@ namespace engine
 
         internal static SortedCombatant[] copy_sorted_players(Player player) /* sub_4188F */
         {
-            var scl = ovr032.Rebuild_SortedCombatantList(gbl.mapToBackGroundTile, ovr033.PlayerMapSize(player), 0xff, 0x7F, ovr033.PlayerMapPos(player));
+            var scl = ovr032.Rebuild_SortedCombatantList(ovr033.PlayerMapSize(player), 0x7F, ovr033.PlayerMapPos(player));
 
             return scl.ToArray(); 
         }
@@ -2339,7 +2353,7 @@ namespace engine
             {
                 var target = ovr033.PlayerMapPos(player.actions.target);
 
-                if (ovr032.canReachTarget(gbl.mapToBackGroundTile, ref range, target, ovr033.PlayerMapPos(player)) == true)
+                if (ovr032.canReachTarget(ref range, target, ovr033.PlayerMapPos(player)) == true)
                 {
                     var_5 = false;
                 }

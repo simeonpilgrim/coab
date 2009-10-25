@@ -56,7 +56,7 @@ namespace engine
                 seg041.GameDelay();
                 ovr025.ClearPlayerTextArea();
 
-                if (gbl.game_state == GameState.Combat)
+                if (gbl.game_state != GameState.Combat)
                 {
                     ovr025.PartySummary(gbl.player_ptr);
                 }
@@ -117,7 +117,7 @@ namespace engine
                         {
                             int max_range = (affect_type == Affects.prayer) ? 6 : 1;
 
-                            var scl = ovr032.Rebuild_SortedCombatantList(gbl.mapToBackGroundTile, ovr033.PlayerMapSize(player_base), 0xff,
+                            var scl = ovr032.Rebuild_SortedCombatantList(ovr033.PlayerMapSize(player_base), 
                                 max_range, ovr033.PlayerMapPos(player_base));
 
                             found = scl.Exists(sc => sc.player == player);
@@ -780,47 +780,47 @@ namespace engine
         }
 
 
-        internal static void sub_647BE(byte arg_2, int class_index, byte bp_var_1, ref byte bp_var_A, Player player)
+        internal static void ConHitPointBonus(int classLvl, SkillType class_index, byte cons, ref byte bp_var_A, Player player) // sub_647BE
         {
-            if (gbl.max_class_hit_dice[class_index] <= arg_2)
+            if (gbl.max_class_hit_dice[(int)class_index] <= classLvl)
             {
-                arg_2 = (byte)(gbl.max_class_hit_dice[class_index] - 1);
+                classLvl = gbl.max_class_hit_dice[(int)class_index] - 1;
             }
 
-            if (class_index == 4 &&
+            if (class_index == SkillType.Ranger &&
                 (player.multiclassLevel == 0 || player.ranger_old_lvl == player.multiclassLevel))
             {
-                arg_2 += 1;
+                classLvl += 1;
             }
 
-            if (class_index == 2 || class_index == 3 || class_index == 4)
+            if (class_index == SkillType.Fighter || class_index == SkillType.Paladin || class_index == SkillType.Ranger)
             {
-                if (bp_var_1 >= 0x0F && bp_var_1 <= 0x13)
+                if (cons >= 15 && cons <= 19)
                 {
-                    bp_var_A += (byte)(arg_2 * (bp_var_1 - 0x0E));
+                    bp_var_A += (byte)(classLvl * (cons - 14));
                 }
-                else if (bp_var_1 == 0x14)
+                else if (cons == 20)
                 {
-                    bp_var_A += (byte)(arg_2 * 5);
+                    bp_var_A += (byte)(classLvl * 5);
                 }
-                else if (bp_var_1 >= 0x15 && bp_var_1 <= 0x17)
+                else if (cons >= 21 && cons <= 23)
                 {
-                    bp_var_A += (byte)(arg_2 * 6);
+                    bp_var_A += (byte)(classLvl * 6);
                 }
-                else if (bp_var_1 >= 0x18 && bp_var_1 <= 0x19)
+                else if (cons >= 24 && cons <= 25)
                 {
-                    bp_var_A += (byte)(arg_2 * 7);
+                    bp_var_A += (byte)(classLvl * 7);
                 }
             }
             else
             {
-                if (bp_var_1 > 0x0F)
+                if (cons > 15)
                 {
-                    bp_var_A += (byte)(arg_2 << 1);
+                    bp_var_A += (byte)(classLvl * 2);
                 }
-                else if (bp_var_1 == 0x0F)
+                else if (cons == 15)
                 {
-                    bp_var_A += arg_2;
+                    bp_var_A += (byte)classLvl;
                 }
             }
         }
@@ -828,7 +828,6 @@ namespace engine
 
         internal static void CalcStatBonuses(Stat stat_index, Player player) // sub_648D9
         {
-            byte var_A = 0;
             byte stat_b = 0;
             byte str_00_b = 0;
             byte var_11 = 0x0FF;
@@ -1048,52 +1047,52 @@ namespace engine
             }
             else if (stat_index == Stat.CON)
             {
-                byte var_13 = 0;
-                byte max_hp = player.hit_point_max;
+                byte hitPointBonus = 0;
+                byte classCount = 0;
+                byte orig_max_hp = player.hit_point_max;
                 player.hit_point_max = player.hit_point_rolled;
 
-                for (int classId = 0; classId <= 7; classId++)
+                for (SkillType classId = SkillType.Cleric; classId <= SkillType.Monk; classId++)
                 {
-                    byte var_B = player.ClassLevelsOld[classId];
+                    byte classLvl = player.ClassLevelsOld[(int)classId];
 
-                    if (var_B > 0)
+                    if (classLvl > 0)
                     {
-                        sub_647BE(var_B, classId, stat_a, ref var_A, player);
+                        ConHitPointBonus(classLvl, classId, stat_a, ref hitPointBonus, player);
                     }
 
-                    var_B = player.ClassLevel[classId];
+                    classLvl = player.ClassLevel[(int)classId];
 
-                    if (var_B > 0)
+                    if (classLvl > 0)
                     {
-                        var_13++;
+                        classCount++;
                     }
 
-                    if (gbl.max_class_hit_dice[classId] < var_B)
+                    if (gbl.max_class_hit_dice[(int)classId] < classLvl)
                     {
-                        var_B = gbl.max_class_hit_dice[classId];
+                        classLvl = gbl.max_class_hit_dice[(int)classId];
                     }
 
-                    if (var_B > player.multiclassLevel)
+                    if (classLvl > player.multiclassLevel)
                     {
-                        var_B = player.multiclassLevel;
+                        classLvl = player.multiclassLevel;
 
-                        sub_647BE(var_B, classId, stat_a, ref var_A, player);
+                        ConHitPointBonus(classLvl, classId, stat_a, ref hitPointBonus, player);
                     }
                 }
 
-                var_A /= var_13;
-                player.hit_point_max += var_A;
+                hitPointBonus /= classCount;
+                player.hit_point_max += hitPointBonus;
 
-                if (player.hit_point_max > max_hp)
+                if (player.hit_point_max > orig_max_hp)
                 {
-                    player.hit_point_current = (byte)(player.hit_point_max - max_hp);
+                    player.hit_point_current += (byte)(player.hit_point_max - orig_max_hp);
                 }
-
-                if (player.hit_point_max < max_hp)
+                else if (player.hit_point_max < orig_max_hp)
                 {
-                    if (player.hit_point_current > max_hp - player.hit_point_max)
+                    if (player.hit_point_current > (orig_max_hp - player.hit_point_max))
                     {
-                        player.hit_point_current = (byte)(max_hp - player.hit_point_max);
+                        player.hit_point_current -= (byte)(orig_max_hp - player.hit_point_max);
                     }
                     else
                     {

@@ -95,11 +95,6 @@ namespace engine
         }
 
 
-        internal static void sub_7431C(int mapX, int mapY)
-        {
-            sub_7431C(new Point(mapX, mapY)); // TODO tidy-up
-        }
-
         internal static void sub_7431C(Point pos)
         {
             int playerIndex = PlayerIndexAtMapXY(pos.y, pos.x);
@@ -128,7 +123,10 @@ namespace engine
                 {
                     foreach (var pos in BuildSizeMap(combatantMap.size, combatantMap.pos))
                     {
-                        mapToPlayerIndex[pos.y, pos.x] = index;
+                        if (pos.x < Point.MapMaxX && pos.y < Point.MapMaxY)
+                        {
+                            mapToPlayerIndex[pos.y, pos.x] = index;
+                        }
                     }
 
                     combatantMap.screenPos = combatantMap.pos - gbl.mapToBackGroundTile.mapScreenTopLeft;
@@ -263,7 +261,7 @@ namespace engine
         /// </summary>
         /// <param name="radius">if this is 0xff the re-check is forced</param>
         /// <returns></returns>
-        static bool ScreenMapCheck(int radius, Point pos)
+        internal static bool ScreenMapCheck(int radius, Point pos)
         {
             Point screenCentre = gbl.mapToBackGroundTile.mapScreenTopLeft + Point.ScreenCenter;
 
@@ -475,7 +473,7 @@ namespace engine
             }
         }
 
-        internal static void getGroundInformation(out bool isPoisonousCloud, out bool isNoxiousCloud, out int groundTile, out int playerIndex, byte direction, Player player) /* sub_74D04 */
+        internal static void getGroundInformation(out bool isPoisonousCloud, out bool isNoxiousCloud, out int groundTile, out int playerIndex, int direction, Player player) /* sub_74D04 */
         {
             playerIndex = 0;
             groundTile = 0x17;
@@ -556,13 +554,15 @@ namespace engine
                     seg044.sound_sub_120E0(Sound.sound_5);
 
                     // Draw skull overlay
+                    DaxBlock b1 = gbl.combat_icons[24].GetIcon(1, 0);
+                    DaxBlock b2 = gbl.combat_icons[25].GetIcon(0, 0);
                     for (int var_3 = 0; var_3 <= 8; var_3++)
                     {
                         foreach (var pos in BuildSizeMap(gbl.CombatMap[player_index].size, gbl.CombatMap[player_index].screenPos))
                         {
                             if (CoordOnScreen(pos) == true)
                             {
-                                DaxBlock tmp = ((var_3 & 1) == 0) ? gbl.combat_icons[24, 1] : gbl.combat_icons[25, 0];
+                                DaxBlock tmp = ((var_3 & 1) == 0) ? b1 : b2;
 
                                 seg040.OverlayBounded(tmp, 5, 0, (pos.y) * 3, (pos.x) * 3);
                             }

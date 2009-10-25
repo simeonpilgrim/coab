@@ -824,7 +824,7 @@ namespace engine
         static int find_players_on_path(SteppingPath path, List<int> player_list) /* sub_5D702 */
         {
             int dir = 0;
-            while (!path.Step())
+            while (path.Step())
             {
                 int playerIndex = ovr033.PlayerIndexAtMapXY(path.current.y, path.current.x);
 
@@ -912,7 +912,7 @@ namespace engine
             targetPos.MapBoundaryTrunc();
 
             int range = 0xff; /* Simeon */
-            ovr032.canReachTarget(gbl.mapToBackGroundTile, ref range, ref targetPos, casterPos);
+            ovr032.canReachTarget(ref range, ref targetPos, casterPos);
 
             localSteppingPathInit(targetPos, casterPos, path);
             int var_76 = find_players_on_path(path, players_on_path);
@@ -1549,7 +1549,7 @@ namespace engine
                         player.combat_team = gbl.player_ptr.combat_team;
                         player.quick_fight = QuickFight.True;
                         player.field_E9 = 1;
-                        player.field_DD = 0;
+                        player.attackLevel = 0;
                         player.base_movement = 6;
 
                         for (int var_1 = 0; var_1 < gbl.max_spells; var_1++)
@@ -1896,7 +1896,7 @@ namespace engine
 
             if (gbl.area_ptr.inDungeon == 0)
             {
-                var scl = ovr032.Rebuild_SortedCombatantList(gbl.mapToBackGroundTile, 1, 0xff, 2, gbl.targetPos);
+                var scl = ovr032.Rebuild_SortedCombatantList(1, 2, gbl.targetPos);
 
                 gbl.spellTargets.Clear();
                 foreach(var sc in scl)
@@ -2462,7 +2462,7 @@ namespace engine
 
             if (ovr025.FindAffect(out affect, Affects.clear_movement, player) == true)
             {
-                var scl = ovr032.Rebuild_SortedCombatantList(gbl.mapToBackGroundTile, 1, 0xff, 1, ovr033.PlayerMapPos(player));
+                var scl = ovr032.Rebuild_SortedCombatantList(1, 1, ovr033.PlayerMapPos(player));
 
                 foreach (var sc in scl)
                 {
@@ -3120,23 +3120,23 @@ namespace engine
         }
 
 
-        internal static void cast_spell_text(byte arg_0, string arg_2, Player arg_6) /* cast_a_spell */
+        internal static void cast_spell_text(int spellId, string arg_2, Player player) /* cast_a_spell */
         {
             if (gbl.game_state == GameState.Combat)
             {
-                ovr025.DisplayPlayerStatusString(true, 10, "Casts a Spell", arg_6);
+                ovr025.DisplayPlayerStatusString(true, 10, "Casts a Spell", player);
                 seg037.draw8x8_clear_area(0x17, 0x27, 0x17, 0);
 
-                seg041.displayString("Spell:" + SpellNames[arg_0], 0, 10, 0x17, 0);
+                seg041.displayString("Spell:" + SpellNames[spellId], 0, 10, 0x17, 0);
             }
             else
             {
                 seg037.draw8x8_clear_area(0x16, 0x26, 0x12, 1);
 
-                ovr025.displayPlayerName(false, 0x13, 1, arg_6);
+                ovr025.displayPlayerName(false, 0x13, 1, player);
 
-                seg041.displayString(arg_2, 0, 10, 0x13, arg_6.name.Length + 2);
-                seg041.displayString(SpellNames[arg_0], 0, 10, 0x14, 1);
+                seg041.displayString(arg_2, 0, 10, 0x13, player.name.Length + 2);
+                seg041.displayString(SpellNames[spellId], 0, 10, 0x14, 1);
                 seg041.GameDelay();
                 ovr025.ClearPlayerTextArea();
             }

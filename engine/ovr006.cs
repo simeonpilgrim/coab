@@ -130,7 +130,6 @@ namespace engine
 
 
                         default:
-
                             if (player._class == ClassId.mc_c_f ||
                                 (player._class >= ClassId.mc_c_r && player._class <= ClassId.mc_f_t) ||
                                 player._class == ClassId.mc_f_t)
@@ -182,7 +181,7 @@ namespace engine
             foreach (Player player in gbl.player_next_ptr)
             {
                 if (player.actions != null &&
-                    player.actions.field_12 == 1)
+                    player.actions.nonTeamMember == true)
                 {
                     break;
                 }

@@ -4,7 +4,7 @@ namespace engine
 {
     class ovr010
     {
-        internal static void sub_3504B(Player player)
+        internal static void PlayerQuickFight(Player player) // sub_3504B
         {
             bool var_2 = process_input_in_monsters_turn(player);
             ovr027.ClearPromptArea();
@@ -16,7 +16,7 @@ namespace engine
                 ovr025.clear_actions(player);
             }
 
-            byte var_1 = player.actions.field_15;
+            int var_1 = player.actions.field_15;
 
             if (var_1 == 0 || var_1 == 4 || ovr024.roll_dice(4, 1) == 1)
             {
@@ -39,7 +39,7 @@ namespace engine
                 var_2 = FleeCheck_001(player);
             }
 
-            if (player.actions.field_14 == true &&
+            if (player.actions.moral_failure == true &&
                 player.actions.fleeing == false)
             {
                 ovr025.DisplayPlayerStatusString(true, 10, "flees in panic", player);
@@ -75,7 +75,7 @@ namespace engine
                 return;
             }
 
-            sub_36673(player);
+            AI_items_selection(player);
             var_2 = process_input_in_monsters_turn(player);
 
             while (var_2 == false)
@@ -122,7 +122,7 @@ namespace engine
 
             int save_bonus = (gbl.player_ptr.combat_team == CombatTeam.Ours)? -2 : 8;
 
-            var sortedCombatants = ovr032.Rebuild_SortedCombatantList(gbl.mapToBackGroundTile, 1, 0xff, gbl.spell_table[spell_id].field_F, pos);
+            var sortedCombatants = ovr032.Rebuild_SortedCombatantList(1, gbl.spell_table[spell_id].field_F, pos);
 
             foreach (var sc in sortedCombatants)
             {
@@ -259,7 +259,7 @@ namespace engine
             if (spells_count > 0 &&
                 (player.control_morale >= Control.NPC_Base || gbl.magicOn == true))
             {
-                if ((player.OppositeTeam()== CombatTeam.Ours ? gbl.friends_count : gbl.foe_count) > 0)
+                if ((player.OppositeTeam() == CombatTeam.Ours ? gbl.friends_count : gbl.foe_count) > 0)
                 {
                     while (var_5D <= var_5B && spell_id == 0)
                     {
@@ -302,13 +302,13 @@ namespace engine
             0, 6, 2, 8, 2, 0, 4, 0, 0, 2,
             6, 2, 2, 0, 4, 4, 4, 2, 6, 6 };/* actual from seg600:02BD - seg600:02F8 */
 
-        internal static bool sub_3573B(out bool arg_0, int arg_4, int arg_6, Player player)
+        internal static bool CanMove(out bool groundClear, int baseDirecction, int dirStep, Player player) // sub_3573B
         {
-            arg_0 = false;
-            bool result = false;
+            groundClear = false;
+            bool canMove = false;
 
-            int var_6 = data_2B8[(player.actions.field_15 * 5) + arg_6];
-            byte playerDirection = (byte)((arg_4 + var_6) % 8);
+            int var_6 = data_2B8[(player.actions.field_15 * 5) + dirStep];
+            byte playerDirection = (byte)((baseDirecction + var_6) % 8);
 
             int groundTile;
             int playerIndex;  
@@ -318,7 +318,7 @@ namespace engine
 
             if (groundTile == 0)
             {
-                arg_0 = true;
+                groundClear = true;
             }
             else
             {
@@ -327,17 +327,17 @@ namespace engine
                     return false;
                 }
 
-                byte var_A = gbl.BackGroundTiles[groundTile].move_cost;
+                int move_cost = gbl.BackGroundTiles[groundTile].move_cost;
                 if ((playerDirection & 1) != 0)
                 {
-                    var_A *= 3;
+                    move_cost *= 3;
                 }
                 else
                 {
-                    var_A *= 2;
+                    move_cost *= 2;
                 }
 
-                if (playerIndex == 0 && var_A < player.actions.move)
+                if (playerIndex == 0 && move_cost < player.actions.move)
                 {
                     if (isNoxiousCloud == true &&
                         player.HasAffect(Affects.animate_dead) == false &&
@@ -350,7 +350,7 @@ namespace engine
                     {
                         if (ovr024.RollSavingThrow(0, 0, player) == false)
                         {
-                            var_A = (byte)(player.actions.move + 1);
+                            move_cost = player.actions.move + 1;
                         }
                     }
 
@@ -362,171 +362,166 @@ namespace engine
                         player.HasAffect(Affects.affect_7d) == false &&
                         player.actions.fleeing == false)
                     {
-                        var_A = (byte)(player.actions.move + 1);
+                        move_cost = player.actions.move + 1;
                     }
 
-                    if (player.actions.move >= var_A)
+                    if (player.actions.move >= move_cost)
                     {
-                        result = true;
+                        canMove = true;
                     }
                 }
             }
 
-            return result;
+            return canMove;
         }
 
 
-        internal static void sub_359D1(Player player)
+        internal static void moralFailureEscape(Player player) // sub_359D1
         {
-            bool var_5;
-
-            byte var_3;
-            byte var_2 = 0; /* Simeon */
-            byte var_1;
+            int var_2 = 0; /* Simeon */
+            int var_1;
 
             string prompt = string.Format("Move/Attack, Move Left = {0} ", player.actions.move / 2);
 
             seg041.displayString(prompt, 0, 10, 0x18, 0);
 
-            if (process_input_in_monsters_turn(player) == false)
+            if (process_input_in_monsters_turn(player))
             {
-                if ((player.actions.move / 2) > 0 &&
-                    player.actions.delay > 0)
+                return;
+            }
+
+            if ((player.actions.move / 2) > 0 &&
+                player.actions.delay > 0)
+            {
+                if (player.control_morale < Control.NPC_Base ||
+                   (player.control_morale >= Control.NPC_Base && gbl.enemyHealthPercentage <= (ovr024.roll_dice(100, 1) + gbl.monster_morale)) ||
+                    player.combat_team == CombatTeam.Enemy)
                 {
-                    if (player.control_morale < Control.NPC_Base ||
-                       (player.control_morale >= Control.NPC_Base && gbl.enemyHealthPercentage <= (ovr024.roll_dice(100, 1) + gbl.monster_morale)) ||
-                        player.combat_team == CombatTeam.Enemy)
+                    if (player.actions.moral_failure == true ||
+                        player.armor != null ||
+                        player._class != ClassId.magic_user)
                     {
-                        if (player.actions.field_14 == true ||
-                            player.armor != null ||
-                            player._class != ClassId.magic_user)
+                        if (player.actions.moral_failure == false)
                         {
-                            if (player.actions.field_14 == false)
+                            var_1 = ovr014.getTargetDirection(player.actions.target, player);
+                        }
+                        else
+                        {
+                            player.actions.field_15 = ovr024.roll_dice(2, 1);
+                            var_1 = gbl.mapDirection - (((gbl.mapDirection + 2) % 4) / 2) + 8;
+
+                            if (player.combat_team == CombatTeam.Ours)
                             {
-                                var_1 = ovr014.getTargetDirection(player.actions.target, player);
+                                var_1 += 4;
+                            }
+
+                            var_1 %= 8;
+                        }
+
+                        bool zeroTitle = false;
+                        bool var_5 = false;
+                        int dirStep = 1;
+
+                        while (dirStep < 6 && var_5 == false &&
+                            CanMove(out zeroTitle, var_1, dirStep, player) == false)
+                        {
+                            if (player.actions.moral_failure == true &&
+                                zeroTitle == true)
+                            {
+                                var_5 = true;
+                                ovr014.flee_battle(player);
                             }
                             else
                             {
-                                player.actions.field_15 = ovr024.roll_dice(2, 1);
-                                var_1 = (byte)(gbl.mapDirection - (((gbl.mapDirection + 2) % 4) / 2));
+                                dirStep++;
+                            }
+                        }
 
-                                if (player.combat_team == CombatTeam.Ours)
+                        if (var_5 == true)
+                        {
+                            player.actions.move = 0;
+                            player.actions.moral_failure = false;
+                            ovr025.clear_actions(player);
+                        }
+                        else
+                        {
+                            var_2 = (data_2B8[(player.actions.field_15 * 5) + dirStep] + var_1) % 8;
+
+                            if (dirStep == 6 || ((var_2 + 4) % 8) == byte_1AB18)
+                            {
+                                byte_1AB19++;
+                                player.actions.field_15 = (player.actions.field_15 % 6) + 1;
+
+                                if (byte_1AB19 > 1)
                                 {
-                                    var_1 += 4;
-                                }
+                                    player.actions.target = null;
 
-                                var_1 %= 8;
+                                    if (byte_1AB19 > 2)
+                                    {
+                                        player.actions.move = 0;
+                                        var_5 = true;
+                                    }
+                                    else if (ovr014.find_target(false, 1, 0xFF, player) == false)
+                                    {
+                                        var_5 = true;
+                                        TryGuarding(player);
+                                    }
+                                }
                             }
 
-                            bool var_4 = false;
-                            var_5 = false;
-                            var_3 = 1;
-
-                            while (var_3 < 6 && var_5 == false &&
-                                sub_3573B(out var_4, var_1, var_3, player) == false)
+                            if (dirStep < 6)
                             {
-                                if (player.actions.field_14 == true &&
-                                    var_4 == true)
-                                {
-                                    var_5 = true;
-                                    ovr014.flee_battle(player);
-                                }
-                                else
-                                {
-                                    var_3++;
-                                }
+                                byte_1AB18 = var_2;
                             }
-
-                            if (var_5 == true)
+                            else
                             {
-                                player.actions.move = 0;
-                                player.actions.field_14 = false;
+                                var_5 = true;
+                            }
+                        }
+
+                        if (var_5 == false)
+                        {
+                            gbl.focusCombatAreaOnPlayer = (gbl.byte_1D90E || ovr033.PlayerOnScreen(false, player) || player.combat_team == CombatTeam.Ours);
+
+                            ovr033.draw_74B3F(0, 0, var_2, player);
+                            ovr014.move_step_away_attack(player.actions.direction, player);
+
+                            if (player.in_combat == false)
+                            {
                                 var_5 = true;
                                 ovr025.clear_actions(player);
                             }
                             else
                             {
-                                var_2 = (byte)((data_2B8[(player.actions.field_15 * 5) + var_3] + var_1) % 8);
-
-                                if (var_3 == 6 || ((var_2 + 4) % 8) == gbl.byte_1AB18)
+                                if (player.actions.move > 0)
                                 {
-                                    gbl.byte_1AB19++;
-                                    player.actions.field_15 %= 6;
-                                    player.actions.field_15 += 1;
-
-                                    if (gbl.byte_1AB19 > 1)
-                                    {
-                                        player.actions.target = null;
-
-                                        if (gbl.byte_1AB19 > 2)
-                                        {
-                                            player.actions.move = 0;
-                                            var_5 = true;
-                                        }
-                                        else if (ovr014.find_target(false, 1, 0xFF, player) == false)
-                                        {
-                                            var_5 = true;
-                                            TryGuarding(player);
-                                        }
-                                    }
+                                    ovr014.sub_3E748(player.actions.direction, player);
                                 }
-
-                                if (var_3 < 6)
-                                {
-                                    gbl.byte_1AB18 = var_2;
-                                }
-                                else
-                                {
-                                    var_5 = true;
-                                }
-                            }
-
-                            if (var_5 == false)
-                            {
-                                gbl.focusCombatAreaOnPlayer = (gbl.byte_1D90E || ovr033.PlayerOnScreen(false, player) || player.combat_team == CombatTeam.Ours);
-
-                                ovr033.draw_74B3F(0, 0, var_2, player);
-                                ovr014.move_step_away_attack(player.actions.direction, player);
 
                                 if (player.in_combat == false)
                                 {
                                     var_5 = true;
                                     ovr025.clear_actions(player);
                                 }
-                                else
-                                {
-                                    if (player.actions.move > 0)
-                                    {
-                                        ovr014.sub_3E748(player.actions.direction, player);
-                                    }
 
-                                    if (player.in_combat == false)
-                                    {
-                                        var_5 = true;
-                                        ovr025.clear_actions(player);
-                                    }
-
-                                    ovr024.in_poison_cloud(1, player);
-                                }
+                                ovr024.in_poison_cloud(1, player);
                             }
-                            return;
                         }
+                        return;
                     }
                 }
-
-                var_5 = true;
-                TryGuarding(player);
             }
+
+            TryGuarding(player);
         }
 
+        static int byte_1AB18; // byte_1AB18
+        static int byte_1AB19; // byte_1AB19
 
         internal static bool sub_35DB1(Player player)
         {
-            gbl.byte_1AB18 = 8;
-            gbl.byte_1AB19 = 0;
-
-            byte var_13 = 0;
-            bool var_2 = false;
+            byte_1AB18 = 8;
+            byte_1AB19 = 0;
 
             ovr024.CheckAffectsEffect(player, CheckType.Type_14);
 
@@ -536,38 +531,40 @@ namespace engine
                 player.actions.delay = 0;
             }
 
-            bool var_3 = player.actions.delay != 0;
+            int counter = 0;
+            bool stop = false;
+            bool delayed = player.actions.delay != 0;
 
-            while (var_2 == false && var_3 == true)
+            while (stop == false && delayed == true)
             {
-                if (player.actions.field_14 == true)
+                if (player.actions.moral_failure == true)
                 {
                     while (player.actions.move > 0 &&
                         player.actions.delay > 0 &&
                         player.actions.delay < 20)
                     {
-                        sub_359D1(player);
+                        moralFailureEscape(player);
                     }
                 }
 
                 if (player.actions.delay == 0 ||
                     player.actions.delay == 20)
                 {
-                    var_3 = false;
+                    delayed = false;
                 }
                 else
                 {
-                    var_2 = false;
+                    stop = false;
                 }
 
-                if (var_2 == false && var_3 == true)
+                if (stop == false && delayed == true)
                 {
-                    var_13++;
+                    counter++;
 
-                    if (var_13 > 20)
+                    if (counter > 20)
                     {
-                        var_2 = true;
-                        var_3 = false;
+                        stop = true;
+                        delayed = false;
                         TryGuarding(player);
                     }
 
@@ -603,7 +600,7 @@ namespace engine
 
                         gbl.mapToBackGroundTile.field_6 = false;
 
-                        if (ovr032.canReachTarget(gbl.mapToBackGroundTile, ref steps, targetPos, attackPos) == true &&
+                        if (ovr032.canReachTarget(ref steps, targetPos, attackPos) == true &&
                             (steps / 2) <= range)
                         {
                             gbl.byte_1D90E = true;
@@ -618,11 +615,11 @@ namespace engine
                         {
                             if (ovr014.find_target(false, 0, 0xff, player) == true)
                             {
-                                sub_359D1(player);
+                                moralFailureEscape(player);
                             }
                             else
                             {
-                                var_2 = true;
+                                stop = true;
                                 TryGuarding(player);
                             }
                         }
@@ -636,8 +633,8 @@ namespace engine
                                 ovr025.is_weapon_ranged_melee(player) == false &&
                                 ovr025.BuildNearTargets(1, player).Count > 0)
                             {
-                                sub_36673(player);
-                                var_2 = true;
+                                AI_items_selection(player);
+                                stop = true;
                             }
                             else if (ovr025.getTargetRange(target, player) == 1 ||
                                 ovr014.CanSeeTargetA(target, player) == true)
@@ -650,19 +647,18 @@ namespace engine
                     if (gbl.byte_1D90E == true)
                     {
                         ovr033.redrawCombatArea(ovr014.getTargetDirection(target, player), 2, ovr033.PlayerMapPos(player));
-
                     }
 
                     if (gbl.byte_1D90E == true)
                     {
                         if (ovr014.TrySweepAttack(target, player) == true)
                         {
-                            var_2 = true;
+                            stop = true;
                             ovr025.clear_actions(player);
                         }
                         else
                         {
-                            ovr014.sub_3F94D(target, player);
+                            ovr014.recalc_action_12(target, player);
 
                             Item item = null;
 
@@ -678,22 +674,22 @@ namespace engine
                                 }
                             }
 
-                            ovr014.AttackTarget(out var_2, item, 0, target, player);
+                            ovr014.AttackTarget(out stop, item, 0, target, player);
 
-                            if (var_2 == true)
+                            if (stop == true)
                             {
-                                var_3 = false;
+                                delayed = false;
                             }
                             else if (target.in_combat == false)
                             {
-                                var_2 = true;
+                                stop = true;
                             }
                         }
                     }
                 }
             }
 
-            return (var_3 == false);
+            return (delayed == false);
         }
 
 
@@ -705,7 +701,7 @@ namespace engine
                 ovr025.is_weapon_ranged(player) == true ||
                 player.actions.delay == 0)
             {
-                ovr025.clear_actions(player);
+                player.actions.Clear();
             }
             else
             {
@@ -730,7 +726,7 @@ namespace engine
                     var_6 = seg043.GetInputKey();
                 }
 
-                if (var_6 == 0x32)
+                if (var_6 == '2')
                 {
                     gbl.magicOn = !gbl.magicOn;
 
@@ -775,13 +771,13 @@ namespace engine
         static bool FleeCheck_001(Player player) // sub_3637F
         {
             bool var_1 = false;
-            player.actions.field_14 = false;
+            player.actions.moral_failure = false;
 
             ovr024.RemoveAttackersAffects(player);
 
             if (player.actions.fleeing == true)
             {
-                player.actions.field_14 = true;
+                player.actions.moral_failure = true;
                 ovr025.DisplayPlayerStatusString(true, 10, "is forced to flee", player);
             }
             else if (player.control_morale >= Control.NPC_Base)
@@ -810,7 +806,7 @@ namespace engine
 
                         if (var_2 <= (ovr014.sub_3E124(player) / 2))
                         {
-                            player.actions.field_14 = true;
+                            player.actions.moral_failure = true;
                             ovr024.remove_affect(null, Affects.affect_4a, player);
                             ovr024.remove_affect(null, Affects.weap_dragon_slayer, player);
                         }
@@ -887,7 +883,7 @@ namespace engine
         }
 
 
-        static void sub_36673(Player player)
+        static void AI_items_selection(Player player)  // sub_36673 
         {            
             if (player.field_151 != null)
             {

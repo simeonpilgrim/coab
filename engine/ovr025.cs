@@ -1,6 +1,7 @@
 using Classes;
 using System;
 using System.Collections.Generic;
+using Classes.Combat;
 
 namespace engine
 {
@@ -360,7 +361,6 @@ namespace engine
         }
 
 
-
         internal static void reclac_player_values(Player player) /* sub_66C20 */
         {
             sbyte[] stat_bonus = new sbyte[5];
@@ -524,11 +524,11 @@ namespace engine
             if (player.SkillLevel(SkillType.Fighter) > 0 &&
                 player.race > Race.monster)
             {
-                player.field_DD = (byte)player.SkillLevel(SkillType.Fighter);
+                player.attackLevel = (byte)player.SkillLevel(SkillType.Fighter);
             }
             else
             {
-                player.field_DD = 1;
+                player.attackLevel = 1;
             }
 
             //System.Console.WriteLine("{0} {1} {2}, {3} {4}, {5} {6}", player.name, player.attack1_DiceCount, player.attack2_DiceCount,
@@ -805,9 +805,6 @@ namespace engine
         }
 
 
-
-
-
         internal static void lose_item(Item item, Player player)
         {
             if (!player.items.Remove(item))
@@ -898,20 +895,18 @@ namespace engine
 
             if (flipIcon == true)
             {
-                seg040.FlipIconLeftToRight(gbl.combat_icons[iconIdx, iconAction]);
+                gbl.combat_icons[iconIdx].GetIcon(iconAction, 0).FlipIconLeftToRight();
             }
             else
             {
-                DaxBlock src = gbl.combat_icons[iconIdx, iconAction];
+                DaxBlock src = gbl.combat_icons[iconIdx].GetIcon(iconAction, 0);
                 if (src != null)
                 {
-                    System.Array.Copy(gbl.combat_icons[iconIdx, iconAction].data, 0, gbl.missile_dax.data, iconOffset * dataSize, dataSize);
-                    System.Array.Copy(gbl.combat_icons[iconIdx, iconAction].data_ptr, 0, gbl.missile_dax.data_ptr, iconOffset * dataSize, dataSize);
+                    System.Array.Copy(src.data, 0, gbl.missile_dax.data, iconOffset * dataSize, dataSize);
                 }
                 else
                 {
                     System.Array.Clear(gbl.missile_dax.data, iconOffset * dataSize, dataSize);
-                    System.Array.Clear(gbl.missile_dax.data_ptr, iconOffset * dataSize, dataSize);
                 }
             }
         }
@@ -1336,7 +1331,7 @@ namespace engine
 
         internal static List<CombatPlayerIndex> BuildNearTargets(int max_range, Player player) /*near_enermy*/
         {
-            var scl = ovr032.Rebuild_SortedCombatantList(gbl.mapToBackGroundTile, ovr033.PlayerMapSize(player), 0xff, max_range, ovr033.PlayerMapPos(player));
+            var scl = ovr032.Rebuild_SortedCombatantList(ovr033.PlayerMapSize(player), max_range, ovr033.PlayerMapPos(player));
             
             scl.RemoveAll(sc => sc.player.combat_team == player.combat_team);
 
@@ -1355,8 +1350,7 @@ namespace engine
         {
             gbl.mapToBackGroundTile.field_6 = true;
 
-            var scl = ovr032.Rebuild_SortedCombatantList(gbl.mapToBackGroundTile,
-                ovr033.PlayerMapSize(attacker), 0xff, 0xff, ovr033.PlayerMapPos(attacker));
+            var scl = ovr032.Rebuild_SortedCombatantList(ovr033.PlayerMapSize(attacker), 0xff, ovr033.PlayerMapPos(attacker));
 
             gbl.mapToBackGroundTile.field_6 = false;
 
@@ -1377,16 +1371,13 @@ namespace engine
 
         internal static void clear_actions(Player player)
         {
-            player.actions.delay = 0;
-            player.actions.spell_id = 0;
-            player.actions.guarding = false;
-            player.actions.move = 0;
+            player.actions.Clear();
         }
 
 
         internal static void guarding(Player player)
         {
-            clear_actions(player);
+            player.actions.Clear();
             player.actions.guarding = true;
 
             string_print01("Guarding");

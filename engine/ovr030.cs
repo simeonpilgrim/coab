@@ -18,7 +18,7 @@ namespace engine
                 {
                     if (gbl.area_ptr.picture_fade > 0)
                     {
-                        seg040.DaxBlockRecolor(dax_block, true, fadeNewColors, fadeOldColors);
+                        dax_block.Recolor(true, fadeNewColors, fadeOldColors);
                     }
 
                     seg040.OverlayBounded(dax_block, 0, 0, rowY - 1, colX - 1);
@@ -124,11 +124,11 @@ namespace engine
                                 }
                             }
 
-                            seg040.turn_dax_to_videolayout(daxArray.frames[frame].picture, 0, masked, src_offset, uncompressed_data);
+                            daxArray.frames[frame].picture.DaxToPicture(0, masked, src_offset, uncompressed_data);
 
                             if ((masked & 1) > 0)
                             {
-                                seg040.DaxBlockRecolor(daxArray.frames[frame].picture, false, transparentNewColors, transparentOldColors);
+                                daxArray.frames[frame].picture.Recolor(false, transparentNewColors, transparentOldColors);
                             }
 
                             src_offset += ega_encoded_size + 1;

@@ -216,11 +216,11 @@ namespace engine
             }
 
             sub_6A00F(player);
-            sub_6A7FB(player);
+            reclac_saving_throws(player);
 
             if (player.thief_lvl > 0)
             {
-                sub_6AAEA(player);
+                reclac_thief_skills(player);
             }
 
             player.classFlags = 0;
@@ -280,7 +280,7 @@ namespace engine
 
                 if (player.thief_old_lvl > 0)
                 {
-                    sub_6AAEA(player);
+                    reclac_thief_skills(player);
                 }
             }
         }
@@ -353,87 +353,92 @@ namespace engine
             {{20, 20, 20, 20, 20}, {13, 12, 14, 16, 15}, {13, 12, 14, 16, 15}, {13, 12, 14, 16, 15}, {13, 12, 14, 16, 15}, {12, 11, 12, 15, 13}, {12, 11, 12, 15, 13}, {12, 11, 12, 15, 13}, {12, 11, 12, 15, 13}, {11, 10, 10, 14, 11}, {13, 11, 9, 13, 10}, {11, 9, 7, 11, 8}, {11, 9, 7, 11, 8}}};
 
 
-        internal static void sub_6A7FB(Player player)
+        internal static void reclac_saving_throws(Player player) // sub_6A7FB
         {
-            Item item = player.items.Find(i => (int)i.affect_3 > 0x80 && i.readied && ((int)i.affect_3 & 0x7F) == 6);
-            bool var_9 = item != null && ((int)item.affect_3 & 0x7F) == 6;
+            Item item = player.items.Find(i => i.affect_3 == Affects.item_affect_6 && i.readied );
+            bool applyBonus = item != null;
 
-            for (int var_1 = 0; var_1 < 5; var_1++)
+            for (int save = 0; save < 5; save++)
             {
-                int var_2;
+                int _class;
 
-                player.saveVerse[var_1] = 20;
-                for (var_2 = 0; var_2 <= 7; var_2++)
+                player.saveVerse[save] = 20;
+                for (_class = 0; _class <= 7; _class++)
                 {
-                    if (player.ClassLevel[var_2] > 0)
+                    if (player.ClassLevel[_class] > 0)
                     {
-                        byte dl = byte_1A8CE[var_2, player.ClassLevel[var_2], var_1];
+                        byte dl = byte_1A8CE[_class, player.ClassLevel[_class], save];
 
-                        if (player.saveVerse[var_1] > dl)
+                        if (player.saveVerse[save] > dl)
                         {
-                            player.saveVerse[var_1] = dl;
+                            player.saveVerse[save] = dl;
                         }
                     }
                 }
 
-                var_2 = 7; /* Orignal code had a post use test and would exit on 7,
+                _class = 7; /* Orignal code had a post use test and would exit on 7,
                             * but this for loops uses are pre-test increment so fix var_2 */
 
-                if (player.ClassLevel[var_2] > player.ClassLevelsOld[var_2])
+                if (player.ClassLevel[_class] > player.ClassLevelsOld[_class])
                 {
-                    byte dl = byte_1A8CE[var_2 ,player.ClassLevelsOld[var_2] , var_1];
+                    byte dl = byte_1A8CE[_class ,player.ClassLevelsOld[_class] , save];
 
-                    if (player.saveVerse[var_1] > dl)
+                    if (player.saveVerse[save] > dl)
                     {
-                        player.saveVerse[var_1] = dl;
+                        player.saveVerse[save] = dl;
                     }
                 }
 
-                if (var_1 == 0)
+                if (save == 0)
                 {
-                    if (player.race == Race.dwarf || 
-                        player.race == Race.halfling ||
-                        var_9 == true)
-                    {
-                        if (player.con >= 4 && player.con <= 6)
-                        {
-                            player.saveVerse[var_1] += 1;
-                        }
-                        else if (player.con >= 7 && player.con <= 10)
-                        {
-                            player.saveVerse[var_1] += 2;
-                        }
-                        else if (player.con >= 11 && player.con <= 13)
-                        {
-                            player.saveVerse[var_1] += 3;
-                        }
-                        else if (player.con >= 14 && player.con <= 17)
-                        {
-                            player.saveVerse[var_1] += 4;
-                        }
-                        else if (player.con == 18)
-                        {
-                            player.saveVerse[var_1] += 5;
-                        }
-                    }
-
-                    if (player.con == 19 || player.con == 20)
-                    {
-                        player.saveVerse[var_1] += 1;
-                    }
-                    else if (player.con == 21 || player.con == 22)
-                    {
-                        player.saveVerse[var_1] += 2;
-                    }
-                    else if (player.con == 23 || player.con == 24)
-                    {
-                        player.saveVerse[var_1] += 3;
-                    }
-                    else if (player.con == 25)
-                    {
-                        player.saveVerse[var_1] += 4;
-                    }
+                    SaveVerseZeroBonus(player, applyBonus);
                 }
+            }
+        }
+
+        private static void SaveVerseZeroBonus(Player player, bool applyBonus)
+        {
+            if (player.race == Race.dwarf ||
+                player.race == Race.halfling ||
+                applyBonus == true)
+            {
+                if (player.con >= 4 && player.con <= 6)
+                {
+                    player.saveVerse[0] += 1;
+                }
+                else if (player.con >= 7 && player.con <= 10)
+                {
+                    player.saveVerse[0] += 2;
+                }
+                else if (player.con >= 11 && player.con <= 13)
+                {
+                    player.saveVerse[0] += 3;
+                }
+                else if (player.con >= 14 && player.con <= 17)
+                {
+                    player.saveVerse[0] += 4;
+                }
+                else if (player.con == 18)
+                {
+                    player.saveVerse[0] += 5;
+                }
+            }
+
+            if (player.con == 19 || player.con == 20)
+            {
+                player.saveVerse[0] += 1;
+            }
+            else if (player.con == 21 || player.con == 22)
+            {
+                player.saveVerse[0] += 2;
+            }
+            else if (player.con == 23 || player.con == 24)
+            {
+                player.saveVerse[0] += 3;
+            }
+            else if (player.con == 25)
+            {
+                player.saveVerse[0] += 4;
             }
         }
 
@@ -494,7 +499,7 @@ namespace engine
 
 
 
-        internal static void sub_6AAEA(Player player)
+        internal static void reclac_thief_skills(Player player) // sub_6AAEA
         {
             byte var_2 = 0; //Simeon
 
@@ -701,8 +706,8 @@ namespace engine
 
             sub_6A3C6(player);
             calc_cleric_spells(true, player);
-            sub_6A7FB(player);
-            sub_6AAEA(player);
+            reclac_saving_throws(player);
+            reclac_thief_skills(player);
 
             foreach(var item in player.items)
             {

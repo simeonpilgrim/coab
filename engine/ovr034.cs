@@ -41,10 +41,12 @@ namespace engine
 
         internal static void ReleaseCombatIcon(int index) // free_icon
         {
-            gbl.combat_icons[index, 0] = null;
-            gbl.combat_icons[index, 1] = null;
+            gbl.combat_icons[index].Release();
         }
 
+        static byte[] unk_16E30 = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 }; // seg600:0B20
+        static byte[] unk_16E40 = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 }; // seg600:0B30
+        static byte[] unk_16E50 = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 0, 14, 15 }; // seg600:0B40
 
         internal static void chead_cbody_comspr_icon(byte combat_icon_index, int block_id, string fileText)
         {
@@ -61,29 +63,23 @@ namespace engine
 
                 file_text = seg051.Copy(file_text.Length - 1, 0, file_text);
 
-                gbl.combat_icons[combat_icon_index, 0] = seg040.LoadDax(0, 1, block_id, file_text);
-                gbl.combat_icons[combat_icon_index, 1] = seg040.LoadDax(0, 1, block_id + 0x80, file_text);
+                gbl.combat_icons[combat_icon_index].LoadIcons(0, 1, file_text, block_id, block_id + 0x80);
             }
             else if (file_text == "COMSPR" || file_text == "ICON")
             {
-                gbl.combat_icons[combat_icon_index, 0] = seg040.LoadDax(0, 1, block_id, file_text);
-                gbl.combat_icons[combat_icon_index, 1] = seg040.LoadDax(0, 1, block_id + 0x80, file_text);
+                gbl.combat_icons[combat_icon_index].LoadIcons(0, 1, file_text, block_id, block_id + 0x80);
 
                 if (file_text == "ICON")
                 {
-                    seg040.DaxBlockRecolor(gbl.combat_icons[combat_icon_index, 0], false, gbl.unk_16E50, gbl.unk_16E30);
-                    seg040.DaxBlockRecolor(gbl.combat_icons[combat_icon_index, 1], false, gbl.unk_16E50, gbl.unk_16E30);
+                    gbl.combat_icons[combat_icon_index].Recolor( false, unk_16E50, unk_16E30);
                 }
             }
             else
             {
                 file_text += gbl.game_area.ToString();
 
-                gbl.combat_icons[combat_icon_index, 0] = seg040.LoadDax(0, 1, block_id, file_text);
-                seg040.DaxBlockRecolor(gbl.combat_icons[combat_icon_index, 0], false, gbl.unk_16E40, gbl.unk_16E30);
-
-                gbl.combat_icons[combat_icon_index, 1] = seg040.LoadDax(0, 1, block_id + 0x80, file_text);
-                seg040.DaxBlockRecolor(gbl.combat_icons[combat_icon_index, 1], false, gbl.unk_16E40, gbl.unk_16E30);
+                gbl.combat_icons[combat_icon_index].LoadIcons(0, 1, file_text, block_id, block_id + 0x80);
+                gbl.combat_icons[combat_icon_index].Recolor(false, unk_16E40, unk_16E30);
             }
 
             seg043.clear_keyboard();
@@ -92,15 +88,10 @@ namespace engine
 
         internal static void draw_combat_icon(int iconIndex, int iconState, int direction, int tileY, int tileX) /* sub_76504 */
         {
-            DaxBlock icon = gbl.combat_icons[iconIndex, iconState];
+            DaxBlock icon = gbl.combat_icons[iconIndex].GetIcon(iconState, direction) ;
 
             if (icon != null)
             {
-                if (direction > 3)
-                {
-                    seg040.FlipIconLeftToRight(icon);
-                }
-
                 seg040.draw_combat_picture(icon, (tileY * 3) + 1, (tileX * 3) + 1, 0);
             }
         }

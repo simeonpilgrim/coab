@@ -648,7 +648,7 @@ namespace engine
 
             if (player.thief_lvl > 0)
             {
-                ovr026.sub_6AAEA(player);
+                ovr026.reclac_thief_skills(player);
             }
 
             player.classFlags = 0;
@@ -669,7 +669,7 @@ namespace engine
                 }
             }
 
-            ovr026.sub_6A7FB(player);
+            ovr026.reclac_saving_throws(player);
             var_C.Clear();
 
             int alignments = gbl.class_alignments[(int)player._class, 0];
@@ -1975,35 +1975,7 @@ namespace engine
 
         internal static void duplicateCombatIcon(bool recolour, byte destIndex, byte sourceIndex) /* sub_4FC5B */
         {
-            byte[] newColors = new byte[16];
-            byte[] oldColors = new byte[16];
-
-            int bitPerPixel = gbl.combat_icons[destIndex, 0].bpp;
-
-            System.Array.Copy(gbl.combat_icons[sourceIndex, 0].data, gbl.combat_icons[destIndex, 0].data, gbl.combat_icons[sourceIndex, 0].data.Length);
-            System.Array.Copy(gbl.combat_icons[sourceIndex, 1].data, gbl.combat_icons[destIndex, 1].data, gbl.combat_icons[sourceIndex, 1].data.Length);
-
-            System.Array.Copy(gbl.combat_icons[sourceIndex, 0].data_ptr, gbl.combat_icons[destIndex, 0].data_ptr, gbl.combat_icons[sourceIndex, 0].data_ptr.Length);
-            System.Array.Copy(gbl.combat_icons[sourceIndex, 1].data_ptr, gbl.combat_icons[destIndex, 1].data_ptr, gbl.combat_icons[sourceIndex, 1].data_ptr.Length);
-
-            if (recolour)
-            {
-                for (byte i = 0; i < 16; i++)
-                {
-                    oldColors[i] = i;
-                    newColors[i] = i;
-                }
-
-                Player player = gbl.player_ptr;
-                for (byte i = 0; i < 6; i++)
-                {
-                    newColors[gbl.default_icon_colours[i]] = (byte)(player.icon_colours[i] & 0x0F);
-                    newColors[gbl.default_icon_colours[i] + 8] = (byte)((player.icon_colours[i] & 0xF0) >> 4);
-                }
-
-                seg040.DaxBlockRecolor(gbl.combat_icons[destIndex, 0], false, newColors, oldColors);
-                seg040.DaxBlockRecolor(gbl.combat_icons[destIndex, 1], false, newColors, oldColors);
-            }
+            gbl.combat_icons[destIndex].DuplicateIcon(recolour, gbl.combat_icons[sourceIndex], gbl.player_ptr);
         }
 
         static Set unk_4FE94 = new Set(0x0009, new byte[] { 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x20 });

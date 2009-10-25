@@ -1165,7 +1165,7 @@ namespace engine
         }
 
 
-        internal static void battle_begins()
+        internal static void BattleSetup() // battle_begins
         {
             gbl.DelayBetweenCharacters = false;
 
@@ -1182,9 +1182,9 @@ namespace engine
 
             seg041.displayString("A battle begins...", 0, 0x0a, 0x18, 0);
 
-            gbl.magicOn = false;
+            gbl.magicOn = false; // TODO review this...
             gbl.combat_round = 0;
-            gbl.combat_round_no_action_limit = 15;
+            gbl.combat_round_no_action_limit = gbl.combat_round_no_action_value;
             gbl.attack_roll = 0;
 
             gbl.NoxiousCloud = new List<GasCloud>();

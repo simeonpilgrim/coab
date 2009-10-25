@@ -104,11 +104,17 @@
     <Compile Include="Cheats.cs" />
     <Compile Include="ClassStatsMin.cs" />
     <Compile Include="Combat.cs" />
+    <Compile Include="Combat\CombatantMap.cs" />
+    <Compile Include="Combat\CombatIcon.cs" />
+    <Compile Include="Combat\CombatPlayerIndex.cs" />
     <Compile Include="DataIO.cs" />
-    <Compile Include="DaxArray.cs" />
-    <Compile Include="DaxBlock.cs">
+    <Compile Include="DaxFiles\DaxArray.cs" />
+    <Compile Include="DaxFiles\DaxBlock.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="DaxFiles\DaxCache.cs" />
+    <Compile Include="DaxFiles\DaxFileCache.cs" />
+    <Compile Include="DaxFiles\DaxHeaderEntry.cs" />
     <Compile Include="Display.cs" />
     <Compile Include="EclBlock.cs">
       <SubType>Code</SubType>

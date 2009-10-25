@@ -144,61 +144,6 @@ namespace engine
         }
 
 
-        static void MergeIcons(DaxBlock destIcon, DaxBlock srcIcon) /* icon_xx */
-        {
-            for (int i = 0; i < srcIcon.bpp; i++)
-            {
-                byte a = destIcon.data[i];
-                byte b = srcIcon.data[i];
-
-                if (a == 16 && b == 16)
-                {
-                    destIcon.data[i] = 16;
-                }
-                else if (a == 16)
-                {
-                    destIcon.data[i] = b;
-                }
-                else if (b == 16)
-                {
-                    destIcon.data[i] = a;
-                }
-                else 
-                {
-                    destIcon.data[i] = (byte)(a | b);
-                }
-
-                //icon.data[i] = (byte)(((a == 16) ? (byte)0 : a) | ((b == 16) ? (byte)0 : b));
-
-                a = destIcon.data_ptr[i];
-                b = srcIcon.data_ptr[i];
-
-                //TODO not sure about this...
-                if (a == 16 && b == 16)
-                {
-                    destIcon.data_ptr[i] = 16;
-                }
-                else if (a == 16)
-                {
-                    destIcon.data_ptr[i] = b;
-                }
-                else if (b == 16)
-                {
-                    destIcon.data_ptr[i] = a;
-                }
-                else
-                {
-                    destIcon.data_ptr[i] = (byte)(a & b);
-                }
-                //icon.data_ptr[i] = (byte)(((a == 16) ? (byte)0xF : a) & ((b == 16) ? (byte)0xF : b));
-
-                 // this worked when the data was packed, but now it's not...
-                //icon.data[i] |= arg_4.data[i];
-                //icon.data_ptr[i] &= arg_4.data_ptr[i];
-            }
-        }
-
-
         internal static void LoadPlayerCombatIcon(bool recolour) /* sub_47A90 */
         {
             seg042.set_game_area(1);
@@ -210,8 +155,7 @@ namespace engine
             ovr034.chead_cbody_comspr_icon(11, player.head_icon, "CHEAD" + sizeToken[player.icon_size].ToString());
             ovr034.chead_cbody_comspr_icon(player.icon_id, player.weapon_icon, "CBODY" + sizeToken[player.icon_size].ToString());
 
-            MergeIcons(gbl.combat_icons[player.icon_id, 0], gbl.combat_icons[11, 0]);
-            MergeIcons(gbl.combat_icons[player.icon_id, 1], gbl.combat_icons[11, 1]);
+            gbl.combat_icons[player.icon_id].MergeIcon(gbl.combat_icons[11]);
 
             if (recolour)
             {
@@ -230,8 +174,7 @@ namespace engine
                     newColors[gbl.default_icon_colours[i] + 8] = (byte)((player.icon_colours[i] & 0xF0) >> 4);
                 }
 
-                seg040.DaxBlockRecolor(gbl.combat_icons[player.icon_id, 0], false, newColors, oldColors);
-                seg040.DaxBlockRecolor(gbl.combat_icons[player.icon_id, 1], false, newColors, oldColors);
+                gbl.combat_icons[player.icon_id].Recolor(false, newColors, oldColors);
             }
 
             ovr034.ReleaseCombatIcon(11);
@@ -355,14 +298,14 @@ namespace engine
         }
 
 
-        internal static bool sub_483AE(string fileExt, string bp_var_2DA)
+        internal static bool PlayerFileExists(string fileExt, string player_name) // sub_483AE
         {
             byte[] data = new byte[0x10];
-            string lastName = string.Empty;
+            string in_file_name = "";
 
             var searchRec = seg046.FINDFIRST(gbl.SavePath + "*" + fileExt);
 
-            while (gbl.FIND_result == 0 && lastName != bp_var_2DA)
+            while (gbl.FIND_result == 0 && in_file_name != player_name)
             {
                 File file;
                 seg042.find_and_open_file(out file, false, gbl.SavePath + searchRec.fileName);
@@ -370,14 +313,14 @@ namespace engine
                 seg051.Seek(0, file);
 
                 seg051.BlockRead(0x10, data, file);
-                lastName = Sys.ArrayToString(data, 0, 0x10);
+                in_file_name = Sys.ArrayToString(data, 0, 0x10);
 
                 seg051.Close(file);
 
                 seg046.FINDNEXT(searchRec);
             }
 
-            return (lastName == bp_var_2DA); ;
+            return (in_file_name == player_name); ;
         }
 
 
@@ -492,7 +435,7 @@ namespace engine
             System.Array.Copy(bp_var_1C0.field_33, player.spellBook, 0x38);
             player.spellBook[(int)Spells.animate_dead - 1] = 0;
 
-            player.field_DD = bp_var_1C0.field_6B;
+            player.attackLevel = bp_var_1C0.field_6B;
             player.field_DE = bp_var_1C0.field_6C;
 
             System.Array.Copy(bp_var_1C0.field_6D, player.saveVerse, 5);
@@ -519,7 +462,7 @@ namespace engine
             player.alignment = bp_var_1C0.field_A0;
 
             player.attacksCount = bp_var_1C0.field_A1;
-            player.field_11D = bp_var_1C0.field_A2;
+            player.baseHalfMoves = bp_var_1C0.field_A2;
             player.attack1_DiceCountBase = bp_var_1C0.field_A3;
             player.attack2_DiceCountBase = bp_var_1C0.field_A4;
             player.attack1_DiceSizeBase = bp_var_1C0.field_A5;
@@ -750,7 +693,7 @@ namespace engine
                 player_ptr.actions = null;
 
                 string fileExt = ".guy";
-                bool var_1BC = sub_483AE(fileExt, var_1C4.field_4);
+                bool var_1BC = PlayerFileExists(fileExt, var_1C4.field_4);
 
                 if (var_1BC == true)
                 {
@@ -810,7 +753,7 @@ namespace engine
                 {
                     fileExt = ".cha";
 
-                    var_1BC = sub_483AE(fileExt, var_1C4.field_4);
+                    var_1BC = PlayerFileExists(fileExt, var_1C4.field_4);
 
                     if (var_1BC == true)
                     {
@@ -869,7 +812,6 @@ namespace engine
 
                         player01_ptr.stats[1].tmp = var_1C4.field_16;
                         player01_ptr.stats[1].max = var_1C4.field_16;
-
                         player01_ptr.stats[2].tmp = var_1C4.field_17;
                         player01_ptr.stats[2].max = var_1C4.field_17;
                         player01_ptr.stats[3].tmp = var_1C4.field_18;

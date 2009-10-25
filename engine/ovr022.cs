@@ -513,23 +513,9 @@ namespace engine
         internal static Item create_item(int item_type) /* sub_5A007 */
         {
             byte var_5 = 0; /* Simeon */
-
-            Item item = new Item();
             int var_4 = -1;
 
-            item.affect_1 = 0;
-            item.affect_2 = 0;
-            item.affect_3 = 0;
-
-            item.readied = false;
-            item.hidden_names_flag = 6;
-            item.cursed = false;
-
-            item.type = (ItemType)item_type;
-
-            item.namenum1 = 0;
-            item.namenum2 = 0;
-            item.namenum3 = 0;
+            Item item = new Item(0, 0, 0, 0, 0, 0, false, 6, false, 0, 0, 0, 0, 0, (ItemType)item_type);
 
             var type = item.type;
 
@@ -1048,15 +1034,7 @@ namespace engine
 
                             if (input_key == 'K' && must_sell == false)
                             {
-                                Item gem_item = new Item();
-                                gem_item.weight = 1;
-                                gem_item.hidden_names_flag = 0;
-                                gem_item.readied = false;
-                                gem_item.namenum3 = 0x65;
-                                gem_item.namenum2 = 0;
-                                gem_item.namenum1 = 0;
-                                gem_item.type = ItemType.Necklace;
-                                gem_item._value = value;
+                                Item gem_item = new Item(0, 0, 0, value, 0, 1, false, 0, false, 0, 0, 0x65, 0, 0, ItemType.Necklace);
 
                                 gbl.player_ptr.items.Add(gem_item);
                             }
@@ -1128,16 +1106,7 @@ namespace engine
 
                             if (input_key == 'K' && must_sell == false)
                             {
-                                Item jewel_item = new Item();
-                                jewel_item.readied = false;
-                                jewel_item.namenum3 = 0xD6;
-                                jewel_item.namenum2 = 0;
-                                jewel_item.type = ItemType.Necklace;
-                                jewel_item.namenum1 = 0;
-
-                                jewel_item._value = value;
-                                jewel_item.hidden_names_flag = 0;
-                                jewel_item.weight = 1;
+                                Item jewel_item = new Item(0, 0, 0, value, 0, 1, false, 0, false, 0, 0, 0xd6, 0, 0, ItemType.Necklace);
 
                                 gbl.player_ptr.items.Add(jewel_item);
                             }

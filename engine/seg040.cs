@@ -12,77 +12,13 @@ namespace engine
 
             if (pic_size != 0)
             {
-                int height = Sys.ArrayToShort(pic_data, 0);
-                int width = Sys.ArrayToShort(pic_data, 2);
-                int x_pos = Sys.ArrayToShort(pic_data, 4);
-                int y_pos = Sys.ArrayToShort(pic_data, 6);
-                int item_count = pic_data[8];
-
-                DaxBlock mem_ptr = new DaxBlock(masked, item_count, width, height);
-                System.Array.Copy(pic_data, 9, mem_ptr.field_9, 0, 8);
-
-                int pic_data_offset = 17;
-
-                turn_dax_to_videolayout(mem_ptr, mask_colour, masked, pic_data_offset, pic_data);
-
-                seg043.clear_keyboard();
-
-                return mem_ptr;
+                return new DaxBlock(pic_data, masked, mask_colour);
             }
 
             return null;
         }
 
-        internal static void turn_dax_to_videolayout(DaxBlock dax_block, byte mask_colour, byte masked, int block_offset, byte[] data)
-        {
-            /* TODO, this function needs to account for masked colours */
-
-            if (dax_block != null)
-            {
-                int dest_offset = 0;
-
-                for (int loop1_var = 1; loop1_var <= dax_block.item_count; loop1_var++)
-                {
-                    int height = dax_block.height - 1;
-
-                    for (int loop2_var = 0; loop2_var <= height; loop2_var++)
-                    {
-                        int width = (dax_block.width * 4) - 1;
-
-                        for (int loop3_var = 0; loop3_var <= width; loop3_var++)
-                        {
-                            byte a = (byte)((data[block_offset]) >> 4);
-                            byte b = (byte)((data[block_offset]) & 0x0f);
-
-                            if (masked == 1 && a == mask_colour)
-                            //if (masked != 0 && a == mask_colour)
-                            {
-                                dax_block.data[dest_offset] = 16;
-                            }
-                            else
-                            {
-                                dax_block.data[dest_offset] = a;
-                            }
-                            dest_offset += 1;
-
-                            if (masked == 1 && b == mask_colour)
-                            //if (masked != 0 && b == mask_colour)
-                            {
-                                dax_block.data[dest_offset] = 16;
-                            }
-                            else
-                            {
-                                dax_block.data[dest_offset] = b;
-                            }
-
-                            dest_offset += 1;
-                            block_offset += 1;
-                        }
-                    }
-                }
-            }
-        }
-
+  
 
         internal static void OverlayUnbounded(DaxBlock source, int arg_8, int itemIdex, int rowY, int colX)
         {
@@ -93,39 +29,6 @@ namespace engine
         internal static void OverlayBounded(DaxBlock source, int arg_8, int itemIndex, int rowY, int colX) /* sub_E353 */
         {
             draw_combat_picture(source, rowY + 1, colX + 1, itemIndex);
-        }
-
-
-        internal static void FlipIconLeftToRight(DaxBlock source)
-        {
-            if (source != null)
-            {
-                byte[] data = new byte[source.data.Length];
-                byte[] dataPtr = new byte[source.data.Length];
-
-                int width = source.width * 8;
-                for (int y = 0; y < source.height; y++)
-                {
-                    for (int x = 0; x < width; x++)
-                    {
-                        int di = (y * width) + x;
-                        int si = (y * width) + (width - x) - 1;
-
-                        data[di] = source.data[si];
-
-                        if (source.data_ptr != null)
-                        {
-                            dataPtr[di] = source.data_ptr[si];
-                        }
-                    }
-                }
-
-                System.Array.Copy(data, source.data, source.data.Length);
-                if (source.data_ptr != null)
-                {
-                    System.Array.Copy(dataPtr, source.data_ptr, source.data.Length);
-                }
-            }
         }
 
 
@@ -234,53 +137,6 @@ namespace engine
             //}
 
             Display.SetEgaPalette(index, newColor);
-        }
-
-        internal static void DaxBlockRecolor(DaxBlock block, bool useRandom, byte[] newColors, byte[] oldColors)
-        {
-            if (block != null)
-            {
-                for (int colorIdx = 0; colorIdx < 16; colorIdx++)
-                {
-                    if (oldColors[colorIdx] != newColors[colorIdx])
-                    {
-                        int srcOffset = 0;
-                        int destOffset = 0;
-
-                        for (int posY = 0; posY < block.height; posY++)
-                        {
-                            for (int posX = 0; posX < (block.width * 8); posX++)
-                            {
-                                if (block.data[srcOffset] == oldColors[colorIdx] &&
-                                    (useRandom == false || (seg051.Random(4) == 0)))
-                                {
-                                    block.data[destOffset] = newColors[colorIdx];
-                                }
-
-                                srcOffset += 1;
-                                destOffset += 1;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        internal static void free_dax_block(ref DaxBlock block_ptr)
-        {
-            if (block_ptr != null)
-            {
-                int var_2 = block_ptr.item_count * block_ptr.bpp;
-
-                if (block_ptr.data_ptr != null)
-                {
-                    seg051.FreeMem(var_2, block_ptr.data_ptr);
-                }
-
-                seg051.FreeMem(var_2 + 0x17, block_ptr);
-
-                block_ptr = null;
-            }
         }
 
 
