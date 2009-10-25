@@ -23,7 +23,7 @@ namespace engine
         {
             gbl.game_state = GameState.Combat;
             gbl.dword_1D5CA = new spellDelegate(ovr014.target);
-            ovr011.battle_begins();
+            ovr011.BattleSetup();
             bool end_combat = false;
 
             if (gbl.friends_count == 0 ||
@@ -36,9 +36,9 @@ namespace engine
             {
                 ovr025.CountCombatTeamMembers();
 
-                foreach (Player tmp_player in gbl.player_next_ptr)
+                foreach (Player player in gbl.player_next_ptr)
                 {
-                    ovr014.sub_3E000(tmp_player);
+                    ovr014.CalculateInitiative(player);
                 }
 
                 gbl.area2_ptr.field_596 = 0;
@@ -48,7 +48,7 @@ namespace engine
                     DoPlayerCombatTurn(player);
                 }
 
-                BattleRoundChecks(ref end_combat);
+                end_combat = BattleRoundChecks();
             }
 
             free_combat_stuff();
@@ -102,7 +102,7 @@ namespace engine
 
         internal static void DoPlayerCombatTurn(Player player) // sub_33281
         {
-            player.actions.field_F = 0;
+            player.actions.AttacksReceived = 0;
             player.actions.field_12 = 0;
             player.actions.guarding = false;
             ovr024.CheckAffectsEffect(player, CheckType.Type_7);
@@ -133,7 +133,7 @@ namespace engine
                 {
                     if (player.quick_fight == QuickFight.True )
                     {
-                        ovr010.sub_3504B(player);
+                        ovr010.PlayerQuickFight(player);
                     }
                     else
                     {
@@ -180,7 +180,7 @@ namespace engine
                                     seg043.clear_keyboard();
                                     seg049.SysDelay(0x0C8);
                                     var_2 = true;
-                                    ovr010.sub_3504B(player);
+                                    ovr010.PlayerQuickFight(player);
                                     break;
 
                                 case 'M':
@@ -368,7 +368,7 @@ namespace engine
         }
 
 
-        internal static void BattleRoundChecks(ref bool battleOver) // battle01
+        internal static bool BattleRoundChecks() // battle01
         {
             ovr021.step_game_time(1, 1);
             gbl.combat_round++;
@@ -400,6 +400,8 @@ namespace engine
 
             ovr033.redrawCombatArea(8, 0xff, gbl.mapToBackGroundTile.mapScreenTopLeft + Point.ScreenCenter);
 
+            bool battleOver = false;
+
             if (gbl.friends_count == 0 ||
                 gbl.foe_count == 0 ||
                 gbl.combat_round >= gbl.combat_round_no_action_limit)
@@ -414,6 +416,8 @@ namespace engine
             {
                 battleOver = false;
             }
+
+            return battleOver;
         }
 
 
@@ -609,7 +613,7 @@ namespace engine
                 }
                 else
                 {
-                    ovr014.sub_3F94D(target, player);
+                    ovr014.recalc_action_12(target, player);
 
                     ovr014.AttackTarget(out arg_0, null, 0, target, player);
                 }

@@ -614,7 +614,7 @@ namespace engine
                             case 'S':
                                 if (CanSellDropTradeItem(curr_item) == true)
                                 {
-                                    sell_Item(curr_item);
+                                    ShopSellItem(curr_item);
                                 }
                                 else
                                 {
@@ -661,12 +661,12 @@ namespace engine
 
             switch (masked_affect)
             {
-                case 0:
+                case 0: // apply affect_2
                     gbl.applyItemAffect = true;
                     ovr013.CallAffectTable((add_item) ? Effect.Add : Effect.Remove, item, player, item.affect_3);
                     break;
 
-                case 1:
+                case 1: // ring of wizardy
                     if (add_item == true)
                     {
                         player.spellCastCount[2,0] *= 2;
@@ -715,9 +715,9 @@ namespace engine
                     }
                     break;
 
-                case 2:
+                case 2: // Gauntlets of Dexterity
                     ovr024.CalcStatBonuses(Stat.DEX, player);
-                    ovr026.sub_6AAEA(player);
+                    ovr026.reclac_thief_skills(player);
                     break;
 
                 case 4:
@@ -746,7 +746,7 @@ namespace engine
                     ovr024.CalcStatBonuses(Stat.CHA, player);
                     break;
 
-                case 8:
+                case 8: //Ioun Stone
                     switch ((int)item.affect_2)
                     {
                         case 0:
@@ -771,8 +771,8 @@ namespace engine
                     ovr024.CalcStatBonuses(Stat.DEX, player);
                     break;
 
-                case 11:
-                    ovr026.sub_6AAEA(player);
+                case 11: // Gloves of Thievery
+                    ovr026.reclac_thief_skills(player);
                     break;
 
                 case 12:
@@ -1091,7 +1091,7 @@ namespace engine
         }
 
 
-        internal static void sell_Item(Item item)
+        internal static void ShopSellItem(Item item) // sell_Item
         {
             int item_value = 0;
 

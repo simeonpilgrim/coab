@@ -6,13 +6,87 @@ namespace engine
 {
     class ovr032
     {
-        internal static bool canReachTarget(Struct_1D1BC groundTilesMap, ref int range, Point target, Point attacker)
+        class MapReach
         {
-            var tmpPos = target;
-            return canReachTarget(groundTilesMap, ref range, ref tmpPos, attacker);
+            public bool reach;
+            public Point target;
+            public int range;
+
+            public MapReach( bool r, int ra, Point p) 
+            {
+                reach = r; target = p; range = ra;
+            }
         }
 
-        internal static bool canReachTarget(Struct_1D1BC groundTilesMap, ref int range, ref Point outPos, Point attacker) /* sub_733F1 */
+        static MapReach[, ,] mapReachCache = new MapReach[Point.MapMaxY * Point.MapMaxX, Point.MapMaxY * Point.MapMaxX, 2];
+
+        internal static void buildMapCache()
+        {
+            for (int y1 = 0; y1 < Point.MapMaxY; y1++)
+            {
+                for (int x1 = 0; x1 < Point.MapMaxX; x1++)
+                {
+                    var p1 = new Point(x1,y1);
+                    for (int y2 = 0; y2 < Point.MapMaxY; y2++)
+                    {
+                        for (int x2 = 0; x2 < Point.MapMaxX; x2++)
+                        {
+                            gbl.mapToBackGroundTile.field_6 = false;
+                            Point p2 = new Point(x2, y2);
+                            int range = -1;
+                            bool reach = canReachTargetCalc(gbl.mapToBackGroundTile, ref range, ref p2, p1);
+                            
+                            mapReachCache[(y1 * Point.MapMaxX) + x1, (y2 * Point.MapMaxX) + x2, 0] = new MapReach(reach, range, p2);
+                            
+                            gbl.mapToBackGroundTile.field_6 = true;
+                            p2 = new Point(x2, y2);
+                            range = -1;
+                            reach = canReachTargetCalc(gbl.mapToBackGroundTile, ref range, ref p2, p1);
+
+                            mapReachCache[(y1 * Point.MapMaxX) + x1, (y2 * Point.MapMaxX) + x2, 1] = new MapReach(reach, range, p2);
+                        }
+                    }
+                }
+            }
+        }
+
+        static MapReach MapCacheGet(Point p1, Point p2, int b)
+        {
+            MapReach mr = mapReachCache[(p2.y * Point.MapMaxX) + p2.x, (p1.y * Point.MapMaxX) + p1.x, b];
+            if (mr != null) return mr;
+
+            bool tmp = gbl.mapToBackGroundTile.field_6;
+            gbl.mapToBackGroundTile.field_6 = true;
+
+            int range = -1;
+            bool reach = canReachTargetCalc(gbl.mapToBackGroundTile, ref range, ref p2, p1);
+
+            gbl.mapToBackGroundTile.field_6 = tmp;
+
+            mr = new MapReach(reach, range, p2);
+            mapReachCache[(p2.y * Point.MapMaxX) + p2.x, (p1.y * Point.MapMaxX) + p1.x, b] = mr;
+            return mr;
+        }
+
+        internal static bool canReachTarget(ref int range, ref Point target, Point attacker)
+        {
+
+            MapReach mr = MapCacheGet( attacker, target, gbl.mapToBackGroundTile.field_6 ? 1 : 0);
+            
+            range = mr.range;
+            target = new Point(mr.target);
+            return mr.reach;
+        }
+
+        internal static bool canReachTarget(ref int range, Point target, Point attacker)
+        {
+            MapReach mr = MapCacheGet(attacker, target, gbl.mapToBackGroundTile.field_6 ? 1 : 0);
+
+            range = mr.range;
+            return mr.reach;
+        }
+
+        internal static bool canReachTargetCalc(Struct_1D1BC groundTilesMap, ref int range, ref Point outPos, Point attacker) /* sub_733F1 */
         {
             SteppingPath var_31 = new SteppingPath();
             SteppingPath var_19 = new SteppingPath();
@@ -44,8 +118,24 @@ namespace engine
                 int gt = groundTilesMap[var_19.current];
                 Struct_189B4 s189 = gbl.BackGroundTiles[gt];
 
-                if ((groundTilesMap.field_6 == false && s189.field_2 > var_31.current.y) ||
-                    var_19.steps > max_range)
+                //if ((groundTilesMap.field_6 == false && s189.field_2 > var_31.current.y) ||
+                //    var_19.steps > max_range)
+                //{
+                //    outPos = var_19.current;
+                //    range = var_19.steps;
+
+                //    return false;
+                //}
+
+                if (groundTilesMap.field_6 == false && s189.field_2 > var_31.current.y)
+                {
+                    outPos = var_19.current;
+                    range = var_19.steps;
+
+                    return false;
+                }
+
+                if ( var_19.steps > max_range)
                 {
                     outPos = var_19.current;
                     range = var_19.steps;
@@ -67,14 +157,14 @@ namespace engine
         /// </summary>
         internal static bool CanSeeCombatant(int direction, Point playerA, Point playerB) /* sub_7354A */
         {
-            if( playerA.MapInBounds() == false && playerB.MapInBounds() == false )
+            if( playerA.MapInBounds() == false || playerB.MapInBounds() == false )
             {
                 return false;
             }
 
-            if (direction == 0xff)
+            if (direction == 0xff || direction == 8 )
             {
-                direction = 8;
+                return true;
             }
 
             int facingX = playerB.x + gbl.MapDirectionXDelta[direction];
@@ -142,7 +232,7 @@ namespace engine
         }
 
 
-        internal static List<SortedCombatant> Rebuild_SortedCombatantList(Struct_1D1BC groundTileMap, int size, byte dir, int max_range, Point pos) /* sub_738D8 */
+        internal static List<SortedCombatant> Rebuild_SortedCombatantList(int size, int max_range, Point pos) /* sub_738D8 */
         {
             var deltas = ovr033.GetSizeBasedMapDeltas(size);
             var attackerMap = ovr033.BuildSizeMap(size, pos);
@@ -165,20 +255,17 @@ namespace engine
                     {
                         foreach (var attackerPos in attackerMap)
                         {
-                            if (CanSeeCombatant(dir, targetPos, attackerPos) == true)
+                            int tmp_range = max_range;
+
+                            if (canReachTarget(ref tmp_range, targetPos, attackerPos) == true)
                             {
-                                int tmp_range = max_range;
+                                found = true;
 
-                                if (canReachTarget(groundTileMap, ref tmp_range, targetPos, attackerPos) == true)
+                                if (tmp_range < found_range)
                                 {
-                                    found = true;
-
-                                    if (tmp_range < found_range)
-                                    {
-                                        found_range = tmp_range;
-                                        found_attacker = attackerPos;
-                                        found_target = targetPos;
-                                    }
+                                    found_range = tmp_range;
+                                    found_attacker = attackerPos;
+                                    found_target = targetPos;
                                 }
                             }
                         }
@@ -186,16 +273,7 @@ namespace engine
 
                     if (found == true)
                     {
-                        byte tmpDir = 0;
-
-                        if (dir < 8)
-                        {
-                            tmpDir = dir;
-                        }
-                        else
-                        {
-                            tmpDir = FindCombatantDirection(found_target, found_attacker);
-                        }
+                        byte tmpDir = FindCombatantDirection(found_target, found_attacker);
 
                         var combatant = new SortedCombatant(gbl.player_array[playerIndex], combatantMap.pos, found_range, tmpDir);
                         sortedCombatants.Add(combatant);
@@ -213,7 +291,7 @@ namespace engine
         {
             byte dir = 0;
 
-            while (CanSeeCombatant(dir, target, attacker) == false)
+            while (CanSeeCombatant(dir, target, attacker) == false && dir < 8)
             {
                 dir++;
             }

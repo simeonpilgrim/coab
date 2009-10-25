@@ -1,4 +1,5 @@
 using Classes;
+using Classes.Combat;
 
 namespace engine
 {
@@ -168,11 +169,11 @@ namespace engine
             gbl.stru_1B2CA.Clear();
             gbl.ecl_ptr.Clear();
 
-            gbl.combat_icons = new DaxBlock[26, 2];
+
+            gbl.combat_icons = new CombatIcon[26];
             for (int i = 0; i < 26; i++)
             {
-                gbl.combat_icons[i, 0] = null;
-                gbl.combat_icons[i, 1] = null;
+                gbl.combat_icons[i] = new CombatIcon();
             }
 
             gbl.byte_1AD44 = 2;

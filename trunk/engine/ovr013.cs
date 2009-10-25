@@ -338,14 +338,8 @@ namespace engine
                 item_found == false &&
                 player.items.Count < Player.MaxItems)
             {
-                item = new Item();
-                item.type = ItemType.Hammer;
-                item.namenum2 = 20;
-                item.namenum3 = 243;
-                item.plus = 1;
-                item.affect_2 = Affects.spiritual_hammer;
-                item.affect_3 = (Affects)160;
-
+                item = new Item((Affects)160, Affects.spiritual_hammer, 0, 0, 0, 0, false, 0, false, 0, 1, 243, 20, 0, ItemType.Hammer );
+ 
                 player.items.Add(item);
                 ovr020.ready_Item(item);
 
@@ -451,7 +445,7 @@ namespace engine
             player.quick_fight = QuickFight.True;
             player.field_E9 = 0;
 
-            player.field_DD = (byte)player.SkillLevel(SkillType.Fighter);
+            player.attackLevel = (byte)player.SkillLevel(SkillType.Fighter);
             player.base_movement = 0x0C;
 
             if (player.control_morale == Control.PC_Berzerk)
@@ -553,7 +547,7 @@ namespace engine
                 player.age++;
             }
 
-            gbl.attacksLeft *= 2;
+            gbl.halfActionsLeft *= 2;
         }
 
 
@@ -649,7 +643,7 @@ namespace engine
 
         internal static void AffectSlow(Effect arg_0, object param, Player player) //sub_3B01B
         {
-            gbl.attacksLeft /= 2;
+            gbl.halfActionsLeft /= 2;
         }
 
 
@@ -778,7 +772,7 @@ namespace engine
 
             if (gbl.resetMovesLeft == true)
             {
-                gbl.attacksLeft = 0;
+                gbl.halfActionsLeft = 0;
             }
         }
 
@@ -1010,8 +1004,7 @@ namespace engine
                 {
                     player.actions.target = null;
 
-                    var scl = ovr032.Rebuild_SortedCombatantList(gbl.mapToBackGroundTile, ovr033.PlayerMapSize(player), 0xff, 0xff,
-                        ovr033.PlayerMapPos(player));
+                    var scl = ovr032.Rebuild_SortedCombatantList(ovr033.PlayerMapSize(player), 0xff, ovr033.PlayerMapPos(player));
 
                     player.actions.target = scl[0].player;
 
@@ -1699,7 +1692,7 @@ namespace engine
 
                 player.actions.target = null;
 
-                var scl = ovr032.Rebuild_SortedCombatantList(gbl.mapToBackGroundTile, ovr033.PlayerMapSize(player), 0xff, 0xff, ovr033.PlayerMapPos(player));
+                var scl = ovr032.Rebuild_SortedCombatantList(ovr033.PlayerMapSize(player), 0xff, ovr033.PlayerMapPos(player));
 
                 player.actions.target = scl[0].player;
                 player.combat_team = player.actions.target.OppositeTeam();

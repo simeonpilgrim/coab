@@ -68,19 +68,19 @@ namespace engine
 
             int index = 0;
 
-            for (int var_2B = 0; var_2B < menuText.Length; var_2B++)
+            for (int idx = 0; idx < menuText.Length; idx++)
             {
-                if (highlightable_text.MemberOf(menuText[var_2B ]) == true)
+                if (highlightable_text.MemberOf(menuText[idx ]) == true)
                 {
                     if (highlighSet[index].start == -1)
                     {
-                        highlighSet[index].start = var_2B;
+                        highlighSet[index].start = idx;
                     }
                     else
                     {
-                        highlighSet[index].end = var_2B - 2;
+                        highlighSet[index].end = idx - 2;
                         index++;
-                        highlighSet[index].start = var_2B;
+                        highlighSet[index].start = idx;
                     }
                 }
             }
@@ -427,7 +427,7 @@ namespace engine
 
         internal static int skipHeadings(bool backwardsStep, int index, List<MenuItem> list, int listDisplayHeight) // sub_6CC08
         {
-            short var_2 = 0;
+            int var_2 = 0;
 
             if (backwardsStep == true)
             {

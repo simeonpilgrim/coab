@@ -214,7 +214,7 @@ namespace Classes
         public void LearnSpell(Spells spell) { spellBook[(int)spell - 1] = 1; }
 
         [DataOffset(0xdd, DataType.Byte)]
-        public byte field_DD; // 0xdd;
+        public byte attackLevel; // 0xdd; field_DD
         [DataOffset(0xde, DataType.Byte)]
         public byte field_DE; // 0xde;
         [DataOffset(0xdf, DataType.ByteArray,5)]
@@ -440,7 +440,7 @@ namespace Classes
         [DataOffset(0x11c, DataType.Byte)] 
         public byte attacksCount; // 0x11c;
         [DataOffset(0x11d, DataType.Byte)]
-        public byte field_11D; // 0x11d;
+        public byte baseHalfMoves; // 0x11d;
         [DataOffset(0x11e, DataType.Byte)]
         public byte attack1_DiceCountBase; // 0x11e;
         [DataOffset(0x11f, DataType.Byte)]

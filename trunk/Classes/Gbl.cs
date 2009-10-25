@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Classes.Combat;
 
 
 namespace Classes
@@ -290,8 +291,6 @@ namespace Classes
         public static byte numLoadedMonsters; // byte_1AB0E
         public static bool byte_1AB14;
         public static bool shopRedrawMenuItems; // byte_1AB16
-        public static byte byte_1AB18;
-        public static byte byte_1AB19 = 0x40;
         public static int[] team_start_x = { 0, 0 }; /* byte_1AD2C */
         public static int[] team_start_y = { 0, 0 }; /* byte_1AD2E */
         public static int[] half_team_count = { 0, 0 }; /* unk_1AD30 */
@@ -342,7 +341,7 @@ namespace Classes
         public static Affects current_affect; // byte_1D2BD
         public static int damage; // byte_1D2BE
         public static DamageType damage_flags; // byte_1D2BF
-        public static int attacksLeft; // byte_1D2C0
+        public static int halfActionsLeft; // byte_1D2C0
         public static bool resetMovesLeft; // byte_1D2C4, reset_byte_1D2C0
         public static byte spell_id; // byte_1D2C1
         public static int dice_count; // byte_1D2C2
@@ -388,6 +387,7 @@ namespace Classes
         public static bool applyItemAffect; // byte_1D8AC
         public static int combat_round; // byte_1D8B7
         public static int combat_round_no_action_limit; // byte_1D8B8
+        public const int combat_round_no_action_value = 15;
 
         public static void inc_byte_byte_1D90x(int index)
         {
@@ -542,7 +542,7 @@ namespace Classes
         public static byte[][] stru_1D52C;
         public static Struct_1D530 stru_1D530 = new Struct_1D530();
 
-        public static DaxBlock[,] combat_icons;
+        public static CombatIcon[] combat_icons;
 
         public static DaxBlock[] symbol_8x8_set; // seg600:65D0 - seg600:65E3 DaxBlock[5]
 
@@ -815,9 +815,6 @@ namespace Classes
 
         public static byte[] unk_1AE0B = new byte[3];
 
-        public static byte[] unk_16E30 = new byte[16]; // seg600:0B20
-        public static byte[] unk_16E40 = new byte[16]; // seg600:0B30
-        public static byte[] unk_16E50 = new byte[16]; // seg600:0B40
 
         public readonly static byte[,] class_alignments = { // unk_1A4EA
             { 9,0,1,2,3,4,5,6,7,8},
