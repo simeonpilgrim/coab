@@ -16,6 +16,8 @@ namespace engine
 
                 Logger.Close();
 
+                ItemLibrary.Write();
+
                 seg001.EngineStop();
             }
         }
@@ -128,8 +130,6 @@ namespace engine
             //    //}
             //    //}
             //}
-
-            Item.DumpItemsText("allitems.txt");
         }
 
         static void TxtDumpPlayer(Player p, int area, int id)

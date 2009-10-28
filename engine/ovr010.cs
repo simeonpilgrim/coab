@@ -64,7 +64,7 @@ namespace engine
                 return;
             }
 
-            if (turn_undead(player) != 0)
+            if (turn_undead(player))
             {
                 ovr025.clear_actions(player);
                 return;
@@ -95,48 +95,47 @@ namespace engine
         }
 
 
-        internal static byte turn_undead(Player player)
+        internal static bool turn_undead(Player player)
         {
             Player var_5;
-            byte ret_val;
 
             if (player.actions.hasTurnedUndead == false &&
                 (player.cleric_lvl > 0 || player.cleric_old_lvl > player.multiclassLevel) &&
                 ovr014.sub_3F433(out var_5, player) == true)
             {
-                ret_val = 1;
                 ovr014.turns_undead(player);
+                return true;
             }
             else
             {
-                ret_val = 0;
+                return false;
             }
-
-            return ret_val;
         }
 
 
         internal static bool sub_352AF(int spell_id, Point pos)
         {
             bool result = false;
+            SpellEntry spell_entry = gbl.spell_table[spell_id];
 
-            int save_bonus = (gbl.player_ptr.combat_team == CombatTeam.Ours)? -2 : 8;
-
-            var sortedCombatants = ovr032.Rebuild_SortedCombatantList(1, gbl.spell_table[spell_id].field_F, pos);
-
-            foreach (var sc in sortedCombatants)
+            if (spell_entry.damageOnSave != DamageOnSave.Zero)
             {
-                Player tmpPlayer = sc.player;
-                SpellEntry spell_entry = gbl.spell_table[spell_id];
 
-                if (gbl.player_ptr.OppositeTeam() != tmpPlayer.combat_team &&
-                    spell_entry.damageOnSave != DamageOnSave.Zero &&
-                    ovr024.RollSavingThrow(save_bonus, spell_entry.saveVerse, tmpPlayer) == false)
+                int save_bonus = (gbl.player_ptr.combat_team == CombatTeam.Ours) ? -2 : 8;
+                var opp = gbl.player_ptr.OppositeTeam();
+
+                var sortedCombatants = ovr032.Rebuild_SortedCombatantList(1, gbl.spell_table[spell_id].field_F, pos, p => p.combat_team != opp);
+
+                foreach (var sc in sortedCombatants)
                 {
-                    result = true;
+                    Player tmpPlayer = sc.player;
+
+                    if (ovr024.RollSavingThrow(save_bonus, spell_entry.saveVerse, sc.player) == false)
+                    {
+                        result = true;
+                    }
                 }
             }
-
             return result;
         }
 
@@ -669,7 +668,6 @@ namespace engine
                                 if (ovr025.is_weapon_ranged_melee(player) == true &&
                                     ovr025.getTargetRange(target, player) == 1)
                                 {
-
                                     item = null;
                                 }
                             }

@@ -10,6 +10,11 @@ namespace Classes.Combat
         public int size;
 
         public Point screenPos;
+
+        public override string ToString()
+        {
+            return string.Format("size: {0} pos: {1},{2}", size, pos.x, pos.y);
+        }
     }
 
 }

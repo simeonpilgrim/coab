@@ -9,19 +9,6 @@ namespace engine
         /*static int random_number;*/
 
 
-        internal static byte[] GetMem(int arg_0)
-        /*TODO REMOVE THIS*/
-        {
-            return new byte[arg_0];
-        }
-
-
-        internal static void FreeMem(int arg_0, object arg_2)
-        /*TODO REMOVE THIS*/
-        {
-
-        }
-
         internal static string Copy(int CopyLen, int StartAt, string InString)
         {
             string OutString;

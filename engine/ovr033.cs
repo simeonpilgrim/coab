@@ -95,7 +95,7 @@ namespace engine
         }
 
 
-        internal static void sub_7431C(Point pos)
+        internal static void RedrawPosition(Point pos) // sub_7431C
         {
             int playerIndex = PlayerIndexAtMapXY(pos.y, pos.x);
 
@@ -359,7 +359,7 @@ namespace engine
                 }
             }
 
-            sub_7431C(map);
+            RedrawPosition(map);
 
             if (CoordOnScreen(newPos - gbl.mapToBackGroundTile.mapScreenTopLeft) == false)
             {

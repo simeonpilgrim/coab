@@ -107,20 +107,19 @@ namespace engine
             }
             else if (unk_6325A.MemberOf((int)affect_type) == true)
             {
-                foreach (Player player_base in gbl.player_next_ptr)
+                foreach (Player team_member in gbl.player_next_ptr)
                 {
                     if (found) break;
 
-                    if (ovr025.FindAffect(out affect, affect_type, player_base) == true)
+                    if (ovr025.FindAffect(out affect, affect_type, team_member) == true)
                     {
                         if (gbl.game_state == GameState.Combat)
                         {
                             int max_range = (affect_type == Affects.prayer) ? 6 : 1;
 
-                            var scl = ovr032.Rebuild_SortedCombatantList(ovr033.PlayerMapSize(player_base), 
-                                max_range, ovr033.PlayerMapPos(player_base));
+                            var scl = ovr032.Rebuild_SortedCombatantList(team_member, max_range, p => p == player);
 
-                            found = scl.Exists(sc => sc.player == player);
+                            found = scl.Count > 0;
                         }
                         else
                         {

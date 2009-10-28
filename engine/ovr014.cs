@@ -256,10 +256,10 @@ namespace engine
             Point newPos = oldPos + gbl.MapDirectionDelta[direction];
 
 			// TODO does this solve problems than it causes? Regarding AI flee
-            //if (newPos.MapInBounds() == false)
-            //{
-            //    return;
-            //}
+            if (newPos.MapInBounds() == false)
+            {
+                return;
+            }
 
             int costToMove = 0;
             if ((direction & 0x01) != 0)
@@ -1285,7 +1285,7 @@ namespace engine
                             }
                         }
 
-                        ovr033.sub_7431C(ovr033.PlayerMapPos(var_C.target));
+                        ovr033.RedrawPosition(ovr033.PlayerMapPos(var_C.target));
                     }
                     else
                     {
@@ -1306,7 +1306,7 @@ namespace engine
                     else
                     {
                         /* TODO it doesn't make sense to mask the low nibble then shift it out */
-                        var scl = ovr032.Rebuild_SortedCombatantList(1, (gbl.spell_table[spellId].field_6 & 0x0f) >> 4, gbl.targetPos);
+                        var scl = ovr032.Rebuild_SortedCombatantList(1, (gbl.spell_table[spellId].field_6 & 0x0f) >> 4, gbl.targetPos, sc => true);
                         
 
                         gbl.spellTargets.Clear();
@@ -1326,7 +1326,7 @@ namespace engine
             {
                 if (sub_4001C(var_C, 1, quick_fight, spellId) == true)
                 {
-                    var scl = ovr032.Rebuild_SortedCombatantList(1, gbl.spell_table[spellId].field_6 & 7, gbl.targetPos);
+                    var scl = ovr032.Rebuild_SortedCombatantList(1, gbl.spell_table[spellId].field_6 & 7, gbl.targetPos, sc => true);
 
                     gbl.spellTargets.Clear();
                     foreach (var sc in scl)
@@ -1371,7 +1371,7 @@ namespace engine
                             }
                         }
 
-                        ovr033.sub_7431C(ovr033.PlayerMapPos(var_C.target));
+                        ovr033.RedrawPosition(ovr033.PlayerMapPos(var_C.target));
                     }
                     else
                     {
@@ -2031,7 +2031,7 @@ namespace engine
                         if (can_target == false ||
                             arg_4 == false)
                         {
-                            ovr033.sub_7431C(pos);
+                            ovr033.RedrawPosition(pos);
                             arg_4 = false;
                             arg_0.Clear();
                         }
@@ -2071,7 +2071,7 @@ namespace engine
 
                     case '\0':
                     case 'E':
-                        ovr033.sub_7431C(pos);
+                        ovr033.RedrawPosition(pos);
                         arg_0.Clear();
                         arg_4 = false;
                         break;
@@ -2091,7 +2091,7 @@ namespace engine
 
         internal static SortedCombatant[] copy_sorted_players(Player player) /* sub_4188F */
         {
-            var scl = ovr032.Rebuild_SortedCombatantList(ovr033.PlayerMapSize(player), 0x7F, ovr033.PlayerMapPos(player));
+            var scl = ovr032.Rebuild_SortedCombatantList(player, 0x7F, p => true);
 
             return scl.ToArray(); 
         }
@@ -2105,7 +2105,7 @@ namespace engine
             }
             else
             {
-                ovr033.sub_7431C(attackerPos);
+                ovr033.RedrawPosition(attackerPos);
             }
 
             list_index += step;
@@ -2237,7 +2237,7 @@ namespace engine
                         target_step = 0;
                     }
 
-                    ovr033.sub_7431C(ovr033.PlayerMapPos(target));
+                    ovr033.RedrawPosition(ovr033.PlayerMapPos(target));
 
                     target = step_combat_list((arg_4 == false && unk_41AE5.MemberOf(input) == false), target_step,
                        ref list_index, ref attackerPos, sorted_list);
@@ -2253,9 +2253,7 @@ namespace engine
 
         internal static bool find_target(bool clear_target, byte arg_2, int max_range, Player player) /* sub_41E44 */
         {
-            byte var_7 = 0;
             bool target_found = false;
-            byte var_5 = 0;
 
             Player target = player.actions.target;
 
@@ -2273,11 +2271,13 @@ namespace engine
                 target_found = true;
             }
 
-            while (target_found == false && var_5 == 0)
+            bool secondPass = false;
+            bool var_5 = false;
+            while (target_found == false && var_5 == false)
             {
-                var_5 = var_7;
+                var_5 = secondPass;
 
-                if (var_7 != 0 && clear_target == false)
+                if (secondPass == true && clear_target == false)
                 {
                     gbl.mapToBackGroundTile.field_6 = true;
                 }
@@ -2305,9 +2305,9 @@ namespace engine
                     }
                 }
 
-                if (var_7 == 0)
+                if (secondPass == false)
                 {
-                    var_7 = 1;
+                    secondPass = true;
                 }
             }
 
@@ -2345,7 +2345,7 @@ namespace engine
         }
 
 
-        internal static bool sub_421C1(bool clear_target, int range, Player player) // sub_421C1
+        internal static bool sub_421C1(bool clear_target, ref int range, Player player) // sub_421C1
         {
             bool var_5 = true;
 
@@ -2367,24 +2367,24 @@ namespace engine
         {
             int range = 0xFF; /* simeon */
 
-            byte var_4 = 0;
-            byte var_1 = 4;
+            byte attacksTired = 0;
+            int attackTiresLeft = 4;
 
             attacker.actions.target = null;
-            sub_421C1(true, range, attacker);
+            sub_421C1(true, ref range, attacker);
 
             do
             {
                 Player target = attacker.actions.target;
 
                 range = ovr025.getTargetRange(target, attacker);
-                var_1--;
+                attackTiresLeft--;
 
                 if (target != null)
                 {
-                    if (range == 2 && (var_4 & 1) == 0)
+                    if (range == 2 && (attacksTired & 1) == 0)
                     {
-                        var_4 |= 1;
+                        attacksTired |= 1;
 
                         ovr025.DisplayPlayerStatusString(true, 10, "fires a disintegrate ray", attacker);
                         LoadMissleIconAndDraw(5, target, attacker);
@@ -2394,11 +2394,11 @@ namespace engine
                             ovr024.KillPlayer("is disintergrated", Status.gone, target);
                         }
 
-                        sub_421C1(false, range, attacker);
+                        sub_421C1(false, ref range, attacker);
                     }
-                    else if (range == 3 && (var_4 & 2) == 0)
+                    else if (range == 3 && (attacksTired & 2) == 0)
                     {
-                        var_4 |= 2;
+                        attacksTired |= 2;
 
                         ovr025.DisplayPlayerStatusString(true, 10, "fires a stone to flesh ray", attacker);
                         LoadMissleIconAndDraw(10, target, attacker);
@@ -2408,11 +2408,11 @@ namespace engine
                             ovr024.KillPlayer("is Stoned", Status.stoned, target);
                         }
 
-                        sub_421C1(false, range, attacker);
+                        sub_421C1(false, ref range, attacker);
                     }
-                    else if (range == 4 && (var_4 & 4) == 0)
+                    else if (range == 4 && (attacksTired & 4) == 0)
                     {
-                        var_4 |= 4;
+                        attacksTired |= 4;
 
                         ovr025.DisplayPlayerStatusString(true, 10, "fires a death ray", attacker);
                         LoadMissleIconAndDraw(5, target, attacker);
@@ -2422,35 +2422,35 @@ namespace engine
                             ovr024.KillPlayer("is killed", Status.dead, target);
                         }
 
-                        sub_421C1(false, range, attacker);
+                        sub_421C1(false, ref range, attacker);
                     }
-                    else if (range == 5 && (var_4 & 8) == 0)
+                    else if (range == 5 && (attacksTired & 8) == 0)
                     {
-                        var_4 |= 8;
+                        attacksTired |= 8;
 
                         ovr025.DisplayPlayerStatusString(true, 10, "wounds you", attacker);
                         LoadMissleIconAndDraw(5, target, attacker);
 
                         ovr024.damage_person(false, 0, ovr024.roll_dice_save(8, 2) + 1, target);
-                        sub_421C1(false, range, attacker);
+                        sub_421C1(false, ref range, attacker);
                     }
-                    else if ((var_4 & 0x10) == 0)
+                    else if ((attacksTired & 0x10) == 0)
                     {
                         ovr023.sub_5D2E1(1, QuickFight.True, 0x54);
-                        var_4 |= 0x10;
+                        attacksTired |= 0x10;
                     }
-                    else if ((var_4 & 0x20) == 0)
+                    else if ((attacksTired & 0x20) == 0)
                     {
                         ovr023.sub_5D2E1(1, QuickFight.True, 0x37);
-                        var_4 |= 0x20;
+                        attacksTired |= 0x20;
                     }
-                    else if ((var_4 & 0x40) == 0)
+                    else if ((attacksTired & 0x40) == 0)
                     {
                         ovr023.sub_5D2E1(1, QuickFight.True, 0x15);
-                        var_4 |= 0x40;
+                        attacksTired |= 0x40;
                     }
                 }
-            } while (var_1 > 0 && attacker.actions.target != null);
+            } while (attackTiresLeft > 0 && attacker.actions.target != null);
         }
 
 

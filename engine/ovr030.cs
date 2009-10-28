@@ -110,7 +110,7 @@ namespace engine
                             {
                                 if (frame == 0)
                                 {
-                                    first_frame_ega_layout = seg051.GetMem(ega_encoded_size + 1);
+                                    first_frame_ega_layout = new byte[ega_encoded_size + 1];
 
                                     System.Array.Copy(uncompressed_data, src_offset, first_frame_ega_layout, 0, ega_encoded_size + 1);
                                 }
@@ -136,7 +136,7 @@ namespace engine
 
                         daxArray.numFrames = frames_count; // also pointless
 
-                        seg051.FreeMem(uncompressed_size, uncompressed_data);
+                        uncompressed_data = null; 
                         seg043.clear_keyboard();
 
                         if (gbl.AnimationsOn == true)

@@ -911,8 +911,7 @@ namespace engine
 
             targetPos.MapBoundaryTrunc();
 
-            int range = 0xff; /* Simeon */
-            ovr032.canReachTarget(ref range, ref targetPos, casterPos);
+            ovr032.canReachTarget(ref targetPos, casterPos);
 
             localSteppingPathInit(targetPos, casterPos, path);
             int var_76 = find_players_on_path(path, players_on_path);
@@ -1896,7 +1895,7 @@ namespace engine
 
             if (gbl.area_ptr.inDungeon == 0)
             {
-                var scl = ovr032.Rebuild_SortedCombatantList(1, 2, gbl.targetPos);
+                var scl = ovr032.Rebuild_SortedCombatantList(1, 2, gbl.targetPos, sc => true);
 
                 gbl.spellTargets.Clear();
                 foreach(var sc in scl)
@@ -2462,7 +2461,7 @@ namespace engine
 
             if (ovr025.FindAffect(out affect, Affects.clear_movement, player) == true)
             {
-                var scl = ovr032.Rebuild_SortedCombatantList(1, 1, ovr033.PlayerMapPos(player));
+                var scl = ovr032.Rebuild_SortedCombatantList(1, 1, ovr033.PlayerMapPos(player), sc => true);
 
                 foreach (var sc in scl)
                 {

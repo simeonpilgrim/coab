@@ -566,7 +566,7 @@ namespace engine
             } while (input_key != 'S');
 
             player.exp = 25000;
-            player._class = ClassList[index-1];
+            player._class = ClassList[index - 1];
             player.HitDice = 1;
 
             if (player._class >= ClassId.cleric && player._class <= ClassId.fighter)
@@ -674,8 +674,8 @@ namespace engine
 
             int alignments = gbl.class_alignments[(int)player._class, 0];
 
-            var_C.Add(new MenuItem("Pick Alignment", true)); 
-                
+            var_C.Add(new MenuItem("Pick Alignment", true));
+
             for (int i = 1; i <= alignments; i++)
             {
                 var_C.Add(new MenuItem("  " + ovr020.alignmentString[gbl.class_alignments[(int)player._class, i]]));
@@ -695,7 +695,7 @@ namespace engine
                 {
                     var_C.Clear();
 
-                    seg051.FreeMem(Player.StructSize, player);
+                    player = null;
                     return;
                 }
             } while (input_key != 'S');
@@ -759,57 +759,57 @@ namespace engine
                     {
                         stat_value = (byte)(ovr024.roll_dice(6, 3) + 1);
 
-                        switch (7) // was loop1_var but that's always 7 after the race building loop.
-                        {
-                            case 1:
-                                if (var_1B == 4)
-                                {
-                                    stat_value += 1;
-                                }
-                                else if (var_1B == 5)
-                                {
-                                    stat_value -= 1;
-                                }
-                                break;
-
-                            case 2:
-                                if (var_1B == 3)
-                                {
-                                    stat_value += 1;
-                                }
-                                else if (var_1B == 4)
-                                {
-                                    stat_value -= 1;
-                                }
-                                break;
-
-                            case 5:
-                                if (var_1B == 0)
-                                {
-                                    stat_value -= 1;
-                                }
-                                else if (var_1B == 3)
-                                {
-                                    stat_value++;
-                                }
-
-                                break;
-
-                            case 6:
-                                if (var_1B == 0)
-                                {
-                                    stat_value++;
-                                }
-                                else if (var_1B == 4)
-                                {
-                                    stat_value++;
-                                }
-                                else if (var_1B == 5)
-                                {
-                                    stat_value -= 2;
-                                }
-                                break;
-                        }
+                        //switch (7) // was loop1_var but that's always 7 after the race building loop.
+                        //{
+                        //    case 1:
+                        //        if (var_1B == 4)
+                        //        {
+                        //            stat_value += 1;
+                        //        }
+                        //        else if (var_1B == 5)
+                        //        {
+                        //            stat_value -= 1;
+                        //        }
+                        //        break;
+                        //
+                        //    case 2:
+                        //        if (var_1B == 3)
+                        //        {
+                        //            stat_value += 1;
+                        //        }
+                        //        else if (var_1B == 4)
+                        //        {
+                        //            stat_value -= 1;
+                        //        }
+                        //        break;
+                        //
+                        //    case 5:
+                        //        if (var_1B == 0)
+                        //        {
+                        //            stat_value -= 1;
+                        //        }
+                        //        else if (var_1B == 3)
+                        //        {
+                        //            stat_value++;
+                        //        }
+                        //
+                        //        break;
+                        //
+                        //    case 6:
+                        //        if (var_1B == 0)
+                        //        {
+                        //            stat_value++;
+                        //        }
+                        //        else if (var_1B == 4)
+                        //        {
+                        //            stat_value++;
+                        //        }
+                        //        else if (var_1B == 5)
+                        //        {
+                        //            stat_value -= 2;
+                        //        }
+                        //        break;
+                        //}
 
                         if (player.stats[var_1B].max < stat_value)
                         {
@@ -1162,18 +1162,12 @@ namespace engine
 
             input_key = ovr027.yes_no(15, 10, 13, "Save " + player.name + "? ");
 
-            if (input_key == 'N')
-            {
-                seg051.FreeMem(Player.StructSize, player);
-                gbl.player_ptr = gblPlayerPtrBkup;
-            }
-            else
+            if (input_key == 'Y')
             {
                 ovr017.SavePlayer(string.Empty, player);
-
-                seg051.FreeMem(Player.StructSize, player);
-                gbl.player_ptr = gblPlayerPtrBkup;
             }
+
+            gbl.player_ptr = gblPlayerPtrBkup;
         }
 
 
