@@ -673,7 +673,7 @@ namespace engine
                     var_D += 1;
                 } while (dataOffset < decode_size);
 
-                seg051.FreeMem(decode_size, data);
+                data = null;
 
                 int var_10 = var_D;
 
@@ -725,8 +725,6 @@ namespace engine
             }
 
             gbl.stru_1D530.LoadData(data);
-
-            seg051.FreeMem(bytesRead, data);
 
             gbl.area_ptr.current_3DMap_block_id = (byte)blockId;
         }

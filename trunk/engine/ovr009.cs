@@ -10,7 +10,6 @@ namespace engine
             gbl.NoxiousCloud.Clear();
             gbl.PoisonousCloud.Clear();
 
-            seg051.FreeMem(0x4e9, gbl.mapToBackGroundTile);
             gbl.mapToBackGroundTile = null;
 
             gbl.missile_dax = null;
@@ -141,7 +140,7 @@ namespace engine
                     }
                 }
 
-                ovr033.sub_7431C(ovr033.PlayerMapPos(player));
+                ovr033.RedrawPosition(ovr033.PlayerMapPos(player));
             }
         }
 

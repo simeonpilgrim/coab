@@ -44,6 +44,8 @@ namespace engine
 
             InitFirst();
 
+            ItemLibrary.Read();
+
             seg044.sound_sub_120E0(Sound.sound_0);
 
             if (Cheats.skip_title_screen == false)

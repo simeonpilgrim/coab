@@ -9,15 +9,9 @@ namespace Classes
 	{
 		public File()
 		{
-			//
-			// TODO: Add constructor logic here
-			//
-			field_4 = new byte[22];
+            // TODO tidy-up this pascal based concept.
 		}
 
-		public short field_0;
-		public byte id;
-		public byte[] field_4;
 		public string name;
 
         public System.IO.FileStream stream;

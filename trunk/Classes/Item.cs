@@ -4,7 +4,8 @@ namespace Classes
 {
 	/// <summary>
 	/// Summary description for Item.
-	/// </summary>
+    /// </summary>
+    [Serializable]
     public class Item
     {
         public string name; // 0x00
@@ -88,7 +89,7 @@ namespace Classes
 
         public Item(Affects _affect_3, Affects _affect_2, Affects _affect_1, short __value, byte _count,
             short _weight, bool _cursed, byte _name_flags, bool _readied, byte _plus_save, sbyte _plus, byte _namenum3,
-            byte _namenum2, byte _namenum1, ItemType _type)
+            byte _namenum2, byte _namenum1, ItemType _type, bool AddToLibrary)
         {
             name = string.Empty;
             type = _type;
@@ -106,6 +107,11 @@ namespace Classes
             affect_1 = _affect_1;
             affect_2 = _affect_2;
             affect_3 = _affect_3;
+
+            if (AddToLibrary)
+            {
+                ItemLibrary.Add(this);
+            }
         }
 
         public Item(byte[] data, int offset)
@@ -129,8 +135,8 @@ namespace Classes
             affect_2 = (Affects)data[offset + 0x3D];
             affect_3 = (Affects)data[offset + 0x3E];
 
-            AddItemsText(string.Format("{0},{1},{2},{3},{4}", type, namenum1, namenum2, namenum3, GenerateName(0)));
-            //System.Console.WriteLine("ITEM:,{0},{1},{2},{3},{4}", type, namenum1, namenum2, namenum3, GenerateName(0)); 
+            ItemLibrary.Add(this);
+            //AddItemsText(string.Format("{0},{1},{2},{3},{4}", type, namenum1, namenum2, namenum3, GenerateName(0)));
         }
 
         public Item ShallowClone()
@@ -287,29 +293,30 @@ namespace Classes
                 }
             }
 
-            return name;
+            return name.Trim();
         }
 
-        static System.Collections.Generic.List<string> itemtext = new System.Collections.Generic.List<string>();
 
-        static void AddItemsText(string text)
+        public override bool Equals(object obj)
         {
-            if (itemtext.Contains(text) == false)
-            {
-                itemtext.Add(text);
-            }
-        }
-
-        public static void DumpItemsText(string filename)
-        {
-            System.IO.TextWriter tw = new System.IO.StreamWriter(filename, true);
-
-            foreach (string s in itemtext)
-            {
-                tw.WriteLine(s);
-            }
-            tw.Flush();
-            tw.Close();
+            Item rhs = obj as Item;
+            return rhs != null &&
+                rhs.type == type &&
+                rhs.namenum1 == namenum1 &&
+                rhs.namenum2 == namenum2 &&
+                rhs.namenum3 == namenum3 &&
+                rhs.plus == plus &&
+                rhs.plus_save == plus_save &&
+                rhs.readied == readied &&
+                rhs.hidden_names_flag == hidden_names_flag &&
+                rhs.cursed == cursed &&
+                rhs.weight == weight &&
+                rhs.count == count &&
+                rhs._value == _value &&
+                rhs.affect_1 == affect_1 &&
+                rhs.affect_2 == affect_2 &&
+                rhs.affect_3 == affect_3
+                ;
         }
 
         public override string ToString()

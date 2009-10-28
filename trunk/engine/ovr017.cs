@@ -681,9 +681,9 @@ namespace engine
             }
             else if (gbl.import_from == ImportSource.Hillsfar)
             {
-                byte[] data = new byte[0xBC];
+                byte[] data = new byte[HillsFarPlayer.StructSize];
 
-                seg051.BlockRead(0xBC, data, file);
+                seg051.BlockRead(HillsFarPlayer.StructSize, data, file);
                 seg051.Close(file);
 
                 HillsFarPlayer var_1C4 = new HillsFarPlayer(data);
@@ -717,7 +717,7 @@ namespace engine
                     {
                         Item newItem = new Item(0, Affects.helpless, (Affects)var_1C4.field_1D,
                             (short)(var_1C4.field_1D * 200), 0, 0,
-                            false, 0, false, 0, 0, 0x57, 0xa7, 0xa8, ItemType.Necklace);
+                            false, 0, false, 0, 0, 0x57, 0xa7, 0xa8, ItemType.Necklace, true);
                         
                         player_ptr.items.Add(newItem);
                     }
@@ -726,7 +726,7 @@ namespace engine
                     {
                         Item newItem = new Item(0, Affects.poison_plus_4, (Affects)var_1C4.field_23,
                             (short)(var_1C4.field_23 * 0x15E), 0, 1,
-                            false, 0, false, 0, 1, 0x45, 0xa7, 0xce, ItemType.WandB);
+                            false, 0, false, 0, 1, 0x45, 0xa7, 0xce, ItemType.WandB, true);
 
                         player_ptr.items.Add(newItem);
                     }
@@ -735,7 +735,7 @@ namespace engine
                     {
                         Item newItem = new Item(0, Affects.helpless, (Affects)var_1C4.field_86,
                             (short)(var_1C4.field_86 * 0xc8), 0, 0,
-                            false, 0, false, 0, 0, 0x42, 0xa7, 0xa8, ItemType.RingInvis);
+                            false, 0, false, 0, 0, 0x42, 0xa7, 0xa8, ItemType.RingInvis, true);
 
                         player_ptr.items.Add(newItem);
                     }
@@ -744,7 +744,7 @@ namespace engine
                     {
                         Item newItem = new Item(0, Affects.highConRegen, (Affects)var_1C4.field_87,
                             (short)(var_1C4.field_87 * 0x190), 0, (short)(var_1C4.field_87 * 10),
-                            false, 0, false, 0, 0, 0x40, 0xa7, 0xb9, ItemType.Necklace);
+                            false, 0, false, 0, 0, 0x40, 0xa7, 0xb9, ItemType.Necklace, true);
 
                         player_ptr.items.Add(newItem);
                     }
@@ -757,7 +757,7 @@ namespace engine
 
                     if (var_1BC == true)
                     {
-                        data = seg051.GetMem(PoolRadPlayer.StructSize);
+                        data = new byte[PoolRadPlayer.StructSize];
 
                         string savename = System.IO.Path.Combine(gbl.SavePath, System.IO.Path.ChangeExtension(arg_8, fileExt));
 
@@ -895,7 +895,7 @@ namespace engine
                     }
                 }
 
-                seg051.FreeMem(0x00bc, var_1C4);
+                var_1C4 = null;
             }
 
             if (gbl.import_from == ImportSource.Curse)
@@ -931,7 +931,7 @@ namespace engine
 
             if (seg042.file_find(gbl.SavePath + arg_8 + ".fx") == true)
             {
-                byte[] data = seg051.GetMem(Affect.StructSize);
+                byte[] data = new byte[Affect.StructSize];
                 seg042.find_and_open_file(out file, false, gbl.SavePath + arg_8 + ".fx");
 
                 while (true)
@@ -955,7 +955,7 @@ namespace engine
             {
                 if (seg042.file_find(gbl.SavePath + arg_8 + ".spc") == true)
                 {
-                    byte[] data = seg051.GetMem(Affect.StructSize);
+                    byte[] data = new byte[Affect.StructSize];
                     seg042.find_and_open_file(out file, false, gbl.SavePath + arg_8 + ".spc");
 
                     while(true)
@@ -1024,8 +1024,6 @@ namespace engine
 
                     offset += 9;
                 } while (offset < decode_size);
-
-                seg051.FreeMem(decode_size, data);
             }
 
             seg042.load_decode_dax(out data, out decode_size, monster_id, "MON" + area_text + "ITM.dax");

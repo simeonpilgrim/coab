@@ -1331,10 +1331,8 @@ namespace engine
 
         internal static List<CombatPlayerIndex> BuildNearTargets(int max_range, Player player) /*near_enermy*/
         {
-            var scl = ovr032.Rebuild_SortedCombatantList(ovr033.PlayerMapSize(player), max_range, ovr033.PlayerMapPos(player));
+            var scl = ovr032.Rebuild_SortedCombatantList(player, max_range, p => p.combat_team != player.combat_team);
             
-            scl.RemoveAll(sc => sc.player.combat_team == player.combat_team);
-
             List<CombatPlayerIndex> nearTargets = new List<CombatPlayerIndex>();
 
             foreach (var sc in scl)
@@ -1350,15 +1348,14 @@ namespace engine
         {
             gbl.mapToBackGroundTile.field_6 = true;
 
-            var scl = ovr032.Rebuild_SortedCombatantList(ovr033.PlayerMapSize(attacker), 0xff, ovr033.PlayerMapPos(attacker));
+            //TODO this is called to build full list, but we only want distance to target, thus we could call the inner workings could be used just for target.
+            var scl = ovr032.Rebuild_SortedCombatantList(attacker, 0xff, p => p == target);
 
             gbl.mapToBackGroundTile.field_6 = false;
 
-            var combatant = scl.Find(sc => sc.player == target);
-
-            if (combatant != null)
+            if (scl.Count > 0)
             {
-                return combatant.steps / 2;
+                return scl[0].steps / 2;
             }
             else
             {

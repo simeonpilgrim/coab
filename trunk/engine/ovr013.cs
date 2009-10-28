@@ -338,7 +338,7 @@ namespace engine
                 item_found == false &&
                 player.items.Count < Player.MaxItems)
             {
-                item = new Item((Affects)160, Affects.spiritual_hammer, 0, 0, 0, 0, false, 0, false, 0, 1, 243, 20, 0, ItemType.Hammer );
+                item = new Item((Affects)160, Affects.spiritual_hammer, 0, 0, 0, 0, false, 0, false, 0, 1, 243, 20, 0, ItemType.Hammer, true);
  
                 player.items.Add(item);
                 ovr020.ready_Item(item);
@@ -1004,7 +1004,7 @@ namespace engine
                 {
                     player.actions.target = null;
 
-                    var scl = ovr032.Rebuild_SortedCombatantList(ovr033.PlayerMapSize(player), 0xff, ovr033.PlayerMapPos(player));
+                    var scl = ovr032.Rebuild_SortedCombatantList(player, 0xff, p => true);
 
                     player.actions.target = scl[0].player;
 
@@ -1692,7 +1692,7 @@ namespace engine
 
                 player.actions.target = null;
 
-                var scl = ovr032.Rebuild_SortedCombatantList(ovr033.PlayerMapSize(player), 0xff, ovr033.PlayerMapPos(player));
+                var scl = ovr032.Rebuild_SortedCombatantList(player, 0xff, p => true);
 
                 player.actions.target = scl[0].player;
                 player.combat_team = player.actions.target.OppositeTeam();

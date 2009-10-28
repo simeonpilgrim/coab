@@ -20,35 +20,35 @@ namespace engine
 
         static MapReach[, ,] mapReachCache = new MapReach[Point.MapMaxY * Point.MapMaxX, Point.MapMaxY * Point.MapMaxX, 2];
 
-        internal static void buildMapCache()
-        {
-            for (int y1 = 0; y1 < Point.MapMaxY; y1++)
-            {
-                for (int x1 = 0; x1 < Point.MapMaxX; x1++)
-                {
-                    var p1 = new Point(x1,y1);
-                    for (int y2 = 0; y2 < Point.MapMaxY; y2++)
-                    {
-                        for (int x2 = 0; x2 < Point.MapMaxX; x2++)
-                        {
-                            gbl.mapToBackGroundTile.field_6 = false;
-                            Point p2 = new Point(x2, y2);
-                            int range = -1;
-                            bool reach = canReachTargetCalc(gbl.mapToBackGroundTile, ref range, ref p2, p1);
-                            
-                            mapReachCache[(y1 * Point.MapMaxX) + x1, (y2 * Point.MapMaxX) + x2, 0] = new MapReach(reach, range, p2);
-                            
-                            gbl.mapToBackGroundTile.field_6 = true;
-                            p2 = new Point(x2, y2);
-                            range = -1;
-                            reach = canReachTargetCalc(gbl.mapToBackGroundTile, ref range, ref p2, p1);
-
-                            mapReachCache[(y1 * Point.MapMaxX) + x1, (y2 * Point.MapMaxX) + x2, 1] = new MapReach(reach, range, p2);
-                        }
-                    }
-                }
-            }
-        }
+        //internal static void buildMapCache()
+        //{
+        //    for (int y1 = 0; y1 < Point.MapMaxY; y1++)
+        //    {
+        //        for (int x1 = 0; x1 < Point.MapMaxX; x1++)
+        //        {
+        //            var p1 = new Point(x1,y1);
+        //            for (int y2 = 0; y2 < Point.MapMaxY; y2++)
+        //            {
+        //                for (int x2 = 0; x2 < Point.MapMaxX; x2++)
+        //                {
+        //                    gbl.mapToBackGroundTile.field_6 = false;
+        //                    Point p2 = new Point(x2, y2);
+        //                    int range = -1;
+        //                    bool reach = canReachTargetCalc(gbl.mapToBackGroundTile, ref range, ref p2, p1);
+        //                    
+        //                    mapReachCache[(y1 * Point.MapMaxX) + x1, (y2 * Point.MapMaxX) + x2, 0] = new MapReach(reach, range, p2);
+        //                    
+        //                    gbl.mapToBackGroundTile.field_6 = true;
+        //                    p2 = new Point(x2, y2);
+        //                    range = -1;
+        //                    reach = canReachTargetCalc(gbl.mapToBackGroundTile, ref range, ref p2, p1);
+        //
+        //                    mapReachCache[(y1 * Point.MapMaxX) + x1, (y2 * Point.MapMaxX) + x2, 1] = new MapReach(reach, range, p2);
+        //                }
+        //            }
+        //        }
+        //    }
+        //}
 
         static MapReach MapCacheGet(Point p1, Point p2, int b)
         {
@@ -58,40 +58,42 @@ namespace engine
             bool tmp = gbl.mapToBackGroundTile.field_6;
             gbl.mapToBackGroundTile.field_6 = true;
 
-            int range = -1;
-            bool reach = canReachTargetCalc(gbl.mapToBackGroundTile, ref range, ref p2, p1);
+            mr = canReachTargetCalc(gbl.mapToBackGroundTile, p2, p1);
 
             gbl.mapToBackGroundTile.field_6 = tmp;
 
-            mr = new MapReach(reach, range, p2);
             mapReachCache[(p2.y * Point.MapMaxX) + p2.x, (p1.y * Point.MapMaxX) + p1.x, b] = mr;
             return mr;
         }
 
-        internal static bool canReachTarget(ref int range, ref Point target, Point attacker)
+        internal static void canReachTarget(ref Point target, Point attacker)
         {
+            MapReach mr = MapCacheGet(attacker, target, gbl.mapToBackGroundTile.field_6 ? 1 : 0);
 
-            MapReach mr = MapCacheGet( attacker, target, gbl.mapToBackGroundTile.field_6 ? 1 : 0);
-            
-            range = mr.range;
             target = new Point(mr.target);
-            return mr.reach;
         }
 
         internal static bool canReachTarget(ref int range, Point target, Point attacker)
         {
             MapReach mr = MapCacheGet(attacker, target, gbl.mapToBackGroundTile.field_6 ? 1 : 0);
 
-            range = mr.range;
-            return mr.reach;
+            if (mr.range > (range*2)+1)
+            {
+                return false;
+            }
+            else
+            {
+                range = mr.range;
+                return mr.reach;
+            }
         }
 
-        internal static bool canReachTargetCalc(Struct_1D1BC groundTilesMap, ref int range, ref Point outPos, Point attacker) /* sub_733F1 */
+        static MapReach canReachTargetCalc(Struct_1D1BC groundTilesMap, Point outPos, Point attacker) /* sub_733F1 */
         {
             SteppingPath var_31 = new SteppingPath();
             SteppingPath var_19 = new SteppingPath();
 
-            int max_range = (range * 2) + 1;
+            int max_range = (256 * 2) + 1;
             var_19.attacker = attacker;
             var_19.target = outPos;
 
@@ -118,38 +120,22 @@ namespace engine
                 int gt = groundTilesMap[var_19.current];
                 Struct_189B4 s189 = gbl.BackGroundTiles[gt];
 
-                //if ((groundTilesMap.field_6 == false && s189.field_2 > var_31.current.y) ||
-                //    var_19.steps > max_range)
-                //{
-                //    outPos = var_19.current;
-                //    range = var_19.steps;
-
-                //    return false;
-                //}
-
                 if (groundTilesMap.field_6 == false && s189.field_2 > var_31.current.y)
                 {
-                    outPos = var_19.current;
-                    range = var_19.steps;
-
-                    return false;
+                    return new MapReach(false, var_19.steps, var_19.current);
                 }
 
+                // range is for cache hard coded to 256, thus max_range = 513, so skip this.
                 if ( var_19.steps > max_range)
                 {
-                    outPos = var_19.current;
-                    range = var_19.steps;
-
-                    return false;
+                    return new MapReach(false, var_19.steps, var_19.current);
                 }
 
                 var_31.Step();
                 finished = !var_19.Step();
             } while (finished == false);
 
-            range = var_19.steps;
-
-            return true;
+            return new MapReach(true, var_19.steps, outPos);
         }
 
         /// <summary>
@@ -231,8 +217,14 @@ namespace engine
             return canSee;
         }
 
+        internal static List<SortedCombatant> Rebuild_SortedCombatantList(Player player, int max_range, Predicate<Player> filter) /* sub_738D8 */
+        {
+            var cm = gbl.CombatMap[ovr033.GetPlayerIndex(player)];
 
-        internal static List<SortedCombatant> Rebuild_SortedCombatantList(int size, int max_range, Point pos) /* sub_738D8 */
+            return Rebuild_SortedCombatantList(cm.size, max_range, cm.pos, filter);
+        }
+
+        internal static List<SortedCombatant> Rebuild_SortedCombatantList(int size, int max_range, Point pos, Predicate<Player> filter) /* sub_738D8 */
         {
             var deltas = ovr033.GetSizeBasedMapDeltas(size);
             var attackerMap = ovr033.BuildSizeMap(size, pos);
@@ -241,9 +233,9 @@ namespace engine
 
             for (int playerIndex = 1; playerIndex <= gbl.CombatantCount; playerIndex++)
             {
-                if (gbl.CombatMap[playerIndex].size > 0)
+                var combatantMap = gbl.CombatMap[playerIndex];
+                if (combatantMap.size > 0 && filter(gbl.player_array[playerIndex]))
                 {
-                    var combatantMap = gbl.CombatMap[playerIndex];
                     var targetMap = ovr033.BuildSizeMap(combatantMap.size, combatantMap.pos);
 
                     bool found = false;

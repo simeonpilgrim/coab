@@ -162,6 +162,11 @@ namespace Classes
         {
             return x < MapMaxX && x >= MapMinX && y < MapMaxY && y >= MapMinY;
         }
+
+        public override string ToString()
+        {
+            return string.Format("x: {0} y: {1}", x, y);
+        }
     }
 
 
@@ -236,13 +241,13 @@ namespace Classes
             new Struct_189B4 ( 1, 1, 0, 13 ),
             new Struct_189B4 ( 1, 1, 0, 14 ),
             new Struct_189B4 ( 1, 1, 0, 15 ),
-            new Struct_189B4 ( 2, 1, 0, 0x10 ),
-            new Struct_189B4 ( 2, 1, 0, 0x11 ),
-            new Struct_189B4 ( 2, 1, 0, 0x12 ),
-            new Struct_189B4 ( 2, 1, 0, 0x13 ),
-            new Struct_189B4 ( 2, 1, 0, 0x14 ),
-            new Struct_189B4 ( 2, 1, 0, 0x15 ),
-            new Struct_189B4 ( 1, 1, 0, 0x16 ),
+            new Struct_189B4 ( 2, 1, 0, 16 ),
+            new Struct_189B4 ( 2, 1, 0, 17 ),
+            new Struct_189B4 ( 2, 1, 0, 18 ),
+            new Struct_189B4 ( 2, 1, 0, 19 ),
+            new Struct_189B4 ( 2, 1, 0, 20 ),
+            new Struct_189B4 ( 2, 1, 0, 21 ),
+            new Struct_189B4 ( 1, 1, 0, 22 ),
             new Struct_189B4 ( 1, 1, 0, 0x17 ),
             new Struct_189B4 ( 1, 1, 0, 0x18 ),
             new Struct_189B4 ( 1, 1, 0, 0x19 ),
