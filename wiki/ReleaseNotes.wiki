@@ -3,7 +3,7 @@
 = Unreleased =
 
 = 1.0.21 =
-  * Issue 36, Fixed staff-sling weapon targetting
+  * Issue 36, Fixed staff-sling weapon targeting
   * Issue 44, Fixed the modify player screen so edits to exceptional strength stay
   * Issue 45, Fixed the Order menu (found off Encamp, Alter), so you can select and place the party members
   * Issue 46, Fixed horizontal menu scroll via comma and dot keys
