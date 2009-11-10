@@ -43,7 +43,7 @@ namespace engine
                         string.Compare(System.IO.Path.GetExtension(search.fileName), ".sav", true) == 0 ?
                         string.Format("{0,-15} from save game {1}", playerName, search.fileName[7]) : playerName;
 
-                    bool found = gbl.player_next_ptr.Find(player => playerName == player.name.Trim()) != null;
+                    bool found = gbl.TeamList.Find(player => playerName == player.name.Trim()) != null;
 
                     if (found == false && var_164 <= 0x7F)
                     {
@@ -1060,12 +1060,12 @@ namespace engine
         {
             player.icon_id = 0xff;
 
-            gbl.player_next_ptr.Add(player);
+            gbl.TeamList.Add(player);
             gbl.player_ptr = player;
 
             bool[] icon_slot = new bool[8];
 
-            foreach (Player tmpPlayer in gbl.player_next_ptr)
+            foreach (Player tmpPlayer in gbl.TeamList)
             {
                 if (tmpPlayer.icon_id >= 0 && tmpPlayer.icon_id < 8)
                 {
@@ -1221,12 +1221,12 @@ namespace engine
                 }
             }
 
-            foreach (Player tmp_player in gbl.player_next_ptr)
+            foreach (Player tmp_player in gbl.TeamList)
             {
                 remove_player_file(tmp_player);
             }
 
-            foreach (Player tmp_player in gbl.player_next_ptr)
+            foreach (Player tmp_player in gbl.TeamList)
             {
                 gbl.player_ptr = tmp_player;
 
@@ -1241,7 +1241,7 @@ namespace engine
             }
         
 
-            gbl.player_ptr = gbl.player_next_ptr[0];
+            gbl.player_ptr = gbl.TeamList[0];
 
             gbl.game_area = gbl.area2_ptr.game_area;
 
@@ -1280,7 +1280,7 @@ namespace engine
         static int save_space_required()
         {
             int size = 0;
-            foreach (Player player in gbl.player_next_ptr)
+            foreach (Player player in gbl.TeamList)
             {
                 size += PlayerDataSize(player); 
             }
@@ -1381,7 +1381,7 @@ namespace engine
                     seg051.BlockWrite(12, data, save_file);
 
                     int party_count = 0;
-                    foreach (Player tmp_player in gbl.player_next_ptr)
+                    foreach (Player tmp_player in gbl.TeamList)
                     {
                         party_count++;
                         var_171[party_count - 1] = "CHRDAT" + inputKey + party_count.ToString();
@@ -1398,7 +1398,7 @@ namespace engine
                     seg051.Close(save_file);
                     
                     party_count = 0;
-                    foreach (Player tmp_player in gbl.player_next_ptr)
+                    foreach (Player tmp_player in gbl.TeamList)
                     {
                         party_count++;
                         SavePlayer("CHRDAT" + inputKey + party_count.ToString(), tmp_player);

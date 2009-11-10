@@ -4,7 +4,7 @@ namespace engine
 {
     class ovr002
     {
-        internal static void delay_or_key(int seconds)
+        static void delay_or_key(int seconds)
         {
             seg043.clear_keyboard();
 
@@ -22,7 +22,7 @@ namespace engine
         }
 
 
-        internal static void credits()
+        static void credits()
         {
             Display.UpdateStop();
 

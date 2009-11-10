@@ -5,14 +5,6 @@ namespace engine
 {
 	class ovr027
 	{
-        static Set yesNoFlags = new Set( 0x0903, new byte[] { 0x40, 0x00, 0x02 } );
-
-        internal ovr027()
-        {
-            yesNoFlags += (9*8) + 6;
-            yesNoFlags += (11*8) + 1;
-        }
-
         internal static MenuItem getStringListEntry(List<MenuItem> list, int index)
         {
             return (list.Count > index) ? list[index] : null;
@@ -139,7 +131,6 @@ namespace engine
         internal static char displayInput(out bool specialKeyPressed, bool useOverlay, byte arg_6, int highlightFgColor, int fgColor, int extraStringFgColor, string displayInputString, string displayExtraString)
         {
             int highlistCount;
-            byte var_61;
 
             gbl.displayInput_specialKeyPressed = false;
 
@@ -154,7 +145,7 @@ namespace engine
 
             char input_key = '\0';
             specialKeyPressed = false;
-            bool var_63 = false;
+            bool stopLoop = false;
 
             int timeStart = seg041.time01();
             int var_5B = seg041.time01() + 30;
@@ -211,7 +202,7 @@ namespace engine
                     (seg041.time01() - timeStart) >= gbl.displayInputCentiSecondWait)
                 {
                     input_key = gbl.displayInputTimeoutValue;
-                    var_63 = true;
+                    stopLoop = true;
                 }
                 else if (seg049.KEYPRESSED() == true)
                 {
@@ -224,12 +215,12 @@ namespace engine
                         if (arg_6 != 0)
                         {
                             specialKeyPressed = true;
-                            var_63 = true;
+                            stopLoop = true;
                         }
                     }
                     else if (input_key == 0x1B)
                     {
-                        var_63 = true;
+                        stopLoop = true;
                         input_key = '\0';
                     }
                     else if (input_key == 13)
@@ -245,7 +236,7 @@ namespace engine
                                 input_key = '\r';
                             }
 
-                            var_63 = true;
+                            stopLoop = true;
                         }
                     }
                     else if (input_key == 0x2C)
@@ -279,7 +270,7 @@ namespace engine
                         {
                             if (input_key == 0x20)
                             {
-                                var_63 = true;
+                                stopLoop = true;
                             }
                             else
                             {
@@ -287,8 +278,8 @@ namespace engine
                                 {
                                     if (displayInputString[var_62] == input_key)
                                     {
-                                        var_63 = true;
-                                        var_61 = 0;
+                                        stopLoop = true;
+                                        int var_61 = 0;
 
                                         while (highlights[var_61].start != var_62)
                                         {
@@ -306,7 +297,7 @@ namespace engine
                         if (arg_6 != 0 &&
                             unk_6C3B8.MemberOf(input_key) == true)
                         {
-                            if (input_key == 0x5C)
+                            if (input_key == 'W')
                             {
                                 input_key = '7';
                             }
@@ -316,7 +307,7 @@ namespace engine
                             }
 
                             specialKeyPressed = true;
-                            var_63 = true;
+                            stopLoop = true;
                         }
                     }
                 }
@@ -333,7 +324,7 @@ namespace engine
 
                 System.Threading.Thread.Sleep(20);
 
-            } while (var_63 == false);
+            } while (stopLoop == false);
 
             gbl.area_ptr.picture_fade = 0;
 
@@ -362,7 +353,7 @@ namespace engine
             seg041.DrawRectangle(0, 0x18, 0x27, 0x18, 0);
         }
 
-        internal static void sub_6C897(int index,
+        static void sub_6C897(int index,
             int yEnd, int xEnd, int yStart, int xStart, List<MenuItem> list,
             int normalColor, int headingColor, int displayFillWidth) // sub_6C897
         {
@@ -425,7 +416,7 @@ namespace engine
         }
 
 
-        internal static int skipHeadings(bool backwardsStep, int index, List<MenuItem> list, int listDisplayHeight) // sub_6CC08
+        static int skipHeadings(bool backwardsStep, int index, List<MenuItem> list, int listDisplayHeight) // sub_6CC08
         {
             int var_2 = 0;
 
@@ -470,7 +461,7 @@ namespace engine
         }
 
 
-        internal static void menu_sub_6CD38(bool backwardsStep, ref int index, List<MenuItem> list, int listDisplayHeight,
+        static void menu_sub_6CD38(bool backwardsStep, ref int index, List<MenuItem> list, int listDisplayHeight,
             int yEnd, int xEnd, int yStart, int xStart,
             int normalColor, int headingColor, int displayFillWidth) // sub_6CD38
         {
@@ -503,7 +494,7 @@ namespace engine
         }
 
 
-        internal static int menu_sub_6CDCA(bool backwardsStep, int index, List<MenuItem> list, int listDisplayHeight) // sub_6CDCA
+        static int menu_sub_6CDCA(bool backwardsStep, int index, List<MenuItem> list, int listDisplayHeight) // sub_6CDCA
         {
 			if( backwardsStep == true )
 			{
@@ -544,9 +535,6 @@ namespace engine
             int highlightBgColor, int normalColor, int headingColor,
             string inputString, string extraTextString)
         {
-            bool showPrevious;
-            bool showNext;
-
             char ret_val = '\0'; /* Simeon */
             result_ptr = null; /*Simeon*/
 
@@ -600,8 +588,8 @@ namespace engine
                 ListItemHighlighted(index_ptr, stringList, startY, startX, highlightBgColor);
                 string displayString = inputString;
 
-                showNext = false;
-                showPrevious = false;
+                bool showNext = false;
+                bool showPrevious = false;
 
                 if ((listCount - listDisplayHeight) > gbl.menuScreenIndex)
                 {
@@ -696,7 +684,7 @@ namespace engine
             {
                 inputKey = displayInput(false, 0, highlightFgColor, fgColor, extraStringFgColor, "Yes No", inputString);
             
-            } while (yesNoFlags.MemberOf(inputKey) == false);
+            } while( inputKey != 'N' && inputKey != 'Y');
 
             return inputKey;
         }

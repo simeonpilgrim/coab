@@ -342,10 +342,10 @@ namespace engine
 
         internal static ushort find_gbl_player_index(Player player)
         {
-            int index = gbl.player_next_ptr.IndexOf(player);
+            int index = gbl.TeamList.IndexOf(player);
 
             if (index == -1)
-                index = gbl.player_next_ptr.Count;
+                index = gbl.TeamList.Count;
 
             return (ushort)index;
         }
@@ -1332,7 +1332,7 @@ namespace engine
             gbl.area2_ptr.isDuel = isDuel;
             Player dueler = gbl.player_ptr;
 
-            foreach (Player player in gbl.player_next_ptr)
+            foreach (Player player in gbl.TeamList)
             {
                 if (player.name != dueler.name)
                 {
@@ -1356,7 +1356,7 @@ namespace engine
                 DuelMaster.affects = new System.Collections.Generic.List<Affect>();
                 DuelMaster.items = new System.Collections.Generic.List<Item>();
 
-                gbl.player_next_ptr.Add(DuelMaster);
+                gbl.TeamList.Add(DuelMaster);
 
                 foreach(Item item in dueler.items)
                 {
@@ -1489,7 +1489,7 @@ namespace engine
             mov_max = byte.MinValue;
             mov_min = byte.MaxValue;
 
-            foreach (Player player in gbl.player_next_ptr)
+            foreach (Player player in gbl.TeamList)
             {
                 byte movement = player.movement;
 

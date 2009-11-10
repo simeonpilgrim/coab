@@ -661,7 +661,7 @@ namespace engine
 
                 case 4:
                     // prepend all players
-                    gbl.spellTargets.AddRange(gbl.player_next_ptr);
+                    gbl.spellTargets.AddRange(gbl.TeamList);
                     break;
 
                 default:
@@ -1314,7 +1314,7 @@ namespace engine
         {
             int totalSpellPower = gbl.player_ptr.hit_point_current;
 
-            gbl.spellTargets = gbl.player_next_ptr.FindAll(target =>
+            gbl.spellTargets = gbl.TeamList.FindAll(target =>
                 {
                     if (target.monsterType == MonsterType.snake &&
                        totalSpellPower >= target.hit_point_current)
@@ -1536,7 +1536,7 @@ namespace engine
 
             gbl.spellTargets.Clear();
 
-            foreach (Player player in gbl.player_next_ptr)
+            foreach (Player player in gbl.TeamList)
             {
                 if (player.health_status == Status.dead &&
                     player.monsterType == 0)

@@ -187,7 +187,7 @@ namespace engine
                 }
             }
 
-            bool detectMagic = gbl.player_next_ptr.Exists(pla => pla.HasAffect(Affects.detect_magic));
+            bool detectMagic = gbl.TeamList.Exists(pla => pla.HasAffect(Affects.detect_magic));
       
             if (detectMagic == true &&
                 (item.plus > 0 || item.plus_save > 0 || item.cursed == true))
@@ -231,7 +231,7 @@ namespace engine
 
             y_pos += 2;
 
-            foreach (Player tmp_player in gbl.player_next_ptr)
+            foreach (Player tmp_player in gbl.TeamList)
             {
                 seg037.draw8x8_clear_area(y_pos, 0x26, y_pos, x_pos);
 
@@ -1312,7 +1312,7 @@ namespace engine
             gbl.friends_count = 0;
             gbl.foe_count = 0;
 
-            foreach(Player player in gbl.player_next_ptr)
+            foreach(Player player in gbl.TeamList)
             {
                 if (player.in_combat == true)
                 {
@@ -1578,21 +1578,21 @@ namespace engine
 
                 input_key = ovr027.displayInput(out special_key, useOverlay, 1, 15, 10, 13, "Select" + text, prompt + " ");
 
-                int index = gbl.player_next_ptr.IndexOf(player);
+                int index = gbl.TeamList.IndexOf(player);
 
                 if (special_key == true)
                 {
                     if (input_key == 'O')
                     {
                         //next
-                        index = (index + 1) % gbl.player_next_ptr.Count;
-                        player = gbl.player_next_ptr[index];
+                        index = (index + 1) % gbl.TeamList.Count;
+                        player = gbl.TeamList[index];
                     }
                     else if (input_key == 'G')
                     {
                         // previous
-                        index = (index - 1 + gbl.player_next_ptr.Count) % gbl.player_next_ptr.Count;
-                        player = gbl.player_next_ptr[index];
+                        index = (index - 1 + gbl.TeamList.Count) % gbl.TeamList.Count;
+                        player = gbl.TeamList[index];
                     }
                 }
                 else if (showExit == true)
@@ -1750,7 +1750,7 @@ namespace engine
         {
             bool someoneBleeding = false;
 
-            foreach (Player player in gbl.player_next_ptr)
+            foreach (Player player in gbl.TeamList)
             {
                 if (player.actions.nonTeamMember == false &&
                     player.combat_team == CombatTeam.Ours &&

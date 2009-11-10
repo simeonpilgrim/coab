@@ -184,7 +184,7 @@ namespace engine
             bool high_bit_set = (player_index & 0x80) != 0;
             player_index = player_index & 0x7f;
 
-            Player player_ptr = player_index > 0 && player_index < gbl.player_next_ptr.Count ? gbl.player_next_ptr[player_index] : null;
+            Player player_ptr = player_index > 0 && player_index < gbl.TeamList.Count ? gbl.TeamList[player_index] : null;
  
             if (player_ptr != null)
             {
@@ -261,7 +261,7 @@ namespace engine
 
                 newMob.icon_id = gbl.monster_icon_id;
              
-                gbl.player_next_ptr.Add(newMob);
+                gbl.TeamList.Add(newMob);
 
                 gbl.numLoadedMonsters++;
                 int copy_count = 1;
@@ -288,7 +288,7 @@ namespace engine
 
                     copy_count++;
                     gbl.numLoadedMonsters++;
-                    gbl.player_next_ptr.Add(newMob);
+                    gbl.TeamList.Add(newMob);
                 }
 
                 gbl.monster_icon_id++;
@@ -784,7 +784,7 @@ namespace engine
             ovr008.vm_LoadCmdSets(1);
             byte power_value = 0;
 
-            foreach (Player player in gbl.player_next_ptr)
+            foreach (Player player in gbl.TeamList)
             {
                 int hit_points = player.hit_point_current;
                 int armor_class = player.ac;
@@ -861,7 +861,7 @@ namespace engine
 
             if (var_2 == 8001)
             {
-                bool affect_found = gbl.player_next_ptr.Exists(player => player.HasAffect(affect_id));
+                bool affect_found = gbl.TeamList.Exists(player => player.HasAffect(affect_id));
 
                 setMemoryFour(affect_found, 0, 0, 0, loc_a, loc_b, loc_c, loc_d);
             }
@@ -869,7 +869,7 @@ namespace engine
             {
                 int index = var_2 - 0xA4;
                 int count = 0;
-                foreach (Player player in gbl.player_next_ptr)
+                foreach (Player player in gbl.TeamList)
                 {
                     count++;
 
@@ -893,7 +893,7 @@ namespace engine
             else if (var_2 == 0x9f)
             {
                 int count = 0;
-                foreach (Player player in gbl.player_next_ptr)
+                foreach (Player player in gbl.TeamList)
                 {
                     count++;
 
@@ -924,7 +924,7 @@ namespace engine
             byte val_a = 0;
             byte val_b = 0;
 
-            foreach (Player player in gbl.player_next_ptr)
+            foreach (Player player in gbl.TeamList)
             {
                 if (player._class == ClassId.ranger ||
                     player._class == ClassId.mc_c_r)
@@ -1225,7 +1225,7 @@ namespace engine
             }
             else
             {
-                foreach (Player player in gbl.player_next_ptr)
+                foreach (Player player in gbl.TeamList)
                 {
                     ovr008.RobMoney(player, percentage);
                     ovr008.RobItems(player, var_3);
@@ -1580,7 +1580,7 @@ namespace engine
 
             gbl.compare_flags[1] = true;
 
-            foreach (Player player in gbl.player_next_ptr)
+            foreach (Player player in gbl.TeamList)
             {
                 foreach (Item item in player.items)
                 {
@@ -1637,7 +1637,7 @@ namespace engine
 
                 if (var_1A != 0)
                 {
-                    foreach (Player player03 in gbl.player_next_ptr)
+                    foreach (Player player03 in gbl.TeamList)
                     {
                         if ((var_1 & 0x20) != 0)
                         {
@@ -1669,7 +1669,7 @@ namespace engine
                     }
                     else
                     {
-                        Player target = gbl.player_next_ptr[var_8 - 1];
+                        Player target = gbl.TeamList[var_8 - 1];
 
                         if (ovr024.RollSavingThrow(saveBonus, (SaveVerseType)bonusType, target) == false)
                         {
@@ -1687,7 +1687,7 @@ namespace engine
                 for (int i = 0; i < var_1; i++)
                 {
                     var_8 = ovr024.roll_dice(gbl.area2_ptr.party_size, 1);
-                    Player player03 = gbl.player_next_ptr[var_8 - 1];
+                    Player player03 = gbl.TeamList[var_8 - 1];
 
                     if (ovr024.CanHitTarget(var_6, player03) == true)
                     {
@@ -1700,7 +1700,7 @@ namespace engine
 
             gbl.party_killed = true;
 
-            foreach (Player player in gbl.player_next_ptr)
+            foreach (Player player in gbl.TeamList)
             {
                 if (player.in_combat == true)
                 {
@@ -1814,7 +1814,7 @@ namespace engine
 
             bool spell_found = false;
 
-            foreach (Player player in gbl.player_next_ptr)
+            foreach (Player player in gbl.TeamList)
             {
                 if (spell_found) break;
                 spell_index = 1;
@@ -1990,7 +1990,7 @@ namespace engine
                 gbl.area_ptr.field_3FA = 0xff;
                 gbl.area2_ptr.training_class_mask = 0xff;
 
-                foreach (Player player in gbl.player_next_ptr)
+                foreach (Player player in gbl.TeamList)
                 {
                     Player play_ptr = player;
                     play_ptr.hit_point_current = play_ptr.hit_point_max;
@@ -2081,7 +2081,7 @@ namespace engine
 
             VmLog.WriteLine("CMD_DestroyItems: type: {0}", item_type);
 
-            foreach (Player player in gbl.player_next_ptr)
+            foreach (Player player in gbl.TeamList)
             {
                 player.items.RemoveAll(item => item.type == item_type);
 
@@ -2301,9 +2301,9 @@ namespace engine
 
             if (gbl.inDemo == true)
             {
-                while(gbl.player_next_ptr.Count > 0)
+                while(gbl.TeamList.Count > 0)
                 {
-                    ovr018.FreeCurrentPlayer(gbl.player_next_ptr[0], true, true);
+                    ovr018.FreeCurrentPlayer(gbl.TeamList[0], true, true);
                 }
                 gbl.player_ptr = null;
             }

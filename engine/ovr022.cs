@@ -187,7 +187,7 @@ namespace engine
 
         internal static void poolMoney()
         {
-            foreach (Player player in gbl.player_next_ptr)
+            foreach (Player player in gbl.TeamList)
             {
                 if (player.control_morale == Control.PC_Base ||
                     player.control_morale == Control.PC_Berzerk)
@@ -209,7 +209,7 @@ namespace engine
         {
             int count = 0;
             
-            foreach (Player player in gbl.player_next_ptr)
+            foreach (Player player in gbl.TeamList)
             {
                 if (player.control_morale == Control.PC_Base ||
                     player.control_morale == Control.PC_Berzerk)
@@ -246,7 +246,7 @@ namespace engine
                 }
             }
 
-            foreach (Player var_4 in gbl.player_next_ptr)
+            foreach (Player var_4 in gbl.TeamList)
             {
                 if (var_4.control_morale < Control.NPC_Base)
                 {
@@ -284,7 +284,7 @@ namespace engine
             {
                 if (money_remander[var_29] > 0)
                 {
-                    foreach (Player var_4 in gbl.player_next_ptr)
+                    foreach (Player var_4 in gbl.TeamList)
                     {
                         short var_C = (short)(get_max_load(var_4) - var_4.weight);
 

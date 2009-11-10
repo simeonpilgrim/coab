@@ -521,7 +521,7 @@ namespace Classes
 
 
         public static byte command;
-        public static List<Player> player_next_ptr = new List<Player>();
+        public static List<Player> TeamList = new List<Player>(); // player_next_ptr
     
         public static Item item_ptr; // rename current item
         public static Player spell_target;

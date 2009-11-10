@@ -786,7 +786,7 @@ namespace engine
         {
             int playerCount = 0;
 
-            foreach (Player player in gbl.player_next_ptr)
+            foreach (Player player in gbl.TeamList)
             {
                 ovr025.reclac_player_values(player);
                 playerCount++;
@@ -1104,7 +1104,7 @@ namespace engine
             gbl.CombatantCount = 0;
 
             List<Player> to_remove = new List<Player>();
-            foreach (Player player_ptr in gbl.player_next_ptr)
+            foreach (Player player_ptr in gbl.TeamList)
             {
                 seg043.clear_one_keypress();
 
@@ -1204,11 +1204,11 @@ namespace engine
 
             gbl.missile_dax = new DaxBlock( 1, 4, 3, 0x18);
 
-            Point pos = ovr033.PlayerMapPos(gbl.player_next_ptr[0]);
+            Point pos = ovr033.PlayerMapPos(gbl.TeamList[0]);
             gbl.mapToBackGroundTile.mapScreenTopLeft = pos - Point.ScreenCenter;
 
             ovr025.RedrawCombatScreen();
-            foreach (Player player in gbl.player_next_ptr)
+            foreach (Player player in gbl.TeamList)
             {
                 ovr024.CheckAffectsEffect(player, CheckType.Type_8);
                 ovr024.CheckAffectsEffect(player, CheckType.Type_22);

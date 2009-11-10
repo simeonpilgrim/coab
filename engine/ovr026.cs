@@ -342,7 +342,7 @@ namespace engine
             }
         }
 
-        static byte[, ,] byte_1A8CE = { // [8,13,5]       
+        static byte[, ,] SaveThrowValues = { // [8,13,5] class, level, save_type      
             {{20, 20, 20, 20, 20}, {10, 13, 14, 16, 15}, {10, 13, 14, 16, 15}, {10, 13, 14, 16, 15}, {9, 12, 13, 15, 14}, {9, 12, 13, 15, 14}, {9, 12, 13, 15, 14}, {7, 10, 11, 13, 12}, {7, 10, 11, 13, 12}, {7, 10, 11, 13, 12}, {6, 9, 10, 12, 11}, {6, 9, 10, 12, 11}, {6, 9, 10, 12, 11}},
             {{20, 20, 20, 20, 20}, {10, 13, 14, 16, 15}, {10, 13, 14, 16, 15}, {10, 13, 14, 16, 15}, {9, 12, 13, 15, 14}, {9, 12, 13, 15, 14}, {9, 12, 13, 15, 14}, {7, 10, 11, 13, 12}, {7, 10, 11, 13, 12}, {7, 10, 11, 13, 12}, {6, 9, 10, 12, 11}, {6, 9, 10, 12, 11}, {6, 9, 10, 12, 11}},
             {{20, 20, 20, 20, 20}, {14, 15, 16, 17, 17}, {14, 15, 16, 17, 17}, {13, 14, 15, 16, 16}, {13, 14, 15, 16, 16}, {11, 12, 13, 13, 14}, {11, 12, 13,13, 14}, {10, 11, 12, 12, 13}, {10, 11, 12, 12, 13}, {8, 9, 10, 9, 11}, {8, 9, 10, 9, 11}, {7, 8, 9, 8, 10}, {7, 8, 9, 8, 10}},                      
@@ -367,7 +367,7 @@ namespace engine
                 {
                     if (player.ClassLevel[_class] > 0)
                     {
-                        byte dl = byte_1A8CE[_class, player.ClassLevel[_class], save];
+                        byte dl = SaveThrowValues[_class, player.ClassLevel[_class], save];
 
                         if (player.saveVerse[save] > dl)
                         {
@@ -381,7 +381,7 @@ namespace engine
 
                 if (player.ClassLevel[_class] > player.ClassLevelsOld[_class])
                 {
-                    byte dl = byte_1A8CE[_class ,player.ClassLevelsOld[_class] , save];
+                    byte dl = SaveThrowValues[_class ,player.ClassLevelsOld[_class] , save];
 
                     if (player.saveVerse[save] > dl)
                     {
@@ -658,7 +658,7 @@ namespace engine
                 {
                     return;
                 }
-            } while (input_key != 0x53);
+            } while (input_key != 'S');
 
             player.exp = 0;
             player.attacksCount = 2;
@@ -720,7 +720,7 @@ namespace engine
         }
 
 
-        internal static ClassId HumanCurrentClass_Unknown(Player player) // getFirstSkill
+        static ClassId HumanCurrentClass_Unknown(Player player) // getFirstSkill
         {
             if (player.race != Race.human)
             {
@@ -757,7 +757,7 @@ namespace engine
         }
 
 
-        internal static bool DualClassExceedLastLevel(Player player) // sub_6B3D1
+        static bool DualClassExceedLastLevel(Player player) // sub_6B3D1
         {
             return HumanCurrentClassLevel_Zero(player) > player.multiclassLevel;
         }

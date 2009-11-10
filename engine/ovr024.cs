@@ -107,7 +107,7 @@ namespace engine
             }
             else if (unk_6325A.MemberOf((int)affect_type) == true)
             {
-                foreach (Player team_member in gbl.player_next_ptr)
+                foreach (Player team_member in gbl.TeamList)
                 {
                     if (found) break;
 
@@ -391,7 +391,7 @@ namespace engine
                 return false;
             });
 
-            Player player_base = (arg_6 != null) ? arg_6.player : gbl.player_next_ptr[0];
+            Player player_base = (arg_6 != null) ? arg_6.player : gbl.TeamList[0];
 
             return player_base;
         }
