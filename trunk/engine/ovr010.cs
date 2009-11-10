@@ -739,7 +739,7 @@ namespace engine
                 }
                 else if (var_6 == 0x20)
                 {
-                    foreach (Player player_ptr in gbl.player_next_ptr)
+                    foreach (Player player_ptr in gbl.TeamList)
                     {
                         if (player_ptr.control_morale < Control.NPC_Base &&
                             player_ptr.health_status != Status.animated)

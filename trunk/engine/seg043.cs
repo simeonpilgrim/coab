@@ -74,7 +74,7 @@ namespace engine
 
         public static void DumpPlayerAffects()
         {
-            foreach (Player player in gbl.player_next_ptr)
+            foreach (Player player in gbl.TeamList)
             {
                 DebugPlayerAffects(player);
             }

@@ -1373,21 +1373,21 @@ namespace engine
 
         internal static void scroll_team_list(char input_key)
         {
-            int index = gbl.player_next_ptr.IndexOf(gbl.player_ptr);
+            int index = gbl.TeamList.IndexOf(gbl.player_ptr);
 
-            if (gbl.player_next_ptr.Count > 0)
+            if (gbl.TeamList.Count > 0)
             {
                 if (input_key == 'O')
                 {
                     //next
-                    index = (index + 1) % gbl.player_next_ptr.Count;
-                    gbl.player_ptr = gbl.player_next_ptr[index];
+                    index = (index + 1) % gbl.TeamList.Count;
+                    gbl.player_ptr = gbl.TeamList[index];
                 }
                 else if (input_key == 'G')
                 {
                     // previous
-                    index = (index - 1 + gbl.player_next_ptr.Count) % gbl.player_next_ptr.Count;
-                    gbl.player_ptr = gbl.player_next_ptr[index];
+                    index = (index - 1 + gbl.TeamList.Count) % gbl.TeamList.Count;
+                    gbl.player_ptr = gbl.TeamList[index];
                 }
             }
         }
@@ -1509,7 +1509,7 @@ namespace engine
         internal static void PaladinHeal(Player player)
         {
             ovr025.load_pic();
-            Player target = gbl.player_next_ptr[0];
+            Player target = gbl.TeamList[0];
 
             ovr025.selectAPlayer(ref target, true, "Heal whom? ");
 
@@ -1545,7 +1545,7 @@ namespace engine
         internal static void PaladinCureDisease(Player player) /* sub_577EC */
         {
             ovr025.load_pic();
-            Player target = gbl.player_next_ptr[0];
+            Player target = gbl.TeamList[0];
 
             ovr025.selectAPlayer(ref target, true, "Cure whom? ");
 

@@ -227,7 +227,7 @@ namespace engine
 
                         case 'S':
                             if (menuFlags[allow_save] == true &&
-                                gbl.player_next_ptr.Count > 0)
+                                gbl.TeamList.Count > 0)
                             {
                                 ovr017.SaveGame();
                             }
@@ -237,7 +237,7 @@ namespace engine
                         case 'B':
                             if (menuFlags[allow_begin] == true)
                             {
-                                if ((gbl.player_next_ptr.Count > 0 && gbl.inDemo == true) ||
+                                if ((gbl.TeamList.Count > 0 && gbl.inDemo == true) ||
                                     gbl.area_ptr.field_3FA == 0 || gbl.inDemo == true)
                                 {
                                     gbl.game_state = gameStateBackup;
@@ -278,7 +278,7 @@ namespace engine
 
                                 if (inputkey == 'Y')
                                 {
-                                    if (gbl.player_next_ptr.Count > 0 &&
+                                    if (gbl.TeamList.Count > 0 &&
                                         gbl.gameSaved == false)
                                     {
 
@@ -1830,7 +1830,7 @@ namespace engine
                         select_sl.Text = "* " + select_sl.Text;
                         pc_count = 0;
 
-                        if (gbl.player_next_ptr.Count == 0)
+                        if (gbl.TeamList.Count == 0)
                         {
                             gbl.area2_ptr.party_size = 0;
                             ovr017.AssignPlayerIconId(new_player);
@@ -1845,7 +1845,7 @@ namespace engine
                             int ranger_count = 0;
                             bool found = false;
 
-                            foreach (Player tmp_player in gbl.player_next_ptr)
+                            foreach (Player tmp_player in gbl.TeamList)
                             {
                                 if (tmp_player.name == new_player.name &&
                                     tmp_player.mod_id == new_player.mod_id)
@@ -1924,11 +1924,11 @@ namespace engine
 
         internal static Player FreeCurrentPlayer(Player player, bool free_icon, bool leave_party_size) // free_players
         {
-            int index = gbl.player_next_ptr.IndexOf(player);
+            int index = gbl.TeamList.IndexOf(player);
 
             if (index >= 0)
             {
-                gbl.player_next_ptr.RemoveAt(index);
+                gbl.TeamList.RemoveAt(index);
 
                 if (free_icon)
                 {
@@ -1943,9 +1943,9 @@ namespace engine
                 FreePlayer(player);
 
                 index = index > 0 ? index - 1 : 0;
-                if (gbl.player_next_ptr.Count > 0)
+                if (gbl.TeamList.Count > 0)
                 {
-                    return gbl.player_next_ptr[index];
+                    return gbl.TeamList[index];
                 }
             }
 

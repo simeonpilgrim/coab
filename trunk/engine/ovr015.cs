@@ -35,7 +35,7 @@ namespace engine
 
         static bool AnyPlayerHasSkill(SkillType skill) // any_player_has_skill
         {
-            foreach (Player player in gbl.player_next_ptr)
+            foreach (Player player in gbl.TeamList)
             {
                 if( player.SkillLevel(skill) > 0)
                 {
@@ -50,7 +50,7 @@ namespace engine
         {
             bool bash_worked = false;
 
-            foreach (Player player in gbl.player_next_ptr)
+            foreach (Player player in gbl.TeamList)
             {
                 if (bash_worked == true)
                 {
@@ -228,7 +228,7 @@ namespace engine
         {
             bool door_picked = false;
 
-            foreach (Player player in gbl.player_next_ptr)
+            foreach (Player player in gbl.TeamList)
             {
                 if (door_picked) break;
 
@@ -256,13 +256,13 @@ namespace engine
 
         static bool AnyPlayerHaveSpell(Spells spellId)
         {
-            return gbl.player_next_ptr.Exists(p => System.Array.Exists(p.spell_list, s => (byte)spellId == s));
+            return gbl.TeamList.Exists(p => System.Array.Exists(p.spell_list, s => (byte)spellId == s));
         }
 
 
         static bool RemoveKnockSpell()
         {
-            foreach (Player player in gbl.player_next_ptr)
+            foreach (Player player in gbl.TeamList)
             {
                 int idx = System.Array.FindIndex(player.spell_list, spId => (byte)Spells.knock == spId);
 

@@ -18,7 +18,7 @@ namespace engine
                  */
                 int total = 0;
 
-                foreach (Player player in gbl.player_next_ptr)
+                foreach (Player player in gbl.TeamList)
                 {
                     if (player.combat_team == CombatTeam.Enemy &&
                         player.health_status != Status.okey &&
@@ -74,7 +74,7 @@ namespace engine
 
         internal static void addExp(int exp_to_add)
         {
-            foreach (Player player in gbl.player_next_ptr)
+            foreach (Player player in gbl.TeamList)
             {
                 if (player.in_combat == true &&
                     player.health_status != Status.animated)
@@ -178,7 +178,7 @@ namespace engine
             gbl.party_killed = true;
             gbl.party_fled = false;
 
-            foreach (Player player in gbl.player_next_ptr)
+            foreach (Player player in gbl.TeamList)
             {
                 if (player.actions != null &&
                     player.actions.nonTeamMember == true)
@@ -194,7 +194,7 @@ namespace engine
 
             bool no_exp = false;
 
-            foreach (Player player in gbl.player_next_ptr)
+            foreach (Player player in gbl.TeamList)
             {
                 if (player.in_combat == true ||
                     player.health_status == Status.unconscious ||
@@ -217,7 +217,7 @@ namespace engine
             if (gbl.combat_type == CombatType.normal ||
                 gbl.inDemo == false)
             {
-                foreach (Player player in gbl.player_next_ptr)
+                foreach (Player player in gbl.TeamList)
                 {
                     if (player.actions != null && player.actions.nonTeamMember == true)
                     {
@@ -262,7 +262,7 @@ namespace engine
                 {
                     List<Player> to_remove = new List<Player>();
 
-                    foreach (Player player in gbl.player_next_ptr)
+                    foreach (Player player in gbl.TeamList)
                     {
                         if (player.actions != null && player.actions.nonTeamMember == true)
                         {
@@ -331,7 +331,7 @@ namespace engine
                 else
                 {
                     List<Player> to_remove = new List<Player>();
-                    foreach (Player player in gbl.player_next_ptr)
+                    foreach (Player player in gbl.TeamList)
                     {
                         if (player.actions != null &&
                             player.actions.nonTeamMember == false)
@@ -354,7 +354,7 @@ namespace engine
             }
             else
             {
-                foreach (Player player in gbl.player_next_ptr)
+                foreach (Player player in gbl.TeamList)
                 {
                     if (player.in_combat == true &&
                         player.health_status == Status.okey &&
@@ -366,7 +366,7 @@ namespace engine
                     }
                 }
                 
-                foreach (Player player in gbl.player_next_ptr)
+                foreach (Player player in gbl.TeamList)
                 {
                     if (player.health_status == Status.okey ||
                         player.health_status == Status.animated)
@@ -692,7 +692,7 @@ namespace engine
             gbl.area2_ptr.field_590 = 0;
 
             Dictionary<Player, bool> to_remove = new Dictionary<Player, bool>();
-            foreach (Player player in gbl.player_next_ptr)
+            foreach (Player player in gbl.TeamList)
             {
                 bool check = (player.actions != null && player.actions.nonTeamMember == true);
                 
@@ -720,7 +720,7 @@ namespace engine
                 ovr018.FreeCurrentPlayer(kvp.Key, true, kvp.Value);
             }
             
-            gbl.player_ptr = gbl.player_next_ptr.Count > 0 ? gbl.player_next_ptr[0] : null;
+            gbl.player_ptr = gbl.TeamList.Count > 0 ? gbl.TeamList[0] : null;
         }
 
 
@@ -731,7 +731,7 @@ namespace engine
             int npcParts = 0;
             int totalParts = 0;
 
-            foreach (Player player in gbl.player_next_ptr)
+            foreach (Player player in gbl.TeamList)
             {
                 if (player.control_morale >= Control.NPC_Base &&
                     player.health_status == Status.okey)
@@ -763,7 +763,7 @@ namespace engine
                 seg037.DrawFrame_Outer();
                 int yCol = 0;
 
-                foreach (Player player in gbl.player_next_ptr)
+                foreach (Player player in gbl.TeamList)
                 {
                     if (player.control_morale >= Control.NPC_Base &&
                         player.health_status == Status.okey &&
@@ -798,7 +798,7 @@ namespace engine
 
             if (gbl.inDemo == false)
             {
-                foreach (Player player in gbl.player_next_ptr)
+                foreach (Player player in gbl.TeamList)
                 {
                     ovr025.reclac_player_values(player);
                 }

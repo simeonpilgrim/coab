@@ -35,7 +35,7 @@ namespace engine
             {
                 ovr025.CountCombatTeamMembers();
 
-                foreach (Player player in gbl.player_next_ptr)
+                foreach (Player player in gbl.TeamList)
                 {
                     ovr014.CalculateInitiative(player);
                 }
@@ -66,7 +66,7 @@ namespace engine
                 int max_delay = 0;
                 int max_roll = 0;
 
-                foreach (Player player in gbl.player_next_ptr)
+                foreach (Player player in gbl.TeamList)
                 {
                     int roll = ovr024.roll_dice(100, 1);
 
@@ -225,7 +225,7 @@ namespace engine
 
                                 case ' ':
                                     /* Turn off auto-fight. */
-                                    foreach (Player player_ptr in gbl.player_next_ptr)
+                                    foreach (Player player_ptr in gbl.TeamList)
                                     {
                                         if (player_ptr.control_morale < Control.NPC_Base)
                                         {
@@ -265,7 +265,7 @@ namespace engine
 
                                 case (char)0x10:
                                     player.actions.delay = 20;
-                                    foreach (Player player_ptr in gbl.player_next_ptr)
+                                    foreach (Player player_ptr in gbl.TeamList)
                                     {
                                         SetPlayerQuickFight(player_ptr);
                                     }
@@ -373,7 +373,7 @@ namespace engine
             gbl.combat_round++;
             ovr014.calc_enemy_health_percentage();
 
-            foreach (Player player in gbl.player_next_ptr)
+            foreach (Player player in gbl.TeamList)
             {
                 ovr024.CheckAffectsEffect(player, CheckType.Type_19);
                 ovr024.in_poison_cloud(0, player);

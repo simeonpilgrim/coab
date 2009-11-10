@@ -97,7 +97,7 @@ namespace engine
 
         internal static void cancel_spells()
         {
-            foreach (Player player in gbl.player_next_ptr)
+            foreach (Player player in gbl.TeamList)
             {
                 cancel_memorize(player);
                 cancel_scribes(player);
@@ -290,7 +290,7 @@ namespace engine
         internal static void rest_menu(out bool action_interrupted)
         {
             int max_rest_time = 0;
-            foreach (Player player in gbl.player_next_ptr)
+            foreach (Player player in gbl.TeamList)
             {
                 int rest_time = sub_44032(player);
 
@@ -592,7 +592,7 @@ namespace engine
 
             var_C.Add(new MenuItem());
 
-            foreach (Player player in gbl.player_next_ptr)
+            foreach (Player player in gbl.TeamList)
             {
                 bool any_effects = false;
 
@@ -617,12 +617,12 @@ namespace engine
                 var_C.Add(new MenuItem(" "));
             }
 
-            bool var_17 = true;
-            int var_42 = 0;
             seg037.DrawFrame_Outer();
 
-            MenuItem var_8;
-            ovr027.sl_select_item(out var_8, ref var_42, ref var_17, true, var_C,
+            bool dummyRedraw = true;
+            int dummyIndex = 0;
+            MenuItem dummyResult;
+            ovr027.sl_select_item(out dummyResult, ref dummyIndex, ref dummyRedraw, true, var_C,
                 0x16, 0x26, 4, 1, 15, 10, 11, string.Empty, string.Empty);
 
             var_C.Clear();
@@ -677,18 +677,18 @@ namespace engine
         {
             // move gbl.player_ptr up the list by one, if at head, move to tail.
 
-            int index = gbl.player_next_ptr.IndexOf(gbl.player_ptr);
+            int index = gbl.TeamList.IndexOf(gbl.player_ptr);
             if (index >= 0)
             {
-                gbl.player_next_ptr.RemoveAt(index);
+                gbl.TeamList.RemoveAt(index);
 
                 if (index > 0)
                 {
-                    gbl.player_next_ptr.Insert(index - 1, gbl.player_ptr);
+                    gbl.TeamList.Insert(index - 1, gbl.player_ptr);
                 }
                 else
                 {
-                    gbl.player_next_ptr.Add(gbl.player_ptr);
+                    gbl.TeamList.Add(gbl.player_ptr);
                 }
             }
         }
@@ -696,18 +696,18 @@ namespace engine
 
         static void MoveCurrentPlayerDown() // sub_456E5
         {
-            int index = gbl.player_next_ptr.IndexOf(gbl.player_ptr);
+            int index = gbl.TeamList.IndexOf(gbl.player_ptr);
             if (index >= 0)
             {
-                gbl.player_next_ptr.RemoveAt(index);
+                gbl.TeamList.RemoveAt(index);
 
-                if (index == gbl.player_next_ptr.Count)
+                if (index == gbl.TeamList.Count)
                 {
-                    gbl.player_next_ptr.Insert(0, gbl.player_ptr);
+                    gbl.TeamList.Insert(0, gbl.player_ptr);
                 }
                 else
                 {
-                    gbl.player_next_ptr.Insert(index + 1, gbl.player_ptr);
+                    gbl.TeamList.Insert(index + 1, gbl.player_ptr);
                 }
             }
         }
@@ -765,11 +765,11 @@ namespace engine
 
         static void DropPlayer() // drop_player
         {
-            if (gbl.player_next_ptr.Count == 1)
+            if (gbl.TeamList.Count == 1)
             {
                 if (ovr027.yes_no(15, 10, 14, "quit TO DOS: ") == 'Y')
                 {
-                    ovr018.FreeCurrentPlayer(gbl.player_next_ptr[0], true, false);
+                    ovr018.FreeCurrentPlayer(gbl.TeamList[0], true, false);
                     seg043.print_and_exit();
                 }
             }
@@ -948,7 +948,7 @@ namespace engine
         {
             int HealingAvailable = 0;
 
-            foreach (Player player in gbl.player_next_ptr)
+            foreach (Player player in gbl.TeamList)
             {
                 if (player.health_status == Status.okey)
                 {
@@ -998,7 +998,7 @@ namespace engine
         static int TotalHitpointsLost() /* sub_4608F */
         {
             int lost_points = 0;
-            foreach (Player player in gbl.player_next_ptr)
+            foreach (Player player in gbl.TeamList)
             {
                 lost_points += player.hit_point_max - player.hit_point_current;
             }
@@ -1016,7 +1016,7 @@ namespace engine
             int maxHealing = 0;
             int maxTime = 0;
 
-            foreach (Player player in gbl.player_next_ptr)
+            foreach (Player player in gbl.TeamList)
             {
                 int var_10 = 0;
                 int var_A = 0;
@@ -1078,7 +1078,7 @@ namespace engine
 
         static void DoTeamHealing(ref int healingAvailable) //sub_46280
         {
-            foreach (Player player in gbl.player_next_ptr)
+            foreach (Player player in gbl.TeamList)
             {
                 if (player.hit_point_max > player.hit_point_current)
                 {

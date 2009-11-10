@@ -52,7 +52,7 @@ namespace engine
 
                 int player_count = 0;
 
-                foreach (Player player in gbl.player_next_ptr)
+                foreach (Player player in gbl.TeamList)
                 {
                     if (gbl.affects_timed_out[player_count] == true)
                     {
@@ -120,7 +120,7 @@ namespace engine
                     }
                     else
                     {
-                        foreach (Player player in gbl.player_next_ptr)
+                        foreach (Player player in gbl.TeamList)
                         {
                             player.age += 1;
                         }
@@ -363,7 +363,7 @@ namespace engine
             {
                 bool update_ui = false;
 
-                foreach (Player player in gbl.player_next_ptr)
+                foreach (Player player in gbl.TeamList)
                 {
                     if (ovr024.heal_player(0, 1, player) == true)
                     {
@@ -462,7 +462,7 @@ namespace engine
         static void CheckForSpellLearning() // sub_58B4D
         {
             int index = 1;
-            foreach (Player player in gbl.player_next_ptr)
+            foreach (Player player in gbl.TeamList)
             {
                 if (spellLaernTimeout[index] > 0)
                 {
@@ -497,7 +497,7 @@ namespace engine
                 arg_0 = 0;
 
                 int index = 1;
-                foreach (Player player in gbl.player_next_ptr)
+                foreach (Player player in gbl.TeamList)
                 {
                     if (player.spell_to_learn_count > 0 &&
                         --player.spell_to_learn_count == 0)
@@ -526,7 +526,7 @@ namespace engine
             bool stop_resting;
             bool resting_intetrupted = false;
 
-            System.Array.Clear(spellLaernTimeout, 0, gbl.player_next_ptr.Count);
+            System.Array.Clear(spellLaernTimeout, 0, gbl.TeamList.Count);
 
             for (int i = 0; i < 0x48; i++)
             {

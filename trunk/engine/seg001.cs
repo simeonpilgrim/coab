@@ -215,7 +215,7 @@ namespace engine
             gbl.reload_ecl_and_pictures = false;
             gbl.rest_incounter_count = 0;
 
-            gbl.player_next_ptr.Clear();
+            gbl.TeamList.Clear();
             gbl.player_ptr = null;
 
             gbl.ecl_offset = 0x8000;
@@ -320,7 +320,7 @@ namespace engine
             gbl.reload_ecl_and_pictures = false;
             gbl.rest_incounter_count = 0;
 
-            gbl.player_next_ptr.Clear();
+            gbl.TeamList.Clear();
             gbl.player_ptr = null;
 
             gbl.ecl_offset = 0x8000;

@@ -1696,7 +1696,7 @@ namespace engine
             int maxTotal = 0;
             int currentTotal = 0;
 
-            foreach (Player player in gbl.player_next_ptr)
+            foreach (Player player in gbl.TeamList)
             {
                 if (player.combat_team == CombatTeam.Enemy)
                 {
@@ -1720,7 +1720,7 @@ namespace engine
         {
             int maxMoves = 0;
 
-            foreach (Player player in gbl.player_next_ptr)
+            foreach (Player player in gbl.TeamList)
             {
                 if (arg_0.OppositeTeam() == player.combat_team && player.in_combat == true)
                 {
@@ -1755,7 +1755,7 @@ namespace engine
                 result = true;
                 gbl.area2_ptr.field_666 = 1;
 
-                foreach (Player player in gbl.player_next_ptr)
+                foreach (Player player in gbl.TeamList)
                 {
                     if (player.health_status == Status.okey &&
                         player.control_morale >= Control.NPC_Base)
@@ -2557,7 +2557,7 @@ namespace engine
                 intervened = true;
                 ovr025.string_print01("The Gods intervene!");
 
-                foreach (Player player in gbl.player_next_ptr)
+                foreach (Player player in gbl.TeamList)
                 {
                     if (player.combat_team == CombatTeam.Enemy)
                     {
