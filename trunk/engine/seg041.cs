@@ -87,8 +87,8 @@ namespace engine
 
 
 
-        internal static void displayStringSlow(string text
-            , ref int text_index, int text_length, int bgColor, int fgColor) // sub_107DE
+        internal static int displayStringSlow(string text
+            ,int text_index, int text_length, int bgColor, int fgColor) // sub_107DE
         {
             while (text_index <= text_length)
             {
@@ -102,6 +102,8 @@ namespace engine
                 text_index += 1;
                 gbl.textXCol++;
             }
+
+			return text_index;
         }
 
 
@@ -189,7 +191,7 @@ namespace engine
                             text[text_end - 1] == ' ')
                         {
                             text_end -= 1;
-                            displayStringSlow(text, ref text_start, text_end, bgColor, fgColor);
+							text_start = displayStringSlow(text, text_start, text_end, bgColor, fgColor);
                         }
 
                         gbl.textXCol = xStart;
@@ -207,12 +209,12 @@ namespace engine
 
                             seg037.draw8x8_clear_area(yEnd, xEnd, yStart, xStart);
 
-                            displayStringSlow(text, ref text_start, text_end, bgColor, fgColor);
+							text_start = displayStringSlow(text, text_start, text_end, bgColor, fgColor);
                         }
                     }
                     else
                     {
-                        displayStringSlow(text, ref text_start, text_end, bgColor, fgColor);
+						text_start = displayStringSlow(text, text_start, text_end, bgColor, fgColor);
                         Display.Update();
                     }
                 } while (text_start <= input_lenght);

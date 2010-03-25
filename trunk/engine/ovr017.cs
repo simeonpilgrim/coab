@@ -1247,7 +1247,7 @@ namespace engine
 
             if (gbl.area_ptr.inDungeon != 0)
             {
-                if (gbl.game_state != GameState.State0)
+                if (gbl.game_state != GameState.StartGameMenu)
                 {
                     if (gbl.setBlocks[0].blockId > 0)
                     {
@@ -1273,7 +1273,7 @@ namespace engine
 
             gbl.last_game_state = gbl.game_state;
 
-            gbl.game_state = 0;
+			gbl.game_state = GameState.StartGameMenu;
         }
  
         

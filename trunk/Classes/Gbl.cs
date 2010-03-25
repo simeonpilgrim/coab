@@ -26,7 +26,7 @@ namespace Classes
 
     public enum GameState
     {
-        State0 = 0,
+        StartGameMenu = 0,
         Shop = 1,
         Camping = 2,
         WildernessMap = 3,

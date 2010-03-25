@@ -67,7 +67,7 @@ namespace engine
         internal static void startGameMenu()
         {
             var gameStateBackup = gbl.game_state;
-            gbl.game_state = 0;
+            gbl.game_state = GameState.StartGameMenu;
             bool reclac_menus = true;
 
             while (true)
@@ -135,14 +135,14 @@ namespace engine
 
                 if (controlKey == true)
                 {
-                    if (unk_4C13D.MemberOf(inputkey) == true)
+                    if (gbl.player_ptr != null &&unk_4C13D.MemberOf(inputkey) == true)
                     {
-                        bool previousDuelClassState = gbl.player_ptr.CanDuelClass();
+						bool previousDuelClassState = gbl.player_ptr.CanDuelClass();
 
                         ovr020.scroll_team_list(inputkey);
                         ovr025.PartySummary(gbl.player_ptr);
 
-                        previousDuelClassState ^= gbl.player_ptr.CanDuelClass();
+						previousDuelClassState ^= gbl.player_ptr.CanDuelClass();
 
                         reclac_menus = previousDuelClassState && gbl.area2_ptr.training_class_mask > 0;
                     }
