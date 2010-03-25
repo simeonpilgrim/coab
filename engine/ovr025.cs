@@ -223,7 +223,7 @@ namespace engine
                 return;
             }
 
-            int x_pos = (gbl.game_state == GameState.State0) ? 1 : 17;
+            int x_pos = (gbl.game_state == GameState.StartGameMenu) ? 1 : 17;
             int y_pos = 2;
 
             seg041.displayString("Name", 0, 15, y_pos, x_pos);
@@ -1443,7 +1443,7 @@ namespace engine
 
             switch (gbl.game_state)
             {
-                case GameState.State0:
+                case GameState.StartGameMenu:
                     seg037.DrawFrame_Outer();
                     break;
 
