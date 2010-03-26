@@ -814,11 +814,11 @@ namespace engine
         }
 
 
-        internal static void string_print01(string arg_0)
+        internal static void string_print01(string text)
         {
             ovr027.ClearPromptAreaNoUpdate();
 
-            seg041.displayString(arg_0, 0, 10, 0x18, 0);
+            seg041.displayString(text, 0, 10, 0x18, 0);
 
             seg041.GameDelay();
 
@@ -1576,7 +1576,7 @@ namespace engine
                 bool useOverlay = (gbl.game_state == GameState.Camping || gbl.game_state == GameState.AfterCombat);
                 bool special_key;
 
-                input_key = ovr027.displayInput(out special_key, useOverlay, 1, 15, 10, 13, "Select" + text, prompt + " ");
+				input_key = ovr027.displayInput(out special_key, useOverlay, 1, gbl.defaultMenuColors, "Select" + text, prompt + " ");
 
                 int index = gbl.TeamList.IndexOf(player);
 

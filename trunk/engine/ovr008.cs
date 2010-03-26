@@ -6,10 +6,9 @@ namespace engine
 {
     class ovr008
     {
-        internal static void vm_LoadCmdSets(byte numberOfSets) // parse_command_sub
+        internal static void vm_LoadCmdSets(int numberOfSets) // parse_command_sub
         {
             byte strIndex;
-            byte loop_var;
 
             strIndex = 0;
             //System.Console.WriteLine("  vm_LoadCmdSets: {0}", numberOfSets);
@@ -19,7 +18,7 @@ namespace engine
                 opp.Clear();
             }
 
-            for (loop_var = 1; loop_var <= numberOfSets; loop_var++)
+            for (int loop_var = 1; loop_var <= numberOfSets; loop_var++)
             {
                 byte code = gbl.ecl_ptr[0x8000 + gbl.ecl_offset + 1];
                 byte low = gbl.ecl_ptr[0x8000 + gbl.ecl_offset + 2];
@@ -120,10 +119,10 @@ namespace engine
             gbl.vm_run_addr_1 = gbl.cmd_opps[1].Word;
 
             vm_LoadCmdSets(1);
-            gbl.vm_run_addr_2 = gbl.cmd_opps[1].Word;
+            gbl.SearchLocationAddr = gbl.cmd_opps[1].Word;
 
             vm_LoadCmdSets(1);
-            gbl.vm_run_addr_3 = gbl.cmd_opps[1].Word;
+            gbl.PreCampCheckAddr = gbl.cmd_opps[1].Word;
 
             vm_LoadCmdSets(1);
             gbl.CampInterruptedAddr = gbl.cmd_opps[1].Word;
@@ -1186,8 +1185,7 @@ namespace engine
 
         static Set unk_3178A = new Set(0x0606, new byte[] { 0xff, 0x03, 0xfe, 0xff, 0xff, 0x07 });
 
-        internal static int sub_317AA(bool useOverlay, byte arg_2, byte highlightFgColor, byte fgColor, 
-			byte extraFgColor, string displayString, string extraString)
+        internal static int sub_317AA(bool useOverlay, byte arg_2, MenuColorSet colors, string displayString, string extraString)
         {
             char key_pressed;
             int ret_val;
@@ -1197,7 +1195,7 @@ namespace engine
             do
             {
                 bool special_key_pressed;
-                key_pressed = ovr027.displayInput(out special_key_pressed, useOverlay, 1, highlightFgColor, fgColor, extraFgColor, displayString, extraString);
+                key_pressed = ovr027.displayInput(out special_key_pressed, useOverlay, 1, colors, displayString, extraString);
 
                 if (special_key_pressed == true)
                 {
@@ -1237,13 +1235,12 @@ namespace engine
 
 
         internal static int VertMenuSelect(int index, bool menuRedraw, bool showExit, 
-			List<MenuItem> list, sbyte endY, sbyte endX, int startY, sbyte startX, 
-			byte highlighBgColor, byte normalColor, byte headingColor)
+			List<MenuItem> list, sbyte endY, sbyte endX, int startY, sbyte startX)
         {
             MenuItem dummyMenuItem;
             
             ovr027.sl_select_item(out dummyMenuItem, ref index, ref menuRedraw, showExit, list, endY, endX,
-                startY, startX, highlighBgColor, normalColor, headingColor, string.Empty, string.Empty);
+                startY, startX, gbl.defaultMenuColors, string.Empty, string.Empty);
 
             return index;
         }
@@ -1393,94 +1390,6 @@ namespace engine
 
                 return (ovr024.roll_dice(100, 1) <= arg_4);
             });
-        }
-
-
-        internal static void vm_skipNextCommand()
-        {
-            gbl.command = gbl.ecl_ptr[gbl.ecl_offset + 0x8000];
-
-            if (gbl.printCommands == true)
-            {
-                Logger.Debug("SKIPPING: ");
-                ovr003.DebugCommand();
-            }
-
-            switch (gbl.command)
-            {
-                case 0x01:
-                case 0x02:
-                case 0x0A:
-                case 0x0E:
-                case 0x11:
-                case 0x12:
-                case 0x1D:
-                case 0x20:
-                case 0x2D:
-                case 0x32:
-                case 0x34:
-                case 0x36:
-                case 0x38:
-                case 0x39:
-                case 0x3C:
-                case 0x3F:
-                case 0x40:
-                    vm_LoadCmdSets(1);
-                    break;
-
-                case 0x03:
-                case 0x08:
-                case 0x09:
-                case 0x0F:
-                case 0x10:
-                case 0x1F:
-                case 0x22:
-                    vm_LoadCmdSets(2);
-                    break;
-
-                case 0x04:
-                case 0x05:
-                case 0x06:
-                case 0x07:
-                case 0x0B:
-                case 0x0C:
-                case 0x21:
-                case 0x28:
-                case 0x2A:
-                case 0x2F:
-                case 0x30:
-                case 0x35:
-                case 0x37:
-                case 0x3B:
-                    vm_LoadCmdSets(3);
-                    break;
-
-                case 0x14:
-                case 0x23:
-                    vm_LoadCmdSets(4);
-                    break;
-
-                case 0x2E:
-                    vm_LoadCmdSets(5);
-                    break;
-
-                case 0x1E:
-                case 0x2C:
-                    vm_LoadCmdSets(6);
-                    break;
-
-                case 0x27:
-                    vm_LoadCmdSets(8);
-                    break;
-
-                case 0x29:
-                    vm_LoadCmdSets(0x0e);
-                    break;
-
-                default:
-                    gbl.ecl_offset++;
-                    break;
-            }
         }
 
 

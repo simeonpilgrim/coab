@@ -473,7 +473,7 @@ namespace engine
 
             if (gbl.compare_flags[index] == false)
             {
-                ovr008.vm_skipNextCommand();
+				SkipNextCommand();
             }
         }
 
@@ -486,8 +486,8 @@ namespace engine
 
             VmLog.WriteLine("CMD_NewECL: block_id {0}", block_id);
 
-            gbl.area_ptr.field_1E4 = gbl.byte_1EE88;
-            gbl.byte_1EE88 = block_id;
+            gbl.area_ptr.LastEclBlockId = gbl.EclBlockId;
+            gbl.EclBlockId = block_id;
 
             ovr008.load_ecl_dax(block_id);
             ovr008.vm_init_ecl();
@@ -690,7 +690,7 @@ namespace engine
                 menuList.Add(new MenuItem(gbl.unk_1D972[i + 1]));
             }
 
-            int index = ovr008.VertMenuSelect(0, true, false, menuList, 0x16, 0x26, gbl.textYCol + 1, 1, 15, 10, 13);
+            int index = ovr008.VertMenuSelect(0, true, false, menuList, 0x16, 0x26, gbl.textYCol + 1, 1);
 
             ovr008.vm_SetMemoryValue((ushort)index, mem_loc);
 
@@ -701,8 +701,6 @@ namespace engine
 
         internal static void CMD_HorizontalMenu()
         {
-            byte var_3E;
-            byte var_3D;
             bool useOverlay;
             byte var_3B;
 
@@ -715,11 +713,11 @@ namespace engine
 
             ovr008.vm_LoadCmdSets(string_count);
 
+			MenuColorSet colors;
             if (string_count == 1)
             {
-                var_3B = 1;
-                var_3D = 0x0F;
-                var_3E = 0x0F;
+				var_3B = 1;
+				colors = new MenuColorSet(15, 15, 13);
 
                 if (gbl.unk_1D972[1] == "PRESS BUTTON OR RETURN TO CONTINUE.")
                 {
@@ -728,9 +726,9 @@ namespace engine
             }
             else
             {
-                var_3B = 0;
-                var_3D = 0x0F;
-                var_3E = 0x0A;
+				colors = new MenuColorSet(1, 15, 15);
+				var_3B = 0;
+				colors = gbl.defaultMenuColors;
             }
 
             if (gbl.byte_1EE8C == false ||
@@ -751,7 +749,7 @@ namespace engine
 
             text += "~" + gbl.unk_1D972[string_count];
 
-            byte menu_selected = (byte)ovr008.sub_317AA(useOverlay, var_3B, var_3D, var_3E, 0x0d, text, string.Empty);
+			byte menu_selected = (byte)ovr008.sub_317AA(useOverlay, var_3B, colors, text, string.Empty);
 
             ovr008.vm_SetMemoryValue(menu_selected, loc);
 
@@ -1369,7 +1367,7 @@ namespace engine
                     displayText = "~COMBAT ~WAIT ~FLEE ~ADVANCE";
                 }
 
-                menu_selected = ovr008.sub_317AA(useOverlay, 0, 15, 10, 13, displayText, string.Empty);
+                menu_selected = ovr008.sub_317AA(useOverlay, 0, gbl.defaultMenuColors, displayText, string.Empty);
 
                 if (gbl.area2_ptr.encounter_distance == 0 ||
                     gbl.area_ptr.inDungeon == 0)
@@ -1557,7 +1555,7 @@ namespace engine
                 values[i] = (byte)ovr008.vm_GetCmdValue(i + 1);
             }
 
-            int menu_selected = ovr008.sub_317AA(false, 0, 15, 10, 13, "~HAUGHTY ~SLY ~NICE ~MEEK ~ABUSIVE", " ");
+			int menu_selected = ovr008.sub_317AA(false, 0, gbl.defaultMenuColors, "~HAUGHTY ~SLY ~NICE ~MEEK ~ABUSIVE", " ");
 
             ushort location = gbl.cmd_opps[6].Word;
 
@@ -1739,10 +1737,10 @@ namespace engine
         internal static void CMD_EclClock() /* sub_28CDA */
         {
             ovr008.vm_LoadCmdSets(2);
-            byte var_1 = (byte)ovr008.vm_GetCmdValue(1);
-            byte var_2 = (byte)ovr008.vm_GetCmdValue(2);
+            int timeStep = ovr008.vm_GetCmdValue(1) & 0xff;
+			int timeSlot = ovr008.vm_GetCmdValue(2) & 0xff;
 
-            ovr021.step_game_time(var_2, var_1);
+            ovr021.step_game_time(timeSlot, timeStep);
         }
 
 
@@ -1944,18 +1942,16 @@ namespace engine
         }
 
 
-        internal static void sub_29094()
+        internal static void TryEncamp()
         {
-            bool action_interrupted = false;
+            RunEclVm(gbl.PreCampCheckAddr);
 
-            RunEclVm(gbl.vm_run_addr_3);
-            ovr016.make_camp(out action_interrupted);
-
-            if (action_interrupted == true)
+			if (ovr016.make_camp() == true)
             {
                 ovr025.load_pic();
                 RunEclVm(gbl.CampInterruptedAddr);
             }
+
             gbl.can_draw_bigpic = true;
             ovr029.RedrawView();
             gbl.gameSaved = false;
@@ -1999,7 +1995,7 @@ namespace engine
                 }
 
                 ovr018.startGameMenu();
-                char saveYes = ovr027.yes_no(15, 10, 13, "You've won. Save before quitting? ");
+				char saveYes = ovr027.yes_no(gbl.defaultMenuColors, "You've won. Save before quitting? ");
 
                 if (saveYes == 'Y')
                 {
@@ -2011,7 +2007,7 @@ namespace engine
             else if (var_1 == 9)
             {
                 ushort ecl_bkup = gbl.ecl_offset;
-                sub_29094();
+                TryEncamp();
                 gbl.ecl_offset = ecl_bkup;
                 CMD_Exit();
             }
@@ -2031,6 +2027,7 @@ namespace engine
             gbl.encounter_flags[1] = false;
             gbl.byte_1EE8C = false;
             ovr008.vm_LoadCmdSets(1);
+
             if (Cheats.skip_copy_protection == false)
             {
                 ovr004.copy_protection();
@@ -2090,78 +2087,93 @@ namespace engine
         }
 
 
-        internal static void commandTable()
-        {
-            switch (gbl.command)
-            {
-                case 0x00: CMD_Exit(); break;
-                case 0x01: CMD_Goto(); break;
-                case 0x02: CMD_Gosub(); break;
-                case 0x03: CMD_Compare(); break;
-                case 0x04: CMD_AddSubDivMulti(); break;
-                case 0x05: CMD_AddSubDivMulti(); break;
-                case 0x06: CMD_AddSubDivMulti(); break;
-                case 0x07: CMD_AddSubDivMulti(); break;
-                case 0x08: CMD_Random(); break;
-                case 0x09: CMD_Save(); break;
-                case 0x0A: CMD_LoadCharacter(); break;
-                case 0x0B: CMD_LoadMonster(); break;
-                case 0x0C: CMD_SetupMonster(); break;
-                case 0x0D: CMD_Approach(); break;
-                case 0x0E: CMD_Picture(); break;
-                case 0x0F: CMD_InputNumber(); break;
-                case 0x10: CMD_InputString(); break;
-                case 0x11: CMD_Print(); break;
-                case 0x12: CMD_Print(); break;
-                case 0x13: CMD_Return(); break;
-                case 0x14: CMD_CompareAnd(); break;
-                case 0x15: CMD_VertMenu(); break;
-                case 0x16: CMD_If(); break;
-                case 0x17: CMD_If(); break;
-                case 0x18: CMD_If(); break;
-                case 0x19: CMD_If(); break;
-                case 0x1A: CMD_If(); break;
-                case 0x1B: CMD_If(); break;
-                case 0x1C: CMD_ClearMonsters(); break;
-                case 0x1D: CMD_PartyStrength(); break;
-                case 0x1E: CMD_CheckParty(); break;
-                case 0x20: CMD_NewECL(); break;
-                case 0x21: CMD_LoadFiles(); break;
-                case 0x22: CMD_PartySurprise(); break;
-                case 0x23: CMD_Surprise(); break;
-                case 0x24: CMD_Combat(); break;
-                case 0x25: CMD_OnGotoGoSub(); break;
-                case 0x26: CMD_OnGotoGoSub(); break;
-                case 0x27: CMD_Treasure(); break;
-                case 0x28: CMD_Rob(); break;
-                case 0x29: CMD_EncounterMenu(); break;
-                case 0x2A: CMD_GetTable(); break;
-                case 0x2B: CMD_HorizontalMenu(); break;
-                case 0x2C: CMD_Parlay(); break;
-                case 0x2D: CMD_Call(); break;
-                case 0x2E: CMD_Damage(); break;
-                case 0x2F: CMD_AndOr(); break;
-                case 0x30: CMD_AndOr(); break;
-                case 0x31: CMD_SpriteOff(); break;
-                case 0x32: CMD_FindItem(); break;
-                case 0x33: CMD_PrintReturn(); break;
-                case 0x34: CMD_EclClock(); break;
-                case 0x35: CMD_SaveTable(); break;
-                case 0x36: CMD_AddNPC(); break;
-                case 0x37: CMD_LoadFiles(); break;
-                case 0x38: CMD_Program(); break;
-                case 0x39: CMD_Who(); break;
-                case 0x3A: CMD_Delay(); break;
-                case 0x3B: CMD_Spell(); break;
-                case 0x3C: CMD_Protection(); break;
-                case 0x3D: CMD_ClearBox(); break;
-                case 0x3E: CMD_Dump(); break;
-                case 0x3F: CMD_FindSpecial(); break;
-                case 0x40: CMD_DestroyItems(); break;
-                default:
-                    break;
-            }
-        }
+
+		static Dictionary<int, CmdItem> CommandTable = new Dictionary<int, CmdItem>();
+
+		public static void SetupCommandTable()
+		{
+			CommandTable.Add(0x00, new CmdItem(0, "EXIT", CMD_Exit));
+			CommandTable.Add(0x01, new CmdItem(1, "GOTO", CMD_Goto));
+			CommandTable.Add(0x02, new CmdItem(1, "GOSUB", CMD_Gosub));
+			CommandTable.Add(0x03, new CmdItem(2, "COMPARE", CMD_Compare));
+			CommandTable.Add(0x04, new CmdItem(3, "ADD", CMD_AddSubDivMulti));
+			CommandTable.Add(0x05, new CmdItem(3, "SUBTRACT", CMD_AddSubDivMulti));
+			CommandTable.Add(0x06, new CmdItem(3, "DIVIDE", CMD_AddSubDivMulti));
+			CommandTable.Add(0x07, new CmdItem(3, "MULTIPLY", CMD_AddSubDivMulti));
+			CommandTable.Add(0x08, new CmdItem(2, "RANDOM", CMD_Random));
+			CommandTable.Add(0x09, new CmdItem(2, "SAVE", CMD_Save));
+			CommandTable.Add(0x0A, new CmdItem(1, "LOAD CHARACTER", CMD_LoadCharacter));
+			CommandTable.Add(0x0B, new CmdItem(3, "LOAD MONSTER", CMD_LoadMonster));
+			CommandTable.Add(0x0C, new CmdItem(3, "SETUP MONSTER", CMD_SetupMonster));
+			CommandTable.Add(0x0D, new CmdItem(0, "APPROACH", CMD_Approach));
+			CommandTable.Add(0x0E, new CmdItem(1, "PICTURE", CMD_Picture));
+			CommandTable.Add(0x0F, new CmdItem(2, "INPUT NUMBER", CMD_InputNumber));
+			CommandTable.Add(0x10, new CmdItem(2, "INPUT STRING", CMD_InputString));
+			CommandTable.Add(0x11, new CmdItem(1, "PRINT", CMD_Print));
+			CommandTable.Add(0x12, new CmdItem(1, "PRINTCLEAR", CMD_Print));
+			CommandTable.Add(0x13, new CmdItem(0, "RETURN", CMD_Return));
+			CommandTable.Add(0x14, new CmdItem(4, "COMPARE AND", CMD_CompareAnd));
+			CommandTable.Add(0x15, new CmdItem(0, "VERTICAL MENU", CMD_VertMenu));
+			CommandTable.Add(0x16, new CmdItem(0, "IF =", CMD_If));
+			CommandTable.Add(0x17, new CmdItem(0, "IF <>", CMD_If));
+			CommandTable.Add(0x18, new CmdItem(0, "IF <", CMD_If));
+			CommandTable.Add(0x19, new CmdItem(0, "IF >", CMD_If));
+			CommandTable.Add(0x1A, new CmdItem(0, "IF <=", CMD_If));
+			CommandTable.Add(0x1B, new CmdItem(0, "IF >=", CMD_If));
+			CommandTable.Add(0x1C, new CmdItem(0, "CLEARMONSTERS", CMD_ClearMonsters));
+			CommandTable.Add(0x1D, new CmdItem(1, "PARTYSTRENGTH", CMD_PartyStrength));
+			CommandTable.Add(0x1E, new CmdItem(6, "CHECKPARTY", CMD_CheckParty));
+			CommandTable.Add(0x1F, new CmdItem(2, "notsure 0x1f", null));
+			CommandTable.Add(0x20, new CmdItem(1, "NEWECL", CMD_NewECL));
+			CommandTable.Add(0x21, new CmdItem(3, "LOAD FILES", CMD_LoadFiles));
+			CommandTable.Add(0x22, new CmdItem(2, "PARTY SURPRISE", CMD_PartySurprise));
+			CommandTable.Add(0x23, new CmdItem(4, "SURPRISE", CMD_Surprise));
+			CommandTable.Add(0x24, new CmdItem(0, "COMBAT", CMD_Combat));
+			CommandTable.Add(0x25, new CmdItem(0, "ON GOTO", CMD_OnGotoGoSub));
+			CommandTable.Add(0x26, new CmdItem(0, "ON GOSUB", CMD_OnGotoGoSub));
+			CommandTable.Add(0x27, new CmdItem(8, "TREASURE", CMD_Treasure));
+			CommandTable.Add(0x28, new CmdItem(3, "ROB", CMD_Rob));
+			CommandTable.Add(0x29, new CmdItem(14, "ENCOUNTER MENU", CMD_EncounterMenu));
+			CommandTable.Add(0x2A, new CmdItem(3, "GETTABLE", CMD_GetTable));
+			CommandTable.Add(0x2B, new CmdItem(0, "HORIZONTAL MENU", CMD_HorizontalMenu));
+			CommandTable.Add(0x2C, new CmdItem(6, "PARLAY", CMD_Parlay));
+			CommandTable.Add(0x2D, new CmdItem(1, "CALL", CMD_Call));
+			CommandTable.Add(0x2E, new CmdItem(5, "DAMAGE", CMD_Damage));
+			CommandTable.Add(0x2F, new CmdItem(3, "AND", CMD_AndOr));
+			CommandTable.Add(0x30, new CmdItem(3, "OR", CMD_AndOr));
+			CommandTable.Add(0x31, new CmdItem(0, "SPRITE OFF", CMD_SpriteOff));
+			CommandTable.Add(0x32, new CmdItem(1, "FIND ITEM", CMD_FindItem));
+			CommandTable.Add(0x33, new CmdItem(0, "PRINT RETURN", CMD_PrintReturn));
+			CommandTable.Add(0x34, new CmdItem(1, "ECL CLOCK", CMD_EclClock));
+			CommandTable.Add(0x35, new CmdItem(3, "SAVE TABLE", CMD_SaveTable));
+			CommandTable.Add(0x36, new CmdItem(1, "ADD NPC", CMD_AddNPC));
+			CommandTable.Add(0x37, new CmdItem(3, "LOAD PIECES", CMD_LoadFiles));
+			CommandTable.Add(0x38, new CmdItem(1, "PROGRAM", CMD_Program));
+			CommandTable.Add(0x39, new CmdItem(1, "WHO", CMD_Who));
+			CommandTable.Add(0x3A, new CmdItem(0, "DELAY", CMD_Delay));
+			CommandTable.Add(0x3B, new CmdItem(3, "SPELL", CMD_Spell));
+			CommandTable.Add(0x3C, new CmdItem(1, "PROTECTION", CMD_Protection));
+			CommandTable.Add(0x3D, new CmdItem(0, "CLEAR BOX", CMD_ClearBox));
+			CommandTable.Add(0x3E, new CmdItem(0, "DUMP", CMD_Dump));
+			CommandTable.Add(0x3F, new CmdItem(1, "FIND SPECIAL", CMD_FindSpecial));
+			CommandTable.Add(0x40, new CmdItem(1, "DESTROY ITEMS", CMD_DestroyItems));
+		}
+
+		static void SkipNextCommand()
+		{
+			gbl.command = gbl.ecl_ptr[gbl.ecl_offset + 0x8000];
+
+			CmdItem cmd;
+			if (CommandTable.TryGetValue(gbl.command, out cmd))
+			{
+				cmd.Skip();
+			}
+			else
+			{
+				Logger.Log("Skipping Unknown command id {0}", gbl.command);
+				gbl.ecl_offset += 1;
+			}
+		}
 
 
         internal static void RunEclVm(ushort offset) // sub_29607
@@ -2169,31 +2181,31 @@ namespace engine
             gbl.ecl_offset = offset;
             gbl.stopVM = false;
 
-            //uncomment to debug end-game 
-            //gbl.game_area = 6;
-            //ovr019.end_game_text(); 
-
             //System.Console.Out.WriteLine("RunEclVm {0,4:X} start", offset);
 
-            while (gbl.stopVM == false &&
-                   gbl.party_killed == false)
-            {
-                //byte byte_1D928 = gbl.command;
+			while (gbl.stopVM == false &&
+				   gbl.party_killed == false)
+			{
+				gbl.command = gbl.ecl_ptr[gbl.ecl_offset + 0x8000];
 
-                gbl.command = gbl.ecl_ptr[gbl.ecl_offset + 0x8000];
+				VmLog.Write("0x{0:X} ", gbl.ecl_offset);
 
-                VmLog.Write("0x{0:X} ", gbl.ecl_offset);
-
-                if (gbl.printCommands == true)
-                {
-                    DebugCommand();
-                }
-
-                commandTable();
-            }
+				CmdItem cmd;
+				if (CommandTable.TryGetValue(gbl.command, out cmd))
+				{
+					if (gbl.printCommands)
+					{
+						Logger.Debug("{0} 0x{1:X}", cmd.Name(), gbl.command);
+					}
+					cmd.Run();
+				}
+				else
+				{
+					Logger.Log("Unknown command id {0}", gbl.command);
+				}
+			}
 
             gbl.stopVM = false;
-            //System.Console.Out.WriteLine("RunEclVm {0,4:X} end", offset);
         }
 
 
@@ -2215,7 +2227,7 @@ namespace engine
 
                 if (gbl.vmFlag01 == false)
                 {
-                    gbl.area_ptr.field_1E4 = gbl.byte_1EE88;
+                    gbl.area_ptr.LastEclBlockId = gbl.EclBlockId;
                 }
 
                 if (gbl.vmFlag01 == false)
@@ -2231,7 +2243,7 @@ namespace engine
 
                     if (gbl.vmFlag01 == false)
                     {
-                        RunEclVm(gbl.vm_run_addr_2);
+                        RunEclVm(gbl.SearchLocationAddr);
 
                         if (gbl.vmFlag01 == false)
                         {
@@ -2260,24 +2272,24 @@ namespace engine
             gbl.game_state = GameState.DungeonMap;
             gbl.vmFlag01 = false;
 
-            if (gbl.area_ptr.field_1E4 == 0)
+            if (gbl.area_ptr.LastEclBlockId == 0)
             {
                 gbl.byte_1EE98 = false;
 
                 if (gbl.inDemo == true)
                 {
-                    gbl.byte_1EE88 = 0x52;
+                    gbl.EclBlockId = 0x52;
                 }
                 else
                 {
-                    gbl.byte_1EE88 = 1;
+                    gbl.EclBlockId = 1;
 
                     ovr025.PartySummary(gbl.player_ptr);
                 }
             }
             else
             {
-                gbl.byte_1EE88 = (byte)(gbl.area_ptr.field_1E4);
+                gbl.EclBlockId = (byte)(gbl.area_ptr.LastEclBlockId);
             }
 
             if (gbl.area_ptr.inDungeon == 0)
@@ -2286,9 +2298,9 @@ namespace engine
             }
 
             if (gbl.reload_ecl_and_pictures == true ||
-                gbl.area_ptr.field_1E4 == 0)
+                gbl.area_ptr.LastEclBlockId == 0)
             {
-                ovr008.load_ecl_dax(gbl.byte_1EE88);
+                ovr008.load_ecl_dax(gbl.EclBlockId);
             }
             else
             {
@@ -2311,7 +2323,7 @@ namespace engine
             {
                 if (gbl.vmFlag01 == false)
                 {
-                    gbl.area_ptr.field_1E4 = gbl.byte_1EE88;
+                    gbl.area_ptr.LastEclBlockId = gbl.EclBlockId;
                 }
                 else
                 {
@@ -2340,7 +2352,7 @@ namespace engine
 
                     if (gbl.vmFlag01 == false)
                     {
-                        gbl.area_ptr.field_1E4 = gbl.byte_1EE88;
+                        gbl.area_ptr.LastEclBlockId = gbl.EclBlockId;
                     }
 
                     while ((gbl.area2_ptr.search_flags > 1 || char.ToUpper(var_1) == 'E') &&
@@ -2348,7 +2360,7 @@ namespace engine
                     {
                         if (char.ToUpper(var_1) == 'E')
                         {
-                            sub_29094();
+                            TryEncamp();
                         }
                         else
                         {
@@ -2357,7 +2369,7 @@ namespace engine
                             gbl.can_draw_bigpic = true;
                             ovr029.RedrawView();
 
-                            RunEclVm(gbl.vm_run_addr_2);
+                            RunEclVm(gbl.SearchLocationAddr);
 
                             if (gbl.vmFlag01 == true)
                             {
@@ -2402,7 +2414,7 @@ namespace engine
 
                             gbl.byte_1EE8C = false;
                             gbl.byte_1EE8D = true;
-                            RunEclVm(gbl.vm_run_addr_2);
+                            RunEclVm(gbl.SearchLocationAddr);
                             if (gbl.vmFlag01 == true)
                             {
                                 sub_29677();
@@ -2414,83 +2426,48 @@ namespace engine
                 gbl.party_killed = false;
             }
         }
-
-        internal static void DebugCommand()
-        {
-            string name;
-
-            switch (gbl.command)
-            {
-                case 0: name = "EXIT"; break;
-                case 1: name = "GOTO"; break;
-                case 2: name = "GOSUB"; break;
-                case 3: name = "COMPARE"; break;
-                case 4: name = "ADD"; break;
-                case 5: name = "SUBTRAT"; break;
-                case 6: name = "DIVIDE"; break;
-                case 7: name = "MULTIPLY"; break;
-                case 8: name = "RANDOM"; break;
-                case 9: name = "SAVE"; break;
-                case 0x0A: name = "LOAD CHARACTER"; break;
-                case 0x0B: name = "LOAD MONSTER"; break;
-                case 0x0C: name = "SETUP MONSTER"; break;
-                case 0x0D: name = "APPROACH"; break;
-                case 0x0E: name = "PICTURE"; break;
-                case 0x0F: name = "INPUT NUMBER"; break;
-                case 0x10: name = "INPUT STRING"; break;
-                case 0x11: name = "PRINT"; break;
-                case 0x12: name = "PRINTCLEAR"; break;
-                case 0x13: name = "RETURN"; break;
-                case 0x14: name = "COMPARE AND"; break;
-                case 0x15: name = "VERTICAL MENU"; break;
-                case 0x16: name = "IF = "; break;
-                case 0x17: name = "IF <>"; break;
-                case 0x18: name = "IF <"; break;
-                case 0x19: name = "IF >"; break;
-                case 0x1A: name = "IF <="; break;
-                case 0x1B: name = "IF >="; break;
-                case 0x1C: name = "CLEARMONSTERS"; break;
-                case 0x1D: name = "PARTYSTRENGTH"; break;
-                case 0x1E: name = "CHECKPARTY"; break;
-                case 0x20: name = "NEWECL"; break;
-                case 0x21: name = "LOAD FILES"; break;
-                case 0x37: name = "LOAD PIECES"; break;
-                case 0x22: name = "PARTY SURPRISE"; break;
-                case 0x23: name = "SURPRISE"; break;
-                case 0x24: name = "COMBAT"; break;
-                case 0x25: name = "ON GOTO"; break;
-                case 0x26: name = "ON GOSUB"; break;
-                case 0x27: name = "TREASURE"; break;
-                case 0x28: name = "ROB"; break;
-                case 0x29: name = "ENCOUNTER MENU"; break;
-                case 0x2A: name = "GETTABLE"; break;
-                case 0x2B: name = "HORIZONTAL MENU"; break;
-                case 0x2C: name = "PARLAY"; break;
-                case 0x2D: name = "CALL"; break;
-                case 0x2E: name = "DAMAGE"; break;
-                case 0x2F: name = "AND"; break;
-                case 0x30: name = "OR"; break;
-                case 0x31: name = "SPRITE OFF"; break;
-                case 0x32: name = "FIND ITEM"; break;
-                case 0x33: name = "PRINT RETURN"; break;
-                case 0x34: name = "ECL CLOCK"; break;
-                case 0x35: name = "SAVE TABLE"; break;
-                case 0x36: name = "ADD NPC"; break;
-                case 0x38: name = "PROGRAM"; break;
-                case 0x39: name = "WHO"; break;
-                case 0x3A: name = "DELAY"; break;
-                case 0x3B: name = "SPELL"; break;
-                case 0x3C: name = "PROTECTION"; break;
-                case 0x3D: name = "CLEAR BOX"; break;
-                case 0x3E: name = "DUMP"; break;
-                case 0x3F: name = "FIND SPECIAL"; break;
-                case 0x40: name = "DESTROY ITEMS"; break;
-                default:
-                    name = "Unknown Command";
-                    break;
-            }
-
-            Logger.Debug("{1} 0x{0:X}", gbl.command, name);
-        }
     }
+
+	internal class CmdItem
+	{
+		public delegate void CmdDelegate();
+
+		int size;
+		string name;
+		CmdDelegate cmd;
+
+		public CmdItem(int Size, string Name, CmdDelegate Cmd)
+		{
+			size = Size;
+			name = Name;
+			cmd = Cmd;
+		}
+
+		public void Run()
+		{
+			cmd();
+		}
+
+		public string Name()
+		{
+			return name;
+		}
+
+		internal void Skip()
+		{
+			if (gbl.printCommands == true)
+			{
+				Logger.Debug("SKIPPING: {0}", name);
+			}
+
+			if (size == 0)
+			{
+				gbl.ecl_offset += 1;
+			}
+			else
+			{
+				ovr008.vm_LoadCmdSets(size);
+			}
+		}
+	}
 }

@@ -1746,7 +1746,7 @@ namespace engine
             {
                 result = true;
             }
-            else if (ovr027.yes_no(15, 10, 13, "Attack Ally: ") != 'Y')
+			else if (ovr027.yes_no(gbl.defaultMenuColors, "Attack Ally: ") != 'Y')
             {
                 result = false;
             }
@@ -1820,7 +1820,7 @@ namespace engine
             gbl.display_hitpoints_ac = true;
             ovr025.CombatDisplayPlayerSummary(target);
 
-            char input_key = ovr027.displayInput(false, 1, 15, 10, 13, text, "Aim:");
+			char input_key = ovr027.displayInput(false, 1, gbl.defaultMenuColors, text, "Aim:");
 
             return input_key;
         }
@@ -1997,7 +1997,7 @@ namespace engine
                     var_29 = "Target " + var_29;
                 }
 
-                input_key = ovr027.displayInput( false, 1, 15, 10, 13, var_29, "(Use Cursor keys) ");
+				input_key = ovr027.displayInput(false, 1, gbl.defaultMenuColors, var_29, "(Use Cursor keys) ");
 
                 switch (input_key)
                 {

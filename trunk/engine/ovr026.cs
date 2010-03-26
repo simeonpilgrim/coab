@@ -652,7 +652,7 @@ namespace engine
             do
             {
                 input_key = ovr027.sl_select_item(out list_ptr, ref index, ref var_F, show_exit, list,
-                    0x16, 0x26, 2, 1, 15, 10, 13, "Select", string.Empty);
+					0x16, 0x26, 2, 1, gbl.defaultMenuColors, "Select", string.Empty);
 
                 if (input_key == 0)
                 {

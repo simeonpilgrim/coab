@@ -16,7 +16,7 @@ namespace engine
         static char CastCureAnyway(string text)
         {
             ovr025.DisplayPlayerStatusString(false, 0, text, gbl.player_ptr);
-            char ret_val = ovr027.yes_no(15, 10, 13, "cast cure anyway: ");
+			char ret_val = ovr027.yes_no(gbl.defaultMenuColors, "cast cure anyway: ");
 
             ovr025.ClearPlayerTextArea();
 
@@ -29,7 +29,7 @@ namespace engine
             string text = string.Format("{0} will only cost {1} gold pieces.", cure_name, cost);
             seg041.press_any_key(text, true, 0, 10, TextRegion.NormalBottom);
 
-            char input_key = ovr027.yes_no(15, 10, 13, "pay for cure ");
+			char input_key = ovr027.yes_no(gbl.defaultMenuColors, "pay for cure ");
 
             if (input_key == 'Y')
             {
@@ -368,7 +368,7 @@ namespace engine
                 MenuItem dummySelected;
 
                 char sl_output = ovr027.sl_select_item(out dummySelected, ref sl_index, ref redrawMenuItems, false,
-                    stringList, 15, 0x26, 4, 2, 15, 10, 13, "Heal Exit", string.Empty);
+					stringList, 15, 0x26, 4, 2, gbl.defaultMenuColors, "Heal Exit", string.Empty);
 
                 if (sl_output == 'H' || sl_output == 0x0d)
                 {
@@ -468,7 +468,7 @@ namespace engine
                 }
 
                 bool ctrl_key;
-                char input_key = ovr027.displayInput(out ctrl_key, false, 1, 15, 10, 13, text, string.Empty);
+				char input_key = ovr027.displayInput(out ctrl_key, false, 1, gbl.defaultMenuColors, text, string.Empty);
 
                 switch (input_key)
                 {
@@ -511,7 +511,7 @@ namespace engine
 
                             seg041.press_any_key("As you leave a priest says, \"Excuse me but you have left some money here\" ", true, 0, 10, TextRegion.NormalBottom);
                             seg041.press_any_key("Do you want to go back and retrieve your money?", true, 0, 10,  TextRegion.NormalBottom);
-                            int menu_selected = ovr008.sub_317AA(false, 0, 15, 10, 13, prompt, string.Empty);
+							int menu_selected = ovr008.sub_317AA(false, 0, gbl.defaultMenuColors, prompt, string.Empty);
 
                             if (menu_selected == 1)
                             {

@@ -129,7 +129,7 @@ namespace engine
 
                 bool controlKey;
 
-                char inputkey = ovr027.displayInput(out controlKey, false, 1, 0, 0, 13, "C D M T H V A R L S B E J", "Choose a function ");
+                char inputkey = ovr027.displayInput(out controlKey, false, 1, new MenuColorSet(0, 0, 13), "C D M T H V A R L S B E J", "Choose a function ");
 
                 ovr027.ClearPromptArea();
 
@@ -257,7 +257,7 @@ namespace engine
                                     }
                                     else
                                     {
-                                        if (gbl.area_ptr.field_1E4 == 0)
+                                        if (gbl.area_ptr.LastEclBlockId == 0)
                                         {
                                             seg037.draw8x8_03();
                                         }
@@ -274,7 +274,7 @@ namespace engine
                         case 'E':
                             if (menuFlags[allow_exit] == true)
                             {
-                                inputkey = ovr027.yes_no(15, 10, 14, "Quit to DOS ");
+								inputkey = ovr027.yes_no(gbl.alertMenuColors, "Quit to DOS ");
 
                                 if (inputkey == 'Y')
                                 {
@@ -282,7 +282,7 @@ namespace engine
                                         gbl.gameSaved == false)
                                     {
 
-                                        inputkey = ovr027.yes_no(15, 10, 14, "Game not saved.  Quit anyway? ");
+										inputkey = ovr027.yes_no(gbl.alertMenuColors, "Game not saved.  Quit anyway? ");
                                         if (inputkey == 'N')
                                         {
                                             ovr017.SaveGame();
@@ -451,7 +451,7 @@ namespace engine
             do
             {
                 input_key = ovr027.sl_select_item(out selected, ref index, ref menuRedraw, showExit, var_C,
-                    22, 38, 2, 1, 15, 10, 13, "Select", string.Empty);
+					22, 38, 2, 1, gbl.defaultMenuColors, "Select", string.Empty);
 
                 if (input_key == '\0')
                 {
@@ -520,7 +520,7 @@ namespace engine
             do
             {
                 input_key = ovr027.sl_select_item(out selected, ref index, ref menuRedraw, showExit, var_C,
-                    22, 38, 2, 1, 15, 10, 13, "Select", string.Empty);
+					22, 38, 2, 1, gbl.defaultMenuColors, "Select", string.Empty);
 
                 if (input_key == '\0')
                 {
@@ -555,7 +555,7 @@ namespace engine
             do
             {
                 input_key = ovr027.sl_select_item(out selected, ref index, ref menuRedraw, showExit, var_C,
-                    22, 38, 2, 1, 15, 10, 13, "Select", string.Empty);
+					22, 38, 2, 1, gbl.defaultMenuColors, "Select", string.Empty);
 
                 if (input_key == '\0')
                 {
@@ -688,7 +688,7 @@ namespace engine
             do
             {
                 input_key = ovr027.sl_select_item(out selected, ref index, ref menuRedraw, showExit, var_C,
-                    22, 38, 2, 1, 15, 10, 13, "Select", string.Empty);
+					22, 38, 2, 1, gbl.defaultMenuColors, "Select", string.Empty);
 
 
                 if (input_key == '\0')
@@ -1140,7 +1140,7 @@ namespace engine
                 ovr020.display_player_stats01();
                 ovr020.displayMoney();
 
-                input_key = ovr027.yes_no(15, 10, 13, "Reroll stats? ");
+				input_key = ovr027.yes_no(gbl.defaultMenuColors, "Reroll stats? ");
 
             } while (input_key != 'N');
 
@@ -1160,7 +1160,7 @@ namespace engine
 
             player.max_str_00 = player.tmp_str_00;
 
-            input_key = ovr027.yes_no(15, 10, 13, "Save " + player.name + "? ");
+			input_key = ovr027.yes_no(gbl.defaultMenuColors, "Save " + player.name + "? ");
 
             if (input_key == 'Y')
             {
@@ -1215,8 +1215,8 @@ namespace engine
             {
                 Player player = gbl.player_ptr;
 
-                if (ovr027.yes_no(15, 10, 14, "Drop " + player.name + " forever? ") == 'Y' &&
-                    ovr027.yes_no(15, 10, 14, "Are you sure? ") == 'Y')
+				if (ovr027.yes_no(gbl.alertMenuColors, "Drop " + player.name + " forever? ") == 'Y' &&
+					ovr027.yes_no(gbl.alertMenuColors, "Are you sure? ") == 'Y')
                 {
                     if (player.in_combat == false)
                     {
@@ -1340,7 +1340,7 @@ namespace engine
                 }
                 else
                 {
-                    var_35 = ovr027.displayInput(out var_36, false, 1, 15, 10, 13, "Keep Exit", "Modify: ");
+					var_35 = ovr027.displayInput(out var_36, false, 1, gbl.defaultMenuColors, "Keep Exit", "Modify: ");
                 }
 
                 draw_highlight_stat(false, edited_stat, name_cursor_pos);
@@ -1777,7 +1777,7 @@ namespace engine
         {
             seg037.draw8x8_clear_area(0x16, 0x26, 1, 1);
 
-            char input_key = ovr027.displayInput(false, 0, 15, 10, 13, "Curse Pool Hillsfar Exit", "Add from where? ");
+			char input_key = ovr027.displayInput(false, 0, gbl.defaultMenuColors, "Curse Pool Hillsfar Exit", "Add from where? ");
 
             switch (input_key)
             {
@@ -1814,7 +1814,7 @@ namespace engine
                 {
                     bool showExit = true;
                     input_key = ovr027.sl_select_item(out select_sl, ref strList_index, ref menuRedraw, showExit, nameList,
-                        22, 38, 2, 1, 15, 10, 13, "Add", "Add a character: ");
+						22, 38, 2, 1, gbl.defaultMenuColors, "Add", "Add a character: ");
 
                     if ((input_key == 13 || input_key == 'A') &&
                         select_sl.Text[0] != '*')
@@ -2047,7 +2047,7 @@ namespace engine
 
                     bool specialKey;
 
-                    inputKey = ovr027.displayInput(out specialKey, false, 0, 15, 10, 13, text, string.Empty);
+					inputKey = ovr027.displayInput(out specialKey, false, 0, gbl.defaultMenuColors, text, string.Empty);
 
                     if (specialKey == false)
                     {
@@ -2314,7 +2314,7 @@ namespace engine
                 ovr027.ClearPromptArea();
                 ovr034.ReleaseCombatIcon(12);
 
-                inputKey = ovr027.yes_no(15, 10, 13, "Is this icon ok? ");
+				inputKey = ovr027.yes_no(gbl.defaultMenuColors, "Is this icon ok? ");
 
             } while (inputKey != 'Y');
 
@@ -2749,7 +2749,7 @@ namespace engine
                 }
             }
 
-            if (skipBits || ovr027.yes_no(15, 10, 13, "Do you wish to train? ") == 'Y')
+            if (skipBits || ovr027.yes_no(gbl.defaultMenuColors, "Do you wish to train? ") == 'Y')
             {
                 if (skipBits == false)
                 {

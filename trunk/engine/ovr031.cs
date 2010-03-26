@@ -183,7 +183,7 @@ namespace engine
         internal static byte WallDoorFlagsGet(int mapDir, int mapY, int mapX) /*sub_71573*/
         {
             if (MapCoordIsValid(mapY, mapX) == false &&
-                (gbl.byte_1EE88 == 0 || gbl.byte_1EE88 == 10))
+                (gbl.EclBlockId == 0 || gbl.EclBlockId == 10))
             {
                 return 0;
             }
@@ -258,7 +258,7 @@ namespace engine
             MapInfo mi = null;
 
             if (MapCoordIsValid(mapY, mapX) == false &&
-                (gbl.byte_1EE88 == 0 || gbl.byte_1EE88 == 10))
+                (gbl.EclBlockId == 0 || gbl.EclBlockId == 10))
             {
             }
             else
@@ -291,7 +291,7 @@ namespace engine
         internal static byte get_wall_x2(int mapY, int mapX) /* sub_717A5 */
         {
             if (MapCoordIsValid(mapY, mapX) == false &&
-                (gbl.byte_1EE88 == 0 || gbl.byte_1EE88 == 10))
+                (gbl.EclBlockId == 0 || gbl.EclBlockId == 10))
             {
                 return 0;
             }

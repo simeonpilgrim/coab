@@ -74,7 +74,7 @@ namespace Classes
         [DataOffset(0x1E2, DataType.SWord)]
         public short lastYPos;
         [DataOffset(0x1E4, DataType.Word)]
-        public ushort field_1E4;
+		public ushort LastEclBlockId; // field_1E4
         [DataOffset(0x1F6, DataType.SWord)]
         public short block_area_view; // field_1F6
         [DataOffset(0x1F8, DataType.Byte)]
@@ -214,7 +214,7 @@ namespace Classes
                     break;
 
                 case 0x1E4:
-                    field_1E4 = value;
+                    LastEclBlockId = value;
                     break;
 
                 case 0x1F6:
@@ -406,7 +406,7 @@ namespace Classes
                     return (ushort)inDungeon;
 
                 case 0x1E4:
-                    return field_1E4;
+                    return LastEclBlockId;
 
                 case 0x1F8:
                     return (ushort)game_speed;
@@ -525,5 +525,5 @@ namespace Classes
 
             return (byte[])origData.Clone();
         }
-    }
+    }   
 }
