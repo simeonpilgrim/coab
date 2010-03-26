@@ -94,6 +94,15 @@ namespace Classes
         None
     }
 
+	public class MenuColorSet
+	{
+		public int highlight;
+		public int foreground;
+		public int prompt;
+
+		public MenuColorSet(int h, int f, int p) { highlight = h; foreground = f; prompt = p; }
+	}
+
     public struct Point
     {
         public int x;
@@ -191,6 +200,9 @@ namespace Classes
 
     public class gbl
     {
+		public static MenuColorSet defaultMenuColors = new MenuColorSet(15, 10, 13);
+		public static MenuColorSet alertMenuColors = new MenuColorSet(15, 10, 14);
+
         public const int BackGroundTiles_count = 64; /* 64 is a guess */
         public static Struct_189B4[] BackGroundTiles = { /* unk_189B4 */
             new Struct_189B4( 1 , 0 , 0xFF, 0),
@@ -429,7 +441,7 @@ namespace Classes
         public static bool redrawBoarder; // byte_1EE7E
         public static int partyAnimatedCount; // byte_1EE81
         public static bool battleWon; // byte_1EE86
-        public static byte byte_1EE88;
+        public static byte EclBlockId;
         public static int search_flag_bkup; // byte_1EE89
         public static bool byte_1EE8C;
         public static bool byte_1EE8D;
@@ -461,15 +473,15 @@ namespace Classes
 
 
         public static ushort vm_run_addr_1; // word_1B2D3
-        public static ushort vm_run_addr_2; // word_1B2D5
-        public static ushort vm_run_addr_3; // word_1B2D7
+		public static ushort SearchLocationAddr; // word_1B2D5 vm_run_addr_2
+		public static ushort PreCampCheckAddr; // word_1B2D7 vm_run_addr_3
         public static ushort CampInterruptedAddr; // word_1B2D9 vm_run_addr_4
         public static ushort ecl_initial_entryPoint; // word_1B2DB
         public static short rest_incounter_count;
         public static DaxBlock dword_1C8FC; //TODO - overlay dax block, not currently used.
         public static DaxBlock bigpic_dax; /* word_1D5B6 */
         public static int menuScreenIndex;
-        public static int displayInputCentiSecondWait; // word_1D5C0 & word_1D5C2
+        public static int displayInputSecondsToWait; // word_1D5C0 & word_1D5C2 - was centiseconds
         public static char displayInputTimeoutValue; // byte_1D5C4
 
         public static Dictionary<Spells, spellDelegate2> spellTable;

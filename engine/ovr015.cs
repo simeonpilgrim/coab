@@ -325,28 +325,10 @@ namespace engine
             gbl.mapPosX += gbl.MapDirectionXDelta[gbl.mapDirection];
             gbl.mapPosY += gbl.MapDirectionYDelta[gbl.mapDirection];
 
-            if (gbl.mapPosX < 0)
-            {
-                gbl.mapPosX = 0x0F;
-            }
+			gbl.mapPosX &= 0x0f; // wrap via masking
+			gbl.mapPosY &= 0x0f; // wrap via masking
 
-            if (gbl.mapPosX > 0x0f)
-            {
-                gbl.mapPosX = 0;
-            }
-
-            if (gbl.mapPosY < 0)
-            {
-                gbl.mapPosY = 0x0F;
-            }
-
-            if (gbl.mapPosY > 0x0f)
-            {
-                gbl.mapPosY = 0;
-            }
-
-
-            gbl.mapWallType = ovr031.getMap_wall_type(gbl.mapDirection, gbl.mapPosY, gbl.mapPosX);
+              gbl.mapWallType = ovr031.getMap_wall_type(gbl.mapDirection, gbl.mapPosY, gbl.mapPosX);
 
             gbl.can_bash_door = true;
             gbl.can_pick_door = true;
@@ -379,7 +361,7 @@ namespace engine
                 {
                     bool special_key;
 
-                    input_key = ovr027.displayInput(out special_key, false, 1, 15, 10, 13, "Area Cast View Encamp Search Look", string.Empty);
+					input_key = ovr027.displayInput(out special_key, false, 1, gbl.defaultMenuColors, "Area Cast View Encamp Search Look", string.Empty);
 
                     if (special_key == false)
                     {
@@ -424,7 +406,7 @@ namespace engine
                             case 'L':
                                 gbl.area2_ptr.search_flags |= 2;
                                 ovr021.step_game_time(2, 1);
-                                gbl.ecl_offset = gbl.vm_run_addr_2;
+                                gbl.ecl_offset = gbl.SearchLocationAddr;
                                 stop_loop = true;
                                 break;
                         }
@@ -529,7 +511,7 @@ namespace engine
                         {
                             prompt += " Exit";
 
-                            input = ovr027.displayInput(out var_2, false, 0, 15, 10, 13, prompt, "Locked. ");
+							input = ovr027.displayInput(out var_2, false, 0, gbl.defaultMenuColors, prompt, "Locked. ");
 
                             switch (input)
                             {
@@ -572,7 +554,7 @@ namespace engine
                         {
                             prompt += " Exit";
 
-                            input = ovr027.displayInput(out var_2, false, 0, 15, 10, 13, prompt, "Locked. ");
+							input = ovr027.displayInput(out var_2, false, 0, gbl.defaultMenuColors, prompt, "Locked. ");
 
                             switch (input)
                             {

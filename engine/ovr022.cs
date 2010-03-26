@@ -434,7 +434,7 @@ namespace engine
 
                 MenuItem var_C;
                 char input_key = ovr027.sl_select_item(out var_C, ref dummyIndex, ref var_118, true, money,
-                    8, 15, 2, 2, 15, 10, 13, "Select", "Select type of coin ");
+					8, 15, 2, 2, gbl.defaultMenuColors, "Select", "Select type of coin ");
 
                 if (var_C == null || input_key == 0)
                 {
@@ -974,7 +974,7 @@ namespace engine
 
                     prompt += " Exit";
 
-                    char input_key = ovr027.displayInput(out special_key, false, 1, 15, 10, 13, prompt, "Appraise : ");
+					char input_key = ovr027.displayInput(out special_key, false, 1, gbl.defaultMenuColors, prompt, "Appraise : ");
 
                     if (input_key == 'G')
                     {
@@ -1031,7 +1031,7 @@ namespace engine
                                 must_sell = false;
                             }
 
-                            input_key = ovr027.displayInput(out special_key, false, 1, 15, 10, 13, sell_text, "You can : ");
+							input_key = ovr027.displayInput(out special_key, false, 1, gbl.defaultMenuColors, sell_text, "You can : ");
 
                             if (input_key == 'K' && must_sell == false)
                             {
@@ -1103,7 +1103,7 @@ namespace engine
                                 must_sell = false;
                             }
 
-                            input_key = ovr027.displayInput(out special_key, false, 1, 15, 10, 13, sell_text, "You can : ");
+							input_key = ovr027.displayInput(out special_key, false, 1, gbl.defaultMenuColors, sell_text, "You can : ");
 
                             if (input_key == 'K' && must_sell == false)
                             {

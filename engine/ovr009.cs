@@ -353,7 +353,7 @@ namespace engine
             do
             {
                 bool ctrlKey;
-                arg_0 = ovr027.displayInput(out ctrlKey, false, 1, 15, 10, 13, menuText, string.Empty);
+				arg_0 = ovr027.displayInput(out ctrlKey, false, 1, gbl.defaultMenuColors, menuText, string.Empty);
 
                 if (ctrlKey == true &&
                     unk_33748.MemberOf(arg_0) == false)
@@ -411,7 +411,7 @@ namespace engine
             if (gbl.friends_count > 1 &&
                 gbl.foe_count == 0 &&
                 gbl.inDemo == false &&
-                ovr027.yes_no(15, 10, 13, "Continue Battle:") == 'Y')
+				ovr027.yes_no(gbl.defaultMenuColors, "Continue Battle:") == 'Y')
             {
                 battleOver = false;
             }
@@ -439,7 +439,7 @@ namespace engine
                 {
                     string text = string.Format("Move/Attack, Move Left = {0} ", player.actions.move / 2);
 
-                    arg_4 = ovr027.displayInput(false, 1, 15, 10, 10, string.Empty, text);
+                    arg_4 = ovr027.displayInput(false, 1, new MenuColorSet(15, 10, 10), string.Empty, text);
                 }
 
                 switch (arg_4)
@@ -514,7 +514,7 @@ namespace engine
                     }
                     else if (ground_tile == 0)
                     {
-                        char b = ovr027.yes_no(15, 10, 13, "Flee:");
+						char b = ovr027.yes_no(gbl.defaultMenuColors, "Flee:");
                         if (b == 'Y')
                         {
                             arg_0 = true;
@@ -643,7 +643,7 @@ namespace engine
 
             while (input != '\0' && input != 'E' && turnEnded == false)
             {
-                input = ovr027.displayInput(false, 0, 15, 10, 13, menuText, string.Empty);
+				input = ovr027.displayInput(false, 0, gbl.defaultMenuColors, menuText, string.Empty);
 
                 switch (input)
                 {
@@ -697,7 +697,7 @@ namespace engine
 
                 menu += "Exit";
 
-                input = ovr027.displayInput(false, 0, 15, 10, 13, menu, text);
+				input = ovr027.displayInput(false, 0, gbl.defaultMenuColors, menu, text);
 
                 if (input == 0x53)
                 {

@@ -261,7 +261,7 @@ namespace engine
                 display_resting_time(time_index);
                 bool control_key;
 
-                input_key = ovr027.displayInput(out control_key, false, 1, 15, 10, 13, "Rest Days Hours Mins Add Subtract Exit", string.Empty);
+				input_key = ovr027.displayInput(out control_key, false, 1, gbl.defaultMenuColors, "Rest Days Hours Mins Add Subtract Exit", string.Empty);
 
                 if (control_key == true)
                 {
@@ -564,7 +564,7 @@ namespace engine
                 {
                     display_resting_time(0);
 
-                    if (ovr027.yes_no(15, 10, 13, "Stop Resting? ") == 'Y')
+					if (ovr027.yes_no(gbl.defaultMenuColors, "Stop Resting? ") == 'Y')
                     {
                         stop_resting = true;
                     }

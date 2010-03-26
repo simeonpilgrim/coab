@@ -444,7 +444,7 @@ namespace engine
             seg041.displayString(text, 0, 10, 5, 1);
             seg041.displayString("experience points.", 0, 10, 7, 1);
 
-            ovr027.displayInput(false, 1, 15, 15, 15, "press <enter>/<return> to continue", string.Empty);
+            ovr027.displayInput(false, 1, new MenuColorSet(15, 15, 15), "press <enter>/<return> to continue", string.Empty);
         }
 
 
@@ -468,7 +468,7 @@ namespace engine
             bool redrawMenuItems = true;
             MenuItem selected;
             key = ovr027.sl_select_item(out selected, ref index, ref redrawMenuItems, true, list,
-                 0x16, 0x26, 1, 1, 15, 10, 13, "Take", "Items: ");
+				 0x16, 0x26, 1, 1, gbl.defaultMenuColors, "Take", "Items: ");
 
             selectedItem = selected != null ? selected.Item : null;
         }
@@ -519,7 +519,7 @@ namespace engine
                     bool done = false;
                     do
                     {
-                        char key = ovr027.displayInput(true, 1, 15, 10, 13, "Money Items Exit", "Take: ");
+						char key = ovr027.displayInput(true, 1, gbl.defaultMenuColors, "Money Items Exit", "Take: ");
 
                         switch (key)
                         {
@@ -621,7 +621,7 @@ namespace engine
                 }
 
                 bool ctrl_key;
-                char input_key = ovr027.displayInput(out ctrl_key, true, 1, 15, 10, 13, text, "");
+				char input_key = ovr027.displayInput(out ctrl_key, true, 1, gbl.defaultMenuColors, text, "");
 
                 switch (input_key)
                 {
@@ -656,7 +656,7 @@ namespace engine
                         {
                             seg041.press_any_key("There is still treasure left.  ", true, 0, 10, TextRegion.NormalBottom);
                             seg041.press_any_key("Do you want to go back and claim your treasure?", false, 0, 15, TextRegion.NormalBottom);
-                            int menu_selected = ovr008.sub_317AA(false, 0, 15, 10, 13, "~Yes ~No", "");
+							int menu_selected = ovr008.sub_317AA(false, 0, gbl.defaultMenuColors, "~Yes ~No", "");
 
                             if (menu_selected == 1)
                             {
@@ -777,7 +777,7 @@ namespace engine
                     }
                 }
 
-                ovr027.displayInput(false, 1, 15, 15, 15, "press <enter>/<return> to continue", string.Empty);
+                ovr027.displayInput(false, 1, new MenuColorSet(15, 15, 15), "press <enter>/<return> to continue", string.Empty);
             }
         }
 

@@ -1,4 +1,5 @@
 using Classes;
+using System;
 
 namespace engine
 {
@@ -8,14 +9,12 @@ namespace engine
         {
             seg043.clear_keyboard();
 
-            int timeNow = seg041.time01();
-            int timeEnd = timeNow + (seconds * 100);
-
+			var timeEnd = DateTime.Now.AddSeconds(seconds);
+			
             while (seg049.KEYPRESSED() == false &&
-                timeNow < timeEnd)
+				DateTime.Now < timeEnd)
             {
                 System.Threading.Thread.Sleep(100);
-                timeNow = seg041.time01();
             }
 
             seg043.clear_keyboard();

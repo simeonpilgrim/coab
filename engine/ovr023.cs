@@ -220,7 +220,7 @@ namespace engine
             do
             {
                 input_key = ovr027.sl_select_item(out selected, ref index, ref var_61, show_exit, gbl.spell_string_list,
-                    end_y, 0x26, 5, 1, 15, 10, 13, text, prompt_text);
+					end_y, 0x26, 5, 1, gbl.defaultMenuColors, text, prompt_text);
 
             } while (asc_5C1D1.MemberOf(input_key) == false);
 
@@ -691,7 +691,7 @@ namespace engine
                     seg041.displayString(SpellNames[spell_id], 0, 10, 0x13, 1);
                     seg041.displayString("can't be cast here...", 0, 10, 0x14, 1);
 
-                    if (ovr027.yes_no(15, 10, 13, "Lose it? ") == 'Y')
+					if (ovr027.yes_no(gbl.defaultMenuColors, "Lose it? ") == 'Y')
                     {
                         caster.ClearSpell(spell_id);
                     }
@@ -701,7 +701,7 @@ namespace engine
                     seg041.displayString("That Item", 0, 10, 0x13, 1);
                     seg041.displayString("is a combat-only item...", 0, 10, 0x14, 1);
 
-                    if (ovr027.yes_no(15, 10, 13, "Use it? ") == 'Y')
+					if (ovr027.yes_no(gbl.defaultMenuColors, "Use it? ") == 'Y')
                     {
                         arg_0 = true;
                     }
@@ -790,7 +790,7 @@ namespace engine
                         var_1 = false;
                     }
                     else if (quick_fight == QuickFight.True ||
-                            ovr027.yes_no(15, 10, 14, "Abort Spell? ") == 'Y')
+							ovr027.yes_no(gbl.alertMenuColors, "Abort Spell? ") == 'Y')
                     {
                         ovr025.string_print01("Spell Aborted");
                         if (gbl.spell_from_item == false)
@@ -2541,7 +2541,7 @@ namespace engine
                 }
                 else
                 {
-                    input_key = ovr027.displayInput(false, 0, 15, 10, 13, "Hot Cold", "flame type: ");
+					input_key = ovr027.displayInput(false, 0, gbl.defaultMenuColors, "Hot Cold", "flame type: ");
                 }
 
                 if (input_key == 'H')
@@ -2558,7 +2558,7 @@ namespace engine
                 }
                 else
                 {
-                    input_key = ovr027.displayInput(false, 0, 15, 10, 13, "Yes No", "Abort spell? ");
+					input_key = ovr027.displayInput(false, 0, gbl.defaultMenuColors, "Yes No", "Abort spell? ");
 
                     if (input_key == 'Y')
                     {

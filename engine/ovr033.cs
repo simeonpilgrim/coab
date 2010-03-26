@@ -556,9 +556,10 @@ namespace engine
                     // Draw skull overlay
                     DaxBlock b1 = gbl.combat_icons[24].GetIcon(1, 0);
                     DaxBlock b2 = gbl.combat_icons[25].GetIcon(0, 0);
+					var points = BuildSizeMap(gbl.CombatMap[player_index].size, gbl.CombatMap[player_index].screenPos);
                     for (int var_3 = 0; var_3 <= 8; var_3++)
                     {
-                        foreach (var pos in BuildSizeMap(gbl.CombatMap[player_index].size, gbl.CombatMap[player_index].screenPos))
+						foreach (var pos in points)
                         {
                             if (CoordOnScreen(pos) == true)
                             {

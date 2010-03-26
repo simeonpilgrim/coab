@@ -53,12 +53,12 @@ namespace engine
                 ovr002.title_screen();
             }
 
-            gbl.displayInputCentiSecondWait = 3000;
+            gbl.displayInputSecondsToWait = 30;
             gbl.displayInputTimeoutValue = 'D';
 
-            char inputKey = ovr027.displayInput(false, 0, 15, 10, 13, "Play Demo", "Curse of the Azure Bonds v1.3 ");
+            char inputKey = ovr027.displayInput(false, 0, gbl.defaultMenuColors, "Play Demo", "Curse of the Azure Bonds v1.3 ");
 
-            gbl.displayInputCentiSecondWait = 0;
+            gbl.displayInputSecondsToWait = 0;
             gbl.displayInputTimeoutValue = '\0';
 
             if (inputKey == 'D')
@@ -98,12 +98,12 @@ namespace engine
                     ovr002.title_screen();
                     seg043.clear_keyboard();
 
-                    gbl.displayInputCentiSecondWait = 1000;
+                    gbl.displayInputSecondsToWait = 10;
                     gbl.displayInputTimeoutValue = 'D';
 
-                    inputKey = ovr027.displayInput(false, 0, 15, 10, 13, "Play Demo", "Curse of the Azure Bonds v1.3 ");
+					inputKey = ovr027.displayInput(false, 0, gbl.defaultMenuColors, "Play Demo", "Curse of the Azure Bonds v1.3 ");
 
-                    gbl.displayInputCentiSecondWait = 0;
+                    gbl.displayInputSecondsToWait = 0;
                     gbl.displayInputTimeoutValue = '\0';
 
                     gbl.inDemo = (inputKey == 'D');
@@ -164,7 +164,7 @@ namespace engine
             gbl.area_ptr.Clear();
 
             gbl.area_ptr.inDungeon = 1;
-            gbl.area_ptr.field_1E4 = 0;
+            gbl.area_ptr.LastEclBlockId = 0;
 
             gbl.area2_ptr.Clear();
 
@@ -288,7 +288,7 @@ namespace engine
         {
             gbl.area_ptr.Clear();
             gbl.area_ptr.inDungeon = 1;
-            gbl.area_ptr.field_1E4 = 0;
+            gbl.area_ptr.LastEclBlockId = 0;
             gbl.area2_ptr.Clear();
             gbl.stru_1B2CA.Clear();
             gbl.ecl_ptr.Clear();

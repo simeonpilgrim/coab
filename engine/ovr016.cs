@@ -344,7 +344,7 @@ namespace engine
 
                 if (var_2 == true)
                 {
-                    if (ovr027.yes_no(15, 10, 14, "Memorize These Spells? ") == 'N')
+                    if (ovr027.yes_no(gbl.alertMenuColors, "Memorize These Spells? ") == 'N')
                     {
                         cancel_memorize(gbl.player_ptr);
                     }
@@ -400,7 +400,7 @@ namespace engine
                     var_4 = ovr020.spell_menu2(out var_2, ref index, 0, SpellLoc.memorize);
 
                     if (var_2 == true &&
-                        ovr027.yes_no(15, 10, 14, "Memorize these spells? ") == 'N')
+						ovr027.yes_no(gbl.alertMenuColors, "Memorize these spells? ") == 'N')
                     {
                         cancel_memorize(gbl.player_ptr);
                     }
@@ -430,7 +430,7 @@ namespace engine
 
                 if (var_2 == true)
                 {
-                    if (ovr027.yes_no(15, 10, 14, "Scribe These Spells? ") == 'N')
+					if (ovr027.yes_no(gbl.alertMenuColors, "Scribe These Spells? ") == 'N')
                     {
                         cancel_scribes(gbl.player_ptr);
                     }
@@ -525,7 +525,7 @@ namespace engine
                     ovr020.spell_menu2(out var_2, ref var_8, 0, SpellLoc.scribe);
 
                     if (var_2 == true &&
-                        ovr027.yes_no(15, 10, 14, "Scribe these spells? ") == 'N')
+						ovr027.yes_no(gbl.alertMenuColors, "Scribe these spells? ") == 'N')
                     {
                         cancel_scribes(gbl.player_ptr);
                     }
@@ -623,21 +623,22 @@ namespace engine
             int dummyIndex = 0;
             MenuItem dummyResult;
             ovr027.sl_select_item(out dummyResult, ref dummyIndex, ref dummyRedraw, true, var_C,
-                0x16, 0x26, 4, 1, 15, 10, 11, string.Empty, string.Empty);
+                0x16, 0x26, 4, 1, new MenuColorSet(15, 10, 11), string.Empty, string.Empty);
 
             var_C.Clear();
             ovr025.load_pic();
         }
 
 
-        internal static void magic_menu(ref bool arg_0)
+        internal static void magic_menu(out bool arg_0)
         {
             char inputKey = ' ';
+			arg_0 = false;
 
             while (arg_0 == false && AlterSet.MemberOf(inputKey) == false)
             {
                 bool controlKey;
-                inputKey = ovr027.displayInput(out controlKey, true, 1, 15, 10, 13, "Cast Memorize Scribe Display Rest Exit", string.Empty);
+				inputKey = ovr027.displayInput(out controlKey, true, 1, gbl.defaultMenuColors, "Cast Memorize Scribe Display Rest Exit", string.Empty);
 
                 if (controlKey == true)
                 {
@@ -723,7 +724,7 @@ namespace engine
             while (AlterSet.MemberOf(inputKey) == false)
             {
                 bool controlKey;
-                inputKey = ovr027.displayInput(out controlKey, true, 1, 15, 10, 13, reorderStrings[reorderState], "Party Order: ");
+				inputKey = ovr027.displayInput(out controlKey, true, 1, gbl.defaultMenuColors, reorderStrings[reorderState], "Party Order: ");
 
                 if (controlKey == true)
                 {
@@ -767,7 +768,7 @@ namespace engine
         {
             if (gbl.TeamList.Count == 1)
             {
-                if (ovr027.yes_no(15, 10, 14, "quit TO DOS: ") == 'Y')
+				if (ovr027.yes_no(gbl.alertMenuColors, "quit TO DOS: ") == 'Y')
                 {
                     ovr018.FreeCurrentPlayer(gbl.TeamList[0], true, false);
                     seg043.print_and_exit();
@@ -777,7 +778,7 @@ namespace engine
             {
                 ovr025.DisplayPlayerStatusString(false, 10, "will be gone", gbl.player_ptr);
 
-                if (ovr027.yes_no(15, 10, 14, "Drop from party? ") == 'Y')
+				if (ovr027.yes_no(gbl.alertMenuColors, "Drop from party? ") == 'Y')
                 {
                     if (gbl.player_ptr.in_combat == true)
                     {
@@ -824,7 +825,7 @@ namespace engine
                 text += " Exit";
 
                 bool controlKey;
-                inputKey = ovr027.displayInput(out controlKey, true, 1, 15, 10, 13, text, "Game Speed:");
+				inputKey = ovr027.displayInput(out controlKey, true, 1, gbl.defaultMenuColors, text, "Game Speed:");
 
                 if (controlKey == true)
                 {
@@ -869,7 +870,7 @@ namespace engine
             while (AlterSet.MemberOf(inputKey) == false)
             {
                 bool controlKey;
-                inputKey = ovr027.displayInput(out controlKey, true, 1, 15, 10, 13, "Order Drop Speed Icon Pics Exit", "Alter: ");
+				inputKey = ovr027.displayInput(out controlKey, true, 1, gbl.defaultMenuColors, "Order Drop Speed Icon Pics Exit", "Alter: ");
 
                 if (controlKey == true)
                 {
@@ -924,7 +925,7 @@ namespace engine
 
                                 text += "Exit";
 
-                                inputKey2 = ovr027.displayInput(out controlKey, true, 0, 15, 10, 13, text, string.Empty);
+								inputKey2 = ovr027.displayInput(out controlKey, true, 0, gbl.defaultMenuColors, text, string.Empty);
 
                                 if (inputKey2 == 0x50)
                                 {
@@ -1145,7 +1146,10 @@ namespace engine
 
         static Set unk_463F4 = new Set(0x0009, new byte[] { 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x20 });
 
-        internal static void make_camp(out bool action_interrupted)
+		/// <summary>
+		/// Does Camp menu, returns if interrupted
+		/// </summary>
+        internal static bool make_camp()
         {
             var game_state_bkup = gbl.game_state;
             gbl.game_state = GameState.Camping;
@@ -1161,14 +1165,14 @@ namespace engine
 
             seg041.displayString("The party makes camp...", 0, 10, 18, 1);
             cancel_spells();
-            action_interrupted = false;
+			bool action_interrupted = false;
             char input_key = ' ';
 
             while (action_interrupted == false &&
                 unk_463F4.MemberOf(input_key) == false)
             {
                 bool special_key;
-                input_key = ovr027.displayInput(out special_key, true, 1, 15, 10, 13, "Save View Magic Rest Alter Fix Exit", "Camp:");
+				input_key = ovr027.displayInput(out special_key, true, 1, gbl.defaultMenuColors, "Save View Magic Rest Alter Fix Exit", "Camp:");
 
                 if (special_key == true)
                 {
@@ -1181,7 +1185,7 @@ namespace engine
                     {
                         case 'S':
                             ovr017.SaveGame();
-                            if (ovr027.yes_no(15, 10, 14, "Quit TO DOS ") == 'Y')
+							if (ovr027.yes_no(gbl.alertMenuColors, "Quit TO DOS ") == 'Y')
                             {
                                 seg043.print_and_exit();
                             }
@@ -1194,7 +1198,7 @@ namespace engine
 
                         case 'M':
                             gbl.menuSelectedWord = 1;
-                            magic_menu(ref action_interrupted);
+                            magic_menu(out action_interrupted);
                             break;
 
                         case 'R':
@@ -1225,6 +1229,8 @@ namespace engine
             ovr025.display_map_position_time();
             ovr025.ClearPlayerTextArea();
             ovr027.ClearPromptArea();
+
+			return action_interrupted;
         }
     }
 }

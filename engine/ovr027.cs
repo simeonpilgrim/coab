@@ -1,5 +1,6 @@
 using Classes;
 using System.Collections.Generic;
+using System;
 
 namespace engine
 {
@@ -122,19 +123,19 @@ namespace engine
 
         static byte[] unk_18AE0 = { 0x4F, 0x50, 0x51, 0x4B, 0x20, 0x4D, 0x47, 0x48, 0x49 };
 
-        internal static char displayInput(bool useOverlay, byte arg_6, int highlightFgColor, int fgColor, int extraStringFgColor, string displayInputString, string displayExtraString)
+        internal static char displayInput(bool useOverlay, byte arg_6, MenuColorSet colors, string displayInputString, string displayExtraString)
         {
             bool dummyBool;
-            return displayInput(out dummyBool, useOverlay, arg_6, highlightFgColor, fgColor, extraStringFgColor, displayInputString, displayExtraString);
+			return displayInput(out dummyBool, useOverlay, arg_6, colors, displayInputString, displayExtraString);
         }
 
-        internal static char displayInput(out bool specialKeyPressed, bool useOverlay, byte arg_6, int highlightFgColor, int fgColor, int extraStringFgColor, string displayInputString, string displayExtraString)
+        internal static char displayInput(out bool specialKeyPressed, bool useOverlay, byte arg_6, MenuColorSet colors, string displayInputString, string displayExtraString)
         {
             int highlistCount;
 
             gbl.displayInput_specialKeyPressed = false;
 
-            bool var_8F = (fgColor != 0) || (highlightFgColor != 0);
+			bool var_8F = (colors.foreground != 0) || (colors.highlight != 0);
 
             HighlightSet highlights = BuildInputKeys(displayInputString, out highlistCount);
 
@@ -147,20 +148,19 @@ namespace engine
             specialKeyPressed = false;
             bool stopLoop = false;
 
-            int timeStart = seg041.time01();
-            int var_5B = seg041.time01() + 30;
-
-            int var_5F = var_5B + 50;
+            var timeStart = DateTime.Now;
+			var timeCursorOn = timeStart.AddMilliseconds(300);
+            var timeCursorOff = timeCursorOn.AddMilliseconds(500);
 
             if (displayExtraString.Length != 0)
             {
-                seg041.displayString(displayExtraString, 0, extraStringFgColor, 0x18, 0);
+                seg041.displayString(displayExtraString, 0, colors.prompt, 0x18, 0);
             }
 
             int displayInputXOffset = displayExtraString.Length;
 
-            display_highlighed_text(gbl.menuSelectedWord, highlightFgColor,
-                displayInputString, displayInputXOffset, fgColor, highlights);
+			display_highlighed_text(gbl.menuSelectedWord, colors.highlight,
+				displayInputString, displayInputXOffset, colors.foreground, highlights);
 
             if (gbl.game_state == GameState.WildernessMap &&
                 gbl.bigpic_block_id == 0x79 &&
@@ -176,10 +176,10 @@ namespace engine
                 if (gbl.game_state == GameState.WildernessMap &&
                     gbl.bigpic_block_id == 0x79 &&
                     gbl.lastDaxBlockId != 0x50 &&
-                    seg041.time01() >= var_5B)
+                    DateTime.Now >= timeCursorOn)
                 {
                     ovr028.map_cursor_draw();
-                    var_5B = var_5F + 30;
+                    timeCursorOn = timeCursorOff.AddMilliseconds(300);
                 }
 
                 if ((gbl.area_ptr.picture_fade != 0 || useOverlay == true) &&
@@ -187,19 +187,19 @@ namespace engine
                 {
                     ovr030.DrawMaybeOverlayed(gbl.byte_1D556.CurrentPicture(), useOverlay, 3, 3);
 
-                    int delay = gbl.byte_1D556.CurrentDelay() * 10;
+                    int delay = gbl.byte_1D556.CurrentDelay() * 100;
 
-                    if ((seg041.time01() - timeStart) >= delay ||
+                    if ((DateTime.Now.Subtract(timeStart).TotalMilliseconds) >= delay ||
                         gbl.area_ptr.picture_fade != 0)
                     {
                         gbl.byte_1D556.NextFrame();
 
-                        timeStart = seg041.time01();
+						timeStart = DateTime.Now;
                     }
                 }
 
-                if (gbl.displayInputCentiSecondWait > 0 &&
-                    (seg041.time01() - timeStart) >= gbl.displayInputCentiSecondWait)
+                if (gbl.displayInputSecondsToWait > 0 &&
+					DateTime.Now.Subtract(timeStart).TotalSeconds >= gbl.displayInputSecondsToWait)
                 {
                     input_key = gbl.displayInputTimeoutValue;
                     stopLoop = true;
@@ -250,7 +250,7 @@ namespace engine
                             gbl.menuSelectedWord--;
                         }
 
-                        display_highlighed_text(gbl.menuSelectedWord, highlightFgColor, displayInputString, displayInputXOffset, fgColor, highlights);
+						display_highlighed_text(gbl.menuSelectedWord, colors.highlight, displayInputString, displayInputXOffset, colors.foreground, highlights);
                     }
                     else if (input_key == 0x2E)
                     {
@@ -261,7 +261,7 @@ namespace engine
                             gbl.menuSelectedWord = 0;
                         }
 
-                        display_highlighed_text(gbl.menuSelectedWord, highlightFgColor, displayInputString, displayInputXOffset, fgColor, highlights);
+						display_highlighed_text(gbl.menuSelectedWord, colors.highlight, displayInputString, displayInputXOffset, colors.foreground, highlights);
                     }
                     else
                     {
@@ -288,7 +288,7 @@ namespace engine
 
                                         gbl.menuSelectedWord = var_61;
 
-                                        display_highlighed_text(gbl.menuSelectedWord, highlightFgColor, displayInputString, displayInputXOffset, fgColor, highlights);
+										display_highlighed_text(gbl.menuSelectedWord, colors.highlight, displayInputString, displayInputXOffset, colors.foreground, highlights);
                                     }
                                 }
                             }
@@ -315,11 +315,11 @@ namespace engine
                 if (gbl.game_state == GameState.WildernessMap &&
                     gbl.bigpic_block_id == 0x79 &&
                     gbl.lastDaxBlockId != 0x50 &&
-                    seg041.time01() >= var_5F)
+                    DateTime.Now >= timeCursorOff)
                 {
                     ovr028.map_cursor_restore();
 
-                    var_5F = var_5B + 50;
+                    timeCursorOff = timeCursorOn.AddMilliseconds(500);
                 }
 
                 System.Threading.Thread.Sleep(20);
@@ -532,8 +532,7 @@ namespace engine
         internal static char sl_select_item(out MenuItem result_ptr, ref int index_ptr,
             ref bool redrawMenuItems, bool showExit, List<MenuItem> stringList, 
             int endY, int endX, int startY, int startX, 
-            int highlightBgColor, int normalColor, int headingColor,
-            string inputString, string extraTextString)
+            MenuColorSet colors, string inputString, string extraTextString)
         {
             char ret_val = '\0'; /* Simeon */
             result_ptr = null; /*Simeon*/
@@ -576,7 +575,7 @@ namespace engine
             if (redrawMenuItems == true)
             {
                 sub_6C897(gbl.menuScreenIndex, endY, endX, startY, startX,
-                    stringList, normalColor, headingColor, listDisplayWidth);
+					stringList, colors.foreground, colors.prompt, listDisplayWidth);
             }
 
             redrawMenuItems = false;
@@ -585,7 +584,7 @@ namespace engine
 
             while (loop_end == false)
             {
-                ListItemHighlighted(index_ptr, stringList, startY, startX, highlightBgColor);
+                ListItemHighlighted(index_ptr, stringList, startY, startX, colors.highlight);
                 string displayString = inputString;
 
                 bool showNext = false;
@@ -609,9 +608,9 @@ namespace engine
                 }
 
                 bool speical_key;
-                char input_key = displayInput(out speical_key, false, 1, highlightBgColor, normalColor, headingColor, displayString, extraTextString);
+				char input_key = displayInput(out speical_key, false, 1, colors, displayString, extraTextString);
 
-                ListItemNormal(index_ptr, stringList, startY, startX, normalColor, headingColor);
+				ListItemNormal(index_ptr, stringList, startY, startX, colors.foreground, colors.prompt);
 
                 if (speical_key == true)
                 {
@@ -628,14 +627,14 @@ namespace engine
                         case 'I':
                             if (showPrevious == true)
                             {
-                                menu_sub_6CD38(false, ref index_ptr, stringList, listDisplayHeight, endY, endX, startY, startX, normalColor, headingColor, listDisplayWidth);
+								menu_sub_6CD38(false, ref index_ptr, stringList, listDisplayHeight, endY, endX, startY, startX, colors.foreground, colors.prompt, listDisplayWidth);
                             }
                             break;
 
                         case 'Q':
                             if (showNext == true)
                             {
-                                menu_sub_6CD38(true, ref index_ptr, stringList, listDisplayHeight, endY, endX, startY, startX, normalColor, headingColor, listDisplayWidth);
+								menu_sub_6CD38(true, ref index_ptr, stringList, listDisplayHeight, endY, endX, startY, startX, colors.foreground, colors.prompt, listDisplayWidth);
                             }
                             break;
                     }
@@ -645,12 +644,12 @@ namespace engine
                     switch (input_key)
                     {
                         case 'P':
-                            menu_sub_6CD38(false, ref index_ptr, stringList, listDisplayHeight, endY, endX, startY, startX, normalColor, headingColor, listDisplayWidth);
+							menu_sub_6CD38(false, ref index_ptr, stringList, listDisplayHeight, endY, endX, startY, startX, colors.foreground, colors.prompt, listDisplayWidth);
                             break;
 
                         case 'N':
 
-                            menu_sub_6CD38(true, ref index_ptr, stringList, listDisplayHeight, endY, endX, startY, startX, normalColor, headingColor, listDisplayWidth);
+							menu_sub_6CD38(true, ref index_ptr, stringList, listDisplayHeight, endY, endX, startY, startX, colors.foreground, colors.prompt, listDisplayWidth);
                             break;
 
                         case (char)0x1B:
@@ -674,7 +673,7 @@ namespace engine
         }
 
 
-        internal static char yes_no(byte highlightFgColor, byte fgColor, byte extraStringFgColor, string inputString)
+        internal static char yes_no(MenuColorSet colors, string inputString)
         {
             char inputKey;
 
@@ -682,7 +681,7 @@ namespace engine
 
             do
             {
-                inputKey = displayInput(false, 0, highlightFgColor, fgColor, extraStringFgColor, "Yes No", inputString);
+				inputKey = displayInput(false, 0, colors, "Yes No", inputString);
             
             } while( inputKey != 'N' && inputKey != 'Y');
 

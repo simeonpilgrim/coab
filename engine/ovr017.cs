@@ -214,7 +214,7 @@ namespace engine
                 {
                     seg041.displayAndDebug("Can't save.  No room on this disk.", 0, 14);
 
-                    input_key = ovr027.displayInput(false, 0, 15, 10, 13, "Ok  Try another disk", "Lose character? ");
+					input_key = ovr027.displayInput(false, 0, gbl.defaultMenuColors, "Ok  Try another disk", "Lose character? ");
                 }
             } while (input_key != 0x4F);
 
@@ -238,7 +238,7 @@ namespace engine
                 arg_0.Length == 0 &&
                 seg042.file_find(gbl.SavePath + file_text + ext_text) == true)
             {
-                input_key = ovr027.yes_no(15, 10, 14, "Overwrite " + file_text + "? ");
+				input_key = ovr027.yes_no(gbl.alertMenuColors, "Overwrite " + file_text + "? ");
 
                 if (input_key == 'N')
                 {
@@ -1119,7 +1119,7 @@ namespace engine
                     do
                     {
                         bool speical_key;
-                        char input_key = ovr027.displayInput(out speical_key, false, 0, 15, 10, 13, games_list, "Load Which Game: ");
+						char input_key = ovr027.displayInput(out speical_key, false, 0, gbl.defaultMenuColors, games_list, "Load Which Game: ");
 
                         stop_loop = input_key == 0x00; // Escape
                         save_letter = '\0';
@@ -1300,7 +1300,7 @@ namespace engine
 
             do
             {
-                inputKey = ovr027.displayInput((gbl.game_state == GameState.Camping), 0, 15, 10, 13, "A B C D E F G H I J", "Save Which Game: ");
+				inputKey = ovr027.displayInput((gbl.game_state == GameState.Camping), 0, gbl.defaultMenuColors, "A B C D E F G H I J", "Save Which Game: ");
 
             } while (unk_4AEA0.MemberOf(inputKey) == false);
 

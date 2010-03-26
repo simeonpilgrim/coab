@@ -26,7 +26,7 @@ namespace engine
             arg_4 = null;
 
             char input_key = ovr027.sl_select_item(out mi, ref index, ref gbl.shopRedrawMenuItems, true, list,
-                0x16, 0x26, 1, 1, 15, 10, 13, "Buy", "Items: " );
+                0x16, 0x26, 1, 1, gbl.defaultMenuColors, "Buy", "Items: " );
 
             if (mi != null)
             {
@@ -196,7 +196,7 @@ namespace engine
 
                 bool controlKey;
 
-                var_2E = ovr027.displayInput(out controlKey, false, 1, 15, 10, 13, text, string.Empty);
+				var_2E = ovr027.displayInput(out controlKey, false, 1, gbl.defaultMenuColors, text, string.Empty);
 
                 switch ( var_2E )
                 {
@@ -237,7 +237,7 @@ namespace engine
                             seg041.press_any_key("As you Leave the Shopkeeper says, \"Excuse me but you have Left Some Money here.\"  ", true, 0, 10, TextRegion.NormalBottom);
                             seg041.press_any_key("Do you want to go back and get your Money?", false, 0, 15, TextRegion.NormalBottom);
 
-                            int menu_selected = ovr008.sub_317AA(false, 0, 0x0f, 0x0a, 0x0d, "~Yes ~No", string.Empty);
+							int menu_selected = ovr008.sub_317AA(false, 0, gbl.defaultMenuColors, "~Yes ~No", string.Empty);
                 
                             if( menu_selected == 1 )
                             {

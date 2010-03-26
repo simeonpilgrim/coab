@@ -306,7 +306,7 @@ namespace engine
 
                 text += "Exit";
 
-                input_key = ovr027.displayInput(false, 0, 15, 10, 13, text, string.Empty);
+				input_key = ovr027.displayInput(false, 0, gbl.defaultMenuColors, text, string.Empty);
 
                 int index = -1;
 
@@ -375,7 +375,7 @@ namespace engine
                 gbl.textYCol = 0x15;
 
                 seg041.press_any_key(" was going to scribe from that scroll", false, 0, 0x0E, TextRegion.Normal2);
-                if (ovr027.yes_no(15, 10, 13, "is it Okay to lose it? ") == 'Y')
+				if (ovr027.yes_no(gbl.defaultMenuColors, "is it Okay to lose it? ") == 'Y')
                 {
                     canSellDropTradeItem = true;
                 }
@@ -530,7 +530,7 @@ namespace engine
                     MenuItem menuitem;
 
                     inputKey = ovr027.sl_select_item(out menuitem, ref dummy_index, ref redraw_items, true,
-                        menulist, 0x16, 0x26, 5, 1, 15, 10, 13, text, string.Empty);
+						menulist, 0x16, 0x26, 5, 1, gbl.defaultMenuColors, text, string.Empty);
 
                     Item curr_item = menuitem != null ? menuitem.Item : null;
 
@@ -589,7 +589,7 @@ namespace engine
 
                                     seg041.press_any_key("Your " + curr_item.name + "will be gone forever", true, 0, 14, 22, 0x26, 21, 1);
 
-                                    if (ovr027.yes_no(15, 10, 13, "Drop It? ") == 'Y')
+									if (ovr027.yes_no(gbl.defaultMenuColors, "Drop It? ") == 'Y')
                                     {
                                         ovr025.lose_item(curr_item, gbl.player_ptr);
                                         redraw_items = true;
@@ -1119,7 +1119,7 @@ namespace engine
 
             seg041.press_any_key(offer, true, 0, 14, TextRegion.Normal2);
 
-            if (ovr027.yes_no(15, 10, 13, "Is It a Deal? ") == 'Y')
+			if (ovr027.yes_no(gbl.defaultMenuColors, "Is It a Deal? ") == 'Y')
             {
                 ovr025.string_print01("Sold!");
 
@@ -1163,7 +1163,7 @@ namespace engine
 
             seg041.press_any_key("For 200 gold pieces I'll identify your " + item.name, true, 0, 0x0e, TextRegion.Normal2);
 
-            if (ovr027.yes_no(15, 10, 13, "Is It a Deal? ") == 'Y')
+			if (ovr027.yes_no(gbl.defaultMenuColors, "Is It a Deal? ") == 'Y')
             {
                 int player_gold = getPlayerGold(gbl.player_ptr);
 
@@ -1252,7 +1252,7 @@ namespace engine
                         MenuItem selected;
 
                         ovr027.sl_select_item(out selected, ref dummyIndex, ref dummyBool, true,
-                            list, 13, 0x19, 7, 12, 15, 10, 13, " Select", "Select type of coin ");
+							list, 13, 0x19, 7, 12, gbl.defaultMenuColors, " Select", "Select type of coin ");
 
                         if (selected == null)
                         {
@@ -1312,7 +1312,7 @@ namespace engine
 
                 MenuItem selected;
                 ovr027.sl_select_item(out selected, ref index, ref redrawMenuItems, true, menuList, 13, 0x19, 7,
-                    12, 15, 10, 13, " Select", "Select type of coin ");
+					12, gbl.defaultMenuColors, " Select", "Select type of coin ");
 
                 if (selected == null)
                 {
@@ -1563,7 +1563,7 @@ namespace engine
                 {
                     ovr025.DisplayPlayerStatusString(false, 0, "is not diseased", target);
 
-                    input = ovr027.yes_no(15, 10, 13, "cure anyway: ");
+					input = ovr027.yes_no(gbl.defaultMenuColors, "cure anyway: ");
 
                     ovr025.ClearPlayerTextArea();
                 }
