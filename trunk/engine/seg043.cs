@@ -23,14 +23,6 @@ namespace engine
         }
 
 
-        static void DebugPlayerAffects(Player player)
-        {
-            foreach (Affect affect in player.affects)
-            {
-                Logger.Debug("who: {0}  sp#: {1} - {2}", player.name, (int)affect.type, affect.type);
-            }
-        }
-
         internal static byte GetInputKey()
         {
             byte key;
@@ -76,7 +68,10 @@ namespace engine
         {
             foreach (Player player in gbl.TeamList)
             {
-                DebugPlayerAffects(player);
+				foreach (Affect affect in player.affects)
+				{
+					Logger.Debug("who: {0}  sp#: {1} - {2}", player.name, (int)affect.type, affect.type);
+				}
             }
         }
 
@@ -252,7 +247,7 @@ namespace engine
         {
             var bkupArea = gbl.game_area;
 
-            string filename = "MonsterFiltered.txt";
+            string filename = System.IO.Path.Combine(Logger.GetPath(),"MonsterFiltered.txt");
             if (System.IO.File.Exists(filename))
             {
                 System.IO.File.Delete(filename);
@@ -344,11 +339,12 @@ namespace engine
 
             var bkupArea = gbl.game_area;
 
-            if (System.IO.File.Exists("Monster.html"))
-            {
-                System.IO.File.Delete("Monster.html");
-            }
-            DebugWriter dw = new DebugWriter("Monster.html");
+			string filename = System.IO.Path.Combine(Logger.GetPath(), "Monster.html");
+			if (System.IO.File.Exists(filename))
+			{
+				System.IO.File.Delete(filename);
+			}
+			DebugWriter dw = new DebugWriter(filename);
 
             dw.WriteLine("<html><body><table><tbody>");
 

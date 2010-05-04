@@ -2,33 +2,25 @@
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
   <?define SkuName = "Curse of the Azure Bonds"?>
 
-  <?define ProductVersion="1.0.21" ?>
-  <?define Manufacturer="ReActive Systems"?>
-  <?define UpgradeCode="6acb18e9-9a80-4ed4-a8ef-3634fa2b3e9b"?>
+  <?define ProductVersion="1.1.0" ?>
+  <?define Manufacturer="Simeon Pilgrim"?>
+  
+  <?define BinDir="Main\bin\Debug\"?>
+
 
   <Product Id="*"
            Name="Curse of the Azure Bonds"
            Language="1033"
-           Version='$(var.ProductVersion)'
-           Manufacturer='$(var.Manufacturer)'
-           UpgradeCode='$(var.UpgradeCode)'>
-    <Package InstallerVersion="200" Compressed="yes"  />
+           Version="$(var.ProductVersion)"
+           Manufacturer="$(var.Manufacturer)"
+           UpgradeCode="{6acb18e9-9a80-4ed4-a8ef-3634fa2b3e9b}"
+           >
+    
+    <Package Id="*" InstallerVersion="300" Compressed="yes" Languages='1033' 
+             Description="Curse of the Azure Bonds Installer"
+             />
 
     <Media Id="1" Cabinet="Installer.cab" EmbedCab="yes" />
-
-    <Upgrade Id="$(var.UpgradeCode)">
-      <UpgradeVersion Minimum="$(var.ProductVersion)"
-                      IncludeMinimum="no"
-                      OnlyDetect="yes"
-                      Language="1033"
-                      Property="NEWPRODUCTFOUND"/>
-
-      <UpgradeVersion Minimum="1.0.0"
-                      IncludeMinimum="yes"
-                      Maximum="$(var.ProductVersion)"
-                      IncludeMaximum="no"
-                      Property="UPGRADEFOUND"/>
-    </Upgrade>
 
     <Directory Id="TARGETDIR" Name="SourceDir">
       <Directory Id="ProgramFilesFolder">
@@ -144,27 +136,29 @@
           </Component>
 
           <Component Id="MainComponent" Guid="{20B26580-D989-42db-AB5A-53DC13BA27C7}">
-            <File Id ="main.exe" Source="$(var.SolutionDir)Main\bin\Debug\main.exe" >
+            <File Id ="main.exe" Source="$(var.SolutionDir)$(var.BinDir)main.exe" >
               <Shortcut Id="startmenuAdv"
                        Directory="ProgramMenuDir"
                        Advertise="yes"
                        Name="Curse of the Azure Bonds"
-                       WorkingDirectory="INSTALLLOCATION">
-              </Shortcut>  
+                       WorkingDirectory="INSTALLLOCATION"
+                       Icon="MainIcon.exe">
+                <Icon Id="MainIcon.exe" SourceFile="$(var.SolutionDir)$(var.BinDir)main.exe" />
+              </Shortcut>
             </File>
             <RemoveFolder Id="DeleteShortcutFolder" Directory="ProgramMenuDir" On="uninstall" />
           </Component>
           <Component Id="EngineComponent" Guid="{BA296A86-2188-4389-9DEE-FD773637B349}">
-            <File Id ="engine.dll" Source="$(var.SolutionDir)Main\bin\Debug\engine.dll" />
+            <File Id ="engine.dll" Source="$(var.SolutionDir)$(var.BinDir)engine.dll" />
           </Component>
           <Component Id="ClassesComponent" Guid="{193AEC02-2C90-47dc-931D-B8D6523B4779}">
-            <File Id ="classes.dll" Source="$(var.SolutionDir)Main\bin\Debug\classes.dll" />
+            <File Id ="classes.dll" Source="$(var.SolutionDir)$(var.BinDir)classes.dll" />
           </Component>
           <Component Id="LoggingComponent" Guid="{42F3391F-FA43-4cb2-90DE-344FC6C19EC4}">
-            <File Id ="logging.dll" Source="$(var.SolutionDir)Main\bin\Debug\logging.dll" />
+            <File Id ="logging.dll" Source="$(var.SolutionDir)$(var.BinDir)logging.dll" />
           </Component>
           <Component Id="WinFormsComponent" Guid="{3692DC5A-EACD-4ee8-AB34-15589EE87779}">
-            <File Id ="win32.dll" Source="$(var.SolutionDir)Main\bin\Debug\win32.dll" />
+            <File Id ="win32.dll" Source="$(var.SolutionDir)$(var.BinDir)win32.dll" />
           </Component>
           <Component Id="LicenseDoc" Guid="{E7BDA157-1637-4a2a-84F4-7825EEFEE354}">
             <File Id ="CotABLicense.rtf" Source="$(var.SolutionDir)Installer\CotAB License.rtf" />
@@ -188,23 +182,33 @@
       <ComponentRef Id="LicenseDoc"/>
     </Feature>
 
+    <Condition Message='This setup requires the .NET Framework 2.0 or higher.'>
+      <![CDATA[MsiNetAssemblySupport >= "2.0.50727"]]>
+    </Condition>
+
+    <Upgrade Id="{6acb18e9-9a80-4ed4-a8ef-3634fa2b3e9b}">
+      <UpgradeVersion OnlyDetect="yes" Minimum="$(var.ProductVersion)" Property="NEWERVERSIONDETECTED" IncludeMinimum="no" />
+      <UpgradeVersion OnlyDetect="no" Maximum="$(var.ProductVersion)" Property="OLDERVERSIONBEINGUPGRADED" IncludeMaximum="no" />
+    </Upgrade>
 
     <!-- Prevent downgrading -->
     <CustomAction Id="PreventDowngrading" Error="Newer version already installed." />
 
-    <!-- Sequences -->
     <InstallExecuteSequence>
-      <Custom Action="PreventDowngrading" After="FindRelatedProducts">NEWPRODUCTFOUND</Custom>
+      <Custom Action="PreventDowngrading" After="FindRelatedProducts">NEWERVERSIONDETECTED</Custom>
       <RemoveExistingProducts After="InstallFinalize" />
     </InstallExecuteSequence>
 
     <InstallUISequence>
-      <Custom Action="PreventDowngrading" After="FindRelatedProducts">NEWPRODUCTFOUND</Custom>
+      <Custom Action="PreventDowngrading" After="FindRelatedProducts">NEWERVERSIONDETECTED</Custom>
     </InstallUISequence>
-    
+
     <Property Id="WIXUI_INSTALLDIR" Value="INSTALLLOCATION" />
     <UIRef Id="WixUI_InstallDir" />
     <WixVariable Id="WixUILicenseRtf" Value="CotAB License.rtf" />
+    <WixVariable Id="WixUIBannerBmp" Value="banner.bmp" />
+    <WixVariable Id="WixUIDialogBmp" Value="dialog.bmp" />
+
 
   </Product>
 </Wix>

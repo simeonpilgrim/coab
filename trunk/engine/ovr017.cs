@@ -1,5 +1,7 @@
 using Classes;
 using System.Collections.Generic;
+using Logging;
+using System.IO;
 
 namespace engine
 {
@@ -8,21 +10,18 @@ namespace engine
         static void BuildLoadablePlayersLists(ref List<MenuItem> fileNames, ref List<MenuItem> displayNames,
             short playerFileSize, int npcOffset, int nameOffset, string fileFilter) // sub_4708B
         {
-            File file = new File();
+            Classes.File file = new Classes.File();
 
             byte[] data = new byte[16];
 
-            var search = seg046.FINDFIRST(fileFilter);
+			foreach (string filePath in Directory.GetFiles(Config.GetSavePath(), fileFilter))
+			{
+				FileStream stream = System.IO.File.Open(filePath, FileMode.Open, FileAccess.Read);
 
-            while (gbl.FIND_result == 0)
-            {
-                file.Assign(gbl.SavePath + search.fileName);
-                seg051.Reset(file);
-
-                if (seg051.FileSize(file) == playerFileSize)
+                if (stream.Length == playerFileSize)
                 {
-                    seg051.Seek(nameOffset, file);
-                    seg051.BlockRead(16, data, file);
+					stream.Seek(nameOffset, SeekOrigin.Begin);
+					stream.Read(data, 0, 16);
 
                     string playerName = Sys.ArrayToString(data, 0, 16).Trim();
 
@@ -34,114 +33,53 @@ namespace engine
                     }
                     else
                     {
-                        seg051.Seek(npcOffset, file);
-                        seg051.BlockRead(1, data, file);
+						stream.Seek(npcOffset, SeekOrigin.Begin);
+						stream.Read(data, 0, 1);
                         var_164 = data[0];
                     }
 
+
                     string fullNameText =
-                        string.Compare(System.IO.Path.GetExtension(search.fileName), ".sav", true) == 0 ?
-                        string.Format("{0,-15} from save game {1}", playerName, search.fileName[7]) : playerName;
+						string.Compare(Path.GetExtension(filePath), ".sav", true) == 0 ?
+						string.Format("{0,-15} from save game {1}", playerName, filePath[7]) : playerName;
 
                     bool found = gbl.TeamList.Find(player => playerName == player.name.Trim()) != null;
 
                     if (found == false && var_164 <= 0x7F)
                     {
-                        fileNames.Add(new MenuItem(search.fileName));
+						fileNames.Add(new MenuItem(filePath));
                         displayNames.Add(new MenuItem(fullNameText));
                     }
                 }
-
-                seg051.Close(file);
-                seg046.FINDNEXT(search);
+				
+				stream.Close();
             }
         }
 
         static int[] PlayerNameOffset = { 0, 0, 4 };
         static int[] NpcFileOffset = { 0xf7, 0x84, 0x13 };
 
-        internal static void BuildLoadablePlayersLists(out List<MenuItem> fileNames, out List<MenuItem> displayNames) // sub_47465
-        {
-            displayNames = new List<MenuItem>();
-            fileNames = new List<MenuItem>();
+		internal static void BuildLoadablePlayersLists(out List<MenuItem> fileNames, out List<MenuItem> displayNames) // sub_47465
+		{
+			displayNames = new List<MenuItem>();
+			fileNames = new List<MenuItem>();
 
-            if (save() == true)
-            {
-                if (gbl.import_from == ImportSource.Curse)
-                {
-                    BuildLoadablePlayersLists(ref fileNames, ref displayNames, Player.StructSize, NpcFileOffset[0], PlayerNameOffset[0], gbl.SavePath + "*.guy");
-                }
-                else if (gbl.import_from == ImportSource.Pool)
-                {
-                    BuildLoadablePlayersLists(ref fileNames, ref displayNames, PoolRadPlayer.StructSize, NpcFileOffset[1], PlayerNameOffset[1], gbl.SavePath + "*.cha");
-                    BuildLoadablePlayersLists(ref fileNames, ref displayNames, PoolRadPlayer.StructSize, NpcFileOffset[1], PlayerNameOffset[1], gbl.SavePath + "*.sav");
-                }
-                else if (gbl.import_from == ImportSource.Hillsfar)
-                {
-                    BuildLoadablePlayersLists(ref fileNames, ref  displayNames, HillsFarPlayer.StructSize, NpcFileOffset[2], PlayerNameOffset[2], gbl.SavePath + "*.hil");
-                }
-            }
-        }
+			if (gbl.import_from == ImportSource.Curse)
+			{
+				BuildLoadablePlayersLists(ref fileNames, ref displayNames, Player.StructSize, NpcFileOffset[0], PlayerNameOffset[0], "*.guy");
+			}
+			else if (gbl.import_from == ImportSource.Pool)
+			{
+				BuildLoadablePlayersLists(ref fileNames, ref displayNames, PoolRadPlayer.StructSize, NpcFileOffset[1], PlayerNameOffset[1], "*.cha");
+				BuildLoadablePlayersLists(ref fileNames, ref displayNames, PoolRadPlayer.StructSize, NpcFileOffset[1], PlayerNameOffset[1], "*.sav");
+			}
+			else if (gbl.import_from == ImportSource.Hillsfar)
+			{
+				BuildLoadablePlayersLists(ref fileNames, ref  displayNames, HillsFarPlayer.StructSize, NpcFileOffset[2], PlayerNameOffset[2], "*.hil");
+			}
+		}
 
         static Set unk_47635 = new Set(0x0001, new byte[] { 0x21 });
-
-        internal static bool save()
-        {
-            short var_3;
-
-            if (gbl.import_from == ImportSource.Curse)
-            {
-                try
-                {
-                    if (System.IO.Directory.Exists(gbl.SavePath) == false)
-                    {
-                        System.IO.Directory.CreateDirectory(gbl.SavePath);
-                    }
-                }
-                catch (System.Exception ex)
-                {
-                    string s = "Unexpected error during save: " + ex.ToString();
-                    seg041.displayAndDebug(s, 0, 14);
-
-                    return false;
-                }
-            }
-            else if (gbl.import_from == ImportSource.Pool)
-            {
-                do
-                {
-                    seg046.FINDFIRST(gbl.SavePath);
-                    var_3 = gbl.FIND_result;
-
-                    if (var_3 != 0)
-                    {
-                        string text = "Unexpected error during save: " + var_3.ToString();
-                        seg041.displayAndDebug(text, 0, 14);
-
-                        return false;
-                    }
-
-                } while (var_3 != 0);
-            }
-            else if (gbl.import_from == ImportSource.Hillsfar)
-            {
-                do
-                {
-                    seg046.FINDFIRST(seg051.Copy(gbl.SavePath.Length - 1, 1, gbl.SavePath));
-                    var_3 = gbl.FIND_result;
-
-                    if (var_3 != 0)
-                    {
-                        string s = "Unexpected error during save: " + var_3.ToString();
-                        seg041.displayAndDebug(s, 0, 14);
-
-                        return false;
-                    }
-                } while (var_3 != 0);
-            }
-
-            return true;
-        }
 
 
         internal static void LoadPlayerCombatIcon(bool recolour) /* sub_47A90 */
@@ -185,7 +123,7 @@ namespace engine
 
         internal static void remove_player_file(Player player)
         {
-            string full_path = gbl.SavePath + seg042.clean_string(player.name);
+            string full_path = Path.Combine(Config.GetSavePath(), seg042.clean_string(player.name));
 
             seg042.delete_file(full_path + ".guy");
             seg042.delete_file(full_path + ".swg");
@@ -195,28 +133,9 @@ namespace engine
         internal static void SavePlayer(string arg_0, Player player) // sub_47DFC
         {
             char input_key;
-            File file = new File();
+            Classes.File file = new Classes.File();
 
             gbl.import_from = ImportSource.Curse;
-
-            do
-            {
-                if (save() == false)
-                {
-                    return;
-                }
-
-                int required_space = PlayerDataSize(player);
-
-                input_key = 'O';
-
-                if (required_space > seg046.getDiskSpace((byte)(char.ToUpper(gbl.SavePath[0]) - 0x40)))
-                {
-                    seg041.displayAndDebug("Can't save.  No room on this disk.", 0, 14);
-
-					input_key = ovr027.displayInput(false, 0, gbl.defaultMenuColors, "Ok  Try another disk", "Lose character? ");
-                }
-            } while (input_key != 0x4F);
 
             string ext_text;
             string file_text;
@@ -236,7 +155,7 @@ namespace engine
 
             while (input_key == 'N' &&
                 arg_0.Length == 0 &&
-                seg042.file_find(gbl.SavePath + file_text + ext_text) == true)
+				seg042.file_find(Path.Combine(Config.GetSavePath(), file_text) + ext_text) == true)
             {
 				input_key = ovr027.yes_no(gbl.alertMenuColors, "Overwrite " + file_text + "? ");
 
@@ -251,18 +170,20 @@ namespace engine
                 }
             }
 
-            file.Assign(gbl.SavePath + file_text + ext_text);
+			string filePath = Path.Combine(Config.GetSavePath(), file_text);
+
+			file.Assign(filePath + ext_text);
 
             seg051.Rewrite(file);
 
             seg051.BlockWrite(Player.StructSize, player.ToByteArray(), file);
             seg051.Close(file);
 
-            seg042.delete_file(gbl.SavePath + file_text + ".swg");
+			seg042.delete_file(filePath + ".swg");
 
             if (player.items.Count > 0)
             {
-                file.Assign(gbl.SavePath + file_text + ".swg");
+				file.Assign(filePath + ".swg");
                 seg051.Rewrite(file);
 
                 player.items.ForEach(item => seg051.BlockWrite(Item.StructSize, item.ToByteArray(), file));
@@ -270,11 +191,11 @@ namespace engine
                 seg051.Close(file);
             }
 
-            seg042.delete_file(gbl.SavePath + file_text + ".fx");
+			seg042.delete_file(filePath + ".fx");
 
             if (player.affects.Count > 0)
             {
-                file.Assign(gbl.SavePath + file_text + ".fx");
+				file.Assign(filePath + ".fx");
                 seg051.Rewrite(file);
 
                 foreach(Affect affect in player.affects)
@@ -286,41 +207,26 @@ namespace engine
             }
         }
 
-        private static int PlayerDataSize(Player player)
-        {
-            int required_space = Player.StructSize;
-
-            required_space += player.items.Count * Item.StructSize;
-
-            required_space += player.affects.Count * Affect.StructSize;
-
-            return required_space;
-        }
-
-
         internal static bool PlayerFileExists(string fileExt, string player_name) // sub_483AE
         {
             byte[] data = new byte[0x10];
-            string in_file_name = "";
 
-            var searchRec = seg046.FINDFIRST(gbl.SavePath + "*" + fileExt);
+			foreach(string filename in Directory.GetFiles(Config.GetSavePath(), "*"+fileExt ))
+			{
+				FileStream stream = System.IO.File.Open(filename, FileMode.Open, FileAccess.Read);
 
-            while (gbl.FIND_result == 0 && in_file_name != player_name)
-            {
-                File file;
-                seg042.find_and_open_file(out file, false, gbl.SavePath + searchRec.fileName);
+				stream.Seek(0, SeekOrigin.Begin);
+				stream.Read(data, 0, 16);
+				stream.Close();
 
-                seg051.Seek(0, file);
+				string in_file_name = Sys.ArrayToString(data, 0, 16).Trim();
+				if (in_file_name == player_name)
+				{
+					return true;
+				}
 
-                seg051.BlockRead(0x10, data, file);
-                in_file_name = Sys.ArrayToString(data, 0, 0x10);
-
-                seg051.Close(file);
-
-                seg046.FINDNEXT(searchRec);
-            }
-
-            return (in_file_name == player_name); ;
+			}
+			return false;
         }
 
 
@@ -652,9 +558,9 @@ namespace engine
             Player player01_ptr;
             Player player02_ptr;
             
-            File file;
+            Classes.File file;
 
-            seg042.find_and_open_file(out file, false, gbl.SavePath + arg_8);
+            seg042.find_and_open_file(out file, false, Path.Combine(Config.GetSavePath(), arg_8));
 
             seg041.displayString("Loading...Please Wait", 0, 10, 0x18, 0);
 
@@ -697,7 +603,7 @@ namespace engine
 
                 if (var_1BC == true)
                 {
-                    string savename = System.IO.Path.Combine(gbl.SavePath, System.IO.Path.ChangeExtension(arg_8, fileExt));
+                    string savename = System.IO.Path.Combine(Config.GetSavePath(), System.IO.Path.ChangeExtension(arg_8, fileExt));
 
                     seg042.find_and_open_file(out file, false, savename);
 
@@ -759,7 +665,7 @@ namespace engine
                     {
                         data = new byte[PoolRadPlayer.StructSize];
 
-                        string savename = System.IO.Path.Combine(gbl.SavePath, System.IO.Path.ChangeExtension(arg_8, fileExt));
+                        string savename = System.IO.Path.Combine(Config.GetSavePath(), System.IO.Path.ChangeExtension(arg_8, fileExt));
 
                         seg042.find_and_open_file(out file, false, savename);
 
@@ -907,11 +813,11 @@ namespace engine
                 arg_8 = seg042.clean_string(player_ptr.name);
             }
 
-            if (seg042.file_find(gbl.SavePath + arg_8 + ".swg") == true)
+            if (seg042.file_find(Path.Combine(Config.GetSavePath(), arg_8 + ".swg")) == true)
             {
                 byte[] data = new byte[Item.StructSize];
 
-                seg042.find_and_open_file(out file, false, gbl.SavePath + arg_8 + ".swg");
+                seg042.find_and_open_file(out file, false, Path.Combine(Config.GetSavePath(), arg_8 + ".swg"));
                  
                 while(true)
                 {
@@ -929,10 +835,10 @@ namespace engine
             }
 
 
-            if (seg042.file_find(gbl.SavePath + arg_8 + ".fx") == true)
+            if (seg042.file_find(Path.Combine(Config.GetSavePath(), arg_8 + ".fx")) == true)
             {
                 byte[] data = new byte[Affect.StructSize];
-                seg042.find_and_open_file(out file, false, gbl.SavePath + arg_8 + ".fx");
+                seg042.find_and_open_file(out file, false, Path.Combine(Config.GetSavePath(), arg_8 + ".fx"));
 
                 while (true)
                 {
@@ -953,10 +859,10 @@ namespace engine
 
             if (gbl.import_from == ImportSource.Pool)
             {
-                if (seg042.file_find(gbl.SavePath + arg_8 + ".spc") == true)
+                if (seg042.file_find(Path.Combine(Config.GetSavePath(), arg_8 + ".spc")) == true)
                 {
                     byte[] data = new byte[Affect.StructSize];
-                    seg042.find_and_open_file(out file, false, gbl.SavePath + arg_8 + ".spc");
+                    seg042.find_and_open_file(out file, false, Path.Combine(Config.GetSavePath(), arg_8 + ".spc"));
 
                     while(true)
                     {
@@ -1092,59 +998,56 @@ namespace engine
 
         static Set save_game_keys = new Set(0x0802, new byte[] { 0xFE, 0x07 }); // asc_4A761
 
-        internal static void loadGameMenu() // loadGame
-        {
-            gbl.import_from = 0;
+		internal static void loadGameMenu() // loadGame
+		{
+			gbl.import_from = ImportSource.Curse;
 
-            if (save() == true)
-            {
-                string games_list = string.Empty;
+			string games_list = string.Empty;
 
-                for (char save_letter = 'A'; save_letter <= 'J'; save_letter++)
-                {
-                    string file_name = gbl.SavePath + "savgam" + save_letter.ToString() + ".dat";
+			for (char save_letter = 'A'; save_letter <= 'J'; save_letter++)
+			{
+				string file_name = Path.Combine(Config.GetSavePath(), "savgam" + save_letter.ToString() + ".dat");
 
-                    if (seg042.file_find(file_name) == true)
-                    {
-                        games_list += save_letter.ToString() + " ";
-                    }
-                }
+				if (seg042.file_find(file_name) == true)
+				{
+					games_list += save_letter.ToString() + " ";
+				}
+			}
 
-                if (games_list.Length != 0)
-                {
-                    games_list = games_list.TrimEnd();
+			if (games_list.Length != 0)
+			{
+				games_list = games_list.TrimEnd();
 
-                    bool stop_loop = false;
-                    char save_letter = '\0';
-                    do
-                    {
-                        bool speical_key;
-						char input_key = ovr027.displayInput(out speical_key, false, 0, gbl.defaultMenuColors, games_list, "Load Which Game: ");
+				bool stop_loop = false;
+				char save_letter = '\0';
+				do
+				{
+					bool speical_key;
+					char input_key = ovr027.displayInput(out speical_key, false, 0, gbl.defaultMenuColors, games_list, "Load Which Game: ");
 
-                        stop_loop = input_key == 0x00; // Escape
-                        save_letter = '\0';
+					stop_loop = input_key == 0x00; // Escape
+					save_letter = '\0';
 
-                        if (save_game_keys.MemberOf(input_key) == true)
-                        {
-                            save_letter = input_key;
-                            string file_name = gbl.SavePath + "savgam" + save_letter.ToString() + ".dat";
-                            stop_loop = seg042.file_find(file_name);
-                        }
-                    } while (stop_loop == false);
+					if (save_game_keys.MemberOf(input_key) == true)
+					{
+						save_letter = input_key;
+						string file_name = Path.Combine(Config.GetSavePath(), "savgam" + save_letter.ToString() + ".dat");
+						stop_loop = seg042.file_find(file_name);
+					}
+				} while (stop_loop == false);
 
-                    if (save_letter != '\0')
-                    {
-                        string file_name = gbl.SavePath + "savgam" + save_letter.ToString() + ".dat";
+				if (save_letter != '\0')
+				{
+					string file_name = Path.Combine(Config.GetSavePath(), "savgam" + save_letter.ToString() + ".dat");
 
-                        loadSaveGame(file_name);
-                    }
-                }
-            }
-        }
+					loadSaveGame(file_name);
+				}
+			}
+		}
 
         internal static void loadSaveGame(string file_name)
         {
-            File file;
+            Classes.File file;
             seg042.find_and_open_file(out file, true, file_name);
 
             ovr027.ClearPromptArea();
@@ -1207,17 +1110,12 @@ namespace engine
             {
                 string var_1F6 = seg042.clean_string(var_148[index]);
 
-                if (seg042.file_find(gbl.SavePath + var_1F6 + ".sav") == true)
+                if (seg042.file_find(Path.Combine(Config.GetSavePath(), var_1F6 + ".sav")) == true)
                 {
                     Player player = new Player();
 
                     import_char01(ref player, var_1F6 + ".sav");
                     AssignPlayerIconId(player);
-
-                    if (save() == false)
-                    {
-                        return;
-                    }
                 }
             }
 
@@ -1275,140 +1173,106 @@ namespace engine
 
 			gbl.game_state = GameState.StartGameMenu;
         }
- 
-        
-        static int save_space_required()
-        {
-            int size = 0;
-            foreach (Player player in gbl.TeamList)
-            {
-                size += PlayerDataSize(player); 
-            }
 
-            return size;
-        }
+		static Set unk_4AEA0 = new Set(0x000a, new byte[] { 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xFE, 0x07 });
+		static Set unk_4AEEF = new Set(0x0003, new byte[] { 0x05, 0x00, 0x04 });
 
+		internal static void SaveGame()
+		{
+			char inputKey;
+			Classes.File save_file = new Classes.File();
+			string[] var_171 = new string[9];
 
-        static Set unk_4AEA0 = new Set (0x000a , new byte[ ] { 0x01, 0x00, 0x00, 0x00 , 0x00 , 0x00 , 0x00 , 0x00, 0xFE, 0x07 });
-        static Set unk_4AEEF = new Set(0x0003, new byte[] { 0x05, 0x00, 0x04 });
-
-        internal static void SaveGame()
-        {
-            char inputKey;
-            File save_file = new File();
-            string[] var_171 = new string[9];
-
-            do
-            {
+			do
+			{
 				inputKey = ovr027.displayInput((gbl.game_state == GameState.Camping), 0, gbl.defaultMenuColors, "A B C D E F G H I J", "Save Which Game: ");
 
-            } while (unk_4AEA0.MemberOf(inputKey) == false);
+			} while (unk_4AEA0.MemberOf(inputKey) == false);
 
-            if (inputKey != '\0')
-            {
-                gbl.import_from = ImportSource.Curse;
+			if (inputKey != '\0')
+			{
+				gbl.import_from = ImportSource.Curse;
 
-                if (save() == true)
-                {
-                    int space_required;
-                    if (seg042.file_find(gbl.SavePath + "savgam" + inputKey + ".dat") == true)
-                    {
-                        space_required = 0;
-                    }
-                    else
-                    {
-                        space_required = 0x3208;
-                    }
+				short var_1FC;
 
-                    space_required += save_space_required();
+				do
+				{
+					save_file.Assign(Path.Combine(Config.GetSavePath(), "savgam" + inputKey + ".dat"));
+					seg051.Rewrite(save_file);
+					var_1FC = gbl.FIND_result;
 
-                    if (space_required > seg046.getDiskSpace((byte)(char.ToUpper(gbl.SavePath[0]) - 0x40)))
-                    {
-                        seg041.displayAndDebug("Can't save.  No room on this disk.", 0, 14);
-                        return;
-                    }
+					if (unk_4AEEF.MemberOf(var_1FC) == false)
+					{
+						seg041.displayAndDebug("Unexpected error during save: " + var_1FC.ToString(), 0, 14);
+						seg051.Close(save_file);
+						return;
+					}
+				} while (unk_4AEEF.MemberOf(var_1FC) == false);
 
-                    short var_1FC;
+				ovr027.ClearPromptArea();
+				seg041.displayString("Saving...Please Wait", 0, 10, 0x18, 0);
 
-                    do
-                    {
-                        save_file.Assign(gbl.SavePath + "savgam" + inputKey + ".dat");
-                        seg051.Rewrite(save_file);
-                        var_1FC = gbl.FIND_result;
+				gbl.area_ptr.game_speed = (byte)gbl.game_speed_var;
+				gbl.area_ptr.pics_on = (byte)(((gbl.PicsOn) ? 0x02 : 0) | ((gbl.AnimationsOn) ? 0x01 : 0));
+				gbl.area2_ptr.game_area = gbl.game_area;
 
-                        if (unk_4AEEF.MemberOf(var_1FC) == false)
-                        {
-                            seg041.displayAndDebug("Unexpected error during save: " + var_1FC.ToString(), 0, 14);
-                            seg051.Close(save_file);
-                            return;
-                        }
-                    } while (unk_4AEEF.MemberOf(var_1FC) == false);
+				byte[] data = new byte[0x1E00];
 
-                    ovr027.ClearPromptArea();
-                    seg041.displayString("Saving...Please Wait", 0, 10, 0x18, 0);
+				data[0] = gbl.game_area;
+				seg051.BlockWrite(1, data, save_file);
 
-                    gbl.area_ptr.game_speed = (byte)gbl.game_speed_var;
-                    gbl.area_ptr.pics_on = (byte)(((gbl.PicsOn) ? 0x02 : 0) | ((gbl.AnimationsOn) ? 0x01 : 0));
-                    gbl.area2_ptr.game_area = gbl.game_area;
+				seg051.BlockWrite(0x800, gbl.area_ptr.ToByteArray(), save_file);
+				seg051.BlockWrite(0x800, gbl.area2_ptr.ToByteArray(), save_file);
+				seg051.BlockWrite(0x400, gbl.stru_1B2CA.ToByteArray(), save_file);
+				seg051.BlockWrite(0x1E00, gbl.ecl_ptr.ToByteArray(), save_file);
 
-                    byte[] data = new byte[0x1E00];
+				data[0] = (byte)gbl.mapPosX;
+				data[1] = (byte)gbl.mapPosY;
+				data[2] = gbl.mapDirection;
+				data[3] = gbl.mapWallType;
+				data[4] = gbl.mapWallRoof;
+				seg051.BlockWrite(5, data, save_file);
 
-                    data[0] = gbl.game_area;
-                    seg051.BlockWrite(1, data, save_file);
+				data[0] = (byte)gbl.last_game_state;
+				seg051.BlockWrite(1, data, save_file);
+				data[0] = (byte)gbl.game_state;
+				seg051.BlockWrite(1, data, save_file);
 
-                    seg051.BlockWrite(0x800, gbl.area_ptr.ToByteArray(), save_file);
-                    seg051.BlockWrite(0x800, gbl.area2_ptr.ToByteArray(), save_file);
-                    seg051.BlockWrite(0x400, gbl.stru_1B2CA.ToByteArray(), save_file);
-                    seg051.BlockWrite(0x1E00, gbl.ecl_ptr.ToByteArray(), save_file);
+				for (int i = 0; i < 3; i++)
+				{
+					Sys.ShortToArray((short)gbl.setBlocks[i].blockId, data, (i * 4) + 0);
+					Sys.ShortToArray((short)gbl.setBlocks[i].setId, data, (i * 4) + 2);
+				}
+				seg051.BlockWrite(12, data, save_file);
 
-                    data[0] = (byte)gbl.mapPosX;
-                    data[1] = (byte)gbl.mapPosY;
-                    data[2] = gbl.mapDirection;
-                    data[3] = gbl.mapWallType;
-                    data[4] = gbl.mapWallRoof;
-                    seg051.BlockWrite(5, data, save_file);
+				int party_count = 0;
+				foreach (Player tmp_player in gbl.TeamList)
+				{
+					party_count++;
+					var_171[party_count - 1] = "CHRDAT" + inputKey + party_count.ToString();
+				}
 
-                    data[0] = (byte)gbl.last_game_state;
-                    seg051.BlockWrite(1, data, save_file);
-                    data[0] = (byte)gbl.game_state;
-                    seg051.BlockWrite(1, data, save_file);
+				data[0] = (byte)party_count;
+				seg051.BlockWrite(1, data, save_file);
 
-                    for (int i = 0; i < 3; i++)
-                    {
-                        Sys.ShortToArray((short)gbl.setBlocks[i].blockId, data, (i * 4) + 0);
-                        Sys.ShortToArray((short)gbl.setBlocks[i].setId, data, (i * 4) + 2);
-                    }
-                    seg051.BlockWrite(12, data, save_file);
+				for (int i = 0; i < party_count; i++)
+				{
+					Sys.StringToArray(data, 0x29 * i, 0x29, var_171[i]);
+				}
+				seg051.BlockWrite(0x148, data, save_file);
+				seg051.Close(save_file);
 
-                    int party_count = 0;
-                    foreach (Player tmp_player in gbl.TeamList)
-                    {
-                        party_count++;
-                        var_171[party_count - 1] = "CHRDAT" + inputKey + party_count.ToString();
-                    }
+				party_count = 0;
+				foreach (Player tmp_player in gbl.TeamList)
+				{
+					party_count++;
+					SavePlayer("CHRDAT" + inputKey + party_count.ToString(), tmp_player);
+					remove_player_file(tmp_player);
+				}
 
-                    data[0] = (byte)party_count;
-                    seg051.BlockWrite(1, data, save_file);
-
-                    for (int i = 0; i < party_count; i++)
-                    {
-                        Sys.StringToArray(data, 0x29*i, 0x29, var_171[i]);
-                    }
-                    seg051.BlockWrite(0x148, data, save_file);
-                    seg051.Close(save_file);
-                    
-                    party_count = 0;
-                    foreach (Player tmp_player in gbl.TeamList)
-                    {
-                        party_count++;
-                        SavePlayer("CHRDAT" + inputKey + party_count.ToString(), tmp_player);
-                        remove_player_file(tmp_player);
-                    }
-
-                    gbl.gameSaved = true;
-                    ovr027.ClearPromptArea();
-                }
-            }
-        }
+				gbl.gameSaved = true;
+				ovr027.ClearPromptArea();
+			}
+		} 
     }
 }

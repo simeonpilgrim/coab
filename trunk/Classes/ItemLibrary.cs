@@ -9,7 +9,11 @@ namespace Classes
 {
     public class ItemLibrary
     {
-        static List<Item> library;
+
+		static string libraryPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "CotAB");
+		static string libraryFile = Path.Combine(libraryPath, "ItemLibrary.dat");
+
+		static List<Item> library = new List<Item>();
         public static void Add(Item item)
         {
             Item i = item.ShallowClone();
@@ -25,9 +29,9 @@ namespace Classes
 
         public static void Read()
         {
-            if (System.IO.File.Exists("ItemLibrary.dat"))
+			if (System.IO.File.Exists(libraryFile))
             {
-                FileStream fs = new FileStream("ItemLibrary.dat", FileMode.Open);
+				FileStream fs = new FileStream(libraryFile, FileMode.Open);
 
                 if (fs.Length == 0)
                 {
@@ -43,24 +47,20 @@ namespace Classes
                 }
                 catch (SerializationException e)
                 {
-                    Console.WriteLine("Failed to deserialize. Reason: " + e.Message);
+                    //Console.WriteLine("Failed to deserialize. Reason: " + e.Message);
                     throw;
                 }
                 finally
                 {
                     fs.Close();
                 }
-                    
-            }
-            else
-            {
-                library = new List<Item>();
             }
         }
 
         public static void Write()
         {
-            FileStream fs = new FileStream("ItemLibrary.dat", FileMode.Create);
+			Directory.CreateDirectory(libraryPath);
+			FileStream fs = new FileStream(libraryFile, FileMode.Create);
 
             // Construct a BinaryFormatter and use it to serialize the data to the stream.
             BinaryFormatter formatter = new BinaryFormatter();
@@ -70,7 +70,7 @@ namespace Classes
             }
             catch (SerializationException e)
             {
-                Console.WriteLine("Failed to serialize. Reason: " + e.Message);
+                //Console.WriteLine("Failed to serialize. Reason: " + e.Message);
                 throw;
             }
             finally

@@ -341,15 +341,6 @@ namespace Classes
 
         public static SoundType soundType = SoundType.None; // byte_1BF14
 
-        public static string save_path = "Save\\"; // byte_1BF1A
-
-        public static string SavePath
-        {
-            get
-            {
-                return save_path;
-            }
-        }
         public static bool gameSaved; // byte_1C01B
         public static byte[] monoCharData = new byte[8]; // byte_1C8C2
         public static int textXCol; // byte_1C8CA
