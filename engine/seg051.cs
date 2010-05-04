@@ -89,20 +89,6 @@ namespace engine
             arg_A.stream.Write(arg_6, 0, arg_4);
         }
 
-        internal static void Seek(int arg_0, File arg_4)
-        {
-            arg_4.stream.Seek(arg_0, System.IO.SeekOrigin.Begin);
-        }
-
-
-        internal static long FileSize(File f)
-        {
-            var fi = new System.IO.FileInfo(f.name);
-
-            return fi.Length;
-        }
-
-
         internal static void FillChar(byte fill_byte, int buffer_size, byte[] buffer)
         {
             for (int i = 0; i < buffer_size; i++)

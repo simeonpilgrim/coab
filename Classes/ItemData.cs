@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 
 namespace Classes
 {
@@ -14,21 +15,30 @@ namespace Classes
         flag_20 = 0x20,
         flag_40 = 0x40,
         quarrels = 0x80,
-
     }
 
     public class ItemDataTable
     {
         ItemData[] table;
 
-        public ItemDataTable(byte[] data)
-        {
-            table = new ItemData[0x81];
-            for (int i = 0; i < 0x81; i++)
-            {
-                table[i] = new ItemData(data, i * 0x10);
-            }
-        }
+		public ItemDataTable(string fileName)
+		{
+			string filePath = Path.Combine(gbl.exe_path, fileName);
+
+			FileStream stream  = System.IO.File.Open(filePath, FileMode.Open, FileAccess.Read);
+
+			stream.Seek(2, SeekOrigin.Begin);
+			byte[] data = new byte[0x810];
+			stream.Read(data, 0, 0x810);
+
+			table = new ItemData[0x81];
+			for (int i = 0; i < 0x81; i++)
+			{
+				table[i] = new ItemData(data, i * 0x10);
+			}
+
+			stream.Close();
+		}
 
         public ItemData this[ItemType index]
         {

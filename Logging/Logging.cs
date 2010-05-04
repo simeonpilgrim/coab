@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Text;
 
 
@@ -6,8 +7,18 @@ namespace Logging
 {
     public class Logger
     {
-        static DebugWriter debug = new DebugWriter("debug.txt");
-        
+		static string logPath;
+		static DebugWriter debug;
+
+		static public void Setup(string path)
+		{
+			logPath = path;
+
+			debug = new DebugWriter(Path.Combine(logPath, "Debugging.txt"));
+		}
+
+		public static string GetPath() { return logPath; }
+
         public delegate void VoidDelegate();
         static VoidDelegate ExitFuncCallback;
 

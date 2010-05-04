@@ -444,7 +444,7 @@ namespace engine
             var_C.Add(new MenuItem("  " + ovr020.raceString[5]));
             var_C.Add(new MenuItem("  " + ovr020.raceString[7]));
 
-            index = 1;
+            index = 0;
             menuRedraw = true;
             showExit = true;
 

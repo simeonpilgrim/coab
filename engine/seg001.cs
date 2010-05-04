@@ -27,7 +27,6 @@ namespace engine
         internal static void ConfigGame()
         {
             gbl.exe_path = System.IO.Directory.GetCurrentDirectory();
-            gbl.data_path = gbl.exe_path;
 
             seg044.SoundInit();
         }
@@ -41,6 +40,8 @@ namespace engine
                 gbl.CombatMap[i] = new CombatantMap();
             }
             /* Memory Init - End */
+
+			ovr003.SetupCommandTable();
 
             InitFirst();
 
@@ -121,8 +122,6 @@ namespace engine
 
         static void InitFirst() /* sub_39054 */
         {
-            File unk_1AD74;
-
             seg051.Randomize();
 
             gbl.area_ptr = new Area1();
@@ -268,17 +267,8 @@ namespace engine
             gbl.sky_dax_251 = seg040.LoadDax(13, 1, 251, "SKY");
             gbl.sky_dax_252 = seg040.LoadDax(13, 1, 252, "SKY");
 
-            seg042.find_and_open_file(out unk_1AD74, false, "ITEMS");
+			gbl.ItemDataTable = new ItemDataTable("ITEMS");
 
-            seg051.Reset(unk_1AD74);
-            seg051.Seek(2, unk_1AD74);
-
-            byte[] data = new byte[0x810];
-            seg051.BlockRead(0x810, data, unk_1AD74);
-            gbl.ItemDataTable = new ItemDataTable(data);
-
-
-            seg051.Close(unk_1AD74);
             ovr023.setup_spells();
             ovr013.SetupAffectTables();
         }
