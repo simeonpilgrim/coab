@@ -2,6 +2,12 @@
 
 = Unreleased =
 
+= 1.1.0 =
+  * Game now installs and plays on Windows Vista (thus minor version update)
+  * Saved games and other generated data is now located under "My Documents\Curse of the Azure Bonds"
+  * Installer now has custom graphics, and cleans up older installers correctly.
+  * Added basic crash logging
+  
 = 1.0.21 =
   * Issue 36, Fixed staff-sling weapon targeting
   * Issue 44, Fixed the modify player screen so edits to exceptional strength stay
@@ -110,7 +116,7 @@
   * Fixed 'Paul's save game F' forward into big fight. The combat now actually begins
   * Added a cheat, to allow Saving Throws to always succeed for the party. Some spells however do not make saving throws, and other have lesser spells cast when the major fails
   * Fixed a number of small mistaken translations
-  * Fixed the installer so older installations are removed, and from 1.0.7 onwards, older installers will not over install newer installations
+  * Fixed the installer so older installations are removed, and from 1.0.7 on wards, older installers will not over install newer installations
   * As always, *lots* of renaming of the variables/functions
 
 = 1.0.6 =
