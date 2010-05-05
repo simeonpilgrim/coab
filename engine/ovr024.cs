@@ -1253,7 +1253,7 @@ namespace engine
 
                     ovr025.DisplayPlayerStatusString(false, gbl.textYCol + 1, text, player);
 
-                    if (gbl.game_state == GameState.Combat)
+                    if (gbl.game_state != GameState.Combat)
                     {
                         seg041.GameDelay();
                     }
