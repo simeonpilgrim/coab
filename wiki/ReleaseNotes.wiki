@@ -1,11 +1,12 @@
 = The Release Notes =
 
 = Unreleased =
+  * Issue 37, magically killed foes, are not truly dead
 
 = 1.1.0 =
   * Game now installs and plays on Windows Vista (thus minor version update)
   * Saved games and other generated data is now located under "My Documents\Curse of the Azure Bonds"
-  * Installer now has custom graphics, and cleans up older installers correctly.
+  * Installer now has custom graphics, and cleans up older installers correctly
   * Added basic crash logging
   
 = 1.0.21 =
