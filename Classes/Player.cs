@@ -248,43 +248,7 @@ namespace Classes
         public byte field_FA; // 0xfa;
 
         [DataOffset(0xfb, DataType.ShortArray, 7)]
-        public short[] Money = new short[7];
-
-        public short copper // 0xfb
-        {
-            get { return Money[0]; }
-            set { Money[0] = value; }
-        }
-        public short electrum // 0xfd
-        {
-            get { return Money[1]; }
-            set { Money[1] = value; }
-        }
-        public short silver // 0xff
-        {
-            get { return Money[2]; }
-            set { Money[2] = value; }
-        }
-        public short gold // 0x101
-        {
-            get { return Money[3]; }
-            set { Money[3] = value; }
-        }
-        public short platinum // 0x103
-        {
-            get { return Money[4]; }
-            set { Money[4] = value; }
-        }
-        public short gems // 0x105
-        {
-            get { return Money[5]; }
-            set { Money[5] = value; }
-        }
-        public short jewels // 0x107
-        {
-            get { return Money[6]; }
-            set { Money[6] = value; }
-        }
+        public MoneySet Money;
 
         [DataOffset(0x109, DataType.ByteArray,8)]
         public byte[] ClassLevel = new byte[8]; /* Skill_A_lvl */
@@ -497,8 +461,9 @@ namespace Classes
 
         public List<Item> items; // 0x14d
         //public Item itemsPtr; // 0x14d
-        
-        public Item[] itemArray = new Item[13]; // 0x151[]
+
+		public const int ItemSlots = 13;
+		public Item[] itemArray = new Item[ItemSlots]; // 0x151[]
         public Item field_151
         {// 0x151
             get { return itemArray[0]; }
@@ -595,6 +560,8 @@ namespace Classes
         public int hitBonus; // 0x199 field_199
         [DataOffset(0x19a, DataType.Byte)]
         public byte ac; // 0x19a
+		public int DisplayAc { get { return 0x3C - ac; } }
+
         [DataOffset(0x19b, DataType.Byte)]
         public byte ac_behind; // 0x19b field_19B
 
@@ -735,6 +702,7 @@ namespace Classes
             affects = new List<Affect>();
 
             actions = null;
+			Money = new MoneySet();
         }
 
 
@@ -801,6 +769,17 @@ namespace Classes
                 }
             }
         }
+
+		public void RemoveWeight(int amount)
+		{
+			weight -= (short)amount;
+		}
+
+
+		public void AddWeight(int amount)
+		{
+			weight += (short)amount;
+		}
 
     }
 }

@@ -1084,7 +1084,7 @@ namespace engine
                     }
                 }
 
-                player.platinum = 300;
+                player.Money.SetCoins(Money.Platinum, 300);
                 player.hit_point_rolled = sub_509E0(0xff, player);
                 player.hit_point_max = player.hit_point_rolled;
 
@@ -2519,43 +2519,7 @@ namespace engine
         }
 
 
-        internal static void subtract_gold(Player player, int gold)
-        {
-            int coppers = gold * 200;
 
-            byte var_3 = 0;
-
-            while (coppers > 0)
-            {
-                short var_2 = (short)((coppers / Money.per_copper[var_3]) + 1);
-
-                if (player.Money[var_3] < var_2)
-                {
-                    var_2 = player.Money[var_3];
-                }
-
-                coppers -= Money.per_copper[var_3] * var_2;
-
-                player.Money[var_3] -= var_2;
-
-                var_3 += 1;
-            }
-
-            if (coppers < 0)
-            {
-                coppers = System.Math.Abs(coppers);
-                var_3 = 4;
-
-                while (coppers > 0)
-                {
-                    short var_2 = (short)(coppers / Money.per_copper[var_3]);
-                    coppers -= Money.per_copper[var_3] * var_2;
-
-                    player.Money[var_3] += var_2;
-                    var_3 -= 1;
-                }
-            }
-        }
 
         internal static int[,] exp_table = { /* seg600:4293 unk_1A5A3 */ 
             /* Cleric */    { 0, 1501, 3001,  6001, 13001, 27501, 55001, 110001, 225001, 450001, -1, -1, -1 },
@@ -2576,7 +2540,7 @@ namespace engine
                 return;
             }
 
-            if (ovr020.getPlayerGold(gbl.player_ptr) < 1000 &&
+            if (gbl.player_ptr.Money.GetGoldWorth() < 1000 &&
                 Cheats.free_training == false &&
                 gbl.silent_training == false &&
                 gbl.gameWon == false)
@@ -2758,7 +2722,7 @@ namespace engine
                     if (Cheats.free_training == false &&
                         gbl.gameWon == false)
                     {
-                        subtract_gold(player_ptr, 1000);
+                        player_ptr.Money.SubtractGoldWorth(1000);
                     }
                 }
 

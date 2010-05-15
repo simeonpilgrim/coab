@@ -8,10 +8,7 @@ namespace engine
     {
         internal static void vm_LoadCmdSets(int numberOfSets) // parse_command_sub
         {
-            byte strIndex;
-
-            strIndex = 0;
-            //System.Console.WriteLine("  vm_LoadCmdSets: {0}", numberOfSets);
+            byte strIndex = 0;
 
             foreach (Opperation opp in gbl.cmd_opps)
             {
@@ -115,34 +112,23 @@ namespace engine
             gbl.area2_ptr.rest_incounter_percentage = 0;
             gbl.area_ptr.can_cast_spells = false;
 
-            vm_LoadCmdSets(1);
-            gbl.vm_run_addr_1 = gbl.cmd_opps[1].Word;
-
-            vm_LoadCmdSets(1);
-            gbl.SearchLocationAddr = gbl.cmd_opps[1].Word;
-
-            vm_LoadCmdSets(1);
-            gbl.PreCampCheckAddr = gbl.cmd_opps[1].Word;
-
-            vm_LoadCmdSets(1);
-            gbl.CampInterruptedAddr = gbl.cmd_opps[1].Word;
-
-            vm_LoadCmdSets(1);
-            gbl.ecl_initial_entryPoint = gbl.cmd_opps[1].Word;
+			vm_LoadCmdSets(1);
+			gbl.vm_run_addr_1 = gbl.cmd_opps[1].Word;
+			vm_LoadCmdSets(1);
+			gbl.SearchLocationAddr = gbl.cmd_opps[1].Word;
+			vm_LoadCmdSets(1);
+			gbl.PreCampCheckAddr = gbl.cmd_opps[1].Word;
+			vm_LoadCmdSets(1);
+			gbl.CampInterruptedAddr = gbl.cmd_opps[1].Word;
+			vm_LoadCmdSets(1);
+			gbl.ecl_initial_entryPoint = gbl.cmd_opps[1].Word;
 
             gbl.area_ptr.inDungeon = 1;
 
             if (gbl.reload_ecl_and_pictures == false)
             {
-                for (int loop_var = 1; loop_var <= 32; loop_var++)
-                {
-                    gbl.area_ptr.field_200[loop_var] = 0; // word array.
-                }
-
-                for (int loop_var = 0; loop_var <= 9; loop_var++)
-                {
-                    gbl.area2_ptr.field_6F2[loop_var] = 0; // word array.
-                }
+				gbl.area_ptr.RestField200Values();
+				gbl.area2_ptr.RestField6F2Values();
             }
         }
 
@@ -394,23 +380,23 @@ namespace engine
             }
             else if (arg_4 == 0xBB)
             {
-                return_val = (ushort)gbl.player_ptr.copper;
+                return_val = (ushort)gbl.player_ptr.Money.GetCoins(Money.Copper);
             }
             else if (arg_4 == 0xBD)
             {
-                return_val = (ushort)gbl.player_ptr.electrum;
+                return_val = (ushort)gbl.player_ptr.Money.GetCoins(Money.Electrum);
             }
             else if (arg_4 == 0xBF)
             {
-                return_val = (ushort)gbl.player_ptr.silver;
+                return_val = (ushort)gbl.player_ptr.Money.GetCoins(Money.Silver);
             }
             else if (arg_4 == 0xC1)
             {
-                return_val = (ushort)gbl.player_ptr.gold;
+                return_val = (ushort)gbl.player_ptr.Money.GetCoins(Money.Gold);
             }
             else if (arg_4 == 0xC3)
             {
-                return_val = (ushort)gbl.player_ptr.platinum;
+                return_val = (ushort)gbl.player_ptr.Money.GetCoins(Money.Platinum);
             }
             else if (arg_4 == 0xC9)
             {
@@ -602,23 +588,23 @@ namespace engine
             }
             else if (switch_var == 0xbb)
             {
-                gbl.player_ptr.copper = (short)(set_value);
+                gbl.player_ptr.Money.SetCoins(Money.Copper, set_value);
             }
             else if (switch_var == 0xbd)
             {
-                gbl.player_ptr.electrum = (short)(set_value);
+                gbl.player_ptr.Money.SetCoins(Money.Electrum, set_value);
             }
             else if (switch_var == 0xbf)
             {
-                gbl.player_ptr.silver = (short)(set_value);
+                gbl.player_ptr.Money.SetCoins(Money.Silver, set_value);
             }
             else if (switch_var == 0xc1)
             {
-                gbl.player_ptr.gold = (short)(set_value);
+                gbl.player_ptr.Money.SetCoins(Money.Gold, set_value);
             }
             else if (switch_var == 0xc3)
             {
-                gbl.player_ptr.platinum = (short)(set_value);
+                gbl.player_ptr.Money.SetCoins(Money.Platinum, set_value);
             }
             else if (switch_var == 0xf7)
             {
@@ -1074,21 +1060,15 @@ namespace engine
             return sb.ToString();
         }
 
-        internal static byte[] EclData(int baseAddr, int lenght)
-        {
-            byte[] data = new byte[lenght];
-
-            for (int i = 0; i < lenght; i++)
-            {
-                data[i] = gbl.ecl_ptr[baseAddr + i];
-            }
-
-            return data;
-        }
-
         internal static void LoadCompressedEclString(int strIndex, int inputLength)
         {
-            byte[] data = EclData(gbl.ecl_offset + 0x8000 + 1, inputLength);
+			byte[] data = new byte[inputLength];
+
+			for (int i = 0; i < inputLength; i++)
+			{
+				data[i] = gbl.ecl_ptr[gbl.ecl_offset + 0x8000 + 1 + i];
+			}
+
             gbl.ecl_offset += (ushort)inputLength;
 
             gbl.unk_1D972[strIndex] = DecompressString(data);
@@ -1147,91 +1127,91 @@ namespace engine
 
         static Set unk_31673 = new Set(0x0606, new byte[] { 0xff, 0x03, 0xfe, 0xff, 0xff, 0x07 });
 
-        internal static string buildMenuStrings( ref string MenuString)
-        {
-            System.Text.StringBuilder sbA = new System.Text.StringBuilder();
-            System.Text.StringBuilder sbB = new System.Text.StringBuilder();
+		internal static string buildMenuStrings(ref string MenuString)
+		{
+			System.Text.StringBuilder sbA = new System.Text.StringBuilder();
+			System.Text.StringBuilder sbB = new System.Text.StringBuilder();
 
-            bool mFlag = false;
+			bool mFlag = false;
 
-            for (int i = 0; i < MenuString.Length; i++)
-            {
-                char ch = MenuString[i];
+			for (int i = 0; i < MenuString.Length; i++)
+			{
+				char ch = MenuString[i];
 
-                if (unk_31673.MemberOf(ch) == true)
-                {
-                    ch += ' ';
-                }
+				if (unk_31673.MemberOf(ch) == true)
+				{
+					ch += ' ';
+				}
 
-                if (ch == '~')
-                {
-                    mFlag = true;
-                    continue;
-                }
+				if (ch == '~')
+				{
+					mFlag = true;
+					continue;
+				}
 
-                if (mFlag == true)
-                {
-                    mFlag = false;
-                    ch = char.ToUpper(ch);
-                    sbA.Append(ch);
-                }
+				if (mFlag == true)
+				{
+					mFlag = false;
+					ch = char.ToUpper(ch);
+					sbA.Append(ch);
+				}
 
-                sbB.Append(ch);
-            }
+				sbB.Append(ch);
+			}
 
-            MenuString = sbB.ToString();
-            return sbA.ToString();
-        }
+			MenuString = sbB.ToString();
+			return sbA.ToString();
+		}
 
         static Set unk_3178A = new Set(0x0606, new byte[] { 0xff, 0x03, 0xfe, 0xff, 0xff, 0x07 });
 
-        internal static int sub_317AA(bool useOverlay, byte arg_2, MenuColorSet colors, string displayString, string extraString)
-        {
-            char key_pressed;
-            int ret_val;
+		internal static int sub_317AA(bool useOverlay, byte arg_2, MenuColorSet colors, string displayString, string extraString)
+		{
+			char key_pressed;
+			int ret_val;
 
-            string menu_keys = buildMenuStrings(ref displayString);
+			string menu_keys = buildMenuStrings(ref displayString);
 
-            do
-            {
-                bool special_key_pressed;
-                key_pressed = ovr027.displayInput(out special_key_pressed, useOverlay, 1, colors, displayString, extraString);
+			do
+			{
+				bool special_key_pressed;
+				key_pressed = ovr027.displayInput(out special_key_pressed, useOverlay, 1, colors, displayString, extraString);
 
-                if (special_key_pressed == true)
-                {
-                    ovr020.scroll_team_list(key_pressed);
-                    ovr025.PartySummary(gbl.player_ptr);
-                    key_pressed = '\0';
-                }
+				if (special_key_pressed == true)
+				{
+					ovr020.scroll_team_list(key_pressed);
+					ovr025.PartySummary(gbl.player_ptr);
+					key_pressed = '\0';
+				}
 
-            } while (unk_3178A.MemberOf(key_pressed) == false && (key_pressed != 0x0d || arg_2 == 0));
+			} while (unk_3178A.MemberOf(key_pressed) == false && (key_pressed != 0x0d || arg_2 == 0));
 
-            if (key_pressed == 0x0d)
-            {
-                ret_val = 0;
-            }
-            else
-            {
-                int var_154 = 0;
+			if (key_pressed == 0x0d)
+			{
+				ret_val = 0;
+			}
+			else
+			{
+				int var_154 = 0;
 
-                while (var_154 < menu_keys.Length && menu_keys[var_154] != key_pressed)
-                {
-                    var_154++;
-                }
+				while (var_154 < menu_keys.Length && menu_keys[var_154] != key_pressed)
+				{
+					var_154++;
+				}
 
 
-                if (var_154 < menu_keys.Length)
-                {
-                    ret_val = var_154;
-                }
-                else
-                {
-                    ret_val = -1;
-                }
-            }
+				if (var_154 < menu_keys.Length)
+				{
+					ret_val = var_154;
+				}
+				else
+				{
+					ret_val = -1;
+				}
+			}
 
-            return ret_val;
-        }
+			return ret_val;
+		}
 
 
         internal static int VertMenuSelect(int index, bool menuRedraw, bool showExit, 
@@ -1365,13 +1345,7 @@ namespace engine
 
         internal static void RobMoney(Player player, double scale) /* sub_31DEF */
         {
-            player.copper *= (short)(player.copper * scale);
-            player.electrum = (short)(player.electrum * scale);
-            player.silver = (short)(player.silver * scale);
-            player.gold = (short)(player.gold * scale);
-            player.platinum = (short)(player.platinum * scale);
-            player.gems = (short)(player.gems * scale);
-            player.jewels = (short)(player.jewels * scale);
+			player.Money.ScaleAll(scale);
         }
 
 

@@ -104,7 +104,7 @@ namespace engine
             player.actions.AttacksReceived = 0;
             player.actions.field_12 = 0;
             player.actions.guarding = false;
-            ovr024.CheckAffectsEffect(player, CheckType.Type_7);
+            ovr024.CheckAffectsEffect(player, CheckType.PlayerRestrained);
 
             if (player.actions.delay > 0)
             {

@@ -10,32 +10,20 @@ namespace engine
             return 1500 + ovr025.max_encumberance(player);
         }
 
-
-        internal static void remove_weight(short amount, Player player)
-        {
-            player.weight -= amount;
-        }
-
-
-        internal static void add_weight(short amount, Player player)
-        {
-            player.weight += amount;
-        }
-
         internal static bool willOverload(int item_weight, Player player)
         {
-            short dummyShort;
-            return willOverload(out dummyShort, item_weight, player);
+            int dummyInt;
+            return willOverload(out dummyInt, item_weight, player);
         }
 
 
-        internal static bool willOverload(out short weight, int item_weight, Player player)
+        internal static bool willOverload(out int weight, int item_weight, Player player)
         {
             bool ret_val;
 
             if ((player.weight + item_weight) > get_max_load(player))
             {
-                weight = (short)(get_max_load(player) - player.weight);
+                weight = get_max_load(player) - player.weight;
                 ret_val = true;
             }
             else
@@ -47,64 +35,27 @@ namespace engine
             return ret_val;
         }
 
+		internal static void addPlayerGold(int item_weight)
+		{
+			int capasity;
 
-        internal static int getPooledGold()
-        {
-            int total = 0;
-            for (int i = 0; i < 5; i++)
-            {
-                total += Money.per_copper[i] * gbl.pooled_money[i];
-            }
+			if (willOverload(out capasity, item_weight, gbl.player_ptr) == true)
+			{
+				ovr025.string_print01("Overloaded. Money will be put in Pool.");
+				gbl.player_ptr.Money.AddCoins(Money.Platinum, capasity);
+				gbl.player_ptr.AddWeight(capasity);
 
-            return total / Money.per_copper[Money.gold];
-        }
-
-
-        internal static void setPooledGold(int gold)
-        {
-            for (int i = 0; i < 5; i++)
-            {
-                gbl.pooled_money[i] = 0;
-            }
-
-            gbl.pooled_money[Money.platum] = gold / 5;
-            gbl.pooled_money[Money.gold] = gold % 5;
-        }
+				gbl.pooled_money.AddCoins(Money.Platinum, item_weight - capasity);
+			}
+			else
+			{
+				gbl.player_ptr.Money.AddCoins(Money.Platinum, item_weight);
+				gbl.player_ptr.AddWeight(item_weight);
+			}
+		}
 
 
-        internal static void setPlayerMoney(int gold)
-        {
-            for (int i = 0; i < 5; i++)
-            {
-                gbl.player_ptr.Money[i] = 0;
-            }
-
-            gbl.player_ptr.platinum = (short)(gold / 5);
-            gbl.player_ptr.gold = (short)(gold % 5);
-        }
-
-
-        internal static void addPlayerGold(short item_weight)
-        {
-            short capasity;
-
-            if (willOverload(out capasity, item_weight, gbl.player_ptr) == true)
-            {
-                ovr025.string_print01("Overloaded. Money will be put in Pool.");
-                gbl.player_ptr.platinum += capasity;
-                add_weight(capasity, gbl.player_ptr);
-
-                gbl.pooled_money[Money.platum] += item_weight - capasity;
-            }
-            else
-            {
-                gbl.player_ptr.platinum += item_weight;
-                add_weight(item_weight, gbl.player_ptr);
-            }
-        }
-
-
-        internal static short sub_592AD(byte fgColor, string prompt, int maxValue) // sub_592AD
+        internal static short AskNumberValue(byte fgColor, string prompt, int maxValue) // sub_592AD
         {
             ovr027.ClearPromptAreaNoUpdate();
             seg041.displayString(prompt, 0, fgColor, 0x18, 0);
@@ -168,20 +119,18 @@ namespace engine
 
         internal static void trade_money(int money_slot, short num_coins, Player dest, Player source) /* add_object */
         {
-            if ((dest.weight + num_coins) <= get_max_load(dest))
-            {
-                source.Money[money_slot] -= num_coins;
+			if ((dest.weight + num_coins) <= get_max_load(dest))
+			{
+				source.Money.AddCoins(money_slot, -num_coins);
+				source.RemoveWeight(num_coins);
 
-                remove_weight(num_coins, source);
-
-                dest.Money[money_slot] += num_coins;
-
-                add_weight(num_coins, dest);
-            }
-            else
-            {
-                ovr025.string_print01("Overloaded");
-            }
+				dest.Money.AddCoins(money_slot, num_coins);
+				dest.AddWeight(num_coins);
+			}
+			else
+			{
+				ovr025.string_print01("Overloaded");
+			}
         }
 
 
@@ -192,14 +141,12 @@ namespace engine
                 if (player.control_morale == Control.PC_Base ||
                     player.control_morale == Control.PC_Berzerk)
                 {
-                    for (int i = 0; i < 7; i++)
+					gbl.pooled_money += player.Money; 
+					for (int coin = 0; coin < 7; coin++)
                     {
-                        gbl.pooled_money[i] += player.Money[i];
-
-                        remove_weight(player.Money[i], player);
-
-                        player.Money[i] = 0;
+						player.RemoveWeight(player.Money.GetCoins(coin));
                     }
+					player.Money.ClearAll();
                 }
             }
         }
@@ -224,129 +171,121 @@ namespace engine
 
         internal static void share_pooled()
         {
-            short[] money_remander;
-            short[] money_each;
+			int[] money_remander = new int[7];
+			int[] money_each = new int[7];
 
             int partySize = GetPartyCount();
 
-            money_each = new short[7];
-            money_remander = new short[7];
-
-            for (int var_29 = 0; var_29 <= 6; var_29++)
+            for (int coin = 0; coin <= 6; coin++)
             {
-                if (gbl.pooled_money[var_29] > 0)
+				if (gbl.pooled_money.GetCoins(coin) > 0)
                 {
-                    money_each[var_29] = (short)(gbl.pooled_money[var_29] / partySize);
-                    money_remander[var_29] = (short)(gbl.pooled_money[var_29] % partySize);
+                    money_each[coin] = gbl.pooled_money.GetCoins(coin) / partySize;
+					money_remander[coin] = gbl.pooled_money.GetCoins(coin) % partySize;
                 }
                 else
                 {
-                    money_each[var_29] = 0;
-                    money_remander[var_29] = 0;
+                    money_each[coin] = 0;
+                    money_remander[coin] = 0;
                 }
             }
 
-            foreach (Player var_4 in gbl.TeamList)
+            foreach (Player player in gbl.TeamList)
             {
-                if (var_4.control_morale < Control.NPC_Base)
+                if (player.control_morale < Control.NPC_Base)
                 {
-                    for (int var_29 = 6; var_29 >= 0; var_29--)
+                    for (int coin = 6; coin >= 0; coin--)
                     {
-                        short var_C;
-                        if (willOverload(out var_C, money_each[var_29], var_4) == false)
+                        int overflow;
+						if (willOverload(out overflow, money_each[coin], player) == false)
                         {
-                            var_4.Money[var_29] += money_each[var_29];
+                            player.Money.AddCoins( coin, money_each[coin]);
+                            player.AddWeight(money_each[coin]);
 
-                            add_weight(money_each[var_29], var_4);
-
-                            if (money_remander[var_29] > 0 &&
-                                willOverload(1, var_4) == false)
+                            if (money_remander[coin] > 0 &&
+                                willOverload(1, player) == false)
                             {
-                                var_4.Money[var_29] += 1;
-
-                                add_weight(1, var_4);
-                                money_remander[var_29] -= 1;
+                                player.Money.AddCoins(coin, 1);
+                                player.AddWeight(1);
+                                money_remander[coin] -= 1;
                             }
                         }
                         else
                         {
-                            var_4.Money[var_29] += var_C;
+							player.Money.AddCoins(coin, overflow);
 
-                            money_remander[var_29] += (short)(money_each[var_29] - var_C);
+							money_remander[coin] += money_each[coin] - overflow;
 
-                            add_weight(var_C, var_4);
+							player.AddWeight(overflow);
                         }
                     }
                 }
             }
 
-            for (int var_29 = 6; var_29 >= 0; var_29--)
+            for (int coin = 6; coin >= 0; coin--)
             {
-                if (money_remander[var_29] > 0)
+                if (money_remander[coin] > 0)
                 {
-                    foreach (Player var_4 in gbl.TeamList)
-                    {
-                        short var_C = (short)(get_max_load(var_4) - var_4.weight);
+					foreach (Player player in gbl.TeamList)
+					{
+						int capacity = get_max_load(player) - player.weight;
 
-                        if (var_C > 0)
-                        {
-                            if (money_remander[var_29] > var_C)
-                            {
-                                var_4.Money[var_29] += var_C;
-                                add_weight(var_C, var_4);
-                                money_remander[var_29] -= var_C;
-                            }
-                            else
-                            {
-                                var_4.Money[var_29] += money_remander[var_29];
-                                add_weight(money_remander[var_29], var_4);
-                                money_remander[var_29] = 0;
-                            }
-                        }
-                    }
+						if (capacity > 0)
+						{
+							if (money_remander[coin] > capacity)
+							{
+								player.Money.AddCoins(coin, capacity);
+								player.AddWeight(capacity);
+								money_remander[coin] -= capacity;
+							}
+							else
+							{
+								player.Money.AddCoins(coin, money_remander[coin]);
+								player.AddWeight(money_remander[coin]);
+								money_remander[coin] = 0;
+							}
+						}
+					}
                 }
             }
 
-            for (int var_29 = 0; var_29 <= 6; var_29++)
+            for (int coin = Money.Copper; coin <= Money.Jewelry; coin++)
             {
-                gbl.pooled_money[var_29] = money_remander[var_29];
+                gbl.pooled_money.SetCoins(coin, money_remander[coin]);
             }
         }
 
 
-        internal static void drop_coins(int money_slot, short num_coins, Player player) /* sub_59A19 */
+		internal static void DropCoins(int money_slot, int num_coins, Player player) /* sub_59A19 */
+		{
+			player.Money.AddCoins(money_slot, -num_coins);
+			player.RemoveWeight(num_coins);
+
+			if (gbl.game_state == GameState.AfterCombat ||
+				gbl.game_state == GameState.Shop)
+			{
+				gbl.pooled_money.AddCoins(money_slot, num_coins);
+			}
+		}
+
+
+        internal static void PickupCoins(int money_slot, int num_coins, Player player) /* sub_59AA0 */
         {
-            player.Money[money_slot] -= num_coins;
-            remove_weight(num_coins, player);
-
-            if (gbl.game_state == GameState.AfterCombat ||
-                gbl.game_state == GameState.Shop)
-            {
-                gbl.pooled_money[money_slot] += num_coins;
-            }
-        }
-
-
-        internal static void sub_59AA0(int money_slot, short num_coins, Player player) /* sub_59AA0 */
-        {
-            short dummy_short;
-
-            if (willOverload(out dummy_short, num_coins, player) == true)
+            if (willOverload(num_coins, player) == true)
             {
                 ovr025.string_print01("Overloaded");
             }
             else
             {
-                if (num_coins > gbl.pooled_money[money_slot])
+                if (num_coins > gbl.pooled_money.GetCoins(money_slot))
                 {
-                    num_coins = (short)gbl.pooled_money[money_slot];
+					num_coins = gbl.pooled_money.GetCoins(money_slot);
                 }
 
-                gbl.pooled_money[money_slot] -= num_coins;
+				gbl.pooled_money.AddCoins(money_slot, -num_coins);
 
-                player.Money[money_slot] += num_coins;
-
-                add_weight(num_coins, player);
+                player.Money.AddCoins(money_slot, num_coins);
+				player.AddWeight(num_coins);
             }
         }
 
@@ -412,7 +351,6 @@ namespace engine
             bool noMoneyLeft;
 
             List<MenuItem> money = new List<MenuItem>();
-            sbyte var_1;
 
             seg037.DrawFrame_Outer();
 
@@ -422,11 +360,11 @@ namespace engine
 
                 money.Clear();
 
-                for (var_1 = 6; var_1 >= 0; var_1--)
+                for (int coin = 6; coin >= 0; coin--)
                 {
-                    if (gbl.pooled_money[var_1] > 0)
+                    if (gbl.pooled_money.GetCoins(coin) > 0)
                     {
-                        money.Add(new MenuItem(string.Format("{0} {1}", Money.names[var_1], gbl.pooled_money[var_1])));
+						money.Add(new MenuItem(string.Format("{0} {1}", Money.names[coin], gbl.pooled_money.GetCoins(coin))));
                     }
                 }
 
@@ -449,15 +387,15 @@ namespace engine
 
                     text = string.Format("How much {0} will you take? ", text);
 
-                    short num_coins = sub_592AD(10, text, gbl.pooled_money[money_slot]);
+                    int num_coins = AskNumberValue(10, text, gbl.pooled_money.GetCoins(money_slot));
 
-                    sub_59AA0(money_slot, num_coins, gbl.player_ptr);
+                    PickupCoins(money_slot, num_coins, gbl.player_ptr);
                     money.Clear();
 
                     noMoneyLeft = true;
-                    for (var_1 = 0; var_1 < 7; var_1++)
+                    for (int coin = 0; coin < 7; coin++)
                     {
-                        if (gbl.pooled_money[var_1] > 0)
+                        if (gbl.pooled_money.GetCoins(coin) > 0)
                         {
                             noMoneyLeft = false;
                         }
@@ -469,16 +407,7 @@ namespace engine
 
         internal static void treasureOnGround(out bool items, out bool money)
         {
-            money = false;
-
-            for (int i = 0; i < 7; i++)
-            {
-                if (gbl.pooled_money[i] != 0)
-                {
-                    money = true;
-                }
-            }
-
+			money = gbl.pooled_money.AnyMoney();
             items = gbl.items_pointer.Count > 0;
         }
 
@@ -907,7 +836,7 @@ namespace engine
             short value;
             string sell_text;
 
-            if (gbl.player_ptr.gems == 0 && gbl.player_ptr.jewels == 0)
+            if (gbl.player_ptr.Money.Gems == 0 && gbl.player_ptr.Money.Jewels == 0)
             {
                 ovr025.string_print01("No Gems or Jewelry");
                 return false;
@@ -917,7 +846,7 @@ namespace engine
 
             do
             {
-                if (gbl.player_ptr.gems == 0 && gbl.player_ptr.jewels == 0)
+				if (gbl.player_ptr.Money.Gems == 0 && gbl.player_ptr.Money.Jewels == 0)
                 {
                     stop_loop = true;
                 }
@@ -925,14 +854,14 @@ namespace engine
                 {
                     stop_loop = false;
 
-                    string gem_text = gbl.player_ptr.gems.ToString();
-                    string jewel_text = gbl.player_ptr.jewels.ToString();
+					string gem_text = gbl.player_ptr.Money.Gems.ToString();
+					string jewel_text = gbl.player_ptr.Money.Jewels.ToString();
 
-                    if (gbl.player_ptr.gems == 0)
+					if (gbl.player_ptr.Money.Gems == 0)
                     {
                         gem_text = string.Empty;
                     }
-                    else if (gbl.player_ptr.gems == 1)
+					else if (gbl.player_ptr.Money.Gems == 1)
                     {
                         gem_text += " Gem";
                     }
@@ -941,11 +870,11 @@ namespace engine
                         gem_text += " Gems";
                     }
 
-                    if (gbl.player_ptr.jewels == 0)
+					if (gbl.player_ptr.Money.Jewels == 0)
                     {
                         jewel_text = string.Empty;
                     }
-                    else if (gbl.player_ptr.jewels == 1)
+					else if (gbl.player_ptr.Money.Jewels == 1)
                     {
                         jewel_text += " piece of Jewelry";
                     }
@@ -962,12 +891,12 @@ namespace engine
                     seg041.displayString(jewel_text, 0, 0x0f, 0x0a, 1);
                     string prompt = string.Empty;
 
-                    if (gbl.player_ptr.gems != 0)
+					if (gbl.player_ptr.Money.Gems != 0)
                     {
                         prompt = "  Gems";
                     }
 
-                    if (gbl.player_ptr.jewels != 0)
+					if (gbl.player_ptr.Money.Jewels != 0)
                     {
                         prompt += " Jewelry";
                     }
@@ -978,9 +907,9 @@ namespace engine
 
                     if (input_key == 'G')
                     {
-                        if (gbl.player_ptr.gems != 0)
+						if (gbl.player_ptr.Money.Gems > 0)
                         {
-                            gbl.player_ptr.gems -= 1;
+							gbl.player_ptr.Money.AddCoins(Money.Gems, -1);
 
                             int roll = ovr024.roll_dice(100, 1);
 
@@ -1048,9 +977,9 @@ namespace engine
                     }
                     else if (input_key == 'J')
                     {
-                        if (gbl.player_ptr.jewels != 0)
+						if (gbl.player_ptr.Money.Jewels > 0)
                         {
-                            gbl.player_ptr.jewels -= 1;
+							gbl.player_ptr.Money.AddCoins(Money.Jewelry, -1);
 
                             int roll = ovr024.roll_dice(100, 1);
 

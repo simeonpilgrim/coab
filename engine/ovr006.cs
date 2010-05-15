@@ -26,10 +26,7 @@ namespace engine
                     {
                         gbl.byte_1AB14 = true;
 
-                        for (int money_type = 0; money_type <= 6; money_type++)
-                        {
-                            gbl.pooled_money[money_type] += player.Money[money_type];
-                        }
+						gbl.pooled_money += player.Money;
 
                         total += player.field_13E * player.hit_point_rolled;
                         total += player.field_13C;
@@ -48,14 +45,9 @@ namespace engine
                     }
                 }
 
-                total += gbl.pooled_money[Money.copper] / 200;
-                total += gbl.pooled_money[Money.silver] / 20;
-                total += gbl.pooled_money[Money.electrum] / 2;
-                total += gbl.pooled_money[Money.gold];
-                total += gbl.pooled_money[Money.platum] * 5;
+                total += gbl.pooled_money.GetExpWorth();
 
-                total += gbl.pooled_money[Money.gem] * 250;
-                total += gbl.pooled_money[Money.jewelry] * 2200;
+
 
                 foreach (Item item_ptr in gbl.items_pointer)
                 {
@@ -398,10 +390,7 @@ namespace engine
 
                     gbl.items_pointer.Clear();
 
-                    for (int i = 0; i < 7; i++)
-                    {
-                        gbl.pooled_money[i] = 0;
-                    }
+					gbl.pooled_money.ClearAll();
                 }
                 else
                 {
@@ -745,18 +734,10 @@ namespace engine
                 }
             }
 
-            if (npcParts > 0)
-            {
-                for (int i = 0; i <= 6; i++)
-                {
-                    if (gbl.pooled_money[i] > 0)
-                    {
-                        gbl.pooled_money[i] -= (gbl.pooled_money[i] / totalParts) * npcParts;
-
-                        treasureTaken = true;
-                    }
-                }
-            }
+			if (npcParts > 0)
+			{
+				treasureTaken = gbl.pooled_money.ScaleAll(npcParts / totalParts);
+			}
 
             if (treasureTaken)
             {

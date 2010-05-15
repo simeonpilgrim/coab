@@ -234,7 +234,7 @@ namespace engine
                 }
             }
 
-            for (int item_slot = 0; item_slot <= 12; item_slot++)
+			for (int item_slot = 0; item_slot < Player.ItemSlots; item_slot++)
             {
                 if (player.itemArray[item_slot] != null &&
                     (gbl.ItemDataTable[player.itemArray[item_slot].type].classFlags & player.classFlags) == 0 &&

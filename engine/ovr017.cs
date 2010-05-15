@@ -207,11 +207,11 @@ namespace engine
             }
         }
 
-        internal static bool PlayerFileExists(string fileExt, string player_name) // sub_483AE
-        {
-            byte[] data = new byte[0x10];
+		internal static bool PlayerFileExists(string fileExt, string player_name) // sub_483AE
+		{
+			byte[] data = new byte[0x10];
 
-			foreach(string filename in Directory.GetFiles(Config.GetSavePath(), "*"+fileExt ))
+			foreach (string filename in Directory.GetFiles(Config.GetSavePath(), "*" + fileExt))
 			{
 				FileStream stream = System.IO.File.Open(filename, FileMode.Open, FileAccess.Read);
 
@@ -227,7 +227,7 @@ namespace engine
 
 			}
 			return false;
-        }
+		}
 
 
         internal static Player ConvertPoolRadPlayer(PoolRadPlayer bp_var_1C0)
@@ -361,7 +361,8 @@ namespace engine
             player.field_F9 = bp_var_1C0.field_86;
             player.field_FA = bp_var_1C0.field_87;
 
-            player.platinum = 300;
+			player.Money.SetCoins(Money.Platinum, 300);
+
             System.Array.Copy(bp_var_1C0.field_96, player.ClassLevel, 8);
 
             player.monsterType = (MonsterType)bp_var_1C0.field_9F;
@@ -495,11 +496,12 @@ namespace engine
                 var_7.exp = hills_far_player.field_2E;
             }
 
-            if (ovr020.getPlayerGold(bp_player_ptr) < hills_far_player.field_28)
+			// If imported player has more than 500 platinum import that amount.
+            if (bp_player_ptr.Money.GetGoldWorth() < hills_far_player.field_28)
             {
                 for (int slot = 0; slot < 5; slot++)
                 {
-                    ovr022.drop_coins(slot, bp_player_ptr.Money[slot], bp_player_ptr);
+                    ovr022.DropCoins(slot, bp_player_ptr.Money.GetCoins(slot), bp_player_ptr);
                 }
                 ovr022.addPlayerGold((short)(hills_far_player.field_28 / 5));
             }
@@ -553,341 +555,351 @@ namespace engine
             ClassId.mc_c_f,     ClassId.unknown,    ClassId.mc_c_mu,    ClassId.unknown, ClassId.mc_c_f_m, 
             ClassId.unknown};
 
-        internal static void import_char01(ref Player player_ptr, string arg_8)
-        {
-            Player player01_ptr;
-            Player player02_ptr;
-            
-            Classes.File file;
 
-            seg042.find_and_open_file(out file, false, Path.Combine(Config.GetSavePath(), arg_8));
+		internal static void import_char01(ref Player player_ptr, string arg_8)
+		{
+			Classes.File file;
+
+			seg042.find_and_open_file(out file, false, Path.Combine(Config.GetSavePath(), arg_8));
+
+			seg041.displayString("Loading...Please Wait", 0, 10, 0x18, 0);
+
+
+			if (gbl.import_from == ImportSource.Curse)
+			{
+				byte[] data = new byte[Player.StructSize];
+				seg051.BlockRead(Player.StructSize, data, file);
+				seg051.Close(file);
+
+				player_ptr = new Player(data, 0);
+
+			}
+			else if (gbl.import_from == ImportSource.Pool)
+			{
+				byte[] data = new byte[PoolRadPlayer.StructSize];
+				seg051.BlockRead(PoolRadPlayer.StructSize, data, file);
+				seg051.Close(file);
+
+				PoolRadPlayer poolRadPlayer = new PoolRadPlayer(data);
+
+				player_ptr = ConvertPoolRadPlayer(poolRadPlayer);
+			}
+			else if (gbl.import_from == ImportSource.Hillsfar)
+			{
+				byte[] data = new byte[HillsFarPlayer.StructSize];
+				seg051.BlockRead(HillsFarPlayer.StructSize, data, file);
+				seg051.Close(file);
+
+				HillsFarPlayer var_1C4 = new HillsFarPlayer(data);
+
+				player_ptr = ConvertHillsFarPlayer(var_1C4, arg_8);
+
+				var_1C4 = null;
+			}
+
+			if (gbl.import_from == ImportSource.Curse)
+			{
+				arg_8 = System.IO.Path.GetFileNameWithoutExtension(arg_8);
+			}
+			else
+			{
+				arg_8 = seg042.clean_string(player_ptr.name);
+			}
+
+			string filename = Path.Combine(Config.GetSavePath(), arg_8 + ".swg");
+			if (seg042.file_find(filename) == true)
+			{
+				byte[] data = new byte[Item.StructSize];
+
+				seg042.find_and_open_file(out file, false, filename);
+
+				while (true)
+				{
+					if (seg051.BlockRead(Item.StructSize, data, file) == Item.StructSize)
+					{
+						player_ptr.items.Add(new Item(data, 0));
+					}
+					else
+					{
+						break;
+					}
+				}
+
+				seg051.Close(file);
+			}
+
+			filename = Path.Combine(Config.GetSavePath(), arg_8 + ".fx");
+			if (seg042.file_find(filename) == true)
+			{
+				byte[] data = new byte[Affect.StructSize];
+				seg042.find_and_open_file(out file, false, filename);
+
+				while (true)
+				{
+					if (seg051.BlockRead(Affect.StructSize, data, file) == Affect.StructSize)
+					{
+						Affect tmp_affect = new Affect(data, 0);
+
+						player_ptr.affects.Add(new Affect(data, 0));
+					}
+					else
+					{
+						break;
+					}
+				}
+
+				seg051.Close(file);
+			}
+
+			filename = Path.Combine(Config.GetSavePath(), arg_8 + ".spc");
+			if (gbl.import_from == ImportSource.Pool)
+			{
+				if (seg042.file_find(filename) == true)
+				{
+					byte[] data = new byte[Affect.StructSize];
+					seg042.find_and_open_file(out file, false, filename);
+
+					while (true)
+					{
+						if (seg051.BlockRead(Affect.StructSize, data, file) == Affect.StructSize)
+						{
+							if (asc_49280.MemberOf(data[0]) == true)
+							{
+								Affect tmpAffect = new Affect(data, 0);
+								player_ptr.affects.Add(tmpAffect);
+							}
+						}
+						else
+						{
+							break;
+						}
+					}
 
-            seg041.displayString("Loading...Please Wait", 0, 10, 0x18, 0);
+					seg051.Close(file);
 
+				}
+			}
 
-            if (gbl.import_from == ImportSource.Curse)
-            {
-                byte[] data = new byte[Player.StructSize];
+			seg043.clear_keyboard();
+			ovr025.reclac_player_values(player_ptr);
+			ovr026.sub_6A3C6(player_ptr);
+		}
 
-                seg051.BlockRead(0x1a6, data, file);
-                player_ptr = new Player(data, 0);
 
-                seg051.Close(file);
-            }
-            else if (gbl.import_from == ImportSource.Pool)
-            {
-                byte[] data = new byte[0x11D];
+		private static Player ConvertHillsFarPlayer(HillsFarPlayer var_1C4, string arg_8)
+		{
+			Player player_ptr = new Player();
+			Player player01_ptr;
+			Player player02_ptr;
+			Classes.File file;
+
+			player_ptr.items = new List<Item>();
+			player_ptr.affects = new List<Affect>();
+			player_ptr.actions = null;
+
+			string fileExt = ".guy";
+
+			if (PlayerFileExists(fileExt, var_1C4.field_4) == true)
+			{
+				string savename = Path.Combine(Config.GetSavePath(), Path.ChangeExtension(arg_8, fileExt));
+
+				seg042.find_and_open_file(out file, false, savename);
+
+				byte[] data = new byte[Player.StructSize];
+
+				seg051.BlockRead(Player.StructSize, data, file);
+				seg051.Close(file);
+
+				player_ptr = new Player(data, 0);
+
+				player02_ptr = gbl.player_ptr;
+				gbl.player_ptr = player_ptr;
+
+				sub_48F35(var_1C4, player_ptr, player02_ptr);
+
+				if (var_1C4.field_1D > 0)
+				{
+					Item newItem = new Item(0, Affects.helpless, (Affects)var_1C4.field_1D,
+						(short)(var_1C4.field_1D * 200), 0, 0,
+						false, 0, false, 0, 0, 0x57, 0xa7, 0xa8, ItemType.Necklace, true);
+
+					player_ptr.items.Add(newItem);
+				}
+
+				if (var_1C4.field_23 > 0)
+				{
+					Item newItem = new Item(0, Affects.poison_plus_4, (Affects)var_1C4.field_23,
+						(short)(var_1C4.field_23 * 0x15E), 0, 1,
+						false, 0, false, 0, 1, 0x45, 0xa7, 0xce, ItemType.WandB, true);
+
+					player_ptr.items.Add(newItem);
+				}
+
+				if (var_1C4.field_86 > 0)
+				{
+					Item newItem = new Item(0, Affects.helpless, (Affects)var_1C4.field_86,
+						(short)(var_1C4.field_86 * 0xc8), 0, 0,
+						false, 0, false, 0, 0, 0x42, 0xa7, 0xa8, ItemType.RingInvis, true);
+
+					player_ptr.items.Add(newItem);
+				}
+
+				if (var_1C4.field_87 > 0)
+				{
+					Item newItem = new Item(0, Affects.highConRegen, (Affects)var_1C4.field_87,
+						(short)(var_1C4.field_87 * 0x190), 0, (short)(var_1C4.field_87 * 10),
+						false, 0, false, 0, 0, 0x40, 0xa7, 0xb9, ItemType.Necklace, true);
+
+					player_ptr.items.Add(newItem);
+				}
+			}
+			else
+			{
+				fileExt = ".cha";
+
+				if (PlayerFileExists(fileExt, var_1C4.field_4) == true)
+				{
+					byte[] data = new byte[PoolRadPlayer.StructSize];
+
+					string savename = System.IO.Path.Combine(Config.GetSavePath(), Path.ChangeExtension(arg_8, fileExt));
+
+					seg042.find_and_open_file(out file, false, savename);
+
+					seg051.BlockRead(PoolRadPlayer.StructSize, data, file);
+					seg051.Close(file);
+
+					PoolRadPlayer poolRadPlayer = new PoolRadPlayer(data);
+
+					player_ptr = ConvertPoolRadPlayer(poolRadPlayer);
+
+					player02_ptr = gbl.player_ptr;
+					gbl.player_ptr = player_ptr;
+
+					sub_48F35(var_1C4, player_ptr, player02_ptr);
+				}
+				else
+				{
+					player02_ptr = gbl.player_ptr;
+					gbl.player_ptr = player_ptr;
+
+					player01_ptr = player_ptr;
+
+					for (int i = 0; i < 6; i++)
+					{
+						player01_ptr.icon_colours[i] = (byte)(((gbl.default_icon_colours[i] + 8) << 4) + gbl.default_icon_colours[i]);
+					}
+
+					player01_ptr.base_ac = 50;
+					player01_ptr.thac0 = 40;
+					player01_ptr.health_status = Status.okey;
+					player01_ptr.in_combat = true;
+					player01_ptr.field_13F = 1;
+					player01_ptr.field_140 = 1;
+					player01_ptr.field_DE = 1;
+
+					player01_ptr.mod_id = seg051.Random((byte)0xff);
+					player01_ptr.icon_id = 0x0A;
+
+					player01_ptr.attacksCount = 2;
+					player01_ptr.attack1_DiceCountBase = 1;
+					player01_ptr.attack1_DiceSizeBase = 2;
+					player01_ptr.field_125 = 1;
+					player01_ptr.base_movement = 12;
+
+					player01_ptr.name = var_1C4.field_4;
+					player01_ptr.tmp_str = var_1C4.field_14;
+					player01_ptr.strength = var_1C4.field_14;
+					player01_ptr.tmp_str_00 = var_1C4.field_15;
+					player01_ptr.max_str_00 = var_1C4.field_15;
+
+					player01_ptr.stats[1].tmp = var_1C4.field_16;
+					player01_ptr.stats[1].max = var_1C4.field_16;
+					player01_ptr.stats[2].tmp = var_1C4.field_17;
+					player01_ptr.stats[2].max = var_1C4.field_17;
+					player01_ptr.stats[3].tmp = var_1C4.field_18;
+					player01_ptr.stats[3].max = var_1C4.field_18;
+					player01_ptr.stats[4].tmp = var_1C4.field_19;
+					player01_ptr.stats[4].max = var_1C4.field_19;
+					player01_ptr.stats[5].tmp = var_1C4.field_1A;
+					player01_ptr.stats[5].max = var_1C4.field_1A;
+
+					player01_ptr.race = (Race)(var_1C4.field_2D + 1);
+
+					if (player01_ptr.race == Race.half_orc)
+					{
+						player01_ptr.race = Race.human;
+					}
+
+					switch (player01_ptr.race)
+					{
+						case Race.halfling:
+							player01_ptr.icon_size = 1;
+							ovr024.add_affect(false, 0xff, 0, Affects.con_saving_bonus, player_ptr);
+							break;
+
+						case Race.dwarf:
+							player01_ptr.icon_size = 1;
+							ovr024.add_affect(false, 0xff, 0, Affects.con_saving_bonus, player_ptr);
+							ovr024.add_affect(false, 0xff, 0, Affects.dwarf_vs_orc, player_ptr);
+							ovr024.add_affect(false, 0xff, 0, Affects.dwarf_and_gnome_vs_giants, player_ptr);
+							break;
+
+						case Race.gnome:
+							player01_ptr.icon_size = 1;
+							ovr024.add_affect(false, 0xff, 0, Affects.con_saving_bonus, player_ptr);
+							ovr024.add_affect(false, 0xff, 0, Affects.gnome_vs_man_sized_giant, player_ptr);
+							ovr024.add_affect(false, 0xff, 0, Affects.dwarf_and_gnome_vs_giants, player_ptr);
+							ovr024.add_affect(false, 0xff, 0, Affects.affect_30, player_ptr);
+							break;
+
+						case Race.elf:
+							player01_ptr.icon_size = 2;
+							ovr024.add_affect(false, 0xff, 0, Affects.elf_resist_sleep, player_ptr);
+							break;
+
+						case Race.half_elf:
+							player01_ptr.icon_size = 2;
+							ovr024.add_affect(false, 0xff, 0, Affects.halfelf_resistance, player_ptr);
+							break;
+
+						default:
+							player01_ptr.icon_size = 2;
+							break;
+					}
+
+					player01_ptr._class = HillsFarClassMap[var_1C4.field_35 & 0x0F];
+					player01_ptr.age = var_1C4.field_1E;
+
+					player01_ptr.cleric_lvl = (var_1C4.field_B7 > 0) ? (byte)1 : (byte)0;
+					player01_ptr.magic_user_lvl = (var_1C4.field_B8 > 0) ? (byte)1 : (byte)0;
+					player01_ptr.fighter_lvl = (var_1C4.field_B9 > 0) ? (byte)1 : (byte)0;
+					player01_ptr.thief_lvl = (var_1C4.field_BA > 0) ? (byte)1 : (byte)0;
+					player01_ptr.HitDice = 1;
+					player01_ptr.sex = var_1C4.field_2C;
+					player01_ptr.alignment = var_1C4.field_1C;
+					player01_ptr.exp = var_1C4.field_2E;
+
+					if (player01_ptr.magic_user_lvl > 0)
+					{
+						player01_ptr.LearnSpell(Spells.detect_magic_MU);
+						player01_ptr.LearnSpell(Spells.read_magic);
+						player01_ptr.LearnSpell(Spells.shield);
+						player01_ptr.LearnSpell(Spells.sleep);
+					}
+
+					SilentTrainPlayer();
+
+					ovr022.addPlayerGold(300);
+					gbl.player_ptr = player02_ptr;
+					player01_ptr.hit_point_max = var_1C4.field_21;
+					player01_ptr.hit_point_rolled = (byte)(player01_ptr.hit_point_max - ovr018.get_con_hp_adj(player_ptr));
+					player01_ptr.hit_point_current = var_1C4.field_20;
+				}
+			}
+
+			return player_ptr;
+		}
 
-                seg051.BlockRead(0x11D, data, file);
-                seg051.Close(file);
-
-                PoolRadPlayer poolRadPlayer = new PoolRadPlayer(data);
-
-                player_ptr = ConvertPoolRadPlayer(poolRadPlayer);
-            }
-            else if (gbl.import_from == ImportSource.Hillsfar)
-            {
-                byte[] data = new byte[HillsFarPlayer.StructSize];
-
-                seg051.BlockRead(HillsFarPlayer.StructSize, data, file);
-                seg051.Close(file);
-
-                HillsFarPlayer var_1C4 = new HillsFarPlayer(data);
-
-                player_ptr.items = new List<Item>();
-                player_ptr.affects = new List<Affect>();
-                player_ptr.actions = null;
-
-                string fileExt = ".guy";
-                bool var_1BC = PlayerFileExists(fileExt, var_1C4.field_4);
-
-                if (var_1BC == true)
-                {
-                    string savename = System.IO.Path.Combine(Config.GetSavePath(), System.IO.Path.ChangeExtension(arg_8, fileExt));
-
-                    seg042.find_and_open_file(out file, false, savename);
-
-                    data = new byte[Player.StructSize];
-
-                    seg051.BlockRead(Player.StructSize, data, file);
-                    seg051.Close(file);
-
-                    player_ptr = new Player(data, 0);
-
-                    player02_ptr = gbl.player_ptr;
-                    gbl.player_ptr = player_ptr;
-
-                    sub_48F35(var_1C4, player_ptr, player02_ptr);
-
-                    if (var_1C4.field_1D > 0)
-                    {
-                        Item newItem = new Item(0, Affects.helpless, (Affects)var_1C4.field_1D,
-                            (short)(var_1C4.field_1D * 200), 0, 0,
-                            false, 0, false, 0, 0, 0x57, 0xa7, 0xa8, ItemType.Necklace, true);
-                        
-                        player_ptr.items.Add(newItem);
-                    }
-
-                    if (var_1C4.field_23 > 0)
-                    {
-                        Item newItem = new Item(0, Affects.poison_plus_4, (Affects)var_1C4.field_23,
-                            (short)(var_1C4.field_23 * 0x15E), 0, 1,
-                            false, 0, false, 0, 1, 0x45, 0xa7, 0xce, ItemType.WandB, true);
-
-                        player_ptr.items.Add(newItem);
-                    }
-
-                    if (var_1C4.field_86 > 0)
-                    {
-                        Item newItem = new Item(0, Affects.helpless, (Affects)var_1C4.field_86,
-                            (short)(var_1C4.field_86 * 0xc8), 0, 0,
-                            false, 0, false, 0, 0, 0x42, 0xa7, 0xa8, ItemType.RingInvis, true);
-
-                        player_ptr.items.Add(newItem);
-                    }
-
-                    if (var_1C4.field_87 > 0)
-                    {
-                        Item newItem = new Item(0, Affects.highConRegen, (Affects)var_1C4.field_87,
-                            (short)(var_1C4.field_87 * 0x190), 0, (short)(var_1C4.field_87 * 10),
-                            false, 0, false, 0, 0, 0x40, 0xa7, 0xb9, ItemType.Necklace, true);
-
-                        player_ptr.items.Add(newItem);
-                    }
-                }
-                else
-                {
-                    fileExt = ".cha";
-
-                    var_1BC = PlayerFileExists(fileExt, var_1C4.field_4);
-
-                    if (var_1BC == true)
-                    {
-                        data = new byte[PoolRadPlayer.StructSize];
-
-                        string savename = System.IO.Path.Combine(Config.GetSavePath(), System.IO.Path.ChangeExtension(arg_8, fileExt));
-
-                        seg042.find_and_open_file(out file, false, savename);
-
-                        seg051.BlockRead(PoolRadPlayer.StructSize, data, file);
-                        seg051.Close(file);
-
-                        PoolRadPlayer poolRadPlayer = new PoolRadPlayer(data);
-
-                        player_ptr = ConvertPoolRadPlayer(poolRadPlayer);
-
-                        player02_ptr = gbl.player_ptr;
-                        gbl.player_ptr = player_ptr;
-
-                        sub_48F35(var_1C4, player_ptr, player02_ptr);
-                    }
-                    else
-                    {
-                        player02_ptr = gbl.player_ptr;
-                        gbl.player_ptr = player_ptr;
-
-                        player01_ptr = player_ptr;
-
-                        for (int i = 0; i < 6; i++)
-                        {
-                            player01_ptr.icon_colours[i] = (byte)(((gbl.default_icon_colours[i] + 8) << 4) + gbl.default_icon_colours[i]);
-                        }
-
-                        player01_ptr.base_ac = 50;
-                        player01_ptr.thac0 = 40;
-                        player01_ptr.health_status = Status.okey;
-                        player01_ptr.in_combat = true;
-                        player01_ptr.field_13F = 1;
-                        player01_ptr.field_140 = 1;
-                        player01_ptr.field_DE = 1;
-
-                        player01_ptr.mod_id = seg051.Random((byte)0xff);
-                        player01_ptr.icon_id = 0x0A;
-
-                        player01_ptr.attacksCount = 2;
-                        player01_ptr.attack1_DiceCountBase = 1;
-                        player01_ptr.attack1_DiceSizeBase = 2;
-                        player01_ptr.field_125 = 1;
-                        player01_ptr.base_movement = 12;
-
-                        player01_ptr.name = var_1C4.field_4;
-                        player01_ptr.tmp_str = var_1C4.field_14;
-                        player01_ptr.strength = var_1C4.field_14;
-                        player01_ptr.tmp_str_00 = var_1C4.field_15;
-                        player01_ptr.max_str_00 = var_1C4.field_15;
-
-                        player01_ptr.stats[1].tmp = var_1C4.field_16;
-                        player01_ptr.stats[1].max = var_1C4.field_16;
-                        player01_ptr.stats[2].tmp = var_1C4.field_17;
-                        player01_ptr.stats[2].max = var_1C4.field_17;
-                        player01_ptr.stats[3].tmp = var_1C4.field_18;
-                        player01_ptr.stats[3].max = var_1C4.field_18;
-                        player01_ptr.stats[4].tmp = var_1C4.field_19;
-                        player01_ptr.stats[4].max = var_1C4.field_19;
-                        player01_ptr.stats[5].tmp = var_1C4.field_1A;
-                        player01_ptr.stats[5].max = var_1C4.field_1A;
-
-                        player01_ptr.race = (Race)(var_1C4.field_2D + 1);
-
-                        if (player01_ptr.race == Race.half_orc)
-                        {
-                            player01_ptr.race = Race.human;
-                        }
-
-                        switch (player01_ptr.race)
-                        {
-                            case Race.halfling:
-                                player01_ptr.icon_size = 1;
-                                ovr024.add_affect(false, 0xff, 0, Affects.con_saving_bonus, player_ptr);
-                                break;
-
-                            case Race.dwarf:
-                                player01_ptr.icon_size = 1;
-                                ovr024.add_affect(false, 0xff, 0, Affects.con_saving_bonus, player_ptr);
-                                ovr024.add_affect(false, 0xff, 0, Affects.dwarf_vs_orc, player_ptr);
-                                ovr024.add_affect(false, 0xff, 0, Affects.dwarf_and_gnome_vs_giants, player_ptr);
-                                break;
-
-                            case Race.gnome:
-                                player01_ptr.icon_size = 1;
-                                ovr024.add_affect(false, 0xff, 0, Affects.con_saving_bonus, player_ptr);
-                                ovr024.add_affect(false, 0xff, 0, Affects.gnome_vs_man_sized_giant, player_ptr);
-                                ovr024.add_affect(false, 0xff, 0, Affects.dwarf_and_gnome_vs_giants, player_ptr);
-                                ovr024.add_affect(false, 0xff, 0, Affects.affect_30, player_ptr);
-                                break;
-
-                            case Race.elf:
-                                player01_ptr.icon_size = 2;
-                                ovr024.add_affect(false, 0xff, 0, Affects.elf_resist_sleep, player_ptr);
-                                break;
-
-                            case Race.half_elf:
-                                player01_ptr.icon_size = 2;
-                                ovr024.add_affect(false, 0xff, 0, Affects.halfelf_resistance, player_ptr);
-                                break;
-
-                            default:
-                                player01_ptr.icon_size = 2;
-                                break;
-                        }
-
-                        player01_ptr._class = HillsFarClassMap[var_1C4.field_35 & 0x0F];
-                        player01_ptr.age = var_1C4.field_1E;
-
-                        player01_ptr.cleric_lvl = (var_1C4.field_B7 > 0) ? (byte)1 : (byte)0;
-                        player01_ptr.magic_user_lvl = (var_1C4.field_B8 > 0) ? (byte)1 : (byte)0;
-                        player01_ptr.fighter_lvl = (var_1C4.field_B9 > 0) ? (byte)1 : (byte)0;
-                        player01_ptr.thief_lvl = (var_1C4.field_BA > 0) ? (byte)1 : (byte)0;
-                        player01_ptr.HitDice = 1;
-                        player01_ptr.sex = var_1C4.field_2C;
-                        player01_ptr.alignment = var_1C4.field_1C;
-                        player01_ptr.exp = var_1C4.field_2E;
-
-                        if (player01_ptr.magic_user_lvl > 0)
-                        {
-                            player01_ptr.LearnSpell(Spells.detect_magic_MU);
-                            player01_ptr.LearnSpell(Spells.read_magic);
-                            player01_ptr.LearnSpell(Spells.shield);
-                            player01_ptr.LearnSpell(Spells.sleep);
-                        }
-
-                        SilentTrainPlayer();
-
-                        ovr022.addPlayerGold(300);
-                        gbl.player_ptr = player02_ptr;
-                        player01_ptr.hit_point_max = var_1C4.field_21;
-                        player01_ptr.hit_point_rolled = (byte)(player01_ptr.hit_point_max - ovr018.get_con_hp_adj(player_ptr));
-                        player01_ptr.hit_point_current = var_1C4.field_20;
-                    }
-                }
-
-                var_1C4 = null;
-            }
-
-            if (gbl.import_from == ImportSource.Curse)
-            {
-                arg_8 = System.IO.Path.GetFileNameWithoutExtension(arg_8);
-            }
-            else
-            {
-                arg_8 = seg042.clean_string(player_ptr.name);
-            }
-
-            if (seg042.file_find(Path.Combine(Config.GetSavePath(), arg_8 + ".swg")) == true)
-            {
-                byte[] data = new byte[Item.StructSize];
-
-                seg042.find_and_open_file(out file, false, Path.Combine(Config.GetSavePath(), arg_8 + ".swg"));
-                 
-                while(true)
-                {
-                    if (seg051.BlockRead(Item.StructSize, data, file) == Item.StructSize)
-                    {
-                        player_ptr.items.Add(new Item(data, 0));
-                    }
-                    else
-                    {
-                        break;
-                    }
-                } 
-
-                seg051.Close(file);
-            }
-
-
-            if (seg042.file_find(Path.Combine(Config.GetSavePath(), arg_8 + ".fx")) == true)
-            {
-                byte[] data = new byte[Affect.StructSize];
-                seg042.find_and_open_file(out file, false, Path.Combine(Config.GetSavePath(), arg_8 + ".fx"));
-
-                while (true)
-                {
-                    if (seg051.BlockRead(Affect.StructSize, data, file) == Affect.StructSize)
-                    {
-                        Affect tmp_affect = new Affect(data, 0);
-
-                        player_ptr.affects.Add(new Affect(data, 0));
-                    }
-                    else
-                    {
-                        break;
-                    }
-                }
-
-                seg051.Close(file);
-            }
-
-            if (gbl.import_from == ImportSource.Pool)
-            {
-                if (seg042.file_find(Path.Combine(Config.GetSavePath(), arg_8 + ".spc")) == true)
-                {
-                    byte[] data = new byte[Affect.StructSize];
-                    seg042.find_and_open_file(out file, false, Path.Combine(Config.GetSavePath(), arg_8 + ".spc"));
-
-                    while(true)
-                    {
-                        if (seg051.BlockRead(Affect.StructSize, data, file) == Affect.StructSize)
-                        {
-                            if (asc_49280.MemberOf(data[0]) == true)
-                            {
-                                Affect tmpAffect = new Affect(data, 0);
-                                player_ptr.affects.Add(tmpAffect);
-                            }
-                        }
-                        else
-                        {
-                            break;
-                        }
-                    }
-
-                    seg051.Close(file);
-
-                }
-            }
-            seg043.clear_keyboard();
-            ovr025.reclac_player_values(player_ptr);
-            ovr026.sub_6A3C6(player_ptr);
-        }
 
         internal static Player load_mob(int monster_id)
         {

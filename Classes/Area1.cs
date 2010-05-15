@@ -525,5 +525,13 @@ namespace Classes
 
             return (byte[])origData.Clone();
         }
-    }   
+
+		public void RestField200Values()
+		{
+			for (int loop_var = 1; loop_var <= 32; loop_var++)
+			{
+				gbl.area_ptr.field_200[loop_var] = 0; // word array.
+			}
+		}
+	}   
 }

@@ -67,16 +67,14 @@ namespace engine
 
 		internal static string clean_string(string s)
 		{
-			string var_1;
+			string cleanStr = s.Trim(unk_16FA9).ToLower();
 
-			var_1 = s.Trim(unk_16FA9).ToUpper();
-
-			if (var_1.Length > 8)
+			if (cleanStr.Length > 8)
 			{
-				var_1 = var_1.Substring(0, 8);
+				cleanStr = cleanStr.Substring(0, 8);
 			}
 
-			return var_1;
+			return cleanStr;
 		}
 
 
