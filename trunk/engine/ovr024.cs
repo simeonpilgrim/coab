@@ -11,8 +11,8 @@ namespace engine
         Type_3 = 3,
         Type_4 = 4,
         Type_5 = 5,
-        Type_6 = 6,
-        Type_7 = 7,
+        PreDamage = 6,
+        PlayerRestrained = 7,
         Type_8 = 8,
         Type_9 = 9,
         Type_10 = 10,
@@ -197,7 +197,7 @@ namespace engine
                     calc_affect_effect(Affects.affect_8f, player);
                     break;
 
-                case CheckType.Type_6:
+                case CheckType.PreDamage:
                     calc_affect_effect(Affects.affect_71, player);
                     calc_affect_effect(Affects.fire_resist, player);
                     calc_affect_effect(Affects.resist_cold, player);
@@ -221,7 +221,7 @@ namespace engine
                     calc_affect_effect(Affects.minor_globe_of_invulnerability, player);
                     break;
 
-                case CheckType.Type_7:
+                case CheckType.PlayerRestrained:
                     calc_affect_effect(Affects.snake_charm, player);
                     calc_affect_effect(Affects.paralyze, player);
                     calc_affect_effect(Affects.sleep, player);
@@ -1177,7 +1177,7 @@ namespace engine
 
             gbl.damage = damage;
 
-            CheckAffectsEffect(player, CheckType.Type_6);
+            CheckAffectsEffect(player, CheckType.PreDamage);
 
             if (change_damage == true)
             {

@@ -50,7 +50,7 @@ namespace engine
                 action.delay = 0;
             }
 
-            player.actions.move = (byte)sub_3E124(player);
+            player.actions.move = sub_3E124(player);
         }
 
 
@@ -278,7 +278,7 @@ namespace engine
             }
             else
             {
-                player.actions.move -= (byte)costToMove;
+                player.actions.move -= costToMove;
             }
 
             byte radius = 1;
@@ -638,7 +638,7 @@ namespace engine
             }
 
             Player target;
-            while (sub_3F433(out target, player) == true && var_2 > 0 && var_6 == 0)
+            while (FindLowestE9Target(out target, player) == true && var_2 > 0 && var_6 == 0)
             {
                 int var_4 = unk_16679[(target.field_E9 * 10) + var_B];
 
@@ -695,11 +695,11 @@ namespace engine
         }
 
 
-        internal static bool sub_3F433(out Player output, Player player)
+        internal static bool FindLowestE9Target(out Player output, Player player) /* sub_3F433 */
         {
             output = null;
 
-            byte var_4 = 13;
+            byte minE9 = 13;
 
             var nearTargets = ovr025.BuildNearTargets(0xff, player);
             bool result = false;
@@ -710,9 +710,9 @@ namespace engine
 
                 if (target.actions.fleeing == false &&
                     target.field_E9 > 0 &&
-                    target.field_E9 < var_4)
+                    target.field_E9 < minE9)
                 {
-                    var_4 = target.field_E9;
+                    minE9 = target.field_E9;
                     output = target;
                     result = true;
                 }
@@ -809,8 +809,7 @@ namespace engine
                     attack_type = AttackType.Backstab;
                 }
 
-                byte var_16 = attacker.actions.attackIdx;
-                for (byte var_15 = var_16; var_15 >= 1; var_15--)
+				for (byte var_15 = attacker.actions.attackIdx; var_15 >= 1; var_15--)
                 {
                     while (attacker.field_19BArray(var_15) > 0 &&
                         var_12 == false)
@@ -854,7 +853,6 @@ namespace engine
 
                             if (attacker.in_combat == false)
                             {
-                                var_16 = 0;
                                 attacker.field_19BArraySet(var_15, 0);
                             }
                         }
@@ -1029,33 +1027,31 @@ namespace engine
 
         internal static int RangedDefenseBonus(Player target, Player attacker) /* sub_3FCED */
         {
-            int oneThirdRange;
-            int range = ovr025.getTargetRange(target, attacker);
-
             if (ovr025.is_weapon_ranged(attacker) == true)
             {
-                oneThirdRange = (gbl.ItemDataTable[attacker.field_151.type].range - 1) / 3;
-            }
+				int range = ovr025.getTargetRange(target, attacker);
+
+				int oneThirdRange = (gbl.ItemDataTable[attacker.field_151.type].range - 1) / 3;
+				int acAdjustment = 0;
+
+				if (range > oneThirdRange)
+				{
+					range -= oneThirdRange;
+					acAdjustment += 2;
+				}
+
+				if (range > oneThirdRange)
+				{
+					range -= oneThirdRange;
+					acAdjustment += 3;
+				}
+
+				return acAdjustment;     
+			}
             else
             {
-                oneThirdRange = range;
+				return 0;
             }
-
-            int acAdjustment = 0;
-
-            if (range > oneThirdRange)
-            {
-                range -= oneThirdRange;
-                acAdjustment += 2;
-            }
-
-            if (range > oneThirdRange)
-            {
-                range -= oneThirdRange;
-                acAdjustment += 3;
-            }
-
-            return acAdjustment;
         }
 
         internal static bool find_healing_target(out Player target, Player healer) /* sub_3FDFE */

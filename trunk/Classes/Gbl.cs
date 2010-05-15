@@ -180,21 +180,7 @@ namespace Classes
 
 
 
-    public class Money
-    {
-        public const int copper = 0;
-        public const int silver = 1;
-        public const int electrum = 2;
-        public const int gold = 3;
-        public const int platum = 4;
-        public const int gem = 5;
-        public const int jewelry = 6;
 
-        public const int maxNameLen = 8;
-        public static string[] names = { "Copper", "Silver", "Electrum", "Gold", "Platinum", "Gems", "Jewelry" };
-
-        public static int[] per_copper = { 1, 10, 100, 200, 1000 };
-    }
 
  
 
@@ -556,7 +542,8 @@ namespace Classes
 
         public static List<Item> items_pointer;
 
-        public static int[] pooled_money = new int[7];
+		public static MoneySet pooled_money;
+        //public static int[] pooled_money = new int[7];
 
         /// <summary>
         /// 0 ==, 1 !=, 2 &lt;, 3 &gt;, 4 &lt;=, 5 &gt;=

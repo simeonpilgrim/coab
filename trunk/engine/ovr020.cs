@@ -139,9 +139,9 @@ namespace engine
 
             for (int coinType = 6; coinType >= 0; coinType--)
             {
-                if (gbl.player_ptr.Money[coinType] > 0)
+                if (gbl.player_ptr.Money.GetCoins(coinType) > 0)
                 {
-                    string text = string.Format("{0,8} {1}", Money.names[coinType], gbl.player_ptr.Money[coinType]);
+					string text = string.Format("{0,8} {1}", Money.names[coinType], gbl.player_ptr.Money.GetCoins(coinType));
                     seg041.displayString(text, 0, 10, yCol, 12);
 
                     yCol++;
@@ -158,7 +158,7 @@ namespace engine
             int yCol = 0x11;
 
             seg041.displayString("AC    ", 0, 15, yCol, 1);
-            ovr025.display_AC(yCol, 4, player);
+			seg041.displayString(player.DisplayAc.ToString(), 0, 10, yCol, 4);
 
             seg041.displayString("HP    ", 0, 15, yCol + 1, 1);
             ovr025.display_hp(false, yCol + 1, 4, player);
@@ -251,21 +251,13 @@ namespace engine
             {
                 string text = string.Empty;
                 bool hasSpells = false;
-                bool hasMoney = false;
+                bool hasMoney = gbl.player_ptr.Money.AnyMoney();
 
                 for (int i = 0; i < gbl.max_spells; i++)
                 {
                     if (gbl.player_ptr.spell_list[i] > 0)
                     {
                         hasSpells = true;
-                    }
-                }
-
-                for (int i = 0; i <= 6; i++)
-                {
-                    if (gbl.player_ptr.Money[i] > 0)
-                    {
-                        hasMoney = true;
                     }
                 }
 
@@ -786,6 +778,13 @@ namespace engine
             }
         }
 
+		enum Weld
+		{
+			Ok = 0,
+			WrongClass = 1,
+			AlreadyUsingX = 2,
+			HandsFull = 3
+		};
 
         internal static void ready_Item(Item item)
         {
@@ -814,11 +813,11 @@ namespace engine
             else
             {
                 // Weld
-                int var_2 = 0;
+				Weld result = Weld.Ok;
 
                 if ((player.field_185 + gbl.ItemDataTable[item.type].handsCount) > 2)
                 {
-                    var_2 = 3;
+                    result = Weld.HandsFull;
                 }
    
                 int item_slot = gbl.ItemDataTable[item.type].item_slot;
@@ -827,14 +826,14 @@ namespace engine
                 {
                     if (player.itemArray[item_slot] != null)
                     {
-                        var_2 = 2;
+                        result = Weld.AlreadyUsingX;
                     }
                 }
                 else if (item_slot == 9)
                 {
                     if (player.Item_ptr_02 != null)
                     {
-                        var_2 = 2;
+						result = Weld.AlreadyUsingX;
                     }
                 }
 
@@ -842,7 +841,7 @@ namespace engine
                 {
                     if (player.arrows != null)
                     {
-                        var_2 = 2;
+						result = Weld.AlreadyUsingX;
                         item_slot = 0x0B;
                     }
                 }
@@ -851,19 +850,19 @@ namespace engine
                 {
                     if (player.quarrels != null)
                     {
-                        var_2 = 2;
+						result = Weld.AlreadyUsingX;
                         item_slot = 0x0C;
                     }
                 }
 
                 if ((player.classFlags & gbl.ItemDataTable[item.type].classFlags) == 0)
                 {
-                    var_2 = 1;
+					result = Weld.AlreadyUsingX;
                 }
 
-                switch (var_2)
+                switch (result)
                 {
-                    case 0:
+                    case Weld.Ok:
                         item.readied = true;
                         if (magic_item == true)
                         {
@@ -871,16 +870,16 @@ namespace engine
                         }
                         break;
 
-                    case 1:
+                    case Weld.WrongClass:
                         ovr025.string_print01("Wrong Class");
                         break;
 
-                    case 2:
+					case Weld.AlreadyUsingX:
                         ovr025.ItemDisplayNameBuild(false, false, 0, 0, player.itemArray[item_slot]);
                         ovr025.string_print01("already using " + player.itemArray[item_slot].name);
                         break;
 
-                    case 3:
+                    case Weld.HandsFull:
                         if (gbl.game_state != GameState.Combat ||
                             player.quick_fight == QuickFight.False)
                         {
@@ -1127,28 +1126,28 @@ namespace engine
 
                 short plat = (short)(item_value / 5);
                 short gold = (short)(item_value % 5);
-                short var_8;
+                int overflow;
 
-                if (ovr022.willOverload(out var_8, plat + gold, gbl.player_ptr) == true)
+                if (ovr022.willOverload(out overflow, plat + gold, gbl.player_ptr) == true)
                 {
                     ovr025.string_print01("Overloaded. Money will be put in pool.");
 
-                    if (var_8 > plat)
+                    if (overflow > plat)
                     {
-                        gbl.player_ptr.platinum += plat;
+                        gbl.player_ptr.Money.AddCoins(Money.Platinum, plat);
                     }
                     else
                     {
-                        gbl.player_ptr.platinum += var_8;
-                        gbl.pooled_money[Money.platum] += plat - var_8;
+                        gbl.player_ptr.Money.AddCoins(Money.Platinum, overflow);
+						gbl.pooled_money.AddCoins(Money.Platinum, plat - overflow);
                     }
 
-                    gbl.player_ptr.gold += gold;
+                    gbl.player_ptr.Money.AddCoins(Money.Gold, gold);
                 }
                 else
                 {
-                    gbl.player_ptr.platinum += plat;
-                    gbl.player_ptr.gold += gold;
+                    gbl.player_ptr.Money.AddCoins(Money.Platinum, plat);
+                    gbl.player_ptr.Money.AddCoins(Money.Gold, gold);
                 }
             }
 
@@ -1164,31 +1163,27 @@ namespace engine
             seg041.press_any_key("For 200 gold pieces I'll identify your " + item.name, true, 0, 0x0e, TextRegion.Normal2);
 
 			if (ovr027.yes_no(gbl.defaultMenuColors, "Is It a Deal? ") == 'Y')
-            {
-                int player_gold = getPlayerGold(gbl.player_ptr);
+			{
+				int cost = 200;
+				if (cost <= gbl.player_ptr.Money.GetGoldWorth())
+				{
+					id_item = true;
+					gbl.player_ptr.Money.SubtractGoldWorth(cost);
+				}
+				else
+				{
+					if (cost <= gbl.pooled_money.GetGoldWorth())
+					{
+						id_item = true;
 
-                if (player_gold >= 200)
-                {
-                    id_item = true;
-
-                    ovr022.setPlayerMoney(player_gold - 200);
-                }
-                else
-                {
-                    int pooled_gold = ovr022.getPooledGold();
-
-                    if (pooled_gold > 200)
-                    {
-                        id_item = true;
-
-                        ovr022.setPooledGold(pooled_gold - 200);
-                    }
-                    else
-                    {
-                        ovr025.string_print01("Not Enough Money");
-                    }
-                }
-            }
+						gbl.pooled_money.SubtractGoldWorth(cost);
+					}
+					else
+					{
+						ovr025.string_print01("Not Enough Money");
+					}
+				}
+			}
 
             if (id_item == true)
             {
@@ -1241,9 +1236,9 @@ namespace engine
 
                         for (int coin = 0; coin <= 6; coin++)
                         {
-                            if (gbl.player_ptr.Money[coin] > 0)
+                            if (gbl.player_ptr.Money.GetCoins(coin) > 0)
                             {
-                                list.Add(new MenuItem(string.Format("{0,8} {1}", moneyString[coin], gbl.player_ptr.Money[coin])));
+								list.Add(new MenuItem(string.Format("{0,8} {1}", moneyString[coin], gbl.player_ptr.Money.GetCoins(coin))));
                             }
                         }
 
@@ -1266,20 +1261,11 @@ namespace engine
 
                             text = "How much " + text + "will you trade? ";
 
-                            short var_130 = ovr022.sub_592AD(10, text, gbl.player_ptr.Money[money_slot]);
+                            short num_coins = ovr022.AskNumberValue(10, text, gbl.player_ptr.Money.GetCoins(money_slot));
 
-                            ovr022.trade_money(money_slot, var_130, dest, gbl.player_ptr);
-                            noMoneyLeft = true;
-                            finished = true;
+                            ovr022.trade_money(money_slot, num_coins, dest, gbl.player_ptr);
 
-                            for (int coin = 0; coin <= 6; coin++)
-                            {
-                                if (gbl.player_ptr.Money[coin] > 0)
-                                {
-                                    finished = false;
-                                    noMoneyLeft = false;
-                                }
-                            }
+							finished = noMoneyLeft = !gbl.player_ptr.Money.AnyMoney();
                         }
 
                         list.Clear();
@@ -1301,9 +1287,9 @@ namespace engine
 
                 for (int coin = 0; coin < 7; coin++)
                 {
-                    if (gbl.player_ptr.Money[coin] != 0)
+                    if (gbl.player_ptr.Money.GetCoins(coin) != 0)
                     {
-                        menuList.Add(new MenuItem(string.Format("{0,8} {1}", moneyString[coin], gbl.player_ptr.Money[coin])));
+						menuList.Add(new MenuItem(string.Format("{0,8} {1}", moneyString[coin], gbl.player_ptr.Money.GetCoins(coin))));
                     }
                 }
 
@@ -1326,18 +1312,11 @@ namespace engine
 
                     text = "How much " + text + "will you drop? ";
 
-                    short num_coins = ovr022.sub_592AD(10, text, gbl.player_ptr.Money[money_slot]);
+                    short num_coins = ovr022.AskNumberValue(10, text, gbl.player_ptr.Money.GetCoins(money_slot));
 
-                    ovr022.drop_coins(money_slot, num_coins, gbl.player_ptr);
-                    noMoreMoney = true;
+                    ovr022.DropCoins(money_slot, num_coins, gbl.player_ptr);
 
-                    for (int coin = 0; coin < 7; coin++)
-                    {
-                        if (gbl.player_ptr.Money[coin] > 0)
-                        {
-                            noMoreMoney = false;
-                        }
-                    }
+					noMoreMoney = !gbl.player_ptr.Money.AnyMoney();
                 }
 
                 menuList.Clear();
@@ -1390,21 +1369,6 @@ namespace engine
                     gbl.player_ptr = gbl.TeamList[index];
                 }
             }
-        }
-
-
-        internal static int getPlayerGold(Player player)
-        {
-            int coppers = 0;
-
-            for (int i = 0; i < 5; i++)
-            {
-                coppers += player.Money[i] * Money.per_copper[i];
-            }
-
-            int gold = (coppers + 100) / Money.per_copper[Money.gold];
-
-            return gold;
         }
 
         internal static byte spell_menu2(out bool arg_0, ref int index, SpellSource arg_8, SpellLoc spl_location)

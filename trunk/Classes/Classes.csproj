@@ -152,6 +152,7 @@
     <Compile Include="ItemData.cs" />
     <Compile Include="ItemLibrary.cs" />
     <Compile Include="MenuItem.cs" />
+    <Compile Include="MoneySet.cs" />
     <Compile Include="Opperation.cs" />
     <Compile Include="Player.cs">
       <SubType>Code</SubType>

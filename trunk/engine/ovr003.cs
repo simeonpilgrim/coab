@@ -626,7 +626,7 @@ namespace engine
             else
             {
                 sym = "Or";
-                resultant = (byte)(val_a | val_b);
+				resultant = (byte)(val_a | val_b);
             }
 
             VmLog.WriteLine("CMD_AndOr: {0} A: {1} B: {2} Loc: {3} Val: {4}", sym, val_a, val_b, new MemLoc(loc), resultant);
@@ -768,11 +768,7 @@ namespace engine
 
             VmLog.WriteLine("CMD_ClearMonsters:");
 
-            for (int i = 0; i < 7; i++)
-            {
-                gbl.pooled_money[i] = 0;
-            }
-
+			gbl.pooled_money.ClearAll();
             gbl.items_pointer.Clear();
         }
 
@@ -1081,9 +1077,9 @@ namespace engine
 
             ovr008.vm_LoadCmdSets(8);
 
-            for (int i = 0; i < 7; i++)
+            for (int coin = 0; coin < 7; coin++)
             {
-                gbl.pooled_money[i] = ovr008.vm_GetCmdValue(i + 1);
+                gbl.pooled_money.SetCoins(coin, ovr008.vm_GetCmdValue(coin + 1));
             }
 
             byte block_id = (byte)ovr008.vm_GetCmdValue(8);

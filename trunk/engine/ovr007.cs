@@ -5,7 +5,7 @@ namespace engine
 {
     class ovr007
     {
-        internal static char ShopChooseItem(ref int index, out Item arg_4) // sub_2F04E
+        internal static char ShopChooseItem(ref int index, out Item selectedItem) // sub_2F04E
         {
             List<MenuItem> list = new List<MenuItem>();
             foreach(var item in gbl.items_pointer)
@@ -23,14 +23,14 @@ namespace engine
             gbl.menuSelectedWord = 0;
 
             MenuItem mi;
-            arg_4 = null;
+            selectedItem = null;
 
             char input_key = ovr027.sl_select_item(out mi, ref index, ref gbl.shopRedrawMenuItems, true, list,
                 0x16, 0x26, 1, 1, gbl.defaultMenuColors, "Buy", "Items: " );
 
             if (mi != null)
             {
-                arg_4 = mi.Item;
+                selectedItem = mi.Item;
             }
 
             foreach (var item in gbl.items_pointer)
@@ -114,45 +114,39 @@ namespace engine
                 Item item;
                 char input_key = ShopChooseItem(ref index, out item);
 
-                if (input_key != 'B' && input_key != 0x0d)
-                {
-                    return;
-                }
-                else
-                {
-                    int item_cost = ItemsValue(item);
-                    int player_gold = ovr020.getPlayerGold(gbl.player_ptr);
+				if (input_key != 'B' && input_key != 0x0d)
+				{
+					return;
+				}
+				else
+				{
+					int item_cost = ItemsValue(item);
+					int player_gold = gbl.player_ptr.Money.GetGoldWorth();
 
-                    if (item_cost <= player_gold)
-                    {
-                        bool overloaded = PlayerAddItem(item);
+					if (item_cost <= gbl.player_ptr.Money.GetGoldWorth())
+					{
+						bool overloaded = PlayerAddItem(item);
 
-                        if (overloaded == false)
-                        {
-                            player_gold -= item_cost;
-                            ovr022.setPlayerMoney(player_gold);
-                        }
-                    }
-                    else
-                    {
-                        int pooled_gold = ovr022.getPooledGold();
+						if (overloaded == false)
+						{
+							player_gold -= item_cost;
+							gbl.player_ptr.Money.SubtractGoldWorth(item_cost);
+						}
+					}
+					else if (item_cost <= gbl.pooled_money.GetGoldWorth())
+					{
+						bool overloaded = PlayerAddItem(item);
 
-                        if (item_cost <= pooled_gold)
-                        {
-                            bool overloaded = PlayerAddItem(item);
-
-                            if (overloaded == false)
-                            {
-                                pooled_gold -= item_cost;
-                                ovr022.setPooledGold(pooled_gold);
-                            }
-                        }
-                        else
-                        {
-                            ovr025.string_print01("Not enough Money.");
-                        }
-                    }
-                }
+						if (overloaded == false)
+						{
+							gbl.pooled_money.SubtractGoldWorth(item_cost);
+						}
+					}
+					else
+					{
+						ovr025.string_print01("Not enough Money.");
+					}
+				}
             }
         }
 
@@ -162,7 +156,7 @@ namespace engine
             bool reloadPics = false; /* Simeon */
             bool items_on_ground;
             bool money_on_ground;
-            char var_2E;
+            char inputKey;
 
             gbl.game_state = GameState.Shop;
             gbl.redrawBoarder = (gbl.area_ptr.inDungeon == 0);
@@ -171,10 +165,7 @@ namespace engine
             gbl.redrawBoarder = true;
             ovr025.PartySummary( gbl.player_ptr );
 
-			for( int var_1 = 0; var_1 < 7; var_1++ )
-			{
-				gbl.pooled_money[ var_1 ] = 0;
-			}
+			gbl.pooled_money.ClearAll();
 
             bool exitShop = false;
 
@@ -196,9 +187,9 @@ namespace engine
 
                 bool controlKey;
 
-				var_2E = ovr027.displayInput(out controlKey, false, 1, gbl.defaultMenuColors, text, string.Empty);
+				inputKey = ovr027.displayInput(out controlKey, false, 1, gbl.defaultMenuColors, text, string.Empty);
 
-                switch ( var_2E )
+                switch ( inputKey )
                 {
                     case 'B':
                         shop_buy();
@@ -255,16 +246,16 @@ namespace engine
                         break;
 
                     case 'G':
-                        ovr020.scroll_team_list( var_2E );
+                        ovr020.scroll_team_list( inputKey );
                         break;
 
                     case 'O':
-                        ovr020.scroll_team_list( var_2E );
+                        ovr020.scroll_team_list( inputKey );
                         break;
                 }
                 
-                if( var_2E == 'B' ||
-                    var_2E == 'T' )
+                if( inputKey == 'B' ||
+                    inputKey == 'T' )
                 {
                     ovr025.load_pic();
                 }

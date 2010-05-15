@@ -244,40 +244,19 @@ namespace engine
                     displayPlayerName(false, y_pos, x_pos, tmp_player);
                 }
 
-                int ac_x_pos;
-                if (tmp_player.ac >= 0 && tmp_player.ac <= 0x32)
-                {
-                    ac_x_pos = 1;
-                }
-                else if (tmp_player.ac >= 0x33 && tmp_player.ac <= 0x3C)
-                {
-                    ac_x_pos = 2;
-                }
-                else if (tmp_player.ac >= 0x3D && tmp_player.ac <= 0x45)
-                {
-                    ac_x_pos = 1;
-                }
-                else
-                {
-                    ac_x_pos = 0;
-                }
+				seg041.displayString(player.DisplayAc.ToString("-3"), 0, 10, y_pos, 0x1F);
 
-                display_AC(y_pos, ac_x_pos + 0x1F /*+0x20*/, tmp_player);
-
+				int hpXPos = 0;
                 if (tmp_player.hit_point_current >= 0 && tmp_player.hit_point_current <= 9)
                 {
-                    ac_x_pos = 2;
+					hpXPos = 2;
                 }
                 else if (tmp_player.hit_point_current >= 10 && tmp_player.hit_point_current <= 99)
                 {
-                    ac_x_pos = 1;
-                }
-                else
-                {
-                    ac_x_pos = 0;
+					hpXPos = 1;
                 }
 
-                display_hp(false, y_pos, ac_x_pos + 0x24, tmp_player);
+				display_hp(false, y_pos, hpXPos + 0x24, tmp_player);
                 y_pos++;
             }
 
@@ -287,9 +266,7 @@ namespace engine
 
         internal static void display_AC(int y_offset, int x_offset, Player player)
         {
-            string text = (0x3c - (int)player.ac).ToString();
-
-            seg041.displayString(text, 0, 10, y_offset, x_offset);
+			seg041.displayString(player.DisplayAc.ToString(), 0, 10, y_offset, x_offset);
         }
 
 
@@ -365,19 +342,10 @@ namespace engine
         {
             sbyte[] stat_bonus = new sbyte[5];
 
-            player.field_151 = null;
-            player.field_155 = null;
-            player.armor = null;
-            player.field_15D = null;
-            player.field_161 = null;
-            player.field_165 = null;
-            player.field_169 = null;
-            player.field_16D = null;
-            player.field_171 = null;
-            player.Item_ptr_01 = null;
-            player.Item_ptr_02 = null;
-            player.arrows = null;
-            player.quarrels = null;
+			for(int slot = 0; slot < Player.ItemSlots; slot ++)
+			{
+				player.itemArray[slot] = null;
+			}
 
             bool var_8 = false;
 
@@ -401,13 +369,13 @@ namespace engine
                 {
                     totalItemWeight += item_weight;
 
-                    int var_13 = gbl.ItemDataTable[item.type].item_slot;
+                    int slot = gbl.ItemDataTable[item.type].item_slot;
 
-                    if (var_13 >= 0 && var_13 <= 8)
+                    if (slot >= 0 && slot <= 8)
                     {
-                        player.itemArray[var_13] = item;
+                        player.itemArray[slot] = item;
                     }
-                    else if (var_13 == 9)
+                    else if (slot == 9)
                     {
                         if (player.Item_ptr_01 != null)
                         {
@@ -439,7 +407,7 @@ namespace engine
 
             for (int money = 0; money < 7; money++)
             {
-                player.weight += player.Money[money];
+                player.weight += (short)player.Money.GetCoins(money);
             }
 
             player.attack1_DiceCount = player.attack1_DiceCountBase;
@@ -530,10 +498,6 @@ namespace engine
             {
                 player.attackLevel = 1;
             }
-
-            //System.Console.WriteLine("{0} {1} {2}, {3} {4}, {5} {6}", player.name, player.attack1_DiceCount, player.attack2_DiceCount,
-            //    player.attack1_DiceSize, player.attack2_DiceSize, player.attack1_DamageBonus, player.attack2_DamageBonus);
-
         }
 
 

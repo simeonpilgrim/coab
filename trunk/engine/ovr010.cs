@@ -101,7 +101,7 @@ namespace engine
 
             if (player.actions.hasTurnedUndead == false &&
                 (player.cleric_lvl > 0 || player.cleric_old_lvl > player.multiclassLevel) &&
-                ovr014.sub_3F433(out var_5, player) == true)
+                ovr014.FindLowestE9Target(out var_5, player) == true)
             {
                 ovr014.turns_undead(player);
                 return true;
