@@ -431,8 +431,8 @@ namespace engine
             player.ac = bp_var_1C0.field_111;
             player.ac_behind = bp_var_1C0.field_112;
 
-            player.field_19C = bp_var_1C0.field_113;
-            player.field_19D = bp_var_1C0.field_114;
+            player.attack1_AttacksLeft = bp_var_1C0.field_113;
+            player.attack2_AttacksLeft = bp_var_1C0.field_114;
 
             player.attack1_DiceCount = bp_var_1C0.field_115;
             player.attack2_DiceCount = bp_var_1C0.field_116;

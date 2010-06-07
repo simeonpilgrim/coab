@@ -21,7 +21,7 @@ namespace engine
 
             ovr024.CheckAffectsEffect(player, CheckType.Movement);
 
-            player.field_19D = (byte)ThisRoundActionCount(gbl.halfActionsLeft);
+            player.attack2_AttacksLeft = (byte)ThisRoundActionCount(gbl.halfActionsLeft);
 
             action.field_5 = player.attackLevel;
 
@@ -385,19 +385,19 @@ namespace engine
                                     attackIndex = 2;
                                 }
 
-                                if (attacker.field_19C > 0)
+                                if (attacker.attack1_AttacksLeft > 0)
                                 {
                                     attackIndex = 1;
                                 }
 
-                                if (attacker.field_19D > 0)
+                                if (attacker.attack2_AttacksLeft > 0)
                                 {
                                     attackIndex = 2;
                                 }
 
-                                if (attacker.field_19BArray(attackIndex) == 0)
+                                if (attacker.AttacksLeft(attackIndex) == 0)
                                 {
-                                    attacker.field_19BArraySet(attackIndex, 1);
+                                    attacker.AttacksLeftSet(attackIndex, 1);
                                 }
 
                                 attacker.actions.attackIdx = attackIndex;
@@ -463,8 +463,8 @@ namespace engine
         {
             bool var_5 = false;
             Item var_9 = null;
-            byte var_2 = player.field_19C;
-            player.field_19C = player.attacksCount;
+            byte var_2 = player.attack1_AttacksLeft;
+            player.attack1_AttacksLeft = player.attacksCount;
 
             if (ovr025.is_weapon_ranged(player) == true &&
                 ovr025.GetCurrentAttackItem(out var_9, player) == true)
@@ -481,7 +481,7 @@ namespace engine
             }
             else
             {
-                gbl.halfActionsLeft = player.field_19C;
+                gbl.halfActionsLeft = player.attack1_AttacksLeft;
             }
 
             gbl.resetMovesLeft = false;
@@ -512,7 +512,7 @@ namespace engine
                   attacks < (var_2 * 2) &&
                   var_5 == false))
             {
-                player.field_19C = (byte)attacks;
+                player.attack1_AttacksLeft = (byte)attacks;
             }
         }
 
@@ -530,7 +530,7 @@ namespace engine
 
         internal static bool TrySweepAttack(Player target, Player attacker) // sub_3EF3D
         {
-            if (attacker.field_19C < attacker.actions.field_5 &&
+            if (attacker.attack1_AttacksLeft < attacker.actions.field_5 &&
                 target.HitDice == 0 &&
                 ovr025.getTargetRange(target, attacker) == 1)
             {
@@ -539,7 +539,7 @@ namespace engine
                 var targetepi = nearTargets.Find(epi => epi.player == target);
                 int sweapableCount = nearTargets.FindAll(epi => epi.player.HitDice == 0).Count;
 
-                if (sweapableCount > attacker.field_19C)
+                if (sweapableCount > attacker.attack1_AttacksLeft)
                 {
                     if (sweapableCount > attacker.actions.field_5)
                     {
@@ -556,7 +556,7 @@ namespace engine
                         var sweaptarget = sweapepi.player;
                         recalc_action_12(sweaptarget, attacker);
 
-                        attacker.field_19C = 1;
+                        attacker.attack1_AttacksLeft = 1;
 
                         AttackTarget(0, sweaptarget, attacker);
                     }
@@ -742,7 +742,7 @@ namespace engine
             {
                 seg044.sound_sub_120E0(Sound.sound_7);
 
-                while (attacker.field_19BArray(attacker.actions.attackIdx) == 0)
+                while (attacker.AttacksLeft(attacker.actions.attackIdx) == 0)
                 {
                     attacker.actions.attackIdx--;
                 }
@@ -752,8 +752,8 @@ namespace engine
                 DisplayAttackMessage(true, 1, target.hit_point_current + 5, AttackType.Slay, target, attacker);
                 ovr024.remove_invisibility(attacker);
 
-                attacker.field_19C = 0;
-                attacker.field_19D = 0;
+                attacker.attack1_AttacksLeft = 0;
+                attacker.attack2_AttacksLeft = 0;
 
                 var_11 = true;
                 arg_4 = true;
@@ -811,10 +811,10 @@ namespace engine
 
 				for (byte var_15 = attacker.actions.attackIdx; var_15 >= 1; var_15--)
                 {
-                    while (attacker.field_19BArray(var_15) > 0 &&
+                    while (attacker.AttacksLeft(var_15) > 0 &&
                         var_12 == false)
                     {
-                        attacker.field_19BArrayDec(var_15);
+                        attacker.AttacksLeftDec(var_15);
                         attacker.actions.attackIdx = var_15;
 
                         gbl.inc_byte_byte_1D90x(var_15);
@@ -853,7 +853,7 @@ namespace engine
 
                             if (attacker.in_combat == false)
                             {
-                                attacker.field_19BArraySet(var_15, 0);
+                                attacker.AttacksLeftSet(var_15, 0);
                             }
                         }
                     }
@@ -863,8 +863,8 @@ namespace engine
                     item.count == 0 &&
                     item.type == ItemType.DartOfHornetsNest)
                 {
-                    attacker.field_19C = 0;
-                    attacker.field_19D = 0;
+                    attacker.attack1_AttacksLeft = 0;
+                    attacker.attack2_AttacksLeft = 0;
                 }
 
                 if (var_11 == false)
@@ -874,8 +874,8 @@ namespace engine
                 }
 
                 arg_4 = true;
-                if (attacker.field_19C > 0 ||
-                    attacker.field_19D > 0)
+                if (attacker.attack1_AttacksLeft > 0 ||
+                    attacker.attack2_AttacksLeft > 0)
                 {
                     arg_4 = false;
                 } 
@@ -972,8 +972,8 @@ namespace engine
 
             arg_0 = true;
 
-            if (attacker.field_19C > 0 ||
-                attacker.field_19D > 0)
+            if (attacker.attack1_AttacksLeft > 0 ||
+                attacker.attack2_AttacksLeft > 0)
             {
                 Player player_bkup = gbl.SelectedPlayer;
 
@@ -2472,8 +2472,8 @@ namespace engine
             }
             else
             {
-                player.field_19C = 2;
-                player.field_19D = 0;
+                player.attack1_AttacksLeft = 2;
+                player.attack2_AttacksLeft = 0;
                 player.attack1_DiceCount = 2;
                 player.attack1_DiceSize = 8;
 
@@ -2510,8 +2510,8 @@ namespace engine
             }
             else
             {
-                player.field_19C = 1;
-                player.field_19D = 0;
+                player.attack1_AttacksLeft = 1;
+                player.attack2_AttacksLeft = 0;
                 player.attack1_DiceCount = 2;
                 player.attack1_DiceSize = 8;
                 
