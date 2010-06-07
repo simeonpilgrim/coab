@@ -10,20 +10,17 @@ namespace engine
             int max_spell_level = 0;
             int total_spell_level = 0;
 
-            for (int sp_indx = 0; sp_indx < gbl.max_spells; sp_indx++)
-            {
-                if (player.spell_list[sp_indx] > 127)
-                {
-                    int var_C = gbl.spell_table[player.spell_list[sp_indx] & 0x7F].spellLevel;
+			foreach (int id in player.spellList.LearningList())
+			{
+				int var_C = gbl.spell_table[id].spellLevel;
 
-                    if (var_C > max_spell_level)
-                    {
-                        max_spell_level = var_C;
-                    }
+				if (var_C > max_spell_level)
+				{
+					max_spell_level = var_C;
+				}
 
-                    total_spell_level += var_C;
-                }
-            }
+				total_spell_level += var_C;
+			}
 
             int max_scribe_level = 0;
             int total_scribe_level = 0;
@@ -69,13 +66,7 @@ namespace engine
 
         static void cancel_memorize(Player player)
         {
-            for (int i = 0; i < gbl.max_spells; i++)
-            {
-                if (player.spell_list[i] > 0x7F)
-                {
-                    player.spell_list[i] = 0;
-                }
-            }
+			player.spellList.CancelLearning();
 
             player.spell_to_learn_count = 0;
         }
@@ -109,21 +100,14 @@ namespace engine
         {
             int alreadyLearning = 0;
 
-            for (int i = 0; i < gbl.max_spells; i++)
-            {
-                int spell_id = gbl.SelectedPlayer.spell_list[i];
-
-                if (spell_id > 0)
-                {
-                    spell_id &= 0x7F;
-
-                    if (gbl.spell_table[spell_id].spellLevel == spellLevel &&
-                        gbl.spell_table[spell_id].spellClass == spellClass)
-                    {
-                        alreadyLearning++;
-                    }
-                }
-            }
+			foreach (int spellId in gbl.SelectedPlayer.spellList.IdList())
+			{
+				if (gbl.spell_table[spellId].spellLevel == spellLevel &&
+					gbl.spell_table[spellId].spellClass == spellClass)
+				{
+					alreadyLearning++;
+				}
+			}
 
             return gbl.SelectedPlayer.spellCastCount[(int)spellClass, spellLevel - 1] - alreadyLearning;
         }
@@ -312,23 +296,6 @@ namespace engine
         }
 
 
-        internal static void sort_spell_list() /* sub_4486F */
-        {
-            for (int i = 0; i < (gbl.max_spells - 1); i++)
-            {
-                for (int j = i; j < gbl.max_spells; j++)
-                {
-                    if ((gbl.SelectedPlayer.spell_list[i] & 0x7F) > (gbl.SelectedPlayer.spell_list[j] & 0x7F))
-                    {
-                        byte tmp_byte = gbl.SelectedPlayer.spell_list[i];
-                        gbl.SelectedPlayer.spell_list[i] = gbl.SelectedPlayer.spell_list[j];
-                        gbl.SelectedPlayer.spell_list[j] = tmp_byte;
-                    }
-                }
-            }
-        }
-
-
         internal static void memorize_spell()
         {
             bool var_2;
@@ -339,7 +306,7 @@ namespace engine
                 int index = -1;
                 gbl.menuSelectedWord = 1;
 
-                byte var_4 = ovr020.spell_menu2(out var_2, ref index, 0, SpellLoc.memorize);
+                byte spellId = ovr020.spell_menu2(out var_2, ref index, 0, SpellLoc.memorize);
                 bool redraw = true;
 
                 if (var_2 == true)
@@ -360,44 +327,35 @@ namespace engine
 
                 index = -1;
 
-                while (var_1 == false)
-                {
-                    var_1 = (BuildMemorizeSpellText() == false);
+				while (var_1 == false)
+				{
+					var_1 = (BuildMemorizeSpellText() == false);
 
-                    if (var_1 == true)
-                    {
-                        ovr025.DisplayPlayerStatusString(true, 10, "cannot memorize any spells", gbl.SelectedPlayer);
-                    }
-                    else
-                    {
-                        var_4 = ovr020.spell_menu2(out var_2, ref index, SpellSource.Memorize, SpellLoc.grimoire);
-                        redraw = true;
+					if (var_1 == true)
+					{
+						ovr025.DisplayPlayerStatusString(true, 10, "cannot memorize any spells", gbl.SelectedPlayer);
+					}
+					else
+					{
+						spellId = ovr020.spell_menu2(out var_2, ref index, SpellSource.Memorize, SpellLoc.grimoire);
+						redraw = true;
 
-                        if (var_4 == 0)
-                        {
-                            var_1 = true;
-                        }
-                        else if (HowManySpellsPlayerCanLearn(gbl.spell_table[var_4].spellClass, gbl.spell_table[var_4].spellLevel) > 0)
-                        {
-                            int var_5 = 0;
-
-                            while (gbl.SelectedPlayer.spell_list[var_5] != 0)
-                            {
-                                var_5++;
-                            }
-
-                            gbl.SelectedPlayer.spell_list[var_5] = (byte)(var_4 + 0x80);
-
-                            sort_spell_list();
-                        }
-                    }
-                }
+						if (spellId == 0)
+						{
+							var_1 = true;
+						}
+						else if (HowManySpellsPlayerCanLearn(gbl.spell_table[spellId].spellClass, gbl.spell_table[spellId].spellLevel) > 0)
+						{
+							gbl.SelectedPlayer.spellList.AddLearn(spellId);
+						}
+					}
+				}
 
                 if (index != -1)
                 {
                     index = -1;
 
-                    var_4 = ovr020.spell_menu2(out var_2, ref index, 0, SpellLoc.memorize);
+                    spellId = ovr020.spell_menu2(out var_2, ref index, 0, SpellLoc.memorize);
 
                     if (var_2 == true &&
 						ovr027.yes_no(gbl.alertMenuColors, "Memorize these spells? ") == 'N')
@@ -953,23 +911,23 @@ namespace engine
             {
                 if (player.health_status == Status.okey)
                 {
-                    for (int i = 0; i < gbl.max_spells; i++)
-                    {
-                        switch (player.spell_list[i])
-                        {
-                            case 3:
-                                HealingAvailable += ovr024.roll_dice(8, 1);
-                                break;
+					foreach (int id in player.spellList.LearntList())
+					{
+						switch (id)
+						{
+							case 3:
+								HealingAvailable += ovr024.roll_dice(8, 1);
+								break;
 
-                            case 0x3A:
-                                HealingAvailable += ovr024.roll_dice(8, 2) + 1;
-                                break;
+							case 0x3A:
+								HealingAvailable += ovr024.roll_dice(8, 2) + 1;
+								break;
 
-                            case 0x47:
-                                HealingAvailable += ovr024.roll_dice(8, 3) + 3;
-                                break;
-                        }
-                    }
+							case 0x47:
+								HealingAvailable += ovr024.roll_dice(8, 3) + 3;
+								break;
+						}
+					}
                 }
             }
 

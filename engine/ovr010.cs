@@ -140,7 +140,7 @@ namespace engine
         }
 
 
-        internal static bool sub_353B1(byte arg_0, byte spellId, Player attacker)
+        internal static bool sub_353B1(byte arg_0, int spellId, Player attacker)
         {
             if (gbl.spell_table[spellId].field_D < arg_0)
             {
@@ -231,26 +231,20 @@ namespace engine
 
         internal static bool sub_3560B(Player player)
         {
-            byte var_5E;
-            byte var_5A;
             byte[] spell_list = new byte[gbl.max_spells];
 
             int spells_count = 0;
 
             if (player.actions.can_cast == true)
             {
-                for (int sp_index = 1; sp_index < gbl.max_spells; sp_index++)
-                {
-                    if (player.spell_list[sp_index] > 0)
-                    {
-                        spell_list[spells_count] = player.spell_list[sp_index];
-                        spells_count++;
-                    }
-                }
+				foreach (int id in player.spellList.LearntList())
+				{
+					spell_list[spells_count++] = (byte)id;
+				}
             }
 
             byte spell_id = 0;
-            var_5A = 7;
+            byte var_5A = 7;
             int var_5B = ovr024.roll_dice(7, 1);
             int var_5D = 1;
 
@@ -262,7 +256,7 @@ namespace engine
                 {
                     while (var_5D <= var_5B && spell_id == 0)
                     {
-                        for (var_5E = 1; var_5E < 4 && spell_id == 0; var_5E++)
+                        for (int var_5E = 1; var_5E < 4 && spell_id == 0; var_5E++)
                         {
                             int random_spell_index = ovr024.roll_dice(spells_count, 1) - 1;
                             byte random_spell_id = spell_list[random_spell_index];

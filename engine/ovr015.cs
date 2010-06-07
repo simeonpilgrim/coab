@@ -254,9 +254,9 @@ namespace engine
         }
 
 
-        static bool AnyPlayerHaveSpell(Spells spellId)
+        static bool TeamMemberHasSpell(Spells spellId)
         {
-            return gbl.TeamList.Exists(p => System.Array.Exists(p.spell_list, s => (byte)spellId == s));
+            return gbl.TeamList.Exists(p => p.spellList.HasSpell((int)spellId));
         }
 
 
@@ -264,13 +264,11 @@ namespace engine
         {
             foreach (Player player in gbl.TeamList)
             {
-                int idx = System.Array.FindIndex(player.spell_list, spId => (byte)Spells.knock == spId);
-
-                if (idx != -1)
-                {
-                    player.spell_list[idx] = 0;
-                    return true;
-                }
+				if (player.spellList.HasSpell((int)Spells.knock))
+				{
+					player.spellList.ClearSpell((int)Spells.knock);
+					return true;
+				}
             }
 
             return false;
@@ -502,7 +500,7 @@ namespace engine
                         }
 
                         if (gbl.can_knock_door == true &&
-                            AnyPlayerHaveSpell(Spells.knock))
+							TeamMemberHasSpell(Spells.knock))
                         {
                             prompt += " Knock";
                         }
@@ -545,7 +543,7 @@ namespace engine
                         }
 
                         if (gbl.can_knock_door == true &&
-                            AnyPlayerHaveSpell(Spells.knock))
+							TeamMemberHasSpell(Spells.knock))
                         {
                             prompt += " Knock";
                         }

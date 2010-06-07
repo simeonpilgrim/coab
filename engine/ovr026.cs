@@ -702,7 +702,7 @@ namespace engine
 
             seg041.DisplayStatusText(0, 10, player.name + " is now a 1st level " + ovr020.classString[newClass] + ".");
 
-            seg051.FillChar(0, 0x54, player.spell_list);
+            player.spellList.Clear();
 
             sub_6A3C6(player);
             calc_cleric_spells(true, player);

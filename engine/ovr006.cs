@@ -560,7 +560,7 @@ namespace engine
 
         internal static void distributeCombatTreasure() /* sub_2E0C3 */
         {
-            byte var_10B = 0; /* Simeon */
+            byte spellId = 0; /* Simeon */
 
             ovr025.load_pic();
 
@@ -574,26 +574,20 @@ namespace engine
                 string text = "View Pool Exit";
                 string suffix = " Exit";
                 bool can_detect_magic = false;
-                int index = 0;
 
-                if (items_present == true)
-                {
-                    while (index < gbl.max_spells && can_detect_magic == false)
-                    {
-                        if (gbl.SelectedPlayer.spell_list[index] == 5 ||
-                            gbl.SelectedPlayer.spell_list[index] == 11 ||
-                            gbl.SelectedPlayer.spell_list[index] == 0x4D)
-                        {
-                            if (gbl.SelectedPlayer.in_combat == true)
-                            {
-                                can_detect_magic = true;
-                                var_10B = gbl.SelectedPlayer.spell_list[index];
-                            }
-                        }
-
-                        index++;
-                    }
-                }
+				if (items_present == true)
+				{
+					foreach (int id in gbl.SelectedPlayer.spellList.IdList())
+					{
+						if ((id == 5 || id == 11 || id == 0x4d) &&
+							gbl.SelectedPlayer.in_combat == true)
+						{
+							can_detect_magic = true;
+							spellId = (byte)id;
+							break;
+						}
+					}
+				}
 
                 if (can_detect_magic == true)
                 {
@@ -634,7 +628,7 @@ namespace engine
                         break;
 
                     case 'D':
-                        ovr023.sub_5D2E1(0, QuickFight.False, var_10B);
+						ovr023.sub_5D2E1(0, QuickFight.False, spellId);
                         break;
 
                     case 'E':

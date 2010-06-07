@@ -574,8 +574,9 @@ namespace engine
             else if (switch_var >= 0x20 && switch_var <= 0x70)
             {
                 int var_1 = switch_var - 0x1f;
-
-                gbl.SelectedPlayer.spell_list[var_1] = (byte)(set_value);
+				Logger.DebugWrite("Set Spell for: {0} slot: {1} to: {2}", gbl.SelectedPlayer, var_1, (byte)set_value);
+				gbl.SelectedPlayer.spellList.AddLearnt(set_value & 0x0ff);
+                //gbl.SelectedPlayer.spell_list[var_1] = (byte)(set_value);
             }
             else if (switch_var == 0xb8)
             {
