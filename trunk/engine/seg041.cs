@@ -128,6 +128,9 @@ namespace engine
             press_any_key(text, clearArea, bgColor, fgColor, bounds[r, 0], bounds[r, 1], bounds[r, 2], bounds[r, 3]);
         }
 
+		//static const char[] syms = { '!', ',', '-', '.', ':', ';', '?' };
+		static Set puncutation = new Set(0x404, new byte[] { 2, 0x70, 0, 0x8C }); // "!,-.:;?"
+
         internal static void press_any_key(string text, bool clearArea, int bgColor, int fgColor,
             int yEnd, int xEnd, int yStart, int xStart)
         {
@@ -158,19 +161,19 @@ namespace engine
 
             if (input_lenght != 0)
             {
-                Set var_125 = new Set(0x404, new byte[] { 2, 0x70, 0, 0x8C });
                 do
                 {
                     int text_end = text_start;
+					//text.LastIndexOfAny(syms, text_start);
 
                     while (text_end < input_lenght &&
-                        var_125.MemberOf(text[text_end - 1]) == true)
+                        puncutation.MemberOf(text[text_end - 1]) == true)
                     {
                         text_end++;
                     }
 
                     while (text_end < input_lenght &&
-                        var_125.MemberOf(text[text_end - 1]) == false &&
+                        puncutation.MemberOf(text[text_end - 1]) == false &&
                         text[text_end - 1] != ' ')
                     {
                         text_end++;
@@ -179,7 +182,7 @@ namespace engine
                     if (text[text_end - 1] != ' ')
                     {
                         while (text_end + 1 < input_lenght &&
-                            var_125.MemberOf(text[text_end]) == true)
+                            puncutation.MemberOf(text[text_end]) == true)
                         {
                             text_end++;
                         }

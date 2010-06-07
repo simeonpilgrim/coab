@@ -1369,7 +1369,6 @@ namespace engine
         {
             byte var_12;
             int groundTile;
-            byte var_D;
             int[] var_C = new int[4];
 
             gbl.byte_1D2C7 = true;
@@ -1382,57 +1381,57 @@ namespace engine
 
             ovr024.add_affect(true, (byte)(var_10 + (count << 4)), var_10, Affects.affect_28, gbl.SelectedPlayer);
 
-            for (int var_11 = 1; var_11 <= 4; var_11++)
-            {
-                var_12 = gbl.unk_18AE9[var_11];
+			for (int var_11 = 0; var_11 < 4; var_11++)
+			{
+				var_12 = gbl.SmallCloudDirections[var_11];
 
-                ovr033.AtMapXY(out groundTile, out var_C[var_11 - 1], gbl.targetPos + gbl.MapDirectionDelta[var_12]);
+				ovr033.AtMapXY(out groundTile, out var_C[var_11], gbl.targetPos + gbl.MapDirectionDelta[var_12]);
 
-                if (groundTile > 0 && gbl.BackGroundTiles[groundTile].move_cost < 0xFF)
-                {
-                    var_8.present[var_11] = true;
-                }
-                else
-                {
-                    var_8.present[var_11] = false;
-                }
+				if (groundTile > 0 && gbl.BackGroundTiles[groundTile].move_cost < 0xFF)
+				{
+					var_8.present[var_11] = true;
+				}
+				else
+				{
+					var_8.present[var_11] = false;
+				}
 
 
-                if (groundTile == 0x1E)
-                {
-                    foreach (var var_4 in gbl.NoxiousCloud)
-                    {
-                        if (var_4 != var_8)
-                        {
-                            for (var_D = 1; var_D <= 4; var_D++)
-                            {
-                                if (var_4.present[var_D] == true &&
-                                    gbl.targetPos + gbl.MapDirectionDelta[var_12] == var_4.targetPos + gbl.MapDirectionDelta[gbl.unk_18AE9[var_D]] &&
-                                    var_4.groundTile[var_D] != 0x1E)
-                                {
-                                    groundTile = var_4.groundTile[var_D];
-                                }
-                            }
-                        }
-                    }
-                }
-                else if (groundTile == 0x1F)
-                {
-                    var c = gbl.downedPlayers.FindLast(cell => cell.map == gbl.targetPos + gbl.MapDirectionDelta[var_12]);
-                    if (c != null)
-                    {
-                        groundTile = c.originalBackgroundTile;
-                    }
-                }
+				if (groundTile == 0x1E)
+				{
+					foreach (var var_4 in gbl.NoxiousCloud)
+					{
+						if (var_4 != var_8)
+						{
+							for (int var_D = 0; var_D < 4; var_D++)
+							{
+								if (var_4.present[var_D] == true &&
+									gbl.targetPos + gbl.MapDirectionDelta[var_12] == var_4.targetPos + gbl.MapDirectionDelta[gbl.SmallCloudDirections[var_D]] &&
+									var_4.groundTile[var_D] != 0x1E)
+								{
+									groundTile = var_4.groundTile[var_D];
+								}
+							}
+						}
+					}
+				}
+				else if (groundTile == 0x1F)
+				{
+					var c = gbl.downedPlayers.FindLast(cell => cell.map == gbl.targetPos + gbl.MapDirectionDelta[var_12]);
+					if (c != null)
+					{
+						groundTile = c.originalBackgroundTile;
+					}
+				}
 
-                var_8.groundTile[var_11] = groundTile;
-                if (var_8.present[var_11] == true)
-                {
-                    var pos = gbl.MapDirectionDelta[var_12] + gbl.targetPos;
+				var_8.groundTile[var_11] = groundTile;
+				if (var_8.present[var_11] == true)
+				{
+					var pos = gbl.MapDirectionDelta[var_12] + gbl.targetPos;
 
-                    gbl.mapToBackGroundTile[pos] = 0x1E;
-                }
-            }
+					gbl.mapToBackGroundTile[pos] = 0x1E;
+				}
+			}
 
             ovr025.DisplayPlayerStatusString(false, 10, "Creates a noxious cloud", gbl.SelectedPlayer);
 
@@ -1441,7 +1440,7 @@ namespace engine
             ovr025.ClearPlayerTextArea();
             for (int var_11 = 0; var_11 < 4; var_11++)
             {
-                for (var_D = 0; var_D < 4; var_D++)
+                for (int var_D = 0; var_D < 4; var_D++)
                 {
                     if (var_C[var_D] == var_C[var_11] &&
                         var_11 != var_D)
@@ -1764,15 +1763,15 @@ namespace engine
 
                 if (ground_tile == 0x1C || ground_tile == 0x1E)
                 {
-                    int var_14 = (ground_tile == 0x1C) ? 9 : 4;
+                    int dirCount = (ground_tile == 0x1C) ? 9 : 4;
                     var looplist = (ground_tile == 0x1C) ? gbl.PoisonousCloud : gbl.NoxiousCloud;
 
                     var mappos = new Point(xPos, yPos);
                     looplist.ForEach(var_18 =>
                     {
-                        for (int var_1 = 1; var_1 <= var_14; var_1++)
+                        for (int var_1 = 0; var_1 < dirCount; var_1++)
                         {
-                            if (mappos == var_18.targetPos + gbl.MapDirectionDelta[gbl.unk_18AE9[var_1]] &&
+                            if (mappos == var_18.targetPos + gbl.MapDirectionDelta[gbl.SmallCloudDirections[var_1]] &&
                                 var_18.field_1D == false)
                             {
                                 if (sub_5F126(var_18.player, maxTargetCount) == true)
@@ -2606,7 +2605,7 @@ namespace engine
         internal static void SpellCloudKill() // spell_poisonous_cloud // similar to create_noxious_cloud
         {
             byte dir = 0;
-            byte var_16;
+            int var_16;
             int ground_tile = 0;
             int[] var_11 = new int[10];
 
@@ -2620,94 +2619,94 @@ namespace engine
 
             ovr024.add_affect(true, (byte)(var_15 + (count << 4)), var_15, Affects.affect_5b, gbl.SelectedPlayer);
 
-            for (var_16 = 1; var_16 <= 9; var_16++)
-            {
-                dir = gbl.unk_18AED[var_16];
+			for (var_16 = 0; var_16 < 9; var_16++)
+			{
+				dir = gbl.CloudDirections[var_16];
 
-                ovr033.AtMapXY(out ground_tile, out var_11[var_16], gbl.targetPos + gbl.MapDirectionDelta[dir]);
+				ovr033.AtMapXY(out ground_tile, out var_11[var_16], gbl.targetPos + gbl.MapDirectionDelta[dir]);
 
-                if (ground_tile > 0 &&
-                    gbl.BackGroundTiles[ground_tile].move_cost < 0xff)
-                {
-                    var_8.present[var_16] = true;
-                }
-                else
-                {
-                    var_8.present[var_16] = false;
-                }
+				if (ground_tile > 0 &&
+					gbl.BackGroundTiles[ground_tile].move_cost < 0xff)
+				{
+					var_8.present[var_16] = true;
+				}
+				else
+				{
+					var_8.present[var_16] = false;
+				}
 
-                if (ground_tile == 0x1E)
-                {
-                    bool found = false;
-                    foreach (var var_4 in gbl.NoxiousCloud)
-                    {
-                        for (int var_12 = 1; var_12 <= 4; var_12++)
-                        {
-                            if (var_4.present[var_12] == true &&
-                                (gbl.MapDirectionDelta[gbl.unk_18AE9[var_12]] + var_4.targetPos) == (gbl.MapDirectionDelta[dir] + gbl.targetPos) &&
-                                var_4.groundTile[var_12] != 0x1E &&
-                                var_4.groundTile[var_12] != 0x1C)
-                            {
-                                ground_tile = var_4.groundTile[var_12];
-                                found = true;
-                            }
-                        }
+				if (ground_tile == 0x1E)
+				{
+					bool found = false;
+					foreach (var var_4 in gbl.NoxiousCloud)
+					{
+						for (int var_12 = 0; var_12 < 4; var_12++)
+						{
+							if (var_4.present[var_12] == true &&
+								(gbl.MapDirectionDelta[gbl.SmallCloudDirections[var_12]] + var_4.targetPos) == (gbl.MapDirectionDelta[dir] + gbl.targetPos) &&
+								var_4.groundTile[var_12] != 0x1E &&
+								var_4.groundTile[var_12] != 0x1C)
+							{
+								ground_tile = var_4.groundTile[var_12];
+								found = true;
+							}
+						}
 
-                        if (found) break;
-                    }
-                }
-                else if (ground_tile == 0x1C)
-                {
-                    bool found = false;
-                    foreach (GasCloud var_4 in gbl.PoisonousCloud)
-                    {
-                        if (var_4 != var_8)
-                        {
-                            for (int var_12 = 1; var_12 <= 9; var_12++)
-                            {
-                                if (var_4.present[var_12] == true &&
-                                    (gbl.MapDirectionDelta[gbl.unk_18AED[var_12]] + var_4.targetPos) == (gbl.MapDirectionDelta[dir] + gbl.targetPos) &&
-                                    var_4.groundTile[var_12] != 0x1E &&
-                                    var_4.groundTile[var_12] != 0x1C)
-                                {
-                                    ground_tile = var_4.groundTile[var_12];
-                                    found = true;
-                                }
-                            }
-                        }
+						if (found) break;
+					}
+				}
+				else if (ground_tile == 0x1C)
+				{
+					bool found = false;
+					foreach (GasCloud var_4 in gbl.PoisonousCloud)
+					{
+						if (var_4 != var_8)
+						{
+							for (int var_12 = 0; var_12 < 9; var_12++)
+							{
+								if (var_4.present[var_12] == true &&
+									(gbl.MapDirectionDelta[gbl.CloudDirections[var_12]] + var_4.targetPos) == (gbl.MapDirectionDelta[dir] + gbl.targetPos) &&
+									var_4.groundTile[var_12] != 0x1E &&
+									var_4.groundTile[var_12] != 0x1C)
+								{
+									ground_tile = var_4.groundTile[var_12];
+									found = true;
+								}
+							}
+						}
 
-                        if (found) break;
-                    }
-                }
-                else if (ground_tile == 0x1F)
-                {
-                    var pos = gbl.MapDirectionDelta[dir] + gbl.targetPos;
+						if (found) break;
+					}
+				}
+				else if (ground_tile == 0x1F)
+				{
+					var pos = gbl.MapDirectionDelta[dir] + gbl.targetPos;
 
-                    var c = gbl.downedPlayers.FindLast(cell => cell.map == pos);
-                    if (c != null)
-                    {
-                        ground_tile = c.originalBackgroundTile;
-                    }
-                }
+					var c = gbl.downedPlayers.FindLast(cell => cell.map == pos);
+					if (c != null)
+					{
+						ground_tile = c.originalBackgroundTile;
+					}
+				}
 
-                var_8.groundTile[var_16] = ground_tile;
+				var_8.groundTile[var_16] = ground_tile;
 
-                if (var_8.present[var_16] == true)
-                {
-                    var pos = gbl.MapDirectionDelta[dir] + gbl.targetPos;
+				if (var_8.present[var_16] == true)
+				{
+					var pos = gbl.MapDirectionDelta[dir] + gbl.targetPos;
 
-                    gbl.mapToBackGroundTile[pos] = 0x1C;
-                }
-            }
+					gbl.mapToBackGroundTile[pos] = 0x1C;
+				}
+			}
 
-            var_8.groundTile[var_16] = ground_tile;
+			var_8.groundTile[var_16] = ground_tile;
 
-            if (var_8.present[var_16] == true)
-            {
-                var pos = gbl.MapDirectionDelta[dir] + gbl.targetPos;
+			if (var_8.present[var_16] == true)
+			{
+				var pos = gbl.MapDirectionDelta[dir] + gbl.targetPos;
 
-                gbl.mapToBackGroundTile[pos] = 0x1C;
-            }
+				gbl.mapToBackGroundTile[pos] = 0x1C;
+			}
 
             ovr025.DisplayPlayerStatusString(false, 10, "Creates a poisonous cloud", gbl.SelectedPlayer);
 
@@ -2715,12 +2714,12 @@ namespace engine
             seg041.GameDelay();
             ovr025.ClearPlayerTextArea();
 
-            for (var_16 = 1; var_16 >= 9; var_16++)
+            for (var_16 = 0; var_16 > 9; var_16++)
             {
-                if (var_11[var_16] > 0)
-                {
-                    ovr024.in_poison_cloud(1, gbl.player_array[var_11[var_16]]);
-                }
+				if (var_11[var_16] > 0)
+				{
+					ovr024.in_poison_cloud(1, gbl.player_array[var_11[var_16]]);
+				}
             }
         }
 

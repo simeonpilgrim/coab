@@ -651,43 +651,43 @@ namespace Classes
         [DataOffset(0x19b, DataType.Byte)]
         public byte ac_behind; // 0x19b field_19B
 
-        public byte field_19BArray(int index)
+        public byte AttacksLeft(int index)
         {
             switch (index)
             {
                 case 1:
-                    return field_19C;
+                    return attack1_AttacksLeft;
                 case 2:
-                    return field_19D;
+                    return attack2_AttacksLeft;
                 default:
                 throw new System.NotImplementedException();
             }
         }
 
-        public void field_19BArraySet(int index, byte value)
+        public void AttacksLeftSet(int index, byte value)
         {
             switch (index)
             {
                 case 1:
-                    field_19C = value; 
+                    attack1_AttacksLeft = value; 
                     break;
                 case 2:
-                    field_19D = value;
+                    attack2_AttacksLeft = value;
                     break;
                 default:
                     throw new System.NotImplementedException();
             }
         }
 
-        public void field_19BArrayDec(int index)
+        public void AttacksLeftDec(int index)
         {
             switch (index)
             {
                 case 1:
-                    field_19C -= 1;
+                    attack1_AttacksLeft -= 1;
                     break;
                 case 2:
-                    field_19D -= 1;
+                    attack2_AttacksLeft -= 1;
                     break;
                 default:
                     throw new System.NotImplementedException();
@@ -695,9 +695,9 @@ namespace Classes
         }
 
         [DataOffset(0x19c, DataType.Byte)]
-        public byte field_19C; // 0x19c
+		public byte attack1_AttacksLeft; // 0x19c - field_19C
         [DataOffset(0x19d, DataType.Byte)]
-        public byte field_19D; // 0x19d
+		public byte attack2_AttacksLeft; // 0x19d - field_19D
 
         public byte attackDiceCount(int index)
         {

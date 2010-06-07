@@ -542,8 +542,8 @@ namespace Classes
 
         public static List<Item> items_pointer;
 
-		public static MoneySet pooled_money;
-        //public static int[] pooled_money = new int[7];
+		public static MoneySet pooled_money = new MoneySet();
+
 
         /// <summary>
         /// 0 ==, 1 !=, 2 &lt;, 3 &gt;, 4 &lt;=, 5 &gt;=
@@ -692,10 +692,10 @@ namespace Classes
         public static Struct_1D1BC mapToBackGroundTile; // stru_1D1BC
 
 
-        public readonly static byte[] /*seg600:27D9*/ unk_18AE9 = { 0, 8, 2, 3, 4 };
-        public readonly static byte[] /*seg600:27DA*/ unk_18AEA = { 8, 2, 3, 4, 8 };
+		public readonly static byte[] /*seg600:27D9*/ SmallCloudDirections = { 8, 2, 3, 4 }; // unk_18AE9 used by NoxiousCloud
+        public readonly static byte[] /*seg600:27DA*/ unk_18AEA = { 2, 3, 4, 8 };
 
-        public readonly static byte[] /* seg600:27DD */ unk_18AED = { 4, 8, 0, 1, 2, 3, 4, 5, 6, 7 };
+		public readonly static byte[] /* seg600:27DD */ CloudDirections = { 8, 0, 1, 2, 3, 4, 5, 6, 7 }; // unk_18AED used by CloudKill
 
         public static List<GasCloud> NoxiousCloud; // stru_1D885
         public static List<GasCloud> PoisonousCloud; // stru_1D889 

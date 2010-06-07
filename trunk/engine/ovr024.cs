@@ -375,18 +375,18 @@ namespace engine
         }
 
 
-		static Player sub_63D03(byte[] arg_0, int arraySize, List<GasCloud> list, Point mapPos) // sub_63D03
+		static Player sub_63D03(byte[] directions, int arraySize, List<GasCloud> list, Point mapPos) // sub_63D03
         {
             var arg_6 = list.Find(cell =>
             {
-                for (int i = 1; i <= arraySize; i++)
-                {
-                    if (cell.present[i] == true &&
-                        cell.targetPos + gbl.MapDirectionDelta[arg_0[i]] == mapPos)
-                    {
-                        return true;
-                    }
-                }
+				for (int i = 0; i < arraySize; i++)
+				{
+					if (cell.present[i] == true &&
+						cell.targetPos + gbl.MapDirectionDelta[directions[i]] == mapPos)
+					{
+						return true;
+					}
+				}
 
                 return false;
             });
@@ -1286,7 +1286,7 @@ namespace engine
             {
                 ovr025.DisplayPlayerStatusString(true, 12, "lost a spell", player);
 
-                player.ClearSpell(player.actions.spell_id);
+				player.spellList.ClearSpell(player.actions.spell_id);
                 player.actions.spell_id = 0;
             }
         }
