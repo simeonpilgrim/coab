@@ -1,8 +1,16 @@
 = The Release Notes =
 
 = Unreleased =
-  * Issue 37, magically killed foes, are not truly dead
 
+= 1.1.2 =
+  * Issue 53, Casting Cloud Kill in combat crashed the game
+  * Issue 49, Fixed crash related to loading monsters spell's (random pre-combat crash)
+  * Issue 48, Temple purchases set you money to the cost, not substracting the cost from money
+  * Issue 37, Magically killed foes, are not truly dead
+
+= 1.1.1 =
+  * Mac OS X release
+  
 = 1.1.0 =
   * Game now installs and plays on Windows Vista (thus minor version update)
   * Saved games and other generated data is now located under "My Documents\Curse of the Azure Bonds"
