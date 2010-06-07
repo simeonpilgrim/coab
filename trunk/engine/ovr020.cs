@@ -139,9 +139,9 @@ namespace engine
 
             for (int coinType = 6; coinType >= 0; coinType--)
             {
-                if (gbl.player_ptr.Money.GetCoins(coinType) > 0)
+                if (gbl.SelectedPlayer.Money.GetCoins(coinType) > 0)
                 {
-					string text = string.Format("{0,8} {1}", Money.names[coinType], gbl.player_ptr.Money.GetCoins(coinType));
+					string text = string.Format("{0,8} {1}", Money.names[coinType], gbl.SelectedPlayer.Money.GetCoins(coinType));
                     seg041.displayString(text, 0, 10, yCol, 12);
 
                     yCol++;
@@ -152,7 +152,7 @@ namespace engine
 
         internal static void display_player_stats01()
         {
-            Player player = gbl.player_ptr;
+            Player player = gbl.SelectedPlayer;
 
             ovr025.reclac_player_values(player);
             int yCol = 0x11;
@@ -202,26 +202,26 @@ namespace engine
             int col_x = 5;
             seg037.draw8x8_clear_area(stat_index + 7, 0x0b, stat_index + 7, col_x);
 
-            if (gbl.player_ptr.stats[stat_index].max < 10)
+            if (gbl.SelectedPlayer.stats[stat_index].max < 10)
             {
                 col_x++;
             }
 
-            string s = gbl.player_ptr.stats[stat_index].max.ToString();
+            string s = gbl.SelectedPlayer.stats[stat_index].max.ToString();
             seg041.displayString(s, 0, color, stat_index + 7, col_x);
 
             if (stat_index == 0 &&
-                gbl.player_ptr.strength == 18 &&
-                gbl.player_ptr.tmp_str_00 > 0)
+                gbl.SelectedPlayer.strength == 18 &&
+                gbl.SelectedPlayer.tmp_str_00 > 0)
             {
-                string text = gbl.player_ptr.tmp_str_00.ToString();
+                string text = gbl.SelectedPlayer.tmp_str_00.ToString();
 
-                if (gbl.player_ptr.tmp_str_00 < 10)
+                if (gbl.SelectedPlayer.tmp_str_00 < 10)
                 {
                     text = "0" + text;
                 }
 
-                if (gbl.player_ptr.tmp_str_00 == 100)
+                if (gbl.SelectedPlayer.tmp_str_00 == 100)
                 {
                     text = "00";
                 }
@@ -243,25 +243,25 @@ namespace engine
             char input_key = ' ';
             bool arg_0 = false;
 
-            gbl.tradeWith = gbl.player_ptr;
+            gbl.tradeWith = gbl.SelectedPlayer;
 
-            playerDisplayFull(gbl.player_ptr);
+            playerDisplayFull(gbl.SelectedPlayer);
 
             while (unk_54B03.MemberOf(input_key) == false && arg_0 == false)
             {
                 string text = string.Empty;
                 bool hasSpells = false;
-                bool hasMoney = gbl.player_ptr.Money.AnyMoney();
+                bool hasMoney = gbl.SelectedPlayer.Money.AnyMoney();
 
                 for (int i = 0; i < gbl.max_spells; i++)
                 {
-                    if (gbl.player_ptr.spell_list[i] > 0)
+                    if (gbl.SelectedPlayer.spell_list[i] > 0)
                     {
                         hasSpells = true;
                     }
                 }
 
-                if (gbl.player_ptr.items.Count > 0)
+                if (gbl.SelectedPlayer.items.Count > 0)
                 {
                     text += "Items ";
                 }
@@ -271,9 +271,9 @@ namespace engine
                     text += "Spells ";
                 }
 
-                if (gbl.player_ptr.control_morale < Control.NPC_Base ||
-                    gbl.player_ptr.in_combat == false ||
-                    gbl.player_ptr.health_status == Status.animated)
+                if (gbl.SelectedPlayer.control_morale < Control.NPC_Base ||
+                    gbl.SelectedPlayer.in_combat == false ||
+                    gbl.SelectedPlayer.health_status == Status.animated)
                 {
                     if (hasMoney && gbl.game_state != GameState.Combat)
                     {
@@ -286,12 +286,12 @@ namespace engine
                     text += "Drop ";
                 }
 
-                if (CanCastHeal(gbl.player_ptr) == true)
+                if (CanCastHeal(gbl.SelectedPlayer) == true)
                 {
                     text += "Heal ";
                 }
 
-                if (CanCastCureDiseases(gbl.player_ptr) == true)
+                if (CanCastCureDiseases(gbl.SelectedPlayer) == true)
                 {
                     text += "Cure ";
                 }
@@ -322,18 +322,18 @@ namespace engine
                         break;
 
                     case 'H':
-                        PaladinHeal(gbl.player_ptr);
+                        PaladinHeal(gbl.SelectedPlayer);
                         break;
 
                     case 'C':
-                        PaladinCureDisease(gbl.player_ptr);
+                        PaladinCureDisease(gbl.SelectedPlayer);
                         break;
                 }
 
                 if (arg_0 == false &&
                     asc_54B50.MemberOf(input_key) == true)
                 {
-                    playerDisplayFull(gbl.player_ptr);
+                    playerDisplayFull(gbl.SelectedPlayer);
                 }
             }
 
@@ -361,9 +361,9 @@ namespace engine
             }
             else if ((int)item.affect_1 > 0x7F || (int)item.affect_2 > 0x7F || (int)item.affect_3 > 0x7F)
             {
-                ovr025.displayPlayerName(false, 15, 1, gbl.player_ptr);
+                ovr025.displayPlayerName(false, 15, 1, gbl.SelectedPlayer);
 
-                gbl.textXCol = gbl.player_ptr.name.Length + 2;
+                gbl.textXCol = gbl.SelectedPlayer.name.Length + 2;
                 gbl.textYCol = 0x15;
 
                 seg041.press_any_key(" was going to scribe from that scroll", false, 0, 0x0E, TextRegion.Normal2);
@@ -439,7 +439,7 @@ namespace engine
 
         internal static void PlayerItemsMenu(ref bool arg_0) /*use_item*/
         {
-            Player player = gbl.player_ptr;
+            Player player = gbl.SelectedPlayer;
             char inputKey = ' ';
 
             bool redraw_items = true;
@@ -583,7 +583,7 @@ namespace engine
 
 									if (ovr027.yes_no(gbl.defaultMenuColors, "Drop It? ") == 'Y')
                                     {
-                                        ovr025.lose_item(curr_item, gbl.player_ptr);
+                                        ovr025.lose_item(curr_item, gbl.SelectedPlayer);
                                         redraw_items = true;
                                     }
 
@@ -647,7 +647,7 @@ namespace engine
 
         internal static void calc_items_effects(bool add_item, Item item) /*sub_55B04*/
         {
-            Player player = gbl.player_ptr;
+            Player player = gbl.SelectedPlayer;
 
             int masked_affect = (int)item.affect_3 & 0x7F;
 
@@ -790,7 +790,7 @@ namespace engine
         {
             bool magic_item = ((int)item.affect_3 > 0x7f);
 
-            Player player = gbl.player_ptr;
+            Player player = gbl.SelectedPlayer;
 
             if (item.readied)
             {
@@ -908,7 +908,7 @@ namespace engine
                 else
                 {
                     player.items.Add(item);
-                    ovr025.lose_item(item, gbl.player_ptr);
+                    ovr025.lose_item(item, gbl.SelectedPlayer);
                     ovr025.reclac_player_values(player);
                 }
             }
@@ -929,7 +929,7 @@ namespace engine
                 new_item.count = half_number;
                 new_item.readied = false;
 
-                gbl.player_ptr.items.Add(new_item);
+                gbl.SelectedPlayer.items.Add(new_item);
             }
             else
             {
@@ -940,7 +940,7 @@ namespace engine
 
         internal static void join_items(Item item) /*sub_56285*/
         {
-            var match = gbl.player_ptr.items.FindAll(i =>
+            var match = gbl.SelectedPlayer.items.FindAll(i =>
                 {
                     return (i != item &&
                     i.count > 0 &&
@@ -966,7 +966,7 @@ namespace engine
                 if (item_ptr.count + items_count <= 255)
                 {
                     items_count += item_ptr.count;
-                    ovr025.lose_item(item_ptr, gbl.player_ptr);
+                    ovr025.lose_item(item_ptr, gbl.SelectedPlayer);
                 }
                 else
                 {
@@ -1007,14 +1007,14 @@ namespace engine
             else
             {
                 if (gbl.game_state == GameState.Combat &&
-                    gbl.player_ptr.quick_fight == QuickFight.False)
+                    gbl.SelectedPlayer.quick_fight == QuickFight.False)
                 {
                     ovr025.RedrawCombatScreen();
                 }
 
                 if (gbl.spell_from_item == true)
                 {
-                    ovr025.DisplayPlayerStatusString(false, 10, "uses an item", gbl.player_ptr);
+                    ovr025.DisplayPlayerStatusString(false, 10, "uses an item", gbl.SelectedPlayer);
 
                     if (gbl.game_state == GameState.Combat)
                     {
@@ -1035,24 +1035,24 @@ namespace engine
 
                 if (ovr023.item_is_scroll(item) == true)
                 {
-                    if (gbl.player_ptr.SkillLevel(SkillType.MagicUser) > 0 ||
-                        gbl.player_ptr.SkillLevel(SkillType.Cleric) > 0)
+                    if (gbl.SelectedPlayer.SkillLevel(SkillType.MagicUser) > 0 ||
+                        gbl.SelectedPlayer.SkillLevel(SkillType.Cleric) > 0)
                     {
-                        ovr023.sub_5D2E1(ref arg_0, 0, gbl.player_ptr.quick_fight, var_1);
+                        ovr023.sub_5D2E1(ref arg_0, 0, gbl.SelectedPlayer.quick_fight, var_1);
                     }
-                    else if (gbl.player_ptr.thief_lvl > 9 &&
+                    else if (gbl.SelectedPlayer.thief_lvl > 9 &&
                             ovr024.roll_dice(100, 1) <= 75)
                     {
-                        ovr023.sub_5D2E1(ref arg_0, 0, gbl.player_ptr.quick_fight, var_1);
+                        ovr023.sub_5D2E1(ref arg_0, 0, gbl.SelectedPlayer.quick_fight, var_1);
                     }
                     else
                     {
-                        ovr025.DisplayPlayerStatusString(true, gbl.textYCol, "oops!", gbl.player_ptr);
+                        ovr025.DisplayPlayerStatusString(true, gbl.textYCol, "oops!", gbl.SelectedPlayer);
                     }
                 }
                 else
                 {
-                    ovr023.sub_5D2E1(ref arg_0, 0, gbl.player_ptr.quick_fight, var_1);
+                    ovr023.sub_5D2E1(ref arg_0, 0, gbl.SelectedPlayer.quick_fight, var_1);
                 }
 
                 gbl.spell_from_item = false;
@@ -1061,7 +1061,7 @@ namespace engine
                     gbl.spell_table[var_1].whenCast != SpellWhen.Camp)
                 {
                     arg_0 = true;
-                    ovr025.clear_actions(gbl.player_ptr);
+                    ovr025.clear_actions(gbl.SelectedPlayer);
                 }
             }
 
@@ -1069,7 +1069,7 @@ namespace engine
             {
                 if (ovr023.item_is_scroll(item) == true)
                 {
-                    ovr023.remove_spell_from_scroll(var_1, item, gbl.player_ptr);
+                    ovr023.remove_spell_from_scroll(var_1, item, gbl.SelectedPlayer);
                 }
                 else if ( item.affect_1 > 0 )
                 {
@@ -1082,7 +1082,7 @@ namespace engine
                         item.affect_1 -= 1;
                         if (item.affect_1 == 0)
                         {
-                            ovr025.lose_item(item, gbl.player_ptr);
+                            ovr025.lose_item(item, gbl.SelectedPlayer);
                         }
                     }
                 }
@@ -1122,32 +1122,32 @@ namespace engine
             {
                 ovr025.string_print01("Sold!");
 
-                ovr025.lose_item(item, gbl.player_ptr);
+                ovr025.lose_item(item, gbl.SelectedPlayer);
 
                 short plat = (short)(item_value / 5);
                 short gold = (short)(item_value % 5);
                 int overflow;
 
-                if (ovr022.willOverload(out overflow, plat + gold, gbl.player_ptr) == true)
+                if (ovr022.willOverload(out overflow, plat + gold, gbl.SelectedPlayer) == true)
                 {
                     ovr025.string_print01("Overloaded. Money will be put in pool.");
 
                     if (overflow > plat)
                     {
-                        gbl.player_ptr.Money.AddCoins(Money.Platinum, plat);
+                        gbl.SelectedPlayer.Money.AddCoins(Money.Platinum, plat);
                     }
                     else
                     {
-                        gbl.player_ptr.Money.AddCoins(Money.Platinum, overflow);
+                        gbl.SelectedPlayer.Money.AddCoins(Money.Platinum, overflow);
 						gbl.pooled_money.AddCoins(Money.Platinum, plat - overflow);
                     }
 
-                    gbl.player_ptr.Money.AddCoins(Money.Gold, gold);
+                    gbl.SelectedPlayer.Money.AddCoins(Money.Gold, gold);
                 }
                 else
                 {
-                    gbl.player_ptr.Money.AddCoins(Money.Platinum, plat);
-                    gbl.player_ptr.Money.AddCoins(Money.Gold, gold);
+                    gbl.SelectedPlayer.Money.AddCoins(Money.Platinum, plat);
+                    gbl.SelectedPlayer.Money.AddCoins(Money.Gold, gold);
                 }
             }
 
@@ -1165,10 +1165,10 @@ namespace engine
 			if (ovr027.yes_no(gbl.defaultMenuColors, "Is It a Deal? ") == 'Y')
 			{
 				int cost = 200;
-				if (cost <= gbl.player_ptr.Money.GetGoldWorth())
+				if (cost <= gbl.SelectedPlayer.Money.GetGoldWorth())
 				{
 					id_item = true;
-					gbl.player_ptr.Money.SubtractGoldWorth(cost);
+					gbl.SelectedPlayer.Money.SubtractGoldWorth(cost);
 				}
 				else
 				{
@@ -1226,7 +1226,7 @@ namespace engine
                 {
                     bool noMoneyLeft;
 
-                    playerDisplayFull(gbl.player_ptr);
+                    playerDisplayFull(gbl.SelectedPlayer);
                     do
                     {
                         displayMoney();
@@ -1236,9 +1236,9 @@ namespace engine
 
                         for (int coin = 0; coin <= 6; coin++)
                         {
-                            if (gbl.player_ptr.Money.GetCoins(coin) > 0)
+                            if (gbl.SelectedPlayer.Money.GetCoins(coin) > 0)
                             {
-								list.Add(new MenuItem(string.Format("{0,8} {1}", moneyString[coin], gbl.player_ptr.Money.GetCoins(coin))));
+								list.Add(new MenuItem(string.Format("{0,8} {1}", moneyString[coin], gbl.SelectedPlayer.Money.GetCoins(coin))));
                             }
                         }
 
@@ -1261,11 +1261,11 @@ namespace engine
 
                             text = "How much " + text + "will you trade? ";
 
-                            short num_coins = ovr022.AskNumberValue(10, text, gbl.player_ptr.Money.GetCoins(money_slot));
+                            short num_coins = ovr022.AskNumberValue(10, text, gbl.SelectedPlayer.Money.GetCoins(money_slot));
 
-                            ovr022.trade_money(money_slot, num_coins, dest, gbl.player_ptr);
+                            ovr022.trade_money(money_slot, num_coins, dest, gbl.SelectedPlayer);
 
-							finished = noMoneyLeft = !gbl.player_ptr.Money.AnyMoney();
+							finished = noMoneyLeft = !gbl.SelectedPlayer.Money.AnyMoney();
                         }
 
                         list.Clear();
@@ -1287,9 +1287,9 @@ namespace engine
 
                 for (int coin = 0; coin < 7; coin++)
                 {
-                    if (gbl.player_ptr.Money.GetCoins(coin) != 0)
+                    if (gbl.SelectedPlayer.Money.GetCoins(coin) != 0)
                     {
-						menuList.Add(new MenuItem(string.Format("{0,8} {1}", moneyString[coin], gbl.player_ptr.Money.GetCoins(coin))));
+						menuList.Add(new MenuItem(string.Format("{0,8} {1}", moneyString[coin], gbl.SelectedPlayer.Money.GetCoins(coin))));
                     }
                 }
 
@@ -1312,11 +1312,11 @@ namespace engine
 
                     text = "How much " + text + "will you drop? ";
 
-                    short num_coins = ovr022.AskNumberValue(10, text, gbl.player_ptr.Money.GetCoins(money_slot));
+                    short num_coins = ovr022.AskNumberValue(10, text, gbl.SelectedPlayer.Money.GetCoins(money_slot));
 
-                    ovr022.DropCoins(money_slot, num_coins, gbl.player_ptr);
+                    ovr022.DropCoins(money_slot, num_coins, gbl.SelectedPlayer);
 
-					noMoreMoney = !gbl.player_ptr.Money.AnyMoney();
+					noMoreMoney = !gbl.SelectedPlayer.Money.AnyMoney();
                 }
 
                 menuList.Clear();
@@ -1352,7 +1352,7 @@ namespace engine
 
         internal static void scroll_team_list(char input_key)
         {
-            int index = gbl.TeamList.IndexOf(gbl.player_ptr);
+            int index = gbl.TeamList.IndexOf(gbl.SelectedPlayer);
 
             if (gbl.TeamList.Count > 0)
             {
@@ -1360,13 +1360,13 @@ namespace engine
                 {
                     //next
                     index = (index + 1) % gbl.TeamList.Count;
-                    gbl.player_ptr = gbl.TeamList[index];
+                    gbl.SelectedPlayer = gbl.TeamList[index];
                 }
                 else if (input_key == 'G')
                 {
                     // previous
                     index = (index - 1 + gbl.TeamList.Count) % gbl.TeamList.Count;
-                    gbl.player_ptr = gbl.TeamList[index];
+                    gbl.SelectedPlayer = gbl.TeamList[index];
                 }
             }
         }
@@ -1437,9 +1437,9 @@ namespace engine
                     }
                 }
 
-                ovr025.displayPlayerName(true, 1, 1, gbl.player_ptr);
+                ovr025.displayPlayerName(true, 1, 1, gbl.SelectedPlayer);
 
-                seg041.displayString("Spells " + text, 0, 10, 1, gbl.player_ptr.name.Length + 4);
+                seg041.displayString("Spells " + text, 0, 10, 1, gbl.SelectedPlayer.name.Length + 4);
 
                 result = ovr023.spell_menu(ref index, arg_8);
             }
@@ -1479,7 +1479,7 @@ namespace engine
 
             if (target == null)
             {
-                playerDisplayFull(gbl.player_ptr);
+                playerDisplayFull(gbl.SelectedPlayer);
                 return;
             }
 
@@ -1495,7 +1495,7 @@ namespace engine
             }
 
             ovr024.add_affect(false, 0, 1440, Affects.paladinDailyHealCast, player);
-            playerDisplayFull(gbl.player_ptr);
+            playerDisplayFull(gbl.SelectedPlayer);
         }
 
         static Affects[] paladinCureableDiseases = { // unk_16B39
@@ -1515,7 +1515,7 @@ namespace engine
 
             if (target == null)
             {
-                playerDisplayFull(gbl.player_ptr);
+                playerDisplayFull(gbl.SelectedPlayer);
             }
             else
             {
@@ -1552,7 +1552,7 @@ namespace engine
                     ovr025.string_print01(target.name + " is cured");
                 }
 
-                playerDisplayFull(gbl.player_ptr);
+                playerDisplayFull(gbl.SelectedPlayer);
             }
         }
     }

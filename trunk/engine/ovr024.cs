@@ -58,7 +58,7 @@ namespace engine
 
                 if (gbl.game_state != GameState.Combat)
                 {
-                    ovr025.PartySummary(gbl.player_ptr);
+                    ovr025.PartySummary(gbl.SelectedPlayer);
                 }
             }
         }
@@ -375,7 +375,7 @@ namespace engine
         }
 
 
-        static Player sub_63D03(byte[] arg_0, int arraySize, List<GasCloud> list, Point mapPos)
+		static Player sub_63D03(byte[] arg_0, int arraySize, List<GasCloud> list, Point mapPos) // sub_63D03
         {
             var arg_6 = list.Find(cell =>
             {
@@ -419,9 +419,9 @@ namespace engine
 
                     if (save_passed == true)
                     {
-                        Player tmp_player_ptr = gbl.player_ptr;
+                        Player tmp_player_ptr = gbl.SelectedPlayer;
 
-                        gbl.player_ptr = sub_63D03(gbl.unk_18AEA, 4, gbl.NoxiousCloud, ovr033.PlayerMapPos(player));
+                        gbl.SelectedPlayer = sub_63D03(gbl.unk_18AEA, 4, gbl.NoxiousCloud, ovr033.PlayerMapPos(player));
 
                         is_unaffected("starts to cough", save_passed, 0, false, 0xff, 1, Affects.stinking_cloud, player);
 
@@ -430,13 +430,13 @@ namespace engine
                             ovr013.CallAffectTable(Effect.Add, affect, player, Affects.stinking_cloud);
                         }
 
-                        gbl.player_ptr = tmp_player_ptr;
+                        gbl.SelectedPlayer = tmp_player_ptr;
                     }
                     else
                     {
-                        Player tmp_player_ptr = gbl.player_ptr;
+                        Player tmp_player_ptr = gbl.SelectedPlayer;
 
-                        gbl.player_ptr = sub_63D03(gbl.unk_18AEA, 4, gbl.NoxiousCloud, ovr033.PlayerMapPos(player));
+                        gbl.SelectedPlayer = sub_63D03(gbl.unk_18AEA, 4, gbl.NoxiousCloud, ovr033.PlayerMapPos(player));
 
                         is_unaffected("chokes and gags from nausea", save_passed, 0, false, 0xff, (ushort)(roll_dice(4, 1) + 1), Affects.helpless, player);
 
@@ -445,7 +445,7 @@ namespace engine
                             ovr013.CallAffectTable(Effect.Add, affect, player, Affects.helpless);
                         }
 
-                        gbl.player_ptr = tmp_player_ptr;
+                        gbl.SelectedPlayer = tmp_player_ptr;
                     }
                 }
 

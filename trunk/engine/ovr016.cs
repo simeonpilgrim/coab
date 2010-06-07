@@ -111,7 +111,7 @@ namespace engine
 
             for (int i = 0; i < gbl.max_spells; i++)
             {
-                int spell_id = gbl.player_ptr.spell_list[i];
+                int spell_id = gbl.SelectedPlayer.spell_list[i];
 
                 if (spell_id > 0)
                 {
@@ -125,7 +125,7 @@ namespace engine
                 }
             }
 
-            return gbl.player_ptr.spellCastCount[(int)spellClass, spellLevel - 1] - alreadyLearning;
+            return gbl.SelectedPlayer.spellCastCount[(int)spellClass, spellLevel - 1] - alreadyLearning;
         }
 
 
@@ -140,8 +140,8 @@ namespace engine
                     text = "cannot cast spells in this area";
                 }
             }
-            else if (gbl.player_ptr.health_status == Status.animated ||
-                gbl.player_ptr.in_combat == false)
+            else if (gbl.SelectedPlayer.health_status == Status.animated ||
+                gbl.SelectedPlayer.in_combat == false)
             {
                 text = "is in no condition to ";
 
@@ -163,7 +163,7 @@ namespace engine
 
             if (text.Length != 0)
             {
-                ovr025.DisplayPlayerStatusString(true, 10, text, gbl.player_ptr);
+                ovr025.DisplayPlayerStatusString(true, 10, text, gbl.SelectedPlayer);
 
                 return false;
             }
@@ -204,7 +204,7 @@ namespace engine
                     }
                     else
                     {
-                        ovr025.DisplayPlayerStatusString(true, 10, "has no spells memorized", gbl.player_ptr);
+                        ovr025.DisplayPlayerStatusString(true, 10, "has no spells memorized", gbl.SelectedPlayer);
                     }
                 } while (spell_id != 0);
             }
@@ -234,7 +234,7 @@ namespace engine
                 {
                     var_60[(int)spellClass, spellLevel] = HowManySpellsPlayerCanLearn(spellClass, spellLevel + 1).ToString();
 
-                    if (gbl.player_ptr.spellCastCount[(int)spellClass, spellLevel] == 0)
+                    if (gbl.SelectedPlayer.spellCastCount[(int)spellClass, spellLevel] == 0)
                     {
                         var_60[(int)spellClass, spellLevel] = " ";
                     }
@@ -248,7 +248,7 @@ namespace engine
 
             if (found == true)
             {
-                ovr025.DisplayPlayerStatusString(false, 10, "can memorize:", gbl.player_ptr);
+                ovr025.DisplayPlayerStatusString(false, 10, "can memorize:", gbl.SelectedPlayer);
                 int y_col = 3;
                 for (int spellClass = 0; spellClass < MaxSpellClass; spellClass++)
                 {
@@ -318,11 +318,11 @@ namespace engine
             {
                 for (int j = i; j < gbl.max_spells; j++)
                 {
-                    if ((gbl.player_ptr.spell_list[i] & 0x7F) > (gbl.player_ptr.spell_list[j] & 0x7F))
+                    if ((gbl.SelectedPlayer.spell_list[i] & 0x7F) > (gbl.SelectedPlayer.spell_list[j] & 0x7F))
                     {
-                        byte tmp_byte = gbl.player_ptr.spell_list[i];
-                        gbl.player_ptr.spell_list[i] = gbl.player_ptr.spell_list[j];
-                        gbl.player_ptr.spell_list[j] = tmp_byte;
+                        byte tmp_byte = gbl.SelectedPlayer.spell_list[i];
+                        gbl.SelectedPlayer.spell_list[i] = gbl.SelectedPlayer.spell_list[j];
+                        gbl.SelectedPlayer.spell_list[j] = tmp_byte;
                     }
                 }
             }
@@ -346,7 +346,7 @@ namespace engine
                 {
                     if (ovr027.yes_no(gbl.alertMenuColors, "Memorize These Spells? ") == 'N')
                     {
-                        cancel_memorize(gbl.player_ptr);
+                        cancel_memorize(gbl.SelectedPlayer);
                     }
                     else
                     {
@@ -366,7 +366,7 @@ namespace engine
 
                     if (var_1 == true)
                     {
-                        ovr025.DisplayPlayerStatusString(true, 10, "cannot memorize any spells", gbl.player_ptr);
+                        ovr025.DisplayPlayerStatusString(true, 10, "cannot memorize any spells", gbl.SelectedPlayer);
                     }
                     else
                     {
@@ -381,12 +381,12 @@ namespace engine
                         {
                             int var_5 = 0;
 
-                            while (gbl.player_ptr.spell_list[var_5] != 0)
+                            while (gbl.SelectedPlayer.spell_list[var_5] != 0)
                             {
                                 var_5++;
                             }
 
-                            gbl.player_ptr.spell_list[var_5] = (byte)(var_4 + 0x80);
+                            gbl.SelectedPlayer.spell_list[var_5] = (byte)(var_4 + 0x80);
 
                             sort_spell_list();
                         }
@@ -402,7 +402,7 @@ namespace engine
                     if (var_2 == true &&
 						ovr027.yes_no(gbl.alertMenuColors, "Memorize these spells? ") == 'N')
                     {
-                        cancel_memorize(gbl.player_ptr);
+                        cancel_memorize(gbl.SelectedPlayer);
                     }
                 }
 
@@ -432,7 +432,7 @@ namespace engine
                 {
 					if (ovr027.yes_no(gbl.alertMenuColors, "Scribe These Spells? ") == 'N')
                     {
-                        cancel_scribes(gbl.player_ptr);
+                        cancel_scribes(gbl.SelectedPlayer);
                     }
                     else
                     {
@@ -456,7 +456,7 @@ namespace engine
 
                         if (var_2 == false)
                         {
-                            ovr025.DisplayPlayerStatusString(true, 10, "has no copyable scrolls", gbl.player_ptr);
+                            ovr025.DisplayPlayerStatusString(true, 10, "has no copyable scrolls", gbl.SelectedPlayer);
                         }
                         else
                         {
@@ -466,13 +466,13 @@ namespace engine
                     else
                     {
                         redraw = true;
-                        if (gbl.player_ptr.KnowsSpell((Spells)var_4))
+                        if (gbl.SelectedPlayer.KnowsSpell((Spells)var_4))
                         {
                             ovr025.string_print01("You already know that spell");
                         }
                         else
                         {
-                            bool var_D = gbl.player_ptr.items.Find(item =>
+                            bool var_D = gbl.SelectedPlayer.items.Find(item =>
                             {
                                 return (item.IsScroll() == true &&
                                     (item.ScrollLearning(1, var_4) ||
@@ -490,9 +490,9 @@ namespace engine
                                 int spell_level = gbl.spell_table[var_4].spellLevel;
                                 int spell_class = (int)gbl.spell_table[var_4].spellClass;
 
-                                if (gbl.player_ptr.spellCastCount[spell_class, spell_level - 1] > 0)
+                                if (gbl.SelectedPlayer.spellCastCount[spell_class, spell_level - 1] > 0)
                                 {
-                                    foreach (Item var_C in gbl.player_ptr.items)
+                                    foreach (Item var_C in gbl.SelectedPlayer.items)
                                     {
                                         int var_6 = 1;
                                         do
@@ -527,7 +527,7 @@ namespace engine
                     if (var_2 == true &&
 						ovr027.yes_no(gbl.alertMenuColors, "Scribe these spells? ") == 'N')
                     {
-                        cancel_scribes(gbl.player_ptr);
+                        cancel_scribes(gbl.SelectedPlayer);
                     }
                 }
 
@@ -643,7 +643,7 @@ namespace engine
                 if (controlKey == true)
                 {
                     ovr020.scroll_team_list(inputKey);
-                    ovr025.PartySummary(gbl.player_ptr);
+                    ovr025.PartySummary(gbl.SelectedPlayer);
                 }
                 else
                 {
@@ -678,18 +678,18 @@ namespace engine
         {
             // move gbl.player_ptr up the list by one, if at head, move to tail.
 
-            int index = gbl.TeamList.IndexOf(gbl.player_ptr);
+            int index = gbl.TeamList.IndexOf(gbl.SelectedPlayer);
             if (index >= 0)
             {
                 gbl.TeamList.RemoveAt(index);
 
                 if (index > 0)
                 {
-                    gbl.TeamList.Insert(index - 1, gbl.player_ptr);
+                    gbl.TeamList.Insert(index - 1, gbl.SelectedPlayer);
                 }
                 else
                 {
-                    gbl.TeamList.Add(gbl.player_ptr);
+                    gbl.TeamList.Add(gbl.SelectedPlayer);
                 }
             }
         }
@@ -697,24 +697,24 @@ namespace engine
 
         static void MoveCurrentPlayerDown() // sub_456E5
         {
-            int index = gbl.TeamList.IndexOf(gbl.player_ptr);
+            int index = gbl.TeamList.IndexOf(gbl.SelectedPlayer);
             if (index >= 0)
             {
                 gbl.TeamList.RemoveAt(index);
 
                 if (index == gbl.TeamList.Count)
                 {
-                    gbl.TeamList.Insert(0, gbl.player_ptr);
+                    gbl.TeamList.Insert(0, gbl.SelectedPlayer);
                 }
                 else
                 {
-                    gbl.TeamList.Insert(index + 1, gbl.player_ptr);
+                    gbl.TeamList.Insert(index + 1, gbl.SelectedPlayer);
                 }
             }
         }
 
         static string[] reorderStrings = { "Select Exit", "Place Exit" }; //seg600_04A6
-        static Set reorderSet = new Set(0x010a, new byte[] { 0x020, 0, 0, 0, 0, 0, 0, 0, 0, 9 });
+		static Set reorderSet = new Set(0x010a, new byte[] { 0x020, 0, 0, 0, 0, 0, 0, 0, 0, 9 }); // "13 80 83 "
 
         static void reorder_party()
         {
@@ -731,7 +731,7 @@ namespace engine
                     if (reorderState == 0)
                     {
                         ovr020.scroll_team_list(inputKey);
-                        ovr025.PartySummary(gbl.player_ptr);
+                        ovr025.PartySummary(gbl.SelectedPlayer);
                     }
                     else
                     {
@@ -743,7 +743,7 @@ namespace engine
                         {
                             MoveCurrentPlayerDown();
                         }
-                        ovr025.PartySummary(gbl.player_ptr);
+                        ovr025.PartySummary(gbl.SelectedPlayer);
                     }
                 }
                 else if (reorderSet.MemberOf(inputKey) == true)
@@ -752,7 +752,7 @@ namespace engine
 
                     if (reorderState != 0)
                     {
-                        ovr025.DisplayPlayerStatusString(false, 10, "has been selected", gbl.player_ptr);
+                        ovr025.DisplayPlayerStatusString(false, 10, "has been selected", gbl.SelectedPlayer);
                     }
                     else
                     {
@@ -776,27 +776,27 @@ namespace engine
             }
             else
             {
-                ovr025.DisplayPlayerStatusString(false, 10, "will be gone", gbl.player_ptr);
+                ovr025.DisplayPlayerStatusString(false, 10, "will be gone", gbl.SelectedPlayer);
 
 				if (ovr027.yes_no(gbl.alertMenuColors, "Drop from party? ") == 'Y')
                 {
-                    if (gbl.player_ptr.in_combat == true)
+                    if (gbl.SelectedPlayer.in_combat == true)
                     {
-                        ovr025.DisplayPlayerStatusString(true, 10, "bids you farewell", gbl.player_ptr);
+                        ovr025.DisplayPlayerStatusString(true, 10, "bids you farewell", gbl.SelectedPlayer);
                     }
                     else
                     {
-                        ovr025.DisplayPlayerStatusString(true, 10, "is dumped in a ditch", gbl.player_ptr);
+                        ovr025.DisplayPlayerStatusString(true, 10, "is dumped in a ditch", gbl.SelectedPlayer);
                     }
 
-                    gbl.player_ptr = ovr018.FreeCurrentPlayer(gbl.player_ptr, true, false);
+                    gbl.SelectedPlayer = ovr018.FreeCurrentPlayer(gbl.SelectedPlayer, true, false);
                     seg037.draw8x8_clear_area(0x0b, 0x26, 1, 0x11);
 
-                    ovr025.PartySummary(gbl.player_ptr);
+                    ovr025.PartySummary(gbl.SelectedPlayer);
                 }
                 else
                 {
-                    ovr025.DisplayPlayerStatusString(true, 10, "Breathes A sigh of relief", gbl.player_ptr);
+                    ovr025.DisplayPlayerStatusString(true, 10, "Breathes A sigh of relief", gbl.SelectedPlayer);
                 }
             }
         }
@@ -861,7 +861,7 @@ namespace engine
             ovr025.ClearPlayerTextArea();
         }
 
-        static Set AlterSet = new Set(0x0009, new byte[] { 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x20 });
+		static Set AlterSet = new Set(0x0009, new byte[] { 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x20 }); // "0 69 "
 
         internal static void alter_menu()
         {
@@ -875,7 +875,7 @@ namespace engine
                 if (controlKey == true)
                 {
                     ovr020.scroll_team_list(inputKey);
-                    ovr025.PartySummary(gbl.player_ptr);
+                    ovr025.PartySummary(gbl.SelectedPlayer);
                 }
                 else
                 {
@@ -1116,7 +1116,7 @@ namespace engine
 
                 if (TotalHitpointsLost() == 0)
                 {
-                    ovr025.PartySummary(gbl.player_ptr);
+                    ovr025.PartySummary(gbl.SelectedPlayer);
                     ovr025.display_map_position_time();
                 }
                 else
@@ -1135,7 +1135,7 @@ namespace engine
                         CalculateHealing(ref healingAvailable, numCureLight, numCureSerious, numCureCritical);
                         DoTeamHealing(ref healingAvailable);
                         
-                        ovr025.PartySummary(gbl.player_ptr);
+                        ovr025.PartySummary(gbl.SelectedPlayer);
                         ovr025.display_map_position_time();
 
                         gbl.timeToRest = new RestTime(timeBackup);
@@ -1177,7 +1177,7 @@ namespace engine
                 if (special_key == true)
                 {
                     ovr020.scroll_team_list(input_key);
-                    ovr025.PartySummary(gbl.player_ptr);
+                    ovr025.PartySummary(gbl.SelectedPlayer);
                 }
                 else
                 {

@@ -113,7 +113,7 @@ namespace engine
                     player.actions.delay = 19;
                 }
 
-                gbl.player_ptr = player;
+                gbl.SelectedPlayer = player;
 
                 gbl.focusCombatAreaOnPlayer = ((player.combat_team == CombatTeam.Ours) || (ovr033.PlayerOnScreen(false, player) == true));
 
@@ -251,9 +251,9 @@ namespace engine
                                     break;
 
                                 case '2':
-                                    gbl.magicOn = !gbl.magicOn;
+                                    gbl.AutoPCsCastMagic = !gbl.AutoPCsCastMagic;
 
-                                    if (gbl.magicOn == true)
+                                    if (gbl.AutoPCsCastMagic == true)
                                     {
                                         ovr025.string_print01("Magic On");
                                     }

@@ -13,14 +13,14 @@ namespace engine
 
             if (gbl.restore_player_ptr == true)
             {
-                gbl.player_ptr = gbl.player_ptr2;
+                gbl.SelectedPlayer = gbl.LastSelectedPlayer;
                 gbl.restore_player_ptr = false;
             }
 
             gbl.encounter_flags[0] = false;
             gbl.encounter_flags[1] = false;
 
-            gbl.byte_1EE8C = false;
+            gbl.spriteChanged = false;
             gbl.stopVM = true;
 
             gbl.ecl_offset++;
@@ -180,7 +180,6 @@ namespace engine
 
             gbl.restore_player_ptr = true;
 
-
             bool high_bit_set = (player_index & 0x80) != 0;
             player_index = player_index & 0x7f;
 
@@ -188,7 +187,7 @@ namespace engine
  
             if (player_ptr != null)
             {
-                gbl.player_ptr = player_ptr;
+                gbl.SelectedPlayer = player_ptr;
                 gbl.player_not_found = false;
             }
             else
@@ -200,13 +199,13 @@ namespace engine
                 gbl.redrawPartySummary1 == true &&
                 gbl.redrawPartySummary2 == true)
             {
-                if (gbl.player_ptr2 == player_ptr)
+                if (gbl.LastSelectedPlayer == player_ptr)
                 {
                     gbl.restore_player_ptr = false;
                 }
-                gbl.player_ptr = ovr018.FreeCurrentPlayer(gbl.player_ptr, true, false);
+                gbl.SelectedPlayer = ovr018.FreeCurrentPlayer(gbl.SelectedPlayer, true, false);
 
-                ovr025.PartySummary(gbl.player_ptr);
+                ovr025.PartySummary(gbl.SelectedPlayer);
                 gbl.redrawPartySummary1 = false;
                 gbl.redrawPartySummary2 = false;
             }
@@ -238,7 +237,7 @@ namespace engine
 
         internal static void CMD_LoadMonster() /* sub_26465 */
         {
-            Player current_player_bkup = gbl.player_ptr;
+            Player current_player_bkup = gbl.SelectedPlayer;
             ovr008.vm_LoadCmdSets(3);
 
             if (gbl.numLoadedMonsters < 63)
@@ -293,7 +292,7 @@ namespace engine
 
                 gbl.monster_icon_id++;
                 gbl.monstersLoaded = true;
-                gbl.player_ptr = current_player_bkup;
+                gbl.SelectedPlayer = current_player_bkup;
             }
         }
 
@@ -318,7 +317,7 @@ namespace engine
             if (blockId != 0xff)
             {
                 gbl.encounter_flags[1] = true;
-                gbl.byte_1EE8C = true;
+                gbl.spriteChanged = true;
 
                 if (gbl.area2_ptr.HeadBlockId == 0xff)
                 {
@@ -344,11 +343,11 @@ namespace engine
             else
             {
                 if ((gbl.last_game_state != GameState.DungeonMap || gbl.game_state == GameState.DungeonMap) &&
-                    (gbl.byte_1EE8C == true || gbl.displayPlayerSprite))
+                    (gbl.spriteChanged == true || gbl.displayPlayerSprite))
                 {
                     gbl.can_draw_bigpic = true;
                     ovr029.RedrawView();
-                    gbl.byte_1EE8C = false;
+                    gbl.spriteChanged = false;
                     gbl.displayPlayerSprite = false;
                     gbl.byte_1EE8D = true;
                 }
@@ -600,7 +599,7 @@ namespace engine
                     gbl.byte_1EE98 == true)
                 {
                     seg037.draw8x8_03();
-                    ovr025.PartySummary(gbl.player_ptr);
+                    ovr025.PartySummary(gbl.SelectedPlayer);
                     ovr025.display_map_position_time();
                 }
                 gbl.byte_1EE98 = false;
@@ -702,7 +701,7 @@ namespace engine
         internal static void CMD_HorizontalMenu()
         {
             bool useOverlay;
-            byte var_3B;
+            bool var_3B;
 
             ovr008.vm_LoadCmdSets(2);
 
@@ -716,7 +715,7 @@ namespace engine
 			MenuColorSet colors;
             if (string_count == 1)
             {
-				var_3B = 1;
+				var_3B = true;
 				colors = new MenuColorSet(15, 15, 13);
 
                 if (gbl.unk_1D972[1] == "PRESS BUTTON OR RETURN TO CONTINUE.")
@@ -727,11 +726,11 @@ namespace engine
             else
             {
 				colors = new MenuColorSet(1, 15, 15);
-				var_3B = 0;
+				var_3B = false;
 				colors = gbl.defaultMenuColors;
             }
 
-            if (gbl.byte_1EE8C == false ||
+            if (gbl.spriteChanged == false ||
                 gbl.byte_1EE8D == false)
             {
                 useOverlay = false;
@@ -749,7 +748,7 @@ namespace engine
 
             text += "~" + gbl.unk_1D972[string_count];
 
-			byte menu_selected = (byte)ovr008.sub_317AA(useOverlay, var_3B, colors, text, string.Empty);
+			byte menu_selected = (byte)ovr008.sub_317AA(useOverlay, var_3B, colors, text, "");
 
             ovr008.vm_SetMemoryValue(menu_selected, loc);
 
@@ -1028,7 +1027,7 @@ namespace engine
             
             gbl.encounter_flags[0] = false;
             gbl.encounter_flags[1] = false;
-            gbl.byte_1EE8C = false;
+            gbl.spriteChanged = false;
             ovr025.load_pic();
         }
 
@@ -1214,8 +1213,8 @@ namespace engine
 
             if (allParty == 0)
             {
-                ovr008.RobMoney(gbl.player_ptr, percentage);
-                ovr008.RobItems(gbl.player_ptr, var_3);
+                ovr008.RobMoney(gbl.SelectedPlayer, percentage);
+                ovr008.RobItems(gbl.SelectedPlayer, var_3);
             }
             else
             {
@@ -1284,7 +1283,7 @@ namespace engine
 
             do
             {
-                if (gbl.byte_1EE8C == false ||
+                if (gbl.spriteChanged == false ||
                     gbl.byte_1EE8D == false ||
                     gbl.area_ptr.inDungeon == 0 ||
                     gbl.lastDaxBlockId == 0x50)
@@ -1363,7 +1362,7 @@ namespace engine
                     displayText = "~COMBAT ~WAIT ~FLEE ~ADVANCE";
                 }
 
-                menu_selected = ovr008.sub_317AA(useOverlay, 0, gbl.defaultMenuColors, displayText, string.Empty);
+                menu_selected = ovr008.sub_317AA(useOverlay, false, gbl.defaultMenuColors, displayText, "");
 
                 if (gbl.area2_ptr.encounter_distance == 0 ||
                     gbl.area_ptr.inDungeon == 0)
@@ -1551,7 +1550,7 @@ namespace engine
                 values[i] = (byte)ovr008.vm_GetCmdValue(i + 1);
             }
 
-			int menu_selected = ovr008.sub_317AA(false, 0, gbl.defaultMenuColors, "~HAUGHTY ~SLY ~NICE ~MEEK ~ABUSIVE", " ");
+			int menu_selected = ovr008.sub_317AA(false, false, gbl.defaultMenuColors, "~HAUGHTY ~SLY ~NICE ~MEEK ~ABUSIVE", " ");
 
             ushort location = gbl.cmd_opps[6].Word;
 
@@ -1600,7 +1599,7 @@ namespace engine
         {
             byte var_8 = 0; /* Simeon */
 
-            Player currentPlayerBackup = gbl.player_ptr;
+            Player currentPlayerBackup = gbl.SelectedPlayer;
             /*byte var_19 = 0; */
             byte var_1A = 0;
             ovr008.vm_LoadCmdSets(5);
@@ -1652,13 +1651,13 @@ namespace engine
                     if ((var_6 & 0x80) != 0)
                     {
                         if (bonusType == 0 ||
-                            ovr024.RollSavingThrow(saveBonus, (SaveVerseType)(bonusType - 1), gbl.player_ptr) == false)
+                            ovr024.RollSavingThrow(saveBonus, (SaveVerseType)(bonusType - 1), gbl.SelectedPlayer) == false)
                         {
-                            ovr008.sub_32200(gbl.player_ptr, damage);
+                            ovr008.sub_32200(gbl.SelectedPlayer, damage);
                         }
                         else if (var_1B != 0)
                         {
-                            ovr008.sub_32200(gbl.player_ptr, damage);
+                            ovr008.sub_32200(gbl.SelectedPlayer, damage);
                         }
                     }
                     else
@@ -1712,7 +1711,7 @@ namespace engine
                 seg049.SysDelay(3000);
             }
 
-            gbl.player_ptr = currentPlayerBackup;
+            gbl.SelectedPlayer = currentPlayerBackup;
             seg041.displayAndDebug("press <enter>/<return> to continue", 0, 15);
         }
 
@@ -1725,7 +1724,7 @@ namespace engine
                 gbl.can_draw_bigpic = true;
                 ovr029.RedrawView();
                 gbl.displayPlayerSprite = false;
-                gbl.byte_1EE8C = false;
+                gbl.spriteChanged = false;
             }
         }
 
@@ -1758,7 +1757,7 @@ namespace engine
             VmLog.WriteLine("CMD_ClearBox:");
 
             seg037.draw8x8_03();
-            ovr025.PartySummary(gbl.player_ptr);
+            ovr025.PartySummary(gbl.SelectedPlayer);
             ovr025.display_map_position_time();
 
             ovr030.DrawMaybeOverlayed(gbl.byte_1D556.frames[0].picture, true, 3, 3);
@@ -1775,7 +1774,7 @@ namespace engine
             VmLog.WriteLine("CMD_Who: Prompt: '{0}'", prompt);
 
             seg037.draw8x8_clear_area(TextRegion.NormalBottom);
-            ovr025.selectAPlayer(ref gbl.player_ptr, false, prompt);
+            ovr025.selectAPlayer(ref gbl.SelectedPlayer, false, prompt);
         }
 
 
@@ -1788,10 +1787,10 @@ namespace engine
 
             byte morale = (byte)ovr008.vm_GetCmdValue(2);
 
-            gbl.player_ptr.control_morale = (byte)((morale >> 1) + 0x80);
+            gbl.SelectedPlayer.control_morale = (byte)((morale >> 1) + 0x80);
 
-            ovr025.reclac_player_values(gbl.player_ptr);
-            ovr025.PartySummary(gbl.player_ptr);
+            ovr025.reclac_player_values(gbl.SelectedPlayer);
+            ovr025.PartySummary(gbl.SelectedPlayer);
         }
 
 
@@ -1873,7 +1872,7 @@ namespace engine
 
                     if (gbl.byte_1AB0B == true)
                     {
-                        if (gbl.byte_1EE8C == true || 
+                        if (gbl.spriteChanged == true || 
                             gbl.displayPlayerSprite || 
                             gbl.byte_1EE91 == true ||
                             gbl.positionChanged == true ||
@@ -1885,7 +1884,7 @@ namespace engine
                             gbl.byte_1EE94 = false;
                             gbl.byte_1EE91 = false;
                             gbl.positionChanged = false;
-                            gbl.byte_1EE8C = false;
+                            gbl.spriteChanged = false;
                             gbl.displayPlayerSprite = false;
 
                             gbl.mapWallType = ovr031.getMap_wall_type(gbl.mapDirection, gbl.mapPosY, gbl.mapPosX);
@@ -1961,7 +1960,7 @@ namespace engine
 
             if (gbl.restore_player_ptr == true)
             {
-                gbl.player_ptr = gbl.player_ptr2;
+                gbl.SelectedPlayer = gbl.LastSelectedPlayer;
                 gbl.restore_player_ptr = false;
             }
 
@@ -2021,7 +2020,7 @@ namespace engine
 
             gbl.encounter_flags[0] = false;
             gbl.encounter_flags[1] = false;
-            gbl.byte_1EE8C = false;
+            gbl.spriteChanged = false;
             ovr008.vm_LoadCmdSets(1);
 
             if (Cheats.skip_copy_protection == false)
@@ -2036,13 +2035,13 @@ namespace engine
         {
             gbl.ecl_offset++;
 
-            VmLog.WriteLine("CMD_Dump: Player: {0}", gbl.player_ptr);
+            VmLog.WriteLine("CMD_Dump: Player: {0}", gbl.SelectedPlayer);
 
-            gbl.player_ptr = ovr018.FreeCurrentPlayer(gbl.player_ptr, true, false);
+            gbl.SelectedPlayer = ovr018.FreeCurrentPlayer(gbl.SelectedPlayer, true, false);
 
-            gbl.player_ptr2 = gbl.player_ptr;
+            gbl.LastSelectedPlayer = gbl.SelectedPlayer;
 
-            ovr025.PartySummary(gbl.player_ptr);
+            ovr025.PartySummary(gbl.SelectedPlayer);
         }
 
 
@@ -2056,7 +2055,7 @@ namespace engine
             ovr008.vm_LoadCmdSets(1);
             Affects affect_type = (Affects)ovr008.vm_GetCmdValue(1);
 
-            if (gbl.player_ptr.HasAffect(affect_type) == true)
+            if (gbl.SelectedPlayer.HasAffect(affect_type) == true)
             {
                 gbl.compare_flags[0] = true;
             }
@@ -2217,7 +2216,7 @@ namespace engine
 
                 gbl.area2_ptr.tried_to_exit_map = false;
 
-                gbl.player_ptr2 = gbl.player_ptr;
+                gbl.LastSelectedPlayer = gbl.SelectedPlayer;
 
                 RunEclVm(gbl.ecl_initial_entryPoint);
 
@@ -2243,8 +2242,8 @@ namespace engine
 
                         if (gbl.vmFlag01 == false)
                         {
-                            gbl.player_ptr = gbl.player_ptr2;
-                            ovr025.PartySummary(gbl.player_ptr);
+                            gbl.SelectedPlayer = gbl.LastSelectedPlayer;
+                            ovr025.PartySummary(gbl.SelectedPlayer);
                         }
                     }
 
@@ -2257,7 +2256,7 @@ namespace engine
 
         internal static void sub_29758()
         {
-            gbl.player_ptr2 = gbl.player_ptr;
+            gbl.LastSelectedPlayer = gbl.SelectedPlayer;
 
             gbl.can_draw_bigpic = true;
             gbl.byte_1AB0C = false;
@@ -2280,7 +2279,7 @@ namespace engine
                 {
                     gbl.EclBlockId = 1;
 
-                    ovr025.PartySummary(gbl.player_ptr);
+                    ovr025.PartySummary(gbl.SelectedPlayer);
                 }
             }
             else
@@ -2313,7 +2312,7 @@ namespace engine
                 {
                     ovr018.FreeCurrentPlayer(gbl.TeamList[0], true, true);
                 }
-                gbl.player_ptr = null;
+                gbl.SelectedPlayer = null;
             }
             else
             {
@@ -2344,7 +2343,7 @@ namespace engine
                 {
                     char var_1 = ovr015.main_3d_world_menu();
 
-                    gbl.player_ptr2 = gbl.player_ptr;
+                    gbl.LastSelectedPlayer = gbl.SelectedPlayer;
 
                     if (gbl.vmFlag01 == false)
                     {
@@ -2378,7 +2377,7 @@ namespace engine
                         if (gbl.party_killed == false)
                         {
                             var_1 = ovr015.main_3d_world_menu();
-                            gbl.player_ptr2 = gbl.player_ptr;
+                            gbl.LastSelectedPlayer = gbl.SelectedPlayer;
                         }
                     }
 
@@ -2408,7 +2407,7 @@ namespace engine
                                 seg044.sound_sub_120E0(Sound.sound_a);
                             }
 
-                            gbl.byte_1EE8C = false;
+                            gbl.spriteChanged = false;
                             gbl.byte_1EE8D = true;
                             RunEclVm(gbl.SearchLocationAddr);
                             if (gbl.vmFlag01 == true)

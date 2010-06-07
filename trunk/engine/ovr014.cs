@@ -975,9 +975,9 @@ namespace engine
             if (attacker.field_19C > 0 ||
                 attacker.field_19D > 0)
             {
-                Player player_bkup = gbl.player_ptr;
+                Player player_bkup = gbl.SelectedPlayer;
 
-                gbl.player_ptr = attacker;
+                gbl.SelectedPlayer = attacker;
 
                 sub_3F4EB(item, ref arg_0, arg_8, target, attacker);
 
@@ -1009,7 +1009,7 @@ namespace engine
                 }
 
                 ovr025.reclac_player_values(attacker);
-                gbl.player_ptr = player_bkup;
+                gbl.SelectedPlayer = player_bkup;
             }
 
             if (arg_0 == true)
@@ -1115,14 +1115,14 @@ namespace engine
             {
                 byte var_A = spellId != 0x53 ? (byte)1 : (byte)0;
 
-                aim_menu(arg_0, out var_2, var_A, arg_4, 0, ovr023.SpellRange(spellId), gbl.player_ptr);
-                gbl.player_ptr.actions.target = arg_0.target;
+                aim_menu(arg_0, out var_2, var_A, arg_4, 0, ovr023.SpellRange(spellId), gbl.SelectedPlayer);
+                gbl.SelectedPlayer.actions.target = arg_0.target;
             }
             else if (gbl.spell_table[spellId].field_E == 0)
             {
-                arg_0.target = gbl.player_ptr;
+                arg_0.target = gbl.SelectedPlayer;
 
-                if (spellId != 3 || find_healing_target(out arg_0.target, gbl.player_ptr))
+                if (spellId != 3 || find_healing_target(out arg_0.target, gbl.SelectedPlayer))
                 {
                     arg_0.map = ovr033.PlayerMapPos(arg_0.target);
                     var_2 = true;
@@ -1137,9 +1137,9 @@ namespace engine
                 {
                     bool var_3 = true;
 
-                    if (find_target(true, 0, ovr023.SpellRange(spellId), gbl.player_ptr) == true)
+                    if (find_target(true, 0, ovr023.SpellRange(spellId), gbl.SelectedPlayer) == true)
                     {
-                        Player target = gbl.player_ptr.actions.target;
+                        Player target = gbl.SelectedPlayer.actions.target;
 
                         if (target.IsHeld() == true)
                         {
@@ -1154,7 +1154,7 @@ namespace engine
 
                         if (var_3 == true)
                         {
-                            arg_0.target = gbl.player_ptr.actions.target;
+                            arg_0.target = gbl.SelectedPlayer.actions.target;
                             arg_0.map = ovr033.PlayerMapPos(arg_0.target);
                             var_2 = true;
                         }
@@ -1185,14 +1185,14 @@ namespace engine
             gbl.spellTargets.Clear();
             gbl.byte_1D2C7 = false;
 
-            gbl.targetPos = ovr033.PlayerMapPos(gbl.player_ptr);
+            gbl.targetPos = ovr033.PlayerMapPos(gbl.SelectedPlayer);
 
             byte tmp1 = (byte)(gbl.spell_table[spellId].field_6 & 0x0F);
 
             if (tmp1 == 0)
             {
                 gbl.spellTargets.Clear();
-                gbl.spellTargets.Add(gbl.player_ptr);
+                gbl.spellTargets.Add(gbl.SelectedPlayer);
             }
             else if (tmp1 == 5)
             {
@@ -1294,10 +1294,10 @@ namespace engine
 
                 if (sub_4001C(var_C, 0, quick_fight, spellId) == true)
                 {
-                    if (gbl.player_ptr.actions.target != null)
+                    if (gbl.SelectedPlayer.actions.target != null)
                     {
                         gbl.spellTargets.Clear();
-                        gbl.spellTargets.Add(gbl.player_ptr.actions.target);
+                        gbl.spellTargets.Add(gbl.SelectedPlayer.actions.target);
                     }
                     else
                     {
@@ -1388,7 +1388,7 @@ namespace engine
 
         internal static void spell_menu3(out bool casting_spell, QuickFight quick_fight, byte spell_id)
         {
-            Player player = gbl.player_ptr;
+            Player player = gbl.SelectedPlayer;
             bool var_6 = true;
             int var_5 = -1;
             casting_spell = false;

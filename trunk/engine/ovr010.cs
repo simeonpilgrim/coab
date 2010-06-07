@@ -121,8 +121,8 @@ namespace engine
             if (spell_entry.damageOnSave != DamageOnSave.Zero)
             {
 
-                int save_bonus = (gbl.player_ptr.combat_team == CombatTeam.Ours) ? -2 : 8;
-                var opp = gbl.player_ptr.OppositeTeam();
+                int save_bonus = (gbl.SelectedPlayer.combat_team == CombatTeam.Ours) ? -2 : 8;
+                var opp = gbl.SelectedPlayer.OppositeTeam();
 
                 var sortedCombatants = ovr032.Rebuild_SortedCombatantList(1, gbl.spell_table[spell_id].field_F, pos, p => p.combat_team != opp);
 
@@ -256,7 +256,7 @@ namespace engine
 
 
             if (spells_count > 0 &&
-                (player.control_morale >= Control.NPC_Base || gbl.magicOn == true))
+                (player.control_morale >= Control.NPC_Base || gbl.AutoPCsCastMagic == true))
             {
                 if ((player.OppositeTeam() == CombatTeam.Ours ? gbl.friends_count : gbl.foe_count) > 0)
                 {
@@ -726,9 +726,9 @@ namespace engine
 
                 if (var_6 == '2')
                 {
-                    gbl.magicOn = !gbl.magicOn;
+                    gbl.AutoPCsCastMagic = !gbl.AutoPCsCastMagic;
 
-                    if (gbl.magicOn == true)
+                    if (gbl.AutoPCsCastMagic == true)
                     {
                         ovr025.string_print01("Magic On");
                     }

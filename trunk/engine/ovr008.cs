@@ -88,7 +88,7 @@ namespace engine
 
         internal static void vm_init_ecl() // sub_301E8
         {
-            gbl.byte_1EE8C = false;
+            gbl.spriteChanged = false;
             gbl.redrawPartySummary1 = false;
             gbl.redrawPartySummary2 = false;
             gbl.byte_1EE91 = true;
@@ -257,7 +257,7 @@ namespace engine
                     gbl.byte_1EE95 == false)
                 {
                     gbl.byte_1EE96 = (byte)gbl.area2_ptr.HeadBlockId;
-                    gbl.byte_1EE8C = true;
+                    gbl.spriteChanged = true;
                     if (gbl.area2_ptr.HeadBlockId == 0xff)
                     {
                         ovr030.load_pic_final(ref gbl.byte_1D556, 0, pic_block_id, "PIC");
@@ -346,85 +346,85 @@ namespace engine
 
             if (arg_4 == 0x15)
             {
-                return_val = gbl.player_ptr._int;
+                return_val = gbl.SelectedPlayer._int;
             }
             else if (arg_4 == 0x18)
             {
-                return_val = gbl.player_ptr.con;
+                return_val = gbl.SelectedPlayer.con;
             }
             else if (arg_4 == 0x72)
             {
-                return_val = (ushort)gbl.player_ptr.race;
+                return_val = (ushort)gbl.SelectedPlayer.race;
             }
             else if (arg_4 == 0x73)
             {
-                return_val = (ushort)gbl.player_ptr._class;
+                return_val = (ushort)gbl.SelectedPlayer._class;
             }
             else if (arg_4 == 0x9b)
             {
-                return_val = gbl.player_ptr.saveVerse[1];
+                return_val = gbl.SelectedPlayer.saveVerse[1];
             }
             else if (arg_4 == 0xa0)
             {
-                return_val = gbl.player_ptr.HitDice;
+                return_val = gbl.SelectedPlayer.HitDice;
             }
             else if (arg_4 >= 0xA5 && arg_4 <= 0xAC)
             {
                 int var_3 = arg_4 - 0xA4;
 
-                return_val = gbl.player_ptr.field_EA[var_3 - 1];
+                return_val = gbl.SelectedPlayer.field_EA[var_3 - 1];
             }
             else if (arg_4 == 0xb8)
             {
-                return_val = gbl.player_ptr.control_morale;
+                return_val = gbl.SelectedPlayer.control_morale;
             }
             else if (arg_4 == 0xBB)
             {
-                return_val = (ushort)gbl.player_ptr.Money.GetCoins(Money.Copper);
+                return_val = (ushort)gbl.SelectedPlayer.Money.GetCoins(Money.Copper);
             }
             else if (arg_4 == 0xBD)
             {
-                return_val = (ushort)gbl.player_ptr.Money.GetCoins(Money.Electrum);
+                return_val = (ushort)gbl.SelectedPlayer.Money.GetCoins(Money.Electrum);
             }
             else if (arg_4 == 0xBF)
             {
-                return_val = (ushort)gbl.player_ptr.Money.GetCoins(Money.Silver);
+                return_val = (ushort)gbl.SelectedPlayer.Money.GetCoins(Money.Silver);
             }
             else if (arg_4 == 0xC1)
             {
-                return_val = (ushort)gbl.player_ptr.Money.GetCoins(Money.Gold);
+                return_val = (ushort)gbl.SelectedPlayer.Money.GetCoins(Money.Gold);
             }
             else if (arg_4 == 0xC3)
             {
-                return_val = (ushort)gbl.player_ptr.Money.GetCoins(Money.Platinum);
+                return_val = (ushort)gbl.SelectedPlayer.Money.GetCoins(Money.Platinum);
             }
             else if (arg_4 == 0xC9)
             {
-                return_val = (ushort)gbl.player_ptr.SkillLevel(SkillType.MagicUser);
+                return_val = (ushort)gbl.SelectedPlayer.SkillLevel(SkillType.MagicUser);
             }
             else if (arg_4 == 0xD6)
             {
-                return_val = gbl.player_ptr.sex;
+                return_val = gbl.SelectedPlayer.sex;
             }
             else if (arg_4 == 0xD8)
             {
-                return_val = gbl.player_ptr.alignment;
+                return_val = gbl.SelectedPlayer.alignment;
             }
             else if (arg_4 == 0xE4)
             {
-                return_val = (ushort)(gbl.player_ptr.field_192 & 1);
+                return_val = (ushort)(gbl.SelectedPlayer.field_192 & 1);
             }
             else if (arg_4 == 0xF7)
             {
-                return_val = (ushort)gbl.player_ptr.field_13C;
+                return_val = (ushort)gbl.SelectedPlayer.field_13C;
             }
             else if (arg_4 == 0xF9)
             {
-                return_val = gbl.player_ptr.field_13E;
+                return_val = gbl.SelectedPlayer.field_13E;
             }
             else if (arg_4 == 0x100)
             {
-                if (gbl.player_ptr.in_combat == true)
+                if (gbl.SelectedPlayer.in_combat == true)
                 {
                     return_val = 1;
                 }
@@ -442,12 +442,12 @@ namespace engine
             }
             else if (arg_4 == 0x10C)
             {
-                if (gbl.player_ptr.combat_team == CombatTeam.Ours &&
-                    gbl.player_ptr.quick_fight == QuickFight.True)
+                if (gbl.SelectedPlayer.combat_team == CombatTeam.Ours &&
+                    gbl.SelectedPlayer.quick_fight == QuickFight.True)
                 {
                     return_val = 0x80;
                 }
-                else if (gbl.player_ptr.combat_team == CombatTeam.Enemy)
+                else if (gbl.SelectedPlayer.combat_team == CombatTeam.Enemy)
                 {
                     return_val = 0x81;
                 }
@@ -464,19 +464,19 @@ namespace engine
             }
             else if (arg_4 == 0x11B)
             {
-                return_val = gbl.player_ptr.movement;
+                return_val = gbl.SelectedPlayer.movement;
             }
             else if (arg_4 == 0x2B1)
             {
-                return_val = find_gbl_player_index(gbl.player_ptr);
+                return_val = find_gbl_player_index(gbl.SelectedPlayer);
             }
             else if (arg_4 == 0x2B4)
             {
-                return_val = find_gbl_player_index(gbl.player_ptr);
+                return_val = find_gbl_player_index(gbl.SelectedPlayer);
             }
             else if (arg_4 == 0x2CF)
             {
-                switch (gbl.player_ptr.charisma)
+                switch (gbl.SelectedPlayer.charisma)
                 {
                     case 3:
                         return_val = 0;
@@ -575,7 +575,7 @@ namespace engine
             {
                 int var_1 = switch_var - 0x1f;
 
-                gbl.player_ptr.spell_list[var_1] = (byte)(set_value);
+                gbl.SelectedPlayer.spell_list[var_1] = (byte)(set_value);
             }
             else if (switch_var == 0xb8)
             {
@@ -584,44 +584,44 @@ namespace engine
                     set_value -= 0x32;
                 }
 
-                gbl.player_ptr.control_morale = (byte)(set_value);
+                gbl.SelectedPlayer.control_morale = (byte)(set_value);
             }
             else if (switch_var == 0xbb)
             {
-                gbl.player_ptr.Money.SetCoins(Money.Copper, set_value);
+                gbl.SelectedPlayer.Money.SetCoins(Money.Copper, set_value);
             }
             else if (switch_var == 0xbd)
             {
-                gbl.player_ptr.Money.SetCoins(Money.Electrum, set_value);
+                gbl.SelectedPlayer.Money.SetCoins(Money.Electrum, set_value);
             }
             else if (switch_var == 0xbf)
             {
-                gbl.player_ptr.Money.SetCoins(Money.Silver, set_value);
+                gbl.SelectedPlayer.Money.SetCoins(Money.Silver, set_value);
             }
             else if (switch_var == 0xc1)
             {
-                gbl.player_ptr.Money.SetCoins(Money.Gold, set_value);
+                gbl.SelectedPlayer.Money.SetCoins(Money.Gold, set_value);
             }
             else if (switch_var == 0xc3)
             {
-                gbl.player_ptr.Money.SetCoins(Money.Platinum, set_value);
+                gbl.SelectedPlayer.Money.SetCoins(Money.Platinum, set_value);
             }
             else if (switch_var == 0xf7)
             {
-                gbl.player_ptr.field_13C = (short)(set_value);
+                gbl.SelectedPlayer.field_13C = (short)(set_value);
             }
             else if (switch_var == 0xf9)
             {
-                gbl.player_ptr.field_13E = (byte)(set_value);
+                gbl.SelectedPlayer.field_13E = (byte)(set_value);
             }
             else if (switch_var == 0x100)
             {
                 if (set_value >= 0x80)
                 {
-                    gbl.player_ptr.in_combat = false;
+                    gbl.SelectedPlayer.in_combat = false;
                     if (set_value == 0x87)
                     {
-                        gbl.player_ptr.health_status = Status.stoned;
+                        gbl.SelectedPlayer.health_status = Status.stoned;
                     }
                 }
 
@@ -635,18 +635,18 @@ namespace engine
                 switch (set_value)
                 {
                     case 0:
-                        gbl.player_ptr.combat_team = CombatTeam.Ours;
-                        gbl.player_ptr.quick_fight = QuickFight.False;
+                        gbl.SelectedPlayer.combat_team = CombatTeam.Ours;
+                        gbl.SelectedPlayer.quick_fight = QuickFight.False;
                         break;
 
                     case 0x80:
-                        gbl.player_ptr.combat_team = CombatTeam.Ours;
-                        gbl.player_ptr.quick_fight = QuickFight.True;
+                        gbl.SelectedPlayer.combat_team = CombatTeam.Ours;
+                        gbl.SelectedPlayer.quick_fight = QuickFight.True;
                         break;
 
                     case 0x81:
-                        gbl.player_ptr.combat_team = CombatTeam.Enemy;
-                        gbl.player_ptr.quick_fight = QuickFight.True;
+                        gbl.SelectedPlayer.combat_team = CombatTeam.Enemy;
+                        gbl.SelectedPlayer.quick_fight = QuickFight.True;
                         break;
                 }
             }
@@ -939,7 +939,7 @@ namespace engine
             {
                 if (loc == 0x7C00)
                 {
-                    gbl.player_ptr.name = text;
+                    gbl.SelectedPlayer.name = text;
                 }
                 else
                 {
@@ -1093,7 +1093,7 @@ namespace engine
                 case 1:
                     if (location == 0x7C00)
                     {
-                        sb.Append(gbl.player_ptr.name);
+                        sb.Append(gbl.SelectedPlayer.name);
                     }
                     else
                     {
@@ -1163,9 +1163,9 @@ namespace engine
 			return sbA.ToString();
 		}
 
-        static Set unk_3178A = new Set(0x0606, new byte[] { 0xff, 0x03, 0xfe, 0xff, 0xff, 0x07 });
+		static Set validkeys = new Set(0x0606, new byte[] { 0xff, 0x03, 0xfe, 0xff, 0xff, 0x07 }); // unk_3178A
 
-		internal static int sub_317AA(bool useOverlay, byte arg_2, MenuColorSet colors, string displayString, string extraString)
+		internal static int sub_317AA(bool useOverlay, bool acceptReturn, MenuColorSet colors, string displayString, string extraString)
 		{
 			char key_pressed;
 			int ret_val;
@@ -1180,13 +1180,12 @@ namespace engine
 				if (special_key_pressed == true)
 				{
 					ovr020.scroll_team_list(key_pressed);
-					ovr025.PartySummary(gbl.player_ptr);
+					ovr025.PartySummary(gbl.SelectedPlayer);
 					key_pressed = '\0';
 				}
+			} while (validkeys.MemberOf(key_pressed) == false && (key_pressed != '\r' || acceptReturn == false));
 
-			} while (unk_3178A.MemberOf(key_pressed) == false && (key_pressed != 0x0d || arg_2 == 0));
-
-			if (key_pressed == 0x0d)
+			if (key_pressed == '\r')
 			{
 				ret_val = 0;
 			}
@@ -1198,7 +1197,6 @@ namespace engine
 				{
 					var_154++;
 				}
-
 
 				if (var_154 < menu_keys.Length)
 				{
@@ -1307,7 +1305,7 @@ namespace engine
             gbl.combat_type = CombatType.duel;
 
             gbl.area2_ptr.isDuel = isDuel;
-            Player dueler = gbl.player_ptr;
+            Player dueler = gbl.SelectedPlayer;
 
             foreach (Player player in gbl.TeamList)
             {

@@ -402,8 +402,8 @@ namespace Classes
         public static byte byte_1D901;
         public static byte byte_1D902;
         public static int enemyHealthPercentage; /* byte_1D903 */
-        public static bool magicOn; /* byte_1D904 */
-        public static bool byte_1D90E;
+        public static bool AutoPCsCastMagic; /* byte_1D904 magicOn */
+		public static bool byte_1D90E; // byte_1D90E
         public static bool display_hitpoints_ac; /* byte_1D90F */
         public static bool focusCombatAreaOnPlayer; // byte_1D910
         public static byte sprite_block_id; /* byte_1D92B */
@@ -420,7 +420,7 @@ namespace Classes
         public static bool battleWon; // byte_1EE86
         public static byte EclBlockId;
         public static int search_flag_bkup; // byte_1EE89
-        public static bool byte_1EE8C;
+		public static bool spriteChanged; // byte_1EE8C
         public static bool byte_1EE8D;
         public static bool displayPlayerSprite; /* byte_1EE8F */
         public static bool bottomTextHasBeenCleared; // byte_1EE90
@@ -497,8 +497,8 @@ namespace Classes
 
         public static DaxBlock cursor; // dword_1EFA0
 
-        public static Player player_ptr2;
-        public static Player player_ptr;
+		public static Player LastSelectedPlayer; // player_ptr2
+		public static Player SelectedPlayer; // player_ptr
 
         public static GameState game_state; // 1- shop, 5 - combat
         public static GameState last_game_state; // byte_1B2E4

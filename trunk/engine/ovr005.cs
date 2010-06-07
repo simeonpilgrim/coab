@@ -15,7 +15,7 @@ namespace engine
 
         static bool CastCureAnyway(string text)
         {
-            ovr025.DisplayPlayerStatusString(false, 0, text, gbl.player_ptr);
+            ovr025.DisplayPlayerStatusString(false, 0, text, gbl.SelectedPlayer);
 
 			char ret_val = ovr027.yes_no(gbl.defaultMenuColors, "cast cure anyway: ");
 
@@ -34,9 +34,9 @@ namespace engine
 
 			if ('Y' == ovr027.yes_no(gbl.defaultMenuColors, "pay for cure "))
 			{
-				if (cost <= gbl.player_ptr.Money.GetGoldWorth())
+				if (cost <= gbl.SelectedPlayer.Money.GetGoldWorth())
 				{
-					gbl.player_ptr.Money.SubtractGoldWorth(cost);
+					gbl.SelectedPlayer.Money.SubtractGoldWorth(cost);
 					buy = true;
 				}
 				else if (cost <= gbl.pooled_money.GetGoldWorth())
@@ -54,7 +54,7 @@ namespace engine
 			if (buy)
             {
                 ovr025.ClearPlayerTextArea();
-                ovr025.DisplayPlayerStatusString(true, 0, "is cured.", gbl.player_ptr);
+                ovr025.DisplayPlayerStatusString(true, 0, "is cured.", gbl.SelectedPlayer);
             }
 
 			return buy;
@@ -65,7 +65,7 @@ namespace engine
         {
             bool cast = true;
 
-            if (gbl.player_ptr.HasAffect(Affects.blinded) == false)
+            if (gbl.SelectedPlayer.HasAffect(Affects.blinded) == false)
             {
 				cast = CastCureAnyway("is not blind.");
             }
@@ -74,7 +74,7 @@ namespace engine
             {
                 if (buy_cure(1000, "Cure Blindness"))
                 {
-                    ovr024.remove_affect(null, Affects.blinded, gbl.player_ptr);
+                    ovr024.remove_affect(null, Affects.blinded, gbl.SelectedPlayer);
                 }
             }
         }
@@ -82,7 +82,7 @@ namespace engine
 
         internal static void cure_disease()
         {
-            bool is_diseased = Array.Exists(disease_types, aff => gbl.player_ptr.HasAffect(aff));
+            bool is_diseased = Array.Exists(disease_types, aff => gbl.SelectedPlayer.HasAffect(aff));
 
 			bool cast = true;
             if (is_diseased == false)
@@ -97,7 +97,7 @@ namespace engine
                     gbl.cureSpell = true;
                     for (int i = 0; i < 6; i++)
                     {
-                        ovr024.remove_affect(null, disease_types[i], gbl.player_ptr);
+                        ovr024.remove_affect(null, disease_types[i], gbl.SelectedPlayer);
                     }
 
                     gbl.cureSpell = false;
@@ -114,7 +114,7 @@ namespace engine
                     if (buy_cure(100, "Cure Light Wounds"))
                     {
                         int heal_amount = ovr024.roll_dice(8, 1);
-                        ovr024.heal_player(0, heal_amount, gbl.player_ptr);
+                        ovr024.heal_player(0, heal_amount, gbl.SelectedPlayer);
                     }
                     break;
 
@@ -122,7 +122,7 @@ namespace engine
                     if (buy_cure(350, "Cure Serious Wounds"))
                     {
                         int heal_amount = ovr024.roll_dice(8, 2) + 1;
-                        ovr024.heal_player(0, heal_amount, gbl.player_ptr);
+                        ovr024.heal_player(0, heal_amount, gbl.SelectedPlayer);
                     }
                     break;
 
@@ -130,29 +130,29 @@ namespace engine
                     if (buy_cure(600, "Cure Critical Wounds"))
                     {
                         int heal_amount = ovr024.roll_dice(8, 3) + 3;
-                        ovr024.heal_player(0, heal_amount, gbl.player_ptr);
+                        ovr024.heal_player(0, heal_amount, gbl.SelectedPlayer);
                     }
                     break;
 
                 case 4:
 					if (buy_cure(5000, "Heal"))
                     {
-                        int heal_amount = gbl.player_ptr.hit_point_max;
-                        heal_amount -= gbl.player_ptr.hit_point_current;
+                        int heal_amount = gbl.SelectedPlayer.hit_point_max;
+                        heal_amount -= gbl.SelectedPlayer.hit_point_current;
                         heal_amount -= ovr024.roll_dice(4, 1);
 
-                        ovr024.heal_player(0, heal_amount, gbl.player_ptr);
-                        ovr024.remove_affect(null, Affects.blinded, gbl.player_ptr);
+                        ovr024.heal_player(0, heal_amount, gbl.SelectedPlayer);
+                        ovr024.remove_affect(null, Affects.blinded, gbl.SelectedPlayer);
 
                         for (int i = 0; i < 6; i++)
                         {
-                            ovr024.remove_affect(null, disease_types[i], gbl.player_ptr);
+                            ovr024.remove_affect(null, disease_types[i], gbl.SelectedPlayer);
                         }
 
-                        ovr024.remove_affect(null, Affects.feeblemind, gbl.player_ptr);
+                        ovr024.remove_affect(null, Affects.feeblemind, gbl.SelectedPlayer);
 
-                        ovr024.CalcStatBonuses(Stat.INT, gbl.player_ptr);
-                        ovr024.CalcStatBonuses(Stat.WIS, gbl.player_ptr);
+                        ovr024.CalcStatBonuses(Stat.INT, gbl.SelectedPlayer);
+                        ovr024.CalcStatBonuses(Stat.WIS, gbl.SelectedPlayer);
                     }
                     break;
             }
@@ -161,7 +161,7 @@ namespace engine
 
 		internal static void raise_dead()
 		{
-			Player player = gbl.player_ptr;
+			Player player = gbl.SelectedPlayer;
 			bool player_dead = false;
 
 			if (player.health_status == Status.dead ||
@@ -243,7 +243,7 @@ namespace engine
 
         internal static void cure_poison2()
         {
-            bool isPoisoned = gbl.player_ptr.HasAffect(Affects.poisoned);
+            bool isPoisoned = gbl.SelectedPlayer.HasAffect(Affects.poisoned);
 
 			if (isPoisoned == true ||
 				(isPoisoned == false && CastCureAnyway("is not poisoned.")))
@@ -252,9 +252,9 @@ namespace engine
                 {
                     gbl.cureSpell = true;
 
-                    ovr024.remove_affect(null, Affects.poisoned, gbl.player_ptr);
-                    ovr024.remove_affect(null, Affects.slow_poison, gbl.player_ptr);
-                    ovr024.remove_affect(null, Affects.poison_damage, gbl.player_ptr);
+                    ovr024.remove_affect(null, Affects.poisoned, gbl.SelectedPlayer);
+                    ovr024.remove_affect(null, Affects.slow_poison, gbl.SelectedPlayer);
+                    ovr024.remove_affect(null, Affects.poison_damage, gbl.SelectedPlayer);
 
                     gbl.cureSpell = false;
                 }
@@ -264,11 +264,11 @@ namespace engine
 
 		internal static void remove_curse()
 		{
-			bool has_curse_items = gbl.player_ptr.items.Find(item => item.cursed) != null;
+			bool has_curse_items = gbl.SelectedPlayer.items.Find(item => item.cursed) != null;
 			bool cast = true;
 
 			if (has_curse_items == false &&
-				gbl.player_ptr.HasAffect(Affects.bestow_curse) == false)
+				gbl.SelectedPlayer.HasAffect(Affects.bestow_curse) == false)
 			{
 				cast = CastCureAnyway("is not cursed.");
 			}
@@ -276,7 +276,7 @@ namespace engine
 			if (cast && buy_cure(3500, "Remove Curse"))
 			{
 				gbl.spellTargets.Clear();
-				gbl.spellTargets.Add(gbl.player_ptr);
+				gbl.spellTargets.Add(gbl.SelectedPlayer);
 				ovr023.SpellRemoveCurse();
 			}
 		}
@@ -284,15 +284,15 @@ namespace engine
 
         internal static void stone_to_flesh()
         {
-			if (gbl.player_ptr.health_status == Status.stoned ||
-				(gbl.player_ptr.health_status != Status.stoned && CastCureAnyway("is not stoned.")))
+			if (gbl.SelectedPlayer.health_status == Status.stoned ||
+				(gbl.SelectedPlayer.health_status != Status.stoned && CastCureAnyway("is not stoned.")))
             {
                 if (buy_cure(2000, "Stone to Flesh") &&
-                    gbl.player_ptr.health_status == Status.stoned)
+                    gbl.SelectedPlayer.health_status == Status.stoned)
                 {
-                    gbl.player_ptr.health_status = Status.okey;
-                    gbl.player_ptr.in_combat = true;
-                    gbl.player_ptr.hit_point_current = 1;
+                    gbl.SelectedPlayer.health_status = Status.okey;
+                    gbl.SelectedPlayer.in_combat = true;
+                    gbl.SelectedPlayer.hit_point_current = 1;
                 }
             }
         }
@@ -317,7 +317,7 @@ namespace engine
 
             do
             {
-                string text = gbl.player_ptr.name + ", how can we help you?";
+                string text = gbl.SelectedPlayer.name + ", how can we help you?";
                 seg041.displayString(text, 0, 15, 1, 1);
                 MenuItem dummySelected;
 
@@ -383,7 +383,7 @@ namespace engine
             stringList.Clear();
 
             ovr025.load_pic();
-            ovr025.PartySummary(gbl.player_ptr);
+            ovr025.PartySummary(gbl.SelectedPlayer);
         }
 
 
@@ -396,7 +396,7 @@ namespace engine
 
             ovr025.load_pic();
             gbl.redrawBoarder = true;
-            ovr025.PartySummary(gbl.player_ptr);
+            ovr025.PartySummary(gbl.SelectedPlayer);
 
             gbl.pooled_money.ClearAll();
 
@@ -462,7 +462,7 @@ namespace engine
 
                             seg041.press_any_key("As you leave a priest says, \"Excuse me but you have left some money here\" ", true, 0, 10, TextRegion.NormalBottom);
                             seg041.press_any_key("Do you want to go back and retrieve your money?", true, 0, 10,  TextRegion.NormalBottom);
-							int menu_selected = ovr008.sub_317AA(false, 0, gbl.defaultMenuColors, prompt, string.Empty);
+							int menu_selected = ovr008.sub_317AA(false, false, gbl.defaultMenuColors, prompt, "");
 
                             if (menu_selected == 1)
                             {
@@ -500,7 +500,7 @@ namespace engine
                     reloadPics = false;
                 }
 
-                ovr025.PartySummary(gbl.player_ptr);
+                ovr025.PartySummary(gbl.SelectedPlayer);
             } while (stop_loop == false);
         }
     }

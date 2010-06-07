@@ -85,7 +85,7 @@ namespace engine
         internal static bool PlayerAddItem( Item item ) /*was overloaded */
         {
             bool wouldOverload;
-            if (ovr020.canCarry(item, gbl.player_ptr) == true)
+            if (ovr020.canCarry(item, gbl.SelectedPlayer) == true)
             {
                 ovr025.string_print01("Overloaded");
                 wouldOverload = true;
@@ -94,9 +94,9 @@ namespace engine
             {
                 wouldOverload = false;
 
-                gbl.player_ptr.items.Add(item.ShallowClone());
+                gbl.SelectedPlayer.items.Add(item.ShallowClone());
 
-                ovr025.reclac_player_values(gbl.player_ptr);
+                ovr025.reclac_player_values(gbl.SelectedPlayer);
             }
 
             return wouldOverload;
@@ -121,16 +121,16 @@ namespace engine
 				else
 				{
 					int item_cost = ItemsValue(item);
-					int player_gold = gbl.player_ptr.Money.GetGoldWorth();
+					int player_gold = gbl.SelectedPlayer.Money.GetGoldWorth();
 
-					if (item_cost <= gbl.player_ptr.Money.GetGoldWorth())
+					if (item_cost <= gbl.SelectedPlayer.Money.GetGoldWorth())
 					{
 						bool overloaded = PlayerAddItem(item);
 
 						if (overloaded == false)
 						{
 							player_gold -= item_cost;
-							gbl.player_ptr.Money.SubtractGoldWorth(item_cost);
+							gbl.SelectedPlayer.Money.SubtractGoldWorth(item_cost);
 						}
 					}
 					else if (item_cost <= gbl.pooled_money.GetGoldWorth())
@@ -163,7 +163,7 @@ namespace engine
 
             ovr025.load_pic();
             gbl.redrawBoarder = true;
-            ovr025.PartySummary( gbl.player_ptr );
+            ovr025.PartySummary( gbl.SelectedPlayer );
 
 			gbl.pooled_money.ClearAll();
 
@@ -228,7 +228,7 @@ namespace engine
                             seg041.press_any_key("As you Leave the Shopkeeper says, \"Excuse me but you have Left Some Money here.\"  ", true, 0, 10, TextRegion.NormalBottom);
                             seg041.press_any_key("Do you want to go back and get your Money?", false, 0, 15, TextRegion.NormalBottom);
 
-							int menu_selected = ovr008.sub_317AA(false, 0, gbl.defaultMenuColors, "~Yes ~No", string.Empty);
+							int menu_selected = ovr008.sub_317AA(false, false, gbl.defaultMenuColors, "~Yes ~No", "");
                 
                             if( menu_selected == 1 )
                             {
@@ -265,7 +265,7 @@ namespace engine
                     reloadPics = false;
                 }
 
-                ovr025.PartySummary( gbl.player_ptr );
+                ovr025.PartySummary( gbl.SelectedPlayer );
 
             }while( exitShop == false );
         }

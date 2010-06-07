@@ -9,7 +9,7 @@ namespace engine
         {
             if (gbl.combat_type == CombatType.duel)
             {
-                return gbl.player_ptr.HitDice * 100;
+                return gbl.SelectedPlayer.HitDice * 100;
             }
             else
             {
@@ -317,7 +317,7 @@ namespace engine
 
                     foreach (Player player in to_remove)
                     {
-                        gbl.player_ptr = ovr018.FreeCurrentPlayer(player, true, false);
+                        gbl.SelectedPlayer = ovr018.FreeCurrentPlayer(player, true, false);
                     }
                 }
                 else
@@ -338,7 +338,7 @@ namespace engine
 
                     foreach (Player player in to_remove)
                     {
-                        gbl.player_ptr = ovr018.FreeCurrentPlayer(player, true, false);
+                        gbl.SelectedPlayer = ovr018.FreeCurrentPlayer(player, true, false);
                     }
 
                     gbl.area2_ptr.party_size = 0;
@@ -535,7 +535,7 @@ namespace engine
                                 break;
                         }
 
-                        ovr025.PartySummary(gbl.player_ptr);
+                        ovr025.PartySummary(gbl.SelectedPlayer);
                         ovr022.treasureOnGround(out items_present, out money_present);
 
                         if (money_present == false ||
@@ -580,14 +580,14 @@ namespace engine
                 {
                     while (index < gbl.max_spells && can_detect_magic == false)
                     {
-                        if (gbl.player_ptr.spell_list[index] == 5 ||
-                            gbl.player_ptr.spell_list[index] == 11 ||
-                            gbl.player_ptr.spell_list[index] == 0x4D)
+                        if (gbl.SelectedPlayer.spell_list[index] == 5 ||
+                            gbl.SelectedPlayer.spell_list[index] == 11 ||
+                            gbl.SelectedPlayer.spell_list[index] == 0x4D)
                         {
-                            if (gbl.player_ptr.in_combat == true)
+                            if (gbl.SelectedPlayer.in_combat == true)
                             {
                                 can_detect_magic = true;
-                                var_10B = gbl.player_ptr.spell_list[index];
+                                var_10B = gbl.SelectedPlayer.spell_list[index];
                             }
                         }
 
@@ -645,7 +645,7 @@ namespace engine
                         {
                             seg041.press_any_key("There is still treasure left.  ", true, 0, 10, TextRegion.NormalBottom);
                             seg041.press_any_key("Do you want to go back and claim your treasure?", false, 0, 15, TextRegion.NormalBottom);
-							int menu_selected = ovr008.sub_317AA(false, 0, gbl.defaultMenuColors, "~Yes ~No", "");
+							int menu_selected = ovr008.sub_317AA(false, false, gbl.defaultMenuColors, "~Yes ~No", "");
 
                             if (menu_selected == 1)
                             {
@@ -664,12 +664,12 @@ namespace engine
 
                     case 'G':
                         ovr020.scroll_team_list(input_key);
-                        ovr025.PartySummary(gbl.player_ptr);
+                        ovr025.PartySummary(gbl.SelectedPlayer);
                         break;
 
                     case 'O':
                         ovr020.scroll_team_list(input_key);
-                        ovr025.PartySummary(gbl.player_ptr);
+                        ovr025.PartySummary(gbl.SelectedPlayer);
                         break;
                 }
             } while (done == false);
@@ -709,7 +709,7 @@ namespace engine
                 ovr018.FreeCurrentPlayer(kvp.Key, true, kvp.Value);
             }
             
-            gbl.player_ptr = gbl.TeamList.Count > 0 ? gbl.TeamList[0] : null;
+            gbl.SelectedPlayer = gbl.TeamList.Count > 0 ? gbl.TeamList[0] : null;
         }
 
 
