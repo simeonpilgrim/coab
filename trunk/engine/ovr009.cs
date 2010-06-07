@@ -325,15 +325,7 @@ namespace engine
                 menuText += "Use ";
             }
 
-            bool hasSpells = false;
-
-            for (int spellIdx = 0; spellIdx < gbl.max_spells; spellIdx++)
-            {
-                if (player.spell_list[spellIdx] > 0)
-                {
-                    hasSpells = true;
-                }
-            }
+			bool hasSpells = player.spellList.HasSpells();
 
             if (hasSpells == true &&
                 player.actions.can_cast == true &&

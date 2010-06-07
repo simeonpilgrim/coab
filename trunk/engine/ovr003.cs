@@ -1809,43 +1809,28 @@ namespace engine
 
             foreach (Player player in gbl.TeamList)
             {
-                if (spell_found) break;
                 spell_index = 1;
-                bool not_found = false;
 
-                do
-                {
-                    if (player.spell_list[spell_index] == spell_id)
-                    {
-                        spell_found = true;
-                    }
-                    else
-                    {
-                        if (spell_index <= 100)
-                        {
-                            spell_index++;
-                        }
-                        else
-                        {
-                            not_found = true;
-                        }
-                    }
-                } while (not_found == false && spell_found == false);
+				foreach (int id in player.spellList.IdList())
+				{
+					if (id == spell_id)
+					{
+						spell_found = true;
+						break;
+					}
 
-                if (spell_found == false)
-                {
-                    player_index++;
-                }
+					spell_index += 1;
+				}
+
+                if (spell_found) break;
+
+                player_index++;
             }
 
             if (spell_found == false)
             {
-                player_index--;
-            }
-
-            if (spell_index > 100)
-            {
-                spell_index = 0x0FF;
+                player_index --;
+				spell_index = 0x0FF;
             }
 
             VmLog.WriteLine("CMD_Spell: spell_id: {0} loc a: {1} val a: {2} loc b: {3} val b: {4}",

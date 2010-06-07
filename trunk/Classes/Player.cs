@@ -109,6 +109,138 @@ namespace Classes
         public const byte PC_Berzerk = 0xB3;
     }
 
+	public class SpellItem
+	{
+		public int Id;
+		public bool Learning;
+
+		public SpellItem(int id) { Id = id; Learning = false; }
+		public SpellItem(int id, bool learning) { Id = id; Learning = learning; }
+	}
+
+
+	public class SpellList
+	{
+		public const int SpellListSize = 84;
+
+		List<SpellItem> spells = new List<SpellItem>();
+
+		public void Clear()
+		{
+			spells.Clear();
+		}
+
+		public void ClearSpell(int spellId)
+		{
+			SpellItem found = null;
+
+			foreach (var sp in spells)
+			{
+				if (sp.Id == spellId)
+				{
+					found = sp;
+					break;
+				}
+			}
+
+			spells.Remove(found);
+		}
+
+		public IEnumerable<int> IdList()
+		{
+			foreach (var sp in spells)
+			{
+				yield return sp.Id;
+			}
+		}
+
+		public IEnumerable<int> LearntList()
+		{
+			foreach (var sp in spells)
+			{
+				if (sp.Learning == false)
+				{
+					yield return sp.Id;
+				}
+			}
+		}
+
+		public IEnumerable<int> LearningList()
+		{
+			foreach (var sp in spells)
+			{
+				if (sp.Learning)
+				{
+					yield return sp.Id;
+				}
+			}
+		}
+
+		public void AddLearn(int id)
+		{
+			spells.Add(new SpellItem(id, true));
+		}
+
+		public void AddLearnt(int id)
+		{
+			spells.Add(new SpellItem(id, id > 0x7f));
+		}
+
+		public void MarkLearnt(int id)
+		{
+			var spell = spells.Find(sp => sp.Id == id && sp.Learning == true);
+
+			if (spell != null)
+			{
+				spell.Learning = false;
+			}
+		}
+
+		public bool HasSpells()
+		{
+			return spells.Count > 0;
+		}
+
+		public bool HasSpell(int id)
+		{
+			return spells.Exists(sp => sp.Id == id);
+		}
+
+		public void CancelLearning()
+		{
+			spells.RemoveAll(sp => sp.Learning == true);
+		}
+
+		public void Load(byte[] data, int offset)
+		{
+			for (int i = 0; i < SpellListSize; i++)
+			{
+				if (data[offset + i] > 0)
+				{
+					spells.Add(new SpellItem(data[offset + i]));
+				}
+			}
+		}
+
+		public void Save(byte[] data, int offset)
+		{
+			for (int i = 0; i < SpellListSize; i++)
+			{
+				data[offset + i] = 0;
+			}
+
+			int idx = SpellListSize - 1;
+			foreach (var sp in spells)
+			{
+				if (sp.Learning == false)
+				{
+					data[offset + idx] = (byte)sp.Id;
+					idx -= 1;
+				}
+			}
+		}
+	}
+
     /// <summary>
     /// Summary description for Player.
     /// </summary>
@@ -189,9 +321,11 @@ namespace Classes
         [DataOffset(0x1D, DataType.Byte)]
         public byte max_str_00; // 0x1d - field_1D
 
-        public const int SpellListSize = 84;
-        [DataOffset(0x1E, DataType.ByteArray, SpellListSize)]
-        public byte[] spell_list = new byte[SpellListSize]; // 0x1e byte[84]
+        //public const int SpellListSize = 84;
+        //[DataOffset(0x1E, DataType.ByteArray, SpellListSize)]
+        //public byte[] spell_list = new byte[SpellListSize]; // 0x1e byte[84]
+		public SpellList spellList; // ox1e was spell_list
+
         [DataOffset(0x72, DataType.Byte)]
         public byte spell_to_learn_count; // 0x72;
         [DataOffset(0x73, DataType.SByte)]
@@ -342,54 +476,6 @@ namespace Classes
         public int SkillLevel(SkillType skill)
         {
             return ClassLevel[(int)skill] + (ClassLevelsOld[(int)skill] * DualClassExceedsPreviousLevel());
-        }
-
-        public bool CanDuelClass()
-        {
-            if (race != Race.human)
-            {
-                return false;
-            }
-
-            for (ClassId index = ClassId.cleric; index <= ClassId.monk; index++)
-            {
-                if (ClassLevelsOld[(int)index] > 0)
-                {
-                    return false;
-                }
-            }
-
-            return true;
-        }
-
-        int DualClassExceedsPreviousLevel() // sub_6B3D1
-        {
-            if (DuelClassCurrentLevel() > multiclassLevel)
-            {
-                return 1;
-            }
-            else
-            {
-                return 0;
-            }
-        }
-
-        int DuelClassCurrentLevel()
-        {
-            if (race != Race.human)
-            {
-                return 0;
-            }
-
-            int loop_var = 0;
-
-            while (loop_var < 7 &&
-                ClassLevel[loop_var] == 0)
-            {
-                loop_var++;
-            }
-
-            return ClassLevel[loop_var];
         }
 
         [DataOffset(0x119, DataType.Byte)]
@@ -683,6 +769,8 @@ namespace Classes
 
             DataIO.ReadObject(this, data, offset);
 
+			spellList.Load(data, offset + 0x1e);
+
             for (int i = 0; i < 3; i++)
             {
                 for (int j = 0; j < 5; j++)
@@ -703,6 +791,7 @@ namespace Classes
 
             actions = null;
 			Money = new MoneySet();
+			spellList = new SpellList();
         }
 
 
@@ -718,6 +807,8 @@ namespace Classes
             byte[] data = new byte[StructSize];
 
             DataIO.WriteObject(this, data);
+
+			spellList.Save(data, 0x1e);
 
             for (int i = 0; i < 3; i++)
             {
@@ -735,6 +826,54 @@ namespace Classes
             return name;
         }
 
+
+		public bool CanDuelClass()
+		{
+			if (race != Race.human)
+			{
+				return false;
+			}
+
+			for (ClassId index = ClassId.cleric; index <= ClassId.monk; index++)
+			{
+				if (ClassLevelsOld[(int)index] > 0)
+				{
+					return false;
+				}
+			}
+
+			return true;
+		}
+
+		int DualClassExceedsPreviousLevel() // sub_6B3D1
+		{
+			if (DuelClassCurrentLevel() > multiclassLevel)
+			{
+				return 1;
+			}
+			else
+			{
+				return 0;
+			}
+		}
+
+		int DuelClassCurrentLevel()
+		{
+			if (race != Race.human)
+			{
+				return 0;
+			}
+
+			int loop_var = 0;
+
+			while (loop_var < 7 &&
+				ClassLevel[loop_var] == 0)
+			{
+				loop_var++;
+			}
+
+			return ClassLevel[loop_var];
+		}
 
         public CombatTeam OppositeTeam()
         {
@@ -758,17 +897,6 @@ namespace Classes
             return Array.Exists(held_affects, affect => HasAffect(affect));
         }
 
-        public void ClearSpell(int spellId)
-        {
-            for (int i = 0; i < gbl.max_spells; i++)
-            {
-                if (spell_list[i] == spellId)
-                {
-                    spell_list[i] = 0;
-                    return;
-                }
-            }
-        }
 
 		public void RemoveWeight(int amount)
 		{

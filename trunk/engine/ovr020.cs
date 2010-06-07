@@ -250,16 +250,8 @@ namespace engine
             while (unk_54B03.MemberOf(input_key) == false && arg_0 == false)
             {
                 string text = string.Empty;
-                bool hasSpells = false;
+				bool hasSpells = gbl.SelectedPlayer.spellList.HasSpells();
                 bool hasMoney = gbl.SelectedPlayer.Money.AnyMoney();
-
-                for (int i = 0; i < gbl.max_spells; i++)
-                {
-                    if (gbl.SelectedPlayer.spell_list[i] > 0)
-                    {
-                        hasSpells = true;
-                    }
-                }
 
                 if (gbl.SelectedPlayer.items.Count > 0)
                 {
@@ -687,23 +679,22 @@ namespace engine
                             player.spellCastCount[2,4] += MU_spell_lvl_learn[sp_lvl, 4];
                         }
 
-                        byte[] var_11 = new byte[5];
-                        seg051.FillChar(0, 5, var_11);
+                        byte[] spCounts = new byte[5];
+						seg051.FillChar(0, 5, spCounts);
 
-                        for (int i = 0; i < gbl.max_spells; i++)
-                        {
-                            if (player.spell_list[i] != 0 &&
-                                gbl.spell_table[player.spell_list[i]].spellClass == SpellClass.MagicUser)
-                            {
-                                int var_C = gbl.spell_table[player.spell_list[i]].spellLevel;
-                                var_11[var_C - 1] += 1;
+						foreach (int id in player.spellList.IdList())
+						{
+							if (gbl.spell_table[id].spellClass == SpellClass.MagicUser)
+							{
+								int spLvl = gbl.spell_table[id].spellLevel - 1;
+								spCounts[spLvl] += 1;
 
-                                if (var_11[var_C - 1] > player.spellCastCount[2, var_C - 1])
-                                {
-                                    player.spell_list[i] = 0;
-                                }
-                            }
-                        }
+								if (spCounts[spLvl] > player.spellCastCount[2, spLvl])
+								{
+									player.spellList.ClearSpell(id);
+								}
+							}
+						}
                     }
                     break;
 

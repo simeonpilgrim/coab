@@ -405,26 +405,23 @@ namespace engine
             switch (spl_location)
             {
                 case SpellLoc.memory:
-                    for (int idx = 0; idx < gbl.max_spells; idx++)
-                    {
-                        if (gbl.SelectedPlayer.spell_list[idx] > 0 &&
-                            can_learn_spell(gbl.SelectedPlayer.spell_list[idx], gbl.SelectedPlayer) == true &&
-                            gbl.SelectedPlayer.spell_list[idx] < 0x80)
-                        {
-                            add_spell_to_learning_list(gbl.SelectedPlayer.spell_list[idx]);
-                        }
-                    }
+					foreach (int id in gbl.SelectedPlayer.spellList.LearntList())
+					{
+						if (can_learn_spell(id, gbl.SelectedPlayer))
+						{
+							add_spell_to_learning_list(id);
+						}
+					}
                     break;
 
                 case SpellLoc.memorize:
-                    for (int idx = 0; idx < gbl.max_spells; idx++)
-                    {
-                        if (gbl.SelectedPlayer.spell_list[idx] > 0x7F &&
-                            can_learn_spell(gbl.SelectedPlayer.spell_list[idx], gbl.SelectedPlayer) == true)
-                        {
-                            add_spell_to_learning_list(gbl.SelectedPlayer.spell_list[idx]);
-                        }
-                    }
+					foreach (int id in gbl.SelectedPlayer.spellList.LearningList())
+					{
+						if (can_learn_spell(id, gbl.SelectedPlayer))
+						{
+							add_spell_to_learning_list(id);
+						}
+					}
                     break;
 
                 case SpellLoc.grimoire:
@@ -693,7 +690,7 @@ namespace engine
 
 					if (ovr027.yes_no(gbl.defaultMenuColors, "Lose it? ") == 'Y')
                     {
-                        caster.ClearSpell(spell_id);
+                        caster.spellList.ClearSpell(spell_id);
                     }
                 }
                 else
@@ -772,7 +769,7 @@ namespace engine
 
                     if (gbl.spell_from_item == false)
                     {
-                        caster.ClearSpell(spell_id);
+						caster.spellList.ClearSpell(spell_id);
                     }
 
                     gbl.spell_id = spell_id;
@@ -795,7 +792,7 @@ namespace engine
                         ovr025.string_print01("Spell Aborted");
                         if (gbl.spell_from_item == false)
                         {
-                            caster.ClearSpell(spell_id);
+							caster.spellList.ClearSpell(spell_id);
                         }
 
                         var_1 = false;
@@ -1551,10 +1548,7 @@ namespace engine
                         player.attackLevel = 0;
                         player.base_movement = 6;
 
-                        for (int var_1 = 0; var_1 < gbl.max_spells; var_1++)
-                        {
-                            player.spell_list[var_1] = 0;
-                        }
+						player.spellList.Clear();
 
                         if (player.control_morale >= Control.NPC_Base)
                         {

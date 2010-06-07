@@ -141,13 +141,10 @@ namespace engine
             Logger.Debug("   Damage: {0}d{1}{2}{3}", p.attack1_DiceCount, p.attack1_DiceSize,
                 p.attack1_DamageBonus > 0 ? "+" : "", p.attack1_DamageBonus != 0 ? p.attack1_DamageBonus.ToString() : "");
 
-            foreach (int sp in p.spell_list)
-            {
-                if (sp != 0)
-                {
-                    Logger.Debug("   Spell: {0}", ovr023.SpellNames[sp]);
-                }
-            }
+			foreach (int sp in p.spellList.IdList())
+			{
+				Logger.Debug("   Spell: {0}", ovr023.SpellNames[sp]);
+			}
 
             foreach (var af in p.affects)
             {
@@ -191,30 +188,27 @@ namespace engine
             int count = 0;
             System.Text.StringBuilder sb = new System.Text.StringBuilder();
 
-            foreach (int sp in p.spell_list)
-            {
-                if (sp != 0)
-                {
-                    if (sp != last)
-                    {
-                        if (last != 0)
-                        {
-                            sb.Append(ovr023.SpellNames[last]);
-                            if (count > 1)
-                            {
-                                sb.Append(string.Format(" ({0})", count));
-                            }
-                            sb.Append(", ");
-                        }
-                        last = sp;
-                        count = 1;
-                    }
-                    else
-                    {
-                        count += 1;
-                    }
-                }
-            }
+			foreach (int sp in p.spellList.IdList())
+			{
+				if (sp != last)
+				{
+					if (last != 0)
+					{
+						sb.Append(ovr023.SpellNames[last]);
+						if (count > 1)
+						{
+							sb.Append(string.Format(" ({0})", count));
+						}
+						sb.Append(", ");
+					}
+					last = sp;
+					count = 1;
+				}
+				else
+				{
+					count += 1;
+				}
+			}
 
             if (last != 0)
             {

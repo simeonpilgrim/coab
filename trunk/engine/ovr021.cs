@@ -392,32 +392,24 @@ namespace engine
 
         static int rest_memorize(ref bool findNext, Player player)
         {
-            int next_spell_level = 0;
-            int spell_index = 0;
+			foreach(int id in player.spellList.LearningList())
+			{
+				if (findNext == true)
+				{
+					return gbl.spell_table[id].spellLevel;
+				}
+				else
+				{
+					player.spellList.MarkLearnt(id);
 
-            while (spell_index <= 83 && next_spell_level == 0)
-            {
-                if (player.spell_list[spell_index] > 0x7F)
-                {
-                    if (findNext == true)
-                    {
-                        next_spell_level = gbl.spell_table[player.spell_list[spell_index] & 0x7F].spellLevel;
-                    }
-                    else
-                    {
-                        player.spell_list[spell_index] -= 128;
+					display_resting_time(0);
 
-                        display_resting_time(0);
+					ovr023.cast_spell_text(id, "has memorized", player);
+					findNext = true;
+				}
+			}
 
-                        ovr023.cast_spell_text(player.spell_list[spell_index], "has memorized", player);
-                        findNext = true;
-                    }
-                }
-
-                spell_index++;
-            }
-
-            return next_spell_level;
+			return 0;
         }
 
 
