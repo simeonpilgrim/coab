@@ -5,7 +5,7 @@
 = 1.1.2 =
   * Issue 53, Casting Cloud Kill in combat crashed the game
   * Issue 49, Fixed crash related to loading monsters spell's (random pre-combat crash)
-  * Issue 48, Temple purchases set you money to the cost, not substracting the cost from money
+  * Issue 48, Temple purchases set you money to the cost, not subtracting the cost from money
   * Issue 37, Magically killed foes, are not truly dead
 
 = 1.1.1 =
