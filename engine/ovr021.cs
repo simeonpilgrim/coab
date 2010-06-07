@@ -380,7 +380,7 @@ namespace engine
 
                 if (update_ui)
                 {
-                    ovr025.PartySummary(gbl.player_ptr);
+                    ovr025.PartySummary(gbl.SelectedPlayer);
                 }
 
                 seg041.GameDelay();

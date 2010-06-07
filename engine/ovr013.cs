@@ -94,7 +94,7 @@ namespace engine
 
         internal static void DispelEvil(Effect arg_0, object param, Player player)
         {
-            if ((gbl.player_ptr.field_14B & 1) != 0)
+            if ((gbl.SelectedPlayer.field_14B & 1) != 0)
             {
                 gbl.attack_roll -= 7;
             }
@@ -157,9 +157,9 @@ namespace engine
 
         internal static void affect_protect_evil(Effect arg_0, object param, Player player) /* sub_3A224 */
         {
-            if (gbl.player_ptr.alignment == 2 ||
-                gbl.player_ptr.alignment == 5 ||
-                gbl.player_ptr.alignment == 8)
+            if (gbl.SelectedPlayer.alignment == 2 ||
+                gbl.SelectedPlayer.alignment == 5 ||
+                gbl.SelectedPlayer.alignment == 8)
             {
                 gbl.savingThrowRoll += 2;
                 gbl.attack_roll -= 2;
@@ -169,9 +169,9 @@ namespace engine
 
         internal static void affect_protect_good(Effect arg_0, object param, Player player) /* sub_3A259 */
         {
-            if (gbl.player_ptr.alignment == 0 ||
-                gbl.player_ptr.alignment == 3 ||
-                gbl.player_ptr.alignment == 6)
+            if (gbl.SelectedPlayer.alignment == 0 ||
+                gbl.SelectedPlayer.alignment == 3 ||
+                gbl.SelectedPlayer.alignment == 6)
             {
                 gbl.savingThrowRoll += 2;
                 gbl.attack_roll -= 2;
@@ -252,7 +252,7 @@ namespace engine
 
                 if (gbl.game_state != GameState.Combat)
                 {
-                    ovr025.PartySummary(gbl.player_ptr);
+                    ovr025.PartySummary(gbl.SelectedPlayer);
                 }
             }
         }
@@ -353,7 +353,7 @@ namespace engine
         internal static void sub_3A6C6(Effect arg_0, object param, Player player)
         {
             if (player.name.Length == 0 &&
-                gbl.player_ptr.HasAffect(Affects.detect_invisibility) == false)
+                gbl.SelectedPlayer.HasAffect(Affects.detect_invisibility) == false)
             {
                 gbl.targetInvisible = true;
                 gbl.attack_roll -= 4;
@@ -423,7 +423,7 @@ namespace engine
 
             player.ac = player.ac_behind;
 
-            if (player == gbl.player_ptr)
+            if (player == gbl.SelectedPlayer)
             {
                 ovr025.CombatDisplayPlayerSummary(player);
             }
@@ -600,8 +600,8 @@ namespace engine
 
         static void AvoidMissleAttack(int percentage, Player player) // sub_3AF06
         {
-            if (gbl.player_ptr.field_151 != null &&
-                ovr025.getTargetRange(player, gbl.player_ptr) == 0 &&
+            if (gbl.SelectedPlayer.field_151 != null &&
+                ovr025.getTargetRange(player, gbl.SelectedPlayer) == 0 &&
                 ovr024.roll_dice(100, 1) <= percentage)
             {
                 ovr025.DisplayPlayerStatusString(true, 10, "Avoids it", player);
@@ -632,7 +632,7 @@ namespace engine
 
         internal static void AffectProtNormalMissles(Effect arg_0, object param, Player player) // sub_3AFE0
         {
-            Item item = get_primary_weapon(gbl.player_ptr);
+            Item item = get_primary_weapon(gbl.SelectedPlayer);
 
             if (item != null && item.plus == 0)
             {
@@ -680,7 +680,7 @@ namespace engine
 
                     if (gbl.game_state != GameState.Combat)
                     {
-                        ovr025.PartySummary(gbl.player_ptr);
+                        ovr025.PartySummary(gbl.SelectedPlayer);
                     }
                 }
                 else if (player.HasAffect(Affects.helpless) == false)
@@ -695,10 +695,10 @@ namespace engine
         {
             gbl.spell_target = player.actions.target;
 
-            if (gbl.player_ptr.monsterType == MonsterType.giant ||
-                gbl.player_ptr.monsterType == MonsterType.type_10)
+            if (gbl.SelectedPlayer.monsterType == MonsterType.giant ||
+                gbl.SelectedPlayer.monsterType == MonsterType.type_10)
             {
-                if ((gbl.player_ptr.field_DE & 0x7F) == 2)
+                if ((gbl.SelectedPlayer.field_DE & 0x7F) == 2)
                 {
                     gbl.attack_roll -= 4;
                 }
@@ -708,8 +708,8 @@ namespace engine
 
         internal static void sub_3B1A2(Effect arg_0, object param, Player player)
         {
-            if (gbl.player_ptr.monsterType == MonsterType.type_1 &&
-                (gbl.player_ptr.field_DE & 0x7F) == 2)
+            if (gbl.SelectedPlayer.monsterType == MonsterType.type_1 &&
+                (gbl.SelectedPlayer.field_DE & 0x7F) == 2)
             {
                 gbl.attack_roll -= 4;
             }
@@ -785,7 +785,7 @@ namespace engine
 
         internal static void AffectResistWeapons(Effect arg_0, object param, Player player) // sub_3B2D8
         {
-            Item weapon = get_primary_weapon(gbl.player_ptr);
+            Item weapon = get_primary_weapon(gbl.SelectedPlayer);
 
             if (weapon == null ||
                 weapon.plus == 0)
@@ -908,9 +908,9 @@ namespace engine
 
         internal static void AffectInvisToAnimals(Effect arg_0, object param, Player player) // sub_3B636
         {
-            if (gbl.player_ptr.monsterType == MonsterType.animal)
+            if (gbl.SelectedPlayer.monsterType == MonsterType.animal)
             {
-                if (gbl.player_ptr.HasAffect(Affects.detect_invisibility) == false)
+                if (gbl.SelectedPlayer.HasAffect(Affects.detect_invisibility) == false)
                 {
                     gbl.targetInvisible = true;
                 }
@@ -1093,7 +1093,7 @@ namespace engine
 
         internal static void sub_3BA14(Effect arg_0, object param, Player player)
         {
-            Item item = get_primary_weapon(gbl.player_ptr);
+            Item item = get_primary_weapon(gbl.SelectedPlayer);
 
             if (item != null &&
                 gbl.ItemDataTable[item.type].field_7 == 1)
@@ -1181,7 +1181,7 @@ namespace engine
 
         internal static void sub_3BDB2(Effect arg_0, object param, Player arg_6)
         {
-            Item item = get_primary_weapon(gbl.player_ptr);
+            Item item = get_primary_weapon(gbl.SelectedPlayer);
 
             if (item != null &&
                 (gbl.ItemDataTable[item.type].field_7 & 0x81) != 0)
@@ -1432,7 +1432,7 @@ namespace engine
 
         internal static void sub_3C260(Effect arg_0, object param, Player player)
         {
-            Item weapon = get_primary_weapon(gbl.player_ptr);
+            Item weapon = get_primary_weapon(gbl.SelectedPlayer);
 
             if (weapon != null)
             {
@@ -1447,7 +1447,7 @@ namespace engine
 
         internal static void half_damage_if_weap_magic(Effect arg_0, object param, Player player) /* sub_3C2BF */
         {
-            Item weapon = get_primary_weapon(gbl.player_ptr);
+            Item weapon = get_primary_weapon(gbl.SelectedPlayer);
 
             if (weapon != null &&
                 weapon.plus > 0)
@@ -1459,7 +1459,7 @@ namespace engine
 
         internal static void sub_3C2F9(Effect arg_0, object param, Player player) // sub_3C2F9
         {
-            Item item = gbl.player_ptr.field_151;
+            Item item = gbl.SelectedPlayer.field_151;
 
             if (item != null && item.type == ItemType.Type_85)
             {
@@ -1479,10 +1479,10 @@ namespace engine
 
         internal static void AffectProtNonMagicWeapons(Effect arg_0, object param, Player player) // sub_3C356
         {
-            Item weapon = get_primary_weapon(gbl.player_ptr);
+            Item weapon = get_primary_weapon(gbl.SelectedPlayer);
 
             if ((weapon == null || weapon.plus == 0) &&
-                (gbl.player_ptr.race > 0 || gbl.player_ptr.HitDice < 4))
+                (gbl.SelectedPlayer.race > 0 || gbl.SelectedPlayer.HitDice < 4))
             {
                 gbl.damage = 0;
             }
@@ -1592,7 +1592,7 @@ namespace engine
         {
             Item item;
 
-            if (ovr025.GetCurrentAttackItem(out item, gbl.player_ptr) == true &&
+            if (ovr025.GetCurrentAttackItem(out item, gbl.SelectedPlayer) == true &&
                 item != null &&
                 item.type == ItemType.Quarrel && 
                 item.namenum3 == 0x87)
@@ -1741,7 +1741,7 @@ namespace engine
 
         internal static void sub_3C975(Effect arg_0, object arg_2, Player target)
         {
-            if (ovr025.getTargetRange(target, gbl.player_ptr) < 2)
+            if (ovr025.getTargetRange(target, gbl.SelectedPlayer) < 2)
             {
                 int bkup_damage = gbl.damage;
                 DamageType bkup_damage_flags = gbl.damage_flags;
@@ -1749,9 +1749,9 @@ namespace engine
                 gbl.damage *= 2;
                 gbl.damage_flags = DamageType.Magic;
 
-                ovr025.DisplayPlayerStatusString(true, 10, "resists dispel evil", gbl.player_ptr);
+                ovr025.DisplayPlayerStatusString(true, 10, "resists dispel evil", gbl.SelectedPlayer);
 
-                ovr024.damage_person(false, 0, gbl.damage, gbl.player_ptr);
+                ovr024.damage_person(false, 0, gbl.damage, gbl.SelectedPlayer);
                 gbl.damage = bkup_damage;
                 gbl.damage_flags = bkup_damage_flags;
             }
@@ -1767,8 +1767,8 @@ namespace engine
             {
                 ovr024.KillPlayer("is dispelled", Status.gone, gbl.spell_target);
 
-                ovr024.remove_affect(null, Affects.dispel_evil, gbl.player_ptr);
-                ovr024.remove_affect(null, Affects.sp_dispel_evil, gbl.player_ptr);
+                ovr024.remove_affect(null, Affects.dispel_evil, gbl.SelectedPlayer);
+                ovr024.remove_affect(null, Affects.sp_dispel_evil, gbl.SelectedPlayer);
             }
             else
             {

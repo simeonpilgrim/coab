@@ -39,18 +39,18 @@ namespace engine
 		{
 			int capasity;
 
-			if (willOverload(out capasity, item_weight, gbl.player_ptr) == true)
+			if (willOverload(out capasity, item_weight, gbl.SelectedPlayer) == true)
 			{
 				ovr025.string_print01("Overloaded. Money will be put in Pool.");
-				gbl.player_ptr.Money.AddCoins(Money.Platinum, capasity);
-				gbl.player_ptr.AddWeight(capasity);
+				gbl.SelectedPlayer.Money.AddCoins(Money.Platinum, capasity);
+				gbl.SelectedPlayer.AddWeight(capasity);
 
 				gbl.pooled_money.AddCoins(Money.Platinum, item_weight - capasity);
 			}
 			else
 			{
-				gbl.player_ptr.Money.AddCoins(Money.Platinum, item_weight);
-				gbl.player_ptr.AddWeight(item_weight);
+				gbl.SelectedPlayer.Money.AddCoins(Money.Platinum, item_weight);
+				gbl.SelectedPlayer.AddWeight(item_weight);
 			}
 		}
 
@@ -389,7 +389,7 @@ namespace engine
 
                     int num_coins = AskNumberValue(10, text, gbl.pooled_money.GetCoins(money_slot));
 
-                    PickupCoins(money_slot, num_coins, gbl.player_ptr);
+                    PickupCoins(money_slot, num_coins, gbl.SelectedPlayer);
                     money.Clear();
 
                     noMoneyLeft = true;
@@ -836,7 +836,7 @@ namespace engine
             short value;
             string sell_text;
 
-            if (gbl.player_ptr.Money.Gems == 0 && gbl.player_ptr.Money.Jewels == 0)
+            if (gbl.SelectedPlayer.Money.Gems == 0 && gbl.SelectedPlayer.Money.Jewels == 0)
             {
                 ovr025.string_print01("No Gems or Jewelry");
                 return false;
@@ -846,7 +846,7 @@ namespace engine
 
             do
             {
-				if (gbl.player_ptr.Money.Gems == 0 && gbl.player_ptr.Money.Jewels == 0)
+				if (gbl.SelectedPlayer.Money.Gems == 0 && gbl.SelectedPlayer.Money.Jewels == 0)
                 {
                     stop_loop = true;
                 }
@@ -854,14 +854,14 @@ namespace engine
                 {
                     stop_loop = false;
 
-					string gem_text = gbl.player_ptr.Money.Gems.ToString();
-					string jewel_text = gbl.player_ptr.Money.Jewels.ToString();
+					string gem_text = gbl.SelectedPlayer.Money.Gems.ToString();
+					string jewel_text = gbl.SelectedPlayer.Money.Jewels.ToString();
 
-					if (gbl.player_ptr.Money.Gems == 0)
+					if (gbl.SelectedPlayer.Money.Gems == 0)
                     {
                         gem_text = string.Empty;
                     }
-					else if (gbl.player_ptr.Money.Gems == 1)
+					else if (gbl.SelectedPlayer.Money.Gems == 1)
                     {
                         gem_text += " Gem";
                     }
@@ -870,11 +870,11 @@ namespace engine
                         gem_text += " Gems";
                     }
 
-					if (gbl.player_ptr.Money.Jewels == 0)
+					if (gbl.SelectedPlayer.Money.Jewels == 0)
                     {
                         jewel_text = string.Empty;
                     }
-					else if (gbl.player_ptr.Money.Jewels == 1)
+					else if (gbl.SelectedPlayer.Money.Jewels == 1)
                     {
                         jewel_text += " piece of Jewelry";
                     }
@@ -884,19 +884,19 @@ namespace engine
                     }
 
                     seg037.draw8x8_clear_area(0x16, 0x26, 1, 1);
-                    ovr025.displayPlayerName(false, 1, 1, gbl.player_ptr);
+                    ovr025.displayPlayerName(false, 1, 1, gbl.SelectedPlayer);
 
                     seg041.displayString("You have a fine collection of:", 0, 0xf, 7, 1);
                     seg041.displayString(gem_text, 0, 0x0f, 9, 1);
                     seg041.displayString(jewel_text, 0, 0x0f, 0x0a, 1);
                     string prompt = string.Empty;
 
-					if (gbl.player_ptr.Money.Gems != 0)
+					if (gbl.SelectedPlayer.Money.Gems != 0)
                     {
                         prompt = "  Gems";
                     }
 
-					if (gbl.player_ptr.Money.Jewels != 0)
+					if (gbl.SelectedPlayer.Money.Jewels != 0)
                     {
                         prompt += " Jewelry";
                     }
@@ -907,9 +907,9 @@ namespace engine
 
                     if (input_key == 'G')
                     {
-						if (gbl.player_ptr.Money.Gems > 0)
+						if (gbl.SelectedPlayer.Money.Gems > 0)
                         {
-							gbl.player_ptr.Money.AddCoins(Money.Gems, -1);
+							gbl.SelectedPlayer.Money.AddCoins(Money.Gems, -1);
 
                             int roll = ovr024.roll_dice(100, 1);
 
@@ -948,8 +948,8 @@ namespace engine
 
                             bool must_sell;
 
-                            if (willOverload(1, gbl.player_ptr) == true ||
-                                gbl.player_ptr.items.Count >= Player.MaxItems)
+                            if (willOverload(1, gbl.SelectedPlayer) == true ||
+                                gbl.SelectedPlayer.items.Count >= Player.MaxItems)
                             {
                                 sell_text = "Sell";
                                 must_sell = true;
@@ -966,7 +966,7 @@ namespace engine
                             {
                                 Item gem_item = new Item(0, 0, 0, value, 0, 1, false, 0, false, 0, 0, 0x65, 0, 0, ItemType.Necklace, true);
 
-                                gbl.player_ptr.items.Add(gem_item);
+                                gbl.SelectedPlayer.items.Add(gem_item);
                             }
                             else
                             {
@@ -977,9 +977,9 @@ namespace engine
                     }
                     else if (input_key == 'J')
                     {
-						if (gbl.player_ptr.Money.Jewels > 0)
+						if (gbl.SelectedPlayer.Money.Jewels > 0)
                         {
-							gbl.player_ptr.Money.AddCoins(Money.Jewelry, -1);
+							gbl.SelectedPlayer.Money.AddCoins(Money.Jewelry, -1);
 
                             int roll = ovr024.roll_dice(100, 1);
 
@@ -1020,8 +1020,8 @@ namespace engine
                             seg041.displayString(value_text, 0, 15, 12, 1);
 
                             bool must_sell;
-                            if (willOverload(1, gbl.player_ptr) == true ||
-                                gbl.player_ptr.items.Count >= Player.MaxItems)
+                            if (willOverload(1, gbl.SelectedPlayer) == true ||
+                                gbl.SelectedPlayer.items.Count >= Player.MaxItems)
                             {
                                 sell_text = "Sell";
                                 must_sell = true;
@@ -1038,7 +1038,7 @@ namespace engine
                             {
                                 Item jewel_item = new Item(0, 0, 0, value, 0, 1, false, 0, false, 0, 0, 0xd6, 0, 0, ItemType.Necklace, true);
 
-                                gbl.player_ptr.items.Add(jewel_item);
+                                gbl.SelectedPlayer.items.Add(jewel_item);
                             }
                             else
                             {
@@ -1052,7 +1052,7 @@ namespace engine
                         stop_loop = true;
                     }
 
-                    ovr025.reclac_player_values(gbl.player_ptr);
+                    ovr025.reclac_player_values(gbl.SelectedPlayer);
                 }
 
             } while (stop_loop == false);

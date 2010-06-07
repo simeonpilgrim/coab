@@ -1266,7 +1266,7 @@ namespace engine
 
             if (gbl.game_state != GameState.Combat)
             {
-                PartySummary(gbl.player_ptr);
+                PartySummary(gbl.SelectedPlayer);
             }
         }
 
@@ -1354,10 +1354,10 @@ namespace engine
                 return 0;
             }
 
-            if (gbl.player_ptr.cleric_lvl == 0 &&
-                gbl.player_ptr.magic_user_lvl == 0 &&
-                gbl.player_ptr.paladin_lvl < 9 &&
-                gbl.player_ptr.ranger_lvl < 8)
+            if (gbl.SelectedPlayer.cleric_lvl == 0 &&
+                gbl.SelectedPlayer.magic_user_lvl == 0 &&
+                gbl.SelectedPlayer.paladin_lvl < 9 &&
+                gbl.SelectedPlayer.ranger_lvl < 8)
             {
                 target_count = 6;
             }
@@ -1366,21 +1366,21 @@ namespace engine
                 switch (gbl.spell_table[spell_id].spellClass)
                 {
                     case SpellClass.Cleric:
-                        int cleric_count = gbl.player_ptr.SkillLevel(SkillType.Cleric);
-                        int paladin_count = gbl.player_ptr.SkillLevel(SkillType.Paladin) - 8;
+                        int cleric_count = gbl.SelectedPlayer.SkillLevel(SkillType.Cleric);
+                        int paladin_count = gbl.SelectedPlayer.SkillLevel(SkillType.Paladin) - 8;
 
                         target_count = Math.Max(cleric_count, paladin_count);
                         break;
 
                     case SpellClass.Druid:
-                        int ranger_count = gbl.player_ptr.SkillLevel(SkillType.Ranger) - 7;
+                        int ranger_count = gbl.SelectedPlayer.SkillLevel(SkillType.Ranger) - 7;
                         
                         target_count = Math.Max(ranger_count, 0);
                         break;
 
                     case SpellClass.MagicUser:
-                        int magicuser_count = gbl.player_ptr.SkillLevel(SkillType.MagicUser);
-                        int ranger_count2 = gbl.player_ptr.SkillLevel(SkillType.Ranger) - 8;
+                        int magicuser_count = gbl.SelectedPlayer.SkillLevel(SkillType.MagicUser);
+                        int ranger_count2 = gbl.SelectedPlayer.SkillLevel(SkillType.Ranger) - 8;
 
                         target_count = Math.Max(magicuser_count, ranger_count2);
                         break;
@@ -1427,21 +1427,21 @@ namespace engine
                         ovr030.draw_head_and_body(true, 3, 3);
                     }
 
-                    PartySummary(gbl.player_ptr);
+                    PartySummary(gbl.SelectedPlayer);
                     display_map_position_time();
                     break;
 
                 case GameState.Camping:
                     seg037.draw8x8_03();
                     ovr030.load_pic_final(ref gbl.byte_1D556, 0, 0x1d, "PIC");
-                    PartySummary(gbl.player_ptr);
+                    PartySummary(gbl.SelectedPlayer);
                     display_map_position_time();
                     break;
 
                 case GameState.DungeonMap:
                     seg037.draw8x8_03();
                     ovr029.RedrawView();
-                    PartySummary(gbl.player_ptr);
+                    PartySummary(gbl.SelectedPlayer);
                     display_map_position_time();
                     gbl.byte_1EE98 = false;
                     break;
@@ -1456,7 +1456,7 @@ namespace engine
                 case GameState.AfterCombat:
                     seg037.draw8x8_03();
                     ovr030.load_pic_final(ref gbl.byte_1D556, 0, 1, "PIC");
-                    PartySummary(gbl.player_ptr);
+                    PartySummary(gbl.SelectedPlayer);
                     break;
             }
         }

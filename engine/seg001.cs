@@ -215,7 +215,7 @@ namespace engine
             gbl.rest_incounter_count = 0;
 
             gbl.TeamList.Clear();
-            gbl.player_ptr = null;
+            gbl.SelectedPlayer = null;
 
             gbl.ecl_offset = 0x8000;
             gbl.game_speed_var = 4;
@@ -228,7 +228,7 @@ namespace engine
             gbl.combat_type = CombatType.normal;
             gbl.displayPlayerStatusLine18 = false;
             gbl.search_flag_bkup = 0;
-            gbl.byte_1EE8C = false;
+            gbl.spriteChanged = false;
             gbl.party_killed = false;
             gbl.byte_1BF12 = 1;
             gbl.displayPlayerSprite = false;
@@ -311,7 +311,7 @@ namespace engine
             gbl.rest_incounter_count = 0;
 
             gbl.TeamList.Clear();
-            gbl.player_ptr = null;
+            gbl.SelectedPlayer = null;
 
             gbl.ecl_offset = 0x8000;
             gbl.game_speed_var = 4;
@@ -323,7 +323,7 @@ namespace engine
             gbl.combat_type = CombatType.normal;
             gbl.displayPlayerStatusLine18 = false;
             gbl.search_flag_bkup = 0;
-            gbl.byte_1EE8C = false;
+            gbl.spriteChanged = false;
             gbl.party_killed = false;
             gbl.byte_1BF12 = 1;
             gbl.displayPlayerSprite = false;

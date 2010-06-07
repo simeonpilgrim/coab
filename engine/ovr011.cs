@@ -1112,7 +1112,6 @@ namespace engine
 
                 gbl.currentTeam = (sbyte)player_ptr.combat_team;
 
-                //gbl.CombatMap[loop_var].player_index = loop_var;
                 gbl.CombatMap[loop_var].size = player_ptr.field_DE & 7;
 
                 if (place_combatant(loop_var) == true)
@@ -1160,7 +1159,7 @@ namespace engine
 
             foreach (Player player in to_remove)
             {
-                gbl.player_ptr = ovr018.FreeCurrentPlayer(player, false, true);
+                gbl.SelectedPlayer = ovr018.FreeCurrentPlayer(player, false, true);
             }
         }
 
@@ -1182,7 +1181,7 @@ namespace engine
 
             seg041.displayString("A battle begins...", 0, 0x0a, 0x18, 0);
 
-            gbl.magicOn = false; // TODO review this...
+            gbl.AutoPCsCastMagic = false; // TODO review this...
             gbl.combat_round = 0;
             gbl.combat_round_no_action_limit = gbl.combat_round_no_action_value;
             gbl.attack_roll = 0;

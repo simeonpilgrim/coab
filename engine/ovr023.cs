@@ -347,8 +347,8 @@ namespace engine
 
         internal static void scroll_5C912(bool learning) /* sub_5C912 */
         {
-            if (gbl.player_ptr.HasAffect(Affects.read_magic) == true ||
-                ((gbl.player_ptr.cleric_lvl > 0 || gbl.player_ptr.cleric_old_lvl > gbl.player_ptr.multiclassLevel) &&
+            if (gbl.SelectedPlayer.HasAffect(Affects.read_magic) == true ||
+                ((gbl.SelectedPlayer.cleric_lvl > 0 || gbl.SelectedPlayer.cleric_old_lvl > gbl.SelectedPlayer.multiclassLevel) &&
                   gbl.ItemDataTable[gbl.currentScroll.type].item_slot == 12))
             {
                 gbl.currentScroll.hidden_names_flag = 0;
@@ -379,7 +379,7 @@ namespace engine
 
             gbl.scribeScrollsCount = 0;
 
-            foreach (var item in gbl.player_ptr.items)
+            foreach (var item in gbl.SelectedPlayer.items)
             {
                 gbl.currentScroll = item;
 
@@ -407,11 +407,11 @@ namespace engine
                 case SpellLoc.memory:
                     for (int idx = 0; idx < gbl.max_spells; idx++)
                     {
-                        if (gbl.player_ptr.spell_list[idx] > 0 &&
-                            can_learn_spell(gbl.player_ptr.spell_list[idx], gbl.player_ptr) == true &&
-                            gbl.player_ptr.spell_list[idx] < 0x80)
+                        if (gbl.SelectedPlayer.spell_list[idx] > 0 &&
+                            can_learn_spell(gbl.SelectedPlayer.spell_list[idx], gbl.SelectedPlayer) == true &&
+                            gbl.SelectedPlayer.spell_list[idx] < 0x80)
                         {
-                            add_spell_to_learning_list(gbl.player_ptr.spell_list[idx]);
+                            add_spell_to_learning_list(gbl.SelectedPlayer.spell_list[idx]);
                         }
                     }
                     break;
@@ -419,10 +419,10 @@ namespace engine
                 case SpellLoc.memorize:
                     for (int idx = 0; idx < gbl.max_spells; idx++)
                     {
-                        if (gbl.player_ptr.spell_list[idx] > 0x7F &&
-                            can_learn_spell(gbl.player_ptr.spell_list[idx], gbl.player_ptr) == true)
+                        if (gbl.SelectedPlayer.spell_list[idx] > 0x7F &&
+                            can_learn_spell(gbl.SelectedPlayer.spell_list[idx], gbl.SelectedPlayer) == true)
                         {
-                            add_spell_to_learning_list(gbl.player_ptr.spell_list[idx]);
+                            add_spell_to_learning_list(gbl.SelectedPlayer.spell_list[idx]);
                         }
                     }
                     break;
@@ -430,8 +430,8 @@ namespace engine
                 case SpellLoc.grimoire:
                     foreach (Spells spell in System.Enum.GetValues(typeof(Spells)))
                     {
-                        if (gbl.player_ptr.KnowsSpell(spell) && 
-                            can_learn_spell((int)spell, gbl.player_ptr))
+                        if (gbl.SelectedPlayer.KnowsSpell(spell) && 
+                            can_learn_spell((int)spell, gbl.SelectedPlayer))
                         {
                             add_spell_to_learning_list((int)spell);
                         }
@@ -463,9 +463,9 @@ namespace engine
                         {
                             //skip this spell
                         }
-                        else if (gbl.player_ptr.spellCastCount[(int)sp_class, sp_lvl - 1] > 0 &&
-                            can_learn_spell((int)spell, gbl.player_ptr) == true &&
-                            gbl.player_ptr.KnowsSpell(spell) == false)
+                        else if (gbl.SelectedPlayer.spellCastCount[(int)sp_class, sp_lvl - 1] > 0 &&
+                            can_learn_spell((int)spell, gbl.SelectedPlayer) == true &&
+                            gbl.SelectedPlayer.KnowsSpell(spell) == false)
                         {
                             add_spell_to_learning_list((int)spell);
                         }
@@ -601,7 +601,7 @@ namespace engine
 
                         ovr024.CheckAffectsEffect(target, CheckType.Type_11);
 
-                        if (ovr024.PC_CanHitTarget(target.ac, target, gbl.player_ptr) == false)
+                        if (ovr024.PC_CanHitTarget(target.ac, target, gbl.SelectedPlayer) == false)
                         {
                             damage = 0;
                             saved = true;
@@ -630,11 +630,11 @@ namespace engine
         {
             if (gbl.lastSelectetSpellTarget == null)
             {
-                gbl.lastSelectetSpellTarget = gbl.player_ptr;
+                gbl.lastSelectetSpellTarget = gbl.SelectedPlayer;
             }
 
             gbl.spellTargets.Clear();
-            gbl.spellTargets.Add(gbl.player_ptr);
+            gbl.spellTargets.Add(gbl.SelectedPlayer);
 
             castSpell = true;
 
@@ -680,7 +680,7 @@ namespace engine
 
         internal static void sub_5D2E1(ref bool arg_0, byte arg_4, QuickFight quick_fight, byte spell_id)
         {
-            Player caster = gbl.player_ptr;
+            Player caster = gbl.SelectedPlayer;
             bool var_1 = true;
 
             if (gbl.game_state != GameState.Combat &&
@@ -940,7 +940,7 @@ namespace engine
             foreach(var idx in players_on_path)
             {
                 var player = gbl.player_array[idx];
-                if( player != gbl.player_ptr)
+                if( player != gbl.SelectedPlayer)
                 {
                     gbl.spellTargets.Add(player);
                 }
@@ -958,7 +958,7 @@ namespace engine
                     seg044.sound_sub_120E0(Sound.sound_2);
                     ovr025.load_missile_icons(0x12);
 
-                    ovr025.draw_missile_attack(0x1E, 4, ovr033.PlayerMapPos(target), ovr033.PlayerMapPos(gbl.player_ptr));
+                    ovr025.draw_missile_attack(0x1E, 4, ovr033.PlayerMapPos(target), ovr033.PlayerMapPos(gbl.SelectedPlayer));
                 }
 
                 bool saved;
@@ -1001,13 +1001,13 @@ namespace engine
 
         internal static void cleric_bless() /* is_Blessed */
         {
-            CastTeamSpell("is Blessed", gbl.player_ptr.combat_team);
+            CastTeamSpell("is Blessed", gbl.SelectedPlayer.combat_team);
         }
 
 
         internal static void cleric_curse() /* is_Cursed */
         {
-            CastTeamSpell("is Cursed", gbl.player_ptr.OppositeTeam());
+            CastTeamSpell("is Cursed", gbl.SelectedPlayer.OppositeTeam());
         }
 
 
@@ -1062,7 +1062,7 @@ namespace engine
             }
             else
             {
-                sub_5CF7F("is charmed", 0, 0, true, (byte)(((int)gbl.player_ptr.combat_team << 7) + ovr025.spellMaxTargetCount(gbl.spell_id)), gbl.spell_id);
+                sub_5CF7F("is charmed", 0, 0, true, (byte)(((int)gbl.SelectedPlayer.combat_team << 7) + ovr025.spellMaxTargetCount(gbl.spell_id)), gbl.spell_id);
 
                 Affect affect = target.GetAffect(Affects.charm_person);
 
@@ -1159,7 +1159,7 @@ namespace engine
         internal static void SpellFriends() // is_friendly
         {
             sub_5CF7F("is friendly", 0, 0, true, ovr024.roll_dice(4, 2), gbl.spell_id);
-            ovr024.CalcStatBonuses(Stat.CHA, gbl.player_ptr);
+            ovr024.CalcStatBonuses(Stat.CHA, gbl.SelectedPlayer);
         }
 
 
@@ -1312,7 +1312,7 @@ namespace engine
 
         internal static void SpellSnakeCharm() // is_charmed2
         {
-            int totalSpellPower = gbl.player_ptr.hit_point_current;
+            int totalSpellPower = gbl.SelectedPlayer.hit_point_current;
 
             gbl.spellTargets = gbl.TeamList.FindAll(target =>
                 {
@@ -1378,12 +1378,12 @@ namespace engine
             gbl.byte_1D2C7 = true;
 
             byte var_10 = (byte)ovr025.spellMaxTargetCount(gbl.spell_id);
-            int count = gbl.NoxiousCloud.FindAll(cell => cell.player == gbl.player_ptr).Count;
+            int count = gbl.NoxiousCloud.FindAll(cell => cell.player == gbl.SelectedPlayer).Count;
 
-            GasCloud var_8 = new GasCloud(gbl.player_ptr, count, gbl.targetPos);
+            GasCloud var_8 = new GasCloud(gbl.SelectedPlayer, count, gbl.targetPos);
             gbl.NoxiousCloud.Add(var_8);
 
-            ovr024.add_affect(true, (byte)(var_10 + (count << 4)), var_10, Affects.affect_28, gbl.player_ptr);
+            ovr024.add_affect(true, (byte)(var_10 + (count << 4)), var_10, Affects.affect_28, gbl.SelectedPlayer);
 
             for (int var_11 = 1; var_11 <= 4; var_11++)
             {
@@ -1437,7 +1437,7 @@ namespace engine
                 }
             }
 
-            ovr025.DisplayPlayerStatusString(false, 10, "Creates a noxious cloud", gbl.player_ptr);
+            ovr025.DisplayPlayerStatusString(false, 10, "Creates a noxious cloud", gbl.SelectedPlayer);
 
             ovr033.redrawCombatArea(8, 0xff, gbl.targetPos);
             seg041.GameDelay();
@@ -1545,7 +1545,7 @@ namespace engine
                     {
                         byte var_2 = (byte)(((int)player.combat_team << 4) + ovr025.spellMaxTargetCount(gbl.spell_id));
 
-                        player.combat_team = gbl.player_ptr.combat_team;
+                        player.combat_team = gbl.SelectedPlayer.combat_team;
                         player.quick_fight = QuickFight.True;
                         player.field_E9 = 1;
                         player.attackLevel = 0;
@@ -1825,7 +1825,7 @@ namespace engine
 
         internal static void SpellPrayer() // is_praying
         {
-            byte tmpByte = (byte)(((int)gbl.player_ptr.combat_team * 16) + ovr025.spellMaxTargetCount(gbl.spell_id));
+            byte tmpByte = (byte)(((int)gbl.SelectedPlayer.combat_team * 16) + ovr025.spellMaxTargetCount(gbl.spell_id));
 
             sub_5CF7F("is praying", 0, 0, false, tmpByte, gbl.spell_id);
         }
@@ -1940,7 +1940,7 @@ namespace engine
 
         internal static void cast_haste()
         {
-            RemoveComplimentSpellFirst("is Hasted", gbl.player_ptr.combat_team, Affects.slow);
+            RemoveComplimentSpellFirst("is Hasted", gbl.SelectedPlayer.combat_team, Affects.slow);
         }
 
 
@@ -2004,7 +2004,7 @@ namespace engine
             int var_3D = 0;
             int var_35 = 1;
 
-            var playerPos = ovr033.PlayerMapPos(gbl.player_ptr);
+            var playerPos = ovr033.PlayerMapPos(gbl.SelectedPlayer);
             byte var_38 = arg_0;
 
             if (playerPos != gbl.targetPos)
@@ -2114,7 +2114,7 @@ namespace engine
 
         internal static void SpellSlow() // sub_5FD2E
         {
-            RemoveComplimentSpellFirst("is Slowed", gbl.player_ptr.OppositeTeam(), Affects.haste);
+            RemoveComplimentSpellFirst("is Slowed", gbl.SelectedPlayer.OppositeTeam(), Affects.haste);
         }
 
 
@@ -2281,14 +2281,14 @@ namespace engine
         {
             sub_5CF7F(string.Empty, DamageType.Magic, 0, false, 0, gbl.spell_id);
 
-            Player target = gbl.player_ptr.actions.target;
+            Player target = gbl.SelectedPlayer.actions.target;
 
             gbl.current_affect = Affects.poison_plus_0;
             ovr024.CheckAffectsEffect(target, CheckType.Type_9);
 
             if (gbl.current_affect == Affects.poison_plus_0)
             {
-                ovr013.CallAffectTable(Effect.Add, null, gbl.player_ptr, Affects.poison_plus_0);
+                ovr013.CallAffectTable(Effect.Add, null, gbl.SelectedPlayer, Affects.poison_plus_0);
             }
         }
 
@@ -2330,7 +2330,7 @@ namespace engine
 
         internal static void SpellDispelEvil() // is_affected4
         {
-            ovr024.is_unaffected(string.Empty, false, 0, false, 0, GetSpellAffectTimeout(Spells.dispel_evil), Affects.dispel_evil, gbl.player_ptr);
+            ovr024.is_unaffected(string.Empty, false, 0, false, 0, GetSpellAffectTimeout(Spells.dispel_evil), Affects.dispel_evil, gbl.SelectedPlayer);
             sub_5CF7F("is affected", 0, 0, false, 0, gbl.spell_id);
         }
 
@@ -2457,7 +2457,7 @@ namespace engine
         internal static void SpellDimensionDoor() // cast_teleport
         {
             Affect affect;
-            Player player = gbl.player_ptr;
+            Player player = gbl.SelectedPlayer;
 
             if (ovr025.FindAffect(out affect, Affects.clear_movement, player) == true)
             {
@@ -2491,7 +2491,7 @@ namespace engine
 
         internal static void SpellFear() /* cast_terror */
         {
-            Player caster = gbl.player_ptr;
+            Player caster = gbl.SelectedPlayer;
 
             BuildAreaDamageTargets(6, 3, gbl.targetPos, ovr033.PlayerMapPos(caster));
 
@@ -2528,7 +2528,7 @@ namespace engine
 
             do
             {
-                if (gbl.player_ptr.quick_fight == QuickFight.True)
+                if (gbl.SelectedPlayer.quick_fight == QuickFight.True)
                 {
                     if (ovr024.roll_dice(10, 1) > 5)
                     {
@@ -2546,14 +2546,14 @@ namespace engine
 
                 if (input_key == 'H')
                 {
-                    ovr024.is_unaffected("is protected", false, 0, false, 0, GetSpellAffectTimeout(Spells.fire_shield), Affects.hot_fire_shield, gbl.player_ptr);
-                    ovr024.is_unaffected(string.Empty, false, 0, false, 0, GetSpellAffectTimeout(Spells.fire_shield), Affects.protect_elec, gbl.player_ptr);
+                    ovr024.is_unaffected("is protected", false, 0, false, 0, GetSpellAffectTimeout(Spells.fire_shield), Affects.hot_fire_shield, gbl.SelectedPlayer);
+                    ovr024.is_unaffected(string.Empty, false, 0, false, 0, GetSpellAffectTimeout(Spells.fire_shield), Affects.protect_elec, gbl.SelectedPlayer);
                     var_3 = true;
                 }
                 else if (input_key == 'C')
                 {
-                    ovr024.is_unaffected(string.Empty, false, 0, false, 0, GetSpellAffectTimeout(Spells.fire_shield), Affects.cold_fire_shield, gbl.player_ptr);
-                    ovr024.is_unaffected(string.Empty, false, 0, false, 0, GetSpellAffectTimeout(Spells.fire_shield), Affects.protect_elec, gbl.player_ptr);
+                    ovr024.is_unaffected(string.Empty, false, 0, false, 0, GetSpellAffectTimeout(Spells.fire_shield), Affects.cold_fire_shield, gbl.SelectedPlayer);
+                    ovr024.is_unaffected(string.Empty, false, 0, false, 0, GetSpellAffectTimeout(Spells.fire_shield), Affects.protect_elec, gbl.SelectedPlayer);
                     var_3 = true;
                 }
                 else
@@ -2619,12 +2619,12 @@ namespace engine
             gbl.byte_1D2C7 = true;
 
             byte var_15 = (byte)ovr025.spellMaxTargetCount(gbl.spell_id);
-            int count = gbl.PoisonousCloud.FindAll(cell => cell.player == gbl.player_ptr).Count;
+            int count = gbl.PoisonousCloud.FindAll(cell => cell.player == gbl.SelectedPlayer).Count;
 
-            GasCloud var_8 = new GasCloud(gbl.player_ptr, count, gbl.targetPos);
+            GasCloud var_8 = new GasCloud(gbl.SelectedPlayer, count, gbl.targetPos);
             gbl.PoisonousCloud.Add(var_8);
 
-            ovr024.add_affect(true, (byte)(var_15 + (count << 4)), var_15, Affects.affect_5b, gbl.player_ptr);
+            ovr024.add_affect(true, (byte)(var_15 + (count << 4)), var_15, Affects.affect_5b, gbl.SelectedPlayer);
 
             for (var_16 = 1; var_16 <= 9; var_16++)
             {
@@ -2715,7 +2715,7 @@ namespace engine
                 gbl.mapToBackGroundTile[pos] = 0x1C;
             }
 
-            ovr025.DisplayPlayerStatusString(false, 10, "Creates a poisonous cloud", gbl.player_ptr);
+            ovr025.DisplayPlayerStatusString(false, 10, "Creates a poisonous cloud", gbl.SelectedPlayer);
 
             ovr033.redrawCombatArea(8, 0xFF, gbl.targetPos);
             seg041.GameDelay();
@@ -2733,7 +2733,7 @@ namespace engine
 
         internal static void SpellConeOfCold() // sub_61550
         {
-            Player player = gbl.player_ptr;
+            Player player = gbl.SelectedPlayer;
             int target_count = ovr025.spellMaxTargetCount(gbl.spell_id);
             int max_range = (target_count + 1) / 2;
 
@@ -2787,7 +2787,7 @@ namespace engine
 
         internal static void sub_61727()
         {
-            Player attacker = gbl.player_ptr;
+            Player attacker = gbl.SelectedPlayer;
 
             BuildAreaDamageTargets(3, 1, gbl.targetPos, ovr033.PlayerMapPos(attacker));
 

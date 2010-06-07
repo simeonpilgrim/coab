@@ -86,7 +86,7 @@ namespace engine
         {
             seg042.set_game_area(1);
 
-            Player player = gbl.player_ptr;
+            Player player = gbl.SelectedPlayer;
 
             char[] sizeToken = new char[] { '\0', 'S', 'T' };
 
@@ -524,7 +524,7 @@ namespace engine
             }
 
             SilentTrainPlayer();
-            gbl.player_ptr = bp_var_1CA;
+            gbl.SelectedPlayer = bp_var_1CA;
 
             var_7.hit_point_max = hills_far_player.field_21;
             var_7.hit_point_rolled = (byte)(var_7.hit_point_max - ovr018.get_con_hp_adj(bp_player_ptr));
@@ -712,8 +712,8 @@ namespace engine
 
 				player_ptr = new Player(data, 0);
 
-				player02_ptr = gbl.player_ptr;
-				gbl.player_ptr = player_ptr;
+				player02_ptr = gbl.SelectedPlayer;
+				gbl.SelectedPlayer = player_ptr;
 
 				sub_48F35(var_1C4, player_ptr, player02_ptr);
 
@@ -772,15 +772,15 @@ namespace engine
 
 					player_ptr = ConvertPoolRadPlayer(poolRadPlayer);
 
-					player02_ptr = gbl.player_ptr;
-					gbl.player_ptr = player_ptr;
+					player02_ptr = gbl.SelectedPlayer;
+					gbl.SelectedPlayer = player_ptr;
 
 					sub_48F35(var_1C4, player_ptr, player02_ptr);
 				}
 				else
 				{
-					player02_ptr = gbl.player_ptr;
-					gbl.player_ptr = player_ptr;
+					player02_ptr = gbl.SelectedPlayer;
+					gbl.SelectedPlayer = player_ptr;
 
 					player01_ptr = player_ptr;
 
@@ -890,7 +890,7 @@ namespace engine
 					SilentTrainPlayer();
 
 					ovr022.addPlayerGold(300);
-					gbl.player_ptr = player02_ptr;
+					gbl.SelectedPlayer = player02_ptr;
 					player01_ptr.hit_point_max = var_1C4.field_21;
 					player01_ptr.hit_point_rolled = (byte)(player01_ptr.hit_point_max - ovr018.get_con_hp_adj(player_ptr));
 					player01_ptr.hit_point_current = var_1C4.field_20;
@@ -979,7 +979,7 @@ namespace engine
             player.icon_id = 0xff;
 
             gbl.TeamList.Add(player);
-            gbl.player_ptr = player;
+            gbl.SelectedPlayer = player;
 
             bool[] icon_slot = new bool[8];
 
@@ -1138,20 +1138,20 @@ namespace engine
 
             foreach (Player tmp_player in gbl.TeamList)
             {
-                gbl.player_ptr = tmp_player;
+                gbl.SelectedPlayer = tmp_player;
 
-                if (gbl.player_ptr.control_morale < Control.NPC_Base)
+                if (gbl.SelectedPlayer.control_morale < Control.NPC_Base)
                 {
                     LoadPlayerCombatIcon(true);
                 }
                 else
                 {
-                    ovr034.chead_cbody_comspr_icon(gbl.player_ptr.icon_id, gbl.player_ptr.mod_id, "CPIC");
+                    ovr034.chead_cbody_comspr_icon(gbl.SelectedPlayer.icon_id, gbl.SelectedPlayer.mod_id, "CPIC");
                 }
             }
         
 
-            gbl.player_ptr = gbl.TeamList[0];
+            gbl.SelectedPlayer = gbl.TeamList[0];
 
             gbl.game_area = gbl.area2_ptr.game_area;
 

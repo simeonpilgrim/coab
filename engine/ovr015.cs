@@ -382,7 +382,7 @@ namespace engine
                                 break;
 
                             case 'C':
-                                if (gbl.player_ptr.health_status == Status.okey)
+                                if (gbl.SelectedPlayer.health_status == Status.okey)
                                 {
                                     gbl.menuSelectedWord = 1;
                                     ovr016.cast_spell();
@@ -446,7 +446,7 @@ namespace engine
 
                             default:
                                 ovr020.scroll_team_list(input_key);
-                                ovr025.PartySummary(gbl.player_ptr);
+                                ovr025.PartySummary(gbl.SelectedPlayer);
                                 break;
                         }
                     }

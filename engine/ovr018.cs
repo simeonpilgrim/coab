@@ -75,16 +75,16 @@ namespace engine
                 if (reclac_menus == true)
                 {
                     seg037.DrawFrame_Outer();
-                    if (gbl.player_ptr != null)
+                    if (gbl.SelectedPlayer != null)
                     {
-                        ovr025.PartySummary(gbl.player_ptr);
+                        ovr025.PartySummary(gbl.SelectedPlayer);
                         menuFlags[allow_drop] = true;
                         menuFlags[allow_modify] = true;
 
                         if (gbl.area2_ptr.training_class_mask > 0 || Cheats.free_training == true)
                         {
                             menuFlags[allow_training] = true;
-                            menuFlags[allow_duelclass] = gbl.player_ptr.CanDuelClass();
+                            menuFlags[allow_duelclass] = gbl.SelectedPlayer.CanDuelClass();
                         }
                         else
                         {
@@ -135,14 +135,14 @@ namespace engine
 
                 if (controlKey == true)
                 {
-                    if (gbl.player_ptr != null &&unk_4C13D.MemberOf(inputkey) == true)
+                    if (gbl.SelectedPlayer != null &&unk_4C13D.MemberOf(inputkey) == true)
                     {
-						bool previousDuelClassState = gbl.player_ptr.CanDuelClass();
+						bool previousDuelClassState = gbl.SelectedPlayer.CanDuelClass();
 
                         ovr020.scroll_team_list(inputkey);
-                        ovr025.PartySummary(gbl.player_ptr);
+                        ovr025.PartySummary(gbl.SelectedPlayer);
 
-						previousDuelClassState ^= gbl.player_ptr.CanDuelClass();
+						previousDuelClassState ^= gbl.SelectedPlayer.CanDuelClass();
 
                         reclac_menus = previousDuelClassState && gbl.area2_ptr.training_class_mask > 0;
                     }
@@ -184,7 +184,7 @@ namespace engine
                         case 'H':
                             if (menuFlags[allow_duelclass] == true)
                             {
-                                ovr026.DuelClass(gbl.player_ptr);
+                                ovr026.DuelClass(gbl.SelectedPlayer);
                             }
                             break;
 
@@ -204,12 +204,12 @@ namespace engine
 
                         case 'R':
                             if (menuFlags[allow_remove] == true &&
-                                gbl.player_ptr != null)
+                                gbl.SelectedPlayer != null)
                             {
-                                if (gbl.player_ptr.control_morale < Control.NPC_Base)
+                                if (gbl.SelectedPlayer.control_morale < Control.NPC_Base)
                                 {
-                                    ovr017.SavePlayer(string.Empty, gbl.player_ptr);
-                                    gbl.player_ptr = FreeCurrentPlayer(gbl.player_ptr, true, false);
+                                    ovr017.SavePlayer(string.Empty, gbl.SelectedPlayer);
+                                    gbl.SelectedPlayer = FreeCurrentPlayer(gbl.SelectedPlayer, true, false);
                                 }
                                 else
                                 {
@@ -253,7 +253,7 @@ namespace engine
                                         {
                                             seg037.draw8x8_03();
                                         }
-                                        ovr025.PartySummary(gbl.player_ptr);
+                                        ovr025.PartySummary(gbl.SelectedPlayer);
                                     }
                                     else
                                     {
@@ -735,8 +735,8 @@ namespace engine
                 }
             }
 
-            Player gblPlayerPtrBkup = gbl.player_ptr;
-            gbl.player_ptr = player;
+            Player gblPlayerPtrBkup = gbl.SelectedPlayer;
+            gbl.SelectedPlayer = player;
             ovr020.playerDisplayFull(player);
 
             do
@@ -1167,14 +1167,14 @@ namespace engine
                 ovr017.SavePlayer(string.Empty, player);
             }
 
-            gbl.player_ptr = gblPlayerPtrBkup;
+            gbl.SelectedPlayer = gblPlayerPtrBkup;
         }
 
 
         internal static int con_bonus(ClassId classId)
         {
             int bonus;
-            int stat = gbl.player_ptr.con;
+            int stat = gbl.SelectedPlayer.con;
 
             if (stat == 3)
             {
@@ -1211,9 +1211,9 @@ namespace engine
 
         internal static void dropPlayer()
         {
-            if (gbl.player_ptr != null)
+            if (gbl.SelectedPlayer != null)
             {
-                Player player = gbl.player_ptr;
+                Player player = gbl.SelectedPlayer;
 
 				if (ovr027.yes_no(gbl.alertMenuColors, "Drop " + player.name + " forever? ") == 'Y' &&
 					ovr027.yes_no(gbl.alertMenuColors, "Are you sure? ") == 'Y')
@@ -1228,7 +1228,7 @@ namespace engine
                     }
 
                     ovr017.remove_player_file(player);
-                    gbl.player_ptr = FreeCurrentPlayer(gbl.player_ptr, true, false);
+                    gbl.SelectedPlayer = FreeCurrentPlayer(gbl.SelectedPlayer, true, false);
                 }
                 else
                 {
@@ -1236,7 +1236,7 @@ namespace engine
                 }
             }
 
-            ovr025.PartySummary(gbl.player_ptr);
+            ovr025.PartySummary(gbl.SelectedPlayer);
         }
 
         /// <summary>
@@ -1250,27 +1250,27 @@ namespace engine
             }
             else if (edited_stat == 6)
             {
-                ovr025.display_hp(highlighted, 18, 4, gbl.player_ptr);
+                ovr025.display_hp(highlighted, 18, 4, gbl.SelectedPlayer);
             }
             else if (edited_stat == 7)
             {
                 if (highlighted == true)
                 {
-                    seg041.displaySpaceChar(1, 0, 1, gbl.player_ptr.name.Length + 1);
-                    seg041.displayString(gbl.player_ptr.name, 0, 13, 1, 1);
+                    seg041.displaySpaceChar(1, 0, 1, gbl.SelectedPlayer.name.Length + 1);
+                    seg041.displayString(gbl.SelectedPlayer.name, 0, 13, 1, 1);
 
-                    if (name_cursor_pos > gbl.player_ptr.name.Length || gbl.player_ptr.name[name_cursor_pos - 1] == ' ')
+                    if (name_cursor_pos > gbl.SelectedPlayer.name.Length || gbl.SelectedPlayer.name[name_cursor_pos - 1] == ' ')
                     {
                         seg041.displayString("%", 0, 15, 1, name_cursor_pos);
                     }
                     else
                     {
-                        seg041.displayString(gbl.player_ptr.name[name_cursor_pos - 1].ToString(), 0, 15, 1, name_cursor_pos);
+                        seg041.displayString(gbl.SelectedPlayer.name[name_cursor_pos - 1].ToString(), 0, 15, 1, name_cursor_pos);
                     }
                 }
                 else
                 {
-                    seg041.displayString(gbl.player_ptr.name, 0, 10, 1, 1);
+                    seg041.displayString(gbl.SelectedPlayer.name, 0, 10, 1, 1);
                 }
             }
         }
@@ -1282,35 +1282,35 @@ namespace engine
             char var_35;
 
             if (Cheats.allow_player_modify == false &&
-                (gbl.player_ptr.exp != 0 &&
-                gbl.player_ptr.exp != 8333 &&
-                gbl.player_ptr.exp != 12500 &&
-                gbl.player_ptr.exp != 25000) ||
-                gbl.player_ptr.multiclassLevel != 0)
+                (gbl.SelectedPlayer.exp != 0 &&
+                gbl.SelectedPlayer.exp != 8333 &&
+                gbl.SelectedPlayer.exp != 12500 &&
+                gbl.SelectedPlayer.exp != 25000) ||
+                gbl.SelectedPlayer.multiclassLevel != 0)
             {
-                seg041.DisplayStatusText(0, 14, gbl.player_ptr.name + " can't be modified.");
+                seg041.DisplayStatusText(0, 14, gbl.SelectedPlayer.name + " can't be modified.");
                 return;
             }
 
-            ovr020.playerDisplayFull(gbl.player_ptr);
+            ovr020.playerDisplayFull(gbl.SelectedPlayer);
 
             byte[] stats_bkup = new byte[6];
             for (int stat_var = 0; stat_var < 6; stat_var++)
             {
-                stats_bkup[stat_var] = gbl.player_ptr.stats[stat_var].max;
+                stats_bkup[stat_var] = gbl.SelectedPlayer.stats[stat_var].max;
             }
 
-            byte orig_str_100 = gbl.player_ptr.tmp_str_00;
-            byte orig_hp_max = gbl.player_ptr.hit_point_max;
+            byte orig_str_100 = gbl.SelectedPlayer.tmp_str_00;
+            byte orig_hp_max = gbl.SelectedPlayer.hit_point_max;
 
-            string nameBackup = gbl.player_ptr.name;
+            string nameBackup = gbl.SelectedPlayer.name;
 
             int name_cursor_pos = 1;
             byte edited_stat = 7;
             draw_highlight_stat(false, edited_stat, name_cursor_pos);
             edited_stat = 0;
             draw_highlight_stat(true, edited_stat, name_cursor_pos);
-            Player player_ptr = gbl.player_ptr;
+            Player player_ptr = gbl.SelectedPlayer;
 
             do
             {
@@ -1350,18 +1350,18 @@ namespace engine
                     switch (var_35)
                     {
                         case 'S':
-                            if (edited_stat == 7 && gbl.player_ptr.name.Length > 1)
+                            if (edited_stat == 7 && gbl.SelectedPlayer.name.Length > 1)
                             {
-                                if (name_cursor_pos == gbl.player_ptr.name.Length)
+                                if (name_cursor_pos == gbl.SelectedPlayer.name.Length)
                                 {
-                                    gbl.player_ptr.name = gbl.player_ptr.name.Substring(0, gbl.player_ptr.name.Length - 1);
-                                    name_cursor_pos = (byte)gbl.player_ptr.name.Length;
+                                    gbl.SelectedPlayer.name = gbl.SelectedPlayer.name.Substring(0, gbl.SelectedPlayer.name.Length - 1);
+                                    name_cursor_pos = (byte)gbl.SelectedPlayer.name.Length;
                                 }
                                 else
                                 {
-                                    string part_a = gbl.player_ptr.name.Substring(0, name_cursor_pos);
-                                    string part_b = gbl.player_ptr.name.Substring(name_cursor_pos + 1, gbl.player_ptr.name.Length - name_cursor_pos);
-                                    gbl.player_ptr.name = part_a + part_b;
+                                    string part_a = gbl.SelectedPlayer.name.Substring(0, name_cursor_pos);
+                                    string part_b = gbl.SelectedPlayer.name.Substring(name_cursor_pos + 1, gbl.SelectedPlayer.name.Length - name_cursor_pos);
+                                    gbl.SelectedPlayer.name = part_a + part_b;
                                 }
                             }
                             break;
@@ -1465,7 +1465,7 @@ namespace engine
                                             player_ptr.stats[stat_var].max = gbl.class_stats_min[(int)player_ptr._class].con_min;
                                         }
 
-                                        int max_hp = calc_max_hp(gbl.player_ptr);
+                                        int max_hp = calc_max_hp(gbl.SelectedPlayer);
                                         if (max_hp < player_ptr.hit_point_max)
                                         {
                                             player_ptr.hit_point_max = (byte)max_hp;
@@ -1495,7 +1495,7 @@ namespace engine
                             {
                                 player_ptr.hit_point_max -= 1;
 
-                                if (sub_506BA(gbl.player_ptr) > player_ptr.hit_point_max)
+                                if (sub_506BA(gbl.SelectedPlayer) > player_ptr.hit_point_max)
                                 {
                                     player_ptr.hit_point_max = (byte)sub_506BA(player_ptr);
                                 }
@@ -1506,7 +1506,7 @@ namespace engine
                             {
                                 if (name_cursor_pos == 1)
                                 {
-                                    name_cursor_pos = (byte)gbl.player_ptr.name.Length;
+                                    name_cursor_pos = (byte)gbl.SelectedPlayer.name.Length;
                                 }
                                 else
                                 {
@@ -1569,7 +1569,7 @@ namespace engine
                                             player_ptr.stats[stat_var].max = racial_stats_limits[(int)player_ptr.race].con_max;
                                         }
 
-                                        if (sub_506BA(gbl.player_ptr) > player_ptr.hit_point_max)
+                                        if (sub_506BA(gbl.SelectedPlayer) > player_ptr.hit_point_max)
                                         {
                                             player_ptr.hit_point_max = (byte)sub_506BA(player_ptr);
                                         }
@@ -1594,9 +1594,9 @@ namespace engine
                                 {
                                     player_ptr.hit_point_max += 1;
 
-                                    if (calc_max_hp(gbl.player_ptr) < player_ptr.hit_point_max)
+                                    if (calc_max_hp(gbl.SelectedPlayer) < player_ptr.hit_point_max)
                                     {
-                                        player_ptr.hit_point_max = (byte)calc_max_hp(gbl.player_ptr);
+                                        player_ptr.hit_point_max = (byte)calc_max_hp(gbl.SelectedPlayer);
                                     }
 
                                     player_ptr.hit_point_current = player_ptr.hit_point_max;
@@ -1631,26 +1631,26 @@ namespace engine
                     {
                         if (name_cursor_pos > 1 && edited_stat > 6)
                         {
-                            int len = gbl.player_ptr.name.Length;
+                            int len = gbl.SelectedPlayer.name.Length;
                             int del = name_cursor_pos - 1;
 
                             /* delete char from name */
                             string s = string.Empty;
                             if (del > 0)
                             {
-                                s = gbl.player_ptr.name.Substring(0, del);
+                                s = gbl.SelectedPlayer.name.Substring(0, del);
                             }
 
                             if ((len - del) > 0)
                             {
-                                s += gbl.player_ptr.name.Substring(del + 1);
+                                s += gbl.SelectedPlayer.name.Substring(del + 1);
                             }
 
-                            gbl.player_ptr.name = s;
+                            gbl.SelectedPlayer.name = s;
 
-                            if (name_cursor_pos > gbl.player_ptr.name.Length)
+                            if (name_cursor_pos > gbl.SelectedPlayer.name.Length)
                             {
-                                name_cursor_pos = (byte)gbl.player_ptr.name.Length;
+                                name_cursor_pos = (byte)gbl.SelectedPlayer.name.Length;
                             }
                         }
                     }
@@ -1696,13 +1696,13 @@ namespace engine
                                 player_ptr.stats[stat_var].max = stats_bkup[stat_var];
                             }
 
-                            gbl.player_ptr.tmp_str_00 = orig_str_100;
-                            gbl.player_ptr.hit_point_max = orig_hp_max;
-                            gbl.player_ptr.hit_point_current = gbl.player_ptr.hit_point_max;
+                            gbl.SelectedPlayer.tmp_str_00 = orig_str_100;
+                            gbl.SelectedPlayer.hit_point_max = orig_hp_max;
+                            gbl.SelectedPlayer.hit_point_current = gbl.SelectedPlayer.hit_point_max;
 
-                            gbl.player_ptr.name = nameBackup;
+                            gbl.SelectedPlayer.name = nameBackup;
 
-                            ovr025.reclac_player_values(gbl.player_ptr);
+                            ovr025.reclac_player_values(gbl.SelectedPlayer);
                             return;
                         }
                     }
@@ -1710,30 +1710,30 @@ namespace engine
                     {
                         for (int stat_var = 0; stat_var < 6; stat_var++)
                         {
-                            gbl.player_ptr.stats[stat_var].max = stats_bkup[stat_var];
+                            gbl.SelectedPlayer.stats[stat_var].max = stats_bkup[stat_var];
                         }
 
-                        gbl.player_ptr.tmp_str_00 = orig_str_100;
-                        gbl.player_ptr.hit_point_max = orig_hp_max;
-                        gbl.player_ptr.name = nameBackup;
+                        gbl.SelectedPlayer.tmp_str_00 = orig_str_100;
+                        gbl.SelectedPlayer.hit_point_max = orig_hp_max;
+                        gbl.SelectedPlayer.name = nameBackup;
 
-                        gbl.player_ptr.hit_point_current = gbl.player_ptr.hit_point_max;
-                        ovr025.reclac_player_values(gbl.player_ptr);
+                        gbl.SelectedPlayer.hit_point_current = gbl.SelectedPlayer.hit_point_max;
+                        ovr025.reclac_player_values(gbl.SelectedPlayer);
                         return;
                     }
                 }
 
-                ovr025.reclac_player_values(gbl.player_ptr);
+                ovr025.reclac_player_values(gbl.SelectedPlayer);
                 ovr020.display_player_stats01();
 
                 draw_highlight_stat(true, edited_stat, name_cursor_pos);
             } while (var_36 == true || var_35 != 0x4B);
 
-            ovr026.calc_cleric_spells(true, gbl.player_ptr);
+            ovr026.calc_cleric_spells(true, gbl.SelectedPlayer);
 
-            gbl.player_ptr.npcTreasureShareCount = 1;
+            gbl.SelectedPlayer.npcTreasureShareCount = 1;
 
-            player_ptr = gbl.player_ptr;
+            player_ptr = gbl.SelectedPlayer;
             orig_hp_max = 0;
             byte var_40 = 0;
 
@@ -1766,10 +1766,10 @@ namespace engine
 
             for (int stat_var = 0; stat_var <= 5; stat_var++)
             {
-                gbl.player_ptr.stats[stat_var].tmp = gbl.player_ptr.stats[stat_var].max;
+                gbl.SelectedPlayer.stats[stat_var].tmp = gbl.SelectedPlayer.stats[stat_var].max;
             }
 
-            gbl.player_ptr.max_str_00 = gbl.player_ptr.tmp_str_00;
+            gbl.SelectedPlayer.max_str_00 = gbl.SelectedPlayer.tmp_str_00;
         }
 
 
@@ -1969,7 +1969,7 @@ namespace engine
 
         internal static void duplicateCombatIcon(bool recolour, byte destIndex, byte sourceIndex) /* sub_4FC5B */
         {
-            gbl.combat_icons[destIndex].DuplicateIcon(recolour, gbl.combat_icons[sourceIndex], gbl.player_ptr);
+            gbl.combat_icons[destIndex].DuplicateIcon(recolour, gbl.combat_icons[sourceIndex], gbl.SelectedPlayer);
         }
 
         static Set unk_4FE94 = new Set(0x0009, new byte[] { 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x20 });
@@ -2002,7 +2002,7 @@ namespace engine
             {
                 ovr017.LoadPlayerCombatIcon(false);
 
-                player_ptr = gbl.player_ptr;
+                player_ptr = gbl.SelectedPlayer;
 
                 var_8 = 1;
                 System.Array.Copy(player_ptr.icon_colours, bkup_colours, 6);
@@ -2195,7 +2195,7 @@ namespace engine
                                         }
                                         else if (inputKey == 'K')
                                         {
-                                            player_ptr2 = gbl.player_ptr;
+                                            player_ptr2 = gbl.SelectedPlayer;
                                             headIcon = player_ptr2.head_icon;
                                             var_8 = var_1A;
                                             inputKey = ' ';
@@ -2235,7 +2235,7 @@ namespace engine
                                         }
                                         else if (inputKey == 'K')
                                         {
-                                            player_ptr2 = gbl.player_ptr;
+                                            player_ptr2 = gbl.SelectedPlayer;
                                             weaponIcon = player_ptr2.weapon_icon;
                                             var_8 = var_1A;
                                             inputKey = ' ';
@@ -2533,14 +2533,14 @@ namespace engine
 
         internal static void train_player()
         {
-            if (gbl.player_ptr.health_status != Status.okey &&
+            if (gbl.SelectedPlayer.health_status != Status.okey &&
                 Cheats.free_training == false)
             {
                 seg041.DisplayStatusText(0, 14, "we only train conscious people");
                 return;
             }
 
-            if (gbl.player_ptr.Money.GetGoldWorth() < 1000 &&
+            if (gbl.SelectedPlayer.Money.GetGoldWorth() < 1000 &&
                 Cheats.free_training == false &&
                 gbl.silent_training == false &&
                 gbl.gameWon == false)
@@ -2555,7 +2555,7 @@ namespace engine
             byte class_lvl = 123; /* Simeon */
 
             byte trainerClassMask = gbl.area2_ptr.training_class_mask;
-            Player player_ptr = gbl.player_ptr;
+            Player player_ptr = gbl.SelectedPlayer;
 
             int var_5 = 0;
 
@@ -2684,7 +2684,7 @@ namespace engine
 
                 int y_offset = 4;
 
-                ovr025.displayPlayerName(false, y_offset, 4, gbl.player_ptr);
+                ovr025.displayPlayerName(false, y_offset, 4, gbl.SelectedPlayer);
 
                 seg041.displayString(" will become:", 0, 10, y_offset, player_ptr.name.Length + 4);
 
@@ -2749,7 +2749,7 @@ namespace engine
                     }
                 }
 
-                ovr026.sub_6A3C6(gbl.player_ptr);
+                ovr026.sub_6A3C6(gbl.SelectedPlayer);
 
                 if (gbl.silent_training == false)
                 {
@@ -2800,7 +2800,7 @@ namespace engine
                     return;
                 }
 
-                short var_F = sub_509E0(actualTrainingClassesMask, gbl.player_ptr);
+                short var_F = sub_509E0(actualTrainingClassesMask, gbl.SelectedPlayer);
 
                 int max_hp_increase = var_F / class_count;
 
@@ -2811,7 +2811,7 @@ namespace engine
 
                 player_ptr.hit_point_rolled += (byte)max_hp_increase;
 
-                int var_15 = get_con_hp_adj(gbl.player_ptr);
+                int var_15 = get_con_hp_adj(gbl.SelectedPlayer);
 
                 max_hp_increase = (var_F + var_15) / class_count;
 
