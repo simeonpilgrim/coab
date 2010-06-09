@@ -86,7 +86,7 @@ namespace Classes
 
 		public void SetCoins(int coinType, int count)
 		{
-			money[coinType] += count;
+			money[coinType] = count;
 		}
 
 
