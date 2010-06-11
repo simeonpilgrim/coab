@@ -623,7 +623,7 @@ namespace engine
         }
 
 
-        internal static void cast_spell_on(out bool castSpell, QuickFight quick_fight, byte arg_6)
+		internal static void NonCombatSpellCast(out bool castSpell, QuickFight quick_fight, byte arg_6) // cast_spell_on
         {
             if (gbl.lastSelectetSpellTarget == null)
             {
@@ -635,12 +635,12 @@ namespace engine
 
             castSpell = true;
 
-            switch (gbl.spell_table[arg_6].field_7)
+            switch (gbl.spell_table[arg_6].targetType)
             {
-                case 1:
+				case SpellTargets.Self:
                     break;
 
-                case 2:
+                case SpellTargets.PartyMember:
                     ovr025.load_pic();
 
                     ovr025.selectAPlayer(ref gbl.lastSelectetSpellTarget, true, "Cast Spell on whom");
@@ -656,7 +656,7 @@ namespace engine
                     }
                     break;
 
-                case 4:
+                case SpellTargets.WholeParty:
                     // prepend all players
                     gbl.spellTargets.AddRange(gbl.TeamList);
                     break;
@@ -668,20 +668,20 @@ namespace engine
         }
 
 
-        internal static void sub_5D2E1(byte arg_4, QuickFight quick_fight, byte spell_id)
+        internal static void sub_5D2E1(byte arg_4, QuickFight quick_fight, byte spell_id) // sub_5D2E1
         {
             bool dummy = false;
             sub_5D2E1(ref dummy, arg_4, quick_fight, spell_id);
         }
 
 
-        internal static void sub_5D2E1(ref bool arg_0, byte arg_4, QuickFight quick_fight, byte spell_id)
+        internal static void sub_5D2E1(ref bool arg_0, byte arg_4, QuickFight quick_fight, byte spell_id) // sub_5D2E1
         {
             Player caster = gbl.SelectedPlayer;
-            bool var_1 = true;
+            bool stillCast = true;
 
             if (gbl.game_state != GameState.Combat &&
-                gbl.spell_table[spell_id].field_7 == 0)
+                gbl.spell_table[spell_id].targetType == SpellTargets.Combat)
             {
                 if (gbl.spell_from_item == false)
                 {
@@ -705,7 +705,7 @@ namespace engine
                 }
 
                 arg_4 = 0;
-                var_1 = false;
+                stillCast = false;
             }
 
             if (caster.HasAffect(Affects.affect_4a) == true)
@@ -716,7 +716,7 @@ namespace engine
                 {
                     cast_spell_text(spell_id, "miscasts", caster);
                     arg_4 = 0;
-                    var_1 = false;
+                    stillCast = false;
                 }
             }
 
@@ -725,13 +725,13 @@ namespace engine
                 cast_spell_text(spell_id, "casts", caster);
             }
 
-            while (var_1 == true)
+            while (stillCast == true)
             {
                 gbl.dword_1D5CA(out arg_0, quick_fight, spell_id);
 
                 if (arg_0 == true)
                 {
-                    var_1 = false;
+                    stillCast = false;
 
                     if (gbl.game_state == GameState.Combat)
                     {
@@ -784,7 +784,7 @@ namespace engine
                 {
                     if (gbl.game_state != GameState.Combat)
                     {
-                        var_1 = false;
+                        stillCast = false;
                     }
                     else if (quick_fight == QuickFight.True ||
 							ovr027.yes_no(gbl.alertMenuColors, "Abort Spell? ") == 'Y')
@@ -795,7 +795,7 @@ namespace engine
 							caster.spellList.ClearSpell(spell_id);
                         }
 
-                        var_1 = false;
+                        stillCast = false;
                     }
                 }
             }
@@ -3142,7 +3142,7 @@ namespace engine
             gbl.lastSelectetSpellTarget = null;
             gbl.byte_1D2C8 = true;
 
-            gbl.dword_1D5CA = new spellDelegate(ovr023.cast_spell_on);
+            gbl.dword_1D5CA = new spellDelegate(ovr023.NonCombatSpellCast);
 
             gbl.spellTable = new Dictionary<Spells, spellDelegate2>();
 

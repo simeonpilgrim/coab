@@ -23,6 +23,14 @@ namespace Classes
         Both = 2
     }
 
+	public enum SpellTargets
+	{
+		Combat = 0, // maybe
+		Self = 1, // maybe
+		PartyMember = 2,
+		WholeParty = 4
+	}
+
     public enum SpellSource
     {
         Cast = 1,
@@ -150,7 +158,7 @@ namespace Classes
         public SpellEntry(SpellClass _spellClass, sbyte _spellLevel, 
             int _fixedRange, int _perLvlRange, 
             int _fixedDuration, byte _perLvlDuration,
-            byte f6, byte f7, 
+			byte f6, SpellTargets _targets, 
             DamageOnSave _damageOnSave, SaveVerseType _saveVerse, 
             Affects _affectId, SpellWhen _whenCast, 
             int _castingDelay, byte fd, byte fe, byte ff)
@@ -162,7 +170,7 @@ namespace Classes
             fixedDuration = _fixedDuration;
             perLvlDuration = _perLvlDuration;
             field_6 = f6;
-            field_7 = f7;
+			targetType = _targets;
             damageOnSave = _damageOnSave;
             saveVerse = _saveVerse;
             affect_id = _affectId;
@@ -183,7 +191,7 @@ namespace Classes
         public int fixedDuration; //seg600:37E0             
         public int perLvlDuration; //seg600:37E1            
         public byte field_6; //seg600:37E2              
-        public byte field_7; //seg600:37E3             
+		public SpellTargets targetType; //seg600:37E3 //              
         public DamageOnSave damageOnSave; //seg600:37E4 unk_19AF4  // field_8 
         public SaveVerseType saveVerse; //seg600:37E5 unk_19AF5    
         public Affects affect_id; //seg600:37E6 unk_19AF6   // field_A
