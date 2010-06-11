@@ -14,7 +14,7 @@ namespace engine
 
             gbl.missile_dax = null;
             ovr033.Color_0_8_normal();
-            gbl.dword_1D5CA = ovr023.cast_spell_on;
+            gbl.dword_1D5CA = ovr023.NonCombatSpellCast;
         }
 
 
