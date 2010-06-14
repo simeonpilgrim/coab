@@ -5,59 +5,59 @@ using System.IO;
 
 namespace engine
 {
-    class ovr017
-    {
-        static void BuildLoadablePlayersLists(ref List<MenuItem> fileNames, ref List<MenuItem> displayNames,
-            short playerFileSize, int npcOffset, int nameOffset, string fileFilter) // sub_4708B
-        {
-            Classes.File file = new Classes.File();
+	class ovr017
+	{
+		static void BuildLoadablePlayersLists(ref List<MenuItem> fileNames, ref List<MenuItem> displayNames,
+			short playerFileSize, int npcOffset, int nameOffset, string fileFilter) // sub_4708B
+		{
+			Classes.File file = new Classes.File();
 
-            byte[] data = new byte[16];
+			byte[] data = new byte[16];
 
 			foreach (string filePath in Directory.GetFiles(Config.GetSavePath(), fileFilter))
 			{
 				FileStream stream = System.IO.File.Open(filePath, FileMode.Open, FileAccess.Read);
 
-                if (stream.Length == playerFileSize)
-                {
+				if (stream.Length == playerFileSize)
+				{
 					stream.Seek(nameOffset, SeekOrigin.Begin);
 					stream.Read(data, 0, 16);
 
-                    string playerName = Sys.ArrayToString(data, 0, 16).Trim();
+					string playerName = Sys.ArrayToString(data, 0, 16).Trim();
 
-                    byte var_164;
+					byte var_164;
 
-                    if (gbl.import_from == ImportSource.Hillsfar)
-                    {
-                        var_164 = 0;
-                    }
-                    else
-                    {
+					if (gbl.import_from == ImportSource.Hillsfar)
+					{
+						var_164 = 0;
+					}
+					else
+					{
 						stream.Seek(npcOffset, SeekOrigin.Begin);
 						stream.Read(data, 0, 1);
-                        var_164 = data[0];
-                    }
+						var_164 = data[0];
+					}
 
 
-                    string fullNameText =
+					string fullNameText =
 						string.Compare(Path.GetExtension(filePath), ".sav", true) == 0 ?
 						string.Format("{0,-15} from save game {1}", playerName, filePath[7]) : playerName;
 
-                    bool found = gbl.TeamList.Find(player => playerName == player.name.Trim()) != null;
+					bool found = gbl.TeamList.Find(player => playerName == player.name.Trim()) != null;
 
-                    if (found == false && var_164 <= 0x7F)
-                    {
+					if (found == false && var_164 <= 0x7F)
+					{
 						fileNames.Add(new MenuItem(filePath));
-                        displayNames.Add(new MenuItem(fullNameText));
-                    }
-                }
-				
-				stream.Close();
-            }
-        }
+						displayNames.Add(new MenuItem(fullNameText));
+					}
+				}
 
-        static int[] PlayerNameOffset = { 0, 0, 4 };
-        static int[] NpcFileOffset = { 0xf7, 0x84, 0x13 };
+				stream.Close();
+			}
+		}
+
+		static int[] PlayerNameOffset = { 0, 0, 4 };
+		static int[] NpcFileOffset = { 0xf7, 0x84, 0x13 };
 
 		internal static void BuildLoadablePlayersLists(out List<MenuItem> fileNames, out List<MenuItem> displayNames) // sub_47465
 		{
@@ -79,133 +79,133 @@ namespace engine
 			}
 		}
 
-        static Set unk_47635 = new Set(0x0001, new byte[] { 0x21 });
+		static Set unk_47635 = new Set(0x0001, new byte[] { 0x21 });
 
 
-        internal static void LoadPlayerCombatIcon(bool recolour) /* sub_47A90 */
-        {
-            seg042.set_game_area(1);
+		internal static void LoadPlayerCombatIcon(bool recolour) /* sub_47A90 */
+		{
+			seg042.set_game_area(1);
 
-            Player player = gbl.SelectedPlayer;
+			Player player = gbl.SelectedPlayer;
 
-            char[] sizeToken = new char[] { '\0', 'S', 'T' };
+			char[] sizeToken = new char[] { '\0', 'S', 'T' };
 
-            ovr034.chead_cbody_comspr_icon(11, player.head_icon, "CHEAD" + sizeToken[player.icon_size].ToString());
-            ovr034.chead_cbody_comspr_icon(player.icon_id, player.weapon_icon, "CBODY" + sizeToken[player.icon_size].ToString());
+			ovr034.chead_cbody_comspr_icon(11, player.head_icon, "CHEAD" + sizeToken[player.icon_size].ToString());
+			ovr034.chead_cbody_comspr_icon(player.icon_id, player.weapon_icon, "CBODY" + sizeToken[player.icon_size].ToString());
 
-            gbl.combat_icons[player.icon_id].MergeIcon(gbl.combat_icons[11]);
+			gbl.combat_icons[player.icon_id].MergeIcon(gbl.combat_icons[11]);
 
-            if (recolour)
-            {
-                byte[] newColors = new byte[16];
-                byte[] oldColors = new byte[16];
+			if (recolour)
+			{
+				byte[] newColors = new byte[16];
+				byte[] oldColors = new byte[16];
 
-                for (byte i = 0; i <= 15; i++)
-                {
-                    oldColors[i] = i;
-                    newColors[i] = i;
-                }
+				for (byte i = 0; i <= 15; i++)
+				{
+					oldColors[i] = i;
+					newColors[i] = i;
+				}
 
-                for (int i = 0; i < 6; i++)
-                {
-                    newColors[gbl.default_icon_colours[i]] = (byte)(player.icon_colours[i] & 0x0F);
-                    newColors[gbl.default_icon_colours[i] + 8] = (byte)((player.icon_colours[i] & 0xF0) >> 4);
-                }
+				for (int i = 0; i < 6; i++)
+				{
+					newColors[gbl.default_icon_colours[i]] = (byte)(player.icon_colours[i] & 0x0F);
+					newColors[gbl.default_icon_colours[i] + 8] = (byte)((player.icon_colours[i] & 0xF0) >> 4);
+				}
 
-                gbl.combat_icons[player.icon_id].Recolor(false, newColors, oldColors);
-            }
+				gbl.combat_icons[player.icon_id].Recolor(false, newColors, oldColors);
+			}
 
-            ovr034.ReleaseCombatIcon(11);
-            seg042.restore_game_area();
-            seg043.clear_keyboard();
-        }
+			ovr034.ReleaseCombatIcon(11);
+			seg042.restore_game_area();
+			seg043.clear_keyboard();
+		}
 
 
-        internal static void remove_player_file(Player player)
-        {
-            string full_path = Path.Combine(Config.GetSavePath(), seg042.clean_string(player.name));
+		internal static void remove_player_file(Player player)
+		{
+			string full_path = Path.Combine(Config.GetSavePath(), seg042.clean_string(player.name));
 
-            seg042.delete_file(full_path + ".guy");
-            seg042.delete_file(full_path + ".swg");
-            seg042.delete_file(full_path + ".fx");
-        }
+			seg042.delete_file(full_path + ".guy");
+			seg042.delete_file(full_path + ".swg");
+			seg042.delete_file(full_path + ".fx");
+		}
 
-        internal static void SavePlayer(string arg_0, Player player) // sub_47DFC
-        {
-            char input_key;
-            Classes.File file = new Classes.File();
+		internal static void SavePlayer(string arg_0, Player player) // sub_47DFC
+		{
+			char input_key;
+			Classes.File file = new Classes.File();
 
-            gbl.import_from = ImportSource.Curse;
+			gbl.import_from = ImportSource.Curse;
 
-            string ext_text;
-            string file_text;
+			string ext_text;
+			string file_text;
 
-            if (arg_0 == "")
-            {
-                ext_text = ".guy";
-                file_text = seg042.clean_string(player.name);
-            }
-            else
-            {
-                ext_text = ".sav";
-                file_text = arg_0;
-            }
+			if (arg_0 == "")
+			{
+				ext_text = ".guy";
+				file_text = seg042.clean_string(player.name);
+			}
+			else
+			{
+				ext_text = ".sav";
+				file_text = arg_0;
+			}
 
-            input_key = 'N';
+			input_key = 'N';
 
-            while (input_key == 'N' &&
-                arg_0.Length == 0 &&
+			while (input_key == 'N' &&
+				arg_0.Length == 0 &&
 				seg042.file_find(Path.Combine(Config.GetSavePath(), file_text) + ext_text) == true)
-            {
+			{
 				input_key = ovr027.yes_no(gbl.alertMenuColors, "Overwrite " + file_text + "? ");
 
-                if (input_key == 'N')
-                {
-                    file_text = string.Empty;
+				if (input_key == 'N')
+				{
+					file_text = string.Empty;
 
-                    while (file_text == string.Empty)
-                    {
-                        file_text = seg041.getUserInputString(8, 0, 10, "New file name: ");
-                    }
-                }
-            }
+					while (file_text == string.Empty)
+					{
+						file_text = seg041.getUserInputString(8, 0, 10, "New file name: ");
+					}
+				}
+			}
 
 			string filePath = Path.Combine(Config.GetSavePath(), file_text);
 
 			file.Assign(filePath + ext_text);
 
-            seg051.Rewrite(file);
+			seg051.Rewrite(file);
 
-            seg051.BlockWrite(Player.StructSize, player.ToByteArray(), file);
-            seg051.Close(file);
+			seg051.BlockWrite(Player.StructSize, player.ToByteArray(), file);
+			seg051.Close(file);
 
 			seg042.delete_file(filePath + ".swg");
 
-            if (player.items.Count > 0)
-            {
+			if (player.items.Count > 0)
+			{
 				file.Assign(filePath + ".swg");
-                seg051.Rewrite(file);
+				seg051.Rewrite(file);
 
-                player.items.ForEach(item => seg051.BlockWrite(Item.StructSize, item.ToByteArray(), file));
+				player.items.ForEach(item => seg051.BlockWrite(Item.StructSize, item.ToByteArray(), file));
 
-                seg051.Close(file);
-            }
+				seg051.Close(file);
+			}
 
 			seg042.delete_file(filePath + ".fx");
 
-            if (player.affects.Count > 0)
-            {
+			if (player.affects.Count > 0)
+			{
 				file.Assign(filePath + ".fx");
-                seg051.Rewrite(file);
+				seg051.Rewrite(file);
 
-                foreach(Affect affect in player.affects)
-                {
-                    seg051.BlockWrite(Affect.StructSize, affect.ToByteArray(), file);
-                }
+				foreach (Affect affect in player.affects)
+				{
+					seg051.BlockWrite(Affect.StructSize, affect.ToByteArray(), file);
+				}
 
-                seg051.Close(file);
-            }
-        }
+				seg051.Close(file);
+			}
+		}
 
 		internal static bool PlayerFileExists(string fileExt, string player_name) // sub_483AE
 		{
@@ -230,330 +230,330 @@ namespace engine
 		}
 
 
-        internal static Player ConvertPoolRadPlayer(PoolRadPlayer bp_var_1C0)
-        {
-            /* nested function, arg_0 is BP */
-            Player player = new Player();
+		internal static Player ConvertPoolRadPlayer(PoolRadPlayer bp_var_1C0)
+		{
+			/* nested function, arg_0 is BP */
+			Player player = new Player();
 
-            player.race = (Race)bp_var_1C0.race;
-            player.sex = bp_var_1C0.sex;
+			player.race = (Race)bp_var_1C0.race;
+			player.sex = bp_var_1C0.sex;
 
-            player.name = bp_var_1C0.name;
+			player.name = bp_var_1C0.name;
 
-            int race = (int)player.race;
-            for (int stat = 0; stat < 6; stat++)
-            {
-                player.stats[stat].tmp = bp_var_1C0.stats[stat];
+			int race = (int)player.race;
+			for (int stat = 0; stat < 6; stat++)
+			{
+				player.stats[stat].tmp = bp_var_1C0.stats[stat];
 
-                switch ((Stat)stat)
-                {
-                    case Stat.STR:
-                        if (player.stats[stat].tmp < ovr018.racial_stats_limits[race].str_min[player.sex])
-                        {
-                            player.stats[stat].tmp = ovr018.racial_stats_limits[race].str_min[player.sex];
-                        }
+				switch ((Stat)stat)
+				{
+					case Stat.STR:
+						if (player.stats[stat].tmp < ovr018.racial_stats_limits[race].str_min[player.sex])
+						{
+							player.stats[stat].tmp = ovr018.racial_stats_limits[race].str_min[player.sex];
+						}
 
-                        if (player.stats[stat].tmp > ovr018.racial_stats_limits[race].str_max[player.sex])
-                        {
-                            player.stats[stat].tmp = ovr018.racial_stats_limits[race].str_max[player.sex];
-                        }
-                        break;
+						if (player.stats[stat].tmp > ovr018.racial_stats_limits[race].str_max[player.sex])
+						{
+							player.stats[stat].tmp = ovr018.racial_stats_limits[race].str_max[player.sex];
+						}
+						break;
 
-                    case Stat.INT:
-                        if (player.stats[stat].tmp < ovr018.racial_stats_limits[race].int_min)
-                        {
-                            player.stats[stat].tmp = ovr018.racial_stats_limits[race].int_min;
-                        }
+					case Stat.INT:
+						if (player.stats[stat].tmp < ovr018.racial_stats_limits[race].int_min)
+						{
+							player.stats[stat].tmp = ovr018.racial_stats_limits[race].int_min;
+						}
 
-                        if (player.stats[stat].tmp > ovr018.racial_stats_limits[race].int_max)
-                        {
-                            player.stats[stat].tmp = ovr018.racial_stats_limits[race].int_max;
-                        }
-                        break;
+						if (player.stats[stat].tmp > ovr018.racial_stats_limits[race].int_max)
+						{
+							player.stats[stat].tmp = ovr018.racial_stats_limits[race].int_max;
+						}
+						break;
 
-                    case Stat.WIS:
-                        if (player.stats[stat].tmp < ovr018.racial_stats_limits[race].wis_min)
-                        {
-                            player.stats[stat].tmp = ovr018.racial_stats_limits[race].wis_min;
-                        }
+					case Stat.WIS:
+						if (player.stats[stat].tmp < ovr018.racial_stats_limits[race].wis_min)
+						{
+							player.stats[stat].tmp = ovr018.racial_stats_limits[race].wis_min;
+						}
 
-                        if (player.stats[stat].tmp > ovr018.racial_stats_limits[race].wis_max)
-                        {
-                            player.stats[stat].tmp = ovr018.racial_stats_limits[race].wis_max;
-                        }
-                        break;
+						if (player.stats[stat].tmp > ovr018.racial_stats_limits[race].wis_max)
+						{
+							player.stats[stat].tmp = ovr018.racial_stats_limits[race].wis_max;
+						}
+						break;
 
-                    case Stat.DEX:
-                        if (player.stats[stat].tmp < ovr018.racial_stats_limits[race].dex_min)
-                        {
-                            player.stats[stat].tmp = ovr018.racial_stats_limits[race].dex_min;
-                        }
+					case Stat.DEX:
+						if (player.stats[stat].tmp < ovr018.racial_stats_limits[race].dex_min)
+						{
+							player.stats[stat].tmp = ovr018.racial_stats_limits[race].dex_min;
+						}
 
-                        if (player.stats[stat].tmp > ovr018.racial_stats_limits[race].dex_max)
-                        {
-                            player.stats[stat].tmp = ovr018.racial_stats_limits[race].dex_max;
-                        }
-                        break;
+						if (player.stats[stat].tmp > ovr018.racial_stats_limits[race].dex_max)
+						{
+							player.stats[stat].tmp = ovr018.racial_stats_limits[race].dex_max;
+						}
+						break;
 
-                    case Stat.CON:
-                        if (player.stats[stat].tmp < ovr018.racial_stats_limits[race].con_min)
-                        {
-                            player.stats[stat].tmp = ovr018.racial_stats_limits[race].con_min;
-                        }
+					case Stat.CON:
+						if (player.stats[stat].tmp < ovr018.racial_stats_limits[race].con_min)
+						{
+							player.stats[stat].tmp = ovr018.racial_stats_limits[race].con_min;
+						}
 
-                        if (player.stats[stat].tmp > ovr018.racial_stats_limits[race].con_max)
-                        {
-                            player.stats[stat].tmp = ovr018.racial_stats_limits[race].con_max;
-                        }
-                        break;
+						if (player.stats[stat].tmp > ovr018.racial_stats_limits[race].con_max)
+						{
+							player.stats[stat].tmp = ovr018.racial_stats_limits[race].con_max;
+						}
+						break;
 
-                    case Stat.CHA:
-                        if (player.stats[stat].tmp < ovr018.racial_stats_limits[race].cha_min)
-                        {
-                            player.stats[stat].tmp = ovr018.racial_stats_limits[race].cha_min;
-                        }
+					case Stat.CHA:
+						if (player.stats[stat].tmp < ovr018.racial_stats_limits[race].cha_min)
+						{
+							player.stats[stat].tmp = ovr018.racial_stats_limits[race].cha_min;
+						}
 
-                        if (player.stats[stat].tmp > ovr018.racial_stats_limits[race].cha_max)
-                        {
-                            player.stats[stat].tmp = ovr018.racial_stats_limits[race].cha_max;
-                        }
-                        break;
-                }
+						if (player.stats[stat].tmp > ovr018.racial_stats_limits[race].cha_max)
+						{
+							player.stats[stat].tmp = ovr018.racial_stats_limits[race].cha_max;
+						}
+						break;
+				}
 
-                player.stats[stat].max = player.stats[stat].tmp;
-            }
+				player.stats[stat].max = player.stats[stat].tmp;
+			}
 
-            player.tmp_str_00 = bp_var_1C0.strength_100;
+			player.tmp_str_00 = bp_var_1C0.strength_100;
 
-            var al = ovr018.racial_stats_limits[(int)player.race].str_100_max[player.sex];
+			var al = ovr018.racial_stats_limits[(int)player.race].str_100_max[player.sex];
 
-            if (al > player.tmp_str)
-            {
-                player.tmp_str = al; // does not make sense, to assign str from max 100 strength.
-            }
+			if (al > player.tmp_str)
+			{
+				player.tmp_str = al; // does not make sense, to assign str from max 100 strength.
+			}
 
-            player.max_str_00 = bp_var_1C0.strength_100;
-            player.thac0 = bp_var_1C0.thac0;
-            player._class = (ClassId)bp_var_1C0._class;
-            player.age = bp_var_1C0.age;
-            player.hit_point_max = bp_var_1C0.hp_max;
+			player.max_str_00 = bp_var_1C0.strength_100;
+			player.thac0 = bp_var_1C0.thac0;
+			player._class = (ClassId)bp_var_1C0._class;
+			player.age = bp_var_1C0.age;
+			player.hit_point_max = bp_var_1C0.hp_max;
 
-            System.Array.Copy(bp_var_1C0.field_33, player.spellBook, 0x38);
-            player.spellBook[(int)Spells.animate_dead - 1] = 0;
+			System.Array.Copy(bp_var_1C0.field_33, player.spellBook, 0x38);
+			player.spellBook[(int)Spells.animate_dead - 1] = 0;
 
-            player.attackLevel = bp_var_1C0.field_6B;
-            player.field_DE = bp_var_1C0.field_6C;
+			player.attackLevel = bp_var_1C0.field_6B;
+			player.field_DE = bp_var_1C0.field_6C;
 
-            System.Array.Copy(bp_var_1C0.field_6D, player.saveVerse, 5);
+			System.Array.Copy(bp_var_1C0.field_6D, player.saveVerse, 5);
 
-            player.base_movement = bp_var_1C0.field_72;
-            player.HitDice = bp_var_1C0.field_73;
-            player.multiclassLevel = player.HitDice;
-            player.lost_lvls = bp_var_1C0.field_74;
-            player.lost_hp = bp_var_1C0.field_75;
-            player.field_E9 = bp_var_1C0.field_76;
+			player.base_movement = bp_var_1C0.field_72;
+			player.HitDice = bp_var_1C0.field_73;
+			player.multiclassLevel = player.HitDice;
+			player.lost_lvls = bp_var_1C0.field_74;
+			player.lost_hp = bp_var_1C0.field_75;
+			player.field_E9 = bp_var_1C0.field_76;
 
-            System.Array.Copy(bp_var_1C0.field_77, player.field_EA, 8);
+			System.Array.Copy(bp_var_1C0.field_77, player.field_EA, 8);
 
-            player.field_F6 = bp_var_1C0.field_83;
-            player.control_morale = bp_var_1C0.field_84;
-            player.npcTreasureShareCount = bp_var_1C0.field_85;
-            player.field_F9 = bp_var_1C0.field_86;
-            player.field_FA = bp_var_1C0.field_87;
+			player.field_F6 = bp_var_1C0.field_83;
+			player.control_morale = bp_var_1C0.field_84;
+			player.npcTreasureShareCount = bp_var_1C0.field_85;
+			player.field_F9 = bp_var_1C0.field_86;
+			player.field_FA = bp_var_1C0.field_87;
 
 			player.Money.SetCoins(Money.Platinum, 300);
 
-            System.Array.Copy(bp_var_1C0.field_96, player.ClassLevel, 8);
+			System.Array.Copy(bp_var_1C0.field_96, player.ClassLevel, 8);
 
-            player.monsterType = (MonsterType)bp_var_1C0.field_9F;
-            player.alignment = bp_var_1C0.field_A0;
+			player.monsterType = (MonsterType)bp_var_1C0.field_9F;
+			player.alignment = bp_var_1C0.field_A0;
 
-            player.attacksCount = bp_var_1C0.field_A1;
-            player.baseHalfMoves = bp_var_1C0.field_A2;
-            player.attack1_DiceCountBase = bp_var_1C0.field_A3;
-            player.attack2_DiceCountBase = bp_var_1C0.field_A4;
-            player.attack1_DiceSizeBase = bp_var_1C0.field_A5;
-            player.attack2_DiceSizeBase = bp_var_1C0.field_A6;
-            player.attack1_DamageBonusBase = bp_var_1C0.field_A7;
-            player.attack2_DamageBonusBase = bp_var_1C0.field_A8;
+			player.attacksCount = bp_var_1C0.field_A1;
+			player.baseHalfMoves = bp_var_1C0.field_A2;
+			player.attack1_DiceCountBase = bp_var_1C0.field_A3;
+			player.attack2_DiceCountBase = bp_var_1C0.field_A4;
+			player.attack1_DiceSizeBase = bp_var_1C0.field_A5;
+			player.attack2_DiceSizeBase = bp_var_1C0.field_A6;
+			player.attack1_DamageBonusBase = bp_var_1C0.field_A7;
+			player.attack2_DamageBonusBase = bp_var_1C0.field_A8;
 
-            player.base_ac = bp_var_1C0.field_A9;
-            player.field_125 = bp_var_1C0.field_AA;
-            player.mod_id = bp_var_1C0.field_AB;
+			player.base_ac = bp_var_1C0.field_A9;
+			player.field_125 = bp_var_1C0.field_AA;
+			player.mod_id = bp_var_1C0.field_AB;
 
-            player.exp = bp_var_1C0.field_AC;
-            player.classFlags = bp_var_1C0.field_B0;
-            player.hit_point_rolled = bp_var_1C0.field_B1;
+			player.exp = bp_var_1C0.field_AC;
+			player.classFlags = bp_var_1C0.field_B0;
+			player.hit_point_rolled = bp_var_1C0.field_B1;
 
-            for (int var_2 = 1; var_2 <= 3; var_2++)
-            {
-                player.spellCastCount[0, var_2 - 1] = bp_var_1C0.field_B2[var_2 - 1];
-                player.spellCastCount[2, var_2 - 1] = bp_var_1C0.field_B5[var_2 - 1];
-            }
+			for (int var_2 = 1; var_2 <= 3; var_2++)
+			{
+				player.spellCastCount[0, var_2 - 1] = bp_var_1C0.field_B2[var_2 - 1];
+				player.spellCastCount[2, var_2 - 1] = bp_var_1C0.field_B5[var_2 - 1];
+			}
 
-            player.field_13C = bp_var_1C0.field_B8;
+			player.field_13C = bp_var_1C0.field_B8;
 
-            player.field_13E = bp_var_1C0.field_BA;
-            player.field_13F = bp_var_1C0.field_BB;
+			player.field_13E = bp_var_1C0.field_BA;
+			player.field_13F = bp_var_1C0.field_BB;
 
-            player.field_140 = bp_var_1C0.field_BC;
-            player.head_icon = bp_var_1C0.field_BD;
-            player.weapon_icon = bp_var_1C0.field_BE;
-            player.icon_size = bp_var_1C0.field_C0;
+			player.field_140 = bp_var_1C0.field_BC;
+			player.head_icon = bp_var_1C0.field_BD;
+			player.weapon_icon = bp_var_1C0.field_BE;
+			player.icon_size = bp_var_1C0.field_C0;
 
-            System.Array.Copy(bp_var_1C0.field_C1, player.icon_colours, 6);
-
-            
-            //player.field_14c = bp_var_1C0.field_C7; // Item count
-
-           //mov	di, [bp+arg_0] // copy item pointers...
-            //les	di, ss:[di-0x1C0]
-            //add	di, 0x0CC
-            //push	es
-            //push	di
-            //les	di, int ptr [bp+player.offset]
-            //add	di, 0x151
-            //push	es
-            //push	di
-            //mov	ax, 0x34
-            //push	ax
-            //call	Move(Any &,Any &,Word)
-
-            player.field_185 = bp_var_1C0.field_100;
-            player.field_186 = (sbyte)bp_var_1C0.field_101;
-            player.weight = bp_var_1C0.field_102;
-
-            player.health_status = (Status)bp_var_1C0.field_10C;
-            player.in_combat = bp_var_1C0.field_10D != 0;
-            player.combat_team = (CombatTeam)bp_var_1C0.field_10E;
-            player.hitBonus = bp_var_1C0.field_110;
-
-            player.ac = bp_var_1C0.field_111;
-            player.ac_behind = bp_var_1C0.field_112;
-
-            player.attack1_AttacksLeft = bp_var_1C0.field_113;
-            player.attack2_AttacksLeft = bp_var_1C0.field_114;
-
-            player.attack1_DiceCount = bp_var_1C0.field_115;
-            player.attack2_DiceCount = bp_var_1C0.field_116;
-
-            player.attack1_DiceSize = bp_var_1C0.field_117;
-            player.attack2_DiceSize = bp_var_1C0.field_118;
-
-            player.attack1_DamageBonus = (sbyte)bp_var_1C0.field_119;
-            player.attack2_DamageBonus = bp_var_1C0.field_11A;
-            player.hit_point_current = bp_var_1C0.field_11B;
-            player.movement = (byte)bp_var_1C0.field_11C;
-
-            return player;
-        }
+			System.Array.Copy(bp_var_1C0.field_C1, player.icon_colours, 6);
 
 
-        internal static void sub_48F35(HillsFarPlayer hills_far_player, Player bp_player_ptr, Player bp_var_1CA)
-        {
-            Player var_7 = bp_player_ptr;
+			//player.field_14c = bp_var_1C0.field_C7; // Item count
 
-            if (var_7.tmp_str < hills_far_player.field_14)
-            {
-                var_7.tmp_str = hills_far_player.field_14;
-                var_7.strength = hills_far_player.field_14;
-            }
+			//mov	di, [bp+arg_0] // copy item pointers...
+			//les	di, ss:[di-0x1C0]
+			//add	di, 0x0CC
+			//push	es
+			//push	di
+			//les	di, int ptr [bp+player.offset]
+			//add	di, 0x151
+			//push	es
+			//push	di
+			//mov	ax, 0x34
+			//push	ax
+			//call	Move(Any &,Any &,Word)
 
-            if (var_7.tmp_str_00 < hills_far_player.field_15)
-            {
-                var_7.tmp_str_00 = hills_far_player.field_15;
-                var_7.max_str_00 = hills_far_player.field_15;
-            }
+			player.field_185 = bp_var_1C0.field_100;
+			player.field_186 = (sbyte)bp_var_1C0.field_101;
+			player.weight = bp_var_1C0.field_102;
 
-            if (var_7.tmp_int < hills_far_player.field_16)
-            {
-                var_7.tmp_int = hills_far_player.field_16;
-                var_7._int = hills_far_player.field_16;
-            }
-            if (var_7.tmp_wis < hills_far_player.field_17)
-            {
-                var_7.tmp_wis = hills_far_player.field_17;
-                var_7.wis = hills_far_player.field_17;
-            }
-            if (var_7.tmp_dex < hills_far_player.field_18)
-            {
-                var_7.tmp_dex = hills_far_player.field_18;
-                var_7.dex = hills_far_player.field_18;
-            }
-            if (var_7.tmp_con < hills_far_player.field_19)
-            {
-                var_7.tmp_con = hills_far_player.field_19;
-                var_7.con = hills_far_player.field_19;
-            }
-            if (var_7.tmp_cha < hills_far_player.field_1A)
-            {
-                var_7.tmp_cha = hills_far_player.field_1A;
-                var_7.charisma = hills_far_player.field_1A;
-            }
+			player.health_status = (Status)bp_var_1C0.field_10C;
+			player.in_combat = bp_var_1C0.field_10D != 0;
+			player.combat_team = (CombatTeam)bp_var_1C0.field_10E;
+			player.hitBonus = bp_var_1C0.field_110;
 
-            if (var_7.exp < hills_far_player.field_2E)
-            {
-                var_7.exp = hills_far_player.field_2E;
-            }
+			player.ac = bp_var_1C0.field_111;
+			player.ac_behind = bp_var_1C0.field_112;
+
+			player.attack1_AttacksLeft = bp_var_1C0.field_113;
+			player.attack2_AttacksLeft = bp_var_1C0.field_114;
+
+			player.attack1_DiceCount = bp_var_1C0.field_115;
+			player.attack2_DiceCount = bp_var_1C0.field_116;
+
+			player.attack1_DiceSize = bp_var_1C0.field_117;
+			player.attack2_DiceSize = bp_var_1C0.field_118;
+
+			player.attack1_DamageBonus = (sbyte)bp_var_1C0.field_119;
+			player.attack2_DamageBonus = bp_var_1C0.field_11A;
+			player.hit_point_current = bp_var_1C0.field_11B;
+			player.movement = (byte)bp_var_1C0.field_11C;
+
+			return player;
+		}
+
+
+		internal static void sub_48F35(HillsFarPlayer hills_far_player, Player bp_player_ptr, Player bp_var_1CA)
+		{
+			Player var_7 = bp_player_ptr;
+
+			if (var_7.tmp_str < hills_far_player.field_14)
+			{
+				var_7.tmp_str = hills_far_player.field_14;
+				var_7.strength = hills_far_player.field_14;
+			}
+
+			if (var_7.tmp_str_00 < hills_far_player.field_15)
+			{
+				var_7.tmp_str_00 = hills_far_player.field_15;
+				var_7.max_str_00 = hills_far_player.field_15;
+			}
+
+			if (var_7.tmp_int < hills_far_player.field_16)
+			{
+				var_7.tmp_int = hills_far_player.field_16;
+				var_7._int = hills_far_player.field_16;
+			}
+			if (var_7.tmp_wis < hills_far_player.field_17)
+			{
+				var_7.tmp_wis = hills_far_player.field_17;
+				var_7.wis = hills_far_player.field_17;
+			}
+			if (var_7.tmp_dex < hills_far_player.field_18)
+			{
+				var_7.tmp_dex = hills_far_player.field_18;
+				var_7.dex = hills_far_player.field_18;
+			}
+			if (var_7.tmp_con < hills_far_player.field_19)
+			{
+				var_7.tmp_con = hills_far_player.field_19;
+				var_7.con = hills_far_player.field_19;
+			}
+			if (var_7.tmp_cha < hills_far_player.field_1A)
+			{
+				var_7.tmp_cha = hills_far_player.field_1A;
+				var_7.charisma = hills_far_player.field_1A;
+			}
+
+			if (var_7.exp < hills_far_player.field_2E)
+			{
+				var_7.exp = hills_far_player.field_2E;
+			}
 
 			// If imported player has more than 500 platinum import that amount.
-            if (bp_player_ptr.Money.GetGoldWorth() < hills_far_player.field_28)
-            {
-                for (int slot = 0; slot < 5; slot++)
-                {
-                    ovr022.DropCoins(slot, bp_player_ptr.Money.GetCoins(slot), bp_player_ptr);
-                }
-                ovr022.addPlayerGold((short)(hills_far_player.field_28 / 5));
-            }
+			if (bp_player_ptr.Money.GetGoldWorth() < hills_far_player.field_28)
+			{
+				for (int slot = 0; slot < 5; slot++)
+				{
+					ovr022.DropCoins(slot, bp_player_ptr.Money.GetCoins(slot), bp_player_ptr);
+				}
+				ovr022.addPlayerGold((short)(hills_far_player.field_28 / 5));
+			}
 
-            if (bp_player_ptr.age < hills_far_player.field_1E)
-            {
-                bp_player_ptr.age = hills_far_player.field_1E;
-            }
+			if (bp_player_ptr.age < hills_far_player.field_1E)
+			{
+				bp_player_ptr.age = hills_far_player.field_1E;
+			}
 
-            var_7.cleric_lvl = (hills_far_player.field_B7 > 0) ? (byte)1 : (byte)0;
-            var_7.magic_user_lvl = (hills_far_player.field_B8 > 0) ? (byte)1 : (byte)0;
-            var_7.fighter_lvl = (hills_far_player.field_B9 > 0) ? (byte)1 : (byte)0;
-            var_7.thief_lvl = (hills_far_player.field_BA > 0) ? (byte)1 : (byte)0;
+			var_7.cleric_lvl = (hills_far_player.field_B7 > 0) ? (byte)1 : (byte)0;
+			var_7.magic_user_lvl = (hills_far_player.field_B8 > 0) ? (byte)1 : (byte)0;
+			var_7.fighter_lvl = (hills_far_player.field_B9 > 0) ? (byte)1 : (byte)0;
+			var_7.thief_lvl = (hills_far_player.field_BA > 0) ? (byte)1 : (byte)0;
 
-            var_7.HitDice = 1;
+			var_7.HitDice = 1;
 
-            if (hills_far_player.field_26 != 0)
-            {
-                var_7.field_192 = 1;
-            }
+			if (hills_far_player.field_26 != 0)
+			{
+				var_7.field_192 = 1;
+			}
 
-            SilentTrainPlayer();
-            gbl.SelectedPlayer = bp_var_1CA;
+			SilentTrainPlayer();
+			gbl.SelectedPlayer = bp_var_1CA;
 
-            var_7.hit_point_max = hills_far_player.field_21;
-            var_7.hit_point_rolled = (byte)(var_7.hit_point_max - ovr018.get_con_hp_adj(bp_player_ptr));
-            var_7.hit_point_current = hills_far_player.field_20;
-        }
+			var_7.hit_point_max = hills_far_player.field_21;
+			var_7.hit_point_rolled = (byte)(var_7.hit_point_max - ovr018.get_con_hp_adj(bp_player_ptr));
+			var_7.hit_point_current = hills_far_player.field_20;
+		}
 
-        internal static void SilentTrainPlayer()
-        {
-            gbl.area2_ptr.training_class_mask = 0xff;
-            gbl.can_train_no_more = false;
-            gbl.silent_training = true;
+		internal static void SilentTrainPlayer()
+		{
+			gbl.area2_ptr.training_class_mask = 0xff;
+			gbl.can_train_no_more = false;
+			gbl.silent_training = true;
 
-            do
-            {
-                ovr018.train_player();
-            } while (gbl.can_train_no_more == false);
+			do
+			{
+				ovr018.train_player();
+			} while (gbl.can_train_no_more == false);
 
-            gbl.silent_training = false;
-        }
+			gbl.silent_training = false;
+		}
 
 
-        static Set asc_49280 = new Set(0x020E, new byte[] { 
-            0x04, 0x04, 0x00, 0x80, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0x08, 0x00, 0x10	});
+		static Set asc_49280 = new Set(0x020E, new byte[] { 
+    0x04, 0x04, 0x00, 0x80, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0x08, 0x00, 0x10	});
 
-        static ClassId[] HillsFarClassMap = {
-            ClassId.unknown,    ClassId.thief,      ClassId.fighter,    ClassId.mc_f_t, ClassId.magic_user,
-            ClassId.mc_mu_t,    ClassId.mc_f_mu,    ClassId.mc_f_mu_t,  ClassId.cleric, ClassId.mc_c_t,
-            ClassId.mc_c_f,     ClassId.unknown,    ClassId.mc_c_mu,    ClassId.unknown, ClassId.mc_c_f_m, 
-            ClassId.unknown};
+		static ClassId[] HillsFarClassMap = {
+    ClassId.unknown,    ClassId.thief,      ClassId.fighter,    ClassId.mc_f_t, ClassId.magic_user,
+    ClassId.mc_mu_t,    ClassId.mc_f_mu,    ClassId.mc_f_mu_t,  ClassId.cleric, ClassId.mc_c_t,
+    ClassId.mc_c_f,     ClassId.unknown,    ClassId.mc_c_mu,    ClassId.unknown, ClassId.mc_c_f_m, 
+    ClassId.unknown};
 
 
 		internal static void import_char01(ref Player player_ptr, string arg_8)
@@ -901,114 +901,114 @@ namespace engine
 		}
 
 
-        internal static Player load_mob(int monster_id)
-        {
-            return load_mob(monster_id, true);
-        }
+		internal static Player load_mob(int monster_id)
+		{
+			return load_mob(monster_id, true);
+		}
 
-        internal static Player load_mob(int monster_id, bool exit)
-        {
-            string area_text = gbl.game_area.ToString();
+		internal static Player load_mob(int monster_id, bool exit)
+		{
+			string area_text = gbl.game_area.ToString();
 
-            byte[] data;
-            short decode_size;
-            seg042.load_decode_dax(out data, out decode_size, monster_id, "MON" + area_text + "CHA.dax");
+			byte[] data;
+			short decode_size;
+			seg042.load_decode_dax(out data, out decode_size, monster_id, "MON" + area_text + "CHA.dax");
 
-            if (decode_size == 0)
-            {
-                if (exit)
-                {
-                    seg041.displayAndDebug("Unable to load monster", 0, 15);
-                    seg043.print_and_exit();
-                }
-                else
-                {
-                    return null;
-                }
-            }
+			if (decode_size == 0)
+			{
+				if (exit)
+				{
+					seg041.displayAndDebug("Unable to load monster", 0, 15);
+					seg043.print_and_exit();
+				}
+				else
+				{
+					return null;
+				}
+			}
 
-            Player player = new Player(data, 0);
+			Player player = new Player(data, 0);
 
-            seg042.load_decode_dax(out data, out decode_size, monster_id, "MON" + area_text + "SPC.dax");
+			seg042.load_decode_dax(out data, out decode_size, monster_id, "MON" + area_text + "SPC.dax");
 
-            if (decode_size != 0)
-            {
-                int offset = 0;
+			if (decode_size != 0)
+			{
+				int offset = 0;
 
-                do
-                {
-                    Affect affect = new Affect(data, offset);
-                    player.affects.Add(affect);
+				do
+				{
+					Affect affect = new Affect(data, offset);
+					player.affects.Add(affect);
 
-                    offset += 9;
-                } while (offset < decode_size);
-            }
+					offset += 9;
+				} while (offset < decode_size);
+			}
 
-            seg042.load_decode_dax(out data, out decode_size, monster_id, "MON" + area_text + "ITM.dax");
+			seg042.load_decode_dax(out data, out decode_size, monster_id, "MON" + area_text + "ITM.dax");
 
-            if (decode_size != 0)
-            {
-                for (int offset = 0; offset < decode_size; offset += Item.StructSize)
-                {
-                    player.items.Add(new Item(data, offset));
-                }
-            }
+			if (decode_size != 0)
+			{
+				for (int offset = 0; offset < decode_size; offset += Item.StructSize)
+				{
+					player.items.Add(new Item(data, offset));
+				}
+			}
 
-            seg043.clear_keyboard();
+			seg043.clear_keyboard();
 
-            return player;
-        }
+			return player;
+		}
 
 
-        internal static void load_npc(int monster_id) // sub_4A57D
-        {
-            if (gbl.area2_ptr.party_size <= 7)
-            {
-                Player player = load_mob(monster_id);
+		internal static void load_npc(int monster_id) // sub_4A57D
+		{
+			if (gbl.area2_ptr.party_size <= 7)
+			{
+				Player player = load_mob(monster_id);
 
-                player.mod_id = (byte)monster_id;
+				player.mod_id = (byte)monster_id;
 
-                AssignPlayerIconId(player);
+				AssignPlayerIconId(player);
 
-                ovr034.chead_cbody_comspr_icon(player.icon_id, monster_id, "CPIC");
-            }
-        }
+				ovr034.chead_cbody_comspr_icon(player.icon_id, monster_id, "CPIC");
+			}
+		}
 
-        internal static void AssignPlayerIconId(Player player) // sub_4A60A
-        {
-            player.icon_id = 0xff;
+		internal static void AssignPlayerIconId(Player player) // sub_4A60A
+		{
+			player.icon_id = 0xff;
 
-            gbl.TeamList.Add(player);
-            gbl.SelectedPlayer = player;
+			gbl.TeamList.Add(player);
+			gbl.SelectedPlayer = player;
 
-            bool[] icon_slot = new bool[8];
+			bool[] icon_slot = new bool[8];
 
-            foreach (Player tmpPlayer in gbl.TeamList)
-            {
-                if (tmpPlayer.icon_id >= 0 && tmpPlayer.icon_id < 8)
-                {
-                    icon_slot[tmpPlayer.icon_id] = true;
-                }
-            }
+			foreach (Player tmpPlayer in gbl.TeamList)
+			{
+				if (tmpPlayer.icon_id >= 0 && tmpPlayer.icon_id < 8)
+				{
+					icon_slot[tmpPlayer.icon_id] = true;
+				}
+			}
 
-            // Now find the lowest free icon slot.
-            player.icon_id = 0;
+			// Now find the lowest free icon slot.
+			player.icon_id = 0;
 
-            while (player.icon_id < 8 &&
-                icon_slot[player.icon_id] == true)
-            {
-                player.icon_id += 1;
-            }
+			while (player.icon_id < 8 &&
+				icon_slot[player.icon_id] == true)
+			{
+				player.icon_id += 1;
+			}
 
-            gbl.area2_ptr.party_size++;
+			gbl.area2_ptr.party_size++;
 
-            if (player.control_morale >= Control.NPC_Base)
-            {
-                ovr026.sub_6A3C6(player);
-            }
-        }
+			if (player.control_morale >= Control.NPC_Base)
+			{
+				ovr026.sub_6A3C6(player);
+			}
+		}
 
-        static Set save_game_keys = new Set(0x0802, new byte[] { 0xFE, 0x07 }); // asc_4A761
+		static Set save_game_keys = new Set(0x0802, new byte[] { 0xFE, 0x07 }); // asc_4A761
 
 		internal static void loadGameMenu() // loadGame
 		{
@@ -1057,134 +1057,134 @@ namespace engine
 			}
 		}
 
-        internal static void loadSaveGame(string file_name)
-        {
-            Classes.File file;
-            seg042.find_and_open_file(out file, true, file_name);
+		internal static void loadSaveGame(string file_name)
+		{
+			Classes.File file;
+			seg042.find_and_open_file(out file, true, file_name);
 
-            ovr027.ClearPromptArea();
-            seg041.displayString("Loading...Please Wait", 0, 10, 0x18, 0);
-            gbl.reload_ecl_and_pictures = true;
+			ovr027.ClearPromptArea();
+			seg041.displayString("Loading...Please Wait", 0, 10, 0x18, 0);
+			gbl.reload_ecl_and_pictures = true;
 
-            byte[] data = new byte[0x2000];
+			byte[] data = new byte[0x2000];
 
-            seg051.BlockRead(1, data, file);
-            gbl.game_area = data[0];
+			seg051.BlockRead(1, data, file);
+			gbl.game_area = data[0];
 
-            seg051.BlockRead(0x800, data, file);
-            gbl.area_ptr = new Area1(data, 0);
+			seg051.BlockRead(0x800, data, file);
+			gbl.area_ptr = new Area1(data, 0);
 
-            seg051.BlockRead(0x800, data, file);
-            gbl.area2_ptr = new Area2(data, 0);
+			seg051.BlockRead(0x800, data, file);
+			gbl.area2_ptr = new Area2(data, 0);
 
-            seg051.BlockRead(0x400, data, file);
-            gbl.stru_1B2CA = new Struct_1B2CA(data, 0);
+			seg051.BlockRead(0x400, data, file);
+			gbl.stru_1B2CA = new Struct_1B2CA(data, 0);
 
-            seg051.BlockRead(0x1E00, data, file);
-            gbl.ecl_ptr = new EclBlock(data, 0);
+			seg051.BlockRead(0x1E00, data, file);
+			gbl.ecl_ptr = new EclBlock(data, 0);
 
-            seg051.BlockRead(5, data, file);
-            gbl.mapPosX = (sbyte)data[0];
-            gbl.mapPosY = (sbyte)data[1];
-            gbl.mapDirection = data[2];
-            gbl.mapWallType = data[3];
-            gbl.mapWallRoof = data[4];
+			seg051.BlockRead(5, data, file);
+			gbl.mapPosX = (sbyte)data[0];
+			gbl.mapPosY = (sbyte)data[1];
+			gbl.mapDirection = data[2];
+			gbl.mapWallType = data[3];
+			gbl.mapWallRoof = data[4];
 
-            seg051.BlockRead(1, data, file);
-            gbl.last_game_state = (GameState)data[0];
+			seg051.BlockRead(1, data, file);
+			gbl.last_game_state = (GameState)data[0];
 
-            seg051.BlockRead(1, data, file);
-            gbl.game_state = (GameState)data[0];
+			seg051.BlockRead(1, data, file);
+			gbl.game_state = (GameState)data[0];
 
-            for (int i = 0; i < 3; i++)
-            {
-                seg051.BlockRead(2, data, file);
-                gbl.setBlocks[i].blockId = Sys.ArrayToShort(data, 0);
+			for (int i = 0; i < 3; i++)
+			{
+				seg051.BlockRead(2, data, file);
+				gbl.setBlocks[i].blockId = Sys.ArrayToShort(data, 0);
 
-                seg051.BlockRead(2, data, file);
-                gbl.setBlocks[i].setId = Sys.ArrayToShort(data, 0);
-            }
+				seg051.BlockRead(2, data, file);
+				gbl.setBlocks[i].setId = Sys.ArrayToShort(data, 0);
+			}
 
-            seg051.BlockRead(1, data, file);
-            int number_of_players = data[0];
+			seg051.BlockRead(1, data, file);
+			int number_of_players = data[0];
 
-            seg051.BlockRead(0x148, data, file);
-            string[] var_148 = Sys.ArrayToStrings(data, 0, System.Math.Min(0x148, 0x29 * number_of_players), 0x29);
+			seg051.BlockRead(0x148, data, file);
+			string[] var_148 = Sys.ArrayToStrings(data, 0, System.Math.Min(0x148, 0x29 * number_of_players), 0x29);
 
-            seg051.Close(file);
+			seg051.Close(file);
 
-            gbl.PicsOn = ((gbl.area_ptr.pics_on >> 1) != 0);
-            gbl.AnimationsOn = ((gbl.area_ptr.pics_on & 1) != 0);
-            gbl.game_speed_var = gbl.area_ptr.game_speed;
-            gbl.area2_ptr.party_size = 0;
+			gbl.PicsOn = ((gbl.area_ptr.pics_on >> 1) != 0);
+			gbl.AnimationsOn = ((gbl.area_ptr.pics_on & 1) != 0);
+			gbl.game_speed_var = gbl.area_ptr.game_speed;
+			gbl.area2_ptr.party_size = 0;
 
-            for (int index = 0; index < number_of_players; index++)
-            {
-                string var_1F6 = seg042.clean_string(var_148[index]);
+			for (int index = 0; index < number_of_players; index++)
+			{
+				string var_1F6 = seg042.clean_string(var_148[index]);
 
-                if (seg042.file_find(Path.Combine(Config.GetSavePath(), var_1F6 + ".sav")) == true)
-                {
-                    Player player = new Player();
+				if (seg042.file_find(Path.Combine(Config.GetSavePath(), var_1F6 + ".sav")) == true)
+				{
+					Player player = new Player();
 
-                    import_char01(ref player, var_1F6 + ".sav");
-                    AssignPlayerIconId(player);
-                }
-            }
+					import_char01(ref player, var_1F6 + ".sav");
+					AssignPlayerIconId(player);
+				}
+			}
 
-            foreach (Player tmp_player in gbl.TeamList)
-            {
-                remove_player_file(tmp_player);
-            }
+			foreach (Player tmp_player in gbl.TeamList)
+			{
+				remove_player_file(tmp_player);
+			}
 
-            foreach (Player tmp_player in gbl.TeamList)
-            {
-                gbl.SelectedPlayer = tmp_player;
+			foreach (Player tmp_player in gbl.TeamList)
+			{
+				gbl.SelectedPlayer = tmp_player;
 
-                if (gbl.SelectedPlayer.control_morale < Control.NPC_Base)
-                {
-                    LoadPlayerCombatIcon(true);
-                }
-                else
-                {
-                    ovr034.chead_cbody_comspr_icon(gbl.SelectedPlayer.icon_id, gbl.SelectedPlayer.mod_id, "CPIC");
-                }
-            }
-        
+				if (gbl.SelectedPlayer.control_morale < Control.NPC_Base)
+				{
+					LoadPlayerCombatIcon(true);
+				}
+				else
+				{
+					ovr034.chead_cbody_comspr_icon(gbl.SelectedPlayer.icon_id, gbl.SelectedPlayer.mod_id, "CPIC");
+				}
+			}
 
-            gbl.SelectedPlayer = gbl.TeamList[0];
 
-            gbl.game_area = gbl.area2_ptr.game_area;
+			gbl.SelectedPlayer = gbl.TeamList[0];
 
-            if (gbl.area_ptr.inDungeon != 0)
-            {
-                if (gbl.game_state != GameState.StartGameMenu)
-                {
-                    if (gbl.setBlocks[0].blockId > 0)
-                    {
-                        ovr031.Load3DMap(gbl.area_ptr.current_3DMap_block_id);
-                    }
+			gbl.game_area = gbl.area2_ptr.game_area;
 
-                    for (int i = 0; i < 3; i++)
-                    {
-                        if (gbl.setBlocks[i].blockId > 0)
-                        {
-                            ovr031.LoadWalldef(gbl.setBlocks[i].setId, gbl.setBlocks[i].blockId);
-                        }
-                    }
-                }
-            }
-            else
-            {
-                ovr030.load_bigpic(0x79);
-            }
+			if (gbl.area_ptr.inDungeon != 0)
+			{
+				if (gbl.game_state != GameState.StartGameMenu)
+				{
+					if (gbl.setBlocks[0].blockId > 0)
+					{
+						ovr031.Load3DMap(gbl.area_ptr.current_3DMap_block_id);
+					}
 
-            seg043.clear_keyboard();
-            ovr027.ClearPromptArea();
+					for (int i = 0; i < 3; i++)
+					{
+						if (gbl.setBlocks[i].blockId > 0)
+						{
+							ovr031.LoadWalldef(gbl.setBlocks[i].setId, gbl.setBlocks[i].blockId);
+						}
+					}
+				}
+			}
+			else
+			{
+				ovr030.load_bigpic(0x79);
+			}
 
-            gbl.last_game_state = gbl.game_state;
+			seg043.clear_keyboard();
+			ovr027.ClearPromptArea();
+
+			gbl.last_game_state = gbl.game_state;
 
 			gbl.game_state = GameState.StartGameMenu;
-        }
+		}
 
 		static Set unk_4AEA0 = new Set(0x000a, new byte[] { 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xFE, 0x07 });
 		static Set unk_4AEEF = new Set(0x0003, new byte[] { 0x05, 0x00, 0x04 });
@@ -1285,6 +1285,6 @@ namespace engine
 				gbl.gameSaved = true;
 				ovr027.ClearPromptArea();
 			}
-		} 
-    }
+		}
+	}
 }
