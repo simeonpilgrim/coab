@@ -108,7 +108,7 @@ namespace Classes
 				coppers -= Money.per_copper[coin] * sub_coins;
 				money[coin] -= sub_coins;
 
-				coin ++;
+				coin++;
 			}
 
 			if (coppers < 0)
@@ -122,7 +122,7 @@ namespace Classes
 					coppers -= Money.per_copper[coin] * add_coins;
 
 					money[coin] += add_coins;
-					coin --;
+					coin--;
 				}
 			}
 		}
@@ -160,27 +160,27 @@ namespace Classes
 			return didScale;
 		}
 
-		public int Copper 
+		public int Copper
 		{
 			get { return money[Money.Copper]; }
 			//set { money[Money.copper] = value; }
 		}
-		public int Electrum 
+		public int Electrum
 		{
 			get { return money[Money.Electrum]; }
 			//set { money[Money.electrum] = value; }
 		}
-		public int Silver 
+		public int Silver
 		{
 			get { return money[Money.Silver]; }
 			//set { money[Money.silver] = value; }
 		}
-		public int Gold 
+		public int Gold
 		{
 			get { return money[Money.Gold]; }
 			//set { money[Money.gold] = value; }
 		}
-		public int Platinum 
+		public int Platinum
 		{
 			get { return money[Money.Platinum]; }
 			//set { money[Money.platum] = value; }
