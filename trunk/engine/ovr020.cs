@@ -347,7 +347,7 @@ namespace engine
             {
                 ovr025.string_print01("Must be unreadied");
             }
-            else if (ovr023.item_is_scroll(item) == false)
+            else if (item.IsScroll() == false)
             {
                 canSellDropTradeItem = true;
             }
@@ -538,7 +538,7 @@ namespace engine
                                     ovr025.string_print01("Must be Readied");
                                     inputKey = ' ';
                                 }
-                                else if (ovr023.item_is_scroll(curr_item) == true ||
+                                else if (curr_item.IsScroll() == true ||
                                     (curr_item.affect_2 > 0 && (int)curr_item.affect_3 < 0x80))
                                 {
                                     sub_56478(ref arg_0, curr_item);
@@ -684,9 +684,9 @@ namespace engine
 
 						foreach (int id in player.spellList.IdList())
 						{
-							if (gbl.spell_table[id].spellClass == SpellClass.MagicUser)
+							if (gbl.spellCastingTable[id].spellClass == SpellClass.MagicUser)
 							{
-								int spLvl = gbl.spell_table[id].spellLevel - 1;
+								int spLvl = gbl.spellCastingTable[id].spellLevel - 1;
 								spCounts[spLvl] += 1;
 
 								if (spCounts[spLvl] > player.spellCastCount[2, spLvl])
@@ -811,16 +811,16 @@ namespace engine
                     result = Weld.HandsFull;
                 }
    
-                int item_slot = gbl.ItemDataTable[item.type].item_slot;
+                ItemSlot item_slot = gbl.ItemDataTable[item.type].item_slot;
 
-                if (item_slot >= 0 && item_slot <= 8)
+				if (item_slot >= ItemSlot.slot_0 && item_slot <= ItemSlot.slot_8)
                 {
-                    if (player.itemArray[item_slot] != null)
+                    if (player.itemArray[(int)item_slot] != null)
                     {
                         result = Weld.AlreadyUsingX;
                     }
                 }
-                else if (item_slot == 9)
+				else if (item_slot == ItemSlot.slot_9)
                 {
                     if (player.Item_ptr_02 != null)
                     {
@@ -833,7 +833,7 @@ namespace engine
                     if (player.arrows != null)
                     {
 						result = Weld.AlreadyUsingX;
-                        item_slot = 0x0B;
+						item_slot = ItemSlot.slot_11;
                     }
                 }
 
@@ -842,7 +842,7 @@ namespace engine
                     if (player.quarrels != null)
                     {
 						result = Weld.AlreadyUsingX;
-                        item_slot = 0x0C;
+						item_slot = ItemSlot.Quarrel;
                     }
                 }
 
@@ -866,8 +866,8 @@ namespace engine
                         break;
 
 					case Weld.AlreadyUsingX:
-                        ovr025.ItemDisplayNameBuild(false, false, 0, 0, player.itemArray[item_slot]);
-                        ovr025.string_print01("already using " + player.itemArray[item_slot].name);
+                        ovr025.ItemDisplayNameBuild(false, false, 0, 0, player.itemArray[(int)item_slot]);
+                        ovr025.string_print01("already using " + player.itemArray[(int)item_slot].name);
                         break;
 
                     case Weld.HandsFull:
@@ -977,7 +977,7 @@ namespace engine
             gbl.spell_from_item = false;
             byte var_1 = 0;
 
-            if (ovr023.item_is_scroll(item) == true)
+            if (item.IsScroll() == true)
             {
                 gbl.currentScroll = item;
 
@@ -1024,7 +1024,7 @@ namespace engine
 
                 gbl.spell_from_item = true;
 
-                if (ovr023.item_is_scroll(item) == true)
+                if (item.IsScroll() == true)
                 {
                     if (gbl.SelectedPlayer.SkillLevel(SkillType.MagicUser) > 0 ||
                         gbl.SelectedPlayer.SkillLevel(SkillType.Cleric) > 0)
@@ -1049,7 +1049,7 @@ namespace engine
                 gbl.spell_from_item = false;
 
                 if (gbl.game_state == GameState.Combat &&
-                    gbl.spell_table[var_1].whenCast != SpellWhen.Camp)
+                    gbl.spellCastingTable[var_1].whenCast != SpellWhen.Camp)
                 {
                     arg_0 = true;
                     ovr025.clear_actions(gbl.SelectedPlayer);
@@ -1058,7 +1058,7 @@ namespace engine
 
             if (arg_0 == true)
             {
-                if (ovr023.item_is_scroll(item) == true)
+                if (item.IsScroll() == true)
                 {
                     ovr023.remove_spell_from_scroll(var_1, item, gbl.SelectedPlayer);
                 }

@@ -1,6 +1,7 @@
 = The Release Notes =
 
 = Unreleased =
+  * Fixed the group view display of AC
 
 = 1.1.2 =
   * Issue 53, Casting Cloud Kill in combat crashed the game

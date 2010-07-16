@@ -190,6 +190,10 @@ namespace Classes
                     training_class_mask = (byte)value;
                     break;
 
+				case 0x580:
+					max_encounter_distance = value;
+					break;
+
                 case 0x58C:
                     field_58C = value;
                     break;

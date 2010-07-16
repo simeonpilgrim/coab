@@ -17,6 +17,24 @@ namespace Classes
         quarrels = 0x80,
     }
 
+	public enum ItemSlot
+	{
+		slot_0 = 0,
+		slot_1 = 1,
+		Armor = 2,
+		slot_3 = 3,
+		slot_4 = 4,
+		slot_5 = 5,
+		slot_6 = 6,
+		slot_7 = 7,
+		slot_8 = 8,
+		slot_9 = 9,
+		slot_10 = 10,
+		slot_11 = 11,
+		Quarrel = 12,
+		slot_13 = 13
+	}
+
     public class ItemDataTable
     {
         ItemData[] table;
@@ -52,7 +70,7 @@ namespace Classes
 	/// </summary>
     public class ItemData
     {
-        public byte item_slot; //seg600:5D10 unk_1C020 - field_0
+		public ItemSlot item_slot; //seg600:5D10 unk_1C020 - field_0
         public byte handsCount; //seg600:5D11 unk_1C021
         public byte diceCountLarge; //seg600:5D12 unk_1C022
         public byte diceSizeLarge; //seg600:5D13 unk_1C023
@@ -72,7 +90,7 @@ namespace Classes
 
         public ItemData(byte[] data, int offset)
         {
-            item_slot = data[offset + 0];
+            item_slot = (ItemSlot)data[offset + 0];
             handsCount = data[offset + 1];
             diceCountLarge = data[offset + 2];
             diceSizeLarge = data[offset + 3];

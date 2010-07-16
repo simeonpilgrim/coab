@@ -396,7 +396,7 @@ namespace engine
 			{
 				if (findNext == true)
 				{
-					return gbl.spell_table[id].spellLevel;
+					return gbl.spellCastingTable[id].spellLevel;
 				}
 				else
 				{
@@ -418,7 +418,7 @@ namespace engine
             int next_scribe_lvl = 0;
             foreach(Item item in player.items.ToArray())
             {
-                if (ovr023.item_is_scroll(item) == true)
+                if (item.IsScroll() == true)
                 {
                     for( int spellIdx = 1; spellIdx < 4 && next_scribe_lvl == 0; spellIdx++)
                     {
@@ -426,7 +426,7 @@ namespace engine
                         {
                             if (findNext == true)
                             {
-                                next_scribe_lvl = gbl.spell_table[(int)item.getAffect(spellIdx) & 0x7F].spellLevel;
+                                next_scribe_lvl = gbl.spellCastingTable[(int)item.getAffect(spellIdx) & 0x7F].spellLevel;
                             }
                             else
                             {

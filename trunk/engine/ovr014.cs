@@ -11,7 +11,7 @@ namespace engine
 			action.spell_id = 0;
 			action.can_cast = true;
 			action.can_use = true;
-			action.field_8 = 0;
+			action.field_8 = false;
 			action.attackIdx = 2;
 
 			sub_3EDD4(player);
@@ -506,9 +506,9 @@ namespace engine
 				}
 			}
 
-			if (player.actions.field_8 == 0 ||
+			if (player.actions.field_8 == false ||
 				attacks < var_2 ||
-				(player.actions.field_8 != 0 &&
+				(player.actions.field_8 == true &&
 				  attacks < (var_2 * 2) &&
 				  var_5 == false))
 			{
@@ -736,7 +736,7 @@ namespace engine
 			bool var_12 = false;
 			gbl.damage = 0;
 
-			attacker.actions.field_8 = 1;
+			attacker.actions.field_8 = true;
 
 			if (target.IsHeld() == true)
 			{
@@ -1108,7 +1108,7 @@ namespace engine
 
 		static Affects[] unk_18ADB = { Affects.bless, Affects.snake_charm, Affects.paralyze, Affects.sleep, Affects.helpless }; // seg600:27CB first is filler (off by 1)
 
-		internal static bool sub_4001C(Struct_1D183 arg_0, byte arg_4, QuickFight quick_fight, byte spellId)
+		internal static bool sub_4001C(Struct_1D183 arg_0, byte arg_4, QuickFight quick_fight, int spellId)
 		{
 			bool var_2 = false;
 			if (quick_fight == QuickFight.False)
@@ -1118,7 +1118,7 @@ namespace engine
 				aim_menu(arg_0, out var_2, var_A, arg_4, 0, ovr023.SpellRange(spellId), gbl.SelectedPlayer);
 				gbl.SelectedPlayer.actions.target = arg_0.target;
 			}
-			else if (gbl.spell_table[spellId].field_E == 0)
+			else if (gbl.spellCastingTable[spellId].field_E == 0)
 			{
 				arg_0.target = gbl.SelectedPlayer;
 
@@ -1145,7 +1145,7 @@ namespace engine
 						{
 							for (int i = 1; i <= 4; i++)
 							{
-								if (gbl.spell_table[spellId].affect_id == unk_18ADB[i])
+								if (gbl.spellCastingTable[spellId].affect_id == unk_18ADB[i])
 								{
 									var_3 = false;
 								}
@@ -1177,7 +1177,7 @@ namespace engine
 			return var_2;
 		}
 
-		internal static void target(out bool arg_0, QuickFight quick_fight, byte spellId)
+		internal static void target(out bool arg_0, QuickFight quick_fight, int spellId)
 		{
 			Struct_1D183 var_C = new Struct_1D183();
 
@@ -1187,7 +1187,7 @@ namespace engine
 
 			gbl.targetPos = ovr033.PlayerMapPos(gbl.SelectedPlayer);
 
-			byte tmp1 = (byte)(gbl.spell_table[spellId].field_6 & 0x0F);
+			int tmp1 = gbl.spellCastingTable[spellId].field_6 & 0x0F;
 
 			if (tmp1 == 0)
 			{
@@ -1302,7 +1302,7 @@ namespace engine
 					else
 					{
 						/* TODO it doesn't make sense to mask the low nibble then shift it out */
-						var scl = ovr032.Rebuild_SortedCombatantList(1, (gbl.spell_table[spellId].field_6 & 0x0f) >> 4, gbl.targetPos, sc => true);
+						var scl = ovr032.Rebuild_SortedCombatantList(1, (gbl.spellCastingTable[spellId].field_6 & 0x0f) >> 4, gbl.targetPos, sc => true);
 
 
 						gbl.spellTargets.Clear();
@@ -1322,7 +1322,7 @@ namespace engine
 			{
 				if (sub_4001C(var_C, 1, quick_fight, spellId) == true)
 				{
-					var scl = ovr032.Rebuild_SortedCombatantList(1, gbl.spell_table[spellId].field_6 & 7, gbl.targetPos, sc => true);
+					var scl = ovr032.Rebuild_SortedCombatantList(1, gbl.spellCastingTable[spellId].field_6 & 7, gbl.targetPos, sc => true);
 
 					gbl.spellTargets.Clear();
 					foreach (var sc in scl)
@@ -1339,10 +1339,10 @@ namespace engine
 			}
 			else
 			{
-				int var_1 = (gbl.spell_table[spellId].field_6 & 3) + 1;
+				int max_targets = (gbl.spellCastingTable[spellId].field_6 & 3) + 1;
 				gbl.spellTargets.Clear();
 
-				while (var_1 > 0)
+				while (max_targets > 0)
 				{
 					if (sub_4001C(var_C, 0, quick_fight, spellId) == true)
 					{
@@ -1351,7 +1351,7 @@ namespace engine
 						if (found == false)
 						{
 							gbl.spellTargets.Add(var_C.target);
-							var_1 -= 1;
+							max_targets -= 1;
 
 							gbl.targetPos = ovr033.PlayerMapPos(var_C.target);
 						}
@@ -1363,7 +1363,7 @@ namespace engine
 							}
 							else
 							{
-								var_1 -= 1;
+								max_targets -= 1;
 							}
 						}
 
@@ -1371,7 +1371,7 @@ namespace engine
 					}
 					else
 					{
-						var_1 = 0;
+						max_targets = 0;
 					}
 				}
 
@@ -1386,7 +1386,7 @@ namespace engine
 		}
 
 
-		internal static void spell_menu3(out bool casting_spell, QuickFight quick_fight, byte spell_id)
+		internal static void spell_menu3(out bool casting_spell, QuickFight quick_fight, int spell_id)
 		{
 			Player player = gbl.SelectedPlayer;
 			bool var_6 = true;
@@ -1399,7 +1399,7 @@ namespace engine
 			}
 
 			if (spell_id > 0 &&
-				gbl.spell_table[spell_id].whenCast == SpellWhen.Camp)
+				gbl.spellCastingTable[spell_id].whenCast == SpellWhen.Camp)
 			{
 				ovr025.string_print01("Camp Only Spell");
 				spell_id = 0;
@@ -1417,7 +1417,7 @@ namespace engine
 
 			if (spell_id > 0)
 			{
-				sbyte delay = (sbyte)(gbl.spell_table[spell_id].castingDelay / 3);
+				sbyte delay = (sbyte)(gbl.spellCastingTable[spell_id].castingDelay / 3);
 
 				if (delay == 0)
 				{

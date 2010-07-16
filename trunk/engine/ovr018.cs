@@ -1064,7 +1064,7 @@ namespace engine
 
                             foreach (Spells spell in System.Enum.GetValues(typeof(Spells)))
                             {
-                                SpellEntry stru = gbl.spell_table[(int)spell];
+                                SpellEntry stru = gbl.spellCastingTable[(int)spell];
 
                                 if (stru.spellClass == 0 && stru.spellLevel == 1)
                                 {

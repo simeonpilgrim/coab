@@ -147,7 +147,7 @@ namespace engine
 
 		internal static void combat_menu(Player player) /* camp_menu */
 		{
-			byte spell_id;
+			int spell_id;
 			Struct_1D183 var_D = new Struct_1D183();
 			char var_1;
 
