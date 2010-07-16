@@ -92,12 +92,33 @@ namespace Classes
 		[DataOffset(0x200, DataType.ShortArray, 33)]
 		public short[] field_200; // 1-32
 
+
+		[DataOffset(0x244, DataType.Word)]
+		public ushort field_244;
+
+		[DataOffset(0x24E, DataType.Word)]
+		public ushort field_24E;
+		[DataOffset(0x250, DataType.Word)]
+		public ushort field_250;
+		[DataOffset(0x252, DataType.Word)]
+		public ushort field_252;
+		[DataOffset(0x254, DataType.Word)]
+		public ushort field_254;
+		[DataOffset(0x256, DataType.Word)]
+		public ushort field_256;
+		[DataOffset(0x258, DataType.Word)]
+		public ushort field_258;
 		[DataOffset(0x25A, DataType.Word)]
 		public ushort field_25A;
 		[DataOffset(0x25C, DataType.Word)]
 		public ushort field_25C;
 		[DataOffset(0x25E, DataType.Word)]
 		public ushort field_25E;
+		[DataOffset(0x260, DataType.Word)]
+		public ushort field_260;
+
+		[DataOffset(0x26A, DataType.Word)]
+		public ushort field_26A;
 
 		[DataOffset(0x296, DataType.Word)]
 		public ushort field_296;
@@ -119,6 +140,8 @@ namespace Classes
 		public byte field_338;
 		[DataOffset(0x33A, DataType.Byte)]
 		public byte field_33A;
+		[DataOffset(0x33C, DataType.Word)]
+		public ushort field_33C;
 
 		[DataOffset(0x340, DataType.Byte)]
 		public byte field_340;
@@ -158,6 +181,8 @@ namespace Classes
 
 		[DataOffset(0x3FA, DataType.Byte)]
 		public byte field_3FA;
+		[DataOffset(0x3FC, DataType.Word)]
+		public ushort field_3FC;
 		[DataOffset(0x3FE, DataType.SWord)]
 		public short picture_fade; //field_3FE
 
@@ -269,15 +294,43 @@ namespace Classes
 					field_200[(loc - 0x200) / 2] = (short)value;
 					break;
 
+				case 0x244:
+					field_244 = value;
+					break;
+
+				case 0x24E:
+					field_24E = value;
+					break;
+				case 0x250:
+					field_250 = value;
+					break;
+				case 0x252:
+					field_252 = value;
+					break;
+				case 0x254:
+					field_254 = value;
+					break;
+				case 0x256:
+					field_256 = value;
+					break;
+				case 0x258:
+					field_258 = value;
+					break;
 				case 0x25A:
 					field_25A = value;
 					break;
-
 				case 0x25C:
 					field_25C = value;
 					break;
 				case 0x25E:
 					field_25E = value;
+					break;
+				case 0x260:
+					field_260 = value;
+					break;
+
+				case 0x26A:
+					field_26A = value;
 					break;
 
 				case 0x296:
@@ -308,6 +361,9 @@ namespace Classes
 					break;
 				case 0x33A:
 					field_33A = (byte)value;
+					break;
+				case 0x33C:
+					field_33C = value;
 					break;
 
 				case 0x340:
@@ -359,6 +415,12 @@ namespace Classes
 					break;
 
 
+				case 0x3FA:
+					field_3FA = (byte)value;
+					break;
+				case 0x3FC:
+					field_3FC = value;
+					break;
 				case 0x3fe:
 					picture_fade = (short)value;
 					break;
@@ -452,12 +514,32 @@ namespace Classes
 				case 0x240:
 					return (ushort)field_200[(loc - 0x200) / 2];
 
+				case 0x244:
+					return field_244;
+
+				case 0x24E:
+					return field_24E;
+				case 0x250:
+					return field_250;
+				case 0x252:
+					return field_252;
+				case 0x254:
+					return field_254;
+				case 0x256:
+					return field_256;
+				case 0x258:
+					return field_258;
 				case 0x25A:
 					return field_25A;
 				case 0x25C:
 					return field_25C;
 				case 0x25E:
 					return field_25E;
+				case 0x260:
+					return field_260;
+
+				case 0x26A:
+					return field_26A;
 
 				case 0x296:
 					return field_296;
@@ -480,6 +562,8 @@ namespace Classes
 					return field_338;
 				case 0x33A:
 					return field_33A;
+				case 0x33C:
+					return field_33C;
 
 				case 0x344:
 					return field_344;
@@ -510,6 +594,11 @@ namespace Classes
 					return field_3E6;
 				case 0x3E8:
 					return field_3E8;
+
+				case 0x3FA:
+					return field_3FA;
+				case 0x3FC:
+					return field_3FC;
 
 				case 0x596:
 					return field_596;

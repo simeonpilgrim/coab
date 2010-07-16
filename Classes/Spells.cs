@@ -155,13 +155,13 @@ namespace Classes
 
     public class SpellEntry /* Struct_19AEC */
     {
-        public SpellEntry(SpellClass _spellClass, sbyte _spellLevel, 
+        public SpellEntry(int spell_idx, SpellClass _spellClass, sbyte _spellLevel, 
             int _fixedRange, int _perLvlRange, 
             int _fixedDuration, byte _perLvlDuration,
 			byte f6, SpellTargets _targets, 
             DamageOnSave _damageOnSave, SaveVerseType _saveVerse, 
             Affects _affectId, SpellWhen _whenCast, 
-            int _castingDelay, byte fd, byte fe, byte ff)
+            int _castingDelay, int _priority, byte fe, byte ff)
         {
             spellClass = _spellClass;
             spellLevel = _spellLevel;
@@ -176,14 +176,19 @@ namespace Classes
             affect_id = _affectId;
             whenCast = _whenCast;
             castingDelay = _castingDelay;
-            field_D = fd;
+            priority = _priority;
             field_E = fe;
             field_F = ff;
+			spellIdx = spell_idx;
+
+			Logging.Logger.Debug("{0:X} {1} {2} {3} {4}", spell_idx, (Spells)spell_idx, f6, fe, ff);
         }
 
         /// <summary>
         /// 0 - Cleric, 1 - Druid, 2 - Magic-User
         /// </summary>
+		public int spellIdx;
+
         public SpellClass spellClass; //seg600:37DC asc_19AEC    // field_0
         public int spellLevel; //seg600:37DD unk_19AED    // field_1
         public int fixedRange; //seg600:37DE              
@@ -197,7 +202,7 @@ namespace Classes
         public Affects affect_id; //seg600:37E6 unk_19AF6   // field_A
         public SpellWhen whenCast; //seg600:37E7 unk_19AF7    
         public int castingDelay; //seg600:37E8 unk_19AF8    
-        public byte field_D; //seg600:37E9 unk_19AF9    
+        public int priority; //seg600:37E9 unk_19AF9    
         public byte field_E; //seg600:37EA unk_19AFA    
         public byte field_F; //seg600:37EB unk_19AFB   
     }

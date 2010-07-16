@@ -7,7 +7,7 @@ namespace Classes
     /// </summary>
     public class Action
     {
-        public byte spell_id; // 0x00
+        public int spell_id; // 0x00
         public bool can_cast; // 0x01
         public bool can_use;  // 0x02
         public int delay;   // 0x03
@@ -15,7 +15,7 @@ namespace Classes
         public byte field_5;  // 0x05
         public int move;     // 0x06
         public bool guarding; // 0x07
-        public byte field_8;  // 0x08
+        public bool field_8;  // 0x08
         public int direction;  // 0x09 field_9
         public Player target; // 0x0A 4 bytes
         public int bleeding; // 0x0E

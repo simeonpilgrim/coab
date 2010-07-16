@@ -44,7 +44,7 @@ namespace Classes
 
         public bool IsScroll()
         {
-            return (gbl.ItemDataTable[type].item_slot > 10 && gbl.ItemDataTable[type].item_slot < 14);
+			return (gbl.ItemDataTable[type].item_slot >= ItemSlot.slot_11 && gbl.ItemDataTable[type].item_slot <= ItemSlot.slot_13);
         }
 
         public Affects getAffect(int i)

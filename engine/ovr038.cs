@@ -5,8 +5,6 @@ namespace engine
 {
     class ovr038
     {
-		static Set Load8x8D_flags = new Set( 0x0001, new byte[] { 0x1F } );
-
         internal static void Load8x8D( int symbolSet, int block_id )
         {
             if (symbolSet >= 0 && symbolSet < 5)

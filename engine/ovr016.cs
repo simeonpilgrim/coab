@@ -12,7 +12,7 @@ namespace engine
 
 			foreach (int id in player.spellList.LearningList())
 			{
-				int var_C = gbl.spell_table[id].spellLevel;
+				int var_C = gbl.spellCastingTable[id].spellLevel;
 
 				if (var_C > max_spell_level)
 				{
@@ -27,23 +27,23 @@ namespace engine
 
             foreach (Item item in player.items)
             {
-                if (ovr023.item_is_scroll(item) == true)
-                {
-                    for (int loop_var = 1; loop_var <= 3; loop_var++)
-                    {
-                        if ((int)item.getAffect(loop_var) > 0x7f)
-                        {
-                            int var_C = gbl.spell_table[(int)item.getAffect(loop_var) & 0x7f].spellLevel;
+				if (item.IsScroll())
+				{
+					for (int loop_var = 1; loop_var <= 3; loop_var++)
+					{
+						if ((int)item.getAffect(loop_var) > 0x7f)
+						{
+							int var_C = gbl.spellCastingTable[(int)item.getAffect(loop_var) & 0x7f].spellLevel;
 
-                            if (var_C > max_scribe_level)
-                            {
-                                max_scribe_level = var_C;
-                            }
+							if (var_C > max_scribe_level)
+							{
+								max_scribe_level = var_C;
+							}
 
-                            total_scribe_level += var_C;
-                        }
-                    }
-                }
+							total_scribe_level += var_C;
+						}
+					}
+				}
             }
 
             byte count = 0;
@@ -76,7 +76,7 @@ namespace engine
         {
             foreach (Item item in player.items)
             {
-                if (ovr023.item_is_scroll(item) == true)
+                if (item.IsScroll() == true)
                 {
                     item.affect_1 &= (Affects)0x7F;
                     item.affect_2 &= (Affects)0x7F;
@@ -102,8 +102,8 @@ namespace engine
 
 			foreach (int spellId in gbl.SelectedPlayer.spellList.IdList())
 			{
-				if (gbl.spell_table[spellId].spellLevel == spellLevel &&
-					gbl.spell_table[spellId].spellClass == spellClass)
+				if (gbl.spellCastingTable[spellId].spellLevel == spellLevel &&
+					gbl.spellCastingTable[spellId].spellClass == spellClass)
 				{
 					alreadyLearning++;
 				}
@@ -344,7 +344,7 @@ namespace engine
 						{
 							var_1 = true;
 						}
-						else if (HowManySpellsPlayerCanLearn(gbl.spell_table[spellId].spellClass, gbl.spell_table[spellId].spellLevel) > 0)
+						else if (HowManySpellsPlayerCanLearn(gbl.spellCastingTable[spellId].spellClass, gbl.spellCastingTable[spellId].spellLevel) > 0)
 						{
 							gbl.SelectedPlayer.spellList.AddLearn(spellId);
 						}
@@ -445,8 +445,8 @@ namespace engine
                             }
                             else
                             {
-                                int spell_level = gbl.spell_table[var_4].spellLevel;
-                                int spell_class = (int)gbl.spell_table[var_4].spellClass;
+                                int spell_level = gbl.spellCastingTable[var_4].spellLevel;
+                                int spell_class = (int)gbl.spellCastingTable[var_4].spellClass;
 
                                 if (gbl.SelectedPlayer.spellCastCount[spell_class, spell_level - 1] > 0)
                                 {
@@ -500,7 +500,14 @@ namespace engine
 
         internal static void BuildEffectNameMap()
         {
-            Affects[] affects = { Affects.bless, Affects.cursed, Affects.detect_magic, Affects.protection_from_evil, Affects.protection_from_good, Affects.resist_cold, Affects.charm_person, Affects.enlarge, Affects.friends, Affects.read_magic, Affects.shield, Affects.find_traps, Affects.resist_fire, Affects.silence_15_radius, Affects.slow_poison, Affects.spiritual_hammer, Affects.detect_invisibility, Affects.invisibility, Affects.mirror_image, Affects.ray_of_enfeeblement, Affects.animate_dead, Affects.blinded, Affects.cause_disease_1, Affects.bestow_curse, Affects.blink, Affects.strength, Affects.haste, Affects.prot_from_normal_missiles, Affects.slow, Affects.prot_from_evil_10_radius, Affects.prot_from_good_10_radius, Affects.prayer, Affects.snake_charm, Affects.paralyze, Affects.sleep };
+            Affects[] affects = { Affects.bless, Affects.cursed, Affects.detect_magic, Affects.protection_from_evil, 
+                                  Affects.protection_from_good, Affects.resist_cold, Affects.charm_person, Affects.enlarge, 
+                                  Affects.friends, Affects.read_magic, Affects.shield, Affects.find_traps, Affects.resist_fire, 
+                                  Affects.silence_15_radius, Affects.slow_poison, Affects.spiritual_hammer, Affects.detect_invisibility, 
+                                  Affects.invisibility, Affects.mirror_image, Affects.ray_of_enfeeblement, Affects.animate_dead, 
+                                  Affects.blinded, Affects.cause_disease_1, Affects.bestow_curse, Affects.blink, Affects.strength, 
+                                  Affects.haste, Affects.prot_from_normal_missiles, Affects.slow, Affects.prot_from_evil_10_radius, 
+                                  Affects.prot_from_good_10_radius, Affects.prayer, Affects.snake_charm, Affects.paralyze, Affects.sleep };
 
             foreach (Affects aff in affects)
             {
@@ -508,7 +515,7 @@ namespace engine
 
                 for (int spId = 1; spId <= 0x38 && found == false; spId++)
                 {
-                    if (gbl.spell_table[spId].affect_id == aff)
+                    if (gbl.spellCastingTable[spId].affect_id == aff)
                     {
                         EffectNameMap.Add(aff, ovr023.SpellNames[spId]);
                         found = true;

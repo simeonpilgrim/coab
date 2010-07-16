@@ -202,8 +202,8 @@ namespace engine
                     calc_affect_effect(Affects.fire_resist, player);
                     calc_affect_effect(Affects.resist_cold, player);
                     calc_affect_effect(Affects.resist_fire, player);
-                    calc_affect_effect(Affects.affect_69, player);
-                    calc_affect_effect(Affects.affect_6a, player);
+                    calc_affect_effect(Affects.resist_magic_50_percent, player);
+                    calc_affect_effect(Affects.resist_magic_15_percent, player);
                     calc_affect_effect(Affects.immune_to_fire, player);
                     calc_affect_effect(Affects.affect_72, player);
                     calc_affect_effect(Affects.affect_76, player);
@@ -240,11 +240,11 @@ namespace engine
                     break;
 
                 case CheckType.Type_9:
-                    calc_affect_effect(Affects.affect_69, player);
-                    calc_affect_effect(Affects.affect_6a, player);
+                    calc_affect_effect(Affects.resist_magic_50_percent, player);
+                    calc_affect_effect(Affects.resist_magic_15_percent, player);
                     calc_affect_effect(Affects.elf_resist_sleep, player);
                     calc_affect_effect(Affects.protect_charm_sleep, player);
-                    calc_affect_effect(Affects.affect_6d, player);
+                    calc_affect_effect(Affects.resist_paralyze, player);
                     calc_affect_effect(Affects.affect_6e, player);
                     calc_affect_effect(Affects.affect_6f, player);
                     calc_affect_effect(Affects.immune_to_fire, player);
