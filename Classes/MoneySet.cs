@@ -25,17 +25,17 @@ namespace Classes
 		int[] money = new int[7];
 
 		// overload operator +
-		public static MoneySet operator +(MoneySet a, MoneySet b)
-		{
-			var c = new MoneySet();
+        public static MoneySet operator +(MoneySet a, MoneySet b)
+        {
+            var c = new MoneySet();
 
-			for (int coin = Money.Copper; coin <= Money.Platinum; coin++)
-			{
-				c.money[coin] = a.money[coin] + b.money[coin];
-			}
+            for (int coin = Money.Copper; coin <= Money.Jewelry; coin++)
+            {
+                c.money[coin] = a.money[coin] + b.money[coin];
+            }
 
-			return c;
-		}
+            return c;
+        }
 
 
 		public void ClearAll()
