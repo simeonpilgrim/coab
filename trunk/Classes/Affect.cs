@@ -47,7 +47,7 @@ namespace Classes
         affect_28 = 0x28,
         prot_from_normal_missiles = 0x29,
         slow = 0x2a,
-        affect_2b = 0x2b,
+        weaken = 0x2b,
         cause_disease_2 = 0x2c,
         prot_from_evil_10_radius = 0x2d,
         prot_from_good_10_radius = 0x2e,

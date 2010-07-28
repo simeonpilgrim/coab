@@ -1492,7 +1492,7 @@ namespace engine
         static Affects[] paladinCureableDiseases = { // unk_16B39
             Affects.helpless, 
             Affects.cause_disease_1, 
-            Affects.affect_2b, 
+            Affects.weaken, 
             Affects.cause_disease_2, 
             Affects.hot_fire_shield, 
             Affects.affect_39 };
