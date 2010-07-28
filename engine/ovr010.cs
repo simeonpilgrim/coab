@@ -795,7 +795,7 @@ namespace engine
 					{
 						int var_2 = ovr014.MaxOppositionMoves(player);
 
-						if (var_2 <= (ovr014.sub_3E124(player) / 2))
+						if (var_2 <= (ovr014.CalcMoves(player) / 2))
 						{
 							player.actions.moral_failure = true;
 							ovr024.remove_affect(null, Affects.affect_4a, player);
@@ -1025,7 +1025,7 @@ namespace engine
 			}
 
 			ovr025.reclac_player_values(player);
-			ovr014.sub_3EDD4(player);
+			ovr014.reclac_attacks(player);
 			replace_weapon = true;
 
 			if (player.field_155 != null &&

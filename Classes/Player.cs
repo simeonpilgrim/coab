@@ -25,7 +25,7 @@ namespace Classes
         animated_dead = 4,
         fire = 8,
         type_9 = 9,
-        type_10 = 10,
+        troll = 10,
         type_12 = 12,
         snake = 14,
         plant = 18,

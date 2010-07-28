@@ -181,7 +181,7 @@ namespace Classes
             field_F = ff;
 			spellIdx = spell_idx;
 
-			Logging.Logger.Debug("{0:X} {1} {2} {3} {4}", spell_idx, (Spells)spell_idx, f6, fe, ff);
+			//Logging.Logger.Debug("{0:X} {1} {2} {3} {4}", spell_idx, (Spells)spell_idx, f6, fe, ff);
         }
 
         /// <summary>

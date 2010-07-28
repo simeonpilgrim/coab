@@ -252,51 +252,51 @@ namespace engine
             DumpMonstersFilteredSub(dw, p => (p.field_14B & 2) != 0);
             dw.WriteLine("");
 
-            dw.WriteLine("field_11A == 1");
+            dw.WriteLine("monsterType == 1");
             DumpMonstersFilteredSub(dw, p => (p.monsterType == MonsterType.type_1));
             dw.WriteLine("");
 
-            dw.WriteLine("field_11A == giant");
+            dw.WriteLine("monsterType == giant");
             DumpMonstersFilteredSub(dw, p => (p.monsterType == MonsterType.giant));
             dw.WriteLine("");
 
-            dw.WriteLine("field_11A == dragon");
+            dw.WriteLine("monsterType == dragon");
             DumpMonstersFilteredSub(dw, p => (p.monsterType == MonsterType.dragon));
             dw.WriteLine("");
 
-            dw.WriteLine("field_11A == animated_dead");
+            dw.WriteLine("monsterType == animated_dead");
             DumpMonstersFilteredSub(dw, p => (p.monsterType == MonsterType.animated_dead));
             dw.WriteLine("");
 
-            dw.WriteLine("field_11A == 9");
+            dw.WriteLine("monsterType == 9");
             DumpMonstersFilteredSub(dw, p => (p.monsterType == MonsterType.type_9));
             dw.WriteLine("");
 
-            dw.WriteLine("field_11A == fire");
+            dw.WriteLine("monsterType == fire");
             DumpMonstersFilteredSub(dw, p => (p.monsterType == MonsterType.fire));
             dw.WriteLine("");
 
-            dw.WriteLine("field_11A == 10");
-            DumpMonstersFilteredSub(dw, p => (p.monsterType == MonsterType.type_10));
+            dw.WriteLine("monsterType == 10");
+            DumpMonstersFilteredSub(dw, p => (p.monsterType == MonsterType.troll));
             dw.WriteLine("");
 
-            dw.WriteLine("field_11A == 12");
+            dw.WriteLine("monsterType == 12");
             DumpMonstersFilteredSub(dw, p => (p.monsterType == MonsterType.type_12));
             dw.WriteLine("");
 
-            dw.WriteLine("field_11A == snake");
+            dw.WriteLine("monsterType == snake");
             DumpMonstersFilteredSub(dw, p => (p.monsterType == MonsterType.snake));
             dw.WriteLine("");
 
-            dw.WriteLine("field_11A == plant");
+            dw.WriteLine("monsterType == plant");
             DumpMonstersFilteredSub(dw, p => (p.monsterType == MonsterType.plant));
             dw.WriteLine("");
 
-            dw.WriteLine("field_11A == animal");
+            dw.WriteLine("monsterType == animal");
             DumpMonstersFilteredSub(dw, p => (p.monsterType == MonsterType.animal));
             dw.WriteLine("");
 
-            dw.WriteLine("field_11A > type_1");
+            dw.WriteLine("monsterType > type_1");
             DumpMonstersFilteredSub(dw, p => (p.monsterType > MonsterType.type_1));
             dw.WriteLine("");
 

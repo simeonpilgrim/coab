@@ -1568,22 +1568,17 @@ namespace engine
 		}
 
 
-		internal static bool item_is_ranged(Item item)
-		{
-			return item != null &&
-				gbl.ItemDataTable[item.type].range > 1;
-		}
-
 		internal static bool item_is_ranged_melee(Item item)
 		{
 			var rangedMelee = (ItemDataFlags.flag_10 | ItemDataFlags.melee);
-			return item_is_ranged(item) &&
+			return item != null &&
+                item.IsRanged() &&
 				 (gbl.ItemDataTable[item.type].field_E & rangedMelee) == rangedMelee;
 		}
 
 		internal static bool is_weapon_ranged(Player player) /* offset_above_1 */
 		{
-			return item_is_ranged(player.field_151);
+			return player.field_151 != null && player.field_151.IsRanged();
 		}
 
 

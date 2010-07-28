@@ -75,7 +75,7 @@ namespace Classes
         public byte diceCountLarge; //seg600:5D12 unk_1C022
         public byte diceSizeLarge; //seg600:5D13 unk_1C023
         public sbyte bonusLarge; //seg600:5D14
-        public byte numberAttacks; //seg600:5D15
+        public int numberAttacks; //seg600:5D15
         public byte field_6; //seg600:5D16 unk_1C026
         public byte field_7; //seg600:5D17 unk_1C027
         public byte field_8; //seg600:5D18

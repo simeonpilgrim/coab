@@ -166,9 +166,9 @@ namespace engine
                 gbl.bigpic_block_id == 0x79 &&
                 gbl.lastDaxBlockId != 0x50)
             {
-                ovr028.SetMapCursorPosition();
-                ovr028.map_cursor_draw();
-                ovr028.map_cursor_restore();
+                MapCursor.SetPosition(gbl.area_ptr.current_city);
+                MapCursor.Draw();
+                MapCursor.Restore();
             }
 
             do
@@ -178,7 +178,7 @@ namespace engine
                     gbl.lastDaxBlockId != 0x50 &&
                     DateTime.Now >= timeCursorOn)
                 {
-                    ovr028.map_cursor_draw();
+                    MapCursor.Draw();
                     timeCursorOn = timeCursorOff.AddMilliseconds(300);
                 }
 
@@ -317,7 +317,7 @@ namespace engine
                     gbl.lastDaxBlockId != 0x50 &&
                     DateTime.Now >= timeCursorOff)
                 {
-                    ovr028.map_cursor_restore();
+                    MapCursor.Restore();
 
                     timeCursorOff = timeCursorOn.AddMilliseconds(500);
                 }
@@ -332,7 +332,7 @@ namespace engine
                 gbl.bigpic_block_id == 0x79 &&
                 gbl.lastDaxBlockId != 0x50)
             {
-                ovr028.map_cursor_restore();
+                MapCursor.Restore();
             }
 
             gbl.displayInput_specialKeyPressed = specialKeyPressed;

@@ -188,7 +188,7 @@ namespace engine
 
 								case 'V':
 									var_2 = ovr020.viewPlayer();
-									ovr014.sub_3EDD4(player);
+									ovr014.reclac_attacks(player);
 									if (var_2 == false)
 									{
 										ovr025.RedrawCombatScreen();
@@ -202,7 +202,7 @@ namespace engine
 								case 'U':
 									gbl.menuSelectedWord = 2;
 									ovr020.PlayerItemsMenu(ref var_2);
-									ovr014.sub_3EDD4(player);
+									ovr014.reclac_attacks(player);
 									if (var_2 == false)
 									{
 										ovr025.RedrawCombatScreen();

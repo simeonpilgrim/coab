@@ -42,13 +42,6 @@ namespace engine
 		}
 
 
-		internal static void sub_3A087(Effect arg_0, object param, Player player)
-		{
-			gbl.savingThrowRoll += 1;
-			gbl.attack_roll++;
-		}
-
-
 		internal static void Bless(Effect add_remove, object param, Player player)
 		{
 			gbl.monster_morale += 5;
@@ -101,7 +94,7 @@ namespace engine
 		}
 
 
-		internal static void sub_3A17A(Effect arg_0, object param, Player player)
+		internal static void BonusVsMonstersX(Effect arg_0, object param, Player player) // sub_3A17A
 		{
 			int bonus = 0;
 
@@ -110,7 +103,7 @@ namespace engine
 			{
 				gbl.spell_target = player.actions.target;
 
-				if (gbl.spell_target.monsterType == MonsterType.type_10)
+				if (gbl.spell_target.monsterType == MonsterType.troll)
 				{
 					bonus = 1;
 				}
@@ -470,7 +463,7 @@ namespace engine
 
 		internal static void AffectCauseDisease(Effect add_remove, object param, Player player) // sub_3A974
 		{
-            ovr013.CallAffectTable(add_remove, param, player, Affects.weaken);
+			ovr013.CallAffectTable(add_remove, param, player, Affects.weaken);
 			ovr013.CallAffectTable(add_remove, param, player, Affects.cause_disease_2);
 		}
 
@@ -651,7 +644,7 @@ namespace engine
 		{
 			Affect affect = (Affect)param;
 
-            if (addAffect(0x3c, affect.affect_data, Affects.weaken, player) == true)
+			if (addAffect(0x3c, affect.affect_data, Affects.weaken, player) == true)
 			{
 				if (player.strength > 3)
 				{
@@ -696,7 +689,7 @@ namespace engine
 			gbl.spell_target = player.actions.target;
 
 			if (gbl.SelectedPlayer.monsterType == MonsterType.giant ||
-				gbl.SelectedPlayer.monsterType == MonsterType.type_10)
+				gbl.SelectedPlayer.monsterType == MonsterType.troll)
 			{
 				if ((gbl.SelectedPlayer.field_DE & 0x7F) == 2)
 				{
@@ -724,8 +717,9 @@ namespace engine
 
 			if (player.combat_team == team)
 			{
-				sub_3A087(arg_0, affect, player);
-			}
+                gbl.savingThrowRoll += 1;
+                gbl.attack_roll++;
+            }
 			else
 			{
 				gbl.attack_roll -= 1;
@@ -1791,7 +1785,7 @@ namespace engine
 			affect_table.Add(Affects.sticks_to_snakes, ovr013.SticksToSnakes);
 			affect_table.Add(Affects.dispel_evil, ovr013.DispelEvil);
 			affect_table.Add(Affects.detect_magic, ovr013.empty);
-			affect_table.Add(Affects.affect_06, ovr013.sub_3A17A);
+			affect_table.Add(Affects.affect_06, ovr013.BonusVsMonstersX);
 			affect_table.Add(Affects.faerie_fire, ovr013.FaerieFire);
 			affect_table.Add(Affects.protection_from_evil, ovr013.affect_protect_evil);
 			affect_table.Add(Affects.protection_from_good, ovr013.affect_protect_good);

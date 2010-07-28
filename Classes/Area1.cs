@@ -154,6 +154,12 @@ namespace Classes
 		[DataOffset(0x348, DataType.Byte)]
 		public byte field_348;
 
+        [DataOffset(0x3C2, DataType.Word)]
+        public ushort field_3C2;
+        [DataOffset(0x3CA, DataType.Word)]
+        public ushort field_3CA;
+        [DataOffset(0x3CC, DataType.Word)]
+        public ushort field_3CC;
 
 		[DataOffset(0x3D4, DataType.Word)]
 		public ushort field_3D4;
@@ -379,9 +385,19 @@ namespace Classes
 					field_348 = (byte)value;
 					break;
 
-				case 0x3D4:
-					field_3D4 = value;
-					break;
+                case 0x3C2:
+                    field_3C2 = value;
+                    break;
+                case 0x3CA:
+                    field_3CA = value;
+                    break;
+                case 0x3CC:
+                    field_3CC = value;
+                    break;
+
+                case 0x3D4:
+                    field_3D4 = value;
+                    break;
 				case 0x3D6:
 					field_3D6 = value;
 					break;
@@ -570,9 +586,16 @@ namespace Classes
 				case 0x346:
 					return field_346;
 
-				case 0x3D4:
-					return field_3D4;
-				case 0x3D6:
+                case 0x3C2:
+                    return field_3C2;
+                case 0x3CA:
+                    return field_3CA;
+                case 0x3CC:
+                    return field_3CC;
+                
+                case 0x3D4:
+                    return field_3D4;
+                case 0x3D6:
 					return field_3D6;
 				case 0x3D8:
 					return field_3D8;

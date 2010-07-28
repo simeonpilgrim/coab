@@ -4,57 +4,57 @@ namespace engine
 {
 	class ovr014
 	{
-		internal static void CalculateInitiative(Player player) // sub_3E000
-		{
-			Action action = player.actions;
+        internal static void CalculateInitiative(Player player) // sub_3E000
+        {
+            Action action = player.actions;
 
-			action.spell_id = 0;
-			action.can_cast = true;
-			action.can_use = true;
-			action.field_8 = false;
-			action.attackIdx = 2;
+            action.spell_id = 0;
+            action.can_cast = true;
+            action.can_use = true;
+            action.field_8 = false;
+            action.attackIdx = 2;
 
-			sub_3EDD4(player);
-			gbl.halfActionsLeft = player.baseHalfMoves;
+            reclac_attacks(player);
+            gbl.halfActionsLeft = player.baseHalfMoves;
 
-			gbl.resetMovesLeft = false;
+            gbl.resetMovesLeft = false;
 
-			ovr024.CheckAffectsEffect(player, CheckType.Movement);
+            ovr024.CheckAffectsEffect(player, CheckType.Movement);
 
-			player.attack2_AttacksLeft = (byte)ThisRoundActionCount(gbl.halfActionsLeft);
+            player.attack2_AttacksLeft = (byte)ThisRoundActionCount(gbl.halfActionsLeft);
 
-			action.field_5 = player.attackLevel;
+            action.field_5 = player.attackLevel;
 
-			if (player.in_combat == true)
-			{
-				action.delay = (sbyte)(ovr024.roll_dice(6, 1) + ovr025.DexReactionAdj(player));
+            if (player.in_combat == true)
+            {
+                action.delay = (sbyte)(ovr024.roll_dice(6, 1) + ovr025.DexReactionAdj(player));
 
-				if (action.delay < 1)
-				{
-					action.delay = 1;
-				}
+                if (action.delay < 1)
+                {
+                    action.delay = 1;
+                }
 
-				if ((((int)player.combat_team + 1) & gbl.area2_ptr.field_596) != 0)
-				{
-					action.delay -= 6;
-				}
+                if ((((int)player.combat_team + 1) & gbl.area2_ptr.field_596) != 0)
+                {
+                    action.delay -= 6;
+                }
 
-				if (action.delay < 0 ||
-					action.delay > 20)
-				{
-					action.delay = 0;
-				}
-			}
-			else
-			{
-				action.delay = 0;
-			}
+                if (action.delay < 0 ||
+                    action.delay > 20)
+                {
+                    action.delay = 0;
+                }
+            }
+            else
+            {
+                action.delay = 0;
+            }
 
-			player.actions.move = sub_3E124(player);
-		}
+            player.actions.move = CalcMoves(player);
+        }
 
 
-		internal static int sub_3E124(Player player)
+        internal static int CalcMoves(Player player) // sub_3E124
 		{
 			int moves = player.movement;
 
@@ -96,7 +96,7 @@ namespace engine
 			}
 
 			gbl.damage_flags = 0;
-			ovr024.CheckAffectsEffect(attacker, CheckType.Type_4);
+			ovr024.CheckAffectsEffect(attacker, CheckType.SpecialAttacks);
 			ovr024.CheckAffectsEffect(target, CheckType.Type_5);
 		}
 
@@ -433,7 +433,7 @@ namespace engine
 			}
 			else
 			{
-				int var_4 = sub_3E124(player) / 2;
+				int var_4 = CalcMoves(player) / 2;
 				int var_3 = MaxOppositionMoves(player);
 
 				if (var_3 < var_4)
@@ -459,25 +459,25 @@ namespace engine
 		}
 
 
-		internal static void sub_3EDD4(Player player)
+        internal static void reclac_attacks(Player player) // sub_3EDD4
 		{
-			bool var_5 = false;
-			Item var_9 = null;
-			byte var_2 = player.attack1_AttacksLeft;
+			bool foundRanged = false;
+			Item rangedItem = null;
+			int origAttacks = player.attack1_AttacksLeft;
 			player.attack1_AttacksLeft = player.attacksCount;
 
 			if (ovr025.is_weapon_ranged(player) == true &&
-				ovr025.GetCurrentAttackItem(out var_9, player) == true)
+				ovr025.GetCurrentAttackItem(out rangedItem, player) == true)
 			{
-				var_5 = true;
-				byte var_4 = gbl.ItemDataTable[player.field_151.type].numberAttacks;
+				foundRanged = true;
+				int numAttacks = gbl.ItemDataTable[player.field_151.type].numberAttacks;
 
-				if (var_4 < 2)
+				if (numAttacks < 2)
 				{
-					var_4 = 2;
+					numAttacks = 2;
 				}
 
-				gbl.halfActionsLeft = var_4;
+				gbl.halfActionsLeft = numAttacks;
 			}
 			else
 			{
@@ -489,28 +489,27 @@ namespace engine
 
 			int attacks = ThisRoundActionCount(gbl.halfActionsLeft);
 
-			if (var_5 == true &&
-				var_9 != null)
+			if (foundRanged == true &&
+				rangedItem != null)
 			{
 				int var_3 = 1;
-				if (var_9 != null &&
-					var_9.count > var_3)
+				if (rangedItem.count > var_3)
 				{
-					var_3 = var_9.count;
+					var_3 = rangedItem.count;
 				}
 
 				if (var_3 < attacks &&
-					var_9.count > 0)
+					rangedItem.count > 0)
 				{
 					attacks = var_3;
 				}
 			}
 
 			if (player.actions.field_8 == false ||
-				attacks < var_2 ||
+				attacks < origAttacks ||
 				(player.actions.field_8 == true &&
-				  attacks < (var_2 * 2) &&
-				  var_5 == false))
+				  attacks < (origAttacks * 2) &&
+				  foundRanged == false))
 			{
 				player.attack1_AttacksLeft = (byte)attacks;
 			}
@@ -1712,20 +1711,17 @@ namespace engine
 		}
 
 
-		internal static int MaxOppositionMoves(Player arg_0) // sub_40E8F
+		internal static int MaxOppositionMoves(Player player) // sub_40E8F
 		{
 			int maxMoves = 0;
 
-			foreach (Player player in gbl.TeamList)
+			foreach (Player mob in gbl.TeamList)
 			{
-				if (arg_0.OppositeTeam() == player.combat_team && player.in_combat == true)
+				if (player.OppositeTeam() == mob.combat_team && mob.in_combat == true)
 				{
-					int moves = sub_3E124(player) / 2;
+					int moves = CalcMoves(mob) / 2;
 
-					if (moves > maxMoves)
-					{
-						maxMoves = moves;
-					}
+                    maxMoves = System.Math.Max(moves, maxMoves);
 				}
 			}
 

@@ -1606,7 +1606,7 @@ namespace engine
 				var_1 = true;
 			}
 
-            if (ovr024.cure_affect(Affects.weaken, gbl.spellTargets[0]) == true)
+			if (ovr024.cure_affect(Affects.weaken, gbl.spellTargets[0]) == true)
 			{
 				var_1 = true;
 

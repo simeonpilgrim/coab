@@ -49,6 +49,63 @@ namespace engine
 
 			seg044.sound_sub_120E0(Sound.sound_0);
 
+            //Logging.Logger.Debug("Field_6 & 0x0F == 0");
+            //foreach (var s in gbl.spellCastingTable )
+            //{
+            //    if (s != null && (s.field_6 & 0x0f) == 0)
+            //    {
+            //        Logging.Logger.Debug("{0} {1}", s.spellIdx, (Spells)s.spellIdx);
+            //    }
+            //}
+            //Logging.Logger.Debug("");
+            //Logging.Logger.Debug("Field_6 & 0x0F == 5");
+            //foreach (var s in gbl.spellCastingTable)
+            //{
+            //    if (s != null && (s.field_6 & 0x0f) == 5)
+            //    {
+            //        Logging.Logger.Debug("{0} {1}", s.spellIdx, (Spells)s.spellIdx);
+            //    }
+            //}
+            //Logging.Logger.Debug("");
+            //Logging.Logger.Debug("Field_6 & 0x0F == 15");
+            //foreach (var s in gbl.spellCastingTable)
+            //{
+            //    if (s != null && (s.field_6 & 0x0f) == 15)
+            //    {
+            //        Logging.Logger.Debug("{0} {1}", s.spellIdx, (Spells)s.spellIdx);
+            //    }
+            //}
+            //Logging.Logger.Debug("");
+            //Logging.Logger.Debug("Field_6 & 0x0F >= 8 <= 14");
+            //foreach (var s in gbl.spellCastingTable)
+            //{
+            //    if (s != null)
+            //    {
+            //        int v = s.field_6 & 0x0f;
+            //        if (v >= 8 && v <= 14)
+            //        {
+            //            Logging.Logger.Debug("{0} {1}", s.spellIdx, (Spells)s.spellIdx);
+
+            //        }
+            //    }
+            //}
+            //Logging.Logger.Debug("");
+            //Logging.Logger.Debug("Field_6 & 0x0F otherwise");
+            //foreach (var s in gbl.spellCastingTable)
+            //{
+            //    if (s != null)
+            //    {
+            //        int v = s.field_6 & 0x0f;
+            //        if (v >= 1 && v <= 7 && v != 5)
+            //        {
+            //            Logging.Logger.Debug("{0} {1} {2}", s.spellIdx, (Spells)s.spellIdx, (v & 3)+1);
+            //        }
+            //    }
+            //}
+            //Logging.Logger.Debug("");
+
+
+
 			if (Cheats.skip_title_screen == false)
 			{
 				ovr002.title_screen();
