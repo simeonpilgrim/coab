@@ -470,7 +470,7 @@ namespace engine
 
 		internal static void AffectCauseDisease(Effect add_remove, object param, Player player) // sub_3A974
 		{
-			ovr013.CallAffectTable(add_remove, param, player, Affects.affect_2b);
+            ovr013.CallAffectTable(add_remove, param, player, Affects.weaken);
 			ovr013.CallAffectTable(add_remove, param, player, Affects.cause_disease_2);
 		}
 
@@ -651,7 +651,7 @@ namespace engine
 		{
 			Affect affect = (Affect)param;
 
-			if (addAffect(0x3c, affect.affect_data, Affects.affect_2b, player) == true)
+            if (addAffect(0x3c, affect.affect_data, Affects.weaken, player) == true)
 			{
 				if (player.strength > 3)
 				{
@@ -1828,7 +1828,7 @@ namespace engine
 			affect_table.Add(Affects.affect_28, ovr013.sub_3AC1D);
 			affect_table.Add(Affects.prot_from_normal_missiles, ovr013.AffectProtNormalMissles);
 			affect_table.Add(Affects.slow, ovr013.AffectSlow);
-			affect_table.Add(Affects.affect_2b, ovr013.weaken);
+            affect_table.Add(Affects.weaken, ovr013.weaken);
 			affect_table.Add(Affects.cause_disease_2, ovr013.sub_3B0C2);
 			affect_table.Add(Affects.prot_from_evil_10_radius, ovr013.affect_protect_evil);
 			affect_table.Add(Affects.prot_from_good_10_radius, ovr013.affect_protect_good);
