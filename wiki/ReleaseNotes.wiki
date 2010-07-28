@@ -2,6 +2,7 @@
 
 = Unreleased =
   * Fixed the group view display of AC
+  * Issue 54, Fixed Join items command, to not loose items
 
 = 1.1.2 =
   * Issue 53, Casting Cloud Kill in combat crashed the game
