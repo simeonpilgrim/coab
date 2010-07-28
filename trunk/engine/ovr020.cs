@@ -724,7 +724,7 @@ namespace engine
                     ovr024.CalcStatBonuses(Stat.STR, player);
                     break;
 
-                case 6:
+                case 6: // Girdle of the Dwarves
                     ovr024.CalcStatBonuses(Stat.CON, player);
                     ovr024.CalcStatBonuses(Stat.CHA, player);
                     break;

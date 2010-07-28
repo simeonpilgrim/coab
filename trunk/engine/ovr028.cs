@@ -2,7 +2,7 @@ using Classes;
 
 namespace engine
 {
-    class ovr028
+    class MapCursor // ovr028
     {
         static int[] city_map_x = { /* unk_16D5A */
             0x04,0x0C,0x15,0x0B,0x1D,0x14,0x26,0x15,
@@ -19,21 +19,21 @@ namespace engine
         static int loc_X; // word_1EF9C
         static int loc_Y; // word_1EF9E
 
-        internal static void SetMapCursorPosition() //sub_6E005
+        internal static void SetPosition(int currentCity) //sub_6E005
         {
-            loc_X = city_map_x[gbl.area_ptr.current_city];
-            loc_Y = city_map_y[gbl.area_ptr.current_city];
+            loc_X = city_map_x[currentCity];
+            loc_Y = city_map_y[currentCity];
         }
 
 
-        internal static void map_cursor_draw() /* sub_6E02E */
+        internal static void Draw() /* sub_6E02E */
         {
             seg040.ega_backup(gbl.cursor_bkup, loc_Y, loc_X);
             seg040.draw_picture(gbl.cursor, loc_Y, loc_X, 0);
         }
 
 
-        internal static void map_cursor_restore() /* sub_6E05D */
+        internal static void Restore() /* sub_6E05D */
         {
             seg040.draw_picture(gbl.cursor_bkup, loc_Y, loc_X, 0);
         }

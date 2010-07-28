@@ -9,7 +9,7 @@ namespace engine
         Visibility = 1,
         Type_2 = 2,
         Type_3 = 3,
-        Type_4 = 4,
+        SpecialAttacks = 4,
         Type_5 = 5,
         PreDamage = 6,
         PlayerRestrained = 7,
@@ -169,7 +169,7 @@ namespace engine
                     calc_affect_effect(Affects.affect_57, player);
                     break;
 
-                case CheckType.Type_4:
+                case CheckType.SpecialAttacks:
                     calc_affect_effect(Affects.ray_of_enfeeblement, player);
                     calc_affect_effect(Affects.affect_06, player);
                     calc_affect_effect(Affects.salamander_heat_damage, player);

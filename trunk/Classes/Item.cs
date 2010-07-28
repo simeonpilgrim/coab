@@ -323,5 +323,11 @@ namespace Classes
         {
             return GenerateName(0);
         }
+
+
+        public bool IsRanged()
+        {
+            return gbl.ItemDataTable[type].range > 1;
+        }
     }
 }
