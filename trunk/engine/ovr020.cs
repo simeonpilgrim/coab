@@ -848,7 +848,7 @@ namespace engine
 
                 if ((player.classFlags & gbl.ItemDataTable[item.type].classFlags) == 0)
                 {
-					result = Weld.AlreadyUsingX;
+                    result = Weld.WrongClass;
                 }
 
                 switch (result)
@@ -1113,8 +1113,8 @@ namespace engine
 
                 ovr025.lose_item(item, gbl.SelectedPlayer);
 
-                short plat = (short)(item_value / 5);
-                short gold = (short)(item_value % 5);
+                int plat = item_value / 5;
+                int gold = item_value % 5;
                 int overflow;
 
                 if (ovr022.willOverload(out overflow, plat + gold, gbl.SelectedPlayer) == true)
