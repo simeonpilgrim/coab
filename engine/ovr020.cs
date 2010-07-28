@@ -931,6 +931,8 @@ namespace engine
 
         internal static void join_items(Item item) /*sub_56285*/
         {
+            var actual = gbl.SelectedPlayer.items.Find(i => i == item);
+
             var match = gbl.SelectedPlayer.items.FindAll(i =>
                 {
                     return (i != item &&
@@ -949,26 +951,22 @@ namespace engine
                     i.affect_3 == item.affect_3);
                 });
 
-            Item this_item = item;
-            int items_count = this_item.count;
-
             foreach (var item_ptr in match)
             {
-                if (item_ptr.count + items_count <= 255)
+                if (item_ptr.count + item.count <= 255)
                 {
-                    items_count += item_ptr.count;
+                    item.count += item_ptr.count;
                     ovr025.lose_item(item_ptr, gbl.SelectedPlayer);
                 }
                 else
                 {
-                    this_item.count = 255;
-                    item_ptr.count -= 255 - items_count;
+                    int tempCount = 255 - (item.count + item_ptr.count);
+                    item.count = 255;
+                    item_ptr.count = tempCount;
 
-                    items_count = item_ptr.count;
-                    this_item = item_ptr;
+                    item = item_ptr;
                 }
             }
-            this_item.count = items_count;
         }
 
 
