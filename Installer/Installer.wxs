@@ -2,10 +2,10 @@
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
   <?define SkuName = "Curse of the Azure Bonds"?>
 
-  <?define ProductVersion="1.1.2" ?>
+  <?define ProductVersion="1.1.3" ?>
   <?define Manufacturer="Simeon Pilgrim"?>
   
-  <?define BinDir="Main\bin\Debug\"?>
+  <?define BinDir="Main\bin\Release\"?>
 
 
   <Product Id="*"
