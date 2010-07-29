@@ -1,9 +1,15 @@
 = The Release Notes =
 
 = Unreleased =
-  * Fixed the group view display of AC
-  * Issue 54, Fixed Join items command, to not loose items
+
+= 1.1.3 =
+  * Issue 54, Fixed join items command, to not loose items
   * Issue 55, Fixed crash from readying items from wrong class
+  * Issue 56, Fixed pooling of party money loosing gems and jewerly
+  * Issue 61, Fixed the group view display of AC
+  * Fixed colouring of sprites, missing black pixels
+  * Fixed sharing not removing treasure from ground 
+ 
 
 = 1.1.2 =
   * Issue 53, Casting Cloud Kill in combat crashed the game
