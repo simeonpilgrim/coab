@@ -98,7 +98,7 @@ namespace DaxDump
                     offset++;
                 } 
 
-                return string.Format("<string starting at ecl byte 0x{0:X4}>", (loc + 0x8000) & 0xffff, sb.ToString());
+                return string.Format("<string starting at ecl byte 0x{0:X4}>{1}", (loc + 0x8000) & 0xffff, sb.ToString());
             }
             else
             {
