@@ -608,7 +608,7 @@ namespace DaxDump
         {
             EclOpp[] opps = LoadEclOpps(4);
 
-            return SetMemoryValue(0x2CB, string.Format("{0} {1} {2} {3}", opps[0].GetCmdValue(), opps[1].GetCmdValue(), opps[2].GetCmdValue(), opps[4].GetCmdValue()));
+            return SetMemoryValue(0x2CB, string.Format("{0} {1} {2} {3}", opps[0].GetCmdValue(), opps[1].GetCmdValue(), opps[2].GetCmdValue(), opps[3].GetCmdValue()));
 
             //byte var_8 = (byte)ovr008.vm_GetCmdValue(1);
             //byte var_7 = (byte)ovr008.vm_GetCmdValue(2);
