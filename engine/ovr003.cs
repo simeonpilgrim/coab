@@ -1597,30 +1597,21 @@ namespace engine
 
 		internal static void CMD_Damage() /* sub_28958 */
 		{
-			byte var_8 = 0; /* Simeon */
-
 			Player currentPlayerBackup = gbl.SelectedPlayer;
-			/*byte var_19 = 0; */
-			byte var_1A = 0;
+
 			ovr008.vm_LoadCmdSets(5);
 			byte var_1 = (byte)ovr008.vm_GetCmdValue(1);
-			byte var_2 = (byte)ovr008.vm_GetCmdValue(2);
-			byte var_3 = (byte)ovr008.vm_GetCmdValue(3);
-			byte var_7 = (byte)ovr008.vm_GetCmdValue(4);
+			int dice_count = ovr008.vm_GetCmdValue(2);
+			int dice_size = ovr008.vm_GetCmdValue(3);
+			int dam_plus = ovr008.vm_GetCmdValue(4);
 			byte var_6 = (byte)ovr008.vm_GetCmdValue(5);
 
+			int damage = ovr024.roll_dice(dice_size, dice_count) + dam_plus;
 
-			int damage = ovr024.roll_dice(var_3, var_2) + var_7;
-
-			byte var_1B = (byte)(var_1 & 0x10);
-
-			if ((var_1 & 0x40) != 0)
+			byte rnd_player_id = 0;
+			if ((var_1 & 0x40) == 0)
 			{
-				var_1A = 1;
-			}
-			else
-			{
-				var_8 = ovr024.roll_dice(gbl.area2_ptr.party_size, 1);
+				rnd_player_id = ovr024.roll_dice(gbl.area2_ptr.party_size, 1);
 			}
 
 			if ((var_1 & 0x80) != 0)
@@ -1628,7 +1619,7 @@ namespace engine
 				int saveBonus = var_1 & 0x1f;
 				int bonusType = var_6 & 7;
 
-				if (var_1A != 0)
+                if ((var_1 & 0x40) != 0)
 				{
 					foreach (Player player03 in gbl.TeamList)
 					{
@@ -1640,7 +1631,7 @@ namespace engine
 						{
 							ovr008.sub_32200(player03, damage);
 						}
-						else if (var_1B != 0)
+                        else if ((var_1 & 0x10) != 0)
 						{
 							ovr008.sub_32200(player03, damage);
 						}
@@ -1655,20 +1646,20 @@ namespace engine
 						{
 							ovr008.sub_32200(gbl.SelectedPlayer, damage);
 						}
-						else if (var_1B != 0)
+                        else if ((var_1 & 0x10) != 0)
 						{
 							ovr008.sub_32200(gbl.SelectedPlayer, damage);
 						}
 					}
 					else
 					{
-						Player target = gbl.TeamList[var_8 - 1];
+						Player target = gbl.TeamList[rnd_player_id - 1];
 
 						if (ovr024.RollSavingThrow(saveBonus, (SaveVerseType)bonusType, target) == false)
 						{
 							ovr008.sub_32200(target, damage);
 						}
-						else if (var_1B != 0)
+                        else if ((var_1 & 0x10) != 0)
 						{
 							ovr008.sub_32200(target, damage);
 						}
@@ -1679,15 +1670,15 @@ namespace engine
 			{
 				for (int i = 0; i < var_1; i++)
 				{
-					var_8 = ovr024.roll_dice(gbl.area2_ptr.party_size, 1);
-					Player player03 = gbl.TeamList[var_8 - 1];
+					rnd_player_id = ovr024.roll_dice(gbl.area2_ptr.party_size, 1);
+					Player player03 = gbl.TeamList[rnd_player_id - 1];
 
 					if (ovr024.CanHitTarget(var_6, player03) == true)
 					{
 						ovr008.sub_32200(player03, damage);
 					}
 
-					damage = ovr024.roll_dice(var_3, var_2) + var_7;
+					damage = ovr024.roll_dice(dice_size, dice_count) + dam_plus;
 				}
 			}
 

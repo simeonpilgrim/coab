@@ -29,6 +29,9 @@ namespace Classes
 
 		protected byte[] origData = new byte[Area2Size];
 
+        [DataOffset(0x218, DataType.Word)]
+        public ushort field_218; // 0x218
+
         [DataOffset(0x550, DataType.Byte)]
         public byte training_class_mask; // 0x550
         [DataOffset(0x580, DataType.Word)]
