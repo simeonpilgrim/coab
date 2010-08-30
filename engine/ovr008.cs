@@ -1329,8 +1329,8 @@ namespace engine
 				DuelMaster.control_morale = Control.NPC_Berzerk;
 				DuelMaster.icon_id = gbl.monster_icon_id;
 
-				DuelMaster.affects = new System.Collections.Generic.List<Affect>();
-				DuelMaster.items = new System.Collections.Generic.List<Item>();
+				DuelMaster.affects = new List<Affect>();
+				DuelMaster.items = new List<Item>();
 
 				gbl.TeamList.Add(DuelMaster);
 
