@@ -136,7 +136,7 @@ namespace Classes
 
 		public bool AnyMoney()
 		{
-			for (int coin = Money.Copper; coin <= Money.Platinum; coin++)
+			for (int coin = Money.Copper; coin <= Money.Jewelry; coin++)
 			{
 				if (money[coin] > 0)
 				{
@@ -147,8 +147,7 @@ namespace Classes
 			return false;
 		}
 
-
-		public bool ScaleAll(double scale)
+ 		public bool ScaleAll(double scale)
 		{
 			bool didScale = false;
 			for (int coin = Money.Copper; coin <= Money.Platinum; coin++)
