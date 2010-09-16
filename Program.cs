@@ -14,14 +14,14 @@ namespace DaxDump
             //string path = System.IO.Directory.GetCurrentDirectory();
             //string path = @"C:\games\DARKNESS";
             //string path = @"C:\games\TREASURE";
-            //string path = @"C:\games\gateway";
+            string path = @"C:\games\gateway";
             //string path = @"C:\games\secret";
             //string path = @"C:\games\deathkrynn";
             //string path = @"C:\games\nwn";
             //string path = @"c:\games\buckmatrix";
-            string path = @"c:\games\buckcount";
+            //string path = @"c:\games\buckcount";
 
-            foreach (var filea in Directory.GetFiles(path, "*.dax"))
+            foreach (var filea in Directory.GetFiles(path, "pic*.dax"))
             {
                 TryDump(filea);
             }
@@ -32,6 +32,8 @@ namespace DaxDump
             //string file = @"C:\games\DARKNESS\cpic1_025.bin";
             //string file = @"C:\games\DARKNESS\SKYGRND_001.bin";
             //string file = @"C:\games\DARKNESS\title_001.bin";
+
+            //Console.ReadKey();
         }
 
         static int[] MonoBitMask = { 0x80, 0x40, 0x20, 0x10, 0x08, 0x04, 0x02, 0x01 };
@@ -47,7 +49,7 @@ namespace DaxDump
                 byte[] data = block.data;
 
                 Console.WriteLine("File: {0} Block: {1} Size: {2}", block.file, block.id, data.Length);
-                
+
                 string block_name = string.Format("{0}_{1:000}", Path.Combine(Path.GetDirectoryName(block.file), Path.GetFileNameWithoutExtension(block.file)), block.id);
 
                 DumpBin(data, block_name);
@@ -56,12 +58,14 @@ namespace DaxDump
 
                 //TryEGA(data, block_name);
 
+                TryStrataVGA(data, block_name);
+
                 //TryVGA(data, block_name);
 
                 //TryVGASprite(data, block_name );
-               
             }
         }
+
 
         private static void DumpBin(byte[] data, string block_name)
         {
@@ -140,6 +144,201 @@ namespace DaxDump
         }
 
 
+        public static int sub_5CB7B(byte[] arg_0, int arg_4, byte[] arg_8) // 044B sub_5CB7B
+        {
+            byte[] var_6A = new byte[0x20];
+            byte[] var_4A = new byte[0x20];
+            byte[] var_2A = new byte[0x18];
+            byte[] var_12 = new byte[0x10];
+            byte var_1;
+
+            if ((arg_8[arg_4] & 0xCC) == 0)
+            {
+                arg_0[0] = 3;
+
+                Array.Copy(arg_8, arg_4, var_12, 0, 8);
+
+                for (var_1 = 0; var_1 <= 0x0f; var_1++)
+                {
+                    var_4A[var_1] = var_1;
+
+                    if ((var_1 & 1) != 0)
+                    {
+                        var_6A[var_1] = (byte)(var_12[var_1 / 2] & 0x0F);
+                    }
+                    else
+                    {
+                        var_6A[var_1] = (byte)((var_12[var_1 / 2] >> 4) & 0x0F);
+                    }
+                }
+                arg_4 += 8;
+            }
+            else
+            {
+                arg_0[0] = arg_8[arg_4];
+                arg_4 += 1;
+
+                if ((arg_0[0] & 1) != 0)
+                {
+                    Array.Copy(arg_8, arg_4, var_12, 0, 8);
+                    for (var_1 = 0; var_1 <= 0x1F; var_1++)
+                    {
+                        int dx = var_1 + var_1 + 6;
+
+                        int dl = (var_12[var_1 / 4] >> dx) & 3;
+
+                        var_6A[var_1] = (byte)dl;
+                    }
+                    arg_4 += 8;
+                }
+
+                if ((arg_0[0] & 2) != 0)
+                {
+                    Array.Copy(arg_8, arg_4, var_12, 0, 0x10);
+
+                    for (var_1 = 0; var_1 < 0x10; var_1++)
+                    {
+                        var_4A[(var_1 * 2) + 0] = (byte)(var_12[var_1] & 0x0F);
+                        var_4A[(var_1 * 2) + 1] = (byte)((var_12[var_1] >> 4) & 0x0F);
+                    }
+                    arg_4 += 0x10;
+                }
+
+                if ((arg_0[0] & 8) != 0)
+                {
+                    Array.Copy(arg_8, arg_4, var_2A, 0, 0x18);
+                    arg_4 += 0x18;
+                }
+            }
+
+
+            Array.Copy(var_2A, 0, arg_0, 0x20, 0x18);
+
+            if ((arg_0[0] & 8) != 0)
+            {
+                arg_0[0x39] = 0xFF;
+            }
+
+            return arg_4;
+        }
+
+
+        private static void TryStrataVGA(byte[] data, string block_name)
+        {
+            if (data.Length < 20)
+                return;
+
+            // try single frame
+            int height = Sys.ArrayToUshort(data, 0);
+            int width = Sys.ArrayToUshort(data, 2);
+            int x_pos = Sys.ArrayToUshort(data, 4);
+            int y_pos = Sys.ArrayToUshort(data, 6);
+            int item_count = data[8];
+
+            int width_px = width * 8;
+            int height_px = height;
+            int x_pos_px = x_pos * 8;
+            int y_pos_px = y_pos * 8;
+
+            int clr_count = data[9];
+            int clr_start = data[10];
+            //int data_offset = data[11];
+
+            if (width_px < 1 || height_px < 1 || width_px > 320 || height_px > 200)
+               return;
+
+            if (data.Length < (5 * width * height) + 9)
+                return;
+
+            var clrs = PaletteBase();
+            
+            byte[] tempPalette = new byte[0x3B];
+            int data_offset = sub_5CB7B(tempPalette, 9, data);
+
+            int[,] pxl_clrs = new int[height_px, width_px];
+
+            int in_offset = data_offset;
+            int out_offset = 0;
+            for (int y = 0; y < height; y++)
+            {
+                for (int x = 0; x < width_px; x++)
+                {
+                    int mask = 0x80 >> (x & 7);
+                    int input_byte = x / 8;
+                    byte px_clr = 0;
+
+                    if ((data[in_offset + input_byte] & mask) != 0)
+                    {
+                        px_clr = 1;
+                    }
+
+                    if ((data[in_offset + input_byte + width] & mask) != 0)
+                    {
+                        px_clr += 2;
+                    }
+
+                    if ((data[in_offset + input_byte + (width * 2)] & mask) != 0)
+                    {
+                        px_clr += 4;
+                    }
+
+                    if ((data[in_offset + input_byte + (width * 3)] & mask) != 0)
+                    {
+                        px_clr += 8;
+                    }
+
+                    if ((data[in_offset + input_byte + (width * 4)] & mask) != 0)
+                    {
+                        px_clr += 0x10;
+                    }
+
+                    pxl_clrs[y, x] = px_clr;
+                }
+
+                in_offset += width * 5;
+                out_offset += width * 8;
+            }
+
+
+            int[] dd = new int[48];
+            int _base = 0x20;
+            for (int i = 0; i < 24; i++)
+            {
+                int b = tempPalette[_base + i];
+                int a1 = (b & 0x0f);
+                int a2 = (b & 0xf0);
+                dd[0 + i] = (b & 0x0f) * 4;
+                dd[24 + i] = (b & 0xf0) / 4;
+            }
+
+            for (int i = 0; i < 14; i += 1)
+            {
+                int r = dd[(i * 3) + 6 + 0];
+                int g = dd[(i * 3) + 6 + 1];
+                int b = dd[(i * 3) + 6 + 2];
+                clrs[i + 18] = Color.FromArgb(r * 4, g * 4, b * 4);
+            }
+
+            int[] counts = new int[32];
+
+            var bitmap = new Bitmap(width_px + x_pos_px, height_px + y_pos_px, System.Drawing.Imaging.PixelFormat.Format16bppArgb1555);
+            for (int y = 0; y < height_px; y++)
+            {
+                for (int x = 0; x < width_px; x += 1)
+                {
+                    int pxX = x + x_pos_px;
+                    int pxY = y + y_pos_px;
+                    bitmap.SetPixel(pxX, pxY, clrs[pxl_clrs[y, x]]);
+                    counts[pxl_clrs[y, x]] += 1;
+                }
+            }
+
+            string name = string.Format("{0}_vga_strata.png", block_name);
+            bitmap.Save(name, System.Drawing.Imaging.ImageFormat.Png);
+        }
+
+
+
         private static void TryMono(byte[] data, string block_name)
         {
             if ((data.Length % 8) == 0 && Path.GetFileName(block_name).StartsWith("8x8", true, System.Globalization.CultureInfo.CurrentCulture))
@@ -176,9 +375,9 @@ namespace DaxDump
             {
                 int run_length = (sbyte)data[input_index];
 
-                 if (run_length >= 0)
+                if (run_length >= 0)
                 {
-                    if( input_index + run_length + 1 >= data.Length )
+                    if (input_index + run_length + 1 >= data.Length)
                         return new byte[0];
 
                     for (int i = 0; i <= run_length; i++)
@@ -202,12 +401,11 @@ namespace DaxDump
 
                     input_index += 2;
                 }
-            } 
+            }
 
             return nd.ToArray();
         }
 
-        static int ww;
         static void TryVGASprite(byte[] data, string filename)
         {
             var orig_data = data;
@@ -227,7 +425,7 @@ namespace DaxDump
             int width_px = width * 8;
             int height_px = height;
 
-            if (width_px < 1 || height_px < 1 || width_px > 320 || height_px > 200 )
+            if (width_px < 1 || height_px < 1 || width_px > 320 || height_px > 200)
                 return;
 
             int frames = orig_data[8];
@@ -237,7 +435,7 @@ namespace DaxDump
             int data_start = (clr_count * 3) + 11 + 0x79 + (3 * frames); // darkness, buckmatrix
             //int data_start = 306; // treasure sprites
             //int data_start = ww;
-           
+
             data = UnpackSpriteData(data, data_start);
 
             int picSize = width_px * height_px;
@@ -263,7 +461,7 @@ namespace DaxDump
             {
                 if (sprite_file)
                 {
-                    mframe = frame_count-1;
+                    mframe = frame_count - 1;
                 }
 
                 for (int frame = 0; frame < frame_count; frame++)
