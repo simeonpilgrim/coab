@@ -17,7 +17,7 @@ namespace Win32
         {
             System.Drawing.Imaging.BitmapData bmpData =
                 bm.LockBits(rect, System.Drawing.Imaging.ImageLockMode.WriteOnly,
-                bm.PixelFormat);
+                System.Drawing.Imaging.PixelFormat.Format24bppRgb);
 
             IntPtr ptr = bmpData.Scan0;
 
