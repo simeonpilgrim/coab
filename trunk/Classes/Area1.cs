@@ -133,6 +133,11 @@ namespace Classes
 		[DataOffset(0x2B6, DataType.Word)]
 		public ushort field_2B6;
 
+        [DataOffset(0x2C0, DataType.Word)]
+        public ushort field_2C0;
+        [DataOffset(0x2CA, DataType.Word)]
+        public ushort field_2CA;
+
 
 		[DataOffset(0x336, DataType.Byte)]
 		public byte field_336;
@@ -355,11 +360,18 @@ namespace Classes
 				case 0x2B4:
 					field_2B4 = value;
 					break;
-				case 0x2B6:
-					field_2B6 = value;
-					break;
+                case 0x2B6:
+                    field_2B6 = value;
+                    break;
 
-				case 0x336:
+                case 0x2C0:
+                    field_2C0 = value;
+                    break;
+                case 0x2CA:
+                    field_2CA = value;
+                    break;
+
+                case 0x336:
 					field_336 = (byte)value;
 					break;
 				case 0x338:
@@ -569,10 +581,15 @@ namespace Classes
 					return field_2B2;
 				case 0x2B4:
 					return field_2B4;
-				case 0x2B6:
-					return field_2B6;
+                case 0x2B6:
+                    return field_2B6;
 
-				case 0x336:
+                case 0x2C0:
+                    return field_2C0;
+                case 0x2CA:
+                    return field_2CA;
+
+                case 0x336:
 					return field_336;
 				case 0x338:
 					return field_338;
@@ -640,10 +657,10 @@ namespace Classes
 
 		public void RestField200Values()
 		{
-			for (int loop_var = 1; loop_var <= 32; loop_var++)
-			{
-				gbl.area_ptr.field_200[loop_var] = 0; // word array.
-			}
+            for (int loop_var = 0; loop_var <= 32; loop_var++)
+            {
+                gbl.area_ptr.field_200[loop_var] = 0; // word array.
+            }
 		}
 	}
 }
