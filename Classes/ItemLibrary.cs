@@ -10,10 +10,10 @@ namespace Classes
     public class ItemLibrary
     {
 
-		static string libraryPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "CotAB");
-		static string libraryFile = Path.Combine(libraryPath, "ItemLibrary.dat");
+        static string libraryPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "CotAB");
+        static string libraryFile = Path.Combine(libraryPath, "ItemLibrary.dat");
 
-		static List<Item> library = new List<Item>();
+        static List<Item> library = new List<Item>();
         public static void Add(Item item)
         {
             Item i = item.ShallowClone();
@@ -29,9 +29,9 @@ namespace Classes
 
         public static void Read()
         {
-			if (System.IO.File.Exists(libraryFile))
+            if (System.IO.File.Exists(libraryFile))
             {
-				FileStream fs = new FileStream(libraryFile, FileMode.Open);
+                FileStream fs = new FileStream(libraryFile, FileMode.Open);
 
                 if (fs.Length == 0)
                 {
@@ -59,8 +59,8 @@ namespace Classes
 
         public static void Write()
         {
-			Directory.CreateDirectory(libraryPath);
-			FileStream fs = new FileStream(libraryFile, FileMode.Create);
+            Directory.CreateDirectory(libraryPath);
+            FileStream fs = new FileStream(libraryFile, FileMode.Create);
 
             // Construct a BinaryFormatter and use it to serialize the data to the stream.
             BinaryFormatter formatter = new BinaryFormatter();

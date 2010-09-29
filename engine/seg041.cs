@@ -11,7 +11,7 @@ namespace engine
             yStart *= 8;
             yEnd = (yEnd + 1) * 8;
 
-            for (int x = xStart; x < xEnd; x ++)
+            for (int x = xStart; x < xEnd; x++)
             {
                 for (int y = yStart; y < yEnd; y++)
                 {
@@ -44,7 +44,7 @@ namespace engine
         internal static void display_char01(char ch, int repeatCount, int bgColor, int fgColor, int YCol, int XCol) // display_char01
         {
             if (XCol < 40 &&
-                YCol < 25 )
+                YCol < 25)
             {
                 char index = (char)(char.ToUpper(ch) % 0x40);
 
@@ -88,11 +88,11 @@ namespace engine
 
 
         internal static int displayStringSlow(string text
-            ,int text_index, int text_length, int bgColor, int fgColor) // sub_107DE
+            , int text_index, int text_length, int bgColor, int fgColor) // sub_107DE
         {
             while (text_index <= text_length)
             {
-                display_char01(text[text_index-1], 1, bgColor, fgColor, gbl.textYCol, gbl.textXCol);
+                display_char01(text[text_index - 1], 1, bgColor, fgColor, gbl.textYCol, gbl.textXCol);
 
                 if (gbl.DelayBetweenCharacters)
                 {
@@ -103,14 +103,14 @@ namespace engine
                 gbl.textXCol++;
             }
 
-			return text_index;
+            return text_index;
         }
 
 
         internal static void text_skip_space(string text, int text_max, ref int text_index) /* sub_10854 */
         {
             while (text_index < text_max &&
-                text[text_index-1] == ' ')
+                text[text_index - 1] == ' ')
             {
                 text_index += 1;
             }
@@ -128,8 +128,8 @@ namespace engine
             press_any_key(text, clearArea, bgColor, fgColor, bounds[r, 0], bounds[r, 1], bounds[r, 2], bounds[r, 3]);
         }
 
-		//static const char[] syms = { '!', ',', '-', '.', ':', ';', '?' };
-		static Set puncutation = new Set(0x404, new byte[] { 2, 0x70, 0, 0x8C }); // "!,-.:;?"
+        //static const char[] syms = { '!', ',', '-', '.', ':', ';', '?' };
+        static Set puncutation = new Set(0x404, new byte[] { 2, 0x70, 0, 0x8C }); // "!,-.:;?"
 
         internal static void press_any_key(string text, bool clearArea, int bgColor, int fgColor,
             int yEnd, int xEnd, int yStart, int xStart)
@@ -164,7 +164,7 @@ namespace engine
                 do
                 {
                     int text_end = text_start;
-					//text.LastIndexOfAny(syms, text_start);
+                    //text.LastIndexOfAny(syms, text_start);
 
                     while (text_end < input_lenght &&
                         puncutation.MemberOf(text[text_end - 1]) == true)
@@ -194,7 +194,7 @@ namespace engine
                             text[text_end - 1] == ' ')
                         {
                             text_end -= 1;
-							text_start = displayStringSlow(text, text_start, text_end, bgColor, fgColor);
+                            text_start = displayStringSlow(text, text_start, text_end, bgColor, fgColor);
                         }
 
                         gbl.textXCol = xStart;
@@ -212,12 +212,12 @@ namespace engine
 
                             seg037.draw8x8_clear_area(yEnd, xEnd, yStart, xStart);
 
-							text_start = displayStringSlow(text, text_start, text_end, bgColor, fgColor);
+                            text_start = displayStringSlow(text, text_start, text_end, bgColor, fgColor);
                         }
                     }
                     else
                     {
-						text_start = displayStringSlow(text, text_start, text_end, bgColor, fgColor);
+                        text_start = displayStringSlow(text, text_start, text_end, bgColor, fgColor);
                         Display.Update();
                     }
                 } while (text_start <= input_lenght);

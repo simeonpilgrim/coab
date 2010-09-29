@@ -68,10 +68,10 @@ namespace engine
         {
             foreach (Player player in gbl.TeamList)
             {
-				foreach (Affect affect in player.affects)
-				{
-					Logger.Debug("who: {0}  sp#: {1} - {2}", player.name, (int)affect.type, affect.type);
-				}
+                foreach (Affect affect in player.affects)
+                {
+                    Logger.Debug("who: {0}  sp#: {1} - {2}", player.name, (int)affect.type, affect.type);
+                }
             }
         }
 
@@ -141,10 +141,10 @@ namespace engine
             Logger.Debug("   Damage: {0}d{1}{2}{3}", p.attack1_DiceCount, p.attack1_DiceSize,
                 p.attack1_DamageBonus > 0 ? "+" : "", p.attack1_DamageBonus != 0 ? p.attack1_DamageBonus.ToString() : "");
 
-			foreach (int sp in p.spellList.IdList())
-			{
-				Logger.Debug("   Spell: {0}", ovr023.SpellNames[sp]);
-			}
+            foreach (int sp in p.spellList.IdList())
+            {
+                Logger.Debug("   Spell: {0}", ovr023.SpellNames[sp]);
+            }
 
             foreach (var af in p.affects)
             {
@@ -188,27 +188,27 @@ namespace engine
             int count = 0;
             System.Text.StringBuilder sb = new System.Text.StringBuilder();
 
-			foreach (int sp in p.spellList.IdList())
-			{
-				if (sp != last)
-				{
-					if (last != 0)
-					{
-						sb.Append(ovr023.SpellNames[last]);
-						if (count > 1)
-						{
-							sb.Append(string.Format(" ({0})", count));
-						}
-						sb.Append(", ");
-					}
-					last = sp;
-					count = 1;
-				}
-				else
-				{
-					count += 1;
-				}
-			}
+            foreach (int sp in p.spellList.IdList())
+            {
+                if (sp != last)
+                {
+                    if (last != 0)
+                    {
+                        sb.Append(ovr023.SpellNames[last]);
+                        if (count > 1)
+                        {
+                            sb.Append(string.Format(" ({0})", count));
+                        }
+                        sb.Append(", ");
+                    }
+                    last = sp;
+                    count = 1;
+                }
+                else
+                {
+                    count += 1;
+                }
+            }
 
             if (last != 0)
             {
@@ -220,7 +220,7 @@ namespace engine
             }
 
             dw.Write("<td nowrap=\"nowrap\">{0}</td>", sb.ToString());
-            
+
 
             sb = new System.Text.StringBuilder();
             foreach (var af in p.affects)
@@ -241,7 +241,7 @@ namespace engine
         {
             var bkupArea = gbl.game_area;
 
-            string filename = System.IO.Path.Combine(Logger.GetPath(),"MonsterFiltered.txt");
+            string filename = System.IO.Path.Combine(Logger.GetPath(), "MonsterFiltered.txt");
             if (System.IO.File.Exists(filename))
             {
                 System.IO.File.Delete(filename);
@@ -333,12 +333,12 @@ namespace engine
 
             var bkupArea = gbl.game_area;
 
-			string filename = System.IO.Path.Combine(Logger.GetPath(), "Monster.html");
-			if (System.IO.File.Exists(filename))
-			{
-				System.IO.File.Delete(filename);
-			}
-			DebugWriter dw = new DebugWriter(filename);
+            string filename = System.IO.Path.Combine(Logger.GetPath(), "Monster.html");
+            if (System.IO.File.Exists(filename))
+            {
+                System.IO.File.Delete(filename);
+            }
+            DebugWriter dw = new DebugWriter(filename);
 
             dw.WriteLine("<html><body><table><tbody>");
 

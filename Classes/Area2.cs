@@ -8,7 +8,7 @@ namespace Classes
     public class Area2
     {
         const int Area2Size = 0x800;
- 
+
         public Area2()
         {
         }
@@ -27,7 +27,7 @@ namespace Classes
             DataIO.ReadObject(this, origData, 0);
         }
 
-		protected byte[] origData = new byte[Area2Size];
+        protected byte[] origData = new byte[Area2Size];
 
         [DataOffset(0x218, DataType.Word)]
         public ushort field_218; // 0x218
@@ -83,26 +83,26 @@ namespace Classes
         [DataOffset(0x6E4, DataType.SWord)]
         public short field_6E4; // 0x6e4
 
-		[DataOffset(0x6F2, DataType.Word)]
-		public ushort field_6F2;  // 0x6F2
-		[DataOffset(0x6F4, DataType.Word)]
-		public ushort field_6F4;  // 0x6F4
-		[DataOffset(0x6F6, DataType.Word)]
-		public ushort field_6F6;  // 0x6F6
-		[DataOffset(0x6F8, DataType.Word)]
-		public ushort field_6F8;  // 0x6F8
-		[DataOffset(0x6FA, DataType.Word)]
-		public ushort field_6FA;  // 0x6FA
-		[DataOffset(0x6FC, DataType.Word)]
-		public ushort field_6FC;  // 0x6FC
-		[DataOffset(0x6FE, DataType.Word)]
-		public ushort field_6FE;  // 0x6FE
-		[DataOffset(0x700, DataType.Word)]
-		public ushort field_700;  // 0x700
-		[DataOffset(0x702, DataType.Word)]
-		public ushort field_702;  // 0x702
-		[DataOffset(0x704, DataType.Word)]
-		public ushort field_704;  // 0x704
+        [DataOffset(0x6F2, DataType.Word)]
+        public ushort field_6F2;  // 0x6F2
+        [DataOffset(0x6F4, DataType.Word)]
+        public ushort field_6F4;  // 0x6F4
+        [DataOffset(0x6F6, DataType.Word)]
+        public ushort field_6F6;  // 0x6F6
+        [DataOffset(0x6F8, DataType.Word)]
+        public ushort field_6F8;  // 0x6F8
+        [DataOffset(0x6FA, DataType.Word)]
+        public ushort field_6FA;  // 0x6FA
+        [DataOffset(0x6FC, DataType.Word)]
+        public ushort field_6FC;  // 0x6FC
+        [DataOffset(0x6FE, DataType.Word)]
+        public ushort field_6FE;  // 0x6FE
+        [DataOffset(0x700, DataType.Word)]
+        public ushort field_700;  // 0x700
+        [DataOffset(0x702, DataType.Word)]
+        public ushort field_702;  // 0x702
+        [DataOffset(0x704, DataType.Word)]
+        public ushort field_704;  // 0x704
 
         [DataOffset(0x799, DataType.Byte)]
         public byte field_799; // 0x799
@@ -166,20 +166,20 @@ namespace Classes
                 case 0x5aa: return tried_to_exit_map ? (ushort)1 : (ushort)0;
                 case 0x67e: return (ushort)field_67E;
 
-				case 0x6F2: return field_6F2;
-				case 0x6F4: return field_6F4;
-				case 0x6F6: return field_6F6;
-				case 0x6F8: return field_6F8;
-				case 0x6FA: return field_6FA;
-				case 0x6FC: return field_6FC;
-				case 0x6FE: return field_6FE;
-				case 0x700: return field_700;
-				case 0x702: return field_702;
-				case 0x704: return field_704;
+                case 0x6F2: return field_6F2;
+                case 0x6F4: return field_6F4;
+                case 0x6F6: return field_6F6;
+                case 0x6F8: return field_6F8;
+                case 0x6FA: return field_6FA;
+                case 0x6FC: return field_6FC;
+                case 0x6FE: return field_6FE;
+                case 0x700: return field_700;
+                case 0x702: return field_702;
+                case 0x704: return field_704;
 
-                default: 
+                default:
                     return DataIO.GetObjectUShort(this, origData, loc);
-            }            
+            }
         }
 
         public void field_800_Set(int index, ushort value)
@@ -193,9 +193,9 @@ namespace Classes
                     training_class_mask = (byte)value;
                     break;
 
-				case 0x580:
-					max_encounter_distance = value;
-					break;
+                case 0x580:
+                    max_encounter_distance = value;
+                    break;
 
                 case 0x58C:
                     field_58C = value;
@@ -255,69 +255,69 @@ namespace Classes
                     field_6E4 = (short)value;
                     break;
 
-				case 0x6F2:
-					field_6F2 = value;
-					break;
+                case 0x6F2:
+                    field_6F2 = value;
+                    break;
 
-				case 0x6F4:
-					field_6F4 = value;
-					break;
+                case 0x6F4:
+                    field_6F4 = value;
+                    break;
 
-				case 0x6F6:
-					field_6F6 = value;
-					break;
+                case 0x6F6:
+                    field_6F6 = value;
+                    break;
 
-				case 0x6F8:
-					field_6F8 = value;
-					break;
+                case 0x6F8:
+                    field_6F8 = value;
+                    break;
 
-				case 0x6FA:
-					field_6FA = value;
-					break;
+                case 0x6FA:
+                    field_6FA = value;
+                    break;
 
-				case 0x6FC:
-					field_6FC = value;
-					break;
+                case 0x6FC:
+                    field_6FC = value;
+                    break;
 
-				case 0x6FE:
-					field_6FE = value;
-					break;
+                case 0x6FE:
+                    field_6FE = value;
+                    break;
 
-				case 0x700:
-					field_700 = value;
-					break;
+                case 0x700:
+                    field_700 = value;
+                    break;
 
-				case 0x702:
-					field_702 = value;
-					break;
+                case 0x702:
+                    field_702 = value;
+                    break;
 
-				case 0x704:
-					field_704 = value;
-					break;
+                case 0x704:
+                    field_704 = value;
+                    break;
 
                 case 0x7ec:
                     field_7EC = value;
                     break;
 
- 
+
                 default:
                     DataIO.SetObjectUShort(this, origData, loc, value);
                     break;
             }
         }
 
-		public void RestField6F2Values()
-		{
-			field_6F2 = 0;
-			field_6F4 = 0;
-			field_6F6 = 0;
-			field_6F8 = 0;
-			field_6FA = 0;
-			field_6FC = 0;
-			field_6FE = 0;
-			field_700 = 0;
-			field_702 = 0;
-			field_704 = 0;
-		}
-	}
+        public void RestField6F2Values()
+        {
+            field_6F2 = 0;
+            field_6F4 = 0;
+            field_6F6 = 0;
+            field_6F8 = 0;
+            field_6FA = 0;
+            field_6FC = 0;
+            field_6FE = 0;
+            field_700 = 0;
+            field_702 = 0;
+            field_704 = 0;
+        }
+    }
 }

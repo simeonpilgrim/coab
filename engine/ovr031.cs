@@ -51,7 +51,7 @@ namespace engine
                     int mapX = x + offsetX;
 
                     int symbol_id = 0x104;
-                    int door_id = 0x104;                    
+                    int door_id = 0x104;
 
                     MapInfo mi = getMap_XXX(mapY, mapX);
                     if (mi != null)
@@ -136,7 +136,7 @@ namespace engine
             seg040.OverlayBounded(gbl.sky_dax_252, 1, 0, 7, 2);
         }
 
-        
+
         static byte[] idxOffset = { 0, 2, 6, 10, 22, 38, 54, 110, 132, 154, 1 };   // seg600:0ADA
         static int[] colCount = { 1, 1, 1, 3, 2, 2, 7, 2, 2, 1 };                 // seg600:0AE4
         static int[] rowCount = { 2, 4, 4, 4, 8, 8, 8, 11, 11, 2 };               // seg600:0AEE
@@ -160,7 +160,7 @@ namespace engine
 
                     if (rowY >= 0 && rowY <= 10 && colX >= 0 && colX <= 10 && symbolId > 0)
                     {
-                        ovr038.Put8x8Symbol(1, true, symbolId , rowY + 2, colX + 2);
+                        ovr038.Put8x8Symbol(1, true, symbolId, rowY + 2, colX + 2);
 
                         Display.Update();
                     }
@@ -225,7 +225,7 @@ namespace engine
 
             MapInfo mi = getMap_XXX(mapY, mapX);
 
-            if( mi != null )
+            if (mi != null)
             {
                 switch (direction)
                 {
@@ -507,7 +507,7 @@ namespace engine
                     }
                     else
                     {
-                        draw_3D_8x8_titles(2, var_15,Row_C, Column_C + Col + 1);
+                        draw_3D_8x8_titles(2, var_15, Row_C, Column_C + Col + 1);
                     }
                 }
 

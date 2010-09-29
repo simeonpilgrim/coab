@@ -5,7 +5,7 @@ namespace engine
     class ovr033
     {
         const int MaxSize = 4;
- 
+
         static Point[][] Steps = new Point[][] {
             new Point[] { },
             new Point[] { new Point( 0, 0 ) },
@@ -172,12 +172,12 @@ namespace engine
         internal static void RedrawPlayerBackground(int player_index, Point map) /* sub_74572 */
         {
             var screen = map - gbl.mapToBackGroundTile.mapScreenTopLeft;
-          
+
             if (player_index > 0)
             {
                 RedrawPlayerBackground(player_index);
             }
-            else if ( CoordOnScreen(screen) == true )
+            else if (CoordOnScreen(screen) == true)
             {
                 var tileIdx = gbl.mapToBackGroundTile[map];
                 ovr034.DrawIsoTile(gbl.BackGroundTiles[tileIdx].tile_index, screen.y * 3, screen.x * 3);
@@ -195,7 +195,7 @@ namespace engine
 
                 int size = gbl.CombatMap[player_index].size;
 
-                foreach(var delta in GetSizeBasedMapDeltas(size))
+                foreach (var delta in GetSizeBasedMapDeltas(size))
                 {
                     if (CoordOnScreen(delta + screen) == true)
                     {
@@ -486,7 +486,7 @@ namespace engine
             var map = gbl.CombatMap[currentPlayerIndex];
             var playerPos = map.pos;
 
-            foreach(var pos in BuildSizeMap(map.size, map.pos ))
+            foreach (var pos in BuildSizeMap(map.size, map.pos))
             {
                 var tmpPos = pos + gbl.MapDirectionDelta[direction];
 
@@ -556,10 +556,10 @@ namespace engine
                     // Draw skull overlay
                     DaxBlock b1 = gbl.combat_icons[24].GetIcon(1, 0);
                     DaxBlock b2 = gbl.combat_icons[25].GetIcon(0, 0);
-					var points = BuildSizeMap(gbl.CombatMap[player_index].size, gbl.CombatMap[player_index].screenPos);
+                    var points = BuildSizeMap(gbl.CombatMap[player_index].size, gbl.CombatMap[player_index].screenPos);
                     for (int var_3 = 0; var_3 <= 8; var_3++)
                     {
-						foreach (var pos in points)
+                        foreach (var pos in points)
                         {
                             if (CoordOnScreen(pos) == true)
                             {
@@ -640,7 +640,7 @@ namespace engine
                         player.actions.nonTeamMember == false)
                     {
                         var downed = gbl.downedPlayers.FindLast(cell => cell.target == player && cell.originalBackgroundTile != 0x1f);
-                        if (downed !=null)
+                        if (downed != null)
                         {
                             ground_tile = downed.originalBackgroundTile;
                         }

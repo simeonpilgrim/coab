@@ -74,7 +74,7 @@ namespace Classes
         {
             skip_title_screen = value;
         }
-                
+
         public static bool view_item_stats = false;
         public static void ViewItemStatsSet(bool value)
         {

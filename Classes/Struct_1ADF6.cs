@@ -9,7 +9,7 @@ namespace Classes
         // 0x17 or 23 long
         public ushort field_00;
         public ushort field_02;
-        public short field_04; 
+        public short field_04;
         public short field_06;
         public short field_08;
         public short field_0A;

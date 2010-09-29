@@ -12,7 +12,7 @@ namespace engine
             public Point target;
             public int range;
 
-            public MapReach( bool r, int ra, Point p) 
+            public MapReach(bool r, int ra, Point p)
             {
                 reach = r; target = p; range = ra;
             }
@@ -77,7 +77,7 @@ namespace engine
         {
             MapReach mr = MapCacheGet(attacker, target, gbl.mapToBackGroundTile.field_6 ? 1 : 0);
 
-            if (mr.range > (range*2)+1)
+            if (mr.range > (range * 2) + 1)
             {
                 return false;
             }
@@ -126,7 +126,7 @@ namespace engine
                 }
 
                 // range is for cache hard coded to 256, thus max_range = 513, so skip this.
-                if ( var_19.steps > max_range)
+                if (var_19.steps > max_range)
                 {
                     return new MapReach(false, var_19.steps, var_19.current);
                 }
@@ -143,12 +143,12 @@ namespace engine
         /// </summary>
         internal static bool CanSeeCombatant(int direction, Point playerA, Point playerB) /* sub_7354A */
         {
-            if( playerA.MapInBounds() == false || playerB.MapInBounds() == false )
+            if (playerA.MapInBounds() == false || playerB.MapInBounds() == false)
             {
                 return false;
             }
 
-            if (direction == 0xff || direction == 8 )
+            if (direction == 0xff || direction == 8)
             {
                 return true;
             }
@@ -290,8 +290,8 @@ namespace engine
 
             return dir;
         }
-    
-    
+
+
     }
 }
 

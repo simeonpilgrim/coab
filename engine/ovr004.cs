@@ -34,7 +34,7 @@ namespace engine
 
                 int var_6 = seg051.Random(26);
                 int var_7 = seg051.Random(22);
-             
+
                 ovr034.DrawIsoTile(var_6, 3, 0x11);
                 ovr034.DrawIsoTile(var_7 + 0x1a, 7, 0x11);
 
@@ -86,7 +86,7 @@ namespace engine
 
                 string input = seg041.getUserInputString(1, 0, 13, "type character and press return: ");
 
-                input_key = (input == null ||input.Length == 0 ) ? ' ' : input[0];
+                input_key = (input == null || input.Length == 0) ? ' ' : input[0];
                 attempt++;
 
                 if (input_key != input_expected)

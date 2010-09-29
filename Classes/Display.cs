@@ -33,7 +33,8 @@ namespace Classes
         static IOSDisplay lowLevelDisplay;
         public static IOSDisplay LowLevelDisplay
         {
-            set {
+            set
+            {
                 lowLevelDisplay = value;
                 lowLevelDisplay.Init(outputHeight, outputWidth);
             }

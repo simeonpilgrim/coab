@@ -91,7 +91,7 @@ namespace engine
 
                             frames_count++;
 
-                            daxArray.frames[frame].picture = new DaxBlock( masked, 1, width, height);
+                            daxArray.frames[frame].picture = new DaxBlock(masked, 1, width, height);
 
                             DaxBlock dax_block = daxArray.frames[frame].picture;
 
@@ -136,7 +136,7 @@ namespace engine
 
                         daxArray.numFrames = frames_count; // also pointless
 
-                        uncompressed_data = null; 
+                        uncompressed_data = null;
                         seg043.clear_keyboard();
 
                         if (gbl.AnimationsOn == true)

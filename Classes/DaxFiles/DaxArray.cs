@@ -46,9 +46,9 @@ namespace Classes
             return frames[curFrame - 1].picture;
         }
 
-		/// <summary>
-		/// Tenth of a second
-		/// </summary>
+        /// <summary>
+        /// Tenth of a second
+        /// </summary>
         public int CurrentDelay()
         {
             return frames[curFrame - 1].delay;

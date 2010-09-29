@@ -36,7 +36,7 @@ namespace Classes
         public byte sex; // 0x9E
         public byte field_9F; // 0x9F
         public byte field_A0; // 0xA0
-   
+
         public byte field_A1; // 0xA1
         public byte field_A2; // 0xA2
         public byte field_A3; // 0xA3
@@ -57,7 +57,7 @@ namespace Classes
         public byte[] field_B5; // 0xB5 - 3
 
         public short field_B8; // 0xB8
-        
+
         public byte field_BA; // 0xBA
         public byte field_BB; // 0xBB
         public byte field_BC; // 0xBC

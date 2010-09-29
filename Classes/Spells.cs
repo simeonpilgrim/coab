@@ -23,13 +23,13 @@ namespace Classes
         Both = 2
     }
 
-	public enum SpellTargets
-	{
-		Combat = 0, // maybe
-		Self = 1, // maybe
-		PartyMember = 2,
-		WholeParty = 4
-	}
+    public enum SpellTargets
+    {
+        Combat = 0, // maybe
+        Self = 1, // maybe
+        PartyMember = 2,
+        WholeParty = 4
+    }
 
     public enum SpellSource
     {
@@ -155,12 +155,12 @@ namespace Classes
 
     public class SpellEntry /* Struct_19AEC */
     {
-        public SpellEntry(int spell_idx, SpellClass _spellClass, sbyte _spellLevel, 
-            int _fixedRange, int _perLvlRange, 
+        public SpellEntry(int spell_idx, SpellClass _spellClass, sbyte _spellLevel,
+            int _fixedRange, int _perLvlRange,
             int _fixedDuration, byte _perLvlDuration,
-			byte f6, SpellTargets _targets, 
-            DamageOnSave _damageOnSave, SaveVerseType _saveVerse, 
-            Affects _affectId, SpellWhen _whenCast, 
+            byte f6, SpellTargets _targets,
+            DamageOnSave _damageOnSave, SaveVerseType _saveVerse,
+            Affects _affectId, SpellWhen _whenCast,
             int _castingDelay, int _priority, byte fe, byte ff)
         {
             spellClass = _spellClass;
@@ -170,7 +170,7 @@ namespace Classes
             fixedDuration = _fixedDuration;
             perLvlDuration = _perLvlDuration;
             field_6 = f6;
-			targetType = _targets;
+            targetType = _targets;
             damageOnSave = _damageOnSave;
             saveVerse = _saveVerse;
             affect_id = _affectId;
@@ -179,31 +179,29 @@ namespace Classes
             priority = _priority;
             field_E = fe;
             field_F = ff;
-			spellIdx = spell_idx;
-
-			//Logging.Logger.Debug("{0:X} {1} {2} {3} {4}", spell_idx, (Spells)spell_idx, f6, fe, ff);
+            spellIdx = spell_idx;
         }
 
         /// <summary>
         /// 0 - Cleric, 1 - Druid, 2 - Magic-User
         /// </summary>
-		public int spellIdx;
+        public int spellIdx;
 
         public SpellClass spellClass; //seg600:37DC asc_19AEC    // field_0
         public int spellLevel; //seg600:37DD unk_19AED    // field_1
-        public int fixedRange; //seg600:37DE              
-        public int perLvlRange; //seg600:37DF            
-        public int fixedDuration; //seg600:37E0             
-        public int perLvlDuration; //seg600:37E1            
-        public byte field_6; //seg600:37E2              
-		public SpellTargets targetType; //seg600:37E3 //              
-        public DamageOnSave damageOnSave; //seg600:37E4 unk_19AF4  // field_8 
-        public SaveVerseType saveVerse; //seg600:37E5 unk_19AF5    
+        public int fixedRange; //seg600:37DE
+        public int perLvlRange; //seg600:37DF
+        public int fixedDuration; //seg600:37E0
+        public int perLvlDuration; //seg600:37E1
+        public byte field_6; //seg600:37E2
+        public SpellTargets targetType; //seg600:37E3
+        public DamageOnSave damageOnSave; //seg600:37E4 unk_19AF4  // field_8
+        public SaveVerseType saveVerse; //seg600:37E5 unk_19AF5
         public Affects affect_id; //seg600:37E6 unk_19AF6   // field_A
-        public SpellWhen whenCast; //seg600:37E7 unk_19AF7    
-        public int castingDelay; //seg600:37E8 unk_19AF8    
-        public int priority; //seg600:37E9 unk_19AF9    
-        public byte field_E; //seg600:37EA unk_19AFA    
-        public byte field_F; //seg600:37EB unk_19AFB   
+        public SpellWhen whenCast; //seg600:37E7 unk_19AF7
+        public int castingDelay; //seg600:37E8 unk_19AF8
+        public int priority; //seg600:37E9 unk_19AF9
+        public byte field_E; //seg600:37EA unk_19AFA
+        public byte field_F; //seg600:37EB unk_19AFB
     }
 }

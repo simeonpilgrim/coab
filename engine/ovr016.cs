@@ -10,40 +10,40 @@ namespace engine
             int max_spell_level = 0;
             int total_spell_level = 0;
 
-			foreach (int id in player.spellList.LearningList())
-			{
-				int var_C = gbl.spellCastingTable[id].spellLevel;
+            foreach (int id in player.spellList.LearningList())
+            {
+                int var_C = gbl.spellCastingTable[id].spellLevel;
 
-				if (var_C > max_spell_level)
-				{
-					max_spell_level = var_C;
-				}
+                if (var_C > max_spell_level)
+                {
+                    max_spell_level = var_C;
+                }
 
-				total_spell_level += var_C;
-			}
+                total_spell_level += var_C;
+            }
 
             int max_scribe_level = 0;
             int total_scribe_level = 0;
 
             foreach (Item item in player.items)
             {
-				if (item.IsScroll())
-				{
-					for (int loop_var = 1; loop_var <= 3; loop_var++)
-					{
-						if ((int)item.getAffect(loop_var) > 0x7f)
-						{
-							int var_C = gbl.spellCastingTable[(int)item.getAffect(loop_var) & 0x7f].spellLevel;
+                if (item.IsScroll())
+                {
+                    for (int loop_var = 1; loop_var <= 3; loop_var++)
+                    {
+                        if ((int)item.getAffect(loop_var) > 0x7f)
+                        {
+                            int var_C = gbl.spellCastingTable[(int)item.getAffect(loop_var) & 0x7f].spellLevel;
 
-							if (var_C > max_scribe_level)
-							{
-								max_scribe_level = var_C;
-							}
+                            if (var_C > max_scribe_level)
+                            {
+                                max_scribe_level = var_C;
+                            }
 
-							total_scribe_level += var_C;
-						}
-					}
-				}
+                            total_scribe_level += var_C;
+                        }
+                    }
+                }
             }
 
             byte count = 0;
@@ -66,7 +66,7 @@ namespace engine
 
         static void cancel_memorize(Player player)
         {
-			player.spellList.CancelLearning();
+            player.spellList.CancelLearning();
 
             player.spell_to_learn_count = 0;
         }
@@ -100,14 +100,14 @@ namespace engine
         {
             int alreadyLearning = 0;
 
-			foreach (int spellId in gbl.SelectedPlayer.spellList.IdList())
-			{
-				if (gbl.spellCastingTable[spellId].spellLevel == spellLevel &&
-					gbl.spellCastingTable[spellId].spellClass == spellClass)
-				{
-					alreadyLearning++;
-				}
-			}
+            foreach (int spellId in gbl.SelectedPlayer.spellList.IdList())
+            {
+                if (gbl.spellCastingTable[spellId].spellLevel == spellLevel &&
+                    gbl.spellCastingTable[spellId].spellClass == spellClass)
+                {
+                    alreadyLearning++;
+                }
+            }
 
             return gbl.SelectedPlayer.spellCastCount[(int)spellClass, spellLevel - 1] - alreadyLearning;
         }
@@ -327,29 +327,29 @@ namespace engine
 
                 index = -1;
 
-				while (var_1 == false)
-				{
-					var_1 = (BuildMemorizeSpellText() == false);
+                while (var_1 == false)
+                {
+                    var_1 = (BuildMemorizeSpellText() == false);
 
-					if (var_1 == true)
-					{
-						ovr025.DisplayPlayerStatusString(true, 10, "cannot memorize any spells", gbl.SelectedPlayer);
-					}
-					else
-					{
-						spellId = ovr020.spell_menu2(out var_2, ref index, SpellSource.Memorize, SpellLoc.grimoire);
-						redraw = true;
+                    if (var_1 == true)
+                    {
+                        ovr025.DisplayPlayerStatusString(true, 10, "cannot memorize any spells", gbl.SelectedPlayer);
+                    }
+                    else
+                    {
+                        spellId = ovr020.spell_menu2(out var_2, ref index, SpellSource.Memorize, SpellLoc.grimoire);
+                        redraw = true;
 
-						if (spellId == 0)
-						{
-							var_1 = true;
-						}
-						else if (HowManySpellsPlayerCanLearn(gbl.spellCastingTable[spellId].spellClass, gbl.spellCastingTable[spellId].spellLevel) > 0)
-						{
-							gbl.SelectedPlayer.spellList.AddLearn(spellId);
-						}
-					}
-				}
+                        if (spellId == 0)
+                        {
+                            var_1 = true;
+                        }
+                        else if (HowManySpellsPlayerCanLearn(gbl.spellCastingTable[spellId].spellClass, gbl.spellCastingTable[spellId].spellLevel) > 0)
+                        {
+                            gbl.SelectedPlayer.spellList.AddLearn(spellId);
+                        }
+                    }
+                }
 
                 if (index != -1)
                 {
@@ -358,7 +358,7 @@ namespace engine
                     spellId = ovr020.spell_menu2(out var_2, ref index, 0, SpellLoc.memorize);
 
                     if (var_2 == true &&
-						ovr027.yes_no(gbl.alertMenuColors, "Memorize these spells? ") == 'N')
+                        ovr027.yes_no(gbl.alertMenuColors, "Memorize these spells? ") == 'N')
                     {
                         cancel_memorize(gbl.SelectedPlayer);
                     }
@@ -388,7 +388,7 @@ namespace engine
 
                 if (var_2 == true)
                 {
-					if (ovr027.yes_no(gbl.alertMenuColors, "Scribe These Spells? ") == 'N')
+                    if (ovr027.yes_no(gbl.alertMenuColors, "Scribe These Spells? ") == 'N')
                     {
                         cancel_scribes(gbl.SelectedPlayer);
                     }
@@ -483,7 +483,7 @@ namespace engine
                     ovr020.spell_menu2(out var_2, ref var_8, 0, SpellLoc.scribe);
 
                     if (var_2 == true &&
-						ovr027.yes_no(gbl.alertMenuColors, "Scribe these spells? ") == 'N')
+                        ovr027.yes_no(gbl.alertMenuColors, "Scribe these spells? ") == 'N')
                     {
                         cancel_scribes(gbl.SelectedPlayer);
                     }
@@ -496,7 +496,7 @@ namespace engine
             }
         }
 
-        static Dictionary<Affects, string> EffectNameMap = new Dictionary<Affects,string>();
+        static Dictionary<Affects, string> EffectNameMap = new Dictionary<Affects, string>();
 
         internal static void BuildEffectNameMap()
         {
@@ -598,12 +598,12 @@ namespace engine
         internal static void magic_menu(out bool arg_0)
         {
             char inputKey = ' ';
-			arg_0 = false;
+            arg_0 = false;
 
             while (arg_0 == false && AlterSet.MemberOf(inputKey) == false)
             {
                 bool controlKey;
-				inputKey = ovr027.displayInput(out controlKey, true, 1, gbl.defaultMenuColors, "Cast Memorize Scribe Display Rest Exit", string.Empty);
+                inputKey = ovr027.displayInput(out controlKey, true, 1, gbl.defaultMenuColors, "Cast Memorize Scribe Display Rest Exit", string.Empty);
 
                 if (controlKey == true)
                 {
@@ -679,7 +679,7 @@ namespace engine
         }
 
         static string[] reorderStrings = { "Select Exit", "Place Exit" }; //seg600_04A6
-		static Set reorderSet = new Set(0x010a, new byte[] { 0x020, 0, 0, 0, 0, 0, 0, 0, 0, 9 }); // "13 80 83 "
+        static Set reorderSet = new Set(0x010a, new byte[] { 0x020, 0, 0, 0, 0, 0, 0, 0, 0, 9 }); // "13 80 83 "
 
         static void reorder_party()
         {
@@ -689,7 +689,7 @@ namespace engine
             while (AlterSet.MemberOf(inputKey) == false)
             {
                 bool controlKey;
-				inputKey = ovr027.displayInput(out controlKey, true, 1, gbl.defaultMenuColors, reorderStrings[reorderState], "Party Order: ");
+                inputKey = ovr027.displayInput(out controlKey, true, 1, gbl.defaultMenuColors, reorderStrings[reorderState], "Party Order: ");
 
                 if (controlKey == true)
                 {
@@ -733,7 +733,7 @@ namespace engine
         {
             if (gbl.TeamList.Count == 1)
             {
-				if (ovr027.yes_no(gbl.alertMenuColors, "quit TO DOS: ") == 'Y')
+                if (ovr027.yes_no(gbl.alertMenuColors, "quit TO DOS: ") == 'Y')
                 {
                     ovr018.FreeCurrentPlayer(gbl.TeamList[0], true, false);
                     seg043.print_and_exit();
@@ -743,7 +743,7 @@ namespace engine
             {
                 ovr025.DisplayPlayerStatusString(false, 10, "will be gone", gbl.SelectedPlayer);
 
-				if (ovr027.yes_no(gbl.alertMenuColors, "Drop from party? ") == 'Y')
+                if (ovr027.yes_no(gbl.alertMenuColors, "Drop from party? ") == 'Y')
                 {
                     if (gbl.SelectedPlayer.in_combat == true)
                     {
@@ -790,7 +790,7 @@ namespace engine
                 text += " Exit";
 
                 bool controlKey;
-				inputKey = ovr027.displayInput(out controlKey, true, 1, gbl.defaultMenuColors, text, "Game Speed:");
+                inputKey = ovr027.displayInput(out controlKey, true, 1, gbl.defaultMenuColors, text, "Game Speed:");
 
                 if (controlKey == true)
                 {
@@ -826,7 +826,7 @@ namespace engine
             ovr025.ClearPlayerTextArea();
         }
 
-		static Set AlterSet = new Set(0x0009, new byte[] { 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x20 }); // "0 69 "
+        static Set AlterSet = new Set(0x0009, new byte[] { 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x20 }); // "0 69 "
 
         internal static void alter_menu()
         {
@@ -835,7 +835,7 @@ namespace engine
             while (AlterSet.MemberOf(inputKey) == false)
             {
                 bool controlKey;
-				inputKey = ovr027.displayInput(out controlKey, true, 1, gbl.defaultMenuColors, "Order Drop Speed Icon Pics Exit", "Alter: ");
+                inputKey = ovr027.displayInput(out controlKey, true, 1, gbl.defaultMenuColors, "Order Drop Speed Icon Pics Exit", "Alter: ");
 
                 if (controlKey == true)
                 {
@@ -890,7 +890,7 @@ namespace engine
 
                                 text += "Exit";
 
-								inputKey2 = ovr027.displayInput(out controlKey, true, 0, gbl.defaultMenuColors, text, string.Empty);
+                                inputKey2 = ovr027.displayInput(out controlKey, true, 0, gbl.defaultMenuColors, text, string.Empty);
 
                                 if (inputKey2 == 0x50)
                                 {
@@ -918,23 +918,23 @@ namespace engine
             {
                 if (player.health_status == Status.okey)
                 {
-					foreach (int id in player.spellList.LearntList())
-					{
-						switch (id)
-						{
-							case 3:
-								HealingAvailable += ovr024.roll_dice(8, 1);
-								break;
+                    foreach (int id in player.spellList.LearntList())
+                    {
+                        switch (id)
+                        {
+                            case 3:
+                                HealingAvailable += ovr024.roll_dice(8, 1);
+                                break;
 
-							case 0x3A:
-								HealingAvailable += ovr024.roll_dice(8, 2) + 1;
-								break;
+                            case 0x3A:
+                                HealingAvailable += ovr024.roll_dice(8, 2) + 1;
+                                break;
 
-							case 0x47:
-								HealingAvailable += ovr024.roll_dice(8, 3) + 3;
-								break;
-						}
-					}
+                            case 0x47:
+                                HealingAvailable += ovr024.roll_dice(8, 3) + 3;
+                                break;
+                        }
+                    }
                 }
             }
 
@@ -1099,7 +1099,7 @@ namespace engine
                     {
                         CalculateHealing(ref healingAvailable, numCureLight, numCureSerious, numCureCritical);
                         DoTeamHealing(ref healingAvailable);
-                        
+
                         ovr025.PartySummary(gbl.SelectedPlayer);
                         ovr025.display_map_position_time();
 
@@ -1111,9 +1111,9 @@ namespace engine
 
         static Set unk_463F4 = new Set(0x0009, new byte[] { 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x20 });
 
-		/// <summary>
-		/// Does Camp menu, returns if interrupted
-		/// </summary>
+        /// <summary>
+        /// Does Camp menu, returns if interrupted
+        /// </summary>
         internal static bool make_camp()
         {
             var game_state_bkup = gbl.game_state;
@@ -1130,14 +1130,14 @@ namespace engine
 
             seg041.displayString("The party makes camp...", 0, 10, 18, 1);
             cancel_spells();
-			bool action_interrupted = false;
+            bool action_interrupted = false;
             char input_key = ' ';
 
             while (action_interrupted == false &&
                 unk_463F4.MemberOf(input_key) == false)
             {
                 bool special_key;
-				input_key = ovr027.displayInput(out special_key, true, 1, gbl.defaultMenuColors, "Save View Magic Rest Alter Fix Exit", "Camp:");
+                input_key = ovr027.displayInput(out special_key, true, 1, gbl.defaultMenuColors, "Save View Magic Rest Alter Fix Exit", "Camp:");
 
                 if (special_key == true)
                 {
@@ -1150,7 +1150,7 @@ namespace engine
                     {
                         case 'S':
                             ovr017.SaveGame();
-							if (ovr027.yes_no(gbl.alertMenuColors, "Quit TO DOS ") == 'Y')
+                            if (ovr027.yes_no(gbl.alertMenuColors, "Quit TO DOS ") == 'Y')
                             {
                                 seg043.print_and_exit();
                             }
@@ -1195,7 +1195,7 @@ namespace engine
             ovr025.ClearPlayerTextArea();
             ovr027.ClearPromptArea();
 
-			return action_interrupted;
+            return action_interrupted;
         }
     }
 }

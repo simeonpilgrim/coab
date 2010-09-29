@@ -37,7 +37,7 @@ namespace engine
         {
             foreach (Player player in gbl.TeamList)
             {
-                if( player.SkillLevel(skill) > 0)
+                if (player.SkillLevel(skill) > 0)
                 {
                     return true;
                 }
@@ -264,11 +264,11 @@ namespace engine
         {
             foreach (Player player in gbl.TeamList)
             {
-				if (player.spellList.HasSpell((int)Spells.knock))
-				{
-					player.spellList.ClearSpell((int)Spells.knock);
-					return true;
-				}
+                if (player.spellList.HasSpell((int)Spells.knock))
+                {
+                    player.spellList.ClearSpell((int)Spells.knock);
+                    return true;
+                }
             }
 
             return false;
@@ -323,10 +323,10 @@ namespace engine
             gbl.mapPosX += gbl.MapDirectionXDelta[gbl.mapDirection];
             gbl.mapPosY += gbl.MapDirectionYDelta[gbl.mapDirection];
 
-			gbl.mapPosX &= 0x0f; // wrap via masking
-			gbl.mapPosY &= 0x0f; // wrap via masking
+            gbl.mapPosX &= 0x0f; // wrap via masking
+            gbl.mapPosY &= 0x0f; // wrap via masking
 
-              gbl.mapWallType = ovr031.getMap_wall_type(gbl.mapDirection, gbl.mapPosY, gbl.mapPosX);
+            gbl.mapWallType = ovr031.getMap_wall_type(gbl.mapDirection, gbl.mapPosY, gbl.mapPosX);
 
             gbl.can_bash_door = true;
             gbl.can_pick_door = true;
@@ -359,7 +359,7 @@ namespace engine
                 {
                     bool special_key;
 
-					input_key = ovr027.displayInput(out special_key, false, 1, gbl.defaultMenuColors, "Area Cast View Encamp Search Look", string.Empty);
+                    input_key = ovr027.displayInput(out special_key, false, 1, gbl.defaultMenuColors, "Area Cast View Encamp Search Look", string.Empty);
 
                     if (special_key == false)
                     {
@@ -500,7 +500,7 @@ namespace engine
                         }
 
                         if (gbl.can_knock_door == true &&
-							TeamMemberHasSpell(Spells.knock))
+                            TeamMemberHasSpell(Spells.knock))
                         {
                             prompt += " Knock";
                         }
@@ -509,7 +509,7 @@ namespace engine
                         {
                             prompt += " Exit";
 
-							input = ovr027.displayInput(out var_2, false, 0, gbl.defaultMenuColors, prompt, "Locked. ");
+                            input = ovr027.displayInput(out var_2, false, 0, gbl.defaultMenuColors, prompt, "Locked. ");
 
                             switch (input)
                             {
@@ -543,7 +543,7 @@ namespace engine
                         }
 
                         if (gbl.can_knock_door == true &&
-							TeamMemberHasSpell(Spells.knock))
+                            TeamMemberHasSpell(Spells.knock))
                         {
                             prompt += " Knock";
                         }
@@ -552,7 +552,7 @@ namespace engine
                         {
                             prompt += " Exit";
 
-							input = ovr027.displayInput(out var_2, false, 0, gbl.defaultMenuColors, prompt, "Locked. ");
+                            input = ovr027.displayInput(out var_2, false, 0, gbl.defaultMenuColors, prompt, "Locked. ");
 
                             switch (input)
                             {

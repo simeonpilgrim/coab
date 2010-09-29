@@ -3,18 +3,18 @@ using System.Diagnostics;
 
 namespace Classes
 {
-	public class MenuItem
-	{
-		public string Text { get; set;}  // 0x00;
-		public bool Heading { get; protected set;} // 0x29;
-        public Item Item { get; protected set;}
+    public class MenuItem
+    {
+        public string Text { get; set; }  // 0x00;
+        public bool Heading { get; protected set; } // 0x29;
+        public Item Item { get; protected set; }
 
         public MenuItem()
-		{
+        {
             Heading = false;
-			Text = string.Empty;
+            Text = string.Empty;
             Item = null;
-		}
+        }
 
         public MenuItem(string text)
         {
@@ -36,5 +36,5 @@ namespace Classes
             Text = text;
             Item = item;
         }
-	}
+    }
 }
