@@ -2,6 +2,10 @@
 
 = Unreleased =
 
+= 1.1.4 =
+  * Issue 59, Fixed treasure distribution code missing gems & jewellery
+  * Issue 60, Fixed the reset of Area flags, meaning events in latter areas would not occur
+
 = 1.1.3 =
   * Issue 54, Fixed join items command, to not loose items
   * Issue 55, Fixed crash from readying items from wrong class
