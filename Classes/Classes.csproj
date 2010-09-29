@@ -146,6 +146,7 @@
     <Compile Include="Gbl.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="GeoBlock.cs" />
     <Compile Include="HillsFarPlayer.cs" />
     <Compile Include="Item.cs">
       <SubType>Code</SubType>
@@ -178,7 +179,6 @@
     <Compile Include="Struct_1D1BC.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Struct_1D530.cs" />
     <Compile Include="Sys.cs" />
   </ItemGroup>
   <ItemGroup>

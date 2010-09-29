@@ -136,29 +136,27 @@ namespace engine
             seg040.OverlayBounded(gbl.sky_dax_252, 1, 0, 7, 2);
         }
 
-        /*seg600:0ADA*/
-        static byte[] dataOffset = { 0, 2, 6, 10, 22, 38, 54, 110, 132, 154, 1 };
+        
+        static byte[] idxOffset = { 0, 2, 6, 10, 22, 38, 54, 110, 132, 154, 1 };   // seg600:0ADA
+        static int[] colCount = { 1, 1, 1, 3, 2, 2, 7, 2, 2, 1 };                 // seg600:0AE4
+        static int[] rowCount = { 2, 4, 4, 4, 8, 8, 8, 11, 11, 2 };               // seg600:0AEE
 
-        /*seg600:0AE4*/
-        static int[] colOffsets = { 1, 1, 1, 3, 2, 2, 7, 2, 2, 1 };
-        /*seg600:0AEE*/
-        static int[] rowOffsets = { 2, 4, 4, 4, 8, 8, 8, 11, 11, 2 };
 
         internal static void draw_3D_8x8_titles(int offsetIndex, int arg_2, int rowStart, int colStart) /* sub_71434 */
         {
-            int var_9 = dataOffset[offsetIndex];
+            int idx = idxOffset[offsetIndex];
 
-            int colMax = colOffsets[offsetIndex] + colStart;
-            int rowMax = rowOffsets[offsetIndex] + rowStart;
+            int colMax = colCount[offsetIndex] + colStart;
+            int rowMax = rowCount[offsetIndex] + rowStart;
 
-            int offsetA = (arg_2 - 1) / 5;
-            int offsetB = ((arg_2 - 1) % 5) * 0x9C;
+            int wallset = (arg_2 - 1) / 5;
+            int slice = (arg_2 - 1) % 5;
 
             for (int rowY = rowStart; rowY < rowMax; rowY++)
             {
                 for (int colX = colStart; colX < colMax; colX++)
                 {
-                    int symbolId = gbl.stru_1D52C[offsetA][offsetB + var_9];
+                    int symbolId = gbl.wallDef.blocks[wallset].Id(slice, idx);
 
                     if (rowY >= 0 && rowY <= 10 && colX >= 0 && colX <= 10 && symbolId > 0)
                     {
@@ -167,7 +165,7 @@ namespace engine
                         Display.Update();
                     }
 
-                    var_9++;
+                    idx++;
                 }
             }
         }
@@ -191,7 +189,7 @@ namespace engine
             mapX = Sys.WrapMinMax(mapX, 0, 15);
             mapY = Sys.WrapMinMax(mapY, 0, 15);
 
-            MapInfo mi = gbl.stru_1D530.maps[mapY, mapX];
+            MapInfo mi = gbl.geo_ptr.maps[mapY, mapX];
             byte var_1 = 1;
 
             switch (mapDir)
@@ -281,7 +279,7 @@ namespace engine
                     mapY = 0x0F;
                 }
 
-                mi = gbl.stru_1D530.maps[mapY, mapX];
+                mi = gbl.geo_ptr.maps[mapY, mapX];
             }
 
             return mi;
@@ -314,7 +312,7 @@ namespace engine
                 mapY = 0x0F;
             }
 
-            MapInfo mi = gbl.stru_1D530.maps[mapY, mapX];
+            MapInfo mi = gbl.geo_ptr.maps[mapY, mapX];
 
             return mi.x2;
         }
@@ -626,7 +624,7 @@ namespace engine
                     draw_3D_8x8_titles(6, var_14, Row_G, var_12 + Column_G);
                 }
 
-                byte var_15 = getMap_wall_type(dir_right, tmpY, tmpX);
+                int var_15 = getMap_wall_type(dir_right, tmpY, tmpX);
 
                 if (var_15 != 0)
                 {
@@ -640,9 +638,6 @@ namespace engine
                 tmpY += gbl.MapDirectionYDelta[dir_left];
             }
         }
-
-
-        static Set unk_72005 = new Set(0x0001, new byte[] { 0xE });
 
         internal static void LoadWalldef(int symbolSet, int block_id)
         {
@@ -662,46 +657,26 @@ namespace engine
 
                 int var_A = gbl.symbol_set_fix[symbolSet] - gbl.symbol_set_fix[1];
 
-                int dataOffset = 0;
-                int var_D = 0;
+                gbl.wallDef.LoadData(symbolSet, data);
 
-                do
+                int blockCount = decode_size / 0x30C;
+
+                for (int block = 0; block < blockCount; block++)
                 {
-                    System.Array.Copy(data, dataOffset, gbl.stru_1D52C[symbolSet + var_D - 1], 0, 0x30C);
-
-                    dataOffset += 0x30C;
-                    var_D += 1;
-                } while (dataOffset < decode_size);
-
-                data = null;
-
-                int var_10 = var_D;
-
-                for (var_D = 0; var_D < var_10; var_D++)
-                {
-                    if (unk_72005.MemberOf(symbolSet + var_D) == true)
+                    int idx = symbolSet + block;
+                    if (idx >= 1 && idx <= 3)
                     {
-                        gbl.setBlocks[symbolSet + var_D - 1].blockId = -1;
-                        gbl.setBlocks[symbolSet + var_D - 1].setId = -1;
+                        gbl.setBlocks[idx - 1].Reset();
 
-                        for (int var_B = 0; var_B < 5; var_B++)
-                        {
-                            for (int var_F = 0; var_F < 0x9C; var_F++)
-                            {
-                                if (gbl.stru_1D52C[symbolSet + var_D - 1][var_F + (var_B * 0x9C)] >= gbl.word_1899C)
-                                {
-                                    gbl.stru_1D52C[symbolSet + var_D - 1][var_F + (var_B * 0x9C)] += (byte)var_A;
-                                }
-                            }
-                        }
+                        gbl.wallDef.BlockOffset(idx, var_A);
 
-                        if (var_10 > 1)
+                        if (blockCount > 1)
                         {
-                            ovr038.Load8x8D(symbolSet + var_D, (block_id * 10) + var_D + 1);
+                            ovr038.Load8x8D(idx, (block_id * 10) + block + 1);
                         }
                         else
                         {
-                            ovr038.Load8x8D(symbolSet + var_D, block_id);
+                            ovr038.Load8x8D(idx, block_id);
                         }
                     }
                 }
@@ -724,7 +699,7 @@ namespace engine
                 Logger.LogAndExit("Unable to load geo in Load3DMap.");
             }
 
-            gbl.stru_1D530.LoadData(data);
+            gbl.geo_ptr.LoadData(data);
 
             gbl.area_ptr.current_3DMap_block_id = (byte)blockId;
         }

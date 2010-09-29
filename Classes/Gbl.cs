@@ -358,8 +358,9 @@ namespace Classes
 
 		public class SetBlock
 		{
-			public SetBlock() { setId = -1; blockId = -1; }
+			public SetBlock() { Reset(); }
 			public SetBlock(int _setId, int _blockId) { setId = _setId; blockId = _blockId; }
+            public void Reset() { setId = -1; blockId = -1; }
 			public int blockId; // byte_1D53A[di] 1*4
 			public int setId; // byte_1D53C[di] 1*4
 		}
@@ -439,7 +440,6 @@ namespace Classes
 
 
 		public readonly static short[] symbol_set_fix = { 0x0001, 0x002E, 0x0074, 0x00BA, 0x0100 };
-		public const short word_1899C = 0x2D;
 
 		public static ushort word_1AE0F;
 		public static ushort word_1AE11;
@@ -533,8 +533,8 @@ namespace Classes
 		public static Struct_1B2CA stru_1B2CA;
 		public static EclBlock ecl_ptr;
 		public static byte[,] dax_8x8d1_201;
-		public static byte[][] stru_1D52C;
-		public static Struct_1D530 stru_1D530 = new Struct_1D530();
+        public static WallDefs wallDef = new WallDefs();
+		public static GeoBlock geo_ptr = new GeoBlock();
 
 		public static CombatIcon[] combat_icons;
 

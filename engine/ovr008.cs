@@ -661,7 +661,7 @@ namespace engine
 				{
 					set_value &= 0x7f;
 
-					ovr031.LoadWalldef(1, (byte)(set_value));
+                    ovr031.LoadWalldef(1, set_value & 0xFF);
 				}
 			}
 			else if (switch_var == 0x324)
@@ -670,7 +670,7 @@ namespace engine
 				{
 					set_value &= 0x7f;
 
-					ovr031.LoadWalldef(2, (byte)(set_value));
+                    ovr031.LoadWalldef(2, set_value & 0xFF);
 				}
 			}
 			else if (switch_var == 0x326)
@@ -679,7 +679,7 @@ namespace engine
 				{
 					set_value &= 0x7f;
 
-					ovr031.LoadWalldef(3, (byte)(set_value));
+                    ovr031.LoadWalldef(3, set_value & 0xFF);
 				}
 			}
 		}

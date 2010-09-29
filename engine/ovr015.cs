@@ -15,19 +15,19 @@ namespace engine
             switch (mapDir)
             {
                 case 6:
-                    gbl.stru_1D530.maps[mapY, mapX].x3_dir_6 = 1;
+                    gbl.geo_ptr.maps[mapY, mapX].x3_dir_6 = 1;
                     break;
 
                 case 4:
-                    gbl.stru_1D530.maps[mapY, mapX].x3_dir_4 = 1;
+                    gbl.geo_ptr.maps[mapY, mapX].x3_dir_4 = 1;
                     break;
 
                 case 2:
-                    gbl.stru_1D530.maps[mapY, mapX].x3_dir_2 = 1;
+                    gbl.geo_ptr.maps[mapY, mapX].x3_dir_2 = 1;
                     break;
 
                 case 0:
-                    gbl.stru_1D530.maps[mapY, mapX].x3_dir_0 = 1;
+                    gbl.geo_ptr.maps[mapY, mapX].x3_dir_0 = 1;
                     break;
             }
         }

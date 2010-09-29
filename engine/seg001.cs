@@ -186,11 +186,7 @@ namespace engine
 			gbl.stru_1B2CA = new Struct_1B2CA();
 			gbl.ecl_ptr = new EclBlock();
 			gbl.dax_8x8d1_201 = new byte[177, 8];
-			gbl.stru_1D52C = new byte[3][];
-			gbl.stru_1D52C[0] = new byte[780];
-			gbl.stru_1D52C[1] = new byte[780];
-			gbl.stru_1D52C[2] = new byte[780];
-			gbl.stru_1D530.LoadData(new byte[0x402]);
+			gbl.geo_ptr.LoadData(new byte[0x402]);
 
 			ovr016.BuildEffectNameMap();
 
@@ -358,10 +354,8 @@ namespace engine
 
 			gbl.setBlocks[0].blockId = 0;
 			gbl.setBlocks[0].setId = 1;
-			gbl.setBlocks[1].blockId = -1;
-			gbl.setBlocks[1].setId = -1;
-			gbl.setBlocks[2].blockId = -1;
-			gbl.setBlocks[2].setId = -1;
+			gbl.setBlocks[1].Reset();
+            gbl.setBlocks[2].Reset();
 
 			gbl.DelayBetweenCharacters = true;
 			gbl.reload_ecl_and_pictures = false;

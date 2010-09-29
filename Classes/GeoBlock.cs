@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Classes
 {
-    public class Struct_1D530
+    public class GeoBlock
     {
         byte[] data;
         public MapInfo[,] maps;
@@ -21,6 +21,70 @@ namespace Classes
                 for (int x = 0; x < 16; x++)
                 {
                     maps[y, x] = new MapInfo(data, x, y);
+                }
+            }
+        }
+    }
+
+    public class WallDefs
+    {
+        const int maxBlocks = 3;
+        public WallDefBlock[] blocks = new WallDefBlock[maxBlocks];
+
+        public WallDefs()
+        {
+            blocks[0] = new WallDefBlock();
+            blocks[1] = new WallDefBlock();
+            blocks[2] = new WallDefBlock();
+        }
+
+        public void LoadData(int baseSet, byte[] _data)
+        {
+            int offset = 0;
+            for(int i = 0; i < (_data.Length / 780); i++)
+            {
+                blocks[baseSet + i - 1].LoadData(_data, offset);
+
+                offset += 780;
+            }
+        }
+
+        public void BlockOffset(int set, int offset)
+        {
+            blocks[set - 1].Offset(offset);
+        }
+    }
+
+    public class WallDefBlock
+    {
+        byte[,] data = new byte[5,156];
+
+        public void LoadData(byte[] _data, int offset)
+        {
+            for (int y = 0; y < 5; y++)
+            {
+                for (int x = 0; x < 156; x++)
+                {
+                    data[y, x] = _data[offset++];
+                }
+            }
+        }
+
+        public int Id(int y, int x)
+        {
+            return data[y, x];
+        }
+
+        public void Offset(int off)
+        {
+            for (int y = 0; y < 5; y++)
+            {
+                for (int x = 0; x < 156; x++)
+                {
+                    if (data[y, x] >= 0x2D)
+                    {
+                        data[y, x] += (byte)off;
+                    }
                 }
             }
         }
