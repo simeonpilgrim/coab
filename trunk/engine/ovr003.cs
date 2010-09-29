@@ -563,8 +563,7 @@ namespace engine
 						}
 						else
 						{
-							gbl.setBlocks[0].blockId = -1;
-							gbl.setBlocks[0].setId = -1;
+							gbl.setBlocks[0].Reset();
 						}
 
 						if (var_2 != 0xff)
@@ -573,8 +572,7 @@ namespace engine
 						}
 						else
 						{
-							gbl.setBlocks[1].blockId = -1;
-							gbl.setBlocks[1].setId = -1;
+                            gbl.setBlocks[1].Reset();
 						}
 
 						if (var_1 != 0xff)
@@ -583,8 +581,7 @@ namespace engine
 						}
 						else
 						{
-							gbl.setBlocks[2].blockId = -1;
-							gbl.setBlocks[2].setId = -1;
+							gbl.setBlocks[2].Reset();
 						}
 					}
 				}
