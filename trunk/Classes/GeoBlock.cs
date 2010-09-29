@@ -41,7 +41,7 @@ namespace Classes
         public void LoadData(int baseSet, byte[] _data)
         {
             int offset = 0;
-            for(int i = 0; i < (_data.Length / 780); i++)
+            for (int i = 0; i < (_data.Length / 780); i++)
             {
                 blocks[baseSet + i - 1].LoadData(_data, offset);
 
@@ -57,7 +57,7 @@ namespace Classes
 
     public class WallDefBlock
     {
-        byte[,] data = new byte[5,156];
+        byte[,] data = new byte[5, 156];
 
         public void LoadData(byte[] _data, int offset)
         {
@@ -110,7 +110,7 @@ namespace Classes
 
             wall_type_dir_0 = (byte)((data[map_x + map_y_x16] >> 4) & 0x0f);
             wall_type_dir_2 = (byte)((data[map_x + map_y_x16]) & 0x0f);
-            wall_type_dir_4 = (byte)((data[0x100 + map_x + map_y_x16] >> 4 ) & 0x0f);
+            wall_type_dir_4 = (byte)((data[0x100 + map_x + map_y_x16] >> 4) & 0x0f);
             wall_type_dir_6 = (byte)((data[0x100 + map_x + map_y_x16]) & 0x0f);
 
             x2 = data[0x200 + map_y_x16 + map_x];

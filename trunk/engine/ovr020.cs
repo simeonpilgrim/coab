@@ -93,7 +93,7 @@ namespace engine
                 if (player.ClassLevel[classIdx] > 0 ||
                     (tmp < ovr026.HumanCurrentClassLevel_Zero(player) && tmp > 0))
                 {
-                    if (displaySlash )
+                    if (displaySlash)
                     {
                         text2 += "/";
                     }
@@ -141,7 +141,7 @@ namespace engine
             {
                 if (gbl.SelectedPlayer.Money.GetCoins(coinType) > 0)
                 {
-					string text = string.Format("{0,8} {1}", Money.names[coinType], gbl.SelectedPlayer.Money.GetCoins(coinType));
+                    string text = string.Format("{0,8} {1}", Money.names[coinType], gbl.SelectedPlayer.Money.GetCoins(coinType));
                     seg041.displayString(text, 0, 10, yCol, 12);
 
                     yCol++;
@@ -158,7 +158,7 @@ namespace engine
             int yCol = 0x11;
 
             seg041.displayString("AC    ", 0, 15, yCol, 1);
-			seg041.displayString(player.DisplayAc.ToString(), 0, 10, yCol, 4);
+            seg041.displayString(player.DisplayAc.ToString(), 0, 10, yCol, 4);
 
             seg041.displayString("HP    ", 0, 15, yCol + 1, 1);
             ovr025.display_hp(false, yCol + 1, 4, player);
@@ -170,11 +170,11 @@ namespace engine
 
 
             string damage = string.Format("{0}d{1}{2}{3}", player.attack1_DiceCount, player.attack1_DiceSize,
-                player.attack1_DamageBonus > 0 ? "+" : "", player.attack1_DamageBonus != 0 ? player.attack1_DamageBonus.ToString() : ""); 
+                player.attack1_DamageBonus > 0 ? "+" : "", player.attack1_DamageBonus != 0 ? player.attack1_DamageBonus.ToString() : "");
 
             seg041.displayString("Damage  ", 0, 15, yCol + 1, xCol);
             seg041.displayString(damage, 0, 10, yCol + 1, xCol + 7);
-            
+
             xCol = 0x16;
             seg041.displayString("Encumbrance  ", 0, 15, yCol, xCol);
             seg041.displayString(player.weight.ToString(), 0, 10, yCol, xCol + 12);
@@ -250,7 +250,7 @@ namespace engine
             while (unk_54B03.MemberOf(input_key) == false && arg_0 == false)
             {
                 string text = string.Empty;
-				bool hasSpells = gbl.SelectedPlayer.spellList.HasSpells();
+                bool hasSpells = gbl.SelectedPlayer.spellList.HasSpells();
                 bool hasMoney = gbl.SelectedPlayer.Money.AnyMoney();
 
                 if (gbl.SelectedPlayer.items.Count > 0)
@@ -290,7 +290,7 @@ namespace engine
 
                 text += "Exit";
 
-				input_key = ovr027.displayInput(false, 0, gbl.defaultMenuColors, text, string.Empty);
+                input_key = ovr027.displayInput(false, 0, gbl.defaultMenuColors, text, string.Empty);
 
                 int index = -1;
 
@@ -359,7 +359,7 @@ namespace engine
                 gbl.textYCol = 0x15;
 
                 seg041.press_any_key(" was going to scribe from that scroll", false, 0, 0x0E, TextRegion.Normal2);
-				if (ovr027.yes_no(gbl.defaultMenuColors, "is it Okay to lose it? ") == 'Y')
+                if (ovr027.yes_no(gbl.defaultMenuColors, "is it Okay to lose it? ") == 'Y')
                 {
                     canSellDropTradeItem = true;
                 }
@@ -381,46 +381,46 @@ namespace engine
 
             seg041.displayString("itemptr:      ", 0, 10, 1, 1);
             seg041.displayString(arg_0.type.ToString(), 0, 10, 1, 0x14);
-            
+
             seg041.displayString("namenum(1):   ", 0, 10, 2, 1);
             seg041.displayString(arg_0.namenum1.ToString(), 0, 10, 2, 0x14);
-            
+
             seg041.displayString("namenum(2):   ", 0, 10, 3, 1);
             seg041.displayString(arg_0.namenum2.ToString(), 0, 10, 3, 0x14);
-            
+
             seg041.displayString("namenum(3):   ", 0, 10, 4, 1);
             seg041.displayString(arg_0.namenum3.ToString(), 0, 10, 4, 0x14);
-            
+
             seg041.displayString("plus:         ", 0, 10, 5, 1);
             seg041.displayString(arg_0.plus.ToString(), 0, 10, 5, 0x14);
-            
+
             seg041.displayString("plussave:     ", 0, 10, 6, 1);
             seg041.displayString(arg_0.plus_save.ToString(), 0, 10, 6, 0x14);
-            
+
             seg041.displayString("ready:        ", 0, 10, 7, 1);
             seg041.displayString(arg_0.readied.ToString(), 0, 10, 7, 0x14);
-            
+
             seg041.displayString("identified:   ", 0, 10, 8, 1);
             seg041.displayString(arg_0.hidden_names_flag.ToString(), 0, 10, 8, 0x14);
-            
+
             seg041.displayString("cursed:       ", 0, 10, 9, 1);
             seg041.displayString(arg_0.cursed.ToString(), 0, 10, 9, 0x14);
-            
+
             seg041.displayString("value:        ", 0, 10, 10, 1);
             seg041.displayString(arg_0._value.ToString(), 0, 10, 10, 0x14);
-            
+
             seg041.displayString("special(1):   ", 0, 10, 11, 1);
             seg041.displayString(arg_0.affect_1.ToString(), 0, 10, 11, 0x14);
-            
+
             seg041.displayString("special(2):   ", 0, 10, 12, 1);
             seg041.displayString(arg_0.affect_2.ToString(), 0, 10, 12, 0x14);
-            
+
             seg041.displayString("special(3):   ", 0, 10, 13, 1);
             seg041.displayString(arg_0.affect_3.ToString(), 0, 10, 13, 0x14);
-            
+
             seg041.displayString("dice large:   ", 0, 10, 14, 1);
             seg041.displayString(gbl.ItemDataTable[arg_0.type].diceCountLarge.ToString(), 0, 10, 14, 0x14);
-            
+
             seg041.displayString("sides large:  ", 0, 10, 15, 1);
             seg041.displayString(gbl.ItemDataTable[arg_0.type].diceSizeLarge.ToString(), 0, 10, 15, 0x14);
 
@@ -514,7 +514,7 @@ namespace engine
                     MenuItem menuitem;
 
                     inputKey = ovr027.sl_select_item(out menuitem, ref dummy_index, ref redraw_items, true,
-						menulist, 0x16, 0x26, 5, 1, gbl.defaultMenuColors, text, string.Empty);
+                        menulist, 0x16, 0x26, 5, 1, gbl.defaultMenuColors, text, string.Empty);
 
                     Item curr_item = menuitem != null ? menuitem.Item : null;
 
@@ -573,7 +573,7 @@ namespace engine
 
                                     seg041.press_any_key("Your " + curr_item.name + "will be gone forever", true, 0, 14, 22, 0x26, 21, 1);
 
-									if (ovr027.yes_no(gbl.defaultMenuColors, "Drop It? ") == 'Y')
+                                    if (ovr027.yes_no(gbl.defaultMenuColors, "Drop It? ") == 'Y')
                                     {
                                         ovr025.lose_item(curr_item, gbl.SelectedPlayer);
                                         redraw_items = true;
@@ -653,48 +653,48 @@ namespace engine
                 case 1: // ring of wizardy
                     if (add_item == true)
                     {
-                        player.spellCastCount[2,0] *= 2;
-                        player.spellCastCount[2,1] *= 2;
-                        player.spellCastCount[2,2] *= 2;
+                        player.spellCastCount[2, 0] *= 2;
+                        player.spellCastCount[2, 1] *= 2;
+                        player.spellCastCount[2, 2] *= 2;
                     }
                     else
                     {
                         int muSkillLevel = player.SkillLevel(SkillType.MagicUser);
 
-                        player.spellCastCount[2,0] = 0;
-                        player.spellCastCount[2,1] = 0;
-                        player.spellCastCount[2,2] = 0;
-                        player.spellCastCount[2,3] = 0;
-                        player.spellCastCount[2,4] = 0;
+                        player.spellCastCount[2, 0] = 0;
+                        player.spellCastCount[2, 1] = 0;
+                        player.spellCastCount[2, 2] = 0;
+                        player.spellCastCount[2, 3] = 0;
+                        player.spellCastCount[2, 4] = 0;
 
-                        player.spellCastCount[2,0] = 1;
+                        player.spellCastCount[2, 0] = 1;
 
                         for (int sp_lvl = 0; sp_lvl < (muSkillLevel - 1); sp_lvl++)
                         {
                             /* unk_1A7C6 = seg600:44B6 */
-                            player.spellCastCount[2,0] += MU_spell_lvl_learn[sp_lvl, 0];
-                            player.spellCastCount[2,1] += MU_spell_lvl_learn[sp_lvl, 1];
-                            player.spellCastCount[2,2] += MU_spell_lvl_learn[sp_lvl, 2];
-                            player.spellCastCount[2,3] += MU_spell_lvl_learn[sp_lvl, 3];
-                            player.spellCastCount[2,4] += MU_spell_lvl_learn[sp_lvl, 4];
+                            player.spellCastCount[2, 0] += MU_spell_lvl_learn[sp_lvl, 0];
+                            player.spellCastCount[2, 1] += MU_spell_lvl_learn[sp_lvl, 1];
+                            player.spellCastCount[2, 2] += MU_spell_lvl_learn[sp_lvl, 2];
+                            player.spellCastCount[2, 3] += MU_spell_lvl_learn[sp_lvl, 3];
+                            player.spellCastCount[2, 4] += MU_spell_lvl_learn[sp_lvl, 4];
                         }
 
                         byte[] spCounts = new byte[5];
-						seg051.FillChar(0, 5, spCounts);
+                        seg051.FillChar(0, 5, spCounts);
 
-						foreach (int id in player.spellList.IdList())
-						{
-							if (gbl.spellCastingTable[id].spellClass == SpellClass.MagicUser)
-							{
-								int spLvl = gbl.spellCastingTable[id].spellLevel - 1;
-								spCounts[spLvl] += 1;
+                        foreach (int id in player.spellList.IdList())
+                        {
+                            if (gbl.spellCastingTable[id].spellClass == SpellClass.MagicUser)
+                            {
+                                int spLvl = gbl.spellCastingTable[id].spellLevel - 1;
+                                spCounts[spLvl] += 1;
 
-								if (spCounts[spLvl] > player.spellCastCount[2, spLvl])
-								{
-									player.spellList.ClearSpell(id);
-								}
-							}
-						}
+                                if (spCounts[spLvl] > player.spellCastCount[2, spLvl])
+                                {
+                                    player.spellList.ClearSpell(id);
+                                }
+                            }
+                        }
                     }
                     break;
 
@@ -769,13 +769,13 @@ namespace engine
             }
         }
 
-		enum Weld
-		{
-			Ok = 0,
-			WrongClass = 1,
-			AlreadyUsingX = 2,
-			HandsFull = 3
-		};
+        enum Weld
+        {
+            Ok = 0,
+            WrongClass = 1,
+            AlreadyUsingX = 2,
+            HandsFull = 3
+        };
 
         internal static void ready_Item(Item item)
         {
@@ -804,27 +804,27 @@ namespace engine
             else
             {
                 // Weld
-				Weld result = Weld.Ok;
+                Weld result = Weld.Ok;
 
                 if ((player.field_185 + gbl.ItemDataTable[item.type].handsCount) > 2)
                 {
                     result = Weld.HandsFull;
                 }
-   
+
                 ItemSlot item_slot = gbl.ItemDataTable[item.type].item_slot;
 
-				if (item_slot >= ItemSlot.slot_0 && item_slot <= ItemSlot.slot_8)
+                if (item_slot >= ItemSlot.slot_0 && item_slot <= ItemSlot.slot_8)
                 {
                     if (player.itemArray[(int)item_slot] != null)
                     {
                         result = Weld.AlreadyUsingX;
                     }
                 }
-				else if (item_slot == ItemSlot.slot_9)
+                else if (item_slot == ItemSlot.slot_9)
                 {
                     if (player.Item_ptr_02 != null)
                     {
-						result = Weld.AlreadyUsingX;
+                        result = Weld.AlreadyUsingX;
                     }
                 }
 
@@ -832,8 +832,8 @@ namespace engine
                 {
                     if (player.arrows != null)
                     {
-						result = Weld.AlreadyUsingX;
-						item_slot = ItemSlot.slot_11;
+                        result = Weld.AlreadyUsingX;
+                        item_slot = ItemSlot.slot_11;
                     }
                 }
 
@@ -841,8 +841,8 @@ namespace engine
                 {
                     if (player.quarrels != null)
                     {
-						result = Weld.AlreadyUsingX;
-						item_slot = ItemSlot.Quarrel;
+                        result = Weld.AlreadyUsingX;
+                        item_slot = ItemSlot.Quarrel;
                     }
                 }
 
@@ -865,7 +865,7 @@ namespace engine
                         ovr025.string_print01("Wrong Class");
                         break;
 
-					case Weld.AlreadyUsingX:
+                    case Weld.AlreadyUsingX:
                         ovr025.ItemDisplayNameBuild(false, false, 0, 0, player.itemArray[(int)item_slot]);
                         ovr025.string_print01("already using " + player.itemArray[(int)item_slot].name);
                         break;
@@ -983,7 +983,7 @@ namespace engine
                 int dummy_index = -1;
                 var_1 = spell_menu2(out dummy_bool, ref dummy_index, SpellSource.Cast, SpellLoc.scroll);
             }
-            else if( item.affect_2 > 0 && (int)item.affect_3 < 0x80 )
+            else if (item.affect_2 > 0 && (int)item.affect_3 < 0x80)
             {
                 gbl.spell_from_item = true;
                 var_1 = (byte)((int)item.affect_2 & 0x7F);
@@ -1060,7 +1060,7 @@ namespace engine
                 {
                     ovr023.remove_spell_from_scroll(var_1, item, gbl.SelectedPlayer);
                 }
-                else if ( item.affect_1 > 0 )
+                else if (item.affect_1 > 0)
                 {
                     if (item.count > 1)
                     {
@@ -1090,8 +1090,8 @@ namespace engine
 
             if (item.count > 1)
             {
-                if (item.type != ItemType.Arrow && 
-                    item.type != ItemType.Quarrel) 
+                if (item.type != ItemType.Arrow &&
+                    item.type != ItemType.Quarrel)
                 {
                     item_value = (item.count * item_value) / 20;
                 }
@@ -1107,7 +1107,7 @@ namespace engine
 
             seg041.press_any_key(offer, true, 0, 14, TextRegion.Normal2);
 
-			if (ovr027.yes_no(gbl.defaultMenuColors, "Is It a Deal? ") == 'Y')
+            if (ovr027.yes_no(gbl.defaultMenuColors, "Is It a Deal? ") == 'Y')
             {
                 ovr025.string_print01("Sold!");
 
@@ -1128,7 +1128,7 @@ namespace engine
                     else
                     {
                         gbl.SelectedPlayer.Money.AddCoins(Money.Platinum, overflow);
-						gbl.pooled_money.AddCoins(Money.Platinum, plat - overflow);
+                        gbl.pooled_money.AddCoins(Money.Platinum, plat - overflow);
                     }
 
                     gbl.SelectedPlayer.Money.AddCoins(Money.Gold, gold);
@@ -1151,28 +1151,28 @@ namespace engine
 
             seg041.press_any_key("For 200 gold pieces I'll identify your " + item.name, true, 0, 0x0e, TextRegion.Normal2);
 
-			if (ovr027.yes_no(gbl.defaultMenuColors, "Is It a Deal? ") == 'Y')
-			{
-				int cost = 200;
-				if (cost <= gbl.SelectedPlayer.Money.GetGoldWorth())
-				{
-					id_item = true;
-					gbl.SelectedPlayer.Money.SubtractGoldWorth(cost);
-				}
-				else
-				{
-					if (cost <= gbl.pooled_money.GetGoldWorth())
-					{
-						id_item = true;
+            if (ovr027.yes_no(gbl.defaultMenuColors, "Is It a Deal? ") == 'Y')
+            {
+                int cost = 200;
+                if (cost <= gbl.SelectedPlayer.Money.GetGoldWorth())
+                {
+                    id_item = true;
+                    gbl.SelectedPlayer.Money.SubtractGoldWorth(cost);
+                }
+                else
+                {
+                    if (cost <= gbl.pooled_money.GetGoldWorth())
+                    {
+                        id_item = true;
 
-						gbl.pooled_money.SubtractGoldWorth(cost);
-					}
-					else
-					{
-						ovr025.string_print01("Not Enough Money");
-					}
-				}
-			}
+                        gbl.pooled_money.SubtractGoldWorth(cost);
+                    }
+                    else
+                    {
+                        ovr025.string_print01("Not Enough Money");
+                    }
+                }
+            }
 
             if (id_item == true)
             {
@@ -1227,7 +1227,7 @@ namespace engine
                         {
                             if (gbl.SelectedPlayer.Money.GetCoins(coin) > 0)
                             {
-								list.Add(new MenuItem(string.Format("{0,8} {1}", moneyString[coin], gbl.SelectedPlayer.Money.GetCoins(coin))));
+                                list.Add(new MenuItem(string.Format("{0,8} {1}", moneyString[coin], gbl.SelectedPlayer.Money.GetCoins(coin))));
                             }
                         }
 
@@ -1236,7 +1236,7 @@ namespace engine
                         MenuItem selected;
 
                         ovr027.sl_select_item(out selected, ref dummyIndex, ref dummyBool, true,
-							list, 13, 0x19, 7, 12, gbl.defaultMenuColors, " Select", "Select type of coin ");
+                            list, 13, 0x19, 7, 12, gbl.defaultMenuColors, " Select", "Select type of coin ");
 
                         if (selected == null)
                         {
@@ -1254,7 +1254,7 @@ namespace engine
 
                             ovr022.trade_money(money_slot, num_coins, dest, gbl.SelectedPlayer);
 
-							finished = noMoneyLeft = !gbl.SelectedPlayer.Money.AnyMoney();
+                            finished = noMoneyLeft = !gbl.SelectedPlayer.Money.AnyMoney();
                         }
 
                         list.Clear();
@@ -1278,7 +1278,7 @@ namespace engine
                 {
                     if (gbl.SelectedPlayer.Money.GetCoins(coin) != 0)
                     {
-						menuList.Add(new MenuItem(string.Format("{0,8} {1}", moneyString[coin], gbl.SelectedPlayer.Money.GetCoins(coin))));
+                        menuList.Add(new MenuItem(string.Format("{0,8} {1}", moneyString[coin], gbl.SelectedPlayer.Money.GetCoins(coin))));
                     }
                 }
 
@@ -1287,7 +1287,7 @@ namespace engine
 
                 MenuItem selected;
                 ovr027.sl_select_item(out selected, ref index, ref redrawMenuItems, true, menuList, 13, 0x19, 7,
-					12, gbl.defaultMenuColors, " Select", "Select type of coin ");
+                    12, gbl.defaultMenuColors, " Select", "Select type of coin ");
 
                 if (selected == null)
                 {
@@ -1305,7 +1305,7 @@ namespace engine
 
                     ovr022.DropCoins(money_slot, num_coins, gbl.SelectedPlayer);
 
-					noMoreMoney = !gbl.SelectedPlayer.Money.AnyMoney();
+                    noMoreMoney = !gbl.SelectedPlayer.Money.AnyMoney();
                 }
 
                 menuList.Clear();
@@ -1404,7 +1404,7 @@ namespace engine
 
             arg_0 = ovr023.BuildSpellList(spl_location);
 
-            if (arg_0 == true )
+            if (arg_0 == true)
             {
                 if (index < 0 ||
                     arg_8 == SpellSource.Cast)
@@ -1516,7 +1516,7 @@ namespace engine
                 {
                     ovr025.DisplayPlayerStatusString(false, 0, "is not diseased", target);
 
-					input = ovr027.yes_no(gbl.defaultMenuColors, "cure anyway: ");
+                    input = ovr027.yes_no(gbl.defaultMenuColors, "cure anyway: ");
 
                     ovr025.ClearPlayerTextArea();
                 }

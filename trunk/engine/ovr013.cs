@@ -19,10 +19,10 @@ namespace engine
 		{
 			gbl.damage = 0;
 			gbl.current_affect = 0;
-		}
+        }
 
 
-		internal static bool addAffect(ushort time, int data, Affects affect_type, Player player)
+        internal static bool addAffect(ushort time, int data, Affects affect_type, Player player)
 		{
 			if (gbl.cureSpell == true)
 			{

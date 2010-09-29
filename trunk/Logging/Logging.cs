@@ -7,17 +7,17 @@ namespace Logging
 {
     public class Logger
     {
-		static string logPath;
-		static DebugWriter debug;
+        static string logPath;
+        static DebugWriter debug;
 
-		static public void Setup(string path)
-		{
-			logPath = path;
+        static public void Setup(string path)
+        {
+            logPath = path;
 
-			debug = new DebugWriter(Path.Combine(logPath, "Debugging.txt"));
-		}
+            debug = new DebugWriter(Path.Combine(logPath, "Debugging.txt"));
+        }
 
-		public static string GetPath() { return logPath; }
+        public static string GetPath() { return logPath; }
 
         public delegate void VoidDelegate();
         static VoidDelegate ExitFuncCallback;
@@ -26,7 +26,7 @@ namespace Logging
         {
             ExitFuncCallback = ExitFunc;
         }
-       
+
 
         static public void Log(string fmt, params object[] args)
         {
@@ -76,7 +76,7 @@ namespace Logging
             {
                 if (writer == null)
                 {
-                    writer = new System.IO.StreamWriter(filename,true);
+                    writer = new System.IO.StreamWriter(filename, true);
                 }
 
                 if (writer != null)

@@ -22,11 +22,11 @@ namespace engine
 
         static public void AddKey(ushort key)
         {
-            lock(keysPressed)
+            lock (keysPressed)
             {
                 keysPressed.Enqueue(key);
 
-                if( keysPressed.Count == 1 )
+                if (keysPressed.Count == 1)
                 {
                     WaitForKey.Release();
                 }
@@ -72,7 +72,7 @@ namespace engine
             lock (keysPressed)
             {
                 key = keysPressed.Dequeue();
-                         
+
                 if (keysPressed.Count > 0)
                 {
                     WaitForKey.Release();

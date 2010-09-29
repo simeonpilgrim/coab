@@ -2,8 +2,8 @@ using System;
 
 namespace Classes
 {
-	/// <summary>
-	/// Summary description for Item.
+    /// <summary>
+    /// Summary description for Item.
     /// </summary>
     [Serializable]
     public class Item
@@ -44,7 +44,7 @@ namespace Classes
 
         public bool IsScroll()
         {
-			return (gbl.ItemDataTable[type].item_slot >= ItemSlot.slot_11 && gbl.ItemDataTable[type].item_slot <= ItemSlot.slot_13);
+            return (gbl.ItemDataTable[type].item_slot >= ItemSlot.slot_11 && gbl.ItemDataTable[type].item_slot <= ItemSlot.slot_13);
         }
 
         public Affects getAffect(int i)

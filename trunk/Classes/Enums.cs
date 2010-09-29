@@ -93,5 +93,4 @@ namespace Classes
         Ours = 0,
         Enemy = 1
     }
-
 }

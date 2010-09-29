@@ -8,12 +8,12 @@ namespace engine
         internal static char ShopChooseItem(ref int index, out Item selectedItem) // sub_2F04E
         {
             List<MenuItem> list = new List<MenuItem>();
-            foreach(var item in gbl.items_pointer)
+            foreach (var item in gbl.items_pointer)
             {
-				if( item._value == 0 )
-				{
-					item._value = 1;
-				}
+                if (item._value == 0)
+                {
+                    item._value = 1;
+                }
 
                 int val = ItemsValue(item);
 
@@ -26,7 +26,7 @@ namespace engine
             selectedItem = null;
 
             char input_key = ovr027.sl_select_item(out mi, ref index, ref gbl.shopRedrawMenuItems, true, list,
-                0x16, 0x26, 1, 1, gbl.defaultMenuColors, "Buy", "Items: " );
+                0x16, 0x26, 1, 1, gbl.defaultMenuColors, "Buy", "Items: ");
 
             if (mi != null)
             {
@@ -82,7 +82,7 @@ namespace engine
         }
 
 
-        internal static bool PlayerAddItem( Item item ) /*was overloaded */
+        internal static bool PlayerAddItem(Item item) /*was overloaded */
         {
             bool wouldOverload;
             if (ovr020.canCarry(item, gbl.SelectedPlayer) == true)
@@ -109,44 +109,44 @@ namespace engine
             gbl.shopRedrawMenuItems = true;
 
             int index = 0;
-            while(true)
+            while (true)
             {
                 Item item;
                 char input_key = ShopChooseItem(ref index, out item);
 
-				if (input_key != 'B' && input_key != 0x0d)
-				{
-					return;
-				}
-				else
-				{
-					int item_cost = ItemsValue(item);
-					int player_gold = gbl.SelectedPlayer.Money.GetGoldWorth();
+                if (input_key != 'B' && input_key != 0x0d)
+                {
+                    return;
+                }
+                else
+                {
+                    int item_cost = ItemsValue(item);
+                    int player_gold = gbl.SelectedPlayer.Money.GetGoldWorth();
 
-					if (item_cost <= gbl.SelectedPlayer.Money.GetGoldWorth())
-					{
-						bool overloaded = PlayerAddItem(item);
+                    if (item_cost <= gbl.SelectedPlayer.Money.GetGoldWorth())
+                    {
+                        bool overloaded = PlayerAddItem(item);
 
-						if (overloaded == false)
-						{
-							player_gold -= item_cost;
-							gbl.SelectedPlayer.Money.SubtractGoldWorth(item_cost);
-						}
-					}
-					else if (item_cost <= gbl.pooled_money.GetGoldWorth())
-					{
-						bool overloaded = PlayerAddItem(item);
+                        if (overloaded == false)
+                        {
+                            player_gold -= item_cost;
+                            gbl.SelectedPlayer.Money.SubtractGoldWorth(item_cost);
+                        }
+                    }
+                    else if (item_cost <= gbl.pooled_money.GetGoldWorth())
+                    {
+                        bool overloaded = PlayerAddItem(item);
 
-						if (overloaded == false)
-						{
-							gbl.pooled_money.SubtractGoldWorth(item_cost);
-						}
-					}
-					else
-					{
-						ovr025.string_print01("Not enough Money.");
-					}
-				}
+                        if (overloaded == false)
+                        {
+                            gbl.pooled_money.SubtractGoldWorth(item_cost);
+                        }
+                    }
+                    else
+                    {
+                        ovr025.string_print01("Not enough Money.");
+                    }
+                }
             }
         }
 
@@ -163,9 +163,9 @@ namespace engine
 
             ovr025.load_pic();
             gbl.redrawBoarder = true;
-            ovr025.PartySummary( gbl.SelectedPlayer );
+            ovr025.PartySummary(gbl.SelectedPlayer);
 
-			gbl.pooled_money.ClearAll();
+            gbl.pooled_money.ClearAll();
 
             bool exitShop = false;
 
@@ -173,10 +173,10 @@ namespace engine
 
             do
             {
-                ovr022.treasureOnGround( out items_on_ground, out money_on_ground );
+                ovr022.treasureOnGround(out items_on_ground, out money_on_ground);
 
                 string text;
-                if( money_on_ground == true )
+                if (money_on_ground == true)
                 {
                     text = "Buy View Take Pool Share Appraise Exit";
                 }
@@ -187,9 +187,9 @@ namespace engine
 
                 bool controlKey;
 
-				inputKey = ovr027.displayInput(out controlKey, false, 1, gbl.defaultMenuColors, text, string.Empty);
+                inputKey = ovr027.displayInput(out controlKey, false, 1, gbl.defaultMenuColors, text, string.Empty);
 
-                switch ( inputKey )
+                switch (inputKey)
                 {
                     case 'B':
                         shop_buy();
@@ -204,7 +204,7 @@ namespace engine
                         break;
 
                     case 'P':
-                        if( controlKey == false )
+                        if (controlKey == false)
                         {
                             ovr022.poolMoney();
                         }
@@ -221,16 +221,16 @@ namespace engine
                         break;
 
                     case 'E':
-                        ovr022.treasureOnGround( out items_on_ground, out money_on_ground );
+                        ovr022.treasureOnGround(out items_on_ground, out money_on_ground);
 
-                        if( money_on_ground == true )
+                        if (money_on_ground == true)
                         {
                             seg041.press_any_key("As you Leave the Shopkeeper says, \"Excuse me but you have Left Some Money here.\"  ", true, 0, 10, TextRegion.NormalBottom);
                             seg041.press_any_key("Do you want to go back and get your Money?", false, 0, 15, TextRegion.NormalBottom);
 
-							int menu_selected = ovr008.sub_317AA(false, false, gbl.defaultMenuColors, "~Yes ~No", "");
-                
-                            if( menu_selected == 1 )
+                            int menu_selected = ovr008.sub_317AA(false, false, gbl.defaultMenuColors, "~Yes ~No", "");
+
+                            if (menu_selected == 1)
                             {
                                 exitShop = true;
                             }
@@ -246,28 +246,28 @@ namespace engine
                         break;
 
                     case 'G':
-                        ovr020.scroll_team_list( inputKey );
+                        ovr020.scroll_team_list(inputKey);
                         break;
 
                     case 'O':
-                        ovr020.scroll_team_list( inputKey );
+                        ovr020.scroll_team_list(inputKey);
                         break;
                 }
-                
-                if( inputKey == 'B' ||
-                    inputKey == 'T' )
+
+                if (inputKey == 'B' ||
+                    inputKey == 'T')
                 {
                     ovr025.load_pic();
                 }
-                else if( reloadPics == true )
+                else if (reloadPics == true)
                 {
                     ovr025.load_pic();
                     reloadPics = false;
                 }
 
-                ovr025.PartySummary( gbl.SelectedPlayer );
+                ovr025.PartySummary(gbl.SelectedPlayer);
 
-            }while( exitShop == false );
+            } while (exitShop == false);
         }
     }
 }

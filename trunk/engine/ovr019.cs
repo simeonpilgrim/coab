@@ -10,41 +10,41 @@ namespace engine
         /// <param name="colour">if bit 7 set, value is XOR'ed onto screen</param>
         /// <param name="row"></param>
         /// <param name="column"></param>
-        static void SetPixel( byte colour, ushort row, ushort column )
+        static void SetPixel(byte colour, ushort row, ushort column)
         {
             Display.SetPixel3(column, row, colour);
         }
 
 
-        internal static byte GetPixel( ushort row, ushort column )
+        internal static byte GetPixel(ushort row, ushort column)
         {
             return Display.GetPixel(column, row);
         }
 
 
-        internal static void sub_52068( )
+        internal static void sub_52068()
         {
-            seg040.SetPaletteColor( 15, 9 );
-            seg049.SysDelay( 1 );
-            seg040.SetPaletteColor( 9, 9 );
+            seg040.SetPaletteColor(15, 9);
+            seg049.SysDelay(1);
+            seg040.SetPaletteColor(9, 9);
         }
 
-		class Struct_1ADFB 
-		{
-			internal void Reset()
-			{
-				field_0 = 1;
-				field_1 = 1;
-				field_2 = 1;
-				field_3 = 1;
-				field_4 = 1;
-			}
+        class Struct_1ADFB
+        {
+            internal void Reset()
+            {
+                field_0 = 1;
+                field_1 = 1;
+                field_2 = 1;
+                field_3 = 1;
+                field_4 = 1;
+            }
 
-			internal byte field_0;
-			internal byte field_1;
-			internal byte field_2;
-			internal byte field_3;
-			internal byte field_4;
+            internal byte field_0;
+            internal byte field_1;
+            internal byte field_2;
+            internal byte field_3;
+            internal byte field_4;
 
             internal byte this[int index]
             {
@@ -62,111 +62,111 @@ namespace engine
                     }
                 }
             }
-		}
+        }
 
-		static Struct_1ADFB[] unk_1ADFB = new Struct_1ADFB[3];
+        static Struct_1ADFB[] unk_1ADFB = new Struct_1ADFB[3];
 
-		internal static void sub_520B8( byte[] arg_0, int arg_4, int arg_6, ushort arg_8, ushort arg_A )
-		{
-			double var_12;
-			double var_C;
-			byte[] var_3;
+        internal static void sub_520B8(byte[] arg_0, int arg_4, int arg_6, ushort arg_8, ushort arg_A)
+        {
+            double var_12;
+            double var_C;
+            byte[] var_3;
 
-			double d;
+            double d;
 
-			var_3 = arg_0; //byte[3];
+            var_3 = arg_0; //byte[3];
 
-			gbl.byte_1ADFA = 0;
+            gbl.byte_1ADFA = 0;
 
 
             unk_1ADFB[1] = new Struct_1ADFB();
-			unk_1ADFB[0] = new Struct_1ADFB();
+            unk_1ADFB[0] = new Struct_1ADFB();
             unk_1ADFB[2] = new Struct_1ADFB();
-			unk_1ADFB[0].Reset();
+            unk_1ADFB[0].Reset();
             unk_1ADFB[1].Reset();
-			unk_1ADFB[2].Reset();
+            unk_1ADFB[2].Reset();
 
-			for( int var_5 = 0; var_5 < 3; var_5++ )
-			{
-				if( var_3[ var_5 ] > 1 )
-				{
-					unk_1ADFB[ var_5 ].field_0 = 15;
-				}
+            for (int var_5 = 0; var_5 < 3; var_5++)
+            {
+                if (var_3[var_5] > 1)
+                {
+                    unk_1ADFB[var_5].field_0 = 15;
+                }
 
-				unk_1ADFB[ var_5 ].field_1 = 15;
+                unk_1ADFB[var_5].field_1 = 15;
 
-				if( var_3[ var_5 ] > 1 )
-				{
-					unk_1ADFB[ var_5 ].field_2 = (byte)(var_3[ var_5 ] + 8);
-				}
+                if (var_3[var_5] > 1)
+                {
+                    unk_1ADFB[var_5].field_2 = (byte)(var_3[var_5] + 8);
+                }
 
-				unk_1ADFB[ var_5 ].field_3 = var_3[ var_5 ];
+                unk_1ADFB[var_5].field_3 = var_3[var_5];
 
-				unk_1ADFB[ var_5 ].field_4 = 1;
+                unk_1ADFB[var_5].field_4 = 1;
 
-				byte var_15 = (byte)(seg051.Random( 20 ) + 25);
+                byte var_15 = (byte)(seg051.Random(20) + 25);
 
-				if( gbl.byte_1ADFA < var_15 )
-				{
-					gbl.byte_1ADFA = var_15;
-				}
+                if (gbl.byte_1ADFA < var_15)
+                {
+                    gbl.byte_1ADFA = var_15;
+                }
 
-				int var_16 = seg051.Random( 5 ) + 5;
-				int var_18 = var_16 + 15;
+                int var_16 = seg051.Random(5) + 5;
+                int var_18 = var_16 + 15;
 
-				var_C = seg051.Random__Real() * (System.Math.PI * 2.0);
-				var_12 = seg051.Random__Real() * (System.Math.PI * 2.0);
+                var_C = seg051.Random__Real() * (System.Math.PI * 2.0);
+                var_12 = seg051.Random__Real() * (System.Math.PI * 2.0);
 
                 d = (seg051.Random(10) + 24) * System.Math.Sin(var_C) * System.Math.Sin(var_12);
                 int var_1A = (int)d + arg_6;
 
                 d = (seg051.Random(10) + 24) * System.Math.Cos(var_C) * System.Math.Sin(var_12);
-				int var_1C = (int)d + arg_4;
+                int var_1C = (int)d + arg_4;
 
-				for( int var_4 = 1; var_4 <= 0x28; var_4++ )
-				{
+                for (int var_4 = 1; var_4 <= 0x28; var_4++)
+                {
                     Struct_1ADF6 var_21 = gbl.dword_1ADF6[var_4 + ((var_5) * 40) - 1];
 
-					var_C = seg051.Random__Real() * (System.Math.PI * 2.0);
-					var_12 = seg051.Random__Real() * (System.Math.PI * 2.0);
+                    var_C = seg051.Random__Real() * (System.Math.PI * 2.0);
+                    var_12 = seg051.Random__Real() * (System.Math.PI * 2.0);
 
                     var_21.field_00 = arg_A;
                     var_21.field_02 = arg_8;
-					var_21.field_08 = (short)(var_21.field_00 << 5);
-					var_21.field_0A = (short)(var_21.field_02 << 5);
+                    var_21.field_08 = (short)(var_21.field_00 << 5);
+                    var_21.field_0A = (short)(var_21.field_02 << 5);
 
                     d = System.Math.Sin(var_C) * 16.0 * System.Math.Sin(var_12);
 
-					var_21.field_0C = (short)( var_1A + ((ushort)d) );
+                    var_21.field_0C = (short)(var_1A + ((ushort)d));
 
                     d = System.Math.Cos(var_C) * 16.0 * System.Math.Sin(var_12);
-					var_21.field_0E = (short)( var_1C + ((ushort)d) );
+                    var_21.field_0E = (short)(var_1C + ((ushort)d));
 
-					var_21.field_10 = 1;
-					var_21.field_12 = 1;
+                    var_21.field_10 = 1;
+                    var_21.field_12 = 1;
 
                     var_21.field_13 = (byte)(var_16 + seg051.Random(7) - 4);
                     var_21.field_14 = (byte)(var_18 + seg051.Random(11) - 6);
                     var_21.field_15 = (byte)(var_15 + seg051.Random(7));
 
-					/*HACK commented out this code as it does not make sense
+                    /*HACK commented out this code as it does not make sense
                     var_21.field_16 = var_21.field_16;
                      */
 
-					var_21.field_11 = GetPixel( var_21.field_02, var_21.field_00 );
-				}
-			}
-		}
+                    var_21.field_11 = GetPixel(var_21.field_02, var_21.field_00);
+                }
+            }
+        }
 
 
         static void sub_524F7(Struct_1ADF6[] arg_2, int arg_6)
         {
             int var_1 = arg_6 % 6;
 
-			for( int var_3 = 1; var_3 <= 3; var_3++ )
-			{
-				for( int var_2 = 1; var_2 <= 0x28; var_2++ )
-				{
+            for (int var_3 = 1; var_3 <= 3; var_3++)
+            {
+                for (int var_2 = 1; var_2 <= 0x28; var_2++)
+                {
                     Struct_1ADF6 var_7 = arg_2[(var_2 - 1) + ((var_3 - 1) * 40)];
 
                     var_7.field_08 = var_7.field_0C;
@@ -183,7 +183,7 @@ namespace engine
                     {
                         var_7.field_0C -= 1;
                     }
-                    else if( var_7.field_0C < 0 )
+                    else if (var_7.field_0C < 0)
                     {
                         var_7.field_0C += 1;
                     }
@@ -193,8 +193,8 @@ namespace engine
                     {
                         var_7.field_10 += 1;
                     }
-				}
-			}
+                }
+            }
 
             for (int var_2 = 0; var_2 < 40; var_2++)
             {
@@ -210,8 +210,8 @@ namespace engine
                 }
             }
 
-			for( int var_2 = 0; var_2 < 40; var_2++ )
-			{
+            for (int var_2 = 0; var_2 < 40; var_2++)
+            {
                 for (int var_3 = 0; var_3 < 3; var_3++)
                 {
                     Struct_1ADF6 var_7 = arg_2[var_2 + (var_3 * 40)];
@@ -225,10 +225,10 @@ namespace engine
                         var_7.field_11 = GetPixel(var_7.field_02, var_7.field_00);
                     }
                 }
-			}
+            }
 
-			for( int var_2 = 0; var_2 < 40; var_2++ )
-			{
+            for (int var_2 = 0; var_2 < 40; var_2++)
+            {
                 for (int var_3 = 0; var_3 < 3; var_3++)
                 {
                     Struct_1ADF6 var_7 = arg_2[var_2 + (var_3 * 40)];
@@ -236,15 +236,15 @@ namespace engine
                     if (var_7.field_02 > 8 &&
                         var_7.field_02 < 0x41)
                     {
-                        SetPixel(unk_1ADFB[var_3][var_7.field_10 -1], var_7.field_02, var_7.field_00);
+                        SetPixel(unk_1ADFB[var_3][var_7.field_10 - 1], var_7.field_02, var_7.field_00);
                     }
                 }
-			}
+            }
 
-			if( arg_2[0].field_10 == 2 )
-			{
-				sub_52068();
-			}
+            if (arg_2[0].field_10 == 2)
+            {
+                sub_52068();
+            }
         }
 
 
@@ -284,13 +284,13 @@ namespace engine
             ushort var_4;
             ushort var_2;
 
-			if( arg_0 != 0 )
-			{
-				sub_52068();
-			}
+            if (arg_0 != 0)
+            {
+                sub_52068();
+            }
 
-			var_6 = (ushort)(arg_10 << 5);
-			var_8 = (ushort)(arg_C << 5);
+            var_6 = (ushort)(arg_10 << 5);
+            var_8 = (ushort)(arg_C << 5);
 
 
             if (arg_0 != 0 &&
@@ -341,15 +341,15 @@ namespace engine
                 SetPixel(var_B, arg_C, arg_10);
             }
 
-			var_6 += arg_8;
-			var_8 += (ushort)(arg_4 + 1);
+            var_6 += arg_8;
+            var_8 += (ushort)(arg_4 + 1);
 
-			var_2 = (ushort)(var_6 / 0x20);
-			var_4 = (ushort)(var_8 / 0x20);
+            var_2 = (ushort)(var_6 / 0x20);
+            var_4 = (ushort)(var_8 / 0x20);
 
-			arg_4 += 1;
-			arg_10 = var_2;
-			arg_C = var_4;
+            arg_4 += 1;
+            arg_10 = var_2;
+            arg_C = var_4;
         }
 
 
@@ -362,47 +362,47 @@ namespace engine
             }
             gbl.byte_1AE0A = 0;
 
-			do
-			{
-				if( gbl.byte_1AE0A == 0 &&
-					seg051.Random( 10000 ) < 1 )
-				{
-					seg051.FillChar( 1, 3, gbl.unk_1AE0B );
-					gbl.byte_1AE1B = seg051.Random( (byte)2 );
+            do
+            {
+                if (gbl.byte_1AE0A == 0 &&
+                    seg051.Random(10000) < 1)
+                {
+                    seg051.FillChar(1, 3, gbl.unk_1AE0B);
+                    gbl.byte_1AE1B = seg051.Random((byte)2);
 
                     for (byte i = 0; i < gbl.byte_1AE1B; i++)
-					{
-						gbl.unk_1AE0B[ i ] = (byte)(seg051.Random( 5 ) + 2);
-					}
+                    {
+                        gbl.unk_1AE0B[i] = (byte)(seg051.Random(5) + 2);
+                    }
 
-					gbl.word_1AE0F = 65;
-					gbl.word_1AE11 = 65;
-					gbl.word_1AE13 = (ushort)(seg051.Random( 20 ) + 35);
+                    gbl.word_1AE0F = 65;
+                    gbl.word_1AE11 = 65;
+                    gbl.word_1AE13 = (ushort)(seg051.Random(20) + 35);
 
-					gbl.word_1AE15 = (short)(-( seg051.Random( 5 ) + 50 ));
+                    gbl.word_1AE15 = (short)(-(seg051.Random(5) + 50));
 
-					gbl.word_1AE19 = gbl.word_1AE15;
-					gbl.word_1AE17 = gbl.word_1AE13;
+                    gbl.word_1AE19 = gbl.word_1AE15;
+                    gbl.word_1AE17 = gbl.word_1AE13;
 
-					endgame_5285E( 0, 0x3C, ref gbl.word_1AE15, ref gbl.word_1AE13, ref gbl.word_1AE11, ref gbl.word_1AE0F );
-					sub_520B8( gbl.unk_1AE0B, gbl.word_1AE15, gbl.word_1AE13, gbl.word_1AE11, gbl.word_1AE0F );
+                    endgame_5285E(0, 0x3C, ref gbl.word_1AE15, ref gbl.word_1AE13, ref gbl.word_1AE11, ref gbl.word_1AE0F);
+                    sub_520B8(gbl.unk_1AE0B, gbl.word_1AE15, gbl.word_1AE13, gbl.word_1AE11, gbl.word_1AE0F);
 
-					gbl.word_1AE13 = gbl.word_1AE17;
-					gbl.word_1AE15 = gbl.word_1AE19;
+                    gbl.word_1AE13 = gbl.word_1AE17;
+                    gbl.word_1AE15 = gbl.word_1AE19;
 
-					gbl.word_1AE0F = 0x41;
-					gbl.word_1AE11 = 0x41;
+                    gbl.word_1AE0F = 0x41;
+                    gbl.word_1AE11 = 0x41;
 
-					endgame_5285E( 1, 0x3C, ref gbl.word_1AE15, ref gbl.word_1AE13, ref gbl.word_1AE11, ref gbl.word_1AE0F );
+                    endgame_5285E(1, 0x3C, ref gbl.word_1AE15, ref gbl.word_1AE13, ref gbl.word_1AE11, ref gbl.word_1AE0F);
 
                     sub_5279B(gbl.unk_1AE0B);/*TODO - extra params - gbl.word_1AE15, gbl.word_1AE13, gbl.word_1AE11, gbl.word_1AE0F );*/
 
-					if( seg049.KEYPRESSED() == true )
-					{
-						gbl.byte_1AE0A = seg049.READKEY();
-					}
-				}
-			}while( gbl.byte_1AE0A == 0 );
+                    if (seg049.KEYPRESSED() == true)
+                    {
+                        gbl.byte_1AE0A = seg049.READKEY();
+                    }
+                }
+            } while (gbl.byte_1AE0A == 0);
 
             gbl.dword_1ADF6 = null;
         }
@@ -455,11 +455,11 @@ namespace engine
         static string aIAmTrappedWith = "'I am trapped without escape, you have succeeded ";
         static string aWhereArmiesHav = "where armies have not. Gloat while you may, Tyranthraxus ";
         static string aIsSlainThisDay = "is slain this day.' Before your eyes he crumbles into ";
-        static string aNothingness_   = "nothingness.";
+        static string aNothingness_ = "nothingness.";
         static string aYouAreCertainH = "You are certain he is destroyed because your ";
         static string aFinalBondFades = "final bond fades away. The Curse of the Azure Bonds ";
         static string aHasFinallyBeen = "has finally been lifted from you! You are free at ";
-        static string aLast           = "last!";
+        static string aLast = "last!";
         static string aTheKnightsOfMy = "The Knights of Myth Drannor rush in, '";
         static string aCongratulati_0 = "Congratulations, you have destroyed the Flamed One. ";
         static string aWithThePowerOf = "With the power of Elminster, let us take you from ";
@@ -471,7 +471,7 @@ namespace engine
 
 
 
-        internal static void end_game_text( )
+        internal static void end_game_text()
         {
             gbl.last_game_state = gbl.game_state;
             gbl.game_state = GameState.EndGame;
@@ -480,50 +480,50 @@ namespace engine
             seg041.press_any_key(aStormGiant_You, false, 0, 10, TextRegion.NormalBottom);
             seg041.press_any_key(aTheAmuletOfLyt, false, 0, 10, TextRegion.NormalBottom);
             seg041.press_any_key(aYouOfYourVicto, false, 0, 10, TextRegion.NormalBottom);
-			seg041.displayAndDebug( "Press any key to continue.", 0, 13 );
+            seg041.displayAndDebug("Press any key to continue.", 0, 13);
 
             seg041.press_any_key(aAsYouReachForT, true, 0, 10, TextRegion.NormalBottom);
             seg041.press_any_key(aOutKeepTheGaun, false, 0, 10, TextRegion.NormalBottom);
             seg041.press_any_key(aWillUnleashDan, false, 0, 10, TextRegion.NormalBottom);
             seg041.press_any_key(aGauntletContac, false, 0, 10, TextRegion.NormalBottom);
 
-            ShowAnimation( 1, 0x4a, 3 ,3 );
+            ShowAnimation(1, 0x4a, 3, 3);
 
-			seg041.displayAndDebug( "Press any key to continue.", 0, 13 );
-			ovr027.ClearPromptArea();
+            seg041.displayAndDebug("Press any key to continue.", 0, 13);
+            ovr027.ClearPromptArea();
 
             seg041.press_any_key(aIAmTrappedWith, true, 0, 10, TextRegion.NormalBottom);
             seg041.press_any_key(aWhereArmiesHav, false, 0, 10, TextRegion.NormalBottom);
             seg041.press_any_key(aIsSlainThisDay, false, 0, 10, TextRegion.NormalBottom);
             seg041.press_any_key(aNothingness_, false, 0, 10, TextRegion.NormalBottom);
 
-			ShowAnimation( 1, 0x4B, 3 ,3 );
+            ShowAnimation(1, 0x4B, 3, 3);
 
-			seg041.displayAndDebug( "Press any key to continue.", 0, 13 );
-			ovr027.ClearPromptArea();
+            seg041.displayAndDebug("Press any key to continue.", 0, 13);
+            ovr027.ClearPromptArea();
 
             seg041.press_any_key(aYouAreCertainH, true, 0, 10, TextRegion.NormalBottom);
             seg041.press_any_key(aFinalBondFades, false, 0, 10, TextRegion.NormalBottom);
             seg041.press_any_key(aHasFinallyBeen, false, 0, 10, TextRegion.NormalBottom);
             seg041.press_any_key(aLast, false, 0, 10, TextRegion.NormalBottom);
 
-			gbl.area_ptr.picture_fade = 1;
+            gbl.area_ptr.picture_fade = 1;
 
             ShowAnimation((10 - gbl.game_speed_var) * 2, 0x4d, 3, 3);
-            
-			gbl.area_ptr.picture_fade = 0;
 
-			ovr030.head_body( 0x41, 0x41 );
-            ovr030.draw_head_and_body( true, 3, 3 );
+            gbl.area_ptr.picture_fade = 0;
+
+            ovr030.head_body(0x41, 0x41);
+            ovr030.draw_head_and_body(true, 3, 3);
 
             seg041.press_any_key(aTheKnightsOfMy, true, 0, 10, TextRegion.NormalBottom);
             seg041.press_any_key(aCongratulati_0, false, 0, 10, TextRegion.NormalBottom);
             seg041.press_any_key(aWithThePowerOf, false, 0, 10, TextRegion.NormalBottom);
             seg041.press_any_key(aThisFoulPlaceT, false, 0, 10, TextRegion.NormalBottom);
 
-            seg041.displayAndDebug( "Press any key to continue.", 0, 13 );
-			ovr027.ClearPromptArea();
-			ovr030.load_bigpic( 0x7A );
+            seg041.displayAndDebug("Press any key to continue.", 0, 13);
+            ovr027.ClearPromptArea();
+            ovr030.load_bigpic(0x7A);
 
             ovr030.draw_bigpic();
 
@@ -531,7 +531,7 @@ namespace engine
             seg041.press_any_key(aHaveAlreadyBeg, false, 0, 10, TextRegion.NormalBottom);
             seg041.press_any_key(aGharriAndNacac, false, 0, 10, TextRegion.NormalBottom);
             seg041.press_any_key(aFromTheNearbyS, false, 0, 10, TextRegion.NormalBottom);
-			endgame_529F4();
+            endgame_529F4();
 
             gbl.game_state = gbl.last_game_state;
             ovr025.load_pic();

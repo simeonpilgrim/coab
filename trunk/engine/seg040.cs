@@ -18,7 +18,7 @@ namespace engine
             return null;
         }
 
-  
+
 
         internal static void OverlayUnbounded(DaxBlock source, int arg_8, int itemIdex, int rowY, int colX)
         {
@@ -70,7 +70,7 @@ namespace engine
             color_no_draw = color;
         }
 
-        internal static void draw_clipped_picture(DaxBlock dax_block, int rowY, int colX, int index, 
+        internal static void draw_clipped_picture(DaxBlock dax_block, int rowY, int colX, int index,
             int clipMinX, int clipMaxX, int clipMinY, int clipMaxY)
         {
             if (dax_block != null)
@@ -87,7 +87,7 @@ namespace engine
                 {
                     for (int pixX = minX; pixX < maxX; pixX++)
                     {
-                        if (pixX >= clipMinX && pixX < clipMaxX && 
+                        if (pixX >= clipMinX && pixX < clipMaxX &&
                             pixY >= clipMinY && pixY < clipMaxY)
                         {
                             byte color = dax_block.data[offset];
@@ -121,7 +121,7 @@ namespace engine
         {
             draw_clipped_picture(dax_block, rowY, colX, index, 0, 320, 0, 200);
         }
-        
+
         internal static void DrawOverlay()
         {
             //TODO this might be useful when we move to OpenGL.

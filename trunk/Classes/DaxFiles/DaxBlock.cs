@@ -5,7 +5,7 @@ namespace Classes
     public class DaxBlock
     {
         static Random random_number = new System.Random(unchecked((int)System.DateTime.Now.Ticks));
-        
+
         public int height; // 0x0;
         public int width; // 0x2;
         public int x_pos; // 0x4;
@@ -44,7 +44,7 @@ namespace Classes
 
             int ram_size = item_count * bpp;
             data = new byte[ram_size];
-            
+
             int pic_data_offset = 17;
             DaxToPicture(mask_color, masked, pic_data_offset, pic_data);
         }

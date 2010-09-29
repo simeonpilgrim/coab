@@ -17,46 +17,46 @@ namespace Classes
         quarrels = 0x80,
     }
 
-	public enum ItemSlot
-	{
-		slot_0 = 0,
-		slot_1 = 1,
-		Armor = 2,
-		slot_3 = 3,
-		slot_4 = 4,
-		slot_5 = 5,
-		slot_6 = 6,
-		slot_7 = 7,
-		slot_8 = 8,
-		slot_9 = 9,
-		slot_10 = 10,
-		slot_11 = 11,
-		Quarrel = 12,
-		slot_13 = 13
-	}
+    public enum ItemSlot
+    {
+        slot_0 = 0,
+        slot_1 = 1,
+        Armor = 2,
+        slot_3 = 3,
+        slot_4 = 4,
+        slot_5 = 5,
+        slot_6 = 6,
+        slot_7 = 7,
+        slot_8 = 8,
+        slot_9 = 9,
+        slot_10 = 10,
+        slot_11 = 11,
+        Quarrel = 12,
+        slot_13 = 13
+    }
 
     public class ItemDataTable
     {
         ItemData[] table;
 
-		public ItemDataTable(string fileName)
-		{
-			string filePath = Path.Combine(gbl.exe_path, fileName);
+        public ItemDataTable(string fileName)
+        {
+            string filePath = Path.Combine(gbl.exe_path, fileName);
 
-			FileStream stream  = System.IO.File.Open(filePath, FileMode.Open, FileAccess.Read);
+            FileStream stream = System.IO.File.Open(filePath, FileMode.Open, FileAccess.Read);
 
-			stream.Seek(2, SeekOrigin.Begin);
-			byte[] data = new byte[0x810];
-			stream.Read(data, 0, 0x810);
+            stream.Seek(2, SeekOrigin.Begin);
+            byte[] data = new byte[0x810];
+            stream.Read(data, 0, 0x810);
 
-			table = new ItemData[0x81];
-			for (int i = 0; i < 0x81; i++)
-			{
-				table[i] = new ItemData(data, i * 0x10);
-			}
+            table = new ItemData[0x81];
+            for (int i = 0; i < 0x81; i++)
+            {
+                table[i] = new ItemData(data, i * 0x10);
+            }
 
-			stream.Close();
-		}
+            stream.Close();
+        }
 
         public ItemData this[ItemType index]
         {
@@ -65,12 +65,12 @@ namespace Classes
         }
     }
 
-	/// <summary>
-	/// Summary description for Struct_1C020.
-	/// </summary>
+    /// <summary>
+    /// Summary description for Struct_1C020.
+    /// </summary>
     public class ItemData
     {
-		public ItemSlot item_slot; //seg600:5D10 unk_1C020 - field_0
+        public ItemSlot item_slot; //seg600:5D10 unk_1C020 - field_0
         public byte handsCount; //seg600:5D11 unk_1C021
         public byte diceCountLarge; //seg600:5D12 unk_1C022
         public byte diceSizeLarge; //seg600:5D13 unk_1C023

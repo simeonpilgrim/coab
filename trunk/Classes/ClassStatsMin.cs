@@ -2,11 +2,11 @@ using System;
 
 namespace Classes
 {
-	/// <summary>
-	/// Summary description for Struct_1A484.
-	/// </summary>
-	public class ClassStatsMin
-	{
+    /// <summary>
+    /// Summary description for Struct_1A484.
+    /// </summary>
+    public class ClassStatsMin
+    {
         public ClassStatsMin(byte v0, byte v1, byte v2, byte v3, byte v4, byte cha)
         {
             str_min = v0;
@@ -17,11 +17,11 @@ namespace Classes
             cha_min = cha;
         }
 
-		public byte str_min; // seg600:4174 unk_1A484
-		public byte int_min; // seg600:4175 unk_1A485
-		public byte wis_min; // seg600:4176 unk_1A486
-		public byte dex_min; // seg600:4177 unk_1A487
-		public byte con_min; // seg600:4178 unk_1A488
+        public byte str_min; // seg600:4174 unk_1A484
+        public byte int_min; // seg600:4175 unk_1A485
+        public byte wis_min; // seg600:4176 unk_1A486
+        public byte dex_min; // seg600:4177 unk_1A487
+        public byte con_min; // seg600:4178 unk_1A488
         public byte cha_min; // field_5 seg600:4179 unk_1A489
 
         public byte this[int index]
@@ -53,5 +53,5 @@ namespace Classes
                 }
             }
         }
-	}
+    }
 }

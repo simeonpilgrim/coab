@@ -36,7 +36,7 @@ namespace Main
                 return 0x08;
             }
 
-            if (key == Keys.Home || key == Keys.NumPad7 || key == Keys.OemOpenBrackets )
+            if (key == Keys.Home || key == Keys.NumPad7 || key == Keys.OemOpenBrackets)
             {
                 return 0x4700;
             }
@@ -46,7 +46,7 @@ namespace Main
                 return 0x4800;
             }
 
-            if (key == Keys.PageUp || key == Keys.NumPad9 )
+            if (key == Keys.PageUp || key == Keys.NumPad9)
             {
                 return 0x4900;
             }
@@ -67,7 +67,7 @@ namespace Main
             }
 
 
-            if (key == Keys.End || key == Keys.NumPad1 || key == Keys.OemCloseBrackets )
+            if (key == Keys.End || key == Keys.NumPad1 || key == Keys.OemCloseBrackets)
             {
                 return 0x4F00;
             }
@@ -77,7 +77,7 @@ namespace Main
                 return 0x5000;
             }
 
-            if (key == Keys.PageDown || key == Keys.NumPad3 )
+            if (key == Keys.PageDown || key == Keys.NumPad3)
             {
                 return 0x5100;
             }

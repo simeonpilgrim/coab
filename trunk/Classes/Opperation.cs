@@ -29,7 +29,8 @@ namespace Classes
 
         public byte Code
         {
-            set {
+            set
+            {
                 if (codeSet == false)
                 {
                     code = value;
@@ -122,7 +123,7 @@ namespace Classes
 
                     default:
                         throw new InvalidOperationException();
-                        //return 0;
+                    //return 0;
                 }
             }
             else throw new InvalidOperationException();

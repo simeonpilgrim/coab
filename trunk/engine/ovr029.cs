@@ -11,7 +11,7 @@ namespace engine
         {
             if (gbl.lastDaxBlockId == 0x50)
             {
-               gbl.can_draw_bigpic = false;
+                gbl.can_draw_bigpic = false;
             }
 
             if (gbl.party_killed == false)

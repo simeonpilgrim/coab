@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Classes
 {
-  
+
     public struct StatValue
     {
         public byte tmp;
@@ -26,9 +26,9 @@ namespace Classes
     /// <summary>
     /// Summary description for Player.
     /// </summary>
-    public class Player   
+    public class Player
     {
-        [DataOffset(0x00,DataType.PString,15)]
+        [DataOffset(0x00, DataType.PString, 15)]
         public string name;
 
         [DataOffset(0x10, DataType.Cust1Array, 6)]
@@ -106,7 +106,7 @@ namespace Classes
         //public const int SpellListSize = 84;
         //[DataOffset(0x1E, DataType.ByteArray, SpellListSize)]
         //public byte[] spell_list = new byte[SpellListSize]; // 0x1e byte[84]
-		public SpellList spellList; // ox1e was spell_list
+        public SpellList spellList; // ox1e was spell_list
 
         [DataOffset(0x72, DataType.Byte)]
         public byte spell_to_learn_count; // 0x72;
@@ -123,8 +123,8 @@ namespace Classes
 
         [DataOffset(0x78, DataType.Byte)]
         public byte hit_point_max; // 0x78;
-        
-        [DataOffset(0x79, DataType.ByteArray,100)]
+
+        [DataOffset(0x79, DataType.ByteArray, 100)]
         public byte[] spellBook = new byte[100]; //78[di]; // 1- 100 or 0x79 - 0xDC
         public bool KnowsSpell(Spells spell) { return spellBook[(int)spell - 1] != 0; }
         public void LearnSpell(Spells spell) { spellBook[(int)spell - 1] = 1; }
@@ -133,9 +133,9 @@ namespace Classes
         public byte attackLevel; // 0xdd; field_DD
         [DataOffset(0xde, DataType.Byte)]
         public byte field_DE; // 0xde;
-        [DataOffset(0xdf, DataType.ByteArray,5)]
+        [DataOffset(0xdf, DataType.ByteArray, 5)]
         public byte[] saveVerse = new byte[5]; // 0xdf; field_DF 
- 
+
         [DataOffset(0xe4, DataType.Byte)]
         public byte base_movement; // 0xe4;
         [DataOffset(0xe5, DataType.Byte)]
@@ -148,7 +148,7 @@ namespace Classes
         public byte lost_hp; // 0xe8;
         [DataOffset(0xe9, DataType.Byte)]
         public byte field_E9; // 0xe9;
-        [DataOffset(0xeA, DataType.ByteArray,8)]
+        [DataOffset(0xeA, DataType.ByteArray, 8)]
         public byte[] field_EA = new byte[8]; // 0xeA; [] was 1 offset @ 0xe9
         public List<Affect> affects; // f2 - affect_ptr
 
@@ -166,7 +166,7 @@ namespace Classes
         [DataOffset(0xfb, DataType.ShortArray, 7)]
         public MoneySet Money;
 
-        [DataOffset(0x109, DataType.ByteArray,8)]
+        [DataOffset(0x109, DataType.ByteArray, 8)]
         public byte[] ClassLevel = new byte[8]; /* Skill_A_lvl */
 
         public byte cleric_lvl // 0x109;
@@ -269,7 +269,7 @@ namespace Classes
         /// <summary>
         /// half-attacks count
         /// </summary>
-        [DataOffset(0x11c, DataType.Byte)] 
+        [DataOffset(0x11c, DataType.Byte)]
         public byte attacksCount; // 0x11c;
         [DataOffset(0x11d, DataType.Byte)]
         public byte baseHalfMoves; // 0x11d;
@@ -299,7 +299,7 @@ namespace Classes
         public byte hit_point_rolled; // 0x12c;
 
         //[DataOffset(0x12d, DataType.ByteArray,15)]
-        public byte[,] spellCastCount = new byte[3,5]; // 0x12d - field_12D
+        public byte[,] spellCastCount = new byte[3, 5]; // 0x12d - field_12D
 
         [DataOffset(0x13c, DataType.SWord)]
         public short field_13C; // 0x13c
@@ -317,11 +317,11 @@ namespace Classes
         public byte icon_id; // 0x143;
         [DataOffset(0x144, DataType.Byte)]
         public byte icon_size; // 0x144; field_144  1 small 2 normal
-        [DataOffset(0x145, DataType.ByteArray,6)]
+        [DataOffset(0x145, DataType.ByteArray, 6)]
         public byte[] icon_colours = new byte[6]; // 0x145 = field_144[1] // byte[6]
         [DataOffset(0x14b, DataType.Byte)]
         public byte field_14B; // 0x14b;
-        
+
         //[DataOffset(0x14c, DataType.Byte)]
         //public byte field_14C; // 0x14c; // items.Count
         public const int MaxItems = 16;
@@ -330,8 +330,8 @@ namespace Classes
         public List<Item> items; // 0x14d
         //public Item itemsPtr; // 0x14d
 
-		public const int ItemSlots = 13;
-		public Item[] itemArray = new Item[ItemSlots]; // 0x151[]
+        public const int ItemSlots = 13;
+        public Item[] itemArray = new Item[ItemSlots]; // 0x151[]
         public Item field_151
         {// 0x151
             get { return itemArray[0]; }
@@ -428,7 +428,7 @@ namespace Classes
         public int hitBonus; // 0x199 field_199
         [DataOffset(0x19a, DataType.Byte)]
         public byte ac; // 0x19a
-		public int DisplayAc { get { return 0x3C - ac; } }
+        public int DisplayAc { get { return 0x3C - ac; } }
 
         [DataOffset(0x19b, DataType.Byte)]
         public byte ac_behind; // 0x19b field_19B
@@ -442,7 +442,7 @@ namespace Classes
                 case 2:
                     return attack2_AttacksLeft;
                 default:
-                throw new System.NotImplementedException();
+                    throw new System.NotImplementedException();
             }
         }
 
@@ -451,7 +451,7 @@ namespace Classes
             switch (index)
             {
                 case 1:
-                    attack1_AttacksLeft = value; 
+                    attack1_AttacksLeft = value;
                     break;
                 case 2:
                     attack2_AttacksLeft = value;
@@ -477,9 +477,9 @@ namespace Classes
         }
 
         [DataOffset(0x19c, DataType.Byte)]
-		public byte attack1_AttacksLeft; // 0x19c - field_19C
+        public byte attack1_AttacksLeft; // 0x19c - field_19C
         [DataOffset(0x19d, DataType.Byte)]
-		public byte attack2_AttacksLeft; // 0x19d - field_19D
+        public byte attack2_AttacksLeft; // 0x19d - field_19D
 
         public byte attackDiceCount(int index)
         {
@@ -531,7 +531,7 @@ namespace Classes
         public sbyte attack1_DamageBonus; // 0x1a2
         [DataOffset(0x1a3, DataType.Byte)]
         public byte attack2_DamageBonus; // 0x1a3
-        
+
         [DataOffset(0x1a4, DataType.Byte)]
         public byte hit_point_current; // 0x1a4
 
@@ -551,7 +551,7 @@ namespace Classes
 
             DataIO.ReadObject(this, data, offset);
 
-			spellList.Load(data, offset + 0x1e);
+            spellList.Load(data, offset + 0x1e);
 
             for (int i = 0; i < 3; i++)
             {
@@ -572,8 +572,8 @@ namespace Classes
             affects = new List<Affect>();
 
             actions = null;
-			Money = new MoneySet();
-			spellList = new SpellList();
+            Money = new MoneySet();
+            spellList = new SpellList();
         }
 
 
@@ -590,7 +590,7 @@ namespace Classes
 
             DataIO.WriteObject(this, data);
 
-			spellList.Save(data, 0x1e);
+            spellList.Save(data, 0x1e);
 
             for (int i = 0; i < 3; i++)
             {
@@ -609,53 +609,53 @@ namespace Classes
         }
 
 
-		public bool CanDuelClass()
-		{
-			if (race != Race.human)
-			{
-				return false;
-			}
+        public bool CanDuelClass()
+        {
+            if (race != Race.human)
+            {
+                return false;
+            }
 
-			for (ClassId index = ClassId.cleric; index <= ClassId.monk; index++)
-			{
-				if (ClassLevelsOld[(int)index] > 0)
-				{
-					return false;
-				}
-			}
+            for (ClassId index = ClassId.cleric; index <= ClassId.monk; index++)
+            {
+                if (ClassLevelsOld[(int)index] > 0)
+                {
+                    return false;
+                }
+            }
 
-			return true;
-		}
+            return true;
+        }
 
-		int DualClassExceedsPreviousLevel() // sub_6B3D1
-		{
-			if (DuelClassCurrentLevel() > multiclassLevel)
-			{
-				return 1;
-			}
-			else
-			{
-				return 0;
-			}
-		}
+        int DualClassExceedsPreviousLevel() // sub_6B3D1
+        {
+            if (DuelClassCurrentLevel() > multiclassLevel)
+            {
+                return 1;
+            }
+            else
+            {
+                return 0;
+            }
+        }
 
-		int DuelClassCurrentLevel()
-		{
-			if (race != Race.human)
-			{
-				return 0;
-			}
+        int DuelClassCurrentLevel()
+        {
+            if (race != Race.human)
+            {
+                return 0;
+            }
 
-			int loop_var = 0;
+            int loop_var = 0;
 
-			while (loop_var < 7 &&
-				ClassLevel[loop_var] == 0)
-			{
-				loop_var++;
-			}
+            while (loop_var < 7 &&
+                ClassLevel[loop_var] == 0)
+            {
+                loop_var++;
+            }
 
-			return ClassLevel[loop_var];
-		}
+            return ClassLevel[loop_var];
+        }
 
         public CombatTeam OppositeTeam()
         {
@@ -680,16 +680,16 @@ namespace Classes
         }
 
 
-		public void RemoveWeight(int amount)
-		{
-			weight -= (short)amount;
-		}
+        public void RemoveWeight(int amount)
+        {
+            weight -= (short)amount;
+        }
 
 
-		public void AddWeight(int amount)
-		{
-			weight += (short)amount;
-		}
+        public void AddWeight(int amount)
+        {
+            weight += (short)amount;
+        }
 
     }
 }

@@ -157,10 +157,10 @@ namespace Classes
     }
 
     /// <summary>
-	/// Summary description for Affect.
-	/// </summary>
-	public class Affect
-	{
+    /// Summary description for Affect.
+    /// </summary>
+    public class Affect
+    {
         public const int StructSize = 9;
 
         public Affect(Affects _type, ushort _minutes, byte _affect_data, bool _call_spell_jump_list)
@@ -179,16 +179,16 @@ namespace Classes
             callAffectTable = (data[offset + 0x4] != 0);
         }
 
-		public Affect ShallowClone()
-		{
-			Affect a = (Affect) this.MemberwiseClone();
-			return a;
-		}
+        public Affect ShallowClone()
+        {
+            Affect a = (Affect)this.MemberwiseClone();
+            return a;
+        }
 
         [DataOffset(0x00, DataType.IByte)]
-		public Affects type;
+        public Affects type;
         [DataOffset(0x01, DataType.Word)]
-		public ushort minutes;
+        public ushort minutes;
         [DataOffset(0x03, DataType.Byte)]
         public byte affect_data;
         [DataOffset(0x04, DataType.Bool)]

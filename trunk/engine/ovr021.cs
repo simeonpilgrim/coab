@@ -5,7 +5,7 @@ namespace engine
 {
     class ovr021
     {
-        static int[] timeScales = {10, 10, 6, 24, 30, 12, 0x100}; //word_1A13C
+        static int[] timeScales = { 10, 10, 6, 24, 30, 12, 0x100 }; //word_1A13C
 
 
         static void CheckAffectsTimingOut(int timeSlot, int timeSteps) // sub_5801E
@@ -261,7 +261,7 @@ namespace engine
                 display_resting_time(time_index);
                 bool control_key;
 
-				input_key = ovr027.displayInput(out control_key, false, 1, gbl.defaultMenuColors, "Rest Days Hours Mins Add Subtract Exit", string.Empty);
+                input_key = ovr027.displayInput(out control_key, false, 1, gbl.defaultMenuColors, "Rest Days Hours Mins Add Subtract Exit", string.Empty);
 
                 if (control_key == true)
                 {
@@ -392,35 +392,35 @@ namespace engine
 
         static int rest_memorize(ref bool findNext, Player player)
         {
-			foreach(int id in player.spellList.LearningList())
-			{
-				if (findNext == true)
-				{
-					return gbl.spellCastingTable[id].spellLevel;
-				}
-				else
-				{
-					player.spellList.MarkLearnt(id);
+            foreach (int id in player.spellList.LearningList())
+            {
+                if (findNext == true)
+                {
+                    return gbl.spellCastingTable[id].spellLevel;
+                }
+                else
+                {
+                    player.spellList.MarkLearnt(id);
 
-					display_resting_time(0);
+                    display_resting_time(0);
 
-					ovr023.cast_spell_text(id, "has memorized", player);
-					findNext = true;
-				}
-			}
+                    ovr023.cast_spell_text(id, "has memorized", player);
+                    findNext = true;
+                }
+            }
 
-			return 0;
+            return 0;
         }
 
 
         static int rest_scribe(ref bool findNext, Player player)
         {
             int next_scribe_lvl = 0;
-            foreach(Item item in player.items.ToArray())
+            foreach (Item item in player.items.ToArray())
             {
                 if (item.IsScroll() == true)
                 {
-                    for( int spellIdx = 1; spellIdx < 4 && next_scribe_lvl == 0; spellIdx++)
+                    for (int spellIdx = 1; spellIdx < 4 && next_scribe_lvl == 0; spellIdx++)
                     {
                         if (item.getAffect(spellIdx) > (Affects)0x80)
                         {
@@ -443,7 +443,7 @@ namespace engine
                     }
                 }
 
-                if( next_scribe_lvl != 0 ) break;
+                if (next_scribe_lvl != 0) break;
             }
 
             return next_scribe_lvl;
@@ -556,7 +556,7 @@ namespace engine
                 {
                     display_resting_time(0);
 
-					if (ovr027.yes_no(gbl.defaultMenuColors, "Stop Resting? ") == 'Y')
+                    if (ovr027.yes_no(gbl.defaultMenuColors, "Stop Resting? ") == 'Y')
                     {
                         stop_resting = true;
                     }

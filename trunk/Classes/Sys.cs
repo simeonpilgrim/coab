@@ -72,7 +72,7 @@ namespace Classes
             {
                 if (i <= input.Length)
                 {
-                    data[offset + i] = (byte)input[i-1];
+                    data[offset + i] = (byte)input[i - 1];
                 }
                 else
                 {
@@ -106,8 +106,8 @@ namespace Classes
         {
             List<string> strs = new List<string>();
 
-            for (int i = 0; i < length; i += stringWidth )
-            {             
+            for (int i = 0; i < length; i += stringWidth)
+            {
                 strs.Add(Sys.ArrayToString(data, i + offset, stringWidth));
             }
 
@@ -120,7 +120,7 @@ namespace Classes
             {
                 val = min;
             }
-            else if ( val < min )
+            else if (val < min)
             {
                 val = max;
             }

@@ -5,7 +5,7 @@ namespace engine
 {
     class ovr038
     {
-        internal static void Load8x8D( int symbolSet, int block_id )
+        internal static void Load8x8D(int symbolSet, int block_id)
         {
             if (symbolSet >= 0 && symbolSet < 5)
             {
@@ -22,36 +22,36 @@ namespace engine
         }
 
 
-        internal static void Put8x8Symbol( byte arg_0, bool use_overlay, int symbol_id, int rowY, int colX )
+        internal static void Put8x8Symbol(byte arg_0, bool use_overlay, int symbol_id, int rowY, int colX)
         {
-			byte symbol_set = 0; /*HACK to make compiler happy*/
+            byte symbol_set = 0; /*HACK to make compiler happy*/
 
-            if( symbol_id >= 1 && symbol_id <= 0x2d )
+            if (symbol_id >= 1 && symbol_id <= 0x2d)
             {
                 symbol_set = 0;
             }
-            else if( symbol_id >= 0x2E && symbol_id <= 0x73 )
+            else if (symbol_id >= 0x2E && symbol_id <= 0x73)
             {
                 symbol_set = 1;
             }
-            else if( symbol_id >= 0x74 && symbol_id <= 0x0B9 )
+            else if (symbol_id >= 0x74 && symbol_id <= 0x0B9)
             {
                 symbol_set = 2;
             }
-            else if( symbol_id >= 0x0BA && symbol_id <= 0x0FF )
+            else if (symbol_id >= 0x0BA && symbol_id <= 0x0FF)
             {
                 symbol_set = 3;
             }
-            else if( symbol_id >= 0x100 && symbol_id <= 0x127 )
+            else if (symbol_id >= 0x100 && symbol_id <= 0x127)
             {
                 symbol_set = 4;
             }
-            else if( symbol_id == 0 || ( symbol_id >= 0x128 && symbol_id <= 0x7FFF ) )
+            else if (symbol_id == 0 || (symbol_id >= 0x128 && symbol_id <= 0x7FFF))
             {
                 throw new System.ApplicationException("Bad symbol number in Put8x8Symbol." + symbol_id);
             }
 
-            if( gbl.symbol_8x8_set[symbol_set] != null )
+            if (gbl.symbol_8x8_set[symbol_set] != null)
             {
                 symbol_id -= gbl.symbol_set_fix[symbol_set];
 
@@ -66,7 +66,7 @@ namespace engine
                     int offset = symbol_id * var_6.bpp;
                     System.Array.Copy(var_6.data, offset, gbl.cursor_bkup.data, 0, var_6.bpp);
 
-                    seg040.draw_picture( gbl.cursor_bkup, rowY, colX, 0 );
+                    seg040.draw_picture(gbl.cursor_bkup, rowY, colX, 0);
                 }
             }
         }

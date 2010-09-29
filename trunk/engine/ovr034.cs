@@ -71,7 +71,7 @@ namespace engine
 
                 if (file_text == "ICON")
                 {
-                    gbl.combat_icons[combat_icon_index].Recolor( false, unk_16E50, unk_16E30);
+                    gbl.combat_icons[combat_icon_index].Recolor(false, unk_16E50, unk_16E30);
                 }
             }
             else
@@ -88,7 +88,7 @@ namespace engine
 
         internal static void draw_combat_icon(int iconIndex, int iconState, int direction, int tileY, int tileX) /* sub_76504 */
         {
-            DaxBlock icon = gbl.combat_icons[iconIndex].GetIcon(iconState, direction) ;
+            DaxBlock icon = gbl.combat_icons[iconIndex].GetIcon(iconState, direction);
 
             if (icon != null)
             {

@@ -6,9 +6,9 @@ namespace Classes
 {
     public class SubStruct_1A35E
     {
-        public SubStruct_1A35E(short f0, byte f2, byte f3) 
+        public SubStruct_1A35E(short f0, byte f2, byte f3)
         {
-            base_age = f0; 
+            base_age = f0;
             dice_count = f2;
             dice_size = f3;
         }

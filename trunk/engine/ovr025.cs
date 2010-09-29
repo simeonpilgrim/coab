@@ -19,7 +19,7 @@ namespace engine
 
 				if ((gbl.ItemDataTable[item_type].field_E & ItemDataFlags.flag_02) != 0)
 				{
-					player.hitBonus += DexReactionAdj(player);
+                    player.hitBonus += DexReactionAdj(player);
 				}
 
 				player.attack1_DamageBonus = gbl.ItemDataTable[item_type].bonusNormal;

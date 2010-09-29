@@ -1124,7 +1124,7 @@ namespace engine
                             player_ptr.actions.nonTeamMember == false)
                         {
                             var pos = gbl.CombatMap[loop_var].pos;
-                            
+
                             var b = new Struct_1D183();
                             gbl.downedPlayers.Add(b);
 
@@ -1133,7 +1133,7 @@ namespace engine
                             b.map = pos;
 
                             gbl.mapToBackGroundTile[pos] = 0x1F;
-                            
+
                         }
                     }
 
@@ -1201,7 +1201,7 @@ namespace engine
 
             seg043.clear_one_keypress();
 
-            gbl.missile_dax = new DaxBlock( 1, 4, 3, 0x18);
+            gbl.missile_dax = new DaxBlock(1, 4, 3, 0x18);
 
             Point pos = ovr033.PlayerMapPos(gbl.TeamList[0]);
             gbl.mapToBackGroundTile.mapScreenTopLeft = pos - Point.ScreenCenter;

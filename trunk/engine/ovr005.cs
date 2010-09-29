@@ -17,7 +17,7 @@ namespace engine
         {
             ovr025.DisplayPlayerStatusString(false, 0, text, gbl.SelectedPlayer);
 
-			char ret_val = ovr027.yes_no(gbl.defaultMenuColors, "cast cure anyway: ");
+            char ret_val = ovr027.yes_no(gbl.defaultMenuColors, "cast cure anyway: ");
 
             ovr025.ClearPlayerTextArea();
 
@@ -30,34 +30,34 @@ namespace engine
             string text = string.Format("{0} will only cost {1} gold pieces.", cure_name, cost);
             seg041.press_any_key(text, true, 0, 10, TextRegion.NormalBottom);
 
-			bool buy = false;
+            bool buy = false;
 
-			if ('Y' == ovr027.yes_no(gbl.defaultMenuColors, "pay for cure "))
-			{
-				if (cost <= gbl.SelectedPlayer.Money.GetGoldWorth())
-				{
-					gbl.SelectedPlayer.Money.SubtractGoldWorth(cost);
-					buy = true;
-				}
-				else if (cost <= gbl.pooled_money.GetGoldWorth())
-				{
-					gbl.pooled_money.SubtractGoldWorth(cost);
-					buy = true;
-				}
-				else
-				{
-					ovr025.string_print01("Not enough money.");
-					buy = false;
-				}
-			}
+            if ('Y' == ovr027.yes_no(gbl.defaultMenuColors, "pay for cure "))
+            {
+                if (cost <= gbl.SelectedPlayer.Money.GetGoldWorth())
+                {
+                    gbl.SelectedPlayer.Money.SubtractGoldWorth(cost);
+                    buy = true;
+                }
+                else if (cost <= gbl.pooled_money.GetGoldWorth())
+                {
+                    gbl.pooled_money.SubtractGoldWorth(cost);
+                    buy = true;
+                }
+                else
+                {
+                    ovr025.string_print01("Not enough money.");
+                    buy = false;
+                }
+            }
 
-			if (buy)
+            if (buy)
             {
                 ovr025.ClearPlayerTextArea();
                 ovr025.DisplayPlayerStatusString(true, 0, "is cured.", gbl.SelectedPlayer);
             }
 
-			return buy;
+            return buy;
         }
 
 
@@ -67,10 +67,10 @@ namespace engine
 
             if (gbl.SelectedPlayer.HasAffect(Affects.blinded) == false)
             {
-				cast = CastCureAnyway("is not blind.");
+                cast = CastCureAnyway("is not blind.");
             }
 
-			if (cast)
+            if (cast)
             {
                 if (buy_cure(1000, "Cure Blindness"))
                 {
@@ -84,13 +84,13 @@ namespace engine
         {
             bool is_diseased = Array.Exists(disease_types, aff => gbl.SelectedPlayer.HasAffect(aff));
 
-			bool cast = true;
+            bool cast = true;
             if (is_diseased == false)
             {
-				cast = CastCureAnyway("is not diseased.");
+                cast = CastCureAnyway("is not diseased.");
             }
 
-			if (cast)
+            if (cast)
             {
                 if (buy_cure(1000, "Cure Disease"))
                 {
@@ -108,7 +108,7 @@ namespace engine
 
         internal static void cure_wounds(int healType)
         {
-			switch (healType)
+            switch (healType)
             {
                 case 1:
                     if (buy_cure(100, "Cure Light Wounds"))
@@ -135,7 +135,7 @@ namespace engine
                     break;
 
                 case 4:
-					if (buy_cure(5000, "Heal"))
+                    if (buy_cure(5000, "Heal"))
                     {
                         int heal_amount = gbl.SelectedPlayer.hit_point_max;
                         heal_amount -= gbl.SelectedPlayer.hit_point_current;
@@ -159,94 +159,94 @@ namespace engine
         }
 
 
-		internal static void raise_dead()
-		{
-			Player player = gbl.SelectedPlayer;
-			bool player_dead = false;
+        internal static void raise_dead()
+        {
+            Player player = gbl.SelectedPlayer;
+            bool player_dead = false;
 
-			if (player.health_status == Status.dead ||
-				player.health_status == Status.animated)
-			{
-				player_dead = true;
-			}
+            if (player.health_status == Status.dead ||
+                player.health_status == Status.animated)
+            {
+                player_dead = true;
+            }
 
-			if (player_dead == true ||
-				(player_dead == false && CastCureAnyway("is not dead.")))
-			{
-				if (buy_cure(5500, "Raise Dead") && player_dead == true)
-				{
-					gbl.cureSpell = true;
+            if (player_dead == true ||
+                (player_dead == false && CastCureAnyway("is not dead.")))
+            {
+                if (buy_cure(5500, "Raise Dead") && player_dead == true)
+                {
+                    gbl.cureSpell = true;
 
-					ovr024.remove_affect(null, Affects.animate_dead, player);
-					ovr024.remove_affect(null, Affects.poisoned, player);
+                    ovr024.remove_affect(null, Affects.animate_dead, player);
+                    ovr024.remove_affect(null, Affects.poisoned, player);
 
-					gbl.cureSpell = false;
+                    gbl.cureSpell = false;
 
-					player.hit_point_current = 1;
-					player.health_status = Status.okey;
-					player.in_combat = true;
+                    player.hit_point_current = 1;
+                    player.health_status = Status.okey;
+                    player.in_combat = true;
 
-					if (player.con <= 0)
-					{
-						player.con--;
-					}
+                    if (player.con <= 0)
+                    {
+                        player.con--;
+                    }
 
-					int var_107;
-					if (player.hit_point_max > player.hit_point_rolled)
-					{
-						var_107 = player.hit_point_max - player.hit_point_rolled;
-					}
-					else
-					{
-						var_107 = 0;
-					}
+                    int var_107;
+                    if (player.hit_point_max > player.hit_point_rolled)
+                    {
+                        var_107 = player.hit_point_max - player.hit_point_rolled;
+                    }
+                    else
+                    {
+                        var_107 = 0;
+                    }
 
-					int var_108 = 0;
+                    int var_108 = 0;
 
-					if (player.con >= 14)
-					{
-						for (int classIdx = 0; classIdx <= 7; classIdx++)
-						{
-							if (player.ClassLevel[classIdx] > 0)
-							{
-								if (classIdx == 2)
-								{
-									var_108 += (player.con - 14) * player.fighter_lvl;
-								}
-								else if (player.con > 15)
-								{
-									var_108 += player.ClassLevel[classIdx] * 2;
-								}
-								else
-								{
-									var_108 += player.ClassLevel[classIdx];
-								}
-							}
-						}
+                    if (player.con >= 14)
+                    {
+                        for (int classIdx = 0; classIdx <= 7; classIdx++)
+                        {
+                            if (player.ClassLevel[classIdx] > 0)
+                            {
+                                if (classIdx == 2)
+                                {
+                                    var_108 += (player.con - 14) * player.fighter_lvl;
+                                }
+                                else if (player.con > 15)
+                                {
+                                    var_108 += player.ClassLevel[classIdx] * 2;
+                                }
+                                else
+                                {
+                                    var_108 += player.ClassLevel[classIdx];
+                                }
+                            }
+                        }
 
-						if (var_108 > 0)
-						{
-							var_107 /= var_108;
-						}
+                        if (var_108 > 0)
+                        {
+                            var_107 /= var_108;
+                        }
 
-						if (player.con < 17 ||
-							player.fighter_lvl > 0 ||
-							player.fighter_lvl > player.multiclassLevel)
-						{
-							player.hit_point_max = (byte)var_107;
-						}
-					}
-				}
-			}
-		}
+                        if (player.con < 17 ||
+                            player.fighter_lvl > 0 ||
+                            player.fighter_lvl > player.multiclassLevel)
+                        {
+                            player.hit_point_max = (byte)var_107;
+                        }
+                    }
+                }
+            }
+        }
 
 
         internal static void cure_poison2()
         {
             bool isPoisoned = gbl.SelectedPlayer.HasAffect(Affects.poisoned);
 
-			if (isPoisoned == true ||
-				(isPoisoned == false && CastCureAnyway("is not poisoned.")))
+            if (isPoisoned == true ||
+                (isPoisoned == false && CastCureAnyway("is not poisoned.")))
             {
                 if (buy_cure(1000, "Neutralize Poison"))
                 {
@@ -262,30 +262,30 @@ namespace engine
         }
 
 
-		internal static void remove_curse()
-		{
-			bool has_curse_items = gbl.SelectedPlayer.items.Find(item => item.cursed) != null;
-			bool cast = true;
+        internal static void remove_curse()
+        {
+            bool has_curse_items = gbl.SelectedPlayer.items.Find(item => item.cursed) != null;
+            bool cast = true;
 
-			if (has_curse_items == false &&
-				gbl.SelectedPlayer.HasAffect(Affects.bestow_curse) == false)
-			{
-				cast = CastCureAnyway("is not cursed.");
-			}
+            if (has_curse_items == false &&
+                gbl.SelectedPlayer.HasAffect(Affects.bestow_curse) == false)
+            {
+                cast = CastCureAnyway("is not cursed.");
+            }
 
-			if (cast && buy_cure(3500, "Remove Curse"))
-			{
-				gbl.spellTargets.Clear();
-				gbl.spellTargets.Add(gbl.SelectedPlayer);
-				ovr023.SpellRemoveCurse();
-			}
-		}
+            if (cast && buy_cure(3500, "Remove Curse"))
+            {
+                gbl.spellTargets.Clear();
+                gbl.spellTargets.Add(gbl.SelectedPlayer);
+                ovr023.SpellRemoveCurse();
+            }
+        }
 
 
         internal static void stone_to_flesh()
         {
-			if (gbl.SelectedPlayer.health_status == Status.stoned ||
-				(gbl.SelectedPlayer.health_status != Status.stoned && CastCureAnyway("is not stoned.")))
+            if (gbl.SelectedPlayer.health_status == Status.stoned ||
+                (gbl.SelectedPlayer.health_status != Status.stoned && CastCureAnyway("is not stoned.")))
             {
                 if (buy_cure(2000, "Stone to Flesh") &&
                     gbl.SelectedPlayer.health_status == Status.stoned)
@@ -322,7 +322,7 @@ namespace engine
                 MenuItem dummySelected;
 
                 char sl_output = ovr027.sl_select_item(out dummySelected, ref sl_index, ref redrawMenuItems, false,
-					stringList, 15, 0x26, 4, 2, gbl.defaultMenuColors, "Heal Exit", string.Empty);
+                    stringList, 15, 0x26, 4, 2, gbl.defaultMenuColors, "Heal Exit", string.Empty);
 
                 if (sl_output == 'H' || sl_output == 0x0d)
                 {
@@ -419,7 +419,7 @@ namespace engine
                 }
 
                 bool ctrl_key;
-				char input_key = ovr027.displayInput(out ctrl_key, false, 1, gbl.defaultMenuColors, text, string.Empty);
+                char input_key = ovr027.displayInput(out ctrl_key, false, 1, gbl.defaultMenuColors, text, string.Empty);
 
                 switch (input_key)
                 {
@@ -461,8 +461,8 @@ namespace engine
                             string prompt = "~Yes ~No";
 
                             seg041.press_any_key("As you leave a priest says, \"Excuse me but you have left some money here\" ", true, 0, 10, TextRegion.NormalBottom);
-                            seg041.press_any_key("Do you want to go back and retrieve your money?", true, 0, 10,  TextRegion.NormalBottom);
-							int menu_selected = ovr008.sub_317AA(false, false, gbl.defaultMenuColors, prompt, "");
+                            seg041.press_any_key("Do you want to go back and retrieve your money?", true, 0, 10, TextRegion.NormalBottom);
+                            int menu_selected = ovr008.sub_317AA(false, false, gbl.defaultMenuColors, prompt, "");
 
                             if (menu_selected == 1)
                             {
