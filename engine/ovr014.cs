@@ -536,13 +536,13 @@ namespace engine
                 var nearTargets = ovr025.BuildNearTargets(1, attacker);
 
                 var targetepi = nearTargets.Find(epi => epi.player == target);
-                int sweapableCount = nearTargets.FindAll(epi => epi.player.HitDice == 0).Count;
+                int sweepableCount = nearTargets.FindAll(epi => epi.player.HitDice == 0).Count;
 
-                if (sweapableCount > attacker.attack1_AttacksLeft)
+                if (sweepableCount > attacker.attack1_AttacksLeft)
                 {
-                    if (sweapableCount > attacker.actions.field_5)
+                    if (sweepableCount > attacker.actions.field_5)
                     {
-                        sweapableCount = attacker.actions.field_5;
+                        sweepableCount = attacker.actions.field_5;
                     }
 
                     ovr025.DisplayPlayerStatusString(true, 10, "sweeps", attacker);
@@ -550,14 +550,14 @@ namespace engine
                     nearTargets.Remove(targetepi);
                     nearTargets.Insert(0, targetepi);
 
-                    foreach (var sweapepi in nearTargets.FindAll(e => e.player.hitBonus == 0).GetRange(0, sweapableCount))
+                    foreach (var sweepepi in nearTargets.FindAll(e => e.player.hitBonus == 0).GetRange(0, sweepableCount))
                     {
-                        var sweaptarget = sweapepi.player;
-                        recalc_action_12(sweaptarget, attacker);
+                        var sweeptarget = sweepepi.player;
+                        recalc_action_12(sweeptarget, attacker);
 
                         attacker.attack1_AttacksLeft = 1;
 
-                        AttackTarget(0, sweaptarget, attacker);
+                        AttackTarget(0, sweeptarget, attacker);
                     }
 
                     return true;
