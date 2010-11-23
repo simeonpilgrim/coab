@@ -1700,7 +1700,7 @@ namespace engine
             }
 
             gbl.SelectedPlayer = currentPlayerBackup;
-            seg041.displayAndDebug("press <enter>/<return> to continue", 0, 15);
+            seg041.DisplayAndPause("press <enter>/<return> to continue", 0, 15);
         }
 
 

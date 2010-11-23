@@ -918,7 +918,7 @@ namespace engine
             {
                 if (exit)
                 {
-                    seg041.displayAndDebug("Unable to load monster", 0, 15);
+                    seg041.DisplayAndPause("Unable to load monster", 0, 15);
                     seg043.print_and_exit();
                 }
                 else
@@ -1215,7 +1215,7 @@ namespace engine
 
                     if (unk_4AEEF.MemberOf(var_1FC) == false)
                     {
-                        seg041.displayAndDebug("Unexpected error during save: " + var_1FC.ToString(), 0, 14);
+                        seg041.DisplayAndPause("Unexpected error during save: " + var_1FC.ToString(), 0, 14);
                         seg051.Close(save_file);
                         return;
                     }

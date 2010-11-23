@@ -770,7 +770,7 @@ namespace engine
 		{
 			if (!player.items.Remove(item))
 			{
-				seg041.displayAndDebug("Tried to Lose item & couldn't find it!", 0, 14);
+				seg041.DisplayAndPause("Tried to Lose item & couldn't find it!", 0, 14);
 			}
 		}
 

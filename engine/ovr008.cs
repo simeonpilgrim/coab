@@ -1417,7 +1417,7 @@ namespace engine
                 {
                     gbl.textYCol = 0x11;
                     clear_text_area = true;
-                    seg041.displayAndDebug("press <enter>/<return> to continue", 0, 15);
+                    seg041.DisplayAndPause("press <enter>/<return> to continue", 0, 15);
                 }
                 else
                 {
