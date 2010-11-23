@@ -71,19 +71,10 @@ namespace Main
 
         static void EngineThread()
         {
-            //try
-            //{
             engine.seg001.__SystemInit(EngineStopped);
             engine.seg001.PROGRAM();
-            //}
-            //catch (Exception e)
-            //{
-            //    Console.Write(e.ToString());
-            //}
-            //finally
-            //{
+
             EngineStopped();
-            //}
         }
     }
 }
