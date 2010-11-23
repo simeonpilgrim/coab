@@ -480,7 +480,7 @@ namespace engine
             seg041.press_any_key(aStormGiant_You, false, 0, 10, TextRegion.NormalBottom);
             seg041.press_any_key(aTheAmuletOfLyt, false, 0, 10, TextRegion.NormalBottom);
             seg041.press_any_key(aYouOfYourVicto, false, 0, 10, TextRegion.NormalBottom);
-            seg041.displayAndDebug("Press any key to continue.", 0, 13);
+            seg041.DisplayAndPause("Press any key to continue.", 0, 13);
 
             seg041.press_any_key(aAsYouReachForT, true, 0, 10, TextRegion.NormalBottom);
             seg041.press_any_key(aOutKeepTheGaun, false, 0, 10, TextRegion.NormalBottom);
@@ -489,7 +489,7 @@ namespace engine
 
             ShowAnimation(1, 0x4a, 3, 3);
 
-            seg041.displayAndDebug("Press any key to continue.", 0, 13);
+            seg041.DisplayAndPause("Press any key to continue.", 0, 13);
             ovr027.ClearPromptArea();
 
             seg041.press_any_key(aIAmTrappedWith, true, 0, 10, TextRegion.NormalBottom);
@@ -499,7 +499,7 @@ namespace engine
 
             ShowAnimation(1, 0x4B, 3, 3);
 
-            seg041.displayAndDebug("Press any key to continue.", 0, 13);
+            seg041.DisplayAndPause("Press any key to continue.", 0, 13);
             ovr027.ClearPromptArea();
 
             seg041.press_any_key(aYouAreCertainH, true, 0, 10, TextRegion.NormalBottom);
@@ -521,7 +521,7 @@ namespace engine
             seg041.press_any_key(aWithThePowerOf, false, 0, 10, TextRegion.NormalBottom);
             seg041.press_any_key(aThisFoulPlaceT, false, 0, 10, TextRegion.NormalBottom);
 
-            seg041.displayAndDebug("Press any key to continue.", 0, 13);
+            seg041.DisplayAndPause("Press any key to continue.", 0, 13);
             ovr027.ClearPromptArea();
             ovr030.load_bigpic(0x7A);
 

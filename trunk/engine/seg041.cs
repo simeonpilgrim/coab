@@ -207,7 +207,7 @@ namespace engine
                             gbl.textXCol = xStart;
                             gbl.textYCol = yStart;
 
-                            displayAndDebug("Press any key to continue", 0, 13);
+                            DisplayAndPause("Press any key to continue", 0, 13);
                             seg043.clear_keyboard();
 
                             seg037.draw8x8_clear_area(yEnd, xEnd, yStart, xStart);
@@ -302,11 +302,11 @@ namespace engine
         }
 
 
-        internal static void displayAndDebug(string arg_0, byte arg_4, byte arg_6)
+        internal static void DisplayAndPause(string txt, byte bgColor, byte fgColor) // displayAndDebug
         {
             ovr027.ClearPromptAreaNoUpdate();
 
-            displayString(arg_0, arg_4, arg_6, 0x18, 0);
+            displayString(txt, bgColor, fgColor, 0x18, 0);
             seg043.GetInputKey();
         }
 

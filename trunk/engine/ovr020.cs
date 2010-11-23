@@ -424,7 +424,7 @@ namespace engine
             seg041.displayString("sides large:  ", 0, 10, 15, 1);
             seg041.displayString(gbl.ItemDataTable[arg_0.type].diceSizeLarge.ToString(), 0, 10, 15, 0x14);
 
-            seg041.displayAndDebug("press a key", 0, 10);
+            seg041.DisplayAndPause("press a key", 0, 10);
         }
 
         static Set unk_554EE = new Set(0x0009, new byte[] { 0x01, 0, 0, 0, 0, 0, 0, 0, 0x20 });
@@ -571,7 +571,7 @@ namespace engine
                                 {
                                     ovr025.ItemDisplayNameBuild(false, false, 0, 0, curr_item);
 
-                                    seg041.press_any_key("Your " + curr_item.name + "will be gone forever", true, 0, 14, 22, 0x26, 21, 1);
+                                    seg041.press_any_key("Your " + curr_item.name + " will be gone forever", true, 0, 14, 22, 0x26, 21, 1);
 
                                     if (ovr027.yes_no(gbl.defaultMenuColors, "Drop It? ") == 'Y')
                                     {

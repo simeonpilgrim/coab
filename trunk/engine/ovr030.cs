@@ -59,7 +59,7 @@ namespace engine
 
                     if (uncompressed_size == 0)
                     {
-                        seg041.displayAndDebug("PIC not found", 0, 14);
+                        seg041.DisplayAndPause("PIC not found", 0, 14);
                     }
                     else
                     {
@@ -176,7 +176,7 @@ namespace engine
 
                 if (gbl.headX_dax == null)
                 {
-                    seg041.displayAndDebug("head not found", 0, 14);
+                    seg041.DisplayAndPause("head not found", 0, 14);
                 }
 
                 gbl.current_head_id = head_id;
@@ -188,7 +188,7 @@ namespace engine
                 gbl.bodyX_dax = seg040.LoadDax(0, 0, body_id, "BODY" + text);
                 if (gbl.bodyX_dax == null)
                 {
-                    seg041.displayAndDebug("body not found", 0, 14);
+                    seg041.DisplayAndPause("body not found", 0, 14);
                 }
 
                 gbl.current_body_id = body_id;
