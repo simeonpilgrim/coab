@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Drawing;
+using System.Drawing.Imaging;
 
 
 namespace Classes
@@ -29,16 +31,9 @@ namespace Classes
         static int scanLineWidth;
         static int outputWidth;
         static int outputHeight;
-
-        static IOSDisplay lowLevelDisplay;
-        public static IOSDisplay LowLevelDisplay
-        {
-            set
-            {
-                lowLevelDisplay = value;
-                lowLevelDisplay.Init(outputHeight, outputWidth);
-            }
-        }
+        
+        static public Bitmap bm;
+        static Rectangle rect = new Rectangle(0, 0, 320, 200);
 
         public delegate void VoidDeledate();
 
@@ -61,6 +56,8 @@ namespace Classes
             scanLineWidth = outputWidth * 3;
             videoRamSize = scanLineWidth * outputHeight;
             videoRam = new byte[videoRamSize];
+
+            bm = new Bitmap(outputWidth, outputHeight, PixelFormat.Format24bppRgb);
         }
 
         static int[] MonoBitMask = { 0x80, 0x40, 0x20, 0x10, 0x08, 0x04, 0x02, 0x01 };
@@ -129,7 +126,7 @@ namespace Classes
         {
             if (noUpdateCount == 0)
             {
-                lowLevelDisplay.RawCopy(videoRam, videoRamSize);
+                RawCopy(videoRam, videoRamSize);
 
                 if (updateCallback != null)
                 {
@@ -140,7 +137,7 @@ namespace Classes
 
         static public void ForceUpdate()
         {
-            lowLevelDisplay.RawCopy(videoRam, videoRamSize);
+            RawCopy(videoRam, videoRamSize);
 
             if (updateCallback != null)
             {
@@ -174,6 +171,21 @@ namespace Classes
             if (value > 16)
             {
             }
+        }
+
+
+      
+        public static void RawCopy(byte[] videoRam, int videoRamSize)
+        {
+            System.Drawing.Imaging.BitmapData bmpData =
+                bm.LockBits(rect, System.Drawing.Imaging.ImageLockMode.WriteOnly,
+                System.Drawing.Imaging.PixelFormat.Format24bppRgb);
+
+            IntPtr ptr = bmpData.Scan0;
+
+            System.Runtime.InteropServices.Marshal.Copy(videoRam, 0, ptr, videoRamSize);
+
+            bm.UnlockBits(bmpData);
         }
     }
 }

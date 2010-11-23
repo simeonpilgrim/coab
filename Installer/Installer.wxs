@@ -157,9 +157,6 @@
           <Component Id="LoggingComponent" Guid="{42F3391F-FA43-4cb2-90DE-344FC6C19EC4}">
             <File Id ="logging.dll" Source="$(var.SolutionDir)$(var.BinDir)logging.dll" />
           </Component>
-          <Component Id="WinFormsComponent" Guid="{3692DC5A-EACD-4ee8-AB34-15589EE87779}">
-            <File Id ="win32.dll" Source="$(var.SolutionDir)$(var.BinDir)win32.dll" />
-          </Component>
           <Component Id="LicenseDoc" Guid="{E7BDA157-1637-4a2a-84F4-7825EEFEE354}">
             <File Id ="CotABLicense.rtf" Source="$(var.SolutionDir)Installer\CotAB License.rtf" />
           </Component>
@@ -178,7 +175,6 @@
       <ComponentRef Id="EngineComponent" />
       <ComponentRef Id="ClassesComponent" />
       <ComponentRef Id="LoggingComponent" />
-      <ComponentRef Id="WinFormsComponent" />
       <ComponentRef Id="LicenseDoc"/>
     </Feature>
 

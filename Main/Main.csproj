@@ -112,10 +112,6 @@
       <Project>{BEC15EB8-3A21-49FF-ABC0-7465927E80B8}</Project>
       <Name>Logging</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Win32\Win32.csproj">
-      <Project>{AD17A2D2-D5E3-4194-906A-2658F77522DB}</Project>
-      <Name>Win32</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resource.resx">
