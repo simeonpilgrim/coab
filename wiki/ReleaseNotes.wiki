@@ -2,6 +2,11 @@
 
 = Unreleased =
 
+= 1.1.5 =
+  * Issue 57 & 52, Fixed crash in game script engine
+  * Issue 58, Fixed crash when removing Ring of Wizardry
+  * Fixed spelling and formatting mistakes
+  
 = 1.1.4 =
   * Issue 59, Fixed treasure distribution code missing gems & jewellery
   * Issue 60, Fixed the reset of Area flags, meaning events in latter areas would not occur
