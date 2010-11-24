@@ -147,6 +147,8 @@ namespace Classes
                     return (ushort)(short)o;
                 case DataType.Word:
                     return (ushort)o;
+                case DataType.Bool:
+                    return ((bool)o) ? (ushort)1 : (ushort)0;
                 default:
                     throw new NotImplementedException();
                 //return 0;
@@ -170,6 +172,10 @@ namespace Classes
                 case DataType.Byte:
                     fInfo.SetValue(obj, (byte)value);
                     break;
+                case DataType.Bool:
+                    fInfo.SetValue(obj, value != 0);
+                    break;
+
 
                 default:
                     throw new NotImplementedException();
