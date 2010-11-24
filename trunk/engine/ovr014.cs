@@ -175,7 +175,7 @@ namespace engine
 
             if (target.health_status != Status.gone)
             {
-                seg041.press_any_key(text, true, 0, 10, line + 3, 0x26, line, 0x17);
+                seg041.press_any_key(text, true, 10, line + 3, 0x26, line, 0x17);
             }
 
             line = gbl.textYCol + 1;

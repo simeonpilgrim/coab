@@ -1417,7 +1417,7 @@ namespace engine
                 {
                     gbl.textYCol = 0x11;
                     clear_text_area = true;
-                    seg041.DisplayAndPause("press <enter>/<return> to continue", 0, 15);
+                    seg041.DisplayAndPause("press <enter>/<return> to continue", 15);
                 }
                 else
                 {
@@ -1426,7 +1426,7 @@ namespace engine
 
                 gbl.textXCol = 0x26;
 
-                seg041.press_any_key(text, clear_text_area, 0, 15, 0x16, 0x26, 17, 1);
+                seg041.press_any_key(text, clear_text_area, 15, 0x16, 0x26, 17, 1);
 
                 ovr025.damage_player(damage, player);
                 seg037.draw8x8_clear_area(0x0f, 0x26, 1, 0x11);

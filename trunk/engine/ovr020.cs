@@ -358,7 +358,7 @@ namespace engine
                 gbl.textXCol = gbl.SelectedPlayer.name.Length + 2;
                 gbl.textYCol = 0x15;
 
-                seg041.press_any_key(" was going to scribe from that scroll", false, 0, 0x0E, TextRegion.Normal2);
+                seg041.press_any_key(" was going to scribe from that scroll", false, 14, TextRegion.Normal2);
                 if (ovr027.yes_no(gbl.defaultMenuColors, "is it Okay to lose it? ") == 'Y')
                 {
                     canSellDropTradeItem = true;
@@ -424,7 +424,7 @@ namespace engine
             seg041.displayString("sides large:  ", 0, 10, 15, 1);
             seg041.displayString(gbl.ItemDataTable[arg_0.type].diceSizeLarge.ToString(), 0, 10, 15, 0x14);
 
-            seg041.DisplayAndPause("press a key", 0, 10);
+            seg041.DisplayAndPause("press a key", 10);
         }
 
         static Set unk_554EE = new Set(0x0009, new byte[] { 0x01, 0, 0, 0, 0, 0, 0, 0, 0x20 });
@@ -571,7 +571,7 @@ namespace engine
                                 {
                                     ovr025.ItemDisplayNameBuild(false, false, 0, 0, curr_item);
 
-                                    seg041.press_any_key("Your " + curr_item.name + " will be gone forever", true, 0, 14, 22, 0x26, 21, 1);
+                                    seg041.press_any_key("Your " + curr_item.name + " will be gone forever", true, 14, 22, 0x26, 21, 1);
 
                                     if (ovr027.yes_no(gbl.defaultMenuColors, "Drop It? ") == 'Y')
                                     {
@@ -1105,7 +1105,7 @@ namespace engine
 
             string offer = "I'll give you " + item_value.ToString() + " gold pieces for your " + item.name;
 
-            seg041.press_any_key(offer, true, 0, 14, TextRegion.Normal2);
+            seg041.press_any_key(offer, true, 14, TextRegion.Normal2);
 
             if (ovr027.yes_no(gbl.defaultMenuColors, "Is It a Deal? ") == 'Y')
             {
@@ -1149,7 +1149,7 @@ namespace engine
             bool id_item = false;
             ovr025.ItemDisplayNameBuild(false, false, 0, 0, item);
 
-            seg041.press_any_key("For 200 gold pieces I'll identify your " + item.name, true, 0, 0x0e, TextRegion.Normal2);
+            seg041.press_any_key("For 200 gold pieces I'll identify your " + item.name, true, 14, TextRegion.Normal2);
 
             if (ovr027.yes_no(gbl.defaultMenuColors, "Is It a Deal? ") == 'Y')
             {
@@ -1178,14 +1178,14 @@ namespace engine
             {
                 if (item.hidden_names_flag == 0)
                 {
-                    seg041.press_any_key("I can't tell anything new about your " + item.name, true, 0, 0x0e, TextRegion.Normal2);
+                    seg041.press_any_key("I can't tell anything new about your " + item.name, true, 14, TextRegion.Normal2);
                 }
                 else
                 {
                     item.hidden_names_flag = 0;
                     ovr025.ItemDisplayNameBuild(false, false, 0, 0, item);
 
-                    seg041.press_any_key("It looks like some sort of " + item.name, true, 0, 0x0e, TextRegion.Normal2);
+                    seg041.press_any_key("It looks like some sort of " + item.name, true, 14, TextRegion.Normal2);
 
                     arg_0 = true;
                 }
