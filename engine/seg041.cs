@@ -60,12 +60,12 @@ namespace engine
             }
         }
 
-        internal static void displaySpaceChar(int count, int color, int yCol, int xCol)
+        internal static void displaySpaceChar(int yCol, int xCol)
         {
             if (xCol >= 0 && xCol <= 0x27 &&
                 yCol >= 0 && yCol <= 0x18)
             {
-                display_char01(' ', count, color, color, yCol, xCol);
+                display_char01(' ', 1, 0, 0, yCol, xCol);
 
                 Display.Update();
             }
@@ -88,11 +88,11 @@ namespace engine
 
 
         internal static int displayStringSlow(string text
-            , int text_index, int text_length, int bgColor, int fgColor) // sub_107DE
+            , int text_index, int text_length, int fgColor) // sub_107DE
         {
             while (text_index <= text_length)
             {
-                display_char01(text[text_index - 1], 1, bgColor, fgColor, gbl.textYCol, gbl.textXCol);
+                display_char01(text[text_index - 1], 1, 0, fgColor, gbl.textYCol, gbl.textXCol);
 
                 if (gbl.DelayBetweenCharacters)
                 {
@@ -122,16 +122,16 @@ namespace engine
             { 0x15, 0x26, 1, 0x17 } // TextRegion.CombatSummary
         };
 
-        internal static void press_any_key(string text, bool clearArea, int bgColor, int fgColor, TextRegion region)
+        internal static void press_any_key(string text, bool clearArea, int fgColor, TextRegion region)
         {
             int r = (int)region;
-            press_any_key(text, clearArea, bgColor, fgColor, bounds[r, 0], bounds[r, 1], bounds[r, 2], bounds[r, 3]);
+            press_any_key(text, clearArea, fgColor, bounds[r, 0], bounds[r, 1], bounds[r, 2], bounds[r, 3]);
         }
 
         //static const char[] syms = { '!', ',', '-', '.', ':', ';', '?' };
         static Set puncutation = new Set(0x404, new byte[] { 2, 0x70, 0, 0x8C }); // "!,-.:;?"
 
-        internal static void press_any_key(string text, bool clearArea, int bgColor, int fgColor,
+        internal static void press_any_key(string text, bool clearArea, int fgColor,
             int yEnd, int xEnd, int yStart, int xStart)
         {
             if (xStart > 0x27 || yStart > 0x18 ||
@@ -194,7 +194,7 @@ namespace engine
                             text[text_end - 1] == ' ')
                         {
                             text_end -= 1;
-                            text_start = displayStringSlow(text, text_start, text_end, bgColor, fgColor);
+                            text_start = displayStringSlow(text, text_start, text_end, fgColor);
                         }
 
                         gbl.textXCol = xStart;
@@ -207,17 +207,17 @@ namespace engine
                             gbl.textXCol = xStart;
                             gbl.textYCol = yStart;
 
-                            DisplayAndPause("Press any key to continue", 0, 13);
+                            DisplayAndPause("Press any key to continue", 13);
                             seg043.clear_keyboard();
 
                             seg037.draw8x8_clear_area(yEnd, xEnd, yStart, xStart);
 
-                            text_start = displayStringSlow(text, text_start, text_end, bgColor, fgColor);
+                            text_start = displayStringSlow(text, text_start, text_end, fgColor);
                         }
                     }
                     else
                     {
-                        text_start = displayStringSlow(text, text_start, text_end, bgColor, fgColor);
+                        text_start = displayStringSlow(text, text_start, text_end, fgColor);
                         Display.Update();
                     }
                 } while (text_start <= input_lenght);
@@ -261,7 +261,7 @@ namespace engine
                 {
                     var_12A = seg051.Copy(var_12A.Length - 1, 0, var_12A);
 
-                    displaySpaceChar(1, 0, 0x18, var_2A);
+                    displaySpaceChar(24, var_2A);
                     var_2A -= 1;
                 }
 
@@ -302,11 +302,11 @@ namespace engine
         }
 
 
-        internal static void DisplayAndPause(string txt, byte bgColor, byte fgColor) // displayAndDebug
+        internal static void DisplayAndPause(string txt, byte fgColor) // displayAndDebug
         {
             ovr027.ClearPromptAreaNoUpdate();
 
-            displayString(txt, bgColor, fgColor, 0x18, 0);
+            displayString(txt, 0, fgColor, 0x18, 0);
             seg043.GetInputKey();
         }
 

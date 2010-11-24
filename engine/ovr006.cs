@@ -637,8 +637,8 @@ namespace engine
 
                         if (money_present == true || items_present == true)
                         {
-                            seg041.press_any_key("There is still treasure left.  ", true, 0, 10, TextRegion.NormalBottom);
-                            seg041.press_any_key("Do you want to go back and claim your treasure?", false, 0, 15, TextRegion.NormalBottom);
+                            seg041.press_any_key("There is still treasure left.  ", true, 10, TextRegion.NormalBottom);
+                            seg041.press_any_key("Do you want to go back and claim your treasure?", false, 15, TextRegion.NormalBottom);
                             int menu_selected = ovr008.sub_317AA(false, false, gbl.defaultMenuColors, "~Yes ~No", "");
 
                             if (menu_selected == 1)
@@ -746,7 +746,7 @@ namespace engine
                     {
                         string output = player.name + " takes and hides " + ((player.sex == 0) ? "his" : "her") + " share.";
 
-                        seg041.press_any_key(output, true, 0, 10, 0x16, 0x22, yCol + 5, 5);
+                        seg041.press_any_key(output, true, 10, 0x16, 0x22, yCol + 5, 5);
 
                         yCol += 2;
                     }
@@ -801,8 +801,8 @@ namespace engine
                     seg037.DrawFrame_Outer();
                     gbl.textXCol = 2;
                     gbl.textYCol = 6;
-                    seg041.press_any_key("The monsters rejoice for the party has been destroyed", true, 0, 10, 0x16, 0x25, 5, 2);
-                    seg041.DisplayAndPause("Press any key to continue", 0, 0x0d);
+                    seg041.press_any_key("The monsters rejoice for the party has been destroyed", true, 10, 0x16, 0x25, 5, 2);
+                    seg041.DisplayAndPause("Press any key to continue", 13);
                 }
 
                 gbl.DelayBetweenCharacters = true;

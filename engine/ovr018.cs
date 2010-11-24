@@ -1256,7 +1256,7 @@ namespace engine
             {
                 if (highlighted == true)
                 {
-                    seg041.displaySpaceChar(1, 0, 1, gbl.SelectedPlayer.name.Length + 1);
+                    seg041.displaySpaceChar(1, gbl.SelectedPlayer.name.Length + 1);
                     seg041.displayString(gbl.SelectedPlayer.name, 0, 13, 1, 1);
 
                     if (name_cursor_pos > gbl.SelectedPlayer.name.Length || gbl.SelectedPlayer.name[name_cursor_pos - 1] == ' ')

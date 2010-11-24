@@ -318,7 +318,7 @@ namespace engine
 					/*var_1 = 0x17;*/
 					ItemDisplayNameBuild(false, false, 0, 0, player.field_151);
 
-					seg041.press_any_key(player.field_151.name, true, 0, 10, line + 3, 0x26, line + 1, 0x17);
+					seg041.press_any_key(player.field_151.name, true, 10, line + 3, 0x26, line + 1, 0x17);
 				}
 
 				line = gbl.textYCol + 1;
@@ -770,7 +770,7 @@ namespace engine
 		{
 			if (!player.items.Remove(item))
 			{
-				seg041.DisplayAndPause("Tried to Lose item & couldn't find it!", 0, 14);
+				seg041.DisplayAndPause("Tried to Lose item & couldn't find it!", 14);
 			}
 		}
 
@@ -794,7 +794,7 @@ namespace engine
 				seg037.draw8x8_clear_area(0x15, 0x26, lineY, 0x17);
 
 				displayPlayerName(false, lineY, 0x17, player);
-				seg041.press_any_key(text, true, 0, 10, 0x15, 0x26, lineY + 1, 0x17);
+				seg041.press_any_key(text, true, 10, 0x15, 0x26, lineY + 1, 0x17);
 			}
 			else
 			{
@@ -803,7 +803,7 @@ namespace engine
 				seg037.draw8x8_clear_area(0x16, 0x26, line_y, 1);
 
 				displayPlayerName(false, line_y + 1, 1, player);
-				seg041.press_any_key(text, true, 0, 10, 0x16, 0x26, line_y + 2, 1);
+				seg041.press_any_key(text, true, 10, 0x16, 0x26, line_y + 2, 1);
 			}
 
 			if (clearDisplay == true)

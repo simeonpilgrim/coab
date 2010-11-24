@@ -96,7 +96,7 @@ namespace engine
                     int i = currentValueStr.Length - 1;
                     currentValueStr = seg051.Copy(i, 1, currentValueStr);
 
-                    seg041.displaySpaceChar(1, 0, 0x18, xCol);
+                    seg041.displaySpaceChar(24, xCol);
                     xCol--;
                 }
             } while (inputKey != 0x0D && inputKey != 0x1B);
