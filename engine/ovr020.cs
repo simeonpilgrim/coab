@@ -682,6 +682,8 @@ namespace engine
                         byte[] spCounts = new byte[5];
                         seg051.FillChar(0, 5, spCounts);
 
+                        var removeList = new List<int>();
+
                         foreach (int id in player.spellList.IdList())
                         {
                             if (gbl.spellCastingTable[id].spellClass == SpellClass.MagicUser)
@@ -691,9 +693,14 @@ namespace engine
 
                                 if (spCounts[spLvl] > player.spellCastCount[2, spLvl])
                                 {
-                                    player.spellList.ClearSpell(id);
+                                    removeList.Add(id);
                                 }
                             }
+                        }
+
+                        foreach (var id in removeList)
+                        {
+                            player.spellList.ClearSpell(id);
                         }
                     }
                     break;
