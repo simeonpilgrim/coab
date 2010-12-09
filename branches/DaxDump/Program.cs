@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.IO;
 using System.Drawing;
+using System.Drawing.Imaging;
 
 namespace DaxDump
 {
@@ -13,18 +14,39 @@ namespace DaxDump
         {
             //string path = System.IO.Directory.GetCurrentDirectory();
             //string path = @"C:\games\DARKNESS";
-            //string path = @"C:\games\TREASURE";
-            string path = @"C:\games\gateway";
+            string path = @"C:\games\TREASURE";
+            //string path = @"C:\games\gateway";
+            //string path = @"C:\games\coab";
             //string path = @"C:\games\secret";
             //string path = @"C:\games\deathkrynn";
             //string path = @"C:\games\nwn";
             //string path = @"c:\games\buckmatrix";
             //string path = @"c:\games\buckcount";
 
-            foreach (var filea in Directory.GetFiles(path, "pic*.dax"))
+            foreach (var filea in Directory.GetFiles(path, "wall*.dax"))
             {
                 TryDump(filea);
             }
+
+            List<Bitmap[]> tiles = new List<Bitmap[]>();
+
+            //foreach (var w8x8 in Directory.GetFiles(path, "8x8d1*.dax"))
+            //{
+            //    foreach (var block in GetAllBlocks(w8x8))
+            //    {
+            //        tiles.Add(DecodeEGA8x8(block.data));
+            //    }
+            //}
+
+            //foreach (var wd in Directory.GetFiles(path, "walldef2.dax"))
+            //{
+            //    foreach (var block in GetAllBlocks(wd))
+            //    {
+            //        string block_name = string.Format("{0}_{1:000}", Path.Combine(Path.GetDirectoryName(block.file), Path.GetFileNameWithoutExtension(block.file)), block.id);
+
+            //        DecodeEGAWall(block.data, block_name, tiles);
+            //    }
+            //}
 
             //TryDump(@"C:\games\DARKNESS\bigpic1.dax");
 
@@ -46,26 +68,38 @@ namespace DaxDump
             Console.WriteLine(file);
             foreach (var block in GetAllBlocks(file))
             {
-                byte[] data = block.data;
+                int b = block.data[0];
+
+                //byte[] data = new byte[block.data.Length - 5];
+                //System.Array.Copy(block.data, 5, data, 0, block.data.Length - 5);
+                var data = block.data;
 
                 Console.WriteLine("File: {0} Block: {1} Size: {2}", block.file, block.id, data.Length);
 
                 string block_name = string.Format("{0}_{1:000}", Path.Combine(Path.GetDirectoryName(block.file), Path.GetFileNameWithoutExtension(block.file)), block.id);
 
-                DumpBin(data, block_name);
+                DumpBin(data, block_name);         
 
                 //TryMono(data, block_name);
 
-                //TryEGA(data, block_name);
+                TryEGA(data, block_name);
+
+                //TryEGASprite(data, block_name);
+
+                //TryVGAPic(data, block_name);
+
 
                 TryStrataVGA(data, block_name);
 
-                //TryVGA(data, block_name);
+                TryStrataBlocksVGA(data, block_name);
 
-                //TryVGASprite(data, block_name );
+                TryVGA(data, block_name);
+
+                TryVGASprite(data, block_name );
             }
         }
 
+ 
 
         private static void DumpBin(byte[] data, string block_name)
         {
@@ -75,6 +109,112 @@ namespace DaxDump
             {
                 binWriter.Write(data);
             }
+        }
+
+        static int dataOffset = 54;
+        static int rows = 8;
+        static int cols = 7;
+
+        private static void DecodeEGAWall(byte[] data, string block_name, List<Bitmap[]> tiles)
+        {
+            for (int tileidx = 0; tileidx < tiles.Count; tileidx++)
+            {
+                var tile = tiles[tileidx];
+                if (tile.Length == 0) continue;
+
+                for (int chunk = 0; chunk < (data.Length / 156); chunk++)
+                {
+                    var bitmap = new Bitmap(cols * 8, rows * 8, PixelFormat.Format16bppArgb1555);
+                    int offset = dataOffset + (chunk * 156);
+
+                    for (int y = 0; y < rows; y++)
+                    {
+                        for (int x = 0; x < cols; x++)
+                        {
+                            int idx = data[offset];
+                            if (idx != 0)
+                            {
+                                if (idx - 1 < tile.Length)
+                                {
+                                    Copy8x8(bitmap, tile[idx - 1], y, x);
+                                }
+                                else
+                                {
+                                }
+                            }
+                            offset += 1;
+                        }
+                    }
+
+                    string name = string.Format("{0}_{1:00}_{2:00}.png", block_name, tileidx, chunk);
+                    bitmap.Save(name, System.Drawing.Imaging.ImageFormat.Png);
+
+                }
+            }
+        }
+
+        private static void Copy8x8(Bitmap dst, Bitmap src, int by, int bx)
+        {
+            for (int y = 0; y < 8; y++)
+            {
+                for (int x = 0; x < 8; x++)
+                {
+                    dst.SetPixel((bx * 8) + x, (by * 8) + y, src.GetPixel(x, y));
+                }
+            }
+        }
+
+
+        private static Bitmap[] DecodeEGA8x8(byte[] data)
+        {
+            // try single frame
+            uint height = Sys.ArrayToUshort(data, 0);
+            uint width = Sys.ArrayToUshort(data, 2);
+            uint x_pos = Sys.ArrayToUshort(data, 4);
+            uint y_pos = Sys.ArrayToUshort(data, 6);
+            uint item_count = data[8];
+
+            uint width_px = width * 8;
+            uint height_px = height;
+            uint x_pos_px = x_pos * 8;
+            uint y_pos_px = y_pos * 8;
+
+            int ega_data_offset = 17;
+
+            uint egaDataSize = height * width * 4;
+
+            Color[] tileColors = new Color[16];
+            for (int i = 0; i < 16; i++)
+            {
+                tileColors[i] = Color.FromArgb((int)egaColors[i]);
+            }
+            tileColors[13] = Color.Transparent;
+
+            List<Bitmap> tiles = new List<Bitmap>();
+
+            if (data.Length == (egaDataSize * item_count) + ega_data_offset)
+            {
+                int offset = 0;
+                for (int i = 0; i < item_count; i++, offset += (int)egaDataSize)
+                {
+                    var bitmap = new Bitmap((int)(width_px + x_pos_px), (int)(height_px + y_pos_px), System.Drawing.Imaging.PixelFormat.Format16bppArgb1555);
+                    for (int y = 0; y < height_px; y++)
+                    {
+                        for (int x = 0; x < width_px; x += 2)
+                        {
+                            byte b = data[ega_data_offset + (y * width * 4) + (x / 2) + offset];
+                            int pxX = (int)(x + 0 + x_pos_px);
+                            int pxY = (int)(y + y_pos_px);
+                            bitmap.SetPixel(pxX, pxY, tileColors[b >> 4]);
+                            bitmap.SetPixel(pxX + 1, pxY, tileColors[b & 0xF]);
+                        }
+                    }
+
+                    tiles.Add(bitmap);
+                }
+            }
+
+            return tiles.ToArray();
         }
 
         private static void TryEGA(byte[] data, string block_name)
@@ -141,6 +281,102 @@ namespace DaxDump
                 string name = string.Format("{0}_ega.png", block_name);
                 bitmap.Save(name, System.Drawing.Imaging.ImageFormat.Png);
             }
+        }
+
+        private static void TryEGASprite(byte[] data, string block_name)
+        {
+            // try single frame
+            uint frames = data[0];
+            int offset = 1;
+            if (frames > 8) 
+                return;
+
+            Color[] clrs = new Color[16];
+            for (int i = 0; i < 16; i++)
+            {
+                clrs[i] = Color.FromArgb((int)egaColors[i]);
+            }
+
+            var filename = Path.GetFileName(block_name);
+            bool xorFrames = filename.StartsWith("pic", true, System.Globalization.CultureInfo.CurrentCulture);
+            xorFrames |= filename.StartsWith("final", true, System.Globalization.CultureInfo.CurrentCulture);
+
+            if (filename.StartsWith("spri", true, System.Globalization.CultureInfo.CurrentCulture))
+            {
+                clrs[0] = Color.FromArgb(0, 0, 0, 0);
+                clrs[13] = Color.FromArgb((int)egaColors[0]);
+            }
+
+            byte[] first_frame_ega_layout = null;
+
+            for (int frame = 0; frame < frames; frame++)
+            {
+                if (data.Length < 21 + offset) return;
+
+                uint delay = Sys.ArrayToUint(data, offset);
+                offset += 4;
+                int height = Sys.ArrayToUshort(data, offset);
+                offset += 2;
+                int width = Sys.ArrayToUshort(data, offset);
+                offset += 2;
+                int x_pos = Sys.ArrayToUshort(data, offset);
+                offset += 2;
+                int y_pos = Sys.ArrayToUshort(data, offset);
+                offset += 3;
+                offset += 8;
+
+                // skip 1 byte
+                // skip 8 bytes
+                int width_px = width * 8;
+                int height_px = height;
+                int x_pos_px = x_pos * 8;
+                int y_pos_px = y_pos * 8;
+
+                if (width_px < 1 || height_px < 1 || width_px > 320 || height_px > 200)
+                    return;
+
+                int egaDataSize = height * width * 4;
+
+                if (data.Length < egaDataSize + offset) return;
+                
+                if (xorFrames)
+                {
+                    if (frame == 0)
+                    {
+                        first_frame_ega_layout = new byte[egaDataSize + 1];
+
+                        System.Array.Copy(data, offset, first_frame_ega_layout, 0, egaDataSize);
+                    }
+                    else
+                    {
+                        for (int i = 0; i < egaDataSize; i++)
+                        {
+                            byte b = first_frame_ega_layout[i];
+                            data[offset + i] ^= b;
+                        }
+                    }
+                }
+
+                var bitmap = new Bitmap((int)(width_px + x_pos_px), (int)(height_px + y_pos_px), System.Drawing.Imaging.PixelFormat.Format16bppArgb1555);
+                for (int y = 0; y < height_px; y++)
+                {
+                    for (int x = 0; x < width_px; x += 2)
+                    {
+                        byte b = data[(y * width * 4) + (x / 2) + offset];
+                        int pxX = (int)(x + 0 + x_pos_px);
+                        int pxY = (int)(y + y_pos_px);
+                        bitmap.SetPixel(pxX, pxY, clrs[b >> 4]);
+                        bitmap.SetPixel(pxX + 1, pxY, clrs[b & 0xF]);
+                    }
+                }
+
+                string name = string.Format("{0}_ega_pic_{1:000}.png", block_name, frame);
+                bitmap.Save(name, System.Drawing.Imaging.ImageFormat.Png);
+
+                offset += egaDataSize;
+
+            }
+
         }
 
 
@@ -223,6 +459,97 @@ namespace DaxDump
         }
 
 
+        private static void TryVGAPic(byte[] data, string block_name)
+        {
+            // try single frame
+            uint frames = data[0];
+            int offset = 1;
+            if (frames > 8)
+                return;
+
+            Color[] clrs = new Color[16];
+            for (int i = 0; i < 16; i++)
+            {
+                clrs[i] = Color.FromArgb((int)egaColors[i]);
+            }
+
+            var filename = Path.GetFileName(block_name);
+            bool xorFrames = filename.StartsWith("pic", true, System.Globalization.CultureInfo.CurrentCulture);
+            xorFrames |= filename.StartsWith("final", true, System.Globalization.CultureInfo.CurrentCulture);
+
+            byte[] first_frame_ega_layout = null;
+
+            for (int frame = 0; frame < frames; frame++)
+            {
+                if (data.Length < 21 + offset) return;
+
+                uint delay = Sys.ArrayToUint(data, offset);
+                offset += 4;
+                int height = Sys.ArrayToUshort(data, offset);
+                offset += 2;
+                int width = Sys.ArrayToUshort(data, offset);
+                offset += 2;
+                int x_pos = Sys.ArrayToUshort(data, offset);
+                offset += 2;
+                int y_pos = Sys.ArrayToUshort(data, offset);
+                offset += 3;
+                offset += 8;
+
+                // skip 1 byte
+                // skip 8 bytes
+                int width_px = width * 8;
+                int height_px = height;
+                int x_pos_px = x_pos * 8;
+                int y_pos_px = y_pos * 8;
+
+                if (width_px < 1 || height_px < 1 || width_px > 320 || height_px > 200)
+                    return;
+
+                int egaDataSize = height * width * 5;
+
+                if (data.Length < egaDataSize + offset) 
+                    return;
+
+                if (xorFrames)
+                {
+                    if (frame == 0)
+                    {
+                        first_frame_ega_layout = new byte[egaDataSize + 1];
+
+                        System.Array.Copy(data, offset, first_frame_ega_layout, 0, egaDataSize);
+                    }
+                    else
+                    {
+                        for (int i = 0; i < egaDataSize; i++)
+                        {
+                            byte b = first_frame_ega_layout[i];
+                            data[offset + i] ^= b;
+                        }
+                    }
+                }
+
+                var bitmap = new Bitmap((int)(width_px + x_pos_px), (int)(height_px + y_pos_px), System.Drawing.Imaging.PixelFormat.Format16bppArgb1555);
+                for (int y = 0; y < height_px; y++)
+                {
+                    for (int x = 0; x < width_px; x += 2)
+                    {
+                        byte b = data[(y * width * 4) + (x / 2) + offset];
+                        int pxX = (int)(x + 0 + x_pos_px);
+                        int pxY = (int)(y + y_pos_px);
+                        bitmap.SetPixel(pxX, pxY, clrs[b >> 4]);
+                        bitmap.SetPixel(pxX + 1, pxY, clrs[b & 0xF]);
+                    }
+                }
+
+                string name = string.Format("{0}_ega_pic_{1:000}.png", block_name, frame);
+                bitmap.Save(name, System.Drawing.Imaging.ImageFormat.Png);
+
+                offset += egaDataSize;
+
+            }
+
+        }
+
         private static void TryStrataVGA(byte[] data, string block_name)
         {
             if (data.Length < 20)
@@ -233,7 +560,7 @@ namespace DaxDump
             int width = Sys.ArrayToUshort(data, 2);
             int x_pos = Sys.ArrayToUshort(data, 4);
             int y_pos = Sys.ArrayToUshort(data, 6);
-            int item_count = data[8];
+            int pic_count = data[8];
 
             int width_px = width * 8;
             int height_px = height;
@@ -242,12 +569,11 @@ namespace DaxDump
 
             int clr_count = data[9];
             int clr_start = data[10];
-            //int data_offset = data[11];
 
             if (width_px < 1 || height_px < 1 || width_px > 320 || height_px > 200)
                return;
 
-            if (data.Length < (5 * width * height) + 9)
+            if (data.Length < ((5 * width * height) * pic_count) + 9)
                 return;
 
             var clrs = PaletteBase();
@@ -256,49 +582,6 @@ namespace DaxDump
             int data_offset = sub_5CB7B(tempPalette, 9, data);
 
             int[,] pxl_clrs = new int[height_px, width_px];
-
-            int in_offset = data_offset;
-            int out_offset = 0;
-            for (int y = 0; y < height; y++)
-            {
-                for (int x = 0; x < width_px; x++)
-                {
-                    int mask = 0x80 >> (x & 7);
-                    int input_byte = x / 8;
-                    byte px_clr = 0;
-
-                    if ((data[in_offset + input_byte] & mask) != 0)
-                    {
-                        px_clr = 1;
-                    }
-
-                    if ((data[in_offset + input_byte + width] & mask) != 0)
-                    {
-                        px_clr += 2;
-                    }
-
-                    if ((data[in_offset + input_byte + (width * 2)] & mask) != 0)
-                    {
-                        px_clr += 4;
-                    }
-
-                    if ((data[in_offset + input_byte + (width * 3)] & mask) != 0)
-                    {
-                        px_clr += 8;
-                    }
-
-                    if ((data[in_offset + input_byte + (width * 4)] & mask) != 0)
-                    {
-                        px_clr += 0x10;
-                    }
-
-                    pxl_clrs[y, x] = px_clr;
-                }
-
-                in_offset += width * 5;
-                out_offset += width * 8;
-            }
-
 
             int[] dd = new int[48];
             int _base = 0x20;
@@ -319,22 +602,212 @@ namespace DaxDump
                 clrs[i + 18] = Color.FromArgb(r * 4, g * 4, b * 4);
             }
 
-            int[] counts = new int[32];
+            int blocksize = (5 * width * height);
 
-            var bitmap = new Bitmap(width_px + x_pos_px, height_px + y_pos_px, System.Drawing.Imaging.PixelFormat.Format16bppArgb1555);
-            for (int y = 0; y < height_px; y++)
+            for (int pic = 0; pic < pic_count; pic++)
             {
-                for (int x = 0; x < width_px; x += 1)
+                int in_offset = data_offset;
+                for (int y = 0; y < height; y++)
                 {
-                    int pxX = x + x_pos_px;
-                    int pxY = y + y_pos_px;
-                    bitmap.SetPixel(pxX, pxY, clrs[pxl_clrs[y, x]]);
-                    counts[pxl_clrs[y, x]] += 1;
-                }
-            }
+                    for (int x = 0; x < width_px; x++)
+                    {
+                        int mask = 0x80 >> (x & 7);
+                        int input_byte = x / 8;
+                        byte px_clr = 0;
 
-            string name = string.Format("{0}_vga_strata.png", block_name);
-            bitmap.Save(name, System.Drawing.Imaging.ImageFormat.Png);
+                        if ((data[in_offset + input_byte] & mask) != 0)
+                        {
+                            px_clr = 1;
+                        }
+
+                        if ((data[in_offset + input_byte + width] & mask) != 0)
+                        {
+                            px_clr += 2;
+                        }
+
+                        if ((data[in_offset + input_byte + (width * 2)] & mask) != 0)
+                        {
+                            px_clr += 4;
+                        }
+
+                        if ((data[in_offset + input_byte + (width * 3)] & mask) != 0)
+                        {
+                            px_clr += 8;
+                        }
+
+                        if ((data[in_offset + input_byte + (width * 4)] & mask) != 0)
+                        {
+                            px_clr += 0x10;
+                        }
+
+                        pxl_clrs[y, x] = px_clr;
+                    }
+
+                    in_offset += width * 5;
+                }
+
+                data_offset = in_offset;
+
+
+                var bitmap = new Bitmap(width_px + x_pos_px, height_px + y_pos_px, System.Drawing.Imaging.PixelFormat.Format16bppArgb1555);
+                for (int y = 0; y < height_px; y++)
+                {
+                    for (int x = 0; x < width_px; x += 1)
+                    {
+                        int pxX = x + x_pos_px;
+                        int pxY = y + y_pos_px;
+                        bitmap.SetPixel(pxX, pxY, clrs[pxl_clrs[y, x]]);
+                    }
+                }
+
+                string name = string.Format("{0}_vga_strata_{1:00}.png", block_name, pic);
+                bitmap.Save(name, System.Drawing.Imaging.ImageFormat.Png);
+            }
+        }
+
+        private static void TryStrataBlocksVGA(byte[] data, string block_name)
+        {
+            if (data.Length < 5)
+                return;
+
+            uint frames = data[0];
+            int offset = 5;
+            if (frames > 8)
+                return;
+
+            if (data.Length < 20 + offset)
+                return;
+
+            // try single frame
+            int height = Sys.ArrayToUshort(data, 0 + offset);
+            int width = Sys.ArrayToUshort(data, 2 + offset);
+            int x_pos = Sys.ArrayToUshort(data, 4 + offset);
+            int y_pos = Sys.ArrayToUshort(data, 6 + offset);
+            int item_count = data[8 + offset];
+
+            int width_px = width * 8;
+            int height_px = height;
+            int x_pos_px = x_pos * 8;
+            int y_pos_px = y_pos * 8;
+
+            int clr_count = data[9 + offset];
+            int clr_start = data[10 + offset];
+
+            if (width_px < 1 || height_px < 1 || width_px > 320 || height_px > 200)
+                return;
+
+            bool egaBlock = (data[9 + offset] & 0xCC) == 0;
+            int blocksize = egaBlock ? (4 * width * height) : (5 * width * height);
+
+            if (data.Length < blocksize + 9 + offset)
+                return;
+
+            var clrs = PaletteBase();
+
+            byte[] tempPalette = new byte[0x3B];
+            int data_offset = sub_5CB7B(tempPalette, 9 + offset, data);
+
+            int[,] pxl_clrs = new int[height_px, width_px];
+
+            for (int frame = 0; frame < frames; frame++)
+            {
+                if (egaBlock)
+                {
+                    int in_offset = data_offset;
+                    for (int y = 0; y < height; y++)
+                    {
+                        for (int x = 0; x < width_px; x += 2)
+                        {
+                            pxl_clrs[y, x] = data[in_offset] >> 4;
+                            pxl_clrs[y, x + 1] = data[in_offset] & 0x0F;
+
+                            in_offset += 1;
+                        }
+                    }
+
+                    data_offset = in_offset;
+                }
+                else
+                {
+                    int in_offset = data_offset;
+                    int out_offset = 0;
+                    for (int y = 0; y < height; y++)
+                    {
+                        for (int x = 0; x < width_px; x++)
+                        {
+                            int mask = 0x80 >> (x & 7);
+                            int input_byte = x / 8;
+                            byte px_clr = 0;
+
+                            if ((data[in_offset + input_byte] & mask) != 0)
+                            {
+                                px_clr = 1;
+                            }
+
+                            if ((data[in_offset + input_byte + width] & mask) != 0)
+                            {
+                                px_clr += 2;
+                            }
+
+                            if ((data[in_offset + input_byte + (width * 2)] & mask) != 0)
+                            {
+                                px_clr += 4;
+                            }
+
+                            if ((data[in_offset + input_byte + (width * 3)] & mask) != 0)
+                            {
+                                px_clr += 8;
+                            }
+
+                            if ((data[in_offset + input_byte + (width * 4)] & mask) != 0)
+                            {
+                                px_clr += 0x10;
+                            }
+
+                            pxl_clrs[y, x] ^= px_clr;
+                        }
+
+                        in_offset += width * 5;
+                        out_offset += width * 8;
+                    }
+
+                    data_offset = in_offset + 14;
+                }
+
+
+                int[] dd = new int[48];
+                int _base = 0x20;
+                for (int i = 0; i < 24; i++)
+                {
+                    int b = tempPalette[_base + i];
+                    int a1 = (b & 0x0f);
+                    int a2 = (b & 0xf0);
+                    dd[0 + i] = (b & 0x0f) * 4;
+                    dd[24 + i] = (b & 0xf0) / 4;
+                }
+
+                for (int i = 0; i < 14; i += 1)
+                {
+                    int r = dd[(i * 3) + 6 + 0];
+                    int g = dd[(i * 3) + 6 + 1];
+                    int b = dd[(i * 3) + 6 + 2];
+                    clrs[i + 18] = Color.FromArgb(r * 4, g * 4, b * 4);
+                }
+
+                var bitmap = new Bitmap(width_px + x_pos_px, height_px + y_pos_px, System.Drawing.Imaging.PixelFormat.Format16bppArgb1555);
+                for (int y = 0; y < height_px; y++)
+                {
+                    for (int x = 0; x < width_px; x += 1)
+                    {
+                        int pxX = x + x_pos_px;
+                        int pxY = y + y_pos_px;
+                        bitmap.SetPixel(pxX, pxY, clrs[pxl_clrs[y, x]]);
+                    }
+                }
+
+                string name = string.Format("{0}_vga_strata_block_{1:000}.png", block_name, frame);
+                bitmap.Save(name, System.Drawing.Imaging.ImageFormat.Png);
+            }
         }
 
 
@@ -420,8 +893,6 @@ namespace DaxDump
             int height = data[0];
             int width = data[2];
 
-            int item_count = data[8];
-
             int width_px = width * 8;
             int height_px = height;
 
@@ -446,6 +917,9 @@ namespace DaxDump
 
             bool sprite_file = false;
 
+
+            int mframe = orig_data[((clr_count * 3) + 11) + 0x74];
+
             Color[] clrs = ExtractPalette(orig_data, clr_count, clr_base, 11);
             if (Path.GetFileName(filename).StartsWith("sprit", true, System.Globalization.CultureInfo.CurrentCulture))
             {
@@ -454,10 +928,9 @@ namespace DaxDump
                 sprite_file = true;
             }
 
-
             if (clrs == null) return;
 
-            for (int mframe = 0; mframe < frame_count; mframe++)
+ 
             {
                 if (sprite_file)
                 {
