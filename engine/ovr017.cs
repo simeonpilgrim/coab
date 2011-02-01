@@ -353,7 +353,7 @@ namespace engine
             player.lost_hp = bp_var_1C0.field_75;
             player.field_E9 = bp_var_1C0.field_76;
 
-            System.Array.Copy(bp_var_1C0.field_77, player.field_EA, 8);
+            System.Array.Copy(bp_var_1C0.field_77, player.thief_skills, 8);
 
             player.field_F6 = bp_var_1C0.field_83;
             player.control_morale = bp_var_1C0.field_84;

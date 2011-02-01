@@ -232,7 +232,7 @@ namespace engine
             {
                 if (door_picked) break;
 
-                if (ovr024.roll_dice(100, 1) <= player.field_EA[1] &&
+                if (ovr024.roll_dice(100, 1) <= player.thief_skills[1] &&
                     player.health_status == Status.okey)
                 {
                     door_picked = true;

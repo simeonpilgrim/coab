@@ -372,7 +372,7 @@ namespace engine
             {
                 int var_3 = arg_4 - 0xA4;
 
-                return_val = gbl.SelectedPlayer.field_EA[var_3 - 1];
+                return_val = gbl.SelectedPlayer.thief_skills[var_3 - 1];
             }
             else if (arg_4 == 0xb8)
             {
