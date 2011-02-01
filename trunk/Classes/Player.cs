@@ -149,7 +149,7 @@ namespace Classes
         [DataOffset(0xe9, DataType.Byte)]
         public byte field_E9; // 0xe9;
         [DataOffset(0xeA, DataType.ByteArray, 8)]
-        public byte[] field_EA = new byte[8]; // 0xeA; [] was 1 offset @ 0xe9
+        public byte[] thief_skills = new byte[8]; // 0xeA; [] was 1 offset @ 0xe9, pick_pockets, open_locks, find_remove_traps, move_silently, hide_in_shadows, hear_noise, climb_walls, read_languages
         public List<Affect> affects; // f2 - affect_ptr
 
         [DataOffset(0xf6, DataType.Byte)]

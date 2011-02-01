@@ -863,17 +863,17 @@ namespace engine
                 {
                     count++;
 
-                    if (player.field_EA[index - 1] < val_a)
+                    if (player.thief_skills[index - 1] < val_a)
                     {
-                        val_a = player.field_EA[index - 1];
+                        val_a = player.thief_skills[index - 1];
                     }
 
-                    if (player.field_EA[index - 1] > val_b)
+                    if (player.thief_skills[index - 1] > val_b)
                     {
-                        val_b = player.field_EA[index - 1];
+                        val_b = player.thief_skills[index - 1];
                     }
 
-                    var_4 += player.field_EA[index - 1];
+                    var_4 += player.thief_skills[index - 1];
                 }
 
                 val_c = (byte)(var_4 / count);

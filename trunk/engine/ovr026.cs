@@ -482,7 +482,7 @@ namespace engine
 			{ 12, 8, 8, 18, 17, 99 }, 
 			{ 99, 0, 3, 18, 3, 18 } };
 
-        static byte[,] /*seg600:3EC0 */ unk_1A1D0 = {
+        static byte[,] /*seg600:3EC0 unk_1A1D0 */ base_chance = {
 			{ 0, 0, 0, 0 , 0 , 0 ,0 , 0, 0 },
 			{ 0, 0x1E, 0x19, 0x14 ,0x0F, 0x0A, 0x0A, 0x55, 0x00 },
 			{ 0, 0x23, 0x1D, 0x19, 0x15, 0x0F, 0x0A, 0x56, 0x00 },
@@ -515,13 +515,13 @@ namespace engine
                 var_B = false;
             }
 
-            int var_5 = thiefLvl;
+            int orig_thief_lvl = thiefLvl;
 
-            for (int var_1 = 1; var_1 <= 8; var_1++)
+            for (int skill = 1; skill <= 8; skill++)
             {
                 if (var_A == true)
                 {
-                    switch (var_1)
+                    switch (skill)
                     {
                         case 1:
                             if (thiefLvl < 5)
@@ -549,28 +549,28 @@ namespace engine
                     }
                 }
 
-                if (unk_1A230[(int)player.race, var_1] < 0 &&
-                    unk_1A1D0[thiefLvl, var_1] < (System.Math.Abs(unk_1A230[(int)player.race, var_1]) + var_2))
+                if (unk_1A230[(int)player.race, skill] < 0 &&
+                    base_chance[thiefLvl, skill] < (System.Math.Abs(unk_1A230[(int)player.race, skill]) + var_2))
                 {
-                    player.field_EA[var_1 - 1] = 0;
+                    player.thief_skills[skill - 1] = 0;
                 }
                 else
                 {
-                    player.field_EA[var_1 - 1] = (byte)(var_2 + unk_1A1D0[thiefLvl, var_1] + unk_1A230[(int)player.race, var_1]);
+                    player.thief_skills[skill - 1] = (byte)(var_2 + base_chance[thiefLvl, skill] + unk_1A230[(int)player.race, skill]);
 
-                    if (var_1 < 6)
+                    if (skill < 6)
                     {
-                        player.field_EA[var_1 - 1] += (byte)unk_1A243[player.dex, var_1];
+                        player.thief_skills[skill - 1] += (byte)unk_1A243[player.dex, skill];
                     }
 
                 }
 
                 if (var_B == true)
                 {
-                    player.field_EA[var_1 - 1] += 10;
+                    player.thief_skills[skill - 1] += 10;
                 }
 
-                thiefLvl = var_5;
+                thiefLvl = orig_thief_lvl;
             }
         }
 
