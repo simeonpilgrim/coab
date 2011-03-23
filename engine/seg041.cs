@@ -275,28 +275,20 @@ namespace engine
 
         internal static ushort getUserInputShort(byte bgColor, byte fgColor, string prompt)
         {
-            bool bad_input = true;
+            bool good_input;
             int value = 0;
 
             do
             {
                 string input = getUserInputString(6, bgColor, fgColor, prompt);
 
-                try
+                good_input = int.TryParse(input, out value);
+        
+                if (good_input)
                 {
-                    value = int.Parse(input);
-                    bad_input = false;
+                    good_input = (value < 0x00010000 && value >= 0);
                 }
-                catch (System.Exception)
-                {
-                    bad_input = true;
-                }
-
-                if (bad_input == false)
-                {
-                    bad_input = (value > 0x00010000 || value < 0);
-                }
-            } while (bad_input == true);
+            } while (good_input == false);
 
             return (ushort)value;
         }
