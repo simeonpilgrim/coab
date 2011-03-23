@@ -104,7 +104,8 @@ namespace engine
             ovr027.ClearPromptAreaNoUpdate();
 
             int var_44;
-            if (inputKey == 0x1B)
+            if (inputKey == 0x1B || 
+                (inputKey == 0x0D && currentValueStr.Length == 0))
             {
                 var_44 = 0;
             }
