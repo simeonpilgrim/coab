@@ -334,7 +334,7 @@ namespace engine
 
         internal static void GameDelay()
         {
-            Display.Update();
+            //Display.Update();
             seg049.SysDelay(gbl.game_speed_var * 100);
         }
     }

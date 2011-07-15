@@ -186,9 +186,9 @@ namespace engine
                     player.health_status = Status.okey;
                     player.in_combat = true;
 
-                    if (player.con <= 0)
+                    if (player.stats2.Con.full <= 0)
                     {
-                        player.con--;
+                        player.stats2.Con.full--;
                     }
 
                     int var_107;
@@ -203,7 +203,7 @@ namespace engine
 
                     int var_108 = 0;
 
-                    if (player.con >= 14)
+                    if (player.stats2.Con.full >= 14)
                     {
                         for (int classIdx = 0; classIdx <= 7; classIdx++)
                         {
@@ -211,9 +211,9 @@ namespace engine
                             {
                                 if (classIdx == 2)
                                 {
-                                    var_108 += (player.con - 14) * player.fighter_lvl;
+                                    var_108 += (player.stats2.Con.full - 14) * player.fighter_lvl;
                                 }
-                                else if (player.con > 15)
+                                else if (player.stats2.Con.full > 15)
                                 {
                                     var_108 += player.ClassLevel[classIdx] * 2;
                                 }
@@ -229,7 +229,7 @@ namespace engine
                             var_107 /= var_108;
                         }
 
-                        if (player.con < 17 ||
+                        if (player.stats2.Con.full < 17 ||
                             player.fighter_lvl > 0 ||
                             player.fighter_lvl > player.multiclassLevel)
                         {
@@ -382,7 +382,7 @@ namespace engine
 
             stringList.Clear();
 
-            ovr025.load_pic();
+            ovr025.LoadPic();
             ovr025.PartySummary(gbl.SelectedPlayer);
         }
 
@@ -394,7 +394,7 @@ namespace engine
             gbl.game_state = GameState.Shop;
             gbl.redrawBoarder = (gbl.area_ptr.inDungeon == 0);
 
-            ovr025.load_pic();
+            ovr025.LoadPic();
             gbl.redrawBoarder = true;
             ovr025.PartySummary(gbl.SelectedPlayer);
 
@@ -492,11 +492,11 @@ namespace engine
                 if (input_key == 'B' ||
                     input_key == 'T')
                 {
-                    ovr025.load_pic();
+                    ovr025.LoadPic();
                 }
                 else if (reloadPics == true)
                 {
-                    ovr025.load_pic();
+                    ovr025.LoadPic();
                     reloadPics = false;
                 }
 

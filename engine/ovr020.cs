@@ -112,17 +112,17 @@ namespace engine
             ovr020.display_player_stats01();
             int yCol = 20;
 
-            if (player.field_151 != null)
+            if (player.activeItems.primaryWeapon != null)
             {
                 seg041.displayString("Weapon", 0, 15, yCol, 1);
-                ovr025.ItemDisplayNameBuild(true, false, yCol, 8, player.field_151);
+                ovr025.ItemDisplayNameBuild(true, false, yCol, 8, player.activeItems.primaryWeapon);
             }
 
             yCol++;
-            if (player.armor != null)
+            if (player.activeItems.armor != null)
             {
                 seg041.displayString("Armor", 0, 15, yCol, 2);
-                ovr025.ItemDisplayNameBuild(true, false, yCol, 8, player.armor);
+                ovr025.ItemDisplayNameBuild(true, false, yCol, 8, player.activeItems.armor);
             }
 
             yCol++;
@@ -202,26 +202,26 @@ namespace engine
             int col_x = 5;
             seg037.draw8x8_clear_area(stat_index + 7, 0x0b, stat_index + 7, col_x);
 
-            if (gbl.SelectedPlayer.stats[stat_index].max < 10)
+            if (gbl.SelectedPlayer.stats2[stat_index].full < 10)
             {
                 col_x++;
             }
 
-            string s = gbl.SelectedPlayer.stats[stat_index].max.ToString();
+            string s = gbl.SelectedPlayer.stats2[stat_index].full.ToString();
             seg041.displayString(s, 0, color, stat_index + 7, col_x);
 
             if (stat_index == 0 &&
-                gbl.SelectedPlayer.strength == 18 &&
-                gbl.SelectedPlayer.tmp_str_00 > 0)
+                gbl.SelectedPlayer.stats2.Str.full == 18 &&
+                gbl.SelectedPlayer.stats2.Str00.cur > 0)
             {
-                string text = gbl.SelectedPlayer.tmp_str_00.ToString();
+                string text = gbl.SelectedPlayer.stats2.Str00.cur.ToString();
 
-                if (gbl.SelectedPlayer.tmp_str_00 < 10)
+                if (gbl.SelectedPlayer.stats2.Str00.cur < 10)
                 {
                     text = "0" + text;
                 }
 
-                if (gbl.SelectedPlayer.tmp_str_00 == 100)
+                if (gbl.SelectedPlayer.stats2.Str00.cur == 100)
                 {
                     text = "00";
                 }
@@ -333,7 +333,7 @@ namespace engine
             {
                 ovr033.Color_0_8_inverse();
             }
-            ovr025.load_pic();
+            ovr025.LoadPic();
 
             return arg_0;
         }
@@ -813,7 +813,7 @@ namespace engine
                 // Weld
                 Weld result = Weld.Ok;
 
-                if ((player.field_185 + gbl.ItemDataTable[item.type].handsCount) > 2)
+                if ((player.weaponsHandsUsed + item.HandsCount()) > 2)
                 {
                     result = Weld.HandsFull;
                 }
@@ -822,14 +822,14 @@ namespace engine
 
                 if (item_slot >= ItemSlot.slot_0 && item_slot <= ItemSlot.slot_8)
                 {
-                    if (player.itemArray[(int)item_slot] != null)
+                    if (player.activeItems[item_slot] != null)
                     {
                         result = Weld.AlreadyUsingX;
                     }
                 }
                 else if (item_slot == ItemSlot.slot_9)
                 {
-                    if (player.Item_ptr_02 != null)
+                    if (player.activeItems.Item_ptr_02 != null)
                     {
                         result = Weld.AlreadyUsingX;
                     }
@@ -837,7 +837,7 @@ namespace engine
 
                 if (item.type == ItemType.Arrow)
                 {
-                    if (player.arrows != null)
+                    if (player.activeItems.arrows != null)
                     {
                         result = Weld.AlreadyUsingX;
                         item_slot = ItemSlot.slot_11;
@@ -846,7 +846,7 @@ namespace engine
 
                 if (item.type == ItemType.Quarrel)
                 {
-                    if (player.quarrels != null)
+                    if (player.activeItems.quarrels != null)
                     {
                         result = Weld.AlreadyUsingX;
                         item_slot = ItemSlot.Quarrel;
@@ -857,7 +857,7 @@ namespace engine
                 {
                     result = Weld.WrongClass;
                 }
-
+                result = Weld.Ok;
                 switch (result)
                 {
                     case Weld.Ok:
@@ -873,8 +873,8 @@ namespace engine
                         break;
 
                     case Weld.AlreadyUsingX:
-                        ovr025.ItemDisplayNameBuild(false, false, 0, 0, player.itemArray[(int)item_slot]);
-                        ovr025.string_print01("already using " + player.itemArray[(int)item_slot].name);
+                        ovr025.ItemDisplayNameBuild(false, false, 0, 0, player.activeItems[item_slot]);
+                        ovr025.string_print01("already using " + player.activeItems[item_slot].name);
                         break;
 
                     case Weld.HandsFull:
@@ -892,7 +892,7 @@ namespace engine
         internal static void trade_item(Item item)
         {
             Player player = gbl.tradeWith;
-            ovr025.load_pic();
+            ovr025.LoadPic();
 
             ovr025.selectAPlayer(ref player, true, "Trade with Whom?");
 
@@ -980,7 +980,7 @@ namespace engine
         internal static void sub_56478(ref bool arg_0, Item item)
         {
             gbl.spell_from_item = false;
-            byte var_1 = 0;
+            int spellId = 0;
 
             if (item.IsScroll() == true)
             {
@@ -988,15 +988,15 @@ namespace engine
 
                 bool dummy_bool;
                 int dummy_index = -1;
-                var_1 = spell_menu2(out dummy_bool, ref dummy_index, SpellSource.Cast, SpellLoc.scroll);
+                spellId = spell_menu2(out dummy_bool, ref dummy_index, SpellSource.Cast, SpellLoc.scroll);
             }
             else if (item.affect_2 > 0 && (int)item.affect_3 < 0x80)
             {
                 gbl.spell_from_item = true;
-                var_1 = (byte)((int)item.affect_2 & 0x7F);
+                spellId = (int)item.affect_2 & 0x7F;
             }
 
-            if (var_1 == 0)
+            if (spellId == 0)
             {
                 arg_0 = false;
             }
@@ -1034,12 +1034,12 @@ namespace engine
                     if (gbl.SelectedPlayer.SkillLevel(SkillType.MagicUser) > 0 ||
                         gbl.SelectedPlayer.SkillLevel(SkillType.Cleric) > 0)
                     {
-                        ovr023.sub_5D2E1(ref arg_0, 0, gbl.SelectedPlayer.quick_fight, var_1);
+                        ovr023.sub_5D2E1(ref arg_0, 0, gbl.SelectedPlayer.quick_fight, spellId);
                     }
                     else if (gbl.SelectedPlayer.thief_lvl > 9 &&
                             ovr024.roll_dice(100, 1) <= 75)
                     {
-                        ovr023.sub_5D2E1(ref arg_0, 0, gbl.SelectedPlayer.quick_fight, var_1);
+                        ovr023.sub_5D2E1(ref arg_0, 0, gbl.SelectedPlayer.quick_fight, spellId);
                     }
                     else
                     {
@@ -1048,13 +1048,13 @@ namespace engine
                 }
                 else
                 {
-                    ovr023.sub_5D2E1(ref arg_0, 0, gbl.SelectedPlayer.quick_fight, var_1);
+                    ovr023.sub_5D2E1(ref arg_0, 0, gbl.SelectedPlayer.quick_fight, spellId);
                 }
 
                 gbl.spell_from_item = false;
 
                 if (gbl.game_state == GameState.Combat &&
-                    gbl.spellCastingTable[var_1].whenCast != SpellWhen.Camp)
+                    gbl.spellCastingTable[spellId].whenCast != SpellWhen.Camp)
                 {
                     arg_0 = true;
                     ovr025.clear_actions(gbl.SelectedPlayer);
@@ -1065,7 +1065,7 @@ namespace engine
             {
                 if (item.IsScroll() == true)
                 {
-                    ovr023.remove_spell_from_scroll(var_1, item, gbl.SelectedPlayer);
+                    ovr023.remove_spell_from_scroll(spellId, item, gbl.SelectedPlayer);
                 }
                 else if (item.affect_1 > 0)
                 {
@@ -1210,7 +1210,7 @@ namespace engine
             do
             {
                 Player dest = gbl.tradeWith;
-                ovr025.load_pic();
+                ovr025.LoadPic();
 
                 ovr025.selectAPlayer(ref dest, true, "Trade to?");
 
@@ -1468,7 +1468,7 @@ namespace engine
 
         internal static void PaladinHeal(Player player)
         {
-            ovr025.load_pic();
+            ovr025.LoadPic();
             Player target = gbl.TeamList[0];
 
             ovr025.selectAPlayer(ref target, true, "Heal whom? ");
@@ -1504,7 +1504,7 @@ namespace engine
 
         internal static void PaladinCureDisease(Player player) /* sub_577EC */
         {
-            ovr025.load_pic();
+            ovr025.LoadPic();
             Player target = gbl.TeamList[0];
 
             ovr025.selectAPlayer(ref target, true, "Cure whom? ");

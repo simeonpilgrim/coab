@@ -19,7 +19,8 @@ namespace Classes
         ByteArray,
         ShortArray,
         WordArray,
-        Cust1Array
+        Cust1Array,
+        CustSaveLoad,
     }
 
     interface IDataIO
@@ -63,7 +64,7 @@ namespace Classes
                 case DataType.SWord:
                     return 2;
                 case DataType.Int:
-                    return 4;
+                    return 4;         
                 default:
                     throw new NotImplementedException();
             }
@@ -342,11 +343,12 @@ namespace Classes
                             StatValue[] sv = (StatValue[])o;
                             foreach (StatValue v in sv)
                             {
-                                data[i++] = v.tmp;
-                                data[i++] = v.max;
+                                data[i++] = (byte)v.cur;
+                                data[i++] = (byte)v.full;
                             }
                         }
                         break;
+
                     default:
                         throw new NotImplementedException();
                 }
@@ -445,12 +447,13 @@ namespace Classes
                             StatValue[] sv = new StatValue[attr.Size];
                             for (int i = 0; i < attr.Size; i++)
                             {
-                                sv[i].tmp = data[offset++];
-                                sv[i].max = data[offset++];
+                                sv[i].cur = data[offset++];
+                                sv[i].full = data[offset++];
                             }
                             fInfo.SetValue(obj, sv);
                         }
                         break;
+
                     default:
                         throw new NotImplementedException();
                 }

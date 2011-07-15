@@ -52,7 +52,7 @@ namespace Classes
         sound_4 = 4,
         sound_5 = 5,
         sound_6 = 6,
-        sound_7 = 7,
+        sound_attackHeld = 7,
         sound_8 = 8,
         sound_9 = 9,
         sound_a = 0xa,
@@ -63,7 +63,7 @@ namespace Classes
         sound_f = 0xf
     }
 
-    public delegate void spellDelegate(out bool arg_0, QuickFight quick_fight, int spellId);
+    public delegate bool spellDelegate(QuickFight quick_fight, int spellId);
     public delegate void spellDelegate2();
     public delegate void affectDelegate(Effect arg_0, object affect, Player player);
 
@@ -307,7 +307,6 @@ namespace Classes
         public static sbyte currentTeam; // field_197
         public static byte current_city;
         public static byte byte_1AD3D;
-        public static byte byte_1AD3E;
         public static byte byte_1AD44;
         public static byte byte_1ADFA;
         public static byte byte_1AE0A;
@@ -344,8 +343,8 @@ namespace Classes
         public static bool byte_1D2C7;
         public static bool byte_1D2C8;
         public static int attack_roll; // byte_1D2C9
-        public static byte byte_1D2CA;
-        public static byte byte_1D2CB; // not used.
+
+        public static byte[] bytes_1D2C9 = new byte[3]; // byte_1D2CA = bytes_1D2C9[1] & byte_1D2CB = bytes_1D2C9[2]
         public static int monster_morale; // byte_1D2CC
         public static int sky_colour; // byte_1D534
 
@@ -384,24 +383,8 @@ namespace Classes
         public static int combat_round_no_action_limit; // byte_1D8B8
         public const int combat_round_no_action_value = 15;
 
-        public static void inc_byte_byte_1D90x(int index)
-        {
-            switch (index)
-            {
-                case 1:
-                    byte_1D901 += 1;
-                    break;
-                case 2:
-                    byte_1D902 += 1;
-                    break;
-                default:
-                    /* byte_1D90x += 1; */
-                    throw new System.NotImplementedException();
-            }
-        }
 
-        public static byte byte_1D901;
-        public static byte byte_1D902;
+        public static byte[] bytes_1D900 = new byte[3]; // byte_1D901 & byte_1D902
         public static int enemyHealthPercentage; /* byte_1D903 */
         public static bool AutoPCsCastMagic; /* byte_1D904 magicOn */
         public static bool byte_1D90E; // byte_1D90E
@@ -553,8 +536,8 @@ namespace Classes
         public static int game_speed_var;
 
         public static bool inDemo;
-        public static bool AnimationsOn;
-        public static bool PicsOn;
+        public static bool AnimationsOn = true;
+        public static bool PicsOn = true;
 
         public static byte current_head_id;
         public static DaxBlock headX_dax;

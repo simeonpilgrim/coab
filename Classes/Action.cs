@@ -11,8 +11,8 @@ namespace Classes
         public bool can_cast; // 0x01
         public bool can_use;  // 0x02
         public int delay;   // 0x03
-        public byte attackIdx;  // 0x04
-        public byte field_5;  // 0x05
+        public int attackIdx;  // 0x04
+        public byte maxSweapTargets;  // 0x05
         public int move;     // 0x06
         public bool guarding; // 0x07
         public bool field_8;  // 0x08
@@ -22,7 +22,7 @@ namespace Classes
         public byte AttacksReceived;  // 0x0F
         public bool fleeing; // 0x10
         public bool hasTurnedUndead; // 0x11
-        public int field_12; // 0x12
+        public int directionChanges; // 0x12
         public bool nonTeamMember; // 0x13 field_13
         public bool moral_failure; // 0x14
         public int field_15; // 0x15

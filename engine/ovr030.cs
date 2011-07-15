@@ -39,7 +39,7 @@ namespace engine
             {
                 if (block_id != 0xff)
                 {
-                    if (gbl.AnimationsOn == true)
+                    if (gbl.AnimationsOn)
                     {
                         ovr027.ClearPromptAreaNoUpdate();
                         seg041.displayString("Loading...Please Wait", 0, 10, 0x18, 0);
@@ -139,7 +139,7 @@ namespace engine
                         uncompressed_data = null;
                         seg043.clear_keyboard();
 
-                        if (gbl.AnimationsOn == true)
+                        if (gbl.AnimationsOn)
                         {
                             ovr027.ClearPromptAreaNoUpdate();
                         }

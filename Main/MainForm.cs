@@ -113,6 +113,8 @@ namespace Main
 			Classes.Cheats.SortTreasureSet(Settings.Default.SortTreasure);
 
 			engine.seg044.SetSound(Settings.Default.SoundOn);
+            engine.seg044.SetPicture(Settings.Default.PictureOn);
+            engine.seg044.SetAnimation(Settings.Default.AnimationOn);
 		}
 
 		private void playersAlwayMakeSavingThrowToolStripMenuItem_CheckedChanged(object sender, EventArgs e)
@@ -232,6 +234,30 @@ namespace Main
 			engine.seg044.SetSound(flipped);
 		}
 
+        private void PictureOnToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            bool flipped = !Settings.Default.PictureOn;
+            Settings.Default.PictureOn = flipped;
+            if (flipped == false)
+            {
+                Settings.Default.AnimationOn = false;
+                engine.seg044.SetAnimation(false);
+            }
+            Settings.Default.Save();
+
+            engine.seg044.SetPicture(flipped);
+
+        }
+
+        private void AnimationOnToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            bool flipped = !Settings.Default.AnimationOn;
+            Settings.Default.AnimationOn = flipped;
+            Settings.Default.Save();
+
+            engine.seg044.SetAnimation(flipped);
+        }
+
 		private void sortTreasureToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			bool flipped = !Settings.Default.SortTreasure;
@@ -240,5 +266,6 @@ namespace Main
 
 			Classes.Cheats.SortTreasureSet(flipped);
 		}
-	}
+
+ 	}
 }

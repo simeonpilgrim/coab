@@ -1,5 +1,6 @@
 using Classes;
 using Logging;
+using Classes.Combat;
 
 namespace engine
 {
@@ -86,7 +87,7 @@ namespace engine
         }
 
 
-        internal static void draw_combat_icon(int iconIndex, int iconState, int direction, int tileY, int tileX) /* sub_76504 */
+        internal static void draw_combat_icon(int iconIndex, Icon iconState, int direction, int tileY, int tileX) /* sub_76504 */
         {
             DaxBlock icon = gbl.combat_icons[iconIndex].GetIcon(iconState, direction);
 

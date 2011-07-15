@@ -9,8 +9,13 @@ namespace Classes
         public const int StructSize = 0x011D;
 
         public string name; // 0x0	16
-        public byte[] stats; // 0x10
-        public byte strength_100; // 0x16
+        public byte stat_str; // 0x10
+        public byte stat_int; // 0x11
+        public byte stat_wis; // 0x12
+        public byte stat_dex; // 0x13
+        public byte stat_con; // 0x14
+        public byte stat_cha; // 0x15
+        public byte stat_str00; // 0x16
         public sbyte thac0; // 0x2D
         public byte race; // 0x2e
         public byte _class; // 0x2F
@@ -93,7 +98,6 @@ namespace Classes
 
         public PoolRadPlayer()
         {
-            stats = new byte[6];
             field_33 = new byte[0x38];
             field_6D = new byte[5];
             field_77 = new byte[8];
@@ -107,8 +111,14 @@ namespace Classes
             : this()
         {
             name = Sys.ArrayToString(data, 0, 16);
-            System.Array.Copy(data, 0x10, stats, 0, 6);
-            strength_100 = data[0x16]; // 0x16
+
+            stat_str = data[0x10]; // 0x10
+            stat_int = data[0x11]; // 0x11
+            stat_wis = data[0x12]; // 0x12
+            stat_dex = data[0x13]; // 0x13
+            stat_con = data[0x14]; // 0x14
+            stat_cha = data[0x15]; // 0x15
+            stat_str00 = data[0x16]; // 0x16
             thac0 = (sbyte)data[0x2D];
             race = data[0x2e];
             _class = data[0x2F];

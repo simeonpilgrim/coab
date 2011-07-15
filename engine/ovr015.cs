@@ -59,17 +59,17 @@ namespace engine
 
                 if (ovr031.WallDoorFlagsGet(gbl.mapDirection, gbl.mapPosY, gbl.mapPosX) == 3)
                 {
-                    if (player.strength == 18)
+                    if (player.stats2.Str.full == 18)
                     {
-                        if (player.tmp_str_00 >= 0x5b &&
-                            player.tmp_str_00 <= 99)
+                        if (player.stats2.Str00.cur >= 0x5b &&
+                            player.stats2.Str00.cur <= 99)
                         {
                             if (ovr024.roll_dice(6, 1) == 1)
                             {
                                 bash_worked = true;
                             }
                         }
-                        else if (player.tmp_str_00 == 100)
+                        else if (player.stats2.Str00.cur == 100)
                         {
                             if (ovr024.roll_dice(6, 1) <= 2)
                             {
@@ -81,37 +81,37 @@ namespace engine
                             gbl.can_bash_door = false;
                         }
                     }
-                    else if (player.strength == 19 ||
-                             player.strength == 20)
+                    else if (player.stats2.Str.full == 19 ||
+                             player.stats2.Str.full == 20)
                     {
                         if (ovr024.roll_dice(6, 1) <= 3)
                         {
                             bash_worked = true;
                         }
                     }
-                    else if (player.strength == 21 ||
-                             player.strength == 22)
+                    else if (player.stats2.Str.full == 21 ||
+                             player.stats2.Str.full == 22)
                     {
                         if (ovr024.roll_dice(6, 1) <= 4)
                         {
                             bash_worked = true;
                         }
                     }
-                    else if (player.strength == 23)
+                    else if (player.stats2.Str.full == 23)
                     {
                         if (ovr024.roll_dice(6, 1) <= 5)
                         {
                             bash_worked = true;
                         }
                     }
-                    else if (player.strength == 24)
+                    else if (player.stats2.Str.full == 24)
                     {
                         if (ovr024.roll_dice(8, 1) <= 7)
                         {
                             bash_worked = true;
                         }
                     }
-                    else if (player.strength == 25)
+                    else if (player.stats2.Str.full == 25)
                     {
                         bash_worked = true;
                     }
@@ -122,33 +122,33 @@ namespace engine
                 }
                 else
                 {
-                    byte al = player.strength;
+                    int str = player.stats2.Str.full;
 
-                    if (al >= 3 && al <= 7)
+                    if (str >= 3 && str <= 7)
                     {
                         if (ovr024.roll_dice(6, 1) == 1)
                         {
                             bash_worked = true;
                         }
                     }
-                    else if (al >= 8 && al <= 15)
+                    else if (str >= 8 && str <= 15)
                     {
                         if (ovr024.roll_dice(6, 1) <= 2)
                         {
                             bash_worked = true;
                         }
                     }
-                    else if (al == 15 || al == 17)
+                    else if (str == 15 || str == 17)
                     {
                         if (ovr024.roll_dice(6, 1) <= 3)
                         {
                             bash_worked = true;
                         }
                     }
-                    else if (al == 18)
+                    else if (str == 18)
                     {
-                        if (player.tmp_str_00 >= 0 &&
-                            player.tmp_str_00 <= 50)
+                        if (player.stats2.Str00.cur >= 0 &&
+                            player.stats2.Str00.cur <= 50)
                         {
                             bash_worked = true;
 
@@ -157,8 +157,8 @@ namespace engine
                                 bash_worked = true;
                             }
                         }
-                        else if (player.tmp_str_00 >= 51 &&
-                            player.tmp_str_00 <= 99)
+                        else if (player.stats2.Str00.cur >= 51 &&
+                            player.stats2.Str00.cur <= 99)
                         {
                             if (ovr024.roll_dice(6, 1) <= 4)
                             {
@@ -166,7 +166,7 @@ namespace engine
                             }
 
                         }
-                        else if (player.tmp_str_00 == 100)
+                        else if (player.stats2.Str00.cur == 100)
                         {
                             if (ovr024.roll_dice(6, 1) <= 5)
                             {
@@ -174,35 +174,35 @@ namespace engine
                             }
                         }
                     }
-                    else if (al == 19 || al == 20)
+                    else if (str == 19 || str == 20)
                     {
                         if (ovr024.roll_dice(8, 1) <= 7)
                         {
                             bash_worked = true;
                         }
                     }
-                    else if (al == 21)
+                    else if (str == 21)
                     {
                         if (ovr024.roll_dice(10, 1) <= 9)
                         {
                             bash_worked = true;
                         }
                     }
-                    else if (al == 22 || al == 23)
+                    else if (str == 22 || str == 23)
                     {
                         if (ovr024.roll_dice(12, 1) <= 11)
                         {
                             bash_worked = true;
                         }
                     }
-                    else if (al == 24)
+                    else if (str == 24)
                     {
                         if (ovr024.roll_dice(20, 1) <= 19)
                         {
                             bash_worked = true;
                         }
                     }
-                    else if (al == 25)
+                    else if (str == 25)
                     {
                         bash_worked = true;
                     }
@@ -317,7 +317,7 @@ namespace engine
 
         internal static void MovePartyForward() /* sub_43813 */
         {
-            seg044.sound_sub_120E0(Sound.sound_a);
+            seg044.PlaySound(Sound.sound_a);
             seg049.SysDelay(50);
 
             gbl.mapPosX += gbl.MapDirectionXDelta[gbl.mapDirection];
@@ -428,7 +428,7 @@ namespace engine
                             case 'K': // turn left
                                 gbl.mapDirection = (byte)((gbl.mapDirection + 6) % 8);
 
-                                seg044.sound_sub_120E0(Sound.sound_a);
+                                seg044.PlaySound(Sound.sound_a);
                                 gbl.mapWallType = ovr031.getMap_wall_type(gbl.mapDirection, gbl.mapPosY, gbl.mapPosX);
                                 ovr031.Draw3dWorld(gbl.mapDirection, gbl.mapPosY, gbl.mapPosX);
                                 break;
@@ -436,7 +436,7 @@ namespace engine
                             case 'M': // turn right
                                 gbl.mapDirection = (byte)((gbl.mapDirection + 2) % 8);
 
-                                seg044.sound_sub_120E0(Sound.sound_a);
+                                seg044.PlaySound(Sound.sound_a);
 
                                 gbl.mapWallType = ovr031.getMap_wall_type(gbl.mapDirection, gbl.mapPosY, gbl.mapPosX);
                                 ovr031.Draw3dWorld(gbl.mapDirection, gbl.mapPosY, gbl.mapPosX);

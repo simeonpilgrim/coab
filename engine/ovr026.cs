@@ -181,7 +181,7 @@ namespace engine
         }
 
 
-        internal static void sub_6A3C6(Player player)
+        internal static void ReclacClassBonuses(Player player) // sub_6A3C6
         {
             player.thac0 = 0;
 
@@ -189,30 +189,15 @@ namespace engine
             {
                 byte class_lvl = player.ClassLevel[_class];
 
-                if (ovr018.thac0_table[_class, class_lvl] > player.thac0)
-                {
-                    player.thac0 = ovr018.thac0_table[_class, class_lvl];
-                }
+                player.thac0 = System.Math.Max(ovr018.thac0_table[_class, class_lvl], player.thac0);
+                player.HitDice = System.Math.Max(class_lvl, player.HitDice);
+            }
 
-                if (player.HitDice < class_lvl)
-                {
-                    player.HitDice = class_lvl;
-                }
-
-                if (_class == 2 || _class == 3)
-                {
-                    if (class_lvl >= 7)
-                    {
-                        player.attacksCount = 3;
-                    }
-                }
-                else if (_class == 4)
-                {
-                    if (class_lvl >= 8)
-                    {
-                        player.attacksCount = 3;
-                    }
-                }
+            if (player.fighter_lvl >= 7 || 
+                player.paladin_lvl >= 7 ||
+                player.ranger_lvl >= 8)
+            {
+                player.attacksCount = 3;
             }
 
             sub_6A00F(player);
@@ -234,15 +219,8 @@ namespace engine
                 }
             }
 
-            for (int item_slot = 0; item_slot < Player.ItemSlots; item_slot++)
-            {
-                if (player.itemArray[item_slot] != null &&
-                    (gbl.ItemDataTable[player.itemArray[item_slot].type].classFlags & player.classFlags) == 0 &&
-                    player.itemArray[item_slot].cursed == false)
-                {
-                    player.itemArray[item_slot].readied = false;
-                }
-            }
+            player.activeItems.UndreadyAll(player.classFlags);
+
 
             if (DualClassExceedLastLevel(player) == true)
             {
@@ -310,32 +288,32 @@ namespace engine
                     }
                 }
 
-                if (player.wis > 12 && player.spellCastCount[0, 0] > 0)
+                if (player.stats2.Wis.full > 12 && player.spellCastCount[0, 0] > 0)
                 {
                     player.spellCastCount[0, 0] += 1;
                 }
 
-                if (player.wis > 13 && player.spellCastCount[0, 0] > 0)
+                if (player.stats2.Wis.full > 13 && player.spellCastCount[0, 0] > 0)
                 {
                     player.spellCastCount[0, 0] += 1;
                 }
 
-                if (player.wis > 14 && player.spellCastCount[0, 1] > 0)
+                if (player.stats2.Wis.full > 14 && player.spellCastCount[0, 1] > 0)
                 {
                     player.spellCastCount[0, 1] += 1;
                 }
 
-                if (player.wis > 15 && player.spellCastCount[0, 1] > 0)
+                if (player.stats2.Wis.full > 15 && player.spellCastCount[0, 1] > 0)
                 {
                     player.spellCastCount[0, 1] += 1;
                 }
 
-                if (player.wis > 16 && player.spellCastCount[0, 2] > 0)
+                if (player.stats2.Wis.full > 16 && player.spellCastCount[0, 2] > 0)
                 {
                     player.spellCastCount[0, 2] += 1;
                 }
 
-                if (player.wis > 17 && player.spellCastCount[0, 3] > 0)
+                if (player.stats2.Wis.full > 17 && player.spellCastCount[0, 3] > 0)
                 {
                     player.spellCastCount[0, 3] += 1;
                 }
@@ -402,41 +380,41 @@ namespace engine
                 player.race == Race.halfling ||
                 applyBonus == true)
             {
-                if (player.con >= 4 && player.con <= 6)
+                if (player.stats2.Con.full >= 4 && player.stats2.Con.full <= 6)
                 {
                     player.saveVerse[0] += 1;
                 }
-                else if (player.con >= 7 && player.con <= 10)
+                else if (player.stats2.Con.full >= 7 && player.stats2.Con.full <= 10)
                 {
                     player.saveVerse[0] += 2;
                 }
-                else if (player.con >= 11 && player.con <= 13)
+                else if (player.stats2.Con.full >= 11 && player.stats2.Con.full <= 13)
                 {
                     player.saveVerse[0] += 3;
                 }
-                else if (player.con >= 14 && player.con <= 17)
+                else if (player.stats2.Con.full >= 14 && player.stats2.Con.full <= 17)
                 {
                     player.saveVerse[0] += 4;
                 }
-                else if (player.con == 18)
+                else if (player.stats2.Con.full == 18)
                 {
                     player.saveVerse[0] += 5;
                 }
             }
 
-            if (player.con == 19 || player.con == 20)
+            if (player.stats2.Con.full == 19 || player.stats2.Con.full == 20)
             {
                 player.saveVerse[0] += 1;
             }
-            else if (player.con == 21 || player.con == 22)
+            else if (player.stats2.Con.full == 21 || player.stats2.Con.full == 22)
             {
                 player.saveVerse[0] += 2;
             }
-            else if (player.con == 23 || player.con == 24)
+            else if (player.stats2.Con.full == 23 || player.stats2.Con.full == 24)
             {
                 player.saveVerse[0] += 3;
             }
-            else if (player.con == 25)
+            else if (player.stats2.Con.full == 25)
             {
                 player.saveVerse[0] += 4;
             }
@@ -560,7 +538,7 @@ namespace engine
 
                     if (skill < 6)
                     {
-                        player.thief_skills[skill - 1] += (byte)unk_1A243[player.dex, skill];
+                        player.thief_skills[skill - 1] += (byte)unk_1A243[player.stats2.Dex.full, skill];
                     }
 
                 }
@@ -575,15 +553,14 @@ namespace engine
         }
 
 
-        internal static bool player_can_be_class(ClassId _class, Player player) /* sub_6AD3E */
+        internal static bool SecondClassAllowed(ClassId _class, Player player) /* sub_6AD3E */
         {
             var firstClass = HumanCurrentClass_Unknown(player);
             bool var_2 = _class != firstClass;
+            
             int var_3 = 0;
-
-
             while (var_3 <= 5 &&
-                (gbl.class_stats_min[(int)firstClass][var_3] < 9 || player.stats[var_3].tmp > 14))
+                (gbl.class_stats_min[(int)firstClass][var_3] < 9 || player.stats2[var_3].cur > 14))
             {
                 var_3++;
             }
@@ -592,7 +569,7 @@ namespace engine
             var_3 = 0;
 
             while (var_3 <= 5 &&
-                (gbl.class_stats_min[(int)_class][var_3] < 9 || player.stats[var_3].tmp > 16))
+                (gbl.class_stats_min[(int)_class][var_3] < 9 || player.stats2[var_3].cur > 16))
             {
                 var_3++;
             }
@@ -629,7 +606,7 @@ namespace engine
 
             foreach (var _class in gbl.RaceClasses[(int)player.race])
             {
-                if (player_can_be_class(_class, player) == true)
+                if (SecondClassAllowed(_class, player) == true)
                 {
                     list.Add(new MenuItem(ovr020.classString[(int)_class]));
                 }
@@ -704,7 +681,7 @@ namespace engine
 
             player.spellList.Clear();
 
-            sub_6A3C6(player);
+            ReclacClassBonuses(player);
             calc_cleric_spells(true, player);
             reclac_saving_throws(player);
             reclac_thief_skills(player);

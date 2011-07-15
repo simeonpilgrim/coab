@@ -9,7 +9,7 @@ namespace engine
 	{
 		internal static void CalculateAttackValues(Player player) // sub_66023
 		{
-			Item item = player.field_151;
+			Item item = player.activeItems.primaryWeapon;
 
 			if (item != null)
 			{
@@ -33,15 +33,15 @@ namespace engine
 				int bonus = item.plus;
 
 				if ((gbl.ItemDataTable[item_type].field_E & ItemDataFlags.quarrels) != 0 &&
-					player.quarrels != null)
+                    player.activeItems.quarrels != null)
 				{
-					bonus += player.quarrels.plus;
+                    bonus += player.activeItems.quarrels.plus;
 				}
 
 				if ((gbl.ItemDataTable[item_type].field_E & ItemDataFlags.arrows) != 0 &&
-					player.arrows != null)
+                    player.activeItems.arrows != null)
 				{
-					bonus += player.arrows.plus;
+                    bonus += player.activeItems.arrows.plus;
 				}
 
 				player.attack1_DamageBonus += (sbyte)bonus;
@@ -312,13 +312,13 @@ namespace engine
 
 				gbl.textYCol = line + 1;
 
-				if (player.field_151 != null)
+                if (player.activeItems.primaryWeapon != null)
 				{
 					line += 2;
 					/*var_1 = 0x17;*/
-					ItemDisplayNameBuild(false, false, 0, 0, player.field_151);
+                    ItemDisplayNameBuild(false, false, 0, 0, player.activeItems.primaryWeapon);
 
-					seg041.press_any_key(player.field_151.name, true, 10, line + 3, 0x26, line + 1, 0x17);
+                    seg041.press_any_key(player.activeItems.primaryWeapon.name, true, 10, line + 3, 0x26, line + 1, 0x17);
 				}
 
 				line = gbl.textYCol + 1;
@@ -339,14 +339,11 @@ namespace engine
 		{
 			sbyte[] stat_bonus = new sbyte[5];
 
-			for (int slot = 0; slot < Player.ItemSlots; slot++)
-			{
-				player.itemArray[slot] = null;
-			}
+            player.activeItems.Reset();
 
 			bool var_8 = false;
 
-			player.field_185 = 0;
+			player.weaponsHandsUsed = 0;
 
 			player.weight = 0;
 			int totalItemWeight = 0;
@@ -370,34 +367,34 @@ namespace engine
 
 					if (slot >= ItemSlot.slot_0 && slot <= ItemSlot.slot_8)
 					{
-						player.itemArray[(int)slot] = item;
+                        player.activeItems[slot] = item;
 					}
 					else if (slot == ItemSlot.slot_9)
 					{
-						if (player.Item_ptr_01 != null)
+                        if (player.activeItems.Item_ptr_01 != null)
 						{
-							if (player.Item_ptr_02 == null)
+                            if (player.activeItems.Item_ptr_02 == null)
 							{
-								player.Item_ptr_02 = item;
+                                player.activeItems.Item_ptr_02 = item;
 							}
 						}
 						else
 						{
-							player.Item_ptr_01 = item;
+                            player.activeItems.Item_ptr_01 = item;
 						}
 					}
 
 					if (item.type == ItemType.Arrow)
 					{
-						player.arrows = item;
+                        player.activeItems.arrows = item;
 					}
 
 					if (item.type == ItemType.Quarrel)
 					{
-						player.quarrels = item;
+                        player.activeItems.quarrels = item;
 					}
 
-					player.field_185 += gbl.ItemDataTable[item.type].handsCount;
+					player.weaponsHandsUsed += item.HandsCount();
 				}
 			}
 
@@ -431,7 +428,7 @@ namespace engine
 
 			stat_bonus[0] = ovr025.DexAcBonus(player);
 
-			if (player.field_151 == null)
+            if (player.activeItems.primaryWeapon == null)
 			{
 				player.hitBonus += strengthHitBonus(player);
 				player.attack1_DamageBonus += strengthDamBonus(player);
@@ -489,7 +486,7 @@ namespace engine
 			if (player.SkillLevel(SkillType.Fighter) > 0 &&
 				player.race > Race.monster)
 			{
-				player.attackLevel = (byte)player.SkillLevel(SkillType.Fighter);
+                player.attackLevel = (byte)player.SkillLevel(SkillType.Fighter);
 			}
 			else
 			{
@@ -502,7 +499,7 @@ namespace engine
 		{
 			sbyte bonus;
 
-			byte stat_val = player.dex;
+            int stat_val = player.stats2.Dex.full;
 
 			if (stat_val >= 1 && stat_val <= 3)
 			{
@@ -541,7 +538,7 @@ namespace engine
 		{
 			int bonus;
 
-			int stat_val = player.dex;
+            int stat_val = player.stats2.Dex.full;
 
 			if (stat_val >= 0 && stat_val <= 2)
 			{
@@ -580,33 +577,33 @@ namespace engine
 		{
 			int ret_val;
 
-			if (player.strength >= 0 && player.strength <= 17)
+            if (player.stats2.Str.full >= 0 && player.stats2.Str.full <= 17)
 			{
-				ret_val = player.strength;
+                ret_val = player.stats2.Str.full;
 			}
-			else if (player.strength == 18)
+            else if (player.stats2.Str.full == 18)
 			{
-				if (player.tmp_str_00 == 0)
+                if (player.stats2.Str00.cur == 0)
 				{
 					ret_val = 18;
 				}
-				else if (player.tmp_str_00 >= 1 && player.tmp_str_00 <= 50)
+                else if (player.stats2.Str00.cur >= 1 && player.stats2.Str00.cur <= 50)
 				{
 					ret_val = 19;
 				}
-				else if (player.tmp_str_00 >= 51 && player.tmp_str_00 <= 75)
+                else if (player.stats2.Str00.cur >= 51 && player.stats2.Str00.cur <= 75)
 				{
 					ret_val = 20;
 				}
-				else if (player.tmp_str_00 >= 76 && player.tmp_str_00 <= 90)
+                else if (player.stats2.Str00.cur >= 76 && player.stats2.Str00.cur <= 90)
 				{
 					ret_val = 21;
 				}
-				else if (player.tmp_str_00 >= 91 && player.tmp_str_00 <= 99)
+                else if (player.stats2.Str00.cur >= 91 && player.stats2.Str00.cur <= 99)
 				{
 					ret_val = 22;
 				}
-				else if (player.tmp_str_00 >= 100)
+                else if (player.stats2.Str00.cur >= 100)
 				{
 					ret_val = 23;
 				}
@@ -615,9 +612,9 @@ namespace engine
 					throw new System.NotSupportedException();
 				}
 			}
-			else if (player.strength >= 19 && player.strength <= 25)
+            else if (player.stats2.Str.full >= 19 && player.stats2.Str.full <= 25)
 			{
-				ret_val = player.strength + 5;
+                ret_val = player.stats2.Str.full + 5;
 			}
 			else
 			{
@@ -850,7 +847,7 @@ namespace engine
 		}
 
 
-		internal static void load_missile_dax(bool flipIcon, byte iconOffset, int iconAction, int iconIdx) /* sub_67924 */
+		internal static void load_missile_dax(bool flipIcon, byte iconOffset, Icon iconAction, int iconIdx) /* sub_67924 */
 		{
 			int dataSize = gbl.missile_dax.bpp;
 
@@ -875,10 +872,10 @@ namespace engine
 
 		internal static void load_missile_icons(int iconIdx) /* sub_67A59 */
 		{
-			load_missile_dax(false, 0, 0, iconIdx);
-			load_missile_dax(true, 1, 0, iconIdx);
-			load_missile_dax(true, 2, 1, iconIdx);
-			load_missile_dax(false, 3, 1, iconIdx);
+			load_missile_dax(false, 0, Icon.Normal, iconIdx);
+            load_missile_dax(true, 1, Icon.Normal, iconIdx);
+            load_missile_dax(true, 2, Icon.Attack, iconIdx);
+			load_missile_dax(false, 3, Icon.Attack, iconIdx);
 		}
 
 
@@ -1133,11 +1130,11 @@ namespace engine
 
 				if (showMagicStars)
 				{
-					seg044.sound_sub_120E0(Sound.sound_4);
+					seg044.PlaySound(Sound.sound_4);
 				}
 				else
 				{
-					seg044.sound_sub_120E0(Sound.sound_3);
+					seg044.PlaySound(Sound.sound_3);
 				}
 
 				DisplayPlayerStatusString(false, 10, text, player);
@@ -1398,7 +1395,7 @@ namespace engine
 		}
 
 
-		internal static void load_pic()
+        internal static void LoadPic() // load_pic
 		{
 			gbl.can_draw_bigpic = true;
 
@@ -1578,13 +1575,13 @@ namespace engine
 
 		internal static bool is_weapon_ranged(Player player) /* offset_above_1 */
 		{
-			return player.field_151 != null && player.field_151.IsRanged();
+            return player.activeItems.primaryWeapon != null && player.activeItems.primaryWeapon.IsRanged();
 		}
 
 
 		internal static bool is_weapon_ranged_melee(Player player) /* offset_equals_20 */
 		{
-			return item_is_ranged_melee(player.field_151);
+            return item_is_ranged_melee(player.activeItems.primaryWeapon);
 		}
 
 
@@ -1593,7 +1590,7 @@ namespace engine
 			found_item = null;
 			var flags = ItemDataFlags.None;
 
-			Item item = player.field_151;
+            Item item = player.activeItems.primaryWeapon;
 			if (item != null)
 			{
 				flags = gbl.ItemDataTable[item.type].field_E;
@@ -1607,12 +1604,12 @@ namespace engine
 				{
 					if ((flags & ItemDataFlags.arrows) != 0)
 					{
-						found_item = player.arrows;
+                        found_item = player.activeItems.arrows;
 					}
 
 					if ((flags & ItemDataFlags.quarrels) != 0)
 					{
-						found_item = player.quarrels;
+                        found_item = player.activeItems.quarrels;
 					}
 				}
 			}
@@ -1623,83 +1620,7 @@ namespace engine
 		}
 
 
-		internal static bool RaceStatLevelRestricted(ClassId _class, Player player) // sub_69138
-		{
-			bool ret_val = false;
 
-			int class_lvl = player.ClassLevel[(int)_class];
-
-			if (class_lvl > 0)
-			{
-				switch (player.race)
-				{
-					case Race.dwarf:
-						if (_class == ClassId.fighter)
-						{
-							if ((class_lvl == 8 && player.strength == 17) ||
-								(class_lvl == 7 && player.strength < 17))
-							{
-								ret_val = true;
-							}
-						}
-						break;
-
-					case Race.elf:
-						if (_class == ClassId.fighter)
-						{
-							if ((class_lvl == 7) ||
-								(class_lvl == 6 && player.strength == 17) ||
-								(class_lvl == 5 && player.strength < 17))
-							{
-								ret_val = true;
-							}
-						}
-						break;
-
-					case Race.gnome:
-						if (_class == ClassId.fighter)
-						{
-							if ((class_lvl == 6) ||
-								(class_lvl == 5 && player.strength < 18))
-							{
-								ret_val = true;
-							}
-						}
-						break;
-
-					case Race.half_elf:
-						if (_class == ClassId.cleric &&
-							class_lvl == 5)
-						{
-							ret_val = true;
-						}
-						else if (_class == ClassId.fighter)
-						{
-							if (class_lvl == 8 ||
-								(class_lvl == 7 && player.strength == 17) ||
-								(class_lvl == 6 && player.strength < 17))
-							{
-								ret_val = true;
-							}
-						}
-						break;
-
-					case Race.halfling:
-						if (_class == ClassId.fighter)
-						{
-							if ((class_lvl == 6) ||
-								(class_lvl == 5 && player.strength == 17) ||
-								(class_lvl == 4 && player.strength < 17))
-							{
-								ret_val = true;
-							}
-						}
-						break;
-				}
-			}
-
-			return ret_val;
-		}
 
 
 		internal static bool bandage(bool applyBandage)

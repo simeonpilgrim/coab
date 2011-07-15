@@ -37,6 +37,11 @@ namespace Classes
         public Affects affect_2; // 0x3D
         public Affects affect_3; // 0x3E
 
+        public byte HandsCount()
+        {
+            return gbl.ItemDataTable[type].handsCount;
+        }
+
         public bool ScrollLearning(int i, int spell)
         {
             return ((int)getAffect(i) > 0x7F && ((int)getAffect(i) & 0x7F) == spell);

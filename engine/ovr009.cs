@@ -1,5 +1,6 @@
 
 using Classes;
+using Classes.Combat;
 
 namespace engine
 {
@@ -102,7 +103,7 @@ namespace engine
         internal static void DoPlayerCombatTurn(Player player) // sub_33281
         {
             player.actions.AttacksReceived = 0;
-            player.actions.field_12 = 0;
+            player.actions.directionChanges = 0;
             player.actions.guarding = false;
             ovr024.CheckAffectsEffect(player, CheckType.PlayerRestrained);
 
@@ -196,7 +197,7 @@ namespace engine
                                     break;
 
                                 case 'A':
-                                    ovr014.aim_menu(var_D, out var_2, 1, 0, 1, -1, player);
+                                    var_2 = ovr014.aim_menu(var_D, true, false, true, -1, player);
                                     break;
 
                                 case 'U':
@@ -225,11 +226,11 @@ namespace engine
 
                                 case ' ':
                                     /* Turn off auto-fight. */
-                                    foreach (Player player_ptr in gbl.TeamList)
+                                    foreach (Player p in gbl.TeamList)
                                     {
-                                        if (player_ptr.control_morale < Control.NPC_Base)
+                                        if (p.control_morale < Control.NPC_Base)
                                         {
-                                            player_ptr.quick_fight = QuickFight.False;
+                                            p.quick_fight = QuickFight.False;
                                         }
                                     }
                                     break;
@@ -265,9 +266,9 @@ namespace engine
 
                                 case (char)0x10:
                                     player.actions.delay = 20;
-                                    foreach (Player player_ptr in gbl.TeamList)
+                                    foreach (Player p in gbl.TeamList)
                                     {
-                                        SetPlayerQuickFight(player_ptr);
+                                        SetPlayerQuickFight(p);
                                     }
                                     ovr027.ClearPromptArea();
                                     seg049.SysDelay(0x0C8);
@@ -494,7 +495,7 @@ namespace engine
 
                 if (dir < 8)
                 {
-                    ovr033.draw_74B3F(0, 0, dir, player);
+                    ovr033.draw_74B3F(false, Icon.Normal, dir, player);
                     int ground_tile;
                     int target_index;
 
@@ -604,21 +605,21 @@ namespace engine
                 }
                 else
                 {
-                    ovr014.recalc_action_12(target, player);
+                    ovr014.RecalcAttacksReceived(target, player);
 
-                    ovr014.AttackTarget(out arg_0, null, 0, target, player);
+                    arg_0 = ovr014.AttackTarget(null, 0, target, player);
                 }
             }
         }
 
 
-        internal static void delay_menu(ref bool turnEnded, Player player_ptr)
+        internal static void delay_menu(ref bool turnEnded, Player player)
         {
             turnEnded = false;
             string menuText = string.Empty;
 
-            if (ovr025.is_weapon_ranged(player_ptr) == false ||
-                ovr025.is_weapon_ranged_melee(player_ptr) == true)
+            if (ovr025.is_weapon_ranged(player) == false ||
+                ovr025.is_weapon_ranged_melee(player) == true)
             {
                 menuText += "Guard ";
             }
@@ -640,23 +641,23 @@ namespace engine
                 switch (input)
                 {
                     case 'G':
-                        ovr025.guarding(player_ptr);
+                        ovr025.guarding(player);
                         turnEnded = true;
                         break;
 
                     case 'D':
-                        player_ptr.actions.delay = 1;
+                        player.actions.delay = 1;
                         turnEnded = true;
                         break;
 
                     case 'Q':
-                        ovr025.clear_actions(player_ptr);
+                        ovr025.clear_actions(player);
                         turnEnded = true;
                         break;
 
                     case 'B':
                         ovr025.bandage(true);
-                        ovr025.clear_actions(player_ptr);
+                        ovr025.clear_actions(player);
                         turnEnded = true;
                         break;
 

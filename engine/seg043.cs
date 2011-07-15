@@ -12,7 +12,7 @@ namespace engine
             {
                 in_print_and_exit = true;
 
-                seg044.sound_sub_120E0(Sound.sound_FF);
+                seg044.PlaySound(Sound.sound_FF);
 
                 Logger.Close();
 
@@ -45,7 +45,7 @@ namespace engine
 
             if (key == 0x13)
             {
-                seg044.sound_sub_120E0(Sound.sound_0);
+                seg044.PlaySound(Sound.sound_0);
             }
 
             if (Cheats.allow_keyboard_exit && key == 3)
@@ -129,14 +129,14 @@ namespace engine
 
         static void TxtDumpPlayer(Player p, int area, int id)
         {
-            string str100 = p.strength == 18 ? string.Format("({0})", p.max_str_00) : "";
+            string str100 = p.stats2.Str.full == 18 ? string.Format("({0})", p.stats2.Str00.full) : "";
             Logger.Debug("Area {0} Id {1} {2} exp: {3} hp: {4} ac: {5} thac0: {6}", area, id, p.name, p.exp, p.hit_point_max, p.DisplayAc, 0x3c - p.hitBonus);
-            Logger.Debug("   S: {0}{1} D: {2} C: {3} I: {4} W: {5} Ch: {6}", p.strength, str100, p.dex, p.con, p._int, p.wis, p.charisma);
+            Logger.Debug("   S: {0}{1} D: {2} C: {3} I: {4} W: {5} Ch: {6}", p.stats2.Str.full, str100, p.stats2.Dex.full, p.stats2.Con.full, p.stats2.Int.full, p.stats2.Wis.full, p.stats2.Cha.full);
             Logger.Debug("   Lvls: {0} {1} {2} {3} {4} {5} {6} {7}", p.ClassLevel[0], p.ClassLevel[1], p.ClassLevel[2], p.ClassLevel[3], p.ClassLevel[4], p.ClassLevel[5], p.ClassLevel[6], p.ClassLevel[7]);
-            if (p.field_151 != null)
-                Logger.Debug("   Weapon: {0}", p.field_151.GenerateName(0));
-            if (p.armor != null)
-                Logger.Debug("   Armor: {0}", p.armor.GenerateName(0));
+            if (p.activeItems.primaryWeapon != null)
+                Logger.Debug("   Weapon: {0}", p.activeItems.primaryWeapon.GenerateName(0));
+            if (p.activeItems.armor != null)
+                Logger.Debug("   Armor: {0}", p.activeItems.armor.GenerateName(0));
 
             Logger.Debug("   Damage: {0}d{1}{2}{3}", p.attack1_DiceCount, p.attack1_DiceSize,
                 p.attack1_DamageBonus > 0 ? "+" : "", p.attack1_DamageBonus != 0 ? p.attack1_DamageBonus.ToString() : "");
@@ -163,13 +163,13 @@ namespace engine
             dw.Write("<td>{0}</td>", p.hit_point_max);
             dw.Write("<td>{0}</td>", 0x3c - p.ac);
             dw.Write("<td>{0}</td>", 0x3c - p.hitBonus);
-            string str100 = p.strength == 18 ? string.Format("({0})", p.max_str_00) : "";
-            dw.Write("<td>{0}{1}</td>", p.strength, str100);
-            dw.Write("<td>{0}</td>", p.dex);
-            dw.Write("<td>{0}</td>", p.con);
-            dw.Write("<td>{0}</td>", p._int);
-            dw.Write("<td>{0}</td>", p.wis);
-            dw.Write("<td>{0}</td>", p.charisma);
+            string str100 = p.stats2.Str.full == 18 ? string.Format("({0})", p.stats2.Str00.full) : "";
+            dw.Write("<td>{0}{1}</td>", p.stats2.Str.full, str100);
+            dw.Write("<td>{0}</td>", p.stats2.Dex.full);
+            dw.Write("<td>{0}</td>", p.stats2.Con.full);
+            dw.Write("<td>{0}</td>", p.stats2.Int.full);
+            dw.Write("<td>{0}</td>", p.stats2.Wis.full);
+            dw.Write("<td>{0}</td>", p.stats2.Cha.full);
             dw.Write("<td>{0}</td>", p.ClassLevel[0]);
             dw.Write("<td>{0}</td>", p.ClassLevel[1]);
             dw.Write("<td>{0}</td>", p.ClassLevel[2]);
@@ -179,8 +179,8 @@ namespace engine
             dw.Write("<td>{0}</td>", p.ClassLevel[6]);
             dw.Write("<td>{0}</td>", p.ClassLevel[7]);
 
-            dw.Write("<td nowrap=\"nowrap\">{0}</td>", p.field_151 != null ? p.field_151.GenerateName(0) : "");
-            dw.Write("<td nowrap=\"nowrap\">{0}</td>", p.armor != null ? p.armor.GenerateName(0) : "");
+            dw.Write("<td nowrap=\"nowrap\">{0}</td>", p.activeItems.primaryWeapon != null ? p.activeItems.primaryWeapon.GenerateName(0) : "");
+            dw.Write("<td nowrap=\"nowrap\">{0}</td>", p.activeItems.armor != null ? p.activeItems.armor.GenerateName(0) : "");
             dw.Write("<td nowrap=\"nowrap\">{0}d{1}{2}{3}</td>", p.attack1_DiceCount, p.attack1_DiceSize,
                 p.attack1_DamageBonus > 0 ? "+" : "", p.attack1_DamageBonus != 0 ? p.attack1_DamageBonus.ToString() : "");
 

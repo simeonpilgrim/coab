@@ -114,7 +114,7 @@ namespace engine
 
         internal static void load_decode_dax(out byte[] out_data, out short decodeSize, int block_id, string file_name)
         {
-            seg044.sound_sub_120E0(Sound.sound_0);
+            seg044.PlaySound(Sound.sound_0);
 
             out_data = Classes.DaxFiles.DaxCache.LoadDax(file_name.ToLower(), block_id);
             decodeSize = out_data == null ? (short)0 : (short)out_data.Length;

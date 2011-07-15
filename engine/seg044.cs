@@ -9,7 +9,17 @@ namespace engine
             gbl.soundType = On ? SoundType.PC : SoundType.None;
         }
 
-        internal static void sound_sub_120E0(Sound arg_0) /*sub_120E0*/
+        public static void SetPicture(bool On)
+        {
+            gbl.PicsOn = On;
+        }
+
+        public static void SetAnimation(bool On)
+        {
+            gbl.AnimationsOn = On;
+        }
+
+        internal static void PlaySound(Sound arg_0) /*sub_120E0*/
         {
             if (gbl.soundType == SoundType.PC)
             {

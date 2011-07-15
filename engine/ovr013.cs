@@ -593,14 +593,14 @@ namespace engine
 
 		static void AvoidMissleAttack(int percentage, Player player) // sub_3AF06
 		{
-			if (gbl.SelectedPlayer.field_151 != null &&
+            if (gbl.SelectedPlayer.activeItems.primaryWeapon != null &&
 				ovr025.getTargetRange(player, gbl.SelectedPlayer) == 0 &&
 				ovr024.roll_dice(100, 1) <= percentage)
 			{
 				ovr025.DisplayPlayerStatusString(true, 10, "Avoids it", player);
 				gbl.damage = 0;
 				gbl.attack_roll = -1;
-				gbl.byte_1D2CA--;
+                gbl.bytes_1D2C9[1] -= 1;
 			}
 		}
 
@@ -609,13 +609,13 @@ namespace engine
 		{
 			Item item = null;
 
-			if (player.field_151 != null)
+            if (player.activeItems.primaryWeapon != null)
 			{
 				bool item_found = ovr025.GetCurrentAttackItem(out item, player);
 
 				if (item_found == false || item == null)
 				{
-					item = player.field_151;
+                    item = player.activeItems.primaryWeapon;
 				}
 			}
 
@@ -646,10 +646,10 @@ namespace engine
 
 			if (addAffect(0x3c, affect.affect_data, Affects.weaken, player) == true)
 			{
-				if (player.strength > 3)
+                if (player.stats2.Str.full > 3)
 				{
 					ovr025.DisplayPlayerStatusString(true, 10, "is weakened", player);
-					player.strength--;
+                    player.stats2.Str.full--;
 				}
 				else if (player.HasAffect(Affects.helpless) == true)
 				{
@@ -888,8 +888,8 @@ namespace engine
 
 		internal static void AffectFeebleMind(Effect arg_0, object param, Player player) // spell_stupid
 		{
-			player._int = 7;
-			player.wis = 7;
+            player.stats2.Int.full = 7;
+            player.stats2.Wis.full = 7;
 
 			ovr025.DisplayPlayerStatusString(true, 10, "is stupid", player);
 
@@ -1204,23 +1204,23 @@ namespace engine
 			{
 				int save_bonus = 0;
 
-				if (player.con >= 4 && player.con <= 6)
+                if (player.stats2.Con.full >= 4 && player.stats2.Con.full <= 6)
 				{
 					save_bonus = 1;
 				}
-				else if (player.con >= 7 && player.con <= 10)
+                else if (player.stats2.Con.full >= 7 && player.stats2.Con.full <= 10)
 				{
 					save_bonus = 2;
 				}
-				else if (player.con >= 11 && player.con <= 13)
+                else if (player.stats2.Con.full >= 11 && player.stats2.Con.full <= 13)
 				{
 					save_bonus = 3;
 				}
-				else if (player.con >= 14 && player.con <= 17)
+                else if (player.stats2.Con.full >= 14 && player.stats2.Con.full <= 17)
 				{
 					save_bonus = 4;
 				}
-				else if (player.con >= 18 && player.con <= 20)
+                else if (player.stats2.Con.full >= 18 && player.stats2.Con.full <= 20)
 				{
 					save_bonus = 5;
 				}
@@ -1241,29 +1241,29 @@ namespace engine
 		}
 
 
-		internal static void sub_3BEE8(Effect arg_0, object param, Player player_ptr)
+		internal static void sub_3BEE8(Effect arg_0, object param, Player player)
 		{
 			Affect arg_2 = (Affect)param;
 
 			byte heal_amount = 0;
 
-			if (player_ptr.health_status == Status.dying &&
-				player_ptr.actions.bleeding < 6)
+			if (player.health_status == Status.dying &&
+				player.actions.bleeding < 6)
 			{
-				heal_amount = (byte)(6 - player_ptr.actions.bleeding);
+				heal_amount = (byte)(6 - player.actions.bleeding);
 			}
 
-			if (player_ptr.health_status == Status.unconscious)
+			if (player.health_status == Status.unconscious)
 			{
 				heal_amount = 6;
 			}
 
 			if (heal_amount > 0 &&
-				ovr024.combat_heal(heal_amount, player_ptr) == true)
+				ovr024.combat_heal(heal_amount, player) == true)
 			{
-				ovr024.add_affect(true, 0xff, (ushort)(ovr024.roll_dice(4, 1) + 1), Affects.affect_5F, player_ptr);
+				ovr024.add_affect(true, 0xff, (ushort)(ovr024.roll_dice(4, 1) + 1), Affects.affect_5F, player);
 				arg_2.callAffectTable = false;
-				ovr024.remove_affect(arg_2, Affects.affect_63, player_ptr);
+				ovr024.remove_affect(arg_2, Affects.affect_63, player);
 			}
 		}
 
@@ -1453,7 +1453,7 @@ namespace engine
 
 		internal static void sub_3C2F9(Effect arg_0, object param, Player player) // sub_3C2F9
 		{
-			Item item = gbl.SelectedPlayer.field_151;
+            Item item = gbl.SelectedPlayer.activeItems.primaryWeapon;
 
 			if (item != null && item.type == ItemType.Type_85)
 			{
@@ -1485,7 +1485,7 @@ namespace engine
 
 		internal static void sub_3C3A2(Effect arg_0, object param, Player player)
 		{
-			Item field_151 = player.field_151;
+            Item field_151 = player.activeItems.primaryWeapon;
 
 			if (field_151 != null)
 			{

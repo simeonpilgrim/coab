@@ -534,7 +534,7 @@ namespace engine
             endgame_529F4();
 
             gbl.game_state = gbl.last_game_state;
-            ovr025.load_pic();
+            ovr025.LoadPic();
         }
     }
 }
