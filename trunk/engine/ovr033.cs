@@ -1,4 +1,5 @@
 using Classes;
+using Classes.Combat;
 
 namespace engine
 {
@@ -54,7 +55,7 @@ namespace engine
         }
 
 
-        internal static void sub_7416E(Point pos)
+        internal static void sub_7416E(Point pos) // sub_7416E
         {
             var screenPos = pos - gbl.mapToBackGroundTile.mapScreenTopLeft;
 
@@ -71,7 +72,7 @@ namespace engine
                     if (gbl.mapToBackGroundTile.drawTargetCursor == true)
                     {
                         // draws grey focus box
-                        ovr034.draw_combat_icon(0x19, 0, 0, screenPos.y + p.y, screenPos.x + p.x);
+                        ovr034.draw_combat_icon(0x19, Icon.Normal, 0, screenPos.y + p.y, screenPos.x + p.x);
                     }
                 }
             }
@@ -87,7 +88,8 @@ namespace engine
                 PlayerOnScreen(false, player_index) == true)
             {
                 // draws the player icon over focus box
-                ovr034.draw_combat_icon(gbl.player_array[player_index].icon_id, 0,
+                ovr034.draw_combat_icon(gbl.player_array[player_index].icon_id, 
+                    Icon.Normal,
                     gbl.player_array[player_index].actions.direction,
                     gbl.CombatMap[player_index].screenPos.y,
                     gbl.CombatMap[player_index].screenPos.x);
@@ -339,7 +341,7 @@ namespace engine
         }
 
 
-        internal static void redrawCombatArea(byte dir, byte radius, Point map) /*sub_749DD*/
+        internal static void redrawCombatArea(int dir, int radius, Point map) /*sub_749DD*/
         {
             var newPos = map + gbl.MapDirectionDelta[dir];
 
@@ -371,7 +373,7 @@ namespace engine
         }
 
 
-        internal static void draw_74B3F(byte arg_0, byte arg_2, int direction, Player player) /* sub_74B3F */
+        internal static void draw_74B3F(bool arg_0, Icon iconState, int direction, Player player) /* sub_74B3F */
         {
             int player_index = GetPlayerIndex(player);
 
@@ -382,8 +384,8 @@ namespace engine
             }
 
             if ((direction >> 2) != (player.actions.direction >> 2) ||
-                arg_2 != 0 ||
-                arg_0 != 0)
+                iconState == Icon.Attack ||
+                arg_0 == true)
             {
                 if (gbl.focusCombatAreaOnPlayer == true)
                 {
@@ -393,12 +395,12 @@ namespace engine
 
             player.actions.direction = direction;
 
-            if (arg_0 == 0 &&
+            if (arg_0 == false &&
                 PlayerOnScreen(false, player) == true &&
                 gbl.focusCombatAreaOnPlayer == true)
             {
                 var pos = gbl.CombatMap[player_index].screenPos;
-                ovr034.draw_combat_icon(player.icon_id, arg_2, direction, pos.y, pos.x);
+                ovr034.draw_combat_icon(player.icon_id, iconState, direction, pos.y, pos.x);
                 seg040.DrawOverlay();
             }
         }
@@ -533,7 +535,7 @@ namespace engine
         {
             if (gbl.game_state != GameState.Combat)
             {
-                seg044.sound_sub_120E0(Sound.sound_5);
+                seg044.PlaySound(Sound.sound_5);
                 seg041.GameDelay();
             }
             else
@@ -551,11 +553,11 @@ namespace engine
                     }
 
                     RedrawPlayerBackground(player_index);
-                    seg044.sound_sub_120E0(Sound.sound_5);
+                    seg044.PlaySound(Sound.sound_5);
 
                     // Draw skull overlay
-                    DaxBlock b1 = gbl.combat_icons[24].GetIcon(1, 0);
-                    DaxBlock b2 = gbl.combat_icons[25].GetIcon(0, 0);
+                    DaxBlock attackIcon = gbl.combat_icons[24].GetIcon(Icon.Attack, 0);
+                    DaxBlock normalIcon = gbl.combat_icons[25].GetIcon(Icon.Normal, 0);
                     var points = BuildSizeMap(gbl.CombatMap[player_index].size, gbl.CombatMap[player_index].screenPos);
                     for (int var_3 = 0; var_3 <= 8; var_3++)
                     {
@@ -563,7 +565,7 @@ namespace engine
                         {
                             if (CoordOnScreen(pos) == true)
                             {
-                                DaxBlock tmp = ((var_3 & 1) == 0) ? b1 : b2;
+                                DaxBlock tmp = ((var_3 & 1) == 0) ? attackIcon : normalIcon;
 
                                 seg040.OverlayBounded(tmp, 5, 0, (pos.y) * 3, (pos.x) * 3);
                             }

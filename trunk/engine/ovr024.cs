@@ -731,7 +731,7 @@ namespace engine
         }
 
 
-        internal static void decode_strength(out byte str_00, out byte str, Affect arg_8) /* sub_646D9 */
+        internal static void decode_strength(out int str_00, out int str, Affect arg_8) /* sub_646D9 */
         {
             str_00 = 0;
             str = (byte)(arg_8.affect_data & 0x7F);
@@ -752,8 +752,8 @@ namespace engine
         {
             bool encoded;
 
-            if (str > player.tmp_str ||
-                (str == 18 && str_100 > player.max_str_00))
+            if (str > player.stats2.Str.cur ||
+                (str == 18 && str_100 > player.stats2.Str00.full))
             {
                 encoded = true;
                 encoded_str = encode_strength(str_100, str);
@@ -768,7 +768,7 @@ namespace engine
         }
 
 
-        internal static void max_strength(ref byte str_a, byte str_b, ref byte str_00_a, byte str_00_b) /* sub_64771 */
+        internal static void max_strength(ref int str_a, int str_b, ref int str_00_a, int str_00_b) /* sub_64771 */
         {
             if (str_b > str_a ||
                 (str_b == 18 && str_00_b > str_00_a))
@@ -779,8 +779,10 @@ namespace engine
         }
 
 
-        internal static void ConHitPointBonus(int classLvl, SkillType class_index, byte cons, ref byte bp_var_A, Player player) // sub_647BE
+        internal static int ConHitPointBonus(int classLvl, SkillType class_index, int cons, Player player) // sub_647BE
         {
+            int returnVal = 0;
+
             if (gbl.max_class_hit_dice[(int)class_index] <= classLvl)
             {
                 classLvl = gbl.max_class_hit_dice[(int)class_index] - 1;
@@ -792,47 +794,51 @@ namespace engine
                 classLvl += 1;
             }
 
-            if (class_index == SkillType.Fighter || class_index == SkillType.Paladin || class_index == SkillType.Ranger)
+            if (class_index == SkillType.Fighter || 
+                class_index == SkillType.Paladin || 
+                class_index == SkillType.Ranger)
             {
                 if (cons >= 15 && cons <= 19)
                 {
-                    bp_var_A += (byte)(classLvl * (cons - 14));
+                    returnVal = classLvl * (cons - 14);
                 }
                 else if (cons == 20)
                 {
-                    bp_var_A += (byte)(classLvl * 5);
+                    returnVal = classLvl * 5;
                 }
                 else if (cons >= 21 && cons <= 23)
                 {
-                    bp_var_A += (byte)(classLvl * 6);
+                    returnVal = classLvl * 6;
                 }
                 else if (cons >= 24 && cons <= 25)
                 {
-                    bp_var_A += (byte)(classLvl * 7);
+                    returnVal = classLvl * 7;
                 }
             }
             else
             {
                 if (cons > 15)
                 {
-                    bp_var_A += (byte)(classLvl * 2);
+                    returnVal = classLvl * 2;
                 }
                 else if (cons == 15)
                 {
-                    bp_var_A += (byte)classLvl;
+                    returnVal = classLvl;
                 }
             }
+
+            return returnVal;
         }
 
 
         internal static void CalcStatBonuses(Stat stat_index, Player player) // sub_648D9
         {
-            byte stat_b = 0;
-            byte str_00_b = 0;
-            byte var_11 = 0x0FF;
+            int stat_b = 0;
+            int str_00_b = 0;
+            int var_11 = 0x0FF;
 
-            byte stat_a = player.stats[(int)stat_index].tmp;
-            byte str_00_a = player.max_str_00;
+            int stat_a = player.stats2[(int)stat_index].cur;
+            int str_00_a = player.stats2.Str00.full;
 
             foreach (Item item in player.items)
             {
@@ -840,7 +846,7 @@ namespace engine
                 {
                     int var_12 = (int)item.affect_3 & 0x7F;
 
-                    if (stat_index == 0)
+                    if (stat_index == Stat.STR)
                     {
                         if (var_12 == 5)
                         {
@@ -878,10 +884,10 @@ namespace engine
                         }
                         else if (var_12 == 8)
                         {
-                            if (player.tmp_str < 18 &&
+                            if (player.stats2.Str.cur < 18 &&
                                 item.affect_2 == 0)
                             {
-                                stat_b = (byte)(player.tmp_str + 1);
+                                stat_b = (byte)(player.stats2.Str.cur + 1);
                                 str_00_b = 0;
                             }
                         }
@@ -899,7 +905,7 @@ namespace engine
                             stat_a++;
                         }
                         else if (var_12 == 8 &&
-                            player.stats[(int)Stat.CON].tmp < 18 &&
+                            player.stats2.Con.cur < 18 &&
                             (int)item.affect_2 == 4)
                         {
                             stat_a++;
@@ -909,7 +915,7 @@ namespace engine
                     {
                         if (var_12 == 8)
                         {
-                            if (player.stats[(int)Stat.INT].tmp < 0x18 &&
+                            if (player.stats2.Int.cur < 0x18 &&
                                 (int)item.affect_2 == 1)
                             {
                                 stat_a++;
@@ -928,7 +934,7 @@ namespace engine
                     {
                         if (var_12 == 8 &&
                             (int)item.affect_2 == 2 &&
-                            player.tmp_wis < 18)
+                            player.stats2.Wis.cur < 18)
                         {
                             stat_a++;
                         }
@@ -937,11 +943,11 @@ namespace engine
                     {
                         if (var_12 == 2)
                         {
-                            if (player.tmp_dex >= 0 && player.tmp_dex <= 6)
+                            if (player.stats2.Dex.cur >= 0 && player.stats2.Dex.cur <= 6)
                             {
                                 stat_a += 4;
                             }
-                            else if (player.tmp_dex >= 7 && player.tmp_dex <= 13)
+                            else if (player.stats2.Dex.cur >= 7 && player.stats2.Dex.cur <= 13)
                             {
                                 stat_a += 2;
                             }
@@ -952,7 +958,7 @@ namespace engine
                         }
                         else if (var_12 == 8)
                         {
-                            if (player.tmp_dex < 18 &&
+                            if (player.stats2.Dex.cur < 18 &&
                                 (int)item.affect_2 == 3)
                             {
                                 stat_a++;
@@ -970,7 +976,7 @@ namespace engine
                             stat_a -= 1;
                         }
                         else if (var_12 == 8 &&
-                            player.tmp_cha < 18 &&
+                            player.stats2.Cha.cur < 18 &&
                             (int)item.affect_2 == 5)
                         {
                             stat_a += 1;
@@ -979,7 +985,7 @@ namespace engine
                 }
             }
 
-            if (stat_index == 0) // Strength
+            if (stat_index == Stat.STR) 
             {
                 Affect affect_ptr;
 
@@ -1001,7 +1007,7 @@ namespace engine
                                 player.ranger_lvl > 0 ||
                                 player.ranger_old_lvl > 0)
                             {
-                                str_00_b = (byte)(player.tmp_str_00 + ((stat_b - 18) * 10));
+                                str_00_b = (byte)(player.stats2.Str00.cur + ((stat_b - 18) * 10));
 
                                 if (str_00_b > 100)
                                 {
@@ -1035,18 +1041,18 @@ namespace engine
 
                 if (var_11 != 0xff)
                 {
-                    player.strength = var_11;
-                    player.tmp_str_00 = 0;
+                    player.stats2.Str.full = var_11;
+                    player.stats2.Str00.cur = 0;
                 }
                 else
                 {
-                    player.strength = stat_a;
-                    player.tmp_str_00 = str_00_a;
+                    player.stats2.Str.full = stat_a;
+                    player.stats2.Str00.cur = str_00_a;
                 }
             }
             else if (stat_index == Stat.CON)
             {
-                byte hitPointBonus = 0;
+                int hitPointBonus = 0;
                 byte classCount = 0;
                 byte orig_max_hp = player.hit_point_max;
                 player.hit_point_max = player.hit_point_rolled;
@@ -1057,7 +1063,7 @@ namespace engine
 
                     if (classLvl > 0)
                     {
-                        ConHitPointBonus(classLvl, classId, stat_a, ref hitPointBonus, player);
+                        hitPointBonus += ConHitPointBonus(classLvl, classId, stat_a, player);
                     }
 
                     classLvl = player.ClassLevel[(int)classId];
@@ -1076,12 +1082,12 @@ namespace engine
                     {
                         classLvl = player.multiclassLevel;
 
-                        ConHitPointBonus(classLvl, classId, stat_a, ref hitPointBonus, player);
+                        hitPointBonus += ConHitPointBonus(classLvl, classId, stat_a, player);
                     }
                 }
 
                 hitPointBonus /= classCount;
-                player.hit_point_max += hitPointBonus;
+                player.hit_point_max += (byte)hitPointBonus;
 
                 if (player.hit_point_max > orig_max_hp)
                 {
@@ -1099,9 +1105,9 @@ namespace engine
                     }
                 }
 
-                player.con = stat_a;
+                player.stats2.Con.full = stat_a;
 
-                if (player.con > 20)
+                if (player.stats2.Con.full > 20)
                 {
                     if (player.HasAffect(Affects.highConRegen) == true)
                     {
@@ -1122,11 +1128,11 @@ namespace engine
 
                 if (var_11 != 0xff)
                 {
-                    player._int = var_11;
+                    player.stats2.Int.full = var_11;
                 }
                 else
                 {
-                    player._int = stat_a;
+                    player.stats2.Int.full = stat_a;
                 }
             }
             else if (stat_index == Stat.WIS)
@@ -1139,22 +1145,22 @@ namespace engine
 
                 if (var_11 != 0xff)
                 {
-                    player.wis = var_11;
+                    player.stats2.Wis.full = var_11;
                 }
                 else
                 {
-                    player.wis = stat_a;
+                    player.stats2.Wis.full = stat_a;
                 }
             }
             else if (stat_index == Stat.DEX)
             {
                 if (var_11 != 0xff)
                 {
-                    player.dex = var_11;
+                    player.stats2.Dex.full = var_11;
                 }
                 else
                 {
-                    player.dex = stat_a;
+                    player.stats2.Dex.full = stat_a;
                 }
             }
             else if (stat_index == Stat.CHA)
@@ -1165,7 +1171,7 @@ namespace engine
                     stat_a = affect.affect_data;
                 }
 
-                player.charisma = stat_a;
+                player.stats2.Cha.full = stat_a;
             }
         }
 

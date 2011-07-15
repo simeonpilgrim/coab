@@ -161,7 +161,7 @@ namespace engine
             gbl.game_state = GameState.Shop;
             gbl.redrawBoarder = (gbl.area_ptr.inDungeon == 0);
 
-            ovr025.load_pic();
+            ovr025.LoadPic();
             gbl.redrawBoarder = true;
             ovr025.PartySummary(gbl.SelectedPlayer);
 
@@ -257,11 +257,11 @@ namespace engine
                 if (inputKey == 'B' ||
                     inputKey == 'T')
                 {
-                    ovr025.load_pic();
+                    ovr025.LoadPic();
                 }
                 else if (reloadPics == true)
                 {
-                    ovr025.load_pic();
+                    ovr025.LoadPic();
                     reloadPics = false;
                 }
 

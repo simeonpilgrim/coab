@@ -4,6 +4,12 @@ using System.Text;
 
 namespace Classes.Combat
 {
+    public enum Icon
+    {
+        Normal,
+        Attack,
+    }
+
 
     public class CombatIcon
     {
@@ -47,9 +53,9 @@ namespace Classes.Combat
             attack_f.Recolor(p, newColors, oldColors);
         }
 
-        public DaxBlock GetIcon(int iconState, int direction)
+        public DaxBlock GetIcon(Icon iconState, int direction)
         {
-            if (iconState == 0)
+            if (iconState == Icon.Normal)
             {
                 return direction > 3 ? normal_f : normal;
             }

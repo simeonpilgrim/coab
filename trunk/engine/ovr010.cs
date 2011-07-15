@@ -1,4 +1,5 @@
 using Classes;
+using Classes.Combat;
 
 namespace engine
 {
@@ -24,7 +25,7 @@ namespace engine
 
                 if (var_1 != 8)
                 {
-                    var_1 = (byte)(ovr024.roll_dice(2, 1) + 4);
+                    var_1 = ovr024.roll_dice(2, 1) + 4;
                 }
                 else
                 {
@@ -113,7 +114,7 @@ namespace engine
         }
 
 
-        internal static bool sub_352AF(int spell_id, Point pos) // sub_352AF
+        internal static bool ShouldCastSpellX_sub1(int spell_id, Point pos) // sub_352AF
         {
             bool result = false;
             var spell_entry = gbl.spellCastingTable[spell_id];
@@ -164,7 +165,7 @@ namespace engine
                         {
                             foreach (var cpi in nearTargets)
                             {
-                                if (sub_352AF(spellId, cpi.pos) == true)
+                                if (ShouldCastSpellX_sub1(spellId, cpi.pos) == true)
                                 {
                                     return false;
                                 }
@@ -286,21 +287,18 @@ namespace engine
             return casting_spell;
         }
 
-        static int[] data_2B8 = new int[]{ 
-0, 8, 7, 6, 1, 2, 8, 1, 2, 7,
-6, 7, 1, 8, 6, 2, 1, 7, 8, 2,
-6, 8, 7, 6, 5, 4, 8, 1, 2, 3,  
-4, 8, 4, 6, 2, 8 ,6, 4, 0, 8,
-0, 6, 2, 8, 2, 0, 4, 0, 0, 2,
-6, 2, 2, 0, 4, 4, 4, 2, 6, 6 };/* actual from seg600:02BD - seg600:02F8 */
+        static int[,] data_2B8 = new int[,]{ 
+            {8, 7, 6, 1, 2}, {8, 1, 2, 7, 6}, {7, 1, 8, 6, 2}, {1, 7, 8, 2, 6}, {8, 7, 6, 5, 4}, 
+            {8, 1, 2, 3, 4}, {8, 4, 6, 2, 8}, {6, 4, 0, 8, 0}, {6, 2, 8, 2, 0}, {4, 0, 0, 2, 6}, 
+            {2, 2, 0, 4, 4} /*, {4, 2, 6, 6}*/ };/* actual from seg600:02BD - seg600:02F8 */
 
         internal static bool CanMove(out bool groundClear, int baseDirecction, int dirStep, Player player) // sub_3573B
         {
             groundClear = false;
             bool canMove = false;
 
-            int var_6 = data_2B8[(player.actions.field_15 * 5) + dirStep];
-            byte playerDirection = (byte)((baseDirecction + var_6) % 8);
+            int var_6 = data_2B8[player.actions.field_15, dirStep - 1];
+            int playerDirection = (baseDirecction + var_6) % 8;
 
             int groundTile;
             int playerIndex;
@@ -390,7 +388,7 @@ namespace engine
                     player.combat_team == CombatTeam.Enemy)
                 {
                     if (player.actions.moral_failure == true ||
-                        player.armor != null ||
+                        player.activeItems.armor != null ||
                         player._class != ClassId.magic_user)
                     {
                         if (player.actions.moral_failure == false)
@@ -437,7 +435,7 @@ namespace engine
                         }
                         else
                         {
-                            var_2 = (data_2B8[(player.actions.field_15 * 5) + dirStep] + dir) % 8;
+                            var_2 = (data_2B8[player.actions.field_15, dirStep] + dir) % 8;
 
                             if (dirStep == 6 || ((var_2 + 4) % 8) == byte_1AB18)
                             {
@@ -475,7 +473,7 @@ namespace engine
                         {
                             gbl.focusCombatAreaOnPlayer = (gbl.byte_1D90E || ovr033.PlayerOnScreen(false, player) || player.combat_team == CombatTeam.Ours);
 
-                            ovr033.draw_74B3F(0, 0, var_2, player);
+                            ovr033.draw_74B3F(false, Icon.Normal, var_2, player);
                             ovr014.move_step_away_attack(player.actions.direction, player);
 
                             if (player.in_combat == false)
@@ -563,9 +561,9 @@ namespace engine
                     gbl.byte_1D90E = false;
                     int range = 1;
 
-                    if (player.field_151 != null)
+                    if (player.activeItems.primaryWeapon != null)
                     {
-                        range = gbl.ItemDataTable[player.field_151.type].range - 1;
+                        range = gbl.ItemDataTable[player.activeItems.primaryWeapon.type].range - 1;
                     }
 
                     if (range == 0 || range == 0xff || range == -1)
@@ -650,7 +648,7 @@ namespace engine
                         }
                         else
                         {
-                            ovr014.recalc_action_12(target, player);
+                            ovr014.RecalcAttacksReceived(target, player);
 
                             Item item = null;
 
@@ -665,7 +663,7 @@ namespace engine
                                 }
                             }
 
-                            ovr014.AttackTarget(out stop, item, 0, target, player);
+                            stop = ovr014.AttackTarget(item, 0, target, player);
 
                             if (stop == true)
                             {
@@ -732,12 +730,12 @@ namespace engine
                 }
                 else if (var_6 == 0x20)
                 {
-                    foreach (Player player_ptr in gbl.TeamList)
+                    foreach (Player p in gbl.TeamList)
                     {
-                        if (player_ptr.control_morale < Control.NPC_Base &&
-                            player_ptr.health_status != Status.animated)
+                        if (p.control_morale < Control.NPC_Base &&
+                            p.health_status != Status.animated)
                         {
-                            player_ptr.quick_fight = QuickFight.False;
+                            p.quick_fight = QuickFight.False;
                         }
                     }
 
@@ -801,7 +799,7 @@ namespace engine
                             ovr024.remove_affect(null, Affects.affect_4a, player);
                             ovr024.remove_affect(null, Affects.weap_dragon_slayer, player);
                         }
-                        else if (player._int > 5)
+                        else if (player.stats2.Int.full > 5)
                         {
                             ovr024.RemoveFromCombat("Surrenders", Status.unconscious, player);
 
@@ -839,17 +837,17 @@ namespace engine
                 rating = 8;
             }
 
-            if ((itemData.field_E & ItemDataFlags.flag_08) > 0)
+            if ((itemData.field_E & ItemDataFlags.flag_08) != 0)
             {
                 rating += (itemData.numberAttacks - 1) * 2;
             }
 
-            if (itemData.handsCount <= 1)
+            if (item.HandsCount() <= 1)
             {
                 rating += 3;
             }
 
-            if ((itemData.handsCount + player.field_185) > 3)
+            if ((item.HandsCount() + player.weaponsHandsUsed) > 3)
             {
                 rating = 0;
             }
@@ -875,16 +873,10 @@ namespace engine
 
 
         static void AI_items_selection(Player player)  // sub_36673 
-        {
-            if (player.field_151 != null)
-            {
-                player.field_185 -= gbl.ItemDataTable[player.field_151.type].handsCount;
-            }
+        {         
+            player.weaponsHandsUsed -= player.activeItems.PrimaryWeaponHandCount();
+            player.weaponsHandsUsed -= player.activeItems.SecondaryWeaponHandCount();
 
-            if (player.field_155 != null)
-            {
-                player.field_185 -= gbl.ItemDataTable[player.field_155.type].handsCount;
-            }
 
             Item var_4 = null;
             Item var_8 = null;
@@ -961,12 +953,12 @@ namespace engine
                 {
                     if ((itemFlags & ItemDataFlags.arrows) != 0)
                     {
-                        tmpItem = player.arrows;
+                        tmpItem = player.activeItems.arrows;
                     }
 
                     if ((itemFlags & ItemDataFlags.quarrels) != 0)
                     {
-                        tmpItem = player.quarrels;
+                        tmpItem = player.activeItems.quarrels;
                     }
                 }
             }
@@ -994,26 +986,26 @@ namespace engine
             bool itemsChanged = false;
             bool replace_weapon = true;
 
-            if (player.field_151 != null &&
-                (player.field_151 == weapon ||
-                 player.field_151.cursed == true))
+            if (player.activeItems.primaryWeapon != null &&
+                (player.activeItems.primaryWeapon == weapon ||
+                 player.activeItems.primaryWeapon.cursed == true))
             {
                 replace_weapon = false;
             }
 
             if (replace_weapon)
             {
-                if (player.field_151 != null)
+                if (player.activeItems.primaryWeapon != null)
                 {
-                    ovr020.ready_Item(player.field_151);
+                    ovr020.ready_Item(player.activeItems.primaryWeapon);
                 }
 
                 ovr025.reclac_player_values(player);
 
-                if (player.field_155 != null &&
-                    player.field_155.cursed == false)
+                if (player.activeItems.secondaryWeapon != null &&
+                    player.activeItems.secondaryWeapon.cursed == false)
                 {
-                    player.field_185 -= gbl.ItemDataTable[player.field_155.type].handsCount;
+                    player.weaponsHandsUsed -= player.activeItems.SecondaryWeaponHandCount();
                 }
 
                 if (weapon != null)
@@ -1028,31 +1020,31 @@ namespace engine
             ovr014.reclac_attacks(player);
             replace_weapon = true;
 
-            if (player.field_155 != null &&
-                (player.field_155 == best_weapon || player.field_155.cursed == true))
+            if (player.activeItems.secondaryWeapon != null &&
+                (player.activeItems.secondaryWeapon == best_weapon || player.activeItems.secondaryWeapon.cursed == true))
             {
                 replace_weapon = false;
             }
 
-            if (player.field_185 > 2)
+            if (player.weaponsHandsUsed > 2)
             {
-                if (player.field_155 == null ||
-                    player.field_155.cursed == true)
+                if (player.activeItems.secondaryWeapon == null ||
+                    player.activeItems.secondaryWeapon.cursed == true)
                 {
                     ovr020.ready_Item(weapon);
                     itemsChanged = true;
                 }
                 else
                 {
-                    ovr020.ready_Item(player.field_155);
+                    ovr020.ready_Item(player.activeItems.secondaryWeapon);
                     itemsChanged = true;
                 }
             }
-            else if (player.field_185 < 2 && replace_weapon)
+            else if (player.weaponsHandsUsed < 2 && replace_weapon)
             {
-                if (player.field_155 != null)
+                if (player.activeItems.secondaryWeapon != null)
                 {
-                    ovr020.ready_Item(player.field_155);
+                    ovr020.ready_Item(player.activeItems.secondaryWeapon);
                 }
                 ovr025.reclac_player_values(player);
 

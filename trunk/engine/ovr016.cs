@@ -195,7 +195,7 @@ namespace engine
 
             if (redraw == true)
             {
-                ovr025.load_pic();
+                ovr025.LoadPic();
             }
         }
 
@@ -271,7 +271,7 @@ namespace engine
         }
 
 
-        internal static void rest_menu(out bool action_interrupted)
+        internal static bool rest_menu()
         {
             int max_rest_time = 0;
             foreach (Player player in gbl.TeamList)
@@ -288,11 +288,13 @@ namespace engine
             gbl.timeToRest.field_4 = (ushort)((max_rest_time - (gbl.timeToRest.field_6 * 60)) / 10);
             gbl.timeToRest.field_2 = (ushort)(max_rest_time % 10);
 
-            action_interrupted = ovr021.resting(true);
+            bool action_interrupted = ovr021.resting(true);
 
             gbl.timeToRest.Clear();
 
             ovr025.display_map_position_time();
+
+            return action_interrupted;
         }
 
 
@@ -366,7 +368,7 @@ namespace engine
 
                 if (redraw == true)
                 {
-                    ovr025.load_pic();
+                    ovr025.LoadPic();
                 }
             }
         }
@@ -491,7 +493,7 @@ namespace engine
 
                 if (redraw)
                 {
-                    ovr025.load_pic();
+                    ovr025.LoadPic();
                 }
             }
         }
@@ -591,16 +593,16 @@ namespace engine
                 0x16, 0x26, 4, 1, new MenuColorSet(15, 10, 11), string.Empty, string.Empty);
 
             var_C.Clear();
-            ovr025.load_pic();
+            ovr025.LoadPic();
         }
 
 
-        internal static void magic_menu(out bool arg_0)
+        internal static bool magic_menu()
         {
             char inputKey = ' ';
-            arg_0 = false;
+            bool actionInterrupted = false;
 
-            while (arg_0 == false && AlterSet.MemberOf(inputKey) == false)
+            while (actionInterrupted == false && AlterSet.MemberOf(inputKey) == false)
             {
                 bool controlKey;
                 inputKey = ovr027.displayInput(out controlKey, true, 1, gbl.defaultMenuColors, "Cast Memorize Scribe Display Rest Exit", string.Empty);
@@ -631,11 +633,13 @@ namespace engine
                             break;
 
                         case 'R':
-                            rest_menu(out arg_0);
+                            actionInterrupted = rest_menu();
                             break;
                     }
                 }
             }
+
+            return actionInterrupted;
         }
 
 
@@ -725,7 +729,6 @@ namespace engine
                     }
                 }
             }
-
         }
 
 
@@ -835,7 +838,7 @@ namespace engine
             while (AlterSet.MemberOf(inputKey) == false)
             {
                 bool controlKey;
-                inputKey = ovr027.displayInput(out controlKey, true, 1, gbl.defaultMenuColors, "Order Drop Speed Icon Pics Exit", "Alter: ");
+                inputKey = ovr027.displayInput(out controlKey, true, 1, gbl.defaultMenuColors, "Order Drop Speed Icon Exit", "Alter: ");
 
                 if (controlKey == true)
                 {
@@ -860,48 +863,7 @@ namespace engine
 
                         case 'I':
                             ovr018.icon_builder();
-                            ovr025.load_pic();
-                            break;
-
-                        case 'P':
-                            char inputKey2;
-
-                            do
-                            {
-                                string text;
-
-                                if (gbl.PicsOn == true)
-                                {
-                                    text = "Pics on  ";
-
-                                    if (gbl.AnimationsOn == true)
-                                    {
-                                        text += "Animation on  ";
-                                    }
-                                    else
-                                    {
-                                        text += "Animation off ";
-                                    }
-                                }
-                                else
-                                {
-                                    text = "Pics off  ";
-                                }
-
-                                text += "Exit";
-
-                                inputKey2 = ovr027.displayInput(out controlKey, true, 0, gbl.defaultMenuColors, text, string.Empty);
-
-                                if (inputKey2 == 0x50)
-                                {
-                                    gbl.PicsOn = !gbl.PicsOn;
-                                }
-                                else if (inputKey2 == 'A')
-                                {
-                                    gbl.AnimationsOn = !gbl.AnimationsOn;
-                                }
-
-                            } while (AlterSet.MemberOf(inputKey2) == false);
+                            ovr025.LoadPic();
                             break;
                     }
                 }
@@ -1071,9 +1033,9 @@ namespace engine
         }
 
 
-        static void FixTeam(out bool action_interrupted) // fix_menu
+        static bool FixTeam() // fix_menu
         {
-            action_interrupted = false;
+            bool action_interrupted = false;
 
             if (TotalHitpointsLost() != 0)
             {
@@ -1107,6 +1069,8 @@ namespace engine
                     }
                 }
             }
+
+            return action_interrupted;
         }
 
         static Set unk_463F4 = new Set(0x0009, new byte[] { 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x20 });
@@ -1114,7 +1078,7 @@ namespace engine
         /// <summary>
         /// Does Camp menu, returns if interrupted
         /// </summary>
-        internal static bool make_camp()
+        internal static bool MakeCamp() // make_camp
         {
             var game_state_bkup = gbl.game_state;
             gbl.game_state = GameState.Camping;
@@ -1125,15 +1089,15 @@ namespace engine
             gbl.byte_1D5AB = gbl.lastDaxFile;
             gbl.byte_1D5B5 = gbl.lastDaxBlockId;
 
-            ovr025.load_pic();
+            ovr025.LoadPic();
             seg037.draw8x8_clear_area(TextRegion.NormalBottom);
 
             seg041.displayString("The party makes camp...", 0, 10, 18, 1);
             cancel_spells();
-            bool action_interrupted = false;
+            bool actionInterrupted = false;
             char input_key = ' ';
 
-            while (action_interrupted == false &&
+            while (actionInterrupted == false &&
                 unk_463F4.MemberOf(input_key) == false)
             {
                 bool special_key;
@@ -1163,16 +1127,16 @@ namespace engine
 
                         case 'M':
                             gbl.menuSelectedWord = 1;
-                            magic_menu(out action_interrupted);
+                            actionInterrupted = magic_menu();
                             break;
 
                         case 'R':
                             gbl.menuSelectedWord = 1;
-                            rest_menu(out action_interrupted);
+                            actionInterrupted = rest_menu();
                             break;
 
                         case 'F':
-                            FixTeam(out action_interrupted);
+                            actionInterrupted = FixTeam();
                             break;
 
                         case 'A':
@@ -1195,7 +1159,7 @@ namespace engine
             ovr025.ClearPlayerTextArea();
             ovr027.ClearPromptArea();
 
-            return action_interrupted;
+            return actionInterrupted;
         }
     }
 }

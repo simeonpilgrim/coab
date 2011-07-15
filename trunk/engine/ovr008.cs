@@ -346,11 +346,11 @@ namespace engine
 
             if (arg_4 == 0x15)
             {
-                return_val = gbl.SelectedPlayer._int;
+                return_val = (byte)gbl.SelectedPlayer.stats2.Int.full;
             }
             else if (arg_4 == 0x18)
             {
-                return_val = gbl.SelectedPlayer.con;
+                return_val = (byte)gbl.SelectedPlayer.stats2.Con.full;
             }
             else if (arg_4 == 0x72)
             {
@@ -476,7 +476,7 @@ namespace engine
             }
             else if (arg_4 == 0x2CF)
             {
-                switch (gbl.SelectedPlayer.charisma)
+                switch (gbl.SelectedPlayer.stats2.Cha.full)
                 {
                     case 3:
                         return_val = 0;
@@ -1348,20 +1348,20 @@ namespace engine
         }
 
 
-        internal static void RobItems(Player player, int arg_4) /* sub_31F1C */
+        internal static void RobItems(Player player, int robChance) /* sub_31F1C */
         {
             player.items.RemoveAll(item =>
             {
                 if (item.weight > 255)
                 {
-                    arg_4 = (arg_4 > 90) ? arg_4 - 90 : 0;
+                    robChance = (robChance > 90) ? robChance - 90 : 0;
                 }
                 else if (item.weight > 24)
                 {
-                    arg_4 = (arg_4 > 50) ? arg_4 - 50 : 0;
+                    robChance = (robChance > 50) ? robChance - 50 : 0;
                 }
 
-                return (ovr024.roll_dice(100, 1) <= arg_4);
+                return (ovr024.roll_dice(100, 1) <= robChance);
             });
         }
 

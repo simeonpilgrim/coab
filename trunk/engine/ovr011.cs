@@ -27,29 +27,31 @@ namespace engine
 
         internal static void sub_370D3()
         {
+            bool byte_1AD3E;
+
             if (gbl.dir_0_flags != 1 && gbl.dir_2_flags != 1 &&
                 gbl.dir_4_flags != 1 && gbl.dir_6_flags != 1)
             {
-                gbl.byte_1AD3E = 0;
+                byte_1AD3E = false;
             }
             else if (gbl.dir_0_flags == 1 && gbl.dir_4_flags == 1 &&
                 (gbl.dir_2_flags != 1 || gbl.dir_6_flags != 1))
             {
-                gbl.byte_1AD3E = 0;
+                byte_1AD3E = false;
             }
             else if (gbl.dir_2_flags == 1 && gbl.dir_6_flags == 1 &&
                 (gbl.dir_0_flags != 1 || gbl.dir_4_flags != 1))
             {
-                gbl.byte_1AD3E = 0;
+                byte_1AD3E = false;
             }
             else if (gbl.dir_0_flags == 3 || gbl.dir_2_flags == 3 ||
                 gbl.dir_4_flags == 3 || gbl.dir_6_flags == 3)
             {
-                gbl.byte_1AD3E = 0;
+                byte_1AD3E = false;
             }
             else
             {
-                gbl.byte_1AD3E = 1;
+                byte_1AD3E = true;
             }
 
             for (int var_1 = 2; var_1 <= 3; var_1++)
@@ -64,7 +66,7 @@ namespace engine
                     {
                         if (gbl.BackGroundTiles[gbl.mapToBackGroundTile[posX, posY]].tile_index == 0x16 &&
                             gbl.byte_1AD3D != 0 &&
-                            gbl.byte_1AD3E != 0 &&
+                            byte_1AD3E &&
                             ovr024.roll_dice(10, 1) <= 5)
                         {
                             gbl.mapToBackGroundTile[posX, posY] = 0x1A; // Table
@@ -495,7 +497,7 @@ namespace engine
         }
 
 
-        internal static void sub_378CD()
+        internal static void SetupDungeonFloor() // sub_378CD0
         {
             for (gbl.byte_1AD35 = -2; gbl.byte_1AD35 <= 2; gbl.byte_1AD35++)
             {
@@ -546,7 +548,7 @@ namespace engine
         }
 
 
-        internal static void sub_37A00()
+        internal static void SetupWildernessFloor01() // sub_37A00
         {
             byte var_1 = 0;
 
@@ -592,7 +594,7 @@ namespace engine
         }
 
 
-        static void BuildGroundMap01() // sub_37B0B
+        static void SetupWildernessFloor02() // sub_37B0B
         {
             int cityFlags = GetCityInfo();
             if ((cityFlags & 0x80) == 0)
@@ -675,7 +677,7 @@ namespace engine
         }
 
 
-        static void sub_37E4A()
+        static void SetupWildernessFloor03() // sub_37E4A
         {
             int var_4 = 50;
 
@@ -741,14 +743,14 @@ namespace engine
         }
 
 
-        static void sub_37FC8()
+        static void SetupWildernessFloor() // sub_37FC8
         {
             gbl.mapToBackGroundTile.SetField_7(23);
 
             gbl.current_city = gbl.area_ptr.current_city;
-            sub_37A00();
-            BuildGroundMap01();
-            sub_37E4A();
+            SetupWildernessFloor01();
+            SetupWildernessFloor02();
+            SetupWildernessFloor03();
         }
 
 
@@ -773,11 +775,11 @@ namespace engine
 
             if (gbl.area_ptr.inDungeon != 0)
             {
-                sub_378CD();
+                SetupDungeonFloor();
             }
             else
             {
-                sub_37FC8();
+                SetupWildernessFloor();
             }
         }
 
@@ -1104,24 +1106,24 @@ namespace engine
             gbl.CombatantCount = 0;
 
             List<Player> to_remove = new List<Player>();
-            foreach (Player player_ptr in gbl.TeamList)
+            foreach (Player player in gbl.TeamList)
             {
                 seg043.clear_one_keypress();
 
-                gbl.player_array[loop_var] = player_ptr;
+                gbl.player_array[loop_var] = player;
 
-                gbl.currentTeam = (sbyte)player_ptr.combat_team;
+                gbl.currentTeam = (sbyte)player.combat_team;
 
-                gbl.CombatMap[loop_var].size = player_ptr.field_DE & 7;
+                gbl.CombatMap[loop_var].size = player.field_DE & 7;
 
                 if (place_combatant(loop_var) == true)
                 {
-                    if (player_ptr.in_combat == false)
+                    if (player.in_combat == false)
                     {
                         gbl.CombatMap[loop_var].size = 0;
 
                         if (gbl.combat_type == CombatType.normal &&
-                            player_ptr.actions.nonTeamMember == false)
+                            player.actions.nonTeamMember == false)
                         {
                             var pos = gbl.CombatMap[loop_var].pos;
 
@@ -1129,11 +1131,10 @@ namespace engine
                             gbl.downedPlayers.Add(b);
 
                             b.originalBackgroundTile = gbl.mapToBackGroundTile[pos];
-                            b.target = player_ptr;
+                            b.target = player;
                             b.map = pos;
 
                             gbl.mapToBackGroundTile[pos] = 0x1F;
-
                         }
                     }
 
@@ -1145,10 +1146,10 @@ namespace engine
                 {
                     gbl.CombatMap[loop_var].size = 0;
 
-                    if (player_ptr.actions.nonTeamMember == true)
+                    if (player.actions.nonTeamMember == true)
                     {
                         gbl.player_array[loop_var] = null;
-                        to_remove.Add(player_ptr);
+                        to_remove.Add(player);
                     }
                     else
                     {

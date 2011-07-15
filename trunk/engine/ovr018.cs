@@ -1,5 +1,7 @@
 using Classes;
 using System.Collections.Generic;
+using System;
+using Classes.Combat;
 
 namespace engine
 {
@@ -319,91 +321,6 @@ namespace engine
             {40, 40, 40, 40, 0x2A, 0x2A, 0x2A, 0x2C, 0x2C, 0x2C, 0x2E, 0x2E, 0x2E} };
 
 
-        class AgeBrackets
-        {
-            internal int age_0; // unk_1A434
-            internal int age_1; // unk_1A436
-            internal int age_2; // unk_1A438
-            internal int age_3; // unk_1A43A
-            internal int age_4; // unk_1A43C
-
-            internal AgeBrackets(int age0, int age1, int age2, int age3, int age4)
-            {
-                age_0 = age0;
-                age_1 = age1;
-                age_2 = age2;
-                age_3 = age3;
-                age_4 = age4;
-            }
-        }
-
-        class RaceAgeBrackets
-        {
-            static AgeBrackets[] data = { // unk_1A434
-            null, // monster 
-            new AgeBrackets(0x32, 0x96, 0xFA, 0x15E, 0x1C2), // dwarf
-            new AgeBrackets(0xAF, 0x226, 0x36B, 0x4B0, 0x640), //elf
-            new AgeBrackets(0x5A, 0x12C, 0x1C2, 0x258, 0x2EE), // gnome
-            new AgeBrackets(0x28, 0x64, 0xAF, 0x0FA, 0x145), // half elf
-            new AgeBrackets(0x21, 0x44, 0x65, 0x90, 0x0C7), // halfling  
-            new AgeBrackets(0x0F, 0x1E, 0x2D, 0x3C, 0x50), // half orc
-            new AgeBrackets(0x14, 0x28, 0x3C, 0x5A, 0x78) }; // human
-
-            internal AgeBrackets this[Race race]
-            {
-                get { return data[(int)race]; }
-            }
-        }
-
-        static RaceAgeBrackets race_age_brackets = new RaceAgeBrackets();
-
-
-        internal class stats_ranges
-        {
-            internal byte[] str_min; // unk_1A298
-            internal byte[] str_max; // max_str_val
-            internal byte[] str_100_max; // unk_1A29C
-            internal byte int_min; // unk_1A29E
-            internal byte int_max; // unk_1A29F
-            internal byte wis_min; // unk_1A2A0
-            internal byte wis_max; // unk_1A2A1
-            internal byte dex_min; // unk_1A2A2
-            internal byte dex_max; // unk_1A2A3
-            internal byte con_min; // unk_1A2A4
-            internal byte con_max; // unk_1A2A5
-            internal byte cha_min; // unk_1A2A6
-            internal byte cha_max; // max_cha_val
-
-            internal stats_ranges(byte v0, byte v1, byte v2, byte v3, byte v4, byte v5, byte v6,
-                byte v7, byte v8, byte v9, byte vA, byte vB, byte vC, byte vD, byte vE, byte vF)
-            {
-                str_min = new byte[] { v0, v1 };
-                str_max = new byte[] { v2, v3 };
-                str_100_max = new byte[] { v4, v5 };
-                int_min = v6;
-                int_max = v7;
-                wis_min = v8;
-                wis_max = v9;
-                dex_min = vA;
-                dex_max = vB;
-                con_min = vC;
-                con_max = vD;
-                cha_min = vE;
-                cha_max = vF;
-
-            }
-        }
-
-
-        internal static stats_ranges[] racial_stats_limits = new stats_ranges[] { // stru_1A298
-            new stats_ranges(0, 5, 0xa, 0, 5, 5, 0xa, 0xF, 5, 0xA, 0xA, 0xF, 0x14, 0xA, 0xC, 0xC), 
-            new stats_ranges(8, 8, 0x12, 0x11, 0x63, 0, 3, 0x12, 3, 0x12, 3, 0x11, 0xC, 0x13, 3, 0x10), 
-            new stats_ranges(3, 3, 0x12, 0x10, 0x4B, 0, 8, 0x12, 3, 0x12, 7, 0x13, 6, 0x12, 8, 0x12), 
-            new stats_ranges(6, 6, 0x12, 0xF, 0x32, 0, 7, 0x12, 3, 0x12, 3, 0x12, 8, 0x12, 3, 0x12), 
-            new stats_ranges(3, 3, 0x12, 0x11, 0x5A, 0, 4, 0x12, 3, 0x12, 6, 0x12, 6, 0x12, 3, 0x12), 
-            new stats_ranges(6, 6, 0x11, 0xE, 0, 0, 6, 0x12, 3, 0x11, 8, 0x12, 0xA, 0x13, 3, 0x12), 
-            new stats_ranges(6, 6, 0x12, 0x12, 0x63, 0x4B, 3, 0x11, 3, 0xE, 3, 0x11, 0xD, 0x13, 3, 0xC), 
-            new stats_ranges(3, 3, 0x12, 0x12, 0x64, 0x32, 3, 0x12, 3, 0x12, 3, 0x12, 3, 0x12, 3, 0x12) };
 
         internal static void createPlayer()
         {
@@ -414,8 +331,6 @@ namespace engine
             byte var_1B;
 
             char input_key;
-            byte stat_value;
-            byte var_14;
             int index;
             MenuItem selected;
 
@@ -749,278 +664,83 @@ namespace engine
                     }
                 }
 
-                player.tmp_str_00 = 0;
+                player.stats2.Str.full = 0;
+                player.stats2.Int.full = 0;
+                player.stats2.Wis.full = 0;
+                player.stats2.Dex.full = 0;
+                player.stats2.Con.full = 0;
+                player.stats2.Cha.full = 0;
+                player.stats2.Str00.full = 0;
 
-                for (var_1B = 0; var_1B <= 5; var_1B++)
+                for(int i = 0; i < 6; i++)
                 {
-                    player.stats[var_1B].max = 0;
+                    player.stats2.Str.full = Math.Max(player.stats2.Str.full, ovr024.roll_dice(6, 3) + 1);
+                    player.stats2.Int.full = Math.Max(player.stats2.Int.full, ovr024.roll_dice(6, 3) + 1);
+                    player.stats2.Wis.full = Math.Max(player.stats2.Wis.full, ovr024.roll_dice(6, 3) + 1);
+                    player.stats2.Dex.full = Math.Max(player.stats2.Dex.full, ovr024.roll_dice(6, 3) + 1);
+                    player.stats2.Con.full = Math.Max(player.stats2.Con.full, ovr024.roll_dice(6, 3) + 1);
+                    player.stats2.Cha.full = Math.Max(player.stats2.Cha.full, ovr024.roll_dice(6, 3) + 1);
+                }
 
-                    for (var_14 = 1; var_14 <= 6; var_14++)
-                    {
-                        stat_value = (byte)(ovr024.roll_dice(6, 3) + 1);
+                int race = (int)player.race;
+                int sex = player.sex;
 
-                        //switch (7) // was loop1_var but that's always 7 after the race building loop.
-                        //{
-                        //    case 1:
-                        //        if (var_1B == 4)
-                        //        {
-                        //            stat_value += 1;
-                        //        }
-                        //        else if (var_1B == 5)
-                        //        {
-                        //            stat_value -= 1;
-                        //        }
-                        //        break;
-                        //
-                        //    case 2:
-                        //        if (var_1B == 3)
-                        //        {
-                        //            stat_value += 1;
-                        //        }
-                        //        else if (var_1B == 4)
-                        //        {
-                        //            stat_value -= 1;
-                        //        }
-                        //        break;
-                        //
-                        //    case 5:
-                        //        if (var_1B == 0)
-                        //        {
-                        //            stat_value -= 1;
-                        //        }
-                        //        else if (var_1B == 3)
-                        //        {
-                        //            stat_value++;
-                        //        }
-                        //
-                        //        break;
-                        //
-                        //    case 6:
-                        //        if (var_1B == 0)
-                        //        {
-                        //            stat_value++;
-                        //        }
-                        //        else if (var_1B == 4)
-                        //        {
-                        //            stat_value++;
-                        //        }
-                        //        else if (var_1B == 5)
-                        //        {
-                        //            stat_value -= 2;
-                        //        }
-                        //        break;
-                        //}
-
-                        if (player.stats[var_1B].max < stat_value)
-                        {
-                            player.stats[var_1B].max = stat_value;
-                        }
-                    }
-
+                for (var_1B = 0; var_1B < 6; var_1B++)
+                {
                     switch ((Stat)var_1B)
                     {
                         case Stat.STR:
-                            if (player.stats[var_1B].max > 0 &&
-                                race_age_brackets[player.race].age_0 < player.age)
-                            {
-                                player.stats[var_1B].max += 1;
-                            }
+                            player.stats2.Str.AgeEffects(race, player.age);
+                            player.stats2.Str.EnforceRaceSexLimits(race, sex);
+                            player.stats2.Str.EnforceClassLimits((int)player._class);
 
-                            if (player.stats[var_1B].max > 0 &&
-                                race_age_brackets[player.race].age_1 < player.age)
-                            {
-                                player.stats[var_1B].max -= 1;
-                            }
-
-                            if (player.stats[var_1B].max > 0 &&
-                                race_age_brackets[player.race].age_2 < player.age)
-                            {
-                                player.stats[var_1B].max -= 2;
-                            }
-
-                            if (player.stats[var_1B].max > 0 &&
-                                race_age_brackets[player.race].age_3 < player.age)
-                            {
-                                player.stats[var_1B].max -= 1;
-                            }
-
-                            if (player.stats[var_1B].max < racial_stats_limits[(int)player.race].str_min[player.sex])
-                            {
-                                player.stats[var_1B].max = racial_stats_limits[(int)player.race].str_min[player.sex];
-                            }
-
-                            if (player.stats[var_1B].max > racial_stats_limits[(int)player.race].str_max[player.sex])
-                            {
-                                player.stats[var_1B].max = racial_stats_limits[(int)player.race].str_max[player.sex];
-                            }
-
-                            if (player.stats[var_1B].max < gbl.class_stats_min[(int)player._class][var_1B])
-                            {
-                                player.stats[var_1B].max = gbl.class_stats_min[(int)player._class][var_1B];
-                            }
-
-                            if (player.strength == 18)
+                            if (player.stats2.Str.full == 18)
                             {
                                 if (player.fighter_lvl > 0 ||
                                     player.ranger_lvl > 0 ||
                                     player.paladin_lvl > 0)
                                 {
-                                    player.tmp_str_00 = (byte)(seg051.Random(100) + 1);
-
-                                    if (player.tmp_str_00 > racial_stats_limits[(int)player.race].str_100_max[player.sex])
-                                    {
-                                        player.tmp_str_00 = racial_stats_limits[(int)player.race].str_100_max[player.sex];
-                                    }
+                                    player.stats2.Str00.Load(seg051.Random(100) + 1);
+                                    player.stats2.Str00.EnforceRaceSexLimits(race, sex);
                                 }
                             }
                             break;
 
                         case Stat.INT:
-
-                            if (race_age_brackets[player.race].age_1 < player.age)
-                            {
-                                player.stats[var_1B].max += 1;
-                            }
-
-                            if (race_age_brackets[player.race].age_3 < player.age)
-                            {
-                                player.stats[var_1B].max += 1;
-                            }
-
-                            if (player.stats[var_1B].max < racial_stats_limits[(int)player.race].int_min)
-                            {
-                                player.stats[var_1B].max = racial_stats_limits[(int)player.race].int_min;
-                            }
-
-                            if (player.stats[var_1B].max > racial_stats_limits[(int)player.race].int_max)
-                            {
-                                player.stats[var_1B].max = racial_stats_limits[(int)player.race].int_max;
-                            }
-
-                            if (player.stats[var_1B].max < gbl.class_stats_min[(int)player._class][var_1B])
-                            {
-                                player.stats[var_1B].max = gbl.class_stats_min[(int)player._class][var_1B];
-                            }
+                            player.stats2.Int.AgeEffects(race, player.age);
+                            player.stats2.Int.EnforceRaceSexLimits(race, sex);
+                            player.stats2.Int.EnforceClassLimits((int)player._class);
                             break;
 
                         case Stat.WIS:
-                            if (race_age_brackets[player.race].age_0 >= player.age)
-                            {
-                                player.stats[var_1B].max -= 1;
-                            }
+                            player.stats2.Wis.AgeEffects(race, player.age);
+                            player.stats2.Wis.EnforceRaceSexLimits(race, sex);
+                            player.stats2.Wis.EnforceClassLimits((int)player._class);
 
-                            if (race_age_brackets[player.race].age_1 < player.age)
-                            {
-                                player.stats[var_1B].max += 1;
-                            }
-
-                            if (race_age_brackets[player.race].age_2 < player.age)
-                            {
-                                player.stats[var_1B].max += 1;
-                            }
-
-                            if (race_age_brackets[player.race].age_3 < player.age)
-                            {
-                                player.stats[var_1B].max += 1;
-                            }
-
-                            if (player.stats[var_1B].max < racial_stats_limits[(int)player.race].wis_min)
-                            {
-                                player.stats[var_1B].max = racial_stats_limits[(int)player.race].wis_min;
-                            }
-
-                            if (player.stats[var_1B].max > racial_stats_limits[(int)player.race].wis_max)
-                            {
-                                player.stats[var_1B].max = racial_stats_limits[(int)player.race].wis_max;
-                            }
-
-                            if (player.stats[var_1B].max < gbl.class_stats_min[(int)player._class][var_1B])
-                            {
-                                player.stats[var_1B].max = gbl.class_stats_min[(int)player._class][var_1B];
-                            }
-
-                            if (player.stats[var_1B].max < 13 &&
+                            if (player.stats2.Wis.full < 13 &&
                                 player._class >= ClassId.mc_c_f && player._class <= ClassId.mc_c_t)
                             {
                                 // Multi-Class Cleric
-                                player.stats[var_1B].max = 13;
+                                player.stats2.Wis.full = 13;
                             }
                             break;
 
                         case Stat.DEX:
-                            if (race_age_brackets[player.race].age_2 < player.age)
-                            {
-                                player.stats[var_1B].max -= 2;
-                            }
-
-                            if (race_age_brackets[player.race].age_3 < player.age)
-                            {
-                                player.stats[var_1B].max -= 2;
-                            }
-
-                            if (player.stats[var_1B].max < racial_stats_limits[(int)player.race].dex_min)
-                            {
-                                player.stats[var_1B].max = racial_stats_limits[(int)player.race].dex_min;
-                            }
-
-                            if (player.stats[var_1B].max > racial_stats_limits[(int)player.race].dex_max)
-                            {
-                                player.stats[var_1B].max = racial_stats_limits[(int)player.race].dex_max;
-                            }
-
-                            if (player.stats[var_1B].max < gbl.class_stats_min[(int)player._class][var_1B])
-                            {
-                                player.stats[var_1B].max = gbl.class_stats_min[(int)player._class][var_1B];
-                            }
+                            player.stats2.Dex.AgeEffects(race, player.age);
+                            player.stats2.Dex.EnforceRaceSexLimits(race, sex);
+                            player.stats2.Dex.EnforceClassLimits((int)player._class);
                             break;
 
                         case Stat.CON:
-                            if (race_age_brackets[player.race].age_1 < player.age)
-                            {
-                                player.stats[var_1B].max -= 1;
-                            }
-
-                            if (race_age_brackets[player.race].age_2 < player.age)
-                            {
-                                player.stats[var_1B].max -= 1;
-                            }
-
-                            if (race_age_brackets[player.race].age_3 < player.age)
-                            {
-                                player.stats[var_1B].max -= 1;
-                            }
-
-                            if (player.stats[var_1B].max < racial_stats_limits[(int)player.race].con_min)
-                            {
-                                player.stats[var_1B].max = racial_stats_limits[(int)player.race].con_min;
-                            }
-
-                            if (player.stats[var_1B].max > racial_stats_limits[(int)player.race].con_max)
-                            {
-                                player.stats[var_1B].max = racial_stats_limits[(int)player.race].con_max;
-                            }
-
-                            if (player.stats[var_1B].max < gbl.class_stats_min[(int)player._class][var_1B])
-                            {
-                                player.stats[var_1B].max = gbl.class_stats_min[(int)player._class][var_1B];
-                            }
+                            player.stats2.Con.AgeEffects(race, player.age);
+                            player.stats2.Con.EnforceRaceSexLimits(race, sex);
+                            player.stats2.Con.EnforceClassLimits((int)player._class);
                             break;
 
                         case Stat.CHA:
-                            if (player.stats[var_1B].max < racial_stats_limits[(int)player.race].cha_min)
-                            {
-                                player.stats[var_1B].max = racial_stats_limits[(int)player.race].cha_min;
-                            }
-
-                            if (player.stats[var_1B].max > racial_stats_limits[(int)player.race].cha_max)
-                            {
-                                player.stats[var_1B].max = racial_stats_limits[(int)player.race].cha_max;
-                            }
-
-                            if (player.stats[var_1B].max < gbl.class_stats_min[(int)player._class][var_1B])
-                            {
-                                player.stats[var_1B].max = gbl.class_stats_min[(int)player._class][var_1B];
-                            }
+                            player.stats2.Cha.AgeEffects(race, player.age);
+                            player.stats2.Cha.EnforceRaceSexLimits(race, sex);
+                            player.stats2.Cha.EnforceClassLimits((int)player._class);
                             break;
                     }
 
@@ -1153,12 +873,12 @@ namespace engine
 
             icon_builder();
 
-            for (var_1B = 0; var_1B <= 5; var_1B++)
-            {
-                player.stats[var_1B].tmp = player.stats[var_1B].max;
-            }
+            //for (var_1B = 0; var_1B <= 5; var_1B++)
+            //{
+            //    player.stats2[var_1B].cur = player.stats2[var_1B].full;
+            //}
 
-            player.max_str_00 = player.tmp_str_00;
+            player.stats2.Str00.full = player.stats2.Str00.cur;
 
             input_key = ovr027.yes_no(gbl.defaultMenuColors, "Save " + player.name + "? ");
 
@@ -1174,7 +894,7 @@ namespace engine
         internal static int con_bonus(ClassId classId)
         {
             int bonus;
-            int stat = gbl.SelectedPlayer.con;
+            int stat = gbl.SelectedPlayer.stats2.Con.full;
 
             if (stat == 3)
             {
@@ -1278,8 +998,8 @@ namespace engine
 
         internal static void modifyPlayer()
         {
-            bool var_36;
-            char var_35;
+            bool controlkey;
+            char inputkey;
 
             if (Cheats.allow_player_modify == false &&
                 (gbl.SelectedPlayer.exp != 0 &&
@@ -1294,13 +1014,9 @@ namespace engine
 
             ovr020.playerDisplayFull(gbl.SelectedPlayer);
 
-            byte[] stats_bkup = new byte[6];
-            for (int stat_var = 0; stat_var < 6; stat_var++)
-            {
-                stats_bkup[stat_var] = gbl.SelectedPlayer.stats[stat_var].max;
-            }
+            PlayerStats stats_bkup = new PlayerStats();
+            stats_bkup.Assign(gbl.SelectedPlayer.stats2);
 
-            byte orig_str_100 = gbl.SelectedPlayer.tmp_str_00;
             byte orig_hp_max = gbl.SelectedPlayer.hit_point_max;
 
             string nameBackup = gbl.SelectedPlayer.name;
@@ -1310,7 +1026,7 @@ namespace engine
             draw_highlight_stat(false, edited_stat, name_cursor_pos);
             edited_stat = 0;
             draw_highlight_stat(true, edited_stat, name_cursor_pos);
-            Player player_ptr = gbl.SelectedPlayer;
+            Player player = gbl.SelectedPlayer;
 
             do
             {
@@ -1321,33 +1037,33 @@ namespace engine
                         /* empty */
                     }
 
-                    var_35 = (char)seg043.GetInputKey();
+                    inputkey = (char)seg043.GetInputKey();
 
-                    if (var_35 == 0)
+                    if (inputkey == 0)
                     {
-                        var_35 = (char)seg043.GetInputKey();
-                        var_36 = true;
+                        inputkey = (char)seg043.GetInputKey();
+                        controlkey = true;
                     }
                     else
                     {
-                        var_36 = false;
+                        controlkey = false;
                     }
 
-                    if (var_35 == 0x1B)
+                    if (inputkey == 0x1B)
                     {
-                        var_35 = '\0';
+                        inputkey = '\0';
                     }
                 }
                 else
                 {
-                    var_35 = ovr027.displayInput(out var_36, false, 1, gbl.defaultMenuColors, "Keep Exit", "Modify: ");
+                    inputkey = ovr027.displayInput(out controlkey, false, 1, gbl.defaultMenuColors, "Keep Exit", "Modify: ");
                 }
 
                 draw_highlight_stat(false, edited_stat, name_cursor_pos);
 
-                if (var_36 == true)
+                if (controlkey == true)
                 {
-                    switch (var_35)
+                    switch (inputkey)
                     {
                         case 'S':
                             if (edited_stat == 7 && gbl.SelectedPlayer.name.Length > 1)
@@ -1388,119 +1104,78 @@ namespace engine
                             if (edited_stat < 6)
                             {
                                 int stat_var = edited_stat;
-                                player_ptr.stats[stat_var].max -= 1;
+                                int race = (int)player.race;
+                                int sex = player.sex;
+
+                                player.stats2[stat_var].Dec();
 
                                 switch ((Stat)stat_var)
                                 {
                                     case Stat.STR:
-                                        if (player_ptr.tmp_str_00 > 0)
+                                        if (player.stats2.Str00.cur > 0)
                                         {
-                                            player_ptr.tmp_str_00 -= 1;
-
-                                            player_ptr.stats[stat_var].max += 1;
+                                            player.stats2.Str00.Dec();
+                                            player.stats2[stat_var].Inc();
                                         }
                                         else
                                         {
-                                            if (player_ptr.stats[stat_var].max < racial_stats_limits[(int)player_ptr.race].str_min[player_ptr.sex])
-                                            {
-                                                player_ptr.stats[stat_var].max = racial_stats_limits[(int)player_ptr.race].str_min[player_ptr.sex];
-                                            }
+                                            player.stats2.Str.EnforceRaceSexLimits(race, sex);
                                         }
-
-                                        if (player_ptr.stats[stat_var].max < gbl.class_stats_min[(int)player_ptr._class].str_min)
-                                        {
-                                            player_ptr.stats[stat_var].max = gbl.class_stats_min[(int)player_ptr._class].str_min;
-                                        }
+                                        player.stats2.Str.EnforceClassLimits((int)player._class);
                                         break;
 
                                     case Stat.INT:
-                                        if (player_ptr.stats[stat_var].max < racial_stats_limits[(int)player_ptr.race].int_min)
-                                        {
-                                            player_ptr.stats[stat_var].max = racial_stats_limits[(int)player_ptr.race].int_min;
-                                        }
-
-                                        if (player_ptr.stats[stat_var].max < gbl.class_stats_min[(int)player_ptr._class].int_min)
-                                        {
-                                            player_ptr.stats[stat_var].max = gbl.class_stats_min[(int)player_ptr._class].int_min;
-                                        }
+                                        player.stats2.Int.EnforceRaceSexLimits(race, sex);
+                                        player.stats2.Int.EnforceClassLimits((int)player._class);
                                         break;
 
                                     case Stat.WIS:
-                                        if (player_ptr.stats[stat_var].max < racial_stats_limits[(int)player_ptr.race].wis_min)
-                                        {
-                                            player_ptr.stats[stat_var].max = racial_stats_limits[(int)player_ptr.race].wis_min;
-                                        }
+                                        player.stats2.Wis.EnforceRaceSexLimits(race, sex);
+                                        player.stats2.Wis.EnforceClassLimits((int)player._class);
 
-                                        if (player_ptr.stats[stat_var].max < gbl.class_stats_min[(int)player_ptr._class].wis_min)
+                                        if (player.spellCastCount[0, 0] > 0)
                                         {
-                                            player_ptr.stats[stat_var].max = gbl.class_stats_min[(int)player_ptr._class].wis_min;
-                                        }
-
-                                        if (player_ptr.spellCastCount[0, 0] > 0)
-                                        {
-                                            player_ptr.spellCastCount[0, 0] = 1;
+                                            player.spellCastCount[0, 0] = 1;
                                         }
                                         break;
 
                                     case Stat.DEX:
-                                        if (player_ptr.stats[stat_var].max < racial_stats_limits[(int)player_ptr.race].dex_min)
-                                        {
-                                            player_ptr.stats[stat_var].max = racial_stats_limits[(int)player_ptr.race].dex_min;
-                                        }
-
-                                        if (player_ptr.stats[stat_var].max < gbl.class_stats_min[(int)player_ptr._class].dex_min)
-                                        {
-                                            player_ptr.stats[stat_var].max = gbl.class_stats_min[(int)player_ptr._class].dex_min;
-                                        }
+                                        player.stats2.Dex.EnforceRaceSexLimits(race, sex);
+                                        player.stats2.Dex.EnforceClassLimits((int)player._class);
                                         break;
 
                                     case Stat.CON:
-                                        if (player_ptr.stats[stat_var].max < racial_stats_limits[(int)player_ptr.race].con_min)
-                                        {
-                                            player_ptr.stats[stat_var].max = racial_stats_limits[(int)player_ptr.race].con_min;
-                                        }
-
-                                        if (player_ptr.stats[stat_var].max < gbl.class_stats_min[(int)player_ptr._class].con_min)
-                                        {
-                                            player_ptr.stats[stat_var].max = gbl.class_stats_min[(int)player_ptr._class].con_min;
-                                        }
+                                        player.stats2.Con.EnforceRaceSexLimits(race, sex);
+                                        player.stats2.Con.EnforceClassLimits((int)player._class);
 
                                         int max_hp = calc_max_hp(gbl.SelectedPlayer);
-                                        if (max_hp < player_ptr.hit_point_max)
+                                        if (max_hp < player.hit_point_max)
                                         {
-                                            player_ptr.hit_point_max = (byte)max_hp;
+                                            player.hit_point_max = (byte)max_hp;
                                         }
 
-                                        player_ptr.hit_point_current = player_ptr.hit_point_max;
+                                        player.hit_point_current = player.hit_point_max;
                                         edited_stat = 6;
                                         draw_highlight_stat(false, edited_stat, name_cursor_pos);
                                         edited_stat = 4;
-
                                         break;
 
                                     case Stat.CHA:
-                                        if (player_ptr.stats[stat_var].max < racial_stats_limits[(int)player_ptr.race].cha_min)
-                                        {
-                                            player_ptr.stats[stat_var].max = racial_stats_limits[(int)player_ptr.race].cha_min;
-                                        }
-
-                                        if (player_ptr.stats[stat_var].max < gbl.class_stats_min[(int)player_ptr._class].cha_min)
-                                        {
-                                            player_ptr.stats[stat_var].max = gbl.class_stats_min[(int)player_ptr._class].cha_min;
-                                        }
+                                        player.stats2.Cha.EnforceRaceSexLimits(race, sex);
+                                        player.stats2.Cha.EnforceClassLimits((int)player._class);
                                         break;
                                 }
                             }
                             else if (edited_stat == 6)
                             {
-                                player_ptr.hit_point_max -= 1;
+                                player.hit_point_max -= 1;
 
-                                if (sub_506BA(gbl.SelectedPlayer) > player_ptr.hit_point_max)
+                                if (sub_506BA(gbl.SelectedPlayer) > player.hit_point_max)
                                 {
-                                    player_ptr.hit_point_max = (byte)sub_506BA(player_ptr);
+                                    player.hit_point_max = (byte)sub_506BA(player);
                                 }
 
-                                player_ptr.hit_point_current = player_ptr.hit_point_max; ;
+                                player.hit_point_current = player.hit_point_max; ;
                             }
                             else
                             {
@@ -1519,72 +1194,55 @@ namespace engine
                             if (edited_stat < 6)
                             {
                                 int stat_var = edited_stat;
+                                int race = (int)player.race;
+                                int sex = player.sex;
 
-                                player_ptr.stats[stat_var].max += 1;
+                                player.stats2[stat_var].Inc();
                                 switch ((Stat)stat_var)
                                 {
                                     case Stat.STR:
-                                        if (player_ptr.stats[stat_var].max > racial_stats_limits[(int)player_ptr.race].str_max[player_ptr.sex])
+                                        player.stats2.Str00.Inc();
+                                        player.stats2.Str.EnforceRaceSexLimits(race, sex);
+                                        if (player.stats2.Str.full != 18 ||
+                                            (player.fighter_lvl == 0 && player.paladin_lvl == 0 && player.ranger_lvl == 0))
                                         {
-                                            if (player_ptr.stats[stat_var].max > 18 &&
-                                                (player_ptr.fighter_lvl > 0 || player_ptr.paladin_lvl > 0 || player_ptr.ranger_lvl > 0) &&
-                                                racial_stats_limits[(int)player_ptr.race].str_100_max[player_ptr.sex] > player_ptr.tmp_str_00)
-                                            {
-                                                player_ptr.tmp_str_00 += 1;
-                                            }
-
-                                            player_ptr.stats[stat_var].max = racial_stats_limits[(int)player_ptr.race].str_max[player_ptr.sex];
+                                            player.stats2.Str00.Load(0);
                                         }
                                         break;
 
                                     case Stat.INT:
-                                        if (player_ptr.stats[stat_var].max > racial_stats_limits[(int)player_ptr.race].int_max)
-                                        {
-                                            player_ptr.stats[stat_var].max = racial_stats_limits[(int)player_ptr.race].int_max;
-                                        }
+                                        player.stats2.Int.EnforceRaceSexLimits(race, sex);
                                         break;
 
                                     case Stat.WIS:
-                                        if (player_ptr.stats[stat_var].max > racial_stats_limits[(int)player_ptr.race].wis_max)
-                                        {
-                                            player_ptr.stats[stat_var].max = racial_stats_limits[(int)player_ptr.race].wis_max;
-                                        }
+                                        player.stats2.Wis.EnforceRaceSexLimits(race, sex);
 
-                                        if (player_ptr.spellCastCount[0, 0] > 0)
+                                        if (player.spellCastCount[0, 0] > 0)
                                         {
-                                            player_ptr.spellCastCount[0, 0] = 1;
+                                            player.spellCastCount[0, 0] = 1;
                                         }
                                         break;
 
                                     case Stat.DEX:
-                                        if (player_ptr.stats[stat_var].max > racial_stats_limits[(int)player_ptr.race].dex_max)
-                                        {
-                                            player_ptr.stats[stat_var].max = racial_stats_limits[(int)player_ptr.race].dex_max;
-                                        }
+                                        player.stats2.Dex.EnforceRaceSexLimits(race, sex);
                                         break;
 
                                     case Stat.CON:
-                                        if (player_ptr.stats[stat_var].max > racial_stats_limits[(int)player_ptr.race].con_max)
+                                        player.stats2.Con.EnforceRaceSexLimits(race, sex);
+
+                                        if (sub_506BA(gbl.SelectedPlayer) > player.hit_point_max)
                                         {
-                                            player_ptr.stats[stat_var].max = racial_stats_limits[(int)player_ptr.race].con_max;
+                                            player.hit_point_max = (byte)sub_506BA(player);
                                         }
 
-                                        if (sub_506BA(gbl.SelectedPlayer) > player_ptr.hit_point_max)
-                                        {
-                                            player_ptr.hit_point_max = (byte)sub_506BA(player_ptr);
-                                        }
-
-                                        player_ptr.hit_point_current = player_ptr.hit_point_max;
+                                        player.hit_point_current = player.hit_point_max;
                                         edited_stat = 6;
                                         draw_highlight_stat(false, edited_stat, name_cursor_pos);
                                         edited_stat = 4;
                                         break;
 
                                     case Stat.CHA:
-                                        if (player_ptr.stats[stat_var].max > racial_stats_limits[(int)player_ptr.race].cha_max)
-                                        {
-                                            player_ptr.stats[stat_var].max = racial_stats_limits[(int)player_ptr.race].cha_max;
-                                        }
+                                        player.stats2.Cha.EnforceRaceSexLimits(race, sex);
                                         break;
                                 }
                             }
@@ -1592,18 +1250,18 @@ namespace engine
                             {
                                 if (edited_stat == 6)
                                 {
-                                    player_ptr.hit_point_max += 1;
+                                    player.hit_point_max += 1;
 
-                                    if (calc_max_hp(gbl.SelectedPlayer) < player_ptr.hit_point_max)
+                                    if (calc_max_hp(gbl.SelectedPlayer) < player.hit_point_max)
                                     {
-                                        player_ptr.hit_point_max = (byte)calc_max_hp(gbl.SelectedPlayer);
+                                        player.hit_point_max = (byte)calc_max_hp(gbl.SelectedPlayer);
                                     }
 
-                                    player_ptr.hit_point_current = player_ptr.hit_point_max;
+                                    player.hit_point_current = player.hit_point_max;
                                 }
                                 else
                                 {
-                                    if (name_cursor_pos == player_ptr.name.Length + 1)
+                                    if (name_cursor_pos == player.name.Length + 1)
                                     {
                                         name_cursor_pos = 1;
                                     }
@@ -1618,7 +1276,7 @@ namespace engine
                 }
                 else
                 {
-                    if (var_35 == 0x0d)
+                    if (inputkey == 0x0d)
                     {
                         edited_stat++;
 
@@ -1627,7 +1285,7 @@ namespace engine
                             edited_stat = 0;
                         }
                     }
-                    else if (var_35 == 0x08)
+                    else if (inputkey == 0x08)
                     {
                         if (name_cursor_pos > 1 && edited_stat > 6)
                         {
@@ -1654,27 +1312,27 @@ namespace engine
                             }
                         }
                     }
-                    else if (var_35 >= 0x20 && var_35 <= 0x7A)
+                    else if (inputkey >= 0x20 && inputkey <= 0x7A)
                     {
                         if (edited_stat > 6)
                         {
                             if (name_cursor_pos <= 15)
                             {
                                 string s = string.Empty;
-                                int len = player_ptr.name.Length;
+                                int len = player.name.Length;
                                 int insert = name_cursor_pos - 1;
 
                                 if (insert > 0)
                                 {
-                                    s = player_ptr.name.Substring(0, insert);
+                                    s = player.name.Substring(0, insert);
                                 }
-                                s += var_35;
+                                s += inputkey;
                                 if (len - insert > 0)
                                 {
-                                    s += player_ptr.name.Substring(insert + 1);
+                                    s += player.name.Substring(insert + 1);
                                 }
 
-                                player_ptr.name = s;
+                                player.name = s;
 
                                 name_cursor_pos++;
                                 if (name_cursor_pos > 15)
@@ -1682,21 +1340,17 @@ namespace engine
                                     name_cursor_pos = 15;
                                 }
 
-                                if (name_cursor_pos > player_ptr.name.Length)
+                                if (name_cursor_pos > player.name.Length)
                                 {
-                                    player_ptr.name.PadRight(name_cursor_pos, ' ');
+                                    player.name.PadRight(name_cursor_pos, ' ');
                                 }
-                                var_35 = '\0';
+                                inputkey = '\0';
                             }
                         }
-                        else if (var_35 == 0x45)
+                        else if (inputkey == 0x45)
                         {
-                            for (int stat_var = 0; stat_var < 6; stat_var++)
-                            {
-                                player_ptr.stats[stat_var].max = stats_bkup[stat_var];
-                            }
+                            gbl.SelectedPlayer.stats2.Assign(stats_bkup);
 
-                            gbl.SelectedPlayer.tmp_str_00 = orig_str_100;
                             gbl.SelectedPlayer.hit_point_max = orig_hp_max;
                             gbl.SelectedPlayer.hit_point_current = gbl.SelectedPlayer.hit_point_max;
 
@@ -1706,14 +1360,10 @@ namespace engine
                             return;
                         }
                     }
-                    else if (var_35 == 0)
+                    else if (inputkey == 0)
                     {
-                        for (int stat_var = 0; stat_var < 6; stat_var++)
-                        {
-                            gbl.SelectedPlayer.stats[stat_var].max = stats_bkup[stat_var];
-                        }
+                        gbl.SelectedPlayer.stats2.Assign(stats_bkup);
 
-                        gbl.SelectedPlayer.tmp_str_00 = orig_str_100;
                         gbl.SelectedPlayer.hit_point_max = orig_hp_max;
                         gbl.SelectedPlayer.name = nameBackup;
 
@@ -1727,49 +1377,49 @@ namespace engine
                 ovr020.display_player_stats01();
 
                 draw_highlight_stat(true, edited_stat, name_cursor_pos);
-            } while (var_36 == true || var_35 != 0x4B);
+            } while (controlkey == true || inputkey != 0x4B);
 
             ovr026.calc_cleric_spells(true, gbl.SelectedPlayer);
 
             gbl.SelectedPlayer.npcTreasureShareCount = 1;
 
-            player_ptr = gbl.SelectedPlayer;
+            player = gbl.SelectedPlayer;
             orig_hp_max = 0;
-            byte var_40 = 0;
+            byte hp_count = 0;
 
             for (int var_33 = 0; var_33 < 8; var_33++)
             {
-                if (player_ptr.ClassLevel[var_33] > 0)
+                if (player.ClassLevel[var_33] > 0)
                 {
-                    if (player_ptr.ClassLevel[var_33] < gbl.max_class_hit_dice[var_33])
+                    if (player.ClassLevel[var_33] < gbl.max_class_hit_dice[var_33])
                     {
                         if ((ClassId)var_33 == ClassId.ranger)
                         {
-                            orig_hp_max += (byte)((player_ptr.ClassLevel[var_33] + 1) * (con_bonus((ClassId)var_33)));
+                            orig_hp_max += (byte)((player.ClassLevel[var_33] + 1) * (con_bonus((ClassId)var_33)));
                         }
                         else
                         {
-                            orig_hp_max += (byte)(player_ptr.ClassLevel[var_33] * (con_bonus((ClassId)var_33)));
+                            orig_hp_max += (byte)(player.ClassLevel[var_33] * (con_bonus((ClassId)var_33)));
                         }
                     }
                     else
                     {
                         orig_hp_max += (byte)((gbl.max_class_hit_dice[var_33] - 1) * con_bonus((ClassId)var_33));
                     }
-                    var_40++;
+                    hp_count++;
                 }
             }
 
-            orig_hp_max /= var_40;
+            orig_hp_max /= hp_count;
 
-            player_ptr.hit_point_rolled = (byte)(player_ptr.hit_point_max - orig_hp_max);
+            player.hit_point_rolled = (byte)(player.hit_point_max - orig_hp_max);
 
-            for (int stat_var = 0; stat_var <= 5; stat_var++)
-            {
-                gbl.SelectedPlayer.stats[stat_var].tmp = gbl.SelectedPlayer.stats[stat_var].max;
-            }
+            //for (int stat_var = 0; stat_var <= 5; stat_var++)
+            //{
+            //    gbl.SelectedPlayer.stats2[stat_var].cur = gbl.SelectedPlayer.stats2[stat_var].full;
+            //}
 
-            gbl.SelectedPlayer.max_str_00 = gbl.SelectedPlayer.tmp_str_00;
+            //gbl.SelectedPlayer.stats2.Str00.full = gbl.SelectedPlayer.stats2.Str00.cur;
         }
 
 
@@ -1957,11 +1607,11 @@ namespace engine
         {
             seg040.DrawColorBlock(0, 24, 12, titleY * 24, titleX * 3);
 
-            ovr034.draw_combat_icon(25, 0, 0, titleY, titleX);
-            ovr034.draw_combat_icon(25, 1, 0, titleY, titleX + 3);
+            ovr034.draw_combat_icon(25, Icon.Normal, 0, titleY, titleX);
+            ovr034.draw_combat_icon(25, Icon.Attack, 0, titleY, titleX + 3);
 
-            ovr034.draw_combat_icon(12, 0, 0, titleY, titleX);
-            ovr034.draw_combat_icon(12, 1, 0, titleY, titleX + 3);
+            ovr034.draw_combat_icon(12, Icon.Normal, 0, titleY, titleX);
+            ovr034.draw_combat_icon(12, Icon.Attack, 0, titleY, titleX + 3);
 
             seg040.DrawOverlay();
         }
@@ -1977,7 +1627,7 @@ namespace engine
         internal static void icon_builder()
         {
             Player player_ptr2;
-            Player player_ptr;
+            Player player;
             char var_1B = '\0'; /* Simeon */
             byte var_1A = 0; /* Simeon */
             bool second_color = false;
@@ -2002,21 +1652,21 @@ namespace engine
             {
                 ovr017.LoadPlayerCombatIcon(false);
 
-                player_ptr = gbl.SelectedPlayer;
+                player = gbl.SelectedPlayer;
 
                 var_8 = 1;
-                System.Array.Copy(player_ptr.icon_colours, bkup_colours, 6);
+                System.Array.Copy(player.icon_colours, bkup_colours, 6);
 
-                byte bkup_icon_id = player_ptr.icon_id;
-                player_ptr.icon_id = 0x0C;
+                byte bkup_icon_id = player.icon_id;
+                player.icon_id = 0x0C;
                 ovr017.LoadPlayerCombatIcon(false);
-                player_ptr.icon_id = bkup_icon_id;
+                player.icon_id = bkup_icon_id;
 
-                headIcon = player_ptr.head_icon;
-                weaponIcon = player_ptr.weapon_icon;
-                byte bkup_size = player_ptr.icon_size;
+                headIcon = player.head_icon;
+                weaponIcon = player.weapon_icon;
+                byte bkup_size = player.icon_size;
 
-                duplicateCombatIcon(true, 12, player_ptr.icon_id);
+                duplicateCombatIcon(true, 12, player.icon_id);
                 drawIconEditorIcons(2, 1);
 
                 seg041.displayString("old", 0, 15, 6, 8);
@@ -2031,7 +1681,7 @@ namespace engine
                     string text;
                     if (var_8 == 4)
                     {
-                        if (player_ptr.icon_size == 2)
+                        if (player.icon_size == 2)
                         {
                             text = "Small" + iconStrings[4];
                         }
@@ -2152,17 +1802,17 @@ namespace engine
                                 switch (inputKey)
                                 {
                                     case 'L':
-                                        player_ptr.icon_size = 2;
+                                        player.icon_size = 2;
                                         ovr017.LoadPlayerCombatIcon(false);
                                         break;
 
                                     case 'S':
-                                        player_ptr.icon_size = 1;
+                                        player.icon_size = 1;
                                         ovr017.LoadPlayerCombatIcon(false);
                                         break;
 
                                     case 'K':
-                                        bkup_size = player_ptr.icon_size;
+                                        bkup_size = player.icon_size;
                                         var_8 = 1;
                                         inputKey = ' ';
                                         break;
@@ -2171,7 +1821,7 @@ namespace engine
                                         goto case '\0';
 
                                     case '\0':
-                                        player_ptr.icon_size = bkup_size;
+                                        player.icon_size = bkup_size;
                                         var_8 = 1;
                                         inputKey = ' ';
                                         break;
@@ -2187,11 +1837,11 @@ namespace engine
                                     {
                                         if (inputKey == 0x50)
                                         {
-                                            player_ptr.head_icon = (byte)Sys.WrapMinMax(player_ptr.head_icon - 1, 0, 13);
+                                            player.head_icon = (byte)Sys.WrapMinMax(player.head_icon - 1, 0, 13);
                                         }
                                         else if (inputKey == 'N')
                                         {
-                                            player_ptr.head_icon = (byte)Sys.WrapMinMax(player_ptr.head_icon + 1, 0, 13);
+                                            player.head_icon = (byte)Sys.WrapMinMax(player.head_icon + 1, 0, 13);
                                         }
                                         else if (inputKey == 'K')
                                         {
@@ -2202,7 +1852,7 @@ namespace engine
                                         }
                                         else if (inputKey == 'E' || inputKey == '\0')
                                         {
-                                            player_ptr.head_icon = headIcon;
+                                            player.head_icon = headIcon;
                                             var_8 = var_1A;
                                             inputKey = ' ';
                                         }
@@ -2213,24 +1863,24 @@ namespace engine
                                     {
                                         if (inputKey == 'P')
                                         {
-                                            if (player_ptr.weapon_icon > 0)
+                                            if (player.weapon_icon > 0)
                                             {
-                                                player_ptr.weapon_icon -= 1;
+                                                player.weapon_icon -= 1;
                                             }
                                             else
                                             {
-                                                player_ptr.weapon_icon = 0x1F;
+                                                player.weapon_icon = 0x1F;
                                             }
                                         }
                                         else if (inputKey == 'N')
                                         {
-                                            if (player_ptr.weapon_icon < 0x1F)
+                                            if (player.weapon_icon < 0x1F)
                                             {
-                                                player_ptr.weapon_icon += 1;
+                                                player.weapon_icon += 1;
                                             }
                                             else
                                             {
-                                                player_ptr.weapon_icon = 0;
+                                                player.weapon_icon = 0;
                                             }
                                         }
                                         else if (inputKey == 'K')
@@ -2242,7 +1892,7 @@ namespace engine
                                         }
                                         else if (inputKey == 'E' || inputKey == '\0')
                                         {
-                                            player_ptr.weapon_icon = weaponIcon;
+                                            player.weapon_icon = weaponIcon;
                                             var_8 = var_1A;
                                             inputKey = ' ';
                                         }
@@ -2252,8 +1902,8 @@ namespace engine
                                 }
                                 else if (var_1A == 3)
                                 {
-                                    byte low_color = (byte)(player_ptr.icon_colours[color_index] & 0x0F);
-                                    byte high_color = (byte)((player_ptr.icon_colours[color_index] & 0xF0) >> 4);
+                                    byte low_color = (byte)(player.icon_colours[color_index] & 0x0F);
+                                    byte high_color = (byte)((player.icon_colours[color_index] & 0xF0) >> 4);
 
                                     if (inputKey == 'N')
                                     {
@@ -2266,7 +1916,7 @@ namespace engine
                                             low_color = (byte)((low_color + 1) % 16);
                                         }
 
-                                        player_ptr.icon_colours[color_index] = (byte)(low_color + (high_color << 4));
+                                        player.icon_colours[color_index] = (byte)(low_color + (high_color << 4));
                                     }
                                     else if (inputKey == 'P')
                                     {
@@ -2279,17 +1929,17 @@ namespace engine
                                             low_color = (byte)((low_color - 1) & 0x0F);
                                         }
 
-                                        player_ptr.icon_colours[color_index] = (byte)(low_color + (high_color << 4));
+                                        player.icon_colours[color_index] = (byte)(low_color + (high_color << 4));
                                     }
                                     else if (inputKey == 'K')
                                     {
-                                        System.Array.Copy(player_ptr.icon_colours, bkup_colours, 6);
+                                        System.Array.Copy(player.icon_colours, bkup_colours, 6);
                                         var_8 = var_1A;
                                         inputKey = ' ';
                                     }
                                     else if (inputKey == 'E' || inputKey == '\0')
                                     {
-                                        System.Array.Copy(bkup_colours, player_ptr.icon_colours, 6);
+                                        System.Array.Copy(bkup_colours, player.icon_colours, 6);
                                         var_8 = var_1A;
                                         inputKey = ' ';
                                     }
@@ -2298,18 +1948,18 @@ namespace engine
                         }
                     }
 
-                    duplicateCombatIcon(true, 12, player_ptr.icon_id);
+                    duplicateCombatIcon(true, 12, player.icon_id);
 
                 } while (var_1A != 0 || unk_4FE94.MemberOf(inputKey) == false);
 
-                player_ptr.head_icon = headIcon;
-                player_ptr.weapon_icon = weaponIcon;
-                player_ptr.icon_size = bkup_size;
+                player.head_icon = headIcon;
+                player.weapon_icon = weaponIcon;
+                player.icon_size = bkup_size;
 
-                System.Array.Copy(bkup_colours, player_ptr.icon_colours, 6);
+                System.Array.Copy(bkup_colours, player.icon_colours, 6);
 
-                duplicateCombatIcon(true, 12, player_ptr.icon_id);
-                duplicateCombatIcon(false, player_ptr.icon_id, 12);
+                duplicateCombatIcon(true, 12, player.icon_id);
+                duplicateCombatIcon(false, player.icon_id, 12);
 
                 ovr027.ClearPromptArea();
                 ovr034.ReleaseCombatIcon(12);
@@ -2333,13 +1983,13 @@ namespace engine
                 if (player.ClassLevel[class_index] > 0 &&
                     player.ClassLevel[class_index] < gbl.max_class_hit_dice[class_index])
                 {
-                    hp_adj += con_hp_adj[player.con];
+                    hp_adj += con_hp_adj[player.stats2.Con.full];
 
                     if (player._class == ClassId.fighter ||
                         player._class == ClassId.paladin ||
                         player._class == ClassId.ranger)
                     {
-                        byte con = player.con;
+                        int con = player.stats2.Con.full;
 
                         if (con == 17)
                         {
@@ -2555,24 +2205,24 @@ namespace engine
             byte class_lvl = 123; /* Simeon */
 
             byte trainerClassMask = gbl.area2_ptr.training_class_mask;
-            Player player_ptr = gbl.SelectedPlayer;
+            Player player = gbl.SelectedPlayer;
 
             int var_5 = 0;
 
             for (int _class = 0; _class <= 7; _class++)
             {
-                if (player_ptr.ClassLevel[_class] > 0)
+                if (player.ClassLevel[_class] > 0)
                 {
                     classesToTrainMask += classMasks[_class];
-                    class_lvl = player_ptr.ClassLevel[_class];
+                    class_lvl = player.ClassLevel[_class];
 
-                    bool race_limited = RaceClassLimit(class_lvl, player_ptr, (ClassId)_class);
+                    bool race_limited = Limits.RaceClassLimit(class_lvl, player, (ClassId)_class);
 
                     if (race_limited == false ||
                         Cheats.no_race_level_limits == true)
                     {
                         if ((exp_table[_class, class_lvl] > 0) &&
-                            (exp_table[_class, class_lvl] <= player_ptr.exp ||
+                            (exp_table[_class, class_lvl] <= player.exp ||
                              Cheats.free_training == true))
                         {
                             if (Cheats.free_training == true)
@@ -2580,9 +2230,9 @@ namespace engine
                                 int tmpExp = exp_table[_class, class_lvl];
                                 if (tmpExp > 0)
                                 {
-                                    if (tmpExp > player_ptr.exp)
+                                    if (tmpExp > player.exp)
                                     {
-                                        player_ptr.exp = tmpExp;
+                                        player.exp = tmpExp;
                                     }
                                 }
                             }
@@ -2593,7 +2243,7 @@ namespace engine
 
                             if (next_lvl_exp > 0)
                             {
-                                if (player_ptr.exp >= next_lvl_exp &&
+                                if (player.exp >= next_lvl_exp &&
                                     next_lvl_exp > var_5)
                                 {
                                     var_5 = next_lvl_exp - 1;
@@ -2628,7 +2278,7 @@ namespace engine
                     int var_9 = exp_table[max_class, class_lvl + 1];
 
                     if (var_9 > 0 &&
-                        player_ptr.exp >= var_9 &&
+                        player.exp >= var_9 &&
                         var_9 > var_5)
                     {
                         var_5 = var_9 - 1;
@@ -2686,11 +2336,11 @@ namespace engine
 
                 ovr025.displayPlayerName(false, y_offset, 4, gbl.SelectedPlayer);
 
-                seg041.displayString(" will become:", 0, 10, y_offset, player_ptr.name.Length + 4);
+                seg041.displayString(" will become:", 0, 10, y_offset, player.name.Length + 4);
 
                 for (int _class = 0; _class <= 7; _class++)
                 {
-                    if (player_ptr.ClassLevel[_class] > 0 &&
+                    if (player.ClassLevel[_class] > 0 &&
                         (classMasks[_class] & actualTrainingClassesMask) != 0)
                     {
                         y_offset++;
@@ -2698,14 +2348,14 @@ namespace engine
                         if (y_offset == 5)
                         {
                             string text = System.String.Format("    a level {0} {1}",
-                                player_ptr.ClassLevel[_class] + 1, ovr020.classString[_class]);
+                                player.ClassLevel[_class] + 1, ovr020.classString[_class]);
 
                             seg041.displayString(text, 0, 10, y_offset, 6);
                         }
                         else
                         {
                             string text = System.String.Format("and a level {0} {1}",
-                                player_ptr.ClassLevel[_class] + 1, ovr020.classString[_class]);
+                                player.ClassLevel[_class] + 1, ovr020.classString[_class]);
 
                             seg041.displayString(text, 0, 10, y_offset, 6);
                         }
@@ -2722,39 +2372,39 @@ namespace engine
                     if (Cheats.free_training == false &&
                         gbl.gameWon == false)
                     {
-                        player_ptr.Money.SubtractGoldWorth(1000);
+                        player.Money.SubtractGoldWorth(1000);
                     }
                 }
 
                 byte class_count = 0;
-                byte oldMagicUserLvl = player_ptr.magic_user_lvl;
-                byte oldRangeLevel = player_ptr.ranger_lvl;
-                player_ptr.classFlags = 0;
+                byte oldMagicUserLvl = player.magic_user_lvl;
+                byte oldRangeLevel = player.ranger_lvl;
+                player.classFlags = 0;
 
                 for (int _class = 0; _class <= 7; _class++)
                 {
-                    if (player_ptr.ClassLevel[_class] > 0)
+                    if (player.ClassLevel[_class] > 0)
                     {
                         class_count++;
 
                         if ((classMasks[_class] & actualTrainingClassesMask) != 0)
                         {
-                            player_ptr.ClassLevel[_class] += 1;
-                            if (player_ptr.lost_lvls > 0)
+                            player.ClassLevel[_class] += 1;
+                            if (player.lost_lvls > 0)
                             {
-                                player_ptr.lost_hp -= (byte)(player_ptr.lost_hp / player_ptr.lost_lvls);
-                                player_ptr.lost_lvls -= 1;
+                                player.lost_hp -= (byte)(player.lost_hp / player.lost_lvls);
+                                player.lost_lvls -= 1;
                             }
                         }
                     }
                 }
 
-                ovr026.sub_6A3C6(gbl.SelectedPlayer);
+                ovr026.ReclacClassBonuses(gbl.SelectedPlayer);
 
                 if (gbl.silent_training == false)
                 {
-                    if (player_ptr.magic_user_lvl > oldMagicUserLvl ||
-                        player_ptr.ranger_lvl > 8)
+                    if (player.magic_user_lvl > oldMagicUserLvl ||
+                        player.ranger_lvl > 8)
                     {
                         int index = -1;
                         byte newSpellId;
@@ -2767,35 +2417,35 @@ namespace engine
 
                         if (newSpellId > 0)
                         {
-                            player_ptr.LearnSpell((Spells)newSpellId);
+                            player.LearnSpell((Spells)newSpellId);
                         }
                     }
                 }
 
                 if (gbl.silent_training == true)
                 {
-                    switch (player_ptr.magic_user_lvl)
+                    switch (player.magic_user_lvl)
                     {
                         case 2:
-                            player_ptr.LearnSpell(Spells.magic_missile);
+                            player.LearnSpell(Spells.magic_missile);
                             break;
 
                         case 3:
-                            player_ptr.LearnSpell(Spells.stinking_cloud);
-                            player_ptr.LearnSpell(Spells.protect_from_evil_MU);
+                            player.LearnSpell(Spells.stinking_cloud);
+                            player.LearnSpell(Spells.protect_from_evil_MU);
                             break;
 
                         case 4:
-                            player_ptr.LearnSpell(Spells.knock);
+                            player.LearnSpell(Spells.knock);
                             break;
 
                         case 5:
-                            player_ptr.LearnSpell(Spells.fireball);
+                            player.LearnSpell(Spells.fireball);
                             break;
                     }
                 }
 
-                if (player_ptr.HitDice <= player_ptr.multiclassLevel)
+                if (player.HitDice <= player.multiclassLevel)
                 {
                     return;
                 }
@@ -2809,7 +2459,7 @@ namespace engine
                     max_hp_increase = 1;
                 }
 
-                player_ptr.hit_point_rolled += (byte)max_hp_increase;
+                player.hit_point_rolled += (byte)max_hp_increase;
 
                 int var_15 = get_con_hp_adj(gbl.SelectedPlayer);
 
@@ -2820,109 +2470,11 @@ namespace engine
                     max_hp_increase = 1;
                 }
 
-                int hp_lost = player_ptr.hit_point_max - player_ptr.hit_point_current;
+                int hp_lost = player.hit_point_max - player.hit_point_current;
 
-                player_ptr.hit_point_max += (byte)max_hp_increase;
-                player_ptr.hit_point_current = (byte)(player_ptr.hit_point_max - hp_lost);
+                player.hit_point_max += (byte)max_hp_increase;
+                player.hit_point_current = (byte)(player.hit_point_max - hp_lost);
             }
-        }
-
-        private static bool RaceClassLimit(int class_lvl, Player player, ClassId _class)
-        {
-            bool race_limited = false;
-
-            switch (player.race)
-            {
-                case Race.dwarf:
-                    if (_class == ClassId.fighter)
-                    {
-                        if (class_lvl == 9 ||
-                            (class_lvl == 8 && player.strength == 17) ||
-                            (class_lvl == 7 && player.strength < 17))
-                        {
-                            race_limited = true;
-                        }
-                    }
-                    break;
-
-                case Race.elf:
-                    if (_class == ClassId.fighter)
-                    {
-                        if (class_lvl == 7 ||
-                            (class_lvl == 6 && player.strength == 17) ||
-                            (class_lvl == 5 && player.strength < 17))
-                        {
-                            race_limited = true;
-                        }
-                    }
-
-                    if (_class == ClassId.magic_user)
-                    {
-                        if (class_lvl == 11 ||
-                            (class_lvl == 9 && player._int < 17) ||
-                            (class_lvl == 10 && player._int == 17))
-                        {
-                            race_limited = true;
-                        }
-                    }
-                    break;
-
-                case Race.gnome:
-                    if (_class == ClassId.fighter)
-                    {
-                        if (class_lvl == 6 ||
-                            (class_lvl == 5 && player.strength < 18))
-                        {
-                            race_limited = true;
-                        }
-                    }
-                    break;
-
-                case Race.half_elf:
-                    if (_class == ClassId.cleric && class_lvl == 5)
-                    {
-                        race_limited = true;
-                    }
-                    else
-                    {
-                        if (_class == ClassId.fighter || _class == ClassId.ranger)
-                        {
-                            if (class_lvl == 8 ||
-                                (class_lvl == 7 && player.strength == 17) ||
-                                (class_lvl == 6 && player.strength < 17))
-                            {
-                                race_limited = true;
-                            }
-                        }
-
-                        if (_class == ClassId.magic_user)
-                        {
-                            if (class_lvl == 8 ||
-                                (class_lvl == 7 && player.strength == 17) ||
-                                (class_lvl == 6 && player.strength < 17))
-                            {
-                                race_limited = true;
-                            }
-                        }
-                    }
-                    break;
-
-                case Race.halfling:
-                    if (_class == ClassId.fighter)
-                    {
-                        if (class_lvl == 6 ||
-                            (class_lvl == 5 && player.strength == 17) ||
-                            (class_lvl == 4 && player.strength < 17))
-                        {
-                            race_limited = true;
-                        }
-                    }
-
-                    break;
-
-            }
-
-            return race_limited;
         }
     }
 }

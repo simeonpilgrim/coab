@@ -47,7 +47,7 @@ namespace engine
 
             ItemLibrary.Read();
 
-            seg044.sound_sub_120E0(Sound.sound_0);
+            seg044.PlaySound(Sound.sound_0);
 
             //Logging.Logger.Debug("Field_6 & 0x0F == 0");
             //foreach (var s in gbl.spellCastingTable )
@@ -172,7 +172,7 @@ namespace engine
                         ovr004.copy_protection();
                     }
 
-                    seg044.sound_sub_120E0(Sound.sound_0);
+                    seg044.PlaySound(Sound.sound_0);
                 }
             }
         }
@@ -261,8 +261,8 @@ namespace engine
             gbl.setBlocks[1] = new gbl.SetBlock();
             gbl.setBlocks[2] = new gbl.SetBlock();
 
-            gbl.AnimationsOn = true;
-            gbl.PicsOn = true;
+            //gbl.AnimationsOn = true;
+            //gbl.PicsOn = true;
             gbl.DelayBetweenCharacters = true;
             gbl.reload_ecl_and_pictures = false;
             gbl.rest_incounter_count = 0;

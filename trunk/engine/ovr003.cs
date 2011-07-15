@@ -183,11 +183,11 @@ namespace engine
             bool high_bit_set = (player_index & 0x80) != 0;
             player_index = player_index & 0x7f;
 
-            Player player_ptr = player_index > 0 && player_index < gbl.TeamList.Count ? gbl.TeamList[player_index] : null;
+            Player player = player_index > 0 && player_index < gbl.TeamList.Count ? gbl.TeamList[player_index] : null;
 
-            if (player_ptr != null)
+            if (player != null)
             {
-                gbl.SelectedPlayer = player_ptr;
+                gbl.SelectedPlayer = player;
                 gbl.player_not_found = false;
             }
             else
@@ -199,7 +199,7 @@ namespace engine
                 gbl.redrawPartySummary1 == true &&
                 gbl.redrawPartySummary2 == true)
             {
-                if (gbl.LastSelectedPlayer == player_ptr)
+                if (gbl.LastSelectedPlayer == player)
                 {
                     gbl.restore_player_ptr = false;
                 }
@@ -1025,7 +1025,7 @@ namespace engine
             gbl.encounter_flags[0] = false;
             gbl.encounter_flags[1] = false;
             gbl.spriteChanged = false;
-            ovr025.load_pic();
+            ovr025.LoadPic();
         }
 
 
@@ -1206,19 +1206,19 @@ namespace engine
             byte var_2 = (byte)ovr008.vm_GetCmdValue(2);
 
             double percentage = (100 - var_2) / 100.0;
-            byte var_3 = (byte)ovr008.vm_GetCmdValue(3);
+            int robChance = (byte)ovr008.vm_GetCmdValue(3);
 
             if (allParty == 0)
             {
                 ovr008.RobMoney(gbl.SelectedPlayer, percentage);
-                ovr008.RobItems(gbl.SelectedPlayer, var_3);
+                ovr008.RobItems(gbl.SelectedPlayer, robChance);
             }
             else
             {
                 foreach (Player player in gbl.TeamList)
                 {
                     ovr008.RobMoney(player, percentage);
-                    ovr008.RobItems(player, var_3);
+                    ovr008.RobItems(player, robChance);
                 }
             }
         }
@@ -1775,7 +1775,7 @@ namespace engine
 
             byte morale = (byte)ovr008.vm_GetCmdValue(2);
 
-            gbl.SelectedPlayer.control_morale = (byte)((morale >> 1) + 0x80);
+            gbl.SelectedPlayer.control_morale = (byte)((morale >> 1) + Control.NPC_Base);
 
             ovr025.reclac_player_values(gbl.SelectedPlayer);
             ovr025.PartySummary(gbl.SelectedPlayer);
@@ -1876,15 +1876,15 @@ namespace engine
                 case 0x3201:
                     if (gbl.word_1EE76 == 8)
                     {
-                        seg044.sound_sub_120E0(Sound.sound_a);
+                        seg044.PlaySound(Sound.sound_a);
                     }
                     else if (gbl.word_1EE76 == 10)
                     {
-                        seg044.sound_sub_120E0(Sound.sound_b);
+                        seg044.PlaySound(Sound.sound_b);
                     }
                     else
                     {
-                        seg044.sound_sub_120E0(Sound.sound_a);
+                        seg044.PlaySound(Sound.sound_a);
                     }
                     break;
 
@@ -1914,9 +1914,9 @@ namespace engine
         {
             RunEclVm(gbl.PreCampCheckAddr);
 
-            if (ovr016.make_camp() == true)
+            if (ovr016.MakeCamp() == true)
             {
-                ovr025.load_pic();
+                ovr025.LoadPic();
                 RunEclVm(gbl.CampInterruptedAddr);
             }
 
@@ -1944,7 +1944,7 @@ namespace engine
                 if (gbl.lastDaxBlockId != 0x50 &&
                     gbl.area_ptr.inDungeon == 0)
                 {
-                    ovr025.load_pic();
+                    ovr025.LoadPic();
                 }
             }
             else if (var_1 == 8)
@@ -2000,7 +2000,7 @@ namespace engine
             {
                 ovr004.copy_protection();
             }
-            ovr025.load_pic();
+            ovr025.LoadPic();
         }
 
 
@@ -2303,7 +2303,7 @@ namespace engine
                 {
                     if (gbl.byte_1EE98 == true)
                     {
-                        ovr025.load_pic();
+                        ovr025.LoadPic();
                     }
 
                     gbl.can_draw_bigpic = true;
@@ -2377,7 +2377,7 @@ namespace engine
                             if (gbl.area_ptr.lastXPos != gbl.mapPosX ||
                                 gbl.area_ptr.lastYPos != gbl.mapPosY)
                             {
-                                seg044.sound_sub_120E0(Sound.sound_a);
+                                seg044.PlaySound(Sound.sound_a);
                             }
 
                             gbl.spriteChanged = false;

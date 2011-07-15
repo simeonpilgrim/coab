@@ -4,11 +4,286 @@ using System.Collections.Generic;
 
 namespace Classes
 {
-
-    public struct StatValue
+    public struct StatValue : IDataIO
     {
-        public byte tmp;
-        public byte max;
+        int[, ,] raceSexMinMax;
+        int[] classMin;
+        int[] ageEffects;
+
+        public StatValue(int[, ,] _raceSexMinMax, int[] _classMin, int[] _ageEffects)
+        {
+            raceSexMinMax = _raceSexMinMax;
+            classMin = _classMin;
+            ageEffects = _ageEffects;
+            cur = full = 0;
+        }
+
+        public int cur;
+        public int full;
+
+        public void Load(int val)
+        {
+            full = cur = val;
+        }
+
+        public void Assign(StatValue sv)
+        {
+            full = sv.full;
+            cur = sv.cur;
+        }
+
+        public void Inc()
+        {
+            full += 1;
+            cur += 1;
+        }
+
+        public void Dec()
+        {
+            full -= 1;
+            cur -= 1;
+        }
+
+        public void EnforceRaceSexLimits(int race, int sex)
+        {
+            if( raceSexMinMax != null )
+            {
+                full = Math.Min(raceSexMinMax[race, 1, sex], full);
+                full = Math.Max(raceSexMinMax[race, 0, sex], full);
+            }
+            cur = full;
+        }
+
+        public void EnforceClassLimits(int _class)
+        {
+            if (classMin != null)
+            {
+                full = Math.Max(classMin[_class], full);
+            }
+            cur = full;
+        }
+
+        public void AgeEffects(int race, int age)
+        {
+            for (int i = 0; i < 5; i++)
+            {
+                if (Limits.RaceAgeBrackets[race, i] < age)
+                {
+                    full += ageEffects[i];
+                }
+            }
+        }
+
+        void IDataIO.Write(byte[] data, int offset)
+        {
+            data[offset + 0] = (byte)cur;
+            data[offset + 1] = (byte)full;
+        }
+
+        void IDataIO.Read(byte[] data, int offset)
+        {
+            // enforce values in valid range
+            cur = Math.Min((int)data[offset + 0], 25);
+            full = Math.Min((int)data[offset + 1], 25);
+        }
+
+        public override string ToString()
+        {
+            return string.Format("{0}/{1}", cur, full);
+        }
+    }
+
+    public class PlayerStats : IDataIO
+    {
+        public StatValue Str = new StatValue(Limits.StrRaceSexMinMax, Limits.StrClassMin, Limits.StrAgeEffect);
+        public StatValue Str00 = new StatValue(Limits.Str00RaceSexMinMax, Limits.Str00ClassMin, Limits.Str00AgeEffect);
+        public StatValue Con = new StatValue(Limits.ConRaceSexMinMax, Limits.ConClassMin, Limits.ConAgeEffect);
+        public StatValue Dex = new StatValue(Limits.DexRaceSexMinMax, Limits.DexClassMin, Limits.DexAgeEffect);
+        public StatValue Int = new StatValue(Limits.IntRaceSexMinMax, Limits.IntClassMin, Limits.IntAgeEffect);
+        public StatValue Wis = new StatValue(Limits.WisRaceSexMinMax, Limits.WisClassMin, Limits.WisAgeEffect);
+        public StatValue Cha = new StatValue(Limits.ChaRaceSexMinMax, Limits.ChaClassMin, Limits.ChaAgeEffect);
+
+
+        void IDataIO.Write(byte[] data, int offset)
+        {
+            ((IDataIO)Str).Write(data, 0x00);
+            ((IDataIO)Int).Write(data, 0x02);
+            ((IDataIO)Wis).Write(data, 0x04);
+            ((IDataIO)Dex).Write(data, 0x06);
+            ((IDataIO)Con).Write(data, 0x08);
+            ((IDataIO)Cha).Write(data, 0x0a);
+            ((IDataIO)Str00).Write(data, 0x0c);
+        }
+
+        void IDataIO.Read(byte[] data, int offset)
+        {
+            ((IDataIO)Str).Read(data, 0x00);
+            ((IDataIO)Int).Read(data, 0x02);
+            ((IDataIO)Wis).Read(data, 0x04);
+            ((IDataIO)Dex).Read(data, 0x06);
+            ((IDataIO)Con).Read(data, 0x08);
+            ((IDataIO)Cha).Read(data, 0x0a);
+            ((IDataIO)Str00).Read(data, 0x0c);
+        }
+
+        public void Assign(PlayerStats ps)
+        {
+            Str.Assign(ps.Str);
+            Int.Assign(ps.Int);
+            Wis.Assign(ps.Wis);
+            Dex.Assign(ps.Dex);
+            Con.Assign(ps.Con);
+            Cha.Assign(ps.Cha);
+            Str00.Assign(ps.Str00);
+        }
+
+        public StatValue this[int idx]
+        {
+            get
+            {
+                switch (idx)
+                {
+                    case 0: return Str;
+                    case 1: return Int;
+                    case 2: return Wis;
+                    case 3: return Dex;
+                    case 4: return Con;
+                    case 5: return Cha;
+                    default: throw new IndexOutOfRangeException(string.Format("idx {0} not in [0-5]", idx));
+                }
+            }
+        }
+
+        public override string ToString()
+        {
+            return string.Format("{0} ({6}),{1},{2},{3},{4},{5}", Str, Int, Wis, Con, Dex, Cha, Str00);
+        }
+    }
+
+    public struct ClassLevels
+    {
+
+    }
+
+    public class ActiveItems
+    {
+        const int ItemSlots = 13;
+        Item[] itemArray = new Item[ItemSlots]; // 0x151[]
+
+        public byte PrimaryWeaponHandCount()
+        {
+            if (primaryWeapon == null) return 0;
+
+            return primaryWeapon.HandsCount();
+        }
+
+        public byte SecondaryWeaponHandCount()
+        {
+            if (secondaryWeapon == null) return 0;
+
+            return secondaryWeapon.HandsCount();
+        }     
+
+        public Item primaryWeapon // field_151
+        {// 0x151
+            get { return itemArray[0]; }
+            set { itemArray[0] = value; }
+        }
+        public Item secondaryWeapon // field_155
+        { // 0x155 
+            get { return itemArray[1]; }
+            set { itemArray[1] = value; }
+        }
+
+        public Item armor // field_159
+        { // 0x159 
+            get { return itemArray[2]; }
+            set { itemArray[2] = value; }
+        }
+
+        public Item field_15D
+        { // 0x15D
+            get { return itemArray[3]; }
+            set { itemArray[3] = value; }
+        }
+        public Item field_161
+        { // 0x161
+            get { return itemArray[4]; }
+            set { itemArray[4] = value; }
+        }
+        public Item field_165
+        { // 0x165
+            get { return itemArray[5]; }
+            set { itemArray[5] = value; }
+        }
+        public Item field_169
+        { // 0x169 
+            get { return itemArray[6]; }
+            set { itemArray[6] = value; }
+        }
+        public Item field_16D
+        { // 0x16D
+            get { return itemArray[7]; }
+            set { itemArray[7] = value; }
+        }
+        public Item field_171
+        { // 0x171
+            get { return itemArray[8]; }
+            set { itemArray[8] = value; }
+        }
+        public Item Item_ptr_01
+        { // 0x175
+            get { return itemArray[9]; }
+            set { itemArray[9] = value; }
+        }
+        public Item Item_ptr_02
+        {// 0x179
+            get { return itemArray[10]; }
+            set { itemArray[10] = value; }
+        }
+        public Item arrows
+        {// 0x17d
+            get { return itemArray[11]; }
+            set { itemArray[11] = value; }
+        }
+        public Item quarrels
+        { // 0x181
+            get { return itemArray[12]; }
+            set { itemArray[12] = value; }
+        }
+
+        public Item this[ItemSlot slot]
+        {
+            get
+            {
+                return itemArray[(int)slot];
+            }
+            set
+            {
+                itemArray[(int)slot] = value;
+            }
+        }
+
+        public void Reset()
+        {
+            for (int slot = 0; slot < ItemSlots; slot++)
+            {
+                itemArray[slot] = null;
+            }
+        }
+
+        public void UndreadyAll(int classFlags)
+        {
+            for (int item_slot = 0; item_slot < ItemSlots; item_slot++)
+            {
+                if (itemArray[item_slot] != null &&
+                    (gbl.ItemDataTable[itemArray[item_slot].type].classFlags & classFlags) == 0 &&
+                    itemArray[item_slot].cursed == false)
+                {
+                    itemArray[item_slot].readied = false;
+                }
+            }
+        }
     }
 
 
@@ -31,81 +306,12 @@ namespace Classes
         [DataOffset(0x00, DataType.PString, 15)]
         public string name;
 
-        [DataOffset(0x10, DataType.Cust1Array, 6)]
-        public StatValue[] stats;
+        //[DataOffset(0x10, DataType.Cust1Array, 6)]
+        //public StatValue[] stats;
 
-        public byte tmp_str // 0x10;
-        {
-            set { stats[0].tmp = value; }
-            get { return stats[0].tmp; }
-        }
-        public byte strength // 0x11;
-        {
-            set { stats[0].max = value; }
-            get { return stats[0].max; }
-        }
+        [DataOffset(0x10, DataType.CustSaveLoad, 0x12)]
+        public PlayerStats stats2;
 
-        public byte tmp_int // 0x12;
-        {
-            set { stats[1].tmp = value; }
-            get { return stats[1].tmp; }
-        }
-        public byte _int // 0x13;
-        {
-            set { stats[1].max = value; }
-            get { return stats[1].max; }
-        }
-
-        public byte tmp_wis // 0x14;
-        {
-            set { stats[2].tmp = value; }
-            get { return stats[2].tmp; }
-        }
-        public byte wis // 0x15;
-        {
-            set { stats[2].max = value; }
-            get { return stats[2].max; }
-        }
-
-        public byte tmp_dex // 0x16;
-        {
-            set { stats[3].tmp = value; }
-            get { return stats[3].tmp; }
-        }
-        public byte dex // 0x17;
-        {
-            set { stats[3].max = value; }
-            get { return stats[3].max; }
-        }
-
-        public byte tmp_con // 0x18;
-        {
-            set { stats[4].tmp = value; }
-            get { return stats[4].tmp; }
-        }
-        public byte con // 0x19;
-        {
-            set { stats[4].max = value; }
-            get { return stats[4].max; }
-        }
-        public byte tmp_cha // 0x1a;
-        {
-            set { stats[5].tmp = value; }
-            get { return stats[5].tmp; }
-        }
-        public byte charisma // 0x1b;
-        {
-            set { stats[5].max = value; }
-            get { return stats[5].max; }
-        }
-        [DataOffset(0x1C, DataType.Byte)]
-        public byte tmp_str_00; // 0x1c - strength_18_100
-        [DataOffset(0x1D, DataType.Byte)]
-        public byte max_str_00; // 0x1d - field_1D
-
-        //public const int SpellListSize = 84;
-        //[DataOffset(0x1E, DataType.ByteArray, SpellListSize)]
-        //public byte[] spell_list = new byte[SpellListSize]; // 0x1e byte[84]
         public SpellList spellList; // ox1e was spell_list
 
         [DataOffset(0x72, DataType.Byte)]
@@ -330,78 +536,11 @@ namespace Classes
         public List<Item> items; // 0x14d
         //public Item itemsPtr; // 0x14d
 
-        public const int ItemSlots = 13;
-        public Item[] itemArray = new Item[ItemSlots]; // 0x151[]
-        public Item field_151
-        {// 0x151
-            get { return itemArray[0]; }
-            set { itemArray[0] = value; }
-        }
-        public Item field_155
-        { // 0x155 
-            get { return itemArray[1]; }
-            set { itemArray[1] = value; }
-        }
+        public ActiveItems activeItems = new ActiveItems();
 
-        public Item armor // field_159
-        { // 0x159 
-            get { return itemArray[2]; }
-            set { itemArray[2] = value; }
-        }
-
-        public Item field_15D
-        { // 0x15D
-            get { return itemArray[3]; }
-            set { itemArray[3] = value; }
-        }
-        public Item field_161
-        { // 0x161
-            get { return itemArray[4]; }
-            set { itemArray[4] = value; }
-        }
-        public Item field_165
-        { // 0x165
-            get { return itemArray[5]; }
-            set { itemArray[5] = value; }
-        }
-        public Item field_169
-        { // 0x169 
-            get { return itemArray[6]; }
-            set { itemArray[6] = value; }
-        }
-        public Item field_16D
-        { // 0x16D
-            get { return itemArray[7]; }
-            set { itemArray[7] = value; }
-        }
-        public Item field_171
-        { // 0x171
-            get { return itemArray[8]; }
-            set { itemArray[8] = value; }
-        }
-        public Item Item_ptr_01
-        { // 0x175
-            get { return itemArray[9]; }
-            set { itemArray[9] = value; }
-        }
-        public Item Item_ptr_02
-        {// 0x179
-            get { return itemArray[10]; }
-            set { itemArray[10] = value; }
-        }
-        public Item arrows
-        {// 0x17d
-            get { return itemArray[11]; }
-            set { itemArray[11] = value; }
-        }
-        public Item quarrels
-        { // 0x181
-            get { return itemArray[12]; }
-            set { itemArray[12] = value; }
-        }
 
         [DataOffset(0x185, DataType.Byte)]
-        public byte field_185; // 0x185;
+        public byte weaponsHandsUsed; // 0x185;
         [DataOffset(0x186, DataType.SByte)]
         public sbyte field_186; // 0x186;
         [DataOffset(0x187, DataType.SWord)]
@@ -565,7 +704,8 @@ namespace Classes
         private void Init()
         {
             spellCastCount = new byte[3, 5];
-            stats = new StatValue[6];
+            //stats = new StatValue[6];
+            stats2 = new PlayerStats();
 
             name = string.Empty;
             items = new List<Item>();
@@ -574,6 +714,7 @@ namespace Classes
             actions = null;
             Money = new MoneySet();
             spellList = new SpellList();
+
         }
 
 

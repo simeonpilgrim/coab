@@ -76,45 +76,45 @@ namespace engine
                     switch (player._class)
                     {
                         case ClassId.cleric:
-                            if (player.wis > 15)
+                            if (player.stats2.Wis.full > 15)
                             {
                                 new_exp = exp_to_add + (exp_to_add / 10);
                             }
                             break;
 
                         case ClassId.fighter:
-                            if (player.strength > 15)
+                            if (player.stats2.Str.full > 15)
                             {
                                 new_exp = exp_to_add + (exp_to_add / 10);
                             }
                             break;
 
                         case ClassId.paladin:
-                            if (player.strength > 15 &&
-                                player.wis > 15)
+                            if (player.stats2.Str.full > 15 &&
+                                player.stats2.Wis.full > 15)
                             {
                                 new_exp = exp_to_add + (exp_to_add / 10);
                             }
                             break;
 
                         case ClassId.ranger:
-                            if (player.strength > 15 &&
-                                player._int > 15 &&
-                                player.wis > 15)
+                            if (player.stats2.Str.full > 15 &&
+                                player.stats2.Int.full > 15 &&
+                                player.stats2.Wis.full > 15)
                             {
                                 new_exp = exp_to_add + (exp_to_add / 10);
                             }
                             break;
 
                         case ClassId.magic_user:
-                            if (player._int > 15)
+                            if (player.stats2.Int.full > 15)
                             {
                                 new_exp = exp_to_add + (exp_to_add / 10);
                             }
                             break;
 
                         case ClassId.thief:
-                            if (player.dex > 15)
+                            if (player.stats2.Dex.full > 15)
                             {
                                 new_exp = exp_to_add + (exp_to_add / 10);
                             }
@@ -126,11 +126,13 @@ namespace engine
                                 (player._class >= ClassId.mc_c_r && player._class <= ClassId.mc_f_t) ||
                                 player._class == ClassId.mc_f_t)
                             {
+                               // duel class
                                 new_exp = exp_to_add / 2;
                             }
                             else if (player._class == ClassId.mc_c_f_m ||
                                 player._class == ClassId.mc_f_mu_t)
                             {
+                                // triple class
                                 new_exp = exp_to_add / 3;
                             }
                             break;
@@ -213,6 +215,7 @@ namespace engine
                 {
                     if (player.actions != null && player.actions.nonTeamMember == true)
                     {
+                        // have gotten past first 6 characters (the party)
                         break;
                     }
 
@@ -495,7 +498,7 @@ namespace engine
                 }
             } while (stop == false);
 
-            ovr025.load_pic();
+            ovr025.LoadPic();
         }
 
 
@@ -514,7 +517,7 @@ namespace engine
                         {
                             case 'M':
                                 ovr022.TakePoolMoney();
-                                ovr025.load_pic();
+                                ovr025.LoadPic();
                                 break;
 
                             case 'I':
@@ -548,7 +551,7 @@ namespace engine
                 else
                 {
                     ovr022.TakePoolMoney();
-                    ovr025.load_pic();
+                    ovr025.LoadPic();
                 }
             }
             else
@@ -562,7 +565,7 @@ namespace engine
         {
             byte spellId = 0; /* Simeon */
 
-            ovr025.load_pic();
+            ovr025.LoadPic();
 
             bool done = false;
             do

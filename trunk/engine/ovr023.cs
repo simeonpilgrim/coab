@@ -1,6 +1,7 @@
 using Classes;
 using System;
 using System.Collections.Generic;
+using Classes.Combat;
 
 namespace engine
 {
@@ -130,7 +131,7 @@ namespace engine
 			switch (gbl.spellCastingTable[spell_id].spellClass)
 			{
 				case SpellClass.Cleric:
-					if (player.wis > 8 &&
+                    if (player.stats2.Wis.full > 8 &&
 						(player.SkillLevel(SkillType.Cleric) > 0 ||
 						 player.SkillLevel(SkillType.Paladin) > 8))
 					{
@@ -139,16 +140,16 @@ namespace engine
 					break;
 
 				case SpellClass.Druid:
-					if ((player.wis > 8 && player.SkillLevel(SkillType.Ranger) > 6))
+                    if ((player.stats2.Wis.full > 8 && player.SkillLevel(SkillType.Ranger) > 6))
 					{
 						can_learn = true;
 					}
 					break;
 
 				case SpellClass.MagicUser:
-					if (player._int > 8 &&
+					if (player.stats2.Int.full > 8 &&
 						((player.race != Race.human) ||
-						 (player.armor == null) ||
+                         (player.activeItems.armor == null) ||
 						 (gbl.game_state != GameState.Combat) ||
 						 (player.SkillLevel(SkillType.Ranger) > 8) ||
 						 (player.SkillLevel(SkillType.MagicUser) > 0)))
@@ -623,7 +624,7 @@ namespace engine
 		}
 
 
-		internal static void NonCombatSpellCast(out bool castSpell, QuickFight quick_fight, int spellId) // cast_spell_on
+		internal static bool NonCombatSpellCast(QuickFight quick_fight, int spellId) // cast_spell_on
 		{
 			if (gbl.lastSelectetSpellTarget == null)
 			{
@@ -633,7 +634,7 @@ namespace engine
 			gbl.spellTargets.Clear();
 			gbl.spellTargets.Add(gbl.SelectedPlayer);
 
-			castSpell = true;
+			bool castSpell = true;
 
 			switch (gbl.spellCastingTable[spellId].targetType)
 			{
@@ -641,7 +642,7 @@ namespace engine
 					break;
 
 				case SpellTargets.PartyMember:
-					ovr025.load_pic();
+					ovr025.LoadPic();
 
 					ovr025.selectAPlayer(ref gbl.lastSelectetSpellTarget, true, "Cast Spell on whom");
 
@@ -665,6 +666,8 @@ namespace engine
 					castSpell = false;
 					break;
 			}
+
+            return castSpell;
 		}
 
 
@@ -727,7 +730,7 @@ namespace engine
 
 			while (stillCast == true)
 			{
-				gbl.dword_1D5CA(out arg_0, quick_fight, spell_id);
+				arg_0 = gbl.dword_1D5CA(quick_fight, spell_id);
 
 				if (arg_0 == true)
 				{
@@ -741,27 +744,27 @@ namespace engine
 						byte direction = ovr032.FindCombatantDirection(gbl.targetPos, casterPos);
 
 						gbl.focusCombatAreaOnPlayer = true;
-						ovr033.draw_74B3F(0, 1, direction, caster);
+						ovr033.draw_74B3F(false, Icon.Attack, direction, caster);
 
 						if (spell_id == 0x2F)
 						{
-							seg044.sound_sub_120E0(Sound.sound_b);
+							seg044.PlaySound(Sound.sound_b);
 						}
 						else if (spell_id == 0x33)
 						{
-							seg044.sound_sub_120E0(Sound.sound_8);
+							seg044.PlaySound(Sound.sound_8);
 						}
 						else
 						{
-							seg044.sound_sub_120E0(Sound.sound_2);
+							seg044.PlaySound(Sound.sound_2);
 						}
 
 						ovr025.draw_missile_attack(0x1E, 4, gbl.targetPos, casterPos);
 
 						if (ovr033.PlayerOnScreen(false, caster) == true)
 						{
-							ovr033.draw_74B3F(1, 1, caster.actions.direction, caster);
-							ovr033.draw_74B3F(0, 0, caster.actions.direction, caster);
+							ovr033.draw_74B3F(true, Icon.Attack, caster.actions.direction, caster);
+							ovr033.draw_74B3F(false, Icon.Normal, caster.actions.direction, caster);
 						}
 					}
 
@@ -952,7 +955,7 @@ namespace engine
 			{
 				if (firstTimeRound == false)
 				{
-					seg044.sound_sub_120E0(Sound.sound_2);
+					seg044.PlaySound(Sound.sound_2);
 					ovr025.load_missile_icons(0x12);
 
 					ovr025.draw_missile_attack(0x1E, 4, ovr033.PlayerMapPos(target), ovr033.PlayerMapPos(gbl.SelectedPlayer));
@@ -1485,7 +1488,7 @@ namespace engine
 				strIncrease = ovr024.roll_dice(8, 1);
 			}
 
-			int str = target.strength + strIncrease;
+            int str = target.stats2.Str.full + strIncrease;
 			int str_100 = 0;
 
 			if (str > 18)
@@ -1497,7 +1500,7 @@ namespace engine
 					target.ranger_lvl > 0 ||
 					target.ranger_old_lvl > target.multiclassLevel)
 				{
-					str_100 = target.tmp_str_00 + ((str - 18) * 10);
+                    str_100 = target.stats2.Str00.cur + ((str - 18) * 10);
 
 					if (str_100 > 100)
 					{
@@ -2139,7 +2142,7 @@ namespace engine
 					{
 						if (ovr018.exp_table[skill, lvl] > 0 &&
 							ovr018.exp_table[skill, lvl] < max_exp &&
-							ovr025.RaceStatLevelRestricted((ClassId)skill, player) == false)
+							Limits.RaceStatLevelRestricted((ClassId)skill, player) == false)
 						{
 							max_lvl = lvl;
 							var_C = skill;
@@ -2155,7 +2158,7 @@ namespace engine
 					player.exp = max_exp;
 				}
 
-				ovr026.sub_6A3C6(player);
+				ovr026.ReclacClassBonuses(player);
 				ovr025.DisplayPlayerStatusString(true, 10, "is restored", player);
 			}
 		}
@@ -2339,7 +2342,7 @@ namespace engine
 			Player player = gbl.spellTargets[0];
 
 			if ((player.health_status == Status.dead || player.health_status == Status.animated) &&
-				player.tmp_con > 0 &&
+                player.stats2.Con.cur > 0 &&
 				player.race != Race.elf)
 			{
 				gbl.cureSpell = true;
@@ -2350,7 +2353,7 @@ namespace engine
 
 				player.health_status = Status.okey;
 				player.in_combat = true;
-				player.tmp_con--;
+                player.stats2.Con.cur--;
 
 				ovr024.CalcStatBonuses(Stat.CON, player);
 				player.hit_point_current = 1;
@@ -2806,7 +2809,7 @@ namespace engine
 		{
 			player.actions.target = null;
 
-			gbl.dword_1D5CA(out gbl.byte_1DA70, QuickFight.True, 0x41);
+			gbl.byte_1DA70 = gbl.dword_1D5CA(QuickFight.True, 0x41);
 
 			if (player.actions.target != null)
 			{
@@ -2851,7 +2854,7 @@ namespace engine
 
 				ovr025.DisplayPlayerStatusString(true, 10, "Breathes!", player);
 
-				gbl.dword_1D5CA(out gbl.byte_1DA70, QuickFight.True, 0x33);
+                gbl.byte_1DA70 = gbl.dword_1D5CA(QuickFight.True, 0x33);
 
 				gbl.targetPos.x = var_2.x + Math.Sign(gbl.targetPos.x - var_2.x);
 				gbl.targetPos.y = var_2.y + Math.Sign(gbl.targetPos.y - var_2.y);
@@ -2890,7 +2893,7 @@ namespace engine
 
 		internal static void AffectSpitAcid(Effect arg_0, object param, Player player) // spell_spit_acid
 		{
-			gbl.dword_1D5CA(out gbl.byte_1DA70, QuickFight.True, 0x41);
+			gbl.byte_1DA70 = gbl.dword_1D5CA(QuickFight.True, 0x41);
 
 			gbl.spell_target = player.actions.target;
 
@@ -2933,7 +2936,7 @@ namespace engine
 
 				var attackerPos = ovr033.PlayerMapPos(attacker);
 
-				gbl.dword_1D5CA(out gbl.byte_1DA70, QuickFight.True, 0x3d);
+				gbl.byte_1DA70 = gbl.dword_1D5CA(QuickFight.True, 0x3d);
 
 				if (gbl.byte_1DA70 == true)
 				{
@@ -2981,7 +2984,7 @@ namespace engine
 				gbl.damage_flags = DamageType.DragonBreath | DamageType.Fire;
 				var attackPos = ovr033.PlayerMapPos(attacker);
 
-				gbl.dword_1D5CA(out gbl.byte_1DA70, QuickFight.True, 0x3D);
+				gbl.byte_1DA70 = gbl.dword_1D5CA(QuickFight.True, 0x3D);
 
 				if (gbl.byte_1DA70 == true)
 				{
@@ -3011,7 +3014,7 @@ namespace engine
 
 		internal static void cast_breath_fire(Effect arg_0, object param, Player arg_6)
 		{
-			gbl.dword_1D5CA(out gbl.byte_1DA70, QuickFight.True, 0x41);
+			gbl.byte_1DA70 = gbl.dword_1D5CA(QuickFight.True, 0x41);
 			gbl.spell_target = arg_6.actions.target;
 
 			if ((gbl.spell_target != null) &&
@@ -3041,7 +3044,7 @@ namespace engine
 				var pos = ovr033.PlayerMapPos(caster);
 
 				ovr025.DisplayPlayerStatusString(true, 10, "throws lightning", caster);
-				gbl.dword_1D5CA(out gbl.byte_1DA70, QuickFight.True, 0x33);
+				gbl.byte_1DA70 = gbl.dword_1D5CA(QuickFight.True, 0x33);
 
 				ovr024.remove_invisibility(caster);
 				ovr025.load_missile_icons(0x13);
@@ -3059,7 +3062,7 @@ namespace engine
 		{
 			arg_6.actions.target = null;
 
-			gbl.dword_1D5CA(out gbl.byte_1DA70, QuickFight.True, 0x24);
+			gbl.byte_1DA70 = gbl.dword_1D5CA(QuickFight.True, 0x24);
 
 			gbl.spell_target = arg_6.actions.target;
 
