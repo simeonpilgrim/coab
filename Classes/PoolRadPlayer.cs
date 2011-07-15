@@ -110,7 +110,7 @@ namespace Classes
         public PoolRadPlayer(byte[] data)
             : this()
         {
-            name = Sys.ArrayToString(data, 0, 16);
+            name = Sys.ArrayToString(data, 0, 15);
 
             stat_str = data[0x10]; // 0x10
             stat_int = data[0x11]; // 0x11
