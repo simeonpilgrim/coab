@@ -24,7 +24,7 @@ namespace engine
                     stream.Seek(nameOffset, SeekOrigin.Begin);
                     stream.Read(data, 0, 16);
 
-                    string playerName = Sys.ArrayToString(data, 0, 16).Trim();
+                    string playerName = Sys.ArrayToString(data, 0, 15).Trim();
 
                     byte var_164;
 
@@ -220,7 +220,7 @@ namespace engine
                 stream.Read(data, 0, 16);
                 stream.Close();
 
-                string in_file_name = Sys.ArrayToString(data, 0, 16).Trim();
+                string in_file_name = Sys.ArrayToString(data, 0, 15).Trim();
                 if (in_file_name == player_name)
                 {
                     return true;

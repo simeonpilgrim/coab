@@ -237,39 +237,39 @@ namespace engine
 
             displayString(prompt, bgColor, fgColor, 0x18, 0);
 
-            int var_2A = prompt.Length;
+            int xPos = prompt.Length;
 
-            char var_12B;
-            string var_12A = string.Empty;
+            char ch;
+            string resultString = string.Empty;
 
             do
             {
-                var_12B = (char)seg043.GetInputKey();
+                ch = (char)seg043.GetInputKey();
 
-                if (var_12B >= 0x20 && var_12B <= 0x7A)
+                if (ch >= 0x20 && ch <= 0x7A)
                 {
-                    if (var_12A.Length < inputLen)
+                    if (resultString.Length < inputLen)
                     {
-                        var_12A += var_12B.ToString();
+                        resultString += ch.ToString();
 
-                        var_2A++;
+                        //var_2A++;
 
-                        displayString(var_12B.ToString(), 0, 15, 0x18, var_2A);
+                        displayString(ch.ToString(), 0, 15, 0x18, xPos++);
                     }
                 }
-                else if (var_12B == 8 && var_12A.Length > 0)
+                else if (ch == 8 && resultString.Length > 0)
                 {
-                    var_12A = seg051.Copy(var_12A.Length - 1, 0, var_12A);
+                    resultString = seg051.Copy(resultString.Length - 1, 0, resultString);
 
-                    displaySpaceChar(24, var_2A);
-                    var_2A -= 1;
+                    displaySpaceChar(24, --xPos);
+                    //xPos -= 1;
                 }
 
-            } while (var_12B != 0x0d && var_12B != 0x1B && gbl.inDemo == false);
+            } while (ch != 0x0d && ch != 0x1B && gbl.inDemo == false);
 
             ovr027.ClearPromptAreaNoUpdate();
 
-            return var_12A.ToUpper();
+            return resultString.ToUpper();
         }
 
 

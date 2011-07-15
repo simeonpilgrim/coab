@@ -106,24 +106,24 @@ namespace Classes
 
         void IDataIO.Write(byte[] data, int offset)
         {
-            ((IDataIO)Str).Write(data, 0x00);
-            ((IDataIO)Int).Write(data, 0x02);
-            ((IDataIO)Wis).Write(data, 0x04);
-            ((IDataIO)Dex).Write(data, 0x06);
-            ((IDataIO)Con).Write(data, 0x08);
-            ((IDataIO)Cha).Write(data, 0x0a);
-            ((IDataIO)Str00).Write(data, 0x0c);
+            ((IDataIO)Str).Write(data, offset + 0x00);
+            ((IDataIO)Int).Write(data, offset + 0x02);
+            ((IDataIO)Wis).Write(data, offset + 0x04);
+            ((IDataIO)Dex).Write(data, offset + 0x06);
+            ((IDataIO)Con).Write(data, offset + 0x08);
+            ((IDataIO)Cha).Write(data, offset + 0x0a);
+            ((IDataIO)Str00).Write(data, offset + 0x0c);
         }
 
         void IDataIO.Read(byte[] data, int offset)
         {
-            ((IDataIO)Str).Read(data, 0x00);
-            ((IDataIO)Int).Read(data, 0x02);
-            ((IDataIO)Wis).Read(data, 0x04);
-            ((IDataIO)Dex).Read(data, 0x06);
-            ((IDataIO)Con).Read(data, 0x08);
-            ((IDataIO)Cha).Read(data, 0x0a);
-            ((IDataIO)Str00).Read(data, 0x0c);
+            ((IDataIO)Str).Read(data, offset + 0x00);
+            ((IDataIO)Int).Read(data, offset + 0x02);
+            ((IDataIO)Wis).Read(data, offset + 0x04);
+            ((IDataIO)Dex).Read(data, offset + 0x06);
+            ((IDataIO)Con).Read(data, offset + 0x08);
+            ((IDataIO)Cha).Read(data, offset + 0x0a);
+            ((IDataIO)Str00).Read(data, offset + 0x0c);
         }
 
         public void Assign(PlayerStats ps)
