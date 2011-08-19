@@ -671,14 +671,14 @@ namespace engine
 		}
 
 
-		internal static void sub_5D2E1(byte arg_4, QuickFight quick_fight, int spell_id) // sub_5D2E1
+		internal static void sub_5D2E1(bool showCastingText, QuickFight quick_fight, int spell_id) // sub_5D2E1
 		{
 			bool dummy = false;
-			sub_5D2E1(ref dummy, arg_4, quick_fight, spell_id);
+			sub_5D2E1(ref dummy, showCastingText, quick_fight, spell_id);
 		}
 
 
-		internal static void sub_5D2E1(ref bool arg_0, byte arg_4, QuickFight quick_fight, int spell_id) // sub_5D2E1
+		internal static void sub_5D2E1(ref bool arg_0, bool showCastingText, QuickFight quick_fight, int spell_id) // sub_5D2E1
 		{
 			Player caster = gbl.SelectedPlayer;
 			bool stillCast = true;
@@ -707,7 +707,7 @@ namespace engine
 					}
 				}
 
-				arg_4 = 0;
+				showCastingText = false;
 				stillCast = false;
 			}
 
@@ -717,15 +717,15 @@ namespace engine
 
 				if (dice_roll == 1)
 				{
-					cast_spell_text(spell_id, "miscasts", caster);
-					arg_4 = 0;
+					DisplayCaseSpellText(spell_id, "miscasts", caster);
+					showCastingText = false;
 					stillCast = false;
 				}
 			}
 
-			if (arg_4 != 0 && gbl.spell_from_item == false)
+			if (showCastingText == true && gbl.spell_from_item == false)
 			{
-				cast_spell_text(spell_id, "casts", caster);
+				DisplayCaseSpellText(spell_id, "casts", caster);
 			}
 
 			while (stillCast == true)
@@ -3106,7 +3106,7 @@ namespace engine
 		}
 
 
-		internal static void cast_spell_text(int spellId, string arg_2, Player player) /* cast_a_spell */
+		internal static void DisplayCaseSpellText(int spellId, string arg_2, Player player) /* cast_a_spell */
 		{
 			if (gbl.game_state == GameState.Combat)
 			{

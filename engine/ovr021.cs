@@ -404,7 +404,7 @@ namespace engine
 
                     display_resting_time(0);
 
-                    ovr023.cast_spell_text(id, "has memorized", player);
+                    ovr023.DisplayCaseSpellText(id, "has memorized", player);
                     findNext = true;
                 }
             }
@@ -436,7 +436,7 @@ namespace engine
 
                                 display_resting_time(0);
 
-                                ovr023.cast_spell_text(spellId, "has scribed", player);
+                                ovr023.DisplayCaseSpellText(spellId, "has scribed", player);
                                 findNext = true;
                             }
                         }

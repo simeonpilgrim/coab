@@ -74,13 +74,13 @@ namespace Classes
             }
         }
 
-        void IDataIO.Write(byte[] data, int offset)
+        public void Write(byte[] data, int offset)
         {
             data[offset + 0] = (byte)cur;
             data[offset + 1] = (byte)full;
         }
 
-        void IDataIO.Read(byte[] data, int offset)
+        public void Read(byte[] data, int offset)
         {
             // enforce values in valid range
             cur = Math.Min((int)data[offset + 0], 25);
@@ -106,24 +106,24 @@ namespace Classes
 
         void IDataIO.Write(byte[] data, int offset)
         {
-            ((IDataIO)Str).Write(data, offset + 0x00);
-            ((IDataIO)Int).Write(data, offset + 0x02);
-            ((IDataIO)Wis).Write(data, offset + 0x04);
-            ((IDataIO)Dex).Write(data, offset + 0x06);
-            ((IDataIO)Con).Write(data, offset + 0x08);
-            ((IDataIO)Cha).Write(data, offset + 0x0a);
-            ((IDataIO)Str00).Write(data, offset + 0x0c);
+            Str.Write(data, offset + 0x00);
+            Int.Write(data, offset + 0x02);
+            Wis.Write(data, offset + 0x04);
+            Dex.Write(data, offset + 0x06);
+            Con.Write(data, offset + 0x08);
+            Cha.Write(data, offset + 0x0a);
+            Str00.Write(data, offset + 0x0c);
         }
 
         void IDataIO.Read(byte[] data, int offset)
         {
-            ((IDataIO)Str).Read(data, offset + 0x00);
-            ((IDataIO)Int).Read(data, offset + 0x02);
-            ((IDataIO)Wis).Read(data, offset + 0x04);
-            ((IDataIO)Dex).Read(data, offset + 0x06);
-            ((IDataIO)Con).Read(data, offset + 0x08);
-            ((IDataIO)Cha).Read(data, offset + 0x0a);
-            ((IDataIO)Str00).Read(data, offset + 0x0c);
+            Str.Read(data, offset + 0x00);
+            Int.Read(data, offset + 0x02);
+            Wis.Read(data, offset + 0x04);
+            Dex.Read(data, offset + 0x06);
+            Con.Read(data, offset + 0x08);
+            Cha.Read(data, offset + 0x0a);
+            Str00.Read(data, offset + 0x0c);
         }
 
         public void Assign(PlayerStats ps)
@@ -721,6 +721,7 @@ namespace Classes
         public Player ShallowClone()
         {
             Player p = (Player)this.MemberwiseClone();
+            p.stats2.Assign(this.stats2);
             return p;
         }
 

@@ -631,7 +631,7 @@ namespace engine
                         break;
 
                     case 'D':
-                        ovr023.sub_5D2E1(0, QuickFight.False, spellId);
+                        ovr023.sub_5D2E1(false, QuickFight.False, spellId);
                         break;
 
                     case 'E':
