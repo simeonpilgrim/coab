@@ -180,7 +180,7 @@ namespace engine
                         redraw = true;
                         seg037.draw8x8_clear_area(TextRegion.NormalBottom);
 
-                        ovr023.sub_5D2E1(1, QuickFight.False, spell_id);
+                        ovr023.sub_5D2E1(true, QuickFight.False, spell_id);
                     }
                     else if (var_3 == true)
                     {

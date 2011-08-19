@@ -541,7 +541,7 @@ namespace engine
                                 else if (curr_item.IsScroll() == true ||
                                     (curr_item.affect_2 > 0 && (int)curr_item.affect_3 < 0x80))
                                 {
-                                    sub_56478(ref arg_0, curr_item);
+                                    UseMagicItem(ref arg_0, curr_item);
                                     if (gbl.game_state != GameState.Combat)
                                     {
                                         arg_0 = false;
@@ -977,7 +977,7 @@ namespace engine
         }
 
 
-        internal static void sub_56478(ref bool arg_0, Item item)
+        internal static void UseMagicItem(ref bool arg_0, Item item) // sub_56478
         {
             gbl.spell_from_item = false;
             int spellId = 0;
@@ -1034,12 +1034,12 @@ namespace engine
                     if (gbl.SelectedPlayer.SkillLevel(SkillType.MagicUser) > 0 ||
                         gbl.SelectedPlayer.SkillLevel(SkillType.Cleric) > 0)
                     {
-                        ovr023.sub_5D2E1(ref arg_0, 0, gbl.SelectedPlayer.quick_fight, spellId);
+                        ovr023.sub_5D2E1(ref arg_0, false, gbl.SelectedPlayer.quick_fight, spellId);
                     }
                     else if (gbl.SelectedPlayer.thief_lvl > 9 &&
                             ovr024.roll_dice(100, 1) <= 75)
                     {
-                        ovr023.sub_5D2E1(ref arg_0, 0, gbl.SelectedPlayer.quick_fight, spellId);
+                        ovr023.sub_5D2E1(ref arg_0, false, gbl.SelectedPlayer.quick_fight, spellId);
                     }
                     else
                     {
@@ -1048,7 +1048,7 @@ namespace engine
                 }
                 else
                 {
-                    ovr023.sub_5D2E1(ref arg_0, 0, gbl.SelectedPlayer.quick_fight, spellId);
+                    ovr023.sub_5D2E1(ref arg_0, false, gbl.SelectedPlayer.quick_fight, spellId);
                 }
 
                 gbl.spell_from_item = false;

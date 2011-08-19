@@ -1405,7 +1405,7 @@ namespace engine
 
                 if (delay == 0)
                 {
-                    ovr023.sub_5D2E1(1, quick_fight, spell_id);
+                    ovr023.sub_5D2E1(true, quick_fight, spell_id);
 
                     casting_spell = true;
                     ovr025.clear_actions(player);
@@ -2419,17 +2419,17 @@ namespace engine
                     }
                     else if ((attacksTired & 0x10) == 0)
                     {
-                        ovr023.sub_5D2E1(1, QuickFight.True, 0x54);
+                        ovr023.sub_5D2E1(true, QuickFight.True, 0x54);
                         attacksTired |= 0x10;
                     }
                     else if ((attacksTired & 0x20) == 0)
                     {
-                        ovr023.sub_5D2E1(1, QuickFight.True, 0x37);
+                        ovr023.sub_5D2E1(true, QuickFight.True, 0x37);
                         attacksTired |= 0x20;
                     }
                     else if ((attacksTired & 0x40) == 0)
                     {
-                        ovr023.sub_5D2E1(1, QuickFight.True, 0x15);
+                        ovr023.sub_5D2E1(true, QuickFight.True, 0x15);
                         attacksTired |= 0x40;
                     }
                 }

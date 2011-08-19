@@ -59,7 +59,7 @@ namespace engine
 
             if (player.actions.spell_id > 0)
             {
-                ovr023.sub_5D2E1(1, QuickFight.True, player.actions.spell_id);
+                ovr023.sub_5D2E1(true, QuickFight.True, player.actions.spell_id);
 
                 ovr025.clear_actions(player);
                 return;
@@ -221,7 +221,7 @@ namespace engine
             if (bestWand != null)
             {
                 bool var_15 = false; /* simeon */
-                ovr020.sub_56478(ref var_15, bestWand);
+                ovr020.UseMagicItem(ref var_15, bestWand);
                 return true;
             }
 
