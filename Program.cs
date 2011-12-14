@@ -24,13 +24,20 @@ namespace EclDump
             //string path = @"c:\games\buckmatrix";
             //string path = @"c:\games\buckcount";
 
-
+            //FindBugTest();
             foreach (var filea in Directory.GetFiles(path, "ecl*.dax"))
             {
                 TryDump(filea);
             }
 
             //Console.ReadKey();
+        }
+
+        static void FindBugTest()
+        {
+            var br = new BinaryReader(File.Open(@"c:\games\coab\ecl2_001.bin", FileMode.Open));
+            byte[] data = br.ReadBytes((int)br.BaseStream.Length);
+            DumpEcl(data, @"c:\games\coab\ecl2_001");
         }
 
         static void TryDump(string file)
@@ -94,11 +101,11 @@ namespace EclDump
                 sw.WriteLine("CampInterrupted   0x{0:X4}", CampInterruptedAddr);
                 sw.WriteLine("ecl_initial_entry 0x{0:X4}", ecl_initial_entryPoint);
 
-                AddAddr(ecl_initial_entryPoint);
-                AddAddr(CampInterruptedAddr);
-                AddAddr(PreCampCheckAddr);
-                AddAddr(SearchLocationAddr);
-                AddAddr(vm_run_addr_1);
+                AddAddr(ecl_initial_entryPoint, "StartUp");
+                AddAddr(CampInterruptedAddr, "StartUp");
+                AddAddr(PreCampCheckAddr, "StartUp");
+                AddAddr(SearchLocationAddr, "StartUp");
+                AddAddr(vm_run_addr_1, "StartUp");
 
                 DecodeBlock(sw);
             }
@@ -116,10 +123,12 @@ namespace EclDump
                 if (ecl_ptr.IsValidAddr(addr + 0x8000) &&
                     addrDone.ContainsKey(addr) == false)
                 {
+                    Debug.WriteLine(String.Format("Pop: {0:x4}", addr));
+
                     if (byteMap.ContainsKey(addr) && byteMap[addr] != addr)
                     {
                         //crazy town!
-                        Debug.WriteLine("addr {0:x4} is not aligned with precous instructions");
+                        Debug.WriteLine(String.Format("addr {0:x4} is not aligned with precous instructions {1:x4}", addr, byteMap[addr]));
                     }
                     else
                     {
@@ -144,10 +153,11 @@ namespace EclDump
             }
         }
 
-        private static void AddAddr(int addr)
+        private static void AddAddr(int addr, string txt)
         {
             if (addrDone.ContainsKey(addr) == false && addrTodo.Contains(addr) == false  )
             {
+                Debug.WriteLine(String.Format("Add: {0:x4} ecl_offset: {1:x4} {2}", addr, ecl_offset, txt));
                 addrTodo.Enqueue(addr);
             }
         }
@@ -201,6 +211,8 @@ namespace EclDump
                     txt += "Unknown command";
                     break;
                 }
+
+                if (stopVM) txt += "\n\r";
 
                 AddLine(addr, txt, (ecl_offset - addr) & 0xFFFF);
             }
