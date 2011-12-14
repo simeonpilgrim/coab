@@ -5,7 +5,7 @@ using System.Text;
 using System.IO;
 using System.Drawing;
 
-namespace DaxDump
+namespace EclDump
 {
     partial class Program
     {
