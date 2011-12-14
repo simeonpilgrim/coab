@@ -25,7 +25,8 @@ namespace EclDump
             EclOpp[] opps = LoadEclOpps(1);
             int newOffset = opps[0].Word;
 
-            AddAddr(newOffset);
+            if (skipNext == false) stopVM = true;
+            AddAddr(newOffset, "Goto");
 
             return string.Format("0x{0:X4}", newOffset);
         }
@@ -35,7 +36,7 @@ namespace EclDump
             EclOpp[] opps = LoadEclOpps(1);
             int newOffset = opps[0].Word;
 
-            AddAddr(newOffset);
+            AddAddr(newOffset, "Gosub");
 
             //gbl.vmCallStack.Push(gbl.ecl_offset);
             //gbl.ecl_offset = newOffset;
@@ -150,7 +151,7 @@ namespace EclDump
             ecl_offset++;
 
             if (skipNext == false) stopVM = true;
-            ecl_offset++;
+            //ecl_offset++;
 
             return "";
         }
@@ -591,7 +592,7 @@ namespace EclDump
                 sb.Append(string.Format("0x{0:X4}", opps[i].Word));
                 addComma = true;
 
-                AddAddr(opps[i].Word);
+                AddAddr(opps[i].Word, "OnGoto");
             }
 
             return string.Format("{0} of [{1}]", var_1, sb.ToString());
