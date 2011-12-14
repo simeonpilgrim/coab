@@ -4,8 +4,9 @@ using System.Linq;
 using System.Text;
 using System.IO;
 using System.Drawing;
+using System.Diagnostics;
 
-namespace DaxDump
+namespace EclDump
 {
     partial class Program
     {
@@ -13,15 +14,16 @@ namespace DaxDump
         {
             SetupCommandTable();
             
-            //string path = System.IO.Directory.GetCurrentDirectory();
+            string path = System.IO.Directory.GetCurrentDirectory();
             //string path = @"C:\games\DARKNESS";
             //string path = @"C:\games\TREASURE";
-            string path = @"C:\games\coab";
+            //string path = @"C:\games\coab";
             //string path = @"C:\games\secret";
             //string path = @"C:\games\deathkrynn";
             //string path = @"C:\games\nwn";
             //string path = @"c:\games\buckmatrix";
             //string path = @"c:\games\buckcount";
+
 
             foreach (var filea in Directory.GetFiles(path, "ecl*.dax"))
             {
@@ -64,6 +66,7 @@ namespace DaxDump
         {
             addrDone = new Dictionary<int,string>();
             addrTodo = new Queue<int>();
+            byteMap = new Dictionary<int, int>();
 
             ecl_offset = 0x8000;
             ecl_ptr = new EclData(data);
@@ -101,7 +104,7 @@ namespace DaxDump
             }
         }
 
-
+        static Dictionary<int, int> byteMap;
         static Dictionary<int,string> addrDone;
         static Queue<int> addrTodo;
 
@@ -113,13 +116,31 @@ namespace DaxDump
                 if (ecl_ptr.IsValidAddr(addr + 0x8000) &&
                     addrDone.ContainsKey(addr) == false)
                 {
-                    DecodeAddr(addr);
+                    if (byteMap.ContainsKey(addr) && byteMap[addr] != addr)
+                    {
+                        //crazy town!
+                        Debug.WriteLine("addr {0:x4} is not aligned with precous instructions");
+                    }
+                    else
+                    {
+                        DecodeAddr(addr);
+                    }
                 }
             }
 
-            foreach (var a in addrDone.OrderBy(ob => ob.Key))
+            int lastAddr = int.MaxValue;
+            int lastCodeAddr = int.MaxValue;
+
+            foreach (var a in byteMap.OrderBy(ob => ob.Key))
             {
-                sw.WriteLine(a.Value);
+                if (a.Key != lastAddr + 1) sw.WriteLine();
+
+                if (a.Value != lastCodeAddr)
+                {
+                    sw.WriteLine(addrDone[a.Value]);
+                    lastCodeAddr = a.Value;
+                }
+                lastAddr = a.Key;    
             }
         }
 
@@ -131,11 +152,22 @@ namespace DaxDump
             }
         }
 
-        private static void AddLine(int addr, string txt)
+        private static void AddLine(int addr, string txt, int len)
         {
             if (addrDone.ContainsKey(addr) == false)
             {
                 addrDone.Add(addr, txt);
+                for (int i = 0; i < len; i++)
+                {
+                    if (byteMap.ContainsKey(addr + i))
+                    {
+                        Debug.WriteLine(String.Format("map byte {0:x4} points to {1:x4} not {2:x4}", addr + i, byteMap[addr + i], addr));
+                    }
+                    else
+                    {
+                        byteMap.Add(addr + i, addr);
+                    }
+                }
             }
         } 
         
@@ -170,7 +202,7 @@ namespace DaxDump
                     break;
                 }
 
-                AddLine(addr, txt);
+                AddLine(addr, txt, (ecl_offset - addr) & 0xFFFF);
             }
         }
 
