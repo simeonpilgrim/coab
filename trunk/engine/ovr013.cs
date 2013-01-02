@@ -1059,6 +1059,7 @@ namespace engine
 				(gbl.damage_flags & DamageType.Cold) != 0)
 			{
 				if (ovr024.RollSavingThrow(0, SaveVerseType.type4, player) == true &&
+                    gbl.spell_id > 0 &&
 					gbl.spellCastingTable[gbl.spell_id].damageOnSave != 0)
 				{
 					gbl.damage = 0;

@@ -166,9 +166,9 @@ namespace engine
 			return can_learn;
 		}
 
-		static Set unk_5C1A2 = new Set(0x0001, new byte[] { 0x1E });
-		static Set asc_5C1D1 = new Set(0x000B, new byte[] { 1, 0, 0, 0, 0, 0, 0, 0, 0x28, 0x30, 8 });
-		static Set unk_5C1F1 = new Set(0x0009, new byte[] { 1, 0, 0, 0, 0, 0, 0, 0, 0x20 });
+		static Set unk_5C1A2 = new Set(1,2,3,4); 
+		static Set asc_5C1D1 = new Set(0, 67, 69, 76, 77, 83);
+		static Set unk_5C1F1 = new Set(0, 69);
 
 		internal static byte spell_menu(ref int index, SpellSource spellSource)
 		{

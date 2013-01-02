@@ -11,7 +11,8 @@ namespace engine
             return (list.Count > index) ? list[index] : null;
         }
 
-        static Set highlightable_text = new Set(0x0606, new byte[] { 0xFF, 3, 0xFE, 0xFF, 0xFF, 7 });
+        static Set highlightable_text = new Set(48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90);
+
 
         internal class highlight
         {
@@ -118,8 +119,9 @@ namespace engine
             }
         }
 
-        static Set unk_6C398 = new Set(0x0408, new byte[] { 1, 0, 0xFF, 3, 0xFE, 0xFF, 0xFF, 7 });
-        static Set unk_6C3B8 = new Set(0x0606, new byte[] { 0xFE, 3, 0, 0, 0, 0x10 });
+        static Set unk_6C398 = new Set(32, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90);
+        static Set unk_6C3B8 = new Set(49, 50, 51, 52, 53, 54, 55, 56, 57, 92);
+
 
         static byte[] unk_18AE0 = { 0x4F, 0x50, 0x51, 0x4B, 0x20, 0x4D, 0x47, 0x48, 0x49 };
 

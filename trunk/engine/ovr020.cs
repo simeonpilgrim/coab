@@ -230,8 +230,8 @@ namespace engine
             }
         }
 
-        static Set asc_54B50 = new Set(0x0902, new byte[] { 0x02, 0x18 });
-        static Set unk_54B03 = new Set(0x0009, new byte[] { 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x20 });
+        static Set asc_54B50 = new Set(73, 83, 84 );
+        static Set unk_54B03 = new Set(0, 69 );
 
         internal static bool viewPlayer()
         {
@@ -427,7 +427,7 @@ namespace engine
             seg041.DisplayAndPause("press a key", 10);
         }
 
-        static Set unk_554EE = new Set(0x0009, new byte[] { 0x01, 0, 0, 0, 0, 0, 0, 0, 0x20 });
+        static Set unk_554EE = new Set(0, 69);
 
         internal static void PlayerItemsMenu(ref bool arg_0) /*use_item*/
         {

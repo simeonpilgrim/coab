@@ -247,7 +247,7 @@ namespace engine
         }
 
 
-        static Set unk_58731 = new Set(0x000B, new byte[] { 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x20, 0x00, 0x04 });
+        static Set unk_58731 = new Set(0, 69, 82 );
 
         static bool resting_time_menu() /* sub_58751 */
         {

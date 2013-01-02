@@ -129,7 +129,7 @@ namespace engine
         }
 
         //static const char[] syms = { '!', ',', '-', '.', ':', ';', '?' };
-        static Set puncutation = new Set(0x404, new byte[] { 2, 0x70, 0, 0x8C }); // "!,-.:;?"
+        static Set puncutation = new Set(33, 44, 45, 46, 58, 59, 63); // "!,-.:;?" // 33,44,45,46,58,59,63
 
         internal static void press_any_key(string text, bool clearArea, int fgColor,
             int yEnd, int xEnd, int yStart, int xStart)

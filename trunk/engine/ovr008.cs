@@ -1126,7 +1126,7 @@ namespace engine
             gbl.unk_1D972[strIndex] = sb.ToString();
         }
 
-        static Set unk_31673 = new Set(0x0606, new byte[] { 0xff, 0x03, 0xfe, 0xff, 0xff, 0x07 });
+        static Set unk_31673 = new Set(48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90); 
 
         internal static string buildMenuStrings(ref string MenuString)
         {
@@ -1164,7 +1164,8 @@ namespace engine
             return sbA.ToString();
         }
 
-        static Set validkeys = new Set(0x0606, new byte[] { 0xff, 0x03, 0xfe, 0xff, 0xff, 0x07 }); // unk_3178A
+        static Set validkeys = new Set(48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90); // unk_3178A
+
 
         internal static int sub_317AA(bool useOverlay, bool acceptReturn, MenuColorSet colors, string displayString, string extraString)
         {

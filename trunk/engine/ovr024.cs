@@ -94,7 +94,7 @@ namespace engine
             }
         }
 
-        static Set unk_6325A = new Set(0x0205, new byte[] { 0x20, 0x00, 0x00, 0x60, 0x02 });
+        static Affects[] unk_6325A = { Affects.silence_15_radius, Affects.prot_from_evil_10_radius, Affects.prot_from_good_10_radius, Affects.prayer };
 
         internal static void calc_affect_effect(Affects affect_type, Player player)
         {
@@ -105,7 +105,7 @@ namespace engine
             {
                 found = true;
             }
-            else if (unk_6325A.MemberOf((int)affect_type) == true)
+            else if (System.Array.Exists(unk_6325A, vv => vv ==affect_type) == true)
             {
                 foreach (Player team_member in gbl.TeamList)
                 {
@@ -1175,8 +1175,6 @@ namespace engine
             }
         }
 
-        static Set unk_64F90 = new Set(0x0002, new byte[] { 0xC0, 0x01 });
-
         internal static void damage_person(bool change_damage, DamageOnSave arg_2, int damage, Player player)
         {
             string text;
@@ -1252,7 +1250,9 @@ namespace engine
                         text = text + ", and is Dying";
                     }
 
-                    if (unk_64F90.MemberOf((int)player.health_status) == true)
+                    if (player.health_status == Status.dead ||
+                        player.health_status == Status.stoned ||
+                        player.health_status == Status.gone )
                     {
                         text = "is killed";
                     }
@@ -1329,11 +1329,13 @@ namespace engine
             }
         }
 
-        static Set unk_653B5 = new Set(0x0001, new byte[] { 0x33 });
 
         internal static bool heal_player(byte arg_0, int amount_healed, Player player)
         {
-            if (unk_653B5.MemberOf((int)player.health_status) == true)
+            if (player.health_status == Status.okey ||
+                player.health_status == Status.animated ||
+                player.health_status == Status.unconscious ||
+                player.health_status == Status.dying )
             {
                 if (player.hit_point_current < player.hit_point_max ||
                     (player.hit_point_current >= player.hit_point_max &&
