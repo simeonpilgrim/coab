@@ -306,8 +306,8 @@ namespace engine
             }
         }
 
-        static Set unk_33748 = new Set(0x0209, new byte[] { 0x09, 0x00, 0x00, 0x20, 0x04, 0x00, 0x80, 0xAB, 0x03 });
-        static Set unk_33768 = new Set(0x0209, new byte[] { 0x09, 0x00, 0x01, 0x20, 0x04, 0x00, 0x9A, 0xAB, 0x73 });
+        static Set unk_33748 = new Set(16, 19, 45, 50, 71, 72, 73, 75, 77, 79, 80, 81);
+        static Set unk_33768 = new Set(16, 19, 32, 45, 50, 65, 67, 68, 71, 72, 73, 75, 77, 79, 80, 81, 84, 85, 86);
 
 
         internal static void combat_menu(out char arg_0, Player player)

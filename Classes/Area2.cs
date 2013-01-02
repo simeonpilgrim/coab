@@ -29,6 +29,9 @@ namespace Classes
 
         protected byte[] origData = new byte[Area2Size];
 
+        [DataOffset(0x170, DataType.Word)]
+        public ushort field_170; // 0x170
+
         [DataOffset(0x218, DataType.Word)]
         public ushort field_218; // 0x218
 
@@ -189,6 +192,14 @@ namespace Classes
 
             switch (loc)
             {
+                case 0x170:
+                    field_170 = value;
+                    break;
+
+                case 0x218:
+                    field_218 = value;
+                    break;
+
                 case 0x550:
                     training_class_mask = (byte)value;
                     break;

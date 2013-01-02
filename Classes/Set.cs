@@ -39,6 +39,34 @@ namespace Classes
             {
                 bits[i] = 0;
             }
+
+            DumpSet();
+            int z = 0;
+        }
+
+        public Set(params int[] toset)
+        {
+            bits = new byte[arrayLen];
+
+            foreach (var b in toset)
+            {
+                SetBit(b);
+            }
+        }
+
+   
+        public void DumpSet()
+        {
+            var sb = new System.Text.StringBuilder();
+
+            for (int i = 0; i < 256; i++)
+            {
+                if (MemberOf(i))
+                {
+                    sb.AppendFormat("{0}, ", i);
+                }
+            }
+            var s = sb.ToString();
         }
 
         public void Clear()
@@ -66,6 +94,11 @@ namespace Classes
             {
                 bits[i >> shift] |= (byte)(1 << (i & mask));
             }
+        }
+
+        void SetBit(int i)
+        {
+            bits[i >> shift] |= (byte)(1 << (i & mask));
         }
 
         public bool MemberOf(int bit)

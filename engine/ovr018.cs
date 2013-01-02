@@ -7,8 +7,8 @@ namespace engine
 {
     class ovr018
     {
-        static Set unk_4C13D = new Set(0x0802, new byte[] { 0x80, 0x80 });
-        static Set unk_4C15D = new Set(0x0803, new byte[] { 0x20, 0x00, 0x08 });
+        static Set unk_4C13D = new Set(71, 79);
+        static Set unk_4C15D = new Set(69, 83);
 
         internal static void FreePlayer(Player player) // free_player
         {
@@ -1622,7 +1622,7 @@ namespace engine
             gbl.combat_icons[destIndex].DuplicateIcon(recolour, gbl.combat_icons[sourceIndex], gbl.SelectedPlayer);
         }
 
-        static Set unk_4FE94 = new Set(0x0009, new byte[] { 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x20 });
+        static Set unk_4FE94 = new Set(0, 69);
 
         internal static void icon_builder()
         {

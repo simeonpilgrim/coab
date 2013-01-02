@@ -101,8 +101,6 @@ namespace engine
             ovr024.CheckAffectsEffect(target, CheckType.Type_5);
         }
 
-        static Set unk_3E2EE = new Set(0x0002, new byte[] { 0xC0, 0x01 });
-
 
         enum AttackType
         {
@@ -198,7 +196,9 @@ namespace engine
                     seg041.displayString("and is Dying", 0, 10, line, 0x17);
                 }
 
-                if (unk_3E2EE.MemberOf((int)target.health_status) == true)
+                if (target.health_status == Status.dead ||
+                    target.health_status == Status.stoned ||
+                    target.health_status == Status.gone )
                 {
                     ovr025.DisplayPlayerStatusString(false, line, "is killed", target);
                 }
@@ -1854,7 +1854,7 @@ namespace engine
             return arg_4;
         }
 
-        static Set asc_41342 = new Set(0x000B, new byte[] { 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x20, 0x00, 0x10 });
+        static Set asc_41342 = new Set(0, 69, 84);
 
         internal static bool Target(Struct_1D183 arg_0, bool allowTarget, bool arg_A, bool showRange, int maxRange, Player target, Player player01)
         {
@@ -2114,8 +2114,9 @@ namespace engine
             return newTarget;
         }
 
-        static Set unk_41AE5 = new Set(0x0009, new byte[] { 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x20 });
-        static Set unk_41B05 = new Set(0x0803, new byte[] { 0x80, 0xAB, 3 });
+        static Set unk_41AE5 = new Set(0, 69);
+        static Set unk_41B05 = new Set(71, 72, 73, 75, 77, 79, 80, 81);
+
 
         internal static bool aim_menu(Struct_1D183 arg_0, bool arg_8, bool arg_A, bool showRange, int maxRange, Player attacker) /* sub_41B25 */
         {

@@ -1519,7 +1519,9 @@ namespace engine
 			ovr033.redrawCombatArea(8, 0xff, gbl.mapToBackGroundTile.mapScreenTopLeft + Point.ScreenCenter);
 		}
 
-		static Set unk_68DFA = new Set(0x010A, new byte[] { 0x20, 0, 8, 0, 0, 0, 0, 0x20, 0, 8 });
+        static Set unk_68DFA = new Set(13, 27, 69, 83);
+
+
 
 
 		internal static void selectAPlayer(ref Player player, bool showExit, string prompt)

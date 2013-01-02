@@ -683,8 +683,7 @@ namespace engine
         }
 
         static string[] reorderStrings = { "Select Exit", "Place Exit" }; //seg600_04A6
-        static Set reorderSet = new Set(0x010a, new byte[] { 0x020, 0, 0, 0, 0, 0, 0, 0, 0, 9 }); // "13 80 83 "
-
+        static Set reorderSet = new Set(13,80,83);
         static void reorder_party()
         {
             int reorderState = 0;
@@ -829,7 +828,7 @@ namespace engine
             ovr025.ClearPlayerTextArea();
         }
 
-        static Set AlterSet = new Set(0x0009, new byte[] { 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x20 }); // "0 69 "
+        static Set AlterSet = new Set(0, 69);
 
         internal static void alter_menu()
         {
@@ -1073,7 +1072,7 @@ namespace engine
             return action_interrupted;
         }
 
-        static Set unk_463F4 = new Set(0x0009, new byte[] { 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x20 });
+        static Set unk_463F4 = new Set(0, 69);
 
         /// <summary>
         /// Does Camp menu, returns if interrupted

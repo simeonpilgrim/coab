@@ -80,7 +80,7 @@ namespace engine
             }
         }
 
-        static Set unk_47635 = new Set(0x0001, new byte[] { 0x21 });
+        static Set unk_47635 = new Set(0, 5);
 
 
         internal static void LoadPlayerCombatIcon(bool recolour) /* sub_47A90 */
@@ -473,8 +473,8 @@ namespace engine
         }
 
 
-        static Set asc_49280 = new Set(0x020E, new byte[] { 
-    0x04, 0x04, 0x00, 0x80, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0x08, 0x00, 0x10	});
+        static Set asc_49280 = new Set(18, 26, 47, 48, 97, 107, 124);
+
 
         static ClassId[] HillsFarClassMap = {
     ClassId.unknown,    ClassId.thief,      ClassId.fighter,    ClassId.mc_f_t, ClassId.magic_user,
@@ -923,7 +923,8 @@ namespace engine
             }
         }
 
-        static Set save_game_keys = new Set(0x0802, new byte[] { 0xFE, 0x07 }); // asc_4A761
+        static Set save_game_keys = new Set(65, 66, 67, 68, 69, 70, 71, 72, 73, 74); // asc_4A761
+
 
         internal static void loadGameMenu() // loadGame
         {
@@ -1101,8 +1102,9 @@ namespace engine
             gbl.game_state = GameState.StartGameMenu;
         }
 
-        static Set unk_4AEA0 = new Set(0x000a, new byte[] { 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xFE, 0x07 });
-        static Set unk_4AEEF = new Set(0x0003, new byte[] { 0x05, 0x00, 0x04 });
+        static Set unk_4AEA0 = new Set(0, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74); 
+        static Set unk_4AEEF = new Set(0, 2, 18); 
+
 
         internal static void SaveGame()
         {
