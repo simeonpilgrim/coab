@@ -94,9 +94,9 @@ namespace engine
                 else if (inputKey == 8 && currentValueStr.Length > 0)
                 {
                     int i = currentValueStr.Length - 1;
-                    currentValueStr = seg051.Copy(i, 1, currentValueStr);
+                    currentValueStr = seg051.Copy(i, 0, currentValueStr);
 
-                    seg041.displaySpaceChar(24, xCol);
+					seg041.displaySpaceChar(0x18, xCol-1);
                     xCol--;
                 }
             } while (inputKey != 0x0D && inputKey != 0x1B);
@@ -347,63 +347,63 @@ namespace engine
         }
 
 
-        internal static void TakePoolMoney() // takeItems
-        {
-            bool noMoneyLeft;
+		internal static void TakePoolMoney() // takeItems
+		{
+			bool noMoneyLeft;
 
-            List<MenuItem> money = new List<MenuItem>();
+			List<MenuItem> money = new List<MenuItem>();
 
-            seg037.DrawFrame_Outer();
+			seg037.DrawFrame_Outer();
 
-            do
-            {
-                bool var_118 = true;
+			do
+			{
+				bool var_118 = true;
 
-                money.Clear();
+				money.Clear();
 
-                for (int coin = 6; coin >= 0; coin--)
-                {
-                    if (gbl.pooled_money.GetCoins(coin) > 0)
-                    {
-                        money.Add(new MenuItem(string.Format("{0} {1}", Money.names[coin], gbl.pooled_money.GetCoins(coin))));
-                    }
-                }
+				for (int coin = 6; coin >= 0; coin--)
+				{
+					if (gbl.pooled_money.GetCoins(coin) > 0)
+					{
+						money.Add(new MenuItem(string.Format("{0} {1}", Money.names[coin], gbl.pooled_money.GetCoins(coin))));
+					}
+				}
 
-                int dummyIndex = 0;
+				int dummyIndex = 0;
 
-                MenuItem var_C;
-                char input_key = ovr027.sl_select_item(out var_C, ref dummyIndex, ref var_118, true, money,
-                    8, 15, 2, 2, gbl.defaultMenuColors, "Select", "Select type of coin ");
+				MenuItem var_C;
+				char input_key = ovr027.sl_select_item(out var_C, ref dummyIndex, ref var_118, true, money,
+					8, 15, 2, 2, gbl.defaultMenuColors, "Select", "Select type of coin ");
 
-                if (var_C == null || input_key == 0)
-                {
-                    noMoneyLeft = true;
-                }
-                else
-                {
-                    noMoneyLeft = false;
-                    string text;
+				if (var_C == null || input_key == 0)
+				{
+					noMoneyLeft = true;
+				}
+				else
+				{
+					noMoneyLeft = false;
+					string text;
 
-                    int money_slot = GetMoneyIndexFromString(out text, var_C.Text);
+					int money_slot = GetMoneyIndexFromString(out text, var_C.Text);
 
-                    text = string.Format("How much {0} will you take? ", text);
+					text = string.Format("How much {0} will you take? ", text);
 
-                    int num_coins = AskNumberValue(10, text, gbl.pooled_money.GetCoins(money_slot));
+					int num_coins = AskNumberValue(10, text, gbl.pooled_money.GetCoins(money_slot));
 
-                    PickupCoins(money_slot, num_coins, gbl.SelectedPlayer);
-                    money.Clear();
+					PickupCoins(money_slot, num_coins, gbl.SelectedPlayer);
+					money.Clear();
 
-                    noMoneyLeft = true;
-                    for (int coin = 0; coin < 7; coin++)
-                    {
-                        if (gbl.pooled_money.GetCoins(coin) > 0)
-                        {
-                            noMoneyLeft = false;
-                        }
-                    }
-                }
-            } while (noMoneyLeft == false);
-        }
+					noMoneyLeft = true;
+					for (int coin = 0; coin < 7; coin++)
+					{
+						if (gbl.pooled_money.GetCoins(coin) > 0)
+						{
+							noMoneyLeft = false;
+						}
+					}
+				}
+			} while (noMoneyLeft == false);
+		}
 
 
         internal static void treasureOnGround(out bool items, out bool money)
