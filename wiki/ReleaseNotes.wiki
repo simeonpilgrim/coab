@@ -2,6 +2,12 @@
 
 = Unreleased =
 
+= 1.1.6 =
+  * Issue 62, Fixed crash in coin drop code, if you pressed return on empty input, and other fix-ups related to number input
+  * Fixed issue with player name input/saving
+  * Fixed crash in quick combat
+  * Fixed crash with ResistCold and ResistFire spell
+  
 = 1.1.5 =
   * Issue 57 & 52, Fixed crash in game script engine
   * Issue 58, Fixed crash when removing Ring of Wizardry
