@@ -2443,7 +2443,7 @@ namespace engine
 
 			foreach (var target in gbl.spellTargets)
 			{
-				bool saved = ovr024.RollSavingThrow(0, SaveVerseType.type6, target);
+				bool saved = ovr024.RollSavingThrow(0, SaveVerseType.type4, target);
 
 				ovr024.is_unaffected("is confused", saved, DamageOnSave.Zero, false, 0, GetSpellAffectTimeout(Spells.confusion), Affects.cause_disease_2, target);
 			}
