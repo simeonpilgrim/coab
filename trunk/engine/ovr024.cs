@@ -1080,7 +1080,7 @@ namespace engine
 
                     if (classLvl > player.multiclassLevel)
                     {
-                        classLvl = player.multiclassLevel;
+                        classLvl -= player.multiclassLevel;
 
                         hitPointBonus += ConHitPointBonus(classLvl, classId, stat_a, player);
                     }

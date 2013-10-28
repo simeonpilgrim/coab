@@ -2,6 +2,7 @@
 
 = Unreleased =
   * Issue 65, notes a few crashes, one related to SpellConfusion is now fixed
+  * Issue 43, multi-class HP mis-calculated
   * Fixed bug the you cannot modify stats of characters, introduced in 1.1.6 refactoring 
 
 = 1.1.6 =
