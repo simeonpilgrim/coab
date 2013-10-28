@@ -1107,7 +1107,7 @@ namespace engine
                                 int race = (int)player.race;
                                 int sex = player.sex;
 
-                                player.stats2[stat_var].Dec();
+								player.stats2.Dec(stat_var);
 
                                 switch ((Stat)stat_var)
                                 {
@@ -1115,7 +1115,7 @@ namespace engine
                                         if (player.stats2.Str00.cur > 0)
                                         {
                                             player.stats2.Str00.Dec();
-                                            player.stats2[stat_var].Inc();
+                                            player.stats2.Str.Inc();
                                         }
                                         else
                                         {
@@ -1197,7 +1197,7 @@ namespace engine
                                 int race = (int)player.race;
                                 int sex = player.sex;
 
-                                player.stats2[stat_var].Inc();
+                                player.stats2.Inc(stat_var);
                                 switch ((Stat)stat_var)
                                 {
                                     case Stat.STR:

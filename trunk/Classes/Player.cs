@@ -137,6 +137,34 @@ namespace Classes
             Str00.Assign(ps.Str00);
         }
 
+		public void Dec(int idx)
+		{
+			switch (idx)
+			{
+				case 0: Str.Dec(); break;
+				case 1: Int.Dec(); break;
+				case 2: Wis.Dec(); break;
+				case 3: Dex.Dec(); break;
+				case 4: Con.Dec(); break;
+				case 5: Cha.Dec(); break;
+				default: throw new IndexOutOfRangeException(string.Format("idx {0} not in [0-5]", idx));
+			}
+		}
+
+		public void Inc(int idx)
+		{
+			switch (idx)
+			{
+				case 0: Str.Inc(); break;
+				case 1: Int.Inc(); break;
+				case 2: Wis.Inc(); break;
+				case 3: Dex.Inc(); break;
+				case 4: Con.Inc(); break;
+				case 5: Cha.Inc(); break;
+				default: throw new IndexOutOfRangeException(string.Format("idx {0} not in [0-5]", idx));
+			}
+		}
+
         public StatValue this[int idx]
         {
             get
@@ -156,7 +184,7 @@ namespace Classes
 
         public override string ToString()
         {
-            return string.Format("{0} ({6}),{1},{2},{3},{4},{5}", Str, Int, Wis, Con, Dex, Cha, Str00);
+            return string.Format("S:{0} ({6}),I:{1},W:{2},C:{3},D:{4},Ch:{5}", Str, Int, Wis, Con, Dex, Cha, Str00);
         }
     }
 
