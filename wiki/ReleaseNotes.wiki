@@ -1,6 +1,7 @@
 = The Release Notes =
 
 = Unreleased =
+  * Issue 65, notes a few crashes, one related to SpellConfusion is now fixed.
 
 = 1.1.6 =
   * Issue 62, Fixed crash in coin drop code, if you pressed return on empty input, and other fix-ups related to number input

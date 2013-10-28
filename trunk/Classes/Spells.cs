@@ -10,11 +10,8 @@ namespace Classes
         type1,
         type2,
         type3,
-        type4,
-        type5,
-        type6,
-        type7
-    }
+        type4
+	}
 
     public enum SpellWhen
     {
