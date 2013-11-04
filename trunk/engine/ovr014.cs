@@ -2263,7 +2263,7 @@ namespace engine
 
                 if (secondPass == true && clear_target == false)
                 {
-                    gbl.mapToBackGroundTile.field_6 = true;
+                    gbl.mapToBackGroundTile.ignoreWalls = true;
                 }
 
                 int tryCount = 20;
@@ -2277,7 +2277,7 @@ namespace engine
                     var epi = nearTargets[roll - 1];
                     target = epi.player;
 
-                    if ((arg_2 != 0 && gbl.mapToBackGroundTile.field_6 == true) ||
+                    if ((arg_2 != 0 && gbl.mapToBackGroundTile.ignoreWalls == true) ||
                         CanSeeTargetA(target, player) == true)
                     {
                         target_found = true;
@@ -2295,7 +2295,7 @@ namespace engine
                 }
             }
 
-            gbl.mapToBackGroundTile.field_6 = false;
+            gbl.mapToBackGroundTile.ignoreWalls = false;
 
             return target_found;
         }

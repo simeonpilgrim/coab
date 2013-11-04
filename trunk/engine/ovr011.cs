@@ -771,7 +771,7 @@ namespace engine
 
             gbl.mapToBackGroundTile.drawTargetCursor = false;
             gbl.mapToBackGroundTile.size = 1;
-            gbl.mapToBackGroundTile.field_6 = false;
+            gbl.mapToBackGroundTile.ignoreWalls = false;
 
             if (gbl.area_ptr.inDungeon != 0)
             {

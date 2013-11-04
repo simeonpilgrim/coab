@@ -1304,12 +1304,12 @@ namespace engine
 
 		internal static int getTargetRange(Player target, Player attacker) /* sub_68708 */
 		{
-			gbl.mapToBackGroundTile.field_6 = true;
+			gbl.mapToBackGroundTile.ignoreWalls = true;
 
 			//TODO this is called to build full list, but we only want distance to target, thus we could call the inner workings could be used just for target.
 			var scl = ovr032.Rebuild_SortedCombatantList(attacker, 0xff, p => p == target);
 
-			gbl.mapToBackGroundTile.field_6 = false;
+			gbl.mapToBackGroundTile.ignoreWalls = false;
 
 			if (scl.Count > 0)
 			{
