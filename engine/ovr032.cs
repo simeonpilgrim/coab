@@ -50,32 +50,33 @@ namespace engine
         //    }
         //}
 
-        static MapReach MapCacheGet(Point p1, Point p2, int b)
+        static MapReach MapCacheGet(Point p1, Point p2, bool ignoreWalls)
         {
-            MapReach mr = mapReachCache[(p2.y * Point.MapMaxX) + p2.x, (p1.y * Point.MapMaxX) + p1.x, b];
+			int nIgnoreWalls = ignoreWalls ? 1 : 0;
+			MapReach mr = mapReachCache[(p2.y * Point.MapMaxX) + p2.x, (p1.y * Point.MapMaxX) + p1.x, nIgnoreWalls];
             if (mr != null) return mr;
 
-            bool tmp = gbl.mapToBackGroundTile.field_6;
-            gbl.mapToBackGroundTile.field_6 = true;
+            bool bkup_val = gbl.mapToBackGroundTile.ignoreWalls;
+			gbl.mapToBackGroundTile.ignoreWalls = ignoreWalls;
 
-            mr = canReachTargetCalc(gbl.mapToBackGroundTile, p2, p1);
+			mr = canReachTargetCalc(gbl.mapToBackGroundTile, p2, p1);
 
-            gbl.mapToBackGroundTile.field_6 = tmp;
+			gbl.mapToBackGroundTile.ignoreWalls = bkup_val;
 
-            mapReachCache[(p2.y * Point.MapMaxX) + p2.x, (p1.y * Point.MapMaxX) + p1.x, b] = mr;
+			mapReachCache[(p2.y * Point.MapMaxX) + p2.x, (p1.y * Point.MapMaxX) + p1.x, nIgnoreWalls] = mr;
             return mr;
         }
 
         internal static void canReachTarget(ref Point target, Point attacker)
         {
-            MapReach mr = MapCacheGet(attacker, target, gbl.mapToBackGroundTile.field_6 ? 1 : 0);
+            MapReach mr = MapCacheGet(attacker, target, gbl.mapToBackGroundTile.ignoreWalls);
 
             target = new Point(mr.target);
         }
 
         internal static bool canReachTarget(ref int range, Point target, Point attacker)
         {
-            MapReach mr = MapCacheGet(attacker, target, gbl.mapToBackGroundTile.field_6 ? 1 : 0);
+			MapReach mr = MapCacheGet(attacker, target, gbl.mapToBackGroundTile.ignoreWalls);
 
             if (mr.range > (range * 2) + 1)
             {
@@ -120,7 +121,7 @@ namespace engine
                 int gt = groundTilesMap[var_19.current];
                 Struct_189B4 s189 = gbl.BackGroundTiles[gt];
 
-                if (groundTilesMap.field_6 == false && s189.field_2 > var_31.current.y)
+                if (groundTilesMap.ignoreWalls == false && s189.field_2 > var_31.current.y)
                 {
                     return new MapReach(false, var_19.steps, var_19.current);
                 }

@@ -588,7 +588,7 @@ namespace engine
 
                         int steps = range;
 
-                        gbl.mapToBackGroundTile.field_6 = false;
+                        gbl.mapToBackGroundTile.ignoreWalls = false;
 
                         if (ovr032.canReachTarget(ref steps, targetPos, attackPos) == true &&
                             (steps / 2) <= range)

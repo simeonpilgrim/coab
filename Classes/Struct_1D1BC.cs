@@ -24,7 +24,7 @@ namespace Classes
         public Point mapScreenTopLeft;
         public bool drawTargetCursor; // field_4, was byte
         public int size; // field_5
-        public bool field_6; // field_6, was byte
+        public bool ignoreWalls; // field_6, was byte
         int[] field_7;
 
         public int this[Point pos]
