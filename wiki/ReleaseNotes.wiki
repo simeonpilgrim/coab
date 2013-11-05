@@ -1,8 +1,11 @@
 = The Release Notes =
 
 = Unreleased =
+
+= 1.1.7 =
+  * Issue 43, multi-class HP mis-calculated 
   * Issue 65, notes a few crashes, one related to SpellConfusion is now fixed
-  * Issue 43, multi-class HP mis-calculated
+  * Issue 66, fixed attacks (missile,spells) going through walls 
   * Fixed bug the you cannot modify stats of characters, introduced in 1.1.6 refactoring 
 
 = 1.1.6 =

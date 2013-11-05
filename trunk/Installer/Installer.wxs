@@ -2,7 +2,7 @@
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
   <?define SkuName = "Curse of the Azure Bonds"?>
 
-  <?define ProductVersion="1.1.6" ?>
+  <?define ProductVersion="1.1.7" ?>
   <?define Manufacturer="Simeon Pilgrim"?>
   
   <?define BinDir="Main\bin\Release\"?>
