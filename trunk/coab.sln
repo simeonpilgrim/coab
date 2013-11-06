@@ -1,5 +1,7 @@
-Microsoft Visual Studio Solution File, Format Version 10.00
-# Visual Studio 2008
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.21005.1
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{EB005EA6-C975-4A0C-8E5F-17D275306B3A}"
 	ProjectSection(SolutionItems) = preProject
 		..\wiki\ReleaseNotes.wiki = ..\wiki\ReleaseNotes.wiki
