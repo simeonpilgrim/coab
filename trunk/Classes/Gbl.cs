@@ -472,7 +472,7 @@ namespace Classes
         public static DaxBlock cursor_bkup; // dword_1C8F4
         public static DaxBlock dax24x24Set; //dword_1C8F8;
         public static Item currentScroll; // dword_1D5C6
-        public static spellDelegate dword_1D5CA;
+        public static spellDelegate SpellCastFunction;
         public static DaxBlock missile_dax; /* */
         public static int exp_to_add;
 

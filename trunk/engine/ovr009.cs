@@ -15,14 +15,14 @@ namespace engine
 
             gbl.missile_dax = null;
             ovr033.Color_0_8_normal();
-            gbl.dword_1D5CA = ovr023.NonCombatSpellCast;
+            gbl.SpellCastFunction = ovr023.NonCombatSpellCast;
         }
 
 
         internal static void MainCombatLoop() //sub_33100
         {
             gbl.game_state = GameState.Combat;
-            gbl.dword_1D5CA = new spellDelegate(ovr014.target);
+            gbl.SpellCastFunction = new spellDelegate(ovr014.target);
             ovr011.BattleSetup();
             bool end_combat = false;
 

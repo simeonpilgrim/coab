@@ -730,7 +730,7 @@ namespace engine
 
 			while (stillCast == true)
 			{
-				arg_0 = gbl.dword_1D5CA(quick_fight, spell_id);
+				arg_0 = gbl.SpellCastFunction(quick_fight, spell_id);
 
 				if (arg_0 == true)
 				{
@@ -2809,7 +2809,7 @@ namespace engine
 		{
 			player.actions.target = null;
 
-			gbl.byte_1DA70 = gbl.dword_1D5CA(QuickFight.True, 0x41);
+			gbl.byte_1DA70 = gbl.SpellCastFunction(QuickFight.True, (int)Spells.spell_41);
 
 			if (player.actions.target != null)
 			{
@@ -2854,7 +2854,7 @@ namespace engine
 
 				ovr025.DisplayPlayerStatusString(true, 10, "Breathes!", player);
 
-                gbl.byte_1DA70 = gbl.dword_1D5CA(QuickFight.True, 0x33);
+                gbl.byte_1DA70 = gbl.SpellCastFunction(QuickFight.True, (int)Spells.lightning_bolt);
 
 				gbl.targetPos.x = var_2.x + Math.Sign(gbl.targetPos.x - var_2.x);
 				gbl.targetPos.y = var_2.y + Math.Sign(gbl.targetPos.y - var_2.y);
@@ -2893,7 +2893,7 @@ namespace engine
 
 		internal static void AffectSpitAcid(Effect arg_0, object param, Player player) // spell_spit_acid
 		{
-			gbl.byte_1DA70 = gbl.dword_1D5CA(QuickFight.True, 0x41);
+			gbl.byte_1DA70 = gbl.SpellCastFunction(QuickFight.True, (int)Spells.spell_41);
 
 			gbl.spell_target = player.actions.target;
 
@@ -2936,7 +2936,7 @@ namespace engine
 
 				var attackerPos = ovr033.PlayerMapPos(attacker);
 
-				gbl.byte_1DA70 = gbl.dword_1D5CA(QuickFight.True, 0x3d);
+				gbl.byte_1DA70 = gbl.SpellCastFunction(QuickFight.True, (int)Spells.spell_3d);
 
 				if (gbl.byte_1DA70 == true)
 				{
@@ -2984,7 +2984,7 @@ namespace engine
 				gbl.damage_flags = DamageType.DragonBreath | DamageType.Fire;
 				var attackPos = ovr033.PlayerMapPos(attacker);
 
-				gbl.byte_1DA70 = gbl.dword_1D5CA(QuickFight.True, 0x3D);
+                gbl.byte_1DA70 = gbl.SpellCastFunction(QuickFight.True, (int)Spells.spell_3d);
 
 				if (gbl.byte_1DA70 == true)
 				{
@@ -3014,7 +3014,7 @@ namespace engine
 
 		internal static void cast_breath_fire(Effect arg_0, object param, Player arg_6)
 		{
-			gbl.byte_1DA70 = gbl.dword_1D5CA(QuickFight.True, 0x41);
+            gbl.byte_1DA70 = gbl.SpellCastFunction(QuickFight.True, (int)Spells.spell_41);
 			gbl.spell_target = arg_6.actions.target;
 
 			if ((gbl.spell_target != null) &&
@@ -3044,7 +3044,7 @@ namespace engine
 				var pos = ovr033.PlayerMapPos(caster);
 
 				ovr025.DisplayPlayerStatusString(true, 10, "throws lightning", caster);
-				gbl.byte_1DA70 = gbl.dword_1D5CA(QuickFight.True, 0x33);
+                gbl.byte_1DA70 = gbl.SpellCastFunction(QuickFight.True, (int)Spells.lightning_bolt);
 
 				ovr024.remove_invisibility(caster);
 				ovr025.load_missile_icons(0x13);
@@ -3062,7 +3062,7 @@ namespace engine
 		{
 			arg_6.actions.target = null;
 
-			gbl.byte_1DA70 = gbl.dword_1D5CA(QuickFight.True, 0x24);
+            gbl.byte_1DA70 = gbl.SpellCastFunction(QuickFight.True, (int)Spells.animate_dead);
 
 			gbl.spell_target = arg_6.actions.target;
 
@@ -3136,7 +3136,7 @@ namespace engine
 			gbl.lastSelectetSpellTarget = null;
 			gbl.byte_1D2C8 = true;
 
-			gbl.dword_1D5CA = new spellDelegate(ovr023.NonCombatSpellCast);
+			gbl.SpellCastFunction = new spellDelegate(ovr023.NonCombatSpellCast);
 
 			gbl.spellTable = new Dictionary<Spells, spellDelegate2>();
 
