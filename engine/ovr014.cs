@@ -1092,14 +1092,14 @@ namespace engine
 
         static Affects[] unk_18ADB = { Affects.bless, Affects.snake_charm, Affects.paralyze, Affects.sleep, Affects.helpless }; // seg600:27CB first is filler (off by 1)
 
-        internal static bool sub_4001C(Struct_1D183 arg_0, bool arg_4, QuickFight quick_fight, int spellId)
+        internal static bool sub_4001C(Struct_1D183 arg_0, bool canTargetEmptyGround, QuickFight quick_fight, int spellId)
         {
             bool var_2 = false;
             if (quick_fight == QuickFight.False)
             {
-                bool var_A = spellId != 0x53;
+                bool allowTarget = spellId != 0x53;
 
-                var_2 = aim_menu(arg_0, var_A, arg_4, false, ovr023.SpellRange(spellId), gbl.SelectedPlayer);
+                var_2 = aim_menu(arg_0, allowTarget, canTargetEmptyGround, false, ovr023.SpellRange(spellId), gbl.SelectedPlayer);
                 gbl.SelectedPlayer.actions.target = arg_0.target;
             }
             else if (gbl.spellCastingTable[spellId].field_E == 0)
@@ -1856,7 +1856,7 @@ namespace engine
 
         static Set asc_41342 = new Set(0, 69, 84);
 
-        internal static bool Target(Struct_1D183 arg_0, bool allowTarget, bool arg_A, bool showRange, int maxRange, Player target, Player player01)
+        internal static bool Target(Struct_1D183 arg_0, bool allowTarget, bool canTargetEmptyGround, bool showRange, int maxRange, Player target, Player player01)
         {
             Item dummyItem;
 
@@ -1964,7 +1964,7 @@ namespace engine
                         }
                     }
                 }
-                else if (arg_A == false)
+                else if (canTargetEmptyGround == false)
                 {
                     can_target = false;
                 }
@@ -2118,7 +2118,7 @@ namespace engine
         static Set unk_41B05 = new Set(71, 72, 73, 75, 77, 79, 80, 81);
 
 
-        internal static bool aim_menu(Struct_1D183 arg_0, bool arg_8, bool arg_A, bool showRange, int maxRange, Player attacker) /* sub_41B25 */
+        internal static bool aim_menu(Struct_1D183 arg_0, bool allowTarget, bool canTargetEmptyGround, bool showRange, int maxRange, Player attacker) /* sub_41B25 */
         {
             Player target; /* var_E5 */
 
@@ -2167,7 +2167,7 @@ namespace engine
                 }
                 else
                 {
-                    input = aim_sub_menu(arg_8, showRange, maxRange, target, attacker);
+                    input = aim_sub_menu(allowTarget, showRange, maxRange, target, attacker);
 
                     if (gbl.displayInput_specialKeyPressed == false)
                     {
@@ -2190,7 +2190,7 @@ namespace engine
                             case 'O':
                             case 'Q':
                             case 'I':
-                                arg_4 = Target(arg_0, arg_8, arg_A, showRange, maxRange, target, attacker);
+                                arg_4 = Target(arg_0, allowTarget, canTargetEmptyGround, showRange, maxRange, target, attacker);
                                 ovr025.load_missile_dax(false, 0, 0, 0x19);
 
                                 sorted_list = copy_sorted_players(attacker);
@@ -2213,7 +2213,7 @@ namespace engine
                     }
                     else if (unk_41B05.MemberOf(input) == true)
                     {
-                        arg_4 = Target(arg_0, arg_8, arg_A, showRange, maxRange, target, attacker);
+                        arg_4 = Target(arg_0, allowTarget, canTargetEmptyGround, showRange, maxRange, target, attacker);
                         ovr025.load_missile_dax(false, 0, 0, 0x19);
                         sorted_list = copy_sorted_players(attacker);
                         target_step = 0;
