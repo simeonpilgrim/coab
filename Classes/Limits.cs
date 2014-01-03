@@ -198,12 +198,17 @@ namespace Classes
 
             }
 
+            if (Cheats.no_race_level_limits)
+            {
+                race_limited = false;
+            }
+
             return race_limited;
         }
 
         public static bool RaceStatLevelRestricted(ClassId _class, Player player) // sub_69138
         {
-            bool ret_val = false;
+            bool race_limited = false;
 
             int class_lvl = player.ClassLevel[(int)_class];
 
@@ -217,7 +222,7 @@ namespace Classes
                             if ((class_lvl == 8 && player.stats2.Str.full == 17) ||
                                 (class_lvl == 7 && player.stats2.Str.full < 17))
                             {
-                                ret_val = true;
+                                race_limited = true;
                             }
                         }
                         break;
@@ -229,7 +234,7 @@ namespace Classes
                                 (class_lvl == 6 && player.stats2.Str.full == 17) ||
                                 (class_lvl == 5 && player.stats2.Str.full < 17))
                             {
-                                ret_val = true;
+                                race_limited = true;
                             }
                         }
                         break;
@@ -240,7 +245,7 @@ namespace Classes
                             if ((class_lvl == 6) ||
                                 (class_lvl == 5 && player.stats2.Str.full < 18))
                             {
-                                ret_val = true;
+                                race_limited = true;
                             }
                         }
                         break;
@@ -249,7 +254,7 @@ namespace Classes
                         if (_class == ClassId.cleric &&
                             class_lvl == 5)
                         {
-                            ret_val = true;
+                            race_limited = true;
                         }
                         else if (_class == ClassId.fighter)
                         {
@@ -257,7 +262,7 @@ namespace Classes
                                 (class_lvl == 7 && player.stats2.Str.full == 17) ||
                                 (class_lvl == 6 && player.stats2.Str.full < 17))
                             {
-                                ret_val = true;
+                                race_limited = true;
                             }
                         }
                         break;
@@ -269,14 +274,19 @@ namespace Classes
                                 (class_lvl == 5 && player.stats2.Str.full == 17) ||
                                 (class_lvl == 4 && player.stats2.Str.full < 17))
                             {
-                                ret_val = true;
+                                race_limited = true;
                             }
                         }
                         break;
                 }
             }
 
-            return ret_val;
+            if (Cheats.no_race_level_limits)
+            {
+                race_limited = false;
+            }
+
+            return race_limited;
         }
     }
 }
