@@ -1201,10 +1201,15 @@ namespace engine
                                 switch ((Stat)stat_var)
                                 {
                                     case Stat.STR:
-                                        player.stats2.Str00.Inc();
                                         player.stats2.Str.EnforceRaceSexLimits(race, sex);
-                                        if (player.stats2.Str.full != 18 ||
-                                            (player.fighter_lvl == 0 && player.paladin_lvl == 0 && player.ranger_lvl == 0))
+
+                                        if( player.stats2.Str.full == 18 &&
+                                            (player.fighter_lvl >0 || player.ranger_lvl > 0 || player.paladin_lvl > 0) )
+                                        {
+                                            player.stats2.Str00.Inc();
+                                            player.stats2.Str00.EnforceRaceSexLimits(race, sex);
+                                        }
+                                        else
                                         {
                                             player.stats2.Str00.Load(0);
                                         }
@@ -2216,10 +2221,7 @@ namespace engine
                     classesToTrainMask += classMasks[_class];
                     class_lvl = player.ClassLevel[_class];
 
-                    bool race_limited = Limits.RaceClassLimit(class_lvl, player, (ClassId)_class);
-
-                    if (race_limited == false ||
-                        Cheats.no_race_level_limits == true)
+                    if (Limits.RaceClassLimit(class_lvl, player, (ClassId)_class) == false)
                     {
                         if ((exp_table[_class, class_lvl] > 0) &&
                             (exp_table[_class, class_lvl] <= player.exp ||
@@ -2291,26 +2293,29 @@ namespace engine
                 //player_ptr.exp = var_5;
             }
 
-            if (Cheats.free_training == false)
+            if ((classesToTrainMask & trainerClassMask) == 0 &&
+                    gbl.silent_training == false &&
+                    Cheats.free_training == false)
             {
-                if ((classesToTrainMask & trainerClassMask) == 0 &&
-                    gbl.silent_training == false)
-                {
-                    seg041.DisplayStatusText(0, 14, "We don't train that class here");
-                    return;
-                }
+                seg041.DisplayStatusText(0, 14, "We don't train that class here");
+                return;
+            }
 
-                if ((classesExpTrainMask & trainerClassMask) == 0)
+            if ((classesExpTrainMask & trainerClassMask) == 0)
+            {
+                if (gbl.silent_training == true)
                 {
                     gbl.can_train_no_more = true;
+                }
 
-                    if (gbl.silent_training == false)
-                    {
-                        seg041.DisplayStatusText(0, 14, "Not Enough Experience");
-                        return;
-                    }
+                if (gbl.silent_training == false &&
+                     Cheats.free_training == false)
+                {
+                    seg041.DisplayStatusText(0, 14, "Not Enough Experience");
+                    return;
                 }
             }
+            
 
             byte actualTrainingClassesMask;
             if (Cheats.free_training == false)
