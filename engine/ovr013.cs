@@ -331,7 +331,7 @@ namespace engine
 				item_found == false &&
 				player.items.Count < Player.MaxItems)
 			{
-				item = new Item((Affects)160, Affects.spiritual_hammer, 0, 0, 0, 0, false, 0, false, 0, 1, 243, 20, 0, ItemType.Hammer, true);
+                item = new Item(Affects.affect_78, Affects.spiritual_hammer, 0, 0, 0, 0, false, 0, false, 0, 1, 243, 20, 0, ItemType.Hammer, true);
 
 				player.items.Add(item);
 				ovr020.ready_Item(item);

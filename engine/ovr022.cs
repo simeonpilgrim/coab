@@ -440,12 +440,12 @@ namespace engine
         {0x00E2, 0x00A7, 0x0064, 0x000A, 0x3A98, 0x0000, 0x0026, 0x0083},
         {0x009d, 0x00a7, 0x0015, 0x0014, 0x0bb8, 0x0001, 0x0033, 0x0000} };
 
-        internal static Item create_item(int item_type) /* sub_5A007 */
+        internal static Item create_item(ItemType item_type) /* sub_5A007 */
         {
             byte var_5 = 0; /* Simeon */
             int var_4 = -1;
 
-            Item item = new Item(0, 0, 0, 0, 0, 0, false, 6, false, 0, 0, 0, 0, 0, (ItemType)item_type, false);
+            Item item = new Item(0, 0, 0, 0, 0, 0, false, 6, false, 0, 0, 0, 0, 0, item_type, false);
 
             var type = item.type;
 
