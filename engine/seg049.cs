@@ -1,8 +1,7 @@
-using Classes;
 using System.Collections.Generic;
 using System.Threading;
 
-namespace engine
+namespace GoldBox.Engine
 {
     public class seg049
     {

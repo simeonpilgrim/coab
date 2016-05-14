@@ -1,7 +1,7 @@
-using Classes;
-using Logging;
+using GoldBox.Classes;
+using GoldBox.Logging;
 
-namespace engine
+namespace GoldBox.Engine
 {
     public class seg043
     {
@@ -186,7 +186,7 @@ namespace engine
 
             int last = 0;
             int count = 0;
-            System.Text.StringBuilder sb = new System.Text.StringBuilder();
+            var sb = new System.Text.StringBuilder();
 
             foreach (int sp in p.spellList.IdList())
             {
@@ -246,7 +246,7 @@ namespace engine
             {
                 System.IO.File.Delete(filename);
             }
-            DebugWriter dw = new DebugWriter(filename);
+            var dw = new DebugWriter(filename);
 
             dw.WriteLine("GnomeVsManSizedGiant");
             DumpMonstersFilteredSub(dw, p => (p.field_14B & 2) != 0);
@@ -338,7 +338,7 @@ namespace engine
             {
                 System.IO.File.Delete(filename);
             }
-            DebugWriter dw = new DebugWriter(filename);
+            var dw = new DebugWriter(filename);
 
             dw.WriteLine("<html><body><table><tbody>");
 

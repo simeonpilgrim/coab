@@ -1,10 +1,14 @@
-using System;
+using System.Collections.Generic;
 using System.Windows.Forms;
 
 namespace Main
 {
     public class Keyboard
     {
+        //private static Dictionary<Keys, ushort> keyMapping = new Dictionary<Keys, ushort>()
+        //{
+
+        //}
         public static ushort KeyToIBMKey(Keys key)
         {
             if (key >= Keys.D0 && key <= Keys.D9)

@@ -1,7 +1,7 @@
 using System;
 using System.IO;
 
-namespace Classes
+namespace GoldBox.Classes
 {
     [FlagsAttribute]
     public enum ItemDataFlags : byte

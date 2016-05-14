@@ -1,8 +1,8 @@
-using Classes;
+using GoldBox.Classes;
 using System;
 using System.Collections.Generic;
 
-namespace engine
+namespace GoldBox.Engine
 {
     class ovr005
     {
@@ -304,7 +304,7 @@ namespace engine
 
             bool end_shop = false;
 
-            List<MenuItem> stringList = new List<MenuItem>(10);
+            var stringList = new List<MenuItem>(10);
 
             for (int i = 0; i < 10; i++)
             {

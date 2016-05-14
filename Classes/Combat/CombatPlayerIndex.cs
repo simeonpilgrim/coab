@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Classes.Combat
+﻿namespace GoldBox.Classes.Combat
 {
     public class CombatPlayerIndex
     {

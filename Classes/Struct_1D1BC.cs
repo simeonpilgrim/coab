@@ -1,6 +1,4 @@
-using System;
-
-namespace Classes
+namespace GoldBox.Classes
 {
     /// <summary>
     /// Summary description for Struct_1D1BC.

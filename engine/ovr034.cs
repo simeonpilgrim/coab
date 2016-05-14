@@ -1,8 +1,9 @@
-using Classes;
-using Logging;
-using Classes.Combat;
+using GoldBox.Classes;
+using GoldBox.Logging;
+using GoldBox.Classes.Combat;
+using GoldBox.Classes.DaxFiles;
 
-namespace engine
+namespace GoldBox.Engine
 {
     class ovr034
     {

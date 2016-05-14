@@ -1,6 +1,6 @@
-using Classes;
+using GoldBox.Classes;
 
-namespace engine
+namespace GoldBox.Engine
 {
 	class ovr013
 	{
@@ -65,9 +65,9 @@ namespace engine
 
 		internal static void SticksToSnakes(Effect arg_0, object param, Player player)
 		{
-			Affect affect = (Affect)param;
+			var affect = (Affect)param;
 
-			byte var_1 = (byte)(player.attack2_AttacksLeft + player.attack1_AttacksLeft);
+			var var_1 = (byte)(player.attack2_AttacksLeft + player.attack1_AttacksLeft);
 
 			if (affect.affect_data > var_1)
 			{
@@ -184,7 +184,7 @@ namespace engine
 
 		internal static void affect_charm_person(Effect arg_0, object param, Player player) /* sub_3A2AD */
 		{
-			Affect affect = (Affect)param;
+			var affect = (Affect)param;
 
 			if (arg_0 == Effect.Remove)
 			{
@@ -219,7 +219,7 @@ namespace engine
 
 		internal static void Suffocates(Effect arg_0, object param, Player player)
 		{
-			Affect affect = (Affect)param;
+			var affect = (Affect)param;
 
 			if (affect.affect_data == 0)
 			{
@@ -234,7 +234,7 @@ namespace engine
 
 		internal static void AffectPoisonDamage(Effect arg_0, object param, Player player) // sub_3A3BC
 		{
-			Affect affect = (Affect)param;
+			var affect = (Affect)param;
 
 			if (addAffect(10, affect.affect_data, Affects.poison_damage, player) == true &&
 				player.hit_point_current > 1)
@@ -367,7 +367,7 @@ namespace engine
 
 		internal static void MirrorImage(Effect arg_0, object param, Player player)
 		{
-			Affect affect = (Affect)param;
+			var affect = (Affect)param;
 
 			if (ovr024.roll_dice((affect.affect_data >> 4) + 1, 1) > 1 &&
 				gbl.spell_id > 0 &&
@@ -425,7 +425,7 @@ namespace engine
 
 		internal static void sub_3A89E(Effect arg_0, object param, Player player)
 		{
-			Affect affect = (Affect)param;
+			var affect = (Affect)param;
 
 			affect.callAffectTable = false;
 
@@ -530,7 +530,7 @@ namespace engine
 
 		internal static void AffectHaste(Effect arg_0, object param, Player player) // spl_age
 		{
-			Affect affect = (Affect)param;
+			var affect = (Affect)param;
 
 			if ((affect.affect_data & 0x10) == 0)
 			{
@@ -546,7 +546,7 @@ namespace engine
 
 		internal static void sub_3AC1D(Effect arg_0, object param, Player player)
 		{
-			Affect affect = (Affect)param;
+			var affect = (Affect)param;
 
 			var var_8 = gbl.NoxiousCloud.Find(cell => cell.player == player && cell.field_1C == (affect.affect_data >> 4));
 
@@ -642,7 +642,7 @@ namespace engine
 
 		internal static void weaken(Effect arg_0, object param, Player player)
 		{
-			Affect affect = (Affect)param;
+			var affect = (Affect)param;
 
 			if (addAffect(0x3c, affect.affect_data, Affects.weaken, player) == true)
 			{
@@ -661,7 +661,7 @@ namespace engine
 
 		internal static void sub_3B0C2(Effect arg_0, object param, Player player)
 		{
-			Affect affect = (Affect)param;
+			var affect = (Affect)param;
 
 			if (addAffect(10, affect.affect_data, Affects.cause_disease_2, player) == true)
 			{
@@ -711,9 +711,9 @@ namespace engine
 
 		internal static void AffectPrayer(Effect arg_0, object param, Player player) // sub_3B1C9
 		{
-			Affect affect = (Affect)param;
+			var affect = (Affect)param;
 
-			CombatTeam team = (CombatTeam)((affect.affect_data & 0x10) >> 4);
+			var team = (CombatTeam)((affect.affect_data & 0x10) >> 4);
 
 			if (player.combat_team == team)
 			{
@@ -819,7 +819,7 @@ namespace engine
 
 		internal static void AffectHighConRegen(Effect arg_0, object param, Player player) /* sub_3B386 */
 		{
-			Affect affect = (Affect)param;
+			var affect = (Affect)param;
 
 			if (addAffect(0x3C, affect.affect_data, Affects.highConRegen, player) == true &&
 				ovr024.heal_player(1, 1, player) == true)
@@ -1022,7 +1022,7 @@ namespace engine
 
 		internal static void sub_3B8D9(Effect arg_0, object param, Player player)
 		{
-			Affect affect = (Affect)param;
+			var affect = (Affect)param;
 
 			if (ovr024.combat_heal(player.hit_point_current, player) == false)
 			{
@@ -1100,7 +1100,7 @@ namespace engine
 
 		internal static void AffectDisplace(Effect arg_0, object param, Player player) /*sub_3BA55*/
 		{
-			Affect affect = (Affect)param;
+			var affect = (Affect)param;
 
 			if (affect != null)
 			{
@@ -1119,7 +1119,7 @@ namespace engine
 
 		internal static void sub_3BAB9(Effect arg_0, object param, Player player)
 		{
-			Affect affect = (Affect)param;
+			var affect = (Affect)param;
 
 			GasCloud var_8 = gbl.PoisonousCloud.Find(cell => cell.player == player && cell.field_1C == (affect.affect_data >> 4));
 
@@ -1188,7 +1188,7 @@ namespace engine
 
 		internal static void sub_3BE06(Effect arg_0, object param, Player player)
 		{
-			Affect affect = (Affect)param;
+			var affect = (Affect)param;
 			affect.callAffectTable = false;
 
 			if (player.in_combat == true)
@@ -1244,7 +1244,7 @@ namespace engine
 
 		internal static void sub_3BEE8(Effect arg_0, object param, Player player)
 		{
-			Affect arg_2 = (Affect)param;
+			var arg_2 = (Affect)param;
 
 			byte heal_amount = 0;
 
@@ -1291,7 +1291,7 @@ namespace engine
 
 		internal static void AffectTrollRegen(Effect arg_0, object param, Player player) // sub_3C01E
 		{
-			Affect affect = (Affect)param;
+			var affect = (Affect)param;
 
 			if (ovr024.combat_heal(player.hit_point_max, player) == false)
 			{
@@ -1500,7 +1500,7 @@ namespace engine
 
 		internal static void sub_3C3F6(Effect arg_0, object param, Player player)
 		{
-			Affect affect = (Affect)param;
+			var affect = (Affect)param;
 
 			gbl.spell_target = player.actions.target;
 
@@ -1608,7 +1608,7 @@ namespace engine
 
 		internal static void do_items_affect(Effect remove_affect, object param, Player player) /* sub_3C6D3 */
 		{
-			Item item = (Item)param;
+			var item = (Item)param;
 
 			gbl.applyItemAffect = false;
 
@@ -1669,7 +1669,7 @@ namespace engine
 
 		internal static void sub_3C7E0(Effect arg_0, object param, Player player) // sub_3C7E0
 		{
-			Affect affect = (Affect)param;
+			var affect = (Affect)param;
 
 			if (arg_0 == Effect.Add)
 			{

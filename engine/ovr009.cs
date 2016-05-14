@@ -1,8 +1,7 @@
+using GoldBox.Classes;
+using GoldBox.Classes.Combat;
 
-using Classes;
-using Classes.Combat;
-
-namespace engine
+namespace GoldBox.Engine
 {
     class ovr009
     {
@@ -149,7 +148,7 @@ namespace engine
         internal static void combat_menu(Player player) /* camp_menu */
         {
             int spell_id;
-            Struct_1D183 var_D = new Struct_1D183();
+            var var_D = new Struct_1D183();
             char var_1;
 
             if (player.in_combat == true)

@@ -1,107 +1,19 @@
 using System;
 using System.Reflection;
-using System.Text;
-using Logging;
+using GoldBox.Logging;
 
-namespace Classes
+namespace GoldBox.Classes
 {
-    public enum DataType
-    {
-        PString,
-        Byte,
-        SByte,
-        IByte, //a byte that needs to be cast to int first.
-        Word,
-        SWord,
-        Int,
-        SInt,
-        Bool,
-        ByteArray,
-        ShortArray,
-        WordArray,
-        Cust1Array,
-        CustSaveLoad,
-    }
-
-    interface IDataIO
-    {
-        void Write(byte[] data, int offset);
-        void Read(byte[] data, int offset);
-    }
-
-    public class DataOffsetAttribute : Attribute
-    {
-
-        // The constructor is called when the attribute is set.
-        public DataOffsetAttribute(int offset, DataType type)
-        {
-            this.offset = offset;
-            this.type = type;
-            this.size = DefaultSize(type);
-        }
-
-        public DataOffsetAttribute(int offset, DataType type, int size)
-        {
-            this.offset = offset;
-            this.type = type;
-            this.size = size;
-        }
-
-        int DefaultSize(DataType type)
-        {
-            switch (type)
-            {
-                case DataType.Byte:
-                    return 1;
-                case DataType.SByte:
-                    return 1;
-                case DataType.IByte:
-                    return 1;
-                case DataType.Bool:
-                    return 1;
-                case DataType.Word:
-                    return 2;
-                case DataType.SWord:
-                    return 2;
-                case DataType.Int:
-                    return 4;         
-                default:
-                    throw new NotImplementedException();
-            }
-        }
-
-        // Keep a variable internally ...
-        protected int offset;
-        public int Offset
-        {
-            get { return offset; }
-        }
-
-        protected int size;
-        public int Size
-        {
-            get { return size; }
-        }
-
-        protected DataType type;
-        public DataType Type
-        {
-            get { return type; }
-        }
-
-
-    }
-
     public class DataIO
     {
-        static public ushort GetObjectUShort(object obj, byte[] data, int location)
+        public static ushort GetObjectUShort(object obj, byte[] data, int location)
         {
             Type type = obj.GetType();
 
             // Iterate through all the fields of the class.
             foreach (FieldInfo fInfo in type.GetFields())
             {
-                DataOffsetAttribute doAttr = (DataOffsetAttribute)Attribute.GetCustomAttribute(fInfo, typeof(DataOffsetAttribute));
+                var doAttr = (DataOffsetAttribute)Attribute.GetCustomAttribute(fInfo, typeof(DataOffsetAttribute));
                 if (doAttr != null && doAttr.Offset == location)
                 {
                     Logger.Debug("GetObjectUShort {0}.{1}", obj, fInfo.Name);
@@ -114,14 +26,14 @@ namespace Classes
             return val;
         }
 
-        static public void SetObjectUShort(object obj, byte[] data, int location, ushort value)
+        public static void SetObjectUShort(object obj, byte[] data, int location, ushort value)
         {
             Type type = obj.GetType();
 
             // Iterate through all the fields of the class.
             foreach (FieldInfo fInfo in type.GetFields())
             {
-                DataOffsetAttribute doAttr = (DataOffsetAttribute)Attribute.GetCustomAttribute(fInfo, typeof(DataOffsetAttribute));
+                var doAttr = (DataOffsetAttribute)Attribute.GetCustomAttribute(fInfo, typeof(DataOffsetAttribute));
                 if (doAttr != null && doAttr.Offset == location)
                 {
                     Logger.Debug("SetObjectUShort {0}.{1}", obj, fInfo.Name);
@@ -135,7 +47,7 @@ namespace Classes
 
         }
 
-        static private ushort GetObjectUshortValue(object obj, FieldInfo fInfo, DataOffsetAttribute attr)
+        private static ushort GetObjectUshortValue(object obj, FieldInfo fInfo, DataOffsetAttribute attr)
         {
             object o = fInfo.GetValue(obj);
             switch (attr.Type)
@@ -156,7 +68,7 @@ namespace Classes
             }
         }
 
-        static private void SetObjectUshortValue(object obj, FieldInfo fInfo, DataOffsetAttribute attr, ushort value)
+        private static void SetObjectUshortValue(object obj, FieldInfo fInfo, DataOffsetAttribute attr, ushort value)
         {
             //object o = fInfo.GetValue(obj);
             switch (attr.Type)
@@ -183,7 +95,7 @@ namespace Classes
             }
         }
 
-        static public void ReadObject(object obj, byte[] data, int offset)
+        public static void ReadObject(object obj, byte[] data, int offset)
         {
             Type type = obj.GetType();
 
@@ -197,16 +109,15 @@ namespace Classes
                     // Check for the DataOffset attribute.
                     if (attr.GetType() == typeof(DataOffsetAttribute))
                     {
-                        DataOffsetAttribute doAttr = (DataOffsetAttribute)attr;
+                        var doAttr = (DataOffsetAttribute)attr;
 
                         readData(obj, fInfo, doAttr, data, offset);
                     }
                 }
             }
         }
-
-
-        static public void WriteObject(object obj, byte[] data)
+        
+        public static void WriteObject(object obj, byte[] data)
         {
             Type type = obj.GetType();
 
@@ -220,7 +131,7 @@ namespace Classes
                     // Check for the DataOffset attribute.
                     if (attr.GetType() == typeof(DataOffsetAttribute))
                     {
-                        DataOffsetAttribute doAttr = (DataOffsetAttribute)attr;
+                        var doAttr = (DataOffsetAttribute)attr;
 
                         writeData(obj, fInfo, doAttr, data);
                     }
@@ -229,10 +140,10 @@ namespace Classes
             }
         }
 
-        static private void writeData(object obj, FieldInfo fInfo, DataOffsetAttribute attr, byte[] data)
+        private static void writeData(object obj, FieldInfo fInfo, DataOffsetAttribute attr, byte[] data)
         {
             object o = fInfo.GetValue(obj);
-            IDataIO idata = o as IDataIO;
+            var idata = o as IDataIO;
 
             if (idata != null)
             {
@@ -256,7 +167,7 @@ namespace Classes
 
                     case DataType.SWord:
                         {
-                            short s = (short)o;
+                            var s = (short)o;
                             data[attr.Offset] = (byte)(s & 0xff);
                             data[attr.Offset + 1] = (byte)((s >> 8) & 0xff);
                         }
@@ -264,7 +175,7 @@ namespace Classes
 
                     case DataType.Word:
                         {
-                            ushort s = (ushort)o;
+                            var s = (ushort)o;
                             data[attr.Offset] = (byte)(s & 0xff);
                             data[attr.Offset + 1] = (byte)((s >> 8) & 0xff);
                         }
@@ -272,7 +183,7 @@ namespace Classes
 
                     case DataType.Int:
                         {
-                            int i = (int)o;
+                            var i = (int)o;
                             int offset = attr.Offset;
                             data[offset++] = (byte)(i & 0xff);
                             data[offset++] = (byte)((i >> 8) & 0xff);
@@ -287,16 +198,16 @@ namespace Classes
 
                     case DataType.ByteArray:
                         {
-                            byte[] values = (byte[])o;
+                            var values = (byte[])o;
 
-                            System.Array.Copy(values, 0, data, attr.Offset, attr.Size);
+                            Array.Copy(values, 0, data, attr.Offset, attr.Size);
                         }
                         break;
 
                     case DataType.ShortArray:
                         {
 
-                            short[] values = (short[])o;
+                            var values = (short[])o;
                             int offset = attr.Offset;
                             for (int i = 0; i < attr.Size; i++)
                             {
@@ -309,7 +220,7 @@ namespace Classes
 
                     case DataType.WordArray:
                         {
-                            ushort[] values = (ushort[])o;
+                            var values = (ushort[])o;
                             int offset = attr.Offset;
                             for (int i = 0; i < attr.Size; i++)
                             {
@@ -322,8 +233,8 @@ namespace Classes
 
                     case DataType.PString:
                         {
-                            byte b = (byte)attr.Size;
-                            string s = (string)o;
+                            var b = (byte)attr.Size;
+                            var s = (string)o;
                             if (s.Length < b)
                             {
                                 b = (byte)s.Length;
@@ -340,7 +251,7 @@ namespace Classes
                     case DataType.Cust1Array:
                         {
                             int i = attr.Offset;
-                            StatValue[] sv = (StatValue[])o;
+                            var sv = (StatValue[])o;
                             foreach (StatValue v in sv)
                             {
                                 data[i++] = (byte)v.cur;
@@ -355,10 +266,10 @@ namespace Classes
             }
         }
 
-        static private void readData(object obj, FieldInfo fInfo, DataOffsetAttribute attr, byte[] data, int offset)
+        private static void readData(object obj, FieldInfo fInfo, DataOffsetAttribute attr, byte[] data, int offset)
         {
             offset += attr.Offset;
-            IDataIO idata = fInfo.GetValue(obj) as IDataIO;
+            var idata = fInfo.GetValue(obj) as IDataIO;
 
             if (idata != null)
             {
@@ -382,14 +293,14 @@ namespace Classes
 
                     case DataType.SWord:
                         {
-                            short s = (short)(data[offset] + (data[offset + 1] << 8));
+                            var s = (short)(data[offset] + (data[offset + 1] << 8));
                             fInfo.SetValue(obj, s);
                         }
                         break;
 
                     case DataType.Word:
                         {
-                            ushort w = (ushort)(data[offset] + (data[offset + 1] << 8));
+                            var w = (ushort)(data[offset] + (data[offset + 1] << 8));
                             fInfo.SetValue(obj, w);
                         }
                         break;
@@ -409,7 +320,7 @@ namespace Classes
                         {
                             byte[] a = new byte[attr.Size];
 
-                            System.Array.Copy(data, offset, a, 0, attr.Size);
+                            Array.Copy(data, offset, a, 0, attr.Size);
                             fInfo.SetValue(obj, a);
                         }
                         break;

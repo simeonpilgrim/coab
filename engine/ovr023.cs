@@ -1,9 +1,9 @@
-using Classes;
+using GoldBox.Classes;
 using System;
 using System.Collections.Generic;
-using Classes.Combat;
+using GoldBox.Classes.Combat;
 
-namespace engine
+namespace GoldBox.Engine
 {
 	class ovr023
 	{
@@ -249,7 +249,7 @@ namespace engine
 
 		internal static void add_spell_to_list(byte spell_id) /* sub_5C3ED */
 		{
-			byte masked_id = (byte)(spell_id & 0x7F);
+			var masked_id = (byte)(spell_id & 0x7F);
 
 			var string_list = gbl.spell_string_list;
 
@@ -275,7 +275,7 @@ namespace engine
 		internal static void add_spell_to_learning_list(int spell_id) /* sub_5C5B9 */
 		{
 			int memorize_index;
-			byte masked_id = (byte)(spell_id & 0x7F);
+			var masked_id = (byte)(spell_id & 0x7F);
 
 			var spell_list = gbl.spell_string_list;
 
@@ -283,7 +283,7 @@ namespace engine
 
 			if (gbl.spell_string_list.Count == 0)
 			{
-				System.Array.Clear(gbl.memorize_count, 0, gbl.max_spells);
+                Array.Clear(gbl.memorize_count, 0, gbl.max_spells);
 
 				memorize_index = 0;
 				gbl.memorize_count[memorize_index] = 1;
@@ -847,10 +847,10 @@ namespace engine
 
 		static void BuildAreaDamageTargets(int max_range, int playerSize, Point targetPos, Point casterPos) // sub_5D7CF
 		{
-			List<int> players_on_path = new List<int>();
+			var players_on_path = new List<int>();
 
 			bool finished;
-			SteppingPath path = new SteppingPath();
+			var path = new SteppingPath();
 
 			localSteppingPathInit(targetPos, casterPos, path);
 
@@ -1376,10 +1376,10 @@ namespace engine
 
 			gbl.byte_1D2C7 = true;
 
-			byte var_10 = (byte)ovr025.spellMaxTargetCount(gbl.spell_id);
+			var var_10 = (byte)ovr025.spellMaxTargetCount(gbl.spell_id);
 			int count = gbl.NoxiousCloud.FindAll(cell => cell.player == gbl.SelectedPlayer).Count;
 
-			GasCloud var_8 = new GasCloud(gbl.SelectedPlayer, count, gbl.targetPos);
+			var var_8 = new GasCloud(gbl.SelectedPlayer, count, gbl.targetPos);
 			gbl.NoxiousCloud.Add(var_8);
 
 			ovr024.add_affect(true, (byte)(var_10 + (count << 4)), var_10, Affects.affect_28, gbl.SelectedPlayer);
@@ -1542,7 +1542,7 @@ namespace engine
 				{
 					if (ovr033.sub_7515A(true, ovr033.PlayerMapPos(player), player) == true)
 					{
-						byte var_2 = (byte)(((int)player.combat_team << 4) + ovr025.spellMaxTargetCount(gbl.spell_id));
+						var var_2 = (byte)(((int)player.combat_team << 4) + ovr025.spellMaxTargetCount(gbl.spell_id));
 
 						player.combat_team = gbl.SelectedPlayer.combat_team;
 						player.quick_fight = QuickFight.True;
@@ -1821,7 +1821,7 @@ namespace engine
 
 		internal static void SpellPrayer() // is_praying
 		{
-			byte tmpByte = (byte)(((int)gbl.SelectedPlayer.combat_team * 16) + ovr025.spellMaxTargetCount(gbl.spell_id));
+			var tmpByte = (byte)(((int)gbl.SelectedPlayer.combat_team * 16) + ovr025.spellMaxTargetCount(gbl.spell_id));
 
 			DoSpellCastingWork("is praying", 0, 0, false, tmpByte, gbl.spell_id);
 		}
@@ -2122,7 +2122,7 @@ namespace engine
 
 			if (player.lost_lvls > 0)
 			{
-				byte restored_hp = (byte)(player.lost_hp / player.lost_lvls);
+				var restored_hp = (byte)(player.lost_hp / player.lost_lvls);
 
 				player.hit_point_max += restored_hp;
 				player.hit_point_current += restored_hp;
@@ -2614,10 +2614,10 @@ namespace engine
 
 			gbl.byte_1D2C7 = true;
 
-			byte var_15 = (byte)ovr025.spellMaxTargetCount(gbl.spell_id);
+			var var_15 = (byte)ovr025.spellMaxTargetCount(gbl.spell_id);
 			int count = gbl.PoisonousCloud.FindAll(cell => cell.player == gbl.SelectedPlayer).Count;
 
-			GasCloud var_8 = new GasCloud(gbl.SelectedPlayer, count, gbl.targetPos);
+			var var_8 = new GasCloud(gbl.SelectedPlayer, count, gbl.targetPos);
 			gbl.PoisonousCloud.Add(var_8);
 
 			ovr024.add_affect(true, (byte)(var_15 + (count << 4)), var_15, Affects.affect_5b, gbl.SelectedPlayer);
@@ -2843,7 +2843,7 @@ namespace engine
 
 		internal static void DragonBreathElec(Effect arg_0, object param, Player player) // cast_breath
 		{
-			Affect affect = (Affect)param;
+			var affect = (Affect)param;
 			bool var_1 = false; /* Simeon */
 
 			if (gbl.combat_round == 0 ||
@@ -2921,7 +2921,7 @@ namespace engine
 
 		internal static void DragonBreathAcid(Effect arg_0, object param, Player attacker) // spell_breathes_acid
 		{
-			Affect affect = (Affect)param;
+			var affect = (Affect)param;
 
 			gbl.byte_1DA70 = false;
 
@@ -2972,7 +2972,7 @@ namespace engine
 
 		internal static void DragonBreathFire(Effect arg_0, object param, Player attacker) // spell_breathes_fire
 		{
-			Affect affect = (Affect)param;
+			var affect = (Affect)param;
 
 			if (gbl.combat_round == 0)
 			{

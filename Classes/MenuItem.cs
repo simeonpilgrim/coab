@@ -1,7 +1,4 @@
-using System;
-using System.Diagnostics;
-
-namespace Classes
+namespace GoldBox.Classes
 {
     public class MenuItem
     {

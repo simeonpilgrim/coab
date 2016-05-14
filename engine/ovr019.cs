@@ -1,6 +1,7 @@
-using Classes;
+using GoldBox.Classes;
+using GoldBox.Classes.DaxFiles;
 
-namespace engine
+namespace GoldBox.Engine
 {
     class ovr019
     {
@@ -104,7 +105,7 @@ namespace engine
 
                 unk_1ADFB[var_5].field_4 = 1;
 
-                byte var_15 = (byte)(seg051.Random(20) + 25);
+                var var_15 = (byte)(seg051.Random(20) + 25);
 
                 if (gbl.byte_1ADFA < var_15)
                 {
@@ -413,7 +414,7 @@ namespace engine
             int loop_count = 0;
             int start_time = seg041.time01();
 
-            DaxArray animation = new DaxArray();
+            var animation = new DaxArray();
 
             ovr030.load_pic_final(ref animation, 2, block_id, "PIC");
             seg040.OverlayBounded(animation.frames[0].picture, 0, 0, row_y - 1, col_x - 1);

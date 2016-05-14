@@ -1,7 +1,7 @@
-using Classes;
+using GoldBox.Classes;
 using System.Collections.Generic;
 
-namespace engine
+namespace GoldBox.Engine
 {
     class ovr016
     {
@@ -448,7 +448,7 @@ namespace engine
                             else
                             {
                                 int spell_level = gbl.spellCastingTable[var_4].spellLevel;
-                                int spell_class = (int)gbl.spellCastingTable[var_4].spellClass;
+                                var spell_class = (int)gbl.spellCastingTable[var_4].spellClass;
 
                                 if (gbl.SelectedPlayer.spellCastCount[spell_class, spell_level - 1] > 0)
                                 {
@@ -555,7 +555,7 @@ namespace engine
 
         static void DisplayMagicEffects()
         {
-            List<MenuItem> var_C = new List<MenuItem>();
+            var var_C = new List<MenuItem>();
 
             var_C.Add(new MenuItem());
 
@@ -1047,7 +1047,7 @@ namespace engine
                 }
                 else
                 {
-                    RestTime timeBackup = new RestTime(gbl.timeToRest);
+                    var timeBackup = new RestTime(gbl.timeToRest);
 
                     int numCureCritical;
                     int numCureSerious;

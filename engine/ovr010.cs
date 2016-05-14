@@ -1,7 +1,7 @@
-using Classes;
-using Classes.Combat;
+using GoldBox.Classes;
+using GoldBox.Classes.Combat;
 
-namespace engine
+namespace GoldBox.Engine
 {
     class ovr010
     {
@@ -196,7 +196,7 @@ namespace engine
 
                     foreach (var item_ptr in player.items)
                     {
-                        byte spell_id = (byte)item_ptr.affect_2;
+                        var spell_id = (byte)item_ptr.affect_2;
 
                         if (item_ptr.IsScroll() == false &&
                             (int)item_ptr.affect_3 < 0x80 &&

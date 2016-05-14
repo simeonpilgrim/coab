@@ -1,6 +1,6 @@
-using Classes;
+using GoldBox.Classes;
 
-namespace engine
+namespace GoldBox.Engine
 {
     class seg041
     {
@@ -46,7 +46,7 @@ namespace engine
             if (XCol < 40 &&
                 YCol < 25)
             {
-                char index = (char)(char.ToUpper(ch) % 0x40);
+                var index = (char)(char.ToUpper(ch) % 0x40);
 
                 for (int i = 0; i < 8; i++)
                 {
@@ -124,7 +124,7 @@ namespace engine
 
         internal static void press_any_key(string text, bool clearArea, int fgColor, TextRegion region)
         {
-            int r = (int)region;
+            var r = (int)region;
             press_any_key(text, clearArea, fgColor, bounds[r, 0], bounds[r, 1], bounds[r, 2], bounds[r, 3]);
         }
 

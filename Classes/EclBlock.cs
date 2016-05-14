@@ -1,6 +1,6 @@
 using System;
 
-namespace Classes
+namespace GoldBox.Classes
 {
     /// <summary>
     /// Summary description for EclBlock.
@@ -20,7 +20,7 @@ namespace Classes
         {
             data = new byte[ecl_struct_size];
 
-            System.Array.Copy(_data, data, ecl_struct_size);
+            Array.Copy(_data, data, ecl_struct_size);
         }
 
         public void Clear()
@@ -50,7 +50,7 @@ namespace Classes
 
         public void SetData(byte[] dataArray, int dataOffset, int dataLength)
         {
-            System.Array.Copy(dataArray, dataOffset, this.data, 0, dataLength);
+            Array.Copy(dataArray, dataOffset, this.data, 0, dataLength);
         }
 
         public byte[] ToByteArray()

@@ -1,7 +1,6 @@
-using Classes;
-using System.Collections.Generic;
+using GoldBox.Classes;
 
-namespace engine
+namespace GoldBox.Engine
 {
     class seg051
     {

@@ -1,10 +1,10 @@
 using System;
 
-namespace Classes
+namespace GoldBox.Classes.DaxFiles
 {
     public class DaxBlock
     {
-        static Random random_number = new System.Random(unchecked((int)System.DateTime.Now.Ticks));
+        static Random random_number = new Random(unchecked((int)DateTime.Now.Ticks));
 
         public int height; // 0x0;
         public int width; // 0x2;
@@ -40,7 +40,7 @@ namespace Classes
             item_count = pic_data[8];
 
             field_9 = new byte[8];
-            System.Array.Copy(pic_data, 9, field_9, 0, 8);
+            Array.Copy(pic_data, 9, field_9, 0, 8);
 
             int ram_size = item_count * bpp;
             data = new byte[ram_size];
@@ -65,7 +65,7 @@ namespace Classes
                 }
             }
 
-            System.Array.Copy(t_data, data, data.Length);
+            Array.Copy(t_data, data, data.Length);
         }
 
         public void Recolor(bool useRandom, byte[] newColors, byte[] oldColors)

@@ -1,24 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using GoldBox.Classes.DaxFiles;
 
-namespace Classes.Combat
+namespace GoldBox.Classes.Combat
 {
-    public enum Icon
-    {
-        Normal,
-        Attack,
-    }
-
-
     public class CombatIcon
     {
-        DaxBlock normal = null;
-        DaxBlock attack = null;
+        DaxBlock normal;
+        DaxBlock attack;
 
         // cheat and cache the flipped copy, so we don't damage the original, then we present this one later.
-        DaxBlock normal_f = null;
-        DaxBlock attack_f = null;
+        DaxBlock normal_f;
+        DaxBlock attack_f;
 
         public void Release()
         {

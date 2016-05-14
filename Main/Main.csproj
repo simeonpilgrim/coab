@@ -96,7 +96,6 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="Settings.cs" />
     <Compile Include="Resource.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -104,17 +103,17 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Classes\Classes.csproj">
+    <ProjectReference Include="..\Classes\GoldBox.Classes.csproj">
       <Project>{6FA9069E-3549-4352-ACBA-73BB0406C0B1}</Project>
-      <Name>Classes</Name>
+      <Name>GoldBox.Classes</Name>
     </ProjectReference>
-    <ProjectReference Include="..\engine\engine.csproj">
+    <ProjectReference Include="..\engine\GoldBox.Engine.csproj">
       <Project>{361087AE-2FD8-4BEF-8218-05A553ED7A49}</Project>
-      <Name>engine</Name>
+      <Name>GoldBox.Engine</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Logging\Logging.csproj">
+    <ProjectReference Include="..\Logging\GoldBox.Logging.csproj">
       <Project>{BEC15EB8-3A21-49FF-ABC0-7465927E80B8}</Project>
-      <Name>Logging</Name>
+      <Name>GoldBox.Logging</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

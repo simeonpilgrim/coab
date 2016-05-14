@@ -1,17 +1,10 @@
-using System;
-
-namespace Classes
+namespace GoldBox.Classes
 {
     /// <summary>
     /// Summary description for File.
     /// </summary>
     public class File
     {
-        public File()
-        {
-            // TODO tidy-up this pascal based concept.
-        }
-
         public string name;
 
         public System.IO.FileStream stream;

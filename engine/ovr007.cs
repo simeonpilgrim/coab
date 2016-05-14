@@ -1,13 +1,13 @@
-using Classes;
+using GoldBox.Classes;
 using System.Collections.Generic;
 
-namespace engine
+namespace GoldBox.Engine
 {
     class ovr007
     {
         internal static char ShopChooseItem(ref int index, out Item selectedItem) // sub_2F04E
         {
-            List<MenuItem> list = new List<MenuItem>();
+            var list = new List<MenuItem>();
             foreach (var item in gbl.items_pointer)
             {
                 if (item._value == 0)

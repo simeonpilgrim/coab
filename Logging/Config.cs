@@ -1,40 +1,30 @@
 ﻿using System;
 using System.IO;
 
-namespace Logging
+namespace GoldBox.Logging
 {
     public static class Config
     {
-        static string basePath;
-        static string logPath;
-        static string savePath;
+        public static string BasePath { get; private set; }
+        public static string LogPath { get; private set; }
+        public static string SavePath { get; private set; }
 
-        static public void Setup()
+        public static void Setup()
         {
-            basePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), "Curse of the Azure Bonds");
+            BasePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), "Curse of the Azure Bonds");
+            LogPath = Path.Combine(BasePath, "Logs");
+            SavePath = Path.Combine(BasePath, "Save");
 
-            if (Directory.Exists(basePath) == false)
-            {
-                Directory.CreateDirectory(basePath);
-            }
+            CreateIfNeeded(BasePath);
+            CreateIfNeeded(LogPath);
+            CreateIfNeeded(SavePath);
 
-            logPath = Path.Combine(basePath, "Logs");
-            if (Directory.Exists(logPath) == false)
-            {
-                Directory.CreateDirectory(logPath);
-            }
-
-            savePath = Path.Combine(basePath, "Save");
-            if (Directory.Exists(savePath) == false)
-            {
-                Directory.CreateDirectory(savePath);
-            }
-
-            Logger.Setup(logPath);
+            Logger.Setup(LogPath);
         }
-
-        public static string GetLogPath() { return logPath; }
-        public static string GetSavePath() { return savePath; }
-        public static string GetBasePath() { return basePath; }
+        private static void CreateIfNeeded(string path)
+        {
+            if (!Directory.Exists(path))
+                Directory.CreateDirectory(path);
+        }
     }
 }

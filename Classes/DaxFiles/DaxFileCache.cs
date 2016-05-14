@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
-namespace Classes.DaxFiles
+namespace GoldBox.Classes.DaxFiles
 {
     class DaxFileCache
     {
@@ -28,7 +26,7 @@ namespace Classes.DaxFiles
 
             try
             {
-                System.IO.FileStream fsA = new System.IO.FileStream(filename, System.IO.FileMode.Open, System.IO.FileAccess.Read, System.IO.FileShare.Read);
+                var fsA = new System.IO.FileStream(filename, System.IO.FileMode.Open, System.IO.FileAccess.Read, System.IO.FileShare.Read);
 
                 fileA = new System.IO.BinaryReader(fsA);
             }
@@ -39,13 +37,13 @@ namespace Classes.DaxFiles
 
             dataOffset = fileA.ReadInt16() + 2;
 
-            List<DaxHeaderEntry> headers = new List<DaxHeaderEntry>();
+            var headers = new List<DaxHeaderEntry>();
 
             const int headerEntrySize = 9;
 
             for (int i = 0; i < ((dataOffset - 2) / headerEntrySize); i++)
             {
-                DaxHeaderEntry dhe = new DaxHeaderEntry();
+                var dhe = new DaxHeaderEntry();
                 dhe.id = fileA.ReadByte();
                 dhe.offset = fileA.ReadInt32();
                 dhe.rawSize = fileA.ReadInt16();

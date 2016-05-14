@@ -1,7 +1,7 @@
-using Classes;
+using GoldBox.Classes;
 using System.Collections.Generic;
 
-namespace engine
+namespace GoldBox.Engine
 {
     class ovr021
     {
@@ -58,7 +58,7 @@ namespace engine
                     {
                         gbl.affects_timed_out[player_count] = false;
 
-                        List<Affect> removeList = new List<Affect>();
+                        var removeList = new List<Affect>();
 
                         foreach (Affect affect in player.affects)
                         {
@@ -149,7 +149,7 @@ namespace engine
 
         internal static void step_game_time(int time_slot, int amount) /* sub_583FA */
         {
-            RestTime rest_time = new RestTime();
+            var rest_time = new RestTime();
 
             for (int i = 0; i <= 6; i++)
             {
@@ -430,7 +430,7 @@ namespace engine
                             }
                             else
                             {
-                                byte spellId = (byte)((int)item.getAffect(spellIdx) & 0x7F);
+                                var spellId = (byte)((int)item.getAffect(spellIdx) & 0x7F);
                                 player.LearnSpell((Spells)spellId);
                                 ovr023.remove_spell_from_scroll(spellId, item, player);
 

@@ -1,8 +1,8 @@
-using Classes;
+using GoldBox.Classes;
 using System.Collections.Generic;
 using System;
 
-namespace engine
+namespace GoldBox.Engine
 {
     class ovr027
     {
@@ -58,7 +58,7 @@ namespace engine
         /// </summary>
         internal static HighlightSet BuildInputKeys(string menuText, out int highlighCount)
         {
-            HighlightSet highlighSet = new HighlightSet();
+            var highlighSet = new HighlightSet();
 
             int index = 0;
 

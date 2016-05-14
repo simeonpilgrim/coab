@@ -1,7 +1,8 @@
-using Classes;
+using GoldBox.Classes;
+using GoldBox.Classes.DaxFiles;
 using System.Collections.Generic;
 
-namespace engine
+namespace GoldBox.Engine
 {
     class ovr011
     {
@@ -1105,7 +1106,7 @@ namespace engine
             int loop_var = 1;
             gbl.CombatantCount = 0;
 
-            List<Player> to_remove = new List<Player>();
+            var to_remove = new List<Player>();
             foreach (Player player in gbl.TeamList)
             {
                 seg043.clear_one_keypress();

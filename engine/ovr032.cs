@@ -1,8 +1,8 @@
-using Classes;
+using GoldBox.Classes;
 using System;
 using System.Collections.Generic;
 
-namespace engine
+namespace GoldBox.Engine
 {
     class ovr032
     {
@@ -91,8 +91,8 @@ namespace engine
 
         static MapReach canReachTargetCalc(Struct_1D1BC groundTilesMap, Point outPos, Point attacker) /* sub_733F1 */
         {
-            SteppingPath var_31 = new SteppingPath();
-            SteppingPath var_19 = new SteppingPath();
+            var var_31 = new SteppingPath();
+            var var_19 = new SteppingPath();
 
             int max_range = (256 * 2) + 1;
             var_19.attacker = attacker;
@@ -241,8 +241,8 @@ namespace engine
 
                     bool found = false;
                     int found_range = max_range;
-                    Point found_target = new Point();
-                    Point found_attacker = new Point();
+                    var found_target = new Point();
+                    var found_attacker = new Point();
 
                     foreach (var targetPos in targetMap)
                     {

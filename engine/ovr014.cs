@@ -1,7 +1,7 @@
-using Classes;
-using Classes.Combat;
+using GoldBox.Classes;
+using GoldBox.Classes.Combat;
 
-namespace engine
+namespace GoldBox.Engine
 {
     class ovr014
     {
@@ -1163,7 +1163,7 @@ namespace engine
 
         internal static bool target(QuickFight quick_fight, int spellId)
         {
-            Struct_1D183 var_C = new Struct_1D183();
+            var var_C = new Struct_1D183();
 
             bool castSpell = true;
             gbl.spellTargets.Clear();
@@ -1401,7 +1401,7 @@ namespace engine
 
             if (spell_id > 0)
             {
-                sbyte delay = (sbyte)(gbl.spellCastingTable[spell_id].castingDelay / 3);
+                var delay = (sbyte)(gbl.spellCastingTable[spell_id].castingDelay / 3);
 
                 if (delay == 0)
                 {
@@ -2152,7 +2152,7 @@ namespace engine
             int next_prev_step = 0;
             int target_step = 0;
 
-            Point attackerPos = new Point();
+            var attackerPos = new Point();
 
             target = step_combat_list(true, next_prev_step, ref list_index, ref attackerPos, sorted_list);
 
@@ -2440,7 +2440,7 @@ namespace engine
 
         internal static void sub_425C6(Effect add_remove, object param, Player player)
         {
-            Affect affect = (Affect)param;
+            var affect = (Affect)param;
 
             gbl.spell_target = gbl.player_array[affect.affect_data];
 
@@ -2481,7 +2481,7 @@ namespace engine
 
         internal static void AffectOwlbearHugRoundAttack(Effect arg_0, object param, Player player) // sub_426FC
         {
-            Affect affect = (Affect)param;
+            var affect = (Affect)param;
 
             gbl.spell_target = gbl.player_array[affect.affect_data];
 

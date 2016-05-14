@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace Classes
+namespace GoldBox.Classes
 {
 
 
@@ -23,7 +21,7 @@ namespace Classes
         /// steps to counted in 2's, so that diagional steps can be 3 (thus 1.5)
         /// </summary>
         public int steps;
-        int direction;
+        private readonly int direction;
 
         public override string ToString()
         {

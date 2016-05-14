@@ -1,6 +1,4 @@
-using System;
-
-namespace Classes
+namespace GoldBox.Classes
 {
     /// <summary>
     /// Summary description for Set.
@@ -41,7 +39,6 @@ namespace Classes
             }
 
             DumpSet();
-            int z = 0;
         }
 
         public Set(params int[] toset)

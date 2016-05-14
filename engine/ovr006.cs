@@ -1,7 +1,7 @@
-using Classes;
+using GoldBox.Classes;
 using System.Collections.Generic;
 
-namespace engine
+namespace GoldBox.Engine
 {
     class ovr006
     {
@@ -255,7 +255,7 @@ namespace engine
 
                 if (gbl.party_killed == false)
                 {
-                    List<Player> to_remove = new List<Player>();
+                    var to_remove = new List<Player>();
 
                     foreach (Player player in gbl.TeamList)
                     {
@@ -325,7 +325,7 @@ namespace engine
                 }
                 else
                 {
-                    List<Player> to_remove = new List<Player>();
+                    var to_remove = new List<Player>();
                     foreach (Player player in gbl.TeamList)
                     {
                         if (player.actions != null &&
@@ -677,7 +677,7 @@ namespace engine
         {
             gbl.area2_ptr.field_590 = 0;
 
-            Dictionary<Player, bool> to_remove = new Dictionary<Player, bool>();
+            var to_remove = new Dictionary<Player, bool>();
             foreach (Player player in gbl.TeamList)
             {
                 bool check = (player.actions != null && player.actions.nonTeamMember == true);

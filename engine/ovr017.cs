@@ -1,21 +1,20 @@
-using Classes;
+using GoldBox.Classes;
 using System.Collections.Generic;
-using Logging;
+using GoldBox.Logging;
 using System.IO;
-using System;
 
-namespace engine
+namespace GoldBox.Engine
 {
     class ovr017
     {
         static void BuildLoadablePlayersLists(ref List<MenuItem> fileNames, ref List<MenuItem> displayNames,
             short playerFileSize, int npcOffset, int nameOffset, string fileFilter) // sub_4708B
         {
-            Classes.File file = new Classes.File();
+            var file = new Classes.File();
 
             byte[] data = new byte[16];
 
-            foreach (string filePath in Directory.GetFiles(Config.GetSavePath(), fileFilter))
+            foreach (string filePath in Directory.GetFiles(Config.SavePath, fileFilter))
             {
                 FileStream stream = System.IO.File.Open(filePath, FileMode.Open, FileAccess.Read);
 
@@ -89,7 +88,7 @@ namespace engine
 
             Player player = gbl.SelectedPlayer;
 
-            char[] sizeToken = new char[] { '\0', 'S', 'T' };
+            var sizeToken = new char[] { '\0', 'S', 'T' };
 
             ovr034.chead_cbody_comspr_icon(11, player.head_icon, "CHEAD" + sizeToken[player.icon_size].ToString());
             ovr034.chead_cbody_comspr_icon(player.icon_id, player.weapon_icon, "CBODY" + sizeToken[player.icon_size].ToString());
@@ -124,7 +123,7 @@ namespace engine
 
         internal static void remove_player_file(Player player)
         {
-            string full_path = Path.Combine(Config.GetSavePath(), seg042.clean_string(player.name));
+            string full_path = Path.Combine(Config.SavePath, seg042.clean_string(player.name));
 
             seg042.delete_file(full_path + ".guy");
             seg042.delete_file(full_path + ".swg");
@@ -134,7 +133,7 @@ namespace engine
         internal static void SavePlayer(string arg_0, Player player) // sub_47DFC
         {
             char input_key;
-            Classes.File file = new Classes.File();
+            var file = new Classes.File();
 
             gbl.import_from = ImportSource.Curse;
 
@@ -156,7 +155,7 @@ namespace engine
 
             while (input_key == 'N' &&
                 arg_0.Length == 0 &&
-                seg042.file_find(Path.Combine(Config.GetSavePath(), file_text) + ext_text) == true)
+                seg042.file_find(Path.Combine(Config.SavePath, file_text) + ext_text) == true)
             {
                 input_key = ovr027.yes_no(gbl.alertMenuColors, "Overwrite " + file_text + "? ");
 
@@ -171,7 +170,7 @@ namespace engine
                 }
             }
 
-            string filePath = Path.Combine(Config.GetSavePath(), file_text);
+            string filePath = Path.Combine(Config.SavePath, file_text);
 
             file.Assign(filePath + ext_text);
 
@@ -212,7 +211,7 @@ namespace engine
         {
             byte[] data = new byte[0x10];
 
-            foreach (string filename in Directory.GetFiles(Config.GetSavePath(), "*" + fileExt))
+            foreach (string filename in Directory.GetFiles(Config.SavePath, "*" + fileExt))
             {
                 FileStream stream = System.IO.File.Open(filename, FileMode.Open, FileAccess.Read);
 
@@ -234,14 +233,14 @@ namespace engine
         internal static Player ConvertPoolRadPlayer(PoolRadPlayer bp_var_1C0)
         {
             /* nested function, arg_0 is BP */
-            Player player = new Player();
+            var player = new Player();
 
             player.race = (Race)bp_var_1C0.race;
             player.sex = bp_var_1C0.sex;
 
             player.name = bp_var_1C0.name;
 
-            int race = (int)player.race;
+            var race = (int)player.race;
             int sex = player.sex;
 
             player.stats2.Str.Load(bp_var_1C0.stat_str);
@@ -487,7 +486,7 @@ namespace engine
         {
             Classes.File file;
 
-            seg042.find_and_open_file(out file, false, Path.Combine(Config.GetSavePath(), arg_8));
+            seg042.find_and_open_file(out file, false, Path.Combine(Config.SavePath, arg_8));
 
             seg041.displayString("Loading...Please Wait", 0, 10, 0x18, 0);
 
@@ -507,7 +506,7 @@ namespace engine
                 seg051.BlockRead(PoolRadPlayer.StructSize, data, file);
                 seg051.Close(file);
 
-                PoolRadPlayer poolRadPlayer = new PoolRadPlayer(data);
+                var poolRadPlayer = new PoolRadPlayer(data);
 
                 player = ConvertPoolRadPlayer(poolRadPlayer);
             }
@@ -517,7 +516,7 @@ namespace engine
                 seg051.BlockRead(HillsFarPlayer.StructSize, data, file);
                 seg051.Close(file);
 
-                HillsFarPlayer var_1C4 = new HillsFarPlayer(data);
+                var var_1C4 = new HillsFarPlayer(data);
 
                 player = ConvertHillsFarPlayer(var_1C4, arg_8);
 
@@ -533,7 +532,7 @@ namespace engine
                 arg_8 = seg042.clean_string(player.name);
             }
 
-            string filename = Path.Combine(Config.GetSavePath(), arg_8 + ".swg");
+            string filename = Path.Combine(Config.SavePath, arg_8 + ".swg");
             if (seg042.file_find(filename) == true)
             {
                 byte[] data = new byte[Item.StructSize];
@@ -555,7 +554,7 @@ namespace engine
                 seg051.Close(file);
             }
 
-            filename = Path.Combine(Config.GetSavePath(), arg_8 + ".fx");
+            filename = Path.Combine(Config.SavePath, arg_8 + ".fx");
             if (seg042.file_find(filename) == true)
             {
                 byte[] data = new byte[Affect.StructSize];
@@ -565,7 +564,7 @@ namespace engine
                 {
                     if (seg051.BlockRead(Affect.StructSize, data, file) == Affect.StructSize)
                     {
-                        Affect tmp_affect = new Affect(data, 0);
+                        var tmp_affect = new Affect(data, 0);
 
                         player.affects.Add(new Affect(data, 0));
                     }
@@ -578,7 +577,7 @@ namespace engine
                 seg051.Close(file);
             }
 
-            filename = Path.Combine(Config.GetSavePath(), arg_8 + ".spc");
+            filename = Path.Combine(Config.SavePath, arg_8 + ".spc");
             if (gbl.import_from == ImportSource.Pool)
             {
                 if (seg042.file_find(filename) == true)
@@ -592,7 +591,7 @@ namespace engine
                         {
                             if (asc_49280.MemberOf(data[0]) == true)
                             {
-                                Affect tmpAffect = new Affect(data, 0);
+                                var tmpAffect = new Affect(data, 0);
                                 player.affects.Add(tmpAffect);
                             }
                         }
@@ -615,7 +614,7 @@ namespace engine
 
         private static Player ConvertHillsFarPlayer(HillsFarPlayer hf_player, string arg_8)
         {
-            Player player = new Player();
+            var player = new Player();
             Classes.File file;
 
             player.items = new List<Item>();
@@ -626,7 +625,7 @@ namespace engine
 
             if (PlayerFileExists(fileExt, hf_player.name) == true)
             {
-                string savename = Path.Combine(Config.GetSavePath(), Path.ChangeExtension(arg_8, fileExt));
+                string savename = Path.Combine(Config.SavePath, Path.ChangeExtension(arg_8, fileExt));
 
                 seg042.find_and_open_file(out file, false, savename);
 
@@ -644,7 +643,7 @@ namespace engine
 
                 if (hf_player.field_1D > 0)
                 {
-                    Item newItem = new Item(0, Affects.helpless, (Affects)hf_player.field_1D,
+                    var newItem = new Item(0, Affects.helpless, (Affects)hf_player.field_1D,
                         (short)(hf_player.field_1D * 200), 0, 0,
                         false, 0, false, 0, 0, 0x57, 0xa7, 0xa8, ItemType.Necklace, true);
 
@@ -653,7 +652,7 @@ namespace engine
 
                 if (hf_player.field_23 > 0)
                 {
-                    Item newItem = new Item(0, Affects.poison_plus_4, (Affects)hf_player.field_23,
+                    var newItem = new Item(0, Affects.poison_plus_4, (Affects)hf_player.field_23,
                         (short)(hf_player.field_23 * 0x15E), 0, 1,
                         false, 0, false, 0, 1, 0x45, 0xa7, 0xce, ItemType.WandB, true);
 
@@ -662,7 +661,7 @@ namespace engine
 
                 if (hf_player.field_86 > 0)
                 {
-                    Item newItem = new Item(0, Affects.helpless, (Affects)hf_player.field_86,
+                    var newItem = new Item(0, Affects.helpless, (Affects)hf_player.field_86,
                         (short)(hf_player.field_86 * 0xc8), 0, 0,
                         false, 0, false, 0, 0, 0x42, 0xa7, 0xa8, ItemType.RingInvis, true);
 
@@ -671,7 +670,7 @@ namespace engine
 
                 if (hf_player.field_87 > 0)
                 {
-                    Item newItem = new Item(0, Affects.highConRegen, (Affects)hf_player.field_87,
+                    var newItem = new Item(0, Affects.highConRegen, (Affects)hf_player.field_87,
                         (short)(hf_player.field_87 * 0x190), 0, (short)(hf_player.field_87 * 10),
                         false, 0, false, 0, 0, 0x40, 0xa7, 0xb9, ItemType.Necklace, true);
 
@@ -686,14 +685,14 @@ namespace engine
                 {
                     byte[] data = new byte[PoolRadPlayer.StructSize];
 
-                    string savename = System.IO.Path.Combine(Config.GetSavePath(), Path.ChangeExtension(arg_8, fileExt));
+                    string savename = System.IO.Path.Combine(Config.SavePath, Path.ChangeExtension(arg_8, fileExt));
 
                     seg042.find_and_open_file(out file, false, savename);
 
                     seg051.BlockRead(PoolRadPlayer.StructSize, data, file);
                     seg051.Close(file);
 
-                    PoolRadPlayer poolRadPlayer = new PoolRadPlayer(data);
+                    var poolRadPlayer = new PoolRadPlayer(data);
 
                     player = ConvertPoolRadPlayer(poolRadPlayer);
 
@@ -842,7 +841,7 @@ namespace engine
                 }
             }
 
-            Player player = new Player(data, 0);
+            var player = new Player(data, 0);
 
             seg042.load_decode_dax(out data, out decode_size, monster_id, "MON" + area_text + "SPC.dax");
 
@@ -852,7 +851,7 @@ namespace engine
 
                 do
                 {
-                    Affect affect = new Affect(data, offset);
+                    var affect = new Affect(data, offset);
                     player.affects.Add(affect);
 
                     offset += 9;
@@ -934,7 +933,7 @@ namespace engine
 
             for (char save_letter = 'A'; save_letter <= 'J'; save_letter++)
             {
-                string file_name = Path.Combine(Config.GetSavePath(), "savgam" + save_letter.ToString() + ".dat");
+                string file_name = Path.Combine(Config.SavePath, "savgam" + save_letter.ToString() + ".dat");
 
                 if (seg042.file_find(file_name) == true)
                 {
@@ -959,14 +958,14 @@ namespace engine
                     if (save_game_keys.MemberOf(input_key) == true)
                     {
                         save_letter = input_key;
-                        string file_name = Path.Combine(Config.GetSavePath(), "savgam" + save_letter.ToString() + ".dat");
+                        string file_name = Path.Combine(Config.SavePath, "savgam" + save_letter.ToString() + ".dat");
                         stop_loop = seg042.file_find(file_name);
                     }
                 } while (stop_loop == false);
 
                 if (save_letter != '\0')
                 {
-                    string file_name = Path.Combine(Config.GetSavePath(), "savgam" + save_letter.ToString() + ".dat");
+                    string file_name = Path.Combine(Config.SavePath, "savgam" + save_letter.ToString() + ".dat");
 
                     loadSaveGame(file_name);
                 }
@@ -1038,9 +1037,9 @@ namespace engine
             {
                 string var_1F6 = seg042.clean_string(var_148[index]);
 
-                if (seg042.file_find(Path.Combine(Config.GetSavePath(), var_1F6 + ".sav")) == true)
+                if (seg042.file_find(Path.Combine(Config.SavePath, var_1F6 + ".sav")) == true)
                 {
-                    Player player = new Player();
+                    var player = new Player();
 
                     import_char01(ref player, var_1F6 + ".sav");
                     AssignPlayerIconId(player);
@@ -1109,7 +1108,7 @@ namespace engine
         internal static void SaveGame()
         {
             char inputKey;
-            Classes.File save_file = new Classes.File();
+            var save_file = new Classes.File();
             string[] var_171 = new string[9];
 
             do
@@ -1126,7 +1125,7 @@ namespace engine
 
                 do
                 {
-                    save_file.Assign(Path.Combine(Config.GetSavePath(), "savgam" + inputKey + ".dat"));
+                    save_file.Assign(Path.Combine(Config.SavePath, "savgam" + inputKey + ".dat"));
                     seg051.Rewrite(save_file);
                     var_1FC = gbl.FIND_result;
 

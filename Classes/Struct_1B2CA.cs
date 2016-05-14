@@ -1,8 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Classes
+namespace GoldBox.Classes
 {
     // 0x400
     public class Struct_1B2CA

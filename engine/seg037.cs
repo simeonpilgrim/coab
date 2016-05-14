@@ -1,6 +1,6 @@
-using Classes;
+using GoldBox.Classes;
 
-namespace engine
+namespace GoldBox.Engine
 {
     class seg037
     {
@@ -195,7 +195,7 @@ namespace engine
 
         internal static void draw8x8_clear_area(TextRegion region)
         {
-            int r = (int)region;
+            var r = (int)region;
             draw8x8_clear_area(seg041.bounds[r, 0], seg041.bounds[r, 1], seg041.bounds[r, 2], seg041.bounds[r, 3]);
         }
 

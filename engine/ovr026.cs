@@ -1,7 +1,7 @@
-using Classes;
+using GoldBox.Classes;
 using System.Collections.Generic;
 
-namespace engine
+namespace GoldBox.Engine
 {
     class ovr026
     {
@@ -600,7 +600,7 @@ namespace engine
 
         internal static void DuelClass(Player player)
         {
-            List<MenuItem> list = new List<MenuItem>();
+            var list = new List<MenuItem>();
 
             list.Add(new MenuItem("Pick New Class", true));
 

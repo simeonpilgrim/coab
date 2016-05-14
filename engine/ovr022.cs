@@ -1,7 +1,7 @@
-using Classes;
+using GoldBox.Classes;
 using System.Collections.Generic;
 
-namespace engine
+namespace GoldBox.Engine
 {
     class ovr022
     {
@@ -351,7 +351,7 @@ namespace engine
 		{
 			bool noMoneyLeft;
 
-			List<MenuItem> money = new List<MenuItem>();
+			var money = new List<MenuItem>();
 
 			seg037.DrawFrame_Outer();
 
@@ -445,7 +445,7 @@ namespace engine
             byte var_5 = 0; /* Simeon */
             int var_4 = -1;
 
-            Item item = new Item(0, 0, 0, 0, 0, 0, false, 6, false, 0, 0, 0, 0, 0, item_type, false);
+            var item = new Item(0, 0, 0, 0, 0, 0, false, 6, false, 0, 0, 0, 0, 0, item_type, false);
 
             var type = item.type;
 
@@ -965,7 +965,7 @@ namespace engine
 
                             if (input_key == 'K' && must_sell == false)
                             {
-                                Item gem_item = new Item(0, 0, 0, value, 0, 1, false, 0, false, 0, 0, 0x65, 0, 0, ItemType.Necklace, true);
+                                var gem_item = new Item(0, 0, 0, value, 0, 1, false, 0, false, 0, 0, 0x65, 0, 0, ItemType.Necklace, true);
 
                                 gbl.SelectedPlayer.items.Add(gem_item);
                             }
@@ -1037,7 +1037,7 @@ namespace engine
 
                             if (input_key == 'K' && must_sell == false)
                             {
-                                Item jewel_item = new Item(0, 0, 0, value, 0, 1, false, 0, false, 0, 0, 0xd6, 0, 0, ItemType.Necklace, true);
+                                var jewel_item = new Item(0, 0, 0, value, 0, 1, false, 0, false, 0, 0, 0xd6, 0, 0, ItemType.Necklace, true);
 
                                 gbl.SelectedPlayer.items.Add(jewel_item);
                             }

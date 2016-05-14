@@ -1,8 +1,8 @@
-using Classes;
-using Logging;
+using GoldBox.Classes;
+using GoldBox.Logging;
 using System.Collections.Generic;
 
-namespace engine
+namespace GoldBox.Engine
 {
     class ovr008
     {
@@ -288,7 +288,7 @@ namespace engine
 
         internal static uint deflateChar(char ch)
         {
-            uint output = (uint)ch;
+            var output = (uint)ch;
 
             if (output >= 0x40)
             {
@@ -1130,8 +1130,8 @@ namespace engine
 
         internal static string buildMenuStrings(ref string MenuString)
         {
-            System.Text.StringBuilder sbA = new System.Text.StringBuilder();
-            System.Text.StringBuilder sbB = new System.Text.StringBuilder();
+            var sbA = new System.Text.StringBuilder();
+            var sbB = new System.Text.StringBuilder();
 
             bool mFlag = false;
 

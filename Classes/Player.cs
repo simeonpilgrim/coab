@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 
 
-namespace Classes
+namespace GoldBox.Classes
 {
     public struct StatValue : IDataIO
     {
@@ -748,7 +748,7 @@ namespace Classes
 
         public Player ShallowClone()
         {
-            Player p = (Player)this.MemberwiseClone();
+            var p = (Player)this.MemberwiseClone();
             p.stats2.Assign(this.stats2);
             return p;
         }

@@ -1,11 +1,9 @@
 using System;
 using System.IO;
-using System.Text;
 
-
-namespace Logging
+namespace GoldBox.Logging
 {
-    public class Logger
+    public static class Logger
     {
         static string logPath;
         static DebugWriter debug;
@@ -30,13 +28,13 @@ namespace Logging
 
         static public void Log(string fmt, params object[] args)
         {
-            System.Console.WriteLine(fmt, args);
+            Console.WriteLine(fmt, args);
             debug.WriteLine(fmt, args);
         }
 
         static public void LogAndExit(string fmt, params object[] args)
         {
-            System.Console.WriteLine(fmt, args);
+            Console.WriteLine(fmt, args);
             debug.WriteLine(fmt, args);
             ExitFuncCallback();
         }
@@ -48,70 +46,14 @@ namespace Logging
 
         static public void Debug(string fmt, params object[] args)
         {
-            System.Console.WriteLine(fmt, args);
+            Console.WriteLine(fmt, args);
             debug.WriteLine(fmt, args);
         }
 
         static public void DebugWrite(string fmt, params object[] args)
         {
-            System.Console.Write(fmt, args);
+            Console.Write(fmt, args);
             debug.Write(fmt, args);
         }
-    }
-
-    public class DebugWriter
-    {
-        string filename;
-        System.IO.TextWriter writer;
-        object iolock = new object();
-
-        public DebugWriter(string _filename)
-        {
-            filename = _filename;
-        }
-
-        public void WriteLine(string fmt, params object[] args)
-        {
-            lock (iolock)
-            {
-                if (writer == null)
-                {
-                    writer = new System.IO.StreamWriter(filename, true);
-                }
-
-                if (writer != null)
-                {
-                    writer.WriteLine(fmt, args);
-                }
-            }
-        }
-
-        public void Write(string fmt, params object[] args)
-        {
-            lock (iolock)
-            {
-                if (writer == null)
-                {
-                    writer = new System.IO.StreamWriter(filename, true);
-                }
-
-                if (writer != null)
-                {
-                    writer.Write(fmt, args);
-                }
-            }
-        }
-
-        public void Close()
-        {
-            lock (iolock)
-            {
-                if (writer != null)
-                {
-                    writer.Close();
-                }
-            }
-        }
-
     }
 }

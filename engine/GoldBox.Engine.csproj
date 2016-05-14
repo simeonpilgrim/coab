@@ -4,14 +4,14 @@
     <ProjectType>Local</ProjectType>
     <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{6FA9069E-3549-4352-ACBA-73BB0406C0B1}</ProjectGuid>
+    <ProjectGuid>{361087AE-2FD8-4BEF-8218-05A553ED7A49}</ProjectGuid>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ApplicationIcon>
     </ApplicationIcon>
     <AssemblyKeyContainerName>
     </AssemblyKeyContainerName>
-    <AssemblyName>classes</AssemblyName>
+    <AssemblyName>GoldBox.Engine</AssemblyName>
     <AssemblyOriginatorKeyFile>
     </AssemblyOriginatorKeyFile>
     <DefaultClientScript>JScript</DefaultClientScript>
@@ -19,7 +19,7 @@
     <DefaultTargetSchema>IE50</DefaultTargetSchema>
     <DelaySign>false</DelaySign>
     <OutputType>Library</OutputType>
-    <RootNamespace>Classes</RootNamespace>
+    <RootNamespace>GoldBox.Engine</RootNamespace>
     <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
     <StartupObject>
     </StartupObject>
@@ -102,94 +102,155 @@
     <Reference Include="System.Data">
       <Name>System.Data</Name>
     </Reference>
-    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml">
       <Name>System.XML</Name>
     </Reference>
+    <ProjectReference Include="..\Classes\GoldBox.Classes.csproj">
+      <Name>GoldBox.Classes</Name>
+      <Project>{6FA9069E-3549-4352-ACBA-73BB0406C0B1}</Project>
+      <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
+    </ProjectReference>
+    <ProjectReference Include="..\Logging\GoldBox.Logging.csproj">
+      <Project>{BEC15EB8-3A21-49FF-ABC0-7465927E80B8}</Project>
+      <Name>GoldBox.Logging</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Action.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Affect.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Area1.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Area2.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Cheats.cs" />
-    <Compile Include="ClassStatsMin.cs" />
-    <Compile Include="Combat.cs" />
-    <Compile Include="Combat\CombatantMap.cs" />
-    <Compile Include="Combat\CombatIcon.cs" />
-    <Compile Include="Combat\CombatPlayerIndex.cs" />
-    <Compile Include="DataIO.cs" />
-    <Compile Include="DaxFiles\DaxArray.cs" />
-    <Compile Include="DaxFiles\DaxBlock.cs">
+    <Compile Include="VmOpp.cs" />
+    <Compile Include="ovr002.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="DaxFiles\DaxCache.cs" />
-    <Compile Include="DaxFiles\DaxFileCache.cs" />
-    <Compile Include="DaxFiles\DaxHeaderEntry.cs" />
-    <Compile Include="Display.cs" />
-    <Compile Include="EclBlock.cs">
+    <Compile Include="ovr003.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Enums.cs" />
-    <Compile Include="File.cs">
+    <Compile Include="ovr004.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="GasCloud.cs" />
-    <Compile Include="Gbl.cs">
+    <Compile Include="ovr005.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="GeoBlock.cs" />
-    <Compile Include="HillsFarPlayer.cs" />
-    <Compile Include="Item.cs">
+    <Compile Include="ovr006.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ItemData.cs" />
-    <Compile Include="ItemLibrary.cs" />
-    <Compile Include="Limits.cs" />
-    <Compile Include="MenuItem.cs" />
-    <Compile Include="MoneySet.cs" />
-    <Compile Include="Opperation.cs" />
-    <Compile Include="Player.cs">
+    <Compile Include="ovr007.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="PoolRadPlayer.cs" />
-    <Compile Include="RestTime.cs" />
-    <Compile Include="Set.cs">
+    <Compile Include="ovr008.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="SpellList.cs" />
-    <Compile Include="Spells.cs" />
-    <Compile Include="SteppingPath.cs" />
-    <Compile Include="Struct_189B4.cs">
+    <Compile Include="ovr009.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Struct_1A35E.cs" />
-    <Compile Include="Struct_1ADF6.cs" />
-    <Compile Include="Struct_1B2CA.cs" />
-    <Compile Include="Struct_1D183.cs">
+    <Compile Include="ovr010.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Struct_1D1BC.cs">
+    <Compile Include="ovr011.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Sys.cs" />
+    <Compile Include="ovr013.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ovr014.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ovr015.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ovr016.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ovr017.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ovr018.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ovr019.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ovr020.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ovr021.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ovr022.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ovr023.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ovr024.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ovr025.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ovr026.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ovr027.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ovr028.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ovr029.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ovr030.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ovr031.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ovr032.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ovr033.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ovr034.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ovr038.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="seg001.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="seg037.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="seg040.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="seg041.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="seg042.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="seg043.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="seg044.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="seg049.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="seg051.cs">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Logging\Logging.csproj">
-      <Project>{BEC15EB8-3A21-49FF-ABC0-7465927E80B8}</Project>
-      <Name>Logging</Name>
-    </ProjectReference>
+    <Content Include="..\coab_new.lst">
+      <Link>coab_new.lst</Link>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

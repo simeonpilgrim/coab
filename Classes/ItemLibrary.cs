@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Runtime.Serialization;
 
-namespace Classes
+namespace GoldBox.Classes
 {
     public class ItemLibrary
     {
@@ -31,7 +30,7 @@ namespace Classes
         {
             if (System.IO.File.Exists(libraryFile))
             {
-                FileStream fs = new FileStream(libraryFile, FileMode.Open);
+                var fs = new FileStream(libraryFile, FileMode.Open);
 
                 if (fs.Length == 0)
                 {
@@ -40,12 +39,12 @@ namespace Classes
                 }
 
                 // Construct a BinaryFormatter and use it to serialize the data to the stream.
-                BinaryFormatter formatter = new BinaryFormatter();
+                var formatter = new BinaryFormatter();
                 try
                 {
                     library = (List<Item>)formatter.Deserialize(fs);
                 }
-                catch (SerializationException e)
+                catch (SerializationException)
                 {
                     //Console.WriteLine("Failed to deserialize. Reason: " + e.Message);
                     throw;
@@ -60,15 +59,15 @@ namespace Classes
         public static void Write()
         {
             Directory.CreateDirectory(libraryPath);
-            FileStream fs = new FileStream(libraryFile, FileMode.Create);
+            var fs = new FileStream(libraryFile, FileMode.Create);
 
             // Construct a BinaryFormatter and use it to serialize the data to the stream.
-            BinaryFormatter formatter = new BinaryFormatter();
+            var formatter = new BinaryFormatter();
             try
             {
                 formatter.Serialize(fs, library);
             }
-            catch (SerializationException e)
+            catch (SerializationException)
             {
                 //Console.WriteLine("Failed to serialize. Reason: " + e.Message);
                 throw;

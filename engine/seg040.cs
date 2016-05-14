@@ -1,6 +1,7 @@
-using Classes;
+using GoldBox.Classes;
+using GoldBox.Classes.DaxFiles;
 
-namespace engine
+namespace GoldBox.Engine
 {
     class seg040
     {

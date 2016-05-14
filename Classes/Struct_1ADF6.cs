@@ -1,8 +1,6 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace Classes
+namespace GoldBox.Classes
 {
     public class Struct_1ADF6
     {

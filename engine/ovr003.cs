@@ -1,8 +1,8 @@
-using Classes;
-using Logging;
+using GoldBox.Classes;
+using GoldBox.Logging;
 using System.Collections.Generic;
 
-namespace engine
+namespace GoldBox.Engine
 {
     class ovr003
     {
@@ -133,7 +133,7 @@ namespace engine
         {
             ovr008.vm_LoadCmdSets(2);
 
-            byte rand_max = (byte)ovr008.vm_GetCmdValue(1);
+            var rand_max = (byte)ovr008.vm_GetCmdValue(1);
 
             if (rand_max < 0xff)
             {
@@ -216,9 +216,9 @@ namespace engine
         {
             ovr008.vm_LoadCmdSets(3);
 
-            byte sprite_id = (byte)ovr008.vm_GetCmdValue(1);
-            byte max_distance = (byte)ovr008.vm_GetCmdValue(2);
-            byte pic_id = (byte)ovr008.vm_GetCmdValue(3);
+            var sprite_id = (byte)ovr008.vm_GetCmdValue(1);
+            var max_distance = (byte)ovr008.vm_GetCmdValue(2);
+            var pic_id = (byte)ovr008.vm_GetCmdValue(3);
 
             VmLog.WriteLine("CMD_SetupMonster: sprite id: {0} area2_ptr.field_580: {1} pic id: {2}", sprite_id, max_distance, pic_id);
 
@@ -312,7 +312,7 @@ namespace engine
         internal static void CMD_Picture() /* sub_26873 */
         {
             ovr008.vm_LoadCmdSets(1);
-            byte blockId = (byte)ovr008.vm_GetCmdValue(1);
+            var blockId = (byte)ovr008.vm_GetCmdValue(1);
 
             if (blockId != 0xff)
             {
@@ -481,7 +481,7 @@ namespace engine
         {
             ovr008.vm_LoadCmdSets(1);
 
-            byte block_id = (byte)ovr008.vm_GetCmdValue(1);
+            var block_id = (byte)ovr008.vm_GetCmdValue(1);
 
             VmLog.WriteLine("CMD_NewECL: block_id {0}", block_id);
 
@@ -504,9 +504,9 @@ namespace engine
 
             gbl.byte_1AB0B = true;
 
-            byte var_3 = (byte)ovr008.vm_GetCmdValue(1);
-            byte var_2 = (byte)ovr008.vm_GetCmdValue(2);
-            byte var_1 = (byte)ovr008.vm_GetCmdValue(3);
+            var var_3 = (byte)ovr008.vm_GetCmdValue(1);
+            var var_2 = (byte)ovr008.vm_GetCmdValue(2);
+            var var_1 = (byte)ovr008.vm_GetCmdValue(3);
 
             VmLog.WriteLine("CMD_LoadFile: {0} A: {1} B: {2} C: {3}",
                 gbl.command == 0x21 ? "Files" : "Pieces", var_1, var_2, var_3);
@@ -637,11 +637,11 @@ namespace engine
             ovr008.vm_LoadCmdSets(3);
 
             ushort var_2 = gbl.cmd_opps[1].Word;
-            byte var_9 = (byte)ovr008.vm_GetCmdValue(2);
+            var var_9 = (byte)ovr008.vm_GetCmdValue(2);
 
             ushort result_loc = gbl.cmd_opps[3].Word;
 
-            ushort var_6 = (ushort)(var_9 + var_2);
+            var var_6 = (ushort)(var_9 + var_2);
 
             ushort var_8 = ovr008.vm_GetMemoryValue(var_6);
             ovr008.vm_SetMemoryValue(var_8, result_loc);
@@ -670,11 +670,11 @@ namespace engine
 
             string delay_text = gbl.unk_1D972[1];
 
-            byte menuCount = (byte)ovr008.vm_GetCmdValue(3);
+            var menuCount = (byte)ovr008.vm_GetCmdValue(3);
             gbl.ecl_offset--;
             ovr008.vm_LoadCmdSets(menuCount);
 
-            List<MenuItem> menuList = new List<MenuItem>();
+            var menuList = new List<MenuItem>();
 
             gbl.textXCol = 1;
             gbl.textYCol = 0x11;
@@ -703,7 +703,7 @@ namespace engine
             ovr008.vm_LoadCmdSets(2);
 
             ushort loc = gbl.cmd_opps[1].Word;
-            byte string_count = (byte)ovr008.vm_GetCmdValue(2);
+            var string_count = (byte)ovr008.vm_GetCmdValue(2);
 
             gbl.ecl_offset--;
 
@@ -745,7 +745,7 @@ namespace engine
 
             text += "~" + gbl.unk_1D972[string_count];
 
-            byte menu_selected = (byte)ovr008.sub_317AA(useOverlay, var_3B, colors, text, "");
+            var menu_selected = (byte)ovr008.sub_317AA(useOverlay, var_3B, colors, text, "");
 
             ovr008.vm_SetMemoryValue(menu_selected, loc);
 
@@ -835,7 +835,7 @@ namespace engine
                 var_2 = ovr008.vm_GetCmdValue(1);
             }
 
-            Affects affect_id = (Affects)ovr008.vm_GetCmdValue(2);
+            var affect_id = (Affects)ovr008.vm_GetCmdValue(2);
 
             var loc_a = gbl.cmd_opps[3].Word;
             var loc_b = gbl.cmd_opps[4].Word;
@@ -936,13 +936,13 @@ namespace engine
             ovr008.vm_LoadCmdSets(4);
             byte val_a = 0;
 
-            byte var_8 = (byte)ovr008.vm_GetCmdValue(1);
-            byte var_7 = (byte)ovr008.vm_GetCmdValue(2);
-            byte var_6 = (byte)ovr008.vm_GetCmdValue(3);
-            byte var_5 = (byte)ovr008.vm_GetCmdValue(4);
+            var var_8 = (byte)ovr008.vm_GetCmdValue(1);
+            var var_7 = (byte)ovr008.vm_GetCmdValue(2);
+            var var_6 = (byte)ovr008.vm_GetCmdValue(3);
+            var var_5 = (byte)ovr008.vm_GetCmdValue(4);
 
-            byte var_9 = (byte)((var_5 + 2) - var_8);
-            byte var_A = (byte)((var_7 + 2) - var_6);
+            var var_9 = (byte)((var_5 + 2) - var_8);
+            var var_A = (byte)((var_7 + 2) - var_6);
 
             byte var_1 = ovr024.roll_dice(6, 1);
             byte var_2 = ovr024.roll_dice(6, 1);
@@ -1032,8 +1032,8 @@ namespace engine
         internal static void CMD_OnGotoGoSub() /* sub_27AE5 */
         {
             ovr008.vm_LoadCmdSets(2);
-            byte var_1 = (byte)ovr008.vm_GetCmdValue(1);
-            byte var_2 = (byte)ovr008.vm_GetCmdValue(2);
+            var var_1 = (byte)ovr008.vm_GetCmdValue(1);
+            var var_2 = (byte)ovr008.vm_GetCmdValue(2);
             gbl.ecl_offset--;
             ovr008.vm_LoadCmdSets(var_2);
 
@@ -1078,7 +1078,7 @@ namespace engine
                 gbl.pooled_money.SetCoins(coin, ovr008.vm_GetCmdValue(coin + 1));
             }
 
-            byte block_id = (byte)ovr008.vm_GetCmdValue(8);
+            var block_id = (byte)ovr008.vm_GetCmdValue(8);
 
             if (block_id < 0x80)
             {
@@ -1202,8 +1202,8 @@ namespace engine
         internal static void CMD_Rob() /* sub_27F76*/
         {
             ovr008.vm_LoadCmdSets(3);
-            byte allParty = (byte)ovr008.vm_GetCmdValue(1);
-            byte var_2 = (byte)ovr008.vm_GetCmdValue(2);
+            var allParty = (byte)ovr008.vm_GetCmdValue(1);
+            var var_2 = (byte)ovr008.vm_GetCmdValue(2);
 
             double percentage = (100 - var_2) / 100.0;
             int robChance = (byte)ovr008.vm_GetCmdValue(3);
@@ -1561,7 +1561,7 @@ namespace engine
         {
             ovr008.vm_LoadCmdSets(1);
 
-            ItemType item_type = (ItemType)ovr008.vm_GetCmdValue(1);
+            var item_type = (ItemType)ovr008.vm_GetCmdValue(1);
 
             for (int i = 0; i < 6; i++)
             {
@@ -1597,11 +1597,11 @@ namespace engine
             Player currentPlayerBackup = gbl.SelectedPlayer;
 
             ovr008.vm_LoadCmdSets(5);
-            byte var_1 = (byte)ovr008.vm_GetCmdValue(1);
+            var var_1 = (byte)ovr008.vm_GetCmdValue(1);
             int dice_count = ovr008.vm_GetCmdValue(2);
             int dice_size = ovr008.vm_GetCmdValue(3);
             int dam_plus = ovr008.vm_GetCmdValue(4);
-            byte var_6 = (byte)ovr008.vm_GetCmdValue(5);
+            var var_6 = (byte)ovr008.vm_GetCmdValue(5);
 
             int damage = ovr024.roll_dice(dice_size, dice_count) + dam_plus;
 
@@ -1773,7 +1773,7 @@ namespace engine
 
             ovr017.load_npc(npc_id);
 
-            byte morale = (byte)ovr008.vm_GetCmdValue(2);
+            var morale = (byte)ovr008.vm_GetCmdValue(2);
 
             gbl.SelectedPlayer.control_morale = (byte)((morale >> 1) + Control.NPC_Base);
 
@@ -1786,7 +1786,7 @@ namespace engine
         {
             ovr008.vm_LoadCmdSets(3);
 
-            byte spell_id = (byte)ovr008.vm_GetCmdValue(1);
+            var spell_id = (byte)ovr008.vm_GetCmdValue(1);
             ushort loc_a = gbl.cmd_opps[2].Word;
             ushort loc_b = gbl.cmd_opps[3].Word;
 
@@ -1834,7 +1834,7 @@ namespace engine
             ovr008.vm_LoadCmdSets(1);
 
             ushort var_2 = gbl.cmd_opps[1].Word;
-            ushort var_4 = (ushort)(var_2 - 0x7fff);
+            var var_4 = (ushort)(var_2 - 0x7fff);
 
             VmLog.WriteLine("CMD_Call: {0:X}", var_4);
 
@@ -1929,7 +1929,7 @@ namespace engine
         internal static void CMD_Program() //YourHaveWon
         {
             ovr008.vm_LoadCmdSets(1);
-            byte var_1 = (byte)ovr008.vm_GetCmdValue(1);
+            var var_1 = (byte)ovr008.vm_GetCmdValue(1);
 
             if (gbl.restore_player_ptr == true)
             {
@@ -2026,7 +2026,7 @@ namespace engine
             }
 
             ovr008.vm_LoadCmdSets(1);
-            Affects affect_type = (Affects)ovr008.vm_GetCmdValue(1);
+            var affect_type = (Affects)ovr008.vm_GetCmdValue(1);
 
             if (gbl.SelectedPlayer.HasAffect(affect_type) == true)
             {
@@ -2042,7 +2042,7 @@ namespace engine
         internal static void CMD_DestroyItems() // sub_292F9
         {
             ovr008.vm_LoadCmdSets(1);
-            ItemType item_type = (ItemType)ovr008.vm_GetCmdValue(1);
+            var item_type = (ItemType)ovr008.vm_GetCmdValue(1);
 
             VmLog.WriteLine("CMD_DestroyItems: type: {0}", item_type);
 

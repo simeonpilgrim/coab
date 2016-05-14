@@ -1,7 +1,7 @@
-using Classes;
+using GoldBox.Classes;
 using System.Collections.Generic;
 
-namespace engine
+namespace GoldBox.Engine
 {
     internal enum SpellLoc
     {
@@ -1228,7 +1228,7 @@ namespace engine
                         displayMoney();
                         gbl.tradeWith = dest;
 
-                        List<MenuItem> list = new List<MenuItem>();
+                        var list = new List<MenuItem>();
 
                         for (int coin = 0; coin <= 6; coin++)
                         {
@@ -1279,7 +1279,7 @@ namespace engine
             do
             {
                 displayMoney();
-                List<MenuItem> menuList = new List<MenuItem>();
+                var menuList = new List<MenuItem>();
 
                 for (int coin = 0; coin < 7; coin++)
                 {

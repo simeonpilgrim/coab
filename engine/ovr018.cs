@@ -1,9 +1,9 @@
-using Classes;
+using GoldBox.Classes;
 using System.Collections.Generic;
 using System;
-using Classes.Combat;
+using GoldBox.Classes.Combat;
 
-namespace engine
+namespace GoldBox.Engine
 {
     class ovr018
     {
@@ -334,7 +334,7 @@ namespace engine
             int index;
             MenuItem selected;
 
-            Player player = new Player();
+            var player = new Player();
 
             for (int i = 0; i < 6; i++)
             {
@@ -349,7 +349,7 @@ namespace engine
             player.mod_id = (byte)seg051.Random(256);
             player.icon_id = 0x0A;
 
-            List<MenuItem> var_C = new List<MenuItem>();
+            var var_C = new List<MenuItem>();
             var_C.Add(new MenuItem("Pick Race", true));
 
             var_C.Add(new MenuItem("  " + ovr020.raceString[1]));
@@ -627,7 +627,7 @@ namespace engine
             }
             else
             {
-                int race = (int)player.race;
+                var race = (int)player.race;
 
                 switch (player._class)
                 {
@@ -682,7 +682,7 @@ namespace engine
                     player.stats2.Cha.full = Math.Max(player.stats2.Cha.full, ovr024.roll_dice(6, 3) + 1);
                 }
 
-                int race = (int)player.race;
+                var race = (int)player.race;
                 int sex = player.sex;
 
                 for (var_1B = 0; var_1B < 6; var_1B++)
@@ -1014,7 +1014,7 @@ namespace engine
 
             ovr020.playerDisplayFull(gbl.SelectedPlayer);
 
-            PlayerStats stats_bkup = new PlayerStats();
+            var stats_bkup = new PlayerStats();
             stats_bkup.Assign(gbl.SelectedPlayer.stats2);
 
             byte orig_hp_max = gbl.SelectedPlayer.hit_point_max;
@@ -1104,7 +1104,7 @@ namespace engine
                             if (edited_stat < 6)
                             {
                                 int stat_var = edited_stat;
-                                int race = (int)player.race;
+                                var race = (int)player.race;
                                 int sex = player.sex;
 
 								player.stats2.Dec(stat_var);
@@ -1194,7 +1194,7 @@ namespace engine
                             if (edited_stat < 6)
                             {
                                 int stat_var = edited_stat;
-                                int race = (int)player.race;
+                                var race = (int)player.race;
                                 int sex = player.sex;
 
                                 player.stats2.Inc(stat_var);
@@ -1476,7 +1476,7 @@ namespace engine
                     {
                         ovr027.ClearPromptArea();
 
-                        Player new_player = new Player();
+                        var new_player = new Player();
 
                         MenuItem var_10 = ovr027.getStringListEntry(strList, strList_index);
 
@@ -1660,7 +1660,7 @@ namespace engine
                 player = gbl.SelectedPlayer;
 
                 var_8 = 1;
-                System.Array.Copy(player.icon_colours, bkup_colours, 6);
+                Array.Copy(player.icon_colours, bkup_colours, 6);
 
                 byte bkup_icon_id = player.icon_id;
                 player.icon_id = 0x0C;
@@ -1907,8 +1907,8 @@ namespace engine
                                 }
                                 else if (var_1A == 3)
                                 {
-                                    byte low_color = (byte)(player.icon_colours[color_index] & 0x0F);
-                                    byte high_color = (byte)((player.icon_colours[color_index] & 0xF0) >> 4);
+                                    var low_color = (byte)(player.icon_colours[color_index] & 0x0F);
+                                    var high_color = (byte)((player.icon_colours[color_index] & 0xF0) >> 4);
 
                                     if (inputKey == 'N')
                                     {
@@ -1938,13 +1938,13 @@ namespace engine
                                     }
                                     else if (inputKey == 'K')
                                     {
-                                        System.Array.Copy(player.icon_colours, bkup_colours, 6);
+                                        Array.Copy(player.icon_colours, bkup_colours, 6);
                                         var_8 = var_1A;
                                         inputKey = ' ';
                                     }
                                     else if (inputKey == 'E' || inputKey == '\0')
                                     {
-                                        System.Array.Copy(bkup_colours, player.icon_colours, 6);
+                                        Array.Copy(bkup_colours, player.icon_colours, 6);
                                         var_8 = var_1A;
                                         inputKey = ' ';
                                     }
@@ -1961,7 +1961,7 @@ namespace engine
                 player.weapon_icon = weaponIcon;
                 player.icon_size = bkup_size;
 
-                System.Array.Copy(bkup_colours, player.icon_colours, 6);
+                Array.Copy(bkup_colours, player.icon_colours, 6);
 
                 duplicateCombatIcon(true, 12, player.icon_id);
                 duplicateCombatIcon(false, player.icon_id, 12);

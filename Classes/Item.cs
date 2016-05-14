@@ -1,6 +1,6 @@
 using System;
 
-namespace Classes
+namespace GoldBox.Classes
 {
     /// <summary>
     /// Summary description for Item.
@@ -146,7 +146,7 @@ namespace Classes
 
         public Item ShallowClone()
         {
-            Item i = (Item)this.MemberwiseClone();
+            var i = (Item)this.MemberwiseClone();
             return i;
         }
 
@@ -304,7 +304,7 @@ namespace Classes
 
         public override bool Equals(object obj)
         {
-            Item rhs = obj as Item;
+            var rhs = obj as Item;
             return rhs != null &&
                 rhs.type == type &&
                 rhs.namenum1 == namenum1 &&

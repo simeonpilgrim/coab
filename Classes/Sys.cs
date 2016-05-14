@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Classes
+namespace GoldBox.Classes
 {
     public class Sys
     {
@@ -18,19 +18,19 @@ namespace Classes
 
         public static uint ArrayToUint(byte[] data, int offset)
         {
-            uint i = (uint)(data[offset + 0] + (data[offset + 1] << 8) + (data[offset + 2] << 16) + (data[offset + 3] << 24));
+            var i = (uint)(data[offset + 0] + (data[offset + 1] << 8) + (data[offset + 2] << 16) + (data[offset + 3] << 24));
             return i;
         }
 
         public static short ArrayToShort(byte[] data, int offset)
         {
-            short i = (short)(data[offset + 0] + (data[offset + 1] << 8));
+            var i = (short)(data[offset + 0] + (data[offset + 1] << 8));
             return i;
         }
 
         public static ushort ArrayToUshort(byte[] data, int offset)
         {
-            ushort i = (ushort)(data[offset + 0] + (data[offset + 1] << 8));
+            var i = (ushort)(data[offset + 0] + (data[offset + 1] << 8));
             return i;
         }
 
@@ -48,11 +48,11 @@ namespace Classes
             int len = data[offset];
             len = Math.Min(len, maxLen);
 
-            StringBuilder sb = new StringBuilder(len);
+            var sb = new StringBuilder(len);
 
             for (int i = 1; i <= len; i++)
             {
-                char c = (char)data[i + offset];
+                var c = (char)data[i + offset];
                 if (c > 0)
                 {
                     sb.Append(c);
@@ -85,7 +85,7 @@ namespace Classes
         {
             length = Math.Min(data[offset], length);
 
-            StringBuilder sb = new StringBuilder(length);
+            var sb = new StringBuilder(length);
             for (int i = 1; i < length; i++)
             {
                 char c = data[i + offset];
@@ -104,7 +104,7 @@ namespace Classes
         /// <returns></returns>
         public static string[] ArrayToStrings(byte[] data, int offset, int length, int stringWidth)
         {
-            List<string> strs = new List<string>();
+            var strs = new List<string>();
 
             for (int i = 0; i < length; i += stringWidth)
             {

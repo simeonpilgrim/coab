@@ -1,8 +1,6 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace Classes
+namespace GoldBox.Classes
 {
     public delegate ushort VmGetMemoryValue(ushort loc);
 

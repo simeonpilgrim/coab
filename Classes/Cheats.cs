@@ -1,10 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Classes
+namespace GoldBox.Classes
 {
-    public class Cheats
+    public static class Cheats
     {
         public static bool allow_player_modify = true;
         public static void AllowPlayerModifySet(bool value)
@@ -12,52 +8,52 @@ namespace Classes
             allow_player_modify = value;
         }
 
-        public static bool always_show_areamap = false;
+        public static bool always_show_areamap;
         public static void AlwayShowAreaMapSet(bool value)
         {
             always_show_areamap = value;
         }
 
-        public static bool allow_gods_intervene = false;
+        public static bool allow_gods_intervene;
         public static void AllowGodsInterveneSet(bool value)
         {
             allow_gods_intervene = value;
         }
 
-        public static bool allow_keyboard_exit = false;
+        public static bool allow_keyboard_exit;
 
 
-        public static bool display_full_item_names = false;
+        public static bool display_full_item_names;
         public static void DisplayFullItemNamesSet(bool value)
         {
             display_full_item_names = value;
         }
 
-        public static bool free_training = false;
+        public static bool free_training;
         public static void FreeTrainingSet(bool value)
         {
             free_training = value;
         }
 
-        public static bool improved_area_map = false;
+        public static bool improved_area_map;
         public static void ImprovedAreaMapSet(bool value)
         {
             improved_area_map = value;
         }
 
-        public static bool no_race_level_limits = false;
+        public static bool no_race_level_limits;
         public static void NoRaceLevelLimits(bool value)
         {
             no_race_level_limits = value;
         }
 
-        public static bool no_race_class_restrictions = false;
+        public static bool no_race_class_restrictions;
         public static void NoRaceClassRestrictions(bool value)
         {
             no_race_class_restrictions = value;
         }
 
-        public static bool player_always_saves = false;
+        public static bool player_always_saves;
         public static void PlayerAlwaysSavesSet(bool value)
         {
             player_always_saves = value;
@@ -69,19 +65,19 @@ namespace Classes
             skip_copy_protection = value;
         }
 
-        public static bool skip_title_screen = false;
+        public static bool skip_title_screen;
         public static void SkipTitleScreenSet(bool value)
         {
             skip_title_screen = value;
         }
 
-        public static bool view_item_stats = false;
+        public static bool view_item_stats;
         public static void ViewItemStatsSet(bool value)
         {
             view_item_stats = value;
         }
 
-        public static bool sort_treasure = false;
+        public static bool sort_treasure;
         public static void SortTreasureSet(bool value)
         {
             sort_treasure = value;

@@ -1,13 +1,13 @@
-using Classes;
-using System.Collections.Generic;
+using GoldBox.Classes;
+using GoldBox.Logging;
 
-namespace engine
+namespace GoldBox.Engine
 {
     class seg042
     {
         static void debug_display(string text)
         {
-            Logging.Logger.Log(text);
+            Logger.Log(text);
             seg043.GetInputKey();
         }
 
@@ -92,8 +92,8 @@ namespace engine
 
             try
             {
-                System.IO.FileStream fsA = new System.IO.FileStream(file_name, System.IO.FileMode.Open, System.IO.FileAccess.Read, System.IO.FileShare.Read);
-                System.IO.FileStream fsB = new System.IO.FileStream(file_name, System.IO.FileMode.Open, System.IO.FileAccess.Read, System.IO.FileShare.Read);
+                var fsA = new System.IO.FileStream(file_name, System.IO.FileMode.Open, System.IO.FileAccess.Read, System.IO.FileShare.Read);
+                var fsB = new System.IO.FileStream(file_name, System.IO.FileMode.Open, System.IO.FileAccess.Read, System.IO.FileShare.Read);
 
                 fileA = new System.IO.BinaryReader(fsA);
                 fileB = new System.IO.BinaryReader(fsB);

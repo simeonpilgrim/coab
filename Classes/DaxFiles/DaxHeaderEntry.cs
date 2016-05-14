@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Classes.DaxFiles
+﻿namespace GoldBox.Classes.DaxFiles
 {
     class DaxHeaderEntry
     {

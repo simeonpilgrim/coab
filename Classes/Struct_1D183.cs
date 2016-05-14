@@ -1,6 +1,4 @@
-using System;
-
-namespace Classes
+namespace GoldBox.Classes
 {
     public class Struct_1D183
     {

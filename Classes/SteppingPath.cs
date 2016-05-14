@@ -1,5 +1,5 @@
 using System;
-namespace Classes
+namespace GoldBox.Classes
 {
     public class SteppingPath
     {

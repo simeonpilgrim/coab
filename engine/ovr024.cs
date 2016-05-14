@@ -1,7 +1,7 @@
-using Classes;
+using GoldBox.Classes;
 using System.Collections.Generic;
 
-namespace engine
+namespace GoldBox.Engine
 {
     internal enum CheckType
     {
@@ -592,7 +592,7 @@ namespace engine
                 roll_total += seg051.Random(dice_size) + 1;
             }
 
-            byte byte_total = (byte)roll_total;
+            var byte_total = (byte)roll_total;
 
             return byte_total;
         }
@@ -608,7 +608,7 @@ namespace engine
 
         internal static void add_affect(bool call_spell_jump_list, int data, ushort minutes, Affects type, Player player)
         {
-            Affect affect = new Affect(type, minutes, (byte)data, call_spell_jump_list);
+            var affect = new Affect(type, minutes, (byte)data, call_spell_jump_list);
 
             player.affects.Add(affect);
             //TODO simplify this funcation.
