@@ -134,7 +134,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="DaxFiles\DaxCache.cs" />
-    <Compile Include="DaxFiles\DaxFileCache.cs" />
+    <Compile Include="DaxFiles\DaxFile.cs" />
     <Compile Include="DaxFiles\DaxHeaderEntry.cs" />
     <Compile Include="Display.cs" />
     <Compile Include="EclBlock.cs">
@@ -164,6 +164,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="PoolRadPlayer.cs" />
+    <Compile Include="ReadOnlyFileStream.cs" />
     <Compile Include="RestTime.cs" />
     <Compile Include="Set.cs">
       <SubType>Code</SubType>
@@ -186,7 +187,7 @@
     <Compile Include="Sys.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Logging\GoldBox.Logging.csproj">
+    <ProjectReference Include="..\GoldBox.Logging\GoldBox.Logging.csproj">
       <Project>{BEC15EB8-3A21-49FF-ABC0-7465927E80B8}</Project>
       <Name>GoldBox.Logging</Name>
     </ProjectReference>

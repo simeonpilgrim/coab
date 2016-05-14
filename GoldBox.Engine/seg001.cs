@@ -34,14 +34,7 @@ namespace GoldBox.Engine
 
         public static void PROGRAM()
         {
-            /* Memory Init - Start */
-            gbl.CombatMap = new CombatantMap[gbl.MaxCombatantCount + 1]; /* God damm 1-n arrays */
-            for (int i = 0; i <= gbl.MaxCombatantCount; i++)
-            {
-                gbl.CombatMap[i] = new CombatantMap();
-            }
-            /* Memory Init - End */
-
+            InitializeAllCombatantMaps();
             ovr003.SetupCommandTable();
 
             InitFirst();
@@ -178,6 +171,15 @@ namespace GoldBox.Engine
             }
         }
 
+        private static void InitializeAllCombatantMaps()
+        {
+            gbl.CombatMap = new CombatantMap[gbl.MaxCombatantCount + 1]; /* God damm 1-n arrays */
+            for (int i = 0; i <= gbl.MaxCombatantCount; i++)
+            {
+                gbl.CombatMap[i] = new CombatantMap();
+            }
+        }
+
         static void InitFirst() /* sub_39054 */
         {
             seg051.Randomize();
@@ -307,7 +309,7 @@ namespace GoldBox.Engine
             ovr027.ClearPromptArea();
             seg041.displayString("Loading...Please Wait", 0, 10, 0x18, 0);
 
-            ovr038.Load8x8D(4, 0xca);
+            ovr038.Load8x8D(4, 0xca); //load symbolset 4
             ovr038.Load8x8D(0, 0xcb);
 
             for (gbl.byte_1AD44 = 0; gbl.byte_1AD44 <= 0x0b; gbl.byte_1AD44++)

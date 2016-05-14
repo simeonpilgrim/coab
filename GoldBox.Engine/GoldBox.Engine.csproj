@@ -105,12 +105,12 @@
     <Reference Include="System.Xml">
       <Name>System.XML</Name>
     </Reference>
-    <ProjectReference Include="..\Classes\GoldBox.Classes.csproj">
+    <ProjectReference Include="..\GoldBox.Classes\GoldBox.Classes.csproj">
       <Name>GoldBox.Classes</Name>
       <Project>{6FA9069E-3549-4352-ACBA-73BB0406C0B1}</Project>
       <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
     </ProjectReference>
-    <ProjectReference Include="..\Logging\GoldBox.Logging.csproj">
+    <ProjectReference Include="..\GoldBox.Logging\GoldBox.Logging.csproj">
       <Project>{BEC15EB8-3A21-49FF-ABC0-7465927E80B8}</Project>
       <Name>GoldBox.Logging</Name>
     </ProjectReference>
@@ -251,6 +251,9 @@
     <Content Include="..\coab_new.lst">
       <Link>coab_new.lst</Link>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Graphics\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

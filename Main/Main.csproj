@@ -52,6 +52,9 @@
     <PlatformTarget>x86</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -70,6 +73,13 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="sounds\death.wav" />
+    <EmbeddedResource Include="sounds\hit.wav" />
+    <EmbeddedResource Include="sounds\magic.wav" />
+    <EmbeddedResource Include="sounds\miss.wav" />
+    <EmbeddedResource Include="sounds\missle.wav" />
+    <EmbeddedResource Include="sounds\start_sound.wav" />
+    <EmbeddedResource Include="sounds\step.wav" />
     <EmbeddedResource Include="MainForm.resx">
       <SubType>Designer</SubType>
       <DependentUpon>MainForm.cs</DependentUpon>
@@ -84,6 +94,354 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Content Include="..\Data\8X8D1.DAX">
+      <Link>Data\8X8D1.DAX</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\Data\8X8D2.DAX">
+      <Link>Data\8X8D2.DAX</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\Data\8X8D3.DAX">
+      <Link>Data\8X8D3.DAX</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\Data\8X8D4.DAX">
+      <Link>Data\8X8D4.DAX</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\Data\8X8D5.DAX">
+      <Link>Data\8X8D5.DAX</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\Data\8X8D6.DAX">
+      <Link>Data\8X8D6.DAX</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\Data\BIGPIC1.DAX">
+      <Link>Data\BIGPIC1.DAX</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\Data\BIGPIC2.DAX">
+      <Link>Data\BIGPIC2.DAX</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\Data\BIGPIC6.DAX">
+      <Link>Data\BIGPIC6.DAX</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\Data\BODY2.DAX">
+      <Link>Data\BODY2.DAX</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\Data\BODY3.DAX">
+      <Link>Data\BODY3.DAX</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\Data\BODY4.DAX">
+      <Link>Data\BODY4.DAX</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\Data\BODY5.DAX">
+      <Link>Data\BODY5.DAX</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\Data\BODY6.DAX">
+      <Link>Data\BODY6.DAX</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\Data\CBODY.DAX">
+      <Link>Data\CBODY.DAX</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\Data\CHEAD.DAX">
+      <Link>Data\CHEAD.DAX</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\Data\COMSPR.DAX">
+      <Link>Data\COMSPR.DAX</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\Data\CPIC1.DAX">
+      <Link>Data\CPIC1.DAX</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\Data\CPIC2.DAX">
+      <Link>Data\CPIC2.DAX</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\Data\CPIC3.DAX">
+      <Link>Data\CPIC3.DAX</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\Data\CPIC4.DAX">
+      <Link>Data\CPIC4.DAX</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\Data\CPIC5.DAX">
+      <Link>Data\CPIC5.DAX</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\Data\CPIC6.DAX">
+      <Link>Data\CPIC6.DAX</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\Data\DUNGCOM.DAX">
+      <Link>Data\DUNGCOM.DAX</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\Data\ECL1.DAX">
+      <Link>Data\ECL1.DAX</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\Data\ECL2.DAX">
+      <Link>Data\ECL2.DAX</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\Data\ECL3.DAX">
+      <Link>Data\ECL3.DAX</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\Data\ECL4.DAX">
+      <Link>Data\ECL4.DAX</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\Data\ECL5.DAX">
+      <Link>Data\ECL5.DAX</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\Data\ECL6.DAX">
+      <Link>Data\ECL6.DAX</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\Data\GEO2.DAX">
+      <Link>Data\GEO2.DAX</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\Data\GEO3.DAX">
+      <Link>Data\GEO3.DAX</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\Data\GEO4.DAX">
+      <Link>Data\GEO4.DAX</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\Data\GEO5.DAX">
+      <Link>Data\GEO5.DAX</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\Data\GEO6.DAX">
+      <Link>Data\GEO6.DAX</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\Data\HEAD2.DAX">
+      <Link>Data\HEAD2.DAX</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\Data\HEAD3.DAX">
+      <Link>Data\HEAD3.DAX</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\Data\HEAD4.DAX">
+      <Link>Data\HEAD4.DAX</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\Data\HEAD5.DAX">
+      <Link>Data\HEAD5.DAX</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\Data\HEAD6.DAX">
+      <Link>Data\HEAD6.DAX</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\Data\ITEM1.DAX">
+      <Link>Data\ITEM1.DAX</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\Data\ITEM2.DAX">
+      <Link>Data\ITEM2.DAX</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\Data\ITEM3.DAX">
+      <Link>Data\ITEM3.DAX</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\Data\ITEM4.DAX">
+      <Link>Data\ITEM4.DAX</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\Data\ITEM5.DAX">
+      <Link>Data\ITEM5.DAX</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\Data\ITEM6.DAX">
+      <Link>Data\ITEM6.DAX</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\Data\ITEMS">
+      <Link>Data\ITEMS</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\Data\MON1CHA.DAX">
+      <Link>Data\MON1CHA.DAX</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\Data\MON1ITM.DAX">
+      <Link>Data\MON1ITM.DAX</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\Data\MON1SPC.DAX">
+      <Link>Data\MON1SPC.DAX</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\Data\MON2CHA.DAX">
+      <Link>Data\MON2CHA.DAX</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\Data\MON2ITM.DAX">
+      <Link>Data\MON2ITM.DAX</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\Data\MON2SPC.DAX">
+      <Link>Data\MON2SPC.DAX</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\Data\MON3CHA.DAX">
+      <Link>Data\MON3CHA.DAX</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\Data\MON3ITM.DAX">
+      <Link>Data\MON3ITM.DAX</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\Data\MON3SPC.DAX">
+      <Link>Data\MON3SPC.DAX</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\Data\MON4CHA.DAX">
+      <Link>Data\MON4CHA.DAX</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\Data\MON4ITM.DAX">
+      <Link>Data\MON4ITM.DAX</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\Data\MON4SPC.DAX">
+      <Link>Data\MON4SPC.DAX</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\Data\MON5CHA.DAX">
+      <Link>Data\MON5CHA.DAX</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\Data\MON5ITM.DAX">
+      <Link>Data\MON5ITM.DAX</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\Data\MON5SPC.DAX">
+      <Link>Data\MON5SPC.DAX</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\Data\MON6CHA.DAX">
+      <Link>Data\MON6CHA.DAX</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\Data\MON6ITM.DAX">
+      <Link>Data\MON6ITM.DAX</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\Data\MON6SPC.DAX">
+      <Link>Data\MON6SPC.DAX</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\Data\PIC1.DAX">
+      <Link>Data\PIC1.DAX</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\Data\PIC2.DAX">
+      <Link>Data\PIC2.DAX</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\Data\PIC3.DAX">
+      <Link>Data\PIC3.DAX</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\Data\PIC4.DAX">
+      <Link>Data\PIC4.DAX</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\Data\PIC5.DAX">
+      <Link>Data\PIC5.DAX</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\Data\PIC6.DAX">
+      <Link>Data\PIC6.DAX</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\Data\RANDCOM.DAX">
+      <Link>Data\RANDCOM.DAX</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\Data\SKY.DAX">
+      <Link>Data\SKY.DAX</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\Data\SPRIT1.DAX">
+      <Link>Data\SPRIT1.DAX</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\Data\SPRIT2.DAX">
+      <Link>Data\SPRIT2.DAX</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\Data\SPRIT3.DAX">
+      <Link>Data\SPRIT3.DAX</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\Data\SPRIT4.DAX">
+      <Link>Data\SPRIT4.DAX</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\Data\SPRIT5.DAX">
+      <Link>Data\SPRIT5.DAX</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\Data\SPRIT6.DAX">
+      <Link>Data\SPRIT6.DAX</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\Data\TILES.DAX">
+      <Link>Data\TILES.DAX</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\Data\TITLE.DAX">
+      <Link>Data\TITLE.DAX</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\Data\WALLDEF2.DAX">
+      <Link>Data\WALLDEF2.DAX</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\Data\WALLDEF3.DAX">
+      <Link>Data\WALLDEF3.DAX</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\Data\WALLDEF4.DAX">
+      <Link>Data\WALLDEF4.DAX</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\Data\WALLDEF5.DAX">
+      <Link>Data\WALLDEF5.DAX</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\Data\WALLDEF6.DAX">
+      <Link>Data\WALLDEF6.DAX</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\Data\WILDCOM.DAX">
+      <Link>Data\WILDCOM.DAX</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <None Include="app.config">
       <SubType>Designer</SubType>
     </None>
@@ -103,15 +461,15 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Classes\GoldBox.Classes.csproj">
+    <ProjectReference Include="..\GoldBox.Classes\GoldBox.Classes.csproj">
       <Project>{6FA9069E-3549-4352-ACBA-73BB0406C0B1}</Project>
       <Name>GoldBox.Classes</Name>
     </ProjectReference>
-    <ProjectReference Include="..\engine\GoldBox.Engine.csproj">
+    <ProjectReference Include="..\GoldBox.Engine\GoldBox.Engine.csproj">
       <Project>{361087AE-2FD8-4BEF-8218-05A553ED7A49}</Project>
       <Name>GoldBox.Engine</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Logging\GoldBox.Logging.csproj">
+    <ProjectReference Include="..\GoldBox.Logging\GoldBox.Logging.csproj">
       <Project>{BEC15EB8-3A21-49FF-ABC0-7465927E80B8}</Project>
       <Name>GoldBox.Logging</Name>
     </ProjectReference>
@@ -124,14 +482,14 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="sounds\magic_hit.wav" />
+    <EmbeddedResource Include="sounds\magic_hit.wav" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="sounds\sound_10.wav" />
+    <EmbeddedResource Include="sounds\sound_10.wav" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Main.exe.manifest" />
-    <None Include="sounds\sound_5.wav" />
+    <EmbeddedResource Include="sounds\sound_5.wav" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Curse.ico" />

@@ -41,21 +41,18 @@ namespace GoldBox.Classes
 
         public ItemDataTable(string fileName)
         {
-            string filePath = Path.Combine(gbl.exe_path, fileName);
-
-            FileStream stream = System.IO.File.Open(filePath, FileMode.Open, FileAccess.Read);
-
-            stream.Seek(2, SeekOrigin.Begin);
-            byte[] data = new byte[0x810];
-            stream.Read(data, 0, 0x810);
-
-            table = new ItemData[0x81];
-            for (int i = 0; i < 0x81; i++)
+            using (var stream = new ReadOnlyFileStream(fileName))
             {
-                table[i] = new ItemData(data, i * 0x10);
-            }
+                stream.Seek(2, SeekOrigin.Begin);
+                byte[] data = new byte[0x810];
+                stream.Read(data, 0, 0x810);
 
-            stream.Close();
+                table = new ItemData[0x81];
+                for (int i = 0; i < 0x81; i++)
+                {
+                    table[i] = new ItemData(data, i * 0x10);
+                }
+            }
         }
 
         public ItemData this[ItemType index]

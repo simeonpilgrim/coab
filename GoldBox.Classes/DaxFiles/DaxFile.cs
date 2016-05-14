@@ -1,12 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
 
 namespace GoldBox.Classes.DaxFiles
 {
-    class DaxFileCache
+    class DaxFile
     {
         Dictionary<int, byte[]> entries;
 
-        internal DaxFileCache(string filename)
+        internal DaxFile(string filename)
         {
             entries = new Dictionary<int, byte[]>();
 
@@ -15,58 +17,41 @@ namespace GoldBox.Classes.DaxFiles
 
         private void LoadFile(string filename)
         {
-            int dataOffset = 0;
-
-            if (System.IO.File.Exists(filename) == false)
+            using (var fileStream = new ReadOnlyFileStream(filename))
+            using (var fileA = new BinaryReader(fileStream.BaseStream))
             {
-                return;
+                int dataOffset = fileA.ReadInt16() + 2;
+
+                var headers = new List<DaxHeaderEntry>();
+
+                const int headerEntrySize = 9;
+
+                for (int i = 0; i < ((dataOffset - 2) / headerEntrySize); i++)
+                {
+                    var dhe = new DaxHeaderEntry();
+                    dhe.id = fileA.ReadByte();
+                    dhe.offset = fileA.ReadInt32();
+                    dhe.rawSize = fileA.ReadInt16();
+                    dhe.compSize = fileA.ReadUInt16();
+
+                    headers.Add(dhe);
+                }
+
+                foreach (DaxHeaderEntry dhe in headers)
+                {
+                    byte[] comp = new byte[dhe.compSize];
+                    byte[] raw = new byte[dhe.rawSize];
+
+                    fileA.BaseStream.Seek(dataOffset + dhe.offset, SeekOrigin.Begin);
+
+                    comp = fileA.ReadBytes(dhe.compSize);
+
+                    Decode(dhe.rawSize, dhe.compSize, raw, comp);
+
+                    entries.Add(dhe.id, raw);
+                }
+
             }
-
-            System.IO.BinaryReader fileA;
-
-            try
-            {
-                var fsA = new System.IO.FileStream(filename, System.IO.FileMode.Open, System.IO.FileAccess.Read, System.IO.FileShare.Read);
-
-                fileA = new System.IO.BinaryReader(fsA);
-            }
-            catch (System.ApplicationException)
-            {
-                return;
-            }
-
-            dataOffset = fileA.ReadInt16() + 2;
-
-            var headers = new List<DaxHeaderEntry>();
-
-            const int headerEntrySize = 9;
-
-            for (int i = 0; i < ((dataOffset - 2) / headerEntrySize); i++)
-            {
-                var dhe = new DaxHeaderEntry();
-                dhe.id = fileA.ReadByte();
-                dhe.offset = fileA.ReadInt32();
-                dhe.rawSize = fileA.ReadInt16();
-                dhe.compSize = fileA.ReadUInt16();
-
-                headers.Add(dhe);
-            }
-
-            foreach (DaxHeaderEntry dhe in headers)
-            {
-                byte[] comp = new byte[dhe.compSize];
-                byte[] raw = new byte[dhe.rawSize];
-
-                fileA.BaseStream.Seek(dataOffset + dhe.offset, System.IO.SeekOrigin.Begin);
-
-                comp = fileA.ReadBytes(dhe.compSize);
-
-                Decode(dhe.rawSize, dhe.compSize, raw, comp);
-
-                entries.Add(dhe.id, raw);
-            }
-
-            fileA.Close();
         }
 
         void Decode(int decodeSize, int dataLength, byte[] output_ptr, byte[] input_ptr)
