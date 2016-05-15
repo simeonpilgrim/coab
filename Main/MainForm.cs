@@ -5,11 +5,14 @@ using System.Windows.Forms;
 using Main.Properties;
 using GoldBox.Engine;
 using GoldBox.Classes;
+using GoldBox.Engine.Utilities;
 
 namespace Main
 {
     public partial class MainForm : Form
     {
+        private static readonly GameAreaMonsterWriter _gameAreaMonsterWriter = new GameAreaMonsterWriter();
+
         public MainForm()
         {
             setSettings();
@@ -45,7 +48,7 @@ namespace Main
 
         private void commandDebugToolStripMenuItem_CheckedChanged(object sender, EventArgs e)
         {
-            seg043.ToggleCommandDebugging();
+            DebuggingUtilities.ToggleCommandDebugging();
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -55,12 +58,12 @@ namespace Main
 
         private void dumpPlayerAffectsToolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            seg043.DumpPlayerAffects();
+            DebuggingUtilities.DumpPlayerAffects();
         }
 
         private void commandDebuggingToolStripMenuItem_CheckedChanged(object sender, EventArgs e)
         {
-            seg043.ToggleCommandDebugging();
+            DebuggingUtilities.ToggleCommandDebugging();
         }
 
         string Picture_Prefix = "Curse - ";
@@ -215,12 +218,11 @@ namespace Main
 
         private void dumpMonstersToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            seg043.DumpMonsters();
+            _gameAreaMonsterWriter.DumpMonsters();
         }
 
         private void dumpTreasureItemsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            seg043.DumpTreasureItems();
         }
 
         private void soundOnToolStripMenuItem_Click(object sender, EventArgs e)

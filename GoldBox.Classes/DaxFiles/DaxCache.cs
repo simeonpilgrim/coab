@@ -6,6 +6,12 @@ namespace GoldBox.Classes.DaxFiles
     {
         static Dictionary<string, DaxFile> fileCache = new Dictionary<string, DaxFile>();
 
+        /// <summary>
+        /// Tries loading a block from Dax file. Might return null
+        /// </summary>
+        /// <param name="file_name">the Dax file to read the block from</param>
+        /// <param name="block_id">the id of the block</param>
+        /// <returns>the block of data from the dax file or null if it can't be found</returns>
         public static byte[] LoadDax(string file_name, int block_id)
         {
             DaxFile dfc;

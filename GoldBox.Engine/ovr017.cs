@@ -7,10 +7,13 @@ namespace GoldBox.Engine
 {
     class ovr017
     {
+        private static readonly FileManager _fileManager = new FileManager();
+        private static readonly CleanEightCharString _stringCleaner = new CleanEightCharString();
+
         static void BuildLoadablePlayersLists(ref List<MenuItem> fileNames, ref List<MenuItem> displayNames,
             short playerFileSize, int npcOffset, int nameOffset, string fileFilter) // sub_4708B
         {
-            var file = new Classes.File();
+            var file = new Classes.OpenOrCreateFile();
 
             byte[] data = new byte[16];
 
@@ -58,7 +61,17 @@ namespace GoldBox.Engine
 
         static int[] PlayerNameOffset = { 0, 0, 4 };
         static int[] NpcFileOffset = { 0xf7, 0x84, 0x13 };
-
+        static Set unk_4AEA0 = new Set(0, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74);
+        static Set unk_4AEEF = new Set(0, 2, 18);
+        static Set unk_47635 = new Set(0, 5);
+        static Set asc_49280 = new Set(18, 26, 47, 48, 97, 107, 124);
+        static Set save_game_keys = new Set(65, 66, 67, 68, 69, 70, 71, 72, 73, 74); // asc_4A761
+        static ClassId[] HillsFarClassMap = {
+    ClassId.unknown,    ClassId.thief,      ClassId.fighter,    ClassId.mc_f_t, ClassId.magic_user,
+    ClassId.mc_mu_t,    ClassId.mc_f_mu,    ClassId.mc_f_mu_t,  ClassId.cleric, ClassId.mc_c_t,
+    ClassId.mc_c_f,     ClassId.unknown,    ClassId.mc_c_mu,    ClassId.unknown, ClassId.mc_c_f_m,
+    ClassId.unknown};
+        
         internal static void BuildLoadablePlayersLists(out List<MenuItem> fileNames, out List<MenuItem> displayNames) // sub_47465
         {
             displayNames = new List<MenuItem>();
@@ -75,12 +88,9 @@ namespace GoldBox.Engine
             }
             else if (gbl.import_from == ImportSource.Hillsfar)
             {
-                BuildLoadablePlayersLists(ref fileNames, ref  displayNames, HillsFarPlayer.StructSize, NpcFileOffset[2], PlayerNameOffset[2], "*.hil");
+                BuildLoadablePlayersLists(ref fileNames, ref displayNames, HillsFarPlayer.StructSize, NpcFileOffset[2], PlayerNameOffset[2], "*.hil");
             }
         }
-
-        static Set unk_47635 = new Set(0, 5);
-
 
         internal static void LoadPlayerCombatIcon(bool recolour) /* sub_47A90 */
         {
@@ -119,21 +129,19 @@ namespace GoldBox.Engine
             seg042.restore_game_area();
             seg043.clear_keyboard();
         }
-
-
+        
         internal static void remove_player_file(Player player)
         {
-            string full_path = Path.Combine(Config.SavePath, seg042.clean_string(player.name));
+            string full_path = Path.Combine(Config.SavePath, _stringCleaner.clean_string(player.name));
 
-            seg042.delete_file(full_path + ".guy");
-            seg042.delete_file(full_path + ".swg");
-            seg042.delete_file(full_path + ".fx");
+            _fileManager.DeleteIfExists(full_path + ".guy");
+            _fileManager.DeleteIfExists(full_path + ".swg");
+            _fileManager.DeleteIfExists(full_path + ".fx");
         }
 
         internal static void SavePlayer(string arg_0, Player player) // sub_47DFC
         {
             char input_key;
-            var file = new Classes.File();
 
             gbl.import_from = ImportSource.Curse;
 
@@ -143,7 +151,7 @@ namespace GoldBox.Engine
             if (arg_0 == "")
             {
                 ext_text = ".guy";
-                file_text = seg042.clean_string(player.name);
+                file_text = _stringCleaner.clean_string(player.name);
             }
             else
             {
@@ -155,7 +163,7 @@ namespace GoldBox.Engine
 
             while (input_key == 'N' &&
                 arg_0.Length == 0 &&
-                seg042.file_find(Path.Combine(Config.SavePath, file_text) + ext_text) == true)
+                _fileManager.Exists(Path.Combine(Config.SavePath, file_text) + ext_text) == true)
             {
                 input_key = ovr027.yes_no(gbl.alertMenuColors, "Overwrite " + file_text + "? ");
 
@@ -172,38 +180,33 @@ namespace GoldBox.Engine
 
             string filePath = Path.Combine(Config.SavePath, file_text);
 
-            file.Assign(filePath + ext_text);
-
-            seg051.Rewrite(file);
-
-            seg051.BlockWrite(Player.StructSize, player.ToByteArray(), file);
-            seg051.Close(file);
-
-            seg042.delete_file(filePath + ".swg");
-
-            if (player.items.Count > 0)
+            using (var file = new OpenOrCreateFile())
             {
-                file.Assign(filePath + ".swg");
-                seg051.Rewrite(file);
-
-                player.items.ForEach(item => seg051.BlockWrite(Item.StructSize, item.ToByteArray(), file));
-
-                seg051.Close(file);
+                file.Assign(filePath + ext_text);
+                file.Rewrite();
+                file.BlockWrite(Player.StructSize, player.ToByteArray());
             }
 
-            seg042.delete_file(filePath + ".fx");
+            _fileManager.DeleteIfExists(filePath + ".swg");
+            if (player.items.Count > 0)
+            {
+                using (var file = new OpenOrCreateFile())
+                {
+                    file.Assign(filePath + ".swg");
+                    file.Rewrite();
+                    player.items.ForEach(item => file.BlockWrite(Item.StructSize, item.ToByteArray()));
+                }
+            }
 
+            _fileManager.DeleteIfExists(filePath + ".fx");
             if (player.affects.Count > 0)
             {
-                file.Assign(filePath + ".fx");
-                seg051.Rewrite(file);
-
-                foreach (Affect affect in player.affects)
+                using (var file = new OpenOrCreateFile())
                 {
-                    seg051.BlockWrite(Affect.StructSize, affect.ToByteArray(), file);
+                    file.Assign(filePath + ".fx");
+                    file.Rewrite();
+                    player.affects.ForEach(affect => file.BlockWrite(Affect.StructSize, affect.ToByteArray()));
                 }
-
-                seg051.Close(file);
             }
         }
 
@@ -228,8 +231,7 @@ namespace GoldBox.Engine
             }
             return false;
         }
-
-
+        
         internal static Player ConvertPoolRadPlayer(PoolRadPlayer bp_var_1C0)
         {
             /* nested function, arg_0 is BP */
@@ -378,8 +380,7 @@ namespace GoldBox.Engine
 
             return player;
         }
-
-
+        
         internal static void TransferHillsFarCharacter(HillsFarPlayer hf_player, Player player, Player previousSelectPlayer) // sub_48F35
         {
             if (player.stats2.Str.cur < hf_player.stat_str)
@@ -471,98 +472,76 @@ namespace GoldBox.Engine
             gbl.silent_training = false;
         }
 
-
-        static Set asc_49280 = new Set(18, 26, 47, 48, 97, 107, 124);
-
-
-        static ClassId[] HillsFarClassMap = {
-    ClassId.unknown,    ClassId.thief,      ClassId.fighter,    ClassId.mc_f_t, ClassId.magic_user,
-    ClassId.mc_mu_t,    ClassId.mc_f_mu,    ClassId.mc_f_mu_t,  ClassId.cleric, ClassId.mc_c_t,
-    ClassId.mc_c_f,     ClassId.unknown,    ClassId.mc_c_mu,    ClassId.unknown, ClassId.mc_c_f_m, 
-    ClassId.unknown};
-
-
         internal static void import_char01(ref Player player, string arg_8)
         {
-            Classes.File file;
-
-            seg042.find_and_open_file(out file, false, Path.Combine(Config.SavePath, arg_8));
-
             seg041.displayString("Loading...Please Wait", 0, 10, 0x18, 0);
 
+            ImportPlayer(ref player, arg_8);
 
             if (gbl.import_from == ImportSource.Curse)
             {
-                byte[] data = new byte[Player.StructSize];
-                seg051.BlockRead(Player.StructSize, data, file);
-                seg051.Close(file);
-
-                player = new Player(data, 0);
-
-            }
-            else if (gbl.import_from == ImportSource.Pool)
-            {
-                byte[] data = new byte[PoolRadPlayer.StructSize];
-                seg051.BlockRead(PoolRadPlayer.StructSize, data, file);
-                seg051.Close(file);
-
-                var poolRadPlayer = new PoolRadPlayer(data);
-
-                player = ConvertPoolRadPlayer(poolRadPlayer);
-            }
-            else if (gbl.import_from == ImportSource.Hillsfar)
-            {
-                byte[] data = new byte[HillsFarPlayer.StructSize];
-                seg051.BlockRead(HillsFarPlayer.StructSize, data, file);
-                seg051.Close(file);
-
-                var var_1C4 = new HillsFarPlayer(data);
-
-                player = ConvertHillsFarPlayer(var_1C4, arg_8);
-
-                var_1C4 = null;
-            }
-
-            if (gbl.import_from == ImportSource.Curse)
-            {
-                arg_8 = System.IO.Path.GetFileNameWithoutExtension(arg_8);
+                arg_8 = Path.GetFileNameWithoutExtension(arg_8);
             }
             else
             {
-                arg_8 = seg042.clean_string(player.name);
+                arg_8 = _stringCleaner.clean_string(player.name);
             }
 
-            string filename = Path.Combine(Config.SavePath, arg_8 + ".swg");
-            if (seg042.file_find(filename) == true)
+            LoadItems(player, arg_8);
+
+            LoadAffects(player, arg_8);
+
+            LoadPoolRadAffects(player, arg_8);
+
+            seg043.clear_keyboard();
+            ovr025.reclac_player_values(player);
+            ovr026.ReclacClassBonuses(player);
+        }
+
+        private static void LoadPoolRadAffects(Player player, string arg_8)
+        {
+            if (gbl.import_from != ImportSource.Pool) return;
+
+            var filename = Path.Combine(Config.SavePath, arg_8 + ".spc");
+            if (!_fileManager.Exists(filename)) return;
+
+            byte[] data = new byte[Affect.StructSize];
+            OpenOrCreateFile file;
+            _fileManager.find_and_open_file(out file, false, filename);
+            using (file)
             {
-                byte[] data = new byte[Item.StructSize];
-
-                seg042.find_and_open_file(out file, false, filename);
-
                 while (true)
                 {
-                    if (seg051.BlockRead(Item.StructSize, data, file) == Item.StructSize)
+                    if (file.BlockRead(Affect.StructSize, data) == Affect.StructSize)
                     {
-                        player.items.Add(new Item(data, 0));
+                        if (asc_49280.MemberOf(data[0]) == true)
+                        {
+                            var tmpAffect = new Affect(data, 0);
+                            player.affects.Add(tmpAffect);
+                        }
                     }
                     else
                     {
                         break;
                     }
                 }
-
-                seg051.Close(file);
             }
 
-            filename = Path.Combine(Config.SavePath, arg_8 + ".fx");
-            if (seg042.file_find(filename) == true)
-            {
-                byte[] data = new byte[Affect.StructSize];
-                seg042.find_and_open_file(out file, false, filename);
+        }
 
+        private static void LoadAffects(Player player, string arg_8)
+        {
+            var filename = Path.Combine(Config.SavePath, arg_8 + ".fx");
+            if (!_fileManager.Exists(filename)) return;
+
+            byte[] data = new byte[Affect.StructSize];
+            OpenOrCreateFile file;
+            _fileManager.find_and_open_file(out file, false, filename);
+            using (file)
+            {
                 while (true)
                 {
-                    if (seg051.BlockRead(Affect.StructSize, data, file) == Affect.StructSize)
+                    if (file.BlockRead(Affect.StructSize, data) == Affect.StructSize)
                     {
                         var tmp_affect = new Affect(data, 0);
 
@@ -573,49 +552,74 @@ namespace GoldBox.Engine
                         break;
                     }
                 }
-
-                seg051.Close(file);
             }
-
-            filename = Path.Combine(Config.SavePath, arg_8 + ".spc");
-            if (gbl.import_from == ImportSource.Pool)
-            {
-                if (seg042.file_find(filename) == true)
-                {
-                    byte[] data = new byte[Affect.StructSize];
-                    seg042.find_and_open_file(out file, false, filename);
-
-                    while (true)
-                    {
-                        if (seg051.BlockRead(Affect.StructSize, data, file) == Affect.StructSize)
-                        {
-                            if (asc_49280.MemberOf(data[0]) == true)
-                            {
-                                var tmpAffect = new Affect(data, 0);
-                                player.affects.Add(tmpAffect);
-                            }
-                        }
-                        else
-                        {
-                            break;
-                        }
-                    }
-
-                    seg051.Close(file);
-
-                }
-            }
-
-            seg043.clear_keyboard();
-            ovr025.reclac_player_values(player);
-            ovr026.ReclacClassBonuses(player);
         }
 
+        private static void LoadItems(Player player, string arg_8)
+        {
+            var filename = Path.Combine(Config.SavePath, arg_8 + ".swg");
+            if (!_fileManager.Exists(filename)) return;
+
+            byte[] data = new byte[Item.StructSize];
+            OpenOrCreateFile file;
+            _fileManager.find_and_open_file(out file, false, filename);
+            using (file)
+            {
+                while (true)
+                {
+
+                    if (file.BlockRead(Item.StructSize, data) == Item.StructSize)
+                    {
+                        player.items.Add(new Item(data, 0));
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+            }
+        }
+
+        private static void ImportPlayer(ref Player player, string arg_8)
+        {
+            OpenOrCreateFile file;
+            _fileManager.find_and_open_file(out file, false, Path.Combine(Config.SavePath, arg_8));
+            if (gbl.import_from == ImportSource.Curse)
+            {
+                byte[] data = new byte[Player.StructSize];
+                using (file)
+                    file.BlockRead(Player.StructSize, data);
+
+                player = new Player(data, 0);
+
+            }
+            else if (gbl.import_from == ImportSource.Pool)
+            {
+                byte[] data = new byte[PoolRadPlayer.StructSize];
+                using (file)
+                    file.BlockRead(PoolRadPlayer.StructSize, data);
+
+                var poolRadPlayer = new PoolRadPlayer(data);
+
+                player = ConvertPoolRadPlayer(poolRadPlayer);
+            }
+            else if (gbl.import_from == ImportSource.Hillsfar)
+            {
+                byte[] data = new byte[HillsFarPlayer.StructSize];
+                using (file)
+                    file.BlockRead(HillsFarPlayer.StructSize, data);
+
+                var var_1C4 = new HillsFarPlayer(data);
+
+                player = ConvertHillsFarPlayer(var_1C4, arg_8);
+
+                var_1C4 = null;
+            }
+        }
 
         private static Player ConvertHillsFarPlayer(HillsFarPlayer hf_player, string arg_8)
         {
             var player = new Player();
-            Classes.File file;
 
             player.items = new List<Item>();
             player.affects = new List<Affect>();
@@ -627,12 +631,12 @@ namespace GoldBox.Engine
             {
                 string savename = Path.Combine(Config.SavePath, Path.ChangeExtension(arg_8, fileExt));
 
-                seg042.find_and_open_file(out file, false, savename);
+                OpenOrCreateFile file;
+                _fileManager.find_and_open_file(out file, false, savename);
 
                 byte[] data = new byte[Player.StructSize];
-
-                seg051.BlockRead(Player.StructSize, data, file);
-                seg051.Close(file);
+                using (file)
+                    file.BlockRead(Player.StructSize, data);
 
                 player = new Player(data, 0);
 
@@ -687,10 +691,11 @@ namespace GoldBox.Engine
 
                     string savename = System.IO.Path.Combine(Config.SavePath, Path.ChangeExtension(arg_8, fileExt));
 
-                    seg042.find_and_open_file(out file, false, savename);
+                    OpenOrCreateFile file;
+                    _fileManager.find_and_open_file(out file, false, savename);
 
-                    seg051.BlockRead(PoolRadPlayer.StructSize, data, file);
-                    seg051.Close(file);
+                    using (file)
+                        file.BlockRead(PoolRadPlayer.StructSize, data);
 
                     var poolRadPlayer = new PoolRadPlayer(data);
 
@@ -814,7 +819,6 @@ namespace GoldBox.Engine
             return player;
         }
 
-
         internal static Player load_mob(int monster_id)
         {
             return load_mob(monster_id, true);
@@ -873,7 +877,6 @@ namespace GoldBox.Engine
             return player;
         }
 
-
         internal static void load_npc(int monster_id) // sub_4A57D
         {
             if (gbl.area2_ptr.party_size <= 7)
@@ -922,9 +925,6 @@ namespace GoldBox.Engine
             }
         }
 
-        static Set save_game_keys = new Set(65, 66, 67, 68, 69, 70, 71, 72, 73, 74); // asc_4A761
-
-
         internal static void loadGameMenu() // loadGame
         {
             gbl.import_from = ImportSource.Curse;
@@ -935,7 +935,7 @@ namespace GoldBox.Engine
             {
                 string file_name = Path.Combine(Config.SavePath, "savgam" + save_letter.ToString() + ".dat");
 
-                if (seg042.file_find(file_name) == true)
+                if (_fileManager.Exists(file_name) == true)
                 {
                     games_list += save_letter.ToString() + " ";
                 }
@@ -959,7 +959,7 @@ namespace GoldBox.Engine
                     {
                         save_letter = input_key;
                         string file_name = Path.Combine(Config.SavePath, "savgam" + save_letter.ToString() + ".dat");
-                        stop_loop = seg042.file_find(file_name);
+                        stop_loop = _fileManager.Exists(file_name);
                     }
                 } while (stop_loop == false);
 
@@ -974,8 +974,8 @@ namespace GoldBox.Engine
 
         internal static void loadSaveGame(string file_name)
         {
-            Classes.File file;
-            seg042.find_and_open_file(out file, true, file_name);
+            OpenOrCreateFile file;
+            _fileManager.find_and_open_file(out file, true, file_name);
 
             ovr027.ClearPromptArea();
             seg041.displayString("Loading...Please Wait", 0, 10, 0x18, 0);
@@ -983,51 +983,50 @@ namespace GoldBox.Engine
 
             byte[] data = new byte[0x2000];
 
-            seg051.BlockRead(1, data, file);
-            gbl.game_area = data[0];
-
-            seg051.BlockRead(0x800, data, file);
-            gbl.area_ptr = new Area1(data, 0);
-
-            seg051.BlockRead(0x800, data, file);
-            gbl.area2_ptr = new Area2(data, 0);
-
-            seg051.BlockRead(0x400, data, file);
-            gbl.stru_1B2CA = new Struct_1B2CA(data, 0);
-
-            seg051.BlockRead(0x1E00, data, file);
-            gbl.ecl_ptr = new EclBlock(data, 0);
-
-            seg051.BlockRead(5, data, file);
-            gbl.mapPosX = (sbyte)data[0];
-            gbl.mapPosY = (sbyte)data[1];
-            gbl.mapDirection = data[2];
-            gbl.mapWallType = data[3];
-            gbl.mapWallRoof = data[4];
-
-            seg051.BlockRead(1, data, file);
-            gbl.last_game_state = (GameState)data[0];
-
-            seg051.BlockRead(1, data, file);
-            gbl.game_state = (GameState)data[0];
-
-            for (int i = 0; i < 3; i++)
+            using (file)
             {
-                seg051.BlockRead(2, data, file);
-                gbl.setBlocks[i].blockId = Sys.ArrayToShort(data, 0);
+                file.BlockRead(1, data);
+                gbl.game_area = data[0];
 
-                seg051.BlockRead(2, data, file);
-                gbl.setBlocks[i].setId = Sys.ArrayToShort(data, 0);
+                file.BlockRead(0x800, data);
+                gbl.area_ptr = new Area1(data, 0);
+
+                file.BlockRead(0x800, data);
+                gbl.area2_ptr = new Area2(data, 0);
+
+                file.BlockRead(0x400, data);
+                gbl.stru_1B2CA = new Struct_1B2CA(data, 0);
+
+                file.BlockRead(0x1E00, data);
+                gbl.ecl_ptr = new EclBlock(data, 0);
+
+                file.BlockRead(5, data);
+                gbl.mapPosX = (sbyte)data[0];
+                gbl.mapPosY = (sbyte)data[1];
+                gbl.mapDirection = data[2];
+                gbl.mapWallType = data[3];
+                gbl.mapWallRoof = data[4];
+
+                file.BlockRead(1, data);
+                gbl.last_game_state = (GameState)data[0];
+
+                file.BlockRead(1, data);
+                gbl.game_state = (GameState)data[0];
+
+                for (int i = 0; i < 3; i++)
+                {
+                    file.BlockRead(2, data);
+                    gbl.setBlocks[i].blockId = Sys.ArrayToShort(data, 0);
+
+                    file.BlockRead(2, data);
+                    gbl.setBlocks[i].setId = Sys.ArrayToShort(data, 0);
+                }
+
+                file.BlockRead(1, data);
+                file.BlockRead(0x148, data);
             }
-
-            seg051.BlockRead(1, data, file);
             int number_of_players = data[0];
-
-            seg051.BlockRead(0x148, data, file);
             string[] var_148 = Sys.ArrayToStrings(data, 0, System.Math.Min(0x148, 0x29 * number_of_players), 0x29);
-
-            seg051.Close(file);
-
             //gbl.PicsOn = ((gbl.area_ptr.pics_on >> 1) != 0);
             //gbl.AnimationsOn = ((gbl.area_ptr.pics_on & 1) != 0);
             gbl.game_speed_var = gbl.area_ptr.game_speed;
@@ -1035,9 +1034,9 @@ namespace GoldBox.Engine
 
             for (int index = 0; index < number_of_players; index++)
             {
-                string var_1F6 = seg042.clean_string(var_148[index]);
+                string var_1F6 = _stringCleaner.clean_string(var_148[index]);
 
-                if (seg042.file_find(Path.Combine(Config.SavePath, var_1F6 + ".sav")) == true)
+                if (_fileManager.Exists(Path.Combine(Config.SavePath, var_1F6 + ".sav")) == true)
                 {
                     var player = new Player();
 
@@ -1101,96 +1100,89 @@ namespace GoldBox.Engine
             gbl.game_state = GameState.StartGameMenu;
         }
 
-        static Set unk_4AEA0 = new Set(0, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74); 
-        static Set unk_4AEEF = new Set(0, 2, 18); 
-
-
         internal static void SaveGame()
         {
             char inputKey;
-            var save_file = new Classes.File();
-            string[] var_171 = new string[9];
-
-            do
+            using (var save_file = new OpenOrCreateFile())
             {
-                inputKey = ovr027.displayInput((gbl.game_state == GameState.Camping), 0, gbl.defaultMenuColors, "A B C D E F G H I J", "Save Which Game: ");
-
-            } while (unk_4AEA0.MemberOf(inputKey) == false);
-
-            if (inputKey != '\0')
-            {
-                gbl.import_from = ImportSource.Curse;
-
-                short var_1FC;
+                string[] var_171 = new string[9];
 
                 do
                 {
-                    save_file.Assign(Path.Combine(Config.SavePath, "savgam" + inputKey + ".dat"));
-                    seg051.Rewrite(save_file);
-                    var_1FC = gbl.FIND_result;
+                    inputKey = ovr027.displayInput((gbl.game_state == GameState.Camping), 0, gbl.defaultMenuColors, "A B C D E F G H I J", "Save Which Game: ");
 
-                    if (unk_4AEEF.MemberOf(var_1FC) == false)
+                } while (unk_4AEA0.MemberOf(inputKey) == false);
+
+                if (inputKey != '\0')
+                {
+                    gbl.import_from = ImportSource.Curse;
+
+                    short var_1FC;
+
+                    do
                     {
-                        seg041.DisplayAndPause("Unexpected error during save: " + var_1FC.ToString(), 14);
-                        seg051.Close(save_file);
-                        return;
+                        save_file.Assign(Path.Combine(Config.SavePath, "savgam" + inputKey + ".dat"));
+                        save_file.Rewrite();
+                        var_1FC = gbl.FIND_result;
+
+                        if (unk_4AEEF.MemberOf(var_1FC) == false)
+                        {
+                            seg041.DisplayAndPause("Unexpected error during save: " + var_1FC.ToString(), 14);
+                            return;
+                        }
+                    } while (unk_4AEEF.MemberOf(var_1FC) == false);
+
+                    ovr027.ClearPromptArea();
+                    seg041.displayString("Saving...Please Wait", 0, 10, 0x18, 0);
+
+                    gbl.area_ptr.game_speed = (byte)gbl.game_speed_var;
+                    gbl.area_ptr.pics_on = (byte)(((gbl.PicsOn) ? 0x02 : 0) | ((gbl.AnimationsOn) ? 0x01 : 0));
+                    gbl.area2_ptr.game_area = gbl.game_area;
+
+                    byte[] data = new byte[0x1E00];
+
+                    data[0] = gbl.game_area;
+                    save_file.BlockWrite(1, data);
+
+                    save_file.BlockWrite(0x800, gbl.area_ptr.ToByteArray());
+                    save_file.BlockWrite(0x800, gbl.area2_ptr.ToByteArray());
+                    save_file.BlockWrite(0x400, gbl.stru_1B2CA.ToByteArray());
+                    save_file.BlockWrite(0x1E00, gbl.ecl_ptr.ToByteArray());
+
+                    data[0] = (byte)gbl.mapPosX;
+                    data[1] = (byte)gbl.mapPosY;
+                    data[2] = gbl.mapDirection;
+                    data[3] = gbl.mapWallType;
+                    data[4] = gbl.mapWallRoof;
+                    save_file.BlockWrite(5, data);
+
+                    data[0] = (byte)gbl.last_game_state;
+                    save_file.BlockWrite(1, data);
+                    data[0] = (byte)gbl.game_state;
+                    save_file.BlockWrite(1, data);
+
+                    for (int i = 0; i < 3; i++)
+                    {
+                        Sys.ShortToArray((short)gbl.setBlocks[i].blockId, data, (i * 4) + 0);
+                        Sys.ShortToArray((short)gbl.setBlocks[i].setId, data, (i * 4) + 2);
                     }
-                } while (unk_4AEEF.MemberOf(var_1FC) == false);
+                    save_file.BlockWrite(12, data);
 
-                ovr027.ClearPromptArea();
-                seg041.displayString("Saving...Please Wait", 0, 10, 0x18, 0);
+                    for(int i=1; i<=gbl.TeamList.Count; i++)
+                    {
+                        var_171[i-1] = "CHRDAT" + inputKey + i;
+                    }
 
-                gbl.area_ptr.game_speed = (byte)gbl.game_speed_var;
-                gbl.area_ptr.pics_on = (byte)(((gbl.PicsOn) ? 0x02 : 0) | ((gbl.AnimationsOn) ? 0x01 : 0));
-                gbl.area2_ptr.game_area = gbl.game_area;
+                    data[0] = (byte)gbl.TeamList.Count;
+                    save_file.BlockWrite(1, data);
 
-                byte[] data = new byte[0x1E00];
-
-                data[0] = gbl.game_area;
-                seg051.BlockWrite(1, data, save_file);
-
-                seg051.BlockWrite(0x800, gbl.area_ptr.ToByteArray(), save_file);
-                seg051.BlockWrite(0x800, gbl.area2_ptr.ToByteArray(), save_file);
-                seg051.BlockWrite(0x400, gbl.stru_1B2CA.ToByteArray(), save_file);
-                seg051.BlockWrite(0x1E00, gbl.ecl_ptr.ToByteArray(), save_file);
-
-                data[0] = (byte)gbl.mapPosX;
-                data[1] = (byte)gbl.mapPosY;
-                data[2] = gbl.mapDirection;
-                data[3] = gbl.mapWallType;
-                data[4] = gbl.mapWallRoof;
-                seg051.BlockWrite(5, data, save_file);
-
-                data[0] = (byte)gbl.last_game_state;
-                seg051.BlockWrite(1, data, save_file);
-                data[0] = (byte)gbl.game_state;
-                seg051.BlockWrite(1, data, save_file);
-
-                for (int i = 0; i < 3; i++)
-                {
-                    Sys.ShortToArray((short)gbl.setBlocks[i].blockId, data, (i * 4) + 0);
-                    Sys.ShortToArray((short)gbl.setBlocks[i].setId, data, (i * 4) + 2);
+                    for (int i = 0; i < gbl.TeamList.Count; i++)
+                    {
+                        Sys.StringToArray(data, 0x29 * i, 0x29, var_171[i]);
+                    }
+                    save_file.BlockWrite(0x148, data);
                 }
-                seg051.BlockWrite(12, data, save_file);
-
-                int party_count = 0;
-                foreach (Player tmp_player in gbl.TeamList)
-                {
-                    party_count++;
-                    var_171[party_count - 1] = "CHRDAT" + inputKey + party_count.ToString();
-                }
-
-                data[0] = (byte)party_count;
-                seg051.BlockWrite(1, data, save_file);
-
-                for (int i = 0; i < party_count; i++)
-                {
-                    Sys.StringToArray(data, 0x29 * i, 0x29, var_171[i]);
-                }
-                seg051.BlockWrite(0x148, data, save_file);
-                seg051.Close(save_file);
-
-                party_count = 0;
+                var party_count = 0;
                 foreach (Player tmp_player in gbl.TeamList)
                 {
                     party_count++;

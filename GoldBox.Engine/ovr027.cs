@@ -6,13 +6,17 @@ namespace GoldBox.Engine
 {
     class ovr027
     {
+        static Set highlightable_text = new Set(48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90);
+        static Set unk_6C398 = new Set(32, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90);
+        static Set unk_6C3B8 = new Set(49, 50, 51, 52, 53, 54, 55, 56, 57, 92);
+        static byte[] unk_18AE0 = { 0x4F, 0x50, 0x51, 0x4B, 0x20, 0x4D, 0x47, 0x48, 0x49 };
+
+        private static readonly MapCursor _mapCursor = new MapCursor();
+
         internal static MenuItem getStringListEntry(List<MenuItem> list, int index)
         {
             return (list.Count > index) ? list[index] : null;
         }
-
-        static Set highlightable_text = new Set(48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90);
-
 
         internal class highlight
         {
@@ -53,9 +57,6 @@ namespace GoldBox.Engine
             }
         }
 
-        /// <summary>
-        /// sub_6C0DA
-        /// </summary>
         internal static HighlightSet BuildInputKeys(string menuText, out int highlighCount)
         {
             var highlighSet = new HighlightSet();
@@ -84,7 +85,6 @@ namespace GoldBox.Engine
 
             return highlighSet;
         }
-
 
         internal static void display_highlighed_text(int highlighed_word, int highlightFgColor,
             string text, int xOffset, int fgColor, HighlightSet highlights) /* sub_6C1E9 */
@@ -119,11 +119,6 @@ namespace GoldBox.Engine
             }
         }
 
-        static Set unk_6C398 = new Set(32, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90);
-        static Set unk_6C3B8 = new Set(49, 50, 51, 52, 53, 54, 55, 56, 57, 92);
-
-
-        static byte[] unk_18AE0 = { 0x4F, 0x50, 0x51, 0x4B, 0x20, 0x4D, 0x47, 0x48, 0x49 };
 
         internal static char displayInput(bool useOverlay, byte arg_6, MenuColorSet colors, string displayInputString, string displayExtraString)
         {
@@ -168,9 +163,9 @@ namespace GoldBox.Engine
                 gbl.bigpic_block_id == 0x79 &&
                 gbl.lastDaxBlockId != 0x50)
             {
-                MapCursor.SetPosition(gbl.area_ptr.current_city);
-                MapCursor.Draw();
-                MapCursor.Restore();
+                _mapCursor.SetPosition(gbl.area_ptr.current_city);
+                _mapCursor.Draw();
+                _mapCursor.Restore();
             }
 
             do
@@ -180,7 +175,7 @@ namespace GoldBox.Engine
                     gbl.lastDaxBlockId != 0x50 &&
                     DateTime.Now >= timeCursorOn)
                 {
-                    MapCursor.Draw();
+                    _mapCursor.Draw();
                     timeCursorOn = timeCursorOff.AddMilliseconds(300);
                 }
 
@@ -319,7 +314,7 @@ namespace GoldBox.Engine
                     gbl.lastDaxBlockId != 0x50 &&
                     DateTime.Now >= timeCursorOff)
                 {
-                    MapCursor.Restore();
+                    _mapCursor.Restore();
 
                     timeCursorOff = timeCursorOn.AddMilliseconds(500);
                 }
@@ -334,7 +329,7 @@ namespace GoldBox.Engine
                 gbl.bigpic_block_id == 0x79 &&
                 gbl.lastDaxBlockId != 0x50)
             {
-                MapCursor.Restore();
+                _mapCursor.Restore();
             }
 
             gbl.displayInput_specialKeyPressed = specialKeyPressed;

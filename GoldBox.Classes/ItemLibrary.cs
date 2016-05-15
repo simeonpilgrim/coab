@@ -6,13 +6,42 @@ using System.Runtime.Serialization;
 
 namespace GoldBox.Classes
 {
+    sealed class AllowAllAssemblyVersionsDeserializationBinder : SerializationBinder
+    {
+        public override Type BindToType(string assemblyName, string typeName)
+        {
+            Type typeToDeserialize = null;
+
+            var currentAssembly = System.Reflection.Assembly.GetExecutingAssembly().FullName;
+
+            // In this case we are always using the current assembly
+            assemblyName = currentAssembly;
+
+            // Get the type using the typeName and assemblyName
+            typeToDeserialize = Type.GetType(String.Format("{0}, {1}", typeName, assemblyName));
+
+            return typeToDeserialize;
+        }
+    }
+
     public class ItemLibrary
     {
+        private readonly static string libraryPath;
+        private readonly static string libraryFile;
+        private readonly static List<Item> library;
+        private readonly static BinaryFormatter _formatter;
 
-        static string libraryPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "CotAB");
-        static string libraryFile = Path.Combine(libraryPath, "ItemLibrary.dat");
+        static ItemLibrary()
+        {
+            _formatter = new BinaryFormatter
+            {
+                Binder = new AllowAllAssemblyVersionsDeserializationBinder()
+            };
+            library = new List<Item>();
+            libraryPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "CotAB");
+            libraryFile = Path.Combine(libraryPath, "ItemLibrary.dat");
+        }
 
-        static List<Item> library = new List<Item>();
         public static void Add(Item item)
         {
             Item i = item.ShallowClone();
@@ -28,53 +57,26 @@ namespace GoldBox.Classes
 
         public static void Read()
         {
-            if (System.IO.File.Exists(libraryFile))
+            library.Clear();
+
+            if (!System.IO.File.Exists(libraryFile))
+                return;
+
+            using (var fs = new FileStream(libraryFile, FileMode.Open))
             {
-                var fs = new FileStream(libraryFile, FileMode.Open);
-
                 if (fs.Length == 0)
-                {
-                    library = new List<Item>();
                     return;
-                }
 
-                // Construct a BinaryFormatter and use it to serialize the data to the stream.
-                var formatter = new BinaryFormatter();
-                try
-                {
-                    library = (List<Item>)formatter.Deserialize(fs);
-                }
-                catch (SerializationException)
-                {
-                    //Console.WriteLine("Failed to deserialize. Reason: " + e.Message);
-                    throw;
-                }
-                finally
-                {
-                    fs.Close();
-                }
+                library .AddRange( (List<Item>)_formatter.Deserialize(fs));
             }
         }
 
         public static void Write()
         {
             Directory.CreateDirectory(libraryPath);
-            var fs = new FileStream(libraryFile, FileMode.Create);
-
-            // Construct a BinaryFormatter and use it to serialize the data to the stream.
-            var formatter = new BinaryFormatter();
-            try
+            using (var fs = new FileStream(libraryFile, FileMode.Create))
             {
-                formatter.Serialize(fs, library);
-            }
-            catch (SerializationException)
-            {
-                //Console.WriteLine("Failed to serialize. Reason: " + e.Message);
-                throw;
-            }
-            finally
-            {
-                fs.Close();
+                _formatter.Serialize(fs, library);
             }
         }
     }

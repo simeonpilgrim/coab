@@ -2,22 +2,8 @@ using System;
 using System.Drawing;
 using System.Drawing.Imaging;
 
-
 namespace GoldBox.Classes
 {
-    public interface IOSDisplay
-    {
-        void Init(int height, int width);
-        void RawCopy(byte[] videoRam, int videoRamSize);
-    }
-
-    public enum TextRegion
-    {
-        NormalBottom,
-        Normal2,
-        CombatSummary,
-    }
-
     public class Display
     {
         static byte[,] OrigEgaColors = { { 0, 0, 0 }, { 0, 0, 173 }, { 0, 173, 0 }, { 0, 173, 173 }, { 173, 0, 0 }, { 173, 0, 173 }, { 173, 82, 0 }, { 173, 173, 173 }, { 82, 82, 82 }, { 82, 82, 255 }, { 82, 255, 82 }, { 82, 255, 255 }, { 255, 82, 82 }, { 255, 82, 255 }, { 255, 255, 82 }, { 255, 255, 255 } };
@@ -166,18 +152,11 @@ namespace GoldBox.Classes
 
                 SetVidPixel(x, y, ram[y, x]);
             }
-            if (value > 16)
-            {
-            }
         }
 
-
-      
         public static void RawCopy(byte[] videoRam, int videoRamSize)
         {
-            System.Drawing.Imaging.BitmapData bmpData =
-                bm.LockBits(rect, System.Drawing.Imaging.ImageLockMode.WriteOnly,
-                System.Drawing.Imaging.PixelFormat.Format24bppRgb);
+            var bmpData = bm.LockBits(rect, ImageLockMode.WriteOnly, PixelFormat.Format24bppRgb);
 
             IntPtr ptr = bmpData.Scan0;
 

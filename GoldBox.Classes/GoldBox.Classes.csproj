@@ -105,6 +105,7 @@
     <Compile Include="Action.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ActiveItems.cs" />
     <Compile Include="Affect.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -121,10 +122,14 @@
     <Compile Include="Cheats.cs" />
     <Compile Include="ClassStatsMin.cs" />
     <Compile Include="Combat.cs" />
+    <Compile Include="CombatType.cs" />
     <Compile Include="Combat\CombatantMap.cs" />
     <Compile Include="Combat\CombatIcon.cs" />
     <Compile Include="Combat\CombatPlayerIndex.cs" />
     <Compile Include="Combat\Icon.cs" />
+    <Compile Include="Control.cs" />
+    <Compile Include="DamageOnSave.cs" />
+    <Compile Include="DamageType.cs" />
     <Compile Include="DataIO.cs" />
     <Compile Include="DataOffsetAttribute.cs" />
     <Compile Include="DataType.cs" />
@@ -136,12 +141,18 @@
     <Compile Include="DaxFiles\DaxCache.cs" />
     <Compile Include="DaxFiles\DaxFile.cs" />
     <Compile Include="DaxFiles\DaxHeaderEntry.cs" />
+    <Compile Include="Delegates.cs" />
     <Compile Include="Display.cs" />
     <Compile Include="EclBlock.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Effect.cs" />
     <Compile Include="Enums.cs" />
-    <Compile Include="File.cs">
+    <Compile Include="GameState.cs" />
+    <Compile Include="ImportSource.cs" />
+    <Compile Include="IOSDisplay.cs" />
+    <Compile Include="MenuColorSet.cs" />
+    <Compile Include="OpenOrCreateFile.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="GasCloud.cs" />
@@ -163,14 +174,21 @@
     <Compile Include="Player.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="PlayerStats.cs" />
+    <Compile Include="Point.cs" />
     <Compile Include="PoolRadPlayer.cs" />
+    <Compile Include="QuickFight.cs" />
     <Compile Include="ReadOnlyFileStream.cs" />
     <Compile Include="RestTime.cs" />
     <Compile Include="Set.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="SetBlock.cs" />
+    <Compile Include="Sound.cs" />
+    <Compile Include="SoundType.cs" />
     <Compile Include="SpellList.cs" />
     <Compile Include="Spells.cs" />
+    <Compile Include="StatValue.cs" />
     <Compile Include="SteppingPath.cs" />
     <Compile Include="Struct_189B4.cs">
       <SubType>Code</SubType>
@@ -185,6 +203,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Sys.cs" />
+    <Compile Include="TextRegion.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\GoldBox.Logging\GoldBox.Logging.csproj">

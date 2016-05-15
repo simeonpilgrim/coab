@@ -92,6 +92,11 @@ namespace GoldBox.Classes.DaxFiles
             } while (input_index < dataLength);
         }
 
+        /// <summary>
+        /// Tries read a block of data from a Dax file
+        /// </summary>
+        /// <param name="block_id">The block of data to get from the Dax file</param>
+        /// <returns>the block of data, or null if the block can't be found</returns>
         internal byte[] GetData(int block_id)
         {
             byte[] orig;

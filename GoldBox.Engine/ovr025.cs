@@ -1491,7 +1491,7 @@ namespace GoldBox.Engine
 
                 output += direction(gbl.mapDirection) + " " + hours + ":" + minutes;
 
-                if (gbl.printCommands == true)
+                if (gbl.printCommands)
                 {
                     output += "*";
                 }

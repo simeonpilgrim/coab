@@ -122,8 +122,8 @@ namespace GoldBox.Engine
                     throw (new System.Exception("can't get here."));
             }
             string[] sym = { "", "", "", "", "A + B", "B - A", "A / B", "A * B" };
-            VmLog.WriteLine("CMD_AdSubDivMulti: {0} A: {1} B: {2} Loc: {3} Res: {4}",
-                sym[gbl.command], val_a, val_b, new MemLoc(location), value);
+            VmLog.WriteLine("CMD_AdSubDivMulti: {0} A: {1} B: {2} Loc: 0x{3:X} Res: {4}",
+                sym[gbl.command], val_a, val_b, location, value);
 
             ovr008.vm_SetMemoryValue(value, location);
         }
@@ -144,7 +144,7 @@ namespace GoldBox.Engine
 
             byte val = seg051.Random(rand_max);
 
-            VmLog.WriteLine("CMD_Random: Max: {0} Loc: {1} Val: {2}", rand_max, new MemLoc(loc), val);
+            VmLog.WriteLine("CMD_Random: Max: {0} Loc: 0x{1:X} Val: {2}", rand_max, loc, val);
 
             ovr008.vm_SetMemoryValue(val, loc);
         }
@@ -160,12 +160,12 @@ namespace GoldBox.Engine
             {
                 ushort val = ovr008.vm_GetCmdValue(1);
 
-                VmLog.WriteLine("CMD_Save: Value {0} Loc: {1}", val, new MemLoc(loc));
+                VmLog.WriteLine("CMD_Save: Value {0} Loc: 0x{1:X}", val, loc);
                 ovr008.vm_SetMemoryValue(val, loc);
             }
             else
             {
-                VmLog.WriteLine("CMD_Save: String '{0}' Loc: {1}", gbl.unk_1D972[1], new MemLoc(loc));
+                VmLog.WriteLine("CMD_Save: String '{0}' Loc: 0x{1:X}", gbl.unk_1D972[1], loc);
                 ovr008.vm_WriteStringToMemory(gbl.unk_1D972[1], loc);
             }
         }
@@ -625,7 +625,7 @@ namespace GoldBox.Engine
                 resultant = (byte)(val_a | val_b);
             }
 
-            VmLog.WriteLine("CMD_AndOr: {0} A: {1} B: {2} Loc: {3} Val: {4}", sym, val_a, val_b, new MemLoc(loc), resultant);
+            VmLog.WriteLine("CMD_AndOr: {0} A: {1} B: {2} Loc: 0x{3:X} Val: {4}", sym, val_a, val_b, loc, resultant);
 
             ovr008.compare_variables(resultant, 0);
             ovr008.vm_SetMemoryValue(resultant, loc);
@@ -1085,12 +1085,12 @@ namespace GoldBox.Engine
                 string filename = string.Format("ITEM{0}.dax", gbl.game_area);
                 seg042.load_decode_dax(out data, out dataSize, block_id, filename);
 
-                if (dataSize == 0)
+                if (data == null)
                 {
                     Logger.LogAndExit("Unable to find item file: {0}", filename);
                 }
 
-                for (int offset = 0; offset < dataSize; offset += Item.StructSize)
+                for (int offset = 0; offset < data.Length; offset += Item.StructSize)
                 {
                     gbl.items_pointer.Add(new Item(data, offset));
                 }
@@ -1821,8 +1821,8 @@ namespace GoldBox.Engine
                 spell_index = 0x0FF;
             }
 
-            VmLog.WriteLine("CMD_Spell: spell_id: {0} loc a: {1} val a: {2} loc b: {3} val b: {4}",
-                spell_id, new MemLoc(loc_a), spell_index, new MemLoc(loc_b), player_index);
+            VmLog.WriteLine("CMD_Spell: spell_id: {0} loc a: 0x{1:X} val a: {2} loc b: 0x{3:X} val b: {4}",
+                spell_id, loc_a, spell_index, loc_b, player_index);
 
             ovr008.vm_SetMemoryValue(spell_index, loc_a);
             ovr008.vm_SetMemoryValue(player_index, loc_b);
@@ -2161,10 +2161,7 @@ namespace GoldBox.Engine
                 CmdItem cmd;
                 if (CommandTable.TryGetValue(gbl.command, out cmd))
                 {
-                    if (gbl.printCommands)
-                    {
-                        Logger.Debug("{0} 0x{1:X}", cmd.Name(), gbl.command);
-                    }
+                    VmLog.WriteLine("{0} 0x{1:X}", cmd.Name(), gbl.command);
                     cmd.Run();
                 }
                 else
@@ -2423,19 +2420,12 @@ namespace GoldBox.Engine
 
         internal void Skip()
         {
-            if (gbl.printCommands == true)
-            {
-                Logger.Debug("SKIPPING: {0}", name);
-            }
+            VmLog.WriteLine("SKIPPING: {0}", name);
 
             if (size == 0)
-            {
                 gbl.ecl_offset += 1;
-            }
             else
-            {
                 ovr008.vm_LoadCmdSets(size);
-            }
         }
     }
 }

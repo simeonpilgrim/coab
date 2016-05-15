@@ -1,189 +1,10 @@
-using System;
 using System.Collections.Generic;
 using GoldBox.Classes.Combat;
 using GoldBox.Classes.DaxFiles;
+using GoldBox.Logging;
 
 namespace GoldBox.Classes
 {
-    public enum QuickFight
-    {
-        False = 0,
-        True = 1
-    }
-
-    public enum Effect
-    {
-        Add = 0,
-        Remove = 1
-    }
-
-    public enum ImportSource
-    {
-        Curse = 0,
-        Pool = 1,
-        Hillsfar = 2
-    }
-
-    public enum GameState
-    {
-        StartGameMenu = 0,
-        Shop = 1,
-        Camping = 2,
-        WildernessMap = 3,
-        DungeonMap = 4,
-        Combat = 5,
-        AfterCombat = 6,
-        EndGame = 7
-    }
-
-    public enum CombatType
-    {
-        normal = 0,
-        duel = 1
-    }
-
-    public enum Sound
-    {
-        sound_FF = -1,
-        sound_0 = 0,
-        sound_1 = 1,
-        sound_2 = 2,
-        sound_3 = 3,
-        sound_4 = 4,
-        sound_5 = 5,
-        sound_6 = 6,
-        sound_attackHeld = 7,
-        sound_8 = 8,
-        sound_9 = 9,
-        sound_a = 0xa,
-        sound_b = 0xb,
-        sound_c = 0xc,
-        sound_d = 0xd,
-        sound_e = 0xe,
-        sound_f = 0xf
-    }
-
-    public delegate bool spellDelegate(QuickFight quick_fight, int spellId);
-    public delegate void spellDelegate2();
-    public delegate void affectDelegate(Effect arg_0, object affect, Player player);
-
-    [Flags]
-    public enum DamageType
-    {
-        Fire = 0x01,
-        Cold = 0x02,
-        Electricity = 0x04,
-        Magic = 0x08,
-        Acid = 0x10,
-        DragonBreath = 0x20,
-        Unknown40 = 0x40
-    }
-
-    public enum DamageOnSave
-    {
-        Normal = 0,
-        Zero = 1,
-        Half = 2,
-        Unknown_3 = 3,
-        Unknown_1E = 0x1e
-    }
-
-    public enum SoundType
-    {
-        PC,
-        None
-    }
-
-    public class MenuColorSet
-    {
-        public int highlight;
-        public int foreground;
-        public int prompt;
-
-        public MenuColorSet(int h, int f, int p) { highlight = h; foreground = f; prompt = p; }
-    }
-
-    public struct Point
-    {
-        public int x;
-        public int y;
-
-        public const int MapMaxX = 50;
-        public const int MapMaxY = 25;
-        public const int MapMinX = 0;
-        public const int MapMinY = 0;
-
-        public const int ScreenMaxX = 6;
-        public const int ScreenMaxY = 6;
-        public const int ScreenHalfX = ScreenMaxX / 2;
-        public const int ScreenHalfY = ScreenMaxY / 2;
-        public static readonly Point ScreenCenter = new Point(ScreenHalfX, ScreenHalfY);
-
-        public Point(int _x, int _y)
-        {
-            x = _x;
-            y = _y;
-        }
-
-        public Point(Point old)
-        {
-            x = old.x;
-            y = old.y;
-        }
-
-        public static Point operator +(Point a, Point b)
-        {
-            return new Point(a.x + b.x, a.y + b.y);
-        }
-
-        public static Point operator -(Point a, Point b)
-        {
-            return new Point(a.x - b.x, a.y - b.y);
-        }
-
-        public static Point operator *(Point a, int b)
-        {
-            return new Point(a.x * b, a.y * b);
-        }
-
-        public static Point operator /(Point a, int b)
-        {
-            return new Point(a.x / b, a.y / b);
-        }
-
-        public static bool operator ==(Point a, Point b)
-        {
-            return a.x == b.x && a.y == b.y;
-        }
-
-        public static bool operator !=(Point a, Point b)
-        {
-            return a.x != b.x || a.y != b.y;
-        }
-
-        public void MapBoundaryTrunc()
-        {
-            x = Math.Max(Math.Min(x, MapMaxX - 1), MapMinX);
-            y = Math.Max(Math.Min(y, MapMaxY - 1), MapMinY);
-        }
-
-        public bool MapInBounds()
-        {
-            return x < MapMaxX && x >= MapMinX && y < MapMaxY && y >= MapMinY;
-        }
-
-        public override string ToString()
-        {
-            return string.Format("x: {0} y: {1}", x, y);
-        }
-    }
-
-
-
-
-
-
-
     public class gbl
     {
         public static MenuColorSet defaultMenuColors = new MenuColorSet(15, 10, 13);
@@ -267,9 +88,6 @@ namespace GoldBox.Classes
             new Struct_189B4 ( 0, 1, 1, 1 )
         };
 
-
-
-
         public readonly static byte[] max_class_hit_dice = { 10, 15, 10, 10, 11, 12, 11, 13 }; // byte_1A1CB seg600:3EBB
         public readonly static byte[] default_icon_colours = { 1, 2, 3, 4, 6, 7 }; // unk_1A1D3[0] == unk_1A1D2[1];
 
@@ -283,7 +101,6 @@ namespace GoldBox.Classes
         new ClassId[] /*Half-Orc*/{ ClassId.cleric, ClassId.fighter, ClassId.thief, ClassId.mc_c_f, ClassId.mc_c_t,ClassId.mc_f_t},
         new ClassId[] /*Human*/{ ClassId.cleric, ClassId.fighter, ClassId.magic_user, ClassId.thief, ClassId.paladin, ClassId.ranger},
         new ClassId[] /*Cheaters*/{ ClassId.cleric, ClassId.fighter, ClassId.magic_user, ClassId.thief, ClassId.ranger,ClassId.mc_c_f, ClassId.mc_c_r, ClassId.mc_c_f_m, ClassId.mc_c_mu, ClassId.mc_f_mu, ClassId.mc_f_t, ClassId.mc_f_mu_t, ClassId.mc_mu_t}};
-
 
         public static bool stopVM; //byte_1AB08
         public static bool vmFlag01; // byte_1AB09 
@@ -354,15 +171,6 @@ namespace GoldBox.Classes
         public static byte mapDirection; // byte_1D53B , 0 N, 2 E, 4 S, 6 W
         public static byte mapWallType; // byte_1D53C
         public static byte mapWallRoof; // byte_1D53D
-
-        public class SetBlock
-        {
-            public SetBlock() { Reset(); }
-            public SetBlock(int _setId, int _blockId) { setId = _setId; blockId = _blockId; }
-            public void Reset() { setId = -1; blockId = -1; }
-            public int blockId; // byte_1D53A[di] 1*4
-            public int setId; // byte_1D53C[di] 1*4
-        }
 
         public static SetBlock[] setBlocks = new SetBlock[3];
 

@@ -96,15 +96,6 @@
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System">
-      <Name>System</Name>
-    </Reference>
-    <Reference Include="System.Data">
-      <Name>System.Data</Name>
-    </Reference>
-    <Reference Include="System.Xml">
-      <Name>System.XML</Name>
-    </Reference>
     <ProjectReference Include="..\GoldBox.Classes\GoldBox.Classes.csproj">
       <Name>GoldBox.Classes</Name>
       <Project>{6FA9069E-3549-4352-ACBA-73BB0406C0B1}</Project>
@@ -119,6 +110,9 @@
     <Compile Include="AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="CleanEightCharString.cs" />
+    <Compile Include="FileManager.cs" />
+    <Compile Include="Utilities\DebuggingUtilities.cs" />
     <Compile Include="VmOpp.cs" />
     <Compile Include="ovr002.cs">
       <SubType>Code</SubType>
@@ -195,7 +189,7 @@
     <Compile Include="ovr027.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ovr028.cs">
+    <Compile Include="MapCursor.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ovr029.cs">
@@ -254,6 +248,9 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Graphics\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

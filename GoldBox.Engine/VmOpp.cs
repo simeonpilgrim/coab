@@ -1,4 +1,3 @@
-using System;
 using GoldBox.Classes;
 using GoldBox.Logging;
 
@@ -8,7 +7,7 @@ namespace GoldBox.Engine
     {
         static internal void Write(string fmt, params object[] args)
         {
-            if (gbl.printCommands == true)
+            if (gbl.printCommands)
             {
                 Logger.DebugWrite(fmt, args);
             }
@@ -16,24 +15,10 @@ namespace GoldBox.Engine
 
         static internal void WriteLine(string fmt, params object[] args)
         {
-            if (gbl.printCommands == true)
+            if (gbl.printCommands)
             {
                 Logger.Debug(fmt, args);
             }
-        }
-    }
-
-    internal class MemLoc
-    {
-        ushort loc;
-        internal MemLoc(ushort _loc)
-        {
-            loc = _loc;
-        }
-
-        public override string ToString()
-        {
-            return String.Format("0x{0:X}", loc);
         }
     }
 }

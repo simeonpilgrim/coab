@@ -260,9 +260,9 @@ namespace GoldBox.Engine
 
             gbl.byte_1AD44 = 3;
 
-            gbl.setBlocks[0] = new gbl.SetBlock(1, 0);
-            gbl.setBlocks[1] = new gbl.SetBlock();
-            gbl.setBlocks[2] = new gbl.SetBlock();
+            gbl.setBlocks[0] = new SetBlock(1, 0);
+            gbl.setBlocks[1] = new SetBlock();
+            gbl.setBlocks[2] = new SetBlock();
 
             //gbl.AnimationsOn = true;
             //gbl.PicsOn = true;
