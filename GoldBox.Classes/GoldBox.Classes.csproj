@@ -143,12 +143,14 @@
     <Compile Include="DaxFiles\DaxHeaderEntry.cs" />
     <Compile Include="Delegates.cs" />
     <Compile Include="Display.cs" />
+    <Compile Include="DisplayColors.cs" />
     <Compile Include="EclBlock.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Effect.cs" />
     <Compile Include="Enums.cs" />
     <Compile Include="GameState.cs" />
+    <Compile Include="HardCodedText.cs" />
     <Compile Include="ImportSource.cs" />
     <Compile Include="IOSDisplay.cs" />
     <Compile Include="MenuColorSet.cs" />

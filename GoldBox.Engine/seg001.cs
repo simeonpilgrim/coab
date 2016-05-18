@@ -6,6 +6,7 @@ namespace GoldBox.Engine
 {
     public class seg001
     {
+        private static readonly TitleScreen _titleScreen = new TitleScreen();
         internal static System.Threading.Thread EngineThread;
 
         public delegate void VoidDelegate();
@@ -102,7 +103,7 @@ namespace GoldBox.Engine
 
             if (Cheats.skip_title_screen == false)
             {
-                ovr002.title_screen();
+                _titleScreen.DisplayTitleScreen();
             }
 
             gbl.displayInputSecondsToWait = 30;
@@ -147,7 +148,7 @@ namespace GoldBox.Engine
 
                 if (gbl.inDemo == true)
                 {
-                    ovr002.title_screen();
+                    _titleScreen.DisplayTitleScreen();
                     seg043.clear_keyboard();
 
                     gbl.displayInputSecondsToWait = 10;

@@ -2,7 +2,7 @@ using GoldBox.Classes;
 
 namespace GoldBox.Engine
 {
-    class seg041
+    public class seg041
     {
         internal static void DrawRectangle(byte color, int yEnd, int xEnd, int yStart, int xStart)
         {
@@ -21,7 +21,7 @@ namespace GoldBox.Engine
         }
 
 
-        internal static void Load8x8Tiles() // load_8x8d1_201
+        public static void Load8x8Tiles() // load_8x8d1_201
         {
             byte[] block_ptr;
             short block_size;
@@ -71,7 +71,10 @@ namespace GoldBox.Engine
             }
         }
 
-
+        internal static void displayString(string str, DisplayColors bgColor, DisplayColors fgColor, int yCol, int xCol)
+        {
+            displayString(str, (int) bgColor, (int) fgColor, yCol, xCol);
+        }
         internal static void displayString(string str, int bgColor, int fgColor, int yCol, int xCol)
         {
             if (xCol <= 0x27 && yCol <= 0x27)

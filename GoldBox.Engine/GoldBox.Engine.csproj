@@ -112,9 +112,10 @@
     </Compile>
     <Compile Include="CleanEightCharString.cs" />
     <Compile Include="FileManager.cs" />
+    <Compile Include="IKeyboardInput.cs" />
     <Compile Include="Utilities\DebuggingUtilities.cs" />
     <Compile Include="VmOpp.cs" />
-    <Compile Include="ovr002.cs">
+    <Compile Include="TitleScreen.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ovr003.cs">
