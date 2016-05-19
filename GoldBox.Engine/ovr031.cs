@@ -692,7 +692,7 @@ namespace GoldBox.Engine
             byte[] data;
             short bytesRead;
 
-            seg042.load_decode_dax(out data, out bytesRead, blockId, "GEO" + gbl.game_area.ToString() + ".dax");
+            seg042.load_decode_dax(out data, out bytesRead, blockId, "GEO" + gbl.game_area + ".dax");
 
             if (bytesRead == 0 || bytesRead != 0x402)
             {

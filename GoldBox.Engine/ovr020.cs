@@ -63,7 +63,7 @@ namespace GoldBox.Engine
             seg041.displayString(text2, 0, 15, 3, xCol);
 
             xCol += (byte)(text2.Length + 1);
-            string text = "Age " + player.age.ToString();
+            string text = "Age " + player.age;
 
             seg041.displayString(text, 0, 15, 3, xCol);
 
@@ -106,7 +106,7 @@ namespace GoldBox.Engine
 
             seg041.displayString(text2, 0, 15, 15, 7);
 
-            text = "Exp " + player.exp.ToString();
+            text = "Exp " + player.exp;
             seg041.displayString(text, 0, 15, 15, 17);
 
             ovr020.display_player_stats01();
@@ -1110,7 +1110,7 @@ namespace GoldBox.Engine
 
             ovr025.ItemDisplayNameBuild(false, false, 0, 0, item);
 
-            string offer = "I'll give you " + item_value.ToString() + " gold pieces for your " + item.name;
+            string offer = "I'll give you " + item_value + " gold pieces for your " + item.name;
 
             seg041.press_any_key(offer, true, 14, TextRegion.Normal2);
 

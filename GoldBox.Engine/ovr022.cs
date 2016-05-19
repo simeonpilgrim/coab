@@ -943,7 +943,7 @@ namespace GoldBox.Engine
                                 value = 0;
                             }
 
-                            string value_text = "The Gem is Valued at " + value.ToString() + " gp.";
+                            string value_text = "The Gem is Valued at " + value + " gp.";
 
                             seg041.displayString(value_text, 0, 15, 12, 1);
 

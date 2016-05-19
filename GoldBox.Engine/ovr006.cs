@@ -426,11 +426,11 @@ namespace GoldBox.Engine
             string text;
             if (gbl.combat_type == CombatType.duel)
             {
-                text = "The duelist receives " + exp.ToString();
+                text = "The duelist receives " + exp;
             }
             else
             {
-                text = "Each character receives " + exp.ToString();
+                text = "Each character receives " + exp;
             }
 
             seg041.displayString(text, 0, 10, 5, 1);

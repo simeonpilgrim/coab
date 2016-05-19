@@ -1203,7 +1203,7 @@ namespace GoldBox.Engine
             {
                 if (gbl.damage != 1)
                 {
-                    text = "takes " + gbl.damage.ToString() + " points of damage ";
+                    text = "takes " + gbl.damage + " points of damage ";
                 }
                 else
                 {

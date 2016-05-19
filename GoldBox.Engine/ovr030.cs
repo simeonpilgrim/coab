@@ -56,7 +56,7 @@ namespace GoldBox.Engine
                     short uncompressed_size;
                     byte[] uncompressed_data;
 
-                    seg042.load_decode_dax(out uncompressed_data, out uncompressed_size, block_id, file_name + gbl.game_area.ToString() + ".dax");
+                    seg042.load_decode_dax(out uncompressed_data, out uncompressed_size, block_id, file_name + gbl.game_area + ".dax");
 
                     if (uncompressed_size == 0)
                     {
@@ -235,7 +235,7 @@ namespace GoldBox.Engine
 
             if (gbl.bigpic_block_id != block_id)
             {
-                gbl.bigpic_dax = seg040.LoadDax(0, 0, block_id, "bigpic" + gbl.game_area.ToString());
+                gbl.bigpic_dax = seg040.LoadDax(0, 0, block_id, "bigpic" + gbl.game_area);
                 gbl.bigpic_block_id = block_id;
             }
         }

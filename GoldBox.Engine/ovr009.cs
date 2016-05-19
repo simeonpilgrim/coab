@@ -674,7 +674,7 @@ namespace GoldBox.Engine
 
             while (input != '\0' && input != 'E')
             {
-                string text = "GameSpeed (" + gbl.game_speed_var.ToString() + ") :";
+                string text = "GameSpeed (" + gbl.game_speed_var + ") :";
                 string menu = " ";
 
                 if (gbl.game_speed_var < 9)

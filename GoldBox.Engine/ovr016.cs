@@ -526,7 +526,7 @@ namespace GoldBox.Engine
 
                 if (found == false)
                 {
-                    EffectNameMap.Add(aff, "Funky--" + aff.ToString());
+                    EffectNameMap.Add(aff, "Funky--" + aff);
                 }
             }
 

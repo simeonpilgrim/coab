@@ -150,7 +150,7 @@ namespace GoldBox.Engine
                 }
                 else
                 {
-                    text += "Hitting for " + attackDamge.ToString();
+                    text += "Hitting for " + attackDamge;
 
                     if (attackDamge == 1)
                     {
@@ -1757,7 +1757,7 @@ namespace GoldBox.Engine
 
             if (showRange)
             {
-                string range_txt = "Range = " + range.ToString() + "  ";
+                string range_txt = "Range = " + range + "  ";
                 seg041.displayString(range_txt, 0, 10, 0x17, 0);
             }
 
@@ -1892,7 +1892,7 @@ namespace GoldBox.Engine
 
                     if (showRange)
                     {
-                        string range_text = "Range = " + (range / 2).ToString() + "  ";
+                        string range_text = "Range = " + (range / 2) + "  ";
 
                         seg041.displayString(range_text, 0, 10, 0x17, 0);
                     }

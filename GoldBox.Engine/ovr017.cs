@@ -99,8 +99,8 @@ namespace GoldBox.Engine
 
             var sizeToken = new char[] { '\0', 'S', 'T' };
 
-            ovr034.chead_cbody_comspr_icon(11, player.head_icon, "CHEAD" + sizeToken[player.icon_size].ToString());
-            ovr034.chead_cbody_comspr_icon(player.icon_id, player.weapon_icon, "CBODY" + sizeToken[player.icon_size].ToString());
+            ovr034.chead_cbody_comspr_icon(11, player.head_icon, "CHEAD" + sizeToken[player.icon_size]);
+            ovr034.chead_cbody_comspr_icon(player.icon_id, player.weapon_icon, "CBODY" + sizeToken[player.icon_size]);
 
             gbl.combat_icons[player.icon_id].MergeIcon(gbl.combat_icons[11]);
 
@@ -928,47 +928,53 @@ namespace GoldBox.Engine
         {
             gbl.import_from = ImportSource.Curse;
 
+            var games_list = GetGameList();
+
+            if (games_list.Length == 0)
+                return;
+
+            games_list = games_list.TrimEnd();
+
+            bool stop_loop = false;
+            char save_letter = '\0';
+            do
+            {
+                bool speical_key;
+                char input_key = ovr027.displayInput(out speical_key, false, 0, gbl.defaultMenuColors, games_list, "Load Which Game: ");
+
+                stop_loop = input_key == 0x00; // Escape
+                save_letter = '\0';
+
+                if (save_game_keys.MemberOf(input_key))
+                {
+                    save_letter = input_key;
+                    string file_name = Path.Combine(Config.SavePath, "savgam" + save_letter + ".dat");
+                    stop_loop = _fileManager.Exists(file_name);
+                }
+            } while (stop_loop == false);
+
+            if (save_letter != '\0')
+            {
+                string file_name = Path.Combine(Config.SavePath, "savgam" + save_letter + ".dat");
+
+                loadSaveGame(file_name);
+            }
+        }
+
+        private static string GetGameList()
+        {
             string games_list = string.Empty;
 
             for (char save_letter = 'A'; save_letter <= 'J'; save_letter++)
             {
-                string file_name = Path.Combine(Config.SavePath, "savgam" + save_letter.ToString() + ".dat");
+                string file_name = Path.Combine(Config.SavePath, "savgam" + save_letter + ".dat");
 
                 if (_fileManager.Exists(file_name))
                 {
-                    games_list += save_letter.ToString() + " ";
+                    games_list += save_letter + " ";
                 }
             }
-
-            if (games_list.Length != 0)
-            {
-                games_list = games_list.TrimEnd();
-
-                bool stop_loop = false;
-                char save_letter = '\0';
-                do
-                {
-                    bool speical_key;
-                    char input_key = ovr027.displayInput(out speical_key, false, 0, gbl.defaultMenuColors, games_list, "Load Which Game: ");
-
-                    stop_loop = input_key == 0x00; // Escape
-                    save_letter = '\0';
-
-                    if (save_game_keys.MemberOf(input_key))
-                    {
-                        save_letter = input_key;
-                        string file_name = Path.Combine(Config.SavePath, "savgam" + save_letter.ToString() + ".dat");
-                        stop_loop = _fileManager.Exists(file_name);
-                    }
-                } while (stop_loop == false);
-
-                if (save_letter != '\0')
-                {
-                    string file_name = Path.Combine(Config.SavePath, "savgam" + save_letter.ToString() + ".dat");
-
-                    loadSaveGame(file_name);
-                }
-            }
+            return games_list;
         }
 
         internal static void loadSaveGame(string file_name)
@@ -1126,7 +1132,7 @@ namespace GoldBox.Engine
 
                         if (unk_4AEEF.MemberOf(var_1FC) == false)
                         {
-                            seg041.DisplayAndPause("Unexpected error during save: " + var_1FC.ToString(), 14);
+                            seg041.DisplayAndPause("Unexpected error during save: " + var_1FC, 14);
                             return;
                         }
                     } while (unk_4AEEF.MemberOf(var_1FC) == false);
@@ -1185,7 +1191,7 @@ namespace GoldBox.Engine
                 foreach (Player tmp_player in gbl.TeamList)
                 {
                     party_count++;
-                    SavePlayer("CHRDAT" + inputKey + party_count.ToString(), tmp_player);
+                    SavePlayer("CHRDAT" + inputKey + party_count, tmp_player);
                     remove_player_file(tmp_player);
                 }
 

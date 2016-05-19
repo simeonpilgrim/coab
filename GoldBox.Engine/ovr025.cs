@@ -195,7 +195,7 @@ namespace GoldBox.Engine
 
             if (item.count > 0)
             {
-                item.name += item.count.ToString() + " ";
+                item.name += item.count + " ";
             }
 
             int hidden_names_flag = item.hidden_names_flag;

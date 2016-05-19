@@ -225,7 +225,7 @@ namespace GoldBox.Engine.Utilities
             sb = new System.Text.StringBuilder();
             foreach (var af in p.affects)
             {
-                sb.Append(af.type.ToString());
+                sb.Append(af.type);
                 sb.Append(", ");
             }
             if (sb.Length > 0)
