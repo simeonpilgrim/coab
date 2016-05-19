@@ -2,18 +2,19 @@ using GoldBox.Classes;
 
 namespace GoldBox.Engine
 {
-    class ovr004
+    class CodeWheel
     {
-        static string[] codeWheel = { 
-								 "CWLNRTESSCEDCSHSISERRRNSHSSTSSNNHSHN",
-								 "LAASRDAIILIDSUGADAEEOEGRLSELIITESOIO",
-								 "LRUNIMMORIIGRRIUPTIIUELIMLHMIXACGRIL",
-								 "Z0LIOHEUVNODSGEOGXYWISIOCRARLRARRHOI",
-								 "AMTELRLUIYNAEOOITOUELRREREUIMADPPFAB",
-								 "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
-							 };
+        static string[] codeWheel = 
+        { 
+            "CWLNRTESSCEDCSHSISERRRNSHSSTSSNNHSHN",
+            "LAASRDAIILIDSUGADAEEOEGRLSELIITESOIO",
+            "LRUNIMMORIIGRRIUPTIIUELIMLHMIXACGRIL",
+            "Z0LIOHEUVNODSGEOGXYWISIOCRARLRARRHOI",
+            "AMTELRLUIYNAEOOITOUELRREREUIMADPPFAB",
+            "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
+        };
 
-        internal static void copy_protection()
+        internal void copy_protection()
         {
             string code_path_str;
             char input_expected;
@@ -60,9 +61,9 @@ namespace GoldBox.Engine
                         break;
                 }
 
-                int code_row = seg051.Random(6);
+                var code_row = seg051.Random(6);
 
-                string text = "Type the character in box number " + (6 - code_row);
+                var text = "Type the character in box number " + (6 - code_row);
 
                 seg041.displayString(text, 0, 10, 12, 3);
 
@@ -70,7 +71,7 @@ namespace GoldBox.Engine
                 seg041.displayString(code_path_str, 0, 15, 13, 14);
                 seg041.displayString("path.", 0, 10, 13, 0x19);
 
-                int code_index = var_6 + 0x22 - var_7 + (code_path * 12) + ((5 - code_row) << 1);
+                var code_index = var_6 + 0x22 - var_7 + (code_path * 12) + ((5 - code_row) << 1);
 
                 while (code_index < 0)
                 {
@@ -84,9 +85,9 @@ namespace GoldBox.Engine
 
                 input_expected = codeWheel[code_row][code_index];
 
-                string input = seg041.getUserInputString(1, 0, 13, "type character and press return: ");
+                var input = seg041.getUserInputString(1, 0, 13, "type character and press return: ");
 
-                input_key = (input == null || input.Length == 0) ? ' ' : input[0];
+                input_key = string.IsNullOrEmpty(input) ? ' ' : input[0];
                 attempt++;
 
                 if (input_key != input_expected)

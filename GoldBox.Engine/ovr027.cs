@@ -65,7 +65,7 @@ namespace GoldBox.Engine
 
             for (int idx = 0; idx < menuText.Length; idx++)
             {
-                if (highlightable_text.MemberOf(menuText[idx]) == true)
+                if (highlightable_text.MemberOf(menuText[idx]))
                 {
                     if (highlighSet[index].start == -1)
                     {
@@ -99,7 +99,7 @@ namespace GoldBox.Engine
                     {
                         seg041.display_char01(text[i], 1, highlightFgColor, 0, 0x18, xOffset + i);
                     }
-                    else if (highlightable_text.MemberOf(text[i]) == true)
+                    else if (highlightable_text.MemberOf(text[i]))
                     {
                         seg041.display_char01(text[i], 1, 0, highlightFgColor, 0x18, xOffset + i);
                     }
@@ -179,7 +179,7 @@ namespace GoldBox.Engine
                     timeCursorOn = timeCursorOff.AddMilliseconds(300);
                 }
 
-                if ((gbl.area_ptr.picture_fade != 0 || useOverlay == true) &&
+                if ((gbl.area_ptr.picture_fade != 0 || useOverlay) &&
                     gbl.byte_1D556.curFrame > 0)
                 {
                     ovr030.DrawMaybeOverlayed(gbl.byte_1D556.CurrentPicture(), useOverlay, 3, 3);
@@ -201,7 +201,7 @@ namespace GoldBox.Engine
                     input_key = gbl.displayInputTimeoutValue;
                     stopLoop = true;
                 }
-                else if (seg049.KEYPRESSED() == true)
+                else if (seg049.KEYPRESSED())
                 {
                     input_key = (char)seg043.GetInputKey();
 
@@ -263,7 +263,7 @@ namespace GoldBox.Engine
                     else
                     {
                         input_key = char.ToUpper(input_key);
-                        if (unk_6C398.MemberOf(input_key) == true)
+                        if (unk_6C398.MemberOf(input_key))
                         {
                             if (input_key == 0x20)
                             {
@@ -292,7 +292,7 @@ namespace GoldBox.Engine
                         }
 
                         if (arg_6 != 0 &&
-                            unk_6C3B8.MemberOf(input_key) == true)
+                            unk_6C3B8.MemberOf(input_key))
                         {
                             if (input_key == 'W')
                             {
@@ -417,7 +417,7 @@ namespace GoldBox.Engine
         {
             int var_2 = 0;
 
-            if (backwardsStep == true)
+            if (backwardsStep)
             {
                 while (var_2 < listDisplayHeight && list[index].Heading)
                 {
@@ -464,7 +464,7 @@ namespace GoldBox.Engine
         {
             int screenOffset = index - gbl.menuScreenIndex;
 
-            if (backwardsStep == true)
+            if (backwardsStep)
             {
                 gbl.menuScreenIndex += listDisplayHeight;
                 if ((list.Count - listDisplayHeight) < gbl.menuScreenIndex)
@@ -493,7 +493,7 @@ namespace GoldBox.Engine
 
         static int menu_sub_6CDCA(bool backwardsStep, int index, List<MenuItem> list, int listDisplayHeight) // sub_6CDCA
         {
-            if (backwardsStep == true)
+            if (backwardsStep)
             {
                 index += 1;
 
@@ -569,7 +569,7 @@ namespace GoldBox.Engine
             index_ptr++;
             index_ptr = menu_sub_6CDCA(false, index_ptr, stringList, listDisplayHeight);
 
-            if (redrawMenuItems == true)
+            if (redrawMenuItems)
             {
                 sub_6C897(gbl.menuScreenIndex, endY, endX, startY, startX,
                     stringList, colors.foreground, colors.prompt, listDisplayWidth);
@@ -599,7 +599,7 @@ namespace GoldBox.Engine
                     showPrevious = true;
                 }
 
-                if (showExit == true)
+                if (showExit)
                 {
                     displayString += " Exit";
                 }
@@ -609,7 +609,7 @@ namespace GoldBox.Engine
 
                 ListItemNormal(index_ptr, stringList, startY, startX, colors.foreground, colors.prompt);
 
-                if (speical_key == true)
+                if (speical_key)
                 {
                     switch (input_key)
                     {
@@ -622,14 +622,14 @@ namespace GoldBox.Engine
                             break;
 
                         case 'I':
-                            if (showPrevious == true)
+                            if (showPrevious)
                             {
                                 menu_sub_6CD38(false, ref index_ptr, stringList, listDisplayHeight, endY, endX, startY, startX, colors.foreground, colors.prompt, listDisplayWidth);
                             }
                             break;
 
                         case 'Q':
-                            if (showNext == true)
+                            if (showNext)
                             {
                                 menu_sub_6CD38(true, ref index_ptr, stringList, listDisplayHeight, endY, endX, startY, startX, colors.foreground, colors.prompt, listDisplayWidth);
                             }

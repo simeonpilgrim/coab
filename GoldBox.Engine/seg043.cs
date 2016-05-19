@@ -18,16 +18,16 @@ namespace GoldBox.Engine
 
             ItemLibrary.Write();
 
-            seg001.EngineStop();
+            GameEngine.EngineStop();
         }
 
         internal static byte GetInputKey()
         {
             byte key;
 
-            if (gbl.inDemo == true)
+            if (gbl.inDemo)
             {
-                if (seg049.KEYPRESSED() == true)
+                if (seg049.KEYPRESSED())
                 {
                     key = seg049.READKEY();
                 }
@@ -53,7 +53,7 @@ namespace GoldBox.Engine
 
             if (key != 0)
             {
-                while (seg049.KEYPRESSED() == true)
+                while (seg049.KEYPRESSED())
                 {
                     key = seg049.READKEY();
                 }

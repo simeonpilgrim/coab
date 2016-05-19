@@ -152,7 +152,7 @@ namespace GoldBox.Engine
                 gbl.textYCol = yStart;
             }
 
-            if (clearArea == true)
+            if (clearArea)
             {
                 seg037.draw8x8_clear_area(yEnd, xEnd, yStart, xStart);
                 gbl.textXCol = xStart;
@@ -170,7 +170,7 @@ namespace GoldBox.Engine
                     //text.LastIndexOfAny(syms, text_start);
 
                     while (text_end < input_lenght &&
-                        puncutation.MemberOf(text[text_end - 1]) == true)
+                        puncutation.MemberOf(text[text_end - 1]))
                     {
                         text_end++;
                     }
@@ -185,7 +185,7 @@ namespace GoldBox.Engine
                     if (text[text_end - 1] != ' ')
                     {
                         while (text_end + 1 < input_lenght &&
-                            puncutation.MemberOf(text[text_end]) == true)
+                            puncutation.MemberOf(text[text_end]))
                         {
                             text_end++;
                         }

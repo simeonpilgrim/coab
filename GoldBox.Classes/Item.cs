@@ -278,7 +278,7 @@ namespace GoldBox.Classes
                     name += itemNames[field_2EArray(var_1)];
 
                     if (count < 2 ||
-                        pural_added == true)
+                        pural_added)
                     {
                         name += " ";
                     }

@@ -398,7 +398,7 @@ namespace GoldBox.Engine
 
                     sub_5279B(gbl.unk_1AE0B);/*TODO - extra params - gbl.word_1AE15, gbl.word_1AE13, gbl.word_1AE11, gbl.word_1AE0F );*/
 
-                    if (seg049.KEYPRESSED() == true)
+                    if (seg049.KEYPRESSED())
                     {
                         gbl.byte_1AE0A = seg049.READKEY();
                     }

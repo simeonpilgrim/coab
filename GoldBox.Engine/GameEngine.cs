@@ -4,8 +4,9 @@ using GoldBox.Classes.DaxFiles;
 
 namespace GoldBox.Engine
 {
-    public class seg001
+    public class GameEngine
     {
+        private static readonly CodeWheel _codeWheel = new CodeWheel();
         private static readonly TitleScreen _titleScreen = new TitleScreen();
         internal static System.Threading.Thread EngineThread;
 
@@ -122,12 +123,12 @@ namespace GoldBox.Engine
             if (Cheats.skip_copy_protection == false &&
                 gbl.inDemo == false)
             {
-                ovr004.copy_protection();
+                _codeWheel.copy_protection();
             }
 
             while (true)
             {
-                if (gbl.inDemo == true)
+                if (gbl.inDemo)
                 {
                     gbl.game_area = 1;
                     gbl.game_speed_var = 9;
@@ -146,7 +147,7 @@ namespace GoldBox.Engine
 
                 InitAgain();
 
-                if (gbl.inDemo == true)
+                if (gbl.inDemo)
                 {
                     _titleScreen.DisplayTitleScreen();
                     seg043.clear_keyboard();
@@ -164,7 +165,7 @@ namespace GoldBox.Engine
                     if (Cheats.skip_copy_protection == false &&
                         gbl.inDemo == false)
                     {
-                        ovr004.copy_protection();
+                        _codeWheel.copy_protection();
                     }
 
                     seg044.PlaySound(Sound.sound_0);

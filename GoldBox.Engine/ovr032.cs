@@ -250,7 +250,7 @@ namespace GoldBox.Engine
                         {
                             int tmp_range = max_range;
 
-                            if (canReachTarget(ref tmp_range, targetPos, attackerPos) == true)
+                            if (canReachTarget(ref tmp_range, targetPos, attackerPos))
                             {
                                 found = true;
 
@@ -264,7 +264,7 @@ namespace GoldBox.Engine
                         }
                     }
 
-                    if (found == true)
+                    if (found)
                     {
                         byte tmpDir = FindCombatantDirection(found_target, found_attacker);
 

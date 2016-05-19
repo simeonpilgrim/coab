@@ -222,7 +222,7 @@ namespace GoldBox.Engine
             player.activeItems.UndreadyAll(player.classFlags);
 
 
-            if (DualClassExceedLastLevel(player) == true)
+            if (DualClassExceedLastLevel(player))
             {
                 for (int class_index = 0; class_index <= 7; class_index++)
                 {
@@ -270,7 +270,7 @@ namespace GoldBox.Engine
 
             if (clericLvl > 0)
             {
-                if (ResetSpellLevels == true)
+                if (ResetSpellLevels)
                 {
                     for (int sp_lvl = 1; sp_lvl < 5; sp_lvl++)
                     {
@@ -378,7 +378,7 @@ namespace GoldBox.Engine
         {
             if (player.race == Race.dwarf ||
                 player.race == Race.halfling ||
-                applyBonus == true)
+                applyBonus)
             {
                 if (player.stats2.Con.full >= 4 && player.stats2.Con.full <= 6)
                 {
@@ -487,7 +487,7 @@ namespace GoldBox.Engine
 
             int thiefLvl = player.SkillLevel(SkillType.Thief);
 
-            if (thiefLvl < 4 && var_B == true)
+            if (thiefLvl < 4 && var_B)
             {
                 thiefLvl = 4;
                 var_B = false;
@@ -497,7 +497,7 @@ namespace GoldBox.Engine
 
             for (int skill = 1; skill <= 8; skill++)
             {
-                if (var_A == true)
+                if (var_A)
                 {
                     switch (skill)
                     {
@@ -543,7 +543,7 @@ namespace GoldBox.Engine
 
                 }
 
-                if (var_B == true)
+                if (var_B)
                 {
                     player.thief_skills[skill - 1] += 10;
                 }
@@ -565,7 +565,7 @@ namespace GoldBox.Engine
                 var_3++;
             }
 
-            var_2 = (var_2 == true && var_3 > 5);
+            var_2 = (var_2 && var_3 > 5);
             var_3 = 0;
 
             while (var_3 <= 5 &&
@@ -574,7 +574,7 @@ namespace GoldBox.Engine
                 var_3++;
             }
 
-            var_2 = (var_2 == true && var_3 > 5);
+            var_2 = (var_2 && var_3 > 5);
 
             byte var_4 = 1;
 
@@ -606,7 +606,7 @@ namespace GoldBox.Engine
 
             foreach (var _class in gbl.RaceClasses[(int)player.race])
             {
-                if (SecondClassAllowed(_class, player) == true)
+                if (SecondClassAllowed(_class, player))
                 {
                     list.Add(new MenuItem(ovr020.classString[(int)_class]));
                 }

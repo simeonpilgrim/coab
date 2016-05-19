@@ -40,13 +40,13 @@ namespace GoldBox.Engine
                 var_2 = FleeCheck_001(player);
             }
 
-            if (player.actions.moral_failure == true &&
+            if (player.actions.moral_failure &&
                 player.actions.fleeing == false)
             {
                 ovr025.DisplayPlayerStatusString(true, 10, "flees in panic", player);
             }
 
-            if (var_2 == true)
+            if (var_2)
             {
                 return;
             }
@@ -71,7 +71,7 @@ namespace GoldBox.Engine
                 return;
             }
 
-            if (sub_3560B(player) == true)
+            if (sub_3560B(player))
             {
                 return;
             }
@@ -81,9 +81,9 @@ namespace GoldBox.Engine
 
             while (var_2 == false)
             {
-                if (ovr014.find_target(false, 1, 0xff, player) == true &&
+                if (ovr014.find_target(false, 1, 0xff, player) &&
                     player.actions.delay > 0 &&
-                    player.in_combat == true)
+                    player.in_combat)
                 {
                     var_2 = sub_35DB1(player);
                 }
@@ -102,7 +102,7 @@ namespace GoldBox.Engine
 
             if (player.actions.hasTurnedUndead == false &&
                 (player.cleric_lvl > 0 || player.cleric_old_lvl > player.multiclassLevel) &&
-                ovr014.FindLowestE9Target(out var_5, player) == true)
+                ovr014.FindLowestE9Target(out var_5, player))
             {
                 ovr014.turns_undead(player);
                 return true;
@@ -165,7 +165,7 @@ namespace GoldBox.Engine
                         {
                             foreach (var cpi in nearTargets)
                             {
-                                if (ShouldCastSpellX_sub1(spellId, cpi.pos) == true)
+                                if (ShouldCastSpellX_sub1(spellId, cpi.pos))
                                 {
                                     return false;
                                 }
@@ -185,7 +185,7 @@ namespace GoldBox.Engine
             Item bestWand = null;
 
             int teamCount = player.OppositeTeam() == CombatTeam.Ours ? gbl.friends_count : gbl.foe_count;
-            if (player.actions.can_use == true &&
+            if (player.actions.can_use &&
                 teamCount > 0 &&
                 gbl.area_ptr.can_cast_spells == false)
             {
@@ -235,7 +235,7 @@ namespace GoldBox.Engine
 
             int spells_count = 0;
 
-            if (player.actions.can_cast == true)
+            if (player.actions.can_cast)
             {
                 foreach (int id in player.spellList.LearntList())
                 {
@@ -250,7 +250,7 @@ namespace GoldBox.Engine
 
 
             if (spells_count > 0 &&
-                (player.control_morale >= Control.NPC_Base || gbl.AutoPCsCastMagic == true))
+                (player.control_morale >= Control.NPC_Base || gbl.AutoPCsCastMagic))
             {
                 if ((player.OppositeTeam() == CombatTeam.Ours ? gbl.friends_count : gbl.foe_count) > 0)
                 {
@@ -329,7 +329,7 @@ namespace GoldBox.Engine
 
                 if (playerIndex == 0 && move_cost < player.actions.move)
                 {
-                    if (isNoxiousCloud == true &&
+                    if (isNoxiousCloud &&
                         player.HasAffect(Affects.animate_dead) == false &&
                         player.HasAffect(Affects.stinking_cloud) == false &&
                         player.HasAffect(Affects.affect_6f) == false &&
@@ -344,7 +344,7 @@ namespace GoldBox.Engine
                         }
                     }
 
-                    if (isPoisonousCloud == true &&
+                    if (isPoisonousCloud &&
                         player.HitDice < 7 &&
                         player.HasAffect(Affects.protect_magic) == false &&
                         player.HasAffect(Affects.affect_6f) == false &&
@@ -387,7 +387,7 @@ namespace GoldBox.Engine
                    (player.control_morale >= Control.NPC_Base && gbl.enemyHealthPercentage <= (ovr024.roll_dice(100, 1) + gbl.monster_morale)) ||
                     player.combat_team == CombatTeam.Enemy)
                 {
-                    if (player.actions.moral_failure == true ||
+                    if (player.actions.moral_failure ||
                         player.activeItems.armor != null ||
                         player._class != ClassId.magic_user)
                     {
@@ -415,8 +415,8 @@ namespace GoldBox.Engine
                         while (dirStep < 6 && var_5 == false &&
                             CanMove(out zeroTitle, dir, dirStep, player) == false)
                         {
-                            if (player.actions.moral_failure == true &&
-                                zeroTitle == true)
+                            if (player.actions.moral_failure &&
+                                zeroTitle)
                             {
                                 var_5 = true;
                                 ovr014.flee_battle(player);
@@ -427,7 +427,7 @@ namespace GoldBox.Engine
                             }
                         }
 
-                        if (var_5 == true)
+                        if (var_5)
                         {
                             player.actions.move = 0;
                             player.actions.moral_failure = false;
@@ -516,7 +516,7 @@ namespace GoldBox.Engine
             ovr024.CheckAffectsEffect(player, CheckType.Type_14);
 
             if (player.combat_team == CombatTeam.Ours &&
-                ovr025.bandage(true) == true)
+                ovr025.bandage(true))
             {
                 player.actions.delay = 0;
             }
@@ -525,9 +525,9 @@ namespace GoldBox.Engine
             bool stop = false;
             bool delayed = player.actions.delay != 0;
 
-            while (stop == false && delayed == true)
+            while (stop == false && delayed)
             {
-                if (player.actions.moral_failure == true)
+                if (player.actions.moral_failure)
                 {
                     while (player.actions.move > 0 &&
                         player.actions.delay > 0 &&
@@ -547,7 +547,7 @@ namespace GoldBox.Engine
                     stop = false;
                 }
 
-                if (stop == false && delayed == true)
+                if (stop == false && delayed)
                 {
                     counter++;
 
@@ -581,7 +581,7 @@ namespace GoldBox.Engine
                     }
 
                     if (target != null &&
-                        ovr014.CanSeeTargetA(target, player) == true)
+                        ovr014.CanSeeTargetA(target, player))
                     {
                         var targetPos = ovr033.PlayerMapPos(target);
                         var attackPos = ovr033.PlayerMapPos(player);
@@ -590,7 +590,7 @@ namespace GoldBox.Engine
 
                         gbl.mapToBackGroundTile.ignoreWalls = false;
 
-                        if (ovr032.canReachTarget(ref steps, targetPos, attackPos) == true &&
+                        if (ovr032.canReachTarget(ref steps, targetPos, attackPos) &&
                             (steps / 2) <= range)
                         {
                             gbl.byte_1D90E = true;
@@ -603,7 +603,7 @@ namespace GoldBox.Engine
 
                         if (nearTargets.Count == 0)
                         {
-                            if (ovr014.find_target(false, 0, 0xff, player) == true)
+                            if (ovr014.find_target(false, 0, 0xff, player))
                             {
                                 moralFailureEscape(player);
                             }
@@ -619,7 +619,7 @@ namespace GoldBox.Engine
 
                             target = nearTargets[roll - 1].player;
 
-                            if (ovr025.is_weapon_ranged(player) == true &&
+                            if (ovr025.is_weapon_ranged(player) &&
                                 ovr025.is_weapon_ranged_melee(player) == false &&
                                 ovr025.BuildNearTargets(1, player).Count > 0)
                             {
@@ -627,21 +627,21 @@ namespace GoldBox.Engine
                                 stop = true;
                             }
                             else if (ovr025.getTargetRange(target, player) == 1 ||
-                                ovr014.CanSeeTargetA(target, player) == true)
+                                ovr014.CanSeeTargetA(target, player))
                             {
                                 gbl.byte_1D90E = true;
                             }
                         }
                     }
 
-                    if (gbl.byte_1D90E == true)
+                    if (gbl.byte_1D90E)
                     {
                         ovr033.redrawCombatArea(ovr014.getTargetDirection(target, player), 2, ovr033.PlayerMapPos(player));
                     }
 
-                    if (gbl.byte_1D90E == true)
+                    if (gbl.byte_1D90E)
                     {
-                        if (ovr014.TrySweepAttack(target, player) == true)
+                        if (ovr014.TrySweepAttack(target, player))
                         {
                             stop = true;
                             ovr025.clear_actions(player);
@@ -652,11 +652,11 @@ namespace GoldBox.Engine
 
                             Item item = null;
 
-                            if (ovr025.is_weapon_ranged(player) == true)
+                            if (ovr025.is_weapon_ranged(player))
                             {
                                 gbl.byte_1D90E = ovr025.GetCurrentAttackItem(out item, player);
 
-                                if (ovr025.is_weapon_ranged_melee(player) == true &&
+                                if (ovr025.is_weapon_ranged_melee(player) &&
                                     ovr025.getTargetRange(target, player) == 1)
                                 {
                                     item = null;
@@ -665,7 +665,7 @@ namespace GoldBox.Engine
 
                             stop = ovr014.AttackTarget(item, 0, target, player);
 
-                            if (stop == true)
+                            if (stop)
                             {
                                 delayed = false;
                             }
@@ -686,8 +686,8 @@ namespace GoldBox.Engine
         {
             ovr025.ClearPlayerTextArea();
 
-            if (player.IsHeld() == true ||
-                ovr025.is_weapon_ranged(player) == true ||
+            if (player.IsHeld() ||
+                ovr025.is_weapon_ranged(player) ||
                 player.actions.delay == 0)
             {
                 player.actions.Clear();
@@ -706,7 +706,7 @@ namespace GoldBox.Engine
         {
             bool player_turn = false;
 
-            if (seg049.KEYPRESSED() == true)
+            if (seg049.KEYPRESSED())
             {
                 byte var_6 = seg043.GetInputKey();
 
@@ -719,7 +719,7 @@ namespace GoldBox.Engine
                 {
                     gbl.AutoPCsCastMagic = !gbl.AutoPCsCastMagic;
 
-                    if (gbl.AutoPCsCastMagic == true)
+                    if (gbl.AutoPCsCastMagic)
                     {
                         ovr025.string_print01("Magic On");
                     }
@@ -764,7 +764,7 @@ namespace GoldBox.Engine
 
             ovr024.RemoveAttackersAffects(player);
 
-            if (player.actions.fleeing == true)
+            if (player.actions.fleeing)
             {
                 player.actions.moral_failure = true;
                 ovr025.DisplayPlayerStatusString(true, 10, "is forced to flee", player);
@@ -863,7 +863,7 @@ namespace GoldBox.Engine
                 rating = 0;
             }
 
-            if (item.cursed == true)
+            if (item.cursed)
             {
                 rating = 0;
             }
@@ -973,8 +973,8 @@ namespace GoldBox.Engine
 
             if (var_4 != null &&
                 var_15 > (var_16 >> 1) &&
-                var_1F == true &&
-                (ranged_melee == true || ovr025.BuildNearTargets(1, player).Count == 0))
+                var_1F &&
+                (ranged_melee || ovr025.BuildNearTargets(1, player).Count == 0))
             {
                 weapon = var_4;
             }
@@ -988,7 +988,7 @@ namespace GoldBox.Engine
 
             if (player.activeItems.primaryWeapon != null &&
                 (player.activeItems.primaryWeapon == weapon ||
-                 player.activeItems.primaryWeapon.cursed == true))
+                 player.activeItems.primaryWeapon.cursed))
             {
                 replace_weapon = false;
             }
@@ -1021,7 +1021,7 @@ namespace GoldBox.Engine
             replace_weapon = true;
 
             if (player.activeItems.secondaryWeapon != null &&
-                (player.activeItems.secondaryWeapon == best_weapon || player.activeItems.secondaryWeapon.cursed == true))
+                (player.activeItems.secondaryWeapon == best_weapon || player.activeItems.secondaryWeapon.cursed))
             {
                 replace_weapon = false;
             }
@@ -1029,7 +1029,7 @@ namespace GoldBox.Engine
             if (player.weaponsHandsUsed > 2)
             {
                 if (player.activeItems.secondaryWeapon == null ||
-                    player.activeItems.secondaryWeapon.cursed == true)
+                    player.activeItems.secondaryWeapon.cursed)
                 {
                     ovr020.ready_Item(weapon);
                     itemsChanged = true;
@@ -1059,7 +1059,7 @@ namespace GoldBox.Engine
 
             ovr025.reclac_player_values(player);
 
-            if (itemsChanged == true)
+            if (itemsChanged)
             {
                 ovr025.CombatDisplayPlayerSummary(player);
             }

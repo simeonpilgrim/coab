@@ -173,7 +173,7 @@ namespace GoldBox.Engine
         {
             item.name = string.Empty;
 
-            if (displayReadied == true)
+            if (displayReadied)
             {
                 if (item.readied)
                 {
@@ -187,8 +187,8 @@ namespace GoldBox.Engine
 
             bool detectMagic = gbl.TeamList.Exists(pla => pla.HasAffect(Affects.detect_magic));
 
-            if (detectMagic == true &&
-                (item.plus > 0 || item.plus_save > 0 || item.cursed == true))
+            if (detectMagic &&
+                (item.plus > 0 || item.plus_save > 0 || item.cursed))
             {
                 item.name += "* ";
             }
@@ -281,7 +281,7 @@ namespace GoldBox.Engine
                 colour = 0x0A;
             }
 
-            if (hightlighted == true)
+            if (hightlighted)
             {
                 colour = 0x0D;
             }
@@ -292,7 +292,7 @@ namespace GoldBox.Engine
 
         internal static void CombatDisplayPlayerSummary(Player player) /* hitpoint_ac */
         {
-            if (gbl.display_hitpoints_ac == true)
+            if (gbl.display_hitpoints_ac)
             {
                 gbl.display_hitpoints_ac = false;
                 seg037.draw8x8_clear_area(TextRegion.CombatSummary);
@@ -328,7 +328,7 @@ namespace GoldBox.Engine
                 {
                     seg041.displayString(ovr020.statusString[(int)player.health_status], 0, 15, line + 1, 0x17);
                 }
-                else if (player.IsHeld() == true)
+                else if (player.IsHeld())
                 {
                     seg041.displayString("(Helpless)", 0, 15, line + 1, 0x17);
                 }
@@ -451,7 +451,7 @@ namespace GoldBox.Engine
                 stat_bonus[3] = 0;
             }
 
-            if (var_8 == true)
+            if (var_8)
             {
                 if (player.weight < 5000)
                 {
@@ -804,7 +804,7 @@ namespace GoldBox.Engine
                 seg041.press_any_key(text, true, 10, 0x16, 0x26, line_y + 2, 1);
             }
 
-            if (clearDisplay == true)
+            if (clearDisplay)
             {
                 seg041.GameDelay();
                 ovr025.ClearPlayerTextArea();
@@ -852,7 +852,7 @@ namespace GoldBox.Engine
         {
             int dataSize = gbl.missile_dax.bpp;
 
-            if (flipIcon == true)
+            if (flipIcon)
             {
                 gbl.combat_icons[iconIdx].GetIcon(iconAction, 0).FlipIconLeftToRight();
             }
@@ -1273,7 +1273,7 @@ namespace GoldBox.Engine
 
             foreach (Player player in gbl.TeamList)
             {
-                if (player.in_combat == true)
+                if (player.in_combat)
                 {
                     if (player.combat_team == CombatTeam.Ours)
                     {
@@ -1386,7 +1386,7 @@ namespace GoldBox.Engine
                 }
             }
 
-            if (gbl.spell_from_item == true &&
+            if (gbl.spell_from_item &&
                 gbl.spellCastingTable[spell_id].spellClass != SpellClass.Monster)
             {
                 target_count = 6;
@@ -1407,7 +1407,7 @@ namespace GoldBox.Engine
                     break;
 
                 case GameState.Shop:
-                    if (gbl.redrawBoarder == true)
+                    if (gbl.redrawBoarder)
                     {
                         seg037.draw8x8_03();
                     }
@@ -1541,7 +1541,7 @@ namespace GoldBox.Engine
 
                 int index = gbl.TeamList.IndexOf(player);
 
-                if (special_key == true)
+                if (special_key)
                 {
                     if (input_key == 'O')
                     {
@@ -1556,7 +1556,7 @@ namespace GoldBox.Engine
                         player = gbl.TeamList[index];
                     }
                 }
-                else if (showExit == true)
+                else if (showExit)
                 {
                     if (input_key == 'E' ||
                         input_key == 0)
@@ -1638,7 +1638,7 @@ namespace GoldBox.Engine
                 {
                     someoneBleeding = true;
 
-                    if (applyBandage == true)
+                    if (applyBandage)
                     {
                         player.health_status = Status.unconscious;
                         player.actions.bleeding = 0;

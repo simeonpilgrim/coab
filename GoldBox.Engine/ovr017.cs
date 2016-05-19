@@ -10,8 +10,7 @@ namespace GoldBox.Engine
         private static readonly FileManager _fileManager = new FileManager();
         private static readonly CleanEightCharString _stringCleaner = new CleanEightCharString();
 
-        static void BuildLoadablePlayersLists(ref List<MenuItem> fileNames, ref List<MenuItem> displayNames,
-            short playerFileSize, int npcOffset, int nameOffset, string fileFilter) // sub_4708B
+        static void BuildLoadablePlayersLists(ref List<MenuItem> fileNames, ref List<MenuItem> displayNames, short playerFileSize, int npcOffset, int nameOffset, string fileFilter) // sub_4708B
         {
             var file = new Classes.OpenOrCreateFile();
 
@@ -163,7 +162,7 @@ namespace GoldBox.Engine
 
             while (input_key == 'N' &&
                 arg_0.Length == 0 &&
-                _fileManager.Exists(Path.Combine(Config.SavePath, file_text) + ext_text) == true)
+                _fileManager.Exists(Path.Combine(Config.SavePath, file_text) + ext_text))
             {
                 input_key = ovr027.yes_no(gbl.alertMenuColors, "Overwrite " + file_text + "? ");
 
@@ -514,7 +513,7 @@ namespace GoldBox.Engine
                 {
                     if (file.BlockRead(Affect.StructSize, data) == Affect.StructSize)
                     {
-                        if (asc_49280.MemberOf(data[0]) == true)
+                        if (asc_49280.MemberOf(data[0]))
                         {
                             var tmpAffect = new Affect(data, 0);
                             player.affects.Add(tmpAffect);
@@ -627,7 +626,7 @@ namespace GoldBox.Engine
 
             string fileExt = ".guy";
 
-            if (PlayerFileExists(fileExt, hf_player.name) == true)
+            if (PlayerFileExists(fileExt, hf_player.name))
             {
                 string savename = Path.Combine(Config.SavePath, Path.ChangeExtension(arg_8, fileExt));
 
@@ -685,7 +684,7 @@ namespace GoldBox.Engine
             {
                 fileExt = ".cha";
 
-                if (PlayerFileExists(fileExt, hf_player.name) == true)
+                if (PlayerFileExists(fileExt, hf_player.name))
                 {
                     byte[] data = new byte[PoolRadPlayer.StructSize];
 
@@ -912,7 +911,7 @@ namespace GoldBox.Engine
             player.icon_id = 0;
 
             while (player.icon_id < 8 &&
-                icon_slot[player.icon_id] == true)
+                icon_slot[player.icon_id])
             {
                 player.icon_id += 1;
             }
@@ -935,7 +934,7 @@ namespace GoldBox.Engine
             {
                 string file_name = Path.Combine(Config.SavePath, "savgam" + save_letter.ToString() + ".dat");
 
-                if (_fileManager.Exists(file_name) == true)
+                if (_fileManager.Exists(file_name))
                 {
                     games_list += save_letter.ToString() + " ";
                 }
@@ -955,7 +954,7 @@ namespace GoldBox.Engine
                     stop_loop = input_key == 0x00; // Escape
                     save_letter = '\0';
 
-                    if (save_game_keys.MemberOf(input_key) == true)
+                    if (save_game_keys.MemberOf(input_key))
                     {
                         save_letter = input_key;
                         string file_name = Path.Combine(Config.SavePath, "savgam" + save_letter.ToString() + ".dat");
@@ -1036,7 +1035,7 @@ namespace GoldBox.Engine
             {
                 string var_1F6 = _stringCleaner.clean_string(var_148[index]);
 
-                if (_fileManager.Exists(Path.Combine(Config.SavePath, var_1F6 + ".sav")) == true)
+                if (_fileManager.Exists(Path.Combine(Config.SavePath, var_1F6 + ".sav")))
                 {
                     var player = new Player();
 

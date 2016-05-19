@@ -52,7 +52,7 @@ namespace GoldBox.Engine
 
             foreach (Player player in gbl.TeamList)
             {
-                if (bash_worked == true)
+                if (bash_worked)
                 {
                     break;
                 }
@@ -209,7 +209,7 @@ namespace GoldBox.Engine
                 }
             }
 
-            if (bash_worked == true)
+            if (bash_worked)
             {
                 MapSetDoorUnlocked(gbl.mapDirection, gbl.mapPosY, gbl.mapPosX);
 
@@ -241,7 +241,7 @@ namespace GoldBox.Engine
 
             gbl.can_pick_door = false;
 
-            if (door_picked == true)
+            if (door_picked)
             {
                 MapSetDoorUnlocked(gbl.mapDirection, gbl.mapPosY, gbl.mapPosX);
 
@@ -488,18 +488,18 @@ namespace GoldBox.Engine
                     {
                         string prompt = string.Empty;
 
-                        if (gbl.can_bash_door == true)
+                        if (gbl.can_bash_door)
                         {
                             prompt = "Bash";
                         }
 
-                        if (gbl.can_pick_door == true &&
+                        if (gbl.can_pick_door &&
                             AnyPlayerHasSkill(SkillType.Thief))
                         {
                             prompt += " Pick";
                         }
 
-                        if (gbl.can_knock_door == true &&
+                        if (gbl.can_knock_door &&
                             TeamMemberHasSpell(Spells.knock))
                         {
                             prompt += " Knock";
@@ -531,18 +531,18 @@ namespace GoldBox.Engine
                     {
                         string prompt = string.Empty;
 
-                        if (gbl.can_bash_door == true)
+                        if (gbl.can_bash_door)
                         {
                             prompt = "Bash";
                         }
 
-                        if (gbl.can_pick_door == true &&
+                        if (gbl.can_pick_door &&
                             AnyPlayerHasSkill(SkillType.Thief))
                         {
                             prompt += " Pick";
                         }
 
-                        if (gbl.can_knock_door == true &&
+                        if (gbl.can_knock_door &&
                             TeamMemberHasSpell(Spells.knock))
                         {
                             prompt += " Knock";
@@ -571,7 +571,7 @@ namespace GoldBox.Engine
                         }
                     }
 
-                    if (var_1 == true)
+                    if (var_1)
                     {
                         MovePartyForward();
                     }

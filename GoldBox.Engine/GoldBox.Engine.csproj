@@ -111,6 +111,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="CleanEightCharString.cs" />
+    <Compile Include="CmdItem.cs" />
     <Compile Include="FileManager.cs" />
     <Compile Include="IKeyboardInput.cs" />
     <Compile Include="Utilities\DebuggingUtilities.cs" />
@@ -121,7 +122,7 @@
     <Compile Include="ovr003.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ovr004.cs">
+    <Compile Include="CodeWheel.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ovr005.cs">
@@ -214,7 +215,7 @@
     <Compile Include="ovr038.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="seg001.cs">
+    <Compile Include="GameEngine.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="seg037.cs">

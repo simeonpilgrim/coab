@@ -73,7 +73,7 @@ namespace GoldBox.Engine
 
             if (affect != null)
             {
-                if (affect.callAffectTable == true)
+                if (affect.callAffectTable)
                 {
                     ovr013.CallAffectTable(Effect.Remove, affect, player, affect_id);
                 }
@@ -101,17 +101,17 @@ namespace GoldBox.Engine
             bool found = false;
 
             Affect affect;
-            if (ovr025.FindAffect(out affect, affect_type, player) == true)
+            if (ovr025.FindAffect(out affect, affect_type, player))
             {
                 found = true;
             }
-            else if (System.Array.Exists(unk_6325A, vv => vv ==affect_type) == true)
+            else if (System.Array.Exists(unk_6325A, vv => vv ==affect_type))
             {
                 foreach (Player team_member in gbl.TeamList)
                 {
                     if (found) break;
 
-                    if (ovr025.FindAffect(out affect, affect_type, team_member) == true)
+                    if (ovr025.FindAffect(out affect, affect_type, team_member))
                     {
                         if (gbl.game_state == GameState.Combat)
                         {
@@ -129,7 +129,7 @@ namespace GoldBox.Engine
                 }
             }
 
-            if (found == true)
+            if (found)
             {
                 ovr013.CallAffectTable(Effect.Add, affect, player, affect_type);
             }
@@ -381,7 +381,7 @@ namespace GoldBox.Engine
             {
                 for (int i = 0; i < arraySize; i++)
                 {
-                    if (cell.present[i] == true &&
+                    if (cell.present[i] &&
                         cell.targetPos + gbl.MapDirectionDelta[directions[i]] == mapPos)
                     {
                         return true;
@@ -399,7 +399,7 @@ namespace GoldBox.Engine
 
         internal static void in_poison_cloud(byte arg_0, Player player)
         {
-            if (player.in_combat == true)
+            if (player.in_combat)
             {
                 bool isPoisonousCloud;
                 bool isNoxiouxCloud;
@@ -417,7 +417,7 @@ namespace GoldBox.Engine
                 {
                     bool save_passed = RollSavingThrow(0, 0, player);
 
-                    if (save_passed == true)
+                    if (save_passed)
                     {
                         Player tmp_player_ptr = gbl.SelectedPlayer;
 
@@ -425,7 +425,7 @@ namespace GoldBox.Engine
 
                         is_unaffected("starts to cough", save_passed, 0, false, 0xff, 1, Affects.stinking_cloud, player);
 
-                        if (player.HasAffect(Affects.stinking_cloud) == true)
+                        if (player.HasAffect(Affects.stinking_cloud))
                         {
                             ovr013.CallAffectTable(Effect.Add, affect, player, Affects.stinking_cloud);
                         }
@@ -440,7 +440,7 @@ namespace GoldBox.Engine
 
                         is_unaffected("chokes and gags from nausea", save_passed, 0, false, 0xff, (ushort)(roll_dice(4, 1) + 1), Affects.helpless, player);
 
-                        if (ovr025.FindAffect(out affect, Affects.helpless, player) == true)
+                        if (ovr025.FindAffect(out affect, Affects.helpless, player))
                         {
                             ovr013.CallAffectTable(Effect.Add, affect, player, Affects.helpless);
                         }
@@ -449,8 +449,8 @@ namespace GoldBox.Engine
                     }
                 }
 
-                if (isPoisonousCloud == true &&
-                    player.in_combat == true)
+                if (isPoisonousCloud &&
+                    player.in_combat)
                 {
                     if (player.HitDice >= 0 && player.HitDice <= 4)
                     {
@@ -617,7 +617,7 @@ namespace GoldBox.Engine
 
         internal static void RemoveFromCombat(string msg, Status health_status, Player player) // sub_644A7
         {
-            if (player.in_combat == true)
+            if (player.in_combat)
             {
                 int player_index = ovr033.GetPlayerIndex(player);
 
@@ -651,7 +651,7 @@ namespace GoldBox.Engine
         {
             Affect affect;
 
-            while (ovr025.FindAffect(out affect, Affects.invisibility, player) == true)
+            while (ovr025.FindAffect(out affect, Affects.invisibility, player))
             {
                 remove_affect(affect, Affects.invisibility, player);
             }
@@ -684,7 +684,7 @@ namespace GoldBox.Engine
 
             System.Array.ForEach(table, affect => remove_affect(null, affect, player));
 
-            if (player.HasAffect(Affects.berserk) == true && player.control_morale == Control.PC_Berzerk)
+            if (player.HasAffect(Affects.berserk) && player.control_morale == Control.PC_Berzerk)
             {
                 player.combat_team = CombatTeam.Ours;
             }
@@ -842,7 +842,7 @@ namespace GoldBox.Engine
 
             foreach (Item item in player.items)
             {
-                if ((int)item.affect_3 > 0x80 && item.readied == true)
+                if ((int)item.affect_3 > 0x80 && item.readied)
                 {
                     int var_12 = (int)item.affect_3 & 0x7F;
 
@@ -989,7 +989,7 @@ namespace GoldBox.Engine
             {
                 Affect affect_ptr;
 
-                if (ovr025.FindAffect(out affect_ptr, Affects.strength, player) == true)
+                if (ovr025.FindAffect(out affect_ptr, Affects.strength, player))
                 {
                     decode_strength(out str_00_b, out stat_b, affect_ptr);
 
@@ -1027,13 +1027,13 @@ namespace GoldBox.Engine
                     max_strength(ref stat_a, stat_b, ref str_00_a, str_00_b);
                 }
 
-                if (ovr025.FindAffect(out affect_ptr, Affects.strength_spell, player) == true)
+                if (ovr025.FindAffect(out affect_ptr, Affects.strength_spell, player))
                 {
                     decode_strength(out str_00_b, out stat_b, affect_ptr);
                     max_strength(ref stat_a, stat_b, ref str_00_a, str_00_b);
                 }
 
-                if (ovr025.FindAffect(out affect_ptr, Affects.enlarge, player) == true)
+                if (ovr025.FindAffect(out affect_ptr, Affects.enlarge, player))
                 {
                     decode_strength(out str_00_b, out stat_b, affect_ptr);
                     max_strength(ref stat_a, stat_b, ref str_00_a, str_00_b);
@@ -1109,7 +1109,7 @@ namespace GoldBox.Engine
 
                 if (player.stats2.Con.full > 20)
                 {
-                    if (player.HasAffect(Affects.highConRegen) == true)
+                    if (player.HasAffect(Affects.highConRegen))
                     {
                         add_affect(false, 0xff, 0x3c, Affects.highConRegen, player);
                     }
@@ -1121,7 +1121,7 @@ namespace GoldBox.Engine
             }
             else if (stat_index == Stat.INT)
             {
-                if (player.HasAffect(Affects.feeblemind) == true && var_11 > 7)
+                if (player.HasAffect(Affects.feeblemind) && var_11 > 7)
                 {
                     var_11 = 3;
                 }
@@ -1137,7 +1137,7 @@ namespace GoldBox.Engine
             }
             else if (stat_index == Stat.WIS)
             {
-                if (player.HasAffect(Affects.feeblemind) == true &&
+                if (player.HasAffect(Affects.feeblemind) &&
                     var_11 > 7)
                 {
                     var_11 = 3;
@@ -1166,7 +1166,7 @@ namespace GoldBox.Engine
             else if (stat_index == Stat.CHA)
             {
                 Affect affect;
-                if (ovr025.FindAffect(out affect, Affects.friends, player) == true)
+                if (ovr025.FindAffect(out affect, Affects.friends, player))
                 {
                     stat_a = affect.affect_data;
                 }
@@ -1183,7 +1183,7 @@ namespace GoldBox.Engine
 
             CheckAffectsEffect(player, CheckType.PreDamage);
 
-            if (change_damage == true)
+            if (change_damage)
             {
                 if (arg_2 == DamageOnSave.Zero)
                 {
@@ -1305,7 +1305,7 @@ namespace GoldBox.Engine
             CheckAffectsEffect(target, CheckType.Type_9);
 
             if (gbl.current_affect == 0 ||
-                (saved == true && can_save == DamageOnSave.Zero))
+                (saved && can_save == DamageOnSave.Zero))
             {
                 ovr025.DisplayPlayerStatusString(true, 10, "is Unaffected", target);
             }
@@ -1313,7 +1313,7 @@ namespace GoldBox.Engine
             {
                 Affect found_affect;
 
-                if (ovr025.FindAffect(out found_affect, affect_id, target) == true &&
+                if (ovr025.FindAffect(out found_affect, affect_id, target) &&
                     found_affect.minutes > 0)
                 {
                     remove_affect(found_affect, affect_id, target);
@@ -1372,7 +1372,7 @@ namespace GoldBox.Engine
 
         internal static bool combat_heal(byte arg_0, Player player)
         {
-            if (ovr033.sub_7515A(true, ovr033.PlayerMapPos(player), player) == true)
+            if (ovr033.sub_7515A(true, ovr033.PlayerMapPos(player), player))
             {
                 player.health_status = Status.okey;
                 player.in_combat = true;

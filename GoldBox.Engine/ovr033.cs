@@ -64,13 +64,13 @@ namespace GoldBox.Engine
 
             foreach (var p in map)
             {
-                if (CoordOnScreen(screenPos + p) == true)
+                if (CoordOnScreen(screenPos + p))
                 {
                     int i = gbl.mapToBackGroundTile[p + pos];
 
                     ovr034.DrawIsoTile(gbl.BackGroundTiles[i].tile_index, (screenPos.y + p.y) * 3, (screenPos.x + p.x) * 3);
 
-                    if (gbl.mapToBackGroundTile.drawTargetCursor == true)
+                    if (gbl.mapToBackGroundTile.drawTargetCursor)
                     {
                         // draws grey focus box
                         ovr034.draw_combat_icon(0x19, Icon.Normal, 0, screenPos.y + p.y, screenPos.x + p.x);
@@ -86,7 +86,7 @@ namespace GoldBox.Engine
         private static void DrawPlayerIconIfOnScreen(int player_index)
         {
             if (player_index > 0 &&
-                PlayerOnScreen(false, player_index) == true)
+                PlayerOnScreen(false, player_index))
             {
                 // draws the player icon over focus box
                 ovr034.draw_combat_icon(gbl.player_array[player_index].icon_id, 
@@ -180,7 +180,7 @@ namespace GoldBox.Engine
             {
                 RedrawPlayerBackground(player_index);
             }
-            else if (CoordOnScreen(screen) == true)
+            else if (CoordOnScreen(screen))
             {
                 var tileIdx = gbl.mapToBackGroundTile[map];
                 ovr034.DrawIsoTile(gbl.BackGroundTiles[tileIdx].tile_index, screen.y * 3, screen.x * 3);
@@ -200,7 +200,7 @@ namespace GoldBox.Engine
 
                 foreach (var delta in GetSizeBasedMapDeltas(size))
                 {
-                    if (CoordOnScreen(delta + screen) == true)
+                    if (CoordOnScreen(delta + screen))
                     {
                         int tileIdx = gbl.mapToBackGroundTile[map + delta];
                         //THIS DRAWS BACKGROUND MAP.
@@ -240,7 +240,7 @@ namespace GoldBox.Engine
                 if (CoordOnScreen(pos) == false)
                 {
                     result = false;
-                    if (AllOnScreen == true)
+                    if (AllOnScreen)
                     {
                         return false;
                     }
@@ -346,15 +346,15 @@ namespace GoldBox.Engine
         {
             var newPos = map + gbl.MapDirectionDelta[dir];
 
-            if (ScreenMapCheck(radius, newPos) == true)
+            if (ScreenMapCheck(radius, newPos))
             {
                 for (int index = 1; index <= gbl.CombatantCount; index++)
                 {
                     Player player = gbl.player_array[index];
 
-                    if (player.in_combat == true &&
+                    if (player.in_combat &&
                         gbl.CombatMap[index].size > 0 &&
-                        PlayerOnScreen(false, player) == true)
+                        PlayerOnScreen(false, player))
                     {
                         var pos = gbl.CombatMap[index].screenPos;
                         ovr034.draw_combat_icon(player.icon_id, 0, player.actions.direction, pos.y, pos.x);
@@ -379,16 +379,16 @@ namespace GoldBox.Engine
             int player_index = GetPlayerIndex(player);
 
             if (PlayerOnScreen(true, player) == false &&
-                gbl.focusCombatAreaOnPlayer == true)
+                gbl.focusCombatAreaOnPlayer)
             {
                 redrawCombatArea(8, 3, PlayerMapPos(player));
             }
 
             if ((direction >> 2) != (player.actions.direction >> 2) ||
                 iconState == Icon.Attack ||
-                arg_0 == true)
+                arg_0)
             {
-                if (gbl.focusCombatAreaOnPlayer == true)
+                if (gbl.focusCombatAreaOnPlayer)
                 {
                     RedrawPlayerBackground(player_index);
                 }
@@ -397,8 +397,8 @@ namespace GoldBox.Engine
             player.actions.direction = direction;
 
             if (arg_0 == false &&
-                PlayerOnScreen(false, player) == true &&
-                gbl.focusCombatAreaOnPlayer == true)
+                PlayerOnScreen(false, player) &&
+                gbl.focusCombatAreaOnPlayer)
             {
                 var pos = gbl.CombatMap[player_index].screenPos;
                 ovr034.draw_combat_icon(player.icon_id, iconState, direction, pos.y, pos.x);
@@ -564,7 +564,7 @@ namespace GoldBox.Engine
                     {
                         foreach (var pos in points)
                         {
-                            if (CoordOnScreen(pos) == true)
+                            if (CoordOnScreen(pos))
                             {
                                 DaxBlock tmp = ((var_3 & 1) == 0) ? attackIcon : normalIcon;
 
@@ -639,7 +639,7 @@ namespace GoldBox.Engine
                 {
                     ret_val = true;
 
-                    if (arg_0 == true &&
+                    if (arg_0 &&
                         player.actions.nonTeamMember == false)
                     {
                         var downed = gbl.downedPlayers.FindLast(cell => cell.target == player && cell.originalBackgroundTile != 0x1f);
@@ -674,7 +674,7 @@ namespace GoldBox.Engine
             gbl.mapToBackGroundTile.drawTargetCursor = draw_cursor;
             gbl.mapToBackGroundTile.size = gbl.CombatMap[GetPlayerIndex(player)].size;
 
-            if (gbl.focusCombatAreaOnPlayer == true)
+            if (gbl.focusCombatAreaOnPlayer)
             {
                 redrawCombatArea(8, radius, PlayerMapPos(player));
             }

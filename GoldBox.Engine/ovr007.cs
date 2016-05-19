@@ -85,7 +85,7 @@ namespace GoldBox.Engine
         internal static bool PlayerAddItem(Item item) /*was overloaded */
         {
             bool wouldOverload;
-            if (ovr020.canCarry(item, gbl.SelectedPlayer) == true)
+            if (ovr020.canCarry(item, gbl.SelectedPlayer))
             {
                 ovr025.string_print01("Overloaded");
                 wouldOverload = true;
@@ -176,7 +176,7 @@ namespace GoldBox.Engine
                 ovr022.treasureOnGround(out items_on_ground, out money_on_ground);
 
                 string text;
-                if (money_on_ground == true)
+                if (money_on_ground)
                 {
                     text = "Buy View Take Pool Share Appraise Exit";
                 }
@@ -223,7 +223,7 @@ namespace GoldBox.Engine
                     case 'E':
                         ovr022.treasureOnGround(out items_on_ground, out money_on_ground);
 
-                        if (money_on_ground == true)
+                        if (money_on_ground)
                         {
                             seg041.press_any_key("As you Leave the Shopkeeper says, \"Excuse me but you have Left Some Money here.\"  ", true, 10, TextRegion.NormalBottom);
                             seg041.press_any_key("Do you want to go back and get your Money?", false, 15, TextRegion.NormalBottom);
@@ -259,7 +259,7 @@ namespace GoldBox.Engine
                 {
                     ovr025.LoadPic();
                 }
-                else if (reloadPics == true)
+                else if (reloadPics)
                 {
                     ovr025.LoadPic();
                     reloadPics = false;

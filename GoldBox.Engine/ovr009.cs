@@ -115,7 +115,7 @@ namespace GoldBox.Engine
 
                 gbl.SelectedPlayer = player;
 
-                gbl.focusCombatAreaOnPlayer = ((player.combat_team == CombatTeam.Ours) || (ovr033.PlayerOnScreen(false, player) == true));
+                gbl.focusCombatAreaOnPlayer = ((player.combat_team == CombatTeam.Ours) || ovr033.PlayerOnScreen(false, player));
 
                 ovr033.RedrawCombatIfFocusOn(true, 2, player);
                 ovr025.reclac_player_values(player);
@@ -151,7 +151,7 @@ namespace GoldBox.Engine
             var var_D = new Struct_1D183();
             char var_1;
 
-            if (player.in_combat == true)
+            if (player.in_combat)
             {
                 if (player.actions.spell_id > 0)
                 {
@@ -253,7 +253,7 @@ namespace GoldBox.Engine
                                 case '2':
                                     gbl.AutoPCsCastMagic = !gbl.AutoPCsCastMagic;
 
-                                    if (gbl.AutoPCsCastMagic == true)
+                                    if (gbl.AutoPCsCastMagic)
                                     {
                                         ovr025.string_print01("Magic On");
                                     }
@@ -276,7 +276,7 @@ namespace GoldBox.Engine
                                     break;
 
                                 case '-':
-                                    if (ovr014.god_intervene() == true)
+                                    if (ovr014.god_intervene())
                                     {
                                         ovr033.RedrawCombatIfFocusOn(false, 3, player);
                                         var_2 = true;
@@ -327,8 +327,8 @@ namespace GoldBox.Engine
 
             bool hasSpells = player.spellList.HasSpells();
 
-            if (hasSpells == true &&
-                player.actions.can_cast == true &&
+            if (hasSpells &&
+                player.actions.can_cast &&
                 gbl.area_ptr.can_cast_spells == false)
             {
                 menuText += "Cast ";
@@ -347,7 +347,7 @@ namespace GoldBox.Engine
                 bool ctrlKey;
                 arg_0 = ovr027.displayInput(out ctrlKey, false, 1, gbl.defaultMenuColors, menuText, string.Empty);
 
-                if (ctrlKey == true &&
+                if (ctrlKey &&
                     unk_33748.MemberOf(arg_0) == false)
                 {
                     arg_0 = '\0';
@@ -589,16 +589,16 @@ namespace GoldBox.Engine
 
         internal static void sub_33F03(ref bool arg_0, Player target, Player player)
         {
-            if (ovr025.is_weapon_ranged(player) == true &&
+            if (ovr025.is_weapon_ranged(player) &&
                 ovr025.is_weapon_ranged_melee(player) == false)
             {
                 ovr025.string_print01("Not with that weapon");
             }
-            else if (ovr014.can_attack_target(target, player) == true)
+            else if (ovr014.can_attack_target(target, player))
             {
                 player.actions.target = target;
 
-                if (ovr014.TrySweepAttack(target, player) == true)
+                if (ovr014.TrySweepAttack(target, player))
                 {
                     arg_0 = true;
                 }
@@ -618,14 +618,14 @@ namespace GoldBox.Engine
             string menuText = string.Empty;
 
             if (ovr025.is_weapon_ranged(player) == false ||
-                ovr025.is_weapon_ranged_melee(player) == true)
+                ovr025.is_weapon_ranged_melee(player))
             {
                 menuText += "Guard ";
             }
 
             menuText += "Delay Quit ";
 
-            if (ovr025.bandage(false) == true)
+            if (ovr025.bandage(false))
             {
                 menuText += "Bandage ";
             }

@@ -68,7 +68,7 @@ namespace GoldBox.Engine
         {
             foreach (Player player in gbl.TeamList)
             {
-                if (player.in_combat == true &&
+                if (player.in_combat &&
                     player.health_status != Status.animated)
                 {
                     int new_exp = exp_to_add;
@@ -175,7 +175,7 @@ namespace GoldBox.Engine
             foreach (Player player in gbl.TeamList)
             {
                 if (player.actions != null &&
-                    player.actions.nonTeamMember == true)
+                    player.actions.nonTeamMember)
                 {
                     break;
                 }
@@ -190,7 +190,7 @@ namespace GoldBox.Engine
 
             foreach (Player player in gbl.TeamList)
             {
-                if (player.in_combat == true ||
+                if (player.in_combat ||
                     player.health_status == Status.unconscious ||
                     player.health_status == Status.running ||
                     player.health_status == Status.dying)
@@ -201,7 +201,7 @@ namespace GoldBox.Engine
             }
 
             if (gbl.combat_type == CombatType.duel ||
-                (gbl.area2_ptr.isDuel == true && no_exp == true))
+                (gbl.area2_ptr.isDuel && no_exp))
             {
                 gbl.party_killed = false;
             }
@@ -213,7 +213,7 @@ namespace GoldBox.Engine
             {
                 foreach (Player player in gbl.TeamList)
                 {
-                    if (player.actions != null && player.actions.nonTeamMember == true)
+                    if (player.actions != null && player.actions.nonTeamMember)
                     {
                         // have gotten past first 6 characters (the party)
                         break;
@@ -246,7 +246,7 @@ namespace GoldBox.Engine
                     System.Array.ForEach(affects_array, affect => ovr024.remove_affect(null, affect, player));
                 }
 
-                if (gbl.battleWon == true)
+                if (gbl.battleWon)
                 {
                     gbl.exp_to_add = calc_battle_exp();
                     addExp(gbl.exp_to_add);
@@ -259,7 +259,7 @@ namespace GoldBox.Engine
 
                     foreach (Player player in gbl.TeamList)
                     {
-                        if (player.actions != null && player.actions.nonTeamMember == true)
+                        if (player.actions != null && player.actions.nonTeamMember)
                         {
                             break;
                         }
@@ -274,7 +274,7 @@ namespace GoldBox.Engine
                                     break;
 
                                 case Status.dying:
-                                    if (gbl.area2_ptr.isDuel == true)
+                                    if (gbl.area2_ptr.isDuel)
                                     {
                                         player.health_status = Status.okey;
                                         player.in_combat = true;
@@ -292,7 +292,7 @@ namespace GoldBox.Engine
                                         player.health_status = Status.okey;
                                         player.in_combat = true;
                                     }
-                                    else if (gbl.area2_ptr.isDuel == true)
+                                    else if (gbl.area2_ptr.isDuel)
                                     {
                                         player.health_status = Status.okey;
                                         player.in_combat = true;
@@ -351,7 +351,7 @@ namespace GoldBox.Engine
             {
                 foreach (Player player in gbl.TeamList)
                 {
-                    if (player.in_combat == true &&
+                    if (player.in_combat &&
                         player.health_status == Status.okey &&
                         player.combat_team == CombatTeam.Ours)
                     {
@@ -382,10 +382,10 @@ namespace GoldBox.Engine
         {
             seg037.DrawFrame_Outer();
 
-            if (gbl.byte_1AB14 == true ||
+            if (gbl.byte_1AB14 ||
                 gbl.combat_type == CombatType.duel)
             {
-                if (gbl.party_fled == true)
+                if (gbl.party_fled)
                 {
                     seg041.displayString("The party has fled.", 0, 10, 3, 1);
 
@@ -398,7 +398,7 @@ namespace GoldBox.Engine
                 else
                 {
                     if ((gbl.combat_type == CombatType.duel && gbl.battleWon == false) ||
-                        (gbl.battleWon == false && gbl.area2_ptr.isDuel == true))
+                        (gbl.battleWon == false && gbl.area2_ptr.isDuel))
                     {
                         gbl.area2_ptr.field_58E = 0x80;
                         seg041.displayString("You have lost the fight.", 0, 10, 3, 1);
@@ -504,9 +504,9 @@ namespace GoldBox.Engine
 
         internal static void take_treasure(ref bool items_present, ref bool money_present) /* sub_2DF2E */
         {
-            if (money_present == true)
+            if (money_present)
             {
-                if (items_present == true)
+                if (items_present)
                 {
                     bool done = false;
                     do
@@ -578,12 +578,12 @@ namespace GoldBox.Engine
                 string suffix = " Exit";
                 bool can_detect_magic = false;
 
-                if (items_present == true)
+                if (items_present)
                 {
                     foreach (int id in gbl.SelectedPlayer.spellList.IdList())
                     {
                         if ((id == 5 || id == 11 || id == 0x4d) &&
-                            gbl.SelectedPlayer.in_combat == true)
+                            gbl.SelectedPlayer.in_combat)
                         {
                             can_detect_magic = true;
                             spellId = (byte)id;
@@ -592,16 +592,16 @@ namespace GoldBox.Engine
                     }
                 }
 
-                if (can_detect_magic == true)
+                if (can_detect_magic)
                 {
                     suffix = " Detect Exit";
                 }
 
-                if (money_present == true)
+                if (money_present)
                 {
                     text = "View Take Pool Share" + suffix;
                 }
-                else if (items_present == true)
+                else if (items_present)
                 {
                     text = "View Take Pool" + suffix;
                 }
@@ -638,7 +638,7 @@ namespace GoldBox.Engine
                     case '\0':
                         ovr022.treasureOnGround(out items_present, out money_present);
 
-                        if (money_present == true || items_present == true)
+                        if (money_present || items_present)
                         {
                             seg041.press_any_key("There is still treasure left.  ", true, 10, TextRegion.NormalBottom);
                             seg041.press_any_key("Do you want to go back and claim your treasure?", false, 15, TextRegion.NormalBottom);
@@ -680,7 +680,7 @@ namespace GoldBox.Engine
             var to_remove = new Dictionary<Player, bool>();
             foreach (Player player in gbl.TeamList)
             {
-                bool check = (player.actions != null && player.actions.nonTeamMember == true);
+                bool check = (player.actions != null && player.actions.nonTeamMember);
 
                 if (check || player.combat_team == CombatTeam.Enemy)
                 {
@@ -784,7 +784,7 @@ namespace GoldBox.Engine
                 if (gbl.party_killed == false ||
                     gbl.combat_type == CombatType.duel)
                 {
-                    if (gbl.party_fled == true)
+                    if (gbl.party_fled)
                     {
                         gbl.items_pointer.Clear();
                     }

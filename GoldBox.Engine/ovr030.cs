@@ -15,7 +15,7 @@ namespace GoldBox.Engine
         {
             if (dax_block != null)
             {
-                if (gbl.area_ptr.picture_fade > 0 || useOverlay == true)
+                if (gbl.area_ptr.picture_fade > 0 || useOverlay)
                 {
                     if (gbl.area_ptr.picture_fade > 0)
                     {
@@ -72,7 +72,7 @@ namespace GoldBox.Engine
 
                         byte frames_count = 0; // kind of pointless...
 
-                        if (gbl.AnimationsOn == false && is_pic_or_final == true)
+                        if (gbl.AnimationsOn == false && is_pic_or_final)
                         {
                             daxArray.numFrames = 1;
                         }
@@ -107,7 +107,7 @@ namespace GoldBox.Engine
 
                             int ega_encoded_size = (daxArray.frames[frame].picture.bpp / 2) - 1;
 
-                            if (is_pic_or_final == true)
+                            if (is_pic_or_final)
                             {
                                 if (frame == 0)
                                 {
@@ -201,7 +201,7 @@ namespace GoldBox.Engine
 
         internal static void draw_head_and_body(bool draw_body, byte rowY, byte colX) /* sub_706DC */
         {
-            if (draw_body == true)
+            if (draw_body)
             {
                 DrawMaybeOverlayed(gbl.headX_dax, false, rowY, colX);
                 DrawMaybeOverlayed(gbl.bodyX_dax, false, rowY + 5, colX);

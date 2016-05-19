@@ -227,7 +227,7 @@ namespace GoldBox.Engine
 
 
 			byte spell_id;
-			if (unk_5C1F1.MemberOf(input_key) == true)
+			if (unk_5C1F1.MemberOf(input_key))
 			{
 				spell_id = 0;
 			}
@@ -348,7 +348,7 @@ namespace GoldBox.Engine
 
 		internal static void scroll_5C912(bool learning) /* sub_5C912 */
 		{
-			if (gbl.SelectedPlayer.HasAffect(Affects.read_magic) == true ||
+			if (gbl.SelectedPlayer.HasAffect(Affects.read_magic) ||
 				((gbl.SelectedPlayer.cleric_lvl > 0 || gbl.SelectedPlayer.cleric_old_lvl > gbl.SelectedPlayer.multiclassLevel) &&
 				  gbl.ItemDataTable[gbl.currentScroll.type].item_slot == ItemSlot.Quarrel))
 			{
@@ -359,7 +359,7 @@ namespace GoldBox.Engine
 			{
 				for (byte var_1 = 1; var_1 <= 3; var_1++)
 				{
-					if ((learning == true && (int)gbl.currentScroll.getAffect(var_1) > 0x80) ||
+					if ((learning && (int)gbl.currentScroll.getAffect(var_1) > 0x80) ||
 						(learning == false && (int)gbl.currentScroll.getAffect(var_1) > 0))
 					{
 						add_spell_to_list((byte)gbl.currentScroll.getAffect(var_1));
@@ -384,7 +384,7 @@ namespace GoldBox.Engine
 			{
 				gbl.currentScroll = item;
 
-				if (item.IsScroll() == true)
+				if (item.IsScroll())
 				{
 					scroll_5C912(showLearning);
 				}
@@ -462,7 +462,7 @@ namespace GoldBox.Engine
 							//skip this spell
 						}
 						else if (gbl.SelectedPlayer.spellCastCount[(int)sp_class, sp_lvl - 1] > 0 &&
-							can_learn_spell((int)spell, gbl.SelectedPlayer) == true &&
+							can_learn_spell((int)spell, gbl.SelectedPlayer) &&
 							gbl.SelectedPlayer.KnowsSpell(spell) == false)
 						{
 							add_spell_to_learning_list((int)spell);
@@ -473,7 +473,7 @@ namespace GoldBox.Engine
 
 			if (gbl.spell_string_list.Count > 0)
 			{
-				if (buildSpellList == true)
+				if (buildSpellList)
 				{
 					int idx = 0;
 					int spellLvl = 0;
@@ -514,7 +514,7 @@ namespace GoldBox.Engine
 
 		internal static int SpellRange(int spellId) // sub_5CDE5
 		{
-			int castingLvl = (gbl.spell_from_item == true) ? 6 : ovr025.spellMaxTargetCount(spellId);
+			int castingLvl = gbl.spell_from_item ? 6 : ovr025.spellMaxTargetCount(spellId);
 			int range = gbl.spellCastingTable[spellId].fixedRange + (gbl.spellCastingTable[spellId].perLvlRange * castingLvl);
 
 			if (range == 0 &&
@@ -711,7 +711,7 @@ namespace GoldBox.Engine
 				stillCast = false;
 			}
 
-			if (caster.HasAffect(Affects.affect_4a) == true)
+			if (caster.HasAffect(Affects.affect_4a))
 			{
 				byte dice_roll = ovr024.roll_dice(2, 1);
 
@@ -723,16 +723,16 @@ namespace GoldBox.Engine
 				}
 			}
 
-			if (showCastingText == true && gbl.spell_from_item == false)
+			if (showCastingText && gbl.spell_from_item == false)
 			{
 				DisplayCaseSpellText(spell_id, "casts", caster);
 			}
 
-			while (stillCast == true)
+			while (stillCast)
 			{
 				arg_0 = gbl.SpellCastFunction(quick_fight, spell_id);
 
-				if (arg_0 == true)
+				if (arg_0)
 				{
 					stillCast = false;
 
@@ -761,7 +761,7 @@ namespace GoldBox.Engine
 
 						ovr025.draw_missile_attack(0x1E, 4, gbl.targetPos, casterPos);
 
-						if (ovr033.PlayerOnScreen(false, caster) == true)
+						if (ovr033.PlayerOnScreen(false, caster))
 						{
 							ovr033.draw_74B3F(true, Icon.Attack, caster.actions.direction, caster);
 							ovr033.draw_74B3F(false, Icon.Normal, caster.actions.direction, caster);
@@ -965,7 +965,7 @@ namespace GoldBox.Engine
 				DamageOnSave can_save_flag;
 
 				if ((gbl.spell_id == 0x4F || gbl.spell_id == 0x51) &&
-					firstTimeRound == true)
+					firstTimeRound)
 				{
 					saved = true;
 					can_save_flag = DamageOnSave.Zero;
@@ -1014,7 +1014,7 @@ namespace GoldBox.Engine
 		internal static void SpellCureLight() /* sub_5DDBC */
 		{
 			if (gbl.spellTargets.Count > 0 &&
-				ovr024.heal_player(0, ovr024.roll_dice(8, 1), gbl.spellTargets[0]) == true)
+				ovr024.heal_player(0, ovr024.roll_dice(8, 1), gbl.spellTargets[0]))
 			{
 				ovr025.DescribeHealing(gbl.spellTargets[0]);
 			}
@@ -1125,7 +1125,7 @@ namespace GoldBox.Engine
 			}
 
 			int encoded_strength;
-			if (ovr024.TryEncodeStrength(out encoded_strength, new_str100, new_str, target) == true)
+			if (ovr024.TryEncodeStrength(out encoded_strength, new_str100, new_str, target))
 			{
 				ovr025.DisplayPlayerStatusString(true, 10, "is stronger", target);
 
@@ -1147,7 +1147,7 @@ namespace GoldBox.Engine
 			if (target != null &&
 				gbl.spellTargets.Count > 0 &&
 				ovr024.RollSavingThrow(0, SaveVerseType.type4, target) == false &&
-				target.HasAffect(Affects.enlarge) == true)
+				target.HasAffect(Affects.enlarge))
 			{
 				ovr024.remove_affect(null, Affects.enlarge, target);
 				ovr024.CalcStatBonuses(Stat.STR, target);
@@ -1296,7 +1296,7 @@ namespace GoldBox.Engine
 			{
 				gbl.spellTargets.Clear();
 			}
-			else if (player.HasAffect(Affects.poisoned) == true)
+			else if (player.HasAffect(Affects.poisoned))
 			{
 				if (player.hit_point_current == 0)
 				{
@@ -1408,7 +1408,7 @@ namespace GoldBox.Engine
 						{
 							for (int var_D = 0; var_D < 4; var_D++)
 							{
-								if (var_4.present[var_D] == true &&
+								if (var_4.present[var_D] &&
 									gbl.targetPos + gbl.MapDirectionDelta[var_12] == var_4.targetPos + gbl.MapDirectionDelta[gbl.SmallCloudDirections[var_D]] &&
 									var_4.groundTile[var_D] != 0x1E)
 								{
@@ -1428,7 +1428,7 @@ namespace GoldBox.Engine
 				}
 
 				var_8.groundTile[var_11] = groundTile;
-				if (var_8.present[var_11] == true)
+				if (var_8.present[var_11])
 				{
 					var pos = gbl.MapDirectionDelta[var_12] + gbl.targetPos;
 
@@ -1517,7 +1517,7 @@ namespace GoldBox.Engine
 
 			int encoded_str;
 
-			if (ovr024.TryEncodeStrength(out encoded_str, str_100, str, target) == true)
+			if (ovr024.TryEncodeStrength(out encoded_str, str_100, str, target))
 			{
 				encoded_str = strIncrease + 100;
 
@@ -1540,7 +1540,7 @@ namespace GoldBox.Engine
 				if (player.health_status == Status.dead &&
 					player.monsterType == 0)
 				{
-					if (ovr033.sub_7515A(true, ovr033.PlayerMapPos(player), player) == true)
+					if (ovr033.sub_7515A(true, ovr033.PlayerMapPos(player), player))
 					{
 						var var_2 = (byte)(((int)player.combat_team << 4) + ovr025.spellMaxTargetCount(gbl.spell_id));
 
@@ -1570,7 +1570,7 @@ namespace GoldBox.Engine
 
 						var_3--;
 
-						if (ovr024.combat_heal(player.hit_point_max, player) == true)
+						if (ovr024.combat_heal(player.hit_point_max, player))
 						{
 							ovr024.is_unaffected("is animated", false, 0, true, var_2, 0, Affects.animate_dead, player);
 							player.health_status = Status.animated;
@@ -1585,7 +1585,7 @@ namespace GoldBox.Engine
 
 		internal static void SpellCureBlindness() // can_see
 		{
-			if (ovr024.cure_affect(Affects.blinded, gbl.spellTargets[0]) == true)
+			if (ovr024.cure_affect(Affects.blinded, gbl.spellTargets[0]))
 			{
 				ovr025.MagicAttackDisplay("can see", true, gbl.spellTargets[0]);
 			}
@@ -1604,12 +1604,12 @@ namespace GoldBox.Engine
 
 			gbl.cureSpell = true;
 
-			if (ovr024.cure_affect(Affects.cause_disease_1, gbl.spellTargets[0]) == true)
+			if (ovr024.cure_affect(Affects.cause_disease_1, gbl.spellTargets[0]))
 			{
 				var_1 = true;
 			}
 
-			if (ovr024.cure_affect(Affects.weaken, gbl.spellTargets[0]) == true)
+			if (ovr024.cure_affect(Affects.weaken, gbl.spellTargets[0]))
 			{
 				var_1 = true;
 
@@ -1617,7 +1617,7 @@ namespace GoldBox.Engine
 				ovr024.remove_affect(null, Affects.helpless, gbl.spellTargets[0]);
 			}
 
-			if (ovr024.cure_affect(Affects.hot_fire_shield, gbl.spellTargets[0]) == true)
+			if (ovr024.cure_affect(Affects.hot_fire_shield, gbl.spellTargets[0]))
 			{
 				var_1 = true;
 				ovr024.remove_affect(null, Affects.affect_39, gbl.spellTargets[0]);
@@ -1709,7 +1709,7 @@ namespace GoldBox.Engine
 				}
 				removeList.Clear();
 
-				if (is_affected == true)
+				if (is_affected)
 				{
 					ovr025.MagicAttackDisplay("is affected", true, target);
 				}
@@ -1777,7 +1777,7 @@ namespace GoldBox.Engine
 							if (mappos == var_18.targetPos + gbl.MapDirectionDelta[gbl.SmallCloudDirections[var_1]] &&
 								var_18.field_1D == false)
 							{
-								if (sub_5F126(var_18.player, maxTargetCount) == true)
+								if (sub_5F126(var_18.player, maxTargetCount))
 								{
 									Affect affect = null;
 									bool found = false;
@@ -1794,7 +1794,7 @@ namespace GoldBox.Engine
 										}
 									}
 
-									if (found == true)
+									if (found)
 									{
 										if (ground_tile == 0x1C)
 										{
@@ -1829,7 +1829,7 @@ namespace GoldBox.Engine
 
 		internal static void SpellRemoveCurse() // uncurse
 		{
-			if (ovr024.cure_affect(Affects.bestow_curse, gbl.spellTargets[0]) == true)
+			if (ovr024.cure_affect(Affects.bestow_curse, gbl.spellTargets[0]))
 			{
 				ovr025.MagicAttackDisplay("is un-cursed", true, gbl.spellTargets[0]);
 			}
@@ -1918,7 +1918,7 @@ namespace GoldBox.Engine
 					{
 						maxTargets -= 1;
 
-						if (ovr024.cure_affect(affect, target) == true)
+						if (ovr024.cure_affect(affect, target))
 						{
 							return true;
 						}
@@ -2036,7 +2036,7 @@ namespace GoldBox.Engine
 									var_36 = false;
 								}
 
-							} while (stepping == true &&
+							} while (stepping &&
 								(var_3A <= 0 || var_3A == var_39) &&
 								groundTile != 0 &&
 								gbl.BackGroundTiles[groundTile].move_cost <= 1 &&
@@ -2053,7 +2053,7 @@ namespace GoldBox.Engine
 						var_36 = DoElecDamage(var_36, var_39, bonusType, damage, path_a.current);
 						var_39 = var_3A;
 
-						if (var_36 == true)
+						if (var_36)
 						{
 							gbl.targetPos = path_a.current;
 
@@ -2064,7 +2064,7 @@ namespace GoldBox.Engine
 
 							path_b.CalculateDeltas();
 
-							while (path_b.Step() == true)
+							while (path_b.Step())
 							{
 								/* empty */
 							}
@@ -2176,7 +2176,7 @@ namespace GoldBox.Engine
 		internal static void SpellCureSeriousWounds() // sub_5FF6D
 		{
 			if (gbl.spellTargets.Count > 0 &&
-				ovr024.heal_player(0, ovr024.roll_dice(8, 2) + 1, gbl.spellTargets[0]) == true)
+				ovr024.heal_player(0, ovr024.roll_dice(8, 2) + 1, gbl.spellTargets[0]))
 			{
 				ovr025.DescribeHealing(gbl.spellTargets[0]);
 			}
@@ -2188,7 +2188,7 @@ namespace GoldBox.Engine
 			int encodedStrength = 0;
 			var target = gbl.spellTargets[0];
 
-			if (ovr024.TryEncodeStrength(out encodedStrength, 0, 0x15, target) == true)
+			if (ovr024.TryEncodeStrength(out encodedStrength, 0, 0x15, target))
 			{
 				ovr025.DisplayPlayerStatusString(true, 10, "is stronger", target);
 			}
@@ -2213,7 +2213,7 @@ namespace GoldBox.Engine
 
 		internal static void cast_heal()
 		{
-			if (ovr024.heal_player(0, ovr024.roll_dice(4, 2) + 2, gbl.spellTargets[0]) == true)
+			if (ovr024.heal_player(0, ovr024.roll_dice(4, 2) + 2, gbl.spellTargets[0]))
 			{
 				ovr025.MagicAttackDisplay("is Healed", true, gbl.spellTargets[0]);
 			}
@@ -2246,7 +2246,7 @@ namespace GoldBox.Engine
 			{
 				gbl.spellTargets.Remove(target);
 			}
-			else if (target.HasAffect(Affects.poisoned) == true)
+			else if (target.HasAffect(Affects.poisoned))
 			{
 				if (target.hit_point_current == 0)
 				{
@@ -2296,7 +2296,7 @@ namespace GoldBox.Engine
 				DoSpellCastingWork("", DamageType.Magic, 0, false, ovr025.spellMaxTargetCount(gbl.spell_id), gbl.spell_id);
 
 				Affect affect;
-				if (ovr025.FindAffect(out affect, Affects.sticks_to_snakes, gbl.spellTargets[0]) == true)
+				if (ovr025.FindAffect(out affect, Affects.sticks_to_snakes, gbl.spellTargets[0]))
 				{
 					ovr013.CallAffectTable(Effect.Add, affect, gbl.spellTargets[0], Affects.sticks_to_snakes);
 				}
@@ -2311,7 +2311,7 @@ namespace GoldBox.Engine
 		internal static void SpellCureCriticalWounds() // sub_603F0
 		{
 			if (gbl.spellTargets.Count > 0 &&
-				ovr024.heal_player(0, ovr024.roll_dice(8, 3) + 3, gbl.spellTargets[0]) == true)
+				ovr024.heal_player(0, ovr024.roll_dice(8, 3) + 3, gbl.spellTargets[0]))
 			{
 				ovr025.DescribeHealing(gbl.spellTargets[0]);
 			}
@@ -2424,7 +2424,7 @@ namespace GoldBox.Engine
 			{
 				Affect affect;
 
-				if (ovr025.FindAffect(out affect, Affects.charm_person, target) == true)
+				if (ovr025.FindAffect(out affect, Affects.charm_person, target))
 				{
 					ovr013.CallAffectTable(Effect.Add, affect, target, Affects.charm_person);
 				}
@@ -2455,7 +2455,7 @@ namespace GoldBox.Engine
 			Affect affect;
 			Player player = gbl.SelectedPlayer;
 
-			if (ovr025.FindAffect(out affect, Affects.clear_movement, player) == true)
+			if (ovr025.FindAffect(out affect, Affects.clear_movement, player))
 			{
 				var scl = ovr032.Rebuild_SortedCombatantList(1, 1, ovr033.PlayerMapPos(player), sc => true);
 
@@ -2463,8 +2463,8 @@ namespace GoldBox.Engine
 				{
 					Player playerB = sc.player;
 
-					if (ovr025.FindAffect(out affect, Affects.owlbear_hug_round_attack, playerB) == true ||
-						ovr025.FindAffect(out affect, Affects.affect_8b, playerB) == true)
+					if (ovr025.FindAffect(out affect, Affects.owlbear_hug_round_attack, playerB) ||
+						ovr025.FindAffect(out affect, Affects.affect_8b, playerB))
 					{
 						if (gbl.player_array[affect.affect_data] == player)
 						{
@@ -2575,7 +2575,7 @@ namespace GoldBox.Engine
 			{
 				ovr024.is_unaffected("is clumsy", false, 0, false, 0, GetSpellAffectTimeout(Spells.fumble), Affects.fumbling, target);
 
-				if (target.HasAffect(Affects.fumbling) == true)
+				if (target.HasAffect(Affects.fumbling))
 				{
 					ovr013.CallAffectTable(Effect.Add, null, target, Affects.fumbling);
 				}
@@ -2584,7 +2584,7 @@ namespace GoldBox.Engine
 			{
 				ovr024.is_unaffected("is slowed", false, 0, false, 0, GetSpellAffectTimeout(Spells.fumble), Affects.slow, target);
 
-				if (target.HasAffect(Affects.slow) == true)
+				if (target.HasAffect(Affects.slow))
 				{
 					ovr013.CallAffectTable(Effect.Add, null, target, Affects.slow);
 				}
@@ -2645,7 +2645,7 @@ namespace GoldBox.Engine
 					{
 						for (int var_12 = 0; var_12 < 4; var_12++)
 						{
-							if (var_4.present[var_12] == true &&
+							if (var_4.present[var_12] &&
 								(gbl.MapDirectionDelta[gbl.SmallCloudDirections[var_12]] + var_4.targetPos) == (gbl.MapDirectionDelta[dir] + gbl.targetPos) &&
 								var_4.groundTile[var_12] != 0x1E &&
 								var_4.groundTile[var_12] != 0x1C)
@@ -2667,7 +2667,7 @@ namespace GoldBox.Engine
 						{
 							for (int var_12 = 0; var_12 < 9; var_12++)
 							{
-								if (var_4.present[var_12] == true &&
+								if (var_4.present[var_12] &&
 									(gbl.MapDirectionDelta[gbl.CloudDirections[var_12]] + var_4.targetPos) == (gbl.MapDirectionDelta[dir] + gbl.targetPos) &&
 									var_4.groundTile[var_12] != 0x1E &&
 									var_4.groundTile[var_12] != 0x1C)
@@ -2694,7 +2694,7 @@ namespace GoldBox.Engine
 
 				var_8.groundTile[var_16] = ground_tile;
 
-				if (var_8.present[var_16] == true)
+				if (var_8.present[var_16])
 				{
 					var pos = gbl.MapDirectionDelta[dir] + gbl.targetPos;
 
@@ -2704,7 +2704,7 @@ namespace GoldBox.Engine
 
 			var_8.groundTile[var_16] = ground_tile;
 
-			if (var_8.present[var_16] == true)
+			if (var_8.present[var_16])
 			{
 				var pos = gbl.MapDirectionDelta[dir] + gbl.targetPos;
 
@@ -2765,7 +2765,7 @@ namespace GoldBox.Engine
 
 			gbl.damage_flags = 0;
 
-			if (target.HasAffect(Affects.feeblemind) == true)
+			if (target.HasAffect(Affects.feeblemind))
 			{
 				ovr013.CallAffectTable(Effect.Add, null, target, Affects.feeblemind);
 			}
@@ -2798,7 +2798,7 @@ namespace GoldBox.Engine
 
 		internal static void cast_heal2()
 		{
-			if (ovr024.heal_player(0, ovr024.roll_dice(4, 2) + 2, gbl.spellTargets[0]) == true)
+			if (ovr024.heal_player(0, ovr024.roll_dice(4, 2) + 2, gbl.spellTargets[0]))
 			{
 				ovr025.MagicAttackDisplay("is Healed", true, gbl.spellTargets[0]);
 			}
@@ -2820,7 +2820,7 @@ namespace GoldBox.Engine
 
 				ovr025.draw_missile_attack(0x2d, 4, ovr033.PlayerMapPos(gbl.spell_target), ovr033.PlayerMapPos(player));
 
-				if (player.HasAffect(Affects.affect_7f) == true)
+				if (player.HasAffect(Affects.affect_7f))
 				{
 					Item item = gbl.spell_target.items.Find(i => i.readied && (i.namenum1 == 0x76 || i.namenum2 == 0x76 || i.namenum3 == 0x76));
 
@@ -2938,7 +2938,7 @@ namespace GoldBox.Engine
 
 				gbl.byte_1DA70 = gbl.SpellCastFunction(QuickFight.True, (int)Spells.spell_3d);
 
-				if (gbl.byte_1DA70 == true)
+				if (gbl.byte_1DA70)
 				{
 					BuildAreaDamageTargets(6, 1, gbl.targetPos, attackerPos);
 				}
@@ -2948,7 +2948,7 @@ namespace GoldBox.Engine
 					gbl.byte_1DA70 = false;
 				}
 
-				if (gbl.byte_1DA70 == true &&
+				if (gbl.byte_1DA70 &&
 					gbl.spellTargets.Count > 0)
 				{
 					ovr025.DisplayPlayerStatusString(true, 10, "breathes acid", attacker);
@@ -2986,7 +2986,7 @@ namespace GoldBox.Engine
 
                 gbl.byte_1DA70 = gbl.SpellCastFunction(QuickFight.True, (int)Spells.spell_3d);
 
-				if (gbl.byte_1DA70 == true)
+				if (gbl.byte_1DA70)
 				{
 					BuildAreaDamageTargets(9, 3, gbl.targetPos, attackPos);
 

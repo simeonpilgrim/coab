@@ -26,7 +26,7 @@ namespace GoldBox.Engine
 
             action.maxSweapTargets = player.attackLevel;
 
-            if (player.in_combat == true)
+            if (player.in_combat)
             {
                 action.delay = (sbyte)(ovr024.roll_dice(6, 1) + ovr025.DexReactionAdj(player));
 
@@ -91,7 +91,7 @@ namespace GoldBox.Engine
                 gbl.damage = 0;
             }
 
-            if (CanBackStabTarget(target, attacker) == true)
+            if (CanBackStabTarget(target, attacker))
             {
                 gbl.damage *= ((attacker.SkillLevel(SkillType.Thief) - 1) / 4) + 2;
             }
@@ -142,7 +142,7 @@ namespace GoldBox.Engine
                 text = string.Empty;
             }
 
-            if (attackHits == true)
+            if (attackHits)
             {
                 if (attack == AttackType.Slay)
                 {
@@ -233,7 +233,7 @@ namespace GoldBox.Engine
                 {
                     Player attacker = cpi.player;
 
-                    if (attacker.actions.guarding == true &&
+                    if (attacker.actions.guarding &&
                         attacker.IsHeld() == false)
                     {
                         ovr033.redrawCombatArea(8, 2, ovr033.PlayerMapPos(target));
@@ -289,13 +289,13 @@ namespace GoldBox.Engine
                 radius = 3;
 
                 if (ovr033.CoordOnScreen(newPos - gbl.mapToBackGroundTile.mapScreenTopLeft) == false &&
-                    gbl.focusCombatAreaOnPlayer == true)
+                    gbl.focusCombatAreaOnPlayer)
                 {
                     ovr033.redrawCombatArea(8, 2, oldPos);
                 }
             }
 
-            if (gbl.focusCombatAreaOnPlayer == true)
+            if (gbl.focusCombatAreaOnPlayer)
             {
                 ovr033.RedrawPlayerBackground(player_index);
             }
@@ -304,7 +304,7 @@ namespace GoldBox.Engine
 
             ovr033.setup_mapToPlayerIndex_and_playerScreen();
 
-            if (gbl.focusCombatAreaOnPlayer == true)
+            if (gbl.focusCombatAreaOnPlayer)
             {
                 ovr033.redrawCombatArea(8, radius, newPos);
             }
@@ -316,7 +316,7 @@ namespace GoldBox.Engine
             move_step_into_attack(player);
 
             if (player.in_combat == false ||
-                player.IsHeld() == true)
+                player.IsHeld())
             {
                 player.actions.move = 0;
             }
@@ -365,7 +365,7 @@ namespace GoldBox.Engine
                 Player attacker = cpiA.player;
 
                 if (attacker.IsHeld() == false &&
-                    CanSeeTargetA(player, attacker) == true &&
+                    CanSeeTargetA(player, attacker) &&
                     attacker.HasAffect(Affects.weap_dragon_slayer) == false &&
                     attacker.HasAffect(Affects.affect_4a) == false)
                 {
@@ -377,7 +377,7 @@ namespace GoldBox.Engine
                         {
                             if (attacker.actions.delay > 0 ||
                                 attacker.actions.AttacksReceived == 0 ||
-                                ovr032.CanSeeCombatant(tmpDir % 8, ovr033.PlayerMapPos(player), ovr033.PlayerMapPos(attacker)) == true)
+                                ovr032.CanSeeCombatant(tmpDir % 8, ovr033.PlayerMapPos(player), ovr033.PlayerMapPos(attacker)))
                             {
                                 byte attackIndex = 1;
                                 if (attacker.attacksCount == 0)
@@ -409,7 +409,7 @@ namespace GoldBox.Engine
 
                                 attacker.actions.target = backupTarget;
 
-                                if (player.in_combat == true)
+                                if (player.in_combat)
                                 {
                                     gbl.display_hitpoints_ac = true;
                                     ovr025.CombatDisplayPlayerSummary(player);
@@ -446,7 +446,7 @@ namespace GoldBox.Engine
                 }
             }
 
-            if (gets_away == true)
+            if (gets_away)
             {
                 ovr024.RemoveFromCombat("Got Away", Status.running, player);
             }
@@ -466,8 +466,8 @@ namespace GoldBox.Engine
             int origAttacks = player.attack1_AttacksLeft;
             player.attack1_AttacksLeft = player.attacksCount;
 
-            if (ovr025.is_weapon_ranged(player) == true &&
-                ovr025.GetCurrentAttackItem(out rangedItem, player) == true)
+            if (ovr025.is_weapon_ranged(player) &&
+                ovr025.GetCurrentAttackItem(out rangedItem, player))
             {
                 foundRanged = true;
                 int numAttacks = gbl.ItemDataTable[player.activeItems.primaryWeapon.type].numberAttacks;
@@ -489,7 +489,7 @@ namespace GoldBox.Engine
 
             int attacks = ThisRoundActionCount(gbl.halfActionsLeft);
 
-            if (foundRanged == true &&
+            if (foundRanged &&
                 rangedItem != null)
             {
                 int rangedAmmo = 1;
@@ -507,7 +507,7 @@ namespace GoldBox.Engine
 
             if (player.actions.field_8 == false ||
                 attacks < origAttacks ||
-                (player.actions.field_8 == true &&
+                (player.actions.field_8 &&
                   attacks < (origAttacks * 2) &&
                   foundRanged == false))
             {
@@ -637,7 +637,7 @@ namespace GoldBox.Engine
             }
 
             Player target;
-            while (FindLowestE9Target(out target, player) == true && var_2 > 0 && var_6 == 0)
+            while (FindLowestE9Target(out target, player) && var_2 > 0 && var_6 == 0)
             {
                 int var_4 = unk_16679[(target.field_E9 * 10) + var_B];
 
@@ -737,7 +737,7 @@ namespace GoldBox.Engine
 
             attacker.actions.field_8 = true;
 
-            if (target.IsHeld() == true)
+            if (target.IsHeld())
             {
                 seg044.PlaySound(Sound.sound_attackHeld);
 
@@ -773,7 +773,7 @@ namespace GoldBox.Engine
                 ovr025.reclac_player_values(target);
                 ovr024.CheckAffectsEffect(target, CheckType.Type_11);
 
-                if (CanBackStabTarget(target, attacker) == true)
+                if (CanBackStabTarget(target, attacker))
                 {
                     target_ac = target.ac_behind - 4;
                 }
@@ -786,7 +786,7 @@ namespace GoldBox.Engine
                         BehindAttack = true;
                     }
 
-                    if (BehindAttack == true)
+                    if (BehindAttack)
                     {
                         target_ac = target.ac_behind;
                     }
@@ -798,12 +798,12 @@ namespace GoldBox.Engine
 
                 target_ac += RangedDefenseBonus(target, attacker);
                 AttackType attack_type = AttackType.Normal;
-                if (BehindAttack == true)
+                if (BehindAttack)
                 {
                     attack_type = AttackType.Behind;
                 }
 
-                if (CanBackStabTarget(target, attacker) == true)
+                if (CanBackStabTarget(target, attacker))
                 {
                     attack_type = AttackType.Backstab;
                 }
@@ -819,7 +819,7 @@ namespace GoldBox.Engine
                         gbl.bytes_1D900[attackIdx] += 1;
 
                         if (ovr024.PC_CanHitTarget(target_ac, target, attacker) ||
-                            target.IsHeld() == true)
+                            target.IsHeld())
                         {
                             gbl.bytes_1D2C9[attackIdx] += 1;
 
@@ -828,7 +828,7 @@ namespace GoldBox.Engine
                             sub_3E192(attackIdx, target, attacker);
                             DisplayAttackMessage(true, gbl.damage, gbl.damage, attack_type, target, attacker);
 
-                            if (target.in_combat == true)
+                            if (target.in_combat)
                             {
                                 ovr024.CheckAffectsEffect(attacker, (CheckType)attackIdx + 1);
                             }
@@ -875,7 +875,7 @@ namespace GoldBox.Engine
                 turnComplete = true;
             }
 
-            if (turnComplete == true)
+            if (turnComplete)
             {
                 ovr025.clear_actions(attacker);
             }
@@ -916,7 +916,7 @@ namespace GoldBox.Engine
 
                 target.actions.direction = (dir + 4) % 8;
             }
-            else if (ovr033.PlayerOnScreen(false, target) == true)
+            else if (ovr033.PlayerOnScreen(false, target))
             {
                 dir = target.actions.direction;
 
@@ -926,7 +926,7 @@ namespace GoldBox.Engine
                 }
             }
 
-            if (ovr033.PlayerOnScreen(false, target) == true)
+            if (ovr033.PlayerOnScreen(false, target))
             {
                 ovr033.draw_74B3F(false, Icon.Normal, dir, target);
             }
@@ -972,7 +972,7 @@ namespace GoldBox.Engine
 
                     if (rangedWeapon.count == 0)
                     {
-                        if (ovr025.is_weapon_ranged_melee(attacker) == true &&
+                        if (ovr025.is_weapon_ranged_melee(attacker) &&
                             rangedWeapon.affect_3 != Affects.affect_89)
                         {
                             Item new_item = rangedWeapon.ShallowClone();
@@ -994,12 +994,12 @@ namespace GoldBox.Engine
                 gbl.SelectedPlayer = player_bkup;
             }
 
-            if (turnComplete == true)
+            if (turnComplete)
             {
                 ovr025.clear_actions(attacker);
             }
 
-            if (ovr033.PlayerOnScreen(false, attacker) == true)
+            if (ovr033.PlayerOnScreen(false, attacker))
             {
                 ovr033.draw_74B3F(true, Icon.Attack, attacker.actions.direction, attacker);
                 ovr033.draw_74B3F(false, Icon.Normal, attacker.actions.direction, attacker);
@@ -1011,7 +1011,7 @@ namespace GoldBox.Engine
 
         internal static int RangedDefenseBonus(Player target, Player attacker) /* sub_3FCED */
         {
-            if (ovr025.is_weapon_ranged(attacker) == true)
+            if (ovr025.is_weapon_ranged(attacker))
             {
                 int range = ovr025.getTargetRange(target, attacker);
 
@@ -1121,11 +1121,11 @@ namespace GoldBox.Engine
                 {
                     bool var_3 = true;
 
-                    if (find_target(true, 0, ovr023.SpellRange(spellId), gbl.SelectedPlayer) == true)
+                    if (find_target(true, 0, ovr023.SpellRange(spellId), gbl.SelectedPlayer))
                     {
                         Player target = gbl.SelectedPlayer.actions.target;
 
-                        if (target.IsHeld() == true)
+                        if (target.IsHeld())
                         {
                             for (int i = 1; i <= 4; i++)
                             {
@@ -1136,7 +1136,7 @@ namespace GoldBox.Engine
                             }
                         }
 
-                        if (var_3 == true)
+                        if (var_3)
                         {
                             arg_0.target = gbl.SelectedPlayer.actions.target;
                             arg_0.map = ovr033.PlayerMapPos(arg_0.target);
@@ -1149,7 +1149,7 @@ namespace GoldBox.Engine
             }
 
 
-            if (var_2 == true)
+            if (var_2)
             {
                 gbl.targetPos = arg_0.map;
             }
@@ -1198,7 +1198,7 @@ namespace GoldBox.Engine
 
                 do
                 {
-                    if (sub_4001C(var_C, false, quick_fight, spellId) == true)
+                    if (sub_4001C(var_C, false, quick_fight, spellId))
                     {
                         bool found = gbl.spellTargets.Exists(st => st == var_C.target);
 
@@ -1275,7 +1275,7 @@ namespace GoldBox.Engine
             }
             else if (tmp1 == 0x0F)
             {
-                if (sub_4001C(var_C, false, quick_fight, spellId) == true)
+                if (sub_4001C(var_C, false, quick_fight, spellId))
                 {
                     if (gbl.SelectedPlayer.actions.target != null)
                     {
@@ -1302,7 +1302,7 @@ namespace GoldBox.Engine
             }
             else if (tmp1 >= 8 && tmp1 <= 0x0E)
             {
-                if (sub_4001C(var_C, true, quick_fight, spellId) == true)
+                if (sub_4001C(var_C, true, quick_fight, spellId))
                 {
                     var scl = ovr032.Rebuild_SortedCombatantList(1, gbl.spellCastingTable[spellId].field_6 & 7, gbl.targetPos, sc => true);
 
@@ -1326,7 +1326,7 @@ namespace GoldBox.Engine
 
                 while (max_targets > 0)
                 {
-                    if (sub_4001C(var_C, false, quick_fight, spellId) == true)
+                    if (sub_4001C(var_C, false, quick_fight, spellId))
                     {
                         bool found = gbl.spellTargets.Exists(st => st == var_C.target);
 
@@ -1680,7 +1680,7 @@ namespace GoldBox.Engine
             {
                 if (player.combat_team == CombatTeam.Enemy)
                 {
-                    if (player.in_combat == true)
+                    if (player.in_combat)
                     {
                         currentTotal += player.hit_point_current;
                     }
@@ -1702,7 +1702,7 @@ namespace GoldBox.Engine
 
             foreach (Player mob in gbl.TeamList)
             {
-                if (player.OppositeTeam() == mob.combat_team && mob.in_combat == true)
+                if (player.OppositeTeam() == mob.combat_team && mob.in_combat)
                 {
                     int moves = CalcMoves(mob) / 2;
 
@@ -1755,7 +1755,7 @@ namespace GoldBox.Engine
             int range = ovr025.getTargetRange(target, attacker);
             int direction = getTargetDirection(target, attacker);
 
-            if (showRange == true)
+            if (showRange)
             {
                 string range_txt = "Range = " + range.ToString() + "  ";
                 seg041.displayString(range_txt, 0, 10, 0x17, 0);
@@ -1765,7 +1765,7 @@ namespace GoldBox.Engine
             {
                 if (showRange == false)
                 {
-                    if (showTarget == true)
+                    if (showTarget)
                     {
                         text = "Target ";
                     }
@@ -1783,8 +1783,8 @@ namespace GoldBox.Engine
                     else
                     {
                         Item dummyItem;
-                        if (ovr025.GetCurrentAttackItem(out dummyItem, attacker) == true &&
-                            (ovr025.BuildNearTargets(1, attacker).Count == 0 || ovr025.is_weapon_ranged_melee(attacker) == true))
+                        if (ovr025.GetCurrentAttackItem(out dummyItem, attacker) &&
+                            (ovr025.BuildNearTargets(1, attacker).Count == 0 || ovr025.is_weapon_ranged_melee(attacker)))
                         {
                             text = "Target ";
                         }
@@ -1813,7 +1813,7 @@ namespace GoldBox.Engine
                 arg_4 = false;
             }
 
-            if (arg_4 == true)
+            if (arg_4)
             {
                 arg_0.target = target;
                 arg_0.map = ovr033.PlayerMapPos(target);
@@ -1823,7 +1823,7 @@ namespace GoldBox.Engine
 
                 if (showRange)
                 {
-                    if (TrySweepAttack(target, attacker) == true)
+                    if (TrySweepAttack(target, attacker))
                     {
                         arg_4 = true;
                         ovr025.clear_actions(attacker);
@@ -1834,9 +1834,9 @@ namespace GoldBox.Engine
 
                         Item rangedWeapon = null;
 
-                        if (ovr025.is_weapon_ranged(attacker) == true &&
-                            ovr025.GetCurrentAttackItem(out rangedWeapon, attacker) == true &&
-                            ovr025.is_weapon_ranged_melee(attacker) == true &&
+                        if (ovr025.is_weapon_ranged(attacker) &&
+                            ovr025.GetCurrentAttackItem(out rangedWeapon, attacker) &&
+                            ovr025.is_weapon_ranged_melee(attacker) &&
                             ovr025.getTargetRange(target, attacker) == 0)
                         {
                             rangedWeapon = null;
@@ -1886,7 +1886,7 @@ namespace GoldBox.Engine
                 bool can_target = false;
                 int range = 255;
 
-                if (ovr032.canReachTarget(ref range, pos, ovr033.PlayerMapPos(player01)) == true)
+                if (ovr032.canReachTarget(ref range, pos, ovr033.PlayerMapPos(player01)))
                 {
                     can_target = true;
 
@@ -1955,7 +1955,7 @@ namespace GoldBox.Engine
                         {
                             can_target = false;
                         }
-                        else if (ovr025.is_weapon_ranged(player01) == true &&
+                        else if (ovr025.is_weapon_ranged(player01) &&
                              (ovr025.GetCurrentAttackItem(out dummyItem, player01) == false ||
                              (ovr025.BuildNearTargets(1, player01).Count > 0 &&
                                 ovr025.is_weapon_ranged_melee(player01) == false)))
@@ -2080,7 +2080,7 @@ namespace GoldBox.Engine
 
         internal static Player step_combat_list(bool arg_2, int step, ref int list_index, ref Point attackerPos, SortedCombatant[] sorted_list) /* sub_41932 */
         {
-            if (arg_2 == true)
+            if (arg_2)
             {
                 attackerPos = sorted_list[list_index - 1].pos;
             }
@@ -2105,7 +2105,7 @@ namespace GoldBox.Engine
 
             var targetPos = sorted_list[list_index - 1].pos;
 
-            if (arg_2 == true)
+            if (arg_2)
             {
                 ovr025.draw_missile_attack(0, 1, targetPos, attackerPos);
                 attackerPos = targetPos;
@@ -2211,7 +2211,7 @@ namespace GoldBox.Engine
                                 break;
                         }
                     }
-                    else if (unk_41B05.MemberOf(input) == true)
+                    else if (unk_41B05.MemberOf(input))
                     {
                         arg_4 = Target(arg_0, allowTarget, canTargetEmptyGround, showRange, maxRange, target, attacker);
                         ovr025.load_missile_dax(false, 0, 0, 0x19);
@@ -2241,7 +2241,7 @@ namespace GoldBox.Engine
 
             Player target = player.actions.target;
 
-            if (clear_target == true ||
+            if (clear_target ||
                  (target != null &&
                    (target.combat_team == player.combat_team ||
                     target.in_combat == false ||
@@ -2261,7 +2261,7 @@ namespace GoldBox.Engine
             {
                 var_5 = secondPass;
 
-                if (secondPass == true && clear_target == false)
+                if (secondPass && clear_target == false)
                 {
                     gbl.mapToBackGroundTile.ignoreWalls = true;
                 }
@@ -2277,8 +2277,8 @@ namespace GoldBox.Engine
                     var epi = nearTargets[roll - 1];
                     target = epi.player;
 
-                    if ((arg_2 != 0 && gbl.mapToBackGroundTile.ignoreWalls == true) ||
-                        CanSeeTargetA(target, player) == true)
+                    if ((arg_2 != 0 && gbl.mapToBackGroundTile.ignoreWalls) ||
+                        CanSeeTargetA(target, player))
                     {
                         target_found = true;
                         player.actions.target = target;
@@ -2306,7 +2306,7 @@ namespace GoldBox.Engine
             Player target = attacker.actions.target;
 
             if (gbl.bytes_1D2C9[1] == 2 &&
-                target.in_combat == true &&
+                target.in_combat &&
                 target.HasAffect(Affects.clear_movement) == false &&
                 target.HasAffect(Affects.reduce) == false)
             {
@@ -2333,11 +2333,11 @@ namespace GoldBox.Engine
         {
             bool var_5 = true;
 
-            if (find_target(clear_target, 0, 0xff, player) == true)
+            if (find_target(clear_target, 0, 0xff, player))
             {
                 var target = ovr033.PlayerMapPos(player.actions.target);
 
-                if (ovr032.canReachTarget(ref range, target, ovr033.PlayerMapPos(player)) == true)
+                if (ovr032.canReachTarget(ref range, target, ovr033.PlayerMapPos(player)))
                 {
                     var_5 = false;
                 }

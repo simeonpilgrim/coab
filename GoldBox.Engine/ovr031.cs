@@ -322,7 +322,7 @@ namespace GoldBox.Engine
         {
             Display.UpdateStop();
 
-            if (gbl.mapAreaDisplay == true)
+            if (gbl.mapAreaDisplay)
             {
                 DrawAreaMap(partyDir, partyPosY, partyPosX);
             }

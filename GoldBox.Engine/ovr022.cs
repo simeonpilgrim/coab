@@ -39,7 +39,7 @@ namespace GoldBox.Engine
         {
             int capasity;
 
-            if (willOverload(out capasity, item_weight, gbl.SelectedPlayer) == true)
+            if (willOverload(out capasity, item_weight, gbl.SelectedPlayer))
             {
                 ovr025.string_print01("Overloaded. Money will be put in Pool.");
                 gbl.SelectedPlayer.Money.AddCoins(Money.Platinum, capasity);
@@ -272,7 +272,7 @@ namespace GoldBox.Engine
 
         internal static void PickupCoins(int money_slot, int num_coins, Player player) /* sub_59AA0 */
         {
-            if (willOverload(num_coins, player) == true)
+            if (willOverload(num_coins, player))
             {
                 ovr025.string_print01("Overloaded");
             }
@@ -949,7 +949,7 @@ namespace GoldBox.Engine
 
                             bool must_sell;
 
-                            if (willOverload(1, gbl.SelectedPlayer) == true ||
+                            if (willOverload(1, gbl.SelectedPlayer) ||
                                 gbl.SelectedPlayer.items.Count >= Player.MaxItems)
                             {
                                 sell_text = "Sell";
@@ -1021,7 +1021,7 @@ namespace GoldBox.Engine
                             seg041.displayString(value_text, 0, 15, 12, 1);
 
                             bool must_sell;
-                            if (willOverload(1, gbl.SelectedPlayer) == true ||
+                            if (willOverload(1, gbl.SelectedPlayer) ||
                                 gbl.SelectedPlayer.items.Count >= Player.MaxItems)
                             {
                                 sell_text = "Sell";

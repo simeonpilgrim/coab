@@ -223,7 +223,7 @@ namespace GoldBox.Engine
             {
                 if (flags[0] == false)
                 {
-                    if (gbl.mapAreaDisplay == true)
+                    if (gbl.mapAreaDisplay)
                     {
                         gbl.mapAreaDisplay = false;
                         gbl.can_draw_bigpic = true;
@@ -424,7 +424,7 @@ namespace GoldBox.Engine
             }
             else if (arg_4 == 0x100)
             {
-                if (gbl.SelectedPlayer.in_combat == true)
+                if (gbl.SelectedPlayer.in_combat)
                 {
                     return_val = 1;
                 }
@@ -433,7 +433,7 @@ namespace GoldBox.Engine
                     return_val = 0x80;
                 }
 
-                if (gbl.player_not_found == true)
+                if (gbl.player_not_found)
                 {
                     return_val = 0;
                 }
@@ -1139,7 +1139,7 @@ namespace GoldBox.Engine
             {
                 char ch = MenuString[i];
 
-                if (unk_31673.MemberOf(ch) == true)
+                if (unk_31673.MemberOf(ch))
                 {
                     ch += ' ';
                 }
@@ -1150,7 +1150,7 @@ namespace GoldBox.Engine
                     continue;
                 }
 
-                if (mFlag == true)
+                if (mFlag)
                 {
                     mFlag = false;
                     ch = char.ToUpper(ch);
@@ -1179,7 +1179,7 @@ namespace GoldBox.Engine
                 bool special_key_pressed;
                 key_pressed = ovr027.displayInput(out special_key_pressed, useOverlay, 1, colors, displayString, extraString);
 
-                if (special_key_pressed == true)
+                if (special_key_pressed)
                 {
                     ovr020.scroll_team_list(key_pressed);
                     ovr025.PartySummary(gbl.SelectedPlayer);
@@ -1376,11 +1376,11 @@ namespace GoldBox.Engine
             {
                 byte movement = player.movement;
 
-                if (player.HasAffect(Affects.haste) == true)
+                if (player.HasAffect(Affects.haste))
                 {
                     movement *= 2;
                 }
-                else if (player.HasAffect(Affects.slow) == true)
+                else if (player.HasAffect(Affects.slow))
                 {
                     movement /= 2;
                 }

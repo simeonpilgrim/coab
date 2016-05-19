@@ -18,7 +18,7 @@ namespace GoldBox.Engine
 
             bool file_found = File.Exists(Path.Combine(dir_path, file_name));
 
-            if (file_found == true)
+            if (file_found)
             {
                 file_ptr = new OpenOrCreateFile();
                 file_ptr.Assign(Path.Combine(dir_path, file_name));

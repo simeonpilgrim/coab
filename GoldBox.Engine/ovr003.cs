@@ -6,12 +6,14 @@ namespace GoldBox.Engine
 {
     class ovr003
     {
+        static Dictionary<int, CmdItem> CommandTable = new Dictionary<int, CmdItem>();
+        private static CodeWheel _codeWheel = new CodeWheel();
         internal static void CMD_Exit()
         {
             VmLog.WriteLine("CMD_Exit: byte_1AB0A {0}", gbl.restore_player_ptr);
             VmLog.WriteLine("");
 
-            if (gbl.restore_player_ptr == true)
+            if (gbl.restore_player_ptr)
             {
                 gbl.SelectedPlayer = gbl.LastSelectedPlayer;
                 gbl.restore_player_ptr = false;
@@ -41,7 +43,6 @@ namespace GoldBox.Engine
             gbl.textXCol = 1;
         }
 
-
         internal static void CMD_Goto()
         {
             ovr008.vm_LoadCmdSets(1);
@@ -51,7 +52,6 @@ namespace GoldBox.Engine
 
             gbl.ecl_offset = newOffset;
         }
-
 
         internal static void CMD_Gosub()
         {
@@ -63,7 +63,6 @@ namespace GoldBox.Engine
             gbl.vmCallStack.Push(gbl.ecl_offset);
             gbl.ecl_offset = newOffset;
         }
-
 
         internal static void CMD_Compare() // sub_2611D
         {
@@ -85,7 +84,6 @@ namespace GoldBox.Engine
                 ovr008.compare_variables(value_b, value_a);
             }
         }
-
 
         internal static void CMD_AddSubDivMulti() // sub_2619A
         {
@@ -128,7 +126,6 @@ namespace GoldBox.Engine
             ovr008.vm_SetMemoryValue(value, location);
         }
 
-
         internal static void CMD_Random() // sub_2623D
         {
             ovr008.vm_LoadCmdSets(2);
@@ -149,7 +146,6 @@ namespace GoldBox.Engine
             ovr008.vm_SetMemoryValue(val, loc);
         }
 
-
         internal static void CMD_Save()
         {
             ovr008.vm_LoadCmdSets(2);
@@ -169,7 +165,6 @@ namespace GoldBox.Engine
                 ovr008.vm_WriteStringToMemory(gbl.unk_1D972[1], loc);
             }
         }
-
 
         internal static void CMD_LoadCharacter() /* sub_262E9 */
         {
@@ -195,9 +190,9 @@ namespace GoldBox.Engine
                 gbl.player_not_found = true;
             }
 
-            if (high_bit_set == true &&
-                gbl.redrawPartySummary1 == true &&
-                gbl.redrawPartySummary2 == true)
+            if (high_bit_set &&
+                gbl.redrawPartySummary1 &&
+                gbl.redrawPartySummary2)
             {
                 if (gbl.LastSelectedPlayer == player)
                 {
@@ -210,7 +205,6 @@ namespace GoldBox.Engine
                 gbl.redrawPartySummary2 = false;
             }
         }
-
 
         internal static void CMD_SetupMonster() /* sub_263C9 */
         {
@@ -296,7 +290,6 @@ namespace GoldBox.Engine
             }
         }
 
-
         internal static void CMD_Approach() // sub_26835
         {
             if (gbl.area2_ptr.encounter_distance > 0)
@@ -307,7 +300,6 @@ namespace GoldBox.Engine
             }
             gbl.ecl_offset++;
         }
-
 
         internal static void CMD_Picture() /* sub_26873 */
         {
@@ -343,7 +335,7 @@ namespace GoldBox.Engine
             else
             {
                 if ((gbl.last_game_state != GameState.DungeonMap || gbl.game_state == GameState.DungeonMap) &&
-                    (gbl.spriteChanged == true || gbl.displayPlayerSprite))
+                    (gbl.spriteChanged || gbl.displayPlayerSprite))
                 {
                     gbl.can_draw_bigpic = true;
                     ovr029.RedrawView();
@@ -356,7 +348,6 @@ namespace GoldBox.Engine
             }
         }
 
-
         internal static void CMD_InputNumber() /* sub_2695E */
         {
             ovr008.vm_LoadCmdSets(2);
@@ -367,7 +358,6 @@ namespace GoldBox.Engine
 
             ovr008.vm_SetMemoryValue(var_4, loc);
         }
-
 
         internal static void CMD_InputString() /* sub_269A4 */
         {
@@ -384,7 +374,6 @@ namespace GoldBox.Engine
 
             ovr008.vm_WriteStringToMemory(str, loc);
         }
-
 
         internal static void CMD_Print()
         {
@@ -416,7 +405,6 @@ namespace GoldBox.Engine
             gbl.DelayBetweenCharacters = false;
         }
 
-
         internal static void CMD_Return()
         {
             gbl.ecl_offset++;
@@ -433,7 +421,6 @@ namespace GoldBox.Engine
                 CMD_Exit();
             }
         }
-
 
         internal static void CMD_CompareAnd() /* sub_26B0C */
         {
@@ -460,7 +447,6 @@ namespace GoldBox.Engine
             }
         }
 
-
         internal static void CMD_If()
         {
             gbl.ecl_offset++;
@@ -475,7 +461,6 @@ namespace GoldBox.Engine
                 SkipNextCommand();
             }
         }
-
 
         internal static void CMD_NewECL()
         {
@@ -496,7 +481,6 @@ namespace GoldBox.Engine
             gbl.encounter_flags[0] = false;
             gbl.encounter_flags[1] = false;
         }
-
 
         internal static void CMD_LoadFiles() /* sub_26C41 */
         {
@@ -588,12 +572,12 @@ namespace GoldBox.Engine
             }
 
 
-            if (gbl.byte_1AB0C == true &&
-                gbl.filesLoaded == true &&
+            if (gbl.byte_1AB0C &&
+                gbl.filesLoaded &&
                 gbl.last_game_state == GameState.WildernessMap)
             {
                 if (gbl.game_state != GameState.WildernessMap &&
-                    gbl.byte_1EE98 == true)
+                    gbl.byte_1EE98)
                 {
                     seg037.draw8x8_03();
                     ovr025.PartySummary(gbl.SelectedPlayer);
@@ -602,7 +586,6 @@ namespace GoldBox.Engine
                 gbl.byte_1EE98 = false;
             }
         }
-
 
         internal static void CMD_AndOr() /* sub_26DD0 */
         {
@@ -631,7 +614,6 @@ namespace GoldBox.Engine
             ovr008.vm_SetMemoryValue(resultant, loc);
         }
 
-
         internal static void CMD_GetTable() /* sub_26E3F */
         {
             ovr008.vm_LoadCmdSets(3);
@@ -647,7 +629,6 @@ namespace GoldBox.Engine
             ovr008.vm_SetMemoryValue(var_8, result_loc);
         }
 
-
         internal static void CMD_SaveTable() /* sub_26E9D */
         {
             ovr008.vm_LoadCmdSets(3);
@@ -659,7 +640,6 @@ namespace GoldBox.Engine
 
             ovr008.vm_SetMemoryValue(var_6, result_loc);
         }
-
 
         internal static void CMD_VertMenu() /* sub_26EE9 */
         {
@@ -693,7 +673,6 @@ namespace GoldBox.Engine
             menuList.Clear();
             seg037.draw8x8_clear_area(TextRegion.NormalBottom);
         }
-
 
         internal static void CMD_HorizontalMenu()
         {
@@ -768,7 +747,6 @@ namespace GoldBox.Engine
             gbl.items_pointer.Clear();
         }
 
-
         internal static void CMD_PartyStrength() /* sub_272A9 */
         {
             ovr008.vm_LoadCmdSets(1);
@@ -808,16 +786,13 @@ namespace GoldBox.Engine
             ovr008.vm_SetMemoryValue(power_value, loc);
         }
 
-
-        internal static void setMemoryFour(bool val_d, byte val_c, byte val_b, byte val_a,
-        ushort loc_a, ushort loc_b, ushort loc_c, ushort loc_d) /* sub_273F6 */
+        internal static void setMemoryFour(bool val_d, byte val_c, byte val_b, byte val_a, ushort loc_a, ushort loc_b, ushort loc_c, ushort loc_d) /* sub_273F6 */
         {
             ovr008.vm_SetMemoryValue(val_a, loc_a);
             ovr008.vm_SetMemoryValue(val_b, loc_b);
             ovr008.vm_SetMemoryValue(val_c, loc_c);
             ovr008.vm_SetMemoryValue(val_d ? (ushort)1 : (ushort)0, loc_d);
         }
-
 
         internal static void CMD_CheckParty() /* sub_27454 */
         {
@@ -906,7 +881,6 @@ namespace GoldBox.Engine
             }
         }
 
-
         internal static void CMD_PartySurprise() /* sub_2767E */
         {
             ovr008.vm_LoadCmdSets(2);
@@ -929,7 +903,6 @@ namespace GoldBox.Engine
             ovr008.vm_SetMemoryValue(val_a, loc_a);
             ovr008.vm_SetMemoryValue(val_b, loc_b);
         }
-
 
         internal static void CMD_Surprise() /* sub_2771E */
         {
@@ -966,7 +939,6 @@ namespace GoldBox.Engine
 
             ovr008.vm_SetMemoryValue(val_a, 0x2cb);
         }
-
 
         internal static void CMD_Combat() // sub_277E4
         {
@@ -1028,7 +1000,6 @@ namespace GoldBox.Engine
             ovr025.LoadPic();
         }
 
-
         internal static void CMD_OnGotoGoSub() /* sub_27AE5 */
         {
             ovr008.vm_LoadCmdSets(2);
@@ -1062,8 +1033,6 @@ namespace GoldBox.Engine
                     gbl.command == 0x25 ? "Goto" : "Gosub", var_1, var_2);
             }
         }
-
-
 
         internal static void CMD_Treasure() /* load_item */
         {
@@ -1198,7 +1167,6 @@ namespace GoldBox.Engine
             }
         }
 
-
         internal static void CMD_Rob() /* sub_27F76*/
         {
             ovr008.vm_LoadCmdSets(3);
@@ -1222,7 +1190,6 @@ namespace GoldBox.Engine
                 }
             }
         }
-
 
         internal static void CMD_EncounterMenu()
         {
@@ -1536,7 +1503,6 @@ namespace GoldBox.Engine
             gbl.byte_1EE95 = false;
         }
 
-
         internal static void CMD_Parlay() /* talk_style */
         {
             ovr008.vm_LoadCmdSets(6);
@@ -1555,7 +1521,6 @@ namespace GoldBox.Engine
 
             ovr008.vm_SetMemoryValue(value, location);
         }
-
 
         internal static void CMD_FindItem() // sub_28856
         {
@@ -1584,13 +1549,11 @@ namespace GoldBox.Engine
             }
         }
 
-
         internal static void CMD_Delay()
         {
             gbl.ecl_offset++;
             seg041.GameDelay();
         }
-
 
         internal static void CMD_Damage() /* sub_28958 */
         {
@@ -1670,7 +1633,7 @@ namespace GoldBox.Engine
                     rnd_player_id = ovr024.roll_dice(gbl.area2_ptr.party_size, 1);
                     Player player03 = gbl.TeamList[rnd_player_id - 1];
 
-                    if (ovr024.CanHitTarget(var_6, player03) == true)
+                    if (ovr024.CanHitTarget(var_6, player03))
                     {
                         ovr008.sub_32200(player03, damage);
                     }
@@ -1683,13 +1646,13 @@ namespace GoldBox.Engine
 
             foreach (Player player in gbl.TeamList)
             {
-                if (player.in_combat == true)
+                if (player.in_combat)
                 {
                     gbl.party_killed = false;
                 }
             }
 
-            if (gbl.party_killed == true)
+            if (gbl.party_killed)
             {
                 seg037.DrawFrame_Outer();
                 gbl.textXCol = 2;
@@ -1703,7 +1666,6 @@ namespace GoldBox.Engine
             seg041.DisplayAndPause("press <enter>/<return> to continue", 15);
         }
 
-
         internal static void CMD_SpriteOff() /* sub_28CB6 */
         {
             gbl.ecl_offset++;
@@ -1716,7 +1678,6 @@ namespace GoldBox.Engine
             }
         }
 
-
         internal static void CMD_EclClock() /* sub_28CDA */
         {
             ovr008.vm_LoadCmdSets(2);
@@ -1725,7 +1686,6 @@ namespace GoldBox.Engine
 
             ovr021.step_game_time(timeSlot, timeStep);
         }
-
 
         internal static void CMD_PrintReturn() // sub_28D0F
         {
@@ -1736,7 +1696,6 @@ namespace GoldBox.Engine
             gbl.textXCol = 1;
             gbl.textYCol++;
         }
-
 
         internal static void CMD_ClearBox() // sub_28D38 
         {
@@ -1753,7 +1712,6 @@ namespace GoldBox.Engine
             gbl.byte_1EE98 = false;
         }
 
-
         internal static void CMD_Who() // sub_28D7F
         {
             ovr008.vm_LoadCmdSets(1);
@@ -1764,7 +1722,6 @@ namespace GoldBox.Engine
             seg037.draw8x8_clear_area(TextRegion.NormalBottom);
             ovr025.selectAPlayer(ref gbl.SelectedPlayer, false, prompt);
         }
-
 
         internal static void CMD_AddNPC() // sub_28DCA
         {
@@ -1780,7 +1737,6 @@ namespace GoldBox.Engine
             ovr025.reclac_player_values(gbl.SelectedPlayer);
             ovr025.PartySummary(gbl.SelectedPlayer);
         }
-
 
         internal static void CMD_Spell()
         {
@@ -1828,7 +1784,6 @@ namespace GoldBox.Engine
             ovr008.vm_SetMemoryValue(player_index, loc_b);
         }
 
-
         internal static void CMD_Call()
         {
             ovr008.vm_LoadCmdSets(1);
@@ -1843,13 +1798,13 @@ namespace GoldBox.Engine
                 case 0xAE11:
                     gbl.mapWallRoof = ovr031.get_wall_x2(gbl.mapPosY, gbl.mapPosX);
 
-                    if (gbl.byte_1AB0B == true)
+                    if (gbl.byte_1AB0B)
                     {
-                        if (gbl.spriteChanged == true ||
+                        if (gbl.spriteChanged ||
                             gbl.displayPlayerSprite ||
-                            gbl.byte_1EE91 == true ||
-                            gbl.positionChanged == true ||
-                            gbl.byte_1EE94 == true)
+                            gbl.byte_1EE91 ||
+                            gbl.positionChanged ||
+                            gbl.byte_1EE94)
                         {
                             gbl.can_draw_bigpic = true;
                             ovr029.RedrawView();
@@ -1909,12 +1864,11 @@ namespace GoldBox.Engine
             }
         }
 
-
         internal static void TryEncamp()
         {
             RunEclVm(gbl.PreCampCheckAddr);
 
-            if (ovr016.MakeCamp() == true)
+            if (ovr016.MakeCamp())
             {
                 ovr025.LoadPic();
                 RunEclVm(gbl.CampInterruptedAddr);
@@ -1925,13 +1879,12 @@ namespace GoldBox.Engine
             gbl.gameSaved = false;
         }
 
-
         internal static void CMD_Program() //YourHaveWon
         {
             ovr008.vm_LoadCmdSets(1);
             var var_1 = (byte)ovr008.vm_GetCmdValue(1);
 
-            if (gbl.restore_player_ptr == true)
+            if (gbl.restore_player_ptr)
             {
                 gbl.SelectedPlayer = gbl.LastSelectedPlayer;
                 gbl.restore_player_ptr = false;
@@ -1986,7 +1939,6 @@ namespace GoldBox.Engine
             }
         }
 
-
         internal static void CMD_Protection() // sub_2923F
         {
             VmLog.WriteLine("CMD_Protection:");
@@ -1996,13 +1948,12 @@ namespace GoldBox.Engine
             gbl.spriteChanged = false;
             ovr008.vm_LoadCmdSets(1);
 
-            if (Cheats.skip_copy_protection == false)
+            if (!Cheats.skip_copy_protection)
             {
-                ovr004.copy_protection();
+                _codeWheel.copy_protection();
             }
             ovr025.LoadPic();
         }
-
 
         internal static void CMD_Dump() // sub_29271
         {
@@ -2017,7 +1968,6 @@ namespace GoldBox.Engine
             ovr025.PartySummary(gbl.SelectedPlayer);
         }
 
-
         internal static void CMD_FindSpecial() // sub_292A5
         {
             for (int i = 0; i < 6; i++)
@@ -2028,7 +1978,7 @@ namespace GoldBox.Engine
             ovr008.vm_LoadCmdSets(1);
             var affect_type = (Affects)ovr008.vm_GetCmdValue(1);
 
-            if (gbl.SelectedPlayer.HasAffect(affect_type) == true)
+            if (gbl.SelectedPlayer.HasAffect(affect_type))
             {
                 gbl.compare_flags[0] = true;
             }
@@ -2037,7 +1987,6 @@ namespace GoldBox.Engine
                 gbl.compare_flags[1] = true;
             }
         }
-
 
         internal static void CMD_DestroyItems() // sub_292F9
         {
@@ -2053,10 +2002,6 @@ namespace GoldBox.Engine
                 ovr025.reclac_player_values(player);
             }
         }
-
-
-
-        static Dictionary<int, CmdItem> CommandTable = new Dictionary<int, CmdItem>();
 
         public static void SetupCommandTable()
         {
@@ -2142,8 +2087,7 @@ namespace GoldBox.Engine
                 gbl.ecl_offset += 1;
             }
         }
-
-
+        
         internal static void RunEclVm(ushort offset) // sub_29607
         {
             gbl.ecl_offset = offset;
@@ -2172,8 +2116,7 @@ namespace GoldBox.Engine
 
             gbl.stopVM = false;
         }
-
-
+        
         internal static void sub_29677()
         {
             do
@@ -2197,7 +2140,7 @@ namespace GoldBox.Engine
 
                 if (gbl.vmFlag01 == false)
                 {
-                    if (((gbl.last_game_state != GameState.DungeonMap || gbl.game_state == GameState.DungeonMap) && gbl.byte_1AB0B == true) ||
+                    if (((gbl.last_game_state != GameState.DungeonMap || gbl.game_state == GameState.DungeonMap) && gbl.byte_1AB0B) ||
                         (gbl.last_game_state == GameState.DungeonMap && gbl.game_state == GameState.DungeonMap))
                     {
                         ovr029.RedrawView();
@@ -2218,12 +2161,11 @@ namespace GoldBox.Engine
                     }
 
                 }
-            } while (gbl.vmFlag01 == true);
+            } while (gbl.vmFlag01);
 
             gbl.last_game_state = gbl.game_state;
         }
-
-
+        
         internal static void sub_29758()
         {
             gbl.LastSelectedPlayer = gbl.SelectedPlayer;
@@ -2241,7 +2183,7 @@ namespace GoldBox.Engine
             {
                 gbl.byte_1EE98 = false;
 
-                if (gbl.inDemo == true)
+                if (gbl.inDemo)
                 {
                     gbl.EclBlockId = 0x52;
                 }
@@ -2262,7 +2204,7 @@ namespace GoldBox.Engine
                 gbl.game_state = GameState.WildernessMap;
             }
 
-            if (gbl.reload_ecl_and_pictures == true ||
+            if (gbl.reload_ecl_and_pictures ||
                 gbl.area_ptr.LastEclBlockId == 0)
             {
                 ovr008.load_ecl_dax(gbl.EclBlockId);
@@ -2276,7 +2218,7 @@ namespace GoldBox.Engine
 
             RunEclVm(gbl.ecl_initial_entryPoint);
 
-            if (gbl.inDemo == true)
+            if (gbl.inDemo)
             {
                 while (gbl.TeamList.Count > 0)
                 {
@@ -2296,9 +2238,9 @@ namespace GoldBox.Engine
                 }
 
                 if (gbl.game_state != GameState.WildernessMap &&
-                    gbl.reload_ecl_and_pictures == true)
+                    gbl.reload_ecl_and_pictures)
                 {
-                    if (gbl.byte_1EE98 == true)
+                    if (gbl.byte_1EE98)
                     {
                         ovr025.LoadPic();
                     }
@@ -2336,7 +2278,7 @@ namespace GoldBox.Engine
 
                             RunEclVm(gbl.SearchLocationAddr);
 
-                            if (gbl.vmFlag01 == true)
+                            if (gbl.vmFlag01)
                             {
                                 sub_29677();
                             }
@@ -2357,7 +2299,7 @@ namespace GoldBox.Engine
                         RunEclVm(gbl.vm_run_addr_1);
                     }
 
-                    if (gbl.vmFlag01 == true)
+                    if (gbl.vmFlag01)
                     {
                         sub_29677();
                     }
@@ -2380,7 +2322,7 @@ namespace GoldBox.Engine
                             gbl.spriteChanged = false;
                             gbl.byte_1EE8D = true;
                             RunEclVm(gbl.SearchLocationAddr);
-                            if (gbl.vmFlag01 == true)
+                            if (gbl.vmFlag01)
                             {
                                 sub_29677();
                             }
@@ -2390,42 +2332,6 @@ namespace GoldBox.Engine
 
                 gbl.party_killed = false;
             }
-        }
-    }
-
-    internal class CmdItem
-    {
-        public delegate void CmdDelegate();
-
-        int size;
-        string name;
-        CmdDelegate cmd;
-
-        public CmdItem(int Size, string Name, CmdDelegate Cmd)
-        {
-            size = Size;
-            name = Name;
-            cmd = Cmd;
-        }
-
-        public void Run()
-        {
-            cmd();
-        }
-
-        public string Name()
-        {
-            return name;
-        }
-
-        internal void Skip()
-        {
-            VmLog.WriteLine("SKIPPING: {0}", name);
-
-            if (size == 0)
-                gbl.ecl_offset += 1;
-            else
-                ovr008.vm_LoadCmdSets(size);
         }
     }
 }

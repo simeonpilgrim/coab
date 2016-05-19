@@ -181,12 +181,12 @@ namespace GoldBox.Engine
 
             int movement = player.movement;
 
-            if (player.HasAffect(Affects.slow) == true)
+            if (player.HasAffect(Affects.slow))
             {
                 movement *= 2;
             }
 
-            if (player.HasAffect(Affects.haste) == true)
+            if (player.HasAffect(Affects.haste))
             {
                 movement /= 2;
             }
@@ -258,7 +258,7 @@ namespace GoldBox.Engine
                     text += "Items ";
                 }
 
-                if (hasSpells == true)
+                if (hasSpells)
                 {
                     text += "Spells ";
                 }
@@ -278,12 +278,12 @@ namespace GoldBox.Engine
                     text += "Drop ";
                 }
 
-                if (CanCastHeal(gbl.SelectedPlayer) == true)
+                if (CanCastHeal(gbl.SelectedPlayer))
                 {
                     text += "Heal ";
                 }
 
-                if (CanCastCureDiseases(gbl.SelectedPlayer) == true)
+                if (CanCastCureDiseases(gbl.SelectedPlayer))
                 {
                     text += "Cure ";
                 }
@@ -323,7 +323,7 @@ namespace GoldBox.Engine
                 }
 
                 if (arg_0 == false &&
-                    asc_54B50.MemberOf(input_key) == true)
+                    asc_54B50.MemberOf(input_key))
                 {
                     playerDisplayFull(gbl.SelectedPlayer);
                 }
@@ -453,11 +453,11 @@ namespace GoldBox.Engine
                         text += " View";
                     }
 
-                    if (player.in_combat == true &&
+                    if (player.in_combat &&
                         gbl.area_ptr.field_1CA == 0 &&
                         (gbl.game_state == GameState.Camping || gbl.game_state == GameState.WildernessMap ||
                          gbl.game_state == GameState.DungeonMap || gbl.game_state == GameState.Combat ||
-                         (player.actions != null && player.actions.can_use == true)))
+                         (player.actions != null && player.actions.can_use)))
                     {
                         text += " Use";
                     }
@@ -496,7 +496,7 @@ namespace GoldBox.Engine
                     player.items.ForEach(item => ovr025.ItemDisplayNameBuild(false, true, 0, 0, item));
 
 
-                    if (redraw_player == true || gbl.byte_1D2C8 == true)
+                    if (redraw_player || gbl.byte_1D2C8)
                     {
                         seg037.draw8x8_07();
 
@@ -538,7 +538,7 @@ namespace GoldBox.Engine
                                     ovr025.string_print01("Must be Readied");
                                     inputKey = ' ';
                                 }
-                                else if (curr_item.IsScroll() == true ||
+                                else if (curr_item.IsScroll() ||
                                     (curr_item.affect_2 > 0 && (int)curr_item.affect_3 < 0x80))
                                 {
                                     UseMagicItem(ref arg_0, curr_item);
@@ -555,7 +555,7 @@ namespace GoldBox.Engine
                                 break;
 
                             case 'T':
-                                if (CanSellDropTradeItem(curr_item) == true)
+                                if (CanSellDropTradeItem(curr_item))
                                 {
                                     trade_item(curr_item);
                                 }
@@ -567,7 +567,7 @@ namespace GoldBox.Engine
                                 break;
 
                             case 'D':
-                                if (CanSellDropTradeItem(curr_item) == true)
+                                if (CanSellDropTradeItem(curr_item))
                                 {
                                     ovr025.ItemDisplayNameBuild(false, false, 0, 0, curr_item);
 
@@ -596,7 +596,7 @@ namespace GoldBox.Engine
                                 break;
 
                             case 'S':
-                                if (CanSellDropTradeItem(curr_item) == true)
+                                if (CanSellDropTradeItem(curr_item))
                                 {
                                     ShopSellItem(curr_item);
                                 }
@@ -651,7 +651,7 @@ namespace GoldBox.Engine
                     break;
 
                 case 1: // ring of wizardy
-                    if (add_item == true)
+                    if (add_item)
                     {
                         player.spellCastCount[2, 0] *= 2;
                         player.spellCastCount[2, 1] *= 2;
@@ -793,7 +793,7 @@ namespace GoldBox.Engine
             if (item.readied)
             {
                 // Remove
-                if (item.cursed == true)
+                if (item.cursed)
                 {
                     ovr025.string_print01("It's Cursed");
                 }
@@ -801,7 +801,7 @@ namespace GoldBox.Engine
                 {
                     item.readied = false;
 
-                    if (magic_item == true)
+                    if (magic_item)
                     {
                         calc_items_effects(false, item);
                     }
@@ -862,7 +862,7 @@ namespace GoldBox.Engine
                 {
                     case Weld.Ok:
                         item.readied = true;
-                        if (magic_item == true)
+                        if (magic_item)
                         {
                             calc_items_effects(true, item);
                         }
@@ -899,7 +899,7 @@ namespace GoldBox.Engine
             if (player != null)
             {
                 gbl.tradeWith = player;
-                if (canCarry(item, player) == true)
+                if (canCarry(item, player))
                 {
                     ovr025.string_print01("Overloaded");
                 }
@@ -982,7 +982,7 @@ namespace GoldBox.Engine
             gbl.spell_from_item = false;
             int spellId = 0;
 
-            if (item.IsScroll() == true)
+            if (item.IsScroll())
             {
                 gbl.currentScroll = item;
 
@@ -1008,7 +1008,7 @@ namespace GoldBox.Engine
                     ovr025.RedrawCombatScreen();
                 }
 
-                if (gbl.spell_from_item == true)
+                if (gbl.spell_from_item)
                 {
                     ovr025.DisplayPlayerStatusString(false, 10, "uses an item", gbl.SelectedPlayer);
 
@@ -1029,7 +1029,7 @@ namespace GoldBox.Engine
 
                 gbl.spell_from_item = true;
 
-                if (item.IsScroll() == true)
+                if (item.IsScroll())
                 {
                     if (gbl.SelectedPlayer.SkillLevel(SkillType.MagicUser) > 0 ||
                         gbl.SelectedPlayer.SkillLevel(SkillType.Cleric) > 0)
@@ -1061,9 +1061,9 @@ namespace GoldBox.Engine
                 }
             }
 
-            if (arg_0 == true)
+            if (arg_0)
             {
-                if (item.IsScroll() == true)
+                if (item.IsScroll())
                 {
                     ovr023.remove_spell_from_scroll(spellId, item, gbl.SelectedPlayer);
                 }
@@ -1124,7 +1124,7 @@ namespace GoldBox.Engine
                 int gold = item_value % 5;
                 int overflow;
 
-                if (ovr022.willOverload(out overflow, plat + gold, gbl.SelectedPlayer) == true)
+                if (ovr022.willOverload(out overflow, plat + gold, gbl.SelectedPlayer))
                 {
                     ovr025.string_print01("Overloaded. Money will be put in pool.");
 
@@ -1181,7 +1181,7 @@ namespace GoldBox.Engine
                 }
             }
 
-            if (id_item == true)
+            if (id_item)
             {
                 if (item.hidden_names_flag == 0)
                 {
@@ -1411,7 +1411,7 @@ namespace GoldBox.Engine
 
             arg_0 = ovr023.BuildSpellList(spl_location);
 
-            if (arg_0 == true)
+            if (arg_0)
             {
                 if (index < 0 ||
                     arg_8 == SpellSource.Cast)
@@ -1481,7 +1481,7 @@ namespace GoldBox.Engine
 
             int healAmount = player.SkillLevel(SkillType.Paladin) * 2;
 
-            if (ovr024.heal_player(0, healAmount, target) == true)
+            if (ovr024.heal_player(0, healAmount, target))
             {
                 ovr025.string_print01(target.name + " feels better");
             }

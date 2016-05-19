@@ -221,7 +221,7 @@ namespace GoldBox.Engine
                                 break;
 
                             case 1:
-                                if (var_6 == true)
+                                if (var_6)
                                 {
                                     var_2 = 0;
                                 }
@@ -236,7 +236,7 @@ namespace GoldBox.Engine
                     {
                         if (gbl.dir_6_flags == 0)
                         {
-                            if (var_6 == true)
+                            if (var_6)
                             {
                                 var_2 = 0x0F;
                             }
@@ -247,7 +247,7 @@ namespace GoldBox.Engine
                         }
                         else
                         {
-                            if (var_6 == true)
+                            if (var_6)
                             {
                                 var_2 = 0x12;
                             }
@@ -282,7 +282,7 @@ namespace GoldBox.Engine
                             {
                                 var_3 = 0x16;
                             }
-                            else if (var_6 == true)
+                            else if (var_6)
                             {
                                 var_3 = 0x10;
                             }
@@ -293,7 +293,7 @@ namespace GoldBox.Engine
                             break;
 
                         case 3:
-                            if (var_6 == true)
+                            if (var_6)
                             {
                                 var_3 = 0x14;
                             }
@@ -304,7 +304,7 @@ namespace GoldBox.Engine
                             break;
 
                         case 1:
-                            if (var_6 == true)
+                            if (var_6)
                             {
                                 var_3 = 1;
                             }
@@ -435,7 +435,7 @@ namespace GoldBox.Engine
             {
                 var_4 = 5;
             }
-            else if (var_6 == true)
+            else if (var_6)
             {
                 var_4 = 0x11;
             }
@@ -970,8 +970,8 @@ namespace GoldBox.Engine
 
                 if (state > tri_state.start)
                 {
-                    if ((any_cur_invalid == true && both_invalid(cur_y, cur_x) == false) ||
-                        (first_row == true && var_13 >= gbl.half_team_count[gbl.currentTeam]) ||
+                    if ((any_cur_invalid && both_invalid(cur_y, cur_x) == false) ||
+                        (first_row && var_13 >= gbl.half_team_count[gbl.currentTeam]) ||
                         (first_row == false && var_13 > 11))
                     {
                         row_scale++;
@@ -1007,8 +1007,8 @@ namespace GoldBox.Engine
                 }
 
 
-                if (any_cur_invalid == true &&
-                    both_invalid(cur_y, cur_x) == true)
+                if (any_cur_invalid &&
+                    both_invalid(cur_y, cur_x))
                 {
                     placed = false;
                     state = 0;
@@ -1117,7 +1117,7 @@ namespace GoldBox.Engine
 
                 gbl.CombatMap[loop_var].size = player.field_DE & 7;
 
-                if (place_combatant(loop_var) == true)
+                if (place_combatant(loop_var))
                 {
                     if (player.in_combat == false)
                     {
@@ -1147,7 +1147,7 @@ namespace GoldBox.Engine
                 {
                     gbl.CombatMap[loop_var].size = 0;
 
-                    if (player.actions.nonTeamMember == true)
+                    if (player.actions.nonTeamMember)
                     {
                         gbl.player_array[loop_var] = null;
                         to_remove.Add(player);

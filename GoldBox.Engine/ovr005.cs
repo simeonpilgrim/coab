@@ -170,10 +170,10 @@ namespace GoldBox.Engine
                 player_dead = true;
             }
 
-            if (player_dead == true ||
+            if (player_dead ||
                 (player_dead == false && CastCureAnyway("is not dead.")))
             {
-                if (buy_cure(5500, "Raise Dead") && player_dead == true)
+                if (buy_cure(5500, "Raise Dead") && player_dead)
                 {
                     gbl.cureSpell = true;
 
@@ -245,7 +245,7 @@ namespace GoldBox.Engine
         {
             bool isPoisoned = gbl.SelectedPlayer.HasAffect(Affects.poisoned);
 
-            if (isPoisoned == true ||
+            if (isPoisoned ||
                 (isPoisoned == false && CastCureAnyway("is not poisoned.")))
             {
                 if (buy_cure(1000, "Neutralize Poison"))
@@ -409,7 +409,7 @@ namespace GoldBox.Engine
 
                 ovr022.treasureOnGround(out items_present, out money_present);
                 string text;
-                if (money_present == true)
+                if (money_present)
                 {
                     text = "Heal View Take Pool Share Appraise Exit";
                 }
@@ -456,7 +456,7 @@ namespace GoldBox.Engine
                     case 'E':
                         ovr022.treasureOnGround(out items_present, out money_present);
 
-                        if (money_present == true)
+                        if (money_present)
                         {
                             string prompt = "~Yes ~No";
 
@@ -494,7 +494,7 @@ namespace GoldBox.Engine
                 {
                     ovr025.LoadPic();
                 }
-                else if (reloadPics == true)
+                else if (reloadPics)
                 {
                     ovr025.LoadPic();
                     reloadPics = false;

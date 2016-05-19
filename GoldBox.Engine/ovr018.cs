@@ -74,7 +74,7 @@ namespace GoldBox.Engine
 
             while (true)
             {
-                if (reclac_menus == true)
+                if (reclac_menus)
                 {
                     seg037.DrawFrame_Outer();
                     if (gbl.SelectedPlayer != null)
@@ -83,7 +83,7 @@ namespace GoldBox.Engine
                         menuFlags[allow_drop] = true;
                         menuFlags[allow_modify] = true;
 
-                        if (gbl.area2_ptr.training_class_mask > 0 || Cheats.free_training == true)
+                        if (gbl.area2_ptr.training_class_mask > 0 || Cheats.free_training)
                         {
                             menuFlags[allow_training] = true;
                             menuFlags[allow_duelclass] = gbl.SelectedPlayer.CanDuelClass();
@@ -116,7 +116,7 @@ namespace GoldBox.Engine
                     int yCol = 0;
                     for (int i = 0; i <= 11; i++)
                     {
-                        if (menuFlags[i] == true)
+                        if (menuFlags[i])
                         {
                             seg041.displayString(menuStrings[i][0].ToString(), 0, 15, yCol + 12, 2);
 
@@ -135,9 +135,9 @@ namespace GoldBox.Engine
 
                 ovr027.ClearPromptArea();
 
-                if (controlKey == true)
+                if (controlKey)
                 {
-                    if (gbl.SelectedPlayer != null && unk_4C13D.MemberOf(inputkey) == true)
+                    if (gbl.SelectedPlayer != null && unk_4C13D.MemberOf(inputkey))
                     {
                         bool previousDuelClassState = gbl.SelectedPlayer.CanDuelClass();
 
@@ -159,53 +159,53 @@ namespace GoldBox.Engine
                     switch (inputkey)
                     {
                         case 'C':
-                            if (menuFlags[allow_create] == true)
+                            if (menuFlags[allow_create])
                             {
                                 createPlayer();
                             }
                             break;
 
                         case 'D':
-                            if (menuFlags[allow_drop] == true)
+                            if (menuFlags[allow_drop])
                             {
                                 dropPlayer();
                             }
                             break;
                         case 'M':
-                            if (menuFlags[allow_modify] == true)
+                            if (menuFlags[allow_modify])
                             {
                                 modifyPlayer();
                             }
                             break;
                         case 'T':
-                            if (menuFlags[allow_training] == true)
+                            if (menuFlags[allow_training])
                             {
                                 train_player();
                             }
                             break;
                         case 'H':
-                            if (menuFlags[allow_duelclass] == true)
+                            if (menuFlags[allow_duelclass])
                             {
                                 ovr026.DuelClass(gbl.SelectedPlayer);
                             }
                             break;
 
                         case 'V':
-                            if (menuFlags[allow_view] == true)
+                            if (menuFlags[allow_view])
                             {
                                 ovr020.viewPlayer();
                             }
                             break;
 
                         case 'A':
-                            if (menuFlags[allow_add] == true)
+                            if (menuFlags[allow_add])
                             {
                                 AddPlayer();
                             }
                             break;
 
                         case 'R':
-                            if (menuFlags[allow_remove] == true &&
+                            if (menuFlags[allow_remove] &&
                                 gbl.SelectedPlayer != null)
                             {
                                 if (gbl.SelectedPlayer.control_morale < Control.NPC_Base)
@@ -221,14 +221,14 @@ namespace GoldBox.Engine
                             break;
 
                         case 'L':
-                            if (menuFlags[allow_load] == true)
+                            if (menuFlags[allow_load])
                             {
                                 ovr017.loadGameMenu();
                             }
                             break;
 
                         case 'S':
-                            if (menuFlags[allow_save] == true &&
+                            if (menuFlags[allow_save] &&
                                 gbl.TeamList.Count > 0)
                             {
                                 ovr017.SaveGame();
@@ -237,10 +237,10 @@ namespace GoldBox.Engine
                             break;
 
                         case 'B':
-                            if (menuFlags[allow_begin] == true)
+                            if (menuFlags[allow_begin])
                             {
-                                if ((gbl.TeamList.Count > 0 && gbl.inDemo == true) ||
-                                    gbl.area_ptr.field_3FA == 0 || gbl.inDemo == true)
+                                if ((gbl.TeamList.Count > 0 && gbl.inDemo) ||
+                                    gbl.area_ptr.field_3FA == 0 || gbl.inDemo)
                                 {
                                     gbl.game_state = gameStateBackup;
 
@@ -274,7 +274,7 @@ namespace GoldBox.Engine
                             break;
 
                         case 'E':
-                            if (menuFlags[allow_exit] == true)
+                            if (menuFlags[allow_exit])
                             {
                                 inputkey = ovr027.yes_no(gbl.alertMenuColors, "Quit to DOS ");
 
@@ -974,7 +974,7 @@ namespace GoldBox.Engine
             }
             else if (edited_stat == 7)
             {
-                if (highlighted == true)
+                if (highlighted)
                 {
                     seg041.displaySpaceChar(1, gbl.SelectedPlayer.name.Length + 1);
                     seg041.displayString(gbl.SelectedPlayer.name, 0, 13, 1, 1);
@@ -1061,7 +1061,7 @@ namespace GoldBox.Engine
 
                 draw_highlight_stat(false, edited_stat, name_cursor_pos);
 
-                if (controlkey == true)
+                if (controlkey)
                 {
                     switch (inputkey)
                     {
@@ -1382,7 +1382,7 @@ namespace GoldBox.Engine
                 ovr020.display_player_stats01();
 
                 draw_highlight_stat(true, edited_stat, name_cursor_pos);
-            } while (controlkey == true || inputkey != 0x4B);
+            } while (controlkey || inputkey != 0x4B);
 
             ovr026.calc_cleric_spells(true, gbl.SelectedPlayer);
 
@@ -1550,7 +1550,7 @@ namespace GoldBox.Engine
                             {
                                 select_sl.Text = select_sl.Text.Substring(2);
 
-                                if (new_player.paladin_lvl > 0 && evil_present == true)
+                                if (new_player.paladin_lvl > 0 && evil_present)
                                 {
                                     ovr025.string_print01("paladins do not join with evil scum");
                                     seg041.GameDelay();
@@ -1560,7 +1560,7 @@ namespace GoldBox.Engine
                                     ovr025.string_print01("too many rangers in party");
                                 }
                                 else if (((new_player.alignment + 1) % 3) == 0 &&
-                                        paladin_present == true)
+                                        paladin_present)
                                 {
                                     ovr025.string_print01(paladins_name + " will tolerate no evil!");
                                 }
@@ -1744,7 +1744,7 @@ namespace GoldBox.Engine
 
                             case 2:
                                 var_1A = 2;
-                                if (unk_4FE94.MemberOf(inputKey) == true)
+                                if (unk_4FE94.MemberOf(inputKey))
                                 {
                                     var_8 = 1;
                                 }
@@ -1793,7 +1793,7 @@ namespace GoldBox.Engine
                                         break;
                                 }
 
-                                if (unk_4FE94.MemberOf(inputKey) == true)
+                                if (unk_4FE94.MemberOf(inputKey))
                                 {
                                     var_8 = 1;
                                 }
@@ -1912,7 +1912,7 @@ namespace GoldBox.Engine
 
                                     if (inputKey == 'N')
                                     {
-                                        if (second_color == true)
+                                        if (second_color)
                                         {
                                             high_color = (byte)((high_color + 1) % 16);
                                         }
@@ -1925,7 +1925,7 @@ namespace GoldBox.Engine
                                     }
                                     else if (inputKey == 'P')
                                     {
-                                        if (second_color == true)
+                                        if (second_color)
                                         {
                                             high_color = (byte)((high_color - 1) & 0x0F);
                                         }
@@ -2225,9 +2225,9 @@ namespace GoldBox.Engine
                     {
                         if ((exp_table[_class, class_lvl] > 0) &&
                             (exp_table[_class, class_lvl] <= player.exp ||
-                             Cheats.free_training == true))
+                             Cheats.free_training))
                         {
-                            if (Cheats.free_training == true)
+                            if (Cheats.free_training)
                             {
                                 int tmpExp = exp_table[_class, class_lvl];
                                 if (tmpExp > 0)
@@ -2303,7 +2303,7 @@ namespace GoldBox.Engine
 
             if ((classesExpTrainMask & trainerClassMask) == 0)
             {
-                if (gbl.silent_training == true)
+                if (gbl.silent_training)
                 {
                     gbl.can_train_no_more = true;
                 }
@@ -2328,7 +2328,7 @@ namespace GoldBox.Engine
             }
 
             bool skipBits = false;
-            if (gbl.silent_training == true)
+            if (gbl.silent_training)
             {
                 skipBits = true;
             }
@@ -2418,7 +2418,7 @@ namespace GoldBox.Engine
                         do
                         {
                             newSpellId = ovr020.spell_menu2(out var_1D, ref index, SpellSource.Learn, SpellLoc.choose);
-                        } while (newSpellId <= 0 && var_1D == true);
+                        } while (newSpellId <= 0 && var_1D);
 
                         if (newSpellId > 0)
                         {
@@ -2427,7 +2427,7 @@ namespace GoldBox.Engine
                     }
                 }
 
-                if (gbl.silent_training == true)
+                if (gbl.silent_training)
                 {
                     switch (player.magic_user_lvl)
                     {

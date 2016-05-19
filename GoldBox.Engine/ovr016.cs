@@ -76,7 +76,7 @@ namespace GoldBox.Engine
         {
             foreach (Item item in player.items)
             {
-                if (item.IsScroll() == true)
+                if (item.IsScroll())
                 {
                     item.affect_1 &= (Affects)0x7F;
                     item.affect_2 &= (Affects)0x7F;
@@ -119,7 +119,7 @@ namespace GoldBox.Engine
 
             if (learn_type == 1)
             {
-                if (gbl.area_ptr.can_cast_spells == true)
+                if (gbl.area_ptr.can_cast_spells)
                 {
                     text = "cannot cast spells in this area";
                 }
@@ -164,7 +164,7 @@ namespace GoldBox.Engine
 
             gbl.menuSelectedWord = 1;
 
-            if (sub_443A0(1) == true)
+            if (sub_443A0(1))
             {
                 byte spell_id;
                 int index = -1;
@@ -182,7 +182,7 @@ namespace GoldBox.Engine
 
                         ovr023.sub_5D2E1(true, QuickFight.False, spell_id);
                     }
-                    else if (var_3 == true)
+                    else if (var_3)
                     {
                         redraw = true;
                     }
@@ -193,7 +193,7 @@ namespace GoldBox.Engine
                 } while (spell_id != 0);
             }
 
-            if (redraw == true)
+            if (redraw)
             {
                 ovr025.LoadPic();
             }
@@ -230,7 +230,7 @@ namespace GoldBox.Engine
                 }
             }
 
-            if (found == true)
+            if (found)
             {
                 ovr025.DisplayPlayerStatusString(false, 10, "can memorize:", gbl.SelectedPlayer);
                 int y_col = 3;
@@ -302,7 +302,7 @@ namespace GoldBox.Engine
         {
             bool var_2;
 
-            if (sub_443A0(2) == true)
+            if (sub_443A0(2))
             {
                 bool var_1 = false;
                 int index = -1;
@@ -311,7 +311,7 @@ namespace GoldBox.Engine
                 byte spellId = ovr020.spell_menu2(out var_2, ref index, 0, SpellLoc.memorize);
                 bool redraw = true;
 
-                if (var_2 == true)
+                if (var_2)
                 {
                     if (ovr027.yes_no(gbl.alertMenuColors, "Memorize These Spells? ") == 'N')
                     {
@@ -333,7 +333,7 @@ namespace GoldBox.Engine
                 {
                     var_1 = (BuildMemorizeSpellText() == false);
 
-                    if (var_1 == true)
+                    if (var_1)
                     {
                         ovr025.DisplayPlayerStatusString(true, 10, "cannot memorize any spells", gbl.SelectedPlayer);
                     }
@@ -359,14 +359,14 @@ namespace GoldBox.Engine
 
                     spellId = ovr020.spell_menu2(out var_2, ref index, 0, SpellLoc.memorize);
 
-                    if (var_2 == true &&
+                    if (var_2 &&
                         ovr027.yes_no(gbl.alertMenuColors, "Memorize these spells? ") == 'N')
                     {
                         cancel_memorize(gbl.SelectedPlayer);
                     }
                 }
 
-                if (redraw == true)
+                if (redraw)
                 {
                     ovr025.LoadPic();
                 }
@@ -380,7 +380,7 @@ namespace GoldBox.Engine
             bool var_2;
             byte var_1;
 
-            if (sub_443A0(3) == true)
+            if (sub_443A0(3))
             {
                 var_1 = 0;
                 int var_8 = -1;
@@ -388,7 +388,7 @@ namespace GoldBox.Engine
                 ovr020.spell_menu2(out var_2, ref var_8, 0, SpellLoc.scribe);
                 redraw = true;
 
-                if (var_2 == true)
+                if (var_2)
                 {
                     if (ovr027.yes_no(gbl.alertMenuColors, "Scribe These Spells? ") == 'N')
                     {
@@ -434,14 +434,14 @@ namespace GoldBox.Engine
                         {
                             bool var_D = gbl.SelectedPlayer.items.Find(item =>
                             {
-                                return (item.IsScroll() == true &&
+                                return (item.IsScroll() &&
                                     (item.ScrollLearning(1, var_4) ||
                                     item.ScrollLearning(2, var_4) ||
                                     item.ScrollLearning(3, var_4)));
                             }) != null;
 
 
-                            if (var_D == true)
+                            if (var_D)
                             {
                                 ovr025.string_print01("You are already scibing that spell");
                             }
@@ -484,7 +484,7 @@ namespace GoldBox.Engine
 
                     ovr020.spell_menu2(out var_2, ref var_8, 0, SpellLoc.scribe);
 
-                    if (var_2 == true &&
+                    if (var_2 &&
                         ovr027.yes_no(gbl.alertMenuColors, "Scribe these spells? ") == 'N')
                     {
                         cancel_scribes(gbl.SelectedPlayer);
@@ -607,7 +607,7 @@ namespace GoldBox.Engine
                 bool controlKey;
                 inputKey = ovr027.displayInput(out controlKey, true, 1, gbl.defaultMenuColors, "Cast Memorize Scribe Display Rest Exit", string.Empty);
 
-                if (controlKey == true)
+                if (controlKey)
                 {
                     ovr020.scroll_team_list(inputKey);
                     ovr025.PartySummary(gbl.SelectedPlayer);
@@ -694,7 +694,7 @@ namespace GoldBox.Engine
                 bool controlKey;
                 inputKey = ovr027.displayInput(out controlKey, true, 1, gbl.defaultMenuColors, reorderStrings[reorderState], "Party Order: ");
 
-                if (controlKey == true)
+                if (controlKey)
                 {
                     if (reorderState == 0)
                     {
@@ -714,7 +714,7 @@ namespace GoldBox.Engine
                         ovr025.PartySummary(gbl.SelectedPlayer);
                     }
                 }
-                else if (reorderSet.MemberOf(inputKey) == true)
+                else if (reorderSet.MemberOf(inputKey))
                 {
                     reorderState = (reorderState == 0) ? 1 : 0;
 
@@ -747,7 +747,7 @@ namespace GoldBox.Engine
 
                 if (ovr027.yes_no(gbl.alertMenuColors, "Drop from party? ") == 'Y')
                 {
-                    if (gbl.SelectedPlayer.in_combat == true)
+                    if (gbl.SelectedPlayer.in_combat)
                     {
                         ovr025.DisplayPlayerStatusString(true, 10, "bids you farewell", gbl.SelectedPlayer);
                     }
@@ -794,7 +794,7 @@ namespace GoldBox.Engine
                 bool controlKey;
                 inputKey = ovr027.displayInput(out controlKey, true, 1, gbl.defaultMenuColors, text, "Game Speed:");
 
-                if (controlKey == true)
+                if (controlKey)
                 {
                     if (inputKey == 0x50)
                     {
@@ -839,7 +839,7 @@ namespace GoldBox.Engine
                 bool controlKey;
                 inputKey = ovr027.displayInput(out controlKey, true, 1, gbl.defaultMenuColors, "Order Drop Speed Icon Exit", "Alter: ");
 
-                if (controlKey == true)
+                if (controlKey)
                 {
                     ovr020.scroll_team_list(inputKey);
                     ovr025.PartySummary(gbl.SelectedPlayer);
@@ -1022,7 +1022,7 @@ namespace GoldBox.Engine
                     }
 
                     if (damge_taken > 0 &&
-                        ovr024.heal_player(0, damge_taken, player) == true &&
+                        ovr024.heal_player(0, damge_taken, player) &&
                         damge_taken <= healingAvailable)
                     {
                         healingAvailable -= damge_taken;
@@ -1102,7 +1102,7 @@ namespace GoldBox.Engine
                 bool special_key;
                 input_key = ovr027.displayInput(out special_key, true, 1, gbl.defaultMenuColors, "Save View Magic Rest Alter Fix Exit", "Camp:");
 
-                if (special_key == true)
+                if (special_key)
                 {
                     ovr020.scroll_team_list(input_key);
                     ovr025.PartySummary(gbl.SelectedPlayer);

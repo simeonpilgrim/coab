@@ -24,7 +24,7 @@ namespace GoldBox.Engine
 
         internal static bool addAffect(ushort time, int data, Affects affect_type, Player player)
 		{
-			if (gbl.cureSpell == true)
+			if (gbl.cureSpell)
 			{
 				return false;
 			}
@@ -236,7 +236,7 @@ namespace GoldBox.Engine
 		{
 			var affect = (Affect)param;
 
-			if (addAffect(10, affect.affect_data, Affects.poison_damage, player) == true &&
+			if (addAffect(10, affect.affect_data, Affects.poison_damage, player) &&
 				player.hit_point_current > 1)
 			{
 				gbl.damage_flags = 0;
@@ -292,7 +292,7 @@ namespace GoldBox.Engine
 
 		internal static void is_silenced1(Effect arg_0, object param, Player player)
 		{
-			if (player.actions.can_use == true)
+			if (player.actions.can_use)
 			{
 				ovr025.DisplayPlayerStatusString(true, 10, "is silenced", player);
 			}
@@ -304,7 +304,7 @@ namespace GoldBox.Engine
 
 		internal static void AffectSlowPoison(Effect arg_0, object param, Player player) // sub_3A517
 		{
-			if (player.HasAffect(Affects.poisoned) == true)
+			if (player.HasAffect(Affects.poisoned))
 			{
 				ovr024.KillPlayer("dies from poison", Status.dead, player);
 			}
@@ -395,7 +395,7 @@ namespace GoldBox.Engine
 
 		internal static void StinkingCloud(Effect arg_0, object param, Player player)
 		{
-			if (player.actions.can_use == true)
+			if (player.actions.can_use)
 			{
 				ovr025.DisplayPlayerStatusString(true, 10, "is coughing", player);
 			}
@@ -504,7 +504,7 @@ namespace GoldBox.Engine
 				ovr025.ClearPlayerTextArea();
 			}
 
-			if (ovr024.RollSavingThrow(-2, SaveVerseType.type4, player) == true)
+			if (ovr024.RollSavingThrow(-2, SaveVerseType.type4, player))
 			{
 				ovr024.remove_affect(null, Affects.confuse, player);
 			}
@@ -556,13 +556,13 @@ namespace GoldBox.Engine
 
 				for (int var_B = 0; var_B < 4; var_B++)
 				{
-					if (var_8.present[var_B] == true)
+					if (var_8.present[var_B])
 					{
 						var tmp = var_8.targetPos + gbl.MapDirectionDelta[gbl.SmallCloudDirections[var_B]];
 
 						bool var_9 = gbl.downedPlayers.Exists(cell => cell.target != null && cell.map == tmp);
 
-						if (var_9 == true)
+						if (var_9)
 						{
 							gbl.mapToBackGroundTile[tmp] = 0x1F;
 						}
@@ -579,7 +579,7 @@ namespace GoldBox.Engine
 				{
 					for (int var_B = 0; var_B < 4; var_B++)
 					{
-						if (var_4.present[var_B] == true)
+						if (var_4.present[var_B])
 						{
 							var tmp = gbl.MapDirectionDelta[gbl.SmallCloudDirections[var_B]] + var_4.targetPos;
 
@@ -644,14 +644,14 @@ namespace GoldBox.Engine
 		{
 			var affect = (Affect)param;
 
-			if (addAffect(0x3c, affect.affect_data, Affects.weaken, player) == true)
+			if (addAffect(0x3c, affect.affect_data, Affects.weaken, player))
 			{
                 if (player.stats2.Str.full > 3)
 				{
 					ovr025.DisplayPlayerStatusString(true, 10, "is weakened", player);
                     player.stats2.Str.full--;
 				}
-				else if (player.HasAffect(Affects.helpless) == true)
+				else if (player.HasAffect(Affects.helpless))
 				{
 					ovr024.add_affect(false, 0xff, 0, Affects.helpless, player);
 				}
@@ -663,7 +663,7 @@ namespace GoldBox.Engine
 		{
 			var affect = (Affect)param;
 
-			if (addAffect(10, affect.affect_data, Affects.cause_disease_2, player) == true)
+			if (addAffect(10, affect.affect_data, Affects.cause_disease_2, player))
 			{
 				if (player.hit_point_current > 1)
 				{
@@ -764,7 +764,7 @@ namespace GoldBox.Engine
 		{
 			player.actions.move = 0;
 
-			if (gbl.resetMovesLeft == true)
+			if (gbl.resetMovesLeft)
 			{
 				gbl.halfActionsLeft = 0;
 			}
@@ -821,8 +821,8 @@ namespace GoldBox.Engine
 		{
 			var affect = (Affect)param;
 
-			if (addAffect(0x3C, affect.affect_data, Affects.highConRegen, player) == true &&
-				ovr024.heal_player(1, 1, player) == true)
+			if (addAffect(0x3C, affect.affect_data, Affects.highConRegen, player) &&
+				ovr024.heal_player(1, 1, player))
 			{
 				ovr025.DescribeHealing(player);
 			}
@@ -1058,7 +1058,7 @@ namespace GoldBox.Engine
 			if ((gbl.damage_flags & DamageType.Fire) != 0 ||
 				(gbl.damage_flags & DamageType.Cold) != 0)
 			{
-				if (ovr024.RollSavingThrow(0, SaveVerseType.type4, player) == true &&
+				if (ovr024.RollSavingThrow(0, SaveVerseType.type4, player) &&
                     gbl.spell_id > 0 &&
 					gbl.spellCastingTable[gbl.spell_id].damageOnSave != 0)
 				{
@@ -1129,13 +1129,13 @@ namespace GoldBox.Engine
 
 				for (int var_B = 0; var_B < 9; var_B++)
 				{
-					if (var_8.present[var_B] == true)
+					if (var_8.present[var_B])
 					{
 						var tmp = var_8.targetPos + gbl.MapDirectionDelta[gbl.CloudDirections[var_B]];
 
 						bool var_E = gbl.downedPlayers.Exists(cell => cell.target != null && cell.map == tmp);
 
-						if (var_E == true)
+						if (var_E)
 						{
 							gbl.mapToBackGroundTile[tmp] = 0x1F;
 						}
@@ -1153,7 +1153,7 @@ namespace GoldBox.Engine
 				{
 					for (int var_B = 0; var_B < 9; var_B++)
 					{
-						if (var_4.present[var_B] == true)
+						if (var_4.present[var_B])
 						{
 							var tmp = var_4.targetPos + gbl.MapDirectionDelta[gbl.CloudDirections[var_B]];
 
@@ -1191,7 +1191,7 @@ namespace GoldBox.Engine
 			var affect = (Affect)param;
 			affect.callAffectTable = false;
 
-			if (player.in_combat == true)
+			if (player.in_combat)
 			{
 				ovr024.KillPlayer("Falls dead", Status.dead, player);
 			}
@@ -1260,7 +1260,7 @@ namespace GoldBox.Engine
 			}
 
 			if (heal_amount > 0 &&
-				ovr024.combat_heal(heal_amount, player) == true)
+				ovr024.combat_heal(heal_amount, player))
 			{
 				ovr024.add_affect(true, 0xff, (ushort)(ovr024.roll_dice(4, 1) + 1), Affects.affect_5F, player);
 				arg_2.callAffectTable = false;
@@ -1587,7 +1587,7 @@ namespace GoldBox.Engine
 		{
 			Item item;
 
-			if (ovr025.GetCurrentAttackItem(out item, gbl.SelectedPlayer) == true &&
+			if (ovr025.GetCurrentAttackItem(out item, gbl.SelectedPlayer) &&
 				item != null &&
 				item.type == ItemType.Quarrel &&
 				item.namenum3 == 0x87)
@@ -1598,7 +1598,7 @@ namespace GoldBox.Engine
 				ovr024.RemoveCombatAffects(player);
 				ovr024.CheckAffectsEffect(player, CheckType.Death);
 
-				if (player.in_combat == true)
+				if (player.in_combat)
 				{
 					ovr033.CombatantKilled(player);
 				}
@@ -1932,7 +1932,7 @@ namespace GoldBox.Engine
 
 		internal static void CallAffectTable(Effect add_remove, object parameter, Player player, Affects affect) /* sub_630C7 */
 		{
-			if (gbl.applyItemAffect == true)
+			if (gbl.applyItemAffect)
 			{
 				affect = Affects.do_items_affect;
 			}

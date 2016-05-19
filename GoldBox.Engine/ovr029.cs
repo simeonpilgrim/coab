@@ -37,7 +37,7 @@ namespace GoldBox.Engine
 
                 ovr031.Draw3dWorld(gbl.mapDirection, gbl.mapPosY, gbl.mapPosX);
             }
-            else if (gbl.can_draw_bigpic == true)
+            else if (gbl.can_draw_bigpic)
             {
                 ovr030.draw_bigpic();
             }

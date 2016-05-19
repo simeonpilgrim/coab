@@ -24,7 +24,7 @@ namespace GoldBox.Engine
 
                 do
                 {
-                    if (gbl.affects_timed_out[player_count] == true)
+                    if (gbl.affects_timed_out[player_count])
                     {
                         var_B = true;
                     }
@@ -54,7 +54,7 @@ namespace GoldBox.Engine
 
                 foreach (Player player in gbl.TeamList)
                 {
-                    if (gbl.affects_timed_out[player_count] == true)
+                    if (gbl.affects_timed_out[player_count])
                     {
                         gbl.affects_timed_out[player_count] = false;
 
@@ -263,7 +263,7 @@ namespace GoldBox.Engine
 
                 input_key = ovr027.displayInput(out control_key, false, 1, gbl.defaultMenuColors, "Rest Days Hours Mins Add Subtract Exit", string.Empty);
 
-                if (control_key == true)
+                if (control_key)
                 {
                     switch (input_key)
                     {
@@ -365,13 +365,13 @@ namespace GoldBox.Engine
 
                 foreach (Player player in gbl.TeamList)
                 {
-                    if (ovr024.heal_player(0, 1, player) == true)
+                    if (ovr024.heal_player(0, 1, player))
                     {
                         update_ui = true;
                     }
                 }
 
-                if (show_text == true)
+                if (show_text)
                 {
                     display_resting_time(0);
                 }
@@ -394,7 +394,7 @@ namespace GoldBox.Engine
         {
             foreach (int id in player.spellList.LearningList())
             {
-                if (findNext == true)
+                if (findNext)
                 {
                     return gbl.spellCastingTable[id].spellLevel;
                 }
@@ -418,13 +418,13 @@ namespace GoldBox.Engine
             int next_scribe_lvl = 0;
             foreach (Item item in player.items.ToArray())
             {
-                if (item.IsScroll() == true)
+                if (item.IsScroll())
                 {
                     for (int spellIdx = 1; spellIdx < 4 && next_scribe_lvl == 0; spellIdx++)
                     {
                         if (item.getAffect(spellIdx) > (Affects)0x80)
                         {
-                            if (findNext == true)
+                            if (findNext)
                             {
                                 next_scribe_lvl = gbl.spellCastingTable[(int)item.getAffect(spellIdx) & 0x7F].spellLevel;
                             }
@@ -528,7 +528,7 @@ namespace GoldBox.Engine
             int var_C = 0;
             int display_counter = 0;
 
-            if (interactive_resting == true)
+            if (interactive_resting)
             {
                 seg037.draw8x8_clear_area(TextRegion.NormalBottom);
                 display_resting_time(0);
@@ -536,7 +536,7 @@ namespace GoldBox.Engine
 
             gbl.displayPlayerStatusLine18 = true;
 
-            if (interactive_resting == true)
+            if (interactive_resting)
             {
                 stop_resting = !resting_time_menu();
             }
@@ -551,8 +551,8 @@ namespace GoldBox.Engine
                  gbl.timeToRest.field_4 > 0 ||
                  gbl.timeToRest.field_2 > 0))
             {
-                if (interactive_resting == true &&
-                    seg049.KEYPRESSED() == true)
+                if (interactive_resting &&
+                    seg049.KEYPRESSED())
                 {
                     display_resting_time(0);
 
@@ -571,7 +571,7 @@ namespace GoldBox.Engine
                     rest_time_5849F(1, 5);
                     display_counter++;
 
-                    if (interactive_resting == true &&
+                    if (interactive_resting &&
                         display_counter >= 5)
                     {
                         display_resting_time(0);

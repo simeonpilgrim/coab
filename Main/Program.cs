@@ -68,8 +68,8 @@ namespace Main
 
         static void EngineThread()
         {
-            seg001.__SystemInit(EngineStopped);
-            seg001.PROGRAM();
+            GameEngine.__SystemInit(EngineStopped);
+            GameEngine.PROGRAM();
 
             EngineStopped();
         }

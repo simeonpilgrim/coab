@@ -83,7 +83,7 @@ namespace GoldBox.Classes
 
         public void MarkLearnt(int id)
         {
-            var spell = spells.Find(sp => sp.Id == id && sp.Learning == true);
+            var spell = spells.Find(sp => sp.Id == id && sp.Learning);
 
             if (spell != null)
             {
@@ -103,7 +103,7 @@ namespace GoldBox.Classes
 
         public void CancelLearning()
         {
-            spells.RemoveAll(sp => sp.Learning == true);
+            spells.RemoveAll(sp => sp.Learning);
         }
 
         public void Load(byte[] data, int offset)
