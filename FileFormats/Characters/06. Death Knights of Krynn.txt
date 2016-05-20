@@ -1,0 +1,283 @@
+
+ DEATH KNIGHTS OF KRYNN
+
+   HEXADECIMAL     DECIMAL
+   OFFSET          OFFSET      LENGTH        DESCRIPTION
+
+   000             000              1        name length              
+   001 - 00F       001 - 015       15        name                     
+   010             016              1        str original             
+   011             017              1        str current              
+   012             018              1        int original             
+   013             019              1        int current              
+   014             020              1        wis original             
+   015             021              1        wis current              
+   016             022              1        dex original             
+   017             023              1        dex current              
+   018             024              1        con original             
+   019             025              1        con current              
+   01A             026              1        cha original             
+   01B             027              1        cha current              
+   01C             028              1        str exc original         
+   01D             029              1        str exc current          
+   01E             030              1        ???                 
+   01F             031              1        thac0 base               
+   020             032              1        race                     
+   021             033              1        class                    
+   022             034              1        knight                   
+   023             035              1        god                      
+   024             036              1        robe                     
+   025             037              1        ???                 
+   026 - 027       038 - 039        2        age                      
+   028             040              1        hit points maximum       
+   029             041              1        ???                 
+   02A             042              1        save 1                   paralyzation, poison or death magic
+   02B             043              1        save 2                   petrification or polymorph
+   02C             044              1        save 3                   rod, staff or wand
+   02D             045              1        save 4                   breath weapon
+   02E             046              1        save 5                   spell
+   02F             047              1        movement base            
+   030             048              1        level highest 1          
+   031             049              1        ???                 
+   032             050              1        thief 1                  pick pockets
+   033             051              1        thief 2                  open locks
+   034             052              1        thief 3                  find / remove traps
+   035             053              1        thief 4                  move silently
+   036             054              1        thief 5                  hide in shadows
+   037             055              1        thief 6                  hear noise
+   038             056              1        thief 7                  climb walls
+   039             057              1        thief 8                  read languages
+   03A             058              1        ???                 
+   03B             059              1        ???                 
+   03C             060              1        ???                 
+   03D             061              1        ???                 
+   03E             062              1        npc                      
+   03F - 040       063 - 064        2        coins steel              
+   041 - 042       065 - 066        2        gems                     
+   043 - 044       067 - 068        2        jewelry                  
+   045             069              1        level cleric             
+   046             070              1        level druid              
+   047             071              1        level fighter            
+   048             072              1        level paladin            
+   049             073              1        level ranger             
+   04A             074              1        level mage               
+   04B             075              1        level thief              
+   04C             076              1        level knight             
+   04D             077              1        ???                 
+   04E             078              1        ???                 
+   04F             079              1        ???                 
+   050             080              1        ???                 
+   051             081              1        ???                 
+   052             082              1        ???                 
+   053             083              1        ???                 
+   054             084              1        ???                 
+   055             085              1        gender                   
+   056             086              1        alignment                
+   057             087              1        attacks                  
+   058             088              1        attacks 2                
+   059             089              1        unarmed rolls            
+   05A             090              1        unarmed rolls 2          
+   05B             091              1        unarmed dice             
+   05C             092              1        unarmed dice 2           
+   05D             093              1        unarmed modifier         
+   05E             094              1        unarmed modifier 2       
+   05F             095              1        ac base                  
+   060             096              1        ???                 
+   061             097              1        monster index            
+   062 - 065       098 - 101        4        experience               
+   066             102              1        ???                 
+   067             103              1        ???                 
+   068             104              1        ???                 
+   069             105              1        ???                 
+   06A             106              1        ???                 
+   06B             107              1        item limits              
+   06C             108              1        hit points rolled        
+   06D - 06E       109 - 110        2        xp award                 
+   06F             111              1        xp bonus per hp          
+   070             112              1        icon head                
+   071             113              1        icon body                
+   072             114              1        order number             
+   073             115              1        icon size                
+   074             116              1        icon color1 body         
+   074             116              1        icon color2 body         
+   075             117              1        icon color1 arm          
+   075             117              1        icon color2 arm          
+   076             118              1        icon color1 leg          
+   076             118              1        icon color2 leg          
+   077             119              1        icon color1 hair         
+   077             119              1        icon color2 face         
+   078             120              1        icon color1 shield       
+   078             120              1        icon color2 shield       
+   079             121              1        icon color1 weapon       
+   079             121              1        icon color2 weapon       
+   07A             122              1        ???                 
+   07B             123              1        ???                 
+   07C             124              1        number of items          
+   07D             125              1        ???                 
+   07E             126              1        ???                 
+   07F             127              1        ???                 
+   080             128              1        ???                 
+   081             129              1        ???                 
+   082             130              1        ???                 
+   083             131              1        ???                 
+   084             132              1        ???                 
+   085             133              1        ???                 
+   086             134              1        ???                 
+   087             135              1        ???                 
+   088             136              1        ???                 
+   089             137              1        ???                 
+   08A             138              1        ???                 
+   08B             139              1        ???                 
+   08C             140              1        ???                 
+   08D             141              1        ???                 
+   08E             142              1        ???                 
+   08F             143              1        ???                 
+   090             144              1        ???                 
+   091             145              1        ???                 
+   092             146              1        ???                 
+   093             147              1        ???                 
+   094             148              1        ???                 
+   095             149              1        ???                 
+   096             150              1        ???                 
+   097             151              1        ???                 
+   098             152              1        ???                 
+   099             153              1        ???                 
+   09A             154              1        ???                 
+   09B             155              1        ???                 
+   09C             156              1        ???                 
+   09D             157              1        ???                 
+   09E             158              1        ???                 
+   09F             159              1        ???                 
+   0A0             160              1        ???                 
+   0A1             161              1        ???                 
+   0A2             162              1        ???                 
+   0A3             163              1        ???                 
+   0A4             164              1        ???                 
+   0A5             165              1        ???                 
+   0A6             166              1        ???                 
+   0A7             167              1        ???                 
+   0A8             168              1        ???                 
+   0A9             169              1        ???                 
+   0AA             170              1        ???                 
+   0AB             171              1        ???                 
+   0AC             172              1        ???                 
+   0AD             173              1        ???                 
+   0AE             174              1        ???                 
+   0AF             175              1        ???                 
+   0B0             176              1        ???                 
+   0B1             177              1        ???                 
+   0B2             178              1        ???                 
+   0B3             179              1        ???                 
+   0B4             180              1        ???                 
+   0B5             181              1        ???                 
+   0B6             182              1        ???                 
+   0B7 - 0B8       183 - 184        2        encumbrance              
+   0B9             185              1        ???                 
+   0BA             186              1        ???                 
+   0BB             187              1        ???                 
+   0BC             188              1        ???                 
+   0BD             189              1        in combat 1              
+   0BE             190              1        ???                 
+   0BF             191              1        in combat 2              
+   0C0             192              1        in combat 3              
+   0C1             193              1        ???                 
+   0C2             194              1        ???                 
+   0C3             195              1        ???                 
+   0C4             196              1        ???                 
+   0C5             197              1        ???                 
+   0C6             198              1        ???                 
+   0C7             199              1        status                   
+   0C8             200              1        enabled                  
+   0C9             201              1        ???                 
+   0CA             202              1        quickfight               
+   0CB             203              1        thac0 current            
+   0CC             204              1        ac current               
+   0CD             205              1        ???                 
+   0CE             206              1        current attacks          
+   0CF             207              1        current attacks 2        
+   0D0             208              1        current rolls            
+   0D1             209              1        current rolls 2          
+   0D2             210              1        current dice             
+   0D3             211              1        current dice 2           
+   0D4             212              1        current modifier         
+   0D5             213              1        current modifier 2       
+   0D6             214              1        hit points current       
+   0D7             215              1        movement current         
+
+ RACE VALUES:
+   00: silvanesti elf
+   01: qualinesti elf
+   02: half-elf
+   03: mountain dwarf
+   04: hill dwarf
+   05: kender
+   06: human
+   07: monster
+
+ GENDER VALUES:
+   00: male
+   01: female
+
+ CLASS VALUES:
+   00: cleric
+   01: druid
+   02: fighter
+   03: paladin
+   04: ranger
+   05: mage
+   06: thief
+   07: knight
+   08: cleric/fighter
+   09: cleric/fighter/mage
+   0A: cleric/ranger
+   0B: cleric/mage
+   0C: cleric/thief
+   0D: fighter/mage
+   0E: fighter/thief
+   0F: fighter/mage/thief
+   10: mage/thief
+   11: ok buddy, who are you?
+
+ ALIGNMENT VALUES:
+   00: lawful good
+   01: lawful neutral
+   02: lawful evil
+   03: neutral good
+   04: true neutral
+   05: neutral evil
+   06: chaotic good
+   07: chaotic neutral
+   08: chaotic evil
+
+ STATUS VALUES:
+   00: okay
+   01: animated
+   02: tempgone
+   03: running
+   04: unconscious
+   05: dying
+   06: dead
+   07: stoned
+   08: gone
+
+ KNIGHT VALUES:
+   00: -
+   01: crown
+   02: sword
+   03: rose
+
+ GOD VALUES:
+   00: -
+   01: paladine
+   02: majere
+   03: kiri-jolith
+   04: mishakal
+   05: sirrion
+   06: reorx
+   07: shinare
+
+ ROBE VALUES:
+   00: -
+   01: white
+   02: red
+   03: black

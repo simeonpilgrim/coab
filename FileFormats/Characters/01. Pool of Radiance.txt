@@ -1,0 +1,306 @@
+
+ POOL OF RADIANCE
+
+   HEXADECIMAL     DECIMAL
+   OFFSET          OFFSET      LENGTH        DESCRIPTION
+
+   000             000              1        name length              
+   001 - 00F       001 - 015       15        name                     
+   010             016              1        str current              
+   011             017              1        int current              
+   012             018              1        wis current              
+   013             019              1        dex current              
+   014             020              1        con current              
+   015             021              1        cha current              
+   016             022              1        str exc current          
+   017 - 02B       023 - 043       21        memorized spells         
+   02C             044              1        ???                 
+   02D             045              1        thac0 base               
+   02E             046              1        race                     
+   02F             047              1        class                    
+   030 - 031       048 - 049        2        age                      
+   032             050              1        hit points maximum       
+   033             051              1        cleric 1 01              bless
+   034             052              1        cleric 1 02              curse
+   035             053              1        cleric 1 03              cure light wounds
+   036             054              1        cleric 1 04              cause light wounds
+   037             055              1        cleric 1 05              detect magic
+   038             056              1        cleric 1 06              protection from evil
+   039             057              1        cleric 1 07              protection from good
+   03A             058              1        cleric 1 08              resist cold
+   03B             059              1        mage 1 01                burning hands
+   03C             060              1        mage 1 02                charm person
+   03D             061              1        mage 1 03                detect magic
+   03E             062              1        mage 1 04                enlarge
+   03F             063              1        mage 1 05                reduce
+   040             064              1        mage 1 06                friends
+   041             065              1        mage 1 07                magic missile
+   042             066              1        mage 1 08                protection from evil
+   043             067              1        mage 1 09                proection from good
+   044             068              1        mage 1 10                read magic
+   045             069              1        mage 1 11                shield
+   046             070              1        mage 1 12                shocking grasp
+   047             071              1        mage 1 13                sleep
+   048             072              1        cleric 2 01              find traps
+   049             073              1        cleric 2 02              hold person
+   04A             074              1        cleric 2 03              resist fire
+   04B             075              1        cleric 2 04              silence, 15' radius
+   04C             076              1        cleric 2 05              slow poison
+   04D             077              1        cleric 2 06              snake charm
+   04E             078              1        cleric 2 07              spiritual hammer
+   04F             079              1        mage 2 01                detect invisibility
+   050             080              1        mage 2 02                invisibility
+   051             081              1        mage 2 03                knock
+   052             082              1        mage 2 04                mirror image
+   053             083              1        mage 2 05                ray of enfeeblement
+   054             084              1        mage 2 06                stinking cloud
+   055             085              1        mage 2 07                strenghth
+   056             086              1        cleric 3 01              animate dead
+   057             087              1        cleric 3 02              cure blindness
+   058             088              1        cleric 3 03              cause blindness
+   059             089              1        cleric 3 04              cure disease
+   05A             090              1        cleric 3 05              cause disease
+   05B             091              1        cleric 3 06              dispel magic
+   05C             092              1        cleric 3 07              prayer
+   05D             093              1        cleric 3 08              remove curse
+   05E             094              1        cleric 3 09              bestow curse
+   05F             095              1        mage 3 01                blink
+   060             096              1        mage 3 02                dispel magic
+   061             097              1        mage 3 03                fireball
+   062             098              1        mage 3 04                haste
+   063             099              1        mage 3 05                hold person
+   064             100              1        mage 3 06                invisibility, 10' radius
+   065             101              1        mage 3 07                lightning bolt
+   066             102              1        mage 3 08                protection from evil, 10' radius
+   067             103              1        mage 3 09                protection from good, 10' radius
+   068             104              1        mage 3 10                protection from normal missiles
+   069             105              1        mage 3 11                slow
+   06A             106              1        ???                 
+   06B             107              1        ???                 
+   06C             108              1        ???                 
+   06D             109              1        save 1                   paralyzation, poison or death magic
+   06E             110              1        save 2                   petrification or polymorph
+   06F             111              1        save 3                   rod, staff or wand
+   070             112              1        save 4                   breath weapon
+   071             113              1        save 5                   spell
+   072             114              1        movement base            
+   073             115              1        level highest 1          
+   074             116              1        ???                 
+   075             117              1        ???                 
+   076             118              1        ???                 
+   077             119              1        thief 1                  pick pockets
+   078             120              1        thief 2                  open locks
+   079             121              1        thief 3                  find / remove traps
+   07A             122              1        thief 4                  move silently
+   07B             123              1        thief 5                  hide in shadows
+   07C             124              1        thief 6                  hear noise
+   07D             125              1        thief 7                  climb walls
+   07E             126              1        thief 8                  read languages
+   07F             127              1        ???                 
+   080             128              1        ???                 
+   081             129              1        ???                 
+   082             130              1        ???                 
+   083             131              1        ???                 
+   084             132              1        npc                      
+   085             133              1        ???                 
+   086             134              1        ???                 
+   087             135              1        ???                 
+   088 - 089       136 - 137        2        coins copper             
+   08A - 08B       138 - 139        2        coins silver             
+   08C - 08D       140 - 141        2        coins electrum           
+   08E - 08F       142 - 143        2        coins gold               
+   090 - 091       144 - 145        2        coins platinum           
+   092 - 093       146 - 147        2        gems                     
+   094 - 095       148 - 149        2        jewelry                  
+   096             150              1        level cleric             
+   097             151              1        level druid              
+   098             152              1        level fighter            
+   099             153              1        level paladin            
+   09A             154              1        level ranger             
+   09B             155              1        level mage               
+   09C             156              1        level thief              
+   09D             157              1        level monk               
+   09E             158              1        gender                   
+   09F             159              1        ???                 
+   0A0             160              1        alignment                
+   0A1             161              1        attacks                  
+   0A2             162              1        attacks 2                
+   0A3             163              1        unarmed rolls            
+   0A4             164              1        unarmed rolls 2          
+   0A5             165              1        unarmed dice             
+   0A6             166              1        unarmed dice 2           
+   0A7             167              1        unarmed modifier         
+   0A8             168              1        unarmed modifier 2       
+   0A9             169              1        ac base                  
+   0AA             170              1        ???                 
+   0AB             171              1        ???                 
+   0AC - 0AF       172 - 175        4        experience               
+   0B0             176              1        item limits              
+   0B1             177              1        hit points rolled        
+   0B2             178              1        cleric spells 1          
+   0B3             179              1        cleric spells 2          
+   0B4             180              1        cleric spells 3          
+   0B5             181              1        mage spells 1            
+   0B6             182              1        mage spells 2            
+   0B7             183              1        mage spells 3            
+   0B8 - 0B9       184 - 185        2        xp award                 
+   0BA             186              1        xp bonus per hp          
+   0BB             187              1        portrait head            
+   0BC             188              1        portrait body            
+   0BD             189              1        icon head                
+   0BE             190              1        icon body                
+   0BF             191              1        order number             
+   0C0             192              1        icon size                
+   0C1             193              1        icon color1 body         
+   0C1             193              1        icon color2 body         
+   0C2             194              1        icon color1 arm          
+   0C2             194              1        icon color2 arm          
+   0C3             195              1        icon color1 leg          
+   0C3             195              1        icon color2 leg          
+   0C4             196              1        icon color1 hair         
+   0C4             196              1        icon color2 face         
+   0C5             197              1        icon color1 shield       
+   0C5             197              1        icon color2 shield       
+   0C6             198              1        icon color1 weapon       
+   0C6             198              1        icon color2 weapon       
+   0C7             199              1        number of items          
+   0C8             200              1        ???                 
+   0C9             201              1        ???                 
+   0CA             202              1        ???                 
+   0CB             203              1        ???                 
+   0CC             204              1        ???                 
+   0CD             205              1        ???                 
+   0CE             206              1        ???                 
+   0CF             207              1        ???                 
+   0D0             208              1        ???                 
+   0D1             209              1        ???                 
+   0D2             210              1        ???                 
+   0D3             211              1        ???                 
+   0D4             212              1        ???                 
+   0D5             213              1        ???                 
+   0D6             214              1        ???                 
+   0D7             215              1        ???                 
+   0D8             216              1        ???                 
+   0D9             217              1        ???                 
+   0DA             218              1        ???                 
+   0DB             219              1        ???                 
+   0DC             220              1        ???                 
+   0DD             221              1        ???                 
+   0DE             222              1        ???                 
+   0DF             223              1        ???                 
+   0E0             224              1        ???                 
+   0E1             225              1        ???                 
+   0E2             226              1        ???                 
+   0E3             227              1        ???                 
+   0E4             228              1        ???                 
+   0E5             229              1        ???                 
+   0E6             230              1        ???                 
+   0E7             231              1        ???                 
+   0E8             232              1        ???                 
+   0E9             233              1        ???                 
+   0EA             234              1        ???                 
+   0EB             235              1        ???                 
+   0EC             236              1        ???                 
+   0ED             237              1        ???                 
+   0EE             238              1        ???                 
+   0EF             239              1        ???                 
+   0F0             240              1        ???                 
+   0F1             241              1        ???                 
+   0F2             242              1        ???                 
+   0F3             243              1        ???                 
+   0F4             244              1        ???                 
+   0F5             245              1        ???                 
+   0F6             246              1        ???                 
+   0F7             247              1        ???                 
+   0F8             248              1        ???                 
+   0F9             249              1        ???                 
+   0FA             250              1        ???                 
+   0FB             251              1        ???                 
+   0FC             252              1        ???                 
+   0FD             253              1        ???                 
+   0FE             254              1        ???                 
+   0FF             255              1        ???                 
+   100             256              1        ???                 
+   101             257              1        ???                 
+   102 - 103       258 - 259        2        encumbrance              
+   104             260              1        ???                 
+   105             261              1        ???                 
+   106             262              1        ???                 
+   107             263              1        ???                 
+   108             264              1        in combat 1              
+   109             265              1        ???                 
+   10A             266              1        in combat 2              
+   10B             267              1        in combat 3              
+   10C             268              1        status                   
+   10D             269              1        enabled                  
+   10E             270              1        ???                 
+   10F             271              1        quickfight               
+   110             272              1        thac0 current            
+   111             273              1        ac current               
+   112             274              1        ???                 
+   113             275              1        current attacks          
+   114             276              1        current attacks 2        
+   115             277              1        current rolls            
+   116             278              1        current rolls 2          
+   117             279              1        current dice             
+   118             280              1        current dice 2           
+   119             281              1        current modifier         
+   11A             282              1        current modifier 2       
+   11B             283              1        hit points current       
+   11C             284              1        movement current         
+
+ RACE VALUES:
+   00: monster
+   01: dwarf
+   02: elf
+   03: gnome
+   04: half-elf
+   05: halfling
+   06: half-orc
+   07: human
+
+ GENDER VALUES:
+   00: male
+   01: female
+
+ CLASS VALUES:
+   00: cleric
+   01: druid
+   02: fighter
+   03: paladin
+   04: ranger
+   05: mage
+   06: thief
+   07: monk
+   08: cleric/fighter
+   09: cleric/fighter/mage
+   0A: cleric/ranger
+   0B: cleric/mage
+   0C: cleric/thief
+   0D: fighter/mage
+   0E: fighter/thief
+   0F: fighter/mage/thief
+   10: mage/thief
+   11: monster
+
+ ALIGNMENT VALUES:
+   00: lawful good
+   01: lawful neutral
+   02: lawful evil
+   03: neutral good
+   04: true neutral
+   05: neutral evil
+   06: chaotic good
+   07: chaotic neutral
+   08: chaotic evil
+
+ STATUS VALUES:
+   00: okay
+   01: animated
+   02: tempgone
+   03: running
+   04: unconscious
+   05: dying
+   06: dead
+   07: stoned
+   08: gone

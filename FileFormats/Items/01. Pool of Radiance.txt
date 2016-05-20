@@ -1,0 +1,839 @@
+POOL OF RADIANCE
+ITEM LIST
+
+This list was created from the game's DAX-files (ITEMx.DAX and MONxITM.DAX) by decoding the RLE (run-length encoding) of 
+the files with DaxDump (a tool made by Simeon Pilgrim) and then processing and sorting the data.
+
+Most Gold Box games have a item record size of 63 bytes which of 17 bytes are copied to this list. Null bytes are marked with
+a "-" for easier reading.
+
+Each item has a pointer to a record in ITEMS file which hold the item's combat properties (damage, protective value, etc.).
+This data (16 bytes) is shown after the item record. For some reason, Gateway to the Savage Frontier has ITEMS record size 
+of 24 bytes but the sequel has the standard 16 bytes. The ITEMS records are fully listed after the first listing.
+
+At least Pool of Radiance has some odd items which are not listed in any of the DAX-files and are only very rarely seen as 
+random treasure so my best guess is that there is some random treasure generator in the games.
+
+I added two of these items (the Cloak of Elvenkind and Keoghtum's Ointment) manually to the list from a save file.
+
+
+Check this file for more in-depth description of the fields:
+http://personal.inet.fi/koti/jhirvonen/gbc/items/info.txt
+
+
+For more Gold Box - games stuff:
+http://personal.inet.fi/koti/jhirvonen/gbc/
+
+
+
+                                    [================ DAX-FILE RECORDS ================]         [========== PROPERTIES IN ITEMS-FILE ==========]
+
+                                      unidentified name bits (00 = identified)
+                                                          |                   special properties    damage vs large          damage vs small/medium
+                                                          | cursed            spells in scrolls     x d x + x    protective  x d x + x
+                                                  readied |  |                 |                        |        value   mel |
+                                                       |  |  | weight   value  |                        |           |    type|          class restrictions
+                                            save bonus |  |  |  |        |     |         hands required |           | wpn |  |           |
+                                      name          |  |  |  |  | amount |     |                     |  |   rate of | type|  |           | missile type
+                                        |     bonus |  |  |  |  |     |  |     |                slot |  |      fire |  |  |  |     range |  |
+                              base type |_____   |  |  |  |  |  |__   |  |__   |_____             |  |  |_____   |  |  |  |  |_____   |  |  | unused
+                                     |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |            |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+                                     2E 2F 30 31 32 33 34 35 36 37 38 39 3A 3B 3C 3D 3E           00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F 
+
+Arrow (10)                           49 -  -  3D -  -  -  -  -  04 -  0A -  -  -  -  -            0A -  01 06 -  -  -  -  -  01 06 -  -  48 -  -  
+Arrow (10)                           49 -  -  3D -  -  -  -  -  04 -  0A -  -  -  -  -            0A -  01 06 -  -  -  -  -  01 06 -  -  48 -  -  
+Arrow (10)                           49 -  -  3D -  -  -  -  -  04 -  0A -  -  -  -  -            0A -  01 06 -  -  -  -  -  01 06 -  -  48 -  -  
+Arrow (12)                           49 -  -  3D -  -  01 -  -  04 -  0C -  -  -  -  -            0A -  01 06 -  -  -  -  -  01 06 -  -  48 -  -  
+Arrow (12)                           49 -  -  3D -  -  01 -  -  04 -  0C -  -  -  -  -            0A -  01 06 -  -  -  -  -  01 06 -  -  48 -  -  
+Arrow (12)                           49 -  -  3D -  -  01 -  -  04 -  0C -  -  -  -  -            0A -  01 06 -  -  -  -  -  01 06 -  -  48 -  -  
+Arrow (15)                           49 -  -  3D -  -  -  -  -  02 -  0F -  -  -  -  -            0A -  01 06 -  -  -  -  -  01 06 -  -  48 -  -  
+Arrow (20)                           49 -  -  3D -  -  01 -  -  04 -  14 -  -  -  -  -            0A -  01 06 -  -  -  -  -  01 06 -  -  48 -  -  
+Arrow (20)                           49 -  -  3D -  -  01 -  -  04 -  14 -  -  -  -  -            0A -  01 06 -  -  -  -  -  01 06 -  -  48 -  -  
+Arrow (20)                           49 -  -  3D -  -  01 -  -  04 -  14 -  -  -  -  -            0A -  01 06 -  -  -  -  -  01 06 -  -  48 -  -  
+Arrow (20)                           49 -  -  3D -  -  01 -  -  04 -  14 -  -  -  -  -            0A -  01 06 -  -  -  -  -  01 06 -  -  48 -  -  
+Arrow (20)                           49 -  -  3D -  -  01 -  -  04 -  14 -  -  -  -  -            0A -  01 06 -  -  -  -  -  01 06 -  -  48 -  -  
+Arrow (20)                           49 -  -  3D -  -  01 -  -  04 -  14 -  -  -  -  -            0A -  01 06 -  -  -  -  -  01 06 -  -  48 -  -  
+Arrow (20)                           49 -  -  3D -  -  01 -  -  04 -  14 -  -  -  -  -            0A -  01 06 -  -  -  -  -  01 06 -  -  48 -  -  
+Arrow (20)                           49 -  -  3D -  -  01 -  -  04 -  14 -  -  -  -  -            0A -  01 06 -  -  -  -  -  01 06 -  -  48 -  -  
+Arrow (20)                           49 -  -  3D -  -  01 -  -  04 -  14 -  -  -  -  -            0A -  01 06 -  -  -  -  -  01 06 -  -  48 -  -  
+Arrow (20)                           49 -  -  3D -  -  01 -  -  04 -  14 02 -  -  -  -            0A -  01 06 -  -  -  -  -  01 06 -  -  48 -  -  
+Arrow (20)                           49 -  -  3D -  -  01 -  -  04 -  14 02 -  -  -  -            0A -  01 06 -  -  -  -  -  01 06 -  -  48 -  -  
+Arrow (20)                           49 -  -  3D -  -  01 -  -  0A -  14 -  -  -  -  -            0A -  01 06 -  -  -  -  -  01 06 -  -  48 -  -  
+Arrow (20)                           49 -  -  3D -  -  01 -  -  0A -  14 -  -  -  -  -            0A -  01 06 -  -  -  -  -  01 06 -  -  48 -  -  
+Arrow (20)                           49 -  -  3D -  -  01 -  -  0A -  14 -  -  -  -  -            0A -  01 06 -  -  -  -  -  01 06 -  -  48 -  -  
+Arrow (20)                           49 -  -  3D -  -  01 -  -  0A -  14 -  -  -  -  -            0A -  01 06 -  -  -  -  -  01 06 -  -  48 -  -  
+Arrow (30)                           49 -  -  3D -  -  01 -  -  04 -  1E -  -  -  -  -            0A -  01 06 -  -  -  -  -  01 06 -  -  48 -  -  
+Arrow (30)                           49 -  -  3D -  -  01 -  -  04 -  1E -  -  -  -  -            0A -  01 06 -  -  -  -  -  01 06 -  -  48 -  -  
+Arrow (30)                           49 -  -  3D -  -  01 -  -  04 -  1E -  -  -  -  -            0A -  01 06 -  -  -  -  -  01 06 -  -  48 -  -  
+Arrow (4)                            49 -  -  3D -  -  -  -  -  04 -  04 -  -  -  -  -            0A -  01 06 -  -  -  -  -  01 06 -  -  48 -  -  
+Arrow (60)                           49 -  -  3D -  -  01 -  -  04 -  3C -  -  -  -  -            0A -  01 06 -  -  -  -  -  01 06 -  -  48 -  -  
+Arrow (60)                           49 -  -  3D -  -  01 -  -  04 -  3C -  -  -  -  -            0A -  01 06 -  -  -  -  -  01 06 -  -  48 -  -  
+Arrow (7)                            49 -  -  3D -  -  01 -  -  04 -  07 -  -  -  -  -            0A -  01 06 -  -  -  -  -  01 06 -  -  48 -  -  
+Arrow (7)                            49 -  -  3D -  -  01 -  -  04 -  07 -  -  -  -  -            0A -  01 06 -  -  -  -  -  01 06 -  -  48 -  -  
+Arrow (7)                            49 -  -  3D -  -  01 -  -  04 -  07 -  -  -  -  -            0A -  01 06 -  -  -  -  -  01 06 -  -  48 -  -  
+Arrow (7)                            49 -  -  3D -  -  01 -  -  04 -  07 -  -  -  -  -            0A -  01 06 -  -  -  -  -  01 06 -  -  48 -  -  
+Arrow (7)                            49 -  -  3D -  -  01 -  -  04 -  07 -  -  -  -  -            0A -  01 06 -  -  -  -  -  01 06 -  -  48 -  -  
+Arrow +1 (20)                        49 -  A2 3D 01 -  -  06 -  04 -  14 64 -  -  -  -            0A -  01 06 -  -  -  -  -  01 06 -  -  48 -  -  
+Awl Pike                             1B -  -  1B -  -  -  -  -  50 -  -  03 -  -  -  -            -  02 01 0C -  -  -  01 80 01 06 -  -  68 04 -  
+Awl Pike                             1B -  -  1B -  -  -  -  -  50 -  -  03 -  -  -  -            -  02 01 0C -  -  -  01 80 01 06 -  -  68 04 -  
+Awl Pike                             1B -  -  1B -  -  -  -  -  50 -  -  03 -  -  -  -            -  02 01 0C -  -  -  01 80 01 06 -  -  68 04 -  
+Banded Armor +2                      39 A3 31 39 02 -  01 04 -  5E 01 -  34 21 -  -  -            02 -  -  -  -  -  B8 -  -  -  -  -  -  4A -  -  
+Banded Mail                          39 -  30 39 -  -  -  -  -  5E 01 -  5A -  -  -  -            02 -  -  -  -  -  B8 -  -  -  -  -  -  4A -  -  
+Banded Mail                          39 -  30 39 -  -  -  -  -  5E 01 -  5A -  -  -  -            02 -  -  -  -  -  B8 -  -  -  -  -  -  4A -  -  
+Banded Mail                          39 -  30 39 -  -  -  -  -  5E 01 -  5A -  -  -  -            02 -  -  -  -  -  B8 -  -  -  -  -  -  4A -  -  
+Banded Mail                          39 -  30 39 -  -  01 -  -  2C 01 -  5A -  -  -  -            02 -  -  -  -  -  B8 -  -  -  -  -  -  4A -  -  
+Banded Mail +1                       39 A2 30 39 01 -  -  04 -  5E 01 -  B8 0B -  -  -            02 -  -  -  -  -  B8 -  -  -  -  -  -  4A -  -  
+Bardiche                             03 -  -  03 -  -  -  -  -  7D -  -  07 -  -  -  -            -  02 03 04 -  -  -  -  80 02 04 -  -  68 04 -  
+Bardiche                             03 -  -  03 -  -  -  -  -  7D -  -  07 -  -  -  -            -  02 03 04 -  -  -  -  80 02 04 -  -  68 04 -  
+Bardiche                             03 -  -  03 -  -  -  -  -  7D -  -  07 -  -  -  -            -  02 03 04 -  -  -  -  80 02 04 -  -  68 04 -  
+Bastard Sword                        22 -  -  22 -  -  -  -  -  64 -  -  19 -  -  -  -            -  02 02 08 -  -  -  -  80 02 04 -  -  48 04 -  
+Bastard Sword                        22 -  -  22 -  -  -  -  -  64 -  -  19 -  -  -  -            -  02 02 08 -  -  -  -  80 02 04 -  -  48 04 -  
+Bastard Sword                        22 -  -  22 -  -  -  -  -  64 -  -  19 -  -  -  -            -  02 02 08 -  -  -  -  80 02 04 -  -  48 04 -  
+Battle Axe                           01 -  -  01 -  -  -  -  -  4B -  -  04 -  -  -  -            -  01 01 08 -  -  -  01 80 01 08 -  -  48 04 -  
+Battle Axe                           01 -  -  01 -  -  -  -  -  4B -  -  04 -  -  -  -            -  01 01 08 -  -  -  01 80 01 08 -  -  48 04 -  
+Battle Axe                           01 -  -  01 -  -  -  -  -  4B -  -  04 -  -  -  -            -  01 01 08 -  -  -  01 80 01 08 -  -  48 04 -  
+Battle Axe                           01 -  -  01 -  -  -  -  -  4B -  -  05 -  -  -  -            -  01 01 08 -  -  -  01 80 01 08 -  -  48 04 -  
+Battle Axe                           01 -  -  01 -  -  -  -  -  4B -  -  05 -  -  -  -            -  01 01 08 -  -  -  01 80 01 08 -  -  48 04 -  
+Battle Axe                           01 -  -  01 -  -  -  -  -  4B -  -  05 -  -  -  -            -  01 01 08 -  -  -  01 80 01 08 -  -  48 04 -  
+Bec De Corbin                        04 -  -  04 -  -  -  -  -  64 -  -  06 -  -  -  -            -  02 01 06 -  -  -  -  80 01 08 -  -  68 14 -  
+Bec De Corbin                        04 -  -  04 -  -  -  -  -  64 -  -  06 -  -  -  -            -  02 01 06 -  -  -  -  80 01 08 -  -  68 14 -  
+Bec De Corbin                        04 -  -  04 -  -  -  -  -  64 -  -  06 -  -  -  -            -  02 01 06 -  -  -  -  80 01 08 -  -  68 14 -  
+Bill-Guisarme                        05 -  -  05 -  -  -  -  -  96 -  -  06 -  -  -  -            -  02 01 0A -  -  -  -  80 02 04 -  -  68 01 -  
+Bill-Guisarme                        05 -  -  05 -  -  -  -  -  96 -  -  06 -  -  -  -            -  02 01 0A -  -  -  -  80 02 04 -  -  68 01 -  
+Bill-Guisarme                        05 -  -  05 -  -  -  -  -  96 -  -  06 -  -  -  -            -  02 01 0A -  -  -  -  80 02 04 -  -  68 01 -  
+Bo Stick                             06 -  -  06 -  -  -  -  -  0F -  -  01 -  -  -  -            -  01 01 03 -  -  -  80 80 01 06 -  -  68 04 -  
+Bo Stick                             06 -  -  06 -  -  -  -  -  0F -  -  01 -  -  -  -            -  01 01 03 -  -  -  80 80 01 06 -  -  68 04 -  
+Bo Stick                             06 -  -  06 -  -  -  -  -  0F -  -  01 -  -  -  -            -  01 01 03 -  -  -  80 80 01 06 -  -  68 04 -  
+Boulder                              57 -  -  F4 -  -  -  -  -  94 11 -  -  -  -  -  87           -  02 01 08 08 02 -  80 -  01 08 08 0A 08 1A -  
+Boulder                              57 -  -  F4 -  -  -  -  -  94 11 -  -  -  -  -  87           -  02 01 08 08 02 -  80 -  01 08 08 0A 08 1A -  
+Boulder                              57 -  -  F4 -  -  -  06 -  94 11 -  -  -  -  -  87           -  02 01 08 08 02 -  80 -  01 08 08 0A 08 1A -  
+Boulder                              57 -  -  F4 -  -  -  06 -  94 11 -  -  -  -  -  87           -  02 01 08 08 02 -  80 -  01 08 08 0A 08 1A -  
+Bracers AC 2                         4D -  DC 4F 06 -  01 06 -  14 -  -  C0 5D -  -  -            4D -  -  -  -  -  B2 -  -  -  -  -  -  7F -  -  
+Bracers AC 3                         4D -  DF 4F 07 -  01 06 -  -  -  -  08 52 -  -  -            4D -  -  -  -  -  B2 -  -  -  -  -  -  7F -  -  
+Bracers AC 3                         4D -  DF 4F 07 -  01 06 -  -  -  -  08 52 -  -  -            4D -  -  -  -  -  B2 -  -  -  -  -  -  7F -  -  
+Bracers AC 4                         4D -  DE 4F 06 -  -  06 -  -  -  -  50 46 -  -  -            4D -  -  -  -  -  B2 -  -  -  -  -  -  7F -  -  
+Bracers AC 4                         4D -  DE 4F 06 -  01 06 -  -  -  -  50 46 -  -  -            4D -  -  -  -  -  B2 -  -  -  -  -  -  7F -  -  
+Bracers AC 6                         4D -  DD 4F 04 -  -  06 -  14 -  -  E0 2E -  -  -            4D -  -  -  -  -  B2 -  -  -  -  -  -  7F -  -  
+Brass Dragon Figurine (1)            46 62 9C DA -  -  -  -  -  -  -  01 4B -  -  -  -            0A -  -  -  -  -  -  -  -  -  -  -  -  7F -  -  
+Brass Key                            4B -  DB DA -  -  -  -  -  -  -  -  01 -  -  -  -            4B 01 -  -  -  -  -  -  -  -  -  -  -  7F -  -  
+Brass Mirror                         47 -  76 DA -  -  -  -  -  0A -  -  0A -  -  -  -            0A 01 -  -  -  -  -  -  -  -  -  -  -  7F -  -  
+Broad Sword                          23 -  -  23 -  -  -  -  -  4B -  -  0A -  -  -  -            -  01 01 06 01 -  -  -  80 02 04 -  -  4C 04 -  
+Broad Sword                          23 -  -  23 -  -  -  -  -  4B -  -  0A -  -  -  -            -  01 01 06 01 -  -  -  80 02 04 -  -  4C 04 -  
+Broad Sword                          23 -  -  23 -  -  -  -  -  4B -  -  0A -  -  -  -            -  01 01 06 01 -  -  -  80 02 04 -  -  4C 04 -  
+Broad Sword +1                       23 -  A2 23 01 -  -  06 -  4B -  -  D0 07 -  -  -            -  01 01 06 01 -  -  -  80 02 04 -  -  4C 04 -  
+Broad Sword -2 Cursed                23 FF CA 23 FE -  -  06 01 4B -  -  -  -  -  -  -            -  01 01 06 01 -  -  -  80 02 04 -  -  4C 04 -  
+Chain Mail                           37 -  30 37 -  -  -  -  -  2C 01 -  4B -  -  -  -            02 -  -  -  -  -  B7 -  -  -  -  -  -  4A -  -  
+Chain Mail                           37 -  30 37 -  -  -  -  -  2C 01 -  4B -  -  -  -            02 -  -  -  -  -  B7 -  -  -  -  -  -  4A -  -  
+Chain Mail                           37 -  30 37 -  -  -  -  -  2C 01 -  4B -  -  -  -            02 -  -  -  -  -  B7 -  -  -  -  -  -  4A -  -  
+Chain Mail                           37 -  30 37 -  -  01 -  -  2C 01 -  14 -  -  -  -            02 -  -  -  -  -  B7 -  -  -  -  -  -  4A -  -  
+Chain Mail                           37 -  30 37 -  -  01 -  -  2C 01 -  14 -  -  -  -            02 -  -  -  -  -  B7 -  -  -  -  -  -  4A -  -  
+Chain Mail                           37 -  30 37 -  -  01 -  -  2C 01 -  19 -  -  -  -            02 -  -  -  -  -  B7 -  -  -  -  -  -  4A -  -  
+Chain Mail                           37 -  30 37 -  -  01 -  -  2C 01 -  19 -  -  -  -            02 -  -  -  -  -  B7 -  -  -  -  -  -  4A -  -  
+Chain Mail                           37 -  30 37 -  -  01 -  -  2C 01 -  19 -  -  -  -            02 -  -  -  -  -  B7 -  -  -  -  -  -  4A -  -  
+Chain Mail                           37 -  30 37 -  -  01 -  -  2C 01 -  19 -  -  -  -            02 -  -  -  -  -  B7 -  -  -  -  -  -  4A -  -  
+Chain Mail                           37 -  30 37 -  -  01 -  -  2C 01 -  26 -  -  -  -            02 -  -  -  -  -  B7 -  -  -  -  -  -  4A -  -  
+Chain Mail                           37 -  30 37 -  -  01 -  -  2C 01 -  26 -  -  -  -            02 -  -  -  -  -  B7 -  -  -  -  -  -  4A -  -  
+Chain Mail                           37 -  30 37 -  -  01 -  -  2C 01 -  26 -  -  -  -            02 -  -  -  -  -  B7 -  -  -  -  -  -  4A -  -  
+Chain Mail                           37 -  30 37 -  -  01 -  -  2C 01 -  26 -  -  -  -            02 -  -  -  -  -  B7 -  -  -  -  -  -  4A -  -  
+Chain Mail                           37 -  30 37 -  -  01 -  -  2C 01 -  26 -  -  -  -            02 -  -  -  -  -  B7 -  -  -  -  -  -  4A -  -  
+Chain Mail                           37 -  30 37 -  -  01 -  -  2C 01 -  4B -  -  -  -            02 -  -  -  -  -  B7 -  -  -  -  -  -  4A -  -  
+Chain Mail                           37 -  30 37 -  -  01 -  -  2C 01 -  4B -  -  -  -            02 -  -  -  -  -  B7 -  -  -  -  -  -  4A -  -  
+Chain Mail                           37 -  30 37 -  -  01 -  -  2C 01 -  4B -  -  -  -            02 -  -  -  -  -  B7 -  -  -  -  -  -  4A -  -  
+Chain Mail                           37 -  30 37 -  -  01 -  -  2C 01 -  4B -  -  -  -            02 -  -  -  -  -  B7 -  -  -  -  -  -  4A -  -  
+Chain Mail +1                        37 A2 30 37 01 -  -  04 -  2C 01 -  AC 0D -  -  -            02 -  -  -  -  -  B7 -  -  -  -  -  -  4A -  -  
+Chain Mail +1                        37 A2 30 37 01 -  -  04 -  2C 01 -  AC 0D -  -  -            02 -  -  -  -  -  B7 -  -  -  -  -  -  4A -  -  
+Chain Mail +1                        37 A2 30 37 01 -  01 04 -  2C 01 -  AC 0D -  -  -            02 -  -  -  -  -  B7 -  -  -  -  -  -  4A -  -  
+Chain Mail +1                        37 A2 30 37 01 -  01 04 -  2C 01 -  AC 0D -  -  -            02 -  -  -  -  -  B7 -  -  -  -  -  -  4A -  -  
+Chain Mail +1                        37 A2 30 37 01 -  01 04 -  2C 01 -  AC 0D -  -  -            02 -  -  -  -  -  B7 -  -  -  -  -  -  4A -  -  
+Chain Mail +1                        37 A2 30 37 01 -  01 04 -  2C 01 -  AC 0D -  -  -            02 -  -  -  -  -  B7 -  -  -  -  -  -  4A -  -  
+Chain Mail +1                        37 A2 30 37 01 -  01 04 -  2C 01 -  AC 0D -  -  -            02 -  -  -  -  -  B7 -  -  -  -  -  -  4A -  -  
+Chain Mail +1                        37 A2 30 37 01 -  01 04 -  2C 01 -  AC 0D -  -  -            02 -  -  -  -  -  B7 -  -  -  -  -  -  4A -  -  
+Chain Mail +1                        37 A2 30 37 01 -  01 04 -  2C 01 -  AC 0D -  -  -            02 -  -  -  -  -  B7 -  -  -  -  -  -  4A -  -  
+Chain Mail +1                        37 A2 30 37 01 -  01 04 -  2C 01 -  AC 0D -  -  -            02 -  -  -  -  -  B7 -  -  -  -  -  -  4A -  -  
+Chain Mail +1                        37 A2 30 37 01 -  01 04 -  2C 01 -  AC 0D -  -  -            02 -  -  -  -  -  B7 -  -  -  -  -  -  4A -  -  
+Chain of Bone (50)                   48 D9 A7 C5 -  -  -  -  -  96 -  32 -  -  -  -  -            0A 02 -  -  -  -  -  -  -  -  -  -  -  7F -  -  
+Clerical Scroll With 2 Spells        3E -  D3 D0 01 -  -  -  -  0A -  -  08 07 38 38 -            0C 02 -  -  -  -  -  -  -  -  -  -  -  02 -  -  
+Clerical Scroll With 2 Spells        3E -  D3 D0 01 -  -  -  -  0A -  -  58 02 03 03 -            0C 02 -  -  -  -  -  -  -  -  -  -  -  02 -  -  
+Clerical Scroll With 2 Spells        3E -  D3 D0 01 -  -  -  -  0A -  -  E8 03 38 38 -            0C 02 -  -  -  -  -  -  -  -  -  -  -  02 -  -  
+Clerical Scroll With 2 Spells        3E -  D3 D0 01 -  -  -  -  0A -  -  E8 03 38 38 -            0C 02 -  -  -  -  -  -  -  -  -  -  -  02 -  -  
+Clerical Scroll With 2 Spells        3E -  D3 D0 01 -  -  -  -  0A -  -  E8 03 38 38 -            0C 02 -  -  -  -  -  -  -  -  -  -  -  02 -  -  
+Clerical Scroll With 2 Spells        3E -  D3 D0 01 -  -  -  -  0A -  -  E8 03 38 38 -            0C 02 -  -  -  -  -  -  -  -  -  -  -  02 -  -  
+Clerical Scroll With 2 Spells        3E -  D3 D0 01 -  -  -  -  0A -  -  E8 03 38 38 -            0C 02 -  -  -  -  -  -  -  -  -  -  -  02 -  -  
+Clerical Scroll With 2 Spells        3E -  D3 D0 01 -  -  -  -  0A -  -  E8 03 38 38 -            0C 02 -  -  -  -  -  -  -  -  -  -  -  02 -  -  
+Clerical Scroll With 2 Spells        3E -  D3 D0 01 -  -  -  -  0A -  -  E8 03 38 38 -            0C 02 -  -  -  -  -  -  -  -  -  -  -  02 -  -  
+Clerical Scroll With 2 Spells        3E -  D3 D0 01 -  -  -  -  0A -  -  E8 03 38 38 -            0C 02 -  -  -  -  -  -  -  -  -  -  -  02 -  -  
+Clerical Scroll With 2 Spells        3E -  D3 D0 01 -  -  -  -  0A -  -  E8 03 38 38 -            0C 02 -  -  -  -  -  -  -  -  -  -  -  02 -  -  
+Clerical Scroll With 2 Spells        3E -  D3 D0 01 -  -  -  -  0A -  -  E8 03 38 38 -            0C 02 -  -  -  -  -  -  -  -  -  -  -  02 -  -  
+Clerical Scroll With 2 Spells        3E -  D3 D0 01 -  -  -  -  0A -  -  E8 03 38 38 -            0C 02 -  -  -  -  -  -  -  -  -  -  -  02 -  -  
+Clerical Scroll With 2 Spells        3E -  D3 D0 01 -  -  -  -  0A -  -  E8 03 38 38 -            0C 02 -  -  -  -  -  -  -  -  -  -  -  02 -  -  
+Clerical Scroll With 2 Spells        3E -  D3 D0 01 -  -  -  -  0A -  -  E8 03 38 38 -            0C 02 -  -  -  -  -  -  -  -  -  -  -  02 -  -  
+Clerical Scroll With 2 Spells        3E -  D3 D0 01 -  -  -  -  0A -  -  E8 03 38 38 -            0C 02 -  -  -  -  -  -  -  -  -  -  -  02 -  -  
+Clerical Scroll With 2 Spells        3E -  D3 D0 01 -  -  -  -  0A -  -  E8 03 38 38 -            0C 02 -  -  -  -  -  -  -  -  -  -  -  02 -  -  
+Clerical Scroll With 2 Spells        3E -  D3 D0 01 -  -  -  -  0A -  -  E8 03 38 38 -            0C 02 -  -  -  -  -  -  -  -  -  -  -  02 -  -  
+Clerical Scroll With 2 Spells        3E -  D3 D0 01 -  -  -  -  0A -  -  E8 03 38 38 -            0C 02 -  -  -  -  -  -  -  -  -  -  -  02 -  -  
+Clerical Scroll With 2 Spells        3E -  D3 D0 01 -  -  -  -  0A -  -  E8 03 38 38 -            0C 02 -  -  -  -  -  -  -  -  -  -  -  02 -  -  
+Clerical Scroll With 2 Spells        3E -  D3 D0 01 -  -  -  -  0A -  -  E8 03 38 38 -            0C 02 -  -  -  -  -  -  -  -  -  -  -  02 -  -  
+Clerical Scroll With 2 Spells        3E -  D3 D0 01 -  -  -  -  0A -  -  E8 03 38 38 -            0C 02 -  -  -  -  -  -  -  -  -  -  -  02 -  -  
+Clerical Scroll With 2 Spells        3E -  D3 D0 01 -  -  -  -  0A -  -  E8 03 38 38 -            0C 02 -  -  -  -  -  -  -  -  -  -  -  02 -  -  
+Clerical Scroll With 2 Spells        3E -  D3 D0 01 -  -  -  -  0A -  -  E8 03 38 38 -            0C 02 -  -  -  -  -  -  -  -  -  -  -  02 -  -  
+Clerical Scroll With 2 Spells        3E -  D3 D0 01 -  -  -  -  0A -  -  E8 03 38 38 -            0C 02 -  -  -  -  -  -  -  -  -  -  -  02 -  -  
+Clerical Scroll With 2 Spells        3E -  D3 D0 01 -  -  06 -  0A -  -  E8 03 38 38 -            0C 02 -  -  -  -  -  -  -  -  -  -  -  02 -  -  
+Clerical Scroll With 2 Spells        3E -  D3 D0 01 -  -  06 -  0A -  -  E8 03 38 38 -            0C 02 -  -  -  -  -  -  -  -  -  -  -  02 -  -  
+Clerical Scroll With 2 Spells        3E -  D3 D0 01 -  -  06 -  19 -  -  4C 1D 24 25 -            0C 02 -  -  -  -  -  -  -  -  -  -  -  02 -  -  
+Clerical Scroll With 3 Spells        3E -  D4 D0 02 -  -  06 -  19 -  -  08 07 1B 19 01           0C 02 -  -  -  -  -  -  -  -  -  -  -  02 -  -  
+Clerical Scroll With 3 Spells        3E -  D4 D0 02 -  -  06 -  19 -  -  10 0E 2A 2B 24           0C 02 -  -  -  -  -  -  -  -  -  -  -  02 -  -  
+Clerical Scroll With 3 Spells        3E -  D4 D0 02 -  -  06 -  19 -  -  7C 2E 17 25 2C           0C 02 -  -  -  -  -  -  -  -  -  -  -  02 -  -  
+Clerical Scroll With 3 Spells        3E -  D4 D0 02 -  -  06 -  19 -  -  94 11 24 28 2A           0C 02 -  -  -  -  -  -  -  -  -  -  -  02 -  -  
+Cloak of Displacement                43 AA A7 58 08 -  01 06 -  14 -  -  5C 44 -  59 85           07 -  -  -  -  -  -  -  -  -  -  -  -  7F -  -  
+Cloak of Displacement                5C AA A7 58 02 -  -  06 -  1E -  -  5C 44 -  59 85           07 -  -  -  -  -  80 -  -  -  -  -  -  7F -  -  
+Cloak of Elvenkind                   43 E5 A7 58 01 01 01 -  -  19 -  -  70 17 -  48 86           07 -  -  -  -  -  -  -  -  -  -  -  -  7F -  -  
+Club                                 07 -  -  07 -  -  -  -  -  1E -  -  01 -  -  -  -            -  01 01 03 -  02 -  80 80 01 06 -  04 7E 14 -  
+Club                                 07 -  -  07 -  -  -  -  -  1E -  -  01 -  -  -  -            -  01 01 03 -  02 -  80 80 01 06 -  04 7E 14 -  
+Club                                 07 -  -  07 -  -  -  -  -  1E -  -  01 -  -  -  -            -  01 01 03 -  02 -  80 80 01 06 -  04 7E 14 -  
+Composite Long Bow                   29 -  -  29 -  -  -  -  -  50 -  -  64 -  -  -  -            -  02 01 06 -  04 -  01 80 01 06 -  16 48 0B -  
+Composite Long Bow                   29 -  -  29 -  -  -  -  -  50 -  -  64 -  -  -  -            -  02 01 06 -  04 -  01 80 01 06 -  16 48 0B -  
+Composite Long Bow                   29 -  -  29 -  -  -  -  -  50 -  -  64 -  -  -  -            -  02 01 06 -  04 -  01 80 01 06 -  16 48 0B -  
+Composite Long Bow                   29 -  -  29 -  -  01 -  -  50 -  -  64 -  -  -  -            -  02 01 06 -  04 -  01 80 01 06 -  16 48 0B -  
+Composite Short Bow                  2A -  -  2A -  -  -  -  -  32 -  -  4B -  -  -  -            -  02 01 06 -  04 -  01 80 01 06 -  13 48 0B -  
+Composite Short Bow                  2A -  -  2A -  -  -  -  -  32 -  -  4B -  -  -  -            -  02 01 06 -  04 -  01 80 01 06 -  13 48 0B -  
+Composite Short Bow                  2A -  -  2A -  -  -  -  -  32 -  -  4B -  -  -  -            -  02 01 06 -  04 -  01 80 01 06 -  13 48 0B -  
+Copper Brazier (3)                   48 -  50 B0 -  -  -  -  -  BC 02 03 01 -  -  -  -            0A 02 -  -  -  -  -  -  -  -  -  -  -  7F -  -  
+Cursed Necklace                      4C -  77 FF FB FB -  05 01 -  -  -  14 -  -  -  -            05 -  -  -  -  -  80 -  -  -  -  -  -  7F -  -  
+Dagger                               08 -  -  08 -  -  -  -  -  0A -  -  -  -  -  -  -            -  01 01 03 -  -  -  01 80 01 04 -  01 7D 04 -  
+Dagger                               08 -  -  08 -  -  -  -  -  0A -  -  -  -  -  -  -            -  01 01 03 -  -  -  01 80 01 04 -  01 7D 04 -  
+Dagger                               08 -  -  08 -  -  -  -  -  0A -  -  01 -  -  -  -            -  01 01 03 -  -  -  01 80 01 04 -  01 7D 04 -  
+Dagger                               08 -  -  08 -  -  -  -  -  0A -  -  02 -  -  -  -            -  01 01 03 -  -  -  01 80 01 04 -  01 7D 04 -  
+Dagger                               08 -  -  08 -  -  -  -  -  0A -  -  02 -  -  -  -            -  01 01 03 -  -  -  01 80 01 04 -  01 7D 04 -  
+Dagger                               08 -  -  08 -  -  -  -  -  0A -  -  02 -  -  -  -            -  01 01 03 -  -  -  01 80 01 04 -  01 7D 04 -  
+Dagger                               08 -  -  08 -  -  01 -  -  1E -  -  01 -  -  -  -            -  01 01 03 -  -  -  01 80 01 04 -  01 7D 04 -  
+Dagger +1                            08 -  A2 08 01 -  -  06 -  0A -  -  F4 01 -  -  -            -  01 01 03 -  -  -  01 80 01 04 -  01 7D 04 -  
+Dagger +1                            08 -  A2 08 01 -  -  06 -  0A -  -  F4 01 -  -  -            -  01 01 03 -  -  -  01 80 01 04 -  01 7D 04 -  
+Dagger +1                            08 -  A2 08 01 -  -  06 -  0A -  -  F4 01 -  -  -            -  01 01 03 -  -  -  01 80 01 04 -  01 7D 04 -  
+Dagger +2                            08 -  A3 08 02 -  -  06 -  0A -  -  D0 07 -  -  -            -  01 01 03 -  -  -  01 80 01 04 -  01 7D 04 -  
+Dagger +2                            08 -  A3 08 02 -  01 06 -  0A -  -  DC 05 -  -  -            -  01 01 03 -  -  -  01 80 01 04 -  01 7D 04 -  
+Dart (4)                             09 -  -  09 -  -  -  -  -  05 -  04 -  -  -  -  -            -  01 01 02 -  06 -  01 80 01 03 -  06 5D 10 -  
+Dart (4)                             09 -  -  09 -  -  -  -  -  05 -  04 -  -  -  -  -            -  01 01 02 -  06 -  01 80 01 03 -  06 5D 10 -  
+Dart (4)                             09 -  -  09 -  -  -  -  -  05 -  04 -  -  -  -  -            -  01 01 02 -  06 -  01 80 01 03 -  06 5D 10 -  
+Dart (6)                             09 -  -  09 -  -  -  -  -  05 -  06 01 -  -  -  -            -  01 01 02 -  06 -  01 80 01 03 -  06 5D 10 -  
+Dart (6)                             09 -  -  09 -  -  -  -  -  05 -  06 01 -  -  -  -            -  01 01 02 -  06 -  01 80 01 03 -  06 5D 10 -  
+Diamond Necklace (1)                 46 -  77 F5 -  -  -  -  -  0A -  01 50 C3 -  -  -            0A -  -  -  -  -  -  -  -  -  -  -  -  7F -  -  
+Dust Covered Boots (25)              44 4D E7 60 -  -  -  -  -  64 -  19 -  -  -  -  -            08 -  -  -  -  -  -  -  -  -  -  -  -  7F -  -  
+Dust of Disappearance                46 C2 A7 60 01 -  -  06 -  14 -  -  40 1F 01 56 -            0A -  -  -  -  -  -  -  -  -  -  -  -  7F -  -  
+Efreeti Bottle                       52 -  E9 E8 0A -  -  -  -  -  -  -  B8 88 -  -  -            52 02 -  -  -  -  -  -  -  -  -  -  -  7F -  -  
+Electrum Decanter                    46 -  5D B2 -  -  -  -  -  64 -  -  0F -  -  -  -            0A -  -  -  -  -  -  -  -  -  -  -  -  7F -  -  
+Emerald Broach (1)                   46 -  C7 F6 -  -  -  -  -  0A -  01 40 1F -  -  -            0A -  -  -  -  -  -  -  -  -  -  -  -  7F -  -  
+Fauchard                             0A -  -  0A -  -  -  -  -  3C -  -  03 -  -  -  -            -  02 01 08 -  -  -  -  80 01 06 -  -  68 04 -  
+Fauchard                             0A -  -  0A -  -  -  -  -  3C -  -  03 -  -  -  -            -  02 01 08 -  -  -  -  80 01 06 -  -  68 04 -  
+Fauchard                             0A -  -  0A -  -  -  -  -  3C -  -  03 -  -  -  -            -  02 01 08 -  -  -  -  80 01 06 -  -  68 04 -  
+Fauchard-Fork                        0B -  -  0B -  -  -  -  -  50 -  -  08 -  -  -  -            -  02 01 0A -  -  -  -  80 01 08 -  -  68 04 -  
+Fauchard-Fork                        0B -  -  0B -  -  -  -  -  50 -  -  08 -  -  -  -            -  02 01 0A -  -  -  -  80 01 08 -  -  68 04 -  
+Fauchard-Fork                        0B -  -  0B -  -  -  -  -  50 -  -  08 -  -  -  -            -  02 01 0A -  -  -  -  80 01 08 -  -  68 04 -  
+Fine Composite Long Bow              2D -  29 D7 -  -  -  -  -  3C -  -  A8 61 -  -  -            -  02 01 06 -  04 -  01 80 01 06 -  14 68 0F -  
+Fine Opal Pendant (1)                46 C6 F7 D7 -  -  -  -  -  0A -  01 54 6F -  -  -            0A -  -  -  -  -  -  -  -  -  -  -  -  7F -  -  
+Fine Tapestry (2)                    46 -  AE D7 -  -  -  -  -  20 03 02 88 13 -  -  -            0A -  -  -  -  -  -  -  -  -  -  -  -  7F -  -  
+Flail                                0C -  -  0C -  -  -  -  -  96 -  -  03 -  -  -  -            -  01 02 04 -  -  -  80 80 01 06 01 -  4A 04 -  
+Flail                                0C -  -  0C -  -  -  -  -  96 -  -  03 -  -  -  -            -  01 02 04 -  -  -  80 80 01 06 01 -  4A 04 -  
+Flail                                0C -  -  0C -  -  -  -  -  96 -  -  03 -  -  -  -            -  01 02 04 -  -  -  80 80 01 06 01 -  4A 04 -  
+Flail +1                             0C -  A2 0C 01 -  01 06 -  4B -  -  A0 0F -  -  -            -  01 02 04 -  -  -  80 80 01 06 01 -  4A 04 -  
+Flask of Oil (1)                     56 AC A7 63 -  -  -  -  -  1E -  01 01 -  -  -  -            -  01 02 06 -  02 -  -  80 02 06 -  04 7F 1A -  
+Fungus Covered Tapestry (6)          48 AE E7 C4 -  -  -  -  -  B0 04 06 02 -  -  -  -            0A 02 -  -  -  -  -  -  -  -  -  -  -  7F -  -  
+Gauntlets of Ogre Power              3F E2 A7 64 02 -  -  -  -  28 -  -  98 3A -  26 83           03 -  -  -  -  -  -  -  -  -  -  -  -  7F -  -  
+Gauntlets of Ogre Power              3F E2 A7 64 03 -  01 06 -  -  -  -  98 3A -  26 83           03 -  -  -  -  -  -  -  -  -  -  -  -  7F -  -  
+Gauntlets of Ogre Power              3F E2 A7 64 03 -  01 06 -  C2 01 -  04 29 -  26 83           03 -  -  -  -  -  -  -  -  -  -  -  -  7F -  -  
+Glaive                               0E -  -  0E -  -  -  -  -  4B -  -  06 -  -  -  -            -  02 01 0A -  -  -  -  80 01 06 -  -  68 04 -  
+Glaive                               0E -  -  0E -  -  -  -  -  4B -  -  06 -  -  -  -            -  02 01 0A -  -  -  -  80 01 06 -  -  68 04 -  
+Glaive                               0E -  -  0E -  -  -  -  -  4B -  -  06 -  -  -  -            -  02 01 0A -  -  -  -  80 01 06 -  -  68 04 -  
+Glaive-Guisarme                      0F -  -  0F -  -  -  -  -  64 -  -  0A -  -  -  -            -  02 02 06 -  -  -  -  80 02 04 -  -  68 04 -  
+Glaive-Guisarme                      0F -  -  0F -  -  -  -  -  64 -  -  0A -  -  -  -            -  02 02 06 -  -  -  -  80 02 04 -  -  68 04 -  
+Glaive-Guisarme                      0F -  -  0F -  -  -  -  -  64 -  -  0A -  -  -  -            -  02 02 06 -  -  -  -  80 02 04 -  -  68 04 -  
+Gold Banded Wand                     46 45 39 B3 -  -  -  -  -  0A -  -  64 -  -  -  -            0A -  -  -  -  -  -  -  -  -  -  -  -  7F -  -  
+Gold Chain (1)                       46 -  C5 B3 -  -  -  -  -  -  -  01 64 -  -  -  -            0A -  -  -  -  -  -  -  -  -  -  -  -  7F -  -  
+Gold Lightning Figurine (1)          46 62 9D B3 -  -  -  -  -  -  -  01 8A 02 -  -  -            0A -  -  -  -  -  -  -  -  -  -  -  -  7F -  -  
+Gold Scarab (1)                      46 -  84 B3 -  -  -  -  -  0A -  01 94 11 -  -  -            0A -  -  -  -  -  -  -  -  -  -  -  -  7F -  -  
+Gold Statuette (7)                   46 -  C3 B3 -  -  -  -  -  32 -  07 F4 01 -  -  -            0A -  -  -  -  -  -  -  -  -  -  -  -  7F -  -  
+Guisarme                             10 -  -  10 -  -  -  -  -  50 -  -  05 -  -  -  -            -  02 01 08 -  -  -  -  80 02 04 -  -  68 04 -  
+Guisarme                             10 -  -  10 -  -  -  -  -  50 -  -  05 -  -  -  -            -  02 01 08 -  -  -  -  80 02 04 -  -  68 04 -  
+Guisarme                             10 -  -  10 -  -  -  -  -  50 -  -  05 -  -  -  -            -  02 01 08 -  -  -  -  80 02 04 -  -  68 04 -  
+Guisarme-Voulge                      11 -  -  11 -  -  -  -  -  96 -  -  07 -  -  -  -            -  02 02 04 -  -  -  -  80 02 04 -  -  68 -  -  
+Guisarme-Voulge                      11 -  -  11 -  -  -  -  -  96 -  -  07 -  -  -  -            -  02 02 04 -  -  -  -  80 02 04 -  -  68 -  -  
+Guisarme-Voulge                      11 -  -  11 -  -  -  -  -  96 -  -  07 -  -  -  -            -  02 02 04 -  -  -  -  80 02 04 -  -  68 -  -  
+Halberd                              12 -  -  12 -  -  -  -  -  AF -  -  09 -  -  -  -            -  02 02 06 -  -  -  -  80 01 0A -  -  68 04 -  
+Halberd                              12 -  -  12 -  -  -  -  -  AF -  -  09 -  -  -  -            -  02 02 06 -  -  -  -  80 01 0A -  -  68 04 -  
+Halberd                              12 -  -  12 -  -  -  -  -  AF -  -  09 -  -  -  -            -  02 02 06 -  -  -  -  80 01 0A -  -  68 04 -  
+Hammer                               14 -  -  14 -  -  -  -  -  32 -  -  01 -  -  -  -            -  01 01 04 -  02 -  80 80 01 04 01 04 5A 14 -  
+Hammer                               14 -  -  14 -  -  -  -  -  32 -  -  01 -  -  -  -            -  01 01 04 -  02 -  80 80 01 04 01 04 5A 14 -  
+Hammer                               14 -  -  14 -  -  -  -  -  32 -  -  01 -  -  -  -            -  01 01 04 -  02 -  80 80 01 04 01 04 5A 14 -  
+Hammer +1                            14 -  A2 14 01 -  -  06 -  32 -  -  C4 09 -  -  -            -  01 01 04 -  02 -  80 80 01 04 01 04 5A 14 -  
+Hammer +1                            14 -  A2 14 01 -  -  06 -  32 -  -  C4 09 -  -  -            -  01 01 04 -  02 -  80 80 01 04 01 04 5A 14 -  
+Hammer +1                            14 -  A2 14 01 -  -  06 -  32 -  -  C4 09 -  -  -            -  01 01 04 -  02 -  80 80 01 04 01 04 5A 14 -  
+Hammer +3                            14 -  A4 14 03 -  -  06 -  32 -  -  0B 2E -  -  -            -  01 01 04 -  02 -  80 80 01 04 01 04 5A 14 -  
+Hammer +3                            14 -  A4 14 03 -  -  06 -  32 -  -  0B 2E -  -  -            -  01 01 04 -  02 -  80 80 01 04 01 04 5A 14 -  
+Hand Axe                             02 -  -  02 -  -  -  -  -  32 -  -  01 -  -  -  -            -  01 01 04 -  02 -  -  80 01 06 -  04 68 14 -  
+Hand Axe                             02 -  -  02 -  -  -  -  -  32 -  -  01 -  -  -  -            -  01 01 04 -  02 -  -  80 01 06 -  04 68 14 -  
+Hand Axe                             02 -  -  02 -  -  -  -  -  32 -  -  01 -  -  -  -            -  01 01 04 -  02 -  -  80 01 06 -  04 68 14 -  
+Hand Axe +1                          02 -  A2 02 01 -  -  06 -  32 -  -  D6 06 -  -  -            -  01 01 04 -  02 -  -  80 01 06 -  04 68 14 -  
+Heavy Crossbow                       2D -  -  2D -  -  -  -  -  50 -  -  05 -  -  -  -            -  02 01 06 -  04 -  01 80 01 06 -  14 68 0F -  
+Heavy Crossbow                       2D -  -  2D -  -  -  -  -  50 -  -  14 -  -  -  -            -  02 01 06 -  04 -  01 80 01 06 -  14 68 0F -  
+Holy Water vial                      55 -  -  99 -  -  -  -  -  -  -  -  19 -  -  -  -            -  01 01 01 FF 02 -  -  80 01 01 FF 04 7F 1A -  
+Holy Water vial (1)                  55 -  -  99 -  -  -  -  -  0A -  01 19 -  -  -  -            -  01 01 01 FF 02 -  -  80 01 01 FF 04 7F 1A -  
+Huge Tapestry (26)                   46 -  AE D8 -  -  -  -  -  20 03 1A 2C 01 -  -  -            0A -  -  -  -  -  -  -  -  -  -  -  -  7F -  -  
+Incense                              46 -  -  6A -  -  -  -  -  0A -  -  01 -  -  -  -            0A -  -  -  -  -  -  -  -  -  -  -  -  7F -  -  
+Iron Holy Symbol Of Tempus           47 FA 98 94 -  -  -  -  -  28 -  -  02 -  -  -  -            0A 01 -  -  -  -  -  -  -  -  -  -  -  7F -  -  
+Javelin (2)                          15 -  -  15 -  -  -  -  -  14 -  02 -  -  -  -  -            -  01 01 06 -  02 -  01 80 01 06 -  07 68 1A -  
+Javelin (2)                          15 -  -  15 -  -  -  -  -  14 -  02 -  -  -  -  -            -  01 01 06 -  02 -  01 80 01 06 -  07 68 1A -  
+Javelin (2)                          15 -  -  15 -  -  -  -  -  14 -  02 01 -  -  -  -            -  01 01 06 -  02 -  01 80 01 06 -  07 68 1A -  
+Javelin of Lightning                 15 9D A7 15 01 -  -  06 -  28 -  -  B8 0B 01 53 -            -  01 01 06 -  02 -  01 80 01 06 -  07 68 1A -  
+Javelin of Lightning                 15 9D A7 15 01 -  -  06 -  28 -  -  B8 0B 01 53 -            -  01 01 06 -  02 -  01 80 01 06 -  07 68 1A -  
+Javelin of Lightning                 47 9D A7 15 01 -  01 06 -  14 -  -  B8 0B 01 53 -            0A 01 -  -  -  -  -  -  -  -  -  -  -  7F -  -  
+Jewel Studded Bowl                   46 4E 34 6E -  -  -  -  -  0A -  -  2C 01 -  -  -            0A -  -  -  -  -  -  -  -  -  -  -  -  7F -  -  
+Jewelled Dragon Statuette            47 C3 9C BE -  -  -  -  -  14 -  -  5E 01 -  -  -            0A 01 -  -  -  -  -  -  -  -  -  -  -  7F -  -  
+Jewelled Silver Wings (1)            46 8D B1 BE -  -  -  -  -  0A -  01 1A 04 -  -  -            0A -  -  -  -  -  -  -  -  -  -  -  -  7F -  -  
+Jo Stick                             16 -  -  16 -  -  -  -  -  28 -  -  01 -  -  -  -            -  01 01 04 -  -  -  80 80 01 06 -  -  68 04 -  
+Jo Stick                             16 -  -  16 -  -  -  -  -  28 -  -  01 -  -  -  -            -  01 01 04 -  -  -  80 80 01 06 -  -  68 04 -  
+Jo Stick                             16 -  -  16 -  -  -  -  -  28 -  -  01 -  -  -  -            -  01 01 04 -  -  -  80 80 01 06 -  -  68 04 -  
+Keoghtum's Ointment                  47 -  6F B6 01 01 -  06 -  01 -  -  10 27 05 51 -            0A 01 -  -  -  -  -  -  -  -  -  -  -  7F -  -  
+Leather Armor                        32 -  31 32 -  -  -  -  -  96 -  -  05 -  -  -  -            02 -  -  -  -  -  B4 -  -  -  -  -  -  5E -  -  
+Leather Armor                        32 -  31 32 -  -  -  -  -  96 -  -  05 -  -  -  -            02 -  -  -  -  -  B4 -  -  -  -  -  -  5E -  -  
+Leather Armor                        32 -  31 32 -  -  -  -  -  96 -  -  05 -  -  -  -            02 -  -  -  -  -  B4 -  -  -  -  -  -  5E -  -  
+Leather Armor                        32 -  31 32 -  -  01 -  -  96 -  -  -  -  -  -  -            02 -  -  -  -  -  B4 -  -  -  -  -  -  5E -  -  
+Leather Armor                        32 -  31 32 -  -  01 -  -  96 -  -  -  -  -  -  -            02 -  -  -  -  -  B4 -  -  -  -  -  -  5E -  -  
+Leather Armor                        32 -  31 32 -  -  01 -  -  96 -  -  -  -  -  -  -            02 -  -  -  -  -  B4 -  -  -  -  -  -  5E -  -  
+Leather Armor                        32 -  31 32 -  -  01 -  -  96 -  -  -  -  -  -  -            02 -  -  -  -  -  B4 -  -  -  -  -  -  5E -  -  
+Leather Armor                        32 -  31 32 -  -  01 -  -  96 -  -  -  -  -  -  -            02 -  -  -  -  -  B4 -  -  -  -  -  -  5E -  -  
+Leather Armor                        32 -  31 32 -  -  01 -  -  96 -  -  -  -  -  -  -            02 -  -  -  -  -  B4 -  -  -  -  -  -  5E -  -  
+Leather Armor                        32 -  31 32 -  -  01 -  -  96 -  -  -  -  -  -  -            02 -  -  -  -  -  B4 -  -  -  -  -  -  5E -  -  
+Leather Armor                        32 -  31 32 -  -  01 -  -  96 -  -  -  -  -  -  -            02 -  -  -  -  -  B4 -  -  -  -  -  -  5E -  -  
+Leather Armor                        32 -  31 32 -  -  01 -  -  96 -  -  01 -  -  -  -            02 -  -  -  -  -  B4 -  -  -  -  -  -  5E -  -  
+Leather Armor                        32 -  31 32 -  -  01 -  -  96 -  -  05 -  -  -  -            02 -  -  -  -  -  B4 -  -  -  -  -  -  5E -  -  
+Leather Armor                        32 -  31 32 -  -  01 -  -  96 -  -  05 -  -  -  -            02 -  -  -  -  -  B4 -  -  -  -  -  -  5E -  -  
+Leather Armor                        32 -  31 32 -  -  01 -  -  96 -  -  05 -  -  -  -            02 -  -  -  -  -  B4 -  -  -  -  -  -  5E -  -  
+Leather Armor                        32 -  31 32 -  -  01 -  -  96 -  -  05 -  -  -  -            02 -  -  -  -  -  B4 -  -  -  -  -  -  5E -  -  
+Leather Armor                        32 -  31 32 -  -  01 -  -  96 -  -  05 -  -  -  -            02 -  -  -  -  -  B4 -  -  -  -  -  -  5E -  -  
+Leather Armor +1                     32 A2 31 32 01 -  01 -  -  96 -  -  D0 07 -  -  -            02 -  -  -  -  -  B4 -  -  -  -  -  -  5E -  -  
+Leather Armor +1                     32 A2 31 32 01 -  01 04 -  96 -  -  D0 07 -  -  -            02 -  -  -  -  -  B4 -  -  -  -  -  -  5E -  -  
+Leather Armor +4                     32 A5 31 32 04 -  -  04 -  96 -  -  98 3A -  -  -            02 -  -  -  -  -  B4 -  -  -  -  -  -  5E -  -  
+Leather Holy Symbol (6)              4A -  98 32 -  -  -  -  -  -  01 06 -  -  -  -  -            4A -  -  -  -  -  -  -  -  -  -  -  -  7F -  -  
+Light Crossbow                       2E -  -  2E -  -  -  -  -  32 -  -  0C -  -  -  -            -  02 01 04 -  02 -  01 80 01 04 -  13 68 8A -  
+Light Crossbow                       2E -  -  2E -  -  -  -  -  32 -  -  0C -  -  -  -            -  02 01 04 -  02 -  01 80 01 04 -  13 68 8A -  
+Light Crossbow                       2E -  -  2E -  -  -  -  -  32 -  -  0C -  -  -  -            -  02 01 04 -  02 -  01 80 01 04 -  13 68 8A -  
+Light Crossbow                       2E -  -  2E -  -  -  -  -  50 -  -  05 -  -  -  -            -  02 01 04 -  02 -  01 80 01 04 -  13 68 8A -  
+Light Crossbow                       2E -  -  2E -  -  -  -  -  50 -  -  05 -  -  -  -            -  02 01 04 -  02 -  01 80 01 04 -  13 68 8A -  
+Long Bow                             2B -  -  2B -  -  -  -  -  28 -  -  1E -  -  -  -            -  02 01 06 -  04 -  01 80 01 06 -  16 48 0B -  
+Long Bow                             2B -  -  2B -  -  -  -  -  28 -  -  1E -  -  -  -            -  02 01 06 -  04 -  01 80 01 06 -  16 48 0B -  
+Long Bow                             2B -  -  2B -  -  -  -  -  28 -  -  1E -  -  -  -            -  02 01 06 -  04 -  01 80 01 06 -  16 48 0B -  
+Long Bow                             2B -  -  2B -  -  -  -  -  28 -  -  1E -  -  -  -            -  02 01 06 -  04 -  01 80 01 06 -  16 48 0B -  
+Long Bow                             2B -  -  2B -  -  -  -  -  28 -  -  1E -  -  -  -            -  02 01 06 -  04 -  01 80 01 06 -  16 48 0B -  
+Long Bow                             2B -  -  2B -  -  -  -  -  3C -  -  1E -  -  -  -            -  02 01 06 -  04 -  01 80 01 06 -  16 48 0B -  
+Long Bow                             2B -  -  2B -  -  -  -  -  3C -  -  1E -  -  -  -            -  02 01 06 -  04 -  01 80 01 06 -  16 48 0B -  
+Long Bow                             2B -  -  2B -  -  -  -  -  3C -  -  1E -  -  -  -            -  02 01 06 -  04 -  01 80 01 06 -  16 48 0B -  
+Long Bow                             2B -  -  2B -  -  -  -  -  3C -  -  1E -  -  -  -            -  02 01 06 -  04 -  01 80 01 06 -  16 48 0B -  
+Long Bow                             2B -  -  2B -  -  -  -  -  3C -  -  1E -  -  -  -            -  02 01 06 -  04 -  01 80 01 06 -  16 48 0B -  
+Long Bow                             2B -  -  2B -  -  -  -  -  3C -  -  78 -  -  -  -            -  02 01 06 -  04 -  01 80 01 06 -  16 48 0B -  
+Long Bow                             2B -  -  2B -  -  -  -  -  3C -  -  78 -  -  -  -            -  02 01 06 -  04 -  01 80 01 06 -  16 48 0B -  
+Long Bow                             2B -  -  2B -  -  -  -  -  64 -  -  14 -  -  -  -            -  02 01 06 -  04 -  01 80 01 06 -  16 48 0B -  
+Long Bow                             2B -  -  2B -  -  -  -  -  64 -  -  14 -  -  -  -            -  02 01 06 -  04 -  01 80 01 06 -  16 48 0B -  
+Long Bow                             2B -  -  2B -  -  -  -  -  64 -  -  14 -  -  -  -            -  02 01 06 -  04 -  01 80 01 06 -  16 48 0B -  
+Long Bow                             2B -  -  2B -  -  -  -  -  64 -  -  14 -  -  -  -            -  02 01 06 -  04 -  01 80 01 06 -  16 48 0B -  
+Long Bow                             2B -  -  2B -  -  -  -  -  64 -  -  14 -  -  -  -            -  02 01 06 -  04 -  01 80 01 06 -  16 48 0B -  
+Long Bow                             2B -  -  2B -  -  -  -  -  64 -  -  14 -  -  -  -            -  02 01 06 -  04 -  01 80 01 06 -  16 48 0B -  
+Long Bow                             2B -  -  2B -  -  -  -  -  64 -  -  14 -  -  -  -            -  02 01 06 -  04 -  01 80 01 06 -  16 48 0B -  
+Long Bow                             2B -  -  2B -  -  -  -  -  64 -  -  14 -  -  -  -            -  02 01 06 -  04 -  01 80 01 06 -  16 48 0B -  
+Long Bow                             2B -  -  2B -  -  -  -  -  64 -  -  32 -  -  -  -            -  02 01 06 -  04 -  01 80 01 06 -  16 48 0B -  
+Long Bow                             2B -  -  2B -  -  -  -  -  64 -  -  32 -  -  -  -            -  02 01 06 -  04 -  01 80 01 06 -  16 48 0B -  
+Long Bow                             2B -  -  2B -  -  -  -  -  64 -  -  3C -  -  -  -            -  02 01 06 -  04 -  01 80 01 06 -  16 48 0B -  
+Long Bow                             2B -  -  2B -  -  -  -  -  64 -  -  3C -  -  -  -            -  02 01 06 -  04 -  01 80 01 06 -  16 48 0B -  
+Long Bow                             2B -  -  2B -  -  -  -  -  64 -  -  3C -  -  -  -            -  02 01 06 -  04 -  01 80 01 06 -  16 48 0B -  
+Long Bow                             2B -  -  2B -  -  01 -  -  64 -  -  14 -  -  -  -            -  02 01 06 -  04 -  01 80 01 06 -  16 48 0B -  
+Long Sword                           24 -  -  24 -  -  -  -  -  3C -  -  0F -  -  -  -            -  01 01 0C -  -  -  -  80 01 08 -  -  4C 04 -  
+Long Sword                           24 -  -  24 -  -  -  -  -  3C -  -  0F -  -  -  -            -  01 01 0C -  -  -  -  80 01 08 -  -  4C 04 -  
+Long Sword                           24 -  -  24 -  -  -  -  -  3C -  -  0F -  -  -  -            -  01 01 0C -  -  -  -  80 01 08 -  -  4C 04 -  
+Long Sword                           24 -  -  24 -  -  -  -  -  3C -  -  0F -  -  -  -            -  01 01 0C -  -  -  -  80 01 08 -  -  4C 04 -  
+Long Sword                           24 -  -  24 -  -  -  -  -  3C -  -  0F -  -  -  -            -  01 01 0C -  -  -  -  80 01 08 -  -  4C 04 -  
+Long Sword                           24 -  -  24 -  -  -  -  -  3C -  -  0F -  -  -  -            -  01 01 0C -  -  -  -  80 01 08 -  -  4C 04 -  
+Long Sword                           24 -  -  24 -  -  -  -  -  3C -  -  0F -  -  -  -            -  01 01 0C -  -  -  -  80 01 08 -  -  4C 04 -  
+Long Sword                           24 -  -  24 -  -  -  -  -  3C -  -  0F -  -  -  -            -  01 01 0C -  -  -  -  80 01 08 -  -  4C 04 -  
+Long Sword                           24 -  -  24 -  -  -  -  -  3C -  -  0F -  -  -  -            -  01 01 0C -  -  -  -  80 01 08 -  -  4C 04 -  
+Long Sword                           24 -  -  24 -  -  01 -  -  3C -  -  05 -  -  -  -            -  01 01 0C -  -  -  -  80 01 08 -  -  4C 04 -  
+Long Sword                           24 -  -  24 -  -  01 -  -  3C -  -  05 -  -  -  -            -  01 01 0C -  -  -  -  80 01 08 -  -  4C 04 -  
+Long Sword                           24 -  -  24 -  -  01 -  -  3C -  -  08 -  -  -  -            -  01 01 0C -  -  -  -  80 01 08 -  -  4C 04 -  
+Long Sword                           24 -  -  24 -  -  01 -  -  3C -  -  08 -  -  -  -            -  01 01 0C -  -  -  -  80 01 08 -  -  4C 04 -  
+Long Sword                           24 -  -  24 -  -  01 -  -  3C -  -  08 -  -  -  -            -  01 01 0C -  -  -  -  80 01 08 -  -  4C 04 -  
+Long Sword                           24 -  -  24 -  -  01 -  -  3C -  -  08 -  -  -  -            -  01 01 0C -  -  -  -  80 01 08 -  -  4C 04 -  
+Long Sword                           24 -  -  24 -  -  01 -  -  3C -  -  08 -  -  -  -            -  01 01 0C -  -  -  -  80 01 08 -  -  4C 04 -  
+Long Sword                           24 -  -  24 -  -  01 -  -  3C -  -  08 -  -  -  -            -  01 01 0C -  -  -  -  80 01 08 -  -  4C 04 -  
+Long Sword                           24 -  -  24 -  -  01 -  -  3C -  -  08 -  -  -  -            -  01 01 0C -  -  -  -  80 01 08 -  -  4C 04 -  
+Long Sword                           24 -  -  24 -  -  01 -  -  3C -  -  08 -  -  -  -            -  01 01 0C -  -  -  -  80 01 08 -  -  4C 04 -  
+Long Sword                           24 -  -  24 -  -  01 -  -  3C -  -  0A -  -  -  -            -  01 01 0C -  -  -  -  80 01 08 -  -  4C 04 -  
+Long Sword                           24 -  -  24 -  -  01 -  -  3C -  -  0A -  -  -  -            -  01 01 0C -  -  -  -  80 01 08 -  -  4C 04 -  
+Long Sword +1                        24 -  A2 24 01 -  -  06 -  32 -  -  D0 07 -  -  -            -  01 01 0C -  -  -  -  80 01 08 -  -  4C 04 -  
+Long Sword +1                        24 -  A2 24 01 -  -  06 -  3C -  -  D0 07 -  -  -            -  01 01 0C -  -  -  -  80 01 08 -  -  4C 04 -  
+Long Sword +1                        24 -  A2 24 01 -  -  06 -  3C -  -  D0 07 -  -  -            -  01 01 0C -  -  -  -  80 01 08 -  -  4C 04 -  
+Long Sword +1                        24 -  A2 24 01 -  01 06 -  3C -  -  C4 09 -  -  -            -  01 01 0C -  -  -  -  80 01 08 -  -  4C 04 -  
+Long Sword +1                        24 -  A2 24 01 -  01 06 -  3C -  -  C4 09 -  -  -            -  01 01 0C -  -  -  -  80 01 08 -  -  4C 04 -  
+Long Sword +1                        24 -  A2 24 01 -  01 06 -  3C -  -  C4 09 -  -  -            -  01 01 0C -  -  -  -  80 01 08 -  -  4C 04 -  
+Long Sword +1                        24 -  A2 24 01 -  01 06 -  3C -  -  C4 09 -  -  -            -  01 01 0C -  -  -  -  80 01 08 -  -  4C 04 -  
+Long Sword +1                        24 -  A2 24 01 -  01 06 -  3C -  -  C4 09 -  -  -            -  01 01 0C -  -  -  -  80 01 08 -  -  4C 04 -  
+Long Sword +1                        24 -  A2 24 01 -  01 06 -  3C -  -  C4 09 -  -  -            -  01 01 0C -  -  -  -  80 01 08 -  -  4C 04 -  
+Long Sword +1                        24 -  A2 24 01 -  01 06 -  3C -  -  D0 07 -  -  -            -  01 01 0C -  -  -  -  80 01 08 -  -  4C 04 -  
+Long Sword +1                        24 -  A2 24 01 -  01 06 -  3C -  -  D0 07 -  -  -            -  01 01 0C -  -  -  -  80 01 08 -  -  4C 04 -  
+Long Sword +1                        24 -  A2 24 01 -  01 06 -  3C -  -  D0 07 -  -  -            -  01 01 0C -  -  -  -  80 01 08 -  -  4C 04 -  
+Long Sword +1                        24 -  A2 24 01 -  01 06 -  3C -  -  D0 07 -  -  -            -  01 01 0C -  -  -  -  80 01 08 -  -  4C 04 -  
+Long Sword +2                        24 -  A3 24 02 -  -  06 -  3C -  -  A0 0F -  -  -            -  01 01 0C -  -  -  -  80 01 08 -  -  4C 04 -  
+Long Sword +2                        24 -  A3 24 02 -  -  06 -  3C -  -  A0 0F -  F0 84           -  01 01 0C -  -  -  -  80 01 08 -  -  4C 04 -  
+Long Sword +2                        24 -  A3 24 02 -  -  06 -  3C -  -  D0 07 -  -  -            -  01 01 0C -  -  -  -  80 01 08 -  -  4C 04 -  
+Long Sword +2 Flame Tongue           24 F1 A3 24 02 -  -  06 -  3C -  -  94 11 -  16 -            -  01 01 0C -  -  -  -  80 01 08 -  -  4C 04 -  
+Long Sword +3                        24 -  A4 24 03 -  -  06 -  3C -  -  58 1B -  52 84           -  01 01 0C -  -  -  -  80 01 08 -  -  4C 04 -  
+Long Sword +3                        24 -  A4 24 03 -  -  06 -  3C -  -  58 1B -  52 84           -  01 01 0C -  -  -  -  80 01 08 -  -  4C 04 -  
+Long Sword +4                        24 -  A5 24 04 -  01 06 -  3C -  -  10 27 -  -  -            -  01 01 0C -  -  -  -  80 01 08 -  -  4C 04 -  
+Long Sword +5                        24 -  A6 24 05 -  01 06 -  3C -  -  98 3A -  -  -            -  01 01 0C -  -  -  -  80 01 08 -  -  4C 04 -  
+Lucern Hammer                        13 -  -  13 -  -  -  -  -  96 -  -  07 -  -  -  -            -  02 01 06 -  -  -  01 80 02 04 -  -  48 04 -  
+Lucern Hammer                        13 -  -  13 -  -  -  -  -  96 -  -  07 -  -  -  -            -  02 01 06 -  -  -  01 80 02 04 -  -  48 04 -  
+Lucern Hammer                        13 -  -  13 -  -  -  -  -  96 -  -  07 -  -  -  -            -  02 01 06 -  -  -  01 80 02 04 -  -  48 04 -  
+Lucern Hammer +1                     13 -  A2 13 01 -  01 06 -  3C -  -  C4 09 -  -  -            -  02 01 06 -  -  -  01 80 02 04 -  -  48 04 -  
+Mace                                 17 -  -  17 -  -  -  -  -  64 -  -  03 -  -  -  -            -  01 01 06 -  -  -  80 80 01 06 01 -  4A 04 -  
+Mace                                 17 -  -  17 -  -  -  -  -  64 -  -  03 -  -  -  -            -  01 01 06 -  -  -  80 80 01 06 01 -  4A 04 -  
+Mace                                 17 -  -  17 -  -  -  -  -  64 -  -  08 -  -  -  -            -  01 01 06 -  -  -  80 80 01 06 01 -  4A 04 -  
+Mace                                 17 -  -  17 -  -  -  -  -  64 -  -  08 -  -  -  -            -  01 01 06 -  -  -  80 80 01 06 01 -  4A 04 -  
+Mace                                 17 -  -  17 -  -  -  -  -  64 -  -  08 -  -  -  -            -  01 01 06 -  -  -  80 80 01 06 01 -  4A 04 -  
+Mace                                 17 -  -  17 -  -  01 -  -  32 -  -  01 -  -  -  -            -  01 01 06 -  -  -  80 80 01 06 01 -  4A 04 -  
+Mace                                 17 -  -  17 -  -  01 -  -  32 -  -  01 -  -  -  -            -  01 01 06 -  -  -  80 80 01 06 01 -  4A 04 -  
+Mace                                 17 -  -  17 -  -  01 -  -  32 -  -  03 -  -  -  -            -  01 01 06 -  -  -  80 80 01 06 01 -  4A 04 -  
+Mace +1                              17 -  A2 17 01 -  -  06 -  32 -  -  B8 0B -  -  -            -  01 01 06 -  -  -  80 80 01 06 01 -  4A 04 -  
+Mace +1                              17 -  A2 17 01 -  -  06 -  64 -  -  B8 0B -  -  -            -  01 01 06 -  -  -  80 80 01 06 01 -  4A 04 -  
+Mace +2                              17 -  A3 17 02 -  -  06 -  64 -  -  94 11 -  -  -            -  01 01 06 -  -  -  80 80 01 06 01 -  4A 04 -  
+Mace +2                              17 -  A3 17 02 -  01 06 -  3C -  -  94 11 -  -  -            -  01 01 06 -  -  -  80 80 01 06 01 -  4A 04 -  
+Mace +3                              17 -  A4 17 03 -  01 06 -  28 -  -  10 27 -  -  -            -  01 01 06 -  -  -  80 80 01 06 01 -  4A 04 -  
+Magic User Scroll With 1 Spell       3D -  D2 D1 01 -  -  -  -  0A -  -  2C 01 0F -  -            0B 02 -  -  -  -  -  -  -  -  -  -  -  01 -  -  
+Magic User Scroll With 3 Spells      3D -  D4 D1 01 -  -  -  -  0A -  -  B0 04 2F 2D 2D           0B 02 -  -  -  -  -  -  -  -  -  -  -  01 -  -  
+Magic User Scroll With 3 Spells      3D -  D4 D1 01 -  -  06 -  0A -  -  DC 05 0A 10 23           0B 02 -  -  -  -  -  -  -  -  -  -  -  01 -  -  
+Magic User Scroll With 3 Spells      3D -  D4 D1 01 -  -  06 -  0A -  -  E8 03 0E 1E 36           0B 02 -  -  -  -  -  -  -  -  -  -  -  01 -  -  
+Magic User Scroll With 3 Spells      3D -  D4 D1 01 -  -  06 -  32 -  -  58 02 2D 09 20           0B 02 -  -  -  -  -  -  -  -  -  -  -  01 -  -  
+Magic User Scroll With 3 Spells      3D -  D4 D1 01 -  -  06 -  32 -  -  58 02 2D 09 20           0B 02 -  -  -  -  -  -  -  -  -  -  -  01 -  -  
+Magic User Scroll With 3 Spells      3D -  D4 D1 01 -  -  06 -  32 -  -  58 02 2F 1D 0D           0B 02 -  -  -  -  -  -  -  -  -  -  -  01 -  -  
+Magic User Scroll With 3 Spells      3D -  D4 D1 01 -  -  06 -  32 -  -  58 02 2F 1D 0D           0B 02 -  -  -  -  -  -  -  -  -  -  -  01 -  -  
+Magic User Scroll With 3 Spells      3D -  D4 D1 02 -  -  -  -  19 -  -  18 15 37 31 32           0B 02 -  -  -  -  -  -  -  -  -  -  -  01 -  -  
+Magic User Scroll With 3 Spells      3D -  D4 D1 02 -  -  -  -  19 -  -  18 15 37 31 32           0B 02 -  -  -  -  -  -  -  -  -  -  -  01 -  -  
+Magic User Scroll With 3 Spells      3D -  D4 D1 02 -  -  06 -  19 -  -  34 08 2F 21 22           0B 02 -  -  -  -  -  -  -  -  -  -  -  01 -  -  
+Magic User Scroll With 3 Spells      3D -  D4 D1 02 -  -  06 -  19 -  -  6C 39 2F 30 31           0B 02 -  -  -  -  -  -  -  -  -  -  -  01 -  -  
+Magic User Scroll With 3 Spells      3D -  D4 D1 02 -  -  06 -  19 -  -  D0 20 2D 21 37           0B 02 -  -  -  -  -  -  -  -  -  -  -  01 -  -  
+Manual of Bodily Health              46 AF A7 72 0C -  -  06 -  C8 -  -  50 C3 01 5A -            0A -  -  -  -  -  -  -  -  -  -  -  -  7F -  -  
+Military Fork                        0D -  -  0D -  -  -  -  -  4B -  -  04 -  -  -  -            -  02 02 04 -  -  -  -  80 01 08 -  -  68 04 -  
+Military Fork                        0D -  -  0D -  -  -  -  -  4B -  -  04 -  -  -  -            -  02 02 04 -  -  -  -  80 01 08 -  -  68 04 -  
+Military Fork                        0D -  -  0D -  -  -  -  -  4B -  -  04 -  -  -  -            -  02 02 04 -  -  -  -  80 01 08 -  -  68 04 -  
+Military Pick                        1A -  -  1A -  -  -  -  -  3C -  -  08 -  -  -  -            -  01 02 04 -  -  -  01 80 01 06 01 -  48 04 -  
+Military Pick                        1A -  -  1A -  -  -  -  -  3C -  -  08 -  -  -  -            -  01 02 04 -  -  -  01 80 01 06 01 -  48 04 -  
+Military Pick                        1A -  -  1A -  -  -  -  -  3C -  -  08 -  -  -  -            -  01 02 04 -  -  -  01 80 01 06 01 -  48 04 -  
+Morning Star                         18 -  -  18 -  -  -  -  -  7D -  -  05 -  -  -  -            -  01 01 06 01 -  -  80 80 02 04 -  -  48 04 -  
+Morning Star                         18 -  -  18 -  -  -  -  -  7D -  -  05 -  -  -  -            -  01 01 06 01 -  -  80 80 02 04 -  -  48 04 -  
+Morning Star                         18 -  -  18 -  -  -  -  -  7D -  -  05 -  -  -  -            -  01 01 06 01 -  -  80 80 02 04 -  -  48 04 -  
+Morning Star +1                      18 -  A2 18 01 -  -  06 -  7D -  -  B8 0B -  -  -            -  01 01 06 01 -  -  80 80 02 04 -  -  48 04 -  
+Morning Star +1                      18 -  A2 18 01 -  -  06 -  7D -  -  B8 0B -  -  -            -  01 01 06 01 -  -  80 80 02 04 -  -  48 04 -  
+Necklace of Missiles                 46 E4 A7 77 02 -  01 06 -  -  -  -  B0 04 06 57 -            0A -  -  -  -  -  -  -  -  -  -  -  -  7F -  -  
+Padded Armor                         33 -  31 33 -  -  -  -  -  64 -  -  04 -  -  -  -            02 -  -  -  -  -  B4 -  -  -  -  -  -  4A -  -  
+Padded Armor                         33 -  31 33 -  -  -  -  -  64 -  -  04 -  -  -  -            02 -  -  -  -  -  B4 -  -  -  -  -  -  4A -  -  
+Padded Armor                         33 -  31 33 -  -  -  -  -  64 -  -  04 -  -  -  -            02 -  -  -  -  -  B4 -  -  -  -  -  -  4A -  -  
+Partisan                             19 -  -  19 -  -  -  -  -  50 -  -  0A -  -  -  -            -  02 01 06 01 -  -  -  80 01 06 -  -  68 04 -  
+Partisan                             19 -  -  19 -  -  -  -  -  50 -  -  0A -  -  -  -            -  02 01 06 01 -  -  -  80 01 06 -  -  68 04 -  
+Partisan                             19 -  -  19 -  -  -  -  -  50 -  -  0A -  -  -  -            -  02 01 06 01 -  -  -  80 01 06 -  -  68 04 -  
+Pass                                 5B -  -  FE -  -  -  -  -  -  -  -  -  -  -  -  -            5B -  -  -  -  -  BC -  -  -  -  -  -  -  -  -  
+Pearl Necklace (1)                   46 -  77 7A -  -  -  -  -  -  -  01 90 01 -  -  -            0A -  -  -  -  -  -  -  -  -  -  -  -  7F -  -  
+Plate                                3A -  -  3A -  -  01 -  -  C2 01 -  0A -  -  -  -            02 -  -  -  -  -  B9 -  -  -  -  -  -  4A -  -  
+Plate                                3A -  -  3A -  -  01 -  -  C2 01 -  0A -  -  -  -            02 -  -  -  -  -  B9 -  -  -  -  -  -  4A -  -  
+Plate Armor                          3A -  31 3A -  -  01 -  -  C2 01 -  2C 01 -  -  -            02 -  -  -  -  -  B9 -  -  -  -  -  -  4A -  -  
+Plate Armor                          3A -  31 3A -  -  01 -  -  C2 01 -  64 -  -  -  -            02 -  -  -  -  -  B9 -  -  -  -  -  -  4A -  -  
+Plate Armor                          3A -  31 3A -  -  01 -  -  C2 01 -  C8 -  -  -  -            02 -  -  -  -  -  B9 -  -  -  -  -  -  4A -  -  
+Plate Armor                          3A -  31 3A -  -  01 -  -  C2 01 -  C8 -  -  -  -            02 -  -  -  -  -  B9 -  -  -  -  -  -  4A -  -  
+Plate Armor                          3A -  31 3A -  -  01 -  -  C2 01 -  C8 -  -  -  -            02 -  -  -  -  -  B9 -  -  -  -  -  -  4A -  -  
+Plate Armor                          3A -  31 3A -  -  01 -  -  C2 01 -  C8 -  -  -  -            02 -  -  -  -  -  B9 -  -  -  -  -  -  4A -  -  
+Plate Mail                           3A -  30 3A -  -  -  -  -  C2 01 -  90 01 -  -  -            02 -  -  -  -  -  B9 -  -  -  -  -  -  4A -  -  
+Plate Mail                           3A -  30 3A -  -  -  -  -  C2 01 -  90 01 -  -  -            02 -  -  -  -  -  B9 -  -  -  -  -  -  4A -  -  
+Plate Mail                           3A -  30 3A -  -  -  -  -  C2 01 -  90 01 -  -  -            02 -  -  -  -  -  B9 -  -  -  -  -  -  4A -  -  
+Plate Mail                           3A -  30 3A -  -  01 -  -  C2 01 -  90 01 -  -  -            02 -  -  -  -  -  B9 -  -  -  -  -  -  4A -  -  
+Plate Mail +1                        3A A2 30 3A 01 -  01 -  -  C2 01 -  88 13 -  -  -            02 -  -  -  -  -  B9 -  -  -  -  -  -  4A -  -  
+Plate Mail +1                        3A A2 30 3A 01 -  01 04 -  C2 01 -  88 13 -  -  -            02 -  -  -  -  -  B9 -  -  -  -  -  -  4A -  -  
+Plate Mail +2                        3A A3 30 3A 02 -  -  04 -  C2 01 -  04 29 -  -  -            02 -  -  -  -  -  B9 -  -  -  -  -  -  4A -  -  
+Plate Mail +2                        3A A3 30 3A 02 -  01 04 -  C2 01 -  04 29 -  -  -            02 -  -  -  -  -  B9 -  -  -  -  -  -  4A -  -  
+Plate Mail +2                        3A A3 30 3A 02 -  01 04 -  C2 01 -  04 29 -  -  -            02 -  -  -  -  -  B9 -  -  -  -  -  -  4A -  -  
+Plate Mail +2                        3A A3 30 3A 02 -  01 04 -  C2 01 -  04 29 -  -  -            02 -  -  -  -  -  B9 -  -  -  -  -  -  4A -  -  
+Plate Mail +3                        3A A4 30 3A 03 -  01 04 -  2C 01 -  D4 30 -  -  -            02 -  -  -  -  -  B9 -  -  -  -  -  -  4A -  -  
+Platinum Sphere (1)                  46 -  86 B4 -  -  -  -  -  1E -  01 44 48 -  -  -            0A -  -  -  -  -  -  -  -  -  -  -  -  7F -  -  
+Potion Extra Healing                 46 B9 BB 40 01 -  -  06 -  0A -  -  20 03 03 03 -            0A -  -  -  -  -  -  -  -  -  -  -  -  7F -  -  
+Potion Extra Healing                 46 B9 BB 40 01 -  -  06 -  0A -  -  20 03 03 03 -            0A -  -  -  -  -  -  -  -  -  -  -  -  7F -  -  
+Potion Extra Healing                 46 B9 BB 40 01 -  -  06 -  0A -  -  20 03 03 03 -            0A -  -  -  -  -  -  -  -  -  -  -  -  7F -  -  
+Potion Extra Healing                 46 B9 BB 40 01 -  -  06 -  19 -  -  90 01 03 03 -            0A -  -  -  -  -  -  -  -  -  -  -  -  7F -  -  
+Potion Extra Healing                 46 B9 BB 40 01 -  -  06 -  19 -  -  90 01 03 03 -            0A -  -  -  -  -  -  -  -  -  -  -  -  7F -  -  
+Potion Extra Healing                 47 B9 BB 40 01 -  -  06 -  19 -  -  20 03 03 03 -            0A 01 -  -  -  -  -  -  -  -  -  -  -  7F -  -  
+Potion Extra Healing (3)             47 B9 BB 40 01 -  -  06 -  14 -  03 20 03 03 03 -            0A 01 -  -  -  -  -  -  -  -  -  -  -  7F -  -  
+Potion of Giant Strength             46 EF A7 40 01 -  -  06 -  19 -  -  F4 01 01 52 -            0A -  -  -  -  -  -  -  -  -  -  -  -  7F -  -  
+Potion of Giant Strength             54 EF A7 40 01 -  -  06 -  19 -  -  F4 01 01 52 -            50 01 -  -  -  -  -  -  -  -  -  -  -  08 -  -  
+Potion of Healing                    46 B9 A7 40 01 -  -  06 -  19 -  -  C8 -  01 55 -            0A -  -  -  -  -  -  -  -  -  -  -  -  7F -  -  
+Potion of Healing                    46 B9 A7 40 01 -  -  06 -  19 -  -  C8 -  01 55 -            0A -  -  -  -  -  -  -  -  -  -  -  -  7F -  -  
+Potion of Healing                    46 B9 A7 40 01 -  -  06 -  19 -  -  C8 -  01 55 -            0A -  -  -  -  -  -  -  -  -  -  -  -  7F -  -  
+Potion of Healing                    47 B9 A7 40 01 -  -  06 -  -  -  -  90 01 01 55 -            0A 01 -  -  -  -  -  -  -  -  -  -  -  7F -  -  
+Potion of Healing                    47 B9 A7 40 01 -  -  06 -  14 -  -  90 01 01 55 -            0A 01 -  -  -  -  -  -  -  -  -  -  -  7F -  -  
+Potion of Healing (2)                47 B9 A7 40 01 -  -  06 -  14 -  02 90 01 01 55 -            0A 01 -  -  -  -  -  -  -  -  -  -  -  7F -  -  
+Potion of Healing (3)                47 B9 A7 40 01 -  -  06 -  14 -  03 90 01 01 55 -            0A 01 -  -  -  -  -  -  -  -  -  -  -  7F -  -  
+Potion of Speed                      46 AD A7 40 01 -  -  06 -  19 -  -  58 02 01 50 -            0A -  -  -  -  -  -  -  -  -  -  -  -  7F -  -  
+Potion of Speed                      47 AD A7 40 01 -  -  06 -  14 -  -  C2 01 01 50 -            0A 01 -  -  -  -  -  -  -  -  -  -  -  7F -  -  
+Potion of Speed                      47 AD A7 40 01 -  -  06 -  14 -  -  C2 01 01 50 -            0A 01 -  -  -  -  -  -  -  -  -  -  -  7F -  -  
+Quarrel (1)                          1C -  -  1C -  -  01 -  -  02 -  01 -  -  -  -  -            0A -  01 04 -  -  -  01 80 01 04 -  -  68 8A -  
+Quarrel (15)                         1C -  -  1C -  -  01 -  -  02 -  0F -  -  -  -  -            0A -  01 04 -  -  -  01 80 01 04 -  -  68 8A -  
+Quarrel (15)                         1C -  -  1C -  -  01 -  -  02 -  0F -  -  -  -  -            0A -  01 04 -  -  -  01 80 01 04 -  -  68 8A -  
+Quarrel (20)                         1C -  -  1C -  -  -  -  -  03 -  14 -  -  -  -  -            0A -  01 04 -  -  -  01 80 01 04 -  -  68 8A -  
+Quarrel (20)                         1C -  -  1C -  -  -  -  -  03 -  14 -  -  -  -  -            0A -  01 04 -  -  -  01 80 01 04 -  -  68 8A -  
+Quarrel (20)                         1C -  -  1C -  -  -  -  -  14 -  14 -  -  -  -  -            0A -  01 04 -  -  -  01 80 01 04 -  -  68 8A -  
+Quarter Staff                        21 -  -  21 -  -  -  -  -  32 -  -  01 -  -  -  -            -  02 01 06 -  -  -  80 80 01 06 -  -  7B 04 -  
+Quarter Staff                        21 -  -  21 -  -  -  -  -  32 -  -  01 -  -  -  -            -  02 01 06 -  -  -  80 80 01 06 -  -  7B 04 -  
+Quarter Staff                        21 -  -  21 -  -  -  -  -  32 -  -  01 -  -  -  -            -  02 01 06 -  -  -  80 80 01 06 -  -  7B 04 -  
+Quarter Staff                        21 -  -  21 -  -  -  -  -  64 -  -  0A -  -  -  -            -  02 01 06 -  -  -  80 80 01 06 -  -  7B 04 -  
+Quarter Staff +1                     21 -  A2 21 01 -  -  06 -  32 -  -  E8 03 -  -  -            -  02 01 06 -  -  -  80 80 01 06 -  -  7B 04 -  
+Ranseur                              1D -  -  1D -  -  -  -  -  32 -  -  04 -  -  -  -            -  02 02 04 -  -  -  -  80 02 04 -  -  68 04 -  
+Ranseur                              1D -  -  1D -  -  -  -  -  32 -  -  04 -  -  -  -            -  02 02 04 -  -  -  -  80 02 04 -  -  68 04 -  
+Ranseur                              1D -  -  1D -  -  -  -  -  32 -  -  04 -  -  -  -            -  02 02 04 -  -  -  -  80 02 04 -  -  68 04 -  
+Ring                                 45 -  -  42 -  -  -  -  -  -  -  -  01 -  -  -  -            09 -  -  -  -  -  -  -  -  -  -  -  -  7F -  -  
+Ring Mail                            35 -  30 35 -  -  -  -  -  FA -  -  1E -  -  -  -            02 -  -  -  -  -  B5 -  -  -  -  -  -  4A -  -  
+Ring Mail                            35 -  30 35 -  -  -  -  -  FA -  -  1E -  -  -  -            02 -  -  -  -  -  B5 -  -  -  -  -  -  4A -  -  
+Ring Mail                            35 -  30 35 -  -  -  -  -  FA -  -  1E -  -  -  -            02 -  -  -  -  -  B5 -  -  -  -  -  -  4A -  -  
+Ring of Feather Falling              5A EE A7 42 03 -  -  06 -  -  -  -  88 13 -  -  -            09 -  -  -  -  -  -  -  -  -  -  -  -  7F -  -  
+Ring of Fire Resistance              45 CD A7 42 03 -  -  06 -  -  -  -  88 13 -  3D 81           09 -  -  -  -  -  -  -  -  -  -  -  -  7F -  -  
+Ring of Fire Resistance              45 CD A7 42 03 -  01 06 -  -  -  -  88 13 -  3D 81           09 -  -  -  -  -  -  -  -  -  -  -  -  7F -  -  
+Ring of Fire Resistance              45 CD A7 42 03 -  01 06 -  -  -  -  88 13 -  3D 81           09 -  -  -  -  -  -  -  -  -  -  -  -  7F -  -  
+Ring of Fire Resistance              45 CD A7 42 03 -  01 06 -  -  -  -  88 13 -  3D 81           09 -  -  -  -  -  -  -  -  -  -  -  -  7F -  -  
+Ring Of Protection +1                5D A2 E0 42 01 -  -  06 -  -  -  -  10 27 -  -  -            09 -  -  -  -  -  80 -  -  -  -  -  -  7F -  -  
+Ring Of Protection +1                5D A2 E0 42 01 01 01 -  -  -  -  -  10 27 -  -  -            09 -  -  -  -  -  80 -  -  -  -  -  -  7F -  -  
+Ring Of Protection +2                5D A3 E0 42 02 -  01 06 -  -  -  -  98 3A -  -  -            09 -  -  -  -  -  80 -  -  -  -  -  -  7F -  -  
+Ring Of Protection +2                5D A3 E0 42 02 -  01 06 -  -  -  -  98 3A -  -  -            09 -  -  -  -  -  80 -  -  -  -  -  -  7F -  -  
+Ring Of Protection +3                5D A4 E0 42 03 -  01 06 -  -  -  -  20 4E -  -  -            09 -  -  -  -  -  80 -  -  -  -  -  -  7F -  -  
+Ring Of Protection +3                5D A4 E0 42 03 -  01 06 -  -  -  -  20 4E -  -  -            09 -  -  -  -  -  80 -  -  -  -  -  -  7F -  -  
+Ring Of Protection +3                5D A4 E0 42 03 -  01 06 -  -  -  -  20 4E -  -  -            09 -  -  -  -  -  80 -  -  -  -  -  -  7F -  -  
+Ring Of Protection +3                5D A4 E0 42 03 -  01 06 -  -  -  -  20 4E -  -  -            09 -  -  -  -  -  80 -  -  -  -  -  -  7F -  -  
+Rotting Leather Saddle (5)           48 9E 32 E6 -  -  -  -  -  FA -  05 01 -  -  -  -            0A 02 -  -  -  -  -  -  -  -  -  -  -  7F -  -  
+Rotting Rug (6)                      48 -  82 E6 -  -  -  -  -  E8 03 06 01 -  -  -  -            0A 02 -  -  -  -  -  -  -  -  -  -  -  7F -  -  
+Scale Armor                          36 -  31 36 -  -  -  -  -  90 01 -  -  -  -  -  -            02 -  -  -  -  -  B6 -  -  -  -  -  -  4A -  -  
+Scale Armor                          36 -  31 36 -  -  -  -  -  90 01 -  -  -  -  -  -            02 -  -  -  -  -  B6 -  -  -  -  -  -  4A -  -  
+Scale Mail                           36 -  30 36 -  -  -  -  -  90 01 -  2D -  -  -  -            02 -  -  -  -  -  B6 -  -  -  -  -  -  4A -  -  
+Scale Mail                           36 -  30 36 -  -  -  -  -  90 01 -  2D -  -  -  -            02 -  -  -  -  -  B6 -  -  -  -  -  -  4A -  -  
+Scale Mail                           36 -  30 36 -  -  -  -  -  90 01 -  2D -  -  -  -            02 -  -  -  -  -  B6 -  -  -  -  -  -  4A -  -  
+Scale Mail                           36 -  30 36 -  -  01 -  -  90 01 -  0F -  -  -  -            02 -  -  -  -  -  B6 -  -  -  -  -  -  4A -  -  
+Scale Mail                           36 -  30 36 -  -  01 -  -  90 01 -  0F -  -  -  -            02 -  -  -  -  -  B6 -  -  -  -  -  -  4A -  -  
+Scale Mail +2                        36 A3 30 36 02 -  01 04 -  90 01 -  5E 1A -  -  -            02 -  -  -  -  -  B6 -  -  -  -  -  -  4A -  -  
+Scimitar                             1E -  -  1E -  -  -  -  -  28 -  -  0F -  -  -  -            -  01 01 08 -  -  -  -  80 01 08 -  -  58 04 -  
+Scimitar                             1E -  -  1E -  -  -  -  -  28 -  -  0F -  -  -  -            -  01 01 08 -  -  -  -  80 01 08 -  -  58 04 -  
+Scimitar                             1E -  -  1E -  -  -  -  -  28 -  -  0F -  -  -  -            -  01 01 08 -  -  -  -  80 01 08 -  -  58 04 -  
+Scimitar +1                          1E -  A2 1E 01 -  -  06 -  28 -  -  D0 07 -  -  -            -  01 01 08 -  -  -  -  80 01 08 -  -  58 04 -  
+Scimitar +1                          1E -  A2 1E 01 -  -  06 -  28 -  -  D0 07 -  -  -            -  01 01 08 -  -  -  -  80 01 08 -  -  58 04 -  
+Sheet of Gold (3)                    46 B3 A7 B7 -  -  -  -  -  -  -  03 03 -  -  -  -            0A -  -  -  -  -  -  -  -  -  -  -  -  7F -  -  
+Shield                               3B -  -  3B -  -  -  -  -  32 -  -  -  -  -  -  -            01 01 -  -  -  -  81 -  -  -  -  -  -  5A -  -  
+Shield                               3B -  -  3B -  -  -  -  -  32 -  -  -  -  -  -  -            01 01 -  -  -  -  81 -  -  -  -  -  -  5A -  -  
+Shield                               3B -  -  3B -  -  -  -  -  32 -  -  -  -  -  -  -            01 01 -  -  -  -  81 -  -  -  -  -  -  5A -  -  
+Shield                               3B -  -  3B -  -  -  -  -  64 -  -  0F -  -  -  -            01 01 -  -  -  -  81 -  -  -  -  -  -  5A -  -  
+Shield                               3B -  -  3B -  -  -  -  -  64 -  -  0F -  -  -  -            01 01 -  -  -  -  81 -  -  -  -  -  -  5A -  -  
+Shield                               3B -  -  3B -  -  -  -  -  64 -  -  0F -  -  -  -            01 01 -  -  -  -  81 -  -  -  -  -  -  5A -  -  
+Shield                               3B -  -  3B -  -  01 -  -  32 -  -  -  -  -  -  -            01 01 -  -  -  -  81 -  -  -  -  -  -  5A -  -  
+Shield                               3B -  -  3B -  -  01 -  -  32 -  -  -  -  -  -  -            01 01 -  -  -  -  81 -  -  -  -  -  -  5A -  -  
+Shield                               3B -  -  3B -  -  01 -  -  32 -  -  -  -  -  -  -            01 01 -  -  -  -  81 -  -  -  -  -  -  5A -  -  
+Shield                               3B -  -  3B -  -  01 -  -  32 -  -  -  -  -  -  -            01 01 -  -  -  -  81 -  -  -  -  -  -  5A -  -  
+Shield                               3B -  -  3B -  -  01 -  -  32 -  -  -  -  -  -  -            01 01 -  -  -  -  81 -  -  -  -  -  -  5A -  -  
+Shield                               3B -  -  3B -  -  01 -  -  32 -  -  -  -  -  -  -            01 01 -  -  -  -  81 -  -  -  -  -  -  5A -  -  
+Shield                               3B -  -  3B -  -  01 -  -  32 -  -  0A -  -  -  -            01 01 -  -  -  -  81 -  -  -  -  -  -  5A -  -  
+Shield                               3B -  -  3B -  -  01 -  -  32 -  -  0A -  -  -  -            01 01 -  -  -  -  81 -  -  -  -  -  -  5A -  -  
+Shield                               3B -  -  3B -  -  01 -  -  32 -  -  0A -  -  -  -            01 01 -  -  -  -  81 -  -  -  -  -  -  5A -  -  
+Shield                               3B -  -  3B -  -  01 -  -  32 -  -  0A -  -  -  -            01 01 -  -  -  -  81 -  -  -  -  -  -  5A -  -  
+Shield                               3B -  -  3B -  -  01 -  -  32 -  -  0A -  -  -  -            01 01 -  -  -  -  81 -  -  -  -  -  -  5A -  -  
+Shield                               3B -  -  3B -  -  01 -  -  5A -  -  -  -  -  -  -            01 01 -  -  -  -  81 -  -  -  -  -  -  5A -  -  
+Shield                               3B -  -  3B -  -  01 -  -  5A -  -  -  -  -  -  -            01 01 -  -  -  -  81 -  -  -  -  -  -  5A -  -  
+Shield                               3B -  -  3B -  -  01 -  -  64 -  -  0A -  -  -  -            01 01 -  -  -  -  81 -  -  -  -  -  -  5A -  -  
+Shield                               3B -  -  3B -  -  01 -  -  64 -  -  0A -  -  -  -            01 01 -  -  -  -  81 -  -  -  -  -  -  5A -  -  
+Shield                               3B -  -  3B -  -  01 -  -  64 -  -  0A -  -  -  -            01 01 -  -  -  -  81 -  -  -  -  -  -  5A -  -  
+Shield                               3B -  -  3B -  -  01 -  -  64 -  -  0A -  -  -  -            01 01 -  -  -  -  81 -  -  -  -  -  -  5A -  -  
+Shield                               3B -  -  3B -  -  01 -  -  96 -  -  -  -  -  -  -            01 01 -  -  -  -  81 -  -  -  -  -  -  5A -  -  
+Shield                               3B -  -  3B -  -  01 -  -  96 -  -  -  -  -  -  -            01 01 -  -  -  -  81 -  -  -  -  -  -  5A -  -  
+Shield                               3B -  -  3B -  -  01 -  -  96 -  -  -  -  -  -  -            01 01 -  -  -  -  81 -  -  -  -  -  -  5A -  -  
+Shield                               3B -  -  3B -  -  01 -  -  96 -  -  -  -  -  -  -            01 01 -  -  -  -  81 -  -  -  -  -  -  5A -  -  
+Shield                               3B -  -  3B -  -  01 -  -  96 -  -  -  -  -  -  -            01 01 -  -  -  -  81 -  -  -  -  -  -  5A -  -  
+Shield                               3B -  -  3B -  -  01 -  -  96 -  -  -  -  -  -  -            01 01 -  -  -  -  81 -  -  -  -  -  -  5A -  -  
+Shield                               3B -  -  3B -  -  01 -  -  96 -  -  -  -  -  -  -            01 01 -  -  -  -  81 -  -  -  -  -  -  5A -  -  
+Shield                               3B -  -  3B -  -  01 -  -  96 -  -  -  -  -  -  -            01 01 -  -  -  -  81 -  -  -  -  -  -  5A -  -  
+Shield                               3B -  -  3B -  -  01 -  -  96 -  -  -  -  -  -  -            01 01 -  -  -  -  81 -  -  -  -  -  -  5A -  -  
+Shield                               3B -  -  3B -  -  01 -  -  96 -  -  02 -  -  -  -            01 01 -  -  -  -  81 -  -  -  -  -  -  5A -  -  
+Shield +1                            3B -  A2 3B 01 -  -  06 -  32 -  -  C4 09 -  -  -            01 01 -  -  -  -  81 -  -  -  -  -  -  5A -  -  
+Shield +1                            3B -  A2 3B 01 -  -  06 -  96 -  -  C4 09 -  -  -            01 01 -  -  -  -  81 -  -  -  -  -  -  5A -  -  
+Shield +1                            3B -  A2 3B 01 -  -  06 -  96 -  -  C4 09 -  -  -            01 01 -  -  -  -  81 -  -  -  -  -  -  5A -  -  
+Shield +1                            3B -  A2 3B 01 -  -  06 -  96 -  -  C4 09 -  -  -            01 01 -  -  -  -  81 -  -  -  -  -  -  5A -  -  
+Shield +1                            3B -  A2 3B 01 -  01 06 -  96 -  -  C4 09 -  -  -            01 01 -  -  -  -  81 -  -  -  -  -  -  5A -  -  
+Shield +1                            3B -  A2 3B 01 -  01 06 -  96 -  -  C4 09 -  -  -            01 01 -  -  -  -  81 -  -  -  -  -  -  5A -  -  
+Shield +2                            3B -  A3 3B 02 -  -  06 -  32 -  -  88 13 -  -  -            01 01 -  -  -  -  81 -  -  -  -  -  -  5A -  -  
+Shield +2                            3B -  A3 3B 02 -  -  06 -  3C -  -  88 13 -  -  -            01 01 -  -  -  -  81 -  -  -  -  -  -  5A -  -  
+Shield +2                            3B -  A3 3B 02 -  01 06 -  96 -  -  88 13 -  -  -            01 01 -  -  -  -  81 -  -  -  -  -  -  5A -  -  
+Short Bow                            2C -  -  2C -  -  -  -  -  19 -  -  32 -  -  -  -            -  02 01 06 -  04 -  01 80 01 06 -  10 48 0B -  
+Short Bow                            2C -  -  2C -  -  -  -  -  1E -  -  -  -  -  -  -            -  02 01 06 -  04 -  01 80 01 06 -  10 48 0B -  
+Short Bow                            2C -  -  2C -  -  -  -  -  1E -  -  -  -  -  -  -            -  02 01 06 -  04 -  01 80 01 06 -  10 48 0B -  
+Short Bow                            2C -  -  2C -  -  -  -  -  1E -  -  -  -  -  -  -            -  02 01 06 -  04 -  01 80 01 06 -  10 48 0B -  
+Short Bow                            2C -  -  2C -  -  -  -  -  1E -  -  -  -  -  -  -            -  02 01 06 -  04 -  01 80 01 06 -  10 48 0B -  
+Short Bow                            2C -  -  2C -  -  -  -  -  1E -  -  -  -  -  -  -            -  02 01 06 -  04 -  01 80 01 06 -  10 48 0B -  
+Short Bow                            2C -  -  2C -  -  -  -  -  1E -  -  -  -  -  -  -            -  02 01 06 -  04 -  01 80 01 06 -  10 48 0B -  
+Short Bow                            2C -  -  2C -  -  -  -  -  1E -  -  -  -  -  -  -            -  02 01 06 -  04 -  01 80 01 06 -  10 48 0B -  
+Short Bow                            2C -  -  2C -  -  -  -  -  1E -  -  -  -  -  -  -            -  02 01 06 -  04 -  01 80 01 06 -  10 48 0B -  
+Short Bow                            2C -  -  2C -  -  -  -  -  32 -  -  0F -  -  -  -            -  02 01 06 -  04 -  01 80 01 06 -  10 48 0B -  
+Short Bow                            2C -  -  2C -  -  -  -  -  32 -  -  0F -  -  -  -            -  02 01 06 -  04 -  01 80 01 06 -  10 48 0B -  
+Short Bow                            2C -  -  2C -  -  -  -  -  32 -  -  0F -  -  -  -            -  02 01 06 -  04 -  01 80 01 06 -  10 48 0B -  
+Short Bow                            2C -  -  2C -  -  01 -  -  32 -  -  0F -  -  -  -            -  02 01 06 -  04 -  01 80 01 06 -  10 48 0B -  
+Short Bow                            2C -  -  2C -  -  01 -  -  32 -  -  0F -  -  -  -            -  02 01 06 -  04 -  01 80 01 06 -  10 48 0B -  
+Short Bow +1                         2C -  A2 2C 01 -  -  06 -  32 -  -  AC 0D -  -  -            -  02 01 06 -  04 -  01 80 01 06 -  10 48 0B -  
+Short Bow +1                         2C -  A2 2C 01 -  -  06 -  32 -  -  AC 0D -  -  -            -  02 01 06 -  04 -  01 80 01 06 -  10 48 0B -  
+Short Sword                          25 -  -  25 -  -  -  -  -  1E -  -  -  -  -  -  -            -  01 01 08 -  -  -  -  80 01 06 -  -  4C 04 -  
+Short Sword                          25 -  -  25 -  -  -  -  -  1E -  -  -  -  -  -  -            -  01 01 08 -  -  -  -  80 01 06 -  -  4C 04 -  
+Short Sword                          25 -  -  25 -  -  -  -  -  1E -  -  -  -  -  -  -            -  01 01 08 -  -  -  -  80 01 06 -  -  4C 04 -  
+Short Sword                          25 -  -  25 -  -  -  -  -  1E -  -  -  -  -  -  -            -  01 01 08 -  -  -  -  80 01 06 -  -  4C 04 -  
+Short Sword                          25 -  -  25 -  -  -  -  -  23 -  -  03 -  -  -  -            -  01 01 08 -  -  -  -  80 01 06 -  -  4C 04 -  
+Short Sword                          25 -  -  25 -  -  -  -  -  23 -  -  03 -  -  -  -            -  01 01 08 -  -  -  -  80 01 06 -  -  4C 04 -  
+Short Sword                          25 -  -  25 -  -  -  -  -  23 -  -  03 -  -  -  -            -  01 01 08 -  -  -  -  80 01 06 -  -  4C 04 -  
+Short Sword                          25 -  -  25 -  -  -  -  -  23 -  -  03 -  -  -  -            -  01 01 08 -  -  -  -  80 01 06 -  -  4C 04 -  
+Short Sword                          25 -  -  25 -  -  -  -  -  23 -  -  03 -  -  -  -            -  01 01 08 -  -  -  -  80 01 06 -  -  4C 04 -  
+Short Sword                          25 -  -  25 -  -  -  -  -  23 -  -  03 -  -  -  -            -  01 01 08 -  -  -  -  80 01 06 -  -  4C 04 -  
+Short Sword                          25 -  -  25 -  -  -  -  -  23 -  -  03 -  -  -  -            -  01 01 08 -  -  -  -  80 01 06 -  -  4C 04 -  
+Short Sword                          25 -  -  25 -  -  -  -  -  23 -  -  03 -  -  -  -            -  01 01 08 -  -  -  -  80 01 06 -  -  4C 04 -  
+Short Sword                          25 -  -  25 -  -  -  -  -  23 -  -  03 -  -  -  -            -  01 01 08 -  -  -  -  80 01 06 -  -  4C 04 -  
+Short Sword                          25 -  -  25 -  -  -  -  -  23 -  -  08 -  -  -  -            -  01 01 08 -  -  -  -  80 01 06 -  -  4C 04 -  
+Short Sword                          25 -  -  25 -  -  -  -  -  23 -  -  08 -  -  -  -            -  01 01 08 -  -  -  -  80 01 06 -  -  4C 04 -  
+Short Sword                          25 -  -  25 -  -  -  -  -  23 -  -  08 -  -  -  -            -  01 01 08 -  -  -  -  80 01 06 -  -  4C 04 -  
+Short Sword                          25 -  -  25 -  -  01 -  -  1E -  -  -  -  -  -  -            -  01 01 08 -  -  -  -  80 01 06 -  -  4C 04 -  
+Short Sword                          25 -  -  25 -  -  01 -  -  1E -  -  -  -  -  -  -            -  01 01 08 -  -  -  -  80 01 06 -  -  4C 04 -  
+Short Sword                          25 -  -  25 -  -  01 -  -  23 -  -  08 -  -  -  -            -  01 01 08 -  -  -  -  80 01 06 -  -  4C 04 -  
+Short Sword                          25 -  -  25 -  -  01 -  -  23 -  -  08 -  -  -  -            -  01 01 08 -  -  -  -  80 01 06 -  -  4C 04 -  
+Short Sword                          25 -  -  25 -  -  01 -  -  23 -  -  08 -  -  -  -            -  01 01 08 -  -  -  -  80 01 06 -  -  4C 04 -  
+Short Sword                          25 -  -  25 -  -  01 -  -  23 -  -  08 -  -  -  -            -  01 01 08 -  -  -  -  80 01 06 -  -  4C 04 -  
+Short Sword                          25 -  -  25 -  -  01 -  -  23 -  -  08 -  -  -  -            -  01 01 08 -  -  -  -  80 01 06 -  -  4C 04 -  
+Short Sword +1                       25 -  A2 25 01 -  -  06 -  23 -  -  D0 07 -  -  -            -  01 01 08 -  -  -  -  80 01 06 -  -  4C 04 -  
+Short Sword +1                       25 -  A2 25 01 -  -  06 -  23 -  -  D0 07 -  -  -            -  01 01 08 -  -  -  -  80 01 06 -  -  4C 04 -  
+Short Sword +1                       25 -  A2 25 01 -  01 -  -  23 -  -  D0 07 -  -  -            -  01 01 08 -  -  -  -  80 01 06 -  -  4C 04 -  
+Short Sword +2                       25 -  A3 25 02 -  -  06 -  23 -  -  A0 0F -  -  -            -  01 01 08 -  -  -  -  80 01 06 -  -  4C 04 -  
+Silver Arrow (20)                    49 -  3D B1 -  -  -  -  -  04 -  14 14 -  -  -  -            0A -  01 06 -  -  -  -  -  01 06 -  -  48 -  -  
+Silver Bastard Sword                 22 -  22 B1 -  -  -  -  -  64 -  -  FA -  -  -  -            -  02 02 08 -  -  -  -  80 02 04 -  -  48 04 -  
+Silver Battle Axe                    01 -  01 B1 -  -  01 -  -  32 -  -  32 -  -  -  -            -  01 01 08 -  -  -  01 80 01 08 -  -  48 04 -  
+Silver Broad Sword                   23 -  23 B1 -  -  -  -  -  4B -  -  64 -  -  -  -            -  01 01 06 01 -  -  -  80 02 04 -  -  4C 04 -  
+Silver Brooch                        46 -  51 B1 -  -  -  -  -  0A -  -  02 -  -  -  -            0A -  -  -  -  -  -  -  -  -  -  -  -  7F -  -  
+Silver Chain Mail                    37 30 37 B1 -  -  -  -  -  2C 01 -  EE 02 -  -  -            02 -  -  -  -  -  B7 -  -  -  -  -  -  4A -  -  
+Silver Dagger (1)                    08 -  08 B1 -  -  -  -  -  0A -  01 14 -  -  -  -            -  01 01 03 -  -  -  01 80 01 04 -  01 7D 04 -  
+Silver Dragon Statuette (1)          46 C3 9C B1 -  -  -  -  -  14 -  01 C4 09 -  -  -            0A -  -  -  -  -  -  -  -  -  -  -  -  7F -  -  
+Silver Holy Symbol Of Sune           47 FB 98 B1 -  -  -  -  -  14 -  -  32 -  -  -  -            0A 01 -  -  -  -  -  -  -  -  -  -  -  7F -  -  
+Silver Holy Symbol Of Sune           47 FB 98 B1 -  -  -  -  -  28 -  -  32 -  -  -  -            0A 01 -  -  -  -  -  -  -  -  -  -  -  7F -  -  
+Silver Long Sword                    24 -  24 B1 -  -  -  -  -  3C -  -  96 -  -  -  -            -  01 01 0C -  -  -  -  80 01 08 -  -  4C 04 -  
+Silver Mace                          17 -  17 B1 -  -  -  -  -  64 -  -  50 -  -  -  -            -  01 01 06 -  -  -  80 80 01 06 01 -  4A 04 -  
+Silver Mirror                        47 -  76 B1 -  -  -  -  -  0A -  -  02 -  -  -  -            0A 01 -  -  -  -  -  -  -  -  -  -  -  7F -  -  
+Silver Mirror                        47 -  76 B1 -  -  -  -  -  0A -  -  14 -  -  -  -            0A 01 -  -  -  -  -  -  -  -  -  -  -  7F -  -  
+Silver Mirror                        47 -  76 B1 -  -  -  -  -  14 -  -  14 -  -  -  -            0A 01 -  -  -  -  -  -  -  -  -  -  -  7F -  -  
+Silver Plate Mail                    3A 30 3A B1 -  -  -  -  -  C2 01 -  A0 0F -  -  -            02 -  -  -  -  -  B9 -  -  -  -  -  -  4A -  -  
+Silver Quarrel (1)                   1C -  1C B1 -  -  -  -  -  03 -  01 14 -  -  -  -            0A -  01 04 -  -  -  01 80 01 04 -  -  68 8A -  
+Silver Ring                          46 -  42 B1 -  -  -  -  -  -  -  -  5A -  -  -  -            0A -  -  -  -  -  -  -  -  -  -  -  -  7F -  -  
+Silver Scarab                        46 -  84 B1 -  -  -  -  -  0A -  -  64 -  -  -  -            0A -  -  -  -  -  -  -  -  -  -  -  -  7F -  -  
+Silver Short Sword                   25 -  25 B1 -  -  -  -  -  23 -  -  50 -  -  -  -            -  01 01 08 -  -  -  -  80 01 06 -  -  4C 04 -  
+Silver Two-Handed Sword              26 -  26 B1 -  -  -  -  -  FA -  -  2C 01 -  -  -            -  02 03 06 -  -  -  -  80 01 0A -  -  48 04 -  
+Sling                                2F -  -  2F -  -  -  -  -  02 -  -  -  -  -  -  -            -  01 01 06 01 02 -  80 80 01 04 01 15 5C 0A -  
+Sling                                2F -  -  2F -  -  -  -  -  02 -  -  -  -  -  -  -            -  01 01 06 01 02 -  80 80 01 04 01 15 5C 0A -  
+Sling                                2F -  -  2F -  -  -  -  -  02 -  -  -  -  -  -  -            -  01 01 06 01 02 -  80 80 01 04 01 15 5C 0A -  
+Sling Of Seeking +2                  2F A3 C8 2F 02 -  -  06 -  0A -  -  58 1B -  -  -            -  01 01 06 01 02 -  80 80 01 04 01 15 5C 0A -  
+Sling Of Seeking +2                  2F A3 C8 2F 02 -  -  06 -  0A -  -  58 1B -  -  -            -  01 01 06 01 02 -  80 80 01 04 01 15 5C 0A -  
+Spear                                1F -  -  1F -  -  -  -  -  32 -  -  01 -  -  -  -            -  02 01 08 -  02 -  01 80 01 06 -  04 78 14 -  
+Spear                                1F -  -  1F -  -  -  -  -  32 -  -  01 -  -  -  -            -  02 01 08 -  02 -  01 80 01 06 -  04 78 14 -  
+Spear                                1F -  -  1F -  -  -  -  -  32 -  -  01 -  -  -  -            -  02 01 08 -  02 -  01 80 01 06 -  04 78 14 -  
+Spear +1                             1F -  A2 1F 01 -  -  06 -  28 -  -  B8 0B -  -  -            -  02 01 08 -  02 -  01 80 01 06 -  04 78 14 -  
+Spetum                               20 -  -  20 -  -  -  -  -  32 -  -  03 -  -  -  -            -  02 02 06 -  -  -  -  80 01 06 01 -  68 04 -  
+Spetum                               20 -  -  20 -  -  -  -  -  32 -  -  03 -  -  -  -            -  02 02 06 -  -  -  -  80 01 06 01 -  68 04 -  
+Spetum                               20 -  -  20 -  -  -  -  -  32 -  -  03 -  -  -  -            -  02 02 06 -  -  -  -  80 01 06 01 -  68 04 -  
+Splint Mail                          38 -  30 38 -  -  -  -  -  90 01 -  50 -  -  -  -            02 -  -  -  -  -  B8 -  -  -  -  -  -  4A -  -  
+Splint Mail                          38 -  30 38 -  -  -  -  -  90 01 -  50 -  -  -  -            02 -  -  -  -  -  B8 -  -  -  -  -  -  4A -  -  
+Splint Mail                          38 -  30 38 -  -  -  -  -  90 01 -  50 -  -  -  -            02 -  -  -  -  -  B8 -  -  -  -  -  -  4A -  -  
+Stone Statuette                      48 -  C3 6B -  -  -  -  -  FA -  -  1E -  -  -  -            0A 02 -  -  -  -  -  -  -  -  -  -  -  7F -  -  
+Stone Statuette                      48 -  C3 6B -  -  -  -  -  FA -  -  1E -  -  -  -            0A 02 -  -  -  -  -  -  -  -  -  -  -  7F -  -  
+Studded Leather Armor                34 31 32 34 -  -  -  -  -  C8 -  -  0F -  -  -  -            02 -  -  -  -  -  B5 -  -  -  -  -  -  4A -  -  
+Studded Leather Armor                34 31 32 34 -  -  -  -  -  C8 -  -  0F -  -  -  -            02 -  -  -  -  -  B5 -  -  -  -  -  -  4A -  -  
+Studded Leather Armor                34 31 32 34 -  -  -  -  -  C8 -  -  0F -  -  -  -            02 -  -  -  -  -  B5 -  -  -  -  -  -  4A -  -  
+Studded Leather Armor                34 31 32 34 -  -  01 -  -  C8 -  -  05 -  -  -  -            02 -  -  -  -  -  B5 -  -  -  -  -  -  4A -  -  
+Studded Leather Armor                34 31 32 34 -  -  01 -  -  C8 -  -  05 -  -  -  -            02 -  -  -  -  -  B5 -  -  -  -  -  -  4A -  -  
+Studded Leather Armor                34 31 32 34 -  -  01 -  -  C8 -  -  05 -  -  -  -            02 -  -  -  -  -  B5 -  -  -  -  -  -  4A -  -  
+Studded Leather Armor                34 31 32 34 -  -  01 -  -  C8 -  -  05 -  -  -  -            02 -  -  -  -  -  B5 -  -  -  -  -  -  4A -  -  
+Studded Leather Armor                34 31 32 34 -  -  01 -  -  C8 -  -  05 -  -  -  -            02 -  -  -  -  -  B5 -  -  -  -  -  -  4A -  -  
+Studded Leather Armor                34 31 32 34 -  -  01 -  -  C8 -  -  05 -  -  -  -            02 -  -  -  -  -  B5 -  -  -  -  -  -  4A -  -  
+Tapestry                             48 -  -  AE -  -  -  -  -  F4 01 -  FA -  -  -  -            0A 02 -  -  -  -  -  -  -  -  -  -  -  7F -  -  
+Tapestry                             48 -  -  AE -  -  -  -  -  F4 01 -  FA -  -  -  -            0A 02 -  -  -  -  -  -  -  -  -  -  -  7F -  -  
+Trident                              27 -  -  27 -  -  -  -  -  32 -  -  04 -  -  -  -            -  01 03 04 -  -  -  -  80 01 06 01 -  48 04 -  
+Trident                              27 -  -  27 -  -  -  -  -  32 -  -  04 -  -  -  -            -  01 03 04 -  -  -  -  80 01 06 01 -  48 04 -  
+Trident                              27 -  -  27 -  -  -  -  -  32 -  -  04 -  -  -  -            -  01 03 04 -  -  -  -  80 01 06 01 -  48 04 -  
+Two-Handed Sword                     26 -  -  26 -  -  -  -  -  FA -  -  1E -  -  -  -            -  02 03 06 -  -  -  -  80 01 0A -  -  48 04 -  
+Two-Handed Sword                     26 -  -  26 -  -  -  -  -  FA -  -  1E -  -  -  -            -  02 03 06 -  -  -  -  80 01 0A -  -  48 04 -  
+Two-Handed Sword                     26 -  -  26 -  -  -  -  -  FA -  -  1E -  -  -  -            -  02 03 06 -  -  -  -  80 01 0A -  -  48 04 -  
+Two-Handed Sword                     26 -  -  26 -  -  01 -  -  5A -  -  05 -  -  -  -            -  02 03 06 -  -  -  -  80 01 0A -  -  48 04 -  
+Two-Handed Sword +1                  26 -  A2 26 01 -  01 -  -  78 -  -  D0 07 -  -  -            -  02 03 06 -  -  -  -  80 01 0A -  -  48 04 -  
+Two-Handed Sword +1 +3 vs Undead     26 FD A2 26 01 -  -  -  -  FA -  -  AC 0D -  03 88           -  02 03 06 -  -  -  -  80 01 0A -  -  48 04 -  
+Two-Handed Sword +1 +3 vs Undead     26 FD A2 26 01 -  -  -  -  FA -  -  AC 0D -  03 88           -  02 03 06 -  -  -  -  80 01 0A -  -  48 04 -  
+Two-Handed Sword +2                  26 -  A3 26 02 -  -  06 -  5A -  -  A0 0F -  -  -            -  02 03 06 -  -  -  -  80 01 0A -  -  48 04 -  
+Two-Handed Sword +2                  26 -  A3 26 02 -  01 06 -  -  -  -  A0 0F -  -  -            -  02 03 06 -  -  -  -  80 01 0A -  -  48 04 -  
+Two-Handed Sword +2                  26 -  A3 26 02 -  01 06 -  -  -  -  A0 0F -  -  -            -  02 03 06 -  -  -  -  80 01 0A -  -  48 04 -  
+Two-Handed Sword +2                  26 -  A3 26 02 -  01 06 -  5A -  -  A0 0F -  -  -            -  02 03 06 -  -  -  -  80 01 0A -  -  48 04 -  
+Two-Handed Sword +2                  26 -  A3 26 02 -  01 06 -  5A -  -  A0 0F -  -  -            -  02 03 06 -  -  -  -  80 01 0A -  -  48 04 -  
+Two-Handed Sword +2                  26 -  A3 26 02 -  01 06 -  5A -  -  A0 0F -  -  -            -  02 03 06 -  -  -  -  80 01 0A -  -  48 04 -  
+Two-Handed Sword +2                  26 -  A3 26 02 -  01 06 -  5A -  -  A0 0F -  -  -            -  02 03 06 -  -  -  -  80 01 0A -  -  48 04 -  
+Wand of Lightning                    4E 9D A7 45 0A -  01 06 -  -  -  -  30 75 38 33 -            4E 01 -  -  -  -  -  -  -  -  -  -  5A 01 -  -  
+Wand of Lightning                    4E 9D A7 45 0A -  01 06 -  0A -  -  30 75 14 33 -            4E 01 -  -  -  -  -  -  -  -  -  -  5A 01 -  -  
+Wand of Lightning                    4E 9D A7 45 0A -  01 06 -  0A -  -  30 75 14 33 -            4E 01 -  -  -  -  -  -  -  -  -  -  5A 01 -  -  
+Wand of Lightning                    4E 9D A7 45 0A -  01 06 -  0A -  -  30 75 43 33 -            4E 01 -  -  -  -  -  -  -  -  -  -  5A 01 -  -  
+Wand of Lightning Bolt               4E CC A7 45 0C -  -  06 -  1E -  -  84 03 03 33 -            4E 01 -  -  -  -  -  -  -  -  -  -  5A 01 -  -  
+Wand of Magic Missiles               4F CE A7 45 01 -  01 06 -  05 -  -  5C 44 32 58 -            4E 01 -  -  -  -  -  -  -  -  -  -  -  7F -  -  
+Wand of Magic Missiles               4F CE A7 45 0A -  -  06 -  -  -  -  20 4E 21 58 -            4E 01 -  -  -  -  -  -  -  -  -  -  -  7F -  -  
+Wand of Magic Missiles               4F CE A7 45 0A -  -  06 -  14 -  -  20 4E 23 58 -            4E 01 -  -  -  -  -  -  -  -  -  -  -  7F -  -  
+Wand of Magic Missiles               4F CE A7 45 0A -  -  06 -  1E -  -  B8 88 14 58 -            4E 01 -  -  -  -  -  -  -  -  -  -  -  7F -  -  
+Wand of Magic Missiles               4F CE A7 45 0A -  01 06 -  -  -  -  B8 88 43 58 -            4E 01 -  -  -  -  -  -  -  -  -  -  -  7F -  -  
+Wand of Magic Missiles               4F CE A7 45 0A -  01 06 -  -  -  -  B8 88 43 58 -            4E 01 -  -  -  -  -  -  -  -  -  -  -  7F -  -  
+Wand of Magic Missiles               4F CE A7 45 0A -  01 06 -  -  -  -  B8 88 43 58 -            4E 01 -  -  -  -  -  -  -  -  -  -  -  7F -  -  
+Wand of Magic Missiles               4F CE A7 45 0A -  01 06 -  14 -  -  B8 88 17 58 -            4E 01 -  -  -  -  -  -  -  -  -  -  -  7F -  -  
+Wand of Paralyzation                 4E E1 A7 45 02 -  01 06 -  0A -  -  C4 09 17 54 -            4E 01 -  -  -  -  -  -  -  -  -  -  5A 01 -  -  
+Wooden Holy Symbol                   47 -  98 FC -  -  -  -  -  32 -  -  01 -  -  -  -            0A 01 -  -  -  -  -  -  -  -  -  -  -  7F -  -  
+Wooden Holy Symbol                   47 -  98 FC -  -  -  -  -  32 -  -  01 -  -  -  -            0A 01 -  -  -  -  -  -  -  -  -  -  -  7F -  -  
+Wooden Holy Symbol Of Tyr            47 F9 98 FC -  -  -  -  -  1E -  -  01 -  -  -  -            0A 01 -  -  -  -  -  -  -  -  -  -  -  7F -  -  
+Woods Holy Symbol                    46 -  98 3C -  -  -  -  -  14 -  -  F4 01 -  -  -            0A -  -  -  -  -  -  -  -  -  -  -  -  7F -  -  
+Voulge                               28 -  -  28 -  -  -  -  -  7D -  -  02 -  -  -  -            -  02 02 04 -  -  -  -  80 02 04 -  -  68 04 -  
+Voulge                               28 -  -  28 -  -  -  -  -  7D -  -  02 -  -  -  -            -  02 02 04 -  -  -  -  80 02 04 -  -  68 04 -  
+Voulge                               28 -  -  28 -  -  -  -  -  7D -  -  02 -  -  -  -            -  02 02 04 -  -  -  -  80 02 04 -  -  68 04 -  
+
+
+
+           damage vs large          damage vs small/medium
+           x d x + x    protective  x d x + x
+               |        value   mel |
+               |           |    type|          class restrictions
+hands required |           | wpn |  |           |
+            |  |   rate of | type|  |           | missile type
+       slot |  |      fire |  |  |  |     range |  |
+         |  |  |_____   |  |  |  |  |_____   |  |  | unused
+         |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+         00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F 
+
+00:      -  01 01 06 -  -  -  -  -  01 06 -  -  48 01 -  
+01:      -  01 01 08 -  -  -  01 80 01 08 -  -  48 04 -  
+02:      -  01 01 04 -  02 -  -  80 01 06 -  04 68 14 -  
+03:      -  02 03 04 -  -  -  -  80 02 04 -  -  68 04 -  
+04:      -  02 01 06 -  -  -  -  80 01 08 -  -  68 14 -  
+05:      -  02 01 0A -  -  -  -  80 02 04 -  -  68 01 -  
+06:      -  01 01 03 -  -  -  80 80 01 06 -  -  68 04 -  
+07:      -  01 01 03 -  02 -  80 80 01 06 -  04 7E 14 -  
+08:      -  01 01 03 -  -  -  01 80 01 04 -  01 7D 04 -  
+09:      -  01 01 02 -  06 -  01 80 01 03 -  06 5D 10 -  
+0A:      -  02 01 08 -  -  -  -  80 01 06 -  -  68 04 -  
+0B:      -  02 01 0A -  -  -  -  80 01 08 -  -  68 04 -  
+0C:      -  01 02 04 -  -  -  80 80 01 06 01 -  4A 04 -  
+0D:      -  02 02 04 -  -  -  -  80 01 08 -  -  68 04 -  
+0E:      -  02 01 0A -  -  -  -  80 01 06 -  -  68 04 -  
+0F:      -  02 02 06 -  -  -  -  80 02 04 -  -  68 04 -  
+10:      -  02 01 08 -  -  -  -  80 02 04 -  -  68 04 -  
+11:      -  02 02 04 -  -  -  -  80 02 04 -  -  68 -  -  
+12:      -  02 02 06 -  -  -  -  80 01 0A -  -  68 04 -  
+13:      -  02 01 06 -  -  -  01 80 02 04 -  -  48 04 -  
+14:      -  01 01 04 -  02 -  80 80 01 04 01 04 5A 14 -  
+15:      -  01 01 06 -  02 -  01 80 01 06 -  07 68 1A -  
+16:      -  01 01 04 -  -  -  80 80 01 06 -  -  68 04 -  
+17:      -  01 01 06 -  -  -  80 80 01 06 01 -  4A 04 -  
+18:      -  01 01 06 01 -  -  80 80 02 04 -  -  48 04 -  
+19:      -  02 01 06 01 -  -  -  80 01 06 -  -  68 04 -  
+1A:      -  01 02 04 -  -  -  01 80 01 06 01 -  48 04 -  
+1B:      -  02 01 0C -  -  -  01 80 01 06 -  -  68 04 -  
+1C:      0A -  01 04 -  -  -  01 80 01 04 -  -  68 8A -  
+1D:      -  02 02 04 -  -  -  -  80 02 04 -  -  68 04 -  
+1E:      -  01 01 08 -  -  -  -  80 01 08 -  -  58 04 -  
+1F:      -  02 01 08 -  02 -  01 80 01 06 -  04 78 14 -  
+20:      -  02 02 06 -  -  -  -  80 01 06 01 -  68 04 -  
+21:      -  02 01 06 -  -  -  80 80 01 06 -  -  7B 04 -  
+22:      -  02 02 08 -  -  -  -  80 02 04 -  -  48 04 -  
+23:      -  01 01 06 01 -  -  -  80 02 04 -  -  4C 04 -  
+24:      -  01 01 0C -  -  -  -  80 01 08 -  -  4C 04 -  
+25:      -  01 01 08 -  -  -  -  80 01 06 -  -  4C 04 -  
+26:      -  02 03 06 -  -  -  -  80 01 0A -  -  48 04 -  
+27:      -  01 03 04 -  -  -  -  80 01 06 01 -  48 04 -  
+28:      -  02 02 04 -  -  -  -  80 02 04 -  -  68 04 -  
+29:      -  02 01 06 -  04 -  01 80 01 06 -  16 48 0B -  
+2A:      -  02 01 06 -  04 -  01 80 01 06 -  13 48 0B -  
+2B:      -  02 01 06 -  04 -  01 80 01 06 -  16 48 0B -  
+2C:      -  02 01 06 -  04 -  01 80 01 06 -  10 48 0B -  
+2D:      -  02 01 06 -  04 -  01 80 01 06 -  14 68 0F -  
+2E:      -  02 01 04 -  02 -  01 80 01 04 -  13 68 8A -  
+2F:      -  01 01 06 01 02 -  80 80 01 04 01 15 5C 0A -  
+30:      -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  
+31:      -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  
+32:      02 -  -  -  -  -  B4 -  -  -  -  -  -  5E -  -  
+33:      02 -  -  -  -  -  B4 -  -  -  -  -  -  4A -  -  
+34:      02 -  -  -  -  -  B5 -  -  -  -  -  -  4A -  -  
+35:      02 -  -  -  -  -  B5 -  -  -  -  -  -  4A -  -  
+36:      02 -  -  -  -  -  B6 -  -  -  -  -  -  4A -  -  
+37:      02 -  -  -  -  -  B7 -  -  -  -  -  -  4A -  -  
+38:      02 -  -  -  -  -  B8 -  -  -  -  -  -  4A -  -  
+39:      02 -  -  -  -  -  B8 -  -  -  -  -  -  4A -  -  
+3A:      02 -  -  -  -  -  B9 -  -  -  -  -  -  4A -  -  
+3B:      01 01 -  -  -  -  81 -  -  -  -  -  -  5A -  -  
+3C:      0A 02 -  -  -  -  -  -  -  -  -  -  -  7F -  -  
+3D:      0B 02 -  -  -  -  -  -  -  -  -  -  -  01 -  -  
+3E:      0C 02 -  -  -  -  -  -  -  -  -  -  -  02 -  -  
+3F:      03 -  -  -  -  -  -  -  -  -  -  -  -  7F -  -  
+40:      04 -  -  -  -  -  -  -  -  -  -  -  -  7F -  -  
+41:      05 -  -  -  -  -  -  -  -  -  -  -  -  7F -  -  
+42:      06 -  -  -  -  -  -  -  -  -  -  -  -  7F -  -  
+43:      07 -  -  -  -  -  -  -  -  -  -  -  -  7F -  -  
+44:      08 -  -  -  -  -  -  -  -  -  -  -  -  7F -  -  
+45:      09 -  -  -  -  -  -  -  -  -  -  -  -  7F -  -  
+46:      0A -  -  -  -  -  -  -  -  -  -  -  -  7F -  -  
+47:      0A 01 -  -  -  -  -  -  -  -  -  -  -  7F -  -  
+48:      0A 02 -  -  -  -  -  -  -  -  -  -  -  7F -  -  
+49:      0A -  01 06 -  -  -  -  -  01 06 -  -  48 -  -  
+4A:      4A -  -  -  -  -  -  -  -  -  -  -  -  7F -  -  
+4B:      4B 01 -  -  -  -  -  -  -  -  -  -  -  7F -  -  
+4C:      05 -  -  -  -  -  80 -  -  -  -  -  -  7F -  -  
+4D:      4D -  -  -  -  -  B2 -  -  -  -  -  -  7F -  -  
+4E:      4E 01 -  -  -  -  -  -  -  -  -  -  5A 01 -  -  
+4F:      4E 01 -  -  -  -  -  -  -  -  -  -  -  7F -  -  
+50:      50 01 -  -  -  -  -  -  -  -  -  -  -  7F -  -  
+51:      51 01 -  -  -  -  -  -  -  -  -  -  -  7F -  -  
+52:      52 02 -  -  -  -  -  -  -  -  -  -  -  7F -  -  
+53:      53 01 -  -  -  -  -  -  -  -  -  -  -  -  -  -  
+54:      50 01 -  -  -  -  -  -  -  -  -  -  -  08 -  -  
+55:      -  01 01 01 FF 02 -  -  80 01 01 FF 04 7F 1A -  
+56:      -  01 02 06 -  02 -  -  80 02 06 -  04 7F 1A -  
+57:      -  02 01 08 08 02 -  80 -  01 08 08 0A 08 1A -  
+58:      -  02 01 0C 08 02 -  80 -  01 0C 08 14 -  1A -  
+59:      -  02 03 06 -  -  -  -  80 01 0A -  -  08 04 -  
+5A:      09 -  -  -  -  -  -  -  -  -  -  -  -  7F -  -  
+5B:      5B -  -  -  -  -  BC -  -  -  -  -  -  -  -  -  
+5C:      07 -  -  -  -  -  80 -  -  -  -  -  -  7F -  -  
+5D:      09 -  -  -  -  -  80 -  -  -  -  -  -  7F -  -  
+5E:      -  02 01 06 -  04 -  01 -  01 06 -  16 48 0F -  
+5F:      -  02 01 06 -  04 -  01 -  01 06 -  16 48 0F -  
+60:      -  02 01 06 -  04 -  01 -  01 06 -  10 48 0F -  
+61:      -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  
+62:      -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  
+63:      -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  
+64:      -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  
+65:      -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  
+66:      -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  
+67:      -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  
+68:      -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  
+69:      -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  
+6A:      -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  
+6B:      -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  
+6C:      -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  
+6D:      -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  
+6E:      -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  
+6F:      -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  
+70:      -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  
+71:      -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  
+72:      -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  
+73:      -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  
+74:      -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  
+75:      -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  
+76:      -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  
+77:      -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  
+78:      -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  
+79:      -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  
+7A:      -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  
+7B:      -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  
+7C:      -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  
+7D:      -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  
+7E:      -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  
+7F:      -  01 02 14 -  28 B6 01 80 02 14 -  3C 7F 0A -  

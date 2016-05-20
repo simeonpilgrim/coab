@@ -1,0 +1,415 @@
+
+ TREASURES OF THE SAVAGE FRONTIER
+
+   HEXADECIMAL     DECIMAL
+   OFFSET          OFFSET      LENGTH        DESCRIPTION
+
+   000             000              1        ???                 
+   001 - 00F       001 - 015       15        name                     
+   010             016              1        str original             
+   011             017              1        str current              
+   012             018              1        int original             
+   013             019              1        int current              
+   014             020              1        wis original             
+   015             021              1        wis current              
+   016             022              1        dex original             
+   017             023              1        dex current              
+   018             024              1        con original             
+   019             025              1        con current              
+   01A             026              1        cha original             
+   01B             027              1        cha current              
+   01C             028              1        str exc original         
+   01D             029              1        str exc current          
+   01E - 0AA       030 - 170      141        memorized spells         
+   0AB             171              1        ???                 
+   0AC             172              1        thac0 base               
+   0AD             173              1        race                     
+   0AE             174              1        class                    
+   0AF             175              1        ???                 
+   0B0 - 0B1       176 - 177        2        age                      
+   0B2             178              1        hit points maximum       
+   0B3             179              1        cleric 1 01              bless
+   0B4             180              1        cleric 1 02              curse
+   0B5             181              1        cleric 1 03              cure light wounds
+   0B6             182              1        cleric 1 04              cause light wounds
+   0B7             183              1        cleric 1 05              detect magic
+   0B8             184              1        cleric 1 06              protection from evil
+   0B9             185              1        cleric 1 07              protection from good
+   0BA             186              1        cleric 1 08              resist cold
+   0BB             187              1        mage 1 01                burning hands
+   0BC             188              1        mage 1 02                charm person
+   0BD             189              1        mage 1 03                detect magic
+   0BE             190              1        mage 1 04                enlarge
+   0BF             191              1        mage 1 05                reduce
+   0C0             192              1        mage 1 06                friends
+   0C1             193              1        mage 1 07                magic missile
+   0C2             194              1        mage 1 08                protection from evil
+   0C3             195              1        mage 1 09                protection from good
+   0C4             196              1        mage 1 10                read magic
+   0C5             197              1        mage 1 11                shield
+   0C6             198              1        mage 1 12                shocking grasp
+   0C7             199              1        mage 1 13                sleep
+   0C8             200              1        cleric 2 01              find traps
+   0C9             201              1        cleric 2 02              hold person
+   0CA             202              1        cleric 2 03              resist fire
+   0CB             203              1        cleric 2 04              silence, 15' radius
+   0CC             204              1        cleric 2 05              slow poison
+   0CD             205              1        cleric 2 06              snake charm
+   0CE             206              1        cleric 2 07              spiritual hammer
+   0CF             207              1        mage 2 01                detect invisibility
+   0D0             208              1        mage 2 02                invisibility
+   0D1             209              1        mage 2 03                knock
+   0D2             210              1        mage 2 04                mirror image
+   0D3             211              1        mage 2 05                ray of enfeeblement
+   0D4             212              1        mage 2 06                stinking cloud
+   0D5             213              1        mage 2 07                strength
+   0D6             214              1        ???                 
+   0D7             215              1        cleric 3 01              cure blindness
+   0D8             216              1        cleric 3 02              cause blindness
+   0D9             217              1        cleric 3 03              cure disease
+   0DA             218              1        cleric 3 04              cause disease
+   0DB             219              1        cleric 3 05              dispel magic
+   0DC             220              1        cleric 3 06              prayer
+   0DD             221              1        cleric 3 07              remove curse
+   0DE             222              1        cleric 3 08              bestow curse
+   0DF             223              1        mage 3 01                blink
+   0E0             224              1        mage 3 02                dispel magic
+   0E1             225              1        mage 3 03                fireball
+   0E2             226              1        mage 3 04                haste
+   0E3             227              1        mage 3 05                hold person
+   0E4             228              1        mage 3 06                invisibility, 10' radius
+   0E5             229              1        mage 3 07                lightning bolt
+   0E6             230              1        mage 3 08                protection from evil, 10' radius
+   0E7             231              1        mage 3 09                protection from good, 10' radius
+   0E8             232              1        mage 3 10                protection from normal missiles
+   0E9             233              1        mage 3 11                slow
+   0EA             234              1        ???                 
+   0EB             235              1        ???                 
+   0EC             236              1        cleric 4 01              cure serious wounds
+   0ED             237              1        ???                 
+   0EE             238              1        ???                 
+   0EF             239              1        ???                 
+   0F0             240              1        ???                 
+   0F1             241              1        ???                 
+   0F2             242              1        ???                 
+   0F3             243              1        ???                 
+   0F4             244              1        cleric 4 02              cause serious wounds
+   0F5             245              1        cleric 4 03              neutralize poison
+   0F6             246              1        cleric 4 04              poison
+   0F7             247              1        cleric 4 05              protection from evil, 10' radius
+   0F8             248              1        cleric 4 06              sticks to snakes
+   0F9             249              1        cleric 5 01              cure critical wounds
+   0FA             250              1        cleric 5 02              cause critical wounds
+   0FB             251              1        cleric 5 03              dispel evil
+   0FC             252              1        cleric 5 04              flame strike
+   0FD             253              1        cleric 5 05              raise dead
+   0FE             254              1        cleric 5 06              slay living
+   0FF             255              1        druid 1 01               detect magic
+   100             256              1        druid 1 02               entangle
+   101             257              1        druid 1 03               faerie fire
+   102             258              1        druid 1 04               invisibility to animals
+   103             259              1        mage 4 01                charm monster
+   104             260              1        mage 4 02                confusion
+   105             261              1        mage 4 03                dimension door
+   106             262              1        mage 4 04                fear
+   107             263              1        mage 4 05                fire shield
+   108             264              1        mage 4 06                fumble
+   109             265              1        mage 4 07                ice storm
+   10A             266              1        mage 4 08                minor globe of invulnerability
+   10B             267              1        mage 4 09                remove curse
+   10C             268              1        ???                 
+   10D             269              1        mage 5 01                cloudkill
+   10E             270              1        mage 5 02                cone of cold
+   10F             271              1        mage 5 03                feeblemind
+   110             272              1        mage 5 04                hold monsters
+   111             273              1        ???                 
+   112             274              1        ???                 
+   113             275              1        ???                 
+   114             276              1        ???                 
+   115             277              1        ???                 
+   116             278              1        mage 4 10                bestow curse
+   117             279              1        ???                 
+   118             280              1        ???                 
+   119             281              1        ???                 
+   11A             282              1        ???                 
+   11B             283              1        ???                 
+   11C             284              1        ???                 
+   11D             285              1        ???                 
+   11E             286              1        ???                 
+   11F             287              1        ???                 
+   120             288              1        ???                 
+   121             289              1        ???                 
+   122             290              1        ???                 
+   123             291              1        ???                 
+   124             292              1        ???                 
+   125             293              1        ???                 
+   126             294              1        ???                 
+   127             295              1        ???                 
+   128             296              1        mage 5 05                fire touch
+   129             297              1        mage 5 06                iron skin
+   12A             298              1        ???                 
+   12B             299              1        ???                 
+   12C             300              1        ???                 
+   12D             301              1        ???                 
+   12E             302              1        ???                 
+   12F             303              1        ???                 
+   130             304              1        ???                 
+   131             305              1        ???                 
+   132             306              1        save 1                   paralyzation, poison or death magic
+   133             307              1        save 2                   petrification or polymorph
+   134             308              1        save 3                   rod, staff or wand
+   135             309              1        save 4                   breath weapon
+   136             310              1        save 5                   spell
+   137             311              1        movement base            
+   138             312              1        level highest 1          
+   139             313              1        level highest 2          
+   13A             314              1        ???                 
+   13B             315              1        thief 1                  pick pockets
+   13C             316              1        thief 2                  open locks
+   13D             317              1        thief 3                  find / remove traps
+   13E             318              1        thief 4                  move silently
+   13F             319              1        thief 5                  hide in shadows
+   140             320              1        thief 6                  hear noise
+   141             321              1        thief 7                  climb walls
+   142             322              1        thief 8                  read languages
+   143             323              1        ???                 
+   144             324              1        ???                 
+   145             325              1        ???                 
+   146             326              1        ???                 
+   147             327              1        npc                      
+   148             328              1        ???                 
+   149             329              1        ???                 
+   14A             330              1        ???                 
+   14B - 14C       331 - 332        2        coins platinum           
+   14D - 14E       333 - 334        2        gems                     
+   14F - 150       335 - 336        2        jewelry                  
+   151             337              1        level cleric             
+   152             338              1        level druid              
+   153             339              1        level fighter            
+   154             340              1        level paladin            
+   155             341              1        level ranger             
+   156             342              1        level mage               
+   157             343              1        level thief              
+   158             344              1        former level cleric      
+   159             345              1        former level druid       
+   15A             346              1        former level fighter     
+   15B             347              1        former level paladin     
+   15C             348              1        former level ranger      
+   15D             349              1        former level mage        
+   15E             350              1        former level thief       
+   15F             351              1        ???                 
+   160             352              1        ???                 
+   161             353              1        ???                 
+   162             354              1        ???                 
+   163             355              1        ???                 
+   164             356              1        ???                 
+   165             357              1        ???                 
+   166             358              1        gender                   
+   167             359              1        alignment                
+   168             360              1        attacks                  
+   169             361              1        attacks 2                
+   16A             362              1        unarmed rolls            
+   16B             363              1        unarmed rolls 2          
+   16C             364              1        unarmed dice             
+   16D             365              1        unarmed dice 2           
+   16E             366              1        unarmed modifier         
+   16F             367              1        unarmed modifier 2       
+   170             368              1        ac base                  
+   171             369              1        monster index            
+   172 - 175       370 - 373        4        experience               
+   176             374              1        ???                 
+   177             375              1        ???                 
+   178             376              1        ???                 
+   179             377              1        ???                 
+   17A             378              1        ???                 
+   17B             379              1        item limits              
+   17C             380              1        hit points rolled        
+   17D             381              1        cleric spells 1          
+   17E             382              1        cleric spells 2          
+   17F             383              1        cleric spells 3          
+   180             384              1        cleric spells 4          
+   181             385              1        cleric spells 5          
+   182             386              1        ???                 
+   183             387              1        ???                 
+   184             388              1        ???                 
+   185             389              1        ???                 
+   186             390              1        druid spells 1           
+   187             391              1        ???                 
+   188             392              1        ???                 
+   189             393              1        ???                 
+   18A             394              1        ???                 
+   18B             395              1        ???                 
+   18C             396              1        ???                 
+   18D             397              1        ???                 
+   18E             398              1        ???                 
+   18F             399              1        mage spells 1            
+   190             400              1        mage spells 2            
+   191             401              1        mage spells 3            
+   192             402              1        mage spells 4            
+   193             403              1        mage spells 5            
+   194             404              1        ???                 
+   195             405              1        ???                 
+   196             406              1        ???                 
+   197             407              1        ???                 
+   198 - 199       408 - 409        2        xp award                 
+   19A             410              1        icon head                
+   19B             411              1        icon body                
+   19C             412              1        order number             
+   19D             413              1        icon size                
+   19E             414              1        icon color1 body         
+   19E             414              1        icon color2 body         
+   19F             415              1        icon color1 arm          
+   19F             415              1        icon color2 arm          
+   1A0             416              1        icon color1 leg          
+   1A0             416              1        icon color2 leg          
+   1A1             417              1        icon color1 hair         
+   1A1             417              1        icon color2 face         
+   1A2             418              1        icon color1 shield       
+   1A2             418              1        icon color2 shield       
+   1A3             419              1        icon color1 weapon       
+   1A3             419              1        icon color2 weapon       
+   1A4             420              1        ???                 
+   1A5             421              1        ???                 
+   1A6             422              1        number of items          
+   1A7             423              1        ???                 
+   1A8             424              1        ???                 
+   1A9             425              1        ???                 
+   1AA             426              1        ???                 
+   1AB             427              1        ???                 
+   1AC             428              1        ???                 
+   1AD             429              1        ???                 
+   1AE             430              1        ???                 
+   1AF             431              1        ???                 
+   1B0             432              1        ???                 
+   1B1             433              1        ???                 
+   1B2             434              1        ???                 
+   1B3             435              1        ???                 
+   1B4             436              1        ???                 
+   1B5             437              1        ???                 
+   1B6             438              1        ???                 
+   1B7             439              1        ???                 
+   1B8             440              1        ???                 
+   1B9             441              1        ???                 
+   1BA             442              1        ???                 
+   1BB             443              1        ???                 
+   1BC             444              1        ???                 
+   1BD             445              1        ???                 
+   1BE             446              1        ???                 
+   1BF             447              1        ???                 
+   1C0             448              1        ???                 
+   1C1             449              1        ???                 
+   1C2             450              1        ???                 
+   1C3             451              1        ???                 
+   1C4             452              1        ???                 
+   1C5             453              1        ???                 
+   1C6             454              1        ???                 
+   1C7             455              1        ???                 
+   1C8             456              1        ???                 
+   1C9             457              1        ???                 
+   1CA             458              1        ???                 
+   1CB             459              1        ???                 
+   1CC             460              1        ???                 
+   1CD             461              1        ???                 
+   1CE             462              1        ???                 
+   1CF             463              1        ???                 
+   1D0             464              1        ???                 
+   1D1             465              1        ???                 
+   1D2             466              1        ???                 
+   1D3             467              1        ???                 
+   1D4             468              1        ???                 
+   1D5             469              1        ???                 
+   1D6             470              1        ???                 
+   1D7             471              1        ???                 
+   1D8             472              1        ???                 
+   1D9             473              1        ???                 
+   1DA             474              1        ???                 
+   1DB             475              1        ???                 
+   1DC             476              1        ???                 
+   1DD             477              1        ???                 
+   1DE             478              1        ???                 
+   1DF             479              1        ???                 
+   1E0             480              1        ???                 
+   1E1             481              1        encumbrance              
+   1E2             482              1        ???                 
+   1E3             483              1        ???                 
+   1E4             484              1        ???                 
+   1E5             485              1        ???                 
+   1E6             486              1        ???                 
+   1E7             487              1        ???                 
+   1E8             488              1        ???                 
+   1E9             489              1        in combat 1              
+   1EA             490              1        in combat 2              
+   1EB             491              1        ???                 
+   1EC             492              1        ???                 
+   1ED             493              1        status                   
+   1EE             494              1        enabled                  
+   1EF             495              1        ???                 
+   1F0             496              1        quickfight               
+   1F1             497              1        thac0 current            
+   1F2             498              1        ac current               
+   1F3             499              1        ???                 
+   1F4             500              1        current attacks          
+   1F5             501              1        current attacks 2        
+   1F6             502              1        current rolls            
+   1F7             503              1        current rolls 2          
+   1F8             504              1        current dice             
+   1F9             505              1        current dice 2           
+   1FA             506              1        current modifier         
+   1FB             507              1        current modifier 2       
+   1FC             508              1        hit points current       
+   1FD             509              1        ???                 
+
+ RACE VALUES:
+   00: elf
+   01: half-elf
+   02: dwarf
+   03: gnome
+   04: halfling
+   05: human
+   06: monster
+
+ GENDER VALUES:
+   00: male
+   01: female
+
+ CLASS VALUES:
+   00: cleric
+   01: druid
+   02: fighter
+   03: paladin
+   04: ranger
+   05: mage
+   06: thief
+   07: monk
+   08: cleric/fighter
+   09: cleric/fighter/mage
+   0A: cleric/ranger
+   0B: cleric/mage
+   0C: cleric/thief
+   0D: fighter/mage
+   0E: fighter/thief
+   0F: fighter/mage/thief
+   10: mage/thief
+   11: illegal type
+
+ ALIGNMENT VALUES:
+   00: lawful good
+   01: lawful neutral
+   02: lawful evil
+   03: neutral good
+   04: true neutral
+   05: neutral evil
+   06: chaotic good
+   07: chaotic neutral
+   08: chaotic evil
+
+ STATUS VALUES:
+   00: okay
+   01: animated
+   02: tempgone
+   03: running
+   04: unconscious
+   05: dying
+   06: dead
+   07: stoned
+   08: gone

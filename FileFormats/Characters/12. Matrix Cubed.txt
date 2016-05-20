@@ -1,0 +1,286 @@
+
+ MATRIX CUBED
+
+   HEXADECIMAL     DECIMAL
+   OFFSET          OFFSET      LENGTH        DESCRIPTION
+
+   000             000              1        name length              
+   001 - 00F       001 - 015       15        name                     
+   010             016              1        str current              
+   011             017              1        dex current              
+   012             018              1        con current              
+   013             019              1        int current              
+   014             020              1        wis current              
+   015             021              1        cha current              
+   016             022              1        tch current              
+   017             023              1        str original             
+   018             024              1        dex original             
+   019             025              1        con original             
+   01A             026              1        int original             
+   01B             027              1        wis original             
+   01C             028              1        cha original             
+   01D             029              1        tch original             
+   01E             030              1        save 1                   explosion / plasma
+   01F             031              1        save 2                   electrical shock
+   020             032              1        save 3                   paralysis / stun / fall
+   021             033              1        save 4                   toxic / gas / poison
+   022             034              1        save 5                   suffocation
+   023             035              1        save 6                   radiation
+   024             036              1        save 7                   heat
+   025             037              1        save 8                   cold
+   026             038              1        gender                   
+   027             039              1        race                     
+   028             040              1        class                    
+   029             041              1        level highest 1          
+   02A             042              1        ???                 
+   02B - 02C       043 - 044        2        coins credit             
+   02D             045              1        ???                 
+   02E             046              1        ???                 
+   02F - 032       047 - 050        4        experience               
+   033             051              1        thac0 base               
+   034             052              1        ???                 
+   035             053              1        ???                 
+   036             054              1        movement base            
+   037             055              1        ac base                  
+   038             056              1        age                      
+   039             057              1        ???                 
+   03A             058              1        ???                 
+   03B             059              1        attacks                  
+   03C             060              1        attacks 2                
+   03D             061              1        unarmed rolls            
+   03E             062              1        unarmed rolls 2          
+   03F             063              1        unarmed dice             
+   040             064              1        unarmed dice 2           
+   041             065              1        unarmed modifier         
+   042             066              1        unarmed modifier 2       
+   043             067              1        ???                 
+   044             068              1        ???                 
+   045             069              1        hit points maximum       
+   046             070              1        ???                 
+   047             071              1        ???                 
+   048             072              1        ???                 
+   049             073              1        ???                 
+   04A             074              1        ???                 
+   04B             075              1        ???                 
+   04C             076              1        ???                 
+   04D             077              1        ???                 
+   04E             078              1        ???                 
+   04F             079              1        ???                 
+   050             080              1        ???                 
+   051             081              1        ???                 
+   052             082              1        ???                 
+   053             083              1        ???                 
+   054             084              1        ???                 
+   055             085              1        ???                 
+   056             086              1        ???                 
+   057             087              1        ???                 
+   058             088              1        ???                 
+   059             089              1        ???                 
+   05A             090              1        ???                 
+   05B             091              1        ???                 
+   05C             092              1        ???                 
+   05D             093              1        ???                 
+   05E             094              1        ???                 
+   05F             095              1        ???                 
+   060             096              1        ???                 
+   061             097              1        ???                 
+   062             098              1        ???                 
+   063             099              1        ???                 
+   064             100              1        ???                 
+   065             101              1        ???                 
+   066             102              1        ???                 
+   067             103              1        ???                 
+   068             104              1        ???                 
+   069             105              1        ???                 
+   06A             106              1        ???                 
+   06B             107              1        ???                 
+   06C             108              1        ???                 
+   06D             109              1        ???                 
+   06E             110              1        ???                 
+   06F             111              1        ???                 
+   070             112              1        ???                 
+   071             113              1        ???                 
+   072             114              1        ???                 
+   073             115              1        ???                 
+   074             116              1        ???                 
+   075             117              1        ???                 
+   076             118              1        ???                 
+   077             119              1        ???                 
+   078             120              1        ???                 
+   079             121              1        ???                 
+   07A             122              1        ???                 
+   07B             123              1        ???                 
+   07C             124              1        ???                 
+   07D             125              1        ???                 
+   07E             126              1        ???                 
+   07F             127              1        ???                 
+   080             128              1        ???                 
+   081             129              1        ???                 
+   082             130              1        ???                 
+   083             131              1        ???                 
+   084             132              1        ???                 
+   085             133              1        ???                 
+   086             134              1        ???                 
+   087             135              1        ???                 
+   088             136              1        ???                 
+   089             137              1        ???                 
+   08A             138              1        ???                 
+   08B             139              1        ???                 
+   08C             140              1        ???                 
+   08D             141              1        ???                 
+   08E             142              1        ???                 
+   08F             143              1        ???                 
+   090             144              1        ???                 
+   091             145              1        ???                 
+   092             146              1        ???                 
+   093             147              1        ???                 
+   094             148              1        ???                 
+   095             149              1        ???                 
+   096             150              1        ???                 
+   097             151              1        ???                 
+   098             152              1        ???                 
+   099             153              1        ???                 
+   09A             154              1        ???                 
+   09B             155              1        ???                 
+   09C             156              1        ???                 
+   09D             157              1        ???                 
+   09E             158              1        ???                 
+   09F             159              1        ???                 
+   0A0             160              1        ???                 
+   0A1             161              1        ???                 
+   0A2             162              1        ???                 
+   0A3             163              1        ???                 
+   0A4             164              1        ???                 
+   0A5             165              1        ???                 
+   0A6             166              1        ???                 
+   0A7             167              1        ???                 
+   0A8             168              1        ???                 
+   0A9             169              1        ???                 
+   0AA             170              1        ???                 
+   0AB             171              1        ???                 
+   0AC             172              1        ???                 
+   0AD             173              1        ???                 
+   0AE             174              1        ???                 
+   0AF             175              1        ???                 
+   0B0             176              1        ???                 
+   0B1             177              1        ???                 
+   0B2 - 0B3       178 - 179        2        xp award                 
+   0B4             180              1        ???                 
+   0B5             181              1        ???                 
+   0B6             182              1        ???                 
+   0B7             183              1        ???                 
+   0B8             184              1        icon                     
+   0B9             185              1        ???                 
+   0BA             186              1        ???                 
+   0BB             187              1        ???                 
+   0BC             188              1        ???                 
+   0BD             189              1        ???                 
+   0BE             190              1        ???                 
+   0BF             191              1        ???                 
+   0C0             192              1        ???                 
+   0C1             193              1        ???                 
+   0C2             194              1        ???                 
+   0C3             195              1        ???                 
+   0C4             196              1        ???                 
+   0C5             197              1        ???                 
+   0C6             198              1        ???                 
+   0C7             199              1        ???                 
+   0C8             200              1        ???                 
+   0C9             201              1        ???                 
+   0CA             202              1        ???                 
+   0CB             203              1        ???                 
+   0CC             204              1        ???                 
+   0CD             205              1        ???                 
+   0CE             206              1        ???                 
+   0CF             207              1        ???                 
+   0D0             208              1        ???                 
+   0D1             209              1        ???                 
+   0D2             210              1        ???                 
+   0D3             211              1        ???                 
+   0D4             212              1        status                   
+   0D5             213              1        enabled                  
+   0D6             214              1        ???                 
+   0D7             215              1        quickfight               
+   0D8             216              1        thac0 current            
+   0D9             217              1        ac current               
+   0DA             218              1        ???                 
+   0DB             219              1        ???                 
+   0DC             220              1        ???                 
+   0DD             221              1        current rolls            
+   0DE             222              1        current rolls 2          
+   0DF             223              1        current dice             
+   0E0             224              1        current dice 2           
+   0E1             225              1        current modifier         
+   0E2             226              1        current modifier 2       
+   0E3             227              1        hit points current       
+   0E4             228              1        ???                 
+   0E5             229              1        movement current         
+   0E6             230              1        ???                 
+   0E7             231              1        ???                 
+   0E8 - 0E9       232 - 233        2        encumbrance              
+   0EA             234              1        ???                 
+   0EB             235              1        ???                 
+   0EC             236              1        ???                 
+   0ED             237              1        ???                 
+   0EE             238              1        ???                 
+   0EF             239              1        ???                 
+   0F0             240              1        ???                 
+   0F1             241              1        ???                 
+   0F2             242              1        ???                 
+   0F3             243              1        in combat 1              
+   0F4             244              1        ???                 
+   0F5             245              1        in combat 2              
+   0F6             246              1        in combat 3              
+   0F7             247              1        ???                 
+   0F8             248              1        ???                 
+   0F9             249              1        ???                 
+   0FA             250              1        ???                 
+   0FB             251              1        ???                 
+   0FC             252              1        ???                 
+   0FD             253              1        ???                 
+   0FE             254              1        ???                 
+   0FF             255              1        ???                 
+   100             256              1        ???                 
+   101             257              1        ???                 
+   102             258              1        ???                 
+
+ RACE VALUES:
+   00: monster
+   01: terran
+   02: martian
+   03: venusian
+   04: mercurian
+   05: tinker
+   06: desert runner
+   07: lunarian
+   08: lowlander
+
+ GENDER VALUES:
+   00: male
+   01: female
+
+ CLASS VALUES:
+   00: -
+   01: rocketjock
+   02: medic
+   03: warrior
+   04: engineer
+   05: rogue
+   06: scout
+
+ STATUS VALUES:
+   00: -
+   01: okay
+   02: gone
+   03: dead
+   04: dying
+   05: unconscious
+   06: fleeing
+   07: poisoned
+   08: comatose
+   09: not here
+   0A: dodging
+   0B: sprinting
+   0C: failed zerog
+   0D: used jetpack
+   0E: jetpack

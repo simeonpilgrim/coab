@@ -1,0 +1,414 @@
+GOLD BOX GAME
+Item file formats
+
+For more Gold Box - games stuff:
+http://personal.inet.fi/koti/jhirvonen/gbc/
+
+
+This file explains the item data file structures of the Gold Box Games. Most of the info comes from FRUA community forums, especially from the Hacking UA area.
+Note that some of the info is for FRUA format and not the actual GB games so there are some differences. The last game, The Dark Queen of Krynn, seems most
+similar to FRUA in its formats.
+
+
+
+Example items from Pool of Radiance:
+
+                                    [================ DAX-FILE RECORDS ================]         [========== PROPERTIES IN ITEMS-FILE ==========]
+
+                                      unidentified name bits (00 = identified)
+                                                          |                   special properties    damage vs large          damage vs small/medium
+                                                          | cursed            spells in scrolls     x d x + x    protective  x d x + x
+                                                  readied |  |                 |                        |        value   mel |
+                                                       |  |  | weight   value  |                        |           |    type|          class restrictions
+                                            save bonus |  |  |  |        |     |         hands required |           | wpn |  |           |
+                                      name          |  |  |  |  | amount |     |                     |  |   rate of | type|  |           | missile type
+                                        |     bonus |  |  |  |  |     |  |     |                slot |  |      fire |  |  |  |     range |  |
+                              base type |_____   |  |  |  |  |  |__   |  |__   |_____             |  |  |_____   |  |  |  |  |_____   |  |  | unused
+                                     |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |            |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+                                     2E 2F 30 31 32 33 34 35 36 37 38 39 3A 3B 3C 3D 3E           00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F 
+
+Cloak of Displacement                43 AA A7 58 08 -  01 06 -  14 -  -  5C 44 -  59 85           07 -  -  -  -  -  -  -  -  -  -  -  -  7F -  -  
+Cloak of Elvenkind                   43 E5 A7 58 01 01 01 -  -  19 -  -  70 17 -  48 86           07 -  -  -  -  -  -  -  -  -  -  -  -  7F -  -  
+Long Sword +2 Flame Tongue           24 F1 A3 24 02 -  -  06 -  3C -  -  94 11 -  16 -            -  01 01 0C -  -  -  -  80 01 08 -  -  4C 04 -  
+Plate Mail +2                        3A A3 30 3A 02 -  -  04 -  C2 01 -  04 29 -  -  -            02 -  -  -  -  -  B9 -  -  -  -  -  -  4A -  -  
+Ring Of Protection +3                5D A4 E0 42 03 -  01 06 -  -  -  -  20 4E -  -  -            09 -  -  -  -  -  80 -  -  -  -  -  -  7F -  -  
+
+
+
+Example items from Pools of Darkness:
+
+                                    [================ DAX-FILE RECORDS ================]         [========== PROPERTIES IN ITEMS-FILE ==========]
+
+                                      unidentified name bits (00 = identified)
+                                                          |                   special properties    damage vs large          damage vs small/medium
+                                                          | cursed            spells in scrolls     x d x + x    protective  x d x + x
+                                                  readied |  |                 |                        |        value   mel |
+                                                       |  |  | weight   value  |                        |           |    type|          class restrictions
+                                            save bonus |  |  |  |        |     |         hands required |           | wpn |  |           |
+                                      name          |  |  |  |  | amount |     |                     |  |   rate of | type|  |           | missile type
+                                        |     bonus |  |  |  |  |     |  |     |                slot |  |      fire |  |  |  |     range |  |
+                              base type |_____   |  |  |  |  |  |__   |  |__   |_____             |  |  |_____   |  |  |  |  |_____   |  |  | unused
+                                     |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |            |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+                                     00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F 10           00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F 
+
+Boots of Speed                       2D 5C 5A 2D 02 -  -  06 -  3C -  -  A0 0F -  4A 80           08 -  -  -  -  -  80 -  -  -  -  -  -  FF -  -  
+Bracers AC 2                         32 -  6E 32 08 -  -  06 -  64 -  -  C0 12 -  -  -            0A -  -  -  -  -  B2 -  -  -  -  -  -  FF -  -  
+Cloak of Displacement                3A 3A 5A 2C 02 -  -  06 -  19 -  -  AC 0D -  59 80           07 -  -  -  -  -  80 -  -  -  -  -  -  FF -  -  
+Elixir of Youth                      2F 36 5A 34 01 -  -  -  -  14 -  -  D0 07 01 3F -            0A -  -  -  -  -  -  -  -  -  -  -  -  FF -  -  
+Eyes of Charming                     2F 60 5A 3B 01 -  -  -  -  14 -  -  C0 12 -  0A -            0A -  -  -  -  -  -  -  -  -  -  -  -  FF -  -  
+Fine Long Bow +2                     1A 70 18 1A 02 -  -  04 -  64 -  -  40 1F -  -  -            -  02 01 06 -  04 -  01 80 01 06 -  16 E8 0F -  
+Girdle of Giant Strength             2A 50 5A 4F 01 -  -  06 -  3C -  -  F4 01 -  05 85           05 -  -  -  -  -  -  -  -  -  -  -  -  FF -  -  
+Long Sword +5                        12 -  73 12 05 -  -  06 -  3C -  -  A0 0F -  -  -            -  01 01 0C -  -  -  01 -  01 08 -  -  EC 04 -  
+Long Sword vs Giants                 12 -  54 12 02 -  -  06 -  3C -  -  4C 04 -  4B 80           -  01 01 0C -  -  -  01 -  01 08 -  -  EC 04 -  
+Plate Mail +5                        24 73 2F 24 05 -  -  04 -  C2 01 -  7C 15 -  -  -            02 -  -  -  -  -  B9 -  -  -  -  -  -  DA -  -  
+Potion Extra Healing                 2F 5F 5E 35 01 -  -  06 -  14 -  -  A0 -  03 63 -            0A -  -  -  -  -  -  -  -  -  -  -  -  FF -  -  
+Potion of Giant Strength             35 50 5A 35 01 -  -  06 -  14 -  -  18 01 01 3B -            0A -  -  -  -  -  -  -  -  -  -  -  -  FF -  -  
+Ring of Blinking                     2E 7C 5A 2E -  01 01 06 -  01 -  -  E8 03 -  25 80           09 -  -  -  -  -  -  -  -  -  -  -  -  FF -  -  
+Ring of Cold Resistance              2E 56 5A 2E -  01 -  06 -  01 -  -  E8 03 -  0A 80           09 -  -  -  -  -  -  -  -  -  -  -  -  FF -  -  
+Ring of Electrical Immunity          2E 77 5A 2E -  01 -  06 -  01 -  -  E8 03 -  06 80           09 -  -  -  -  -  -  -  -  -  -  -  -  FF -  -  
+Ring of Fire Resistance              2E 43 5A 2E -  01 -  06 -  01 -  -  E8 03 -  3D 80           09 -  -  -  -  -  -  -  -  -  -  -  -  FF -  -  
+Ring of Invisibility                 2E 68 5A 2E -  01 -  06 -  01 -  -  DC 05 -  38 80           09 -  -  -  -  -  -  -  -  -  -  -  -  FF -  -  
+Ring Of Prot +5                      3B 73 31 20 05 05 -  06 -  01 -  -  A0 0F -  -  -            09 -  -  -  -  -  80 -  -  -  -  -  -  FF -  -  
+Ring Of Prot from Evil               2E 7D 31 2E -  01 -  06 -  01 -  -  E8 03 -  2D 80           09 -  -  -  -  -  -  -  -  -  -  -  -  FF -  -  
+Ring of Wizardry                     41 41 5A 2E -  01 -  06 -  01 -  -  10 27 -  -  81           09 -  -  -  -  -  -  -  -  -  -  -  -  01 -  -  
+Shield +5                            25 -  73 25 05 -  -  06 -  64 -  -  AC 0D -  -  -            01 01 -  -  -  -  81 -  -  -  -  -  -  FE -  -  
+Wand of Lightning                    33 58 5A 33 01 -  -  06 -  3C -  -  80 0C 14 33 -            0A 01 -  -  -  -  -  -  -  -  -  -  63 ED -  -  
+Wand of Magic Missiles               33 62 5A 33 01 -  -  06 -  3C -  -  58 1B 14 41 -            0A 01 -  -  -  -  -  -  -  -  -  -  63 ED -  -  
+Wand of Paralyzation                 33 67 5A 33 01 -  -  06 -  3C -  -  88 13 14 3D -            0A 01 -  -  -  -  -  -  -  -  -  -  63 ED -  -  
+Vorpal Long Sword                    49 -  12 55 03 -  -  04 -  3C -  -  10 27 -  73 80           -  01 01 0C -  -  -  01 80 01 08 -  -  E8 04 -  
+
+
+
+Example items from The Dark Queen of Krynn:
+
+                                    [================ DAX-FILE RECORDS ================]         [========== PROPERTIES IN ITEMS-FILE ==========]
+
+                                                  unidentified name bits (00 = identified)
+                                                                      |       special properties    damage vs large          damage vs small/medium
+                                                              readied |       spells in scrolls     x d x + x    protective  x d x + x
+                                                                   |  |        |                        |        value   mel |
+                                                              save |  | cursed |                        |           |    type|          class restrictions
+                                                    value       |  |  |  |     |         hands required |           | wpn |  |           |
+                                      name             |        |  |  |  |     |                     |  |   rate of | type|  |           | missile type
+                                        |    weight    |  bonus |  |  |  | amt |                slot |  |      fire |  |  |  |     range |  |
+                              base type |_____   |__   |__   |  |  |  |  |  |  |_____             |  |  |_____   |  |  |  |  |_____   |  |  | unused
+                                     |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |            |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+                                     00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F 10           00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F 
+
+Boots Of Speed                       2D 5C 5A 2D 3C -  10 27 02 -  -  06 -  -  -  4A 80           08 -  -  -  -  -  80 -  -  -  -  -  -  FF -  -  
+Bracers AC 2                         32 -  6E 32 64 -  E0 2E 08 -  -  06 -  -  -  -  -            0A -  -  -  -  -  B2 -  -  -  -  -  -  FF -  -  
+Long Sword +3 Dragon Slayer          12 82 71 12 3C -  70 17 03 -  -  06 -  -  -  D6 80           -  01 01 0C -  -  -  01 -  01 08 -  -  FC 04 -  
+
+
+========================================================================
+
+
+marainein writes at:
+http://ua.reonis.com/index.php?topic=1912.45
+
+
+Here's what I understand about the pool of radiance ITM file format. It's very similar to the FRUA one, except the fields are in a different order and there's a 45 byte
+name field at the front.
+
+The actual item records are 63 bytes long:
+1,0x00,"item description length"
+44,0x01,"item description"
+1,0x2D,"item type"
+1,0x2E,"name component 1"
+1,0x2F,"name component 2"
+1,0x30,"name component 3"
+1,0x31,"item bonus"
+1,0x32,"save bonus"
+1,0x33,"item is readied flags"
+1,0x34,"hidden name flag"
+1,0x35,"cursed flag"
+2,0x36,"weight"
+1,0x38,"stack size"
+2,0x39,"item price"
+1,0x3B,"effect field 1"
+1,0x3C,"effect field 2"
+1,0x3D,"effect field 3"
+
+
+The file begins with the string description that appears in the character's inventory - as far as I can tell this has no effect on the item properties. The first byte is
+the string length, the next 45 bytes are a buffer that holds the string. Following that are 3 bytes (0x2E-0x30) which specify the item description, each of which can
+reference an entry in the item description table I've included at the end of this post, or can just be 0.
+
+The item type is a pointer to a record which holds information on how where the item is equipped, how much damage it does, and so on.
+
+The item bonus is the +3 part of a long sword +3, for instance. There are some odd ones - wands all seem to be +10, so maybe this field has some other purpose.
+
+The first 3 bits of the hidden name flag byte control which name components are displayed (if the bit is 1 the name component is hidden). So you can have a wand of magic
+missiles where the 'of magic missiles' part is hidden.
+
+Location 0x31 is called the save bonus field in Simeon Pilgrim's cotab code. It is rarely used in Pool of Radiance, whatever it does. It is set to 0 in almost all items,
+except a cursed necklace, where it is set to 255 and a ring of protection +1, where it is set to 1 (there are numerous other rings of protection which all have this field
+set at 0)
+
+The 3 effects fields control magical effects (apart from weapon and armor bonuses). From what I can tell:
+* if the item is a scroll, these 3 fields hold the spell codes
+* if not, and field 3 is 0, the item's special effect is activated by the use command, field 2 holds the effect number, and field 1 the number of charges/uses remaining
+* if field 3 is 128 or greater, the effect is activated by readying the item, and field 2 contains information on the effect
+(there are one or two items which seem to break these rules)
+
+I'm still compiling a list of what each effect number is, but the first 56 are just the spells from the spell table. They are also different to the cotab ones.
+
+Here are the name components: 
+"Battle Axe", "Hand Axe", "Bardiche", "Bec De Corbin", "Bill-Guisarme", "Bo Stick", "Club", "Dagger", "Dart", "Fauchard", "Fauchard-Fork", "Flail", "Military Fork",
+"Glaive", "Glaive-Guisarme", "Guisarme", "Guisarme-Voulge", "Halberd", "Lucern Hammer", "Hammer", "Javelin", "Jo Stick", "Mace", "Morning Star", "Partisan", "Military
+Pick", "Awl Pike", "Quarrel", "Ranseur", "Scimitar", "Spear", "Spetum", "Quarter Staff", "Bastard Sword", "Broad Sword", "Long Sword", "Short Sword", "Two-Handed Sword",
+"Trident", "Voulge", "Composite Long Bow", "Composite Short Bow", "Long Bow", "Short Bow", "Heavy Crossbow", "Light Crossbow", "Sling", "Mail", "Armor", "Leather",
+"Padded", "Studded", "Ring", "Scale", "Chain", "Splint", "Banded", "Plate", "Shield", "Woods", "Arrow", "", "", "Potion", "Scroll", "Ring", "Rod", "Stave", "Wand", "Jug",
+"Amulet", "Apparatus", "Bag", "Beaker", "Boat", "Book", "Boots", "Bowl", "Bracers", "Brazier", "Brooch", "Broom", "Purse", "Candle", "Carpet", "Censer", "Chime", "Cloak",
+"Crystal", "Cube", "Cubic", "Fortress", "Decanter", "Deck", "Drums", "Dust", "Eyes", "Figurine", "Flask", "Gauntlets", "Gem", "Girdle", "Helm", "Horn", "Horseshoes",
+"Incense", "Stone", "Instrument", "Javelin", "Jewel", "Ointment", "Libram", "Lyre", "Manual", "Mattock", "Maul", "Medallion", "Mirror", "Necklace", "Net", "Pigment",
+"Pearl", "Periapt", "Phylactery", "Pipes", "Hole", "Token", "Robe", "Rope", "Rug", "Saw", "Scarab", "Spade", "Sphere", "", "Talisman", "Tome", "Trident", "Grimoire",
+"Well", "Wings", "Vial", "Lantern", "", "Oil", "10 ft. Pole", "50 ft. Rope", "Iron", "Thf Prickly Tools", "Iron Rations", "Standard Rations", "Holy Symbol", "Holy Water
+vial", "Unholy Water vial", "Barding", "Dragon", "Lightning", "Saddle", "Small Raft", "Cart", "Wagon", "+1", "+2", "+3", "+4", "+5", "of", "", "Cloak", "Displacement",
+"Torches", "Oil", "Speed", "Tapestry", "Bodily Health", "Copper", "Silver", "Electrum", "Gold", "Platinum", "Ointment", "Keoghtum's", "Sheet", "Strength", "Healing",
+"Holding", "Extra", "Gaseous Form", "Slipperiness", "Jewelled", "Flying", "Treasure Finding", "Fear", "Disappearance", "Statuette", "Fungus", "Chain", "Pendant", "Broach",
+"Of Seeking", "-1", "-2", "-3", "Lightning Bolt", "Fire Resistance", "Magic Missiles", "Save", "Clerical Scroll", "Magic User Scroll", "With 1 Spell", "With 2 Spells",
+"With 3 Spells", "Protection Scroll", "Jewelry", "Fine", "Huge", "Bone", "Brass", "Key", "AC 2", "AC 6", "AC 4", "AC 3", "Of Protection", "Paralyzation", "Ogre Power",
+"Invisibility", "Missiles", "Elvenkind", "Rotting", "Covered", "Efreeti", "Bottle", "Missile Attractor", "Of Maglubiyet", "Secr Door & Trap Det", "Gd Dragon Control",
+"Feather Falling", "Giant Strength", "Restoring Level(s)", "Flame Tongue", "Fireballs", "Spiritual", "Boulder", "Diamond", "Emerald", "Opal", "Saphire", "Of Tyr", "Of
+Tempus", "Of Sune", "Wooden", "+3 vs Undead", "Pass", "Cursed"
+
+
+========================================================================
+
+
+http://ua.reonis.com/index.php?topic=726.0
+
+
+Item.dat File Format by David Knott 
+
+The file "item.dat" contains 254 records (numbered from 1 to 254),
+with each record comprising 18 bytes.  This file thus permits editing
+of all possible items except for item 0 (no item) and item 255 (the
+random Mage spell scroll).  Numbering each byte in each record from 0
+to 17, we have the following format:
+
+Byte 0:  Pointer to record in "items.dat" file.  Item 73 is a bundle of
+scrolls.
+
+Bytes 1 to 3:  Name of item, read from byte 3 to byte 1.  The vocabulary
+is given in the file "vocab.txt".  If byte 3 is 77 (for "bundle of"),
+byte 2 gives the (original) number of scrolls in the bundle and byte 1
+is 39 (for "scroll").
+
+Bytes 4 and 5:  Encumbrance of item in coins (where 10 coins =
+one pound)
+
+Bytes 6 and 7:  Price of item in PP
+
+Byte 8:  Magic Bonus of Item
+
+Byte 9:  Secondary Code:
+        Equals byte 8 for protective items other than armor and 
+        bracers.
+        Equals 1 for magic rings other than rings of protection.
+        Equals 1 for scroll of prot. from dragons.
+
+Byte 10:  Indicates whether or not item is ready
+
+Byte 11:  Indicates whether or not item has been identified:
+0 = Item is fully identified
+1 = First name code (byte 3) concealed
+2 = Second name code (byte 2) concealed
+4 = Third name code (byte 1) concealed
+Add values for multiple parts of name concealed.  It is not recommended
+that you conceal all three bytes or that you leave only zero (null) codes
+available.
+
+Byte 12:  Set to 1 if item is cursed (cannot be unreadied once
+readied)
+
+Byte 13:  Number of items in "regular" bundle (0 = cannot be joined).
+For a bundle of scrolls, this byte gives the actual number of scrolls
+that are currently in the bundle.  One item entry per scroll follows
+this item record in a character file entry.
+
+Byte 14:  Number of charges (0 = permanent item)
+
+Byte 15:  Code for magical effect:  See byte 16 for interpretation.
+
+Byte 16:  Special Code
+                          0 = Byte 15 is spell code
+                      1-127 = Item is Scroll (bytes 14-16 give codes
+                                for spells on scroll)
+                        128 = Byte 15 is special ability code
+                        129 = Item is Ring of Wizardry
+                                (byte 15 = 0)
+                        131 = Item is Gauntlets of Ogre Power
+                                (byte 15 = 0)
+                        133 = Item is Girdle of Giant Strength
+                                (byte 15 = Str - 18)
+
+Byte 17:  Always set to zero
+
+
+========================================================================
+
+
+Thread:
+http://ua.reonis.com/index.php?topic=727.0
+
+
+Items.dat File Format by David Knott 
+
+The file "items.dat" contains 128 records numbered from 0 to 127.
+There are many records that are not referenced from the "item.dat"
+file; it appears (although I cannot be certain of this) that these
+records are not used.  If so, they may be usable for expansions to
+possible items.  The known records are allocated as follows:
+
+  0 = No Item
+  1 = Battle Axe
+  2 = Hand Axe
+  3 = Club
+  4 = Dagger
+  5 = Dart(s)
+  6 = Hammer
+  7 = Javelin(s)
+  8 = Mace
+  9 = Morning Star
+ 10 = Military Pick
+ 11 = Awl Pike
+ 12 = Bolt(s)
+ 13 = Scimitar
+ 14 = Spear
+ 15 = Quarter Staff
+ 16 = Bastard Sword
+ 17 = Broad Sword
+ 18 = Long Sword
+ 19 = Short Sword
+ 20 = Two Handed Sword
+ 21 = Trident
+ 22 = Composite Long Bow
+ 23 = Composite Short Bow
+ 24 = Long Bow
+ 25 = Short Bow
+ 26 = Fine Long Bow
+ 27 = Light Crossbow
+ 28 = Sling
+ 29 = Staff Sling
+ 30 = Arrow(s)
+ 31 = Leather Armor
+ 32 = Ring Mail
+ 33 = Scale Mail
+ 34 = Chain Mail
+ 35 = Banded Mail
+ 36 = Plate Mail
+ 37 = Shield (including silver shield)
+ 38 = Scroll of Protection
+ 39 = Scroll of Mage Spells
+ 40 = Scroll of Cleric Spells
+ 41 = Helm
+ 42 = Belt
+ 43 = Robe
+ 44 = Cloak
+ 45 = Boots
+ 46 = Misc. Ring
+ 47 = Special Item
+ 48 = Mirror
+ 50 = Bracers
+ 51 = Wand
+ 58 = Cloak of Displacement
+ 59 = Ring of Protection
+ 61 = Elfin Chain
+ 62 = Drow Chain
+ 63 = Drow Long Sword
+ 65 = Ring of Wizardry
+ 66 = Dart of Hornet's Nest
+ 70 = Flail
+ 71 = Halberd
+ 72 = Gauntlets
+ 73 = Scroll Bundle
+ 74 = Blessed Bolt(s)
+ 75 = Cloak of Protection
+105 = Vorpal Long Sword
+
+Numbering each byte from 0 to 15, each record is interpreted as
+follows:
+
+Byte 0:  Location where item is to be carried:                              
+         0 = Weapon Hand
+         1 = Shield Hand
+         2 = Body (Armor)
+         3 = Hands (Gauntlets)
+         4 = Head (Helm)
+         5 = Waist (Belt)
+         6 = Body (Robe)
+         7 = Back (Cloak)
+         8 = Feet (Boots)
+         9 = Fingers (Ring)
+        10 = Ammo Quiver
+
+        For scrolls, the value is interpreted as follows:
+        10 = Protection
+        11 = Mage
+        12 = Cleric
+
+Byte 1 = Hands required to use
+
+Byte 2 = Number of Damage Dice vs. size L
+
+Byte 3 = Type of Damage Dice vs. size L
+
+Byte 4 = Damage Bonus vs. size L
+
+Byte 5 = Rate of Fire per two rounds (if ROF = 1, value is 2 for one-
+handed weapon and 1 for two-handed weapon)
+
+Byte 6 = Protection Value:  Thanks to Vixenkitty for her research
+in this area:
+        Value = 188 - Base AC for Armor and Bracers
+        Value = AC Bonus + 128 for shield
+   Value = 128 for other protective item
+                (AC bonus = magic bonus)
+        Value = 0 for non-protective items
+
+Byte 7: 
+                  0 = Not a Weapon
+                  1 = Cutting Weapon
+                128 = Blunt Weapon
+
+Byte 8 = Melee Class
+          0 = Item usable in melee
+        128 = Item not usable in melee
+        This byte appears to be meaningless for protective items.
+
+Bytes 9-11:  As bytes 2-4 but vs. size S-M
+
+Byte 12:  Range of item
+
+Byte 13:  As offset 183 in .cch file, with one bit set per class that
+can use this item.
+
+Byte 14:  Missile Type:  Add up all appropriate values (thanks to
+John Viveiros and Jason Linhart for their analyses of this byte):
+
+  1 = Bow (fires arrows)
+  2 = Missile Weapon (cannot be used in melee; destroyed if lost when thrown/fired)
+  4 = Melee Weapon or Fine Bow (adds strength bonus to attack)
+  8 = Capable of firing multiple missiles (see byte 5 for rate of fire)
+ 16 = Thrown weapon or ammo (lost when thrown/fired)
+ 32 = Not used
+ 64 = Not used
+128 = Crossbow (fires bolts)
+
+Known combinations:
+
+  0 = Not a Weapon
+  4 = Hand Held Weapon, Cannot be Thrown
+ 10 = Sling Weapon (requires no ammo) (8 + 2)
+ 11 = Bow (requires Arrow) (8 + 2 + 1)
+ 15 = Fine Bow (8 + 4 + 2 + 1)
+ 18 = Ammo (Arrow or Bolt) (16 + 2)
+ 20 = Hand Held Weapon, Can be Thrown (16 + 4)
+ 26 = Thrown Weapon (16 + 8 + 2)
+138 = Crossbow (requires Bolt) (128 + 8 + 2)
+
+Byte 15:  Set to zero
+
+

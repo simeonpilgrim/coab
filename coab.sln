@@ -1,6 +1,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
+VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GoldBox.Engine", "GoldBox.Engine\GoldBox.Engine.csproj", "{361087AE-2FD8-4BEF-8218-05A553ED7A49}"
 EndProject
@@ -21,6 +21,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{488B5DF3-7EBD-463D-AAE4-22238C5B7532}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GoldBox.Engine.Tests", "GoldBox.Engine.Tests\GoldBox.Engine.Tests.csproj", "{D3606859-8487-4659-9B18-A8D24E07BE4E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GoldBox.Data", "GoldBox.Data\GoldBox.Data.csproj", "{BC290B3B-BE0C-482F-9398-C6E41605606B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -74,6 +76,14 @@ Global
 		{D3606859-8487-4659-9B18-A8D24E07BE4E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D3606859-8487-4659-9B18-A8D24E07BE4E}.Release|x86.ActiveCfg = Release|Any CPU
 		{D3606859-8487-4659-9B18-A8D24E07BE4E}.Release|x86.Build.0 = Release|Any CPU
+		{BC290B3B-BE0C-482F-9398-C6E41605606B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BC290B3B-BE0C-482F-9398-C6E41605606B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BC290B3B-BE0C-482F-9398-C6E41605606B}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{BC290B3B-BE0C-482F-9398-C6E41605606B}.Debug|x86.Build.0 = Debug|Any CPU
+		{BC290B3B-BE0C-482F-9398-C6E41605606B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BC290B3B-BE0C-482F-9398-C6E41605606B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BC290B3B-BE0C-482F-9398-C6E41605606B}.Release|x86.ActiveCfg = Release|Any CPU
+		{BC290B3B-BE0C-482F-9398-C6E41605606B}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
