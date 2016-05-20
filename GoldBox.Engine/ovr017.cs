@@ -5,14 +5,14 @@ using System.IO;
 
 namespace GoldBox.Engine
 {
-    class ovr017
+    public class ovr017
     {
         private static readonly FileManager _fileManager = new FileManager();
         private static readonly CleanEightCharString _stringCleaner = new CleanEightCharString();
 
         static void BuildLoadablePlayersLists(ref List<MenuItem> fileNames, ref List<MenuItem> displayNames, short playerFileSize, int npcOffset, int nameOffset, string fileFilter) // sub_4708B
         {
-            var file = new Classes.OpenOrCreateFile();
+            var file = new OpenOrCreateFile();
 
             byte[] data = new byte[16];
 
@@ -71,7 +71,12 @@ namespace GoldBox.Engine
     ClassId.mc_c_f,     ClassId.unknown,    ClassId.mc_c_mu,    ClassId.unknown, ClassId.mc_c_f_m,
     ClassId.unknown};
         
-        internal static void BuildLoadablePlayersLists(out List<MenuItem> fileNames, out List<MenuItem> displayNames) // sub_47465
+        /// <summary>
+        /// Used when "Adding Character To Party"
+        /// </summary>
+        /// <param name="fileNames"></param>
+        /// <param name="displayNames"></param>
+        public static void BuildLoadablePlayersLists(out List<MenuItem> fileNames, out List<MenuItem> displayNames) // sub_47465
         {
             displayNames = new List<MenuItem>();
             fileNames = new List<MenuItem>();

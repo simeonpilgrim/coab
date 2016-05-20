@@ -5,9 +5,7 @@ namespace GoldBox.Data
     [StructLayout(LayoutKind.Sequential, CharSet=CharSet.Ansi, Pack = 1, Size = 0x11D)]
     public struct PoolRadCharacter
     {
-        private byte NameLength;
-        [MarshalAs(UnmanagedType.AnsiBStr, SizeConst =15)]
-        public string Name;
+        public CharacterName Name;
         private byte Field010;
         private byte Field011;
         private byte Field012;

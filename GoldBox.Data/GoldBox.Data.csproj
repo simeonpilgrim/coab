@@ -33,6 +33,7 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CharacterName.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="PoolRadCharacter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

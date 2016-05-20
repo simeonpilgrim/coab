@@ -101,6 +101,10 @@
       <Project>{6FA9069E-3549-4352-ACBA-73BB0406C0B1}</Project>
       <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
     </ProjectReference>
+    <ProjectReference Include="..\GoldBox.Data\GoldBox.Data.csproj">
+      <Project>{bc290b3b-be0c-482f-9398-c6e41605606b}</Project>
+      <Name>GoldBox.Data</Name>
+    </ProjectReference>
     <ProjectReference Include="..\GoldBox.Logging\GoldBox.Logging.csproj">
       <Project>{BEC15EB8-3A21-49FF-ABC0-7465927E80B8}</Project>
       <Name>GoldBox.Logging</Name>
@@ -113,7 +117,12 @@
     <Compile Include="CleanEightCharString.cs" />
     <Compile Include="CmdItem.cs" />
     <Compile Include="FileManager.cs" />
+    <Compile Include="ImportCharacters\CharacterToAddToParty.cs" />
+    <Compile Include="ImportCharacters\FindCharactersToAddToPartyFactory.cs" />
+    <Compile Include="ImportCharacters\FindCotABCharactersToAddToParty.cs" />
+    <Compile Include="ImportCharacters\IFindCharactersToAddToParty.cs" />
     <Compile Include="IKeyboardInput.cs" />
+    <Compile Include="ImportCharacters\ReturnZeroCharactersFound.cs" />
     <Compile Include="Utilities\DebuggingUtilities.cs" />
     <Compile Include="VmOpp.cs" />
     <Compile Include="TitleScreen.cs">

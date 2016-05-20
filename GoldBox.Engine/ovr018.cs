@@ -1107,7 +1107,7 @@ namespace GoldBox.Engine
                                 var race = (int)player.race;
                                 int sex = player.sex;
 
-								player.stats2.Dec(stat_var);
+                                player.stats2.Dec(stat_var);
 
                                 switch ((Stat)stat_var)
                                 {
@@ -1644,11 +1644,11 @@ namespace GoldBox.Engine
             char inputKey;
 
             string[] iconStrings = {   "", 
-									   "Parts 1st-color 2nd-color Size Exit", 
-									   "Head Weapon Exit", 
-									   "Weapon Body xxxx Shield Arm Leg Exit", 
-									   " Keep Exit", 
-									   "Next Prev Keep Exit" };
+                                       "Parts 1st-color 2nd-color Size Exit", 
+                                       "Head Weapon Exit", 
+                                       "Weapon Body xxxx Shield Arm Leg Exit", 
+                                       " Keep Exit", 
+                                       "Next Prev Keep Exit" };
 
             seg037.DrawFrame_Outer();
             ovr033.Color_0_8_inverse();

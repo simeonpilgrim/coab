@@ -1,6 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace GoldBox.Engine.Tests
+namespace GoldBox.Engine
 {
     [TestClass]
     public class CleanEightCharStringTests

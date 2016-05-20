@@ -4,18 +4,19 @@ using System.IO;
 
 namespace GoldBox.Classes
 {
-    class ReadOnlyFileStream : IDisposable
+    public class ReadOnlyFileStream : IDisposable
     {
         public Stream BaseStream { get; private set; }
         public bool FileExists { get; }
+        public long Length => BaseStream.Length;
 
         private readonly string _filePath;
 
         public ReadOnlyFileStream(string fileName)
         {
-            _filePath = System.IO.File.Exists(fileName) ? fileName : "Data\\" + fileName;
+            _filePath = File.Exists(fileName) ? fileName : "Data\\" + fileName;
 
-            FileExists = System.IO.File.Exists(_filePath);
+            FileExists = File.Exists(_filePath);
             Open();
         }
 
@@ -26,7 +27,7 @@ namespace GoldBox.Classes
                 Logger.Log("File not found:{0}", Path.GetFullPath(_filePath));
                 return;
             }
-            BaseStream = System.IO.File.Open(_filePath, FileMode.Open, FileAccess.Read);
+            BaseStream = File.Open(_filePath, FileMode.Open, FileAccess.Read);
             Logger.Debug("Reading File:{0}", _filePath);
         }
 
@@ -35,13 +36,12 @@ namespace GoldBox.Classes
             Logger.Debug("Closing File:{0}", _filePath);
             BaseStream?.Dispose();
         }
-
-        internal void Seek(long offset, SeekOrigin seekOrigin)
+        public void Seek(long offset, SeekOrigin seekOrigin)
         {
             BaseStream?.Seek(offset, seekOrigin);
         }
 
-        internal void Read(byte[] array, int offset, int count)
+        public void Read(byte[] array, int offset, int count)
         {
             BaseStream?.Read(array, offset, count);
         }

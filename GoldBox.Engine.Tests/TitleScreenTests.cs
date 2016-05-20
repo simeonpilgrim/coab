@@ -4,7 +4,7 @@ using GoldBox.Classes;
 using GoldBox.Classes.DaxFiles;
 using GoldBox.Logging;
 
-namespace GoldBox.Engine.Tests
+namespace GoldBox.Engine
 {
     [TestClass]
     public class TitleScreenTests
