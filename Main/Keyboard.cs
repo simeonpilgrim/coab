@@ -1,14 +1,9 @@
-using System.Collections.Generic;
 using System.Windows.Forms;
 
 namespace Main
 {
     public class Keyboard
     {
-        //private static Dictionary<Keys, ushort> keyMapping = new Dictionary<Keys, ushort>()
-        //{
-
-        //}
         public static ushort KeyToIBMKey(Keys key)
         {
             if (key >= Keys.D0 && key <= Keys.D9)
@@ -20,93 +15,37 @@ namespace Main
                 return (ushort)key;
             }
 
-            if (key == Keys.Enter)
+            switch (key)
             {
-                return 0x1C0D;
+                case Keys.Enter: return 0x1C0D;
+                case Keys.Space: return 0x20;
+                case Keys.Delete: return 0x5300;
+                case Keys.Back: return 0x08;
+                case Keys.OemOpenBrackets: return 0x4700;
+                case Keys.NumPad7: return 0x4700;
+                case Keys.Home: return 0x4700;
+                case Keys.Up: return 0x4800;
+                case Keys.NumPad8: return 0x4800;
+                case Keys.PageUp: return 0x4900;
+                case Keys.NumPad9: return 0x4900;
+                case Keys.Left: return 0x4B00;
+                case Keys.NumPad4: return 0x4B00;
+                case Keys.NumPad5: return 0x4C00;
+                case Keys.NumPad6: return 0x4D00;
+                case Keys.Right: return 0x4D00;
+                case Keys.End: return 0x4F00;
+                case Keys.NumPad1: return 0x4F00;
+                case Keys.OemCloseBrackets: return 0x4F00;
+                case Keys.Down: return 0x5000;
+                case Keys.NumPad2: return 0x5000;
+                case Keys.PageDown: return 0x5100;
+                case Keys.NumPad3: return 0x5100;
+                case Keys.OemMinus: return 0x2d00;
+                case Keys.Escape: return 0x1b;
+                case Keys.Oemcomma: return 0x2c;
+                case Keys.OemPeriod: return 0x2e;
+                default: return 0x20;
             }
-
-            if (key == Keys.Space)
-            {
-                return 0x20;
-            }
-
-            if (key == Keys.Delete)
-            {
-                return 0x5300;
-            }
-
-            if (key == Keys.Back)
-            {
-                return 0x08;
-            }
-
-            if (key == Keys.Home || key == Keys.NumPad7 || key == Keys.OemOpenBrackets)
-            {
-                return 0x4700;
-            }
-
-            if (key == Keys.Up || key == Keys.NumPad8)
-            {
-                return 0x4800;
-            }
-
-            if (key == Keys.PageUp || key == Keys.NumPad9)
-            {
-                return 0x4900;
-            }
-
-            if (key == Keys.Left || key == Keys.NumPad4)
-            {
-                return 0x4B00;
-            }
-
-            if (key == Keys.NumPad5)
-            {
-                return 0x4C00;
-            }
-
-            if (key == Keys.Right || key == Keys.NumPad6)
-            {
-                return 0x4D00;
-            }
-
-
-            if (key == Keys.End || key == Keys.NumPad1 || key == Keys.OemCloseBrackets)
-            {
-                return 0x4F00;
-            }
-
-            if (key == Keys.Down || key == Keys.NumPad2)
-            {
-                return 0x5000;
-            }
-
-            if (key == Keys.PageDown || key == Keys.NumPad3)
-            {
-                return 0x5100;
-            }
-
-            if (key == Keys.OemMinus)
-            {
-                return 0x2d00;
-            }
-
-            if (key == Keys.Escape)
-            {
-                return 0x1b;
-            }
-
-            if (key == Keys.Oemcomma)
-            {
-                return 0x2c;
-            }
-
-            if (key == Keys.OemPeriod)
-            {
-                return 0x2e;
-            }
-
-            return 0x0020;
         }
     }
 }
