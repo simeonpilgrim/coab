@@ -1,23 +1,22 @@
-﻿using System.Collections.Generic;
-using System.IO;
-using GoldBox.Classes;
+﻿using GoldBox.Classes;
 using GoldBox.Data;
+using System.Collections.Generic;
+using System.IO;
 
 namespace GoldBox.Engine.ImportCharacters
 {
-    internal class FindCotABCharactersToAddToParty : IFindCharactersToAddToParty
+    //TODO not tested.
+    internal class FindHillsfarCharactersToAddToParty : IFindCharactersToAddToParty
     {
         public IEnumerable<CharacterToAddToParty> LookIn(string filePath)
         {
-            foreach (var fileName in Directory.GetFiles(filePath, "*.guy"))
+            foreach (var fileName in Directory.GetFiles(filePath, "*.hil"))
             {
                 var data = File.ReadAllBytes(fileName);
-                if (data.Length != Player.StructSize)
+                if (data.Length != HillsFarPlayer.StructSize)
                     continue;
 
-                var character = CurseCharacter.Parse(data);
-                if (character.NpcByte > 0x7F)
-                    continue;
+                var character = HillsfarCharacter.Parse(data);
 
                 var isCharacterInTeamList = gbl.TeamList.Find(player => character.NameStructure.Value == player.name.Trim()) != null;
                 if (isCharacterInTeamList)

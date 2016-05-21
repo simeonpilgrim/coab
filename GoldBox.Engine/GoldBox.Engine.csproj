@@ -120,6 +120,8 @@
     <Compile Include="ImportCharacters\CharacterToAddToParty.cs" />
     <Compile Include="ImportCharacters\FindCharactersToAddToPartyFactory.cs" />
     <Compile Include="ImportCharacters\FindCotABCharactersToAddToParty.cs" />
+    <Compile Include="ImportCharacters\FindHillsfarCharactersToAddToParty.cs" />
+    <Compile Include="ImportCharacters\FindPoolRadCharactersToAddToParty.cs" />
     <Compile Include="ImportCharacters\IFindCharactersToAddToParty.cs" />
     <Compile Include="IKeyboardInput.cs" />
     <Compile Include="ImportCharacters\ReturnZeroCharactersFound.cs" />

@@ -1,21 +1,23 @@
-﻿using System.Collections.Generic;
-using System.IO;
-using GoldBox.Classes;
+﻿using GoldBox.Classes;
 using GoldBox.Data;
+using System.Collections.Generic;
+using System.IO;
 
 namespace GoldBox.Engine.ImportCharacters
 {
-    internal class FindCotABCharactersToAddToParty : IFindCharactersToAddToParty
+    //TODO when using the copycurs program from DOSBOX
+    internal class FindPoolRadCharactersToAddToParty : IFindCharactersToAddToParty
     {
         public IEnumerable<CharacterToAddToParty> LookIn(string filePath)
         {
-            foreach (var fileName in Directory.GetFiles(filePath, "*.guy"))
+            foreach (var fileName in Directory.GetFiles(filePath, "*.cha"))
             {
                 var data = File.ReadAllBytes(fileName);
-                if (data.Length != Player.StructSize)
+                if (data.Length != PoolRadPlayer.StructSize)
                     continue;
 
-                var character = CurseCharacter.Parse(data);
+                var character = PoolRadCharacter.Parse(data);
+
                 if (character.NpcByte > 0x7F)
                     continue;
 
