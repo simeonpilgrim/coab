@@ -5,7 +5,7 @@ namespace GoldBox.Data
     [StructLayout(LayoutKind.Sequential, CharSet=CharSet.Ansi, Pack = 1, Size = 0x11D)]
     public struct PoolRadCharacter
     {
-        public CharacterName Name;
+        public CharacterName NameStructure;
         private byte Field010;
         private byte Field011;
         private byte Field012;
@@ -122,7 +122,7 @@ namespace GoldBox.Data
         private byte Field081;
         private byte Field082;
         private byte Field083;
-        private byte Field084;
+        public byte NpcByte;
         private byte Field085;
         private byte Field086;
         private byte Field087;
@@ -275,5 +275,8 @@ namespace GoldBox.Data
         private byte Field11A;
         private byte Field11B;
         private byte Field11C;
+
+        public byte[] ToByteArray() => Extensions.ToByteArray(this);
+        public static PoolRadCharacter Parse(byte[] array) => Extensions.MarshalAs<PoolRadCharacter>(array);
     }
 }
