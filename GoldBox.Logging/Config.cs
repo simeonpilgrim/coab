@@ -5,9 +5,9 @@ namespace GoldBox.Logging
 {
     public static class Config
     {
-        public static string BasePath { get; private set; }
-        public static string LogPath { get; private set; }
-        public static string SavePath { get; private set; }
+        public static string BasePath { get; set; }
+        public static string LogPath { get; set; }
+        public static string SavePath { get; set; }
 
         public static void Setup()
         {

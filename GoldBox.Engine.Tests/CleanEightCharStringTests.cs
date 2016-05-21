@@ -1,11 +1,11 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
 
 namespace GoldBox.Engine
 {
-    [TestClass]
+    [TestFixture]
     public class CleanEightCharStringTests
     {
-        [TestMethod]
+        [Test]
         public void TestMethod_clean_string()
         {
             var _stringCleaner = new CleanEightCharString();

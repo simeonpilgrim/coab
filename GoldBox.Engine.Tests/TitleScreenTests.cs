@@ -1,4 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
 using System.IO;
 using GoldBox.Classes;
 using GoldBox.Classes.DaxFiles;
@@ -6,16 +6,17 @@ using GoldBox.Logging;
 
 namespace GoldBox.Engine
 {
-    [TestClass]
+    [TestFixture]
     public class TitleScreenTests
     {
-        [TestInitialize]
+        private int _counter;
+        [SetUp]
         public void Setup()
         {
             RecreateDisplayDirectory();
-
         }
-        [TestMethod]
+
+        [Test]
         public void DisplayTitleScreen()
         {
             Logger.Setup("");
@@ -31,7 +32,6 @@ namespace GoldBox.Engine
             titleScreen.DisplayTitleScreen();
         }
 
-        private int _counter;
         private void DisplayCallback()
         {
             Display.bm.Save($@"Display\Screen{_counter++}.png");

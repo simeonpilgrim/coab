@@ -2,6 +2,7 @@ using GoldBox.Classes;
 using System.Collections.Generic;
 using GoldBox.Logging;
 using System.IO;
+using GoldBox.Engine.ImportCharacters;
 
 namespace GoldBox.Engine
 {
@@ -10,59 +11,9 @@ namespace GoldBox.Engine
         private static readonly FileManager _fileManager = new FileManager();
         private static readonly CleanEightCharString _stringCleaner = new CleanEightCharString();
 
-        static void BuildLoadablePlayersLists(ref List<MenuItem> fileNames, ref List<MenuItem> displayNames, short playerFileSize, int npcOffset, int nameOffset, string fileFilter) // sub_4708B
-        {
-            var file = new OpenOrCreateFile();
-
-            byte[] data = new byte[16];
-
-            foreach (string filePath in Directory.GetFiles(Config.SavePath, fileFilter))
-            {
-                FileStream stream = System.IO.File.Open(filePath, FileMode.Open, FileAccess.Read);
-
-                if (stream.Length == playerFileSize)
-                {
-                    stream.Seek(nameOffset, SeekOrigin.Begin);
-                    stream.Read(data, 0, 16);
-
-                    string playerName = Sys.ArrayToString(data, 0, 15).Trim();
-
-                    byte var_164;
-
-                    if (gbl.import_from == ImportSource.Hillsfar)
-                    {
-                        var_164 = 0;
-                    }
-                    else
-                    {
-                        stream.Seek(npcOffset, SeekOrigin.Begin);
-                        stream.Read(data, 0, 1);
-                        var_164 = data[0];
-                    }
-
-
-                    string fullNameText =
-                        string.Compare(Path.GetExtension(filePath), ".sav", true) == 0 ?
-                        string.Format("{0,-15} from save game {1}", playerName, filePath[7]) : playerName;
-
-                    bool found = gbl.TeamList.Find(player => playerName == player.name.Trim()) != null;
-
-                    if (found == false && var_164 <= 0x7F)
-                    {
-                        fileNames.Add(new MenuItem(filePath));
-                        displayNames.Add(new MenuItem(fullNameText));
-                    }
-                }
-
-                stream.Close();
-            }
-        }
-
-        static int[] PlayerNameOffset = { 0, 0, 4 };
-        static int[] NpcFileOffset = { 0xf7, 0x84, 0x13 };
         static Set unk_4AEA0 = new Set(0, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74);
         static Set unk_4AEEF = new Set(0, 2, 18);
-        static Set unk_47635 = new Set(0, 5);
+        //static Set unk_47635 = new Set(0, 5); //unused
         static Set asc_49280 = new Set(18, 26, 47, 48, 97, 107, 124);
         static Set save_game_keys = new Set(65, 66, 67, 68, 69, 70, 71, 72, 73, 74); // asc_4A761
         static ClassId[] HillsFarClassMap = {
@@ -76,23 +27,17 @@ namespace GoldBox.Engine
         /// </summary>
         /// <param name="fileNames"></param>
         /// <param name="displayNames"></param>
-        public static void BuildLoadablePlayersLists(out List<MenuItem> fileNames, out List<MenuItem> displayNames) // sub_47465
+        public static void BuildLoadablePlayersLists(out List<MenuItem> fileNames, out List<MenuItem> displayNames)
         {
             displayNames = new List<MenuItem>();
             fileNames = new List<MenuItem>();
 
-            if (gbl.import_from == ImportSource.Curse)
+            var findCharacter = FindCharactersToAddToPartyFactory.Create(gbl.import_from);
+            var results = findCharacter.LookIn(Config.SavePath);
+            foreach (var foundCharacter in results)
             {
-                BuildLoadablePlayersLists(ref fileNames, ref displayNames, Player.StructSize, NpcFileOffset[0], PlayerNameOffset[0], "*.guy");
-            }
-            else if (gbl.import_from == ImportSource.Pool)
-            {
-                BuildLoadablePlayersLists(ref fileNames, ref displayNames, PoolRadPlayer.StructSize, NpcFileOffset[1], PlayerNameOffset[1], "*.cha");
-                BuildLoadablePlayersLists(ref fileNames, ref displayNames, PoolRadPlayer.StructSize, NpcFileOffset[1], PlayerNameOffset[1], "*.sav");
-            }
-            else if (gbl.import_from == ImportSource.Hillsfar)
-            {
-                BuildLoadablePlayersLists(ref fileNames, ref displayNames, HillsFarPlayer.StructSize, NpcFileOffset[2], PlayerNameOffset[2], "*.hil");
+                displayNames.Add(new MenuItem(foundCharacter.DisplayName));
+                fileNames.Add(new MenuItem(foundCharacter.FileName));
             }
         }
 
