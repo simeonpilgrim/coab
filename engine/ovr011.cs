@@ -824,10 +824,15 @@ namespace engine
         }
 
 
-        static bool both_invalid(int arg_0, int arg_2) /* sub_38202 */
+		static int min_placement_column = 0;
+		static int max_placement_column = 10;
+		static int min_placement_row = 0;
+		static int max_placement_row = 5;
+
+        static bool row_column_both_out_of_range(int row, int column) /* sub_38202 */
         {
-            if ((arg_2 >= 0 && arg_2 < 11) ||
-                (arg_0 >= 0 && arg_0 < 6))
+            if ((column >= min_placement_column && column <= max_placement_column) ||
+                (row >= min_placement_row && row <= max_placement_row))
             {
                 return false;
             }
@@ -840,13 +845,11 @@ namespace engine
 
         static bool try_place_combatant(int arg_0, int arg_2, int arg_4, int arg_6, int arg_8, int player_index) /* sub_38233 */
         {
-            bool var_1;
-
             if (arg_8 < 0 || arg_8 > 10 ||
                 arg_6 < 0 || arg_6 > 5 ||
                 unk_1AB1C[gbl.currentTeam, arg_0, arg_6, arg_8] == 0)
             {
-                var_1 = false;
+                return false;
             }
             else
             {
@@ -861,16 +864,14 @@ namespace engine
                     groundTile > 0 &&
                     gbl.BackGroundTiles[groundTile].move_cost < 0xFF)
                 {
-                    var_1 = true;
                     unk_1AB1C[gbl.currentTeam, arg_0, arg_6, arg_8] = 0;
+					return true;
                 }
                 else
                 {
-                    var_1 = false;
+					return false;
                 }
             }
-
-            return var_1;
         }
 
         static int[,] direction_165EC = { { 8, 4, 6, 2 }, { 8, 6, 4, 0 }, { 8, 0, 6, 2 }, { 8, 2, 0, 4 } }; /*seg600:02DC unk_165EC*/
@@ -969,7 +970,7 @@ namespace engine
 
                 if (state > tri_state.start)
                 {
-                    if ((any_cur_invalid == true && both_invalid(cur_y, cur_x) == false) ||
+                    if ((any_cur_invalid == true && row_column_both_out_of_range(cur_y, cur_x) == false) ||
                         (first_row == true && var_13 >= gbl.half_team_count[gbl.currentTeam]) ||
                         (first_row == false && var_13 > 11))
                     {
@@ -1007,7 +1008,7 @@ namespace engine
 
 
                 if (any_cur_invalid == true &&
-                    both_invalid(cur_y, cur_x) == true)
+                    row_column_both_out_of_range(cur_y, cur_x) == true)
                 {
                     placed = false;
                     state = 0;
