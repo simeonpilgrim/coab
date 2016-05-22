@@ -9,7 +9,7 @@ namespace Classes
         Poison = 0,
         Petrification,
         RodStaffWand,
-        type3,
+        BreathWeapon,
         Spell
 	}
 

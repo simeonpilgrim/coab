@@ -2373,7 +2373,7 @@ namespace engine
                         ovr025.DisplayPlayerStatusString(true, 10, "fires a disintegrate ray", attacker);
                         LoadMissleIconAndDraw(5, target, attacker);
 
-                        if (ovr024.RollSavingThrow(0, SaveVerseType.type3, target) == false)
+                        if (ovr024.RollSavingThrow(0, SaveVerseType.BreathWeapon, target) == false)
                         {
                             ovr024.KillPlayer("is disintergrated", Status.gone, target);
                         }

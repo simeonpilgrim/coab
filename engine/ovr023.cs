@@ -2877,8 +2877,8 @@ namespace engine
 				ovr025.load_missile_icons(0x13);
 
 				ovr025.draw_missile_attack(0x32, 4, gbl.targetPos, var_2);
-				var_1 = DoElecDamage(var_1, 0, SaveVerseType.type3, player.hit_point_max, gbl.targetPos);
-				sub_5FA44(0, SaveVerseType.type3, player.hit_point_max, 10);
+				var_1 = DoElecDamage(var_1, 0, SaveVerseType.BreathWeapon, player.hit_point_max, gbl.targetPos);
+				sub_5FA44(0, SaveVerseType.BreathWeapon, player.hit_point_max, 10);
 
 				if (affect.affect_data > 0xFD)
 				{
@@ -2913,7 +2913,7 @@ namespace engine
 
 					ovr025.draw_missile_attack(30, 1, ovr033.PlayerMapPos(gbl.spell_target), ovr033.PlayerMapPos(player));
 
-					ovr024.damage_person(ovr024.RollSavingThrow(0, SaveVerseType.type3, gbl.spell_target), DamageOnSave.Half, player.hit_point_max, gbl.spell_target);
+					ovr024.damage_person(ovr024.RollSavingThrow(0, SaveVerseType.BreathWeapon, gbl.spell_target), DamageOnSave.Half, player.hit_point_max, gbl.spell_target);
 				}
 				else
 				{
@@ -2962,7 +2962,7 @@ namespace engine
 
 					foreach (var target in gbl.spellTargets)
 					{
-						bool save_made = ovr024.RollSavingThrow(0, SaveVerseType.type3, target);
+						bool save_made = ovr024.RollSavingThrow(0, SaveVerseType.BreathWeapon, target);
 						ovr024.damage_person(save_made, DamageOnSave.Half, attacker.hit_point_max, target);
 					}
 
@@ -3003,7 +3003,7 @@ namespace engine
 
 						foreach (var target in gbl.spellTargets)
 						{
-							bool saves = ovr024.RollSavingThrow(0, SaveVerseType.type3, target);
+							bool saves = ovr024.RollSavingThrow(0, SaveVerseType.BreathWeapon, target);
 
 							ovr024.damage_person(saves, DamageOnSave.Half, attacker.hit_point_max, target);
 						}
@@ -3034,7 +3034,7 @@ namespace engine
 
 				ovr025.draw_missile_attack(0x1E, 1, ovr033.PlayerMapPos(gbl.spell_target), ovr033.PlayerMapPos(arg_6));
 
-				ovr024.damage_person(ovr024.RollSavingThrow(0, SaveVerseType.type3, gbl.spell_target), DamageOnSave.Half, 7, gbl.spell_target);
+				ovr024.damage_person(ovr024.RollSavingThrow(0, SaveVerseType.BreathWeapon, gbl.spell_target), DamageOnSave.Half, 7, gbl.spell_target);
 			}
 		}
 

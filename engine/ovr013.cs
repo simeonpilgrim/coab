@@ -1517,7 +1517,7 @@ namespace engine
 					ovr025.draw_missile_attack(0x1e, 1, ovr033.PlayerMapPos(gbl.spell_target), ovr033.PlayerMapPos(player));
 
 					int damage = ovr024.roll_dice_save(4, 8);
-					bool saved = ovr024.RollSavingThrow(0, SaveVerseType.type3, gbl.spell_target);
+					bool saved = ovr024.RollSavingThrow(0, SaveVerseType.BreathWeapon, gbl.spell_target);
 
 					ovr024.damage_person(saved, DamageOnSave.Half, damage, gbl.spell_target);
 
