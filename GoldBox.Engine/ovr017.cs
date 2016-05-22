@@ -1,8 +1,8 @@
 using GoldBox.Classes;
-using System.Collections.Generic;
-using GoldBox.Logging;
-using System.IO;
 using GoldBox.Engine.ImportCharacters;
+using GoldBox.Logging;
+using System.Collections.Generic;
+using System.IO;
 
 namespace GoldBox.Engine
 {
@@ -11,17 +11,19 @@ namespace GoldBox.Engine
         private static readonly FileManager _fileManager = new FileManager();
         private static readonly CleanEightCharString _stringCleaner = new CleanEightCharString();
 
-        static Set unk_4AEA0 = new Set(0, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74);
-        static Set unk_4AEEF = new Set(0, 2, 18);
-        //static Set unk_47635 = new Set(0, 5); //unused
-        static Set asc_49280 = new Set(18, 26, 47, 48, 97, 107, 124);
-        static Set save_game_keys = new Set(65, 66, 67, 68, 69, 70, 71, 72, 73, 74); // asc_4A761
-        static ClassId[] HillsFarClassMap = {
+        private static Set unk_4AEA0 = new Set(0, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74);
+        private static Set unk_4AEEF = new Set(0, 2, 18);
+        private static Set asc_49280 = new Set(18, 26, 47, 48, 97, 107, 124);
+        private static Set save_game_keys = new Set(65, 66, 67, 68, 69, 70, 71, 72, 73, 74); // asc_4A761
+
+        private static ClassId[] HillsFarClassMap = {
     ClassId.unknown,    ClassId.thief,      ClassId.fighter,    ClassId.mc_f_t, ClassId.magic_user,
     ClassId.mc_mu_t,    ClassId.mc_f_mu,    ClassId.mc_f_mu_t,  ClassId.cleric, ClassId.mc_c_t,
     ClassId.mc_c_f,     ClassId.unknown,    ClassId.mc_c_mu,    ClassId.unknown, ClassId.mc_c_f_m,
     ClassId.unknown};
-        
+
+        //static Set unk_47635 = new Set(0, 5); //unused
+
         /// <summary>
         /// Used when "Adding Character To Party"
         /// </summary>
@@ -78,7 +80,7 @@ namespace GoldBox.Engine
             seg042.restore_game_area();
             seg043.clear_keyboard();
         }
-        
+
         internal static void remove_player_file(Player player)
         {
             string full_path = Path.Combine(Config.SavePath, _stringCleaner.clean_string(player.name));
@@ -159,7 +161,284 @@ namespace GoldBox.Engine
             }
         }
 
-        internal static bool PlayerFileExists(string fileExt, string player_name) // sub_483AE
+        internal static void SilentTrainPlayer()
+        {
+            gbl.area2_ptr.training_class_mask = 0xff;
+            gbl.can_train_no_more = false;
+            gbl.silent_training = true;
+
+            do
+            {
+                ovr018.train_player();
+            } while (gbl.can_train_no_more == false);
+
+            gbl.silent_training = false;
+        }
+
+        internal static void import_char01(ref Player player, string arg_8)
+        {
+            seg041.displayString("Loading...Please Wait", 0, 10, 0x18, 0);
+
+            ImportPlayer(ref player, arg_8);
+
+            if (gbl.import_from == ImportSource.Curse)
+            {
+                arg_8 = Path.GetFileNameWithoutExtension(arg_8);
+            }
+            else
+            {
+                arg_8 = _stringCleaner.clean_string(player.name);
+            }
+
+            LoadItems(player, arg_8);
+
+            LoadAffects(player, arg_8);
+
+            LoadPoolRadAffects(player, arg_8);
+
+            seg043.clear_keyboard();
+            ovr025.reclac_player_values(player);
+            ovr026.ReclacClassBonuses(player);
+        }
+
+        internal static Player load_mob(int monster_id)
+        {
+            return load_mob(monster_id, true);
+        }
+
+        internal static Player load_mob(int monster_id, bool exit)
+        {
+            string area_text = gbl.game_area.ToString();
+
+            byte[] data;
+            short decode_size;
+            seg042.load_decode_dax(out data, out decode_size, monster_id, "MON" + area_text + "CHA.dax");
+
+            if (decode_size == 0)
+            {
+                if (exit)
+                {
+                    seg041.DisplayAndPause("Unable to load monster", 15);
+                    seg043.print_and_exit();
+                }
+                else
+                {
+                    return null;
+                }
+            }
+
+            var player = new Player(data, 0);
+
+            seg042.load_decode_dax(out data, out decode_size, monster_id, "MON" + area_text + "SPC.dax");
+
+            if (decode_size != 0)
+            {
+                int offset = 0;
+
+                do
+                {
+                    var affect = new Affect(data, offset);
+                    player.affects.Add(affect);
+
+                    offset += 9;
+                } while (offset < decode_size);
+            }
+
+            seg042.load_decode_dax(out data, out decode_size, monster_id, "MON" + area_text + "ITM.dax");
+
+            if (decode_size != 0)
+            {
+                for (int offset = 0; offset < decode_size; offset += Item.StructSize)
+                {
+                    player.items.Add(new Item(data, offset));
+                }
+            }
+
+            seg043.clear_keyboard();
+
+            return player;
+        }
+
+        internal static void load_npc(int monster_id) // sub_4A57D
+        {
+            if (gbl.area2_ptr.party_size <= 7)
+            {
+                Player player = load_mob(monster_id);
+
+                player.mod_id = (byte)monster_id;
+
+                AssignPlayerIconId(player);
+
+                ovr034.chead_cbody_comspr_icon(player.icon_id, monster_id, "CPIC");
+            }
+        }
+
+        internal static void AssignPlayerIconId(Player player) // sub_4A60A
+        {
+            player.icon_id = 0xff;
+
+            gbl.TeamList.Add(player);
+            gbl.SelectedPlayer = player;
+
+            bool[] icon_slot = new bool[8];
+
+            foreach (Player tmpPlayer in gbl.TeamList)
+            {
+                if (tmpPlayer.icon_id >= 0 && tmpPlayer.icon_id < 8)
+                {
+                    icon_slot[tmpPlayer.icon_id] = true;
+                }
+            }
+
+            // Now find the lowest free icon slot.
+            player.icon_id = 0;
+
+            while (player.icon_id < 8 &&
+                icon_slot[player.icon_id])
+            {
+                player.icon_id += 1;
+            }
+
+            gbl.area2_ptr.party_size++;
+
+            if (player.control_morale >= Control.NPC_Base)
+            {
+                ovr026.ReclacClassBonuses(player);
+            }
+        }
+
+        internal static void loadGameMenu() // loadGame
+        {
+            gbl.import_from = ImportSource.Curse;
+
+            var games_list = GetGameList();
+
+            if (games_list.Length == 0)
+                return;
+
+            games_list = games_list.TrimEnd();
+
+            bool stop_loop = false;
+            char save_letter = '\0';
+            do
+            {
+                bool speical_key;
+                char input_key = ovr027.displayInput(out speical_key, false, 0, gbl.defaultMenuColors, games_list, "Load Which Game: ");
+
+                stop_loop = input_key == 0x00; // Escape
+                save_letter = '\0';
+
+                if (save_game_keys.MemberOf(input_key))
+                {
+                    save_letter = input_key;
+                    string file_name = Path.Combine(Config.SavePath, "savgam" + save_letter + ".dat");
+                    stop_loop = _fileManager.Exists(file_name);
+                }
+            } while (stop_loop == false);
+
+            if (save_letter != '\0')
+            {
+                string file_name = Path.Combine(Config.SavePath, "savgam" + save_letter + ".dat");
+
+                loadSaveGame(file_name);
+            }
+        }
+
+        internal static void SaveGame()
+        {
+            char inputKey;
+            using (var save_file = new OpenOrCreateFile())
+            {
+                string[] var_171 = new string[9];
+
+                do
+                {
+                    inputKey = ovr027.displayInput((gbl.game_state == GameState.Camping), 0, gbl.defaultMenuColors, "A B C D E F G H I J", "Save Which Game: ");
+                } while (unk_4AEA0.MemberOf(inputKey) == false);
+
+                if (inputKey != '\0')
+                {
+                    gbl.import_from = ImportSource.Curse;
+
+                    short var_1FC;
+
+                    do
+                    {
+                        save_file.Assign(Path.Combine(Config.SavePath, "savgam" + inputKey + ".dat"));
+                        save_file.Rewrite();
+                        var_1FC = gbl.FIND_result;
+
+                        if (unk_4AEEF.MemberOf(var_1FC) == false)
+                        {
+                            seg041.DisplayAndPause("Unexpected error during save: " + var_1FC, 14);
+                            return;
+                        }
+                    } while (unk_4AEEF.MemberOf(var_1FC) == false);
+
+                    ovr027.ClearPromptArea();
+                    seg041.displayString("Saving...Please Wait", 0, 10, 0x18, 0);
+
+                    gbl.area_ptr.game_speed = (byte)gbl.game_speed_var;
+                    gbl.area_ptr.pics_on = (byte)(((gbl.PicsOn) ? 0x02 : 0) | ((gbl.AnimationsOn) ? 0x01 : 0));
+                    gbl.area2_ptr.game_area = gbl.game_area;
+
+                    byte[] data = new byte[0x1E00];
+
+                    data[0] = gbl.game_area;
+                    save_file.BlockWrite(1, data);
+
+                    save_file.BlockWrite(0x800, gbl.area_ptr.ToByteArray());
+                    save_file.BlockWrite(0x800, gbl.area2_ptr.ToByteArray());
+                    save_file.BlockWrite(0x400, gbl.stru_1B2CA.ToByteArray());
+                    save_file.BlockWrite(0x1E00, gbl.ecl_ptr.ToByteArray());
+
+                    data[0] = (byte)gbl.mapPosX;
+                    data[1] = (byte)gbl.mapPosY;
+                    data[2] = gbl.mapDirection;
+                    data[3] = gbl.mapWallType;
+                    data[4] = gbl.mapWallRoof;
+                    save_file.BlockWrite(5, data);
+
+                    data[0] = (byte)gbl.last_game_state;
+                    save_file.BlockWrite(1, data);
+                    data[0] = (byte)gbl.game_state;
+                    save_file.BlockWrite(1, data);
+
+                    for (int i = 0; i < 3; i++)
+                    {
+                        Sys.ShortToArray((short)gbl.setBlocks[i].blockId, data, (i * 4) + 0);
+                        Sys.ShortToArray((short)gbl.setBlocks[i].setId, data, (i * 4) + 2);
+                    }
+                    save_file.BlockWrite(12, data);
+
+                    for (int i = 1; i <= gbl.TeamList.Count; i++)
+                    {
+                        var_171[i - 1] = "CHRDAT" + inputKey + i;
+                    }
+
+                    data[0] = (byte)gbl.TeamList.Count;
+                    save_file.BlockWrite(1, data);
+
+                    for (int i = 0; i < gbl.TeamList.Count; i++)
+                    {
+                        Sys.StringToArray(data, 0x29 * i, 0x29, var_171[i]);
+                    }
+                    save_file.BlockWrite(0x148, data);
+                }
+                var party_count = 0;
+                foreach (Player tmp_player in gbl.TeamList)
+                {
+                    party_count++;
+                    SavePlayer("CHRDAT" + inputKey + party_count, tmp_player);
+                    remove_player_file(tmp_player);
+                }
+
+                gbl.gameSaved = true;
+                ovr027.ClearPromptArea();
+            }
+        }
+
+        private static bool PlayerFileExists(string fileExt, string player_name) // sub_483AE
         {
             byte[] data = new byte[0x10];
 
@@ -176,12 +455,11 @@ namespace GoldBox.Engine
                 {
                     return true;
                 }
-
             }
             return false;
         }
-        
-        internal static Player ConvertPoolRadPlayer(PoolRadPlayer bp_var_1C0)
+
+        private static Player ConvertPoolRadPlayer(PoolRadPlayer bp_var_1C0)
         {
             /* nested function, arg_0 is BP */
             var player = new Player();
@@ -285,7 +563,6 @@ namespace GoldBox.Engine
 
             System.Array.Copy(bp_var_1C0.field_C1, player.icon_colours, 6);
 
-
             //player.field_14c = bp_var_1C0.field_C7; // Item count
 
             //mov	di, [bp+arg_0] // copy item pointers...
@@ -329,8 +606,8 @@ namespace GoldBox.Engine
 
             return player;
         }
-        
-        internal static void TransferHillsFarCharacter(HillsFarPlayer hf_player, Player player, Player previousSelectPlayer) // sub_48F35
+
+        private static void TransferHillsFarCharacter(HillsFarPlayer hf_player, Player player, Player previousSelectPlayer) // sub_48F35
         {
             if (player.stats2.Str.cur < hf_player.stat_str)
             {
@@ -407,46 +684,6 @@ namespace GoldBox.Engine
             player.hit_point_current = hf_player.field_20;
         }
 
-        internal static void SilentTrainPlayer()
-        {
-            gbl.area2_ptr.training_class_mask = 0xff;
-            gbl.can_train_no_more = false;
-            gbl.silent_training = true;
-
-            do
-            {
-                ovr018.train_player();
-            } while (gbl.can_train_no_more == false);
-
-            gbl.silent_training = false;
-        }
-
-        internal static void import_char01(ref Player player, string arg_8)
-        {
-            seg041.displayString("Loading...Please Wait", 0, 10, 0x18, 0);
-
-            ImportPlayer(ref player, arg_8);
-
-            if (gbl.import_from == ImportSource.Curse)
-            {
-                arg_8 = Path.GetFileNameWithoutExtension(arg_8);
-            }
-            else
-            {
-                arg_8 = _stringCleaner.clean_string(player.name);
-            }
-
-            LoadItems(player, arg_8);
-
-            LoadAffects(player, arg_8);
-
-            LoadPoolRadAffects(player, arg_8);
-
-            seg043.clear_keyboard();
-            ovr025.reclac_player_values(player);
-            ovr026.ReclacClassBonuses(player);
-        }
-
         private static void LoadPoolRadAffects(Player player, string arg_8)
         {
             if (gbl.import_from != ImportSource.Pool) return;
@@ -475,7 +712,6 @@ namespace GoldBox.Engine
                     }
                 }
             }
-
         }
 
         private static void LoadAffects(Player player, string arg_8)
@@ -516,7 +752,6 @@ namespace GoldBox.Engine
             {
                 while (true)
                 {
-
                     if (file.BlockRead(Item.StructSize, data) == Item.StructSize)
                     {
                         player.items.Add(new Item(data, 0));
@@ -540,7 +775,6 @@ namespace GoldBox.Engine
                     file.BlockRead(Player.StructSize, data);
 
                 player = new Player(data, 0);
-
             }
             else if (gbl.import_from == ImportSource.Pool)
             {
@@ -768,149 +1002,6 @@ namespace GoldBox.Engine
             return player;
         }
 
-        internal static Player load_mob(int monster_id)
-        {
-            return load_mob(monster_id, true);
-        }
-
-        internal static Player load_mob(int monster_id, bool exit)
-        {
-            string area_text = gbl.game_area.ToString();
-
-            byte[] data;
-            short decode_size;
-            seg042.load_decode_dax(out data, out decode_size, monster_id, "MON" + area_text + "CHA.dax");
-
-            if (decode_size == 0)
-            {
-                if (exit)
-                {
-                    seg041.DisplayAndPause("Unable to load monster", 15);
-                    seg043.print_and_exit();
-                }
-                else
-                {
-                    return null;
-                }
-            }
-
-            var player = new Player(data, 0);
-
-            seg042.load_decode_dax(out data, out decode_size, monster_id, "MON" + area_text + "SPC.dax");
-
-            if (decode_size != 0)
-            {
-                int offset = 0;
-
-                do
-                {
-                    var affect = new Affect(data, offset);
-                    player.affects.Add(affect);
-
-                    offset += 9;
-                } while (offset < decode_size);
-            }
-
-            seg042.load_decode_dax(out data, out decode_size, monster_id, "MON" + area_text + "ITM.dax");
-
-            if (decode_size != 0)
-            {
-                for (int offset = 0; offset < decode_size; offset += Item.StructSize)
-                {
-                    player.items.Add(new Item(data, offset));
-                }
-            }
-
-            seg043.clear_keyboard();
-
-            return player;
-        }
-
-        internal static void load_npc(int monster_id) // sub_4A57D
-        {
-            if (gbl.area2_ptr.party_size <= 7)
-            {
-                Player player = load_mob(monster_id);
-
-                player.mod_id = (byte)monster_id;
-
-                AssignPlayerIconId(player);
-
-                ovr034.chead_cbody_comspr_icon(player.icon_id, monster_id, "CPIC");
-            }
-        }
-
-        internal static void AssignPlayerIconId(Player player) // sub_4A60A
-        {
-            player.icon_id = 0xff;
-
-            gbl.TeamList.Add(player);
-            gbl.SelectedPlayer = player;
-
-            bool[] icon_slot = new bool[8];
-
-            foreach (Player tmpPlayer in gbl.TeamList)
-            {
-                if (tmpPlayer.icon_id >= 0 && tmpPlayer.icon_id < 8)
-                {
-                    icon_slot[tmpPlayer.icon_id] = true;
-                }
-            }
-
-            // Now find the lowest free icon slot.
-            player.icon_id = 0;
-
-            while (player.icon_id < 8 &&
-                icon_slot[player.icon_id])
-            {
-                player.icon_id += 1;
-            }
-
-            gbl.area2_ptr.party_size++;
-
-            if (player.control_morale >= Control.NPC_Base)
-            {
-                ovr026.ReclacClassBonuses(player);
-            }
-        }
-
-        internal static void loadGameMenu() // loadGame
-        {
-            gbl.import_from = ImportSource.Curse;
-
-            var games_list = GetGameList();
-
-            if (games_list.Length == 0)
-                return;
-
-            games_list = games_list.TrimEnd();
-
-            bool stop_loop = false;
-            char save_letter = '\0';
-            do
-            {
-                bool speical_key;
-                char input_key = ovr027.displayInput(out speical_key, false, 0, gbl.defaultMenuColors, games_list, "Load Which Game: ");
-
-                stop_loop = input_key == 0x00; // Escape
-                save_letter = '\0';
-
-                if (save_game_keys.MemberOf(input_key))
-                {
-                    save_letter = input_key;
-                    string file_name = Path.Combine(Config.SavePath, "savgam" + save_letter + ".dat");
-                    stop_loop = _fileManager.Exists(file_name);
-                }
-            } while (stop_loop == false);
-
-            if (save_letter != '\0')
-            {
-                string file_name = Path.Combine(Config.SavePath, "savgam" + save_letter + ".dat");
-
-                loadSaveGame(file_name);
-            }
-        }
-
         private static string GetGameList()
         {
             string games_list = string.Empty;
@@ -927,7 +1018,7 @@ namespace GoldBox.Engine
             return games_list;
         }
 
-        internal static void loadSaveGame(string file_name)
+        private static void loadSaveGame(string file_name)
         {
             OpenOrCreateFile file;
             _fileManager.find_and_open_file(out file, true, file_name);
@@ -1019,7 +1110,6 @@ namespace GoldBox.Engine
                 }
             }
 
-
             gbl.SelectedPlayer = gbl.TeamList[0];
 
             gbl.game_area = gbl.area2_ptr.game_area;
@@ -1053,101 +1143,6 @@ namespace GoldBox.Engine
             gbl.last_game_state = gbl.game_state;
 
             gbl.game_state = GameState.StartGameMenu;
-        }
-
-        internal static void SaveGame()
-        {
-            char inputKey;
-            using (var save_file = new OpenOrCreateFile())
-            {
-                string[] var_171 = new string[9];
-
-                do
-                {
-                    inputKey = ovr027.displayInput((gbl.game_state == GameState.Camping), 0, gbl.defaultMenuColors, "A B C D E F G H I J", "Save Which Game: ");
-
-                } while (unk_4AEA0.MemberOf(inputKey) == false);
-
-                if (inputKey != '\0')
-                {
-                    gbl.import_from = ImportSource.Curse;
-
-                    short var_1FC;
-
-                    do
-                    {
-                        save_file.Assign(Path.Combine(Config.SavePath, "savgam" + inputKey + ".dat"));
-                        save_file.Rewrite();
-                        var_1FC = gbl.FIND_result;
-
-                        if (unk_4AEEF.MemberOf(var_1FC) == false)
-                        {
-                            seg041.DisplayAndPause("Unexpected error during save: " + var_1FC, 14);
-                            return;
-                        }
-                    } while (unk_4AEEF.MemberOf(var_1FC) == false);
-
-                    ovr027.ClearPromptArea();
-                    seg041.displayString("Saving...Please Wait", 0, 10, 0x18, 0);
-
-                    gbl.area_ptr.game_speed = (byte)gbl.game_speed_var;
-                    gbl.area_ptr.pics_on = (byte)(((gbl.PicsOn) ? 0x02 : 0) | ((gbl.AnimationsOn) ? 0x01 : 0));
-                    gbl.area2_ptr.game_area = gbl.game_area;
-
-                    byte[] data = new byte[0x1E00];
-
-                    data[0] = gbl.game_area;
-                    save_file.BlockWrite(1, data);
-
-                    save_file.BlockWrite(0x800, gbl.area_ptr.ToByteArray());
-                    save_file.BlockWrite(0x800, gbl.area2_ptr.ToByteArray());
-                    save_file.BlockWrite(0x400, gbl.stru_1B2CA.ToByteArray());
-                    save_file.BlockWrite(0x1E00, gbl.ecl_ptr.ToByteArray());
-
-                    data[0] = (byte)gbl.mapPosX;
-                    data[1] = (byte)gbl.mapPosY;
-                    data[2] = gbl.mapDirection;
-                    data[3] = gbl.mapWallType;
-                    data[4] = gbl.mapWallRoof;
-                    save_file.BlockWrite(5, data);
-
-                    data[0] = (byte)gbl.last_game_state;
-                    save_file.BlockWrite(1, data);
-                    data[0] = (byte)gbl.game_state;
-                    save_file.BlockWrite(1, data);
-
-                    for (int i = 0; i < 3; i++)
-                    {
-                        Sys.ShortToArray((short)gbl.setBlocks[i].blockId, data, (i * 4) + 0);
-                        Sys.ShortToArray((short)gbl.setBlocks[i].setId, data, (i * 4) + 2);
-                    }
-                    save_file.BlockWrite(12, data);
-
-                    for(int i=1; i<=gbl.TeamList.Count; i++)
-                    {
-                        var_171[i-1] = "CHRDAT" + inputKey + i;
-                    }
-
-                    data[0] = (byte)gbl.TeamList.Count;
-                    save_file.BlockWrite(1, data);
-
-                    for (int i = 0; i < gbl.TeamList.Count; i++)
-                    {
-                        Sys.StringToArray(data, 0x29 * i, 0x29, var_171[i]);
-                    }
-                    save_file.BlockWrite(0x148, data);
-                }
-                var party_count = 0;
-                foreach (Player tmp_player in gbl.TeamList)
-                {
-                    party_count++;
-                    SavePlayer("CHRDAT" + inputKey + party_count, tmp_player);
-                    remove_player_file(tmp_player);
-                }
-
-                gbl.gameSaved = true;
-                ovr027.ClearPromptArea();
-            }
         }
     }
 }

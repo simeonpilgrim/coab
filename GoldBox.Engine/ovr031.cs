@@ -178,7 +178,7 @@ namespace GoldBox.Engine
         }
 
 
-        internal static byte WallDoorFlagsGet(int mapDir, int mapY, int mapX) /*sub_71573*/
+        internal static byte WallDoorFlagsGet(int mapDir, int mapY, int mapX)
         {
             if (MapCoordIsValid(mapY, mapX) == false &&
                 (gbl.EclBlockId == 0 || gbl.EclBlockId == 10))

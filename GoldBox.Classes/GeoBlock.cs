@@ -100,6 +100,10 @@ namespace GoldBox.Classes
         public byte x3_dir_4;
         public byte x3_dir_6;
 
+        public MapInfo()
+        {
+        }
+
         internal MapInfo(byte[] data, int map_x, int map_y)
         {
             int map_y_x16 = map_y << 4;

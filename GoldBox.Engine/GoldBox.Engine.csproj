@@ -125,6 +125,7 @@
     <Compile Include="ImportCharacters\IFindCharactersToAddToParty.cs" />
     <Compile Include="IKeyboardInput.cs" />
     <Compile Include="ImportCharacters\ReturnZeroCharactersFound.cs" />
+    <Compile Include="IStepGameTime.cs" />
     <Compile Include="Utilities\DebuggingUtilities.cs" />
     <Compile Include="VmOpp.cs" />
     <Compile Include="TitleScreen.cs">

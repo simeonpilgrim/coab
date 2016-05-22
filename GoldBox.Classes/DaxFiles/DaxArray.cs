@@ -11,14 +11,14 @@ namespace GoldBox.Classes.DaxFiles
             numFrames = 0;
             curFrame = 0;
             frames = new AnimationFrame[8];
-            frames[0] = new AnimationFrame(); // 1D558 - seg600:7248
-            frames[1] = new AnimationFrame(); // 1D560 - seg600:7250
-            frames[2] = new AnimationFrame(); // 1D568 - seg600:7258
-            frames[3] = new AnimationFrame(); // 1D570 - seg600:7260
-            frames[4] = new AnimationFrame(); // 1D578 - seg600:7268
-            frames[5] = new AnimationFrame(); // 1D580 - seg600:7270
-            frames[6] = new AnimationFrame(); // 1D588 - seg600:7278
-            frames[7] = new AnimationFrame(); // 1D590 - seg600:7280
+            frames[0] = new AnimationFrame();
+            frames[1] = new AnimationFrame();
+            frames[2] = new AnimationFrame();
+            frames[3] = new AnimationFrame();
+            frames[4] = new AnimationFrame();
+            frames[5] = new AnimationFrame();
+            frames[6] = new AnimationFrame();
+            frames[7] = new AnimationFrame();
         }
 
         public void NextFrame()
