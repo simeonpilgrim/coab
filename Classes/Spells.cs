@@ -7,7 +7,7 @@ namespace Classes
     public enum SaveVerseType
     {
         Poison = 0,
-        type1,
+        Petrification,
         type2,
         type3,
         Spell

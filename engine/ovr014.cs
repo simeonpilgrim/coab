@@ -2387,7 +2387,7 @@ namespace engine
                         ovr025.DisplayPlayerStatusString(true, 10, "fires a stone to flesh ray", attacker);
                         LoadMissleIconAndDraw(10, target, attacker);
 
-                        if (ovr024.RollSavingThrow(0, SaveVerseType.type1, target) == false)
+                        if (ovr024.RollSavingThrow(0, SaveVerseType.Petrification, target) == false)
                         {
                             ovr024.KillPlayer("is Stoned", Status.stoned, target);
                         }

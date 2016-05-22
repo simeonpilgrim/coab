@@ -2837,7 +2837,7 @@ namespace engine
 					}
 				}
 
-				if (ovr024.RollSavingThrow(0, SaveVerseType.type1, gbl.spell_target) == false)
+				if (ovr024.RollSavingThrow(0, SaveVerseType.Petrification, gbl.spell_target) == false)
 				{
 					ovr024.KillPlayer("is Stoned", Status.stoned, gbl.spell_target);
 				}
@@ -3078,7 +3078,7 @@ namespace engine
 
 				ovr025.draw_missile_attack(0x2d, 4, ovr033.PlayerMapPos(gbl.spell_target), ovr033.PlayerMapPos(arg_6));
 
-				if (ovr024.RollSavingThrow(0, SaveVerseType.type1, gbl.spell_target) == false)
+				if (ovr024.RollSavingThrow(0, SaveVerseType.Petrification, gbl.spell_target) == false)
 				{
 					ovr024.add_affect(false, 0xff, 0x3c, Affects.paralyze, gbl.spell_target);
 					ovr025.DisplayPlayerStatusString(false, 10, "is paralyzed", gbl.spell_target);
