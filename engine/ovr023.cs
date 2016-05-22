@@ -2280,7 +2280,7 @@ namespace engine
 			Player target = gbl.SelectedPlayer.actions.target;
 
 			gbl.current_affect = Affects.poison_plus_0;
-			ovr024.CheckAffectsEffect(target, CheckType.Type_9);
+			ovr024.CheckAffectsEffect(target, CheckType.MagicResistance);
 
 			if (gbl.current_affect == Affects.poison_plus_0)
 			{
@@ -2368,7 +2368,7 @@ namespace engine
 			Player target = gbl.spellTargets[0];
 			gbl.damage_flags = DamageType.Unknown40;
 			gbl.damage = 67;
-			ovr024.CheckAffectsEffect(target, CheckType.Type_9);
+			ovr024.CheckAffectsEffect(target, CheckType.MagicResistance);
 
 			if (gbl.damage != 0)
 			{

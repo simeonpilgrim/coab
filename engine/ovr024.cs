@@ -14,7 +14,7 @@ namespace engine
         PreDamage = 6,
         PlayerRestrained = 7,
         Type_8 = 8,
-        Type_9 = 9,
+        MagicResistance = 9,
         Type_10 = 10,
         Type_11 = 11,
         SavingThrow = 12,
@@ -239,7 +239,7 @@ namespace engine
                     calc_affect_effect(Affects.item_invisibility, player);
                     break;
 
-                case CheckType.Type_9:
+                case CheckType.MagicResistance:
                     calc_affect_effect(Affects.resist_magic_50_percent, player);
                     calc_affect_effect(Affects.resist_magic_15_percent, player);
                     calc_affect_effect(Affects.elf_resist_sleep, player);
@@ -1302,7 +1302,7 @@ namespace engine
 		{
             gbl.current_affect = affect_id;
 
-            CheckAffectsEffect(target, CheckType.Type_9);
+            CheckAffectsEffect(target, CheckType.MagicResistance);
 
             if (gbl.current_affect == 0 ||
                 (saved == true && can_save == DamageOnSave.Zero))
