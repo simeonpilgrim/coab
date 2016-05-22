@@ -613,7 +613,7 @@ namespace engine
 
 					if (gbl.spellCastingTable[spell_id].affect_id > 0)
 					{
-						ovr024.is_unaffected(text, saved, gbl.spellCastingTable[spell_id].damageOnSave,
+						ovr024.ApplyAttackSpellAffect(text, saved, gbl.spellCastingTable[spell_id].damageOnSave,
 							call_affect_table, target_count, GetSpellAffectTimeout((Spells)spell_id), gbl.spellCastingTable[spell_id].affect_id,
 							target);
 					}
@@ -982,7 +982,7 @@ namespace engine
 					saved = true;
 				}
 
-				ovr024.is_unaffected(text, saved, can_save_flag, false, ovr025.spellMaxTargetCount(gbl.spell_id), GetSpellAffectTimeout((Spells)gbl.spell_id),
+				ovr024.ApplyAttackSpellAffect(text, saved, can_save_flag, false, ovr025.spellMaxTargetCount(gbl.spell_id), GetSpellAffectTimeout((Spells)gbl.spell_id),
 					gbl.spellCastingTable[gbl.spell_id].affect_id, target);
 			}
 		}
@@ -1572,7 +1572,7 @@ namespace engine
 
 						if (ovr024.combat_heal(player.hit_point_max, player) == true)
 						{
-							ovr024.is_unaffected("is animated", false, 0, true, var_2, 0, Affects.animate_dead, player);
+							ovr024.ApplyAttackSpellAffect("is animated", false, 0, true, var_2, 0, Affects.animate_dead, player);
 							player.health_status = Status.animated;
 						}
 					}
@@ -2326,7 +2326,7 @@ namespace engine
 
 		internal static void SpellDispelEvil() // is_affected4
 		{
-			ovr024.is_unaffected(string.Empty, false, 0, false, 0, GetSpellAffectTimeout(Spells.dispel_evil), Affects.dispel_evil, gbl.SelectedPlayer);
+			ovr024.ApplyAttackSpellAffect(string.Empty, false, 0, false, 0, GetSpellAffectTimeout(Spells.dispel_evil), Affects.dispel_evil, gbl.SelectedPlayer);
 			DoSpellCastingWork("is affected", 0, 0, false, 0, gbl.spell_id);
 		}
 
@@ -2398,7 +2398,7 @@ namespace engine
 				{
 					bool saved = ovr024.RollSavingThrow(0, SaveVerseType.Spell, target);
 
-					ovr024.is_unaffected("is entangled", saved, DamageOnSave.Zero, false, 0, GetSpellAffectTimeout((Spells)0x88), Affects.entangle, target);
+					ovr024.ApplyAttackSpellAffect("is entangled", saved, DamageOnSave.Zero, false, 0, GetSpellAffectTimeout((Spells)0x88), Affects.entangle, target);
 				}
 			}
 		}
@@ -2445,7 +2445,7 @@ namespace engine
 			{
 				bool saved = ovr024.RollSavingThrow(0, SaveVerseType.Spell, target);
 
-				ovr024.is_unaffected("is confused", saved, DamageOnSave.Zero, false, 0, GetSpellAffectTimeout(Spells.confusion), Affects.cause_disease_2, target);
+				ovr024.ApplyAttackSpellAffect("is confused", saved, DamageOnSave.Zero, false, 0, GetSpellAffectTimeout(Spells.confusion), Affects.cause_disease_2, target);
 			}
 		}
 
@@ -2497,7 +2497,7 @@ namespace engine
 
 				if (saves == false)
 				{
-					ovr024.is_unaffected("runs in terror", saves, DamageOnSave.Zero, true, 0, GetSpellAffectTimeout(Spells.fear), Affects.fear, target);
+					ovr024.ApplyAttackSpellAffect("runs in terror", saves, DamageOnSave.Zero, true, 0, GetSpellAffectTimeout(Spells.fear), Affects.fear, target);
 					target.actions.fleeing = true;
 					target.quick_fight = QuickFight.True;
 
@@ -2542,14 +2542,14 @@ namespace engine
 
 				if (input_key == 'H')
 				{
-					ovr024.is_unaffected("is protected", false, 0, false, 0, GetSpellAffectTimeout(Spells.fire_shield), Affects.hot_fire_shield, gbl.SelectedPlayer);
-					ovr024.is_unaffected(string.Empty, false, 0, false, 0, GetSpellAffectTimeout(Spells.fire_shield), Affects.protect_elec, gbl.SelectedPlayer);
+					ovr024.ApplyAttackSpellAffect("is protected", false, 0, false, 0, GetSpellAffectTimeout(Spells.fire_shield), Affects.hot_fire_shield, gbl.SelectedPlayer);
+					ovr024.ApplyAttackSpellAffect(string.Empty, false, 0, false, 0, GetSpellAffectTimeout(Spells.fire_shield), Affects.protect_elec, gbl.SelectedPlayer);
 					var_3 = true;
 				}
 				else if (input_key == 'C')
 				{
-					ovr024.is_unaffected(string.Empty, false, 0, false, 0, GetSpellAffectTimeout(Spells.fire_shield), Affects.cold_fire_shield, gbl.SelectedPlayer);
-					ovr024.is_unaffected(string.Empty, false, 0, false, 0, GetSpellAffectTimeout(Spells.fire_shield), Affects.protect_elec, gbl.SelectedPlayer);
+					ovr024.ApplyAttackSpellAffect(string.Empty, false, 0, false, 0, GetSpellAffectTimeout(Spells.fire_shield), Affects.cold_fire_shield, gbl.SelectedPlayer);
+					ovr024.ApplyAttackSpellAffect(string.Empty, false, 0, false, 0, GetSpellAffectTimeout(Spells.fire_shield), Affects.protect_elec, gbl.SelectedPlayer);
 					var_3 = true;
 				}
 				else
@@ -2573,7 +2573,7 @@ namespace engine
 
 			if (ovr024.RollSavingThrow(0, SaveVerseType.Spell, target) == false)
 			{
-				ovr024.is_unaffected("is clumsy", false, 0, false, 0, GetSpellAffectTimeout(Spells.fumble), Affects.fumbling, target);
+				ovr024.ApplyAttackSpellAffect("is clumsy", false, 0, false, 0, GetSpellAffectTimeout(Spells.fumble), Affects.fumbling, target);
 
 				if (target.HasAffect(Affects.fumbling) == true)
 				{
@@ -2582,7 +2582,7 @@ namespace engine
 			}
 			else
 			{
-				ovr024.is_unaffected("is slowed", false, 0, false, 0, GetSpellAffectTimeout(Spells.fumble), Affects.slow, target);
+				ovr024.ApplyAttackSpellAffect("is slowed", false, 0, false, 0, GetSpellAffectTimeout(Spells.fumble), Affects.slow, target);
 
 				if (target.HasAffect(Affects.slow) == true)
 				{

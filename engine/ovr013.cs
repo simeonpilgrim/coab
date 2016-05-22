@@ -485,7 +485,7 @@ namespace engine
 
 				player.actions.target = null;
 
-				ovr024.is_unaffected("runs away", false, DamageOnSave.Zero, true, 0, 10, Affects.fear, player);
+				ovr024.ApplyAttackSpellAffect("runs away", false, DamageOnSave.Zero, true, 0, 10, Affects.fear, player);
 			}
 			else if (var_1 >= 11 && var_1 <= 60)
 			{
@@ -495,7 +495,7 @@ namespace engine
 			}
 			else if (var_1 >= 61 && var_1 <= 80)
 			{
-				ovr024.is_unaffected("goes berserk", false, DamageOnSave.Zero, true, (byte)player.combat_team, 1, Affects.affect_89, player);
+				ovr024.ApplyAttackSpellAffect("goes berserk", false, DamageOnSave.Zero, true, (byte)player.combat_team, 1, Affects.affect_89, player);
 				ovr013.CallAffectTable(Effect.Add, null, player, Affects.affect_89);
 			}
 			else if (var_1 >= 81 && var_1 <= 100)

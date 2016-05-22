@@ -423,7 +423,7 @@ namespace engine
 
                         gbl.SelectedPlayer = sub_63D03(gbl.unk_18AEA, 4, gbl.NoxiousCloud, ovr033.PlayerMapPos(player));
 
-                        is_unaffected("starts to cough", save_passed, 0, false, 0xff, 1, Affects.stinking_cloud, player);
+                        ApplyAttackSpellAffect("starts to cough", save_passed, 0, false, 0xff, 1, Affects.stinking_cloud, player);
 
                         if (player.HasAffect(Affects.stinking_cloud) == true)
                         {
@@ -438,7 +438,7 @@ namespace engine
 
                         gbl.SelectedPlayer = sub_63D03(gbl.unk_18AEA, 4, gbl.NoxiousCloud, ovr033.PlayerMapPos(player));
 
-                        is_unaffected("chokes and gags from nausea", save_passed, 0, false, 0xff, (ushort)(roll_dice(4, 1) + 1), Affects.helpless, player);
+                        ApplyAttackSpellAffect("chokes and gags from nausea", save_passed, 0, false, 0xff, (ushort)(roll_dice(4, 1) + 1), Affects.helpless, player);
 
                         if (ovr025.FindAffect(out affect, Affects.helpless, player) == true)
                         {
@@ -1298,8 +1298,8 @@ namespace engine
         }
 
 
-        internal static void is_unaffected(string text, bool saved, DamageOnSave can_save, bool call_affect_table, int data, ushort time, Affects affect_id, Player target)
-        {
+        internal static void ApplyAttackSpellAffect(string text, bool saved, DamageOnSave can_save, bool call_affect_table, int data, ushort time, Affects affect_id, Player target) // is_unaffected
+		{
             gbl.current_affect = affect_id;
 
             CheckAffectsEffect(target, CheckType.Type_9);
