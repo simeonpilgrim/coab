@@ -1146,7 +1146,7 @@ namespace engine
 
 			if (target != null &&
 				gbl.spellTargets.Count > 0 &&
-				ovr024.RollSavingThrow(0, SaveVerseType.type4, target) == false &&
+				ovr024.RollSavingThrow(0, SaveVerseType.Spell, target) == false &&
 				target.HasAffect(Affects.enlarge) == true)
 			{
 				ovr024.remove_affect(null, Affects.enlarge, target);
@@ -2103,8 +2103,8 @@ namespace engine
 		{
 			int damage = ovr024.roll_dice(6, ovr025.spellMaxTargetCount(gbl.spell_id));
 
-			DoElecDamage(0, SaveVerseType.type4, damage, gbl.targetPos);
-			sub_5FA44(1, SaveVerseType.type4, damage, 7);
+			DoElecDamage(0, SaveVerseType.Spell, damage, gbl.targetPos);
+			sub_5FA44(1, SaveVerseType.Spell, damage, 7);
 		}
 
 
@@ -2200,8 +2200,8 @@ namespace engine
 
 		internal static void sub_6003C()
 		{
-			DoElecDamage(0, SaveVerseType.type4, ovr024.roll_dice(6, 1) + 20, gbl.targetPos);
-			sub_5FA44(0, SaveVerseType.type4, 20, 3);
+			DoElecDamage(0, SaveVerseType.Spell, ovr024.roll_dice(6, 1) + 20, gbl.targetPos);
+			sub_5FA44(0, SaveVerseType.Spell, 20, 3);
 		}
 
 
@@ -2372,7 +2372,7 @@ namespace engine
 
 			if (gbl.damage != 0)
 			{
-				if (ovr024.RollSavingThrow(0, SaveVerseType.type4, target) == false)
+				if (ovr024.RollSavingThrow(0, SaveVerseType.Spell, target) == false)
 				{
 					ovr024.KillPlayer("is slain", Status.dead, target);
 				}
@@ -2396,7 +2396,7 @@ namespace engine
 			{
 				foreach (var target in gbl.spellTargets)
 				{
-					bool saved = ovr024.RollSavingThrow(0, SaveVerseType.type4, target);
+					bool saved = ovr024.RollSavingThrow(0, SaveVerseType.Spell, target);
 
 					ovr024.is_unaffected("is entangled", saved, DamageOnSave.Zero, false, 0, GetSpellAffectTimeout((Spells)0x88), Affects.entangle, target);
 				}
@@ -2443,7 +2443,7 @@ namespace engine
 
 			foreach (var target in gbl.spellTargets)
 			{
-				bool saved = ovr024.RollSavingThrow(0, SaveVerseType.type4, target);
+				bool saved = ovr024.RollSavingThrow(0, SaveVerseType.Spell, target);
 
 				ovr024.is_unaffected("is confused", saved, DamageOnSave.Zero, false, 0, GetSpellAffectTimeout(Spells.confusion), Affects.cause_disease_2, target);
 			}
@@ -2493,7 +2493,7 @@ namespace engine
 
 			foreach (var target in gbl.spellTargets)
 			{
-				bool saves = ovr024.RollSavingThrow(0, SaveVerseType.type4, target);
+				bool saves = ovr024.RollSavingThrow(0, SaveVerseType.Spell, target);
 
 				if (saves == false)
 				{
@@ -2571,7 +2571,7 @@ namespace engine
 			Player target = gbl.spellTargets[0];
 			gbl.damage_flags = DamageType.Unknown40;
 
-			if (ovr024.RollSavingThrow(0, SaveVerseType.type4, target) == false)
+			if (ovr024.RollSavingThrow(0, SaveVerseType.Spell, target) == false)
 			{
 				ovr024.is_unaffected("is clumsy", false, 0, false, 0, GetSpellAffectTimeout(Spells.fumble), Affects.fumbling, target);
 
@@ -2748,7 +2748,7 @@ namespace engine
 		internal static void SpellFeeblemind() // sub_615F2
 		{
 			Player target = gbl.spellTargets[0];
-			int saveTypeSpell = (int)SaveVerseType.type4;
+			int saveTypeSpell = (int)SaveVerseType.Spell;
 
 			// Different classes have adjustments to their saving throw for this spell. 
 			var oldBonus = target.saveVerse[saveTypeSpell];
@@ -3054,7 +3054,7 @@ namespace engine
 				ovr025.load_missile_icons(0x13);
 				ovr025.draw_missile_attack(0x32, 4, gbl.targetPos, pos);
 
-				var_1 = DoElecDamage(var_1, 0, SaveVerseType.type4, ovr024.roll_dice_save(6, 16), gbl.targetPos);
+				var_1 = DoElecDamage(var_1, 0, SaveVerseType.Spell, ovr024.roll_dice_save(6, 16), gbl.targetPos);
 				sub_5FA44(0, 0, ovr024.roll_dice_save(6, 16), 10);
 				var_1 = true;
 				ovr025.clear_actions(caster);

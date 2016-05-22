@@ -504,7 +504,7 @@ namespace engine
 				ovr025.ClearPlayerTextArea();
 			}
 
-			if (ovr024.RollSavingThrow(-2, SaveVerseType.type4, player) == true)
+			if (ovr024.RollSavingThrow(-2, SaveVerseType.Spell, player) == true)
 			{
 				ovr024.remove_affect(null, Affects.confuse, player);
 			}
@@ -1058,7 +1058,7 @@ namespace engine
 			if ((gbl.damage_flags & DamageType.Fire) != 0 ||
 				(gbl.damage_flags & DamageType.Cold) != 0)
 			{
-				if (ovr024.RollSavingThrow(0, SaveVerseType.type4, player) == true &&
+				if (ovr024.RollSavingThrow(0, SaveVerseType.Spell, player) == true &&
                     gbl.spell_id > 0 &&
 					gbl.spellCastingTable[gbl.spell_id].damageOnSave != 0)
 				{
@@ -1200,7 +1200,7 @@ namespace engine
 
 		internal static void con_saving_bonus(Effect arg_0, object param, Player player) /* sub_3BE42 */
 		{
-			if (gbl.saveVerseType == SaveVerseType.type4 ||
+			if (gbl.saveVerseType == SaveVerseType.Spell ||
 				gbl.saveVerseType == SaveVerseType.type2)
 			{
 				int save_bonus = 0;
@@ -1758,7 +1758,7 @@ namespace engine
 			gbl.spell_target = player.actions.target;
 
 			if ((gbl.spell_target.field_14B & 1) != 0 &&
-				ovr024.RollSavingThrow(0, SaveVerseType.type4, gbl.spell_target) == false)
+				ovr024.RollSavingThrow(0, SaveVerseType.Spell, gbl.spell_target) == false)
 			{
 				ovr024.KillPlayer("is dispelled", Status.gone, gbl.spell_target);
 
