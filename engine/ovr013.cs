@@ -1201,7 +1201,7 @@ namespace engine
 		internal static void con_saving_bonus(Effect arg_0, object param, Player player) /* sub_3BE42 */
 		{
 			if (gbl.saveVerseType == SaveVerseType.Spell ||
-				gbl.saveVerseType == SaveVerseType.type2)
+				gbl.saveVerseType == SaveVerseType.RodStaffWand)
 			{
 				int save_bonus = 0;
 

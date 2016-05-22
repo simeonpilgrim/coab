@@ -8,7 +8,7 @@ namespace Classes
     {
         Poison = 0,
         Petrification,
-        type2,
+        RodStaffWand,
         type3,
         Spell
 	}
