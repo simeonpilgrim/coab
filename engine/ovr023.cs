@@ -2610,7 +2610,8 @@ namespace engine
 			byte dir = 0;
 			int var_16;
 			int ground_tile = 0;
-			int[] var_11 = new int[10];
+			const int max_targets = 9;
+			int[] targets = new int[max_targets];
 
 			gbl.byte_1D2C7 = true;
 
@@ -2622,11 +2623,11 @@ namespace engine
 
 			ovr024.add_affect(true, (byte)(var_15 + (count << 4)), var_15, Affects.affect_5b, gbl.SelectedPlayer);
 
-			for (var_16 = 0; var_16 < 9; var_16++)
+			for (var_16 = 0; var_16 < max_targets; var_16++)
 			{
 				dir = gbl.CloudDirections[var_16];
 
-				ovr033.AtMapXY(out ground_tile, out var_11[var_16], gbl.targetPos + gbl.MapDirectionDelta[dir]);
+				ovr033.AtMapXY(out ground_tile, out targets[var_16], gbl.targetPos + gbl.MapDirectionDelta[dir]);
 
 				if (ground_tile > 0 &&
 					gbl.BackGroundTiles[ground_tile].move_cost < 0xff)
@@ -2717,11 +2718,11 @@ namespace engine
 			seg041.GameDelay();
 			ovr025.ClearPlayerTextArea();
 
-			for (var_16 = 0; var_16 > 9; var_16++)
+			for (int idx = 0; idx < max_targets; idx++)
 			{
-				if (var_11[var_16] > 0)
+				if (targets[idx] > 0)
 				{
-					ovr024.in_poison_cloud(1, gbl.player_array[var_11[var_16]]);
+					ovr024.in_poison_cloud(1, gbl.player_array[targets[idx]]);
 				}
 			}
 		}
