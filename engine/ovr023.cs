@@ -2748,32 +2748,34 @@ namespace engine
 		internal static void SpellFeeblemind() // sub_615F2
 		{
 			Player target = gbl.spellTargets[0];
-			int saveType4 = (int)SaveVerseType.type4;
+			int saveTypeSpell = (int)SaveVerseType.type4;
 
-			var oldBonus = target.saveVerse[saveType4];
+			// Different classes have adjustments to their saving throw for this spell. 
+			var oldBonus = target.saveVerse[saveTypeSpell];
 
 			if (target._class == ClassId.cleric)
 			{
-				target.saveVerse[saveType4] -= 1;
+				target.saveVerse[saveTypeSpell] -= 1;
 			}
 			else if (target._class == ClassId.magic_user)
 			{
-				target.saveVerse[saveType4] += 4;
+				target.saveVerse[saveTypeSpell] += 4;
 			}
 			else
 			{
-				target.saveVerse[saveType4] += 2;
+				target.saveVerse[saveTypeSpell] += 2;
 			}
 
 			gbl.damage_flags = 0;
+
+			DoSpellCastingWork(string.Empty, 0, 0, false, 0, gbl.spell_id);
 
 			if (target.HasAffect(Affects.feeblemind) == true)
 			{
 				ovr013.CallAffectTable(Effect.Add, null, target, Affects.feeblemind);
 			}
 
-			//Todo Feeblemind does not seam to have a lasting effect.
-			target.saveVerse[saveType4] = oldBonus;
+			target.saveVerse[saveTypeSpell] = oldBonus;
 		}
 
 
