@@ -362,7 +362,7 @@ namespace engine
             }
             else if (arg_4 == 0x9b)
             {
-                return_val = gbl.SelectedPlayer.saveVerse[1];
+                return_val = gbl.SelectedPlayer.saveVerse[(int)SaveVerseType.type1];
             }
             else if (arg_4 == 0xa0)
             {

@@ -369,54 +369,56 @@ namespace engine
 
                 if (save == 0)
                 {
-                    SaveVerseZeroBonus(player, applyBonus);
+                    SaveVersePoisonBonus(player, applyBonus);
                 }
             }
         }
 
-        private static void SaveVerseZeroBonus(Player player, bool applyBonus)
+        private static void SaveVersePoisonBonus(Player player, bool applyBonus)
         {
+			int poison = (int)SaveVerseType.Poison;
+
             if (player.race == Race.dwarf ||
                 player.race == Race.halfling ||
                 applyBonus == true)
             {
                 if (player.stats2.Con.full >= 4 && player.stats2.Con.full <= 6)
                 {
-                    player.saveVerse[0] += 1;
+                    player.saveVerse[poison] += 1;
                 }
                 else if (player.stats2.Con.full >= 7 && player.stats2.Con.full <= 10)
                 {
-                    player.saveVerse[0] += 2;
+                    player.saveVerse[poison] += 2;
                 }
                 else if (player.stats2.Con.full >= 11 && player.stats2.Con.full <= 13)
                 {
-                    player.saveVerse[0] += 3;
+                    player.saveVerse[poison] += 3;
                 }
                 else if (player.stats2.Con.full >= 14 && player.stats2.Con.full <= 17)
                 {
-                    player.saveVerse[0] += 4;
+                    player.saveVerse[poison] += 4;
                 }
                 else if (player.stats2.Con.full == 18)
                 {
-                    player.saveVerse[0] += 5;
+                    player.saveVerse[poison] += 5;
                 }
             }
 
             if (player.stats2.Con.full == 19 || player.stats2.Con.full == 20)
             {
-                player.saveVerse[0] += 1;
+                player.saveVerse[poison] += 1;
             }
             else if (player.stats2.Con.full == 21 || player.stats2.Con.full == 22)
             {
-                player.saveVerse[0] += 2;
+                player.saveVerse[poison] += 2;
             }
             else if (player.stats2.Con.full == 23 || player.stats2.Con.full == 24)
             {
-                player.saveVerse[0] += 3;
+                player.saveVerse[poison] += 3;
             }
             else if (player.stats2.Con.full == 25)
             {
-                player.saveVerse[0] += 4;
+                player.saveVerse[poison] += 4;
             }
         }
 

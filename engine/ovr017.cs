@@ -276,7 +276,7 @@ namespace engine
             player.attackLevel = bp_var_1C0.field_6B;
             player.field_DE = bp_var_1C0.field_6C;
 
-            System.Array.Copy(bp_var_1C0.field_6D, player.saveVerse, 5);
+            System.Array.Copy(bp_var_1C0.saveVerse, player.saveVerse, 5);
 
             player.base_movement = bp_var_1C0.field_72;
             player.HitDice = bp_var_1C0.field_73;

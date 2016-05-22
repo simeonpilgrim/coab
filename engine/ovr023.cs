@@ -2748,20 +2748,21 @@ namespace engine
 		internal static void SpellFeeblemind() // sub_615F2
 		{
 			Player target = gbl.spellTargets[0];
+			int saveType4 = (int)SaveVerseType.type4;
 
-			var oldBonus = target.saveVerse[4];
+			var oldBonus = target.saveVerse[saveType4];
 
 			if (target._class == ClassId.cleric)
 			{
-				target.saveVerse[4] -= 1;
+				target.saveVerse[saveType4] -= 1;
 			}
 			else if (target._class == ClassId.magic_user)
 			{
-				target.saveVerse[4] += 4;
+				target.saveVerse[saveType4] += 4;
 			}
 			else
 			{
-				target.saveVerse[4] += 2;
+				target.saveVerse[saveType4] += 2;
 			}
 
 			gbl.damage_flags = 0;
@@ -2772,7 +2773,7 @@ namespace engine
 			}
 
 			//Todo Feeblemind does not seam to have a lasting effect.
-			target.saveVerse[4] = oldBonus;
+			target.saveVerse[saveType4] = oldBonus;
 		}
 
 

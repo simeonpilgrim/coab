@@ -24,7 +24,7 @@ namespace Classes
         public byte[] field_33; // 0x33 Array 0x38, 0x33 - 0x6A
         public byte field_6B; // 0x6B
         public byte field_6C; // 0x6C
-        public byte[] field_6D; // 0x6D Array 5, 0x6D - 0x71
+        public byte[] saveVerse; // 0x6D Array 5, 0x6D - 0x71
         public byte field_72; // 0x72
         public byte field_73; // 0x73
         public byte field_74; // 0x74
@@ -99,7 +99,7 @@ namespace Classes
         public PoolRadPlayer()
         {
             field_33 = new byte[0x38];
-            field_6D = new byte[5];
+            saveVerse = new byte[5];
             field_77 = new byte[8];
             field_96 = new byte[8];
             field_B2 = new byte[3];
@@ -129,7 +129,7 @@ namespace Classes
 
             field_6B = data[0x6B];
             field_6C = data[0x6C];
-            System.Array.Copy(data, 0x6D, field_6D, 0, 5);
+            System.Array.Copy(data, 0x6D, saveVerse, 0, 5);
             field_72 = data[0x72];
             field_73 = data[0x73];
             field_74 = data[0x74];
