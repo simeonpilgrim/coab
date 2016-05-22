@@ -12,7 +12,6 @@ namespace GoldBox.Engine
 
         static string[] temple_sl = { "Cure Blindness", "Cure Disease", "Cure Light Wounds", "Cure Serious Wounds", "Cure Critical Wounds", "Heal", "Neutralize Poison", "Raise Dead", "Remove Curse", "Stone to Flesh", "Exit" };
 
-
         static bool CastCureAnyway(string text)
         {
             ovr025.DisplayPlayerStatusString(false, 0, text, gbl.SelectedPlayer);
@@ -23,7 +22,6 @@ namespace GoldBox.Engine
 
             return ret_val == 'Y';
         }
-
 
         internal static bool buy_cure(int cost, string cure_name) /* buy_cure */
         {
@@ -60,7 +58,6 @@ namespace GoldBox.Engine
             return buy;
         }
 
-
         internal static void cure_blindness()
         {
             bool cast = true;
@@ -78,7 +75,6 @@ namespace GoldBox.Engine
                 }
             }
         }
-
 
         internal static void cure_disease()
         {
@@ -104,7 +100,6 @@ namespace GoldBox.Engine
                 }
             }
         }
-
 
         internal static void cure_wounds(int healType)
         {
@@ -157,7 +152,6 @@ namespace GoldBox.Engine
                     break;
             }
         }
-
 
         internal static void raise_dead()
         {
@@ -240,7 +234,6 @@ namespace GoldBox.Engine
             }
         }
 
-
         internal static void cure_poison2()
         {
             bool isPoisoned = gbl.SelectedPlayer.HasAffect(Affects.poisoned);
@@ -261,7 +254,6 @@ namespace GoldBox.Engine
             }
         }
 
-
         internal static void remove_curse()
         {
             bool has_curse_items = gbl.SelectedPlayer.items.Find(item => item.cursed) != null;
@@ -281,7 +273,6 @@ namespace GoldBox.Engine
             }
         }
 
-
         internal static void stone_to_flesh()
         {
             if (gbl.SelectedPlayer.health_status == Status.stoned ||
@@ -296,7 +287,6 @@ namespace GoldBox.Engine
                 }
             }
         }
-
 
         internal static void temple_heal()
         {
@@ -385,7 +375,6 @@ namespace GoldBox.Engine
             ovr025.LoadPic();
             ovr025.PartySummary(gbl.SelectedPlayer);
         }
-
 
         internal static void temple_shop()
         {
@@ -489,8 +478,7 @@ namespace GoldBox.Engine
                         break;
                 }
 
-                if (input_key == 'B' ||
-                    input_key == 'T')
+                if (input_key == 'B' || input_key == 'T')
                 {
                     ovr025.LoadPic();
                 }
