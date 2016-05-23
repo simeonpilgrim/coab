@@ -211,7 +211,7 @@ namespace engine
                     calc_affect_effect(Affects.affect_5d, player);
                     calc_affect_effect(Affects.troll_regen, player);
                     calc_affect_effect(Affects.mirror_image, player);
-                    calc_affect_effect(Affects.affect_6e, player);
+                    calc_affect_effect(Affects.immune_to_cold, player);
                     calc_affect_effect(Affects.prot_drag_breath, player);
                     calc_affect_effect(Affects.resist_fire_and_cold, player);
                     calc_affect_effect(Affects.shambling_absorb_lightning, player);
@@ -245,7 +245,7 @@ namespace engine
                     calc_affect_effect(Affects.elf_resist_sleep, player);
                     calc_affect_effect(Affects.protect_charm_sleep, player);
                     calc_affect_effect(Affects.resist_paralyze, player);
-                    calc_affect_effect(Affects.affect_6e, player);
+                    calc_affect_effect(Affects.immune_to_cold, player);
                     calc_affect_effect(Affects.affect_6f, player);
                     calc_affect_effect(Affects.immune_to_fire, player);
                     calc_affect_effect(Affects.halfelf_resistance, player);
@@ -421,7 +421,7 @@ namespace engine
                     {
                         Player tmp_player_ptr = gbl.SelectedPlayer;
 
-                        gbl.SelectedPlayer = sub_63D03(gbl.unk_18AEA, 4, gbl.NoxiousCloud, ovr033.PlayerMapPos(player));
+                        gbl.SelectedPlayer = sub_63D03(gbl.unk_18AEA, 4, gbl.StinkingCloud, ovr033.PlayerMapPos(player));
 
                         ApplyAttackSpellAffect("starts to cough", save_passed, 0, false, 0xff, 1, Affects.stinking_cloud, player);
 
@@ -436,7 +436,7 @@ namespace engine
                     {
                         Player tmp_player_ptr = gbl.SelectedPlayer;
 
-                        gbl.SelectedPlayer = sub_63D03(gbl.unk_18AEA, 4, gbl.NoxiousCloud, ovr033.PlayerMapPos(player));
+                        gbl.SelectedPlayer = sub_63D03(gbl.unk_18AEA, 4, gbl.StinkingCloud, ovr033.PlayerMapPos(player));
 
                         ApplyAttackSpellAffect("chokes and gags from nausea", save_passed, 0, false, 0xff, (ushort)(roll_dice(4, 1) + 1), Affects.helpless, player);
 

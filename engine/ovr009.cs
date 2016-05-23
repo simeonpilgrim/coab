@@ -8,8 +8,8 @@ namespace engine
     {
         internal static void free_combat_stuff() /* sub_3304B */
         {
-            gbl.NoxiousCloud.Clear();
-            gbl.PoisonousCloud.Clear();
+            gbl.StinkingCloud.Clear();
+            gbl.CloudKillCloud.Clear();
 
             gbl.mapToBackGroundTile = null;
 
@@ -149,7 +149,7 @@ namespace engine
         internal static void combat_menu(Player player) /* camp_menu */
         {
             int spell_id;
-            Struct_1D183 var_D = new Struct_1D183();
+            DownedPlayerTile var_D = new DownedPlayerTile();
             char var_1;
 
             if (player.in_combat == true)

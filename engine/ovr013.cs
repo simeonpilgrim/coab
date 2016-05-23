@@ -544,11 +544,11 @@ namespace engine
 		}
 
 
-		internal static void sub_3AC1D(Effect arg_0, object param, Player player)
+		internal static void StinkingCloudAffect(Effect arg_0, object param, Player player) // sub_3AC1D
 		{
 			Affect affect = (Affect)param;
 
-			var var_8 = gbl.NoxiousCloud.Find(cell => cell.player == player && cell.field_1C == (affect.affect_data >> 4));
+			var var_8 = gbl.StinkingCloud.Find(cell => cell.player == player && cell.field_1C == (affect.affect_data >> 4));
 
 			if (var_8 != null)
 			{
@@ -573,9 +573,9 @@ namespace engine
 					}
 				}
 
-				gbl.NoxiousCloud.Remove(var_8);
+				gbl.StinkingCloud.Remove(var_8);
 
-				foreach (var var_4 in gbl.NoxiousCloud)
+				foreach (var var_4 in gbl.StinkingCloud)
 				{
 					for (int var_B = 0; var_B < 4; var_B++)
 					{
@@ -1117,21 +1117,21 @@ namespace engine
 		}
 
 
-		internal static void sub_3BAB9(Effect arg_0, object param, Player player)
+		internal static void CloudKillAffect(Effect arg_0, object param, Player player) // sub_3BAB9
 		{
 			Affect affect = (Affect)param;
 
-			GasCloud var_8 = gbl.PoisonousCloud.Find(cell => cell.player == player && cell.field_1C == (affect.affect_data >> 4));
+			GasCloud cell = gbl.CloudKillCloud.Find(cell => cell.player == player && cell.field_1C == (affect.affect_data >> 4));
 
-			if (var_8 != null)
+			if (cell != null)
 			{
 				ovr025.string_print01("The air clears a little...");
 
 				for (int var_B = 0; var_B < 9; var_B++)
 				{
-					if (var_8.present[var_B] == true)
+					if (cell.present[var_B] == true)
 					{
-						var tmp = var_8.targetPos + gbl.MapDirectionDelta[gbl.CloudDirections[var_B]];
+						var tmp = cell.targetPos + gbl.MapDirectionDelta[gbl.CloudDirections[var_B]];
 
 						bool var_E = gbl.downedPlayers.Exists(cell => cell.target != null && cell.map == tmp);
 
@@ -1141,15 +1141,15 @@ namespace engine
 						}
 						else
 						{
-							gbl.mapToBackGroundTile[tmp] = var_8.groundTile[var_B];
+							gbl.mapToBackGroundTile[tmp] = cell.groundTile[var_B];
 						}
 					}
 				}
 
 
-				gbl.PoisonousCloud.Remove(var_8);
+				gbl.CloudKillCloud.Remove(cell);
 
-				foreach (var var_4 in gbl.PoisonousCloud)
+				foreach (var var_4 in gbl.CloudKillCloud)
 				{
 					for (int var_B = 0; var_B < 9; var_B++)
 					{
@@ -1369,7 +1369,7 @@ namespace engine
 		}
 
 
-		internal static void sub_3C1B2(Effect arg_0, object param, Player arg_6)
+		internal static void AffectImmuneToCold(Effect arg_0, object param, Player arg_6) // sub_3C1B2
 		{
 			if ((gbl.damage_flags & DamageType.Cold) != 0)
 			{
@@ -1416,7 +1416,7 @@ namespace engine
 		}
 
 
-		internal static void sub_3C246(Effect arg_0, object param, Player player)
+		internal static void AffectProtectionFromElectricity(Effect arg_0, object param, Player player) // sub_3C246
 		{
 			if ((gbl.damage_flags & DamageType.Electricity) != 0)
 			{
@@ -1820,7 +1820,7 @@ namespace engine
 			affect_table.Add(Affects.blink, ovr013.AffectBlink);
 			affect_table.Add(Affects.strength, ovr013.empty);
 			affect_table.Add(Affects.haste, ovr013.AffectHaste);
-			affect_table.Add(Affects.affect_28, ovr013.sub_3AC1D);
+			affect_table.Add(Affects.affect_in_stinking_cloud, ovr013.StinkingCloudAffect);
 			affect_table.Add(Affects.prot_from_normal_missiles, ovr013.AffectProtNormalMissles);
 			affect_table.Add(Affects.slow, ovr013.AffectSlow);
             affect_table.Add(Affects.weaken, ovr013.weaken);
@@ -1871,7 +1871,7 @@ namespace engine
 			affect_table.Add(Affects.breath_elec, ovr023.DragonBreathElec);
 			affect_table.Add(Affects.displace, ovr013.AffectDisplace);
 			affect_table.Add(Affects.breath_acid, ovr023.DragonBreathAcid);
-			affect_table.Add(Affects.affect_5b, ovr013.sub_3BAB9);
+			affect_table.Add(Affects.affect_in_cloud_kill, ovr013.CloudKillAffect);
 			affect_table.Add(Affects.affect_5c, ovr013.empty);
 			affect_table.Add(Affects.affect_5d, ovr013.half_fire_damage);
 			affect_table.Add(Affects.affect_5e, ovr013.sub_3BDB2);
@@ -1890,11 +1890,11 @@ namespace engine
 			affect_table.Add(Affects.elf_resist_sleep, ovr013.AffectElfRisistSleep);
 			affect_table.Add(Affects.protect_charm_sleep, ovr013.AffectProtCharmSleep);
 			affect_table.Add(Affects.resist_paralyze, ovr013.ResistParalyze);
-			affect_table.Add(Affects.affect_6e, ovr013.sub_3C1B2);
+			affect_table.Add(Affects.immune_to_cold, ovr013.AffectImmuneToCold);
 			affect_table.Add(Affects.affect_6f, ovr013.sub_3C1C9);
 			affect_table.Add(Affects.immune_to_fire, ovr013.AffectImmuneToFire);
 			affect_table.Add(Affects.affect_71, ovr013.sub_3C201);
-			affect_table.Add(Affects.affect_72, ovr013.sub_3C246);
+			affect_table.Add(Affects.affect_72, ovr013.AffectProtectionFromElectricity);
 			affect_table.Add(Affects.affect_73, ovr013.sub_3C260);
 			affect_table.Add(Affects.affect_74, ovr013.half_damage_if_weap_magic);
 			affect_table.Add(Affects.affect_75, ovr013.sub_3C2F9);

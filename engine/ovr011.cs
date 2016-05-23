@@ -1128,7 +1128,7 @@ namespace engine
                         {
                             var pos = gbl.CombatMap[loop_var].pos;
 
-                            var b = new Struct_1D183();
+                            var b = new DownedPlayerTile();
                             gbl.downedPlayers.Add(b);
 
                             b.originalBackgroundTile = gbl.mapToBackGroundTile[pos];
@@ -1188,11 +1188,11 @@ namespace engine
             gbl.combat_round_no_action_limit = gbl.combat_round_no_action_value;
             gbl.attack_roll = 0;
 
-            gbl.NoxiousCloud = new List<GasCloud>();
-            gbl.PoisonousCloud = new List<GasCloud>();
+            gbl.StinkingCloud = new List<GasCloud>();
+            gbl.CloudKillCloud = new List<GasCloud>();
             gbl.item_ptr = null;
 
-            gbl.downedPlayers = new List<Struct_1D183>();
+            gbl.downedPlayers = new List<DownedPlayerTile>();
 
             gbl.area2_ptr.field_666 = 0;
 

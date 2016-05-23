@@ -670,7 +670,7 @@ namespace Classes
 
         public static ItemDataTable ItemDataTable; // unk_1C020
 
-        public static List<Struct_1D183> downedPlayers; // unk_1D183 
+        public static List<DownedPlayerTile> downedPlayers; // unk_1D183 
 
         public static Struct_1D1BC mapToBackGroundTile; // stru_1D1BC
 
@@ -680,8 +680,8 @@ namespace Classes
 
         public readonly static byte[] /* seg600:27DD */ CloudDirections = { 8, 0, 1, 2, 3, 4, 5, 6, 7 }; // unk_18AED used by CloudKill
 
-        public static List<GasCloud> NoxiousCloud; // stru_1D885
-        public static List<GasCloud> PoisonousCloud; // stru_1D889 
+        public static List<GasCloud> StinkingCloud; // stru_1D885
+        public static List<GasCloud> CloudKillCloud; // stru_1D889 
 
         public static Point[] MapDirectionDelta = { new Point(0, -1), new Point(1, -1), new Point(1, 0), new Point(1, 1), new Point(0, 1), new Point(-1, 1), new Point(-1, 0), new Point(-1, -1), new Point(0, 0) };
         public readonly static sbyte[] MapDirectionXDelta = /*unk_189A6 seg600:2696*/ { 0, 1, 1, 1, 0, -1, -1, -1, 0 }; //TODO remove

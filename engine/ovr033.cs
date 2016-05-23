@@ -578,7 +578,7 @@ namespace engine
                     // Add downed corpse for team players.
                     if (player.actions.nonTeamMember == false)
                     {
-                        var b = new Struct_1D183();
+                        var b = new DownedPlayerTile();
 
                         gbl.downedPlayers.Add(b);
                         b.originalBackgroundTile = gbl.mapToBackGroundTile[map];

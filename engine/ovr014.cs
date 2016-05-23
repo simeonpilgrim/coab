@@ -1042,7 +1042,7 @@ namespace engine
         {
             Player lowest_target = null;
             int lowest_hp = 0x0FF;
-            Struct_1D183 var_8 = null;
+            DownedPlayerTile var_8 = null;
 
             for (int dir = 0; dir <= 8; dir++)
             {
@@ -1092,7 +1092,7 @@ namespace engine
 
         static Affects[] unk_18ADB = { Affects.bless, Affects.snake_charm, Affects.paralyze, Affects.sleep, Affects.helpless }; // seg600:27CB first is filler (off by 1)
 
-        internal static bool sub_4001C(Struct_1D183 arg_0, bool canTargetEmptyGround, QuickFight quick_fight, int spellId)
+        internal static bool sub_4001C(DownedPlayerTile arg_0, bool canTargetEmptyGround, QuickFight quick_fight, int spellId)
         {
             bool var_2 = false;
             if (quick_fight == QuickFight.False)
@@ -1163,7 +1163,7 @@ namespace engine
 
         internal static bool target(QuickFight quick_fight, int spellId)
         {
-            Struct_1D183 var_C = new Struct_1D183();
+            DownedPlayerTile var_C = new DownedPlayerTile();
 
             bool castSpell = true;
             gbl.spellTargets.Clear();
@@ -1803,7 +1803,7 @@ namespace engine
         }
 
 
-        internal static bool sub_411D8(Struct_1D183 arg_0, bool showRange, Player target, Player attacker)
+        internal static bool sub_411D8(DownedPlayerTile arg_0, bool showRange, Player target, Player attacker)
         {
             bool arg_4 = true;
 
@@ -1856,7 +1856,7 @@ namespace engine
 
         static Set asc_41342 = new Set(0, 69, 84);
 
-        internal static bool Target(Struct_1D183 arg_0, bool allowTarget, bool canTargetEmptyGround, bool showRange, int maxRange, Player target, Player player01)
+        internal static bool Target(DownedPlayerTile arg_0, bool allowTarget, bool canTargetEmptyGround, bool showRange, int maxRange, Player target, Player player01)
         {
             Item dummyItem;
 
@@ -2118,7 +2118,7 @@ namespace engine
         static Set unk_41B05 = new Set(71, 72, 73, 75, 77, 79, 80, 81);
 
 
-        internal static bool aim_menu(Struct_1D183 arg_0, bool allowTarget, bool canTargetEmptyGround, bool showRange, int maxRange, Player attacker) /* sub_41B25 */
+        internal static bool aim_menu(DownedPlayerTile arg_0, bool allowTarget, bool canTargetEmptyGround, bool showRange, int maxRange, Player attacker) /* sub_41B25 */
         {
             Player target; /* var_E5 */
 

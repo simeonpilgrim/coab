@@ -1377,12 +1377,12 @@ namespace engine
 			gbl.byte_1D2C7 = true;
 
 			byte var_10 = (byte)ovr025.spellMaxTargetCount(gbl.spell_id);
-			int count = gbl.NoxiousCloud.FindAll(cell => cell.player == gbl.SelectedPlayer).Count;
+			int count = gbl.StinkingCloud.FindAll(cell => cell.player == gbl.SelectedPlayer).Count;
 
 			GasCloud var_8 = new GasCloud(gbl.SelectedPlayer, count, gbl.targetPos);
-			gbl.NoxiousCloud.Add(var_8);
+			gbl.StinkingCloud.Add(var_8);
 
-			ovr024.add_affect(true, (byte)(var_10 + (count << 4)), var_10, Affects.affect_28, gbl.SelectedPlayer);
+			ovr024.add_affect(true, (byte)(var_10 + (count << 4)), var_10, Affects.affect_in_stinking_cloud, gbl.SelectedPlayer);
 
 			for (int var_11 = 0; var_11 < 4; var_11++)
 			{
@@ -1402,7 +1402,7 @@ namespace engine
 
 				if (groundTile == 0x1E)
 				{
-					foreach (var var_4 in gbl.NoxiousCloud)
+					foreach (var var_4 in gbl.StinkingCloud)
 					{
 						if (var_4 != var_8)
 						{
@@ -1766,13 +1766,13 @@ namespace engine
 
 				if (ground_tile == 0x1C || ground_tile == 0x1E)
 				{
-					int dirCount = (ground_tile == 0x1C) ? 9 : 4;
-					var looplist = (ground_tile == 0x1C) ? gbl.PoisonousCloud : gbl.NoxiousCloud;
+					int targetCount = (ground_tile == 0x1C) ? 9 : 4;
+					var looplist = (ground_tile == 0x1C) ? gbl.CloudKillCloud : gbl.StinkingCloud;
 
 					var mappos = new Point(xPos, yPos);
 					looplist.ForEach(var_18 =>
 					{
-						for (int var_1 = 0; var_1 < dirCount; var_1++)
+						for (int var_1 = 0; var_1 < targetCount; var_1++)
 						{
 							if (mappos == var_18.targetPos + gbl.MapDirectionDelta[gbl.SmallCloudDirections[var_1]] &&
 								var_18.field_1D == false)
@@ -1784,8 +1784,8 @@ namespace engine
 
 									foreach (Affect tmpAffect in var_18.player.affects)
 									{
-										if (((affect.type == Affects.affect_5b && ground_tile == 0x1c) ||
-											 (affect.type == Affects.affect_28 && ground_tile == 0x1E)) &&
+										if (((affect.type == Affects.affect_in_cloud_kill && ground_tile == 0x1c) ||
+											 (affect.type == Affects.affect_in_stinking_cloud && ground_tile == 0x1E)) &&
 											(affect.affect_data >> 4) == var_18.field_1C)
 										{
 											affect = tmpAffect;
@@ -1798,11 +1798,11 @@ namespace engine
 									{
 										if (ground_tile == 0x1C)
 										{
-											ovr024.remove_affect(affect, Affects.affect_5b, var_18.player);
+											ovr024.remove_affect(affect, Affects.affect_in_cloud_kill, var_18.player);
 										}
 										else
 										{
-											ovr024.remove_affect(affect, Affects.affect_28, var_18.player);
+											ovr024.remove_affect(affect, Affects.affect_in_stinking_cloud, var_18.player);
 										}
 									}
 								}
@@ -2616,12 +2616,12 @@ namespace engine
 			gbl.byte_1D2C7 = true;
 
 			byte var_15 = (byte)ovr025.spellMaxTargetCount(gbl.spell_id);
-			int count = gbl.PoisonousCloud.FindAll(cell => cell.player == gbl.SelectedPlayer).Count;
+			int count = gbl.CloudKillCloud.FindAll(cell => cell.player == gbl.SelectedPlayer).Count;
 
 			GasCloud var_8 = new GasCloud(gbl.SelectedPlayer, count, gbl.targetPos);
-			gbl.PoisonousCloud.Add(var_8);
+			gbl.CloudKillCloud.Add(var_8);
 
-			ovr024.add_affect(true, (byte)(var_15 + (count << 4)), var_15, Affects.affect_5b, gbl.SelectedPlayer);
+			ovr024.add_affect(true, (byte)(var_15 + (count << 4)), var_15, Affects.affect_in_cloud_kill, gbl.SelectedPlayer);
 
 			for (var_16 = 0; var_16 < max_targets; var_16++)
 			{
@@ -2642,7 +2642,7 @@ namespace engine
 				if (ground_tile == 0x1E)
 				{
 					bool found = false;
-					foreach (var var_4 in gbl.NoxiousCloud)
+					foreach (var var_4 in gbl.StinkingCloud)
 					{
 						for (int var_12 = 0; var_12 < 4; var_12++)
 						{
@@ -2662,7 +2662,7 @@ namespace engine
 				else if (ground_tile == 0x1C)
 				{
 					bool found = false;
-					foreach (GasCloud var_4 in gbl.PoisonousCloud)
+					foreach (GasCloud var_4 in gbl.CloudKillCloud)
 					{
 						if (var_4 != var_8)
 						{
