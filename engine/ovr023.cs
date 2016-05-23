@@ -1367,6 +1367,7 @@ namespace engine
 			DoSpellCastingWork("is weakened", 0, 0, false, 0, gbl.spell_id);
 		}
 
+		const int StinkingCloudMaxTargets = 4;
 
 		internal static void SpellStinkingCloud() //TODO similar to spell_poisonous_cloud
 		{
@@ -1384,7 +1385,7 @@ namespace engine
 
 			ovr024.add_affect(true, (byte)(var_10 + (count << 4)), var_10, Affects.affect_in_stinking_cloud, gbl.SelectedPlayer);
 
-			for (int var_11 = 0; var_11 < 4; var_11++)
+			for (int var_11 = 0; var_11 < StinkingCloudMaxTargets; var_11++)
 			{
 				var_12 = gbl.SmallCloudDirections[var_11];
 

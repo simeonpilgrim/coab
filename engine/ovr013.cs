@@ -1121,7 +1121,7 @@ namespace engine
 		{
 			Affect affect = (Affect)param;
 
-			GasCloud cell = gbl.CloudKillCloud.Find(cell => cell.player == player && cell.field_1C == (affect.affect_data >> 4));
+			GasCloud cell = gbl.CloudKillCloud.Find(c => c.player == player && c.field_1C == (affect.affect_data >> 4));
 
 			if (cell != null)
 			{
@@ -1133,7 +1133,7 @@ namespace engine
 					{
 						var tmp = cell.targetPos + gbl.MapDirectionDelta[gbl.CloudDirections[var_B]];
 
-						bool var_E = gbl.downedPlayers.Exists(cell => cell.target != null && cell.map == tmp);
+						bool var_E = gbl.downedPlayers.Exists(c => c.target != null && c.map == tmp);
 
 						if (var_E == true)
 						{
