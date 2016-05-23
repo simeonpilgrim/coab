@@ -673,8 +673,12 @@ namespace Classes
         public static List<DownedPlayerTile> downedPlayers; // unk_1D183 
 
         public static Struct_1D1BC mapToBackGroundTile; // stru_1D1BC
-
-
+		public const int Tile_Table = 0x1A;
+		public const int Tile_Chair = 0x1B;
+		public const int Tile_CloudKill = 0x1C;
+		public const int Tile_StinkingCloud = 0x1E;
+		public const int Tile_DownPlayer = 0x1F;
+	
         public readonly static byte[] /*seg600:27D9*/ SmallCloudDirections = { 8, 2, 3, 4 }; // unk_18AE9 used by NoxiousCloud
         public readonly static byte[] /*seg600:27DA*/ unk_18AEA = { 2, 3, 4, 8 };
 

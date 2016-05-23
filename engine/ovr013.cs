@@ -564,7 +564,7 @@ namespace engine
 
 						if (var_9 == true)
 						{
-							gbl.mapToBackGroundTile[tmp] = 0x1F;
+							gbl.mapToBackGroundTile[tmp] = gbl.Tile_DownPlayer;
 						}
 						else
 						{
@@ -583,7 +583,7 @@ namespace engine
 						{
 							var tmp = gbl.MapDirectionDelta[gbl.SmallCloudDirections[var_B]] + var_4.targetPos;
 
-							gbl.mapToBackGroundTile[tmp] = 0x1E;
+							gbl.mapToBackGroundTile[tmp] = gbl.Tile_StinkingCloud;
 						}
 					}
 				}
@@ -1137,7 +1137,7 @@ namespace engine
 
 						if (var_E == true)
 						{
-							gbl.mapToBackGroundTile[tmp] = 0x1F;
+							gbl.mapToBackGroundTile[tmp] = gbl.Tile_DownPlayer;
 						}
 						else
 						{
@@ -1157,7 +1157,7 @@ namespace engine
 						{
 							var tmp = var_4.targetPos + gbl.MapDirectionDelta[gbl.CloudDirections[var_B]];
 
-							gbl.mapToBackGroundTile[tmp] = 0x1C;
+							gbl.mapToBackGroundTile[tmp] = gbl.Tile_CloudKill;
 						}
 					}
 				}

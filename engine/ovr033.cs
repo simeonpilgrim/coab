@@ -585,9 +585,9 @@ namespace engine
                         b.target = player;
                         b.map = map;
 
-                        if (gbl.mapToBackGroundTile[map] != 0x1E)
+                        if (gbl.mapToBackGroundTile[map] != gbl.Tile_StinkingCloud)
                         {
-                            gbl.mapToBackGroundTile[map] = 0x1F;
+                            gbl.mapToBackGroundTile[map] = gbl.Tile_DownPlayer;
                         }
                     }
 
@@ -641,7 +641,7 @@ namespace engine
                     if (arg_0 == true &&
                         player.actions.nonTeamMember == false)
                     {
-                        var downed = gbl.downedPlayers.FindLast(cell => cell.target == player && cell.originalBackgroundTile != 0x1f);
+                        var downed = gbl.downedPlayers.FindLast(cell => cell.target == player && cell.originalBackgroundTile != gbl.Tile_DownPlayer);
                         if (downed != null)
                         {
                             ground_tile = downed.originalBackgroundTile;

@@ -1067,7 +1067,7 @@ namespace engine
                         }
                     }
                 }
-                else if (ground_tile == 0x1F)
+                else if (ground_tile == gbl.Tile_DownPlayer)
                 {
                     var_8 = gbl.downedPlayers.FindLast(cell => cell.target != null && cell.map == map &&
                         cell.target.health_status != Status.tempgone && cell.target.health_status != Status.running &&
@@ -1914,7 +1914,7 @@ namespace engine
                     {
                         target = gbl.player_array[playerAtXY];
                     }
-                    else if (groundTile == 0x1f)
+                    else if (groundTile == gbl.Tile_DownPlayer)
                     {
                         var c = gbl.downedPlayers.Find(cell => cell.map == pos);
                         if (c != null && c.target != null)

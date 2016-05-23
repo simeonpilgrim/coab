@@ -1419,7 +1419,7 @@ namespace engine
 						}
 					}
 				}
-				else if (groundTile == 0x1F)
+				else if (groundTile == gbl.Tile_DownPlayer)
 				{
 					var c = gbl.downedPlayers.FindLast(cell => cell.map == gbl.targetPos + gbl.MapDirectionDelta[var_12]);
 					if (c != null)
@@ -1433,7 +1433,7 @@ namespace engine
 				{
 					var pos = gbl.MapDirectionDelta[var_12] + gbl.targetPos;
 
-					gbl.mapToBackGroundTile[pos] = 0x1E;
+					gbl.mapToBackGroundTile[pos] = gbl.Tile_StinkingCloud;
 				}
 			}
 
@@ -2640,7 +2640,7 @@ namespace engine
 					var_8.present[var_16] = false;
 				}
 
-				if (ground_tile == 0x1E)
+				if (ground_tile == gbl.Tile_StinkingCloud)
 				{
 					bool found = false;
 					foreach (var var_4 in gbl.StinkingCloud)
@@ -2660,7 +2660,7 @@ namespace engine
 						if (found) break;
 					}
 				}
-				else if (ground_tile == 0x1C)
+				else if (ground_tile == gbl.Tile_CloudKill)
 				{
 					bool found = false;
 					foreach (GasCloud var_4 in gbl.CloudKillCloud)
@@ -2683,7 +2683,7 @@ namespace engine
 						if (found) break;
 					}
 				}
-				else if (ground_tile == 0x1F)
+				else if (ground_tile == gbl.Tile_DownPlayer)
 				{
 					var pos = gbl.MapDirectionDelta[dir] + gbl.targetPos;
 
@@ -2700,7 +2700,7 @@ namespace engine
 				{
 					var pos = gbl.MapDirectionDelta[dir] + gbl.targetPos;
 
-					gbl.mapToBackGroundTile[pos] = 0x1C;
+					gbl.mapToBackGroundTile[pos] = gbl.Tile_CloudKill;
 				}
 			}
 
@@ -2710,7 +2710,7 @@ namespace engine
 			{
 				var pos = gbl.MapDirectionDelta[dir] + gbl.targetPos;
 
-				gbl.mapToBackGroundTile[pos] = 0x1C;
+				gbl.mapToBackGroundTile[pos] = gbl.Tile_CloudKill;
 			}
 
 			ovr025.DisplayPlayerStatusString(false, 10, "Creates a poisonous cloud", gbl.SelectedPlayer);

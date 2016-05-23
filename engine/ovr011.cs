@@ -69,7 +69,7 @@ namespace engine
                             byte_1AD3E &&
                             ovr024.roll_dice(10, 1) <= 5)
                         {
-                            gbl.mapToBackGroundTile[posX, posY] = 0x1A; // Table
+                            gbl.mapToBackGroundTile[posX, posY] = gbl.Tile_Table; // Table
 
                             for (int var_7 = 0; var_7 < 4; var_7++)
                             {
@@ -82,7 +82,7 @@ namespace engine
                                     if (gbl.BackGroundTiles[gbl.mapToBackGroundTile[tmpX, tmpY]].tile_index == 0x16 &&
                                         ovr024.roll_dice(10, 1) <= 9)
                                     {
-                                        gbl.mapToBackGroundTile[posX, posY] = 0x1B; // Chair
+                                        gbl.mapToBackGroundTile[posX, posY] = gbl.Tile_Chair; // Chair
                                     }
                                 }
                             }
