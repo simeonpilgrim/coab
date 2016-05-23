@@ -119,11 +119,9 @@ namespace engine
             }
         }
 
-        static Set unk_6C398 = new Set(32, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90);
-        static Set unk_6C3B8 = new Set(49, 50, 51, 52, 53, 54, 55, 56, 57, 92);
-
-
-        static byte[] unk_18AE0 = { 0x4F, 0x50, 0x51, 0x4B, 0x20, 0x4D, 0x47, 0x48, 0x49 };
+		static Set alpha_number_input = new Set(' ', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'); //unk_6C398
+		static Set number_input = new Set('1', '2', '3', '4', '5', '6', '7', '8', '9', '\\'); //unk_6C3B8
+		static char[] keypad_ctrl_codes = { 'O', 'P', 'Q', 'K', ' ', 'M', 'G', 'H', 'I' };
 
         internal static char displayInput(bool useOverlay, byte arg_6, MenuColorSet colors, string displayInputString, string displayExtraString)
         {
@@ -131,7 +129,7 @@ namespace engine
             return displayInput(out dummyBool, useOverlay, arg_6, colors, displayInputString, displayExtraString);
         }
 
-        internal static char displayInput(out bool specialKeyPressed, bool useOverlay, byte arg_6, MenuColorSet colors, string displayInputString, string displayExtraString)
+        internal static char displayInput(out bool specialKeyPressed, bool useOverlay, byte accept_ctrlkeys, MenuColorSet colors, string displayInputString, string displayExtraString)
         {
             int highlistCount;
 
@@ -214,7 +212,7 @@ namespace engine
                     {
                         input_key = (char)seg043.GetInputKey();
 
-                        if (arg_6 != 0)
+                        if (accept_ctrlkeys != 0)
                         {
                             specialKeyPressed = true;
                             stopLoop = true;
@@ -241,7 +239,7 @@ namespace engine
                             stopLoop = true;
                         }
                     }
-                    else if (input_key == 0x2C)
+                    else if (input_key == ',')
                     {
                         if (gbl.menuSelectedWord == 0)
                         {
@@ -254,7 +252,7 @@ namespace engine
 
                         display_highlighed_text(gbl.menuSelectedWord, colors.highlight, displayInputString, displayInputXOffset, colors.foreground, highlights);
                     }
-                    else if (input_key == 0x2E)
+                    else if (input_key == '.')
                     {
                         gbl.menuSelectedWord++;
 
@@ -268,7 +266,7 @@ namespace engine
                     else
                     {
                         input_key = char.ToUpper(input_key);
-                        if (unk_6C398.MemberOf(input_key) == true)
+                        if (alpha_number_input.MemberOf(input_key) == true)
                         {
                             if (input_key == 0x20)
                             {
@@ -296,8 +294,8 @@ namespace engine
                             }
                         }
 
-                        if (arg_6 != 0 &&
-                            unk_6C3B8.MemberOf(input_key) == true)
+                        if (accept_ctrlkeys != 0 &&
+                            number_input.MemberOf(input_key) == true)
                         {
                             if (input_key == 'W')
                             {
@@ -305,7 +303,7 @@ namespace engine
                             }
                             else
                             {
-                                input_key = (char)unk_18AE0[input_key - 0x31];
+                                input_key = keypad_ctrl_codes[input_key - 0x31];
                             }
 
                             specialKeyPressed = true;
