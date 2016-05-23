@@ -2,6 +2,7 @@
 using NUnit.Framework;
 using GoldBox.Classes;
 using GoldBox.Classes.DaxFiles;
+using System;
 
 namespace GoldBox.Engine
 {
@@ -11,11 +12,23 @@ namespace GoldBox.Engine
         private ObjectVerifier _verifier = new ObjectVerifier();
         private MapInfo _mapInfo;
         private StepGameTimeSpy _stepGameTimeSpy;
+        private DisplayMenuAndGetInputSpy _displayMenuSpy;
+
         [SetUp]
         public void Setup()
         {
             _stepGameTimeSpy = new StepGameTimeSpy();
+            _displayMenuSpy = new DisplayMenuAndGetInputSpy();
             ovr015.StepGameTime = _stepGameTimeSpy;
+            ovr015.DisplayInput = _displayMenuSpy;
+            SetupGlobalState();
+        }
+
+        private void SetupGlobalState()
+        {
+            gbl.area_ptr = new Area1(); //used only when moving party
+            gbl.dax_8x8d1_201 = new byte[177, 8];// used only when moving party
+
             gbl.area2_ptr = new Area2();
             gbl.byte_1D556 = new DaxArray();
             gbl.game_state = GameState.DungeonMap;
@@ -31,6 +44,9 @@ namespace GoldBox.Engine
                 }
 
             gbl.geo_ptr.maps = maps;
+            gbl.can_draw_bigpic = gbl.can_bash_door = gbl.can_knock_door = gbl.can_pick_door = false;
+            gbl.mapPosX = gbl.mapPosY = 0;
+            
         }
 
         [TestCase(GameState.AfterCombat)]
@@ -49,6 +65,7 @@ namespace GoldBox.Engine
 
             VerifyDaxArray1D556IsReset();
             VerifyHeadAndBodyDaxIsReleased();
+            VerifyPartyWasNotMovedForward();
             _verifier.CheckThat(() => gbl.can_draw_bigpic == false);
             _verifier.CheckThat(() => gbl.area2_ptr.field_592 == 1);
             _verifier.Verify();
@@ -64,6 +81,7 @@ namespace GoldBox.Engine
 
             VerifyDaxArray1D556IsReset();
             VerifyHeadAndBodyDaxIsReleased();
+            VerifyPartyWasNotMovedForward();
             _verifier.CheckThat(() => gbl.area2_ptr.field_592 == 0);
             _verifier.CheckThat(() => gbl.can_draw_bigpic == false);
             _verifier.Verify();
@@ -83,6 +101,12 @@ namespace GoldBox.Engine
             _verifier.CheckThat(() => gbl.area2_ptr.field_592 == 0);
             _verifier.CheckThat(() => gbl.can_draw_bigpic == true);
             _verifier.Verify();
+        }
+
+        [Test]
+        public void LockedDoor_ALIsTwo_Test1Of1000000000()
+        {
+            Assert.Fail("Need to test for if can do a few things, and setup a party with a thief and MU with knock");
 
         }
 
@@ -107,8 +131,8 @@ namespace GoldBox.Engine
 
         private void VerifyPartyWasMovedForward()
         {
-            _verifier.CheckThat(() => gbl.mapPosX == 1);
-            _verifier.CheckThat(() => gbl.mapPosY == 2);
+            _verifier.CheckThat(() => gbl.mapPosX == 0);
+            _verifier.CheckThat(() => gbl.mapPosY == 15);
             _verifier.CheckThat(() => gbl.can_bash_door == true);
             _verifier.CheckThat(() => gbl.can_pick_door == true);
             _verifier.CheckThat(() => gbl.can_knock_door == true);
@@ -116,15 +140,47 @@ namespace GoldBox.Engine
             _verifier.CheckThat(() => _stepGameTimeSpy.LastAmountCalled == 1);
         }
 
+        private void VerifyPartyWasNotMovedForward()
+        {
+            _verifier.CheckThat(() => gbl.mapPosX == 0);
+            _verifier.CheckThat(() => gbl.mapPosY == 0);
+            _verifier.CheckThat(() => gbl.can_bash_door == false);
+            _verifier.CheckThat(() => gbl.can_pick_door == false);
+            _verifier.CheckThat(() => gbl.can_knock_door == false);
+            _verifier.CheckThat(() => _stepGameTimeSpy.LastTimeSlotCalled == null);
+            _verifier.CheckThat(() => _stepGameTimeSpy.LastAmountCalled == null);
+        }
+
+        private void VerifyMenuDisplayWasNotCalled()
+        {
+            _verifier.CheckThat(() => _displayMenuSpy.WasDisplayInputCalled == false);
+        }
+
         private class StepGameTimeSpy : IStepGameTime
         {
-            public int LastTimeSlotCalled = -1;
-            public int LastAmountCalled = -1;
+            public int? LastTimeSlotCalled;
+            public int? LastAmountCalled;
 
             public void step_game_time(int time_slot, int amount)
             {
                 LastTimeSlotCalled = time_slot;
                 LastAmountCalled = amount;
+            }
+        }
+
+        private class DisplayMenuAndGetInputSpy : IDisplayMenuAndGetInput
+        {
+            public bool WasDisplayInputCalled;
+            public string LastDisplayInputString;
+            public string LastDisplayExtraString;
+
+            public char displayInput(out bool specialKeyPressed, bool useOverlay, byte arg_6, MenuColorSet colors, string displayInputString, string displayExtraString)
+            {
+                specialKeyPressed = false;
+                WasDisplayInputCalled = true;
+                LastDisplayInputString = displayInputString;
+                LastDisplayExtraString = displayExtraString;
+                return '\0';
             }
         }
     }

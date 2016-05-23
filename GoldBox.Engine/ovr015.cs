@@ -5,7 +5,9 @@ namespace GoldBox.Engine
     public class ovr015
     {
         public static IStepGameTime StepGameTime { set { _stepGameTime = value; } }
+        public static IDisplayMenuAndGetInput DisplayInput { set { _displayInput = value; } }
         private static IStepGameTime _stepGameTime = new StepGameTime();
+        private static IDisplayMenuAndGetInput _displayInput = new DisplayMenuAndGetInput();
 
         internal static char main_3d_world_menu()
         {
@@ -21,7 +23,7 @@ namespace GoldBox.Engine
                 {
                     bool special_key;
 
-                    input_key = ovr027.displayInput(out special_key, false, 1, gbl.defaultMenuColors, "Area Cast View Encamp Search Look", string.Empty);
+                    input_key = _displayInput.displayInput(out special_key, false, 1, gbl.defaultMenuColors, "Area Cast View Encamp Search Look", string.Empty);
 
                     if (special_key == false)
                     {
@@ -164,11 +166,11 @@ namespace GoldBox.Engine
                             prompt += " Knock";
                         }
 
-                        if (prompt != "")
+                        if (prompt != string.Empty)
                         {
                             prompt += " Exit";
 
-                            input = ovr027.displayInput(out var_2, false, 0, gbl.defaultMenuColors, prompt, "Locked. ");
+                            input = _displayInput.displayInput(out var_2, false, 0, gbl.defaultMenuColors, prompt, "Locked. ");
 
                             switch (input)
                             {
@@ -211,7 +213,7 @@ namespace GoldBox.Engine
                         {
                             prompt += " Exit";
 
-                            input = ovr027.displayInput(out var_2, false, 0, gbl.defaultMenuColors, prompt, "Locked. ");
+                            input = _displayInput.displayInput(out var_2, false, 0, gbl.defaultMenuColors, prompt, "Locked. ");
 
                             switch (input)
                             {

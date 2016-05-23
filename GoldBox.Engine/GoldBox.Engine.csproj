@@ -117,6 +117,7 @@
     <Compile Include="CleanEightCharString.cs" />
     <Compile Include="CmdItem.cs" />
     <Compile Include="FileManager.cs" />
+    <Compile Include="IDisplayMenuAndGetInput.cs" />
     <Compile Include="ImportCharacters\CharacterToAddToParty.cs" />
     <Compile Include="ImportCharacters\FindCharactersToAddToPartyFactory.cs" />
     <Compile Include="ImportCharacters\FindCotABCharactersToAddToParty.cs" />
