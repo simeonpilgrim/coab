@@ -135,7 +135,7 @@ namespace GoldBox.Engine
             }
         }
 
-        static internal void CheckAffectsEffect(Player player, CheckType type) // work_on_00
+        internal static void CheckAffectsEffect(Player player, CheckType type) // work_on_00
         {
             switch (type)
             {

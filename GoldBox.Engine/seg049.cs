@@ -19,7 +19,7 @@ namespace GoldBox.Engine
         private static Queue<ushort> keysPressed = new Queue<ushort>();
         private static Semaphore WaitForKey = new Semaphore(0, 1);
 
-        static public void AddKey(ushort key)
+        public static void AddKey(ushort key)
         {
             lock (keysPressed)
             {

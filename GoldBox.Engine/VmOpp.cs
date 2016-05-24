@@ -5,7 +5,7 @@ namespace GoldBox.Engine
 {
     static class VmLog
     {
-        static internal void Write(string fmt, params object[] args)
+        internal static void Write(string fmt, params object[] args)
         {
             if (gbl.printCommands)
             {
@@ -13,7 +13,7 @@ namespace GoldBox.Engine
             }
         }
 
-        static internal void WriteLine(string fmt, params object[] args)
+        internal static void WriteLine(string fmt, params object[] args)
         {
             if (gbl.printCommands)
             {

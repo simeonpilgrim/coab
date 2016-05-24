@@ -88,10 +88,10 @@ namespace GoldBox.Classes
             new Struct_189B4 ( 0, 1, 1, 1 )
         };
 
-        public readonly static byte[] max_class_hit_dice = { 10, 15, 10, 10, 11, 12, 11, 13 }; // byte_1A1CB seg600:3EBB
-        public readonly static byte[] default_icon_colours = { 1, 2, 3, 4, 6, 7 }; // unk_1A1D3[0] == unk_1A1D2[1];
+        public static readonly byte[] max_class_hit_dice = { 10, 15, 10, 10, 11, 12, 11, 13 }; // byte_1A1CB seg600:3EBB
+        public static readonly byte[] default_icon_colours = { 1, 2, 3, 4, 6, 7 }; // unk_1A1D3[0] == unk_1A1D2[1];
 
-        public readonly static ClassId[][] RaceClasses = { 
+        public static readonly ClassId[][] RaceClasses = { 
         new ClassId[] /*MonsterType*/{ },
         new ClassId[] /*Dwarf*/{ ClassId.fighter, ClassId.thief, ClassId.mc_f_t},
         new ClassId[] /*Elf*/{ ClassId.fighter, ClassId.magic_user, ClassId.thief, ClassId.mc_f_mu, ClassId.mc_f_t, ClassId.mc_f_mu_t, ClassId.mc_mu_t},
@@ -230,7 +230,7 @@ namespace GoldBox.Classes
 
 
 
-        public readonly static short[] symbol_set_fix = { 0x0001, 0x002E, 0x0074, 0x00BA, 0x0100 };
+        public static readonly short[] symbol_set_fix = { 0x0001, 0x002E, 0x0074, 0x00BA, 0x0100 };
 
         public static ushort word_1AE0F;
         public static ushort word_1AE11;
@@ -483,17 +483,17 @@ namespace GoldBox.Classes
         public static Struct_1D1BC mapToBackGroundTile; // stru_1D1BC
 
 
-        public readonly static byte[] /*seg600:27D9*/ SmallCloudDirections = { 8, 2, 3, 4 }; // unk_18AE9 used by NoxiousCloud
-        public readonly static byte[] /*seg600:27DA*/ unk_18AEA = { 2, 3, 4, 8 };
+        public static readonly byte[] /*seg600:27D9*/ SmallCloudDirections = { 8, 2, 3, 4 }; // unk_18AE9 used by NoxiousCloud
+        public static readonly byte[] /*seg600:27DA*/ unk_18AEA = { 2, 3, 4, 8 };
 
-        public readonly static byte[] /* seg600:27DD */ CloudDirections = { 8, 0, 1, 2, 3, 4, 5, 6, 7 }; // unk_18AED used by CloudKill
+        public static readonly byte[] /* seg600:27DD */ CloudDirections = { 8, 0, 1, 2, 3, 4, 5, 6, 7 }; // unk_18AED used by CloudKill
 
         public static List<GasCloud> NoxiousCloud; // stru_1D885
         public static List<GasCloud> PoisonousCloud; // stru_1D889 
 
         public static Point[] MapDirectionDelta = { new Point(0, -1), new Point(1, -1), new Point(1, 0), new Point(1, 1), new Point(0, 1), new Point(-1, 1), new Point(-1, 0), new Point(-1, -1), new Point(0, 0) };
-        public readonly static sbyte[] MapDirectionXDelta = /*unk_189A6 seg600:2696*/ { 0, 1, 1, 1, 0, -1, -1, -1, 0 }; //TODO remove
-        public readonly static sbyte[] MapDirectionYDelta = /*unk_189AF seg600:269F*/ { -1, -1, 0, 1, 1, 1, 0, -1, 0 };//TODO remove
+        public static readonly sbyte[] MapDirectionXDelta = /*unk_189A6 seg600:2696*/ { 0, 1, 1, 1, 0, -1, -1, -1, 0 }; //TODO remove
+        public static readonly sbyte[] MapDirectionYDelta = /*unk_189AF seg600:269F*/ { -1, -1, 0, 1, 1, 1, 0, -1, 0 };//TODO remove
 
         public static ImportSource import_from;
         public static bool party_fled;
@@ -602,7 +602,7 @@ namespace GoldBox.Classes
         public static byte[] unk_1AE0B = new byte[3];
 
 
-        public readonly static byte[,] class_alignments = { // unk_1A4EA
+        public static readonly byte[,] class_alignments = { // unk_1A4EA
             { 9,0,1,2,3,4,5,6,7,8},
             { 5,1,3,4,5,7,0,0,0,0},
             { 9,0,1,2,3,4,5,6,7,8},

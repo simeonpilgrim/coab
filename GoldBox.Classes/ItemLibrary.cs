@@ -26,10 +26,10 @@ namespace GoldBox.Classes
 
     public class ItemLibrary
     {
-        private readonly static string libraryPath;
-        private readonly static string libraryFile;
-        private readonly static List<Item> library;
-        private readonly static BinaryFormatter _formatter;
+        private static readonly string libraryPath;
+        private static readonly string libraryFile;
+        private static readonly List<Item> library;
+        private static readonly BinaryFormatter _formatter;
 
         static ItemLibrary()
         {

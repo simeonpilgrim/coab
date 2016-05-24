@@ -624,7 +624,7 @@ namespace GoldBox.Engine
 
 
         /*seg600:44B6 unk_1A7C6*/
-        public readonly static byte[,] MU_spell_lvl_learn = { 
+        public static readonly byte[,] MU_spell_lvl_learn = { 
             {1, 0, 0, 0, 0},
             {0, 1, 0, 0, 0},
             {1, 1, 0, 0, 0},

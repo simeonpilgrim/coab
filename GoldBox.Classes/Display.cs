@@ -16,14 +16,14 @@ namespace GoldBox.Classes
         static int outputWidth;
         static int outputHeight;
         
-        static public Bitmap bm;
+        public static Bitmap bm;
         static Rectangle rect = new Rectangle(0, 0, 320, 200);
 
         public delegate void VoidDeledate();
 
         static VoidDeledate updateCallback;
 
-        static public VoidDeledate UpdateCallback
+        public static VoidDeledate UpdateCallback
         {
             set
             {
@@ -106,7 +106,7 @@ namespace GoldBox.Classes
             Update();
         }
 
-        static public void Update()
+        public static void Update()
         {
             if (noUpdateCount == 0)
             {
@@ -119,7 +119,7 @@ namespace GoldBox.Classes
             }
         }
 
-        static public void ForceUpdate()
+        public static void ForceUpdate()
         {
             RawCopy(videoRam, videoRamSize);
 
