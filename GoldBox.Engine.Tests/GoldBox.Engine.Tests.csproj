@@ -638,6 +638,18 @@
     <None Include="TestFiles\ImportCharacter\CHRDATA3.SPC" />
     <None Include="TestFiles\ImportCharacter\CHRDATA5.SPC" />
     <None Include="TestFiles\ImportCharacter\CHRDATA6.SPC" />
+    <Content Include="TestFiles\SaveFiles\SAVGAMA.DAT">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestFiles\SaveFiles\SAVGAMB.DAT">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestFiles\SaveFiles\savgamC.dat">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestFiles\SaveFiles\savgamD.dat">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

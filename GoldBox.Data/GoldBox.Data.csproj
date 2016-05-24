@@ -35,6 +35,7 @@
   <ItemGroup>
     <Compile Include="CharacterName.cs" />
     <Compile Include="CurseCharacter.cs" />
+    <Compile Include="CurseSaveGame.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="HillsfarCharacter.cs" />
     <Compile Include="PoolRadCharacter.cs" />
