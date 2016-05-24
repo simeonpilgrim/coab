@@ -11,7 +11,7 @@ namespace GoldBox.Logging
         public static void Setup(string path)
         {
             logPath = path;
-
+            Directory.CreateDirectory(logPath);
             debug = new DebugWriter(Path.Combine(logPath, "Debugging.txt"));
         }
 

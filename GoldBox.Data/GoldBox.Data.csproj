@@ -33,13 +33,18 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CharacterLoadFile.cs" />
     <Compile Include="CharacterName.cs" />
+    <Compile Include="CommandList.cs" />
     <Compile Include="CurseCharacter.cs" />
     <Compile Include="CurseSaveGame.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="HillsfarCharacter.cs" />
+    <Compile Include="CharacterLoadFileCollection.cs" />
     <Compile Include="PoolRadCharacter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SavedGameState.cs" />
+    <Compile Include="SetBlock.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

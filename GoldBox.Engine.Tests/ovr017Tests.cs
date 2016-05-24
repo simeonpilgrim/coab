@@ -20,7 +20,7 @@ namespace GoldBox.Engine
         [OneTimeSetUp]
         public void ClassSetup()
         {
-            Config.Setup();
+            Config.Setup(TestContext.CurrentContext.TestDirectory);
             Config.SavePath = ImportCharacterDirectory.FullName;
         }
 

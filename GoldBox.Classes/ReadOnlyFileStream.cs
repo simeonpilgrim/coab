@@ -14,9 +14,13 @@ namespace GoldBox.Classes
 
         public ReadOnlyFileStream(string fileName)
         {
-            _filePath = File.Exists(fileName) ? fileName : "Data\\" + fileName;
+            var file = Config.BaseFile(fileName);
+            if (!file.Exists)
+                file = Config.DataFile(fileName);
 
-            FileExists = File.Exists(_filePath);
+            _filePath = file.FullName;
+
+            FileExists = file.Exists;
             Open();
         }
 

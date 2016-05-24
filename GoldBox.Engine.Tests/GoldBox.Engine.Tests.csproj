@@ -56,6 +56,8 @@
     <Compile Include="ovr015Tests.cs" />
     <Compile Include="ovr017Tests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SaveDisplayAsPng.cs" />
+    <Compile Include="seg037Tests.cs" />
     <Compile Include="SysTests.cs" />
     <Compile Include="TitleScreenTests.cs" />
   </ItemGroup>

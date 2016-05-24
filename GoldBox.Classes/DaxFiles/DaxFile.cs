@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using GoldBox.Logging;
 
 namespace GoldBox.Classes.DaxFiles
 {

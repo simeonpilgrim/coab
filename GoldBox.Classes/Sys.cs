@@ -16,12 +16,6 @@ namespace GoldBox.Classes
             return i;
         }
 
-        public static uint ArrayToUint(byte[] data, int offset)
-        {
-            var i = (uint)(data[offset + 0] + (data[offset + 1] << 8) + (data[offset + 2] << 16) + (data[offset + 3] << 24));
-            return i;
-        }
-
         public static short ArrayToShort(byte[] data, int offset)
         {
             var i = (short)(data[offset + 0] + (data[offset + 1] << 8));
@@ -79,20 +73,6 @@ namespace GoldBox.Classes
                     data[offset + i] = 0;
                 }
             }
-        }
-
-        public static string ArrayToString(char[] data, int offset, int length)
-        {
-            length = Math.Min(data[offset], length);
-
-            var sb = new StringBuilder(length);
-            for (int i = 1; i < length; i++)
-            {
-                char c = data[i + offset];
-                sb.Append(c);
-            }
-
-            return sb.ToString();
         }
 
         /// <summary>
