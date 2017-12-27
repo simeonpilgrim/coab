@@ -11,7 +11,7 @@ namespace engine
             return (list.Count > index) ? list[index] : null;
         }
 
-        static Set highlightable_text = new Set(48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90);
+        static Set highlightable_text = new Set('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z');
 
 
         internal class highlight
@@ -461,7 +461,7 @@ namespace engine
         }
 
 
-        static void menu_sub_6CD38(bool backwardsStep, ref int index, List<MenuItem> list, int listDisplayHeight,
+        static void menu_scroll_page(bool backwardsStep, ref int index, List<MenuItem> list, int listDisplayHeight,
             int yEnd, int xEnd, int yStart, int xStart,
             int normalColor, int headingColor, int displayFillWidth) // sub_6CD38
         {
@@ -494,7 +494,7 @@ namespace engine
         }
 
 
-        static int menu_sub_6CDCA(bool backwardsStep, int index, List<MenuItem> list, int listDisplayHeight) // sub_6CDCA
+        static int menu_scroll_in_page(bool backwardsStep, int index, List<MenuItem> list, int listDisplayHeight) // sub_6CDCA
         {
             if (backwardsStep == true)
             {
@@ -570,7 +570,7 @@ namespace engine
             }
 
             index_ptr++;
-            index_ptr = menu_sub_6CDCA(false, index_ptr, stringList, listDisplayHeight);
+            index_ptr = menu_scroll_in_page(false, index_ptr, stringList, listDisplayHeight);
 
             if (redrawMenuItems == true)
             {
@@ -617,24 +617,24 @@ namespace engine
                     switch (input_key)
                     {
                         case 'G':
-                            index_ptr = menu_sub_6CDCA(false, index_ptr, stringList, listDisplayHeight);
+                            index_ptr = menu_scroll_in_page(false, index_ptr, stringList, listDisplayHeight);
                             break;
 
                         case 'O':
-                            index_ptr = menu_sub_6CDCA(true, index_ptr, stringList, listDisplayHeight);
+                            index_ptr = menu_scroll_in_page(true, index_ptr, stringList, listDisplayHeight);
                             break;
 
                         case 'I':
                             if (showPrevious == true)
                             {
-                                menu_sub_6CD38(false, ref index_ptr, stringList, listDisplayHeight, endY, endX, startY, startX, colors.foreground, colors.prompt, listDisplayWidth);
+                                menu_scroll_page(false, ref index_ptr, stringList, listDisplayHeight, endY, endX, startY, startX, colors.foreground, colors.prompt, listDisplayWidth);
                             }
                             break;
 
                         case 'Q':
                             if (showNext == true)
                             {
-                                menu_sub_6CD38(true, ref index_ptr, stringList, listDisplayHeight, endY, endX, startY, startX, colors.foreground, colors.prompt, listDisplayWidth);
+                                menu_scroll_page(true, ref index_ptr, stringList, listDisplayHeight, endY, endX, startY, startX, colors.foreground, colors.prompt, listDisplayWidth);
                             }
                             break;
                     }
@@ -644,12 +644,12 @@ namespace engine
                     switch (input_key)
                     {
                         case 'P':
-                            menu_sub_6CD38(false, ref index_ptr, stringList, listDisplayHeight, endY, endX, startY, startX, colors.foreground, colors.prompt, listDisplayWidth);
+                            menu_scroll_page(false, ref index_ptr, stringList, listDisplayHeight, endY, endX, startY, startX, colors.foreground, colors.prompt, listDisplayWidth);
                             break;
 
                         case 'N':
 
-                            menu_sub_6CD38(true, ref index_ptr, stringList, listDisplayHeight, endY, endX, startY, startX, colors.foreground, colors.prompt, listDisplayWidth);
+                            menu_scroll_page(true, ref index_ptr, stringList, listDisplayHeight, endY, endX, startY, startX, colors.foreground, colors.prompt, listDisplayWidth);
                             break;
 
                         case (char)0x1B:
