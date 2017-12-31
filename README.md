@@ -5,4 +5,4 @@ The game is almost 100% feature complete, besides player importation from Pool o
 
 All the original game cheats plus more are available, just right click on the game window to enable/disable.
 
-Currently installer: [CotAB Installer 1.1.7.msi](http://simeonpilgrim.com/files/CotAB Installer 1.1.7.msi)
+Currently installer: [CotAB Installer 1.1.7.msi](http://simeonpilgrim.com/files/CotAB%20Installer%201.1.7.msi)
