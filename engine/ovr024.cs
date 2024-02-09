@@ -1107,7 +1107,7 @@ namespace engine
 
                 player.stats2.Con.full = stat_a;
 
-                if (player.stats2.Con.full > 20)
+                if (player.stats2.Con.full >= 20)
                 {
                     if (player.HasAffect(Affects.highConRegen) == true)
                     {
