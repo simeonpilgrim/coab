@@ -1111,7 +1111,7 @@ namespace engine
                 {
                     if (player.HasAffect(Affects.highConRegen) == false)
                     {
-                        add_affect(false, 0xff, 0x3c, Affects.highConRegen, player);
+                        add_affect(true, 0xff, 0x3c, Affects.highConRegen, player);
                     }
                 }
                 else
