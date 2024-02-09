@@ -821,10 +821,14 @@ namespace engine
 		{
 			Affect affect = (Affect)param;
 
-			if (addAffect(0x3C, affect.affect_data, Affects.highConRegen, player) == true &&
-				ovr024.heal_player(1, 1, player) == true)
+			// BUGFIX: Only Regen when Con is high enough
+			if (player.stats2.Con.full >= 20)
 			{
-				ovr025.DescribeHealing(player);
+				if (addAffect(0x3C, affect.affect_data, Affects.highConRegen, player) == true && 
+					ovr024.heal_player(1, 1, player) == true)
+				{
+					ovr025.DescribeHealing(player);
+				}
 			}
 		}
 
