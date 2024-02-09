@@ -915,7 +915,7 @@ namespace engine
                     {
                         if (var_12 == 8)
                         {
-                            if (player.stats2.Int.cur < 0x18 &&
+                            if (player.stats2.Int.cur < 18 &&
                                 (int)item.affect_2 == 1)
                             {
                                 stat_a++;
