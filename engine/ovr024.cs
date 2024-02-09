@@ -1109,7 +1109,7 @@ namespace engine
 
                 if (player.stats2.Con.full >= 20)
                 {
-                    if (player.HasAffect(Affects.highConRegen) == true)
+                    if (player.HasAffect(Affects.highConRegen) == false)
                     {
                         add_affect(false, 0xff, 0x3c, Affects.highConRegen, player);
                     }
