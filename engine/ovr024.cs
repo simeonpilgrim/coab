@@ -1111,7 +1111,9 @@ namespace engine
                 {
                     if (player.HasAffect(Affects.highConRegen) == false)
                     {
-                        add_affect(true, 0xff, 0x3c, Affects.highConRegen, player);
+                        // Per 1e, healing is 1/6 turns at 20, 1/5 turns at 21, ... 1/1 turn at 25
+                        ushort rounds = (ushort)((26 - player.stats2.Con.full) * 10);
+                        add_affect(true, 0xff, rounds, Affects.highConRegen, player);
                     }
                 }
                 else
