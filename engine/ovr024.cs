@@ -583,13 +583,26 @@ namespace engine
         }
 
 
-        internal static byte roll_dice(int dice_size, int dice_count)
+        internal static byte roll_dice(int dice_size, int dice_count, int min_roll = 1)
         {
             int roll_total = 0;
 
             for (int i = 0; i < dice_count; i++)
             {
-                roll_total += seg051.Random(dice_size) + 1;
+                int roll_current;
+
+                // don't bother rolling if we can't roll over the min_roll
+                if (min_roll >= dice_size)
+                {
+                    roll_current = dice_size;
+                }
+                else
+                {
+                    roll_current = seg051.Random(dice_size) + 1;
+                    if (roll_current < min_roll)
+                        roll_current = min_roll;
+                }
+                roll_total += roll_current;
             }
 
             byte byte_total = (byte)roll_total;
@@ -1052,41 +1065,11 @@ namespace engine
             }
             else if (stat_index == Stat.CON)
             {
-                int hitPointBonus = 0;
-                byte classCount = 0;
                 byte orig_max_hp = player.hit_point_max;
                 player.hit_point_max = player.hit_point_rolled;
 
-                for (SkillType classId = SkillType.Cleric; classId <= SkillType.Monk; classId++)
-                {
-                    byte classLvl = player.ClassLevelsOld[(int)classId];
+                int hitPointBonus = ovr018.calc_fixed_hp_bonus(player, stat_a);
 
-                    if (classLvl > 0)
-                    {
-                        hitPointBonus += ConHitPointBonus(classLvl, classId, stat_a, player);
-                    }
-
-                    classLvl = player.ClassLevel[(int)classId];
-
-                    if (classLvl > 0)
-                    {
-                        classCount++;
-                    }
-
-                    if (gbl.max_class_hit_dice[(int)classId] < classLvl)
-                    {
-                        classLvl = gbl.max_class_hit_dice[(int)classId];
-                    }
-
-                    if (classLvl > player.multiclassLevel)
-                    {
-                        classLvl -= player.multiclassLevel;
-
-                        hitPointBonus += ConHitPointBonus(classLvl, classId, stat_a, player);
-                    }
-                }
-
-                hitPointBonus /= classCount;
                 player.hit_point_max += (byte)hitPointBonus;
 
                 if (player.hit_point_max > orig_max_hp)
