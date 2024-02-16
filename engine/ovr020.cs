@@ -70,7 +70,47 @@ namespace engine
             text2 = alignmentString[player.alignment];
             seg041.displayString(text2, 0, 15, 4, 1);
 
-            text2 = classString[(int)player._class];
+            bool displaySlash = false;
+            text2 = string.Empty;
+
+            for (int classIdx = 0; classIdx <= 7; classIdx++)
+            {
+                byte classLvl = player.ClassLevelsOld[classIdx];
+
+                if (classLvl > 0)
+                {
+                    if (displaySlash)
+                    {
+                        text2 += "/";
+                    }
+                    if (classLvl < ovr026.HumanCurrentClassLevel_Zero(player))
+                    {
+                        text2 += classString[classIdx];
+                    }
+                    else
+                    {
+                        text2 += "(" + classString[classIdx] + ")";
+                    }
+
+                    displaySlash = true;
+                }
+            }
+            for (int classIdx = 0; classIdx <= 7; classIdx++)
+            {
+                byte classLvl = player.ClassLevel[classIdx];
+
+                if (classLvl > 0)
+                {
+                    if (displaySlash)
+                    {
+                        text2 += "/";
+                    }
+                    text2 += classString[classIdx];
+
+                    displaySlash = true;
+                }
+            }
+
             seg041.displayString(text2, 0, 15, 5, 1);
 
             for (int stat = 0; stat < 6; stat++)
@@ -83,22 +123,42 @@ namespace engine
             displayMoney();
             seg041.displayString("Level", 0, 15, 15, 1);
 
-            bool displaySlash = false;
+            displaySlash = false;
             text2 = string.Empty;
 
             for (int classIdx = 0; classIdx <= 7; classIdx++)
             {
-                byte tmp = player.ClassLevelsOld[classIdx];
+                byte classLvl = player.ClassLevelsOld[classIdx];
 
-                if (player.ClassLevel[classIdx] > 0 ||
-                    (tmp < ovr026.HumanCurrentClassLevel_Zero(player) && tmp > 0))
+                if (classLvl > 0)
                 {
                     if (displaySlash)
                     {
                         text2 += "/";
                     }
+                    if (classLvl < ovr026.HumanCurrentClassLevel_Zero(player))
+                    {
+                        text2 += classLvl.ToString();
+                    }
+                    else
+                    {
+                        text2 += "(" + classLvl.ToString() + ")";
+                    }
 
-                    text2 += (player.ClassLevel[classIdx] + player.ClassLevelsOld[classIdx]).ToString();
+                    displaySlash = true;
+                }
+            }
+            for (int classIdx = 0; classIdx <= 7; classIdx++)
+            {
+                byte classLvl = player.ClassLevel[classIdx];
+
+                if (classLvl > 0)
+                {
+                    if (displaySlash)
+                    {
+                        text2 += "/";
+                    }
+                    text2 += classLvl.ToString();
 
                     displaySlash = true;
                 }
