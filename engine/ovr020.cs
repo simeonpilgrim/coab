@@ -857,7 +857,7 @@ namespace engine
                 {
                     result = Weld.WrongClass;
                 }
-                result = Weld.Ok;
+
                 switch (result)
                 {
                     case Weld.Ok:
