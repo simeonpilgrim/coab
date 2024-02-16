@@ -6,7 +6,7 @@ namespace Classes
 {
     public class Cheats
     {
-        public static bool allow_player_modify = true;
+        public static bool allow_player_modify = false;
         public static void AllowPlayerModifySet(bool value)
         {
             allow_player_modify = value;

@@ -26,6 +26,21 @@ namespace Main.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool AllowPlayerModify
+        {
+            get
+            {
+                return ((bool)(this["AllowPlayerModify"]));
+            }
+            set
+            {
+                this["AllowPlayerModify"] = value;
+            }
+        }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
         public bool AllowGodsIntervene {
             get {
                 return ((bool)(this["AllowGodsIntervene"]));
