@@ -600,7 +600,7 @@ namespace engine
 				ovr025.DisplayPlayerStatusString(true, 10, "Avoids it", player);
 				gbl.damage = 0;
 				gbl.attack_roll = -1;
-                gbl.bytes_1D2C9[1] -= 1;
+				gbl.attacksHit[1] -= 1;
 			}
 		}
 

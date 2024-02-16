@@ -344,7 +344,7 @@ namespace Classes
         public static bool byte_1D2C8;
         public static int attack_roll; // byte_1D2C9
 
-        public static byte[] bytes_1D2C9 = new byte[3]; // byte_1D2CA = bytes_1D2C9[1] & byte_1D2CB = bytes_1D2C9[2]
+        public static byte[] attacksHit = new byte[3]; // byte_1D2CA = bytes_1D2C9[1] & byte_1D2CB = bytes_1D2C9[2]
         public static int monster_morale; // byte_1D2CC
         public static int sky_colour; // byte_1D534
 
@@ -384,7 +384,7 @@ namespace Classes
         public const int combat_round_no_action_value = 15;
 
 
-        public static byte[] bytes_1D900 = new byte[3]; // byte_1D901 & byte_1D902
+        public static byte[] attacksTaken = new byte[3]; // byte_1D901 & byte_1D902
         public static int enemyHealthPercentage; /* byte_1D903 */
         public static bool AutoPCsCastMagic; /* byte_1D904 magicOn */
         public static bool byte_1D90E; // byte_1D90E

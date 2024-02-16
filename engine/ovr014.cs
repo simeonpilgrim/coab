@@ -727,10 +727,10 @@ namespace engine
             bool turnComplete = true;
             bool BehindAttack = arg_8 != 0;
             turnComplete = false;
-            gbl.bytes_1D2C9[1] = 0;
-            gbl.bytes_1D2C9[2] = 0;
-            gbl.bytes_1D900[1] = 0;
-            gbl.bytes_1D900[2] = 0;
+            gbl.attacksHit[1] = 0;
+            gbl.attacksHit[2] = 0;
+            gbl.attacksTaken[1] = 0;
+            gbl.attacksTaken[2] = 0;
             bool var_11 = false;
             bool targetNotInCombat = false;
             gbl.damage = 0;
@@ -746,7 +746,7 @@ namespace engine
                     attacker.actions.attackIdx--;
                 }
 
-                gbl.bytes_1D900[attacker.actions.attackIdx] += 1;
+                gbl.attacksTaken[attacker.actions.attackIdx] += 1;
 
                 DisplayAttackMessage(true, 1, target.hit_point_current + 5, AttackType.Slay, target, attacker);
                 ovr024.remove_invisibility(attacker);
@@ -816,12 +816,12 @@ namespace engine
                         attacker.AttacksLeftDec(attackIdx);
                         attacker.actions.attackIdx = attackIdx;
 
-                        gbl.bytes_1D900[attackIdx] += 1;
+                        gbl.attacksTaken[attackIdx] += 1;
 
                         if (ovr024.PC_CanHitTarget(target_ac, target, attacker) ||
                             target.IsHeld() == true)
                         {
-                            gbl.bytes_1D2C9[attackIdx] += 1;
+                            gbl.attacksHit[attackIdx] += 1;
 
                             seg044.PlaySound(Sound.sound_attackHeld);
                             var_11 = true;
@@ -967,7 +967,7 @@ namespace engine
                 {
                     if (rangedWeapon.count > 0)
                     {
-                        rangedWeapon.count = gbl.bytes_1D900[1];
+                        rangedWeapon.count -= gbl.attacksTaken[1];
                     }
 
                     if (rangedWeapon.count == 0)
@@ -2305,7 +2305,7 @@ namespace engine
         {
             Player target = attacker.actions.target;
 
-            if (gbl.bytes_1D2C9[1] == 2 &&
+            if (gbl.attacksHit[1] == 2 &&
                 target.in_combat == true &&
                 target.HasAffect(Affects.clear_movement) == false &&
                 target.HasAffect(Affects.reduce) == false)
