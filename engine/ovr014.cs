@@ -735,7 +735,7 @@ namespace engine
             gbl.attacksHit[2] = 0;
             gbl.attacksTaken[1] = 0;
             gbl.attacksTaken[2] = 0;
-            bool var_11 = false;
+            bool hit = false;
             bool targetNotInCombat = false;
             gbl.damage = 0;
 
@@ -758,7 +758,7 @@ namespace engine
                 attacker.attack1_AttacksLeft = 0;
                 attacker.attack2_AttacksLeft = 0;
 
-                var_11 = true;
+                hit = true;
                 turnComplete = true;
             }
             else
@@ -828,13 +828,16 @@ namespace engine
                             gbl.attacksHit[attackIdx] += 1;
 
                             seg044.PlaySound(Sound.sound_attackHeld);
-                            var_11 = true;
+                            hit = true;
                             sub_3E192(attackIdx, target, attacker);
                             DisplayAttackMessage(true, gbl.damage, gbl.damage, attack_type, target, attacker);
 
                             if (target.in_combat == true)
                             {
-                                ovr024.CheckAffectsEffect(attacker, (CheckType)attackIdx + 1);
+                                if (attackIdx == 1)
+                                    ovr024.CheckAffectsEffect(attacker, CheckType.PostHit1_Damage);
+                                else if (attackIdx == 2)
+                                    ovr024.CheckAffectsEffect(attacker, CheckType.PostHit2_Damage);
                             }
 
                             if (target.in_combat == false)
@@ -858,7 +861,7 @@ namespace engine
                     attacker.attack2_AttacksLeft = 0;
                 }
 
-                if (var_11 == false)
+                if (hit == false)
                 {
                     seg044.PlaySound(Sound.sound_9);
                     DisplayAttackMessage(false, 0, 0, attack_type, target, attacker);
@@ -2306,7 +2309,7 @@ namespace engine
         }
 
 
-        internal static void engulfs(Effect arg_0, object param, Player attacker)
+        internal static void AffectEngulf(Effect arg_0, object param, Player attacker)
         {
             Player target = attacker.actions.target;
 
@@ -2352,7 +2355,7 @@ namespace engine
         }
 
 
-        internal static void attack_or_kill(Effect arg_0, object param, Player attacker)
+        internal static void beholder_eyestalk(Effect arg_0, object param, Player attacker)
         {
             int range = 0xFF; /* simeon */
 

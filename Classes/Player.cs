@@ -658,7 +658,7 @@ namespace Classes
         public int hitBonus; // 0x199 field_199
         [DataOffset(0x19a, DataType.Byte)]
         public byte ac; // 0x19a
-        public int DisplayAc { get { return 0x3C - ac; } }
+        public int DisplayAc { get { return 60 - ac; } }
 
         [DataOffset(0x19b, DataType.Byte)]
         public byte ac_behind; // 0x19b field_19B

@@ -332,8 +332,8 @@ namespace engine
                     if (isNoxiousCloud == true &&
                         player.HasAffect(Affects.animate_dead) == false &&
                         player.HasAffect(Affects.stinking_cloud) == false &&
-                        player.HasAffect(Affects.affect_6f) == false &&
-                        player.HasAffect(Affects.affect_7d) == false &&
+                        player.HasAffect(Affects.prot_paralysis_poison) == false &&
+                        player.HasAffect(Affects.prot_sleep_charm_paralysis_poison) == false &&
                         player.HasAffect(Affects.protect_magic) == false &&
                         player.HasAffect(Affects.minor_globe_of_invulnerability) == false &&
                         player.actions.fleeing == false)
@@ -347,9 +347,9 @@ namespace engine
                     if (isPoisonousCloud == true &&
                         player.HitDice < 7 &&
                         player.HasAffect(Affects.protect_magic) == false &&
-                        player.HasAffect(Affects.affect_6f) == false &&
-                        player.HasAffect(Affects.affect_85) == false &&
-                        player.HasAffect(Affects.affect_7d) == false &&
+                        player.HasAffect(Affects.prot_paralysis_poison) == false &&
+                        player.HasAffect(Affects.prot_sleep_charm_paralysis_poison) == false &&
+                        player.HasAffect(Affects.dracolich_protection) == false &&
                         player.actions.fleeing == false)
                     {
                         move_cost = player.actions.move + 1;
@@ -858,7 +858,7 @@ namespace engine
                 rating = 0;
             }
 
-            if (item.affect_2 == Affects.paralizing_gaze)
+            if (item.affect_2 == Affects.petrifying_gaze)
             {
                 rating = 0;
             }

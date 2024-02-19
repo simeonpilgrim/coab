@@ -237,21 +237,21 @@ namespace engine
 
 		internal static void AffectShield(Effect arg_0, object param, Player player) /* sub_3A41F */
 		{
-			if (player.ac < 0x39) // AC 3
+			if (player.ac < 57) // AC 3
 			{
-				player.ac = 0x39; // AC 3
+				player.ac = 57; // AC 3
 			}
 
 			gbl.savingThrowRoll += 1;
 
-			if (gbl.spell_id == (byte)Spells.magic_missile)
+			if (gbl.spell_id == (byte)Spells.magic_missile || gbl.spell_id == (byte)Spells.wand_of_magic_missiles)
 			{
 				gbl.damage = 0;
 			}
 		}
 
 
-		internal static void AffectGnomeVsManSizedGiant(Effect arg_0, object param, Player player) // sub_3A44A
+		internal static void AffectGnomeVsGoblinKobold(Effect arg_0, object param, Player player) // sub_3A44A
 		{
 			if (player.actions != null &&
 				player.actions.target != null &&
@@ -315,7 +315,7 @@ namespace engine
 				item_found == false &&
 				player.items.Count < Player.MaxItems)
 			{
-                item = new Item(Affects.affect_78, Affects.spiritual_hammer, 0, 0, 0, 0, false, 0, false, 0, 1, 243, 20, 0, ItemType.Hammer, true);
+                item = new Item((Affects)0x78, Affects.spiritual_hammer, 0, 0, 0, 0, false, 0, false, 0, 1, 243, 20, 0, ItemType.Hammer, true);
 
 				player.items.Add(item);
 				ovr020.ready_Item(item);
@@ -684,7 +684,7 @@ namespace engine
 		}
 
 
-		internal static void sub_3B1A2(Effect arg_0, object param, Player player)
+		internal static void AffectGnomeVsGnoll(Effect arg_0, object param, Player player)
 		{
 			if (gbl.SelectedPlayer.monsterType == MonsterType.humanoid &&
 				(gbl.SelectedPlayer.icon_dimensions & 0x7F) == 2)
@@ -703,7 +703,7 @@ namespace engine
 			if (player.combat_team == team)
 			{
                 gbl.savingThrowRoll += 1;
-                gbl.attack_roll++;
+                gbl.attack_roll += 1;
             }
 			else
 			{
@@ -1030,7 +1030,7 @@ namespace engine
 		}
 
 
-		internal static void AnkhegAcidAttack(Effect arg_0, object param, Player player) // sub_3B94C
+		internal static void AnkhegMeleeAcidAttack(Effect arg_0, object param, Player player) // sub_3B94C
 		{
 			gbl.damage_flags = DamageType.Acid;
 
@@ -1072,12 +1072,12 @@ namespace engine
 				Protected();
 				//byte var_1 = ovr024.roll_dice(8, 1);
 
-				player.ac += 8;
+				player.hit_point_current += 8;
 			}
 		}
 
 
-		internal static void sub_3BA14(Effect arg_0, object param, Player player)
+		internal static void AffectResistPiercing(Effect arg_0, object param, Player player) // sub_3BA14
 		{
 			Item item = get_primary_weapon(gbl.SelectedPlayer);
 
@@ -1165,7 +1165,7 @@ namespace engine
 		}
 
 
-		internal static void sub_3BDB2(Effect arg_0, object param, Player arg_6)
+		internal static void AffectResistBluntPierce(Effect arg_0, object param, Player arg_6) // sub_3BDB2
 		{
 			Item item = get_primary_weapon(gbl.SelectedPlayer);
 
@@ -1241,7 +1241,7 @@ namespace engine
 		}
 
 
-		internal static void sub_3BEE8(Effect arg_0, object param, Player player)
+		internal static void AffectFightUnconscious(Effect arg_0, object param, Player player) // sub_3BEE8
 		{
 			Affect arg_2 = (Affect)param;
 
@@ -1263,7 +1263,7 @@ namespace engine
 			{
 				ovr024.add_affect(true, 0xff, (ushort)(ovr024.roll_dice(4, 1) + 1), Affects.affect_5F, player);
 				arg_2.callAffectTable = false;
-				ovr024.remove_affect(arg_2, Affects.affect_63, player);
+				ovr024.remove_affect(arg_2, Affects.fight_unconscious, player);
 			}
 		}
 
@@ -1377,7 +1377,7 @@ namespace engine
 		}
 
 
-		internal static void sub_3C1C9(Effect arg_0, object param, Player arg_6)
+		internal static void AffectProtParalysisPoison(Effect arg_0, object param, Player arg_6) // sub_3C1C9
 		{
 			ProtectedIf(Affects.poisoned);
 			ProtectedIf(Affects.paralyze);
@@ -1398,7 +1398,7 @@ namespace engine
 		}
 
 
-		internal static void sub_3C201(Effect arg_0, object param, Player arg_6)
+		internal static void AffectEfreetiFireResist(Effect arg_0, object param, Player arg_6) // sub_3C201
 		{
 			if ((gbl.damage_flags & DamageType.Fire) != 0)
 			{
@@ -1424,7 +1424,7 @@ namespace engine
 		}
 
 
-		internal static void sub_3C260(Effect arg_0, object param, Player player)
+		internal static void AffectResistPierceSlash(Effect arg_0, object param, Player player) // sub_3C260
 		{
 			Item weapon = get_primary_weapon(gbl.SelectedPlayer);
 
@@ -1451,7 +1451,7 @@ namespace engine
 		}
 
 
-		internal static void sub_3C2F9(Effect arg_0, object param, Player player) // sub_3C2F9
+		internal static void AffectVulnHolyWater(Effect arg_0, object param, Player player) // sub_3C2F9
 		{
             Item item = gbl.SelectedPlayer.activeItems.primaryWeapon;
 
@@ -1483,9 +1483,9 @@ namespace engine
 		}
 
 
-		internal static void sub_3C3A2(Effect arg_0, object param, Player player)
+		internal static void AffectBoulderEvasion(Effect arg_0, object param, Player player) // sub_3C3A2
 		{
-            Item field_151 = player.activeItems.primaryWeapon;
+			Item field_151 = player.activeItems.primaryWeapon;
 
 			if (field_151 != null)
 			{
@@ -1497,7 +1497,7 @@ namespace engine
 		}
 
 
-		internal static void sub_3C3F6(Effect arg_0, object param, Player player)
+		internal static void AffectAnkhedRangedAcidAttack(Effect arg_0, object param, Player player) // sub_3C3F6
 		{
 			Affect affect = (Affect)param;
 
@@ -1520,8 +1520,8 @@ namespace engine
 
 					ovr024.damage_person(saved, DamageOnSave.Half, damage, gbl.spell_target);
 
-					ovr024.remove_affect(affect, Affects.affect_79, player);
-					ovr024.remove_affect(null, Affects.ankheg_acid_attack, player);
+					ovr024.remove_affect(affect, Affects.ankheg_ranged_acid_attack, player);
+					ovr024.remove_affect(null, Affects.ankheg_melee_acid_attack, player);
 				}
 			}
 		}
@@ -1540,9 +1540,9 @@ namespace engine
 		}
 
 
-		internal static void sub_3C59D(Effect arg_0, object param, Player player)
+		internal static void AffectDracolichColdDamage(Effect arg_0, object param, Player player) // sub_3C59
 		{
-			gbl.damage_flags = DamageType.Acid;
+			gbl.damage_flags = DamageType.Cold; // was DamageType.Acid;
 
 			ovr024.damage_person(false, 0, ovr024.roll_dice_save(8, 2), player.actions.target);
 		}
@@ -1558,7 +1558,7 @@ namespace engine
 		}
 
 
-		internal static void sub_3C5F4(Effect arg_0, object param, Player player)
+		internal static void AffectProtSleepCharmParalysisPoison(Effect arg_0, object param, Player player) // sub_3C5F4
 		{
 			ProtectedIf(Affects.charm_person);
 			ProtectedIf(Affects.sleep);
@@ -1582,7 +1582,7 @@ namespace engine
 		}
 
 
-		internal static void sub_3C643(Effect arg_0, object arg_2, Player player)
+		internal static void AffectVulnBlessedQuarrel(Effect arg_0, object arg_2, Player player) // sub_3C643
 		{
 			Item item;
 
@@ -1627,7 +1627,7 @@ namespace engine
 		}
 
 
-		internal static void AffectDracolichA(Effect arg_0, object param, Player player) //sub_3C750
+		internal static void AffectDracolichProtection(Effect arg_0, object param, Player player) //sub_3C750
 		{
 			ProtectedIf(Affects.fear);
 			ProtectedIf(Affects.ray_of_enfeeblement);
@@ -1703,7 +1703,7 @@ namespace engine
 		}
 
 
-		internal static void add_affect_19(Effect arg_0, object param, Player player)
+		internal static void AffectAddInvisibility(Effect arg_0, object param, Player player) // add_affect_19
 		{
 			ovr024.add_affect(false, 0xff, 0xff, Affects.invisibility, player);
 		}
@@ -1752,7 +1752,7 @@ namespace engine
 		}
 
 
-		internal static void sp_dispel_evil(Effect arg_0, object param, Player player)
+		internal static void AffectDispelEvilBanish(Effect arg_0, object param, Player player)
 		{
 			gbl.spell_target = player.actions.target;
 
@@ -1762,7 +1762,7 @@ namespace engine
 				ovr024.KillPlayer("is dispelled", Status.gone, gbl.spell_target);
 
 				ovr024.remove_affect(null, Affects.dispel_evil, gbl.SelectedPlayer);
-				ovr024.remove_affect(null, Affects.sp_dispel_evil, gbl.SelectedPlayer);
+				ovr024.remove_affect(null, Affects.dispel_evil_banish, gbl.SelectedPlayer);
 			}
 			else
 			{
@@ -1785,7 +1785,7 @@ namespace engine
 			affect_table.Add(Affects.sticks_to_snakes, ovr013.SticksToSnakes);
 			affect_table.Add(Affects.dispel_evil, ovr013.DispelEvil);
 			affect_table.Add(Affects.detect_magic, ovr013.empty);
-			affect_table.Add(Affects.affect_06, ovr013.BonusVsMonstersX);
+			affect_table.Add(Affects.weap_flame_tongue, ovr013.BonusVsMonstersX);
 			affect_table.Add(Affects.faerie_fire, ovr013.FaerieFire);
 			affect_table.Add(Affects.protection_from_evil, ovr013.affect_protect_evil);
 			affect_table.Add(Affects.protection_from_good, ovr013.affect_protect_good);
@@ -1797,7 +1797,7 @@ namespace engine
 			affect_table.Add(Affects.poison_damage, ovr013.AffectPoisonDamage);
 			affect_table.Add(Affects.read_magic, ovr013.empty);
 			affect_table.Add(Affects.shield, ovr013.AffectShield);
-			affect_table.Add(Affects.gnome_vs_man_sized_giant, ovr013.AffectGnomeVsManSizedGiant);
+			affect_table.Add(Affects.gnome_vs_goblin_kobold, ovr013.AffectGnomeVsGoblinKobold);
 			affect_table.Add(Affects.find_traps, ovr013.empty);
 			affect_table.Add(Affects.resist_fire, ovr013.AffectResistFire);
 			affect_table.Add(Affects.silence_15_radius, ovr013.is_silenced1);
@@ -1822,12 +1822,12 @@ namespace engine
 			affect_table.Add(Affects.affect_in_stinking_cloud, ovr013.StinkingCloudAffect);
 			affect_table.Add(Affects.prot_from_normal_missiles, ovr013.AffectProtNormalMissles);
 			affect_table.Add(Affects.slow, ovr013.AffectSlow);
-            affect_table.Add(Affects.weaken, ovr013.weaken);
+			affect_table.Add(Affects.weaken, ovr013.weaken);
 			affect_table.Add(Affects.cause_disease_2, ovr013.sub_3B0C2);
 			affect_table.Add(Affects.prot_from_evil_10_radius, ovr013.affect_protect_evil);
 			affect_table.Add(Affects.prot_from_good_10_radius, ovr013.affect_protect_good);
 			affect_table.Add(Affects.dwarf_and_gnome_vs_giants, ovr013.AffectDwarfGnomeVsGiants);
-			affect_table.Add(Affects.affect_30, ovr013.sub_3B1A2);
+			affect_table.Add(Affects.gnome_vs_gnoll, ovr013.AffectGnomeVsGnoll);
 			affect_table.Add(Affects.prayer, ovr013.AffectPrayer);
 			affect_table.Add(Affects.hot_fire_shield, ovr013.HotFireShield);
 			affect_table.Add(Affects.snake_charm, ovr013.sub_3A071);
@@ -1836,7 +1836,7 @@ namespace engine
 			affect_table.Add(Affects.cold_fire_shield, ovr013.ColdFireShield);
 			affect_table.Add(Affects.poisoned, ovr013.empty);
 			affect_table.Add(Affects.item_invisibility, ovr013.sub_3B27B);
-			affect_table.Add(Affects.affect_39, ovr014.engulfs);
+			affect_table.Add(Affects.engulf, ovr014.AffectEngulf);
 			affect_table.Add(Affects.clear_movement, ovr013.AffectClearMovement);
 			affect_table.Add(Affects.regenerate, ovr013.AffectRegenration);
 			affect_table.Add(Affects.resist_normal_weapons, ovr013.AffectResistWeapons);
@@ -1859,26 +1859,26 @@ namespace engine
 			affect_table.Add(Affects.berserk, ovr013.AffectBerzerk);
 			affect_table.Add(Affects.affect_4e, ovr013.sub_3B8D9);
 			affect_table.Add(Affects.fireAttack_2d10, ovr013.MagicFireAttack_2d10);
-			affect_table.Add(Affects.ankheg_acid_attack, ovr013.AnkhegAcidAttack);
+			affect_table.Add(Affects.ankheg_melee_acid_attack, ovr013.AnkhegMeleeAcidAttack);
 			affect_table.Add(Affects.half_damage, ovr013.half_damage);
 			affect_table.Add(Affects.resist_fire_and_cold, ovr013.AffectResistFireAndCold);
-			affect_table.Add(Affects.paralizing_gaze, ovr023.AffectParalizingGaze);
+			affect_table.Add(Affects.petrifying_gaze, ovr023.AffectPetrifyingGaze);
 			affect_table.Add(Affects.shambling_absorb_lightning, ovr013.AffectShamblerAbsorbLightning);
-			affect_table.Add(Affects.affect_55, ovr013.sub_3BA14);
+			affect_table.Add(Affects.resist_piercing, ovr013.AffectResistPiercing);
 			affect_table.Add(Affects.spit_acid, ovr023.AffectSpitAcid);
-			affect_table.Add(Affects.affect_57, ovr014.attack_or_kill);
+			affect_table.Add(Affects.beholder_eyestalk, ovr014.beholder_eyestalk);
 			affect_table.Add(Affects.breath_elec, ovr023.DragonBreathElec);
 			affect_table.Add(Affects.displace, ovr013.AffectDisplace);
 			affect_table.Add(Affects.breath_acid, ovr023.DragonBreathAcid);
 			affect_table.Add(Affects.affect_in_cloud_kill, ovr013.CloudKillAffect);
 			affect_table.Add(Affects.affect_5c, ovr013.empty);
-			affect_table.Add(Affects.affect_5d, ovr013.half_fire_damage);
-			affect_table.Add(Affects.affect_5e, ovr013.sub_3BDB2);
+			affect_table.Add(Affects.half_fire, ovr013.half_fire_damage);
+			affect_table.Add(Affects.resist_blunt_pierce, ovr013.AffectResistBluntPierce);
 			affect_table.Add(Affects.affect_5F, ovr013.sub_3BE06);
 			affect_table.Add(Affects.owlbear_hug_check, ovr014.AffectOwlbearHugAttackCheck);
 			affect_table.Add(Affects.con_saving_bonus, ovr013.con_saving_bonus);
 			affect_table.Add(Affects.regen_3_hp, ovr013.AffectRegen3Hp);
-			affect_table.Add(Affects.affect_63, ovr013.sub_3BEE8);
+			affect_table.Add(Affects.fight_unconscious, ovr013.AffectFightUnconscious);
 			affect_table.Add(Affects.troll_fire_or_acid, ovr013.AffectTrollFireOrAcid);
 			affect_table.Add(Affects.troll_regen, ovr013.AffectTrollRegenerate);
 			affect_table.Add(Affects.TrollRegen, ovr013.AffectTrollRegen);
@@ -1890,41 +1890,41 @@ namespace engine
 			affect_table.Add(Affects.protect_charm_sleep, ovr013.AffectProtCharmSleep);
 			affect_table.Add(Affects.resist_paralyze, ovr013.ResistParalyze);
 			affect_table.Add(Affects.immune_to_cold, ovr013.AffectImmuneToCold);
-			affect_table.Add(Affects.affect_6f, ovr013.sub_3C1C9);
+			affect_table.Add(Affects.prot_paralysis_poison, ovr013.AffectProtParalysisPoison);
 			affect_table.Add(Affects.immune_to_fire, ovr013.AffectImmuneToFire);
-			affect_table.Add(Affects.affect_71, ovr013.sub_3C201);
-			affect_table.Add(Affects.affect_72, ovr013.AffectProtectionFromElectricity);
-			affect_table.Add(Affects.affect_73, ovr013.sub_3C260);
-			affect_table.Add(Affects.affect_74, ovr013.half_damage_if_weap_magic);
-			affect_table.Add(Affects.affect_75, ovr013.sub_3C2F9);
-			affect_table.Add(Affects.affect_76, ovr013.AffectProtCold);
-			affect_table.Add(Affects.affect_77, ovr013.AffectProtNonMagicWeapons);
-			affect_table.Add(Affects.affect_78, ovr013.sub_3C3A2);
-			affect_table.Add(Affects.affect_79, ovr013.sub_3C3F6);
+			affect_table.Add(Affects.efreeti_fire_resist, ovr013.AffectEfreetiFireResist);
+			affect_table.Add(Affects.half_elec, ovr013.AffectProtectionFromElectricity);
+			affect_table.Add(Affects.resist_pierce_slash, ovr013.AffectResistPierceSlash);
+			affect_table.Add(Affects.resist_magic_weapon, ovr013.half_damage_if_weap_magic);
+			affect_table.Add(Affects.vuln_holy_water, ovr013.AffectVulnHolyWater);
+			affect_table.Add(Affects.half_cold, ovr013.AffectProtCold);
+			affect_table.Add(Affects.protect_non_magic_weapons, ovr013.AffectProtNonMagicWeapons);
+			affect_table.Add(Affects.boulder_evasion, ovr013.AffectBoulderEvasion);
+			affect_table.Add(Affects.ankheg_ranged_acid_attack, ovr013.AffectAnkhedRangedAcidAttack);
 			affect_table.Add(Affects.dracolich_paralysis, ovr013.AffectDracolichParalysis);
-			affect_table.Add(Affects.affect_7b, ovr013.sub_3C59D);
+			affect_table.Add(Affects.dracolich_cold_damage, ovr013.AffectDracolichColdDamage);
 			affect_table.Add(Affects.halfelf_resistance, ovr013.AffectHalfElfResistance);
-			affect_table.Add(Affects.affect_7d, ovr013.sub_3C5F4);
-			affect_table.Add(Affects.affect_7e, ovr023.cast_gaze_paralyze);
-			affect_table.Add(Affects.affect_7f, ovr013.empty);
-			affect_table.Add(Affects.affect_80, ovr023.DragonBreathFire);
+			affect_table.Add(Affects.prot_sleep_charm_paralysis_poison, ovr013.AffectProtSleepCharmParalysisPoison);
+			affect_table.Add(Affects.dracolich_paralytic_gaze, ovr023.cast_gaze_paralyze);
+			affect_table.Add(Affects.reflectable_gaze, ovr013.empty);
+			affect_table.Add(Affects.breath_fire, ovr023.DragonBreathFire);
 			affect_table.Add(Affects.protect_magic, ovr013.AffectProtMagic);
-			affect_table.Add(Affects.affect_82, ovr013.sub_3C643);
+			affect_table.Add(Affects.vuln_blessed_quarrel, ovr013.AffectVulnBlessedQuarrel);
 			affect_table.Add(Affects.cast_breath_fire, ovr023.cast_breath_fire);
 			affect_table.Add(Affects.cast_throw_lightening, ovr023.cast_throw_lightening);
-			affect_table.Add(Affects.affect_85, ovr013.AffectDracolichA);
+			affect_table.Add(Affects.dracolich_protection, ovr013.AffectDracolichProtection);
 			affect_table.Add(Affects.ranger_vs_giant, ovr013.AffectRangerVsGiant);
 			affect_table.Add(Affects.protect_elec, ovr013.AffectProtElec);
 			affect_table.Add(Affects.entangle, ovr013.AffectEntangle);
 			affect_table.Add(Affects.affect_89, ovr013.sub_3C7E0);
-			affect_table.Add(Affects.affect_8a, ovr013.add_affect_19);
+			affect_table.Add(Affects.add_invisibility, ovr013.AffectAddInvisibility);
 			affect_table.Add(Affects.affect_8b, ovr014.sub_425C6);
 			affect_table.Add(Affects.paladinDailyHealCast, ovr013.empty);
 			affect_table.Add(Affects.paladinDailyCureRefresh, ovr013.PaladinCastCureRefresh);
 			affect_table.Add(Affects.fear, ovr013.AffectFear);
 			affect_table.Add(Affects.affect_8f, ovr013.sub_3C975);
 			affect_table.Add(Affects.owlbear_hug_round_attack, ovr014.AffectOwlbearHugRoundAttack);
-			affect_table.Add(Affects.sp_dispel_evil, ovr013.sp_dispel_evil);
+			affect_table.Add(Affects.dispel_evil_banish, ovr013.AffectDispelEvilBanish);
 			affect_table.Add(Affects.strength_spell, ovr013.empty);
 			affect_table.Add(Affects.do_items_affect, ovr013.do_items_affect);
 		}

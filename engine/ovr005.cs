@@ -8,7 +8,7 @@ namespace engine
     {
         static Affects[] disease_types = {  Affects.helpless,  Affects.cause_disease_1,
                                             Affects.weaken, Affects.cause_disease_2,
-                                            Affects.animate_dead, Affects.affect_39 };
+                                            Affects.animate_dead, (Affects)0x39 };
 
         static string[] temple_sl = { "Cure Blindness", "Cure Disease", "Cure Light Wounds", "Cure Serious Wounds", "Cure Critical Wounds", "Heal", "Neutralize Poison", "Raise Dead", "Remove Curse", "Stone to Flesh", "Exit" };
 
