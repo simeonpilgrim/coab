@@ -2129,7 +2129,7 @@ namespace engine
 
         static void SkipNextCommand()
         {
-            gbl.command = gbl.ecl_ptr[gbl.ecl_offset + 0x8000];
+            gbl.command = gbl.ecl_ptr[gbl.ecl_offset - gbl.initial_ecl_offset];
 
             CmdItem cmd;
             if (CommandTable.TryGetValue(gbl.command, out cmd))
@@ -2154,7 +2154,7 @@ namespace engine
             while (gbl.stopVM == false &&
                    gbl.party_killed == false)
             {
-                gbl.command = gbl.ecl_ptr[gbl.ecl_offset + 0x8000];
+                gbl.command = gbl.ecl_ptr[gbl.ecl_offset - gbl.initial_ecl_offset];
 
                 VmLog.Write("0x{0:X} ", gbl.ecl_offset);
 

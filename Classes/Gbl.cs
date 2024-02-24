@@ -489,6 +489,13 @@ namespace Classes
 
         public static CombatType combat_type;
         public static ushort ecl_offset;
+        public static ushort vm_mem0_offset;
+        public static ushort vm_mem0_size;
+        public static ushort vm_mem1_offset;
+        public static ushort vm_mem1_size;
+        public static ushort vm_mem2_offset;
+        public static ushort vm_mem2_size;
+        public static ushort initial_ecl_offset;
 
 
 

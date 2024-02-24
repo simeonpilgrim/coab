@@ -17,8 +17,8 @@ namespace engine
 
             for (int loop_var = 1; loop_var <= numberOfSets; loop_var++)
             {
-                byte code = gbl.ecl_ptr[0x8000 + gbl.ecl_offset + 1];
-                byte low = gbl.ecl_ptr[0x8000 + gbl.ecl_offset + 2];
+                byte code = gbl.ecl_ptr[gbl.ecl_offset + 1 - gbl.initial_ecl_offset];
+                byte low = gbl.ecl_ptr[gbl.ecl_offset + 2 - gbl.initial_ecl_offset];
 
 
                 gbl.cmd_opps[loop_var].Code = code;
@@ -29,7 +29,7 @@ namespace engine
                 if (code == 1 || code == 2 || code == 3)
                 {
                     gbl.ecl_offset++;
-                    byte high = gbl.ecl_ptr[0x8000 + gbl.ecl_offset];
+                    byte high = gbl.ecl_ptr[gbl.ecl_offset - gbl.initial_ecl_offset];
 
                     gbl.cmd_opps[loop_var].High = high;
 
@@ -58,7 +58,7 @@ namespace engine
                 {
                     strIndex++;
                     gbl.ecl_offset++;
-                    byte high = gbl.ecl_ptr[0x8000 + gbl.ecl_offset];
+                    byte high = gbl.ecl_ptr[gbl.ecl_offset - gbl.initial_ecl_offset];
 
                     gbl.cmd_opps[loop_var].High = high;
 
@@ -96,7 +96,7 @@ namespace engine
             gbl.encounter_flags[0] = false;
             gbl.encounter_flags[1] = false;
             gbl.monster_icon_id = 8;
-            gbl.ecl_offset = 0x8000;
+            gbl.ecl_offset = gbl.initial_ecl_offset;
             gbl.byte_1DA70 = false;
 
             gbl.vmCallStack.Clear();
@@ -301,22 +301,19 @@ namespace engine
         {
             int var_1 = 4;
 
-            if (arg_0 >= 0x4B00 && arg_0 <= 0x4EFF)
+            if (arg_0 >= gbl.vm_mem0_offset && arg_0 <= gbl.vm_mem0_offset + gbl.vm_mem0_size - 1)
             {
                 var_1 = 0;
             }
-
-            if (arg_0 >= 0x7C00 && arg_0 <= 0x7FFF)
+            if (arg_0 >= gbl.vm_mem1_offset && arg_0 <= gbl.vm_mem1_offset + gbl.vm_mem1_size - 1)
             {
                 var_1 = 1;
             }
-
-            if (arg_0 >= 0x7A00 && arg_0 <= 0x7BFF)
+            if (arg_0 >= gbl.vm_mem2_offset && arg_0 <= gbl.vm_mem2_offset + gbl.vm_mem2_size - 1)
             {
                 var_1 = 2;
             }
-
-            if (arg_0 >= 0x8000 && arg_0 <= 0x9DFF)
+            if (arg_0 >= gbl.initial_ecl_offset && arg_0 <= gbl.initial_ecl_offset + 0x1DFF)
             {
                 var_1 = 3;
             }
@@ -342,7 +339,7 @@ namespace engine
 
             arg_0 = true;
 
-            arg_4 -= 0x7c00;
+            //arg_4 -= 0x7c00;
 
             if (arg_4 == 0x15)
             {
@@ -562,7 +559,7 @@ namespace engine
 
         internal static void alter_character(ushort set_value, ushort switch_var)
         {
-            switch_var -= 0x7c00;
+            //switch_var -= 0x7c00;
 
             if (switch_var == 0)
             {
@@ -696,12 +693,12 @@ namespace engine
 
             if (memType == 0)
             {
-                if ((location - 0x4B00) == 0x0FD || (location - 0x4B00) == 0x0FE)
+                if ((location - gbl.vm_mem0_offset) == 0x0FD || (location - gbl.vm_mem0_offset) == 0x0FE)
                 {
                     //System.Console.WriteLine("    gbl.byte_1EE94 = 1");
                     gbl.byte_1EE94 = true;
                 }
-                else if ((location - 0x4B00) == 0x0E6 && gbl.area_ptr.inDungeon != value)
+                else if ((location - gbl.vm_mem0_offset) == 0x0E6 && gbl.area_ptr.inDungeon != value)
                 {
                     gbl.last_game_state = gbl.game_state;
                     if (value == 0)
@@ -714,20 +711,20 @@ namespace engine
                     }
                 }
 
-                gbl.area_ptr.field_6A00_Set(0x6A00 + (location * 2), value);
+                gbl.area_ptr.field_6A00_Set((location - gbl.vm_mem0_offset) * 2, value);
             }
             else if (memType == 1)
             {
-                gbl.area2_ptr.field_800_Set((location * 2) + 0x800, value);
-                alter_character(value, location);
+                gbl.area2_ptr.field_800_Set((location - gbl.vm_mem1_offset) * 2, value);
+                alter_character(value, (ushort)(location - gbl.vm_mem1_offset));
             }
             else if (memType == 2)
             {
-                gbl.stru_1B2CA[(location << 1) + 0x0C00] = value;
+                gbl.stru_1B2CA[(location - gbl.vm_mem2_offset) << 1] = value;
             }
             else if (memType == 3)
             {
-                gbl.ecl_ptr[location + 0x8000] = (byte)value;
+                gbl.ecl_ptr[location - gbl.initial_ecl_offset] = (byte)value;
             }
             else if (memType == 4)
             {
@@ -754,6 +751,9 @@ namespace engine
 
                         case 0xB9:
                             gbl.word_1EE7A = value;
+                            break;
+
+                        default:
                             break;
                     }
                 }
@@ -812,6 +812,9 @@ namespace engine
                         case 0xF7:
                             gbl.byte_1EE91 = true;
                             break;
+
+                        default:
+                            break;
                     }
                 }
             }
@@ -827,25 +830,25 @@ namespace engine
             switch (mem_type)
             {
                 case 0:
-                    val = gbl.area_ptr.field_6A00_Get(0x6A00 + (loc * 2));
+                    val = gbl.area_ptr.field_6A00_Get((loc - gbl.vm_mem0_offset) * 2);
                     break;
 
                 case 1:
                     bool var_4 = false;
-                    val = get_player_values(ref var_4, loc);
+                    val = get_player_values(ref var_4, (ushort)(loc - gbl.vm_mem1_offset));
 
                     if (var_4 == false)
                     {
-                        val = gbl.area2_ptr.field_800_Get((loc * 2) + 0x800);
+                        val = gbl.area2_ptr.field_800_Get((loc - gbl.vm_mem1_offset) * 2);
                     }
                     break;
 
                 case 2:
-                    val = gbl.stru_1B2CA[(loc << 1) + 0x0C00];
+                    val = gbl.stru_1B2CA[(loc - gbl.vm_mem2_offset) << 1];
                     break;
 
                 case 3:
-                    val = gbl.ecl_ptr[loc + 0x8000]; // When does this happen?
+                    val = gbl.ecl_ptr[loc - gbl.initial_ecl_offset]; // Read from tables in ecl
                     break;
 
                 case 4:
@@ -870,6 +873,9 @@ namespace engine
                                 break;
 
                             case 0x035F:
+                                break;
+
+                            default:
                                 break;
                         }
                     }
@@ -930,15 +936,15 @@ namespace engine
 
                     for (int i = 0; i <= var_104; i++)
                     {
-                        gbl.area_ptr.field_6A00_Set(0x6A00 + ((loc + i) * 2), text[i]);
+                        gbl.area_ptr.field_6A00_Set((loc + i - gbl.vm_mem0_offset) * 2, text[i]);
                     }
                 }
 
-                gbl.area_ptr.field_6A00_Set(0x6A00 + ((text_len + loc) * 2), 0);
+                gbl.area_ptr.field_6A00_Set((text_len + loc - gbl.vm_mem0_offset) * 2, 0);
             }
             else if (mem_type == 1)
             {
-                if (loc == 0x7C00)
+                if (loc == gbl.vm_mem1_offset)
                 {
                     gbl.SelectedPlayer.name = text;
                 }
@@ -948,11 +954,11 @@ namespace engine
                     {
                         for (int i = 0; i <= text_len - 1; i++)
                         {
-                            gbl.area2_ptr.field_800_Set(((loc + i) * 2) + 0x800, text[i]);
+                            gbl.area2_ptr.field_800_Set((loc + i - gbl.vm_mem1_offset) * 2, text[i]);
                         }
                     }
 
-                    gbl.area2_ptr.field_800_Set(((text_len + loc) * 2) + 0x800, 0);
+                    gbl.area2_ptr.field_800_Set((text_len + loc - gbl.vm_mem1_offset) * 2, 0);
                 }
             }
             else if (mem_type == 2)
@@ -962,11 +968,11 @@ namespace engine
                     var_104 = (byte)(text_len - 1);
                     for (int i = 0; i <= var_104; i++)
                     {
-                        gbl.stru_1B2CA[((i + loc) * 2) + 0x0C00] = text[i];
+                        gbl.stru_1B2CA[(i + loc - gbl.vm_mem2_offset) * 2] = text[i];
                     }
                 }
 
-                gbl.stru_1B2CA[((text_len + loc) * 2) + 0x0C00] = 0;
+                gbl.stru_1B2CA[(text_len + loc - gbl.vm_mem2_offset) * 2] = 0;
             }
             else if (mem_type == 3)
             {
@@ -974,11 +980,11 @@ namespace engine
                 {
                     for (int i = 0; i <= text_len - 1; i++)
                     {
-                        gbl.ecl_ptr[0x8000 + i + loc] = (byte)text[i];
+                        gbl.ecl_ptr[i + loc - gbl.initial_ecl_offset] = (byte)text[i];
                     }
                 }
 
-                gbl.ecl_ptr[0x8000 + text_len + loc] = 0;
+                gbl.ecl_ptr[text_len + loc - gbl.initial_ecl_offset] = 0;
             }
         }
 
@@ -1067,7 +1073,7 @@ namespace engine
 
             for (int i = 0; i < inputLength; i++)
             {
-                data[i] = gbl.ecl_ptr[gbl.ecl_offset + 0x8000 + 1 + i];
+                data[i] = gbl.ecl_ptr[gbl.ecl_offset + 1 + i - gbl.initial_ecl_offset];
             }
 
             gbl.ecl_offset += (ushort)inputLength;
@@ -1084,40 +1090,40 @@ namespace engine
             switch (vm_GetMemoryValueType(location))
             {
                 case 0:
-                    while (gbl.area_ptr.field_6A00_Get(((offset + location) * 2) + 0x6A00) != 0)
+                    while (gbl.area_ptr.field_6A00_Get((offset + location - gbl.vm_mem0_offset) * 2) != 0)
                     {
-                        sb.Append((char)((byte)gbl.area_ptr.field_6A00_Get(((offset + location) * 2) + 0x6A00)));
+                        sb.Append((char)((byte)gbl.area_ptr.field_6A00_Get((offset + location - gbl.vm_mem0_offset) * 2)));
                         offset++;
                     }
                     break;
 
                 case 1:
-                    if (location == 0x7C00)
+                    if (location == gbl.vm_mem1_offset)
                     {
                         sb.Append(gbl.SelectedPlayer.name);
                     }
                     else
                     {
-                        while (gbl.area2_ptr.field_800_Get(((offset + location) << 1) + 0x800) != 0)
+                        while (gbl.area2_ptr.field_800_Get((offset + location - gbl.vm_mem1_offset) << 1) != 0)
                         {
-                            sb.Append((char)((byte)gbl.area2_ptr.field_800_Get(((offset + location) << 1) + 0x800)));
+                            sb.Append((char)((byte)gbl.area2_ptr.field_800_Get((offset + location - gbl.vm_mem1_offset) << 1)));
                             offset++;
                         }
                     }
                     break;
 
                 case 2:
-                    while (gbl.stru_1B2CA[((offset + location) << 1) + 0x0C00] != 0)
+                    while (gbl.stru_1B2CA[(offset + location - gbl.vm_mem2_offset) << 1] != 0)
                     {
-                        sb.Append((char)gbl.stru_1B2CA[((offset + location) << 1) + 0x0C00]);
+                        sb.Append((char)gbl.stru_1B2CA[(offset + location - gbl.vm_mem2_offset) << 1]);
                         offset++;
                     }
                     break;
 
                 case 3:
-                    while (gbl.ecl_ptr[offset + location + 0x8000] != 0)
+                    while (gbl.ecl_ptr[offset + location - gbl.initial_ecl_offset] != 0)
                     {
-                        sb.Append((char)gbl.ecl_ptr[offset + location + 0x8000]);
+                        sb.Append((char)gbl.ecl_ptr[offset + location - gbl.initial_ecl_offset]);
                         offset++;
                     }
                     break;
