@@ -1643,7 +1643,7 @@ namespace engine
                     seg044.PlaySound(Sound.sound_9);
                     break;
 
-                case ItemType.Type_85:
+                case ItemType.HolyWater:
                 case ItemType.FlaskOfOil:
                     ovr025.load_missile_icons(iconId + 4);
                     frame_count = 4;

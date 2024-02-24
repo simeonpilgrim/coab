@@ -1179,7 +1179,7 @@ namespace engine
                         }
                         else if (var_62 == 10)
                         {
-                            item_type = ItemType.Type_84;
+                            item_type = ItemType.PotionOfGiantStr;
                         }
                         else if (var_62 >= 11 && var_62 <= 15)
                         {

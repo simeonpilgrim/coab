@@ -830,7 +830,7 @@ namespace engine
                 rating += itemData.bonusNormal * 2;
             }
 
-            if (item.type == ItemType.Type_85 &&
+            if (item.type == ItemType.HolyWater &&
                 player.actions.target != null &&
                 player.actions.target.field_E9 > 0)
             {

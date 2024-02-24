@@ -1470,7 +1470,7 @@ namespace engine
 		{
             Item item = gbl.SelectedPlayer.activeItems.primaryWeapon;
 
-			if (item != null && item.type == ItemType.Type_85)
+			if (item != null && item.type == ItemType.HolyWater)
 			{
 				gbl.damage = ovr024.roll_dice_save(6, 1) + 1;
 			}
@@ -1504,7 +1504,7 @@ namespace engine
 
 			if (field_151 != null)
 			{
-				if (field_151.type == ItemType.Type_87 || field_151.type == ItemType.Type_88)
+				if (field_151.type == ItemType.HillGiantBoulder || field_151.type == ItemType.CloudGiantBoulder)
 				{
 					AvoidMissleAttack(50, player);
 				}
