@@ -124,7 +124,7 @@ namespace engine
                 int save_bonus = (gbl.SelectedPlayer.combat_team == CombatTeam.Ours) ? -2 : 8;
                 var opp = gbl.SelectedPlayer.OppositeTeam();
 
-                var sortedCombatants = ovr032.Rebuild_SortedCombatantList(1, spell_entry.field_F, pos, p => p.combat_team != opp);
+                var sortedCombatants = ovr032.Rebuild_SortedCombatantList(1, spell_entry.maxRange, pos, p => p.combat_team != opp);
 
                 foreach (var sc in sortedCombatants)
                 {
@@ -146,7 +146,7 @@ namespace engine
             if (spell_entry.priority >= minPriority)
             {
                 Player dummy_target;
-                if ((spellId != 3 && spell_entry.field_E == 0) ||
+                if ((spellId != 3 && spell_entry.targetsEnemy == 0) ||
                     (spellId == 3 && ovr014.find_healing_target(out dummy_target, attacker)))
                 {
                     return true;
@@ -157,7 +157,7 @@ namespace engine
 
                     if (nearTargets.Count > 0)
                     {
-                        if (spell_entry.field_F == 0)
+                        if (spell_entry.maxRange == 0)
                         {
                             return true;
                         }

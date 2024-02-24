@@ -260,7 +260,7 @@ namespace engine
 
 			gbl.savingThrowRoll += 1;
 
-			if (gbl.spell_id == 15) /* Magic Missle */
+			if (gbl.spell_id == (byte)Spells.magic_missile)
 			{
 				gbl.damage = 0;
 			}

@@ -89,11 +89,11 @@ namespace engine
                                 int sp_class = (se.spellLevel - 1) / 5;
                                 int sp_lvl = (se.spellLevel - 1) % 5;
 
-                                if (se.spellClass == 0 &&
+                                if (se.spellClass == SpellClass.Cleric &&
                                     player.spellCastCount[sp_class, sp_lvl] > 0 &&
                                     spell != Spells.animate_dead)
                                 {
-                                    player.LearnSpell(spell);
+                                    player.spellBook.LearnSpell(spell);
                                 }
                             }
                             break;
@@ -115,10 +115,10 @@ namespace engine
                                     int sp_class = (se.spellLevel - 1) / 5;
                                     int sp_lvl = (se.spellLevel - 1) % 5;
 
-                                    if (se.spellClass == 0 &&
+                                    if (se.spellClass == SpellClass.Cleric &&
                                         player.spellCastCount[sp_class, sp_lvl] > 0)
                                     {
-                                        player.LearnSpell(spell);
+                                        player.spellBook.LearnSpell(spell);
                                     }
                                 }
                             }
@@ -144,7 +144,7 @@ namespace engine
                                 {
                                     if (gbl.spellCastingTable[(int)spell].spellClass == SpellClass.Druid)
                                     {
-                                        player.LearnSpell(spell);
+                                        player.spellBook.LearnSpell(spell);
                                     }
                                 }
                             }
@@ -675,9 +675,9 @@ namespace engine
             else if (newClass == SkillType.MagicUser)
             {
                 player.spellCastCount[2, 0] = 1;
-                player.LearnSpell(Spells.detect_magic_MU);
-                player.LearnSpell(Spells.read_magic);
-                player.LearnSpell(Spells.sleep);
+                player.spellBook.LearnSpell(Spells.detect_magic_MU);
+                player.spellBook.LearnSpell(Spells.read_magic);
+                player.spellBook.LearnSpell(Spells.sleep);
             }
 
             player._class = (ClassId)newClass;

@@ -1106,7 +1106,7 @@ namespace engine
                 var_2 = aim_menu(arg_0, allowTarget, canTargetEmptyGround, false, ovr023.SpellRange(spellId), gbl.SelectedPlayer);
                 gbl.SelectedPlayer.actions.target = arg_0.target;
             }
-            else if (gbl.spellCastingTable[spellId].field_E == 0)
+            else if (gbl.spellCastingTable[spellId].targetsEnemy == 0)
             {
                 arg_0.target = gbl.SelectedPlayer;
 
@@ -1175,21 +1175,21 @@ namespace engine
 
             gbl.targetPos = ovr033.PlayerMapPos(gbl.SelectedPlayer);
 
-            int tmp1 = gbl.spellCastingTable[spellId].field_6 & 0x0F;
+            int area = gbl.spellCastingTable[spellId].effectArea & 0x0F;
 
-            if (tmp1 == 0)
+            if (area == 0)
             {
                 gbl.spellTargets.Clear();
                 gbl.spellTargets.Add(gbl.SelectedPlayer);
             }
-            else if (tmp1 == 5)
+            else if (area == 5)
             {
                 int var_5 = 0;
                 gbl.spellTargets.Clear();
 
                 int var_4;
 
-                if (spellId == 0x4F)
+                if (spellId == (byte)Spells.faerie_fire)
                 {
                     var_4 = ovr025.spellMaxTargetCount(0x4F);
                 }
@@ -1213,7 +1213,7 @@ namespace engine
 
                             gbl.targetPos = ovr033.PlayerMapPos(var_C.target);
 
-                            if (spellId != 0x4f)
+                            if (spellId != (byte)Spells.faerie_fire)
                             {
                                 byte hitDice = target.HitDice;
 
@@ -1277,7 +1277,7 @@ namespace engine
                     }
                 } while (stop_loop == false && var_4 != 0);
             }
-            else if (tmp1 == 0x0F)
+            else if (area == 15)
             {
                 if (sub_4001C(var_C, false, quick_fight, spellId) == true)
                 {
@@ -1289,7 +1289,8 @@ namespace engine
                     else
                     {
                         /* TODO it doesn't make sense to mask the low nibble then shift it out */
-                        var scl = ovr032.Rebuild_SortedCombatantList(1, (gbl.spellCastingTable[spellId].field_6 & 0x0f) >> 4, gbl.targetPos, sc => true);
+                        // Only silence 15" radius matches area == 0x0F with something in the upper byte
+                        var scl = ovr032.Rebuild_SortedCombatantList(1, (gbl.spellCastingTable[spellId].effectArea & 0x0f) >> 4, gbl.targetPos, sc => true);
 
                         gbl.spellTargets.Clear();
                         foreach (var sc in scl)
@@ -1304,11 +1305,11 @@ namespace engine
                     castSpell = false;
                 }
             }
-            else if (tmp1 >= 8 && tmp1 <= 0x0E)
+            else if (area >= 8 && area <= 14)
             {
                 if (sub_4001C(var_C, true, quick_fight, spellId) == true)
                 {
-                    var scl = ovr032.Rebuild_SortedCombatantList(1, gbl.spellCastingTable[spellId].field_6 & 7, gbl.targetPos, sc => true);
+                    var scl = ovr032.Rebuild_SortedCombatantList(1, gbl.spellCastingTable[spellId].effectArea & 0x03, gbl.targetPos, sc => true);
 
                     gbl.spellTargets.Clear();
                     foreach (var sc in scl)
@@ -1323,9 +1324,9 @@ namespace engine
                     castSpell = false;
                 }
             }
-            else
+            else // 1 - 4, 6 - 7 (1 - 3 makes sense [based on mask below], 4 & 6 - 7 does not)
             {
-                int max_targets = (gbl.spellCastingTable[spellId].field_6 & 3) + 1;
+                int max_targets = (gbl.spellCastingTable[spellId].effectArea & 0x03) + 1;
                 gbl.spellTargets.Clear();
 
                 while (max_targets > 0)

@@ -786,16 +786,16 @@ namespace engine
 
                                 if (stru.spellClass == 0 && stru.spellLevel == 1)
                                 {
-                                    player.LearnSpell(spell);
+                                    player.spellBook.LearnSpell(spell);
                                 }
                             }
                         }
                         else if (skill == SkillType.MagicUser)
                         {
-                            player.LearnSpell(Spells.detect_magic_MU);
-                            player.LearnSpell(Spells.read_magic);
-                            player.LearnSpell(Spells.enlarge);
-                            player.LearnSpell(Spells.sleep);
+                            player.spellBook.LearnSpell(Spells.detect_magic_MU);
+                            player.spellBook.LearnSpell(Spells.read_magic);
+                            player.spellBook.LearnSpell(Spells.enlarge);
+                            player.spellBook.LearnSpell(Spells.sleep);
                         }
 
                         class_count++;
@@ -2399,7 +2399,7 @@ namespace engine
 
                         if (newSpellId > 0)
                         {
-                            player.LearnSpell((Spells)newSpellId);
+                            player.spellBook.LearnSpell((Spells)newSpellId);
                         }
                     }
                 }
@@ -2409,20 +2409,20 @@ namespace engine
                     switch (player.magic_user_lvl)
                     {
                         case 2:
-                            player.LearnSpell(Spells.magic_missile);
+                            player.spellBook.LearnSpell(Spells.magic_missile);
                             break;
 
                         case 3:
-                            player.LearnSpell(Spells.stinking_cloud);
-                            player.LearnSpell(Spells.protect_from_evil_MU);
+                            player.spellBook.LearnSpell(Spells.stinking_cloud);
+                            player.spellBook.LearnSpell(Spells.protect_from_evil_MU);
                             break;
 
                         case 4:
-                            player.LearnSpell(Spells.knock);
+                            player.spellBook.LearnSpell(Spells.knock);
                             break;
 
                         case 5:
-                            player.LearnSpell(Spells.fireball);
+                            player.spellBook.LearnSpell(Spells.fireball);
                             break;
                     }
                 }

@@ -426,7 +426,7 @@ namespace engine
                     else
                     {
                         redraw = true;
-                        if (gbl.SelectedPlayer.KnowsSpell((Spells)var_4))
+                        if (gbl.SelectedPlayer.spellBook.KnowsSpell((Spells)var_4))
                         {
                             ovr025.string_print01("You already know that spell");
                         }

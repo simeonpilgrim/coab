@@ -49,8 +49,8 @@ namespace Classes
     {
         bless = 0x01,
         curse = 0x02,
-        cure_light_wounds = 0x03,
-        cause_light_wounds = 0x04,
+        cure_light_wounds_CL = 0x03,
+        cause_light_wounds_CL = 0x04,
         detect_magic_CL = 0x05,
         protect_from_evil_CL = 0x06,
         protect_from_good_CL = 0x07,
@@ -89,7 +89,7 @@ namespace Classes
         cause_disease = 0x28,
         dispel_magic_CL = 0x29,
         prayer = 0x2a,
-        remove_curse = 0x2b,
+        remove_curse_CL = 0x2b,
         bestow_curse_CL = 0x2c,
         blink = 0x2d,
         dispel_magic_MU = 0x2e,
@@ -104,7 +104,7 @@ namespace Classes
         slow = 0x37,
         restoration = 0x38,
         spell_39 = 0x39,
-        cure_serious_wounds = 0x3a,
+        cure_serious_wounds_CL = 0x3a,
         spell_3b = 0x3b,
         spell_3c = 0x3c,
         spell_3d = 0x3d,
@@ -112,11 +112,11 @@ namespace Classes
         spell_3f = 0x3f,
         spell_40 = 0x40,
         spell_41 = 0x41,
-        cause_serious_wounds = 0x42,
-        neutralize_poison = 0x43,
+        cause_serious_wounds_CL = 0x42,
+        neutralize_poison_CL = 0x43,
         poison = 0x44,
         protect_evil_10_rad = 0x45,
-        sticks_to_snakes = 0x46,
+        sticks_to_snakes_CL = 0x46,
         cure_critical_wounds = 0x47,
         cause_critical_wounds = 0x48,
         dispel_evil = 0x49,
@@ -135,7 +135,7 @@ namespace Classes
         fumble = 0x56,
         ice_storm = 0x57,
         minor_globe_of_invuln = 0x58,
-        spell_59 = 0x59,
+        remove_curse_MU = 0x59,
         spell_5a = 0x5a,
         cloud_kill = 0x5b,
         cone_of_cold = 0x5c,
@@ -147,18 +147,19 @@ namespace Classes
         spell_62 = 0x62,
         spell_63 = 0x63,
         bestow_curse_MU = 0x64,
+        unknown_10 = 0x65,
         //spell_88 = 0x88,
     }
 
     public class SpellEntry /* Struct_19AEC */
     {
-        public SpellEntry(int spell_idx, SpellClass _spellClass, sbyte _spellLevel,
+        public SpellEntry(Spells _spell, SpellClass _spellClass, sbyte _spellLevel,
             int _fixedRange, int _perLvlRange,
             int _fixedDuration, byte _perLvlDuration,
-            byte f6, SpellTargets _targets,
+            byte _effectArea, SpellTargets _targets,
             DamageOnSave _damageOnSave, SaveVerseType _saveVerse,
             Affects _affectId, SpellWhen _whenCast,
-            int _castingDelay, int _priority, byte fe, byte ff)
+            int _castingDelay, int _priority, byte _targetsEnemy, byte _max_range)
         {
             spellClass = _spellClass;
             spellLevel = _spellLevel;
@@ -166,7 +167,7 @@ namespace Classes
             perLvlRange = _perLvlRange;
             fixedDuration = _fixedDuration;
             perLvlDuration = _perLvlDuration;
-            field_6 = f6;
+            effectArea = _effectArea;
             targetType = _targets;
             damageOnSave = _damageOnSave;
             saveVerse = _saveVerse;
@@ -174,10 +175,11 @@ namespace Classes
             whenCast = _whenCast;
             castingDelay = _castingDelay;
             priority = _priority;
-            field_E = fe;
-            field_F = ff;
-            spellIdx = spell_idx;
+            targetsEnemy = _targetsEnemy;
+            maxRange = _max_range;
+            spellIdx = (int)_spell;
         }
+
 
         /// <summary>
         /// 0 - Cleric, 1 - Druid, 2 - Magic-User
@@ -190,7 +192,7 @@ namespace Classes
         public int perLvlRange; //seg600:37DF
         public int fixedDuration; //seg600:37E0
         public int perLvlDuration; //seg600:37E1
-        public byte field_6; //seg600:37E2
+        public byte effectArea; //seg600:37E2
         public SpellTargets targetType; //seg600:37E3
         public DamageOnSave damageOnSave; //seg600:37E4 unk_19AF4  // field_8
         public SaveVerseType saveVerse; //seg600:37E5 unk_19AF5
@@ -198,7 +200,7 @@ namespace Classes
         public SpellWhen whenCast; //seg600:37E7 unk_19AF7
         public int castingDelay; //seg600:37E8 unk_19AF8
         public int priority; //seg600:37E9 unk_19AF9
-        public byte field_E; //seg600:37EA unk_19AFA
-        public byte field_F; //seg600:37EB unk_19AFB
+        public byte targetsEnemy; //seg600:37EA unk_19AFA
+        public byte maxRange; //seg600:37EB unk_19AFB
     }
 }

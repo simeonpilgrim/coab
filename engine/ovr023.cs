@@ -73,7 +73,7 @@ namespace engine
                             string.Empty,
                             string.Empty,
                             string.Empty,
-                            string.Empty,                                   
+                            string.Empty,
                             "Cause Serious Wounds",
                             "Neutralize Poison",
                             "Poison",
@@ -108,7 +108,9 @@ namespace engine
                             string.Empty,
                             string.Empty,
                             string.Empty,
-                            "Bestow Curse" };
+                            "Bestow Curse",
+                            string.Empty,
+                        };
 
 		static string[] LevelStrings = {
                             string.Empty,
@@ -428,7 +430,7 @@ namespace engine
 				case SpellLoc.grimoire:
 					foreach (Spells spell in System.Enum.GetValues(typeof(Spells)))
 					{
-						if (gbl.SelectedPlayer.KnowsSpell(spell) &&
+						if (gbl.SelectedPlayer.spellBook.KnowsSpell(spell) &&
 							can_learn_spell((int)spell, gbl.SelectedPlayer))
 						{
 							add_spell_to_learning_list((int)spell);
@@ -463,7 +465,7 @@ namespace engine
 						}
 						else if (gbl.SelectedPlayer.spellCastCount[(int)sp_class, sp_lvl - 1] > 0 &&
 							can_learn_spell((int)spell, gbl.SelectedPlayer) == true &&
-							gbl.SelectedPlayer.KnowsSpell(spell) == false)
+							gbl.SelectedPlayer.spellBook.KnowsSpell(spell) == false)
 						{
 							add_spell_to_learning_list((int)spell);
 						}
@@ -518,7 +520,7 @@ namespace engine
 			int range = gbl.spellCastingTable[spellId].fixedRange + (gbl.spellCastingTable[spellId].perLvlRange * castingLvl);
 
 			if (range == 0 &&
-				gbl.spellCastingTable[spellId].field_6 != 0)
+				gbl.spellCastingTable[spellId].effectArea != 0)
 			{
 				range = 1;
 			}
@@ -559,7 +561,7 @@ namespace engine
 					var_4 = (ovr024.roll_dice(10, 1) + 10) * 10;
 				}
 			}
-			else if (spellId == Spells.neutralize_poison)
+			else if (spellId == Spells.neutralize_poison_CL)
 			{
 				var_4 = 1440;
 			}
@@ -746,11 +748,11 @@ namespace engine
 						gbl.focusCombatAreaOnPlayer = true;
 						ovr033.draw_74B3F(false, Icon.Attack, direction, caster);
 
-						if (spell_id == 0x2F)
+						if (spell_id == (byte)Spells.fireball)
 						{
 							seg044.PlaySound(Sound.sound_b);
 						}
-						else if (spell_id == 0x33)
+						else if (spell_id == (byte)Spells.lightning_bolt)
 						{
 							seg044.PlaySound(Sound.sound_8);
 						}
@@ -964,7 +966,7 @@ namespace engine
 				bool saved;
 				DamageOnSave can_save_flag;
 
-				if ((gbl.spell_id == 0x4F || gbl.spell_id == 0x51) &&
+				if ((gbl.spell_id == (byte)Spells.faerie_fire || gbl.spell_id == (byte)Spells.charm_monsters) &&
 					firstTimeRound == true)
 				{
 					saved = true;
@@ -977,7 +979,7 @@ namespace engine
 				}
 
 				if ((target.monsterType > MonsterType.humanoid || target.icon_dimensions > 1) &&
-					gbl.spell_id != 0x53)
+					gbl.spell_id != (byte)Spells.dimension_door)
 				{
 					saved = true;
 				}
@@ -1250,7 +1252,7 @@ namespace engine
 
 			if (gbl.spellTargets.Count == 1)
 			{
-				if (gbl.spell_id == 0x17)
+				if (gbl.spell_id == (byte)Spells.hold_person_CL)
 				{
 					save_bonus = -2;
 				}
@@ -1881,7 +1883,7 @@ namespace engine
 
 			gbl.byte_1D2C7 = true;
 
-			if (gbl.spell_id == 0x40)
+			if (gbl.spell_id == (byte)Spells.spell_40)
 			{
 				dice_count = (ovr024.roll_dice(3, 1) * 2) + 1;
 			}
@@ -3146,8 +3148,8 @@ namespace engine
 
 			gbl.spellTable.Add(Spells.bless, ovr023.cleric_bless);
 			gbl.spellTable.Add(Spells.curse, ovr023.cleric_curse);
-			gbl.spellTable.Add(Spells.cure_light_wounds, ovr023.SpellCureLight);
-			gbl.spellTable.Add(Spells.cause_light_wounds, ovr023.SpellCauseLight);
+			gbl.spellTable.Add(Spells.cure_light_wounds_CL, ovr023.SpellCureLight);
+			gbl.spellTable.Add(Spells.cause_light_wounds_CL, ovr023.SpellCauseLight);
 			gbl.spellTable.Add(Spells.detect_magic_CL, ovr023.is_affected);
 			gbl.spellTable.Add(Spells.protect_from_evil_CL, ovr023.SpellProtectionFromX);
 			gbl.spellTable.Add(Spells.protect_from_good_CL, ovr023.SpellProtectionFromX);
@@ -3186,7 +3188,7 @@ namespace engine
 			gbl.spellTable.Add(Spells.cause_disease, ovr023.SpellCauseDisease);
 			gbl.spellTable.Add(Spells.dispel_magic_CL, ovr023.SpellDispelMagic);
 			gbl.spellTable.Add(Spells.prayer, ovr023.SpellPrayer);
-			gbl.spellTable.Add(Spells.remove_curse, ovr023.SpellRemoveCurse);
+			gbl.spellTable.Add(Spells.remove_curse_CL, ovr023.SpellRemoveCurse);
 			gbl.spellTable.Add(Spells.bestow_curse_CL, ovr023.curse);
 			gbl.spellTable.Add(Spells.blink, ovr023.spell_blinking);
 			gbl.spellTable.Add(Spells.dispel_magic_MU, ovr023.SpellDispelMagic);
@@ -3201,7 +3203,7 @@ namespace engine
 			gbl.spellTable.Add(Spells.slow, ovr023.SpellSlow);
 			gbl.spellTable.Add(Spells.restoration, ovr023.SpellRestoration);
 			gbl.spellTable.Add(Spells.spell_39, ovr023.cast_speed);
-			gbl.spellTable.Add(Spells.cure_serious_wounds, ovr023.SpellCureSeriousWounds);
+			gbl.spellTable.Add(Spells.cure_serious_wounds_CL, ovr023.SpellCureSeriousWounds);
 			gbl.spellTable.Add(Spells.spell_3b, ovr023.cast_strength);
 			gbl.spellTable.Add(Spells.spell_3c, ovr023.sub_6003C);
 			gbl.spellTable.Add(Spells.spell_3d, ovr023.cast_paralyzed);
@@ -3209,11 +3211,11 @@ namespace engine
 			gbl.spellTable.Add(Spells.spell_3f, ovr023.cast_invisible);
 			gbl.spellTable.Add(Spells.spell_40, ovr023.sub_5F782);
 			gbl.spellTable.Add(Spells.spell_41, ovr023.dam2d4plus2);
-			gbl.spellTable.Add(Spells.cause_serious_wounds, ovr023.SpellCauseSeriousWounds);
-			gbl.spellTable.Add(Spells.neutralize_poison, ovr023.SpellNeutralizePoison);
+			gbl.spellTable.Add(Spells.cause_serious_wounds_CL, ovr023.SpellCauseSeriousWounds);
+			gbl.spellTable.Add(Spells.neutralize_poison_CL, ovr023.SpellNeutralizePoison);
 			gbl.spellTable.Add(Spells.poison, ovr023.SpellPoison);
 			gbl.spellTable.Add(Spells.protect_evil_10_rad, ovr023.SpellProtectionFromX);
-			gbl.spellTable.Add(Spells.sticks_to_snakes, ovr023.SpellSticksToSnakes);
+			gbl.spellTable.Add(Spells.sticks_to_snakes_CL, ovr023.SpellSticksToSnakes);
 			gbl.spellTable.Add(Spells.cure_critical_wounds, ovr023.SpellCureCriticalWounds);
 			gbl.spellTable.Add(Spells.cause_critical_wounds, ovr023.SpellCauseCriticalWounds);
 			gbl.spellTable.Add(Spells.dispel_evil, ovr023.SpellDispelEvil);
@@ -3232,7 +3234,7 @@ namespace engine
 			gbl.spellTable.Add(Spells.fumble, ovr023.SpellFumble);
 			gbl.spellTable.Add(Spells.ice_storm, ovr023.SpellIceStorm);
 			gbl.spellTable.Add(Spells.minor_globe_of_invuln, ovr023.SpellMinorGlobeOfInvulnerability);
-			gbl.spellTable.Add(Spells.spell_59, ovr023.SpellRemoveCurse);
+			gbl.spellTable.Add(Spells.remove_curse_MU, ovr023.SpellRemoveCurse);
 			gbl.spellTable.Add(Spells.spell_5a, ovr023.SpellAnimateDead);
 			gbl.spellTable.Add(Spells.cloud_kill, ovr023.SpellCloudKill);
 			gbl.spellTable.Add(Spells.cone_of_cold, ovr023.SpellConeOfCold);

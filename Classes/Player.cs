@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 
 namespace Classes
@@ -206,6 +207,52 @@ namespace Classes
         }
     }
 
+    public class SpellBook : IDataIO
+    {
+        public bool[] spellBook = new bool[(byte)Enum.GetValues(typeof(Spells)).Cast<Spells>().Max()+1];
+        void IDataIO.Write(byte[] data, int offset)
+        {
+            foreach (SpellEntry spell in gbl.spellCastingTable)
+            {
+                if (spell != null && spell.spellIdx <= (byte)Spells.bestow_curse_MU)
+                {
+                    data[offset + spell.spellIdx - 1] = (byte)(spellBook[spell.spellIdx] == true ? 1 : 0);
+                }
+            }
+        }
+
+        void IDataIO.Read(byte[] data, int offset)
+        {
+            for (int i = 0; i < 100; i++)
+            {
+                spellBook[i + 1] = data[offset + i] != 0;
+            }
+        }
+
+        public void Load(byte[] data, int length)
+        {
+            for (int i = 0; i < length; i++)
+            {
+                spellBook[i + 1] = data[i] != 0;
+            }
+        }
+
+        public bool KnowsSpell(Spells spell)
+        {
+            return spellBook[(int)spell];
+        }
+
+        public void LearnSpell(Spells spell)
+        {
+            spellBook[(int)spell] = true;
+        }
+
+        public void UnlearnSpell(Spells spell)
+        {
+            spellBook[(int)spell] = false;
+        }
+    }
+
     public struct ClassLevels
     {
 
@@ -376,10 +423,8 @@ namespace Classes
         [DataOffset(0x78, DataType.Byte)]
         public byte hit_point_max; // 0x78;
 
-        [DataOffset(0x79, DataType.ByteArray, 100)]
-        public byte[] spellBook = new byte[100]; //78[di]; // 1- 100 or 0x79 - 0xDC
-        public bool KnowsSpell(Spells spell) { return spellBook[(int)spell - 1] != 0; }
-        public void LearnSpell(Spells spell) { spellBook[(int)spell - 1] = 1; }
+        [DataOffset(0x79, DataType.CustSaveLoad, 100)]
+        public SpellBook spellBook; // 0x79 - 0xDC
 
         [DataOffset(0xdd, DataType.Byte)]
         public byte attackLevel; // 0xdd; field_DD
@@ -753,6 +798,8 @@ namespace Classes
             //stats = new StatValue[6];
             stats2 = new PlayerStats();
 
+            spellBook = new SpellBook();
+
             name = string.Empty;
             items = new List<Item>();
             affects = new List<Affect>();
@@ -768,6 +815,7 @@ namespace Classes
         {
             Player p = (Player)this.MemberwiseClone();
             p.stats2.Assign(this.stats2);
+            p.spellBook = this.spellBook;
             return p;
         }
 
