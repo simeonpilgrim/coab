@@ -61,15 +61,15 @@ namespace engine
                 {
                     if (player.stats2.Str.full == 18)
                     {
-                        if (player.stats2.Str00.cur >= 0x5b &&
-                            player.stats2.Str00.cur <= 99)
+                        if (player.stats2.Str00.full >= 91 &&
+                            player.stats2.Str00.full <= 99)
                         {
                             if (ovr024.roll_dice(6, 1) == 1)
                             {
                                 bash_worked = true;
                             }
                         }
-                        else if (player.stats2.Str00.cur == 100)
+                        else if (player.stats2.Str00.full == 100)
                         {
                             if (ovr024.roll_dice(6, 1) <= 2)
                             {
@@ -138,7 +138,7 @@ namespace engine
                             bash_worked = true;
                         }
                     }
-                    else if (str == 15 || str == 17)
+                    else if (str >= 15 && str <= 17)
                     {
                         if (ovr024.roll_dice(6, 1) <= 3)
                         {
@@ -147,18 +147,16 @@ namespace engine
                     }
                     else if (str == 18)
                     {
-                        if (player.stats2.Str00.cur >= 0 &&
-                            player.stats2.Str00.cur <= 50)
+                        if (player.stats2.Str00.full >= 0 &&
+                            player.stats2.Str00.full <= 50)
                         {
-                            bash_worked = true;
-
                             if (ovr024.roll_dice(6, 1) <= 3)
                             {
                                 bash_worked = true;
                             }
                         }
-                        else if (player.stats2.Str00.cur >= 51 &&
-                            player.stats2.Str00.cur <= 99)
+                        else if (player.stats2.Str00.full >= 51 &&
+                            player.stats2.Str00.full <= 99)
                         {
                             if (ovr024.roll_dice(6, 1) <= 4)
                             {
@@ -166,7 +164,7 @@ namespace engine
                             }
 
                         }
-                        else if (player.stats2.Str00.cur == 100)
+                        else if (player.stats2.Str00.full == 100)
                         {
                             if (ovr024.roll_dice(6, 1) <= 5)
                             {

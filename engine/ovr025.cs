@@ -587,27 +587,27 @@ namespace engine
 			}
             else if (player.stats2.Str.full == 18)
 			{
-                if (player.stats2.Str00.cur == 0)
+                if (player.stats2.Str00.full == 0)
 				{
 					ret_val = 18;
 				}
-                else if (player.stats2.Str00.cur >= 1 && player.stats2.Str00.cur <= 50)
+                else if (player.stats2.Str00.full >= 1 && player.stats2.Str00.full <= 50)
 				{
 					ret_val = 19;
 				}
-                else if (player.stats2.Str00.cur >= 51 && player.stats2.Str00.cur <= 75)
+                else if (player.stats2.Str00.full >= 51 && player.stats2.Str00.full <= 75)
 				{
 					ret_val = 20;
 				}
-                else if (player.stats2.Str00.cur >= 76 && player.stats2.Str00.cur <= 90)
+                else if (player.stats2.Str00.full >= 76 && player.stats2.Str00.full <= 90)
 				{
 					ret_val = 21;
 				}
-                else if (player.stats2.Str00.cur >= 91 && player.stats2.Str00.cur <= 99)
+                else if (player.stats2.Str00.full >= 91 && player.stats2.Str00.full <= 99)
 				{
 					ret_val = 22;
 				}
-                else if (player.stats2.Str00.cur >= 100)
+                else if (player.stats2.Str00.full >= 100)
 				{
 					ret_val = 23;
 				}

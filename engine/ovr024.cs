@@ -766,7 +766,7 @@ namespace engine
             bool encoded;
 
             if (str > player.stats2.Str.cur ||
-                (str == 18 && str_100 > player.stats2.Str00.full))
+                (str == 18 && str_100 > player.stats2.Str00.cur))
             {
                 encoded = true;
                 encoded_str = encode_strength(str_100, str);
@@ -784,7 +784,7 @@ namespace engine
         internal static void max_strength(ref int str_a, int str_b, ref int str_00_a, int str_00_b) /* sub_64771 */
         {
             if (str_b > str_a ||
-                (str_b == 18 && str_00_b > str_00_a))
+                (str_a == str_b && str_b == 18 && str_00_b > str_00_a))
             {
                 str_a = str_b;
                 str_00_a = str_00_b;
@@ -851,7 +851,7 @@ namespace engine
             int var_11 = 0x0FF;
 
             int stat_a = player.stats2[(int)stat_index].cur;
-            int str_00_a = player.stats2.Str00.full;
+            int str_00_a = player.stats2.Str00.cur;
 
             foreach (Item item in player.items)
             {
@@ -872,26 +872,32 @@ namespace engine
 
                                 case 1:
                                     stat_b = 19;
+                                    str_00_b = 0;
                                     break;
 
                                 case 2:
                                     stat_b = 20;
+                                    str_00_b = 0;
                                     break;
 
                                 case 3:
                                     stat_b = 21;
+                                    str_00_b = 0;
                                     break;
 
                                 case 4:
                                     stat_b = 22;
+                                    str_00_b = 0;
                                     break;
 
                                 case 5:
                                     stat_b = 23;
+                                    str_00_b = 0;
                                     break;
 
                                 case 6:
                                     stat_b = 24;
+                                    str_00_b = 0;
                                     break;
                             }
                         }
@@ -1032,6 +1038,7 @@ namespace engine
                             else
                             {
                                 stat_b = 18;
+                                str_00_b = 0;
                             }
                         }
                     }
@@ -1055,12 +1062,12 @@ namespace engine
                 if (var_11 != 0xff)
                 {
                     player.stats2.Str.full = var_11;
-                    player.stats2.Str00.cur = 0;
+                    player.stats2.Str00.full = 0;
                 }
                 else
                 {
                     player.stats2.Str.full = stat_a;
-                    player.stats2.Str00.cur = str_00_a;
+                    player.stats2.Str00.full = str_00_a;
                 }
             }
             else if (stat_index == Stat.CON)

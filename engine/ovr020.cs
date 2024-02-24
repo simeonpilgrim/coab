@@ -41,7 +41,7 @@ namespace engine
                                         "Gems", "Jewelry" };
 
 
-        internal static void playerDisplayFull(Player player)
+        internal static void playerDisplayFull(Player player, bool cur = false)
         {
             seg037.DrawFrame_Outer();
 
@@ -117,7 +117,7 @@ namespace engine
             {
                 text2 = statShortString[stat];
                 seg041.displayString(text2, 0, 10, stat + 7, 1);
-                display_stat(false, stat);
+                display_stat(false, stat, cur);
             }
 
             displayMoney();
@@ -256,37 +256,79 @@ namespace engine
         }
 
 
-        internal static void display_stat(bool highlighted, int stat_index)
+        internal static void display_stat(bool highlighted, int stat_index, bool cur)
         {
             int color = highlighted ? 0x0D : 0x0A;
             int col_x = 5;
             seg037.draw8x8_clear_area(stat_index + 7, 0x0b, stat_index + 7, col_x);
 
-            if (gbl.SelectedPlayer.stats2[stat_index].full < 10)
+            if (cur)
             {
-                col_x++;
+                if (gbl.SelectedPlayer.stats2[stat_index].cur < 10)
+                {
+                    col_x++;
+                }
+            }
+            else
+            {
+                if (gbl.SelectedPlayer.stats2[stat_index].full < 10)
+                {
+                    col_x++;
+                }
             }
 
-            string s = gbl.SelectedPlayer.stats2[stat_index].full.ToString();
+            string s;
+            if (cur)
+            {
+                s = gbl.SelectedPlayer.stats2[stat_index].cur.ToString();
+            }
+            else
+            {
+                s = gbl.SelectedPlayer.stats2[stat_index].full.ToString();
+            }
             seg041.displayString(s, 0, color, stat_index + 7, col_x);
 
-            if (stat_index == 0 &&
-                gbl.SelectedPlayer.stats2.Str.full == 18 &&
-                gbl.SelectedPlayer.stats2.Str00.cur > 0)
+            if (cur)
             {
-                string text = gbl.SelectedPlayer.stats2.Str00.cur.ToString();
-
-                if (gbl.SelectedPlayer.stats2.Str00.cur < 10)
+                if (stat_index == 0 &&
+                    gbl.SelectedPlayer.stats2.Str.cur == 18 &&
+                    gbl.SelectedPlayer.stats2.Str00.cur > 0)
                 {
-                    text = "0" + text;
-                }
+                    string text = gbl.SelectedPlayer.stats2.Str00.cur.ToString();
 
-                if (gbl.SelectedPlayer.stats2.Str00.cur == 100)
+                    if (gbl.SelectedPlayer.stats2.Str00.cur < 10)
+                    {
+                        text = "0" + text;
+                    }
+
+                    if (gbl.SelectedPlayer.stats2.Str00.cur == 100)
+                    {
+                        text = "00";
+                    }
+
+                    seg041.displayString("(" + text + ")", 0, color, 7, 7);
+                }
+            }
+            else
+            {
+                if (stat_index == 0 &&
+                    gbl.SelectedPlayer.stats2.Str.full == 18 &&
+                    gbl.SelectedPlayer.stats2.Str00.full > 0)
                 {
-                    text = "00";
-                }
+                    string text = gbl.SelectedPlayer.stats2.Str00.full.ToString();
 
-                seg041.displayString("(" + text + ")", 0, color, 7, 7);
+                    if (gbl.SelectedPlayer.stats2.Str00.full < 10)
+                    {
+                        text = "0" + text;
+                    }
+
+                    if (gbl.SelectedPlayer.stats2.Str00.full == 100)
+                    {
+                        text = "00";
+                    }
+
+                    seg041.displayString("(" + text + ")", 0, color, 7, 7);
+                }
             }
         }
 

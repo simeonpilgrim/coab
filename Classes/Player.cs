@@ -6,24 +6,28 @@ namespace Classes
 {
     public struct StatValue : IDataIO
     {
-        int[, ,] raceSexMinMax;
-        int[] classMin;
-        int[] ageEffects;
-        int min;
-        int max;
+        readonly int[, ,] raceSexMinMax;
+        readonly int[] classMin;
+        readonly int[] ageEffects;
+        readonly int min;
+        readonly int max;
 
-        public StatValue(int[, ,] _raceSexMinMax, int[] _classMin, int[] _ageEffects, int _min, int _max)
+        public StatValue(int[, ,] _raceSexMinMax, int[] _classMin, int[] _ageEffects, int _cur_offset = 0, int _full_offset = 1, int _min = 3, int _max = 25)
         {
             raceSexMinMax = _raceSexMinMax;
             classMin = _classMin;
             ageEffects = _ageEffects;
             cur = full = 0;
+            cur_offset = _cur_offset;
+            full_offset = _full_offset;
             min = _min;
             max = _max;
         }
 
         public int cur;
         public int full;
+        readonly int cur_offset ;
+        readonly int full_offset;
 
         public void Load(int val)
         {
@@ -38,69 +42,67 @@ namespace Classes
 
         public void Inc()
         {
-            if (full < max)
-            {
-                full += 1;
-            }
             if (cur < max)
             {
                 cur += 1;
+                full += 1;
             }
         }
 
         public void Dec()
         {
-            if (full > min)
-            {
-                full -= 1;
-            }
             if (cur > min)
             {
                 cur -= 1;
+                full -= 1;
             }
         }
 
         public void EnforceRaceSexLimits(int race, int sex)
         {
+            int delta = full - cur;
             if( raceSexMinMax != null )
             {
-                full = Math.Min(raceSexMinMax[race, 1, sex], full);
-                full = Math.Max(raceSexMinMax[race, 0, sex], full);
+                cur = Math.Min(raceSexMinMax[race, 1, sex], cur);
+                cur = Math.Max(raceSexMinMax[race, 0, sex], cur);
             }
-            cur = full;
+            full = cur + delta;
         }
 
         public void EnforceClassLimits(int _class)
         {
+            int delta = full - cur;
             if (classMin != null)
             {
-                full = Math.Max(classMin[_class], full);
+                cur = Math.Max(classMin[_class], cur);
             }
-            cur = full;
+            full = cur + delta;
         }
 
         public void AgeEffects(int race, int age)
         {
+            int delta = full - cur;
             for (int i = 0; i < 5; i++)
             {
                 if (Limits.RaceAgeBrackets[race, i] < age)
                 {
-                    full += ageEffects[i];
+                    cur += ageEffects[i];
                 }
             }
+            full = cur + delta;
         }
 
         public void Write(byte[] data, int offset)
         {
-            data[offset + 0] = (byte)cur;
-            data[offset + 1] = (byte)full;
+            data[offset + cur_offset] = (byte)cur;
+            data[offset + full_offset] = (byte)full;
         }
 
         public void Read(byte[] data, int offset)
         {
             // enforce values in valid range
-            cur = Math.Max(Math.Min((int)data[offset + 0], max), min);
-            full = Math.Max(Math.Min((int)data[offset + 1], max), min);
+            cur = Math.Max(Math.Min((int)data[offset + cur_offset], max), min);
+            full = Math.Max(Math.Min((int)data[offset + full_offset], max), min);
         }
 
         public override string ToString()
@@ -111,13 +113,13 @@ namespace Classes
 
     public class PlayerStats : IDataIO
     {
-        public StatValue Str = new StatValue(Limits.StrRaceSexMinMax, Limits.StrClassMin, Limits.StrAgeEffect, 3, 25);
-        public StatValue Str00 = new StatValue(Limits.Str00RaceSexMinMax, Limits.Str00ClassMin, Limits.Str00AgeEffect, 0, 100);
-        public StatValue Con = new StatValue(Limits.ConRaceSexMinMax, Limits.ConClassMin, Limits.ConAgeEffect, 3, 25);
-        public StatValue Dex = new StatValue(Limits.DexRaceSexMinMax, Limits.DexClassMin, Limits.DexAgeEffect, 3, 25);
-        public StatValue Int = new StatValue(Limits.IntRaceSexMinMax, Limits.IntClassMin, Limits.IntAgeEffect, 3, 25);
-        public StatValue Wis = new StatValue(Limits.WisRaceSexMinMax, Limits.WisClassMin, Limits.WisAgeEffect, 3, 25);
-        public StatValue Cha = new StatValue(Limits.ChaRaceSexMinMax, Limits.ChaClassMin, Limits.ChaAgeEffect, 3, 25);
+        public StatValue Str = new StatValue(Limits.StrRaceSexMinMax, Limits.StrClassMin, Limits.StrAgeEffect);
+        public StatValue Str00 = new StatValue(Limits.Str00RaceSexMinMax, Limits.Str00ClassMin, Limits.Str00AgeEffect, 1, 0, 0, 100);
+        public StatValue Con = new StatValue(Limits.ConRaceSexMinMax, Limits.ConClassMin, Limits.ConAgeEffect);
+        public StatValue Dex = new StatValue(Limits.DexRaceSexMinMax, Limits.DexClassMin, Limits.DexAgeEffect);
+        public StatValue Int = new StatValue(Limits.IntRaceSexMinMax, Limits.IntClassMin, Limits.IntAgeEffect);
+        public StatValue Wis = new StatValue(Limits.WisRaceSexMinMax, Limits.WisClassMin, Limits.WisAgeEffect);
+        public StatValue Cha = new StatValue(Limits.ChaRaceSexMinMax, Limits.ChaClassMin, Limits.ChaAgeEffect);
 
 
         void IDataIO.Write(byte[] data, int offset)

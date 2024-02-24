@@ -359,7 +359,7 @@ namespace engine
             var_C.Add(new MenuItem("  " + ovr020.raceString[5]));
             var_C.Add(new MenuItem("  " + ovr020.raceString[7]));
 
-            index = 0;
+            index = 1;
             menuRedraw = true;
             showExit = true;
 
@@ -664,22 +664,22 @@ namespace engine
                     }
                 }
 
-                player.stats2.Str.full = 0;
-                player.stats2.Int.full = 0;
-                player.stats2.Wis.full = 0;
-                player.stats2.Dex.full = 0;
-                player.stats2.Con.full = 0;
-                player.stats2.Cha.full = 0;
-                player.stats2.Str00.full = 0;
+                player.stats2.Str.Load(0);
+                player.stats2.Str00.Load(0);
+                player.stats2.Int.Load(0);
+                player.stats2.Wis.Load(0);
+                player.stats2.Dex.Load(0);
+                player.stats2.Con.Load(0);
+                player.stats2.Cha.Load(0);
 
-                for(int i = 0; i < 6; i++)
+                for (int i = 0; i < 6; i++)
                 {
-                    player.stats2.Str.full = Math.Max(player.stats2.Str.full, ovr024.roll_dice(6, 3) + 1);
-                    player.stats2.Int.full = Math.Max(player.stats2.Int.full, ovr024.roll_dice(6, 3) + 1);
-                    player.stats2.Wis.full = Math.Max(player.stats2.Wis.full, ovr024.roll_dice(6, 3) + 1);
-                    player.stats2.Dex.full = Math.Max(player.stats2.Dex.full, ovr024.roll_dice(6, 3) + 1);
-                    player.stats2.Con.full = Math.Max(player.stats2.Con.full, ovr024.roll_dice(6, 3) + 1);
-                    player.stats2.Cha.full = Math.Max(player.stats2.Cha.full, ovr024.roll_dice(6, 3) + 1);
+                    player.stats2.Str.Load(Math.Max(player.stats2.Str.cur, ovr024.roll_dice(6, 3)+1));
+                    player.stats2.Int.Load(Math.Max(player.stats2.Int.cur, ovr024.roll_dice(6, 3)+1));
+                    player.stats2.Wis.Load(Math.Max(player.stats2.Wis.cur, ovr024.roll_dice(6, 3)+1));
+                    player.stats2.Dex.Load(Math.Max(player.stats2.Dex.cur, ovr024.roll_dice(6, 3)+1));
+                    player.stats2.Con.Load(Math.Max(player.stats2.Con.cur, ovr024.roll_dice(6, 3)+1));
+                    player.stats2.Cha.Load(Math.Max(player.stats2.Cha.cur, ovr024.roll_dice(6, 3)+1));
                 }
 
                 int race = (int)player.race;
@@ -694,7 +694,7 @@ namespace engine
                             player.stats2.Str.EnforceRaceSexLimits(race, sex);
                             player.stats2.Str.EnforceClassLimits((int)player._class);
 
-                            if (player.stats2.Str.full == 18)
+                            if (player.stats2.Str.cur == 18)
                             {
                                 if (player.fighter_lvl > 0 ||
                                     player.ranger_lvl > 0 ||
@@ -717,11 +717,11 @@ namespace engine
                             player.stats2.Wis.EnforceRaceSexLimits(race, sex);
                             player.stats2.Wis.EnforceClassLimits((int)player._class);
 
-                            if (player.stats2.Wis.full < 13 &&
+                            if (player.stats2.Wis.cur < 13 &&
                                 player._class >= ClassId.mc_c_f && player._class <= ClassId.mc_c_t)
                             {
                                 // Multi-Class Cleric
-                                player.stats2.Wis.full = 13;
+                                player.stats2.Wis.cur = 13;
                             }
                             break;
 
@@ -744,7 +744,7 @@ namespace engine
                             break;
                     }
 
-                    ovr020.display_stat(false, var_1B);
+                    ovr020.display_stat(false, var_1B, true);
                 }
 
                 player.hit_point_current = player.hit_point_max;
@@ -951,11 +951,11 @@ namespace engine
         /// <summary>
         /// nested function, has not been fix to be not nested.
         /// </summary>
-        internal static void draw_highlight_stat(bool highlighted, byte edited_stat, int name_cursor_pos) /* sub_4E6F2 */
+        internal static void draw_highlight_stat(bool highlighted, byte edited_stat, int name_cursor_pos, bool cur) /* sub_4E6F2 */
         {
             if (edited_stat >= 0 && edited_stat <= 5)
             {
-                ovr020.display_stat(highlighted, edited_stat);
+                ovr020.display_stat(highlighted, edited_stat, cur);
             }
             else if (edited_stat == 6)
             {
@@ -991,17 +991,17 @@ namespace engine
             char inputkey;
 
             if (Cheats.allow_player_modify == false &&
-                (gbl.SelectedPlayer.exp != 0 &&
+                ((gbl.SelectedPlayer.exp != 0 &&
                 gbl.SelectedPlayer.exp != 8333 &&
                 gbl.SelectedPlayer.exp != 12500 &&
                 gbl.SelectedPlayer.exp != 25000) ||
-                gbl.SelectedPlayer.multiclassLevel != 0)
+                gbl.SelectedPlayer.multiclassLevel != 0))
             {
                 seg041.DisplayStatusText(0, 14, gbl.SelectedPlayer.name + " can't be modified.");
                 return;
             }
 
-            ovr020.playerDisplayFull(gbl.SelectedPlayer);
+            ovr020.playerDisplayFull(gbl.SelectedPlayer, true);
 
             PlayerStats stats_bkup = new PlayerStats();
             stats_bkup.Assign(gbl.SelectedPlayer.stats2);
@@ -1012,9 +1012,9 @@ namespace engine
 
             int name_cursor_pos = 1;
             byte edited_stat = 7;
-            draw_highlight_stat(false, edited_stat, name_cursor_pos);
+            draw_highlight_stat(false, edited_stat, name_cursor_pos, true);
             edited_stat = 0;
-            draw_highlight_stat(true, edited_stat, name_cursor_pos);
+            draw_highlight_stat(true, edited_stat, name_cursor_pos, true);
             Player player = gbl.SelectedPlayer;
 
             do
@@ -1048,7 +1048,7 @@ namespace engine
                     inputkey = ovr027.displayInput(out controlkey, false, 1, gbl.defaultMenuColors, "Keep Exit", "Modify: ");
                 }
 
-                draw_highlight_stat(false, edited_stat, name_cursor_pos);
+                draw_highlight_stat(false, edited_stat, name_cursor_pos, true);
 
                 if (controlkey == true)
                 {
@@ -1096,7 +1096,7 @@ namespace engine
                                 int race = (int)player.race;
                                 int sex = player.sex;
 
-								player.stats2.Dec(stat_var);
+                                player.stats2.Dec(stat_var);
 
                                 switch ((Stat)stat_var)
                                 {
@@ -1145,7 +1145,7 @@ namespace engine
 
                                         player.hit_point_current = player.hit_point_max;
                                         edited_stat = 6;
-                                        draw_highlight_stat(false, edited_stat, name_cursor_pos);
+                                        draw_highlight_stat(false, edited_stat, name_cursor_pos, true);
                                         edited_stat = 4;
                                         break;
 
@@ -1154,6 +1154,7 @@ namespace engine
                                         player.stats2.Cha.EnforceClassLimits((int)player._class);
                                         break;
                                 }
+                                ovr024.CalcStatBonuses((Stat)stat_var, player);
                             }
                             else if (edited_stat == 6)
                             {
@@ -1192,8 +1193,11 @@ namespace engine
                                     case Stat.STR:
                                         player.stats2.Str.EnforceRaceSexLimits(race, sex);
 
-                                        if( player.stats2.Str.full == 18 &&
-                                            (player.fighter_lvl >0 || player.ranger_lvl > 0 || player.paladin_lvl > 0) )
+                                        if( player.stats2.Str.cur == 18 &&
+                                            ((player.multiclassLevel == 0 &&
+                                              (player.fighter_lvl > 0 || player.ranger_lvl > 0 || player.paladin_lvl > 0)) ||
+                                             (player.multiclassLevel > 0 &&
+                                              (player.fighter_old_lvl > 0 || player.ranger_old_lvl > 0 || player.paladin_old_lvl > 0))))
                                         {
                                             player.stats2.Str00.Inc();
                                             player.stats2.Str00.EnforceRaceSexLimits(race, sex);
@@ -1231,7 +1235,7 @@ namespace engine
 
                                         player.hit_point_current = player.hit_point_max;
                                         edited_stat = 6;
-                                        draw_highlight_stat(false, edited_stat, name_cursor_pos);
+                                        draw_highlight_stat(false, edited_stat, name_cursor_pos, true);
                                         edited_stat = 4;
                                         break;
 
@@ -1239,30 +1243,28 @@ namespace engine
                                         player.stats2.Cha.EnforceRaceSexLimits(race, sex);
                                         break;
                                 }
+                                ovr024.CalcStatBonuses((Stat)stat_var, player);
+                            }
+                            else if (edited_stat == 6)
+                            {
+                                player.hit_point_max += 1;
+
+                                if (calc_max_hp(gbl.SelectedPlayer) < player.hit_point_max)
+                                {
+                                    player.hit_point_max = (byte)calc_max_hp(gbl.SelectedPlayer);
+                                }
+
+                                player.hit_point_current = player.hit_point_max;
                             }
                             else
                             {
-                                if (edited_stat == 6)
+                                if (name_cursor_pos == player.name.Length + 1)
                                 {
-                                    player.hit_point_max += 1;
-
-                                    if (calc_max_hp(gbl.SelectedPlayer) < player.hit_point_max)
-                                    {
-                                        player.hit_point_max = (byte)calc_max_hp(gbl.SelectedPlayer);
-                                    }
-
-                                    player.hit_point_current = player.hit_point_max;
+                                    name_cursor_pos = 1;
                                 }
                                 else
                                 {
-                                    if (name_cursor_pos == player.name.Length + 1)
-                                    {
-                                        name_cursor_pos = 1;
-                                    }
-                                    else
-                                    {
-                                        name_cursor_pos++;
-                                    }
+                                    name_cursor_pos++;
                                 }
                             }
                             break;
@@ -1370,7 +1372,7 @@ namespace engine
                 ovr025.reclac_player_values(gbl.SelectedPlayer);
                 ovr020.display_player_stats01();
 
-                draw_highlight_stat(true, edited_stat, name_cursor_pos);
+                draw_highlight_stat(true, edited_stat, name_cursor_pos, true);
             } while (controlkey == true || inputkey != 0x4B);
 
             ovr026.calc_cleric_spells(true, gbl.SelectedPlayer);
@@ -2021,12 +2023,12 @@ namespace engine
                         {
                             min_hp += (classLvl + hpt.lvl_bonus - player.multiclassLevel) * hpt.max_mult;
 
-                    }
-                    else
-                    {
+                        }
+                        else
+                        {
                             int over_count = classLvl + hpt.lvl_bonus - hpt.max_hit_die;
 
-                        // con hp bonus only applies to hit dice
+                            // con hp bonus only applies to hit dice
                             min_hp += ((con_hp_bonus + lvl_adj) * (hpt.max_hit_die - player.multiclassLevel)) + (over_count * hpt.max_mult);
                         }
 
