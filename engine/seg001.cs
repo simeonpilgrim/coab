@@ -294,7 +294,7 @@ namespace engine
             gbl.focusCombatAreaOnPlayer = true;
             gbl.bigpic_block_id = 0x0FF;
             gbl.silent_training = false;
-            gbl.menuSelectedWord = 1;
+            gbl.menuSelectedWord = 0;
             gbl.game_state = GameState.DungeonMap;
             gbl.last_game_state = 0;
             gbl.applyItemAffect = false;
@@ -388,7 +388,7 @@ namespace engine
             gbl.bigpic_block_id = 0x0FF;
             gbl.silent_training = false;
             ovr027.ClearPromptArea();
-            gbl.menuSelectedWord = 1;
+            gbl.menuSelectedWord = 0;
             gbl.game_state = GameState.DungeonMap;
             gbl.last_game_state = 0;
             gbl.applyItemAffect = false;

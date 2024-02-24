@@ -545,7 +545,7 @@ namespace engine
                 return '\0';
             }
 
-            gbl.menuSelectedWord = 1;
+            gbl.menuSelectedWord = 0;
 
             int listDisplayWidth = (endX - startX) + 1;
             int listDisplayHeight = (short)((endY - startY) + 1);
