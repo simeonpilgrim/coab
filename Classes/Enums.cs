@@ -19,15 +19,21 @@ namespace Classes
 
     public enum MonsterType
     {
-        type_1 = 1,
+        humanoid = 1,
         giant = 2,
         dragon = 3,
         animated_dead = 4,
+        genie = 7,
         fire = 8,
-        type_9 = 9,
+        cold = 9,
         troll = 10,
-        type_12 = 12,
+        reptile = 11,
+        avian = 12,
+        squid = 13,
         snake = 14,
+        animal_old = 15,
+        giant_bug = 16,
+        magic_beast = 17,
         plant = 18,
         animal = 19,
     }

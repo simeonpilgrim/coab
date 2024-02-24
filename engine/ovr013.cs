@@ -107,7 +107,7 @@ namespace engine
 				{
 					bonus = 1;
 				}
-				else if (gbl.spell_target.monsterType == MonsterType.type_9 || gbl.spell_target.monsterType == MonsterType.type_12)
+				else if (gbl.spell_target.monsterType == MonsterType.cold || gbl.spell_target.monsterType == MonsterType.avian)
 				{
 					bonus = 2;
 				}
@@ -701,7 +701,7 @@ namespace engine
 
 		internal static void sub_3B1A2(Effect arg_0, object param, Player player)
 		{
-			if (gbl.SelectedPlayer.monsterType == MonsterType.type_1 &&
+			if (gbl.SelectedPlayer.monsterType == MonsterType.humanoid &&
 				(gbl.SelectedPlayer.field_DE & 0x7F) == 2)
 			{
 				gbl.attack_roll -= 4;
