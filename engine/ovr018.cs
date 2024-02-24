@@ -563,7 +563,7 @@ namespace engine
 
             if (player.thief_lvl > 0)
             {
-                ovr026.reclac_thief_skills(player);
+                ovr026.recalc_thief_skills(player);
             }
 
             player.classFlags = 0;

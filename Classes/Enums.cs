@@ -93,4 +93,16 @@ namespace Classes
         Ours = 0,
         Enemy = 1
     }
+
+    public enum ThiefSkills
+    {
+        PickPockets = 0,
+        OpenLocks = 1,
+        FindRemoveTraps = 2,
+        MoveSilently = 3,
+        HideInShadows = 4,
+        HearNoise = 5,
+        ClimbWalls = 6,
+        ReadLanguages = 7,
+    }
 }

@@ -370,9 +370,9 @@ namespace engine
             }
             else if (arg_4 >= 0xA5 && arg_4 <= 0xAC)
             {
-                int var_3 = arg_4 - 0xA4;
+                int var_3 = arg_4 - 0xA5;
 
-                return_val = gbl.SelectedPlayer.thief_skills[var_3 - 1];
+                return_val = gbl.SelectedPlayer.thief_skills[var_3];
             }
             else if (arg_4 == 0xb8)
             {

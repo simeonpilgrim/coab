@@ -1154,6 +1154,7 @@ namespace engine
                 {
                     player.stats2.Dex.full = stat_a;
                 }
+                ovr026.recalc_thief_skills(player);
             }
             else if (stat_index == Stat.CHA)
             {

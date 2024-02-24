@@ -809,7 +809,7 @@ namespace engine
 
                 case 2: // Gauntlets of Dexterity
                     ovr024.CalcStatBonuses(Stat.DEX, player);
-                    ovr026.reclac_thief_skills(player);
+                    ovr026.recalc_thief_skills(player);
                     break;
 
                 case 4:
@@ -864,7 +864,7 @@ namespace engine
                     break;
 
                 case 11: // Gloves of Thievery
-                    ovr026.reclac_thief_skills(player);
+                    ovr026.recalc_thief_skills(player);
                     break;
 
                 case 12:

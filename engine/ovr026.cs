@@ -205,7 +205,7 @@ namespace engine
 
             if (player.thief_lvl > 0)
             {
-                reclac_thief_skills(player);
+                recalc_thief_skills(player);
             }
 
             player.classFlags = 0;
@@ -258,7 +258,7 @@ namespace engine
 
                 if (player.thief_old_lvl > 0)
                 {
-                    reclac_thief_skills(player);
+                    recalc_thief_skills(player);
                 }
             }
         }
@@ -423,134 +423,136 @@ namespace engine
         }
 
 
-        static sbyte[,] /*seg600:3F20 */ unk_1A230 = { 
-			{ 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-			{ 0, 0, 10, 15, 0, 0, 0, -10, -5 },
-			{ 0, 5, -5, 0, 5, 10, 5, 0, 0 },
-			{ 0, 0, 5, 10, 5, 5, 10, -15, 0 }, 
-			{ 0, 10, 0, 0, 0, 5, 0, 0, 0 }, 
-			{ 0, 5, 5, 5, 10, 15, 5, -15, -5 }, 
-			{ 0, -5, 5, 5, 0, 0, 5, 5, -10 }, 
-			{ 0, 0, 0, 0, 0, 0, 0, 0, 0 }, 
-			{ 0, -15, -10, -10, -20, -10, -19, -5, 10 }, 
-			{ 0, -15, -5, -5, 0, -5, -10, 0, 0 }, 
-			{ 0, 0, 0, -5, 0, 0, 0, 0, 0 }, 
-			{ 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-			{ 0, 0, 0, 0, 0, -5, 0, 0, 0 } };
+        /* PickPockets, OpenLocks, FindRemoveTraps, MoveSilently, HideInShadows, HearNoise, ClimbWalls, ReadLanguage */
+        static sbyte[,] /*seg600:3F20 unk_1A230 */ race_adj = {
+            { 0,  0,  0,  0,  0,  0,   0,   0 }, // monster
+            { 0, 10, 15,  0,  0,  0, -10,  -5 }, // dwarf
+            { 5, -5,  0,  5, 10,  5,   0,   0 }, // elf
+            { 0,  5, 10,  5,  5, 10, -15,   0 }, // gnome
+            { 10, 0,  0,  0,  5,  0,   0,   0 }, // half-elf
+            { 5,  5,  5, 10, 15,  5, -15,  -5 }, // halfling
+            { 5,  5,  5,  0,  0,  5,   5, -10 }, // half-orc
+            { 0,  0,  0,  0,  0,  0,   0,   0 }, // human
+        };
 
-        static sbyte[,] /*seg600:3F33 */ unk_1A243 = { 
-			{ 0, 5, 10, 5, 0, 0 }, 
-			{ 0, 0, 5, 10, 5, 5 }, 
-			{ 5, 10, -15, 0, 10, 0 }, 
-			{ 0, 0, 0, 5, 0, 0 }, 
-			{ 0, 0, 5, 5, 5, 10 }, 
-			{ 10, 15, 5, -15, -5, -5 }, 
-			{ -5, 5, 5, 0, 0, 5 },
-			{ 5, 5, -10, 0, 0, 0 }, 
-			{ 0, 0, 0, 0, 0, 0 }, 
-			{ 0, -15, -10, -10, -20, -10 }, 
-			{ -10, -19, -5, -10, -15, -5 }, 
-			{ -5, -5, 0, -5, -10, 0 }, 
-			{ 0, 0, 0, 0, -5, 0 }, 
-			{ 0, 0, 0, 0, 0, 0 }, 
-			{ 0, 0, 0, 0, 0, 0 }, 
-			{ 0, 0, 0, 0, 0, 0 }, 
-			{ 0, 0, -5, 0, 0, 0 }, 
-			{ 0, 5, 10, 0, 5, 5 }, 
-			{ 5, 10, 15, 5, 10, 10 }, 
-			{ 10, 15, 20, 10, 12, 12 }, 
-			{ 12, 8, 8, 18, 17, 99 }, 
-			{ 99, 0, 3, 18, 3, 18 } };
+        /* PickPockets, OpenLocks, FindRemoveTraps, MoveSilently, HideInShadows */
+        static sbyte[,] /*seg600:3F33 unk_1A243 */ dex_adj = {
+            { -15, -10,  -10, -20, -10 }, // 0
+            { -15, -10,  -10, -20, -10 }, // 1
+            { -15, -10,  -10, -20, -10 }, // 2
+            { -15, -10,  -10, -20, -10 }, // 3
+            { -15, -10,  -10, -20, -10 }, // 4
+            { -15, -10,  -10, -20, -10 }, // 5
+            { -15, -10,  -10, -20, -10 }, // 6
+            { -15, -10,  -10, -20, -10 }, // 7
+            { -15, -10,  -10, -20, -10 }, // 8
+            { -15, -10,  -10, -20, -10 }, // 9
+            { -10,  -5,  -10, -15,  -5 }, // 10
+            {  -5,   0,   -5, -10,   0 }, // 11
+            {   0,   0,    0,  -5,   0 }, // 12
+            {   0,   0,    0,   0,   0 }, // 13
+            {   0,   0,    0,   0,   0 }, // 14
+            {   0,   0,    0,   0,   0 }, // 15
+            {   0,   5,    0,   0,   0 }, // 16
+            {   5,  10,    0,   5,   5 }, // 17
+            {  10,  15,    5,  10,  10 }, // 18
+            {  15,  20,   10,  12,  12 }, // 19
+            {  20,  25,   15,  15,  15 }, // 20
+            {  25,  30,   20,  18,  18 }, // 21
+            {  30,  35,   25,  20,  20 }, // 22
+            {  35,  40,   30,  23,  23 }, // 23
+            {  40,  45,   35,  25,  25 }, // 24
+            {  45,  50,   40,  30,  30 }, // 25
+        };
 
+        /* PickPockets, OpenLocks, FindRemoveTraps, MoveSilently, HideInShadows, HearNoise, ClimbWalls, ReadLanguage */
         static byte[,] /*seg600:3EC0 unk_1A1D0 */ base_chance = {
-			{ 0, 0, 0, 0 , 0 , 0 ,0 , 0, 0 },
-			{ 0, 0x1E, 0x19, 0x14 ,0x0F, 0x0A, 0x0A, 0x55, 0x00 },
-			{ 0, 0x23, 0x1D, 0x19, 0x15, 0x0F, 0x0A, 0x56, 0x00 },
-			{ 0, 0x28, 0x21, 0x1E, 0x1B, 0x14, 0x0F, 0x57, 0x00 },
-			{ 0, 0x2D, 0x25, 0x23, 0x21, 0x19, 0x0F, 0x58, 0x14 },
-			{ 0, 0x32, 0x2A, 0x28, 0x28, 0x1F, 0x14, 0x5A, 0x19 },
-			{ 0, 0x37, 0x2F, 0x2D, 0x25, 0x14, 0x5C, 0x1E, 0x3C },
-			{ 0, 0x34, 0x32, 0x37, 0x2B, 0x19, 0x5E, 0x23, 0x41},
-			{ 0, 0x39, 0x37, 0x3E, 0x31, 0x19, 0x60, 0x28, 0x46},
-			{ 0, 0x3E, 0x3C, 0x46, 0x38, 0x1E, 0x62, 0x2D, 0x50},
-			{ 0, 0x43, 0x41, 0x4E, 0x3F, 0x1E, 0x63, 0x32, 0x5A},
-			{ 0, 0x48, 0x46, 0x56, 0x46, 0x23, 0x63, 0x3C, 0x64},
-			{ 0, 0x64, 0x4D, 0x4B, 0x5E, 0x4D, 0x23, 0x63, 0x41 } };
+            {   0,  0,  0,  0,  0, 0,  0,  0 },
+            {  30, 25, 20, 15, 10, 10, 85, 0 },    // 1
+            {  35, 29, 25, 21, 15, 10, 86, 0 },    // 2
+            {  40, 33, 30, 27, 20, 15, 87, 0 },    // 3
+            {  45, 37, 35, 33, 25, 15, 88, 20 },   // 4
+            {  50, 42, 40, 40, 31, 20, 90, 25 },   // 5
+            {  55, 47, 45, 47, 37, 20, 92, 30 },   // 6
+            {  60, 52, 50, 55, 43, 25, 94, 35 },   // 7
+            {  65, 57, 55, 62, 49, 25, 96, 40 },   // 8
+            {  70, 62, 60, 70, 56, 30, 98, 45 },   // 9
+            {  80, 67, 65, 78, 63, 30, 99, 50 },   // 10
+            {  90, 72, 70, 86, 70, 35, 99, 55 },   // 11
+            { 100, 77, 75, 94, 77, 35, 99, 60 },   // 12
+        };
 
 
 
-        internal static void reclac_thief_skills(Player player) // sub_6AAEA
+        internal static void recalc_thief_skills(Player player) // sub_6AAEA
         {
-            byte var_2 = 0; //Simeon
-
-            var item_found = player.items.Find(item => item.readied && (item.ScrollLearning(3, 2) || item.ScrollLearning(3, 11)));
-            var var_A = item_found != null && item_found.ScrollLearning(3, 11);
-            var var_B = item_found != null && item_found.ScrollLearning(3, 2);
+            var item_found = player.items.Find(item => item.readied && (item.CheckMaskedAffect(3, 2) || item.CheckMaskedAffect(3, 11)));
+            var gloves_of_thievery = item_found != null && item_found.CheckMaskedAffect(3, 11); // gloves of thievery
+            var gauntlets_of_dexterity = item_found != null && item_found.CheckMaskedAffect(3, 2); // gauntlets of dexterity
 
             int thiefLvl = player.SkillLevel(SkillType.Thief);
 
-            if (thiefLvl < 4 && var_B == true)
+            if (thiefLvl < 4 && gauntlets_of_dexterity == true)
             {
                 thiefLvl = 4;
-                var_B = false;
+                gauntlets_of_dexterity = false;
             }
 
             int orig_thief_lvl = thiefLvl;
 
-            for (int skill = 1; skill <= 8; skill++)
+            for (ThiefSkills skill = ThiefSkills.PickPockets; skill <= ThiefSkills.ReadLanguages; skill++)
             {
-                if (var_A == true)
+                int calc_skill = race_adj[(int)player.race, (int)skill];
+                thiefLvl = orig_thief_lvl;
+
+                if (gloves_of_thievery == true)
                 {
                     switch (skill)
                     {
-                        case 1:
+                        case ThiefSkills.PickPockets:
                             if (thiefLvl < 5)
                             {
                                 thiefLvl = 5;
-                                var_2 = 0;
                             }
                             else
                             {
-                                var_2 = 5;
+                                calc_skill += 5;
                             }
                             break;
 
-                        case 2:
+                        case ThiefSkills.OpenLocks:
                             if (thiefLvl < 7)
                             {
                                 thiefLvl = 7;
-                                var_2 = 0;
                             }
                             else
                             {
-                                var_2 = 5;
+                                calc_skill += 5;
                             }
                             break;
                     }
                 }
 
-                if (unk_1A230[(int)player.race, skill] < 0 &&
-                    base_chance[thiefLvl, skill] < (System.Math.Abs(unk_1A230[(int)player.race, skill]) + var_2))
+                if (gauntlets_of_dexterity == true)
                 {
-                    player.thief_skills[skill - 1] = 0;
+                    calc_skill += 10;
+                }
+
+                calc_skill += base_chance[thiefLvl, (int)skill];
+
+                if (skill <= ThiefSkills.HideInShadows)
+                {
+                    calc_skill += dex_adj[(int)player.stats2.Dex.full, (int)skill];
+                }
+
+                if ( calc_skill > 0)
+                {
+                    player.thief_skills[(int)skill] = (byte)calc_skill;
                 }
                 else
                 {
-                    player.thief_skills[skill - 1] = (byte)(var_2 + base_chance[thiefLvl, skill] + unk_1A230[(int)player.race, skill]);
-
-                    if (skill < 6)
-                    {
-                        player.thief_skills[skill - 1] += (byte)unk_1A243[player.stats2.Dex.full, skill];
-                    }
-
+                    player.thief_skills[(int)skill] = 0;
                 }
-
-                if (var_B == true)
-                {
-                    player.thief_skills[skill - 1] += 10;
-                }
-
-                thiefLvl = orig_thief_lvl;
             }
         }
 
@@ -686,7 +688,7 @@ namespace engine
             ReclacClassBonuses(player);
             calc_cleric_spells(true, player);
             reclac_saving_throws(player);
-            reclac_thief_skills(player);
+            recalc_thief_skills(player);
 
             foreach (var item in player.items)
             {

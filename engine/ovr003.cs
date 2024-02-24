@@ -857,23 +857,23 @@ namespace engine
             }
             else if (var_2 >= 0x00A5 && var_2 <= 0x00AC)
             {
-                int index = var_2 - 0xA4;
+                int index = var_2 - 0xA5;
                 int count = 0;
                 foreach (Player player in gbl.TeamList)
                 {
                     count++;
 
-                    if (player.thief_skills[index - 1] < val_a)
+                    if (player.thief_skills[index] < val_a)
                     {
-                        val_a = player.thief_skills[index - 1];
+                        val_a = player.thief_skills[index];
                     }
 
-                    if (player.thief_skills[index - 1] > val_b)
+                    if (player.thief_skills[index] > val_b)
                     {
-                        val_b = player.thief_skills[index - 1];
+                        val_b = player.thief_skills[index];
                     }
 
-                    var_4 += player.thief_skills[index - 1];
+                    var_4 += player.thief_skills[index];
                 }
 
                 val_c = (byte)(var_4 / count);

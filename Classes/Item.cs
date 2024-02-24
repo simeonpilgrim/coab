@@ -42,9 +42,9 @@ namespace Classes
             return gbl.ItemDataTable[type].handsCount;
         }
 
-        public bool ScrollLearning(int i, int spell)
+        public bool CheckMaskedAffect(int i, byte masked_val)
         {
-            return ((int)getAffect(i) > 0x7F && ((int)getAffect(i) & 0x7F) == spell);
+            return ((int)getAffect(i) > 0x7F && ((int)getAffect(i) & 0x7F) == masked_val);
         }
 
         public bool IsScroll()

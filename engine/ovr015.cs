@@ -230,7 +230,7 @@ namespace engine
             {
                 if (door_picked) break;
 
-                if (ovr024.roll_dice(100, 1) <= player.thief_skills[1] &&
+                if (ovr024.roll_dice(100, 1) <= player.thief_skills[(byte)ThiefSkills.OpenLocks] &&
                     player.health_status == Status.okey)
                 {
                     door_picked = true;
