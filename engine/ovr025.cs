@@ -1412,7 +1412,7 @@ namespace engine
 				case GameState.Shop:
 					if (gbl.redrawBoarder == true)
 					{
-						seg037.draw8x8_03();
+						seg037.DrawFrame_Dungeon();
 					}
 
 					if (gbl.lastDaxBlockId == 0x50)
@@ -1430,14 +1430,14 @@ namespace engine
 					break;
 
 				case GameState.Camping:
-					seg037.draw8x8_03();
+					seg037.DrawFrame_Dungeon();
 					ovr030.load_pic_final(ref gbl.byte_1D556, 0, 0x1d, "PIC");
 					PartySummary(gbl.SelectedPlayer);
 					display_map_position_time();
 					break;
 
 				case GameState.DungeonMap:
-					seg037.draw8x8_03();
+					seg037.DrawFrame_Dungeon();
 					ovr029.RedrawView();
 					PartySummary(gbl.SelectedPlayer);
 					display_map_position_time();
@@ -1452,7 +1452,7 @@ namespace engine
 					break;
 
 				case GameState.AfterCombat:
-					seg037.draw8x8_03();
+					seg037.DrawFrame_Dungeon();
 					ovr030.load_pic_final(ref gbl.byte_1D556, 0, 1, "PIC");
 					PartySummary(gbl.SelectedPlayer);
 					break;

@@ -54,7 +54,7 @@ namespace engine
         }
 
 
-        internal static void draw8x8_02()
+        internal static void DrawCredits() /* draw8x8_02 */
         {
             Display.UpdateStop();
 
@@ -70,7 +70,7 @@ namespace engine
         }
 
 
-        internal static void draw8x8_03()
+        internal static void DrawFrame_Dungeon() // draw8x8_03
         {
             Display.UpdateStop();
 

@@ -595,7 +595,7 @@ namespace engine
                 if (gbl.game_state != GameState.WildernessMap &&
                     gbl.byte_1EE98 == true)
                 {
-                    seg037.draw8x8_03();
+                    seg037.DrawFrame_Dungeon();
                     ovr025.PartySummary(gbl.SelectedPlayer);
                     ovr025.display_map_position_time();
                 }
@@ -1744,7 +1744,7 @@ namespace engine
 
             VmLog.WriteLine("CMD_ClearBox:");
 
-            seg037.draw8x8_03();
+            seg037.DrawFrame_Dungeon();
             ovr025.PartySummary(gbl.SelectedPlayer);
             ovr025.display_map_position_time();
 

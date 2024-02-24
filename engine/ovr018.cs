@@ -253,7 +253,7 @@ namespace engine
                                         }
                                         else
                                         {
-                                            seg037.draw8x8_03();
+                                            seg037.DrawFrame_Dungeon();
                                         }
                                         ovr025.PartySummary(gbl.SelectedPlayer);
                                     }
@@ -261,7 +261,7 @@ namespace engine
                                     {
                                         if (gbl.area_ptr.LastEclBlockId == 0)
                                         {
-                                            seg037.draw8x8_03();
+                                            seg037.DrawFrame_Dungeon();
                                         }
                                     }
 
