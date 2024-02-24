@@ -976,7 +976,7 @@ namespace engine
 					can_save_flag = gbl.spellCastingTable[gbl.spell_id].damageOnSave;
 				}
 
-				if ((target.monsterType > MonsterType.humanoid || target.field_DE > 1) &&
+				if ((target.monsterType > MonsterType.humanoid || target.icon_dimensions > 1) &&
 					gbl.spell_id != 0x53)
 				{
 					saved = true;
@@ -1056,7 +1056,7 @@ namespace engine
 			Player target = gbl.spellTargets[0];
 
 			if (target.monsterType > MonsterType.humanoid ||
-				target.field_DE > 1)
+				target.icon_dimensions > 1)
 			{
 				ovr025.DisplayPlayerStatusString(true, 10, "is unaffected", target);
 			}

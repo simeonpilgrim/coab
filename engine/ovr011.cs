@@ -1115,7 +1115,7 @@ namespace engine
 
                 gbl.currentTeam = (sbyte)player.combat_team;
 
-                gbl.CombatMap[loop_var].size = player.field_DE & 7;
+                gbl.CombatMap[loop_var].size = player.icon_dimensions & 7;
 
                 if (place_combatant(loop_var) == true)
                 {

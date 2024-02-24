@@ -344,7 +344,7 @@ namespace engine
             player.thac0 = 40;
             player.health_status = Status.okey;
             player.in_combat = true;
-            player.field_DE = 1;
+            player.icon_dimensions = 1;
             player.mod_id = (byte)seg051.Random(256);
             player.icon_id = 0x0A;
 

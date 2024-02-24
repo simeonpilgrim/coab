@@ -23,7 +23,7 @@ namespace Classes
         public byte hp_max; // 0x32
         public byte[] field_33; // 0x33 Array 0x38, 0x33 - 0x6A
         public byte field_6B; // 0x6B
-        public byte field_6C; // 0x6C
+        public byte icon_dimensions; // 0x6C
         public byte[] saveVerse; // 0x6D Array 5, 0x6D - 0x71
         public byte field_72; // 0x72
         public byte field_73; // 0x73
@@ -128,7 +128,7 @@ namespace Classes
             System.Array.Copy(data, 0x33, field_33, 0, 0x38);
 
             field_6B = data[0x6B];
-            field_6C = data[0x6C];
+            icon_dimensions = data[0x6C];
             System.Array.Copy(data, 0x6D, saveVerse, 0, 5);
             field_72 = data[0x72];
             field_73 = data[0x73];

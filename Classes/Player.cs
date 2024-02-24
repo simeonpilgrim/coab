@@ -384,7 +384,7 @@ namespace Classes
         [DataOffset(0xdd, DataType.Byte)]
         public byte attackLevel; // 0xdd; field_DD
         [DataOffset(0xde, DataType.Byte)]
-        public byte field_DE; // 0xde;
+        public byte icon_dimensions; // 0xde;
         [DataOffset(0xdf, DataType.ByteArray, 5)]
         public byte[] saveVerse = new byte[5]; // 0xdf; field_DF 
 

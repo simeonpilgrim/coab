@@ -625,7 +625,7 @@ namespace engine
 
                 int player_index = GetPlayerIndex(player);
 
-                gbl.CombatMap[player_index].size = (byte)(player.field_DE & 0x7F);
+                gbl.CombatMap[player_index].size = (byte)(player.icon_dimensions & 0x7F);
                 gbl.CombatMap[player_index].pos = pos;
 
                 int playerIdx;

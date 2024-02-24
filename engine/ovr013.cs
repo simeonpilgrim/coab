@@ -691,7 +691,7 @@ namespace engine
 			if (gbl.SelectedPlayer.monsterType == MonsterType.giant ||
 				gbl.SelectedPlayer.monsterType == MonsterType.troll)
 			{
-				if ((gbl.SelectedPlayer.field_DE & 0x7F) == 2)
+				if ((gbl.SelectedPlayer.icon_dimensions & 0x7F) == 2)
 				{
 					gbl.attack_roll -= 4;
 				}
@@ -702,7 +702,7 @@ namespace engine
 		internal static void sub_3B1A2(Effect arg_0, object param, Player player)
 		{
 			if (gbl.SelectedPlayer.monsterType == MonsterType.humanoid &&
-				(gbl.SelectedPlayer.field_DE & 0x7F) == 2)
+				(gbl.SelectedPlayer.icon_dimensions & 0x7F) == 2)
 			{
 				gbl.attack_roll -= 4;
 			}

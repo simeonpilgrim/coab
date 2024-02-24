@@ -764,7 +764,7 @@ namespace engine
             else
             {
                 if (attacker.activeItems.primaryWeapon != null &&
-                    (target.field_DE > 0x80 || (target.field_DE & 7) > 1))
+                    (target.icon_dimensions > 0x80 || (target.icon_dimensions & 7) > 1))
                 {
                     ItemData itemData = gbl.ItemDataTable[attacker.activeItems.primaryWeapon.type];
 
@@ -1236,7 +1236,7 @@ namespace engine
                             }
                             else
                             {
-                                byte al = target.field_DE;
+                                byte al = target.icon_dimensions;
 
                                 if (al == 1)
                                 {
@@ -1449,7 +1449,7 @@ namespace engine
                     weapon.type == ItemType.ShortSword)
                 {
                     if (target.actions.AttacksReceived > 1 &&
-                        (target.field_DE & 0x7F) <= 1 &&
+                        (target.icon_dimensions & 0x7F) <= 1 &&
                         getTargetDirection(target, attacker) == target.actions.direction)
                     {
                         return true;

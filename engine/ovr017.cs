@@ -274,7 +274,7 @@ namespace engine
             player.spellBook[(int)Spells.animate_dead - 1] = 0;
 
             player.attackLevel = bp_var_1C0.field_6B;
-            player.field_DE = bp_var_1C0.field_6C;
+            player.icon_dimensions = bp_var_1C0.icon_dimensions;
 
             System.Array.Copy(bp_var_1C0.saveVerse, player.saveVerse, 5);
 
@@ -718,7 +718,7 @@ namespace engine
                     player.in_combat = true;
                     player.field_13F = 1;
                     player.field_140 = 1;
-                    player.field_DE = 1;
+                    player.icon_dimensions = 1;
 
                     player.mod_id = seg051.Random((byte)0xff);
                     player.icon_id = 0x0A;
