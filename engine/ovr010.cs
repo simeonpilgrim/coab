@@ -896,7 +896,7 @@ namespace engine
             {
                 ItemType item_type = item.type;
 
-                if (gbl.ItemDataTable[item_type].item_slot == ItemSlot.slot_0 &&
+                if (gbl.ItemDataTable[item_type].item_slot == ItemSlot.Weapon &&
                     (gbl.ItemDataTable[item_type].classFlags & player.classFlags) != 0)
                 {
                     int power_rating = CalcItemPowerRating(item, player);
@@ -920,7 +920,7 @@ namespace engine
                 }
 
 
-                if (gbl.ItemDataTable[item_type].item_slot == ItemSlot.slot_1)
+                if (gbl.ItemDataTable[item_type].item_slot == ItemSlot.Shield)
                 {
                     if ((gbl.ItemDataTable[item_type].classFlags & player.classFlags) != 0)
                     {

@@ -923,14 +923,14 @@ namespace engine
 
                 ItemSlot item_slot = gbl.ItemDataTable[item.type].item_slot;
 
-                if (item_slot >= ItemSlot.slot_0 && item_slot <= ItemSlot.slot_8)
+                if (item_slot >= ItemSlot.Weapon && item_slot <= ItemSlot.Boots)
                 {
                     if (player.activeItems[item_slot] != null)
                     {
                         result = Weld.AlreadyUsingX;
                     }
                 }
-                else if (item_slot == ItemSlot.slot_9)
+                else if (item_slot == ItemSlot.Ring1)
                 {
                     if (player.activeItems.Item_ptr_02 != null)
                     {
@@ -943,7 +943,7 @@ namespace engine
                     if (player.activeItems.arrows != null)
                     {
                         result = Weld.AlreadyUsingX;
-                        item_slot = ItemSlot.slot_11;
+                        item_slot = ItemSlot.Arrow;
                     }
                 }
 

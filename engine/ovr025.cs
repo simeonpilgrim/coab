@@ -96,7 +96,7 @@ namespace engine
 			{
 				var_1 &= 0x7F;
 				ItemSlot itemSlot = gbl.ItemDataTable[item.type].item_slot;
-				if (itemSlot == ItemSlot.slot_1)
+				if (itemSlot == ItemSlot.Shield)
 				{
 					bonus[1] = (sbyte)(item.plus + var_1);
 					return;
@@ -104,7 +104,7 @@ namespace engine
 
 				if (var_1 == 0)
 				{
-					if (itemSlot == ItemSlot.slot_9)
+					if (itemSlot == ItemSlot.Ring1)
 					{
 						if (item.plus > bonus[3])
 						{
@@ -369,11 +369,11 @@ namespace engine
 
 					ItemSlot slot = gbl.ItemDataTable[item.type].item_slot;
 
-					if (slot >= ItemSlot.slot_0 && slot <= ItemSlot.slot_8)
+					if (slot >= ItemSlot.Weapon && slot <= ItemSlot.Boots)
 					{
                         player.activeItems[slot] = item;
 					}
-					else if (slot == ItemSlot.slot_9)
+					else if (slot == ItemSlot.Ring1)
 					{
                         if (player.activeItems.Item_ptr_01 != null)
 						{

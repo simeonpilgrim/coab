@@ -19,18 +19,18 @@ namespace Classes
 
     public enum ItemSlot
     {
-        slot_0 = 0,
-        slot_1 = 1,
+        Weapon = 0,
+        Shield = 1,
         Armor = 2,
-        slot_3 = 3,
-        slot_4 = 4,
-        slot_5 = 5,
-        slot_6 = 6,
-        slot_7 = 7,
-        slot_8 = 8,
-        slot_9 = 9,
-        slot_10 = 10,
-        slot_11 = 11,
+        Gauntlets = 3,
+        Helm = 4,
+        Belt = 5,
+        Robe = 6,
+        Cloak = 7,
+        Boots = 8,
+        Ring1 = 9,
+        Ring2 = 10,
+        Arrow = 11,
         Quarrel = 12,
         slot_13 = 13
     }
