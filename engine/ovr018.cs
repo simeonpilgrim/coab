@@ -2207,89 +2207,68 @@ namespace engine
 
             byte classesExpTrainMask = 0;
             byte classesToTrainMask = 0;
-            byte class_lvl = 123; /* Simeon */
 
             byte trainerClassMask = gbl.area2_ptr.training_class_mask;
             Player player = gbl.SelectedPlayer;
 
-            int var_5 = 0;
+            int exp_limit = 0;
+
+            if (Cheats.free_training == true)
+            {
+                /* to avoid always training the first class, figure out which class needs the least exp */
+                int min_exp = 10000000;
+
+                for (SkillType skill = SkillType.Cleric; skill <= SkillType.Monk; skill++)
+                {
+                    if (player.ClassLevel[(byte)skill] > 0)
+                    {
+                        byte class_lvl = player.ClassLevel[(byte)skill];
+
+                        if (Limits.RaceClassLimit(class_lvl, player, skill) == false)
+                        {
+                            int next_exp = exp_table[(byte)skill, class_lvl];
+                            if (next_exp > 0 && next_exp < min_exp)
+                            {
+                                min_exp = exp_table[(byte)skill, class_lvl];
+                            }
+                        }
+                    }
+                }
+                if (min_exp != 10000000 && player.exp < min_exp)
+                {
+                    player.exp = min_exp;
+                }
+            }
 
             for (SkillType skill = SkillType.Cleric; skill <= SkillType.Monk; skill++)
             {
                 if (player.ClassLevel[(byte)skill] > 0)
                 {
-                    classesToTrainMask += classMasks[(byte)skill];
-                    class_lvl = player.ClassLevel[(byte)skill];
+                    classesToTrainMask |= classMasks[(byte)skill];
+                    byte class_lvl = player.ClassLevel[(byte)skill];
 
                     if (Limits.RaceClassLimit(class_lvl, player, skill) == false)
                     {
-                        if ((exp_table[(byte)skill, class_lvl] <= player.exp ||
-                             Cheats.free_training == true))
+                        int next_exp = exp_table[(byte)skill, class_lvl];
+                        if (next_exp > 0 && next_exp <= player.exp)
                         {
-                            if (Cheats.free_training == true)
+                            classesExpTrainMask |= classMasks[(byte)skill];
+
+                            int next_lvl_exp = exp_table[(byte)skill, class_lvl + 1];
+
+                            if (next_lvl_exp > 0 && player.exp >= next_lvl_exp && next_lvl_exp > exp_limit)
                             {
-                                int tmpExp = exp_table[(byte)skill, class_lvl];
-                                if (tmpExp > 0)
-                                {
-                                    if (tmpExp > player.exp)
-                                    {
-                                        player.exp = tmpExp;
-                                    }
-                                }
-                            }
-
-                            classesExpTrainMask += classMasks[(byte)skill];
-
-                            int next_lvl_exp = exp_table[(byte)skill, (class_lvl + 1)];
-
-                            if (next_lvl_exp > 0)
-                            {
-                                if (player.exp >= next_lvl_exp &&
-                                    next_lvl_exp > var_5)
-                                {
-                                    var_5 = next_lvl_exp - 1;
-                                }
+                                exp_limit = next_lvl_exp - 1;
                             }
                         }
                     }
                 }
             }
 
-            if (gbl.silent_training == false)
+            if (exp_limit > 0 && gbl.silent_training == false)
             {
-                int max_class = 0;
-                int max_exp = 0;
-
-                for (SkillType skill = SkillType.Cleric; skill <= SkillType.Monk; skill++)
-                {
-                    if ((classMasks[(byte)skill] & classesExpTrainMask) != 0)
-                    {
-                        if (exp_table[(byte)skill, class_lvl] > max_exp)
-                        {
-                            max_exp = exp_table[(byte)skill, class_lvl];
-                            max_class = (byte)skill;
-                        }
-                    }
-                }
-
-
-                if (max_exp > 0)
-                {
-                    classesExpTrainMask = classMasks[max_class];
-                    int var_9 = exp_table[max_class, class_lvl + 1];
-
-                    if (var_9 > 0 &&
-                        player.exp >= var_9 &&
-                        var_9 > var_5)
-                    {
-                        var_5 = var_9 - 1;
-                    }
-                }
-            }
-
-            if (var_5 > 0 && gbl.silent_training == false)
-            {
-                //player_ptr.exp = var_5;
+                /* only allow leveling at most one level. cap exp to 1 point under needed exp for second */
+                player.exp = exp_limit;
             }
 
             if ((classesToTrainMask & trainerClassMask) == 0 &&
@@ -2307,8 +2286,7 @@ namespace engine
                     gbl.can_train_no_more = true;
                 }
 
-                if (gbl.silent_training == false &&
-                     Cheats.free_training == false)
+                if (gbl.silent_training == false)
                 {
                     seg041.DisplayStatusText(0, 14, "Not Enough Experience");
                     return;
