@@ -205,21 +205,21 @@ namespace engine
 
                     if (player.stats2.Con.full >= 14)
                     {
-                        for (int classIdx = 0; classIdx <= 7; classIdx++)
+                        for (SkillType skill = SkillType.Cleric; skill <= SkillType.Monk; skill++)
                         {
-                            if (player.ClassLevel[classIdx] > 0)
+                            if (player.ClassLevel[(byte)skill] > 0)
                             {
-                                if (classIdx == 2)
+                                if (skill == SkillType.Fighter)
                                 {
                                     var_108 += (player.stats2.Con.full - 14) * player.fighter_lvl;
                                 }
                                 else if (player.stats2.Con.full > 15)
                                 {
-                                    var_108 += player.ClassLevel[classIdx] * 2;
+                                    var_108 += player.ClassLevel[(byte)skill] * 2;
                                 }
                                 else
                                 {
-                                    var_108 += player.ClassLevel[classIdx];
+                                    var_108 += player.ClassLevel[(byte)skill];
                                 }
                             }
                         }

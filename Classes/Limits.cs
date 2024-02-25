@@ -103,14 +103,14 @@ namespace Classes
         public static int[] ChaClassMin = { 0, 15, 0, 17, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
         public static int[] Str00ClassMin = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
-        public static bool RaceClassLimit(int class_lvl, Player player, ClassId _class)
+        public static bool RaceClassLimit(int class_lvl, Player player, SkillType skill)
         {
             bool race_limited = false;
 
             switch (player.race)
             {
                 case Race.dwarf:
-                    if (_class == ClassId.fighter)
+                    if (skill == SkillType.Fighter)
                     {
                         if (class_lvl == 9 ||
                             (class_lvl == 8 && player.stats2.Str.full == 17) ||
@@ -122,7 +122,7 @@ namespace Classes
                     break;
 
                 case Race.elf:
-                    if (_class == ClassId.fighter)
+                    if (skill == SkillType.Fighter)
                     {
                         if (class_lvl == 7 ||
                             (class_lvl == 6 && player.stats2.Str.full == 17) ||
@@ -132,7 +132,7 @@ namespace Classes
                         }
                     }
 
-                    if (_class == ClassId.magic_user)
+                    if (skill == SkillType.MagicUser)
                     {
                         if (class_lvl == 11 ||
                             (class_lvl == 9 && player.stats2.Int.full < 17) ||
@@ -144,7 +144,7 @@ namespace Classes
                     break;
 
                 case Race.gnome:
-                    if (_class == ClassId.fighter)
+                    if (skill == SkillType.Fighter)
                     {
                         if (class_lvl == 6 ||
                             (class_lvl == 5 && player.stats2.Str.full < 18))
@@ -155,13 +155,13 @@ namespace Classes
                     break;
 
                 case Race.half_elf:
-                    if (_class == ClassId.cleric && class_lvl == 5)
+                    if (skill == SkillType.Cleric && class_lvl == 5)
                     {
                         race_limited = true;
                     }
                     else
                     {
-                        if (_class == ClassId.fighter || _class == ClassId.ranger)
+                        if (skill == SkillType.Fighter || skill == SkillType.Ranger)
                         {
                             if (class_lvl == 8 ||
                                 (class_lvl == 7 && player.stats2.Str.full == 17) ||
@@ -171,7 +171,7 @@ namespace Classes
                             }
                         }
 
-                        if (_class == ClassId.magic_user)
+                        if (skill == SkillType.MagicUser)
                         {
                             if (class_lvl == 8 ||
                                 (class_lvl == 7 && player.stats2.Str.full == 17) ||
@@ -184,7 +184,7 @@ namespace Classes
                     break;
 
                 case Race.halfling:
-                    if (_class == ClassId.fighter)
+                    if (skill == SkillType.Fighter)
                     {
                         if (class_lvl == 6 ||
                             (class_lvl == 5 && player.stats2.Str.full == 17) ||
@@ -206,18 +206,18 @@ namespace Classes
             return race_limited;
         }
 
-        public static bool RaceStatLevelRestricted(ClassId _class, Player player) // sub_69138
+        public static bool RaceStatLevelRestricted(SkillType skill, Player player) // sub_69138
         {
             bool race_limited = false;
 
-            int class_lvl = player.ClassLevel[(int)_class];
+            int class_lvl = player.ClassLevel[(int)skill];
 
             if (class_lvl > 0)
             {
                 switch (player.race)
                 {
                     case Race.dwarf:
-                        if (_class == ClassId.fighter)
+                        if (skill == SkillType.Fighter)
                         {
                             if ((class_lvl == 8 && player.stats2.Str.full == 17) ||
                                 (class_lvl == 7 && player.stats2.Str.full < 17))
@@ -228,7 +228,7 @@ namespace Classes
                         break;
 
                     case Race.elf:
-                        if (_class == ClassId.fighter)
+                        if (skill == SkillType.Fighter)
                         {
                             if ((class_lvl == 7) ||
                                 (class_lvl == 6 && player.stats2.Str.full == 17) ||
@@ -240,7 +240,7 @@ namespace Classes
                         break;
 
                     case Race.gnome:
-                        if (_class == ClassId.fighter)
+                        if (skill == SkillType.Fighter)
                         {
                             if ((class_lvl == 6) ||
                                 (class_lvl == 5 && player.stats2.Str.full < 18))
@@ -251,12 +251,12 @@ namespace Classes
                         break;
 
                     case Race.half_elf:
-                        if (_class == ClassId.cleric &&
+                        if (skill == SkillType.Cleric &&
                             class_lvl == 5)
                         {
                             race_limited = true;
                         }
-                        else if (_class == ClassId.fighter)
+                        else if (skill == SkillType.Fighter)
                         {
                             if (class_lvl == 8 ||
                                 (class_lvl == 7 && player.stats2.Str.full == 17) ||
@@ -268,7 +268,7 @@ namespace Classes
                         break;
 
                     case Race.halfling:
-                        if (_class == ClassId.fighter)
+                        if (skill == SkillType.Fighter)
                         {
                             if ((class_lvl == 6) ||
                                 (class_lvl == 5 && player.stats2.Str.full == 17) ||

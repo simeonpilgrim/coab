@@ -73,9 +73,9 @@ namespace engine
             bool displaySlash = false;
             text2 = string.Empty;
 
-            for (int classIdx = 0; classIdx <= 7; classIdx++)
+            for (SkillType skill = SkillType.Cleric; skill <= SkillType.Monk; skill++)
             {
-                byte classLvl = player.ClassLevelsOld[classIdx];
+                byte classLvl = player.ClassLevelsOld[(byte)skill];
 
                 if (classLvl > 0)
                 {
@@ -85,19 +85,19 @@ namespace engine
                     }
                     if (classLvl < ovr026.HumanCurrentClassLevel_Zero(player))
                     {
-                        text2 += classString[classIdx];
+                        text2 += classString[(byte)skill];
                     }
                     else
                     {
-                        text2 += "(" + classString[classIdx] + ")";
+                        text2 += "(" + classString[(byte)skill] + ")";
                     }
 
                     displaySlash = true;
                 }
             }
-            for (int classIdx = 0; classIdx <= 7; classIdx++)
+            for (SkillType skill = SkillType.Cleric; skill <= SkillType.Monk; skill++)
             {
-                byte classLvl = player.ClassLevel[classIdx];
+                byte classLvl = player.ClassLevel[(byte)skill];
 
                 if (classLvl > 0)
                 {
@@ -105,7 +105,7 @@ namespace engine
                     {
                         text2 += "/";
                     }
-                    text2 += classString[classIdx];
+                    text2 += classString[(byte)skill];
 
                     displaySlash = true;
                 }
@@ -113,10 +113,10 @@ namespace engine
 
             seg041.displayString(text2, 0, 15, 5, 1);
 
-            for (int stat = 0; stat < 6; stat++)
+            for (Stat stat = Stat.STR; stat <= Stat.CHA; stat++)
             {
-                text2 = statShortString[stat];
-                seg041.displayString(text2, 0, 10, stat + 7, 1);
+                text2 = statShortString[(byte)stat];
+                seg041.displayString(text2, 0, 10, (byte)stat + 7, 1);
                 display_stat(false, stat, cur);
             }
 
@@ -126,9 +126,9 @@ namespace engine
             displaySlash = false;
             text2 = string.Empty;
 
-            for (int classIdx = 0; classIdx <= 7; classIdx++)
+            for (SkillType skill = SkillType.Cleric; skill <= SkillType.Monk; skill++)
             {
-                byte classLvl = player.ClassLevelsOld[classIdx];
+                byte classLvl = player.ClassLevelsOld[(byte)skill];
 
                 if (classLvl > 0)
                 {
@@ -148,9 +148,9 @@ namespace engine
                     displaySlash = true;
                 }
             }
-            for (int classIdx = 0; classIdx <= 7; classIdx++)
+            for (SkillType skill = SkillType.Cleric; skill <= SkillType.Monk; skill++)
             {
-                byte classLvl = player.ClassLevel[classIdx];
+                byte classLvl = player.ClassLevel[(byte)skill];
 
                 if (classLvl > 0)
                 {
@@ -256,22 +256,22 @@ namespace engine
         }
 
 
-        internal static void display_stat(bool highlighted, int stat_index, bool cur)
+        internal static void display_stat(bool highlighted, Stat stat, bool cur)
         {
             int color = highlighted ? 0x0D : 0x0A;
             int col_x = 5;
-            seg037.draw8x8_clear_area(stat_index + 7, 0x0b, stat_index + 7, col_x);
+            seg037.draw8x8_clear_area((byte)stat + 7, 0x0b, (byte)stat + 7, col_x);
 
             if (cur)
             {
-                if (gbl.SelectedPlayer.stats2[stat_index].cur < 10)
+                if (gbl.SelectedPlayer.stats2[(byte)stat].cur < 10)
                 {
                     col_x++;
                 }
             }
             else
             {
-                if (gbl.SelectedPlayer.stats2[stat_index].full < 10)
+                if (gbl.SelectedPlayer.stats2[(byte)stat].full < 10)
                 {
                     col_x++;
                 }
@@ -280,17 +280,17 @@ namespace engine
             string s;
             if (cur)
             {
-                s = gbl.SelectedPlayer.stats2[stat_index].cur.ToString();
+                s = gbl.SelectedPlayer.stats2[(byte)stat].cur.ToString();
             }
             else
             {
-                s = gbl.SelectedPlayer.stats2[stat_index].full.ToString();
+                s = gbl.SelectedPlayer.stats2[(byte)stat].full.ToString();
             }
-            seg041.displayString(s, 0, color, stat_index + 7, col_x);
+            seg041.displayString(s, 0, color, (byte)stat + 7, col_x);
 
             if (cur)
             {
-                if (stat_index == 0 &&
+                if (stat == Stat.STR &&
                     gbl.SelectedPlayer.stats2.Str.cur == 18 &&
                     gbl.SelectedPlayer.stats2.Str00.cur > 0)
                 {
@@ -311,7 +311,7 @@ namespace engine
             }
             else
             {
-                if (stat_index == 0 &&
+                if (stat == Stat.STR &&
                     gbl.SelectedPlayer.stats2.Str.full == 18 &&
                     gbl.SelectedPlayer.stats2.Str00.full > 0)
                 {

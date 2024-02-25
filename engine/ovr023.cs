@@ -2117,8 +2117,6 @@ namespace engine
 
 		internal static void SpellRestoration() // cast_restore
 		{
-			int var_C = 30; /* simeon */
-
 			Player player = gbl.spellTargets[0];
 
 			if (player.lost_lvls > 0)
@@ -2131,28 +2129,29 @@ namespace engine
 				player.lost_hp -= restored_hp;
 				player.lost_lvls -= 1;
 
+				SkillType restored_skill = SkillType.Monk;
 				int max_lvl = 13;
 				int max_exp = 10000000;
 
-				for (int skill = 0; skill <= 7; skill++)
+				for (SkillType skill = SkillType.Cleric; skill <= SkillType.Monk; skill++)
 				{
-					int lvl = player.ClassLevel[skill];
+					int lvl = player.ClassLevel[(byte)skill];
 
 					if (lvl > 0 &&
 						lvl <= max_lvl)
 					{
-						if (ovr018.exp_table[skill, lvl] > 0 &&
-							ovr018.exp_table[skill, lvl] < max_exp &&
-							Limits.RaceStatLevelRestricted((ClassId)skill, player) == false)
+						if (ovr018.exp_table[(byte)skill, lvl] > 0 &&
+							ovr018.exp_table[(byte)skill, lvl] < max_exp &&
+							Limits.RaceStatLevelRestricted(skill, player) == false)
 						{
 							max_lvl = lvl;
-							var_C = skill;
-							max_exp = ovr018.exp_table[skill, lvl];
+							restored_skill = skill;
+							max_exp = ovr018.exp_table[(byte)skill, lvl];
 						}
 					}
 				}
 
-				player.ClassLevel[var_C]++;
+				player.ClassLevel[(byte)restored_skill]++;
 
 				if (player.exp < max_exp)
 				{

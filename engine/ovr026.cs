@@ -185,11 +185,11 @@ namespace engine
         {
             player.thac0 = 0;
 
-            for (int _class = 0; _class <= 7; _class++)
+            for (SkillType skill = SkillType.Cleric; skill <= SkillType.Monk; skill++)
             {
-                byte class_lvl = player.ClassLevel[_class];
+                byte class_lvl = player.ClassLevel[(byte)skill];
 
-                player.thac0 = System.Math.Max(ovr018.thac0_table[_class, class_lvl], player.thac0);
+                player.thac0 = System.Math.Max(ovr018.thac0_table[(byte)skill, class_lvl], player.thac0);
                 player.HitDice = System.Math.Max(class_lvl, player.HitDice);
             }
 
@@ -210,12 +210,12 @@ namespace engine
 
             player.classFlags = 0;
 
-            for (int skill = 0; skill <= 7; skill++)
+            for (SkillType skill = SkillType.Cleric; skill <= SkillType.Monk; skill++)
             {
-                if (player.ClassLevel[skill] > 0 ||
-                    (player.ClassLevelsOld[skill] > 0 && player.ClassLevelsOld[skill] < player.HitDice))
+                if (player.ClassLevel[(byte)skill] > 0 ||
+                    (player.ClassLevelsOld[(byte)skill] > 0 && player.ClassLevelsOld[(byte)skill] < player.HitDice))
                 {
-                    player.classFlags += ovr018.unk_1A1B2[skill];
+                    player.classFlags += ovr018.unk_1A1B2[(byte)skill];
                 }
             }
 
@@ -224,18 +224,18 @@ namespace engine
 
             if (DualClassExceedLastLevel(player) == true)
             {
-                for (int class_index = 0; class_index <= 7; class_index++)
+                for (SkillType skill = SkillType.Cleric; skill <= SkillType.Monk; skill++)
                 {
-                    byte skill_lvl = player.ClassLevelsOld[class_index];
+                    byte skill_lvl = player.ClassLevelsOld[(byte)skill];
 
-                    if (class_index == 2 || class_index == 3)
+                    if (skill == SkillType.Fighter || skill == SkillType.Paladin)
                     {
                         if (skill_lvl > 6)
                         {
                             player.attacksCount = 3;
                         }
                     }
-                    else if (class_index == 4)
+                    else if (skill == SkillType.Ranger)
                     {
                         if (skill_lvl > 7)
                         {
@@ -243,9 +243,9 @@ namespace engine
                         }
                     }
 
-                    if (ovr018.thac0_table[class_index, skill_lvl] > player.thac0)
+                    if (ovr018.thac0_table[(byte)skill, skill_lvl] > player.thac0)
                     {
-                        player.thac0 = ovr018.thac0_table[class_index, skill_lvl];
+                        player.thac0 = ovr018.thac0_table[(byte)skill, skill_lvl];
                     }
                 }
 
@@ -336,35 +336,33 @@ namespace engine
             Item item = player.items.Find(i => i.affect_3 == Affects.girdle_of_dwarves && i.readied); // Girdle of the Dwarves
             bool applyBonus = item != null;
 
-            for (int save = 0; save < 5; save++)
+            for (SaveVerseType save = SaveVerseType.Poison; save <= SaveVerseType.Spell; save++)
             {
-                int _class;
-
-                player.saveVerse[save] = 20;
-                for (_class = 0; _class <= 7; _class++)
+                player.saveVerse[(byte)save] = 20;
+                for (SkillType skill = SkillType.Cleric; skill <= SkillType.Monk; skill++)
                 {
-                    if (player.ClassLevel[_class] > 0)
+                    if (player.ClassLevel[(byte)skill] > 0)
                     {
-                        byte dl = SaveThrowValues[_class, player.ClassLevel[_class], save];
+                        byte dl = SaveThrowValues[(byte)skill, player.ClassLevel[(byte)skill], (byte)save];
 
-                        if (player.saveVerse[save] > dl)
+                        if (player.saveVerse[(byte)save] > dl)
                         {
-                            player.saveVerse[save] = dl;
+                            player.saveVerse[(byte)save] = dl;
                         }
                     }
 
-                    if (DualClassExceedLastLevel(player) == true && player.ClassLevelsOld[_class] > 0)
+                    if (DualClassExceedLastLevel(player) == true && player.ClassLevelsOld[(byte)skill] > 0)
                     {
-                        byte dl = SaveThrowValues[_class, player.ClassLevelsOld[_class], save];
+                        byte dl = SaveThrowValues[(byte)skill, player.ClassLevelsOld[(byte)skill], (byte)save];
 
-                        if (player.saveVerse[save] > dl)
+                        if (player.saveVerse[(byte)save] > dl)
                         {
-                            player.saveVerse[save] = dl;
+                            player.saveVerse[(byte)save] = dl;
                         }
                     }
                 }
 
-                SaveVerseTypeBonus(player, (SaveVerseType)save, applyBonus);
+                SaveVerseTypeBonus(player, save, applyBonus);
             }
         }
 
@@ -646,9 +644,9 @@ namespace engine
 
             player.exp = 0;
             player.attacksCount = 2;
-            int newClass = 0;
+            SkillType newClass = SkillType.Cleric;
 
-            while (newClass <= 7 && ovr020.classString[newClass] != list_ptr.Text)
+            while (newClass <= SkillType.Monk && ovr020.classString[(byte)newClass] != list_ptr.Text)
             {
                 newClass++;
             }
@@ -661,7 +659,7 @@ namespace engine
             player.HitDice = 1;
 
             player.ClassLevel[(int)HumanCurrentClass_Unknown(player)] = 0;
-            player.ClassLevel[newClass] = 1;
+            player.ClassLevel[(byte)newClass] = 1;
 
             for (int i = 0; i < 5; i++)
             {
@@ -670,11 +668,11 @@ namespace engine
                 player.spellCastCount[2, i] = 0;
             }
 
-            if (newClass == 0)
+            if (newClass == SkillType.Cleric)
             {
                 player.spellCastCount[0, 0] = 1;
             }
-            else if (newClass == 5)
+            else if (newClass == SkillType.MagicUser)
             {
                 player.spellCastCount[2, 0] = 1;
                 player.LearnSpell(Spells.detect_magic_MU);
@@ -684,7 +682,7 @@ namespace engine
 
             player._class = (ClassId)newClass;
 
-            seg041.DisplayStatusText(0, 10, player.name + " is now a 1st level " + ovr020.classString[newClass] + ".");
+            seg041.DisplayStatusText(0, 10, player.name + " is now a 1st level " + ovr020.classString[(byte)newClass] + ".");
 
             player.spellList.Clear();
 
