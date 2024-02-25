@@ -1110,6 +1110,7 @@ namespace engine
                 {
                     remove_affect(null, Affects.highConRegen, player);
                 }
+                ovr026.recalc_saving_throws(player);
             }
             else if (stat_index == Stat.INT)
             {

@@ -140,7 +140,7 @@ namespace Classes
         cast_throw_lightening = 0x84,
         affect_85 = 0x85,
         ranger_vs_giant = 0x86,
-        item_affect_6 = 0x86,
+        girdle_of_dwarves = 0x86,
         protect_elec = 0x87,
         entangle = 0x88,
         affect_89 = 0x89,

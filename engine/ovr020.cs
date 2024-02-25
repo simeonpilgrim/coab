@@ -836,6 +836,7 @@ namespace engine
                 case 6: // Girdle of the Dwarves
                     ovr024.CalcStatBonuses(Stat.CON, player);
                     ovr024.CalcStatBonuses(Stat.CHA, player);
+                    ovr026.recalc_saving_throws(player);
                     break;
 
                 case 8: //Ioun Stone

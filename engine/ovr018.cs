@@ -584,7 +584,7 @@ namespace engine
                 }
             }
 
-            ovr026.reclac_saving_throws(player);
+            ovr026.recalc_saving_throws(player);
             var_C.Clear();
 
             int alignments = gbl.class_alignments[(int)player._class, 0];

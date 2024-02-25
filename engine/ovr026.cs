@@ -201,7 +201,7 @@ namespace engine
             }
 
             sub_6A00F(player);
-            reclac_saving_throws(player);
+            recalc_saving_throws(player);
 
             if (player.thief_lvl > 0)
             {
@@ -331,9 +331,9 @@ namespace engine
 			{{20, 20, 20, 20, 20}, {13, 12, 14, 16, 15}, {13, 12, 14, 16, 15}, {13, 12, 14, 16, 15}, {13, 12, 14, 16, 15}, {12, 11, 12, 15, 13}, {12, 11, 12, 15, 13}, {12, 11, 12, 15, 13}, {12, 11, 12, 15, 13}, {11, 10, 10, 14, 11}, {13, 11, 9, 13, 10}, {11, 9, 7, 11, 8}, {11, 9, 7, 11, 8}}};
 
 
-        internal static void reclac_saving_throws(Player player) // sub_6A7FB
+        internal static void recalc_saving_throws(Player player) // sub_6A7FB
         {
-            Item item = player.items.Find(i => i.affect_3 == Affects.item_affect_6 && i.readied);
+            Item item = player.items.Find(i => i.affect_3 == Affects.girdle_of_dwarves && i.readied); // Girdle of the Dwarves
             bool applyBonus = item != null;
 
             for (int save = 0; save < 5; save++)
@@ -352,73 +352,76 @@ namespace engine
                             player.saveVerse[save] = dl;
                         }
                     }
-                }
 
-                _class = 7; /* Orignal code had a post use test and would exit on 7,
-                        * but this for loops uses are pre-test increment so fix var_2 */
-
-                if (player.ClassLevel[_class] > player.ClassLevelsOld[_class])
-                {
-                    byte dl = SaveThrowValues[_class, player.ClassLevelsOld[_class], save];
-
-                    if (player.saveVerse[save] > dl)
+                    if (DualClassExceedLastLevel(player) == true && player.ClassLevelsOld[_class] > 0)
                     {
-                        player.saveVerse[save] = dl;
+                        byte dl = SaveThrowValues[_class, player.ClassLevelsOld[_class], save];
+
+                        if (player.saveVerse[save] > dl)
+                        {
+                            player.saveVerse[save] = dl;
+                        }
                     }
                 }
 
-                if (save == 0)
-                {
-                    SaveVersePoisonBonus(player, applyBonus);
-                }
+                SaveVerseTypeBonus(player, (SaveVerseType)save, applyBonus);
             }
         }
 
-        private static void SaveVersePoisonBonus(Player player, bool applyBonus)
+        private static void SaveVerseTypeBonus(Player player, SaveVerseType type, bool applyBonus)
         {
-			int poison = (int)SaveVerseType.Poison;
-
-            if (player.race == Race.dwarf ||
-                player.race == Race.halfling ||
-                applyBonus == true)
+            if ((type == SaveVerseType.Poison && (player.race == Race.dwarf || player.race == Race.halfling || applyBonus == true)) ||
+                (type == SaveVerseType.RodStaffWand && applyBonus == true) ||
+                (type == SaveVerseType.Spell && applyBonus == true))
             {
                 if (player.stats2.Con.full >= 4 && player.stats2.Con.full <= 6)
                 {
-                    player.saveVerse[poison] += 1;
+                    player.saveVerse[(byte)type] -= 1;
                 }
                 else if (player.stats2.Con.full >= 7 && player.stats2.Con.full <= 10)
                 {
-                    player.saveVerse[poison] += 2;
+                    player.saveVerse[(byte)type] -= 2;
                 }
                 else if (player.stats2.Con.full >= 11 && player.stats2.Con.full <= 13)
                 {
-                    player.saveVerse[poison] += 3;
+                    player.saveVerse[(byte)type] -= 3;
                 }
                 else if (player.stats2.Con.full >= 14 && player.stats2.Con.full <= 17)
                 {
-                    player.saveVerse[poison] += 4;
+                    player.saveVerse[(byte)type] -= 4;
                 }
-                else if (player.stats2.Con.full == 18)
+                else if (player.stats2.Con.full >= 18 && player.stats2.Con.full <= 20)
                 {
-                    player.saveVerse[poison] += 5;
+                    player.saveVerse[(byte)type] -= 5;
+                }
+                else if (player.stats2.Con.full >= 21 && player.stats2.Con.full <= 24)
+                {
+                    player.saveVerse[(byte)type] -= 6;
+                }
+                else if (player.stats2.Con.full == 25)
+                {
+                    player.saveVerse[(byte)type] -= 7;
                 }
             }
 
-            if (player.stats2.Con.full == 19 || player.stats2.Con.full == 20)
+            if (type == SaveVerseType.Poison)
             {
-                player.saveVerse[poison] += 1;
-            }
-            else if (player.stats2.Con.full == 21 || player.stats2.Con.full == 22)
-            {
-                player.saveVerse[poison] += 2;
-            }
-            else if (player.stats2.Con.full == 23 || player.stats2.Con.full == 24)
-            {
-                player.saveVerse[poison] += 3;
-            }
-            else if (player.stats2.Con.full == 25)
-            {
-                player.saveVerse[poison] += 4;
+                if (player.stats2.Con.full == 19 || player.stats2.Con.full == 20)
+                {
+                    player.saveVerse[(byte)type] -= 1;
+                }
+                else if (player.stats2.Con.full == 21 || player.stats2.Con.full == 22)
+                {
+                    player.saveVerse[(byte)type] -= 2;
+                }
+                else if (player.stats2.Con.full == 23 || player.stats2.Con.full == 24)
+                {
+                    player.saveVerse[(byte)type] -= 3;
+                }
+                else if (player.stats2.Con.full == 25)
+                {
+                    player.saveVerse[(byte)type] -= 4;
+                }
             }
         }
 
@@ -687,7 +690,7 @@ namespace engine
 
             ReclacClassBonuses(player);
             calc_cleric_spells(true, player);
-            reclac_saving_throws(player);
+            recalc_saving_throws(player);
             recalc_thief_skills(player);
 
             foreach (var item in player.items)

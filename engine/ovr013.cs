@@ -1231,6 +1231,14 @@ namespace engine
 				{
 					save_bonus = 5;
 				}
+				else if (player.stats2.Con.full >= 21 && player.stats2.Con.full <= 24)
+				{
+					save_bonus = 6;
+				}
+				else if (player.stats2.Con.full == 25)
+				{
+					save_bonus = 7;
+				}
 
 				gbl.savingThrowRoll += save_bonus;
 			}
