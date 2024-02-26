@@ -1101,92 +1101,92 @@ namespace engine
             {
                 for (int count = 0; count < (block_id - 0x80); count++)
                 {
-                    int var_63 = ovr024.roll_dice(100, 1);
+                    int roll1 = ovr024.roll_dice(100, 1);
 
-                    if (var_63 >= 1 && var_63 <= 60)
+                    if (roll1 >= 1 && roll1 <= 60)
                     {
-                        int var_64 = ovr024.roll_dice(100, 1);
+                        int roll2 = ovr024.roll_dice(100, 1);
 
-                        if ((var_64 >= 1 && var_64 <= 47) ||
-                            (var_64 >= 50 && var_64 <= 59))
+                        if ((roll2 >= (int)ItemType.BattleAxe && roll2 <= (int)ItemType.Sling) ||
+                            (roll2 >= (int)ItemType.LeatherArmor && roll2 <= (int)ItemType.Shield))
                         {
-                            if (var_64 == 45)
+                            if (roll2 == (int)ItemType.HeavyCrossbow)
                             {
                                 item_type = ItemType.Shield;
                             }
                             else
                             {
-                                item_type = (ItemType)var_64;
+                                item_type = (ItemType)roll2;
                             }
                         }
-                        else if (var_64 >= 60 && var_64 <= 90)
+                        else if (roll2 >= 60 && roll2 <= 90)
                         {
-                            var_64 = ovr024.roll_dice(10, 1);
+                            int roll3 = ovr024.roll_dice(10, 1);
 
-                            if (var_64 >= 1 && var_64 <= 4)
+                            if (roll3 >= 1 && roll3 <= 4)
                             {
                                 item_type = ItemType.LongSword;
                             }
-                            else if (var_64 >= 5 && var_64 <= 7)
+                            else if (roll3 >= 5 && roll3 <= 7)
                             {
                                 item_type = ItemType.BroadSword;
                             }
-                            else if (var_64 == 8)
+                            else if (roll3 == 8)
                             {
                                 item_type = ItemType.BastardSword;
                             }
-                            else if (var_64 == 9)
+                            else if (roll3 == 9)
                             {
                                 item_type = ItemType.ShortSword;
                             }
-                            else if (var_64 == 10)
+                            else if (roll3 == 10)
                             {
                                 item_type = ItemType.TwoHandedSword;
                             }
                         }
-                        else if (var_64 >= 91 && var_64 <= 94)
+                        else if (roll2 >= 91 && roll2 <= 94)
                         {
                             item_type = ItemType.Arrow;
                         }
-                        else if (var_64 >= 95 && var_64 <= 97)
+                        else if (roll2 >= 95 && roll2 <= 97)
                         {
                             item_type = ItemType.RingOfProt;
                         }
-                        else if (var_64 >= 98 && var_64 <= 100)
+                        else if (roll2 >= 98 && roll2 <= 100)
                         {
                             item_type = ItemType.Bracers;
                         }
-                        else
+                        else // roll == 48 || roll == 49
                         {
                             item_type = ItemType.Shield;
                         }
                     }
-                    else if (var_63 >= 0x3d && var_63 <= 0x55)
+                    else if (roll1 >= 61 && roll1 <= 85)
                     {
                         item_type = ItemType.MUScroll;
                     }
-                    else if (var_63 >= 0x56 && var_63 <= 0x5C)
+                    else if (roll1 >= 86 && roll1 <= 92)
                     {
                         item_type = ItemType.ClrcScroll;
                     }
-                    else if (var_63 >= 0x5B && var_63 <= 0x62)
+                    else if (roll1 >= 91 && roll1 <= 98) // actually 93-98
                     {
-                        int var_62 = ovr024.roll_dice(15, 1);
+                        int roll2 = ovr024.roll_dice(15, 1);
 
-                        if (var_62 >= 1 && var_62 <= 9)
+                        if (roll2 >= 1 && roll2 <= 9)
                         {
                             item_type = ItemType.Potion;
                         }
-                        else if (var_62 == 10)
+                        else if (roll2 == 10)
                         {
                             item_type = ItemType.PotionOfGiantStr;
                         }
-                        else if (var_62 >= 11 && var_62 <= 15)
+                        else if (roll2 >= 11 && roll2 <= 15)
                         {
                             item_type = ItemType.WandB;
                         }
                     }
-                    else if (var_63 == 99 || var_63 == 100)
+                    else if (roll1 == 99 || roll1 == 100)
                     {
                         item_type = ItemType.Shield;
                     }

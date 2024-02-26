@@ -431,19 +431,19 @@ namespace engine
             return bonus;
         }
 
-        static short[,] /*seg600:082E unk_16B3E */	preconfiiguredItems = { 
-        {0x00B9, 0x00BB, 0x0040, 0x0001, 0x0320, 0x0003, 0x0063, 0x0000},
-        {0x00EF, 0x00A7, 0x0040, 0x0001, 0x044C, 0x0001, 0x003b, 0x0000},
-        {0x00b9, 0x00a7, 0x0040, 0x0001, 0x0190, 0x0001, 0x0003, 0x0000},
-        {0x00AD, 0x00a7, 0x0040, 0x0001, 0x01C2, 0x0001, 0x0030, 0x0000},
-        {0x00CE, 0x00A7, 0x0045, 0x0001, 0x2AF8, 0x001E, 0x000F, 0x0000},
-        {0x00E2, 0x00A7, 0x0064, 0x000A, 0x3A98, 0x0000, 0x0026, 0x0083},
-        {0x009d, 0x00a7, 0x0015, 0x0014, 0x0bb8, 0x0001, 0x0033, 0x0000} };
+        static short[,] /*seg600:082E unk_16B3E */	preconfiguredItems = {
+            {185, 187,  64,  1,   800,  3, 99,   0}, // potion extra healing
+            {239, 167,  64,  1,  1100,  1, 59,   0}, // potion of giant strength
+            {185, 167,  64,  1,   400,  1,  3,   0}, // potion of healing
+            {173, 167,  64,  1,   450,  1, 48,   0}, // potion of speed (unused)
+            {206, 167,  69,  1, 11000, 30, 15,   0}, // wand of magic missile
+            {226, 167, 100, 10, 15000,  0, 38, 131}, // gauntlets of ogre power (unused)
+            {157, 167,  21, 20,  3000,  1, 51,   0}, // javelin of lightning
+        };
 
         internal static Item create_item(ItemType item_type) /* sub_5A007 */
         {
-            byte var_5 = 0; /* Simeon */
-            int var_4 = -1;
+            int preconfig = -1;
 
             Item item = new Item(0, 0, 0, 0, 0, 0, false, 6, false, 0, 0, 0, 0, 0, item_type, false);
 
@@ -458,73 +458,75 @@ namespace engine
 
                 if (item.type == ItemType.Javelin)
                 {
-                    int var_1 = ovr024.roll_dice(5, 1);
-                    if (var_1 == 5)
+                    int roll = ovr024.roll_dice(5, 1);
+                    if (roll == 5)
                     {
-                        var_4 = 6;
+                        preconfig = 6;
                     }
-
-                    item.namenum3 = 0x15;
-                    item.namenum2 = item.plus + 0xA1;
+                    else
+                    {
+                        item.namenum3 = (int)item.type;
+                        item.namenum2 = item.plus + 161;
+                    }
                 }
                 else if (item.type == ItemType.Quarrel)
                 {
-                    item.namenum3 = 0x1C;
-                    item.namenum2 = item.plus + 0xA1;
+                    item.namenum3 = (int)item.type;
+                    item.namenum2 = item.plus + 161;
                 }
                 else if (item.type == ItemType.LeatherArmor ||
                          item.type == ItemType.PaddedArmor)
                 {
                     item.namenum3 = (int)item.type;
-                    item.namenum2 = 0x31;
-                    item.namenum1 = item.plus + 0xA1;
+                    item.namenum2 = 49; // Armor
+                    item.namenum1 = item.plus + 161;
                     item.hidden_names_flag = 4;
                 }
                 else if (item.type == ItemType.StuddedLeather)
                 {
                     item.namenum3 = (int)item.type;
-                    item.namenum2 = 0x32;
-                    item.namenum1 = item.plus + 0xA1;
+                    item.namenum2 = 50; // Leather
+                    item.namenum1 = item.plus + 161;
                     item.hidden_names_flag = 4;
                 }
                 else if (item.type >= ItemType.RingMail &&
                          item.type <= ItemType.PlateMail)
                 {
                     item.namenum3 = (int)item.type;
-                    item.namenum2 = 0x30;
-                    item.namenum1 = item.plus + 0xA1;
+                    item.namenum2 = 48; // Mail
+                    item.namenum1 = item.plus + 161;
                     item.hidden_names_flag = 4;
                 }
                 else if (item.type == ItemType.Arrow)
                 {
-                    item.namenum3 = 0x3D;
-                    item.namenum2 = item.plus + 0xA1;
+                    item.namenum3 = 61; // Arrow
+                    item.namenum2 = item.plus + 161;
                 }
                 else if (item.type == ItemType.Bracers)
                 {
-                    item.namenum3 = 0x4F;
-                    item.namenum2 = 0xA7;
+                    item.namenum3 = 79; // Bracers
+                    item.namenum2 = 167; // of
                     item.plus = (item.plus << 1) + 2;
 
                     if (item.plus == 4)
                     {
-                        item.namenum1 = 0xdd;
+                        item.namenum1 = 221; // AC 6
                     }
                     else if (item.plus == 6)
                     {
-                        item.namenum1 = 0xde;
+                        item.namenum1 = 222; // AC 4
                     }
                 }
                 else if (item.type == ItemType.RingOfProt)
                 {
-                    item.namenum3 = 0x42;
-                    item.namenum2 = 0xE0;
-                    item.namenum1 = item.plus + 0xA1;
+                    item.namenum3 = 66; // Ring
+                    item.namenum2 = 224; // of Prot.
+                    item.namenum1 = item.plus + 161;
                 }
                 else
                 {
                     item.namenum3 = (int)item.type;
-                    item.namenum2 = item.plus + 0xA1;
+                    item.namenum2 = item.plus + 161;
                 }
 
                 item.plus_save = 0;
@@ -539,7 +541,7 @@ namespace engine
                         item.weight = 75;
                         break;
 
-                    case ItemType.HandAxe: // HandAxe
+                    case ItemType.HandAxe:
                     case ItemType.Hammer:
                     case ItemType.Ranseur:
                     case ItemType.Spear:
@@ -556,7 +558,7 @@ namespace engine
                     case ItemType.Bardiche:
                     case ItemType.MorningStar:
                     case ItemType.Voulge:
-                        item.weight = 0x7D;
+                        item.weight = 125;
                         break;
 
                     case ItemType.BecDeCorbin:
@@ -574,7 +576,7 @@ namespace engine
                     case ItemType.GuisarmeVoulge:
                     case ItemType.LucernHammer:
                     case ItemType.LeatherArmor:
-                        item.weight = 0x96;
+                        item.weight = 150;
                         break;
 
                     case ItemType.BoStick:
@@ -582,7 +584,7 @@ namespace engine
                         break;
 
                     case ItemType.Club:
-                        item.weight = 0x1E;
+                        item.weight = 30;
                         break;
 
                     case ItemType.Dagger:
@@ -591,14 +593,14 @@ namespace engine
                         break;
 
                     case ItemType.Dart:
-                        item.weight = 0x19;
+                        item.weight = 25;
                         item.count = 5;
                         break;
 
                     case ItemType.Fauchard:
                     case ItemType.MilitaryPick:
                     case ItemType.LongSword:
-                        item.weight = 0x3C;
+                        item.weight = 60;
                         break;
 
                     case ItemType.FauchardFork:
@@ -606,7 +608,7 @@ namespace engine
                     case ItemType.Partisan:
                     case ItemType.AwlPike:
                     case ItemType.CompositeLongBow:
-                    case ItemType.Sling:
+                    // case ItemType.Sling: - this exists twice. other seems correct (weight 80 for a sling seems off)
                         item.weight = 80;
                         break;
 
@@ -633,7 +635,7 @@ namespace engine
                         break;
 
                     case ItemType.StuddedLeather:
-                        item.weight = 0x0C8;
+                        item.weight = 200;
                         break;
 
                     case ItemType.ScaleMail:
@@ -642,18 +644,18 @@ namespace engine
                         break;
 
                     case ItemType.ChainMail:
-                        item.weight = 0x12C;
+                        item.weight = 300;
                         break;
 
                     case ItemType.BandedMail:
-                        item.weight = 0x15E;
+                        item.weight = 350;
                         break;
 
                     case ItemType.PlateMail:
                         item.weight = 450;
                         break;
 
-                    //case 0x2f: //wonder if this should have been 0x3f
+                    case ItemType.Sling:
                     case ItemType.RingOfProt:
                         item.weight = 1;
                         break;
@@ -683,7 +685,6 @@ namespace engine
                 else if (item.type == ItemType.BandedMail)
                 {
                     item._value = (short)(item.plus * 4000);
-
                 }
                 else if (item.type == ItemType.PlateMail)
                 {
@@ -718,108 +719,109 @@ namespace engine
                 item.count = 0;
                 item._value = 0;
 
-                for (int var_3 = 1; var_3 <= spellsCount; var_3++)
+                for (int affect = 1; affect <= spellsCount; affect++)
                 {
-                    int var_1 = ovr024.roll_dice(5, 1);
+                    int roll = ovr024.roll_dice(5, 1);
+                    Spells spell;
 
                     if (item.type == ItemType.MUScroll)
                     {
-                        switch (var_1)
+                        switch (roll)
                         {
                             case 1:
-                                var_5 = (byte)(ovr024.roll_dice(13, 1) + 8);
+                                spell = Spells.burning_hands + ovr024.roll_dice(13, 1) - 1;
                                 break;
 
                             case 2:
-                                var_5 = (byte)(ovr024.roll_dice(7, 1) + 28);
+                                spell = Spells.detect_invisibility + ovr024.roll_dice(7, 1) - 1;
                                 break;
 
                             case 3:
-                                var_5 = (byte)(ovr024.roll_dice(0x0B, 1) + 44);
+                                spell = Spells.blink + ovr024.roll_dice(11, 1) - 1;
                                 break;
 
                             case 4:
-                                var_5 = (byte)(ovr024.roll_dice(9, 1) + 80);
+                                spell = Spells.charm_monsters + ovr024.roll_dice(9, 1) - 1;
                                 break;
 
-                            case 5:
-                                var_5 = (byte)(ovr024.roll_dice(4, 1) + 90);
+                            default: // 5
+                                spell = Spells.cloud_kill + ovr024.roll_dice(4, 1) - 1;
                                 break;
                         }
                     }
                     else
                     {
-                        switch (var_1)
+                        switch (roll)
                         {
                             case 1:
-                                var_5 = ovr024.roll_dice(8, 1);
+                                spell = Spells.bless + ovr024.roll_dice(8, 1) - 1;
                                 break;
 
                             case 2:
-                                var_5 = (byte)(ovr024.roll_dice(7, 1) + 0x15);
+                                spell = Spells.find_traps + ovr024.roll_dice(7, 1) - 1;
                                 break;
 
                             case 3:
-                                var_5 = (byte)(ovr024.roll_dice(8, 1) + 0x24);
+                                spell = Spells.cure_blindness + ovr024.roll_dice(8, 1) - 1;
                                 break;
 
                             case 4:
-                                var_5 = (byte)(ovr024.roll_dice(5, 1) + 0x41);
+                                spell = Spells.cause_serious_wounds_CL + ovr024.roll_dice(5, 1) - 1;
                                 break;
 
-                            case 5:
-                                var_5 = (byte)(ovr024.roll_dice(6, 1) + 0x46);
+                            default: // 5
+                                spell = Spells.cure_critical_wounds + ovr024.roll_dice(6, 1) - 1;
                                 break;
                         }
                     }
 
-                    item.setAffect(var_3, (Affects)var_5);
-                    item._value += (short)(var_1 * 300);
+                    item.setAffect(affect, (Affects)spell);
+                    item._value += (short)(roll * 300);
                 }
             }
-            else if (type == ItemType.Gauntlets || type == ItemType.CloakOfProt)
+            else if (type == ItemType.Gauntlets || type == ItemType.CloakOfProt) // Gauntlets and CloakOfProt unused
             {
-                var_4 = 5;
+                preconfig = 5;
             }
-            else if (type == ItemType.WandA || type == ItemType.WandB)
+            else if (type == ItemType.WandA || type == ItemType.WandB) // WandA unused
             {
-                var_4 = 4;
+                preconfig = 4;
             }
-            else if (type == ItemType.FireGiantBoulder || type == ItemType.Cloak)
+            else if (type == ItemType.PotionOfGiantStr || type == ItemType.Cloak) // Cloak unused
             {
-                var_4 = 1;
+                preconfig = 1;
             }
             else if (type == ItemType.Potion)
             {
-                int var_1 = ovr024.roll_dice(8, 1);
+                int roll = ovr024.roll_dice(8, 1);
 
-                if (var_1 >= 1 && var_1 <= 5)
+                if (roll >= 1 && roll <= 5)
                 {
-                    var_4 = 2;
+                    preconfig = 2;
                 }
-                else if (var_1 >= 6 && var_1 <= 8)
+                else if (roll >= 6 && roll <= 8)
                 {
-                    var_4 = 0;
+                    preconfig = 0;
                 }
             }
 
-            if (var_4 > -1)
+            if (preconfig > -1)
             {
-                item.namenum1 = preconfiiguredItems[var_4, 0];
-                item.namenum2 = preconfiiguredItems[var_4, 1];
-                item.namenum3 = preconfiiguredItems[var_4, 2];
+                item.namenum1 = preconfiguredItems[preconfig, 0];
+                item.namenum2 = preconfiguredItems[preconfig, 1];
+                item.namenum3 = preconfiguredItems[preconfig, 2];
 
                 item.plus = 1;
                 item.plus_save = 1;
 
-                item.weight = preconfiiguredItems[var_4, 3];
+                item.weight = preconfiguredItems[preconfig, 3];
                 item.count = 0;
 
-                item._value = preconfiiguredItems[var_4, 4];
+                item._value = preconfiguredItems[preconfig, 4];
 
-                for (int var_3 = 1; var_3 <= 3; var_3++)
+                for (int affect = 1; affect <= 3; affect++)
                 {
-                    item.setAffect(var_3, (Affects)(byte)preconfiiguredItems[var_4, 4 + var_3]);
+                    item.setAffect(affect, (Affects)(byte)preconfiguredItems[preconfig, 4 + affect]);
                 }
             }
 
