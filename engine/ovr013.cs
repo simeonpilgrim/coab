@@ -128,23 +128,7 @@ namespace engine
 
 		internal static void FaerieFire(Effect arg_0, object param, Player player)
 		{
-			if (player.ac < 0x3A)
-			{
-				player.ac += 2;
-			}
-			else
-			{
-				player.ac = 0x3C;
-			}
-
-			if (player.ac_behind < 0x3A)
-			{
-				player.ac_behind += 2;
-			}
-			else
-			{
-				player.ac_behind = 0x3C;
-			}
+			gbl.attack_roll += 2;
 		}
 
 
@@ -346,7 +330,8 @@ namespace engine
 		internal static void sub_3A6C6(Effect arg_0, object param, Player player)
 		{
 			if (player.name.Length == 0 &&
-				gbl.SelectedPlayer.HasAffect(Affects.detect_invisibility) == false)
+				gbl.SelectedPlayer.HasAffect(Affects.detect_invisibility) == false &&
+				player.HasAffect(Affects.faerie_fire) == false)
 			{
 				gbl.targetInvisible = true;
 				gbl.attack_roll -= 4;
@@ -910,12 +895,12 @@ namespace engine
 		{
 			if (gbl.SelectedPlayer.monsterType == MonsterType.animal)
 			{
-				if (gbl.SelectedPlayer.HasAffect(Affects.detect_invisibility) == false)
+				if (gbl.SelectedPlayer.HasAffect(Affects.detect_invisibility) == false &&
+					player.HasAffect(Affects.faerie_fire) == false)
 				{
 					gbl.targetInvisible = true;
+					gbl.attack_roll -= 4;
 				}
-
-				gbl.attack_roll -= 4;
 			}
 		}
 

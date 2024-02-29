@@ -952,22 +952,22 @@ namespace engine
 
 		internal static void MultiTargetedSpell(string text, int save_bonus) // sub_5DB24
 		{
-			bool firstTimeRound = true;
-			foreach (var target in gbl.spellTargets)
+			for (var i=gbl.spellTargets.Count-1; i >= 0; i--)
 			{
-				if (firstTimeRound == false)
+				var target = gbl.spellTargets[i];
+
+				if (i < gbl.spellTargets.Count-1)
 				{
 					seg044.PlaySound(Sound.sound_2);
 					ovr025.load_missile_icons(0x12);
-
 					ovr025.draw_missile_attack(0x1E, 4, ovr033.PlayerMapPos(target), ovr033.PlayerMapPos(gbl.SelectedPlayer));
 				}
 
 				bool saved;
 				DamageOnSave can_save_flag;
 
-				if ((gbl.spell_id == (byte)Spells.faerie_fire || gbl.spell_id == (byte)Spells.charm_monsters) &&
-					firstTimeRound == true)
+				if ((gbl.spell_id == (byte)Spells.hold_person_CL || gbl.spell_id == (byte)Spells.hold_person_MU) &&
+					(target.monsterType > MonsterType.humanoid || target.icon_dimensions > 1))
 				{
 					saved = true;
 					can_save_flag = DamageOnSave.Zero;
@@ -976,12 +976,6 @@ namespace engine
 				{
 					saved = ovr024.RollSavingThrow(save_bonus, gbl.spellCastingTable[gbl.spell_id].saveVerse, target);
 					can_save_flag = gbl.spellCastingTable[gbl.spell_id].damageOnSave;
-				}
-
-				if ((target.monsterType > MonsterType.humanoid || target.icon_dimensions > 1) &&
-					gbl.spell_id != (byte)Spells.dimension_door)
-				{
-					saved = true;
 				}
 
 				ovr024.ApplyAttackSpellAffect(text, saved, can_save_flag, false, ovr025.spellMaxTargetCount(gbl.spell_id), GetSpellAffectTimeout((Spells)gbl.spell_id),

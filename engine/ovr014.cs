@@ -1191,7 +1191,7 @@ namespace engine
 
                 if (spellId == (byte)Spells.faerie_fire)
                 {
-                    var_4 = ovr025.spellMaxTargetCount(0x4F);
+                    var_4 = ovr025.spellMaxTargetCount((byte)Spells.faerie_fire);
                 }
                 else
                 {
