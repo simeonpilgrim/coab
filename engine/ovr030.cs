@@ -202,8 +202,12 @@ namespace engine
         {
             if (draw_body == true)
             {
+                Display.UpdateStop();
+
                 DrawMaybeOverlayed(gbl.headX_dax, false, rowY, colX);
                 DrawMaybeOverlayed(gbl.bodyX_dax, false, rowY + 5, colX);
+
+                Display.UpdateStart();
             }
             else
             {

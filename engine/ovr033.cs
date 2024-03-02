@@ -345,6 +345,8 @@ namespace engine
         {
             var newPos = map + gbl.MapDirectionDelta[dir];
 
+            Display.UpdateStop();
+
             if (ScreenMapCheck(radius, newPos) == true)
             {
                 for (int index = 1; index <= gbl.CombatantCount; index++)
@@ -370,6 +372,8 @@ namespace engine
 
             sub_7416E(newPos);
             seg040.DrawOverlay();
+
+            Display.UpdateStart();
         }
 
 

@@ -293,6 +293,8 @@ namespace engine
 		{
 			if (gbl.display_hitpoints_ac == true)
 			{
+				Display.UpdateStop();
+
 				gbl.display_hitpoints_ac = false;
 				seg037.draw8x8_clear_area(TextRegion.CombatSummary);
 
@@ -331,6 +333,8 @@ namespace engine
 				{
 					seg041.displayString("(Helpless)", 0, 15, line + 1, 0x17);
 				}
+
+				Display.UpdateStart();
 			}
 		}
 

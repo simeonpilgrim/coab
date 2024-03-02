@@ -14,7 +14,7 @@ namespace engine
             while (seg049.KEYPRESSED() == false &&
                 DateTime.Now < timeEnd)
             {
-                System.Threading.Thread.Sleep(100);
+                seg049.SysDelay(100);
             }
 
             seg043.clear_keyboard();

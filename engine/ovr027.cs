@@ -322,7 +322,7 @@ namespace engine
                     timeCursorOff = timeCursorOn.AddMilliseconds(500);
                 }
 
-                System.Threading.Thread.Sleep(20);
+                seg049.SysDelay(20);
 
             } while (stopLoop == false);
 

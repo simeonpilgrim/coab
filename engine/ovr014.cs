@@ -114,6 +114,8 @@ namespace engine
         {
             string text;
 
+            Display.UpdateStop();
+
             if (attack == AttackType.Backstab)
             {
                 text = "-Backstabs-";
@@ -220,6 +222,8 @@ namespace engine
             }
 
             ovr025.ClearPlayerTextArea();
+
+            Display.UpdateStart();
         }
 
 
