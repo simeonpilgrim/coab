@@ -426,9 +426,9 @@ namespace engine
 
 			player.combat_team = (CombatTeam)(affect.affect_data >> 4);
 			player.quick_fight = QuickFight.True;
-			player.field_E9 = 0;
+			player.level_undead = 0;
 
-			player.attackLevel = (byte)player.SkillLevel(SkillType.Fighter);
+			player.attackLevel = (byte)player.SkillLevel(SkillType.Fighter, SkillType.Paladin, SkillType.Ranger);
 			player.base_movement = 0x0C;
 
 			if (player.control_morale == Control.PC_Berzerk)

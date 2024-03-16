@@ -1543,7 +1543,7 @@ namespace engine
 
 						player.combat_team = gbl.SelectedPlayer.combat_team;
 						player.quick_fight = QuickFight.True;
-						player.field_E9 = 1;
+						player.level_undead = 1;
 						player.attackLevel = 0;
 						player.base_movement = 6;
 

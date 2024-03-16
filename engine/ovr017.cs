@@ -283,7 +283,7 @@ namespace engine
             player.multiclassLevel = player.HitDice;
             player.lost_lvls = bp_var_1C0.field_74;
             player.lost_hp = bp_var_1C0.field_75;
-            player.field_E9 = bp_var_1C0.field_76;
+            player.level_undead = bp_var_1C0.field_76;
 
             System.Array.Copy(bp_var_1C0.field_77, player.thief_skills, 8);
 

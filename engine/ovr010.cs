@@ -101,10 +101,11 @@ namespace engine
             Player var_5;
 
             if (player.actions.hasTurnedUndead == false &&
-                (player.cleric_lvl > 0 || player.cleric_old_lvl > player.multiclassLevel) &&
+                (player.SkillLevel(SkillType.Cleric) > 0 ||
+                player.SkillLevel(SkillType.Paladin) > 2) &&
                 ovr014.FindLowestE9Target(out var_5, player) == true)
             {
-                ovr014.turns_undead(player);
+                ovr014.turn_undead(player);
                 return true;
             }
             else
@@ -832,7 +833,7 @@ namespace engine
 
             if (item.type == ItemType.HolyWater &&
                 player.actions.target != null &&
-                player.actions.target.field_E9 > 0)
+                player.actions.target.level_undead > 0)
             {
                 rating = 8;
             }

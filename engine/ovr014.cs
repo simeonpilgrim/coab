@@ -605,48 +605,57 @@ namespace engine
             return false;
         }
 
-        static sbyte[] /*seg600:0369*/ unk_16679 = { 0, 
-        17, 17,  0,  0,  1, 17,  0,  0, 32, 32, 
-        10,  7,  4,  1,  1,  0,  0, -1, -1, -1 };
+        internal static sbyte[,] /*seg600:0369 unk_16679 */ turn_table = {
+            { 10,  7,  4,  1,  1,  0, 0, -1, -1, -1 }, // skeleton
+            { 13, 10,  7,  1,  1,  0, 0,  0, -1, -1 }, // zombie
+            { 16, 13, 10,  4,  1,  1, 0,  0,  0, -1 }, // ghoul
+            { 19, 16, 13,  7,  4,  1, 1,  0,  0, -1 }, // shadow
+            { 20, 19, 16, 10,  7,  4, 1,  1,  0,  0 }, // wight
+            { 99, 20, 19, 13, 10,  7, 4,  1,  1,  0 }, // ghast
+            { 99, 99, 20, 16, 13, 10, 7,  4,  1,  0 }, // wraith
+            { 99, 99, 99, 20, 16, 13, 10, 7,  4,  1 }, // mummy
+            { 99, 99, 99, 99, 20, 16, 13, 10, 7,  1 }, // specter
+            { 99, 99, 99, 99, 99, 20, 16, 13, 10, 4 }, // vampire
+        };
 
-        internal static void turns_undead(Player player)
+        internal static void turn_undead(Player player)
         {
             ovr025.DisplayPlayerStatusString(false, 10, "turns undead...", player);
             ovr027.ClearPromptArea();
             seg041.GameDelay();
 
             bool any_turned = false;
-            byte var_6 = 0;
+            bool turn_failed = false;
 
             player.actions.hasTurnedUndead = true;
 
-            byte var_3 = 6;
-            int var_2 = ovr024.roll_dice(12, 1);
-            int var_1 = ovr024.roll_dice(20, 1);
+            byte min_destroy = 7; // high level clerics destroy 7-12 low level undead
+            int turn_count = ovr024.roll_dice(12, 1); // turn 1-12 undead
+            int turn_roll = ovr024.roll_dice(20, 1);
 
-            int clericLvl = player.SkillLevel(SkillType.Cleric);
+            int turnLvl = player.TurnLevel();
 
-            byte var_B;
+            byte idx2;
 
-            if (clericLvl >= 1 && clericLvl <= 8)
+            if (turnLvl >= 1 && turnLvl <= 8)
             {
-                var_B = player.cleric_lvl;
+                idx2 = (byte)(player.cleric_lvl - 1);
             }
-            else if (clericLvl >= 9 && clericLvl <= 13)
+            else if (turnLvl >= 9 && turnLvl <= 13)
             {
-                var_B = 9;
+                idx2 = 8;
             }
             else
             {
-                var_B = 10;
+                idx2 = 9;
             }
 
             Player target;
-            while (FindLowestE9Target(out target, player) == true && var_2 > 0 && var_6 == 0)
+            while (FindLowestE9Target(out target, player) == true && turn_count > 0 && turn_failed == false)
             {
-                int var_4 = unk_16679[(target.field_E9 * 10) + var_B];
+                int turn_target = turn_table[target.level_undead-1,idx2];
 
-                if (var_1 >= System.Math.Abs(var_4))
+                if (turn_roll >= System.Math.Abs(turn_target))
                 {
                     any_turned = true;
 
@@ -654,7 +663,7 @@ namespace engine
                     gbl.display_hitpoints_ac = true;
                     ovr025.CombatDisplayPlayerSummary(target);
 
-                    if (var_4 > 0)
+                    if (turn_target > 0)
                     {
                         target.actions.fleeing = true;
                         ovr025.MagicAttackDisplay("is turned", true, target);
@@ -667,23 +676,23 @@ namespace engine
                         target.in_combat = false;
                     }
 
-                    if (var_3 > 0)
+                    if (min_destroy > 0)
                     {
-                        var_3 -= 1;
+                        min_destroy -= 1;
                     }
 
-                    var_2 -= 1;
+                    turn_count -= 1;
 
-                    if (var_2 == 0 && var_3 > 0 && var_4 < 0)
+                    if (turn_count == 0 && min_destroy > 0 && turn_target < 0)
                     {
-                        var_2++;
+                        turn_count++;
                     }
 
                     ovr025.ClearPlayerTextArea();
                 }
                 else
                 {
-                    var_6 = 1;
+                    turn_failed = true;
                 }
             }
 
@@ -713,10 +722,10 @@ namespace engine
                 Player target = epi.player;
 
                 if (target.actions.fleeing == false &&
-                    target.field_E9 > 0 &&
-                    target.field_E9 < minE9)
+                    target.level_undead > 0 &&
+                    target.level_undead < minE9)
                 {
-                    minE9 = target.field_E9;
+                    minE9 = target.level_undead;
                     output = target;
                     result = true;
                 }

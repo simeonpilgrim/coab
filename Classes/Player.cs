@@ -444,7 +444,7 @@ namespace Classes
         [DataOffset(0xe8, DataType.Byte)]
         public byte lost_hp; // 0xe8;
         [DataOffset(0xe9, DataType.Byte)]
-        public byte field_E9; // 0xe9;
+        public byte level_undead; // 0xe9;
         [DataOffset(0xeA, DataType.ByteArray, 8)]
         public byte[] thief_skills = new byte[8]; // 0xeA; [] was 1 offset @ 0xe9, pick_pockets, open_locks, find_remove_traps, move_silently, hide_in_shadows, hear_noise, climb_walls, read_languages
         public List<Affect> affects; // f2 - affect_ptr
@@ -563,6 +563,12 @@ namespace Classes
             }
 
             return level;
+        }
+
+        public int TurnLevel()
+        {
+            // paladins turn at level - 2
+            return System.Math.Max(SkillLevel(SkillType.Cleric), SkillLevel(SkillType.Paladin) - 2);
         }
 
         [DataOffset(0x119, DataType.Byte)]
