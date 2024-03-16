@@ -487,10 +487,11 @@ namespace engine
 
 			player.ac_behind = (byte)((stat_bonus[4] + stat_bonus[2] + stat_bonus[3]) - 2);
 
-			if (player.SkillLevel(SkillType.Fighter) > 0 &&
-				player.race > Race.monster)
+			int warrior_level = player.SkillLevel(SkillType.Fighter, SkillType.Paladin, SkillType.Ranger);
+
+			if (warrior_level > 0 && player.race > Race.monster)
 			{
-                player.attackLevel = (byte)player.SkillLevel(SkillType.Fighter);
+				player.attackLevel = (byte)warrior_level;
 			}
 			else
 			{

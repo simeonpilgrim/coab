@@ -555,7 +555,7 @@ namespace engine
                     nearTargets.Remove(targetepi);
                     nearTargets.Insert(0, targetepi);
 
-                    foreach (var sweepepi in nearTargets.FindAll(e => e.player.hitBonus == 0).GetRange(0, sweepableCount))
+                    foreach (var sweepepi in nearTargets.FindAll(e => e.player.HitDice == 0).GetRange(0, sweepableCount))
                     {
                         var sweeptarget = sweepepi.player;
                         RecalcAttacksReceived(sweeptarget, attacker);

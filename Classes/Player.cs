@@ -552,9 +552,17 @@ namespace Classes
         //    set { ClassLevelsOld[7] = value; }
         //}
 
-        public int SkillLevel(SkillType skill)
+        public int SkillLevel(params SkillType[] skills)
         {
-            return ClassLevel[(int)skill] + (ClassLevelsOld[(int)skill] * DualClassExceedsPreviousLevel());
+            int level = 0;
+
+            foreach (SkillType skill in skills)
+            {
+                level = System.Math.Max(level,
+                    ClassLevel[(int)skill] + (ClassLevelsOld[(int)skill] * DualClassExceedsPreviousLevel()));
+            }
+
+            return level;
         }
 
         [DataOffset(0x119, DataType.Byte)]

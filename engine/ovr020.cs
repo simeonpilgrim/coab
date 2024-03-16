@@ -1134,8 +1134,7 @@ namespace engine
 
                 if (item.IsScroll() == true)
                 {
-                    if (gbl.SelectedPlayer.SkillLevel(SkillType.MagicUser) > 0 ||
-                        gbl.SelectedPlayer.SkillLevel(SkillType.Cleric) > 0)
+                    if (gbl.SelectedPlayer.SkillLevel(SkillType.MagicUser, SkillType.Cleric) > 0)
                     {
                         ovr023.sub_5D2E1(ref arg_0, false, gbl.SelectedPlayer.quick_fight, spellId);
                     }
