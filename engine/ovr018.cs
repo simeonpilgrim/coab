@@ -2414,7 +2414,7 @@ namespace engine
 
                         case 3:
                             player.spellBook.LearnSpell(Spells.stinking_cloud);
-                            player.spellBook.LearnSpell(Spells.protect_from_evil_MU);
+                            player.spellBook.LearnSpell(Spells.charm_person);
                             break;
 
                         case 4:
