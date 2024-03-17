@@ -511,14 +511,28 @@ namespace engine
             seg041.displayString("value:        ", 0, 10, 10, 1);
             seg041.displayString(arg_0._value.ToString(), 0, 10, 10, 0x14);
 
-            seg041.displayString("special(1):   ", 0, 10, 11, 1);
-            seg041.displayString(arg_0.affect_1.ToString(), 0, 10, 11, 0x14);
+            if (arg_0.type == ItemType.MUScroll || arg_0.type == ItemType.ClrcScroll)
+            {
+                seg041.displayString("special(1):   ", 0, 10, 11, 1);
+                seg041.displayString(((Spells)arg_0.affect_1).ToString().Replace("_", " "), 0, 10, 11, 0x14);
 
-            seg041.displayString("special(2):   ", 0, 10, 12, 1);
-            seg041.displayString(arg_0.affect_2.ToString(), 0, 10, 12, 0x14);
+                seg041.displayString("special(2):   ", 0, 10, 12, 1);
+                seg041.displayString(((Spells)arg_0.affect_2).ToString().Replace("_", " "), 0, 10, 12, 0x14);
 
-            seg041.displayString("special(3):   ", 0, 10, 13, 1);
-            seg041.displayString(arg_0.affect_3.ToString(), 0, 10, 13, 0x14);
+                seg041.displayString("special(3):   ", 0, 10, 13, 1);
+                seg041.displayString(((Spells)arg_0.affect_3).ToString().Replace("_", " "), 0, 10, 13, 0x14);
+            }
+            else
+            {
+                seg041.displayString("special(1):   ", 0, 10, 11, 1);
+                seg041.displayString(arg_0.affect_1.ToString().Replace("_", " "), 0, 10, 11, 0x14);
+
+                seg041.displayString("special(2):   ", 0, 10, 12, 1);
+                seg041.displayString(arg_0.affect_2.ToString().Replace("_", " "), 0, 10, 12, 0x14);
+
+                seg041.displayString("special(3):   ", 0, 10, 13, 1);
+                seg041.displayString(arg_0.affect_3.ToString().Replace("_", " "), 0, 10, 13, 0x14);
+            }
 
             seg041.displayString("dice large:   ", 0, 10, 14, 1);
             seg041.displayString(gbl.ItemDataTable[arg_0.type].diceCountLarge.ToString(), 0, 10, 14, 0x14);
