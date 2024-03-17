@@ -368,7 +368,8 @@ namespace engine
 
                 Player attacker = cpiA.player;
 
-                if (attacker.IsHeld() == false &&
+                if (player.health_status == Status.okey && 
+                    attacker.IsHeld() == false &&
                     CanSeeTargetA(player, attacker) == true &&
                     attacker.HasAffect(Affects.weap_dragon_slayer) == false &&
                     attacker.HasAffect(Affects.affect_4a) == false)
