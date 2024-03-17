@@ -119,6 +119,22 @@ namespace Classes
             }
         }
 
+        public Item(byte _affect_3, Affects _affect_2, Affects _affect_1, short __value, byte _count,
+            short _weight, bool _cursed, byte _name_flags, bool _readied, byte _plus_save, sbyte _plus, byte _namenum3,
+            byte _namenum2, byte _namenum1, ItemType _type, bool AddToLibrary) :
+            this((Affects)_affect_3, _affect_2, _affect_1, __value, _count, _weight, _cursed, _name_flags,
+                _readied, _plus_save, _plus, _namenum3, _namenum2, _namenum1, _type, AddToLibrary)
+        {
+        }
+
+        public Item(short __value, byte _count,
+            short _weight, bool _cursed, byte _name_flags, bool _readied, byte _plus_save, sbyte _plus, byte _namenum3,
+            byte _namenum2, byte _namenum1, ItemType _type, bool AddToLibrary) :
+            this(Affects.none, Affects.none, Affects.none, __value, _count, _weight, _cursed, _name_flags,
+                _readied, _plus_save, _plus, _namenum3, _namenum2, _namenum1, _type, AddToLibrary)
+        {
+        }
+
         public Item(byte[] data, int offset)
         {
             name = Sys.ArrayToString(data, offset, 0x2a);

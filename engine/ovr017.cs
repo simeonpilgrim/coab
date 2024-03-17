@@ -644,7 +644,7 @@ namespace engine
 
                 if (hf_player.field_1D > 0)
                 {
-                    Item newItem = new Item(0, Affects.helpless, (Affects)hf_player.field_1D,
+                    Item newItem = new Item(Affects.none, Affects.helpless, (Affects)hf_player.field_1D,
                         (short)(hf_player.field_1D * 200), 0, 0,
                         false, 0, false, 0, 0, 0x57, 0xa7, 0xa8, ItemType.GemsJewelry, true);
 
@@ -653,7 +653,7 @@ namespace engine
 
                 if (hf_player.field_23 > 0)
                 {
-                    Item newItem = new Item(0, Affects.poison_plus_4, (Affects)hf_player.field_23,
+                    Item newItem = new Item(Affects.none, Affects.poison_plus_4, (Affects)hf_player.field_23,
                         (short)(hf_player.field_23 * 0x15E), 0, 1,
                         false, 0, false, 0, 1, 0x45, 0xa7, 0xce, ItemType.WandB, true);
 
@@ -662,7 +662,7 @@ namespace engine
 
                 if (hf_player.field_86 > 0)
                 {
-                    Item newItem = new Item(0, Affects.helpless, (Affects)hf_player.field_86,
+                    Item newItem = new Item(Affects.none, Affects.helpless, (Affects)hf_player.field_86,
                         (short)(hf_player.field_86 * 0xc8), 0, 0,
                         false, 0, false, 0, 0, 0x42, 0xa7, 0xa8, ItemType.Ring, true);
 
@@ -671,7 +671,7 @@ namespace engine
 
                 if (hf_player.field_87 > 0)
                 {
-                    Item newItem = new Item(0, Affects.highConRegen, (Affects)hf_player.field_87,
+                    Item newItem = new Item(Affects.none, Affects.highConRegen, (Affects)hf_player.field_87,
                         (short)(hf_player.field_87 * 0x190), 0, (short)(hf_player.field_87 * 10),
                         false, 0, false, 0, 0, 0x40, 0xa7, 0xb9, ItemType.GemsJewelry, true);
 

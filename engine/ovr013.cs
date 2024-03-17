@@ -315,9 +315,14 @@ namespace engine
 				item_found == false &&
 				player.items.Count < Player.MaxItems)
 			{
-                item = new Item((Affects)0x78, Affects.spiritual_hammer, 0, 0, 0, 0, false, 0, false, 0, 1, 243, 20, 0, ItemType.Hammer, true);
+				item = new Item(0x80 | 0x09, Affects.spiritual_hammer, 0, 0, 0, 0, false, 0, false, 0, 1, 243, 20, 0, ItemType.Hammer, true);
 
 				player.items.Add(item);
+				if (gbl.SelectedPlayer.activeItems[ItemSlot.Weapon] != null)
+				{
+					ovr020.ready_Item(gbl.SelectedPlayer.activeItems[ItemSlot.Weapon]);
+					ovr025.reclac_player_values(player);
+				}
 				ovr020.ready_Item(item);
 
 				ovr025.DisplayPlayerStatusString(true, 10, "Gains an item", player);

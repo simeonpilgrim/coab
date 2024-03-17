@@ -1641,7 +1641,7 @@ namespace engine
 
                 case ItemType.HandAxe:
                 case ItemType.Club:
-                case ItemType.Glaive:
+                case ItemType.Hammer:
                     ovr025.load_missile_icons(iconId + 3);
                     frame_count = 4;
                     delay = 50;

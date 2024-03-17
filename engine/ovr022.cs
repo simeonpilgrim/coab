@@ -445,7 +445,7 @@ namespace engine
         {
             int preconfig = -1;
 
-            Item item = new Item(0, 0, 0, 0, 0, 0, false, 6, false, 0, 0, 0, 0, 0, item_type, false);
+            Item item = new Item(0, 0, 0, false, 6, false, 0, 0, 0, 0, 0, item_type, false);
 
             var type = item.type;
 
@@ -967,7 +967,7 @@ namespace engine
 
                             if (input_key == 'K' && must_sell == false)
                             {
-                                Item gem_item = new Item(0, 0, 0, value, 0, 1, false, 0, false, 0, 0, 0x65, 0, 0, ItemType.GemsJewelry, true);
+                                Item gem_item = new Item(value, 0, 1, false, 0, false, 0, 0, 0x65, 0, 0, ItemType.GemsJewelry, true);
 
                                 gbl.SelectedPlayer.items.Add(gem_item);
                             }
@@ -1039,7 +1039,7 @@ namespace engine
 
                             if (input_key == 'K' && must_sell == false)
                             {
-                                Item jewel_item = new Item(0, 0, 0, value, 0, 1, false, 0, false, 0, 0, 0xd6, 0, 0, ItemType.GemsJewelry, true);
+                                Item jewel_item = new Item(value, 0, 1, false, 0, false, 0, 0, 0xd6, 0, 0, ItemType.GemsJewelry, true);
 
                                 gbl.SelectedPlayer.items.Add(jewel_item);
                             }

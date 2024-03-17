@@ -368,6 +368,7 @@ namespace engine
 
             foreach (Player player in gbl.TeamList)
             {
+                gbl.SelectedPlayer = player;
                 ovr024.CheckAffectsEffect(player, CheckType.Type_19);
                 ovr024.in_poison_cloud(0, player);
 
