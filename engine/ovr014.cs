@@ -1613,26 +1613,27 @@ namespace engine
                 case ItemType.Quarrel:
                 case ItemType.Spear:
                 case ItemType.Arrow:
+                case ItemType.Dagger:
                     if ((dir & 1) == 1)
                     {
                         if (dir == 3 || dir == 5)
                         {
                             ovr025.load_missile_dax((dir == 5), 0, Icon.Attack, iconId + 1);
                         }
-                        else
+                        else // dir == 1 || dir == 7
                         {
                             ovr025.load_missile_dax((dir == 7), 0, Icon.Normal, iconId + 1);
                         }
                     }
                     else
                     {
-                        if (dir >= 4)
+                        if (dir == 4 || dir == 6)
                         {
-                            ovr025.load_missile_dax(false, 0, Icon.Attack, iconId + (dir % 4));
+                            ovr025.load_missile_dax(false, 0, Icon.Attack, iconId + (dir - 4));
                         }
-                        else
+                        else // dir == 0 || dir == 2
                         {
-                            ovr025.load_missile_dax(false, 0, Icon.Normal, iconId + (dir % 4));
+                            ovr025.load_missile_dax(false, 0, Icon.Normal, iconId + dir);
                         }
                     }
                     seg044.PlaySound(Sound.sound_c);
@@ -1658,9 +1659,8 @@ namespace engine
                 case ItemType.StaffSling:
                 case ItemType.Sling:
                 case ItemType.Spine:
-                    iconId++;
-                    ovr025.load_missile_dax(false, 0, Icon.Normal, iconId + 7);
-                    ovr025.load_missile_dax(false, 1, Icon.Attack, iconId + 7);
+                    ovr025.load_missile_dax(false, 0, Icon.Normal, iconId + 8);
+                    ovr025.load_missile_dax(false, 1, Icon.Attack, iconId + 8);
                     frame_count = 2;
                     delay = 10;
                     seg044.PlaySound(Sound.sound_6);

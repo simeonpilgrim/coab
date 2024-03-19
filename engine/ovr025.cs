@@ -855,21 +855,14 @@ namespace engine
 		{
 			int dataSize = gbl.missile_dax.bpp;
 
-			if (flipIcon == true)
+			DaxBlock src = gbl.combat_icons[iconIdx].GetIcon(iconAction, flipIcon ? 4 : 0);
+			if (src != null)
 			{
-				gbl.combat_icons[iconIdx].GetIcon(iconAction, 0).FlipIconLeftToRight();
+				System.Array.Copy(src.data, 0, gbl.missile_dax.data, iconOffset * dataSize, dataSize);
 			}
 			else
 			{
-				DaxBlock src = gbl.combat_icons[iconIdx].GetIcon(iconAction, 0);
-				if (src != null)
-				{
-					System.Array.Copy(src.data, 0, gbl.missile_dax.data, iconOffset * dataSize, dataSize);
-				}
-				else
-				{
-					System.Array.Clear(gbl.missile_dax.data, iconOffset * dataSize, dataSize);
-				}
+				System.Array.Clear(gbl.missile_dax.data, iconOffset * dataSize, dataSize);
 			}
 		}
 
