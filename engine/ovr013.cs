@@ -334,8 +334,7 @@ namespace engine
 
 		internal static void sub_3A6C6(Effect arg_0, object param, Player player)
 		{
-			if (player.name.Length == 0 &&
-				gbl.SelectedPlayer.HasAffect(Affects.detect_invisibility) == false &&
+			if (gbl.SelectedPlayer.HasAffect(Affects.detect_invisibility) == false &&
 				player.HasAffect(Affects.faerie_fire) == false)
 			{
 				gbl.targetInvisible = true;

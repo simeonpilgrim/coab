@@ -585,7 +585,13 @@ namespace engine
                 {
                     gbl.targetInvisible = false;
 
+                    Player player_bkup = gbl.SelectedPlayer;
+
+                    gbl.SelectedPlayer = targetB;
+
                     ovr024.CheckAffectsEffect(targetA, CheckType.Visibility);
+
+                    gbl.SelectedPlayer = player_bkup;
 
                     if (gbl.targetInvisible == false)
                     {
