@@ -299,6 +299,7 @@ namespace engine
             ovr027.ClearPromptAreaNoUpdate();
 
             displayString(txt, 0, fgColor, 0x18, 0);
+            Display.ForceUpdate();
             seg043.GetInputKey();
         }
 
@@ -334,8 +335,8 @@ namespace engine
 
         internal static void GameDelay()
         {
-            //Display.Update();
-            seg049.SysDelay(gbl.game_speed_var * 100);
+            Display.ForceUpdate();
+            seg049.SysDelay(System.Math.Max(gbl.game_speed_var * 100, 50));
         }
     }
 }

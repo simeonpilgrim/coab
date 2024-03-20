@@ -1,25 +1,34 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 
 namespace Classes
 {
     public struct StatValue : IDataIO
     {
-        int[, ,] raceSexMinMax;
-        int[] classMin;
-        int[] ageEffects;
+        readonly int[, ,] raceSexMinMax;
+        readonly int[] classMin;
+        readonly int[] ageEffects;
+        readonly int min;
+        readonly int max;
 
-        public StatValue(int[, ,] _raceSexMinMax, int[] _classMin, int[] _ageEffects)
+        public StatValue(int[, ,] _raceSexMinMax, int[] _classMin, int[] _ageEffects, int _cur_offset = 0, int _full_offset = 1, int _min = 3, int _max = 25)
         {
             raceSexMinMax = _raceSexMinMax;
             classMin = _classMin;
             ageEffects = _ageEffects;
             cur = full = 0;
+            cur_offset = _cur_offset;
+            full_offset = _full_offset;
+            min = _min;
+            max = _max;
         }
 
         public int cur;
         public int full;
+        readonly int cur_offset ;
+        readonly int full_offset;
 
         public void Load(int val)
         {
@@ -34,57 +43,67 @@ namespace Classes
 
         public void Inc()
         {
-            full += 1;
-            cur += 1;
+            if (cur < max)
+            {
+                cur += 1;
+                full += 1;
+            }
         }
 
         public void Dec()
         {
-            full -= 1;
-            cur -= 1;
+            if (cur > min)
+            {
+                cur -= 1;
+                full -= 1;
+            }
         }
 
         public void EnforceRaceSexLimits(int race, int sex)
         {
+            int delta = full - cur;
             if( raceSexMinMax != null )
             {
-                full = Math.Min(raceSexMinMax[race, 1, sex], full);
-                full = Math.Max(raceSexMinMax[race, 0, sex], full);
+                cur = Math.Min(raceSexMinMax[race, 1, sex], cur);
+                cur = Math.Max(raceSexMinMax[race, 0, sex], cur);
             }
-            cur = full;
+            full = cur + delta;
         }
 
         public void EnforceClassLimits(int _class)
         {
+            int delta = full - cur;
             if (classMin != null)
             {
-                full = Math.Max(classMin[_class], full);
+                cur = Math.Max(classMin[_class], cur);
             }
-            cur = full;
+            full = cur + delta;
         }
 
         public void AgeEffects(int race, int age)
         {
+            int delta = full - cur;
             for (int i = 0; i < 5; i++)
             {
                 if (Limits.RaceAgeBrackets[race, i] < age)
                 {
-                    full += ageEffects[i];
+                    cur += ageEffects[i];
                 }
             }
+            full = cur + delta;
         }
 
         public void Write(byte[] data, int offset)
         {
-            data[offset + 0] = (byte)cur;
-            data[offset + 1] = (byte)full;
+            data[offset + cur_offset] = (byte)cur;
+            data[offset + full_offset] = (byte)full;
         }
 
         public void Read(byte[] data, int offset)
         {
             // enforce values in valid range
-            cur = Math.Min((int)data[offset + 0], 25);
-            full = Math.Min((int)data[offset + 1], 25);
+            cur = Math.Max(Math.Min((int)data[offset + cur_offset], max), min);
+            full = Math.Max(Math.Min((int)data[offset + full_offset], max), min);
         }
 
         public override string ToString()
@@ -96,7 +115,7 @@ namespace Classes
     public class PlayerStats : IDataIO
     {
         public StatValue Str = new StatValue(Limits.StrRaceSexMinMax, Limits.StrClassMin, Limits.StrAgeEffect);
-        public StatValue Str00 = new StatValue(Limits.Str00RaceSexMinMax, Limits.Str00ClassMin, Limits.Str00AgeEffect);
+        public StatValue Str00 = new StatValue(Limits.Str00RaceSexMinMax, Limits.Str00ClassMin, Limits.Str00AgeEffect, 1, 0, 0, 100);
         public StatValue Con = new StatValue(Limits.ConRaceSexMinMax, Limits.ConClassMin, Limits.ConAgeEffect);
         public StatValue Dex = new StatValue(Limits.DexRaceSexMinMax, Limits.DexClassMin, Limits.DexAgeEffect);
         public StatValue Int = new StatValue(Limits.IntRaceSexMinMax, Limits.IntClassMin, Limits.IntAgeEffect);
@@ -185,6 +204,52 @@ namespace Classes
         public override string ToString()
         {
             return string.Format("S:{0} ({6}),I:{1},W:{2},C:{3},D:{4},Ch:{5}", Str, Int, Wis, Con, Dex, Cha, Str00);
+        }
+    }
+
+    public class SpellBook : IDataIO
+    {
+        public bool[] spellBook = new bool[(byte)Enum.GetValues(typeof(Spells)).Cast<Spells>().Max()+1];
+        void IDataIO.Write(byte[] data, int offset)
+        {
+            foreach (SpellEntry spell in gbl.spellCastingTable)
+            {
+                if (spell != null && spell.spellIdx <= (byte)Spells.bestow_curse_MU)
+                {
+                    data[offset + spell.spellIdx - 1] = (byte)(spellBook[spell.spellIdx] == true ? 1 : 0);
+                }
+            }
+        }
+
+        void IDataIO.Read(byte[] data, int offset)
+        {
+            for (int i = 0; i < 100; i++)
+            {
+                spellBook[i + 1] = data[offset + i] != 0;
+            }
+        }
+
+        public void Load(byte[] data, int length)
+        {
+            for (int i = 0; i < length; i++)
+            {
+                spellBook[i + 1] = data[i] != 0;
+            }
+        }
+
+        public bool KnowsSpell(Spells spell)
+        {
+            return spellBook[(int)spell];
+        }
+
+        public void LearnSpell(Spells spell)
+        {
+            spellBook[(int)spell] = true;
+        }
+
+        public void UnlearnSpell(Spells spell)
+        {
+            spellBook[(int)spell] = false;
         }
     }
 
@@ -358,15 +423,13 @@ namespace Classes
         [DataOffset(0x78, DataType.Byte)]
         public byte hit_point_max; // 0x78;
 
-        [DataOffset(0x79, DataType.ByteArray, 100)]
-        public byte[] spellBook = new byte[100]; //78[di]; // 1- 100 or 0x79 - 0xDC
-        public bool KnowsSpell(Spells spell) { return spellBook[(int)spell - 1] != 0; }
-        public void LearnSpell(Spells spell) { spellBook[(int)spell - 1] = 1; }
+        [DataOffset(0x79, DataType.CustSaveLoad, 100)]
+        public SpellBook spellBook; // 0x79 - 0xDC
 
         [DataOffset(0xdd, DataType.Byte)]
         public byte attackLevel; // 0xdd; field_DD
         [DataOffset(0xde, DataType.Byte)]
-        public byte field_DE; // 0xde;
+        public byte icon_dimensions; // 0xde;
         [DataOffset(0xdf, DataType.ByteArray, 5)]
         public byte[] saveVerse = new byte[5]; // 0xdf; field_DF 
 
@@ -381,7 +444,7 @@ namespace Classes
         [DataOffset(0xe8, DataType.Byte)]
         public byte lost_hp; // 0xe8;
         [DataOffset(0xe9, DataType.Byte)]
-        public byte field_E9; // 0xe9;
+        public byte level_undead; // 0xe9;
         [DataOffset(0xeA, DataType.ByteArray, 8)]
         public byte[] thief_skills = new byte[8]; // 0xeA; [] was 1 offset @ 0xe9, pick_pockets, open_locks, find_remove_traps, move_silently, hide_in_shadows, hear_noise, climb_walls, read_languages
         public List<Affect> affects; // f2 - affect_ptr
@@ -489,9 +552,23 @@ namespace Classes
         //    set { ClassLevelsOld[7] = value; }
         //}
 
-        public int SkillLevel(SkillType skill)
+        public int SkillLevel(params SkillType[] skills)
         {
-            return ClassLevel[(int)skill] + (ClassLevelsOld[(int)skill] * DualClassExceedsPreviousLevel());
+            int level = 0;
+
+            foreach (SkillType skill in skills)
+            {
+                level = System.Math.Max(level,
+                    ClassLevel[(int)skill] + (ClassLevelsOld[(int)skill] * DualClassExceedsPreviousLevel()));
+            }
+
+            return level;
+        }
+
+        public int TurnLevel()
+        {
+            // paladins turn at level - 2
+            return System.Math.Max(SkillLevel(SkillType.Cleric), SkillLevel(SkillType.Paladin) - 2);
         }
 
         [DataOffset(0x119, DataType.Byte)]
@@ -595,7 +672,7 @@ namespace Classes
         public int hitBonus; // 0x199 field_199
         [DataOffset(0x19a, DataType.Byte)]
         public byte ac; // 0x19a
-        public int DisplayAc { get { return 0x3C - ac; } }
+        public int DisplayAc { get { return 60 - ac; } }
 
         [DataOffset(0x19b, DataType.Byte)]
         public byte ac_behind; // 0x19b field_19B
@@ -735,6 +812,8 @@ namespace Classes
             //stats = new StatValue[6];
             stats2 = new PlayerStats();
 
+            spellBook = new SpellBook();
+
             name = string.Empty;
             items = new List<Item>();
             affects = new List<Affect>();
@@ -750,6 +829,7 @@ namespace Classes
         {
             Player p = (Player)this.MemberwiseClone();
             p.stats2.Assign(this.stats2);
+            p.spellBook = this.spellBook;
             return p;
         }
 

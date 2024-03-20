@@ -14,7 +14,7 @@ namespace engine
             while (seg049.KEYPRESSED() == false &&
                 DateTime.Now < timeEnd)
             {
-                System.Threading.Thread.Sleep(100);
+                seg049.SysDelay(100);
             }
 
             seg043.clear_keyboard();
@@ -25,7 +25,7 @@ namespace engine
         {
             Display.UpdateStop();
 
-            seg037.draw8x8_02();
+            seg037.DrawCredits();
 
             seg041.displayString("based on the tsr novel 'azure bonds'", 0, 10, 1, 2);
             seg041.displayString("by:", 0, 10, 2, 6);

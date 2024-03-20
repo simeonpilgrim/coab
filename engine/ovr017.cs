@@ -270,11 +270,11 @@ namespace engine
             player.age = bp_var_1C0.age;
             player.hit_point_max = bp_var_1C0.hp_max;
 
-            System.Array.Copy(bp_var_1C0.field_33, player.spellBook, 0x38);
-            player.spellBook[(int)Spells.animate_dead - 1] = 0;
+            player.spellBook.Load(bp_var_1C0.field_33, 0x38);
+            player.spellBook.UnlearnSpell(Spells.animate_dead);
 
             player.attackLevel = bp_var_1C0.field_6B;
-            player.field_DE = bp_var_1C0.field_6C;
+            player.icon_dimensions = bp_var_1C0.icon_dimensions;
 
             System.Array.Copy(bp_var_1C0.saveVerse, player.saveVerse, 5);
 
@@ -283,7 +283,7 @@ namespace engine
             player.multiclassLevel = player.HitDice;
             player.lost_lvls = bp_var_1C0.field_74;
             player.lost_hp = bp_var_1C0.field_75;
-            player.field_E9 = bp_var_1C0.field_76;
+            player.level_undead = bp_var_1C0.field_76;
 
             System.Array.Copy(bp_var_1C0.field_77, player.thief_skills, 8);
 
@@ -644,16 +644,16 @@ namespace engine
 
                 if (hf_player.field_1D > 0)
                 {
-                    Item newItem = new Item(0, Affects.helpless, (Affects)hf_player.field_1D,
+                    Item newItem = new Item(Affects.none, Affects.helpless, (Affects)hf_player.field_1D,
                         (short)(hf_player.field_1D * 200), 0, 0,
-                        false, 0, false, 0, 0, 0x57, 0xa7, 0xa8, ItemType.Necklace, true);
+                        false, 0, false, 0, 0, 0x57, 0xa7, 0xa8, ItemType.GemsJewelry, true);
 
                     player.items.Add(newItem);
                 }
 
                 if (hf_player.field_23 > 0)
                 {
-                    Item newItem = new Item(0, Affects.poison_plus_4, (Affects)hf_player.field_23,
+                    Item newItem = new Item(Affects.none, Affects.poison_plus_4, (Affects)hf_player.field_23,
                         (short)(hf_player.field_23 * 0x15E), 0, 1,
                         false, 0, false, 0, 1, 0x45, 0xa7, 0xce, ItemType.WandB, true);
 
@@ -662,18 +662,18 @@ namespace engine
 
                 if (hf_player.field_86 > 0)
                 {
-                    Item newItem = new Item(0, Affects.helpless, (Affects)hf_player.field_86,
+                    Item newItem = new Item(Affects.none, Affects.helpless, (Affects)hf_player.field_86,
                         (short)(hf_player.field_86 * 0xc8), 0, 0,
-                        false, 0, false, 0, 0, 0x42, 0xa7, 0xa8, ItemType.RingInvis, true);
+                        false, 0, false, 0, 0, 0x42, 0xa7, 0xa8, ItemType.Ring, true);
 
                     player.items.Add(newItem);
                 }
 
                 if (hf_player.field_87 > 0)
                 {
-                    Item newItem = new Item(0, Affects.highConRegen, (Affects)hf_player.field_87,
+                    Item newItem = new Item(Affects.none, Affects.highConRegen, (Affects)hf_player.field_87,
                         (short)(hf_player.field_87 * 0x190), 0, (short)(hf_player.field_87 * 10),
-                        false, 0, false, 0, 0, 0x40, 0xa7, 0xb9, ItemType.Necklace, true);
+                        false, 0, false, 0, 0, 0x40, 0xa7, 0xb9, ItemType.GemsJewelry, true);
 
                     player.items.Add(newItem);
                 }
@@ -718,7 +718,7 @@ namespace engine
                     player.in_combat = true;
                     player.field_13F = 1;
                     player.field_140 = 1;
-                    player.field_DE = 1;
+                    player.icon_dimensions = 1;
 
                     player.mod_id = seg051.Random((byte)0xff);
                     player.icon_id = 0x0A;
@@ -762,9 +762,9 @@ namespace engine
                         case Race.gnome:
                             player.icon_size = 1;
                             ovr024.add_affect(false, 0xff, 0, Affects.con_saving_bonus, player);
-                            ovr024.add_affect(false, 0xff, 0, Affects.gnome_vs_man_sized_giant, player);
+                            ovr024.add_affect(false, 0xff, 0, Affects.gnome_vs_goblin_kobold, player);
                             ovr024.add_affect(false, 0xff, 0, Affects.dwarf_and_gnome_vs_giants, player);
-                            ovr024.add_affect(false, 0xff, 0, Affects.affect_30, player);
+                            ovr024.add_affect(false, 0xff, 0, Affects.gnome_vs_gnoll, player);
                             break;
 
                         case Race.elf:
@@ -796,10 +796,10 @@ namespace engine
 
                     if (player.magic_user_lvl > 0)
                     {
-                        player.LearnSpell(Spells.detect_magic_MU);
-                        player.LearnSpell(Spells.read_magic);
-                        player.LearnSpell(Spells.shield);
-                        player.LearnSpell(Spells.sleep);
+                        player.spellBook.LearnSpell(Spells.detect_magic_MU);
+                        player.spellBook.LearnSpell(Spells.read_magic);
+                        player.spellBook.LearnSpell(Spells.shield);
+                        player.spellBook.LearnSpell(Spells.sleep);
                     }
 
                     SilentTrainPlayer();

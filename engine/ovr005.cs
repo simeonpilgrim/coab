@@ -8,7 +8,7 @@ namespace engine
     {
         static Affects[] disease_types = {  Affects.helpless,  Affects.cause_disease_1,
                                             Affects.weaken, Affects.cause_disease_2,
-                                            Affects.animate_dead, Affects.affect_39 };
+                                            Affects.animate_dead, (Affects)0x39 };
 
         static string[] temple_sl = { "Cure Blindness", "Cure Disease", "Cure Light Wounds", "Cure Serious Wounds", "Cure Critical Wounds", "Heal", "Neutralize Poison", "Raise Dead", "Remove Curse", "Stone to Flesh", "Exit" };
 
@@ -205,21 +205,21 @@ namespace engine
 
                     if (player.stats2.Con.full >= 14)
                     {
-                        for (int classIdx = 0; classIdx <= 7; classIdx++)
+                        for (SkillType skill = SkillType.Cleric; skill <= SkillType.Monk; skill++)
                         {
-                            if (player.ClassLevel[classIdx] > 0)
+                            if (player.ClassLevel[(byte)skill] > 0)
                             {
-                                if (classIdx == 2)
+                                if (skill == SkillType.Fighter)
                                 {
                                     var_108 += (player.stats2.Con.full - 14) * player.fighter_lvl;
                                 }
                                 else if (player.stats2.Con.full > 15)
                                 {
-                                    var_108 += player.ClassLevel[classIdx] * 2;
+                                    var_108 += player.ClassLevel[(byte)skill] * 2;
                                 }
                                 else
                                 {
-                                    var_108 += player.ClassLevel[classIdx];
+                                    var_108 += player.ClassLevel[(byte)skill];
                                 }
                             }
                         }

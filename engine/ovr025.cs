@@ -96,7 +96,7 @@ namespace engine
 			{
 				var_1 &= 0x7F;
 				ItemSlot itemSlot = gbl.ItemDataTable[item.type].item_slot;
-				if (itemSlot == ItemSlot.slot_1)
+				if (itemSlot == ItemSlot.Shield)
 				{
 					bonus[1] = (sbyte)(item.plus + var_1);
 					return;
@@ -104,7 +104,7 @@ namespace engine
 
 				if (var_1 == 0)
 				{
-					if (itemSlot == ItemSlot.slot_9)
+					if (itemSlot == ItemSlot.Ring1)
 					{
 						if (item.plus > bonus[3])
 						{
@@ -293,6 +293,8 @@ namespace engine
 		{
 			if (gbl.display_hitpoints_ac == true)
 			{
+				Display.UpdateStop();
+
 				gbl.display_hitpoints_ac = false;
 				seg037.draw8x8_clear_area(TextRegion.CombatSummary);
 
@@ -331,6 +333,8 @@ namespace engine
 				{
 					seg041.displayString("(Helpless)", 0, 15, line + 1, 0x17);
 				}
+
+				Display.UpdateStart();
 			}
 		}
 
@@ -365,11 +369,11 @@ namespace engine
 
 					ItemSlot slot = gbl.ItemDataTable[item.type].item_slot;
 
-					if (slot >= ItemSlot.slot_0 && slot <= ItemSlot.slot_8)
+					if (slot >= ItemSlot.Weapon && slot <= ItemSlot.Boots)
 					{
                         player.activeItems[slot] = item;
 					}
-					else if (slot == ItemSlot.slot_9)
+					else if (slot == ItemSlot.Ring1)
 					{
                         if (player.activeItems.Item_ptr_01 != null)
 						{
@@ -483,10 +487,11 @@ namespace engine
 
 			player.ac_behind = (byte)((stat_bonus[4] + stat_bonus[2] + stat_bonus[3]) - 2);
 
-			if (player.SkillLevel(SkillType.Fighter) > 0 &&
-				player.race > Race.monster)
+			int warrior_level = player.SkillLevel(SkillType.Fighter, SkillType.Paladin, SkillType.Ranger);
+
+			if (warrior_level > 0 && player.race > Race.monster)
 			{
-                player.attackLevel = (byte)player.SkillLevel(SkillType.Fighter);
+				player.attackLevel = (byte)warrior_level;
 			}
 			else
 			{
@@ -583,27 +588,27 @@ namespace engine
 			}
             else if (player.stats2.Str.full == 18)
 			{
-                if (player.stats2.Str00.cur == 0)
+                if (player.stats2.Str00.full == 0)
 				{
 					ret_val = 18;
 				}
-                else if (player.stats2.Str00.cur >= 1 && player.stats2.Str00.cur <= 50)
+                else if (player.stats2.Str00.full >= 1 && player.stats2.Str00.full <= 50)
 				{
 					ret_val = 19;
 				}
-                else if (player.stats2.Str00.cur >= 51 && player.stats2.Str00.cur <= 75)
+                else if (player.stats2.Str00.full >= 51 && player.stats2.Str00.full <= 75)
 				{
 					ret_val = 20;
 				}
-                else if (player.stats2.Str00.cur >= 76 && player.stats2.Str00.cur <= 90)
+                else if (player.stats2.Str00.full >= 76 && player.stats2.Str00.full <= 90)
 				{
 					ret_val = 21;
 				}
-                else if (player.stats2.Str00.cur >= 91 && player.stats2.Str00.cur <= 99)
+                else if (player.stats2.Str00.full >= 91 && player.stats2.Str00.full <= 99)
 				{
 					ret_val = 22;
 				}
-                else if (player.stats2.Str00.cur >= 100)
+                else if (player.stats2.Str00.full >= 100)
 				{
 					ret_val = 23;
 				}
@@ -851,21 +856,14 @@ namespace engine
 		{
 			int dataSize = gbl.missile_dax.bpp;
 
-			if (flipIcon == true)
+			DaxBlock src = gbl.combat_icons[iconIdx].GetIcon(iconAction, flipIcon ? 4 : 0);
+			if (src != null)
 			{
-				gbl.combat_icons[iconIdx].GetIcon(iconAction, 0).FlipIconLeftToRight();
+				System.Array.Copy(src.data, 0, gbl.missile_dax.data, iconOffset * dataSize, dataSize);
 			}
 			else
 			{
-				DaxBlock src = gbl.combat_icons[iconIdx].GetIcon(iconAction, 0);
-				if (src != null)
-				{
-					System.Array.Copy(src.data, 0, gbl.missile_dax.data, iconOffset * dataSize, dataSize);
-				}
-				else
-				{
-					System.Array.Clear(gbl.missile_dax.data, iconOffset * dataSize, dataSize);
-				}
+				System.Array.Clear(gbl.missile_dax.data, iconOffset * dataSize, dataSize);
 			}
 		}
 
@@ -1408,7 +1406,7 @@ namespace engine
 				case GameState.Shop:
 					if (gbl.redrawBoarder == true)
 					{
-						seg037.draw8x8_03();
+						seg037.DrawFrame_Dungeon();
 					}
 
 					if (gbl.lastDaxBlockId == 0x50)
@@ -1426,14 +1424,14 @@ namespace engine
 					break;
 
 				case GameState.Camping:
-					seg037.draw8x8_03();
+					seg037.DrawFrame_Dungeon();
 					ovr030.load_pic_final(ref gbl.byte_1D556, 0, 0x1d, "PIC");
 					PartySummary(gbl.SelectedPlayer);
 					display_map_position_time();
 					break;
 
 				case GameState.DungeonMap:
-					seg037.draw8x8_03();
+					seg037.DrawFrame_Dungeon();
 					ovr029.RedrawView();
 					PartySummary(gbl.SelectedPlayer);
 					display_map_position_time();
@@ -1448,7 +1446,7 @@ namespace engine
 					break;
 
 				case GameState.AfterCombat:
-					seg037.draw8x8_03();
+					seg037.DrawFrame_Dungeon();
 					ovr030.load_pic_final(ref gbl.byte_1D556, 0, 1, "PIC");
 					PartySummary(gbl.SelectedPlayer);
 					break;

@@ -41,7 +41,7 @@ namespace engine
                                         "Gems", "Jewelry" };
 
 
-        internal static void playerDisplayFull(Player player)
+        internal static void playerDisplayFull(Player player, bool cur = false)
         {
             seg037.DrawFrame_Outer();
 
@@ -70,35 +70,95 @@ namespace engine
             text2 = alignmentString[player.alignment];
             seg041.displayString(text2, 0, 15, 4, 1);
 
-            text2 = classString[(int)player._class];
-            seg041.displayString(text2, 0, 15, 5, 1);
-
-            for (int stat = 0; stat < 6; stat++)
-            {
-                text2 = statShortString[stat];
-                seg041.displayString(text2, 0, 10, stat + 7, 1);
-                display_stat(false, stat);
-            }
-
-            displayMoney();
-            seg041.displayString("Level", 0, 15, 15, 1);
-
             bool displaySlash = false;
             text2 = string.Empty;
 
-            for (int classIdx = 0; classIdx <= 7; classIdx++)
+            for (SkillType skill = SkillType.Cleric; skill <= SkillType.Monk; skill++)
             {
-                byte tmp = player.ClassLevelsOld[classIdx];
+                byte classLvl = player.ClassLevelsOld[(byte)skill];
 
-                if (player.ClassLevel[classIdx] > 0 ||
-                    (tmp < ovr026.HumanCurrentClassLevel_Zero(player) && tmp > 0))
+                if (classLvl > 0)
                 {
                     if (displaySlash)
                     {
                         text2 += "/";
                     }
+                    if (classLvl < ovr026.HumanCurrentClassLevel_Zero(player))
+                    {
+                        text2 += classString[(byte)skill];
+                    }
+                    else
+                    {
+                        text2 += "(" + classString[(byte)skill] + ")";
+                    }
 
-                    text2 += (player.ClassLevel[classIdx] + player.ClassLevelsOld[classIdx]).ToString();
+                    displaySlash = true;
+                }
+            }
+            for (SkillType skill = SkillType.Cleric; skill <= SkillType.Monk; skill++)
+            {
+                byte classLvl = player.ClassLevel[(byte)skill];
+
+                if (classLvl > 0)
+                {
+                    if (displaySlash)
+                    {
+                        text2 += "/";
+                    }
+                    text2 += classString[(byte)skill];
+
+                    displaySlash = true;
+                }
+            }
+
+            seg041.displayString(text2, 0, 15, 5, 1);
+
+            for (Stat stat = Stat.STR; stat <= Stat.CHA; stat++)
+            {
+                text2 = statShortString[(byte)stat];
+                seg041.displayString(text2, 0, 10, (byte)stat + 7, 1);
+                display_stat(false, stat, cur);
+            }
+
+            displayMoney();
+            seg041.displayString("Level", 0, 15, 15, 1);
+
+            displaySlash = false;
+            text2 = string.Empty;
+
+            for (SkillType skill = SkillType.Cleric; skill <= SkillType.Monk; skill++)
+            {
+                byte classLvl = player.ClassLevelsOld[(byte)skill];
+
+                if (classLvl > 0)
+                {
+                    if (displaySlash)
+                    {
+                        text2 += "/";
+                    }
+                    if (classLvl < ovr026.HumanCurrentClassLevel_Zero(player))
+                    {
+                        text2 += classLvl.ToString();
+                    }
+                    else
+                    {
+                        text2 += "(" + classLvl.ToString() + ")";
+                    }
+
+                    displaySlash = true;
+                }
+            }
+            for (SkillType skill = SkillType.Cleric; skill <= SkillType.Monk; skill++)
+            {
+                byte classLvl = player.ClassLevel[(byte)skill];
+
+                if (classLvl > 0)
+                {
+                    if (displaySlash)
+                    {
+                        text2 += "/";
+                    }
+                    text2 += classLvl.ToString();
 
                     displaySlash = true;
                 }
@@ -196,37 +256,79 @@ namespace engine
         }
 
 
-        internal static void display_stat(bool highlighted, int stat_index)
+        internal static void display_stat(bool highlighted, Stat stat, bool cur)
         {
             int color = highlighted ? 0x0D : 0x0A;
             int col_x = 5;
-            seg037.draw8x8_clear_area(stat_index + 7, 0x0b, stat_index + 7, col_x);
+            seg037.draw8x8_clear_area((byte)stat + 7, 0x0b, (byte)stat + 7, col_x);
 
-            if (gbl.SelectedPlayer.stats2[stat_index].full < 10)
+            if (cur)
             {
-                col_x++;
+                if (gbl.SelectedPlayer.stats2[(byte)stat].cur < 10)
+                {
+                    col_x++;
+                }
+            }
+            else
+            {
+                if (gbl.SelectedPlayer.stats2[(byte)stat].full < 10)
+                {
+                    col_x++;
+                }
             }
 
-            string s = gbl.SelectedPlayer.stats2[stat_index].full.ToString();
-            seg041.displayString(s, 0, color, stat_index + 7, col_x);
-
-            if (stat_index == 0 &&
-                gbl.SelectedPlayer.stats2.Str.full == 18 &&
-                gbl.SelectedPlayer.stats2.Str00.cur > 0)
+            string s;
+            if (cur)
             {
-                string text = gbl.SelectedPlayer.stats2.Str00.cur.ToString();
+                s = gbl.SelectedPlayer.stats2[(byte)stat].cur.ToString();
+            }
+            else
+            {
+                s = gbl.SelectedPlayer.stats2[(byte)stat].full.ToString();
+            }
+            seg041.displayString(s, 0, color, (byte)stat + 7, col_x);
 
-                if (gbl.SelectedPlayer.stats2.Str00.cur < 10)
+            if (cur)
+            {
+                if (stat == Stat.STR &&
+                    gbl.SelectedPlayer.stats2.Str.cur == 18 &&
+                    gbl.SelectedPlayer.stats2.Str00.cur > 0)
                 {
-                    text = "0" + text;
-                }
+                    string text = gbl.SelectedPlayer.stats2.Str00.cur.ToString();
 
-                if (gbl.SelectedPlayer.stats2.Str00.cur == 100)
+                    if (gbl.SelectedPlayer.stats2.Str00.cur < 10)
+                    {
+                        text = "0" + text;
+                    }
+
+                    if (gbl.SelectedPlayer.stats2.Str00.cur == 100)
+                    {
+                        text = "00";
+                    }
+
+                    seg041.displayString("(" + text + ")", 0, color, 7, 7);
+                }
+            }
+            else
+            {
+                if (stat == Stat.STR &&
+                    gbl.SelectedPlayer.stats2.Str.full == 18 &&
+                    gbl.SelectedPlayer.stats2.Str00.full > 0)
                 {
-                    text = "00";
-                }
+                    string text = gbl.SelectedPlayer.stats2.Str00.full.ToString();
 
-                seg041.displayString("(" + text + ")", 0, color, 7, 7);
+                    if (gbl.SelectedPlayer.stats2.Str00.full < 10)
+                    {
+                        text = "0" + text;
+                    }
+
+                    if (gbl.SelectedPlayer.stats2.Str00.full == 100)
+                    {
+                        text = "00";
+                    }
+
+                    seg041.displayString("(" + text + ")", 0, color, 7, 7);
+                }
             }
         }
 
@@ -409,14 +511,28 @@ namespace engine
             seg041.displayString("value:        ", 0, 10, 10, 1);
             seg041.displayString(arg_0._value.ToString(), 0, 10, 10, 0x14);
 
-            seg041.displayString("special(1):   ", 0, 10, 11, 1);
-            seg041.displayString(arg_0.affect_1.ToString(), 0, 10, 11, 0x14);
+            if (arg_0.type == ItemType.MUScroll || arg_0.type == ItemType.ClrcScroll)
+            {
+                seg041.displayString("special(1):   ", 0, 10, 11, 1);
+                seg041.displayString(((Spells)arg_0.affect_1).ToString().Replace("_", " "), 0, 10, 11, 0x14);
 
-            seg041.displayString("special(2):   ", 0, 10, 12, 1);
-            seg041.displayString(arg_0.affect_2.ToString(), 0, 10, 12, 0x14);
+                seg041.displayString("special(2):   ", 0, 10, 12, 1);
+                seg041.displayString(((Spells)arg_0.affect_2).ToString().Replace("_", " "), 0, 10, 12, 0x14);
 
-            seg041.displayString("special(3):   ", 0, 10, 13, 1);
-            seg041.displayString(arg_0.affect_3.ToString(), 0, 10, 13, 0x14);
+                seg041.displayString("special(3):   ", 0, 10, 13, 1);
+                seg041.displayString(((Spells)arg_0.affect_3).ToString().Replace("_", " "), 0, 10, 13, 0x14);
+            }
+            else
+            {
+                seg041.displayString("special(1):   ", 0, 10, 11, 1);
+                seg041.displayString(arg_0.affect_1.ToString().Replace("_", " "), 0, 10, 11, 0x14);
+
+                seg041.displayString("special(2):   ", 0, 10, 12, 1);
+                seg041.displayString(arg_0.affect_2.ToString().Replace("_", " "), 0, 10, 12, 0x14);
+
+                seg041.displayString("special(3):   ", 0, 10, 13, 1);
+                seg041.displayString(arg_0.affect_3.ToString().Replace("_", " "), 0, 10, 13, 0x14);
+            }
 
             seg041.displayString("dice large:   ", 0, 10, 14, 1);
             seg041.displayString(gbl.ItemDataTable[arg_0.type].diceCountLarge.ToString(), 0, 10, 14, 0x14);
@@ -707,7 +823,7 @@ namespace engine
 
                 case 2: // Gauntlets of Dexterity
                     ovr024.CalcStatBonuses(Stat.DEX, player);
-                    ovr026.reclac_thief_skills(player);
+                    ovr026.recalc_thief_skills(player);
                     break;
 
                 case 4:
@@ -734,6 +850,7 @@ namespace engine
                 case 6: // Girdle of the Dwarves
                     ovr024.CalcStatBonuses(Stat.CON, player);
                     ovr024.CalcStatBonuses(Stat.CHA, player);
+                    ovr026.recalc_saving_throws(player);
                     break;
 
                 case 8: //Ioun Stone
@@ -762,7 +879,7 @@ namespace engine
                     break;
 
                 case 11: // Gloves of Thievery
-                    ovr026.reclac_thief_skills(player);
+                    ovr026.recalc_thief_skills(player);
                     break;
 
                 case 12:
@@ -820,14 +937,14 @@ namespace engine
 
                 ItemSlot item_slot = gbl.ItemDataTable[item.type].item_slot;
 
-                if (item_slot >= ItemSlot.slot_0 && item_slot <= ItemSlot.slot_8)
+                if (item_slot >= ItemSlot.Weapon && item_slot <= ItemSlot.Boots)
                 {
                     if (player.activeItems[item_slot] != null)
                     {
                         result = Weld.AlreadyUsingX;
                     }
                 }
-                else if (item_slot == ItemSlot.slot_9)
+                else if (item_slot == ItemSlot.Ring1)
                 {
                     if (player.activeItems.Item_ptr_02 != null)
                     {
@@ -840,7 +957,7 @@ namespace engine
                     if (player.activeItems.arrows != null)
                     {
                         result = Weld.AlreadyUsingX;
-                        item_slot = ItemSlot.slot_11;
+                        item_slot = ItemSlot.Arrow;
                     }
                 }
 
@@ -857,7 +974,7 @@ namespace engine
                 {
                     result = Weld.WrongClass;
                 }
-                result = Weld.Ok;
+
                 switch (result)
                 {
                     case Weld.Ok:
@@ -1031,8 +1148,7 @@ namespace engine
 
                 if (item.IsScroll() == true)
                 {
-                    if (gbl.SelectedPlayer.SkillLevel(SkillType.MagicUser) > 0 ||
-                        gbl.SelectedPlayer.SkillLevel(SkillType.Cleric) > 0)
+                    if (gbl.SelectedPlayer.SkillLevel(SkillType.MagicUser, SkillType.Cleric) > 0)
                     {
                         ovr023.sub_5D2E1(ref arg_0, false, gbl.SelectedPlayer.quick_fight, spellId);
                     }
@@ -1495,12 +1611,13 @@ namespace engine
         }
 
         static Affects[] paladinCureableDiseases = { // unk_16B39
-            Affects.helpless, 
-            Affects.cause_disease_1, 
-            Affects.weaken, 
-            Affects.cause_disease_2, 
-            Affects.hot_fire_shield, 
-            Affects.affect_39 };
+            Affects.helpless,
+            Affects.cause_disease_1,
+            Affects.weaken,
+            Affects.cause_disease_2,
+            (Affects)0x32,
+            (Affects)0x39,
+        };
 
         internal static void PaladinCureDisease(Player player) /* sub_577EC */
         {

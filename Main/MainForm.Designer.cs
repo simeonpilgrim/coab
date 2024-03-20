@@ -39,6 +39,7 @@ namespace Main
             this.screenCaptureToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.cheatsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.alwayAllowAreaMapToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.allowPlayerModifyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.allowGodsInterveneToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.displayItemsFullNameToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.freeTrainingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -139,6 +140,7 @@ namespace Main
             // 
             this.cheatsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.alwayAllowAreaMapToolStripMenuItem,
+            this.allowPlayerModifyToolStripMenuItem,
             this.allowGodsInterveneToolStripMenuItem,
             this.displayItemsFullNameToolStripMenuItem,
             this.freeTrainingToolStripMenuItem,
@@ -162,6 +164,15 @@ namespace Main
             this.alwayAllowAreaMapToolStripMenuItem.Size = new System.Drawing.Size(253, 22);
             this.alwayAllowAreaMapToolStripMenuItem.Text = "Allow Area Map";
             this.alwayAllowAreaMapToolStripMenuItem.Click += new System.EventHandler(this.alwayAllowAreaMapToolStripMenuItem_Click);
+            // 
+            // allowPlayerModifyToolStripMenuItem
+            // 
+            this.allowPlayerModifyToolStripMenuItem.Checked = global::Main.Properties.Settings.Default.AllowPlayerModify;
+            this.allowPlayerModifyToolStripMenuItem.CheckOnClick = true;
+            this.allowPlayerModifyToolStripMenuItem.Name = "allowPlayerModifyToolStripMenuItem";
+            this.allowPlayerModifyToolStripMenuItem.Size = new System.Drawing.Size(253, 22);
+            this.allowPlayerModifyToolStripMenuItem.Text = "Allow Player Modify";
+            this.allowPlayerModifyToolStripMenuItem.Click += new System.EventHandler(this.allowPlayerModifyToolStripMenuItem_Click);
             // 
             // allowGodsInterveneToolStripMenuItem
             // 
@@ -407,6 +418,7 @@ namespace Main
         private System.Windows.Forms.ToolStripMenuItem freeTrainingToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem alwayAllowAreaMapToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem skipCopyProtectionToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem allowPlayerModifyToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem allowGodsInterveneToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem displayItemsFullNameToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem viewItemsStatsToolStripMenuItem;

@@ -114,6 +114,8 @@ namespace engine
         {
             string text;
 
+            Display.UpdateStop();
+
             if (attack == AttackType.Backstab)
             {
                 text = "-Backstabs-";
@@ -220,6 +222,8 @@ namespace engine
             }
 
             ovr025.ClearPlayerTextArea();
+
+            Display.UpdateStart();
         }
 
 
@@ -364,7 +368,8 @@ namespace engine
 
                 Player attacker = cpiA.player;
 
-                if (attacker.IsHeld() == false &&
+                if (player.health_status == Status.okey && 
+                    attacker.IsHeld() == false &&
                     CanSeeTargetA(player, attacker) == true &&
                     attacker.HasAffect(Affects.weap_dragon_slayer) == false &&
                     attacker.HasAffect(Affects.affect_4a) == false)
@@ -550,7 +555,7 @@ namespace engine
                     nearTargets.Remove(targetepi);
                     nearTargets.Insert(0, targetepi);
 
-                    foreach (var sweepepi in nearTargets.FindAll(e => e.player.hitBonus == 0).GetRange(0, sweepableCount))
+                    foreach (var sweepepi in nearTargets.FindAll(e => e.player.HitDice == 0).GetRange(0, sweepableCount))
                     {
                         var sweeptarget = sweepepi.player;
                         RecalcAttacksReceived(sweeptarget, attacker);
@@ -580,7 +585,13 @@ namespace engine
                 {
                     gbl.targetInvisible = false;
 
+                    Player player_bkup = gbl.SelectedPlayer;
+
+                    gbl.SelectedPlayer = targetB;
+
                     ovr024.CheckAffectsEffect(targetA, CheckType.Visibility);
+
+                    gbl.SelectedPlayer = player_bkup;
 
                     if (gbl.targetInvisible == false)
                     {
@@ -600,48 +611,57 @@ namespace engine
             return false;
         }
 
-        static sbyte[] /*seg600:0369*/ unk_16679 = { 0, 
-        17, 17,  0,  0,  1, 17,  0,  0, 32, 32, 
-        10,  7,  4,  1,  1,  0,  0, -1, -1, -1 };
+        internal static sbyte[,] /*seg600:0369 unk_16679 */ turn_table = {
+            { 10,  7,  4,  1,  1,  0, 0, -1, -1, -1 }, // skeleton
+            { 13, 10,  7,  1,  1,  0, 0,  0, -1, -1 }, // zombie
+            { 16, 13, 10,  4,  1,  1, 0,  0,  0, -1 }, // ghoul
+            { 19, 16, 13,  7,  4,  1, 1,  0,  0, -1 }, // shadow
+            { 20, 19, 16, 10,  7,  4, 1,  1,  0,  0 }, // wight
+            { 99, 20, 19, 13, 10,  7, 4,  1,  1,  0 }, // ghast
+            { 99, 99, 20, 16, 13, 10, 7,  4,  1,  0 }, // wraith
+            { 99, 99, 99, 20, 16, 13, 10, 7,  4,  1 }, // mummy
+            { 99, 99, 99, 99, 20, 16, 13, 10, 7,  1 }, // specter
+            { 99, 99, 99, 99, 99, 20, 16, 13, 10, 4 }, // vampire
+        };
 
-        internal static void turns_undead(Player player)
+        internal static void turn_undead(Player player)
         {
             ovr025.DisplayPlayerStatusString(false, 10, "turns undead...", player);
             ovr027.ClearPromptArea();
             seg041.GameDelay();
 
             bool any_turned = false;
-            byte var_6 = 0;
+            bool turn_failed = false;
 
             player.actions.hasTurnedUndead = true;
 
-            byte var_3 = 6;
-            int var_2 = ovr024.roll_dice(12, 1);
-            int var_1 = ovr024.roll_dice(20, 1);
+            byte min_destroy = 7; // high level clerics destroy 7-12 low level undead
+            int turn_count = ovr024.roll_dice(12, 1); // turn 1-12 undead
+            int turn_roll = ovr024.roll_dice(20, 1);
 
-            int clericLvl = player.SkillLevel(SkillType.Cleric);
+            int turnLvl = player.TurnLevel();
 
-            byte var_B;
+            byte idx2;
 
-            if (clericLvl >= 1 && clericLvl <= 8)
+            if (turnLvl >= 1 && turnLvl <= 8)
             {
-                var_B = player.cleric_lvl;
+                idx2 = (byte)(player.cleric_lvl - 1);
             }
-            else if (clericLvl >= 9 && clericLvl <= 13)
+            else if (turnLvl >= 9 && turnLvl <= 13)
             {
-                var_B = 9;
+                idx2 = 8;
             }
             else
             {
-                var_B = 10;
+                idx2 = 9;
             }
 
             Player target;
-            while (FindLowestE9Target(out target, player) == true && var_2 > 0 && var_6 == 0)
+            while (FindLowestE9Target(out target, player) == true && turn_count > 0 && turn_failed == false)
             {
-                int var_4 = unk_16679[(target.field_E9 * 10) + var_B];
+                int turn_target = turn_table[target.level_undead-1,idx2];
 
-                if (var_1 >= System.Math.Abs(var_4))
+                if (turn_roll >= System.Math.Abs(turn_target))
                 {
                     any_turned = true;
 
@@ -649,7 +669,7 @@ namespace engine
                     gbl.display_hitpoints_ac = true;
                     ovr025.CombatDisplayPlayerSummary(target);
 
-                    if (var_4 > 0)
+                    if (turn_target > 0)
                     {
                         target.actions.fleeing = true;
                         ovr025.MagicAttackDisplay("is turned", true, target);
@@ -662,23 +682,23 @@ namespace engine
                         target.in_combat = false;
                     }
 
-                    if (var_3 > 0)
+                    if (min_destroy > 0)
                     {
-                        var_3 -= 1;
+                        min_destroy -= 1;
                     }
 
-                    var_2 -= 1;
+                    turn_count -= 1;
 
-                    if (var_2 == 0 && var_3 > 0 && var_4 < 0)
+                    if (turn_count == 0 && min_destroy > 0 && turn_target < 0)
                     {
-                        var_2++;
+                        turn_count++;
                     }
 
                     ovr025.ClearPlayerTextArea();
                 }
                 else
                 {
-                    var_6 = 1;
+                    turn_failed = true;
                 }
             }
 
@@ -708,10 +728,10 @@ namespace engine
                 Player target = epi.player;
 
                 if (target.actions.fleeing == false &&
-                    target.field_E9 > 0 &&
-                    target.field_E9 < minE9)
+                    target.level_undead > 0 &&
+                    target.level_undead < minE9)
                 {
-                    minE9 = target.field_E9;
+                    minE9 = target.level_undead;
                     output = target;
                     result = true;
                 }
@@ -727,11 +747,11 @@ namespace engine
             bool turnComplete = true;
             bool BehindAttack = arg_8 != 0;
             turnComplete = false;
-            gbl.bytes_1D2C9[1] = 0;
-            gbl.bytes_1D2C9[2] = 0;
-            gbl.bytes_1D900[1] = 0;
-            gbl.bytes_1D900[2] = 0;
-            bool var_11 = false;
+            gbl.attacksHit[1] = 0;
+            gbl.attacksHit[2] = 0;
+            gbl.attacksTaken[1] = 0;
+            gbl.attacksTaken[2] = 0;
+            bool hit = false;
             bool targetNotInCombat = false;
             gbl.damage = 0;
 
@@ -746,7 +766,7 @@ namespace engine
                     attacker.actions.attackIdx--;
                 }
 
-                gbl.bytes_1D900[attacker.actions.attackIdx] += 1;
+                gbl.attacksTaken[attacker.actions.attackIdx] += 1;
 
                 DisplayAttackMessage(true, 1, target.hit_point_current + 5, AttackType.Slay, target, attacker);
                 ovr024.remove_invisibility(attacker);
@@ -754,13 +774,13 @@ namespace engine
                 attacker.attack1_AttacksLeft = 0;
                 attacker.attack2_AttacksLeft = 0;
 
-                var_11 = true;
+                hit = true;
                 turnComplete = true;
             }
             else
             {
                 if (attacker.activeItems.primaryWeapon != null &&
-                    (target.field_DE > 0x80 || (target.field_DE & 7) > 1))
+                    (target.icon_dimensions > 0x80 || (target.icon_dimensions & 7) > 1))
                 {
                     ItemData itemData = gbl.ItemDataTable[attacker.activeItems.primaryWeapon.type];
 
@@ -816,21 +836,24 @@ namespace engine
                         attacker.AttacksLeftDec(attackIdx);
                         attacker.actions.attackIdx = attackIdx;
 
-                        gbl.bytes_1D900[attackIdx] += 1;
+                        gbl.attacksTaken[attackIdx] += 1;
 
                         if (ovr024.PC_CanHitTarget(target_ac, target, attacker) ||
                             target.IsHeld() == true)
                         {
-                            gbl.bytes_1D2C9[attackIdx] += 1;
+                            gbl.attacksHit[attackIdx] += 1;
 
                             seg044.PlaySound(Sound.sound_attackHeld);
-                            var_11 = true;
+                            hit = true;
                             sub_3E192(attackIdx, target, attacker);
                             DisplayAttackMessage(true, gbl.damage, gbl.damage, attack_type, target, attacker);
 
                             if (target.in_combat == true)
                             {
-                                ovr024.CheckAffectsEffect(attacker, (CheckType)attackIdx + 1);
+                                if (attackIdx == 1)
+                                    ovr024.CheckAffectsEffect(attacker, CheckType.PostHit1_Damage);
+                                else if (attackIdx == 2)
+                                    ovr024.CheckAffectsEffect(attacker, CheckType.PostHit2_Damage);
                             }
 
                             if (target.in_combat == false)
@@ -854,7 +877,7 @@ namespace engine
                     attacker.attack2_AttacksLeft = 0;
                 }
 
-                if (var_11 == false)
+                if (hit == false)
                 {
                     seg044.PlaySound(Sound.sound_9);
                     DisplayAttackMessage(false, 0, 0, attack_type, target, attacker);
@@ -967,7 +990,7 @@ namespace engine
                 {
                     if (rangedWeapon.count > 0)
                     {
-                        rangedWeapon.count = gbl.bytes_1D900[1];
+                        rangedWeapon.count -= gbl.attacksTaken[1];
                     }
 
                     if (rangedWeapon.count == 0)
@@ -1102,7 +1125,7 @@ namespace engine
                 var_2 = aim_menu(arg_0, allowTarget, canTargetEmptyGround, false, ovr023.SpellRange(spellId), gbl.SelectedPlayer);
                 gbl.SelectedPlayer.actions.target = arg_0.target;
             }
-            else if (gbl.spellCastingTable[spellId].field_E == 0)
+            else if (gbl.spellCastingTable[spellId].targetsEnemy == 0)
             {
                 arg_0.target = gbl.SelectedPlayer;
 
@@ -1171,23 +1194,23 @@ namespace engine
 
             gbl.targetPos = ovr033.PlayerMapPos(gbl.SelectedPlayer);
 
-            int tmp1 = gbl.spellCastingTable[spellId].field_6 & 0x0F;
+            int area = gbl.spellCastingTable[spellId].effectArea & 0x0F;
 
-            if (tmp1 == 0)
+            if (area == 0)
             {
                 gbl.spellTargets.Clear();
                 gbl.spellTargets.Add(gbl.SelectedPlayer);
             }
-            else if (tmp1 == 5)
+            else if (area == 5)
             {
                 int var_5 = 0;
                 gbl.spellTargets.Clear();
 
                 int var_4;
 
-                if (spellId == 0x4F)
+                if (spellId == (byte)Spells.faerie_fire)
                 {
-                    var_4 = ovr025.spellMaxTargetCount(0x4F);
+                    var_4 = ovr025.spellMaxTargetCount((byte)Spells.faerie_fire);
                 }
                 else
                 {
@@ -1209,7 +1232,7 @@ namespace engine
 
                             gbl.targetPos = ovr033.PlayerMapPos(var_C.target);
 
-                            if (spellId != 0x4f)
+                            if (spellId != (byte)Spells.faerie_fire)
                             {
                                 byte hitDice = target.HitDice;
 
@@ -1232,7 +1255,7 @@ namespace engine
                             }
                             else
                             {
-                                byte al = target.field_DE;
+                                byte al = target.icon_dimensions;
 
                                 if (al == 1)
                                 {
@@ -1273,7 +1296,7 @@ namespace engine
                     }
                 } while (stop_loop == false && var_4 != 0);
             }
-            else if (tmp1 == 0x0F)
+            else if (area == 15)
             {
                 if (sub_4001C(var_C, false, quick_fight, spellId) == true)
                 {
@@ -1285,7 +1308,8 @@ namespace engine
                     else
                     {
                         /* TODO it doesn't make sense to mask the low nibble then shift it out */
-                        var scl = ovr032.Rebuild_SortedCombatantList(1, (gbl.spellCastingTable[spellId].field_6 & 0x0f) >> 4, gbl.targetPos, sc => true);
+                        // Only silence 15" radius matches area == 0x0F with something in the upper byte
+                        var scl = ovr032.Rebuild_SortedCombatantList(1, (gbl.spellCastingTable[spellId].effectArea & 0x0f) >> 4, gbl.targetPos, sc => true);
 
                         gbl.spellTargets.Clear();
                         foreach (var sc in scl)
@@ -1300,11 +1324,11 @@ namespace engine
                     castSpell = false;
                 }
             }
-            else if (tmp1 >= 8 && tmp1 <= 0x0E)
+            else if (area >= 8 && area <= 14)
             {
                 if (sub_4001C(var_C, true, quick_fight, spellId) == true)
                 {
-                    var scl = ovr032.Rebuild_SortedCombatantList(1, gbl.spellCastingTable[spellId].field_6 & 7, gbl.targetPos, sc => true);
+                    var scl = ovr032.Rebuild_SortedCombatantList(1, gbl.spellCastingTable[spellId].effectArea & 0x03, gbl.targetPos, sc => true);
 
                     gbl.spellTargets.Clear();
                     foreach (var sc in scl)
@@ -1319,9 +1343,9 @@ namespace engine
                     castSpell = false;
                 }
             }
-            else
+            else // 1 - 4, 6 - 7 (1 - 3 makes sense [based on mask below], 4 & 6 - 7 does not)
             {
-                int max_targets = (gbl.spellCastingTable[spellId].field_6 & 3) + 1;
+                int max_targets = (gbl.spellCastingTable[spellId].effectArea & 0x03) + 1;
                 gbl.spellTargets.Clear();
 
                 while (max_targets > 0)
@@ -1445,7 +1469,7 @@ namespace engine
                     weapon.type == ItemType.ShortSword)
                 {
                     if (target.actions.AttacksReceived > 1 &&
-                        (target.field_DE & 0x7F) <= 1 &&
+                        (target.icon_dimensions & 0x7F) <= 1 &&
                         getTargetDirection(target, attacker) == target.actions.direction)
                     {
                         return true;
@@ -1605,26 +1629,27 @@ namespace engine
                 case ItemType.Quarrel:
                 case ItemType.Spear:
                 case ItemType.Arrow:
+                case ItemType.Dagger:
                     if ((dir & 1) == 1)
                     {
                         if (dir == 3 || dir == 5)
                         {
                             ovr025.load_missile_dax((dir == 5), 0, Icon.Attack, iconId + 1);
                         }
-                        else
+                        else // dir == 1 || dir == 7
                         {
                             ovr025.load_missile_dax((dir == 7), 0, Icon.Normal, iconId + 1);
                         }
                     }
                     else
                     {
-                        if (dir >= 4)
+                        if (dir == 4 || dir == 6)
                         {
-                            ovr025.load_missile_dax(false, 0, Icon.Attack, iconId + (dir % 4));
+                            ovr025.load_missile_dax(false, 0, Icon.Attack, iconId + (dir - 4));
                         }
-                        else
+                        else // dir == 0 || dir == 2
                         {
-                            ovr025.load_missile_dax(false, 0, Icon.Normal, iconId + (dir % 4));
+                            ovr025.load_missile_dax(false, 0, Icon.Normal, iconId + dir);
                         }
                     }
                     seg044.PlaySound(Sound.sound_c);
@@ -1632,14 +1657,14 @@ namespace engine
 
                 case ItemType.HandAxe:
                 case ItemType.Club:
-                case ItemType.Glaive:
+                case ItemType.Hammer:
                     ovr025.load_missile_icons(iconId + 3);
                     frame_count = 4;
                     delay = 50;
                     seg044.PlaySound(Sound.sound_9);
                     break;
 
-                case ItemType.Type_85:
+                case ItemType.HolyWater:
                 case ItemType.FlaskOfOil:
                     ovr025.load_missile_icons(iconId + 4);
                     frame_count = 4;
@@ -1650,9 +1675,8 @@ namespace engine
                 case ItemType.StaffSling:
                 case ItemType.Sling:
                 case ItemType.Spine:
-                    iconId++;
-                    ovr025.load_missile_dax(false, 0, Icon.Normal, iconId + 7);
-                    ovr025.load_missile_dax(false, 1, Icon.Attack, iconId + 7);
+                    ovr025.load_missile_dax(false, 0, Icon.Normal, iconId + 8);
+                    ovr025.load_missile_dax(false, 1, Icon.Attack, iconId + 8);
                     frame_count = 2;
                     delay = 10;
                     seg044.PlaySound(Sound.sound_6);
@@ -2301,11 +2325,11 @@ namespace engine
         }
 
 
-        internal static void engulfs(Effect arg_0, object param, Player attacker)
+        internal static void AffectEngulf(Effect arg_0, object param, Player attacker)
         {
             Player target = attacker.actions.target;
 
-            if (gbl.bytes_1D2C9[1] == 2 &&
+            if (gbl.attacksHit[1] == 2 &&
                 target.in_combat == true &&
                 target.HasAffect(Affects.clear_movement) == false &&
                 target.HasAffect(Affects.reduce) == false)
@@ -2347,7 +2371,7 @@ namespace engine
         }
 
 
-        internal static void attack_or_kill(Effect arg_0, object param, Player attacker)
+        internal static void beholder_eyestalk(Effect arg_0, object param, Player attacker)
         {
             int range = 0xFF; /* simeon */
 

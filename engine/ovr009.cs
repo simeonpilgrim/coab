@@ -215,7 +215,7 @@ namespace engine
                                     break;
 
                                 case 'T':
-                                    ovr014.turns_undead(player);
+                                    ovr014.turn_undead(player);
                                     var_2 = true;
                                     ovr025.clear_actions(player);
                                     break;
@@ -335,7 +335,8 @@ namespace engine
                 menuText += "Cast ";
             }
 
-            if (player.SkillLevel(SkillType.Cleric) > 0 &&
+            if ((player.SkillLevel(SkillType.Cleric) > 0 ||
+                 player.SkillLevel(SkillType.Paladin) > 2) &&
                 player.actions.hasTurnedUndead == false)
             {
                 menuText += "Turn ";
@@ -368,6 +369,7 @@ namespace engine
 
             foreach (Player player in gbl.TeamList)
             {
+                gbl.SelectedPlayer = player;
                 ovr024.CheckAffectsEffect(player, CheckType.Type_19);
                 ovr024.in_poison_cloud(0, player);
 

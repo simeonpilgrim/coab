@@ -431,7 +431,7 @@ namespace engine
                             else
                             {
                                 byte spellId = (byte)((int)item.getAffect(spellIdx) & 0x7F);
-                                player.LearnSpell((Spells)spellId);
+                                player.spellBook.LearnSpell((Spells)spellId);
                                 ovr023.remove_spell_from_scroll(spellId, item, player);
 
                                 display_resting_time(0);

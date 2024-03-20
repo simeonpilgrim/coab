@@ -345,6 +345,8 @@ namespace engine
         {
             var newPos = map + gbl.MapDirectionDelta[dir];
 
+            Display.UpdateStop();
+
             if (ScreenMapCheck(radius, newPos) == true)
             {
                 for (int index = 1; index <= gbl.CombatantCount; index++)
@@ -370,6 +372,8 @@ namespace engine
 
             sub_7416E(newPos);
             seg040.DrawOverlay();
+
+            Display.UpdateStart();
         }
 
 
@@ -621,7 +625,7 @@ namespace engine
 
                 int player_index = GetPlayerIndex(player);
 
-                gbl.CombatMap[player_index].size = (byte)(player.field_DE & 0x7F);
+                gbl.CombatMap[player_index].size = (byte)(player.icon_dimensions & 0x7F);
                 gbl.CombatMap[player_index].pos = pos;
 
                 int playerIdx;

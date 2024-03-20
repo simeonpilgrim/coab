@@ -101,10 +101,11 @@ namespace engine
             Player var_5;
 
             if (player.actions.hasTurnedUndead == false &&
-                (player.cleric_lvl > 0 || player.cleric_old_lvl > player.multiclassLevel) &&
+                (player.SkillLevel(SkillType.Cleric) > 0 ||
+                player.SkillLevel(SkillType.Paladin) > 2) &&
                 ovr014.FindLowestE9Target(out var_5, player) == true)
             {
-                ovr014.turns_undead(player);
+                ovr014.turn_undead(player);
                 return true;
             }
             else
@@ -124,7 +125,7 @@ namespace engine
                 int save_bonus = (gbl.SelectedPlayer.combat_team == CombatTeam.Ours) ? -2 : 8;
                 var opp = gbl.SelectedPlayer.OppositeTeam();
 
-                var sortedCombatants = ovr032.Rebuild_SortedCombatantList(1, spell_entry.field_F, pos, p => p.combat_team != opp);
+                var sortedCombatants = ovr032.Rebuild_SortedCombatantList(1, spell_entry.maxRange, pos, p => p.combat_team != opp);
 
                 foreach (var sc in sortedCombatants)
                 {
@@ -146,7 +147,7 @@ namespace engine
             if (spell_entry.priority >= minPriority)
             {
                 Player dummy_target;
-                if ((spellId != 3 && spell_entry.field_E == 0) ||
+                if ((spellId != 3 && spell_entry.targetsEnemy == 0) ||
                     (spellId == 3 && ovr014.find_healing_target(out dummy_target, attacker)))
                 {
                     return true;
@@ -157,7 +158,7 @@ namespace engine
 
                     if (nearTargets.Count > 0)
                     {
-                        if (spell_entry.field_F == 0)
+                        if (spell_entry.maxRange == 0)
                         {
                             return true;
                         }
@@ -332,8 +333,8 @@ namespace engine
                     if (isNoxiousCloud == true &&
                         player.HasAffect(Affects.animate_dead) == false &&
                         player.HasAffect(Affects.stinking_cloud) == false &&
-                        player.HasAffect(Affects.affect_6f) == false &&
-                        player.HasAffect(Affects.affect_7d) == false &&
+                        player.HasAffect(Affects.prot_paralysis_poison) == false &&
+                        player.HasAffect(Affects.prot_sleep_charm_paralysis_poison) == false &&
                         player.HasAffect(Affects.protect_magic) == false &&
                         player.HasAffect(Affects.minor_globe_of_invulnerability) == false &&
                         player.actions.fleeing == false)
@@ -347,9 +348,9 @@ namespace engine
                     if (isPoisonousCloud == true &&
                         player.HitDice < 7 &&
                         player.HasAffect(Affects.protect_magic) == false &&
-                        player.HasAffect(Affects.affect_6f) == false &&
-                        player.HasAffect(Affects.affect_85) == false &&
-                        player.HasAffect(Affects.affect_7d) == false &&
+                        player.HasAffect(Affects.prot_paralysis_poison) == false &&
+                        player.HasAffect(Affects.prot_sleep_charm_paralysis_poison) == false &&
+                        player.HasAffect(Affects.dracolich_protection) == false &&
                         player.actions.fleeing == false)
                     {
                         move_cost = player.actions.move + 1;
@@ -830,9 +831,9 @@ namespace engine
                 rating += itemData.bonusNormal * 2;
             }
 
-            if (item.type == ItemType.Type_85 &&
+            if (item.type == ItemType.HolyWater &&
                 player.actions.target != null &&
-                player.actions.target.field_E9 > 0)
+                player.actions.target.level_undead > 0)
             {
                 rating = 8;
             }
@@ -858,7 +859,7 @@ namespace engine
                 rating = 0;
             }
 
-            if (item.affect_2 == Affects.paralizing_gaze)
+            if (item.affect_2 == Affects.petrifying_gaze)
             {
                 rating = 0;
             }
@@ -896,7 +897,7 @@ namespace engine
             {
                 ItemType item_type = item.type;
 
-                if (gbl.ItemDataTable[item_type].item_slot == ItemSlot.slot_0 &&
+                if (gbl.ItemDataTable[item_type].item_slot == ItemSlot.Weapon &&
                     (gbl.ItemDataTable[item_type].classFlags & player.classFlags) != 0)
                 {
                     int power_rating = CalcItemPowerRating(item, player);
@@ -920,7 +921,7 @@ namespace engine
                 }
 
 
-                if (gbl.ItemDataTable[item_type].item_slot == ItemSlot.slot_1)
+                if (gbl.ItemDataTable[item_type].item_slot == ItemSlot.Shield)
                 {
                     if ((gbl.ItemDataTable[item_type].classFlags & player.classFlags) != 0)
                     {

@@ -7,8 +7,8 @@ namespace engine
     {
         None = 0,
         Visibility = 1,
-        Type_2 = 2,
-        Type_3 = 3,
+        PostHit1_Damage = 2,
+        PostHit2_Damage = 3,
         SpecialAttacks = 4,
         Type_5 = 5,
         PreDamage = 6,
@@ -149,29 +149,29 @@ namespace engine
                     calc_affect_effect(Affects.invisible_to_animals, player);
                     break;
 
-                case CheckType.Type_2:
+                case CheckType.PostHit1_Damage:
                     calc_affect_effect(Affects.fireAttack_2d10, player);
-                    calc_affect_effect(Affects.ankheg_acid_attack, player);
-                    calc_affect_effect(Affects.sp_dispel_evil, player);
-                    calc_affect_effect(Affects.affect_39, player);
+                    calc_affect_effect(Affects.ankheg_melee_acid_attack, player);
+                    calc_affect_effect(Affects.dispel_evil_banish, player);
+                    calc_affect_effect(Affects.engulf, player);
                     calc_affect_effect(Affects.owlbear_hug_check, player);
                     calc_affect_effect(Affects.dracolich_paralysis, player);
-                    calc_affect_effect(Affects.affect_7b, player);
+                    calc_affect_effect(Affects.dracolich_cold_damage, player);
                     break;
 
-                case CheckType.Type_3:
+                case CheckType.PostHit2_Damage:
                     calc_affect_effect(Affects.poison_plus_0, player);
                     calc_affect_effect(Affects.poison_plus_4, player);
                     calc_affect_effect(Affects.poison_plus_2, player);
                     calc_affect_effect(Affects.thri_kreen_paralyze, player);
                     calc_affect_effect(Affects.poison_neg_2, player);
                     calc_affect_effect(Affects.fireAttack_2d10, player);
-                    calc_affect_effect(Affects.affect_57, player);
+                    calc_affect_effect(Affects.beholder_eyestalk, player);
                     break;
 
                 case CheckType.SpecialAttacks:
                     calc_affect_effect(Affects.ray_of_enfeeblement, player);
-                    calc_affect_effect(Affects.affect_06, player);
+                    calc_affect_effect(Affects.weap_flame_tongue, player);
                     calc_affect_effect(Affects.salamander_heat_damage, player);
                     calc_affect_effect(Affects.weap_dragon_slayer, player);
                     calc_affect_effect(Affects.weap_frost_brand, player);
@@ -182,33 +182,33 @@ namespace engine
                     calc_affect_effect(Affects.mirror_image, player);
                     calc_affect_effect(Affects.prot_from_normal_missiles, player);
                     calc_affect_effect(Affects.thri_kreen_dodge_missile, player);
-                    calc_affect_effect(Affects.affect_78, player);
+                    calc_affect_effect(Affects.boulder_evasion, player);
                     calc_affect_effect(Affects.troll_regen, player);
-                    calc_affect_effect(Affects.affect_73, player);
-                    calc_affect_effect(Affects.affect_74, player);
-                    calc_affect_effect(Affects.affect_77, player);
-                    calc_affect_effect(Affects.affect_5e, player);
-                    calc_affect_effect(Affects.affect_75, player);
+                    calc_affect_effect(Affects.resist_pierce_slash, player);
+                    calc_affect_effect(Affects.resist_magic_weapon, player);
+                    calc_affect_effect(Affects.protect_non_magic_weapons, player);
+                    calc_affect_effect(Affects.resist_blunt_pierce, player);
+                    calc_affect_effect(Affects.vuln_holy_water, player);
                     calc_affect_effect(Affects.resist_normal_weapons, player);
                     calc_affect_effect(Affects.half_damage, player);
                     calc_affect_effect(Affects.resist_fire_and_cold, player);
-                    calc_affect_effect(Affects.affect_55, player);
-                    calc_affect_effect(Affects.affect_82, player);
+                    calc_affect_effect(Affects.resist_piercing, player);
+                    calc_affect_effect(Affects.vuln_blessed_quarrel, player);
                     calc_affect_effect(Affects.affect_8f, player);
                     break;
 
                 case CheckType.PreDamage:
-                    calc_affect_effect(Affects.affect_71, player);
+                    calc_affect_effect(Affects.efreeti_fire_resist, player);
                     calc_affect_effect(Affects.fire_resist, player);
                     calc_affect_effect(Affects.resist_cold, player);
                     calc_affect_effect(Affects.resist_fire, player);
                     calc_affect_effect(Affects.resist_magic_50_percent, player);
                     calc_affect_effect(Affects.resist_magic_15_percent, player);
                     calc_affect_effect(Affects.immune_to_fire, player);
-                    calc_affect_effect(Affects.affect_72, player);
-                    calc_affect_effect(Affects.affect_76, player);
+                    calc_affect_effect(Affects.half_elec, player);
+                    calc_affect_effect(Affects.half_cold, player);
                     calc_affect_effect(Affects.shield, player);
-                    calc_affect_effect(Affects.affect_5d, player);
+                    calc_affect_effect(Affects.half_fire, player);
                     calc_affect_effect(Affects.troll_regen, player);
                     calc_affect_effect(Affects.mirror_image, player);
                     calc_affect_effect(Affects.immune_to_cold, player);
@@ -216,7 +216,7 @@ namespace engine
                     calc_affect_effect(Affects.resist_fire_and_cold, player);
                     calc_affect_effect(Affects.shambling_absorb_lightning, player);
                     calc_affect_effect(Affects.protect_magic, player);
-                    calc_affect_effect(Affects.affect_85, player);
+                    calc_affect_effect(Affects.dracolich_protection, player);
                     calc_affect_effect(Affects.protect_elec, player);
                     calc_affect_effect(Affects.minor_globe_of_invulnerability, player);
                     break;
@@ -232,7 +232,7 @@ namespace engine
                     break;
 
                 case CheckType.Type_8:
-                    calc_affect_effect(Affects.affect_63, player);
+                    calc_affect_effect(Affects.fight_unconscious, player);
                     calc_affect_effect(Affects.resist_fire_and_cold, player);
                     calc_affect_effect(Affects.displace, player);
                     calc_affect_effect(Affects.camouflage, player);
@@ -246,10 +246,10 @@ namespace engine
                     calc_affect_effect(Affects.protect_charm_sleep, player);
                     calc_affect_effect(Affects.resist_paralyze, player);
                     calc_affect_effect(Affects.immune_to_cold, player);
-                    calc_affect_effect(Affects.affect_6f, player);
+                    calc_affect_effect(Affects.prot_paralysis_poison, player);
                     calc_affect_effect(Affects.immune_to_fire, player);
                     calc_affect_effect(Affects.halfelf_resistance, player);
-                    calc_affect_effect(Affects.affect_7d, player);
+                    calc_affect_effect(Affects.prot_sleep_charm_paralysis_poison, player);
                     calc_affect_effect(Affects.minor_globe_of_invulnerability, player);
                     calc_affect_effect(Affects.protect_magic, player);
                     break;
@@ -260,8 +260,8 @@ namespace engine
                     calc_affect_effect(Affects.blinded, player);
                     calc_affect_effect(Affects.bestow_curse, player);
                     calc_affect_effect(Affects.prayer, player);
-                    calc_affect_effect(Affects.affect_06, player);
-                    calc_affect_effect(Affects.gnome_vs_man_sized_giant, player);
+                    calc_affect_effect(Affects.weap_flame_tongue, player);
+                    calc_affect_effect(Affects.gnome_vs_goblin_kobold, player);
                     calc_affect_effect(Affects.dwarf_vs_orc, player);
                     calc_affect_effect(Affects.weap_dragon_slayer, player);
                     calc_affect_effect(Affects.weap_frost_brand, player);
@@ -290,28 +290,28 @@ namespace engine
                     calc_affect_effect(Affects.prot_from_good_10_radius, player);
                     calc_affect_effect(Affects.prayer, player);
                     calc_affect_effect(Affects.fire_resist, player);
-                    calc_affect_effect(Affects.affect_6f, player);
-                    calc_affect_effect(Affects.affect_7d, player);
+                    calc_affect_effect(Affects.prot_paralysis_poison, player);
+                    calc_affect_effect(Affects.prot_sleep_charm_paralysis_poison, player);
                     calc_affect_effect(Affects.con_saving_bonus, player);
                     calc_affect_effect(Affects.hot_fire_shield, player);
                     calc_affect_effect(Affects.cold_fire_shield, player);
                     break;
 
                 case CheckType.Death:
-                    calc_affect_effect(Affects.affect_63, player);
+                    calc_affect_effect(Affects.fight_unconscious, player);
                     calc_affect_effect(Affects.troll_fire_or_acid, player);
                     calc_affect_effect(Affects.weap_dragon_slayer, player);
                     break;
 
                 case CheckType.Type_14:
-                    calc_affect_effect(Affects.paralizing_gaze, player);
+                    calc_affect_effect(Affects.petrifying_gaze, player);
                     calc_affect_effect(Affects.breath_elec, player);
-                    calc_affect_effect(Affects.affect_79, player);
+                    calc_affect_effect(Affects.ankheg_ranged_acid_attack, player);
                     calc_affect_effect(Affects.spit_acid, player);
-                    calc_affect_effect(Affects.affect_57, player);
+                    calc_affect_effect(Affects.beholder_eyestalk, player);
                     calc_affect_effect(Affects.breath_acid, player);
-                    calc_affect_effect(Affects.affect_7e, player);
-                    calc_affect_effect(Affects.affect_80, player);
+                    calc_affect_effect(Affects.dracolich_paralytic_gaze, player);
+                    calc_affect_effect(Affects.breath_fire, player);
                     calc_affect_effect(Affects.cast_breath_fire, player);
                     calc_affect_effect(Affects.cast_throw_lightening, player);
                     calc_affect_effect(Affects.affect_8b, player);
@@ -330,7 +330,7 @@ namespace engine
                     calc_affect_effect(Affects.invisible, player);
                     calc_affect_effect(Affects.blink, player);
                     calc_affect_effect(Affects.dwarf_and_gnome_vs_giants, player);
-                    calc_affect_effect(Affects.affect_30, player);
+                    calc_affect_effect(Affects.gnome_vs_gnoll, player);
                     calc_affect_effect(Affects.displace, player);
                     calc_affect_effect(Affects.dispel_evil, player);
                     break;
@@ -365,7 +365,7 @@ namespace engine
                     break;
 
                 case CheckType.Type_22:
-                    calc_affect_effect(Affects.affect_8a, player);
+                    calc_affect_effect(Affects.add_invisibility, player);
                     break;
 
                 case CheckType.Type_23:
@@ -412,8 +412,8 @@ namespace engine
                 if (isNoxiouxCloud && arg_0 != 0 &&
                     ovr025.FindAffect(out affect, Affects.helpless, player) == false &&
                     ovr025.FindAffect(out affect, Affects.animate_dead, player) == false &&
-                    ovr025.FindAffect(out affect, Affects.affect_6f, player) == false &&
-                    ovr025.FindAffect(out affect, Affects.affect_7d, player) == false)
+                    ovr025.FindAffect(out affect, Affects.prot_paralysis_poison, player) == false &&
+                    ovr025.FindAffect(out affect, Affects.prot_sleep_charm_paralysis_poison, player) == false)
                 {
                     bool save_passed = RollSavingThrow(0, 0, player);
 
@@ -583,13 +583,26 @@ namespace engine
         }
 
 
-        internal static byte roll_dice(int dice_size, int dice_count)
+        internal static byte roll_dice(int dice_size, int dice_count, int min_roll = 1)
         {
             int roll_total = 0;
 
             for (int i = 0; i < dice_count; i++)
             {
-                roll_total += seg051.Random(dice_size) + 1;
+                int roll_current;
+
+                // don't bother rolling if we can't roll over the min_roll
+                if (min_roll >= dice_size)
+                {
+                    roll_current = dice_size;
+                }
+                else
+                {
+                    roll_current = seg051.Random(dice_size) + 1;
+                    if (roll_current < min_roll)
+                        roll_current = min_roll;
+                }
+                roll_total += roll_current;
             }
 
             byte byte_total = (byte)roll_total;
@@ -753,7 +766,7 @@ namespace engine
             bool encoded;
 
             if (str > player.stats2.Str.cur ||
-                (str == 18 && str_100 > player.stats2.Str00.full))
+                (str == 18 && str_100 > player.stats2.Str00.cur))
             {
                 encoded = true;
                 encoded_str = encode_strength(str_100, str);
@@ -771,7 +784,7 @@ namespace engine
         internal static void max_strength(ref int str_a, int str_b, ref int str_00_a, int str_00_b) /* sub_64771 */
         {
             if (str_b > str_a ||
-                (str_b == 18 && str_00_b > str_00_a))
+                (str_a == str_b && str_b == 18 && str_00_b > str_00_a))
             {
                 str_a = str_b;
                 str_00_a = str_00_b;
@@ -838,7 +851,7 @@ namespace engine
             int var_11 = 0x0FF;
 
             int stat_a = player.stats2[(int)stat_index].cur;
-            int str_00_a = player.stats2.Str00.full;
+            int str_00_a = player.stats2.Str00.cur;
 
             foreach (Item item in player.items)
             {
@@ -859,26 +872,32 @@ namespace engine
 
                                 case 1:
                                     stat_b = 19;
+                                    str_00_b = 0;
                                     break;
 
                                 case 2:
                                     stat_b = 20;
+                                    str_00_b = 0;
                                     break;
 
                                 case 3:
                                     stat_b = 21;
+                                    str_00_b = 0;
                                     break;
 
                                 case 4:
                                     stat_b = 22;
+                                    str_00_b = 0;
                                     break;
 
                                 case 5:
                                     stat_b = 23;
+                                    str_00_b = 0;
                                     break;
 
                                 case 6:
                                     stat_b = 24;
+                                    str_00_b = 0;
                                     break;
                             }
                         }
@@ -1019,6 +1038,7 @@ namespace engine
                             else
                             {
                                 stat_b = 18;
+                                str_00_b = 0;
                             }
                         }
                     }
@@ -1042,51 +1062,21 @@ namespace engine
                 if (var_11 != 0xff)
                 {
                     player.stats2.Str.full = var_11;
-                    player.stats2.Str00.cur = 0;
+                    player.stats2.Str00.full = 0;
                 }
                 else
                 {
                     player.stats2.Str.full = stat_a;
-                    player.stats2.Str00.cur = str_00_a;
+                    player.stats2.Str00.full = str_00_a;
                 }
             }
             else if (stat_index == Stat.CON)
             {
-                int hitPointBonus = 0;
-                byte classCount = 0;
                 byte orig_max_hp = player.hit_point_max;
                 player.hit_point_max = player.hit_point_rolled;
 
-                for (SkillType classId = SkillType.Cleric; classId <= SkillType.Monk; classId++)
-                {
-                    byte classLvl = player.ClassLevelsOld[(int)classId];
+                int hitPointBonus = ovr018.calc_fixed_hp_bonus(player, stat_a);
 
-                    if (classLvl > 0)
-                    {
-                        hitPointBonus += ConHitPointBonus(classLvl, classId, stat_a, player);
-                    }
-
-                    classLvl = player.ClassLevel[(int)classId];
-
-                    if (classLvl > 0)
-                    {
-                        classCount++;
-                    }
-
-                    if (gbl.max_class_hit_dice[(int)classId] < classLvl)
-                    {
-                        classLvl = gbl.max_class_hit_dice[(int)classId];
-                    }
-
-                    if (classLvl > player.multiclassLevel)
-                    {
-                        classLvl -= player.multiclassLevel;
-
-                        hitPointBonus += ConHitPointBonus(classLvl, classId, stat_a, player);
-                    }
-                }
-
-                hitPointBonus /= classCount;
                 player.hit_point_max += (byte)hitPointBonus;
 
                 if (player.hit_point_max > orig_max_hp)
@@ -1120,6 +1110,7 @@ namespace engine
                 {
                     remove_affect(null, Affects.highConRegen, player);
                 }
+                ovr026.recalc_saving_throws(player);
             }
             else if (stat_index == Stat.INT)
             {
@@ -1164,6 +1155,7 @@ namespace engine
                 {
                     player.stats2.Dex.full = stat_a;
                 }
+                ovr026.recalc_thief_skills(player);
             }
             else if (stat_index == Stat.CHA)
             {

@@ -42,14 +42,14 @@ namespace Classes
             return gbl.ItemDataTable[type].handsCount;
         }
 
-        public bool ScrollLearning(int i, int spell)
+        public bool CheckMaskedAffect(int i, byte masked_val)
         {
-            return ((int)getAffect(i) > 0x7F && ((int)getAffect(i) & 0x7F) == spell);
+            return ((int)getAffect(i) > 0x7F && ((int)getAffect(i) & 0x7F) == masked_val);
         }
 
         public bool IsScroll()
         {
-            return (gbl.ItemDataTable[type].item_slot >= ItemSlot.slot_11 && gbl.ItemDataTable[type].item_slot <= ItemSlot.slot_13);
+            return (gbl.ItemDataTable[type].item_slot >= ItemSlot.Arrow && gbl.ItemDataTable[type].item_slot <= ItemSlot.slot_13);
         }
 
         public Affects getAffect(int i)
@@ -117,6 +117,22 @@ namespace Classes
             {
                 ItemLibrary.Add(this);
             }
+        }
+
+        public Item(byte _affect_3, Affects _affect_2, Affects _affect_1, short __value, byte _count,
+            short _weight, bool _cursed, byte _name_flags, bool _readied, byte _plus_save, sbyte _plus, byte _namenum3,
+            byte _namenum2, byte _namenum1, ItemType _type, bool AddToLibrary) :
+            this((Affects)_affect_3, _affect_2, _affect_1, __value, _count, _weight, _cursed, _name_flags,
+                _readied, _plus_save, _plus, _namenum3, _namenum2, _namenum1, _type, AddToLibrary)
+        {
+        }
+
+        public Item(short __value, byte _count,
+            short _weight, bool _cursed, byte _name_flags, bool _readied, byte _plus_save, sbyte _plus, byte _namenum3,
+            byte _namenum2, byte _namenum1, ItemType _type, bool AddToLibrary) :
+            this(Affects.none, Affects.none, Affects.none, __value, _count, _weight, _cursed, _name_flags,
+                _readied, _plus_save, _plus, _namenum3, _namenum2, _namenum1, _type, AddToLibrary)
+        {
         }
 
         public Item(byte[] data, int offset)
@@ -197,69 +213,68 @@ namespace Classes
         }
 
         static string[] itemNames = { "",
-            "Battle Axe","Hand Axe","Bardiche","Bec De Corbin","Bill-Guisarme",
-            "Bo Stick", "Club","Dagger","Dart","Fauchard",
+            /*   1 -   5 */ "Battle Axe","Hand Axe","Bardiche","Bec De Corbin","Bill-Guisarme",
+            /*   6 -  10 */"Bo Stick", "Club","Dagger","Dart","Fauchard",
             
-            "Fauchard-Fork","Flail","Military Fork","Glaive","Glaive-Guisarme",
-            "Guisarme","Guisarme-Voulge","Halberd","Lucern Hammer","Hammer",
+            /*  11 -  15 */ "Fauchard-Fork","Flail","Military Fork","Glaive","Glaive-Guisarme",
+            /*  16 -  20 */ "Guisarme","Guisarme-Voulge","Halberd","Lucern Hammer","Hammer",
             
-            "Javelin","Jo Stick","Mace","Morning Star","Partisan",      
-            "Military Pick","Awl Pike","Quarrel","Ranseur","Scimitar",
+            /*  21 -  25 */ "Javelin","Jo Stick","Mace","Morning Star","Partisan",
+            /*  26 -  30 */ "Military Pick","Awl Pike","Quarrel","Ranseur","Scimitar",
  
-            "Spear","Spetum","Quarter Staff","Bastard Sword","Broad Sword",
+            /*  31 -  35 */ "Spear","Spetum","Quarter Staff","Bastard Sword","Broad Sword",
             
-            "Long Sword","Short Sword","Two-Handed Sword","Trident","Voulge",
-            "Composite Long Bow","Composite Short Bow","Long Bow","Short Bow","Heavy Crossbow",
+            /*  36 -  40 */ "Long Sword","Short Sword","Two-Handed Sword","Trident","Voulge",
+            /*  41 -  45 */ "Composite Long Bow","Composite Short Bow","Long Bow","Short Bow","Heavy Crossbow",
             
-            "Light Crossbow","Sling","Mail","Armor","Leather",
-            "Padded","Studded","Ring","Scale","Chain",					 
-            "Splint","Banded","Plate","Shield","Woods",
+            /*  46 -  50 */ "Light Crossbow","Sling","Mail","Armor","Leather",
+            /*  51 -  55 */ "Padded","Studded","Ring","Scale","Chain",
+            /*  56 -  60 */ "Splint","Banded","Plate","Shield","Woods",
             
-            "Arrow",string.Empty,string.Empty,"Potion","Scroll",
-            "Ring","Rod","Stave","Wand","Jug",
-            "Amulet","Dragon Breath","Bag","Defoliation","Ice Storm",
-            "Book","Boots","Hornets Nest","Bracers","Piercing",
+            /*  61 -  65 */ "Arrow",string.Empty,string.Empty,"Potion","Scroll",
+            /*  66 -  70 */ "Ring","Rod","Stave","Wand","Jug",
+            /*  71 -  75 */ "Amulet","Dragon Breath","Bag","Defoliation","Ice Storm",
+            /*  76 -  80 */ "Book","Boots","Hornets Nest","Bracers","Piercing",
 
-            "Brooch","Elfin Chain","Wizardry","ac10", "Dexterity",
-            "Fumbling","Chime","Cloak","Crystal","Cube",
-			"Cubic","The Dwarves","Decanter","Gloves","Drums",
-            "Dust","Thievery","Hat","Flask","Gauntlets",
+            /*  81 -  85 */ "Brooch","Elfin Chain","Wizardry","ac10", "Dexterity",
+            /*  86 -  90 */ "Fumbling","Chime","Cloak","Crystal","Cube",
+			/*  91 -  95 */ "Cubic","The Dwarves","Decanter","Gloves","Drums",
+            /*  96 - 100 */ "Dust","Thievery","Hat","Flask","Gauntlets",
             
-            "Gem","Girdle","Helm","Horn","Stupidity",
-            "Incense","Stone","Ioun Stone", "Javelin","Jewel",
-            "Ointment","Pale Blue","Scarlet And","Manual","Incandescent",
+            /* 101 - 105 */ "Gem","Girdle","Helm","Horn","Stupidity",
+            /* 106 - 110 */ "Incense","Stone","Ioun Stone", "Javelin","Jewel",
+            /* 111 - 115 */ "Ointment","Pale Blue","Scarlet And","Manual","Incandescent",
             
-            "Deep Red","Pink","Mirror","Necklace","And Green",
-            "Blue","Pearl","Powerlessness",
-								 "Vermin","Pipes","Hole","Dragon Slayer","Robe","Rope",
-								 "Frost Brand","Berserker","Scarab","Spade","Sphere",
-								 "Blessed","Talisman","Tome","Trident","Grimoire","Well",
-								 "Wings","Vial","Lantern",string.Empty,"Flask of Oil",
-								 "10 ft. Pole","50 ft. Rope","Iron","Thf Prickly Tools",
-								 "Iron Rations","Standard Rations","Holy Symbol",
-								 "Holy Water vial","Unholy Water vial","Barding","Dragon",
-								 "Lightning","Saddle","Staff","Drow","Wagon","+1",
-								 "+2","+3","+4","+5","of","Vulnerability","Cloak",
-								 "Displacement","Torches","Oil","Speed","Tapestry",
-								 "Spine","Copper","Silver","Electrum","Gold","Platinum",
-								 "Ointment","Keoghtum's","Sheet","Strength","Healing",
-								 
-                                 "Holding","Extra","Gaseous Form","Slipperiness",
-								 "Jewelled","Flying","Treasure Finding","Fear",
-								 "Disappearance","Statuette","Fungus","Chain","Pendant",
-								 "Broach","Of Seeking","-1","-2","-3","Lightning Bolt",
-								 "Fire Resistance","Magic Missiles","Save","Clrc Scroll",
-								 "MU Scroll","With 1 Spell","With 2 Spells","With 3 Spells",
-								 "Prot. Scroll","Jewelry","Fine","Huge","Bone","Brass",
-								 "Key","AC 2","AC 6","AC 4","AC 3","Of Prot.","Paralyzation",
-								 "Ogre Power","Invisibility","Missiles","Elvenkind",
-								 "Rotting","Covered","Efreeti","Bottle","Missile Attractor",
-								 "Of Maglubiyet","Secr Door & Trap Det","Gd Dragon Control",
-								 "Feather Falling","Giant Strength","Restoring Level(s)",
-								 "Flame Tongue","Fireballs","Spiritual","Boulder","Diamond",
-								 "Emerald","Opal","Saphire","Of Tyr","Of Tempus","Of Sune",
-								 "Wooden","+3 vs Undead","Pass","Cursed" 
-							 };
+            /* 116 - 120 */ "Deep Red","Pink","Mirror","Necklace","And Green",
+            /* 121 - 125 */ "Blue","Pearl","Powerlessness","Vermin","Pipes",
+            /* 126 - 130 */ "Hole","Dragon Slayer","Robe","Rope","Frost Brand",
+            /* 131 - 135 */ "Berserker","Scarab","Spade","Sphere","Blessed",
+            /* 136 - 140 */ "Talisman","Tome","Trident","Grimoire","Well",
+            /* 141 - 145 */ "Wings","Vial","Lantern",string.Empty,"Flask of Oil",
+            /* 146 - 150 */ "10 ft. Pole","50 ft. Rope","Iron","Thf Prickly Tools","Iron Rations",
+            /* 151 - 155 */ "Standard Rations","Holy Symbol","Holy Water vial","Unholy Water vial","Barding",
+            /* 156 - 160 */ "Dragon","Lightning","Saddle","Staff","Drow",
+            /* 161 - 165 */ "Wagon","+1","+2","+3","+4",
+            /* 166 - 170 */ "+5","of","Vulnerability","Cloak","Displacement",
+            /* 171 - 175 */ "Torches","Oil","Speed","Tapestry","Spine",
+            /* 176 - 180 */ "Copper","Silver","Electrum","Gold","Platinum",
+            /* 181 - 185 */ "Ointment","Keoghtum's","Sheet","Strength","Healing",
+
+            /* 186 - 190 */ "Holding","Extra","Gaseous Form","Slipperiness","Jewelled",
+            /* 191 - 195 */ "Flying","Treasure Finding","Fear","Disappearance","Statuette",
+            /* 196 - 200 */ "Fungus","Chain","Pendant","Broach","Of Seeking",
+            /* 201 - 205 */ "-1","-2","-3","Lightning Bolt","Fire Resistance",
+            /* 206 - 210 */ "Magic Missiles","Save","Clrc Scroll","MU Scroll","With 1 Spell",
+            /* 211 - 215 */ "With 2 Spells","With 3 Spells","Prot. Scroll","Jewelry","Fine",
+            /* 216 - 220 */ "Huge","Bone","Brass","Key","AC 2",
+            /* 221 - 225 */ "AC 6","AC 4","AC 3","Of Prot.","Paralyzation",
+            /* 226 - 230 */ "Ogre Power","Invisibility","Missiles","Elvenkind","Rotting",
+            /* 231 - 235 */ "Covered","Efreeti","Bottle","Missile Attractor","Of Maglubiyet",
+            /* 236 - 240 */ "Secr Door & Trap Det","Gd Dragon Control","Feather Falling","Giant Strength","Restoring Level(s)",
+            /* 241 - 245 */ "Flame Tongue","Fireballs","Spiritual","Boulder","Diamond",
+            /* 246 - 250 */ "Emerald","Opal","Saphire","Of Tyr","Of Tempus",
+            /* 251 - 255 */ "Of Sune", "Wooden","+3 vs Undead","Pass","Cursed",
+        };
 
         public string GenerateName(int hidden_names_flag)
         {

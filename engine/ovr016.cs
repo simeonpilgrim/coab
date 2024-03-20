@@ -408,7 +408,7 @@ namespace engine
 
                 while (var_1 == 0)
                 {
-                    int var_4 = ovr020.spell_menu2(out var_2, ref var_8, SpellSource.Scribe, SpellLoc.scrolls);
+                    byte var_4 = ovr020.spell_menu2(out var_2, ref var_8, SpellSource.Scribe, SpellLoc.scrolls);
 
                     if (var_4 == 0)
                     {
@@ -426,7 +426,7 @@ namespace engine
                     else
                     {
                         redraw = true;
-                        if (gbl.SelectedPlayer.KnowsSpell((Spells)var_4))
+                        if (gbl.SelectedPlayer.spellBook.KnowsSpell((Spells)var_4))
                         {
                             ovr025.string_print01("You already know that spell");
                         }
@@ -435,9 +435,9 @@ namespace engine
                             bool var_D = gbl.SelectedPlayer.items.Find(item =>
                             {
                                 return (item.IsScroll() == true &&
-                                    (item.ScrollLearning(1, var_4) ||
-                                    item.ScrollLearning(2, var_4) ||
-                                    item.ScrollLearning(3, var_4)));
+                                    (item.CheckMaskedAffect(1, var_4) ||
+                                    item.CheckMaskedAffect(2, var_4) ||
+                                    item.CheckMaskedAffect(3, var_4)));
                             }) != null;
 
 
