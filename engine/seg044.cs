@@ -21,41 +21,24 @@ namespace engine
 
         internal static void PlaySound(Sound arg_0) /*sub_120E0*/
         {
-            if (gbl.soundType == SoundType.PC)
+            if (gbl.soundType == SoundType.PC && soundPlayer != null)
             {
                 if (arg_0 == Sound.sound_0)
                 {
-                    foreach (var sp in sounds)
-                    {
-                        if (sp != null)
-                        {
-                            sp.Stop();
-                        }
-                    }
+                    soundPlayer.StopAll();
                 }
                 else if (arg_0 == Sound.sound_1)
                 {
                 }
                 else if (arg_0 == Sound.sound_FF) // off maybe.
                 {
-                    foreach (var sp in sounds)
-                    {
-                        if (sp != null)
-                        {
-                            sp.Stop();
-                        }
-                    }
+                    soundPlayer.StopAll();
                 }
                 else if (arg_0 >= Sound.sound_2 && arg_0 <= Sound.sound_e)
                 {
                     int sampleId = (int)arg_0 - 1;
-                    if (sounds[sampleId] != null)
-                    {
-                        sounds[sampleId].Play();
-                    }
-                    else
-                    {
-                    }
+
+                    soundPlayer.Play(sampleId);
                 }
                 else if (arg_0 == Sound.sound_f)
                 {
@@ -63,23 +46,11 @@ namespace engine
             }
         }
 
-        static System.Media.SoundPlayer[] sounds;
+        static ISoundPlayer soundPlayer;
 
-        internal static void SoundInit()
+        public static void SetSoundPlayer(ISoundPlayer player)
         {
-            var resources = new System.Resources.ResourceManager("Main.Resource", System.Reflection.Assembly.GetEntryAssembly());
-
-            sounds = new System.Media.SoundPlayer[13];
-
-            sounds[1] = new System.Media.SoundPlayer(resources.GetStream("missle"));
-            sounds[2] = new System.Media.SoundPlayer(resources.GetStream("magic_hit"));
-            sounds[4] = new System.Media.SoundPlayer(resources.GetStream("death"));
-            sounds[5] = new System.Media.SoundPlayer(resources.GetStream("sound_5"));
-            sounds[6] = new System.Media.SoundPlayer(resources.GetStream("hit"));
-            sounds[8] = new System.Media.SoundPlayer(resources.GetStream("miss"));
-            sounds[9] = new System.Media.SoundPlayer(resources.GetStream("step"));
-            sounds[10] = new System.Media.SoundPlayer(resources.GetStream("sound_10"));
-            sounds[12] = new System.Media.SoundPlayer(resources.GetStream("start_sound"));
+            soundPlayer = player;
         }
     }
 }

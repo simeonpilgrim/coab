@@ -1,0 +1,63 @@
+name: CI
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            rid: linux-x64
+            project: MainAvalonia/MainAvalonia.csproj
+          - os: macos-latest
+            rid: osx-arm64
+            project: MainAvalonia/MainAvalonia.csproj
+          - os: macos-latest
+            rid: osx-x64
+            project: MainAvalonia/MainAvalonia.csproj
+          - os: windows-latest
+            rid: win-x64
+            project: Main/Main.csproj
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: 8.0.x
+
+      - name: Publish
+        run: dotnet publish ${{ matrix.project }} -c Release -r ${{ matrix.rid }} --self-contained -p:DebugType=embedded -o publish
+
+      - name: Package (Linux)
+        if: matrix.rid == 'linux-x64'
+        run: tar -czf coab-${{ matrix.rid }}.tar.gz -C publish coab
+
+      - name: Package (macOS)
+        if: startsWith(matrix.rid, 'osx-')
+        run: |
+          mkdir -p coab.app/Contents/MacOS
+          cp publish/coab coab.app/Contents/MacOS/coab
+          cp MainAvalonia/Info.plist coab.app/Contents/Info.plist
+          chmod +x coab.app/Contents/MacOS/coab
+          codesign --force --sign - coab.app/Contents/MacOS/coab
+          codesign --force --sign - coab.app
+          tar -czf coab-${{ matrix.rid }}.tar.gz coab.app
+
+      - name: Package (Windows)
+        if: runner.os == 'Windows'
+        run: Compress-Archive -Path publish\* -DestinationPath coab-${{ matrix.rid }}.zip
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: coab-${{ matrix.rid }}
+          path: coab-${{ matrix.rid }}.*
+          if-no-files-found: error

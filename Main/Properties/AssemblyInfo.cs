@@ -31,3 +31,6 @@ using System.Runtime.InteropServices;
 //
 [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyFileVersion("1.1.7")]
+
+// net8.0-windows would generate this, but GenerateAssemblyInfo is disabled
+[assembly: System.Runtime.Versioning.SupportedOSPlatform("windows7.0")]

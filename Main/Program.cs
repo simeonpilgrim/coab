@@ -47,11 +47,14 @@ namespace Main
 
             Logger.SetExitFunc(engine.seg043.print_and_exit);
 
+            engine.seg044.SetSoundPlayer(new WinSoundPlayer());
+
             main = new MainForm();
 
             ThreadStart threadDelegate = new ThreadStart(EngineThread);
             engineThread = new Thread(threadDelegate);
             engineThread.Name = "Engine";
+            engineThread.IsBackground = true;
             engineThread.Start();
 
 
@@ -71,8 +74,16 @@ namespace Main
 
         static void EngineThread()
         {
-            engine.seg001.__SystemInit(EngineStopped);
-            engine.seg001.PROGRAM();
+            try
+            {
+                engine.seg001.__SystemInit(EngineStopped);
+                engine.seg001.PROGRAM();
+            }
+            catch (engine.EngineStopException)
+            {
+                // EngineStop already ran the stopped callback
+                return;
+            }
 
             EngineStopped();
         }

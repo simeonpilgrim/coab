@@ -41,7 +41,6 @@ namespace Classes
             }
 
             DumpSet();
-            int z = 0;
         }
 
         public Set(params int[] toset)

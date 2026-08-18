@@ -1,9 +1,8 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
-using System.Runtime.Serialization.Formatters.Binary;
-using System.Runtime.Serialization;
+using System.Text.Json;
 
 namespace Classes
 {
@@ -11,7 +10,10 @@ namespace Classes
     {
 
         static string libraryPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "CotAB");
-        static string libraryFile = Path.Combine(libraryPath, "ItemLibrary.dat");
+        // JSON replaces the BinaryFormatter .dat format, which .NET 8+ can no longer read
+        static string libraryFile = Path.Combine(libraryPath, "ItemLibrary.json");
+
+        static JsonSerializerOptions serializerOptions = new JsonSerializerOptions { IncludeFields = true };
 
         static List<Item> library = new List<Item>();
         public static void Add(Item item)
@@ -31,28 +33,18 @@ namespace Classes
         {
             if (System.IO.File.Exists(libraryFile))
             {
-                FileStream fs = new FileStream(libraryFile, FileMode.Open);
-
-                if (fs.Length == 0)
-                {
-                    library = new List<Item>();
-                    return;
-                }
-
-                // Construct a BinaryFormatter and use it to serialize the data to the stream.
-                BinaryFormatter formatter = new BinaryFormatter();
                 try
                 {
-                    library = (List<Item>)formatter.Deserialize(fs);
+                    library = JsonSerializer.Deserialize<List<Item>>(System.IO.File.ReadAllText(libraryFile), serializerOptions);
                 }
-                catch (SerializationException e)
+                catch (JsonException)
                 {
-                    //Console.WriteLine("Failed to deserialize. Reason: " + e.Message);
-                    throw;
+                    library = new List<Item>();
                 }
-                finally
+
+                if (library == null)
                 {
-                    fs.Close();
+                    library = new List<Item>();
                 }
             }
         }
@@ -60,23 +52,8 @@ namespace Classes
         public static void Write()
         {
             Directory.CreateDirectory(libraryPath);
-            FileStream fs = new FileStream(libraryFile, FileMode.Create);
 
-            // Construct a BinaryFormatter and use it to serialize the data to the stream.
-            BinaryFormatter formatter = new BinaryFormatter();
-            try
-            {
-                formatter.Serialize(fs, library);
-            }
-            catch (SerializationException e)
-            {
-                //Console.WriteLine("Failed to serialize. Reason: " + e.Message);
-                throw;
-            }
-            finally
-            {
-                fs.Close();
-            }
+            System.IO.File.WriteAllText(libraryFile, JsonSerializer.Serialize(library, serializerOptions));
         }
     }
 }

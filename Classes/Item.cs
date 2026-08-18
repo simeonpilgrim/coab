@@ -324,6 +324,13 @@ namespace Classes
                 ;
         }
 
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(
+                HashCode.Combine(type, namenum1, namenum2, namenum3, plus, plus_save, readied, hidden_names_flag),
+                HashCode.Combine(cursed, weight, count, _value, affect_1, affect_2, affect_3));
+        }
+
         public override string ToString()
         {
             return GenerateName(0);

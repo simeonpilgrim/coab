@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using System.Drawing;
-using System.Drawing.Imaging;
 
 
 namespace Classes
@@ -31,9 +29,12 @@ namespace Classes
         static int scanLineWidth;
         static int outputWidth;
         static int outputHeight;
-        
-        static public Bitmap bm;
-        static Rectangle rect = new Rectangle(0, 0, 320, 200);
+
+        // frame buffer geometry for frontends; pixel data is 24bpp in B,G,R byte order
+        static public int Width { get { return outputWidth; } }
+        static public int Height { get { return outputHeight; } }
+        static public int Stride { get { return scanLineWidth; } }
+        static public int FrameSize { get { return videoRamSize; } }
 
         public delegate void VoidDeledate();
 
@@ -56,8 +57,6 @@ namespace Classes
             scanLineWidth = outputWidth * 3;
             videoRamSize = scanLineWidth * outputHeight;
             videoRam = new byte[videoRamSize];
-
-            bm = new Bitmap(outputWidth, outputHeight, PixelFormat.Format24bppRgb);
         }
 
         static int[] MonoBitMask = { 0x80, 0x40, 0x20, 0x10, 0x08, 0x04, 0x02, 0x01 };
@@ -126,8 +125,6 @@ namespace Classes
         {
             if (noUpdateCount == 0)
             {
-                RawCopy(videoRam, videoRamSize);
-
                 if (updateCallback != null)
                 {
                     updateCallback.Invoke();
@@ -137,8 +134,6 @@ namespace Classes
 
         static public void ForceUpdate()
         {
-            RawCopy(videoRam, videoRamSize);
-
             if (updateCallback != null)
             {
                 updateCallback.Invoke();
@@ -174,18 +169,10 @@ namespace Classes
         }
 
 
-      
-        public static void RawCopy(byte[] videoRam, int videoRamSize)
+        // copies the current frame into dest; dest must be at least FrameSize bytes
+        public static void CopyFrameTo(byte[] dest)
         {
-            System.Drawing.Imaging.BitmapData bmpData =
-                bm.LockBits(rect, System.Drawing.Imaging.ImageLockMode.WriteOnly,
-                System.Drawing.Imaging.PixelFormat.Format24bppRgb);
-
-            IntPtr ptr = bmpData.Scan0;
-
-            System.Runtime.InteropServices.Marshal.Copy(videoRam, 0, ptr, videoRamSize);
-
-            bm.UnlockBits(bmpData);
+            Array.Copy(videoRam, dest, videoRamSize);
         }
     }
 }

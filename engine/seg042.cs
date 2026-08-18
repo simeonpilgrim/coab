@@ -34,7 +34,9 @@ namespace engine
 
             bool file_found;
 
-            file_found = System.IO.File.Exists(System.IO.Path.Combine(dir_path, file_name));
+            string resolved_path = Classes.FilePath.Resolve(System.IO.Path.Combine(dir_path, file_name));
+
+            file_found = System.IO.File.Exists(resolved_path);
 
             if (file_found == false && noError == false)
             {
@@ -44,7 +46,7 @@ namespace engine
             if (file_found == true)
             {
                 file_ptr = new File();
-                file_ptr.Assign(System.IO.Path.Combine(dir_path, file_name));
+                file_ptr.Assign(resolved_path);
 
                 seg051.Reset(file_ptr);
             }
@@ -59,7 +61,7 @@ namespace engine
 
         internal static bool file_find(string filePath)
         {
-            return System.IO.File.Exists(filePath);
+            return System.IO.File.Exists(Classes.FilePath.Resolve(filePath));
         }
 
 

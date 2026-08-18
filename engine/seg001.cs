@@ -3,6 +3,11 @@ using Classes.Combat;
 
 namespace engine
 {
+    // unwinds the engine thread on EngineStop; Thread.Abort is unsupported on modern .NET
+    public class EngineStopException : System.Exception
+    {
+    }
+
     public class seg001
     {
         internal static System.Threading.Thread EngineThread;
@@ -12,8 +17,14 @@ namespace engine
 
         internal static void EngineStop()
         {
-            EngineStoppedCallback();
-            EngineThread.Abort();
+            EngineStoppedCallback?.Invoke();
+
+            // on the engine thread, unwind via exception; from any other
+            // thread the background engine thread dies with the process
+            if (System.Threading.Thread.CurrentThread == EngineThread)
+            {
+                throw new EngineStopException();
+            }
         }
 
         public static void __SystemInit(VoidDelegate stoppedCallback)
@@ -27,8 +38,6 @@ namespace engine
         internal static void ConfigGame()
         {
             gbl.exe_path = System.IO.Directory.GetCurrentDirectory();
-
-            seg044.SoundInit();
         }
 
         public static void PROGRAM()

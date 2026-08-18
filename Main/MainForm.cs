@@ -23,6 +23,8 @@ namespace Main
 
 		object obj = new object();
 
+		byte[] frameBuffer = new byte[Classes.Display.FrameSize];
+
 		public void UpdateDisplayCallback()
 		{
 			if (displayArea.InvokeRequired)
@@ -31,7 +33,21 @@ namespace Main
 			}
 			else
 			{
-                displayArea.Image = (Image)Classes.Display.bm.Clone();
+				Classes.Display.CopyFrameTo(frameBuffer);
+
+				var bm = new Bitmap(Classes.Display.Width, Classes.Display.Height, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
+				var bmpData = bm.LockBits(new Rectangle(0, 0, bm.Width, bm.Height),
+					System.Drawing.Imaging.ImageLockMode.WriteOnly,
+					System.Drawing.Imaging.PixelFormat.Format24bppRgb);
+				System.Runtime.InteropServices.Marshal.Copy(frameBuffer, 0, bmpData.Scan0, frameBuffer.Length);
+				bm.UnlockBits(bmpData);
+
+				var old = displayArea.Image;
+				displayArea.Image = bm;
+				if (old != null)
+				{
+					old.Dispose();
+				}
 			}
 		}
 

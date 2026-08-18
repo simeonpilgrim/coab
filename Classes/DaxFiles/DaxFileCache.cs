@@ -19,6 +19,8 @@ namespace Classes.DaxFiles
         {
             int dataOffset = 0;
 
+            filename = FilePath.Resolve(filename);
+
             if (System.IO.File.Exists(filename) == false)
             {
                 return;

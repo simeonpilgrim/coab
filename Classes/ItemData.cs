@@ -41,7 +41,7 @@ namespace Classes
 
         public ItemDataTable(string fileName)
         {
-            string filePath = Path.Combine(gbl.exe_path, fileName);
+            string filePath = FilePath.Resolve(Path.Combine(gbl.exe_path, fileName));
 
             FileStream stream = System.IO.File.Open(filePath, FileMode.Open, FileAccess.Read);
 

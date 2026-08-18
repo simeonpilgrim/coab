@@ -161,6 +161,16 @@ namespace Classes
             return a.x != b.x || a.y != b.y;
         }
 
+        public override bool Equals(object obj)
+        {
+            return obj is Point other && this == other;
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(x, y);
+        }
+
         public void MapBoundaryTrunc()
         {
             x = Math.Max(Math.Min(x, MapMaxX - 1), MapMinX);
